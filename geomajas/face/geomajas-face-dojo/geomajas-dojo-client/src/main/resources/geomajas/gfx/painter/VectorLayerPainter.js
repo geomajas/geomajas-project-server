@@ -62,7 +62,7 @@ dojo.declare("VectorLayerPainter", Painter, {
 			var style = layer.getStyles().item(i).getStyle();
 			graphics.drawShapeType({
 				style:     style,
-				id:        layer.getLayerId()+"."+layer.getStyles().item(i).getId()+".style",
+				id:        layer.getLayerId()+"."+layer.getStyles().item(i).getId()+".style"
 			});
 		}
 
