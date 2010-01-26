@@ -1,0 +1,86 @@
+<!--
+  ~ This file is part of Geomajas, a component framework for building
+  ~ rich Internet applications (RIA) with sophisticated capabilities for the
+  ~ display, analysis and management of geographic information.
+  ~ It is a building block that allows developers to add maps
+  ~ and other geographic data capabilities to their web applications.
+  ~
+  ~ Copyright 2008-2010 Geosparc, http://www.geosparc.com, Belgium
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU Affero General Public License as
+  ~ published by the Free Software Foundation, either version 3 of the
+  ~ License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU Affero General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU Affero General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<html xmlns:vml="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" >
+<head>
+	<title>Geomajas demo: simple.</title>
+	<link rel="icon" type="image/jpg" href="images/geomajas_favicon.jpg">
+
+	<!-- VML specific stuff -->
+	<style type="text/css">vml\:* { behavior: url(#VMLRender); position:absolute }</style>
+	<object id="VMLRender" codebase="vgx.dll" classid="CLSID:10072CEC-8CC1-11D1-986E-00A0C955B42E" style="width:0px;height:0px"></object>
+
+	<!-- Everything needed to start up Geomajas -->
+	<link rel='stylesheet' href="js/geomajas/widget/themes/tundra/tundra.css">
+
+	<script type="text/javascript" src="js/dojo/dojo.js" djConfig="parseOnLoad:true, usePlainJson :true"></script>
+	<script type="text/javascript" src="js/geomajas/geomajas.js" geomajasConfig="showLog:true, connectionPoint:'generalConnectionPoint'"></script>
+
+	<!-- Add functionality on the onLoad event -->
+	<script type="text/javascript">
+		dojo.addOnLoad(function() {
+			// custom extension of ConfigManager, this is our entry point
+			manager= new ConfigManager();
+			manager.getConfigWithJson();
+			dojo.connect(manager,"onConfigDone",hideSplash);
+		});
+
+		// hides the splash screen when the structures layer is loaded
+		function hideSplash(){
+			var layer = dijit.byId("sampleFeaturesMap").getMapModel().getLayerById("sampleFeaturesMap.structures");
+			dijit.byId("loader").init(layer);
+		}
+	</script>
+
+	<style type="text/css">@import "css/simple.css";</style>
+	<style>
+			h1 {color: #668822;}
+			h2 {color: #668822;}
+			h3 {color: #668822;}
+
+			a:link {color: #668822;}
+			a:visited {color: #668822;}
+	</style>
+</head>
+
+<body class="tundra" style="overflow: hidden;">
+
+	<div id="loader" dojoType="geomajas.widget.experimental.LoadingScreen" loadText="Loading demo: Editing" style="width:100%; height: 100%;"></div>
+
+	<div dojoType="dijit.layout.LayoutContainer" style="width: 100%; height: 100%;" >
+
+		<div dojoType="dijit.layout.ContentPane" layoutAlign="top" style="font-size: 14px; height:22px;" class="title">
+			<div class="titleTxt">Geomajas demo: simple.</div>
+		</div>
+
+		<div dojoType="dijit.layout.ContentPane" layoutAlign="client" class="sampleBorder">
+				<div dojoType="dijit.layout.LayoutContainer" sizeMin="200" sizeShare="2" style="margin: 0px; padding: 0px; width: 100%; height: 100%;">
+					<div dojoType="geomajas.widget.DynamicToolbar" id="sampleFeaturesMapToolbar" layoutAlign="top" style="height:25px;"></div>
+					<div id="sampleFeaturesMap" dojoType="geomajas.widget.MapWidget" layoutAlign="client" style="margin: 0px; padding: 0px; width:100%; height:100%; border: 1px solid #9B9B9B;"></div>
+				</div>
+
+		</div>
+
+	</div>
+
+</body>
+</html>

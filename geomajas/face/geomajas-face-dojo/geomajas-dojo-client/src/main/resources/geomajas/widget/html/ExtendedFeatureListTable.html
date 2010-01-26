@@ -1,0 +1,48 @@
+<div dojoType="dijit.layout.BorderContainer" style="width: 100%; height: 100%; margin: 0px; padding: 0px; overflow:hidden;">
+	<!--
+	  ~ This file is part of Geomajas, a component framework for building
+	  ~ rich Internet applications (RIA) with sophisticated capabilities for the
+	  ~ display, analysis and management of geographic information.
+	  ~ It is a building block that allows developers to add maps
+	  ~ and other geographic data capabilities to their web applications.
+	  ~
+	  ~ Copyright 2008-2010 Geosparc, http://www.geosparc.com, Belgium
+	  ~
+	  ~ This program is free software: you can redistribute it and/or modify
+	  ~ it under the terms of the GNU Affero General Public License as
+	  ~ published by the Free Software Foundation, either version 3 of the
+	  ~ License, or (at your option) any later version.
+	  ~
+	  ~ This program is distributed in the hope that it will be useful,
+	  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+	  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	  ~ GNU Affero General Public License for more details.
+	  ~
+	  ~ You should have received a copy of the GNU Affero General Public License
+	  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+	  -->
+
+	<div dojoType="dijit.layout.ContentPane" region="top" style="height: 30px; overflow:hidden;">
+		<div dojoType="dijit.Toolbar" id="${id}:toolbar" style="overflow:hidden;">
+			<button id="${id}:info" style="display:none;" class="dijit dijitReset dijitInline chatIcon"></button>
+			<span dojoType="dijit.Tooltip" connectId="${id}:info">
+				<b>${titleString}</b>
+				<ul style="margin-top:0px; margin-bottom:0px;">
+					<li>${item1String}</li>
+					<li>${item2String}</li>
+				</ul>
+			</span>
+			<span style="padding-bottom:3px;">Select a layer: </span>
+			<select id="${id}:cmb" name="${id}:cmb" dojoType="dijit.form.ComboBox" class="medium"
+				autoComplete="false" pageSize="30" searchStr="label">
+			</select>
+			<div dojoType="dijit.ToolbarSeparator"></div>
+			<button id="${id}:refresh" name="${id}:refresh" dojoType="dijit.form.Button" iconClass="refreshLayerIcon" style="vertical-align:top;">Refresh Table</button>
+			<button id="${id}:deselect" name="${id}:deselect" dojoType="dijit.form.Button" iconClass="deselectAllIcon" style="vertical-align:top;">Deselect</button>
+		</div>
+	</div>
+
+	<div dojoType="dijit.layout.ContentPane" region="center">
+		<div id="${id}:flt" dojoType="geomajas.widget.FeatureListTable" style="width: 100%; height: 100%; text-align: left;"></div>
+	</div>
+</div>

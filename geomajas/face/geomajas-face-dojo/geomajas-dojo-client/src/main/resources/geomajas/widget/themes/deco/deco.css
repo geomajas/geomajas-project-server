@@ -1,0 +1,544 @@
+/*
+ * This file is part of Geomajas, a component framework for building
+ * rich Internet applications (RIA) with sophisticated capabilities for the
+ * display, analysis and management of geographic information.
+ * It is a building block that allows developers to add maps
+ * and other geographic data capabilities to their web applications.
+ *
+ * Copyright 2008-2010 Geosparc, http://www.geosparc.com, Belgium
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+@import url("../../../../dijit/themes/dijit.css");
+@import url("Common.css");
+
+@import url("layout/TabContainer.css");
+@import url("layout/AccordionContainer.css");
+@import url("layout/SplitContainer.css");
+@import url("layout/BorderContainer.css");
+@import url("form/Common.css");
+@import url("form/Button.css");
+@import url("form/Checkbox.css");
+@import url("form/RadioButton.css");
+@import url("form/TextArea.css");
+@import url("form/Slider.css");
+@import url("Tree.css");
+@import url("ProgressBar.css");
+@import url("TitlePane.css");
+@import url("Calendar.css");
+@import url("Toolbar.css");
+@import url("Dialog.css");
+@import url("Menu.css");
+@import url("Editor.css");
+@import url("ColorPalette.css");
+@import url("decoGrid.css");
+
+@import url("../../../../dojox/layout/resources/ResizeHandle.css");
+@import url("../../../../dojox/layout/resources/FloatingPane.css");
+@import url("../../../../dojo/resources/dojo.css");
+@import url("../../../../dojox/grid/_grid/Grid.css");
+
+
+@import url("LoadingScreen.css");
+@import url("../majas.css");
+
+/* General stuff */
+
+.deco table { 
+	font-size: 100%;
+	margin: 0px;
+	border-collapse: separate;
+}
+
+.deco thead tr th, thead tr td, tbody tr td, tfoot tr td {
+	padding: 0px 0px 0px 0px;
+}
+
+/* Overriding DOJO deco */
+
+.deco .dijitSplitter { border: 0; background: #D0D0D0; }
+.deco .dijitSplitterH { height: 5px }
+.deco .dijitSplitterV { width: 5px }
+.deco .dijitSplitterActive { background: #999999; }
+
+.deco .dijitDialogUnderlay {
+	background-color: #A0A0A0;
+}
+
+
+.deco .dojoxExpandoTitle {
+	background:#C0C0C0 url("images/titleBar.png") repeat-x top left;
+	color: #ECD556;
+	font-weight: bold;
+	margin:0px;
+	padding: 3px;
+}
+
+.deco .dijitToolbarSeparator {
+	margin: 0px 3px 0px 3px;
+}
+
+.dj_ie .deco .dijitButtonNode {
+	/* Fixes the lack of a bottom border in dojo buttons */
+	display:block;
+}
+
+.deco .dojoxResizeHandle {
+	right: 0px;
+	bottom: 0px;
+	background-image: url('images/resize.gif');
+	width: 15px;
+	height: 15px;
+}
+
+.deco .dojoxFloatingPane {
+	border-top: 1px solid #C0C0C0;
+	border-bottom: 1px solid #888;
+	border-left: 1px solid #C0C0C0;
+	border-right: 1px solid #888;
+	background:#AAAAAA;
+}
+.deco .dojoxFloatingPaneTitle {
+	background:#C0C0C0 url("images/titleBar.png") repeat-x top left;
+	padding-right: 1px;
+	color:#ECD556;
+	font-weight: bold;
+	margin: 2px 2px 1px 2px;
+	border-top: 1px solid #C0C0C0;
+	border-bottom: 1px solid #888;
+	border-left: 1px solid #C0C0C0;
+	border-right: 1px solid #888;
+}
+.deco .dojoxFloatingPaneCanvas {
+	border-top: 1px solid #C0C0C0;
+	border-bottom: 1px solid #888;
+	border-left: 1px solid #C0C0C0;
+	border-right: 1px solid #888;
+	margin: 0px 2px 2px 2px;
+}
+
+
+
+.deco .dojoxDockNode {
+	background:#E0E0E0 url("images/titleBar.png") repeat-x top left;
+	border-top: 1px solid #C0C0C0;
+	border-bottom: 1px solid #888;
+	border-left: 1px solid #C0C0C0;
+	border-right: 1px solid #888;
+}
+.deco .dojoxDock {
+	background:#eaeaea url("images/titleBar2.png") repeat-x top left;
+}
+
+
+.deco .dojoxDockTitleNode {
+	color:#ECD556;
+	font-weight: bold;
+}
+
+
+.deco .dojoxFloatingCloseIcon {
+	background:url('images/close1.gif') no-repeat 0px 0px; 
+	width:16px;
+	height:16px; 
+	overflow:hidden;
+	float:right; 
+}
+.deco .dojoxFloatingCloseIconHover {
+	background:url('images/close2.gif') no-repeat 0px 0px; 
+}
+
+.deco .dojoxFloatingMinimizeIcon {
+	background:url('images/minimize1.gif') no-repeat 0px 0px; 
+	width:16px;
+	height:16px; 
+	overflow:hidden;
+	float:right; 
+}
+.deco .dojoxFloatingMinimizeIconHover {
+	background:url('images/minimize2.gif') no-repeat 0px 0px; 
+}
+
+
+.deco .dojoxDockRestoreButton {
+	background:url('images/restore1.gif') no-repeat 0px 0px; 
+	width:16px; height:16px;
+	overflow:hidden; 
+	float:left;
+	margin-top:2px;
+}
+.deco .dojoxDockRestoreButtonHover {
+	background:url('images/restore2.gif') no-repeat 0px 0px; 
+}
+
+
+/* Overwriting DOJO tab panes */
+
+
+.deco .dijitTabInnerDiv {
+	padding: 2px 6px 1px 6px; /* To make it more flat */
+	border: 0px;
+}
+
+.deco .dijitAlignTop .dijitTabChecked, .tundra .dijitAlignTop .dijitTabCloseButtonChecked {
+	background: #FFFFFF;
+	border-bottom: 1px solid #F0F0F0;
+	color: #000000;
+}
+.deco .dijitTab {
+	border-top: 1px solid #A0A0A0;
+	border-left: 1px solid #A0A0A0;
+	border-bottom: 1px solid #A0A0A0;
+	border-right: 1px solid #C0C0C0;
+	background: #D0D0D0 url("./images/tabBG.png") repeat-x top;
+	color: #555555;
+}
+.deco .dijitTabPaneWrapper {
+	border-top: 1px solid #A0A0A0;
+	border-left: 1px solid #A0A0A0;
+	border-bottom: 1px solid #E0E0E0;
+	border-right: 1px solid #C0C0C0;
+}
+.deco .dijitTabHover,
+.deco .dijitTabCloseButtonHover {
+	color: #366dba;
+	border-top-color:#D0D0D0;
+	border-left-color:#D0D0D0;
+	border-right-color:#F0F0F0;
+	background:#e2e2e2 url("./images/tabHover.png") repeat-x bottom;
+}
+
+
+/* ACTIVITYDIV styles */
+
+.deco .activityDiv {
+	/* Same as general dijitButtonNode, except for the cursor. */
+	margin:0px;
+	padding:3px;
+	/*overflow:visible;*/
+	line-height:normal;
+	font-family:inherit;
+	font-size:12px;
+	vertical-align:middle;	
+	text-align:center;
+	white-space: nowrap;
+}
+
+.deco .activityDivStop {
+	border-top: 1px solid #A0A0A0;
+	border-left: 1px solid #909090;
+	border-bottom: 1px solid #888888;
+	border-right: 1px solid #888888;
+	color:#666666;
+	background:#B7CDEE url("images/titleBar2.png") repeat-x top;
+}
+
+.deco .activityDivStart {
+	border-top: 1px solid #B0B0B0;
+	border-left: 1px solid #B0B0B0;
+	border-bottom: 1px solid #D0D0D0;
+	border-right: 1px solid #C0C0C0;
+	color:#366dba;
+	background:#e2e2e2 url("./images/tabHover.png") repeat-x bottom;
+}
+
+
+
+
+
+/* TextBalloon styles */
+
+.deco .textBalloon {
+	position : absolute;
+	margin : 0px;
+	padding : 0px;
+	z-index : 999; /* popup stuff */
+	background: #FFFFFF;
+}
+	
+.deco .textBalloonContainer {
+	border:1px solid #366dba;
+	color:#366dba;
+	padding:3px;
+	line-height:normal;
+	font-family:inherit;
+	font-size:12px;
+	vertical-align:middle;	
+	z-index : 999; /* popup stuff */
+	/*	text-align:center;*/
+	white-space: nowrap;
+}
+
+
+
+/* Toolbar button styles = LayerTree button styles */
+.deco .dijitToolbar {
+	padding: 3px 0 1px 3px;	
+	border-bottom: 1px solid #CCCCCC;
+	background:#EAEAEA url("images/titleBar2.png") repeat-x top left;
+}
+
+.dj_ie6 .deco .dijitToolbar {
+	padding: 0px 0 1px 0px;	
+}
+
+.dj_ie7 .deco .dijitToolbar {
+	padding: 0px 0 1px 0px;	
+}
+
+.deco .dijitToolbar .dijitToggleButton {
+	border-top: 1px solid #A0A0A0;
+	border-left: 1px solid #909090;
+	border-bottom: 1px solid #777777;
+	border-right: 1px solid #777777;
+}
+.dj_ie6 .deco .dijitToolbar .dijitToggleButton {
+	margin: 1px;
+	border-top: 1px solid #A0A0A0;
+	border-left: 1px solid #909090;
+	border-bottom: 1px solid #777777;
+	border-right: 1px solid #777777;
+}
+
+.deco .dijitToolbar .dijitToggleButtonHover,
+.dj_ie6 .deco .dijitToolbar .dijitToggleButtonHover {
+	/*border-top: 1px solid #81A7D0;
+	border-left: 1px solid #5286D4;
+	border-bottom: 1px solid #316ac5;
+	border-right: 1px solid #316ac5;*/
+	border: 1px solid #316ac5;
+}
+
+.deco .dijitToolbar .dijitToggleButtonChecked,
+.dj_ie6 .deco .dijitToolbar .dijitToggleButtonChecked {
+	border-top: 1px solid #666666;
+	border-left: 1px solid #666666;
+	border-bottom: 1px solid #999999;
+	border-right: 1px solid #888888;
+	background-color: #B7AF69;
+}
+
+.deco .dijitToolbar .dijitToggleButtonCheckedHover,
+.dj_ie6 .deco .dijitToolbar .dijitToggleButtonCheckedHover {
+	border-top: 1px solid #81A7D0;
+	border-left: 1px solid #5286D4;
+	border-bottom: 1px solid #316ac5;
+	border-right: 1px solid #316ac5;
+}
+
+
+
+/* Legend styles */
+.deco .legendBorder {
+	border-top: 1px solid #A0A0A0;
+	border-left: 1px solid #A0A0A0;
+	border-bottom: 1px solid #E0E0E0;
+	border-right: 1px solid #C0C0C0;
+	background-color: #FFFFFF;
+}
+
+/* LayerTree styles */
+
+.deco .layerTreeContainer {
+	border-top: 1px solid #E0E0E0;
+	border-left: 1px solid #C0C0C0;
+	border-bottom: 1px solid #A0A0A0;
+	border-right: 1px solid #A0A0A0;
+	background-color: #FFFFFF;
+}
+
+.deco .layerTreeInner {
+	padding: 2px 5px 2px 5px;
+}
+
+
+.deco .dijitTreeLabelSelected {
+	border-top: 1px solid #E0E0E0;
+	border-left: 1px solid #C0C0C0;
+	border-bottom: 1px solid #A0A0A0;
+	border-right: 1px solid #A0A0A0;
+	background-color: #E0E0E0;
+	color: #316ac5;
+	font-weight: bold;
+}
+
+
+.deco .layerTreeButtons {
+	border-spacing: 5px;
+	border-collapse: separate;
+	padding: 0px 0px 0px 0px;
+	border: 0px  
+}
+
+.deco .layerTreeTree {
+	height: 100%;
+	background:#FFFFFF;
+	border-spacing: 5px;
+	border-collapse: separate;
+	border: 1px solid #9B9B9B;
+	padding: 0px 0px 0px 0px;
+}
+
+
+
+
+/* StyleWidget styles */
+
+.deco .swTabStyle {
+	margin: 3px;
+	text-align: center;
+	overflow: auto;
+}
+
+.deco .swOuterTable {
+	padding: 3px;
+	border: 1px solid #9B9B9B;
+	border-collapse: separate;
+	border-spacing: 3px;
+}
+
+.deco .swOuterTableTD {
+	border-spacing: 3px;
+	border-collapse: separate;
+}
+
+.deco .swInnerTable {
+	border-spacing: 2px;
+	border: 1px solid #9B9B9B;
+	margin: 0px;
+}
+
+
+
+
+
+/* ScaleText styles */
+
+.deco .scaleTextBorder {
+	border-top: 1px solid #A0A0A0;
+	border-left: 1px solid #909090;
+	border-bottom: 1px solid #777777;
+	border-right: 1px solid #777777;
+	padding-top: 1px;
+	padding-right: 1px;
+	padding-bottom: 2px;
+	padding-left: 1px;
+}
+
+.dj_gecko .deco .scaleTextBorder {
+	padding: 1px;
+	height: 18px;
+}
+
+.deco .scaleTextScaleDIV {
+	vertical-align: middle;
+}
+
+.dj_safari .deco .scaleTextScaleDIV {
+	vertical-align: top;
+}
+
+.dj_gecko .deco .scaleTextScaleDIV {
+	vertical-align: top;
+	padding-top: 2px;
+}
+
+
+/* FeatureEditDialog styles */
+.deco .fdtTABLE { 
+	width: 100%;
+	margin: 0px;
+	border-collapse: separate;
+	border-spacing: 0px;
+	border-top: 1px solid #9B9B9B;
+	border-left: 0px solid #9B9B9B;
+	border-right: 0px solid #9B9B9B;
+	border-bottom: 0px solid #9B9B9B;
+}
+
+.deco .fdtTH {
+	padding: 3px 10px 3px 10px;
+	background:#E8E1CF url(images/grid_dx_gradient.gif) repeat-x scroll center top;
+	border-color:#F6F4EB rgb(172, 168, 153) rgb(172, 168, 153) rgb(246, 244, 235);
+	border-style:solid;
+	border-width:1px;
+}
+
+.deco .fdtTD {
+	padding: 3px 10px 3px 10px;
+	border-color:#EBEADB rgb(213, 205, 181) rgb(235, 234, 219) rgb(235, 234, 219);
+	border-style:solid;
+	border-width:1px;
+	text-align:left;
+}
+
+
+/* FeatureEditDialog styles OOOOLLLDDDDD */
+.deco .FeatureEditDialog table { 
+	font-size: 100%;
+	margin: 0px;
+	border-collapse: separate;
+	border-spacing: 0px;
+	border: 1px solid #9B9B9B;
+}
+
+.deco .FeatureEditDialog thead tr th, .deco .FeatureEditDialog tbody tr th {
+	padding: 3px 10px 3px 10px;
+	background:#E8E1CF url(images/grid_dx_gradient.gif) repeat-x scroll center top;
+	border-color:#F6F4EB rgb(172, 168, 153) rgb(172, 168, 153) rgb(246, 244, 235);
+	border-style:solid;
+	border-width:1px;
+}
+
+.deco .FeatureEditDialog thead tr td, .deco .FeatureEditDialog tbody tr td {
+	padding: 3px 10px 3px 10px;
+	border-color:#EBEADB rgb(213, 205, 181) rgb(235, 234, 219) rgb(235, 234, 219);
+	border-style:solid;
+	border-width:1px;
+	text-align:left;
+}
+
+
+/* Tables that we want to look like a grid. FeatureEditDialog is actually one... */
+.deco .gridLookalike table { 
+	font-size: 100%;
+	margin: 0px;
+	border-collapse: separate;
+	border-spacing: 0px;
+	border: 1px solid #9B9B9B;
+	background: #FFFFFF;
+}
+
+.deco .gridLookalike thead tr th, .deco .gridLookalike tbody tr th {
+	padding: 2px 10px 2px 10px;
+	background:#E8E1CF url(images/grid_dx_gradient.gif) repeat-x scroll center top;
+	border-color:#F6F4EB rgb(172, 168, 153) rgb(172, 168, 153) rgb(246, 244, 235);
+	border-style:solid;
+	border-width:1px;
+}
+
+.deco .gridLookalike thead tr td, .deco .gridLookalike tbody tr td {
+	background: #FFFFFF;
+	padding: 2px 10px 2px 10px;
+	border-color:#EBEADB rgb(213, 205, 181) rgb(235, 234, 219) rgb(235, 234, 219);
+	border-style:solid;
+	border-width:1px;
+	text-align:left;
+}
+
+.deco .noBorderTable thead tr td, .deco .noBorderTable tbody tr td {
+	padding: 0px;
+	border-width:0px;
+	text-align:left;
+}

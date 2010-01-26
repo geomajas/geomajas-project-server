@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ This file is part of Geomajas, a component framework for building
+  ~ rich Internet applications (RIA) with sophisticated capabilities for the
+  ~ display, analysis and management of geographic information.
+  ~ It is a building block that allows developers to add maps
+  ~ and other geographic data capabilities to their web applications.
+  ~
+  ~ Copyright 2008-2010 Geosparc, http://www.geosparc.com, Belgium
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU Affero General Public License as
+  ~ published by the Free Software Foundation, either version 3 of the
+  ~ License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU Affero General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU Affero General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<layer xmlns="http://geomajas.org/schemas/configuration/"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" id="cities"
+	xsi:type="vectorLayerInfo">
+	<label>Cities</label>
+	<visible>true</visible>
+	<layerType>2</layerType>
+	<crs>EPSG:4326</crs>	
+	<viewScale>
+		<min>0</min>
+		<max>1000</max>
+	</viewScale>
+	<maxExtent>
+		<minX>-170</minX>
+		<maxX>170</maxX>
+		<minY>-80</minY>
+		<maxY>80</maxY>
+	</maxExtent>
+	<maxTileLevel>17</maxTileLevel>
+	<layerDefinition>
+		<layerFactory>
+			org.geomajas.internal.application.DefaultLayerFactory
+		</layerFactory>
+		<label>
+			<labelAttribute>City</labelAttribute>
+		</label>
+		<filter />
+	    <editPermissions>
+	            <creatingAllowed>false</creatingAllowed>
+	            <updatingAllowed>false</updatingAllowed>
+	            <deletingAllowed>false</deletingAllowed>
+	    </editPermissions>
+		<featureType>
+			<layerModelFactoryRef>citiesShape</layerModelFactoryRef>
+			<name>cities</name>
+			<identifier>
+				<label>id</label>
+				<name>Id</name>
+				<type>string</type>
+			</identifier>
+            <geometryType>
+                    <name>the_geom</name>
+                    <crs>EPSG:4326</crs>
+                    <editable>false</editable>
+            </geometryType>			
+			<attributes>
+				<attribute>
+					<label>City</label>
+					<name>City</name>
+					<editable>false</editable>
+					<identifying>true</identifying>
+					<type>string</type>
+				</attribute>
+			</attributes>
+		</featureType>
+
+		<snappingRules />
+
+		<styleDefs>
+			<styleDef id="1">
+				<name>City</name>
+				<formula />
+				<style>
+					<fillColor>#76EE00</fillColor>
+					<fillOpacity>1</fillOpacity>
+					<strokeColor>#458B00</strokeColor>
+					<strokeOpacity>1</strokeOpacity>
+					<strokeWidth>1</strokeWidth>
+					<symbol>
+						<rect w="10" h="10"/>
+					</symbol>
+				</style>
+			</styleDef>
+		</styleDefs>
+
+	</layerDefinition>
+</layer>

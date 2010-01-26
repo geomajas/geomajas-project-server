@@ -1,0 +1,37 @@
+<module>
+	<!-- Internationalization requirements -->
+	<inherits name="com.google.gwt.user.User"/>
+	<inherits name="com.google.gwt.i18n.I18N"/>
+	<extend-property name="locale" values="nl"/>
+
+	<!-- Inherited modules: SmartGWT -->
+	<inherits name='com.smartgwt.SmartGwt'/>
+
+	<!-- Geomajas DTO source code, base path must be org/geomajas to access all packages !!! -->
+
+	<source path="command"/>
+	<source path="layer">
+		<include name="LayerType.java"/>
+	</source>
+	<source path="layer/feature">
+		<include name="Feature.java"/>
+		<include name="Attribute.java"/>
+		<include name="FeatureTransaction.java"/>
+		<include name="SearchCriterion.java"/>
+	</source>
+	<source path="layer/feature/attribute">
+	</source>
+	<source path="rendering/tile">
+		<exclude name="RenderedTile.java"/>
+		<exclude name="UrlTile.java"/>
+	</source>
+	<source path="configuration">
+		<exclude name="ApplicationInfo.java"/>
+		<exclude name="GeomajasRuntimeParameters.java"/>
+		<exclude name="parser/*"/>
+	</source>
+	<source path="geometry"/>
+	<source path="extension/command/dto"/>
+	<source path="extension/printing/command/dto"/>
+
+</module>

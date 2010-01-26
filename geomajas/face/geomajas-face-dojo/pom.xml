@@ -1,0 +1,35 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<parent>
+		<groupId>org.geomajas</groupId>
+		<artifactId>geomajas</artifactId>
+		<version>1.5.3-SNAPSHOT</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.geomajas</groupId>
+	<artifactId>geomajas-face-dojo</artifactId>
+	<packaging>pom</packaging>
+	<name>Geomajas dojo face</name>
+
+	<modules>
+		<module>geomajas-dojo-server</module>
+		<module>geomajas-dojo-client</module>
+	</modules>
+
+	<profiles>
+		<profile>
+			<!-- development profile, no shrinking -->
+			<id>noshrink</id>
+		</profile>
+		<profile>
+			<!-- shrinking -->
+			<id>shrink</id>
+			<modules>
+				<module>geomajas-dojo-client-shrinksafe</module>
+			</modules>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+		</profile>
+	</profiles>
+
+</project>

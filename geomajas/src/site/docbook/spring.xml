@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+<!--
+  ~ This file is part of Geomajas, a component framework for building
+  ~ rich Internet applications (RIA) with sophisticated capabilities for the
+  ~ display, analysis and management of geographic information.
+  ~ It is a building block that allows developers to add maps
+  ~ and other geographic data capabilities to their web applications.
+  ~
+  ~ Copyright 2008-2010 Geosparc, http://www.geosparc.com, Belgium
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU Affero General Public License as
+  ~ published by the Free Software Foundation, either version 3 of the
+  ~ License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU Affero General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU Affero General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<article id="release" lang="en">
+  <title>Spring usage in Geomajas</title>
+
+  <toc />
+
+  <section>
+    <title>Spring dependency injection</title>
+
+    <para>To assure the spring dependency injection is used, you should obtain
+    beans through either injection (possibly autowiring) or the application
+    context. When you directly instantiate classes which require spring
+    dependency injection, you are likely to encounter NullPointerException or
+    other problems.</para>
+
+    <programlisting>@Component
+public class MyClass {
+
+    @Autowired
+    private ApplicationContainer applicationContainer;
+
+    public void myMethod() {
+        Command command = applicationContext.getBean("controller.LogCommand", Command.class);
+        .....</programlisting>
+
+    <para>We recommend using the annotations when possible.</para>
+
+    <section>
+      <title>Bean naming convention</title>
+
+      <para>Bean names match the (fully qualified name of the) interface they
+      implement if there is only one implementation to be used. When this is
+      not the case, the bean name is the (fully qualified) classname. When the
+      bean name starts with "org.geomajas.", this is cut off. Interfaces which
+      are expected to have several alternate implementations should be
+      annotated with the "@ExpectAlternatives" interface.</para>
+
+      <para>There is a "GeomajasBeanNameGenerator" class which tries to
+      automatically determine the bean names, assuring that you don't need to
+      mention this explicitly in the "@Component" annotation. If the first
+      interface which is implemented by the class does not have the
+      "@ExpectAlternatives" annotation, then the fully qualified name of the
+      first interface is used as bean name. For all other beans, and for beans
+      which are in a "command" package and don't have a class name starting
+      with "Default" the fully qualified class name is used. In all cases the
+      bean name has the "org.geomajas." prefix removed is present (using the
+      "GeomajasBeanNameGenerator.simplify()" method.</para>
+
+      <para>Note that these rules are built to easily replace instantiation
+      based on class names by instantiating based on bean names. For the same
+      class name, you can often replace the code</para>
+
+      <programlisting>Class.forName(className).newInstance();</programlisting>
+
+      <para>by</para>
+
+      <programlisting>applicationContext.getBean(GeomajasBeanNameGenerator.simplify(className));</programlisting>
+    </section>
+
+    <section>
+      <title>Initialising the applicationContext</title>
+
+      <para>For servlets, you can use the GeomajasContextListener in the
+      web.xml file.</para>
+
+      <programlisting>&lt;!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd" &gt;
+&lt;web-app&gt;
+    &lt;display-name&gt;Geomajas application&lt;/display-name&gt;
+    &lt;context-param&gt;
+        &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;
+        &lt;param-value&gt;/myapp/applicationContext.xml&lt;/param-value&gt;
+    &lt;/context-param&gt;
+
+    &lt;listener&gt;
+         &lt;listener-class&gt;org.geomajas.dojo.server.servlet.GeomajasContextListener&lt;/listener-class&gt;
+    &lt;/listener&gt;
+    .....</programlisting>
+
+      <para>The "contextConfigLocation" context-param allows you to specify
+      additional application context definition files. These will be included
+      after the builtin Geomajas file. You can include several files by
+      separating the location by a space, newline, comma or semicolon. The
+      files are always searched on the classpath.</para>
+
+      <para>When the GeomajasContextListener is used, the application context
+      can be obtained in the servlet using</para>
+
+      <programlisting>public void init(ServletConfig config) throws ServletException {
+    ApplicationContext applicationContext = ApplicationContextUtils.getApplicationContext(config);
+    .....</programlisting>
+
+      <para>When using another way to define the application context, you have
+      to make sure to include "org/geomajas/spring/geomajasContext.xml"
+      (classpath resource). This resource can be found in the geomajas-impl
+      module.</para>
+    </section>
+  </section>
+</article>

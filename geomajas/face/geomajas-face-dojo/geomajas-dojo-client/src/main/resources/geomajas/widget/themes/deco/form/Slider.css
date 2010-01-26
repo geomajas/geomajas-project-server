@@ -1,0 +1,156 @@
+/*
+ * This file is part of Geomajas, a component framework for building
+ * rich Internet applications (RIA) with sophisticated capabilities for the
+ * display, analysis and management of geographic information.
+ * It is a building block that allows developers to add maps
+ * and other geographic data capabilities to their web applications.
+ *
+ * Copyright 2008-2010 Geosparc, http://www.geosparc.com, Belgium
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+.deco .dijitSliderProgressBarH {
+	border-color: #aab0bb;
+	background: #c0c2c5 url("../images/sliderFull.png") repeat-x top left;
+}
+
+.deco .dijitSliderProgressBarV {
+	border-color: #aab0bb;
+	background: #c0c2c5 url("../images/sliderFullVertical.png") repeat-y bottom left;
+}
+
+.deco .dijitSliderFocused .dijitSliderProgressBarH,
+.deco .dijitSliderFocused .dijitSliderLeftBumper {
+	background-image:url("../images/sliderFullFocus.png");
+}
+
+.deco .dijitSliderFocused .dijitSliderProgressBarV,
+.deco .dijitSliderFocused .dijitSliderBottomBumper {
+	background-image:url("../images/sliderFullVerticalFocus.png");
+}
+
+.deco .dijitSliderRemainingBarV {
+	border-color: #b4b4b4;
+	background: #dcdcdc url("../images/sliderEmptyVertical.png") repeat-y bottom left;
+}
+
+.deco .dijitSliderRemainingBarH {
+	border-color: #b4b4b4;
+	background: #dcdcdc url("../images/sliderEmpty.png") repeat-x top left;
+}
+
+.deco .dijitSliderBar {
+	border-style: solid;
+	outline:1px;
+}
+.deco .dijitSliderFocused .dijitSliderBar {
+	border-color:#333;	
+}
+
+.dijit_a11y .dijitSliderProgressBar {
+	background-color:#333 !important;
+}
+
+.deco .dijitSliderImageHandleH {
+	border:0px;
+	width:16px;
+	height:16px;
+	background:url("../images/preciseSliderThumb.png") no-repeat center top;
+	cursor:pointer;
+}
+.deco .dijitSliderFocused .dijitSliderImageHandleH {
+	background-image:url("../images/preciseSliderThumbFocus.png");
+	#background-image:url("../images/preciseSliderThumbFocus.gif");
+}
+
+.dj_ie6 .deco .dijitSliderImageHandleH {
+	background-image:url("../images/preciseSliderThumb.gif");
+}
+
+.deco .dijitSliderLeftBumper {
+	border-left-width: 1px;
+	border-color: #aab0bb;
+	background: #c0c2c5 url("../images/sliderFull.png") repeat-x top left;
+}
+
+.deco .dijitSliderRightBumper {
+	background: #dcdcdc url("../images/sliderEmpty.png") repeat-x top left;
+	border-color: #b4b4b4;
+	border-right-width: 1px;
+}
+
+.deco .dijitSliderImageHandleV {
+	border:0px;
+	width:16px;
+	height:16px;
+	background:url("../images/sliderThumb.png") no-repeat center center;
+	cursor:pointer;
+}
+
+.deco .dijitSliderFocused .dijitSliderImageHandleV {
+	background-image:url("../images/sliderThumbFocus.png");
+}
+.dj_ie6 .deco .dijitSliderFocused .dijitSliderImageHandleV {
+	background-image:url("../images/sliderThumbFocus.gif");
+}
+
+.deco .dijitSliderBottomBumper {
+	border-bottom-width: 1px;
+	border-color: #aab0bb;
+	background: #c0c2c5 url("../images/sliderFullVertical.png") repeat-y bottom left;
+}
+
+.deco .dijitSliderTopBumper {
+	background: #dcdcdc url("../images/sliderEmptyVertical.png") repeat-y top left;
+	border-color: #b4b4b4;
+	border-top-width: 1px;
+}
+
+.deco .dijitSliderIncrementIconH,
+.deco .dijitSliderIncrementIconV {
+	background:url('../images/arrowUp.png') no-repeat center center;
+	width:16px; height:16px;
+	cursor:pointer;
+}
+.deco .dijitSliderIncrementIconH {
+	background-image:url('../images/arrowRight.png');
+}
+
+.deco .dijitSliderDecrementIconH,
+.deco .dijitSliderDecrementIconV {
+	width:16px;
+	height:16px;
+	cursor:pointer;
+	background:url('../images/arrowDown.png') no-repeat center center;
+}
+.deco .dijitSliderDecrementIconH { background-image:url('../images/arrowLeft.png'); }
+
+.deco .dijitSliderButtonInner {
+	visibility:hidden;
+}
+
+.deco .dijitSliderDisabled {
+	opacity:0.6 !important;
+}
+
+.dj_ie6 .deco .dijitSliderDisabled,
+.dj_ie6 .deco .dijitSliderDisabled .dijitRuleContainer,
+.dj_ie6 .deco .dijitSliderDisabled .dijitSliderRemainingBar,
+.dj_ie6 .deco .dijitSliderDisabled .dijitSliderProgressBar {
+	filter: gray() alpha(opacity=40);
+}
+
+.deco .dijitSliderDisabled * {
+	cursor: not-allowed !important;
+}

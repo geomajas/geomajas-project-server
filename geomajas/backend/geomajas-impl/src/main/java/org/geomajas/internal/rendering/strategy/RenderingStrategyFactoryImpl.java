@@ -1,0 +1,92 @@
+/*
+ * This file is part of Geomajas, a component framework for building
+ * rich Internet applications (RIA) with sophisticated capabilities for the
+ * display, analysis and management of geographic information.
+ * It is a building block that allows developers to add maps
+ * and other geographic data capabilities to their web applications.
+ *
+ * Copyright 2008-2010 Geosparc, http://www.geosparc.com, Belgium
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+package org.geomajas.internal.rendering.strategy;
+
+import org.geomajas.configuration.VectorLayerInfo;
+import org.geomajas.rendering.strategy.RenderingStrategy;
+import org.geomajas.rendering.strategy.RenderingStrategyFactory;
+import org.geomajas.rendering.tile.TileMetadata;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Component;
+
+/**
+ * <p>
+ * Factory that creates rendering strategy instances.
+ * </p>
+ *
+ * @author Pieter De Graef
+ */
+@Component()
+public class RenderingStrategyFactoryImpl implements RenderingStrategyFactory {
+
+	@Autowired
+	private ApplicationContext applicationContext;
+
+	/**
+	 * Create a rendering-strategy for a VectorLayerInfo object. If something
+	 * goes wrong during this search, the default will be returned. The default
+	 * being a VectorRendering strategy.
+	 *
+	 * @param info
+	 *            The VectorLayer configuration object that contains the
+	 *            predefined rendering strategies.
+	 * @param tileMetadata
+	 *            The RetrieveRenderingCommand that holds all the metadata
+	 *            needed for rendering a tile. This metadata is now used to
+	 *            select a rendering strategy as well.
+	 * @return Returns the correct rendering strategy, or the default
+	 *         VectorRendering strategy.
+	 */
+	public RenderingStrategy createRenderingStrategy(VectorLayerInfo info, TileMetadata tileMetadata) {
+		/*
+		if (info.getRenderingStrategies() != null
+				&& info.getRenderingStrategies().getRenderingStrategy() != null) {
+			List<RenderingStrategyInfo> strategies = info.getRenderingStrategies().getRenderingStrategy();
+
+			// Go over the strategies one by one:
+			for (RenderingStrategyInfo strategy : strategies) {
+				String beanName = strategy.getRule().getClassName();
+				beanName = GeomajasBeanNameGenerator.simplify(beanName);
+				if (applicationContext.containsBean(beanName)) {
+				RenderingStrategyRule rule = applicationContext.getBean(beanName, RenderingStrategyRule.class);
+
+					// Test each rule; if true, select the RenderingStrategy
+					rule.setParameters(strategy.getRule().getParameterMap().getParameters());
+					if (rule.accept(tileMetadata)) {
+						beanName = strategy.getClassName();
+						beanName = GeomajasBeanNameGenerator.simplify(beanName);
+						if (applicationContext.containsBean(beanName)) {
+							RenderingStrategy s = applicationContext.getBean(beanName, RenderingStrategy.class);
+							s.setParameters(strategy.getParameterMap().getParameters());
+							return s;
+						}
+					}
+				}
+			}
+		}
+		*/
+		return applicationContext.getBean("internal.rendering.strategy.VectorRendering", RenderingStrategy.class);
+	}
+}

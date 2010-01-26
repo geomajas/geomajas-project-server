@@ -1,0 +1,67 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<parent>
+		<groupId>org.geomajas</groupId>
+		<artifactId>geomajas-dojo-example</artifactId>
+		<version>1.5.3-SNAPSHOT</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.geomajas</groupId>
+	<artifactId>geomajas-dojo-example-modules-shrinksafe</artifactId>
+	<packaging>jar</packaging>
+	<name>Geomajas dojo application example modules (shrinksafe)</name>
+	<url>http://files.geomajas.org/maven/trunk/dojo-example</url>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-dojo-client</artifactId>
+			<version>${project.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-dojo-example-client</artifactId>
+			<version>${project.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-dojo-server</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-maven-dojo</artifactId>
+				<version>1.1</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>build</goal>
+						</goals>
+						<configuration>
+							<layerName>example</layerName>
+							<localeList>en,fr,nl,pt,sp</localeList>
+							<modules>
+								<module>
+									<groupId>org.geomajas</groupId>
+									<artifactId>geomajas-dojo-client</artifactId>
+									<requires>geomajas.geomajas</requires>
+								</module>
+								<module>
+									<groupId>org.geomajas</groupId>
+									<artifactId>geomajas-dojo-example-client</artifactId>
+									<requires>tutorial.tutorial</requires>
+								</module>
+							</modules>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+</project>
+

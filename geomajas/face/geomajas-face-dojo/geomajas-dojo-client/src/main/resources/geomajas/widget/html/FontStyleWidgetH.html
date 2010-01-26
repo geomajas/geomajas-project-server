@@ -1,0 +1,93 @@
+<div>
+	<!--
+	  ~ This file is part of Geomajas, a component framework for building
+	  ~ rich Internet applications (RIA) with sophisticated capabilities for the
+	  ~ display, analysis and management of geographic information.
+	  ~ It is a building block that allows developers to add maps
+	  ~ and other geographic data capabilities to their web applications.
+	  ~
+	  ~ Copyright 2008-2010 Geosparc, http://www.geosparc.com, Belgium
+	  ~
+	  ~ This program is free software: you can redistribute it and/or modify
+	  ~ it under the terms of the GNU Affero General Public License as
+	  ~ published by the Free Software Foundation, either version 3 of the
+	  ~ License, or (at your option) any later version.
+	  ~
+	  ~ This program is distributed in the hope that it will be useful,
+	  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+	  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+	  ~ GNU Affero General Public License for more details.
+	  ~
+	  ~ You should have received a copy of the GNU Affero General Public License
+	  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+	  -->
+
+	<table class="swOuterTable">
+	
+			<tr>
+				<td valign="top"><b>${fillColorString}:</b></td>
+				<td rowspan="4">
+					<div dojoType="dijit.ColorPalette" palette="7x10" id="${id}:fillColorPalette"
+						onChange="dojo.byId('${id}:fillColor').value = arguments[0];">
+					</div>
+				</td>
+				<td valign="top" width="120" style="padding-left:10px;"><b>${fontSizeString}:</b></td>
+				<td valign="top">
+					<input dojoType="dijit.form.NumberTextBox" id="${id}:fontSize"
+						name="${id}:fontSize" size="5" flags="integer:.;min:0;max:50"
+						missingMessage=" " invalidMessage=" " style="margin-bottom: 1px;" />
+				</td>
+			</tr>
+
+			<tr>
+				<td style="vertical-align: bottom;" rowspan="3">
+					<input dojoType="dijit.form.ValidationTextBox" id="${id}:fillColor" name="${id}:fillColor"
+						regexp="#[0-9a-f]{6}" missingMessage=" " invalidMessage="HTML color code (ie. #FFFFFF)" style="margin-bottom: 1px; width: 80px;" />
+				</td>
+				<td style="padding-left:10px;"><b>${fontFamilyString}:</b></td>
+				<td>
+					<select id="${id}:fontFamily"
+							dojoType="dijit.form.ComboBox"
+							style="margin-bottom: 1px;"
+							name="${id}:fontFamily"
+							autocomplete="false">
+						<option>Verdana</option>
+						<option>Arial</option>
+						<option>Times New Roman</option>
+					</select>
+				</td>
+			</tr>
+
+			<tr>
+				<td style="padding-left:10px;"><b>${fontWeightString}:</b></td>
+				<td>
+					<select id="${id}:fontWeight"
+							dojoType="dijit.form.ComboBox"
+							style="margin-bottom: 1px;"
+							class="short"
+							name="${id}:fontWeight"
+							autocomplete="false">
+						<option>${normalString}</option>
+						<option>${boldString}</option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td style="padding-left:10px;"><b>${fontStyleString}:</b></td>
+				<td>
+					<select id="${id}:fontStyle"
+							dojoType="dijit.form.ComboBox"
+							style="margin-bottom: 1px;"
+							class="short"
+							name="${id}:fontStyle"
+							autocomplete="false">
+						<option>${normalString}</option>
+						<option>${italicString}</option>
+						<option>${obliqueString}</option>
+					</select>
+				</td>
+			</tr>
+
+	</table>
+
+</div>

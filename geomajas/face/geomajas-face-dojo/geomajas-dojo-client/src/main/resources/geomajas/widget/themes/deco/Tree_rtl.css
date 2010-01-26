@@ -1,0 +1,58 @@
+/*
+ * This file is part of Geomajas, a component framework for building
+ * rich Internet applications (RIA) with sophisticated capabilities for the
+ * display, analysis and management of geographic information.
+ * It is a building block that allows developers to add maps
+ * and other geographic data capabilities to their web applications.
+ *
+ * Copyright 2008-2010 Geosparc, http://www.geosparc.com, Belgium
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+/* Tree */
+.dijitRtl .dijitTreeContainer .dijitTreeNode {
+    background-image : url('images/i_rtl.gif');
+    background-position : top right;
+    margin-left: auto;
+    margin-right: 19px;
+}
+
+.dijitRtl .dijitTreeContainer .dijitTreeIsRoot {
+	margin-left: auto;
+    margin-right: 0;
+    background-image: none;
+}
+
+.dijitRtl .dijitTreeContainer .dijitTreeIsLast {
+    background-image: url('images/i_half_rtl.gif');
+}
+
+.dijitRtl .dijitTreeContainer .dijitTreeContent {
+    margin-left: auto;
+    margin-right: 18px;
+    padding-left: auto;
+    padding-right: 1px;   
+}
+
+.dijitRtl .dijitTreeContainer .dijitTreeExpandoOpened {
+	background-image: url('images/treeExpand_minus_rtl.gif');
+}
+
+.dijitRtl .dijitTreeContainer .dijitTreeExpandoClosed {
+	background-image: url('images/treeExpand_plus_rtl.gif');
+}
+
+.dijitRtl .dijitTreeContainer .dijitTreeExpandoLeaf {
+	background-image: url('images/treeExpand_leaf_rtl.gif');
+}

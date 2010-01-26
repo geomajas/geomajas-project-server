@@ -1,0 +1,211 @@
+<!--
+  ~ This file is part of Geomajas, a component framework for building
+  ~ rich Internet applications (RIA) with sophisticated capabilities for the
+  ~ display, analysis and management of geographic information.
+  ~ It is a building block that allows developers to add maps
+  ~ and other geographic data capabilities to their web applications.
+  ~
+  ~ Copyright 2008-2010 Geosparc, http://www.geosparc.com, Belgium
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU Affero General Public License as
+  ~ published by the Free Software Foundation, either version 3 of the
+  ~ License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU Affero General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU Affero General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<html xmlns:vml="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" >
+<head>
+	<title>Geomajas demo: Editing.</title>
+	<link rel="icon" type="image/jpg" href="images/geomajas_favicon.jpg">
+
+	<!-- VML specific stuff -->
+	<style type="text/css">vml\:* { behavior: url(#VMLRender); position:absolute }</style>
+	<object id="VMLRender" codebase="vgx.dll" classid="CLSID:10072CEC-8CC1-11D1-986E-00A0C955B42E" style="width:0px;height:0px"></object>
+
+	<!-- Everything needed to start up Geomajas -->
+	<link rel='stylesheet' href="js/geomajas/widget/themes/tundra/tundra.css">
+
+	<script type="text/javascript" src="js/dojo/dojo.js" djConfig="parseOnLoad:true, usePlainJson :true"></script>
+	<script type="text/javascript" src="js/example/example.js" geomajasConfig="showLog:false, connectionPoint:'generalConnectionPoint'"></script>
+
+	<!-- Add functionality on the onLoad event -->
+	<script type="text/javascript">
+
+		dojo.addOnLoad(function() {
+			// custom extension of ConfigManager, this is our entry point
+			editingManager = new EditingManager();
+			editingManager.onLoad();
+		});
+
+	</script>
+
+	<style type="text/css">@import "css/tutorial.css";</style>
+	<style>
+			h1 {color: #668822;}
+			h2 {color: #668822;}
+			h3 {color: #668822;}
+
+			a:link {color: #668822;}
+			a:visited {color: #668822;}
+	</style>
+</head>
+
+<body class="tundra" style="overflow: hidden;">
+
+	<div id="loader" dojoType="geomajas.widget.experimental.LoadingScreen" loadText="Loading demo: Editing" style="width:100%; height: 100%;"></div>
+
+	<div dojoType="dijit.layout.BorderContainer" style="width: 100%; height: 100%;">
+
+		<div id="generalConnectionPoint" style="width: 100%; height: 100%;"></div>
+
+		<div dojoType="dijit.layout.ContentPane" region="top" style="height:10px; overflow:hidden;"></div>
+		<div dojoType="dijit.layout.ContentPane" region="left" style="width:25px; overflow:hidden;"></div>
+
+		<div dojoType="dijit.layout.ContentPane" region="center" style="overflow:hidden;">
+			<div dojoType="dijit.layout.BorderContainer" style="background: #D0D0D0; border: 3px solid #D0D0D0;">
+
+				<!-- Application banner -->
+				<div dojoType="dijit.layout.ContentPane" region="top" style="font-size: 14px; height:30px; margin-bottom: 5px;" class="pagetitle">
+					<div class="pagetitleTxt">geo<font color="#00B164">majas</font> 1.5.2 : Editing</div>
+				</div>
+		
+				<!-- Main application area -->
+				<div dojoType="dijit.layout.ContentPane" region="center" style="overflow:hidden;">
+					<div dojoType="dijit.layout.BorderContainer">
+		
+						<!-- LEFT SIDE : layerTree, text and legend -->
+						<div dojoType="dijit.layout.ContentPane" region="left" style="width: 270px; overflow:hidden;">
+							<div dojoType="dijit.layout.BorderContainer">
+		
+								<!-- Help pages -->
+								<div dojoType="dijit.layout.ContentPane" region="center" style="overflow:hidden;">
+									<div dojoType="dijit.layout.BorderContainer" style="overflow:none;">
+			
+										<div dojoType="dijit.layout.ContentPane" region="top" style="height:20px;" class="greenTitle">
+											<div class="greenTitleTxt">Help pages</div>
+										</div>
+			
+										<div dojoType="dijit.layout.ContentPane" region="center" style="padding: 4px; background: #E0E0E0;" class="sampleBorder">
+											<div dojoType="dijit.layout.ContentPane" style="background-color: #FFFFFF;border-top: 1px solid #A0A0A0; border-bottom: 1px solid #E0E0E0; border-left: 1px solid #A0A0A0; border-right: 1px solid #C0C0C0;">
+												<h2>Editing in Geomajas</h2>
+												<p>Click on one of the howto's, and the accompanying text will appear bottom right.</p>
+												<center><table class="gridLookalike" style="margin:5px 5px 0px 5px;">
+													<tr><th colspan="2"><b>How do I ...</b></th></tr>
+													<tr><td><a href="editing.html#" onClick="editingManager.selectManualPage('edit_manual:create')"><img src="images/chat.gif"></a></td><td><a href="editing.html#" onClick="editingManager.selectManualPage('edit_manual:create')">create a new feature</a></td></tr>
+													<tr><td><a href="editing.html#" onClick="editingManager.selectManualPage('edit_manual:update')"><img src="images/chat.gif"></a></td><td><a href="editing.html#" onClick="editingManager.selectManualPage('edit_manual:update')">edit an existing feature</a></td></tr>
+													<tr><td><a href="editing.html#" onClick="editingManager.selectManualPage('edit_manual:delete')"><img src="images/chat.gif"></a></td><td><a href="editing.html#" onClick="editingManager.selectManualPage('edit_manual:delete')">delete an existing feature</a></td></tr>
+													<tr><td><a href="editing.html#" onClick="editingManager.selectManualPage('edit_manual:donut')"><img src="images/chat.gif"></a></td><td><a href="editing.html#" onClick="editingManager.selectManualPage('edit_manual:donut')">create a donut polygon</a></td></tr>
+													<tr><td><a href="editing.html#" onClick="editingManager.selectManualPage('edit_manual:snap')"><img src="images/chat.gif"></a></td><td><a href="editing.html#" onClick="editingManager.selectManualPage('edit_manual:snap')">use snapping</a></td></tr>
+													<tr><td><a href="editing.html#" onClick="editingManager.selectManualPage('edit_manual:splitting')"><img src="images/chat.gif"></a></td><td><a href="editing.html#" onClick="editingManager.selectManualPage('edit_manual:splitting')">split a polygon</a></td></tr>
+													<tr><td><a href="editing.html#" onClick="editingManager.selectManualPage('edit_manual:merging')"><img src="images/chat.gif"></a></td><td><a href="editing.html#" onClick="editingManager.selectManualPage('edit_manual:merging')">merge polygons</a></td></tr>
+												</table></center>
+											</div> 
+										</div>
+			
+									</div>
+								</div>
+		
+								<div dojoType="dijit.layout.ContentPane" region="bottom" style="height: 300px; margin-top: 5px;">
+									<div dojoType="dijit.layout.BorderContainer">
+		
+										<!-- LAYER TREE -->
+										<div dojoType="dijit.layout.ContentPane" region="top" style="height: 160px; overflow:hidden;">
+											<div dojoType="dijit.layout.BorderContainer">
+							
+												<div dojoType="dijit.layout.ContentPane" region="top" style="height:20px;" class="greenTitle">
+													<div class="greenTitleTxt">Layer control</div>
+												</div>
+					
+												<div dojoType="dijit.layout.ContentPane" region="center" style="padding: 4px; background: #E0E0E0;" class="sampleBorder">
+													<div dojoType="dijit.layout.ContentPane" style="overflow:hidden;">
+														<div dojoType="geomajas.widget.LayerTree" id="sampleEditingTree"></div>
+													</div>
+												</div>
+					
+											</div>
+										</div>
+				
+										<!-- LEGEND -->
+										<div dojoType="dijit.layout.ContentPane" region="center" style="margin-top: 5px;">
+											<div dojoType="dijit.layout.BorderContainer">
+					
+												<div dojoType="dijit.layout.ContentPane" region="top" style="height:20px;" class="greenTitle">
+													<div class="greenTitleTxt">Legend</div>
+												</div>
+					
+												<div dojoType="dijit.layout.ContentPane" region="center" style="padding: 4px; background: #E0E0E0;" class="sampleBorder">
+													<div dojoType="dijit.layout.ContentPane" style="overflow:hidden;">
+														<div dojoType="geomajas.widget.LegendWidget" id="legend"></div>
+													</div>
+												</div>
+					
+											</div>
+										</div>
+			
+									</div>
+								</div>
+		
+							</div>
+						</div>
+		
+		
+		
+						<!-- RIGHT SIDE: toolbar, map and manual -->
+						<div dojoType="dijit.layout.ContentPane" region="center" style="margin-left: 5px; overflow:hidden;">
+							<div dojoType="dijit.layout.BorderContainer" persist="false" liveSplitters="false">
+		
+								<div dojoType="dijit.layout.ContentPane" region="center" style="overflow:hidden;">
+									<div dojoType="dijit.layout.BorderContainer">
+		
+										<div dojoType="dijit.layout.ContentPane" region="top" style="height:20px;" class="greenTitle">
+											<div class="greenTitleTxt">Main map - shows roads and structures of a place called Duisburg, Belgium.</div>
+										</div>
+		
+										<div dojoType="dijit.layout.ContentPane" region="center" style="padding:4px; background:#E0E0E0;" class="sampleBorder">
+											<div dojoType="dijit.layout.ContentPane" style="overflow:hidden;">
+												<div dojoType="dijit.layout.BorderContainer">
+		
+													<div dojoType="dijit.layout.ContentPane" region="top" style="height:29px;">
+														<div dojoType="geomajas.widget.DynamicToolbar" id="sampleEditingMapToolbar"></div>
+														<div dojoType="geomajas.widget.ActivityDiv" id="activityDiv" style="position:absolute; top:2px; right:2px; width: 100px;"></div>
+													</div>
+		
+													<div dojoType="dijit.layout.ContentPane" region="center" style="overflow:hidden;">
+														<div id="sampleEditingMap" dojoType="geomajas.widget.MapWidget" style="width:100%; height:100%; border-top: 1px solid #A0A0A0; border-bottom: 1px solid #E0E0E0; border-left: 1px solid #A0A0A0; border-right: 1px solid #C0C0C0;"></div>
+													</div>
+		
+												</div>
+											</div>
+										</div>
+		
+									</div>
+								</div>
+		
+								<div dojoType="dijit.layout.ContentPane" region="bottom" splitter="true" style="height: 250px; padding:4px; background:#E0E0E0;" class="dojoxFloatingPane">
+									<div dojoType="dijit.layout.ContentPane" href="quickmanual.html" style="overflow:hidden;">
+									</div>
+								</div>
+		
+							</div>
+						</div>
+		
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+		<div dojoType="dijit.layout.ContentPane" region="right" style="width:25px; overflow:hidden;"></div>
+		<div dojoType="dijit.layout.ContentPane" region="bottom" style="height:10px; overflow:hidden;"></div>
+
+	</div>
+
+</body>
+</html>

@@ -1,0 +1,528 @@
+/*
+ * This file is part of Geomajas, a component framework for building
+ * rich Internet applications (RIA) with sophisticated capabilities for the
+ * display, analysis and management of geographic information.
+ * It is a building block that allows developers to add maps
+ * and other geographic data capabilities to their web applications.
+ *
+ * Copyright 2008-2010 Geosparc, http://www.geosparc.com, Belgium
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+@import url("../../../../dojo/resources/dojo.css");
+@import url("../../../../dijit/themes/soria/soria.css");
+@import url("../../../../dojox/grid/_grid/Grid.css");
+@import url("../../../../dojox/grid/_grid/soriaGrid.css");
+@import url("../../../../dojox/layout/resources/ResizeHandle.css");
+@import url("../../../../dojox/layout/resources/FloatingPane.css");
+
+@import url("LoadingScreen.css");
+@import url("../majas.css");
+
+/* General stuff */
+
+.soria table { 
+	font-size: 100%;
+	margin: 0px;
+	border-collapse: separate;
+}
+
+.soria thead tr th, thead tr td, tbody tr td, tfoot tr td {
+	padding: 0px 0px 0px 0px;
+}
+
+/* Overriding DOJO soria */
+
+
+.soria .dijitDialogUnderlay {
+	background-color: #A0A0A0;
+}
+
+
+/* Floater */
+
+.soria .dojoxResizeHandle {
+	right: 0px;
+	bottom: 0px;
+	background-image: url('images/resize.gif');
+	width: 15px;
+	height: 15px;
+}
+
+.soria .dojoxFloatingPane {
+	border-top: 1px solid #DEE6FE;
+	border-bottom: 1px solid #87A2F9;
+	border-left: 1px solid #DEE6FE;
+	border-right: 1px solid #87A2F9;
+	background:#C4D1FC;
+}
+.soria .dojoxFloatingPaneTitle {
+	background:#800080 url("images/titleBar.png") repeat-x top left;
+	color: #333333;
+	font-size: 12px;
+	font-weight: bold;
+	border-top: 1px solid #DEE6FE;
+	border-bottom: 1px solid #87A2F9;
+	border-left: 1px solid #DEE6FE;
+	border-right: 1px solid #87A2F9;
+	margin: 2px 2px 1px 2px;
+	padding-right: 1px;
+}
+
+.soria .dojoxFloatingPaneCanvas {
+	border-top: 1px solid #DEE6FE;
+	border-bottom: 1px solid #87A2F9;
+	border-left: 1px solid #DEE6FE;
+	border-right: 1px solid #87A2F9;
+	background:#FFFFFF;
+	margin: 0px 2px 2px 2px;
+}
+
+.soria .dojoxFloatingCloseIcon {
+	background:url('images/close1.gif') no-repeat 0px 0px; 
+	width:16px;
+	height:16px; 
+	overflow:hidden;
+	float:right; 
+}
+.soria .dojoxFloatingCloseIconHover {
+	background:url('images/close2.gif') no-repeat 0px 0px; 
+}
+
+.soria .dojoxFloatingMinimizeIcon {
+	background:url('images/minimize1.gif') no-repeat 0px 0px; 
+	width:16px;
+	height:16px; 
+	overflow:hidden;
+	float:right; 
+}
+.soria .dojoxFloatingMinimizeIconHover {
+	background:url('images/minimize2.gif') no-repeat 0px 0px; 
+}
+
+.soria .dojoxDockRestoreButton {
+	background:url('images/restore1.gif') no-repeat 0px 0px; 
+	width:16px; height:16px;
+	overflow:hidden; 
+	float:left;
+	margin-top:2px;
+}
+.soria .dojoxDockRestoreButtonHover {
+	background:url('images/restore2.gif') no-repeat 0px 0px; 
+}
+
+.soria .dojoxDockNode {
+	background:#C0C0C0 url("images/titleBar.png") repeat-x top left;
+	border-top: 1px solid #E0E0E0;
+	border-bottom: 1px solid #A0A0A0;
+	border-left: 1px solid #C0C0C0;
+	border-right: 1px solid #A0A0A0;
+}
+.soria .dojoxDockTitleNode {
+	color:#333333;
+	font-weight: bold;
+}
+
+
+
+/* Trees */
+
+.soria .dijitTreeNode {
+    background-image : url('images/i.gif');
+    background-position : top left;
+    background-repeat : repeat-y;
+}
+.soria .dijitTreeIsRoot {
+    margin-left: 4px;
+    background-image: none;
+}
+.soria .dijitTreeIsLast {
+    background: url('images/i_half.gif') no-repeat; 
+}
+.soria .dijitTreeExpandoLeaf { background-image: url('images/treeExpand_leaf.gif');}
+
+/* inner divvs */ 
+
+.soria .dijitTabInnerDiv {
+	padding: 1px 6px; /* To make it more flat */
+}
+
+.soria .dijitToolbarSeparator {
+	margin: 0px 3px 0px 3px;
+}
+
+.dj_ie .soria .dijitButtonNode {
+	/* Fixes the lack of a bottom border in dojo buttons */
+	display:block;
+}
+
+
+
+/* Overwriting the DOJO splitter */
+
+.soria .dijitSplitter { border: 0; background: #D0D0D0; }
+.soria .dijitSplitterH { height: 5px }
+.soria .dijitSplitterV { width: 5px }
+.soria .dijitSplitterActive { background: #2266AA; }
+
+
+
+
+/* ACTIVITYDIV styles */
+
+.soria .activityDiv {
+	/* Same as general dijitButtonNode, except for the cursor. */
+	margin:0px;
+	padding:3px;
+	/*overflow:visible;*/
+	line-height:normal;
+	font-family:inherit;
+	font-size:12px;
+	vertical-align:middle;	
+	text-align:center;
+	white-space: nowrap;
+}
+
+.soria .activityDivStop {
+	/* Taken from the soria dijitButtonNode */
+	border-top: 1px solid #DEE6FE;
+	border-bottom: 1px solid #87A2F9;
+	border-left: 1px solid #DEE6FE;
+	border-right: 1px solid #87A2F9;
+	background:#C4D1FC;
+	/*border:1px solid #888888;
+	color:#9b9b9b;*/
+	background:#B7CDEE url("images/buttonEnabled.png") repeat-x top;
+} 
+
+.soria .activityDivStart {
+	/* Taken from the soria dijitButtonHover */
+	/*border:1px solid #888888;*/
+	border-top: 1px solid #87A2F9;
+	border-bottom: 1px solid #DEE6FE;
+	border-left: 1px solid #87A2F9;
+	border-right: 1px solid #DEE6FE;
+	color:#366dba;
+	background:#B7CDEE url("images/buttonHover.png") repeat-x bottom;
+}
+
+
+
+
+
+/* TextBalloon styles */
+
+	
+.soria .textBalloon {
+	position : absolute;
+	margin : 0px;
+	padding : 0px;
+	z-index : 998; /* popup stuff */
+}
+
+
+
+.soria .textBalloonBackground {
+     background-color: #B7CDEE;
+     height: 100%;
+     filter:alpha(opacity=100); /* IE's opacity*/
+     left: 0px;
+     opacity: 1.00;
+     moz-opacity: 1.00;
+     position: absolute;
+     top: 0px;
+     width: 100%;
+     z-index: 998;
+}
+
+.soria .textBalloonContainer {
+	/* background-color:transparent; */
+	border:1px solid #333333;
+	color:#366dba;
+	padding:3px;
+	line-height:normal;
+	font-family:inherit;
+	font-size:12px;
+	vertical-align:middle;	
+	z-index : 999; /* popup stuff */
+	/*	text-align:center;*/
+	white-space: nowrap;
+	position: relative;	
+}
+
+
+
+/* Toolbar button styles = LayerTree button styles */
+
+.dj_ie6 .soria .dijitToolbar {
+	padding: 0px 0 1px 0px;	
+}
+
+.dj_ie7 .soria .dijitToolbar {
+	padding: 0px 0 1px 0px;	
+}
+
+.soria .dijitToolbar .dijitToggleButton {
+	border-top: 1px solid #E0E0E0;
+	border-left: 1px solid #C0C0C0;
+	border-bottom: 1px solid #A0A0A0;
+	border-right: 1px solid #A0A0A0;
+}
+.dj_ie6 .soria .dijitToolbar .dijitToggleButton {
+	margin: 1px;
+	border-top: 1px solid #E0E0E0;
+	border-left: 1px solid #C0C0C0;
+	border-bottom: 1px solid #A0A0A0;
+	border-right: 1px solid #A0A0A0;
+}
+
+.soria .dijitToolbar .dijitToggleButtonHover,
+.dj_ie6 .soria .dijitToolbar .dijitToggleButtonHover {
+	border-top: 1px solid #81A7D0;
+	border-left: 1px solid #5286D4;
+	border-bottom: 1px solid #316ac5;
+	border-right: 1px solid #316ac5;
+}
+
+.soria .dijitToolbar .dijitToggleButtonChecked,
+.dj_ie6 .soria .dijitToolbar .dijitToggleButtonChecked {
+	border-top: 1px solid #666666;
+	border-left: 1px solid #666666;
+	border-bottom: 1px solid #888888;
+	border-right: 1px solid #777777;
+	background-color: #C8C39C;
+}
+
+.soria .dijitToolbar .dijitToggleButtonCheckedHover,
+.dj_ie6 .soria .dijitToolbar .dijitToggleButtonCheckedHover {
+	border-top: 1px solid #81A7D0;
+	border-left: 1px solid #5286D4;
+	border-bottom: 1px solid #316ac5;
+	border-right: 1px solid #316ac5;
+}
+
+
+
+
+
+/* LayerTree styles */
+
+.soria .layerTreeContainer {
+	border-top: 1px solid #E0E0E0;
+	border-left: 1px solid #C0C0C0;
+	border-bottom: 1px solid #A0A0A0;
+	border-right: 1px solid #A0A0A0;
+	background-color: #FFFFFF;
+}
+
+.soria .layerTreeInner {
+	padding: 2px 5px 2px 5px;
+}
+
+/* Legend styles */
+.soria .legendBorder {
+	border-top: 1px solid #A0A0A0;
+	border-left: 1px solid #A0A0A0;
+	border-bottom: 1px solid #E0E0E0;
+	border-right: 1px solid #C0C0C0;
+	background-color: #FFFFFF;
+}
+
+.soria .dijitTreeLabelSelected {
+	border-top: 1px solid #E0E0E0;
+	border-left: 1px solid #C0C0C0;
+	border-bottom: 1px solid #A0A0A0;
+	border-right: 1px solid #A0A0A0;
+	background-color: #d8e5f8;
+	color: 316ac5;
+	font-weight: bold;
+}
+
+.soria .layerTreeButtons {
+	border-spacing: 5px;
+	border-collapse: separate;
+	padding: 0px 0px 0px 0px;
+	border: 0px  
+}
+
+.soria .layerTreeTree {
+	height: 100%;
+	background:#FFFFFF;
+	border-spacing: 5px;
+	border-collapse: separate;
+	border: 1px solid #B0B0B0;
+	padding: 0px 0px 0px 0px;
+}
+
+
+
+
+/* StyleWidget styles */
+
+.soria .swTabStyle {
+	margin: 3px;
+	text-align: center;
+	overflow: auto;
+}
+
+.soria .swOuterTable {
+	padding: 3px;
+	border: 1px solid #333333;
+	border-collapse: separate;
+	border-spacing: 3px;
+}
+
+.soria .swOuterTableTD {
+	border-spacing: 3px;
+	border-collapse: separate;
+}
+
+.soria .swInnerTable {
+	border-spacing: 2px;
+	border: 1px solid #333333;
+	margin: 0px;
+}
+
+
+
+
+
+/* ScaleText styles */
+
+.soria .scaleTextBorder {
+	border-top: 1px solid #E0E0E0;
+	border-left: 1px solid #C0C0C0;
+	border-bottom: 1px solid #A0A0A0;
+	border-right: 1px solid #A0A0A0;
+	padding-top: 1px;
+	padding-right: 1px;
+	padding-bottom: 2px;
+	padding-left: 1px;
+}
+
+.dj_safari .soria .scaleTextBorder {
+	border-top: 1px solid #E0E0E0;
+	border-left: 1px solid #C0C0C0;
+	border-bottom: 1px solid #A0A0A0;
+	border-right: 1px solid #A0A0A0;
+	padding-top: 2px;
+	padding-right: 1px;
+	padding-bottom: 1px;
+	padding-left: 1px;
+}
+
+.dj_gecko .soria .scaleTextBorder {
+	padding: 1px;
+	height: 18px;
+}
+
+.soria .scaleTextScaleDIV {
+	vertical-align: middle;
+}
+
+.dj_safari .soria .scaleTextScaleDIV {
+	vertical-align: top;
+}
+
+.dj_gecko .soria .scaleTextScaleDIV {
+	vertical-align: top;
+	padding-top: 2px;
+}
+
+
+
+
+
+/* FeatureDetailTable styles */
+.soria .fdtTABLE { 
+	width: 100%;
+	margin: 0px;
+	border-collapse: separate;
+	border-spacing: 0px;
+	border-top: 1px solid #9B9B9B;
+	border-left: 0px solid #9B9B9B;
+	border-right: 0px solid #9B9B9B;
+	border-bottom: 0px solid #9B9B9B;
+}
+
+.soria .fdtTH {
+	padding: 3px 10px 3px 10px;
+	background:#E8E1CF url(images/grid_dx_gradient.gif) repeat-x scroll center top;
+	border-color:#F6F4EB rgb(172, 168, 153) rgb(172, 168, 153) rgb(246, 244, 235);
+	border-style:solid;
+	border-width:1px;
+}
+
+.soria .fdtTD {
+	padding: 3px 10px 3px 10px;
+	border-color:#EBEADB rgb(213, 205, 181) rgb(235, 234, 219) rgb(235, 234, 219);
+	border-style:solid;
+	border-width:1px;
+	text-align:left;
+}
+
+
+
+/* FeatureEditDialog styles */
+.soria .FeatureEditDialog table { 
+	font-size: 100%;
+	margin: 0px;
+	border-collapse: separate;
+	border-spacing: 0px;
+	border: 1px solid #333333;
+}
+
+.soria .FeatureEditDialog thead tr th, .soria .FeatureEditDialog tbody tr th {
+	padding: 3px 10px 3px 10px;
+	background:#E8E1CF url(images/grid_dx_gradient.gif) repeat-x scroll center top;
+	border-color:#F6F4EB rgb(172, 168, 153) rgb(172, 168, 153) rgb(246, 244, 235);
+	border-style:solid;
+	border-width:1px;
+}
+
+.soria .FeatureEditDialog thead tr td, .soria .FeatureEditDialog tbody tr td {
+	padding: 3px 10px 3px 10px;
+	border-color:#EBEADB rgb(213, 205, 181) rgb(235, 234, 219) rgb(235, 234, 219);
+	border-style:solid;
+	border-width:1px;
+	text-align:left;
+}
+
+
+/* Tables that we want to look like a grid. FeatureEditDialog is actually one... */
+.soria .gridLookalike table { 
+	font-size: 100%;
+	margin: 0px;
+	border-collapse: separate;
+	border-spacing: 0px;
+	border: 1px solid #333333;
+}
+
+.soria .gridLookalike thead tr th, .soria .gridLookalike tbody tr th {
+	padding: 3px 10px 3px 10px;
+	background:#E8E1CF url("images/grid_dx_gradient.gif") repeat-x scroll center top;
+	border-color:#F6F4EB rgb(172, 168, 153) rgb(172, 168, 153) rgb(246, 244, 235);
+	border-style:solid;
+	border-width:1px;
+}
+
+.soria .gridLookalike thead tr td, .soria .gridLookalike tbody tr td {
+	padding: 3px 10px 3px 10px;
+	border-color:#EBEADB rgb(213, 205, 181) rgb(235, 234, 219) rgb(235, 234, 219);
+	border-style:solid;
+	border-width:1px;
+	text-align:left;
+}
+
+/* tables */

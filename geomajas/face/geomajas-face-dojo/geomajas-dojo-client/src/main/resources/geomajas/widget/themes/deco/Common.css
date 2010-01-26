@@ -1,0 +1,67 @@
+/*
+ * This file is part of Geomajas, a component framework for building
+ * rich Internet applications (RIA) with sophisticated capabilities for the
+ * display, analysis and management of geographic information.
+ * It is a building block that allows developers to add maps
+ * and other geographic data capabilities to their web applications.
+ *
+ * Copyright 2008-2010 Geosparc, http://www.geosparc.com, Belgium
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+/**** Disabled cursor *****/
+.deco .dijitSliderDisabled *,
+.deco .dijitDisabledClickableRegion,	/* a region the user would be able to click on, but it's disabled */
+.deco .dijitSpinnerDisabled *,
+.deco .dijitButtonDisabled *,
+.deco .dijitDropDownButtonDisabled *,
+.deco .dijitComboButtonDisabled *,
+.deco .dijitComboBoxDisabled *
+{
+	cursor: not-allowed !important;
+}
+
+/* DnD avatar-specific settings */
+/* For now it uses a default set of rules. Some other DnD classes can be modified as well. */
+.deco .dojoDndItemBefore {
+	border-top: 2px solid #369;
+}
+
+.deco .dojoDndItemAfter {
+	border-bottom: 2px solid #369;
+}
+
+.deco .dojoDndItemOver {
+	cursor:pointer;
+}
+
+.deco table.dojoDndAvatar { -moz-border-radius: 0; border: 1px solid #ccc; border-collapse: collapse; background-color: #fff; font-size: 75%; color: black;}
+.deco .dojoDndAvatar td	{ border: none; }
+.deco .dojoDndAvatar tr	{ border: none; }
+.deco .dojoDndAvatarHeader td	{ height: 20px; padding: 0 0 0 21px; }
+.deco .dojoDndAvatarItem td { padding: 2px;}
+.deco.dojoDndMove .dojoDndAvatarHeader	{background-color: #f58383; background-image: url(images/dndNoMove.png); background-repeat: no-repeat; background-position: 2px center;}
+.deco.dojoDndCopy .dojoDndAvatarHeader	{background-color: #f58383; background-image: url(images/dndNoCopy.png); background-repeat: no-repeat; background-position: 2px center;}
+.deco.dojoDndMove .dojoDndAvatarCanDrop .dojoDndAvatarHeader	{background-color: #97e68d; background-image: url(images/dndMove.png); background-repeat: no-repeat; background-position: 2px center;}
+.deco.dojoDndCopy .dojoDndAvatarCanDrop .dojoDndAvatarHeader	{background-color: #97e68d; background-image: url(images/dndCopy.png); background-repeat: no-repeat; background-position: 2px center;}
+
+.deco .dijitContentPaneLoading {
+	background:url('images/loading.gif') no-repeat left center;
+	padding-left:25px;
+}
+
+.deco .dijitContentPaneError {
+	background:url('images/warning.png') no-repeat left center;
+	padding-left:25px;
+}

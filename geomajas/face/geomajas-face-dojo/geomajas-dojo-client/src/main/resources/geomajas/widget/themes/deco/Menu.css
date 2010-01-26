@@ -1,0 +1,76 @@
+/*
+ * This file is part of Geomajas, a component framework for building
+ * rich Internet applications (RIA) with sophisticated capabilities for the
+ * display, analysis and management of geographic information.
+ * It is a building block that allows developers to add maps
+ * and other geographic data capabilities to their web applications.
+ *
+ * Copyright 2008-2010 Geosparc, http://www.geosparc.com, Belgium
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+.deco .dijitMenu {
+	border: 1px solid #7eabcd;
+	margin: 0px;
+	padding: 0px;
+}
+
+.deco .dijitMenuItem {
+	background-color: #f7f7f7;
+	font: menu;
+	margin: 0;
+}
+.deco .dijitMenuPreviousButton, .deco .dijitMenuNextButton {
+	font-style: italic;
+}
+.deco .dijitMenuItem td {
+	padding:2px;
+}
+
+.deco .dijitMenuItemHover {
+	background-color: #60a1ea;
+	color:#fff;
+}
+
+.deco .dijitMenuItemIcon {
+	width: 16px;
+	height: 16px;
+}
+
+.deco .dijitMenuExpand {
+	display:none;
+}
+.deco .dijitMenuExpandEnabled {
+	width:16px;
+	height:16px;
+	background:url('images/arrowRight.gif') no-repeat center center;
+	display:block;
+}
+
+.deco .dijitMenuExpandInner {
+	display:none;
+}
+
+.deco .dijitMenuSeparator {
+	background-color: #f7f7f7;
+}
+
+/* separator can be two pixels -- set border of either one to 0px to have only one */
+.deco .dijitMenuSeparatorTop {
+	border-bottom: 1px solid #9b9b9b;
+}
+
+.deco .dijitMenuSeparatorBottom {
+	border-top: 1px solid #e8e8e8;
+}

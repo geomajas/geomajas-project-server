@@ -1,0 +1,279 @@
+<!--
+  ~ This file is part of Geomajas, a component framework for building
+  ~ rich Internet applications (RIA) with sophisticated capabilities for the
+  ~ display, analysis and management of geographic information.
+  ~ It is a building block that allows developers to add maps
+  ~ and other geographic data capabilities to their web applications.
+  ~
+  ~ Copyright 2008-2010 Geosparc, http://www.geosparc.com, Belgium
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU Affero General Public License as
+  ~ published by the Free Software Foundation, either version 3 of the
+  ~ License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU Affero General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU Affero General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<div id="mainTabContainer" dojoType="dijit.layout.TabContainer" sizeMin="100" sizeShare="1">
+	<div dojoType="dijit.layout.ContentPane" title="Editing mode" style="overflow: auto; width: 100%; height: 100%; padding: 5px;">
+		<h1>Editing mode</h1>
+		<p>Editing always begins by enabling editing mode. This can be done by activating
+		the edit-tool (<img src="js/geomajas/widget/themes/images/wijzig_geometrie.gif">)
+		in the toolbar.
+		</p>
+		<p>At this point nothing will happen if the left mouse is clicked on
+		the map. Instead the user should first of all choose whether he wants to
+		create a new feature, edit an existing feature or delete an existing
+		feature. For each of these cases, there is a condition. To create a new
+		feature for example, the user has to select a layer first. For editing
+		or deleting an existing feature, the user has to select a feature first.
+		Since the editing controller also has selecting capabilities, selecting
+		a feature can simply be done by clicking on one. Selecting a layer on
+		the other hand is not possible on the map itself. Usually there is a
+		LayerTree widget present that allows the user to select a layer.</p>
+	</div>
+
+	<div dojoType="dijit.layout.ContentPane" title="Create/Update/Delete" style="overflow: auto; width: 100%; height: 100%; padding: 5px;">
+	<h1>Editing shapes</h1>
+		<h2>Create a new feature</h2>
+		<p>As mentioned above, the creation of a new feature requires the
+		user to <b>select a layer first</b>. Select layers can be done in the layer
+		control, by clicking on them. It is this layer, the feature will be
+		created in. Simply click the RIGHT mouse button on the map, and a menu
+		will appear. At the top of this menu, you will see "Create new feature".
+		Select this option to start.</p>
+
+		<center><img src="images/menu1.gif"></center>
+		<p>After the "Create new feature" option has been selected, editing
+		has started. To create a new feature, you to place points (it's
+		vertices) on the map. Simply start clicking to place new points on the
+		map. As will be explained later, editing has 2 basic modes to function
+		in. "Insert-mode" and "drag-mode". Creating a new feature always starts
+		in "Insert-mode". Insert mode basically means that you can add new
+		points to the geometry by clicking on the map, but more on that later.</p>
+
+		<h2>Edit an existing feature</h2>
+		<p>To start editing an existing feature, it is necessary to select
+		the feature you want to edit first. Since the editing controller has
+		selecting capabilities, this can be done by clicking on it (or use right
+		mouse click, and select "Toggle Selection"). After a feature has been
+		selected, you can click the right mouse button on it again to have the
+		option menu pop up again. This time select "Start editing". You will see
+		that the selected feature suddenly has a whole different appearance
+		(with pink lines, and white circle). This is it's editable view. From
+		here on, you can drag points, insert new points, etc...</p>
+
+		<h2>Delete an existing feature</h2>
+		<p>To delete an existing feature, it is necessary to select it
+		first. Since the editing controller has selecting capabilities, this can
+		be done by clicking on it (or use right mouse click, and select "Toggle
+		Selection"). After a feature has been selected, you can click the right
+		mouse button on it again to have the option menu pop up again. This time
+		select "Delete feature". The system will ask for confirmation, but after
+		that the workflow will take over and start the deletion process (which
+		usually means immediate deletion, unless otherwise specified).</p>
+
+	</div>
+
+	<div dojoType="dijit.layout.ContentPane" title="Insert & drag mode" style="overflow: auto; width: 100%; height: 100%; padding: 5px;">
+
+		<h2>Insert Mode</h2>
+		<p>In the previouse paragraphs, we often mentioned the 2 different
+		editing modes "Insert mode" and "Drag mode". We will start with the
+		explanation of the "Insert mode". This mode allows the user to
+		insert/add new points into the geometry by clicking on the map. Once
+		there is at least one point, you may also notice one or two lines
+		following you mouse cursor as you move it. These lines emphasize where
+		the next point will be when you click again, and how this will affect
+		your geometry (see figure below). There is a limitation though! It is
+		not allowed for a polygon to intersect itself, so when dealing with
+		polygons or multipolygons, no points will be inserted if they result in
+		crossing edges.</p>
+		<center><img src="images/insert1.png" style="border: 1px solid #888888;"></center>
+		<p>After clicking a few times on the map, a geometry begins to take
+		shape. At this point you may feel you want to change something, or
+		perhaps you feel everything is as it should be. It is time to check our
+		options again. Again this can be done by using the RIGHT mouse button,
+		and again a options menu will appear, but a different one this time:</p>
+		<center><img src="images/insert2.png" style="border: 1px solid #888888;"></center>
+		<p>At this point there are 4 options:</p>
+		<ul type="disc">
+			<li>
+			<p><span class="bold"><strong>Stop inserting</strong></span> :
+			Selecting this option will change editing mode to drag mode. There is
+			no turning back to insert-mode once you select this, but don't worry,
+			you'll still be able to insert additional points into the geometry.</p>
+			</li>
+			<li>
+			<p><span class="bold"><strong>Undo last step</strong></span> :
+			Every change in the geometry's form is seen as an action that can be
+			undone. This means changes like the insertion of a new point, the
+			deletion of a point, the dragging of a point, ... All these actions are
+			stored in a stack, and all of them can be undone again.</p>
+			</li>
+			<li>
+			<p><span class="bold"><strong>Save featue</strong></span> : This
+			option seems pretty straightforward. It will save the current geometry
+			(whether we are creating a new feature, or editing an existinf one).
+			But this is not entirely true. Actually it will start a predefined
+			workflow for handling persistance. The default workflow will indeed
+			immediatly save everything.</p>
+			</li>
+			<li>
+			<p><span class="bold"><strong>Cancel Editing</strong></span> : This
+			option will stop editing. This means that no existing feature is still
+			being edited or no new feature is being created, but we are still in
+			general editing mode. Just like in the beginning of this chapter, it is
+			possible to choose again whether to create a new feature, edit an
+			existing one, or delete an existing one.</p>
+			</li>
+			<li>
+			<p><span class="bold"><strong>Show Info</strong></span> : Enabling
+			this will display some geometric information in the top left corner of
+			the map. This information holds the current length, and area of the
+			geometry.</p>
+			<center><img src="images/info1.png" style="border: 1px solid #888888;"></center>
+			</li>
+		</ul>
+
+		<h2>Drag Mode</h2>
+		<p>Once in drag mode it is no longer possible to add new points to
+		the geometry by simply clicking on the map. Instead other options now
+		lie before you. It is now possible to drag all the points to other
+		locations. Standard drag mode looks like the picture below:</p>
+		<center><img src="images/drag1.png" style="border: 1px solid #888888;"></center>
+		<p>Again it is possible to view you options by rightclicking on the
+		map. This time the menu will look differently, depending on where you
+		click. By simply clicking somewhere at random, you'll get the following
+		menu:</p>
+		<center><img src="images/drag2.png" style="border: 1px solid #888888;"></center>
+		<p>If you open the menu by right-clicking on one of the points,
+		you'll get a different menu, in which an extra option has appeared. The
+		"Remove point" option gives you the opportunity to remove the point in
+		question:</p>
+		<center><img src="images/drag3.png" style="border: 1px solid #888888;"></center>
+		<p>Yet another possibility is to open the menu by right-clicking on
+		one of the edges of the geometry. This will present you with a new
+		option: "Insert point". As the name of the option suggests, this will
+		insert a new point into the geometry, at the exact same spot you
+		right-clicked. Of course you can easily drag it somewhere else.</p>
+		<center><img src="images/drag4.png" style="border: 1px solid #888888;"></center>
+
+	</div>
+
+	<div dojoType="dijit.layout.ContentPane" title="Holes in polygons" style="overflow: auto; width: 100%; height: 100%; padding: 5px;">
+
+		<h2>Holes in polygons</h2>
+		<p>In the previous section, we showed part of the creation of a new
+		polygon. Let us now assume, this polygon has been saved succesfully, and
+		we want to create a hole inside this polygon. Notice that holes can only
+		be created in polygons or multipolygons. A linestring object can never
+		contain a hole, and as a result, the options for creating and deleting
+		holes will only be present when dealing with polygons/multipolygons.
+		Creating a hole is actually a lot like creating a new feature. It starts
+		again in "insert mode", until the user selects "stop inserting". Since
+		by definition a hole must be entirely inside the shell, it is not
+		allowed for points of a hole to lie on or out of the outer shell. Also,
+		a hole inside a hole will not be allowed!</p>
+		<center><img src="images/hole1.png" style="border: 1px solid #888888;"></center>
+		<p>Create the hole by adding points, just like creating a new geometry:</p>
+		<center><img src="images/hole2.png" style="border: 1px solid #888888;"></center>
+		<p>An example of a polygon with a hole:</p>
+		<center><img src="images/hole3.png" style="border: 1px solid #888888;"></center>
+		<p>After a hole is created, it must also be possible to delete it
+		again, without deleting the entire polygon. To do this, one can start
+		editing the feature again, and simply right-click in the middle of a
+		hole. The "Delete hole" option will now be available, and by selecting
+		it, the hole will effectively dissapear. The following image shows a
+		polygon where the hole is deleted, but not yet saved.</p>
+		<center><img src="images/hole4.png" style="border: 1px solid #888888;"></center>
+
+	</div>
+
+	<div dojoType="dijit.layout.ContentPane" title="Snapping" style="overflow: auto; width: 100%; height: 100%; padding: 5px;">
+
+		<h2>Using snapping</h2>
+		<p>First of all, snapping is a setting that can be activated and deactivated
+		for each layer independetly. To activate snapping for a certain layer, first
+		select that layer in the layertree, and then press this button:
+		<img src="../../../js/geomajas/widget/themes/images/snap.gif">.
+		Beware that snapping only works on vector-layers!</p>
+
+		<p>Editing can be done with or without snapping. If snapping for the
+		layer in question is activated, the insertion of new points as well as
+		the dragging of existing points will be influenced by snapping points.
+		How this influence presents itself depends on the type of snapping,
+		defined for the layer. Usually, it means that if the mousecursor comes
+		within a certain distance from snapping points, the next click will have
+		the snapping point as coodinates.</p>
+		<center><img src="images/snapping1.gif" style="border: 1px solid #888888;"></center>
+		<p>See the above picture for clarification. You may notice that the
+		purple lines do not cross at the mousecursor's coordinates as was the
+		case in normal insert mode. This is because in this example there is a
+		snapping rule that allows snapping to the nearest point in the structures layer.
+		If the user would click in this situation, the new point would not
+		appear at the mousecursor's coordinates, but where the purple lines
+		cross (at the red dot).</p>
+
+	</div>
+
+	<div dojoType="dijit.layout.ContentPane" title="Splitting and merging" style="overflow: auto; width: 100%; height: 100%; padding: 5px;">
+
+		<h1>Splitting and merging polygons</h1>
+		<h2>Splitting polygons</h2>
+		<p>Besides operations on singel features, in the case of polygons,
+		it is also possible to split an existing polygon or multipolygon.
+		Actually the process of splitting if very analogous to the creation of a
+		linestring geometry. The first step is to select the polygon we wish to
+		split. After that, you can start the splitting process by right-clicking
+		on the selected polygon, and selecting the "Start splitting" option, as
+		shown below:</p>
+		<center><img src="images/split1.png" style="border: 1px solid #888888;"></center>
+		<p>At this point, you can start drawing a linestring object that
+		will eventually split the polygon. Just like the editing process, we
+		start in "insert-mode" and can add new points to the linestring by
+		clicking on the map. Again it is possible to switch to drag-mode to
+		handle individual points, by dragging or deleting them again, or
+		inserting new points on the edges. You can tweak the splitting
+		linestring to your liking until you decide to actualy save the
+		splitting. Another options during splitting is the "Show info". Unlike
+		the "Show info" during editing, this option now shows the geometric
+		information of what will be the new polygons.</p>
+		<center><img src="images/split3.png" style="border: 1px solid #888888;"></center>
+
+		<h2>Merging polygons</h2>
+		<p>If splitting is possible, it must also be possible to merge them
+		again. And so it is! The process of merging polygons is a simple one.
+		Just select polygons that actually touch each other, right-click, and
+		select "Merge polygons". That's all there is to it.</p>
+		<center><img src="images/merge1.png" style="border: 1px solid #888888;"></center>
+		<p>And here is the result:</p>
+		<center><img src="images/merge2.png" style="border: 1px solid #888888;"></center>
+	</div>
+
+	<div dojoType="dijit.layout.ContentPane" title="Editing Attributes" style="overflow: auto; width: 100%; height: 100%; padding: 5px;">
+
+		<h2>Editing the attributes</h2>
+		<p>While you are busy editing the geometry of a feature or creating a new feature,
+		it is always possible to edit it's attributes as well. By simply clicking the right
+		mouse button as before, and selecting "Edit Attributes". An example is shown while
+		creating a new feature for the structures layer:</p>
+		<center><img src="images/attributes1.png" style="border: 1px solid #888888;"></center>
+		<p>But there is more to it! Each of the attributes that have been defined,
+		can be given a few constraints to which it's values have to apply. In the case
+		of the "Area" attribute for example, we have configured to only allow positive numbers.
+		See what happens when the given value is not accepted by the constraints:</p>
+		<center><img src="images/attributes2.png" style="border: 1px solid #888888;"></center>
+		<p>Another nice little detail is that the "Type" attribute is also configured as
+		the label attribute for that structures layer. This means that when the labels are
+		activated, you can see the values as they were given in the attribute editor screen:</p>
+		<center><img src="images/attributes3.png" style="border: 1px solid #888888;"></center>
+	</div>
+
+</div>

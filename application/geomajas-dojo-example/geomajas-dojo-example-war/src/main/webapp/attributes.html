@@ -1,0 +1,199 @@
+<!--
+  ~ This file is part of Geomajas, a component framework for building
+  ~ rich Internet applications (RIA) with sophisticated capabilities for the
+  ~ display, analysis and management of geographic information.
+  ~ It is a building block that allows developers to add maps
+  ~ and other geographic data capabilities to their web applications.
+  ~
+  ~ Copyright 2008-2010 Geosparc, http://www.geosparc.com, Belgium
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU Affero General Public License as
+  ~ published by the Free Software Foundation, either version 3 of the
+  ~ License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU Affero General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU Affero General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<html xmlns:vml="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" >
+<head>
+	<title>Geomajas demo: Attributes & Features.</title>
+	<link rel="icon" type="image/jpg" href="images/geomajas_favicon.jpg">
+
+	<!-- VML specific stuff -->
+	<style type="text/css">vml\:* { behavior: url(#VMLRender); position:absolute }</style>
+	<object id="VMLRender" codebase="vgx.dll" classid="CLSID:10072CEC-8CC1-11D1-986E-00A0C955B42E" style="width:0px;height:0px"></object>
+
+	<!-- Everything needed to start up Geomajas -->
+	<link rel='stylesheet' href="js/geomajas/widget/themes/soria/soria.css">
+
+	<script type="text/javascript" src="js/dojo/dojo.js" djConfig="parseOnLoad:true, usePlainJson :true">
+	</script>
+	<script type="text/javascript" src="js/example/example.js" geomajasConfig="showLog :false"></script>
+
+	<!-- Add functionality on the onLoad event -->
+	<script type="text/javascript">
+
+		dojo.addOnLoad(function() {
+			// custom extension of ConfigManager, this is our entry point
+			var attributesManager = new AttributesManager();
+			attributesManager.onLoad();
+		});
+
+	</script>
+	<style type="text/css">@import "css/tutorial.css";</style>
+</head>
+
+<body class="soria" style="overflow: hidden;">
+
+	<div id="loader" dojoType="geomajas.widget.experimental.LoadingScreen" loadText="Loading demo: Attributes & Features" style="width:100%; height: 100%;"></div>
+ 
+	<div dojoType="dijit.layout.BorderContainer" style="width: 100%; height: 100%;">
+
+		<div id="generalConnectionPoint" style="width: 100%; height: 100%;"></div>
+
+		<div dojoType="dijit.layout.ContentPane" region="top" style="height:10px; overflow:hidden;"></div>
+		<div dojoType="dijit.layout.ContentPane" region="left" style="width:25px; overflow:hidden;"></div>
+
+		<div dojoType="dijit.layout.ContentPane" region="center" style="overflow:hidden;">
+			<div dojoType="dijit.layout.BorderContainer" style="background: #D0D0D0; border: 3px solid #D0D0D0;">
+		
+				<!-- Application banner -->
+				<div dojoType="dijit.layout.ContentPane" region="top" style="font-size: 14px; height:30px; margin-bottom: 5px;" class="pagetitle">
+					<div class="pagetitleTxt">geo<font color="#00B164">majas</font> 1.5.2 : Attributes & Features</div>
+				</div>
+		
+				<!-- Main application area -->
+				<div dojoType="dijit.layout.ContentPane" region="center" style="overflow: hidden;">
+					<div dojoType="dijit.layout.BorderContainer">
+		
+		
+						<!-- LEFT SIDE: accordion and legend -->
+						<div dojoType="dijit.layout.ContentPane" region="left" style="width: 350px; overflow:hidden;">
+							<div dojoType="dijit.layout.BorderContainer">
+		
+								<!-- The accordion with help pages -->
+								<div dojoType="dijit.layout.ContentPane" region="center" style="overflow: hidden;">
+									<div dojoType="dijit.layout.BorderContainer">
+		
+										<div dojoType="dijit.layout.ContentPane" region="top" style="height:20px" class="title">
+											<div class="titleTxt">Help pages</div>
+										</div>
+										
+										<div dojoType="dijit.layout.ContentPane" region="center" style="padding:2px;" class="dojoxFloatingPane">
+											<div dojoType="dijit.layout.AccordionContainer" duration="500" style="overflow: hidden; background-color: #FFFFFF;">
+												<div dojoType="dijit.layout.AccordionPane" title="How to navigate">
+													<p>Note that zooming in and out can also be done by use of the mouse scrollwheel!</p>
+													<table class="gridLookalike" style="margin:5px;">
+														<tr><th colspan="2"><b>Toolbar buttons</b></th></tr>
+														<tr><td><img src="js/geomajas/widget/themes/images/zoom_in.gif"></td><td>&Zoom in on the center of the map</td></tr>
+														<tr><td><img src="js/geomajas/widget/themes/images/zoom_out.gif"></td><td>Zoom out</td></tr>
+														<tr><td><img src="js/geomajas/widget/themes/images/zoom_selectie.gif"></td><td>Draw a box on the map and zoom in to that box</td></tr>
+														<tr><td><img src="js/geomajas/widget/themes/images/hand.gif"></td><td>Move around the map by dragging it around</td></tr>
+														<tr><td><img src="js/geomajas/widget/themes/images/pijltje.gif"></td><td>Center the map to a selected point</td></tr>
+														<tr><td><img src="js/geomajas/widget/themes/images/view_previous.gif"></td><td>Go back to the previous map-extent</td></tr>
+														<tr><td><img src="js/geomajas/widget/themes/images/view_next.gif"></td><td>Go forward to the next map-extent</td></tr>
+														<tr><td><img src="js/geomajas/widget/themes/images/checkbox.gif"></td><td>Activate selection mode. Selecting features can be done by clicking on the map, or try out the right mouse menu</td></tr>
+														<tr><td><img src="js/geomajas/widget/themes/images/deselect.gif"></td><td>Deselect all selected features (in all layers)</td></tr>
+														<tr><td><img src="js/geomajas/widget/themes/images/selection_view.gif"></td><td>Zoom to a selected feature on the map (see "How to select features")</td></tr>
+														<tr><td><img src="js/geomajas/widget/themes/images/showDefaultPrintIcon.gif"></td><td>Create a print from the map (pdf format)</td></tr>
+													</table>
+												</div>
+												<div dojoType="dijit.layout.AccordionPane" title="How to select features">
+													<table class="gridLookalike" style="margin:5px;">
+														<tr><th colspan="2"><b>Toolbar buttons</b></th></tr>
+														<tr><td><img src="js/geomajas/widget/themes/images/checkbox.gif"></td><td>Activate selection mode. Selecting features can be done by clicking on the map, or try out the right mouse menu</td></tr>
+														<tr><td><img src="js/geomajas/widget/themes/images/deselect.gif"></td><td>Deselect all selected features (in all layers)</td></tr>
+														<tr><td><img src="js/geomajas/widget/themes/images/selection_view.gif"></td><td>Zoom to a selected feature on the map. For this to work, you need to select one or more features first</td></tr>
+													</table>
+													<table class="gridLookalike" style="margin:5px;">
+														<tr><th colspan="2"><b>Feature-Table</b></th></tr>
+														<tr><td>Try clicking around in the table (bottom right) to alter selection.</td></tr>
+														<tr><td>You can also use the "shift" and "ctrl" buttons as you would in windows or excel.</td></tr>
+													</table>
+												</div>
+												<div dojoType="dijit.layout.AccordionPane" title="How to edit attributes" selected=true>
+													<table class="gridLookalike" style="margin:5px;">
+														<tr><th colspan="2"><b>How to edit attributes?</b></th></tr>
+														<tr><td style="color:#007700;">By <b>doubleclicking</b> on a row in the table! (bottom right)</td></tr>
+													</table>
+													<table class="gridLookalike" style="margin:5px;">
+														<tr><th colspan="2"><b>Consequences?</b></th></tr>
+														<tr><td>Try changing the population attribute, to change the feature's <b>style</b> on the map. (see style-filters in the legend below)</td></tr>
+														<tr><td>Try changing the name attribute, to change the feature's <b>label</b> on the map.</td></tr>
+													</table>
+												</div>
+											</div>
+										</div>
+		
+									</div>
+								</div>
+								
+								<!-- The legend bottom left -->
+								<div dojoType="dijit.layout.ContentPane" region="bottom" style="height: 200px; padding:2px; margin-top:5px;" class="dojoxFloatingPane">
+									<div dojoType="dijit.layout.ContentPane" style="overflow:hidden;">
+										<div dojoType="geomajas.widget.LegendWidget" id="sampleFeaturesLegend"></div>
+									</div>
+								</div>
+							</div>
+						</div>
+		
+		
+		
+						<!-- RIGHT SIDE: Toolbar, Map and FeatureListTable -->
+						<div dojoType="dijit.layout.ContentPane" region="center" style="margin-left: 5px; overflow:hidden;">
+							<div dojoType="dijit.layout.BorderContainer" persist="false" liveSplitters="false">
+		
+								<!-- Toolbar and Map, with splitter underneath to adjust height -->
+								<div dojoType="dijit.layout.ContentPane" region="center" style="overflow:hidden;">
+									<div dojoType="dijit.layout.BorderContainer">
+		
+										<div dojoType="dijit.layout.ContentPane" region="top" style="height:20px;" class="title">
+											<div class="titleTxt">Main map</div>
+										</div>
+		
+										<div dojoType="dijit.layout.ContentPane" region="center" style="padding:2px;" class="dojoxFloatingPane">
+											<div dojoType="dijit.layout.ContentPane" style="overflow:hidden;">
+												<div dojoType="dijit.layout.BorderContainer">
+			
+													<div dojoType="dijit.layout.ContentPane" region="top" style="height:29px;">
+														<div dojoType="geomajas.widget.DynamicToolbar" id="sampleFeaturesMapToolbar"></div>
+														<div dojoType="geomajas.widget.ActivityDiv" id="activityDiv" style="position:absolute; top:2px; right:2px; width: 100px;"></div>
+													</div>
+			
+													<div dojoType="dijit.layout.ContentPane" region="center" style="overflow:hidden;">
+														<div id="sampleFeaturesMap" dojoType="geomajas.widget.MapWidget" style="width:100%; height:100%; border-top: 1px solid #87A2F9; border-bottom: 1px solid #DEE6FE; border-left: 1px solid #87A2F9; border-right: 1px solid #DEE6FE;"></div>
+													</div>
+			
+												</div>
+											</div>
+										</div>
+									
+									</div>
+								</div>
+		
+								<!-- FeatureListTable -->
+								<div dojoType="dijit.layout.ContentPane" region="bottom" splitter="true" style="height:250px; padding:2px;" class="dojoxFloatingPane">
+									<div id="sampleFeaturesFLT" dojoType="geomajas.widget.FeatureListTable" supportEditing=true style="width: 100%; height: 100%; text-align: left;"></div>
+								</div>
+		
+							</div>
+						</div>
+		
+					</div>
+				</div>
+		
+			</div>
+		</div>
+
+		<div dojoType="dijit.layout.ContentPane" region="right" style="width:25px; overflow:hidden;"></div>
+		<div dojoType="dijit.layout.ContentPane" region="bottom" style="height:10px; overflow:hidden;"></div>
+
+	</div>
+</body>
+</html>

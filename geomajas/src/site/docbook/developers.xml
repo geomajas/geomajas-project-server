@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+<!--
+  ~ This file is part of Geomajas, a component framework for building
+  ~ rich Internet applications (RIA) with sophisticated capabilities for the
+  ~ display, analysis and management of geographic information.
+  ~ It is a building block that allows developers to add maps
+  ~ and other geographic data capabilities to their web applications.
+  ~
+  ~ Copyright 2008-2010 Geosparc, http://www.geosparc.com, Belgium
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU Affero General Public License as
+  ~ published by the Free Software Foundation, either version 3 of the
+  ~ License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU Affero General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU Affero General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<article id="release" lang="en">
+  <title>Developers information</title>
+
+  <toc />
+
+  <section>
+    <title>maven targets, profiles, variables</title>
+
+    <para>The source contains one main pom which allows building of the
+    Geomajas framework and each of the sample applications in one go.</para>
+
+    <para>You can also choose to build them individually.</para>
+
+    <para>There are a couple of profiles define should help during development
+    :</para>
+
+    <itemizedlist>
+      <listitem>
+        <para><code>-Pnoshrink</code> : shrink profile (defined in the
+        geomajas-dojo-client module) builds a shrinked version of the
+        javascript files. The files are compressed and combined for faster
+        loading and better caching.</para>
+      </listitem>
+
+      <listitem>
+        <para><code>-Dbc</code> : when building everything (framework and
+        examples), the "bc" enables the build-checkstyle profile which assures
+        the project's checkstyle configuration is also built. This is normally
+        not needed as the checkstyle dependencies are available from our maven
+        repository.</para>
+      </listitem>
+
+      <listitem>
+        <para><code>-Dhudson</code> : profile for running the selenium
+        integration tests on the hudson continuous integration server. As long
+        as running the tests on the ci server proves problematic, this will
+        disable these tests.</para>
+      </listitem>
+    </itemizedlist>
+
+    <para>For development using the dojo face, apart from using the
+    "-Pnoshrink" profile mentioned about, you may also want to configure the
+    ResourceServlet to try to directly read the javascript files from disk
+    before looking at the classpath (it also changes the cache headers). This
+    allows a simple refresh in the browser to load the changed versions. The
+    configuration in your web.xml needs an extra init-parameter like in this
+    example..</para>
+
+    <programlisting>&lt;servlet&gt;
+    &lt;servlet-name&gt;ResourceServlet&lt;/servlet-name&gt;
+    &lt;servlet-class&gt;org.geomajas.servlet.ResourceServlet&lt;/servlet-class&gt;
+    &lt;init-param&gt;
+        &lt;description&gt;
+            When this is specified, files are searched here first.
+            Files which are found at this locations are not cached.
+        &lt;/description&gt;
+        &lt;param-name&gt;files-location&lt;/param-name&gt;
+        &lt;param-value&gt;/home/me/apps/java/geomajas/geomajas/geomajas-dojo-client/src/main/resources&lt;/param-value&gt;
+    &lt;/init-param&gt;
+    &lt;load-on-startup&gt;3&lt;/load-on-startup&gt;
+&lt;/servlet&gt;
+</programlisting>
+
+    <section>
+      <title>Running the example applications</title>
+
+      <para>Once you have done a "<code>mvn install</code>" on either the
+      entire tree or the "Geomajas" directory, you can use maven to run the
+      example applications.</para>
+
+      <para>For the dojo face, you can run the examples using (when in the
+      geomajas-dojo-example directory) <programlisting>mvn jetty:run</programlisting></para>
+
+      <para>For the gwt face, you have two options. Once in the
+      geomajas-gwt-simple directory, you can run the application in
+      development mode using <programlisting>mvn gwt:run</programlisting></para>
+
+      <note>
+        <para>Due to classpath problems and the gwt-maven-plugin which does
+        not properly handle excluded dependencies (the "provided" scope), this
+        can fail on some systems.</para>
+      </note>
+
+      <para>Alternatively you can run the actual war using <programlisting>mvn jetty:run-war</programlisting><note>
+          <para>It can be advisable to run "mvn clean" between "gwt:run" and
+          "jetty:run-war" or the classpath problem from the previous footnote
+          may appear again.</para>
+        </note></para>
+    </section>
+  </section>
+
+  <section><title>Documentation</title> <para>The documentation is split in
+  two parts. There is general documentation which is intended for the Geomajas
+  developers only, which is included as part of the project site and written
+  using wiki format. These are in the source at geomajas/src/main/site.
+  </para><para>There is also the user documentation which is written in
+  docbook format to allow both PDF and HTML output formats. These are in the
+  source at geomajas/src/main/docbook. </para><para>To generate the commands,
+  from the Geomajas source tree, do the following to build the docbook output.
+  </para><programlisting>cd geomajas/src/docbook
+mvn install</programlisting>To generate the project site, do (from the
+  Geomajas source tree again) <programlisting>cd geomajas
+mvn site</programlisting><para>For editing the docbook files, we recommend
+  using <ulink url="http://www.xmlmind.com/xmleditor/">XMLMind</ulink>. The
+  personal version is free and can (at the time of writing) be used for
+  editing open source documentation. </para><para>The docbook files are
+  currently formatted using XMLMind. When using another tool for editing,
+  please keep the current formatting to assure diffs remain usable.
+  </para></section>
+
+  <section>
+    <title>Versioning</title>
+
+    <para>Version have a major.minor.patch structure.</para>
+
+    <itemizedlist>
+      <listitem>major : indicates that this release has major advances over
+      previous releases. New major versions do not need to be backwards
+      compatible.</listitem>
+
+      <listitem>minor : indicates that there are important new features that
+      do not break compatibility with previous versions with the same major
+      number. Even minor versions are used for "stable" versions which will be
+      supported by Geosparc. Odd minor versions are used for work-in-progress
+      and stabilisation efforts.</listitem>
+
+      <listitem>patch : bugfixes and smaller improvements.</listitem>
+    </itemizedlist>
+  </section>
+
+  <section>
+    <title>subversion, commits</title>
+
+    <para>New committers need to sign an agreement which hands over copyright
+    to Geosparc. Policies are needed for assigning commit rights (see
+    below).</para>
+
+    <para>All SVN commits should include the JIRA issue number at the start of
+    the commit message, and a short description of the work done. The JIRA
+    issue number allows linking the commits with the issues (as can be seen in
+    JIRA), the short message allows persons to know what is happening without
+    referring to JIRA. The only times JIRA issue number are not needed is for
+    making "obvious" changes like fixing typos.</para>
+
+    <para>Commits should be grouped by issue as much as possible/sensible
+    (better two commits than one commit for fixing two issues, better one
+    commit of five files than five commits of one file (for one
+    issue)).</para>
+
+    <para>Development of the "latest-and-greatest" version happens in
+    "trunk".</para>
+
+    <para>Continued development on earlier versions (when not
+    "latest-and-greatest") occur in branches with the future version number as
+    name.</para>
+
+    <para>When a release is cut, a tag with the release version as name is
+    created. The release should be built from the tagged files.</para>
+
+    <para>After each commit, the system should still compile and all test
+    cases should still succeed. There is a continuous integration engine
+    (Hudson) which verifies this and send messages to the commit mailing list
+    on failures.</para>
+  </section>
+
+  <section>
+    <title>Coding</title>
+
+    <para>Note that details about coding style and naming are on the <ulink
+    url="???">coding style</ulink> page.</para>
+
+    <section>
+      <title>Logging</title>
+
+      <itemizedlist>
+        <listitem>
+          <para>When inserting debug statements, parameterized messages should
+          be used to prevent the need/usefulness of
+          <code>isDebugEnabled()</code>.</para>
+        </listitem>
+
+        <listitem>all logging is done through slf4f, logger is created using
+        <programlisting>private final Logger log = LoggerFactory.getLogger( ContainingClassName.class );</programlisting></listitem>
+
+        <listitem>logging levels<table>
+            <title>logging levels</title>
+
+            <tgroup cols="3">
+              <thead>
+                <row>
+                  <entry align="center">log level</entry>
+
+                  <entry align="center">default on</entry>
+
+                  <entry>use</entry>
+                </row>
+              </thead>
+
+              <tbody>
+                <row>
+                  <entry>ERROR</entry>
+
+                  <entry>yes</entry>
+
+                  <entry>major problems, should always be visible in logs and
+                  are likely to require action from a person (to fix the
+                  condition or assure it does not happen again). Indicates
+                  that something is seriously wrong.</entry>
+                </row>
+
+                <row>
+                  <entry>WARN</entry>
+
+                  <entry>yes</entry>
+
+                  <entry>warning about potential problems. Should always be
+                  visible in logs and a person will probably need to assess
+                  whether this is harmless or should be treated as an
+                  error.</entry>
+                </row>
+
+                <row>
+                  <entry>INFO</entry>
+
+                  <entry>yes</entry>
+
+                  <entry>important information. You can assume this level is
+                  on in production, so it should be carefully considered
+                  whether this level is appropriate. In general only used to
+                  indicate service status (started, stopped).</entry>
+                </row>
+
+                <row>
+                  <entry>DEBUG</entry>
+
+                  <entry>no</entry>
+
+                  <entry>logging information which is detailed enough to know
+                  what is happening in the system, without flooding the
+                  logs.</entry>
+                </row>
+
+                <row>
+                  <entry>TRACE</entry>
+
+                  <entry>no</entry>
+
+                  <entry>very detailed logging, probably only making sense to
+                  the developer of the code.</entry>
+                </row>
+              </tbody>
+            </tgroup>
+          </table></listitem>
+
+        <listitem>When an exception is caught and (another exception) thrown
+        you should not log the exception. You should however include the cause
+        in the newly thrown exception.</listitem>
+      </itemizedlist>
+    </section>
+
+    <section>
+      <title>Unit testing</title>
+
+      <para>Unit testing: At least each class implementing the public API
+      should have a unit test, testing all methods. For testing JUnit is
+      used.</para>
+
+      <itemizedlist>
+        <listitem>Advantages of unit testing: <itemizedlist>
+            <listitem>
+              <para>Capturing a <ulink
+              url="http://jira.geomajas.org/">JIRA</ulink> bug report in a
+              reproducible manner.</para>
+            </listitem>
+
+            <listitem>Allowing you to specify exactly the behaviour you want,
+            before you start coding.</listitem>
+          </itemizedlist></listitem>
+
+        <listitem>How unit testing should be done: <itemizedlist>
+            <listitem>If you are testing
+            src/main/java/org/geomajas/ToBeTestedClass.java, create a class
+            src/test/java/org/geomajas/ToBeTestedClassTest.java. Actual test
+            methods have a name starting with "test". The class itself should
+            extend jnit.framework.TestCase.</listitem>
+
+            <listitem>
+              <para>The test will automatically be run when running "<code>mvn
+              install</code>".</para>
+            </listitem>
+          </itemizedlist></listitem>
+
+        <listitem>Integration tests should also be provided. These can also be
+        used for testing the user interface (thanks to selenium).</listitem>
+      </itemizedlist>
+    </section>
+
+    <section>
+      <title>Exception handling</title>
+
+      <para>*Never* throw away exception, either log them or throw them again
+      (possibly wrapped). Do not log and throw, this only clutters log files
+      with duplicate exceptions.</para>
+
+      <para>Do not wrap exceptions unnecessarily (so no
+      <code>GeomajasException</code> caused by a
+      <code>GeomajasException</code>) unless you add additional information in
+      the message.</para>
+
+      <para>When wrapping an exception, always include the cause.</para>
+    </section>
+
+    <section>
+      <title>Refactoring</title>
+
+      <para>Changes in the (public) API use a "deprecate, then remove" cycle.
+      It should be marked "deprecated" in at least one minor version before it
+      can be removed in the next major version.</para>
+    </section>
+
+    <section>
+      <title>File encoding</title>
+
+      <para>All source files, including .properties files should use UTF-8
+      encoding.</para>
+    </section>
+
+    <section>
+      <title>Other</title>
+
+      <para>For the directory structure and file locations, we follow standard
+      maven conventions (see
+      http://maven.apache.org/guides/introduction/introduction-to-the-standard-directory-layout.html).</para>
+    </section>
+  </section>
+
+  <section>
+    <title>Maven repository</title>
+
+    <para>The Geomajas build has quite a few dependencies which are gathered
+    from several repositories.</para>
+
+    <para>To make this all easier to manage, we are using a repository proxy
+    (<ulink url="http://nexus.sonatype.org/">nexus</ulink>).</para>
+
+    <para>This combines the artifacts from the following repositories :</para>
+
+    <itemizedlist>
+      <listitem>maven central : http://repo1.maven.org/maven2/</listitem>
+
+      <listitem>java.net repo : http://download.java.net/maven/2/</listitem>
+
+      <listitem>jts4gwt :
+      http://jts4gwt.sourceforge.net/maven/repository/</listitem>
+
+      <listitem>OSGeo : http://download.osgeo.org/webdav/geotools/</listitem>
+
+      <listitem>staticwiki : http://maven.progs.be/m2repo</listitem>
+
+      <listitem>refractions : http://lists.refractions.net/m2</listitem>
+
+      <listitem>smartgwt : http://www.smartclient.com/maven2</listitem>
+
+      <listitem>spring milestones :
+      http://repository.springsource.com/maven/bundles/milestone</listitem>
+
+      <listitem>spring releases :
+      http://repository.springsource.com/maven/bundles/release</listitem>
+
+      <listitem>selenium :
+      http://nexus.openqa.org/content/repositories/releases</listitem>
+
+      <listitem>selenium snapshots :
+      http://nexus.openqa.org/content/repositories/snapshots</listitem>
+    </itemizedlist>
+  </section>
+</article>

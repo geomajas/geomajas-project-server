@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE part PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+<!--
+  ~ This file is part of Geomajas, a component framework for building
+  ~ rich Internet applications (RIA) with sophisticated capabilities for the
+  ~ display, analysis and management of geographic information.
+  ~ It is a building block that allows developers to add maps
+  ~ and other geographic data capabilities to their web applications.
+  ~
+  ~ Copyright 2008-2010 Geosparc, http://www.geosparc.com, Belgium
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU Affero General Public License as
+  ~ published by the Free Software Foundation, either version 3 of the
+  ~ License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU Affero General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU Affero General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<part id="part-intro">
+  <title>Introduction</title>
+
+  <chapter id="chapter-preface">
+    <title>Preface</title>
+
+    <section id="section-about-this-document">
+      <title>About this document</title>
+
+      <para>Documentation for developer who want to use and extend the
+      Geomajas GIS framework.</para>
+    </section>
+
+    <section id="section-about-this-project">
+      <title>About this Project</title>
+
+      <para>Geomajas is a GIS application framework. See<uri>
+      http://www.geomajas.org/</uri>)</para>
+    </section>
+
+    <section id="section-license">
+      <title>License Information</title>
+
+      <para>Copyright © 2009 Geosparc nv.</para>
+
+      <para>Licensed under the GNU Affero General Public License. You may
+      obtain a copy of the License at
+      <uri>http://www.gnu.org/licenses/</uri></para>
+
+      <para>This program is distributed in the hope that it will be useful,
+      but <emphasis>without any warranty</emphasis>; without even the implied
+      warranty of <emphasis>merchantability</emphasis> or <emphasis>fitness
+      for a particular purpose</emphasis>. See the GNU Affero General Public
+      License for more details.</para>
+    </section>
+
+    <section id="section-author-information">
+      <title>Author Information</title>
+
+      <para>This framework and documentation was written by the Geomajas
+      Developers. If you have questions, found a bug or have enhancements,
+      please contact us through the user fora at
+      <uri>http://www.geomajas.org/</uri>.</para>
+    </section>
+  </chapter>
+</part>

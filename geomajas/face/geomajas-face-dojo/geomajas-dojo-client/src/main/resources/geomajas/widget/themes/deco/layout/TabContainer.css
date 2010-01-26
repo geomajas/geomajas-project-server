@@ -1,0 +1,159 @@
+/*
+ * This file is part of Geomajas, a component framework for building
+ * rich Internet applications (RIA) with sophisticated capabilities for the
+ * display, analysis and management of geographic information.
+ * It is a building block that allows developers to add maps
+ * and other geographic data capabilities to their web applications.
+ *
+ * Copyright 2008-2010 Geosparc, http://www.geosparc.com, Belgium
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+/* Tabs */
+
+.deco .dijitTabPaneWrapper {
+	/*
+	overflow: hidden;
+	*/
+	background:#fff;
+	border:1px solid #ccc;
+}
+
+.deco .dijitTab {
+	line-height:normal;
+	margin-right:5px;	/* space between one tab and the next in top/bottom mode */
+	padding:0px;
+	border:1px solid #ccc;
+	background:#e2e2e2 url("../images/tabEnabled.png") repeat-x;
+}
+
+.deco .dijitAlignLeft .dijitTab,
+.deco .dijitAlignRight .dijitTab {
+	margin-right:0px;
+	margin-bottom:5px;	/* space between one tab and the next in left/right mode */
+}
+
+.deco .dijitTabInnerDiv {
+	padding:6px 10px 4px 10px;
+	border-left:1px solid #fff;
+	border-bottom:1px solid #fff;
+}
+
+.deco .dijitTabHover,
+.deco .dijitTabCloseButtonHover {
+	color: #243C5F;
+	border-top-color:#92a0b3;
+	border-left-color:#92a0b3;
+	border-right-color:#92a0b3;
+	background:#e2e2e2 url("../images/tabHover.png") repeat-x bottom;
+}
+
+.dj_ie6 .deco .dijitTabHover,
+.dj_ie6 .deco .dijitTabCloseButtonHover {
+	background-image: url("../images/tabHover.gif");
+}
+
+.deco .dijitTabChecked,
+.deco .dijitTabCloseButtonChecked
+{
+	/* the selected tab (with or without hover) */
+	background-color:#fff;
+	border-color: #ccc;
+	background-image:none;
+}
+
+/* make the active tab white on the side next to the content pane */
+.deco .dijitAlignTop .dijitTabChecked,
+.deco .dijitAlignTop .dijitTabCloseButtonChecked
+{
+	border-bottom-color:white;
+	vertical-align:bottom;
+}
+
+.deco .dijitAlignBottom .dijitTabChecked,
+.deco .dijitAlignBottom .dijitTabCloseButtonChecked
+{
+	border-top-color:white;
+	-moz-border-radius:2px 2px 0px 0px;	/* eliminate some border detritrus on moz */
+}
+
+.deco .dijitAlignLeft .dijitTabChecked,
+.deco .dijitAlignLeft .dijitTabCloseButtonChecked
+{
+	border-right-color:white;
+}
+
+.deco .dijitAlignRight .dijitTabChecked,
+.deco .dijitAlignRight .dijitTabCloseButtonChecked
+{
+	border-left-color:white;
+}
+
+
+/* make space for a positioned close button */
+.deco .dijitTab .dijitClosable {
+	position: relative;
+	padding:6px 20px 4px 10px;
+}
+
+.deco .dijitTab .dijitClosable .closeImage {
+	position:absolute;
+	top: 7px;
+	right: 3px;
+	height: 12px;
+	width: 12px;
+	padding: 0;
+	margin: 0;
+	background: url("../images/tabClose.png") no-repeat right top;
+}
+.dj_ie6 .dijitTab .dijitClosable .closeImage {
+	background-image:url("../images/tabClose.gif");
+}
+
+.deco .dijitTabCloseButton .dijitClosable .closeImage {
+	background-image : url("../images/tabClose.png");
+}
+.dj_ie6 .deco .dijitTabCloseButton .dijitClosable .closeImage {
+	background-image : url("../images/tabClose.gif");
+}
+
+.deco .dijitTabCloseButtonHover .dijitClosable .closeImage {
+	background-image : url("../images/tabCloseHover.png");
+}
+.dj_ie6 .deco .dijitTabCloseButtonHover .dijitClosable .closeImage {
+	background-image : url("../images/tabCloseHover.gif");
+}
+
+.deco .dijitAlignLeft .dijitTab .dijitClosable {
+	padding:6px 10px 4px 20px;
+}
+
+/* correct for IE6.
+    We cant force hasLayout as that blows out the shrink wrapped tabs
+    ..so we shim in the closeImage position properties instead
+*/
+.dj_ie6 .deco .dijitAlignLeft .dijitTab .dijitClosable .closeImage {
+	left:-20px;
+}
+
+.deco .dijitAlignBottom .dijitTab .dijitClosable .closeImage {
+	top: auto;
+	bottom: 7px;
+	right: 3px;
+}
+
+.deco .dijitAlignLeft .dijitTab .dijitClosable .closeImage {
+	top: 7px;
+	left: 3px;
+}

@@ -1,0 +1,148 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.geomajas</groupId>
+	<artifactId>geomajas-dojo-simple</artifactId>
+	<version>1.5.3-SNAPSHOT</version>
+	<packaging>war</packaging>
+	<name>Geomajas simple dojo application demo</name>
+	<url>http://files.geomajas.org/maven/trunk/dojo-simple</url>	
+
+    <distributionManagement>
+        <repository>
+            <id>Geomajas repository</id>
+            <name>Mapping with Asynchronous Java and SVG</name>
+            <url>file:/var/www/maven.geomajas.org/htdocs/repository</url>
+        </repository>
+        <site>
+            <id>Geomajas project site</id>
+            <name>Mapping with Asynchronous Java and SVG</name>
+            <url>file:/var/www/files.geomajas.org/htdocs/maven/trunk/geomajas-dojo-simple</url>
+        </site>
+    </distributionManagement>
+
+
+	<dependencies> 		
+		<dependency>
+            	<groupId>org.geomajas</groupId>
+            	<artifactId>${geomajas.modules.name}</artifactId>
+ 			<version>${project.version}</version>
+        	</dependency>
+
+		<dependency>
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-dependency</artifactId>
+			<version>${project.version}</version>
+			<type>pom</type>
+		</dependency>
+
+
+		<!-- logging dependencies, delegate all to slf4j and use logback -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.5.8</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl-over-slf4j</artifactId>
+            <version>1.5.8</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>log4j-over-slf4j</artifactId>
+            <version>1.5.8</version>
+        </dependency>
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>0.9.9</version>
+        </dependency>
+	</dependencies>
+
+
+    <repositories>
+        <repository>
+            <id>Geomajas</id>
+            <name>Geomajas repository</name>
+            <url>http://maven.geomajas.org/</url>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>Geomajas</id>
+            <name>Geomajas repository</name>
+            <url>http://maven.geomajas.org/</url>
+        </pluginRepository>
+    </pluginRepositories>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<encoding>utf8</encoding>
+					<source>1.5</source>
+					<target>1.5</target>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.1-beta-1</version>
+			</plugin>
+
+            <!-- Plugin that creates Eclipse projects -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-eclipse-plugin</artifactId>
+				<version>2.7</version>
+                <configuration>
+                    <wtpversion>1.0</wtpversion>
+                </configuration>
+            </plugin>
+
+			<!-- Run the application using "mvn jetty:run" -->
+			<plugin>
+				<groupId>org.mortbay.jetty</groupId>
+				<artifactId>maven-jetty-plugin</artifactId>
+				<version>6.1.20</version>
+				<configuration>
+					<webAppConfig>
+						<contextPath>/</contextPath>
+					</webAppConfig>
+					<reload>manual</reload>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<profiles>
+		<profile>
+			<!-- development profile, no shrinking -->
+			<id>noshrink</id>
+			<properties>
+				<geomajas.modules.name>geomajas-dojo-client</geomajas.modules.name>
+			</properties>
+		</profile>
+		<profile>
+			<!-- shrinking -->
+			<id>shrink</id>
+			<properties>
+				<geomajas.modules.name>geomajas-dojo-client-shrinksafe</geomajas.modules.name>
+			</properties>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+		</profile>
+	</profiles>
+
+</project>

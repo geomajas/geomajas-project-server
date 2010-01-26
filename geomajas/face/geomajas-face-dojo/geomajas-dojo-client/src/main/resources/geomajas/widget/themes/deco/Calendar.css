@@ -1,0 +1,175 @@
+/*
+ * This file is part of Geomajas, a component framework for building
+ * rich Internet applications (RIA) with sophisticated capabilities for the
+ * display, analysis and management of geographic information.
+ * It is a building block that allows developers to add maps
+ * and other geographic data capabilities to their web applications.
+ *
+ * Copyright 2008-2010 Geosparc, http://www.geosparc.com, Belgium
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+/* Calendar*/
+	
+.deco .dijitCalendarIncrementControl {
+	/* next/prev month buttons */
+	width:15px;
+	height:15px;
+	font-size: 1px;
+}
+.dj_ie6 .deco .dijitCalendarIncrementControl {
+	padding:.1em;
+}
+
+.deco .dijitCalendarIncreaseInner,
+.deco .dijitCalendarDecreaseInner {
+	visibility:hidden;
+}
+
+.deco .dijitCalendarDecrease {
+	background:url("images/spriteRoundedIconsSmall.png") no-repeat top left;
+}
+.dj_ie6 .deco .dijitCalendarDecrease {
+	background:url("images/spriteRoundedIconsSmall.gif") no-repeat top left;
+}
+
+.deco .dijitCalendarIncrease {
+	background:url("images/spriteRoundedIconsSmall.png") no-repeat -30px top;
+}
+.dj_ie6 .deco .dijitCalendarIncrease {
+	background:url("images/spriteRoundedIconsSmall.gif") no-repeat -30px top;
+}
+
+.deco table.dijitCalendarContainer {
+	font-size: 100%;
+	border-spacing: 0;
+	border-collapse: separate;
+	border: 1px solid #ccc;
+	margin: 0;
+}
+
+.deco .dijitCalendarMonthContainer th {
+	/* month header cell */
+	background:#d3d3d3 url("images/titleBar.png") repeat-x top;
+	padding-top:.3em;
+	padding-bottom:.2em;
+	text-align:center;
+}
+.dj_ie6 .deco .dijitCalendarMonthContainer th {
+	padding-top:.1em;
+	padding-bottom:0em;
+}
+
+.deco .dijitCalendarDayLabelTemplate {
+	/* day of week labels */
+	background:white url("images/calendarDayLabel.png") repeat-x bottom;
+	font-weight:normal;
+	padding-top:.15em;
+	padding-bottom:0em;
+	border-top: 1px solid #eeeeee;
+	color:#293a4b;
+	text-align:center;
+}
+
+.deco .dijitCalendarBodyContainer {
+	border-bottom: 1px solid #eeeeee;	
+}
+
+.deco .dijitCalendarMonthLabel {
+	color:#293a4b;
+	font-weight: bold;
+}
+
+.dj_ie7 .deco .dijitCalendarDateTemplate,
+.dj_ie6 .deco .dijitCalendarDateTemplate {
+	font-size: 0.8em;
+}
+
+.deco .dijitCalendarDateTemplate {
+	/* style for each day cell */
+	font-size: 0.9em;
+	font-weight: bold;
+	text-align: center;
+	padding: 0.3em 0.3em 0.05em 0.3em;
+	letter-spacing: 1px;
+}
+
+
+.deco .dijitCalendarPreviousMonth,
+.deco .dijitCalendarNextMonth 		{
+	/* days that are part of the previous or next month */
+	color:#999999;
+	background-color:#f8f8f8 !important;
+}
+
+.deco .dijitCalendarPreviousMonthDisabled,
+.deco .dijitCalendarNextMonthDisabled	{
+	/* days that are part of the previous or next month - disabled*/
+	background-color:#a4a5a6 !important;
+}
+
+.deco .dijitCalendarCurrentMonth {
+	/* days that are part of this month */
+	background-color:white !important;
+}
+
+.deco .dijitCalendarCurrentMonthDisabled {
+	/* days that are part of this month - disabled */	
+	background-color:#bbbbbc !important;
+}
+
+.deco .dijitCalendarCurrentDate {
+	/* cell for today's date */
+	text-decoration:underline;
+	font-weight:bold;
+}
+
+.deco .dijitCalendarCurrentDate {
+	/* cell for today's date */
+	text-decoration:underline;
+	font-weight:bold;
+}
+
+.deco .dijitCalendarSelectedDate {
+	/* cell for the selected date */
+	background-color:#bbc4d0 !important;
+	color:black !important;
+}
+.deco .dijitCalendarYearContainer {
+	/* footer of the table that contains the year display/selector */
+	background:white url("images/calendarYearLabel.png") repeat-x bottom;
+	border-top:1px solid #ccc;
+}
+
+.deco .dijitCalendarYearLabel {
+	/* container for all of 3 year labels */
+	margin:0;
+	padding:0.4em 0 0.25em 0;
+	text-align:center;
+}
+
+.deco .dijitCalendarSelectedYear {
+	/* label for selected year */
+	color:black;
+	padding:0.2em;
+	padding-bottom:0.1em;
+	background-color:#bbc4d0 !important;
+}
+
+.deco .dijitCalendarNextYear,
+.deco .dijitCalendarPreviousYear {
+	/* label for next/prev years */
+	color:black !important;
+	font-weight:normal;
+}

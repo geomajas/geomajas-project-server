@@ -1,0 +1,120 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.geomajas</groupId>
+	<artifactId>geomajas-dependency</artifactId>
+	<version>1.5.3-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<name>Geomajas dependencies</name>
+	<description>Geomajas dependencies, allows you to pull in all core extensions, but not faces.</description>
+	<url>http://files.geomajas.org/maven/trunk/geomajas-dep</url>
+
+	<scm>
+		<connection>scm:svn:https://svn.geomajas.org/majas/tags/1.5.3-SNAPSHOT-dep</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/1.5.3-SNAPSHOT-dep</developerConnection>
+		<url>https://svn.geomajas.org/majas/tags/1.5.3-SNAPSHOT-dep</url>
+	</scm>
+	<organization>
+		<name>Geosparc</name>
+		<url>http://www.geosparc.com</url>
+	</organization>
+	<mailingLists>
+		<mailingList>
+			<name>DEV</name>
+			<post>mailto:majas-dev@geomajas.org</post>
+			<subscribe>http://lists.geomajas.org/mailman/listinfo/majas-dev</subscribe>
+			<unsubscribe>http://lists.geomajas.org/mailman/listinfo/majas-dev</unsubscribe>
+			<archive>http://lists.geomajas.org/pipermail/majas-dev/</archive>
+		</mailingList>
+	</mailingLists>
+	<licenses>
+		<license>
+			<name>GNU Affero General Public License, Version 3</name>
+			<url>http://www.fsf.org/licensing/licenses/agpl-3.0.html</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+	<issueManagement>
+		<system>JIRA</system>
+		<url>http://jira.geomajas.org</url>
+	</issueManagement>
+	<distributionManagement>
+		<repository>
+			<id>Geomajas repository</id>
+			<name>Mapping with Asynchronous Java and SVG</name>
+			<url>file:/var/www/maven.geomajas.org/htdocs/repository</url>
+		</repository>
+		<site>
+			<id>Geomajas project site</id>
+			<name>Mapping with Asynchronous Java and SVG</name>
+			<url>file:/var/www/files.geomajas.org/htdocs/maven/trunk/geomajas-dep</url>
+		</site>
+	</distributionManagement>
+
+	<repositories>
+		<repository>
+			<id>Geomajas</id>
+			<name>Geomajas repository</name>
+			<url>http://maven.geomajas.org/</url>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>Geomajas</id>
+			<name>Geomajas repository</name>
+			<url>http://apps.geomajas.org/nexus/content/groups/public</url>
+		</pluginRepository>
+	</pluginRepositories>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.geomajas</groupId>
+            <artifactId>geomajas-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.geomajas</groupId>
+            <artifactId>geomajas-impl</artifactId>
+            <version>${project.version}</version>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- Geomajas modules to include -->
+        <dependency>
+            <groupId>org.geomajas.extension</groupId>
+            <artifactId>geomajas-extension-printing</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.geomajas.extension</groupId>
+            <artifactId>geomajas-extension-command</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.geomajas.layermodel</groupId>
+            <artifactId>geomajas-layermodel-geotools</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.geomajas.layermodel</groupId>
+            <artifactId>geomajas-layermodel-hibernate</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.geomajas.layermodel</groupId>
+            <artifactId>geomajas-layermodel-google</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.geomajas.layermodel</groupId>
+            <artifactId>geomajas-layermodel-openstreetmaps</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.geomajas.layermodel</groupId>
+            <artifactId>geomajas-layermodel-wms</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+    </dependencies>
+
+</project>

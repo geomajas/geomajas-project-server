@@ -1,0 +1,51 @@
+/*
+ * This file is part of Geomajas, a component framework for building
+ * rich Internet applications (RIA) with sophisticated capabilities for the
+ * display, analysis and management of geographic information.
+ * It is a building block that allows developers to add maps
+ * and other geographic data capabilities to their web applications.
+ *
+ * Copyright 2008-2010 Geosparc, http://www.geosparc.com, Belgium
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+/* Dialog */
+.dijitRtl .dijitDialogTitleBar .dijitDialogCloseIcon {
+	background-position: -60px top;
+	float: left;
+	right: auto;
+	left: 5px;
+}
+
+/*FIXME: redundant?*/
+.dj_ie6 .dijitRtl .dijitDialogTitleBar .dijitDialogCloseIcon {
+	background-position: -60px top;
+}
+
+
+/* ToolTip */
+
+.dj_ie .dijitRtl .dijitTooltipLeft {
+	margin-right: 0px;
+	margin-left: 13px;
+}
+
+.dj_ie .dijitRtl .dijitTooltipRight {
+	margin-left: 26px;
+	margin-right: -13px;
+}
+
+.dj_ie .dijitRtl .dijitTooltipDialog {
+	zoom:1 !important;
+}

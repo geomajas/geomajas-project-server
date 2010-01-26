@@ -1,0 +1,29 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<parent>
+		<groupId>org.geomajas</groupId>
+		<artifactId>geomajas</artifactId>
+		<version>1.5.3-SNAPSHOT</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.geomajas</groupId>
+	<artifactId>geomajas-testdata</artifactId>
+	<packaging>jar</packaging>
+	<name>Geomajas test data</name>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-api</artifactId>
+		</dependency>
+		<!-- uncomment this for error checking when typing, but creates cyclic dependency 
+		<dependency>
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-impl</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas.layermodel</groupId>
+			<artifactId>geomajas-layermodel-geotools</artifactId>
+		</dependency>
+		-->
+	</dependencies>
+</project>

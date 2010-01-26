@@ -1,0 +1,160 @@
+<!--
+  ~ This file is part of Geomajas, a component framework for building
+  ~ rich Internet applications (RIA) with sophisticated capabilities for the
+  ~ display, analysis and management of geographic information.
+  ~ It is a building block that allows developers to add maps
+  ~ and other geographic data capabilities to their web applications.
+  ~
+  ~ Copyright 2008-2010 Geosparc, http://www.geosparc.com, Belgium
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU Affero General Public License as
+  ~ published by the Free Software Foundation, either version 3 of the
+  ~ License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU Affero General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU Affero General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<div id="edit_manual" dojoType="dijit.layout.TabContainer" sizeMin="100" sizeShare="1">
+
+	<div id="edit_manual:quick_help" dojoType="dijit.layout.ContentPane" title="How do I..." style="width: 100%; height: 100%; padding: 0px; overflow:hidden;">
+
+				<div dojoType="dijit.layout.StackContainer" id="edit_manual:container" style="background-color: #FFFFFF;">
+
+					<div id="edit_manual:create" dojoType="dijit.layout.ContentPane">
+						<h2>How do I create a new feature?</h2>
+						<h3>Prerequisites</h3>
+						<ol>
+							<li>Enable editing mode (<img src="js/geomajas/widget/themes/images/wijzig_geometrie.gif">) in the toolbar.</li>
+							<li>Select the layer you want to create in. This can be done in the layer control (left). Select for example the "Structures" layer.<br><i>Hint: you can only create new features in vector-layers.</i></li>
+						</ol>
+						<h3>Creating a new feature</h3>
+						<ol>
+							<li><b>Start:</b> Simply click the RIGHT mouse button on the map, and a menu will appear. At the top of this menu, you will see "Create new feature". Select this option to start.<br/><img src="images/menu1.gif"></li>
+							<li><b>Create:</b> After the "Create new feature" option has been selected, just start clicking to place new points on the map.<br/><img src="images/insert1.png" style="border: 1px solid #888888;"></li>
+							<li><b>Save:</b> Click the RIGHT mouse button again, and a new menu will appear. Select the option "Save feature".<br/><img src="images/insert2.png" style="border: 1px solid #888888;"></li>
+						</ol>
+					</div>
+
+					<div id="edit_manual:update" dojoType="dijit.layout.ContentPane">
+						<h2>How do I edit an existing feature?</h2>
+						<h3>Prerequisites</h3>
+						<ol>
+							<li>Enable editing mode (<img src="js/geomajas/widget/themes/images/wijzig_geometrie.gif">) in the toolbar.</li>
+							<li>Select the feature you want to edit on the map (left mouse click).<br><i>Hint: by selecting a feature, it will become yellow.</i></li>
+						</ol>
+						<h3>Editing the selected feature</h3>
+						<ol>
+							<li><b>Start:</b> Simply click the RIGHT mouse button on the map, and a menu will appear. Select "Start editing" to start.<br/><img src="images/menu2.png"><br><i>Hint: as long as the orange edges and points are drawn, the feature is in editing mode.</i></li>
+							<li><b>Drag a point:</b> You can now drag the endpoints of the geometry to other locations.</li>
+							<li><b>Insert a point:</b> Click the RIGHT mouse button on one of the orange edges. Then select "Insert point".<br/><img src="images/drag4.png" style="border: 1px solid #888888;"></li>
+							<li><b>Remove a point:</b> Click the RIGHT mouse button on one of the endpoints. Then select "Remove point".<br/><img src="images/drag3.png" style="border: 1px solid #888888;"></li>
+							<li><b>Undo last step:</b> Click the RIGHT mouse button, then select "Undo last step". This will make your last change undone.<br/><img src="images/insert2.png" style="border: 1px solid #888888;"></li>
+							<li><b>Save:</b> Click the RIGHT mouse button again, and a new menu will appear. Select the option "Save feature".</li>
+						</ol>
+					</div>
+
+					<div id="edit_manual:delete" dojoType="dijit.layout.ContentPane">
+						<h2>How do I delete an existing feature?</h2>
+						<h3>Prerequisites</h3>
+						<ol>
+							<li>Enable editing mode (<img src="js/geomajas/widget/themes/images/wijzig_geometrie.gif">) in the toolbar.</li>
+							<li>Select the feature you want to delete on the map (left mouse click).<br><i>Hint: by selecting a feature, it will become yellow.</i></li>
+						</ol>
+						<h3>Deleting the selected feature</h3>
+						<ol>
+							<li><b>Start:</b> Simply click the RIGHT mouse button on the map, and a menu will appear. Select "Delete feature".<br/><img src="images/menu3.png"></li>
+						</ol>
+					</div>
+
+					<div id="edit_manual:donut" dojoType="dijit.layout.ContentPane">
+						<h2>How do I create a donut polygon?</h2>
+						<h3>Prerequisites</h3>
+						<ol>
+							<li>Enable editing mode (<img src="js/geomajas/widget/themes/images/wijzig_geometrie.gif">) in the toolbar.</li>
+							<li>Select the feature you want to edit on the map (left mouse click).<br><i>Hint: by selecting a feature, it will become yellow.</i></li>
+						</ol>
+						<h3>Editing the selected feature, to create a hole in it</h3>
+						<ol>
+							<li><b>Start:</b> Simply click the RIGHT mouse button on the map, and a menu will appear. Select "Start editing" to start.<br/><img src="images/menu2.png"><br><i>Hint: as long as the orange edges and points are drawn, the feature is in editing mode.</i></li>
+							<li><b>Create hole:</b> Click the RIGHT mouse button, and a menu will appear. Select "Create hole".<br/><img src="images/hole1.png" style="border: 1px solid #888888;"></li>
+							<li><b>Place points:</b> Click new points inside the feature's border.<br/><img src="images/hole2.png" style="border: 1px solid #888888;"></li>
+							<li><b>Stop inserting:</b> Click the RIGHT mouse button, and select "Stop inserting".<br/><i>Hint: you are now in normal editing mode. This means you can drag points around, etc.</i></li>
+							<li><b>Save:</b> Click the RIGHT mouse button again, and a new menu will appear. Select the option "Save feature".</li>
+						</ol>
+					</div>
+
+					<div id="edit_manual:snap" dojoType="dijit.layout.ContentPane">
+						<h2>How do I use snapping?</h2>
+						<h3>Prerequisites</h3>
+						<ol>
+							<li>Select the layer you want to use snapping in. This can be done in the layer control (left). Select for example the "Structures" layer.</li>
+							<li>Enable snapping for the selected layer (<img src="js/geomajas/widget/themes/images/snap.gif">).</li>
+							<li>Enable editing mode (<img src="js/geomajas/widget/themes/images/wijzig_geometrie.gif">) in the toolbar.</li>
+						</ol>
+						<h3>Create a new feature with snapping</h3>
+						<ol>
+							<li><b>Start:</b> Simply click the RIGHT mouse button on the map, and a menu will appear. At the top of this menu, you will see "Create new feature". Select this option to start.<br/><img src="images/menu1.gif"></li>
+							<li><b>Create:</b> After the "Create new feature" option has been selected, just start clicking to place new points on the map.<br/><img src="images/snapping1.gif" style="border: 1px solid #888888;"></li>
+							<li><b>Save:</b> Click the RIGHT mouse button again, and a new menu will appear. Select the option "Save feature".</li>
+						</ol>
+					</div>
+
+					<div id="edit_manual:splitting" dojoType="dijit.layout.ContentPane">
+						<h2>How do I split a polygon?</h2>
+						<h3>Prerequisites</h3>
+						<ol>
+							<li>Enable split-polygon mode (<img src="js/geomajas/widget/themes/images/splitsen.gif">) in the toolbar.</li>
+							<li>Select the polygon feature you want to split on the map (left mouse click).<br><i>Hint: by selecting a feature, it will become yellow.</i></li>
+						</ol>
+						<h3>Split the polygon</h3>
+						<ol>
+							<li><b>Start:</b> Simply click the RIGHT mouse button on the map, and a menu will appear. Select the "Start splitting" option to start.<br/><img src="images/split1.png" style="border: 1px solid #888888;"></li>
+							<li><b>Create split-line:</b> Start clicking to place new points on the map. The line you create here will split the selected polygon.<br/><img src="images/split3.png" style="border: 1px solid #888888;"></li>
+							<li><b>Save:</b> Click the RIGHT mouse button again, and a new menu will appear. Select the option "Save splitting".</li>
+						</ol>
+					</div>
+
+					<div id="edit_manual:merging" dojoType="dijit.layout.ContentPane">
+						<h2>How do I merge polygons?</h2>
+						<h3>Prerequisites</h3>
+						<ol>
+							<li>Enable merge-polygon mode (<img src="js/geomajas/widget/themes/images/kopieer_object.gif">) in the toolbar.</li>
+							<li>Select the set of polygon features you want to merge on the map (left mouse click).<br><i>Hint: by selecting a feature, it will become yellow.</i></li>
+						</ol>
+						<h3>Merging the selected polygons</h3>
+						<ol>
+							<li><b>Start:</b> Simply click the RIGHT mouse button on the map, and a menu will appear. Select "Merge polygons".<br/><img src="images/merge1.png" style="border: 1px solid #888888;"></li>
+						</ol>
+					</div>
+
+				</div>
+	</div>
+
+	<div dojoType="dijit.layout.ContentPane" title="Instruction movies" style="overflow: hidden; width: 100%; height: 100%; padding: 0px;">
+		<p>The movies you see here, require the adobe flash plugin to play.</p>
+		<table class="gridLookalike" style="margin:5px 5px 0px 5px;">
+			<tr><th colspan="2"><b>How do I ...</b></th></tr>
+			<tr><td><a href="http://files.geomajas.org/movies/1.3.1/new_feature.html" target="_blank"><img src="images/play_movie_icon.gif"></a></td><td>create a new feature</td></tr>
+			<tr><td><a href="http://files.geomajas.org/movies/1.3.1/create_hole.html" target="_blank"><img src="images/play_movie_icon.gif"></a></td><td>create a donut polygon</td></tr>
+			<tr><td><a href="http://files.geomajas.org/movies/1.3.1/snapping.html" target="_blank"><img src="images/play_movie_icon.gif"></a></td><td>use snapping</td></tr>
+			<tr><td><a href="http://files.geomajas.org/movies/1.3.1/splitting.html" target="_blank"><img src="images/play_movie_icon.gif"></a></td><td>split features</td></tr>
+			<tr><td><a href="http://files.geomajas.org/movies/1.3.1/merge.html" target="_blank"><img src="images/play_movie_icon.gif"></a></td><td>merge features</td></tr>
+		</table>
+		<p>These movies were created using geomajas 1.3.1. That is why they look a bit different from this sample.</p>
+	</div>
+
+	<div dojoType="dijit.layout.ContentPane" title="General hints" style="overflow: hidden; width: 100%; height: 100%; padding: 0px;">
+		<h2>General hints</h2>
+		<ul>
+			<li>The toolbar allows for only 1 tool to be active at any given moment.<br/>A tool is active when it's color in the toolbar becomes dark grey.<br/>In other words, when you are editing(<img src="js/geomajas/widget/themes/images/wijzig_geometrie.gif">), and you select the pan-tool(<img src="js/geomajas/widget/themes/images/hand.gif">), editing will be disabled.</li>
+			<li>Sometimes you are editing a feature, that lies partially off the screen.<br/>Click the RIGHT mouse button while editing, and select "Zoom to fit" to center around the feature.</li>
+		</ul>
+	</div>
+
+</div>

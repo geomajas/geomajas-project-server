@@ -1,0 +1,195 @@
+<!--
+  ~ This file is part of Geomajas, a component framework for building
+  ~ rich Internet applications (RIA) with sophisticated capabilities for the
+  ~ display, analysis and management of geographic information.
+  ~ It is a building block that allows developers to add maps
+  ~ and other geographic data capabilities to their web applications.
+  ~
+  ~ Copyright 2008-2010 Geosparc, http://www.geosparc.com, Belgium
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU Affero General Public License as
+  ~ published by the Free Software Foundation, either version 3 of the
+  ~ License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU Affero General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU Affero General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<html xmlns:vml="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office" >
+<head>
+	<title>Geomajas demo: Search & filtering</title>
+	<link rel="icon" type="image/jpg" href="images/geomajas_favicon.jpg">
+
+	<!-- VML specific stuff -->
+	<style type="text/css">vml\:* { behavior: url(#VMLRender); position:absolute }</style>
+	<object id="VMLRender" codebase="vgx.dll" classid="CLSID:10072CEC-8CC1-11D1-986E-00A0C955B42E" style="width:0;height:0"></object>
+
+	<!-- Everything needed to start up Geomajas -->
+	<link rel='stylesheet' href="js/geomajas/widget/themes/tundra/tundra.css">
+
+	<script type="text/javascript" src="js/dojo/dojo.js" djConfig="parseOnLoad:true, usePlainJson :true"></script>
+	<script type="text/javascript" src="js/example/example.js" geomajasConfig="showLog:false, connectionPoint:'generalConnectionPoint'"></script>
+
+	<!-- Add functionality on the onLoad event -->
+	<script type="text/javascript">
+
+		dojo.addOnLoad(function() {
+			// custom extension of ConfigManager, this is our entry point
+			searchManager = new SearchManager();
+			searchManager.onLoad();
+		});
+
+	</script>
+
+
+	<style type="text/css">@import "css/tutorial.css";</style>
+</head>
+
+<body class="tundra" style="overflow: hidden;">
+
+	<div id="loader" dojoType="geomajas.widget.experimental.LoadingScreen" loadText="Loading demo: Search & filtering" style="width:100%; height: 100%;"></div>
+
+	<div dojoType="dijit.layout.BorderContainer" style="width: 100%; height: 100%;">
+
+		<div id="generalConnectionPoint" style="width: 100%; height: 100%;"></div>
+
+		<div dojoType="dijit.layout.ContentPane" region="top" style="height:10px; overflow:hidden;"></div>
+		<div dojoType="dijit.layout.ContentPane" region="left" style="width:25px; overflow:hidden;"></div>
+
+		<div dojoType="dijit.layout.ContentPane" region="center" style="overflow:hidden;">
+			<div dojoType="dijit.layout.BorderContainer" style="background: #D0D0D0; border: 3px solid #D0D0D0;">
+
+				<!-- Application banner -->
+				<div dojoType="dijit.layout.ContentPane" region="top" style="font-size: 14px; height:30px; margin-bottom: 5px;" class="pagetitle">
+					<div class="pagetitleTxt">geo<font color="#00B164">majas</font> 1.5.2 : Search & Filtering</div>
+				</div>
+
+				<!-- Main application area -->
+				<div dojoType="dijit.layout.ContentPane" region="center" style="overflow:hidden;">
+					<div dojoType="dijit.layout.BorderContainer">
+
+
+						<!-- LEFT SIDE: accordion and legend -->
+						<div dojoType="dijit.layout.ContentPane" region="left" style="width: 350px; overflow: hidden;">
+							<div dojoType="dijit.layout.BorderContainer">
+
+								<!-- The accordion with help pages -->
+								<div dojoType="dijit.layout.ContentPane" region="center" style="overflow:hidden;">
+									<div dojoType="dijit.layout.BorderContainer">
+
+										<div dojoType="dijit.layout.ContentPane" region="top" style="height:20px" class="greenTitle">
+											<div class="greenTitleTxt">Help pages</div>
+										</div>
+
+										<div dojoType="dijit.layout.ContentPane" region="center" style="padding:4px; background-color:#D8D8D8;" class="sampleBorder">
+											<div dojoType="dijit.layout.AccordionContainer" duration="500" style="overflow: hidden; background-color: #FFFFFF;">
+												<div dojoType="dijit.layout.AccordionPane" title="What is filtering?">
+													<p>
+														The difference between searching and filtering:
+													</p>
+													<p>
+														Both apply queries on the data. The difference is that searching uses these formulas to fetch new data, while filtering <b>limits</b> all data access.
+													</p>
+													<p></p>
+													<center>
+														<table class="gridLookalike" style="margin:5px;">
+															<tr><th colspan="2"><b>Example filters on the African countries vectorlayer</b></th></tr>
+															<tr><td><button dojoType="dijit.form.Button" id="filterButton1" iconClass="filterIcon" onClick="searchManager.setFilter('(OPEC = 1)')">Filter</button></td><td>Show only OPEC countries</td></tr>
+															<tr><td><button dojoType="dijit.form.Button" id="filterButton2" iconClass="filterIcon" onClick='searchManager.setFilter("(REGION like \"%%ern%%\")")'>Filter</button></td><td>Filter out middle Africa</td></tr>
+															<tr><td><button dojoType="dijit.form.Button" id="filterButton4" iconClass="deleteIcon" onClick="searchManager.setFilter(null)">No filter</button></td><td>Remove filters</td></tr>
+														</table>
+													</center>
+													<p></p>
+													<p>It's best to zoom out to the whole of Africa to view the effects of the filters.</p>
+												</div>
+												<div dojoType="dijit.layout.AccordionPane" title="How to search features?" selected="true">
+													<p>Open the search panel to start a search operation.</p>
+													<p><center>
+														<button dojoType="dijit.form.Button" onClick="searchManager.showSearch()" iconClass="searchIcon">Search Panel</button>
+													</center></p>
+													<p></p>
+													<center><table class="gridLookalike" style="margin:5px;">
+														<tr><th colspan="2"><b>How to edit attributes?</b></th></tr>
+														<tr><td>By <b>doubleclicking</b> on a row in the table! (bottom right)</td></tr>
+													</table></center>
+													<p></p>
+													<center><table class="gridLookalike" style="margin:5px;">
+														<tr><th colspan="2"><b>Search example movie</b></th></tr>
+														<tr><td><a href="http://files.geomajas.org/movies/1.3.1/search.html" target="_blank"><img src="images/play_movie_icon.gif"></a></td><td>Searching features in Geomajas</td></tr>
+													</table></center>
+													<p>This movie requires the adobe flash plugin to play.</p>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+
+
+								<!-- The legend bottom left -->
+								<div dojoType="dijit.layout.ContentPane" region="bottom" style="height: 250px; padding:4px; margin-top: 5px; background-color:#D8D8D8;" class="sampleBorder">
+									<div dojoType="dijit.layout.ContentPane" style="overflow:hidden;">
+										<div dojoType="geomajas.widget.LegendWidget" id="sampleSearchLegend"></div>
+									</div>
+								</div>
+
+							</div>
+						</div>
+
+
+						<!-- RIGHT SIDE: Toolbar, Map and FeatureListTable -->
+						<div dojoType="dijit.layout.ContentPane" region="center" style="margin-left: 5px; overflow:hidden;">
+							<div dojoType="dijit.layout.BorderContainer" persist="false" liveSplitters="false">
+
+								<!-- Toolbar and Map, with splitter underneath to adjust height -->
+								<div dojoType="dijit.layout.ContentPane" region="center" style="overflow: hidden;">
+									<div dojoType="dijit.layout.BorderContainer">
+
+										<div dojoType="dijit.layout.ContentPane" region="top" style="height:20px;" class="greenTitle">
+											<div class="greenTitleTxt">Map showing the countries and main cities of Africa</div>
+										</div>
+
+										<div dojoType="dijit.layout.ContentPane" region="center" style="padding:4px; background-color:#D8D8D8;" class="sampleBorder">
+											<div dojoType="dijit.layout.ContentPane" style="overflow: hidden;">
+												<div dojoType="dijit.layout.BorderContainer">
+
+													<div dojoType="dijit.layout.ContentPane" region="top" style="height:29px;">
+														<div dojoType="geomajas.widget.DynamicToolbar" id="sampleSearchToolbar"></div>
+														<div dojoType="geomajas.widget.ActivityDiv" id="activityDiv" style="position:absolute; top:2px; right:2px; width: 100px;"></div>
+													</div>
+
+													<div dojoType="dijit.layout.ContentPane" region="center" style="overflow:hidden;">
+														<div id="sampleSearchMap" dojoType="geomajas.widget.MapWidget" style="width:100%; height:100%; border-top: 1px solid #A0A0A0; border-bottom: 1px solid #E0E0E0; border-left: 1px solid #A0A0A0; border-right: 1px solid #C0C0C0;"></div>
+													</div>
+			
+												</div>
+											</div>
+										</div>
+
+									</div>
+								</div>
+
+								<!-- FeatureListTable -->
+								<div dojoType="dijit.layout.ContentPane" region="bottom" splitter="true" style="height:30%; padding:4px;" class="dojoxFloatingPane">
+									<div id="searchFLT" dojoType="geomajas.widget.FeatureListTable" supportEditing=true style="width: 100%; height: 100%; text-align: left;"></div>
+								</div>
+
+							</div>
+						</div>
+
+					</div>
+				</div>
+
+			</div>
+		</div>
+
+		<div dojoType="dijit.layout.ContentPane" region="right" style="width:25px; overflow:hidden;"></div>
+		<div dojoType="dijit.layout.ContentPane" region="bottom" style="height:10px; overflow:hidden;"></div>
+	</div>
+
+</body>
+</html>

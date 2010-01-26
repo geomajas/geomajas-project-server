@@ -1,0 +1,69 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.geomajas</groupId>
+	<artifactId>geomajas-dojo-example</artifactId>
+	<version>1.5.3-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<name>Geomajas dojo application example</name>
+	<url>http://files.geomajas.org/maven/trunk/dojo-example</url>
+
+    <distributionManagement>
+        <repository>
+            <id>Geomajas repository</id>
+            <name>Mapping with Asynchronous Java and SVG</name>
+            <url>file:/var/www/maven.geomajas.org/htdocs/repository</url>
+        </repository>
+        <site>
+            <id>Geomajas project site</id>
+            <name>Mapping with Asynchronous Java and SVG</name>
+            <url>file:/var/www/files.geomajas.org/htdocs/maven/trunk/geomajas-dojo-example</url>
+        </site>
+    </distributionManagement>
+
+	<repositories>
+		<repository>
+			<id>Geomajas</id>
+			<name>Geomajas repository</name>
+			<url>http://maven.geomajas.org/</url>
+		</repository>
+	</repositories>
+
+	<pluginRepositories>
+		<pluginRepository>
+			<id>Geomajas</id>
+			<name>Geomajas repository</name>
+			<url>http://maven.geomajas.org/</url>
+		</pluginRepository>
+	</pluginRepositories>
+
+	<modules>
+		<module>geomajas-dojo-example-client</module>
+		<module>${geomajas.modules.name}</module>
+		<module>geomajas-dojo-example-war</module>
+	</modules>
+
+	<profiles>
+		<profile>
+			<!-- development profile, no shrinking -->
+			<id>noshrink</id>
+			<properties>
+				<geomajas.modules.name>geomajas-dojo-example-modules</geomajas.modules.name>
+			</properties>
+		</profile>
+		<profile>
+			<!-- shrinking -->
+			<id>shrink</id>
+			<properties>
+				<geomajas.modules.name>geomajas-dojo-example-modules-shrinksafe</geomajas.modules.name>
+			</properties>
+			<modules>
+				<!-- include other module to assure version increased on release, doesn't really change anything -->
+				<module>geomajas-dojo-example-modules</module>
+			</modules>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+		</profile>
+	</profiles>
+
+</project>

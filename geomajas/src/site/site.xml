@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="geomajas">
+	<publishDate format="yyyy-MM-dd"/>
+	<bannerLeft>
+		<name>geomajas</name>
+		<src>http://www.geomajas.org/sites/all/themes/geomajas/images/header_logo.gif</src>
+		<href>http://www.geomajas.org/</href>
+	</bannerLeft>
+	<body>
+		<links>
+			<item name="geosparc" href="http://www.geosparc.com/"/>
+		</links>
+
+		<menu name="geomajas">
+			<item name="Introduction" href="index.html"/>
+			<item name="Documentation" collapse="false">
+				<item name="User Guides" href="userguide.html"/>
+				<item name="Migrating" href="migrating.html"/>
+				<item name="Spring" href="spring.html"/>
+				<item name="Release" href="release.html"/>
+			</item>
+			<item name="Policies" collapse="false">
+				<item name="Developers" href="developers.html"/>
+				<item name="Coding style" href="codingstyle.html"/>
+				<item name="JIRA conventions" href="jira.html"/>
+			</item>
+			<item name="Roadmap" href="roadmap.html"/>
+			<item name="License" href="license.html"/>
+		</menu>
+
+		<menu ref="modules"/>
+		<menu ref="reports"/>
+	</body>
+
+	<poweredBy>
+		<logo name="Geosparc" href="http://www.geosparc.com"
+			  img="geosparc.png"/>
+		<logo name="maven" href="http://maven.apache.org/"
+			  img="http://maven.apache.org/images/logos/maven-feather.png"/>
+		<logo name="sourceforge" href="http://sf.net/projects/geomajas/"
+			  img="http://sourceforge.net/sflogo.php?group_id=geomajas&amp;type=1"/>
+	</poweredBy>
+
+</project>

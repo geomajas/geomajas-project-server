@@ -1,0 +1,27 @@
+<configuration debug="true">
+
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</Pattern>
+        </layout>
+    </appender>
+
+    <logger name="org.geomajas.dojo.server.json.AnnotatedBeanSerializer">
+        <level value="INFO"/>
+    </logger>
+    <logger name="org.geomajas.dojo.server.servlet.JsonServlet">
+        <level value="DEBUG"/> 
+    </logger>
+    <logger name="org.geomajas.extension.printing.component.ScaleBarComponent">
+        <level value="DEBUG"/>
+    </logger>
+    <logger name="org.geomajas.extension.command.render.GetRasterDataCommand">
+        <level value="DEBUG"/>
+    </logger>
+
+    <root>
+        <level value="INFO"/>
+        <appender-ref ref="CONSOLE"/>
+    </root>
+
+</configuration>

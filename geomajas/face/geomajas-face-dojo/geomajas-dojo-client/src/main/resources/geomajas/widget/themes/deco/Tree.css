@@ -1,0 +1,107 @@
+/*
+ * This file is part of Geomajas, a component framework for building
+ * rich Internet applications (RIA) with sophisticated capabilities for the
+ * display, analysis and management of geographic information.
+ * It is a building block that allows developers to add maps
+ * and other geographic data capabilities to their web applications.
+ *
+ * Copyright 2008-2010 Geosparc, http://www.geosparc.com, Belgium
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+/* Tree */
+
+.deco .dijitTreeNode {
+    background-image : url('images/i.gif');
+    background-position : top left;
+    background-repeat : repeat-y;
+    margin-left: 19px;
+    zoom: 1;	/* MOW: what the heck is this doing in here? */
+}
+
+/* left vertical line (grid) for all nodes */
+.deco .dijitTreeIsLast {
+    background: url('images/i_half.gif') no-repeat;
+}
+
+.deco .dijitTreeIsRoot {
+    margin-left: 0;
+    background-image: none;
+}
+
+.deco .dijitTreeExpando {
+    width: 18px;
+    height: 18px;
+}
+
+.deco .dijitTreeContent {
+    min-height: 18px;
+    min-width: 18px;
+    margin-left:18px;
+    padding-top:3px;
+    padding-left:1px;
+}
+
+
+.deco .dijitTreeExpand {
+    width: 18px;
+    height: 18px;
+    background-repeat : no-repeat;
+}
+
+/* same style as IE selection */
+.deco .dijitTreeNodeEmphasized {
+    background-color: Highlight;
+    color: HighlightText;
+}
+
+/* don't use :focus due to opera and IE's lack of support on div's */
+.deco .dijitTreeLabelFocused {
+	outline: 1px invert dotted;
+	background:#dde7f2;
+}
+
+.deco .dijitTreeExpandoOpened {
+	background-image: url('images/treeExpand_minus.gif');
+}
+
+.deco .dijitTreeExpandoClosed {
+	background-image: url('images/treeExpand_plus.gif');
+}
+
+.deco .dijitTreeExpandoLeaf {
+	background-image: url('images/treeExpand_leaf.gif');
+}
+
+.deco .dijitTreeExpandoLoading {
+	background-image: url('images/treeExpand_loading.gif');
+}
+
+.deco .dijitTreeIcon {
+	width: 16px;
+	height: 16px;
+	padding-right: 4px;
+}
+
+.deco .dijitFolderOpened {
+	background: url('images/folderOpened.gif') no-repeat;
+}
+
+.deco .dijitFolderClosed {
+	background: url('images/folderClosed.gif') no-repeat;
+}
+
+.deco .dijitLeaf {
+	background: url('images/leaf.gif') no-repeat;
+}

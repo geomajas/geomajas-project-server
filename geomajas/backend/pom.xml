@@ -1,0 +1,21 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<parent>
+		<groupId>org.geomajas</groupId>
+		<artifactId>geomajas</artifactId>
+		<version>1.5.3-SNAPSHOT</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.geomajas</groupId>
+	<artifactId>geomajas-backend</artifactId>
+	<packaging>pom</packaging>
+	<name>Geomajas back end</name>
+
+	<modules>
+		<module>geomajas-api</module>
+		<module>geomajas-common-servlet</module>
+		<module>geomajas-extension-command</module>
+		<module>geomajas-impl</module>
+		<module>geomajas-testdata</module>
+	</modules>
+
+</project>

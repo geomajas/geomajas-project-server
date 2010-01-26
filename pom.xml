@@ -1,0 +1,89 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.geomajas</groupId>
+	<artifactId>geomajas-all</artifactId>
+	<version>1.5.3-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<url>http://files.geomajas.org/maven/trunk</url>
+
+	<build>
+		<finalName>geomajas</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.0-beta-8</version>
+				<configuration>
+					<arguments>-Dhudson</arguments>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<name>Grouping of all Geomajas modules</name>
+	<modules>
+		<module>build-tools</module>
+		<module>geomajas</module>
+		<module>plugin</module>
+		<module>application</module>
+	</modules>
+
+	<distributionManagement>
+		<repository>
+			<id>Geomajas repository</id>
+			<name>Mapping with Asynchronous Java and SVG</name>
+			<url>file:/var/www/maven.geomajas.org/htdocs/repository</url>
+		</repository>
+		<site>
+			<id>Geomajas project site</id>
+			<name>Mapping with Asynchronous Java and SVG</name>
+			<url>file:/var/www/files.geomajas.org/htdocs/maven/trunk</url>
+		</site>
+	</distributionManagement>
+
+	<scm>
+		<connection>scm:svn:https://svn.geomajas.org/majas/tags/1.5.3-SNAPSHOT</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/1.5.3-SNAPSHOT</developerConnection>
+		<url>https://svn.geomajas.org/majas/tags/1.5.3-SNAPSHOT</url>
+	</scm>
+	<organization>
+		<name>Geosparc</name>
+		<url>http://www.geosparc.com</url>
+	</organization>
+	<mailingLists>
+		<mailingList>
+			<name>DEV</name>
+			<post>mailto:majas-dev@geomajas.org</post>
+			<subscribe>http://lists.geomajas.org/mailman/listinfo/majas-dev</subscribe>
+			<unsubscribe>http://lists.geomajas.org/mailman/listinfo/majas-dev</unsubscribe>
+			<archive>http://lists.geomajas.org/pipermail/majas-dev/</archive>
+		</mailingList>
+	</mailingLists>
+	<licenses>
+		<license>
+			<name>GNU Affero General Public License, Version 3</name>
+			<url>http://www.fsf.org/licensing/licenses/agpl-3.0.html</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+	<issueManagement>
+		<system>JIRA</system>
+		<url>http://jira.geomajas.org</url>
+	</issueManagement>
+	<ciManagement>
+		<system>hudson</system>
+		<url>http://apps.geomajas.org/hudson/</url>
+		<notifiers>
+			<notifier>
+				<type>mail</type>
+				<sendOnError>true</sendOnError>
+				<sendOnFailure>true</sendOnFailure>
+				<sendOnSuccess>false</sendOnSuccess>
+				<sendOnWarning>true</sendOnWarning>
+				<configuration>
+					<address>geomajas-commit@lists.sourceforge.net</address>
+				</configuration>
+			</notifier>
+		</notifiers>
+	</ciManagement>
+</project>
