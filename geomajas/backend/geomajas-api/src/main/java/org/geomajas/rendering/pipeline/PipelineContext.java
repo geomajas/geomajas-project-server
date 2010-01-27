@@ -23,35 +23,29 @@
 
 package org.geomajas.rendering.pipeline;
 
-import org.geomajas.global.GeomajasException;
-
 /**
- * Definition of one execution step in a pipeline.
- *
- * @param <REQUEST> type of request object for the pipeline
- * @param <RESPONSE> type of response object for the pipeline
+ * Context which is provided to a pipeline context to help execute.
  *
  * @author Joachim Van der Auwera
  */
-public interface PipelineStep<REQUEST, RESPONSE> {
+public interface PipelineContext {
 
 	/**
-	 * Get the id for the step. This is used for possible skipping and looping in the pipeline.
-	 *
-	 * @return pipeline step id
-	 */
-	String getId();
-
-	/**
-	 * Execute this step in the pipeline.
+	 * Get the value for a key.
 	 * <p/>
-	 * This is expected to modify and transform both the parameters and response objects.
+	 * These values can be used to pass values between the pipeline steps.
 	 *
-	 * @param request request object, contains parameters for the pipeline service
-	 * @param context contains a map of objects which are used as shared memory between the pipeline steps
-	 * @param response response object for the pipeline service
-	 * @return instructions for progressing the pipeline
-	 * @throws GeomajasException any exception which may have been throws during the execution
+	 * @param key key for which the value needs to be obtained.
+	 * @return value for key or null
 	 */
-	void execute(REQUEST request, PipelineContext context, RESPONSE response) throws GeomajasException;
+	Object get(String key);
+
+	/**
+	 * Put context value which may be accessed by later pipeline steps.
+	 *
+	 * @param key key for value
+	 * @param value value for key
+	 * @return previous value stored for this key
+	 */
+	Object put(String key, Object value);
 }
