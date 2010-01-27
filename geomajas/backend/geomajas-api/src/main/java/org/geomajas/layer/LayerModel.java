@@ -130,7 +130,12 @@ public interface LayerModel {
 	 */
 	Iterator<?> getObjects(String attributeName, Filter filter) throws LayerException;
 
+	/**
+	 * Set the default filter as configured in {@link VectorLayerInfo}.
+	 * <p/>
+	 * This is set during layer initialisation (for example by DefaultVectorLayer). 
+	 *
+	 * @param filter default filter on the layer.
+	 */
 	void setDefaultFilter(Filter filter);
-
-	Filter getDefaultFilter();
 }
