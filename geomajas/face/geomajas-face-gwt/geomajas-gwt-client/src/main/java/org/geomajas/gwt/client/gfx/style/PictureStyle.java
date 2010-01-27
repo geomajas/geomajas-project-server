@@ -65,9 +65,15 @@ public class PictureStyle implements Style {
 	// Other functions:
 
 	/**
+	 * Does nothing.
+	 */
+	public void scale(double scale) {
+	}
+
+	/**
 	 * Return a clone of this style object.
 	 */
-	public Object clone() {
+	public Style clone() {
 		return new PictureStyle(this);
 	}
 

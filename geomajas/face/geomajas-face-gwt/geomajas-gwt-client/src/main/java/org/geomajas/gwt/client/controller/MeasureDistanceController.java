@@ -76,8 +76,10 @@ public class MeasureDistanceController extends AbstractSnappingController {
 		super(mapWidget);
 		distanceLine = new GfxGeometry("world.measureDistanceLine");
 		distanceLine.setStyle(lineStyle1);
+		distanceLine.setCompensatingForScale(true);
 		lineSegment = new GfxGeometry("world.measureDistanceLineSegment");
 		lineSegment.setStyle(lineStyle2);
+		lineSegment.setCompensatingForScale(true);
 		factory = mapWidget.getMapModel().getGeometryFactory();
 	}
 

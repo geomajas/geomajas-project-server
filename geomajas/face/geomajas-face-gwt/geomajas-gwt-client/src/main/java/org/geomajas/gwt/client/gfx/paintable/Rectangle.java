@@ -23,7 +23,6 @@
 
 package org.geomajas.gwt.client.gfx.paintable;
 
-import org.geomajas.gwt.client.gfx.Paintable;
 import org.geomajas.gwt.client.gfx.PainterVisitor;
 import org.geomajas.gwt.client.gfx.style.ShapeStyle;
 import org.geomajas.gwt.client.spatial.Bbox;
@@ -33,38 +32,28 @@ import org.geomajas.gwt.client.spatial.Bbox;
  * Implementation of the <code>Paintable</code> interface for drawing rectangles. It is only usefull as a rendering
  * object, do not use this as a bounding box.
  * </p>
- *
+ * 
  * @author Pieter De Graef
  */
-public class Rectangle implements Paintable {
-
-	/**
-	 * A preferably unique ID that identifies the object even after it is painted. This can later be used to update or
-	 * delete it from the <code>GraphicsContext</code>.
-	 */
-	private String id;
+public class Rectangle extends AbstractWorldPaintable {
 
 	private Bbox bounds;
 
-	/**
-	 * A style object that determines the look.
-	 */
-	private ShapeStyle style;
-
+	// -------------------------------------------------------------------------
 	// Constructors:
-
-	public Rectangle() {
-	}
+	// -------------------------------------------------------------------------
 
 	public Rectangle(String id) {
-		this.id = id;
+		super(id);
 	}
 
+	// -------------------------------------------------------------------------
 	// Paintable implementation:
+	// -------------------------------------------------------------------------
 
 	/**
 	 * Everything that can be drawn on the map, must be accessible by a PainterVisitor!
-	 *
+	 * 
 	 * @param visitor
 	 *            A PainterVisitor object. Comes from a MapWidget.
 	 * @param bounds
@@ -76,22 +65,12 @@ public class Rectangle implements Paintable {
 		visitor.visit(this);
 	}
 
+	// -------------------------------------------------------------------------
 	// Getters and setters:
-
-	public String getId() {
-		return id;
-	}
-
-	public ShapeStyle getStyle() {
-		return style;
-	}
+	// -------------------------------------------------------------------------
 
 	public void setStyle(ShapeStyle style) {
-		this.style = style;
-	}
-
-	public void setId(String id) {
-		this.id = id;
+		setOriginalStyle(style);
 	}
 
 	public Bbox getBounds() {

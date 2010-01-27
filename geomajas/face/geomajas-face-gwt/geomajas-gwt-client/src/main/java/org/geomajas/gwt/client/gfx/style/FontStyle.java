@@ -30,7 +30,7 @@ package org.geomajas.gwt.client.gfx.style;
  * <p>
  * TODO: should be an extension of ShapeStyle, because it needs a fill, fill-opacity, stroke, stroke-opacity,....
  * </p>
- *
+ * 
  * @author Pieter De Graef
  */
 public class FontStyle implements Style {
@@ -62,7 +62,7 @@ public class FontStyle implements Style {
 
 	/**
 	 * Style object for graphics fonts. Initialize it immediately with all it's fields.
-	 *
+	 * 
 	 * @param fillColor
 	 *            HTML color code determining font color.
 	 * @param fontSize
@@ -84,7 +84,7 @@ public class FontStyle implements Style {
 
 	/**
 	 * Initialize this style object with another, copying it's values.
-	 *
+	 * 
 	 * @param other
 	 *            The other style object from who to copy the field values.
 	 */
@@ -99,9 +99,16 @@ public class FontStyle implements Style {
 	// Other functions:
 
 	/**
+	 * Scale only the font-size.
+	 */
+	public void scale(double scale) {
+		fontSize = (int) Math.ceil(fontSize * scale);
+	}
+
+	/**
 	 * Return a clone of this style object.
 	 */
-	public Object clone() {
+	public Style clone() {
 		return new FontStyle(this);
 	}
 

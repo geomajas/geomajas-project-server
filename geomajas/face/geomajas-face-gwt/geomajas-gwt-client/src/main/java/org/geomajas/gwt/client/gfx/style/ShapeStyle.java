@@ -29,7 +29,7 @@ import org.geomajas.configuration.StyleInfo;
  * <p>
  * Style object for shapes and geometries on the map.
  * </p>
- *
+ * 
  * @author Pieter De Graef
  */
 public class ShapeStyle implements Style {
@@ -83,8 +83,9 @@ public class ShapeStyle implements Style {
 
 	/**
 	 * Initialize this style object with the values of another style object.
-	 *
-	 * @param other The other style object from who to copy the field values.
+	 * 
+	 * @param other
+	 *            The other style object from who to copy the field values.
 	 */
 	public ShapeStyle(ShapeStyle other) {
 		this.fillColor = other.fillColor;
@@ -96,8 +97,9 @@ public class ShapeStyle implements Style {
 
 	/**
 	 * Initialize this style object with the values of a style configuration object.
-	 *
-	 * @param info {@link StyleInfo} object to read the style from
+	 * 
+	 * @param info
+	 *            {@link StyleInfo} object to read the style from
 	 */
 	public ShapeStyle(StyleInfo info) {
 		if (null != info) {
@@ -110,6 +112,13 @@ public class ShapeStyle implements Style {
 	}
 
 	// Other functions:
+
+	/**
+	 * Scales only the strokewidth.
+	 */
+	public void scale(double scale) {
+		strokeWidth = (int) Math.ceil(strokeWidth * scale);
+	}
 
 	public void merge(ShapeStyle style) {
 		if (style.getFillColor() != null) {
@@ -126,7 +135,7 @@ public class ShapeStyle implements Style {
 	/**
 	 * Return a clone of this style object.
 	 */
-	public Object clone() {
+	public Style clone() {
 		return new ShapeStyle(this);
 	}
 

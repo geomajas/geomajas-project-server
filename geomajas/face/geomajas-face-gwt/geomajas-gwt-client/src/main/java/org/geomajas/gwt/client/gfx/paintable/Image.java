@@ -23,7 +23,6 @@
 
 package org.geomajas.gwt.client.gfx.paintable;
 
-import org.geomajas.gwt.client.gfx.Paintable;
 import org.geomajas.gwt.client.gfx.PainterVisitor;
 import org.geomajas.gwt.client.gfx.style.PictureStyle;
 import org.geomajas.gwt.client.spatial.Bbox;
@@ -33,16 +32,10 @@ import org.geomajas.rendering.tile.RasterImage;
  * <p>
  * Implementation of the <code>Paintable</code> interface for drawing images.
  * </p>
- *
+ * 
  * @author Pieter De Graef
  */
-public class Image implements Paintable {
-
-	/**
-	 * A preferably unique ID that identifies the object even after it is painted. This can later be used to update or
-	 * delete it from the <code>GraphicsContext</code>.
-	 */
-	private String id;
+public class Image extends AbstractWorldPaintable {
 
 	/**
 	 * Location of the actual image.
@@ -54,32 +47,28 @@ public class Image implements Paintable {
 	 */
 	private Bbox bounds;
 
-	/**
-	 * A style object that determines the look.
-	 */
-	private PictureStyle style;
-
+	// -------------------------------------------------------------------------
 	// Constructors:
-
-	public Image() {
-	}
+	// -------------------------------------------------------------------------
 
 	public Image(String id) {
-		this.id = id;
+		super(id);
 	}
 
 	public Image(RasterImage raster) {
-		id = raster.getId();
+		super(raster.getId());
 		href = raster.getUrl();
 		bounds = new Bbox(raster.getBounds());
-		style = new PictureStyle(1);
+		setOriginalStyle(new PictureStyle(1));
 	}
 
+	// -------------------------------------------------------------------------
 	// Paintable implementation:
+	// -------------------------------------------------------------------------
 
 	/**
 	 * Everything that can be drawn on the map, must be accessible by a PainterVisitor!
-	 *
+	 * 
 	 * @param visitor
 	 *            A PainterVisitor object. Comes from a MapWidget.
 	 * @param bounds
@@ -91,22 +80,12 @@ public class Image implements Paintable {
 		visitor.visit(this);
 	}
 
+	// -------------------------------------------------------------------------
 	// Getters and setters:
-
-	public String getId() {
-		return id;
-	}
-
-	public PictureStyle getStyle() {
-		return style;
-	}
+	// -------------------------------------------------------------------------
 
 	public void setStyle(PictureStyle style) {
-		this.style = style;
-	}
-
-	public void setId(String id) {
-		this.id = id;
+		setOriginalStyle(style);
 	}
 
 	public Bbox getBounds() {

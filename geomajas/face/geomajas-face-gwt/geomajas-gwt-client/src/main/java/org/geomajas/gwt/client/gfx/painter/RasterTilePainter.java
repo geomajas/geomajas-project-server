@@ -25,7 +25,6 @@ package org.geomajas.gwt.client.gfx.painter;
 import org.geomajas.gwt.client.gfx.GraphicsContext;
 import org.geomajas.gwt.client.gfx.Paintable;
 import org.geomajas.gwt.client.gfx.Painter;
-import org.geomajas.gwt.client.map.MapView;
 import org.geomajas.gwt.client.map.cache.tile.RasterTile;
 
 /**
@@ -35,10 +34,7 @@ import org.geomajas.gwt.client.map.cache.tile.RasterTile;
  */
 public class RasterTilePainter implements Painter {
 
-	private MapView mapView;
-
-	public RasterTilePainter(MapView mapView) {
-		this.mapView = mapView;
+	public RasterTilePainter() {
 	}
 
 	public String getPaintableClassName() {
@@ -60,6 +56,5 @@ public class RasterTilePainter implements Painter {
 	public void deleteShape(Paintable paintable, GraphicsContext graphics) {
 		graphics.deleteShape(paintable.getId(), false);
 	}
-
 }
 

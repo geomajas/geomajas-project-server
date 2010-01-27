@@ -27,25 +27,25 @@ import org.geomajas.gwt.client.gfx.GraphicsContext;
 import org.geomajas.gwt.client.gfx.Paintable;
 import org.geomajas.gwt.client.gfx.Painter;
 import org.geomajas.gwt.client.map.MapModel;
-import org.geomajas.gwt.client.map.MapView;
+import org.geomajas.gwt.client.widget.MapWidget;
 
 /**
  * Actual painter for the {@link MapModel} object. Prepares some groups, and sets the correct transformations. Also
  * prepares a group for objects that are to be painted in world space. (the MapModel's WorldSpacePaintables)
- *
+ * 
  * @author Pieter De Graef
  */
 public class MapModelPainter implements Painter {
 
-	private MapView mapView;
+	private MapWidget mapWidget;
 
-	public MapModelPainter(MapView mapView) {
-		this.mapView = mapView;
+	public MapModelPainter(MapWidget mapWidget) {
+		this.mapWidget = mapWidget;
 	}
 
-	//-------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
 	// Painter implementation:
-	//-------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
 
 	public String getPaintableClassName() {
 		return MapModel.class.getName();
@@ -55,18 +55,19 @@ public class MapModelPainter implements Painter {
 		MapModel mapModel = (MapModel) paintable;
 
 		// Draw the group (DIV) and translate for world space:
-		graphics.drawGroup(mapModel.getId(), null, mapView.getPanToViewTranslation());
+		graphics.drawGroup(mapModel.getId(), null, mapWidget.getMapModel().getMapView().getPanToViewTranslation());
 
 		// Prepare a group for objects being painted in world space:
 		if (mapModel.getWorldSpacePaintables() != null && mapModel.getWorldSpacePaintables().size() > 0) {
-			graphics.drawGroup(mapModel.getId() + "_world", null, mapView.getWorldToViewTransformation());
+			graphics.drawGroup(mapModel.getId() + "_world", null, mapWidget.getMapModel().getMapView()
+					.getWorldToViewTransformation());
 		}
 	}
 
 	/**
 	 * Delete a <code>Paintable</code> object from the given <code>GraphicsContext</code>. It the object does not exist,
 	 * nothing will be done.
-	 *
+	 * 
 	 * @param paintable
 	 *            The MapModel
 	 * @param graphics

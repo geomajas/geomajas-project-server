@@ -23,7 +23,6 @@
 
 package org.geomajas.gwt.client.gfx.paintable;
 
-import org.geomajas.gwt.client.gfx.Paintable;
 import org.geomajas.gwt.client.gfx.PainterVisitor;
 import org.geomajas.gwt.client.gfx.style.ShapeStyle;
 import org.geomajas.gwt.client.spatial.Bbox;
@@ -31,39 +30,28 @@ import org.geomajas.gwt.client.spatial.geometry.Geometry;
 
 /**
  * <p>
- * A {@link Geometry} that can be drawn onto a {@link org.geomajas.gwt.client.gfx.GraphicsContext}. It therefore
- *  the {@link org.geomajas.gwt.client.gfx.Paintable} interface.
+ * A {@link Geometry} that can be drawn onto a {@link org.geomajas.gwt.client.gfx.GraphicsContext}. It therefore the
+ * {@link org.geomajas.gwt.client.gfx.Paintable} interface.
  * </p>
- *
+ * 
  * @author Pieter De Graef
  */
-public class GfxGeometry implements Paintable {
-
-	/**
-	 * A preferably unique ID that identifies the object even after it is painted. This can later be used to update or
-	 * delete it from the <code>GraphicsContext</code>.
-	 */
-	private String id;
+public class GfxGeometry extends AbstractWorldPaintable {
 
 	private Geometry geometry;
-
-	private ShapeStyle style;
 
 	// -------------------------------------------------------------------------
 	// Constructors:
 	// -------------------------------------------------------------------------
 
-	public GfxGeometry() {
-	}
-
 	public GfxGeometry(String id) {
-		this.id = id;
+		super(id);
 	}
 
 	public GfxGeometry(String id, Geometry geometry, ShapeStyle style) {
-		this.id = id;
+		super(id);
 		this.geometry = geometry;
-		this.style = style;
+		setOriginalStyle(style);
 	}
 
 	// -------------------------------------------------------------------------
@@ -72,7 +60,7 @@ public class GfxGeometry implements Paintable {
 
 	/**
 	 * Everything that can be drawn on the map, must be accessible by a PainterVisitor!
-	 *
+	 * 
 	 * @param visitor
 	 *            A PainterVisitor object.
 	 */
@@ -84,20 +72,8 @@ public class GfxGeometry implements Paintable {
 	// Getters and setters:
 	// -------------------------------------------------------------------------
 
-	public String getId() {
-		return id;
-	}
-
-	public ShapeStyle getStyle() {
-		return style;
-	}
-
 	public void setStyle(ShapeStyle style) {
-		this.style = style;
-	}
-
-	public void setId(String id) {
-		this.id = id;
+		setOriginalStyle(style);
 	}
 
 	public Geometry getGeometry() {

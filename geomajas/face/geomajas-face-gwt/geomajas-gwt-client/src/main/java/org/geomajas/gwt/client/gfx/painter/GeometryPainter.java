@@ -27,6 +27,7 @@ import org.geomajas.gwt.client.gfx.GraphicsContext;
 import org.geomajas.gwt.client.gfx.Paintable;
 import org.geomajas.gwt.client.gfx.Painter;
 import org.geomajas.gwt.client.gfx.paintable.GfxGeometry;
+import org.geomajas.gwt.client.gfx.style.ShapeStyle;
 import org.geomajas.gwt.client.spatial.geometry.Geometry;
 import org.geomajas.gwt.client.spatial.geometry.LineString;
 import org.geomajas.gwt.client.spatial.geometry.MultiLineString;
@@ -38,7 +39,7 @@ import org.geomajas.gwt.client.spatial.geometry.Polygon;
  * <p>
  * Painter implementation for text.
  * </p>
- *
+ * 
  * @author Pieter De Graef
  */
 public class GeometryPainter implements Painter {
@@ -51,7 +52,7 @@ public class GeometryPainter implements Painter {
 
 	/**
 	 * Return the class-name of the type of object this painter can paint.
-	 *
+	 * 
 	 * @return Return the class-name as a string.
 	 */
 	public String getPaintableClassName() {
@@ -60,7 +61,7 @@ public class GeometryPainter implements Painter {
 
 	/**
 	 * The actual painting function. Draws the circles with the object's id.
-	 *
+	 * 
 	 * @param paintable
 	 *            A {@link org.geomajas.gwt.client.gfx.paintable.Text} object.
 	 * @param graphics
@@ -71,17 +72,19 @@ public class GeometryPainter implements Painter {
 			GfxGeometry gfxGeometry = (GfxGeometry) paintable;
 			Geometry geometry = gfxGeometry.getGeometry();
 			if (geometry instanceof LineString) {
-				graphics.drawLine(gfxGeometry.getId(), (LineString) geometry, gfxGeometry.getStyle());
+				graphics.drawLine(gfxGeometry.getId(), (LineString) geometry, (ShapeStyle) gfxGeometry.getStyle());
 			} else if (geometry instanceof MultiLineString) {
 				MultiLineString m = (MultiLineString) geometry;
-				graphics.drawLine(gfxGeometry.getId(), (LineString) m.getGeometryN(0), gfxGeometry.getStyle());
+				graphics.drawLine(gfxGeometry.getId(), (LineString) m.getGeometryN(0), (ShapeStyle) gfxGeometry
+						.getStyle());
 			} else if (geometry instanceof Polygon) {
-				graphics.drawPolygon(gfxGeometry.getId(), (Polygon) geometry, gfxGeometry.getStyle());
+				graphics.drawPolygon(gfxGeometry.getId(), (Polygon) geometry, (ShapeStyle) gfxGeometry.getStyle());
 			} else if (geometry instanceof MultiPolygon) {
 				MultiPolygon m = (MultiPolygon) geometry;
-				graphics.drawPolygon(gfxGeometry.getId(), (Polygon) m.getGeometryN(0), gfxGeometry.getStyle());
+				graphics.drawPolygon(gfxGeometry.getId(), (Polygon) m.getGeometryN(0), (ShapeStyle) gfxGeometry
+						.getStyle());
 			} else if (geometry instanceof Point) {
-				graphics.drawSymbol(gfxGeometry.getId(), (Point) geometry, gfxGeometry.getStyle(), null);
+				graphics.drawSymbol(gfxGeometry.getId(), (Point) geometry, (ShapeStyle) gfxGeometry.getStyle(), null);
 			}
 		}
 	}
@@ -89,7 +92,7 @@ public class GeometryPainter implements Painter {
 	/**
 	 * Delete a <code>Paintable</code> object from the given <code>GraphicsContext</code>. It the object does not exist,
 	 * nothing will be done.
-	 *
+	 * 
 	 * @param paintable
 	 *            The object to be painted.
 	 * @param graphics

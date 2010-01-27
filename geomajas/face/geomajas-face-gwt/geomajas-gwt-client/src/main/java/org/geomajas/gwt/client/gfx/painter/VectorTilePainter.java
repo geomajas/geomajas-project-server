@@ -27,6 +27,7 @@ import org.geomajas.gwt.client.gfx.GraphicsContext;
 import org.geomajas.gwt.client.gfx.Paintable;
 import org.geomajas.gwt.client.gfx.Painter;
 import org.geomajas.gwt.client.gfx.paintable.Image;
+import org.geomajas.gwt.client.gfx.style.PictureStyle;
 import org.geomajas.gwt.client.map.MapView;
 import org.geomajas.gwt.client.map.cache.tile.VectorTile;
 import org.geomajas.gwt.client.spatial.Bbox;
@@ -59,9 +60,10 @@ public class VectorTilePainter implements Painter {
 		Matrix transformationMatrix = createTransformationMatrix(tile);
 
 		if (tile.getFeatureImage() != null) {
-			Image im = tile.getFeatureImage();
+			Image image = tile.getFeatureImage();
 			graphics.drawGroup(tile.getId(), DOM.NS_VML, transformationMatrix);
-			graphics.drawImage(tile.getId() + ".img", im.getHref(), im.getBounds(), im.getStyle(), false);
+			graphics.drawImage(tile.getId() + ".img", image.getHref(), image.getBounds(), (PictureStyle) image
+					.getStyle(), false);
 		} else if (tile.getFeatureFragment() != null) {
 			graphics.drawGroup(tile.getId(), DOM.NS_VML, (int) tile.getScreenWidth(), (int) tile.getScreenHeight(),
 					transformationMatrix);
@@ -71,10 +73,11 @@ public class VectorTilePainter implements Painter {
 		if (tile.getLabelImage() != null) {
 			Image im = tile.getLabelImage();
 			graphics.drawGroup(createLabelId(tile), DOM.NS_VML, transformationMatrix);
-			graphics.drawImage(createLabelId(tile) + ".img", im.getHref(), im.getBounds(), im.getStyle(), false);
+			graphics.drawImage(createLabelId(tile) + ".img", im.getHref(), im.getBounds(),
+					(PictureStyle) im.getStyle(), false);
 		} else if (tile.getLabelFragment() != null) {
-			graphics.drawGroup(createLabelId(tile), DOM.NS_VML, (int) tile.getScreenWidth(),
-					(int) tile.getScreenHeight(), transformationMatrix);
+			graphics.drawGroup(createLabelId(tile), DOM.NS_VML, (int) tile.getScreenWidth(), (int) tile
+					.getScreenHeight(), transformationMatrix);
 			graphics.drawData(createLabelId(tile) + ".data", tile.getLabelFragment());
 		}
 	}

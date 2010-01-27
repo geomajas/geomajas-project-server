@@ -24,46 +24,36 @@
 package org.geomajas.gwt.client.gfx.paintable;
 
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.gwt.client.gfx.Paintable;
 import org.geomajas.gwt.client.gfx.PainterVisitor;
 import org.geomajas.gwt.client.gfx.style.FontStyle;
 import org.geomajas.gwt.client.spatial.Bbox;
 
 /**
- * ???
- *
- * @author check subversion
+ * <p>
+ * Paintable definition for drawing text onto a GraphicsWidget.
+ * </p>
+ * 
+ * @author Pieter De Graef
  */
-public class Text implements Paintable {
-
-	/**
-	 * A preferably unique ID that identifies the object even after it is painted. This can later be used to update or
-	 * delete it from the <code>GraphicsContext</code>.
-	 */
-	private String id;
+public class Text extends AbstractWorldPaintable {
 
 	private String content;
 
 	private Coordinate position;
 
-	private FontStyle style;
-
 	// -------------------------------------------------------------------------
 	// Constructors:
 	// -------------------------------------------------------------------------
 
-	public Text() {
-	}
-
 	public Text(String id) {
-		this.id = id;
+		super(id);
 	}
 
 	public Text(String id, String content, Coordinate position, FontStyle style) {
-		this.id = id;
+		super(id);
 		this.content = content;
 		this.position = position;
-		this.style = style;
+		setOriginalStyle(style);
 	}
 
 	// -------------------------------------------------------------------------
@@ -78,16 +68,8 @@ public class Text implements Paintable {
 	// Getters and setters:
 	// -------------------------------------------------------------------------
 
-	public String getId() {
-		return id;
-	}
-
-	public FontStyle getStyle() {
-		return style;
-	}
-
 	public void setStyle(FontStyle style) {
-		this.style = style;
+		setOriginalStyle(style);
 	}
 
 	public Coordinate getPosition() {
@@ -104,9 +86,5 @@ public class Text implements Paintable {
 
 	public void setContent(String content) {
 		this.content = content;
-	}
-
-	public void setId(String id) {
-		this.id = id;
 	}
 }

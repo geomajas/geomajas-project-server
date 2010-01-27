@@ -24,7 +24,6 @@
 package org.geomajas.gwt.client.gfx.paintable;
 
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.gwt.client.gfx.Paintable;
 import org.geomajas.gwt.client.gfx.PainterVisitor;
 import org.geomajas.gwt.client.gfx.style.ShapeStyle;
 import org.geomajas.gwt.client.spatial.Bbox;
@@ -33,16 +32,10 @@ import org.geomajas.gwt.client.spatial.Bbox;
  * <p>
  * A circle that can be drawn onto a <code>GraphicsContext</code>.
  * </p>
- *
+ * 
  * @author Pieter De Graef
  */
-public class Circle implements Paintable {
-
-	/**
-	 * A preferably unique ID that identifies the object even after it is painted. This can later be used to update or
-	 * delete it from the <code>GraphicsContext</code>.
-	 */
-	private String id;
+public class Circle extends AbstractWorldPaintable {
 
 	/**
 	 * A circle needs to be drawn at a certain location.
@@ -54,18 +47,15 @@ public class Circle implements Paintable {
 	 */
 	private float radius;
 
-	/**
-	 * The styling object.
-	 */
-	private ShapeStyle style;
-
+	// -------------------------------------------------------------------------
 	// Constructors:
+	// -------------------------------------------------------------------------
 
 	/**
 	 * constructor setting the id.
 	 */
 	public Circle(String id) {
-		this.id = id;
+		super(id);
 	}
 
 	// -------------------------------------------------------------------------
@@ -74,7 +64,7 @@ public class Circle implements Paintable {
 
 	/**
 	 * Everything that can be drawn on the map, must be accessible by a PainterVisitor!
-	 *
+	 * 
 	 * @param visitor
 	 *            A PainterVisitor object. Comes from a MapWidget.
 	 * @param bounds
@@ -87,14 +77,6 @@ public class Circle implements Paintable {
 	}
 
 	// Getters and setters:
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
 
 	public Coordinate getPosition() {
 		return position;
@@ -112,11 +94,7 @@ public class Circle implements Paintable {
 		this.radius = radius;
 	}
 
-	public ShapeStyle getStyle() {
-		return style;
-	}
-
 	public void setStyle(ShapeStyle style) {
-		this.style = style;
+		setOriginalStyle(style);
 	}
 }

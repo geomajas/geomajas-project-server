@@ -161,9 +161,9 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 		painterVisitor.registerPainter(new TextPainter());
 		painterVisitor.registerPainter(new GeometryPainter());
 		painterVisitor.registerPainter(new ImagePainter());
-		painterVisitor.registerPainter(new MapModelPainter(mapModel.getMapView()));
+		painterVisitor.registerPainter(new MapModelPainter(this));
 		painterVisitor.registerPainter(new RasterLayerPainter());
-		painterVisitor.registerPainter(new RasterTilePainter(mapModel.getMapView()));
+		painterVisitor.registerPainter(new RasterTilePainter());
 		painterVisitor.registerPainter(new VectorLayerPainter());
 		painterVisitor.registerPainter(new VectorTilePainter(mapModel.getMapView()));
 		painterVisitor.registerPainter(new FeatureTransactionPainter(this));
@@ -237,11 +237,11 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 				layer.addLayerChangedHandler(new LayerChangedHandler() {
 
 					public void onLabelChange(LayerLabeledEvent event) {
-						render(layer, "update");
+						render(layer, "all");
 					}
 
 					public void onVisibleChange(LayerShownEvent event) {
-						render(layer, "update");
+						render(layer, "all");
 					}
 				});
 			}

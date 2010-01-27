@@ -27,12 +27,13 @@ import org.geomajas.gwt.client.gfx.GraphicsContext;
 import org.geomajas.gwt.client.gfx.Paintable;
 import org.geomajas.gwt.client.gfx.Painter;
 import org.geomajas.gwt.client.gfx.paintable.Circle;
+import org.geomajas.gwt.client.gfx.style.ShapeStyle;
 
 /**
  * <p>
  * Painter implementation for circles.
  * </p>
- *
+ * 
  * @author Pieter De Graef
  */
 public class CirclePainter implements Painter {
@@ -45,7 +46,7 @@ public class CirclePainter implements Painter {
 
 	/**
 	 * Return the class-name of the type of object this painter can paint.
-	 *
+	 * 
 	 * @return Return the class-name as a string.
 	 */
 	public String getPaintableClassName() {
@@ -54,7 +55,7 @@ public class CirclePainter implements Painter {
 
 	/**
 	 * The actual painting function. Draws the circles with the object's id.
-	 *
+	 * 
 	 * @param object
 	 *            A {@link Circle} object.
 	 * @param graphics
@@ -62,13 +63,13 @@ public class CirclePainter implements Painter {
 	 */
 	public void paint(Paintable paintable, GraphicsContext graphics) {
 		Circle circle = (Circle) paintable;
-		graphics.drawCircle(circle.getId(), circle.getPosition(), circle.getRadius(), circle.getStyle());
+		graphics.drawCircle(circle.getId(), circle.getPosition(), circle.getRadius(), (ShapeStyle) circle.getStyle());
 	}
 
 	/**
 	 * Delete a <code>Paintable</code> object from the given <code>GraphicsContext</code>. It the object does not exist,
 	 * nothing will be done.
-	 *
+	 * 
 	 * @param paintable
 	 *            The object to be painted.
 	 * @param graphics

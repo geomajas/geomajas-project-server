@@ -23,14 +23,18 @@
 
 package org.geomajas.gwt.client.map;
 
-import com.google.gwt.event.shared.HandlerManager;
-import com.google.gwt.event.shared.HandlerRegistration;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.geomajas.configuration.LayerInfo;
 import org.geomajas.configuration.MapInfo;
 import org.geomajas.configuration.RasterLayerInfo;
 import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.gwt.client.gfx.Paintable;
 import org.geomajas.gwt.client.gfx.PainterVisitor;
+import org.geomajas.gwt.client.gfx.WorldPaintable;
 import org.geomajas.gwt.client.map.event.FeatureDeselectedEvent;
 import org.geomajas.gwt.client.map.event.FeatureSelectedEvent;
 import org.geomajas.gwt.client.map.event.FeatureSelectionHandler;
@@ -53,16 +57,15 @@ import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.spatial.geometry.GeometryFactory;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.event.shared.HandlerRegistration;
 
 /**
- * <p> The model behind a map. This object contains all the layers related to the map. When re-rendering the entire map,
- * it is actually this model that is rendered. Therefore the MapModel implements the <code>Paintable</code> interface.
+ * <p>
+ * The model behind a map. This object contains all the layers related to the map. When re-rendering the entire map, it
+ * is actually this model that is rendered. Therefore the MapModel implements the <code>Paintable</code> interface.
  * </p>
- *
+ * 
  * @author Pieter De Graef
  */
 public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSelectionHandlers {
@@ -89,7 +92,7 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 
 	private FeatureEditor featureEditor;
 
-	private List<Paintable> worldSpacePaintables;
+	private List<WorldPaintable> worldSpacePaintables;
 
 	private HandlerManager handlerManager;
 
@@ -104,13 +107,14 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 
 	/**
 	 * Initialize map model, coordinate system has to be filled in later (from configuration).
-	 *
-	 * @param id map id
+	 * 
+	 * @param id
+	 *            map id
 	 */
 	public MapModel(String id) {
 		this.id = id;
 		featureEditor = new FeatureEditor(this);
-		worldSpacePaintables = new ArrayList<Paintable>();
+		worldSpacePaintables = new ArrayList<WorldPaintable>();
 		handlerManager = new HandlerManager(this);
 		mapView = new MapView();
 		mapView.addMapViewChangedHandler(this);
@@ -118,8 +122,9 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 
 	/**
 	 * Adds this handler to the model.
-	 *
-	 * @param handler the handler
+	 * 
+	 * @param handler
+	 *            the handler
 	 * @return {@link com.google.gwt.event.shared.HandlerRegistration} used to remove the handler
 	 */
 	public final HandlerRegistration addMapModelHandler(final MapModelHandler handler) {
@@ -168,7 +173,8 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 
 		// Paint the world space paintable objects:
 		if (worldSpacePaintables != null) {
-			for (Paintable paintable : worldSpacePaintables) {
+			for (WorldPaintable paintable : worldSpacePaintables) {
+				paintable.scale(1 / mapView.getCurrentScale());
 				paintable.accept(visitor, bounds, recursive);
 			}
 		}
@@ -191,8 +197,9 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 	/**
 	 * Initialize the MapModel object, using a configuration object acquired from the server. This will automatically
 	 * build the list of layers.
-	 *
-	 * @param mapInfo The configuration object.
+	 * 
+	 * @param mapInfo
+	 *            The configuration object.
 	 */
 	public void initialize(final MapInfo mapInfo) {
 		description = mapInfo;
@@ -207,8 +214,8 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 			mapView.setResolutions(mapInfo.getResolutions());
 		}
 		mapView.setMaximumScale(mapInfo.getMaximumScale());
-		Bbox initialBounds = new Bbox(mapInfo.getInitialBounds().getX(), mapInfo.getInitialBounds().getY(),
-				mapInfo.getInitialBounds().getWidth(), mapInfo.getInitialBounds().getHeight());
+		Bbox initialBounds = new Bbox(mapInfo.getInitialBounds().getX(), mapInfo.getInitialBounds().getY(), mapInfo
+				.getInitialBounds().getWidth(), mapInfo.getInitialBounds().getHeight());
 		mapView.applyBounds(initialBounds, MapView.ZoomOption.LEVEL_CLOSEST);
 		removeAllLayers();
 		Bbox maxBounds = new Bbox(initialBounds);
@@ -239,8 +246,9 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 
 	/**
 	 * Search a layer by it's id.
-	 *
-	 * @param layerId The layer's ID.
+	 * 
+	 * @param layerId
+	 *            The layer's ID.
 	 * @return Returns either a Layer, or null.
 	 */
 	public Layer getLayerByLayerId(String layerId) {
@@ -257,8 +265,9 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 	/**
 	 * Select a new layer. Only one layer can be selected at a time, so this function first tries to deselect the
 	 * currently selected (if there is one).
-	 *
-	 * @param layer The layer to select. If layer is null, then the currently selected layer will be deselected!
+	 * 
+	 * @param layer
+	 *            The layer to select. If layer is null, then the currently selected layer will be deselected!
 	 */
 	public void selectLayer(Layer layer) {
 		if (layer == null) {
@@ -275,21 +284,22 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 
 	/**
 	 * Deselect the currently selected layer, includes sending the deselect events.
-	 *
-	 * @param layer layer to clear
+	 * 
+	 * @param layer
+	 *            layer to clear
 	 */
 	private void deselectLayer(Layer layer) {
 		if (layer != null) {
 			layer.setSelected(false);
 			handlerManager.fireEvent(new LayerDeselectedEvent(layer));
 		}
-		//clearSelectedFeatures();
 	}
 
 	/**
 	 * Return whether the feature with given id is selected.
-	 *
-	 * @param featureId feature id to test
+	 * 
+	 * @param featureId
+	 *            feature id to test
 	 * @return true when the feature with given ide is selected
 	 */
 	public boolean isFeatureSelected(String featureId) {
@@ -298,8 +308,9 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 
 	/**
 	 * Select a feature: set the feature's selected state and add it to the layer's selection.
-	 *
-	 * @param feature The feature that is to be selected.
+	 * 
+	 * @param feature
+	 *            The feature that is to be selected.
 	 */
 	public void selectFeature(Feature feature) {
 		if (!selectedFeatures.containsKey(feature.getId())) {
@@ -311,8 +322,9 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 
 	/**
 	 * Deselect a feature: set the feature's selected state and remove it from the layer's selection.
-	 *
-	 * @param feature The feature that is to be selected.
+	 * 
+	 * @param feature
+	 *            The feature that is to be selected.
 	 */
 	public void deselectFeature(Feature feature) {
 		if (selectedFeatures.containsKey(feature.getId())) {
@@ -331,7 +343,7 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 
 	/**
 	 * Searches for the selected layer, and returns it.
-	 *
+	 * 
 	 * @return Returns the selected layer object, or null if none is selected.
 	 */
 	public Layer getSelectedLayer() {
@@ -347,8 +359,9 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 
 	/**
 	 * Retrieve a feature, by it's ID.
-	 *
-	 * @param featureId Must be the entire id: <layer>.<feature>
+	 * 
+	 * @param featureId
+	 *            Must be the entire id: <layer>.<feature>
 	 * @return Returns the feature if it is found, null otherwise.
 	 */
 	public Feature getFeatureById(String featureId) {
@@ -409,7 +422,7 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 		return -1;
 	}
 
-	public List<Paintable> getWorldSpacePaintables() {
+	public List<WorldPaintable> getWorldSpacePaintables() {
 		return worldSpacePaintables;
 	}
 
@@ -419,8 +432,9 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 
 	/**
 	 * Update the visibility of the layers.
-	 *
-	 * @param event change event
+	 * 
+	 * @param event
+	 *            change event
 	 */
 	public void onMapViewChanged(MapViewChangedEvent event) {
 		for (Layer layer : layers) {

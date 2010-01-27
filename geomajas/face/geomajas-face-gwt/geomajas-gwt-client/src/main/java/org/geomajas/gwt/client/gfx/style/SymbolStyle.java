@@ -24,10 +24,16 @@
 package org.geomajas.gwt.client.gfx.style;
 
 /**
- * ???
- *
- * @author check subversion
+ * TODO: support for point layers in VML.
+ * 
+ * @author Pieter De Graef
  */
 public class SymbolStyle implements Style {
 
+	public Style clone() {
+		return null;
+	}
+
+	public void scale(double scale) {
+	}
 }

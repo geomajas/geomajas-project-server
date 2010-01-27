@@ -25,11 +25,22 @@ package org.geomajas.gwt.client.gfx.style;
 
 /**
  * <p>
- * General interface for style objects. At the moment pretty empty.
+ * General interface for style objects.
  * </p>
- *
+ * 
  * @author Pieter De Graef
  */
 public interface Style {
 
+	/**
+	 * Scale a style by a given value. This might be necessary when due to scale changes on the map, a style needs to
+	 * look the same nonetheless. For example, when using the <code>ShapeStyle</code> for a shape, you may want the
+	 * <code>stroke-width</code> to remain constant.
+	 * 
+	 * @param scale
+	 *            The scale value. (will usually be the opposite of the map's scale value)
+	 */
+	void scale(double scale);
+	
+	Style clone();
 }

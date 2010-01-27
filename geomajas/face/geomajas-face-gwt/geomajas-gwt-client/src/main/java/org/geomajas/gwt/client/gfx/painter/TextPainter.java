@@ -27,12 +27,13 @@ import org.geomajas.gwt.client.gfx.GraphicsContext;
 import org.geomajas.gwt.client.gfx.Paintable;
 import org.geomajas.gwt.client.gfx.Painter;
 import org.geomajas.gwt.client.gfx.paintable.Text;
+import org.geomajas.gwt.client.gfx.style.FontStyle;
 
 /**
  * <p>
  * Painter implementation for text.
  * </p>
- *
+ * 
  * @author Pieter De Graef
  */
 public class TextPainter implements Painter {
@@ -45,7 +46,7 @@ public class TextPainter implements Painter {
 
 	/**
 	 * Return the class-name of the type of object this painter can paint.
-	 *
+	 * 
 	 * @return Return the class-name as a string.
 	 */
 	public String getPaintableClassName() {
@@ -54,7 +55,7 @@ public class TextPainter implements Painter {
 
 	/**
 	 * The actual painting function. Draws the circles with the object's id.
-	 *
+	 * 
 	 * @param object
 	 *            A {@link Text} object.
 	 * @param graphics
@@ -62,13 +63,13 @@ public class TextPainter implements Painter {
 	 */
 	public void paint(Paintable paintable, GraphicsContext graphics) {
 		Text text = (Text) paintable;
-		graphics.drawText(text.getId(), text.getContent(), text.getPosition(), text.getStyle());
+		graphics.drawText(text.getId(), text.getContent(), text.getPosition(), (FontStyle) text.getStyle());
 	}
 
 	/**
 	 * Delete a <code>Paintable</code> object from the given <code>GraphicsContext</code>. It the object does not exist,
 	 * nothing will be done.
-	 *
+	 * 
 	 * @param paintable
 	 *            The object to be painted.
 	 * @param graphics
