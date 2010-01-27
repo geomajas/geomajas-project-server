@@ -490,9 +490,6 @@ public class VmlGraphicsContext extends AbstractGraphicsContext {
 	 *            The symbol's identifier.
 	 * @param symbol
 	 *            A {@link Point} geometry that indicates where the symbol is to be drawn.
-	 * @param options
-	 *            List of additional options. Should at least contain an ID. If it also contains a "styleId", then this
-	 *            style id is used for styling. Otherwise, we turn to the parent element to find a style.
 	 */
 	public void drawSymbol(String elementId, Point symbol, ShapeStyle style, String shapeTypeId) {
 		Element element = findOrCreateElement(elementId, DOM.NS_VML, "shape", style, null, null);

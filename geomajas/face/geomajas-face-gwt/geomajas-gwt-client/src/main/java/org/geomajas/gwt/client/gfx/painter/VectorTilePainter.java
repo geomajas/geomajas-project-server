@@ -67,6 +67,16 @@ public class VectorTilePainter implements Painter {
 					transformationMatrix);
 			graphics.drawData(tile.getId() + ".data", tile.getFeatureFragment());
 		}
+
+		if (tile.getLabelImage() != null) {
+			Image im = tile.getLabelImage();
+			graphics.drawGroup(createLabelId(tile), DOM.NS_VML, transformationMatrix);
+			graphics.drawImage(createLabelId(tile) + ".img", im.getHref(), im.getBounds(), im.getStyle(), false);
+		} else if (tile.getLabelFragment() != null) {
+			graphics.drawGroup(createLabelId(tile), DOM.NS_VML, (int) tile.getScreenWidth(),
+					(int) tile.getScreenHeight(), transformationMatrix);
+			graphics.drawData(createLabelId(tile) + ".data", tile.getLabelFragment());
+		}
 	}
 
 	/**

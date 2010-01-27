@@ -239,11 +239,11 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 				layer.addLayerChangedHandler(new LayerChangedHandler() {
 
 					public void onLabelChange(LayerLabeledEvent event) {
-						render(layer, "update");
+						render(layer, "all");
 					}
 
 					public void onVisibleChange(LayerShownEvent event) {
-						render(layer, "update");
+						render(layer, "all");
 					}
 				});
 			}

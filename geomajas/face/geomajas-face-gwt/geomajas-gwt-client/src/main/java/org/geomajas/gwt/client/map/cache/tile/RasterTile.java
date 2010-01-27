@@ -68,11 +68,15 @@ public class RasterTile implements Tile, Paintable {
 	}
 
 	public TileCode getCode() {
-		return code;  //To change body of implemented methods use File | Settings | File Templates.
+		return code;
 	}
 
 	public Bbox getBounds() {
-		return bbox;  //To change body of implemented methods use File | Settings | File Templates.
+		return bbox;
+	}
+
+	public boolean isComplete() {
+		return true;
 	}
 
 	/** Return the unique value of the spatial code for this node. */

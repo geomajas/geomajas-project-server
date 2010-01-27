@@ -218,8 +218,12 @@ public class TileCache implements SpatialCache {
 					tile.applyConnected(filter, onUpdate);
 				} else {
 					VectorTile tile = currentNodes.get(tileCode.toString());
-					tile.apply(onUpdate);
-					tile.applyConnected(filter, onUpdate);
+					if (tile.isComplete()) {
+						tile.apply(onUpdate);
+					} else {
+						tile.fetch(filter, onUpdate);
+						tile.applyConnected(filter, onUpdate);
+					}
 				}
 			}
 		}

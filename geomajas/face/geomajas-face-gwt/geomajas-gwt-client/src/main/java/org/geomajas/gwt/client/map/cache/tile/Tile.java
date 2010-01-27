@@ -47,4 +47,9 @@ public interface Tile {
 	 * @return bounds
 	 */
 	Bbox getBounds();
+
+	/**
+	 *  True if all rendering data is present.
+	 */
+	boolean isComplete();
 }

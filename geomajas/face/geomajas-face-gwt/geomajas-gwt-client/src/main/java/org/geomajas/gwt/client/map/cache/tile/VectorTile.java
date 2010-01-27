@@ -53,8 +53,14 @@ public class VectorTile extends AbstractVectorTile {
 	 */
 	private String featureFragment;
 
+	/**
+	 * Data holder: contains SVG or VML from the server for labels.
+	 */
+	private String labelFragment;
+
 	private Image featureImage;
 
+	private Image labelImage;
 	/** Array of feature ID's. */
 	private List<String> featureIds = new ArrayList<String>();
 
@@ -81,6 +87,8 @@ public class VectorTile extends AbstractVectorTile {
 	private boolean rendered;
 
 	private boolean canceled;
+
+	private GwtCommand command;
 
 	// -------------------------------------------------------------------------
 	// Constructors:
@@ -117,19 +125,7 @@ public class VectorTile extends AbstractVectorTile {
 	 *            When this node's data comes from the server, it will be handled by this callback function.
 	 */
 	public void fetch(String filter, final TileFunction callback) {
-		GetRenderedTileRequest request = new GetRenderedTileRequest();
-		request.setCode(code);
-		request.setCrs(cache.getLayer().getMapModel().getCrs());
-		request.setFilter(filter);
-		request.setLayerId(cache.getLayer().getId());
-		request.setPaintGeometries(true);
-		request.setPaintLabels(false);
-		request.setPanOrigin(cache.getLayer().getMapModel().getMapView().getPanOrigin());
-		request.setRenderer(SC.isIE() ? "VML" : "SVG");
-		request.setScale(cache.getLayer().getMapModel().getMapView().getCurrentScale());
-		request.setStyleDefs(cache.getLayer().getLayerInfo().getStyleDefinitions().toArray(new StyleInfo[] {}));
-		GwtCommand command = new GwtCommand("command.render.GetRenderedTile");
-		command.setCommandRequest(request);
+		GwtCommand command = createCommand(filter);
 		final VectorTile self = this;
 		GwtCommandDispatcher.getInstance().execute(command, new CommandCallback() {
 
@@ -152,9 +148,11 @@ public class VectorTile extends AbstractVectorTile {
 					if (tile instanceof org.geomajas.rendering.tile.VectorTile) {
 						org.geomajas.rendering.tile.VectorTile vTile = (org.geomajas.rendering.tile.VectorTile) tile;
 						featureFragment = vTile.getFeatureFragment();
+						labelFragment = vTile.getLabelFragment();
 					} else if (tile instanceof RasterTile) {
 						RasterTile rTile = (RasterTile) tile;
 						featureImage = new Image(rTile.getFeatureImage());
+						labelImage = new Image(rTile.getLabelImage());
 					}
 					try {
 						callback.execute(self);
@@ -165,6 +163,24 @@ public class VectorTile extends AbstractVectorTile {
 				}
 			}
 		});
+	}
+
+	private GwtCommand createCommand(String filter) {
+		GetRenderedTileRequest request = new GetRenderedTileRequest();
+		request.setCode(code);
+		request.setCrs(cache.getLayer().getMapModel().getCrs());
+		request.setFilter(filter);
+		request.setLayerId(cache.getLayer().getId());
+		// always paint geometries in first fetch
+		request.setPaintGeometries(!rendered);
+		request.setPaintLabels(cache.getLayer().isLabeled());
+		request.setPanOrigin(cache.getLayer().getMapModel().getMapView().getPanOrigin());
+		request.setRenderer(SC.isIE() ? "VML" : "SVG");
+		request.setScale(cache.getLayer().getMapModel().getMapView().getCurrentScale());
+		request.setStyleDefs(cache.getLayer().getLayerInfo().getStyleDefinitions().toArray(new StyleInfo[] {}));
+		GwtCommand command = new GwtCommand("command.render.GetRenderedTile");
+		command.setCommandRequest(request);
+		return command;
 	}
 
 	/**
@@ -240,16 +256,24 @@ public class VectorTile extends AbstractVectorTile {
 		return featureFragment;
 	}
 
-	public void setFeatureFragment(String featureFragment) {
-		this.featureFragment = featureFragment;
-	}
-
 	public Image getFeatureImage() {
 		return featureImage;
 	}
 
-	public void setFeatureImage(Image featureImage) {
-		this.featureImage = featureImage;
+	public String getLabelFragment() {
+		return labelFragment;
+	}
+
+	public void setLabelFragment(String labelFragment) {
+		this.labelFragment = labelFragment;
+	}
+
+	public Image getLabelImage() {
+		return labelImage;
+	}
+
+	public void setLabelImage(Image labelImage) {
+		this.labelImage = labelImage;
 	}
 
 	public void cancel() {
@@ -263,4 +287,12 @@ public class VectorTile extends AbstractVectorTile {
 	public double getScreenHeight() {
 		return screenHeight;
 	}
+
+	public boolean isComplete() {
+		if (cache.getLayer().isLabeled() && labelFragment == null) {
+			return false;
+		}
+		return true;
+	}
+
 }
