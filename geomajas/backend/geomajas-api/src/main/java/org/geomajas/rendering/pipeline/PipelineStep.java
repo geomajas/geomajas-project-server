@@ -50,7 +50,6 @@ public interface PipelineStep<REQUEST, RESPONSE> {
 	 * @param request request object, contains parameters for the pipeline service
 	 * @param context contains a map of objects which are used as shared memory between the pipeline steps
 	 * @param response response object for the pipeline service
-	 * @return instructions for progressing the pipeline
 	 * @throws GeomajasException any exception which may have been throws during the execution
 	 */
 	void execute(REQUEST request, PipelineContext context, RESPONSE response) throws GeomajasException;
