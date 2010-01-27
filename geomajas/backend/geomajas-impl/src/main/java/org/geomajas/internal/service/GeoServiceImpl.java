@@ -79,6 +79,9 @@ public final class GeoServiceImpl implements GeoService {
 		return getSridFromCrs(crs.getIdentifiers().iterator().next().toString());
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public MathTransform findMathTransform(CoordinateReferenceSystem sourceCRS,
 			CoordinateReferenceSystem targetCRS) throws FactoryException {
 		// AllAuthoritiesFactory f;
@@ -91,6 +94,9 @@ public final class GeoServiceImpl implements GeoService {
 		return transform;
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public Coordinate calcDefaultLabelPosition(RenderedFeature feature) {
 		Geometry geometry = feature.getGeometry();
 		Coordinate labelPoint;
@@ -124,6 +130,9 @@ public final class GeoServiceImpl implements GeoService {
 		return labelPoint;
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public Geometry createCircle(final Point point, final double radius, final int nrPoints) {
 		double x = point.getX();
 		double y = point.getY();

@@ -55,10 +55,32 @@ public interface GeoService {
 	 */
 	int getSridFromCrs(CoordinateReferenceSystem crs);
 
-	MathTransform findMathTransform(CoordinateReferenceSystem sourceCRS,
-			CoordinateReferenceSystem targetCRS) throws FactoryException;
+	/**
+	 * Get the transformation which converts between two coordinate systems.
+	 *
+	 * @param sourceCrs crs used by source data
+	 * @param targetCrs crs to be used by target
+	 * @return transformation matrix
+	 * @throws FactoryException oops
+	 */
+	MathTransform findMathTransform(CoordinateReferenceSystem sourceCrs,
+			CoordinateReferenceSystem targetCrs) throws FactoryException;
 
+	/**
+	 * Determine a default position for positionin the label for a feature.
+	 *
+	 * @param feature feature which needs the label
+	 * @return coordinate where the label would make sense.
+	 */
 	Coordinate calcDefaultLabelPosition(RenderedFeature feature);
 
-	Geometry createCircle(Point point, double radius, int nrPoints);
+	/**
+	 * Create a geometry which approximates like a circle.
+	 *
+	 * @param center center for the circle
+	 * @param radius radius for the circle
+	 * @param nrPoints number of points to calculate for approcimating the circle
+	 * @return
+	 */
+	Geometry createCircle(Point center, double radius, int nrPoints);
 }

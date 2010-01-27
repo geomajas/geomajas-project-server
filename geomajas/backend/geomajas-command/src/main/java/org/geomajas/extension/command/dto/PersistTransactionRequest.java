@@ -37,8 +37,6 @@ public class PersistTransactionRequest implements CommandRequest {
 
 	private FeatureTransaction featureTransaction;
 
-	private String filter;
-
 	private String crs;
 
 	public PersistTransactionRequest() {
@@ -50,14 +48,6 @@ public class PersistTransactionRequest implements CommandRequest {
 
 	public void setFeatureTransaction(FeatureTransaction featureTransaction) {
 		this.featureTransaction = featureTransaction;
-	}
-
-	public String getFilter() {
-		return filter;
-	}
-
-	public void setFilter(String filter) {
-		this.filter = filter;
 	}
 
 	/**
@@ -77,5 +67,4 @@ public class PersistTransactionRequest implements CommandRequest {
 	public void setCrs(String crs) {
 		this.crs = crs;
 	}
-
 }
