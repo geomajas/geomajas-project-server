@@ -46,6 +46,8 @@ public class PanController extends AbstractGraphicsController {
 	private Coordinate begin;
 
 	private ZoomToRectangleController zoomToRectangleController;
+	
+	// Constructors:
 
 	public PanController(MapWidget mapWidget) {
 		super(mapWidget);
@@ -92,6 +94,8 @@ public class PanController extends AbstractGraphicsController {
 		}
 	}
 
+	// Private methods:
+
 	private void stopPanning(MouseUpEvent event) {
 		dragging = false;
 		mapWidget.setCursor(Cursor.DEFAULT);
@@ -100,7 +104,7 @@ public class PanController extends AbstractGraphicsController {
 		}
 	}
 
-	private void updateView(MouseEvent event) {
+	private void updateView(MouseEvent<?> event) {
 		Coordinate end = getScreenPosition(event);
 		Coordinate beginWorld = getTransformer().viewToWorld(begin);
 		Coordinate endWorld = getTransformer().viewToWorld(end);

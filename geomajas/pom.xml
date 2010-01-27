@@ -354,13 +354,13 @@
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>org.geomajas.extension</groupId>
-				<artifactId>geomajas-extension-command</artifactId>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-command</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>org.geomajas.extension</groupId>
-				<artifactId>geomajas-extension-command</artifactId>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-command</artifactId>
 				<classifier>sources</classifier>
 				<version>${project.version}</version>
 			</dependency>

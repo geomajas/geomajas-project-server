@@ -11,12 +11,12 @@
 	<name>Geomajas plugins</name>
 
 	<modules>
-		<module>geomajas-extension-printing</module>
 		<module>geomajas-layermodel-geotools</module>
 		<module>geomajas-layermodel-google</module>
 		<module>geomajas-layermodel-hibernate</module>
 		<module>geomajas-layermodel-openstreetmaps</module>
 		<module>geomajas-layermodel-wms</module>
+		<module>geomajas-plugin-printing</module>
 	</modules>
 
 </project>

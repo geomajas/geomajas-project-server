@@ -25,7 +25,6 @@ package org.geomajas.gwt.client.widget;
 
 import java.util.List;
 
-import com.smartgwt.client.widgets.menu.Menu;
 import org.geomajas.command.CommandResponse;
 import org.geomajas.configuration.MapInfo;
 import org.geomajas.configuration.UnitType;
@@ -33,6 +32,7 @@ import org.geomajas.extension.command.dto.GetMapConfigurationRequest;
 import org.geomajas.extension.command.dto.GetMapConfigurationResponse;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.Geomajas;
+import org.geomajas.gwt.client.action.menu.AboutAction;
 import org.geomajas.gwt.client.command.CommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
@@ -82,6 +82,7 @@ import com.smartgwt.client.types.Cursor;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.events.ResizedEvent;
 import com.smartgwt.client.widgets.events.ResizedHandler;
+import com.smartgwt.client.widgets.menu.Menu;
 
 /**
  * The map widget is responsible for rendering the map model. It has a Model-View relationship with the map model. A
@@ -136,11 +137,9 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 
 	private boolean initialized;
 
-	private Canvas base;
-
-	private Menu emptyContextMenu;
-
 	private boolean resizedHandlerDisabled;
+
+	private Menu defaultMenu;
 
 	// -------------------------------------------------------------------------
 	// Constructor:
@@ -148,11 +147,6 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 
 	public MapWidget(String id) {
 		super(id);
-
-		// assure there is no context menu unless one is selected
-		emptyContextMenu = new Menu();
-		emptyContextMenu.setWidth(150);
-		this.setContextMenu(emptyContextMenu);
 
 		mapModel = new MapModel(getID() + "Graphics");
 		mapModel.addMapModelHandler(this);
@@ -173,6 +167,10 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 		painterVisitor.registerPainter(new VectorLayerPainter());
 		painterVisitor.registerPainter(new VectorTilePainter(mapModel.getMapView()));
 		painterVisitor.registerPainter(new FeatureTransactionPainter(this));
+
+		defaultMenu = new Menu();
+		defaultMenu.addItem(new AboutAction());
+		setContextMenu(defaultMenu);
 
 		// Resizing should work correctly!
 		setWidth100();
@@ -239,11 +237,11 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 				layer.addLayerChangedHandler(new LayerChangedHandler() {
 
 					public void onLabelChange(LayerLabeledEvent event) {
-						render(layer, "all");
+						render(layer, "update");
 					}
 
 					public void onVisibleChange(LayerShownEvent event) {
-						render(layer, "all");
+						render(layer, "update");
 					}
 				});
 			}
@@ -417,7 +415,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	@Override
 	public void setContextMenu(Menu contextMenu) {
 		if (null == contextMenu) {
-			super.setContextMenu(emptyContextMenu);
+			super.setContextMenu(defaultMenu);
 		} else {
 			super.setContextMenu(contextMenu);
 		}
@@ -504,6 +502,14 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 
 	public void setResizedHandlerDisabled(boolean resizedHandlerDisabled) {
 		this.resizedHandlerDisabled = resizedHandlerDisabled;
+	}
+
+	public Menu getDefaultMenu() {
+		return defaultMenu;
+	}
+
+	public void setDefaultMenu(Menu defaultMenu) {
+		this.defaultMenu = defaultMenu;
 	}
 
 	// -------------------------------------------------------------------------

@@ -22,13 +22,13 @@
 			<classifier>sources</classifier>
 		</dependency>
 		<dependency>
-			<groupId>org.geomajas.extension</groupId>
-			<artifactId>geomajas-extension-command</artifactId>
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-command</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.geomajas.extension</groupId>
+			<groupId>org.geomajas</groupId>
 			<classifier>sources</classifier>
-			<artifactId>geomajas-extension-command</artifactId>
+			<artifactId>geomajas-command</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas</groupId>

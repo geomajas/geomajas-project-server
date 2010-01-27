@@ -26,6 +26,7 @@ package org.geomajas.gwt.client.command;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
 import com.smartgwt.client.util.SC;
@@ -41,7 +42,7 @@ import org.geomajas.gwt.client.command.event.HasDispatchHandlers;
 /**
  * The central client side dispatcher for all commands. Use the {@link #execute(GwtCommand, CommandCallback)} function
  * to execute an asynchronous command on the server.
- *
+ * 
  * @author Pieter De Graef
  */
 public final class GwtCommandDispatcher implements HasDispatchHandlers {
@@ -54,12 +55,19 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 
 	private int nrOfDispatchedCommands;
 
+	private String locale;
+
 	private GwtCommandDispatcher() {
+		locale = LocaleInfo.getCurrentLocale().getLocaleName();
 		service = (GeomajasServiceAsync) GWT.create(GeomajasService.class);
 		ServiceDefTarget endpoint = (ServiceDefTarget) service;
 		String moduleRelativeURL = GWT.getModuleBaseURL() + "geomajasService";
 		endpoint.setServiceEntryPoint(moduleRelativeURL);
 	}
+
+	// -------------------------------------------------------------------------
+	// Public methods:
+	// -------------------------------------------------------------------------
 
 	/** Get the only static instance of this class. This should be the object you work with. */
 	public static GwtCommandDispatcher getInstance() {
@@ -79,12 +87,15 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 
 	/**
 	 * The execution function. Executes a server side command.
-	 *
-	 * @param command The command to be executed. This command is a wrapper around the actual request object.
-	 * @param onSuccess A <code>CommandCallback</code> function to be executed when the command successfully returns.
+	 * 
+	 * @param command
+	 *            The command to be executed. This command is a wrapper around the actual request object.
+	 * @param onSuccess
+	 *            A <code>CommandCallback</code> function to be executed when the command successfully returns.
 	 */
 	public void execute(GwtCommand command, final CommandCallback onSuccess) {
 		incrementDispatched();
+		command.setLocale(locale);
 		service.execute(command, new AsyncCallback<CommandResponse>() {
 
 			public void onFailure(Throwable error) {
@@ -110,11 +121,16 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 
 	/**
 	 * Is the dispatcher busy ?
+	 * 
 	 * @return true if there are outstanding commands
 	 */
 	public boolean isBusy() {
 		return nrOfDispatchedCommands != 0;
 	}
+
+	// -------------------------------------------------------------------------
+	// Protected methods:
+	// -------------------------------------------------------------------------
 
 	protected void incrementDispatched() {
 		boolean started = nrOfDispatchedCommands == 0;

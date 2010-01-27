@@ -166,6 +166,7 @@ public class GraphicsWidget extends FocusWidget implements MenuGraphicsContext, 
 		}
 		if (controller != null) {
 			controller.onDeactivate();
+			controller = null;
 		}
 		handlers = new ArrayList<HandlerRegistration>();
 		if (graphicsController != null) {

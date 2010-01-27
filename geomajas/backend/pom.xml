@@ -12,9 +12,9 @@
 
 	<modules>
 		<module>geomajas-api</module>
-		<module>geomajas-common-servlet</module>
-		<module>geomajas-extension-command</module>
 		<module>geomajas-impl</module>
+		<module>geomajas-common-servlet</module>
+		<module>geomajas-command</module>
 		<module>geomajas-testdata</module>
 	</modules>
 

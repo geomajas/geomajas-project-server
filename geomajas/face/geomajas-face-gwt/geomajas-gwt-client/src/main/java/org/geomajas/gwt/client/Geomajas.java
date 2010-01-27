@@ -23,6 +23,9 @@
 
 package org.geomajas.gwt.client;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * <p>
  * Global settings for the Geomajas GWT face.
@@ -35,6 +38,24 @@ public final class Geomajas {
 	private Geomajas() {
 	}
 
+	/** Returns the current version of Geomajas as a string. */
+	public static String getVersion() {
+		return "1.5.3-SNAPSHOT";
+	}
+
+	/**
+	 * Returns a list of locales that can be used in this version of Geomajas. The default is english, and 'native'
+	 * means that your browsers locale should be used (if supported - default otherwise).
+	 */
+	public static Map<String, String> getSupportedLocales() {
+		Map<String, String> locales = new HashMap<String, String>();
+//		locales.put("English", "default");
+//		locales.put("Nederlands", "nl");
+		locales.put("default", "English");
+		locales.put("nl", "Nederlands");
+		return locales;
+	}
+
 	/**
 	 * Return the base directory for the web application.
 	 * 
@@ -44,4 +65,14 @@ public final class Geomajas {
 	/*-{
 		return $wnd.isomorphicDir;
 	}-*/;
+//	
+//	public static native void installLanguage()
+//	/*-{
+//		var search = location.search;
+//		if(search.indexOf("locale") == -1){
+//			var lang = navigator.language!=null ? navigator.language : navigator.browserLanguage;
+//			var lang = lang.replace("-", "_");
+//			document.write("<meta name='gwt:property' content='locale="+lang +"'>");
+//		}
+//	}-*/;
 }

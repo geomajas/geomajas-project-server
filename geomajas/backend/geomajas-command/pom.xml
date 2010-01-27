@@ -5,10 +5,10 @@
 		<version>1.5.3-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.geomajas.extension</groupId>
-	<artifactId>geomajas-extension-command</artifactId>
+	<groupId>org.geomajas</groupId>
+	<artifactId>geomajas-command</artifactId>
 	<packaging>jar</packaging>
-	<name>Geomajas extension with commands</name>
+	<name>Geomajas commands</name>
 
 	<dependencies>
 		<dependency>

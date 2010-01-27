@@ -38,6 +38,7 @@ import org.geomajas.gwt.client.widget.ActivityMonitor;
 import org.geomajas.gwt.client.widget.LayerTree;
 import org.geomajas.gwt.client.widget.Legend;
 import org.geomajas.gwt.client.widget.LoadingScreen;
+import org.geomajas.gwt.client.widget.LocaleSelect;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.OverviewMap;
 import org.geomajas.gwt.client.widget.ScaleSelect;
@@ -56,9 +57,9 @@ import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.tab.TabSet;
 
 /**
- * ???
+ * Entry point for gwt simple application.
  * 
- * @author check subversion
+ * @author Pieter De Graef
  */
 public class GeomajasSimple implements EntryPoint {
 
@@ -146,7 +147,9 @@ public class GeomajasSimple implements EntryPoint {
 		rightLayout.setShowEdges(true);
 
 		ActivityMonitor monitor = new ActivityMonitor();
+		LocaleSelect localeSelect = new LocaleSelect();
 
+		rightLayout.addMember(localeSelect);
 		rightLayout.addMember(monitor);
 		rightLayout.addMember(overviewMap);
 		rightLayout.addMember(layerTree);
@@ -162,9 +165,10 @@ public class GeomajasSimple implements EntryPoint {
 
 		// Finally draw everything:
 		layout.draw();
-		
+
 		// Install a loading screen:
-		LoadingScreen loadScreen = new LoadingScreen(map, "Simple GWT application using Geomajas 1.5.2");
+		LoadingScreen loadScreen = new LoadingScreen(map, "Simple GWT application using Geomajas " +
+				Geomajas.getVersion());
 		loadScreen.draw();
 
 		// Then initialize:

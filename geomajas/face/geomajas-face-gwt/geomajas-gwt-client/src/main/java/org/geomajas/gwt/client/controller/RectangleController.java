@@ -146,7 +146,7 @@ public abstract class RectangleController extends AbstractGraphicsController {
 		}
 	}
 
-	private void updateRectangle(MouseEvent event) {
+	private void updateRectangle(MouseEvent<?> event) {
 		Coordinate pos = getScreenPosition(event);
 		double x = begin.getX();
 		double y = begin.getY();

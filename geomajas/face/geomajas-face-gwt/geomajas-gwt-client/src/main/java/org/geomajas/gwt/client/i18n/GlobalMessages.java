@@ -52,4 +52,18 @@ public interface GlobalMessages extends Messages {
 	String loadScreenLoadText();
 
 	String loadScreenReadyText();
+
+	// MapWidget:
+
+	String aboutMenuTitle();
+
+	String aboutCopyRight();
+
+	String aboutVisit();
+
+	// LocaleSelect:
+
+	String localeTitle();
+
+	String localeReload();
 }
