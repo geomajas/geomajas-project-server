@@ -27,27 +27,23 @@ import org.geomajas.extension.command.dto.GetAssociationRequest;
 import org.geomajas.extension.command.dto.GetAssociationResponse;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
-import org.geomajas.layer.Layer;
-import org.geomajas.layer.VectorLayer;
-import org.geomajas.service.ApplicationService;
+import org.geomajas.service.VectorLayerModelService;
 import org.geotools.filter.text.cql2.CQL;
-import org.geotools.filter.text.cql2.CQLException;
 import org.opengis.filter.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Iterator;
-
 /**
- * ???
+ * Get associated objects.
  *
- * @author check subversion
+ * @author Jan De Moerloose
+ * @author Joachim Van der Auwera
  */
 @Component()
 public class GetAssociationCommand implements Command<GetAssociationRequest, GetAssociationResponse> {
 
 	@Autowired
-	private ApplicationService runtimeParameters;
+	private VectorLayerModelService layerModelService;
 
 	public GetAssociationResponse getEmptyCommandResponse() {
 		return new GetAssociationResponse();
@@ -57,26 +53,16 @@ public class GetAssociationCommand implements Command<GetAssociationRequest, Get
 		if (null == request.getLayerId()) {
 			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "layerId");
 		}
-		try {
-			// create the bbox filter
-			Layer layer = runtimeParameters.getLayer(request.getLayerId());
-			// AND the other filter
-			Filter filter;
-			if (request.getFilter() != null) {
-				filter = CQL.toFilter(request.getFilter());
-			} else {
-				filter = Filter.INCLUDE;
-			}
-			if (layer instanceof VectorLayer) {
-				VectorLayer vectorLayer = (VectorLayer) layer;
-				Iterator it = vectorLayer.getLayerModel().getObjects(request.getAttributeName(), filter);
-				while (it.hasNext()) {
-					response.addObject(it.next());
-				}
-			}
-		} catch (CQLException e) {
-			throw new GeomajasException(e, ExceptionCode.FILTER_APPLY_PROBLEM, request.getFilter());
+		if (null == request.getAttributeName()) {
+			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "attributeName");
 		}
+		Filter filter;
+		if (request.getFilter() != null) {
+			filter = CQL.toFilter(request.getFilter());
+		} else {
+			filter = Filter.INCLUDE;
+		}
+		response.setObjects(layerModelService.getObjects(request.getLayerId(), request.getAttributeName(), filter));
 	}
 
 }

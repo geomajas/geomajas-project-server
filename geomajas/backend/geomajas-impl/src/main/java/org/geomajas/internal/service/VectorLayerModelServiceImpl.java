@@ -46,6 +46,8 @@ import org.opengis.referencing.operation.TransformException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -164,7 +166,18 @@ public class VectorLayerModelServiceImpl implements VectorLayerModelService {
 		return bounds;
 	}
 
-	public Iterable<?> getObjects(String layerId, String attributeName, Filter filter) throws GeomajasException {
-		throw new GeomajasException(ExceptionCode.NOT_IMPLEMENTED);
+	public List<Object> getObjects(String layerId, String attributeName, Filter filter) throws GeomajasException {
+		VectorLayer layer = applicationService.getVectorLayer(layerId);
+		if (null == layer) {
+			throw new GeomajasException(ExceptionCode.VECTOR_LAYER_NOT_FOUND, layerId);
+		}
+		LayerModel layerModel = layer.getLayerModel();
+
+		List<Object> list = new ArrayList<Object>();
+		Iterator it = layerModel.getObjects(attributeName, filter);
+		while (it.hasNext()) {
+			list.add(it.next());
+		}
+		return list;
 	}
 }

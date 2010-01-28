@@ -89,5 +89,5 @@ public interface VectorLayerModelService {
 	 * @return possible object values
 	 * @throws GeomajasException oops
 	 */
-	Iterable<?> getObjects(String layerId, String attributeName, Filter filter) throws GeomajasException;
+	List<Object> getObjects(String layerId, String attributeName, Filter filter) throws GeomajasException;
 }
