@@ -23,20 +23,28 @@
 package org.geomajas.layermodel.hibernate;
 
 import org.geomajas.layer.LayerModel;
-import org.geomajas.layermodel.hibernate.command.interceptor.HibernateTransactionInterceptor;
 import org.geomajas.layermodel.hibernate.pojo.HibernateTestManyToOne;
 import org.geomajas.service.FilterCreator;
 import org.hibernate.SessionFactory;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Unit test that tests filters for the HibernateLayerModel.
- *
+ * 
  * @author Pieter De Graef
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
+		"/testContext.xml" })
+@Transactional
 public abstract class AbstractHibernateLayerModelTest {
 
 	public static final String PARAM_TEXT_ATTR = "textAttr";
@@ -50,83 +58,72 @@ public abstract class AbstractHibernateLayerModelTest {
 	public static final String PARAM_GEOMETRY_ATTR = "the_geom";
 
 	/** Filter: manyToOne.textAttr */
-	public static final String ATTR__MANY_TO_ONE__DOT__TEXT = PARAM_MANY_TO_ONE + HibernateLayerUtil.SEPARATOR
+	public static final String ATTR__MANY_TO_ONE__DOT__TEXT = PARAM_MANY_TO_ONE
+			+ HibernateLayerUtil.SEPARATOR
 			+ HibernateTestManyToOne.PARAM_TEXT_ATTR;
 
 	/** Filter: manyToOne.intAttr */
-	public static final String ATTR__MANY_TO_ONE__DOT__INT = PARAM_MANY_TO_ONE + HibernateLayerUtil.SEPARATOR
+	public static final String ATTR__MANY_TO_ONE__DOT__INT = PARAM_MANY_TO_ONE
+			+ HibernateLayerUtil.SEPARATOR
 			+ HibernateTestManyToOne.PARAM_INT_ATTR;
 
 	/** Filter: manyToOne.floatAttr */
-	public static final String ATTR__MANY_TO_ONE__DOT__FLOAT = PARAM_MANY_TO_ONE + HibernateLayerUtil.SEPARATOR
+	public static final String ATTR__MANY_TO_ONE__DOT__FLOAT = PARAM_MANY_TO_ONE
+			+ HibernateLayerUtil.SEPARATOR
 			+ HibernateTestManyToOne.PARAM_FLOAT_ATTR;
 
 	/** Filter: manyToOne.doubleAttr */
-	public static final String ATTR__MANY_TO_ONE__DOT__DOUBLE = PARAM_MANY_TO_ONE + HibernateLayerUtil.SEPARATOR
+	public static final String ATTR__MANY_TO_ONE__DOT__DOUBLE = PARAM_MANY_TO_ONE
+			+ HibernateLayerUtil.SEPARATOR
 			+ HibernateTestManyToOne.PARAM_DOUBLE_ATTR;
 
 	/** Filter: manyToOne.booleanAttr */
-	public static final String ATTR__MANY_TO_ONE__DOT__BOOLEAN = PARAM_MANY_TO_ONE + HibernateLayerUtil.SEPARATOR
+	public static final String ATTR__MANY_TO_ONE__DOT__BOOLEAN = PARAM_MANY_TO_ONE
+			+ HibernateLayerUtil.SEPARATOR
 			+ HibernateTestManyToOne.PARAM_BOOLEAN_ATTR;
 
 	/** Filter: manyToOne.dateAttr */
-	public static final String ATTR__MANY_TO_ONE__DOT__DATE = PARAM_MANY_TO_ONE + HibernateLayerUtil.SEPARATOR
+	public static final String ATTR__MANY_TO_ONE__DOT__DATE = PARAM_MANY_TO_ONE
+			+ HibernateLayerUtil.SEPARATOR
 			+ HibernateTestManyToOne.PARAM_DATE_ATTR;
 
 	/** Filter: oneToMany.textAttr */
-	public static final String ATTR__ONE_TO_MANY__DOT__TEXT = PARAM_ONE_TO_MANY + HibernateLayerUtil.SEPARATOR
+	public static final String ATTR__ONE_TO_MANY__DOT__TEXT = PARAM_ONE_TO_MANY
+			+ HibernateLayerUtil.SEPARATOR
 			+ HibernateTestManyToOne.PARAM_TEXT_ATTR;
 
 	/** Filter: oneToMany.intAttr */
-	public static final String ATTR__ONE_TO_MANY__DOT__INT = PARAM_ONE_TO_MANY + HibernateLayerUtil.SEPARATOR
+	public static final String ATTR__ONE_TO_MANY__DOT__INT = PARAM_ONE_TO_MANY
+			+ HibernateLayerUtil.SEPARATOR
 			+ HibernateTestManyToOne.PARAM_INT_ATTR;
 
 	/** Filter: oneToMany.floatAttr */
-	public static final String ATTR__ONE_TO_MANY__DOT__FLOAT = PARAM_ONE_TO_MANY + HibernateLayerUtil.SEPARATOR
+	public static final String ATTR__ONE_TO_MANY__DOT__FLOAT = PARAM_ONE_TO_MANY
+			+ HibernateLayerUtil.SEPARATOR
 			+ HibernateTestManyToOne.PARAM_FLOAT_ATTR;
 
 	/** Filter: oneToMany.doubleAttr */
-	public static final String ATTR__ONE_TO_MANY__DOT__DOUBLE = PARAM_ONE_TO_MANY + HibernateLayerUtil.SEPARATOR
+	public static final String ATTR__ONE_TO_MANY__DOT__DOUBLE = PARAM_ONE_TO_MANY
+			+ HibernateLayerUtil.SEPARATOR
 			+ HibernateTestManyToOne.PARAM_DOUBLE_ATTR;
 
 	/** Filter: oneToMany.booleanAttr */
-	public static final String ATTR__ONE_TO_MANY__DOT__BOOLEAN = PARAM_ONE_TO_MANY + HibernateLayerUtil.SEPARATOR
+	public static final String ATTR__ONE_TO_MANY__DOT__BOOLEAN = PARAM_ONE_TO_MANY
+			+ HibernateLayerUtil.SEPARATOR
 			+ HibernateTestManyToOne.PARAM_BOOLEAN_ATTR;
 
 	/** Filter: oneToMany.dateAttr */
-	public static final String ATTR__ONE_TO_MANY__DOT__DATE = PARAM_ONE_TO_MANY + HibernateLayerUtil.SEPARATOR
+	public static final String ATTR__ONE_TO_MANY__DOT__DATE = PARAM_ONE_TO_MANY
+			+ HibernateLayerUtil.SEPARATOR
 			+ HibernateTestManyToOne.PARAM_DATE_ATTR;
 
-	protected static SessionFactory factory;
-	protected static LayerModel layerModel;
-	protected static HibernateTransactionInterceptor transactionInterceptor;
-	protected static FilterCreator filterCreator;
+	@Autowired
+	protected SessionFactory factory;
 
-	/** Default constructor initializing the Hibernate HSQL database, and creates the HibernateLayerModel. */
-	public AbstractHibernateLayerModelTest() throws Exception {
-		// assure initialization is only done once
-		if (!isInitialised()) {
-			ApplicationContext applicationContext = new ClassPathXmlApplicationContext(
-					new String[] {"org/geomajas/spring/geomajasContext.xml", "testContext.xml"});
+	@Autowired
+	protected LayerModel layerModel;
 
-			factory = applicationContext.getBean("testSessionFactory", SessionFactory.class);
-			layerModel = applicationContext.getBean("layerModel", HibernateLayerModel.class);
-			filterCreator = applicationContext.getBean("service.FilterCreator", FilterCreator.class);
-			transactionInterceptor =
-					applicationContext.getBean("hibernateTransactionInterceptor", HibernateTransactionInterceptor.class);
-		}
-	}
+	@Autowired
+	protected FilterCreator filterCreator;
 
-	public abstract boolean isInitialised();
-
-
-	@Before
-	public void before() {
-		transactionInterceptor.beforeExecute(null);
-	}
-
-	@After
-	public void after() {
-		transactionInterceptor.afterExecute(null);
-	}
 }

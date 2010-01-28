@@ -38,28 +38,13 @@ import java.util.Map;
  */
 public class HibernateLayerModelTest extends AbstractHibernateLayerModelTest {
 
-	private static String createdId;
-	private static boolean initialised;
-
-	public HibernateLayerModelTest() throws Exception {
-		super();
-		initialised = true;
-	}
-
-	public boolean isInitialised() {
-		return initialised;
-	}
+	private String createdId;
 
 	@Test
 	public void testCreate() throws Exception {
 		Object created = null;
 		HibernateTestFeature feature = HibernateTestFeature.getDefaultInstance1(null);
-		try {
-			created = layerModel.create(feature);
-			transactionInterceptor.commitTransaction();
-		} catch (Exception e) {
-			transactionInterceptor.rollbackTransaction();
-		}
+		created = layerModel.create(feature);
 		Assert.assertNotNull(created);
 		Assert.assertTrue(created instanceof HibernateTestFeature);
 		HibernateTestFeature createdFeature = (HibernateTestFeature) created;
@@ -69,6 +54,7 @@ public class HibernateLayerModelTest extends AbstractHibernateLayerModelTest {
 
 	@Test
 	public void testRead() throws Exception {
+		testCreate();
 		Assert.assertNotNull(createdId);
 		Object feature = layerModel.read(createdId);
 		Assert.assertNotNull(feature);
@@ -76,6 +62,7 @@ public class HibernateLayerModelTest extends AbstractHibernateLayerModelTest {
 
 	@Test
 	public void testUpdate() throws Exception {
+		testCreate();
 		Assert.assertNotNull(createdId);
 		Object feature = layerModel.read(createdId);
 		Assert.assertNotNull("The requested feature could not be found!", feature);
@@ -111,6 +98,7 @@ public class HibernateLayerModelTest extends AbstractHibernateLayerModelTest {
 
 	@Test
 	public void testDelete() throws Exception {
+		testCreate();
 		Assert.assertNotNull(createdId);
 		Assert.assertNotNull(layerModel.read(createdId));
 		layerModel.delete(createdId);

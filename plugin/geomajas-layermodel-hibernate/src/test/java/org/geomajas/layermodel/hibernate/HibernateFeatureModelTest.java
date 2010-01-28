@@ -22,11 +22,13 @@
  */
 package org.geomajas.layermodel.hibernate;
 
+import org.geomajas.layer.LayerException;
 import org.geomajas.layer.feature.FeatureModel;
 import org.geomajas.layermodel.hibernate.pojo.HibernateTestFeature;
 import org.geomajas.layermodel.hibernate.pojo.HibernateTestManyToOne;
 import org.geomajas.layermodel.hibernate.pojo.HibernateTestOneToMany;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.text.DateFormat;
@@ -49,9 +51,9 @@ public class HibernateFeatureModelTest extends AbstractHibernateLayerModelTest {
 
 	private FeatureModel featureModel;
 	private HibernateTestFeature feature1;
-
-	public HibernateFeatureModelTest() throws Exception {
-		super();
+	
+	@Before
+    public void setUpTestDataWithinTransaction() throws LayerException {
 		featureModel = layerModel.getFeatureModel();
 
 		feature1 = HibernateTestFeature.getDefaultInstance1(new Long(1));
@@ -61,7 +63,8 @@ public class HibernateFeatureModelTest extends AbstractHibernateLayerModelTest {
 		set1.add(HibernateTestOneToMany.getDefaultInstance1(new Long(1)));
 		set1.add(HibernateTestOneToMany.getDefaultInstance2(new Long(2)));
 		feature1.setOneToMany(set1);
-	}
+    }
+
 
 	public boolean isInitialised() {
 		return false; // need a new database for each run

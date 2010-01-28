@@ -22,8 +22,10 @@
  */
 package org.geomajas.layermodel.hibernate;
 
+import org.geomajas.layer.LayerException;
 import org.geomajas.layermodel.hibernate.pojo.HibernateTestFeature;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.opengis.filter.Filter;
 
@@ -38,25 +40,15 @@ import java.util.Iterator;
  * @author Pieter De Graef
  */
 public class HibernateFilterAttributeTest extends AbstractHibernateLayerModelTest {
+	
+	@Before
+    public void setUpTestDataWithinTransaction() throws LayerException {
+		layerModel.create(HibernateTestFeature.getDefaultInstance1(null));
+		layerModel.create(HibernateTestFeature.getDefaultInstance2(null));
+		layerModel.create(HibernateTestFeature.getDefaultInstance3(null));
+		layerModel.create(HibernateTestFeature.getDefaultInstance4(null));
+    }
 
-	static boolean initialised = false;
-
-	public HibernateFilterAttributeTest() throws Exception {
-		super();
-		if (!initialised) {
-			initialised = true;
-			transactionInterceptor.beforeExecute(null);
-			layerModel.create(HibernateTestFeature.getDefaultInstance1(null));
-			layerModel.create(HibernateTestFeature.getDefaultInstance2(null));
-			layerModel.create(HibernateTestFeature.getDefaultInstance3(null));
-			layerModel.create(HibernateTestFeature.getDefaultInstance4(null));
-			transactionInterceptor.afterExecute(null);
-		}
-	}
-
-	public boolean isInitialised() {
-		return initialised;
-	}
 
 	@Test
 	public void betweenFilterOnInteger() throws Exception {

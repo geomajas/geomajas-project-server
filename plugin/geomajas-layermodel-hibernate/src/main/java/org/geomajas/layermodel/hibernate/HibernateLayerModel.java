@@ -49,6 +49,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.io.Serializable;
 import java.text.DateFormat;
@@ -66,6 +67,7 @@ import com.vividsolutions.jts.geom.Geometry;
  */
 @Component
 @Scope("prototype")
+@Transactional
 public class HibernateLayerModel extends HibernateLayerUtil implements LayerModel {
 
 	private final Logger log = LoggerFactory.getLogger(HibernateLayerModel.class);

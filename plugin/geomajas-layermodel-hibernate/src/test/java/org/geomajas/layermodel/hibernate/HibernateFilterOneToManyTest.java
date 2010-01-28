@@ -22,9 +22,12 @@
  */
 package org.geomajas.layermodel.hibernate;
 
+import org.geomajas.layer.LayerException;
 import org.geomajas.layermodel.hibernate.pojo.HibernateTestFeature;
+import org.geomajas.layermodel.hibernate.pojo.HibernateTestManyToOne;
 import org.geomajas.layermodel.hibernate.pojo.HibernateTestOneToMany;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.opengis.filter.Filter;
 
@@ -43,52 +46,40 @@ import java.util.Set;
  */
 public class HibernateFilterOneToManyTest extends AbstractHibernateLayerModelTest {
 
-	static boolean initialised = false;
+	@Before
+	public void setUpTestDataWithinTransaction() throws LayerException {
+		HibernateTestFeature f1 = HibernateTestFeature.getDefaultInstance1(null);
+		HibernateTestFeature f2 = HibernateTestFeature.getDefaultInstance2(null);
+		HibernateTestFeature f3 = HibernateTestFeature.getDefaultInstance3(null);
+		HibernateTestFeature f4 = HibernateTestFeature.getDefaultInstance4(null);
 
-	public HibernateFilterOneToManyTest() throws Exception {
-		super();
-		if (!initialised) {
-			initialised = true;
-			transactionInterceptor.beforeExecute(null);
-			HibernateTestFeature f1 = HibernateTestFeature.getDefaultInstance1(null);
-			HibernateTestFeature f2 = HibernateTestFeature.getDefaultInstance2(null);
-			HibernateTestFeature f3 = HibernateTestFeature.getDefaultInstance3(null);
-			HibernateTestFeature f4 = HibernateTestFeature.getDefaultInstance4(null);
+		Set<HibernateTestOneToMany> set1 = new HashSet<HibernateTestOneToMany>();
+		set1.add(HibernateTestOneToMany.getDefaultInstance1(null));
+		set1.add(HibernateTestOneToMany.getDefaultInstance2(null));
+		f1.setOneToMany(set1);
 
-			Set<HibernateTestOneToMany> set1 = new HashSet<HibernateTestOneToMany>();
-			set1.add(HibernateTestOneToMany.getDefaultInstance1(null));
-			set1.add(HibernateTestOneToMany.getDefaultInstance2(null));
-			f1.setOneToMany(set1);
+		Set<HibernateTestOneToMany> set2 = new HashSet<HibernateTestOneToMany>();
+		set2.add(HibernateTestOneToMany.getDefaultInstance3(null));
+		set2.add(HibernateTestOneToMany.getDefaultInstance4(null));
+		f2.setOneToMany(set2);
 
-			Set<HibernateTestOneToMany> set2 = new HashSet<HibernateTestOneToMany>();
-			set2.add(HibernateTestOneToMany.getDefaultInstance3(null));
-			set2.add(HibernateTestOneToMany.getDefaultInstance4(null));
-			f2.setOneToMany(set2);
+		Set<HibernateTestOneToMany> set3 = new HashSet<HibernateTestOneToMany>();
+		set3.add(HibernateTestOneToMany.getDefaultInstance1(null));
+		set3.add(HibernateTestOneToMany.getDefaultInstance3(null));
+		f3.setOneToMany(set3);
 
-			Set<HibernateTestOneToMany> set3 = new HashSet<HibernateTestOneToMany>();
-			set3.add(HibernateTestOneToMany.getDefaultInstance1(null));
-			set3.add(HibernateTestOneToMany.getDefaultInstance3(null));
-			f3.setOneToMany(set3);
+		Set<HibernateTestOneToMany> set4 = new HashSet<HibernateTestOneToMany>();
+		set4.add(HibernateTestOneToMany.getDefaultInstance1(null));
+		set4.add(HibernateTestOneToMany.getDefaultInstance2(null));
+		set4.add(HibernateTestOneToMany.getDefaultInstance3(null));
+		set4.add(HibernateTestOneToMany.getDefaultInstance4(null));
+		f4.setOneToMany(set4);
 
-			Set<HibernateTestOneToMany> set4 = new HashSet<HibernateTestOneToMany>();
-			set4.add(HibernateTestOneToMany.getDefaultInstance1(null));
-			set4.add(HibernateTestOneToMany.getDefaultInstance2(null));
-			set4.add(HibernateTestOneToMany.getDefaultInstance3(null));
-			set4.add(HibernateTestOneToMany.getDefaultInstance4(null));
-			f4.setOneToMany(set4);
+		layerModel.create(f1);
+		layerModel.create(f2);
+		layerModel.create(f3);
+		layerModel.create(f4);   }
 
-			layerModel.create(f1);
-			layerModel.create(f2);
-			layerModel.create(f3);
-			layerModel.create(f4);
-			transactionInterceptor.afterExecute(null);
-		}
-	}
-
-	public boolean isInitialised() {
-		return initialised;
-	}
-	
 	/*
 	 * Uses inner join: If ANY of the oneToMany objects are evaluated by the filter, then the HibernateTestFeature is
 	 * returned.

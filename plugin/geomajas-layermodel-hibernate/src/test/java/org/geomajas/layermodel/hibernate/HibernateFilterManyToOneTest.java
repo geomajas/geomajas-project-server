@@ -22,10 +22,12 @@
  */
 package org.geomajas.layermodel.hibernate;
 
+import org.geomajas.layer.LayerException;
 import org.geomajas.layermodel.hibernate.pojo.HibernateTestFeature;
 import org.geomajas.layermodel.hibernate.pojo.HibernateTestManyToOne;
 import org.geomajas.service.FilterCreator;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.opengis.filter.Filter;
 
@@ -43,32 +45,23 @@ import java.util.Iterator;
 public class HibernateFilterManyToOneTest extends AbstractHibernateLayerModelTest {
 
 	static boolean initialised = false;
-
-	public HibernateFilterManyToOneTest() throws Exception {
-		super();
-		if (!initialised) {
-			initialised = true;
-			transactionInterceptor.beforeExecute(null);
-			HibernateTestFeature f1 = HibernateTestFeature.getDefaultInstance1(null);
-			f1.setManyToOne(HibernateTestManyToOne.getDefaultInstance1(null));
-			layerModel.create(f1);
-			HibernateTestFeature f2 = HibernateTestFeature.getDefaultInstance2(null);
-			f2.setManyToOne(HibernateTestManyToOne.getDefaultInstance2(null));
-			layerModel.create(f2);
-			HibernateTestFeature f3 = HibernateTestFeature.getDefaultInstance3(null);
-			f3.setManyToOne(HibernateTestManyToOne.getDefaultInstance3(null));
-			layerModel.create(f3);
-			HibernateTestFeature f4 = HibernateTestFeature.getDefaultInstance4(null);
-			f4.setManyToOne(HibernateTestManyToOne.getDefaultInstance4(null));
-			layerModel.create(f4);
-			transactionInterceptor.afterExecute(null);
-		}
-	}
-
-	public boolean isInitialised() {
-		return initialised;
-	}
 	
+	@Before
+    public void setUpTestDataWithinTransaction() throws LayerException {
+		HibernateTestFeature f1 = HibernateTestFeature.getDefaultInstance1(null);
+		f1.setManyToOne(HibernateTestManyToOne.getDefaultInstance1(null));
+		layerModel.create(f1);
+		HibernateTestFeature f2 = HibernateTestFeature.getDefaultInstance2(null);
+		f2.setManyToOne(HibernateTestManyToOne.getDefaultInstance2(null));
+		layerModel.create(f2);
+		HibernateTestFeature f3 = HibernateTestFeature.getDefaultInstance3(null);
+		f3.setManyToOne(HibernateTestManyToOne.getDefaultInstance3(null));
+		layerModel.create(f3);
+		HibernateTestFeature f4 = HibernateTestFeature.getDefaultInstance4(null);
+		f4.setManyToOne(HibernateTestManyToOne.getDefaultInstance4(null));
+		layerModel.create(f4);
+   }
+
 	@Test
 	public void betweenFilterOnInteger() throws Exception {
 		Filter filter = filterCreator.createBetweenFilter(ATTR__MANY_TO_ONE__DOT__INT, "50", "250");
