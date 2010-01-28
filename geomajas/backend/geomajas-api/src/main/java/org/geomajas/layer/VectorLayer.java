@@ -33,7 +33,8 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 /**
  * A layer which contains vector data.
  *
- * @author check subversion
+ * @author Pieter De Graef
+ * @author Jan De Moerloose
  */
 public interface VectorLayer extends Layer<VectorLayerInfo> {
 

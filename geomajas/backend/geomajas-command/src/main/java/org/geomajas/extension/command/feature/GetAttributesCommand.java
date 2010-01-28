@@ -28,34 +28,29 @@ import org.geomajas.extension.command.dto.GetAttributesRequest;
 import org.geomajas.extension.command.dto.GetAttributesResponse;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
-import org.geomajas.layer.Layer;
-import org.geomajas.layer.VectorLayer;
-import org.geomajas.service.ApplicationService;
+import org.geomajas.layer.feature.RenderedFeature;
 import org.geomajas.service.FilterCreator;
+import org.geomajas.service.VectorLayerModelService;
 import org.opengis.filter.Filter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 /**
- * ???
+ * Get attributes for a feature. This is needed when features are loaded lazily.
  * 
  * @author Pieter De Graef
  */
 @Component()
 public class GetAttributesCommand implements Command<GetAttributesRequest, GetAttributesResponse> {
 
-	private final Logger log = LoggerFactory.getLogger(GetAttributesCommand.class);
-
-	@Autowired
-	private ApplicationService runtimeParameters;
-
 	@Autowired
 	private FilterCreator filterCreator;
+
+	@Autowired
+	private VectorLayerModelService layerModelService;
 
 	public GetAttributesResponse getEmptyCommandResponse() {
 		return new GetAttributesResponse();
@@ -65,48 +60,27 @@ public class GetAttributesCommand implements Command<GetAttributesRequest, GetAt
 		if (null == request.getLayerId()) {
 			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "layerId");
 		}
+		if (null == request.getFeatureIds()) {
+			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "featureIds");
+		}
 
 		String layerId = request.getLayerId();
 		String[] featureIds = request.getFeatureIds();
-		if (layerId != null && featureIds != null && featureIds.length > 0) {
-			Layer layer;
-			layer = runtimeParameters.getLayer(layerId);
-			if (layer != null && layer instanceof VectorLayer) {
-				VectorLayer vectorLayer = (VectorLayer) layer;
+		if (featureIds.length > 0) {
+			Filter filter = filterCreator.createFidFilter(featureIds);
 
-				// Prepare filtering:
-				Filter filter = filterCreator.createFidFilter(featureIds);
+			List<RenderedFeature> features = layerModelService.getFeatures(layerId, null, filter, null,
+					VectorLayerModelService.FEATURE_INCLUDE_ATTRIBUTES);
 
-				// Retrieve the features:
-				Iterator<?> iterator;
-				try {
-					iterator = vectorLayer.getLayerModel().getElements(filter);
-				} catch (GeomajasException ge) {
-					response.getErrors().add(ge);
-					return;
+			Map<String, Object>[] attributes = new Map[featureIds.length];
+			for (RenderedFeature feature : features) {
+				String id = feature.getId();
+				int index = searchFeatureIndex(id, featureIds);
+				if (index >= 0) {
+					attributes[index] = feature.getAttributes();
 				}
-
-				Map<String, Object>[] attributes = new Map[featureIds.length];
-
-				// Get the attributes:
-				while (iterator.hasNext()) {
-					Object feature = iterator.next();
-					if (feature != null) {
-						try {
-							String id = vectorLayer.getLayerModel().getFeatureModel().getId(feature);
-							int index = searchFeatureIndex(id, featureIds);
-							if (index >= 0) {
-								attributes[index] = vectorLayer.getLayerModel().getFeatureModel()
-										.getAttributes(feature);
-							}
-						} catch (GeomajasException e) {
-							log.error("execute() problem", e);
-						}
-					}
-				}
-
-				response.setAttributes(attributes);
 			}
+			response.setAttributes(attributes);
 		}
 	}
 

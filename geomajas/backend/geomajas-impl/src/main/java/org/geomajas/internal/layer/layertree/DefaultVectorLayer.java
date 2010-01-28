@@ -45,6 +45,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.NoSuchElementException;
 
 /**
@@ -107,24 +108,25 @@ public class DefaultVectorLayer implements Layer<VectorLayerInfo>, VectorLayer {
 	 *            The painter that will do the actual painting of the features.
 	 * @param paintFilter
 	 *            The paintFilter that determines what features should be painted.
-	 * @param styleDefs
+	 * @param paintStyleDefs
 	 *            An optional list of style definitions. These will overwrite the layer's original list of styles.
-	 * @param mapCrs
+	 * @param targetCrs
 	 *            The map's coordinate system. This may differ from the layer's coordinate system. This function will
 	 *            create a transformer out of it, and add it to the
 	 *            {@link org.geomajas.rendering.painter.LayerPaintContext} so that the painter knows how to transform
 	 *            it's geometries or labels.
 	 */
 	public void paint(FeaturePainter painter, Filter paintFilter, StyleInfo[] paintStyleDefs,
-			CoordinateReferenceSystem mapCrs) throws RenderException {
+			CoordinateReferenceSystem targetCrs) throws RenderException {
 		StyleInfo[] styleDefs = paintStyleDefs;
 		if (styleDefs == null) {
-			styleDefs = this.getLayerInfo().getStyleDefinitions().toArray(new StyleInfo[] {});
+			List<StyleInfo> stylesList = getLayerInfo().getStyleDefinitions();
+			styleDefs = stylesList.toArray(new StyleInfo[stylesList.size()]);
 		}
 		LayerPaintContext context = new DefaultLayerPaintContext(this, styleDefs);
-		if (mapCrs != null && !mapCrs.equals(getCrs())) {
+		if (targetCrs != null && !targetCrs.equals(getCrs())) {
 			try {
-				context.setMathTransform(geoService.findMathTransform(getCrs(), mapCrs));
+				context.setMathTransform(geoService.findMathTransform(getCrs(), targetCrs));
 			} catch (FactoryException e) {
 				throw new RenderException(ExceptionCode.LAYER_CRS_INIT_PROBLEM, e);
 			}

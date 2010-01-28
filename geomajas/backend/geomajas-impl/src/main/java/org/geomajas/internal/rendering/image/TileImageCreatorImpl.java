@@ -23,22 +23,18 @@
 
 package org.geomajas.internal.rendering.image;
 
+import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.global.GeomajasException;
-import org.geomajas.internal.layer.feature.RenderedFeatureImpl;
 import org.geomajas.layer.VectorLayer;
-import org.geomajas.layer.feature.FeatureModel;
 import org.geomajas.layer.feature.RenderedFeature;
 import org.geomajas.rendering.image.TileImageCreator;
 import org.geomajas.rendering.painter.LayerPaintContext;
 import org.geomajas.rendering.painter.TilePaintContext;
 import org.geomajas.rendering.painter.image.FeatureImagePainter;
 import org.geomajas.rendering.tile.RenderedTile;
-import org.geomajas.service.BboxService;
 import org.geomajas.service.FilterCreator;
-import org.geotools.feature.IllegalAttributeException;
-import org.geotools.filter.IllegalFilterException;
-import org.geotools.renderer.lite.RendererUtilities;
+import org.geomajas.service.VectorLayerModelService;
 import org.opengis.filter.Filter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,11 +44,9 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
-import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -96,23 +90,24 @@ public class TileImageCreatorImpl implements TileImageCreator {
 	/**
 	 * The tile object for whom we are creating a rendering.
 	 */
-	protected RenderedTile tile;
+	private RenderedTile tile;
 
-	protected BboxService bboxService;
 
-	protected FilterCreator filterCreator;
+	private FilterCreator filterCreator;
+
+	private VectorLayerModelService layerModelService;
 
 	// -------------------------------------------------------------------------
 	// Constructor
 	// -------------------------------------------------------------------------
 
-	public TileImageCreatorImpl(RenderedTile tile, boolean transparent, BboxService bboxService,
-			FilterCreator filterCreator) {
+	public TileImageCreatorImpl(RenderedTile tile, boolean transparent, FilterCreator filterCreator,
+			VectorLayerModelService layerModelService) {
 		this.tile = tile;
 		this.transparent = transparent;
 		painters = new ArrayList<FeatureImagePainter>();
-		this.bboxService = bboxService;
 		this.filterCreator = filterCreator;
+		this.layerModelService = layerModelService;
 	}
 
 	// -------------------------------------------------------------------------
@@ -144,7 +139,6 @@ public class TileImageCreatorImpl implements TileImageCreator {
 		// Check to see if all the needed arguments can be found.
 		// ---------------------------------------------------------------------
 		Bbox mapArea = tileContext.getAreaOfInterest();
-		AffineTransform worldToScreen = null;
 
 		if (graphics == null || paintArea == null) {
 			log.error("renderer passed null arguments");
@@ -155,11 +149,6 @@ public class TileImageCreatorImpl implements TileImageCreator {
 		} else if (mapArea == null) {
 			log.error("renderer passed null arguments");
 			throw new NullPointerException("renderer passed null arguments");
-		} else if (worldToScreen == null) {
-			worldToScreen = RendererUtilities.worldToScreenTransform(bboxService.toEnvelope(mapArea), paintArea);
-			if (worldToScreen == null) {
-				return null;
-			}
 		}
 
 		// ---------------------------------------------------------------------
@@ -170,7 +159,7 @@ public class TileImageCreatorImpl implements TileImageCreator {
 		for (int i = 0; i < tileContext.getLayerCount(); i++) {
 			layerContext = layerContexts.get(i);
 			try {
-				paintLayer(graphics, layerContext, worldToScreen, tileContext);
+				paintLayer(graphics, layerContext, tileContext);
 			} catch (Throwable t) {
 				log.error(t.getLocalizedMessage());
 			}
@@ -179,7 +168,7 @@ public class TileImageCreatorImpl implements TileImageCreator {
 		return image;
 	}
 
-	/**
+	/*
 	 * Set extra rendering parameters. See the public static fields in this class for more info.
 	 */
 	/*
@@ -293,41 +282,27 @@ public class TileImageCreatorImpl implements TileImageCreator {
 		return graphics;
 	}
 
-	private void paintLayer(final Graphics2D graphics2D, LayerPaintContext layerContext, AffineTransform at,
-			TilePaintContext tileContext) throws IllegalFilterException, GeomajasException, IllegalAttributeException {
+	private void paintLayer(final Graphics2D graphics2D, LayerPaintContext layerContext,
+			TilePaintContext tileContext) throws GeomajasException {
 
 		// ---------------------------------------------------------------------
 		// Step1: fetch all the LayerModel objects that need to be drawn:
 		// ---------------------------------------------------------------------
 		VectorLayer layer = layerContext.getLayer();
+		VectorLayerInfo layerInfo = layer.getLayerInfo();
 		String geomName = layer.getLayerInfo().getFeatureInfo().getGeometryType().getName();
 		Filter filter = filterCreator.createBboxFilter(tileContext.getCoordinateReferenceSystem().getIdentifiers()
 				.iterator().next().toString(), tileContext.getAreaOfInterest(), geomName);
 		if (layerContext.getFilter() != null) {
 			filter = filterCreator.createLogicFilter(filter, "AND", layerContext.getFilter());
 		}
-		Iterator<?> features = layer.getLayerModel().getElements(filter);
-
+		List<RenderedFeature> features = layerModelService.getFeatures(layerInfo.getId(), null, filter,
+				layerInfo.getStyleDefinitions(), VectorLayerModelService.FEATURE_INCLUDE_ALL);
 		// ---------------------------------------------------------------------
 		// Step2: Transform the LayerModel objects to features:
 		// ---------------------------------------------------------------------
-		FeatureModel featureModel = layer.getLayerModel().getFeatureModel();
-		while (features.hasNext()) {
-			Object feature = features.next();
-			String localId = featureModel.getId(feature);
-
-			RenderedFeature f = new RenderedFeatureImpl(bboxService);
-			f.setLayer(layer);
-			f.setId(layer.getLayerInfo().getId() + "." + localId);
-			f.setGeometry(featureModel.getGeometry(feature));
-			f.setStyleDefinition(layerContext.findStyleFilter(feature).getStyleDefinition());
-
-			String labelAttr = layer.getLayerInfo().getLabelAttribute().getLabelAttributeName();
-			Object attribute = featureModel.getAttribute(feature, labelAttr);
-			if (attribute != null) {
-				f.setLabel(attribute.toString());
-			}
-			tile.addFeature(f);
+		for (RenderedFeature feature : features) {
+			tile.addFeature(feature);
 		}
 
 		// ---------------------------------------------------------------------

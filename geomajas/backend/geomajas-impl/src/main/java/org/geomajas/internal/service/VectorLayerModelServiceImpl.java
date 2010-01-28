@@ -24,6 +24,7 @@
 package org.geomajas.internal.service;
 
 import com.vividsolutions.jts.geom.Geometry;
+import org.geomajas.configuration.StyleInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
@@ -139,7 +140,8 @@ public class VectorLayerModelServiceImpl implements VectorLayerModelService {
 		}
 	}
 
-	public Iterable<RenderedFeature> getElements(String layerId, CoordinateReferenceSystem crs, Filter filter)
+	public List<RenderedFeature> getFeatures(String layerId, CoordinateReferenceSystem crs, Filter filter,
+			List<StyleInfo> styleDefinitions, int featureIncludes )
 			throws GeomajasException {
 		throw new GeomajasException(ExceptionCode.NOT_IMPLEMENTED);
 	}

@@ -23,40 +23,28 @@
 
 package org.geomajas.extension.command.geometry;
 
-import com.vividsolutions.jts.geom.Geometry;
 import org.geomajas.command.Command;
-import org.geomajas.configuration.ApplicationInfo;
 import org.geomajas.extension.command.dto.GetGeometryRequest;
 import org.geomajas.extension.command.dto.GetGeometryResponse;
+import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
-import org.geomajas.layer.Layer;
-import org.geomajas.layer.VectorLayer;
-import org.geomajas.service.ApplicationService;
+import org.geomajas.layer.feature.RenderedFeature;
 import org.geomajas.service.DtoConverter;
 import org.geomajas.service.FilterCreator;
+import org.geomajas.service.VectorLayerModelService;
 import org.opengis.filter.Filter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Iterator;
+import java.util.List;
 
 /**
- * Get geometry for a feature. This needed when features are loaded lazily.
+ * Get geometry for a feature. This is needed when features are loaded lazily.
  *
  * @author Pieter De Graef
  */
 @Component()
 public class GetGeometryCommand implements Command<GetGeometryRequest, GetGeometryResponse> {
-
-	private final Logger log = LoggerFactory.getLogger(GetGeometryCommand.class);
-
-	@Autowired
-	private ApplicationService runtimeParameters;
-
-	@Autowired
-	private ApplicationInfo application;
 
 	@Autowired
 	private DtoConverter converter;
@@ -64,49 +52,58 @@ public class GetGeometryCommand implements Command<GetGeometryRequest, GetGeomet
 	@Autowired
 	private FilterCreator filterCreator;
 
+	@Autowired
+	private VectorLayerModelService layerModelService;
+
 	public GetGeometryResponse getEmptyCommandResponse() {
 		return new GetGeometryResponse();
 	}
 
 	public void execute(GetGeometryRequest request, GetGeometryResponse response) throws Exception {
+		if (null == request.getLayerId()) {
+			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "layerId");
+		}
+		if (null == request.getFeatureIds()) {
+			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "featureIds");
+		}
+
 		String layerId = request.getLayerId();
 		String[] featureIds = request.getFeatureIds();
-		int size = featureIds.length;
-		org.geomajas.geometry.Geometry[] geometries = new org.geomajas.geometry.Geometry[size];
-		response.setGeometries(geometries);
-		for (int i = 0; i < size; i++) {
-			String featureId = featureIds[i];
-			if (layerId != null && featureIds != null) {
-				Layer<?> layer;
-				try {
-					layer = runtimeParameters.getLayer(layerId);
-				} catch (NullPointerException e) {
-					layer = null;
-				}
-				if (layer != null && layer instanceof VectorLayer) {
-					VectorLayer vectorLayer = (VectorLayer) layer;
-					Object feature;
-					try {
-						Filter filter = filterCreator.createFidFilter(new String[] {featureId});
+		if (featureIds.length > 0) {
+			Filter filter = filterCreator.createFidFilter(featureIds);
 
-						Iterator<?> iterator = vectorLayer.getLayerModel().getElements(filter);
-						if (iterator.hasNext()) {
-							feature = iterator.next();
-						} else {
-							feature = null;
-						}
-					} catch (GeomajasException e) {
-						log.error("execute() problem", e);
-						feature = null;
-					}
-					if (feature != null) {
-						Geometry geometry;
-						geometry = vectorLayer.getLayerModel().getFeatureModel().getGeometry(feature);
-						geometries[i] = converter.toDto(geometry);
-					}
+			List<RenderedFeature> features = layerModelService.getFeatures(layerId, null, filter, null,
+					VectorLayerModelService.FEATURE_INCLUDE_ATTRIBUTES);
+
+			org.geomajas.geometry.Geometry[] geometries = new org.geomajas.geometry.Geometry[featureIds.length];
+			for (RenderedFeature feature : features) {
+				String id = feature.getId();
+				int index = searchFeatureIndex(id, featureIds);
+				if (index >= 0) {
+					geometries[index] = converter.toDto(feature.getGeometry());
+				}
+			}
+			response.setGeometries(geometries);
+		}
+	}
+
+	/**
+	 * Searching for the index through the feature array, for each feature = x
+	 * time :-(
+	 *
+	 * @param id id to find index of
+	 * @param featureIds array in which to find the id
+	 * @return index of id in array or -1 when not found
+	 */
+	private int searchFeatureIndex(String id, String[] featureIds) {
+		if (id != null) {
+			for (int i = 0; i < featureIds.length; i++) {
+				if (id.equals(featureIds[i])) {
+					return i;
 				}
 			}
 		}
+		return -1;
 	}
 
 }

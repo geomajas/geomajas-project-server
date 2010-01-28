@@ -75,14 +75,14 @@ public interface FeaturePainter {
 	 *            A feature object that comes directly from the <code>LayerModel</code>. Some LayerModels cannot handle
 	 *            these features to be altered directly (think Hibernate), so it is important that implementations of
 	 *            this interface never transform the feature's geometries.
-	 * @throws RenderException
+	 * @throws RenderException oops
 	 */
 	void paint(LayerPaintContext paintContext, Object feature) throws RenderException;
 
 	/**
 	 * The full list of <code>RenderedFeature</code> objects.
 	 *
-	 * @return
+	 * @return list of rendered features
 	 */
 	List<RenderedFeature> getFeatures();
 
@@ -105,8 +105,8 @@ public interface FeaturePainter {
 	/**
 	 * Request the value of an option.
 	 *
-	 * @param option
-	 * @return
+	 * @param option check value for an option
+	 * @return true when that option is set
 	 */
 	boolean getOption(int option);
 }

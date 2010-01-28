@@ -23,6 +23,7 @@
 
 package org.geomajas.service;
 
+import org.geomajas.configuration.StyleInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.feature.RenderedFeature;
@@ -41,6 +42,37 @@ import java.util.List;
  * @author Joachim Van der Auwera
  */
 public interface VectorLayerModelService {
+
+	/**
+	 * Value to use when all aspects of the Feature should be lazy loaded.
+	 */
+	int FEATURE_INCLUDE_NONE = 0;
+
+	/**
+	 * Include attributes in the {@link RenderedFeature}. (speed issue)
+	 */
+	int FEATURE_INCLUDE_ATTRIBUTES = 1;
+
+	/**
+	 * Include geometries in the {@link RenderedFeature}. (speed issue)
+	 */
+	int FEATURE_INCLUDE_GEOMETRY = 2;
+
+	/**
+	 * Include style definitions in the {@link RenderedFeature}. (speed issue)
+	 */
+	int FEATURE_INCLUDE_STYLE = 4;
+
+	/**
+	 * Include label string in the {@link RenderedFeature}. (speed issue)
+	 */
+	int FEATURE_INCLUDE_LABEL = 8;
+
+	/**
+	 * The Features should include all aspects.
+	 */
+	int FEATURE_INCLUDE_ALL = FEATURE_INCLUDE_ATTRIBUTES + FEATURE_INCLUDE_GEOMETRY + FEATURE_INCLUDE_STYLE +
+			FEATURE_INCLUDE_LABEL;
 
 	/**
 	 * Update an existing feature of the model or creates a new feature.
@@ -62,11 +94,14 @@ public interface VectorLayerModelService {
 	 *
 	 * @param layerId id of layer to get features from
 	 * @param crs which should be used for the geometries in the features
-	 * @param filter filter to be applied                                                                		o
+	 * @param filter filter to be applied
+	 * @param styleDefinitions style definitions to apply
+	 * @param featureIncludes indicate which data to include in the features
 	 * @return reader of feature value objects
 	 * @throws GeomajasException oops
 	 */
-	Iterable<RenderedFeature> getElements(String layerId, CoordinateReferenceSystem crs, Filter filter)
+	List<RenderedFeature> getFeatures(String layerId, CoordinateReferenceSystem crs, Filter filter,
+			List<StyleInfo> styleDefinitions, int featureIncludes)
 			throws GeomajasException;
 
 	/**
