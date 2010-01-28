@@ -87,12 +87,11 @@ public final class VmlPathDecoder {
 	// -------------------------------------------------------------------------
 
 	/**
-	 * TODO: Is the StringBuffer the fastest method for concatenating strings??? I know that the "+" operator in
-	 * JavaScript is far slower then array.join[""].
+	 * Convert {@link LineString} to a VML string.
 	 *
-	 * @param line
-	 * @param scale
-	 * @return
+	 * @param line line to convert
+	 * @param scale scale to use
+	 * @return vml string representation of linestring
 	 */
 	private static String decodeLine(LineString line, float scale) {
 		if (line == null || line.isEmpty()) {
@@ -130,7 +129,7 @@ public final class VmlPathDecoder {
 
 	private static String decodeMultiLine(MultiLineString multiLine, float scale) {
 		int n = multiLine.getNumGeometries();
-		StringBuffer pstr = new StringBuffer();
+		StringBuilder pstr = new StringBuilder();
 		for (int i = 0; i < n; i++) {
 			pstr.append(decodeLine((LineString) multiLine.getGeometryN(i), scale));
 		}
@@ -141,16 +140,16 @@ public final class VmlPathDecoder {
 		if (polygon == null || polygon.isEmpty()) {
 			return "";
 		}
-		StringBuffer pstr = new StringBuffer();
-		pstr.append(decodeLinearRing((LinearRing) polygon.getExteriorRing(), scale));
+		StringBuilder pstr = new StringBuilder();
+		pstr.append(decodeLinearRing(polygon.getExteriorRing(), scale));
 		for (int i = 0; i < polygon.getNumInteriorRing(); i++) {
-			pstr.append(decodeLinearRing((LinearRing) polygon.getInteriorRingN(i), scale));
+			pstr.append(decodeLinearRing(polygon.getInteriorRingN(i), scale));
 		}
 		return pstr.toString() + " e";
 	}
 
 	private static String decodeMultiPolygon(MultiPolygon multipoly, float scale) {
-		StringBuffer pstr = new StringBuffer();
+		StringBuilder pstr = new StringBuilder();
 		for (int i = 0; i < multipoly.getNumGeometries(); i++) {
 			pstr.append(decodePolygon((Polygon) multipoly.getGeometryN(i), scale));
 		}

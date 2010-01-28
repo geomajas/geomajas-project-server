@@ -47,7 +47,7 @@ public class JsonObjectWriter
 
 	private int logLines;
 
-	private StringBuffer logBuffer = new StringBuffer();
+	private StringBuilder logBuffer = new StringBuilder();
 
 	public JsonObjectWriter(Writer arg0, int logLines) {
 		super(arg0);

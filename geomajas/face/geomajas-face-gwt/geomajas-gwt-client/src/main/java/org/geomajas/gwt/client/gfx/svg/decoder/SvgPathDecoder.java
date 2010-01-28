@@ -96,7 +96,7 @@ public final class SvgPathDecoder {
 		if (lineString == null || lineString.isEmpty()) {
 			return "";
 		}
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		Coordinate[] coordinates = lineString.getCoordinates();
 		for (int i = 0; i < coordinates.length; i++) {
 			buffer.append(coordinates[i].getX());
@@ -113,7 +113,7 @@ public final class SvgPathDecoder {
 		if (linearRing == null || linearRing.isEmpty()) {
 			return "";
 		}
-		StringBuffer buffer = new StringBuffer();
+		StringBuilder buffer = new StringBuilder();
 		Coordinate[] coordinates = linearRing.getCoordinates();
 		for (int i = 0; i < coordinates.length - 1; i++) {
 			buffer.append(coordinates[i].getX());
@@ -128,7 +128,7 @@ public final class SvgPathDecoder {
 
 	private static String decodeMultiLineString(MultiLineString multiLine) {
 		int n = multiLine.getNumGeometries();
-		StringBuffer pstr = new StringBuffer();
+		StringBuilder pstr = new StringBuilder();
 		for (int i = 0; i < n; i++) {
 			pstr.append(decodeLineString((LineString) multiLine.getGeometryN(i)));
 		}
@@ -139,7 +139,7 @@ public final class SvgPathDecoder {
 		if (polygon == null || polygon.isEmpty()) {
 			return "";
 		}
-		StringBuffer pstr = new StringBuffer();
+		StringBuilder pstr = new StringBuilder();
 		pstr.append(decodeLinearRing(polygon.getExteriorRing()));
 		for (int i = 0; i < polygon.getNumInteriorRing(); i++) {
 			pstr.append(decodeLinearRing(polygon.getInteriorRingN(i)));
@@ -148,7 +148,7 @@ public final class SvgPathDecoder {
 	}
 
 	private static String decodeMultiPolygon(MultiPolygon multipoly) {
-		StringBuffer pstr = new StringBuffer();
+		StringBuilder pstr = new StringBuilder();
 		for (int i = 0; i < multipoly.getNumGeometries(); i++) {
 			pstr.append(decodePolygon((Polygon) multipoly.getGeometryN(i)));
 		}

@@ -66,7 +66,7 @@ public class SvgFeatureTileWriter implements GraphicsWriter {
 
 	private String parseStyle(StyleInfo style) {
 		if (!(style.getId() == StyleFilter.DEFAULT_STYLE_ID)) {
-			StringBuffer css = new StringBuffer();
+			StringBuilder css = new StringBuilder();
 			addToCss(css, "fill", style.getFillColor());
 			addToCss(css, "fill-opacity", style.getFillOpacity());
 			addToCss(css, "stroke", style.getStrokeColor());
@@ -78,15 +78,15 @@ public class SvgFeatureTileWriter implements GraphicsWriter {
 		return "display:none;";
 	}
 
-	private void addToCss(StringBuffer css, String name, int value) {
+	private void addToCss(StringBuilder css, String name, int value) {
 		addToCss(css, name, Integer.toString(value));
 	}
 
-	private void addToCss(StringBuffer css, String name, float value) {
+	private void addToCss(StringBuilder css, String name, float value) {
 		addToCss(css, name, Float.toString(value));
 	}
 
-	private void addToCss(StringBuffer css, String name, String value) {
+	private void addToCss(StringBuilder css, String name, String value) {
 		if (value != null && value.length() > 0) {
 			css.append(name);
 			css.append(":");

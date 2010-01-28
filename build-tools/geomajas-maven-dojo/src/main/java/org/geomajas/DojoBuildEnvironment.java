@@ -198,7 +198,7 @@ public class DojoBuildEnvironment {
 
 	private File createProfile() throws MojoExecutionException {
 		File profile = new File(dojoDirectory, layerName + ".profile.js");
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		sb.append("dependencies ={").append("\n");
 		sb.append("  layers:  [").append("\n");
 		sb.append("    {").append("\n");
@@ -219,7 +219,7 @@ public class DojoBuildEnvironment {
 	}
 
 	private String getModulePrefixesArray() {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		sb.append("[");
 		for (String name : moduleNames) {
 			sb.append("['" + name + "','../" + name + "'],");
@@ -231,7 +231,7 @@ public class DojoBuildEnvironment {
 	}
 
 	private String getModulesRequiresArray() {
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 		sb.append("[");
 		for (String require : moduleRequires) {
 			sb.append("'" + require + "',");

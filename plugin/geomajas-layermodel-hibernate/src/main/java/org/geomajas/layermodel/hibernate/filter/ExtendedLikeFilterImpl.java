@@ -100,7 +100,7 @@ public class ExtendedLikeFilterImpl extends AbstractFilterImpl implements LikeFi
 			throw new IllegalArgumentException("do not use single quote (') as special char!");
 		}
 		
-		StringBuffer result = new StringBuffer(pattern.length() + 5);
+		StringBuilder result = new StringBuilder(pattern.length() + 5);
 		int i = 0;
 		while (i < pattern.length()) {
 			char chr = pattern.charAt(i);
@@ -175,7 +175,7 @@ public class ExtendedLikeFilterImpl extends AbstractFilterImpl implements LikeFi
 			String escapedWildcardSingle = fixSpecials(wildcardSingle);
 
 			// escape any special chars which are not our wildcards
-			StringBuffer tmp = new StringBuffer("");
+			StringBuilder tmp = new StringBuilder();
 
 			boolean escapedMode = false;
 
@@ -497,7 +497,7 @@ public class ExtendedLikeFilterImpl extends AbstractFilterImpl implements LikeFi
 	 * @return the fixed string
 	 */
 	private String fixSpecials(final String inString) {
-		StringBuffer tmp = new StringBuffer("");
+		StringBuilder tmp = new StringBuilder();
 
 		for (int i = 0; i < inString.length(); i++) {
 			char chr = inString.charAt(i);
