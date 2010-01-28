@@ -22,20 +22,18 @@
  */
 package org.geomajas.extension.command.configuration;
 
-import com.vividsolutions.jts.geom.Envelope;
 import org.geomajas.command.Command;
 import org.geomajas.extension.command.dto.UserMaximumExtentRequest;
 import org.geomajas.extension.command.dto.UserMaximumExtentResponse;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.layer.Layer;
 import org.geomajas.layer.LayerType;
-import org.geomajas.layer.VectorLayer;
 import org.geomajas.service.ApplicationService;
 import org.geomajas.service.BboxService;
 import org.geomajas.service.GeoService;
+import org.geomajas.service.VectorLayerModelService;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.referencing.CRS;
-import org.opengis.filter.Filter;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 import org.slf4j.Logger;
@@ -46,9 +44,10 @@ import org.springframework.stereotype.Component;
 import java.util.ArrayList;
 
 /**
- * ???
+ * Calculate the maximum extent a user can see (based on a set of layers).
  *
- * @author check subversion
+ * @author Kristof Heirwegh
+ * @author Joachim Van der Auwera
  */
 @Component()
 public class UserMaximumExtentCommand implements Command<UserMaximumExtentRequest, UserMaximumExtentResponse> {
@@ -64,12 +63,14 @@ public class UserMaximumExtentCommand implements Command<UserMaximumExtentReques
 	@Autowired
 	private ApplicationService runtimeParameters;
 
+	@Autowired
+	private VectorLayerModelService layerModelService;
+
 	public UserMaximumExtentResponse getEmptyCommandResponse() {
 		return new UserMaximumExtentResponse();
 	}
 
 	public void execute(UserMaximumExtentRequest request, UserMaximumExtentResponse response) throws Exception {
-		Filter[] filters;
 		String[] layers;
 		ArrayList<String> tempLayers = new ArrayList<String>();
 		String includeLayers = request.getIncludeLayers();
@@ -83,64 +84,33 @@ public class UserMaximumExtentCommand implements Command<UserMaximumExtentReques
 			}
 		}
 		layers = tempLayers.toArray(new String[tempLayers.size()]);
-		filters = new Filter[tempLayers.size()];
-		for (int i = 0; i < filters.length; i++) {
-			filters[i] = Filter.INCLUDE;
-		}
 
 		Layer layer;
-		CoordinateReferenceSystem mapCrs = CRS.decode(request.getCrs());
+		CoordinateReferenceSystem targetCrs = CRS.decode(request.getCrs());
 
 		if (layers.length == 0) {
 			// return empty bbox
 			response.setBounds(new Bbox());
 		} else {
-			Envelope extent = new Envelope();
-			for (int i = 0; i < layers.length; i++) {
-				layer = runtimeParameters.getLayer(layers[i]);
+			Bbox extent = new Bbox();
+			for (String layerId : layers) {
+				layer = runtimeParameters.getLayer(layerId);
 				if (layer != null) {
-					if (filters[i] != null) {
-						MathTransform transformer = geoService.findMathTransform(layer.getCrs(), mapCrs);
-						Bbox bounds;
-						if (layer.getLayerInfo().getLayerType() == LayerType.RASTER) {
-							// no features so nothing to filter
-							extent.expandToInclude(
-									JTS.transform(bboxService.toEnvelope(layer.getLayerInfo().getMaxExtent()),
-											transformer));
-						} else {
-							if (Filter.INCLUDE.equals(filters[i])) {
-								// a shortcut, might not be the same though
-								bounds = layer.getLayerInfo().getMaxExtent();
-
-								extent.expandToInclude(
-										JTS.transform(bboxService.toEnvelope(layer.getLayerInfo().getMaxExtent()),
-												transformer));
-							} else {
-								log.info("need to filter: " + filters[i].toString());
-								if (layer instanceof VectorLayer) {
-									VectorLayer vLayer = (VectorLayer) layer;
-									log.info("getting bounds for layer: " + layer.getLayerInfo().getId() +
-											" - layermodel: " + vLayer.getLayerModel().getClass().getName());
-									bounds = vLayer.getLayerModel().getBounds(filters[i]);
-									if (layer.getCrs() != null && !mapCrs.equals(layer.getCrs())) {
-										log.info("     **** bounds before transforming: " + layers[i] + ": "
-												+ bounds.toString());
-										extent.expandToInclude(
-												JTS.transform(bboxService.toEnvelope(bounds), transformer));
-									}
-								} else {
-									throw new IllegalStateException("Cannot filter features of non-vectorlayer: "
-											+ layers[i]);
-								}
-							}
-							log.info("     **** bounds layer " + layers[i] + ": " + bounds.toString());
-						}
+					Bbox bounds;
+					if (layer.getLayerInfo().getLayerType() == LayerType.RASTER) {
+						// @todo need to limit based on security
+						bounds = layer.getLayerInfo().getMaxExtent();
+						MathTransform transformer = geoService.findMathTransform(layer.getCrs(), targetCrs);
+						bounds = bboxService.fromEnvelope(JTS.transform(bboxService.toEnvelope(bounds), transformer));
+					} else {
+						bounds = layerModelService.getBounds(layerId, targetCrs, null);
 					}
+					bboxService.expandToInclude(extent, bounds);
 				} else {
-					log.warn("layer not found ?! " + layers[i]);
+					log.warn("layer not found ?! " + layerId);
 				}
 			}
-			response.setBounds(bboxService.fromEnvelope(extent));
+			response.setBounds(extent);
 		}
 	}
 }

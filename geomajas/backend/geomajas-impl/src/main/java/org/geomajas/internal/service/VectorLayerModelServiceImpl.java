@@ -34,6 +34,7 @@ import org.geomajas.layer.feature.RenderedFeature;
 import org.geomajas.rendering.painter.LayerPaintContext;
 import org.geomajas.rendering.painter.PaintFactory;
 import org.geomajas.service.ApplicationService;
+import org.geomajas.service.BboxService;
 import org.geomajas.service.GeoService;
 import org.geomajas.service.VectorLayerModelService;
 import org.geotools.geometry.jts.JTS;
@@ -66,11 +67,17 @@ public class VectorLayerModelServiceImpl implements VectorLayerModelService {
 	private GeoService geoService;
 
 	@Autowired
+	private BboxService bboxService;
+
+	@Autowired
 	private PaintFactory paintFactory;
 
 	public void saveOrUpdate(String layerId, CoordinateReferenceSystem crs,
 			List<RenderedFeature> oldFeatures, List<RenderedFeature> newFeatures) throws GeomajasException {
 		VectorLayer layer = applicationService.getVectorLayer(layerId);
+		if (null == layer) {
+			throw new GeomajasException(ExceptionCode.VECTOR_LAYER_NOT_FOUND, layerId);
+		}
 		LayerModel layerModel = layer.getLayerModel();
 		FeatureModel featureModel = layerModel.getFeatureModel();
 
@@ -100,7 +107,7 @@ public class VectorLayerModelServiceImpl implements VectorLayerModelService {
 				}
 			} else {
 				// create or update
-				Object feature = null;
+				Object feature;
 				if (null == oldFeature) {
 					// create new feature
 					feature = featureModel.newInstance(newFeature.getLocalId());
@@ -136,7 +143,25 @@ public class VectorLayerModelServiceImpl implements VectorLayerModelService {
 	}
 
 	public Bbox getBounds(String layerId, CoordinateReferenceSystem crs, Filter filter) throws GeomajasException {
-		throw new GeomajasException(ExceptionCode.NOT_IMPLEMENTED);
+		VectorLayer layer = applicationService.getVectorLayer(layerId);
+		if (null == layer) {
+			throw new GeomajasException(ExceptionCode.VECTOR_LAYER_NOT_FOUND, layerId);
+		}
+		LayerModel layerModel = layer.getLayerModel();
+
+		MathTransform layerToTarget;
+		try {
+			layerToTarget = geoService.findMathTransform(layer.getCrs(), crs);
+		} catch (FactoryException fe) {
+			throw new GeomajasException(fe, ExceptionCode.CRS_TRANSFORMATION_NOT_POSSIBLE, crs, layer.getCrs());
+		}
+		Bbox bounds = layerModel.getBounds(filter);
+		try {
+			bounds = bboxService.fromEnvelope(JTS.transform(bboxService.toEnvelope(bounds), layerToTarget));
+		} catch (TransformException te) {
+			throw new GeomajasException(te, ExceptionCode.GEOMETRY_TRANSFORMATION_FAILED);
+		}
+		return bounds;
 	}
 
 	public Iterable<?> getObjects(String layerId, String attributeName, Filter filter) throws GeomajasException {
