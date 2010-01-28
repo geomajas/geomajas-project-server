@@ -22,10 +22,6 @@
  */
 package org.geomajas.extension.command.geometry;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Polygon;
 import org.geomajas.command.Command;
 import org.geomajas.extension.command.dto.MergePolygonRequest;
 import org.geomajas.extension.command.dto.MergePolygonResponse;
@@ -34,6 +30,12 @@ import org.geomajas.global.GeomajasException;
 import org.geomajas.service.DtoConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.MultiPolygon;
+import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.geom.PrecisionModel;
 
 /**
  * <p>
@@ -62,12 +64,15 @@ public class MergePolygonCommand implements Command<MergePolygonRequest, MergePo
 				throw new GeomajasException(ExceptionCode.MERGE_NO_POLYGON);
 			}
 		}
-		Geometry temp = polygons[0];
+		int precision = polygons[0].getPrecisionModel().getMaximumSignificantDigits() - 1;
+		PrecisionModel precisionModel = new PrecisionModel(Math.pow(10.0, precision));
+		GeometryFactory factory = new GeometryFactory(precisionModel, polygons[0].getSRID());
+
+		Geometry temp = factory.createGeometry(polygons[0]);
 		for (int i = 1; i < polygons.length; i++) {
-			temp = temp.union(polygons[i]);
+			temp = temp.union(factory.createGeometry(polygons[i]).buffer(Math.pow(10.0, -precision)));
 		}
 		if (temp instanceof Polygon) {
-			GeometryFactory factory = temp.getFactory();
 			MultiPolygon mp = factory.createMultiPolygon(new Polygon[] {(Polygon) temp});
 			response.setMultiPolygon(converter.toDto(mp));
 		} else if (temp instanceof MultiPolygon && temp.getNumGeometries() != 0

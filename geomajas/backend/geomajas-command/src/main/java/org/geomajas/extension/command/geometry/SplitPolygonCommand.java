@@ -22,13 +22,6 @@
  */
 package org.geomajas.extension.command.geometry;
 
-import com.vividsolutions.jts.geom.CoordinateSequence;
-import com.vividsolutions.jts.geom.CoordinateSequenceFilter;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.geom.PrecisionModel;
 import org.geomajas.command.Command;
 import org.geomajas.extension.command.dto.SplitPolygonRequest;
 import org.geomajas.extension.command.dto.SplitPolygonResponse;
@@ -37,12 +30,16 @@ import org.geomajas.service.DtoConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.MultiPolygon;
+import com.vividsolutions.jts.geom.Polygon;
+
 /**
  * <p>
  * This command splits a polygon or multipolygon by a linestring, and returns an array of resulting
  * polygons/multipolygons.
  * </p>
- *
+ * 
  * @author Pieter De Graef
  */
 @Component()
@@ -63,17 +60,15 @@ public class SplitPolygonCommand implements Command<SplitPolygonRequest, SplitPo
 		} catch (Exception e) {
 			// throw new GeomajasException();
 		}
-		GeometryFactory factory = new GeometryFactory(new PrecisionModel(), polygon.getFactory().getSRID());
-		Polygon p = (Polygon) factory.createGeometry(polygon);
-		LineString l = (LineString) factory.createGeometry(converter.toJts(request.getLineString()));
-		int precision = 11;
-		com.vividsolutions.jts.geom.Geometry buffered = factory.createGeometryCollection(null);
-		while (buffered.isEmpty()) {
-			buffered = l.buffer(Math.pow(10.0, -(precision--)));
-		}
-		com.vividsolutions.jts.geom.Geometry diff = p.difference(buffered);
+		// Convert to the polygons precision model:
+		LineString preciseLine = (LineString) polygon.getFactory().createGeometry(
+				converter.toJts(request.getLineString()));
+		int precision = polygon.getPrecisionModel().getMaximumSignificantDigits() - 1;
+		com.vividsolutions.jts.geom.Geometry bufferedLine = preciseLine.buffer(Math.pow(10.0, -precision));
+		com.vividsolutions.jts.geom.Geometry diff = polygon.difference(bufferedLine);
+
 		if (diff instanceof Polygon) {
-			response.setPolygons(new Geometry[] {converter.toDto(diff)});
+			response.setPolygons(new Geometry[] { converter.toDto(diff) });
 		} else if (diff instanceof MultiPolygon) {
 			Geometry[] polygons = new Geometry[diff.getNumGeometries()];
 			for (int i = 0; i < diff.getNumGeometries(); i++) {
@@ -82,27 +77,5 @@ public class SplitPolygonCommand implements Command<SplitPolygonRequest, SplitPo
 			}
 			response.setPolygons(polygons);
 		}
-	}
-
-	private static void makePrecise(final PrecisionModel precision,
-			final com.vividsolutions.jts.geom.Geometry geometry) {
-		geometry.apply(new CoordinateSequenceFilter() {
-
-			public void filter(CoordinateSequence coordinates, int index) {
-				for (int i = 0; i < coordinates.getDimension(); i++) {
-					double ordinate = coordinates.getOrdinate(index, i);
-					double preciseOrdinate = precision.makePrecise(ordinate);
-					coordinates.setOrdinate(index, i, preciseOrdinate);
-				}
-			}
-
-			public boolean isDone() {
-				return false;
-			}
-
-			public boolean isGeometryChanged() {
-				return true;
-			}
-		});
 	}
 }
