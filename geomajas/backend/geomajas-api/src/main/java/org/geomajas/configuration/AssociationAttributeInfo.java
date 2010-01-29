@@ -26,15 +26,24 @@ import java.io.Serializable;
 
 /**
  * Linked attribute configuration information.
- *
- * @author check subversion
+ * 
+ * @author Jan De Moerloose
  */
 public class AssociationAttributeInfo extends AttributeInfo implements Serializable {
 
 	private static final long serialVersionUID = 151L;
+
 	private AssociationType type;
+
 	private FeatureInfo featureInfo;
 
+	private PrimitiveAttributeInfo identifier;
+
+	/**
+	 * returns the type of the association (many-to-one, one-to-many, ...).
+	 * 
+	 * @return association type
+	 */
 	public AssociationType getType() {
 		return type;
 	}
@@ -43,6 +52,11 @@ public class AssociationAttributeInfo extends AttributeInfo implements Serializa
 		this.type = type;
 	}
 
+	/**
+	 * returns the feature information of this attribute (represented as feature).
+	 * 
+	 * @return feature information
+	 */
 	public FeatureInfo getFeatureInfo() {
 		return featureInfo;
 	}
@@ -50,4 +64,18 @@ public class AssociationAttributeInfo extends AttributeInfo implements Serializa
 	public void setFeatureInfo(FeatureInfo featureInfo) {
 		this.featureInfo = featureInfo;
 	}
+
+	/**
+	 * returns the metadata of the unique identifier of this association.
+	 * 
+	 * @return the identifier info
+	 */
+	public PrimitiveAttributeInfo getIdentifier() {
+		return identifier;
+	}
+
+	public void setIdentifier(PrimitiveAttributeInfo identifier) {
+		this.identifier = identifier;
+	}
+
 }
