@@ -24,21 +24,13 @@ package org.geomajas.extension.printing.document;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import org.geomajas.configuration.ApplicationInfo;
-import org.geomajas.extension.printing.component.ImageComponent;
-import org.geomajas.extension.printing.component.LabelComponent;
-import org.geomajas.extension.printing.component.LayoutConstraint;
-import org.geomajas.extension.printing.component.MapComponent;
 import org.geomajas.extension.printing.component.PageComponent;
-import org.geomajas.extension.printing.component.RasterLayerComponent;
-import org.geomajas.extension.printing.component.ScaleBarComponent;
-import org.geomajas.extension.printing.component.VectorLayerComponent;
 import org.geomajas.extension.printing.configuration.DefaultConfigurationVisitor;
-import org.geomajas.extension.printing.configuration.PrintTemplate;
-import org.geomajas.rendering.painter.PaintFactory;
 import org.geomajas.service.ApplicationService;
 import org.geomajas.service.BboxService;
 import org.geomajas.service.FilterCreator;
 import org.geomajas.service.GeoService;
+import org.geomajas.service.VectorLayerService;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
@@ -47,12 +39,9 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
-import java.awt.Color;
-import java.awt.Font;
 import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.StringReader;
-import java.net.URL;
 
 public class DefaultDocumentTest {
 
@@ -66,7 +55,7 @@ public class DefaultDocumentTest {
 
 	private FilterCreator filterCreator;
 
-	private PaintFactory paintFactory;
+	private VectorLayerService layerService;
 
 	@Before
 	public void setUp() throws Exception {
@@ -75,25 +64,19 @@ public class DefaultDocumentTest {
 						"org/geomajas/testdata/layerBluemarble.xml",
 						"org/geomajas/testdata/layerCountries.xml",
 						"org/geomajas/testdata/simplemixedContext.xml"});
-		URL appsUrl = getClass().getResource("/org/geomajas/configuration");
-		URL escapedUrl = new URL(appsUrl.getProtocol(), appsUrl.getHost(), appsUrl.getPort(), appsUrl
-				.getFile().replace(" ", "%20"));
 		// load the configuration (context-wide object);
-		ApplicationService applicationService =
-				applicationContext.getBean("service.ApplicationService", ApplicationService.class);
-
 		application = applicationContext.getBean("application", ApplicationInfo.class);
 		runtime = applicationContext.getBean("service.ApplicationService", ApplicationService.class);
 		geoService = applicationContext.getBean("service.GeoService", GeoService.class);
 		bboxService = applicationContext.getBean("service.BboxService", BboxService.class);
 		filterCreator = applicationContext.getBean("service.FilterCreator", FilterCreator.class);
-		paintFactory = applicationContext.getBean("rendering.painter.PaintFactory", PaintFactory.class);
+		layerService = applicationContext.getBean("service.VectorLayerService", VectorLayerService.class);
 	}
 
 	@Test
 	public void testRender() throws Exception {
 		DefaultDocument document = new DefaultDocument("A4", application, runtime, null, getDefaultVisitor(-31.44,
-				-37.43, 89.83f), geoService, bboxService, filterCreator, paintFactory);
+				-37.43, 89.83f), geoService, bboxService, filterCreator, layerService);
 		document.render();
 
 		JAXBContext context = JAXBContext.newInstance("org.geomajas.extension.printing.component", getClass()
@@ -184,60 +167,6 @@ public class DefaultDocumentTest {
 		config.setMapLocation(new Coordinate(x, y));
 		config.setTitle("Africa");
 		return config;
-	}
-
-	private MapComponent createMap(double x, double y, float widthInUnits) {
-		MapComponent map = new MapComponent();
-		map.getConstraint().setMarginX(20);
-		map.getConstraint().setMarginY(20);
-		map.setMapId("mainMap");
-		map.setRasterResolution(72);
-		map.setPpUnit(822 / widthInUnits);
-		map.setLocation(new Coordinate(x, y));
-		map.setTag(PrintTemplate.MAP);
-		RasterLayerComponent rc = new RasterLayerComponent();
-		rc.setLayerId("bluemarble");
-		rc.setVisible(true);
-		map.addComponent(rc);
-		VectorLayerComponent vc = new VectorLayerComponent(geoService, bboxService, filterCreator, paintFactory);
-		vc.setLayerId("countries");
-		vc.setVisible(true);
-		vc.setLabelsVisible(true);
-		map.addComponent(vc);
-		return map;
-	}
-
-	private ImageComponent createArrow() {
-		ImageComponent northarrow = new ImageComponent();
-		northarrow.setImagePath("/images/northarrow.gif");
-		northarrow.getConstraint().setAlignmentX(LayoutConstraint.RIGHT);
-		northarrow.getConstraint().setAlignmentY(LayoutConstraint.TOP);
-		northarrow.getConstraint().setMarginX(20);
-		northarrow.getConstraint().setMarginY(20);
-		northarrow.getConstraint().setWidth(10);
-		northarrow.setTag(PrintTemplate.ARROW);
-		return northarrow;
-	}
-
-	private LabelComponent createTitle() {
-		LabelComponent title = new LabelComponent();
-		title.setFont(new Font("Dialog", Font.ITALIC, 14));
-		title.setBackgroundColor(Color.white);
-		title.setBorderColor(Color.BLACK);
-		title.setFontColor(Color.BLACK);
-		title.setText("France");
-		title.getConstraint().setAlignmentY(LayoutConstraint.TOP);
-		title.getConstraint().setAlignmentX(LayoutConstraint.CENTER);
-		title.getConstraint().setMarginY(40);
-		title.setTag(PrintTemplate.TITLE);
-		return title;
-	}
-
-	private ScaleBarComponent createBar() {
-		ScaleBarComponent bar = new ScaleBarComponent();
-		bar.setTicNumber(3);
-		bar.setUnit("m");
-		return bar;
 	}
 
 }
