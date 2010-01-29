@@ -23,12 +23,7 @@
 package org.geomajas.layer;
 
 import org.geomajas.configuration.EditPermissionType;
-import org.geomajas.configuration.StyleInfo;
 import org.geomajas.configuration.VectorLayerInfo;
-import org.geomajas.rendering.RenderException;
-import org.geomajas.rendering.painter.feature.FeaturePainter;
-import org.opengis.filter.Filter;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * A layer which contains vector data.
@@ -37,9 +32,6 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @author Jan De Moerloose
  */
 public interface VectorLayer extends Layer<VectorLayerInfo> {
-
-	void paint(FeaturePainter painter, Filter filter, StyleInfo[] styleDefs,
-			CoordinateReferenceSystem mapCRS) throws RenderException;
 
 	LayerModel getLayerModel();
 

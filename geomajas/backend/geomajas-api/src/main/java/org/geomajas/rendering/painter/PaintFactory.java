@@ -23,10 +23,8 @@
 
 package org.geomajas.rendering.painter;
 
-import com.vividsolutions.jts.geom.Coordinate;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.rendering.image.TileImageCreator;
-import org.geomajas.rendering.painter.feature.FeaturePainter;
 import org.geomajas.rendering.painter.tile.TilePainter;
 import org.geomajas.rendering.tile.RenderedTile;
 import org.geomajas.rendering.tile.TileCode;
@@ -48,26 +46,6 @@ public interface PaintFactory {
 	LayerPaintContext createLayerPaintContext(VectorLayer layer);
 
 	/**
-	 * Create a {@link FeaturePainter} for painting a tile.
-	 *
-	 * @param tile tile to paint in
-	 * @param layer layer
-	 * @param code tile code
-	 * @param scale scale
-	 * @param panOrigin pan origin
-	 * @return feature painter
-	 */
-	FeaturePainter createTiledFeaturePainter(RenderedTile tile, VectorLayer layer, TileCode code, double scale,
-			Coordinate panOrigin);
-
-	/**
-	 * Create a default {@link FeaturePainter}.
-	 *
-	 * @return feature painter
-	 */
-	FeaturePainter createFeaturePainter();
-
-	/**
 	 * Create a {@link TileImageCreator} object.
 	 *
 	 * @param tile tile to create object for
@@ -84,7 +62,13 @@ public interface PaintFactory {
 	 */
 	TilePainter createRasterTilePainter(String layerId);
 
+	/**
+	 * Create a vector tile which contains the url to the rendered image.
+	 *
+	 * @param code tile code
+	 * @param layer (vector) layer
+	 * @param scale scale
+	 * @return tile which contains the image url
+	 */
 	UrlTile createRasterTile(TileCode code, VectorLayer layer, double scale);
-
-	RenderedTile createVectorTile(TileCode code, VectorLayer layer, double scale);
 }

@@ -44,21 +44,21 @@ public interface RenderedFeature extends Cloneable, Comparable<RenderedFeature> 
 	 * Retrieve the local feature ID. That is the ID without the layer ID attached to it. This ID will still be unique
 	 * within the layer.
 	 *
-	 * @return
+	 * @return local feature id
 	 */
 	String getLocalId();
 
 	/**
 	 * Get the feature's bounding box.
 	 *
-	 * @return
+	 * @return feature bounds
 	 */
 	Bbox getBounds();
 
 	/**
 	 * Is this a new feature or not? This is tested by the ID. If the ID is null, then the feature is new.
 	 *
-	 * @return
+	 * @return true when new
 	 */
 	boolean isNew();
 

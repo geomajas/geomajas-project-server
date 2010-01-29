@@ -24,8 +24,13 @@
 package org.geomajas.internal.layer.feature;
 
 import com.vividsolutions.jts.geom.Geometry;
+import org.geomajas.configuration.StyleInfo;
+import org.geomajas.geometry.Bbox;
 import org.geomajas.global.Json;
-import org.geomajas.service.BboxService;
+import org.geomajas.layer.VectorLayer;
+import org.geomajas.layer.feature.RenderedFeature;
+
+import java.util.Map;
 
 /**
  * <p>
@@ -39,7 +44,12 @@ import org.geomajas.service.BboxService;
  *
  * @author Pieter De Graef
  */
-public class VectorFeature extends RenderedFeatureImpl {
+public class VectorFeature implements RenderedFeature {
+
+	/**
+	 * RenderedFeature to delegate calls to.
+	 */
+	private RenderedFeature base;
 
 	/**
 	 * Has this feature's geometry been clipped?
@@ -51,12 +61,12 @@ public class VectorFeature extends RenderedFeatureImpl {
 	 */
 	private Geometry clippedGeometry;
 
-	public VectorFeature(BboxService bboxService) {
-		super(bboxService);
+	public VectorFeature(RenderedFeature base) {
+		this.base = base;
 	}
 
 	// -------------------------------------------------------------------------
-	// Getters and setters:
+	// Specific getters and setters:
 	// -------------------------------------------------------------------------
 
 	public boolean isClipped() {
@@ -75,5 +85,73 @@ public class VectorFeature extends RenderedFeatureImpl {
 	@Json(serialize = false)
 	public void setClippedGeometry(Geometry clippedGeometry) {
 		this.clippedGeometry = clippedGeometry;
+	}
+
+	// -------------------------------------------------------------------------
+	// Delegated methods
+	// -------------------------------------------------------------------------
+
+	public String getLocalId() {
+		return base.getLocalId();
+	}
+
+	public Bbox getBounds() {
+		return base.getBounds();
+	}
+
+	public boolean isNew() {
+		return base.isNew();
+	}
+
+	public int compareTo(RenderedFeature o) {
+		return base.compareTo(o);
+	}
+
+	public void setId(String id) {
+		base.setId(id);
+	}
+
+	public String getId() {
+		return base.getId();
+	}
+
+	public Map<String, Object> getAttributes() {
+		return base.getAttributes();
+	}
+
+	public void setAttributes(Map<String, Object> attributes) {
+		base.setAttributes(attributes);
+	}
+
+	public Geometry getGeometry() {
+		return null;  // you should use getClippedGeometry()
+	}
+
+	public void setGeometry(Geometry geometry) {
+		// nothing to do, you should use setClippedGeometry()
+	}
+
+	public StyleInfo getStyleInfo() {
+		return base.getStyleInfo();
+	}
+
+	public void setStyleDefinition(StyleInfo style) {
+		base.setStyleDefinition(style);
+	}
+
+	public VectorLayer getLayer() {
+		return base.getLayer();
+	}
+
+	public void setLayer(VectorLayer layer) {
+		base.setLayer(layer);
+	}
+
+	public String getLabel() {
+		return base.getLabel();
+	}
+
+	public void setLabel(String label) {
+		base.setLabel(label);
 	}
 }

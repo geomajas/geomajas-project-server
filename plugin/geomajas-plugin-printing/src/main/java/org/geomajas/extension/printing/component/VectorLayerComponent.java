@@ -41,13 +41,11 @@ import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.extension.printing.PdfContext;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.layer.Layer;
-import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.RenderedFeature;
-import org.geomajas.rendering.painter.PaintFactory;
-import org.geomajas.rendering.painter.feature.FeaturePainter;
 import org.geomajas.service.BboxService;
 import org.geomajas.service.FilterCreator;
 import org.geomajas.service.GeoService;
+import org.geomajas.service.VectorLayerModelService;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.referencing.CRS;
 import org.opengis.filter.Filter;
@@ -60,6 +58,7 @@ import javax.xml.bind.annotation.XmlTransient;
 import java.awt.Color;
 import java.awt.Font;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -67,13 +66,13 @@ import java.util.TreeSet;
 /**
  * ???
  *
- * @author check subversion
+ * @author Pieter De Graef
  */
 @XmlRootElement
 public class VectorLayerComponent extends BaseLayerComponent {
 
 	/** Array of StyleDefinition for this layer. */
-	private StyleInfo[] styleDefinitions;
+	private List<StyleInfo> styleDefinitions;
 
 	/** CQL filter */
 	private String filter;
@@ -107,18 +106,18 @@ public class VectorLayerComponent extends BaseLayerComponent {
 
 	private FilterCreator filterCreator;
 
-	private PaintFactory paintFactory;
+	private VectorLayerModelService layerModelService;
 
 	public VectorLayerComponent() {
 		// todo needed for JAXB but looses the services, causing NPE later on
 	}
 
 	public VectorLayerComponent(GeoService geoService, BboxService bboxService, FilterCreator filterCreator,
-			PaintFactory paintFactory) {
+			VectorLayerModelService layerModelService) {
 		this.geoService = geoService;
 		this.bboxService = bboxService;
 		this.filterCreator = filterCreator;
-		this.paintFactory = paintFactory;
+		this.layerModelService = layerModelService;
 
 		// stretch to map
 		getConstraint().setAlignmentX(LayoutConstraint.JUSTIFIED);
@@ -138,30 +137,23 @@ public class VectorLayerComponent extends BaseLayerComponent {
 	public void render(PdfContext context) {
 		if (isVisible()) {
 			bbox = createBbox();
-			for (String s : getSelectedFeatureIds()) {
-				selectedFeatures.add(s);
-			}
+			Collections.addAll(selectedFeatures, getSelectedFeatureIds());
 			// Fetch features
 			try {
 				MapInfo map = context.getMap(getMap().getMapId());
 				String geomName = ((VectorLayerInfo) context.getLayer(getLayerId()).getLayerInfo()).getFeatureInfo()
 						.getGeometryType().getName();
-				Layer layer = context.getLayer(getLayerId());
-				if (layer instanceof VectorLayer) {
-					VectorLayer vectorLayer = (VectorLayer) layer;
-					GeometryFactory factory = new GeometryFactory(new PrecisionModel(Math.pow(10, map.getPrecision())),
-							geoService.getSridFromCrs(map.getCrs()));
+				GeometryFactory factory = new GeometryFactory(new PrecisionModel(Math.pow(10, map.getPrecision())),
+						geoService.getSridFromCrs(map.getCrs()));
 
-					Filter f = filterCreator
-							.createIntersectsFilter(factory.toGeometry(bboxService.toEnvelope(bbox)), geomName);
-					if (getFilter() != null) {
-						f = filterCreator.createLogicFilter(CQL.toFilter(getFilter()), "and", f);
-					}
-
-					FeaturePainter painter = paintFactory.createFeaturePainter();
-					vectorLayer.paint(painter, f, styleDefinitions, CRS.decode(map.getCrs()));
-					features = painter.getFeatures();
+				Filter filter = filterCreator
+						.createIntersectsFilter(factory.toGeometry(bboxService.toEnvelope(bbox)), geomName);
+				if (getFilter() != null) {
+					filter = filterCreator.createLogicFilter(CQL.toFilter(getFilter()), "and", filter);
 				}
+
+				features = layerModelService.getFeatures(getLayerId(), CRS.decode(map.getCrs()), filter,
+						styleDefinitions, VectorLayerModelService.FEATURE_INCLUDE_ALL);
 			} catch (Exception e) {
 				log.error("Error rendering vectorlayerRenderer", e);
 			}
@@ -185,24 +177,24 @@ public class VectorLayerComponent extends BaseLayerComponent {
 		Font font = new Font("Helvetica", Font.ITALIC, 10);
 		Color fontColor = Color.black;
 		if (labelType.getFontStyle() != null) {
-			fontColor = context.getColor(labelType.getFontStyle().getFillColor(), new Float(labelType.getFontStyle()
-					.getFillOpacity()));
+			fontColor = context.getColor(labelType.getFontStyle().getFillColor(), labelType.getFontStyle()
+					.getFillOpacity());
 		}
 		Rectangle rect = calculateLabelRect(context, f, label, font);
 		Color bgColor = Color.white;
 		if (labelType.getBackgroundStyle() != null) {
-			bgColor = context.getColor(labelType.getBackgroundStyle().getFillColor(), new Float(labelType
-					.getBackgroundStyle().getFillOpacity()));
+			bgColor = context.getColor(labelType.getBackgroundStyle().getFillColor(), labelType
+					.getBackgroundStyle().getFillOpacity());
 		}
 		context.fillRoundRectangle(rect, bgColor, 3);
 		Color borderColor = Color.black;
 		if (labelType.getBackgroundStyle() != null) {
-			borderColor = context.getColor(labelType.getBackgroundStyle().getStrokeColor(), new Float(labelType
-					.getBackgroundStyle().getStrokeOpacity()));
+			borderColor = context.getColor(labelType.getBackgroundStyle().getStrokeColor(), labelType
+					.getBackgroundStyle().getStrokeOpacity());
 		}
 		float linewidth = 0.5f;
 		if (labelType.getBackgroundStyle() != null) {
-			linewidth = new Float(labelType.getBackgroundStyle().getStrokeWidth());
+			linewidth = labelType.getBackgroundStyle().getStrokeWidth();
 		}
 		context.strokeRoundRectangle(rect, borderColor, linewidth, 3);
 		context.drawText(label, font, rect, fontColor);
@@ -252,27 +244,23 @@ public class VectorLayerComponent extends BaseLayerComponent {
 		StyleInfo style = f.getStyleInfo();
 
 		// Color, transparency, dash
-		Color fillColor = context.getColor(style.getFillColor(),
-				new Float(style.getFillOpacity()));
-		Color strokeColor = context.getColor(style.getStrokeColor(), new Float(style.getStrokeOpacity()));
+		Color fillColor = context.getColor(style.getFillColor(), style.getFillOpacity());
+		Color strokeColor = context.getColor(style.getStrokeColor(), style.getStrokeOpacity());
 		float[] dashArray = context.getDashArray(style.getDashArray());
 
 		// check if the feature is selected
 		MapInfo map = context.getMap(getMap().getMapId());
 		if (selectedFeatures.contains(f.getLocalId())) {
 			if (f.getGeometry() instanceof MultiPolygon || f.getGeometry() instanceof Polygon) {
-				fillColor = context.getColor(map.getPolygonSelectStyle().getFillColor(), new Float(style
-						.getFillOpacity()));
+				fillColor = context.getColor(map.getPolygonSelectStyle().getFillColor(), style.getFillOpacity());
 			} else if (f.getGeometry() instanceof MultiLineString || f.getGeometry() instanceof LineString) {
-				strokeColor = context.getColor(map.getLineSelectStyle().getStrokeColor(), new Float(style
-						.getStrokeOpacity()));
+				strokeColor = context.getColor(map.getLineSelectStyle().getStrokeColor(), style.getStrokeOpacity());
 			} else if (f.getGeometry() instanceof MultiPoint || f.getGeometry() instanceof Point) {
-				strokeColor = context.getColor(map.getPointSelectStyle().getStrokeColor(), new Float(
-						style.getStrokeOpacity()));
+				strokeColor = context.getColor(map.getPointSelectStyle().getStrokeColor(), style.getStrokeOpacity());
 			}
 		}
 
-		float lineWidth = new Float(style.getStrokeWidth());
+		float lineWidth = style.getStrokeWidth();
 
 		SymbolInfo symbol = null;
 		if (f.getGeometry() instanceof MultiPoint || f.getGeometry() instanceof Point) {
@@ -305,12 +293,9 @@ public class VectorLayerComponent extends BaseLayerComponent {
 		setParent((PrintComponent) parent);
 	}
 
-	public StyleInfo[] getStyleDefinitions() {
-		return styleDefinitions;
-	}
-
 	public void setStyleDefinitions(StyleInfo... styleDefs) {
-		this.styleDefinitions = styleDefs;
+		styleDefinitions = new ArrayList<StyleInfo>();
+		Collections.addAll(styleDefinitions, styleDefs);
 	}
 
 	public String[] getSelectedFeatureIds() {

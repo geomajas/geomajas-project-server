@@ -23,8 +23,10 @@
 
 package org.geomajas.layermodel.wms.rendering.strategy;
 
-import org.geomajas.layer.LayerException;
+import org.geomajas.configuration.StyleInfo;
+import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.VectorLayer;
+import org.geomajas.layer.feature.RenderedFeature;
 import org.geomajas.rendering.painter.PaintFactory;
 import org.geomajas.rendering.tile.RenderedTile;
 import org.geomajas.rendering.tile.TileMetadata;
@@ -36,10 +38,10 @@ import org.geomajas.global.ExceptionCode;
 import org.geomajas.layermodel.wms.WmsLayer;
 import org.geomajas.rendering.RenderException;
 import org.geomajas.rendering.image.RasterUrlBuilder;
-import org.geomajas.rendering.painter.feature.FeaturePainter;
 import org.geomajas.rendering.painter.tile.TilePainter;
 import org.geomajas.rendering.strategy.RenderingStrategy;
 import org.geomajas.service.FilterCreator;
+import org.geomajas.service.VectorLayerModelService;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.cql2.CQLException;
 import org.opengis.filter.Filter;
@@ -49,6 +51,9 @@ import org.springframework.stereotype.Component;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * <p>
@@ -80,13 +85,17 @@ public class ExternalWmsRendering implements RenderingStrategy {
 	private static final String WMS_LAYERNAME = "layerName";
 
 	@Autowired
-	private ApplicationService runtime;
+	private ApplicationService applicationService;
 
 	@Autowired
 	private FilterCreator filterCreator;
 
 	@Autowired
 	private PaintFactory paintFactory;
+
+	@Autowired
+	private VectorLayerModelService layerModelService;
+
 
 	/**
 	 * Holds the value of the WMS_LAYERNAME parameter.
@@ -112,8 +121,8 @@ public class ExternalWmsRendering implements RenderingStrategy {
 			RenderException {
 		try {
 			// Get the map and layer objects:
-			VectorLayer vLayer = runtime.getVectorLayer(metadata.getLayerId());
-			CoordinateReferenceSystem crs = runtime.getCrs(metadata.getCrs());
+			VectorLayer vLayer = applicationService.getVectorLayer(metadata.getLayerId());
+			CoordinateReferenceSystem crs = applicationService.getCrs(metadata.getCrs());
 
 			// Prepare the tile:
 			UrlTile tile = paintFactory.createRasterTile(metadata.getCode(), vLayer, metadata.getScale());
@@ -129,18 +138,22 @@ public class ExternalWmsRendering implements RenderingStrategy {
 			}
 
 			// Create a FeaturePainter and paint the features:
-			FeaturePainter featurePainter = paintFactory.createFeaturePainter();
-			vLayer.paint(featurePainter, filter, metadata.getStyleDefs(), crs);
+			List<StyleInfo> styleDefinitions = new ArrayList<StyleInfo>();
+			Collections.addAll(styleDefinitions, metadata.getStyleDefs());
+			List<RenderedFeature> features = layerModelService.getFeatures(metadata.getLayerId(), crs, filter,
+					styleDefinitions, VectorLayerModelService.FEATURE_INCLUDE_ALL);
 
 			// At this point, we have a tile with rendered features.
 			// Now we need to paint the tile itself:
-			tile.setFeatures(featurePainter.getFeatures());
+			tile.setFeatures(features);
 			TilePainter tilePainter = paintFactory.createRasterTilePainter(vLayer.getLayerInfo().getId());
 			return tilePainter.paint(tile);
 		} catch (CQLException cqle) {
 			throw new RenderException(ExceptionCode.RENDER_FILTER_PARSE_PROBLEM, cqle);
-		} catch (LayerException me) {
-			throw new RenderException(ExceptionCode.RENDER_MAP_PROBLEM, me);
+		} catch (RenderException re) {
+			throw re;
+		} catch (GeomajasException ge) {
+			throw new RenderException(ge, ExceptionCode.RENDER_MAP_PROBLEM);
 		}
 	}
 
@@ -199,7 +212,7 @@ public class ExternalWmsRendering implements RenderingStrategy {
 		 * Create a WMS url.
 		 */
 		public String getImageUrl() {
-			WmsLayer wmsLayer = (WmsLayer) runtime.getLayer(layerName);
+			WmsLayer wmsLayer = (WmsLayer) applicationService.getLayer(layerName);
 
 			String url = wmsLayer.getBaseWmsUrl();
 			int pos = url.lastIndexOf('?');

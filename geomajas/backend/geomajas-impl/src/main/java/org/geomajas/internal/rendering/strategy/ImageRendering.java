@@ -24,17 +24,16 @@
 package org.geomajas.internal.rendering.strategy;
 
 import org.geomajas.configuration.ApplicationInfo;
+import org.geomajas.configuration.StyleInfo;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.global.ExceptionCode;
+import org.geomajas.global.GeomajasException;
 import org.geomajas.internal.application.tile.RasterTileJG;
-import org.geomajas.internal.rendering.painter.feature.DefaultFeaturePainter;
 import org.geomajas.internal.rendering.painter.tile.RasterTilePainter;
-import org.geomajas.layer.LayerException;
 import org.geomajas.layer.VectorLayer;
-import org.geomajas.layer.feature.FeatureFactory;
+import org.geomajas.layer.feature.RenderedFeature;
 import org.geomajas.rendering.RenderException;
 import org.geomajas.rendering.image.RasterUrlBuilder;
-import org.geomajas.rendering.painter.feature.FeaturePainter;
 import org.geomajas.rendering.painter.tile.TilePainter;
 import org.geomajas.rendering.strategy.RenderingStrategy;
 import org.geomajas.rendering.tile.RenderedTile;
@@ -42,6 +41,7 @@ import org.geomajas.rendering.tile.TileCode;
 import org.geomajas.rendering.tile.TileMetadata;
 import org.geomajas.service.ApplicationService;
 import org.geomajas.service.FilterCreator;
+import org.geomajas.service.VectorLayerModelService;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.cql2.CQLException;
 import org.opengis.filter.Filter;
@@ -49,6 +49,9 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -74,7 +77,7 @@ public class ImageRendering implements RenderingStrategy {
 	private FilterCreator filterCreator;
 
 	@Autowired
-	private FeatureFactory featureFactory;
+	private VectorLayerModelService layerModelService;
 
 	/**
 	 * Paint the tile! This function will create a <code>RasterTile</code> extension of the <code>RenderedTile</code>
@@ -107,20 +110,24 @@ public class ImageRendering implements RenderingStrategy {
 			}
 
 			// Create a FeaturePainter and paint the features:
-			FeaturePainter featurePainter = new DefaultFeaturePainter(featureFactory);
-			vLayer.paint(featurePainter, filter, metadata.getStyleDefs(), crs);
+			List<StyleInfo> styleDefinitions = new ArrayList<StyleInfo>();
+			Collections.addAll(styleDefinitions, metadata.getStyleDefs());
+			List<RenderedFeature> features = layerModelService.getFeatures(metadata.getLayerId(), crs, filter,
+					styleDefinitions, VectorLayerModelService.FEATURE_INCLUDE_ALL);
 
 			// At this point, we have a tile with rendered features.
 			// Now we need to paint the tile itself:
-			tile.setFeatures(featurePainter.getFeatures());
+			tile.setFeatures(features);
 			TilePainter tilePainter = new RasterTilePainter(vLayer.getLayerInfo().getId());
 			tilePainter.setPaintGeometries(metadata.isPaintGeometries());
 			tilePainter.setPaintLabels(metadata.isPaintLabels());
 			return tilePainter.paint(tile);
-		} catch (LayerException layerException) {
-			throw new RenderException(ExceptionCode.IMAGE_RENDERING_LAYER_PROBLEM, layerException);
 		} catch (CQLException cqlException) {
-			throw new RenderException(ExceptionCode.IMAGE_RENDERING_FILTER_PROBLEM, cqlException);
+			throw new RenderException(cqlException, ExceptionCode.IMAGE_RENDERING_FILTER_PROBLEM);
+		} catch (RenderException re) {
+			throw re;
+		} catch (GeomajasException ge) {
+			throw new RenderException(ge, ExceptionCode.IMAGE_RENDERING_LAYER_PROBLEM);
 		}
 	}
 

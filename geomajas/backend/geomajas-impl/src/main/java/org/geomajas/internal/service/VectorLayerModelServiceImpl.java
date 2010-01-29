@@ -24,16 +24,20 @@
 package org.geomajas.internal.service;
 
 import com.vividsolutions.jts.geom.Geometry;
+import org.geomajas.configuration.LayerInfo;
 import org.geomajas.configuration.StyleInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
+import org.geomajas.internal.application.style.StyleFilterImpl;
+import org.geomajas.internal.layer.feature.RenderedFeatureImpl;
 import org.geomajas.layer.LayerModel;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.FeatureModel;
 import org.geomajas.layer.feature.RenderedFeature;
 import org.geomajas.rendering.painter.LayerPaintContext;
 import org.geomajas.rendering.painter.PaintFactory;
+import org.geomajas.rendering.style.StyleFilter;
 import org.geomajas.service.ApplicationService;
 import org.geomajas.service.BboxService;
 import org.geomajas.service.GeoService;
@@ -141,9 +145,130 @@ public class VectorLayerModelServiceImpl implements VectorLayerModelService {
 	}
 
 	public List<RenderedFeature> getFeatures(String layerId, CoordinateReferenceSystem crs, Filter filter,
-			List<StyleInfo> styleDefinitions, int featureIncludes )
+			List<StyleInfo> styleDefinitions, int featureIncludes)
 			throws GeomajasException {
-		throw new GeomajasException(ExceptionCode.NOT_IMPLEMENTED);
+		VectorLayer layer = applicationService.getVectorLayer(layerId);
+		if (null == layer) {
+			throw new GeomajasException(ExceptionCode.VECTOR_LAYER_NOT_FOUND, layerId);
+		}
+		LayerModel layerModel = layer.getLayerModel();
+
+		List<StyleFilter> styleFilters = null;
+		if ((featureIncludes & FEATURE_INCLUDE_STYLE) != 0) {
+			if (null != styleDefinitions) {
+				styleFilters = initStyleFilters(styleDefinitions);
+			} else {
+				styleFilters = initStyleFilters(layer.getLayerInfo().getStyleDefinitions());
+			}
+		}
+
+		//LayerPaintContext context = new DefaultLayerPaintContext(this, styleDefs);
+		MathTransform transformation = null;
+		if ((featureIncludes & FEATURE_INCLUDE_GEOMETRY) != 0 && crs != null && !crs.equals(layer.getCrs())) {
+			try {
+				transformation = geoService.findMathTransform(layer.getCrs(), crs);
+			} catch (FactoryException fe) {
+				throw new GeomajasException(fe, ExceptionCode.CRS_TRANSFORMATION_NOT_POSSIBLE, crs, layer.getCrs());
+			}
+		}
+
+		List<RenderedFeature> res = new ArrayList<RenderedFeature>();
+		Iterator<?> it = layerModel.getElements(filter);
+		while (it.hasNext()) {
+			res.add(convertFeature(it.next(), layer, transformation, styleFilters, featureIncludes));
+		}
+		return res;
+	}
+
+	/**
+	 * Convert the generic feature object (as obtained from te layer model) into a {@link RenderedFeature}, with
+	 * requested data. Part may be lazy loaded.
+	 *
+	 * @param feature A feature object that comes directly from the {@link LayerModel}
+	 * @param layer vector layer for the feature
+	 * @param transformation transformation to apply to the geometry
+	 * @param styles style filters to apply
+	 * @param featureIncludes aspects to include in features
+	 * @throws GeomajasException oops
+	 */
+	private RenderedFeature convertFeature(Object feature, VectorLayer layer, MathTransform transformation,
+			List<StyleFilter> styles, int featureIncludes) throws GeomajasException {
+		LayerInfo layerInfo = layer.getLayerInfo();
+		FeatureModel featureModel = layer.getLayerModel().getFeatureModel();
+		RenderedFeature res = new RenderedFeatureImpl(bboxService);
+		res.setId(layerInfo.getId() + "." + featureModel.getId(feature));
+		res.setLayer(layer);
+
+		// If allowed, add the label to the RenderedFeature:
+		if ((featureIncludes & FEATURE_INCLUDE_LABEL) != 0) {
+			String labelAttr = layer.getLayerInfo().getLabelAttribute().getLabelAttributeName();
+			Object attribute = featureModel.getAttribute(feature, labelAttr);
+			if (attribute != null) {
+				res.setLabel(attribute.toString());
+			}
+		}
+
+		// If allowed, add the geometry (transformed!) to the RenderedFeature:
+		if ((featureIncludes & FEATURE_INCLUDE_GEOMETRY) != 0) {
+			Geometry geometry = featureModel.getGeometry(feature);
+			Geometry transformed;
+			if (null != transformation) {
+				try {
+					transformed = JTS.transform(geometry, transformation);
+				} catch (TransformException te) {
+					throw new GeomajasException(te, ExceptionCode.GEOMETRY_TRANSFORMATION_FAILED);
+				}
+			} else {
+				transformed = geometry;
+			}
+			res.setGeometry(transformed);
+		}
+
+		// If allowed, add the style definition to the RenderedFeature:
+		if ((featureIncludes & FEATURE_INCLUDE_STYLE) != 0) {
+			res.setStyleDefinition(findStyleFilter(feature, styles).getStyleDefinition());
+		}
+
+		// If allowed, add the attributes to the RenderedFeature:
+		if ((featureIncludes & FEATURE_INCLUDE_ATTRIBUTES) != 0) {
+			res.setAttributes(featureModel.getAttributes(feature));
+		}
+
+		return res;
+	}
+
+	/**
+	 * Find the style filter that must be applied to this feature.
+	 *
+	 * @param feature feature to find the style for
+	 * @param styles style filters to select from
+	 * @return a style filter
+	 */
+	public StyleFilter findStyleFilter(Object feature, List<StyleFilter> styles) {
+		for (StyleFilter styleFilter : styles) {
+			if (styleFilter.getFilter().evaluate(feature)) {
+				return styleFilter;
+			}
+		}
+		return new StyleFilterImpl();
+	}
+
+	/**
+	 * Build list of style filters from style definitions.
+	 *
+	 * @param styleDefinitions list of style definitions
+	 * @return list of style filters
+	 */
+	private List<StyleFilter> initStyleFilters(List<StyleInfo> styleDefinitions) {
+		List<StyleFilter> styleFilters = new ArrayList<StyleFilter>();
+		if (styleDefinitions == null || styleDefinitions.size() == 0) {
+			styleFilters.add(new StyleFilterImpl()); // use default.
+		} else {
+			for (StyleInfo styleDef : styleDefinitions) {
+				styleFilters.add(new StyleFilterImpl(styleDef));
+			}
+		}
+		return styleFilters;
 	}
 
 	public Bbox getBounds(String layerId, CoordinateReferenceSystem crs, Filter filter) throws GeomajasException {

@@ -27,15 +27,13 @@ import org.geomajas.extension.command.dto.SearchFeatureRequest;
 import org.geomajas.extension.command.dto.SearchFeatureResponse;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
-import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.Feature;
 import org.geomajas.layer.feature.RenderedFeature;
 import org.geomajas.layer.feature.SearchCriterion;
-import org.geomajas.rendering.painter.PaintFactory;
-import org.geomajas.rendering.painter.feature.FeaturePainter;
 import org.geomajas.service.ApplicationService;
 import org.geomajas.service.DtoConverter;
 import org.geomajas.service.FilterCreator;
+import org.geomajas.service.VectorLayerModelService;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.cql2.CQLException;
 import org.opengis.filter.Filter;
@@ -45,24 +43,24 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 /**
- * ???
+ * Search features based on a seat of search criteria.
  *
- * @author check subversion
+ * @author Pieter De Graef
  */
 @Component()
 public class SearchFeatureCommand implements Command<SearchFeatureRequest, SearchFeatureResponse> {
 
 	@Autowired
-	private ApplicationService runtimeParameters;
+	private ApplicationService applicationService;
 
 	@Autowired
 	private DtoConverter converter;
 
 	@Autowired
-	private PaintFactory paintFactory;
+	private FilterCreator filterCreator;
 
 	@Autowired
-	private FilterCreator filterCreator;
+	private VectorLayerModelService layerModelService;
 
 	public SearchFeatureResponse getEmptyCommandResponse() {
 		return new SearchFeatureResponse();
@@ -77,15 +75,11 @@ public class SearchFeatureCommand implements Command<SearchFeatureRequest, Searc
 		}
 
 		String layerId = request.getLayerId();
-		VectorLayer layer = runtimeParameters.getVectorLayer(layerId);
-		if (null == layer) {
-			throw new GeomajasException(ExceptionCode.LAYER_NOT_FOUND, layerId);
-		}
 
-		FeaturePainter featurePainter = paintFactory.createFeaturePainter();
 		Filter filter = createFilter(request);
-		layer.paint(featurePainter, filter, null, runtimeParameters.getCrs(request.getCrs()));
-		List<RenderedFeature> features = featurePainter.getFeatures();
+
+		List<RenderedFeature> features = layerModelService.getFeatures(layerId,
+				applicationService.getCrs(request.getCrs()), filter, null, VectorLayerModelService.FEATURE_INCLUDE_ALL);
 		response.setLayerId(layerId);
 		int max = request.getMax();
 		if (max == SearchFeatureRequest.MAX_UNLIMITED) {
