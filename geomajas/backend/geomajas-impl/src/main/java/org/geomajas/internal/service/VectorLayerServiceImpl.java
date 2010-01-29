@@ -41,7 +41,7 @@ import org.geomajas.rendering.style.StyleFilter;
 import org.geomajas.service.ApplicationService;
 import org.geomajas.service.BboxService;
 import org.geomajas.service.GeoService;
-import org.geomajas.service.VectorLayerModelService;
+import org.geomajas.service.VectorLayerService;
 import org.geotools.geometry.jts.JTS;
 import org.opengis.filter.Filter;
 import org.opengis.referencing.FactoryException;
@@ -56,7 +56,8 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Implementation of {@link VectorLayerModelService}, a service which allows accessing data from a vector layer model.
+ * Implementation of {@link org.geomajas.service.VectorLayerService}, a service which allows accessing data from a
+ * vector layer model.
  * <p/>
  * All access to layer models should be done through this service, not by accessing the layer models directly as this
  * adds possible caching, security etc. These services are implemented using pipelines
@@ -65,7 +66,7 @@ import java.util.List;
  * @author Joachim Van der Auwera
  */
 @Component
-public class VectorLayerModelServiceImpl implements VectorLayerModelService {
+public class VectorLayerServiceImpl implements VectorLayerService {
 
 	@Autowired
 	private ApplicationService applicationService;

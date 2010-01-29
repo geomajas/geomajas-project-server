@@ -45,7 +45,7 @@ import org.geomajas.layer.feature.RenderedFeature;
 import org.geomajas.service.BboxService;
 import org.geomajas.service.FilterCreator;
 import org.geomajas.service.GeoService;
-import org.geomajas.service.VectorLayerModelService;
+import org.geomajas.service.VectorLayerService;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.referencing.CRS;
 import org.opengis.filter.Filter;
@@ -106,18 +106,18 @@ public class VectorLayerComponent extends BaseLayerComponent {
 
 	private FilterCreator filterCreator;
 
-	private VectorLayerModelService layerModelService;
+	private VectorLayerService layerService;
 
 	public VectorLayerComponent() {
 		// todo needed for JAXB but looses the services, causing NPE later on
 	}
 
 	public VectorLayerComponent(GeoService geoService, BboxService bboxService, FilterCreator filterCreator,
-			VectorLayerModelService layerModelService) {
+			VectorLayerService layerService) {
 		this.geoService = geoService;
 		this.bboxService = bboxService;
 		this.filterCreator = filterCreator;
-		this.layerModelService = layerModelService;
+		this.layerService = layerService;
 
 		// stretch to map
 		getConstraint().setAlignmentX(LayoutConstraint.JUSTIFIED);
@@ -152,8 +152,8 @@ public class VectorLayerComponent extends BaseLayerComponent {
 					filter = filterCreator.createLogicFilter(CQL.toFilter(getFilter()), "and", filter);
 				}
 
-				features = layerModelService.getFeatures(getLayerId(), CRS.decode(map.getCrs()), filter,
-						styleDefinitions, VectorLayerModelService.FEATURE_INCLUDE_ALL);
+				features = layerService.getFeatures(getLayerId(), CRS.decode(map.getCrs()), filter,
+						styleDefinitions, VectorLayerService.FEATURE_INCLUDE_ALL);
 			} catch (Exception e) {
 				log.error("Error rendering vectorlayerRenderer", e);
 			}

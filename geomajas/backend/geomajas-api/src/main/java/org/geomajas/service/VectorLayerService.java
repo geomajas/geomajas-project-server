@@ -41,7 +41,7 @@ import java.util.List;
  *
  * @author Joachim Van der Auwera
  */
-public interface VectorLayerModelService {
+public interface VectorLayerService {
 
 	/**
 	 * Value to use when all aspects of the Feature should be lazy loaded.

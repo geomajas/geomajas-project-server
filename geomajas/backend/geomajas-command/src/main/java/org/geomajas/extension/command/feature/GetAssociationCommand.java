@@ -27,7 +27,7 @@ import org.geomajas.extension.command.dto.GetAssociationRequest;
 import org.geomajas.extension.command.dto.GetAssociationResponse;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
-import org.geomajas.service.VectorLayerModelService;
+import org.geomajas.service.VectorLayerService;
 import org.geotools.filter.text.cql2.CQL;
 import org.opengis.filter.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +43,7 @@ import org.springframework.stereotype.Component;
 public class GetAssociationCommand implements Command<GetAssociationRequest, GetAssociationResponse> {
 
 	@Autowired
-	private VectorLayerModelService layerModelService;
+	private VectorLayerService layerService;
 
 	public GetAssociationResponse getEmptyCommandResponse() {
 		return new GetAssociationResponse();
@@ -62,7 +62,7 @@ public class GetAssociationCommand implements Command<GetAssociationRequest, Get
 		} else {
 			filter = Filter.INCLUDE;
 		}
-		response.setObjects(layerModelService.getObjects(request.getLayerId(), request.getAttributeName(), filter));
+		response.setObjects(layerService.getObjects(request.getLayerId(), request.getAttributeName(), filter));
 	}
 
 }

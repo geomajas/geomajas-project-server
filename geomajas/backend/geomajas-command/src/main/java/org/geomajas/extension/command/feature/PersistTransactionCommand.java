@@ -34,7 +34,7 @@ import org.geomajas.service.ApplicationService;
 import org.geomajas.service.DtoConverter;
 import org.geomajas.service.FilterCreator;
 import org.geomajas.service.GeoService;
-import org.geomajas.service.VectorLayerModelService;
+import org.geomajas.service.VectorLayerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -66,7 +66,7 @@ public class PersistTransactionCommand
 	private PaintFactory paintFactory;
 
 	@Autowired
-	private VectorLayerModelService layerModelService;
+	private VectorLayerService layerService;
 
 	public PersistTransactionResponse getEmptyCommandResponse() {
 		return new PersistTransactionResponse();
@@ -101,7 +101,7 @@ public class PersistTransactionCommand
 			}
 		}
 
-		layerModelService.saveOrUpdate(featureTransaction.getLayerId(), runtimeParameters.getCrs(request.getCrs()),
+		layerService.saveOrUpdate(featureTransaction.getLayerId(), runtimeParameters.getCrs(request.getCrs()),
 				oldFeatures, newFeatures);
 
 		response.setFeatureTransaction(featureTransaction);

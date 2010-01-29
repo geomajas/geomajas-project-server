@@ -41,7 +41,7 @@ import org.geomajas.rendering.image.RasterUrlBuilder;
 import org.geomajas.rendering.painter.tile.TilePainter;
 import org.geomajas.rendering.strategy.RenderingStrategy;
 import org.geomajas.service.FilterCreator;
-import org.geomajas.service.VectorLayerModelService;
+import org.geomajas.service.VectorLayerService;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.cql2.CQLException;
 import org.opengis.filter.Filter;
@@ -94,7 +94,7 @@ public class ExternalWmsRendering implements RenderingStrategy {
 	private PaintFactory paintFactory;
 
 	@Autowired
-	private VectorLayerModelService layerModelService;
+	private VectorLayerService layerService;
 
 
 	/**
@@ -140,8 +140,8 @@ public class ExternalWmsRendering implements RenderingStrategy {
 			// Create a FeaturePainter and paint the features:
 			List<StyleInfo> styleDefinitions = new ArrayList<StyleInfo>();
 			Collections.addAll(styleDefinitions, metadata.getStyleDefs());
-			List<RenderedFeature> features = layerModelService.getFeatures(metadata.getLayerId(), crs, filter,
-					styleDefinitions, VectorLayerModelService.FEATURE_INCLUDE_ALL);
+			List<RenderedFeature> features = layerService.getFeatures(metadata.getLayerId(), crs, filter,
+					styleDefinitions, VectorLayerService.FEATURE_INCLUDE_ALL);
 
 			// At this point, we have a tile with rendered features.
 			// Now we need to paint the tile itself:

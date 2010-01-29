@@ -42,7 +42,7 @@ import org.geomajas.rendering.tile.TileMetadata;
 import org.geomajas.service.ApplicationService;
 import org.geomajas.service.FilterCreator;
 import org.geomajas.service.GeoService;
-import org.geomajas.service.VectorLayerModelService;
+import org.geomajas.service.VectorLayerService;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.cql2.CQLException;
 import org.opengis.filter.Filter;
@@ -92,7 +92,7 @@ public class VectorRendering implements RenderingStrategy {
 	private PaintFactory paintFactory;
 
 	@Autowired
-	private VectorLayerModelService layerModelService;
+	private VectorLayerService layerService;
 
 	@Autowired
 	private TiledFeatureService tiledFeatureService;
@@ -134,8 +134,8 @@ public class VectorRendering implements RenderingStrategy {
 			// Get the features (always needs to include the geometry !)
 			List<StyleInfo> styleDefinitions = new ArrayList<StyleInfo>();
 			Collections.addAll(styleDefinitions, metadata.getStyleDefs());
-			List<RenderedFeature> features = layerModelService.getFeatures(metadata.getLayerId(), crs, filter,
-					styleDefinitions, VectorLayerModelService.FEATURE_INCLUDE_ALL);
+			List<RenderedFeature> features = layerService.getFeatures(metadata.getLayerId(), crs, filter,
+					styleDefinitions, VectorLayerService.FEATURE_INCLUDE_ALL);
 
 			Coordinate panOrigin = new Coordinate(metadata.getPanOrigin().getX(), metadata.getPanOrigin().getY());
 			tiledFeatureService.fillTile(tile, features, vLayer, metadata.getCode(), metadata.getScale(), panOrigin);

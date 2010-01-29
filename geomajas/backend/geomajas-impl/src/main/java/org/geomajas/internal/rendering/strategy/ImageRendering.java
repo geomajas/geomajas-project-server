@@ -41,7 +41,7 @@ import org.geomajas.rendering.tile.TileCode;
 import org.geomajas.rendering.tile.TileMetadata;
 import org.geomajas.service.ApplicationService;
 import org.geomajas.service.FilterCreator;
-import org.geomajas.service.VectorLayerModelService;
+import org.geomajas.service.VectorLayerService;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.cql2.CQLException;
 import org.opengis.filter.Filter;
@@ -77,7 +77,7 @@ public class ImageRendering implements RenderingStrategy {
 	private FilterCreator filterCreator;
 
 	@Autowired
-	private VectorLayerModelService layerModelService;
+	private VectorLayerService layerService;
 
 	/**
 	 * Paint the tile! This function will create a <code>RasterTile</code> extension of the <code>RenderedTile</code>
@@ -112,8 +112,8 @@ public class ImageRendering implements RenderingStrategy {
 			// Create a FeaturePainter and paint the features:
 			List<StyleInfo> styleDefinitions = new ArrayList<StyleInfo>();
 			Collections.addAll(styleDefinitions, metadata.getStyleDefs());
-			List<RenderedFeature> features = layerModelService.getFeatures(metadata.getLayerId(), crs, filter,
-					styleDefinitions, VectorLayerModelService.FEATURE_INCLUDE_ALL);
+			List<RenderedFeature> features = layerService.getFeatures(metadata.getLayerId(), crs, filter,
+					styleDefinitions, VectorLayerService.FEATURE_INCLUDE_ALL);
 
 			// At this point, we have a tile with rendered features.
 			// Now we need to paint the tile itself:

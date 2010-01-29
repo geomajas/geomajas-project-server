@@ -33,7 +33,7 @@ import org.geomajas.layer.feature.SearchCriterion;
 import org.geomajas.service.ApplicationService;
 import org.geomajas.service.DtoConverter;
 import org.geomajas.service.FilterCreator;
-import org.geomajas.service.VectorLayerModelService;
+import org.geomajas.service.VectorLayerService;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.cql2.CQLException;
 import org.opengis.filter.Filter;
@@ -60,7 +60,7 @@ public class SearchFeatureCommand implements Command<SearchFeatureRequest, Searc
 	private FilterCreator filterCreator;
 
 	@Autowired
-	private VectorLayerModelService layerModelService;
+	private VectorLayerService layerService;
 
 	public SearchFeatureResponse getEmptyCommandResponse() {
 		return new SearchFeatureResponse();
@@ -78,8 +78,8 @@ public class SearchFeatureCommand implements Command<SearchFeatureRequest, Searc
 
 		Filter filter = createFilter(request);
 
-		List<RenderedFeature> features = layerModelService.getFeatures(layerId,
-				applicationService.getCrs(request.getCrs()), filter, null, VectorLayerModelService.FEATURE_INCLUDE_ALL);
+		List<RenderedFeature> features = layerService.getFeatures(layerId,
+				applicationService.getCrs(request.getCrs()), filter, null, VectorLayerService.FEATURE_INCLUDE_ALL);
 		response.setLayerId(layerId);
 		int max = request.getMax();
 		if (max == SearchFeatureRequest.MAX_UNLIMITED) {

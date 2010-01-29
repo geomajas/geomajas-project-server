@@ -34,7 +34,7 @@ import org.geomajas.layer.feature.RenderedFeature;
 import org.geomajas.service.ApplicationService;
 import org.geomajas.service.DtoConverter;
 import org.geomajas.service.FilterCreator;
-import org.geomajas.service.VectorLayerModelService;
+import org.geomajas.service.VectorLayerService;
 import org.opengis.filter.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -83,7 +83,7 @@ public class SearchByLocationCommand implements Command<SearchByLocationRequest,
 	private FilterCreator filterCreator;
 
 	@Autowired
-	private VectorLayerModelService layerModelService;
+	private VectorLayerService layerService;
 
 	// -------------------------------------------------------------------------
 	// Command implementation:
@@ -138,9 +138,9 @@ public class SearchByLocationCommand implements Command<SearchByLocationRequest,
 				}
 
 				// Gett the features
-				List<RenderedFeature> temp = layerModelService.getFeatures(layerId,
+				List<RenderedFeature> temp = layerService.getFeatures(layerId,
 						applicationService.getCrs(request.getCrs()), f, null,
-						VectorLayerModelService.FEATURE_INCLUDE_ALL);
+						VectorLayerService.FEATURE_INCLUDE_ALL);
 				if (temp.size() > 0) {
 					List<Feature> features = new ArrayList<Feature>();
 

@@ -31,7 +31,7 @@ import org.geomajas.layer.LayerType;
 import org.geomajas.service.ApplicationService;
 import org.geomajas.service.BboxService;
 import org.geomajas.service.GeoService;
-import org.geomajas.service.VectorLayerModelService;
+import org.geomajas.service.VectorLayerService;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.referencing.CRS;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -64,7 +64,7 @@ public class UserMaximumExtentCommand implements Command<UserMaximumExtentReques
 	private ApplicationService runtimeParameters;
 
 	@Autowired
-	private VectorLayerModelService layerModelService;
+	private VectorLayerService layerService;
 
 	public UserMaximumExtentResponse getEmptyCommandResponse() {
 		return new UserMaximumExtentResponse();
@@ -103,7 +103,7 @@ public class UserMaximumExtentCommand implements Command<UserMaximumExtentReques
 						MathTransform transformer = geoService.findMathTransform(layer.getCrs(), targetCrs);
 						bounds = bboxService.fromEnvelope(JTS.transform(bboxService.toEnvelope(bounds), transformer));
 					} else {
-						bounds = layerModelService.getBounds(layerId, targetCrs, null);
+						bounds = layerService.getBounds(layerId, targetCrs, null);
 					}
 					bboxService.expandToInclude(extent, bounds);
 				} else {

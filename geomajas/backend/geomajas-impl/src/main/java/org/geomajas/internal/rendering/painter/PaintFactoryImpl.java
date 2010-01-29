@@ -38,7 +38,7 @@ import org.geomajas.rendering.tile.TileCode;
 import org.geomajas.rendering.tile.UrlTile;
 import org.geomajas.service.BboxService;
 import org.geomajas.service.FilterCreator;
-import org.geomajas.service.VectorLayerModelService;
+import org.geomajas.service.VectorLayerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -60,14 +60,14 @@ public class PaintFactoryImpl implements PaintFactory {
 	private FeatureFactory featureFactory;
 
 	@Autowired
-	private VectorLayerModelService layerModelService;
+	private VectorLayerService layerService;
 
 	public LayerPaintContext createLayerPaintContext(VectorLayer layer) {
 		return new DefaultLayerPaintContext(layer);
 	}
 
 	public TileImageCreator createTileImageCreator(RenderedTile tile, boolean transparent) {
-		return new TileImageCreatorImpl(tile, transparent, filterCreator, layerModelService);
+		return new TileImageCreatorImpl(tile, transparent, filterCreator, layerService);
 	}
 
 	public TilePainter createRasterTilePainter(String layerId) {

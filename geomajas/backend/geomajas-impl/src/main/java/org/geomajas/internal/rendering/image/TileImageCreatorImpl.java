@@ -34,7 +34,7 @@ import org.geomajas.rendering.painter.TilePaintContext;
 import org.geomajas.rendering.painter.image.FeatureImagePainter;
 import org.geomajas.rendering.tile.RenderedTile;
 import org.geomajas.service.FilterCreator;
-import org.geomajas.service.VectorLayerModelService;
+import org.geomajas.service.VectorLayerService;
 import org.opengis.filter.Filter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -95,19 +95,19 @@ public class TileImageCreatorImpl implements TileImageCreator {
 
 	private FilterCreator filterCreator;
 
-	private VectorLayerModelService layerModelService;
+	private VectorLayerService layerService;
 
 	// -------------------------------------------------------------------------
 	// Constructor
 	// -------------------------------------------------------------------------
 
 	public TileImageCreatorImpl(RenderedTile tile, boolean transparent, FilterCreator filterCreator,
-			VectorLayerModelService layerModelService) {
+			VectorLayerService layerService) {
 		this.tile = tile;
 		this.transparent = transparent;
 		painters = new ArrayList<FeatureImagePainter>();
 		this.filterCreator = filterCreator;
-		this.layerModelService = layerModelService;
+		this.layerService = layerService;
 	}
 
 	// -------------------------------------------------------------------------
@@ -296,8 +296,8 @@ public class TileImageCreatorImpl implements TileImageCreator {
 		if (layerContext.getFilter() != null) {
 			filter = filterCreator.createLogicFilter(filter, "AND", layerContext.getFilter());
 		}
-		List<RenderedFeature> features = layerModelService.getFeatures(layerInfo.getId(), null, filter,
-				layerInfo.getStyleDefinitions(), VectorLayerModelService.FEATURE_INCLUDE_ALL);
+		List<RenderedFeature> features = layerService.getFeatures(layerInfo.getId(), null, filter,
+				layerInfo.getStyleDefinitions(), VectorLayerService.FEATURE_INCLUDE_ALL);
 		// ---------------------------------------------------------------------
 		// Step2: Transform the LayerModel objects to features:
 		// ---------------------------------------------------------------------
