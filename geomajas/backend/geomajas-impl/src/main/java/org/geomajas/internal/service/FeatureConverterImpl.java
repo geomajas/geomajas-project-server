@@ -26,6 +26,7 @@ package org.geomajas.internal.service;
 import org.geomajas.configuration.AttributeInfo;
 import org.geomajas.configuration.FeatureInfo;
 import org.geomajas.internal.layer.feature.EditableFeature;
+import org.geomajas.internal.layer.feature.RenderedFeatureImpl;
 import org.geomajas.internal.layer.feature.VectorFeature;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.Feature;
@@ -102,7 +103,7 @@ public class FeatureConverterImpl implements FeatureConverter {
 			feature = new EditableFeature(bboxService);
 			((EditableFeature) feature).setEditable(true);
 		} else {
-			feature = new VectorFeature(bboxService);
+			feature = new VectorFeature(new RenderedFeatureImpl(bboxService));
 			((VectorFeature) feature).setClipped(dto.isClipped());
 		}
 		feature.setAttributes(toFeature(dto.getAttributes()));

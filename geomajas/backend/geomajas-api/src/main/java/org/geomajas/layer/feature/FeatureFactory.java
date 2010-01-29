@@ -32,7 +32,5 @@ public interface FeatureFactory {
 
 	RenderedFeature createRenderedFeature();
 
-	RenderedFeature createVectorFeature();
-
 	RenderedFeature createEditableFeature();
 }

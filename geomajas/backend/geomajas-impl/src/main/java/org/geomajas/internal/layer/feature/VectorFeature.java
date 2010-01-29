@@ -124,11 +124,11 @@ public class VectorFeature implements RenderedFeature {
 	}
 
 	public Geometry getGeometry() {
-		return null;  // you should use getClippedGeometry()
+		return base.getGeometry();
 	}
 
 	public void setGeometry(Geometry geometry) {
-		// nothing to do, you should use setClippedGeometry()
+		base.setGeometry(geometry);
 	}
 
 	public StyleInfo getStyleInfo() {

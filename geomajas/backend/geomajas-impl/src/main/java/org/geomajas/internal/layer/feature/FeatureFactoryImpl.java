@@ -44,10 +44,6 @@ public class FeatureFactoryImpl implements FeatureFactory {
 		return new RenderedFeatureImpl(bboxService);
 	}
 
-	public RenderedFeature createVectorFeature() {
-		return new VectorFeature(bboxService);
-	}
-
 	public RenderedFeature createEditableFeature() {
 		return new EditableFeature(bboxService);
 	}
