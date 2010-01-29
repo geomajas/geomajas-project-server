@@ -38,6 +38,17 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 		</property>
 	</bean>
 
+	<bean class="org.springframework.beans.factory.config.CustomScopeConfigurer">
+		<property name="scopes">
+			<map>
+				<entry key="thread">
+					<bean class="org.geomajas.spring.ThreadScope"/>
+				</entry>
+			</map>
+		</property>
+	</bean>
+
+
 	<context:component-scan base-package="org.geomajas" name-generator="org.geomajas.spring.GeomajasBeanNameGenerator"/>
 
 </beans>
