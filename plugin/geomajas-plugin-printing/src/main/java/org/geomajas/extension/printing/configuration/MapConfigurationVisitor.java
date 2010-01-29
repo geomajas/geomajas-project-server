@@ -32,11 +32,11 @@ import org.geomajas.extension.printing.component.MapComponent;
 import org.geomajas.extension.printing.component.RasterLayerComponent;
 import org.geomajas.extension.printing.component.TopDownVisitor;
 import org.geomajas.extension.printing.component.VectorLayerComponent;
-import org.geomajas.rendering.painter.PaintFactory;
 import org.geomajas.service.ApplicationService;
 import org.geomajas.service.BboxService;
 import org.geomajas.service.FilterCreator;
 import org.geomajas.service.GeoService;
+import org.geomajas.service.VectorLayerService;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -58,15 +58,15 @@ public class MapConfigurationVisitor extends TopDownVisitor {
 
 	private FilterCreator filterCreator;
 
-	private PaintFactory paintFactory;
+	private VectorLayerService layerService;
 
 	public MapConfigurationVisitor(ApplicationService runtimeParameters, GeoService geoService, BboxService bboxService,
-			FilterCreator filterCreator, PaintFactory paintFactory) {
+			FilterCreator filterCreator, VectorLayerService layerService) {
 		this.runtime = runtimeParameters;
 		this.geoService = geoService;
 		this.bboxService = bboxService;
 		this.filterCreator = filterCreator;
-		this.paintFactory = paintFactory;
+		this.layerService = layerService;
 	}
 
 	@Override
@@ -93,7 +93,7 @@ public class MapConfigurationVisitor extends TopDownVisitor {
 		for (LayerInfo info : layers) {
 			if (info instanceof VectorLayerInfo) {
 				VectorLayerComponent comp = new VectorLayerComponent(geoService, bboxService, filterCreator,
-						paintFactory);
+						layerService);
 				comp.setLabelsVisible(false);
 				comp.setLayerId(info.getId());
 				List<StyleInfo> sdef = ((VectorLayerInfo) info).getStyleDefinitions();
