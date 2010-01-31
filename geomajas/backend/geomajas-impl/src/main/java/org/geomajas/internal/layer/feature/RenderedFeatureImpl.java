@@ -28,7 +28,7 @@ import org.geomajas.configuration.StyleInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.global.Json;
 import org.geomajas.layer.VectorLayer;
-import org.geomajas.layer.feature.RenderedFeature;
+import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.service.BboxService;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -47,7 +47,7 @@ import java.util.Map;
  */
 @Component
 @Scope("prototype")
-public class RenderedFeatureImpl implements RenderedFeature {
+public class RenderedFeatureImpl implements InternalFeature {
 
 	private BboxService bboxService;
 
@@ -93,7 +93,7 @@ public class RenderedFeatureImpl implements RenderedFeature {
 	 * Create a clone.
 	 */
 	public Object clone() {
-		RenderedFeature f = new RenderedFeatureImpl(bboxService);
+		InternalFeature f = new RenderedFeatureImpl(bboxService);
 		f.setAttributes(attributes);
 		f.setGeometry((Geometry) geometry.clone());
 		f.setId(id);
@@ -139,7 +139,7 @@ public class RenderedFeatureImpl implements RenderedFeature {
 	/**
 	 * This function compares style ID's between features. Features are usually sorted by style.
 	 */
-	public int compareTo(RenderedFeature o) {
+	public int compareTo(InternalFeature o) {
 		if (styleDefinition.getId() > o.getStyleInfo().getId()) {
 			return 1;
 		}
@@ -157,10 +157,10 @@ public class RenderedFeatureImpl implements RenderedFeature {
 		if (obj == null || id == null) {
 			return false;
 		} else {
-			if (!(obj instanceof RenderedFeature)) {
+			if (!(obj instanceof InternalFeature)) {
 				return false;
 			}
-			RenderedFeature other = (RenderedFeature) obj;
+			InternalFeature other = (InternalFeature) obj;
 			return id.equals(other.getId());
 		}
 	}

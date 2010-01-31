@@ -23,7 +23,10 @@
 
 package org.geomajas.internal.rendering.strategy;
 
-import com.vividsolutions.jts.geom.Coordinate;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import org.geomajas.configuration.ApplicationInfo;
 import org.geomajas.configuration.StyleInfo;
 import org.geomajas.global.ExceptionCode;
@@ -32,15 +35,14 @@ import org.geomajas.internal.application.tile.VectorTileJG;
 import org.geomajas.internal.rendering.painter.feature.TiledFeatureService;
 import org.geomajas.internal.rendering.painter.tile.VectorTilePainter;
 import org.geomajas.layer.VectorLayer;
-import org.geomajas.layer.feature.RenderedFeature;
+import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.rendering.RenderException;
-import org.geomajas.rendering.painter.PaintFactory;
 import org.geomajas.rendering.painter.tile.TilePainter;
 import org.geomajas.rendering.strategy.RenderingStrategy;
-import org.geomajas.rendering.tile.RenderedTile;
+import org.geomajas.rendering.tile.InternalTile;
 import org.geomajas.rendering.tile.TileMetadata;
 import org.geomajas.service.ApplicationService;
-import org.geomajas.service.FilterCreator;
+import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
 import org.geomajas.service.VectorLayerService;
 import org.geotools.filter.text.cql2.CQL;
@@ -50,9 +52,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import com.vividsolutions.jts.geom.Coordinate;
 
 /**
  * <p>
@@ -62,18 +62,16 @@ import java.util.List;
  * </p>
  * <p>
  * This puts the features in a tile. Not all features are included as-is. For example, when features are way too big,
- * they are clipped. (note: since the normal <code>RenderedFeature</code> object does not support clipped
- * features, an extension, called <code>VectorFeature</code> is used instead).
+ * they are clipped. (note: since the normal <code>RenderedFeature</code> object does not support clipped features, an
+ * extension, called <code>VectorFeature</code> is used instead).
  * </p>
  * <p>
- * When features are put in a VectorTile, it also keeps track of dependency
- * between tiles. Tiles in Geomajas are dependent in the sense that each feature
- * lies in only 1 tile, even if it's geometry crosses the bounds of the tile. To
- * discern what tile a feature belongs to, the position of the first coordinate
- * is used. The other tiles that the geometry in question spans, are considered
- * dependent tiles.
+ * When features are put in a VectorTile, it also keeps track of dependency between tiles. Tiles in Geomajas are
+ * dependent in the sense that each feature lies in only 1 tile, even if it's geometry crosses the bounds of the tile.
+ * To discern what tile a feature belongs to, the position of the first coordinate is used. The other tiles that the
+ * geometry in question spans, are considered dependent tiles.
  * </p>
- *
+ * 
  * @author Pieter De Graef
  */
 @Component()
@@ -86,10 +84,7 @@ public class VectorRendering implements RenderingStrategy {
 	private GeoService geoService;
 
 	@Autowired
-	private FilterCreator filterCreator;
-
-	@Autowired
-	private PaintFactory paintFactory;
+	private FilterService filterCreator;
 
 	@Autowired
 	private VectorLayerService layerService;
@@ -98,9 +93,9 @@ public class VectorRendering implements RenderingStrategy {
 	private TiledFeatureService tiledFeatureService;
 
 	/**
-	 * Paint a tile! This class uses the {@link org.geomajas.internal.rendering.painter.feature.TiledFeatureService}
-	 * to paint the features, then the {@link VectorTilePainter} to paint the tiles.
-	 *
+	 * Paint a tile! This class uses the {@link org.geomajas.internal.rendering.painter.feature.TiledFeatureService} to
+	 * paint the features, then the {@link VectorTilePainter} to paint the tiles.
+	 * 
 	 * @param metadata
 	 *            The object that holds all the spatial and styling information for a tile.
 	 * @param application
@@ -110,7 +105,7 @@ public class VectorRendering implements RenderingStrategy {
 	 * @throws RenderException
 	 *             Sometimes things go wrong...
 	 */
-	public RenderedTile paint(TileMetadata metadata, ApplicationInfo application) throws RenderException {
+	public InternalTile paint(TileMetadata metadata, ApplicationInfo application) throws RenderException {
 		try {
 			// Get the map and layer objects:
 			VectorLayer vLayer = runtime.getVectorLayer(metadata.getLayerId());
@@ -134,7 +129,7 @@ public class VectorRendering implements RenderingStrategy {
 			// Get the features (always needs to include the geometry !)
 			List<StyleInfo> styleDefinitions = new ArrayList<StyleInfo>();
 			Collections.addAll(styleDefinitions, metadata.getStyleDefs());
-			List<RenderedFeature> features = layerService.getFeatures(metadata.getLayerId(), crs, filter,
+			List<InternalFeature> features = layerService.getFeatures(metadata.getLayerId(), crs, filter,
 					styleDefinitions, VectorLayerService.FEATURE_INCLUDE_ALL);
 
 			Coordinate panOrigin = new Coordinate(metadata.getPanOrigin().getX(), metadata.getPanOrigin().getY());

@@ -135,7 +135,7 @@ public class LabelImagePainter implements FeatureImagePainter {
 	 * @param feature
 	 *            The feature object of which we draw the label.
 	 */
-	public void paint(Graphics2D graphics, org.geomajas.layer.feature.RenderedFeature feature) {
+	public void paint(Graphics2D graphics, org.geomajas.layer.feature.InternalFeature feature) {
 		if (transformer == null) {
 			return;
 		}

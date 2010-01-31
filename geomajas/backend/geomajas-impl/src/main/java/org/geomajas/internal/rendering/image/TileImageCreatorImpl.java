@@ -23,22 +23,6 @@
 
 package org.geomajas.internal.rendering.image;
 
-import org.geomajas.configuration.VectorLayerInfo;
-import org.geomajas.geometry.Bbox;
-import org.geomajas.global.GeomajasException;
-import org.geomajas.layer.VectorLayer;
-import org.geomajas.layer.feature.RenderedFeature;
-import org.geomajas.rendering.image.TileImageCreator;
-import org.geomajas.rendering.painter.LayerPaintContext;
-import org.geomajas.rendering.painter.TilePaintContext;
-import org.geomajas.rendering.painter.image.FeatureImagePainter;
-import org.geomajas.rendering.tile.RenderedTile;
-import org.geomajas.service.FilterCreator;
-import org.geomajas.service.VectorLayerService;
-import org.opengis.filter.Filter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -48,6 +32,22 @@ import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.geomajas.configuration.VectorLayerInfo;
+import org.geomajas.geometry.Bbox;
+import org.geomajas.global.GeomajasException;
+import org.geomajas.layer.VectorLayer;
+import org.geomajas.layer.feature.InternalFeature;
+import org.geomajas.rendering.image.TileImageCreator;
+import org.geomajas.rendering.painter.LayerPaintContext;
+import org.geomajas.rendering.painter.TilePaintContext;
+import org.geomajas.rendering.painter.image.FeatureImagePainter;
+import org.geomajas.rendering.tile.InternalTile;
+import org.geomajas.service.FilterService;
+import org.geomajas.service.VectorLayerService;
+import org.opengis.filter.Filter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * <p>
@@ -90,10 +90,9 @@ public class TileImageCreatorImpl implements TileImageCreator {
 	/**
 	 * The tile object for whom we are creating a rendering.
 	 */
-	private RenderedTile tile;
+	protected InternalTile tile;
 
-
-	private FilterCreator filterCreator;
+	private FilterService filterService;
 
 	private VectorLayerService layerService;
 
@@ -101,13 +100,13 @@ public class TileImageCreatorImpl implements TileImageCreator {
 	// Constructor
 	// -------------------------------------------------------------------------
 
-	public TileImageCreatorImpl(RenderedTile tile, boolean transparent, FilterCreator filterCreator,
+	public TileImageCreatorImpl(InternalTile tile, boolean transparent, FilterService filterService,
 			VectorLayerService layerService) {
 		this.tile = tile;
 		this.transparent = transparent;
 		painters = new ArrayList<FeatureImagePainter>();
-		this.filterCreator = filterCreator;
 		this.layerService = layerService;
+		this.filterService = filterService;
 	}
 
 	// -------------------------------------------------------------------------
@@ -291,17 +290,17 @@ public class TileImageCreatorImpl implements TileImageCreator {
 		VectorLayer layer = layerContext.getLayer();
 		VectorLayerInfo layerInfo = layer.getLayerInfo();
 		String geomName = layer.getLayerInfo().getFeatureInfo().getGeometryType().getName();
-		Filter filter = filterCreator.createBboxFilter(tileContext.getCoordinateReferenceSystem().getIdentifiers()
+		Filter filter = filterService.createBboxFilter(tileContext.getCoordinateReferenceSystem().getIdentifiers()
 				.iterator().next().toString(), tileContext.getAreaOfInterest(), geomName);
 		if (layerContext.getFilter() != null) {
-			filter = filterCreator.createLogicFilter(filter, "AND", layerContext.getFilter());
+			filter = filterService.createLogicFilter(filter, "AND", layerContext.getFilter());
 		}
-		List<RenderedFeature> features = layerService.getFeatures(layerInfo.getId(), null, filter,
+		List<InternalFeature> features = layerService.getFeatures(layerInfo.getId(), null, filter,
 				layerInfo.getStyleDefinitions(), VectorLayerService.FEATURE_INCLUDE_ALL);
 		// ---------------------------------------------------------------------
 		// Step2: Transform the LayerModel objects to features:
 		// ---------------------------------------------------------------------
-		for (RenderedFeature feature : features) {
+		for (InternalFeature feature : features) {
 			tile.addFeature(feature);
 		}
 
@@ -310,7 +309,7 @@ public class TileImageCreatorImpl implements TileImageCreator {
 		// ---------------------------------------------------------------------
 		for (FeatureImagePainter painter : painters) {
 			painter.setTileContext(tileContext);
-			for (RenderedFeature feature : tile.getFeatures()) {
+			for (InternalFeature feature : tile.getFeatures()) {
 				painter.paint(graphics2D, feature);
 			}
 		}

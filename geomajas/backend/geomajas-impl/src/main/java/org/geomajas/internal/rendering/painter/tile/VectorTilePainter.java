@@ -27,7 +27,7 @@ import com.vividsolutions.jts.geom.Coordinate;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.internal.application.tile.VectorTileJG;
-import org.geomajas.internal.layer.feature.VectorFeature;
+import org.geomajas.internal.layer.feature.ClippedInternalFeature;
 import org.geomajas.internal.rendering.DefaultSvgDocument;
 import org.geomajas.internal.rendering.DefaultVmlDocument;
 import org.geomajas.internal.rendering.writers.svg.SvgFeatureScreenWriter;
@@ -40,7 +40,7 @@ import org.geomajas.layer.VectorLayer;
 import org.geomajas.rendering.GraphicsDocument;
 import org.geomajas.rendering.RenderException;
 import org.geomajas.rendering.painter.tile.TilePainter;
-import org.geomajas.rendering.tile.RenderedTile;
+import org.geomajas.rendering.tile.InternalTile;
 import org.geomajas.rendering.tile.TileMetadata;
 import org.geomajas.service.GeoService;
 import org.geotools.geometry.jts.GeometryCoordinateSequenceTransformer;
@@ -173,7 +173,7 @@ public class VectorTilePainter implements TilePainter {
 	 *            created.
 	 * @return Returns a fully rendered vector tile.
 	 */
-	public RenderedTile paint(RenderedTile tileToPaint) throws RenderException {
+	public InternalTile paint(InternalTile tileToPaint) throws RenderException {
 		if (tileToPaint instanceof VectorTileJG) {
 			// VectorTile vTile = (VectorTile) tile;
 			this.tile = (VectorTileJG) tileToPaint;
@@ -248,14 +248,14 @@ public class VectorTilePainter implements TilePainter {
 		if (TileMetadata.PARAM_SVG_RENDERER.equalsIgnoreCase(renderer)) {
 			DefaultSvgDocument document = new DefaultSvgDocument(writer, false);
 			document.setMaximumFractionDigits(MAXIMUM_FRACTION_DIGITS);
-			document.registerWriter(VectorFeature.class, new SvgFeatureScreenWriter(getTransformer()));
+			document.registerWriter(ClippedInternalFeature.class, new SvgFeatureScreenWriter(getTransformer()));
 			document.registerWriter(VectorTileJG.class, new SvgFeatureTileWriter());
 			return document;
 		} else if (TileMetadata.PARAM_VML_RENDERER.equalsIgnoreCase(renderer)) {
 			DefaultVmlDocument document = new DefaultVmlDocument(writer);
 			int coordWidth = tile.getScreenWidth();
 			int coordHeight = tile.getScreenHeight();
-			document.registerWriter(VectorFeature.class, new VmlFeatureScreenWriter(getTransformer(),
+			document.registerWriter(ClippedInternalFeature.class, new VmlFeatureScreenWriter(getTransformer(),
 					coordWidth, coordHeight));
 			document.registerWriter(VectorTileJG.class, new VmlVectorTileWriter(coordWidth, coordHeight));
 			document.setMaximumFractionDigits(MAXIMUM_FRACTION_DIGITS);
@@ -280,7 +280,7 @@ public class VectorTilePainter implements TilePainter {
 			DefaultVmlDocument document = new DefaultVmlDocument(writer);
 			int coordWidth = (int) Math.round(scale * getTileBbox().getWidth());
 			int coordHeight = (int) Math.round(scale * getTileBbox().getHeight());
-			document.registerWriter(VectorFeature.class, new VmlFeatureScreenWriter(getTransformer(),
+			document.registerWriter(ClippedInternalFeature.class, new VmlFeatureScreenWriter(getTransformer(),
 					coordWidth, coordHeight));
 			document.registerWriter(VectorTileJG.class, new VmlLabelTileWriter(coordWidth, coordHeight,
 					getTransformer(), layer.getLayerInfo().getLabelAttribute().getBackgroundStyle(), geoService));

@@ -24,10 +24,10 @@
 package org.geomajas.internal.rendering.strategy;
 
 import org.geomajas.configuration.ApplicationInfo;
-import org.geomajas.layer.feature.RenderedFeature;
+import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.rendering.RenderException;
 import org.geomajas.rendering.strategy.RenderingStrategy;
-import org.geomajas.rendering.tile.RenderedTile;
+import org.geomajas.rendering.tile.InternalTile;
 import org.geomajas.rendering.tile.TileMetadata;
 
 /**
@@ -53,12 +53,12 @@ public class SimplifiedImageRendering implements RenderingStrategy {
 	 *            The application in which this tile is defined.
 	 * @return Returns a completely rendered <code>RasterTile</code>.
 	 */
-	public RenderedTile paint(TileMetadata metadata, ApplicationInfo application) throws RenderException {
+	public InternalTile paint(TileMetadata metadata, ApplicationInfo application) throws RenderException {
 
-		RenderedTile paintedTile = rendering.paint(metadata, application);
+		InternalTile paintedTile = rendering.paint(metadata, application);
 
 		// Remove loads of geometries from features.
-		for (RenderedFeature feature : paintedTile.getFeatures()) {
+		for (InternalFeature feature : paintedTile.getFeatures()) {
 			String geometryType = feature.getGeometry().getGeometryType();
 			if ("MultiPolygon".equals(geometryType) || "Polygon".equals(geometryType)) {
 				//feature.setGeometry(feature.getGeometry().getBbox());

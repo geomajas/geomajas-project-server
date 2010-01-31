@@ -27,7 +27,7 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import org.geomajas.configuration.StyleInfo;
 import org.geomajas.internal.application.tile.VectorTileJG;
-import org.geomajas.internal.layer.feature.VectorFeature;
+import org.geomajas.internal.layer.feature.ClippedInternalFeature;
 import org.geomajas.internal.rendering.writers.GraphicsWriter;
 import org.geomajas.rendering.GraphicsDocument;
 import org.geomajas.rendering.RenderException;
@@ -67,8 +67,8 @@ public class SvgLabelTileWriter implements GraphicsWriter {
 		VectorTileJG tile = (VectorTileJG) object;
 		document.writeElement("g", asChild);
 		document.writeId("labels." + tile.getCode().toString());
-		for (org.geomajas.layer.feature.RenderedFeature f : tile.getFeatures()) {
-			VectorFeature feature = (VectorFeature) f;
+		for (org.geomajas.layer.feature.InternalFeature f : tile.getFeatures()) {
+			ClippedInternalFeature feature = (ClippedInternalFeature) f;
 			if (!feature.getStyleInfo().equals(StyleFilter.DEFAULT_STYLE_ID + "")) {
 				Coordinate pos = geoService.calcDefaultLabelPosition(feature);
 				if (pos == null) {

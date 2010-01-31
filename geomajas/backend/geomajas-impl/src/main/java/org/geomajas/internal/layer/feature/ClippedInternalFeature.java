@@ -23,14 +23,15 @@
 
 package org.geomajas.internal.layer.feature;
 
-import com.vividsolutions.jts.geom.Geometry;
+import java.util.Map;
+
 import org.geomajas.configuration.StyleInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.global.Json;
 import org.geomajas.layer.VectorLayer;
-import org.geomajas.layer.feature.RenderedFeature;
+import org.geomajas.layer.feature.InternalFeature;
 
-import java.util.Map;
+import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * <p>
@@ -44,12 +45,12 @@ import java.util.Map;
  *
  * @author Pieter De Graef
  */
-public class VectorFeature implements RenderedFeature {
+public class ClippedInternalFeature implements InternalFeature {
 
 	/**
 	 * RenderedFeature to delegate calls to.
 	 */
-	private RenderedFeature base;
+	private InternalFeature base;
 
 	/**
 	 * Has this feature's geometry been clipped?
@@ -61,7 +62,7 @@ public class VectorFeature implements RenderedFeature {
 	 */
 	private Geometry clippedGeometry;
 
-	public VectorFeature(RenderedFeature base) {
+	public ClippedInternalFeature(InternalFeature base) {
 		this.base = base;
 	}
 
@@ -103,7 +104,7 @@ public class VectorFeature implements RenderedFeature {
 		return base.isNew();
 	}
 
-	public int compareTo(RenderedFeature o) {
+	public int compareTo(InternalFeature o) {
 		return base.compareTo(o);
 	}
 

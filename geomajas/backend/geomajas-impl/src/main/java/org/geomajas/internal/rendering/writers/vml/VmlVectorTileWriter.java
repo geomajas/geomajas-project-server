@@ -26,7 +26,7 @@ package org.geomajas.internal.rendering.writers.vml;
 import org.geomajas.configuration.StyleInfo;
 import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.internal.application.tile.VectorTileJG;
-import org.geomajas.internal.layer.feature.VectorFeature;
+import org.geomajas.internal.layer.feature.ClippedInternalFeature;
 import org.geomajas.internal.rendering.writers.GraphicsWriter;
 import org.geomajas.layer.LayerType;
 import org.geomajas.rendering.GraphicsDocument;
@@ -55,8 +55,8 @@ public class VmlVectorTileWriter implements GraphicsWriter {
 			boolean asChild) throws RenderException {
 		VectorTileJG tile = (VectorTileJG) object;
 		String style = null;
-		for (org.geomajas.layer.feature.RenderedFeature f : tile.getFeatures()) {
-			VectorFeature feature = (VectorFeature) f;
+		for (org.geomajas.layer.feature.InternalFeature f : tile.getFeatures()) {
+			ClippedInternalFeature feature = (ClippedInternalFeature) f;
 			String nextStyle = feature.getStyleInfo().getId() + "";
 			if (style == null || !style.equals(nextStyle)) {
 				if (style != null) {

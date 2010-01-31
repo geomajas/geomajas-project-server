@@ -27,10 +27,10 @@ import org.geomajas.configuration.AttributeInfo;
 import org.geomajas.configuration.FeatureInfo;
 import org.geomajas.internal.layer.feature.EditableFeature;
 import org.geomajas.internal.layer.feature.RenderedFeatureImpl;
-import org.geomajas.internal.layer.feature.VectorFeature;
+import org.geomajas.internal.layer.feature.ClippedInternalFeature;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.Feature;
-import org.geomajas.layer.feature.RenderedFeature;
+import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.service.AttributeConverter;
 import org.geomajas.service.BboxService;
 import org.geomajas.service.FeatureConverter;
@@ -65,7 +65,7 @@ public class FeatureConverterImpl implements FeatureConverter {
 	 * @param feature The server-side feature representation.
 	 * @return Returns the DTO feature.
 	 */
-	public Feature toDto(RenderedFeature feature) {
+	public Feature toDto(InternalFeature feature) {
 		if (feature == null) {
 			return null;
 		}
@@ -78,8 +78,8 @@ public class FeatureConverterImpl implements FeatureConverter {
 			dto.setStyleId((int) feature.getStyleInfo().getId());
 		}
 
-		if (feature instanceof VectorFeature) {
-			VectorFeature vFeature = (VectorFeature) feature;
+		if (feature instanceof ClippedInternalFeature) {
+			ClippedInternalFeature vFeature = (ClippedInternalFeature) feature;
 			dto.setClipped(vFeature.isClipped());
 		} else if (feature instanceof EditableFeature) {
 			EditableFeature eFeature = (EditableFeature) feature;
@@ -94,17 +94,17 @@ public class FeatureConverterImpl implements FeatureConverter {
 	 * @param dto The DTO feature that comes from the client.
 	 * @return Returns a server-side feature object.
 	 */
-	public RenderedFeature toFeature(Feature dto) {
+	public InternalFeature toFeature(Feature dto) {
 		if (dto == null) {
 			return null;
 		}
-		RenderedFeature feature;
+		InternalFeature feature;
 		if (dto.isEditable()) {
 			feature = new EditableFeature(bboxService);
 			((EditableFeature) feature).setEditable(true);
 		} else {
-			feature = new VectorFeature(new RenderedFeatureImpl(bboxService));
-			((VectorFeature) feature).setClipped(dto.isClipped());
+			feature = new ClippedInternalFeature(new RenderedFeatureImpl(bboxService));
+			((ClippedInternalFeature) feature).setClipped(dto.isClipped());
 		}
 		feature.setAttributes(toFeature(dto.getAttributes()));
 		feature.setId(dto.getId());

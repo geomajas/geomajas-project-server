@@ -26,9 +26,9 @@ package org.geomajas.internal.service;
 import org.geomajas.internal.application.tile.RasterTileJG;
 import org.geomajas.internal.application.tile.VectorTileJG;
 import org.geomajas.layer.feature.Feature;
-import org.geomajas.layer.feature.RenderedFeature;
+import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.rendering.tile.RasterTile;
-import org.geomajas.rendering.tile.RenderedTile;
+import org.geomajas.rendering.tile.InternalTile;
 import org.geomajas.rendering.tile.Tile;
 import org.geomajas.rendering.tile.VectorTile;
 import org.geomajas.service.FeatureConverter;
@@ -58,7 +58,7 @@ public final class TileConverterImpl implements TileConverter {
 	 *            The server-side representation of a tile.
 	 * @return Returns the DTO version that can be sent to the client.
 	 */
-	public Tile toDto(RenderedTile tile) {
+	public Tile toDto(InternalTile tile) {
 		if (tile != null) {
 			if (tile instanceof VectorTileJG) {
 				VectorTileJG vTile = (VectorTileJG) tile;
@@ -85,7 +85,7 @@ public final class TileConverterImpl implements TileConverter {
 
 	// Private methods:
 
-	private void updateBasicTile(RenderedTile source, Tile target) {
+	private void updateBasicTile(InternalTile source, Tile target) {
 		target.setClipped(source.isClipped());
 		target.setCode(source.getCode());
 		target.setCodes(source.getCodes());
@@ -94,7 +94,7 @@ public final class TileConverterImpl implements TileConverter {
 		target.setTileHeight(source.getTileHeight());
 		target.setTileWidth(source.getTileWidth());
 		List<Feature> features = new ArrayList<Feature>();
-		for (RenderedFeature feature : source.getFeatures()) {
+		for (InternalFeature feature : source.getFeatures()) {
 			features.add(featureConverter.toDto(feature));
 		}
 		target.setFeatures(features);

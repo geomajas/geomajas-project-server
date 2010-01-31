@@ -23,39 +23,37 @@
 
 package org.geomajas.internal.rendering.painter.feature;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Geometry;
+import java.util.List;
+
 import org.geomajas.geometry.Bbox;
-import org.geomajas.internal.layer.feature.VectorFeature;
+import org.geomajas.internal.layer.feature.ClippedInternalFeature;
 import org.geomajas.layer.VectorLayer;
-import org.geomajas.layer.feature.RenderedFeature;
-import org.geomajas.rendering.tile.RenderedTile;
+import org.geomajas.layer.feature.InternalFeature;
+import org.geomajas.rendering.tile.InternalTile;
 import org.geomajas.rendering.tile.TileCode;
 import org.geomajas.service.BboxService;
 import org.geotools.geometry.jts.JTS;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * <p>
  * This service puts featues in a tile. In that case, not all features which overlap the tile are included as-is.
  * </p>
  * <p>
- * For example, when features are way too big, they are clipped. (note: since
- * the normal <code>RenderedFeature</code> object does not support clipped
- * features, an extension, called <code>VectorFeature</code> is used instead).
+ * For example, when features are way too big, they are clipped. (note: since the normal <code>RenderedFeature</code>
+ * object does not support clipped features, an extension, called <code>VectorFeature</code> is used instead).
  * </p>
  * <p>
- * It also keeps track of dependency
- * between tiles. Tiles in Geomajas are dependent in the sense that each feature
- * lies in only 1 tile, even if it's geometry crosses the bounds of the tile. To
- * discern what tile a feature belongs to, the position of the first coordinate
- * is used. The other tiles that the geometry in question spans, are considered
+ * It also keeps track of dependency between tiles. Tiles in Geomajas are dependent in the sense that each feature lies
+ * in only 1 tile, even if it's geometry crosses the bounds of the tile. To discern what tile a feature belongs to, the
+ * position of the first coordinate is used. The other tiles that the geometry in question spans, are considered
  * dependent tiles.
  * </p>
- *
+ * 
  * @author Pieter De Graef
  * @author Joachim Van der Auwera
  */
@@ -71,27 +69,31 @@ public class TiledFeatureService {
 	private static int MAXIMUM_TILE_COORDINATE = 10000;
 
 	/**
-	 * The tile's maximum bounds in screen space. Needed for clipping
-	 * calculations.
+	 * The tile's maximum bounds in screen space. Needed for clipping calculations.
 	 */
 	private Bbox maxScreenBbox;
 
 	/**
-	 * Paint an individual feature. In other words transform the generic feature
-	 * object into a <code>VectorFeature</code>, and prepare it for a certain
-	 * tile.
-	 *
-	 * @param tile tile to put features in
-	 * @param features features to include
-	 * @param layer layer
-	 * @param code tile code
-	 * @param scale scale
-	 * @param panOrigin When panning on the client, only this parameter changes. So we need to be
-	 * aware of it as we calculate the maxScreenEnvelope.
+	 * Paint an individual feature. In other words transform the generic feature object into a
+	 * <code>VectorFeature</code>, and prepare it for a certain tile.
+	 * 
+	 * @param tile
+	 *            tile to put features in
+	 * @param features
+	 *            features to include
+	 * @param layer
+	 *            layer
+	 * @param code
+	 *            tile code
+	 * @param scale
+	 *            scale
+	 * @param panOrigin
+	 *            When panning on the client, only this parameter changes. So we need to be aware of it as we calculate
+	 *            the maxScreenEnvelope.
 	 */
-	public void fillTile(RenderedTile tile, List<RenderedFeature> features, VectorLayer layer, TileCode code,
+	public void fillTile(InternalTile tile, List<InternalFeature> features, VectorLayer layer, TileCode code,
 			double scale, Coordinate panOrigin) {
-		for (RenderedFeature feature : features) {
+		for (InternalFeature feature : features) {
 			Geometry geometry = feature.getGeometry();
 
 			if (!bboxService.contains(tile.getBbox(layer), geometry.getCoordinate())) {
@@ -99,12 +101,12 @@ public class TiledFeatureService {
 			} else {
 				// clip feature if necessary
 				if (exceedsScreenDimensions(feature, scale)) {
-					VectorFeature vectorFeature = new VectorFeature(feature);
+					ClippedInternalFeature vectorFeature = new ClippedInternalFeature(feature);
 					tile.setClipped(true);
 					vectorFeature.setClipped(true);
-					Geometry clipped =
-							JTS.toGeometry(bboxService.toEnvelope(getMaxScreenBbox(layer, code, scale, panOrigin))).
-									intersection(feature.getGeometry());
+					Geometry clipped = JTS.toGeometry(
+							bboxService.toEnvelope(getMaxScreenBbox(layer, code, scale, panOrigin))).intersection(
+							feature.getGeometry());
 					vectorFeature.setClippedGeometry(clipped);
 					tile.addFeature(vectorFeature);
 				} else {
@@ -120,12 +122,15 @@ public class TiledFeatureService {
 
 	/**
 	 * Add dependent tiles for this geometry.
-	 *
-	 * @param tile tile in which to add dependent tile
-	 * @param layer layer
-	 * @param geometry geometry
+	 * 
+	 * @param tile
+	 *            tile in which to add dependent tile
+	 * @param layer
+	 *            layer
+	 * @param geometry
+	 *            geometry
 	 */
-	private void addTileCode(RenderedTile tile, VectorLayer layer, Geometry geometry) {
+	private void addTileCode(InternalTile tile, VectorLayer layer, Geometry geometry) {
 		Coordinate c = geometry.getCoordinate();
 		if (c != null && bboxService.contains(layer.getLayerInfo().getMaxExtent(), c)) {
 			int i = (int) ((c.x - layer.getLayerInfo().getMaxExtent().getX()) / tile.getTileWidth());
@@ -137,12 +142,14 @@ public class TiledFeatureService {
 
 	/**
 	 * The test that checks if clipping is needed.
-	 *
-	 * @param f feature to test
-	 * @param scale scale
+	 * 
+	 * @param f
+	 *            feature to test
+	 * @param scale
+	 *            scale
 	 * @return true if clipping is needed
 	 */
-	private boolean exceedsScreenDimensions(RenderedFeature f, double scale) {
+	private boolean exceedsScreenDimensions(InternalFeature f, double scale) {
 		Bbox env = f.getBounds();
 		if (env.getWidth() * scale > MAXIMUM_TILE_COORDINATE) {
 			return true;
@@ -153,11 +160,15 @@ public class TiledFeatureService {
 
 	/**
 	 * What is the maximum bounds in screen space? Needed for correct clipping calculation.
-	 *
-	 * @param layer layer
-	 * @param code tile code
-	 * @param scale scale
-	 * @param panOrigin pan origin
+	 * 
+	 * @param layer
+	 *            layer
+	 * @param code
+	 *            tile code
+	 * @param scale
+	 *            scale
+	 * @param panOrigin
+	 *            pan origin
 	 * @return max screen bbox
 	 */
 	private Bbox getMaxScreenBbox(VectorLayer layer, TileCode code, double scale, Coordinate panOrigin) {

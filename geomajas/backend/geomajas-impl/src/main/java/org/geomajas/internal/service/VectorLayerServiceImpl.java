@@ -23,7 +23,10 @@
 
 package org.geomajas.internal.service;
 
-import com.vividsolutions.jts.geom.Geometry;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import org.geomajas.configuration.LayerInfo;
 import org.geomajas.configuration.StyleInfo;
 import org.geomajas.geometry.Bbox;
@@ -34,7 +37,7 @@ import org.geomajas.internal.layer.feature.RenderedFeatureImpl;
 import org.geomajas.layer.LayerModel;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.FeatureModel;
-import org.geomajas.layer.feature.RenderedFeature;
+import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.rendering.painter.LayerPaintContext;
 import org.geomajas.rendering.painter.PaintFactory;
 import org.geomajas.rendering.style.StyleFilter;
@@ -51,9 +54,7 @@ import org.opengis.referencing.operation.TransformException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * Implementation of {@link org.geomajas.service.VectorLayerService}, a service which allows accessing data from a
@@ -81,7 +82,7 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 	private PaintFactory paintFactory;
 
 	public void saveOrUpdate(String layerId, CoordinateReferenceSystem crs,
-			List<RenderedFeature> oldFeatures, List<RenderedFeature> newFeatures) throws GeomajasException {
+			List<InternalFeature> oldFeatures, List<InternalFeature> newFeatures) throws GeomajasException {
 		VectorLayer layer = applicationService.getVectorLayer(layerId);
 		if (null == layer) {
 			throw new GeomajasException(ExceptionCode.VECTOR_LAYER_NOT_FOUND, layerId);
@@ -106,8 +107,8 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 			newFeatures.add(null);
 		}
 		for (int i = 0; i < count; i++) {
-			RenderedFeature oldFeature = oldFeatures.get(i);
-			RenderedFeature newFeature = newFeatures.get(i);
+			InternalFeature oldFeature = oldFeatures.get(i);
+			InternalFeature newFeature = newFeatures.get(i);
 			if (null == newFeature) {
 				// delete ?
 				if (null != oldFeature) {
@@ -145,7 +146,7 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 		}
 	}
 
-	public List<RenderedFeature> getFeatures(String layerId, CoordinateReferenceSystem crs, Filter filter,
+	public List<InternalFeature> getFeatures(String layerId, CoordinateReferenceSystem crs, Filter filter,
 			List<StyleInfo> styleDefinitions, int featureIncludes)
 			throws GeomajasException {
 		VectorLayer layer = applicationService.getVectorLayer(layerId);
@@ -173,7 +174,7 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 			}
 		}
 
-		List<RenderedFeature> res = new ArrayList<RenderedFeature>();
+		List<InternalFeature> res = new ArrayList<InternalFeature>();
 		Iterator<?> it = layerModel.getElements(filter);
 		while (it.hasNext()) {
 			res.add(convertFeature(it.next(), layer, transformation, styleFilters, featureIncludes));
@@ -192,11 +193,11 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 	 * @param featureIncludes aspects to include in features
 	 * @throws GeomajasException oops
 	 */
-	private RenderedFeature convertFeature(Object feature, VectorLayer layer, MathTransform transformation,
+	private InternalFeature convertFeature(Object feature, VectorLayer layer, MathTransform transformation,
 			List<StyleFilter> styles, int featureIncludes) throws GeomajasException {
 		LayerInfo layerInfo = layer.getLayerInfo();
 		FeatureModel featureModel = layer.getLayerModel().getFeatureModel();
-		RenderedFeature res = new RenderedFeatureImpl(bboxService);
+		InternalFeature res = new RenderedFeatureImpl(bboxService);
 		res.setId(layerInfo.getId() + "." + featureModel.getId(feature));
 		res.setLayer(layer);
 
@@ -302,7 +303,7 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 		LayerModel layerModel = layer.getLayerModel();
 
 		List<Object> list = new ArrayList<Object>();
-		Iterator it = layerModel.getObjects(attributeName, filter);
+		Iterator<?> it = layerModel.getObjects(attributeName, filter);
 		while (it.hasNext()) {
 			list.add(it.next());
 		}

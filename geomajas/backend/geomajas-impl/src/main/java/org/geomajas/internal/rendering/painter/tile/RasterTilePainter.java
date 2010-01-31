@@ -29,7 +29,7 @@ import org.geomajas.rendering.RenderException;
 import org.geomajas.rendering.image.RasterUrlBuilder;
 import org.geomajas.rendering.painter.tile.TilePainter;
 import org.geomajas.rendering.tile.RasterImage;
-import org.geomajas.rendering.tile.RenderedTile;
+import org.geomajas.rendering.tile.InternalTile;
 import org.geomajas.rendering.tile.TileCode;
 
 /**
@@ -83,7 +83,7 @@ public class RasterTilePainter implements TilePainter {
 	 *            Must be an instance of {@link RasterTileJG}, and must have a non-null {@link RasterUrlBuilder}.
 	 * @return Returns a {@link RasterTileJG} with a {@link RasterImage} added to it.
 	 */
-	public RenderedTile paint(RenderedTile tile) throws RenderException {
+	public InternalTile paint(InternalTile tile) throws RenderException {
 		if (tile instanceof RasterTileJG) {
 			RasterTileJG rasterTile = (RasterTileJG) tile;
 			RasterUrlBuilder urlBuilder = rasterTile.getUrlBuilder();

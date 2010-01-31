@@ -23,6 +23,11 @@
 
 package org.geomajas.internal.rendering.strategy;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
+
 import org.geomajas.configuration.ApplicationInfo;
 import org.geomajas.configuration.StyleInfo;
 import org.geomajas.geometry.Coordinate;
@@ -31,16 +36,16 @@ import org.geomajas.global.GeomajasException;
 import org.geomajas.internal.application.tile.RasterTileJG;
 import org.geomajas.internal.rendering.painter.tile.RasterTilePainter;
 import org.geomajas.layer.VectorLayer;
-import org.geomajas.layer.feature.RenderedFeature;
+import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.rendering.RenderException;
 import org.geomajas.rendering.image.RasterUrlBuilder;
 import org.geomajas.rendering.painter.tile.TilePainter;
 import org.geomajas.rendering.strategy.RenderingStrategy;
-import org.geomajas.rendering.tile.RenderedTile;
+import org.geomajas.rendering.tile.InternalTile;
 import org.geomajas.rendering.tile.TileCode;
 import org.geomajas.rendering.tile.TileMetadata;
 import org.geomajas.service.ApplicationService;
-import org.geomajas.service.FilterCreator;
+import org.geomajas.service.FilterService;
 import org.geomajas.service.VectorLayerService;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.cql2.CQLException;
@@ -48,11 +53,6 @@ import org.opengis.filter.Filter;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
 
 /**
  * <p>
@@ -74,7 +74,7 @@ public class ImageRendering implements RenderingStrategy {
 	private ApplicationService runtime;
 
 	@Autowired
-	private FilterCreator filterCreator;
+	private FilterService filterService;
 
 	@Autowired
 	private VectorLayerService layerService;
@@ -90,7 +90,7 @@ public class ImageRendering implements RenderingStrategy {
 	 *            The application in which this tile is to be rendered.
 	 * @return Returns a completely rendered <code>RasterTile</code>.
 	 */
-	public RenderedTile paint(TileMetadata metadata, ApplicationInfo application) throws RenderException {
+	public InternalTile paint(TileMetadata metadata, ApplicationInfo application) throws RenderException {
 		try {
 			// Get the map and layer objects:
 			VectorLayer vLayer = runtime.getVectorLayer(metadata.getLayerId());
@@ -103,16 +103,16 @@ public class ImageRendering implements RenderingStrategy {
 
 			// Prepare any filtering:
 			String geomName = vLayer.getLayerInfo().getFeatureInfo().getGeometryType().getName();
-			Filter filter = filterCreator.createBboxFilter(crs.getIdentifiers().iterator().next()
+			Filter filter = filterService.createBboxFilter(crs.getIdentifiers().iterator().next()
 					.toString(), tile.getBbox(vLayer), geomName);
 			if (metadata.getFilter() != null) {
-				filter = filterCreator.createLogicFilter(CQL.toFilter(metadata.getFilter()), "and", filter);
+				filter = filterService.createLogicFilter(CQL.toFilter(metadata.getFilter()), "and", filter);
 			}
 
 			// Create a FeaturePainter and paint the features:
 			List<StyleInfo> styleDefinitions = new ArrayList<StyleInfo>();
 			Collections.addAll(styleDefinitions, metadata.getStyleDefs());
-			List<RenderedFeature> features = layerService.getFeatures(metadata.getLayerId(), crs, filter,
+			List<InternalFeature> features = layerService.getFeatures(metadata.getLayerId(), crs, filter,
 					styleDefinitions, VectorLayerService.FEATURE_INCLUDE_ALL);
 
 			// At this point, we have a tile with rendered features.

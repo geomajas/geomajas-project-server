@@ -31,7 +31,7 @@ import org.geomajas.configuration.RectInfo;
 import org.geomajas.configuration.StyleInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.internal.rendering.image.Style2dFactory;
-import org.geomajas.layer.feature.RenderedFeature;
+import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.rendering.painter.TilePaintContext;
 import org.geomajas.rendering.painter.image.FeatureImagePainter;
 import org.geomajas.service.GeoService;
@@ -106,7 +106,7 @@ public class GeometryImagePainter implements FeatureImagePainter {
 	 * @param feature
 	 *            The feature object of which we draw the geometry.
 	 */
-	public void paint(Graphics2D graphics, RenderedFeature feature) {
+	public void paint(Graphics2D graphics, InternalFeature feature) {
 		if (tileContext == null) {
 			return;
 		}

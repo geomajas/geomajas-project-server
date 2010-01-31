@@ -27,10 +27,10 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import org.geomajas.configuration.StyleInfo;
 import org.geomajas.internal.application.tile.VectorTileJG;
-import org.geomajas.internal.layer.feature.VectorFeature;
+import org.geomajas.internal.layer.feature.ClippedInternalFeature;
 import org.geomajas.internal.rendering.writers.GraphicsWriter;
 import org.geomajas.internal.rendering.writers.svg.SvgFeatureScreenWriter;
-import org.geomajas.layer.feature.RenderedFeature;
+import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.rendering.GraphicsDocument;
 import org.geomajas.rendering.RenderException;
 import org.geomajas.service.GeoService;
@@ -92,8 +92,8 @@ public class VmlLabelTileWriter implements GraphicsWriter {
 		// up to shapetype
 		document.closeElement();
 
-		for (RenderedFeature f : tile.getFeatures()) {
-			VectorFeature feature = (VectorFeature) f;
+		for (InternalFeature f : tile.getFeatures()) {
+			ClippedInternalFeature feature = (ClippedInternalFeature) f;
 			Coordinate pos = geoService.calcDefaultLabelPosition(feature);
 			if (pos == null) {
 				continue;

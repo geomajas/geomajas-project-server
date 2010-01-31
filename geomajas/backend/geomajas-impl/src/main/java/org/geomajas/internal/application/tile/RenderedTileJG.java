@@ -25,8 +25,8 @@ package org.geomajas.internal.application.tile;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.layer.Layer;
 import org.geomajas.layer.VectorLayer;
-import org.geomajas.layer.feature.RenderedFeature;
-import org.geomajas.rendering.tile.RenderedTile;
+import org.geomajas.layer.feature.InternalFeature;
+import org.geomajas.rendering.tile.InternalTile;
 import org.geomajas.rendering.tile.TileCode;
 
 import java.util.ArrayList;
@@ -38,12 +38,12 @@ import java.util.List;
  * 
  * @author check subversion
  */
-public class RenderedTileJG implements RenderedTile {
+public class RenderedTileJG implements InternalTile {
 
 	/**
 	 * features in the tile
 	 */
-	private List<RenderedFeature> features = new ArrayList<RenderedFeature>();
+	private List<InternalFeature> features = new ArrayList<InternalFeature>();
 
 	/**
 	 * tile codes of dependent tiles
@@ -119,16 +119,16 @@ public class RenderedTileJG implements RenderedTile {
 
 	// Getters and setters:
 
-	public List<RenderedFeature> getFeatures() {
+	public List<InternalFeature> getFeatures() {
 		Collections.sort(features);
 		return features;
 	}
 
-	public void setFeatures(List<RenderedFeature> features) {
+	public void setFeatures(List<InternalFeature> features) {
 		this.features = features;
 	}
 
-	public void addFeature(RenderedFeature feature) {
+	public void addFeature(InternalFeature feature) {
 		features.add(feature);
 	}
 

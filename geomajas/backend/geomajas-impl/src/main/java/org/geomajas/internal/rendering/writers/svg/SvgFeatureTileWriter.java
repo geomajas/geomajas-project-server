@@ -25,9 +25,9 @@ package org.geomajas.internal.rendering.writers.svg;
 
 import org.geomajas.configuration.StyleInfo;
 import org.geomajas.internal.application.tile.VectorTileJG;
-import org.geomajas.internal.layer.feature.VectorFeature;
+import org.geomajas.internal.layer.feature.ClippedInternalFeature;
 import org.geomajas.internal.rendering.writers.GraphicsWriter;
-import org.geomajas.layer.feature.RenderedFeature;
+import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.rendering.GraphicsDocument;
 import org.geomajas.rendering.RenderException;
 import org.geomajas.rendering.style.StyleFilter;
@@ -44,8 +44,8 @@ public class SvgFeatureTileWriter implements GraphicsWriter {
 		document.writeElement("g", true);
 		document.writeId("features." + tile.getCode().toString());
 		String style = null;
-		for (RenderedFeature f : tile.getFeatures()) {
-			VectorFeature feature = (VectorFeature) f;
+		for (InternalFeature f : tile.getFeatures()) {
+			ClippedInternalFeature feature = (ClippedInternalFeature) f;
 			String nextStyle = feature.getStyleInfo().getId() + "";
 			if (style == null || !style.equals(nextStyle)) {
 				if (style != null) {

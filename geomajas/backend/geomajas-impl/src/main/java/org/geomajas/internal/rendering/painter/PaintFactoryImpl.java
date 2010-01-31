@@ -28,16 +28,14 @@ import org.geomajas.internal.rendering.DefaultLayerPaintContext;
 import org.geomajas.internal.rendering.image.TileImageCreatorImpl;
 import org.geomajas.internal.rendering.painter.tile.RasterTilePainter;
 import org.geomajas.layer.VectorLayer;
-import org.geomajas.layer.feature.FeatureFactory;
 import org.geomajas.rendering.image.TileImageCreator;
 import org.geomajas.rendering.painter.LayerPaintContext;
 import org.geomajas.rendering.painter.PaintFactory;
 import org.geomajas.rendering.painter.tile.TilePainter;
-import org.geomajas.rendering.tile.RenderedTile;
+import org.geomajas.rendering.tile.InternalTile;
 import org.geomajas.rendering.tile.TileCode;
 import org.geomajas.rendering.tile.UrlTile;
-import org.geomajas.service.BboxService;
-import org.geomajas.service.FilterCreator;
+import org.geomajas.service.FilterService;
 import org.geomajas.service.VectorLayerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -51,13 +49,7 @@ import org.springframework.stereotype.Component;
 public class PaintFactoryImpl implements PaintFactory {
 
 	@Autowired
-	private BboxService bboxService;
-
-	@Autowired
-	private FilterCreator filterCreator;
-
-	@Autowired
-	private FeatureFactory featureFactory;
+	private FilterService filterCreator;
 
 	@Autowired
 	private VectorLayerService layerService;
@@ -66,7 +58,7 @@ public class PaintFactoryImpl implements PaintFactory {
 		return new DefaultLayerPaintContext(layer);
 	}
 
-	public TileImageCreator createTileImageCreator(RenderedTile tile, boolean transparent) {
+	public TileImageCreator createTileImageCreator(InternalTile tile, boolean transparent) {
 		return new TileImageCreatorImpl(tile, transparent, filterCreator, layerService);
 	}
 

@@ -27,30 +27,36 @@ import org.geomajas.rendering.painter.feature.FeaturePainter;
 
 /**
  * <p>
- * Abstract implementation of the <code>FeaturePainter</code> interface. It
- * implements common functionality for all feature painter: the option
- * settings. In order to decently support lazy loading, all feature painter
- * should support these options!
+ * Abstract implementation of the <code>FeaturePainter</code> interface. It implements common functionality for all
+ * feature painter: the option settings. In order to decently support lazy loading, all feature painter should support
+ * these options! Supported options are:
+ * <ul>
+ * <li><b>renderingAttributes</b>: will attributes be added to the <code>JtsFeature</code> objects or not?</li>
+ * <li><b>renderingGeometry</b>: will geometries be added to the <code>JtsFeature</code> objects or not?</li>
+ * <li><b>renderingStyle</b>: will style definitions be added to the <code>JtsFeature</code> objects or not?</li>
+ * <li><b>renderingLabel</b>: will the label string be added to the <code>JtsFeature</code> objects or not?</li>
+ * </ul>
  * </p>
- *
+ * 
  * @author Pieter De Graef
  */
 public abstract class AbstractFeaturePainter implements FeaturePainter {
 
-	/**
-	 * This field contains a bitmask of all the rendering options for feature
-	 * painter implementations.
-	 */
-	private int options;
+	private boolean renderingAttributes;
+
+	private boolean renderingGeometry;
+
+	private boolean renderingStyle;
+
+	private boolean renderingLabels;
 
 	// -------------------------------------------------------------------------
 	// Constructors:
 	// -------------------------------------------------------------------------
 
 	/**
-	 * Default constructor. The default settings allow geometries, labels and
-	 * style definitions to be added to the <code>RenderedFeature</code>
-	 * objects, but not attributes.
+	 * Default constructor. The default settings allow geometries, labels and style definitions to be added to the
+	 * <code>RenderedFeature</code> objects, but not attributes.
 	 */
 	public AbstractFeaturePainter() {
 		this(true, true, true, true);
@@ -58,62 +64,85 @@ public abstract class AbstractFeaturePainter implements FeaturePainter {
 
 	/**
 	 * Constructor that determines what should be painted and what not.
-	 *
-	 * @param paintAttributes
-	 *            Do we allow attributes to be added to the
-	 *            <code>RenderedFeature</code> objects or not?
-	 * @param paintGeometry
-	 *            Do we allow geometries to be added to the
-	 *            <code>RenderedFeature</code> objects or not?
-	 * @param paintStyle
-	 *            Do we allow style definitions to be added to the
-	 *            <code>RenderedFeature</code> objects or not?
-	 * @param paintLabel
-	 *            Do we allow the label string to be added to the
-	 *            <code>RenderedFeature</code> objects or not?
+	 * 
+	 * @param renderingAttributes
+	 *            Do we allow attributes to be added to the <code>JtsFeature</code> objects or not?
+	 * @param renderingGeometry
+	 *            Do we allow geometries to be added to the <code>JtsFeature</code> objects or not?
+	 * @param renderingStyle
+	 *            Do we allow style definitions to be added to the <code>JtsFeature</code> objects or not?
+	 * @param renderingLabels
+	 *            Do we allow the label string to be added to the <code>JtsFeature</code> objects or not?
 	 */
-	public AbstractFeaturePainter(boolean paintAttributes, boolean paintGeometry, boolean paintStyle,
-			boolean paintLabel) {
-		setOption(OPTION_PAINT_ATTRIBUTES, paintAttributes);
-		setOption(OPTION_PAINT_GEOMETRY, paintGeometry);
-		setOption(OPTION_PAINT_STYLE, paintStyle);
-		setOption(OPTION_PAINT_LABEL, paintLabel);
+	public AbstractFeaturePainter(boolean renderingAttributes, boolean renderingGeometry, boolean renderingStyle,
+			boolean renderingLabels) {
+		this.renderingAttributes = renderingAttributes;
+		this.renderingGeometry = renderingGeometry;
+		this.renderingStyle = renderingStyle;
+		this.renderingLabels = renderingLabels;
 	}
 
 	// -------------------------------------------------------------------------
 	// FeaturePainter implementation (part of it):
 	// -------------------------------------------------------------------------
 
-	/**
-	 * Turn on or off a specific rendering option. All options are meant to
-	 * increase performance. Available options are:
-	 * <ul>
-	 * <li>OPTION_PAINT_ATTRIBUTES</li>
-	 * <li>OPTION_PAINT_GEOMETRY</li>
-	 * <li>OPTION_PAINT_STYLE</li>
-	 * <li>OPTION_PAINT_LABEL</li>
-	 * </ul>
-	 *
-	 * @param option
-	 *            One of the 3 above options.
-	 * @param value
-	 *            True or false. In other words, turn it on or off.
-	 */
-	public void setOption(int option, boolean value) {
-		if (value) {
-			options |= option;
-		} else {
-			options &= ~option;
-		}
+	/** Will attributes be added to the <code>JtsFeature</code> objects or not? */
+	public boolean isRenderingAttributes() {
+		return renderingAttributes;
 	}
 
 	/**
-	 * Request the value of an option.
-	 *
-	 * @param option option to test
-	 * @return true when option is set
+	 * Determine whether attributes will be added to the <code>JtsFeature</code> objects or not.
+	 * 
+	 * @param renderingAttributes
+	 *            The new value.
 	 */
-	public boolean getOption(int option) {
-		return (options & option) == option;
+	public void setRenderingAttributes(boolean renderingAttributes) {
+		this.renderingAttributes = renderingAttributes;
+	}
+
+	/** Will geometries be added to the <code>JtsFeature</code> objects or not? */
+	public boolean isRenderingGeometry() {
+		return renderingGeometry;
+	}
+
+	/**
+	 * Determine whether geometries will be added to the <code>JtsFeature</code> objects or not.
+	 * 
+	 * @param renderingGeometry
+	 *            The new value.
+	 */
+	public void setRenderingGeometry(boolean renderingGeometry) {
+		this.renderingGeometry = renderingGeometry;
+	}
+
+	/** Will style definitions be added to the <code>JtsFeature</code> objects or not? */
+	public boolean isRenderingStyle() {
+		return renderingStyle;
+	}
+
+	/**
+	 * Determine whether style definitions will be added to the <code>JtsFeature</code> objects or not.
+	 * 
+	 * @param renderingStyle
+	 *            The new value.
+	 */
+	public void setRenderingStyle(boolean renderingStyle) {
+		this.renderingStyle = renderingStyle;
+	}
+
+	/** Will the label string be added to the <code>JtsFeature</code> objects or not? */
+	public boolean isRenderingLabels() {
+		return renderingLabels;
+	}
+
+	/**
+	 * Determine whether the label string will be added to the <code>JtsFeature</code> objects or not.
+	 * 
+	 * @param renderingLabels
+	 *            The new value.
+	 */
+	public void setRenderingLabels(boolean renderingLabels) {
+		this.renderingLabels = renderingLabels;
 	}
 }

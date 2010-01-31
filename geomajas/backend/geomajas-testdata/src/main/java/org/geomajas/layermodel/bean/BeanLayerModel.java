@@ -35,7 +35,7 @@ import org.geomajas.layer.LayerException;
 import org.geomajas.layer.LayerModel;
 import org.geomajas.layer.feature.FeatureModel;
 import org.geomajas.service.BboxService;
-import org.geomajas.service.FilterCreator;
+import org.geomajas.service.FilterService;
 import org.opengis.filter.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -68,12 +68,12 @@ public class BeanLayerModel implements LayerModel {
 	private BboxService bboxService;
 
 	@Autowired
-	private FilterCreator filterCreator;
+	private FilterService filterService;
 
 	public Iterator<?> getElements(Filter queryFilter) throws LayerException {
 		Filter filter = queryFilter;
 		if (defaultFilter != null) {
-			filter = filterCreator.createLogicFilter(filter, "AND", defaultFilter);
+			filter = filterService.createLogicFilter(filter, "AND", defaultFilter);
 		}
 		Filter realFilter = filter;
 		List<Object> filteredList = new ArrayList<Object>();
@@ -97,7 +97,7 @@ public class BeanLayerModel implements LayerModel {
 	public Bbox getBounds(Filter queryFilter) throws LayerException {
 		Filter filter = queryFilter;
 		if (defaultFilter != null) {
-			filter = filterCreator.createLogicFilter(filter, "AND", defaultFilter);
+			filter = filterService.createLogicFilter(filter, "AND", defaultFilter);
 		}
 		Iterator<?> it = getElements(filter);
 		// start with null envelope
@@ -171,5 +171,4 @@ public class BeanLayerModel implements LayerModel {
 	public void setFeatures(Map<String, Object> features) {
 		this.features = features;
 	}
-
 }

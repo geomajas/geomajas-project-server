@@ -32,7 +32,7 @@ import com.vividsolutions.jts.geom.MultiLineString;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
-import org.geomajas.layer.feature.RenderedFeature;
+import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.service.GeoService;
 import org.geotools.referencing.CRS;
 import org.opengis.referencing.FactoryException;
@@ -97,7 +97,7 @@ public final class GeoServiceImpl implements GeoService {
 	/**
 	 * @inheritDoc
 	 */
-	public Coordinate calcDefaultLabelPosition(RenderedFeature feature) {
+	public Coordinate calcDefaultLabelPosition(InternalFeature feature) {
 		Geometry geometry = feature.getGeometry();
 		Coordinate labelPoint;
 		if (geometry == null || geometry.isEmpty()) {

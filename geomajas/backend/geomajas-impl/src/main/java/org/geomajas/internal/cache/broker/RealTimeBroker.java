@@ -40,10 +40,10 @@ import org.geomajas.rendering.image.TileImageCreator;
 import org.geomajas.rendering.painter.LayerPaintContext;
 import org.geomajas.rendering.painter.PaintFactory;
 import org.geomajas.rendering.painter.TilePaintContext;
-import org.geomajas.rendering.tile.RenderedTile;
+import org.geomajas.rendering.tile.InternalTile;
 import org.geomajas.rendering.tile.TileCode;
 import org.geomajas.service.ApplicationService;
-import org.geomajas.service.FilterCreator;
+import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.cql2.CQLException;
@@ -87,7 +87,7 @@ public class RealTimeBroker implements Broker {
 	private ApplicationInfo application;
 
 	@Autowired
-	private FilterCreator filterCreator;
+	private FilterService filterCreator;
 
 	@Autowired
 	private PaintFactory paintFactory;
@@ -147,7 +147,7 @@ public class RealTimeBroker implements Broker {
 
 		// 5: Create the vector tile:
 		TileCode code = new TileCode(tileLevel, x, y);
-		RenderedTile tile = new RenderedTileJG(code, vLayer, scale);
+		InternalTile tile = new RenderedTileJG(code, vLayer, scale);
 		Bbox areaOfInterest = tile.getBbox(vLayer);
 		tileContext.setAreaOfInterest(areaOfInterest);
 		Rectangle paintArea = new Rectangle(0, 0, tile.getScreenWidth(), tile.getScreenHeight());

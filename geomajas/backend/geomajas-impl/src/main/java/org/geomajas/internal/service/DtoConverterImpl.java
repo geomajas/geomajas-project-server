@@ -25,8 +25,8 @@ package org.geomajas.internal.service;
 
 import org.geomajas.geometry.Geometry;
 import org.geomajas.layer.feature.Feature;
-import org.geomajas.layer.feature.RenderedFeature;
-import org.geomajas.rendering.tile.RenderedTile;
+import org.geomajas.layer.feature.InternalFeature;
+import org.geomajas.rendering.tile.InternalTile;
 import org.geomajas.rendering.tile.Tile;
 import org.geomajas.service.DtoConverter;
 import org.geomajas.service.FeatureConverter;
@@ -52,11 +52,11 @@ public class DtoConverterImpl implements DtoConverter {
 	@Autowired
 	private TileConverter tileConverter;
 
-	public Feature toDto(RenderedFeature feature) {
+	public Feature toDto(InternalFeature feature) {
 		return featureConverter.toDto(feature);
 	}
 
-	public RenderedFeature toFeature(Feature dto) {
+	public InternalFeature toFeature(Feature dto) {
 		return featureConverter.toFeature(dto);
 	}
 
@@ -64,7 +64,7 @@ public class DtoConverterImpl implements DtoConverter {
 		return geometryConverter.toDto(geometry);
 	}
 
-	public Tile toDto(RenderedTile tile) {
+	public Tile toDto(InternalTile tile) {
 		return tileConverter.toDto(tile);
 	}
 

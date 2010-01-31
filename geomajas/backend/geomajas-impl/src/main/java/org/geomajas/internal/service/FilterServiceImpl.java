@@ -25,7 +25,7 @@ package org.geomajas.internal.service;
 
 import com.vividsolutions.jts.geom.Geometry;
 import org.geomajas.geometry.Bbox;
-import org.geomajas.service.FilterCreator;
+import org.geomajas.service.FilterService;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.identity.FeatureIdImpl;
 import org.opengis.filter.Filter;
@@ -49,7 +49,7 @@ import java.util.HashSet;
  * @author Pieter De Graef
  */
 @Component
-public final class FilterCreatorImpl implements FilterCreator {
+public final class FilterServiceImpl implements FilterService {
 
 	private static final FilterFactory2 FF = CommonFactoryFinder.getFilterFactory2(null);
 

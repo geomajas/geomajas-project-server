@@ -24,7 +24,7 @@
 package org.geomajas.internal.layer.feature;
 
 import org.geomajas.layer.feature.FeatureFactory;
-import org.geomajas.layer.feature.RenderedFeature;
+import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.service.BboxService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -40,11 +40,11 @@ public class FeatureFactoryImpl implements FeatureFactory {
 	@Autowired
 	private BboxService bboxService;
 
-	public RenderedFeature createRenderedFeature() {
+	public InternalFeature createRenderedFeature() {
 		return new RenderedFeatureImpl(bboxService);
 	}
 
-	public RenderedFeature createEditableFeature() {
+	public InternalFeature createEditableFeature() {
 		return new EditableFeature(bboxService);
 	}
 }

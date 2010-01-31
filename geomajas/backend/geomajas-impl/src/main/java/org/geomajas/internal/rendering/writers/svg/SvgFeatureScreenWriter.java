@@ -26,7 +26,7 @@ package org.geomajas.internal.rendering.writers.svg;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.MultiPoint;
 import com.vividsolutions.jts.geom.Point;
-import org.geomajas.internal.layer.feature.VectorFeature;
+import org.geomajas.internal.layer.feature.ClippedInternalFeature;
 import org.geomajas.internal.rendering.writers.GraphicsWriter;
 import org.geomajas.rendering.GraphicsDocument;
 import org.geomajas.rendering.RenderException;
@@ -52,7 +52,7 @@ public class SvgFeatureScreenWriter implements GraphicsWriter {
 
 	public void writeObject(Object object, GraphicsDocument document, boolean asChild) throws RenderException {
 		try {
-			VectorFeature feature = (VectorFeature) object;
+			ClippedInternalFeature feature = (ClippedInternalFeature) object;
 			Geometry geom = feature.getGeometry();
 			if (feature.isClipped()) {
 				geom = feature.getClippedGeometry();
