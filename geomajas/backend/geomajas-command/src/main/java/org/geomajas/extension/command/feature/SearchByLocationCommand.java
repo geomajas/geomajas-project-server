@@ -22,7 +22,9 @@
  */
 package org.geomajas.extension.command.feature;
 
-import com.vividsolutions.jts.geom.Geometry;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.geomajas.command.Command;
 import org.geomajas.extension.command.dto.SearchByLocationRequest;
 import org.geomajas.extension.command.dto.SearchByLocationResponse;
@@ -30,17 +32,16 @@ import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.Feature;
-import org.geomajas.layer.feature.RenderedFeature;
+import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.service.ApplicationService;
 import org.geomajas.service.DtoConverter;
-import org.geomajas.service.FilterCreator;
+import org.geomajas.service.FilterService;
 import org.geomajas.service.VectorLayerService;
 import org.opengis.filter.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * <p>
@@ -80,7 +81,7 @@ public class SearchByLocationCommand implements Command<SearchByLocationRequest,
 	private DtoConverter converter;
 
 	@Autowired
-	private FilterCreator filterCreator;
+	private FilterService filterCreator;
 
 	@Autowired
 	private VectorLayerService layerService;
@@ -138,7 +139,7 @@ public class SearchByLocationCommand implements Command<SearchByLocationRequest,
 				}
 
 				// Gett the features
-				List<RenderedFeature> temp = layerService.getFeatures(layerId,
+				List<InternalFeature> temp = layerService.getFeatures(layerId,
 						applicationService.getCrs(request.getCrs()), f, null,
 						VectorLayerService.FEATURE_INCLUDE_ALL);
 				if (temp.size() > 0) {
@@ -146,7 +147,7 @@ public class SearchByLocationCommand implements Command<SearchByLocationRequest,
 
 					// Calculate overlap ratio in case of intersects:
 					if (queryType == SearchByLocationRequest.QUERY_INTERSECTS && ratio >= 0 && ratio < 1) {
-						for (RenderedFeature feature : temp) {
+						for (InternalFeature feature : temp) {
 							double minimalOverlap = feature.getGeometry().getArea() * ratio;
 							Geometry overlap = location.intersection(feature.getGeometry());
 							double effectiveOverlap = overlap.getArea();
@@ -155,7 +156,7 @@ public class SearchByLocationCommand implements Command<SearchByLocationRequest,
 							}
 						}
 					} else {
-						for (RenderedFeature feature : temp) {
+						for (InternalFeature feature : temp) {
 							features.add(converter.toDto(feature));
 						}
 					}

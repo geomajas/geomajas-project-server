@@ -20,36 +20,25 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package org.geomajas.extension.command.dto;
 
+import org.geomajas.command.CommandResponse;
 
 /**
- * Request object for {@link org.geomajas.extension.command.feature.GetAssociationCommand}.
- *
- * @author Joachim Van der Auwera
+ * Response object for {@link Command} which indicates success.
+ * 
+ * @author check subversion
  */
-public class GetAssociationRequest extends LayerIdCommandRequest {
+public class SuccessCommandResponse extends CommandResponse {
 
 	private static final long serialVersionUID = 151L;
+	private boolean succes;
 
-	private String filter;
-
-	private String attributeName;
-
-	public String getFilter() {
-		return filter;
+	public boolean isSucces() {
+		return succes;
 	}
 
-	public void setFilter(String filter) {
-		this.filter = filter;
-	}
-
-	public String getAttributeName() {
-		return attributeName;
-	}
-
-	public void setAttributeName(String attributeName) {
-		this.attributeName = attributeName;
+	public void setSucces(boolean succes) {
+		this.succes = succes;
 	}
 }

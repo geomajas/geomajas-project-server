@@ -23,10 +23,10 @@
 package org.geomajas.extension.command.configuration;
 
 import org.geomajas.command.Command;
-import org.geomajas.command.EmptyCommandRequest;
 import org.geomajas.configuration.ApplicationInfo;
 import org.geomajas.configuration.ClientApplicationInfo;
 import org.geomajas.configuration.MapInfo;
+import org.geomajas.extension.command.dto.EmptyCommandRequest;
 import org.geomajas.extension.command.dto.GetConfigurationResponse;
 import org.geomajas.layer.LayerException;
 import org.springframework.beans.factory.annotation.Autowired;

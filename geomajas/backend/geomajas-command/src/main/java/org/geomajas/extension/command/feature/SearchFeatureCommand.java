@@ -28,11 +28,11 @@ import org.geomajas.extension.command.dto.SearchFeatureResponse;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.feature.Feature;
-import org.geomajas.layer.feature.RenderedFeature;
+import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.layer.feature.SearchCriterion;
 import org.geomajas.service.ApplicationService;
 import org.geomajas.service.DtoConverter;
-import org.geomajas.service.FilterCreator;
+import org.geomajas.service.FilterService;
 import org.geomajas.service.VectorLayerService;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.cql2.CQLException;
@@ -57,7 +57,7 @@ public class SearchFeatureCommand implements Command<SearchFeatureRequest, Searc
 	private DtoConverter converter;
 
 	@Autowired
-	private FilterCreator filterCreator;
+	private FilterService filterCreator;
 
 	@Autowired
 	private VectorLayerService layerService;
@@ -78,7 +78,7 @@ public class SearchFeatureCommand implements Command<SearchFeatureRequest, Searc
 
 		Filter filter = createFilter(request);
 
-		List<RenderedFeature> features = layerService.getFeatures(layerId,
+		List<InternalFeature> features = layerService.getFeatures(layerId,
 				applicationService.getCrs(request.getCrs()), filter, null, VectorLayerService.FEATURE_INCLUDE_ALL);
 		response.setLayerId(layerId);
 		int max = request.getMax();

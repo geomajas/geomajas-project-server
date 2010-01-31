@@ -21,35 +21,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.extension.command.dto;
-
+package org.geomajas.layer.feature;
 
 /**
- * Request object for {@link org.geomajas.extension.command.feature.GetAssociationCommand}.
+ * Factory for creating features.
  *
  * @author Joachim Van der Auwera
  */
-public class GetAssociationRequest extends LayerIdCommandRequest {
+public interface FeatureFactory {
 
-	private static final long serialVersionUID = 151L;
+	InternalFeature createRenderedFeature();
 
-	private String filter;
-
-	private String attributeName;
-
-	public String getFilter() {
-		return filter;
-	}
-
-	public void setFilter(String filter) {
-		this.filter = filter;
-	}
-
-	public String getAttributeName() {
-		return attributeName;
-	}
-
-	public void setAttributeName(String attributeName) {
-		this.attributeName = attributeName;
-	}
+	InternalFeature createEditableFeature();
 }

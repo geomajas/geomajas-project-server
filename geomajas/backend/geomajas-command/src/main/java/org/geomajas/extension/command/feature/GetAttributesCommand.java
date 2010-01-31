@@ -23,20 +23,20 @@
 
 package org.geomajas.extension.command.feature;
 
+import java.util.List;
+import java.util.Map;
+
 import org.geomajas.command.Command;
 import org.geomajas.extension.command.dto.GetAttributesRequest;
 import org.geomajas.extension.command.dto.GetAttributesResponse;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
-import org.geomajas.layer.feature.RenderedFeature;
-import org.geomajas.service.FilterCreator;
+import org.geomajas.layer.feature.InternalFeature;
+import org.geomajas.service.FilterService;
 import org.geomajas.service.VectorLayerService;
 import org.opengis.filter.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
-import java.util.Map;
 
 /**
  * Get attributes for a feature. This is needed when features are loaded lazily.
@@ -47,7 +47,7 @@ import java.util.Map;
 public class GetAttributesCommand implements Command<GetAttributesRequest, GetAttributesResponse> {
 
 	@Autowired
-	private FilterCreator filterCreator;
+	private FilterService filterCreator;
 
 	@Autowired
 	private VectorLayerService layerService;
@@ -69,11 +69,11 @@ public class GetAttributesCommand implements Command<GetAttributesRequest, GetAt
 		if (featureIds.length > 0) {
 			Filter filter = filterCreator.createFidFilter(featureIds);
 
-			List<RenderedFeature> features = layerService.getFeatures(layerId, null, filter, null,
+			List<InternalFeature> features = layerService.getFeatures(layerId, null, filter, null,
 					VectorLayerService.FEATURE_INCLUDE_ATTRIBUTES);
 
 			Map<String, Object>[] attributes = new Map[featureIds.length];
-			for (RenderedFeature feature : features) {
+			for (InternalFeature feature : features) {
 				String id = feature.getId();
 				int index = searchFeatureIndex(id, featureIds);
 				if (index >= 0) {

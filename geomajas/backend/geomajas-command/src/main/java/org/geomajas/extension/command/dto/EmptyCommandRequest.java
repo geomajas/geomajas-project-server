@@ -23,33 +23,19 @@
 
 package org.geomajas.extension.command.dto;
 
+import org.geomajas.command.CommandRequest;
 
 /**
- * Request object for {@link org.geomajas.extension.command.feature.GetAssociationCommand}.
+ * Placeholder class, useful for commands which don't have any parameters.
+ * There is no need to ever instantiate this object. Use "null" instead.
  *
  * @author Joachim Van der Auwera
  */
-public class GetAssociationRequest extends LayerIdCommandRequest {
+public class EmptyCommandRequest implements CommandRequest {
 
 	private static final long serialVersionUID = 151L;
 
-	private String filter;
-
-	private String attributeName;
-
-	public String getFilter() {
-		return filter;
-	}
-
-	public void setFilter(String filter) {
-		this.filter = filter;
-	}
-
-	public String getAttributeName() {
-		return attributeName;
-	}
-
-	public void setAttributeName(String attributeName) {
-		this.attributeName = attributeName;
+	public int getDummy() {
+		return 0; 
 	}
 }

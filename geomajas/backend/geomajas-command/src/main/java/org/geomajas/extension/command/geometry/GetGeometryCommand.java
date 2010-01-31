@@ -28,9 +28,9 @@ import org.geomajas.extension.command.dto.GetGeometryRequest;
 import org.geomajas.extension.command.dto.GetGeometryResponse;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
-import org.geomajas.layer.feature.RenderedFeature;
+import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.service.DtoConverter;
-import org.geomajas.service.FilterCreator;
+import org.geomajas.service.FilterService;
 import org.geomajas.service.VectorLayerService;
 import org.opengis.filter.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +50,7 @@ public class GetGeometryCommand implements Command<GetGeometryRequest, GetGeomet
 	private DtoConverter converter;
 
 	@Autowired
-	private FilterCreator filterCreator;
+	private FilterService filterCreator;
 
 	@Autowired
 	private VectorLayerService layerService;
@@ -72,11 +72,11 @@ public class GetGeometryCommand implements Command<GetGeometryRequest, GetGeomet
 		if (featureIds.length > 0) {
 			Filter filter = filterCreator.createFidFilter(featureIds);
 
-			List<RenderedFeature> features = layerService.getFeatures(layerId, null, filter, null,
+			List<InternalFeature> features = layerService.getFeatures(layerId, null, filter, null,
 					VectorLayerService.FEATURE_INCLUDE_ATTRIBUTES);
 
 			org.geomajas.geometry.Geometry[] geometries = new org.geomajas.geometry.Geometry[featureIds.length];
-			for (RenderedFeature feature : features) {
+			for (InternalFeature feature : features) {
 				String id = feature.getId();
 				int index = searchFeatureIndex(id, featureIds);
 				if (index >= 0) {

@@ -21,35 +21,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.extension.command.dto;
+package org.geomajas.service;
 
+import org.geomajas.rendering.tile.InternalTile;
+import org.geomajas.rendering.tile.Tile;
 
 /**
- * Request object for {@link org.geomajas.extension.command.feature.GetAssociationCommand}.
+ * Converter that can transform server-side tile representations into DTO tiles. These DTO versions can be sent to the
+ * client.
  *
- * @author Joachim Van der Auwera
+ * @author Pieter De Graef
  */
-public class GetAssociationRequest extends LayerIdCommandRequest {
+public interface TileConverter {
 
-	private static final long serialVersionUID = 151L;
-
-	private String filter;
-
-	private String attributeName;
-
-	public String getFilter() {
-		return filter;
-	}
-
-	public void setFilter(String filter) {
-		this.filter = filter;
-	}
-
-	public String getAttributeName() {
-		return attributeName;
-	}
-
-	public void setAttributeName(String attributeName) {
-		this.attributeName = attributeName;
-	}
+	/**
+	 * Convert a server-side tile representations into a DTO tile.
+	 *
+	 * @param tile
+	 *            The server-side representation of a tile.
+	 * @return Returns the DTO version that can be sent to the client.
+	 */
+	Tile toDto(InternalTile tile);
 }

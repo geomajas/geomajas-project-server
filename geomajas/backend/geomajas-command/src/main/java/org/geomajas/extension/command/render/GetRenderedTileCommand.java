@@ -31,7 +31,7 @@ import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.rendering.strategy.RenderingStrategy;
 import org.geomajas.rendering.strategy.RenderingStrategyFactory;
-import org.geomajas.rendering.tile.RenderedTile;
+import org.geomajas.rendering.tile.InternalTile;
 import org.geomajas.service.ApplicationService;
 import org.geomajas.service.DtoConverter;
 import org.slf4j.Logger;
@@ -78,8 +78,7 @@ public class GetRenderedTileCommand implements Command<GetRenderedTileRequest, G
 			throw new GeomajasException(ExceptionCode.LAYER_NOT_FOUND, request.getLayerId());
 		}
 		RenderingStrategy strategy = renderingStrategyFactory.createRenderingStrategy(vLayer.getLayerInfo(), request);
-		RenderedTile tile = strategy.paint(request, application);
+		InternalTile tile = strategy.paint(request, application);
 		response.setTile(converter.toDto(tile));
 	}
-
 }

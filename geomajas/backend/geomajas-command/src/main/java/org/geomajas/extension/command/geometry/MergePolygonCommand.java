@@ -70,7 +70,8 @@ public class MergePolygonCommand implements Command<MergePolygonRequest, MergePo
 
 		Geometry temp = factory.createGeometry(polygons[0]);
 		for (int i = 1; i < polygons.length; i++) {
-			temp = temp.union(factory.createGeometry(polygons[i]).buffer(Math.pow(10.0, -precision)));
+			Geometry polygon = factory.createGeometry(polygons[i]);
+			temp = temp.union(polygon.buffer(Math.pow(10.0, -(precision - 1))));
 		}
 		if (temp instanceof Polygon) {
 			MultiPolygon mp = factory.createMultiPolygon(new Polygon[] {(Polygon) temp});
