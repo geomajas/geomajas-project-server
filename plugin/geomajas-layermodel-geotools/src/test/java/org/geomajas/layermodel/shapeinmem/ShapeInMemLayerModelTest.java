@@ -10,7 +10,7 @@ import org.geomajas.configuration.PrimitiveAttributeInfo;
 import org.geomajas.configuration.PrimitiveType;
 import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.geometry.Bbox;
-import org.geomajas.service.FilterCreator;
+import org.geomajas.service.FilterService;
 import org.geotools.factory.CommonFactoryFinder;
 import org.junit.Assert;
 import org.junit.Before;
@@ -38,7 +38,7 @@ public class ShapeInMemLayerModelTest {
 				new String[] {"org/geomajas/spring/geomajasContext.xml",
 						"org/geomajas/testdata/layerCountries.xml",
 						"org/geomajas/testdata/simplevectorsContext.xml"});
-		FilterCreator filterCreator = applicationContext.getBean("service.FilterCreator", FilterCreator.class);
+		FilterService filterCreator = applicationContext.getBean("service.FilterCreator", FilterService.class);
 		layerModel = applicationContext.getBean(
 				"layermodel.shapeinmem.ShapeInMemLayerModel", ShapeInMemLayerModel.class);
 		layerModel.setUrl(SHAPE_FILE);

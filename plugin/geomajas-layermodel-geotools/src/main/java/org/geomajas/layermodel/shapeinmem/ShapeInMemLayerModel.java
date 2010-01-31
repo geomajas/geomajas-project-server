@@ -30,7 +30,7 @@ import org.geomajas.layer.LayerException;
 import org.geomajas.layer.LayerModel;
 import org.geomajas.layer.feature.FeatureModel;
 import org.geomajas.service.BboxService;
-import org.geomajas.service.FilterCreator;
+import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
 import org.geotools.data.DataStore;
 import org.geotools.data.shapefile.ShapefileDataStore;
@@ -78,7 +78,7 @@ public class ShapeInMemLayerModel extends FeatureSourceRetriever implements Laye
 	private BboxService bboxService;
 
 	@Autowired
-	private FilterCreator filterCreator;
+	private FilterService filterCreator;
 
 	@Autowired
 	private GeoService geoService;

@@ -6,7 +6,7 @@ import org.geomajas.configuration.GeometricAttributeInfo;
 import org.geomajas.configuration.PrimitiveAttributeInfo;
 import org.geomajas.configuration.PrimitiveType;
 import org.geomajas.configuration.VectorLayerInfo;
-import org.geomajas.service.FilterCreator;
+import org.geomajas.service.FilterService;
 import org.junit.Before;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -34,7 +34,7 @@ public abstract class AbstractFilterTest {
 
 	protected ShapeInMemLayerModel layerModel;
 
-	protected FilterCreator filterCreator;
+	protected FilterService filterCreator;
 
 	@Before
 	public void setUp() throws Exception {
@@ -112,7 +112,7 @@ public abstract class AbstractFilterTest {
 				new String[] {"org/geomajas/spring/geomajasContext.xml",
 						"org/geomajas/testdata/layerCountries.xml",
 						"org/geomajas/testdata/simplevectorsContext.xml"});
-		filterCreator = applicationContext.getBean("service.FilterCreator", FilterCreator.class);
+		filterCreator = applicationContext.getBean("service.FilterCreator", FilterService.class);
 		layerModel = applicationContext.getBean(
 				"layermodel.shapeinmem.ShapeInMemLayerModel", ShapeInMemLayerModel.class);
 		layerModel.setUrl(SHAPE_FILE);

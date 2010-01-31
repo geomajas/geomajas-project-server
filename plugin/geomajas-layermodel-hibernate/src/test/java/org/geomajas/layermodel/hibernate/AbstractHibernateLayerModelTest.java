@@ -24,7 +24,7 @@ package org.geomajas.layermodel.hibernate;
 
 import org.geomajas.layer.LayerModel;
 import org.geomajas.layermodel.hibernate.pojo.HibernateTestManyToOne;
-import org.geomajas.service.FilterCreator;
+import org.geomajas.service.FilterService;
 import org.hibernate.SessionFactory;
 import org.junit.After;
 import org.junit.Before;
@@ -124,6 +124,6 @@ public abstract class AbstractHibernateLayerModelTest {
 	protected LayerModel layerModel;
 
 	@Autowired
-	protected FilterCreator filterCreator;
+	protected FilterService filterCreator;
 
 }

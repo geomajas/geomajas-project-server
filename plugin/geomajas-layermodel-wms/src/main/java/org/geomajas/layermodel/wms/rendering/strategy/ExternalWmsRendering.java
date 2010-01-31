@@ -23,24 +23,30 @@
 
 package org.geomajas.layermodel.wms.rendering.strategy;
 
-import org.geomajas.configuration.StyleInfo;
-import org.geomajas.global.GeomajasException;
-import org.geomajas.layer.VectorLayer;
-import org.geomajas.layer.feature.RenderedFeature;
-import org.geomajas.rendering.painter.PaintFactory;
-import org.geomajas.rendering.tile.RenderedTile;
-import org.geomajas.rendering.tile.TileMetadata;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import org.geomajas.configuration.ApplicationInfo;
-import org.geomajas.rendering.tile.UrlTile;
-import org.geomajas.service.ApplicationService;
+import org.geomajas.configuration.StyleInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.global.ExceptionCode;
+import org.geomajas.global.GeomajasException;
+import org.geomajas.layer.VectorLayer;
+import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.layermodel.wms.WmsLayer;
 import org.geomajas.rendering.RenderException;
 import org.geomajas.rendering.image.RasterUrlBuilder;
+import org.geomajas.rendering.painter.PaintFactory;
 import org.geomajas.rendering.painter.tile.TilePainter;
 import org.geomajas.rendering.strategy.RenderingStrategy;
-import org.geomajas.service.FilterCreator;
+import org.geomajas.rendering.tile.InternalTile;
+import org.geomajas.rendering.tile.TileMetadata;
+import org.geomajas.rendering.tile.UrlTile;
+import org.geomajas.service.ApplicationService;
+import org.geomajas.service.FilterService;
 import org.geomajas.service.VectorLayerService;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.cql2.CQLException;
@@ -48,12 +54,6 @@ import org.opengis.filter.Filter;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * <p>
@@ -69,33 +69,26 @@ import java.util.List;
  * </p>
  * <p>
  * Internally this class contains a private class that implements the {@link RasterUrlBuilder} interface to create an
- * implementation that is able to create WMS url's. This class is added to the {@link RasterTileJG} objects so that the
- * {@link RasterTilePainter} can use it to actually paint the raster tiles.
+ * implementation that is able to create WMS url's. This class is added to the <code>RasterTileJG</code> objects so that
+ * the <code>RasterTilePainter</code> can use it to actually paint the raster tiles.
  * </p>
- *
+ * 
  * @author Pieter De Graef
  */
 @Component()
 public class ExternalWmsRendering implements RenderingStrategy {
 
-	/**
-	 * When asking the WMS server for images, you must always specify which layers to fetch. This required parameters
-	 * must determine that.
-	 */
-	private static final String WMS_LAYERNAME = "layerName";
-
 	@Autowired
 	private ApplicationService applicationService;
 
 	@Autowired
-	private FilterCreator filterCreator;
+	private FilterService filterCreator;
 
 	@Autowired
 	private PaintFactory paintFactory;
 
 	@Autowired
 	private VectorLayerService layerService;
-
 
 	/**
 	 * Holds the value of the WMS_LAYERNAME parameter.
@@ -110,15 +103,14 @@ public class ExternalWmsRendering implements RenderingStrategy {
 	 * Paint the tile! This function will create a <code>RasterTile</code> extension of the <code>RenderedTile</code>
 	 * class. This <code>RasterTile</code> not only holds all the drawn features and tiling info, but also an URL
 	 * pointing to the image that represents the rendered tile.
-	 *
+	 * 
 	 * @param metadata
 	 *            The object that holds all the spatial and styling information for a tile.
 	 * @param application
 	 *            The application in which this tile is to be rendered.
 	 * @return Returns a completely rendered <code>RasterTile</code>.
 	 */
-	public RenderedTile paint(TileMetadata metadata, ApplicationInfo application) throws
-			RenderException {
+	public InternalTile paint(TileMetadata metadata, ApplicationInfo application) throws RenderException {
 		try {
 			// Get the map and layer objects:
 			VectorLayer vLayer = applicationService.getVectorLayer(metadata.getLayerId());
@@ -131,8 +123,8 @@ public class ExternalWmsRendering implements RenderingStrategy {
 
 			// Prepare any filtering:
 			String geomName = vLayer.getLayerInfo().getFeatureInfo().getGeometryType().getName();
-			Filter filter = filterCreator.createBboxFilter(crs.getIdentifiers().iterator().next()
-					.toString(), tile.getBbox(vLayer), geomName);
+			Filter filter = filterCreator.createBboxFilter(crs.getIdentifiers().iterator().next().toString(), tile
+					.getBbox(vLayer), geomName);
 			if (metadata.getFilter() != null) {
 				filter = filterCreator.createLogicFilter(CQL.toFilter(metadata.getFilter()), "and", filter);
 			}
@@ -140,7 +132,7 @@ public class ExternalWmsRendering implements RenderingStrategy {
 			// Create a FeaturePainter and paint the features:
 			List<StyleInfo> styleDefinitions = new ArrayList<StyleInfo>();
 			Collections.addAll(styleDefinitions, metadata.getStyleDefs());
-			List<RenderedFeature> features = layerService.getFeatures(metadata.getLayerId(), crs, filter,
+			List<InternalFeature> features = layerService.getFeatures(metadata.getLayerId(), crs, filter,
 					styleDefinitions, VectorLayerService.FEATURE_INCLUDE_ALL);
 
 			// At this point, we have a tile with rendered features.
@@ -162,16 +154,10 @@ public class ExternalWmsRendering implements RenderingStrategy {
 	 * parameters: "factory" and "layerName".
 	 */
 	/*
-	public void setParameters(List<Parameter> parameters) {
-		for (Parameter parameter : parameters) {
-			if (parameter.getDataSourceName().equalsIgnoreCase(WMS_FACTORY)) {
-				factory = parameter.getValue();
-			} else if (parameter.getDataSourceName().equalsIgnoreCase(WMS_LAYERNAME)) {
-				layerName = parameter.getValue();
-			}
-		}
-	}
-	*/
+	 * public void setParameters(List<Parameter> parameters) { for (Parameter parameter : parameters) { if
+	 * (parameter.getDataSourceName().equalsIgnoreCase(WMS_FACTORY)) { factory = parameter.getValue(); } else if
+	 * (parameter.getDataSourceName().equalsIgnoreCase(WMS_LAYERNAME)) { layerName = parameter.getValue(); } } }
+	 */
 
 	// -------------------------------------------------------------------------
 	// Private stuff:
@@ -181,7 +167,7 @@ public class ExternalWmsRendering implements RenderingStrategy {
 	 * <p>
 	 * A private class that builds a WMS getMap request URL. This is the URL that will holds the tile's image.
 	 * </p>
-	 *
+	 * 
 	 * @author Pieter De Graef
 	 */
 	private class WmsUrlBuilder implements RasterUrlBuilder {
@@ -190,11 +176,11 @@ public class ExternalWmsRendering implements RenderingStrategy {
 
 		private VectorLayer layer;
 
-		private RenderedTile tile;
+		private InternalTile tile;
 
 		private String layerName;
 
-		public WmsUrlBuilder(RenderedTile tile, VectorLayer layer, String layerName) {
+		public WmsUrlBuilder(InternalTile tile, VectorLayer layer, String layerName) {
 			this.tile = tile;
 			this.layer = layer;
 			this.layerName = layerName;

@@ -37,13 +37,17 @@ import java.util.Collections;
 import java.util.List;
 
 /**
- * <p> This class represents the viewing controller behind a <code>MapWidget</code>. It knows the map's width, height,
- * but it also controls what is visible on the map through a <code>Camera</code> object. This camera hangs over the map
- * at a certain height (represented by the scale), and together with the width and height, this MapView can determine
- * the boundaries of the visible area on the map. </p> <p> But it's more then that. This MapView can also calculate
- * necessary transformation matrices to go from world to view space an back. It can also snap the scale-levels to fixed
- * resolutions (in case these are actually defined). </p>
- *
+ * <p>
+ * This class represents the viewing controller behind a <code>MapWidget</code>. It knows the map's width, height, but
+ * it also controls what is visible on the map through a <code>Camera</code> object. This camera hangs over the map at a
+ * certain height (represented by the scale), and together with the width and height, this MapView can determine the
+ * boundaries of the visible area on the map.
+ * </p>
+ * <p>
+ * But it's more then that. This MapView can also calculate necessary transformation matrices to go from world to view
+ * space an back. It can also snap the scale-levels to fixed resolutions (in case these are actually defined).
+ * </p>
+ * 
  * @author Pieter De Graef
  */
 public class MapView {
@@ -54,8 +58,8 @@ public class MapView {
 		/** Zoom exactly to the new scale. */
 		EXACT,
 		/**
-		 * Zoom to a scale level that is different from the current (lower or heigher according to the new scale,
-		 * only if allowed of course).
+		 * Zoom to a scale level that is different from the current (lower or heigher according to the new scale, only
+		 * if allowed of course).
 		 */
 		LEVEL_CHANGE,
 		/** Zoom to a scale level that is as close as possible to the new scale. */
@@ -117,8 +121,9 @@ public class MapView {
 
 	/**
 	 * Adds this handler to the view.
-	 *
-	 * @param handler the handler
+	 * 
+	 * @param handler
+	 *            the handler
 	 * @return {@link com.google.gwt.event.shared.HandlerRegistration} used to remove the handler
 	 */
 	public final HandlerRegistration addMapViewChangedHandler(final MapViewChangedHandler handler) {
@@ -183,7 +188,9 @@ public class MapView {
 
 	/**
 	 * Recenters the map to a new position.
-	 * @param coordinate the new center position
+	 * 
+	 * @param coordinate
+	 *            the new center position
 	 */
 	public void setCenterPosition(Coordinate coordinate) {
 		pushPanData();
@@ -195,9 +202,11 @@ public class MapView {
 	 * Apply a new scale level on the map. In case the are fixed resolutions defined on this MapView, it will
 	 * automatically snap to the nearest resolution. In case the maximum extents are exceeded, it will pan to avoid
 	 * this.
-	 *
-	 * @param newScale The preferred new scale.
-	 * @param option zoom option, {@link org.geomajas.gwt.client.map.MapView.ZoomOption}
+	 * 
+	 * @param newScale
+	 *            The preferred new scale.
+	 * @param option
+	 *            zoom option, {@link org.geomajas.gwt.client.map.MapView.ZoomOption}
 	 */
 	public void setCurrentScale(final double newScale, final ZoomOption option) {
 		pushPanData();
@@ -214,13 +223,19 @@ public class MapView {
 	}
 
 	/**
-	 * <p> Change the view on the map by applying a bounding box (world coordinates!). Since the width/height ratio of
-	 * the bounding box may differ from that of the map, the fit is "as good as possible". </p> <p> Also this function
-	 * will almost certainly change the scale on the map, so if there have been resolutions defined, it will snap to
-	 * them. </p>
-	 *
-	 * @param bounds A bounding box in world coordinates that determines the view from now on.
-	 * @param option zoom option, {@link org.geomajas.gwt.client.map.MapView.ZoomOption}
+	 * <p>
+	 * Change the view on the map by applying a bounding box (world coordinates!). Since the width/height ratio of the
+	 * bounding box may differ from that of the map, the fit is "as good as possible".
+	 * </p>
+	 * <p>
+	 * Also this function will almost certainly change the scale on the map, so if there have been resolutions defined,
+	 * it will snap to them.
+	 * </p>
+	 * 
+	 * @param bounds
+	 *            A bounding box in world coordinates that determines the view from now on.
+	 * @param option
+	 *            zoom option, {@link org.geomajas.gwt.client.map.MapView.ZoomOption}
 	 */
 	public void applyBounds(final Bbox bounds, final ZoomOption option) {
 		pushPanData();
@@ -233,9 +248,11 @@ public class MapView {
 
 	/**
 	 * Set the size of the map in pixels.
-	 *
-	 * @param newWidth The map's width.
-	 * @param newHeight The map's height.
+	 * 
+	 * @param newWidth
+	 *            The map's width.
+	 * @param newHeight
+	 *            The map's height.
 	 */
 	public void setSize(int newWidth, int newHeight) {
 		pushPanData();
@@ -252,9 +269,11 @@ public class MapView {
 
 	/**
 	 * Move the view on the map. This happens by translating the camera in turn.
-	 *
-	 * @param x Translation factor along the X-axis in world space.
-	 * @param y Translation factor along the Y-axis in world space.
+	 * 
+	 * @param x
+	 *            Translation factor along the X-axis in world space.
+	 * @param y
+	 *            Translation factor along the Y-axis in world space.
 	 */
 	public void translate(double x, double y) {
 		pushPanData();
@@ -265,8 +284,9 @@ public class MapView {
 
 	/**
 	 * Adjust the current scale on the map by a new factor.
-	 *
-	 * @param delta Adjust the scale by factor "delta".
+	 * 
+	 * @param delta
+	 *            Adjust the scale by factor "delta".
 	 */
 	public void scale(double delta, ZoomOption option) {
 		setCurrentScale(currentScale * delta, option);
@@ -279,7 +299,7 @@ public class MapView {
 
 	/**
 	 * Given the information in this MapView object, what is the currently visible area?
-	 *
+	 * 
 	 * @return Notice that at this moment an Axis Aligned Bounding Box is returned! This means that rotating is not yet
 	 *         possible.
 	 */
@@ -293,8 +313,9 @@ public class MapView {
 
 	/**
 	 * Set the list of predefined map resolutions (resolution = inverse of scale).
-	 *
-	 * @param resolutions the list of predefined resolutions (expressed in map unit/pixel)
+	 * 
+	 * @param resolutions
+	 *            the list of predefined resolutions (expressed in map unit/pixel)
 	 */
 	public void setResolutions(List<Double> resolutions) {
 		this.resolutions.clear();
@@ -304,7 +325,7 @@ public class MapView {
 
 	/**
 	 * are we panning ?
-	 *
+	 * 
 	 * @return true if panning
 	 */
 	public boolean isPanning() {
@@ -360,15 +381,17 @@ public class MapView {
 	}
 
 	private void doApplyBounds(Bbox bounds, ZoomOption option) {
-		// find best scale
-		double scale = getBestScale(bounds);
-		// snap and limit
-		scale = snapToResolution(scale, option);
-		// set scale
-		doSetScale(scale, option);
-		// set center
-		Coordinate center = bounds.getCenterPoint();
-		doSetPosition(center);
+		if (!bounds.isEmpty()) {
+			// find best scale
+			double scale = getBestScale(bounds);
+			// snap and limit
+			scale = snapToResolution(scale, option);
+			// set scale
+			doSetScale(scale, option);
+			// set center
+			Coordinate center = bounds.getCenterPoint();
+			doSetPosition(center);
+		}
 	}
 
 	private double getMinimumScale() {
@@ -385,7 +408,7 @@ public class MapView {
 	private double getBestScale(Bbox bounds) {
 		double wRatio = width / bounds.getWidth();
 		double hRatio = height / bounds.getHeight();
-		// return the minimum  to fit inside
+		// return the minimum to fit inside
 		return wRatio < hRatio ? wRatio : hRatio;
 	}
 
@@ -434,6 +457,7 @@ public class MapView {
 
 	/**
 	 * finds an optimal scale by snapping to resolutions
+	 * 
 	 * @param scale
 	 * @param option
 	 * @return
@@ -493,7 +517,7 @@ public class MapView {
 	/**
 	 * Adjusts the center point of the map, to an allowed center point. This method tries to make sure the whole map
 	 * extent is inside the maximum allowed bounds.
-	 *
+	 * 
 	 * @param worldCenter
 	 * @return
 	 */
@@ -544,7 +568,9 @@ public class MapView {
 	 * A range of indexes.
 	 */
 	private class IndexRange {
+
 		private Integer min;
+
 		private Integer max;
 
 		public int getMax() {

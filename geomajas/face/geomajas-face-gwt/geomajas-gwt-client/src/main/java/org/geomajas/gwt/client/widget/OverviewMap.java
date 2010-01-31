@@ -318,8 +318,8 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 
 		// zoom if current view is too small
 		if (dynamicOverview && !overviewBox.contains(targetBox)) {
-			mapView.applyBounds(overviewBox.union(targetBox), MapView.ZoomOption.LEVEL_FIT);
-			super.onMapViewChanged(null);
+			//mapView.applyBounds(overviewBox.union(targetBox), MapView.ZoomOption.LEVEL_FIT);
+			//super.onMapViewChanged(null);
 		}
 
 		// calculate boxSize

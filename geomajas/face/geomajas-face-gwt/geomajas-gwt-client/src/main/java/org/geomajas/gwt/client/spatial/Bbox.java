@@ -30,7 +30,7 @@ import org.geomajas.geometry.Coordinate;
  * Definition of an Axis Aligned Bounding Box. Determined by an x-ordinate an y-ordinate, it's width and it's height.
  * Notice the the name says "Axis Aligned"! This implies that this type of bounding box cannot rotate!
  * </p>
- *
+ * 
  * @author Pieter De Graef
  */
 public class Bbox {
@@ -68,7 +68,7 @@ public class Bbox {
 
 	/**
 	 * constructor that immediately applies values to all the fields.
-	 *
+	 * 
 	 * @param x
 	 *            The ordinate along the X-axis.
 	 * @param y
@@ -84,9 +84,10 @@ public class Bbox {
 		this.width = width;
 		this.height = height;
 	}
+
 	/**
 	 * Construct a bbox by copying another one.
-	 *
+	 * 
 	 * @param bounds
 	 *            Another bounding box instance.
 	 */
@@ -99,7 +100,7 @@ public class Bbox {
 
 	/**
 	 * Constructor that transforms the DTO bounding box to the GWT bounding box.
-	 *
+	 * 
 	 * @param bounds
 	 *            A DTO bounding box instance.
 	 */
@@ -144,7 +145,7 @@ public class Bbox {
 
 	/**
 	 * Get the coordinates of the bounding box as an array.
-	 *
+	 * 
 	 * @return Returns 5 coordinates so that the array is closed. This can be useful when using this array to creating a
 	 *         <code>LinearRing</code>.
 	 */
@@ -161,7 +162,7 @@ public class Bbox {
 
 	/**
 	 * Does this bounding box contain the given bounding box?
-	 *
+	 * 
 	 * @param other
 	 *            Another Bbox.
 	 * @return true if the other is completely surrounded by this one, false otherwise.
@@ -184,7 +185,7 @@ public class Bbox {
 
 	/**
 	 * Does this bounding box intersect the given bounding box?
-	 *
+	 * 
 	 * @param other
 	 *            Another Bbox.
 	 * @return true if the other intersects this one, false otherwise.
@@ -207,7 +208,7 @@ public class Bbox {
 
 	/**
 	 * Computes the intersection of this bounding box with the specified bounding box.
-	 *
+	 * 
 	 * @param other
 	 *            Another Bbox.
 	 * @return bounding box of intersection or null if they do not intersect.
@@ -217,18 +218,18 @@ public class Bbox {
 			return null;
 		} else {
 			double minx = other.getX() > this.getX() ? other.getX() : this.getX();
-			double maxx = other.getEndPoint().getX() < this.getEndPoint().getX() ? other.getEndPoint().getX() :
-					this.getEndPoint().getX();
+			double maxx = other.getEndPoint().getX() < this.getEndPoint().getX() ? other.getEndPoint().getX() : this
+					.getEndPoint().getX();
 			double miny = other.getY() > this.getY() ? other.getY() : this.getY();
-			double maxy = other.getEndPoint().getY() < this.getEndPoint().getY() ? other.getEndPoint().getY() :
-					this.getEndPoint().getY();
+			double maxy = other.getEndPoint().getY() < this.getEndPoint().getY() ? other.getEndPoint().getY() : this
+					.getEndPoint().getY();
 			return new Bbox(minx, miny, (maxx - minx), (maxy - miny));
 		}
 	}
 
 	/**
 	 * Calculates the union of 2 bounding boxes.
-	 *
+	 * 
 	 * @param other
 	 *            The other Bbox. Can be a bounding box with width and height equal to 0.
 	 */
@@ -240,11 +241,11 @@ public class Bbox {
 			return (Bbox) other.clone();
 		}
 		double minx = other.getX() < this.getX() ? other.getX() : this.getX();
-		double maxx = other.getEndPoint().getX() > this.getEndPoint().getX() ? other.getEndPoint().getX() :
-				this.getEndPoint().getX();
+		double maxx = other.getEndPoint().getX() > this.getEndPoint().getX() ? other.getEndPoint().getX() : this
+				.getEndPoint().getX();
 		double miny = other.getY() < this.getY() ? other.getY() : this.getY();
-		double maxy = other.getEndPoint().getY() > this.getEndPoint().getY() ? other.getEndPoint().getY() :
-				this.getEndPoint().getY();
+		double maxy = other.getEndPoint().getY() > this.getEndPoint().getY() ? other.getEndPoint().getY() : this
+				.getEndPoint().getY();
 		return new Bbox(minx, miny, (maxx - minx), (maxy - miny));
 	}
 
@@ -278,12 +279,21 @@ public class Bbox {
 
 	/**
 	 * Moves center to the specified coordinate.
-	 *
-	 * @param coordinate new center point
+	 * 
+	 * @param coordinate
+	 *            new center point
 	 */
 	public void setCenterPoint(Coordinate coordinate) {
 		this.x = coordinate.getX() - 0.5 * this.width;
 		this.y = coordinate.getY() - 0.5 * this.height;
+	}
+
+	/**
+	 * Returns whether or not this bounding box is empty. A bounding box is considered empty when either the width or
+	 * the height is equal to zero.
+	 */
+	public boolean isEmpty() {
+		return width == 0 || height == 0;
 	}
 
 	/**
@@ -338,9 +348,8 @@ public class Bbox {
 	}
 
 	public boolean equals(Bbox other, double delta) {
-		return equals(this.x, other.x, delta) && equals(this.y, other.y, delta) &&
-				equals(this.width, other.width, delta) &&
-				equals(this.height, other.height, delta);
+		return equals(this.x, other.x, delta) && equals(this.y, other.y, delta)
+				&& equals(this.width, other.width, delta) && equals(this.height, other.height, delta);
 	}
 
 	protected boolean equals(double d1, double d2, double delta) {

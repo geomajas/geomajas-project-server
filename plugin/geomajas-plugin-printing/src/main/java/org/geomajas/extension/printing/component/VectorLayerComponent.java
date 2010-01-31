@@ -22,6 +22,37 @@
  */
 package org.geomajas.extension.printing.component;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
+
+import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+
+import org.geomajas.configuration.LabelAttributeInfo;
+import org.geomajas.configuration.MapInfo;
+import org.geomajas.configuration.StyleInfo;
+import org.geomajas.configuration.SymbolInfo;
+import org.geomajas.configuration.VectorLayerInfo;
+import org.geomajas.extension.printing.PdfContext;
+import org.geomajas.geometry.Bbox;
+import org.geomajas.layer.Layer;
+import org.geomajas.layer.feature.InternalFeature;
+import org.geomajas.service.BboxService;
+import org.geomajas.service.FilterService;
+import org.geomajas.service.GeoService;
+import org.geomajas.service.VectorLayerService;
+import org.geotools.filter.text.cql2.CQL;
+import org.geotools.referencing.CRS;
+import org.opengis.filter.Filter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.lowagie.text.Rectangle;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.CoordinateFilter;
@@ -33,35 +64,6 @@ import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.geom.PrecisionModel;
-import org.geomajas.configuration.LabelAttributeInfo;
-import org.geomajas.configuration.MapInfo;
-import org.geomajas.configuration.StyleInfo;
-import org.geomajas.configuration.SymbolInfo;
-import org.geomajas.configuration.VectorLayerInfo;
-import org.geomajas.extension.printing.PdfContext;
-import org.geomajas.geometry.Bbox;
-import org.geomajas.layer.Layer;
-import org.geomajas.layer.feature.RenderedFeature;
-import org.geomajas.service.BboxService;
-import org.geomajas.service.FilterCreator;
-import org.geomajas.service.GeoService;
-import org.geomajas.service.VectorLayerService;
-import org.geotools.filter.text.cql2.CQL;
-import org.geotools.referencing.CRS;
-import org.opengis.filter.Filter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
-import java.awt.Color;
-import java.awt.Font;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 
 /**
  * ???
@@ -89,7 +91,7 @@ public class VectorLayerComponent extends BaseLayerComponent {
 
 	/** List of the features */
 	@XmlTransient
-	protected List<RenderedFeature> features = new ArrayList<RenderedFeature>();
+	protected List<InternalFeature> features = new ArrayList<InternalFeature>();
 
 	/** A sorted set of selected feature ids */
 	@XmlTransient
@@ -104,7 +106,7 @@ public class VectorLayerComponent extends BaseLayerComponent {
 
 	private BboxService bboxService;
 
-	private FilterCreator filterCreator;
+	private FilterService filterCreator;
 
 	private VectorLayerService layerService;
 
@@ -112,7 +114,7 @@ public class VectorLayerComponent extends BaseLayerComponent {
 		// todo needed for JAXB but looses the services, causing NPE later on
 	}
 
-	public VectorLayerComponent(GeoService geoService, BboxService bboxService, FilterCreator filterCreator,
+	public VectorLayerComponent(GeoService geoService, BboxService bboxService, FilterService filterCreator,
 			VectorLayerService layerService) {
 		this.geoService = geoService;
 		this.bboxService = bboxService;
@@ -158,18 +160,18 @@ public class VectorLayerComponent extends BaseLayerComponent {
 				log.error("Error rendering vectorlayerRenderer", e);
 			}
 
-			for (RenderedFeature f : features) {
+			for (InternalFeature f : features) {
 				drawFeature(context, f);
 			}
 			if (isLabelsVisible()) {
-				for (RenderedFeature f : features) {
+				for (InternalFeature f : features) {
 					drawLabel(context, f);
 				}
 			}
 		}
 	}
 
-	private void drawLabel(PdfContext context, RenderedFeature f) {
+	private void drawLabel(PdfContext context, InternalFeature f) {
 		Layer layer = context.getLayer(getLayerId());
 		LabelAttributeInfo labelType = ((VectorLayerInfo) layer.getLayerInfo()).getLabelAttribute();
 		String label = f.getLabel();
@@ -204,7 +206,7 @@ public class VectorLayerComponent extends BaseLayerComponent {
 		}
 	}
 
-	private float getSymbolHeight(RenderedFeature f) {
+	private float getSymbolHeight(InternalFeature f) {
 		SymbolInfo info = f.getStyleInfo().getSymbol();
 		if (info.getCircle() != null) {
 			return 2 * info.getCircle().getR();
@@ -213,7 +215,7 @@ public class VectorLayerComponent extends BaseLayerComponent {
 		}
 	}
 
-	private Rectangle calculateLabelRect(PdfContext context, RenderedFeature f, String label, Font font) {
+	private Rectangle calculateLabelRect(PdfContext context, InternalFeature f, String label, Font font) {
 		Rectangle textSize = context.getTextSize(label, font);
 		float margin = 0.25f * font.getSize();
 		Rectangle rect = new Rectangle(textSize.getWidth() + 2 * margin, textSize.getHeight() + 2 * margin);
@@ -240,7 +242,7 @@ public class VectorLayerComponent extends BaseLayerComponent {
 		return rect;
 	}
 
-	private void drawFeature(PdfContext context, RenderedFeature f) {
+	private void drawFeature(PdfContext context, InternalFeature f) {
 		StyleInfo style = f.getStyleInfo();
 
 		// Color, transparency, dash
@@ -322,7 +324,7 @@ public class VectorLayerComponent extends BaseLayerComponent {
 		this.labelsVisible = labelsVisible;
 	}
 
-	public List<RenderedFeature> getFeatures() {
+	public List<InternalFeature> getFeatures() {
 		return features;
 	}
 }

@@ -33,7 +33,7 @@ import org.geomajas.configuration.SortType;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.service.BboxService;
-import org.geomajas.service.FilterCreator;
+import org.geomajas.service.FilterService;
 import org.hibernate.Criteria;
 import org.hibernate.EntityMode;
 import org.hibernate.HibernateException;
@@ -86,7 +86,7 @@ public class HibernateLayerModel extends HibernateLayerUtil implements LayerMode
 	private BboxService bboxService;
 
 	@Autowired
-	private FilterCreator filterCreator;
+	private FilterService filterCreator;
 
 	// -------------------------------------------------------------------------
 	// LayerModel implementation:

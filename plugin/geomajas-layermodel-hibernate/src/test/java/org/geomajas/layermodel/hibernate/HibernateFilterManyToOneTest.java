@@ -25,7 +25,6 @@ package org.geomajas.layermodel.hibernate;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layermodel.hibernate.pojo.HibernateTestFeature;
 import org.geomajas.layermodel.hibernate.pojo.HibernateTestManyToOne;
-import org.geomajas.service.FilterCreator;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

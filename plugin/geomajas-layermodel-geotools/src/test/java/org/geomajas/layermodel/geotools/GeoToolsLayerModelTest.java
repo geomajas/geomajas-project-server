@@ -9,7 +9,7 @@ import org.geomajas.configuration.PrimitiveAttributeInfo;
 import org.geomajas.configuration.PrimitiveType;
 import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.geometry.Bbox;
-import org.geomajas.service.FilterCreator;
+import org.geomajas.service.FilterService;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -43,7 +43,7 @@ public class GeoToolsLayerModelTest {
 				new String[] {"org/geomajas/spring/geomajasContext.xml",
 						"org/geomajas/testdata/layerCountries.xml",
 						"org/geomajas/testdata/simplevectorsContext.xml"});
-		FilterCreator filterCreator = applicationContext.getBean("service.FilterCreator", FilterCreator.class);
+		FilterService filterCreator = applicationContext.getBean("service.FilterCreator", FilterService.class);
 		layerModel = applicationContext.getBean("layermodel.geotools.GeotoolsLayerModel", GeotoolsLayerModel.class);
 		layerModel.setUrl(url);
 

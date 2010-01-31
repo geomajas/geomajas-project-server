@@ -22,7 +22,9 @@
  */
 package org.geomajas.layermodel.google;
 
-import com.vividsolutions.jts.geom.Coordinate;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.geomajas.configuration.RasterLayerInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.global.ExceptionCode;
@@ -46,13 +48,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.vividsolutions.jts.geom.Coordinate;
 
 /**
- * Mayer for displaying Google Maps images.
- *
- * @author check subversion
+ * Layer for displaying Google Maps images.
+ * 
+ * @author Jan De Moerloose
  */
 public class GoogleLayer implements RasterLayer {
 
@@ -98,12 +99,12 @@ public class GoogleLayer implements RasterLayer {
 	private void initCrs() throws LayerException {
 		try {
 			crs = CRS.decode(layerInfo.getCrs());
-		} catch (NoSuchAuthorityCodeException e) {
-			throw new LayerException(ExceptionCode.LAYER_CRS_UNKNOWN_AUTHORITY, e, layerInfo.getId(),
+		} catch (NoSuchAuthorityCodeException exception) {
+			throw new LayerException(ExceptionCode.LAYER_CRS_UNKNOWN_AUTHORITY, exception, layerInfo.getId(),
 					getLayerInfo().getCrs());
-		} catch (FactoryException e) {
-			throw new LayerException(ExceptionCode.LAYER_CRS_PROBLEMATIC, e, layerInfo.getId(),
-					getLayerInfo().getCrs());
+		} catch (FactoryException exception) {
+			throw new LayerException(ExceptionCode.LAYER_CRS_PROBLEMATIC, exception, layerInfo.getId(), getLayerInfo()
+					.getCrs());
 		}
 	}
 
@@ -132,8 +133,8 @@ public class GoogleLayer implements RasterLayer {
 			// TODO: if bounds width or height is 0, we run out of memory ?
 			bounds = clipBounds(bounds);
 			// find the center of the map in map coordinates (positive y-axis)
-			DirectPosition2D center = new DirectPosition2D(0.5 * (bounds.getX() + bounds.getMaxX()), 0.5 *
-					(bounds.getY() + bounds.getMaxY()));
+			DirectPosition2D center = new DirectPosition2D(0.5 * (bounds.getX() + bounds.getMaxX()), 0.5 * (bounds
+					.getY() + bounds.getMaxY()));
 
 			double scaleRatio = calculateMapUnitPerGoogleMeter(layerToGoogle, center);
 
@@ -211,8 +212,9 @@ public class GoogleLayer implements RasterLayer {
 					int x = xScreenUpperLeft + (i - iMin) * screenWidth;
 					int y = yScreenUpperLeft - (j - jMin) * screenWidth;
 					// screen coordinates !!!!!
-					RasterImage image = new RasterImage(new Bbox(x, -y, screenWidth, screenWidth),
-							getLayerInfo().getId() + "." + tileLevel + "." + i + "," + j);
+					RasterImage image = new RasterImage(new Bbox(x, -y, screenWidth, screenWidth), getLayerInfo()
+							.getId()
+							+ "." + tileLevel + "." + i + "," + j);
 					image.setLevel(tileLevel);
 					image.setXIndex(i);
 					image.setYIndex(j);
@@ -299,7 +301,9 @@ public class GoogleLayer implements RasterLayer {
 	}
 
 	/**
-	 * ???
+	 * Single resolution in a Google layer.
+	 * 
+	 * @author Jan De Moerloose
 	 */
 	private class GoogleResolution {
 
@@ -325,5 +329,4 @@ public class GoogleLayer implements RasterLayer {
 	public RasterLayerInfo getLayerInfo() {
 		return layerInfo;
 	}
-
 }

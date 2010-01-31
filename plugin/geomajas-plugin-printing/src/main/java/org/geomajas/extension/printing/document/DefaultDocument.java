@@ -28,7 +28,7 @@ import org.geomajas.extension.printing.configuration.MapConfigurationVisitor;
 import org.geomajas.extension.printing.configuration.PrintTemplate;
 import org.geomajas.service.ApplicationService;
 import org.geomajas.service.BboxService;
-import org.geomajas.service.FilterCreator;
+import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
 import org.geomajas.service.VectorLayerService;
 
@@ -49,13 +49,13 @@ public class DefaultDocument extends SinglePageDocument {
 
 	private BboxService bboxService;
 
-	private FilterCreator filterCreator;
+	private FilterService filterCreator;
 
 	private VectorLayerService layerService;
 
 	public DefaultDocument(String pageSize, ApplicationInfo application, ApplicationService runtime,
 			Map<String, String> filters, DefaultConfigurationVisitor defaultVisitor, GeoService geoService,
-			BboxService bboxService, FilterCreator filterCreator, VectorLayerService layerService) {
+			BboxService bboxService, FilterService filterCreator, VectorLayerService layerService) {
 		super(PrintTemplate.createDefaultTemplate(pageSize, true).getPage(), application, runtime, filters);
 		this.runtime = runtime;
 		this.defaultVisitor = defaultVisitor;

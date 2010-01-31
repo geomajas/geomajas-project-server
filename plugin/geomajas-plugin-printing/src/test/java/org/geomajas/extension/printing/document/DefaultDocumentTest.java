@@ -28,7 +28,7 @@ import org.geomajas.extension.printing.component.PageComponent;
 import org.geomajas.extension.printing.configuration.DefaultConfigurationVisitor;
 import org.geomajas.service.ApplicationService;
 import org.geomajas.service.BboxService;
-import org.geomajas.service.FilterCreator;
+import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
 import org.geomajas.service.VectorLayerService;
 import org.junit.Before;
@@ -53,7 +53,7 @@ public class DefaultDocumentTest {
 
 	private BboxService bboxService;
 
-	private FilterCreator filterCreator;
+	private FilterService filterCreator;
 
 	private VectorLayerService layerService;
 
@@ -69,7 +69,7 @@ public class DefaultDocumentTest {
 		runtime = applicationContext.getBean("service.ApplicationService", ApplicationService.class);
 		geoService = applicationContext.getBean("service.GeoService", GeoService.class);
 		bboxService = applicationContext.getBean("service.BboxService", BboxService.class);
-		filterCreator = applicationContext.getBean("service.FilterCreator", FilterCreator.class);
+		filterCreator = applicationContext.getBean("service.FilterCreator", FilterService.class);
 		layerService = applicationContext.getBean("service.VectorLayerService", VectorLayerService.class);
 	}
 

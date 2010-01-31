@@ -23,8 +23,8 @@
 package org.geomajas.extension.printing.command.print;
 
 import org.geomajas.command.Command;
-import org.geomajas.command.EmptyCommandRequest;
 import org.geomajas.configuration.ApplicationInfo;
+import org.geomajas.extension.command.dto.EmptyCommandRequest;
 import org.geomajas.extension.printing.command.dto.DtoPrintTemplate;
 import org.geomajas.extension.printing.command.dto.PrintListTemplatesResponse;
 import org.geomajas.extension.printing.configuration.PrintConfiguration;

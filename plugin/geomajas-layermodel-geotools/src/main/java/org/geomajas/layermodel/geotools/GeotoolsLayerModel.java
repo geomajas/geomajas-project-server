@@ -33,7 +33,7 @@ import org.geomajas.layermodel.geotools.command.interceptor.GeotoolsTransactionI
 import org.geomajas.layermodel.geotools.postgis.NonTypedPostgisFidMapperFactory;
 import org.geomajas.layermodel.shapeinmem.FeatureSourceRetriever;
 import org.geomajas.service.BboxService;
-import org.geomajas.service.FilterCreator;
+import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
 import org.geotools.data.DataStore;
 import org.geotools.data.DataStoreFinder;
@@ -96,7 +96,7 @@ public class GeotoolsLayerModel extends FeatureSourceRetriever implements LayerM
 	private BboxService bboxService;
 
 	@Autowired
-	private FilterCreator filterCreator;
+	private FilterService filterCreator;
 
 	@Autowired
 	private GeoService geoService;

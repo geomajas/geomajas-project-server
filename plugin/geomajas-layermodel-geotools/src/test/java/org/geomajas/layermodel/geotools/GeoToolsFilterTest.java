@@ -9,7 +9,7 @@ import org.geomajas.configuration.PrimitiveAttributeInfo;
 import org.geomajas.configuration.PrimitiveType;
 import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.geometry.Bbox;
-import org.geomajas.service.FilterCreator;
+import org.geomajas.service.FilterService;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.Filter;
 import org.springframework.context.ApplicationContext;
@@ -26,7 +26,7 @@ public class GeoToolsFilterTest extends TestCase {
 			"org/geomajas/testdata/shapes/filtertest/filtertest.shp";
 
 	private GeotoolsLayerModel layerModel;
-	private FilterCreator filterCreator;
+	private FilterService filterCreator;
 
 	public void setUp() throws Exception {
 		ClassLoader classloader = Thread.currentThread().getContextClassLoader();
@@ -35,7 +35,7 @@ public class GeoToolsFilterTest extends TestCase {
 				new String[] {"org/geomajas/spring/geomajasContext.xml",
 						"org/geomajas/testdata/layerCountries.xml",
 						"org/geomajas/testdata/simplevectorsContext.xml"});
-		filterCreator = applicationContext.getBean("service.FilterCreator", FilterCreator.class);
+		filterCreator = applicationContext.getBean("service.FilterCreator", FilterService.class);
 		layerModel = applicationContext.getBean("layermodel.geotools.GeotoolsLayerModel", GeotoolsLayerModel.class);
 		layerModel.setUrl(url);
 
