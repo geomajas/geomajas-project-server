@@ -324,6 +324,17 @@
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-api-experimental</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-api-experimental</artifactId>
+				<classifier>sources</classifier>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-impl</artifactId>
 				<version>${project.version}</version>
 			</dependency>

@@ -71,6 +71,11 @@
             <artifactId>geomajas-api</artifactId>
             <version>${project.version}</version>
         </dependency>
+		<dependency>
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-api-experimental</artifactId>
+            <version>${project.version}</version>
+		</dependency>
         <dependency>
             <groupId>org.geomajas</groupId>
             <artifactId>geomajas-impl</artifactId>

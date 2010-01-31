@@ -48,7 +48,6 @@ public enum LayerType implements Serializable {
 		this.code = code;
 	}
 
-	@Override
 	public String toString() {
 		return Integer.toString(code);
 	}

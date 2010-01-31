@@ -44,8 +44,7 @@ public interface Layer<T extends LayerInfo> {
 	/**
 	 * Get coordinate reference system for this layer.
 	 *
-	 * @return crs
+	 * @return Coordinate reference system for this layer.
 	 */
 	CoordinateReferenceSystem getCrs();
-
 }

@@ -39,7 +39,7 @@ import java.util.Iterator;
  * Also a model should be able to fetch elements from it's source, using the bounds.
  * </p>
  *
- * @author check subversion
+ * @author Jan De Moerloose
  */
 @ExpectAlternatives
 public interface LayerModel {
@@ -133,7 +133,7 @@ public interface LayerModel {
 	/**
 	 * Set the default filter as configured in {@link VectorLayerInfo}.
 	 * <p/>
-	 * This is set during layer initialisation (for example by DefaultVectorLayer). 
+	 * This is set during layer initialization (for example by DefaultVectorLayer). 
 	 *
 	 * @param filter default filter on the layer.
 	 */

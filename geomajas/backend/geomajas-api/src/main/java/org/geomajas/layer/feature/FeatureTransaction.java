@@ -26,7 +26,7 @@ package org.geomajas.layer.feature;
 import java.io.Serializable;
 
 /**
- * DTO version of a {@link RenderedFeature}. This object can be sent to the client.
+ * DTO version of a {@link InternalFeature}. This object can be sent to the client.
  *
  * @author Pieter De Graef
  */

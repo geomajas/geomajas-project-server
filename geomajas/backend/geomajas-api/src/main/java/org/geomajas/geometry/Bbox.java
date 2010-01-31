@@ -28,7 +28,7 @@ import org.geomajas.global.Json;
 import java.io.Serializable;
 
 /**
- * Bbox definition.
+ * DTO bounding box definition.
  *
  * @author Joachim Van der Auwera
  */

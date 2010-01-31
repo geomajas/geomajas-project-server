@@ -33,7 +33,7 @@ import java.util.Date;
  * 
  * @author Joachim Van der Auwera
  */
-public interface FilterCreator {
+public interface FilterService {
 
 	/**
 	 * Create a filter which passes all features from the FeatureInfo within featureTypeInfo with attribute values from

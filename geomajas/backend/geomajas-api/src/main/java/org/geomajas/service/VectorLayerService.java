@@ -23,14 +23,14 @@
 
 package org.geomajas.service;
 
+import java.util.List;
+
 import org.geomajas.configuration.StyleInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.global.GeomajasException;
-import org.geomajas.layer.feature.RenderedFeature;
+import org.geomajas.layer.feature.InternalFeature;
 import org.opengis.filter.Filter;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
-
-import java.util.List;
 
 /**
  * Service which allows accessing data from a vector layer model.
@@ -86,8 +86,8 @@ public interface VectorLayerService {
 	 * some null elements added when it is shorter than oldFeatures.
 	 * @throws GeomajasException oops
 	 */
-	void saveOrUpdate(String layerId, CoordinateReferenceSystem crs, List<RenderedFeature> oldFeatures,
-			List<RenderedFeature> newFeatures) throws GeomajasException;
+	void saveOrUpdate(String layerId, CoordinateReferenceSystem crs, List<InternalFeature> oldFeatures,
+			List<InternalFeature> newFeatures) throws GeomajasException;
 
 	/**
 	 * Retrieve all the features from the model that this filter accepts.
@@ -100,7 +100,7 @@ public interface VectorLayerService {
 	 * @return reader of feature value objects
 	 * @throws GeomajasException oops
 	 */
-	List<RenderedFeature> getFeatures(String layerId, CoordinateReferenceSystem crs, Filter filter,
+	List<InternalFeature> getFeatures(String layerId, CoordinateReferenceSystem crs, Filter filter,
 			List<StyleInfo> styleDefinitions, int featureIncludes)
 			throws GeomajasException;
 

@@ -16,6 +16,10 @@
 			<artifactId>geomajas-api</artifactId>
 		</dependency>
 		<dependency>
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-api-experimental</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 		</dependency>

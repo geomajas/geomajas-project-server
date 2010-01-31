@@ -37,9 +37,9 @@ import java.util.List;
 public interface RasterLayer extends Layer<RasterLayerInfo> {
 
 	/**
-	 * paints the specified bounds optimized for the specified scale in pix/unit.
+	 * paints the specified bounds optimized for the specified scale in pixel/unit.
 	 *
-	 * @param boundsCrs crs used for bounds
+	 * @param boundsCrs Coordinate reference system used for bounds
 	 * @param bounds bounds to request images for
 	 * @param scale scale or zoom level (unit?)
 	 * @return a list of raster images that covers the bounds

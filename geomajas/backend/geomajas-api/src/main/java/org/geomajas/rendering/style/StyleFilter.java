@@ -27,7 +27,7 @@ import org.opengis.filter.Filter;
 
 /**
  * <p>
- * Simple interface for defining a style filter. It couples a style-definition to an opengis filter implementation.
+ * Simple interface for defining a style filter. It couples a style-definition to an OpenGIS filter implementation.
  * </p>
  *
  * @author Pieter De Graef

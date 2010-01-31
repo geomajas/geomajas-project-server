@@ -31,33 +31,33 @@ import java.util.Map;
 
 /**
  * <p>
- * This is the main feature class used on the server. Even though each {@link org.geomajas.layer.LayerModel} may have
- * it's own specific feature objects, this is the common feature type that comes out of the
+ * This is the main feature class, internally used on the server. Even though each {@link org.geomajas.layer.LayerModel}
+ * may have it's own specific feature objects, this is the common feature type that comes out of the
  * {@link org.geomajas.rendering.painter.feature.FeaturePainter} classes and is used throughout the whole back-end.
  * </p>
- *
+ * 
  * @author Pieter De Graef
  */
-public interface RenderedFeature extends Cloneable, Comparable<RenderedFeature> {
+public interface InternalFeature extends Cloneable, Comparable<InternalFeature> {
 
 	/**
 	 * Retrieve the local feature ID. That is the ID without the layer ID attached to it. This ID will still be unique
 	 * within the layer.
-	 *
+	 * 
 	 * @return local feature id
 	 */
 	String getLocalId();
 
 	/**
 	 * Get the feature's bounding box.
-	 *
+	 * 
 	 * @return feature bounds
 	 */
 	Bbox getBounds();
 
 	/**
 	 * Is this a new feature or not? This is tested by the ID. If the ID is null, then the feature is new.
-	 *
+	 * 
 	 * @return true when new
 	 */
 	boolean isNew();
@@ -65,7 +65,7 @@ public interface RenderedFeature extends Cloneable, Comparable<RenderedFeature> 
 	/**
 	 * This function compares style ID's between features. Features are usually sorted by style.
 	 */
-	int compareTo(RenderedFeature o);
+	int compareTo(InternalFeature o);
 
 	void setId(String id);
 

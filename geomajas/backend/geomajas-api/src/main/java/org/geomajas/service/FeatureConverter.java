@@ -24,7 +24,7 @@
 package org.geomajas.service;
 
 import org.geomajas.layer.feature.Feature;
-import org.geomajas.layer.feature.RenderedFeature;
+import org.geomajas.layer.feature.InternalFeature;
 
 /**
  * Converter for feature objects between the server-side feature representation and the DTO version for client-server
@@ -40,7 +40,7 @@ public interface FeatureConverter {
 	 * @param feature The server-side feature representation.
 	 * @return Returns the DTO feature.
 	 */
-	Feature toDto(RenderedFeature feature);
+	Feature toDto(InternalFeature feature);
 
 	/**
 	 * Convert a DTO feature to a server-side feature.
@@ -48,5 +48,5 @@ public interface FeatureConverter {
 	 * @param dto The DTO feature that comes from the client.
 	 * @return Returns a server-side feature object.
 	 */
-	RenderedFeature toFeature(Feature dto);
+	InternalFeature toFeature(Feature dto);
 }

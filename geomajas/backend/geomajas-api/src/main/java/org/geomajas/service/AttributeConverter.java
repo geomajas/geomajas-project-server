@@ -29,12 +29,29 @@ import org.geomajas.layer.feature.Attribute;
 /**
  * Converter for attributes between the server-side attribute representation and the DTO version for client-server
  * communication.
- *
+ * 
  * @author Jan De Moerloose
  */
 public interface AttributeConverter {
 
+	/**
+	 * Converts a DTO attribute into a generic attribute object.
+	 * 
+	 * @param attribute
+	 *            The DTO attribute.
+	 * @return The server side attribute representation. As we don't know at this point what kind of object the
+	 *         attribute is (that's a problem for the <code>FeatureModel</code>), we return an <code>Object</code>.
+	 */
 	Object toObject(Attribute attribute);
 
+	/**
+	 * Converts a server-side attribute object into a DTO attribute.
+	 * 
+	 * @param object
+	 *            The attribute value.
+	 * @param info
+	 *            The attribute definition from the configuration.
+	 * @return Returns a DTO attribute.
+	 */
 	Attribute toDto(Object object, AttributeInfo info);
 }

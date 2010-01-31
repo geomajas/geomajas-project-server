@@ -26,9 +26,12 @@ package org.geomajas.geometry;
 import java.io.Serializable;
 
 /**
- * ???
- *
- * @author check subversion
+ * <p>
+ * Definition of a DTO geometry object. This geometry type is used for client-server communication. Internally on the
+ * server, these geometries are converted into JTS geometries.
+ * </p>
+ * 
+ * @author Pieter De Graef
  */
 public class Geometry implements Serializable {
 
@@ -63,7 +66,7 @@ public class Geometry implements Serializable {
 
 	/**
 	 * Return the spatial reference ID.
-	 *
+	 * 
 	 * @return Returns the srid as an integer.
 	 */
 	public int getSrid() {

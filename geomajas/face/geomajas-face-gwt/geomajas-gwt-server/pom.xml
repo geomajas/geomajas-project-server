@@ -18,6 +18,10 @@
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-api-experimental</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-common-servlet</artifactId>
 			<scope>runtime</scope>
 		</dependency>

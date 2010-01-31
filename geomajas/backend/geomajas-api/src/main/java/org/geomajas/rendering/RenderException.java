@@ -56,5 +56,4 @@ public class RenderException extends GeomajasException {
 	public RenderException(int exceptionCode) {
 		super(exceptionCode);
 	}
-
 }

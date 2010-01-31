@@ -26,7 +26,7 @@ package org.geomajas.service;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.Point;
-import org.geomajas.layer.feature.RenderedFeature;
+import org.geomajas.layer.feature.InternalFeature;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
@@ -72,7 +72,7 @@ public interface GeoService {
 	 * @param feature feature which needs the label
 	 * @return coordinate where the label would make sense.
 	 */
-	Coordinate calcDefaultLabelPosition(RenderedFeature feature);
+	Coordinate calcDefaultLabelPosition(InternalFeature feature);
 
 	/**
 	 * Create a geometry which approximates like a circle.

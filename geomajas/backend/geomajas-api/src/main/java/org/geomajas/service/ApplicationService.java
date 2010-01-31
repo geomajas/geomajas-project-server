@@ -92,10 +92,10 @@ public interface ApplicationService {
 	 * @param id vector layer id
 	 * @return vector layer
 	 */
-	Layer getLayer(String id);
+	Layer<?> getLayer(String id);
 
 	/**
-	 * Get tinfo about the map with given id.
+	 * Get information about the map with given id.
 	 *
 	 * @param id map id
 	 * @return {@link org.geomajas.configuration.MapInfo}
@@ -105,10 +105,9 @@ public interface ApplicationService {
 	/**
 	 * Get the {@link org.opengis.referencing.crs.CoordinateReferenceSystem} with given code.
 	 *
-	 * @param crs crs code
+	 * @param crs Coordinate reference system code. (EPSG:xxxx)
 	 * @return {@link org.opengis.referencing.crs.CoordinateReferenceSystem}
-	 * @throws LayerException crs code not found
+	 * @throws LayerException CRS code not found
 	 */
 	CoordinateReferenceSystem getCrs(String crs) throws LayerException;
-
 }

@@ -72,5 +72,4 @@ public interface LayerPaintContext {
 	 * @return a style filter
 	 */
 	StyleFilter findStyleFilter(Object feature);
-
 }

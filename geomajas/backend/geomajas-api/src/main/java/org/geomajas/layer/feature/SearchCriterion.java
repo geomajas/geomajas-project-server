@@ -25,7 +25,7 @@ package org.geomajas.layer.feature;
 import java.io.Serializable;
 
 /**
- * A single criterion that can be used to set up filters and search for features.
+ * A single criterion DTO that can be used to set up filters and search for features.
  *
  * @author Pieter De Graef
  */
@@ -38,8 +38,6 @@ public class SearchCriterion implements Serializable {
 	private String operator;
 
 	private String value;
-
-	public static final String OP_EQUALS = "=";
 
 	// Constructors:
 

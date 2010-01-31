@@ -27,22 +27,23 @@ import org.geomajas.global.ExpectAlternatives;
 /**
  * Interceptors perform some action before or after a command is executed. Interceptors are useful for adding
  * infrastructural behavior in an AOP style. Examples are: transaction demarcation, user profile injection,...
- *
+ * 
  * @author Jan De Moerloose
- *
  */
 @ExpectAlternatives
 public interface CommandInterceptor {
 
 	/**
-	 * @param command command which is being executed
-	 * @return false if execution of command should be cancelled, afterExecute will still be called (to allow for
+	 * @param command
+	 *            command which is being executed
+	 * @return false if execution of command should be canceled, afterExecute will still be called (to allow for
 	 *         cleanup)
 	 */
-	boolean beforeExecute(Command command);
+	boolean beforeExecute(Command<?, ?> command);
 
 	/**
-	 * @param command command which is being executed
+	 * @param command
+	 *            command which is being executed
 	 */
-	void afterExecute(Command command);
+	void afterExecute(Command<?, ?> command);
 }

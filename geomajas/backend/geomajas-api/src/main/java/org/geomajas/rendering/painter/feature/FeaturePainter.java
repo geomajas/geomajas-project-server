@@ -23,90 +23,93 @@
 
 package org.geomajas.rendering.painter.feature;
 
-import org.geomajas.layer.feature.RenderedFeature;
+import java.util.List;
+
+import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.rendering.RenderException;
 import org.geomajas.rendering.painter.LayerPaintContext;
 
-import java.util.List;
-
 /**
  * <p>
- * Interface for painter that render features. Implementations of this interface will be used in the
+ * Interface for painter that builds JTS features. Implementations of this interface will be used in the
  * <code>VectorLayer</code>'s paint function. Basically they transform the object from the <code>LayerModel</code> into
- * <code>RenderedFeature</code> objects. Different implementations of this interface will transform to different
- * implementations of a <code>RenderedFeature</code>.
+ * <code>JtsFeature</code> objects. Different implementations of this interface will transform to different
+ * implementations of a <code>JtsFeature</code>.
  * </p>
  * <p>
  * It also adds the possibility to determine what parts of the features should be painted: attributes, geometries,
- * styles. Leaving out some (or all) of these parts can increase performance.
+ * styles. Leaving out some (or all) of these parts can increase performance. Supported options are:
+ * <ul>
+ * <li><b>renderingAttributes</b>: will attributes be added to the <code>JtsFeature</code> objects or not?</li>
+ * <li><b>renderingGeometry</b>: will geometries be added to the <code>JtsFeature</code> objects or not?</li>
+ * <li><b>renderingStyle</b>: will style definitions be added to the <code>JtsFeature</code> objects or not?</li>
+ * <li><b>renderingLabel</b>: will the label string be added to the <code>JtsFeature</code> objects or not?</li>
+ * </ul>
  * </p>
- *
+ * 
  * @author Pieter De Graef
  */
 public interface FeaturePainter {
 
 	/**
-	 * Do we allow attributes to be added to the <code>RenderedFeature</code> objects or not? (speed issue)
-	 */
-	int OPTION_PAINT_ATTRIBUTES = 1;
-
-	/**
-	 * Do we allow geometries to be added to the <code>RenderedFeature</code> objects or not? (speed issue)
-	 */
-	int OPTION_PAINT_GEOMETRY = 2;
-
-	/**
-	 * Do we allow style definitions to be added to the <code>RenderedFeature</code> objects or not? (speed issue)
-	 */
-	int OPTION_PAINT_STYLE = 4;
-
-	/**
-	 * Do we allow the label string to be added to the <code>RenderedFeature</code> objects or not? (speed issue)
-	 */
-	int OPTION_PAINT_LABEL = 8;
-
-	/**
-	 * Paint an individual feature. In other words transform the generic feature object into a
-	 * <code>RenderedFeature</code>.
-	 *
+	 * Paint an individual feature. In other words transform the generic feature object into a <code>JtsFeature</code>.
+	 * 
 	 * @param paintContext
 	 *            The provided painting context. It helps to determine what style a feature should receive.
 	 * @param feature
 	 *            A feature object that comes directly from the <code>LayerModel</code>. Some LayerModels cannot handle
 	 *            these features to be altered directly (think Hibernate), so it is important that implementations of
 	 *            this interface never transform the feature's geometries.
-	 * @throws RenderException oops
+	 * @throws RenderException
 	 */
 	void paint(LayerPaintContext paintContext, Object feature) throws RenderException;
 
 	/**
-	 * The full list of <code>RenderedFeature</code> objects.
-	 *
-	 * @return list of rendered features
+	 * Returns the full list of <code>JtsFeature</code> objects.
 	 */
-	List<RenderedFeature> getFeatures();
+	List<InternalFeature> getFeatures();
+
+	/** Will attributes be added to the <code>JtsFeature</code> objects or not? */
+	boolean isRenderingAttributes();
+
+	/** Will geometries be added to the <code>JtsFeature</code> objects or not? */
+	boolean isRenderingGeometry();
+
+	/** Will style definitions be added to the <code>JtsFeature</code> objects or not? */
+	boolean isRenderingStyle();
+
+	/** Will the label string be added to the <code>JtsFeature</code> objects or not? */
+	boolean isRenderingLabels();
 
 	/**
-	 * Turn on or off a specific rendering option. All options are meant to increase performance. Available options are:
-	 * <ul>
-	 * <li>OPTION_PAINT_ATTRIBUTES</li>
-	 * <li>OPTION_PAINT_GEOMETRY</li>
-	 * <li>OPTION_PAINT_STYLE</li>
-	 * <li>OPTION_PAINT_LABEL</li>
-	 * </ul>
-	 *
-	 * @param option
-	 *            One of the 3 above options.
-	 * @param value
-	 *            True or false. In other words, turn it on or off.
+	 * Determine whether attributes will be added to the <code>JtsFeature</code> objects or not.
+	 * 
+	 * @param renderingAttributes
+	 *            The new value.
 	 */
-	void setOption(int option, boolean value);
+	void setRenderingAttributes(boolean renderingAttributes);
 
 	/**
-	 * Request the value of an option.
-	 *
-	 * @param option check value for an option
-	 * @return true when that option is set
+	 * Determine whether geometries will be added to the <code>JtsFeature</code> objects or not.
+	 * 
+	 * @param renderingGeometry
+	 *            The new value.
 	 */
-	boolean getOption(int option);
+	void setRenderingGeometry(boolean renderingGeometry);
+
+	/**
+	 * Determine whether style definitions will be added to the <code>JtsFeature</code> objects or not.
+	 * 
+	 * @param renderingStyle
+	 *            The new value.
+	 */
+	void setRenderingStyle(boolean renderingStyle);
+
+	/**
+	 * Determine whether the label string will be added to the <code>JtsFeature</code> objects or not.
+	 * 
+	 * @param renderingLabels
+	 *            The new value.
+	 */
+	void setRenderingLabels(boolean renderingLabels);
 }
