@@ -69,7 +69,7 @@ public class DefaultDocumentTest {
 		runtime = applicationContext.getBean("service.ApplicationService", ApplicationService.class);
 		geoService = applicationContext.getBean("service.GeoService", GeoService.class);
 		bboxService = applicationContext.getBean("service.BboxService", BboxService.class);
-		filterCreator = applicationContext.getBean("service.FilterCreator", FilterService.class);
+		filterCreator = applicationContext.getBean("service.FilterService", FilterService.class);
 		layerService = applicationContext.getBean("service.VectorLayerService", VectorLayerService.class);
 	}
 

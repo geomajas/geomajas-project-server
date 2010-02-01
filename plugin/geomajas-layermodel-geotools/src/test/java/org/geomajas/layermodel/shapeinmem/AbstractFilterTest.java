@@ -112,7 +112,7 @@ public abstract class AbstractFilterTest {
 				new String[] {"org/geomajas/spring/geomajasContext.xml",
 						"org/geomajas/testdata/layerCountries.xml",
 						"org/geomajas/testdata/simplevectorsContext.xml"});
-		filterCreator = applicationContext.getBean("service.FilterCreator", FilterService.class);
+		filterCreator = applicationContext.getBean("service.FilterService", FilterService.class);
 		layerModel = applicationContext.getBean(
 				"layermodel.shapeinmem.ShapeInMemLayerModel", ShapeInMemLayerModel.class);
 		layerModel.setUrl(SHAPE_FILE);

@@ -35,7 +35,7 @@ public class GeoToolsFilterTest extends TestCase {
 				new String[] {"org/geomajas/spring/geomajasContext.xml",
 						"org/geomajas/testdata/layerCountries.xml",
 						"org/geomajas/testdata/simplevectorsContext.xml"});
-		filterCreator = applicationContext.getBean("service.FilterCreator", FilterService.class);
+		filterCreator = applicationContext.getBean("service.FilterService", FilterService.class);
 		layerModel = applicationContext.getBean("layermodel.geotools.GeotoolsLayerModel", GeotoolsLayerModel.class);
 		layerModel.setUrl(url);
 
