@@ -36,9 +36,5 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 	<bean name="application" class="org.geomajas.configuration.ApplicationInfo">
 	</bean>
 
-	<bean name="configuration.GeomajasRuntimeParameters" class="org.geomajas.internal.service.ApplicationServiceImpl">
-		<property name="tileCacheMaximumSize" value="61"/>
-	</bean>
-
 </beans>
 

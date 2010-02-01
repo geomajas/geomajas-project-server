@@ -80,13 +80,4 @@ public class SpringIocTest extends TestCase {
 		ExampleInterface ex = factory.getBean(EXAMPLE_CONFIG, ExampleInterface.class);
 		assertEquals(ConfiguredExample.HELLO_WORLD, ex.helloWorld());
 	}
-
-	/* this fails
-	public void testAddSettings() {
-		ApplicationService grp = factory.getBean("service.ApplicationService",
-				ApplicationServiceImpl.class);
-		assertEquals("second does not overwrite first", 61, grp.getTileCacheMaximumSize());
-		assertEquals("second does not add to first", "testloc", grp.getApplicationLocation());
-	}
-	*/
 }
