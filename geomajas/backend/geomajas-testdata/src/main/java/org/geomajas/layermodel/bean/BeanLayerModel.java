@@ -29,6 +29,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.geomajas.configuration.AssociationAttributeInfo;
 import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.layer.LayerException;
@@ -36,6 +37,7 @@ import org.geomajas.layer.LayerModel;
 import org.geomajas.layer.feature.FeatureModel;
 import org.geomajas.service.BboxService;
 import org.geomajas.service.FilterService;
+import org.geomajas.service.GeoService;
 import org.opengis.filter.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -53,10 +55,12 @@ import com.vividsolutions.jts.geom.Geometry;
 @Scope("prototype")
 public class BeanLayerModel implements LayerModel {
 
+	private Map<String, Object> featuresById = new HashMap<String, Object>();
+
 	/**
 	 * The features (should be Java beans compliant)
 	 */
-	private Map<String, Object> features = new HashMap<String, Object>();
+	private List<Object> features = new ArrayList<Object>();
 
 	private FeatureModel featureModel;
 
@@ -70,6 +74,9 @@ public class BeanLayerModel implements LayerModel {
 	@Autowired
 	private FilterService filterService;
 
+	@Autowired
+	private GeoService geoService;
+
 	public Iterator<?> getElements(Filter queryFilter) throws LayerException {
 		Filter filter = queryFilter;
 		if (defaultFilter != null) {
@@ -77,7 +84,7 @@ public class BeanLayerModel implements LayerModel {
 		}
 		Filter realFilter = filter;
 		List<Object> filteredList = new ArrayList<Object>();
-		for (Object feature : features.values()) {
+		for (Object feature : featuresById.values()) {
 			if (realFilter.evaluate(feature)) {
 				filteredList.add(feature);
 			}
@@ -110,16 +117,13 @@ public class BeanLayerModel implements LayerModel {
 		return bboxService.fromEnvelope(bounds);
 	}
 
-	public void setFeatureModel(FeatureModel featureModel) {
-		this.featureModel = featureModel;
-	}
-
 	public FeatureModel getFeatureModel() {
 		return featureModel;
 	}
 
 	public void setLayerInfo(VectorLayerInfo layerInfo) throws LayerException {
 		this.layerInfo = layerInfo;
+		initFeatureModel();
 	}
 
 	public VectorLayerInfo getLayerInfo() {
@@ -128,15 +132,15 @@ public class BeanLayerModel implements LayerModel {
 
 	public Object create(Object feature) throws LayerException {
 		String id = featureModel.getId(feature);
-		if (id != null && !features.containsKey(id)) {
-			return features.put(id, feature);
+		if (id != null && !featuresById.containsKey(id)) {
+			return featuresById.put(id, feature);
 		} else {
 			return null;
 		}
 	}
 
 	public Object read(String featureId) throws LayerException {
-		return features.get(featureId);
+		return featuresById.get(featureId);
 	}
 
 	public Object saveOrUpdate(Object feature) throws LayerException {
@@ -164,11 +168,19 @@ public class BeanLayerModel implements LayerModel {
 		this.defaultFilter = defaultFilter;
 	}
 
-	public Map<String, Object> getFeatures() {
+	public List<Object> getFeatures() {
 		return features;
 	}
 
-	public void setFeatures(Map<String, Object> features) {
+	public void setFeatures(List<Object> features) throws LayerException {
 		this.features = features;
+	}
+
+	protected void initFeatureModel() throws LayerException {
+		AssociationAttributeInfo info = new AssociationAttributeInfo();
+		featureModel = new BeanFeatureModel(layerInfo, geoService.getSridFromCrs(layerInfo.getCrs()));
+		for (Object f : features) {
+			featuresById.put(featureModel.getId(f), f);
+		}
 	}
 }

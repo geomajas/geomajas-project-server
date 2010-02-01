@@ -32,6 +32,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
 
 import org.geomajas.configuration.AssociationAttributeInfo;
 import org.geomajas.configuration.AttributeInfo;
@@ -46,6 +47,11 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.PrecisionModel;
+import com.vividsolutions.jts.io.ParseException;
+import com.vividsolutions.jts.io.WKTReader;
+import com.vividsolutions.jts.io.WKTWriter;
 
 /**
  * A simple Java beans based feature model.
@@ -66,6 +72,35 @@ public class BeanFeatureModel implements FeatureModel {
 
 	private VectorLayerInfo vectorLayerInfo;
 
+	private WKTReader reader;
+
+	private WKTWriter writer;
+
+	private boolean wkt;
+
+	public BeanFeatureModel(VectorLayerInfo vectorLayerInfo, int srid) throws LayerException {
+		this.vectorLayerInfo = vectorLayerInfo;
+		try {
+			beanClass = Class.forName(vectorLayerInfo.getFeatureInfo().getDataSourceName());
+		} catch (ClassNotFoundException e) {
+			throw new LayerException(ExceptionCode.FEATURE_MODEL_PROBLEM, "Feature class "
+					+ vectorLayerInfo.getFeatureInfo().getDataSourceName() + " was not found");
+		}
+		this.srid = srid;
+		reader = new WKTReader(new GeometryFactory(new PrecisionModel(), srid));
+		writer = new WKTWriter();
+		PropertyDescriptor d = BeanUtils.getPropertyDescriptor(beanClass, getGeometryAttributeName());
+		Class geometryClass = d.getPropertyType();
+		if (Geometry.class.isAssignableFrom(geometryClass.getClass())) {
+			wkt = false;
+		} else if (geometryClass == String.class) {
+			wkt = true;
+		} else {
+			throw new LayerException(ExceptionCode.FEATURE_MODEL_PROBLEM, "Feature "
+					+ vectorLayerInfo.getFeatureInfo().getDataSourceName() + " has no valid geometry attribute");
+		}
+	}
+
 	public Class<?> getBeanClass() {
 		return beanClass;
 	}
@@ -79,12 +114,7 @@ public class BeanFeatureModel implements FeatureModel {
 	}
 
 	public Object getAttribute(Object feature, String name) throws LayerException {
-		PropertyDescriptor d = BeanUtils.getPropertyDescriptor(beanClass, name);
-		try {
-			return readProperty(feature, name);
-		} catch (Exception e) {
-			throw new LayerException(ExceptionCode.FEATURE_MODEL_PROBLEM, e);
-		}
+		return getAttributeRecursively(feature, name);
 	}
 
 	public Map<String, Object> getAttributes(Object feature) throws LayerException {
@@ -104,7 +134,16 @@ public class BeanFeatureModel implements FeatureModel {
 	}
 
 	public Geometry getGeometry(Object feature) throws LayerException {
-		return (Geometry) getAttribute(feature, getGeometryAttributeName());
+		Object geometry = getAttribute(feature, getGeometryAttributeName());
+		if (!wkt) {
+			return (Geometry) geometry;
+		} else {
+			try {
+				return reader.read((String) geometry);
+			} catch (ParseException e) {
+				throw new LayerException(ExceptionCode.FEATURE_MODEL_PROBLEM, e);
+			}
+		}
 	}
 
 	public String getGeometryAttributeName() throws LayerException {
@@ -142,21 +181,21 @@ public class BeanFeatureModel implements FeatureModel {
 		}
 	}
 
+	/**
+	 * Does not support many-to-one and one-to-many....
+	 */
 	public void setAttributes(Object feature, Map<String, Object> attributes) throws LayerException {
-		for (String name : attributes.keySet()) {
-			try {
-				writeProperty(feature, attributes.get(name), name);
-			} catch (Throwable t) {
-				throw new LayerException(ExceptionCode.FEATURE_MODEL_PROBLEM, t);
-			}
+		for (Entry<String, Object> entry : attributes.entrySet()) {
+			setAttributeRecursively(feature, null, entry.getKey(), entry.getValue());
 		}
 	}
 
 	public void setGeometry(Object feature, Geometry geometry) throws LayerException {
-		try {
-			writeProperty(feature, geometry, getFeatureInfo().getGeometryType().getName());
-		} catch (Throwable t) {
-			throw new LayerException(ExceptionCode.FEATURE_MODEL_PROBLEM, t);
+		if (wkt) {
+			String wktStr = writer.write(geometry);
+			writeProperty(feature, wktStr, getGeometryAttributeName());
+		} else {
+			writeProperty(feature, geometry, getGeometryAttributeName());
 		}
 	}
 
@@ -186,12 +225,8 @@ public class BeanFeatureModel implements FeatureModel {
 		String[] properties = name.split(SEPARATOR_REGEXP, 2);
 		Object tempFeature = feature;
 
-		// If the first property is the identifier:
-		if (properties[0].equals(getFeatureInfo().getIdentifier().getName())) {
-			tempFeature = getId(feature);
-		} else {
-			tempFeature = readProperty(feature, properties[0]);
-		}
+		// Get the first property:
+		tempFeature = readProperty(feature, properties[0]);
 
 		// Detect if the first property is a collection (one-to-many):
 		if (tempFeature instanceof Collection<?>) {
@@ -216,7 +251,6 @@ public class BeanFeatureModel implements FeatureModel {
 	}
 
 	/**
-	 * TODO Do we allow an ID to be set by the setAttributes method? I suggest not.(PDG)
 	 * 
 	 * @param parent
 	 * @param parentAttribute
@@ -270,16 +304,18 @@ public class BeanFeatureModel implements FeatureModel {
 				if (properties.length == 1) {
 					// If the first property is the only one: set the entire complex object:
 					String name = attribute.getName();
-					String asoType = aso.getType().value();
 					PropertyDescriptor pd = BeanUtils.getPropertyDescriptor(beanClass, name);
-					if ("many-to-one".equals(asoType)) {
-						writeProperty(parent, value, name);
-					} else if ("one-to-many".equals(asoType)) {
-						if (value instanceof Object[]) {
-							Object[] array = (Object[]) value;
-							Collection<?> old = (Collection<?>) readProperty(parent, name);
-							copyArrayToPersistentCollection(array, aso, parent, old);
-						}
+					switch (aso.getType()) {
+						case MANY_TO_ONE:
+							writeProperty(parent, value, name);
+							break;
+						case ONE_TO_MANY:
+							if (value instanceof Object[]) {
+								Object[] array = (Object[]) value;
+								Collection<?> old = (Collection<?>) readProperty(parent, name);
+								copyArrayToPersistentCollection(array, aso, parent, old);
+							}
+							break;
 					}
 				} else {
 					// It's a complex property name...we must go deeper:
