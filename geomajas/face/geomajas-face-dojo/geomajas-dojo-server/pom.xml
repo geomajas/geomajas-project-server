@@ -15,10 +15,12 @@
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-api</artifactId>
 		</dependency>
+		<!--
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-api-experimental</artifactId>
 		</dependency>
+		-->
 
 		<dependency>
 			<groupId>org.geomajas</groupId>
