@@ -24,7 +24,7 @@
 package org.geomajas.internal.security;
 
 import com.vividsolutions.jts.geom.Geometry;
-import org.geomajas.layer.feature.Feature;
+import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.security.Authentication;
 import org.geomajas.security.SecurityContext;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -169,11 +169,11 @@ public class SecurityContextImpl implements SecurityContext {
 		return false;  //To change body of implemented methods use File | Settings | File Templates.
 	}
 
-	public boolean isAttributeReadable(String layerId, Feature feature, String attributeName) {
+	public boolean isAttributeReadable(String layerId, InternalFeature feature, String attributeName) {
 		return false;  //To change body of implemented methods use File | Settings | File Templates.
 	}
 
-	public boolean isFeatureVisible(String layerId, Feature feature) {
+	public boolean isFeatureVisible(String layerId, InternalFeature feature) {
 		return false;  //To change body of implemented methods use File | Settings | File Templates.
 	}
 
@@ -197,11 +197,11 @@ public class SecurityContextImpl implements SecurityContext {
 		return false;  //To change body of implemented methods use File | Settings | File Templates.
 	}
 
-	public boolean isFeatureUpdateAuthorized(String layerId, Feature feature) {
+	public boolean isFeatureUpdateAuthorized(String layerId, InternalFeature feature) {
 		return false;  //To change body of implemented methods use File | Settings | File Templates.
 	}
 
-	public boolean isAttributeWritable(String layerId, Feature feature, String attributeName) {
+	public boolean isAttributeWritable(String layerId, InternalFeature feature, String attributeName) {
 		return false;  //To change body of implemented methods use File | Settings | File Templates.
 	}
 
@@ -213,7 +213,7 @@ public class SecurityContextImpl implements SecurityContext {
 		return null;  //To change body of implemented methods use File | Settings | File Templates.
 	}
 
-	public boolean isFeatureUpdateAuthorized(String layerId, Feature orgFeature, Feature newFeature) {
+	public boolean isFeatureUpdateAuthorized(String layerId, InternalFeature orgFeature, InternalFeature newFeature) {
 		return false;  //To change body of implemented methods use File | Settings | File Templates.
 	}
 
@@ -221,11 +221,11 @@ public class SecurityContextImpl implements SecurityContext {
 		return false;  //To change body of implemented methods use File | Settings | File Templates.
 	}
 
-	public boolean isFeatureDeleteAuthorized(String layerId, Feature feature) {
+	public boolean isFeatureDeleteAuthorized(String layerId, InternalFeature feature) {
 		return false;  //To change body of implemented methods use File | Settings | File Templates.
 	}
 
-	public boolean isFeatureCreateAuthorized(String layerId, Feature feature) {
+	public boolean isFeatureCreateAuthorized(String layerId, InternalFeature feature) {
 		return false;  //To change body of implemented methods use File | Settings | File Templates.
 	}
 
