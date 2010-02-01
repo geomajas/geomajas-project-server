@@ -119,7 +119,7 @@ dojo.declare("AttributeEditorFactory", null, {
 		var extra = {
 			trim: true
 		};
-		return new dijit.form.ValidationTextBox(dojo.mixin(params,extra), srcNodeRef);
+		return new dijit.form.ValidationTextBox(dojo.mixin(extra,params), srcNodeRef);
 	},
 
 	/**
@@ -131,7 +131,7 @@ dojo.declare("AttributeEditorFactory", null, {
 			constraints:{places:0,min:0,max:99999999},
 			maxLength: 15
 		};
-		return new dijit.form.NumberTextBox(dojo.mixin(params,extra), srcNodeRef);
+		return new dijit.form.NumberTextBox(dojo.mixin(extra,params), srcNodeRef);
 	},
 
 	/**
@@ -144,7 +144,7 @@ dojo.declare("AttributeEditorFactory", null, {
 			places: 2,
 			maxLength: 15
 		};
-		return new dijit.form.NumberTextBox(dojo.mixin(params,extra), srcNodeRef);
+		return new dijit.form.NumberTextBox(dojo.mixin(extra,params), srcNodeRef);
 	},
 
 	/**
@@ -157,7 +157,7 @@ dojo.declare("AttributeEditorFactory", null, {
 			currency: "EUR",
 			maxLength: 15
 		};
-		return new dijit.form.CurrencyTextBox(dojo.mixin(params,extra), srcNodeRef);
+		return new dijit.form.CurrencyTextBox(dojo.mixin(extra,params), srcNodeRef);
 	},
 
 	/**
@@ -167,7 +167,7 @@ dojo.declare("AttributeEditorFactory", null, {
 		var extra = {
 			checked: params.value
 		};
-		return new dijit.form.CheckBox(dojo.mixin(params,extra), srcNodeRef);
+		return new dijit.form.CheckBox(dojo.mixin(extra,params), srcNodeRef);
 	},
 
 	/**
@@ -177,7 +177,7 @@ dojo.declare("AttributeEditorFactory", null, {
 		var extra = {
 			trim: true
 		};
-		return new dijit.form.DateTextBox(dojo.mixin(params,extra), srcNodeRef);
+		return new dijit.form.DateTextBox(dojo.mixin(extra,params), srcNodeRef);
 	},
 
 	/**
@@ -190,7 +190,7 @@ dojo.declare("AttributeEditorFactory", null, {
 			searchAttr: params.atDef.getAssociationAttributeName(),
 			store: store
 		};
-		return new geomajas.widget.attributes.NullableFilteringSelect(dojo.mixin(params,extra), srcNodeRef);
+		return new geomajas.widget.attributes.NullableFilteringSelect(dojo.mixin(extra,params), srcNodeRef);
 	},	
 
 	/**
@@ -198,7 +198,7 @@ dojo.declare("AttributeEditorFactory", null, {
 	 */
 	_createCompositionEditor : function (params,srcNodeRef) {
 		var extra = {};
-		return new geomajas.widget.attributes.CompositionFloater(dojo.mixin(params,extra), srcNodeRef);
+		return new geomajas.widget.attributes.CompositionFloater(dojo.mixin(extra,params), srcNodeRef);
 	},
 
 	/**
