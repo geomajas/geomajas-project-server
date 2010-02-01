@@ -20,42 +20,31 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+package org.geomajas.internal.service;
 
-package org.geomajas.rendering.tile;
+import static junit.framework.Assert.assertTrue;
+
+import org.geomajas.layer.feature.attribute.BooleanAttribute;
+import org.geomajas.service.DtoConverterService;
+import org.junit.Test;
 
 /**
- * DTO version of a {@link RasterTile}. This object can be sent to the client.
+ * TODO: document me !
  *
- * @author Pieter De Graef
+ * @author Jan De Moerloose
  */
-public class RasterTile extends Tile {
+public class ConverterTest {
 
-	private static final long serialVersionUID = 151L;
+	private DtoConverterService converter = new DtoConverterServiceImpl();
 
-	private RasterImage featureImage;
-
-	private RasterImage labelImage;
-
-	// Constructors:
-
-	public RasterTile() {
+	@Test
+	public void testToObject() throws Exception {
+		BooleanAttribute attribute = new BooleanAttribute(true);
+		assertTrue(converter.toObject(attribute) instanceof Boolean);
+		assertTrue((Boolean) converter.toObject(attribute));
 	}
 
-	// Getters and setters:
-
-	public RasterImage getFeatureImage() {
-		return featureImage;
-	}
-
-	public void setFeatureImage(RasterImage featureImage) {
-		this.featureImage = featureImage;
-	}
-
-	public RasterImage getLabelImage() {
-		return labelImage;
-	}
-
-	public void setLabelImage(RasterImage labelImage) {
-		this.labelImage = labelImage;
+	@Test
+	public void testToDto() throws Exception {
 	}
 }

@@ -30,18 +30,18 @@ import org.geomajas.cache.store.RenderContent;
 import org.geomajas.configuration.ApplicationInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.global.ExceptionCode;
-import org.geomajas.internal.application.tile.RenderedTileJG;
+import org.geomajas.internal.layer.tile.InternalTileImpl;
 import org.geomajas.internal.rendering.DefaultLayerPaintContext;
 import org.geomajas.internal.rendering.DefaultTilePaintContext;
 import org.geomajas.internal.rendering.painter.image.GeometryImagePainter;
 import org.geomajas.internal.rendering.painter.image.LabelImagePainter;
 import org.geomajas.layer.VectorLayer;
+import org.geomajas.layer.tile.InternalTile;
+import org.geomajas.layer.tile.TileCode;
 import org.geomajas.rendering.image.TileImageCreator;
 import org.geomajas.rendering.painter.LayerPaintContext;
 import org.geomajas.rendering.painter.PaintFactory;
 import org.geomajas.rendering.painter.TilePaintContext;
-import org.geomajas.rendering.tile.InternalTile;
-import org.geomajas.rendering.tile.TileCode;
 import org.geomajas.service.ApplicationService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
@@ -147,7 +147,7 @@ public class RealTimeBroker implements Broker {
 
 		// 5: Create the vector tile:
 		TileCode code = new TileCode(tileLevel, x, y);
-		InternalTile tile = new RenderedTileJG(code, vLayer, scale);
+		InternalTile tile = new InternalTileImpl(code, vLayer, scale);
 		Bbox areaOfInterest = tile.getBbox(vLayer);
 		tileContext.setAreaOfInterest(areaOfInterest);
 		Rectangle paintArea = new Rectangle(0, 0, tile.getScreenWidth(), tile.getScreenHeight());

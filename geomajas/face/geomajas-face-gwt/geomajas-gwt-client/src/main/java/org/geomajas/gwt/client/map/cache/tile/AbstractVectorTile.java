@@ -28,7 +28,7 @@ import org.geomajas.gwt.client.gfx.PainterVisitor;
 import org.geomajas.gwt.client.map.cache.SpatialCache;
 import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.spatial.Bbox;
-import org.geomajas.rendering.tile.TileCode;
+import org.geomajas.layer.tile.TileCode;
 
 import java.util.Collection;
 

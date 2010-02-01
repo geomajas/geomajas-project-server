@@ -25,8 +25,8 @@ package org.geomajas.extension.command.dto;
 
 import org.geomajas.configuration.StyleInfo;
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.rendering.tile.TileCode;
-import org.geomajas.rendering.tile.TileMetadata;
+import org.geomajas.layer.tile.TileCode;
+import org.geomajas.layer.tile.TileMetadata;
 
 /**
  * Request object for {@link org.geomajas.extension.command.render.GetRenderedTileCommand}.

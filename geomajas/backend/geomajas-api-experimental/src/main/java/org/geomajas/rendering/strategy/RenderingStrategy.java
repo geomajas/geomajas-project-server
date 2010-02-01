@@ -25,9 +25,9 @@ package org.geomajas.rendering.strategy;
 
 import org.geomajas.configuration.ApplicationInfo;
 import org.geomajas.global.ExpectAlternatives;
+import org.geomajas.layer.tile.InternalTile;
+import org.geomajas.layer.tile.TileMetadata;
 import org.geomajas.rendering.RenderException;
-import org.geomajas.rendering.tile.InternalTile;
-import org.geomajas.rendering.tile.TileMetadata;
 
 /**
  * <p>

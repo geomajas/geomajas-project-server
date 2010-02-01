@@ -24,7 +24,7 @@
 package org.geomajas.rendering.strategy;
 
 import org.geomajas.configuration.VectorLayerInfo;
-import org.geomajas.rendering.tile.TileMetadata;
+import org.geomajas.layer.tile.TileMetadata;
 
 /**
  * <p>

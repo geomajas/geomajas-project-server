@@ -23,18 +23,18 @@
 
 package org.geomajas.internal.rendering.painter;
 
-import org.geomajas.internal.application.tile.RasterTileJG;
+import org.geomajas.internal.layer.tile.InternalRasterTile;
 import org.geomajas.internal.rendering.DefaultLayerPaintContext;
 import org.geomajas.internal.rendering.image.TileImageCreatorImpl;
 import org.geomajas.internal.rendering.painter.tile.RasterTilePainter;
 import org.geomajas.layer.VectorLayer;
+import org.geomajas.layer.tile.InternalTile;
+import org.geomajas.layer.tile.InternalUrlTile;
+import org.geomajas.layer.tile.TileCode;
 import org.geomajas.rendering.image.TileImageCreator;
 import org.geomajas.rendering.painter.LayerPaintContext;
 import org.geomajas.rendering.painter.PaintFactory;
 import org.geomajas.rendering.painter.tile.TilePainter;
-import org.geomajas.rendering.tile.InternalTile;
-import org.geomajas.rendering.tile.TileCode;
-import org.geomajas.rendering.tile.InternalUrlTile;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.VectorLayerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,6 +67,6 @@ public class PaintFactoryImpl implements PaintFactory {
 	}
 
 	public InternalUrlTile createRasterTile(TileCode code, VectorLayer layer, double scale) {
-		return new RasterTileJG(code, layer, scale);
+		return new InternalRasterTile(code, layer, scale);
 	}
 }

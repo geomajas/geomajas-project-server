@@ -25,10 +25,10 @@ package org.geomajas.internal.rendering.strategy;
 
 import org.geomajas.configuration.ApplicationInfo;
 import org.geomajas.layer.feature.InternalFeature;
+import org.geomajas.layer.tile.InternalTile;
+import org.geomajas.layer.tile.TileMetadata;
 import org.geomajas.rendering.RenderException;
 import org.geomajas.rendering.strategy.RenderingStrategy;
-import org.geomajas.rendering.tile.InternalTile;
-import org.geomajas.rendering.tile.TileMetadata;
 
 /**
  * This class does exactly the same than ImageRendering. The only difference is

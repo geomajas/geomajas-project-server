@@ -29,7 +29,7 @@ import org.geomajas.extension.command.dto.GetGeometryResponse;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.feature.InternalFeature;
-import org.geomajas.service.DtoConverter;
+import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.VectorLayerService;
 import org.opengis.filter.Filter;
@@ -47,7 +47,7 @@ import java.util.List;
 public class GetGeometryCommand implements Command<GetGeometryRequest, GetGeometryResponse> {
 
 	@Autowired
-	private DtoConverter converter;
+	private DtoConverterService converter;
 
 	@Autowired
 	private FilterService filterCreator;

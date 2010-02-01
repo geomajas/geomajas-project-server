@@ -31,16 +31,16 @@ import org.geomajas.configuration.ApplicationInfo;
 import org.geomajas.configuration.StyleInfo;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
-import org.geomajas.internal.application.tile.VectorTileJG;
+import org.geomajas.internal.layer.tile.InternalVectorTile;
 import org.geomajas.internal.rendering.painter.feature.TiledFeatureService;
 import org.geomajas.internal.rendering.painter.tile.VectorTilePainter;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.InternalFeature;
+import org.geomajas.layer.tile.InternalTile;
+import org.geomajas.layer.tile.TileMetadata;
 import org.geomajas.rendering.RenderException;
 import org.geomajas.rendering.painter.tile.TilePainter;
 import org.geomajas.rendering.strategy.RenderingStrategy;
-import org.geomajas.rendering.tile.InternalTile;
-import org.geomajas.rendering.tile.TileMetadata;
 import org.geomajas.service.ApplicationService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
@@ -112,7 +112,7 @@ public class VectorRendering implements RenderingStrategy {
 			CoordinateReferenceSystem crs = runtime.getCrs(metadata.getCrs());
 
 			// Prepare the tile:
-			VectorTileJG tile = new VectorTileJG(metadata.getCode(), vLayer, metadata.getScale());
+			InternalVectorTile tile = new InternalVectorTile(metadata.getCode(), vLayer, metadata.getScale());
 
 			// Prepare any filtering:
 			String geomName = vLayer.getLayerInfo().getFeatureInfo().getGeometryType().getName();

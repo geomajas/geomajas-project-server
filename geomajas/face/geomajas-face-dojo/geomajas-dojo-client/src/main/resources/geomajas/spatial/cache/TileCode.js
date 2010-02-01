@@ -75,7 +75,7 @@ dojo.declare("TileCode", SpatialCode, {
 
 	toJSON : function () {
 		return {
-			javaClass : "org.geomajas.rendering.tile.TileCode",
+			javaClass : "org.geomajas.layer.tile.TileCode",
 			tileLevel : this.tileLevel,
 			x : this.x,
 			y : this.y

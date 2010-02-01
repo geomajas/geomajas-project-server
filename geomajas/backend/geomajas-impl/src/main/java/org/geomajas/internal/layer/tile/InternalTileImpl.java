@@ -20,14 +20,14 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.geomajas.internal.application.tile;
+package org.geomajas.internal.layer.tile;
 
 import org.geomajas.geometry.Bbox;
 import org.geomajas.layer.Layer;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.InternalFeature;
-import org.geomajas.rendering.tile.InternalTile;
-import org.geomajas.rendering.tile.TileCode;
+import org.geomajas.layer.tile.InternalTile;
+import org.geomajas.layer.tile.TileCode;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -38,7 +38,7 @@ import java.util.List;
  * 
  * @author check subversion
  */
-public class RenderedTileJG implements InternalTile {
+public class InternalTileImpl implements InternalTile {
 
 	/**
 	 * features in the tile
@@ -82,13 +82,13 @@ public class RenderedTileJG implements InternalTile {
 
 	// Constructors:
 
-	public RenderedTileJG(TileCode code, VectorLayer layer, double scale) {
+	public InternalTileImpl(TileCode code, VectorLayer layer, double scale) {
 		super();
 		this.code = code;
 		init(layer, scale);
 	}
 
-	public RenderedTileJG(int x, int y, int tileLevel, VectorLayer layer, double scale) {
+	public InternalTileImpl(int x, int y, int tileLevel, VectorLayer layer, double scale) {
 		this(new TileCode(tileLevel, x, y), layer, scale);
 	}
 

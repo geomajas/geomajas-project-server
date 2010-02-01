@@ -34,8 +34,8 @@ import org.geomajas.gwt.client.map.cache.tile.TileFunction;
 import org.geomajas.gwt.client.map.layer.RasterLayer;
 import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.spatial.Matrix;
-import org.geomajas.rendering.tile.RasterImage;
-import org.geomajas.rendering.tile.TileCode;
+import org.geomajas.layer.tile.RasterImage;
+import org.geomajas.layer.tile.TileCode;
 
 import java.util.Collection;
 import java.util.HashMap;

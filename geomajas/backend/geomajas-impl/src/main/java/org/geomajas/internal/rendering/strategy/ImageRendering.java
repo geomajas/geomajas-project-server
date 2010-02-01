@@ -33,17 +33,17 @@ import org.geomajas.configuration.StyleInfo;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
-import org.geomajas.internal.application.tile.RasterTileJG;
+import org.geomajas.internal.layer.tile.InternalRasterTile;
 import org.geomajas.internal.rendering.painter.tile.RasterTilePainter;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.InternalFeature;
+import org.geomajas.layer.tile.InternalTile;
+import org.geomajas.layer.tile.TileCode;
+import org.geomajas.layer.tile.TileMetadata;
 import org.geomajas.rendering.RenderException;
 import org.geomajas.rendering.image.RasterUrlBuilder;
 import org.geomajas.rendering.painter.tile.TilePainter;
 import org.geomajas.rendering.strategy.RenderingStrategy;
-import org.geomajas.rendering.tile.InternalTile;
-import org.geomajas.rendering.tile.TileCode;
-import org.geomajas.rendering.tile.TileMetadata;
 import org.geomajas.service.ApplicationService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.VectorLayerService;
@@ -62,7 +62,7 @@ import org.springframework.stereotype.Component;
  * <p>
  * Internally this class contains a private class that implements the {@link RasterUrlBuilder} interface to create an
  * implementation that is able to create url's that refer to the {@link RetrieveImageServlet}. This class is added to
- * the {@link RasterTileJG} objects so that the {@link RasterTilePainter} can use it to actually paint the raster tiles.
+ * the {@link InternalRasterTile} objects so that the {@link RasterTilePainter} can use it to actually paint the raster tiles.
  * </p>
  *
  * @author Pieter De Graef
@@ -97,7 +97,7 @@ public class ImageRendering implements RenderingStrategy {
 			CoordinateReferenceSystem crs = runtime.getCrs(metadata.getCrs());
 
 			// Prepare the tile:
-			RasterTileJG tile = new RasterTileJG(metadata.getCode(), vLayer, metadata.getScale());
+			InternalRasterTile tile = new InternalRasterTile(metadata.getCode(), vLayer, metadata.getScale());
 			RasterUrlBuilder urlBuilder = new InternalUrlBuilder(metadata, application);
 			tile.setUrlBuilder(urlBuilder);
 

@@ -21,47 +21,59 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.rendering.tile;
+package org.geomajas.internal.layer.tile;
+
+import org.geomajas.global.Json;
+import org.geomajas.layer.VectorLayer;
+import org.geomajas.layer.tile.InternalUrlTile;
+import org.geomajas.layer.tile.RasterImage;
+import org.geomajas.layer.tile.TileCode;
+import org.geomajas.rendering.image.RasterUrlBuilder;
 
 /**
- * DTO version of a {@link VectorTile}. This object can be sent to the client.
+ * ???
  *
- * @author Pieter De Graef
+ * @author check subversion
  */
-public class VectorTile extends Tile {
+public class InternalRasterTile extends InternalTileImpl implements InternalUrlTile {
 
-	private static final long serialVersionUID = 151L;
+	private RasterImage featureImage;
 
-	/**
-	 * feature data for client renderer (SVG/VML/...)
-	 */
-	private String featureFragment;
+	private RasterImage labelImage;
 
-	/**
-	 * label data for client renderer (SVG/VML/...)
-	 */
-	private String labelFragment;
+	private RasterUrlBuilder urlBuilder;
 
 	// Constructors:
 
-	public VectorTile() {
+	public InternalRasterTile(TileCode code, VectorLayer layer, double scale) {
+		super(code, layer, scale);
 	}
 
 	// Getters and setters:
 
-	public String getFeatureFragment() {
-		return featureFragment;
+	@Json(serialize = false)
+	public RasterUrlBuilder getUrlBuilder() {
+		return urlBuilder;
 	}
 
-	public void setFeatureFragment(String featureFragment) {
-		this.featureFragment = featureFragment;
+	@Json(serialize = false)
+	public void setUrlBuilder(RasterUrlBuilder urlBuilder) {
+		this.urlBuilder = urlBuilder;
 	}
 
-	public String getLabelFragment() {
-		return labelFragment;
+	public RasterImage getFeatureImage() {
+		return featureImage;
 	}
 
-	public void setLabelFragment(String labelFragment) {
-		this.labelFragment = labelFragment;
+	public void setFeatureImage(RasterImage featureImage) {
+		this.featureImage = featureImage;
+	}
+
+	public RasterImage getLabelImage() {
+		return labelImage;
+	}
+
+	public void setLabelImage(RasterImage labelImage) {
+		this.labelImage = labelImage;
 	}
 }

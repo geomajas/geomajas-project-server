@@ -23,7 +23,7 @@
 package org.geomajas.extension.command.dto;
 
 import org.geomajas.command.CommandResponse;
-import org.geomajas.rendering.tile.Tile;
+import org.geomajas.layer.tile.Tile;
 
 /**
  * Response object for {@link org.geomajas.extension.command.render.GetRenderedTileCommand}.

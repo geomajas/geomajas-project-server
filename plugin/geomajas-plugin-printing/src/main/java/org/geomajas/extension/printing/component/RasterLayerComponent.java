@@ -31,7 +31,7 @@ import org.geomajas.configuration.MapInfo;
 import org.geomajas.extension.printing.PdfContext;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.layer.RasterLayer;
-import org.geomajas.rendering.tile.RasterImage;
+import org.geomajas.layer.tile.RasterImage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

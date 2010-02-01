@@ -29,11 +29,11 @@ import org.geomajas.extension.command.dto.GetRenderedTileResponse;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.VectorLayer;
+import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.rendering.strategy.RenderingStrategy;
 import org.geomajas.rendering.strategy.RenderingStrategyFactory;
-import org.geomajas.rendering.tile.InternalTile;
 import org.geomajas.service.ApplicationService;
-import org.geomajas.service.DtoConverter;
+import org.geomajas.service.DtoConverterService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +59,7 @@ public class GetRenderedTileCommand implements Command<GetRenderedTileRequest, G
 	private RenderingStrategyFactory renderingStrategyFactory;
 
 	@Autowired
-	private DtoConverter converter;
+	private DtoConverterService converter;
 
 	public GetRenderedTileResponse getEmptyCommandResponse() {
 		return new GetRenderedTileResponse();

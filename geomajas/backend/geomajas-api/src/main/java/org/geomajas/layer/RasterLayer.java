@@ -24,8 +24,8 @@ package org.geomajas.layer;
 
 import org.geomajas.configuration.RasterLayerInfo;
 import org.geomajas.geometry.Bbox;
+import org.geomajas.layer.tile.RasterImage;
 import org.geomajas.rendering.RenderException;
-import org.geomajas.rendering.tile.RasterImage;
 
 import java.util.List;
 

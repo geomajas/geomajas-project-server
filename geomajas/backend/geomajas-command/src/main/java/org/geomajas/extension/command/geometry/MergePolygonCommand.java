@@ -27,7 +27,7 @@ import org.geomajas.extension.command.dto.MergePolygonRequest;
 import org.geomajas.extension.command.dto.MergePolygonResponse;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
-import org.geomajas.service.DtoConverter;
+import org.geomajas.service.DtoConverterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -49,7 +49,7 @@ import com.vividsolutions.jts.geom.PrecisionModel;
 public class MergePolygonCommand implements Command<MergePolygonRequest, MergePolygonResponse> {
 
 	@Autowired
-	private DtoConverter converter;
+	private DtoConverterService converter;
 
 	public MergePolygonResponse getEmptyCommandResponse() {
 		return new MergePolygonResponse();

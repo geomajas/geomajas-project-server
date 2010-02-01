@@ -23,7 +23,7 @@
 
 package org.geomajas.rendering.strategy.rule;
 
-import org.geomajas.rendering.tile.TileMetadata;
+import org.geomajas.layer.tile.TileMetadata;
 
 /**
  * <p>

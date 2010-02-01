@@ -21,7 +21,7 @@
 	</source>
 	<source path="layer/feature/attribute">
 	</source>
-	<source path="rendering/tile">
+	<source path="layer/tile">
 		<exclude name="InternalTile.java"/>
 		<exclude name="InternalUrlTile.java"/>
 	</source>

@@ -24,9 +24,9 @@
 package org.geomajas.internal.rendering.strategy;
 
 import org.geomajas.configuration.VectorLayerInfo;
+import org.geomajas.layer.tile.TileMetadata;
 import org.geomajas.rendering.strategy.RenderingStrategy;
 import org.geomajas.rendering.strategy.RenderingStrategyFactory;
-import org.geomajas.rendering.tile.TileMetadata;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;

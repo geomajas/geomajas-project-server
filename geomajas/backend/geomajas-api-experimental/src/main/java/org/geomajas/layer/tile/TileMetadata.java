@@ -20,10 +20,11 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.geomajas.rendering.tile;
+package org.geomajas.layer.tile;
 
 import org.geomajas.configuration.StyleInfo;
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.layer.tile.TileCode;
 
 /**
  * <p>

@@ -26,7 +26,7 @@ import org.geomajas.command.Command;
 import org.geomajas.extension.command.dto.SplitPolygonRequest;
 import org.geomajas.extension.command.dto.SplitPolygonResponse;
 import org.geomajas.geometry.Geometry;
-import org.geomajas.service.DtoConverter;
+import org.geomajas.service.DtoConverterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -46,7 +46,7 @@ import com.vividsolutions.jts.geom.Polygon;
 public class SplitPolygonCommand implements Command<SplitPolygonRequest, SplitPolygonResponse> {
 
 	@Autowired
-	private DtoConverter converter;
+	private DtoConverterService converter;
 
 	public SplitPolygonResponse getEmptyCommandResponse() {
 		return new SplitPolygonResponse();

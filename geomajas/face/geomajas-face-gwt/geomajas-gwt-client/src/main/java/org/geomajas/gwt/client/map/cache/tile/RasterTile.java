@@ -27,7 +27,7 @@ import org.geomajas.gwt.client.gfx.PainterVisitor;
 import org.geomajas.gwt.client.gfx.style.PictureStyle;
 import org.geomajas.gwt.client.map.store.RasterLayerStore;
 import org.geomajas.gwt.client.spatial.Bbox;
-import org.geomajas.rendering.tile.TileCode;
+import org.geomajas.layer.tile.TileCode;
 
 /**
  * A paintable tile for raster layers.

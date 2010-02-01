@@ -23,7 +23,7 @@
 package org.geomajas.gwt.client.map.cache.tile;
 
 import org.geomajas.gwt.client.spatial.Bbox;
-import org.geomajas.rendering.tile.TileCode;
+import org.geomajas.layer.tile.TileCode;
 
 /**
  * A tile represents a rectangular partitioning of a layer's data. All layers are tile-based, which enables reproducible

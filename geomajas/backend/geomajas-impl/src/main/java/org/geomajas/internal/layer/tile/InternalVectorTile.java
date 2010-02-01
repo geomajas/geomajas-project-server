@@ -20,31 +20,50 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.geomajas.internal.service;
 
-import org.geomajas.layer.feature.attribute.BooleanAttribute;
-import org.geomajas.service.AttributeConverter;
-import org.junit.Test;
+package org.geomajas.internal.layer.tile;
 
-import static junit.framework.Assert.assertTrue;
+import org.geomajas.layer.VectorLayer;
+import org.geomajas.layer.tile.TileCode;
 
 /**
- * TODO: document me !
+ * ???
  *
- * @author Jan De Moerloose
+ * @author check subversion
  */
-public class AttributeConverterTest {
+public class InternalVectorTile extends InternalTileImpl {
 
-	private AttributeConverter converter = new AttributeConverterImpl();
+	/**
+	 * feature data for client renderer (SVG/VML/...)
+	 */
+	private String featureFragment;
 
-	@Test
-	public void testToObject() throws Exception {
-		BooleanAttribute attribute = new BooleanAttribute(true);
-		assertTrue(converter.toObject(attribute) instanceof Boolean);
-		assertTrue((Boolean) converter.toObject(attribute));
+	/**
+	 * label data for client renderer (SVG/VML/...)
+	 */
+	private String labelFragment;
+
+	// Constructors:
+
+	public InternalVectorTile(TileCode code, VectorLayer layer, double scale) {
+		super(code, layer, scale);
 	}
 
-	@Test
-	public void testToDto() throws Exception {
+	// Getters and setters:
+
+	public String getFeatureFragment() {
+		return featureFragment;
+	}
+
+	public void setFeatureFragment(String featureFragment) {
+		this.featureFragment = featureFragment;
+	}
+
+	public String getLabelFragment() {
+		return labelFragment;
+	}
+
+	public void setLabelFragment(String labelFragment) {
+		this.labelFragment = labelFragment;
 	}
 }

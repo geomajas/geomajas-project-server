@@ -27,7 +27,7 @@ import org.geomajas.gwt.client.map.cache.tile.VectorTile;
 import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.map.store.VectorLayerStore;
-import org.geomajas.rendering.tile.TileCode;
+import org.geomajas.layer.tile.TileCode;
 
 import java.util.List;
 

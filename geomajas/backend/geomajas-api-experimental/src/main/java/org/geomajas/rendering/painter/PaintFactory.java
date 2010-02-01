@@ -24,11 +24,11 @@
 package org.geomajas.rendering.painter;
 
 import org.geomajas.layer.VectorLayer;
+import org.geomajas.layer.tile.InternalTile;
+import org.geomajas.layer.tile.InternalUrlTile;
+import org.geomajas.layer.tile.TileCode;
 import org.geomajas.rendering.image.TileImageCreator;
 import org.geomajas.rendering.painter.tile.TilePainter;
-import org.geomajas.rendering.tile.InternalTile;
-import org.geomajas.rendering.tile.TileCode;
-import org.geomajas.rendering.tile.InternalUrlTile;
 
 /**
  * Allows creation of painter related objects.

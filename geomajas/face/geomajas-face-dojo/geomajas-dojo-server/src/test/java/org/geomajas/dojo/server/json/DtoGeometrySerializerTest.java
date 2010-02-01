@@ -36,7 +36,7 @@ import com.vividsolutions.jts.geom.impl.CoordinateArraySequence;
 import com.vividsolutions.jts.util.Assert;
 import junit.framework.TestCase;
 import org.geomajas.geometry.Geometry;
-import org.geomajas.service.DtoConverter;
+import org.geomajas.service.DtoConverterService;
 import org.json.JSONObject;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -47,7 +47,7 @@ public class DtoGeometrySerializerTest extends TestCase {
 
 	private GeometrySerializer jtsSerializer;
 
-	private DtoConverter converter;
+	private DtoConverterService converter;
 
 	public DtoGeometrySerializerTest() {
 		dtoSerializer = new DtoGeometrySerializer();
@@ -55,7 +55,7 @@ public class DtoGeometrySerializerTest extends TestCase {
 
 		ApplicationContext applicationContext = new ClassPathXmlApplicationContext(
 				new String[] {"org/geomajas/spring/geomajasContext.xml", "org/geomajas/spring/emptyApplication.xml"});
-		converter = applicationContext.getBean("service.DtoConverter", DtoConverter.class);
+		converter = applicationContext.getBean("service.DtoConverter", DtoConverterService.class);
 	}
 
 	public void testPoint() throws MarshallException {

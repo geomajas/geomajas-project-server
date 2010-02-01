@@ -30,7 +30,7 @@ import java.util.List;
 
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.RasterLayer;
-import org.geomajas.rendering.tile.RasterImage;
+import org.geomajas.layer.tile.RasterImage;
 import org.geomajas.service.ApplicationService;
 import org.geomajas.configuration.RasterLayerInfo;
 import org.geomajas.geometry.Bbox;

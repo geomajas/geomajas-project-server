@@ -23,7 +23,7 @@
 package org.geomajas.extension.command.dto;
 
 import org.geomajas.command.CommandResponse;
-import org.geomajas.rendering.tile.RasterImage;
+import org.geomajas.layer.tile.RasterImage;
 
 import java.util.List;
 

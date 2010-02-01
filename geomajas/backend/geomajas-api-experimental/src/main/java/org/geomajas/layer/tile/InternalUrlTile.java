@@ -21,25 +21,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.service;
+package org.geomajas.layer.tile;
 
-import org.geomajas.rendering.tile.InternalTile;
-import org.geomajas.rendering.tile.Tile;
+import org.geomajas.rendering.image.RasterUrlBuilder;
 
 /**
- * Converter that can transform server-side tile representations into DTO tiles. These DTO versions can be sent to the
- * client.
+ * A {@link InternalTile} which contains a {@link RasterUrlBuilder} to build the url to the raster image.
  *
- * @author Pieter De Graef
+ * @author Joachim Van der Auwera
  */
-public interface TileConverter {
+public interface InternalUrlTile extends InternalTile {
 
 	/**
-	 * Convert a server-side tile representations into a DTO tile.
+	 * Get the {@link RasterUrlBuilder}.
 	 *
-	 * @param tile
-	 *            The server-side representation of a tile.
-	 * @return Returns the DTO version that can be sent to the client.
+	 * @return {@link RasterUrlBuilder}
 	 */
-	Tile toDto(InternalTile tile);
+	RasterUrlBuilder getUrlBuilder();
+
+	/**
+	 * Set the {@link RasterUrlBuilder}.
+	 *
+	 * @param urlBuilder {@link RasterUrlBuilder}
+	 */
+	void setUrlBuilder(RasterUrlBuilder urlBuilder);
 }

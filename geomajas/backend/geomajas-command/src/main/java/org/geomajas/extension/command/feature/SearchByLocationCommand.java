@@ -34,7 +34,7 @@ import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.Feature;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.service.ApplicationService;
-import org.geomajas.service.DtoConverter;
+import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.VectorLayerService;
 import org.opengis.filter.Filter;
@@ -78,7 +78,7 @@ public class SearchByLocationCommand implements Command<SearchByLocationRequest,
 	private ApplicationService applicationService;
 
 	@Autowired
-	private DtoConverter converter;
+	private DtoConverterService converter;
 
 	@Autowired
 	private FilterService filterCreator;

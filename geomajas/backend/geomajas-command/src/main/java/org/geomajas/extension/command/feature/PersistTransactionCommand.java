@@ -31,7 +31,7 @@ import org.geomajas.layer.feature.FeatureTransaction;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.rendering.painter.PaintFactory;
 import org.geomajas.service.ApplicationService;
-import org.geomajas.service.DtoConverter;
+import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
 import org.geomajas.service.VectorLayerService;
@@ -54,7 +54,7 @@ public class PersistTransactionCommand
 	private ApplicationService runtimeParameters;
 
 	@Autowired
-	private DtoConverter converter;
+	private DtoConverterService converter;
 
 	@Autowired
 	private FilterService filterCreator;

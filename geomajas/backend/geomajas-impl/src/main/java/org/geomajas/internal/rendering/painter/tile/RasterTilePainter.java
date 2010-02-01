@@ -24,19 +24,19 @@
 package org.geomajas.internal.rendering.painter.tile;
 
 import org.geomajas.geometry.Bbox;
-import org.geomajas.internal.application.tile.RasterTileJG;
+import org.geomajas.internal.layer.tile.InternalRasterTile;
+import org.geomajas.layer.tile.InternalTile;
+import org.geomajas.layer.tile.RasterImage;
+import org.geomajas.layer.tile.TileCode;
 import org.geomajas.rendering.RenderException;
 import org.geomajas.rendering.image.RasterUrlBuilder;
 import org.geomajas.rendering.painter.tile.TilePainter;
-import org.geomajas.rendering.tile.RasterImage;
-import org.geomajas.rendering.tile.InternalTile;
-import org.geomajas.rendering.tile.TileCode;
 
 /**
  * <p>
  * TilePainter implementation for painting raster tiles. This painter is actually very simple. It will simply create a
  * URL where the actual image can be found. To do this, it uses the {@link RasterUrlBuilder} contained within the tile.
- * One condition for this to work is that the <code>RenderedTile</code> is an instance of {@link RasterTileJG}, and that
+ * One condition for this to work is that the <code>RenderedTile</code> is an instance of {@link InternalRasterTile}, and that
  * this raster tile's {@link RasterUrlBuilder} is not null!
  * </p>
  *
@@ -80,12 +80,12 @@ public class RasterTilePainter implements TilePainter {
 	 * Painter the tile, by building a URL where the image can be found.
 	 *
 	 * @param tile
-	 *            Must be an instance of {@link RasterTileJG}, and must have a non-null {@link RasterUrlBuilder}.
-	 * @return Returns a {@link RasterTileJG} with a {@link RasterImage} added to it.
+	 *            Must be an instance of {@link InternalRasterTile}, and must have a non-null {@link RasterUrlBuilder}.
+	 * @return Returns a {@link InternalRasterTile} with a {@link RasterImage} added to it.
 	 */
 	public InternalTile paint(InternalTile tile) throws RenderException {
-		if (tile instanceof RasterTileJG) {
-			RasterTileJG rasterTile = (RasterTileJG) tile;
+		if (tile instanceof InternalRasterTile) {
+			InternalRasterTile rasterTile = (InternalRasterTile) tile;
 			RasterUrlBuilder urlBuilder = rasterTile.getUrlBuilder();
 			if (urlBuilder != null) { // paint either geometries or labels.
 				if (paintGeometries) {

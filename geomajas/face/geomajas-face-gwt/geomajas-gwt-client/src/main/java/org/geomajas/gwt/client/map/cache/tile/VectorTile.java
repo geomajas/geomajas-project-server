@@ -35,8 +35,8 @@ import org.geomajas.gwt.client.gfx.paintable.Image;
 import org.geomajas.gwt.client.map.cache.SpatialCache;
 import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.spatial.Bbox;
-import org.geomajas.rendering.tile.RasterTile;
-import org.geomajas.rendering.tile.TileCode;
+import org.geomajas.layer.tile.RasterTile;
+import org.geomajas.layer.tile.TileCode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -138,15 +138,15 @@ public class VectorTile extends AbstractVectorTile {
 							featureIds.add(dto.getId());
 						}
 					}
-					org.geomajas.rendering.tile.Tile tile = tileResponse.getTile();
+					org.geomajas.layer.tile.Tile tile = tileResponse.getTile();
 					code = tile.getCode();
 					// TODO: is it normal to round from double to int in the tile width and height??
 					width = (int) tile.getTileWidth();
 					height = (int) tile.getTileHeight();
 					screenWidth = tile.getScreenWidth();
 					screenHeight = tile.getScreenHeight();
-					if (tile instanceof org.geomajas.rendering.tile.VectorTile) {
-						org.geomajas.rendering.tile.VectorTile vTile = (org.geomajas.rendering.tile.VectorTile) tile;
+					if (tile instanceof org.geomajas.layer.tile.VectorTile) {
+						org.geomajas.layer.tile.VectorTile vTile = (org.geomajas.layer.tile.VectorTile) tile;
 						featureFragment = vTile.getFeatureFragment();
 						labelFragment = vTile.getLabelFragment();
 					} else if (tile instanceof RasterTile) {

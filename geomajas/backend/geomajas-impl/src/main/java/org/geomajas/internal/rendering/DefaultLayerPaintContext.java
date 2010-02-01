@@ -23,7 +23,7 @@
 package org.geomajas.internal.rendering;
 
 import org.geomajas.configuration.StyleInfo;
-import org.geomajas.internal.application.style.StyleFilterImpl;
+import org.geomajas.internal.rendering.style.StyleFilterImpl;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.rendering.painter.LayerPaintContext;
 import org.geomajas.rendering.style.StyleFilter;

@@ -22,24 +22,10 @@
  */
 package org.geomajas.extension.command.feature;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.LinearRing;
-import com.vividsolutions.jts.geom.Polygon;
 import org.geomajas.command.CommandDispatcher;
-import org.geomajas.extension.command.dto.SearchByLocationRequest;
-import org.geomajas.extension.command.dto.SearchByLocationResponse;
-import org.geomajas.layer.feature.Feature;
-import org.geomajas.service.DtoConverter;
-import org.junit.Assert;
+import org.geomajas.service.DtoConverterService;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Test for the SearchByLocationCommand class.
@@ -52,7 +38,7 @@ public class SearchByLocationCommandTest {
 
 	private static CommandDispatcher DISPATCHER;
 
-	private static DtoConverter CONVERTOR;
+	private static DtoConverterService CONVERTOR;
 
 	@BeforeClass
 	public static void setUp() {

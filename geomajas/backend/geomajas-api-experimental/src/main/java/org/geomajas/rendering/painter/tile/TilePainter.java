@@ -23,8 +23,8 @@
 
 package org.geomajas.rendering.painter.tile;
 
+import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.rendering.RenderException;
-import org.geomajas.rendering.tile.InternalTile;
 
 /**
  * <p>

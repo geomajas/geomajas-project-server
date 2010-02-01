@@ -28,7 +28,7 @@ import org.geomajas.extension.command.dto.GetRasterDataResponse;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.RasterLayer;
-import org.geomajas.rendering.tile.RasterImage;
+import org.geomajas.layer.tile.RasterImage;
 import org.geomajas.service.ApplicationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

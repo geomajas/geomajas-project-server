@@ -26,7 +26,7 @@ package org.geomajas.gwt.client.gfx.paintable;
 import org.geomajas.gwt.client.gfx.PainterVisitor;
 import org.geomajas.gwt.client.gfx.style.PictureStyle;
 import org.geomajas.gwt.client.spatial.Bbox;
-import org.geomajas.rendering.tile.RasterImage;
+import org.geomajas.layer.tile.RasterImage;
 
 /**
  * <p>

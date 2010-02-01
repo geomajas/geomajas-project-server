@@ -26,8 +26,8 @@ package org.geomajas.internal.rendering.writers.svg;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import org.geomajas.configuration.StyleInfo;
-import org.geomajas.internal.application.tile.VectorTileJG;
 import org.geomajas.internal.layer.feature.ClippedInternalFeature;
+import org.geomajas.internal.layer.tile.InternalVectorTile;
 import org.geomajas.internal.rendering.writers.GraphicsWriter;
 import org.geomajas.rendering.GraphicsDocument;
 import org.geomajas.rendering.RenderException;
@@ -64,7 +64,7 @@ public class SvgLabelTileWriter implements GraphicsWriter {
 	}
 
 	public void writeObject(Object object, GraphicsDocument document, boolean asChild) throws RenderException {
-		VectorTileJG tile = (VectorTileJG) object;
+		InternalVectorTile tile = (InternalVectorTile) object;
 		document.writeElement("g", asChild);
 		document.writeId("labels." + tile.getCode().toString());
 		for (org.geomajas.layer.feature.InternalFeature f : tile.getFeatures()) {
