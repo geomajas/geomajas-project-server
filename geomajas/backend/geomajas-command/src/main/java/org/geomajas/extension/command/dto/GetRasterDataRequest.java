@@ -22,6 +22,7 @@
  */
 package org.geomajas.extension.command.dto;
 
+import org.geomajas.command.LayerIdCommandRequest;
 import org.geomajas.geometry.Bbox;
 
 /**

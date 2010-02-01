@@ -21,13 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.extension.command.dto;
+package org.geomajas.command;
 
-import org.geomajas.command.CommandRequest;
 
 /**
- * Placeholder class, useful for commands which don't have any parameters.
- * There is no need to ever instantiate this object. Use "null" instead.
+ * ...
  *
  * @author Joachim Van der Auwera
  */

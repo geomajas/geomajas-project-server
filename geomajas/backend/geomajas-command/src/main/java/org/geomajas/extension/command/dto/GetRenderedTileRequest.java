@@ -23,6 +23,7 @@
 
 package org.geomajas.extension.command.dto;
 
+import org.geomajas.command.LayerIdCommandRequest;
 import org.geomajas.configuration.StyleInfo;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.layer.tile.TileCode;

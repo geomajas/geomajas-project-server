@@ -22,6 +22,8 @@
  */
 package org.geomajas.extension.command.dto;
 
+import org.geomajas.command.LayerIdCommandRequest;
+
 
 /**
  * Request object for {@link org.geomajas.extension.command.geometry.GetGeometryCommand}.
