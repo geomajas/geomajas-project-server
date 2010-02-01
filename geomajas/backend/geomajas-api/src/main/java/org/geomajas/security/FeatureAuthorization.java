@@ -23,7 +23,7 @@
 
 package org.geomajas.security;
 
-import org.geomajas.layer.feature.Feature;
+import org.geomajas.layer.feature.InternalFeature;
 
 /**
  * Authorizations at the individual feature level.
@@ -44,7 +44,7 @@ public interface FeatureAuthorization extends BaseAuthorization {
 	 * @param feature feature which needs to be tested
 	 * @return true when the feature is visible
 	 */
-	boolean isFeatureVisible(String layerId, Feature feature);
+	boolean isFeatureVisible(String layerId, InternalFeature feature);
 
 	/**
 	 * Check whether the feature is allowed to be updated in some way.
@@ -61,7 +61,7 @@ public interface FeatureAuthorization extends BaseAuthorization {
 	 * @param feature feature which needs to tested
 	 * @return true when the feature is visible
 	 */
-	boolean isFeatureUpdateAuthorized(String layerId, Feature feature);
+	boolean isFeatureUpdateAuthorized(String layerId, InternalFeature feature);
 
 	/**
 	 * Check whether a update of the feature to the new state is authorized.
@@ -77,7 +77,7 @@ public interface FeatureAuthorization extends BaseAuthorization {
 	 * @param newFeature feature new state
 	 * @return true when the feature is visible
 	 */
-	boolean isFeatureUpdateAuthorized(String layerId, Feature orgFeature, Feature newFeature);
+	boolean isFeatureUpdateAuthorized(String layerId, InternalFeature orgFeature, InternalFeature newFeature);
 
 	/**
 	 * Check whether deletion of the feature is allowed.
@@ -88,7 +88,7 @@ public interface FeatureAuthorization extends BaseAuthorization {
 	 * @param feature feature which needs to be deleted
 	 * @return true when deleting the feature is allowed
 	 */
-	boolean isFeatureDeleteAuthorized(String layerId, Feature feature);
+	boolean isFeatureDeleteAuthorized(String layerId, InternalFeature feature);
 
 	/**
 	 * Check whether creation of the feature is allowed.
@@ -100,5 +100,5 @@ public interface FeatureAuthorization extends BaseAuthorization {
 	 * @param feature feature which needs to be created
 	 * @return true when deleting the feature is allowed
 	 */
-	boolean isFeatureCreateAuthorized(String layerId, Feature feature);
+	boolean isFeatureCreateAuthorized(String layerId, InternalFeature feature);
 }

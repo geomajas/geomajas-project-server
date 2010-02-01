@@ -36,6 +36,4 @@ public interface VectorLayer extends Layer<VectorLayerInfo> {
 	LayerModel getLayerModel();
 
 	EditPermissionType getEditPermissions();
-
-	VectorLayerInfo getLayerInfo();
 }

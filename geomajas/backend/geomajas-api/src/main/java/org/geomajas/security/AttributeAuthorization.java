@@ -23,7 +23,7 @@
 
 package org.geomajas.security;
 
-import org.geomajas.layer.feature.Feature;
+import org.geomajas.layer.feature.InternalFeature;
 
 /**
  * Possible authorizations at individual attribute level.
@@ -44,7 +44,7 @@ public interface AttributeAuthorization extends BaseAuthorization {
 	 * @param attributeName name of the attribute to test
 	 * @return true when the feature is visible
 	 */
-	boolean isAttributeReadable(String layerId, Feature feature, String attributeName);
+	boolean isAttributeReadable(String layerId, InternalFeature feature, String attributeName);
 
 	/**
 	 * Check whether a specific attribute of a feature is writable.
@@ -62,5 +62,5 @@ public interface AttributeAuthorization extends BaseAuthorization {
 	 * @param attributeName name of the attribute to test
 	 * @return true when the feature is visible
 	 */
-	boolean isAttributeWritable(String layerId, Feature feature, String attributeName);
+	boolean isAttributeWritable(String layerId, InternalFeature feature, String attributeName);
 }
