@@ -30,7 +30,7 @@ import org.geomajas.rendering.image.RasterUrlBuilder;
  *
  * @author Joachim Van der Auwera
  */
-public interface UrlTile extends InternalTile {
+public interface InternalUrlTile extends InternalTile {
 
 	/**
 	 * Get the {@link RasterUrlBuilder}.

@@ -63,6 +63,12 @@ public class TileCode implements Serializable {
 	// -------------------------------------------------------------------------
 
 	/**
+	 * Default constructor.
+	 */
+	public TileCode() {
+	}
+
+	/**
 	 * The only constructor available. It requires you to immediately set all it's values.
 	 * 
 	 * @param tileLevel

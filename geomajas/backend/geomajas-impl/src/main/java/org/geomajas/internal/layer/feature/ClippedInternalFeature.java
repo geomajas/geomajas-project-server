@@ -35,14 +35,13 @@ import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * <p>
- * Extension of the <code>RenderedFeature</code> interface that is used only in
- * the {@link org.geomajas.internal.rendering.strategy.VectorRendering} rendering strategy. This feature type has
- * support for clipped geometries. This is sometimes necessary when features are huge,
- * and the map is zoomed in. In SVG and VML you would still be bothered by the
- * useless extra points. So in some situations clipped geometries provide faster
+ * Extension of the <code>RenderedFeature</code> interface that is used only in the
+ * {@link org.geomajas.internal.rendering.strategy.VectorRendering} rendering strategy. This feature type has support
+ * for clipped geometries. This is sometimes necessary when features are huge, and the map is zoomed in. In SVG and VML
+ * you would still be bothered by the useless extra points. So in some situations clipped geometries provide faster
  * SVG/VML rendering.
  * </p>
- *
+ * 
  * @author Pieter De Graef
  */
 public class ClippedInternalFeature implements InternalFeature {
@@ -61,6 +60,10 @@ public class ClippedInternalFeature implements InternalFeature {
 	 * If the feature's geometry has been clipped, store it here.
 	 */
 	private Geometry clippedGeometry;
+
+	// -------------------------------------------------------------------------
+	// Constructors:
+	// -------------------------------------------------------------------------
 
 	public ClippedInternalFeature(InternalFeature base) {
 		this.base = base;

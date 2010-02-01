@@ -44,7 +44,7 @@ import org.geomajas.rendering.painter.tile.TilePainter;
 import org.geomajas.rendering.strategy.RenderingStrategy;
 import org.geomajas.rendering.tile.InternalTile;
 import org.geomajas.rendering.tile.TileMetadata;
-import org.geomajas.rendering.tile.UrlTile;
+import org.geomajas.rendering.tile.InternalUrlTile;
 import org.geomajas.service.ApplicationService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.VectorLayerService;
@@ -117,7 +117,7 @@ public class ExternalWmsRendering implements RenderingStrategy {
 			CoordinateReferenceSystem crs = applicationService.getCrs(metadata.getCrs());
 
 			// Prepare the tile:
-			UrlTile tile = paintFactory.createRasterTile(metadata.getCode(), vLayer, metadata.getScale());
+			InternalUrlTile tile = paintFactory.createRasterTile(metadata.getCode(), vLayer, metadata.getScale());
 			RasterUrlBuilder urlBuilder = new WmsUrlBuilder(tile, vLayer, layerName);
 			tile.setUrlBuilder(urlBuilder);
 

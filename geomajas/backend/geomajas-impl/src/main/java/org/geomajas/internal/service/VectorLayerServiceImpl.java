@@ -33,6 +33,7 @@ import org.geomajas.geometry.Bbox;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.internal.application.style.StyleFilterImpl;
+import org.geomajas.internal.layer.feature.ClippedInternalFeature;
 import org.geomajas.internal.layer.feature.RenderedFeatureImpl;
 import org.geomajas.layer.LayerModel;
 import org.geomajas.layer.VectorLayer;
@@ -197,7 +198,7 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 			List<StyleFilter> styles, int featureIncludes) throws GeomajasException {
 		LayerInfo layerInfo = layer.getLayerInfo();
 		FeatureModel featureModel = layer.getLayerModel().getFeatureModel();
-		InternalFeature res = new RenderedFeatureImpl(bboxService);
+		ClippedInternalFeature res = new ClippedInternalFeature(new RenderedFeatureImpl(bboxService));
 		res.setId(layerInfo.getId() + "." + featureModel.getId(feature));
 		res.setLayer(layer);
 

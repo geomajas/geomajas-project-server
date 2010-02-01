@@ -28,14 +28,14 @@ import org.geomajas.layer.VectorLayer;
 import org.geomajas.rendering.image.RasterUrlBuilder;
 import org.geomajas.rendering.tile.RasterImage;
 import org.geomajas.rendering.tile.TileCode;
-import org.geomajas.rendering.tile.UrlTile;
+import org.geomajas.rendering.tile.InternalUrlTile;
 
 /**
  * ???
  *
  * @author check subversion
  */
-public class RasterTileJG extends RenderedTileJG implements UrlTile {
+public class RasterTileJG extends RenderedTileJG implements InternalUrlTile {
 
 	private RasterImage featureImage;
 

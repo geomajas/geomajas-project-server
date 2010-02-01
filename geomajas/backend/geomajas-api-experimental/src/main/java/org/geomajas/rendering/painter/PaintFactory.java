@@ -28,7 +28,7 @@ import org.geomajas.rendering.image.TileImageCreator;
 import org.geomajas.rendering.painter.tile.TilePainter;
 import org.geomajas.rendering.tile.InternalTile;
 import org.geomajas.rendering.tile.TileCode;
-import org.geomajas.rendering.tile.UrlTile;
+import org.geomajas.rendering.tile.InternalUrlTile;
 
 /**
  * Allows creation of painter related objects.
@@ -70,5 +70,5 @@ public interface PaintFactory {
 	 * @param scale scale
 	 * @return tile which contains the image url
 	 */
-	UrlTile createRasterTile(TileCode code, VectorLayer layer, double scale);
+	InternalUrlTile createRasterTile(TileCode code, VectorLayer layer, double scale);
 }

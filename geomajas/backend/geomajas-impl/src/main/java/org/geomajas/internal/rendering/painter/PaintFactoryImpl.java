@@ -34,7 +34,7 @@ import org.geomajas.rendering.painter.PaintFactory;
 import org.geomajas.rendering.painter.tile.TilePainter;
 import org.geomajas.rendering.tile.InternalTile;
 import org.geomajas.rendering.tile.TileCode;
-import org.geomajas.rendering.tile.UrlTile;
+import org.geomajas.rendering.tile.InternalUrlTile;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.VectorLayerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -66,7 +66,7 @@ public class PaintFactoryImpl implements PaintFactory {
 		return new RasterTilePainter(layerId);
 	}
 
-	public UrlTile createRasterTile(TileCode code, VectorLayer layer, double scale) {
+	public InternalUrlTile createRasterTile(TileCode code, VectorLayer layer, double scale) {
 		return new RasterTileJG(code, layer, scale);
 	}
 }
