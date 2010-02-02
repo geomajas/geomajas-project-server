@@ -27,12 +27,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.geomajas.configuration.StyleInfo;
-import org.geomajas.geometry.Bbox;
 import org.geomajas.global.Json;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.service.BboxService;
 
+import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 
 /**
@@ -127,9 +127,9 @@ public class InternalFeatureImpl implements InternalFeature {
 	 * 
 	 * @return
 	 */
-	public Bbox getBounds() {
+	public Envelope getBounds() {
 		if (geometry != null) {
-			return bboxService.fromEnvelope(geometry.getEnvelopeInternal());
+			return geometry.getEnvelopeInternal();
 		}
 		return null;
 	}

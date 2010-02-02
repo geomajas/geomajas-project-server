@@ -22,14 +22,17 @@
  */
 package org.geomajas.extension.command.configuration;
 
+import java.util.ArrayList;
+
 import org.geomajas.command.Command;
 import org.geomajas.extension.command.dto.UserMaximumExtentRequest;
 import org.geomajas.extension.command.dto.UserMaximumExtentResponse;
 import org.geomajas.geometry.Bbox;
+import org.geomajas.internal.service.DtoConverterServiceImpl;
 import org.geomajas.layer.Layer;
 import org.geomajas.layer.LayerType;
 import org.geomajas.service.ApplicationService;
-import org.geomajas.service.BboxService;
+import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
 import org.geomajas.service.VectorLayerService;
 import org.geotools.geometry.jts.JTS;
@@ -41,7 +44,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
+import com.vividsolutions.jts.geom.Envelope;
 
 /**
  * Calculate the maximum extent a user can see (based on a set of layers).
@@ -54,8 +57,7 @@ public class UserMaximumExtentCommand implements Command<UserMaximumExtentReques
 
 	private final Logger log = LoggerFactory.getLogger(UserMaximumExtentCommand.class);
 
-	@Autowired
-	private BboxService bboxService;
+	private DtoConverterService converter = new DtoConverterServiceImpl();
 
 	@Autowired
 	private GeoService geoService;
@@ -92,25 +94,25 @@ public class UserMaximumExtentCommand implements Command<UserMaximumExtentReques
 			// return empty bbox
 			response.setBounds(new Bbox());
 		} else {
-			Bbox extent = new Bbox();
+			Envelope extent = new Envelope();
 			for (String layerId : layers) {
 				layer = runtimeParameters.getLayer(layerId);
 				if (layer != null) {
-					Bbox bounds;
+					Envelope bounds;
 					if (layer.getLayerInfo().getLayerType() == LayerType.RASTER) {
 						// @todo need to limit based on security
-						bounds = layer.getLayerInfo().getMaxExtent();
+						bounds = converter.toEnvelope(layer.getLayerInfo().getMaxExtent());
 						MathTransform transformer = geoService.findMathTransform(layer.getCrs(), targetCrs);
-						bounds = bboxService.fromEnvelope(JTS.transform(bboxService.toEnvelope(bounds), transformer));
+						bounds = JTS.transform(bounds, transformer);
 					} else {
 						bounds = layerService.getBounds(layerId, targetCrs, null);
 					}
-					bboxService.expandToInclude(extent, bounds);
+					extent.expandToInclude(bounds);
 				} else {
 					log.warn("layer not found ?! " + layerId);
 				}
 			}
-			response.setBounds(extent);
+			response.setBounds(converter.fromEnvelope(extent));
 		}
 	}
 }

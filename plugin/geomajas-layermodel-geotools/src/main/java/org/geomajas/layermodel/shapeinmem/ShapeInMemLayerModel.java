@@ -22,14 +22,23 @@
  */
 package org.geomajas.layermodel.shapeinmem;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 import org.geomajas.configuration.VectorLayerInfo;
-import org.geomajas.geometry.Bbox;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.LayerModel;
 import org.geomajas.layer.feature.FeatureModel;
-import org.geomajas.service.BboxService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
 import org.geotools.data.DataStore;
@@ -44,20 +53,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import com.vividsolutions.jts.geom.Envelope;
 
 /**
  * Layer model for handling shape files in memory.
- *
+ * 
  * @author check subversion
  */
 @Component
@@ -75,9 +75,6 @@ public class ShapeInMemLayerModel extends FeatureSourceRetriever implements Laye
 	private Filter defaultFilter;
 
 	@Autowired
-	private BboxService bboxService;
-
-	@Autowired
 	private FilterService filterCreator;
 
 	@Autowired
@@ -88,7 +85,6 @@ public class ShapeInMemLayerModel extends FeatureSourceRetriever implements Laye
 		setFeatureSourceName(layerInfo.getFeatureInfo().getDataSourceName());
 		initFeatures();
 	}
-
 
 	public void setUrl(URL url) throws LayerException {
 		try {
@@ -155,23 +151,23 @@ public class ShapeInMemLayerModel extends FeatureSourceRetriever implements Laye
 		return filteredList.iterator();
 	}
 
-	public Bbox getBounds() throws LayerException {
+	public Envelope getBounds() throws LayerException {
 		return getBounds(Filter.INCLUDE);
 	}
 
 	/**
 	 * Retrieve the bounds of the specified features.
-	 *
+	 * 
 	 * @return the bounds of the specified features
 	 */
-	public Bbox getBounds(Filter queryFilter) throws LayerException {
+	public Envelope getBounds(Filter queryFilter) throws LayerException {
 		Filter filter = queryFilter;
 		if (defaultFilter != null) {
 			filter = filterCreator.createLogicFilter(filter, "AND", defaultFilter);
 		}
 		try {
 			FeatureCollection<SimpleFeatureType, SimpleFeature> fc = getFeatureSource().getFeatures(filter);
-			return bboxService.fromEnvelope(fc.getBounds());
+			return fc.getBounds();
 		} catch (IOException ioe) {
 			throw new LayerException(ExceptionCode.FEATURE_MODEL_PROBLEM, ioe);
 		}
@@ -233,7 +229,7 @@ public class ShapeInMemLayerModel extends FeatureSourceRetriever implements Laye
 				}
 			}
 			col.close(iterator);
-			//		getNextId();
+			// getNextId();
 			nextId++;
 		} catch (NumberFormatException nfe) {
 			throw new LayerException(ExceptionCode.FEATURE_MODEL_PROBLEM, nfe);

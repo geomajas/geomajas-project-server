@@ -1,15 +1,15 @@
 package org.geomajas.layermodel.shapeinmem;
 
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.io.ParseException;
-import com.vividsolutions.jts.io.WKTReader;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import org.geomajas.configuration.AttributeInfo;
 import org.geomajas.configuration.FeatureInfo;
 import org.geomajas.configuration.GeometricAttributeInfo;
 import org.geomajas.configuration.PrimitiveAttributeInfo;
 import org.geomajas.configuration.PrimitiveType;
 import org.geomajas.configuration.VectorLayerInfo;
-import org.geomajas.geometry.Bbox;
 import org.geomajas.service.FilterService;
 import org.geotools.factory.CommonFactoryFinder;
 import org.junit.Assert;
@@ -20,9 +20,10 @@ import org.opengis.filter.Filter;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.io.ParseException;
+import com.vividsolutions.jts.io.WKTReader;
 
 public class ShapeInMemLayerModelTest {
 
@@ -34,13 +35,12 @@ public class ShapeInMemLayerModelTest {
 
 	@Before
 	public void setUp() throws Exception {
-		ApplicationContext applicationContext = new ClassPathXmlApplicationContext(
-				new String[] {"org/geomajas/spring/geomajasContext.xml",
-						"org/geomajas/testdata/layerCountries.xml",
-						"org/geomajas/testdata/simplevectorsContext.xml"});
+		ApplicationContext applicationContext = new ClassPathXmlApplicationContext(new String[] {
+				"org/geomajas/spring/geomajasContext.xml", "org/geomajas/testdata/layerCountries.xml",
+				"org/geomajas/testdata/simplevectorsContext.xml" });
 		FilterService filterCreator = applicationContext.getBean("service.FilterService", FilterService.class);
-		layerModel = applicationContext.getBean(
-				"layermodel.shapeinmem.ShapeInMemLayerModel", ShapeInMemLayerModel.class);
+		layerModel = applicationContext.getBean("layermodel.shapeinmem.ShapeInMemLayerModel",
+				ShapeInMemLayerModel.class);
 		layerModel.setUrl(SHAPE_FILE);
 
 		FeatureInfo ft = new FeatureInfo();
@@ -100,7 +100,7 @@ public class ShapeInMemLayerModelTest {
 			}
 
 			SimpleFeature feature = CommonFactoryFinder.getFeatureFactory(null).createSimpleFeature(
-					new Object[] {geometry, "Tsjakamaka", 342}, layerModel.getSchema(), "100000");
+					new Object[] { geometry, "Tsjakamaka", 342 }, layerModel.getSchema(), "100000");
 
 			created = layerModel.create(feature);
 		} catch (Exception e) {
@@ -123,20 +123,20 @@ public class ShapeInMemLayerModelTest {
 	@Test
 	public void getBounds() throws Exception {
 		// Checked in QGis!
-		Bbox bbox = layerModel.getBounds();
-		Assert.assertEquals(-175.22, bbox.getX(), .0001);
+		Envelope bbox = layerModel.getBounds();
+		Assert.assertEquals(-175.22, bbox.getMinX(), .0001);
 		Assert.assertEquals(179.38, bbox.getMaxX(), .0001);
-		Assert.assertEquals(-46.41, bbox.getY(), .0001);
+		Assert.assertEquals(-46.41, bbox.getMinY(), .0001);
 		Assert.assertEquals(69.41, bbox.getMaxY(), .0001);
 	}
 
 	@Test
 	public void getBoundsFilter() throws Exception {
 		// Checked in QGis!
-		Bbox bbox = layerModel.getBounds(filter);
-		Assert.assertEquals(-118.01, bbox.getX(), .0001);
+		Envelope bbox = layerModel.getBounds(filter);
+		Assert.assertEquals(-118.01, bbox.getMinX(), .0001);
 		Assert.assertEquals(120.86, bbox.getMaxX(), .0001);
-		Assert.assertEquals(-19.99, bbox.getY(), .0001);
+		Assert.assertEquals(-19.99, bbox.getMinY(), .0001);
 		Assert.assertEquals(53.09, bbox.getMaxY(), .0001);
 	}
 

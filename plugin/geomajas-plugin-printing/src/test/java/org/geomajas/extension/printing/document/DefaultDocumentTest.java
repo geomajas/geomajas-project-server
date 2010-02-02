@@ -22,12 +22,18 @@
  */
 package org.geomajas.extension.printing.document;
 
-import com.vividsolutions.jts.geom.Coordinate;
+import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
+import java.io.StringReader;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+
 import org.geomajas.configuration.ApplicationInfo;
 import org.geomajas.extension.printing.component.PageComponent;
 import org.geomajas.extension.printing.configuration.DefaultConfigurationVisitor;
 import org.geomajas.service.ApplicationService;
-import org.geomajas.service.BboxService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
 import org.geomajas.service.VectorLayerService;
@@ -36,12 +42,7 @@ import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
-import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
-import java.io.StringReader;
+import com.vividsolutions.jts.geom.Coordinate;
 
 public class DefaultDocumentTest {
 
@@ -51,24 +52,19 @@ public class DefaultDocumentTest {
 
 	private GeoService geoService;
 
-	private BboxService bboxService;
-
 	private FilterService filterCreator;
 
 	private VectorLayerService layerService;
 
 	@Before
 	public void setUp() throws Exception {
-		ApplicationContext applicationContext = new ClassPathXmlApplicationContext(
-				new String[] {"org/geomajas/spring/geomajasContext.xml",
-						"org/geomajas/testdata/layerBluemarble.xml",
-						"org/geomajas/testdata/layerCountries.xml",
-						"org/geomajas/testdata/simplemixedContext.xml"});
+		ApplicationContext applicationContext = new ClassPathXmlApplicationContext(new String[] {
+				"org/geomajas/spring/geomajasContext.xml", "org/geomajas/testdata/layerBluemarble.xml",
+				"org/geomajas/testdata/layerCountries.xml", "org/geomajas/testdata/simplemixedContext.xml" });
 		// load the configuration (context-wide object);
 		application = applicationContext.getBean("application", ApplicationInfo.class);
 		runtime = applicationContext.getBean("service.ApplicationService", ApplicationService.class);
 		geoService = applicationContext.getBean("service.GeoService", GeoService.class);
-		bboxService = applicationContext.getBean("service.BboxService", BboxService.class);
 		filterCreator = applicationContext.getBean("service.FilterService", FilterService.class);
 		layerService = applicationContext.getBean("service.VectorLayerService", VectorLayerService.class);
 	}
@@ -76,7 +72,7 @@ public class DefaultDocumentTest {
 	@Test
 	public void testRender() throws Exception {
 		DefaultDocument document = new DefaultDocument("A4", application, runtime, null, getDefaultVisitor(-31.44,
-				-37.43, 89.83f), geoService, bboxService, filterCreator, layerService);
+				-37.43, 89.83f), geoService, filterCreator, layerService);
 		document.render();
 
 		JAXBContext context = JAXBContext.newInstance("org.geomajas.extension.printing.component", getClass()
@@ -99,64 +95,34 @@ public class DefaultDocumentTest {
 	}
 
 	/*
-	@Test
-	public void testWrite() throws Exception {
-		PageComponent page = new PageComponent("A4", true);
-		page.setTag(PrintTemplate.PAGE);
-		MapComponent map = createMap(-570765.9534524073, 5067494.962772554, 2000000);
-		ImageComponent northarrow = createArrow();
-		ScaleBarComponent bar = createBar();
-		LabelComponent title = createTitle();
-
-		LegendComponent legend = new LegendComponent();
-		map.addComponent(bar);
-		map.addComponent(legend);
-		map.addComponent(northarrow);
-		page.addComponent(map);
-		page.addComponent(title);
-
-		HibernateUtil.getInstance().beginTransaction();
-		if (HibernateTransactionInterceptor.isHibernateEnabled()) {
-			PrintTemplateDAO dao = PrintConfiguration.getDAO();
-
-			PrintTemplate template = new PrintTemplate();
-			template.setDataSourceName("Viewports1");
-			template.setPage(page);
-			template.encode();
-			List<String> names = dao.findAllNames();
-			// dao.makePersistent(template);
-			template = PrintTemplate.createDefaultTemplate("A4");
-			template.setDataSourceName("Default");
-			template.encode();
-			// dao.makePersistent(template);
-			HibernateUtil.getInstance().commitTransaction();
-			HibernateUtil.getInstance().getCurrentSession().close();
-		}
-	}
-	*/
+	 * @Test public void testWrite() throws Exception { PageComponent page = new PageComponent("A4", true);
+	 * page.setTag(PrintTemplate.PAGE); MapComponent map = createMap(-570765.9534524073, 5067494.962772554, 2000000);
+	 * ImageComponent northarrow = createArrow(); ScaleBarComponent bar = createBar(); LabelComponent title =
+	 * createTitle();
+	 * 
+	 * LegendComponent legend = new LegendComponent(); map.addComponent(bar); map.addComponent(legend);
+	 * map.addComponent(northarrow); page.addComponent(map); page.addComponent(title);
+	 * 
+	 * HibernateUtil.getInstance().beginTransaction(); if (HibernateTransactionInterceptor.isHibernateEnabled()) {
+	 * PrintTemplateDAO dao = PrintConfiguration.getDAO();
+	 * 
+	 * PrintTemplate template = new PrintTemplate(); template.setDataSourceName("Viewports1"); template.setPage(page);
+	 * template.encode(); List<String> names = dao.findAllNames(); // dao.makePersistent(template); template =
+	 * PrintTemplate.createDefaultTemplate("A4"); template.setDataSourceName("Default"); template.encode(); //
+	 * dao.makePersistent(template); HibernateUtil.getInstance().commitTransaction();
+	 * HibernateUtil.getInstance().getCurrentSession().close(); } }
+	 */
 
 	/*
-	@Test
-	public void testRead() throws Exception {
-		Application app = createApplication();
-		HibernateUtil.getInstance().beginTransaction();
-		if (HibernateTransactionInterceptor.isHibernateEnabled()) {
-			PrintTemplateDAO dao = PrintConfiguration.getDAO();
-			List<PrintTemplate> templates = dao.findAll();
-
-			for (PrintTemplate template : templates) {
-				// decode the page
-				template.decode();
-				// calculate the sizes (if not already calculated !)
-				SinglePageDocument document = new SinglePageDocument(template.getPage(), app, null);
-				document.setLayoutOnly(true);
-				document.render();
-			}
-			HibernateUtil.getInstance().commitTransaction();
-			HibernateUtil.getInstance().getCurrentSession().close();
-		}
-	}
-	*/
+	 * @Test public void testRead() throws Exception { Application app = createApplication();
+	 * HibernateUtil.getInstance().beginTransaction(); if (HibernateTransactionInterceptor.isHibernateEnabled()) {
+	 * PrintTemplateDAO dao = PrintConfiguration.getDAO(); List<PrintTemplate> templates = dao.findAll();
+	 * 
+	 * for (PrintTemplate template : templates) { // decode the page template.decode(); // calculate the sizes (if not
+	 * already calculated !) SinglePageDocument document = new SinglePageDocument(template.getPage(), app, null);
+	 * document.setLayoutOnly(true); document.render(); } HibernateUtil.getInstance().commitTransaction();
+	 * HibernateUtil.getInstance().getCurrentSession().close(); } }
+	 */
 
 	private DefaultConfigurationVisitor getDefaultVisitor(double x, double y, float widthInUnits) {
 		// 842, 595

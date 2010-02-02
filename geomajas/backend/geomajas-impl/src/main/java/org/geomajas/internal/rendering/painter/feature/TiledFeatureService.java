@@ -25,18 +25,18 @@ package org.geomajas.internal.rendering.painter.feature;
 
 import java.util.List;
 
-import org.geomajas.geometry.Bbox;
 import org.geomajas.internal.layer.feature.InternalFeatureImpl;
+import org.geomajas.internal.service.DtoConverterServiceImpl;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.layer.tile.TileCode;
-import org.geomajas.service.BboxService;
+import org.geomajas.service.DtoConverterService;
 import org.geotools.geometry.jts.JTS;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 
 /**
@@ -60,8 +60,7 @@ import com.vividsolutions.jts.geom.Geometry;
 @Component
 public class TiledFeatureService {
 
-	@Autowired
-	private BboxService bboxService;
+	private DtoConverterService converter = new DtoConverterServiceImpl();
 
 	/**
 	 * Helps determine when a feature is too big and must therefore be clipped.
@@ -71,7 +70,7 @@ public class TiledFeatureService {
 	/**
 	 * The tile's maximum bounds in screen space. Needed for clipping calculations.
 	 */
-	private Bbox maxScreenBbox;
+	private Envelope maxScreenBbox;
 
 	/**
 	 * Paint an individual feature. In other words transform the generic feature object into a
@@ -96,7 +95,7 @@ public class TiledFeatureService {
 		for (InternalFeature feature : features) {
 			Geometry geometry = feature.getGeometry();
 
-			if (!bboxService.contains(tile.getBbox(layer), geometry.getCoordinate())) {
+			if (!tile.getBbox(layer).contains(geometry.getCoordinate())) {
 				addTileCode(tile, layer, geometry);
 			} else {
 				// clip feature if necessary
@@ -104,8 +103,7 @@ public class TiledFeatureService {
 					InternalFeatureImpl vectorFeature = new InternalFeatureImpl(feature);
 					tile.setClipped(true);
 					vectorFeature.setClipped(true);
-					Geometry clipped = JTS.toGeometry(
-							bboxService.toEnvelope(getMaxScreenBbox(layer, code, scale, panOrigin))).intersection(
+					Geometry clipped = JTS.toGeometry(getMaxScreenBbox(layer, code, scale, panOrigin)).intersection(
 							feature.getGeometry());
 					vectorFeature.setClippedGeometry(clipped);
 					tile.addFeature(vectorFeature);
@@ -132,7 +130,8 @@ public class TiledFeatureService {
 	 */
 	private void addTileCode(InternalTile tile, VectorLayer layer, Geometry geometry) {
 		Coordinate c = geometry.getCoordinate();
-		if (c != null && bboxService.contains(layer.getLayerInfo().getMaxExtent(), c)) {
+		Envelope max = converter.toEnvelope(layer.getLayerInfo().getMaxExtent());
+		if (c != null && max.contains(c)) {
 			int i = (int) ((c.x - layer.getLayerInfo().getMaxExtent().getX()) / tile.getTileWidth());
 			int j = (int) ((c.y - layer.getLayerInfo().getMaxExtent().getY()) / tile.getTileHeight());
 			int level = tile.getCode().getTileLevel();
@@ -150,7 +149,7 @@ public class TiledFeatureService {
 	 * @return true if clipping is needed
 	 */
 	private boolean exceedsScreenDimensions(InternalFeature f, double scale) {
-		Bbox env = f.getBounds();
+		Envelope env = f.getBounds();
 		if (env.getWidth() * scale > MAXIMUM_TILE_COORDINATE) {
 			return true;
 		} else {
@@ -171,9 +170,9 @@ public class TiledFeatureService {
 	 *            pan origin
 	 * @return max screen bbox
 	 */
-	private Bbox getMaxScreenBbox(VectorLayer layer, TileCode code, double scale, Coordinate panOrigin) {
+	private Envelope getMaxScreenBbox(VectorLayer layer, TileCode code, double scale, Coordinate panOrigin) {
 		if (maxScreenBbox == null) {
-			Bbox max = layer.getLayerInfo().getMaxExtent();
+			Envelope max = converter.toEnvelope(layer.getLayerInfo().getMaxExtent());
 			double div = Math.pow(2, code.getTileLevel());
 			int tileWidthPx = (int) Math.ceil(scale * max.getWidth() / div);
 			double tileWidth = tileWidthPx / scale;
@@ -181,8 +180,12 @@ public class TiledFeatureService {
 			double tileHeight = tileHeightPx / scale;
 			int nrOfTilesX = Math.max(1, MAXIMUM_TILE_COORDINATE / tileWidthPx);
 			int nrOfTilesY = Math.max(1, MAXIMUM_TILE_COORDINATE / tileHeightPx);
-			maxScreenBbox = new Bbox(panOrigin.x - nrOfTilesX * tileWidth, panOrigin.y - nrOfTilesY * tileHeight,
-					nrOfTilesX * tileWidth * 2, nrOfTilesY * tileHeight * 2);
+
+			double x1 = panOrigin.x - nrOfTilesX * tileWidth;
+			double x2 = x1 + (nrOfTilesX * tileWidth * 2);
+			double y1 = panOrigin.y - nrOfTilesY * tileHeight;
+			double y2 = y1 + (nrOfTilesY * tileHeight * 2);
+			maxScreenBbox = new Envelope(x1, x2, y1, y2);
 		}
 		return maxScreenBbox;
 	}

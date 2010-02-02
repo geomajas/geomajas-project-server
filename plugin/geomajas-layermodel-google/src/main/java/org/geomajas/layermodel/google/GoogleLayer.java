@@ -49,6 +49,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Envelope;
 
 /**
  * Layer for displaying Google Maps images.
@@ -124,7 +125,7 @@ public class GoogleLayer implements RasterLayer {
 		return layerName;
 	}
 
-	public List<RasterImage> paint(String boundsCrs, Bbox bounds, double scale) throws RenderException {
+	public List<RasterImage> paint(String boundsCrs, Envelope bounds, double scale) throws RenderException {
 		try {
 			CoordinateReferenceSystem google = CRS.decode("EPSG:900913");
 			MathTransform googleToLayer = geoService.findMathTransform(google, CRS.decode(boundsCrs));
@@ -133,8 +134,8 @@ public class GoogleLayer implements RasterLayer {
 			// TODO: if bounds width or height is 0, we run out of memory ?
 			bounds = clipBounds(bounds);
 			// find the center of the map in map coordinates (positive y-axis)
-			DirectPosition2D center = new DirectPosition2D(0.5 * (bounds.getX() + bounds.getMaxX()), 0.5 * (bounds
-					.getY() + bounds.getMaxY()));
+			DirectPosition2D center = new DirectPosition2D(0.5 * (bounds.getMinX() + bounds.getMaxX()), 0.5 * (bounds
+					.getMinY() + bounds.getMaxY()));
 
 			double scaleRatio = calculateMapUnitPerGoogleMeter(layerToGoogle, center);
 
@@ -174,7 +175,7 @@ public class GoogleLayer implements RasterLayer {
 			// that just falls off the screen
 			double xMin = xCenter;
 			int iMin = iCenter;
-			while (xMin > bounds.getX()) {
+			while (xMin > bounds.getMinX()) {
 				xMin -= width;
 				iMin--;
 			}
@@ -194,7 +195,7 @@ public class GoogleLayer implements RasterLayer {
 			}
 			double yMin = yCenter;
 			int jMax = jCenter;
-			while (yMin > bounds.getY()) {
+			while (yMin > bounds.getMinY()) {
 				yMin -= width;
 				jMax++;
 			}
@@ -248,8 +249,8 @@ public class GoogleLayer implements RasterLayer {
 		}
 	}
 
-	private Bbox clipBounds(Bbox bounds) {
-		return bboxService.intersection(bounds, getLayerInfo().getMaxExtent());
+	private Envelope clipBounds(Envelope bounds) {
+		return bounds.intersection(bboxService.toEnvelope(getLayerInfo().getMaxExtent()));
 	}
 
 	private void calculatePredefinedResolutions() {

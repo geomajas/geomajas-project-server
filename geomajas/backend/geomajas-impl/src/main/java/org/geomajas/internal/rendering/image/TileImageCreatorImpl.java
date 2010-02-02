@@ -34,7 +34,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.configuration.VectorLayerInfo;
-import org.geomajas.geometry.Bbox;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.InternalFeature;
@@ -48,6 +47,8 @@ import org.geomajas.service.VectorLayerService;
 import org.opengis.filter.Filter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.vividsolutions.jts.geom.Envelope;
 
 /**
  * <p>
@@ -137,7 +138,7 @@ public class TileImageCreatorImpl implements TileImageCreator {
 		// ---------------------------------------------------------------------
 		// Check to see if all the needed arguments can be found.
 		// ---------------------------------------------------------------------
-		Bbox mapArea = tileContext.getAreaOfInterest();
+		Envelope mapArea = tileContext.getAreaOfInterest();
 
 		if (graphics == null || paintArea == null) {
 			log.error("renderer passed null arguments");

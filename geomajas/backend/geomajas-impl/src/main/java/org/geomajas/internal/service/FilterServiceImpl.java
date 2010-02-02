@@ -23,8 +23,9 @@
 
 package org.geomajas.internal.service;
 
-import com.vividsolutions.jts.geom.Geometry;
-import org.geomajas.geometry.Bbox;
+import java.util.Date;
+import java.util.HashSet;
+
 import org.geomajas.service.FilterService;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.identity.FeatureIdImpl;
@@ -36,8 +37,8 @@ import org.opengis.filter.expression.PropertyName;
 import org.opengis.filter.identity.Identifier;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
-import java.util.HashSet;
+import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * <p>
@@ -45,7 +46,7 @@ import java.util.HashSet;
  * functions. This class uses the OpenGIS FilterFactory2 interface, which extends the OGC FilterFactory specification
  * with JTS geometry support.
  * </p>
- *
+ * 
  * @author Pieter De Graef
  */
 @Component
@@ -57,7 +58,7 @@ public final class FilterServiceImpl implements FilterService {
 	 * Create a filter which passes all features from the FeatureInfo within featureTypeInfo with attribute values from
 	 * attribute 'name' between values 'lower and 'upper'.<BR>
 	 * This type of filter is only allowed on numeric object types (short, integer, long, float, double)
-	 *
+	 * 
 	 * @param name
 	 *            The name of the attribute from featureTypeInfo.
 	 * @param lower
@@ -77,7 +78,7 @@ public final class FilterServiceImpl implements FilterService {
 	 * Filter based on the LIKE comparator as in sql. arg2 is a string to compare the values of arg1 with. Make sure
 	 * arg1 refers to a String-attribute. The expression understands wildcards like *(= zero or more unknown characters)
 	 * and ?(exactly 1 unknown character).
-	 *
+	 * 
 	 * @param name
 	 *            The name of the attribute from featureTypeInfo.
 	 * @param pattern
@@ -93,7 +94,7 @@ public final class FilterServiceImpl implements FilterService {
 	/**
 	 * Create a filter that passes all features where the values of attribute 'name' compared to literal 'value' using
 	 * comparator 'comparator' returns true.
-	 *
+	 * 
 	 * @param name
 	 *            The name of the attribute from featureTypeInfo. This type of filter is only allowed on numeric object
 	 *            types (short, integer, long, float, double)
@@ -135,7 +136,7 @@ public final class FilterServiceImpl implements FilterService {
 	/**
 	 * Create a filter that passes all features where the values of attribute 'name' compared to literal 'value' using
 	 * comparator 'comparator' returns true. This function compares object of the type Date.
-	 *
+	 * 
 	 * @param name
 	 *            The name of the attribute from featureTypeInfo. This type of filter is only allowed on dates.
 	 * @param comparator
@@ -169,12 +170,13 @@ public final class FilterServiceImpl implements FilterService {
 
 	/**
 	 * Creates a logic filter. This is a combination of filters.
-	 *
-	 * @param filter1 first filter to combine
+	 * 
+	 * @param filter1
+	 *            first filter to combine
 	 * @param logic
 	 *            The logic operator. Can be 'AND', 'OR', 'NOT'.
-	 * @param filter2 second filter to combine
-	 *            In the case of "NOT", this parameter is not used.
+	 * @param filter2
+	 *            second filter to combine In the case of "NOT", this parameter is not used.
 	 * @return filter
 	 */
 	public Filter createLogicFilter(Filter filter1, String logic, Filter filter2) {
@@ -191,7 +193,7 @@ public final class FilterServiceImpl implements FilterService {
 
 	/**
 	 * Create a feature ID filter.
-	 *
+	 * 
 	 * @param featureIDs
 	 *            Array of identifier strings for the features that need looking up.
 	 * @return filter
@@ -206,7 +208,7 @@ public final class FilterServiceImpl implements FilterService {
 
 	/**
 	 * Creates a filter with all the geometries that contain the parameterized geometry (including the geometry itself).
-	 *
+	 * 
 	 * @param geometry
 	 *            the (parameterized) geometry
 	 * @param geomName
@@ -222,7 +224,7 @@ public final class FilterServiceImpl implements FilterService {
 	/**
 	 * Creates a filter with all the geometries that lie completely within the parameterized geometry (including the
 	 * geometry itself).
-	 *
+	 * 
 	 * @param geometry
 	 *            the (parameterized) geometry
 	 * @param geomName
@@ -238,7 +240,7 @@ public final class FilterServiceImpl implements FilterService {
 	/**
 	 * Creates a filter with all the geometries that have a non-empty intersection (overlap or touching) with the
 	 * parameterized geometry (including the geometry itself).
-	 *
+	 * 
 	 * @param geometry
 	 *            the geometry
 	 * @param geomName
@@ -253,7 +255,7 @@ public final class FilterServiceImpl implements FilterService {
 
 	/**
 	 * Creates a filter with all the geometries that touch the parameterized geometry.
-	 *
+	 * 
 	 * @param geometry
 	 *            the geometry
 	 * @param geomName
@@ -268,7 +270,7 @@ public final class FilterServiceImpl implements FilterService {
 
 	/**
 	 * Create a filter the evaluates all geometries within a certain bounding box.
-	 *
+	 * 
 	 * @param epsg
 	 *            The bounding box' coordinate system reference.
 	 * @param bbox
@@ -277,13 +279,13 @@ public final class FilterServiceImpl implements FilterService {
 	 *            The name of the geometry field ("the_geom")
 	 * @return filter
 	 */
-	public Filter createBboxFilter(String epsg, Bbox bbox, String geomName) {
-		return FF.bbox(geomName, bbox.getX(), bbox.getY(), bbox.getMaxX(), bbox.getMaxY(), epsg);
+	public Filter createBboxFilter(String epsg, Envelope bbox, String geomName) {
+		return FF.bbox(geomName, bbox.getMinX(), bbox.getMinY(), bbox.getMaxX(), bbox.getMaxY(), epsg);
 	}
 
 	/**
 	 * Creates a filter with all the geometries that overlap the parameterized geometry.
-	 *
+	 * 
 	 * @param geometry
 	 *            the geometry
 	 * @param geomName
@@ -298,7 +300,7 @@ public final class FilterServiceImpl implements FilterService {
 
 	/**
 	 * Creates a filter that evaluates everything.
-	 *
+	 * 
 	 * @return filter
 	 */
 	public Filter createTrueFilter() {

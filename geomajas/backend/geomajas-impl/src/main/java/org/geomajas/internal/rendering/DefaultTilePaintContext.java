@@ -23,21 +23,21 @@
 
 package org.geomajas.internal.rendering;
 
-import org.geomajas.geometry.Bbox;
-import org.geomajas.rendering.painter.LayerPaintContext;
-import org.geomajas.rendering.painter.TilePaintContext;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-
 import java.awt.RenderingHints;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.geomajas.rendering.painter.LayerPaintContext;
+import org.geomajas.rendering.painter.TilePaintContext;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+
+import com.vividsolutions.jts.geom.Envelope;
+
 /**
  * <p>
- * The map context is a general meta data object that is vital to the rendering
- * process of creating images for tiles.
+ * The map context is a general meta data object that is vital to the rendering process of creating images for tiles.
  * </p>
- *
+ * 
  * @see org.geomajas.internal.rendering.image.TileImageCreatorImpl
  * @author Pieter De Graef
  */
@@ -47,7 +47,7 @@ public class DefaultTilePaintContext implements TilePaintContext {
 
 	private CoordinateReferenceSystem crs;
 
-	private Bbox areaOfInterest;
+	private Envelope areaOfInterest;
 
 	private double scale;
 
@@ -70,7 +70,7 @@ public class DefaultTilePaintContext implements TilePaintContext {
 
 	/**
 	 * Remove a layer's paint context from the list.
-	 *
+	 * 
 	 * @param layerPaintContext
 	 * @return
 	 */
@@ -86,9 +86,9 @@ public class DefaultTilePaintContext implements TilePaintContext {
 
 	/**
 	 * Add a layer's paint context to the list. When the
-	 * {@link org.geomajas.internal.rendering.image.TileImageCreatorImpl} creates images,
-	 * using this context it will paint all layers in this list.
-	 *
+	 * {@link org.geomajas.internal.rendering.image.TileImageCreatorImpl} creates images, using this context it will
+	 * paint all layers in this list.
+	 * 
 	 * @param layerPaintContext
 	 * @return
 	 */
@@ -111,7 +111,7 @@ public class DefaultTilePaintContext implements TilePaintContext {
 
 	/**
 	 * Get the full list of layers that must be painted.
-	 *
+	 * 
 	 * @return
 	 */
 	public List<LayerPaintContext> getLayerPaintContexts() {
@@ -119,30 +119,28 @@ public class DefaultTilePaintContext implements TilePaintContext {
 	}
 
 	/**
-	 * Set a new area of interest. Normally this would be the tile's bounding
-	 * box in world space.
-	 *
+	 * Set a new area of interest. Normally this would be the tile's bounding box in world space.
+	 * 
 	 * @param areaOfInterest
 	 *            The new area of interest.
 	 */
-	public void setAreaOfInterest(Bbox areaOfInterest) {
+	public void setAreaOfInterest(Envelope areaOfInterest) {
 		this.areaOfInterest = areaOfInterest;
 	}
 
 	/**
-	 * Get the current area of interest. Normally this would be the tile's
-	 * bounding box in world space.
-	 *
+	 * Get the current area of interest. Normally this would be the tile's bounding box in world space.
+	 * 
 	 * @return Current area of interest
-	 *
+	 * 
 	 */
-	public Bbox getAreaOfInterest() {
+	public Envelope getAreaOfInterest() {
 		return areaOfInterest;
 	}
 
 	/**
 	 * Get the current coordinate system.
-	 *
+	 * 
 	 * @return the coordinate system of this box.
 	 */
 	public CoordinateReferenceSystem getCoordinateReferenceSystem() {
@@ -151,7 +149,7 @@ public class DefaultTilePaintContext implements TilePaintContext {
 
 	/**
 	 * Set the <code>CoordinateReferenceSystem</code> for this map context.
-	 *
+	 * 
 	 * @param crs
 	 */
 	public void setCrs(CoordinateReferenceSystem crs) {
@@ -160,7 +158,7 @@ public class DefaultTilePaintContext implements TilePaintContext {
 
 	/**
 	 * Return the current client-side scale.
-	 *
+	 * 
 	 * @return
 	 */
 	public double getScale() {
@@ -169,7 +167,7 @@ public class DefaultTilePaintContext implements TilePaintContext {
 
 	/**
 	 * Set the current client-side scale.
-	 *
+	 * 
 	 * @param scale
 	 */
 	public void setScale(double scale) {
@@ -178,7 +176,7 @@ public class DefaultTilePaintContext implements TilePaintContext {
 
 	/**
 	 * Retrieve the rendering hints.
-	 *
+	 * 
 	 * @return
 	 */
 	public RenderingHints getRenderingHints() {
@@ -187,7 +185,7 @@ public class DefaultTilePaintContext implements TilePaintContext {
 
 	/**
 	 * Set new Java rendering hints, such as the of anti-aliasing etc.
-	 *
+	 * 
 	 * @param hints
 	 *            The new hints with which to create images.
 	 */

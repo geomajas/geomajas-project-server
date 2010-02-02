@@ -26,13 +26,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.geomajas.geometry.Bbox;
+import org.geomajas.internal.service.DtoConverterServiceImpl;
 import org.geomajas.layer.Layer;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.layer.tile.InternalTile;
-import org.geomajas.layer.tile.TileCode;
 import org.geomajas.layer.tile.InternalTileRendering;
+import org.geomajas.layer.tile.TileCode;
+import org.geomajas.service.DtoConverterService;
+
+import com.vividsolutions.jts.geom.Envelope;
 
 /**
  * RenderedTile implementation.
@@ -98,22 +101,24 @@ public class InternalTileImpl implements InternalTile {
 	// General functions:
 
 	public void init(VectorLayer layer, double scale) {
-		Bbox max = layer.getLayerInfo().getMaxExtent(); // @todo used to be getMaxBbox
+		DtoConverterService converter = new DtoConverterServiceImpl();
+		Envelope max = converter.toEnvelope(layer.getLayerInfo().getMaxExtent()); // @todo used to be getMaxBbox
 		double div = Math.pow(2, code.getTileLevel());
-		tileWidth = Math.ceil(scale * (max.getMaxX() - max.getX()) / div) / scale;
-		tileHeight = Math.ceil(scale * (max.getMaxY() - max.getY()) / div) / scale;
+		tileWidth = Math.ceil(scale * (max.getMaxX() - max.getMinX()) / div) / scale;
+		tileHeight = Math.ceil(scale * (max.getMaxY() - max.getMinY()) / div) / scale;
 		screenWidth = (int) Math.ceil(scale * tileWidth);
 		screenHeight = (int) Math.ceil(scale * tileHeight);
 	}
 
-	public Bbox getBbox(Layer<?> layer) {
+	public Envelope getBbox(Layer<?> layer) {
 		if (tileWidth == 0) {
 			return null;
 		}
-		Bbox max = layer.getLayerInfo().getMaxExtent(); // @todo used to be getMaxBbox
-		double cX = max.getX() + code.getX() * tileWidth;
-		double cY = max.getY() + code.getY() * tileHeight;
-		return new Bbox(cX, cY, tileWidth, tileHeight);
+		DtoConverterService converter = new DtoConverterServiceImpl();
+		Envelope max = converter.toEnvelope(layer.getLayerInfo().getMaxExtent()); // @todo used to be getMaxBbox
+		double cX = max.getMinX() + code.getX() * tileWidth;
+		double cY = max.getMinY() + code.getY() * tileHeight;
+		return new Envelope(cX, cY, cX + tileWidth, cY + tileHeight);
 	}
 
 	public String codeAsString() {

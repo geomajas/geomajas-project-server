@@ -22,11 +22,12 @@
  */
 package org.geomajas.service;
 
-import com.vividsolutions.jts.geom.Geometry;
-import org.geomajas.geometry.Bbox;
+import java.util.Date;
+
 import org.opengis.filter.Filter;
 
-import java.util.Date;
+import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * Filter creator service.
@@ -176,7 +177,7 @@ public interface FilterService {
 	 *            The name of the geometry field ("the_geom")
 	 * @return filter
 	 */
-	Filter createBboxFilter(String epsg, Bbox bbox, String geomName);
+	Filter createBboxFilter(String epsg, Envelope bbox, String geomName);
 
 	/**
 	 * Creates a filter with all the geometries that overlap the parameterized geometry.

@@ -23,107 +23,113 @@
 
 package org.geomajas.rendering.painter;
 
-import org.geomajas.geometry.Bbox;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-
 import java.awt.RenderingHints;
 import java.util.List;
+
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+
+import com.vividsolutions.jts.geom.Envelope;
 
 /**
  * <p>
  * The map context is a general meta data object that is vital to the rendering process of creating images for tiles.
  * </p>
- *
+ * 
  * @author Pieter De Graef
  */
 public interface TilePaintContext {
 
 	/**
 	 * Remove a layer's paint context from the list.
-	 *
-	 * @param layerPaintContext context to delete
+	 * 
+	 * @param layerPaintContext
+	 *            context to delete
 	 * @return true when object was removed
 	 */
 	boolean remove(LayerPaintContext layerPaintContext);
 
 	/**
-	 * Add a layer's paint context to the list. When the tile images are created, using this context it
-	 * will paint all layers in this list.
-	 *
-	 * @param layerPaintContext context to add
+	 * Add a layer's paint context to the list. When the tile images are created, using this context it will paint all
+	 * layers in this list.
+	 * 
+	 * @param layerPaintContext
+	 *            context to add
 	 * @return true when object was added
 	 */
 	boolean add(LayerPaintContext layerPaintContext);
 
 	/**
 	 * Return the number of layers in this map context.
-	 *
+	 * 
 	 * @return number of layers
 	 */
 	int getLayerCount();
 
 	/**
 	 * Get the full list of layers that must be painted.
-	 *
+	 * 
 	 * @return list of layer paint contexts
 	 */
 	List<LayerPaintContext> getLayerPaintContexts();
 
 	/**
 	 * Set a new area of interest. Normally this would be the tile's bounding box in world space.
-	 *
+	 * 
 	 * @param areaOfInterest
 	 *            The new area of interest.
 	 */
-	void setAreaOfInterest(Bbox areaOfInterest);
+	void setAreaOfInterest(Envelope areaOfInterest);
 
 	/**
 	 * Get the current area of interest. Normally this would be the tile's bounding box in world space.
-	 *
+	 * 
 	 * @return Current area of interest
-	 *
+	 * 
 	 */
-	Bbox getAreaOfInterest();
+	Envelope getAreaOfInterest();
 
 	/**
 	 * Get the current coordinate system.
-	 *
+	 * 
 	 * @return the coordinate system of this box.
 	 */
 	CoordinateReferenceSystem getCoordinateReferenceSystem();
 
 	/**
 	 * Set the <code>CoordinateReferenceSystem</code> for this map context.
-	 *
-	 * @param crs coordinate reference system
+	 * 
+	 * @param crs
+	 *            coordinate reference system
 	 */
 	void setCrs(CoordinateReferenceSystem crs);
 
 	/**
 	 * Return the current client-side scale.
-	 *
+	 * 
 	 * @return scale
 	 */
 	double getScale();
 
 	/**
 	 * Set the current client-side scale.
-	 *
-	 * @param scale scale
+	 * 
+	 * @param scale
+	 *            scale
 	 */
 	void setScale(double scale);
 
 	/**
 	 * Retrieve the rendering hints.
-	 *
+	 * 
 	 * @return rendering hints
 	 */
 	RenderingHints getRenderingHints();
 
 	/**
 	 * Set new Java rendering hints, such as the of anti-aliasing etc.
-	 *
-	 * @param hints The new hints with which to create images.
+	 * 
+	 * @param hints
+	 *            The new hints with which to create images.
 	 */
 	void setRenderingHints(RenderingHints hints);
 }

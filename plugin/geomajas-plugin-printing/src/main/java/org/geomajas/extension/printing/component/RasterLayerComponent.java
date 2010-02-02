@@ -22,23 +22,6 @@
  */
 package org.geomajas.extension.printing.component;
 
-import com.lowagie.text.Image;
-import com.lowagie.text.Rectangle;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
-import org.apache.commons.httpclient.methods.GetMethod;
-import org.geomajas.configuration.MapInfo;
-import org.geomajas.extension.printing.PdfContext;
-import org.geomajas.geometry.Bbox;
-import org.geomajas.layer.RasterLayer;
-import org.geomajas.layer.tile.RasterImage;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.persistence.Transient;
-import javax.xml.bind.Unmarshaller;
-import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 import java.awt.Color;
 import java.awt.Font;
 import java.io.ByteArrayOutputStream;
@@ -55,9 +38,29 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
+import javax.persistence.Transient;
+import javax.xml.bind.Unmarshaller;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+
+import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
+import org.apache.commons.httpclient.methods.GetMethod;
+import org.geomajas.configuration.MapInfo;
+import org.geomajas.extension.printing.PdfContext;
+import org.geomajas.geometry.Bbox;
+import org.geomajas.layer.RasterLayer;
+import org.geomajas.layer.tile.RasterImage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.lowagie.text.Image;
+import com.lowagie.text.Rectangle;
+import com.vividsolutions.jts.geom.Envelope;
+
 /**
  * Subcomponent of a map responsible for rendering raster layer.
- *
+ * 
  * @author Jan De Moerloose
  */
 @XmlRootElement
@@ -81,7 +84,7 @@ public class RasterLayerComponent extends BaseLayerComponent {
 
 	/** The calculated bounds */
 	@XmlTransient
-	protected Bbox bbox;
+	protected Envelope bbox;
 
 	/** List of the tile images */
 	@XmlTransient
@@ -107,13 +110,13 @@ public class RasterLayerComponent extends BaseLayerComponent {
 
 	/**
 	 * Call back visitor.
-	 *
+	 * 
 	 * @param visitor
 	 */
 	public void accept(PrintComponentVisitor visitor) {
 		visitor.visit(this);
 	}
-	
+
 	@Override
 	public void render(PdfContext context) {
 		if (isVisible()) {
@@ -122,8 +125,8 @@ public class RasterLayerComponent extends BaseLayerComponent {
 			RasterLayer rasterlayer = ((RasterLayer) context.getLayer(getLayerId()));
 			try {
 				if (log.isDebugEnabled()) {
-					log.debug("rendering" + rasterlayer.getLayerInfo().getId() + " to [" + bbox.getX() + " "
-							+ bbox.getY() + " " + bbox.getWidth() + " " + bbox.getHeight() + "]");
+					log.debug("rendering" + rasterlayer.getLayerInfo().getId() + " to [" + bbox.getMinX() + " "
+							+ bbox.getMinY() + " " + bbox.getWidth() + " " + bbox.getHeight() + "]");
 				}
 				MapInfo map = context.getMap(getMap().getMapId());
 				this.images = rasterlayer.paint(map.getCrs(), bbox, rasterScale);
@@ -132,13 +135,12 @@ public class RasterLayerComponent extends BaseLayerComponent {
 				this.images = new ArrayList<RasterImage>();
 			}
 
-			Collection<Callable<ImageResult>> callables = new ArrayList<Callable<ImageResult>>(
-					images.size());
+			Collection<Callable<ImageResult>> callables = new ArrayList<Callable<ImageResult>>(images.size());
 
 			// Build the image downloading threads
 			for (RasterImage image : images) {
-				RasterImageDownloadCallable downloadThread =
-						new RasterImageDownloadCallable(DOWNLOAD_MAX_ATTEMPTS, image);
+				RasterImageDownloadCallable downloadThread = new RasterImageDownloadCallable(DOWNLOAD_MAX_ATTEMPTS,
+						image);
 				callables.add(downloadThread);
 			}
 
@@ -172,11 +174,11 @@ public class RasterLayerComponent extends BaseLayerComponent {
 		float width = (float) imageBounds.getWidth() * scaleFactor;
 		float height = (float) imageBounds.getHeight() * scaleFactor;
 		// subtract screen position of lower-left corner
-		float x = (float) (imageBounds.getX() - rasterScale * bbox.getX()) * scaleFactor;
+		float x = (float) (imageBounds.getX() - rasterScale * bbox.getMinX()) * scaleFactor;
 		// shift y to lowerleft corner, flip y to user space and subtract
 		// screen position of lower-left
 		// corner
-		float y = (float) (-imageBounds.getY() - imageBounds.getHeight() - rasterScale * bbox.getY()) * scaleFactor;
+		float y = (float) (-imageBounds.getY() - imageBounds.getHeight() - rasterScale * bbox.getMinY()) * scaleFactor;
 		if (log.isDebugEnabled()) {
 			log.debug("adding image, width=" + width + ",height=" + height + ",x=" + x + ",y=" + y);
 		}
@@ -189,23 +191,22 @@ public class RasterLayerComponent extends BaseLayerComponent {
 		float width = (float) imageBounds.getWidth() * scaleFactor;
 		float height = (float) imageBounds.getHeight() * scaleFactor;
 		// subtract screen position of lower-left corner
-		float x = (float) (imageBounds.getX() - rasterScale * bbox.getX()) * scaleFactor;
+		float x = (float) (imageBounds.getX() - rasterScale * bbox.getMinX()) * scaleFactor;
 		// shift y to lowerleft corner, flip y to user space and subtract
 		// screen position of lower-left
 		// corner
-		float y = (float) (-imageBounds.getY() - imageBounds.getHeight() - rasterScale * bbox.getY()) * scaleFactor;
+		float y = (float) (-imageBounds.getY() - imageBounds.getHeight() - rasterScale * bbox.getMinY()) * scaleFactor;
 		if (log.isDebugEnabled()) {
 			log.debug("adding failed message=" + width + ",height=" + height + ",x=" + x + ",y=" + y);
 		}
 		float textHeight = context.getTextSize("failed", ERROR_FONT).getHeight() * 3f;
 		Rectangle rec = new Rectangle(x, y, x + width, y + height);
 		context.strokeRectangle(rec, Color.RED, 0.5f);
-		context.drawText(getNlsString("RasterLayerComponent.loaderror.line1"),
-				ERROR_FONT, new Rectangle(x, y + textHeight, x + width, y + height), Color.RED);
-		context.drawText(getNlsString("RasterLayerComponent.loaderror.line2"),
-				ERROR_FONT, rec, Color.RED);
-		context.drawText(getNlsString("RasterLayerComponent.loaderror.line3"),
-				ERROR_FONT, new Rectangle(x, y - textHeight, x + width, y + height), Color.RED);
+		context.drawText(getNlsString("RasterLayerComponent.loaderror.line1"), ERROR_FONT, new Rectangle(x, y
+				+ textHeight, x + width, y + height), Color.RED);
+		context.drawText(getNlsString("RasterLayerComponent.loaderror.line2"), ERROR_FONT, rec, Color.RED);
+		context.drawText(getNlsString("RasterLayerComponent.loaderror.line3"), ERROR_FONT, new Rectangle(x, y
+				- textHeight, x + width, y + height), Color.RED);
 	}
 
 	/**
@@ -214,6 +215,7 @@ public class RasterLayerComponent extends BaseLayerComponent {
 	private class ImageResult {
 
 		private Image image;
+
 		private RasterImage rasterImage;
 
 		public ImageResult(RasterImage rasterImage) {
@@ -238,6 +240,8 @@ public class RasterLayerComponent extends BaseLayerComponent {
 	 */
 	private class ImageException extends Exception {
 
+		private static final long serialVersionUID = 151L;
+
 		private RasterImage rasterImage;
 
 		public ImageException(RasterImage rasterImage) {
@@ -255,6 +259,7 @@ public class RasterLayerComponent extends BaseLayerComponent {
 	private class RasterImageDownloadCallable implements Callable<ImageResult> {
 
 		private ImageResult result;
+
 		private int retries;
 
 		public RasterImageDownloadCallable(int retries, RasterImage rasterImage) {
@@ -296,9 +301,11 @@ public class RasterLayerComponent extends BaseLayerComponent {
 
 	/**
 	 * Resets cyclic references like child -> parent relationship.
-	 *
-	 * @param u  unmarshaller
-	 * @param parent  parent component
+	 * 
+	 * @param u
+	 *            unmarshaller
+	 * @param parent
+	 *            parent component
 	 */
 	public void afterUnmarshal(Unmarshaller u, Object parent) {
 		setParent((PrintComponent) parent);

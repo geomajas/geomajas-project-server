@@ -23,13 +23,12 @@
 
 package org.geomajas.internal.rendering.painter.image;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.Point;
+import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
+
 import org.geomajas.configuration.CircleInfo;
 import org.geomajas.configuration.RectInfo;
 import org.geomajas.configuration.StyleInfo;
-import org.geomajas.geometry.Bbox;
 import org.geomajas.internal.rendering.image.Style2dFactory;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.rendering.painter.TilePaintContext;
@@ -47,19 +46,22 @@ import org.opengis.referencing.operation.TransformException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.awt.Graphics2D;
-import java.awt.geom.AffineTransform;
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.Point;
 
 /**
  * <p>
  * Implementation of the <code>FeatureImagePainter</code> that paints a feature's geometry on the graphics object.
  * </p>
- *
+ * 
  * @author Pieter De Graef
  */
 public class GeometryImagePainter implements FeatureImagePainter {
 
 	private final Logger log = LoggerFactory.getLogger(FeatureImagePainter.class);
+
 	private static final Decimator NULL_DECIMATOR = new Decimator(-1, -1);
 
 	/**
@@ -100,7 +102,7 @@ public class GeometryImagePainter implements FeatureImagePainter {
 
 	/**
 	 * Paint the feature object on the graphics. It is the feature's geometry that this painter draws.
-	 *
+	 * 
 	 * @param graphics
 	 *            The AWT graphics object onto which we draw.
 	 * @param feature
@@ -120,8 +122,8 @@ public class GeometryImagePainter implements FeatureImagePainter {
 		}
 		try {
 			LiteShape2 shape = new LiteShape2(geometry, transform, NULL_DECIMATOR, false, false);
-			Style2D style = Style2dFactory.createStyle(feature.getStyleInfo(), feature.getLayer()
-					.getLayerInfo().getLayerType());
+			Style2D style = Style2dFactory.createStyle(feature.getStyleInfo(), feature.getLayer().getLayerInfo()
+					.getLayerType());
 			painter.paint(graphics, shape, style, tileContext.getScale());
 		} catch (TransformException e) {
 			log.error(e.getMessage(), e);
@@ -148,9 +150,9 @@ public class GeometryImagePainter implements FeatureImagePainter {
 		// find coords wrt to upper left corner (0,0) and scale
 		// (pix/unit)
 		scale = tileContext.getScale();
-		Bbox env = tileContext.getAreaOfInterest();
-		return ProjectiveTransform.create(new AffineTransform(scale, 0, 0, -scale, -scale * env.getX(), scale
-				* (env.getY() + env.getHeight())));
+		Envelope env = tileContext.getAreaOfInterest();
+		return ProjectiveTransform.create(new AffineTransform(scale, 0, 0, -scale, -scale * env.getMinX(), scale
+				* (env.getMinY() + env.getHeight())));
 	}
 
 	private Geometry convertPoint(StyleInfo style, Point point) {

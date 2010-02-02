@@ -23,12 +23,19 @@
 
 package org.geomajas.internal.cache.broker;
 
+import java.awt.Rectangle;
+import java.awt.image.RenderedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.Map;
+
+import javax.imageio.ImageIO;
+
 import org.geomajas.cache.CacheException;
 import org.geomajas.cache.CacheService;
 import org.geomajas.cache.broker.Broker;
 import org.geomajas.cache.store.RenderContent;
 import org.geomajas.configuration.ApplicationInfo;
-import org.geomajas.geometry.Bbox;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.internal.layer.tile.InternalTileImpl;
 import org.geomajas.internal.rendering.DefaultLayerPaintContext;
@@ -57,12 +64,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
-import javax.imageio.ImageIO;
-import java.awt.Rectangle;
-import java.awt.image.RenderedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.util.Map;
+import com.vividsolutions.jts.geom.Envelope;
 
 /**
  * <p>
@@ -148,7 +150,7 @@ public class RealTimeBroker implements Broker {
 		// 5: Create the vector tile:
 		TileCode code = new TileCode(tileLevel, x, y);
 		InternalTile tile = new InternalTileImpl(code, vLayer, scale);
-		Bbox areaOfInterest = tile.getBbox(vLayer);
+		Envelope areaOfInterest = tile.getBbox(vLayer);
 		tileContext.setAreaOfInterest(areaOfInterest);
 		Rectangle paintArea = new Rectangle(0, 0, tile.getScreenWidth(), tile.getScreenHeight());
 

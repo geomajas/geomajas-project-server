@@ -22,17 +22,26 @@
  */
 package org.geomajas.layermodel.geotools;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.NoSuchElementException;
+
 import org.geomajas.configuration.VectorLayerInfo;
-import org.geomajas.geometry.Bbox;
 import org.geomajas.global.ExceptionCode;
-import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.LayerModel;
 import org.geomajas.layer.feature.FeatureModel;
 import org.geomajas.layermodel.geotools.command.interceptor.GeotoolsTransactionInterceptor;
 import org.geomajas.layermodel.geotools.postgis.NonTypedPostgisFidMapperFactory;
 import org.geomajas.layermodel.shapeinmem.FeatureSourceRetriever;
-import org.geomajas.service.BboxService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
 import org.geotools.data.DataStore;
@@ -59,21 +68,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
+import com.vividsolutions.jts.geom.Envelope;
 
 /**
  * Geotools layer model.
- *
+ * 
  * @author check subversion
  */
 @Component
@@ -91,9 +90,6 @@ public class GeotoolsLayerModel extends FeatureSourceRetriever implements LayerM
 	private VectorLayerInfo layerInfo;
 
 	private Filter defaultFilter;
-
-	@Autowired
-	private BboxService bboxService;
 
 	@Autowired
 	private FilterService filterCreator;
@@ -135,8 +131,6 @@ public class GeotoolsLayerModel extends FeatureSourceRetriever implements LayerM
 			throw new LayerException(ExceptionCode.CANNOT_CREATE_LAYER_MODEL, ioe, url);
 		} catch (LayerException le) {
 			throw le;
-		} catch (GeomajasException ge) {
-			throw new LayerException(ExceptionCode.CANNOT_CREATE_LAYER_MODEL, ge, url);
 		}
 	}
 
@@ -177,14 +171,14 @@ public class GeotoolsLayerModel extends FeatureSourceRetriever implements LayerM
 	public Object create(Object feature) throws LayerException {
 		FeatureSource<SimpleFeatureType, SimpleFeature> source = getFeatureSource();
 		if (source instanceof FeatureStore<?, ?>) {
-			FeatureStore<SimpleFeatureType, SimpleFeature> store =
-					(FeatureStore<SimpleFeatureType, SimpleFeature>) source;
+			FeatureStore<SimpleFeatureType, SimpleFeature> store = 
+				(FeatureStore<SimpleFeatureType, SimpleFeature>) source;
 			FeatureCollection<SimpleFeatureType, SimpleFeature> col = DataUtilities
-					.collection(new SimpleFeature[] {(SimpleFeature) feature});
+					.collection(new SimpleFeature[] { (SimpleFeature) feature });
 			store.setTransaction(GeotoolsTransactionInterceptor.getTransaction());
-//			List<FeatureId> ids = store.addFeatures(col);
-//			FeatureId newId = ids.iterator().next();
-//			return read(newId.getID());
+			// List<FeatureId> ids = store.addFeatures(col);
+			// FeatureId newId = ids.iterator().next();
+			// return read(newId.getID());
 			try {
 				store.addFeatures(col);
 			} catch (IOException ioe) {
@@ -194,16 +188,16 @@ public class GeotoolsLayerModel extends FeatureSourceRetriever implements LayerM
 		} else {
 			log.error("Don't know how to create or update " + getFeatureSourceName() + ", class "
 					+ source.getClass().getName() + " does not implement FeatureStore");
-			throw new LayerException(ExceptionCode.CREATE_OR_UPDATE_NOT_IMPLEMENTED, getFeatureSourceName(),
-					source.getClass().getName());
+			throw new LayerException(ExceptionCode.CREATE_OR_UPDATE_NOT_IMPLEMENTED, getFeatureSourceName(), source
+					.getClass().getName());
 		}
 	}
 
 	public void update(Object feature) throws LayerException {
 		FeatureSource<SimpleFeatureType, SimpleFeature> source = getFeatureSource();
 		if (source instanceof FeatureStore<?, ?>) {
-			FeatureStore<SimpleFeatureType, SimpleFeature> store =
-					(FeatureStore<SimpleFeatureType, SimpleFeature>) source;
+			FeatureStore<SimpleFeatureType, SimpleFeature> store = 
+				(FeatureStore<SimpleFeatureType, SimpleFeature>) source;
 			Identifier identifier = new FeatureIdImpl(getFeatureModel().getId(feature));
 			Id filter = filterFactory.id(Collections.singleton(identifier));
 			store.setTransaction(GeotoolsTransactionInterceptor.getTransaction());
@@ -217,8 +211,8 @@ public class GeotoolsLayerModel extends FeatureSourceRetriever implements LayerM
 			}
 
 			try {
-				store.modifyFeatures(descriptors.toArray(new AttributeDescriptor[descriptors.size()]),
-						attrList.toArray(), filter);
+				store.modifyFeatures(descriptors.toArray(new AttributeDescriptor[descriptors.size()]), attrList
+						.toArray(), filter);
 				store.modifyFeatures(store.getSchema().getGeometryDescriptor(), getFeatureModel().getGeometry(feature),
 						filter);
 				log.debug("Updated feature {} in {}", filter.getIDs().iterator().next(), getFeatureSourceName());
@@ -228,16 +222,16 @@ public class GeotoolsLayerModel extends FeatureSourceRetriever implements LayerM
 		} else {
 			log.error("Don't know how to create or update " + getFeatureSourceName() + ", class "
 					+ source.getClass().getName() + " does not implement FeatureStore");
-			throw new LayerException(ExceptionCode.CREATE_OR_UPDATE_NOT_IMPLEMENTED, getFeatureSourceName(),
-					source.getClass().getName());
+			throw new LayerException(ExceptionCode.CREATE_OR_UPDATE_NOT_IMPLEMENTED, getFeatureSourceName(), source
+					.getClass().getName());
 		}
 	}
 
 	public void delete(String featureId) throws LayerException {
 		FeatureSource<SimpleFeatureType, SimpleFeature> source = getFeatureSource();
 		if (source instanceof FeatureStore<?, ?>) {
-			FeatureStore<SimpleFeatureType, SimpleFeature> store =
-					(FeatureStore<SimpleFeatureType, SimpleFeature>) source;
+			FeatureStore<SimpleFeatureType, SimpleFeature> store = 
+				(FeatureStore<SimpleFeatureType, SimpleFeature>) source;
 			Identifier identifier = new FeatureIdImpl(featureId);
 			Id filter = filterFactory.id(Collections.singleton(identifier));
 			store.setTransaction(GeotoolsTransactionInterceptor.getTransaction());
@@ -252,8 +246,8 @@ public class GeotoolsLayerModel extends FeatureSourceRetriever implements LayerM
 		} else {
 			log.error("Don't know how to delete from " + getFeatureSourceName() + ", class "
 					+ source.getClass().getName() + " does not implement FeatureStore");
-			throw new LayerException(ExceptionCode.DELETE_NOT_IMPLEMENTED, getFeatureSourceName(),
-					source.getClass().getName());
+			throw new LayerException(ExceptionCode.DELETE_NOT_IMPLEMENTED, getFeatureSourceName(), source.getClass()
+					.getName());
 		}
 	}
 
@@ -280,19 +274,18 @@ public class GeotoolsLayerModel extends FeatureSourceRetriever implements LayerM
 		throw new LayerException(ExceptionCode.LAYER_MODEL_FEATURE_NOT_FOUND, featureId);
 	}
 
-	public Bbox getBounds() throws LayerException {
+	public Envelope getBounds() throws LayerException {
 		FeatureSource<SimpleFeatureType, SimpleFeature> source = getFeatureSource();
 		if (source instanceof FeatureStore<?, ?>) {
-			FeatureStore<SimpleFeatureType, SimpleFeature> store =
-					(FeatureStore<SimpleFeatureType, SimpleFeature>) source;
+			FeatureStore<SimpleFeatureType, SimpleFeature> store = 
+				(FeatureStore<SimpleFeatureType, SimpleFeature>) source;
 			store.setTransaction(GeotoolsTransactionInterceptor.getTransaction());
 		}
 		try {
 			FeatureCollection<SimpleFeatureType, SimpleFeature> fc = source.getFeatures();
 			Iterator<SimpleFeature> it = fc.iterator();
 			GeotoolsTransactionInterceptor.addIterator(fc, it);
-
-			return bboxService.fromEnvelope(fc.getBounds());
+			return fc.getBounds();
 		} catch (Throwable t) {
 			if (t instanceof NullPointerException || t instanceof IllegalStateException) {
 				GeotoolsTransactionInterceptor.closeTransaction();
@@ -303,26 +296,25 @@ public class GeotoolsLayerModel extends FeatureSourceRetriever implements LayerM
 
 	/**
 	 * Retrieve the bounds of the specified features.
-	 *
+	 * 
 	 * @return the bounds of the specified features
 	 */
-	public Bbox getBounds(Filter queryFilter) throws LayerException {
+	public Envelope getBounds(Filter queryFilter) throws LayerException {
 		Filter filter = queryFilter;
 		if (defaultFilter != null) {
 			filter = filterCreator.createLogicFilter(filter, "AND", defaultFilter);
 		}
 		FeatureSource<SimpleFeatureType, SimpleFeature> source = getFeatureSource();
 		if (source instanceof FeatureStore<?, ?>) {
-			FeatureStore<SimpleFeatureType, SimpleFeature> store =
-					(FeatureStore<SimpleFeatureType, SimpleFeature>) source;
+			FeatureStore<SimpleFeatureType, SimpleFeature> store = 
+				(FeatureStore<SimpleFeatureType, SimpleFeature>) source;
 			store.setTransaction(GeotoolsTransactionInterceptor.getTransaction());
 		}
 		try {
 			FeatureCollection<SimpleFeatureType, SimpleFeature> fc = source.getFeatures(filter);
 			Iterator<SimpleFeature> it = fc.iterator();
 			GeotoolsTransactionInterceptor.addIterator(fc, it);
-
-			return bboxService.fromEnvelope(fc.getBounds());
+			return fc.getBounds();
 		} catch (Throwable t) {
 			if (t instanceof NullPointerException || t instanceof IllegalStateException) {
 				GeotoolsTransactionInterceptor.closeTransaction();
@@ -348,8 +340,8 @@ public class GeotoolsLayerModel extends FeatureSourceRetriever implements LayerM
 
 		FeatureSource<SimpleFeatureType, SimpleFeature> source = getFeatureSource();
 		if (source instanceof FeatureStore<?, ?>) {
-			FeatureStore<SimpleFeatureType, SimpleFeature> store =
-					(FeatureStore<SimpleFeatureType, SimpleFeature>) source;
+			FeatureStore<SimpleFeatureType, SimpleFeature> store = 
+				(FeatureStore<SimpleFeatureType, SimpleFeature>) source;
 			store.setTransaction(GeotoolsTransactionInterceptor.getTransaction());
 		}
 		try {

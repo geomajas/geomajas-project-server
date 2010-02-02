@@ -26,7 +26,6 @@ package org.geomajas.internal.rendering.painter.tile;
 import java.awt.geom.AffineTransform;
 import java.io.StringWriter;
 
-import org.geomajas.geometry.Bbox;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.internal.layer.feature.InternalFeatureImpl;
 import org.geomajas.internal.layer.tile.InternalTileImpl;
@@ -51,6 +50,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Envelope;
 
 /**
  * <p>
@@ -101,7 +101,7 @@ public class VectorTilePainter implements TilePainter {
 	/**
 	 * The tile's bounding box.
 	 */
-	private Bbox bbox;
+	private Envelope bbox;
 
 	/**
 	 * Transformer that transforms the feature's geometries from world to view space.
@@ -298,7 +298,7 @@ public class VectorTilePainter implements TilePainter {
 				// find coords wrt to upper left corner (0,0) and scale
 				// (pix/unit)
 				unitToPixel.setMathTransform(ProjectiveTransform.create(new AffineTransform(scale, 0, 0, -scale, -scale
-						* getTileBbox().getX(), scale * (getTileBbox().getY() + getTileBbox().getHeight()))));
+						* getTileBbox().getMinX(), scale * (getTileBbox().getMinY() + getTileBbox().getHeight()))));
 			}
 		}
 		return unitToPixel;
@@ -309,7 +309,7 @@ public class VectorTilePainter implements TilePainter {
 	 * 
 	 * @return bbox
 	 */
-	private Bbox getTileBbox() {
+	private Envelope getTileBbox() {
 		if (bbox == null) {
 			bbox = tile.getBbox(layer);
 		}

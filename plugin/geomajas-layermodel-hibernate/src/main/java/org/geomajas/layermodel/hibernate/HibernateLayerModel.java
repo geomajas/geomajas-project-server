@@ -22,17 +22,23 @@
  */
 package org.geomajas.layermodel.hibernate;
 
+import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.beanutils.ConvertUtils;
-import org.geomajas.configuration.VectorLayerInfo;
-import org.geomajas.layer.LayerException;
-import org.geomajas.layer.LayerModel;
-import org.geomajas.layer.feature.FeatureModel;
 import org.geomajas.configuration.AssociationAttributeInfo;
 import org.geomajas.configuration.AttributeInfo;
 import org.geomajas.configuration.SortType;
-import org.geomajas.geometry.Bbox;
+import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.global.ExceptionCode;
-import org.geomajas.service.BboxService;
+import org.geomajas.layer.LayerException;
+import org.geomajas.layer.LayerModel;
+import org.geomajas.layer.feature.FeatureModel;
 import org.geomajas.service.FilterService;
 import org.hibernate.Criteria;
 import org.hibernate.EntityMode;
@@ -51,18 +57,12 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.Serializable;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * Hibernate layer model.
- *
+ * 
  * @author check subversion
  */
 @Component
@@ -81,9 +81,6 @@ public class HibernateLayerModel extends HibernateLayerUtil implements LayerMode
 	 * transforming them into Hibernate criteria.
 	 */
 	private DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-
-	@Autowired
-	private BboxService bboxService;
 
 	@Autowired
 	private FilterService filterCreator;
@@ -141,8 +138,8 @@ public class HibernateLayerModel extends HibernateLayerUtil implements LayerMode
 			return list.iterator();
 		} catch (HibernateException he) {
 			log.error("failed to load " + getFeatureInfo().getDataSourceName() + " with filter " + filter, he);
-			throw new HibernateLayerException(ExceptionCode.HIBERNATE_LOAD_FILTER_FAIL, he,
-					getFeatureInfo().getDataSourceName(), filter.toString());
+			throw new HibernateLayerException(ExceptionCode.HIBERNATE_LOAD_FILTER_FAIL, he, getFeatureInfo()
+					.getDataSourceName(), filter.toString());
 		}
 	}
 
@@ -154,8 +151,8 @@ public class HibernateLayerModel extends HibernateLayerUtil implements LayerMode
 		// Problem: this changes the id for generated id's !!!!!
 		if (getFeatureModel().getSuperClass() != null) {
 			String id = getFeatureModel().getId(feature);
-			Object parent = session.get(getFeatureModel().getSuperClass(), (Serializable) ConvertUtils
-					.convert(id, getEntityMetadata().getIdentifierType().getReturnedClass()));
+			Object parent = session.get(getFeatureModel().getSuperClass(), (Serializable) ConvertUtils.convert(id,
+					getEntityMetadata().getIdentifierType().getReturnedClass()));
 			if (parent != null) {
 				getFeatureModel().setGeometry(feature, (Geometry) getFeatureModel().getGeometry(parent).clone());
 				session.delete(parent);
@@ -185,8 +182,8 @@ public class HibernateLayerModel extends HibernateLayerUtil implements LayerMode
 
 	public void delete(String featureId) throws LayerException {
 		Session session = getSessionFactory().getCurrentSession();
-		Object persistent = session.get(getFeatureInfo().getDataSourceName(), (Serializable) ConvertUtils.
-				convert(featureId, getEntityMetadata().getIdentifierType().getReturnedClass()));
+		Object persistent = session.get(getFeatureInfo().getDataSourceName(), (Serializable) ConvertUtils.convert(
+				featureId, getEntityMetadata().getIdentifierType().getReturnedClass()));
 		session.delete(persistent);
 		session.flush();
 	}
@@ -211,17 +208,18 @@ public class HibernateLayerModel extends HibernateLayerUtil implements LayerMode
 		// featureModel.setAttributes(feature, attributes);
 	}
 
-	public Bbox getBounds() throws LayerException {
+	public Envelope getBounds() throws LayerException {
 		return getBounds(filterCreator.createTrueFilter());
 	}
 
 	/**
 	 * Retrieve the bounds of the specified features.
-	 *
-	 * @param queryFilter folter which needs to be applied
+	 * 
+	 * @param queryFilter
+	 *            folter which needs to be applied
 	 * @return the bounds of the specified features
 	 */
-	public Bbox getBounds(Filter queryFilter) throws LayerException {
+	public Envelope getBounds(Filter queryFilter) throws LayerException {
 		Filter filter = queryFilter;
 		if (defaultFilter != null) {
 			filter = filterCreator.createLogicFilter(filter, "AND", defaultFilter);
@@ -270,7 +268,7 @@ public class HibernateLayerModel extends HibernateLayerUtil implements LayerMode
 	/**
 	 * Bounds are calculated locally, can use any filter, but slower than native.
 	 */
-	private Bbox getBoundsLocal(Filter filter) throws LayerException {
+	private Envelope getBoundsLocal(Filter filter) throws LayerException {
 		try {
 			Session session = getSessionFactory().getCurrentSession();
 			Criteria criteria = session.createCriteria(getFeatureInfo().getDataSourceName());
@@ -281,18 +279,18 @@ public class HibernateLayerModel extends HibernateLayerUtil implements LayerMode
 			}
 			criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
 			List<?> features = criteria.list();
-			Bbox bounds = new Bbox();
+			Envelope bounds = new Envelope();
 			for (Object f : features) {
-				Bbox geomBounds = bboxService.fromEnvelope(getFeatureModel().getGeometry(f).getEnvelopeInternal() );
-				if (!bboxService.isNull(geomBounds)) {
-					bboxService.expandToInclude(bounds, geomBounds);
+				Envelope geomBounds = getFeatureModel().getGeometry(f).getEnvelopeInternal();
+				if (!geomBounds.isNull()) {
+					bounds.expandToInclude(geomBounds);
 				}
 			}
 			return bounds;
 		} catch (HibernateException he) {
 			log.error("failed to load " + getFeatureInfo().getDataSourceName() + " with filter " + filter, he);
-			throw new HibernateLayerException(ExceptionCode.HIBERNATE_LOAD_FILTER_FAIL, he,
-					getFeatureInfo().getDataSourceName(), filter.toString());
+			throw new HibernateLayerException(ExceptionCode.HIBERNATE_LOAD_FILTER_FAIL, he, getFeatureInfo()
+					.getDataSourceName(), filter.toString());
 		}
 	}
 
@@ -313,11 +311,12 @@ public class HibernateLayerModel extends HibernateLayerUtil implements LayerMode
 	/**
 	 * The idea here is to replace association objects with their persistent counterparts. This has to happen just
 	 * before the saving to database. We have to keep the persistent objects inside the HibernateLayerModel package.
-	 * Never let them out, because that way we'll invite exceptions.
-	 * TODO This method is not recursive!
+	 * Never let them out, because that way we'll invite exceptions. TODO This method is not recursive!
 	 * 
-	 * @param feature feature to persist
-	 * @throws LayerException oops
+	 * @param feature
+	 *            feature to persist
+	 * @throws LayerException
+	 *             oops
 	 */
 	@SuppressWarnings("unchecked")
 	private void setPersistentAssociations(Object feature) throws LayerException {
@@ -336,7 +335,7 @@ public class HibernateLayerModel extends HibernateLayerUtil implements LayerMode
 
 						String asoType = aso.getType().value();
 						if ("many-to-one".equals(asoType)) {
-							// Many-to-one: 
+							// Many-to-one:
 							Serializable id = meta.getIdentifier(value, EntityMode.POJO);
 							if (id != null) { // We can only replace it, if it has an ID:
 								value = session.load(aso.getName(), id);
@@ -362,7 +361,7 @@ public class HibernateLayerModel extends HibernateLayerUtil implements LayerMode
 							Type type = getEntityMetadata().getPropertyType(name);
 							CollectionType colType = (CollectionType) type;
 							Collection<Object> col = (Collection<Object>) colType.instantiate(0);
-							
+
 							// Loop over all detached values:
 							for (int i = 0; i < array.length; i++) {
 								Serializable id = meta.getIdentifier(array[i], EntityMode.POJO);
@@ -392,8 +391,8 @@ public class HibernateLayerModel extends HibernateLayerUtil implements LayerMode
 				}
 			}
 		} catch (Exception e) {
-			throw new HibernateLayerException(e, ExceptionCode.HIBERNATE_ATTRIBUTE_SET_FAILED,
-					getFeatureInfo().getDataSourceName());
+			throw new HibernateLayerException(e, ExceptionCode.HIBERNATE_ATTRIBUTE_SET_FAILED, getFeatureInfo()
+					.getDataSourceName());
 		}
 	}
 
@@ -404,5 +403,5 @@ public class HibernateLayerModel extends HibernateLayerUtil implements LayerMode
 	public void setDefaultFilter(Filter defaultFilter) {
 		this.defaultFilter = defaultFilter;
 	}
-	
+
 }

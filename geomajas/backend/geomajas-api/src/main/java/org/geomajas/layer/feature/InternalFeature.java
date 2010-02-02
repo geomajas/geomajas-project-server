@@ -22,12 +22,13 @@
  */
 package org.geomajas.layer.feature;
 
-import com.vividsolutions.jts.geom.Geometry;
+import java.util.Map;
+
 import org.geomajas.configuration.StyleInfo;
-import org.geomajas.geometry.Bbox;
 import org.geomajas.layer.VectorLayer;
 
-import java.util.Map;
+import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * <p>
@@ -53,7 +54,7 @@ public interface InternalFeature extends Cloneable, Comparable<InternalFeature> 
 	 * 
 	 * @return feature bounds
 	 */
-	Bbox getBounds();
+	Envelope getBounds();
 
 	/**
 	 * Is this a new feature or not? This is tested by the ID. If the ID is null, then the feature is new.
@@ -90,5 +91,4 @@ public interface InternalFeature extends Cloneable, Comparable<InternalFeature> 
 	String getLabel();
 
 	void setLabel(String label);
-
 }

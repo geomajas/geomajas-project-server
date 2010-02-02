@@ -25,14 +25,14 @@ package org.geomajas.layermodel.osm;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.geomajas.layer.LayerException;
-import org.geomajas.layer.RasterLayer;
-import org.geomajas.layer.tile.RasterImage;
-import org.geomajas.service.ApplicationService;
 import org.geomajas.configuration.RasterLayerInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.global.ExceptionCode;
+import org.geomajas.layer.LayerException;
+import org.geomajas.layer.RasterLayer;
+import org.geomajas.layer.tile.RasterImage;
 import org.geomajas.rendering.RenderException;
+import org.geomajas.service.ApplicationService;
 import org.geomajas.service.BboxService;
 import org.geomajas.service.GeoService;
 import org.geotools.geometry.DirectPosition2D;
@@ -49,10 +49,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Envelope;
 
 /**
  * Layer for displaying OpenStreetMaps images.
- *
+ * 
  * @author check subversion
  */
 public class OsmLayer implements RasterLayer {
@@ -99,12 +100,12 @@ public class OsmLayer implements RasterLayer {
 	private void initCrs() throws LayerException {
 		try {
 			crs = CRS.decode(layerInfo.getCrs());
-		} catch (NoSuchAuthorityCodeException e) {
-			throw new LayerException(ExceptionCode.LAYER_CRS_UNKNOWN_AUTHORITY, e, layerInfo.getId(),
+		} catch (NoSuchAuthorityCodeException exception) {
+			throw new LayerException(ExceptionCode.LAYER_CRS_UNKNOWN_AUTHORITY, exception, layerInfo.getId(),
 					getLayerInfo().getCrs());
-		} catch (FactoryException e) {
-			throw new LayerException(ExceptionCode.LAYER_CRS_PROBLEMATIC, e, layerInfo.getId(),
-					getLayerInfo().getCrs());
+		} catch (FactoryException exception) {
+			throw new LayerException(ExceptionCode.LAYER_CRS_PROBLEMATIC, exception, layerInfo.getId(), getLayerInfo()
+					.getCrs());
 		}
 	}
 
@@ -119,20 +120,20 @@ public class OsmLayer implements RasterLayer {
 		this.calculatePredefinedResolutions();
 	}
 
-	public List<RasterImage> paint(String boundsCrs, Bbox bounds, double scale) throws RenderException {
+	public List<RasterImage> paint(String boundsCrs, Envelope bounds, double scale) throws RenderException {
 		try {
 			CoordinateReferenceSystem google = CRS.decode("EPSG:900913");
 			MathTransform googleToLayer = geoService.findMathTransform(google, CRS.decode(boundsCrs));
 			MathTransform layerToGoogle = googleToLayer.inverse();
 			// TODO: if bounds width or height is 0, we run out of memory ?
 			bounds = clipBounds(bounds);
-			if (bboxService.isNull(bounds)) {
+			if (bounds.isNull()) {
 				return new ArrayList<RasterImage>();
 			}
 			// find the center of the map in map coordinates (positive
 			// y-axis)
-			DirectPosition2D center = new DirectPosition2D(0.5 * (bounds.getX() + bounds.getMaxX()), 0.5 * (bounds
-					.getY() + bounds.getMaxY()));
+			DirectPosition2D center = new DirectPosition2D(0.5 * (bounds.getMinX() + bounds.getMaxX()), 0.5 * (bounds
+					.getMinY() + bounds.getMaxY()));
 
 			double scaleRatio = calculateMapUnitPerGoogleMeter(layerToGoogle, center);
 
@@ -171,7 +172,7 @@ public class OsmLayer implements RasterLayer {
 			// that just falls off the screen
 			double xMin = xCenter;
 			int iMin = iCenter;
-			while (xMin > bounds.getX()) {
+			while (xMin > bounds.getMinX()) {
 				xMin -= width;
 				iMin--;
 			}
@@ -191,7 +192,7 @@ public class OsmLayer implements RasterLayer {
 			}
 			double yMin = yCenter;
 			int jMax = jCenter;
-			while (yMin > bounds.getY()) {
+			while (yMin > bounds.getMinY()) {
 				yMin -= width;
 				jMax++;
 			}
@@ -207,8 +208,9 @@ public class OsmLayer implements RasterLayer {
 					int x = xScreenUpperLeft + (i - iMin) * screenWidth;
 					int y = yScreenUpperLeft - (j - jMin) * screenWidth;
 					// screen coordinates !!!!!
-					RasterImage image = new RasterImage(new Bbox(x, -y, screenWidth, screenWidth),
-							getLayerInfo().getId() + "." + tileLevel + "." + i + "," + j);
+					RasterImage image = new RasterImage(new Bbox(x, -y, screenWidth, screenWidth), getLayerInfo()
+							.getId()
+							+ "." + tileLevel + "." + i + "," + j);
 					image.setLevel(tileLevel);
 					image.setXIndex(i);
 					image.setYIndex(j);
@@ -243,8 +245,8 @@ public class OsmLayer implements RasterLayer {
 		}
 	}
 
-	private Bbox clipBounds(Bbox bounds) {
-		return bboxService.intersection(bounds, getLayerInfo().getMaxExtent());
+	private Envelope clipBounds(Envelope bounds) {
+		return bounds.intersection(bboxService.toEnvelope(getLayerInfo().getMaxExtent()));
 	}
 
 	private void calculatePredefinedResolutions() {

@@ -26,11 +26,12 @@ package org.geomajas.service;
 import java.util.List;
 
 import org.geomajas.configuration.StyleInfo;
-import org.geomajas.geometry.Bbox;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.feature.InternalFeature;
 import org.opengis.filter.Filter;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+
+import com.vividsolutions.jts.geom.Envelope;
 
 /**
  * Service which allows accessing data from a vector layer model.
@@ -113,7 +114,7 @@ public interface VectorLayerService {
 	 * @return the bounds of the specified features
 	 * @throws GeomajasException oops
 	 */
-	Bbox getBounds(String layerId, CoordinateReferenceSystem crs, Filter filter) throws GeomajasException;
+	Envelope getBounds(String layerId, CoordinateReferenceSystem crs, Filter filter) throws GeomajasException;
 
 	/**
 	 * Return the list of possible attribute values.

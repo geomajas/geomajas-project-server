@@ -29,7 +29,6 @@ import java.util.List;
 
 import org.geomajas.configuration.LayerInfo;
 import org.geomajas.configuration.StyleInfo;
-import org.geomajas.geometry.Bbox;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.internal.layer.feature.InternalFeatureImpl;
@@ -54,6 +53,7 @@ import org.opengis.referencing.operation.TransformException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 
 /**
@@ -273,7 +273,7 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 		return styleFilters;
 	}
 
-	public Bbox getBounds(String layerId, CoordinateReferenceSystem crs, Filter filter) throws GeomajasException {
+	public Envelope getBounds(String layerId, CoordinateReferenceSystem crs, Filter filter) throws GeomajasException {
 		VectorLayer layer = applicationService.getVectorLayer(layerId);
 		if (null == layer) {
 			throw new GeomajasException(ExceptionCode.VECTOR_LAYER_NOT_FOUND, layerId);
@@ -286,9 +286,9 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 		} catch (FactoryException fe) {
 			throw new GeomajasException(fe, ExceptionCode.CRS_TRANSFORMATION_NOT_POSSIBLE, crs, layer.getCrs());
 		}
-		Bbox bounds = layerModel.getBounds(filter);
+		Envelope bounds = layerModel.getBounds(filter);
 		try {
-			bounds = bboxService.fromEnvelope(JTS.transform(bboxService.toEnvelope(bounds), layerToTarget));
+			bounds = JTS.transform(bounds, layerToTarget);
 		} catch (TransformException te) {
 			throw new GeomajasException(te, ExceptionCode.GEOMETRY_TRANSFORMATION_FAILED);
 		}

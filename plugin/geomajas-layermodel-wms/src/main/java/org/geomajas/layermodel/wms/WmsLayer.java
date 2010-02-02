@@ -28,14 +28,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.geomajas.layer.LayerException;
-import org.geomajas.layer.RasterLayer;
-import org.geomajas.layer.tile.RasterImage;
-import org.geomajas.service.ApplicationService;
 import org.geomajas.configuration.RasterLayerInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.global.ExceptionCode;
+import org.geomajas.layer.LayerException;
+import org.geomajas.layer.RasterLayer;
+import org.geomajas.layer.tile.RasterImage;
 import org.geomajas.rendering.RenderException;
+import org.geomajas.service.ApplicationService;
 import org.geomajas.service.BboxService;
 import org.geomajas.service.GeoService;
 import org.geotools.geometry.DirectPosition2D;
@@ -52,10 +52,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Envelope;
 
 /**
  * Layer model for accessing raster data from WMS servers.
- *
+ * 
  * @author check subversion
  */
 public class WmsLayer implements RasterLayer {
@@ -95,10 +96,10 @@ public class WmsLayer implements RasterLayer {
 		try {
 			crs = CRS.decode(layerInfo.getCrs());
 		} catch (NoSuchAuthorityCodeException e) {
-			throw new LayerException(ExceptionCode.LAYER_CRS_UNKNOWN_AUTHORITY, e, layerInfo.getId(),
-					getLayerInfo().getCrs());
+			throw new LayerException(ExceptionCode.LAYER_CRS_UNKNOWN_AUTHORITY, e, layerInfo.getId(), getLayerInfo()
+					.getCrs());
 		} catch (FactoryException e) {
-			throw new LayerException(ExceptionCode.LAYER_CRS_PROBLEMATIC, e, layerInfo.getId(),
+			throw new LayerException(ExceptionCode.LAYER_CRS_PROBLEMATIC, e, layerInfo.getId(), 
 					getLayerInfo().getCrs());
 		}
 	}
@@ -146,9 +147,9 @@ public class WmsLayer implements RasterLayer {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<RasterImage> paint(String boundsCrs, Bbox orgBounds, double scale) throws RenderException {
+	public List<RasterImage> paint(String boundsCrs, Envelope orgBounds, double scale) throws RenderException {
 		List<RasterImage> result = new ArrayList<RasterImage>();
-		Bbox bounds = orgBounds;
+		Envelope bounds = orgBounds;
 
 		// We don't necessarily need to split into same crs and different crs
 		// cases,
@@ -158,7 +159,7 @@ public class WmsLayer implements RasterLayer {
 		String crsCode = getLayerInfo().getCrs();
 		if (crsCode.equals(boundsCrs)) {
 			bounds = clipBounds(bounds);
-			if (bboxService.isNull(bounds)) {
+			if (bounds.isNull()) {
 				return Collections.EMPTY_LIST;
 			}
 			Resolution bestResolution = calculateBestResolution(scale);
@@ -171,15 +172,13 @@ public class WmsLayer implements RasterLayer {
 					double y = grid.getLowerLeft().y + (j - grid.getYmin()) * grid.getTileHeight();
 					Bbox worldBox = new Bbox(x, y, grid.getTileWidth(), grid.getTileHeight());
 					// lower-left becomes upper-left in inverted y-space !!!
-					Bbox screenbox = new Bbox(
-							Math.round(scale * worldBox.getX()),
-							-Math.round(scale * worldBox.getMaxY()),
-							Math.round(scale * worldBox.getMaxX()) - Math.round(scale * worldBox.getX()),
-							Math.round(scale * worldBox.getMaxY()) - Math.round(scale * worldBox.getY())
-					);
+					Bbox screenbox = new Bbox(Math.round(scale * worldBox.getX()), -Math.round(scale
+							* worldBox.getMaxY()), Math.round(scale * worldBox.getMaxX())
+							- Math.round(scale * worldBox.getX()), Math.round(scale * worldBox.getMaxY())
+							- Math.round(scale * worldBox.getY()));
 
-					RasterImage image = new RasterImage(screenbox, getLayerInfo().getId() +
-							"." + bestResolution.getLevel() + "." + i + "," + j);
+					RasterImage image = new RasterImage(screenbox, getLayerInfo().getId() + "."
+							+ bestResolution.getLevel() + "." + i + "," + j);
 
 					image.setLevel(bestResolution.getLevel());
 					image.setXIndex(i);
@@ -190,22 +189,21 @@ public class WmsLayer implements RasterLayer {
 			}
 		} else {
 			try {
-				MathTransform layerToMap = geoService.findMathTransform(CRS.decode(getLayerInfo().getCrs()),
-						runtime.getCrs(boundsCrs));
+				MathTransform layerToMap = geoService.findMathTransform(CRS.decode(getLayerInfo().getCrs()), runtime
+						.getCrs(boundsCrs));
 				MathTransform mapToLayer = layerToMap.inverse();
 
 				// Translate the map coordinates to layer coordinates
-				DirectPosition leftTop = new DirectPosition2D(bounds.getX(), bounds.getMaxY());
-				DirectPosition rightBottom = new DirectPosition2D(bounds.getMaxX(), bounds.getY());
+				DirectPosition leftTop = new DirectPosition2D(bounds.getMinX(), bounds.getMaxY());
+				DirectPosition rightBottom = new DirectPosition2D(bounds.getMaxX(), bounds.getMinY());
 				mapToLayer.transform(leftTop, leftTop);
 				mapToLayer.transform(rightBottom, rightBottom);
-				Bbox layerBounds = new Bbox(leftTop.getCoordinates()[0], leftTop.getCoordinates()[1],
-						rightBottom.getCoordinates()[0] - leftTop.getCoordinates()[0],
-						rightBottom.getCoordinates()[1] - leftTop.getCoordinates()[1]);
+				Envelope layerBounds = new Envelope(leftTop.getCoordinate()[0], rightBottom.getCoordinate()[0], leftTop
+						.getCoordinate()[1], rightBottom.getCoordinate()[1]);
 				double layerScale = bounds.getWidth() * scale / layerBounds.getWidth();
 
 				layerBounds = clipBounds(layerBounds);
-				if (bboxService.isNull(layerBounds)) {
+				if (layerBounds.isNull()) {
 					return Collections.EMPTY_LIST;
 				}
 
@@ -222,15 +220,13 @@ public class WmsLayer implements RasterLayer {
 
 						// Rounding to avoid white space between raster tiles
 						// lower-left becomes upper-left in inverted y-space !!!
-						Bbox screenbox = new Bbox(
-								Math.round(scale * worldBox.getX()),
-								-Math.round(scale * worldBox.getMaxY()),
-								Math.round(scale * worldBox.getMaxX()) - Math.round(scale * worldBox.getX()),
-								Math.round(scale * worldBox.getMaxY()) - Math.round(scale * worldBox.getY())
-						);
+						Bbox screenbox = new Bbox(Math.round(scale * worldBox.getX()), -Math.round(scale
+								* worldBox.getMaxY()), Math.round(scale * worldBox.getMaxX())
+								- Math.round(scale * worldBox.getX()), Math.round(scale * worldBox.getMaxY())
+								- Math.round(scale * worldBox.getY()));
 
-						RasterImage image = new RasterImage(screenbox, getLayerInfo().getId() + "." +
-								bestResolution.getLevel() + "." + i + "," + j);
+						RasterImage image = new RasterImage(screenbox, getLayerInfo().getId() + "."
+								+ bestResolution.getLevel() + "." + i + "," + j);
 
 						image.setLevel(bestResolution.getLevel());
 						image.setXIndex(i);
@@ -301,20 +297,20 @@ public class WmsLayer implements RasterLayer {
 		return resolutions.get(resolutions.size() - 1);
 	}
 
-	protected RasterGrid getRasterGrid(Bbox bounds, double width, double height, double scale) {
+	protected RasterGrid getRasterGrid(Envelope bounds, double width, double height, double scale) {
 		// slightly adjust the width and height so it becomes integer for the
 		// current scale
 		double realWidth = ((int) (width * scale)) / scale;
 		double realHeight = ((int) (height * scale)) / scale;
 
-		Bbox bbox = getLayerInfo().getMaxExtent();
-		int ymin = (int) Math.floor((bounds.getY() - bbox.getY()) / realHeight);
-		int ymax = (int) Math.floor((bounds.getMaxY() - bbox.getY()) / realHeight) + 1;
-		int xmin = (int) Math.floor((bounds.getX() - bbox.getX()) / realWidth);
-		int xmax = (int) Math.floor((bounds.getMaxX() - bbox.getX()) / realWidth) + 1;
+		Envelope bbox = bboxService.toEnvelope(getLayerInfo().getMaxExtent());
+		int ymin = (int) Math.floor((bounds.getMinY() - bbox.getMinY()) / realHeight);
+		int ymax = (int) Math.floor((bounds.getMaxY() - bbox.getMinY()) / realHeight) + 1;
+		int xmin = (int) Math.floor((bounds.getMinX() - bbox.getMinX()) / realWidth);
+		int xmax = (int) Math.floor((bounds.getMaxX() - bbox.getMinX()) / realWidth) + 1;
 		// same adjustment for corner
-		double realXmin = ((int) (bbox.getX() * scale)) / scale;
-		double realYmin = ((int) (bbox.getY() * scale)) / scale;
+		double realXmin = ((int) (bbox.getMinX() * scale)) / scale;
+		double realYmin = ((int) (bbox.getMinY() * scale)) / scale;
 		Coordinate lowerLeft = new Coordinate(realXmin + xmin * realWidth, realYmin + ymin * realHeight);
 		return new RasterGrid(lowerLeft, xmin, ymin, xmax, ymax, realWidth, realHeight);
 	}
@@ -331,8 +327,8 @@ public class WmsLayer implements RasterLayer {
 		return getLayerInfo().getMaxTileLevel();
 	}
 
-	private Bbox clipBounds(Bbox bounds) {
-		return bboxService.intersection(bounds, getLayerInfo().getMaxExtent());
+	private Envelope clipBounds(Envelope bounds) {
+		return bounds.intersection(bboxService.toEnvelope(getLayerInfo().getMaxExtent()));
 	}
 
 	public String getBaseWmsUrl() {

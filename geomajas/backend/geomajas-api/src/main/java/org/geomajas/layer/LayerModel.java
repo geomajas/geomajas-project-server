@@ -22,13 +22,14 @@
  */
 package org.geomajas.layer;
 
+import java.util.Iterator;
+
 import org.geomajas.configuration.VectorLayerInfo;
-import org.geomajas.geometry.Bbox;
 import org.geomajas.global.ExpectAlternatives;
 import org.geomajas.layer.feature.FeatureModel;
 import org.opengis.filter.Filter;
 
-import java.util.Iterator;
+import com.vividsolutions.jts.geom.Envelope;
 
 /**
  * <p>
@@ -110,7 +111,7 @@ public interface LayerModel {
 	 * @return the bounds of the specified features
 	 * @throws LayerException oops
 	 */
-	Bbox getBounds(Filter filter) throws LayerException;
+	Envelope getBounds(Filter filter) throws LayerException;
 
 	/**
 	 * Return the bounds of this model.
@@ -118,7 +119,7 @@ public interface LayerModel {
 	 * @return bounds of this model
 	 * @throws LayerException oops
 	 */
-	Bbox getBounds() throws LayerException;
+	Envelope getBounds() throws LayerException;
 
 	/**
 	 * Return the list of possible object values.

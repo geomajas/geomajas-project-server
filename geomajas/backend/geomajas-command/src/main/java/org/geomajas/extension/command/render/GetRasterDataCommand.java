@@ -22,20 +22,22 @@
  */
 package org.geomajas.extension.command.render;
 
+import java.util.List;
+
 import org.geomajas.command.Command;
 import org.geomajas.extension.command.dto.GetRasterDataRequest;
 import org.geomajas.extension.command.dto.GetRasterDataResponse;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
+import org.geomajas.internal.service.DtoConverterServiceImpl;
 import org.geomajas.layer.RasterLayer;
 import org.geomajas.layer.tile.RasterImage;
 import org.geomajas.service.ApplicationService;
+import org.geomajas.service.DtoConverterService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 /**
  * GetRasterDataCommand
@@ -73,7 +75,8 @@ public class GetRasterDataCommand implements Command<GetRasterDataRequest, GetRa
 		RasterLayer rasterlayer = (RasterLayer) runtimeParameters.getLayer(request.getLayerId());
 		List<RasterImage> images;
 		log.debug("execute() : bbox {}", request.getBbox());
-		images = rasterlayer.paint(request.getCrs(), request.getBbox(), request.getScale());
+		DtoConverterService converter = new DtoConverterServiceImpl();
+		images = rasterlayer.paint(request.getCrs(), converter.toEnvelope(request.getBbox()), request.getScale());
 		log.debug("execute() : returning {} images", images.size());
 		response.setRasterData(images);
 		if (images.size() > 0) {

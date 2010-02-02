@@ -22,12 +22,12 @@
  */
 package org.geomajas.extension.printing.component;
 
-import org.geomajas.geometry.Bbox;
+import com.vividsolutions.jts.geom.Envelope;
 
 /**
  * ???
  *
- * @author check subversion
+ * @author Jan De Moerloose
  */
 public abstract class BaseLayerComponent extends BaseComponent {
 
@@ -74,12 +74,11 @@ public abstract class BaseLayerComponent extends BaseComponent {
 		return (MapComponent) getParent();
 	}
 
-	Bbox createBbox() {
-		Bbox bbox = new Bbox();
-		bbox.setX(getMap().getLocation().x);
-		bbox.setY(getMap().getLocation().y);
-		bbox.setHeight(getBounds().getHeight() / getMap().getPpUnit());
-		bbox.setWidth(getBounds().getWidth() / getMap().getPpUnit());
-		return bbox;
+	Envelope createBbox() {
+		double x1 = getMap().getLocation().x;
+		double x2 = x1 + (getBounds().getWidth() / getMap().getPpUnit());
+		double y1 = getMap().getLocation().y;
+		double y2 = y1 + (getBounds().getHeight() / getMap().getPpUnit());
+		return new Envelope(x1, x2, y1, y2);
 	}
 }

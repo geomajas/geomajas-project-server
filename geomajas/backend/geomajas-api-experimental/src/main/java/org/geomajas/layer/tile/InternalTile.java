@@ -24,10 +24,11 @@ package org.geomajas.layer.tile;
 
 import java.util.List;
 
-import org.geomajas.geometry.Bbox;
 import org.geomajas.layer.Layer;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.InternalFeature;
+
+import com.vividsolutions.jts.geom.Envelope;
 
 /**
  * <p>
@@ -41,7 +42,7 @@ public interface InternalTile {
 
 	void init(VectorLayer layer, double scale);
 
-	Bbox getBbox(Layer<?> layer);
+	Envelope getBbox(Layer<?> layer);
 
 	String codeAsString();
 

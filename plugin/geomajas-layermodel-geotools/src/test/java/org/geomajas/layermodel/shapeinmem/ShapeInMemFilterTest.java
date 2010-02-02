@@ -1,17 +1,18 @@
 package org.geomajas.layermodel.shapeinmem;
 
-import com.vividsolutions.jts.geom.Geometry;
-import org.geomajas.geometry.Bbox;
-import org.junit.Assert;
-import org.junit.Test;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.filter.Filter;
-
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Iterator;
+
+import org.junit.Assert;
+import org.junit.Test;
+import org.opengis.feature.simple.SimpleFeature;
+import org.opengis.filter.Filter;
+
+import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.Geometry;
 
 public class ShapeInMemFilterTest extends AbstractFilterTest {
 
@@ -350,7 +351,7 @@ public class ShapeInMemFilterTest extends AbstractFilterTest {
 	@Test
 	public void bboxFilter() {
 		try {
-			Bbox bbox = new Bbox(-0.4d, -0.3d, 0.2d, 0.4d);
+			Envelope bbox = new Envelope(-0.4d, -0.3d, -0.2d, 0.1d);
 			Filter filter = filterCreator.createBboxFilter("EPSG:4326", bbox, PARAM_GEOMETRY_ATTR);
 			Iterator<?> it = layerModel.getElements(filter);
 

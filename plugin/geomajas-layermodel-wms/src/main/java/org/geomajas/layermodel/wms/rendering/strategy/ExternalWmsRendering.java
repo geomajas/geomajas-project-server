@@ -31,7 +31,6 @@ import java.util.List;
 
 import org.geomajas.configuration.ApplicationInfo;
 import org.geomajas.configuration.StyleInfo;
-import org.geomajas.geometry.Bbox;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.VectorLayer;
@@ -53,6 +52,8 @@ import org.opengis.filter.Filter;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import com.vividsolutions.jts.geom.Envelope;
 
 /**
  * <p>
@@ -210,8 +211,8 @@ public class ExternalWmsRendering implements RenderingStrategy {
 			url += "&width=" + tile.getScreenWidth();
 			url += "&height=" + tile.getScreenHeight();
 
-			Bbox env = tile.getBbox(this.layer);
-			url += "&bbox=" + decimalFormat.format(env.getX()) + "," + decimalFormat.format(env.getY()) + ","
+			Envelope env = tile.getBbox(this.layer);
+			url += "&bbox=" + decimalFormat.format(env.getMinX()) + "," + decimalFormat.format(env.getMinY()) + ","
 					+ decimalFormat.format(env.getMaxX()) + "," + decimalFormat.format(env.getMaxY());
 			url += "&format=" + wmsLayer.getFormat();
 			url += "&version=" + wmsLayer.getVersion();

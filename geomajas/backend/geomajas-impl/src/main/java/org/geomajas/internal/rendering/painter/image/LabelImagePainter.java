@@ -23,11 +23,15 @@
 
 package org.geomajas.internal.rendering.painter.image;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.Point;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.font.FontRenderContext;
+import java.awt.font.GlyphVector;
+import java.awt.font.TextLayout;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
+
 import org.geomajas.configuration.LabelAttributeInfo;
-import org.geomajas.geometry.Bbox;
 import org.geomajas.internal.rendering.image.LabelStyle;
 import org.geomajas.rendering.painter.TilePaintContext;
 import org.geomajas.rendering.painter.image.FeatureImagePainter;
@@ -39,24 +43,22 @@ import org.opengis.referencing.operation.TransformException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.font.FontRenderContext;
-import java.awt.font.GlyphVector;
-import java.awt.font.TextLayout;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Rectangle2D;
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.Point;
 
 /**
  * <p>
  * This feature image painter draws the feature's labels on the graphics.
  * </p>
- *
+ * 
  * @author Pieter De Graef
  */
 public class LabelImagePainter implements FeatureImagePainter {
 
 	private final Logger log = LoggerFactory.getLogger(FeatureImagePainter.class);
+
 	/**
 	 * The context object helping the painting process.
 	 */
@@ -129,7 +131,7 @@ public class LabelImagePainter implements FeatureImagePainter {
 
 	/**
 	 * Paint the feature object on the graphics. It is the feature's label that this painter will draw.
-	 *
+	 * 
 	 * @param graphics
 	 *            The AWT graphics object onto which we draw.
 	 * @param feature
@@ -207,8 +209,8 @@ public class LabelImagePainter implements FeatureImagePainter {
 	 */
 	private MathTransform getMathTransform() {
 		double scale = tileContext.getScale();
-		Bbox env = tileContext.getAreaOfInterest();
-		return ProjectiveTransform.create(new AffineTransform(scale, 0, 0, -scale, -scale * env.getX(), scale
-				* (env.getY() + env.getHeight())));
+		Envelope env = tileContext.getAreaOfInterest();
+		return ProjectiveTransform.create(new AffineTransform(scale, 0, 0, -scale, -scale * env.getMinX(), scale
+				* (env.getMinY() + env.getHeight())));
 	}
 }

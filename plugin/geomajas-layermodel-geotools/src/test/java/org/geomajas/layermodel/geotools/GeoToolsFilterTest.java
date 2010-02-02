@@ -1,40 +1,41 @@
 package org.geomajas.layermodel.geotools;
 
-import com.vividsolutions.jts.geom.Geometry;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import junit.framework.TestCase;
+
 import org.geomajas.configuration.AttributeInfo;
 import org.geomajas.configuration.FeatureInfo;
 import org.geomajas.configuration.GeometricAttributeInfo;
 import org.geomajas.configuration.PrimitiveAttributeInfo;
 import org.geomajas.configuration.PrimitiveType;
 import org.geomajas.configuration.VectorLayerInfo;
-import org.geomajas.geometry.Bbox;
 import org.geomajas.service.FilterService;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.Filter;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.Geometry;
 
 public class GeoToolsFilterTest extends TestCase {
 
-	private static final String SHAPE_FILE =
-			"org/geomajas/testdata/shapes/filtertest/filtertest.shp";
+	private static final String SHAPE_FILE = "org/geomajas/testdata/shapes/filtertest/filtertest.shp";
 
 	private GeotoolsLayerModel layerModel;
+
 	private FilterService filterCreator;
 
 	public void setUp() throws Exception {
 		ClassLoader classloader = Thread.currentThread().getContextClassLoader();
 		URL url = classloader.getResource(SHAPE_FILE);
-		ApplicationContext applicationContext = new ClassPathXmlApplicationContext(
-				new String[] {"org/geomajas/spring/geomajasContext.xml",
-						"org/geomajas/testdata/layerCountries.xml",
-						"org/geomajas/testdata/simplevectorsContext.xml"});
+		ApplicationContext applicationContext = new ClassPathXmlApplicationContext(new String[] {
+				"org/geomajas/spring/geomajasContext.xml", "org/geomajas/testdata/layerCountries.xml",
+				"org/geomajas/testdata/simplevectorsContext.xml" });
 		filterCreator = applicationContext.getBean("service.FilterService", FilterService.class);
 		layerModel = applicationContext.getBean("layermodel.geotools.GeotoolsLayerModel", GeotoolsLayerModel.class);
 		layerModel.setUrl(url);
@@ -132,7 +133,7 @@ public class GeoToolsFilterTest extends TestCase {
 	}
 
 	public void testFIDFilter() throws Exception {
-		Filter filter = filterCreator.createFidFilter(new String[] {"1"});
+		Filter filter = filterCreator.createFidFilter(new String[] { "1" });
 		Iterator<?> it = layerModel.getElements(filter);
 		SimpleFeature f = (SimpleFeature) it.next();
 		assertEquals("centraal", f.getAttribute("textAttr"));
@@ -191,7 +192,7 @@ public class GeoToolsFilterTest extends TestCase {
 	}
 
 	public void testcreateBBoxFilter() throws Exception {
-		Bbox bbox = new Bbox(-0.4d, -0.3d, 0.2d, 0.4d);
+		Envelope bbox = new Envelope(-0.4d, -0.3d, -0.2d, 0.1d);
 		Filter filter = filterCreator.createBboxFilter("EPSG:4326", bbox, "the_geom");
 		Iterator<?> it = layerModel.getElements(filter);
 

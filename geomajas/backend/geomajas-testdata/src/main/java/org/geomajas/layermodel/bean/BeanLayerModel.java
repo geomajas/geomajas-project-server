@@ -31,11 +31,9 @@ import java.util.Map;
 
 import org.geomajas.configuration.AssociationAttributeInfo;
 import org.geomajas.configuration.VectorLayerInfo;
-import org.geomajas.geometry.Bbox;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.LayerModel;
 import org.geomajas.layer.feature.FeatureModel;
-import org.geomajas.service.BboxService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
 import org.opengis.filter.Filter;
@@ -69,9 +67,6 @@ public class BeanLayerModel implements LayerModel {
 	private Filter defaultFilter;
 
 	@Autowired
-	private BboxService bboxService;
-
-	@Autowired
 	private FilterService filterService;
 
 	@Autowired
@@ -92,7 +87,7 @@ public class BeanLayerModel implements LayerModel {
 		return filteredList.iterator();
 	}
 
-	public Bbox getBounds() throws LayerException {
+	public Envelope getBounds() throws LayerException {
 		return getBounds(Filter.INCLUDE);
 	}
 
@@ -101,7 +96,7 @@ public class BeanLayerModel implements LayerModel {
 	 * 
 	 * @return the bounds of the specified features
 	 */
-	public Bbox getBounds(Filter queryFilter) throws LayerException {
+	public Envelope getBounds(Filter queryFilter) throws LayerException {
 		Filter filter = queryFilter;
 		if (defaultFilter != null) {
 			filter = filterService.createLogicFilter(filter, "AND", defaultFilter);
@@ -114,7 +109,7 @@ public class BeanLayerModel implements LayerModel {
 			Geometry g = featureModel.getGeometry(o);
 			bounds.expandToInclude(g.getEnvelopeInternal());
 		}
-		return bboxService.fromEnvelope(bounds);
+		return bounds;
 	}
 
 	public FeatureModel getFeatureModel() {

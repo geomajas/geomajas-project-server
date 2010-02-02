@@ -40,10 +40,8 @@ import org.geomajas.configuration.StyleInfo;
 import org.geomajas.configuration.SymbolInfo;
 import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.extension.printing.PdfContext;
-import org.geomajas.geometry.Bbox;
 import org.geomajas.layer.Layer;
 import org.geomajas.layer.feature.InternalFeature;
-import org.geomajas.service.BboxService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
 import org.geomajas.service.VectorLayerService;
@@ -56,6 +54,7 @@ import org.slf4j.LoggerFactory;
 import com.lowagie.text.Rectangle;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.CoordinateFilter;
+import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.MultiLineString;
@@ -67,7 +66,7 @@ import com.vividsolutions.jts.geom.PrecisionModel;
 
 /**
  * ???
- *
+ * 
  * @author Pieter De Graef
  */
 @XmlRootElement
@@ -87,7 +86,7 @@ public class VectorLayerComponent extends BaseLayerComponent {
 
 	/** The calculated bounds */
 	@XmlTransient
-	protected Bbox bbox;
+	protected Envelope bbox;
 
 	/** List of the features */
 	@XmlTransient
@@ -104,8 +103,6 @@ public class VectorLayerComponent extends BaseLayerComponent {
 
 	private GeoService geoService;
 
-	private BboxService bboxService;
-
 	private FilterService filterCreator;
 
 	private VectorLayerService layerService;
@@ -114,10 +111,8 @@ public class VectorLayerComponent extends BaseLayerComponent {
 		// todo needed for JAXB but looses the services, causing NPE later on
 	}
 
-	public VectorLayerComponent(GeoService geoService, BboxService bboxService, FilterService filterCreator,
-			VectorLayerService layerService) {
+	public VectorLayerComponent(GeoService geoService, FilterService filterCreator, VectorLayerService layerService) {
 		this.geoService = geoService;
-		this.bboxService = bboxService;
 		this.filterCreator = filterCreator;
 		this.layerService = layerService;
 
@@ -128,7 +123,7 @@ public class VectorLayerComponent extends BaseLayerComponent {
 
 	/**
 	 * Call back visitor.
-	 *
+	 * 
 	 * @param visitor
 	 */
 	public void accept(PrintComponentVisitor visitor) {
@@ -148,14 +143,13 @@ public class VectorLayerComponent extends BaseLayerComponent {
 				GeometryFactory factory = new GeometryFactory(new PrecisionModel(Math.pow(10, map.getPrecision())),
 						geoService.getSridFromCrs(map.getCrs()));
 
-				Filter filter = filterCreator
-						.createIntersectsFilter(factory.toGeometry(bboxService.toEnvelope(bbox)), geomName);
+				Filter filter = filterCreator.createIntersectsFilter(factory.toGeometry(bbox), geomName);
 				if (getFilter() != null) {
 					filter = filterCreator.createLogicFilter(CQL.toFilter(getFilter()), "and", filter);
 				}
 
-				features = layerService.getFeatures(getLayerId(), CRS.decode(map.getCrs()), filter,
-						styleDefinitions, VectorLayerService.FEATURE_INCLUDE_ALL);
+				features = layerService.getFeatures(getLayerId(), CRS.decode(map.getCrs()), filter, styleDefinitions,
+						VectorLayerService.FEATURE_INCLUDE_ALL);
 			} catch (Exception e) {
 				log.error("Error rendering vectorlayerRenderer", e);
 			}
@@ -172,7 +166,7 @@ public class VectorLayerComponent extends BaseLayerComponent {
 	}
 
 	private void drawLabel(PdfContext context, InternalFeature f) {
-		Layer layer = context.getLayer(getLayerId());
+		Layer<?> layer = context.getLayer(getLayerId());
 		LabelAttributeInfo labelType = ((VectorLayerInfo) layer.getLayerInfo()).getLabelAttribute();
 		String label = f.getLabel();
 
@@ -185,8 +179,8 @@ public class VectorLayerComponent extends BaseLayerComponent {
 		Rectangle rect = calculateLabelRect(context, f, label, font);
 		Color bgColor = Color.white;
 		if (labelType.getBackgroundStyle() != null) {
-			bgColor = context.getColor(labelType.getBackgroundStyle().getFillColor(), labelType
-					.getBackgroundStyle().getFillOpacity());
+			bgColor = context.getColor(labelType.getBackgroundStyle().getFillColor(), labelType.getBackgroundStyle()
+					.getFillOpacity());
 		}
 		context.fillRoundRectangle(rect, bgColor, 3);
 		Color borderColor = Color.black;
@@ -280,14 +274,14 @@ public class VectorLayerComponent extends BaseLayerComponent {
 	private final class MapToUserFilter implements CoordinateFilter {
 
 		public void filter(Coordinate coordinate) {
-			coordinate.x = (coordinate.x - bbox.getX()) * getMap().getPpUnit();
-			coordinate.y = (coordinate.y - bbox.getY()) * getMap().getPpUnit();
+			coordinate.x = (coordinate.x - bbox.getMinX()) * getMap().getPpUnit();
+			coordinate.y = (coordinate.y - bbox.getMinY()) * getMap().getPpUnit();
 		}
 	}
 
 	/**
 	 * Resets cyclic references like child -> parent relationship.
-	 *
+	 * 
 	 * @param u
 	 * @param parent
 	 */

@@ -22,21 +22,20 @@
  */
 package org.geomajas.extension.printing.document;
 
+import java.util.Map;
+
 import org.geomajas.configuration.ApplicationInfo;
 import org.geomajas.extension.printing.configuration.DefaultConfigurationVisitor;
 import org.geomajas.extension.printing.configuration.MapConfigurationVisitor;
 import org.geomajas.extension.printing.configuration.PrintTemplate;
 import org.geomajas.service.ApplicationService;
-import org.geomajas.service.BboxService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
 import org.geomajas.service.VectorLayerService;
 
-import java.util.Map;
-
 /**
  * ???
- *
+ * 
  * @author check subversion
  */
 public class DefaultDocument extends SinglePageDocument {
@@ -47,20 +46,17 @@ public class DefaultDocument extends SinglePageDocument {
 
 	private GeoService geoService;
 
-	private BboxService bboxService;
-
 	private FilterService filterCreator;
 
 	private VectorLayerService layerService;
 
 	public DefaultDocument(String pageSize, ApplicationInfo application, ApplicationService runtime,
 			Map<String, String> filters, DefaultConfigurationVisitor defaultVisitor, GeoService geoService,
-			BboxService bboxService, FilterService filterCreator, VectorLayerService layerService) {
+			FilterService filterCreator, VectorLayerService layerService) {
 		super(PrintTemplate.createDefaultTemplate(pageSize, true).getPage(), application, runtime, filters);
 		this.runtime = runtime;
 		this.defaultVisitor = defaultVisitor;
 		this.geoService = geoService;
-		this.bboxService = bboxService;
 		this.filterCreator = filterCreator;
 		this.layerService = layerService;
 	}
@@ -68,8 +64,7 @@ public class DefaultDocument extends SinglePageDocument {
 	@Override
 	public void render() {
 		defaultVisitor.visitTree(getPage());
-		MapConfigurationVisitor visitor = new MapConfigurationVisitor(runtime, geoService, bboxService, filterCreator,
-				layerService);
+		MapConfigurationVisitor visitor = new MapConfigurationVisitor(runtime, geoService, filterCreator, layerService);
 		visitor.visitTree(getPage());
 		super.render();
 	}

@@ -22,12 +22,13 @@
  */
 package org.geomajas.layer;
 
+import java.util.List;
+
 import org.geomajas.configuration.RasterLayerInfo;
-import org.geomajas.geometry.Bbox;
 import org.geomajas.layer.tile.RasterImage;
 import org.geomajas.rendering.RenderException;
 
-import java.util.List;
+import com.vividsolutions.jts.geom.Envelope;
 
 /**
  * A layer of raster data (could be based on local files, WMS or some non-standard image server).
@@ -45,5 +46,5 @@ public interface RasterLayer extends Layer<RasterLayerInfo> {
 	 * @return a list of raster images that covers the bounds
 	 * @throws RenderException oops
 	 */
-	List<RasterImage> paint(String boundsCrs, Bbox bounds, double scale) throws RenderException;
+	List<RasterImage> paint(String boundsCrs, Envelope bounds, double scale) throws RenderException;
 }

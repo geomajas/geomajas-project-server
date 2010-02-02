@@ -22,6 +22,10 @@
  */
 package org.geomajas.extension.printing.configuration;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import org.geomajas.configuration.LayerInfo;
 import org.geomajas.configuration.MapInfo;
 import org.geomajas.configuration.RasterLayerInfo;
@@ -33,19 +37,14 @@ import org.geomajas.extension.printing.component.RasterLayerComponent;
 import org.geomajas.extension.printing.component.TopDownVisitor;
 import org.geomajas.extension.printing.component.VectorLayerComponent;
 import org.geomajas.service.ApplicationService;
-import org.geomajas.service.BboxService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
 import org.geomajas.service.VectorLayerService;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 /**
  * Visitor that configures the default layers of all the maps and legends in the print component. Maps and legends
  * should have valid map id's.
- *
+ * 
  * @author Jan De Moerloose
  */
 public class MapConfigurationVisitor extends TopDownVisitor {
@@ -54,17 +53,14 @@ public class MapConfigurationVisitor extends TopDownVisitor {
 
 	private GeoService geoService;
 
-	private BboxService bboxService;
-
 	private FilterService filterCreator;
 
 	private VectorLayerService layerService;
 
-	public MapConfigurationVisitor(ApplicationService runtimeParameters, GeoService geoService, BboxService bboxService,
+	public MapConfigurationVisitor(ApplicationService runtimeParameters, GeoService geoService,
 			FilterService filterCreator, VectorLayerService layerService) {
 		this.runtime = runtimeParameters;
 		this.geoService = geoService;
-		this.bboxService = bboxService;
 		this.filterCreator = filterCreator;
 		this.layerService = layerService;
 	}
@@ -92,8 +88,7 @@ public class MapConfigurationVisitor extends TopDownVisitor {
 		Collections.reverse(layers);
 		for (LayerInfo info : layers) {
 			if (info instanceof VectorLayerInfo) {
-				VectorLayerComponent comp = new VectorLayerComponent(geoService, bboxService, filterCreator,
-						layerService);
+				VectorLayerComponent comp = new VectorLayerComponent(geoService, filterCreator, layerService);
 				comp.setLabelsVisible(false);
 				comp.setLayerId(info.getId());
 				List<StyleInfo> sdef = ((VectorLayerInfo) info).getStyleDefinitions();
