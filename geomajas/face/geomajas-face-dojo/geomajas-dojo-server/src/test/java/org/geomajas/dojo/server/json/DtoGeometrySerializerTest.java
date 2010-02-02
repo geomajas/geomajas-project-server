@@ -55,7 +55,7 @@ public class DtoGeometrySerializerTest extends TestCase {
 
 		ApplicationContext applicationContext = new ClassPathXmlApplicationContext(
 				new String[] {"org/geomajas/spring/geomajasContext.xml", "org/geomajas/spring/emptyApplication.xml"});
-		converter = applicationContext.getBean("service.DtoConverter", DtoConverterService.class);
+		converter = applicationContext.getBean("service.DtoConverterService", DtoConverterService.class);
 	}
 
 	public void testPoint() throws MarshallException {
