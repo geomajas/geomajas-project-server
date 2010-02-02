@@ -26,7 +26,7 @@ package org.geomajas.internal.rendering.writers.vml;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import org.geomajas.configuration.StyleInfo;
-import org.geomajas.internal.layer.feature.ClippedInternalFeature;
+import org.geomajas.internal.layer.feature.InternalFeatureImpl;
 import org.geomajas.internal.layer.tile.InternalVectorTile;
 import org.geomajas.internal.rendering.writers.GraphicsWriter;
 import org.geomajas.internal.rendering.writers.svg.SvgFeatureScreenWriter;
@@ -93,7 +93,7 @@ public class VmlLabelTileWriter implements GraphicsWriter {
 		document.closeElement();
 
 		for (InternalFeature f : tile.getFeatures()) {
-			ClippedInternalFeature feature = (ClippedInternalFeature) f;
+			InternalFeatureImpl feature = (InternalFeatureImpl) f;
 			Coordinate pos = geoService.calcDefaultLabelPosition(feature);
 			if (pos == null) {
 				continue;

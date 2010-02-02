@@ -36,10 +36,10 @@ import org.geomajas.rendering.painter.tile.TilePainter;
  * <p>
  * TilePainter implementation for painting raster tiles. This painter is actually very simple. It will simply create a
  * URL where the actual image can be found. To do this, it uses the {@link RasterUrlBuilder} contained within the tile.
- * One condition for this to work is that the <code>RenderedTile</code> is an instance of {@link InternalRasterTile}, and that
- * this raster tile's {@link RasterUrlBuilder} is not null!
+ * One condition for this to work is that the <code>RenderedTile</code> is an instance of {@link InternalRasterTile},
+ * and that this raster tile's {@link RasterUrlBuilder} is not null!
  * </p>
- *
+ * 
  * @author Pieter De Graef
  */
 public class RasterTilePainter implements TilePainter {
@@ -65,8 +65,9 @@ public class RasterTilePainter implements TilePainter {
 
 	/**
 	 * Constructor setting the layer's ID.
-	 *
-	 * @param layerId layer id
+	 * 
+	 * @param layerId
+	 *            layer id
 	 */
 	public RasterTilePainter(String layerId) {
 		this.layerId = layerId;
@@ -78,7 +79,7 @@ public class RasterTilePainter implements TilePainter {
 
 	/**
 	 * Painter the tile, by building a URL where the image can be found.
-	 *
+	 * 
 	 * @param tile
 	 *            Must be an instance of {@link InternalRasterTile}, and must have a non-null {@link RasterUrlBuilder}.
 	 * @return Returns a {@link InternalRasterTile} with a {@link RasterImage} added to it.
@@ -94,8 +95,8 @@ public class RasterTilePainter implements TilePainter {
 					String url = urlBuilder.getImageUrl();
 					TileCode code = rasterTile.getCode();
 					String id = layerId + "." + code.getTileLevel() + "." + code.getX() + "," + code.getY();
-					RasterImage image = new RasterImage(new Bbox(0, 0, tile.getScreenWidth(),
-							tile.getScreenHeight()), id);
+					RasterImage image = new RasterImage(new Bbox(0, 0, tile.getScreenWidth(), tile.getScreenHeight()),
+							id);
 					image.setUrl(url);
 					rasterTile.setFeatureImage(image);
 				}
@@ -105,8 +106,8 @@ public class RasterTilePainter implements TilePainter {
 					String url = urlBuilder.getImageUrl();
 					TileCode code = rasterTile.getCode();
 					String id = layerId + "." + code.getTileLevel() + "." + code.getX() + "," + code.getY();
-					RasterImage image = new RasterImage(new Bbox(0, 0, tile.getScreenWidth(),
-							tile.getScreenHeight()), id);
+					RasterImage image = new RasterImage(new Bbox(0, 0, tile.getScreenWidth(), tile.getScreenHeight()),
+							id);
 					image.setUrl(url);
 					rasterTile.setLabelImage(image);
 				}
@@ -117,9 +118,8 @@ public class RasterTilePainter implements TilePainter {
 	}
 
 	/**
-	 * Enables or disabled the use of painter that paint the geometries of the
-	 * features in the tile.
-	 *
+	 * Enables or disabled the use of painter that paint the geometries of the features in the tile.
+	 * 
 	 * @param paintGeometries
 	 *            true or false.
 	 */
@@ -128,9 +128,8 @@ public class RasterTilePainter implements TilePainter {
 	}
 
 	/**
-	 * Enables or disabled the use of painter that paint the labels of the
-	 * features in the tile.
-	 *
+	 * Enables or disabled the use of painter that paint the labels of the features in the tile.
+	 * 
 	 * @param paintLabels
 	 *            true or false.
 	 */

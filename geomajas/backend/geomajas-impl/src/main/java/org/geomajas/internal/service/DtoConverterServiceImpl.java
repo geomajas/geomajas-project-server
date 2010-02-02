@@ -37,9 +37,7 @@ import org.geomajas.configuration.PrimitiveAttributeInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
-import org.geomajas.internal.layer.feature.ClippedInternalFeature;
-import org.geomajas.internal.layer.feature.EditableFeature;
-import org.geomajas.internal.layer.feature.RenderedFeatureImpl;
+import org.geomajas.internal.layer.feature.InternalFeatureImpl;
 import org.geomajas.internal.layer.tile.InternalRasterTile;
 import org.geomajas.internal.layer.tile.InternalVectorTile;
 import org.geomajas.layer.feature.Attribute;
@@ -214,12 +212,9 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 			dto.setStyleId((int) feature.getStyleInfo().getId());
 		}
 
-		if (feature instanceof ClippedInternalFeature) {
-			ClippedInternalFeature vFeature = (ClippedInternalFeature) feature;
+		if (feature instanceof InternalFeatureImpl) {
+			InternalFeatureImpl vFeature = (InternalFeatureImpl) feature;
 			dto.setClipped(vFeature.isClipped());
-		} else if (feature instanceof EditableFeature) {
-			EditableFeature eFeature = (EditableFeature) feature;
-			dto.setEditable(eFeature.isEditable());
 		}
 		return dto;
 	}
@@ -235,18 +230,15 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		if (dto == null) {
 			return null;
 		}
-		InternalFeature feature;
+		InternalFeatureImpl feature = new InternalFeatureImpl(bboxService);
 		if (dto.isEditable()) {
-			feature = new EditableFeature(bboxService);
-			((EditableFeature) feature).setEditable(true);
-		} else {
-			feature = new ClippedInternalFeature(new RenderedFeatureImpl(bboxService));
-			((ClippedInternalFeature) feature).setClipped(dto.isClipped());
+			// TODO implement this????
 		}
 		feature.setAttributes(toFeature(dto.getAttributes()));
 		feature.setId(dto.getId());
 		feature.setLabel(dto.getLabel());
 		feature.setGeometry(toJts(dto.getGeometry()));
+		feature.setClipped(dto.isClipped());
 		return feature;
 	}
 

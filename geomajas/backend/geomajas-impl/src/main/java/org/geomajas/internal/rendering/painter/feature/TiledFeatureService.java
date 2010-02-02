@@ -26,7 +26,7 @@ package org.geomajas.internal.rendering.painter.feature;
 import java.util.List;
 
 import org.geomajas.geometry.Bbox;
-import org.geomajas.internal.layer.feature.ClippedInternalFeature;
+import org.geomajas.internal.layer.feature.InternalFeatureImpl;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.layer.tile.InternalTile;
@@ -101,7 +101,7 @@ public class TiledFeatureService {
 			} else {
 				// clip feature if necessary
 				if (exceedsScreenDimensions(feature, scale)) {
-					ClippedInternalFeature vectorFeature = new ClippedInternalFeature(feature);
+					InternalFeatureImpl vectorFeature = new InternalFeatureImpl(feature);
 					tile.setClipped(true);
 					vectorFeature.setClipped(true);
 					Geometry clipped = JTS.toGeometry(

@@ -62,9 +62,10 @@ import org.springframework.stereotype.Component;
  * <p>
  * Internally this class contains a private class that implements the {@link RasterUrlBuilder} interface to create an
  * implementation that is able to create url's that refer to the {@link RetrieveImageServlet}. This class is added to
- * the {@link InternalRasterTile} objects so that the {@link RasterTilePainter} can use it to actually paint the raster tiles.
+ * the {@link InternalRasterTile} objects so that the {@link RasterTilePainter} can use it to actually paint the raster
+ * tiles.
  * </p>
- *
+ * 
  * @author Pieter De Graef
  */
 @Component()
@@ -83,7 +84,7 @@ public class ImageRendering implements RenderingStrategy {
 	 * Paint the tile! This function will create a <code>RasterTile</code> extension of the <code>RenderedTile</code>
 	 * class. This <code>RasterTile</code> not only holds all the drawn features and tiling info, but also an URL
 	 * pointing to the image that represents the rendered tile.
-	 *
+	 * 
 	 * @param metadata
 	 *            The command that holds all the spatial and styling information.
 	 * @param application
@@ -103,8 +104,8 @@ public class ImageRendering implements RenderingStrategy {
 
 			// Prepare any filtering:
 			String geomName = vLayer.getLayerInfo().getFeatureInfo().getGeometryType().getName();
-			Filter filter = filterService.createBboxFilter(crs.getIdentifiers().iterator().next()
-					.toString(), tile.getBbox(vLayer), geomName);
+			Filter filter = filterService.createBboxFilter(crs.getIdentifiers().iterator().next().toString(), tile
+					.getBbox(vLayer), geomName);
 			if (metadata.getFilter() != null) {
 				filter = filterService.createLogicFilter(CQL.toFilter(metadata.getFilter()), "and", filter);
 			}
@@ -139,7 +140,7 @@ public class ImageRendering implements RenderingStrategy {
 	 * <p>
 	 * A private class that builds a URL to the servlet that will serve the URL to the tile's image.
 	 * </p>
-	 *
+	 * 
 	 * @author Pieter De Graef
 	 */
 	private class InternalUrlBuilder implements RasterUrlBuilder {
@@ -160,11 +161,11 @@ public class ImageRendering implements RenderingStrategy {
 		public String getImageUrl() {
 			TileCode c = metadata.getCode();
 			Coordinate p = metadata.getPanOrigin();
-			return "tile/" + UUID.randomUUID().toString() + ".png?appId=" + application.getId()
-					+ "&layerId=" + metadata.getLayerId() + "&x=" + c.getX() + "&y=" + c.getY() + "&tileLevel="
-					+ c.getTileLevel() + "&scale=" + metadata.getScale() + "&origX=" + p.getX() + "&origY=" + p.getY()
-					+ "&filter=" + metadata.getFilter() + "&setPaintGeometries=" + paintGeometries
-					+ "&setPaintLabels=" + paintLabels;
+			return "tile/" + UUID.randomUUID().toString() + ".png?appId=" + application.getId() + "&layerId="
+					+ metadata.getLayerId() + "&x=" + c.getX() + "&y=" + c.getY() + "&tileLevel=" + c.getTileLevel()
+					+ "&scale=" + metadata.getScale() + "&origX=" + p.getX() + "&origY=" + p.getY() + "&filter="
+					+ metadata.getFilter() + "&setPaintGeometries=" + paintGeometries + "&setPaintLabels="
+					+ paintLabels;
 		}
 
 		public void paintGeometries(boolean enable) {

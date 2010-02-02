@@ -22,13 +22,12 @@
  */
 package org.geomajas.layer.tile;
 
+import java.util.List;
+
 import org.geomajas.geometry.Bbox;
 import org.geomajas.layer.Layer;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.InternalFeature;
-import org.geomajas.layer.tile.TileCode;
-
-import java.util.List;
 
 /**
  * <p>

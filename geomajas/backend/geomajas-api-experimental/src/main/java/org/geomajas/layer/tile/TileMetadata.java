@@ -24,7 +24,6 @@ package org.geomajas.layer.tile;
 
 import org.geomajas.configuration.StyleInfo;
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.layer.tile.TileCode;
 
 /**
  * <p>

@@ -23,20 +23,22 @@
 
 package org.geomajas.internal.rendering.painter.feature;
 
-import com.vividsolutions.jts.geom.Geometry;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.geomajas.global.ExceptionCode;
+import org.geomajas.internal.layer.feature.InternalFeatureImpl;
 import org.geomajas.layer.LayerException;
-import org.geomajas.layer.feature.FeatureFactory;
 import org.geomajas.layer.feature.FeatureModel;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.rendering.RenderException;
 import org.geomajas.rendering.painter.LayerPaintContext;
+import org.geomajas.service.BboxService;
 import org.geotools.geometry.jts.JTS;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.operation.TransformException;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * <p>
@@ -53,7 +55,7 @@ public class DefaultFeaturePainter extends AbstractFeaturePainter {
 	 */
 	private List<InternalFeature> features;
 
-	private FeatureFactory featureFactory;
+	private BboxService bboxService;
 
 	// -------------------------------------------------------------------------
 	// Constructors:
@@ -63,9 +65,9 @@ public class DefaultFeaturePainter extends AbstractFeaturePainter {
 	 * Default constructor. The default settings allow geometries, labels and style definitions to be added to the
 	 * <code>RenderedFeature</code> objects, but not attributes.
 	 */
-	public DefaultFeaturePainter(FeatureFactory featureFactory) {
+	public DefaultFeaturePainter(BboxService bboxService) {
 		super();
-		this.featureFactory = featureFactory;
+		this.bboxService = bboxService;
 		features = new ArrayList<InternalFeature>();
 	}
 
@@ -105,7 +107,7 @@ public class DefaultFeaturePainter extends AbstractFeaturePainter {
 		try {
 			FeatureModel featureModel = paintContext.getLayer().getLayerModel().getFeatureModel();
 
-			InternalFeature f = featureFactory.createRenderedFeature();
+			InternalFeature f = new InternalFeatureImpl(bboxService);
 			f.setId(paintContext.getLayer().getLayerInfo().getId() + "." + featureModel.getId(feature));
 			f.setLayer(paintContext.getLayer());
 
