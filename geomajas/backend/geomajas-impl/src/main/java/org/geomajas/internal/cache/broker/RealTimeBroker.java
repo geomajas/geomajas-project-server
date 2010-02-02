@@ -37,7 +37,6 @@ import org.geomajas.cache.broker.Broker;
 import org.geomajas.cache.store.RenderContent;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.internal.layer.tile.InternalTileImpl;
-import org.geomajas.internal.rendering.DefaultLayerPaintContext;
 import org.geomajas.internal.rendering.DefaultTilePaintContext;
 import org.geomajas.internal.rendering.painter.image.GeometryImagePainter;
 import org.geomajas.internal.rendering.painter.image.LabelImagePainter;
@@ -45,15 +44,11 @@ import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.layer.tile.TileCode;
 import org.geomajas.rendering.image.TileImageCreator;
-import org.geomajas.rendering.painter.LayerPaintContext;
 import org.geomajas.rendering.painter.PaintFactory;
 import org.geomajas.rendering.painter.TilePaintContext;
 import org.geomajas.service.ApplicationService;
 import org.geomajas.service.GeoService;
-import org.geotools.filter.text.cql2.CQL;
-import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.referencing.CRS;
-import org.opengis.filter.Filter;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -101,22 +96,11 @@ public class RealTimeBroker implements Broker {
 		int tileLevel = (Integer) params.get(CacheService.PARAM_TILELEVEL);
 		int x = (Integer) params.get(CacheService.PARAM_X);
 		int y = (Integer) params.get(CacheService.PARAM_Y);
-		String f = (String) params.get(CacheService.PARAM_FILTER);
 		boolean paintGeometries = (Boolean) params.get(CacheService.PARAM_PAINT_GEOMETRIES);
 		boolean paintLabels = (Boolean) params.get(CacheService.PARAM_PAINT_LABELS);
 
 		// 2: Get the Application/Map/Layer objects:
 		VectorLayer vLayer = runtime.getVectorLayer(layerId);
-		Filter filter = null;
-		if (f != null) {
-			if (!"null".equalsIgnoreCase(f)) {
-				try {
-					filter = CQL.toFilter(f);
-				} catch (CQLException e) {
-					return false;
-				}
-			}
-		}
 
 		// 4: Create a context for rendering the image:
 		TilePaintContext tileContext = new DefaultTilePaintContext();
@@ -127,8 +111,7 @@ public class RealTimeBroker implements Broker {
 		} catch (FactoryException e) {
 			throw new CacheException(ExceptionCode.CRS_NO_DEFAULT, e, crs);
 		}
-		LayerPaintContext layerContext = new DefaultLayerPaintContext(vLayer, filter);
-		tileContext.add(layerContext);
+		tileContext.add(vLayer.getLayerInfo());
 		tileContext.setScale(scale);
 
 		// 5: Create the vector tile:

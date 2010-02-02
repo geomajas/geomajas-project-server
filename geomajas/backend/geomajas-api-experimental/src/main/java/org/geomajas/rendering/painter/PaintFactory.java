@@ -38,15 +38,6 @@ import org.geomajas.rendering.painter.tile.TilePainter;
 public interface PaintFactory {
 
 	/**
-	 * Create a {@link LayerPaintContext} for a layer.
-	 * 
-	 * @param layer
-	 *            layer to create context for
-	 * @return layer paint context
-	 */
-	LayerPaintContext createLayerPaintContext(VectorLayer layer);
-
-	/**
 	 * Create a {@link TileImageCreator} object.
 	 * 
 	 * @param tile

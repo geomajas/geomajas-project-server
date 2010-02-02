@@ -21,7 +21,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.internal.rendering.painter.feature;
+package org.geomajas.internal.rendering.strategy;
 
 import java.util.List;
 
@@ -41,7 +41,7 @@ import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * <p>
- * This service puts featues in a tile. In that case, not all features which overlap the tile are included as-is.
+ * This service puts features in a tile. In that case, not all features which overlap the tile are included as-is.
  * </p>
  * <p>
  * For example, when features are way too big, they are clipped. (note: since the normal <code>RenderedFeature</code>

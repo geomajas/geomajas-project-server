@@ -37,7 +37,6 @@ import org.geomajas.layer.LayerModel;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.FeatureModel;
 import org.geomajas.layer.feature.InternalFeature;
-import org.geomajas.rendering.painter.LayerPaintContext;
 import org.geomajas.rendering.painter.PaintFactory;
 import org.geomajas.rendering.style.StyleFilter;
 import org.geomajas.service.ApplicationService;
@@ -93,8 +92,6 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 			throw new GeomajasException(fe, ExceptionCode.CRS_TRANSFORMATION_NOT_POSSIBLE, crs, layer.getCrs());
 		}
 
-		LayerPaintContext context = paintFactory.createLayerPaintContext(layer);
-
 		int count = Math.max(oldFeatures.size(), newFeatures.size());
 		while (oldFeatures.size() < count) {
 			oldFeatures.add(null);
@@ -136,7 +133,6 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 				String id = featureModel.getId(feature);
 				newFeature.setId(layerId + "." + id);
 
-				newFeature.setStyleDefinition(context.findStyleFilter(newFeature).getStyleDefinition());
 				newFeature.setAttributes(featureModel.getAttributes(feature));
 			}
 		}
@@ -159,7 +155,6 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 			}
 		}
 
-		// LayerPaintContext context = new DefaultLayerPaintContext(this, styleDefs);
 		MathTransform transformation = null;
 		if ((featureIncludes & FEATURE_INCLUDE_GEOMETRY) != 0 && crs != null && !crs.equals(layer.getCrs())) {
 			try {
@@ -178,7 +173,7 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 	}
 
 	/**
-	 * Convert the generic feature object (as obtained from te layer model) into a {@link RenderedFeature}, with
+	 * Convert the generic feature object (as obtained from te layer model) into a {@link InternalFeature}, with
 	 * requested data. Part may be lazy loaded.
 	 * 
 	 * @param feature
@@ -191,6 +186,7 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 	 *            style filters to apply
 	 * @param featureIncludes
 	 *            aspects to include in features
+	 * @return actual feature
 	 * @throws GeomajasException
 	 *             oops
 	 */

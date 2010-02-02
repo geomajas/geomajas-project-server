@@ -27,7 +27,7 @@ import java.awt.RenderingHints;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.geomajas.rendering.painter.LayerPaintContext;
+import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.rendering.painter.TilePaintContext;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
@@ -43,7 +43,7 @@ import com.vividsolutions.jts.geom.Envelope;
  */
 public class DefaultTilePaintContext implements TilePaintContext {
 
-	private List<LayerPaintContext> paintContexts;
+	private List<VectorLayerInfo> layers;
 
 	private CoordinateReferenceSystem crs;
 
@@ -61,7 +61,7 @@ public class DefaultTilePaintContext implements TilePaintContext {
 	 * Default constructor. Initializes an empty list of layers.
 	 */
 	public DefaultTilePaintContext() {
-		paintContexts = new ArrayList<LayerPaintContext>();
+		layers = new ArrayList<VectorLayerInfo>();
 	}
 
 	// -------------------------------------------------------------------------
@@ -71,51 +71,41 @@ public class DefaultTilePaintContext implements TilePaintContext {
 	/**
 	 * Remove a layer's paint context from the list.
 	 * 
-	 * @param layerPaintContext
-	 * @return
+	 * @param layer layer to remove
+	 * @return true when layer is removed
 	 */
-	public boolean remove(LayerPaintContext layerPaintContext) {
-		for (LayerPaintContext l : paintContexts) {
-			if (layerPaintContext == l) {
-				paintContexts.remove(layerPaintContext);
-				return true;
-			}
-		}
-		return false;
+	public boolean remove(VectorLayerInfo layer) {
+		return layers.remove(layer);
 	}
 
 	/**
-	 * Add a layer's paint context to the list. When the
-	 * {@link org.geomajas.internal.rendering.image.TileImageCreatorImpl} creates images, using this context it will
-	 * paint all layers in this list.
-	 * 
-	 * @param layerPaintContext
-	 * @return
+	 * Add a layer to the list.
+	 *
+	 * @param layer layer to add
+	 * @return true when added (when false it was already in the list)
 	 */
-	public boolean add(LayerPaintContext layerPaintContext) {
-		for (LayerPaintContext l : paintContexts) {
-			if (layerPaintContext == l) {
-				return false;
-			}
+	public boolean add(VectorLayerInfo layer) {
+		if (!layers.contains(layer)) {
+			layers.add(layer);
+			return true;
 		}
-		paintContexts.add(layerPaintContext);
-		return true;
+		return false;
 	}
 
 	/**
 	 * Return the number of layers in this map context.
 	 */
 	public int getLayerCount() {
-		return paintContexts.size();
+		return layers.size();
 	}
 
 	/**
 	 * Get the full list of layers that must be painted.
 	 * 
-	 * @return
+	 * @return list of layers
 	 */
-	public List<LayerPaintContext> getLayerPaintContexts() {
-		return paintContexts;
+	public List<VectorLayerInfo> getLayers() {
+		return layers;
 	}
 
 	/**

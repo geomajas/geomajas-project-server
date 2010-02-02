@@ -33,7 +33,6 @@ import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.internal.layer.tile.InternalTileImpl;
 import org.geomajas.internal.layer.tile.InternalTileRenderingImpl;
-import org.geomajas.internal.rendering.painter.feature.TiledFeatureService;
 import org.geomajas.internal.rendering.painter.tile.VectorTilePainter;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.InternalFeature;
@@ -95,7 +94,7 @@ public class VectorRendering implements RenderingStrategy {
 	private TiledFeatureService tiledFeatureService;
 
 	/**
-	 * Paint a tile! This class uses the {@link org.geomajas.internal.rendering.painter.feature.TiledFeatureService} to
+	 * Paint a tile! This class uses the {@link TiledFeatureService} to
 	 * paint the features, then the {@link VectorTilePainter} to paint the tiles.
 	 * 
 	 * @param metadata

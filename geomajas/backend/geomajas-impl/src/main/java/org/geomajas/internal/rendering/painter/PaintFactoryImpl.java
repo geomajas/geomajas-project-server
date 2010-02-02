@@ -25,7 +25,6 @@ package org.geomajas.internal.rendering.painter;
 
 import org.geomajas.internal.layer.tile.InternalTileImpl;
 import org.geomajas.internal.layer.tile.InternalTileRenderingImpl;
-import org.geomajas.internal.rendering.DefaultLayerPaintContext;
 import org.geomajas.internal.rendering.image.TileImageCreatorImpl;
 import org.geomajas.internal.rendering.painter.tile.RasterTilePainter;
 import org.geomajas.layer.VectorLayer;
@@ -34,7 +33,6 @@ import org.geomajas.layer.tile.TileCode;
 import org.geomajas.layer.tile.InternalTileRendering.TileRenderMethod;
 import org.geomajas.rendering.image.RasterUrlBuilder;
 import org.geomajas.rendering.image.TileImageCreator;
-import org.geomajas.rendering.painter.LayerPaintContext;
 import org.geomajas.rendering.painter.PaintFactory;
 import org.geomajas.rendering.painter.tile.TilePainter;
 import org.geomajas.service.FilterService;
@@ -55,10 +53,6 @@ public class PaintFactoryImpl implements PaintFactory {
 
 	@Autowired
 	private VectorLayerService layerService;
-
-	public LayerPaintContext createLayerPaintContext(VectorLayer layer) {
-		return new DefaultLayerPaintContext(layer);
-	}
 
 	public TileImageCreator createTileImageCreator(InternalTile tile, boolean transparent) {
 		return new TileImageCreatorImpl(tile, transparent, filterCreator, layerService);

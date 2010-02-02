@@ -26,6 +26,7 @@ package org.geomajas.rendering.painter;
 import java.awt.RenderingHints;
 import java.util.List;
 
+import org.geomajas.configuration.VectorLayerInfo;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.Envelope;
@@ -36,30 +37,30 @@ import com.vividsolutions.jts.geom.Envelope;
  * </p>
  * 
  * @author Pieter De Graef
+ * @author Joachim Van der Auwera
  */
 public interface TilePaintContext {
 
 	/**
-	 * Remove a layer's paint context from the list.
+	 * Remove a layer from the list.
 	 * 
-	 * @param layerPaintContext
-	 *            context to delete
+	 * @param layer
+	 *            layer to delete
 	 * @return true when object was removed
 	 */
-	boolean remove(LayerPaintContext layerPaintContext);
+	boolean remove(VectorLayerInfo layer);
 
 	/**
-	 * Add a layer's paint context to the list. When the tile images are created, using this context it will paint all
-	 * layers in this list.
+	 * Add a layer to the list of layers which need to be included.
 	 * 
-	 * @param layerPaintContext
-	 *            context to add
+	 * @param layer
+	 *            layer to add
 	 * @return true when object was added
 	 */
-	boolean add(LayerPaintContext layerPaintContext);
+	boolean add(VectorLayerInfo layer);
 
 	/**
-	 * Return the number of layers in this map context.
+	 * Return the number of layers in this context.
 	 * 
 	 * @return number of layers
 	 */
@@ -68,9 +69,9 @@ public interface TilePaintContext {
 	/**
 	 * Get the full list of layers that must be painted.
 	 * 
-	 * @return list of layer paint contexts
+	 * @return list of layers (using the info object)
 	 */
-	List<LayerPaintContext> getLayerPaintContexts();
+	List<VectorLayerInfo> getLayers();
 
 	/**
 	 * Set a new area of interest. Normally this would be the tile's bounding box in world space.
