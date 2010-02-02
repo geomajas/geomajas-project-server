@@ -24,10 +24,12 @@
 package org.geomajas.internal.security;
 
 import org.geomajas.security.Authentication;
+import org.geomajas.security.SecurityContext;
 import org.geomajas.security.SecurityInfo;
 import org.geomajas.security.SecurityManager;
 import org.geomajas.security.SecurityService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -48,11 +50,15 @@ public class SecurityManagerImpl implements SecurityManager {
 	@Autowired
 	private SecurityInfo securityInfo;
 
-	/**
-	 * @inheritDoc
-	 */
+	@Autowired
+	private ApplicationContext applicationContext;
+
+	@Autowired
+	private SecurityContext securityContext;
+
+	/** @inheritDoc */
 	public boolean createSecurityContext(String authenticationToken) {
-		clearSecurityContext(); // assure there is no authenticated used in case of problems during creation
+		clearSecurityContext(); // assure there is no authenticated user in case of problems during creation
 		List<SecurityService> services = securityInfo.getSecurityServices();
 		List<Authentication> authentications = new ArrayList<Authentication>();
 		for (SecurityService service : services) {
@@ -65,14 +71,16 @@ public class SecurityManagerImpl implements SecurityManager {
 				}
 			}
 		}
-		// @todo build authorization and build thread local SecurityContext
-		return false; // @todo
+		if (!authentications.isEmpty()) {
+			// build authorization and build thread local SecurityContext
+			((SecurityContextImpl) securityContext).setAuthentications(authentications);
+			return true;
+		}
+		return false;
 	}
 
-	/**
-	 * @inheritDoc
-	 */
+	/** @inheritDoc */
 	public void clearSecurityContext() {
-		// @todo
+		((SecurityContextImpl) securityContext).setAuthentications(null);
 	}
 }

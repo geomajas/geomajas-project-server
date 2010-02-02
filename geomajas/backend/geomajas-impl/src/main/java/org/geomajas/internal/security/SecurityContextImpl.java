@@ -31,6 +31,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -46,7 +47,7 @@ import java.util.Locale;
 @Scope("thread")
 public class SecurityContextImpl implements SecurityContext {
 
-	private List<Authentication> authentications;
+	private List<Authentication> authentications = new ArrayList<Authentication>();
 
 	// user info
 	private String userId;
@@ -55,8 +56,11 @@ public class SecurityContextImpl implements SecurityContext {
 	private String userOrganization;
 	private String userDivision;
 
-	public SecurityContextImpl(List<Authentication> authentications) {
-		this.authentications = authentications;
+	void setAuthentications(List<Authentication> authentications) {
+		this.authentications.clear();
+		if (null != authentications) {
+			this.authentications.addAll(authentications);
+		}
 		userInfoInit();
 	}
 
@@ -107,21 +111,28 @@ public class SecurityContextImpl implements SecurityContext {
 	 */
 	private void userInfoInit() {
 		boolean first = true;
-		for (Authentication auth : authentications) {
-			userId = combine(userName, auth.getUserId());
-			userName = combine(userName, auth.getUserName());
-			if (first) {
-				userLocale = auth.getUserLocale();
-				first = false;
-			} else {
-				if (null != auth.getUserLocale()) {
-					if (null == userLocale || !userLocale.equals(auth.getUserLocale())) {
-						userLocale = null;
+		userId = null;
+		userLocale = null;
+		userName = null;
+		userOrganization = null;
+		userDivision = null;
+		if (null != authentications) {
+			for (Authentication auth : authentications) {
+				userId = combine(userId, auth.getUserId());
+				userName = combine(userName, auth.getUserName());
+				if (first) {
+					userLocale = auth.getUserLocale();
+					first = false;
+				} else {
+					if (null != auth.getUserLocale()) {
+						if (null == userLocale || !userLocale.equals(auth.getUserLocale())) {
+							userLocale = null;
+						}
 					}
 				}
+				userOrganization = combine(userOrganization, auth.getUserOrganization());
+				userDivision = combine(userDivision, auth.getUserDivision());
 			}
-			userOrganization = combine(userOrganization, auth.getUserOrganization());
-			userDivision = combine(userDivision, auth.getUserDivision());
 		}
 	}
 
