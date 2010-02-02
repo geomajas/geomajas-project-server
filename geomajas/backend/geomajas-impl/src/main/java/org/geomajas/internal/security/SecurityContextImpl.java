@@ -26,6 +26,7 @@ package org.geomajas.internal.security;
 import com.vividsolutions.jts.geom.Geometry;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.security.Authentication;
+import org.geomajas.security.BaseAuthorization;
 import org.geomajas.security.SecurityContext;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.springframework.context.annotation.Scope;
@@ -166,14 +167,28 @@ public class SecurityContextImpl implements SecurityContext {
 	 * @inheritDoc
 	 */
 	public boolean isToolAuthorized(String toolId) {
-		return false;  //To change body of implemented methods use File | Settings | File Templates.
+		for (Authentication authentication : authentications) {
+			for (BaseAuthorization authorization : authentication.getAuthorizations()) {
+				if ( (authorization.isToolAuthorized(toolId))) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	/**
 	 * @inheritDoc
 	 */
 	public boolean isCommandAuthorized(String commandName) {
-		return false;  //To change body of implemented methods use File | Settings | File Templates.
+		for (Authentication authentication : authentications) {
+			for (BaseAuthorization authorization : authentication.getAuthorizations()) {
+				if ( (authorization.isCommandAuthorized(commandName))) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	public boolean isLayerVisible(String layerId) {
