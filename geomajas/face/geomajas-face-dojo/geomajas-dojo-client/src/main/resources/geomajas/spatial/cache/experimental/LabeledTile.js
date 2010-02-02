@@ -162,18 +162,19 @@ dojo.declare("LabeledTile", RenderedTile, {
 			this.labelImage = new RasterImage();
 			this.labelImage.setId(this.getId());
 
-			var tempUrl = json.labelImage.url;
+			var tempUrl = json.labelImage;
 			if (tempUrl.startsWith("http")){
-				this.labelImage.setUrl(json.labelImage.url);
+				this.labelImage.setUrl(json.labelImage);
 			} else {
-				this.labelImage.setUrl(geomajasConfig.serverBase + json.labelImage.url);
+				this.labelImage.setUrl(geomajasConfig.serverBase + json.labelImage);
 			}                                                   
+			this.code = new TileCode();
+			this.code.fromJSON(json.code);
 
-			var b = json.labelImage.bounds;
-			this.labelImage.setBounds(new Bbox(b.x,b.y,b.width,b.height));
-			this.labelImage.setLevel(json.labelImage.level);
-			this.labelImage.setXIndex(json.labelImage.XIndex);
-			this.labelImage.setYIndex(json.labelImage.YIndex);
+			this.labelImage.setBounds(new Bbox(0, 0, json.screenWidth, json.screenHeight));
+			this.labelImage.setLevel(this.code.tileLevel);
+			this.labelImage.setXIndex(this.code.x);
+			this.labelImage.setYIndex(this.code.y);
 		}
 
 		return this.inherited("_fromJSON", arguments);

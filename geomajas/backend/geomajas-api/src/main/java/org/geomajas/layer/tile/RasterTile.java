@@ -32,9 +32,9 @@ public class RasterTile extends Tile {
 
 	private static final long serialVersionUID = 151L;
 
-	private RasterImage featureImage;
+	private String featureImage;
 
-	private RasterImage labelImage;
+	private String labelImage;
 
 	// Constructors:
 
@@ -43,19 +43,19 @@ public class RasterTile extends Tile {
 
 	// Getters and setters:
 
-	public RasterImage getFeatureImage() {
+	public String getFeatureImage() {
 		return featureImage;
 	}
 
-	public void setFeatureImage(RasterImage featureImage) {
+	public void setFeatureImage(String featureImage) {
 		this.featureImage = featureImage;
 	}
 
-	public RasterImage getLabelImage() {
+	public String getLabelImage() {
 		return labelImage;
 	}
 
-	public void setLabelImage(RasterImage labelImage) {
+	public void setLabelImage(String labelImage) {
 		this.labelImage = labelImage;
 	}
 }

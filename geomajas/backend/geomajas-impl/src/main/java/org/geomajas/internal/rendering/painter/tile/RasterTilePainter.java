@@ -23,11 +23,9 @@
 
 package org.geomajas.internal.rendering.painter.tile;
 
-import org.geomajas.geometry.Bbox;
-import org.geomajas.internal.layer.tile.InternalRasterTile;
 import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.layer.tile.RasterImage;
-import org.geomajas.layer.tile.TileCode;
+import org.geomajas.layer.tile.TileRendering.TileRenderMethod;
 import org.geomajas.rendering.RenderException;
 import org.geomajas.rendering.image.RasterUrlBuilder;
 import org.geomajas.rendering.painter.tile.TilePainter;
@@ -45,11 +43,6 @@ import org.geomajas.rendering.painter.tile.TilePainter;
 public class RasterTilePainter implements TilePainter {
 
 	/**
-	 * Every tile belongs to a layer. This painter needs that layer's ID to create tile ID's.
-	 */
-	private String layerId;
-
-	/**
 	 * Should this painter paint a feature's geometries or not?
 	 */
 	private boolean paintGeometries = true;
@@ -59,6 +52,8 @@ public class RasterTilePainter implements TilePainter {
 	 */
 	private boolean paintLabels;
 
+	private RasterUrlBuilder urlBuilder;
+
 	// -------------------------------------------------------------------------
 	// Constructors:
 	// -------------------------------------------------------------------------
@@ -66,11 +61,11 @@ public class RasterTilePainter implements TilePainter {
 	/**
 	 * Constructor setting the layer's ID.
 	 * 
-	 * @param layerId
-	 *            layer id
+	 * @param urlBuilder
+	 *            Creates URL's to where the actual rendering of tiles can be found.
 	 */
-	public RasterTilePainter(String layerId) {
-		this.layerId = layerId;
+	public RasterTilePainter(RasterUrlBuilder urlBuilder) {
+		this.urlBuilder = urlBuilder;
 	}
 
 	// -------------------------------------------------------------------------
@@ -85,33 +80,19 @@ public class RasterTilePainter implements TilePainter {
 	 * @return Returns a {@link InternalRasterTile} with a {@link RasterImage} added to it.
 	 */
 	public InternalTile paint(InternalTile tile) throws RenderException {
-		if (tile instanceof InternalRasterTile) {
-			InternalRasterTile rasterTile = (InternalRasterTile) tile;
-			RasterUrlBuilder urlBuilder = rasterTile.getUrlBuilder();
+		if (tile.getTileRendering().getTileRenderMethod().equals(TileRenderMethod.IMAGE_RENDERING)) {
 			if (urlBuilder != null) { // paint either geometries or labels.
 				if (paintGeometries) {
 					urlBuilder.paintGeometries(paintGeometries);
 					urlBuilder.paintLabels(false);
-					String url = urlBuilder.getImageUrl();
-					TileCode code = rasterTile.getCode();
-					String id = layerId + "." + code.getTileLevel() + "." + code.getX() + "," + code.getY();
-					RasterImage image = new RasterImage(new Bbox(0, 0, tile.getScreenWidth(), tile.getScreenHeight()),
-							id);
-					image.setUrl(url);
-					rasterTile.setFeatureImage(image);
+					tile.getTileRendering().setFeatureString(urlBuilder.getImageUrl());
 				}
 				if (paintLabels) {
 					urlBuilder.paintGeometries(false);
 					urlBuilder.paintLabels(paintLabels);
-					String url = urlBuilder.getImageUrl();
-					TileCode code = rasterTile.getCode();
-					String id = layerId + "." + code.getTileLevel() + "." + code.getX() + "," + code.getY();
-					RasterImage image = new RasterImage(new Bbox(0, 0, tile.getScreenWidth(), tile.getScreenHeight()),
-							id);
-					image.setUrl(url);
-					rasterTile.setLabelImage(image);
+					tile.getTileRendering().setLabelString(urlBuilder.getImageUrl());
 				}
-				return rasterTile;
+				return tile;
 			}
 		}
 		return tile;

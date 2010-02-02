@@ -26,18 +26,17 @@ package org.geomajas.internal.rendering.writers.vml;
 import org.geomajas.configuration.StyleInfo;
 import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.internal.layer.feature.InternalFeatureImpl;
-import org.geomajas.internal.layer.tile.InternalVectorTile;
+import org.geomajas.internal.layer.tile.InternalTileImpl;
 import org.geomajas.internal.rendering.writers.GraphicsWriter;
 import org.geomajas.layer.LayerType;
 import org.geomajas.rendering.GraphicsDocument;
 import org.geomajas.rendering.RenderException;
 
 /**
- * This class writes the features of a feature tile as styled VML. Note that
- * there is no surrounding group element for the following reasons: - the result
- * can be immediately assigned to innerHTML in IE - the position of the tile in
+ * This class writes the features of a feature tile as styled VML. Note that there is no surrounding group element for
+ * the following reasons: - the result can be immediately assigned to innerHTML in IE - the position of the tile in
  * screen space is not known yet - the result is always cacheable
- *
+ * 
  * @author Jan De Moerloose
  */
 public class VmlVectorTileWriter implements GraphicsWriter {
@@ -51,9 +50,8 @@ public class VmlVectorTileWriter implements GraphicsWriter {
 		this.coordHeight = coordHeight;
 	}
 
-	public void writeObject(Object object, GraphicsDocument document,
-			boolean asChild) throws RenderException {
-		InternalVectorTile tile = (InternalVectorTile) object;
+	public void writeObject(Object object, GraphicsDocument document, boolean asChild) throws RenderException {
+		InternalTileImpl tile = (InternalTileImpl) object;
 		String style = null;
 		for (org.geomajas.layer.feature.InternalFeature f : tile.getFeatures()) {
 			InternalFeatureImpl feature = (InternalFeatureImpl) f;
@@ -62,29 +60,21 @@ public class VmlVectorTileWriter implements GraphicsWriter {
 				if (style != null) {
 					document.closeElement();
 					document.writeElement("vml:group", false);
-					document.writeAttribute("coordsize", coordWidth + ","
-							+ coordHeight);
-					document.writeAttribute("style",
-							"WIDTH: 100%; HEIGHT: 100%");
+					document.writeAttribute("coordsize", coordWidth + "," + coordHeight);
+					document.writeAttribute("style", "WIDTH: 100%; HEIGHT: 100%");
 				} else {
 					document.writeElement("vml:group", true);
-					document.writeAttribute("coordsize", coordWidth + ","
-							+ coordHeight);
-					document.writeAttribute("style",
-							"WIDTH: 100%; HEIGHT: 100%");
+					document.writeAttribute("coordsize", coordWidth + "," + coordHeight);
+					document.writeAttribute("style", "WIDTH: 100%; HEIGHT: 100%");
 				}
 				style = nextStyle;
 
-				VectorLayerInfo layerInfo = (VectorLayerInfo) feature
-						.getLayer().getLayerInfo();
-				if (layerInfo.getLayerType() != LayerType.POINT
-						&& layerInfo.getLayerType() != LayerType.MULTIPOINT) {
+				VectorLayerInfo layerInfo = (VectorLayerInfo) feature.getLayer().getLayerInfo();
+				if (layerInfo.getLayerType() != LayerType.POINT && layerInfo.getLayerType() != LayerType.MULTIPOINT) {
 					// the shapetype
 					document.writeElement("vml:shapetype", true);
-					document.writeAttribute("id", feature.getLayer().getLayerInfo().getId()
-							+ "." + style + ".style");
-					document.writeAttribute("style",
-							"WIDTH: 100%; HEIGHT: 100%");
+					document.writeAttribute("id", feature.getLayer().getLayerInfo().getId() + "." + style + ".style");
+					document.writeAttribute("style", "WIDTH: 100%; HEIGHT: 100%");
 					document.writeAttribute("style", "VISIBILITY: hidden");
 					document.writeAttribute("filled", "t");
 					document.writeAttribute("stroked", "t");

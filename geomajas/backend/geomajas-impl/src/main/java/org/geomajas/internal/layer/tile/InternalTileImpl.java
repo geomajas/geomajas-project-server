@@ -22,21 +22,22 @@
  */
 package org.geomajas.internal.layer.tile;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import org.geomajas.geometry.Bbox;
 import org.geomajas.layer.Layer;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.layer.tile.TileCode;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import org.geomajas.layer.tile.TileRendering;
 
 /**
  * RenderedTile implementation.
  * 
- * @author check subversion
+ * @author Pieter De Graef
  */
 public class InternalTileImpl implements InternalTile {
 
@@ -80,6 +81,8 @@ public class InternalTileImpl implements InternalTile {
 	 */
 	private boolean clipped;
 
+	private TileRendering tileRendering;
+
 	// Constructors:
 
 	public InternalTileImpl(TileCode code, VectorLayer layer, double scale) {
@@ -103,7 +106,7 @@ public class InternalTileImpl implements InternalTile {
 		screenHeight = (int) Math.ceil(scale * tileHeight);
 	}
 
-	public Bbox getBbox(Layer layer) {
+	public Bbox getBbox(Layer<?> layer) {
 		if (tileWidth == 0) {
 			return null;
 		}
@@ -195,4 +198,11 @@ public class InternalTileImpl implements InternalTile {
 		this.code = code;
 	}
 
+	public TileRendering getTileRendering() {
+		return tileRendering;
+	}
+
+	public void setTileRendering(TileRendering tileRendering) {
+		this.tileRendering = tileRendering;
+	}
 }

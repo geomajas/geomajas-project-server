@@ -80,4 +80,8 @@ public interface InternalTile {
 	TileCode getCode();
 
 	void setCode(TileCode code);
+	
+	TileRendering getTileRendering();
+	
+	void setTileRendering(TileRendering tileRendering);
 }

@@ -23,14 +23,16 @@
 
 package org.geomajas.internal.rendering.painter;
 
-import org.geomajas.internal.layer.tile.InternalRasterTile;
+import org.geomajas.internal.layer.tile.InternalTileImpl;
+import org.geomajas.internal.layer.tile.TileRenderingImpl;
 import org.geomajas.internal.rendering.DefaultLayerPaintContext;
 import org.geomajas.internal.rendering.image.TileImageCreatorImpl;
 import org.geomajas.internal.rendering.painter.tile.RasterTilePainter;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.tile.InternalTile;
-import org.geomajas.layer.tile.InternalUrlTile;
 import org.geomajas.layer.tile.TileCode;
+import org.geomajas.layer.tile.TileRendering.TileRenderMethod;
+import org.geomajas.rendering.image.RasterUrlBuilder;
 import org.geomajas.rendering.image.TileImageCreator;
 import org.geomajas.rendering.painter.LayerPaintContext;
 import org.geomajas.rendering.painter.PaintFactory;
@@ -42,7 +44,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * Allows creation of painter related objects.
- *
+ * 
  * @author Joachim Van der Auwera
  */
 @Component
@@ -62,11 +64,13 @@ public class PaintFactoryImpl implements PaintFactory {
 		return new TileImageCreatorImpl(tile, transparent, filterCreator, layerService);
 	}
 
-	public TilePainter createRasterTilePainter(String layerId) {
-		return new RasterTilePainter(layerId);
+	public TilePainter createRasterTilePainter(RasterUrlBuilder urlBuilder) {
+		return new RasterTilePainter(urlBuilder);
 	}
 
-	public InternalUrlTile createRasterTile(TileCode code, VectorLayer layer, double scale) {
-		return new InternalRasterTile(code, layer, scale);
+	public InternalTile createRasterTile(TileCode code, VectorLayer layer, double scale) {
+		InternalTileImpl tile = new InternalTileImpl(code, layer, scale);
+		tile.setTileRendering(new TileRenderingImpl(TileRenderMethod.IMAGE_RENDERING));
+		return tile;
 	}
 }

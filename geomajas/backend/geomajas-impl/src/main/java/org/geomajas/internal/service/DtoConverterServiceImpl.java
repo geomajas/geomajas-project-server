@@ -38,8 +38,6 @@ import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.internal.layer.feature.InternalFeatureImpl;
-import org.geomajas.internal.layer.tile.InternalRasterTile;
-import org.geomajas.internal.layer.tile.InternalVectorTile;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.Feature;
 import org.geomajas.layer.feature.InternalFeature;
@@ -428,25 +426,24 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 	 * @return Returns the DTO version that can be sent to the client.
 	 */
 	public Tile toDto(InternalTile tile) {
-		if (tile != null) {
-			if (tile instanceof InternalVectorTile) {
-				InternalVectorTile vTile = (InternalVectorTile) tile;
-				VectorTile dto = new VectorTile();
-				updateBasicTile(tile, dto);
-				dto.setFeatureFragment(vTile.getFeatureFragment());
-				dto.setLabelFragment(vTile.getLabelFragment());
-				return dto;
-			} else if (tile instanceof InternalRasterTile) {
-				InternalRasterTile rTile = (InternalRasterTile) tile;
-				RasterTile dto = new RasterTile();
-				updateBasicTile(tile, dto);
-				dto.setFeatureImage(rTile.getFeatureImage());
-				dto.setLabelImage(rTile.getLabelImage());
-				return dto;
-			} else {
-				Tile dto = new Tile();
-				updateBasicTile(tile, dto);
-				return dto;
+		if (tile != null && tile.getTileRendering() != null) {
+			switch (tile.getTileRendering().getTileRenderMethod()) {
+				case STRING_RENDERING:
+					VectorTile vectorDto = new VectorTile();
+					updateBasicTile(tile, vectorDto);
+					vectorDto.setFeatureFragment(tile.getTileRendering().getFeatureString());
+					vectorDto.setLabelFragment(tile.getTileRendering().getLabelString());
+					return vectorDto;
+				case IMAGE_RENDERING:
+					RasterTile rasterDto = new RasterTile();
+					updateBasicTile(tile, rasterDto);
+					rasterDto.setFeatureImage(tile.getTileRendering().getFeatureString());
+					rasterDto.setLabelImage(tile.getTileRendering().getFeatureString());
+					return rasterDto;
+				default:
+					Tile dto = new Tile();
+					updateBasicTile(tile, dto);
+					return dto;
 			}
 		}
 		return null;

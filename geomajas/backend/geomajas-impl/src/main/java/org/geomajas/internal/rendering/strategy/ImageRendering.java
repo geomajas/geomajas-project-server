@@ -33,13 +33,15 @@ import org.geomajas.configuration.StyleInfo;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
-import org.geomajas.internal.layer.tile.InternalRasterTile;
+import org.geomajas.internal.layer.tile.InternalTileImpl;
+import org.geomajas.internal.layer.tile.TileRenderingImpl;
 import org.geomajas.internal.rendering.painter.tile.RasterTilePainter;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.layer.tile.TileCode;
 import org.geomajas.layer.tile.TileMetadata;
+import org.geomajas.layer.tile.TileRendering.TileRenderMethod;
 import org.geomajas.rendering.RenderException;
 import org.geomajas.rendering.image.RasterUrlBuilder;
 import org.geomajas.rendering.painter.tile.TilePainter;
@@ -98,9 +100,8 @@ public class ImageRendering implements RenderingStrategy {
 			CoordinateReferenceSystem crs = runtime.getCrs(metadata.getCrs());
 
 			// Prepare the tile:
-			InternalRasterTile tile = new InternalRasterTile(metadata.getCode(), vLayer, metadata.getScale());
-			RasterUrlBuilder urlBuilder = new InternalUrlBuilder(metadata, application);
-			tile.setUrlBuilder(urlBuilder);
+			InternalTileImpl tile = new InternalTileImpl(metadata.getCode(), vLayer, metadata.getScale());
+			tile.setTileRendering(new TileRenderingImpl(TileRenderMethod.STRING_RENDERING));
 
 			// Prepare any filtering:
 			String geomName = vLayer.getLayerInfo().getFeatureInfo().getGeometryType().getName();
@@ -119,7 +120,7 @@ public class ImageRendering implements RenderingStrategy {
 			// At this point, we have a tile with rendered features.
 			// Now we need to paint the tile itself:
 			tile.setFeatures(features);
-			TilePainter tilePainter = new RasterTilePainter(vLayer.getLayerInfo().getId());
+			TilePainter tilePainter = new RasterTilePainter(new InternalUrlBuilder(metadata, application));
 			tilePainter.setPaintGeometries(metadata.isPaintGeometries());
 			tilePainter.setPaintLabels(metadata.isPaintLabels());
 			return tilePainter.paint(tile);

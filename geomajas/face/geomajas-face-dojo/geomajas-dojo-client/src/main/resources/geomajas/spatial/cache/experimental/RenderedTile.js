@@ -308,18 +308,17 @@ dojo.declare("RenderedTile", SpatialNode, {
 			this.featureImage = new RasterImage();
 			this.featureImage.setId(this.getId());
 
-			var tempUrl = json.featureImage.url;
+			var tempUrl = json.featureImage;
 			if (tempUrl.startsWith("http")){
-				this.featureImage.setUrl(json.featureImage.url);
+				this.featureImage.setUrl(json.featureImage);
 			} else {
-				this.featureImage.setUrl(geomajasConfig.serverBase + json.featureImage.url);
+				this.featureImage.setUrl(geomajasConfig.serverBase + json.featureImage);
 			}
 
-			var b = json.featureImage.bounds;
-			this.featureImage.setBounds(new Bbox(b.x,b.y,b.width,b.height));
-			this.featureImage.setLevel(json.featureImage.level);
-			this.featureImage.setXIndex(json.featureImage.XIndex);
-			this.featureImage.setYIndex(json.featureImage.YIndex);
+			this.featureImage.setBounds(new Bbox(0, 0, json.screenWidth, json.screenHeight));
+			this.featureImage.setLevel(this.code.tileLevel);
+			this.featureImage.setXIndex(this.code.x);
+			this.featureImage.setYIndex(this.code.y);
 		}
 
 		return features;

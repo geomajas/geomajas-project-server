@@ -25,50 +25,56 @@ package org.geomajas.rendering.painter;
 
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.tile.InternalTile;
-import org.geomajas.layer.tile.InternalUrlTile;
 import org.geomajas.layer.tile.TileCode;
+import org.geomajas.rendering.image.RasterUrlBuilder;
 import org.geomajas.rendering.image.TileImageCreator;
 import org.geomajas.rendering.painter.tile.TilePainter;
 
 /**
  * Allows creation of painter related objects.
- *
+ * 
  * @author Joachim Van der Auwera
  */
 public interface PaintFactory {
 
 	/**
 	 * Create a {@link LayerPaintContext} for a layer.
-	 *
-	 * @param layer layer to create context for
+	 * 
+	 * @param layer
+	 *            layer to create context for
 	 * @return layer paint context
 	 */
 	LayerPaintContext createLayerPaintContext(VectorLayer layer);
 
 	/**
 	 * Create a {@link TileImageCreator} object.
-	 *
-	 * @param tile tile to create object for
-	 * @param transparent transparent status
+	 * 
+	 * @param tile
+	 *            tile to create object for
+	 * @param transparent
+	 *            transparent status
 	 * @return {@link TileImageCreator} object
 	 */
 	TileImageCreator createTileImageCreator(InternalTile tile, boolean transparent);
 
 	/**
 	 * Create a {@link TilePainter} for painting raster tiles.
-	 *
-	 * @param layerId layer id
+	 * 
+	 * @param urlBuilder
 	 * @return {@link TilePainter}
 	 */
-	TilePainter createRasterTilePainter(String layerId);
+	TilePainter createRasterTilePainter(RasterUrlBuilder urlBuilder);
 
 	/**
 	 * Create a vector tile which contains the url to the rendered image.
-	 *
-	 * @param code tile code
-	 * @param layer (vector) layer
-	 * @param scale scale
+	 * 
+	 * @param code
+	 *            tile code
+	 * @param layer
+	 *            (vector) layer
+	 * @param scale
+	 *            scale
 	 * @return tile which contains the image url
 	 */
-	InternalUrlTile createRasterTile(TileCode code, VectorLayer layer, double scale);
+	InternalTile createRasterTile(TileCode code, VectorLayer layer, double scale);
 }

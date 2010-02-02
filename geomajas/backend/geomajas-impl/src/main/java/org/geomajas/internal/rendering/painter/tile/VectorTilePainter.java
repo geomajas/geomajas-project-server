@@ -23,11 +23,13 @@
 
 package org.geomajas.internal.rendering.painter.tile;
 
-import com.vividsolutions.jts.geom.Coordinate;
+import java.awt.geom.AffineTransform;
+import java.io.StringWriter;
+
 import org.geomajas.geometry.Bbox;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.internal.layer.feature.InternalFeatureImpl;
-import org.geomajas.internal.layer.tile.InternalVectorTile;
+import org.geomajas.internal.layer.tile.InternalTileImpl;
 import org.geomajas.internal.rendering.DefaultSvgDocument;
 import org.geomajas.internal.rendering.DefaultVmlDocument;
 import org.geomajas.internal.rendering.writers.svg.SvgFeatureScreenWriter;
@@ -48,14 +50,13 @@ import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.awt.geom.AffineTransform;
-import java.io.StringWriter;
+import com.vividsolutions.jts.geom.Coordinate;
 
 /**
  * <p>
  * TilePainter implementation for {@link InternalVectorTile} objects.
  * </p>
- *
+ * 
  * @author Pieter De Graef
  */
 public class VectorTilePainter implements TilePainter {
@@ -83,15 +84,14 @@ public class VectorTilePainter implements TilePainter {
 	private VectorLayer layer;
 
 	/**
-	 * Rendering output type. This can be either "SVG" or "VML". This depends on
-	 * what the client requests.
+	 * Rendering output type. This can be either "SVG" or "VML". This depends on what the client requests.
 	 */
 	private String renderer;
 
 	/**
 	 * The tile to render.
 	 */
-	private InternalVectorTile tile;
+	private InternalTile tile;
 
 	/**
 	 * The current client-side scale.
@@ -104,8 +104,7 @@ public class VectorTilePainter implements TilePainter {
 	private Bbox bbox;
 
 	/**
-	 * Transformer that transforms the feature's geometries from world to view
-	 * space.
+	 * Transformer that transforms the feature's geometries from world to view space.
 	 */
 	private GeometryCoordinateSequenceTransformer unitToPixel;
 
@@ -120,8 +119,7 @@ public class VectorTilePainter implements TilePainter {
 	private GraphicsDocument labelDocument;
 
 	/**
-	 * The current origin may differ, depending on whether or not the client has
-	 * been panning.
+	 * The current origin may differ, depending on whether or not the client has been panning.
 	 */
 	private Coordinate panOrigin;
 
@@ -133,18 +131,16 @@ public class VectorTilePainter implements TilePainter {
 
 	/**
 	 * Initialize this painter with all the info it needs.
-	 *
+	 * 
 	 * @param layer
 	 *            The vector layer wherein the tiles lie.
 	 * @param renderer
 	 *            Rendering output type: "SVG" or "VML".
 	 * @param scale
-	 *            The current client-side scale. Needed for creating the world
-	 *            to view space coordinate transformer.
+	 *            The current client-side scale. Needed for creating the world to view space coordinate transformer.
 	 * @param panOrigin
-	 *            The current origin may differ, depending on whether or not the
-	 *            client has been panning.Needed for creating the world to view
-	 *            space coordinate transformer.
+	 *            The current origin may differ, depending on whether or not the client has been panning.Needed for
+	 *            creating the world to view space coordinate transformer.
 	 */
 	public VectorTilePainter(VectorLayer layer, String renderer, double scale, Coordinate panOrigin,
 			GeoService geoService) {
@@ -160,39 +156,36 @@ public class VectorTilePainter implements TilePainter {
 	// -------------------------------------------------------------------------
 
 	/**
-	 * Paint the tile! The tile must be an instance of {@link InternalVectorTile}. This
-	 * function will create 2 DOM documents for geometries and labels. In case
-	 * the renderer says "SVG" these documents will be of the type
+	 * Paint the tile! The tile must be an instance of {@link InternalTile}. This function will create 2 DOM documents
+	 * for geometries and labels. In case the renderer says "SVG" these documents will be of the type
 	 * {@link org.geomajas.internal.rendering.DefaultSvgDocument}, otherwise
-	 * {@link org.geomajas.internal.rendering.DefaultVmlDocument}. These
-	 * documents in turn are built using {@link org.geomajas.internal.rendering.writers.GraphicsWriter} classes.
-	 *
+	 * {@link org.geomajas.internal.rendering.DefaultVmlDocument}. These documents in turn are built using
+	 * {@link org.geomajas.internal.rendering.writers.GraphicsWriter} classes.
+	 * 
 	 * @param tileToPaint
-	 *            The instance of {@link InternalVectorTile}. Using the DOM documents,
-	 *            the tile's "featureFragment" and "labelFragment" will be
-	 *            created.
+	 *            The instance of {@link InternalTile}. Using the DOM documents, the tile's "featureFragment" and
+	 *            "labelFragment" will be created.
 	 * @return Returns a fully rendered vector tile.
 	 */
 	public InternalTile paint(InternalTile tileToPaint) throws RenderException {
-		if (tileToPaint instanceof InternalVectorTile) {
-			// VectorTile vTile = (VectorTile) tile;
-			this.tile = (InternalVectorTile) tileToPaint;
+		if (tileToPaint != null) {
+			tile = tileToPaint;
 			if (paintGeometries && featureDocument == null) {
-				// create the svg feature fragment
+				// Create the SVG / VML feature fragment:
 				StringWriter writer = new StringWriter();
 				try {
 					featureDocument = createFeatureDocument(writer);
 					featureDocument.setRootId(layer.getLayerInfo().getId());
-					featureDocument.writeObject(this.tile, false);
+					featureDocument.writeObject(tile, false);
 					featureDocument.flush();
 				} catch (RenderException e) {
 					log.error("Unable to write this tile's feature fragment", e);
 				}
-				this.tile.setFeatureFragment(writer.toString());
+				tile.getTileRendering().setFeatureString(writer.toString());
 			}
 
 			if (paintLabels && labelDocument == null) {
-				// create the svg label fragment
+				// Create the SVG / VML label fragment:
 				StringWriter writer = new StringWriter();
 				try {
 					labelDocument = createLabelDocument(writer);
@@ -202,18 +195,17 @@ public class VectorTilePainter implements TilePainter {
 				} catch (RenderException e) {
 					log.error("Unable to write this tile's label fragment", e);
 				}
-				this.tile.setLabelFragment(writer.toString());
+				tile.getTileRendering().setLabelString(writer.toString());
 			}
-			return this.tile;
+			return tile;
 		}
 
 		return tileToPaint;
 	}
 
 	/**
-	 * Enables or disabled the use of painter that paint the geometries of the
-	 * features in the tile.
-	 *
+	 * Enables or disabled the use of painter that paint the geometries of the features in the tile.
+	 * 
 	 * @param paintGeometries
 	 *            true or false.
 	 */
@@ -222,9 +214,8 @@ public class VectorTilePainter implements TilePainter {
 	}
 
 	/**
-	 * Enables or disabled the use of painter that paint the labels of the
-	 * features in the tile.
-	 *
+	 * Enables or disabled the use of painter that paint the labels of the features in the tile.
+	 * 
 	 * @param paintLabels
 	 *            true or false.
 	 */
@@ -237,27 +228,28 @@ public class VectorTilePainter implements TilePainter {
 	// -------------------------------------------------------------------------
 
 	/**
-	 * Create a document that parses the tile's featureFragment, using
-	 * GraphicsWriter classes.
-	 *
-	 * @param writer writer
+	 * Create a document that parses the tile's featureFragment, using GraphicsWriter classes.
+	 * 
+	 * @param writer
+	 *            writer
 	 * @return document
-	 * @throws RenderException oops
+	 * @throws RenderException
+	 *             oops
 	 */
 	private GraphicsDocument createFeatureDocument(StringWriter writer) throws RenderException {
 		if (TileMetadata.PARAM_SVG_RENDERER.equalsIgnoreCase(renderer)) {
 			DefaultSvgDocument document = new DefaultSvgDocument(writer, false);
 			document.setMaximumFractionDigits(MAXIMUM_FRACTION_DIGITS);
 			document.registerWriter(InternalFeatureImpl.class, new SvgFeatureScreenWriter(getTransformer()));
-			document.registerWriter(InternalVectorTile.class, new SvgFeatureTileWriter());
+			document.registerWriter(InternalTileImpl.class, new SvgFeatureTileWriter());
 			return document;
 		} else if (TileMetadata.PARAM_VML_RENDERER.equalsIgnoreCase(renderer)) {
 			DefaultVmlDocument document = new DefaultVmlDocument(writer);
 			int coordWidth = tile.getScreenWidth();
 			int coordHeight = tile.getScreenHeight();
-			document.registerWriter(InternalFeatureImpl.class, new VmlFeatureScreenWriter(getTransformer(),
-					coordWidth, coordHeight));
-			document.registerWriter(InternalVectorTile.class, new VmlVectorTileWriter(coordWidth, coordHeight));
+			document.registerWriter(InternalFeatureImpl.class, new VmlFeatureScreenWriter(getTransformer(), coordWidth,
+					coordHeight));
+			document.registerWriter(InternalTileImpl.class, new VmlVectorTileWriter(coordWidth, coordHeight));
 			document.setMaximumFractionDigits(MAXIMUM_FRACTION_DIGITS);
 			return document;
 		} else {
@@ -266,23 +258,22 @@ public class VectorTilePainter implements TilePainter {
 	}
 
 	/**
-	 * Create a document that parses the tile's labelFragment, using
-	 * GraphicsWriter classes.
+	 * Create a document that parses the tile's labelFragment, using GraphicsWriter classes.
 	 */
 	private GraphicsDocument createLabelDocument(StringWriter writer) throws RenderException {
 		if (TileMetadata.PARAM_SVG_RENDERER.equalsIgnoreCase(renderer)) {
 			DefaultSvgDocument document = new DefaultSvgDocument(writer, false);
 			document.setMaximumFractionDigits(MAXIMUM_FRACTION_DIGITS);
-			document.registerWriter(InternalVectorTile.class, new SvgLabelTileWriter(getTransformer(), layer
+			document.registerWriter(InternalTileImpl.class, new SvgLabelTileWriter(getTransformer(), layer
 					.getLayerInfo().getLabelAttribute().getBackgroundStyle(), geoService));
 			return document;
 		} else if (TileMetadata.PARAM_VML_RENDERER.equalsIgnoreCase(renderer)) {
 			DefaultVmlDocument document = new DefaultVmlDocument(writer);
 			int coordWidth = (int) Math.round(scale * getTileBbox().getWidth());
 			int coordHeight = (int) Math.round(scale * getTileBbox().getHeight());
-			document.registerWriter(InternalFeatureImpl.class, new VmlFeatureScreenWriter(getTransformer(),
-					coordWidth, coordHeight));
-			document.registerWriter(InternalVectorTile.class, new VmlLabelTileWriter(coordWidth, coordHeight,
+			document.registerWriter(InternalFeatureImpl.class, new VmlFeatureScreenWriter(getTransformer(), coordWidth,
+					coordHeight));
+			document.registerWriter(InternalTileImpl.class, new VmlLabelTileWriter(coordWidth, coordHeight,
 					getTransformer(), layer.getLayerInfo().getLabelAttribute().getBackgroundStyle(), geoService));
 			document.setMaximumFractionDigits(MAXIMUM_FRACTION_DIGITS);
 			return document;
@@ -293,7 +284,7 @@ public class VectorTilePainter implements TilePainter {
 
 	/**
 	 * Can't we get this out of this class???
-	 *
+	 * 
 	 * @return
 	 */
 	private GeometryCoordinateSequenceTransformer getTransformer() {
@@ -301,14 +292,13 @@ public class VectorTilePainter implements TilePainter {
 			unitToPixel = new GeometryCoordinateSequenceTransformer();
 			if (tile.isClipped()) {
 				// find coords wrt to pan origin (0,0) and scale (pix/unit)
-				unitToPixel.setMathTransform(ProjectiveTransform.create(new AffineTransform(scale, 0, 0,
-						-scale, -scale * panOrigin.x, scale * panOrigin.y)));
+				unitToPixel.setMathTransform(ProjectiveTransform.create(new AffineTransform(scale, 0, 0, -scale, -scale
+						* panOrigin.x, scale * panOrigin.y)));
 			} else {
 				// find coords wrt to upper left corner (0,0) and scale
 				// (pix/unit)
-				unitToPixel.setMathTransform(ProjectiveTransform.create(new AffineTransform(scale, 0, 0,
-						-scale, -scale * getTileBbox().getX(), scale
-								* (getTileBbox().getY() + getTileBbox().getHeight()))));
+				unitToPixel.setMathTransform(ProjectiveTransform.create(new AffineTransform(scale, 0, 0, -scale, -scale
+						* getTileBbox().getX(), scale * (getTileBbox().getY() + getTileBbox().getHeight()))));
 			}
 		}
 		return unitToPixel;
@@ -316,7 +306,7 @@ public class VectorTilePainter implements TilePainter {
 
 	/**
 	 * Convenience method for fetching the tile's bbox.
-	 *
+	 * 
 	 * @return bbox
 	 */
 	private Bbox getTileBbox() {

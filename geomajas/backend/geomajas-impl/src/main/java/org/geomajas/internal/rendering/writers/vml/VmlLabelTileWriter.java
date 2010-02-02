@@ -23,11 +23,9 @@
 
 package org.geomajas.internal.rendering.writers.vml;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.GeometryFactory;
 import org.geomajas.configuration.StyleInfo;
 import org.geomajas.internal.layer.feature.InternalFeatureImpl;
-import org.geomajas.internal.layer.tile.InternalVectorTile;
+import org.geomajas.internal.layer.tile.InternalTileImpl;
 import org.geomajas.internal.rendering.writers.GraphicsWriter;
 import org.geomajas.internal.rendering.writers.svg.SvgFeatureScreenWriter;
 import org.geomajas.layer.feature.InternalFeature;
@@ -39,9 +37,12 @@ import org.opengis.referencing.operation.TransformException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.GeometryFactory;
+
 /**
  * ???
- *
+ * 
  * @author check subversion
  */
 public class VmlLabelTileWriter implements GraphicsWriter {
@@ -64,8 +65,8 @@ public class VmlLabelTileWriter implements GraphicsWriter {
 
 	private GeoService geoService;
 
-	public VmlLabelTileWriter(int coordWidth, int coordHeight,
-			GeometryCoordinateSequenceTransformer transformer, StyleInfo bgStyle, GeoService geoService) {
+	public VmlLabelTileWriter(int coordWidth, int coordHeight, GeometryCoordinateSequenceTransformer transformer,
+			StyleInfo bgStyle, GeoService geoService) {
 		this.coordWidth = coordWidth;
 		this.coordHeight = coordHeight;
 		this.bgStyle = bgStyle;
@@ -75,7 +76,7 @@ public class VmlLabelTileWriter implements GraphicsWriter {
 	}
 
 	public void writeObject(Object object, GraphicsDocument document, boolean asChild) throws RenderException {
-		InternalVectorTile tile = (InternalVectorTile) object;
+		InternalTileImpl tile = (InternalTileImpl) object;
 		document.writeElement("vml:group", asChild);
 		document.writeId("labels." + tile.getCode().toString());
 		document.writeAttribute("style", "WIDTH: 100%; HEIGHT: 100%");
@@ -118,16 +119,15 @@ public class VmlLabelTileWriter implements GraphicsWriter {
 
 				// Group for an individual label (vml:group):
 				document.writeElement("vml:group", true);
-				document.writeAttribute("style", "LEFT: " + left + "px; TOP: " + top + "px; WIDTH: "
-						+ boxWidth + "px; HEIGHT: " + boxHeight + "px; position:absolute;");
+				document.writeAttribute("style", "LEFT: " + left + "px; TOP: " + top + "px; WIDTH: " + boxWidth
+						+ "px; HEIGHT: " + boxHeight + "px; position:absolute;");
 				document.writeAttribute("coordsize", boxWidth + " " + boxHeight);
 
 				// First we draw the rectangle:
 				if (bgStyle != null) {
 					document.writeElement("vml:rect", true);
 					document.writeAttribute("id", feature.getId() + ".label");
-					document.writeAttribute("style", "WIDTH: " + boxWidth + "px; HEIGHT: " + boxHeight
-							+ "px;");
+					document.writeAttribute("style", "WIDTH: " + boxWidth + "px; HEIGHT: " + boxHeight + "px;");
 					document.writeAttribute("fillcolor", bgStyle.getFillColor());
 					document.writeAttribute("strokecolor", bgStyle.getStrokeColor());
 					document.writeAttribute("strokeweight", bgStyle.getStrokeWidth());

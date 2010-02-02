@@ -37,7 +37,6 @@ import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.layer.tile.InternalTile;
-import org.geomajas.layer.tile.InternalUrlTile;
 import org.geomajas.layer.tile.TileMetadata;
 import org.geomajas.layermodel.wms.WmsLayer;
 import org.geomajas.rendering.RenderException;
@@ -117,9 +116,7 @@ public class ExternalWmsRendering implements RenderingStrategy {
 			CoordinateReferenceSystem crs = applicationService.getCrs(metadata.getCrs());
 
 			// Prepare the tile:
-			InternalUrlTile tile = paintFactory.createRasterTile(metadata.getCode(), vLayer, metadata.getScale());
-			RasterUrlBuilder urlBuilder = new WmsUrlBuilder(tile, vLayer, layerName);
-			tile.setUrlBuilder(urlBuilder);
+			InternalTile tile = paintFactory.createRasterTile(metadata.getCode(), vLayer, metadata.getScale());
 
 			// Prepare any filtering:
 			String geomName = vLayer.getLayerInfo().getFeatureInfo().getGeometryType().getName();
@@ -138,7 +135,7 @@ public class ExternalWmsRendering implements RenderingStrategy {
 			// At this point, we have a tile with rendered features.
 			// Now we need to paint the tile itself:
 			tile.setFeatures(features);
-			TilePainter tilePainter = paintFactory.createRasterTilePainter(vLayer.getLayerInfo().getId());
+			TilePainter tilePainter = paintFactory.createRasterTilePainter(new WmsUrlBuilder(tile, vLayer, layerName));
 			return tilePainter.paint(tile);
 		} catch (CQLException cqle) {
 			throw new RenderException(ExceptionCode.RENDER_FILTER_PARSE_PROBLEM, cqle);
