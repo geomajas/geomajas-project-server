@@ -181,7 +181,7 @@ public class VectorTilePainter implements TilePainter {
 				} catch (RenderException e) {
 					log.error("Unable to write this tile's feature fragment", e);
 				}
-				tile.getTileRendering().setFeatureString(writer.toString());
+				tile.getTileRendering().setFeatureRendering(writer.toString());
 			}
 
 			if (paintLabels && labelDocument == null) {
@@ -195,7 +195,7 @@ public class VectorTilePainter implements TilePainter {
 				} catch (RenderException e) {
 					log.error("Unable to write this tile's label fragment", e);
 				}
-				tile.getTileRendering().setLabelString(writer.toString());
+				tile.getTileRendering().setLabelRendering(writer.toString());
 			}
 			return tile;
 		}

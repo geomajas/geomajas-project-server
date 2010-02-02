@@ -31,7 +31,7 @@ package org.geomajas.layer.tile;
  * 
  * @author Pieter De Graef
  */
-public interface TileRendering {
+public interface InternalTileRendering {
 
 	/**
 	 * <p>
@@ -58,14 +58,32 @@ public interface TileRendering {
 	TileRenderMethod getTileRenderMethod();
 
 	/**
-	 * @return Return the string format. This will return the actual rendering of a tile in a string format (such as SVG
-	 *         or VML), but only if the rendering method used is STRING_RENDERING. Returns null otherwise.
+	 * Return the rendering of a tile's features. Depending on the rendering method used, the returned string will
+	 * contain an entire rendering (SVG/VML) or a URL.
 	 */
-	String getFeatureString();
+	String getFeatureRendering();
 
-	void setFeatureString(String featureString);
+	/**
+	 * Set the rendering of a tile's features. Depending on the rendering method used, the given string must contain an
+	 * entire rendering (SVG/VML) or a URL.
+	 * 
+	 * @param featureString
+	 *            The rendering of a tile's features.
+	 */
+	void setFeatureRendering(String featureString);
 
-	String getLabelString();
+	/**
+	 * Return the rendering of a tile's labels. Depending on the rendering method used, the returned string will contain
+	 * an entire rendering (SVG/VML) or a URL.
+	 */
+	String getLabelRendering();
 
-	void setLabelString(String labelString);
+	/**
+	 * Set the rendering of a tile's labels. Depending on the rendering method used, the given string must contain an
+	 * entire rendering (SVG/VML) or a URL.
+	 * 
+	 * @param labelString
+	 *            The rendering of a tile's labels.
+	 */
+	void setLabelRendering(String labelString);
 }

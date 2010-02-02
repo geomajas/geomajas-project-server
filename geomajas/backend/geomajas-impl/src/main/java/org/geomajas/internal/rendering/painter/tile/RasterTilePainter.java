@@ -24,8 +24,7 @@
 package org.geomajas.internal.rendering.painter.tile;
 
 import org.geomajas.layer.tile.InternalTile;
-import org.geomajas.layer.tile.RasterImage;
-import org.geomajas.layer.tile.TileRendering.TileRenderMethod;
+import org.geomajas.layer.tile.InternalTileRendering.TileRenderMethod;
 import org.geomajas.rendering.RenderException;
 import org.geomajas.rendering.image.RasterUrlBuilder;
 import org.geomajas.rendering.painter.tile.TilePainter;
@@ -77,7 +76,7 @@ public class RasterTilePainter implements TilePainter {
 	 * 
 	 * @param tile
 	 *            Must be an instance of {@link InternalRasterTile}, and must have a non-null {@link RasterUrlBuilder}.
-	 * @return Returns a {@link InternalRasterTile} with a {@link RasterImage} added to it.
+	 * @return Returns a {@link InternalRasterTile}.
 	 */
 	public InternalTile paint(InternalTile tile) throws RenderException {
 		if (tile.getTileRendering().getTileRenderMethod().equals(TileRenderMethod.IMAGE_RENDERING)) {
@@ -85,12 +84,12 @@ public class RasterTilePainter implements TilePainter {
 				if (paintGeometries) {
 					urlBuilder.paintGeometries(paintGeometries);
 					urlBuilder.paintLabels(false);
-					tile.getTileRendering().setFeatureString(urlBuilder.getImageUrl());
+					tile.getTileRendering().setFeatureRendering(urlBuilder.getImageUrl());
 				}
 				if (paintLabels) {
 					urlBuilder.paintGeometries(false);
 					urlBuilder.paintLabels(paintLabels);
-					tile.getTileRendering().setLabelString(urlBuilder.getImageUrl());
+					tile.getTileRendering().setLabelRendering(urlBuilder.getImageUrl());
 				}
 				return tile;
 			}

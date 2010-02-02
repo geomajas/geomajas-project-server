@@ -32,7 +32,7 @@ import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.layer.tile.TileCode;
-import org.geomajas.layer.tile.TileRendering;
+import org.geomajas.layer.tile.InternalTileRendering;
 
 /**
  * RenderedTile implementation.
@@ -81,7 +81,7 @@ public class InternalTileImpl implements InternalTile {
 	 */
 	private boolean clipped;
 
-	private TileRendering tileRendering;
+	private InternalTileRendering tileRendering;
 
 	// Constructors:
 
@@ -198,11 +198,11 @@ public class InternalTileImpl implements InternalTile {
 		this.code = code;
 	}
 
-	public TileRendering getTileRendering() {
+	public InternalTileRendering getTileRendering() {
 		return tileRendering;
 	}
 
-	public void setTileRendering(TileRendering tileRendering) {
+	public void setTileRendering(InternalTileRendering tileRendering) {
 		this.tileRendering = tileRendering;
 	}
 }

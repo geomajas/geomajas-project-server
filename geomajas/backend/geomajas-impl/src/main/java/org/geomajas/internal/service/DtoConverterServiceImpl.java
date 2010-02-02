@@ -431,14 +431,14 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 				case STRING_RENDERING:
 					VectorTile vectorDto = new VectorTile();
 					updateBasicTile(tile, vectorDto);
-					vectorDto.setFeatureFragment(tile.getTileRendering().getFeatureString());
-					vectorDto.setLabelFragment(tile.getTileRendering().getLabelString());
+					vectorDto.setFeatureFragment(tile.getTileRendering().getFeatureRendering());
+					vectorDto.setLabelFragment(tile.getTileRendering().getLabelRendering());
 					return vectorDto;
 				case IMAGE_RENDERING:
 					RasterTile rasterDto = new RasterTile();
 					updateBasicTile(tile, rasterDto);
-					rasterDto.setFeatureImage(tile.getTileRendering().getFeatureString());
-					rasterDto.setLabelImage(tile.getTileRendering().getFeatureString());
+					rasterDto.setFeatureImage(tile.getTileRendering().getFeatureRendering());
+					rasterDto.setLabelImage(tile.getTileRendering().getFeatureRendering());
 					return rasterDto;
 				default:
 					Tile dto = new Tile();

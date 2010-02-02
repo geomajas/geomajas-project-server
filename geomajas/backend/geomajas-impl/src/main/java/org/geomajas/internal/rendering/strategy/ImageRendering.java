@@ -34,14 +34,14 @@ import org.geomajas.geometry.Coordinate;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.internal.layer.tile.InternalTileImpl;
-import org.geomajas.internal.layer.tile.TileRenderingImpl;
+import org.geomajas.internal.layer.tile.InternalTileRenderingImpl;
 import org.geomajas.internal.rendering.painter.tile.RasterTilePainter;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.layer.tile.TileCode;
 import org.geomajas.layer.tile.TileMetadata;
-import org.geomajas.layer.tile.TileRendering.TileRenderMethod;
+import org.geomajas.layer.tile.InternalTileRendering.TileRenderMethod;
 import org.geomajas.rendering.RenderException;
 import org.geomajas.rendering.image.RasterUrlBuilder;
 import org.geomajas.rendering.painter.tile.TilePainter;
@@ -101,7 +101,7 @@ public class ImageRendering implements RenderingStrategy {
 
 			// Prepare the tile:
 			InternalTileImpl tile = new InternalTileImpl(metadata.getCode(), vLayer, metadata.getScale());
-			tile.setTileRendering(new TileRenderingImpl(TileRenderMethod.STRING_RENDERING));
+			tile.setTileRendering(new InternalTileRenderingImpl(TileRenderMethod.STRING_RENDERING));
 
 			// Prepare any filtering:
 			String geomName = vLayer.getLayerInfo().getFeatureInfo().getGeometryType().getName();
