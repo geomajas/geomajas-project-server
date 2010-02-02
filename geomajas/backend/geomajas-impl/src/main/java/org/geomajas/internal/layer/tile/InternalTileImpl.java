@@ -26,14 +26,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.geomajas.internal.service.DtoConverterServiceImpl;
 import org.geomajas.layer.Layer;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.layer.tile.InternalTileRendering;
 import org.geomajas.layer.tile.TileCode;
-import org.geomajas.service.DtoConverterService;
 
 import com.vividsolutions.jts.geom.Envelope;
 
@@ -101,8 +99,7 @@ public class InternalTileImpl implements InternalTile {
 	// General functions:
 
 	public void init(VectorLayer layer, double scale) {
-		DtoConverterService converter = new DtoConverterServiceImpl();
-		Envelope max = converter.toEnvelope(layer.getLayerInfo().getMaxExtent()); // @todo used to be getMaxBbox
+		Envelope max = layer.getMaxBounds(); // @todo used to be getMaxBbox
 		double div = Math.pow(2, code.getTileLevel());
 		tileWidth = Math.ceil(scale * (max.getMaxX() - max.getMinX()) / div) / scale;
 		tileHeight = Math.ceil(scale * (max.getMaxY() - max.getMinY()) / div) / scale;
@@ -114,11 +111,10 @@ public class InternalTileImpl implements InternalTile {
 		if (tileWidth == 0) {
 			return null;
 		}
-		DtoConverterService converter = new DtoConverterServiceImpl();
-		Envelope max = converter.toEnvelope(layer.getLayerInfo().getMaxExtent()); // @todo used to be getMaxBbox
+		Envelope max = layer.getMaxBounds(); // @todo used to be getMaxBbox
 		double cX = max.getMinX() + code.getX() * tileWidth;
 		double cY = max.getMinY() + code.getY() * tileHeight;
-		return new Envelope(cX, cY, cX + tileWidth, cY + tileHeight);
+		return new Envelope(cX, cX + tileWidth, cY, cY + tileHeight);
 	}
 
 	public String codeAsString() {

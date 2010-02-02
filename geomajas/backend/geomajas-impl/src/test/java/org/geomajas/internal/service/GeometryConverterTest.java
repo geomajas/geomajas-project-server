@@ -151,49 +151,49 @@ public class GeometryConverterTest {
 	@Test
 	public void dtoPointToJts() {
 		// Test DTO Point to JTS:
-		Point point = (Point) converter.toJts(createDtoPoint());
+		Point point = (Point) converter.toInternal(createDtoPoint());
 		Assert.assertEquals(dtoC1.getX(), point.getX());
 	}
 
 	@Test
 	public void dtoLineStringToJts() {
 		// Test DTO LineString to JTS:
-		LineString lineString = (LineString) converter.toJts(createDtoLineString());
+		LineString lineString = (LineString) converter.toInternal(createDtoLineString());
 		Assert.assertEquals(dtoC3.getX(), lineString.getCoordinateN(2).x);
 	}
 
 	@Test
 	public void dtoLinearRingToJts() {
 		// Test DTO LinearRing to JTS:
-		LinearRing linearRing = (LinearRing) converter.toJts(createDtoLinearRing());
+		LinearRing linearRing = (LinearRing) converter.toInternal(createDtoLinearRing());
 		Assert.assertEquals(dtoC3.getX(), linearRing.getCoordinateN(2).x);
 	}
 
 	@Test
 	public void dtoPolygonToJts() {
 		// Test DTO Polygon to JTS:
-		Polygon polygon = (Polygon) converter.toJts(createDtoPolygon());
+		Polygon polygon = (Polygon) converter.toInternal(createDtoPolygon());
 		Assert.assertEquals(dtoC6.getX(), polygon.getInteriorRingN(0).getCoordinateN(1).x);
 	}
 
 	@Test
 	public void dtoMultiPointToJts() {
 		// Test DTO MultiPoint to JTS:
-		MultiPoint multiPoint = (MultiPoint) converter.toJts(createDtoMultiPoint());
+		MultiPoint multiPoint = (MultiPoint) converter.toInternal(createDtoMultiPoint());
 		Assert.assertEquals(dtoC2.getX(), multiPoint.getGeometryN(1).getCoordinate().x);
 	}
 
 	@Test
 	public void dtoMultiLineStringToJts() {
 		// Test DTO MultiLineString to JTS:
-		MultiLineString multiLineString = (MultiLineString) converter.toJts(createDtoMultiLineString());
+		MultiLineString multiLineString = (MultiLineString) converter.toInternal(createDtoMultiLineString());
 		Assert.assertEquals(dtoC7.getX(), multiLineString.getGeometryN(1).getCoordinates()[2].x);
 	}
 
 	@Test
 	public void dtoMultiPolygonToJts() {
 		// Test DTO MultiPolygon to JTS:
-		MultiPolygon multiPolygon = (MultiPolygon) converter.toJts(createDtoMultiPolygon());
+		MultiPolygon multiPolygon = (MultiPolygon) converter.toInternal(createDtoMultiPolygon());
 		Polygon polygon = (Polygon) multiPolygon.getGeometryN(1);
 		Assert.assertEquals(dtoC6.getX(), polygon.getInteriorRingN(0).getCoordinateN(1).x);
 	}

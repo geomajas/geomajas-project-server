@@ -56,13 +56,13 @@ public class SplitPolygonCommand implements Command<SplitPolygonRequest, SplitPo
 		// convert to most accurate precision model
 		Polygon polygon = null;
 		try {
-			polygon = (Polygon) converter.toJts(request.getPolygon());
+			polygon = (Polygon) converter.toInternal(request.getPolygon());
 		} catch (Exception e) {
 			// throw new GeomajasException();
 		}
 		// Convert to the polygons precision model:
 		LineString preciseLine = (LineString) polygon.getFactory().createGeometry(
-				converter.toJts(request.getLineString()));
+				converter.toInternal(request.getLineString()));
 		int precision = polygon.getPrecisionModel().getMaximumSignificantDigits() - 1;
 		com.vividsolutions.jts.geom.Geometry bufferedLine = preciseLine.buffer(Math.pow(10.0, -precision));
 		com.vividsolutions.jts.geom.Geometry diff = polygon.difference(bufferedLine);

@@ -26,13 +26,13 @@ package org.geomajas.internal.rendering.painter.feature;
 import java.util.List;
 
 import org.geomajas.internal.layer.feature.InternalFeatureImpl;
-import org.geomajas.internal.service.DtoConverterServiceImpl;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.layer.tile.TileCode;
 import org.geomajas.service.DtoConverterService;
 import org.geotools.geometry.jts.JTS;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.vividsolutions.jts.geom.Coordinate;
@@ -60,7 +60,8 @@ import com.vividsolutions.jts.geom.Geometry;
 @Component
 public class TiledFeatureService {
 
-	private DtoConverterService converter = new DtoConverterServiceImpl();
+	@Autowired
+	private DtoConverterService converterService;
 
 	/**
 	 * Helps determine when a feature is too big and must therefore be clipped.
@@ -130,7 +131,7 @@ public class TiledFeatureService {
 	 */
 	private void addTileCode(InternalTile tile, VectorLayer layer, Geometry geometry) {
 		Coordinate c = geometry.getCoordinate();
-		Envelope max = converter.toEnvelope(layer.getLayerInfo().getMaxExtent());
+		Envelope max = converterService.toInternal(layer.getLayerInfo().getMaxExtent());
 		if (c != null && max.contains(c)) {
 			int i = (int) ((c.x - layer.getLayerInfo().getMaxExtent().getX()) / tile.getTileWidth());
 			int j = (int) ((c.y - layer.getLayerInfo().getMaxExtent().getY()) / tile.getTileHeight());
@@ -172,7 +173,7 @@ public class TiledFeatureService {
 	 */
 	private Envelope getMaxScreenBbox(VectorLayer layer, TileCode code, double scale, Coordinate panOrigin) {
 		if (maxScreenBbox == null) {
-			Envelope max = converter.toEnvelope(layer.getLayerInfo().getMaxExtent());
+			Envelope max = converterService.toInternal(layer.getLayerInfo().getMaxExtent());
 			double div = Math.pow(2, code.getTileLevel());
 			int tileWidthPx = (int) Math.ceil(scale * max.getWidth() / div);
 			double tileWidth = tileWidthPx / scale;

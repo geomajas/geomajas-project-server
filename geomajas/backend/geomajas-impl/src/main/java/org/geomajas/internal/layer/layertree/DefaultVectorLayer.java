@@ -29,7 +29,7 @@ import org.geomajas.layer.Layer;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.LayerModel;
 import org.geomajas.layer.VectorLayer;
-import org.geomajas.service.GeoService;
+import org.geomajas.service.DtoConverterService;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.referencing.CRS;
@@ -39,15 +39,17 @@ import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.vividsolutions.jts.geom.Envelope;
+
 /**
  * Default vector layer implementation.
- *
+ * 
  * @author Jan De Moerloose
  */
 public class DefaultVectorLayer implements Layer<VectorLayerInfo>, VectorLayer {
 
 	@Autowired
-	private GeoService geoService;
+	private DtoConverterService converterService;
 
 	/**
 	 * Model for all the elements in this layer. The elements are effectively stored in this model.
@@ -75,11 +77,11 @@ public class DefaultVectorLayer implements Layer<VectorLayerInfo>, VectorLayer {
 		try {
 			crs = CRS.decode(layerInfo.getCrs());
 		} catch (NoSuchAuthorityCodeException e) {
-			throw new LayerException(ExceptionCode.LAYER_CRS_UNKNOWN_AUTHORITY, e, layerInfo.getId(),
-					getLayerInfo().getCrs());
-		} catch (FactoryException e) {
-			throw new LayerException(ExceptionCode.LAYER_CRS_PROBLEMATIC, e, layerInfo.getId(),
-					getLayerInfo().getCrs());
+			throw new LayerException(ExceptionCode.LAYER_CRS_UNKNOWN_AUTHORITY, e, layerInfo.getId(), getLayerInfo()
+					.getCrs());
+		} catch (FactoryException exception) {
+			throw new LayerException(ExceptionCode.LAYER_CRS_PROBLEMATIC, exception, layerInfo.getId(), getLayerInfo()
+					.getCrs());
 		}
 	}
 
@@ -105,6 +107,10 @@ public class DefaultVectorLayer implements Layer<VectorLayerInfo>, VectorLayer {
 		return getLayerInfo().getEditPermissions();
 	}
 
+	public Envelope getMaxBounds() {
+		return converterService.toInternal(layerInfo.getMaxExtent());
+	}
+
 	// Getters and setters:
 
 	public LayerModel getLayerModel() {
@@ -115,5 +121,4 @@ public class DefaultVectorLayer implements Layer<VectorLayerInfo>, VectorLayer {
 		this.layerModel = layerModel;
 		layerModel.setLayerInfo(getLayerInfo());
 	}
-
 }

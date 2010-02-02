@@ -28,7 +28,6 @@ import org.geomajas.command.Command;
 import org.geomajas.extension.command.dto.UserMaximumExtentRequest;
 import org.geomajas.extension.command.dto.UserMaximumExtentResponse;
 import org.geomajas.geometry.Bbox;
-import org.geomajas.internal.service.DtoConverterServiceImpl;
 import org.geomajas.layer.Layer;
 import org.geomajas.layer.LayerType;
 import org.geomajas.service.ApplicationService;
@@ -48,7 +47,7 @@ import com.vividsolutions.jts.geom.Envelope;
 
 /**
  * Calculate the maximum extent a user can see (based on a set of layers).
- *
+ * 
  * @author Kristof Heirwegh
  * @author Joachim Van der Auwera
  */
@@ -57,7 +56,8 @@ public class UserMaximumExtentCommand implements Command<UserMaximumExtentReques
 
 	private final Logger log = LoggerFactory.getLogger(UserMaximumExtentCommand.class);
 
-	private DtoConverterService converter = new DtoConverterServiceImpl();
+	@Autowired
+	private DtoConverterService converterService;
 
 	@Autowired
 	private GeoService geoService;
@@ -79,7 +79,7 @@ public class UserMaximumExtentCommand implements Command<UserMaximumExtentReques
 		boolean excludeRasterLayers = request.isExcludeRasterLayers();
 		if (includeLayers != null && includeLayers.length() > 0) {
 			for (String layer : includeLayers.split("\\, ")) {
-				Layer l = runtimeParameters.getLayer(layer.trim());
+				Layer<?> l = runtimeParameters.getLayer(layer.trim());
 				if (!excludeRasterLayers || l.getLayerInfo().getLayerType() != LayerType.RASTER) {
 					tempLayers.add(l.getLayerInfo().getId());
 				}
@@ -87,7 +87,7 @@ public class UserMaximumExtentCommand implements Command<UserMaximumExtentReques
 		}
 		layers = tempLayers.toArray(new String[tempLayers.size()]);
 
-		Layer layer;
+		Layer<?> layer;
 		CoordinateReferenceSystem targetCrs = CRS.decode(request.getCrs());
 
 		if (layers.length == 0) {
@@ -101,7 +101,7 @@ public class UserMaximumExtentCommand implements Command<UserMaximumExtentReques
 					Envelope bounds;
 					if (layer.getLayerInfo().getLayerType() == LayerType.RASTER) {
 						// @todo need to limit based on security
-						bounds = converter.toEnvelope(layer.getLayerInfo().getMaxExtent());
+						bounds = converterService.toInternal(layer.getLayerInfo().getMaxExtent());
 						MathTransform transformer = geoService.findMathTransform(layer.getCrs(), targetCrs);
 						bounds = JTS.transform(bounds, transformer);
 					} else {
@@ -112,7 +112,7 @@ public class UserMaximumExtentCommand implements Command<UserMaximumExtentReques
 					log.warn("layer not found ?! " + layerId);
 				}
 			}
-			response.setBounds(converter.fromEnvelope(extent));
+			response.setBounds(converterService.toDto(extent));
 		}
 	}
 }

@@ -104,7 +104,7 @@ public class SearchByLocationCommand implements Command<SearchByLocationRequest,
 			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "crs");
 		}
 		String[] layerIds = request.getLayerIds();
-		Geometry location = converter.toJts(request.getLocation());
+		Geometry location = converter.toInternal(request.getLocation());
 		int queryType = request.getQueryType();
 		double ratio = request.getRatio();
 		int searchType = request.getSearchType();

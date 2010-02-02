@@ -22,6 +22,9 @@
  */
 package org.geomajas.extension.command.feature;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.geomajas.command.Command;
 import org.geomajas.extension.command.dto.PersistTransactionRequest;
 import org.geomajas.extension.command.dto.PersistTransactionResponse;
@@ -29,41 +32,25 @@ import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.feature.FeatureTransaction;
 import org.geomajas.layer.feature.InternalFeature;
-import org.geomajas.rendering.painter.PaintFactory;
 import org.geomajas.service.ApplicationService;
 import org.geomajas.service.DtoConverterService;
-import org.geomajas.service.FilterService;
-import org.geomajas.service.GeoService;
 import org.geomajas.service.VectorLayerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * A securityException will fail all, not just the feature(s) which are not allowed.
- *
+ * 
  * @author check subversion
  */
 @Component()
-public class PersistTransactionCommand
-		implements Command<PersistTransactionRequest, PersistTransactionResponse> {
+public class PersistTransactionCommand implements Command<PersistTransactionRequest, PersistTransactionResponse> {
 
 	@Autowired
 	private ApplicationService runtimeParameters;
 
 	@Autowired
 	private DtoConverterService converter;
-
-	@Autowired
-	private FilterService filterCreator;
-
-	@Autowired
-	private GeoService geoService;
-
-	@Autowired
-	private PaintFactory paintFactory;
 
 	@Autowired
 	private VectorLayerService layerService;
@@ -92,12 +79,12 @@ public class PersistTransactionCommand
 		List<InternalFeature> newFeatures = new ArrayList<InternalFeature>();
 		if (featureTransaction.getOldFeatures() != null) {
 			for (int i = 0; i < featureTransaction.getOldFeatures().length; i++) {
-				oldFeatures.add(converter.toFeature(featureTransaction.getOldFeatures()[i]));
+				oldFeatures.add(converter.toInternal(featureTransaction.getOldFeatures()[i]));
 			}
 		}
 		if (featureTransaction.getNewFeatures() != null) {
 			for (int i = 0; i < featureTransaction.getNewFeatures().length; i++) {
-				newFeatures.add(converter.toFeature(featureTransaction.getNewFeatures()[i]));
+				newFeatures.add(converter.toInternal(featureTransaction.getNewFeatures()[i]));
 			}
 		}
 

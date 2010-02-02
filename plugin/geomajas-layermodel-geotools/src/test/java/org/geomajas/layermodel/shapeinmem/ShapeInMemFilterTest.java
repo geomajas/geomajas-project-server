@@ -351,7 +351,7 @@ public class ShapeInMemFilterTest extends AbstractFilterTest {
 	@Test
 	public void bboxFilter() {
 		try {
-			Envelope bbox = new Envelope(-0.4d, -0.3d, -0.2d, 0.1d);
+			Envelope bbox = new Envelope(-0.4d, -0.2d, -0.3d, 0.1d);
 			Filter filter = filterCreator.createBboxFilter("EPSG:4326", bbox, PARAM_GEOMETRY_ATTR);
 			Iterator<?> it = layerModel.getElements(filter);
 

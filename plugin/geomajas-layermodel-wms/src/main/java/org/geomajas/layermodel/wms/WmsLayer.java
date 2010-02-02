@@ -36,7 +36,7 @@ import org.geomajas.layer.RasterLayer;
 import org.geomajas.layer.tile.RasterImage;
 import org.geomajas.rendering.RenderException;
 import org.geomajas.service.ApplicationService;
-import org.geomajas.service.BboxService;
+import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.referencing.CRS;
@@ -75,7 +75,7 @@ public class WmsLayer implements RasterLayer {
 	private ApplicationService runtime;
 
 	@Autowired
-	private BboxService bboxService;
+	private DtoConverterService converterService;
 
 	@Autowired
 	private GeoService geoService;
@@ -98,10 +98,14 @@ public class WmsLayer implements RasterLayer {
 		} catch (NoSuchAuthorityCodeException e) {
 			throw new LayerException(ExceptionCode.LAYER_CRS_UNKNOWN_AUTHORITY, e, layerInfo.getId(), getLayerInfo()
 					.getCrs());
-		} catch (FactoryException e) {
-			throw new LayerException(ExceptionCode.LAYER_CRS_PROBLEMATIC, e, layerInfo.getId(), 
-					getLayerInfo().getCrs());
+		} catch (FactoryException exception) {
+			throw new LayerException(ExceptionCode.LAYER_CRS_PROBLEMATIC, exception, layerInfo.getId(), getLayerInfo()
+					.getCrs());
 		}
+	}
+
+	public Envelope getMaxBounds() {
+		return converterService.toInternal(layerInfo.getMaxExtent());
 	}
 
 	public void setLayerInfo(RasterLayerInfo layerInfo) throws LayerException {
@@ -303,7 +307,7 @@ public class WmsLayer implements RasterLayer {
 		double realWidth = ((int) (width * scale)) / scale;
 		double realHeight = ((int) (height * scale)) / scale;
 
-		Envelope bbox = bboxService.toEnvelope(getLayerInfo().getMaxExtent());
+		Envelope bbox = converterService.toInternal(getLayerInfo().getMaxExtent());
 		int ymin = (int) Math.floor((bounds.getMinY() - bbox.getMinY()) / realHeight);
 		int ymax = (int) Math.floor((bounds.getMaxY() - bbox.getMinY()) / realHeight) + 1;
 		int xmin = (int) Math.floor((bounds.getMinX() - bbox.getMinX()) / realWidth);
@@ -328,7 +332,7 @@ public class WmsLayer implements RasterLayer {
 	}
 
 	private Envelope clipBounds(Envelope bounds) {
-		return bounds.intersection(bboxService.toEnvelope(getLayerInfo().getMaxExtent()));
+		return bounds.intersection(getMaxBounds());
 	}
 
 	public String getBaseWmsUrl() {

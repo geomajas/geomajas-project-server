@@ -44,5 +44,4 @@ public interface RenderingStrategyRule {
 	 * @return true when the rule is accepted for the tile
 	 */
 	boolean accept(TileMetadata metadata);
-
 }

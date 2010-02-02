@@ -41,7 +41,6 @@ import org.geomajas.rendering.painter.LayerPaintContext;
 import org.geomajas.rendering.painter.PaintFactory;
 import org.geomajas.rendering.style.StyleFilter;
 import org.geomajas.service.ApplicationService;
-import org.geomajas.service.BboxService;
 import org.geomajas.service.GeoService;
 import org.geomajas.service.VectorLayerService;
 import org.geotools.geometry.jts.JTS;
@@ -61,9 +60,9 @@ import com.vividsolutions.jts.geom.Geometry;
  * vector layer model.
  * <p/>
  * All access to layer models should be done through this service, not by accessing the layer models directly as this
- * adds possible caching, security etc. These services are implemented using pipelines
- * (see {@link org.geomajas.rendering.pipeline.PipelineService}) to make them configurable.
- *
+ * adds possible caching, security etc. These services are implemented using pipelines (see
+ * {@link org.geomajas.rendering.pipeline.PipelineService}) to make them configurable.
+ * 
  * @author Joachim Van der Auwera
  */
 @Component
@@ -76,13 +75,10 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 	private GeoService geoService;
 
 	@Autowired
-	private BboxService bboxService;
-
-	@Autowired
 	private PaintFactory paintFactory;
 
-	public void saveOrUpdate(String layerId, CoordinateReferenceSystem crs,
-			List<InternalFeature> oldFeatures, List<InternalFeature> newFeatures) throws GeomajasException {
+	public void saveOrUpdate(String layerId, CoordinateReferenceSystem crs, List<InternalFeature> oldFeatures,
+			List<InternalFeature> newFeatures) throws GeomajasException {
 		VectorLayer layer = applicationService.getVectorLayer(layerId);
 		if (null == layer) {
 			throw new GeomajasException(ExceptionCode.VECTOR_LAYER_NOT_FOUND, layerId);
@@ -147,8 +143,7 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 	}
 
 	public List<InternalFeature> getFeatures(String layerId, CoordinateReferenceSystem crs, Filter filter,
-			List<StyleInfo> styleDefinitions, int featureIncludes)
-			throws GeomajasException {
+			List<StyleInfo> styleDefinitions, int featureIncludes) throws GeomajasException {
 		VectorLayer layer = applicationService.getVectorLayer(layerId);
 		if (null == layer) {
 			throw new GeomajasException(ExceptionCode.VECTOR_LAYER_NOT_FOUND, layerId);
@@ -164,7 +159,7 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 			}
 		}
 
-		//LayerPaintContext context = new DefaultLayerPaintContext(this, styleDefs);
+		// LayerPaintContext context = new DefaultLayerPaintContext(this, styleDefs);
 		MathTransform transformation = null;
 		if ((featureIncludes & FEATURE_INCLUDE_GEOMETRY) != 0 && crs != null && !crs.equals(layer.getCrs())) {
 			try {
@@ -185,19 +180,25 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 	/**
 	 * Convert the generic feature object (as obtained from te layer model) into a {@link RenderedFeature}, with
 	 * requested data. Part may be lazy loaded.
-	 *
-	 * @param feature A feature object that comes directly from the {@link LayerModel}
-	 * @param layer vector layer for the feature
-	 * @param transformation transformation to apply to the geometry
-	 * @param styles style filters to apply
-	 * @param featureIncludes aspects to include in features
-	 * @throws GeomajasException oops
+	 * 
+	 * @param feature
+	 *            A feature object that comes directly from the {@link LayerModel}
+	 * @param layer
+	 *            vector layer for the feature
+	 * @param transformation
+	 *            transformation to apply to the geometry
+	 * @param styles
+	 *            style filters to apply
+	 * @param featureIncludes
+	 *            aspects to include in features
+	 * @throws GeomajasException
+	 *             oops
 	 */
 	private InternalFeature convertFeature(Object feature, VectorLayer layer, MathTransform transformation,
 			List<StyleFilter> styles, int featureIncludes) throws GeomajasException {
 		LayerInfo layerInfo = layer.getLayerInfo();
 		FeatureModel featureModel = layer.getLayerModel().getFeatureModel();
-		InternalFeatureImpl res = new InternalFeatureImpl(bboxService);
+		InternalFeatureImpl res = new InternalFeatureImpl();
 		res.setId(layerInfo.getId() + "." + featureModel.getId(feature));
 		res.setLayer(layer);
 
@@ -241,9 +242,11 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 
 	/**
 	 * Find the style filter that must be applied to this feature.
-	 *
-	 * @param feature feature to find the style for
-	 * @param styles style filters to select from
+	 * 
+	 * @param feature
+	 *            feature to find the style for
+	 * @param styles
+	 *            style filters to select from
 	 * @return a style filter
 	 */
 	public StyleFilter findStyleFilter(Object feature, List<StyleFilter> styles) {
@@ -257,8 +260,9 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 
 	/**
 	 * Build list of style filters from style definitions.
-	 *
-	 * @param styleDefinitions list of style definitions
+	 * 
+	 * @param styleDefinitions
+	 *            list of style definitions
 	 * @return list of style filters
 	 */
 	private List<StyleFilter> initStyleFilters(List<StyleInfo> styleDefinitions) {

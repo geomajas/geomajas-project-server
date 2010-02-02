@@ -59,7 +59,7 @@ public class MergePolygonCommand implements Command<MergePolygonRequest, MergePo
 		Polygon[] polygons = new Polygon[request.getPolygons().length];
 		for (int i = 0; i < request.getPolygons().length; i++) {
 			try {
-				polygons[i] = (Polygon) converter.toJts(request.getPolygons()[i]);
+				polygons[i] = (Polygon) converter.toInternal(request.getPolygons()[i]);
 			} catch (Exception e) {
 				throw new GeomajasException(ExceptionCode.MERGE_NO_POLYGON);
 			}

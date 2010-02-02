@@ -192,7 +192,7 @@ public class GeoToolsFilterTest extends TestCase {
 	}
 
 	public void testcreateBBoxFilter() throws Exception {
-		Envelope bbox = new Envelope(-0.4d, -0.3d, -0.2d, 0.1d);
+		Envelope bbox = new Envelope(-0.4d, -0.2d, -0.3d, 0.1d);
 		Filter filter = filterCreator.createBboxFilter("EPSG:4326", bbox, "the_geom");
 		Iterator<?> it = layerModel.getElements(filter);
 

@@ -58,9 +58,7 @@ import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.layer.tile.Tile;
 import org.geomajas.layer.tile.VectorTile;
-import org.geomajas.service.BboxService;
 import org.geomajas.service.DtoConverterService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.vividsolutions.jts.geom.Envelope;
@@ -84,9 +82,6 @@ import com.vividsolutions.jts.geom.PrecisionModel;
 @Component()
 public class DtoConverterServiceImpl implements DtoConverterService {
 
-	@Autowired
-	private BboxService bboxService;
-
 	private ConvertUtilsBean cub = new ConvertUtilsBean();
 
 	// -------------------------------------------------------------------------
@@ -101,7 +96,7 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 	 * @return The server side attribute representation. As we don't know at this point what kind of object the
 	 *         attribute is (that's a problem for the <code>FeatureModel</code>), we return an <code>Object</code>.
 	 */
-	public Object toObject(Attribute attribute) {
+	public Object toInternal(Attribute attribute) {
 		if (attribute instanceof PrimitiveAttribute<?>) {
 			return toPrimitiveObject((PrimitiveAttribute<?>) attribute);
 		} else if (attribute instanceof AssociationAttribute) {
@@ -224,18 +219,18 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 	 *            The DTO feature that comes from the client.
 	 * @return Returns a server-side feature object.
 	 */
-	public InternalFeature toFeature(Feature dto) {
+	public InternalFeature toInternal(Feature dto) {
 		if (dto == null) {
 			return null;
 		}
-		InternalFeatureImpl feature = new InternalFeatureImpl(bboxService);
+		InternalFeatureImpl feature = new InternalFeatureImpl();
 		if (dto.isEditable()) {
 			// TODO implement this????
 		}
 		feature.setAttributes(toFeature(dto.getAttributes()));
 		feature.setId(dto.getId());
 		feature.setLabel(dto.getLabel());
-		feature.setGeometry(toJts(dto.getGeometry()));
+		feature.setGeometry(toInternal(dto.getGeometry()));
 		feature.setClipped(dto.isClipped());
 		return feature;
 	}
@@ -259,7 +254,7 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 	private Map<String, Object> toFeature(Map<String, Attribute> attributes) {
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		for (String name : attributes.keySet()) {
-			map.put(name, toObject(attributes.get(name)));
+			map.put(name, toInternal(attributes.get(name)));
 		}
 		return map;
 	}
@@ -329,7 +324,7 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 	 *            The DTO geometry to convert into a JTS geometry.
 	 * @return Returns a JTS geometry.
 	 */
-	public com.vividsolutions.jts.geom.Geometry toJts(Geometry geometry) {
+	public com.vividsolutions.jts.geom.Geometry toInternal(Geometry geometry) {
 		if (geometry == null) {
 			return null;
 		}
@@ -352,10 +347,10 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		} else if ("LineString".equals(geometryType)) {
 			jts = factory.createLineString(convertCoordinates(geometry));
 		} else if ("Polygon".equals(geometryType)) {
-			LinearRing exteriorRing = (LinearRing) toJts(geometry.getGeometries()[0]);
+			LinearRing exteriorRing = (LinearRing) toInternal(geometry.getGeometries()[0]);
 			LinearRing[] interiorRings = new LinearRing[geometry.getGeometries().length - 1];
 			for (int i = 0; i < interiorRings.length; i++) {
-				interiorRings[i] = (LinearRing) toJts(geometry.getGeometries()[i + 1]);
+				interiorRings[i] = (LinearRing) toInternal(geometry.getGeometries()[i + 1]);
 			}
 			jts = factory.createPolygon(exteriorRing, interiorRings);
 		} else if ("MultiPoint".equals(geometryType)) {
@@ -409,7 +404,7 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 	private com.vividsolutions.jts.geom.Geometry[] convertGeometries(Geometry geometry,
 			com.vividsolutions.jts.geom.Geometry[] geometries) {
 		for (int i = 0; i < geometries.length; i++) {
-			geometries[i] = toJts(geometry.getGeometries()[i]);
+			geometries[i] = toInternal(geometry.getGeometries()[i]);
 		}
 		return geometries;
 	}
@@ -475,7 +470,7 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 	 *            Geomajas <code>Bbox</code>
 	 * @return JTS envelope
 	 */
-	public Envelope toEnvelope(Bbox bbox) {
+	public Envelope toInternal(Bbox bbox) {
 		return new Envelope(bbox.getX(), bbox.getMaxX(), bbox.getY(), bbox.getMaxY());
 	}
 
@@ -486,7 +481,7 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 	 *            JTS envelope
 	 * @return Geomajas <code>Bbox</code>
 	 */
-	public Bbox fromEnvelope(Envelope envelope) {
+	public Bbox toDto(Envelope envelope) {
 		return new Bbox(envelope.getMinX(), envelope.getMinY(), envelope.getWidth(), envelope.getHeight());
 	}
 

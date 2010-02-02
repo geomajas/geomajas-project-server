@@ -35,7 +35,6 @@ import org.geomajas.cache.CacheException;
 import org.geomajas.cache.CacheService;
 import org.geomajas.cache.broker.Broker;
 import org.geomajas.cache.store.RenderContent;
-import org.geomajas.configuration.ApplicationInfo;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.internal.layer.tile.InternalTileImpl;
 import org.geomajas.internal.rendering.DefaultLayerPaintContext;
@@ -50,7 +49,6 @@ import org.geomajas.rendering.painter.LayerPaintContext;
 import org.geomajas.rendering.painter.PaintFactory;
 import org.geomajas.rendering.painter.TilePaintContext;
 import org.geomajas.service.ApplicationService;
-import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.cql2.CQLException;
@@ -58,10 +56,7 @@ import org.geotools.referencing.CRS;
 import org.opengis.filter.Filter;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import com.vividsolutions.jts.geom.Envelope;
@@ -71,25 +66,14 @@ import com.vividsolutions.jts.geom.Envelope;
  * This broker gets it's content the old fashioned way: it creates the content in real-time. There is no underlying
  * caching mechanism here, just the default rendering algorithms.
  * </p>
- *
+ * 
  * @author Pieter De Graef
  */
 @Component()
 public class RealTimeBroker implements Broker {
 
-	private final Logger log = LoggerFactory.getLogger(RealTimeBroker.class);
-
-	@Autowired
-	private ApplicationContext applicationContext;
-
 	@Autowired
 	private ApplicationService runtime;
-
-	@Autowired
-	private ApplicationInfo application;
-
-	@Autowired
-	private FilterService filterCreator;
 
 	@Autowired
 	private PaintFactory paintFactory;
@@ -99,7 +83,7 @@ public class RealTimeBroker implements Broker {
 
 	/**
 	 * Try and get the content for a specific empty <code>RenderContent</code> object.
-	 *
+	 * 
 	 * @param renderContent
 	 *            An empty renderContent. This function will create the content, using a <code>MapImageCreator</code>.
 	 * @return Since this function does not rely on a caching mechanism, it can always create the content. Therefore
@@ -156,8 +140,8 @@ public class RealTimeBroker implements Broker {
 
 		// 6: Image creator for creating images:
 		TileImageCreator imageCreator = paintFactory.createTileImageCreator(tile, true);
-		//imageCreator.setRenderingHints(vLayer.getLayerInfo().getRenderingStrategies().getRenderingStrategy().get(0)
-		//        .getParameterMap().getParameters());
+		// imageCreator.setRenderingHints(vLayer.getLayerInfo().getRenderingStrategies().getRenderingStrategy().get(0)
+		// .getParameterMap().getParameters());
 		if (paintGeometries) {
 			imageCreator.registerPainter(new GeometryImagePainter(geoService));
 		}
@@ -179,10 +163,12 @@ public class RealTimeBroker implements Broker {
 
 	/**
 	 * The writing to a ByteArrayOutputStream must be synchronized to avoid error in the JVM.
-	 *
-	 * @param image image to write (including meta-data)
+	 * 
+	 * @param image
+	 *            image to write (including meta-data)
 	 * @return image data
-	 * @throws CacheException when IOException occurred while writing
+	 * @throws CacheException
+	 *             when IOException occurred while writing
 	 */
 	private synchronized byte[] createImage(RenderedImage image) throws CacheException {
 		byte[] result;

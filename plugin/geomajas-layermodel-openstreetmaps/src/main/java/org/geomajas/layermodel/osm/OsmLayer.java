@@ -33,7 +33,7 @@ import org.geomajas.layer.RasterLayer;
 import org.geomajas.layer.tile.RasterImage;
 import org.geomajas.rendering.RenderException;
 import org.geomajas.service.ApplicationService;
-import org.geomajas.service.BboxService;
+import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.referencing.CRS;
@@ -80,7 +80,7 @@ public class OsmLayer implements RasterLayer {
 	private ApplicationService runtime;
 
 	@Autowired
-	private BboxService bboxService;
+	private DtoConverterService converterService;
 
 	@Autowired
 	private GeoService geoService;
@@ -107,6 +107,10 @@ public class OsmLayer implements RasterLayer {
 			throw new LayerException(ExceptionCode.LAYER_CRS_PROBLEMATIC, exception, layerInfo.getId(), getLayerInfo()
 					.getCrs());
 		}
+	}
+
+	public Envelope getMaxBounds() {
+		return converterService.toInternal(layerInfo.getMaxExtent());
 	}
 
 	public void setLayerInfo(RasterLayerInfo layerInfo) throws LayerException {
@@ -246,7 +250,7 @@ public class OsmLayer implements RasterLayer {
 	}
 
 	private Envelope clipBounds(Envelope bounds) {
-		return bounds.intersection(bboxService.toEnvelope(getLayerInfo().getMaxExtent()));
+		return bounds.intersection(getMaxBounds());
 	}
 
 	private void calculatePredefinedResolutions() {

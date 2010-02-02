@@ -55,7 +55,7 @@ public interface DtoConverterService {
 	 * @return The server side attribute representation. As we don't know at this point what kind of object the
 	 *         attribute is (that's a problem for the <code>FeatureModel</code>), we return an <code>Object</code>.
 	 */
-	Object toObject(Attribute attribute);
+	Object toInternal(Attribute attribute);
 
 	/**
 	 * Converts a server-side attribute object into a DTO attribute.
@@ -88,7 +88,7 @@ public interface DtoConverterService {
 	 *            The DTO feature that comes from the client.
 	 * @return Returns a server-side feature object.
 	 */
-	InternalFeature toFeature(Feature dto);
+	InternalFeature toInternal(Feature dto);
 
 	// -------------------------------------------------------------------------
 	// Geometry conversion:
@@ -110,7 +110,7 @@ public interface DtoConverterService {
 	 *            The DTO geometry to convert into a JTS geometry.
 	 * @return Returns a JTS geometry.
 	 */
-	com.vividsolutions.jts.geom.Geometry toJts(Geometry geometry);
+	com.vividsolutions.jts.geom.Geometry toInternal(Geometry geometry);
 
 	// -------------------------------------------------------------------------
 	// Tile conversion:
@@ -136,7 +136,7 @@ public interface DtoConverterService {
 	 *            Geomajas bbox
 	 * @return JTS envelope
 	 */
-	Envelope toEnvelope(Bbox bbox);
+	Envelope toInternal(Bbox bbox);
 
 	/**
 	 * Convert JTS envelope into a bbox.
@@ -145,5 +145,5 @@ public interface DtoConverterService {
 	 *            JTS envelope
 	 * @return Geomajas bbox
 	 */
-	Bbox fromEnvelope(Envelope envelope);
+	Bbox toDto(Envelope envelope);
 }

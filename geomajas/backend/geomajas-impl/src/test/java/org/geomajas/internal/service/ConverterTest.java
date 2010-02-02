@@ -40,8 +40,8 @@ public class ConverterTest {
 	@Test
 	public void testToObject() throws Exception {
 		BooleanAttribute attribute = new BooleanAttribute(true);
-		assertTrue(converter.toObject(attribute) instanceof Boolean);
-		assertTrue((Boolean) converter.toObject(attribute));
+		assertTrue(converter.toInternal(attribute) instanceof Boolean);
+		assertTrue((Boolean) converter.toInternal(attribute));
 	}
 
 	@Test

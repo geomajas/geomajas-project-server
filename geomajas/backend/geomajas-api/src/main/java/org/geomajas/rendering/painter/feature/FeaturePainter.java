@@ -33,17 +33,17 @@ import org.geomajas.rendering.painter.LayerPaintContext;
  * <p>
  * Interface for painter that builds JTS features. Implementations of this interface will be used in the
  * <code>VectorLayer</code>'s paint function. Basically they transform the object from the <code>LayerModel</code> into
- * <code>JtsFeature</code> objects. Different implementations of this interface will transform to different
- * implementations of a <code>JtsFeature</code>.
+ * <code>InternalFeature</code> objects. Different implementations of this interface will transform to different
+ * implementations of a <code>InternalFeature</code>.
  * </p>
  * <p>
  * It also adds the possibility to determine what parts of the features should be painted: attributes, geometries,
  * styles. Leaving out some (or all) of these parts can increase performance. Supported options are:
  * <ul>
- * <li><b>renderingAttributes</b>: will attributes be added to the <code>JtsFeature</code> objects or not?</li>
- * <li><b>renderingGeometry</b>: will geometries be added to the <code>JtsFeature</code> objects or not?</li>
- * <li><b>renderingStyle</b>: will style definitions be added to the <code>JtsFeature</code> objects or not?</li>
- * <li><b>renderingLabel</b>: will the label string be added to the <code>JtsFeature</code> objects or not?</li>
+ * <li><b>renderingAttributes</b>: will attributes be added to the <code>InternalFeature</code> objects or not?</li>
+ * <li><b>renderingGeometry</b>: will geometries be added to the <code>InternalFeature</code> objects or not?</li>
+ * <li><b>renderingStyle</b>: will style definitions be added to the <code>InternalFeature</code> objects or not?</li>
+ * <li><b>renderingLabel</b>: will the label string be added to the <code>InternalFeature</code> objects or not?</li>
  * </ul>
  * </p>
  * 
@@ -52,7 +52,8 @@ import org.geomajas.rendering.painter.LayerPaintContext;
 public interface FeaturePainter {
 
 	/**
-	 * Paint an individual feature. In other words transform the generic feature object into a <code>JtsFeature</code>.
+	 * Paint an individual feature. In other words transform the generic feature object into a
+	 * <code>InternalFeature</code>.
 	 * 
 	 * @param paintContext
 	 *            The provided painting context. It helps to determine what style a feature should receive.
@@ -65,24 +66,24 @@ public interface FeaturePainter {
 	void paint(LayerPaintContext paintContext, Object feature) throws RenderException;
 
 	/**
-	 * Returns the full list of <code>JtsFeature</code> objects.
+	 * Returns the full list of <code>InternalFeature</code> objects.
 	 */
 	List<InternalFeature> getFeatures();
 
-	/** Will attributes be added to the <code>JtsFeature</code> objects or not? */
+	/** Will attributes be added to the <code>InternalFeature</code> objects or not? */
 	boolean isRenderingAttributes();
 
-	/** Will geometries be added to the <code>JtsFeature</code> objects or not? */
+	/** Will geometries be added to the <code>InternalFeature</code> objects or not? */
 	boolean isRenderingGeometry();
 
-	/** Will style definitions be added to the <code>JtsFeature</code> objects or not? */
+	/** Will style definitions be added to the <code>InternalFeature</code> objects or not? */
 	boolean isRenderingStyle();
 
-	/** Will the label string be added to the <code>JtsFeature</code> objects or not? */
+	/** Will the label string be added to the <code>InternalFeature</code> objects or not? */
 	boolean isRenderingLabels();
 
 	/**
-	 * Determine whether attributes will be added to the <code>JtsFeature</code> objects or not.
+	 * Determine whether attributes will be added to the <code>InternalFeature</code> objects or not.
 	 * 
 	 * @param renderingAttributes
 	 *            The new value.
@@ -90,7 +91,7 @@ public interface FeaturePainter {
 	void setRenderingAttributes(boolean renderingAttributes);
 
 	/**
-	 * Determine whether geometries will be added to the <code>JtsFeature</code> objects or not.
+	 * Determine whether geometries will be added to the <code>InternalFeature</code> objects or not.
 	 * 
 	 * @param renderingGeometry
 	 *            The new value.
@@ -98,7 +99,7 @@ public interface FeaturePainter {
 	void setRenderingGeometry(boolean renderingGeometry);
 
 	/**
-	 * Determine whether style definitions will be added to the <code>JtsFeature</code> objects or not.
+	 * Determine whether style definitions will be added to the <code>InternalFeature</code> objects or not.
 	 * 
 	 * @param renderingStyle
 	 *            The new value.
@@ -106,7 +107,7 @@ public interface FeaturePainter {
 	void setRenderingStyle(boolean renderingStyle);
 
 	/**
-	 * Determine whether the label string will be added to the <code>JtsFeature</code> objects or not.
+	 * Determine whether the label string will be added to the <code>InternalFeature</code> objects or not.
 	 * 
 	 * @param renderingLabels
 	 *            The new value.

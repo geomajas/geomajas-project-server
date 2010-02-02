@@ -22,7 +22,9 @@
  */
 package org.geomajas.extension.command.configuration;
 
-import com.vividsolutions.jts.geom.Envelope;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.geomajas.command.Command;
 import org.geomajas.configuration.ApplicationInfo;
 import org.geomajas.configuration.LayerInfo;
@@ -33,7 +35,7 @@ import org.geomajas.geometry.Bbox;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.LayerException;
-import org.geomajas.service.BboxService;
+import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
 import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.jts.JTS;
@@ -46,8 +48,7 @@ import org.opengis.referencing.operation.TransformException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.vividsolutions.jts.geom.Envelope;
 
 /**
  * This command fetches, and returns the initial application configuration for a specific MapWidget.
@@ -61,7 +62,7 @@ public class GetMapConfigurationCommand implements Command<GetMapConfigurationRe
 	private ApplicationInfo application;
 
 	@Autowired
-	private BboxService bboxService;
+	private DtoConverterService converterService;
 
 	@Autowired
 	private GeoService geoService;
@@ -113,9 +114,9 @@ public class GetMapConfigurationCommand implements Command<GetMapConfigurationRe
 		try {
 			CoordinateReferenceSystem mapCrs = CRS.decode(mapCrsKey);
 			CoordinateReferenceSystem layerCrs = CRS.decode(layerCrsKey);
-			Envelope serverEnvelope = bboxService.toEnvelope(serverBbox);
+			Envelope serverEnvelope = converterService.toInternal(serverBbox);
 			MathTransform transformer = geoService.findMathTransform(layerCrs, mapCrs);
-			return bboxService.fromEnvelope(JTS.transform(serverEnvelope, transformer));
+			return converterService.toDto(JTS.transform(serverEnvelope, transformer));
 		} catch (FactoryException e) {
 			throw new LayerException(e, ExceptionCode.LAYER_CRS_INIT_PROBLEM);
 		} catch (TransformException e) {

@@ -25,26 +25,35 @@ package org.geomajas.layer;
 import org.geomajas.configuration.LayerInfo;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
+import com.vividsolutions.jts.geom.Envelope;
+
 /**
  * A layer which is is normally used as part of a map.
- *
- * @param <T> type of layer configuration info
- *
+ * 
+ * @param <T>
+ *            type of layer configuration info
+ * 
  * @author check subversion
  */
 public interface Layer<T extends LayerInfo> {
 
 	/**
 	 * Get information about the layer.
-	 *
+	 * 
 	 * @return layer info
 	 */
 	T getLayerInfo();
 
 	/**
 	 * Get coordinate reference system for this layer.
-	 *
+	 * 
 	 * @return Coordinate reference system for this layer.
 	 */
 	CoordinateReferenceSystem getCrs();
+
+	/**
+	 * Get the maximum bounds of this layer as a JTS envelope. The coordinates within this bounding box are expressed in
+	 * the layer's own coordinate reference system.
+	 */
+	Envelope getMaxBounds();
 }

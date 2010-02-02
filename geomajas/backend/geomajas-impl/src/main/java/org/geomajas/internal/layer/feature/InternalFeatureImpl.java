@@ -30,7 +30,6 @@ import org.geomajas.configuration.StyleInfo;
 import org.geomajas.global.Json;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.InternalFeature;
-import org.geomajas.service.BboxService;
 
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
@@ -47,8 +46,6 @@ import com.vividsolutions.jts.geom.Geometry;
  * @author Pieter De Graef
  */
 public class InternalFeatureImpl implements InternalFeature {
-
-	private BboxService bboxService;
 
 	/** The feature's unique identifier. It's format is as follows: "[layer ID].[local ID]". */
 	private String id;
@@ -78,8 +75,7 @@ public class InternalFeatureImpl implements InternalFeature {
 	// Constructors:
 	// -------------------------------------------------------------------------
 
-	public InternalFeatureImpl(BboxService bboxService) {
-		this.bboxService = bboxService;
+	public InternalFeatureImpl() {
 	}
 
 	public InternalFeatureImpl(InternalFeature other) {
@@ -98,7 +94,7 @@ public class InternalFeatureImpl implements InternalFeature {
 	 * Create a clone.
 	 */
 	public Object clone() {
-		InternalFeatureImpl f = new InternalFeatureImpl(bboxService);
+		InternalFeatureImpl f = new InternalFeatureImpl();
 		f.setAttributes(new HashMap<String, Object>(attributes));
 		f.setGeometry((Geometry) geometry.clone());
 		f.setId(id);

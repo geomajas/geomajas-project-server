@@ -29,7 +29,6 @@ import org.geomajas.extension.command.dto.GetRasterDataRequest;
 import org.geomajas.extension.command.dto.GetRasterDataResponse;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
-import org.geomajas.internal.service.DtoConverterServiceImpl;
 import org.geomajas.layer.RasterLayer;
 import org.geomajas.layer.tile.RasterImage;
 import org.geomajas.service.ApplicationService;
@@ -49,7 +48,7 @@ import org.springframework.stereotype.Component;
  * determine the indices. The client can cache as many tiles as it likes.
  * <p/>
  * </p>
- *
+ * 
  * @author Pieter De Graef, Jan De Moerloose
  */
 @Component()
@@ -59,6 +58,9 @@ public class GetRasterDataCommand implements Command<GetRasterDataRequest, GetRa
 
 	@Autowired
 	private ApplicationService runtimeParameters;
+
+	@Autowired
+	private DtoConverterService converterService;
 
 	public GetRasterDataResponse getEmptyCommandResponse() {
 		return new GetRasterDataResponse();
@@ -73,10 +75,9 @@ public class GetRasterDataCommand implements Command<GetRasterDataRequest, GetRa
 			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "crs");
 		}
 		RasterLayer rasterlayer = (RasterLayer) runtimeParameters.getLayer(request.getLayerId());
-		List<RasterImage> images;
 		log.debug("execute() : bbox {}", request.getBbox());
-		DtoConverterService converter = new DtoConverterServiceImpl();
-		images = rasterlayer.paint(request.getCrs(), converter.toEnvelope(request.getBbox()), request.getScale());
+		List<RasterImage> images = rasterlayer.paint(request.getCrs(), converterService.toInternal(request.getBbox()),
+				request.getScale());
 		log.debug("execute() : returning {} images", images.size());
 		response.setRasterData(images);
 		if (images.size() > 0) {
