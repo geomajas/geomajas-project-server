@@ -24,7 +24,7 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <article id="release" lang="en">
-  <title>How to release Geomajas</title>
+  <title>Migrating between Geomajas version</title>
 
   <toc />
 
@@ -53,6 +53,10 @@
         removed. These are obsolete with the introduction of the
         <code>VectorLayerService</code>.</para>
       </listitem>
+
+      <listitem>
+        <para />
+      </listitem>
     </itemizedlist>
   </section>
 
@@ -63,10 +67,6 @@
       <listitem>
         <para>"layerRef" is renamed to "layerIds" in
         <code>LayerTreeNodeInfo</code>.</para>
-      </listitem>
-
-      <listitem>
-        <para />
       </listitem>
     </itemizedlist>
   </section>

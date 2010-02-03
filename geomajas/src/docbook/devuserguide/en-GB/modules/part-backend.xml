@@ -34,7 +34,7 @@
 
     <para>The layer models provide the actual data which can be combined for
     the maps. There are basically two types of layer models, providing either
-    raster data (bitmaps) or vector data. The provided vector layer models
+    raster data (bitmaps) or vector data. The provided vector layers
     are</para>
 
     <para><itemizedlist>
@@ -59,17 +59,7 @@
         </listitem>
 
         <listitem>
-          <para><emphasis>shapeinmem</emphasis> (vector, in "impl") :</para>
-        </listitem>
-
-        <listitem>
-          <para><emphasis>maxcoordsimplifier</emphasis> (vector, in "impl")
-          :</para>
-        </listitem>
-
-        <listitem>
-          <para><emphasis>readonlysimplifier</emphasis> (vector, in "impl")
-          :</para>
+          <para><emphasis>shapeinmem</emphasis> (vector) :</para>
         </listitem>
       </itemizedlist>Other extensions typically provide additional
     commands.</para>
@@ -198,14 +188,14 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
       <title>Map configuration</title>
 
       <para>A map is a client side object. The Geomajas backend works almost
-      exclusively on layers<footnote>
+      exclusively on layers.<footnote>
           <para>The only current exception is the printing command which
           converts maps to PDF document. Clearly this also uses the map
           configuration.</para>
-        </footnote>. On the client side however, these layers are combined
-      into maps. In general, the backend never needs to know which map the
-      layer is displayed in when doing its work. However the backend does need
-      to know the coordinate reference system which is used.</para>
+        </footnote>On the client side however, these layers are combined into
+      maps. In general, the backend never needs to know which map the layer is
+      displayed in when doing its work. However the backend does need to know
+      the coordinate reference system which is used.</para>
 
       <programlisting>&lt;bean name="sampleMap" class="org.geomajas.configuration.MapInfo"&gt;
     &lt;property name="id" value="sampleSMap"/&gt;
@@ -361,8 +351,6 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
       client side. Secondly, there is a distinction between raster and vector
       layers as they each needs a lot of specific information.</para>
 
-      <para></para>
-
       <section>
         <title>Raster layer</title>
 
@@ -388,8 +376,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         object.</para>
 
         <para>The lines below are extra parameters which are layer specific.
-        The example here shows some example values as needed for the WMS layer
-        model.</para>
+        The example here shows some example values as needed for the WMS
+        layer.</para>
 
         <programlisting>&lt;bean name="bluemarbleInfo" class="org.geomajas.configuration.RasterLayerInfo"&gt;
     &lt;property name="id" value="bluemarble"/&gt;
@@ -434,17 +422,14 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         <para>The definition of the actual layer is similar to the definition
         of a raster layer.</para>
 
-        <programlisting>&amp;lt;bean name="countries" class="org.geomajas.internal.layer.layertree.DefaultVectorLayer" &amp;gt;
-    &amp;lt;property name="layerInfo" ref="countriesInfo" /&amp;gt;
-    &amp;lt;property name="layerModel" ref="countriesModel" /&amp;gt;
-&amp;lt;/bean&amp;gt;
-</programlisting>
+        <programlisting>&lt;bean name="countries" class="org.geomajas.layer.shapeinmem.ShapeInMemLayer" &gt;
+    &lt;property name="layerInfo" ref="countriesInfo" /&gt;
+    &lt;property name="url" value="classpath:shapes/africa/country.shp"/&gt;
+&lt;/bean&gt;</programlisting>
 
-        <para>In most cases the class name to use is
-        "<code>org.geomajas.internal.layer.layertree.DefaultVectorLayer</code>".
-        The difference between the different types of vector layer is
-        typically in the layer model, the object which creates, reads, updates
-        and deletes the features.</para>
+        <para>The "layerInfo" property always needs to be set. Other
+        properties depend on the layer class (options are detailed
+        below).</para>
 
         <para>For the layer configuration, you have to create the layer info
         object.</para>
@@ -585,19 +570,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         association attributes defined: MANY-TO-ONE and ONE-TO-MANY. These
         reflect the many-to-one and one-to-many relationships as defined in an
         entity-relationship model and can only be used in conjunction with the
-        HibernateLayerModel.</para>
-
-        <para>Lastly, we need to build the layer model which needs to be
-        provided to the layer to be able to create, retrieve, update and
-        delete the features.</para>
-
-        <programlisting>&lt;bean name="countriesModel" class="ShapeInMemLayer"&gt;
-    &lt;property name="url" value="classpath:shapes/africa/country.shp"/&gt;
-&lt;/bean&gt;
-</programlisting>
-
-        <para>Apart from that, some parameters which are specific for the
-        layer module can be defined.</para>
+        <code>HibernateLayer</code>.</para>
 
         <section>
           <title>Validation</title>
@@ -652,7 +625,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
               <tgroup cols="2">
                 <thead>
                   <row>
-                    <entry>ShapeInMemLayerModel configuration</entry>
+                    <entry>ShapeInMemLayer configuration</entry>
                   </row>
                 </thead>
 
@@ -683,7 +656,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
               <tgroup cols="2">
                 <thead>
                   <row>
-                    <entry>GeotoolsLayerModel configuration</entry>
+                    <entry>GeotoolsLayer configuration</entry>
                   </row>
                 </thead>
 
@@ -735,8 +708,9 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
                   <row>
                     <entry>version</entry>
 
-                    <entry>????? Check your server configuration for possible
-                    values.</entry>
+                    <entry>Version of the WMS format which should be used.
+                    Check your server configuration for possible values.
+                    </entry>
                   </row>
 
                   <row>
@@ -813,8 +787,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
       <listitem>
         <para><emphasis>layer</emphasis> : all interfaces, services,
         exceptions and data transfer objects related with the layer extension
-        points. These include the definition of a layer, a layer model,
-        features and feature models.</para>
+        points. These include the definition of a layer, features and feature
+        models.</para>
       </listitem>
 
       <listitem>
@@ -1998,7 +1972,7 @@ public class MySuperDoItCommand implements Command&lt;MySuperDoItRequest, MySupe
   </chapter>
 
   <chapter id="chapter-layer-models">
-    <title>Layer Models</title>
+    <title>Layers</title>
 
     <para></para>
   </chapter>
