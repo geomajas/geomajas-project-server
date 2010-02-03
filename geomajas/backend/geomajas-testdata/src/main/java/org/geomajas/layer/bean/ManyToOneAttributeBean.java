@@ -20,17 +20,17 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.geomajas.layermodel.bean;
+package org.geomajas.layer.bean;
 
 import java.util.Date;
 
 /**
- * Java bean for one to many attribute.
+ * Java bean for many-to-one attribute.
  * 
  * @author Jan De Moerloose
  * 
  */
-public class OneToManyAttributeBean {
+public class ManyToOneAttributeBean {
 
 	private Long id;
 

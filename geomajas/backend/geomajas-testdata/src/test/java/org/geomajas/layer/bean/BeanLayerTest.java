@@ -1,4 +1,4 @@
-package org.geomajas.layermodel.bean;
+package org.geomajas.layer.bean;
 
 import java.util.Calendar;
 

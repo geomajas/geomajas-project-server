@@ -20,6 +20,7 @@
   ~ You should have received a copy of the GNU Affero General Public License
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
+
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="
@@ -92,7 +93,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 	</bean>
 
 	<bean class="org.geomajas.configuration.FeatureInfo" name="beansFeatureInfo">
-		<property name="dataSourceName" value="org.geomajas.layermodel.bean.FeatureBean" />
+		<property name="dataSourceName" value="org.geomajas.layer.bean.FeatureBean" />
 		<property name="identifier">
 			<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
 				<property name="label" value="Id" />
@@ -119,11 +120,11 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		</property>
 	</bean>
 
-	<bean name="beans" class="org.geomajas.layermodel.bean.BeanLayer">
+	<bean name="beans" class="org.geomajas.layer.bean.BeanLayer">
 		<property name="layerInfo" ref="beansInfo" />
 		<property name="features">
 			<list>
-				<bean class="org.geomajas.layermodel.bean.FeatureBean">
+				<bean class="org.geomajas.layer.bean.FeatureBean">
 					<property name="id" value="1" />
 					<property name="booleanAttr" value="true" />
 					<property name="currencyAttr" value="100,23" />

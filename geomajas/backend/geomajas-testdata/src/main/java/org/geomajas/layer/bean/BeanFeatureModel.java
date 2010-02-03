@@ -20,7 +20,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.geomajas.layermodel.bean;
+package org.geomajas.layer.bean;
 
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
