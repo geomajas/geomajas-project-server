@@ -28,5 +28,4 @@
 	"date" : "Date:",
 	"northArrow" : "North arrow:",
 	"rasterDPI" : "Raster DPI:"
-		
 })
