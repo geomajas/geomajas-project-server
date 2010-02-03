@@ -20,10 +20,12 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package org.geomajas.service;
 
 import java.util.Date;
 
+import org.geomajas.layer.feature.FeatureModel;
 import org.opengis.filter.Filter;
 
 import com.vividsolutions.jts.geom.Envelope;
@@ -196,4 +198,13 @@ public interface FilterService {
 	 * @return filter
 	 */
 	Filter createTrueFilter();
+
+	/**
+	 * Register a feature model.
+	 * <p/>
+	 * Only feature models which are registered can be used when filtering.
+	 *
+	 * @param featureModel feature model to register
+	 */
+	void registerFeatureModel(FeatureModel featureModel);
 }

@@ -267,7 +267,7 @@ public class HibernateFeatureModel extends HibernateLayerUtil implements Feature
 	 * @param name
 	 *            The attribute's full name. (can be attr1.attr2)
 	 * @return Returns the value. In case a one-to-many is passed along the way, an array will be returned.
-	 * @throws LayerException
+	 * @throws LayerException oops
 	 */
 	private Object getAttributeRecursively(Object feature, String name) throws LayerException {
 		if (feature == null) {

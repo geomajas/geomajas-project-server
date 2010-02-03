@@ -39,6 +39,7 @@ import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.rendering.painter.PaintFactory;
 import org.geomajas.rendering.style.StyleFilter;
 import org.geomajas.service.ApplicationService;
+import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
 import org.geomajas.service.VectorLayerService;
 import org.geotools.geometry.jts.JTS;
@@ -74,6 +75,9 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 
 	@Autowired
 	private PaintFactory paintFactory;
+
+	@Autowired
+	private FilterService filterService;
 
 	public void saveOrUpdate(String layerId, CoordinateReferenceSystem crs, List<InternalFeature> oldFeatures,
 			List<InternalFeature> newFeatures) throws GeomajasException {
@@ -136,11 +140,16 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 		}
 	}
 
-	public List<InternalFeature> getFeatures(String layerId, CoordinateReferenceSystem crs, Filter filter,
+	public List<InternalFeature> getFeatures(String layerId, CoordinateReferenceSystem crs, Filter queryFilter,
 			List<StyleInfo> styleDefinitions, int featureIncludes) throws GeomajasException {
 		VectorLayer layer = applicationService.getVectorLayer(layerId);
 		if (null == layer) {
 			throw new GeomajasException(ExceptionCode.VECTOR_LAYER_NOT_FOUND, layerId);
+		}
+
+		Filter filter = queryFilter;
+		if (null == filter) {
+			filter = filterService.createTrueFilter();
 		}
 
 		List<StyleFilter> styleFilters = null;
@@ -270,10 +279,16 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 		return styleFilters;
 	}
 
-	public Envelope getBounds(String layerId, CoordinateReferenceSystem crs, Filter filter) throws GeomajasException {
+	public Envelope getBounds(String layerId, CoordinateReferenceSystem crs, Filter queryFilter)
+			throws GeomajasException {
 		VectorLayer layer = applicationService.getVectorLayer(layerId);
 		if (null == layer) {
 			throw new GeomajasException(ExceptionCode.VECTOR_LAYER_NOT_FOUND, layerId);
+		}
+
+		Filter filter = queryFilter;
+		if (null == filter) {
+			filter = filterService.createTrueFilter();
 		}
 
 		MathTransform layerToTarget;
@@ -291,10 +306,15 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 		return bounds;
 	}
 
-	public List<Object> getObjects(String layerId, String attributeName, Filter filter) throws GeomajasException {
+	public List<Object> getObjects(String layerId, String attributeName, Filter queryFilter) throws GeomajasException {
 		VectorLayer layer = applicationService.getVectorLayer(layerId);
 		if (null == layer) {
 			throw new GeomajasException(ExceptionCode.VECTOR_LAYER_NOT_FOUND, layerId);
+		}
+
+		Filter filter = queryFilter;
+		if (null == filter) {
+			filter = filterService.createTrueFilter();
 		}
 
 		List<Object> list = new ArrayList<Object>();

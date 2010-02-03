@@ -140,6 +140,18 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 					<property name="geometry"
 						value="MULTIPOLYGON(((0 0,1 0,1 1,0 1,0 0)))" />
 				</bean>
+				<bean class="org.geomajas.layer.bean.FeatureBean">
+					<property name="id" value="2" />
+					<property name="stringAttr" value="bean2" />
+					<property name="geometry"
+						value="MULTIPOLYGON(((4 0,6 0,6 3,4 3,4 0)))" />
+				</bean>
+				<bean class="org.geomajas.layer.bean.FeatureBean">
+					<property name="id" value="3" />
+					<property name="stringAttr" value="bean3" />
+					<property name="geometry"
+						value="MULTIPOLYGON(((2 1,6 1,7 2,2 2,2 1)))" />
+				</bean>
 			</list>
 		</property>
 	</bean>

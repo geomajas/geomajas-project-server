@@ -84,6 +84,9 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer {
 	@Autowired
 	private FilterService filterCreator;
 
+	@Autowired
+	private FilterService filterService;
+
 	private CoordinateReferenceSystem crs;
 
 	public CoordinateReferenceSystem getCrs() {
@@ -136,6 +139,7 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer {
 		if (null != getLayerInfo()) {
 			featureModel.setLayerInfo(getLayerInfo());
 		}
+		filterService.registerFeatureModel(featureModel);
 	}
 
 	public Iterator<?> getElements(Filter filter) throws LayerException {

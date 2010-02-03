@@ -26,6 +26,8 @@ package org.geomajas.internal.service;
 import java.util.Date;
 import java.util.HashSet;
 
+import org.geomajas.internal.layer.feature.FeatureModelRegistry;
+import org.geomajas.layer.feature.FeatureModel;
 import org.geomajas.service.FilterService;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.identity.FeatureIdImpl;
@@ -305,5 +307,16 @@ public final class FilterServiceImpl implements FilterService {
 	 */
 	public Filter createTrueFilter() {
 		return Filter.INCLUDE;
+	}
+
+	/**
+	 * Register a feature model.
+	 * <p/>
+	 * Only feature models which are registered can be used when filtering.
+	 *
+	 * @param featureModel feature model to register
+	 */
+	public void registerFeatureModel(FeatureModel featureModel) {
+		FeatureModelRegistry.getRegistry().register(featureModel);
 	}
 }

@@ -13,6 +13,16 @@
 
 	<dependencies>
 		<dependency>
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-api</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.geotools</groupId>
+			<artifactId>gt-referencing</artifactId>
+		</dependency>
+
+		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
 		</dependency>
@@ -26,21 +36,6 @@
 		<dependency>
 			<groupId>javax.annotation</groupId>
 			<artifactId>jsr250-api</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-api-experimental</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-api</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-impl</artifactId>
 		</dependency>
 
         <dependency>

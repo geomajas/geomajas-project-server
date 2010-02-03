@@ -20,6 +20,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package org.geomajas.layer.bean;
 
 import java.util.ArrayList;
@@ -100,10 +101,10 @@ public class BeanLayer implements VectorLayer {
 		return true;
 	}
 
-	public Iterator<?> getElements(Filter queryFilter) throws LayerException {
+	public Iterator<?> getElements(Filter filter) throws LayerException {
 		List<Object> filteredList = new ArrayList<Object>();
 		for (Object feature : featuresById.values()) {
-			if (queryFilter.evaluate(feature)) {
+			if (filter.evaluate(feature)) {
 				filteredList.add(feature);
 			}
 		}
@@ -192,6 +193,7 @@ public class BeanLayer implements VectorLayer {
 
 	protected void initFeatureModel() throws LayerException {
 		featureModel = new BeanFeatureModel(layerInfo, geoService.getSridFromCrs(layerInfo.getCrs()));
+		filterService.registerFeatureModel(featureModel);
 		for (Object f : features) {
 			featuresById.put(featureModel.getId(f), f);
 		}
