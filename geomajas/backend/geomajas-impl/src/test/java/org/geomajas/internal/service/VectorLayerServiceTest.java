@@ -26,21 +26,28 @@ package org.geomajas.internal.service;
 import com.vividsolutions.jts.geom.Envelope;
 import junit.framework.Assert;
 import org.geomajas.layer.bean.BeanLayer;
+import org.geomajas.layer.bean.FeatureBean;
+import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.VectorLayerService;
 import org.geotools.referencing.CRS;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opengis.filter.Filter;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 /**
  * Tests for VectorLayerService.
  *
- * @author <a href="mailto:joachim@progs.be">Joachim Van der Auwera</a>
+ * @author Joachim Van der Auwera
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
@@ -48,6 +55,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class VectorLayerServiceTest {
 
 	private static final String LAYER_ID = "beans";
+	private static final String STRING_ATTR = "stringAttr";
 	private static final double ALLOWANCE = .00000001;
 
 	@Autowired
@@ -61,19 +69,60 @@ public class VectorLayerServiceTest {
 	private FilterService filterService;
 
 	@Test
-	public void testSaveOrUpdate() {
-		// @todo
+	public void testSaveOrUpdate() throws Exception {
+		Filter filter = filterService.createFidFilter(new String[] {"3"});
+		CoordinateReferenceSystem crs = CRS.decode(beanLayer.getLayerInfo().getCrs());
+		List<InternalFeature> oldFeatures = layerService.getFeatures(LAYER_ID,
+				crs, filter, null, VectorLayerService.FEATURE_INCLUDE_ATTRIBUTES);
+		Assert.assertEquals(1, oldFeatures.size());
+		InternalFeature feature = oldFeatures.get(0);
+		List<InternalFeature> newFeatures = new ArrayList<InternalFeature>();
+		feature.getAttributes().put(STRING_ATTR, "changed");
+		newFeatures.addAll(oldFeatures);
+		feature.getAttributes().put(STRING_ATTR, "changed");
+		layerService.saveOrUpdate(LAYER_ID, crs, oldFeatures, newFeatures);
+
+		Iterator<FeatureBean> iterator =
+				(Iterator<FeatureBean>) beanLayer.getElements(filterService.createTrueFilter());
+		int count = 0;
+		while (iterator.hasNext()) {
+			FeatureBean featureBean = iterator.next();
+			count++;
+			if (3 == featureBean.getId()) {
+				Assert.assertEquals("changed", featureBean.getStringAttr());
+			}
+		}
+		Assert.assertEquals(3, count);
 	}
 
 	@Test
-	public void testGetFeatures() {
-		// @todo
+	public void testGetFeaturesLazy() throws Exception {
+		List<InternalFeature> features = layerService.getFeatures(LAYER_ID,
+				CRS.decode(beanLayer.getLayerInfo().getCrs()), null, null, VectorLayerService.FEATURE_INCLUDE_NONE);
+		Assert.assertEquals(3, features.size());
+		InternalFeature feature = features.get(0);
+		Assert.assertNotNull(feature.getId());
+		Assert.assertNull(feature.getGeometry());
+		Assert.assertNull(feature.getAttributes());
+		Assert.assertNull(feature.getLabel());
+		Assert.assertNull(feature.getStyleInfo());
+	}
+
+	@Test
+	public void testGetFeaturesAllFiltered() throws Exception {
+		Filter filter = filterService.createFidFilter(new String[] {"3"});
+		List<InternalFeature> features = layerService.getFeatures(LAYER_ID,
+				CRS.decode(beanLayer.getLayerInfo().getCrs()), filter, null, VectorLayerService.FEATURE_INCLUDE_ALL);
+		Assert.assertEquals(1, features.size());
+		InternalFeature feature = features.get(0);
+		Assert.assertEquals("3", feature.getLocalId());
+		Assert.assertNotNull(feature.getGeometry());
+		Assert.assertNotNull(feature.getAttributes().get(STRING_ATTR));
 	}
 
 	@Test
 	public void testGetBoundsAll() throws Exception {
 		Envelope bounds = layerService.getBounds(LAYER_ID, CRS.decode(beanLayer.getLayerInfo().getCrs()), null);
-		System.out.println("bound "+bounds.getMinX()+","+bounds.getMinY()+" - "+bounds.getMaxX()+","+bounds.getMaxY());
 		Assert.assertEquals(0, bounds.getMinX(), ALLOWANCE);
 		Assert.assertEquals(0, bounds.getMinY(), ALLOWANCE);
 		Assert.assertEquals(7, bounds.getMaxX(), ALLOWANCE);
@@ -82,9 +131,8 @@ public class VectorLayerServiceTest {
 
 	@Test
 	public void testGetBoundsFiltered() throws Exception {
-		Filter filter = filterService.createFidFilter(new String[] {"2","3"});
+		Filter filter = filterService.createFidFilter(new String[] {"2", "3"});
 		Envelope bounds = layerService.getBounds(LAYER_ID, CRS.decode(beanLayer.getLayerInfo().getCrs()), filter);
-		System.out.println("bound "+bounds.getMinX()+","+bounds.getMinY()+" - "+bounds.getMaxX()+","+bounds.getMaxY());
 		Assert.assertEquals(2, bounds.getMinX(), ALLOWANCE);
 		Assert.assertEquals(0, bounds.getMinY(), ALLOWANCE);
 		Assert.assertEquals(7, bounds.getMaxX(), ALLOWANCE);
