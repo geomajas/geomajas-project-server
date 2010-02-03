@@ -155,7 +155,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
          </property>
      </bean>
 
-	<bean name="rivers" class="org.geomajas.layermodel.shapeinmem.ShapeInMemLayer">
+	<bean name="rivers" class="org.geomajas.layer.shapeinmem.ShapeInMemLayer">
 		<property name="url" value="classpath:shapes/africa/Rivers.shp"/>
 		<property name="layerInfo" ref="riversInfo" />
 	</bean>

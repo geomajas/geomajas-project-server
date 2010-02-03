@@ -11,7 +11,7 @@
 		</layout>
 	</appender>
 
-	<logger name="org.geomajas.layermodel.hibernate.command.interceptor.HibernateTransactionInterceptor" level="DEBUG"/>
+	<logger name="org.geomajas.layer.hibernate.command.interceptor.HibernateTransactionInterceptor" level="DEBUG"/>
 
 	<root level="INFO">
 		<appender-ref ref="CONSOLE"/>

@@ -70,7 +70,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
         <property name="style" value="opacity:1;"/>
 	</bean>
 
-	<bean name="bluemarble" class="org.geomajas.layermodel.wms.WmsLayer" >
+	<bean name="bluemarble" class="org.geomajas.layer.wms.WmsLayer" >
 		<property name="layerInfo" ref="bluemarbleInfo" />
         <!-- When configuring your own applications, please do not use this WMS server -->
         <property name="baseWmsUrl" value="http://apps.geomajas.org/geoserver/wms"/>

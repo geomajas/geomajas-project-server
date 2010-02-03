@@ -387,28 +387,28 @@
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>org.geomajas.layermodel</groupId>
-				<artifactId>geomajas-layermodel-hibernate</artifactId>
+				<groupId>org.geomajas.layer</groupId>
+				<artifactId>geomajas-layer-hibernate</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>org.geomajas.layermodel</groupId>
-				<artifactId>geomajas-layermodel-geotools</artifactId>
+				<groupId>org.geomajas.layer</groupId>
+				<artifactId>geomajas-layer-geotools</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>org.geomajas.layermodel</groupId>
-				<artifactId>geomajas-layermodel-google</artifactId>
+				<groupId>org.geomajas.layer</groupId>
+				<artifactId>geomajas-layer-google</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>org.geomajas.layermodel</groupId>
-				<artifactId>geomajas-layermodel-openstreetmaps</artifactId>
+				<groupId>org.geomajas.layer</groupId>
+				<artifactId>geomajas-layer-openstreetmaps</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>org.geomajas.layermodel</groupId>
-				<artifactId>geomajas-layermodel-wms</artifactId>
+				<groupId>org.geomajas.layer</groupId>
+				<artifactId>geomajas-layer-wms</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>

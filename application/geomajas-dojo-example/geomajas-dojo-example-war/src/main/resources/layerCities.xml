@@ -260,7 +260,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
         </property>
     </bean>
 
-    <bean name="cities" class="org.geomajas.layermodel.shapeinmem.ShapeInMemLayer">
+    <bean name="cities" class="org.geomajas.layer.shapeinmem.ShapeInMemLayer">
 		<property name="layerInfo" ref="citiesInfo"/>
         <property name="url" value="classpath:shapes/africa/Cities.shp"/>
     </bean>

@@ -41,10 +41,28 @@
 &lt;bean name="countries" class="org.geomajas.internal.layer.layertree.DefaultVectorLayer" &gt;
     &lt;property name="layerInfo" ref="countriesInfo" /&gt;
     &lt;property name="layerModel" ref="countriesModel" /&gt;
-&lt;/bean&gt;</programlisting> into <programlisting>&lt;bean name="countries" class="org.geomajas.layermodel.shapeinmem.ShapeInMemLayer"&gt;
+&lt;/bean&gt;</programlisting> into <programlisting>&lt;bean name="countries" class="org.geomajas.layer.shapeinmem.ShapeInMemLayer"&gt;
     &lt;property name="layerInfo" ref="countriesInfo" /&gt;
     &lt;property name="url" value="classpath:shapes/africa/country.shp"/&gt;
-&lt;/bean&gt;</programlisting></para>
+&lt;/bean&gt;</programlisting>Note that this includes changing "layermodel" to
+        "layer" in all module and package names.</para>
+      </listitem>
+
+      <listitem>
+        <para><code>FeaturePainter</code> interface and related stuff has been
+        removed. These are obsolete with the introduction of the
+        <code>VectorLayerService</code>.</para>
+      </listitem>
+    </itemizedlist>
+  </section>
+
+  <section>
+    <title>Migrating from Geomajas 1.5.1 to Geomajas 1.5.2</title>
+
+    <itemizedlist>
+      <listitem>
+        <para>"layerRef" is renamed to "layerIds" in
+        <code>LayerTreeNodeInfo</code>.</para>
       </listitem>
 
       <listitem>
@@ -52,21 +70,6 @@
       </listitem>
     </itemizedlist>
   </section>
-
-	<section>
-	  <title>Migrating from Geomajas 1.5.1 to Geomajas 1.5.2</title>
-
-	  <itemizedlist>
-		<listitem>
-		  <para>"layerRef" is renamed to "layerIds" in
-		  <code>LayerTreeNodeInfo</code>.</para>
-		</listitem>
-
-		<listitem>
-		  <para />
-		</listitem>
-	  </itemizedlist>
-	</section>
 
   <section>
     <title>Migrating from Geomajas 1.5.0 to Geomajas 1.5.1</title>

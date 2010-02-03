@@ -31,10 +31,10 @@ http://www.springframework.org/schema/context
 http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 		>
 
-	<bean name="filterTest" class="org.geomajas.layermodel.shapeinmem.ShapeInMemLayer">
+	<bean name="filterTest" class="org.geomajas.layer.shapeinmem.ShapeInMemLayer">
 	</bean>
 
-	<bean name="test" class="org.geomajas.layermodel.shapeinmem.ShapeInMemLayer">
+	<bean name="test" class="org.geomajas.layer.shapeinmem.ShapeInMemLayer">
 	</bean>
 
 </beans>

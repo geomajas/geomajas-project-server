@@ -28,18 +28,18 @@
 			<artifactId>geomajas-command</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.geomajas.layermodel</groupId>
-			<artifactId>geomajas-layermodel-hibernate</artifactId>
+			<groupId>org.geomajas.layer</groupId>
+			<artifactId>geomajas-layer-hibernate</artifactId>
 		</dependency>
 
 		<dependency>
-			<groupId>org.geomajas.layermodel</groupId>
-			<artifactId>geomajas-layermodel-geotools</artifactId>
+			<groupId>org.geomajas.layer</groupId>
+			<artifactId>geomajas-layer-geotools</artifactId>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.geomajas.layermodel</groupId>
-			<artifactId>geomajas-layermodel-wms</artifactId>
+			<groupId>org.geomajas.layer</groupId>
+			<artifactId>geomajas-layer-wms</artifactId>
 			<scope>test</scope>
 		</dependency>
 		<dependency>

@@ -22,7 +22,7 @@
  */
 package org.geomajas.extension.printing.configuration;
 
-import org.geomajas.layermodel.hibernate.GenericHibernateDao;
+import org.geomajas.layer.hibernate.GenericHibernateDao;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;

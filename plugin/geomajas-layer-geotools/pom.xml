@@ -5,8 +5,8 @@
 		<version>1.5.3-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.geomajas.layermodel</groupId>
-	<artifactId>geomajas-layermodel-geotools</artifactId>
+	<groupId>org.geomajas.layer</groupId>
+	<artifactId>geomajas-layer-geotools</artifactId>
 	<packaging>jar</packaging>
 	<name>Geomajas layer model using Geotools</name>
 

@@ -71,7 +71,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 
 	</bean>
 
-	<bean name="belt" class="org.geomajas.layermodel.wms.WmsLayer" >
+	<bean name="belt" class="org.geomajas.layer.wms.WmsLayer" >
 		<property name="layerInfo" ref="beltInfo" />
         <!-- When configuring your own applications, please do not use this WMS server -->
         <property name="baseWmsUrl" value="http://apps.geomajas.org/geoserver/wms?transparent=true"/>
