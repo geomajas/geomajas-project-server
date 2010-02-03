@@ -138,8 +138,6 @@ dojo.declare("Feature", PainterVisitable, {
             }
         }
         return {
-        	// TODO recheck this!!! Something from internal should never be here!!!
-			//javaClass : "org.geomajas.internal.layer.feature.RenderedFeatureImpl",
 			javaClass : "org.geomajas.layer.feature.Feature",
 			id : this.getId(),
 			geometry : this.getGeometry(),

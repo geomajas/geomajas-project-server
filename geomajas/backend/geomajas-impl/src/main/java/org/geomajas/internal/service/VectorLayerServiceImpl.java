@@ -195,7 +195,7 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 		res.setId(layerInfo.getId() + "." + featureModel.getId(feature));
 		res.setLayer(layer);
 
-		// If allowed, add the label to the RenderedFeature:
+		// If allowed, add the label to the InternalFeature:
 		if ((featureIncludes & FEATURE_INCLUDE_LABEL) != 0) {
 			String labelAttr = layer.getLayerInfo().getLabelAttribute().getLabelAttributeName();
 			Object attribute = featureModel.getAttribute(feature, labelAttr);
@@ -204,7 +204,7 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 			}
 		}
 
-		// If allowed, add the geometry (transformed!) to the RenderedFeature:
+		// If allowed, add the geometry (transformed!) to the InternalFeature:
 		if ((featureIncludes & FEATURE_INCLUDE_GEOMETRY) != 0) {
 			Geometry geometry = featureModel.getGeometry(feature);
 			Geometry transformed;
@@ -220,12 +220,12 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 			res.setGeometry(transformed);
 		}
 
-		// If allowed, add the style definition to the RenderedFeature:
+		// If allowed, add the style definition to the InternalFeature:
 		if ((featureIncludes & FEATURE_INCLUDE_STYLE) != 0) {
 			res.setStyleDefinition(findStyleFilter(feature, styles).getStyleDefinition());
 		}
 
-		// If allowed, add the attributes to the RenderedFeature:
+		// If allowed, add the attributes to the InternalFeature:
 		if ((featureIncludes & FEATURE_INCLUDE_ATTRIBUTES) != 0) {
 			res.setAttributes(featureModel.getAttributes(feature));
 		}

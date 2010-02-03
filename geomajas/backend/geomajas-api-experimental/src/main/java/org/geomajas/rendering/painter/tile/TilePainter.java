@@ -37,7 +37,7 @@ import org.geomajas.rendering.RenderException;
  * takes in a <code>RenderedTile</code> as parameter and also returns one. The idea here is that implementations of this
  * interface add a rendered result to this tile. This result can be either SVG, VML or an image.<br/>
  * Now back to the timing thing: the tile you get as parameters here, should already contain
- * <code>RenderedFeature</code> objects. Usually it will come from a <code>TiledFeaturePainter</code>, which is used in
+ * <code>InternalFeature</code> objects. Usually it will come from a <code>TiledFeaturePainter</code>, which is used in
  * almost all rendering strategies as feature painter.
  * </p>
  *

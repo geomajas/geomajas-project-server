@@ -64,7 +64,7 @@ import com.vividsolutions.jts.geom.Coordinate;
  * </p>
  * <p>
  * This puts the features in a tile. Not all features are included as-is. For example, when features are way too big,
- * they are clipped. (note: since the normal <code>RenderedFeature</code> object does not support clipped features, an
+ * they are clipped. (note: since the normal <code>InternalFeature</code> object does not support clipped features, an
  * extension, called <code>VectorFeature</code> is used instead).
  * </p>
  * <p>

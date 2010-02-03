@@ -50,22 +50,22 @@ public interface VectorLayerService {
 	int FEATURE_INCLUDE_NONE = 0;
 
 	/**
-	 * Include attributes in the {@link RenderedFeature}. (speed issue)
+	 * Include attributes in the {@link InternalFeature}. (speed issue)
 	 */
 	int FEATURE_INCLUDE_ATTRIBUTES = 1;
 
 	/**
-	 * Include geometries in the {@link RenderedFeature}. (speed issue)
+	 * Include geometries in the {@link InternalFeature}. (speed issue)
 	 */
 	int FEATURE_INCLUDE_GEOMETRY = 2;
 
 	/**
-	 * Include style definitions in the {@link RenderedFeature}. (speed issue)
+	 * Include style definitions in the {@link InternalFeature}. (speed issue)
 	 */
 	int FEATURE_INCLUDE_STYLE = 4;
 
 	/**
-	 * Include label string in the {@link RenderedFeature}. (speed issue)
+	 * Include label string in the {@link InternalFeature}. (speed issue)
 	 */
 	int FEATURE_INCLUDE_LABEL = 8;
 
@@ -83,7 +83,7 @@ public interface VectorLayerService {
 	 * @param oldFeatures old features to update or delete, in the same order as in newFeatures (delete when null in
 	 * newFeatures). The list may have some null elements added when it is shorter than newFeatures.
 	 * @param newFeatures new version of features, indicating a need to create or update (create when entry is null in
-	 * oldFeatures). The items in the list are updated with the updated {@link RenderedFeature}. The list may have
+	 * oldFeatures). The items in the list are updated with the updated {@link InternalFeature}. The list may have
 	 * some null elements added when it is shorter than oldFeatures.
 	 * @throws GeomajasException oops
 	 */

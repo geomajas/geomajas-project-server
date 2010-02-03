@@ -36,7 +36,7 @@ import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * <p>
- * Extension of the <code>RenderedFeature</code> interface that is used only in the
+ * Extension of the <code>InternalFeature</code> interface that is used only in the
  * {@link org.geomajas.internal.rendering.strategy.VectorRendering} rendering strategy. This feature type has support
  * for clipped geometries. This is sometimes necessary when features are huge, and the map is zoomed in. In SVG and VML
  * you would still be bothered by the useless extra points. So in some situations clipped geometries provide faster

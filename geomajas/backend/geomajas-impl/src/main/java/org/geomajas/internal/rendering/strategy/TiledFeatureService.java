@@ -44,7 +44,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * This service puts features in a tile. In that case, not all features which overlap the tile are included as-is.
  * </p>
  * <p>
- * For example, when features are way too big, they are clipped. (note: since the normal <code>RenderedFeature</code>
+ * For example, when features are way too big, they are clipped. (note: since the normal <code>InternalFeature</code>
  * object does not support clipped features, an extension, called <code>VectorFeature</code> is used instead).
  * </p>
  * <p>
