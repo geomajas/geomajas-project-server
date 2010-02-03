@@ -26,10 +26,6 @@
 <article id="release" lang="en">
   <title>How to release Geomajas</title>
 
-  <para><warning>
-      <para>Before using this document, note that is does not yet work!</para>
-    </warning></para>
-
   <para>Several steps need to be performed on the gaya server. This procedure
   expects that you have logged in to the gaya server, with the
   <code>geomajas</code> user account. Do not use the root user!</para>
@@ -69,47 +65,48 @@ cd tmpgeomajas</programlisting>
       "release:prepare" asks the release version, tag name for the release and
       next version. Change the tag name to just be the version number (without
       "geomajas-all" in prefix). <programlisting>mvn clean install -Dhudson
-mvn release:prepare -DautoVersionSubmodules=true -DreleaseVersion=$VERSION -Dtag=$VERSION</programlisting>When
-      the prepare gives an error message "scm ... already exists" during the
-      prepare, then do "svn update" and restart (from mvn clean install
-      -Dhudson).</para>
+mvn release:prepare -DautoVersionSubmodules=true -DreleaseVersion=$VERSION -Dtag=$VERSION
+sudo chmod -R 775 /var/www/maven.geomajas.org/htdocs/repository/org/geomajas/
+sudo chmod -R 775 /var/www/files.geomajas.org/htdocs/maven/trunk/
+cd ..
+rm -rf tmpgeomajas</programlisting></para>
     </listitem>
 
     <listitem>
-      <para>Now that the preparation is over, the actual tag can be created.
-      Before you do so, make sure that you have sufficient rights to alter the
-      maven repository!</para>
+      <para>Now that the preparation is over, the actual tag has been created.
+      We will now check out that tag:</para>
 
-      <para><warning>
-          <para>Go to the following folder:
-          <code>/var/www/maven.geomajas.org/htdocs/repository/org/geomajas</code>,
-          and check if all folders and files allow writing for your user!
-          Especially all .xml files in all subdirectories. If not, the
-          <code>mvn release:perform</code> will fail.</para>
-
-          <para>Make the same check for the following folder:
-          <code>/var/www/files.geomajas.org/htdocs/maven/trunk/</code></para>
-
-          <para><code>In both cases, do: chown -R geomajas:tomcat
-          *</code></para>
-
-          <para><code>chmod -R 774 *</code></para>
-        </warning></para>
-
-      <programlisting>mvn release:perform</programlisting>
+      <programlisting>svn checkout https://svn.geomajas.org/majas/tags/$VERSION geomajas-$VERSION
+cd geomajas-$VERSION</programlisting>
     </listitem>
 
     <listitem>
+      <para>Next step is to deploy the newly created tag.</para>
+
+      <programlisting>mvn deploy -Dhudson</programlisting>
+
       <para>The files are now deployed in our maven repository, but the index
       needs to be rebuilt. So log into <ulink
       url="http://apps.geomajas.org/nexus/">nexus</ulink> go to repositories,
       right click on the "3rd party" repository and indicate both "Re-index"
-      and "Rebuild metadata".</para>
+      and "Rebuild metadata":</para>
+
+      <screenshot>
+        <screeninfo>Nexus re-index and rebuild metadata</screeninfo>
+
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center"
+                       fileref="../resources/nexus_re_index.png" />
+          </imageobject>
+        </mediaobject>
+      </screenshot>
     </listitem>
 
     <listitem>
-      <para>Rebuild the docs to fix a maven site plugin problem.
-      <programlisting>cd geomajas
+      <para>TODO: check from here!!! (tested: mvn -Pnoshrink -DskipTests
+      site-deploy from the main directory) Rebuild the docs to fix a maven
+      site plugin problem. <programlisting>cd geomajas
 mvn install
 mvn -Pnoshrink -DskipTests site-deploy
 cd ../..
