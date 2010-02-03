@@ -22,18 +22,120 @@
  */
 package org.geomajas.layer;
 
-import org.geomajas.configuration.EditPermissionType;
+import com.vividsolutions.jts.geom.Envelope;
 import org.geomajas.configuration.VectorLayerInfo;
+import org.geomajas.layer.feature.FeatureModel;
+import org.opengis.filter.Filter;
+
+import java.util.Iterator;
 
 /**
  * A layer which contains vector data.
+ * <p/>
+ * It hold all the elements that belong to a layer within the bounds determined by the client's view. It is able to
+ * manipulate the objects which are represented as features on the map.
  *
  * @author Pieter De Graef
  * @author Jan De Moerloose
  */
 public interface VectorLayer extends Layer<VectorLayerInfo> {
 
-	LayerModel getLayerModel();
+	/**
+	 * Indicate whether the layer is capable of creating new features.
+	 *
+	 * @return true when creating new features is possible for this layer
+	 */
+	boolean isCreateCapable();
 
-	EditPermissionType getEditPermissions();
+	/**
+	 * Indicate whether the layer is capable of updating features.
+	 *
+	 * @return true when updating features is possible for this layer
+	 */
+	boolean isUpdateCapable();
+
+	/**
+	 * Indicate whether the layer is capable of creating new features.
+	 *
+	 * @return true when deleting features is possible for this layer
+	 */
+	boolean isDeleteCapable();
+
+	/**
+	 * Return the feature model of this layer model.
+	 *
+	 * @return feature model for this layer
+	 */
+	FeatureModel getFeatureModel();
+
+	/**
+	 * Creates a new feature.
+	 *
+	 * @param feature feature value object
+	 * @return the new feature (with assigned or generated ID)
+	 * @throws LayerException oops
+	 */
+	Object create(Object feature) throws LayerException;
+
+	/**
+	 * Update an existing feature of the model or creates a new feature.
+	 *
+	 * @param feature feature value object
+	 * @return the feature itself
+	 * @throws LayerException oops
+	 */
+	Object saveOrUpdate(Object feature) throws LayerException;
+
+	/**
+	 * Reads an existing feature of the model.
+	 *
+	 * @param featureId unique id of the feature
+	 * @return feature value object
+	 * @throws LayerException oops
+	 */
+	Object read(String featureId) throws LayerException;
+
+	/**
+	 * Deletes a feature of the model.
+	 *
+	 * @param featureId unique id of the feature
+	 * @throws LayerException oops
+	 */
+	void delete(String featureId) throws LayerException;
+
+	/**
+	 * Retrieve all the features from the model that this filter accepts.
+	 *
+	 * @param filter filter to be applied
+	 * @return reader of feature value objects
+	 * @throws LayerException oops
+	 */
+	Iterator<?> getElements(Filter filter) throws LayerException;
+
+	/**
+	 * Retrieve the bounds of the specified features.
+	 *
+	 * @param filter filter to be applied
+	 * @return the bounds of the specified features
+	 * @throws LayerException oops
+	 */
+	Envelope getBounds(Filter filter) throws LayerException;
+
+	/**
+	 * Return the bounds of this model.
+	 *
+	 * @return bounds of this model
+	 * @throws LayerException oops
+	 */
+	Envelope getBounds() throws LayerException;
+
+	/**
+	 * Return the list of possible object values.
+	 *
+	 * @param attributeName attribute to get objects for
+	 * @param filter filter to be applied
+	 * @return possible object values
+	 * @throws LayerException oops
+	 */
+	Iterator<?> getObjects(String attributeName, Filter filter) throws LayerException;
 }

@@ -29,12 +29,22 @@
   <toc />
 
   <section>
-    <title>Migrating from Geomajas 1.5.1 to Geomajas 1.5.2</title>
+    <title>Migrating from Geomajas 1.5.2 to Geomajas 1.5.3</title>
 
     <itemizedlist>
       <listitem>
-        <para>"layerRef" is renamed to "layerIds" in
-        <code>LayerTreeNodeInfo</code>.</para>
+        <para>The <code>LayerModel</code> class has been integrated in
+        <code>VectorLayer</code>. This modifies the configuration. Where
+        before you would have written <programlisting>&lt;bean name="countriesModel" class="org.geomajas.layermodel.shapeinmem.ShapeInMemLayer"&gt;
+    &lt;property name="url" value="classpath:shapes/africa/country.shp"/&gt;
+&lt;/bean&gt;
+&lt;bean name="countries" class="org.geomajas.internal.layer.layertree.DefaultVectorLayer" &gt;
+    &lt;property name="layerInfo" ref="countriesInfo" /&gt;
+    &lt;property name="layerModel" ref="countriesModel" /&gt;
+&lt;/bean&gt;</programlisting> into <programlisting>&lt;bean name="countries" class="org.geomajas.layermodel.shapeinmem.ShapeInMemLayer"&gt;
+    &lt;property name="layerInfo" ref="countriesInfo" /&gt;
+    &lt;property name="url" value="classpath:shapes/africa/country.shp"/&gt;
+&lt;/bean&gt;</programlisting></para>
       </listitem>
 
       <listitem>
@@ -42,6 +52,21 @@
       </listitem>
     </itemizedlist>
   </section>
+
+	<section>
+	  <title>Migrating from Geomajas 1.5.1 to Geomajas 1.5.2</title>
+
+	  <itemizedlist>
+		<listitem>
+		  <para>"layerRef" is renamed to "layerIds" in
+		  <code>LayerTreeNodeInfo</code>.</para>
+		</listitem>
+
+		<listitem>
+		  <para />
+		</listitem>
+	  </itemizedlist>
+	</section>
 
   <section>
     <title>Migrating from Geomajas 1.5.0 to Geomajas 1.5.1</title>

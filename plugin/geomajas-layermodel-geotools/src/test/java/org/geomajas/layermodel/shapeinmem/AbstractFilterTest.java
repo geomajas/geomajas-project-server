@@ -32,7 +32,7 @@ public abstract class AbstractFilterTest {
 
 	protected static final String PARAM_GEOMETRY_ATTR = "the_geom";
 
-	protected ShapeInMemLayerModel layerModel;
+	protected ShapeInMemLayer layer;
 
 	protected FilterService filterCreator;
 
@@ -111,12 +111,12 @@ public abstract class AbstractFilterTest {
 		ApplicationContext applicationContext = new ClassPathXmlApplicationContext(
 				new String[] {"org/geomajas/spring/geomajasContext.xml",
 						"org/geomajas/testdata/layerCountries.xml",
-						"org/geomajas/testdata/simplevectorsContext.xml"});
+						"org/geomajas/testdata/simplevectorsContext.xml",
+						"org/geomajas/layer/shapeinmem/test.xml"});
 		filterCreator = applicationContext.getBean("service.FilterService", FilterService.class);
-		layerModel = applicationContext.getBean(
-				"layermodel.shapeinmem.ShapeInMemLayerModel", ShapeInMemLayerModel.class);
-		layerModel.setUrl(SHAPE_FILE);
+		layer = applicationContext.getBean("filterTest", ShapeInMemLayer.class);
+		layer.setUrl(SHAPE_FILE);
 
-		layerModel.setLayerInfo(layerInfo);
+		layer.setLayerInfo(layerInfo);
 	}
 }

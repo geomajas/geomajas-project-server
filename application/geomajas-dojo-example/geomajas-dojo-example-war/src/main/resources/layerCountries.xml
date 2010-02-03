@@ -221,12 +221,9 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
         </property>
     </bean>
 
-	<bean name="countriesModel" class="org.geomajas.layermodel.shapeinmem.ShapeInMemLayerModel">
- 		<property name="url" value="classpath:shapes/africa/country.shp"/>
-	</bean>
-	<bean name="countries" class="org.geomajas.internal.layer.layertree.DefaultVectorLayer" >
+	<bean name="countries" class="org.geomajas.layermodel.shapeinmem.ShapeInMemLayer">
 		<property name="layerInfo" ref="countriesInfo" />
-		<property name="layerModel" ref="countriesModel" />
+		<property name="url" value="classpath:shapes/africa/country.shp"/>
 	</bean>
 
 </beans>

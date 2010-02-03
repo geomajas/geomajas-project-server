@@ -43,6 +43,7 @@ import org.geomajas.rendering.RenderException;
 import org.geomajas.rendering.painter.tile.TilePainter;
 import org.geomajas.rendering.strategy.RenderingStrategy;
 import org.geomajas.service.ApplicationService;
+import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
 import org.geomajas.service.VectorLayerService;
@@ -93,6 +94,9 @@ public class VectorRendering implements RenderingStrategy {
 	@Autowired
 	private TiledFeatureService tiledFeatureService;
 
+	@Autowired
+	private DtoConverterService converterService;
+
 	/**
 	 * Paint a tile! This class uses the {@link TiledFeatureService} to
 	 * paint the features, then the {@link VectorTilePainter} to paint the tiles.
@@ -113,7 +117,8 @@ public class VectorRendering implements RenderingStrategy {
 			CoordinateReferenceSystem crs = runtime.getCrs(metadata.getCrs());
 
 			// Prepare the tile:
-			InternalTileImpl tile = new InternalTileImpl(metadata.getCode(), vLayer, metadata.getScale());
+			InternalTileImpl tile = new InternalTileImpl(metadata.getCode(), vLayer, metadata.getScale(),
+					converterService);
 			tile.setTileRendering(new InternalTileRenderingImpl(TileRenderMethod.STRING_RENDERING));
 
 			// Prepare any filtering:

@@ -175,12 +175,9 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
         </property>
     </bean>
 
-    <bean name="lakesModel" class="org.geomajas.layermodel.shapeinmem.ShapeInMemLayerModel">
+    <bean name="lakes" class="org.geomajas.layermodel.shapeinmem.ShapeInMemLayer">
+		<property name="layerInfo" ref="lakesInfo"/>
         <property name="url" value="classpath:shapes/africa/Lakes.shp"/>
-    </bean>
-    <bean name="lakes" class="org.geomajas.internal.layer.layertree.DefaultVectorLayer">
-        <property name="layerInfo" ref="lakesInfo"/>
-        <property name="layerModel" ref="lakesModel"/>
     </bean>
 
 </beans>

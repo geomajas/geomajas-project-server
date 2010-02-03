@@ -282,7 +282,7 @@ public class TileImageCreatorImpl implements TileImageCreator {
 			TilePaintContext tileContext) throws GeomajasException {
 
 		// ---------------------------------------------------------------------
-		// Step1: fetch all the LayerModel objects that need to be drawn:
+		// Step1: fetch all the layer objects that need to be drawn:
 		// ---------------------------------------------------------------------
 		String geomName = layerInfo.getFeatureInfo().getGeometryType().getName();
 		Filter filter = filterService.createBboxFilter(tileContext.getCoordinateReferenceSystem().getIdentifiers()
@@ -290,7 +290,7 @@ public class TileImageCreatorImpl implements TileImageCreator {
 		List<InternalFeature> features = layerService.getFeatures(layerInfo.getId(), null, filter,
 				layerInfo.getStyleDefinitions(), VectorLayerService.FEATURE_INCLUDE_ALL);
 		// ---------------------------------------------------------------------
-		// Step2: Transform the LayerModel objects to features:
+		// Step2: Transform the layer objects to features:
 		// ---------------------------------------------------------------------
 		for (InternalFeature feature : features) {
 			tile.addFeature(feature);

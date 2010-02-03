@@ -591,7 +591,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         provided to the layer to be able to create, retrieve, update and
         delete the features.</para>
 
-        <programlisting>&lt;bean name="countriesModel" class="org.geomajas.layermodel.shapeinmem.ShapeInMemLayerModel"&gt;
+        <programlisting>&lt;bean name="countriesModel" class="org.geomajas.layermodel.shapeinmem.ShapeInMemLayer"&gt;
     &lt;property name="url" value="classpath:shapes/africa/country.shp"/&gt;
 &lt;/bean&gt;
 </programlisting>

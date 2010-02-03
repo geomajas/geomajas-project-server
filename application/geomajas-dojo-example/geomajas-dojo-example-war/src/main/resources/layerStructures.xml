@@ -152,12 +152,9 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
         </property>
     </bean>
 
-    <bean name="structuresModel" class="org.geomajas.layermodel.shapeinmem.ShapeInMemLayerModel">
+    <bean name="structures" class="org.geomajas.layermodel.shapeinmem.ShapeInMemLayer">
         <property name="url" value="classpath:shapes/belgium/strucnet_p.shp"/>
-    </bean>
-    <bean name="structures" class="org.geomajas.internal.layer.layertree.DefaultVectorLayer">
         <property name="layerInfo" ref="structuresInfo"/>
-        <property name="layerModel" ref="structuresModel"/>
     </bean>
 
 </beans>

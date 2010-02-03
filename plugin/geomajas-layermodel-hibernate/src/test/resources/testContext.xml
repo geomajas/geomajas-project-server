@@ -74,7 +74,8 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		<constructor-arg type="java.lang.String" value="dd/MM/yyyy"/>
 	</bean>
 
-	<bean name="layerModel" class="org.geomajas.layermodel.hibernate.HibernateLayerModel">
+	<bean name="layer" class="org.geomajas.layermodel.hibernate.HibernateLayer">
+		<property name="layerInfo" ref="layerInfo"/>
 		<property name="featureModel">
 			<bean class="org.geomajas.layermodel.hibernate.HibernateFeatureModel">
 				<property name="sessionFactory" ref="testSessionFactory"/>
@@ -364,11 +365,6 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		<property name="id" value="hibernateLayer" />
 		<property name="crs" value="EPSG:4326"/>
 		<property name="featureInfo" ref="featureInfo"/>
-	</bean>
-
-	<bean name="layer" class="org.geomajas.internal.layer.layertree.DefaultVectorLayer">
-		<property name="layerInfo" ref="layerInfo"/>
-		<property name="layerModel" ref="layerModel"/>
 	</bean>
 
 	<bean name="application" class="org.geomajas.configuration.ApplicationInfo" >

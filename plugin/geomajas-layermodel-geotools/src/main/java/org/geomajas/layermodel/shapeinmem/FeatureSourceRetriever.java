@@ -32,7 +32,7 @@ import org.opengis.feature.simple.SimpleFeatureType;
 import java.io.IOException;
 
 /**
- * Both the GeotoolsFeatureModel and the GeotoolsLayerModel use the same FeatureSource a their way of dealing with
+ * Both the GeotoolsFeatureModel and the GeotoolsLayer use the same FeatureSource a their way of dealing with
  * geotools persistence. So instead of each of these classes having the same functions, we created this little class.
  *
  * @author Pieter De Graef

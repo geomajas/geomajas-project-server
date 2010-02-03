@@ -168,12 +168,9 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 		</property>
 	</bean>
 
-	<bean name="roadsModel" class="org.geomajas.layermodel.shapeinmem.ShapeInMemLayerModel">
+	<bean name="roads" class="org.geomajas.layermodel.shapeinmem.ShapeInMemLayer">
 		<property name="url" value="classpath:org/geomajas/dojo/simple/shapes/roads.shp"/>
-	</bean>
-	<bean name="roads" class="org.geomajas.internal.layer.layertree.DefaultVectorLayer">
 		<property name="layerInfo" ref="roadsInfo"/>
-		<property name="layerModel" ref="roadsModel"/>
 	</bean>
 
 </beans>

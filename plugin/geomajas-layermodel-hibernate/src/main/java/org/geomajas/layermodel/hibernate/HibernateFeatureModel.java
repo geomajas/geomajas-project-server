@@ -56,7 +56,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * <p>
- * FeatureModel implementation for the HibernateLayerModel.
+ * FeatureModel implementation for the HibernateLayer.
  * </p>
  * 
  * @author Jan De Moerloose, Pieter De Graef

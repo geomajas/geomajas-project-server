@@ -27,7 +27,7 @@ import java.io.Serializable;
 /**
  * Edit permission type.
  * 
- * @author check subversion
+ * @author Pieter De Graef
  */
 public class EditPermissionType implements Serializable {
 

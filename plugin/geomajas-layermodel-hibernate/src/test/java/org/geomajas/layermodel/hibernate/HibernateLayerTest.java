@@ -32,11 +32,11 @@ import java.util.Iterator;
 import java.util.Map;
 
 /**
- * Unit test that tests all the functions of the HibernateLayerModel.
+ * Unit test that tests all the functions of the HibernateLayer.
  *
  * @author Pieter De Graef
  */
-public class HibernateLayerModelTest extends AbstractHibernateLayerModelTest {
+public class HibernateLayerTest extends AbstractHibernateLayerModelTest {
 
 	private String createdId;
 
@@ -44,7 +44,7 @@ public class HibernateLayerModelTest extends AbstractHibernateLayerModelTest {
 	public void testCreate() throws Exception {
 		Object created = null;
 		HibernateTestFeature feature = HibernateTestFeature.getDefaultInstance1(null);
-		created = layerModel.create(feature);
+		created = layer.create(feature);
 		Assert.assertNotNull(created);
 		Assert.assertTrue(created instanceof HibernateTestFeature);
 		HibernateTestFeature createdFeature = (HibernateTestFeature) created;
@@ -56,7 +56,7 @@ public class HibernateLayerModelTest extends AbstractHibernateLayerModelTest {
 	public void testRead() throws Exception {
 		testCreate();
 		Assert.assertNotNull(createdId);
-		Object feature = layerModel.read(createdId);
+		Object feature = layer.read(createdId);
 		Assert.assertNotNull(feature);
 	}
 
@@ -64,15 +64,15 @@ public class HibernateLayerModelTest extends AbstractHibernateLayerModelTest {
 	public void testUpdate() throws Exception {
 		testCreate();
 		Assert.assertNotNull(createdId);
-		Object feature = layerModel.read(createdId);
+		Object feature = layer.read(createdId);
 		Assert.assertNotNull("The requested feature could not be found!", feature);
 		Map<String, Object> attributes = new HashMap<String, Object>();
 		attributes.put("name", "new name");
 		attributes.put("number", 5f);
 		attributes.put("data", new Date());
 		attributes.put("available", false);
-		layerModel.getFeatureModel().setAttributes(feature, attributes);
-		layerModel.saveOrUpdate(feature);
+		layer.getFeatureModel().setAttributes(feature, attributes);
+		layer.saveOrUpdate(feature);
 	}
 
 	@Test
@@ -87,9 +87,9 @@ public class HibernateLayerModelTest extends AbstractHibernateLayerModelTest {
 
 	@Test
 	public void testGetElements() throws Exception {
-		layerModel.create(HibernateTestFeature.getDefaultInstance2(null));
+		layer.create(HibernateTestFeature.getDefaultInstance2(null));
 		Object feature = null;
-		Iterator<?> iterator = layerModel.getElements(null);
+		Iterator<?> iterator = layer.getElements(null);
 		if (iterator.hasNext()) {
 			feature = iterator.next();
 		}
@@ -100,8 +100,8 @@ public class HibernateLayerModelTest extends AbstractHibernateLayerModelTest {
 	public void testDelete() throws Exception {
 		testCreate();
 		Assert.assertNotNull(createdId);
-		Assert.assertNotNull(layerModel.read(createdId));
-		layerModel.delete(createdId);
-		Assert.assertNull(layerModel.read(createdId));
+		Assert.assertNotNull(layer.read(createdId));
+		layer.delete(createdId);
+		Assert.assertNull(layer.read(createdId));
 	}
 }

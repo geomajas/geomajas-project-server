@@ -147,7 +147,7 @@ public interface FeatureModel {
 	/**
 	 * Can a given 'feature' object be handled by this FeatureModel?
 	 *
-	 * @param feature A object from a LayerModel.
+	 * @param feature A object from a layer.
 	 * @return true when feature can be handled by this feature model
 	 */
 	boolean canHandle(Object feature);

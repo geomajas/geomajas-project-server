@@ -32,9 +32,9 @@ import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * <p>
- * This is the main feature class, internally used on the server. Even though each {@link org.geomajas.layer.LayerModel}
- * may have it's own specific feature objects, this is the common feature type that comes out of the
- * {@link org.geomajas.rendering.painter.feature.FeaturePainter} classes and is used throughout the whole back-end.
+ * This is the main feature class, internally used on the server. Even though each
+ * {@link org.geomajas.layer.VectorLayer} may have it's own specific feature objects, this is the common feature type
+ * that comes out of the {@link org.geomajas.service.VectorLayerService} class and is used throughout the back-end.
  * </p>
  * 
  * @author Pieter De Graef

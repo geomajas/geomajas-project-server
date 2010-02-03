@@ -37,9 +37,10 @@ import org.geomajas.configuration.SortType;
 import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.layer.LayerException;
-import org.geomajas.layer.LayerModel;
+import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.FeatureModel;
 import org.geomajas.service.FilterService;
+import org.geotools.referencing.CRS;
 import org.hibernate.Criteria;
 import org.hibernate.EntityMode;
 import org.hibernate.HibernateException;
@@ -50,11 +51,12 @@ import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.type.CollectionType;
 import org.hibernate.type.Type;
 import org.opengis.filter.Filter;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.NoSuchAuthorityCodeException;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.vividsolutions.jts.geom.Envelope;
@@ -63,18 +65,15 @@ import com.vividsolutions.jts.geom.Geometry;
 /**
  * Hibernate layer model.
  * 
- * @author check subversion
+ * @author Pieter De Graef
+ * @author Jan De Moerloose
  */
-@Component
-@Scope("prototype")
 @Transactional
-public class HibernateLayerModel extends HibernateLayerUtil implements LayerModel {
+public class HibernateLayer extends HibernateLayerUtil implements VectorLayer {
 
-	private final Logger log = LoggerFactory.getLogger(HibernateLayerModel.class);
+	private final Logger log = LoggerFactory.getLogger(HibernateLayer.class);
 
 	private FeatureModel featureModel;
-
-	private Filter defaultFilter;
 
 	/**
 	 * When parsing dates from filters, this model must know how to parse these strings into Date objects before
@@ -85,9 +84,23 @@ public class HibernateLayerModel extends HibernateLayerUtil implements LayerMode
 	@Autowired
 	private FilterService filterCreator;
 
-	// -------------------------------------------------------------------------
-	// LayerModel implementation:
-	// -------------------------------------------------------------------------
+	private CoordinateReferenceSystem crs;
+
+	public CoordinateReferenceSystem getCrs() {
+		return crs;
+	}
+
+	private void initCrs() throws LayerException {
+		try {
+			crs = CRS.decode(getLayerInfo().getCrs());
+		} catch (NoSuchAuthorityCodeException e) {
+			throw new LayerException(ExceptionCode.LAYER_CRS_UNKNOWN_AUTHORITY, e, getLayerInfo().getId(),
+					getLayerInfo().getCrs());
+		} catch (FactoryException exception) {
+			throw new LayerException(ExceptionCode.LAYER_CRS_PROBLEMATIC, exception, getLayerInfo().getId(),
+					getLayerInfo().getCrs());
+		}
+	}
 
 	public FeatureModel getFeatureModel() {
 		return this.featureModel;
@@ -96,9 +109,26 @@ public class HibernateLayerModel extends HibernateLayerUtil implements LayerMode
 	@Override
 	public void setLayerInfo(VectorLayerInfo layerInfo) throws LayerException {
 		super.setLayerInfo(layerInfo);
+		initCrs();
 		if (null != featureModel) {
 			featureModel.setLayerInfo(getLayerInfo());
 		}
+	}
+
+	public VectorLayerInfo getLayerInfo() {
+		return super.getLayerInfo();
+	}
+
+	public boolean isCreateCapable() {
+		return true;
+	}
+
+	public boolean isUpdateCapable() {
+		return true;
+	}
+
+	public boolean isDeleteCapable() {
+		return true;
 	}
 
 	public void setFeatureModel(FeatureModel featureModel) throws LayerException {
@@ -108,11 +138,7 @@ public class HibernateLayerModel extends HibernateLayerUtil implements LayerMode
 		}
 	}
 
-	public Iterator<?> getElements(Filter queryFilter) throws LayerException {
-		Filter filter = queryFilter;
-		if (defaultFilter != null) {
-			filter = filterCreator.createLogicFilter(filter, "AND", defaultFilter);
-		}
+	public Iterator<?> getElements(Filter filter) throws LayerException {
 		try {
 			Session session = getSessionFactory().getCurrentSession();
 			Criteria criteria = session.createCriteria(getFeatureInfo().getDataSourceName());
@@ -165,7 +191,7 @@ public class HibernateLayerModel extends HibernateLayerUtil implements LayerMode
 		session.save(feature); // do not replace feature by managed object !
 
 		// Set the original detached associations back where they belong:
-		// TODO THIS SHOULD ONLY RESTORE ASSOCIATIONS NOT ALL ATTRIBUTES (fails for complex attributes (ddd/ddd)
+		// @TODO THIS SHOULD ONLY RESTORE ASSOCIATIONS NOT ALL ATTRIBUTES (fails for complex attributes (ddd/ddd)
 		// featureModel.setAttributes(feature, attributes);
 		return feature;
 	}
@@ -215,21 +241,17 @@ public class HibernateLayerModel extends HibernateLayerUtil implements LayerMode
 	/**
 	 * Retrieve the bounds of the specified features.
 	 * 
-	 * @param queryFilter
-	 *            folter which needs to be applied
+	 * @param filter
+	 *            filter which needs to be applied
 	 * @return the bounds of the specified features
 	 */
-	public Envelope getBounds(Filter queryFilter) throws LayerException {
-		Filter filter = queryFilter;
-		if (defaultFilter != null) {
-			filter = filterCreator.createLogicFilter(filter, "AND", defaultFilter);
-		}
+	public Envelope getBounds(Filter filter) throws LayerException {
 		// Envelope bounds = getBoundsDb(filter);
 		// if (bounds == null)
 		// bounds = getBoundsLocal(filter);
 		// return bounds;
 
-		// TODO getBoundsDb cannot handle hibernate Formula fields
+		// @TODO getBoundsDb cannot handle hibernate Formula fields
 		return getBoundsLocal(filter);
 	}
 
@@ -267,6 +289,10 @@ public class HibernateLayerModel extends HibernateLayerUtil implements LayerMode
 
 	/**
 	 * Bounds are calculated locally, can use any filter, but slower than native.
+	 * @param filter
+	 *            filter which needs to be applied
+	 * @return the bounds of the specified features
+	 * @throws LayerException oops
 	 */
 	private Envelope getBoundsLocal(Filter filter) throws LayerException {
 		try {
@@ -310,8 +336,8 @@ public class HibernateLayerModel extends HibernateLayerUtil implements LayerMode
 
 	/**
 	 * The idea here is to replace association objects with their persistent counterparts. This has to happen just
-	 * before the saving to database. We have to keep the persistent objects inside the HibernateLayerModel package.
-	 * Never let them out, because that way we'll invite exceptions. TODO This method is not recursive!
+	 * before the saving to database. We have to keep the persistent objects inside the HibernateLayer package.
+	 * Never let them out, because that way we'll invite exceptions. @TODO This method is not recursive!
 	 * 
 	 * @param feature
 	 *            feature to persist
@@ -395,13 +421,4 @@ public class HibernateLayerModel extends HibernateLayerUtil implements LayerMode
 					.getDataSourceName());
 		}
 	}
-
-	public Filter getDefaultFilter() {
-		return defaultFilter;
-	}
-
-	public void setDefaultFilter(Filter defaultFilter) {
-		this.defaultFilter = defaultFilter;
-	}
-
 }

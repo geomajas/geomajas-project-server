@@ -29,17 +29,19 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.geomajas.configuration.AssociationAttributeInfo;
 import org.geomajas.configuration.VectorLayerInfo;
+import org.geomajas.global.ExceptionCode;
 import org.geomajas.layer.LayerException;
-import org.geomajas.layer.LayerModel;
+import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.FeatureModel;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
+import org.geotools.referencing.CRS;
 import org.opengis.filter.Filter;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.NoSuchAuthorityCodeException;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
@@ -49,9 +51,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * 
  * @author Jan De Moerloose
  */
-@Component
-@Scope("prototype")
-public class BeanLayerModel implements LayerModel {
+public class BeanLayer implements VectorLayer {
 
 	private Map<String, Object> featuresById = new HashMap<String, Object>();
 
@@ -64,23 +64,46 @@ public class BeanLayerModel implements LayerModel {
 
 	private VectorLayerInfo layerInfo;
 
-	private Filter defaultFilter;
-
 	@Autowired
 	private FilterService filterService;
 
 	@Autowired
 	private GeoService geoService;
 
-	public Iterator<?> getElements(Filter queryFilter) throws LayerException {
-		Filter filter = queryFilter;
-		if (defaultFilter != null) {
-			filter = filterService.createLogicFilter(filter, "AND", defaultFilter);
+	private CoordinateReferenceSystem crs;
+
+	public CoordinateReferenceSystem getCrs() {
+		return crs;
+	}
+
+	private void initCrs() throws LayerException {
+		try {
+			crs = CRS.decode(layerInfo.getCrs());
+		} catch (NoSuchAuthorityCodeException e) {
+			throw new LayerException(ExceptionCode.LAYER_CRS_UNKNOWN_AUTHORITY, e, layerInfo.getId(), getLayerInfo()
+					.getCrs());
+		} catch (FactoryException exception) {
+			throw new LayerException(ExceptionCode.LAYER_CRS_PROBLEMATIC, exception, layerInfo.getId(), getLayerInfo()
+					.getCrs());
 		}
-		Filter realFilter = filter;
+	}
+
+	public boolean isCreateCapable() {
+		return true;
+	}
+
+	public boolean isUpdateCapable() {
+		return true;
+	}
+
+	public boolean isDeleteCapable() {
+		return true;
+	}
+
+	public Iterator<?> getElements(Filter queryFilter) throws LayerException {
 		List<Object> filteredList = new ArrayList<Object>();
 		for (Object feature : featuresById.values()) {
-			if (realFilter.evaluate(feature)) {
+			if (queryFilter.evaluate(feature)) {
 				filteredList.add(feature);
 			}
 		}
@@ -97,11 +120,7 @@ public class BeanLayerModel implements LayerModel {
 	 * @return the bounds of the specified features
 	 */
 	public Envelope getBounds(Filter queryFilter) throws LayerException {
-		Filter filter = queryFilter;
-		if (defaultFilter != null) {
-			filter = filterService.createLogicFilter(filter, "AND", defaultFilter);
-		}
-		Iterator<?> it = getElements(filter);
+		Iterator<?> it = getElements(queryFilter);
 		// start with null envelope
 		Envelope bounds = new Envelope();
 		while (it.hasNext()) {
@@ -118,6 +137,7 @@ public class BeanLayerModel implements LayerModel {
 
 	public void setLayerInfo(VectorLayerInfo layerInfo) throws LayerException {
 		this.layerInfo = layerInfo;
+		initCrs();
 		initFeatureModel();
 	}
 
@@ -155,24 +175,22 @@ public class BeanLayerModel implements LayerModel {
 		return Collections.EMPTY_LIST.iterator();
 	}
 
-	public Filter getDefaultFilter() {
-		return defaultFilter;
-	}
-
-	public void setDefaultFilter(Filter defaultFilter) {
-		this.defaultFilter = defaultFilter;
-	}
-
 	public List<Object> getFeatures() {
 		return features;
 	}
 
 	public void setFeatures(List<Object> features) throws LayerException {
-		this.features = features;
+		if (null != features) {
+			this.features.addAll(features);
+			if (null != featureModel) {
+				for (Object f : features) {
+					featuresById.put(featureModel.getId(f), f);
+				}
+			}
+		}
 	}
 
 	protected void initFeatureModel() throws LayerException {
-		AssociationAttributeInfo info = new AssociationAttributeInfo();
 		featureModel = new BeanFeatureModel(layerInfo, geoService.getSridFromCrs(layerInfo.getCrs()));
 		for (Object f : features) {
 			featuresById.put(featureModel.getId(f), f);

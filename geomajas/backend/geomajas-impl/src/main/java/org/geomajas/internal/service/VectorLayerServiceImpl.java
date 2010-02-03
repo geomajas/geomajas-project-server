@@ -33,7 +33,6 @@ import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.internal.layer.feature.InternalFeatureImpl;
 import org.geomajas.internal.rendering.style.StyleFilterImpl;
-import org.geomajas.layer.LayerModel;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.FeatureModel;
 import org.geomajas.layer.feature.InternalFeature;
@@ -82,8 +81,7 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 		if (null == layer) {
 			throw new GeomajasException(ExceptionCode.VECTOR_LAYER_NOT_FOUND, layerId);
 		}
-		LayerModel layerModel = layer.getLayerModel();
-		FeatureModel featureModel = layerModel.getFeatureModel();
+		FeatureModel featureModel = layer.getFeatureModel();
 
 		MathTransform mapToLayer;
 		try {
@@ -105,7 +103,7 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 			if (null == newFeature) {
 				// delete ?
 				if (null != oldFeature) {
-					layerModel.delete(oldFeature.getLocalId());
+					layer.delete(oldFeature.getLocalId());
 				}
 			} else {
 				// create or update
@@ -114,7 +112,7 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 					// create new feature
 					feature = featureModel.newInstance(newFeature.getLocalId());
 				} else {
-					feature = layerModel.read(newFeature.getLocalId());
+					feature = layer.read(newFeature.getLocalId());
 				}
 				featureModel.setAttributes(feature, newFeature.getAttributes());
 
@@ -127,7 +125,7 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 					}
 					featureModel.setGeometry(feature, transformed);
 				}
-				feature = layerModel.saveOrUpdate(feature);
+				feature = layer.saveOrUpdate(feature);
 
 				// Not needed for existing features, but no problem to re-set feature id
 				String id = featureModel.getId(feature);
@@ -144,7 +142,6 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 		if (null == layer) {
 			throw new GeomajasException(ExceptionCode.VECTOR_LAYER_NOT_FOUND, layerId);
 		}
-		LayerModel layerModel = layer.getLayerModel();
 
 		List<StyleFilter> styleFilters = null;
 		if ((featureIncludes & FEATURE_INCLUDE_STYLE) != 0) {
@@ -165,7 +162,7 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 		}
 
 		List<InternalFeature> res = new ArrayList<InternalFeature>();
-		Iterator<?> it = layerModel.getElements(filter);
+		Iterator<?> it = layer.getElements(filter);
 		while (it.hasNext()) {
 			res.add(convertFeature(it.next(), layer, transformation, styleFilters, featureIncludes));
 		}
@@ -177,7 +174,7 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 	 * requested data. Part may be lazy loaded.
 	 * 
 	 * @param feature
-	 *            A feature object that comes directly from the {@link LayerModel}
+	 *            A feature object that comes directly from the {@link VectorLayer}
 	 * @param layer
 	 *            vector layer for the feature
 	 * @param transformation
@@ -193,7 +190,7 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 	private InternalFeature convertFeature(Object feature, VectorLayer layer, MathTransform transformation,
 			List<StyleFilter> styles, int featureIncludes) throws GeomajasException {
 		LayerInfo layerInfo = layer.getLayerInfo();
-		FeatureModel featureModel = layer.getLayerModel().getFeatureModel();
+		FeatureModel featureModel = layer.getFeatureModel();
 		InternalFeatureImpl res = new InternalFeatureImpl();
 		res.setId(layerInfo.getId() + "." + featureModel.getId(feature));
 		res.setLayer(layer);
@@ -278,7 +275,6 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 		if (null == layer) {
 			throw new GeomajasException(ExceptionCode.VECTOR_LAYER_NOT_FOUND, layerId);
 		}
-		LayerModel layerModel = layer.getLayerModel();
 
 		MathTransform layerToTarget;
 		try {
@@ -286,7 +282,7 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 		} catch (FactoryException fe) {
 			throw new GeomajasException(fe, ExceptionCode.CRS_TRANSFORMATION_NOT_POSSIBLE, crs, layer.getCrs());
 		}
-		Envelope bounds = layerModel.getBounds(filter);
+		Envelope bounds = layer.getBounds(filter);
 		try {
 			bounds = JTS.transform(bounds, layerToTarget);
 		} catch (TransformException te) {
@@ -300,10 +296,9 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 		if (null == layer) {
 			throw new GeomajasException(ExceptionCode.VECTOR_LAYER_NOT_FOUND, layerId);
 		}
-		LayerModel layerModel = layer.getLayerModel();
 
 		List<Object> list = new ArrayList<Object>();
-		Iterator<?> it = layerModel.getObjects(attributeName, filter);
+		Iterator<?> it = layer.getObjects(attributeName, filter);
 		while (it.hasNext()) {
 			list.add(it.next());
 		}

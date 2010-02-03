@@ -24,7 +24,6 @@ package org.geomajas.layermodel.hibernate;
 
 import org.geomajas.layer.LayerException;
 import org.geomajas.layermodel.hibernate.pojo.HibernateTestFeature;
-import org.geomajas.layermodel.hibernate.pojo.HibernateTestManyToOne;
 import org.geomajas.layermodel.hibernate.pojo.HibernateTestOneToMany;
 import org.junit.Assert;
 import org.junit.Before;
@@ -75,10 +74,10 @@ public class HibernateFilterOneToManyTest extends AbstractHibernateLayerModelTes
 		set4.add(HibernateTestOneToMany.getDefaultInstance4(null));
 		f4.setOneToMany(set4);
 
-		layerModel.create(f1);
-		layerModel.create(f2);
-		layerModel.create(f3);
-		layerModel.create(f4);   }
+		layer.create(f1);
+		layer.create(f2);
+		layer.create(f3);
+		layer.create(f4);   }
 
 	/*
 	 * Uses inner join: If ANY of the oneToMany objects are evaluated by the filter, then the HibernateTestFeature is
@@ -87,7 +86,7 @@ public class HibernateFilterOneToManyTest extends AbstractHibernateLayerModelTes
 	@Test
 	public void betweenFilterOnInteger() throws Exception {
 		Filter filter = filterCreator.createBetweenFilter(ATTR__ONE_TO_MANY__DOT__INT, "500", "2500");
-		Iterator<?> it = layerModel.getElements(filter);
+		Iterator<?> it = layer.getElements(filter);
 		int t = 0;
 		while (it.hasNext()) {
 			Assert.assertTrue("Returned object must be a HibernateTestFeature",
@@ -101,7 +100,7 @@ public class HibernateFilterOneToManyTest extends AbstractHibernateLayerModelTes
 	public void betweenFilterOnFloat() throws Exception {
 		Filter filter = filterCreator.createBetweenFilter(ATTR__ONE_TO_MANY__DOT__FLOAT, "500", "2500");
 		try {
-			Iterator<?> it = layerModel.getElements(filter);
+			Iterator<?> it = layer.getElements(filter);
 			int t = 0;
 			while (it.hasNext()) {
 				Assert.assertTrue("Returned object must be a HibernateTestFeature",
@@ -117,7 +116,7 @@ public class HibernateFilterOneToManyTest extends AbstractHibernateLayerModelTes
 	@Test
 	public void betweenFilterOnDouble() throws Exception {
 		Filter filter = filterCreator.createBetweenFilter(ATTR__ONE_TO_MANY__DOT__DOUBLE, "500", "2500");
-		Iterator<?> it = layerModel.getElements(filter);
+		Iterator<?> it = layer.getElements(filter);
 		int t = 0;
 		while (it.hasNext()) {
 			Assert.assertTrue("Returned object must be a HibernateTestFeature",
@@ -130,7 +129,7 @@ public class HibernateFilterOneToManyTest extends AbstractHibernateLayerModelTes
 	@Test
 	public void ltFilterOnInt() throws Exception {
 		Filter filter = filterCreator.createCompareFilter(ATTR__ONE_TO_MANY__DOT__INT, "<", "2500");
-		Iterator<?> it = layerModel.getElements(filter);
+		Iterator<?> it = layer.getElements(filter);
 		int t = 0;
 		while (it.hasNext()) {
 			Assert.assertTrue("Returned object must be a HibernateTestFeature",
@@ -143,7 +142,7 @@ public class HibernateFilterOneToManyTest extends AbstractHibernateLayerModelTes
 	@Test
 	public void leFilterOnInt() throws Exception {
 		Filter filter = filterCreator.createCompareFilter(ATTR__ONE_TO_MANY__DOT__INT, "<=", "2000");
-		Iterator<?> it = layerModel.getElements(filter);
+		Iterator<?> it = layer.getElements(filter);
 		int t = 0;
 		while (it.hasNext()) {
 			Assert.assertTrue("Returned object must be a HibernateTestFeature",
@@ -156,7 +155,7 @@ public class HibernateFilterOneToManyTest extends AbstractHibernateLayerModelTes
 	@Test
 	public void gtFilterOnInt() throws Exception {
 		Filter filter = filterCreator.createCompareFilter(ATTR__ONE_TO_MANY__DOT__INT, ">", "2500");
-		Iterator<?> it = layerModel.getElements(filter);
+		Iterator<?> it = layer.getElements(filter);
 		int t = 0;
 		while (it.hasNext()) {
 			Assert.assertTrue("Returned object must be a HibernateTestFeature",
@@ -169,7 +168,7 @@ public class HibernateFilterOneToManyTest extends AbstractHibernateLayerModelTes
 	@Test
 	public void geFilterOnInt() throws Exception {
 		Filter filter = filterCreator.createCompareFilter(ATTR__ONE_TO_MANY__DOT__INT, ">=", "3000");
-		Iterator<?> it = layerModel.getElements(filter);
+		Iterator<?> it = layer.getElements(filter);
 		int t = 0;
 		while (it.hasNext()) {
 			Assert.assertTrue("Returned object must be a HibernateTestFeature",
@@ -182,7 +181,7 @@ public class HibernateFilterOneToManyTest extends AbstractHibernateLayerModelTes
 	@Test
 	public void eqFilterOnInt() throws Exception {
 		Filter filter = filterCreator.createCompareFilter(ATTR__ONE_TO_MANY__DOT__INT, "==", "2000");
-		Iterator<?> it = layerModel.getElements(filter);
+		Iterator<?> it = layer.getElements(filter);
 		int t = 0;
 		while (it.hasNext()) {
 			Assert.assertTrue("Returned object must be a HibernateTestFeature",
@@ -200,7 +199,7 @@ public class HibernateFilterOneToManyTest extends AbstractHibernateLayerModelTes
 	@Test
 	public void neFilterOnInt() throws Exception {
 		Filter filter = filterCreator.createCompareFilter(ATTR__ONE_TO_MANY__DOT__INT, "<>", "2000");
-		Iterator<?> it = layerModel.getElements(filter);
+		Iterator<?> it = layer.getElements(filter);
 		int t = 0;
 		while (it.hasNext()) {
 			Assert.assertTrue("Returned object must be a HibernateTestFeature",
@@ -213,7 +212,7 @@ public class HibernateFilterOneToManyTest extends AbstractHibernateLayerModelTes
 	@Test
 	public void ltFilterOnFloat() throws Exception {
 		Filter filter = filterCreator.createCompareFilter(ATTR__ONE_TO_MANY__DOT__FLOAT, "<", "2500");
-		Iterator<?> it = layerModel.getElements(filter);
+		Iterator<?> it = layer.getElements(filter);
 		int t = 0;
 		while (it.hasNext()) {
 			Assert.assertTrue("Returned object must be a HibernateTestFeature",
@@ -226,7 +225,7 @@ public class HibernateFilterOneToManyTest extends AbstractHibernateLayerModelTes
 	@Test
 	public void leFilterOnFloat() throws Exception {
 		Filter filter = filterCreator.createCompareFilter(ATTR__ONE_TO_MANY__DOT__FLOAT, "<=", "2000");
-		Iterator<?> it = layerModel.getElements(filter);
+		Iterator<?> it = layer.getElements(filter);
 		int t = 0;
 		while (it.hasNext()) {
 			Assert.assertTrue("Returned object must be a HibernateTestFeature",
@@ -239,7 +238,7 @@ public class HibernateFilterOneToManyTest extends AbstractHibernateLayerModelTes
 	@Test
 	public void gtFilterOnFloat() throws Exception {
 		Filter filter = filterCreator.createCompareFilter(ATTR__ONE_TO_MANY__DOT__FLOAT, ">", "2500");
-		Iterator<?> it = layerModel.getElements(filter);
+		Iterator<?> it = layer.getElements(filter);
 		int t = 0;
 		while (it.hasNext()) {
 			Assert.assertTrue("Returned object must be a HibernateTestFeature",
@@ -252,7 +251,7 @@ public class HibernateFilterOneToManyTest extends AbstractHibernateLayerModelTes
 	@Test
 	public void geFilterOnFloat() throws Exception {
 		Filter filter = filterCreator.createCompareFilter(ATTR__ONE_TO_MANY__DOT__FLOAT, ">=", "3000");
-		Iterator<?> it = layerModel.getElements(filter);
+		Iterator<?> it = layer.getElements(filter);
 		int t = 0;
 		while (it.hasNext()) {
 			Assert.assertTrue("Returned object must be a HibernateTestFeature",
@@ -265,7 +264,7 @@ public class HibernateFilterOneToManyTest extends AbstractHibernateLayerModelTes
 	@Test
 	public void eqFilterOnFloat() throws Exception {
 		Filter filter = filterCreator.createCompareFilter(ATTR__ONE_TO_MANY__DOT__FLOAT, "==", "2000");
-		Iterator<?> it = layerModel.getElements(filter);
+		Iterator<?> it = layer.getElements(filter);
 		int t = 0;
 		while (it.hasNext()) {
 			Assert.assertTrue("Returned object must be a HibernateTestFeature",
@@ -278,7 +277,7 @@ public class HibernateFilterOneToManyTest extends AbstractHibernateLayerModelTes
 	@Test
 	public void neFilterOnFloat() throws Exception {
 		Filter filter = filterCreator.createCompareFilter(ATTR__ONE_TO_MANY__DOT__FLOAT, "<>", "2000");
-		Iterator<?> it = layerModel.getElements(filter);
+		Iterator<?> it = layer.getElements(filter);
 		int t = 0;
 		while (it.hasNext()) {
 			Assert.assertTrue("Returned object must be a HibernateTestFeature",
@@ -291,7 +290,7 @@ public class HibernateFilterOneToManyTest extends AbstractHibernateLayerModelTes
 	@Test
 	public void ltFilterOnDouble() throws Exception {
 		Filter filter = filterCreator.createCompareFilter(ATTR__ONE_TO_MANY__DOT__DOUBLE, "<", "2500");
-		Iterator<?> it = layerModel.getElements(filter);
+		Iterator<?> it = layer.getElements(filter);
 		int t = 0;
 		while (it.hasNext()) {
 			Assert.assertTrue("Returned object must be a HibernateTestFeature",
@@ -304,7 +303,7 @@ public class HibernateFilterOneToManyTest extends AbstractHibernateLayerModelTes
 	@Test
 	public void leFilterOnDouble() throws Exception {
 		Filter filter = filterCreator.createCompareFilter(ATTR__ONE_TO_MANY__DOT__DOUBLE, "<=", "2500");
-		Iterator<?> it = layerModel.getElements(filter);
+		Iterator<?> it = layer.getElements(filter);
 		int t = 0;
 		while (it.hasNext()) {
 			Assert.assertTrue("Returned object must be a HibernateTestFeature",
@@ -317,7 +316,7 @@ public class HibernateFilterOneToManyTest extends AbstractHibernateLayerModelTes
 	@Test
 	public void gtFilterOnDouble() throws Exception {
 		Filter filter = filterCreator.createCompareFilter(ATTR__ONE_TO_MANY__DOT__DOUBLE, ">", "2500");
-		Iterator<?> it = layerModel.getElements(filter);
+		Iterator<?> it = layer.getElements(filter);
 		int t = 0;
 		while (it.hasNext()) {
 			Assert.assertTrue("Returned object must be a HibernateTestFeature",
@@ -330,7 +329,7 @@ public class HibernateFilterOneToManyTest extends AbstractHibernateLayerModelTes
 	@Test
 	public void geFilterOnDouble() throws Exception {
 		Filter filter = filterCreator.createCompareFilter(ATTR__ONE_TO_MANY__DOT__DOUBLE, ">=", "3000");
-		Iterator<?> it = layerModel.getElements(filter);
+		Iterator<?> it = layer.getElements(filter);
 		int t = 0;
 		while (it.hasNext()) {
 			Assert.assertTrue("Returned object must be a HibernateTestFeature",
@@ -343,7 +342,7 @@ public class HibernateFilterOneToManyTest extends AbstractHibernateLayerModelTes
 	@Test
 	public void eqFilterOnDouble() throws Exception {
 		Filter filter = filterCreator.createCompareFilter(ATTR__ONE_TO_MANY__DOT__DOUBLE, "==", "2000");
-		Iterator<?> it = layerModel.getElements(filter);
+		Iterator<?> it = layer.getElements(filter);
 		int t = 0;
 		while (it.hasNext()) {
 			Assert.assertTrue("Returned object must be a HibernateTestFeature",
@@ -356,7 +355,7 @@ public class HibernateFilterOneToManyTest extends AbstractHibernateLayerModelTes
 	@Test
 	public void neFilterOnDouble() throws Exception {
 		Filter filter = filterCreator.createCompareFilter(ATTR__ONE_TO_MANY__DOT__DOUBLE, "<>", "2000");
-		Iterator<?> it = layerModel.getElements(filter);
+		Iterator<?> it = layer.getElements(filter);
 		int t = 0;
 		while (it.hasNext()) {
 			Assert.assertTrue("Returned object must be a HibernateTestFeature",
@@ -372,7 +371,7 @@ public class HibernateFilterOneToManyTest extends AbstractHibernateLayerModelTes
 		Date date;
 		date = format.parse("01/01/2008");
 		Filter filter = filterCreator.createCompareFilter(ATTR__ONE_TO_MANY__DOT__DATE, "<", date);
-		Iterator<?> it = layerModel.getElements(filter);
+		Iterator<?> it = layer.getElements(filter);
 		int t = 0;
 		while (it.hasNext()) {
 			Assert.assertTrue("Returned object must be a HibernateTestFeature",
@@ -388,7 +387,7 @@ public class HibernateFilterOneToManyTest extends AbstractHibernateLayerModelTes
 		Date date;
 		date = format.parse("01/01/2007");
 		Filter filter = filterCreator.createCompareFilter(ATTR__ONE_TO_MANY__DOT__DATE, "<=", date);
-		Iterator<?> it = layerModel.getElements(filter);
+		Iterator<?> it = layer.getElements(filter);
 		int t = 0;
 		while (it.hasNext()) {
 			Assert.assertTrue("Returned object must be a HibernateTestFeature",
@@ -404,7 +403,7 @@ public class HibernateFilterOneToManyTest extends AbstractHibernateLayerModelTes
 		Date date;
 		date = format.parse("01/01/2007");
 		Filter filter = filterCreator.createCompareFilter(ATTR__ONE_TO_MANY__DOT__DATE, ">", date);
-		Iterator<?> it = layerModel.getElements(filter);
+		Iterator<?> it = layer.getElements(filter);
 		int t = 0;
 		while (it.hasNext()) {
 			Assert.assertTrue("Returned object must be a HibernateTestFeature",
@@ -420,7 +419,7 @@ public class HibernateFilterOneToManyTest extends AbstractHibernateLayerModelTes
 		Date date;
 		date = format.parse("01/01/2007");
 		Filter filter = filterCreator.createCompareFilter(ATTR__ONE_TO_MANY__DOT__DATE, ">=", date);
-		Iterator<?> it = layerModel.getElements(filter);
+		Iterator<?> it = layer.getElements(filter);
 		int t = 0;
 		while (it.hasNext()) {
 			Assert.assertTrue("Returned object must be a HibernateTestFeature",
@@ -436,7 +435,7 @@ public class HibernateFilterOneToManyTest extends AbstractHibernateLayerModelTes
 		Date date;
 		date = format.parse("01/01/2008");
 		Filter filter = filterCreator.createCompareFilter(ATTR__ONE_TO_MANY__DOT__DATE, "==", date);
-		Iterator<?> it = layerModel.getElements(filter);
+		Iterator<?> it = layer.getElements(filter);
 		int t = 0;
 		while (it.hasNext()) {
 			Assert.assertTrue("Returned object must be a HibernateTestFeature",
@@ -452,7 +451,7 @@ public class HibernateFilterOneToManyTest extends AbstractHibernateLayerModelTes
 		Date date;
 		date = format.parse("01/01/2008");
 		Filter filter = filterCreator.createCompareFilter(ATTR__ONE_TO_MANY__DOT__DATE, "<>", date);
-		Iterator<?> it = layerModel.getElements(filter);
+		Iterator<?> it = layer.getElements(filter);
 		int t = 0;
 		while (it.hasNext()) {
 			Assert.assertTrue("Returned object must be a HibernateTestFeature",
@@ -465,7 +464,7 @@ public class HibernateFilterOneToManyTest extends AbstractHibernateLayerModelTes
 	@Test
 	public void eqFilterOnBoolean() throws Exception {
 		Filter filter = filterCreator.createCompareFilter(ATTR__ONE_TO_MANY__DOT__BOOLEAN, "==", "true");
-		Iterator<?> it = layerModel.getElements(filter);
+		Iterator<?> it = layer.getElements(filter);
 		int t = 0;
 		while (it.hasNext()) {
 			Assert.assertTrue("Returned object must be a HibernateTestFeature",
@@ -478,7 +477,7 @@ public class HibernateFilterOneToManyTest extends AbstractHibernateLayerModelTes
 	@Test
 	public void neFilterOnBoolean() throws Exception {
 		Filter filter = filterCreator.createCompareFilter(ATTR__ONE_TO_MANY__DOT__BOOLEAN, "<>", "true");
-		Iterator<?> it = layerModel.getElements(filter);
+		Iterator<?> it = layer.getElements(filter);
 		int t = 0;
 		while (it.hasNext()) {
 			Assert.assertTrue("Returned object must be a HibernateTestFeature",
@@ -491,7 +490,7 @@ public class HibernateFilterOneToManyTest extends AbstractHibernateLayerModelTes
 	@Test
 	public void eqFilterOnString() throws Exception {
 		Filter filter = filterCreator.createCompareFilter(ATTR__ONE_TO_MANY__DOT__TEXT, "==", "oneToMany-1");
-		Iterator<?> it = layerModel.getElements(filter);
+		Iterator<?> it = layer.getElements(filter);
 		int t = 0;
 		while (it.hasNext()) {
 			Assert.assertTrue("Returned object must be a HibernateTestFeature",
@@ -504,7 +503,7 @@ public class HibernateFilterOneToManyTest extends AbstractHibernateLayerModelTes
 	@Test
 	public void neFilterOnString() throws Exception {
 		Filter filter = filterCreator.createCompareFilter(ATTR__ONE_TO_MANY__DOT__TEXT, "<>", "oneToMany-1");
-		Iterator<?> it = layerModel.getElements(filter);
+		Iterator<?> it = layer.getElements(filter);
 		int t = 0;
 		while (it.hasNext()) {
 			Assert.assertTrue("Returned object must be a HibernateTestFeature",
@@ -517,7 +516,7 @@ public class HibernateFilterOneToManyTest extends AbstractHibernateLayerModelTes
 	@Test
 	public void likeFilter() throws Exception {
 		Filter wildCardFilter = filterCreator.createLikeFilter(ATTR__ONE_TO_MANY__DOT__TEXT, "*-1");
-		Iterator<?> it = layerModel.getElements(wildCardFilter);
+		Iterator<?> it = layer.getElements(wildCardFilter);
 		int t = 0;
 		while (it.hasNext()) {
 			Assert.assertTrue("Returned object must be a HibernateTestFeature",
@@ -527,7 +526,7 @@ public class HibernateFilterOneToManyTest extends AbstractHibernateLayerModelTes
 		Assert.assertEquals(3, t);
 
 		Filter singleCharFilter = filterCreator.createLikeFilter(ATTR__ONE_TO_MANY__DOT__TEXT, "oneToMany-?");
-		it = layerModel.getElements(singleCharFilter);
+		it = layer.getElements(singleCharFilter);
 		t = 0;
 		while (it.hasNext()) {
 			Assert.assertTrue("Returned object must be a HibernateTestFeature",
@@ -542,7 +541,7 @@ public class HibernateFilterOneToManyTest extends AbstractHibernateLayerModelTes
 		Filter textFilter = filterCreator.createCompareFilter(ATTR__ONE_TO_MANY__DOT__TEXT, "==", "oneToMany-1");
 		Filter intFilter = filterCreator.createCompareFilter(ATTR__ONE_TO_MANY__DOT__INT, "<", "2500");
 		Filter filter = filterCreator.createLogicFilter(textFilter, "and", intFilter);
-		Iterator<?> it = layerModel.getElements(filter);
+		Iterator<?> it = layer.getElements(filter);
 		int t = 0;
 		while (it.hasNext()) {
 			Assert.assertTrue("Returned object must be a HibernateTestFeature",
@@ -557,7 +556,7 @@ public class HibernateFilterOneToManyTest extends AbstractHibernateLayerModelTes
 		Filter textFilter = filterCreator.createCompareFilter(ATTR__ONE_TO_MANY__DOT__TEXT, "==", "oneToMany-1");
 		Filter intFilter = filterCreator.createCompareFilter(ATTR__ONE_TO_MANY__DOT__INT, ">", "2500");
 		Filter filter = filterCreator.createLogicFilter(textFilter, "or", intFilter);
-		Iterator<?> it = layerModel.getElements(filter);
+		Iterator<?> it = layer.getElements(filter);
 		int t = 0;
 		while (it.hasNext()) {
 			Assert.assertTrue("Returned object must be a HibernateTestFeature",
@@ -574,7 +573,7 @@ public class HibernateFilterOneToManyTest extends AbstractHibernateLayerModelTes
 	public void notFilter() throws Exception {
 		Filter textFilter = filterCreator.createCompareFilter(ATTR__ONE_TO_MANY__DOT__TEXT, "<>", "oneToMany-1");
 		Filter filter = filterCreator.createLogicFilter(textFilter, "NOT", null);
-		Iterator<?> it = layerModel.getElements(filter);
+		Iterator<?> it = layer.getElements(filter);
 		int t = 0;
 		while (it.hasNext()) {
 			Assert.assertTrue("Returned object must be a HibernateTestFeature",

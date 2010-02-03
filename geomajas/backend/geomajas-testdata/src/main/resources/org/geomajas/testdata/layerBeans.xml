@@ -119,7 +119,8 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		</property>
 	</bean>
 
-	<bean name="beansModel" class="org.geomajas.layermodel.bean.BeanLayerModel">
+	<bean name="beans" class="org.geomajas.layermodel.bean.BeanLayer">
+		<property name="layerInfo" ref="beansInfo" />
 		<property name="features">
 			<list>
 				<bean class="org.geomajas.layermodel.bean.FeatureBean">
@@ -140,12 +141,6 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 				</bean>
 			</list>
 		</property>
-	</bean>
-
-	<bean name="beans"
-		class="org.geomajas.internal.layer.layertree.DefaultVectorLayer">
-		<property name="layerInfo" ref="beansInfo" />
-		<property name="layerModel" ref="beansModel" />
 	</bean>
 
 </beans>

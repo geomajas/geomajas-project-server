@@ -22,7 +22,7 @@
  */
 package org.geomajas.layermodel.hibernate;
 
-import org.geomajas.layer.LayerModel;
+import org.geomajas.layer.VectorLayer;
 import org.geomajas.layermodel.hibernate.pojo.HibernateTestManyToOne;
 import org.geomajas.service.FilterService;
 import org.hibernate.SessionFactory;
@@ -33,7 +33,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Unit test that tests filters for the HibernateLayerModel.
+ * Unit test that tests filters for the HibernateLayer.
  * 
  * @author Pieter De Graef
  */
@@ -117,7 +117,7 @@ public abstract class AbstractHibernateLayerModelTest {
 	protected SessionFactory factory;
 
 	@Autowired
-	protected LayerModel layerModel;
+	protected VectorLayer layer;
 
 	@Autowired
 	protected FilterService filterCreator;

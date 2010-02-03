@@ -47,6 +47,7 @@ import org.geomajas.rendering.image.RasterUrlBuilder;
 import org.geomajas.rendering.painter.tile.TilePainter;
 import org.geomajas.rendering.strategy.RenderingStrategy;
 import org.geomajas.service.ApplicationService;
+import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.VectorLayerService;
 import org.geotools.filter.text.cql2.CQL;
@@ -64,7 +65,7 @@ import org.springframework.stereotype.Component;
  * <p>
  * Internally this class contains a private class that implements the {@link RasterUrlBuilder} interface to create an
  * implementation that is able to create url's that refer to the {@link RetrieveImageServlet}. This class is added to
- * the {@link InternalRasterTile} objects so that the {@link RasterTilePainter} can use it to actually paint the raster
+ * the {@link InternalTile} objects so that the {@link RasterTilePainter} can use it to actually paint the raster
  * tiles.
  * </p>
  * 
@@ -81,6 +82,9 @@ public class ImageRendering implements RenderingStrategy {
 
 	@Autowired
 	private VectorLayerService layerService;
+
+	@Autowired
+	private DtoConverterService converterService;
 
 	/**
 	 * Paint the tile! This function will create a <code>RasterTile</code> extension of the <code>RenderedTile</code>
@@ -100,7 +104,8 @@ public class ImageRendering implements RenderingStrategy {
 			CoordinateReferenceSystem crs = runtime.getCrs(metadata.getCrs());
 
 			// Prepare the tile:
-			InternalTileImpl tile = new InternalTileImpl(metadata.getCode(), vLayer, metadata.getScale());
+			InternalTileImpl tile = new InternalTileImpl(metadata.getCode(), vLayer, metadata.getScale(),
+					converterService);
 			tile.setTileRendering(new InternalTileRenderingImpl(TileRenderMethod.STRING_RENDERING));
 
 			// Prepare any filtering:

@@ -54,7 +54,7 @@ public class HibernateFeatureModelTest extends AbstractHibernateLayerModelTest {
 	
 	@Before
     public void setUpTestDataWithinTransaction() throws LayerException {
-		featureModel = layerModel.getFeatureModel();
+		featureModel = layer.getFeatureModel();
 
 		feature1 = HibernateTestFeature.getDefaultInstance1(new Long(1));
 		feature1.setManyToOne(HibernateTestManyToOne.getDefaultInstance1(new Long(1)));

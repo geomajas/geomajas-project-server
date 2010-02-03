@@ -35,7 +35,7 @@ import java.util.Date;
 import java.util.Iterator;
 
 /**
- * Unit test that tests filters for the HibernateLayerModel.
+ * Unit test that tests filters for the HibernateLayer.
  *
  * @author Pieter De Graef
  */
@@ -43,17 +43,17 @@ public class HibernateFilterAttributeTest extends AbstractHibernateLayerModelTes
 	
 	@Before
     public void setUpTestDataWithinTransaction() throws LayerException {
-		layerModel.create(HibernateTestFeature.getDefaultInstance1(null));
-		layerModel.create(HibernateTestFeature.getDefaultInstance2(null));
-		layerModel.create(HibernateTestFeature.getDefaultInstance3(null));
-		layerModel.create(HibernateTestFeature.getDefaultInstance4(null));
+		layer.create(HibernateTestFeature.getDefaultInstance1(null));
+		layer.create(HibernateTestFeature.getDefaultInstance2(null));
+		layer.create(HibernateTestFeature.getDefaultInstance3(null));
+		layer.create(HibernateTestFeature.getDefaultInstance4(null));
     }
 
 
 	@Test
 	public void betweenFilterOnInteger() throws Exception {
 		Filter intFilter = filterCreator.createBetweenFilter(PARAM_INT_ATTR, "5", "25");
-		Iterator<?> it = layerModel.getElements(intFilter);
+		Iterator<?> it = layer.getElements(intFilter);
 		int t = 0;
 		while (it.hasNext()) {
 			Assert.assertTrue("Returned object must be a HibernateTestFeature",
@@ -66,7 +66,7 @@ public class HibernateFilterAttributeTest extends AbstractHibernateLayerModelTes
 	@Test
 	public void betweenFilterOnFloat() throws Exception {
 		Filter filter = filterCreator.createBetweenFilter(PARAM_FLOAT_ATTR, "5.0f", "25.0f");
-		Iterator<?> it = layerModel.getElements(filter);
+		Iterator<?> it = layer.getElements(filter);
 
 		int t = 0;
 		while (it.hasNext()) {
@@ -80,7 +80,7 @@ public class HibernateFilterAttributeTest extends AbstractHibernateLayerModelTes
 	@Test
 	public void betweenFilterOnDouble() throws Exception {
 		Filter filter = filterCreator.createBetweenFilter(PARAM_DOUBLE_ATTR, "5.0", "25.0");
-		Iterator<?> it = layerModel.getElements(filter);
+		Iterator<?> it = layer.getElements(filter);
 
 		int t = 0;
 		while (it.hasNext()) {
@@ -94,7 +94,7 @@ public class HibernateFilterAttributeTest extends AbstractHibernateLayerModelTes
 	@Test
 	public void compareFilterOnInteger() throws Exception {
 		Filter lt = filterCreator.createCompareFilter(PARAM_INT_ATTR, "<", "35");
-		Iterator<?> it = layerModel.getElements(lt);
+		Iterator<?> it = layer.getElements(lt);
 
 		int t = 0;
 		while (it.hasNext()) {
@@ -104,7 +104,7 @@ public class HibernateFilterAttributeTest extends AbstractHibernateLayerModelTes
 		}
 		Assert.assertEquals(3, t);
 		Filter ne = filterCreator.createCompareFilter(PARAM_INT_ATTR, "<>", "10");
-		it = layerModel.getElements(ne);
+		it = layer.getElements(ne);
 
 		t = 0;
 		while (it.hasNext()) {
@@ -118,7 +118,7 @@ public class HibernateFilterAttributeTest extends AbstractHibernateLayerModelTes
 	@Test
 	public void compareFilterOnFloat() throws Exception {
 		Filter lt = filterCreator.createCompareFilter(PARAM_FLOAT_ATTR, "<", "35");
-		Iterator<?> it = layerModel.getElements(lt);
+		Iterator<?> it = layer.getElements(lt);
 
 		int t = 0;
 		while (it.hasNext()) {
@@ -128,7 +128,7 @@ public class HibernateFilterAttributeTest extends AbstractHibernateLayerModelTes
 		}
 		Assert.assertEquals(3, t);
 		Filter ne = filterCreator.createCompareFilter(PARAM_FLOAT_ATTR, "<>", "10");
-		it = layerModel.getElements(ne);
+		it = layer.getElements(ne);
 
 		t = 0;
 		while (it.hasNext()) {
@@ -142,7 +142,7 @@ public class HibernateFilterAttributeTest extends AbstractHibernateLayerModelTes
 	@Test
 	public void compareFilterOnDouble() throws Exception {
 		Filter lt = filterCreator.createCompareFilter(PARAM_DOUBLE_ATTR, "<", "35");
-		Iterator<?> it = layerModel.getElements(lt);
+		Iterator<?> it = layer.getElements(lt);
 
 		int t = 0;
 		while (it.hasNext()) {
@@ -152,7 +152,7 @@ public class HibernateFilterAttributeTest extends AbstractHibernateLayerModelTes
 		}
 		Assert.assertEquals(3, t);
 		Filter ne = filterCreator.createCompareFilter(PARAM_DOUBLE_ATTR, "<>", "10");
-		it = layerModel.getElements(ne);
+		it = layer.getElements(ne);
 
 		t = 0;
 		while (it.hasNext()) {
@@ -170,7 +170,7 @@ public class HibernateFilterAttributeTest extends AbstractHibernateLayerModelTes
 		d1 = format.parse("12/12/2007");
 
 		Filter filter = filterCreator.createCompareFilter(PARAM_DATE_ATTR, "<", d1);
-		Iterator<?> it = layerModel.getElements(filter);
+		Iterator<?> it = layer.getElements(filter);
 
 		int t = 0;
 		while (it.hasNext()) {
@@ -184,7 +184,7 @@ public class HibernateFilterAttributeTest extends AbstractHibernateLayerModelTes
 	@Test
 	public void compareFilterOnBoolean() throws Exception {
 		Filter eq = filterCreator.createCompareFilter(PARAM_BOOLEAN_ATTR, "==", "true");
-		Iterator<?> it = layerModel.getElements(eq);
+		Iterator<?> it = layer.getElements(eq);
 
 		int t = 0;
 		while (it.hasNext()) {
@@ -195,7 +195,7 @@ public class HibernateFilterAttributeTest extends AbstractHibernateLayerModelTes
 		Assert.assertEquals(2, t);
 
 		Filter ne = filterCreator.createCompareFilter(PARAM_BOOLEAN_ATTR, "<>", "true");
-		it = layerModel.getElements(ne);
+		it = layer.getElements(ne);
 
 		t = 0;
 		while (it.hasNext()) {
@@ -209,7 +209,7 @@ public class HibernateFilterAttributeTest extends AbstractHibernateLayerModelTes
 	@Test
 	public void compareFilterOnString() throws Exception {
 		Filter eq = filterCreator.createCompareFilter(PARAM_TEXT_ATTR, "==", "default-name-1");
-		Iterator<?> it = layerModel.getElements(eq);
+		Iterator<?> it = layer.getElements(eq);
 
 		int t = 0;
 		while (it.hasNext()) {
@@ -220,7 +220,7 @@ public class HibernateFilterAttributeTest extends AbstractHibernateLayerModelTes
 		Assert.assertEquals(1, t);
 
 		Filter ne = filterCreator.createCompareFilter(PARAM_TEXT_ATTR, "<>", "default-name-1");
-		it = layerModel.getElements(ne);
+		it = layer.getElements(ne);
 
 		t = 0;
 		while (it.hasNext()) {
@@ -234,7 +234,7 @@ public class HibernateFilterAttributeTest extends AbstractHibernateLayerModelTes
 	@Test
 	public void likeFilter() throws Exception {
 		Filter filter = filterCreator.createLikeFilter(PARAM_TEXT_ATTR, "*name-_");
-		Iterator<?> it = layerModel.getElements(filter);
+		Iterator<?> it = layer.getElements(filter);
 
 		int t = 0;
 		while (it.hasNext()) {
@@ -251,7 +251,7 @@ public class HibernateFilterAttributeTest extends AbstractHibernateLayerModelTes
 		Filter filter2 = filterCreator.createLikeFilter(PARAM_TEXT_ATTR, "default*");
 		Filter filter = filterCreator.createLogicFilter(filter1, "and", filter2);
 
-		Iterator<?> it = layerModel.getElements(filter);
+		Iterator<?> it = layer.getElements(filter);
 
 		int t = 0;
 		while (it.hasNext()) {
@@ -265,14 +265,14 @@ public class HibernateFilterAttributeTest extends AbstractHibernateLayerModelTes
 	@Test
 	public void fidFilter() throws Exception {
 		String id = "45";
-		Iterator<?> it = layerModel.getElements(null);
+		Iterator<?> it = layer.getElements(null);
 		if (it.hasNext()) {
 			HibernateTestFeature f = (HibernateTestFeature) it.next();
 			id = f.getId() + "";
 		}
 
 		Filter filter = filterCreator.createFidFilter(new String[] {id});
-		it = layerModel.getElements(filter);
+		it = layer.getElements(filter);
 		Assert.assertTrue("FidFilter should return an iterator with 1 feature.", it.hasNext());
 		if (it.hasNext()) {
 			HibernateTestFeature f = (HibernateTestFeature) it.next();

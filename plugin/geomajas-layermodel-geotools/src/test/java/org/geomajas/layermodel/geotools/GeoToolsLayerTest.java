@@ -1,6 +1,9 @@
-package org.geomajas.layermodel.shapeinmem;
+package org.geomajas.layermodel.geotools;
 
+import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
 
@@ -11,9 +14,9 @@ import org.geomajas.configuration.PrimitiveAttributeInfo;
 import org.geomajas.configuration.PrimitiveType;
 import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.service.FilterService;
-import org.geotools.factory.CommonFactoryFinder;
+import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.junit.Assert;
-import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.Filter;
@@ -22,26 +25,26 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKTReader;
 
-public class ShapeInMemLayerModelTest {
+public class GeoToolsLayerTest {
 
-	private static final String SHAPE_FILE = "classpath:org/geomajas/testdata/shapes/cities_world/cities.shp";
+	private static final String SHAPE_FILE = "org/geomajas/testdata/shapes/cities_world/cities.shp";
 
-	private ShapeInMemLayerModel layerModel;
+	private static GeotoolsLayer layer;
 
-	private Filter filter;
+	private static Filter filter;
 
-	@Before
-	public void setUp() throws Exception {
+	@BeforeClass
+	public static void init() throws Exception {
+		ClassLoader classloader = Thread.currentThread().getContextClassLoader();
+		URL url = classloader.getResource(SHAPE_FILE);
 		ApplicationContext applicationContext = new ClassPathXmlApplicationContext(new String[] {
 				"org/geomajas/spring/geomajasContext.xml", "org/geomajas/testdata/layerCountries.xml",
-				"org/geomajas/testdata/simplevectorsContext.xml" });
+				"org/geomajas/testdata/simplevectorsContext.xml", "org/geomajas/layer/geotools/test.xml" });
 		FilterService filterCreator = applicationContext.getBean("service.FilterService", FilterService.class);
-		layerModel = applicationContext.getBean("layermodel.shapeinmem.ShapeInMemLayerModel",
-				ShapeInMemLayerModel.class);
-		layerModel.setUrl(SHAPE_FILE);
+		layer = applicationContext.getBean("test", GeotoolsLayer.class);
+		layer.setUrl(url);
 
 		FeatureInfo ft = new FeatureInfo();
 		ft.setDataSourceName("cities");
@@ -72,58 +75,50 @@ public class ShapeInMemLayerModelTest {
 		layerInfo.setFeatureInfo(ft);
 		layerInfo.setCrs("EPSG:4326");
 
-		layerModel.setLayerInfo(layerInfo);
+		layer.setLayerInfo(layerInfo);
 		filter = filterCreator.createCompareFilter("Population", ">", "49900");
 	}
 
 	@Test
-	public void read() {
-		SimpleFeature f = null;
-		try {
-			f = (SimpleFeature) layerModel.read("9703");
-		} catch (Exception e) {
-		}
-
-		Assert.assertNotNull(f);
+	public void testRead() throws Exception {
+		SimpleFeature f = (SimpleFeature) layer.read("9703");
 		Assert.assertEquals("Elmhurst", f.getAttribute("City"));
 	}
 
 	@Test
-	public void create() {
-		Object created = null;
-		try {
-			WKTReader wktReader = new WKTReader();
-			Point geometry = null;
-			try {
-				geometry = (Point) wktReader.read("POINT (0 0)");
-			} catch (ParseException e) {
-			}
+	public void testUpdate() throws Exception {
+		Calendar cal = Calendar.getInstance();
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+		SimpleFeature f = (SimpleFeature) layer.read("10");
+		f.setAttribute("City", sdf.format(cal.getTime()));
+		layer.update(f);
+		Assert.assertEquals(sdf.format(cal.getTime()), f.getAttribute("City"));
+	}
 
-			SimpleFeature feature = CommonFactoryFinder.getFeatureFactory(null).createSimpleFeature(
-					new Object[] { geometry, "Tsjakamaka", 342 }, layerModel.getSchema(), "100000");
+	@Test
+	public void create() throws Exception {
+		WKTReader wktReader = new WKTReader();
+		Point geometry = (Point) wktReader.read("POINT (0 0)");
 
-			created = layerModel.create(feature);
-		} catch (Exception e) {
-		}
+		SimpleFeatureBuilder build = new SimpleFeatureBuilder(layer.getSchema());
+		SimpleFeature feature = build.buildFeature("100000", new Object[] { geometry, "Tsjakamaka", 342 });
+
+		Object created = layer.create(feature);
 		Assert.assertNotNull(created);
 	}
 
 	@Test
-	public void delete() {
-		try {
-			SimpleFeature f = (SimpleFeature) layerModel.read("10580");
-			Assert.assertNotNull(f);
-			layerModel.delete("10580");
-			Assert.assertTrue(true);
-		} catch (Exception e) {
-			Assert.assertTrue(false);
-		}
+	public void testDelete() throws Exception {
+		SimpleFeature f = (SimpleFeature) layer.read("10580");
+		Assert.assertNotNull(f);
+		layer.delete("10580");
+		Assert.assertTrue(true);
 	}
 
 	@Test
-	public void getBounds() throws Exception {
+	public void testGetBounds() throws Exception {
 		// Checked in QGis!
-		Envelope bbox = layerModel.getBounds();
+		Envelope bbox = layer.getBounds();
 		Assert.assertEquals(-175.22, bbox.getMinX(), .0001);
 		Assert.assertEquals(179.38, bbox.getMaxX(), .0001);
 		Assert.assertEquals(-46.41, bbox.getMinY(), .0001);
@@ -131,9 +126,9 @@ public class ShapeInMemLayerModelTest {
 	}
 
 	@Test
-	public void getBoundsFilter() throws Exception {
+	public void testGetBoundsFilter() throws Exception {
 		// Checked in QGis!
-		Envelope bbox = layerModel.getBounds(filter);
+		Envelope bbox = layer.getBounds(filter);
 		Assert.assertEquals(-118.01, bbox.getMinX(), .0001);
 		Assert.assertEquals(120.86, bbox.getMaxX(), .0001);
 		Assert.assertEquals(-19.99, bbox.getMinY(), .0001);
@@ -141,17 +136,14 @@ public class ShapeInMemLayerModelTest {
 	}
 
 	@Test
-	public void getElements() {
-		try {
-			// Checked in QGis!
-			Iterator<?> it = layerModel.getElements(filter);
-			int counter = 0;
-			while (it.hasNext()) {
-				it.next();
-				counter++;
-			}
-			Assert.assertEquals(16, counter);
-		} catch (Exception e) {
+	public void testGetElements() throws Exception {
+		// Checked in QGis!
+		Iterator<?> it = layer.getElements(filter);
+		int counter = 0;
+		while (it.hasNext()) {
+			it.next();
+			counter++;
 		}
+		Assert.assertEquals(16, counter);
 	}
 }

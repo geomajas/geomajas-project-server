@@ -47,6 +47,7 @@ import org.geomajas.rendering.image.TileImageCreator;
 import org.geomajas.rendering.painter.PaintFactory;
 import org.geomajas.rendering.painter.TilePaintContext;
 import org.geomajas.service.ApplicationService;
+import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
 import org.geotools.referencing.CRS;
 import org.opengis.referencing.FactoryException;
@@ -75,6 +76,9 @@ public class RealTimeBroker implements Broker {
 
 	@Autowired
 	private GeoService geoService;
+
+	@Autowired
+	private DtoConverterService converterService;
 
 	/**
 	 * Try and get the content for a specific empty <code>RenderContent</code> object.
@@ -116,7 +120,7 @@ public class RealTimeBroker implements Broker {
 
 		// 5: Create the vector tile:
 		TileCode code = new TileCode(tileLevel, x, y);
-		InternalTile tile = new InternalTileImpl(code, vLayer, scale);
+		InternalTile tile = new InternalTileImpl(code, vLayer, scale, converterService);
 		Envelope areaOfInterest = tile.getBbox(vLayer);
 		tileContext.setAreaOfInterest(areaOfInterest);
 		Rectangle paintArea = new Rectangle(0, 0, tile.getScreenWidth(), tile.getScreenHeight());

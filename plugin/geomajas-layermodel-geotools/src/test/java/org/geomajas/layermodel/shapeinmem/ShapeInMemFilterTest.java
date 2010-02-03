@@ -20,7 +20,7 @@ public class ShapeInMemFilterTest extends AbstractFilterTest {
 	public void betweenFilterOnInteger() {
 		Filter intFilter = filterCreator.createBetweenFilter(PARAM_INT_ATTR, "2", "8");
 		try {
-			Iterator<?> it = layerModel.getElements(intFilter);
+			Iterator<?> it = layer.getElements(intFilter);
 			int t = 0;
 			while (it.hasNext()) {
 				it.next();
@@ -35,7 +35,7 @@ public class ShapeInMemFilterTest extends AbstractFilterTest {
 	public void betweenFilterOnFloat() {
 		Filter filter = filterCreator.createBetweenFilter(PARAM_FLOAT_ATTR, "2", "8");
 		try {
-			Iterator<?> it = layerModel.getElements(filter);
+			Iterator<?> it = layer.getElements(filter);
 
 			int t = 0;
 			while (it.hasNext()) {
@@ -51,7 +51,7 @@ public class ShapeInMemFilterTest extends AbstractFilterTest {
 	public void betweenFilterOnDouble() {
 		Filter filter = filterCreator.createBetweenFilter(PARAM_DOUBLE_ATTR, "2", "8");
 		try {
-			Iterator<?> it = layerModel.getElements(filter);
+			Iterator<?> it = layer.getElements(filter);
 
 			int t = 0;
 			while (it.hasNext()) {
@@ -67,7 +67,7 @@ public class ShapeInMemFilterTest extends AbstractFilterTest {
 	public void compareFilterOnInteger() {
 		Filter lt = filterCreator.createCompareFilter(PARAM_INT_ATTR, "<", "15");
 		try {
-			Iterator<?> it = layerModel.getElements(lt);
+			Iterator<?> it = layer.getElements(lt);
 
 			int t = 0;
 			while (it.hasNext()) {
@@ -79,7 +79,7 @@ public class ShapeInMemFilterTest extends AbstractFilterTest {
 		}
 		Filter ne = filterCreator.createCompareFilter(PARAM_INT_ATTR, "<>", "10");
 		try {
-			Iterator<?> it = layerModel.getElements(ne);
+			Iterator<?> it = layer.getElements(ne);
 
 			int t = 0;
 			while (it.hasNext()) {
@@ -95,7 +95,7 @@ public class ShapeInMemFilterTest extends AbstractFilterTest {
 	public void compareFilterOnFloat() {
 		Filter lt = filterCreator.createCompareFilter(PARAM_FLOAT_ATTR, "<", "15");
 		try {
-			Iterator<?> it = layerModel.getElements(lt);
+			Iterator<?> it = layer.getElements(lt);
 
 			int t = 0;
 			while (it.hasNext()) {
@@ -107,7 +107,7 @@ public class ShapeInMemFilterTest extends AbstractFilterTest {
 		}
 		Filter ne = filterCreator.createCompareFilter(PARAM_FLOAT_ATTR, "<>", "10");
 		try {
-			Iterator<?> it = layerModel.getElements(ne);
+			Iterator<?> it = layer.getElements(ne);
 
 			int t = 0;
 			while (it.hasNext()) {
@@ -123,7 +123,7 @@ public class ShapeInMemFilterTest extends AbstractFilterTest {
 	public void compareFilterOnDouble() {
 		Filter lt = filterCreator.createCompareFilter(PARAM_DOUBLE_ATTR, "<", "15");
 		try {
-			Iterator<?> it = layerModel.getElements(lt);
+			Iterator<?> it = layer.getElements(lt);
 
 			int t = 0;
 			while (it.hasNext()) {
@@ -135,7 +135,7 @@ public class ShapeInMemFilterTest extends AbstractFilterTest {
 		}
 		Filter ne = filterCreator.createCompareFilter(PARAM_DOUBLE_ATTR, "<>", "10");
 		try {
-			Iterator<?> it = layerModel.getElements(ne);
+			Iterator<?> it = layer.getElements(ne);
 
 			int t = 0;
 			while (it.hasNext()) {
@@ -159,7 +159,7 @@ public class ShapeInMemFilterTest extends AbstractFilterTest {
 
 		Filter filter = filterCreator.createCompareFilter(PARAM_DATE_ATTR, "<", d1);
 		try {
-			Iterator<?> it = layerModel.getElements(filter);
+			Iterator<?> it = layer.getElements(filter);
 
 			int t = 0;
 			while (it.hasNext()) {
@@ -175,7 +175,7 @@ public class ShapeInMemFilterTest extends AbstractFilterTest {
 	public void compareFilterOnBoolean() {
 		Filter eq = filterCreator.createCompareFilter(PARAM_BOOLEAN_ATTR, "==", "true");
 		try {
-			Iterator<?> it = layerModel.getElements(eq);
+			Iterator<?> it = layer.getElements(eq);
 
 			int t = 0;
 			while (it.hasNext()) {
@@ -188,7 +188,7 @@ public class ShapeInMemFilterTest extends AbstractFilterTest {
 
 		Filter ne = filterCreator.createCompareFilter(PARAM_BOOLEAN_ATTR, "<>", "true");
 		try {
-			Iterator<?> it = layerModel.getElements(ne);
+			Iterator<?> it = layer.getElements(ne);
 
 			int t = 0;
 			while (it.hasNext()) {
@@ -204,7 +204,7 @@ public class ShapeInMemFilterTest extends AbstractFilterTest {
 	public void compareFilterOnString() {
 		Filter eq = filterCreator.createCompareFilter(PARAM_TEXT_ATTR, "==", "inside");
 		try {
-			Iterator<?> it = layerModel.getElements(eq);
+			Iterator<?> it = layer.getElements(eq);
 
 			int t = 0;
 			while (it.hasNext()) {
@@ -217,7 +217,7 @@ public class ShapeInMemFilterTest extends AbstractFilterTest {
 
 		Filter ne = filterCreator.createCompareFilter(PARAM_TEXT_ATTR, "<>", "inside");
 		try {
-			Iterator<?> it = layerModel.getElements(ne);
+			Iterator<?> it = layer.getElements(ne);
 
 			int t = 0;
 			while (it.hasNext()) {
@@ -233,7 +233,7 @@ public class ShapeInMemFilterTest extends AbstractFilterTest {
 	public void likeFilter() {
 		Filter filter = filterCreator.createLikeFilter(PARAM_TEXT_ATTR, "*sid*");
 		try {
-			Iterator<?> it = layerModel.getElements(filter);
+			Iterator<?> it = layer.getElements(filter);
 
 			int t = 0;
 			while (it.hasNext()) {
@@ -252,7 +252,7 @@ public class ShapeInMemFilterTest extends AbstractFilterTest {
 		Filter filter = filterCreator.createLogicFilter(filter1, "and", filter2);
 
 		try {
-			Iterator<?> it = layerModel.getElements(filter);
+			Iterator<?> it = layer.getElements(filter);
 
 			int t = 0;
 			while (it.hasNext()) {
@@ -268,7 +268,7 @@ public class ShapeInMemFilterTest extends AbstractFilterTest {
 	public void fidFilter() {
 		Filter filter = filterCreator.createFidFilter(new String[] {"1", "2"});
 		try {
-			Iterator<?> it = layerModel.getElements(filter);
+			Iterator<?> it = layer.getElements(filter);
 			SimpleFeature f = (SimpleFeature) it.next();
 			f = (SimpleFeature) it.next();
 			Assert.assertEquals("inside", f.getAttribute(PARAM_TEXT_ATTR));
@@ -279,10 +279,10 @@ public class ShapeInMemFilterTest extends AbstractFilterTest {
 	@Test
 	public void containsFilter() {
 		try {
-			SimpleFeature feature = (SimpleFeature) layerModel.read("1");
+			SimpleFeature feature = (SimpleFeature) layer.read("1");
 			Geometry geom = (Geometry) feature.getDefaultGeometry();
 			Filter filter = filterCreator.createContainsFilter(geom, PARAM_GEOMETRY_ATTR);
-			Iterator<?> it = layerModel.getElements(filter);
+			Iterator<?> it = layer.getElements(filter);
 
 			int t = 0;
 			while (it.hasNext()) {
@@ -297,10 +297,10 @@ public class ShapeInMemFilterTest extends AbstractFilterTest {
 	@Test
 	public void withinFilter() {
 		try {
-			SimpleFeature feature = (SimpleFeature) layerModel.read("7");
+			SimpleFeature feature = (SimpleFeature) layer.read("7");
 			Geometry geom = (Geometry) feature.getDefaultGeometry();
 			Filter filter = filterCreator.createWithinFilter(geom, PARAM_GEOMETRY_ATTR);
-			Iterator<?> it = layerModel.getElements(filter);
+			Iterator<?> it = layer.getElements(filter);
 
 			int t = 0;
 			while (it.hasNext()) {
@@ -315,10 +315,10 @@ public class ShapeInMemFilterTest extends AbstractFilterTest {
 	@Test
 	public void intersectsFilter() {
 		try {
-			SimpleFeature feature = (SimpleFeature) layerModel.read("7");
+			SimpleFeature feature = (SimpleFeature) layer.read("7");
 			Geometry geom = (Geometry) feature.getDefaultGeometry();
 			Filter filter = filterCreator.createIntersectsFilter(geom, PARAM_GEOMETRY_ATTR);
-			Iterator<?> it = layerModel.getElements(filter);
+			Iterator<?> it = layer.getElements(filter);
 
 			int t = 0;
 			while (it.hasNext()) {
@@ -333,10 +333,10 @@ public class ShapeInMemFilterTest extends AbstractFilterTest {
 	@Test
 	public void touchesFilter() {
 		try {
-			SimpleFeature feature = (SimpleFeature) layerModel.read("7");
+			SimpleFeature feature = (SimpleFeature) layer.read("7");
 			Geometry geom = (Geometry) feature.getDefaultGeometry();
 			Filter filter = filterCreator.createTouchesFilter(geom, PARAM_GEOMETRY_ATTR);
-			Iterator<?> it = layerModel.getElements(filter);
+			Iterator<?> it = layer.getElements(filter);
 
 			int t = 0;
 			while (it.hasNext()) {
@@ -353,7 +353,7 @@ public class ShapeInMemFilterTest extends AbstractFilterTest {
 		try {
 			Envelope bbox = new Envelope(-0.4d, -0.2d, -0.3d, 0.1d);
 			Filter filter = filterCreator.createBboxFilter("EPSG:4326", bbox, PARAM_GEOMETRY_ATTR);
-			Iterator<?> it = layerModel.getElements(filter);
+			Iterator<?> it = layer.getElements(filter);
 
 			int t = 0;
 			while (it.hasNext()) {
@@ -368,10 +368,10 @@ public class ShapeInMemFilterTest extends AbstractFilterTest {
 	@Test
 	public void overlapsFilter() {
 		try {
-			SimpleFeature feature = (SimpleFeature) layerModel.read("2");
+			SimpleFeature feature = (SimpleFeature) layer.read("2");
 			Geometry geom = (Geometry) feature.getDefaultGeometry();
 			Filter filter = filterCreator.createOverlapsFilter(geom, PARAM_GEOMETRY_ATTR);
-			Iterator<?> it = layerModel.getElements(filter);
+			Iterator<?> it = layer.getElements(filter);
 
 			int t = 0;
 			while (it.hasNext()) {

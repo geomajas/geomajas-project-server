@@ -147,6 +147,10 @@ public class CacheBroker implements Broker {
 	 * Checks to see if the content is allowed to be cached at all. To do this,
 	 * it checks the layer's editing permissions. Editable layers can not be
 	 * cached.
+	 *
+	 * @param renderContent data to render
+	 * @return true when the data is immutable and can safely be cached
+	 * @throws CacheException oops
 	 */
 	private boolean isCachable(RenderContent renderContent) throws CacheException {
 		Map<String, Object> params = renderContent.getParameters();
@@ -157,8 +161,6 @@ public class CacheBroker implements Broker {
 		} catch (NullPointerException e) {
 			return false;
 		}
-		return !(vLayer.getEditPermissions().isCreatingAllowed() ||
-				vLayer.getEditPermissions().isDeletingAllowed() ||
-				vLayer.getEditPermissions().isUpdatingAllowed());
+		return !(vLayer.isCreateCapable() || vLayer.isDeleteCapable() || vLayer.isUpdateCapable());
 	}
 }

@@ -37,7 +37,7 @@ import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.LayerException;
-import org.geomajas.layer.LayerModel;
+import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.FeatureModel;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
@@ -45,13 +45,15 @@ import org.geotools.data.DataStore;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
+import org.geotools.referencing.CRS;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
 import org.opengis.filter.Id;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.NoSuchAuthorityCodeException;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 
 import com.vividsolutions.jts.geom.Envelope;
 
@@ -60,9 +62,7 @@ import com.vividsolutions.jts.geom.Envelope;
  * 
  * @author check subversion
  */
-@Component
-@Scope("prototype")
-public class ShapeInMemLayerModel extends FeatureSourceRetriever implements LayerModel {
+public class ShapeInMemLayer extends FeatureSourceRetriever implements VectorLayer {
 
 	private static final String CLASSPATH_URL_PROTOCOL = "classpath:";
 
@@ -72,18 +72,51 @@ public class ShapeInMemLayerModel extends FeatureSourceRetriever implements Laye
 
 	private VectorLayerInfo layerInfo;
 
-	private Filter defaultFilter;
-
 	@Autowired
 	private FilterService filterCreator;
 
 	@Autowired
 	private GeoService geoService;
 
+	private CoordinateReferenceSystem crs;
+
+	public CoordinateReferenceSystem getCrs() {
+		return crs;
+	}
+
+	private void initCrs() throws LayerException {
+		try {
+			crs = CRS.decode(layerInfo.getCrs());
+		} catch (NoSuchAuthorityCodeException e) {
+			throw new LayerException(ExceptionCode.LAYER_CRS_UNKNOWN_AUTHORITY, e, layerInfo.getId(), getLayerInfo()
+					.getCrs());
+		} catch (FactoryException exception) {
+			throw new LayerException(ExceptionCode.LAYER_CRS_PROBLEMATIC, exception, layerInfo.getId(), getLayerInfo()
+					.getCrs());
+		}
+	}
+
 	public void setLayerInfo(VectorLayerInfo layerInfo) throws LayerException {
 		this.layerInfo = layerInfo;
 		setFeatureSourceName(layerInfo.getFeatureInfo().getDataSourceName());
+		initCrs();
 		initFeatures();
+	}
+
+	public VectorLayerInfo getLayerInfo() {
+		return layerInfo;
+	}
+
+	public boolean isCreateCapable() {
+		return true;
+	}
+
+	public boolean isUpdateCapable() {
+		return true;
+	}
+
+	public boolean isDeleteCapable() {
+		return true;
 	}
 
 	public void setUrl(URL url) throws LayerException {
@@ -129,22 +162,10 @@ public class ShapeInMemLayerModel extends FeatureSourceRetriever implements Laye
 	}
 
 	public Iterator<?> getElements(Filter queryFilter) throws LayerException {
-		Filter filter = queryFilter;
-		if (defaultFilter != null) {
-			filter = filterCreator.createLogicFilter(filter, "AND", defaultFilter);
-		}
-		Filter realFilter = filter;
+		Filter filter = convertFilter(queryFilter);
 		List<SimpleFeature> filteredList = new ArrayList<SimpleFeature>();
-		if (filter instanceof Id) {
-			Iterator<?> iterator = ((Id) filter).getIdentifiers().iterator();
-			List<String> identifiers = new ArrayList<String>();
-			while (iterator.hasNext()) {
-				identifiers.add(getFeatureSourceName() + "." + iterator.next());
-			}
-			realFilter = filterCreator.createFidFilter(identifiers.toArray(new String[identifiers.size()]));
-		}
 		for (SimpleFeature feature : features.values()) {
-			if (realFilter.evaluate(feature)) {
+			if (filter.evaluate(feature)) {
 				filteredList.add(feature);
 			}
 		}
@@ -155,17 +176,26 @@ public class ShapeInMemLayerModel extends FeatureSourceRetriever implements Laye
 		return getBounds(Filter.INCLUDE);
 	}
 
+	private Filter convertFilter(Filter queryFilter) {
+		if (queryFilter instanceof Id) {
+			Iterator<?> iterator = ((Id) queryFilter).getIdentifiers().iterator();
+			List<String> identifiers = new ArrayList<String>();
+			while (iterator.hasNext()) {
+				identifiers.add(getFeatureSourceName() + "." + iterator.next());
+			}
+			return filterCreator.createFidFilter(identifiers.toArray(new String[identifiers.size()]));
+		}
+		return queryFilter;
+	}
+
 	/**
 	 * Retrieve the bounds of the specified features.
 	 * 
 	 * @return the bounds of the specified features
 	 */
 	public Envelope getBounds(Filter queryFilter) throws LayerException {
-		Filter filter = queryFilter;
-		if (defaultFilter != null) {
-			filter = filterCreator.createLogicFilter(filter, "AND", defaultFilter);
-		}
 		try {
+			Filter filter = convertFilter(queryFilter);
 			FeatureCollection<SimpleFeatureType, SimpleFeature> fc = getFeatureSource().getFeatures(filter);
 			return fc.getBounds();
 		} catch (IOException ioe) {
@@ -236,14 +266,6 @@ public class ShapeInMemLayerModel extends FeatureSourceRetriever implements Laye
 		} catch (IOException ioe) {
 			throw new LayerException(ExceptionCode.FEATURE_MODEL_PROBLEM, ioe);
 		}
-	}
-
-	public Filter getDefaultFilter() {
-		return defaultFilter;
-	}
-
-	public void setDefaultFilter(Filter defaultFilter) {
-		this.defaultFilter = defaultFilter;
 	}
 
 }

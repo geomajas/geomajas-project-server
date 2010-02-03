@@ -75,8 +75,8 @@ import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * <p>
- * FilterVisitor implementation for the HibernateLayerModel. This class transforms OpenGis filters into a Hibernate
- * criteria object. This is how the HibernateLayerModel is able to use OpenGis filters.
+ * FilterVisitor implementation for the HibernateLayer. This class transforms OpenGis filters into a Hibernate
+ * criteria object. This is how the HibernateLayer is able to use OpenGis filters.
  * </p>
  * 
  * @author Jan De Moerloose, Pieter De Graef
@@ -91,7 +91,7 @@ public class CriteriaVisitor implements FilterVisitor {
 	private String geomName;
 
 	/**
-	 * The srid of the coordinate reference system used in the HibernateLayerModel. Stored here as a shortcut.
+	 * The srid of the coordinate reference system used in the HibernateLayer. Stored here as a shortcut.
 	 */
 	private int srid;
 

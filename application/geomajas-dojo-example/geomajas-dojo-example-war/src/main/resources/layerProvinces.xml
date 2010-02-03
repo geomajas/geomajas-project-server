@@ -181,12 +181,9 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
         </property>
     </bean>
 
-	<bean name="provincesModel" class="org.geomajas.layermodel.shapeinmem.ShapeInMemLayerModel">
-        <property name="url" value="classpath:shapes/belgium/provincies.shp"/>
-	</bean>
-	<bean name="provinces" class="org.geomajas.internal.layer.layertree.DefaultVectorLayer" >
+	<bean name="provinces" class="org.geomajas.layermodel.shapeinmem.ShapeInMemLayer">
 		<property name="layerInfo" ref="provincesInfo" />
-		<property name="layerModel" ref="provincesModel" />
+        <property name="url" value="classpath:shapes/belgium/provincies.shp"/>
 	</bean>
 
 </beans>

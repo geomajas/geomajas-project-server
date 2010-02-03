@@ -1,9 +1,6 @@
-package org.geomajas.layermodel.geotools;
+package org.geomajas.layermodel.shapeinmem;
 
-import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
 
@@ -14,9 +11,9 @@ import org.geomajas.configuration.PrimitiveAttributeInfo;
 import org.geomajas.configuration.PrimitiveType;
 import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.service.FilterService;
-import org.geotools.feature.simple.SimpleFeatureBuilder;
+import org.geotools.factory.CommonFactoryFinder;
 import org.junit.Assert;
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.Filter;
@@ -25,26 +22,25 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKTReader;
 
-public class GeoToolsLayerModelTest {
+public class ShapeInMemLayerTest {
 
-	private static final String SHAPE_FILE = "org/geomajas/testdata/shapes/cities_world/cities.shp";
+	private static final String SHAPE_FILE = "classpath:org/geomajas/testdata/shapes/cities_world/cities.shp";
 
-	private static GeotoolsLayerModel layerModel;
+	private ShapeInMemLayer layer;
 
-	private static Filter filter;
+	private Filter filter;
 
-	@BeforeClass
-	public static void init() throws Exception {
-		ClassLoader classloader = Thread.currentThread().getContextClassLoader();
-		URL url = classloader.getResource(SHAPE_FILE);
+	@Before
+	public void setUp() throws Exception {
 		ApplicationContext applicationContext = new ClassPathXmlApplicationContext(new String[] {
 				"org/geomajas/spring/geomajasContext.xml", "org/geomajas/testdata/layerCountries.xml",
-				"org/geomajas/testdata/simplevectorsContext.xml" });
+				"org/geomajas/testdata/simplevectorsContext.xml", "org/geomajas/layer/shapeinmem/test.xml" });
 		FilterService filterCreator = applicationContext.getBean("service.FilterService", FilterService.class);
-		layerModel = applicationContext.getBean("layermodel.geotools.GeotoolsLayerModel", GeotoolsLayerModel.class);
-		layerModel.setUrl(url);
+		layer = applicationContext.getBean("test", ShapeInMemLayer.class);
+		layer.setUrl(SHAPE_FILE);
 
 		FeatureInfo ft = new FeatureInfo();
 		ft.setDataSourceName("cities");
@@ -75,50 +71,58 @@ public class GeoToolsLayerModelTest {
 		layerInfo.setFeatureInfo(ft);
 		layerInfo.setCrs("EPSG:4326");
 
-		layerModel.setLayerInfo(layerInfo);
+		layer.setLayerInfo(layerInfo);
 		filter = filterCreator.createCompareFilter("Population", ">", "49900");
 	}
 
 	@Test
-	public void testRead() throws Exception {
-		SimpleFeature f = (SimpleFeature) layerModel.read("9703");
+	public void read() {
+		SimpleFeature f = null;
+		try {
+			f = (SimpleFeature) layer.read("9703");
+		} catch (Exception e) {
+		}
+
+		Assert.assertNotNull(f);
 		Assert.assertEquals("Elmhurst", f.getAttribute("City"));
 	}
 
 	@Test
-	public void testUpdate() throws Exception {
-		Calendar cal = Calendar.getInstance();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-		SimpleFeature f = (SimpleFeature) layerModel.read("10");
-		f.setAttribute("City", sdf.format(cal.getTime()));
-		layerModel.update(f);
-		Assert.assertEquals(sdf.format(cal.getTime()), f.getAttribute("City"));
-	}
+	public void create() {
+		Object created = null;
+		try {
+			WKTReader wktReader = new WKTReader();
+			Point geometry = null;
+			try {
+				geometry = (Point) wktReader.read("POINT (0 0)");
+			} catch (ParseException e) {
+			}
 
-	@Test
-	public void create() throws Exception {
-		WKTReader wktReader = new WKTReader();
-		Point geometry = (Point) wktReader.read("POINT (0 0)");
+			SimpleFeature feature = CommonFactoryFinder.getFeatureFactory(null).createSimpleFeature(
+					new Object[] { geometry, "Tsjakamaka", 342 }, layer.getSchema(), "100000");
 
-		SimpleFeatureBuilder build = new SimpleFeatureBuilder(layerModel.getSchema());
-		SimpleFeature feature = build.buildFeature("100000", new Object[] { geometry, "Tsjakamaka", 342 });
-
-		Object created = layerModel.create(feature);
+			created = layer.create(feature);
+		} catch (Exception e) {
+		}
 		Assert.assertNotNull(created);
 	}
 
 	@Test
-	public void testDelete() throws Exception {
-		SimpleFeature f = (SimpleFeature) layerModel.read("10580");
-		Assert.assertNotNull(f);
-		layerModel.delete("10580");
-		Assert.assertTrue(true);
+	public void delete() {
+		try {
+			SimpleFeature f = (SimpleFeature) layer.read("10580");
+			Assert.assertNotNull(f);
+			layer.delete("10580");
+			Assert.assertTrue(true);
+		} catch (Exception e) {
+			Assert.assertTrue(false);
+		}
 	}
 
 	@Test
-	public void testGetBounds() throws Exception {
+	public void getBounds() throws Exception {
 		// Checked in QGis!
-		Envelope bbox = layerModel.getBounds();
+		Envelope bbox = layer.getBounds();
 		Assert.assertEquals(-175.22, bbox.getMinX(), .0001);
 		Assert.assertEquals(179.38, bbox.getMaxX(), .0001);
 		Assert.assertEquals(-46.41, bbox.getMinY(), .0001);
@@ -126,9 +130,9 @@ public class GeoToolsLayerModelTest {
 	}
 
 	@Test
-	public void testGetBoundsFilter() throws Exception {
+	public void getBoundsFilter() throws Exception {
 		// Checked in QGis!
-		Envelope bbox = layerModel.getBounds(filter);
+		Envelope bbox = layer.getBounds(filter);
 		Assert.assertEquals(-118.01, bbox.getMinX(), .0001);
 		Assert.assertEquals(120.86, bbox.getMaxX(), .0001);
 		Assert.assertEquals(-19.99, bbox.getMinY(), .0001);
@@ -136,14 +140,17 @@ public class GeoToolsLayerModelTest {
 	}
 
 	@Test
-	public void testGetElements() throws Exception {
-		// Checked in QGis!
-		Iterator<?> it = layerModel.getElements(filter);
-		int counter = 0;
-		while (it.hasNext()) {
-			it.next();
-			counter++;
+	public void getElements() {
+		try {
+			// Checked in QGis!
+			Iterator<?> it = layer.getElements(filter);
+			int counter = 0;
+			while (it.hasNext()) {
+				it.next();
+				counter++;
+			}
+			Assert.assertEquals(16, counter);
+		} catch (Exception e) {
 		}
-		Assert.assertEquals(16, counter);
 	}
 }
