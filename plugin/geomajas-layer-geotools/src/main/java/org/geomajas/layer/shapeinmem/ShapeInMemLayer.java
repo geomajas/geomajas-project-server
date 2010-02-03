@@ -42,7 +42,6 @@ import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.FeatureModel;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
-import org.geotools.data.DataStore;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
@@ -81,6 +80,8 @@ public class ShapeInMemLayer extends FeatureSourceRetriever implements VectorLay
 
 	private CoordinateReferenceSystem crs;
 
+	private URL url;
+
 	public CoordinateReferenceSystem getCrs() {
 		return crs;
 	}
@@ -99,7 +100,6 @@ public class ShapeInMemLayer extends FeatureSourceRetriever implements VectorLay
 
 	public void setLayerInfo(VectorLayerInfo layerInfo) throws LayerException {
 		this.layerInfo = layerInfo;
-		setFeatureSourceName(layerInfo.getFeatureInfo().getDataSourceName());
 		initCrs();
 		initFeatures();
 	}
@@ -121,20 +121,8 @@ public class ShapeInMemLayer extends FeatureSourceRetriever implements VectorLay
 	}
 
 	public void setUrl(URL url) throws LayerException {
-		try {
-			InputStream in = url.openStream();
-			if (in == null) {
-				throw new IOException("File not found: " + url);
-			}
-			in.close();
-			setDataStore(new ShapefileDataStore(url));
-		} catch (MalformedURLException e) {
-			throw new LayerException(ExceptionCode.INVALID_SHAPE_FILE_URL, url);
-		} catch (IOException ioe) {
-			throw new LayerException(ExceptionCode.CANNOT_CREATE_LAYER_MODEL, ioe, url);
-		} catch (GeomajasException ge) {
-			throw new LayerException(ExceptionCode.CANNOT_CREATE_LAYER_MODEL, ge, url);
-		}
+		this.url = url;
+		initFeatures();
 	}
 
 	public void setUrl(String url) throws LayerException {
@@ -154,12 +142,6 @@ public class ShapeInMemLayer extends FeatureSourceRetriever implements VectorLay
 		} catch (MalformedURLException mue) {
 			throw new LayerException(ExceptionCode.INVALID_SHAPE_FILE_URL, url);
 		}
-	}
-
-	@Override
-	protected void setDataStore(DataStore dataStore) throws LayerException {
-		super.setDataStore(dataStore);
-		initFeatures();
 	}
 
 	public Iterator<?> getElements(Filter queryFilter) throws LayerException {
@@ -242,10 +224,18 @@ public class ShapeInMemLayer extends FeatureSourceRetriever implements VectorLay
 	// Private functions:
 
 	private void initFeatures() throws LayerException {
-		if (null == layerInfo || null == getDataStore()) {
+		if (null == layerInfo || null == url) {
 			return;
 		}
 		try {
+			InputStream in = url.openStream();
+			if (in == null) {
+				throw new IOException("File not found: " + url);
+			}
+			in.close();
+			setDataStore(new ShapefileDataStore(url));
+			setFeatureSourceName(layerInfo.getFeatureInfo().getDataSourceName());
+
 			featureModel = new ShapeInMemFeatureModel(getDataStore(), layerInfo.getFeatureInfo().getDataSourceName(),
 					geoService.getSridFromCrs(layerInfo.getCrs()));
 			FeatureCollection<SimpleFeatureType, SimpleFeature> col = getFeatureSource().getFeatures();
@@ -262,10 +252,15 @@ public class ShapeInMemLayer extends FeatureSourceRetriever implements VectorLay
 			col.close(iterator);
 			// getNextId();
 			nextId++;
+
 		} catch (NumberFormatException nfe) {
 			throw new LayerException(ExceptionCode.FEATURE_MODEL_PROBLEM, nfe);
+		} catch (MalformedURLException e) {
+			throw new LayerException(ExceptionCode.INVALID_SHAPE_FILE_URL, url);
 		} catch (IOException ioe) {
-			throw new LayerException(ExceptionCode.FEATURE_MODEL_PROBLEM, ioe);
+			throw new LayerException(ExceptionCode.CANNOT_CREATE_LAYER_MODEL, ioe, url);
+		} catch (GeomajasException ge) {
+			throw new LayerException(ExceptionCode.CANNOT_CREATE_LAYER_MODEL, ge, url);
 		}
 	}
 
