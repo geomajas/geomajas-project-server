@@ -97,11 +97,16 @@ dojo.extend(GraphicsContext, {
 	 */
 	drawPolygon : function (/*Paintable*/polygon, /* hashtable {id, style, transform,...}*/ options) {
 		//log.debug("drawpolygon for :" + options.id);
-		var path = this._findOrCreateElement("vml:shape", options);
-		if (polygon) {
-			this._updateAttribute(path, "path", this.pathDecoder.decode(polygon, options.worldspace));
+		try {
+			var path = this._findOrCreateElement("vml:shape", options);
+		} catch (e) {
+			//alert("VmlGraphicsContext - drawPolygon error :" + getObjectProperties(options));
+			alert("VmlGraphicsContext - drawPolygon error :" + this.styleDecoder.decode(options.style));
 		}
-		else if(options.path){
+		if (polygon) {
+			var decoded = this.pathDecoder.decode(polygon, options.worldspace);
+			this._updateAttribute(path, "path", decoded);
+		} else if(options.path){
 			this._updateAttribute(path, "path", options.path);
 		}
 		this._updateAttribute(path, "fill-rule", "evenodd");
@@ -783,7 +788,6 @@ dojo.extend(GraphicsContext, {
 			return;
 		}
 		if (style.fillColor && style.fillColor !== "") {
-			//log.info("setting fill color for "+element.id+","+style.fillColor);
 			element.filled = true;
 			if (element.fill == null) {
 				element.fill = {};
@@ -794,11 +798,12 @@ dojo.extend(GraphicsContext, {
 			if (element.fill == null) {
 				element.fill = {};
 			}
-			//log.info("setting stroke opacity for "+element.id+","+style.fillOpacity);
-			element.fill.opacity = style.fillOpacity;
+			var value = parseFloat(style.fillOpacity);
+			if (value >= 0 && value <= 1) {
+				element.fill.opacity = value;
+			}
 		}
 		if (style.strokeColor && style.strokeColor !== "") {
-			//log.info("setting stroke color for "+element.id+","+style.strokeColor);
 			element.stroked = true;
 			if (element.stroke == null) {
 				element.stroke = {};
@@ -809,11 +814,16 @@ dojo.extend(GraphicsContext, {
 			if (element.stroke == null) {
 				element.stroke = {};
 			}
-			//log.info("setting stroke opacity for "+element.id+","+style.strokeOpacity);
-			element.stroke.opacity = style.strokeOpacity;
+			var value = parseFloat(style.strokeOpacity);
+			if (value >= 0 && value <= 1) {
+				element.fill.opacity = value;
+			}
 		}
-		if (style.strokeWidth && style.strokeWidth !== "") {			
-			element.strokeweight = style.strokeWidth;
+		if (style.strokeWidth && style.strokeWidth !== "") {
+			var value = parseFloat(style.strokeOpacity);
+			if (value >= 0) {
+				element.strokeweight = value;
+			}
 		}
 		if (style.dashArray && style.dashArray !== "") {
 			// todo

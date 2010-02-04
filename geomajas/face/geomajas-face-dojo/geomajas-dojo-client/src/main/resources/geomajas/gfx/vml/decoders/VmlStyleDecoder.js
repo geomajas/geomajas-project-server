@@ -52,16 +52,25 @@ dojo.declare("VmlStyleDecoder", null, {
 			css += "fill:"+style.fillColor+";";
 		}
 		if (style.fillOpacity != null && style.fillOpacity != "") {
-			css += "fill-opacity:"+style.fillOpacity+";";
+			var value = parseFloat(style.fillOpacity);
+			if (value >= 0 && value <= 1) {
+				css += "fill-opacity:"+value+";";
+			}
 		}
 		if (style.strokeColor != null && style.strokeColor != "") {
 			css += "stroke:"+style.strokeColor+";";
 		}
 		if (style.strokeOpacity != null && style.strokeOpacity != "") {
-			css += "stroke-opacity:"+style.strokeOpacity+";";
+			var value = parseFloat(style.strokeOpacity);
+			if (value >= 0 && value <= 1) {
+				css += "stroke-opacity:"+value+";";
+			}
 		}
 		if (style.strokeWidth != null && style.strokeWidth != "") {
-			css += "stroke-width:"+style.strokeWidth+";";
+			var value = parseFloat(style.strokeWidth);
+			if (value >= 0) {
+				css += "stroke-width:"+value+";";
+			}
 		}
 		if (style.dashArray != null && style.dashArray != "") {
 			css += "stroke-dasharray:"+style.dashArray+";";
@@ -90,6 +99,10 @@ dojo.declare("VmlStyleDecoder", null, {
 	},
 	
 	_decodePictureStyle : function (style) {
-		return "opacity:" + style.getOpacity() + ";";
+		var value = parseFloat(style.getOpacity());
+		if (value >= 0 && value <= 1) {
+			css += "opacity:"+value+";";
+		}
+		return "opacity:1;";
 	}
 });

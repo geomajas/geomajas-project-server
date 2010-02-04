@@ -86,8 +86,10 @@ dojo.declare("MapModel", PainterVisitable, {
 	destroy : function () {
 		this.layers = null;
 		this.layerOrder = null;
-		for (var i=0; i < this.renderHandlers.length; i++) {
-			dojo.disconnect(this.renderHandlers[i]);
+		if (this.renderHandlers != null) {
+			for (var i=0; i < this.renderHandlers.length; i++) {
+				dojo.disconnect(this.renderHandlers[i]);
+			}
 		}
 		this.renderHandlers = null;
 	},

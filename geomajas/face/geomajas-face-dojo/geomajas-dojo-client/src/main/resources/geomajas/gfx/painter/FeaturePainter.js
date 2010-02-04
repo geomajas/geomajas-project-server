@@ -85,6 +85,7 @@ dojo.declare("FeaturePainter", Painter, {
 			worldspace : true
 		};
 		
+		
 		if(feature.isClipped() && feature.getPath()){
 			log.info("FeaturePainter : painting with (clipped) path");
 			options.path = feature.getPath();
