@@ -1,3 +1,25 @@
+/*
+ * This file is part of Geomajas, a component framework for building
+ * rich Internet applications (RIA) with sophisticated capabilities for the
+ * display, analysis and management of geographic information.
+ * It is a building block that allows developers to add maps
+ * and other geographic data capabilities to their web applications.
+ *
+ * Copyright 2008-2010 Geosparc, http://www.geosparc.com, Belgium
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package org.geomajas.layer.geotools;
 
 import java.net.URL;
@@ -13,39 +35,37 @@ import org.geomajas.configuration.GeometricAttributeInfo;
 import org.geomajas.configuration.PrimitiveAttributeInfo;
 import org.geomajas.configuration.PrimitiveType;
 import org.geomajas.configuration.VectorLayerInfo;
-import org.geomajas.layer.geotools.GeotoolsLayer;
+import org.geomajas.layer.VectorLayer;
 import org.geomajas.service.FilterService;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.junit.Assert;
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.Filter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.io.WKTReader;
 
-public class GeoToolsLayerTest {
+public class GeoToolsLayerTest extends AbstractGeoToolsTest {
 
-	private static final String SHAPE_FILE = "org/geomajas/testdata/shapes/cities_world/cities.shp";
+	private static final String SHAPE_FILE = "classpath:org/geomajas/testdata/shapes/cities_world/cities.shp";
 
-	private static GeotoolsLayer layer;
+	private GeoToolsLayer layer;
 
-	private static Filter filter;
-
-	@BeforeClass
-	public static void init() throws Exception {
-		ClassLoader classloader = Thread.currentThread().getContextClassLoader();
-		URL url = classloader.getResource(SHAPE_FILE);
-		ApplicationContext applicationContext = new ClassPathXmlApplicationContext(new String[] {
-				"org/geomajas/spring/geomajasContext.xml", "org/geomajas/testdata/layerCountries.xml",
-				"org/geomajas/testdata/simplevectorsContext.xml", "org/geomajas/layer/geotools/test.xml" });
-		FilterService filterCreator = applicationContext.getBean("service.FilterService", FilterService.class);
-		layer = applicationContext.getBean("test", GeotoolsLayer.class);
-		layer.setUrl(url);
+	private Filter filter;
+	
+	@Before
+	public void init() throws Exception {
+		layer = (GeoToolsLayer)applicationContext.getBean("test", VectorLayer.class);
+		layer.setUrl(SHAPE_FILE);
 
 		FeatureInfo ft = new FeatureInfo();
 		ft.setDataSourceName("cities");
@@ -84,6 +104,7 @@ public class GeoToolsLayerTest {
 	public void testRead() throws Exception {
 		SimpleFeature f = (SimpleFeature) layer.read("9703");
 		Assert.assertEquals("Elmhurst", f.getAttribute("City"));
+		Assert.assertEquals(45060, f.getAttribute("Population"));
 	}
 
 	@Test

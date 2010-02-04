@@ -23,9 +23,6 @@
 package org.geomajas.layer.geotools;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -39,19 +36,13 @@ import org.geomajas.global.ExceptionCode;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.FeatureModel;
-import org.geomajas.layer.geotools.command.interceptor.GeotoolsTransactionInterceptor;
-import org.geomajas.layer.geotools.postgis.NonTypedPostgisFidMapperFactory;
 import org.geomajas.layer.shapeinmem.FeatureSourceRetriever;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
 import org.geotools.data.DataStore;
-import org.geotools.data.DataStoreFinder;
 import org.geotools.data.DataUtilities;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.FeatureStore;
-import org.geotools.data.jdbc.JDBC1DataStore;
-import org.geotools.data.jdbc.JDBCDataStore;
-import org.geotools.data.postgis.PostgisDataStore;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.filter.identity.FeatureIdImpl;
@@ -69,6 +60,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.vividsolutions.jts.geom.Envelope;
 
@@ -77,11 +69,12 @@ import com.vividsolutions.jts.geom.Envelope;
  * 
  * @author check subversion
  */
-public class GeotoolsLayer extends FeatureSourceRetriever implements VectorLayer {
+@Transactional
+public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer {
 
 	private static final String CLASSPATH_URL_PROTOCOL = "classpath:";
 
-	private final Logger log = LoggerFactory.getLogger(GeotoolsLayer.class);
+	private final Logger log = LoggerFactory.getLogger(GeoToolsLayer.class);
 
 	private FilterFactory filterFactory;
 
@@ -94,6 +87,9 @@ public class GeotoolsLayer extends FeatureSourceRetriever implements VectorLayer
 
 	@Autowired
 	private GeoService geoService;
+
+	@Autowired(required = false)
+	private GeoToolsTransactionManager transactionManager;
 
 	private CoordinateReferenceSystem crs;
 
@@ -136,56 +132,18 @@ public class GeotoolsLayer extends FeatureSourceRetriever implements VectorLayer
 		return true;
 	}
 
-	public void setUrl(URL url) throws LayerException {
-		try {
-			InputStream in = url.openStream();
-			if (in == null) {
-				throw new IOException("File not found: " + url);
-			}
-			in.close();
-
-			Map<String, String> parameters = new HashMap<String, String>();
-			parameters.put("url", url.toExternalForm());
-			DataStore store = DataStoreFinder.getDataStore(parameters);
-			if (store instanceof PostgisDataStore) {
-				PostgisDataStore jdbcStore = (PostgisDataStore) store;
-				jdbcStore.setFIDMapperFactory(new NonTypedPostgisFidMapperFactory(false));
-			} else if (store instanceof JDBCDataStore) {
-				JDBCDataStore jdbcStore = (JDBCDataStore) store;
-				jdbcStore.setFIDMapperFactory(new NonTypedFidMapperFactory());
-			}
-			if (store instanceof JDBC1DataStore) {
-				store = new ExtendedDataStore((JDBC1DataStore) store);
-			}
-			setDataStore(store);
-		} catch (MalformedURLException e) {
-			throw new LayerException(ExceptionCode.INVALID_SHAPE_FILE_URL, url);
-		} catch (IOException ioe) {
-			throw new LayerException(ExceptionCode.CANNOT_CREATE_LAYER_MODEL, ioe, url);
-		}
-	}
-
 	public void setUrl(String url) throws LayerException {
 		try {
-			URL realUrl = null;
-			if (url.startsWith(CLASSPATH_URL_PROTOCOL)) {
-				ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-				if (null == classLoader) {
-					classLoader = this.getClass().getClassLoader();
-				}
-				realUrl = classLoader.getResource(url.substring(CLASSPATH_URL_PROTOCOL.length()));
-			}
-			if (null == realUrl) {
-				realUrl = new URL(url);
-			}
-			setUrl(realUrl);
-		} catch (MalformedURLException mue) {
+			Map<String, String> params = new HashMap<String, String>();
+			params.put("url", url);
+			DataStore store = DataStoreFactory.create(params);
+			setDataStore(store);
+		} catch (IOException ioe) {
 			throw new LayerException(ExceptionCode.INVALID_SHAPE_FILE_URL, url);
 		}
 	}
 
-	@Override
-	protected void setDataStore(DataStore dataStore) throws LayerException {
+	public void setDataStore(DataStore dataStore) throws LayerException {
 		super.setDataStore(dataStore);
 		initFeatures();
 	}
@@ -195,21 +153,20 @@ public class GeotoolsLayer extends FeatureSourceRetriever implements VectorLayer
 			return;
 		}
 		this.filterFactory = CommonFactoryFinder.getFilterFactory(null);
-		this.featureModel = new GeotoolsFeatureModel(getDataStore(), layerInfo.getFeatureInfo().getDataSourceName(),
+		this.featureModel = new GeoToolsFeatureModel(getDataStore(), layerInfo.getFeatureInfo().getDataSourceName(),
 				geoService.getSridFromCrs(layerInfo.getCrs()));
 	}
 
 	public Object create(Object feature) throws LayerException {
 		FeatureSource<SimpleFeatureType, SimpleFeature> source = getFeatureSource();
 		if (source instanceof FeatureStore<?, ?>) {
-			FeatureStore<SimpleFeatureType, SimpleFeature> store = 
+			FeatureStore<SimpleFeatureType, SimpleFeature> store =
 				(FeatureStore<SimpleFeatureType, SimpleFeature>) source;
 			FeatureCollection<SimpleFeatureType, SimpleFeature> col = DataUtilities
 					.collection(new SimpleFeature[] { (SimpleFeature) feature });
-			store.setTransaction(GeotoolsTransactionInterceptor.getTransaction());
-			// List<FeatureId> ids = store.addFeatures(col);
-			// FeatureId newId = ids.iterator().next();
-			// return read(newId.getID());
+			if (transactionManager != null) {
+				store.setTransaction(transactionManager.getTransaction());
+			}
 			try {
 				store.addFeatures(col);
 			} catch (IOException ioe) {
@@ -231,8 +188,9 @@ public class GeotoolsLayer extends FeatureSourceRetriever implements VectorLayer
 				(FeatureStore<SimpleFeatureType, SimpleFeature>) source;
 			Identifier identifier = new FeatureIdImpl(getFeatureModel().getId(feature));
 			Id filter = filterFactory.id(Collections.singleton(identifier));
-			store.setTransaction(GeotoolsTransactionInterceptor.getTransaction());
-
+			if (transactionManager != null) {
+				store.setTransaction(transactionManager.getTransaction());
+			}
 			List<AttributeDescriptor> descriptors = store.getSchema().getAttributeDescriptors();
 			Map<String, Object> attrMap = getFeatureModel().getAttributes(feature);
 			List<Object> attrList = new ArrayList<Object>();
@@ -265,7 +223,9 @@ public class GeotoolsLayer extends FeatureSourceRetriever implements VectorLayer
 				(FeatureStore<SimpleFeatureType, SimpleFeature>) source;
 			Identifier identifier = new FeatureIdImpl(featureId);
 			Id filter = filterFactory.id(Collections.singleton(identifier));
-			store.setTransaction(GeotoolsTransactionInterceptor.getTransaction());
+			if (transactionManager != null) {
+				store.setTransaction(transactionManager.getTransaction());
+			}
 			try {
 				store.removeFeatures(filter);
 				if (log.isDebugEnabled()) {
@@ -310,17 +270,18 @@ public class GeotoolsLayer extends FeatureSourceRetriever implements VectorLayer
 		if (source instanceof FeatureStore<?, ?>) {
 			FeatureStore<SimpleFeatureType, SimpleFeature> store = 
 				(FeatureStore<SimpleFeatureType, SimpleFeature>) source;
-			store.setTransaction(GeotoolsTransactionInterceptor.getTransaction());
+			if (transactionManager != null) {
+				store.setTransaction(transactionManager.getTransaction());
+			}
 		}
 		try {
 			FeatureCollection<SimpleFeatureType, SimpleFeature> fc = source.getFeatures();
 			Iterator<SimpleFeature> it = fc.iterator();
-			GeotoolsTransactionInterceptor.addIterator(fc, it);
+			if (transactionManager != null) {
+				transactionManager.addIterator(fc, it);
+			}
 			return fc.getBounds();
 		} catch (Throwable t) {
-			if (t instanceof NullPointerException || t instanceof IllegalStateException) {
-				GeotoolsTransactionInterceptor.closeTransaction();
-			}
 			throw new LayerException(ExceptionCode.UNEXPECTED_PROBLEM, t);
 		}
 	}
@@ -336,17 +297,18 @@ public class GeotoolsLayer extends FeatureSourceRetriever implements VectorLayer
 		if (source instanceof FeatureStore<?, ?>) {
 			FeatureStore<SimpleFeatureType, SimpleFeature> store = 
 				(FeatureStore<SimpleFeatureType, SimpleFeature>) source;
-			store.setTransaction(GeotoolsTransactionInterceptor.getTransaction());
+			if (transactionManager != null) {
+				store.setTransaction(transactionManager.getTransaction());
+			}
 		}
 		try {
 			FeatureCollection<SimpleFeatureType, SimpleFeature> fc = source.getFeatures(filter);
 			Iterator<SimpleFeature> it = fc.iterator();
-			GeotoolsTransactionInterceptor.addIterator(fc, it);
+			if (transactionManager != null) {
+				transactionManager.addIterator(fc, it);
+			}
 			return fc.getBounds();
 		} catch (Throwable t) {
-			if (t instanceof NullPointerException || t instanceof IllegalStateException) {
-				GeotoolsTransactionInterceptor.closeTransaction();
-			}
 			throw new LayerException(ExceptionCode.LAYER_MODEL_IO_EXCEPTION, t);
 		}
 	}
@@ -357,19 +319,18 @@ public class GeotoolsLayer extends FeatureSourceRetriever implements VectorLayer
 		if (source instanceof FeatureStore<?, ?>) {
 			FeatureStore<SimpleFeatureType, SimpleFeature> store = 
 				(FeatureStore<SimpleFeatureType, SimpleFeature>) source;
-			store.setTransaction(GeotoolsTransactionInterceptor.getTransaction());
+			if (transactionManager != null) {
+				store.setTransaction(transactionManager.getTransaction());
+			}
 		}
 		try {
 			FeatureCollection<SimpleFeatureType, SimpleFeature> fc = source.getFeatures(filter);
 			Iterator<SimpleFeature> it = fc.iterator();
-			GeotoolsTransactionInterceptor.addIterator(fc, it);
-
+			if (transactionManager != null) {
+				transactionManager.addIterator(fc, it);
+			}
 			return it;
 		} catch (Throwable t) {
-			if (t instanceof NullPointerException || t instanceof IllegalStateException) {
-				GeotoolsTransactionInterceptor.closeTransaction();
-				getElements(filter);
-			}
 			throw new LayerException(ExceptionCode.UNEXPECTED_PROBLEM, t);
 		}
 	}

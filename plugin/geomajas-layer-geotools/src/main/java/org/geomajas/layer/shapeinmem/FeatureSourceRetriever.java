@@ -57,17 +57,16 @@ public class FeatureSourceRetriever {
 
 	protected int nextId;
 
-	protected void setDataStore(DataStore dataStore) throws LayerException {
+	public void setDataStore(DataStore dataStore) throws LayerException {
 		this.dataStore = dataStore;
 	}
 
-	protected DataStore getDataStore() {
+	public DataStore getDataStore() {
 		return dataStore;
 	}
 
 	public void setFeatureSourceName(String featureSourceName) throws LayerException {
 		this.featureSourceName = featureSourceName;
-		getFeatureSource();
 	}
 
 	// Class specific functions:

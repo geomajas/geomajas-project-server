@@ -21,18 +21,19 @@
 	</distributionManagement>
 
 	<dependencies>
+		<!-- Geomajas dependencies -->
 		<dependency>
 			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-dependency</artifactId>
+			<artifactId>geomajas-command</artifactId>
 			<version>${project.version}</version>
-			<type>pom</type>
-			<exclusions>
-				<exclusion>
-					<groupId>org.geotools</groupId>
-					<artifactId>gt-main</artifactId>
-				</exclusion>
-			</exclusions>
 		</dependency>
+		
+		<dependency>
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-impl</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-gwt-client</artifactId>
@@ -57,6 +58,12 @@
 			<version>${project.version}</version>
 		</dependency>
 		
+		<dependency>
+			<groupId>org.geomajas.layer</groupId>
+			<artifactId>geomajas-layer-geotools</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+
 		<dependency>
 			<groupId>org.hibernatespatial</groupId>
 			<artifactId>hibernate-spatial-postgis</artifactId>

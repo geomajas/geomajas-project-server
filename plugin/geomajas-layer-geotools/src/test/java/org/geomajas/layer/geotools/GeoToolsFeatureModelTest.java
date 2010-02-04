@@ -1,8 +1,31 @@
+/*
+ * This file is part of Geomajas, a component framework for building
+ * rich Internet applications (RIA) with sophisticated capabilities for the
+ * display, analysis and management of geographic information.
+ * It is a building block that allows developers to add maps
+ * and other geographic data capabilities to their web applications.
+ *
+ * Copyright 2008-2010 Geosparc, http://www.geosparc.com, Belgium
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package org.geomajas.layer.geotools;
 
-import com.vividsolutions.jts.geom.Point;
-import com.vividsolutions.jts.io.WKTReader;
-import org.geomajas.layer.geotools.GeotoolsFeatureModel;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.geotools.data.DataStore;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.shapefile.ShapefileDataStore;
@@ -13,9 +36,8 @@ import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
-import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
+import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.io.WKTReader;
 
 /**
  * <p>
@@ -24,14 +46,14 @@ import java.util.Map;
  *
  * @author Mathias Versichele
  */
-public class GeoToolsFeatureModelTest {
+public class GeoToolsFeatureModelTest extends AbstractGeoToolsTest {
 
 	private static final String SHAPE_FILE =
 			"org/geomajas/testdata/shapes/cities_world/cities.shp";
 
 	private static final String LAYER_NAME = "cities";
 
-	private static GeotoolsFeatureModel featureModel;
+	private static GeoToolsFeatureModel featureModel;
 
 	private static SimpleFeature feature;
 
@@ -40,7 +62,7 @@ public class GeoToolsFeatureModelTest {
 		ClassLoader classloader = Thread.currentThread().getContextClassLoader();
 		URL url = classloader.getResource(SHAPE_FILE);
 		DataStore dataStore = new ShapefileDataStore(url);
-		featureModel = new GeotoolsFeatureModel(dataStore, LAYER_NAME, 4326);
+		featureModel = new GeoToolsFeatureModel(dataStore, LAYER_NAME, 4326);
 
 		FeatureSource<SimpleFeatureType, SimpleFeature> fs = featureModel.getFeatureSource();
 		FeatureIterator<SimpleFeature> fi = fs.getFeatures().features();

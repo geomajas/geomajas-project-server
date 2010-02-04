@@ -41,7 +41,7 @@ import java.util.Map;
  *
  * @author check subversion
  */
-public class GeotoolsFeatureModel extends FeatureSourceRetriever implements FeatureModel {
+public class GeoToolsFeatureModel extends FeatureSourceRetriever implements FeatureModel {
 
 	private SimpleFeatureBuilder builder;
 
@@ -49,7 +49,7 @@ public class GeotoolsFeatureModel extends FeatureSourceRetriever implements Feat
 
 	// Constructor:
 
-	public GeotoolsFeatureModel(DataStore dataStore, String featureSourceName, int srid)
+	public GeoToolsFeatureModel(DataStore dataStore, String featureSourceName, int srid)
 			throws LayerException {
 		setDataStore(dataStore);
 		setFeatureSourceName(featureSourceName);
