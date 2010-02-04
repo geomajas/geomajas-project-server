@@ -16,19 +16,27 @@ import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.geom.PrecisionModel;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  * <p>
- * Test class that test conversions between JTS and DTO geometries. It specifically tests the
- * {@link org.geomajas.internal.service.GeometryConverterImpl} class, which executes these tests.
+ * Test class that test conversions between JTS and DTO geometries. It specifically tests certain methods in the
+ * {@link org.geomajas.service.DtoConverterService} service.
  * </p>
  * 
  * @author Pieter De Graef
  */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
+		"/org/geomajas/spring/moreContext.xml"})
 public class GeometryConverterTest {
 
 	private static final int SRID = 31300;
 
+	@Autowired
 	private DtoConverterService converter;
 
 	private GeometryFactory factory;
@@ -70,7 +78,6 @@ public class GeometryConverterTest {
 	// -------------------------------------------------------------------------
 
 	public GeometryConverterTest() {
-		converter = new DtoConverterServiceImpl();
 		factory = new GeometryFactory(new PrecisionModel(), SRID);
 		jtsC1 = new com.vividsolutions.jts.geom.Coordinate(10.0, 10.0);
 		jtsC2 = new com.vividsolutions.jts.geom.Coordinate(20.0, 10.0);

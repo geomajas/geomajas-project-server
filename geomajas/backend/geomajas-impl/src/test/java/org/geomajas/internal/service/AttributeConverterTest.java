@@ -24,27 +24,43 @@ package org.geomajas.internal.service;
 
 import static junit.framework.Assert.assertTrue;
 
+import junit.framework.Assert;
+import org.geomajas.configuration.AttributeInfo;
+import org.geomajas.configuration.PrimitiveAttributeInfo;
+import org.geomajas.configuration.PrimitiveType;
 import org.geomajas.layer.feature.attribute.BooleanAttribute;
 import org.geomajas.service.DtoConverterService;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  * TODO: document me !
  *
  * @author Jan De Moerloose
  */
-public class ConverterTest {
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
+		"/org/geomajas/spring/moreContext.xml"})
+public class AttributeConverterTest {
 
-	private DtoConverterService converter = new DtoConverterServiceImpl();
+	@Autowired
+	private DtoConverterService converter;
 
 	@Test
 	public void testToObject() throws Exception {
 		BooleanAttribute attribute = new BooleanAttribute(true);
-		assertTrue(converter.toInternal(attribute) instanceof Boolean);
-		assertTrue((Boolean) converter.toInternal(attribute));
+		Assert.assertTrue(converter.toInternal(attribute) instanceof Boolean);
+		Assert.assertTrue((Boolean) converter.toInternal(attribute));
 	}
 
 	@Test
-	public void testToDto() throws Exception {
+	public void testBooleanToDto() throws Exception {
+		PrimitiveAttributeInfo attributeInfo = new PrimitiveAttributeInfo();
+		attributeInfo.setType(PrimitiveType.BOOLEAN);
+		Assert.assertTrue(converter.toDto(Boolean.TRUE, attributeInfo) instanceof BooleanAttribute);
+		Assert.assertTrue(((BooleanAttribute)converter.toDto(Boolean.TRUE, attributeInfo)).getValue());
 	}
 }

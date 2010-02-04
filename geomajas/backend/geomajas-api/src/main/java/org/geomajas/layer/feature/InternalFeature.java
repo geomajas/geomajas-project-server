@@ -91,4 +91,39 @@ public interface InternalFeature extends Cloneable, Comparable<InternalFeature> 
 	String getLabel();
 
 	void setLabel(String label);
+
+	/**
+	 * Is the logged in user allowed to edit this feature?
+	 *
+	 * @return true when edit/update is allowed for this feature
+	 */
+	boolean isEditable();
+
+	/**
+	 * Set whether the logged in user is allowed to edit/update this feature.
+	 *
+	 * @param editable true when edit/update is allowed for this feature
+	 */
+	void setEditable(boolean editable);
+
+	/**
+	 * Is the logged in user allowed to delete this feature?
+	 *
+	 * @return true when delete is allowed for this feature
+	 */
+	boolean isDeletable();
+
+	/**
+	 * Set whether the logged in user is allowed to delete this feature.
+	 *
+	 * @param deletable true when deleting this feature is allowed
+	 */
+	void setDeletable(boolean deletable);
+
+	/**
+	 * Create a deep clone of this internal feature.
+	 *
+	 * @return deep cloned object (attributes and geometry are deep cloned).
+	 */
+	InternalFeature clone();
 }

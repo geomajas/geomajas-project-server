@@ -62,8 +62,6 @@ import com.vividsolutions.jts.io.WKTWriter;
 @Scope("prototype")
 public class BeanFeatureModel implements FeatureModel {
 
-	public static final String SEPARATOR = ".";
-
 	public static final String SEPARATOR_REGEXP = "\\.";
 
 	private Class<?> beanClass;
@@ -99,14 +97,6 @@ public class BeanFeatureModel implements FeatureModel {
 			throw new LayerException(ExceptionCode.FEATURE_MODEL_PROBLEM, "Feature "
 					+ vectorLayerInfo.getFeatureInfo().getDataSourceName() + " has no valid geometry attribute");
 		}
-	}
-
-	public Class<?> getBeanClass() {
-		return beanClass;
-	}
-
-	public void setBeanClass(Class<?> beanClass) {
-		this.beanClass = beanClass;
 	}
 
 	public boolean canHandle(Object feature) {
@@ -164,8 +154,7 @@ public class BeanFeatureModel implements FeatureModel {
 
 	public Object newInstance() throws LayerException {
 		try {
-			Object instance = beanClass.newInstance();
-			return instance;
+			return beanClass.newInstance();
 		} catch (Throwable t) {
 			throw new LayerException(ExceptionCode.FEATURE_MODEL_PROBLEM, t);
 		}
@@ -174,7 +163,19 @@ public class BeanFeatureModel implements FeatureModel {
 	public Object newInstance(String id) throws LayerException {
 		try {
 			Object instance = beanClass.newInstance();
-			writeProperty(instance, id, getFeatureInfo().getIdentifier().getName());
+			PrimitiveAttributeInfo pai = vectorLayerInfo.getFeatureInfo().getIdentifier();
+			Object value;
+			switch (pai.getType()) {
+				case LONG:
+					value = Long.parseLong(id);
+					break;
+				case STRING:
+					value = id;
+					break;
+				default:
+					throw new IllegalStateException("BeanFeatureModel only accepts String and long ids.");
+			}
+			writeProperty(instance, value, getFeatureInfo().getIdentifier().getName());
 			return instance;
 		} catch (Throwable t) {
 			throw new LayerException(ExceptionCode.FEATURE_MODEL_PROBLEM, t);
@@ -215,7 +216,7 @@ public class BeanFeatureModel implements FeatureModel {
 	 * @param name
 	 *            The attribute's full name. (can be attr1.attr2)
 	 * @return Returns the value. In case a one-to-many is passed along the way, an array will be returned.
-	 * @throws LayerException
+	 * @throws LayerException oops
 	 */
 	private Object getAttributeRecursively(Object feature, String name) throws LayerException {
 		if (feature == null) {
@@ -223,10 +224,9 @@ public class BeanFeatureModel implements FeatureModel {
 		}
 		// Split up properties: the first and the rest.
 		String[] properties = name.split(SEPARATOR_REGEXP, 2);
-		Object tempFeature = feature;
 
 		// Get the first property:
-		tempFeature = readProperty(feature, properties[0]);
+		Object tempFeature = readProperty(feature, properties[0]);
 
 		// Detect if the first property is a collection (one-to-many):
 		if (tempFeature instanceof Collection<?>) {
@@ -250,17 +250,8 @@ public class BeanFeatureModel implements FeatureModel {
 		}
 	}
 
-	/**
-	 * 
-	 * @param parent
-	 * @param parentAttribute
-	 * @param propertyName
-	 * @param baseValue
-	 * @throws LayerException
-	 */
 	private void setAttributeRecursively(Object parent, AttributeInfo parentAttribute, String propertyName,
-			Object baseValue) throws LayerException {
-		Object value = baseValue;
+			Object value) throws LayerException {
 		if (parent == null) {
 			return;
 		}
@@ -304,7 +295,6 @@ public class BeanFeatureModel implements FeatureModel {
 				if (properties.length == 1) {
 					// If the first property is the only one: set the entire complex object:
 					String name = attribute.getName();
-					PropertyDescriptor pd = BeanUtils.getPropertyDescriptor(beanClass, name);
 					switch (aso.getType()) {
 						case MANY_TO_ONE:
 							writeProperty(parent, value, name);

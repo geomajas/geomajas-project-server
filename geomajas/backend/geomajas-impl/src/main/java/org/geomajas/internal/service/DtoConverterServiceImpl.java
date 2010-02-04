@@ -197,18 +197,20 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 			return null;
 		}
 		Feature dto = new Feature(feature.getId());
-		FeatureInfo info = feature.getLayer().getLayerInfo().getFeatureInfo();
+		FeatureInfo info = null;
+		if (null != feature.getLayer() && null != feature.getLayer().getLayerInfo()) {
+			info = feature.getLayer().getLayerInfo().getFeatureInfo();
+		}
 		dto.setAttributes(toDto(feature.getAttributes(), info));
 		dto.setLabel(feature.getLabel());
 		dto.setGeometry(toDto(feature.getGeometry()));
 		if (feature.getStyleInfo() != null) {
 			dto.setStyleId((int) feature.getStyleInfo().getId());
 		}
-
-		if (feature instanceof InternalFeatureImpl) {
-			InternalFeatureImpl vFeature = (InternalFeatureImpl) feature;
-			dto.setClipped(vFeature.isClipped());
-		}
+		InternalFeatureImpl vFeature = (InternalFeatureImpl) feature;
+		dto.setClipped(vFeature.isClipped());
+		dto.setEditable(feature.isEditable());
+		dto.setDeletable(feature.isDeletable());
 		return dto;
 	}
 
@@ -224,14 +226,13 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 			return null;
 		}
 		InternalFeatureImpl feature = new InternalFeatureImpl();
-		if (dto.isEditable()) {
-			// TODO implement this????
-		}
 		feature.setAttributes(toFeature(dto.getAttributes()));
 		feature.setId(dto.getId());
 		feature.setLabel(dto.getLabel());
 		feature.setGeometry(toInternal(dto.getGeometry()));
 		feature.setClipped(dto.isClipped());
+		feature.setEditable(dto.isEditable());
+		feature.setDeletable(dto.isDeletable());
 		return feature;
 	}
 
@@ -241,11 +242,13 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 
 	private Map<String, Attribute> toDto(Map<String, Object> attributes, FeatureInfo info) {
 		HashMap<String, Attribute> map = new HashMap<String, Attribute>();
-		for (AttributeInfo attributeInfo : info.getAttributes()) {
-			String name = attributeInfo.getName();
-			if (attributes.containsKey(name)) {
-				Object attribute = attributes.get(name);
-				map.put(name, toDto(attribute, attributeInfo));
+		if (null != info) {
+			for (AttributeInfo attributeInfo : info.getAttributes()) {
+				String name = attributeInfo.getName();
+				if (attributes.containsKey(name)) {
+					Object attribute = attributes.get(name);
+					map.put(name, toDto(attribute, attributeInfo));
+				}
 			}
 		}
 		return map;
@@ -253,8 +256,10 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 
 	private Map<String, Object> toFeature(Map<String, Attribute> attributes) {
 		HashMap<String, Object> map = new HashMap<String, Object>();
-		for (String name : attributes.keySet()) {
-			map.put(name, toInternal(attributes.get(name)));
+		if (null != attributes) {
+			for (String name : attributes.keySet()) {
+				map.put(name, toInternal(attributes.get(name)));
+			}
 		}
 		return map;
 	}
@@ -421,7 +426,10 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 	 * @return Returns the DTO version that can be sent to the client.
 	 */
 	public Tile toDto(InternalTile tile) {
-		if (tile != null && tile.getTileRendering() != null) {
+		if (null != tile) {
+			if (null == tile.getTileRendering()) {
+				throw new IllegalStateException("An InternalTile should always have the TileRendering set");
+			}
 			switch (tile.getTileRendering().getTileRenderMethod()) {
 				case STRING_RENDERING:
 					VectorTile vectorDto = new VectorTile();

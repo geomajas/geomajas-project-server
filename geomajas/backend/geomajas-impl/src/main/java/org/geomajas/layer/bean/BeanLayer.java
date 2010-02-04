@@ -149,9 +149,11 @@ public class BeanLayer implements VectorLayer {
 	public Object create(Object feature) throws LayerException {
 		String id = featureModel.getId(feature);
 		if (id != null && !featuresById.containsKey(id)) {
-			return featuresById.put(id, feature);
+			features.add(feature);
+			featuresById.put(id, feature);
+			return feature;
 		} else {
-			return null;
+			throw new IllegalStateException("BeanLayer cannot auto assign the feature id");
 		}
 	}
 
@@ -170,6 +172,7 @@ public class BeanLayer implements VectorLayer {
 
 	public void delete(String featureId) throws LayerException {
 		features.remove(featureId);
+		featuresById.remove(featureId);
 	}
 
 	public Iterator<?> getObjects(String attributeName, Filter filter) throws LayerException {

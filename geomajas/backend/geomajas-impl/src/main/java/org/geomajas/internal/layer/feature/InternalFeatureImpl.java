@@ -44,6 +44,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * </p>
  * 
  * @author Pieter De Graef
+ * @author Joachim Van der Auwera
  */
 public class InternalFeatureImpl implements InternalFeature {
 
@@ -71,6 +72,16 @@ public class InternalFeatureImpl implements InternalFeature {
 	/** If the feature's geometry has been clipped, store it here. */
 	private Geometry clippedGeometry;
 
+	/**
+	 * Is it allowed for the user in question to edit this feature?
+	 */
+	private boolean editable;
+
+	/**
+	 * Is it allowed for the user in question to delete this feature?
+	 */
+	private boolean deletable;
+
 	// -------------------------------------------------------------------------
 	// Constructors:
 	// -------------------------------------------------------------------------
@@ -93,15 +104,19 @@ public class InternalFeatureImpl implements InternalFeature {
 	/**
 	 * Create a clone.
 	 */
-	public Object clone() {
+	public InternalFeature clone() {
 		InternalFeatureImpl f = new InternalFeatureImpl();
 		f.setAttributes(new HashMap<String, Object>(attributes));
-		f.setGeometry((Geometry) geometry.clone());
+		if (null != geometry) {
+			f.setGeometry((Geometry) geometry.clone());
+		}
 		f.setId(id);
 		f.setLayer(layer);
 		f.setStyleDefinition(styleDefinition);
 		f.setClipped(clipped);
 		f.setClippedGeometry(clippedGeometry);
+		f.setEditable(isEditable());
+		f.setDeletable(isDeletable());
 		return f;
 	}
 
@@ -109,11 +124,11 @@ public class InternalFeatureImpl implements InternalFeature {
 	 * Retrieve the local feature ID. That is the ID without the layer ID attached to it. This ID will still be unique
 	 * within the layer.
 	 * 
-	 * @return
+	 * @return local id
 	 */
 	public String getLocalId() {
 		if (id != null) {
-			return id.substring(id.lastIndexOf('.') + 1);
+			return id.substring(id.indexOf('.') + 1);
 		}
 		return null;
 	}
@@ -121,7 +136,7 @@ public class InternalFeatureImpl implements InternalFeature {
 	/**
 	 * Get the feature's bounding box.
 	 * 
-	 * @return
+	 * @return feature's bounding box
 	 */
 	public Envelope getBounds() {
 		if (geometry != null) {
@@ -133,7 +148,7 @@ public class InternalFeatureImpl implements InternalFeature {
 	/**
 	 * Is this a new feature or not? This is tested by the ID. If the ID is null, then the feature is new.
 	 * 
-	 * @return
+	 * @return true when new
 	 */
 	public boolean isNew() {
 		return id == null;
@@ -253,5 +268,41 @@ public class InternalFeatureImpl implements InternalFeature {
 
 	public void setLabel(String label) {
 		this.label = label;
+	}
+
+	/**
+	 * Is the logged in user allowed to edit this feature?
+	 *
+	 * @return true when edit/update is allowed for this feature
+	 */
+	public boolean isEditable() {
+		return editable;
+	}
+
+	/**
+	 * Set whether the logged in user is allowed to edit/update this feature.
+	 *
+	 * @param editable true when edit/update is allowed for this feature
+	 */
+	public void setEditable(boolean editable) {
+		this.editable = editable;
+	}
+
+	/**
+	 * Is the logged in user allowed to delete this feature?
+	 *
+	 * @return true when delete is allowed for this feature
+	 */
+	public boolean isDeletable() {
+		return deletable;
+	}
+
+	/**
+	 * Set whether the logged in user is allowed to delete this feature.
+	 *
+	 * @param deletable true when deleting this feature is allowed
+	 */
+	public void setDeletable(boolean deletable) {
+		this.deletable = deletable;
 	}
 }

@@ -27,7 +27,9 @@ import com.vividsolutions.jts.geom.Envelope;
 import junit.framework.Assert;
 import org.geomajas.layer.bean.BeanLayer;
 import org.geomajas.layer.bean.FeatureBean;
+import org.geomajas.layer.feature.Feature;
 import org.geomajas.layer.feature.InternalFeature;
+import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.VectorLayerService;
 import org.geotools.referencing.CRS;
@@ -68,31 +70,86 @@ public class VectorLayerServiceTest {
 	@Autowired
 	private FilterService filterService;
 
+	@Autowired
+	private DtoConverterService converterService;
+
 	@Test
-	public void testSaveOrUpdate() throws Exception {
-		Filter filter = filterService.createFidFilter(new String[] {"3"});
+	public void testUpdate() throws Exception {
+		Filter filter = filterService.createFidFilter(new String[]{"3"});
 		CoordinateReferenceSystem crs = CRS.decode(beanLayer.getLayerInfo().getCrs());
 		List<InternalFeature> oldFeatures = layerService.getFeatures(LAYER_ID,
 				crs, filter, null, VectorLayerService.FEATURE_INCLUDE_ATTRIBUTES);
 		Assert.assertEquals(1, oldFeatures.size());
 		InternalFeature feature = oldFeatures.get(0);
 		List<InternalFeature> newFeatures = new ArrayList<InternalFeature>();
+		feature = feature.clone();
 		feature.getAttributes().put(STRING_ATTR, "changed");
-		newFeatures.addAll(oldFeatures);
+		newFeatures.add(feature);
 		feature.getAttributes().put(STRING_ATTR, "changed");
 		layerService.saveOrUpdate(LAYER_ID, crs, oldFeatures, newFeatures);
 
 		Iterator<FeatureBean> iterator =
 				(Iterator<FeatureBean>) beanLayer.getElements(filterService.createTrueFilter());
 		int count = 0;
+		int check = 0;
 		while (iterator.hasNext()) {
 			FeatureBean featureBean = iterator.next();
 			count++;
 			if (3 == featureBean.getId()) {
 				Assert.assertEquals("changed", featureBean.getStringAttr());
 			}
+			check |= 1 << (featureBean.getId() - 1);
 		}
 		Assert.assertEquals(3, count);
+		Assert.assertEquals(7, check);
+	}
+
+	@Test
+	public void testCreateDelete() throws Exception {
+		// done in one test to assure the state is back to what is expected,
+		// the spring context is not rebuilt between test methods
+		
+		// Create first
+		CoordinateReferenceSystem crs = CRS.decode(beanLayer.getLayerInfo().getCrs());
+		List<InternalFeature> oldFeatures = new ArrayList<InternalFeature>();
+		List<InternalFeature> newFeatures = new ArrayList<InternalFeature>();
+		InternalFeature feature = converterService.toInternal(new Feature());
+		feature.setId("beans.4");
+		feature.setLayer(beanLayer);
+		newFeatures.add(feature);
+		layerService.saveOrUpdate(LAYER_ID, crs, oldFeatures, newFeatures);
+
+		Iterator<FeatureBean> iterator =
+				(Iterator<FeatureBean>) beanLayer.getElements(filterService.createTrueFilter());
+		int count = 0;
+		int check = 0;
+		while (iterator.hasNext()) {
+			FeatureBean featureBean = iterator.next();
+			count++;
+			check |= 1 << (featureBean.getId() - 1);
+		}
+		Assert.assertEquals(4, count);
+		Assert.assertEquals(15, check);
+
+		// now delete again
+		Filter filter = filterService.createFidFilter(new String[]{"4"});
+		oldFeatures = layerService.getFeatures(LAYER_ID,
+				crs, filter, null, VectorLayerService.FEATURE_INCLUDE_ATTRIBUTES);
+		Assert.assertEquals(1, oldFeatures.size());
+		newFeatures = new ArrayList<InternalFeature>();
+		layerService.saveOrUpdate(LAYER_ID, crs, oldFeatures, newFeatures);
+
+		iterator = (Iterator<FeatureBean>) beanLayer.getElements(filterService.createTrueFilter());
+		count = 0;
+		check = 0;
+		while (iterator.hasNext()) {
+			FeatureBean featureBean = iterator.next();
+			count++;
+			check |= 1 << (featureBean.getId() - 1);
+		}
+		Assert.assertEquals(3, count);
+		Assert.assertEquals(7, check);
+
 	}
 
 	@Test
@@ -110,7 +167,7 @@ public class VectorLayerServiceTest {
 
 	@Test
 	public void testGetFeaturesAllFiltered() throws Exception {
-		Filter filter = filterService.createFidFilter(new String[] {"3"});
+		Filter filter = filterService.createFidFilter(new String[]{"3"});
 		List<InternalFeature> features = layerService.getFeatures(LAYER_ID,
 				CRS.decode(beanLayer.getLayerInfo().getCrs()), filter, null, VectorLayerService.FEATURE_INCLUDE_ALL);
 		Assert.assertEquals(1, features.size());
@@ -131,7 +188,7 @@ public class VectorLayerServiceTest {
 
 	@Test
 	public void testGetBoundsFiltered() throws Exception {
-		Filter filter = filterService.createFidFilter(new String[] {"2", "3"});
+		Filter filter = filterService.createFidFilter(new String[]{"2", "3"});
 		Envelope bounds = layerService.getBounds(LAYER_ID, CRS.decode(beanLayer.getLayerInfo().getCrs()), filter);
 		Assert.assertEquals(2, bounds.getMinX(), ALLOWANCE);
 		Assert.assertEquals(0, bounds.getMinY(), ALLOWANCE);

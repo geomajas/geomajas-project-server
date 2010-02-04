@@ -32,6 +32,7 @@ import java.util.Map;
  * DTO version of a {@link InternalFeature}. This object can be sent to the client.
  * 
  * @author Pieter De Graef
+ * @author Joachim Van der Auwera
  */
 public class Feature implements Serializable {
 
@@ -134,10 +135,20 @@ public class Feature implements Serializable {
 		this.clipped = clipped;
 	}
 
+	/**
+	 * Is the logged in user allowed to edit this feature?
+	 *
+	 * @return true when edit/update is allowed for this feature
+	 */
 	public boolean isEditable() {
 		return editable;
 	}
 
+	/**
+	 * Set whether the logged in user is allowed to edit/update this feature.
+	 *
+	 * @param editable true when edit/update is allowed for this feature
+	 */
 	public void setEditable(boolean editable) {
 		this.editable = editable;
 	}
