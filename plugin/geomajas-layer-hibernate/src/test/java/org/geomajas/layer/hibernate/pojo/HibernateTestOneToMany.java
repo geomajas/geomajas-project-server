@@ -5,14 +5,18 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
+
 @Entity
-@Table(name = "manyToOne")
+@Table(name = "oneToMany")
 public class HibernateTestOneToMany {
 
 	public static final String PARAM_TEXT_ATTR = "textAttr";
@@ -49,6 +53,9 @@ public class HibernateTestOneToMany {
 
 	@Column(name = "dateAttr")
 	private Date dateAttr;
+	
+	@ManyToOne
+	private HibernateTestFeature feature;
 
 	// Constructors:
 
@@ -71,7 +78,7 @@ public class HibernateTestOneToMany {
 	// Class specific functions:
 
 	public String toString() {
-		return "HibernateTestOneToMany-" + id;
+		return ReflectionToStringBuilder.toString(this);
 	}
 
 	public static HibernateTestOneToMany getDefaultInstance1(Long id) {
@@ -203,4 +210,15 @@ public class HibernateTestOneToMany {
 	public void setDateAttr(Date dateAttr) {
 		this.dateAttr = dateAttr;
 	}
+
+	
+	public HibernateTestFeature getFeature() {
+		return feature;
+	}
+
+	
+	public void setFeature(HibernateTestFeature feature) {
+		this.feature = feature;
+	}
+	
 }

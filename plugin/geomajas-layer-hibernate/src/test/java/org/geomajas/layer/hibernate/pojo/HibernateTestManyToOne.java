@@ -11,6 +11,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
+
 @Entity
 @Table(name = "manyToOne")
 public class HibernateTestManyToOne {
@@ -71,7 +73,7 @@ public class HibernateTestManyToOne {
 	// Class specific functions:
 
 	public String toString() {
-		return "HibernateTestManyToOne-" + id;
+		return ReflectionToStringBuilder.toString(this);
 	}
 
 	public static HibernateTestManyToOne getDefaultInstance1(Long id) {

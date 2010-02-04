@@ -51,7 +51,7 @@ public abstract class AbstractHibernateLayerModelTest {
 	public static final String PARAM_DATE_ATTR = "dateAttr";
 	public static final String PARAM_MANY_TO_ONE = "manyToOne";
 	public static final String PARAM_ONE_TO_MANY = "oneToMany";
-	public static final String PARAM_GEOMETRY_ATTR = "the_geom";
+	public static final String PARAM_GEOMETRY_ATTR = "geometry";
 
 	/** Filter: manyToOne.textAttr */
 	public static final String ATTR__MANY_TO_ONE__DOT__TEXT = PARAM_MANY_TO_ONE

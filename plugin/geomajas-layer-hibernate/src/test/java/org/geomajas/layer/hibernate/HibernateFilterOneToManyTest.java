@@ -22,25 +22,27 @@
  */
 package org.geomajas.layer.hibernate;
 
-import org.geomajas.layer.LayerException;
-import org.geomajas.layer.hibernate.pojo.HibernateTestFeature;
-import org.geomajas.layer.hibernate.pojo.HibernateTestOneToMany;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.opengis.filter.Filter;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
+
+import org.geomajas.layer.LayerException;
+import org.geomajas.layer.hibernate.pojo.HibernateTestFeature;
+import org.geomajas.layer.hibernate.pojo.HibernateTestOneToMany;
+import org.hibernate.criterion.Restrictions;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.opengis.filter.Filter;
 
 /**
  * TestCase for Hibernate's OneToMany association. All possible filters we can imagine on such an association must be
  * put to the test here.
- *
+ * 
  * @author Pieter De Graef
  */
 public class HibernateFilterOneToManyTest extends AbstractHibernateLayerModelTest {
@@ -52,32 +54,25 @@ public class HibernateFilterOneToManyTest extends AbstractHibernateLayerModelTes
 		HibernateTestFeature f3 = HibernateTestFeature.getDefaultInstance3(null);
 		HibernateTestFeature f4 = HibernateTestFeature.getDefaultInstance4(null);
 
-		Set<HibernateTestOneToMany> set1 = new HashSet<HibernateTestOneToMany>();
-		set1.add(HibernateTestOneToMany.getDefaultInstance1(null));
-		set1.add(HibernateTestOneToMany.getDefaultInstance2(null));
-		f1.setOneToMany(set1);
+		f1.addOneToMany(HibernateTestOneToMany.getDefaultInstance1(null));
+		f1.addOneToMany(HibernateTestOneToMany.getDefaultInstance2(null));
 
-		Set<HibernateTestOneToMany> set2 = new HashSet<HibernateTestOneToMany>();
-		set2.add(HibernateTestOneToMany.getDefaultInstance3(null));
-		set2.add(HibernateTestOneToMany.getDefaultInstance4(null));
-		f2.setOneToMany(set2);
+		f2.addOneToMany(HibernateTestOneToMany.getDefaultInstance3(null));
+		f2.addOneToMany(HibernateTestOneToMany.getDefaultInstance4(null));
 
-		Set<HibernateTestOneToMany> set3 = new HashSet<HibernateTestOneToMany>();
-		set3.add(HibernateTestOneToMany.getDefaultInstance1(null));
-		set3.add(HibernateTestOneToMany.getDefaultInstance3(null));
-		f3.setOneToMany(set3);
+		f3.addOneToMany(HibernateTestOneToMany.getDefaultInstance1(null));
+		f3.addOneToMany(HibernateTestOneToMany.getDefaultInstance3(null));
 
-		Set<HibernateTestOneToMany> set4 = new HashSet<HibernateTestOneToMany>();
-		set4.add(HibernateTestOneToMany.getDefaultInstance1(null));
-		set4.add(HibernateTestOneToMany.getDefaultInstance2(null));
-		set4.add(HibernateTestOneToMany.getDefaultInstance3(null));
-		set4.add(HibernateTestOneToMany.getDefaultInstance4(null));
-		f4.setOneToMany(set4);
+		f4.addOneToMany(HibernateTestOneToMany.getDefaultInstance1(null));
+		f4.addOneToMany(HibernateTestOneToMany.getDefaultInstance2(null));
+		f4.addOneToMany(HibernateTestOneToMany.getDefaultInstance3(null));
+		f4.addOneToMany(HibernateTestOneToMany.getDefaultInstance4(null));
 
 		layer.create(f1);
 		layer.create(f2);
 		layer.create(f3);
-		layer.create(f4);   }
+		layer.create(f4);
+	}
 
 	/*
 	 * Uses inner join: If ANY of the oneToMany objects are evaluated by the filter, then the HibernateTestFeature is
@@ -85,6 +80,10 @@ public class HibernateFilterOneToManyTest extends AbstractHibernateLayerModelTes
 	 */
 	@Test
 	public void betweenFilterOnInteger() throws Exception {
+		List l = factory.getCurrentSession().createCriteria(HibernateTestFeature.class).list();
+		List l2 = factory.getCurrentSession().createCriteria(HibernateTestFeature.class).createAlias("oneToMany",
+				"oneToMany").add(Restrictions.between("oneToMany.intAttr", -5000, 5000)).list();
+
 		Filter filter = filterCreator.createBetweenFilter(ATTR__ONE_TO_MANY__DOT__INT, "500", "2500");
 		Iterator<?> it = layer.getElements(filter);
 		int t = 0;

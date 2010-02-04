@@ -42,24 +42,14 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 	</bean>
 
 	<!-- Hibernate SessionFactory -->
-	<bean id="testSessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
-		<property name="dataSource" ref="testDataSource"/>
-		<property name="hibernateProperties">
-			<props>
-				<prop key="hibernate.dialect">org.hibernate.dialect.HSQLDialect</prop>
-				<prop key="hibernate.connection.pool_size">1</prop>
-				<prop key="hibernate.connection.autocommit">true</prop>
-				<prop key="hibernate.cache.provider_class">org.hibernate.cache.HashtableCacheProvider</prop>
-				<prop key="hibernate.hbm2ddl.auto">create-drop</prop>
-				<prop key="hibernate.show_sql">false</prop>
-			</props>
+	<bean id="testSessionFactory"
+		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource" ref="testDataSource" />
+		<property name="configLocation">
+			<value>classpath:/hibernate.cfg.xml</value>
 		</property>
-	 	<property name="mappingResources">
-			<list>
-			   <value>org/geomajas/layer/hibernate/pojo/HibernateTestFeature.hbm.xml</value>
-			   <value>org/geomajas/layer/hibernate/pojo/HibernateTestManyToOne.hbm.xml</value>
-			   <value>org/geomajas/layer/hibernate/pojo/HibernateTestOneToMany.hbm.xml</value>
-			</list>
+		<property name="configurationClass">
+			<value>org.hibernate.cfg.AnnotationConfiguration</value>
 		</property>
 	</bean>
 
@@ -377,5 +367,3 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 	</bean>
 
 </beans>
-
-

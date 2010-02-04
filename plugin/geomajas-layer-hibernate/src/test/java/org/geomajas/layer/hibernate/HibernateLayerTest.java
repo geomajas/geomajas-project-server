@@ -22,14 +22,15 @@
  */
 package org.geomajas.layer.hibernate;
 
-import org.geomajas.layer.hibernate.pojo.HibernateTestFeature;
-import org.junit.Assert;
-import org.junit.Test;
-
-import java.util.Date;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+
+import org.geomajas.layer.hibernate.pojo.HibernateTestFeature;
+import org.geomajas.layer.hibernate.pojo.HibernateTestManyToOne;
+import org.junit.Assert;
+import org.junit.Test;
 
 /**
  * Unit test that tests all the functions of the HibernateLayer.
@@ -66,13 +67,27 @@ public class HibernateLayerTest extends AbstractHibernateLayerModelTest {
 		Assert.assertNotNull(createdId);
 		Object feature = layer.read(createdId);
 		Assert.assertNotNull("The requested feature could not be found!", feature);
+		// create a detached copy
+		HibernateTestFeature detached = HibernateTestFeature.getDefaultInstance1(null);
+		detached.setId(((HibernateTestFeature)feature).getId());
 		Map<String, Object> attributes = new HashMap<String, Object>();
-		attributes.put("name", "new name");
-		attributes.put("number", 5f);
-		attributes.put("data", new Date());
-		attributes.put("available", false);
-		layer.getFeatureModel().setAttributes(feature, attributes);
-		layer.saveOrUpdate(feature);
+		attributes.put("textAttr", "new name");
+		attributes.put("floatAttr", 5f);
+		Calendar c = Calendar.getInstance();
+		attributes.put("dateAttr",c.getTime());
+		attributes.put("booleanAttr", false);
+		attributes.put("manyToOne", HibernateTestManyToOne.getDefaultInstance1(null));
+		layer.getFeatureModel().setAttributes(detached, attributes);
+		// save or update
+		layer.saveOrUpdate(detached);
+		// check it
+		feature = layer.read(createdId);
+		Assert.assertEquals("new name",layer.getFeatureModel().getAttribute(feature, "textAttr"));
+		Assert.assertEquals(5f,layer.getFeatureModel().getAttribute(feature, "floatAttr"));
+		Assert.assertEquals(c.getTime(),layer.getFeatureModel().getAttribute(feature, "dateAttr"));
+		Assert.assertEquals(false,layer.getFeatureModel().getAttribute(feature, "booleanAttr"));
+		HibernateTestManyToOne manytoOne = (HibernateTestManyToOne)layer.getFeatureModel().getAttribute(feature, "manyToOne");
+		Assert.assertNotNull(manytoOne.getId());		
 	}
 
 	@Test

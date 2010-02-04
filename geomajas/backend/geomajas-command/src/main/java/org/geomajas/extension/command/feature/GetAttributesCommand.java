@@ -37,6 +37,7 @@ import org.geomajas.service.VectorLayerService;
 import org.opengis.filter.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Get attributes for a feature. This is needed when features are loaded lazily.
@@ -44,6 +45,7 @@ import org.springframework.stereotype.Component;
  * @author Pieter De Graef
  */
 @Component()
+@Transactional(readOnly = true)
 public class GetAttributesCommand implements Command<GetAttributesRequest, GetAttributesResponse> {
 
 	@Autowired

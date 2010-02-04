@@ -112,12 +112,14 @@ public class HibernateFeatureModel extends HibernateLayerUtil implements Feature
 
 	public Geometry getGeometry(Object feature) throws LayerException {
 		Object obj = getAttribute(feature, getFeatureInfo().getGeometryType().getName());
-		if (Geometry.class.isAssignableFrom(obj.getClass())) {
+		if (obj == null) {
+			return null;
+		} else if (Geometry.class.isAssignableFrom(obj.getClass())) {
 			Geometry geom = (Geometry) obj;
 			return (Geometry) geom.clone();
 		} else {
-			throw new LayerException(ExceptionCode.PROPERTY_IS_NOT_GEOMETRY,
-					getFeatureInfo().getGeometryType().getName());
+			throw new LayerException(ExceptionCode.PROPERTY_IS_NOT_GEOMETRY, getFeatureInfo().getGeometryType()
+					.getName());
 		}
 	}
 

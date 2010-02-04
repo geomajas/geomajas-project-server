@@ -202,12 +202,15 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer {
 
 	public Object saveOrUpdate(Object feature) throws LayerException {
 		String id = getFeatureModel().getId(feature);
+		Object result = null;
 		if (read(id) == null) {
-			return create(feature);
+			result = create(feature);
 		} else {
 			update(feature);
-			return feature;
+			result = read(id);
 		}
+		getSessionFactory().getCurrentSession().flush();
+		return result;
 	}
 
 	public void delete(String featureId) throws LayerException {
@@ -225,17 +228,11 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer {
 	}
 
 	public void update(Object feature) throws LayerException {
-		Session session = getSessionFactory().getCurrentSession();
-
-		// Replace associations with persistent versions:
-		// Map<String, Object> attributes = featureModel.getAttributes(feature);
-		// ((HibernateFeatureModel) featureModel)
-		// .setPersistentAssociations(feature);
-		session.update(feature);
-
-		// Set the original detached associations back where they belong:
-		// Not here, transaction not finished yet !!!!
-		// featureModel.setAttributes(feature, attributes);
+		Object persistent = read(getFeatureModel().getId(feature));
+		Map<String, Object> attributes = featureModel.getAttributes(feature);
+		// replace all modified attributes by their new values
+		featureModel.setAttributes(persistent, attributes);
+		featureModel.setGeometry(feature, featureModel.getGeometry(feature));
 	}
 
 	public Envelope getBounds() throws LayerException {

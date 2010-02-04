@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+		"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+		"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+	<session-factory>
+		<property name="hibernate.dialect">org.geomajas.layer.hibernate.HSQLSpatialDialect</property>
+
+		<!-- always recreate the db schema for a clean test setup -->
+		<property name="hibernate.hbm2ddl.auto">create-drop</property>
+
+		<property name="cache.provider_class">org.hibernate.cache.HashtableCacheProvider</property>
+
+		<!-- Echo all executed SQL to stdout -->
+		<property name="show_sql">true</property>
+		<mapping class="org.geomajas.layer.hibernate.pojo.HibernateTestFeature" />
+		<mapping class="org.geomajas.layer.hibernate.pojo.HibernateTestManyToOne" />
+		<mapping class="org.geomajas.layer.hibernate.pojo.HibernateTestOneToMany" />
+	</session-factory>
+</hibernate-configuration>

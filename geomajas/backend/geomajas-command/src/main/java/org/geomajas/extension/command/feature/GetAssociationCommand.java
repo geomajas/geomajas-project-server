@@ -32,6 +32,7 @@ import org.geotools.filter.text.cql2.CQL;
 import org.opengis.filter.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Get associated objects.
@@ -40,6 +41,7 @@ import org.springframework.stereotype.Component;
  * @author Joachim Van der Auwera
  */
 @Component()
+@Transactional(readOnly = true)
 public class GetAssociationCommand implements Command<GetAssociationRequest, GetAssociationResponse> {
 
 	@Autowired

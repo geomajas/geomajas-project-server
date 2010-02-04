@@ -37,6 +37,7 @@ import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.VectorLayerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * A securityException will fail all, not just the feature(s) which are not allowed.
@@ -44,6 +45,7 @@ import org.springframework.stereotype.Component;
  * @author check subversion
  */
 @Component()
+@Transactional
 public class PersistTransactionCommand implements Command<PersistTransactionRequest, PersistTransactionResponse> {
 
 	@Autowired

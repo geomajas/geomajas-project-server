@@ -4,13 +4,23 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import org.apache.commons.lang.builder.ReflectionToStringBuilder;
+import org.hibernate.annotations.Type;
+
+import com.vividsolutions.jts.geom.Geometry;
+
 
 @Entity
 @Table(name = "pojo")
@@ -38,11 +48,16 @@ public class HibernateTestFeature {
 
 	@Column(name = "dateAttr")
 	private Date dateAttr;
-
+	
+	@ManyToOne( cascade = {CascadeType.ALL} )
 	private HibernateTestManyToOne manyToOne;
 
-	private Set<HibernateTestOneToMany> oneToMany;
+	@OneToMany( cascade = {CascadeType.ALL}, mappedBy="feature" )
+	private Set<HibernateTestOneToMany> oneToMany = new HashSet<HibernateTestOneToMany>();
 
+	@Type(type = "org.hibernatespatial.GeometryUserType")
+	@Column(name = "the_geom")
+	private Geometry geometry;
 	// Constructors:
 
 	public HibernateTestFeature() {
@@ -64,7 +79,7 @@ public class HibernateTestFeature {
 	// Class specific functions:
 
 	public String toString() {
-		return "HibernateTestFeature-" + id;
+		return ReflectionToStringBuilder.toString(this);
 	}
 
 	public static HibernateTestFeature getDefaultInstance1(Long id) {
@@ -212,4 +227,18 @@ public class HibernateTestFeature {
 	public void setOneToMany(Set<HibernateTestOneToMany> oneToMany) {
 		this.oneToMany = oneToMany;
 	}
+	
+	public void addOneToMany(HibernateTestOneToMany oneToMany){
+		this.oneToMany.add(oneToMany);
+		oneToMany.setFeature(this);
+	}
+	
+	public Geometry getGeometry() {
+		return geometry;
+	}
+	
+	public void setGeometry(Geometry geometry) {
+		this.geometry = geometry;
+	}
+		
 }

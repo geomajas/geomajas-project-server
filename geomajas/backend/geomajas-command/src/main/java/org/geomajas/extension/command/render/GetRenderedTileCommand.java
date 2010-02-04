@@ -38,13 +38,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Command to retrieve a feature tile.
- *
+ * 
  * @author Jan De Moerloose
  */
 @Component()
+@Transactional(readOnly = true)
 public class GetRenderedTileCommand implements Command<GetRenderedTileRequest, GetRenderedTileResponse> {
 
 	private final Logger log = LoggerFactory.getLogger(GetRenderedTileCommand.class);
