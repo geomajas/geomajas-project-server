@@ -76,21 +76,24 @@ public class VmlVectorTileWriter implements GraphicsWriter {
 					document.writeAttribute("id", feature.getLayer().getLayerInfo().getId() + "." + style + ".style");
 					document.writeAttribute("style", "WIDTH: 100%; HEIGHT: 100%");
 					document.writeAttribute("style", "VISIBILITY: hidden");
-					document.writeAttribute("filled", "t");
-					document.writeAttribute("stroked", "t");
+					// document.writeAttribute("filled", "t");
+					// document.writeAttribute("stroked", "t");
 					document.writeAttribute("coordsize", coordWidth + "," + coordHeight);
 					StyleInfo info = feature.getStyleInfo();
 					document.writeAttribute("fillcolor", info.getFillColor());
 					document.writeAttribute("strokecolor", info.getStrokeColor());
 					document.writeAttribute("strokeweight", info.getStrokeWidth() + "px");
-					// fill element
-					document.writeElement("vml:stroke", true);
-					document.writeAttribute("opacity", info.getStrokeOpacity());
-					// style element
-					document.writeElement("vml:fill", false);
-					document.writeAttribute("opacity", info.getFillOpacity());
-					// up to shapetype
+
+					// Tile-fill element:
+					document.writeElement("vml:fill", true);
+					document.writeAttribute("opacity", "" + info.getFillOpacity());
 					document.closeElement();
+
+					// Tile-stroke element:
+					document.writeElement("vml:stroke", true);
+					document.writeAttribute("opacity", "" + info.getStrokeOpacity());
+					document.closeElement();
+
 					// up to style group
 					document.closeElement();
 				}

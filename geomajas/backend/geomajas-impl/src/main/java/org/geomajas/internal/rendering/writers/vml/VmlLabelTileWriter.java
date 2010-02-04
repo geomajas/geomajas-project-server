@@ -134,12 +134,12 @@ public class VmlLabelTileWriter implements GraphicsWriter {
 
 					// Rect-fill element:
 					document.writeElement("vml:fill", true);
-					document.writeAttribute("opacity", bgStyle.getFillOpacity());
+					document.writeAttribute("opacity", "" + bgStyle.getFillOpacity());
 					document.closeElement();
 
 					// Rect-stroke element:
 					document.writeElement("vml:stroke", true);
-					document.writeAttribute("opacity", bgStyle.getStrokeOpacity());
+					document.writeAttribute("opacity", "" + bgStyle.getStrokeOpacity());
 					document.closeElement();
 				}
 
