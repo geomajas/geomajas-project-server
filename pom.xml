@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas</groupId>
 	<artifactId>geomajas-all</artifactId>
-	<version>1.5.3-TEST</version>
+	<version>1.5.3-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<url>http://files.geomajas.org/maven/trunk</url>
 
@@ -50,9 +50,9 @@
 	</distributionManagement>
 
 	<scm>
-		<connection>scm:svn:https://svn.geomajas.org/majas/tags/1.5.3-TEST</connection>
-		<developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/1.5.3-TEST</developerConnection>
-		<url>https://svn.geomajas.org/majas/tags/1.5.3-TEST</url>
+		<connection>scm:svn:https://svn.geomajas.org/majas/trunk</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk</developerConnection>
+		<url>https://svn.geomajas.org/majas/trunk</url>
 	</scm>
 
 	<organization>
