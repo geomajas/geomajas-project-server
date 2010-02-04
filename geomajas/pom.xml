@@ -13,10 +13,11 @@
 	<url>http://files.geomajas.org/maven/trunk/geomajas</url>
 
 	<scm>
-		<connection>scm:svn:https://svn.geomajas.org/majas/tags/1.5.3-SNAPSHOT</connection>
-		<developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/1.5.3-SNAPSHOT</developerConnection>
-		<url>https://svn.geomajas.org/majas/tags/1.5.3-SNAPSHOT</url>
+		<connection>scm:svn:https://svn.geomajas.org/majas/trunk</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk</developerConnection>
+		<url>https://svn.geomajas.org/majas/trunk</url>
 	</scm>
+
 	<organization>
 		<name>Geosparc</name>
 		<url>http://www.geosparc.com</url>

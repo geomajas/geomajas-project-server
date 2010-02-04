@@ -21,21 +21,10 @@
 	</distributionManagement>
 
 	<dependencies>
+		<!-- Geomajas dependencies -->
 		<dependency>
 			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-dependency</artifactId>
-			<version>${project.version}</version>
-			<type>pom</type>
-			<exclusions>
-				<exclusion>
-					<groupId>org.geotools</groupId>
-					<artifactId>gt-main</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-gwt-client</artifactId>
+			<artifactId>geomajas-command</artifactId>
 			<version>${project.version}</version>
 			<exclusions>
 				<exclusion>
@@ -44,6 +33,65 @@
 				</exclusion>
 			</exclusions>
 		</dependency>
+        <dependency>
+            <groupId>org.geomajas.layer</groupId>
+            <artifactId>geomajas-layer-geotools</artifactId>
+            <version>${project.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.geotools</groupId>
+					<artifactId>gt-main</artifactId>
+				</exclusion>
+			</exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.geomajas.layer</groupId>
+            <artifactId>geomajas-layer-openstreetmaps</artifactId>
+            <version>${project.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.geotools</groupId>
+					<artifactId>gt-main</artifactId>
+				</exclusion>
+			</exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.geomajas.layer</groupId>
+            <artifactId>geomajas-layer-wms</artifactId>
+            <version>${project.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.geotools</groupId>
+					<artifactId>gt-main</artifactId>
+				</exclusion>
+			</exclusions>
+        </dependency>
+        <!--dependency>
+            <groupId>org.geomajas.layer</groupId>
+            <artifactId>geomajas-layer-hibernate</artifactId>
+            <version>${project.version}</version>
+        </dependency-->
+        <!--dependency>
+            <groupId>org.geomajas.layer</groupId>
+            <artifactId>geomajas-layer-google</artifactId>
+            <version>${project.version}</version>
+        </dependency-->
+        <!--dependency>
+            <groupId>org.geomajas.plugin</groupId>
+            <artifactId>geomajas-plugin-printing</artifactId>
+            <version>${project.version}</version>
+        </dependency-->
+        <dependency>
+            <groupId>org.geomajas</groupId>
+            <artifactId>geomajas-gwt-client</artifactId>
+            <version>${project.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>org.geotools</groupId>
+					<artifactId>gt-main</artifactId>
+				</exclusion>
+			</exclusions>
+        </dependency>
 
 		<!-- Google dependencies -->
 		<dependency>

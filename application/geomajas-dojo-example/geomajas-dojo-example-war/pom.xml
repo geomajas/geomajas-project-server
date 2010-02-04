@@ -12,18 +12,48 @@
 	<url>http://files.geomajas.org/maven/trunk/dojo-example</url>
     
 	<dependencies>
+		<!-- Geomajas dependencies -->
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>${geomajas.modules.name}</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-
 		<dependency>
 			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-dependency</artifactId>
+			<artifactId>geomajas-command</artifactId>
 			<version>${project.version}</version>
-			<type>pom</type>
 		</dependency>
+        <dependency>
+            <groupId>org.geomajas.layer</groupId>
+            <artifactId>geomajas-layer-geotools</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.geomajas.layer</groupId>
+            <artifactId>geomajas-layer-openstreetmaps</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.geomajas.layer</groupId>
+            <artifactId>geomajas-layer-wms</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <!--dependency>
+            <groupId>org.geomajas.layer</groupId>
+            <artifactId>geomajas-layer-hibernate</artifactId>
+            <version>${project.version}</version>
+        </dependency-->
+        <!--dependency>
+            <groupId>org.geomajas.layer</groupId>
+            <artifactId>geomajas-layer-google</artifactId>
+            <version>${project.version}</version>
+        </dependency-->
+        <!--dependency>
+            <groupId>org.geomajas.plugin</groupId>
+            <artifactId>geomajas-plugin-printing</artifactId>
+            <version>${project.version}</version>
+        </dependency-->
+
 		<!-- logging dependencies, delegate all to slf4j and use logback -->
         <dependency>
             <groupId>org.slf4j</groupId>
@@ -46,6 +76,7 @@
             <version>0.9.9</version>
         </dependency>
 
+		<!-- Testing dependencies -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>

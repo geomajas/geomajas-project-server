@@ -104,13 +104,7 @@ cd geomajas-$VERSION</programlisting>
     </listitem>
 
     <listitem>
-      <para>TODO: check from here!!! (tested: mvn -Pnoshrink -DskipTests
-      site-deploy from the main directory) Rebuild the docs to fix a maven
-      site plugin problem. <programlisting>cd geomajas
-mvn install
-mvn -Pnoshrink -DskipTests site-deploy
-cd ../..
-rm -Rf tmpgeomajas</programlisting></para>
+      <para>Build the maven site:<programlisting>mvn -Pnoshrink -DskipTests site-deploy</programlisting></para>
     </listitem>
 
     <listitem>

@@ -11,7 +11,6 @@
 	<name>Geomajas applications</name>
 
 	<modules>
-		<module>geomajas-dependency</module>
 		<module>geomajas-dojo-example</module>
 		<module>geomajas-dojo-simple</module>
 		<module>geomajas-gwt-example</module>

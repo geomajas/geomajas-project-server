@@ -21,12 +21,42 @@
     </distributionManagement>
     
 	<dependencies>
+		<!-- Geomajas dependencies -->
+		<dependency>
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-command</artifactId>
+			<version>${project.version}</version>
+		</dependency>
         <dependency>
-            <groupId>org.geomajas</groupId>
-            <artifactId>geomajas-dependency</artifactId>
+            <groupId>org.geomajas.layer</groupId>
+            <artifactId>geomajas-layer-geotools</artifactId>
             <version>${project.version}</version>
-		<type>pom</type>
         </dependency>
+        <dependency>
+            <groupId>org.geomajas.layer</groupId>
+            <artifactId>geomajas-layer-openstreetmaps</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.geomajas.layer</groupId>
+            <artifactId>geomajas-layer-wms</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+        <!--dependency>
+            <groupId>org.geomajas.layer</groupId>
+            <artifactId>geomajas-layer-hibernate</artifactId>
+            <version>${project.version}</version>
+        </dependency-->
+        <!--dependency>
+            <groupId>org.geomajas.layer</groupId>
+            <artifactId>geomajas-layer-google</artifactId>
+            <version>${project.version}</version>
+        </dependency-->
+        <!--dependency>
+            <groupId>org.geomajas.plugin</groupId>
+            <artifactId>geomajas-plugin-printing</artifactId>
+            <version>${project.version}</version>
+        </dependency-->
         <dependency>
             <groupId>org.geomajas</groupId>
             <artifactId>geomajas-gwt-client</artifactId>
@@ -55,6 +85,7 @@
             <version>0.9.9</version>
         </dependency>
 	</dependencies>
+
 	<build>
 		<plugins>
 			<plugin>

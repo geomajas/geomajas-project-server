@@ -12,7 +12,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-release-plugin</artifactId>
-				<version>2.0-beta-8</version>
+				<version>2.0-beta-9</version>
 				<configuration>
 					<arguments>-Dhudson</arguments>
 				</configuration>
@@ -22,11 +22,19 @@
 
 	<name>Grouping of all Geomajas modules</name>
 	<modules>
-		<module>build-tools</module>
 		<module>geomajas</module>
 		<module>plugin</module>
 		<module>application</module>
 	</modules>
+
+	<profiles>
+		<profile>
+			<id>full-build</id>
+			<modules>
+				<module>build-tools</module>
+			</modules>
+		</profile>
+	</profiles>
 
 	<distributionManagement>
 		<repository>
@@ -42,10 +50,11 @@
 	</distributionManagement>
 
 	<scm>
-		<connection>scm:svn:https://svn.geomajas.org/majas/tags/1.5.3-SNAPSHOT</connection>
-		<developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/1.5.3-SNAPSHOT</developerConnection>
-		<url>https://svn.geomajas.org/majas/tags/1.5.3-SNAPSHOT</url>
+		<connection>scm:svn:https://svn.geomajas.org/majas/trunk</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk</developerConnection>
+		<url>https://svn.geomajas.org/majas/trunk</url>
 	</scm>
+
 	<organization>
 		<name>Geosparc</name>
 		<url>http://www.geosparc.com</url>
