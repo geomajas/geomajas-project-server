@@ -191,7 +191,7 @@ public class Feature implements Paintable, Cloneable {
 
 	public String getLabel() {
 		String attributeName = layer.getLayerInfo().getLabelAttribute().getLabelAttributeName();
-		return (String) getAttributeValue(attributeName);
+		return getAttributeValue(attributeName).toString();
 	}
 
 	// Getters and setters:
