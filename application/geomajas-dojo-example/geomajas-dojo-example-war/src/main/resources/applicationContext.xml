@@ -279,6 +279,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
                 <property name="id" value="sampleSearchToolbar"/>
                 <property name="tools">
                     <list>
+                    	<!--ref bean="ZoomToMaximumExtent"/-->
                         <ref bean="ZoomIn"/>
                         <ref bean="ZoomOut"/>
                         <ref bean="ZoomToRectangleMode"/>
@@ -495,6 +496,17 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     </bean>
     <bean name="ZoomToSelection" class="org.geomajas.configuration.ToolInfo">
         <property name="id" value="ZoomToSelection"/>
+    </bean>
+    <bean name="ZoomToMaximumExtent" class="org.geomajas.configuration.ToolInfo">
+        <property name="id" value="ZoomToMaximumExtent"/>
+        <property name="parameters">
+            <list>
+                <bean class="org.geomajas.configuration.Parameter">
+                    <property name="name" value="includeLayers"/>
+                    <property name="value" value="countries"/>
+                </bean>
+            </list>
+        </property>
     </bean>
     <bean name="PanToSelection" class="org.geomajas.configuration.ToolInfo">
         <property name="id" value="PanToSelection"/>

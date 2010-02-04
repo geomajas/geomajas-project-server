@@ -59,6 +59,7 @@ dojo.declare("ZoomToMaximumExtentAction", ToolbarAction, {
 		command.addParam("mapId", this.mapWidget.getMapModel().getId());
 		command.addParam("excludeRasterLayers", this.excludeRasterLayers);
 		command.addParam("includeLayers", this.includeLayers);
+		command.addParam("crs", "EPSG:"+this.mapWidget.getMapModel().getMapView().getSRID());
 		var deferred = geomajasConfig.dispatcher.execute(command);
 		deferred.addCallback(this, "_jsonCallback");
 		geomajasConfig.zoomMaxExtentBounds = null;
@@ -70,7 +71,7 @@ dojo.declare("ZoomToMaximumExtentAction", ToolbarAction, {
 	},
 	
 	_zoomToMaxExtent : function () {
-		var bounds = geomajasConfigzoomMaxExtentBounds;
+		var bounds = geomajasConfig.zoomMaxExtentBounds;
 		if (bounds != null) {
 			log.info("setBounds: x,y,w,h" + bounds.x + ", " + bounds.y + ", " + bounds.width + ", " + bounds.height);
 			dojo.publish(this.mapWidget.getMapView().getExternalRenderTopic(), [{event:"setBounds", x:bounds.x, y:bounds.y, width:bounds.width, height:bounds.height, option:geomajas.ZoomOption.ZOOM_OPTION_LEVEL_FIT}]);

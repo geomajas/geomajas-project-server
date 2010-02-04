@@ -48,11 +48,11 @@
             <artifactId>geomajas-layer-google</artifactId>
             <version>${project.version}</version>
         </dependency-->
-        <!--dependency>
+        <dependency>
             <groupId>org.geomajas.plugin</groupId>
             <artifactId>geomajas-plugin-printing</artifactId>
             <version>${project.version}</version>
-        </dependency-->
+        </dependency>
 
 		<!-- logging dependencies, delegate all to slf4j and use logback -->
         <dependency>
