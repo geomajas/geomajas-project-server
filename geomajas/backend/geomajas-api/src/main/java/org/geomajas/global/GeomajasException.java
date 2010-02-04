@@ -43,13 +43,28 @@ public class GeomajasException extends Exception {
 	
 	private static final String RESOURCE_BUNDLE_NAME = "org.geomajas.global.GeomajasException";
 
+	/**
+	 * Create new GeomajasException.
+	 */
 	public GeomajasException() {
 	}
 
+	/**
+	 * Create new GeomajasException.
+	 *
+	 * @param ex cause exception
+	 */
 	public GeomajasException(Throwable ex) {
 		super(ex);
 	}
 
+	/**
+	 * Create new GeomajasException.
+	 *
+	 * @param ex cause exception
+	 * @param exceptionCode code which points to the message
+	 * @param parameters possible extra parameters
+	 */
 	public GeomajasException(Throwable ex, int exceptionCode, Object... parameters) {
 		super(ex);
 		this.exceptionCode = exceptionCode;
@@ -57,16 +72,33 @@ public class GeomajasException extends Exception {
 
 	}
 
+	/**
+	 * Create new GeomajasException.
+	 *
+	 * @param ex cause exception
+	 * @param exceptionCode code which points to the message
+	 */
 	public GeomajasException(Throwable ex, int exceptionCode) {
 		super(ex);
 		this.exceptionCode = exceptionCode;
 	}
 
+	/**
+	 * Create new GeomajasException.
+	 *
+	 * @param exceptionCode code which points to the message
+	 * @param parameters possible extra parameters
+	 */
 	public GeomajasException(int exceptionCode, Object... parameters) {
 		this.exceptionCode = exceptionCode;
 		msgParameters = parameters;
 	}
 
+	/**
+	 * Create new GeomajasException.
+	 *
+	 * @param exceptionCode code which points to the message
+	 */
 	public GeomajasException(int exceptionCode) {
 		this.exceptionCode = exceptionCode;
 	}
@@ -95,10 +127,21 @@ public class GeomajasException extends Exception {
 		return message; // fallback when no translation
 	}
 
+	/**
+	 * Get message using the default locale.
+	 *
+	 * @return exception message
+	 */
 	public String getMessage() {
 		return getMessage(Locale.getDefault());
 	}
 
+	/**
+	 * Get the exception message using the requested locale.
+	 *
+	 * @param locale locale for message
+	 * @return exception message
+	 */
 	public String getMessage(Locale locale) {
 		if (getCause() != null) {
 			String message = getShortMessage(locale) + ", " + translate("ROOT_CAUSE", locale) + " ";
@@ -111,6 +154,12 @@ public class GeomajasException extends Exception {
 		}
 	}
 
+	/**
+	 * Get the short exception message using the requested locale. This does not include the cause exception message.
+	 *
+	 * @param locale locale for message
+	 * @return (short) exception message
+	 */
 	public String getShortMessage(Locale locale) {
 		String message;
 		message = translate(Integer.toString(exceptionCode), locale);
@@ -143,10 +192,20 @@ public class GeomajasException extends Exception {
 		return message;
 	}
 
+	/**
+	 * Get the exception code for the problem.
+	 *
+	 * @return exception code
+	 */
 	public int getExceptionCode() {
 		return exceptionCode;
 	}
 
+	/**
+	 * Resource bundle to be used for translating the exception code into exception messages.
+	 *
+	 * @return resource bundle name
+	 */
 	public String getResourceBundleName() {
 		return RESOURCE_BUNDLE_NAME;
 	}

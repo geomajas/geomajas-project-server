@@ -30,7 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * DTO version of a {@link RenderedTile}. This object can be sent to the client.
+ * DTO version of a {@link InternalTile}. This object can be sent to the client.
  *
  * @author Pieter De Graef
  */

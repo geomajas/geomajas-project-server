@@ -23,7 +23,6 @@
 package org.geomajas.geometry;
 
 import java.io.Serializable;
-import java.util.Comparator;
 
 /**
  * General coordinate class. It is based upon the Coordinate class from JTS4GWT (LGPL).
@@ -106,15 +105,7 @@ public class Coordinate implements Comparable<Coordinate>, Cloneable, Serializab
 			return false;
 		}
 		Coordinate c = (Coordinate) other;
-		if (x != c.x) {
-			return false;
-		}
-
-		if (y != c.y) {
-			return false;
-		}
-
-		return true;
+		return x == c.x && y == c.y;
 	}
 
 	public boolean equalsDelta(Coordinate coordinate, double delta) {
@@ -131,14 +122,12 @@ public class Coordinate implements Comparable<Coordinate>, Cloneable, Serializab
 	 * </UL>
 	 * Note: This method assumes that ordinate values are valid numbers. NaN values are not handled correctly.
 	 *
-	 *@param o
+	 *@param other
 	 *            the <code>Coordinate</code> with which this <code>Coordinate</code> is being compared
 	 *@return -1, zero, or 1 as this <code>Coordinate</code> is less than, equal to, or greater than the specified
 	 *         <code>Coordinate</code>
 	 */
-	public int compareTo(Coordinate o) {
-		Coordinate other = (Coordinate) o;
-
+	public int compareTo(Coordinate other) {
 		if (x < other.x) {
 			return -1;
 		}
@@ -197,80 +186,13 @@ public class Coordinate implements Comparable<Coordinate>, Cloneable, Serializab
 	/**
 	 * Computes a hash code for a double value, using the algorithm from Joshua Bloch's book <i>Effective Java"</i>.
 	 *
+	 * @param d value to calculate hash for
 	 * @return a hashcode for the double value
 	 */
-	public static int hashCode(double x) {
+	private int hashCode(double d) {
 		// long f = Double.doubleToRawLongBits(x);
-		long f = (long) x;
+		long f = (long) d;
 		return (int) (f ^ (f >>> 32));
-	}
-
-	/**
-	 * Compares two {@link Coordinate}s, allowing for either a 2-dimensional or 3-dimensional comparison, and handling
-	 * NaN values correctly.
-	 */
-	@SuppressWarnings("unchecked")
-	public static class CoordinateComparator implements Comparator {
-
-		/**
-		 * Compare two <code>double</code>s, allowing for NaN values. NaN is treated as being less than any valid
-		 * number.
-		 *
-		 * @param a
-		 *            a <code>double</code>
-		 * @param b
-		 *            a <code>double</code>
-		 * @return -1, 0, or 1 depending on whether a is less than, equal to or greater than b
-		 */
-		public static int compare(double a, double b) {
-			if (a < b) {
-				return -1;
-			}
-			if (a > b) {
-				return 1;
-			}
-
-			if (Double.isNaN(a)) {
-				if (Double.isNaN(b)) {
-					return 0;
-				}
-				return -1;
-			}
-
-			if (Double.isNaN(b)) {
-				return 1;
-			}
-			return 0;
-		}
-
-		/**
-		 * Creates a comparator for 2 dimensional coordinates.
-		 */
-		public CoordinateComparator() {
-		}
-
-		/**
-		 * Compares two {@link Coordinate}s along to the number of dimensions specified.
-		 *
-		 * @param o1
-		 *            a {@link Coordinate}
-		 * @param o2
-		 *            a {link Coordinate}
-		 * @return -1, 0, or 1 depending on whether o1 is less than, equal to, or greater than 02
-		 *
-		 */
-		public int compare(Object o1, Object o2) {
-			Coordinate c1 = (Coordinate) o1;
-			Coordinate c2 = (Coordinate) o2;
-
-			int compX = compare(c1.x, c2.x);
-			if (compX != 0) {
-				return compX;
-			}
-
-			int compY = compare(c1.y, c2.y);
-			return compY;
-		}
 	}
 
 	// Getters and setters:
