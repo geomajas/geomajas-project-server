@@ -55,7 +55,8 @@
       </listitem>
 
       <listitem>
-        <para />
+        <para><code>GeotoolsLayer</code> has been renamed
+        <code>GeoToolsLayer</code>.</para>
       </listitem>
     </itemizedlist>
   </section>
