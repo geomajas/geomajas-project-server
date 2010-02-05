@@ -31,7 +31,6 @@ import org.geomajas.security.VectorLayerSelectFilterAuthorization;
 import org.geomajas.security.SecurityContext;
 import org.geomajas.service.FilterService;
 import org.opengis.filter.Filter;
-import org.opengis.filter.FilterFactory;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -302,7 +301,7 @@ public class SecurityContextImpl implements SecurityContext {
 		for (Authentication authentication : authentications) {
 			for (BaseAuthorization authorization : authentication.getAuthorizations()) {
 				if (authorization instanceof VectorLayerSelectFilterAuthorization) {
-					Filter part = ((VectorLayerSelectFilterAuthorization)authorization).getFeatureFilter(layerId);
+					Filter part = ((VectorLayerSelectFilterAuthorization) authorization).getFeatureFilter(layerId);
 					if (null != part) {
 						filter = combineFilter(filter, part);
 					}
