@@ -27,7 +27,7 @@ import java.io.Serializable;
 
 /**
  * DTO version of a {@link InternalFeature}. This object can be sent to the client.
- *
+ * 
  * @author Pieter De Graef
  */
 public class FeatureTransaction implements Serializable {
@@ -40,33 +40,65 @@ public class FeatureTransaction implements Serializable {
 
 	private Feature[] newFeatures;
 
+	// -------------------------------------------------------------------------
 	// Constructors:
+	// -------------------------------------------------------------------------
 
+	/**
+	 * Default constructor - does nothing.
+	 */
 	public FeatureTransaction() {
 	}
 
+	// -------------------------------------------------------------------------
 	// Getters and setters:
+	// -------------------------------------------------------------------------
 
+	/** Get the identifier of the vector layer wherein this transaction should take place. */
 	public String getLayerId() {
 		return layerId;
 	}
 
+	/**
+	 * Set the identifier of the vector layer wherein this transaction should take place.
+	 * 
+	 * @param layerId
+	 *            The layer's identifier.
+	 */
 	public void setLayerId(String layerId) {
 		this.layerId = layerId;
 	}
 
+	/**
+	 * Returns the array of features with their original values. Can be empty or null when new features are to be
+	 * created.
+	 */
 	public Feature[] getOldFeatures() {
 		return oldFeatures;
 	}
 
+	/**
+	 * Set the array of features with their original values. When creating new features, this array should be null.
+	 * 
+	 * @param oldFeatures
+	 *            The original feature array.
+	 */
 	public void setOldFeatures(Feature[] oldFeatures) {
 		this.oldFeatures = oldFeatures;
 	}
 
+	/**
+	 * Return the list of features with the new values. Can be empty or null when features are to be deleted.
+	 */
 	public Feature[] getNewFeatures() {
 		return newFeatures;
 	}
 
+	/**
+	 * Set the list of features with the new values. When deleting existing features, this array should be null.
+	 * 
+	 * @param newFeatures
+	 */
 	public void setNewFeatures(Feature[] newFeatures) {
 		this.newFeatures = newFeatures;
 	}

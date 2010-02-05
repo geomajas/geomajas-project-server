@@ -25,8 +25,9 @@ package org.geomajas.layer.feature;
 import java.io.Serializable;
 
 /**
- * A single criterion DTO that can be used to set up filters and search for features.
- *
+ * A single criterion DTO that can be used to set up filters and search for features by their alpha numerical
+ * attributes.
+ * 
  * @author Pieter De Graef
  */
 public class SearchCriterion implements Serializable {
@@ -39,39 +40,75 @@ public class SearchCriterion implements Serializable {
 
 	private String value;
 
+	// -------------------------------------------------------------------------
 	// Constructors:
+	// -------------------------------------------------------------------------
 
+	/**
+	 * Default constructor - does nothing.
+	 */
 	public SearchCriterion() {
 	}
 
-	// Class specific functions:
+	// -------------------------------------------------------------------------
+	// Public methods:
+	// -------------------------------------------------------------------------
 
 	public String toString() {
 		return "(" + attributeName + " " + operator + " " + value + ")";
 	}
 
+	// -------------------------------------------------------------------------
 	// Getters and setters:
+	// -------------------------------------------------------------------------
 
+	/**
+	 * Return the operator used in the criterion such as '=', '>', ...
+	 */
 	public String getOperator() {
 		return operator;
 	}
 
+	/**
+	 * Set the operator used in the criterion such as '=', '>', ...
+	 * 
+	 * @param operator
+	 *            The criterion operator.
+	 */
 	public void setOperator(String operator) {
 		this.operator = operator;
 	}
 
+	/**
+	 * Get the name of the alpha numerical attribute on which this criterion operates. This attribute name is one of the
+	 * attributes from the vector layer configuration.
+	 */
 	public String getAttributeName() {
 		return attributeName;
 	}
 
+	/**
+	 * Set the name of the alpha numerical attribute on which this criterion operates. This attribute name is one of the
+	 * attributes from the vector layer configuration.
+	 * 
+	 * @param attributeName
+	 *            The name of the alpha numerical attribute.
+	 */
 	public void setAttributeName(String attributeName) {
 		this.attributeName = attributeName;
 	}
 
+	/** Get the value for this criterion as a formatted string. */
 	public String getValue() {
 		return value;
 	}
 
+	/**
+	 * Set the value for this criterion as a formatted string.
+	 * 
+	 * @param value
+	 *            The value for the attribute.
+	 */
 	public void setValue(String value) {
 		this.value = value;
 	}
