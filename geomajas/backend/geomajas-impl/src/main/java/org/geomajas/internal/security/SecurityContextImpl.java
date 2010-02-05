@@ -28,6 +28,7 @@ import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.security.Authentication;
 import org.geomajas.security.BaseAuthorization;
 import org.geomajas.security.SecurityContext;
+import org.opengis.filter.Filter;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -208,7 +209,7 @@ public class SecurityContextImpl implements SecurityContext {
 	public boolean isToolAuthorized(String toolId) {
 		for (Authentication authentication : authentications) {
 			for (BaseAuthorization authorization : authentication.getAuthorizations()) {
-				if ( (authorization.isToolAuthorized(toolId))) {
+				if (authorization.isToolAuthorized(toolId)) {
 					return true;
 				}
 			}
@@ -222,7 +223,7 @@ public class SecurityContextImpl implements SecurityContext {
 	public boolean isCommandAuthorized(String commandName) {
 		for (Authentication authentication : authentications) {
 			for (BaseAuthorization authorization : authentication.getAuthorizations()) {
-				if ( (authorization.isCommandAuthorized(commandName))) {
+				if (authorization.isCommandAuthorized(commandName)) {
 					return true;
 				}
 			}
@@ -230,10 +231,13 @@ public class SecurityContextImpl implements SecurityContext {
 		return false;
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public boolean isLayerVisible(String layerId) {
 		for (Authentication authentication : authentications) {
 			for (BaseAuthorization authorization : authentication.getAuthorizations()) {
-				if ( (authorization.isLayerVisible(layerId))) {
+				if (authorization.isLayerVisible(layerId)) {
 					return true;
 				}
 			}
@@ -241,10 +245,13 @@ public class SecurityContextImpl implements SecurityContext {
 		return false;
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public boolean isLayerUpdateAuthorized(String layerId) {
 		for (Authentication authentication : authentications) {
 			for (BaseAuthorization authorization : authentication.getAuthorizations()) {
-				if ( (authorization.isLayerUpdateAuthorized(layerId))) {
+				if (authorization.isLayerUpdateAuthorized(layerId)) {
 					return true;
 				}
 			}
@@ -252,10 +259,13 @@ public class SecurityContextImpl implements SecurityContext {
 		return false;
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public boolean isLayerCreateAuthorized(String layerId) {
 		for (Authentication authentication : authentications) {
 			for (BaseAuthorization authorization : authentication.getAuthorizations()) {
-				if ( (authorization.isLayerCreateAuthorized(layerId))) {
+				if (authorization.isLayerCreateAuthorized(layerId)) {
 					return true;
 				}
 			}
@@ -263,10 +273,13 @@ public class SecurityContextImpl implements SecurityContext {
 		return false;
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public boolean isLayerDeleteAuthorized(String layerId) {
 		for (Authentication authentication : authentications) {
 			for (BaseAuthorization authorization : authentication.getAuthorizations()) {
-				if ( (authorization.isLayerDeleteAuthorized(layerId))) {
+				if (authorization.isLayerDeleteAuthorized(layerId)) {
 					return true;
 				}
 			}
@@ -274,67 +287,122 @@ public class SecurityContextImpl implements SecurityContext {
 		return false;
 	}
 
+	/**
+	 * @inheritDoc
+	 */
+	public Filter getFeatureFilter(String layerId) {
+		Filter filter = null;
+		for (Authentication authentication : authentications) {
+			for (BaseAuthorization authorization : authentication.getAuthorizations()) {
+				if (authorization.isLayerDeleteAuthorized(layerId)) {
+					return null;
+				}
+			}
+		}
+		return null;  //To change body of implemented methods use File | Settings | File Templates.
+	}
+
+	/**
+	 * @inheritDoc
+	 */
 	public boolean isAttributeReadable(String layerId, InternalFeature feature, String attributeName) {
 		return false;  //To change body of implemented methods use File | Settings | File Templates.
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public boolean isFeatureVisible(String layerId, InternalFeature feature) {
 		return false;  //To change body of implemented methods use File | Settings | File Templates.
 	}
 
-
+	/**
+	 * @inheritDoc
+	 */
 	public Geometry getVisibleArea(String layerId, CoordinateReferenceSystem crs) {
 		return null;  //To change body of implemented methods use File | Settings | File Templates.
 	}
 
-	public String getFeatureFilter(String layerId) {
-		return null;  //To change body of implemented methods use File | Settings | File Templates.
-	}
-
+	/**
+	 * @inheritDoc
+	 */
 	public boolean isPartlyVisibleSufficient(String layerId) {
 		return false;  //To change body of implemented methods use File | Settings | File Templates.
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public boolean isFeatureUpdateAuthorized(String layerId, InternalFeature feature) {
 		return false;  //To change body of implemented methods use File | Settings | File Templates.
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public boolean isAttributeWritable(String layerId, InternalFeature feature, String attributeName) {
 		return false;  //To change body of implemented methods use File | Settings | File Templates.
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public Geometry getUpdateAuthorizedArea(String layerId, CoordinateReferenceSystem crs) {
 		return null;  //To change body of implemented methods use File | Settings | File Templates.
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public boolean isFeatureUpdateAuthorized(String layerId, InternalFeature orgFeature, InternalFeature newFeature) {
 		return false;  //To change body of implemented methods use File | Settings | File Templates.
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public boolean isPartlyUpdateAuthorizedSufficient(String layerId) {
 		return false;  //To change body of implemented methods use File | Settings | File Templates.
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public boolean isFeatureDeleteAuthorized(String layerId, InternalFeature feature) {
 		return false;  //To change body of implemented methods use File | Settings | File Templates.
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public boolean isFeatureCreateAuthorized(String layerId, InternalFeature feature) {
 		return false;  //To change body of implemented methods use File | Settings | File Templates.
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public Geometry getCreateAuthorizedArea(String layerId, CoordinateReferenceSystem crs) {
 		return null;  //To change body of implemented methods use File | Settings | File Templates.
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public boolean isPartlyCreateAuthorizedSufficient(String layerId) {
 		return false;  //To change body of implemented methods use File | Settings | File Templates.
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public Geometry getDeleteAuthorizedArea(String layerId, CoordinateReferenceSystem crs) {
 		return null;  //To change body of implemented methods use File | Settings | File Templates.
 	}
 
+	/**
+	 * @inheritDoc
+	 */
 	public boolean isPartlyDeleteAuthorizedSufficient(String layerId) {
 		return false;  //To change body of implemented methods use File | Settings | File Templates.
 	}

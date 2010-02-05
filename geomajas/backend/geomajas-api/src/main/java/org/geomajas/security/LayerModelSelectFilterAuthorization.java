@@ -23,6 +23,8 @@
 
 package org.geomajas.security;
 
+import org.opengis.filter.Filter;
+
 /**
  * Extra filter which should be applied by the layer model when selecting features.
  * <p/>
@@ -36,13 +38,11 @@ public interface LayerModelSelectFilterAuthorization extends BaseAuthorization {
 
 	/**
 	 * Get a filter which limits the visible data which can be used.
-	 * The filter is represented as a string. If the layer cannot handle the filter (when it is not null and not empty),
-	 * the layer should not include any features.
-	 *
+	 * <p/>
 	 * This allows for example filtering cities on number of inhabitants, features on their area etc.
 	 *
 	 * @param layerId layer id for which the filter applies
 	 * @return string representation of the filter
 	 */
-	String getFeatureFilter(String layerId);
+	Filter getFeatureFilter(String layerId);
 }
