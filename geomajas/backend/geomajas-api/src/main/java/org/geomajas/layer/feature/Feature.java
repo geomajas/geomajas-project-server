@@ -38,106 +38,145 @@ public class Feature implements Serializable {
 
 	private static final long serialVersionUID = 151L;
 
-	/**
-	 * The feature's unique identifier. It's format is as follows: "[layer ID].[local ID]".
-	 */
 	private String id;
 
-	/**
-	 * The full mapping of attributes.
-	 */
 	private Map<String, Attribute> attributes;
 
-	/**
-	 * The feature's geometry.
-	 */
 	private Geometry geometry;
 
-	/**
-	 * The label-string for this feature.
-	 */
 	private String label;
 
-	/**
-	 * Has this feature's geometry been clipped?
-	 */
 	private boolean clipped;
 
-	/**
-	 * Is it allowed for the user in question to edit this feature?
-	 */
 	private boolean updatable;
 
-	/**
-	 * Is it allowed for the user in question to delete this feature?
-	 */
 	private boolean deletable;
 
-	/**
-	 * The feature's style ID.
-	 */
 	private int styleId;
 
+	// -------------------------------------------------------------------------
 	// Constructors:
+	// -------------------------------------------------------------------------
 
+	/**
+	 * Default constructor - does nothing.
+	 */
 	public Feature() {
 	}
 
+	/**
+	 * Initialize a feature with it's identifier.
+	 * 
+	 * @param id
+	 *            The feature's unique identifier. It's format is as follows: "[layer ID].[local ID]".
+	 */
 	public Feature(String id) {
 		this.id = id;
 	}
 
+	// -------------------------------------------------------------------------
 	// Class specific functions:
+	// -------------------------------------------------------------------------
 
+	/** Transform this feature to an easily readable string (id + " - " + label). */
 	public String toString() {
 		return id + " - " + label;
 	}
 
+	// -------------------------------------------------------------------------
 	// Getters and setters:
+	// -------------------------------------------------------------------------
 
+	/**
+	 * Get the feature's unique identifier. It's format is as follows: "[layer ID].[local ID]".
+	 */
 	public String getId() {
 		return id;
 	}
 
+	/**
+	 * Set the feature's unique identifier. It's format is as follows: "[layer ID].[local ID]".
+	 */
 	public void setId(String id) {
 		this.id = id;
 	}
 
+	/**
+	 * Get the full mapping of attributes for this feature. The attribute names are those from the vector layer
+	 * configuration, and the {@link Attribute} objects contain the actual values for this feature.
+	 */
 	public Map<String, Attribute> getAttributes() {
 		return attributes;
 	}
 
+	/**
+	 * Set the full mapping of attributes for this feature. The attribute names are those from the vector layer
+	 * configuration, and the {@link Attribute} objects contain the actual values for this feature.
+	 * 
+	 * @param attributes
+	 *            The name-value mapping of attributes for this feature.
+	 */
 	public void setAttributes(Map<String, Attribute> attributes) {
 		this.attributes = attributes;
 	}
 
+	/**
+	 * Get this feature's geometric attribute. It is always considered separately from the alphanumerical mapping of
+	 * attributes.
+	 */
 	public Geometry getGeometry() {
 		return geometry;
 	}
 
+	/**
+	 * Set this feature's geometric attribute. It is always considered separately from the alphanumerical mapping of
+	 * attributes.
+	 * 
+	 * @param geometry
+	 *            The geometric object.
+	 */
 	public void setGeometry(Geometry geometry) {
 		this.geometry = geometry;
 	}
 
+	/**
+	 * Get the label-string for this feature.
+	 */
 	public String getLabel() {
 		return label;
 	}
 
+	/**
+	 * Set a new label-string for this feature.
+	 * 
+	 * @param label
+	 *            The new label value.
+	 */
 	public void setLabel(String label) {
 		this.label = label;
 	}
 
+	/**
+	 * Has this feature's geometry been clipped? If so, it was probably because it was too large for the client to
+	 * handle. In that case the client must make sure that it is never persisted again to the layer.
+	 */
 	public boolean isClipped() {
 		return clipped;
 	}
 
+	/**
+	 * Set whether or not the feature's geometry has been clipped.
+	 * 
+	 * @param clipped
+	 *            Is the geometry clipped?
+	 */
 	public void setClipped(boolean clipped) {
 		this.clipped = clipped;
 	}
 
 	/**
 	 * Is the logged in user allowed to edit this feature?
-	 *
+	 * 
 	 * @return true when edit/update is allowed for this feature
 	 */
 	public boolean isUpdatable() {
@@ -146,8 +185,9 @@ public class Feature implements Serializable {
 
 	/**
 	 * Set whether the logged in user is allowed to edit/update this feature.
-	 *
-	 * @param editable true when edit/update is allowed for this feature
+	 * 
+	 * @param editable
+	 *            true when edit/update is allowed for this feature
 	 */
 	public void setUpdatable(boolean editable) {
 		this.updatable = editable;
@@ -155,7 +195,7 @@ public class Feature implements Serializable {
 
 	/**
 	 * Is the logged in user allowed to delete this feature?
-	 *
+	 * 
 	 * @return true when delete is allowed for this feature
 	 */
 	public boolean isDeletable() {
@@ -164,17 +204,31 @@ public class Feature implements Serializable {
 
 	/**
 	 * Set whether the logged in user is allowed to delete this feature.
-	 *
-	 * @param deletable true when deleting this feature is allowed
+	 * 
+	 * @param deletable
+	 *            true when deleting this feature is allowed
 	 */
 	public void setDeletable(boolean deletable) {
 		this.deletable = deletable;
 	}
 
+	/**
+	 * Get the identifier for the styling that applies on this feature. Depending on the vector layer styling
+	 * configuration, only 1 style can be valid for a feature. In the tile's it is that style that is used to render the
+	 * feature. This can be handy for some client side rendering of this feature.
+	 */
 	public int getStyleId() {
 		return styleId;
 	}
 
+	/**
+	 * Set the identifier for the styling that applies on this feature. Depending on the vector layer styling
+	 * configuration, only 1 style can be valid for a feature. In the tile's it is that style that is used to render the
+	 * feature. This can be handy for some client side rendering of this feature.
+	 * 
+	 * @param styleId
+	 *            The style configuration identifier from the vector layer's styling configuration.
+	 */
 	public void setStyleId(int styleId) {
 		this.styleId = styleId;
 	}

@@ -58,7 +58,7 @@ public interface Attribute extends Serializable {
 	 */
 	boolean isEditable();
 
-	/** set wether the feature is editable or not.
+	/** set whether the feature is editable or not.
 	 * <p/>
 	 * The value can only be true when the layer/feature model has the capability to edit the attribute and the logged
 	 * in user is authorized.
