@@ -31,7 +31,8 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @param <T>
  *            type of layer configuration info
  * 
- * @author check subversion
+ * @author Joachim Van der Auwera
+ * @author Jan De Moerloose
  */
 public interface Layer<T extends LayerInfo> {
 

@@ -28,7 +28,7 @@ import java.lang.annotation.RetentionPolicy;
 /**
  * Indicates that the property should be serialized by JSON.
  *
- * @author check subversion
+ * @author Jan De Moerloose
  */
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Json {

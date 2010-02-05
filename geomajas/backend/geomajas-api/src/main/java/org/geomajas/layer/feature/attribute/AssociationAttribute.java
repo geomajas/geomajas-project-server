@@ -28,7 +28,7 @@ import org.geomajas.layer.feature.Attribute;
 /**
  * Association attribute.
  *
- * @author check subversion
+ * @author Jan De Moerloose
  */
 public abstract class AssociationAttribute implements Attribute {
 
