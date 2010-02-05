@@ -28,8 +28,8 @@ import java.util.List;
 
 import org.geomajas.command.CommandResponse;
 import org.geomajas.configuration.StyleInfo;
-import org.geomajas.extension.command.dto.GetRenderedTileRequest;
-import org.geomajas.extension.command.dto.GetRenderedTileResponse;
+import org.geomajas.command.dto.GetRenderedTileRequest;
+import org.geomajas.command.dto.GetRenderedTileResponse;
 import org.geomajas.gwt.client.command.CommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;

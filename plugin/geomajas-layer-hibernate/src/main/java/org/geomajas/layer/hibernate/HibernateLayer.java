@@ -147,19 +147,22 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer {
 			Session session = getSessionFactory().getCurrentSession();
 			Criteria criteria = session.createCriteria(getFeatureInfo().getDataSourceName());
 			if (filter != null) {
-				CriteriaVisitor visitor = new CriteriaVisitor((HibernateFeatureModel) getFeatureModel(), dateFormat);
-				Criterion c = (Criterion) filter.accept(visitor, criteria);
-				if (c != null) {
-					criteria.add(c);
+				if (filter != Filter.INCLUDE) {
+					CriteriaVisitor visitor = 
+						new CriteriaVisitor((HibernateFeatureModel) getFeatureModel(), dateFormat);
+					Criterion c = (Criterion) filter.accept(visitor, criteria);
+					if (c != null) {
+						criteria.add(c);
+					}
 				}
 			}
 
 			// Sorting of elements.
 			if (getFeatureInfo().getSortAttributeName() != null) {
 				if (SortType.ASC.equals(getFeatureInfo().getSortType())) {
-					criteria.addOrder(Order.desc(getFeatureInfo().getSortAttributeName()));
-				} else {
 					criteria.addOrder(Order.asc(getFeatureInfo().getSortAttributeName()));
+				} else {
+					criteria.addOrder(Order.desc(getFeatureInfo().getSortAttributeName()));
 				}
 			}
 
@@ -290,10 +293,12 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer {
 
 	/**
 	 * Bounds are calculated locally, can use any filter, but slower than native.
+	 * 
 	 * @param filter
 	 *            filter which needs to be applied
 	 * @return the bounds of the specified features
-	 * @throws LayerException oops
+	 * @throws LayerException
+	 *             oops
 	 */
 	private Envelope getBoundsLocal(Filter filter) throws LayerException {
 		try {
@@ -337,8 +342,8 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer {
 
 	/**
 	 * The idea here is to replace association objects with their persistent counterparts. This has to happen just
-	 * before the saving to database. We have to keep the persistent objects inside the HibernateLayer package.
-	 * Never let them out, because that way we'll invite exceptions. @TODO This method is not recursive!
+	 * before the saving to database. We have to keep the persistent objects inside the HibernateLayer package. Never
+	 * let them out, because that way we'll invite exceptions. @TODO This method is not recursive!
 	 * 
 	 * @param feature
 	 *            feature to persist

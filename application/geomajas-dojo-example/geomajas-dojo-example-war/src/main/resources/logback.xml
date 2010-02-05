@@ -15,7 +15,7 @@
     <logger name="org.geomajas.extension.printing.component.ScaleBarComponent">
         <level value="DEBUG"/>
     </logger>
-    <logger name="org.geomajas.extension.command.render.GetRasterDataCommand">
+    <logger name="org.geomajas.command.render.GetRasterDataCommand">
         <level value="DEBUG"/>
     </logger>
 

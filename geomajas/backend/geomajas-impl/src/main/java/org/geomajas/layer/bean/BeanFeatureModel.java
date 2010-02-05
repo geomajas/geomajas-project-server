@@ -49,7 +49,6 @@ import org.springframework.stereotype.Component;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.PrecisionModel;
-import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKTReader;
 import com.vividsolutions.jts.io.WKTWriter;
 
@@ -130,8 +129,8 @@ public class BeanFeatureModel implements FeatureModel {
 		} else {
 			try {
 				return reader.read((String) geometry);
-			} catch (ParseException e) {
-				throw new LayerException(ExceptionCode.FEATURE_MODEL_PROBLEM, e);
+			} catch (Throwable t) {
+				throw new LayerException(ExceptionCode.FEATURE_MODEL_PROBLEM, t);
 			}
 		}
 	}

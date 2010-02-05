@@ -22,9 +22,11 @@
  */
 package org.geomajas.layer.hibernate;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import org.geomajas.layer.hibernate.pojo.HibernateTestFeature;
@@ -39,8 +41,6 @@ import org.junit.Test;
  */
 public class HibernateLayerTest extends AbstractHibernateLayerModelTest {
 
-	private String createdId;
-
 	@Test
 	public void testCreate() throws Exception {
 		Object created = null;
@@ -50,22 +50,21 @@ public class HibernateLayerTest extends AbstractHibernateLayerModelTest {
 		Assert.assertTrue(created instanceof HibernateTestFeature);
 		HibernateTestFeature createdFeature = (HibernateTestFeature) created;
 		Assert.assertNotNull(createdFeature.getId());
-		createdId = Long.toString(createdFeature.getId().longValue());
 	}
 
 	@Test
 	public void testRead() throws Exception {
-		testCreate();
-		Assert.assertNotNull(createdId);
-		Object feature = layer.read(createdId);
+		HibernateTestFeature f1 = (HibernateTestFeature)layer.create(HibernateTestFeature.getDefaultInstance1(null));
+		Assert.assertNotNull(f1.getId());
+		Object feature = layer.read(f1.getId().toString());
 		Assert.assertNotNull(feature);
 	}
 
 	@Test
 	public void testUpdate() throws Exception {
-		testCreate();
-		Assert.assertNotNull(createdId);
-		Object feature = layer.read(createdId);
+		HibernateTestFeature f1 = (HibernateTestFeature)layer.create(HibernateTestFeature.getDefaultInstance1(null));
+		Assert.assertNotNull(f1.getId());
+		Object feature = layer.read(f1.getId().toString());
 		Assert.assertNotNull("The requested feature could not be found!", feature);
 		// create a detached copy
 		HibernateTestFeature detached = HibernateTestFeature.getDefaultInstance1(null);
@@ -81,7 +80,7 @@ public class HibernateLayerTest extends AbstractHibernateLayerModelTest {
 		// save or update
 		layer.saveOrUpdate(detached);
 		// check it
-		feature = layer.read(createdId);
+		feature = layer.read(f1.getId().toString());
 		Assert.assertEquals("new name",layer.getFeatureModel().getAttribute(feature, "textAttr"));
 		Assert.assertEquals(5f,layer.getFeatureModel().getAttribute(feature, "floatAttr"));
 		Assert.assertEquals(c.getTime(),layer.getFeatureModel().getAttribute(feature, "dateAttr"));
@@ -113,10 +112,25 @@ public class HibernateLayerTest extends AbstractHibernateLayerModelTest {
 
 	@Test
 	public void testDelete() throws Exception {
-		testCreate();
-		Assert.assertNotNull(createdId);
-		Assert.assertNotNull(layer.read(createdId));
-		layer.delete(createdId);
-		Assert.assertNull(layer.read(createdId));
+		HibernateTestFeature f1 = (HibernateTestFeature)layer.create(HibernateTestFeature.getDefaultInstance1(null));
+		Assert.assertNotNull(f1.getId());
+		Assert.assertNotNull(layer.read(f1.getId().toString()));
+		layer.delete(f1.getId().toString());
+		Assert.assertNull(layer.read(f1.getId().toString()));
+	}
+	
+	@Test
+	public void testSort() throws Exception {
+		HibernateTestFeature f1 = (HibernateTestFeature)layer.create(HibernateTestFeature.getDefaultInstance1(null));
+		HibernateTestFeature f2 = (HibernateTestFeature)layer.create(HibernateTestFeature.getDefaultInstance2(null));
+		Iterator<?> iterator = layer.getElements(null);
+		List<Object> actual = new ArrayList<Object>();
+		while (iterator.hasNext()) {
+			actual.add(iterator.next());
+		}
+		List<Object> expected = new ArrayList<Object>();
+		expected.add(HibernateTestFeature.getDefaultInstance2(f2.getId()));
+		expected.add(HibernateTestFeature.getDefaultInstance1(f1.getId()));
+		Assert.assertEquals(expected, actual);
 	}
 }

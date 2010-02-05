@@ -28,8 +28,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.geomajas.command.CommandResponse;
-import org.geomajas.extension.command.dto.GetRasterDataRequest;
-import org.geomajas.extension.command.dto.GetRasterDataResponse;
+import org.geomajas.command.dto.GetRasterDataRequest;
+import org.geomajas.command.dto.GetRasterDataResponse;
 import org.geomajas.gwt.client.command.CommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;

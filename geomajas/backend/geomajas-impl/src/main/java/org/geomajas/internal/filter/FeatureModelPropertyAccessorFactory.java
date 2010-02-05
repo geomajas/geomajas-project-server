@@ -35,49 +35,31 @@ import java.util.regex.Pattern;
 
 /**
  * <p>
- * Implementation of the normal geotools PropertyAccessorFactory factory.
- * Geotools can only handle the retrieval of simple attributes, and is therefore
- * not strong enough for the possibilities that Hibernate Spatial gives us. That
- * is where this class comes in. It uses the FeatureModel's of the features to
- * retrieve the correct attributes. This way, we can search for complex
- * attributes in complex objects, still using the default geotools
- * Filter.evaluate(Object) function calls.
+ * Implementation of the normal geotools PropertyAccessorFactory factory. Geotools can only handle the retrieval of
+ * simple attributes, and is therefore not strong enough for the possibilities that Hibernate Spatial gives us. That is
+ * where this class comes in. It uses the FeatureModel's of the features to retrieve the correct attributes. This way,
+ * we can search for complex attributes in complex objects, still using the default geotools Filter.evaluate(Object)
+ * function calls.
  * </p>
- *
+ * 
  * @author Pieter De Graef
  */
 public class FeatureModelPropertyAccessorFactory implements PropertyAccessorFactory {
 
-	private static final PropertyAccessor ATTRIBUTE_ACCESS = new FeatureModelAttributeAccessor();
-
-	private static final PropertyAccessor GEOMETRY_ACCESS = new FeatureModelGeometryAccessor();
-
-	private static final PropertyAccessor FID_ACCESS = new FeatureModelFidAccessor();
-
-	private static final Pattern ID_PATTERN = Pattern.compile("@(\\w+:)?id");
+	private static final PropertyAccessor ACCESSOR = new FeatureModelPropertyAccessor();
 
 	public PropertyAccessor createPropertyAccessor(Class type, String xpath, Class target, Hints hints) {
-
-		if (xpath == null) {
-			return null;
-		}
-
-		if ("".equals(xpath)) {
-			return GEOMETRY_ACCESS;
-		}
-
-		// check for fid access
-		if (ID_PATTERN.matcher(xpath).matches()) {
-			return FID_ACCESS;
-		}
-
-		return ATTRIBUTE_ACCESS;
+		return ACCESSOR;
 	}
 
 	/**
-	 * ???
+	 * Property accessor for feature models
 	 */
-	static class FeatureModelAttributeAccessor implements PropertyAccessor {
+	static class FeatureModelPropertyAccessor implements PropertyAccessor {
+
+		private static Pattern ID_PATTERN = Pattern.compile("@(\\w+:)?id");
+
+		private static Pattern PROPERTY_PATTERN = Pattern.compile("(\\w+:)?(\\w+)");
 
 		public boolean canHandle(Object object, String xpath, Class target) {
 			FeatureModel fm = FeatureModelRegistry.getRegistry().lookup(object);
@@ -87,62 +69,24 @@ public class FeatureModelPropertyAccessorFactory implements PropertyAccessorFact
 		public Object get(Object object, String xpath, Class target) throws IllegalArgumentException {
 			FeatureModel fm = FeatureModelRegistry.getRegistry().lookup(object);
 			try {
-				return fm.getAttribute(object, xpath);
+				if (fm.getGeometryAttributeName().equals(xpath)) {
+					return fm.getGeometry(object);
+				} else if (ID_PATTERN.matcher(xpath).matches()) {
+					return fm.getId(object);
+				} else if (PROPERTY_PATTERN.matcher(xpath).matches()) {
+					return fm.getAttribute(object, xpath);
+				} else {
+					return null;
+				}
 			} catch (LayerException e) {
 				throw new IllegalArgumentException(e);
 			}
 		}
 
-		public void set(Object object, String xpath, Object value, Class target)
-				throws IllegalAttributeException, IllegalArgumentException {
+		public void set(Object object, String xpath, Object value, Class target) throws IllegalAttributeException,
+				IllegalArgumentException {
+			throw new IllegalAttributeException("feature is immutable, only use property access for filtering");
 		}
 	}
 
-	/**
-	 * ???
-	 */
-	static class FeatureModelGeometryAccessor implements PropertyAccessor {
-
-		public boolean canHandle(Object object, String xpath, Class target) {
-			FeatureModel fm = FeatureModelRegistry.getRegistry().lookup(object);
-			return (fm != null);
-		}
-
-		public Object get(Object object, String xpath, Class target) throws IllegalArgumentException {
-			FeatureModel fm = FeatureModelRegistry.getRegistry().lookup(object);
-			try {
-				return fm.getGeometry(object);
-			} catch (LayerException e) {
-				throw new IllegalArgumentException(e);
-			}
-		}
-
-		public void set(Object object, String xpath, Object value, Class target)
-				throws IllegalAttributeException, IllegalArgumentException {
-		}
-	}
-
-	/**
-	 * ???
-	 */
-	static class FeatureModelFidAccessor implements PropertyAccessor {
-
-		public boolean canHandle(Object object, String xpath, Class target) {
-			FeatureModel fm = FeatureModelRegistry.getRegistry().lookup(object);
-			return (fm != null);
-		}
-
-		public Object get(Object object, String xpath, Class target) throws IllegalArgumentException {
-			FeatureModel fm = FeatureModelRegistry.getRegistry().lookup(object);
-			try {
-				return fm.getId(object);
-			} catch (LayerException e) {
-				throw new IllegalArgumentException(e);
-			}
-		}
-
-		public void set(Object object, String xpath, Object value, Class target)
-				throws IllegalAttributeException, IllegalArgumentException {
-		}
-	}
 }

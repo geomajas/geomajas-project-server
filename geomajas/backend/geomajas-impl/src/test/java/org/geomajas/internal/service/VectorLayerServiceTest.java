@@ -23,7 +23,11 @@
 
 package org.geomajas.internal.service;
 
+import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.LineString;
+
 import junit.framework.Assert;
 import org.geomajas.layer.bean.BeanLayer;
 import org.geomajas.layer.bean.FeatureBean;
@@ -187,13 +191,26 @@ public class VectorLayerServiceTest {
 	}
 
 	@Test
-	public void testGetBoundsFiltered() throws Exception {
+	public void testGetBoundsFidFiltered() throws Exception {
 		Filter filter = filterService.createFidFilter(new String[]{"2", "3"});
 		Envelope bounds = layerService.getBounds(LAYER_ID, CRS.decode(beanLayer.getLayerInfo().getCrs()), filter);
 		Assert.assertEquals(2, bounds.getMinX(), ALLOWANCE);
 		Assert.assertEquals(0, bounds.getMinY(), ALLOWANCE);
 		Assert.assertEquals(7, bounds.getMaxX(), ALLOWANCE);
 		Assert.assertEquals(3, bounds.getMaxY(), ALLOWANCE);
+	}
+	
+	@Test
+	public void testGetBoundsIntersectsFiltered() throws Exception {
+		GeometryFactory factory = new GeometryFactory();
+		LineString equator = factory.createLineString(new Coordinate[] { new Coordinate(0, 0),
+				new Coordinate(-180, 180) });
+		Filter filter = filterService.createIntersectsFilter(equator,beanLayer.getLayerInfo().getFeatureInfo().getGeometryType().getName());
+		Envelope bounds = layerService.getBounds(LAYER_ID, CRS.decode(beanLayer.getLayerInfo().getCrs()), filter);
+		Assert.assertEquals(0, bounds.getMinX(), ALLOWANCE);
+		Assert.assertEquals(0, bounds.getMinY(), ALLOWANCE);
+		Assert.assertEquals(1, bounds.getMaxX(), ALLOWANCE);
+		Assert.assertEquals(1, bounds.getMaxY(), ALLOWANCE);
 	}
 
 	// @todo should also test the getObjects() method.

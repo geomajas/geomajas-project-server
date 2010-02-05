@@ -25,11 +25,14 @@ package org.geomajas.layer.bean;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.geomajas.configuration.FeatureInfo;
+import org.geomajas.configuration.SortType;
 import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.layer.LayerException;
@@ -42,6 +45,8 @@ import org.opengis.filter.Filter;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vividsolutions.jts.geom.Envelope;
@@ -53,6 +58,8 @@ import com.vividsolutions.jts.geom.Geometry;
  * @author Jan De Moerloose
  */
 public class BeanLayer implements VectorLayer {
+
+	private final Logger log = LoggerFactory.getLogger(BeanLayer.class);
 
 	private Map<String, Object> featuresById = new HashMap<String, Object>();
 
@@ -72,6 +79,8 @@ public class BeanLayer implements VectorLayer {
 	private GeoService geoService;
 
 	private CoordinateReferenceSystem crs;
+
+	protected Comparator<Object> comparator;
 
 	public CoordinateReferenceSystem getCrs() {
 		return crs;
@@ -108,6 +117,10 @@ public class BeanLayer implements VectorLayer {
 				filteredList.add(feature);
 			}
 		}
+		// Sorting of elements.
+		if (comparator != null) {
+			Collections.sort(filteredList, comparator);
+		}
 		return filteredList.iterator();
 	}
 
@@ -140,6 +153,7 @@ public class BeanLayer implements VectorLayer {
 		this.layerInfo = layerInfo;
 		initCrs();
 		initFeatureModel();
+		initComparator();
 	}
 
 	public VectorLayerInfo getLayerInfo() {
@@ -194,11 +208,56 @@ public class BeanLayer implements VectorLayer {
 		}
 	}
 
+	protected FeatureInfo getFeatureInfo() {
+		return layerInfo.getFeatureInfo();
+	}
+
 	protected void initFeatureModel() throws LayerException {
 		featureModel = new BeanFeatureModel(layerInfo, geoService.getSridFromCrs(layerInfo.getCrs()));
 		filterService.registerFeatureModel(featureModel);
 		for (Object f : features) {
 			featuresById.put(featureModel.getId(f), f);
 		}
+	}
+
+	protected void initComparator() throws LayerException {
+		comparator = new FeatureComparator(getFeatureInfo().getSortAttributeName(), getFeatureInfo().getSortType());
+	}
+
+	/**
+	 * Compares features by a single attribute.
+	 * 
+	 * @author Jan De Moerloose
+	 * 
+	 */
+	class FeatureComparator implements Comparator<Object> {
+
+		private String attributeName;
+
+		private SortType type;
+
+		public FeatureComparator(String attributeName, SortType type) {
+			this.attributeName = attributeName;
+			this.type = type;
+		}
+
+		public int compare(Object f1, Object f2) {
+			try {
+				Comparable attr1 = (Comparable) getFeatureModel().getAttribute(f1, attributeName);
+				Comparable attr2 = (Comparable) getFeatureModel().getAttribute(f2, attributeName);
+				switch (type) {
+					case ASC:
+						return attr1.compareTo(attr2);
+					case DESC:
+						return attr2.compareTo(attr1);
+				}
+			} catch (Throwable t) {
+				// can't throw !
+				log.warn("Can't compare " + getFeatureInfo().getDataSourceName() + " features for attribute "
+						+ attributeName);
+			}
+			return 0;
+		}
+
 	}
 }

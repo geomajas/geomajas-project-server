@@ -24,8 +24,8 @@
 package org.geomajas.gwt.client.map.workflow.activity;
 
 import org.geomajas.command.CommandResponse;
-import org.geomajas.extension.command.dto.PersistTransactionRequest;
-import org.geomajas.extension.command.dto.PersistTransactionResponse;
+import org.geomajas.command.dto.PersistTransactionRequest;
+import org.geomajas.command.dto.PersistTransactionResponse;
 import org.geomajas.gwt.client.command.CommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;

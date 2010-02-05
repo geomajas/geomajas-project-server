@@ -16,11 +16,12 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.hibernate.annotations.Type;
 
 import com.vividsolutions.jts.geom.Geometry;
-
 
 @Entity
 @Table(name = "pojo")
@@ -48,16 +49,17 @@ public class HibernateTestFeature {
 
 	@Column(name = "dateAttr")
 	private Date dateAttr;
-	
-	@ManyToOne( cascade = {CascadeType.ALL} )
+
+	@ManyToOne(cascade = { CascadeType.ALL })
 	private HibernateTestManyToOne manyToOne;
 
-	@OneToMany( cascade = {CascadeType.ALL}, mappedBy="feature" )
+	@OneToMany(cascade = { CascadeType.ALL }, mappedBy = "feature")
 	private Set<HibernateTestOneToMany> oneToMany = new HashSet<HibernateTestOneToMany>();
 
 	@Type(type = "org.hibernatespatial.GeometryUserType")
 	@Column(name = "the_geom")
 	private Geometry geometry;
+
 	// Constructors:
 
 	public HibernateTestFeature() {
@@ -227,18 +229,28 @@ public class HibernateTestFeature {
 	public void setOneToMany(Set<HibernateTestOneToMany> oneToMany) {
 		this.oneToMany = oneToMany;
 	}
-	
-	public void addOneToMany(HibernateTestOneToMany oneToMany){
+
+	public void addOneToMany(HibernateTestOneToMany oneToMany) {
 		this.oneToMany.add(oneToMany);
 		oneToMany.setFeature(this);
 	}
-	
+
 	public Geometry getGeometry() {
 		return geometry;
 	}
-	
+
 	public void setGeometry(Geometry geometry) {
 		this.geometry = geometry;
 	}
-		
+
+	@Override
+	public boolean equals(Object other) {
+		return EqualsBuilder.reflectionEquals(this, other);
+	}
+
+	@Override
+	public int hashCode() {
+		return HashCodeBuilder.reflectionHashCode(this);
+	}
+
 }

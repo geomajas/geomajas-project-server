@@ -264,20 +264,16 @@ public class HibernateFilterAttributeTest extends AbstractHibernateLayerModelTes
 
 	@Test
 	public void fidFilter() throws Exception {
-		String id = "45";
-		Iterator<?> it = layer.getElements(null);
-		if (it.hasNext()) {
-			HibernateTestFeature f = (HibernateTestFeature) it.next();
-			id = f.getId() + "";
-		}
-
-		Filter filter = filterCreator.createFidFilter(new String[] {id});
-		it = layer.getElements(filter);
-		Assert.assertTrue("FidFilter should return an iterator with 1 feature.", it.hasNext());
-		if (it.hasNext()) {
-			HibernateTestFeature f = (HibernateTestFeature) it.next();
-			Assert.assertEquals("default-name-1", f.getTextAttr());
-		}
+		Iterator<?> it = layer.getElements(filterCreator.createTrueFilter());
+		// iterate and check if they can be fetched with the fid filter
+		while (it.hasNext()) {
+			HibernateTestFeature expected = (HibernateTestFeature)it.next();
+			Filter filter = filterCreator.createFidFilter(new String[] {layer.getFeatureModel().getId(expected)});
+			Iterator<?> it2 = layer.getElements(filter);
+			Assert.assertTrue("FidFilter should return an iterator with 1 feature.", it2.hasNext());
+			HibernateTestFeature actual = (HibernateTestFeature) it2.next();
+			Assert.assertEquals(expected, actual);
+		}		
 	}
 
 	@Test

@@ -22,7 +22,6 @@
  */
 package org.geomajas.configuration;
 
-import org.geomajas.command.CommandInterceptor;
 import org.geomajas.layer.Layer;
 
 import java.io.Serializable;
@@ -39,7 +38,6 @@ public class ApplicationInfo implements Serializable {
 	private static final long serialVersionUID = 151L;
 	private String id;
 	private String name;
-	private transient List<CommandInterceptor> interceptors;
 	private transient List<Layer> layers;
 	private List<MapInfo> maps;
 	private int screenDpi = 96;
@@ -78,27 +76,6 @@ public class ApplicationInfo implements Serializable {
 	 */
 	public void setName(String value) {
 		this.name = value;
-	}
-
-	/**
-	 * Get the list of command interceptor for this application.
-	 *
-	 * @return list of {@link CommandInterceptor}
-	 */
-	public List<CommandInterceptor> getInterceptors() {
-		if (null == interceptors) {
-			interceptors = new ArrayList<CommandInterceptor>();
-		}
-		return interceptors;
-	}
-
-	/**
-	 * Set the list of command interceptors.
-	 *
-	 * @param value interceptors
-	 */
-	public void setInterceptors(List<CommandInterceptor> value) {
-		this.interceptors = value;
 	}
 
 	public List<Layer> getLayers() {

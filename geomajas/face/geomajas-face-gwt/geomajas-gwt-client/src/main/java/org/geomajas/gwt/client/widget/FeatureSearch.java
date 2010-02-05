@@ -27,8 +27,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.command.CommandResponse;
-import org.geomajas.extension.command.dto.SearchFeatureRequest;
-import org.geomajas.extension.command.dto.SearchFeatureResponse;
+import org.geomajas.command.dto.SearchFeatureRequest;
+import org.geomajas.command.dto.SearchFeatureResponse;
 import org.geomajas.gwt.client.command.CommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;

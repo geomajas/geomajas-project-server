@@ -28,8 +28,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.geomajas.command.CommandResponse;
-import org.geomajas.extension.command.dto.SearchByLocationRequest;
-import org.geomajas.extension.command.dto.SearchByLocationResponse;
+import org.geomajas.command.dto.SearchByLocationRequest;
+import org.geomajas.command.dto.SearchByLocationResponse;
 import org.geomajas.gwt.client.action.menu.DeselectAllAction;
 import org.geomajas.gwt.client.action.menu.ToggleSelectionAction;
 import org.geomajas.gwt.client.command.CommandCallback;
