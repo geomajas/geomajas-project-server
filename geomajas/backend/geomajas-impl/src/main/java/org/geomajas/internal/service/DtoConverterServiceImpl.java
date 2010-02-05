@@ -209,7 +209,7 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		}
 		InternalFeatureImpl vFeature = (InternalFeatureImpl) feature;
 		dto.setClipped(vFeature.isClipped());
-		dto.setEditable(feature.isEditable());
+		dto.setUpdatable(feature.isEditable());
 		dto.setDeletable(feature.isDeletable());
 		return dto;
 	}
@@ -231,7 +231,7 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		feature.setLabel(dto.getLabel());
 		feature.setGeometry(toInternal(dto.getGeometry()));
 		feature.setClipped(dto.isClipped());
-		feature.setEditable(dto.isEditable());
+		feature.setEditable(dto.isUpdatable());
 		feature.setDeletable(dto.isDeletable());
 		return feature;
 	}

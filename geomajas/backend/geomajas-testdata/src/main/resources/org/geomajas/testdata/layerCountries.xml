@@ -68,13 +68,6 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 				</property>
 			</bean>
 		</property>
-		<property name="editPermissions">
-			<bean class="org.geomajas.configuration.EditPermissionType">
-				<property name="creatingAllowed" value="false"/>
-				<property name="updatingAllowed" value="true"/>
-				<property name="deletingAllowed" value="false"/>
-			</bean>
-		</property>
 		<property name="featureInfo" ref="countriesFeatureInfo"/>
 		<property name="styleDefinitions">
 			<list>

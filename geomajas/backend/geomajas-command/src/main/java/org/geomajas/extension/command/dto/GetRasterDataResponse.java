@@ -71,7 +71,7 @@ public class GetRasterDataResponse extends CommandResponse {
 	}
 
 	/**
-	 * Set node id, which is (layer id) + "." + level
+	 * Set node id, which is (layer id) + "." + level.
 	 *
 	 * @param nodeId node id
 	 */

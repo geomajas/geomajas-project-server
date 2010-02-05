@@ -39,14 +39,18 @@ public class VectorLayerInfo extends LayerInfo implements Serializable, Cloneabl
 
 	private String filter;
 
-	// @todo should be removed, should be handled either through testing of capabilities (interfaces?) or policies
-	private EditPermissionType editPermissions;
-
 	private FeatureInfo featureInfo;
 
 	private List<SnappingRuleInfo> snappingRules;
 
 	private List<StyleInfo> styleDefinitions;
+
+	private boolean creatable;
+
+	private boolean updatable;
+
+	private boolean deletable;
+
 
 	public LabelAttributeInfo getLabelAttribute() {
 		return labelAttribute;
@@ -62,14 +66,6 @@ public class VectorLayerInfo extends LayerInfo implements Serializable, Cloneabl
 
 	public void setFilter(String filter) {
 		this.filter = filter;
-	}
-
-	public EditPermissionType getEditPermissions() {
-		return editPermissions;
-	}
-
-	public void setEditPermissions(EditPermissionType editPermissions) {
-		this.editPermissions = editPermissions;
 	}
 
 	public FeatureInfo getFeatureInfo() {
@@ -102,6 +98,66 @@ public class VectorLayerInfo extends LayerInfo implements Serializable, Cloneabl
 		this.styleDefinitions = styleDefinitions;
 	}
 
+	/**
+	 * Is the logged in user allowed to create new features?
+	 *
+	 * @return true when creating new features is allowed
+	 */
+	public boolean isCreatable() {
+		return creatable;
+	}
+
+	/**
+	 * Set whether the logged in user is allowed to create new features.
+	 * <p/>
+	 * This should not be set in configuration, it is set in the GetConfigurationCommand based on security settings.
+	 *
+	 * @param creatable true when creating new features is allowed
+	 */
+	public void setCreatable(boolean creatable) {
+		this.creatable = creatable;
+	}
+
+	/**
+	 * Is the logged in user allowed to edit some features?
+	 *
+	 * @return true when update is allowed for some features
+	 */
+	public boolean isUpdatable() {
+		return updatable;
+	}
+
+	/**
+	 * Set whether the logged in user is allowed to edit/update some features.
+	 * <p/>
+	 * This should not be set in configuration, it is set in the GetConfigurationCommand based on security settings.
+	 *
+	 * @param editable true when edit/update is allowed for some features
+	 */
+	public void setUpdatable(boolean editable) {
+		this.updatable = editable;
+	}
+
+	/**
+	 * Is the logged in user allowed to delete (some) features?
+	 *
+	 * @return true when delete is allowed
+	 */
+	public boolean isDeletable() {
+		return deletable;
+	}
+
+	/**
+	 * Set whether the logged in user is allowed to delete (some) features.
+	 * <p/>
+	 * This should not be set in configuration, it is set in the GetConfigurationCommand based on security settings.
+	 *
+	 * @param deletable true when deleting is allowed
+	 */
+	public void setDeletable(boolean deletable) {
+		this.deletable = deletable;
+	}
+
 	public VectorLayerInfo clone() {
 		/*
 		 * this is what the method should look like, but GWT cannot handle this (grmbl) return (VectorLayerInfo)
@@ -110,7 +166,9 @@ public class VectorLayerInfo extends LayerInfo implements Serializable, Cloneabl
 		VectorLayerInfo res = (VectorLayerInfo) super.clone(new VectorLayerInfo());
 		res.setLabelAttribute(labelAttribute);
 		res.setFilter(filter);
-		res.setEditPermissions(editPermissions);
+		res.setCreatable(isCreatable());
+		res.setUpdatable(isUpdatable());
+		res.setDeletable(isDeletable());
 		res.setFeatureInfo(featureInfo);
 		res.setSnappingRules(snappingRules);
 		res.setStyleDefinitions(styleDefinitions);

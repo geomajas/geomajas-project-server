@@ -257,7 +257,9 @@ dojo.declare("ConfigManager", null, {
 
 		// EditPermissions:
 		var permissions = new EditPermissions();
-		permissions.fromJSON(lc.editPermissions);
+		permissions.setCreatingAllowed = lc.creatable;
+		permissions.setUpdatingAllowed = lc.updatable;
+		permissions.setDeletingAllowed = lc.deletable;
 		layer.setEditPermissions(permissions);
 
 		// Filters:

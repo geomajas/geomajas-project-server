@@ -55,7 +55,7 @@ public class FeatureConverterTest {
 		feature.setId("id");
 		feature.setLabel("label");
 		feature.setDeletable(true);
-		feature.setEditable(true);
+		feature.setUpdatable(true);
 
 		InternalFeature internalFeature = converterService.toInternal(feature);
 		Assert.assertEquals("id", internalFeature.getId());
@@ -78,6 +78,6 @@ public class FeatureConverterTest {
 		Assert.assertEquals("id", feature.getId());
 		Assert.assertEquals("label", feature.getLabel());
 		Assert.assertTrue(feature.isDeletable());
-		Assert.assertTrue(feature.isEditable());
+		Assert.assertTrue(feature.isUpdatable());
 	}
 }

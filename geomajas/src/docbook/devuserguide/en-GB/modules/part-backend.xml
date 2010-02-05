@@ -485,19 +485,6 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         <emphasis>labelAttributeName</emphasis> refers to the name of an
         attribute as defined in the feature info.</para>
 
-        <programlisting>    &lt;property name="editPermissions"&gt;
-        &lt;bean class="org.geomajas.configuration.EditPermissionType"&gt;
-            &lt;property name="creatingAllowed" value="false"/&gt;
-            &lt;property name="updatingAllowed" value="true"/&gt;
-            &lt;property name="deletingAllowed" value="false"/&gt;
-        &lt;/bean&gt;
-    &lt;/property&gt;
-</programlisting>
-
-        <para>This defines the operations which are allowed on the layer
-        (which may be further limited by the security based on the logged in
-        user).</para>
-
         <programlisting>    &lt;property name="styleDefinitions"&gt;
         &lt;list&gt;
             &lt;bean class="org.geomajas.configuration.StyleInfo"&gt;

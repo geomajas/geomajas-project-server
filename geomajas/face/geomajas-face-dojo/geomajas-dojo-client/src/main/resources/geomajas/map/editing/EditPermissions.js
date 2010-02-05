@@ -25,8 +25,8 @@ dojo.provide("geomajas.map.editing.EditPermissions");
 dojo.declare ("EditPermissions", null, {
 
 	/**
-	 * @fileoverview Config object determinging CRUD permissions.
-	 * @class Config object determinging CRUD permissions.
+	 * @fileoverview Config object determining CRUD permissions.
+	 * @class Config object determining CRUD permissions.
 	 * @author Pieter De Graef
 	 *
 	 * @constructor

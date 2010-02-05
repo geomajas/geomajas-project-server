@@ -68,13 +68,6 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 				</property>
 			</bean>
 		</property>
-		<property name="editPermissions">
-			<bean class="org.geomajas.configuration.EditPermissionType">
-				<property name="creatingAllowed" value="true"/>
-				<property name="updatingAllowed" value="true"/>
-				<property name="deletingAllowed" value="true"/>
-			</bean>
-		</property>
 		<property name="featureInfo" ref="structuresFeatureInfo"/>
 		<property name="snappingRules">
 			<list>

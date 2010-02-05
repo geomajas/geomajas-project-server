@@ -66,7 +66,7 @@ public class Feature implements Serializable {
 	/**
 	 * Is it allowed for the user in question to edit this feature?
 	 */
-	private boolean editable;
+	private boolean updatable;
 
 	/**
 	 * Is it allowed for the user in question to delete this feature?
@@ -140,8 +140,8 @@ public class Feature implements Serializable {
 	 *
 	 * @return true when edit/update is allowed for this feature
 	 */
-	public boolean isEditable() {
-		return editable;
+	public boolean isUpdatable() {
+		return updatable;
 	}
 
 	/**
@@ -149,8 +149,8 @@ public class Feature implements Serializable {
 	 *
 	 * @param editable true when edit/update is allowed for this feature
 	 */
-	public void setEditable(boolean editable) {
-		this.editable = editable;
+	public void setUpdatable(boolean editable) {
+		this.updatable = editable;
 	}
 
 	/**
