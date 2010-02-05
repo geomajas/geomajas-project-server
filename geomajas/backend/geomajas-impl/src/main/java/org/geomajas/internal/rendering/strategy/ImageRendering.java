@@ -34,14 +34,13 @@ import org.geomajas.geometry.Coordinate;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.internal.layer.tile.InternalTileImpl;
-import org.geomajas.internal.layer.tile.InternalTileRenderingImpl;
-import org.geomajas.internal.rendering.painter.tile.RasterTilePainter;
+import org.geomajas.internal.rendering.painter.tile.UrlContentTilePainter;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.layer.tile.TileCode;
 import org.geomajas.layer.tile.TileMetadata;
-import org.geomajas.layer.tile.InternalTileRendering.TileRenderMethod;
+import org.geomajas.layer.tile.VectorTile.VectorTileContentType;
 import org.geomajas.rendering.RenderException;
 import org.geomajas.rendering.image.RasterUrlBuilder;
 import org.geomajas.rendering.painter.tile.TilePainter;
@@ -65,7 +64,7 @@ import org.springframework.stereotype.Component;
  * <p>
  * Internally this class contains a private class that implements the {@link RasterUrlBuilder} interface to create an
  * implementation that is able to create url's that refer to the {@link RetrieveImageServlet}. This class is added to
- * the {@link InternalTile} objects so that the {@link RasterTilePainter} can use it to actually paint the raster
+ * the {@link InternalTile} objects so that the {@link UrlContentTilePainter} can use it to actually paint the raster
  * tiles.
  * </p>
  * 
@@ -106,7 +105,7 @@ public class ImageRendering implements RenderingStrategy {
 			// Prepare the tile:
 			InternalTileImpl tile = new InternalTileImpl(metadata.getCode(), vLayer, metadata.getScale(),
 					converterService);
-			tile.setTileRendering(new InternalTileRenderingImpl(TileRenderMethod.STRING_RENDERING));
+			tile.setContentType(VectorTileContentType.URL_CONTENT);
 
 			// Prepare any filtering:
 			String geomName = vLayer.getLayerInfo().getFeatureInfo().getGeometryType().getName();
@@ -125,7 +124,7 @@ public class ImageRendering implements RenderingStrategy {
 			// At this point, we have a tile with rendered features.
 			// Now we need to paint the tile itself:
 			tile.setFeatures(features);
-			TilePainter tilePainter = new RasterTilePainter(new InternalUrlBuilder(metadata, application));
+			TilePainter tilePainter = new UrlContentTilePainter(new InternalUrlBuilder(metadata, application));
 			tilePainter.setPaintGeometries(metadata.isPaintGeometries());
 			tilePainter.setPaintLabels(metadata.isPaintLabels());
 			return tilePainter.paint(tile);

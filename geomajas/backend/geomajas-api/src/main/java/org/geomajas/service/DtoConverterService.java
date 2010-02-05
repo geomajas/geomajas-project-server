@@ -30,7 +30,7 @@ import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.Feature;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.layer.tile.InternalTile;
-import org.geomajas.layer.tile.Tile;
+import org.geomajas.layer.tile.VectorTile;
 
 import com.vividsolutions.jts.geom.Envelope;
 
@@ -123,7 +123,7 @@ public interface DtoConverterService {
 	 *            The server-side representation of a tile.
 	 * @return Returns the DTO version that can be sent to the client.
 	 */
-	Tile toDto(InternalTile tile);
+	VectorTile toDto(InternalTile tile);
 
 	// -------------------------------------------------------------------------
 	// Bounding box conversion:

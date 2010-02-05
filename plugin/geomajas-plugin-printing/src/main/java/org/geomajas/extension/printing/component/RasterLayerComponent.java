@@ -50,7 +50,7 @@ import org.geomajas.configuration.MapInfo;
 import org.geomajas.extension.printing.PdfContext;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.layer.RasterLayer;
-import org.geomajas.layer.tile.RasterImage;
+import org.geomajas.layer.tile.RasterTile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -88,7 +88,7 @@ public class RasterLayerComponent extends BaseLayerComponent {
 
 	/** List of the tile images */
 	@XmlTransient
-	protected List<RasterImage> images;
+	protected List<RasterTile> images;
 
 	/** The raster scale, may be different from map ppunit */
 	@XmlTransient
@@ -132,13 +132,13 @@ public class RasterLayerComponent extends BaseLayerComponent {
 				this.images = rasterlayer.paint(map.getCrs(), bbox, rasterScale);
 			} catch (Throwable e) {
 				log.error("could not paint raster layer " + rasterlayer.getLayerInfo().getId(), e);
-				this.images = new ArrayList<RasterImage>();
+				this.images = new ArrayList<RasterTile>();
 			}
 
 			Collection<Callable<ImageResult>> callables = new ArrayList<Callable<ImageResult>>(images.size());
 
 			// Build the image downloading threads
-			for (RasterImage image : images) {
+			for (RasterTile image : images) {
 				RasterImageDownloadCallable downloadThread = new RasterImageDownloadCallable(DOWNLOAD_MAX_ATTEMPTS,
 						image);
 				callables.add(downloadThread);
@@ -216,9 +216,9 @@ public class RasterLayerComponent extends BaseLayerComponent {
 
 		private Image image;
 
-		private RasterImage rasterImage;
+		private RasterTile rasterImage;
 
-		public ImageResult(RasterImage rasterImage) {
+		public ImageResult(RasterTile rasterImage) {
 			this.rasterImage = rasterImage;
 		}
 
@@ -230,7 +230,7 @@ public class RasterLayerComponent extends BaseLayerComponent {
 			this.image = image;
 		}
 
-		public RasterImage getRasterImage() {
+		public RasterTile getRasterImage() {
 			return rasterImage;
 		}
 	}
@@ -242,13 +242,13 @@ public class RasterLayerComponent extends BaseLayerComponent {
 
 		private static final long serialVersionUID = 151L;
 
-		private RasterImage rasterImage;
+		private RasterTile rasterImage;
 
-		public ImageException(RasterImage rasterImage) {
+		public ImageException(RasterTile rasterImage) {
 			this.rasterImage = rasterImage;
 		}
 
-		public RasterImage getRasterImage() {
+		public RasterTile getRasterImage() {
 			return rasterImage;
 		}
 	}
@@ -262,7 +262,7 @@ public class RasterLayerComponent extends BaseLayerComponent {
 
 		private int retries;
 
-		public RasterImageDownloadCallable(int retries, RasterImage rasterImage) {
+		public RasterImageDownloadCallable(int retries, RasterTile rasterImage) {
 			this.result = new ImageResult(rasterImage);
 			this.retries = retries;
 		}

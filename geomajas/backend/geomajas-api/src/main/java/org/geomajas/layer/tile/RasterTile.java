@@ -20,42 +20,134 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package org.geomajas.layer.tile;
 
+import org.geomajas.geometry.Bbox;
+
+import java.io.Serializable;
+
 /**
- * DTO version of a {@link RasterTile}. This object can be sent to the client.
- *
- * @author Pieter De Graef
+ * <p>
+ * A raster image represents all the meta-data needed to put an image on a screen. The bounds in the meta-data are
+ * expressed in application coordinates, the indices are expressed in view coordinates (this means that the y-axis is
+ * flipped)
+ * </p>
+ * 
+ * @author Jan De Moerloose
  */
-public class RasterTile extends Tile {
+public class RasterTile implements Serializable {
 
 	private static final long serialVersionUID = 151L;
 
-	private String featureImage;
+	private String id;
 
-	private String labelImage;
+	private TileCode code;
 
+	private String url;
+
+	private Bbox bounds;
+
+	// -------------------------------------------------------------------------
 	// Constructors:
+	// -------------------------------------------------------------------------
 
+	/**
+	 * Default constructor - does nothing.
+	 */
 	public RasterTile() {
 	}
 
+	/**
+	 * Constructor setting the tile's unique ID and bounds.
+	 * 
+	 * @param bounds
+	 *            Bounds for the image on the client side.
+	 * @param id
+	 *            Unique identifier for this tile (normally, id = <layer id>+"."+<tile level>+"."+<x-index>,<y-index>).
+	 */
+	public RasterTile(Bbox bounds, String id) {
+		this.bounds = bounds;
+		this.id = id;
+	}
+
+	// -------------------------------------------------------------------------
+	// Public methods:
+	// -------------------------------------------------------------------------
+
+	public String toString() {
+		if (code == null) {
+			return "[bounds=" + bounds + ",url=" + url + "]";
+		}
+		return "[z=" + code.getTileLevel() + ",x=" + code.getX() + ",y=" + code.getY() + ",bounds=" + bounds + ",url="
+				+ url + "]";
+	}
+
+	// -------------------------------------------------------------------------
 	// Getters and setters:
+	// -------------------------------------------------------------------------
 
-	public String getFeatureImage() {
-		return featureImage;
+	/**
+	 * Return the unique identifier for this tile (normally, id = <layer id>+"."+<tile level>+"."+<x-index>,<y-index>).
+	 */
+	public String getId() {
+		return id;
 	}
 
-	public void setFeatureImage(String featureImage) {
-		this.featureImage = featureImage;
+	/**
+	 * Set a new unique identifier for this tile.
+	 * 
+	 * @param id
+	 */
+	public void setId(String id) {
+		this.id = id;
 	}
 
-	public String getLabelImage() {
-		return labelImage;
+	/** Returns the unique code for this tile. Consider this it's unique identifier within a raster layer. */
+	public TileCode getCode() {
+		return code;
 	}
 
-	public void setLabelImage(String labelImage) {
-		this.labelImage = labelImage;
+	/**
+	 * Set the unique code for this tile. Consider this it's unique identifier within a raster layer.
+	 * 
+	 * @param code
+	 *            The tile's code.
+	 */
+	public void setCode(TileCode code) {
+		this.code = code;
+	}
+
+	/** Returns the bounds for the image on the client side. */
+	public Bbox getBounds() {
+		return bounds;
+	}
+
+	/**
+	 * Sets the bounds for the image on the client side.
+	 * 
+	 * @param bounds
+	 *            The image bounds.
+	 */
+	public void setBounds(Bbox bounds) {
+		this.bounds = bounds;
+	}
+
+	/**
+	 * Return the URL to the actual image for this raster tile. It is that image that will really display the rendered
+	 * tile.
+	 */
+	public String getUrl() {
+		return url;
+	}
+
+	/**
+	 * Set the URL to the actual image for this raster tile. It is that image that will really display the rendered
+	 * tile.
+	 * 
+	 * @param url
+	 *            The location of the actual image.
+	 */
+	public void setUrl(String url) {
+		this.url = url;
 	}
 }

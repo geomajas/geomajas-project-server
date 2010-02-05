@@ -23,8 +23,9 @@
 
 package org.geomajas.internal.rendering.painter.tile;
 
+import org.geomajas.internal.layer.tile.InternalTileImpl;
 import org.geomajas.layer.tile.InternalTile;
-import org.geomajas.layer.tile.InternalTileRendering.TileRenderMethod;
+import org.geomajas.layer.tile.VectorTile.VectorTileContentType;
 import org.geomajas.rendering.RenderException;
 import org.geomajas.rendering.image.RasterUrlBuilder;
 import org.geomajas.rendering.painter.tile.TilePainter;
@@ -39,7 +40,7 @@ import org.geomajas.rendering.painter.tile.TilePainter;
  * 
  * @author Pieter De Graef
  */
-public class RasterTilePainter implements TilePainter {
+public class UrlContentTilePainter implements TilePainter {
 
 	/**
 	 * Should this painter paint a feature's geometries or not?
@@ -63,7 +64,7 @@ public class RasterTilePainter implements TilePainter {
 	 * @param urlBuilder
 	 *            Creates URL's to where the actual rendering of tiles can be found.
 	 */
-	public RasterTilePainter(RasterUrlBuilder urlBuilder) {
+	public UrlContentTilePainter(RasterUrlBuilder urlBuilder) {
 		this.urlBuilder = urlBuilder;
 	}
 
@@ -79,17 +80,17 @@ public class RasterTilePainter implements TilePainter {
 	 * @return Returns a {@link InternalRasterTile}.
 	 */
 	public InternalTile paint(InternalTile tile) throws RenderException {
-		if (tile.getTileRendering().getTileRenderMethod().equals(TileRenderMethod.IMAGE_RENDERING)) {
-			if (urlBuilder != null) { // paint either geometries or labels.
+		if (tile.getContentType().equals(VectorTileContentType.URL_CONTENT)) {
+			if (urlBuilder != null) {
 				if (paintGeometries) {
 					urlBuilder.paintGeometries(paintGeometries);
 					urlBuilder.paintLabels(false);
-					tile.getTileRendering().setFeatureRendering(urlBuilder.getImageUrl());
+					((InternalTileImpl) tile).setFeatureContent(urlBuilder.getImageUrl());
 				}
 				if (paintLabels) {
 					urlBuilder.paintGeometries(false);
 					urlBuilder.paintLabels(paintLabels);
-					tile.getTileRendering().setLabelRendering(urlBuilder.getImageUrl());
+					((InternalTileImpl) tile).setLabelContent(urlBuilder.getImageUrl());
 				}
 				return tile;
 			}

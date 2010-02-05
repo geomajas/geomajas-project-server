@@ -25,7 +25,7 @@ package org.geomajas.layer;
 import java.util.List;
 
 import org.geomajas.configuration.RasterLayerInfo;
-import org.geomajas.layer.tile.RasterImage;
+import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.rendering.RenderException;
 
 import com.vividsolutions.jts.geom.Envelope;
@@ -46,5 +46,5 @@ public interface RasterLayer extends Layer<RasterLayerInfo> {
 	 * @return a list of raster images that covers the bounds
 	 * @throws RenderException oops
 	 */
-	List<RasterImage> paint(String boundsCrs, Envelope bounds, double scale) throws RenderException;
+	List<RasterTile> paint(String boundsCrs, Envelope bounds, double scale) throws RenderException;
 }

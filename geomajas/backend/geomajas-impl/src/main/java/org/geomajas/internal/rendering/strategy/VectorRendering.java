@@ -32,13 +32,12 @@ import org.geomajas.configuration.StyleInfo;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.internal.layer.tile.InternalTileImpl;
-import org.geomajas.internal.layer.tile.InternalTileRenderingImpl;
-import org.geomajas.internal.rendering.painter.tile.VectorTilePainter;
+import org.geomajas.internal.rendering.painter.tile.StringContentTilePainter;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.layer.tile.TileMetadata;
-import org.geomajas.layer.tile.InternalTileRendering.TileRenderMethod;
+import org.geomajas.layer.tile.VectorTile.VectorTileContentType;
 import org.geomajas.rendering.RenderException;
 import org.geomajas.rendering.painter.tile.TilePainter;
 import org.geomajas.rendering.strategy.RenderingStrategy;
@@ -98,8 +97,8 @@ public class VectorRendering implements RenderingStrategy {
 	private DtoConverterService converterService;
 
 	/**
-	 * Paint a tile! This class uses the {@link TiledFeatureService} to
-	 * paint the features, then the {@link VectorTilePainter} to paint the tiles.
+	 * Paint a tile! This class uses the {@link TiledFeatureService} to paint the features, then the
+	 * {@link StringContentTilePainter} to paint the tiles.
 	 * 
 	 * @param metadata
 	 *            The object that holds all the spatial and styling information for a tile.
@@ -119,7 +118,7 @@ public class VectorRendering implements RenderingStrategy {
 			// Prepare the tile:
 			InternalTileImpl tile = new InternalTileImpl(metadata.getCode(), vLayer, metadata.getScale(),
 					converterService);
-			tile.setTileRendering(new InternalTileRenderingImpl(TileRenderMethod.STRING_RENDERING));
+			tile.setContentType(VectorTileContentType.STRING_CONTENT);
 
 			// Prepare any filtering:
 			String geomName = vLayer.getLayerInfo().getFeatureInfo().getGeometryType().getName();
@@ -144,7 +143,7 @@ public class VectorRendering implements RenderingStrategy {
 
 			// At this point, we have a tile with rendered features.
 			// Now we need to paint the tile itself:
-			TilePainter tilePainter = new VectorTilePainter(vLayer, metadata.getRenderer(), metadata.getScale(),
+			TilePainter tilePainter = new StringContentTilePainter(vLayer, metadata.getRenderer(), metadata.getScale(),
 					panOrigin, geoService);
 			tilePainter.setPaintGeometries(metadata.isPaintGeometries());
 			tilePainter.setPaintLabels(metadata.isPaintLabels());

@@ -23,7 +23,7 @@
 package org.geomajas.extension.command.dto;
 
 import org.geomajas.command.CommandResponse;
-import org.geomajas.layer.tile.RasterImage;
+import org.geomajas.layer.tile.RasterTile;
 
 import java.util.List;
 
@@ -36,7 +36,7 @@ public class GetRasterDataResponse extends CommandResponse {
 
 	private static final long serialVersionUID = 151L;
 
-	private List<RasterImage> rasterData;
+	private List<RasterTile> rasterData;
 
 	private String nodeId;
 
@@ -48,7 +48,7 @@ public class GetRasterDataResponse extends CommandResponse {
 	 *
 	 * @return list of raster data
 	 */
-	public List<RasterImage> getRasterData() {
+	public List<RasterTile> getRasterData() {
 		return rasterData;
 	}
 
@@ -57,7 +57,7 @@ public class GetRasterDataResponse extends CommandResponse {
 	 *
 	 * @param rasterData new list with raster tiles
 	 */
-	public void setRasterData(List<RasterImage> rasterData) {
+	public void setRasterData(List<RasterTile> rasterData) {
 		this.rasterData = rasterData;
 	}
 

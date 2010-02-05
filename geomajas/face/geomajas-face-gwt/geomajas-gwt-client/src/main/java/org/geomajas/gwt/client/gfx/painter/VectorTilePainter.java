@@ -26,7 +26,6 @@ package org.geomajas.gwt.client.gfx.painter;
 import org.geomajas.gwt.client.gfx.GraphicsContext;
 import org.geomajas.gwt.client.gfx.Paintable;
 import org.geomajas.gwt.client.gfx.Painter;
-import org.geomajas.gwt.client.gfx.paintable.Image;
 import org.geomajas.gwt.client.gfx.style.PictureStyle;
 import org.geomajas.gwt.client.map.MapView;
 import org.geomajas.gwt.client.map.cache.tile.VectorTile;
@@ -59,26 +58,36 @@ public class VectorTilePainter implements Painter {
 		VectorTile tile = (VectorTile) paintable;
 		Matrix transformationMatrix = createTransformationMatrix(tile);
 
-		if (tile.getFeatureImage() != null) {
-			Image image = tile.getFeatureImage();
-			graphics.drawGroup(tile.getId(), DOM.NS_VML, transformationMatrix);
-			graphics.drawImage(tile.getId() + ".img", image.getHref(), image.getBounds(), (PictureStyle) image
-					.getStyle(), false);
-		} else if (tile.getFeatureFragment() != null) {
-			graphics.drawGroup(tile.getId(), DOM.NS_VML, (int) tile.getScreenWidth(), (int) tile.getScreenHeight(),
-					transformationMatrix);
-			graphics.drawData(tile.getId() + ".data", tile.getFeatureFragment());
-		}
+		// Paint the feature content:
+		if (tile.getFeatureContent() != null) {
+			switch (tile.getContentType()) {
+				case STRING_CONTENT:
+					graphics.drawGroup(tile.getId(), DOM.NS_VML, (int) tile.getScreenWidth(), (int) tile
+							.getScreenHeight(), transformationMatrix);
+					graphics.drawData(tile.getId() + ".data", tile.getFeatureContent());
+					break;
+				case URL_CONTENT:
+					graphics.drawGroup(tile.getId(), DOM.NS_VML, transformationMatrix);
+					graphics.drawImage(tile.getId() + ".img", tile.getFeatureContent(), new Bbox(0, 0, tile
+							.getScreenWidth(), tile.getScreenHeight()), new PictureStyle(1), false);
 
-		if (tile.getLabelImage() != null) {
-			Image im = tile.getLabelImage();
-			graphics.drawGroup(createLabelId(tile), DOM.NS_VML, transformationMatrix);
-			graphics.drawImage(createLabelId(tile) + ".img", im.getHref(), im.getBounds(),
-					(PictureStyle) im.getStyle(), false);
-		} else if (tile.getLabelFragment() != null) {
-			graphics.drawGroup(createLabelId(tile), DOM.NS_VML, (int) tile.getScreenWidth(), (int) tile
-					.getScreenHeight(), transformationMatrix);
-			graphics.drawData(createLabelId(tile) + ".data", tile.getLabelFragment());
+			}
+		}
+		
+		// Paint the label content:
+		if (tile.getLabelContent() != null) {
+			switch (tile.getContentType()) {
+				case STRING_CONTENT:
+					graphics.drawGroup(createLabelId(tile), DOM.NS_VML, (int) tile.getScreenWidth(), (int) tile
+							.getScreenHeight(), transformationMatrix);
+					graphics.drawData(createLabelId(tile) + ".data", tile.getLabelContent());
+					break;
+				case URL_CONTENT:
+					graphics.drawGroup(tile.getId(), DOM.NS_VML, transformationMatrix);
+					graphics.drawImage(tile.getId() + ".img", tile.getFeatureContent(), new Bbox(0, 0, tile
+							.getScreenWidth(), tile.getScreenHeight()), new PictureStyle(1), false);
+
+			}
 		}
 	}
 

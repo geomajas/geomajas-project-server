@@ -33,7 +33,8 @@ import org.geomajas.geometry.Bbox;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.RasterLayer;
-import org.geomajas.layer.tile.RasterImage;
+import org.geomajas.layer.tile.RasterTile;
+import org.geomajas.layer.tile.TileCode;
 import org.geomajas.rendering.RenderException;
 import org.geomajas.service.ApplicationService;
 import org.geomajas.service.DtoConverterService;
@@ -151,8 +152,8 @@ public class WmsLayer implements RasterLayer {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<RasterImage> paint(String boundsCrs, Envelope orgBounds, double scale) throws RenderException {
-		List<RasterImage> result = new ArrayList<RasterImage>();
+	public List<RasterTile> paint(String boundsCrs, Envelope orgBounds, double scale) throws RenderException {
+		List<RasterTile> result = new ArrayList<RasterTile>();
 		Envelope bounds = orgBounds;
 
 		// We don't necessarily need to split into same crs and different crs
@@ -181,12 +182,10 @@ public class WmsLayer implements RasterLayer {
 							- Math.round(scale * worldBox.getX()), Math.round(scale * worldBox.getMaxY())
 							- Math.round(scale * worldBox.getY()));
 
-					RasterImage image = new RasterImage(screenbox, getLayerInfo().getId() + "."
+					RasterTile image = new RasterTile(screenbox, getLayerInfo().getId() + "."
 							+ bestResolution.getLevel() + "." + i + "," + j);
 
-					image.setLevel(bestResolution.getLevel());
-					image.setXIndex(i);
-					image.setYIndex(j);
+					image.setCode(new TileCode(bestResolution.getLevel(), i, j));
 					resolveUrl(image, bestResolution.getTileWidthPx(), bestResolution.getTileHeightPx(), worldBox);
 					result.add(image);
 				}
@@ -229,12 +228,10 @@ public class WmsLayer implements RasterLayer {
 								- Math.round(scale * worldBox.getX()), Math.round(scale * worldBox.getMaxY())
 								- Math.round(scale * worldBox.getY()));
 
-						RasterImage image = new RasterImage(screenbox, getLayerInfo().getId() + "."
+						RasterTile image = new RasterTile(screenbox, getLayerInfo().getId() + "."
 								+ bestResolution.getLevel() + "." + i + "," + j);
 
-						image.setLevel(bestResolution.getLevel());
-						image.setXIndex(i);
-						image.setYIndex(j);
+						image.setCode(new TileCode(bestResolution.getLevel(), i, j));
 						resolveUrl(image, (int) screenbox.getWidth(), (int) screenbox.getHeight(), worldBox);
 						result.add(image);
 					}
@@ -252,7 +249,7 @@ public class WmsLayer implements RasterLayer {
 		return result;
 	}
 
-	protected void resolveUrl(RasterImage image, int width, int height, Bbox box) throws RenderException {
+	protected void resolveUrl(RasterTile image, int width, int height, Bbox box) throws RenderException {
 		String url = getBaseWmsUrl();
 		if (null == url) {
 			throw new RenderException(ExceptionCode.PARAMETER_MISSING, "baseWmsUrl");

@@ -30,7 +30,8 @@ import org.geomajas.geometry.Bbox;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.RasterLayer;
-import org.geomajas.layer.tile.RasterImage;
+import org.geomajas.layer.tile.RasterTile;
+import org.geomajas.layer.tile.TileCode;
 import org.geomajas.rendering.RenderException;
 import org.geomajas.service.ApplicationService;
 import org.geomajas.service.DtoConverterService;
@@ -124,7 +125,7 @@ public class OsmLayer implements RasterLayer {
 		this.calculatePredefinedResolutions();
 	}
 
-	public List<RasterImage> paint(String boundsCrs, Envelope bounds, double scale) throws RenderException {
+	public List<RasterTile> paint(String boundsCrs, Envelope bounds, double scale) throws RenderException {
 		try {
 			CoordinateReferenceSystem google = CRS.decode("EPSG:900913");
 			MathTransform googleToLayer = geoService.findMathTransform(google, CRS.decode(boundsCrs));
@@ -132,7 +133,7 @@ public class OsmLayer implements RasterLayer {
 			// TODO: if bounds width or height is 0, we run out of memory ?
 			bounds = clipBounds(bounds);
 			if (bounds.isNull()) {
-				return new ArrayList<RasterImage>();
+				return new ArrayList<RasterTile>();
 			}
 			// find the center of the map in map coordinates (positive
 			// y-axis)
@@ -203,21 +204,19 @@ public class OsmLayer implements RasterLayer {
 			Coordinate upperLeft = new Coordinate(xMin, yMax);
 
 			// calculate the images
-			List<RasterImage> result = new ArrayList<RasterImage>();
+			List<RasterTile> result = new ArrayList<RasterTile>();
 			int xScreenUpperLeft = (int) Math.round(upperLeft.x * scale);
 			int yScreenUpperLeft = (int) Math.round(upperLeft.y * scale);
 			int screenWidth = (int) Math.round(scale * width);
 			for (int i = iMin; i < iMax; i++) {
 				for (int j = jMin; j < jMax; j++) {
+					// Using screen coordinates:
 					int x = xScreenUpperLeft + (i - iMin) * screenWidth;
 					int y = yScreenUpperLeft - (j - jMin) * screenWidth;
-					// screen coordinates !!!!!
-					RasterImage image = new RasterImage(new Bbox(x, -y, screenWidth, screenWidth), getLayerInfo()
-							.getId()
+
+					RasterTile image = new RasterTile(new Bbox(x, -y, screenWidth, screenWidth), getLayerInfo().getId()
 							+ "." + tileLevel + "." + i + "," + j);
-					image.setLevel(tileLevel);
-					image.setXIndex(i);
-					image.setYIndex(j);
+					image.setCode(new TileCode(tileLevel, i, j));
 					image.setUrl("http://tile.openstreetmap.org/" + tileLevel + "/" + i + "/" + j + ".png");
 					log.debug("adding OSM image {}", image);
 					result.add(image);

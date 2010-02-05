@@ -36,7 +36,7 @@ import java.awt.Stroke;
  * <p>
  * Extension of the Style2D class from the GeoTools library specific for labels.
  * </p>
- *
+ * 
  * @author Pieter De Graef
  */
 public class LabelStyle extends Style2D {
@@ -78,21 +78,16 @@ public class LabelStyle extends Style2D {
 	// -------------------------------------------------------------------------
 
 	/**
-	 * Initialize the LabelStyle using style info objects from the layer's XML
-	 * label configuration.
-	 *
+	 * Initialize the LabelStyle using style info objects from the layer's XML label configuration.
+	 * 
 	 * @param fontInfo
 	 *            Determines the font's style.
 	 * @param backgroundInfo
 	 *            Determines the background style.
 	 */
 	public LabelStyle(StyleInfo fontInfo, StyleInfo backgroundInfo) {
-		float opacity = 1;
-
 		fontComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, fontInfo.getFillOpacity());
-
 		backgroundComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, backgroundInfo.getFillOpacity());
-
 		strokeComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, backgroundInfo.getStrokeOpacity());
 
 		if (fontInfo.getFillColor() != null) {

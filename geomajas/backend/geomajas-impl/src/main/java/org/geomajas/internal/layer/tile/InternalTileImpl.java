@@ -30,64 +30,46 @@ import org.geomajas.layer.Layer;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.layer.tile.InternalTile;
-import org.geomajas.layer.tile.InternalTileRendering;
 import org.geomajas.layer.tile.TileCode;
-
-import com.vividsolutions.jts.geom.Envelope;
+import org.geomajas.layer.tile.VectorTile.VectorTileContentType;
 import org.geomajas.service.DtoConverterService;
 
+import com.vividsolutions.jts.geom.Envelope;
+
 /**
- * RenderedTile implementation.
+ * Internal representation of a tile.
  * 
  * @author Pieter De Graef
  */
 public class InternalTileImpl implements InternalTile {
 
-	/**
-	 * features in the tile
-	 */
 	private List<InternalFeature> features = new ArrayList<InternalFeature>();
 
-	/**
-	 * tile codes of dependent tiles
-	 */
 	private List<TileCode> codes = new ArrayList<TileCode>();
 
-	/**
-	 * The tile's unique code.
-	 */
 	private TileCode code;
 
-	/**
-	 * tile width in world coordinates
-	 */
 	private double tileWidth;
 
-	/**
-	 * tile height in world coordinates
-	 */
 	private double tileHeight;
 
-	/**
-	 * tile width in screen pixels
-	 */
 	private int screenWidth;
 
-	/**
-	 * tile height in screen pixels
-	 */
 	private int screenHeight;
 
-	/**
-	 * clipped
-	 */
 	private boolean clipped;
 
-	private InternalTileRendering tileRendering;
+	private String featureContent;
+
+	private String labelContent;
+
+	private VectorTileContentType contentType;
 
 	private DtoConverterService converterService;
 
+	// -------------------------------------------------------------------------
 	// Constructors:
+	// -------------------------------------------------------------------------
 
 	public InternalTileImpl(TileCode code, VectorLayer layer, double scale, DtoConverterService converterService) {
 		super();
@@ -101,7 +83,9 @@ public class InternalTileImpl implements InternalTile {
 		this(new TileCode(tileLevel, x, y), layer, scale, converterService);
 	}
 
+	// -------------------------------------------------------------------------
 	// General functions:
+	// -------------------------------------------------------------------------
 
 	public void init(VectorLayer layer, double scale) {
 		Envelope max = converterService.toInternal(layer.getLayerInfo().getMaxExtent());
@@ -126,51 +110,8 @@ public class InternalTileImpl implements InternalTile {
 		return (code.getX() == -1 ? "super" : code.getTileLevel() + "-" + code.getX() + "-" + code.getY());
 	}
 
-	// Getters and setters:
-
-	public List<InternalFeature> getFeatures() {
-		Collections.sort(features);
-		return features;
-	}
-
-	public void setFeatures(List<InternalFeature> features) {
-		this.features = features;
-	}
-
 	public void addFeature(InternalFeature feature) {
 		features.add(feature);
-	}
-
-	public double getTileWidth() {
-		return tileWidth;
-	}
-
-	public void setTileWidth(double tileWidth) {
-		this.tileWidth = tileWidth;
-	}
-
-	public double getTileHeight() {
-		return tileHeight;
-	}
-
-	public void setTileHeight(double tileHeight) {
-		this.tileHeight = tileHeight;
-	}
-
-	public int getScreenWidth() {
-		return screenWidth;
-	}
-
-	public void setScreenWidth(int screenWidth) {
-		this.screenWidth = screenWidth;
-	}
-
-	public int getScreenHeight() {
-		return screenHeight;
-	}
-
-	public void setScreenHeight(int screenHeight) {
-		this.screenHeight = screenHeight;
 	}
 
 	public void addCode(int level, int x, int y) {
@@ -180,35 +121,199 @@ public class InternalTileImpl implements InternalTile {
 		}
 	}
 
+	// -------------------------------------------------------------------------
+	// Getters and setters:
+	// -------------------------------------------------------------------------
+
+	/** Returns the list of features that are stored in this tile. */
+	public List<InternalFeature> getFeatures() {
+		Collections.sort(features);
+		return features;
+	}
+
+	/**
+	 * Set the list of features that are stored in this tile.
+	 * 
+	 * @param features
+	 *            The full list of features stored and rendered in this tile.
+	 */
+	public void setFeatures(List<InternalFeature> features) {
+		this.features = features;
+	}
+
+	/**
+	 * Return the rendered content of a tile's features. Depending on the rendering method used, a different content
+	 * type will be stored. Basically, the returned string will contain a string rendering (SVG/VML) or a URL.
+	 */
+	public String getFeatureContent() {
+		return featureContent;
+	}
+
+	/**
+	 * Set the rendered content of a tile's features. Depending on the rendering method used, a different content type
+	 * will be stored. Basically, the returned string will contain a string rendering (SVG/VML) or a URL.
+	 * 
+	 * @param featureContent
+	 *            The new value for the actual rendered feature content of this tile.
+	 */
+	public void setFeatureContent(String featureContent) {
+		this.featureContent = featureContent;
+	}
+
+	/**
+	 * Return the rendered content of a tile's labels. Depending on the rendering method used, a different content type
+	 * will be stored. Basically, the returned string will contain a string rendering (SVG/VML) or a URL.
+	 */
+	public String getLabelContent() {
+		return labelContent;
+	}
+
+	/**
+	 * Set the rendered content of a tile's labels. Depending on the rendering method used, a different content type
+	 * will be stored. Basically, the returned string will contain a string rendering (SVG/VML) or a URL.
+	 * 
+	 * @param labelContent
+	 *            The new value for the actual rendered label content of this tile.
+	 */
+	public void setLabelContent(String labelContent) {
+		this.labelContent = labelContent;
+	}
+
+	/** Returns the type of content for the rendered features and labels that are stored within this tile. */
+	public VectorTileContentType getContentType() {
+		return contentType;
+	}
+
+	/**
+	 * Determine the type of content for the rendered features and labels that are stored within this tile.
+	 * 
+	 * @param contentType
+	 *            The value for the content type.
+	 */
+	public void setContentType(VectorTileContentType contentType) {
+		this.contentType = contentType;
+	}
+
+	/**
+	 * All tiles that have at least one feature that geographically intersects with this tile are called dependent
+	 * tiles. This list returns their codes.
+	 * 
+	 * @return Return the list of tiles that are dependent on this one.
+	 */
 	public List<TileCode> getCodes() {
 		return codes;
 	}
 
+	/**
+	 * All tiles that have at least one feature that geographically intersects with this tile are called dependent
+	 * tiles.
+	 * 
+	 * @param codes
+	 *            Set the list of tiles that are dependent on this one.
+	 */
 	public void setCodes(List<TileCode> codes) {
 		this.codes = codes;
 	}
 
-	public boolean isClipped() {
-		return clipped;
-	}
-
-	public void setClipped(boolean clipped) {
-		this.clipped = clipped;
-	}
-
+	/** Returns the unique code for this tile. Consider this it's unique identifier within a vector layer. */
 	public TileCode getCode() {
 		return code;
 	}
 
+	/**
+	 * Set the unique code for this tile. Consider this it's unique identifier within a vector layer.
+	 * 
+	 * @param code
+	 *            The tile's code.
+	 */
 	public void setCode(TileCode code) {
 		this.code = code;
 	}
 
-	public InternalTileRendering getTileRendering() {
-		return tileRendering;
+	/**
+	 * Return the tile's width, expressed in world coordinates. In other words, expressed in the coordinates system of
+	 * the map wherein this tile's layer lies.
+	 */
+	public double getTileWidth() {
+		return tileWidth;
 	}
 
-	public void setTileRendering(InternalTileRendering tileRendering) {
-		this.tileRendering = tileRendering;
+	/**
+	 * Set the tile's width, expressed in world coordinates. In other words, expressed in the coordinates system of the
+	 * map wherein this tile's layer lies.
+	 * 
+	 * @param tileWidth
+	 *            The tile's world space width.
+	 */
+	public void setTileWidth(double tileWidth) {
+		this.tileWidth = tileWidth;
+	}
+
+	/**
+	 * Return the tile's height, expressed in world coordinates. In other words, expressed in the coordinates system of
+	 * the map wherein this tile's layer lies.
+	 */
+	public double getTileHeight() {
+		return tileHeight;
+	}
+
+	/**
+	 * Set the tile's height, expressed in world coordinates. In other words, expressed in the coordinates system of the
+	 * map wherein this tile's layer lies.
+	 * 
+	 * @param tileHeight
+	 *            The tile's world space height.
+	 */
+	public void setTileHeight(double tileHeight) {
+		this.tileHeight = tileHeight;
+	}
+
+	/** Return the tile's width, expressed in client side pixels. */
+	public int getScreenWidth() {
+		return screenWidth;
+	}
+
+	/**
+	 * Set the tile's width, expressed in client side pixels.
+	 * 
+	 * @param screenWidth
+	 *            The new value.
+	 */
+	public void setScreenWidth(int screenWidth) {
+		this.screenWidth = screenWidth;
+	}
+
+	/** Return the tile's height, expressed in client side pixels. */
+	public int getScreenHeight() {
+		return screenHeight;
+	}
+
+	/**
+	 * Set the tile's height, expressed in client side pixels.
+	 * 
+	 * @param screenHeight
+	 *            The new value.
+	 */
+	public void setScreenHeight(int screenHeight) {
+		this.screenHeight = screenHeight;
+	}
+
+	/**
+	 * Returns whether or not at least one feature within this tile has been clipped. This may sometimes be necessary
+	 * when a feature's bounds are larger then the space allowed on the client side.
+	 */
+	public boolean isClipped() {
+		return clipped;
+	}
+
+	/**
+	 * Set whether or not at least one feature within this tile has been clipped. This may sometimes be necessary when a
+	 * feature's bounds are larger then the space allowed on the client side.
+	 * 
+	 * @param clipped
+	 *            The new value.
+	 */
+	public void setClipped(boolean clipped) {
+		this.clipped = clipped;
 	}
 }

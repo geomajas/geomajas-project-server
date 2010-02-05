@@ -89,7 +89,7 @@ public class TileCode implements Serializable {
 	// -------------------------------------------------------------------------
 
 	/** Create a clone from this object. */
-	public Object clone() {
+	public TileCode clone() {
 		return new TileCode(tileLevel, x, y);
 	}
 

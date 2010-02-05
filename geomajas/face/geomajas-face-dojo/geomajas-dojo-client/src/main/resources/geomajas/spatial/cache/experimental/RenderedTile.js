@@ -291,34 +291,32 @@ dojo.declare("RenderedTile", SpatialNode, {
 			features.push(feature);
 			this.featureIds.push(feature.getLocalId());
 		}
+		
+		if (json["featureContent"] != null) {
+			if (json.contentType.value == "STRING_CONTENT") {
+				this.featureFragment = json.featureContent;
+				this.clipped = json.clipped;
+				for(var i = 0; i < json.codes.list.length; i++){
+					var code = new TileCode();
+					code.fromJSON(json.codes.list[i]);
+					this.codes.push(code);
+				}
+			} else if (json.contentType.value == "URL_CONTENT") {
+				this.featureImage = new RasterImage();
+				this.featureImage.setId(this.getId());
 
-		// Vector-rendering:
-		if (json["featureFragment"] != null) {
-			this.featureFragment = json.featureFragment;
-			this.clipped = json.clipped;
-			for(var i = 0; i < json.codes.list.length; i++){
-				var code = new TileCode();
-				code.fromJSON(json.codes.list[i]);
-				this.codes.push(code);
+				var tempUrl = json.featureImage;
+				if (tempUrl.startsWith("http")){
+					this.featureImage.setUrl(json.featureContent);
+				} else {
+					this.featureImage.setUrl(geomajasConfig.serverBase + json.featureContent);
+				}
+
+				this.featureImage.setBounds(new Bbox(0, 0, json.screenWidth, json.screenHeight));
+				this.featureImage.setLevel(this.code.tileLevel);
+				this.featureImage.setXIndex(this.code.x);
+				this.featureImage.setYIndex(this.code.y);
 			}
-		}
-
-		// Raster-rendering:
-		if (json["featureImage"] != null){
-			this.featureImage = new RasterImage();
-			this.featureImage.setId(this.getId());
-
-			var tempUrl = json.featureImage;
-			if (tempUrl.startsWith("http")){
-				this.featureImage.setUrl(json.featureImage);
-			} else {
-				this.featureImage.setUrl(geomajasConfig.serverBase + json.featureImage);
-			}
-
-			this.featureImage.setBounds(new Bbox(0, 0, json.screenWidth, json.screenHeight));
-			this.featureImage.setLevel(this.code.tileLevel);
-			this.featureImage.setXIndex(this.code.x);
-			this.featureImage.setYIndex(this.code.y);
 		}
 
 		return features;

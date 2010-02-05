@@ -154,27 +154,27 @@ dojo.declare("LabeledTile", RenderedTile, {
 	 * Parses a json object.
 	 */
 	_fromJSON : function (json) {
-		if (json["labelFragment"] != null) {
-			this.labelFragment = json.labelFragment;
-		}
+		if (json["labelContent"] != null) {
+			if (json.contentType.value == "STRING_CONTENT") {
+				this.labelFragment = json.labelContent;
+			} else if (json.contentType.value == "URL_CONTENT") {
+				this.labelImage = new RasterImage();
+				this.labelImage.setId(this.getId());
 
-		if (json["labelImage"] != null){
-			this.labelImage = new RasterImage();
-			this.labelImage.setId(this.getId());
+				var tempUrl = json.labelImage;
+				if (tempUrl.startsWith("http")){
+					this.labelImage.setUrl(json.labelContent);
+				} else {
+					this.labelImage.setUrl(geomajasConfig.serverBase + json.labelContent);
+				}                                                   
+				this.code = new TileCode();
+				this.code.fromJSON(json.code);
 
-			var tempUrl = json.labelImage;
-			if (tempUrl.startsWith("http")){
-				this.labelImage.setUrl(json.labelImage);
-			} else {
-				this.labelImage.setUrl(geomajasConfig.serverBase + json.labelImage);
-			}                                                   
-			this.code = new TileCode();
-			this.code.fromJSON(json.code);
-
-			this.labelImage.setBounds(new Bbox(0, 0, json.screenWidth, json.screenHeight));
-			this.labelImage.setLevel(this.code.tileLevel);
-			this.labelImage.setXIndex(this.code.x);
-			this.labelImage.setYIndex(this.code.y);
+				this.labelImage.setBounds(new Bbox(0, 0, json.screenWidth, json.screenHeight));
+				this.labelImage.setLevel(this.code.tileLevel);
+				this.labelImage.setXIndex(this.code.x);
+				this.labelImage.setYIndex(this.code.y);
+			}
 		}
 
 		return this.inherited("_fromJSON", arguments);

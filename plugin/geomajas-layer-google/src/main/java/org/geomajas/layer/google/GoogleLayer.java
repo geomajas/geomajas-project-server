@@ -30,7 +30,8 @@ import org.geomajas.geometry.Bbox;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.RasterLayer;
-import org.geomajas.layer.tile.RasterImage;
+import org.geomajas.layer.tile.RasterTile;
+import org.geomajas.layer.tile.TileCode;
 import org.geomajas.rendering.RenderException;
 import org.geomajas.service.ApplicationService;
 import org.geomajas.service.DtoConverterService;
@@ -129,7 +130,7 @@ public class GoogleLayer implements RasterLayer {
 		return layerName;
 	}
 
-	public List<RasterImage> paint(String boundsCrs, Envelope bounds, double scale) throws RenderException {
+	public List<RasterTile> paint(String boundsCrs, Envelope bounds, double scale) throws RenderException {
 		try {
 			CoordinateReferenceSystem google = CRS.decode("EPSG:900913");
 			MathTransform googleToLayer = geoService.findMathTransform(google, CRS.decode(boundsCrs));
@@ -206,7 +207,7 @@ public class GoogleLayer implements RasterLayer {
 			Coordinate upperLeft = new Coordinate(xMin, yMax);
 
 			// calculate the images
-			List<RasterImage> result = new ArrayList<RasterImage>();
+			List<RasterTile> result = new ArrayList<RasterTile>();
 			log.info("bounds =" + bounds);
 			log.info("indices " + iMin + "," + iMax + "," + jMin + "," + jMax);
 			int xScreenUpperLeft = (int) Math.round(upperLeft.x * scale);
@@ -214,15 +215,13 @@ public class GoogleLayer implements RasterLayer {
 			int screenWidth = (int) Math.round(scale * width);
 			for (int i = iMin; i <= iMax; i++) {
 				for (int j = jMin; j <= jMax; j++) {
+					// Using screen coordinates:
 					int x = xScreenUpperLeft + (i - iMin) * screenWidth;
 					int y = yScreenUpperLeft - (j - jMin) * screenWidth;
-					// screen coordinates !!!!!
-					RasterImage image = new RasterImage(new Bbox(x, -y, screenWidth, screenWidth), getLayerInfo()
-							.getId()
+
+					RasterTile image = new RasterTile(new Bbox(x, -y, screenWidth, screenWidth), getLayerInfo().getId()
 							+ "." + tileLevel + "." + i + "," + j);
-					image.setLevel(tileLevel);
-					image.setXIndex(i);
-					image.setYIndex(j);
+					image.setCode(new TileCode(tileLevel, i, j));
 					image.setUrl(getLayerName());
 					result.add(image);
 				}

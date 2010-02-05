@@ -30,7 +30,7 @@ import org.geomajas.extension.command.dto.GetRasterDataResponse;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.RasterLayer;
-import org.geomajas.layer.tile.RasterImage;
+import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.service.ApplicationService;
 import org.geomajas.service.DtoConverterService;
 import org.slf4j.Logger;
@@ -76,12 +76,12 @@ public class GetRasterDataCommand implements Command<GetRasterDataRequest, GetRa
 		}
 		RasterLayer rasterlayer = (RasterLayer) runtimeParameters.getLayer(request.getLayerId());
 		log.debug("execute() : bbox {}", request.getBbox());
-		List<RasterImage> images = rasterlayer.paint(request.getCrs(), converterService.toInternal(request.getBbox()),
+		List<RasterTile> images = rasterlayer.paint(request.getCrs(), converterService.toInternal(request.getBbox()),
 				request.getScale());
 		log.debug("execute() : returning {} images", images.size());
 		response.setRasterData(images);
 		if (images.size() > 0) {
-			response.setNodeId(rasterlayer.getLayerInfo().getId() + "." + images.get(0).getLevel());
+			response.setNodeId(rasterlayer.getLayerInfo().getId() + "." + images.get(0).getCode().getTileLevel());
 		}
 	}
 

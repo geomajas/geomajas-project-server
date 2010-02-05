@@ -22,7 +22,11 @@
  */
 package org.geomajas.gwt.client.map.store;
 
-import com.google.gwt.core.client.GWT;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.geomajas.command.CommandResponse;
 import org.geomajas.extension.command.dto.GetRasterDataRequest;
 import org.geomajas.extension.command.dto.GetRasterDataResponse;
@@ -34,18 +38,14 @@ import org.geomajas.gwt.client.map.cache.tile.TileFunction;
 import org.geomajas.gwt.client.map.layer.RasterLayer;
 import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.spatial.Matrix;
-import org.geomajas.layer.tile.RasterImage;
 import org.geomajas.layer.tile.TileCode;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.google.gwt.core.client.GWT;
 
 /**
- * A raster layer store that keeps tiles in cache while panning, only clearing them when a non-panning move occurs,
- * see {@link org.geomajas.gwt.client.map.MapView}.
- *
+ * A raster layer store that keeps tiles in cache while panning, only clearing them when a non-panning move occurs, see
+ * {@link org.geomajas.gwt.client.map.MapView}.
+ * 
  * @author Jan De Moerloose
  */
 public class DefaultRasterLayerStore implements RasterLayerStore {
@@ -94,8 +94,8 @@ public class DefaultRasterLayerStore implements RasterLayerStore {
 
 	private void fetchAndUpdateTiles(Bbox bounds, final TileFunction<RasterTile> onUpdate) {
 		GetRasterDataRequest request = new GetRasterDataRequest();
-		request.setBbox(
-				new org.geomajas.geometry.Bbox(bounds.getX(), bounds.getY(), bounds.getWidth(), bounds.getHeight()));
+		request.setBbox(new org.geomajas.geometry.Bbox(bounds.getX(), bounds.getY(), bounds.getWidth(), bounds
+				.getHeight()));
 		request.setCrs(getLayer().getMapModel().getCrs());
 		request.setLayerId(getLayer().getId());
 		request.setScale(getLayer().getMapModel().getMapView().getCurrentScale());
@@ -105,9 +105,9 @@ public class DefaultRasterLayerStore implements RasterLayerStore {
 		GwtCommandDispatcher.getInstance().execute(command, callBack);
 	}
 
-	private void addTiles(List<RasterImage> images) {
-		for (RasterImage image : images) {
-			TileCode code = new TileCode(image.getLevel(), image.getXIndex(), image.getYIndex());
+	private void addTiles(List<org.geomajas.layer.tile.RasterTile> images) {
+		for (org.geomajas.layer.tile.RasterTile image : images) {
+			TileCode code = image.getCode().clone();
 			if (!tiles.containsKey(code)) {
 				RasterTile tile = new RasterTile(code, new Bbox(image.getBounds()), image.getUrl(), this);
 				Matrix t = rasterLayer.getMapModel().getMapView().getWorldToPanTranslation();
@@ -123,6 +123,7 @@ public class DefaultRasterLayerStore implements RasterLayerStore {
 	private final class RasterCallBack implements CommandCallback {
 
 		private boolean canceled;
+
 		private TileFunction<RasterTile> callback;
 
 		private RasterCallBack(TileFunction<RasterTile> callback) {

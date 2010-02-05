@@ -24,12 +24,11 @@
 package org.geomajas.internal.service;
 
 import junit.framework.Assert;
+
 import org.geomajas.internal.layer.tile.InternalTileImpl;
-import org.geomajas.internal.layer.tile.InternalTileRenderingImpl;
 import org.geomajas.layer.VectorLayer;
-import org.geomajas.layer.tile.InternalTile;
-import org.geomajas.layer.tile.InternalTileRendering;
-import org.geomajas.layer.tile.Tile;
+import org.geomajas.layer.tile.VectorTile;
+import org.geomajas.layer.tile.VectorTile.VectorTileContentType;
 import org.geomajas.service.DtoConverterService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,12 +39,12 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  * Tests for conversion of tiles.
- *
+ * 
  * @author Joachim Van der Auwera
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
-		"/org/geomajas/layer/bean/beanContext.xml", "/org/geomajas/layer/bean/layerBeans.xml"})
+@ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
+		"/org/geomajas/layer/bean/beanContext.xml", "/org/geomajas/layer/bean/layerBeans.xml" })
 public class TileConverterTest {
 
 	@Autowired
@@ -55,12 +54,11 @@ public class TileConverterTest {
 	@Qualifier("beans")
 	private VectorLayer beansLayer;
 
-    @Test
+	@Test
 	public void testToDto() {
-		InternalTile internalTile = new InternalTileImpl(0, 0, 0, beansLayer, 0, converterService);
-		internalTile.setTileRendering(
-				new InternalTileRenderingImpl(InternalTileRendering.TileRenderMethod.STRING_RENDERING));
-		Tile tile = converterService.toDto(internalTile);
+		InternalTileImpl internalTile = new InternalTileImpl(0, 0, 0, beansLayer, 0, converterService);
+		internalTile.setContentType(VectorTileContentType.STRING_CONTENT);
+		VectorTile tile = converterService.toDto(internalTile);
 		Assert.assertNotNull(tile);
 	}
 }

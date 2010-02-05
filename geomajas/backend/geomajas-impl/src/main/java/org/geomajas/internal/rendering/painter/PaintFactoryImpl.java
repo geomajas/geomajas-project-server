@@ -24,13 +24,12 @@
 package org.geomajas.internal.rendering.painter;
 
 import org.geomajas.internal.layer.tile.InternalTileImpl;
-import org.geomajas.internal.layer.tile.InternalTileRenderingImpl;
 import org.geomajas.internal.rendering.image.TileImageCreatorImpl;
-import org.geomajas.internal.rendering.painter.tile.RasterTilePainter;
+import org.geomajas.internal.rendering.painter.tile.UrlContentTilePainter;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.layer.tile.TileCode;
-import org.geomajas.layer.tile.InternalTileRendering.TileRenderMethod;
+import org.geomajas.layer.tile.VectorTile.VectorTileContentType;
 import org.geomajas.rendering.image.RasterUrlBuilder;
 import org.geomajas.rendering.image.TileImageCreator;
 import org.geomajas.rendering.painter.PaintFactory;
@@ -63,12 +62,12 @@ public class PaintFactoryImpl implements PaintFactory {
 	}
 
 	public TilePainter createRasterTilePainter(RasterUrlBuilder urlBuilder) {
-		return new RasterTilePainter(urlBuilder);
+		return new UrlContentTilePainter(urlBuilder);
 	}
 
 	public InternalTile createRasterTile(TileCode code, VectorLayer layer, double scale) {
 		InternalTileImpl tile = new InternalTileImpl(code, layer, scale, converterService);
-		tile.setTileRendering(new InternalTileRenderingImpl(TileRenderMethod.IMAGE_RENDERING));
+		tile.setContentType(VectorTileContentType.URL_CONTENT);
 		return tile;
 	}
 }

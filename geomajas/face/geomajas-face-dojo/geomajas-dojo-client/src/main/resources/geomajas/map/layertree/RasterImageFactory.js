@@ -47,9 +47,9 @@ dojo.declare("RasterImageFactory", null, {
 		image.setUrl(jsonImage.url);
 		var b = jsonImage.bounds;
 		image.setBounds(new Bbox(b.x,b.y,b.width,b.height));
-		image.setLevel(jsonImage.level);
-		image.setXIndex(jsonImage.XIndex);
-		image.setYIndex(jsonImage.YIndex);
+		image.setLevel(jsonImage.code.tileLevel);
+		image.setXIndex(jsonImage.code.x);
+		image.setYIndex(jsonImage.code.y);
 		image.setStyle(this.layer.getStyle());
 		return image;	
 	},

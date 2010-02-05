@@ -23,7 +23,9 @@
 
 package org.geomajas.gwt.client.map.cache.tile;
 
-import com.smartgwt.client.util.SC;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.geomajas.command.CommandResponse;
 import org.geomajas.configuration.StyleInfo;
 import org.geomajas.extension.command.dto.GetRenderedTileRequest;
@@ -31,15 +33,13 @@ import org.geomajas.extension.command.dto.GetRenderedTileResponse;
 import org.geomajas.gwt.client.command.CommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
-import org.geomajas.gwt.client.gfx.paintable.Image;
 import org.geomajas.gwt.client.map.cache.SpatialCache;
 import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.spatial.Bbox;
-import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.layer.tile.TileCode;
+import org.geomajas.layer.tile.VectorTile.VectorTileContentType;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.smartgwt.client.util.SC;
 
 /**
  * TODO: not conform with latest Dojo implementation.
@@ -51,24 +51,17 @@ public class VectorTile extends AbstractVectorTile {
 	/**
 	 * Data holder: contains SVG or VML from the server for features.
 	 */
-	private String featureFragment;
+	private String featureContent;
 
 	/**
 	 * Data holder: contains SVG or VML from the server for labels.
 	 */
-	private String labelFragment;
+	private String labelContent;
+	
+	private VectorTileContentType contentType;
 
-	private Image featureImage;
-
-	private Image labelImage;
 	/** Array of feature ID's. */
 	private List<String> featureIds = new ArrayList<String>();
-
-	/** width in map units */
-	private int width;
-
-	/** height in map units */
-	private int height;
 
 	/** width in screen units */
 	private double screenWidth;
@@ -88,15 +81,13 @@ public class VectorTile extends AbstractVectorTile {
 
 	private boolean canceled;
 
-	private GwtCommand command;
-
 	// -------------------------------------------------------------------------
 	// Constructors:
 	// -------------------------------------------------------------------------
 
 	public VectorTile(TileCode code, Bbox bbox, SpatialCache cache) {
 		super(code, bbox, cache);
-		this.featureFragment = null;
+		this.featureContent = null;
 
 	}
 
@@ -124,7 +115,7 @@ public class VectorTile extends AbstractVectorTile {
 	 * @param callback
 	 *            When this node's data comes from the server, it will be handled by this callback function.
 	 */
-	public void fetch(String filter, final TileFunction callback) {
+	public void fetch(String filter, final TileFunction<VectorTile> callback) {
 		GwtCommand command = createCommand(filter);
 		final VectorTile self = this;
 		GwtCommandDispatcher.getInstance().execute(command, new CommandCallback() {
@@ -138,22 +129,14 @@ public class VectorTile extends AbstractVectorTile {
 							featureIds.add(dto.getId());
 						}
 					}
-					org.geomajas.layer.tile.Tile tile = tileResponse.getTile();
+					org.geomajas.layer.tile.VectorTile tile = tileResponse.getTile();
 					code = tile.getCode();
 					// TODO: is it normal to round from double to int in the tile width and height??
-					width = (int) tile.getTileWidth();
-					height = (int) tile.getTileHeight();
 					screenWidth = tile.getScreenWidth();
 					screenHeight = tile.getScreenHeight();
-					if (tile instanceof org.geomajas.layer.tile.VectorTile) {
-						org.geomajas.layer.tile.VectorTile vTile = (org.geomajas.layer.tile.VectorTile) tile;
-						featureFragment = vTile.getFeatureFragment();
-						labelFragment = vTile.getLabelFragment();
-					} else if (tile instanceof RasterTile) {
-						RasterTile rTile = (RasterTile) tile;
-						featureImage = new Image(rTile.getFeatureImage());
-						labelImage = new Image(rTile.getLabelImage());
-					}
+					featureContent = tile.getFeatureContent();
+					labelContent = tile.getFeatureContent();
+					contentType = tile.getContentType();
 					try {
 						callback.execute(self);
 					} catch (Throwable t) {
@@ -192,7 +175,7 @@ public class VectorTile extends AbstractVectorTile {
 	 * @param callback
 	 *            The actual <code>TileFunction</code> to be executed on the connected tiles.
 	 */
-	public void applyConnected(final String filter, final TileFunction callback) {
+	public void applyConnected(final String filter, final TileFunction<VectorTile> callback) {
 		apply(new TileFunction<VectorTile>() {
 
 			public void execute(VectorTile tile) {
@@ -214,7 +197,7 @@ public class VectorTile extends AbstractVectorTile {
 	 * 
 	 * @param callback
 	 */
-	public void apply(TileFunction callback) {
+	public void apply(TileFunction<VectorTile> callback) {
 		if (getStatus() == STATUS.LOADED) {
 			callback.execute(this);
 		} else {
@@ -252,28 +235,12 @@ public class VectorTile extends AbstractVectorTile {
 		return clipped;
 	}
 
-	public String getFeatureFragment() {
-		return featureFragment;
+	public String getFeatureContent() {
+		return featureContent;
 	}
 
-	public Image getFeatureImage() {
-		return featureImage;
-	}
-
-	public String getLabelFragment() {
-		return labelFragment;
-	}
-
-	public void setLabelFragment(String labelFragment) {
-		this.labelFragment = labelFragment;
-	}
-
-	public Image getLabelImage() {
-		return labelImage;
-	}
-
-	public void setLabelImage(Image labelImage) {
-		this.labelImage = labelImage;
+	public String getLabelContent() {
+		return labelContent;
 	}
 
 	public void cancel() {
@@ -289,10 +256,13 @@ public class VectorTile extends AbstractVectorTile {
 	}
 
 	public boolean isComplete() {
-		if (cache.getLayer().isLabeled() && labelFragment == null) {
+		if (cache.getLayer().isLabeled() && labelContent == null) {
 			return false;
 		}
 		return true;
 	}
 
+	public VectorTileContentType getContentType() {
+		return contentType;
+	}
 }

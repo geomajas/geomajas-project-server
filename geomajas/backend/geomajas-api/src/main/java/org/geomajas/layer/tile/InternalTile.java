@@ -20,70 +20,83 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package org.geomajas.layer.tile;
+
+import java.util.List;
+
+import org.geomajas.layer.Layer;
+import org.geomajas.layer.VectorLayer;
+import org.geomajas.layer.feature.InternalFeature;
+import org.geomajas.layer.tile.VectorTile.VectorTileContentType;
+
+import com.vividsolutions.jts.geom.Envelope;
 
 /**
  * <p>
- * Definition of the actual rendering object of a tile. Depending on the rendering method, this object will contain
- * either a string (SVG / VML) or a URL (to an image).
+ * General definition for a tile that is used internally on the server-side. When a tile needs to be send to the client,
+ * it must first be converted to a DTO tile.
  * </p>
  * 
  * @author Pieter De Graef
  */
-public interface InternalTileRendering {
-
-	/**
-	 * <p>
-	 * The rendering method used for a specific tile. Geomajas supports different rendering strategies with different
-	 * ways of rendering a tile. This enumeration defines the supported rendering methods.
-	 * </p>
-	 * 
-	 * @author Pieter De Graef
-	 */
-	enum TileRenderMethod {
-		/**
-		 * Rendering method that contains an entire tile in a string format, such as SVG or VML. On the client side,
-		 * this string will be plugged directly into the HTML DOM tree.
-		 */
-		STRING_RENDERING,
-
-		/** Rendering method that contains an URL to an image that contains the actual rendering of a tile. */
-		IMAGE_RENDERING
-	};
+public interface InternalTile {
 
 	/**
 	 * Return the rendering method used.
 	 */
-	TileRenderMethod getTileRenderMethod();
+	VectorTileContentType getContentType();
 
 	/**
 	 * Return the rendering of a tile's features. Depending on the rendering method used, the returned string will
 	 * contain an entire rendering (SVG/VML) or a URL.
 	 */
-	String getFeatureRendering();
-
-	/**
-	 * Set the rendering of a tile's features. Depending on the rendering method used, the given string must contain an
-	 * entire rendering (SVG/VML) or a URL.
-	 * 
-	 * @param featureString
-	 *            The rendering of a tile's features.
-	 */
-	void setFeatureRendering(String featureString);
+	String getFeatureContent();
 
 	/**
 	 * Return the rendering of a tile's labels. Depending on the rendering method used, the returned string will contain
 	 * an entire rendering (SVG/VML) or a URL.
 	 */
-	String getLabelRendering();
+	String getLabelContent();
 
-	/**
-	 * Set the rendering of a tile's labels. Depending on the rendering method used, the given string must contain an
-	 * entire rendering (SVG/VML) or a URL.
-	 * 
-	 * @param labelString
-	 *            The rendering of a tile's labels.
-	 */
-	void setLabelRendering(String labelString);
+	void init(VectorLayer layer, double scale);
+
+	Envelope getBbox(Layer<?> layer);
+
+	String codeAsString();
+
+	List<InternalFeature> getFeatures();
+
+	void setFeatures(List<InternalFeature> features);
+
+	void addFeature(InternalFeature feature);
+
+	double getTileWidth();
+
+	void setTileWidth(double tileWidth);
+
+	double getTileHeight();
+
+	void setTileHeight(double tileHeight);
+
+	int getScreenWidth();
+
+	void setScreenWidth(int screenWidth);
+
+	int getScreenHeight();
+
+	void setScreenHeight(int screenHeight);
+
+	void addCode(int level, int x, int y);
+
+	List<TileCode> getCodes();
+
+	void setCodes(List<TileCode> codes);
+
+	boolean isClipped();
+
+	void setClipped(boolean clipped);
+
+	TileCode getCode();
+
+	void setCode(TileCode code);
 }

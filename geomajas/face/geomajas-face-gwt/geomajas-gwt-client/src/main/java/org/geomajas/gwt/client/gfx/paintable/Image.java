@@ -26,7 +26,7 @@ package org.geomajas.gwt.client.gfx.paintable;
 import org.geomajas.gwt.client.gfx.PainterVisitor;
 import org.geomajas.gwt.client.gfx.style.PictureStyle;
 import org.geomajas.gwt.client.spatial.Bbox;
-import org.geomajas.layer.tile.RasterImage;
+import org.geomajas.layer.tile.RasterTile;
 
 /**
  * <p>
@@ -55,7 +55,7 @@ public class Image extends AbstractWorldPaintable {
 		super(id);
 	}
 
-	public Image(RasterImage raster) {
+	public Image(RasterTile raster) {
 		super(raster.getId());
 		href = raster.getUrl();
 		bounds = new Bbox(raster.getBounds());

@@ -65,11 +65,10 @@ dojo.declare("GoogleImageFactory", null, {
 			this._assertMapType(jsonImage.url);			
 			image.setUrl(jsonImage.url);
 			var b = jsonImage.bounds;
-			//image.setBounds(new Bbox(b.x-0.002*b.width,b.y-0.002*b.height,b.width*1.004,b.height*1.004));
 			image.setBounds(new Bbox(b.x,b.y,b.width,b.height));
-			image.setLevel(jsonImage.level);
-			image.setXIndex(jsonImage.XIndex);
-			image.setYIndex(jsonImage.YIndex);
+			image.setLevel(jsonImage.code.tileLevel);
+			image.setXIndex(jsonImage.code.x);
+			image.setYIndex(jsonImage.code.y);
 			if(typeof(GPoint) != "undefined"){
 				image.setUrl(this.currentMapType.getTileLayers()[0].getTileUrl(new GPoint(image.getXIndex(),image.getYIndex()),image.getLevel()));
 			}

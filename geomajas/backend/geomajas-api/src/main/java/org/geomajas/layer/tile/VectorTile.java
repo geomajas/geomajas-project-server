@@ -23,45 +23,262 @@
 
 package org.geomajas.layer.tile;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.geomajas.layer.feature.Feature;
+
 /**
- * DTO version of a {@link VectorTile}. This object can be sent to the client.
- *
+ * <p>
+ * DTO version of an {@link InternalTile}. This object can be sent to the client.
+ * </p>
+ * 
  * @author Pieter De Graef
  */
-public class VectorTile extends Tile {
+public class VectorTile {
 
 	private static final long serialVersionUID = 151L;
 
 	/**
-	 * feature data for client renderer (SVG/VML/...)
+	 * <p>
+	 * The rendering method used for a specific tile. Geomajas supports different rendering strategies with different
+	 * ways of rendering a tile. This enumeration defines the content types that these rendering methods produce.
+	 * </p>
+	 * 
+	 * @author Pieter De Graef
 	 */
-	private String featureFragment;
+	public enum VectorTileContentType {
+		/**
+		 * Rendering method that contains an entire tile in a string format, such as SVG or VML. On the client side,
+		 * this string will be plugged directly into the HTML DOM tree.
+		 */
+		STRING_CONTENT,
 
-	/**
-	 * label data for client renderer (SVG/VML/...)
-	 */
-	private String labelFragment;
+		/** Rendering method that contains an URL to an image that contains the actual rendering of a tile. */
+		URL_CONTENT
+	};
 
+	private List<Feature> features = new ArrayList<Feature>();
+
+	private List<TileCode> codes = new ArrayList<TileCode>();
+
+	private TileCode code;
+
+	private double tileWidth;
+
+	private double tileHeight;
+
+	private int screenWidth;
+
+	private int screenHeight;
+
+	private boolean clipped;
+
+	private String featureContent;
+
+	private String labelContent;
+
+	private VectorTileContentType contentType;
+
+	// -------------------------------------------------------------------------
 	// Constructors:
+	// -------------------------------------------------------------------------
 
 	public VectorTile() {
 	}
 
+	// -------------------------------------------------------------------------
 	// Getters and setters:
+	// -------------------------------------------------------------------------
 
-	public String getFeatureFragment() {
-		return featureFragment;
+	/**
+	 * Return the rendered content of a tile's features. Depending on the rendering method used, a different content
+	 * type will be stored. Basically, the returned string will contain a string rendering (SVG/VML) or a URL.
+	 */
+	public String getFeatureContent() {
+		return featureContent;
 	}
 
-	public void setFeatureFragment(String featureFragment) {
-		this.featureFragment = featureFragment;
+	/**
+	 * Set the rendered content of a tile's features. Depending on the rendering method used, a different content type
+	 * will be stored. Basically, the returned string will contain a string rendering (SVG/VML) or a URL.
+	 * 
+	 * @param featureContent
+	 *            The new value for the actual rendered feature content of this tile.
+	 */
+	public void setFeatureContent(String featureContent) {
+		this.featureContent = featureContent;
 	}
 
-	public String getLabelFragment() {
-		return labelFragment;
+	/**
+	 * Return the rendered content of a tile's labels. Depending on the rendering method used, a different content type
+	 * will be stored. Basically, the returned string will contain a string rendering (SVG/VML) or a URL.
+	 */
+	public String getLabelContent() {
+		return labelContent;
 	}
 
-	public void setLabelFragment(String labelFragment) {
-		this.labelFragment = labelFragment;
+	/**
+	 * Set the rendered content of a tile's labels. Depending on the rendering method used, a different content type
+	 * will be stored. Basically, the returned string will contain a string rendering (SVG/VML) or a URL.
+	 * 
+	 * @param labelContent
+	 *            The new value for the actual rendered label content of this tile.
+	 */
+	public void setLabelContent(String labelContent) {
+		this.labelContent = labelContent;
+	}
+
+	/** Returns the type of content for the rendered features and labels that are stored within this tile. */
+	public VectorTileContentType getContentType() {
+		return contentType;
+	}
+
+	/**
+	 * Determine the type of content for the rendered features and labels that are stored within this tile.
+	 * 
+	 * @param contentType
+	 *            The value for the content type.
+	 */
+	public void setContentType(VectorTileContentType contentType) {
+		this.contentType = contentType;
+	}
+
+	/** Returns the list of features that are stored in this tile. */
+	public List<Feature> getFeatures() {
+		return features;
+	}
+
+	/**
+	 * Set the list of features that are stored in this tile.
+	 * 
+	 * @param features
+	 *            The full list of features stored and rendered in this tile.
+	 */
+	public void setFeatures(List<Feature> features) {
+		this.features = features;
+	}
+
+	/**
+	 * All tiles that have at least one feature that geographically intersects with this tile are called dependent
+	 * tiles. This list returns their codes.
+	 * 
+	 * @return Return the list of tiles that are dependent on this one.
+	 */
+	public List<TileCode> getCodes() {
+		return codes;
+	}
+
+	/**
+	 * All tiles that have at least one feature that geographically intersects with this tile are called dependent
+	 * tiles.
+	 * 
+	 * @param codes
+	 *            Set the list of tiles that are dependent on this one.
+	 */
+	public void setCodes(List<TileCode> codes) {
+		this.codes = codes;
+	}
+
+	/** Returns the unique code for this tile. Consider this it's unique identifier within a vector layer. */
+	public TileCode getCode() {
+		return code;
+	}
+
+	/**
+	 * Set the unique code for this tile. Consider this it's unique identifier within a vector layer.
+	 * 
+	 * @param code
+	 *            The tile's code.
+	 */
+	public void setCode(TileCode code) {
+		this.code = code;
+	}
+
+	/**
+	 * Return the tile's width, expressed in world coordinates. In other words, expressed in the coordinates system of
+	 * the map wherein this tile's layer lies.
+	 */
+	public double getTileWidth() {
+		return tileWidth;
+	}
+
+	/**
+	 * Set the tile's width, expressed in world coordinates. In other words, expressed in the coordinates system of the
+	 * map wherein this tile's layer lies.
+	 * 
+	 * @param tileWidth
+	 *            The tile's world space width.
+	 */
+	public void setTileWidth(double tileWidth) {
+		this.tileWidth = tileWidth;
+	}
+
+	/**
+	 * Return the tile's height, expressed in world coordinates. In other words, expressed in the coordinates system of
+	 * the map wherein this tile's layer lies.
+	 */
+	public double getTileHeight() {
+		return tileHeight;
+	}
+
+	/**
+	 * Set the tile's height, expressed in world coordinates. In other words, expressed in the coordinates system of the
+	 * map wherein this tile's layer lies.
+	 * 
+	 * @param tileHeight
+	 *            The tile's world space height.
+	 */
+	public void setTileHeight(double tileHeight) {
+		this.tileHeight = tileHeight;
+	}
+
+	/** Return the tile's width, expressed in client side pixels. */
+	public int getScreenWidth() {
+		return screenWidth;
+	}
+
+	/**
+	 * Set the tile's width, expressed in client side pixels.
+	 * 
+	 * @param screenWidth
+	 *            The new value.
+	 */
+	public void setScreenWidth(int screenWidth) {
+		this.screenWidth = screenWidth;
+	}
+
+	/** Return the tile's height, expressed in client side pixels. */
+	public int getScreenHeight() {
+		return screenHeight;
+	}
+
+	/**
+	 * Set the tile's height, expressed in client side pixels.
+	 * 
+	 * @param screenHeight
+	 *            The new value.
+	 */
+	public void setScreenHeight(int screenHeight) {
+		this.screenHeight = screenHeight;
+	}
+
+	/**
+	 * Returns whether or not at least one feature within this tile has been clipped. This may sometimes be necessary
+	 * when a feature's bounds are larger then the space allowed on the client side.
+	 */
+	public boolean isClipped() {
+		return clipped;
+	}
+
+	/**
+	 * Set whether or not at least one feature within this tile has been clipped. This may sometimes be necessary when a
+	 * feature's bounds are larger then the space allowed on the client side.
+	 * 
+	 * @param clipped
+	 *            The new value.
+	 */
+	public void setClipped(boolean clipped) {
+		this.clipped = clipped;
 	}
 }

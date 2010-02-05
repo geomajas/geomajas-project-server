@@ -55,8 +55,6 @@ import org.geomajas.layer.feature.attribute.ShortAttribute;
 import org.geomajas.layer.feature.attribute.StringAttribute;
 import org.geomajas.layer.feature.attribute.UrlAttribute;
 import org.geomajas.layer.tile.InternalTile;
-import org.geomajas.layer.tile.RasterTile;
-import org.geomajas.layer.tile.Tile;
 import org.geomajas.layer.tile.VectorTile;
 import org.geomajas.service.DtoConverterService;
 import org.springframework.stereotype.Component;
@@ -425,46 +423,28 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 	 *            The server-side representation of a tile.
 	 * @return Returns the DTO version that can be sent to the client.
 	 */
-	public Tile toDto(InternalTile tile) {
+	public VectorTile toDto(InternalTile tile) {
 		if (null != tile) {
-			if (null == tile.getTileRendering()) {
-				throw new IllegalStateException("An InternalTile should always have the TileRendering set");
+			VectorTile dto = new VectorTile();
+			dto.setClipped(tile.isClipped());
+			dto.setCode(tile.getCode());
+			dto.setCodes(tile.getCodes());
+			dto.setScreenHeight(tile.getScreenHeight());
+			dto.setScreenWidth(tile.getScreenWidth());
+			dto.setTileHeight(tile.getTileHeight());
+			dto.setTileWidth(tile.getTileWidth());
+			List<Feature> features = new ArrayList<Feature>();
+			for (InternalFeature feature : tile.getFeatures()) {
+				features.add(toDto(feature));
 			}
-			switch (tile.getTileRendering().getTileRenderMethod()) {
-				case STRING_RENDERING:
-					VectorTile vectorDto = new VectorTile();
-					updateBasicTile(tile, vectorDto);
-					vectorDto.setFeatureFragment(tile.getTileRendering().getFeatureRendering());
-					vectorDto.setLabelFragment(tile.getTileRendering().getLabelRendering());
-					return vectorDto;
-				case IMAGE_RENDERING:
-					RasterTile rasterDto = new RasterTile();
-					updateBasicTile(tile, rasterDto);
-					rasterDto.setFeatureImage(tile.getTileRendering().getFeatureRendering());
-					rasterDto.setLabelImage(tile.getTileRendering().getFeatureRendering());
-					return rasterDto;
-				default:
-					Tile dto = new Tile();
-					updateBasicTile(tile, dto);
-					return dto;
-			}
+			dto.setFeatures(features);
+			dto.setFeatureContent(tile.getFeatureContent());
+			dto.setLabelContent(tile.getLabelContent());
+			dto.setContentType(tile.getContentType());
+			return dto;
 		}
-		return null;
-	}
 
-	private void updateBasicTile(InternalTile source, Tile target) {
-		target.setClipped(source.isClipped());
-		target.setCode(source.getCode());
-		target.setCodes(source.getCodes());
-		target.setScreenHeight(source.getScreenHeight());
-		target.setScreenWidth(source.getScreenWidth());
-		target.setTileHeight(source.getTileHeight());
-		target.setTileWidth(source.getTileWidth());
-		List<Feature> features = new ArrayList<Feature>();
-		for (InternalFeature feature : source.getFeatures()) {
-			features.add(toDto(feature));
-		}
-		target.setFeatures(features);
+		return null;
 	}
 
 	// -------------------------------------------------------------------------

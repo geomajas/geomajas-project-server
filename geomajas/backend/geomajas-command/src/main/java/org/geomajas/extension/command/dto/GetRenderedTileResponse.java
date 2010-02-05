@@ -23,27 +23,27 @@
 package org.geomajas.extension.command.dto;
 
 import org.geomajas.command.CommandResponse;
-import org.geomajas.layer.tile.Tile;
+import org.geomajas.layer.tile.VectorTile;
 
 /**
  * Response object for {@link org.geomajas.extension.command.render.GetRenderedTileCommand}.
- *
+ * 
  * @author check subversion
  */
 public class GetRenderedTileResponse extends CommandResponse {
 
 	private static final long serialVersionUID = 151L;
 
-	private Tile tile;
+	private VectorTile tile;
 
 	public GetRenderedTileResponse() {
 	}
 
-	public Tile getTile() {
+	public VectorTile getTile() {
 		return tile;
 	}
 
-	public void setTile(Tile tile) {
+	public void setTile(VectorTile tile) {
 		this.tile = tile;
 	}
 }

@@ -59,9 +59,9 @@ import com.vividsolutions.jts.geom.Envelope;
  * 
  * @author Pieter De Graef
  */
-public class VectorTilePainter implements TilePainter {
+public class StringContentTilePainter implements TilePainter {
 
-	private final Logger log = LoggerFactory.getLogger(VectorTilePainter.class);
+	private final Logger log = LoggerFactory.getLogger(StringContentTilePainter.class);
 
 	/**
 	 * The maximum number of allowed fraction digits.
@@ -142,7 +142,7 @@ public class VectorTilePainter implements TilePainter {
 	 *            The current origin may differ, depending on whether or not the client has been panning.Needed for
 	 *            creating the world to view space coordinate transformer.
 	 */
-	public VectorTilePainter(VectorLayer layer, String renderer, double scale, Coordinate panOrigin,
+	public StringContentTilePainter(VectorLayer layer, String renderer, double scale, Coordinate panOrigin,
 			GeoService geoService) {
 		this.layer = layer;
 		this.renderer = renderer;
@@ -170,8 +170,9 @@ public class VectorTilePainter implements TilePainter {
 	public InternalTile paint(InternalTile tileToPaint) throws RenderException {
 		if (tileToPaint != null) {
 			tile = tileToPaint;
+
+			// Create the SVG / VML feature fragment:
 			if (paintGeometries && featureDocument == null) {
-				// Create the SVG / VML feature fragment:
 				StringWriter writer = new StringWriter();
 				try {
 					featureDocument = createFeatureDocument(writer);
@@ -181,11 +182,11 @@ public class VectorTilePainter implements TilePainter {
 				} catch (RenderException e) {
 					log.error("Unable to write this tile's feature fragment", e);
 				}
-				tile.getTileRendering().setFeatureRendering(writer.toString());
+				((InternalTileImpl) tile).setFeatureContent(writer.toString());
 			}
 
+			// Create the SVG / VML label fragment:
 			if (paintLabels && labelDocument == null) {
-				// Create the SVG / VML label fragment:
 				StringWriter writer = new StringWriter();
 				try {
 					labelDocument = createLabelDocument(writer);
@@ -195,7 +196,7 @@ public class VectorTilePainter implements TilePainter {
 				} catch (RenderException e) {
 					log.error("Unable to write this tile's label fragment", e);
 				}
-				tile.getTileRendering().setLabelRendering(writer.toString());
+				((InternalTileImpl) tile).setLabelContent(writer.toString());
 			}
 			return tile;
 		}
