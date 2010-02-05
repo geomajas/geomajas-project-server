@@ -229,19 +229,11 @@ dojo.declare("PrintTemplateManager", null, {
 				templates.push(new PrintTemplate(data.templates.list[i], this));
 			} else {
 				prints.push(new PrintTemplate(data.templates.list[i], this));
+			}
 		}
-		}
-		this.templateStore = new ArrayDataStore( {
-			items : templates,
-			identifier : "name",
-			label : "name"
-		});
+		this.templateStore = new ArrayDataStore(templates, "name");
 
-		this.printStore = new ArrayDataStore( {
-			items : prints,
-			identifier : "name",
-			label : "name"
-		});
+		this.printStore = new ArrayDataStore(prints, "name");
 	},
 	
 	_fetchTemplatesAfterCallback : function (data) {
