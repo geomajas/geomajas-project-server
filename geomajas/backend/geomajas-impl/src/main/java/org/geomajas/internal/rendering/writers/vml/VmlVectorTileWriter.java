@@ -69,7 +69,7 @@ public class VmlVectorTileWriter implements GraphicsWriter {
 				}
 				style = nextStyle;
 
-				VectorLayerInfo layerInfo = (VectorLayerInfo) feature.getLayer().getLayerInfo();
+				VectorLayerInfo layerInfo = feature.getLayer().getLayerInfo();
 				if (layerInfo.getLayerType() != LayerType.POINT && layerInfo.getLayerType() != LayerType.MULTIPOINT) {
 					// the shapetype
 					document.writeElement("vml:shapetype", true);
@@ -86,12 +86,12 @@ public class VmlVectorTileWriter implements GraphicsWriter {
 
 					// Tile-fill element:
 					document.writeElement("vml:fill", true);
-					document.writeAttribute("opacity", "" + info.getFillOpacity());
+					document.writeAttribute("opacity", Float.toString(info.getFillOpacity()));
 					document.closeElement();
 
 					// Tile-stroke element:
 					document.writeElement("vml:stroke", true);
-					document.writeAttribute("opacity", "" + info.getStrokeOpacity());
+					document.writeAttribute("opacity", Float.toString(info.getStrokeOpacity()));
 					document.closeElement();
 
 					// up to style group

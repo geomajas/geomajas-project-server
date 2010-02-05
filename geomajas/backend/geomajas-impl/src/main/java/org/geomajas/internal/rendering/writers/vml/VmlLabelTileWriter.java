@@ -113,7 +113,7 @@ public class VmlLabelTileWriter implements GraphicsWriter {
 
 				// Calculate label width, left and top:
 				int boxWidth = (int) ((label.length()) * FONT_WIDTH) + 2;
-				int boxHeight = (int) (FONT_HEIGHT + 4);
+				int boxHeight = FONT_HEIGHT + 4;
 				int left = ((int) labelPos.getX()) - boxWidth / 2;
 				int top = ((int) labelPos.getY()) - FONT_HEIGHT / 2;
 
@@ -134,12 +134,12 @@ public class VmlLabelTileWriter implements GraphicsWriter {
 
 					// Rect-fill element:
 					document.writeElement("vml:fill", true);
-					document.writeAttribute("opacity", "" + bgStyle.getFillOpacity());
+					document.writeAttribute("opacity", Float.toString(bgStyle.getFillOpacity()));
 					document.closeElement();
 
 					// Rect-stroke element:
 					document.writeElement("vml:stroke", true);
-					document.writeAttribute("opacity", "" + bgStyle.getStrokeOpacity());
+					document.writeAttribute("opacity", Float.toString(bgStyle.getStrokeOpacity()));
 					document.closeElement();
 				}
 
