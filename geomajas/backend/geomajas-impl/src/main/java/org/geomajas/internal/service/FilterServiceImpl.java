@@ -319,4 +319,15 @@ public final class FilterServiceImpl implements FilterService {
 	public void registerFeatureModel(FeatureModel featureModel) {
 		FeatureModelRegistry.getRegistry().register(featureModel);
 	}
+
+	/**
+	 * Combine two filters using the "AND" operator.
+	 *
+	 * @param left first filter to combine
+	 * @param right second filter to combine
+	 * @return new filter combining the parameters using "and"
+	 */
+	public Filter createAndFilter(Filter left, Filter right) {
+		return FF.and(left, right);
+	}
 }

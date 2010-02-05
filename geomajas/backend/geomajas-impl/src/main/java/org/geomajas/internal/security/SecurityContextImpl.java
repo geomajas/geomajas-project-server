@@ -29,8 +29,11 @@ import org.geomajas.security.Authentication;
 import org.geomajas.security.BaseAuthorization;
 import org.geomajas.security.VectorLayerSelectFilterAuthorization;
 import org.geomajas.security.SecurityContext;
+import org.geomajas.service.FilterService;
 import org.opengis.filter.Filter;
+import org.opengis.filter.FilterFactory;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -63,6 +66,9 @@ public class SecurityContextImpl implements SecurityContext {
 	private Locale userLocale;
 	private String userOrganization;
 	private String userDivision;
+
+	@Autowired
+	private FilterService filterService;
 
 	void setAuthentications(List<Authentication> authentications) {
 		this.authentications.clear();
@@ -296,11 +302,24 @@ public class SecurityContextImpl implements SecurityContext {
 		for (Authentication authentication : authentications) {
 			for (BaseAuthorization authorization : authentication.getAuthorizations()) {
 				if (authorization instanceof VectorLayerSelectFilterAuthorization) {
-					return null;
+					Filter part = ((VectorLayerSelectFilterAuthorization)authorization).getFeatureFilter(layerId);
+					if (null != part) {
+						filter = combineFilter(filter, part);
+					}
 				}
 			}
 		}
-		return null;  //To change body of implemented methods use File | Settings | File Templates.
+		return filter;
+	}
+
+	private Filter combineFilter(Filter base, Filter add) {
+		if (null == base) {
+			return add;
+		}
+		if (null == add) {
+			return base;
+		}
+		return filterService.createAndFilter(base, add);
 	}
 
 	/**

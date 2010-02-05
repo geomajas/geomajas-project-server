@@ -207,4 +207,13 @@ public interface FilterService {
 	 * @param featureModel feature model to register
 	 */
 	void registerFeatureModel(FeatureModel featureModel);
+
+	/**
+	 * Combine two filters using the "AND" operator.
+	 *
+	 * @param left first filter to combine
+	 * @param right second filter to combine
+	 * @return new filter combining the parameters using "and"
+	 */
+	Filter createAndFilter(Filter left, Filter right);
 }
