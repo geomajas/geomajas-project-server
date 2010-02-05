@@ -98,7 +98,7 @@ public class DeleteFeatureAction extends MenuAction implements MenuItemIfFunctio
 		if (featureId != null) {
 			if (mapWidget.getMapModel().isFeatureSelected(featureId)) {
 				feature = mapWidget.getMapModel().getFeatureById(featureId);
-				return feature.getLayer().getLayerInfo().getEditPermissions().isDeletingAllowed();
+				return feature.isDeletable();
 			}
 		}
 		return false;

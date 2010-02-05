@@ -77,6 +77,16 @@ public class Feature implements Paintable, Cloneable {
 	/** is the feature clipped ? */
 	private boolean clipped;
 
+	/**
+	 * Is it allowed for the user in question to edit this feature?
+	 */
+	private boolean updatable;
+
+	/**
+	 * Is it allowed for the user in question to delete this feature?
+	 */
+	private boolean deletable;
+
 	// Constructors:
 
 	public Feature() {
@@ -99,6 +109,8 @@ public class Feature implements Paintable, Cloneable {
 			id = dto.getId();
 			geometry = GeometryConverter.toGwt(dto.getGeometry());
 			styleId = dto.getStyleId();
+			setUpdatable(dto.isUpdatable());
+			setDeletable(dto.isDeletable());
 		}
 	}
 
@@ -226,5 +238,41 @@ public class Feature implements Paintable, Cloneable {
 
 	public VectorLayer getLayer() {
 		return layer;
+	}
+
+	/**
+	 * Is the logged in user allowed to edit this feature?
+	 *
+	 * @return true when edit/update is allowed for this feature
+	 */
+	public boolean isUpdatable() {
+		return updatable;
+	}
+
+	/**
+	 * Set whether the logged in user is allowed to edit/update this feature.
+	 *
+	 * @param editable true when edit/update is allowed for this feature
+	 */
+	public void setUpdatable(boolean editable) {
+		this.updatable = editable;
+	}
+
+	/**
+	 * Is the logged in user allowed to delete this feature?
+	 *
+	 * @return true when delete is allowed for this feature
+	 */
+	public boolean isDeletable() {
+		return deletable;
+	}
+
+	/**
+	 * Set whether the logged in user is allowed to delete this feature.
+	 *
+	 * @param deletable true when deleting this feature is allowed
+	 */
+	public void setDeletable(boolean deletable) {
+		this.deletable = deletable;
 	}
 }

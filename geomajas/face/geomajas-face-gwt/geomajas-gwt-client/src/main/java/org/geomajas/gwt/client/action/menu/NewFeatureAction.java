@@ -101,7 +101,7 @@ public class NewFeatureAction extends MenuAction implements MenuItemIfFunction {
 		Layer<?> selected = mapWidget.getMapModel().getSelectedLayer();
 		if (selected != null && selected instanceof VectorLayer) {
 			VectorLayer layer = (VectorLayer) selected;
-			if (layer.getLayerInfo().getEditPermissions().isCreatingAllowed()) {
+			if (layer.getLayerInfo().isCreatable()) {
 				return true;
 			}
 		}
