@@ -28,6 +28,6 @@ package org.geomajas.security;
  *
  * @author Joachim Van der Auwera
  */
-public interface Authorization extends BaseAuthorization, LayerAuthorization, LayerModelSelectFilterAuthorization,
-		AreaAuthorization, FeatureAuthorization, AttributeAuthorization {
+public interface Authorization extends BaseAuthorization, LayerModelSelectFilterAuthorization, AreaAuthorization,
+		FeatureAuthorization, AttributeAuthorization {
 }

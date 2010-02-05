@@ -24,7 +24,7 @@
 package org.geomajas.security;
 
 /**
- * Base authorization, determines authorization of tools and commands .
+ * Base authorization, determines authorization of tools and commands and entire layers.
  *
  * @author Joachim Van der Auwera
  */
@@ -35,7 +35,7 @@ public interface BaseAuthorization {
 	 * <p/>
 	 * Lack of id can hamper caching of data.
 	 * <p/>
-	 * when two {@link org.geomajas.security.Authorization} objects from the same
+	 * When two {@link org.geomajas.security.Authorization} objects from the same
 	 * {@link org.geomajas.security.SecurityService} have the same id, they should behave exactly the same.
 	 * <p/>
 	 * The id is not allowed to contain the horizontal bar ("|") or at ("@") characters (except on the
@@ -61,4 +61,42 @@ public interface BaseAuthorization {
 	 * @return true when access is allowed
 	 */
 	boolean isCommandAuthorized(String commandName);
+
+	/**
+	 * Check whether there are features in the layer which are visible.
+	 *
+	 * @param layerId layer id for which the visibility should be tested
+	 * @return true when the logged in user is allowed to see part of the layer
+	 */
+	boolean isLayerVisible(String layerId);
+
+	/**
+	 * Check whether there are features in the layer which can be updated.
+	 * <p/>
+	 * When isLayerUpdateAuthorized() is true, then isLayerVisible() should also be true.
+	 *
+	 * @param layerId layer id for which the visible area should be returned
+	 * @return true when the logged in user is allowed to edit the visible part of the layer
+	 */
+	boolean isLayerUpdateAuthorized(String layerId);
+
+	/**
+	 * Check whether creating new features may be allowed.
+	 * <p/>
+	 * When isLayerCreateAuthorized() is true, then isLayerVisible() should also be true.
+	 *
+	 * @param layerId layer id for which the visible area should be returned
+	 * @return true when the logged in user is allowed to edit the visible part of the layer
+	 */
+	boolean isLayerCreateAuthorized(String layerId);
+
+	/**
+	 * Check whether there are features in the layer which can be deleted.
+	 * <p/>
+	 * When isLayerDeleteAuthorized() is true, then isLayerVisible() should also be true.
+	 *
+	 * @param layerId layer id for which the visible area should be returned
+	 * @return true when the logged in user is allowed to edit the visible part of the layer
+	 */
+	boolean isLayerDeleteAuthorized(String layerId);	
 }

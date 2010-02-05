@@ -33,8 +33,11 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 /**
  * {@link org.geomajas.security.SecurityContext} implementation.
@@ -49,6 +52,8 @@ import java.util.Locale;
 public class SecurityContextImpl implements SecurityContext {
 
 	private List<Authentication> authentications = new ArrayList<Authentication>();
+
+	private String id; // SecurityContext id
 
 	// user info
 	private String userId;
@@ -135,6 +140,40 @@ public class SecurityContextImpl implements SecurityContext {
 				userDivision = combine(userDivision, auth.getUserDivision());
 			}
 		}
+
+		// now calculate the "id" for this context, this should be independent of the data order, so sort
+		Map<String, List<String>> idParts = new HashMap<String, List<String>>();
+		if (null != authentications) {
+			for (Authentication auth : authentications) {
+				List<String> auths = new ArrayList<String>();
+				for (BaseAuthorization ba : auth.getAuthorizations()) {
+					auths.add(ba.getId());
+				}
+				Collections.sort(auths);
+				idParts.put(auth.getSecurityServiceId(), auths);
+			}
+		}
+		StringBuilder sb = new StringBuilder();
+		List<String> sortedKeys = new ArrayList<String>(idParts.keySet());
+		Collections.sort(sortedKeys);
+		for (String key : sortedKeys) {
+			if (sb.length() > 0) {
+				sb.append('|');
+			}
+			List<String> auths = idParts.get(key);
+			first = true;
+			for (String ak : auths) {
+				if (first) {
+					first = false;
+				} else {
+					sb.append('|');
+				}
+				sb.append(ak);
+			}
+			sb.append('@');
+			sb.append(key);
+		}
+		id = sb.toString();
 	}
 
 	/**
@@ -150,7 +189,7 @@ public class SecurityContextImpl implements SecurityContext {
 		if (null == org) {
 			return add;
 		}
-		if (org.equals(add) || org.startsWith(add + ", ") || org.endsWith(", " + add)) {
+		if (null == add || org.equals(add) || org.startsWith(add + ", ") || org.endsWith(", " + add)) {
 			return org;
 		}
 		return org + ", " + add;
@@ -160,7 +199,7 @@ public class SecurityContextImpl implements SecurityContext {
 	 * @inheritDoc
 	 */
 	public String getId() {
-		return null;  //To change body of implemented methods use File | Settings | File Templates.
+		return id;
 	}
 
 	/**
@@ -192,7 +231,47 @@ public class SecurityContextImpl implements SecurityContext {
 	}
 
 	public boolean isLayerVisible(String layerId) {
-		return false;  //To change body of implemented methods use File | Settings | File Templates.
+		for (Authentication authentication : authentications) {
+			for (BaseAuthorization authorization : authentication.getAuthorizations()) {
+				if ( (authorization.isLayerVisible(layerId))) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	public boolean isLayerUpdateAuthorized(String layerId) {
+		for (Authentication authentication : authentications) {
+			for (BaseAuthorization authorization : authentication.getAuthorizations()) {
+				if ( (authorization.isLayerUpdateAuthorized(layerId))) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	public boolean isLayerCreateAuthorized(String layerId) {
+		for (Authentication authentication : authentications) {
+			for (BaseAuthorization authorization : authentication.getAuthorizations()) {
+				if ( (authorization.isLayerCreateAuthorized(layerId))) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	public boolean isLayerDeleteAuthorized(String layerId) {
+		for (Authentication authentication : authentications) {
+			for (BaseAuthorization authorization : authentication.getAuthorizations()) {
+				if ( (authorization.isLayerDeleteAuthorized(layerId))) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	public boolean isAttributeReadable(String layerId, InternalFeature feature, String attributeName) {
@@ -203,9 +282,6 @@ public class SecurityContextImpl implements SecurityContext {
 		return false;  //To change body of implemented methods use File | Settings | File Templates.
 	}
 
-	public boolean isLayerUpdateAuthorized(String layerId) {
-		return false;  //To change body of implemented methods use File | Settings | File Templates.
-	}
 
 	public Geometry getVisibleArea(String layerId, CoordinateReferenceSystem crs) {
 		return null;  //To change body of implemented methods use File | Settings | File Templates.
@@ -213,10 +289,6 @@ public class SecurityContextImpl implements SecurityContext {
 
 	public String getFeatureFilter(String layerId) {
 		return null;  //To change body of implemented methods use File | Settings | File Templates.
-	}
-
-	public boolean isLayerCreateAuthorized(String layerId) {
-		return false;  //To change body of implemented methods use File | Settings | File Templates.
 	}
 
 	public boolean isPartlyVisibleSufficient(String layerId) {
@@ -228,10 +300,6 @@ public class SecurityContextImpl implements SecurityContext {
 	}
 
 	public boolean isAttributeWritable(String layerId, InternalFeature feature, String attributeName) {
-		return false;  //To change body of implemented methods use File | Settings | File Templates.
-	}
-
-	public boolean isLayerDeleteAuthorized(String layerId) {
 		return false;  //To change body of implemented methods use File | Settings | File Templates.
 	}
 

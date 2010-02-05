@@ -24,25 +24,24 @@
 package org.geomajas.internal.security;
 
 import org.geomajas.security.BaseAuthorization;
-import org.geomajas.security.LayerAuthorization;
 
 /**
- * Simple authorization class, used for testing.
+ * Simple authorization class, allows everything.
  *
  * @author Joachim Van der Auwera
  */
-public class AllowAllAuthorization implements BaseAuthorization, LayerAuthorization {
+public class AllowAllAuthorization implements BaseAuthorization {
 
 	public String getId() {
 		return "AllowAll";
 	}
 
 	public boolean isToolAuthorized(String toolId) {
-		return false;
+		return true;
 	}
 
 	public boolean isCommandAuthorized(String commandName) {
-		return false;
+		return true;
 	}
 
 	public boolean isLayerVisible(String layerId) {
