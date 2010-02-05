@@ -30,7 +30,7 @@ import java.util.List;
 /**
  * Response object for {@link org.geomajas.extension.command.render.GetRasterDataCommand}.
  *
- * @author check subversion
+ * @author Jan De Moerloose
  */
 public class GetRasterDataResponse extends CommandResponse {
 
@@ -46,18 +46,23 @@ public class GetRasterDataResponse extends CommandResponse {
 	/**
 	 * Get list of raster image metadata.
 	 *
-	 * @return
+	 * @return list of raster data
 	 */
 	public List<RasterImage> getRasterData() {
 		return rasterData;
 	}
 
+	/**
+	 * Set list of raster tiles.
+	 *
+	 * @param rasterData new list with raster tiles
+	 */
 	public void setRasterData(List<RasterImage> rasterData) {
 		this.rasterData = rasterData;
 	}
 
 	/**
-	 * Get node id, which is <layer id> + "."+level.
+	 * Get node id, which is (layer id) + "." + level.
 	 *
 	 * @return node id
 	 */
@@ -65,6 +70,11 @@ public class GetRasterDataResponse extends CommandResponse {
 		return nodeId;
 	}
 
+	/**
+	 * Set node id, which is (layer id) + "." + level
+	 *
+	 * @param nodeId node id
+	 */
 	public void setNodeId(String nodeId) {
 		this.nodeId = nodeId;
 	}
