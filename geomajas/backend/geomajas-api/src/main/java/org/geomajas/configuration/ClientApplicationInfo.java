@@ -109,7 +109,7 @@ public class ClientApplicationInfo implements Serializable {
 	/**
 	 * Set number of dots per inch of the client screen.
 	 *
-	 * @param screenDpi
+	 * @param screenDpi number of dots per inch (default = 96)
 	 */
 	public void setScreenDpi(int screenDpi) {
 		this.screenDpi = screenDpi;

@@ -27,6 +27,7 @@ import com.vividsolutions.jts.geom.Geometry;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.security.Authentication;
 import org.geomajas.security.BaseAuthorization;
+import org.geomajas.security.VectorLayerSelectFilterAuthorization;
 import org.geomajas.security.SecurityContext;
 import org.opengis.filter.Filter;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -294,7 +295,7 @@ public class SecurityContextImpl implements SecurityContext {
 		Filter filter = null;
 		for (Authentication authentication : authentications) {
 			for (BaseAuthorization authorization : authentication.getAuthorizations()) {
-				if (authorization.isLayerDeleteAuthorized(layerId)) {
+				if (authorization instanceof VectorLayerSelectFilterAuthorization) {
 					return null;
 				}
 			}

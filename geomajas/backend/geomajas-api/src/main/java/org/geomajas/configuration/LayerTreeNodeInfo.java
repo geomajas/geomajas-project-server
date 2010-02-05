@@ -47,10 +47,20 @@ public class LayerTreeNodeInfo implements Serializable {
 	public LayerTreeNodeInfo() {
 	}
 
+	/**
+	 * Get the tree node label.
+	 *
+	 * @return label
+	 */
 	public String getLabel() {
 		return label;
 	}
 
+	/**
+	 * Set the tree node label.
+	 *
+	 * @param label label
+	 */
 	public void setLabel(String label) {
 		this.label = label;
 	}
@@ -87,10 +97,20 @@ public class LayerTreeNodeInfo implements Serializable {
 		this.layerIds = layerIds;
 	}
 
+	/**
+	 * Is the node expanded?
+	 *
+	 * @return true when node is expanded
+	 */
 	public String getExpanded() {
 		return expanded;
 	}
 
+	/**
+	 * Set the "expanded" state for the node.
+	 *
+	 * @param expanded true when node is expanded
+	 */
 	public void setExpanded(String expanded) {
 		this.expanded = expanded;
 	}

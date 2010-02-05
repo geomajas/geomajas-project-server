@@ -31,4 +31,5 @@ package org.geomajas.configuration;
  */
 public class FutureConstraintInfo implements ConstraintInfo {
 
+	private static final long serialVersionUID = 153L;
 }

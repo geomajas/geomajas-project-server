@@ -20,29 +20,36 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+package org.geomajas.rendering;
 
-package org.geomajas.security;
-
+import org.geomajas.configuration.StyleInfo;
 import org.opengis.filter.Filter;
 
 /**
- * Extra filter which should be applied by the layer model when selecting features.
- * <p/>
- * Note that while it is possible to use this filter to limit the features returned by the layer, it does not affect
- * creation of features and may not be applied when trying to fetch features by id. When such checks are needed, you
- * should also implement {@link org.geomajas.security.FeatureAuthorization} and do the checks there.
+ * <p>
+ * Simple interface for defining a style filter. It couples a style-definition to an OpenGIS filter implementation.
+ * </p>
  *
- * @author Joachim Van der Auwera
+ * @author Pieter De Graef
  */
-public interface LayerModelSelectFilterAuthorization extends BaseAuthorization {
+public interface StyleFilter {
 
 	/**
-	 * Get a filter which limits the visible data which can be used.
-	 * <p/>
-	 * This allows for example filtering cities on number of inhabitants, features on their area etc.
-	 *
-	 * @param layerId layer id for which the filter applies
-	 * @return string representation of the filter
+	 * Only needed in case no LayerStyleDefinition is given in the constructor.
 	 */
-	Filter getFeatureFilter(String layerId);
+	int DEFAULT_STYLE_ID = 9999;
+
+	/**
+	 * Return the opengis filter implementation coupled to a style.
+	 *
+	 * @return opengis filter
+	 */
+	Filter getFilter();
+
+	/**
+	 * A style definition object as described in the geomajas configuration.
+	 *
+	 * @return style info
+	 */
+	StyleInfo getStyleDefinition();
 }

@@ -67,7 +67,7 @@ public interface GeoService {
 			CoordinateReferenceSystem targetCrs) throws FactoryException;
 
 	/**
-	 * Determine a default position for positionin the label for a feature.
+	 * Determine a default position for positioning the label for a feature.
 	 *
 	 * @param feature feature which needs the label
 	 * @return coordinate where the label would make sense.
@@ -79,8 +79,8 @@ public interface GeoService {
 	 *
 	 * @param center center for the circle
 	 * @param radius radius for the circle
-	 * @param nrPoints number of points to calculate for approcimating the circle
-	 * @return
+	 * @param nrPoints number of points to calculate for approximating the circle
+	 * @return created circle
 	 */
 	Geometry createCircle(Point center, double radius, int nrPoints);
 }

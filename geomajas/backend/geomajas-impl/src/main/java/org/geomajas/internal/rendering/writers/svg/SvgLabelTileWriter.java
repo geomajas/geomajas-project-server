@@ -29,7 +29,7 @@ import org.geomajas.internal.layer.tile.InternalTileImpl;
 import org.geomajas.internal.rendering.writers.GraphicsWriter;
 import org.geomajas.rendering.GraphicsDocument;
 import org.geomajas.rendering.RenderException;
-import org.geomajas.rendering.style.StyleFilter;
+import org.geomajas.rendering.StyleFilter;
 import org.geomajas.service.GeoService;
 import org.geotools.geometry.jts.GeometryCoordinateSequenceTransformer;
 import org.opengis.referencing.operation.TransformException;

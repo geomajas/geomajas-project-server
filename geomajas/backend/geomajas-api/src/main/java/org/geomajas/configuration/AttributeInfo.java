@@ -45,8 +45,8 @@ public class AttributeInfo extends AttributeBaseInfo {
 	/**
 	 * Creates a non-editable, non-identifying, non-hidden attribute.
 	 *
-	 * @param name
-	 * @param label
+	 * @param name attribute name
+	 * @param label attribute label
 	 */
 	public AttributeInfo(String name, String label) {
 		this(false, false, false, name, label);
@@ -58,8 +58,8 @@ public class AttributeInfo extends AttributeBaseInfo {
 	 * @param editable
 	 * @param hidden
 	 * @param identifying
-	 * @param label
-	 * @param name
+	 * @param label attribute label
+	 * @param name attribute name
 	 */
 	public AttributeInfo(boolean editable, boolean hidden, boolean identifying, String label, String name) {
 		setEditable(editable);

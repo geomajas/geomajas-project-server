@@ -21,10 +21,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.internal.rendering.style;
+package org.geomajas.internal.rendering;
 
 import org.geomajas.configuration.StyleInfo;
-import org.geomajas.rendering.style.StyleFilter;
+import org.geomajas.rendering.StyleFilter;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.cql2.CQLException;
 import org.opengis.filter.Filter;

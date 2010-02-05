@@ -42,8 +42,8 @@ public class PrimitiveAttributeInfo extends AttributeInfo implements Serializabl
 	/**
 	 * Creates an attribute information for the specified primitive type.
 	 *
-	 * @param name
-	 * @param label
+	 * @param name attribute name
+	 * @param label attribute label
 	 * @param type the primitive type
 	 */
 	public PrimitiveAttributeInfo(String name, String label, PrimitiveType type) {

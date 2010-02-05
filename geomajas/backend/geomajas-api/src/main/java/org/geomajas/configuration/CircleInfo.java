@@ -34,10 +34,20 @@ public class CircleInfo implements Serializable {
 	private static final long serialVersionUID = 151L;
 	private float r;
 
+	/**
+	 * Get circle radius.
+	 *
+	 * @return radius
+	 */
 	public float getR() {
 		return r;
 	}
 
+	/**
+	 * Set circle radius.
+	 *
+	 * @param value radius
+	 */
 	public void setR(float value) {
 		this.r = value;
 	}

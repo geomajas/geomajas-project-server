@@ -47,7 +47,8 @@ public class CommandResponse implements Serializable {
 
 	/**
 	 * Determine whether an error occurred while dispatching the command.
-	 * @return
+	 *
+	 * @return true when an exception occured during command processing
 	 */
 	public boolean isError() {
 		return (null != errorMessages && errorMessages.size() > 0) || (null != errors && errors.size() > 0);
@@ -64,6 +65,11 @@ public class CommandResponse implements Serializable {
 		return id;
 	}
 
+	/**
+	 * Set the id assigned to this command. The id can help you to match client and server side logs about a command.
+	 *
+	 * @param id id
+	 */
 	public void setId(String id) {
 		this.id = id;
 	}
@@ -78,10 +84,6 @@ public class CommandResponse implements Serializable {
 		return errorMessages;
 	}
 
-	public void setErrorMessages(List<String> errorMessages) {
-		this.errorMessages = errorMessages;
-	}
-
 	/**
 	 * Get the list of exceptions which are thrown while dispatching the command.
 	 * This list is used (by the dispatcher) to fill the errorMessages list.
@@ -93,10 +95,6 @@ public class CommandResponse implements Serializable {
 		return errors;
 	}
 
-	public void setErrors(List<Throwable> errors) {
-		this.errors = errors;
-	}
-
 	/**
 	 * Get execution time in milliseconds.
 	 *
@@ -106,6 +104,11 @@ public class CommandResponse implements Serializable {
 		return executionTime;
 	}
 
+	/**
+	 * Set the execution time in milliseconds for the command.
+	 *
+	 * @param executionTime command execution time in milliseconds
+	 */
 	public void setExecutionTime(long executionTime) {
 		this.executionTime = executionTime;
 	}

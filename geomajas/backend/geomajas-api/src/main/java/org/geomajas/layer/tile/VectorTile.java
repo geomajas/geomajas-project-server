@@ -56,7 +56,7 @@ public class VectorTile {
 
 		/** Rendering method that contains an URL to an image that contains the actual rendering of a tile. */
 		URL_CONTENT
-	};
+	}
 
 	private List<Feature> features = new ArrayList<Feature>();
 

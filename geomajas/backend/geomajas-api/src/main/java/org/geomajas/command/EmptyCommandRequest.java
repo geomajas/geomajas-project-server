@@ -34,6 +34,11 @@ public class EmptyCommandRequest implements CommandRequest {
 
 	private static final long serialVersionUID = 151L;
 
+	/**
+	 * Dummy method, provided to assure Checkstyle doesn't complain.
+	 *
+	 * @return 0
+	 */
 	public int getDummy() {
 		return 0; 
 	}

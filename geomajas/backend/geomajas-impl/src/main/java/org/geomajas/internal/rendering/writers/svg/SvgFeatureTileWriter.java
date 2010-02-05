@@ -30,7 +30,7 @@ import org.geomajas.internal.rendering.writers.GraphicsWriter;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.rendering.GraphicsDocument;
 import org.geomajas.rendering.RenderException;
-import org.geomajas.rendering.style.StyleFilter;
+import org.geomajas.rendering.StyleFilter;
 
 /**
  * ???
