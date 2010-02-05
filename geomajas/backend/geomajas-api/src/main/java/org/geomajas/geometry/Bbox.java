@@ -51,6 +51,7 @@ public class Bbox implements Serializable {
 		setHeight(height);
 	}
 
+	/** Return the height for the bounding box. This will always be a positive value. */
 	public double getHeight() {
 		return height;
 	}
@@ -70,6 +71,7 @@ public class Bbox implements Serializable {
 		}
 	}
 
+	/** Return the width for the bounding box. This will always be a positive value. */
 	public double getWidth() {
 		return width;
 	}

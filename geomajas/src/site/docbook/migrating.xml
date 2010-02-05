@@ -59,6 +59,48 @@
         <code>GeoToolsLayer</code>.</para>
       </listitem>
     </itemizedlist>
+
+    <section>
+      <title>General API changes</title>
+
+      <para>The geomajas-API has been split up in a formal (geomajas-API) and
+      experimental API (geomajas-api-experimental). All interfaces/classes
+      from the cache and rendering packages have been moved to experimental.
+      This means that the rendering pipeline is at the moment not a part of
+      the official API, but instead more of a preview of what's to come.
+      Furthermore, some major changes have been made in many other
+      packages:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para>The <code>org.geomajas.rendering.tile</code> has been moved to
+          <code>org.geomajas.layer.tile</code></para>
+        </listitem>
+
+        <listitem>
+          <para>Introduction of a DtoConverterService that is able to convert
+          DTO objects from and to backend internal representations.</para>
+        </listitem>
+
+        <listitem>
+          <para>All the different feature definitions have been cut down. Only
+          2 versions remain at the moment: a DTO feature
+          (<code>org.geomajas.layer.feature.Feature</code>) and a feature
+          definition used internally in the backed
+          (<code>org.geomajas.layer.feature.InternalFeature</code>). </para>
+        </listitem>
+
+        <listitem>
+          <para>All the different tile definitions have been cut down. Only 3
+          remain. 2 DTO tiles: <code>org.geomajas.layer.tile.VectorTile</code>
+          - used in vector layers and
+          <code>org.geomajas.layer.tile.RasterTile</code> - used in raster
+          layers. The third is the
+          <code>org.geomajas.tile.InternalTile</code>. This tile is used
+          internally on the backend.</para>
+        </listitem>
+      </itemizedlist>
+    </section>
   </section>
 
   <section>
