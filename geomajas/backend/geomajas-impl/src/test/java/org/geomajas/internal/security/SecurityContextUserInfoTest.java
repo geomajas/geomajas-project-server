@@ -40,9 +40,6 @@ import java.util.Locale;
  *
  * @author Joachim Van der Auwera
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
-		"/org/geomajas/spring/securityLoopContext.xml"})
 public class SecurityContextUserInfoTest {
 
 	private static final String SECURITY_SERVICE_ID = "ss";

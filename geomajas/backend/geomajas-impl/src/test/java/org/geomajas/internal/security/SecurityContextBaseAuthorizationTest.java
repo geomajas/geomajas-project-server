@@ -39,9 +39,6 @@ import java.util.List;
  *
  * @author Joachim Van der Auwera
  */
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
-		"/org/geomajas/spring/securityLoopContext.xml"})
 public class SecurityContextBaseAuthorizationTest {
 
 	private static final String TOOL_ID = "Tool";
