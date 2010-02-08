@@ -53,10 +53,6 @@ public class SecurityContextFeatureFilterTest {
 	private static final String SECURITY_SERVICE_ID = "ss";
 	private static final String LAYER_ID = "layer";
 	private static final String USER_ID = "auth";
-	private static final String USER_NAME = "Full name";
-	private static final Locale USER_LOCALE = Locale.CHINESE;
-	private static final String USER_ORGANIZATION = "Geosparc";
-	private static final String USER_DIVISION = "Development";
 
 	@Autowired
 	private FilterService filterService;
@@ -116,10 +112,6 @@ public class SecurityContextFeatureFilterTest {
 		auth.setAuthorizations(new BaseAuthorization[]{new AllowAllAuthorization()});
 		auth.setSecurityServiceId(SECURITY_SERVICE_ID);
 		auth.setUserId(USER_ID);
-		auth.setUserName(USER_NAME);
-		auth.setUserLocale(USER_LOCALE);
-		auth.setUserOrganization(USER_ORGANIZATION);
-		auth.setUserDivision(USER_DIVISION);
 		return auth;
 	}
 
@@ -128,10 +120,6 @@ public class SecurityContextFeatureFilterTest {
 		auth.setAuthorizations(new BaseAuthorization[]{new FilterAuthorization()});
 		auth.setSecurityServiceId(SECURITY_SERVICE_ID);
 		auth.setUserId(USER_ID);
-		auth.setUserName(USER_NAME);
-		auth.setUserLocale(USER_LOCALE);
-		auth.setUserOrganization(USER_ORGANIZATION);
-		auth.setUserDivision(USER_DIVISION);
 		return auth;
 	}
 

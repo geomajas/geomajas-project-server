@@ -23,15 +23,25 @@
 
 package org.geomajas.internal.security;
 
+import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.PrecisionModel;
+import org.geomajas.configuration.VectorLayerInfo;
+import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.InternalFeature;
+import org.geomajas.security.AreaAuthorization;
 import org.geomajas.security.Authentication;
 import org.geomajas.security.BaseAuthorization;
 import org.geomajas.security.VectorLayerSelectFilterAuthorization;
 import org.geomajas.security.SecurityContext;
+import org.geomajas.service.ApplicationService;
+import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.FilterService;
+import org.geomajas.service.GeoService;
 import org.opengis.filter.Filter;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
@@ -55,6 +65,8 @@ import java.util.Map;
 @Scope("thread")
 public class SecurityContextImpl implements SecurityContext {
 
+	private Logger log = LoggerFactory.getLogger(SecurityManagerImpl.class);
+
 	private List<Authentication> authentications = new ArrayList<Authentication>();
 
 	private String id; // SecurityContext id
@@ -68,6 +80,15 @@ public class SecurityContextImpl implements SecurityContext {
 
 	@Autowired
 	private FilterService filterService;
+
+	@Autowired
+	private ApplicationService applicationService;
+
+	@Autowired
+	private DtoConverterService converterService;
+
+	@Autowired
+	private GeoService geoService;
 
 	void setAuthentications(List<Authentication> authentications) {
 		this.authentications.clear();
@@ -324,28 +345,135 @@ public class SecurityContextImpl implements SecurityContext {
 	/**
 	 * @inheritDoc
 	 */
-	public boolean isAttributeReadable(String layerId, InternalFeature feature, String attributeName) {
-		return false;  //To change body of implemented methods use File | Settings | File Templates.
+	public Geometry getVisibleArea(final String layerId) {
+		return areaCombine(layerId, new AreaCombineGetter() {
+			public Geometry get(AreaAuthorization auth) {
+				return auth.getVisibleArea(layerId);
+			}
+		});
 	}
 
+	private Geometry areaCombine(String layerId, AreaCombineGetter areaGetter) {
+System.out.println("appService"+applicationService);
+		VectorLayer layer = applicationService.getVectorLayer(layerId);
+System.out.println("layer "+layer);
+		if (null == layer) {
+			log.error("areaCombine on unknown layer " + layerId);
+			return null;
+		}
+		VectorLayerInfo layerInfo = layer.getLayerInfo();
+
+		// base is the max bounds of the layer
+		Envelope maxBounds = converterService.toInternal(layerInfo.getMaxExtent());
+		PrecisionModel precisionModel  = new PrecisionModel(PrecisionModel.FLOATING);
+		GeometryFactory geometryFactory = new GeometryFactory(precisionModel);
+		Geometry geometry = geometryFactory.toGeometry(maxBounds);
+
+		// limit based on authorizations
+		for (Authentication authentication : authentications) {
+			for (BaseAuthorization authorization : authentication.getAuthorizations()) {
+				if (authorization instanceof AreaAuthorization) {
+					geometry = geometry.intersection(areaGetter.get((AreaAuthorization)authorization));
+				}
+			}
+		}
+		return geometry;
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public boolean isPartlyVisibleSufficient(final String layerId) {
+		return areaPartlySufficientCombine(new AreaPartlySufficientGetter() {
+			public boolean get(AreaAuthorization auth) {
+				return auth.isPartlyVisibleSufficient(layerId);
+			}
+		});
+	}
+
+	private boolean areaPartlySufficientCombine(AreaPartlySufficientGetter partlySufficientGetter) {
+		for (Authentication authentication : authentications) {
+			for (BaseAuthorization authorization : authentication.getAuthorizations()) {
+				if (authorization instanceof AreaAuthorization) {
+					if (!partlySufficientGetter.get((AreaAuthorization)authorization)) {
+						return false;
+					}
+				}
+			}
+		}
+		return true;
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public Geometry getUpdateAuthorizedArea(final String layerId) {
+		return areaCombine(layerId, new AreaCombineGetter() {
+			public Geometry get(AreaAuthorization auth) {
+				return auth.getUpdateAuthorizedArea(layerId);
+			}
+		});
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public boolean isPartlyUpdateAuthorizedSufficient(final String layerId) {
+		return areaPartlySufficientCombine(new AreaPartlySufficientGetter() {
+			public boolean get(AreaAuthorization auth) {
+				return auth.isPartlyUpdateAuthorizedSufficient(layerId);
+			}
+		});
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public Geometry getCreateAuthorizedArea(final String layerId) {
+		return areaCombine(layerId, new AreaCombineGetter() {
+			public Geometry get(AreaAuthorization auth) {
+				return auth.getCreateAuthorizedArea(layerId);
+			}
+		});
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public boolean isPartlyCreateAuthorizedSufficient(final String layerId) {
+		return areaPartlySufficientCombine(new AreaPartlySufficientGetter() {
+			public boolean get(AreaAuthorization auth) {
+				return auth.isPartlyCreateAuthorizedSufficient(layerId);
+			}
+		});
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public Geometry getDeleteAuthorizedArea(final String layerId) {
+		return areaCombine(layerId, new AreaCombineGetter() {
+			public Geometry get(AreaAuthorization auth) {
+				return auth.getDeleteAuthorizedArea(layerId);
+			}
+		});
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public boolean isPartlyDeleteAuthorizedSufficient(final String layerId) {
+		return areaPartlySufficientCombine(new AreaPartlySufficientGetter() {
+			public boolean get(AreaAuthorization auth) {
+				return auth.isPartlyDeleteAuthorizedSufficient(layerId);
+			}
+		});
+	}
+	
 	/**
 	 * @inheritDoc
 	 */
 	public boolean isFeatureVisible(String layerId, InternalFeature feature) {
-		return false;  //To change body of implemented methods use File | Settings | File Templates.
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public Geometry getVisibleArea(String layerId, CoordinateReferenceSystem crs) {
-		return null;  //To change body of implemented methods use File | Settings | File Templates.
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public boolean isPartlyVisibleSufficient(String layerId) {
 		return false;  //To change body of implemented methods use File | Settings | File Templates.
 	}
 
@@ -359,28 +487,7 @@ public class SecurityContextImpl implements SecurityContext {
 	/**
 	 * @inheritDoc
 	 */
-	public boolean isAttributeWritable(String layerId, InternalFeature feature, String attributeName) {
-		return false;  //To change body of implemented methods use File | Settings | File Templates.
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public Geometry getUpdateAuthorizedArea(String layerId, CoordinateReferenceSystem crs) {
-		return null;  //To change body of implemented methods use File | Settings | File Templates.
-	}
-
-	/**
-	 * @inheritDoc
-	 */
 	public boolean isFeatureUpdateAuthorized(String layerId, InternalFeature orgFeature, InternalFeature newFeature) {
-		return false;  //To change body of implemented methods use File | Settings | File Templates.
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public boolean isPartlyUpdateAuthorizedSufficient(String layerId) {
 		return false;  //To change body of implemented methods use File | Settings | File Templates.
 	}
 
@@ -401,28 +508,42 @@ public class SecurityContextImpl implements SecurityContext {
 	/**
 	 * @inheritDoc
 	 */
-	public Geometry getCreateAuthorizedArea(String layerId, CoordinateReferenceSystem crs) {
-		return null;  //To change body of implemented methods use File | Settings | File Templates.
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public boolean isPartlyCreateAuthorizedSufficient(String layerId) {
+	public boolean isAttributeReadable(String layerId, InternalFeature feature, String attributeName) {
 		return false;  //To change body of implemented methods use File | Settings | File Templates.
 	}
 
 	/**
 	 * @inheritDoc
 	 */
-	public Geometry getDeleteAuthorizedArea(String layerId, CoordinateReferenceSystem crs) {
-		return null;  //To change body of implemented methods use File | Settings | File Templates.
+	public boolean isAttributeWritable(String layerId, InternalFeature feature, String attributeName) {
+		return false;  //To change body of implemented methods use File | Settings | File Templates.
 	}
 
 	/**
-	 * @inheritDoc
+	 * Interface to unify/generalise the different areas.
 	 */
-	public boolean isPartlyDeleteAuthorizedSufficient(String layerId) {
-		return false;  //To change body of implemented methods use File | Settings | File Templates.
+	private interface AreaCombineGetter {
+
+		/**
+		 * Get the area which needs to be combined.
+		 *
+		 * @param auth authorization object to get data from
+		 * @return area to combine
+		 */
+		Geometry get(AreaAuthorization auth);
+	}
+
+	/**
+	 * Interface to unify/generalise the different areas.
+	 */
+	private interface AreaPartlySufficientGetter {
+
+		/**
+		 * Get the "partly sufficient" status.
+		 *
+		 * @param auth authorization object to get data from
+		 * @return true when part in area is sufficient
+		 */
+		boolean get(AreaAuthorization auth);
 	}
 }

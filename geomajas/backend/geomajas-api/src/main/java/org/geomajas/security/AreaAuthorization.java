@@ -24,7 +24,6 @@
 package org.geomajas.security;
 
 import com.vividsolutions.jts.geom.Geometry;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * Authorizations based on area.
@@ -40,12 +39,13 @@ public interface AreaAuthorization extends BaseAuthorization {
 	 * <p/>
 	 * The return value should be consistent with the isLayerVisible() method. If isLayerVisible() is false,
 	 * this method should return null. If isLayerVisible() is true, a Geometry should be returned.
+	 * <p/>
+	 * Geometry coordinates need to be in layer coordinate space.
 	 *
 	 * @param layerId layer id for which the visible area should be returned
-	 * @param crs crs which should be used in the returned {@link com.vividsolutions.jts.geom.Geometry}
 	 * @return geometry which indicates the visible area or null when nothing is visible
 	 */
-	Geometry getVisibleArea(String layerId, CoordinateReferenceSystem crs);
+	Geometry getVisibleArea(String layerId);
 
 	/**
 	 * Indicates whether features which only partly fall inside the visible area are still considered visible.
@@ -66,12 +66,13 @@ public interface AreaAuthorization extends BaseAuthorization {
 	 * <p/>
 	 * The return value should also be consistent with getVisibleArea(). The returned area should be contained in the
 	 * visible area.
+	 * <p/>
+	 * Geometry coordinates need to be in layer coordinate space.
 	 *
 	 * @param layerId layer id for which the area where updates are allowed should be returned
-	 * @param crs crs which should be used in the returned {@link com.vividsolutions.jts.geom.Geometry}
 	 * @return geometry which indicates the updatable area or null when nothing is updatable
 	 */
-	Geometry getUpdateAuthorizedArea(String layerId, CoordinateReferenceSystem crs);
+	Geometry getUpdateAuthorizedArea(String layerId);
 
 	/**
 	 * Indicates whether features which only partly fall inside the updatable area are still considered updatable.
@@ -92,12 +93,13 @@ public interface AreaAuthorization extends BaseAuthorization {
 	 * <p/>
 	 * The return value should also be consistent with getVisibleArea(). The returned area should be contained in the
 	 * visible area.
+	 * <p/>
+	 * Geometry coordinates need to be in layer coordinate space.
 	 *
 	 * @param layerId layer id for which the area where creating features is allowed should be returned
-	 * @param crs crs which should be used in the returned {@link com.vividsolutions.jts.geom.Geometry}
 	 * @return geometry which indicates the area where creation is allowed or null when nothing can be created
 	 */
-	Geometry getCreateAuthorizedArea(String layerId, CoordinateReferenceSystem crs);
+	Geometry getCreateAuthorizedArea(String layerId);
 
 	/**
 	 * Indicates whether features which only partly fall inside the area where creation is allowed are still allowed
@@ -119,12 +121,13 @@ public interface AreaAuthorization extends BaseAuthorization {
 	 * <p/>
 	 * The return value should also be consistent with getVisibleArea(). The returned area should be contained in the
 	 * visible area.
+	 * <p/>
+	 * Geometry coordinates need to be in layer coordinate space.
 	 *
 	 * @param layerId layer id for which the area where creating features is allowed should be returned
-	 * @param crs crs which should be used in the returned {@link com.vividsolutions.jts.geom.Geometry}
 	 * @return geometry which indicates the area in which deletion is allowed or null when nothing can be deleted
 	 */
-	Geometry getDeleteAuthorizedArea(String layerId, CoordinateReferenceSystem crs);
+	Geometry getDeleteAuthorizedArea(String layerId);
 
 	/**
 	 * Indicates whether features which only partly fall inside the deletable area are still considered deletable.
