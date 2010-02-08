@@ -354,9 +354,7 @@ public class SecurityContextImpl implements SecurityContext {
 	}
 
 	private Geometry areaCombine(String layerId, AreaCombineGetter areaGetter) {
-System.out.println("appService"+applicationService);
 		VectorLayer layer = applicationService.getVectorLayer(layerId);
-System.out.println("layer "+layer);
 		if (null == layer) {
 			log.error("areaCombine on unknown layer " + layerId);
 			return null;
@@ -373,7 +371,7 @@ System.out.println("layer "+layer);
 		for (Authentication authentication : authentications) {
 			for (BaseAuthorization authorization : authentication.getAuthorizations()) {
 				if (authorization instanceof AreaAuthorization) {
-					geometry = geometry.intersection(areaGetter.get((AreaAuthorization)authorization));
+					geometry = geometry.intersection(areaGetter.get((AreaAuthorization) authorization));
 				}
 			}
 		}
@@ -395,7 +393,7 @@ System.out.println("layer "+layer);
 		for (Authentication authentication : authentications) {
 			for (BaseAuthorization authorization : authentication.getAuthorizations()) {
 				if (authorization instanceof AreaAuthorization) {
-					if (!partlySufficientGetter.get((AreaAuthorization)authorization)) {
+					if (!partlySufficientGetter.get((AreaAuthorization) authorization)) {
 						return false;
 					}
 				}
