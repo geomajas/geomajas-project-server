@@ -20,8 +20,10 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.geomajas.command;
+package org.geomajas.command.general;
 
+import org.geomajas.command.Command;
+import org.geomajas.command.CommandResponse;
 import org.geomajas.command.dto.LogRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

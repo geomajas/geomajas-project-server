@@ -854,7 +854,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
       "command" prefix, the "Command" suffix is removed from the name if
       present. When the resulting name starts or end with the sub package,
       then that is removed as well. For example the
-      "org.geomajas.extension.command.configuration.GetConfigurationCommand"
+      "org.geomajas.command.configuration.GetConfigurationCommand"
       class will get "command.configuration.Get" as registry key.</para>
 
       <para><table>
@@ -883,7 +883,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
               <row>
                 <entry>Request object class</entry>
 
-                <entry>org.geomajas.extension.command.dto.GetAssociationRequest</entry>
+                <entry>org.geomajas.command.dto.GetAssociationRequest</entry>
               </row>
 
               <row>
@@ -909,7 +909,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
               <row>
                 <entry>Response object class</entry>
 
-                <entry>org.geomajas.extension.command.dto.GetAssociationResponse</entry>
+                <entry>org.geomajas.command.dto.GetAssociationResponse</entry>
               </row>
 
               <row>
@@ -971,7 +971,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
               <row>
                 <entry>Response object class</entry>
 
-                <entry>org.geomajas.extension.command.dto.GetConfigurationResponse</entry>
+                <entry>org.geomajas.command.dto.GetConfigurationResponse</entry>
               </row>
 
               <row>
@@ -1027,7 +1027,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
               <row>
                 <entry>Request object class</entry>
 
-                <entry>org.geomajas.extension.command.dto.GetMapConfigurationRequest</entry>
+                <entry>org.geomajas.command.dto.GetMapConfigurationRequest</entry>
               </row>
 
               <row>
@@ -1051,7 +1051,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
               <row>
                 <entry>Response object class</entry>
 
-                <entry>org.geomajas.extension.command.dto.GetMapConfigurationResponse</entry>
+                <entry>org.geomajas.command.dto.GetMapConfigurationResponse</entry>
               </row>
 
               <row>
@@ -1216,7 +1216,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
               <row>
                 <entry>Registry key</entry>
 
-                <entry>command.Log</entry>
+                <entry>command.general.Log</entry>
               </row>
 
               <row>
@@ -1228,7 +1228,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
               <row>
                 <entry>Request object class</entry>
 
-                <entry>org.geomajas.extension.command.dto.LogRequest</entry>
+                <entry>org.geomajas.command.dto.LogRequest</entry>
               </row>
 
               <row>
@@ -1679,7 +1679,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
               <row>
                 <entry>Request object class</entry>
 
-                <entry>org.geomajas.extension.command.dto.SearchFeatureRequest</entry>
+                <entry>org.geomajas.command.dto.SearchFeatureRequest</entry>
               </row>
 
               <row>
@@ -1729,7 +1729,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
               <row>
                 <entry>Response object class</entry>
 
-                <entry>org.geomajas.extension.command.dto.SearchFeatureResponse</entry>
+                <entry>org.geomajas.command.dto.SearchFeatureResponse</entry>
               </row>
 
               <row>
@@ -1917,7 +1917,7 @@ import org.springframework.stereotype.Component;
 @Component()
 public class MySuperDoItCommand implements Command&lt;MySuperDoItRequest, MySuperDoItResponse&gt; {
 
-    private final Logger log = LoggerFactory.getLogger(LogCommand.class);
+    private final Logger log = LoggerFactory.getLogger(MySuperDoItCommand.class);
 
     public MySuperDoItResponse getEmptyCommandResponse() {
         return new MySuperDoItResponse();

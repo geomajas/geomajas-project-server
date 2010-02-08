@@ -44,7 +44,7 @@ public class MyClass {
     private ApplicationContainer applicationContainer;
 
     public void myMethod() {
-        Command command = applicationContext.getBean("controller.LogCommand", Command.class);
+        Command command = applicationContext.getBean("controller.general.LogCommand", Command.class);
         .....</programlisting>
 
     <para>We recommend using the annotations when possible.</para>

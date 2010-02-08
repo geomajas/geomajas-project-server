@@ -58,6 +58,13 @@
         <para><code>GeotoolsLayer</code> has been renamed
         <code>GeoToolsLayer</code>.</para>
       </listitem>
+
+      <listitem>
+        <para>With the change in directory structure, the commands have moved
+        from the <code>org.geomajas.extension.command</code> package to
+        <code>org.geomajas.command</code>. The <code>LogCommand</code> has
+        also been moved into the <code>general</code> sub-package.</para>
+      </listitem>
     </itemizedlist>
 
     <section>
@@ -87,7 +94,7 @@
           2 versions remain at the moment: a DTO feature
           (<code>org.geomajas.layer.feature.Feature</code>) and a feature
           definition used internally in the backed
-          (<code>org.geomajas.layer.feature.InternalFeature</code>). </para>
+          (<code>org.geomajas.layer.feature.InternalFeature</code>).</para>
         </listitem>
 
         <listitem>

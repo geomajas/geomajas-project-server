@@ -25,7 +25,7 @@ package org.geomajas.command.dto;
 import org.geomajas.command.CommandRequest;
 
 /**
- * Request object for {@link org.geomajas.command.LogCommand}.
+ * Request object for {@link org.geomajas.command.general.LogCommand}.
  *
  * @author Joachim Van der Auwera
  */
