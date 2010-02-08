@@ -1,5 +1,14 @@
 <Configure class="org.mortbay.jetty.webapp.WebAppContext">
 
+	<Set name="serverClasses">
+		<Array type="java.lang.String">
+
+			<!-- remove slf4j from server classes -->
+			<Item>-org.slf4j.</Item>
+
+		</Array>
+	</Set>
+
 	<Set name="systemClasses">
 		<Array type="java.lang.String">
 
