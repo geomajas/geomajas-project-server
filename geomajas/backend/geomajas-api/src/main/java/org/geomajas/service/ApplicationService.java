@@ -29,54 +29,11 @@ import org.geomajas.layer.VectorLayer;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
- * Container class which contains runtime information about the parameters and other information for Geomajas. Values
- * are injected using Spring.
+ * Utility service which is used to get some global data.
  *
  * @author Joachim Van der Auwera
  */
 public interface ApplicationService {
-
-	/**
-	 * Get the directory where the tile cache should be stored.
-	 *
-	 * @return tile cache location
-	 */
-	String getTileCacheDirectory();
-
-	/**
-	 * Set the directory where the tile cache should be stored.
-	 *
-	 * @param tileCacheDirectory tile cache location
-	 */
-	void setTileCacheDirectory(String tileCacheDirectory);
-
-	/**
-	 * Get maximum number of cached tiles for the tile cache.
-	 *
-	 * @return maximum number of tiles which are cached
-	 */
-	int getTileCacheMaximumSize();
-
-	/**
-	 * Set the maximum number of tiles which may be cached.
-	 *
-	 * @param tileCacheMaximumSize maximum number of tiles which are cached
-	 */
-	void setTileCacheMaximumSize(int tileCacheMaximumSize);
-
-	/**
-	 * Check whether the tile cache is enabled.
-	 *
-	 * @return true when tile cache should be used
-	 */
-	boolean isTileCacheEnabled();
-
-	/**
-	 * Set whether the tile cache should be used or not.
-	 *
-	 * @param tileCacheEnabled new status
-	 */
-	void setTileCacheEnabled(boolean tileCacheEnabled);
 
 	/**
 	 * Get the layer with given id.

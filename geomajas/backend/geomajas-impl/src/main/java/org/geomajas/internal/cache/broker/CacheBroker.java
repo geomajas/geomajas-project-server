@@ -29,6 +29,7 @@ import org.geomajas.cache.algorithm.CachingAlgorithm;
 import org.geomajas.cache.broker.Broker;
 import org.geomajas.cache.store.ContentStore;
 import org.geomajas.cache.store.RenderContent;
+import org.geomajas.configuration.TileCacheConfiguration;
 import org.geomajas.internal.cache.algorithm.RoundRobinCachingAlgorithm;
 import org.geomajas.internal.cache.store.FileContentStore;
 import org.geomajas.layer.VectorLayer;
@@ -60,7 +61,10 @@ public class CacheBroker implements Broker {
 	private ApplicationContext applicationContext;
 
 	@Autowired
-	private ApplicationService runtime;
+	private ApplicationService applicationService;
+
+	@Autowired
+	private TileCacheConfiguration tileCacheConfiguration;
 
 	private boolean initialised;
 
@@ -84,8 +88,8 @@ public class CacheBroker implements Broker {
 	 */
 	public void init() throws CacheException {
 		if (!initialised) {
-			contentStore = new FileContentStore(new File(runtime.getTileCacheDirectory()));
-			algorithm = new RoundRobinCachingAlgorithm(runtime.getTileCacheMaximumSize());
+			contentStore = new FileContentStore(new File(tileCacheConfiguration.getTileCacheDirectory()));
+			algorithm = new RoundRobinCachingAlgorithm(tileCacheConfiguration.getTileCacheMaximumSize());
 			initialised = true;
 		}
 	}
@@ -157,7 +161,7 @@ public class CacheBroker implements Broker {
 		String layerId = (String) params.get(CacheService.PARAM_LAYER_ID);
 		VectorLayer vLayer;
 		try {
-			vLayer = runtime.getVectorLayer(layerId);
+			vLayer = applicationService.getVectorLayer(layerId);
 		} catch (NullPointerException e) {
 			return false;
 		}

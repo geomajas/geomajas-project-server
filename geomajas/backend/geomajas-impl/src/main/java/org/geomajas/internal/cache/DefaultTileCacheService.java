@@ -27,7 +27,7 @@ import org.geomajas.cache.CacheException;
 import org.geomajas.cache.TileCacheService;
 import org.geomajas.cache.broker.Broker;
 import org.geomajas.cache.store.RenderContent;
-import org.geomajas.service.ApplicationService;
+import org.geomajas.configuration.TileCacheConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,7 +79,8 @@ public class DefaultTileCacheService implements TileCacheService {
 	private Broker realTime;
 
 	@Autowired
-	private ApplicationService runtimeParameters;
+	private TileCacheConfiguration tileCacheConfiguration;
+
 
 	// -------------------------------------------------------------------------
 	// Class specific functions:
@@ -98,7 +99,7 @@ public class DefaultTileCacheService implements TileCacheService {
 		log.info("Getting tile for ID=" + renderContent.getId());
 
 		// Try to get the content from the cache:
-		if (runtimeParameters.isTileCacheEnabled()) {
+		if (tileCacheConfiguration.isTileCacheEnabled()) {
 			try {
 				if (cache.read(renderContent)) {
 					return renderContent;

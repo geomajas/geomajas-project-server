@@ -27,7 +27,7 @@ import org.geomajas.cache.CacheException;
 import org.geomajas.cache.CacheService;
 import org.geomajas.cache.TileCacheService;
 import org.geomajas.cache.store.RenderContent;
-import org.geomajas.service.ApplicationService;
+import org.geomajas.configuration.TileCacheConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -112,15 +112,15 @@ public class TileImageServlet extends HttpServlet {
 			}
 		}
 
-		ApplicationService runtime =
-				applicationContext.getBean("service.ApplicationService", ApplicationService.class);
-		runtime.setTileCacheDirectory(baseDirectory.getAbsolutePath());
+		TileCacheConfiguration tileCacheConfiguration =
+				applicationContext.getBean("configuration.TileCacheConfiguration", TileCacheConfiguration.class);
+		tileCacheConfiguration.setTileCacheDirectory(baseDirectory.getAbsolutePath());
 		try {
-			runtime.setTileCacheMaximumSize(Integer.parseInt(maximumSize));
+			tileCacheConfiguration.setTileCacheMaximumSize(Integer.parseInt(maximumSize));
 		} catch (NumberFormatException nfe) {
 			log.warn("cacheMaximumSize {} cannot be converted to integer", maximumSize);
 		}
-		runtime.setTileCacheEnabled(useCache);
+		tileCacheConfiguration.setTileCacheEnabled(useCache);
 
 		service = applicationContext.getBean("internal.cache.TileCacheService", TileCacheService.class);
 	}

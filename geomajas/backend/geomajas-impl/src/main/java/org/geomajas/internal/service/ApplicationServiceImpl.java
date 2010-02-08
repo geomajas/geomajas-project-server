@@ -46,73 +46,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class ApplicationServiceImpl implements ApplicationService {
 
-	private String tileCacheDirectory;
-	private int tileCacheMaximumSize;
-	private boolean tileCacheEnabled;
-
 	@Autowired
 	private ApplicationInfo applicationInfo;
-
-	public ApplicationServiceImpl() {
-	}
-
-	public ApplicationServiceImpl(ApplicationInfo applicationInfo) {
-		this.applicationInfo = applicationInfo;
-	}
-
-	/**
-	 * Get the directory where the tile cache should be stored.
-	 *
-	 * @return tile cache location
-	 */
-	public String getTileCacheDirectory() {
-		return tileCacheDirectory;
-	}
-
-	/**
-	 * Set the directory where the tile cache should be stored.
-	 *
-	 * @param tileCacheDirectory tile cache location
-	 */
-	public void setTileCacheDirectory(String tileCacheDirectory) {
-		this.tileCacheDirectory = tileCacheDirectory;
-	}
-
-	/**
-	 * Get maximum number of cached tiles for the tile cache.
-	 *
-	 * @return maximum number of tiles which are cached
-	 */
-	public int getTileCacheMaximumSize() {
-		return tileCacheMaximumSize;
-	}
-
-	/**
-	 * Set the maximum number of tiles which may be cached.
-	 *
-	 * @param tileCacheMaximumSize maximum number of tiles which are cached
-	 */
-	public void setTileCacheMaximumSize(int tileCacheMaximumSize) {
-		this.tileCacheMaximumSize = tileCacheMaximumSize;
-	}
-
-	/**
-	 * Check whether the tile cache is enabled.
-	 *
-	 * @return true when tile cache should be used
-	 */
-	public boolean isTileCacheEnabled() {
-		return tileCacheEnabled;
-	}
-
-	/**
-	 * Set whether the tile cache should be used or not.
-	 *
-	 * @param tileCacheEnabled new status
-	 */
-	public void setTileCacheEnabled(boolean tileCacheEnabled) {
-		this.tileCacheEnabled = tileCacheEnabled;
-	}
 
 	public VectorLayer getVectorLayer(String id) {
 		Layer layer = getLayer(id);

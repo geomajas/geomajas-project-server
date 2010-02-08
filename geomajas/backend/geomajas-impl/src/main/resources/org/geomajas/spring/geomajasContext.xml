@@ -38,6 +38,10 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 		</property>
 	</bean>
 
+	<bean name="configuration.TileCacheConfiguration" class="org.geomajas.configuration.TileCacheConfiguration">
+		<!-- no default configuration -->
+	</bean>
+
 	<bean class="org.springframework.beans.factory.config.CustomScopeConfigurer">
 		<property name="scopes">
 			<map>
