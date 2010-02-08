@@ -74,7 +74,7 @@ dojo.declare("LabeledTile", RenderedTile, {
 		this.cache.onTileFetching();
 		// IE commands executed in sync to avoid the VML jitter !!!!
         var command = new JsonCommand("command.render.GetRenderedTile",
-                "org.geomajas.extension.command.dto.GetRenderedTileRequest", null, dojo.isIE > 0 ? true : false);
+                "org.geomajas.command.dto.GetRenderedTileRequest", null, dojo.isIE > 0 ? true : false);
 		command.addParam("layerId", this.cache.layer.layerId);
         command.addParam("crs",this.cache.layer.getMapModel().getCrs());
 		command.addParam("code", this.code.toJSON());

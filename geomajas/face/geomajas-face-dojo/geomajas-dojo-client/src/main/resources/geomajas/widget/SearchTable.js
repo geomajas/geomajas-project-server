@@ -146,7 +146,7 @@ dojo.declare("geomajas.widget.SearchTable", [dijit._Widget, dijit._Templated, di
 			}
 
 			var command = new JsonCommand("command.feature.Search",
-                    "org.geomajas.extension.command.dto.SearchFeatureRequest", null, false);
+                    "org.geomajas.command.dto.SearchFeatureRequest", null, false);
 			command.addParam("layerId", this.layer.layerId);
 			command.addParam("crs", this.layer.mapModel.getCrs());
 			command.addParam("booleanOperator", "AND");

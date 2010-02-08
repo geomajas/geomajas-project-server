@@ -184,7 +184,7 @@ dojo.declare("SelectionController", MouseListener, {
 		var polygon = factory.createPolygon (linearRing, null);
 
 		var command = new JsonCommand("command.feature.SearchByLocation",
-                "org.geomajas.extension.command.dto.SearchByLocationRequest", null, false);
+                "org.geomajas.command.dto.SearchByLocationRequest", null, false);
 		command.addParam ("layerIds", [this.mapWidget.getMapModel().getSelectedLayer().getLayerId()]);
 		command.addParam ("searchType", 1);
 		command.addParam ("location", polygon);

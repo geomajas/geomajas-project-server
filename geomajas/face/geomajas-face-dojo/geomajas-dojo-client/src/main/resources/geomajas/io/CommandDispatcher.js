@@ -104,7 +104,7 @@ dojo.declare("CommandDispatcher", null, {
 	 * @param statement The statement to log on the server.
 	 */
 	logOnServer : function (level, statement) {
-		var command = new JsonCommand("command.Log", "org.geomajas.extension.command.dto.LogRequest", null, false);
+		var command = new JsonCommand("command.Log", "org.geomajas.command.dto.LogRequest", null, false);
 		command.addParam("level", level);
 		command.addParam("statement", statement);
 		var deferred = this.execute(command);

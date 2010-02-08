@@ -59,7 +59,7 @@ dojo.declare("SaveSplittingAction", Action, {
 		} else {
 			return;
 		}
-		var command = new JsonCommand("command.geometry.SplitPolygon","org.geomajas.extension.command.dto.SplitPolygonRequest", null, false);
+		var command = new JsonCommand("command.geometry.SplitPolygon","org.geomajas.command.dto.SplitPolygonRequest", null, false);
 		command.addParam("lineString", lineString);
 		command.addParam("polygon", polygon);
 		var deferred = geomajasConfig.dispatcher.execute(command);

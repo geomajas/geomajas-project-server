@@ -59,7 +59,7 @@ dojo.declare("CommitActivity", Activity, {
 		log.info("CommitActivity:start");
 		this.state = geomajas.ActivityState.RUNNING;
 		var command = new JsonCommand("command.feature.PersistTransaction",
-                "org.geomajas.extension.command.dto.PersistTransactionRequest", null, false);
+                "org.geomajas.command.dto.PersistTransactionRequest", null, false);
 		command.addParam("featureTransaction", this.featureTransaction.toJSON());
 		command.addParam("crs", this.featureTransaction.getCrs());
 		var deferred = this.dispatcher.execute(command);

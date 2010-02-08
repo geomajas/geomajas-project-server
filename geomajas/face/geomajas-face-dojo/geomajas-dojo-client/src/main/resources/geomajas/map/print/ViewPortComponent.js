@@ -54,7 +54,7 @@ dojo.declare("ViewPortComponent", MapComponent, {
 		if(!this.location){
 			this.location = new Coordinate(0, 0);
 		}
-		this.javaClass = "org.geomajas.extension.printing.component.ViewPortComponent";
+		this.javaClass = "org.geomajas.printing.component.ViewPortComponent";
 		// avoid json serialization of port bounds !
 		dojo.mixin(this.portBounds, {json : function() { return this;}});
 	},

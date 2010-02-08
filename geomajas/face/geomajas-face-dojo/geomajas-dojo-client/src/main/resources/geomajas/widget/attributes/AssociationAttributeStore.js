@@ -221,7 +221,7 @@ dojo.declare("AssociationAttributeStore", dojo.data.ItemFileReadStore, {
 	executeCommand: function () {
 		// prepare the command
 		var command = new JsonCommand("command.feature.GetAssociation",
-                "org.geomajas.extension.command.dto.GetAssociationRequest", null, true);
+                "org.geomajas.command.dto.GetAssociationRequest", null, true);
 		command.addParam("layerId", this.atDef.getLayer().layerId);
 		command.addParam("attributeName",this.atDef.getName());
 		var deferred =  geomajasConfig.dispatcher.execute(command);

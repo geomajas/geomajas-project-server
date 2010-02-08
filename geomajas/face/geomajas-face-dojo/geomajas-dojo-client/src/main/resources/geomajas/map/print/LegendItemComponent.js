@@ -31,20 +31,20 @@ dojo.declare("LegendItemComponent", BaseComponent, {
 	 * @constructor
 	 */
 	constructor : function (/* json object */ json, /* unique string */ id) {
-		this.javaClass = "org.geomajas.extension.printing.component.LegendItemComponent";
+		this.javaClass = "org.geomajas.printing.component.LegendItemComponent";
 	},
 	
 	init : function( /* style def */def, /* string */label, /* type */ type, /* font */ font) {
 		// icon component
 		var icon = new BaseComponent({
-			javaClass : "org.geomajas.extension.printing.component.LegendIconComponent",
+			javaClass : "org.geomajas.printing.component.LegendIconComponent",
 			label: label,
 			layerType: type,
 			def: def,
 			id : this.id+".icon"
 		});
 		var label = new LabelComponent({
-			javaClass : "org.geomajas.extension.printing.component.LabelComponent",
+			javaClass : "org.geomajas.printing.component.LabelComponent",
 			font: font,
 			text: label,
 			textOnly: true,

@@ -93,7 +93,7 @@ dojo.declare("PrintTemplateManager", null, {
 	
 	deletePrint : function (name) {
 		var command = new JsonCommand("command.print.DeleteTemplate",
-                "org.geomajas.extension.command.dto.PrintDeleteTemplateRequest", null, false);
+                "org.geomajas.command.dto.PrintDeleteTemplateRequest", null, false);
 		command.addParam("name", name);
 		var deferred = this.dispatcher.execute(command);
 		deferred.addCallback(this, "_deletePrintCallback");
@@ -188,7 +188,7 @@ dojo.declare("PrintTemplateManager", null, {
 			this.visitTemplate(visitor);
 		}
 		var command = new JsonCommand("command.print.GetTemplate",
-                "org.geomajas.extension.printing.command.dto.PrintGetTemplateRequest", null, false);
+                "org.geomajas.printing.command.dto.PrintGetTemplateRequest", null, false);
 		command.addParam("downloadMethod", 0);
 		command.addParam("fileName", this.currentPrint.getName()+".pdf");
 		command.addParam("template", this.currentPrint);
@@ -246,7 +246,7 @@ dojo.declare("PrintTemplateManager", null, {
 	
 	_savePrint : function () {
 		var command = new JsonCommand("command.print.SaveTemplate",
-                "org.geomajas.extension.printing.command.dto.PrintSaveTemplateRequest", null, false);
+                "org.geomajas.printing.command.dto.PrintSaveTemplateRequest", null, false);
 		command.addParam("template",this.currentPrint);
 		var deferred = this.dispatcher.execute(command);
 		deferred.addCallback(this, "_savePrintCallback");

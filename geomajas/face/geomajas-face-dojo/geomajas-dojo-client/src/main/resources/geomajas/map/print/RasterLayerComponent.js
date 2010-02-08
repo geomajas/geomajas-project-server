@@ -31,7 +31,7 @@ dojo.declare("RasterLayerComponent", BaseComponent, {
 	 * @constructor
 	 */
 	constructor : function (/* json object */ json, /* unique string */ id) {
-		this.javaClass = "org.geomajas.extension.printing.component.RasterLayerComponent";
+		this.javaClass = "org.geomajas.printing.component.RasterLayerComponent";
 	},
 
 	setLayer : function (layer) {

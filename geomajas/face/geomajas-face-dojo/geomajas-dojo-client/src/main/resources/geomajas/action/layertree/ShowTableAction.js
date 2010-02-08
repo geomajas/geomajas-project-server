@@ -104,7 +104,7 @@ dojo.declare("ShowTableAction", LayerTreeAction, {
 		for (var i=0; i<this.features.length; i++) {
 			ids.push(this.features[i].getLocalId());
 		}
-		var command = new JsonCommand("command.feature.GetAttributes","org.geomajas.extension.command.dto.GetAttributesRequest", null, true);
+		var command = new JsonCommand("command.feature.GetAttributes","org.geomajas.command.dto.GetAttributesRequest", null, true);
 		command.addParam("layerId", layerId);
 		command.addParam("featureIds", ids);
 		var deferred = geomajasConfig.dispatcher.execute(command);

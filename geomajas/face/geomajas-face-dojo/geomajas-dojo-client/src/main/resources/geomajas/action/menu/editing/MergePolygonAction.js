@@ -59,7 +59,7 @@ dojo.declare("MergePolygonAction", Action, {
 				polygons.push(geom);
 			}
 
-			var command = new JsonCommand("command.geometry.MergePolygon","org.geomajas.extension.command.dto.MergePolygonRequest", null, false);
+			var command = new JsonCommand("command.geometry.MergePolygon","org.geomajas.command.dto.MergePolygonRequest", null, false);
 			command.addParam("polygons", polygons);
 			command.addParam("allowMultiPolygon", true);
 			var deferred = geomajasConfig.dispatcher.execute(command);

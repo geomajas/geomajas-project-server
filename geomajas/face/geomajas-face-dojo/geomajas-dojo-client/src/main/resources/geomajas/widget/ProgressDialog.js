@@ -78,7 +78,7 @@ dojo.declare("geomajas.widget.ProgressDialog", dijit.Dialog, {
 	 */
 	_fetchProgress : function () {
 		var command = new JsonCommand("command.progress.Get",
-                "org.geomajas.extension.command.dto.GetProgressRequest", null, false);
+                "org.geomajas.command.dto.GetProgressRequest", null, false);
 		command.addParam("taskId", this.progressId);
 
 		var deferred = geomajasConfig.dispatcher.execute(command);

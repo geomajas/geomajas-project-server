@@ -55,7 +55,7 @@ dojo.declare("ZoomToMaximumExtentAction", ToolbarAction, {
 	},
 	
 	_getMaxExtent : function () {
-		var command = new JsonCommand("command.configuration.UserMaximumExtent","org.geomajas.extension.command.dto.UserMaximumExtentRequest", null, false);
+		var command = new JsonCommand("command.configuration.UserMaximumExtent","org.geomajas.command.dto.UserMaximumExtentRequest", null, false);
 		command.addParam("mapId", this.mapWidget.getMapModel().getId());
 		command.addParam("excludeRasterLayers", this.excludeRasterLayers);
 		command.addParam("includeLayers", this.includeLayers);

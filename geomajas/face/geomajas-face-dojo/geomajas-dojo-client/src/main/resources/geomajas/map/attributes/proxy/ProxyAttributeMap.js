@@ -37,7 +37,7 @@ dojo.declare("ProxyAttributeMap", null, {
 
 	getValue : function () {
 		var command = new JsonCommand("command.feature.GetAttributes",
-                "org.geomajas.extension.command.dto.GetAttributesRequest", null, true);
+                "org.geomajas.command.dto.GetAttributesRequest", null, true);
 		command.addParam("layerId", this.layerId);
 		command.addParam("featureIds", [this.featureId]);
 		var deferred = geomajasConfig.dispatcher.execute(command);

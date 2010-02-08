@@ -537,7 +537,7 @@ dojo.declare("MapModel", PainterVisitable, {
 			var point = factory.createPoint(worldPos);
 
 			var command = new JsonCommand("command.feature.SearchByLocation",
-                    "org.geomajas.extension.command.dto.SearchByLocationRequest", null, false);
+                    "org.geomajas.command.dto.SearchByLocationRequest", null, false);
             command.addParam ("crs", this.crs);
 			command.addParam ("layerIds", layerIds);
 			command.addParam ("location", point);

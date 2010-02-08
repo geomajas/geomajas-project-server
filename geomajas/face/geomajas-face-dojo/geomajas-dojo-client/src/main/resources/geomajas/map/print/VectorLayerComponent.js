@@ -31,7 +31,7 @@ dojo.declare("VectorLayerComponent", BaseComponent, {
 	 * @constructor
 	 */
 	constructor : function (/* json object */ json, /* unique string */ id) {
-		this.javaClass = "org.geomajas.extension.printing.component.VectorLayerComponent";
+		this.javaClass = "org.geomajas.printing.component.VectorLayerComponent";
 	},
 	
 	setLayer : function (layer) {
