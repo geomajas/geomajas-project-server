@@ -51,7 +51,7 @@ public class SecurityContextBaseAuthorizationTest {
 		authentication.setAuthorizations(
 				new BaseAuthorization[]{new AllowAllAuthorization(), new AllowNoneAuthorization()});
 		authentications.add(authentication);
-		securityContext.setAuthentications(authentications);
+		securityContext.setAuthentications("token", authentications);
 		Assert.assertTrue(securityContext.isToolAuthorized(TOOL_ID));
 		Assert.assertTrue(securityContext.isCommandAuthorized(COMMAND_NAME));
 		Assert.assertTrue(securityContext.isLayerVisible(Layer_ID));
@@ -69,7 +69,7 @@ public class SecurityContextBaseAuthorizationTest {
 		authentication.setAuthorizations(
 				new BaseAuthorization[]{new AllowNoneAuthorization(), new AllowAllAuthorization()});
 		authentications.add(authentication);
-		securityContext.setAuthentications(authentications);
+		securityContext.setAuthentications("token", authentications);
 		Assert.assertTrue(securityContext.isToolAuthorized(TOOL_ID));
 		Assert.assertTrue(securityContext.isCommandAuthorized(COMMAND_NAME));
 		Assert.assertTrue(securityContext.isLayerVisible(Layer_ID));
@@ -89,7 +89,7 @@ public class SecurityContextBaseAuthorizationTest {
 		authentication = new Authentication();
 		authentication.setAuthorizations(new BaseAuthorization[]{new AllowAllAuthorization()});
 		authentications.add(authentication);
-		securityContext.setAuthentications(authentications);
+		securityContext.setAuthentications("token", authentications);
 		Assert.assertTrue(securityContext.isToolAuthorized(TOOL_ID));
 		Assert.assertTrue(securityContext.isCommandAuthorized(COMMAND_NAME));
 		Assert.assertTrue(securityContext.isLayerVisible(Layer_ID));

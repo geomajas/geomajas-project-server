@@ -21,31 +21,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.security;
+package org.geomajas.plugin.springsecurity.configuration;
 
-import java.util.List;
+import org.geomajas.security.BaseAuthorization;
 
 /**
- * The security context is a thread scoped service which allows you to query the authorization details for the
- * logged in user.
+ * Authorization info, which needs to be convertable to a {@link org.geomajas.security.BaseAuthorization} class.
  *
  * @author Joachim Van der Auwera
  */
-public interface SecurityContext extends Authorization, UserInfo {
+public interface AuthorizationInfo {
 
-	/**
-	 * Get the direct replies of the security services which build the security context.
-	 * <p/>
-	 * In principle this method should not be used.
-	 *
-	 * @return array of security service id's
-	 */
-	List<Authentication> getSecurityServiceResults();
-
-	/**
-	 * Get the token which was used for the authentication.
-	 *
-	 * @return token which was used.
-	 */
-	String getToken();
+	BaseAuthorization getAuthorization();
 }

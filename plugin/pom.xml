@@ -17,6 +17,7 @@
 		<module>geomajas-layer-openstreetmaps</module>
 		<module>geomajas-layer-wms</module>
 		<module>geomajas-plugin-printing</module>
+		<module>geomajas-plugin-springsecurity</module>
 	</modules>
 
 </project>

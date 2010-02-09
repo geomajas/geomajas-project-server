@@ -69,7 +69,7 @@ public class SecurityContextAttributeAuthorizationTest {
 		Authentication auth2 = getAuthentication(1); // base, allow all
 		authentications.add(auth1);
 		authentications.add(auth2);
-		securityContext.setAuthentications(authentications);
+		securityContext.setAuthentications("token", authentications);
 
 		InternalFeature feature = new InternalFeatureImpl();
 		Map<String, Object> attributes = new HashMap<String, Object>();
@@ -87,7 +87,7 @@ public class SecurityContextAttributeAuthorizationTest {
 		Authentication auth2 = getAttributeAuthentication();
 		authentications.add(auth1);
 		authentications.add(auth2);
-		securityContext.setAuthentications(authentications);
+		securityContext.setAuthentications("token", authentications);
 
 		InternalFeature feature = new InternalFeatureImpl();
 		Map<String, Object> attributes = new HashMap<String, Object>();
@@ -105,7 +105,7 @@ public class SecurityContextAttributeAuthorizationTest {
 		Authentication auth2 = getAttributeAuthentication();
 		authentications.add(auth1);
 		authentications.add(auth2);
-		securityContext.setAuthentications(authentications);
+		securityContext.setAuthentications("token", authentications);
 
 		InternalFeature feature = new InternalFeatureImpl();
 		Map<String, Object> attributes = new HashMap<String, Object>();
@@ -131,7 +131,7 @@ public class SecurityContextAttributeAuthorizationTest {
 		Authentication auth2 = getFeatureAuthentication();
 		authentications.add(auth1);
 		authentications.add(auth2);
-		securityContext.setAuthentications(authentications);
+		securityContext.setAuthentications("token", authentications);
 
 		InternalFeature feature = new InternalFeatureImpl();
 		Map<String, Object> attributes = new HashMap<String, Object>();

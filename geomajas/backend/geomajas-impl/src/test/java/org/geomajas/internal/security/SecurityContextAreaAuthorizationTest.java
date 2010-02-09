@@ -64,7 +64,7 @@ public class SecurityContextAreaAuthorizationTest {
 	@Test
 	public void testDefaultVisibleArea() throws Exception {
 		SecurityContextImpl securityContext = (SecurityContextImpl)this.securityContext;
-		securityContext.setAuthentications(null);
+		securityContext.setAuthentications(null, null);
 		Geometry geometry = securityContext.getVisibleArea(LAYER_ID);
 		Assert.assertNotNull(geometry);
 		PrecisionModel precisionModel  = new PrecisionModel(PrecisionModel.FLOATING);
@@ -99,7 +99,7 @@ public class SecurityContextAreaAuthorizationTest {
 		Authentication auth2 = getAreaAuthentication(1);
 		authentications.add(auth1);
 		authentications.add(auth2);
-		securityContext.setAuthentications(authentications);
+		securityContext.setAuthentications("token", authentications);
 
 		Geometry geometry = securityContext.getVisibleArea(LAYER_ID);
 		Assert.assertNotNull(geometry);
@@ -128,7 +128,7 @@ public class SecurityContextAreaAuthorizationTest {
 		Authentication auth2 = getAreaAuthentication(2);
 		authentications.add(auth1);
 		authentications.add(auth2);
-		securityContext.setAuthentications(authentications);
+		securityContext.setAuthentications("token", authentications);
 
 		Geometry geometry = securityContext.getVisibleArea(LAYER_ID);
 		Assert.assertNotNull(geometry);

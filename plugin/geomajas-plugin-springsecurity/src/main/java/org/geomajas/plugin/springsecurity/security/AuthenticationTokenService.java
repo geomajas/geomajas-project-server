@@ -21,31 +21,50 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.security;
+package org.geomajas.plugin.springsecurity.security;
 
-import java.util.List;
+import org.geomajas.security.Authentication;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * The security context is a thread scoped service which allows you to query the authorization details for the
- * logged in user.
+ * Create and manage/cache authentication tokens.
  *
  * @author Joachim Van der Auwera
  */
-public interface SecurityContext extends Authorization, UserInfo {
+@Component
+public class AuthenticationTokenService {
 
-	/**
-	 * Get the direct replies of the security services which build the security context.
-	 * <p/>
-	 * In principle this method should not be used.
-	 *
-	 * @return array of security service id's
-	 */
-	List<Authentication> getSecurityServiceResults();
+	@Autowired
+	private AuthenticationTokenGeneratorService generatorService;
 
-	/**
-	 * Get the token which was used for the authentication.
-	 *
-	 * @return token which was used.
-	 */
-	String getToken();
+	private Map<String, Authentication> tokens = new HashMap<String, Authentication>();
+
+	public Authentication getAuthentication(String token) {
+		return tokens.get(token);
+	}
+
+	public void logout(String token) {
+		tokens.remove(token);
+	}
+
+	public String login(Authentication authentication) {
+		String token = getToken();
+		return login(token, authentication);
+	}
+
+	public String login(String token, Authentication authentication) {
+		if (null == token) {
+			return login(authentication);
+		}
+		tokens.put(token, authentication);
+		return token;
+	}
+
+	public String getToken() {
+		return "ss." + generatorService.get();
+	}
 }

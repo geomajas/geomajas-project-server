@@ -73,7 +73,7 @@ public class SecurityManagerImpl implements SecurityManager {
 		}
 		if (!authentications.isEmpty()) {
 			// build authorization and build thread local SecurityContext
-			((SecurityContextImpl) securityContext).setAuthentications(authentications);
+			((SecurityContextImpl) securityContext).setAuthentications("token", authentications);
 			return true;
 		}
 		return false;
@@ -81,6 +81,6 @@ public class SecurityManagerImpl implements SecurityManager {
 
 	/** @inheritDoc */
 	public void clearSecurityContext() {
-		((SecurityContextImpl) securityContext).setAuthentications(null);
+		((SecurityContextImpl) securityContext).setAuthentications(null, null);
 	}
 }

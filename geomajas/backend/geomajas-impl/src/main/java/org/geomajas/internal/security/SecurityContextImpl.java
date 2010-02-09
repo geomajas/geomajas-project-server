@@ -70,6 +70,7 @@ public class SecurityContextImpl implements SecurityContext {
 	private Logger log = LoggerFactory.getLogger(SecurityManagerImpl.class);
 
 	private List<Authentication> authentications = new ArrayList<Authentication>();
+	private String token;
 
 	private String id; // SecurityContext id
 
@@ -92,7 +93,8 @@ public class SecurityContextImpl implements SecurityContext {
 	@Autowired
 	private GeoService geoService;
 
-	void setAuthentications(List<Authentication> authentications) {
+	void setAuthentications(String token, List<Authentication> authentications) {
+		this.token = token;
 		this.authentications.clear();
 		if (null != authentications) {
 			this.authentications.addAll(authentications);
@@ -105,6 +107,10 @@ public class SecurityContextImpl implements SecurityContext {
 	 */
 	public List<Authentication> getSecurityServiceResults() {
 		return authentications;
+	}
+
+	public String getToken() {
+		return token;
 	}
 
 	/**
@@ -155,7 +161,7 @@ public class SecurityContextImpl implements SecurityContext {
 		if (null != authentications) {
 			for (Authentication auth : authentications) {
 				userId = combine(userId, auth.getUserId());
-				userName = combine(userName, auth.getUserName());
+				userName = combine(userName, auth.getUserId());
 				if (first) {
 					userLocale = auth.getUserLocale();
 					first = false;

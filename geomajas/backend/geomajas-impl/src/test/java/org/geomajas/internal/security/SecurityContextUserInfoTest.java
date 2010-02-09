@@ -27,9 +27,6 @@ import junit.framework.Assert;
 import org.geomajas.security.Authentication;
 import org.geomajas.security.BaseAuthorization;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,10 +55,10 @@ public class SecurityContextUserInfoTest {
 		auth2.setSecurityServiceId("ss2");
 		authentications.add(auth1);
 		authentications.add(auth2);
-		securityContext.setAuthentications(authentications);
+		securityContext.setAuthentications("token", authentications);
 		Assert.assertEquals("AllowAll@ss|AllowAll@ss2",securityContext.getId());
 		Assert.assertEquals(USER_ID,securityContext.getUserId());
-		Assert.assertEquals(USER_NAME,securityContext.getUserName());
+		Assert.assertEquals(USER_NAME,securityContext.getUserId());
 		Assert.assertEquals(USER_LOCALE,securityContext.getUserLocale());
 		Assert.assertEquals(USER_ORGANIZATION,securityContext.getUserOrganization());
 		Assert.assertEquals(USER_DIVISION,securityContext.getUserDivision());
@@ -79,10 +76,10 @@ public class SecurityContextUserInfoTest {
 		auth2.setUserDivision("Marketing");
 		authentications.add(auth1);
 		authentications.add(auth2);
-		securityContext.setAuthentications(authentications);
+		securityContext.setAuthentications("token", authentications);
 		Assert.assertEquals("AllowAll@ss",securityContext.getId());
 		Assert.assertEquals(USER_ID + ", bla",securityContext.getUserId());
-		Assert.assertEquals(USER_NAME,securityContext.getUserName());
+		Assert.assertEquals(USER_NAME,securityContext.getUserId());
 		Assert.assertEquals(USER_LOCALE,securityContext.getUserLocale());
 		Assert.assertEquals(USER_ORGANIZATION,securityContext.getUserOrganization());
 		Assert.assertEquals(USER_DIVISION + ", Marketing",securityContext.getUserDivision());
@@ -101,10 +98,10 @@ public class SecurityContextUserInfoTest {
 		auth2.setUserLocale(null);
 		authentications.add(auth1);
 		authentications.add(auth2);
-		securityContext.setAuthentications(authentications);
+		securityContext.setAuthentications("token", authentications);
 		Assert.assertEquals("AllowAll@ss",securityContext.getId());
 		Assert.assertEquals(USER_ID,securityContext.getUserId());
-		Assert.assertNull(securityContext.getUserName());
+		Assert.assertNull(securityContext.getUserId());
 		Assert.assertNull(securityContext.getUserLocale());
 		Assert.assertEquals(USER_ORGANIZATION,securityContext.getUserOrganization());
 		Assert.assertEquals(USER_DIVISION,securityContext.getUserDivision());

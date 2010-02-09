@@ -38,7 +38,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 /**
  * Testing of FeatureFilter combination in the security context.
@@ -69,7 +68,7 @@ public class SecurityContextFeatureFilterTest {
 		auth2.setSecurityServiceId("ss2");
 		authentications.add(auth1);
 		authentications.add(auth2);
-		securityContext.setAuthentications(authentications);
+		securityContext.setAuthentications("token", authentications);
 		Assert.assertNull(securityContext.getFeatureFilter(LAYER_ID));
 	}
 
@@ -82,7 +81,7 @@ public class SecurityContextFeatureFilterTest {
 		auth2.setSecurityServiceId("ss2");
 		authentications.add(auth1);
 		authentications.add(auth2);
-		securityContext.setAuthentications(authentications);
+		securityContext.setAuthentications("token", authentications);
 		Filter filter = securityContext.getFeatureFilter(LAYER_ID);
 		Assert.assertNotNull(filter);
 		// these tests are (geotools) implementation dependent
@@ -99,7 +98,7 @@ public class SecurityContextFeatureFilterTest {
 		auth2.setSecurityServiceId("ss2");
 		authentications.add(auth1);
 		authentications.add(auth2);
-		securityContext.setAuthentications(authentications);
+		securityContext.setAuthentications("token", authentications);
 		Filter filter = securityContext.getFeatureFilter(LAYER_ID);
 		Assert.assertNotNull(filter);
 		// these tests are (geotools) implementation dependent

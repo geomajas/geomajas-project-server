@@ -21,31 +21,38 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.security;
+package org.geomajas.plugin.springsecurity.command;
 
-import java.util.List;
+import org.geomajas.command.Command;
+import org.geomajas.command.CommandResponse;
+import org.geomajas.command.EmptyCommandRequest;
+import org.geomajas.plugin.springsecurity.security.AuthenticationTokenService;
+import org.geomajas.security.Authentication;
+import org.geomajas.security.SecurityContext;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * The security context is a thread scoped service which allows you to query the authorization details for the
- * logged in user.
+ * Command which allows logging out.
  *
  * @author Joachim Van der Auwera
  */
-public interface SecurityContext extends Authorization, UserInfo {
+public class LogoutCommand implements Command<EmptyCommandRequest, CommandResponse> {
 
-	/**
-	 * Get the direct replies of the security services which build the security context.
-	 * <p/>
-	 * In principle this method should not be used.
-	 *
-	 * @return array of security service id's
-	 */
-	List<Authentication> getSecurityServiceResults();
+	@Autowired
+	private SecurityContext securityContext;
 
-	/**
-	 * Get the token which was used for the authentication.
-	 *
-	 * @return token which was used.
-	 */
-	String getToken();
+	@Autowired
+	private AuthenticationTokenService tokenService;
+
+	public CommandResponse getEmptyCommandResponse() {
+		return new CommandResponse();
+	}
+
+	public void execute(EmptyCommandRequest emptyCommandRequest, CommandResponse commandResponse) throws Exception {
+		for (Authentication auth : securityContext.getSecurityServiceResults()) {
+			if ("SecurityService".equals(auth.getSecurityServiceId())) {
+				tokenService.logout(securityContext.getToken());
+			}
+		}
+	}
 }

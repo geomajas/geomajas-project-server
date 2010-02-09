@@ -21,31 +21,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.security;
+package org.geomajas.plugin.springsecurity.configuration;
 
 import java.util.List;
 
 /**
- * The security context is a thread scoped service which allows you to query the authorization details for the
- * logged in user.
+ * Base configuration data for the springsecurity security service.
  *
  * @author Joachim Van der Auwera
  */
-public interface SecurityContext extends Authorization, UserInfo {
+public class SecurityServiceInfo {
+
+	private List<UserInfo> users;
 
 	/**
-	 * Get the direct replies of the security services which build the security context.
-	 * <p/>
-	 * In principle this method should not be used.
+	 * Get information about existing users.
 	 *
-	 * @return array of security service id's
+	 * @return list of {@link UserInfo} objects
 	 */
-	List<Authentication> getSecurityServiceResults();
+	public List<UserInfo> getUsers() {
+		return users;
+	}
 
 	/**
-	 * Get the token which was used for the authentication.
+	 * Set the list of users which can be used by springsecurity.
 	 *
-	 * @return token which was used.
+	 * @param users list of {@link UserInfo} objects
 	 */
-	String getToken();
+	public void setUsers(List<UserInfo> users) {
+		this.users = users;
+	}
 }

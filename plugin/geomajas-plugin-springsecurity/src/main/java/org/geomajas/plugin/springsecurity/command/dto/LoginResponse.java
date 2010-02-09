@@ -21,31 +21,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.security;
+package org.geomajas.plugin.springsecurity.command.dto;
 
-import java.util.List;
+import org.geomajas.command.CommandResponse;
 
 /**
- * The security context is a thread scoped service which allows you to query the authorization details for the
- * logged in user.
+ * Response object for the login command.
  *
  * @author Joachim Van der Auwera
  */
-public interface SecurityContext extends Authorization, UserInfo {
+public class LoginResponse extends CommandResponse {
+
+	private String token;
 
 	/**
-	 * Get the direct replies of the security services which build the security context.
-	 * <p/>
-	 * In principle this method should not be used.
+	 * Get the token or null when the login failed.
 	 *
-	 * @return array of security service id's
+	 * @return token
 	 */
-	List<Authentication> getSecurityServiceResults();
+	public String getToken() {
+		return token;
+	}
 
 	/**
-	 * Get the token which was used for the authentication.
+	 * Set the token.
 	 *
-	 * @return token which was used.
+	 * @param token token
 	 */
-	String getToken();
+	public void setToken(String token) {
+		this.token = token;
+	}
 }
