@@ -111,7 +111,7 @@ dojo.declare("FeaturePainter", Painter, {
 			} else if (geometry.declaredClass == geomajas.GeometryTypes.MULTILINESTRING) {
 				graphics.drawLine (viewGeometry,options);
 			} else if (geometry.type == geomajas.GeometryTypes.POINT) {
-				options.styleId = feature.getLayer().getId() + "." + feature.styleId + ".style";
+				options.styleId = feature.getLayer().getLayerId() + "." + feature.styleId + ".style";
 				graphics.drawSymbol (viewGeometry,options);
 			}
 		}
