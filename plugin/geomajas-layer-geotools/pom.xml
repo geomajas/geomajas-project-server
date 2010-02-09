@@ -17,10 +17,6 @@
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-api-experimental</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-impl</artifactId>
 			<scope>test</scope>
 		</dependency>
