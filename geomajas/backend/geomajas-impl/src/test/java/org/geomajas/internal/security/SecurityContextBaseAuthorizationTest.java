@@ -27,9 +27,6 @@ import junit.framework.Assert;
 import org.geomajas.security.Authentication;
 import org.geomajas.security.BaseAuthorization;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -122,36 +119,4 @@ public class SecurityContextBaseAuthorizationTest {
 		Assert.assertFalse(securityContext.isLayerUpdateAuthorized(Layer_ID));
 		Assert.assertFalse(securityContext.isLayerDeleteAuthorized(Layer_ID));
 	}
-
-	private class AllowNoneAuthorization implements BaseAuthorization {
-
-		public String getId() {
-			return "AllowNone";
-		}
-
-		public boolean isToolAuthorized(String toolId) {
-			return false;
-		}
-
-		public boolean isCommandAuthorized(String commandName) {
-			return false;
-		}
-
-		public boolean isLayerVisible(String layerId) {
-			return false;
-		}
-
-		public boolean isLayerUpdateAuthorized(String layerId) {
-			return false;
-		}
-
-		public boolean isLayerCreateAuthorized(String layerId) {
-			return false;
-		}
-
-		public boolean isLayerDeleteAuthorized(String layerId) {
-			return false;
-		}
-	}
-
 }

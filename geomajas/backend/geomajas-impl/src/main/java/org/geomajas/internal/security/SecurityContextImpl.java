@@ -31,8 +31,10 @@ import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.security.AreaAuthorization;
+import org.geomajas.security.AttributeAuthorization;
 import org.geomajas.security.Authentication;
 import org.geomajas.security.BaseAuthorization;
+import org.geomajas.security.FeatureAuthorization;
 import org.geomajas.security.VectorLayerSelectFilterAuthorization;
 import org.geomajas.security.SecurityContext;
 import org.geomajas.service.ApplicationService;
@@ -382,14 +384,14 @@ public class SecurityContextImpl implements SecurityContext {
 	 * @inheritDoc
 	 */
 	public boolean isPartlyVisibleSufficient(final String layerId) {
-		return areaPartlySufficientCombine(new AreaPartlySufficientGetter() {
+		return areaPartlySufficientCombine(new AuthorizationGetter<AreaAuthorization>() {
 			public boolean get(AreaAuthorization auth) {
 				return auth.isPartlyVisibleSufficient(layerId);
 			}
 		});
 	}
 
-	private boolean areaPartlySufficientCombine(AreaPartlySufficientGetter partlySufficientGetter) {
+	private boolean areaPartlySufficientCombine(AuthorizationGetter<AreaAuthorization> partlySufficientGetter) {
 		for (Authentication authentication : authentications) {
 			for (BaseAuthorization authorization : authentication.getAuthorizations()) {
 				if (authorization instanceof AreaAuthorization) {
@@ -417,7 +419,7 @@ public class SecurityContextImpl implements SecurityContext {
 	 * @inheritDoc
 	 */
 	public boolean isPartlyUpdateAuthorizedSufficient(final String layerId) {
-		return areaPartlySufficientCombine(new AreaPartlySufficientGetter() {
+		return areaPartlySufficientCombine(new AuthorizationGetter<AreaAuthorization>() {
 			public boolean get(AreaAuthorization auth) {
 				return auth.isPartlyUpdateAuthorizedSufficient(layerId);
 			}
@@ -439,7 +441,7 @@ public class SecurityContextImpl implements SecurityContext {
 	 * @inheritDoc
 	 */
 	public boolean isPartlyCreateAuthorizedSufficient(final String layerId) {
-		return areaPartlySufficientCombine(new AreaPartlySufficientGetter() {
+		return areaPartlySufficientCombine(new AuthorizationGetter<AreaAuthorization>() {
 			public boolean get(AreaAuthorization auth) {
 				return auth.isPartlyCreateAuthorizedSufficient(layerId);
 			}
@@ -461,7 +463,7 @@ public class SecurityContextImpl implements SecurityContext {
 	 * @inheritDoc
 	 */
 	public boolean isPartlyDeleteAuthorizedSufficient(final String layerId) {
-		return areaPartlySufficientCombine(new AreaPartlySufficientGetter() {
+		return areaPartlySufficientCombine(new AuthorizationGetter<AreaAuthorization>() {
 			public boolean get(AreaAuthorization auth) {
 				return auth.isPartlyDeleteAuthorizedSufficient(layerId);
 			}
@@ -471,50 +473,116 @@ public class SecurityContextImpl implements SecurityContext {
 	/**
 	 * @inheritDoc
 	 */
-	public boolean isFeatureVisible(String layerId, InternalFeature feature) {
-		return false;  //To change body of implemented methods use File | Settings | File Templates.
+	public boolean isFeatureVisible(final String layerId, final InternalFeature feature) {
+		return policyCombine(new AuthorizationGetter<BaseAuthorization>() {
+			public boolean get(BaseAuthorization auth) {
+				if (auth instanceof FeatureAuthorization) {
+					return ((FeatureAuthorization) auth).isFeatureVisible(layerId, feature);
+				} else {
+					return auth.isLayerVisible(layerId);
+				}
+			}
+		});
+	}
+
+	private boolean policyCombine(AuthorizationGetter<BaseAuthorization> auth) {
+		for (Authentication authentication : authentications) {
+			for (BaseAuthorization authorization : authentication.getAuthorizations()) {
+				if (auth.get(authorization)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	/** @inheritDoc */
+	public boolean isFeatureUpdateAuthorized(final String layerId, final InternalFeature feature) {
+		return policyCombine(new AuthorizationGetter<BaseAuthorization>() {
+			public boolean get(BaseAuthorization auth) {
+				if (auth instanceof FeatureAuthorization) {
+					return ((FeatureAuthorization) auth).isFeatureUpdateAuthorized(layerId, feature);
+				} else {
+					return auth.isLayerUpdateAuthorized(layerId);
+				}
+			}
+		});
+	}
+
+	/** @inheritDoc */
+	public boolean isFeatureUpdateAuthorized(final String layerId, final InternalFeature orgFeature,
+			final InternalFeature newFeature) {
+		return policyCombine(new AuthorizationGetter<BaseAuthorization>() {
+			public boolean get(BaseAuthorization auth) {
+				if (auth instanceof FeatureAuthorization) {
+					return ((FeatureAuthorization) auth).isFeatureUpdateAuthorized(layerId, orgFeature, newFeature);
+				} else {
+					return auth.isLayerUpdateAuthorized(layerId);
+				}
+			}
+		});
+	}
+
+	/** @inheritDoc */
+	public boolean isFeatureDeleteAuthorized(final String layerId, final InternalFeature feature) {
+		return policyCombine(new AuthorizationGetter<BaseAuthorization>() {
+			public boolean get(BaseAuthorization auth) {
+				if (auth instanceof FeatureAuthorization) {
+					return ((FeatureAuthorization) auth).isFeatureDeleteAuthorized(layerId, feature);
+				} else {
+					return auth.isLayerDeleteAuthorized(layerId);
+				}
+			}
+		});
+	}
+
+	/** @inheritDoc */
+	public boolean isFeatureCreateAuthorized(final String layerId, final InternalFeature feature) {
+		return policyCombine(new AuthorizationGetter<BaseAuthorization>() {
+			public boolean get(BaseAuthorization auth) {
+				if (auth instanceof FeatureAuthorization) {
+					return ((FeatureAuthorization) auth).isFeatureCreateAuthorized(layerId, feature);
+				} else {
+					return auth.isLayerCreateAuthorized(layerId);
+				}
+			}
+		});
 	}
 
 	/**
 	 * @inheritDoc
 	 */
-	public boolean isFeatureUpdateAuthorized(String layerId, InternalFeature feature) {
-		return false;  //To change body of implemented methods use File | Settings | File Templates.
+	public boolean isAttributeReadable(final String layerId, final InternalFeature feature,
+			final String attributeName) {
+		return policyCombine(new AuthorizationGetter<BaseAuthorization>() {
+			public boolean get(BaseAuthorization auth) {
+				if (auth instanceof AttributeAuthorization) {
+					return ((AttributeAuthorization) auth).isAttributeReadable(layerId, feature, attributeName);
+				} else if (auth instanceof FeatureAuthorization) {
+					return ((FeatureAuthorization) auth).isFeatureVisible(layerId, feature);
+				} else {
+					return auth.isLayerVisible(layerId);
+				}
+			}
+		});
 	}
 
 	/**
 	 * @inheritDoc
 	 */
-	public boolean isFeatureUpdateAuthorized(String layerId, InternalFeature orgFeature, InternalFeature newFeature) {
-		return false;  //To change body of implemented methods use File | Settings | File Templates.
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public boolean isFeatureDeleteAuthorized(String layerId, InternalFeature feature) {
-		return false;  //To change body of implemented methods use File | Settings | File Templates.
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public boolean isFeatureCreateAuthorized(String layerId, InternalFeature feature) {
-		return false;  //To change body of implemented methods use File | Settings | File Templates.
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public boolean isAttributeReadable(String layerId, InternalFeature feature, String attributeName) {
-		return false;  //To change body of implemented methods use File | Settings | File Templates.
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public boolean isAttributeWritable(String layerId, InternalFeature feature, String attributeName) {
-		return false;  //To change body of implemented methods use File | Settings | File Templates.
+	public boolean isAttributeWritable(final String layerId, final InternalFeature feature,
+			final String attributeName) {
+		return policyCombine(new AuthorizationGetter<BaseAuthorization>() {
+			public boolean get(BaseAuthorization auth) {
+				if (auth instanceof AttributeAuthorization) {
+					return ((AttributeAuthorization) auth).isAttributeWritable(layerId, feature, attributeName);
+				} else if (auth instanceof FeatureAuthorization) {
+					return ((FeatureAuthorization) auth).isFeatureUpdateAuthorized(layerId, feature);
+				} else {
+					return auth.isLayerUpdateAuthorized(layerId);
+				}
+			}
+		});
 	}
 
 	/**
@@ -534,7 +602,7 @@ public class SecurityContextImpl implements SecurityContext {
 	/**
 	 * Interface to unify/generalise the different areas.
 	 */
-	private interface AreaPartlySufficientGetter {
+	private interface AuthorizationGetter<AUTH extends BaseAuthorization> {
 
 		/**
 		 * Get the "partly sufficient" status.
@@ -542,6 +610,6 @@ public class SecurityContextImpl implements SecurityContext {
 		 * @param auth authorization object to get data from
 		 * @return true when part in area is sufficient
 		 */
-		boolean get(AreaAuthorization auth);
+		boolean get(AUTH auth);
 	}
 }
