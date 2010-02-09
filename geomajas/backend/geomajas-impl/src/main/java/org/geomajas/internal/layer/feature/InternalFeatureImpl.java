@@ -91,7 +91,9 @@ public class InternalFeatureImpl implements InternalFeature {
 
 	public InternalFeatureImpl(InternalFeature other) {
 		attributes = new HashMap<String, Object>(other.getAttributes());
-		geometry = (Geometry) other.getGeometry().clone();
+		if (null != other.getGeometry()) {
+			geometry = (Geometry) other.getGeometry().clone();
+		}
 		id = other.getId();
 		layer = other.getLayer();
 		styleDefinition = other.getStyleInfo();
