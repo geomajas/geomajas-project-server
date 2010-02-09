@@ -42,29 +42,60 @@ dojo.declare("ZoomToSelectionAction", ToolbarAction, {
 	},
 
 	actionPerformed : function (event) {
+	
 		var selection = this.mapWidget.getMapModel().getSelection();
 		var bounds = null;
+		
 		for (var i=0; i<selection.count; i++) {
 			var feature = selection.item(i);
-			var geometry = feature.getGeometry();
+			
+			var featBounds = feature.getGeometry().getBounds();
+			if (featBounds.getWidth() == 0 || featBounds.getHeight() == 0) {
+				/* Force non-zero bounds, because bounds.union will not take features into account with zero width or height */
+				featBounds = featBounds.buffer(1);
+			}
+			
 			if (bounds == null) {
-				bounds = geometry.getBounds();
+				bounds = featBounds;
 			} else {
-				bounds = bounds.union(geometry.getBounds());
+				bounds = bounds.union(featBounds);
 			}
 		}
 		if (bounds != null) {
-			// First add 10% to bounds:
+			// add 10% to bounds:
 			var len = 0;
 			if (bounds.getWidth() > bounds.getHeight()) {
 				len = bounds.getWidth() * 0.1;
 			} else {
 				len = bounds.getHeight() * 0.1;
 			}
-			bounds = bounds.buffer(len);
-			
-			// Then change map position:
-			dojo.publish(this.mapWidget.getMapView().getExternalRenderTopic(), [{event:"setBounds", x:bounds.getX(), y:bounds.getY(), width:bounds.getWidth(), height:bounds.getHeight(), option:geomajas.ZoomOption.ZOOM_OPTION_LEVEL_FIT}]);
+			bounds = bounds.buffer(len);				
+			// Set new bounds on the map 
+			dojo.publish(this.mapWidget.getMapView().getExternalRenderTopic(), [{
+				event:"setBounds",
+				x:bounds.getX(), 
+				y:bounds.getY(), 
+				width:bounds.getWidth(), 
+				height:bounds.getHeight(),
+				option:geomajas.ZoomOption.ZOOM_OPTION_EXACT
+			}]);
+
+			var layer = selection.item(0).getLayer();
+			var newScale = this.mapWidget.getMapView().getCurrentScale();  /* pixels/unit-length */ 
+			 
+			if (newScale > layer.getMaxViewScale()/2.0) {
+				newScale = layer.getMaxViewScale()/2.0;
+				var minScale = layer.getMinViewScale(); /* pixels/unit-length */
+				if (newScale < minScale) {
+					newScale = minScale;
+				}
+				dojo.publish(this.mapWidget.getMapView().getExternalRenderTopic(), [{
+						event:"scale",
+						scale: newScale
+					}]);
+			}
+			/* recenter (only needed in case setBounds failed */
+			this.mapWidget.getMapView().setCenterPosition(bounds.getCenterPoint());
 		}
 	},
 
