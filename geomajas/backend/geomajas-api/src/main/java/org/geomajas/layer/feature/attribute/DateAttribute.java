@@ -28,6 +28,8 @@ import org.geomajas.configuration.PrimitiveType;
 
 /**
  * Attribute with value of type <code>PrimitiveType.DATE</code>.
+ * <p/>
+ * This only stores the date, any time component may be removed.
  * 
  * @author Jan De Moerloose
  */
@@ -35,10 +37,18 @@ public class DateAttribute extends PrimitiveAttribute<Date> {
 
 	private static final long serialVersionUID = 151L;
 
+	/**
+	 * Create using undefined value (null).
+	 */
 	public DateAttribute() {
 		this(null);
 	}
 
+	/**
+	 * Create using specific date value.
+	 *
+	 * @param value value for attribute
+	 */
 	public DateAttribute(Date value) {
 		super(PrimitiveType.DATE);
 		setValue(value);
