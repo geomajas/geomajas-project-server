@@ -23,6 +23,7 @@
 
 package org.geomajas.layer.tile;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +36,7 @@ import org.geomajas.layer.feature.Feature;
  * 
  * @author Pieter De Graef
  */
-public class VectorTile {
+public class VectorTile implements Serializable {
 
 	private static final long serialVersionUID = 151L;
 
