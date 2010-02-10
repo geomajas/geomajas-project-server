@@ -23,6 +23,7 @@
 
 package org.geomajas.spring;
 
+import org.geomajas.command.Command;
 import org.geomajas.global.ExpectAlternatives;
 import org.geomajas.service.BeanNameSimplifier;
 import org.slf4j.Logger;
@@ -37,10 +38,10 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
 /**
- * Automatically apply Geomajas naming convention for spring beans.
- * If the bean implements one interface, it is the fully qualified name of the interface (without "org.geomajas.").
- * Alternatively it is the fully qualified class name (without "org.geomajas.").
- *
+ * Automatically apply Geomajas naming convention for spring beans. If the bean implements one interface, it is the
+ * fully qualified name of the interface (without "org.geomajas."). Alternatively it is the fully qualified class name
+ * (without "org.geomajas.").
+ * 
  * @author Joachim Van der Auwera
  */
 @Component("service.BeanNameSimplifier")
@@ -48,17 +49,19 @@ public class GeomajasBeanNameGenerator extends AnnotationBeanNameGenerator imple
 		BeanNameSimplifier {
 
 	private final Logger log = LoggerFactory.getLogger(GeomajasBeanNameGenerator.class);
+
 	private static final String SKIP_PREFIX = "org.geomajas.";
+
 	private static final String COMMAND_PACKAGE = ".command.";
 
 	/**
-	 * Remove the skipped 'org.geomajas.' prefix from bean name when present.
-	 * This often allows conversion from class to bean name for configuration.
-	 * For commands (when the fully qualified name contains ".command."), remove everything
-	 * before the command, and try to reduce duplication of the sub package.
-	 * This will reduce "org.geomajas.command.get.GetConfigurationCommand" to "command.get.configuration"
-	 *
-	 * @param name original name which may contain the prefix
+	 * Remove the skipped 'org.geomajas.' prefix from bean name when present. This often allows conversion from class to
+	 * bean name for configuration. For commands (when the fully qualified name contains ".command."), remove everything
+	 * before the command, and try to reduce duplication of the sub package. This will reduce
+	 * "org.geomajas.command.get.GetConfigurationCommand" to "command.get.configuration"
+	 * 
+	 * @param name
+	 *            original name which may contain the prefix
 	 * @return bean name, guaranteed without prefix
 	 */
 	public String simplify(String orgName) {
@@ -108,7 +111,8 @@ public class GeomajasBeanNameGenerator extends AnnotationBeanNameGenerator imple
 				if (interfaces.length == 1) {
 					// only apply if not annotated with "ExpectAlternatives"
 					final Class interfaceClass = interfaces[0];
-					if (!interfaceClass.isAnnotationPresent(ExpectAlternatives.class)) {
+					if (!interfaceClass.equals(Command.class) &&
+							!interfaceClass.isAnnotationPresent(ExpectAlternatives.class)) {
 						name = interfaceClass.getName();
 					}
 				}
