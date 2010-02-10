@@ -25,6 +25,9 @@ package org.geomajas.plugin.springsecurity.command;
 
 import org.geomajas.plugin.springsecurity.command.dto.LoginRequest;
 import org.geomajas.plugin.springsecurity.command.dto.LoginResponse;
+import org.geomajas.plugin.springsecurity.security.AuthenticationTokenService;
+import org.geomajas.security.Authentication;
+import org.geomajas.security.BaseAuthorization;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -45,6 +48,9 @@ public class LoginCommandTest {
 	@Autowired
 	private LoginCommand loginCommand;
 
+	@Autowired
+	private AuthenticationTokenService tokenService;
+
 	@Test
 	public void testValidLogin() throws Exception {
 		LoginRequest request = new LoginRequest();
@@ -52,7 +58,43 @@ public class LoginCommandTest {
 		request.setPassword("luc");
 		LoginResponse response = loginCommand.getEmptyCommandResponse();
 		loginCommand.execute(request, response);
-		Assert.assertNotNull(response.getToken());
+		String token = response.getToken();
+		Assert.assertNotNull(token);
+
+		Authentication auth = tokenService.getAuthentication(token);
+		Assert.assertEquals(1, auth.getAuthorizations().length);
+		BaseAuthorization authorizaton = auth.getAuthorizations()[0];
+		Assert.assertTrue(authorizaton.isToolAuthorized("bla"));
+		Assert.assertTrue(authorizaton.isCommandAuthorized("bla"));
+		Assert.assertTrue(authorizaton.isLayerVisible("bla"));
+		Assert.assertTrue(authorizaton.isLayerVisible("roads"));
+		Assert.assertTrue(authorizaton.isLayerVisible("rivers"));
+		Assert.assertTrue(authorizaton.isLayerUpdateAuthorized("bla"));
+		Assert.assertTrue(authorizaton.isLayerCreateAuthorized("bla"));
+		Assert.assertTrue(authorizaton.isLayerDeleteAuthorized("bla"));
+	}
+
+	@Test
+	public void testValidLogin2() throws Exception {
+		LoginRequest request = new LoginRequest();
+		request.setLogin("marino");
+		request.setPassword("marino");
+		LoginResponse response = loginCommand.getEmptyCommandResponse();
+		loginCommand.execute(request, response);
+		String token = response.getToken();
+		Assert.assertNotNull(token);
+
+		Authentication auth = tokenService.getAuthentication(token);
+		Assert.assertEquals(1, auth.getAuthorizations().length);
+		BaseAuthorization authorizaton = auth.getAuthorizations()[0];
+		Assert.assertFalse(authorizaton.isToolAuthorized("bla"));
+		Assert.assertTrue(authorizaton.isCommandAuthorized("bla"));
+		Assert.assertFalse(authorizaton.isLayerVisible("bla"));
+		Assert.assertTrue(authorizaton.isLayerVisible("roads"));
+		Assert.assertTrue(authorizaton.isLayerVisible("rivers"));
+		Assert.assertFalse(authorizaton.isLayerUpdateAuthorized("bla"));
+		Assert.assertFalse(authorizaton.isLayerCreateAuthorized("bla"));
+		Assert.assertFalse(authorizaton.isLayerDeleteAuthorized("bla"));
 	}
 
 	@Test

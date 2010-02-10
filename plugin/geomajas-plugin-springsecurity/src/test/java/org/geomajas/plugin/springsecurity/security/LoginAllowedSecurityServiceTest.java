@@ -32,7 +32,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
- *
+ * Verify functioning of LoginAllowedSecurityService.
  *
  * @author Joachim Van der Auwera
  */
@@ -42,7 +42,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class LoginAllowedSecurityServiceTest {
 
 	@Test
-	public void bla() {
+	public void testLoginAllowedService() {
 		LoginAllowedSecurityService service = new LoginAllowedSecurityService();
 		Authentication auth = service.getAuthentication("bla");
 		Assert.assertNotNull(auth);
