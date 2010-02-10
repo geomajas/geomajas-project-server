@@ -20,9 +20,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.geomajas.command.dto;
-
-import org.geomajas.command.CommandResponse;
+package org.geomajas.command;
 
 /**
  * Response object for {@link Command} which indicates success.

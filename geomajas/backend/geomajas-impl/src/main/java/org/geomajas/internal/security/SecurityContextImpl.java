@@ -93,7 +93,7 @@ public class SecurityContextImpl implements SecurityContext {
 	@Autowired
 	private GeoService geoService;
 
-	void setAuthentications(String token, List<Authentication> authentications) {
+	public void setAuthentications(String token, List<Authentication> authentications) {
 		this.token = token;
 		this.authentications.clear();
 		if (null != authentications) {

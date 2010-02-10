@@ -23,22 +23,32 @@
 
 package org.geomajas.plugin.springsecurity.command;
 
-import org.geomajas.command.Command;
 import org.geomajas.command.EmptyCommandRequest;
 import org.geomajas.command.SuccessCommandResponse;
+import org.geomajas.internal.security.SecurityContextImpl;
 import org.geomajas.plugin.springsecurity.security.AuthenticationTokenService;
 import org.geomajas.security.Authentication;
+import org.geomajas.security.BaseAuthorization;
 import org.geomajas.security.SecurityContext;
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Command which allows logging out.
+ * Verify the functioning of the LogoutCommand class.
  *
  * @author Joachim Van der Auwera
  */
-@Component
-public class LogoutCommand implements Command<EmptyCommandRequest, SuccessCommandResponse> {
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
+		"/org/geomajas/plugin/springsecurity/security.xml"})
+public class LogoutCommandTest {
 
 	@Autowired
 	private SecurityContext securityContext;
@@ -46,18 +56,25 @@ public class LogoutCommand implements Command<EmptyCommandRequest, SuccessComman
 	@Autowired
 	private AuthenticationTokenService tokenService;
 
-	public SuccessCommandResponse getEmptyCommandResponse() {
-		return new SuccessCommandResponse();
-	}
+	@Autowired
+	private LogoutCommand logoutCommand;
+	
+	@Test
+	public void testLogout() throws Exception {
+		Authentication auth = new Authentication();
+		auth.setAuthorizations(new BaseAuthorization[0]);
+		auth.setSecurityServiceId("SecurityService"); // mimic that this comes from the SpringSecurity stuff
+		String token = tokenService.login(auth);
+		SecurityContextImpl securityContext = (SecurityContextImpl) this.securityContext;
+		List<Authentication> auths = new ArrayList<Authentication>();
+		auths.add(auth);
+		securityContext.setAuthentications(token, auths);
 
-	public void execute(EmptyCommandRequest emptyCommandRequest, SuccessCommandResponse commandResponse)
-			throws Exception {
-		commandResponse.setSucces(false);
-		for (Authentication auth : securityContext.getSecurityServiceResults()) {
-			if ("SecurityService".equals(auth.getSecurityServiceId())) {
-				tokenService.logout(securityContext.getToken());
-				commandResponse.setSucces(true);
-			}
-		}
+		Assert.assertEquals(token, securityContext.getToken());
+		EmptyCommandRequest request = new EmptyCommandRequest();
+		SuccessCommandResponse response = logoutCommand.getEmptyCommandResponse();
+		logoutCommand.execute(request, response);
+		Assert.assertTrue(response.isSucces());
+		Assert.assertNull(tokenService.getAuthentication(token));
 	}
 }

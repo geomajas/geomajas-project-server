@@ -21,53 +21,35 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.plugin.springsecurity.command.dto;
+package org.geomajas.plugin.springsecurity.security;
 
-import org.geomajas.command.CommandRequest;
+import org.geomajas.security.Authentication;
+import org.geomajas.security.BaseAuthorization;
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
- * Request object for the login command.
+ *
  *
  * @author Joachim Van der Auwera
  */
-public class LoginRequest implements CommandRequest {
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
+		"/org/geomajas/plugin/springsecurity/security.xml"})
+public class LoginAllowedSecurityServiceTest {
 
-	private String login;
-	private String password;
-
-	/**
-	 * Get login (userId).
-	 *
-	 * @return user name
-	 */
-	public String getLogin() {
-		return login;
-	}
-
-	/**
-	 * Set login (userId).
-	 *
-	 * @param login login (userId)
-	 */
-	public void setLogin(String login) {
-		this.login = login;
-	}
-
-	/**
-	 * Get password for the user.
-	 *
-	 * @return password
-	 */
-	public String getPassword() {
-		return password;
-	}
-
-	/**
-	 * Set password for the user.
-	 *
-	 * @param password password
-	 */
-	public void setPassword(String password) {
-		this.password = password;
+	@Test
+	public void bla() {
+		LoginAllowedSecurityService service = new LoginAllowedSecurityService();
+		Authentication auth = service.getAuthentication("bla");
+		Assert.assertNotNull(auth);
+		Assert.assertEquals(1, auth.getAuthorizations().length);
+		BaseAuthorization authorization = auth.getAuthorizations()[0];
+		Assert.assertTrue(authorization.isCommandAuthorized("command.Login"));
+		Assert.assertTrue(authorization.isCommandAuthorized("command.Logout"));
+		Assert.assertFalse(authorization.isCommandAuthorized("command.Other"));
 	}
 }

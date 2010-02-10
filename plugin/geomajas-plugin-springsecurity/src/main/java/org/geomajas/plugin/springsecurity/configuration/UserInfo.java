@@ -60,7 +60,10 @@ public class UserInfo implements org.geomajas.security.UserInfo {
 	}
 
 	/**
-	 * Get password as encoded using "pwgen".
+	 * Get encoded password.
+	 * <p/>
+	 * To encoded calculate a base64 encoded MD5 hash of "Geomajas is a wonderful framework" + userId + password.
+	 * You can easily calculate this at http://progs.be/md5.html.
 	 *
 	 * @return encoded password
 	 */
@@ -69,7 +72,10 @@ public class UserInfo implements org.geomajas.security.UserInfo {
 	}
 
 	/**
-	 * Set password as encoded using the "pwgen" tool.
+	 * Set encoded password.
+	 * <p/>
+	 * To encoded calculate a base64 encoded MD5 hash of "Geomajas is a wonderful framework" + userId + password.
+	 * You can easily calculate this at http://progs.be/md5.html.
 	 *
 	 * @param password encoded password
 	 */
