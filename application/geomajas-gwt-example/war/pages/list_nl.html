@@ -1,0 +1,99 @@
+<div>
+<p>Volledige lijst met alle geplande tests. Om voorbeelden te bekijken omtrent niet GIS functionaliteiten, ga naar de <a href="http://www.smartclient.com/smartgwt/showcase/">SmartGWT demonstratie pagina</a>.</p>
+<p style="color:red;">De rest van deze pagina is niet vertaald....dat is werk voor later.</p>
+<h2>MapWidget</h2>
+<p>All mapWidget tests should use the ZoomOnScrollController and have the scalebar and panbuttons active by default.</p>
+<ul>
+<li>OpenStreetMap layer</li>
+<li>Google layer</li>
+<li>WMS layer</li>
+<li>Geotools layer</li>
+<li>Hibernate layer (later)</li>
+<li>Toggle panbuttons and scalebar on and off</li>
+<li>Change map unit types (metric versus english – meter versus mile)</li>
+<li>Toggle maxbounds</li>
+<li>Many buttons for navigation: zoom in, apply bounds, ....</li>
+<li>Simple CRS test: show 1 raster layer and 1 vector layer and a map, all in the same CRS. (make the layers as simple as possible – i.e. rectangle for vector...)</li>
+<li>CRS test: 2 layers. 1 raster, 1 vector where the layers use a different CRS then the map. This test should display that CRS transformation works in Geomajas.</li>
+</ul>
+
+<h2>Overview Map</h2>
+<ul>
+<li>Show an overview map.</li>
+<li>Button page, altering overview map display.</li>
+</ul>
+
+<h2>Map Styling</h2>
+<ul>
+<li>Custom point layer styles (circle, square, image)</li>
+<li>Custom line layer styles </li>
+<li>Custom polygon layer styles</li>
+</ul>
+
+<h2>Map Controller</h2>
+<ul>
+<li>Creating a custom controller</li>
+<li>Adding controllers to specific elements</li>
+<li>(low priority) Real time updating of the map (use a server side layer model that lets a feature go round and round and round in circles)</li>
+<li>SnappingController test</li>
+<li>RectangleContrller test</li>
+</ul>
+
+<h2>Security</h2>
+<ul>
+<li>Login knop met verschillende logins (filter op laag)</li>
+<li>Login knop met verschillende logins (filter op features)</li>
+<li>Login knop met verschillende logins (filter op attributen)</li>
+<li>Variable tools in the toolbar, depending on rights</li>
+<li>Command limitation, depending on rights (one user not allowed to see source :-)))</li>
+</ul>
+
+<h2>Localization</h2>
+<ul>
+<li>Tool that reports errors: tests server side error message translation.</li>
+</ul>
+
+<h2>Toolbar</h2>
+<ul>
+<li>Toolbar navigational buttons</li>
+<li>Toolbar selection buttons</li>
+<li>Measure distance</li>
+<li>Display feature information</li>
+<li>Scale select</li>
+<li>Writing custom toolbar tools</li>
+<li>Writing custom toolbar</li>
+</ul>
+
+<h2>LayerTree & Legend</h2>
+<p>Use different layer types, so that the legend is tested to display the different styles.</p>
+<ul>
+<li>Test initial state in the layer tree and legend</li>
+<li>LayerTree: test selected layer</li>
+<li>Page with map + layertree + legend: test the visibility toggle.</li>
+<li>Page with map + layertree: test the labels toggle</li>
+<li>layertree: test grouping within tree</li>
+</ul>
+
+<h2>FeatureListGrid</h2>
+<p>Page with map and FeatureListGrid, where all the features are immediately shown in the grid.</p>
+<ul>
+<li>Test all the toggle buttons (show ID, show all attributes, enable/disable double click)</li>
+<li>Test selection – together with toolbar</li>
+<li>Test sorting in table</li>
+<li>Test with all types of data</li>
+<li>Test using a custom type</li>
+</ul>
+
+<h2>Search & Filtering</h2>
+<ul>
+<li>Using the default search handlers</li>
+<li>Using an example search handler</li>
+<li>Custom search criteria (all types of attributes)</li>
+<li>Apply custom filter on a layer (all types of attributes)</li>
+<li>Adjusting the maximum result size</li>
+</ul>
+
+<h2>Editing</h2>
+<p>I would suggest we write separate tutorials here for different actions (new feature, update, delete, donut, split, merge, snapping)</p>
+<p>All test times 6: once for point layers, once for line layers and once for polygon layers, multi stuff.</p>
+</div>

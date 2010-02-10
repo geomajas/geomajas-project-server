@@ -25,6 +25,7 @@ package org.geomajas.gwt.client.samples;
 
 import org.geomajas.gwt.client.samples.base.SamplePanel;
 
+import com.google.gwt.i18n.client.LocaleInfo;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.HTMLPane;
@@ -54,7 +55,12 @@ public class IntroductionTab extends SamplePanel {
 		logo.setLayoutAlign(Alignment.CENTER);
 		
 		HTMLPane pane = new HTMLPane();
-		pane.setContentsURL("/pages/list.html");
+		String currentLocale = LocaleInfo.getCurrentLocale().getLocaleName();
+		if ("default".equals(currentLocale)) {
+			pane.setContentsURL("/pages/list.html");
+		} else if ("nl".equals(currentLocale)) {
+			pane.setContentsURL("/pages/list_nl.html");
+		}
 		
 		layout.addMember(logo);
 		layout.addMember(pane);

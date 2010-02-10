@@ -53,13 +53,13 @@ public class OpenStreetMapSample extends SamplePanel {
 		
 		// Map with ID osmMap is defined in the XML configuration. (mapOsm.xml)
 		map = new MapWidget("osmMap");
-		
+
 		// Set a panning controller on the map:
 		map.setController(new PanController(map));
 		layout.addMember(map);
 
-		// Specific to these samples; calls the MapWidget.initialize method when ready. 
-		registerMap(map); 
+		// Specific to these samples; calls the MapWidget.initialize method when ready.
+		registerMap(map);
 		return layout;
 	}
 
