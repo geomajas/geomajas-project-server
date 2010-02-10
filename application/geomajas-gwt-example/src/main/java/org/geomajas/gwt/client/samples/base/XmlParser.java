@@ -78,7 +78,7 @@ public class XmlParser {
 				result += temp.charAt(0);
 				temp = temp.substring(1);
 			}
-			if (temp.isEmpty()) {
+			if (temp.length() == 0) {
 				busy = false;
 			}
 		}

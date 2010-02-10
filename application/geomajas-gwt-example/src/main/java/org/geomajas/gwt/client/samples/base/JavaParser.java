@@ -86,7 +86,7 @@ public class JavaParser {
 				result += c;
 				temp = temp.substring(1);
 			}
-			if (temp.isEmpty()) {
+			if (temp.length() == 0) {
 				busy = false;
 			}
 		}
