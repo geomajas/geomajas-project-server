@@ -25,6 +25,7 @@
 		<module>geomajas</module>
 		<module>plugin</module>
 		<module>application</module>
+		<module>test</module>
 	</modules>
 
 	<profiles>

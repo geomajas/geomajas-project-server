@@ -29,6 +29,8 @@ import org.geomajas.command.CommandResponse;
 import org.geomajas.configuration.ApplicationInfo;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
+import org.geomajas.security.SecurityContext;
+import org.geomajas.security.SecurityManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -37,6 +39,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Locale;
 
 /**
  * The <code>CommandDispatcher</code> is the main command execution center. It
@@ -57,10 +60,19 @@ public final class CommandDispatcherImpl implements CommandDispatcher {
 	@Autowired
 	private ApplicationInfo application;
 
+	@Autowired
+	private SecurityContext securityContext;
+
+	@Autowired
+	private SecurityManager securityManager;
+
 	private long commandCount;
 
 	/**
 	 * General command execution function.
+	 * <p/>
+	 * The security context is built for the authentication token. The security context is cleared again at the end of
+	 * processing if the security context was changed.
 	 *
 	 * @param commandName
 	 *            name of command to execute
@@ -74,54 +86,87 @@ public final class CommandDispatcherImpl implements CommandDispatcher {
 	 */
 	public CommandResponse execute(String commandName, CommandRequest request,
 			String userToken, String locale) {
-		String id = Long.toString(++commandCount); // @todo this is not thread
+		String id = Long.toString(++commandCount); // NOTE this is not thread safe
 		// safe or cluster aware
 		log.info("{} execute command {} for user token {}", new Object[] {id, commandName, userToken});
 		long begin = System.currentTimeMillis();
 		CommandResponse response;
 
-		// @todo security check, verify validity of userToken and check access
-		// rights for the command
-		Command command = null;
-		try {
-			command = applicationContext.getBean(commandName, Command.class);
-		} catch (BeansException be) {
-			log.error("could not create command bean for {}",
-					new Object[] {commandName}, be);
-		}
-		if (null != command) {
-			response = command.getEmptyCommandResponse();
-			response.setId(id);
-			// @todo the interceptors still need to be handled here. For proper
-			// (exception) handling, this should be treated as an interceptor
-			// chain instead of a list
-			try {
-				command.execute(request, response);
-			} catch (Throwable throwable) {
-				response.getErrors().add(throwable);
-			}
+		String previousToken = securityContext.getToken();
+		boolean tokenIdentical;
+		if (null == userToken) {
+			tokenIdentical = false; // always need to *try* as otherwise login would never be possible
 		} else {
-			response = new CommandResponse();
-			response.setId(id);
-			response.getErrors().add(
-					new GeomajasException(ExceptionCode.COMMAND_NOT_FOUND,
-							commandName));
+			tokenIdentical = userToken.equals(previousToken);
 		}
+		try {
+			if (!tokenIdentical) {
+				// need to change security context
+				securityManager.createSecurityContext(userToken);
+			}
 
-		// now process the errors for display on the client
-		List<Throwable> errors = response.getErrors();
-		if (null != errors && !errors.isEmpty()) {
-			for (Throwable t : errors) {
-				if (!(t instanceof GeomajasException)) {
-					log.error("unexpected " + t.getMessage(), t);
+			// check access rights for the command
+			System.out.println("security check on " + commandName + " for " + securityContext.getUserId());
+			if (securityContext.isCommandAuthorized(commandName)) {
+
+				Command command = null;
+				try {
+					command = applicationContext.getBean(commandName, Command.class);
+				} catch (BeansException be) {
+					log.error("could not create command bean for {}",
+							new Object[] {commandName}, be);
 				}
-				// @todo need to use the properly translated version in case of
-				// GeomajasException (and assure it contains cause)
-				response.getErrorMessages().add(t.getMessage());
+				if (null != command) {
+					response = command.getEmptyCommandResponse();
+					response.setId(id);
+					try {
+						command.execute(request, response);
+					} catch (Throwable throwable) {
+						response.getErrors().add(throwable);
+					}
+				} else {
+					response = new CommandResponse();
+					response.setId(id);
+					response.getErrors().add(new GeomajasException(ExceptionCode.COMMAND_NOT_FOUND, commandName));
+				}
+
+			} else {
+				// not authorized
+				System.out.println("not authorized");
+				response = new CommandResponse();
+				response.setId(id);
+				response.getErrors().add(new GeomajasException(ExceptionCode.COMMAND_ACCESS_DENIED,
+						commandName, securityContext.getUserId()));
+			}
+
+			// now process the errors for display on the client
+			List<Throwable> errors = response.getErrors();
+			Locale localeObject = null;
+			if (null != errors && !errors.isEmpty()) {
+				for (Throwable t : errors) {
+					if (!(t instanceof GeomajasException)) {
+						log.error("unexpected " + t.getMessage(), t); // unexpected so log also
+						String msg = t.getMessage();
+						if (null == msg) {
+							msg = t.getClass().getName();
+						}
+						response.getErrorMessages().add(msg);
+					} else {
+						if (null == localeObject && null != locale) {
+							localeObject = new Locale(locale);
+						}
+						response.getErrorMessages().add(((GeomajasException) t).getMessage(localeObject));
+					}
+				}
+			}
+			response.setExecutionTime(System.currentTimeMillis() - begin);
+			return response;
+		} finally {
+			if (!tokenIdentical) {
+				// clear security context to previous
+				securityManager.clearSecurityContext();
 			}
 		}
-		response.setExecutionTime(System.currentTimeMillis() - begin);
-		return response;
 	}
 
 }
