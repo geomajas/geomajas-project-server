@@ -161,7 +161,7 @@ public class SecurityContextImpl implements SecurityContext {
 		if (null != authentications) {
 			for (Authentication auth : authentications) {
 				userId = combine(userId, auth.getUserId());
-				userName = combine(userName, auth.getUserId());
+				userName = combine(userName, auth.getUserName());
 				if (first) {
 					userLocale = auth.getUserLocale();
 					first = false;

@@ -60,6 +60,15 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		<property name="sessionFactory" ref="simpleSessionFactory" />
 	</bean>
 
+	<bean name="security.securityInfo" class="org.geomajas.security.SecurityInfo">
+		<property name="loopAllServices" value="false"/>
+		<property name="securityServices">
+			<list>
+				<bean class="org.geomajas.internal.security.AllowAllSecurityService"/>
+			</list>
+		</property>
+	</bean>
+
 
 	<bean name="application" class="org.geomajas.configuration.ApplicationInfo">
 		<property name="id" value="gwt-simple" />

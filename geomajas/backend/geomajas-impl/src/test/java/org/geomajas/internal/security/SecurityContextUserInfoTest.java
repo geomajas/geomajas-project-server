@@ -58,7 +58,7 @@ public class SecurityContextUserInfoTest {
 		securityContext.setAuthentications("token", authentications);
 		Assert.assertEquals("AllowAll@ss|AllowAll@ss2",securityContext.getId());
 		Assert.assertEquals(USER_ID,securityContext.getUserId());
-		Assert.assertEquals(USER_NAME,securityContext.getUserId());
+		Assert.assertEquals(USER_NAME,securityContext.getUserName());
 		Assert.assertEquals(USER_LOCALE,securityContext.getUserLocale());
 		Assert.assertEquals(USER_ORGANIZATION,securityContext.getUserOrganization());
 		Assert.assertEquals(USER_DIVISION,securityContext.getUserDivision());
@@ -78,11 +78,11 @@ public class SecurityContextUserInfoTest {
 		authentications.add(auth2);
 		securityContext.setAuthentications("token", authentications);
 		Assert.assertEquals("AllowAll@ss",securityContext.getId());
-		Assert.assertEquals(USER_ID + ", bla",securityContext.getUserId());
-		Assert.assertEquals(USER_NAME,securityContext.getUserId());
-		Assert.assertEquals(USER_LOCALE,securityContext.getUserLocale());
-		Assert.assertEquals(USER_ORGANIZATION,securityContext.getUserOrganization());
-		Assert.assertEquals(USER_DIVISION + ", Marketing",securityContext.getUserDivision());
+		Assert.assertEquals(USER_ID + ", bla", securityContext.getUserId());
+		Assert.assertEquals(USER_NAME, securityContext.getUserName());
+		Assert.assertEquals(USER_LOCALE, securityContext.getUserLocale());
+		Assert.assertEquals(USER_ORGANIZATION, securityContext.getUserOrganization());
+		Assert.assertEquals(USER_DIVISION + ", Marketing", securityContext.getUserDivision());
 	}
 
 	@Test
@@ -99,12 +99,12 @@ public class SecurityContextUserInfoTest {
 		authentications.add(auth1);
 		authentications.add(auth2);
 		securityContext.setAuthentications("token", authentications);
-		Assert.assertEquals("AllowAll@ss",securityContext.getId());
-		Assert.assertEquals(USER_ID,securityContext.getUserId());
-		Assert.assertNull(securityContext.getUserId());
+		Assert.assertEquals("AllowAll@ss", securityContext.getId());
+		Assert.assertEquals(USER_ID, securityContext.getUserId());
+		Assert.assertNull(securityContext.getUserName());
 		Assert.assertNull(securityContext.getUserLocale());
-		Assert.assertEquals(USER_ORGANIZATION,securityContext.getUserOrganization());
-		Assert.assertEquals(USER_DIVISION,securityContext.getUserDivision());
+		Assert.assertEquals(USER_ORGANIZATION, securityContext.getUserOrganization());
+		Assert.assertEquals(USER_DIVISION, securityContext.getUserDivision());
 	}
 
 	private Authentication getAuthentication() {

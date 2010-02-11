@@ -158,6 +158,19 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
       <code>contextConfigLocation</code> context parameter in the web.xml
       file, the reference is resolved.</para>
 
+      <para>To make sure the system can be used, you have to configure the
+      security to allow access. In easiest configuration is to allow access to
+      everybody.</para>
+
+      <programlisting>&lt;bean name="security.securityInfo" class="org.geomajas.security.SecurityInfo"&gt;
+    &lt;property name="loopAllServices" value="false"/&gt;
+    &lt;property name="securityServices"&gt;
+        &lt;list&gt;
+            &lt;bean class="org.geomajas.internal.security.AllowAllSecurityService"/&gt;
+        &lt;/list&gt;
+    &lt;/property&gt;
+&lt;/bean&gt;</programlisting>
+
       <para>The initial bean which needs to be defined is the
       <emphasis>application</emphasis> bean.</para>
 
@@ -696,8 +709,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
                     <entry>version</entry>
 
                     <entry>Version of the WMS format which should be used.
-                    Check your server configuration for possible values.
-                    </entry>
+                    Check your server configuration for possible
+                    values.</entry>
                   </row>
 
                   <row>
@@ -854,8 +867,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
       "command" prefix, the "Command" suffix is removed from the name if
       present. When the resulting name starts or end with the sub package,
       then that is removed as well. For example the
-      "org.geomajas.command.configuration.GetConfigurationCommand"
-      class will get "command.configuration.Get" as registry key.</para>
+      "org.geomajas.command.configuration.GetConfigurationCommand" class will
+      get "command.configuration.Get" as registry key.</para>
 
       <para><table>
           <title>GetAssociationCommand</title>
