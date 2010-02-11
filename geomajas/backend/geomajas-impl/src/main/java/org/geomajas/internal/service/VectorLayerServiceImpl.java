@@ -141,7 +141,8 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 	}
 
 	public List<InternalFeature> getFeatures(String layerId, CoordinateReferenceSystem crs, Filter queryFilter,
-			List<StyleInfo> styleDefinitions, int featureIncludes) throws GeomajasException {
+			List<StyleInfo> styleDefinitions, int featureIncludes, int offset, int maxResultSize)
+			throws GeomajasException {
 		VectorLayer layer = applicationService.getVectorLayer(layerId);
 		if (null == layer) {
 			throw new GeomajasException(ExceptionCode.VECTOR_LAYER_NOT_FOUND, layerId);
@@ -171,11 +172,16 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 		}
 
 		List<InternalFeature> res = new ArrayList<InternalFeature>();
-		Iterator<?> it = layer.getElements(filter);
+		Iterator<?> it = layer.getElements(filter, offset, maxResultSize);
 		while (it.hasNext()) {
 			res.add(convertFeature(it.next(), layer, transformation, styleFilters, featureIncludes));
 		}
 		return res;
+	}
+
+	public List<InternalFeature> getFeatures(String layerId, CoordinateReferenceSystem crs, Filter filter,
+			List<StyleInfo> styleDefinitions, int featureIncludes) throws GeomajasException {
+		return getFeatures(layerId, crs, filter, styleDefinitions, featureIncludes, 0, 0);
 	}
 
 	/**

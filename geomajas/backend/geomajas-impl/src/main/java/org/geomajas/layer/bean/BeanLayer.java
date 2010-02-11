@@ -110,7 +110,10 @@ public class BeanLayer implements VectorLayer {
 		return true;
 	}
 
-	public Iterator<?> getElements(Filter filter) throws LayerException {
+	/**
+	 * This implementation does not support the 'offset' and 'maxResultSize' parameters.
+	 */
+	public Iterator<?> getElements(Filter filter, int offset, int maxResultSize) throws LayerException {
 		List<Object> filteredList = new ArrayList<Object>();
 		for (Object feature : featuresById.values()) {
 			if (filter.evaluate(feature)) {
@@ -134,7 +137,7 @@ public class BeanLayer implements VectorLayer {
 	 * @return the bounds of the specified features
 	 */
 	public Envelope getBounds(Filter queryFilter) throws LayerException {
-		Iterator<?> it = getElements(queryFilter);
+		Iterator<?> it = getElements(queryFilter, 0, 0);
 		// start with null envelope
 		Envelope bounds = new Envelope();
 		while (it.hasNext()) {
@@ -241,6 +244,7 @@ public class BeanLayer implements VectorLayer {
 			this.type = type;
 		}
 
+		@SuppressWarnings("unchecked")
 		public int compare(Object f1, Object f2) {
 			try {
 				Comparable attr1 = (Comparable) getFeatureModel().getAttribute(f1, attributeName);

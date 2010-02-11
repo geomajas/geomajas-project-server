@@ -22,7 +22,6 @@
  */
 package org.geomajas.layer.geotools;
 
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -36,19 +35,12 @@ import org.geomajas.configuration.PrimitiveAttributeInfo;
 import org.geomajas.configuration.PrimitiveType;
 import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.layer.VectorLayer;
-import org.geomajas.service.FilterService;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.Filter;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Point;
@@ -61,10 +53,10 @@ public class GeoToolsLayerTest extends AbstractGeoToolsTest {
 	private GeoToolsLayer layer;
 
 	private Filter filter;
-	
+
 	@Before
 	public void init() throws Exception {
-		layer = (GeoToolsLayer)applicationContext.getBean("test", VectorLayer.class);
+		layer = (GeoToolsLayer) applicationContext.getBean("test", VectorLayer.class);
 		layer.setUrl(SHAPE_FILE);
 
 		FeatureInfo ft = new FeatureInfo();
@@ -160,7 +152,7 @@ public class GeoToolsLayerTest extends AbstractGeoToolsTest {
 	@Test
 	public void testGetElements() throws Exception {
 		// Checked in QGis!
-		Iterator<?> it = layer.getElements(filter);
+		Iterator<?> it = layer.getElements(filter, 0, 0);
 		int counter = 0;
 		while (it.hasNext()) {
 			it.next();

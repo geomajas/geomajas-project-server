@@ -105,12 +105,16 @@ public interface VectorLayer extends Layer<VectorLayerInfo> {
 
 	/**
 	 * Retrieve all the features from the model that this filter accepts.
+	 * <p><b>Note that not all vector layers may support the offset or maxResultSize parameters! Check the individual
+	 * layer documentation to be certain.</b></p>
 	 *
 	 * @param filter filter to be applied
+	 * @param offset Skip the first 'offset' features in the result. This is meant for paging.
+	 * @param maxResultSize Limit the result to a maximum number of features. Can be used for paging.
 	 * @return reader of feature value objects
 	 * @throws LayerException oops
 	 */
-	Iterator<?> getElements(Filter filter) throws LayerException;
+	Iterator<?> getElements(Filter filter, int offset, int maxResultSize) throws LayerException;
 
 	/**
 	 * Retrieve the bounds of the specified features.

@@ -72,8 +72,6 @@ import com.vividsolutions.jts.geom.Envelope;
 @Transactional
 public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer {
 
-	private static final String CLASSPATH_URL_PROTOCOL = "classpath:";
-
 	private final Logger log = LoggerFactory.getLogger(GeoToolsLayer.class);
 
 	private FilterFactory filterFactory;
@@ -258,7 +256,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 	public Object read(String featureId) throws LayerException {
 		Identifier identifier = new FeatureIdImpl(featureId);
 		Id filter = filterFactory.id(Collections.singleton(identifier));
-		Iterator<?> iterator = getElements(filter);
+		Iterator<?> iterator = getElements(filter, 0, 0);
 		if (iterator.hasNext()) {
 			return iterator.next();
 		}
@@ -313,7 +311,10 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 		}
 	}
 
-	public Iterator<?> getElements(Filter queryFilter) throws LayerException {
+	/**
+	 * This implementation does not support the 'offset' and 'maxResultSize' parameters.
+	 */
+	public Iterator<?> getElements(Filter queryFilter, int offset, int maxResultSize) throws LayerException {
 		Filter filter = convertFilter(queryFilter);
 		FeatureSource<SimpleFeatureType, SimpleFeature> source = getFeatureSource();
 		if (source instanceof FeatureStore<?, ?>) {

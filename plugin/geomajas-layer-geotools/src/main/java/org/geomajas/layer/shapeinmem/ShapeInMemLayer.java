@@ -144,7 +144,10 @@ public class ShapeInMemLayer extends FeatureSourceRetriever implements VectorLay
 		}
 	}
 
-	public Iterator<?> getElements(Filter queryFilter) throws LayerException {
+	/**
+	 * This implementation does not support the 'offset' and 'maxResultSize' parameters.
+	 */
+	public Iterator<?> getElements(Filter queryFilter, int offset, int maxResultSize) throws LayerException {
 		Filter filter = convertFilter(queryFilter);
 		List<SimpleFeature> filteredList = new ArrayList<SimpleFeature>();
 		for (SimpleFeature feature : features.values()) {

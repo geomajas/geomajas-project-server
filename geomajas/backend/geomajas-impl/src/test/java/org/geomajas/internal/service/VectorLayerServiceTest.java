@@ -93,7 +93,7 @@ public class VectorLayerServiceTest {
 		layerService.saveOrUpdate(LAYER_ID, crs, oldFeatures, newFeatures);
 
 		Iterator<FeatureBean> iterator =
-				(Iterator<FeatureBean>) beanLayer.getElements(filterService.createTrueFilter());
+				(Iterator<FeatureBean>) beanLayer.getElements(filterService.createTrueFilter(), 0, 0);
 		int count = 0;
 		int check = 0;
 		while (iterator.hasNext()) {
@@ -124,7 +124,7 @@ public class VectorLayerServiceTest {
 		layerService.saveOrUpdate(LAYER_ID, crs, oldFeatures, newFeatures);
 
 		Iterator<FeatureBean> iterator =
-				(Iterator<FeatureBean>) beanLayer.getElements(filterService.createTrueFilter());
+				(Iterator<FeatureBean>) beanLayer.getElements(filterService.createTrueFilter(), 0, 0);
 		int count = 0;
 		int check = 0;
 		while (iterator.hasNext()) {
@@ -143,7 +143,7 @@ public class VectorLayerServiceTest {
 		newFeatures = new ArrayList<InternalFeature>();
 		layerService.saveOrUpdate(LAYER_ID, crs, oldFeatures, newFeatures);
 
-		iterator = (Iterator<FeatureBean>) beanLayer.getElements(filterService.createTrueFilter());
+		iterator = (Iterator<FeatureBean>) beanLayer.getElements(filterService.createTrueFilter(), 0, 0);
 		count = 0;
 		check = 0;
 		while (iterator.hasNext()) {

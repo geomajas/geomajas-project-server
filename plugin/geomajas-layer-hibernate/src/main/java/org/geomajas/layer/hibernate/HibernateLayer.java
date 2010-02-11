@@ -142,14 +142,17 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer {
 		filterService.registerFeatureModel(featureModel);
 	}
 
-	public Iterator<?> getElements(Filter filter) throws LayerException {
+	/**
+	 * This implementation does not support the 'offset' and 'maxResultSize' parameters.
+	 */
+	public Iterator<?> getElements(Filter filter, int offset, int maxResultSize) throws LayerException {
 		try {
 			Session session = getSessionFactory().getCurrentSession();
 			Criteria criteria = session.createCriteria(getFeatureInfo().getDataSourceName());
 			if (filter != null) {
 				if (filter != Filter.INCLUDE) {
-					CriteriaVisitor visitor = 
-						new CriteriaVisitor((HibernateFeatureModel) getFeatureModel(), dateFormat);
+					CriteriaVisitor visitor = new CriteriaVisitor((HibernateFeatureModel) getFeatureModel(),
+							dateFormat);
 					Criterion c = (Criterion) filter.accept(visitor, criteria);
 					if (c != null) {
 						criteria.add(c);

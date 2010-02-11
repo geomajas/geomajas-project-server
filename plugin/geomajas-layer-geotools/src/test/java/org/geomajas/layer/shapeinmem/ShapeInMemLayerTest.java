@@ -32,7 +32,6 @@ import org.geomajas.configuration.GeometricAttributeInfo;
 import org.geomajas.configuration.PrimitiveAttributeInfo;
 import org.geomajas.configuration.PrimitiveType;
 import org.geomajas.configuration.VectorLayerInfo;
-import org.geomajas.layer.shapeinmem.ShapeInMemLayer;
 import org.geomajas.service.FilterService;
 import org.geotools.factory.CommonFactoryFinder;
 import org.junit.Assert;
@@ -166,7 +165,7 @@ public class ShapeInMemLayerTest {
 	public void getElements() {
 		try {
 			// Checked in QGis!
-			Iterator<?> it = layer.getElements(filter);
+			Iterator<?> it = layer.getElements(filter, 0, 0);
 			int counter = 0;
 			while (it.hasNext()) {
 				it.next();

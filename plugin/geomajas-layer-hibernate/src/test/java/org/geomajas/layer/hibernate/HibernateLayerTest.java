@@ -36,7 +36,7 @@ import org.junit.Test;
 
 /**
  * Unit test that tests all the functions of the HibernateLayer.
- *
+ * 
  * @author Pieter De Graef
  */
 public class HibernateLayerTest extends AbstractHibernateLayerModelTest {
@@ -54,7 +54,7 @@ public class HibernateLayerTest extends AbstractHibernateLayerModelTest {
 
 	@Test
 	public void testRead() throws Exception {
-		HibernateTestFeature f1 = (HibernateTestFeature)layer.create(HibernateTestFeature.getDefaultInstance1(null));
+		HibernateTestFeature f1 = (HibernateTestFeature) layer.create(HibernateTestFeature.getDefaultInstance1(null));
 		Assert.assertNotNull(f1.getId());
 		Object feature = layer.read(f1.getId().toString());
 		Assert.assertNotNull(feature);
@@ -62,18 +62,18 @@ public class HibernateLayerTest extends AbstractHibernateLayerModelTest {
 
 	@Test
 	public void testUpdate() throws Exception {
-		HibernateTestFeature f1 = (HibernateTestFeature)layer.create(HibernateTestFeature.getDefaultInstance1(null));
+		HibernateTestFeature f1 = (HibernateTestFeature) layer.create(HibernateTestFeature.getDefaultInstance1(null));
 		Assert.assertNotNull(f1.getId());
 		Object feature = layer.read(f1.getId().toString());
 		Assert.assertNotNull("The requested feature could not be found!", feature);
 		// create a detached copy
 		HibernateTestFeature detached = HibernateTestFeature.getDefaultInstance1(null);
-		detached.setId(((HibernateTestFeature)feature).getId());
+		detached.setId(((HibernateTestFeature) feature).getId());
 		Map<String, Object> attributes = new HashMap<String, Object>();
 		attributes.put("textAttr", "new name");
 		attributes.put("floatAttr", 5f);
 		Calendar c = Calendar.getInstance();
-		attributes.put("dateAttr",c.getTime());
+		attributes.put("dateAttr", c.getTime());
 		attributes.put("booleanAttr", false);
 		attributes.put("manyToOne", HibernateTestManyToOne.getDefaultInstance1(null));
 		layer.getFeatureModel().setAttributes(detached, attributes);
@@ -81,12 +81,13 @@ public class HibernateLayerTest extends AbstractHibernateLayerModelTest {
 		layer.saveOrUpdate(detached);
 		// check it
 		feature = layer.read(f1.getId().toString());
-		Assert.assertEquals("new name",layer.getFeatureModel().getAttribute(feature, "textAttr"));
-		Assert.assertEquals(5f,layer.getFeatureModel().getAttribute(feature, "floatAttr"));
-		Assert.assertEquals(c.getTime(),layer.getFeatureModel().getAttribute(feature, "dateAttr"));
-		Assert.assertEquals(false,layer.getFeatureModel().getAttribute(feature, "booleanAttr"));
-		HibernateTestManyToOne manytoOne = (HibernateTestManyToOne)layer.getFeatureModel().getAttribute(feature, "manyToOne");
-		Assert.assertNotNull(manytoOne.getId());		
+		Assert.assertEquals("new name", layer.getFeatureModel().getAttribute(feature, "textAttr"));
+		Assert.assertEquals(5f, layer.getFeatureModel().getAttribute(feature, "floatAttr"));
+		Assert.assertEquals(c.getTime(), layer.getFeatureModel().getAttribute(feature, "dateAttr"));
+		Assert.assertEquals(false, layer.getFeatureModel().getAttribute(feature, "booleanAttr"));
+		HibernateTestManyToOne manytoOne = (HibernateTestManyToOne) layer.getFeatureModel().getAttribute(feature,
+				"manyToOne");
+		Assert.assertNotNull(manytoOne.getId());
 	}
 
 	@Test
@@ -103,7 +104,7 @@ public class HibernateLayerTest extends AbstractHibernateLayerModelTest {
 	public void testGetElements() throws Exception {
 		layer.create(HibernateTestFeature.getDefaultInstance2(null));
 		Object feature = null;
-		Iterator<?> iterator = layer.getElements(null);
+		Iterator<?> iterator = layer.getElements(null, 0, 0);
 		if (iterator.hasNext()) {
 			feature = iterator.next();
 		}
@@ -112,18 +113,18 @@ public class HibernateLayerTest extends AbstractHibernateLayerModelTest {
 
 	@Test
 	public void testDelete() throws Exception {
-		HibernateTestFeature f1 = (HibernateTestFeature)layer.create(HibernateTestFeature.getDefaultInstance1(null));
+		HibernateTestFeature f1 = (HibernateTestFeature) layer.create(HibernateTestFeature.getDefaultInstance1(null));
 		Assert.assertNotNull(f1.getId());
 		Assert.assertNotNull(layer.read(f1.getId().toString()));
 		layer.delete(f1.getId().toString());
 		Assert.assertNull(layer.read(f1.getId().toString()));
 	}
-	
+
 	@Test
 	public void testSort() throws Exception {
-		HibernateTestFeature f1 = (HibernateTestFeature)layer.create(HibernateTestFeature.getDefaultInstance1(null));
-		HibernateTestFeature f2 = (HibernateTestFeature)layer.create(HibernateTestFeature.getDefaultInstance2(null));
-		Iterator<?> iterator = layer.getElements(null);
+		HibernateTestFeature f1 = (HibernateTestFeature) layer.create(HibernateTestFeature.getDefaultInstance1(null));
+		HibernateTestFeature f2 = (HibernateTestFeature) layer.create(HibernateTestFeature.getDefaultInstance2(null));
+		Iterator<?> iterator = layer.getElements(null, 0, 0);
 		List<Object> actual = new ArrayList<Object>();
 		while (iterator.hasNext()) {
 			actual.add(iterator.next());

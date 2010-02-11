@@ -1,0 +1,29 @@
+<projectDescription>
+  <name>geomajas-plugin-springsecurity</name>
+  <comment>Geomajas is a component framework for building rich Internet applications (RIA) with sophisticated capabilities
+		for the display, analysis and management of geographic information. It is a building block that allows
+		developers to add maps and other geographic data capabilities to their web applications.</comment>
+  <projects>
+    <project>geomajas-api</project>
+    <project>geomajas-api-experimental</project>
+    <project>geomajas-impl</project>
+    <project>geomajas-testdata</project>
+  </projects>
+  <buildSpec>
+    <buildCommand>
+      <name>org.eclipse.jdt.core.javabuilder</name>
+    </buildCommand>
+    <buildCommand>
+      <name>org.eclipse.wst.common.project.facet.core.builder</name>
+    </buildCommand>
+    <buildCommand>
+      <name>org.eclipse.wst.validation.validationbuilder</name>
+    </buildCommand>
+  </buildSpec>
+  <natures>
+    <nature>org.eclipse.wst.common.project.facet.core.nature</nature>
+    <nature>org.eclipse.jdt.core.javanature</nature>
+    <nature>org.eclipse.wst.common.modulecore.ModuleCoreNature</nature>
+    <nature>org.eclipse.jem.workbench.JavaEMFNature</nature>
+  </natures>
+</projectDescription>

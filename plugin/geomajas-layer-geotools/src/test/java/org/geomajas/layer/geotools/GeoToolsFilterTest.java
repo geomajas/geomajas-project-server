@@ -22,7 +22,6 @@
  */
 package org.geomajas.layer.geotools;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -33,7 +32,6 @@ import org.geomajas.configuration.GeometricAttributeInfo;
 import org.geomajas.configuration.PrimitiveAttributeInfo;
 import org.geomajas.configuration.PrimitiveType;
 import org.geomajas.configuration.VectorLayerInfo;
-import org.geomajas.layer.VectorLayer;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -56,7 +54,7 @@ public class GeoToolsFilterTest extends AbstractGeoToolsTest {
 	@Before
 	public void setUp() throws Exception {
 		ClassLoader classloader = Thread.currentThread().getContextClassLoader();
-		URL url = classloader.getResource(SHAPE_FILE);
+		classloader.getResource(SHAPE_FILE);
 
 		FeatureInfo ft = new FeatureInfo();
 		ft.setDataSourceName("filtertest");
@@ -102,7 +100,7 @@ public class GeoToolsFilterTest extends AbstractGeoToolsTest {
 	@Test
 	public void testBetweenFilter() throws Exception {
 		Filter filter = filterCreator.createBetweenFilter("numberAttr", "2", "8");
-		Iterator<?> it = layer.getElements(filter);
+		Iterator<?> it = layer.getElements(filter, 0, 0);
 
 		int t = 0;
 		while (it.hasNext()) {
@@ -115,7 +113,7 @@ public class GeoToolsFilterTest extends AbstractGeoToolsTest {
 	@Test
 	public void testCompareFilter() throws Exception {
 		Filter filter = filterCreator.createCompareFilter("numberAttr", "<", "15");
-		Iterator<?> it = layer.getElements(filter);
+		Iterator<?> it = layer.getElements(filter, 0, 0);
 
 		int t = 0;
 		while (it.hasNext()) {
@@ -128,7 +126,7 @@ public class GeoToolsFilterTest extends AbstractGeoToolsTest {
 	@Test
 	public void testLikeFilter() throws Exception {
 		Filter filter = filterCreator.createLikeFilter("textAttr", "*sid*");
-		Iterator<?> it = layer.getElements(filter);
+		Iterator<?> it = layer.getElements(filter, 0, 0);
 
 		int t = 0;
 		while (it.hasNext()) {
@@ -144,7 +142,7 @@ public class GeoToolsFilterTest extends AbstractGeoToolsTest {
 		Filter filter2 = filterCreator.createLikeFilter("textAttr", "over*");
 		Filter filter = filterCreator.createLogicFilter(filter1, "and", filter2);
 
-		Iterator<?> it = layer.getElements(filter);
+		Iterator<?> it = layer.getElements(filter, 0, 0);
 
 		int t = 0;
 		while (it.hasNext()) {
@@ -157,7 +155,7 @@ public class GeoToolsFilterTest extends AbstractGeoToolsTest {
 	@Test
 	public void testFIDFilter() throws Exception {
 		Filter filter = filterCreator.createFidFilter(new String[] { "1" });
-		Iterator<?> it = layer.getElements(filter);
+		Iterator<?> it = layer.getElements(filter, 0, 0);
 		SimpleFeature f = (SimpleFeature) it.next();
 		Assert.assertEquals("centraal", f.getAttribute("textAttr"));
 	}
@@ -166,7 +164,7 @@ public class GeoToolsFilterTest extends AbstractGeoToolsTest {
 	public void testContainsFilter() throws Exception {
 		Geometry geom = (Geometry) ((SimpleFeature) layer.read("3")).getDefaultGeometry();
 		Filter filter = filterCreator.createContainsFilter(geom, "the_geom");
-		Iterator<?> it = layer.getElements(filter);
+		Iterator<?> it = layer.getElements(filter, 0, 0);
 
 		int t = 0;
 		while (it.hasNext()) {
@@ -180,7 +178,7 @@ public class GeoToolsFilterTest extends AbstractGeoToolsTest {
 	public void testWithinFilter() throws Exception {
 		Geometry geom = (Geometry) ((SimpleFeature) layer.read("1")).getDefaultGeometry();
 		Filter filter = filterCreator.createWithinFilter(geom, "the_geom");
-		Iterator<?> it = layer.getElements(filter);
+		Iterator<?> it = layer.getElements(filter, 0, 0);
 
 		int t = 0;
 		while (it.hasNext()) {
@@ -194,7 +192,7 @@ public class GeoToolsFilterTest extends AbstractGeoToolsTest {
 	public void testIntersectsFilter() throws Exception {
 		Geometry geom = (Geometry) ((SimpleFeature) layer.read("1")).getDefaultGeometry();
 		Filter filter = filterCreator.createIntersectsFilter(geom, "the_geom");
-		Iterator<?> it = layer.getElements(filter);
+		Iterator<?> it = layer.getElements(filter, 0, 0);
 
 		int t = 0;
 		while (it.hasNext()) {
@@ -208,7 +206,7 @@ public class GeoToolsFilterTest extends AbstractGeoToolsTest {
 	public void testTouchesFilter() throws Exception {
 		Geometry geom = (Geometry) ((SimpleFeature) layer.read("1")).getDefaultGeometry();
 		Filter filter = filterCreator.createTouchesFilter(geom, "the_geom");
-		Iterator<?> it = layer.getElements(filter);
+		Iterator<?> it = layer.getElements(filter, 0, 0);
 
 		int t = 0;
 		while (it.hasNext()) {
@@ -222,7 +220,7 @@ public class GeoToolsFilterTest extends AbstractGeoToolsTest {
 	public void testcreateBBoxFilter() throws Exception {
 		Envelope bbox = new Envelope(-0.4d, -0.2d, -0.3d, 0.1d);
 		Filter filter = filterCreator.createBboxFilter("EPSG:4326", bbox, "the_geom");
-		Iterator<?> it = layer.getElements(filter);
+		Iterator<?> it = layer.getElements(filter, 0, 0);
 
 		int t = 0;
 		while (it.hasNext()) {
@@ -236,7 +234,7 @@ public class GeoToolsFilterTest extends AbstractGeoToolsTest {
 	public void testOverlapsFilter() throws Exception {
 		Geometry geom = (Geometry) ((SimpleFeature) layer.read("4")).getDefaultGeometry();
 		Filter filter = filterCreator.createOverlapsFilter(geom, "the_geom");
-		Iterator<?> it = layer.getElements(filter);
+		Iterator<?> it = layer.getElements(filter, 0, 0);
 
 		int t = 0;
 		while (it.hasNext()) {
