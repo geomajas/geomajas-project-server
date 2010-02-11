@@ -29,6 +29,7 @@ import org.geomajas.command.CommandResponse;
 import org.geomajas.configuration.ApplicationInfo;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
+import org.geomajas.global.GeomajasSecurityException;
 import org.geomajas.security.SecurityContext;
 import org.geomajas.security.SecurityManager;
 import org.slf4j.Logger;
@@ -106,7 +107,6 @@ public final class CommandDispatcherImpl implements CommandDispatcher {
 			}
 
 			// check access rights for the command
-			System.out.println("security check on " + commandName + " for " + securityContext.getUserId());
 			if (securityContext.isCommandAuthorized(commandName)) {
 
 				Command command = null;
@@ -132,10 +132,9 @@ public final class CommandDispatcherImpl implements CommandDispatcher {
 
 			} else {
 				// not authorized
-				System.out.println("not authorized");
 				response = new CommandResponse();
 				response.setId(id);
-				response.getErrors().add(new GeomajasException(ExceptionCode.COMMAND_ACCESS_DENIED,
+				response.getErrors().add(new GeomajasSecurityException(ExceptionCode.COMMAND_ACCESS_DENIED,
 						commandName, securityContext.getUserId()));
 			}
 

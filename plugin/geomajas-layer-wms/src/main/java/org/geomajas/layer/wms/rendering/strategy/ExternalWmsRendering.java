@@ -139,7 +139,7 @@ public class ExternalWmsRendering implements RenderingStrategy {
 			TilePainter tilePainter = paintFactory.createRasterTilePainter(new WmsUrlBuilder(tile, vLayer, layerName));
 			return tilePainter.paint(tile);
 		} catch (CQLException cqle) {
-			throw new RenderException(ExceptionCode.RENDER_FILTER_PARSE_PROBLEM, cqle);
+			throw new RenderException(cqle, ExceptionCode.FILTER_PARSE_PROBLEM, metadata.getFilter());
 		} catch (RenderException re) {
 			throw re;
 		} catch (GeomajasException ge) {

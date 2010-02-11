@@ -29,8 +29,10 @@ import java.util.List;
 
 import org.geomajas.configuration.LayerInfo;
 import org.geomajas.configuration.StyleInfo;
+import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
+import org.geomajas.global.GeomajasSecurityException;
 import org.geomajas.internal.layer.feature.InternalFeatureImpl;
 import org.geomajas.internal.rendering.StyleFilterImpl;
 import org.geomajas.layer.VectorLayer;
@@ -38,6 +40,7 @@ import org.geomajas.layer.feature.FeatureModel;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.rendering.StyleFilter;
 import org.geomajas.rendering.painter.PaintFactory;
+import org.geomajas.security.SecurityContext;
 import org.geomajas.service.ApplicationService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
@@ -79,12 +82,23 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 	@Autowired
 	private FilterService filterService;
 
-	public void saveOrUpdate(String layerId, CoordinateReferenceSystem crs, List<InternalFeature> oldFeatures,
-			List<InternalFeature> newFeatures) throws GeomajasException {
+	@Autowired
+	private SecurityContext securityContext;
+
+	private VectorLayer getVectorLayer(String layerId) throws GeomajasException {
+		if (!securityContext.isLayerVisible(layerId)) {
+			throw new GeomajasSecurityException(ExceptionCode.LAYER_NOT_VISIBLE, layerId, securityContext.getUserId());
+		}
 		VectorLayer layer = applicationService.getVectorLayer(layerId);
 		if (null == layer) {
 			throw new GeomajasException(ExceptionCode.VECTOR_LAYER_NOT_FOUND, layerId);
 		}
+		return layer;
+	}
+
+	public void saveOrUpdate(String layerId, CoordinateReferenceSystem crs, List<InternalFeature> oldFeatures,
+			List<InternalFeature> newFeatures) throws GeomajasException {
+		VectorLayer layer = getVectorLayer(layerId);
 		FeatureModel featureModel = layer.getFeatureModel();
 
 		MathTransform mapToLayer;
@@ -107,27 +121,42 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 			if (null == newFeature) {
 				// delete ?
 				if (null != oldFeature) {
-					layer.delete(oldFeature.getLocalId());
+					if (securityContext.isFeatureDeleteAuthorized(layerId, oldFeature)) {
+						layer.delete(oldFeature.getLocalId());
+					} else {
+						throw new GeomajasSecurityException(ExceptionCode.FEATURE_DELETE_PROHIBITED, oldFeature.getId(),
+								securityContext.getUserId());
+					}
 				}
 			} else {
 				// create or update
 				Object feature;
 				if (null == oldFeature) {
 					// create new feature
-					feature = featureModel.newInstance(newFeature.getLocalId());
+					transformGeometry(newFeature, mapToLayer);
+					if (securityContext.isFeatureCreateAuthorized(layerId, oldFeature)) {
+						feature = featureModel.newInstance(newFeature.getLocalId());
+					} else {
+						throw new GeomajasSecurityException(ExceptionCode.FEATURE_CREATE_PROHIBITED,
+								securityContext.getUserId());
+					}
 				} else {
-					feature = layer.read(newFeature.getLocalId());
+					if (null == oldFeature.getId() || !oldFeature.getId().equals(newFeature.getId())) {
+						throw new GeomajasException(ExceptionCode.FEATURE_ID_MISMATCH);
+					}
+					transformGeometry(newFeature, mapToLayer);
+					if (securityContext.isFeatureUpdateAuthorized(layerId, oldFeature, newFeature)) {
+						feature = layer.read(newFeature.getLocalId());
+					} else {
+						throw new GeomajasSecurityException(ExceptionCode.FEATURE_UPDATE_PROHIBITED, oldFeature.getId(),
+								securityContext.getUserId());
+					}
 				}
+				// @todo security verify attribute editable authorizations
 				featureModel.setAttributes(feature, newFeature.getAttributes());
 
 				if (newFeature.getGeometry() != null) {
-					Geometry transformed;
-					try {
-						transformed = JTS.transform(newFeature.getGeometry(), mapToLayer);
-					} catch (TransformException te) {
-						throw new GeomajasException(te, ExceptionCode.GEOMETRY_TRANSFORMATION_FAILED);
-					}
-					featureModel.setGeometry(feature, transformed);
+					featureModel.setGeometry(feature, newFeature.getGeometry());
 				}
 				feature = layer.saveOrUpdate(feature);
 
@@ -136,6 +165,25 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 				newFeature.setId(layerId + "." + id);
 
 				newFeature.setAttributes(featureModel.getAttributes(feature));
+
+				newFeature.setEditable(securityContext.isFeatureUpdateAuthorized(layerId, newFeature));
+				newFeature.setDeletable(securityContext.isFeatureDeleteAuthorized(layerId, newFeature));
+			}
+		}
+	}
+
+	/**
+	 * Convert the geometry (if any) in the passed feature to layer crs.
+	 *
+	 * @param feature feature in which the geometry should be updated
+	 * @param mapToLayer transformation to apply
+	 */
+	private void transformGeometry(InternalFeature feature, MathTransform mapToLayer) throws GeomajasException {
+		if (feature.getGeometry() != null) {
+			try {
+				feature.setGeometry(JTS.transform(feature.getGeometry(), mapToLayer));
+			} catch (TransformException te) {
+				throw new GeomajasException(te, ExceptionCode.GEOMETRY_TRANSFORMATION_FAILED);
 			}
 		}
 	}
@@ -143,15 +191,8 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 	public List<InternalFeature> getFeatures(String layerId, CoordinateReferenceSystem crs, Filter queryFilter,
 			List<StyleInfo> styleDefinitions, int featureIncludes, int offset, int maxResultSize)
 			throws GeomajasException {
-		VectorLayer layer = applicationService.getVectorLayer(layerId);
-		if (null == layer) {
-			throw new GeomajasException(ExceptionCode.VECTOR_LAYER_NOT_FOUND, layerId);
-		}
-
-		Filter filter = queryFilter;
-		if (null == filter) {
-			filter = filterService.createTrueFilter();
-		}
+		VectorLayer layer = getVectorLayer(layerId);
+		Filter filter = getLayerFilter(layer.getLayerInfo(), queryFilter);
 
 		List<StyleFilter> styleFilters = null;
 		if ((featureIncludes & FEATURE_INCLUDE_STYLE) != 0) {
@@ -174,7 +215,13 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 		List<InternalFeature> res = new ArrayList<InternalFeature>();
 		Iterator<?> it = layer.getElements(filter, offset, maxResultSize);
 		while (it.hasNext()) {
-			res.add(convertFeature(it.next(), layer, transformation, styleFilters, featureIncludes));
+			InternalFeature feature = convertFeature(it.next(), layer, transformation, styleFilters, featureIncludes);
+			if (securityContext.isFeatureVisible(layerId, feature)) {
+				// @todo security filter attributes which are not visible
+				feature.setEditable(securityContext.isFeatureUpdateAuthorized(layerId, feature));
+				feature.setDeletable(securityContext.isFeatureDeleteAuthorized(layerId, feature));
+				res.add(feature);
+			}
 		}
 		return res;
 	}
@@ -257,7 +304,7 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 	 *            style filters to select from
 	 * @return a style filter
 	 */
-	public StyleFilter findStyleFilter(Object feature, List<StyleFilter> styles) {
+	private StyleFilter findStyleFilter(Object feature, List<StyleFilter> styles) {
 		for (StyleFilter styleFilter : styles) {
 			if (styleFilter.getFilter().evaluate(feature)) {
 				return styleFilter;
@@ -287,15 +334,8 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 
 	public Envelope getBounds(String layerId, CoordinateReferenceSystem crs, Filter queryFilter)
 			throws GeomajasException {
-		VectorLayer layer = applicationService.getVectorLayer(layerId);
-		if (null == layer) {
-			throw new GeomajasException(ExceptionCode.VECTOR_LAYER_NOT_FOUND, layerId);
-		}
-
-		Filter filter = queryFilter;
-		if (null == filter) {
-			filter = filterService.createTrueFilter();
-		}
+		VectorLayer layer = getVectorLayer(layerId);
+		Filter filter = getLayerFilter(layer.getLayerInfo(), queryFilter);
 
 		MathTransform layerToTarget;
 		try {
@@ -312,11 +352,66 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 		return bounds;
 	}
 
-	public List<Object> getObjects(String layerId, String attributeName, Filter queryFilter) throws GeomajasException {
-		VectorLayer layer = applicationService.getVectorLayer(layerId);
-		if (null == layer) {
-			throw new GeomajasException(ExceptionCode.VECTOR_LAYER_NOT_FOUND, layerId);
+	/**
+	 * Get the (combined) filter to apply. Always returns a filter, never null.
+	 * <p/>
+	 * This combines the visible area, the security filter for the layer, the default filter for the layer,  
+	 *
+	 * @param layerInfo layer info (matching the layer id)
+	 * @param queryFilter base query filter if any
+	 * @return filter to apply
+	 */
+	private Filter getLayerFilter(VectorLayerInfo layerInfo, Filter queryFilter) throws GeomajasException {
+		Filter filter = queryFilter;
+		String layerId = layerInfo.getId();
+
+		/* @todo security remove comments
+		// apply generic security filter
+		Filter layerFeatureFilter = securityContext.getFeatureFilter(layerId);
+		if (null != layerFeatureFilter) {
+			filter = and(filter, layerFeatureFilter);
 		}
+
+		// apply default filter
+		String defaultFilter = layerInfo.getFilter();
+		if (null != defaultFilter) {
+			try {
+				filter = and(filter, CQL.toFilter(defaultFilter));
+			} catch (CQLException ce) {
+				throw new GeomajasException(ce, ExceptionCode.FILTER_APPLY_PROBLEM, defaultFilter);
+			}
+		}
+
+		// apply visible area filter
+		Geometry visibleArea = securityContext.getVisibleArea(layerId);
+		String geometryName = layerInfo.getFeatureInfo().getGeometryType().getName();
+		if (securityContext.isPartlyVisibleSufficient(layerId)) {
+			filter = and(filter, filterService.createOverlapsFilter(visibleArea, geometryName));
+		} else {
+			filter = and(filter, filterService.createWithinFilter(visibleArea, geometryName));
+		}
+		*/
+
+		if (null == filter) {
+			filter = filterService.createTrueFilter();
+		}
+		return filter;
+	}
+
+	private Filter and(Filter f1, Filter f2) {
+		if (null == f1) {
+			return f2;
+		} else if (null == f2) {
+			return f1;
+		} else {
+			return filterService.createAndFilter(f1, f2);
+		}
+	}
+
+	public List<Object> getObjects(String layerId, String attributeName, Filter queryFilter) throws GeomajasException {
+		VectorLayer layer = getVectorLayer(layerId);
+
+		// @todo security ??
 
 		Filter filter = queryFilter;
 		if (null == filter) {

@@ -33,10 +33,12 @@ import org.geomajas.layer.bean.BeanLayer;
 import org.geomajas.layer.bean.FeatureBean;
 import org.geomajas.layer.feature.Feature;
 import org.geomajas.layer.feature.InternalFeature;
+import org.geomajas.security.SecurityManager;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.VectorLayerService;
 import org.geotools.referencing.CRS;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opengis.filter.Filter;
@@ -76,6 +78,15 @@ public class VectorLayerServiceTest {
 
 	@Autowired
 	private DtoConverterService converterService;
+
+	@Autowired
+	private SecurityManager securityManager;
+
+	@Before
+	public void login() {
+		// assure security context is set
+		securityManager.createSecurityContext(null);
+	}
 
 	@Test
 	public void testUpdate() throws Exception {

@@ -128,7 +128,7 @@ public class VectorRendering implements RenderingStrategy {
 				try {
 					filter = filterCreator.createLogicFilter(CQL.toFilter(metadata.getFilter()), "and", filter);
 				} catch (CQLException e) {
-					throw new RenderException(ExceptionCode.RENDER_FILTER_PARSE_PROBLEM, e);
+					throw new RenderException(e, ExceptionCode.FILTER_PARSE_PROBLEM, metadata.getFilter());
 				}
 			}
 
