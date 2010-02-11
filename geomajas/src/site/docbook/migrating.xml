@@ -65,6 +65,26 @@
         <code>org.geomajas.command</code>. The <code>LogCommand</code> has
         also been moved into the <code>general</code> sub-package.</para>
       </listitem>
+
+      <listitem>
+        <para>security contraints are now applied in Geomajas. By default,
+        nothing is authorized, so you always have to configure at least one
+        security service. To go back to the old (allow-all) behaviour, include
+        the following excerpt in your configuration file.</para>
+
+        <programlisting>&lt;bean name="security.securityInfo" class="org.geomajas.security.SecurityInfo"&gt;
+    &lt;property name="loopAllServices" value="false"/&gt;
+    &lt;property name="securityServices"&gt;
+        &lt;list&gt;
+            &lt;bean class="org.geomajas.internal.security.AllowAllSecurityService"/&gt;
+        &lt;/list&gt;
+    &lt;/property&gt;
+&lt;/bean&gt;</programlisting>
+      </listitem>
+
+      <listitem>
+        <para />
+      </listitem>
     </itemizedlist>
 
     <section>

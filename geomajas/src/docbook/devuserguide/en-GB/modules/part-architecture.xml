@@ -714,22 +714,25 @@
           </listitem>
         </itemizedlist>
 
-        <para>Layer model :</para>
+        <para>VectorLayerService :</para>
 
         <itemizedlist>
           <listitem>
-            <para>Layer models are required to handle the "filter" for the
-            layer (if any), other security aspects may be ignored.</para>
+            <para>Check layer access.</para>
           </listitem>
 
           <listitem>
-            <para>Layer models are recommended to consider especially the
-            visible area as this can increase query speed.</para>
+            <para>Handle the "filter" for the layer (if any) .</para>
           </listitem>
 
           <listitem>
-            <para>Layer models are recommended to not fetch attributes which
-            are not readable.</para>
+            <para>Filter on visible area as this can increase query
+            speed.</para>
+          </listitem>
+
+          <listitem>
+            <para>Post-process features filtering unreadable attributes, set
+            update flags, remove features which are not allowed.</para>
           </listitem>
         </itemizedlist>
 
