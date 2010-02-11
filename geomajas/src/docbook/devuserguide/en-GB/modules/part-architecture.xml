@@ -260,12 +260,12 @@
             </listitem>
 
             <listitem>
-              <para><code>GetFeaturesService</code> : fetches features for a
+              <para><code>VectorLayerService</code> : fetches features for a
               vector layer</para>
             </listitem>
           </itemizedlist>Pipelines can even nest. One of the steps in the
         RenderVectorTiles service will normally be an invocation to the
-        GetFeatures service as one of the steps.</para>
+        VectorLayer service as one of the steps.</para>
 
         <para>Pipeline services are server side only and will typically be
         invoked by commands to allow client access.</para>
@@ -291,8 +291,8 @@
             </listitem>
 
             <listitem>
-              <para>a &lt;String,Object&gt; map which can be used to pass data
-              between the next steps</para>
+              <para>a context which contains&lt;String,Object&gt; map which
+              can be used to pass data between the next steps</para>
             </listitem>
 
             <listitem>
@@ -301,43 +301,10 @@
           </itemizedlist></para>
 
         <para>Each step itself can do a check or transformation on the
-        response object. It can also control how the pipeline should continue
-        using the return value. The following possibilities exist :</para>
-
-        <itemizedlist>
-          <listitem>
-            <para><code>null</code> : Continue to the next step.</para>
-          </listitem>
-
-          <listitem>
-            <para><code>PipelineService.STOP</code> : Stop the rendering
-            pipeline, return the result object.</para>
-          </listitem>
-
-          <listitem>
-            <para><code>"<userinput>step-id</userinput>"</code> : Continue the
-            pipeline at given step. This will skip steps in the pipeline if
-            the requested step is not the next one. When no step with given id
-            exists in the pipeline after the current step, an exception is
-            thrown.</para>
-          </listitem>
-
-          <listitem>
-            <para><code>"-"</code> : Restart the pipeline. This could in some
-            cases be used to handle certain exceptions by changing one of the
-            parameters. It is however not recommended to use this.</para>
-          </listitem>
-
-          <listitem>
-            <para><code>"-<userinput>step-id</userinput>"</code> : Go back the
-            to a previous step in the pipeline (effectively creating a loop).
-            This will go back in the pipeline to the step with given id. When
-            no step with given id exists in the pipeline before the current
-            step, an exception is thrown. To prevent infinite loops, there is
-            a limit to the number of steps which can be performed in a
-            pipeline.</para>
-          </listitem>
-        </itemizedlist>
+        response object. In future the context will be usable to control the
+        how the pipeline should continue. For now, all steps are always
+        executed consecutively (though it may be interrupted by an
+        exception).</para>
       </sect2>
 
       <sect2>
@@ -372,13 +339,17 @@
           </listitem>
 
           <listitem>
-            <para>Invoke <code>GetFeaturesService</code> to get the
+            <para>Invoke <code>VectorLayerService</code> to get the
             features.</para>
+          </listitem>
+
+          <listitem>
+            <para>...</para>
           </listitem>
         </orderedlist>
 
-        <para>The default <code>GetFeaturesService</code> pipeline looks like
-        this :</para>
+        <para>The default <code>VectorLayerService</code> pipeline for
+        fetching the features looks like this :</para>
 
         <orderedlist>
           <listitem>
@@ -387,7 +358,11 @@
           </listitem>
 
           <listitem>
-            <para>Get feature objects from the layer model.</para>
+            <para>Build (security) filter which needs to be applied.</para>
+          </listitem>
+
+          <listitem>
+            <para>Get feature objects from the layer.</para>
           </listitem>
 
           <listitem>
@@ -434,26 +409,15 @@
     </sect1>
 
     <sect1>
-      <title>Layer Model</title>
+      <title>Layer</title>
 
-      <para>The layer model extensions allow determining how a layer is built,
-      which data is part of the layer, update and creation of extra data on a
+      <para>The layer extensions allow determining how a layer is built, which
+      data is part of the layer, update and creation of extra data on a
       layer.</para>
 
       <para>A <code>Layer</code> has some metadata (id, coordinate system,
       label, bbox, stored in the <code>LayerInfo</code> object) and allows you
-      get obtain the <code>LayerData</code> for a certain<code>(Bbox</code>,
-      scale, CRS) combination.</para>
-
-      <para>Depending on whether the layer is a raster or a vector layer, the
-      <code>LayerData</code> contains either raster images or attributes (raw
-      features?). If the layer is a vector layer, the LayerInfo object will
-      contain links to the <code>AttributeService</code> (previously
-      VectorLayerModel) which is use to create, update and delete attributes,
-      and the <code>AttributeModel</code> (previously FeatureModel) which is
-      used to convert attributes into<code>Feature</code>s.</para>
-
-      <para></para>
+      get obtain the <code>layer data</code>.</para>
     </sect1>
 
     <sect1>
@@ -617,73 +581,75 @@
           </listitem>
 
           <listitem>
-            <para><code>getVisibleArea(String layerId,
-            CoordinateReferenceSystem crs)</code> : only the area inside the
-            returned geometry is visible.</para>
+            <para><code>getVisibleArea(String layerId)</code> : only the area
+            inside the returned geometry is visible (uses layer coordinate
+            space).</para>
           </listitem>
 
           <listitem>
-            <para><code>getUpdateAuthorizedArea(String layerId,
-            CoordinateReferenceSystem crs)</code> : only the area inside the
-            returned geometry may contain updatable features.</para>
+            <para><code>getUpdateAuthorizedArea(String layerId)</code> : only
+            the area inside the returned geometry may contain updatable
+            features (uses layer coordinate space).</para>
           </listitem>
 
           <listitem>
-            <para><code>getCreateAuthorizedArea(String layerId,
-            CoordinateReferenceSystem crs)</code> : only the area inside the
-            returned geometry can new features be created.</para>
+            <para><code>getCreateAuthorizedArea(String layerId)</code> : only
+            the area inside the returned geometry can new features be created
+            (uses layer coordinate space).</para>
           </listitem>
 
           <listitem>
-            <para><code>getDeleteAuthorizedArea(String layerId,
-            CoordinateReferenceSystem crs)</code> : only the area inside the
-            returned geometry may contain deletable features.</para>
+            <para><code>getDeleteAuthorizedArea(String layerId)</code> : only
+            the area inside the returned geometry may contain deletable
+            features (uses layer coordinate space).</para>
           </listitem>
 
           <listitem>
-            <para><code>getFeatureFilter(String layerId)</code> : get a filter
-            which needs to be applied when querying the layer's
-            features.</para>
+            <para><code>getFeatureFilter(String layerId)</code> : get an
+            additional filter which needs to be applied when querying the
+            layer's features.</para>
           </listitem>
 
           <listitem>
-            <para><code>isFeatureVisible(String layerId, Feature
+            <para><code>isFeatureVisible(String layerId, InternalFeature
             feature)</code> : check the visibility of a feature.</para>
           </listitem>
 
           <listitem>
-            <para><code>isFeatureUpdateAuthorized(String layerId, Feature
-            feature)</code> : check whether a feature is editable.</para>
+            <para><code>isFeatureUpdateAuthorized(String layerId,
+            InternalFeature feature)</code> : check whether a feature is
+            editable.</para>
           </listitem>
 
           <listitem>
-            <para><code>isFeatureUpdateAuthorized(String layerId, Feature
-            oldFeature, Feature newFeature)</code> : check whether the update
-            contained in the feature is allowed to be saved.</para>
+            <para><code>isFeatureUpdateAuthorized(String layerId,
+            InternalFeature oldFeature, InternalFeature newFeature)</code> :
+            check whether the update contained in the feature is allowed to be
+            saved.</para>
           </listitem>
 
           <listitem>
-            <para><code>isFeatureCreateAuthorized(String layerId, Feature
-            feature)</code> : check whether a feature is allowed to be
-            created.</para>
+            <para><code>isFeatureCreateAuthorized(String layerId,
+            InternalFeature feature)</code> : check whether a feature is
+            allowed to be created.</para>
           </listitem>
 
           <listitem>
-            <para><code>isFeatureDeleteAuthorized(String layerId, Feature
-            feature)</code> : check whether deleting the specific feature is
-            allowed.</para>
+            <para><code>isFeatureDeleteAuthorized(String layerId,
+            InternalFeature feature)</code> : check whether deleting the
+            specific feature is allowed.</para>
           </listitem>
 
           <listitem>
-            <para><code>isAttributeReadable(String layerId, Feature feature,
-            String attributeName)</code> : check the readability of an
-            attribute. The result can be feature specific.</para>
+            <para><code>isAttributeReadable(String layerId, InternalFeature
+            feature, String attributeName)</code> : check the readability of
+            an attribute. The result can be feature specific.</para>
           </listitem>
 
           <listitem>
-            <para><code>isAttributeWritable(String layerId, Feature feature,
-            String attributeName)</code> : check whether an attribute is
-            editable. The result can be feature specific.</para>
+            <para><code>isAttributeWritable(String layerId, InternalFeature
+            feature, String attributeName)</code> : check whether an attribute
+            is editable. The result can be feature specific.</para>
           </listitem>
         </itemizedlist>
 
@@ -723,10 +689,9 @@
         update or delete, any attempt which is not authorized should result in
         a security exception.</para>
 
-        <para>When no authorization data is available, a security exception
-        should also be thrown (this can only occur when overwriting the
-        security configuration, by default, a allow-everything to anybody
-        security manager is configured).</para>
+        <para>The security uses the approach that all access is forbidden
+        unless is is allowed. Hence, you will always need to configure at
+        least one security service to assure the system is usable.</para>
       </sect2>
 
       <sect2>
