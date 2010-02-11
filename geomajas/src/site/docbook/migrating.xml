@@ -67,7 +67,7 @@
       </listitem>
 
       <listitem>
-        <para>security contraints are now applied in Geomajas. By default,
+        <para>Security constraints are now applied in Geomajas. By default,
         nothing is authorized, so you always have to configure at least one
         security service. To go back to the old (allow-all) behaviour, include
         the following excerpt in your configuration file.</para>
