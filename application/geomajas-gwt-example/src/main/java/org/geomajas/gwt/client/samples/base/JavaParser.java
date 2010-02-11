@@ -30,7 +30,7 @@ package org.geomajas.gwt.client.samples.base;
  * 
  * @author Pieter De Graef
  */
-public class JavaParser {
+public final class JavaParser {
 
 	private JavaParser() {
 	}
@@ -75,7 +75,7 @@ public class JavaParser {
 				int position = temp.indexOf('\'') + 1;
 				result += "'" + temp.substring(0, position);
 				temp = temp.substring(position);
-			} else if(isSingleLineComment(temp)) {
+			} else if (isSingleLineComment(temp)) {
 				int position = temp.indexOf("\n");
 				String commentString = temp.substring(0, position);
 				commentString = commentString.replaceAll("<span style='color:#800080;'>", "");

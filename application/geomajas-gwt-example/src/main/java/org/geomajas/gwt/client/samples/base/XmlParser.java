@@ -32,7 +32,7 @@ import com.google.gwt.core.client.GWT;
  * 
  * @author Pieter De Graef
  */
-public class XmlParser {
+public final class XmlParser {
 
 	private XmlParser() {
 	}

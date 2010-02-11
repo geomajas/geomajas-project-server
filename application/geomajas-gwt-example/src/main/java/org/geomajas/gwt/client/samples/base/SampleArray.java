@@ -31,7 +31,10 @@ import org.geomajas.gwt.client.samples.OpenStreetMapSample;
  * 
  * @author Pieter De Graef
  */
-public class SampleArray {
+public final class SampleArray {
+
+	private SampleArray() {
+	}
 
 	public static SampleTreeNode[] getSampleArray() {
 		return new SampleTreeNode[] { new SampleTreeNode("MapWidget", "/images/world.png", "MapWidget", "topLevel"),
