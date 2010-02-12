@@ -395,7 +395,6 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 		if (null == filter) {
 			filter = filterService.createTrueFilter();
 		}
-		System.out.println("final filter=" + filter);
 		return filter;
 	}
 
