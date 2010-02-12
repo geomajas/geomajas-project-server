@@ -25,9 +25,12 @@ package org.geomajas.internal.service;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 
+import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.geom.PrecisionModel;
 import junit.framework.Assert;
 import org.geomajas.layer.bean.BeanLayer;
 import org.geomajas.layer.bean.FeatureBean;
@@ -36,6 +39,7 @@ import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.security.SecurityManager;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.FilterService;
+import org.geomajas.service.GeoService;
 import org.geomajas.service.VectorLayerService;
 import org.geotools.referencing.CRS;
 import org.junit.Before;
@@ -81,6 +85,9 @@ public class VectorLayerServiceTest {
 
 	@Autowired
 	private SecurityManager securityManager;
+
+	@Autowired
+	private GeoService geoService;
 
 	@Before
 	public void login() {
@@ -131,6 +138,10 @@ public class VectorLayerServiceTest {
 		InternalFeature feature = converterService.toInternal(new Feature());
 		feature.setId("beans.4");
 		feature.setLayer(beanLayer);
+		// feature needs a geometry or exceptions all over
+		GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel());
+		Geometry geometry = geometryFactory.createPoint(new Coordinate(1.5, 1.5));
+		feature.setGeometry(geometry);
 		newFeatures.add(feature);
 		layerService.saveOrUpdate(LAYER_ID, crs, oldFeatures, newFeatures);
 

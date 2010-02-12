@@ -45,6 +45,8 @@ import org.geomajas.service.ApplicationService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
 import org.geomajas.service.VectorLayerService;
+import org.geotools.filter.text.cql2.CQL;
+import org.geotools.filter.text.cql2.CQLException;
 import org.geotools.geometry.jts.JTS;
 import org.opengis.filter.Filter;
 import org.opengis.referencing.FactoryException;
@@ -365,7 +367,6 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 		Filter filter = queryFilter;
 		String layerId = layerInfo.getId();
 
-		/* @todo security remove comments
 		// apply generic security filter
 		Filter layerFeatureFilter = securityContext.getFeatureFilter(layerId);
 		if (null != layerFeatureFilter) {
@@ -386,15 +387,15 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 		Geometry visibleArea = securityContext.getVisibleArea(layerId);
 		String geometryName = layerInfo.getFeatureInfo().getGeometryType().getName();
 		if (securityContext.isPartlyVisibleSufficient(layerId)) {
-			filter = and(filter, filterService.createOverlapsFilter(visibleArea, geometryName));
+			filter = and(filter, filterService.createIntersectsFilter(visibleArea, geometryName));
 		} else {
 			filter = and(filter, filterService.createWithinFilter(visibleArea, geometryName));
 		}
-		*/
 
 		if (null == filter) {
 			filter = filterService.createTrueFilter();
 		}
+		System.out.println("final filter=" + filter);
 		return filter;
 	}
 
@@ -410,13 +411,8 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 
 	public List<Object> getObjects(String layerId, String attributeName, Filter queryFilter) throws GeomajasException {
 		VectorLayer layer = getVectorLayer(layerId);
-
+		Filter filter = getLayerFilter(layer.getLayerInfo(), queryFilter);
 		// @todo security ??
-
-		Filter filter = queryFilter;
-		if (null == filter) {
-			filter = filterService.createTrueFilter();
-		}
 
 		List<Object> list = new ArrayList<Object>();
 		Iterator<?> it = layer.getObjects(attributeName, filter);

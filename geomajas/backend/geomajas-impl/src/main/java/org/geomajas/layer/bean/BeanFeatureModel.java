@@ -118,19 +118,19 @@ public class BeanFeatureModel implements FeatureModel {
 			}
 			return attribs;
 		} catch (Exception e) {
-			throw new LayerException(ExceptionCode.FEATURE_MODEL_PROBLEM, e);
+			throw new LayerException(e, ExceptionCode.FEATURE_MODEL_PROBLEM);
 		}
 	}
 
 	public Geometry getGeometry(Object feature) throws LayerException {
 		Object geometry = getAttribute(feature, getGeometryAttributeName());
-		if (!wkt) {
+		if (!wkt || null == geometry) {
 			return (Geometry) geometry;
 		} else {
 			try {
 				return reader.read((String) geometry);
 			} catch (Throwable t) {
-				throw new LayerException(ExceptionCode.FEATURE_MODEL_PROBLEM, t);
+				throw new LayerException(t, ExceptionCode.FEATURE_MODEL_PROBLEM, geometry);
 			}
 		}
 	}
@@ -155,7 +155,7 @@ public class BeanFeatureModel implements FeatureModel {
 		try {
 			return beanClass.newInstance();
 		} catch (Throwable t) {
-			throw new LayerException(ExceptionCode.FEATURE_MODEL_PROBLEM, t);
+			throw new LayerException(t, ExceptionCode.FEATURE_MODEL_PROBLEM);
 		}
 	}
 
@@ -177,7 +177,7 @@ public class BeanFeatureModel implements FeatureModel {
 			writeProperty(instance, value, getFeatureInfo().getIdentifier().getName());
 			return instance;
 		} catch (Throwable t) {
-			throw new LayerException(ExceptionCode.FEATURE_MODEL_PROBLEM, t);
+			throw new LayerException(t, ExceptionCode.FEATURE_MODEL_PROBLEM);
 		}
 	}
 
@@ -390,7 +390,7 @@ public class BeanFeatureModel implements FeatureModel {
 				try {
 					value = m.invoke(feature);
 				} catch (Throwable t) {
-					throw new LayerException(ExceptionCode.FEATURE_MODEL_PROBLEM, t);
+					throw new LayerException(t, ExceptionCode.FEATURE_MODEL_PROBLEM);
 				}
 				return value;
 			} else {
@@ -412,7 +412,7 @@ public class BeanFeatureModel implements FeatureModel {
 				try {
 					m.invoke(feature, value);
 				} catch (Throwable t) {
-					throw new LayerException(ExceptionCode.FEATURE_MODEL_PROBLEM, t);
+					throw new LayerException(t, ExceptionCode.FEATURE_MODEL_PROBLEM);
 				}
 			}
 

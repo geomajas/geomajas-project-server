@@ -68,8 +68,12 @@ public class FeatureModelPropertyAccessorFactory implements PropertyAccessorFact
 
 		public Object get(Object object, String xpath, Class target) throws IllegalArgumentException {
 			FeatureModel fm = FeatureModelRegistry.getRegistry().lookup(object);
+			if (null == fm) {
+				throw new IllegalArgumentException("Objects of type " + object.getClass().getName() +
+						" not registered in FeatureModelRegistry");
+			}
 			try {
-				if (fm.getGeometryAttributeName().equals(xpath)) {
+				if (xpath.equals(fm.getGeometryAttributeName())) {
 					return fm.getGeometry(object);
 				} else if (ID_PATTERN.matcher(xpath).matches()) {
 					return fm.getId(object);
