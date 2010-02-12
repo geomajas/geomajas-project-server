@@ -25,6 +25,7 @@ dojo.provide("geomajas.controller.SelectionController");
 dojo.require("geomajas.event.MouseListener");
 dojo.require("geomajas.spatial.transform.WorldViewTransformation");
 dojo.require("geomajas.action.menu.ToggleSelectionAction");
+dojo.require("geomajas.action.menu.SelectionAction");
 dojo.require("geomajas.action.menu.editing.StartEditingAction");
 dojo.require("geomajas.action.menu.editing.DeleteFeatureAction");
 dojo.require("geomajas.action.toolbar.DeselectAllAction");
@@ -35,9 +36,9 @@ dojo.declare("SelectionController", MouseListener, {
 
 	/**
 	 * @fileoverview MouseListener for selection.
-	 * @class MouseListener implementation that toggles selection on the
-	 * object clicked upon. Toggling the selection happens through the 
-	 * ToggleSelectionAction, whether it's called by clicking or by the menu.
+	 * @class MouseListener implementation that selects/deselects the
+	 * object clicked upon. Selection when clicking happens through the 
+	 * SelectionAction, via the menu the selection can be toggled via the ToggleSelectionAction.
 	 * @author An Buyle
 	 *
 	 * @constructor
@@ -93,6 +94,7 @@ dojo.declare("SelectionController", MouseListener, {
 
 		/** @private */
 		this.shift = false;
+		this.ctrl = false;
 
 		/** @private */
 		this.style = new ShapeStyle("#66AA22", "0.3", "#668822", "0.8", "2", null, null);
@@ -134,7 +136,7 @@ dojo.declare("SelectionController", MouseListener, {
 			if (this._menu.isShowingNow) {
 				dijit.popup.close(this._menu);
 			}
-			var action = new ToggleSelectionAction("selectionControllerMenu.toggle", this.mapWidget, false/*singleSelection*/, 
+			var action = new SelectionAction("selectionController.selection", this.mapWidget,
 								this.selectFromActiveLayerOnly, this.pixelTolerance);
 			action.actionPerformed(event);
 		}
@@ -146,6 +148,7 @@ dojo.declare("SelectionController", MouseListener, {
 			this.begin = event.getPosition();
 			this.bounds = null;
 			this.shift = event.isShiftDown();
+			this.ctrl = event.isCtrlDown();
 
 			this.rectangle = new Rectangle ("selectionRectangle");
 			this.rectangle.setStyle (this.style);
@@ -164,6 +167,9 @@ dojo.declare("SelectionController", MouseListener, {
 				var layer = this.mapWidget.getMapModel().getSelectedLayer();
 
 				if (layer != null) {
+					if (!this.ctrl && !this.shift) {
+						dojo.publish(this.mapWidget.getMapModel().getSelectionTopic(), [ "deselectAll", null ]);
+					}
 					var viewBounds = new Bbox(this.rectangle.getPosition().getX(), this.rectangle.getPosition().getY(), this.rectangle.getWidth(), this.rectangle.getHeight());
 					var trans = new WorldViewTransformation(this.mapWidget.getMapView());
 					this.bounds = trans.viewBoundsToWorld(viewBounds);
@@ -205,17 +211,14 @@ dojo.declare("SelectionController", MouseListener, {
 					feature.setLayer(layer);
 					feature.fromJSON(featureArray[i]);
 
-					// Check if something needs to be done:
-					var isAlreadySelected = feature.isSelected();
-					if ((this.shift && !isAlreadySelected) || (!this.shift && isAlreadySelected) ) {
-						continue;
+		
+					if (!this.ctrl && !this.shift) { /* Select feature */
+						if (!feature.isSelected()) {
+							dojo.publish(this.mapWidget.getMapModel().getSelectionTopic(), [ "select", feature ]);
+						}
 					}
-
-					// Select or deselect? Depends on shift button:
-					if (this.shift) {
-						dojo.publish(this.mapWidget.getMapModel().getSelectionTopic(), [ "deselect", feature ]);
-					} else {
-						dojo.publish(this.mapWidget.getMapModel().getSelectionTopic(), [ "select", feature ]);
+					else { /* Toggle selection of  feature */
+						dojo.publish(this.mapWidget.getMapModel().getSelectionTopic(), [ "toggle", feature ]);
 					}
 				}
 			}
