@@ -128,6 +128,449 @@
         </listitem>
       </itemizedlist>
     </section>
+
+    <section>
+      <title>Configuration changes</title>
+
+      <para>The configuration API has been split up in a backend part and a
+      client (or faces) part. The following general rules have been kept in
+      mind:</para>
+
+      <para><itemizedlist>
+          <listitem>
+            <para>Backend configuration should be restricted to those
+            properties that are functionally needed on the backend. We
+            essentially regard the backend as a container of layers or, in WFS
+            terms, feature types. Higher level concepts like map or
+            application should be dealt with at the client (or faces)
+            level.</para>
+          </listitem>
+
+          <listitem>
+            <para>Client configuration should not impact the backend state. In
+            the near future, this will make it possible to reconfigure clients
+            without restarting the server.</para>
+          </listitem>
+        </itemizedlist>The configuration API has profoundly changed. Where
+      possible, the backend classes have retained their original (before the
+      split) names, after pruning them to remove all client related
+      information. The client classes have been mostly created from scratch
+      and have been named <code>ClientXxxInfo.java</code> for consistency.
+      They have been located in a separate package, called
+      <code>org.geomajas.configuration.client.</code>The following table gives
+      a top-down overview of the backend configuration classes (new classes
+      and properties have been marked in <emphasis
+      role="bold">bold</emphasis>):</para>
+
+      <para><table>
+          <title>Back end configuration changes</title>
+
+          <tgroup cols="3">
+            <thead>
+              <row>
+                <entry>Name</entry>
+
+                <entry>Property</entry>
+
+                <entry>Action or description</entry>
+              </row>
+            </thead>
+
+            <tbody>
+              <row>
+                <entry>ApplicationInfo</entry>
+
+                <entry>*</entry>
+
+                <entry>removed</entry>
+              </row>
+
+              <row>
+                <entry>LayerInfo</entry>
+
+                <entry>label</entry>
+
+                <entry>moved to ClientLayerInfo</entry>
+              </row>
+
+              <row>
+                <entry />
+
+                <entry>visible</entry>
+
+                <entry>moved to ClientLayerInfo</entry>
+              </row>
+
+              <row>
+                <entry />
+
+                <entry>viewScaleMin, viewScaleMax</entry>
+
+                <entry>moved to ClientLayerInfo</entry>
+              </row>
+
+              <row>
+                <entry>VectorLayerInfo</entry>
+
+                <entry>labelAttribute</entry>
+
+                <entry>moved to LabelStyleInfo</entry>
+              </row>
+
+              <row>
+                <entry />
+
+                <entry>snappingRules</entry>
+
+                <entry>moved to ClientVectorLayerInfo</entry>
+              </row>
+
+              <row>
+                <entry />
+
+                <entry>styleDefinitions</entry>
+
+                <entry>replaced by namedStyleInfos</entry>
+              </row>
+
+              <row>
+                <entry />
+
+                <entry>creatable, updatable, deletable</entry>
+
+                <entry>moved to ClientVectorLayerInfo (automatically
+                assigned)</entry>
+              </row>
+
+              <row>
+                <entry />
+
+                <entry>
+                  <emphasis role="bold">namedStyleInfos</emphasis>
+                </entry>
+
+                <entry>list of NamedStyleInfo. Lists the predefined styles
+                available for this layer. Multiple styles are possible so
+                clients can choose a style</entry>
+              </row>
+
+              <row>
+                <entry>RasterLayerInfo</entry>
+
+                <entry>style</entry>
+
+                <entry>moved to ClientRasterLayerInfo</entry>
+              </row>
+
+              <row>
+                <entry>
+                  <emphasis role="bold">NamedStyleInfo</emphasis>
+                </entry>
+
+                <entry>
+                  <emphasis role="bold">featureStyles</emphasis>
+                </entry>
+
+                <entry>list of FeatureStyleInfo. Ordered list of style
+                definitions with applicable filters. Together with the label
+                style they define a single named layer style.</entry>
+              </row>
+
+              <row>
+                <entry />
+
+                <entry>
+                  <emphasis role="bold">labelStyleInfo</emphasis>
+                </entry>
+
+                <entry>label attribute name and style</entry>
+              </row>
+
+              <row>
+                <entry>
+                  <emphasis role="bold">FeatureStyleInfo</emphasis>
+                </entry>
+
+                <entry>*</entry>
+
+                <entry>replaces StyleInfo same properties except for
+                index</entry>
+              </row>
+
+              <row>
+                <entry />
+
+                <entry>index</entry>
+
+                <entry>replaces id (automatically assigned)</entry>
+              </row>
+
+              <row>
+                <entry>
+                  <emphasis role="bold">LabelStyleInfo</emphasis>
+                </entry>
+
+                <entry>*</entry>
+
+                <entry>replaces LabelAttribute, same properties</entry>
+              </row>
+
+              <row>
+                <entry>ValidatorInfo and XxxConstraintInfo</entry>
+
+                <entry>*</entry>
+
+                <entry>moved to package
+                <code>org.geomajas.configuration.validation</code></entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>The most important changes are:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para>The removal of client-side properties like visible, label,
+          viewScaleMin, viewScaleMax, style and snapping rules. These are
+          moved to the client configuration (see hereafter).</para>
+        </listitem>
+
+        <listitem>
+          <para>The replacement of the single style definition list by a set
+          of named styles. These are styles that are preconfigured in the back
+          end. </para>
+        </listitem>
+
+        <listitem>
+          <para>Inclusion of the label attribute name and style as part of the
+          named style. This is more logical and in line with the SLD (Styled
+          Layer Descriptor) specification.</para>
+        </listitem>
+      </itemizedlist>
+
+      <para>The client or face classes are largely new and have been relocated
+      to the <code>org.geomajas.configuration.client</code> package. The
+      following table gives a top-down overview of the backend configuration
+      classes (new classes and properties have been marked in <emphasis
+      role="bold">bold</emphasis>):</para>
+
+      <table>
+        <title>Client configuration</title>
+
+        <tgroup cols="3">
+          <thead>
+            <row>
+              <entry>Name</entry>
+
+              <entry>Property</entry>
+
+              <entry>Action or description</entry>
+            </row>
+          </thead>
+
+          <tbody>
+            <row>
+              <entry>ClientApplicationInfo</entry>
+
+              <entry>name</entry>
+
+              <entry>removed</entry>
+            </row>
+
+            <row>
+              <entry>
+                <emphasis role="bold">ClientMapInfo</emphasis>
+              </entry>
+
+              <entry>maxBounds</entry>
+
+              <entry>replaces MapInfo, optional maximum extent of the map, if
+              present it will be used instead of the union of the layers'
+              maximum extent</entry>
+            </row>
+
+            <row>
+              <entry>
+                <emphasis role="bold">ClientLayerInfo</emphasis>
+              </entry>
+
+              <entry>label</entry>
+
+              <entry>moved from LayerInfo</entry>
+            </row>
+
+            <row>
+              <entry />
+
+              <entry>visible</entry>
+
+              <entry>moved from LayerInfo</entry>
+            </row>
+
+            <row>
+              <entry />
+
+              <entry>viewScaleMin, viewScaleMax</entry>
+
+              <entry>moved from LayerInfo</entry>
+            </row>
+
+            <row>
+              <entry />
+
+              <entry>layerInfo</entry>
+
+              <entry>reference to backend LayerInfo</entry>
+            </row>
+
+            <row>
+              <entry />
+
+              <entry>maxExtent</entry>
+
+              <entry>transformed extent from backend</entry>
+            </row>
+
+            <row>
+              <entry>
+                <emphasis role="bold">ClientVectorLayerInfo</emphasis>
+              </entry>
+
+              <entry>snappingRules</entry>
+
+              <entry>moved from VectorLayerInfo</entry>
+            </row>
+
+            <row>
+              <entry />
+
+              <entry>
+                <emphasis role="bold">namedStyleInfo</emphasis>
+              </entry>
+
+              <entry>The style to apply on the layer. Should be a reference to
+              one of the backend layer's predefined styles (see
+              VectorLayerInfo).</entry>
+            </row>
+
+            <row>
+              <entry />
+
+              <entry>creatable, updatable, deletable</entry>
+
+              <entry>moved from VectorLayerInfo</entry>
+            </row>
+
+            <row>
+              <entry />
+
+              <entry>
+                <emphasis role="bold">featureInfo</emphasis>
+              </entry>
+
+              <entry>optional replacement of the backend layer's FeatureInfo.
+              If present, it is used instead.</entry>
+            </row>
+
+            <row>
+              <entry>
+                <emphasis role="bold">ClientRasterLayerInfo</emphasis>
+              </entry>
+
+              <entry>style</entry>
+
+              <entry>moved from ClientRasterLayerInfo</entry>
+            </row>
+
+            <row>
+              <entry>
+                <emphasis role="bold">ClientLayerTreeInfo</emphasis>
+
+                
+              </entry>
+
+              <entry>*</entry>
+
+              <entry>rename of LayerTreeInfo, same properties</entry>
+            </row>
+
+            <row>
+              <entry>
+                <emphasis role="bold">ClientLayerTreeNodeInfo</emphasis>
+              </entry>
+
+              <entry>*</entry>
+
+              <entry>rename of LayerTreeNodeInfo</entry>
+            </row>
+
+            <row>
+              <entry />
+
+              <entry>layers</entry>
+
+              <entry>list of ClientLayerInfo objects, replaces previous list
+              of layer ids</entry>
+            </row>
+
+            <row>
+              <entry />
+
+              <entry>expanded</entry>
+
+              <entry>changed from string to boolean</entry>
+            </row>
+
+            <row>
+              <entry>
+                <emphasis role="bold">ClientToolbarInfo</emphasis>
+              </entry>
+
+              <entry>*</entry>
+
+              <entry>rename of ToolbarInfo</entry>
+            </row>
+
+            <row>
+              <entry>
+                <emphasis role="bold">ClientToolInfo</emphasis>
+              </entry>
+
+              <entry>*</entry>
+
+              <entry>rename of ToolInfo</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table>
+
+      <para>Apart from these changes in content, some general technical
+      improvements have been made as well:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para>The spring bean name (or id) is used to set the id property of
+          the class if there is one. This makes it unnecessary to define the
+          id separately. The way this is done is by using a Spring
+          <code>BeanPostProcessor</code>. (see
+          <code>org.geomajas.internal.configuration.ConfigurationBeanPostProcessor</code>)</para>
+        </listitem>
+
+        <listitem>
+          <para>Some calculations that were previously done in the
+          <code>GetConfigurationCommand</code> are now done in the
+          <code>ConfigurationBeanPostProcessor.</code></para>
+        </listitem>
+
+        <listitem>
+          <para>Cloning of the client configuration classes can be done with
+          general deep cloning techniques like serialization, bypassing the
+          need for custom cloneable implementations.</para>
+        </listitem>
+      </itemizedlist>
+
+      <para>As usual, example configurations can be found in the application
+      projects.</para>
+    </section>
   </section>
 
   <section>
