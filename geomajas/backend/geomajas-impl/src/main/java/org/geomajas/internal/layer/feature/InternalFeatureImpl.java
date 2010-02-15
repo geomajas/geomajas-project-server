@@ -26,7 +26,7 @@ package org.geomajas.internal.layer.feature;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.geomajas.configuration.StyleInfo;
+import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.global.Json;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.InternalFeature;
@@ -58,7 +58,7 @@ public class InternalFeatureImpl implements InternalFeature {
 	private Geometry geometry;
 
 	/** The style definition for this particular feature. */
-	private StyleInfo styleDefinition;
+	private FeatureStyleInfo styleDefinition;
 
 	/** The label-string for this feature. */
 	private String label;
@@ -160,10 +160,10 @@ public class InternalFeatureImpl implements InternalFeature {
 	 * This function compares style ID's between features. Features are usually sorted by style.
 	 */
 	public int compareTo(InternalFeature o) {
-		if (styleDefinition.getId() > o.getStyleInfo().getId()) {
+		if (styleDefinition.getIndex() > o.getStyleInfo().getIndex()) {
 			return 1;
 		}
-		if (styleDefinition.getId() < o.getStyleInfo().getId()) {
+		if (styleDefinition.getIndex() < o.getStyleInfo().getIndex()) {
 			return -1;
 		}
 		return 0;
@@ -245,12 +245,12 @@ public class InternalFeatureImpl implements InternalFeature {
 	}
 
 	@Json(serialize = false)
-	public StyleInfo getStyleInfo() {
+	public FeatureStyleInfo getStyleInfo() {
 		return styleDefinition;
 	}
 
 	@Json(serialize = false)
-	public void setStyleDefinition(StyleInfo style) {
+	public void setStyleDefinition(FeatureStyleInfo style) {
 		this.styleDefinition = style;
 	}
 

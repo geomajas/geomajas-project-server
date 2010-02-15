@@ -34,13 +34,24 @@ public class GetMapConfigurationRequest implements CommandRequest {
 
 	private static final long serialVersionUID = 151L;
 
+	private String applicationId;
+
 	private String mapId;
 
 	public GetMapConfigurationRequest() {
 	}
 
-	public GetMapConfigurationRequest(String mapId) {
+	public GetMapConfigurationRequest(String mapId, String applicationId) {
 		this.mapId = mapId;
+		this.applicationId = applicationId;
+	}
+
+	public String getApplicationId() {
+		return applicationId;
+	}
+	
+	public void setApplicationId(String applicationId) {
+		this.applicationId = applicationId;
 	}
 
 	public String getMapId() {
@@ -50,5 +61,5 @@ public class GetMapConfigurationRequest implements CommandRequest {
 	public void setMapId(String mapId) {
 		this.mapId = mapId;
 	}
-
+	
 }

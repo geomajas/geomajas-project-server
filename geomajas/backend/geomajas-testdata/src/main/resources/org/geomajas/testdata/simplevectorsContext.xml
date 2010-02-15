@@ -40,46 +40,30 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 		</property>
 	</bean>
 
-	<bean name="application" class="org.geomajas.configuration.ApplicationInfo" >
-		<property name="id" value="simplevectors" />
-		<property name="name" value="Simple vectorial application focused on South Africa." />
-		<property name="layers">
-			<list>
-				<!--
-				<ref bean="google"/>
-				<ref bean="osm"/>
-				-->
-				<ref bean="countries"/>
-				<!--
-				<ref bean="cities"/>
-				<ref bean="rivers"/>
-				-->
-			</list>
-		</property>
+	<bean name="simplevectors" class="org.geomajas.configuration.client.ClientApplicationInfo" >
 		<property name="maps">
 			<list>
-				<bean name="mainMap" class="org.geomajas.configuration.MapInfo">
-					<property name="id" value="mainMap"/>
+				<bean name="mainMap" class="org.geomajas.configuration.client.ClientMapInfo">
 					<property name="backgroundColor" value="#E0E0E0" />
 					<property name="lineSelectStyle">
-						<bean class="org.geomajas.configuration.StyleInfo">
+						<bean class="org.geomajas.configuration.FeatureStyleInfo">
 							<property name="fillOpacity" value="0" />
 							<property name="strokeColor" value="#FF6600" />
 							<property name="strokeOpacity" value="1" />
 						</bean>
 					</property>
 					<property name="pointSelectStyle">
-						<bean class="org.geomajas.configuration.StyleInfo">
+						<bean class="org.geomajas.configuration.FeatureStyleInfo">
 							<property name="fillColor" value="#FFFF00" />
 						</bean>
 					</property>
 					<property name="polygonSelectStyle">
-						<bean class="org.geomajas.configuration.StyleInfo">
+						<bean class="org.geomajas.configuration.FeatureStyleInfo">
 							<property name="fillColor" value="#FFFF00" />
 							<property name="fillOpacity" value=".5" />
 						</bean>
 					</property>
-					<property name="crs" value="EPSG:4326"/>
+					<property name="crs" value="EPSG:900913"/>
 					<property name="scaleBarEnabled" value="true"/>
 					<property name="maximumScale" value="100000"/>
 					<property name="initialBounds">
@@ -114,35 +98,27 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 					</property>
 					<property name="layers">
 						<list>
-							<!--
-							<ref bean="googleInfo"/>
-							<ref bean="osmInfo"/>
-							-->
-							<ref bean="countriesInfo"/>
-							<!--
-							<ref bean="citiesInfo"/>
-							<ref bean="riversInfo"/>
-							-->
+							<ref bean="countriesLayer"/>
 						</list>
 					</property>
 				</bean>
-				<bean name="overviewMap" class="org.geomajas.configuration.MapInfo">
-					<property name="id" value="overviewMap"/>
+				
+				<bean name="overviewMap" class="org.geomajas.configuration.client.ClientMapInfo">
 					<property name="backgroundColor" value="#FFFFFF" />
 					<property name="lineSelectStyle">
-						<bean class="org.geomajas.configuration.StyleInfo">
+						<bean class="org.geomajas.configuration.FeatureStyleInfo">
 							<property name="fillOpacity" value="0" />
 							<property name="strokeColor" value="#FF6600" />
 							<property name="strokeOpacity" value="1" />
 						</bean>
 					</property>
 					<property name="pointSelectStyle">
-						<bean class="org.geomajas.configuration.StyleInfo">
+						<bean class="org.geomajas.configuration.FeatureStyleInfo">
 							<property name="fillColor" value="#FFFF00" />
 						</bean>
 					</property>
 					<property name="polygonSelectStyle">
-						<bean class="org.geomajas.configuration.StyleInfo">
+						<bean class="org.geomajas.configuration.FeatureStyleInfo">
 							<property name="fillColor" value="#FFFF00" />
 							<property name="fillOpacity" value=".5" />
 						</bean>
@@ -150,7 +126,6 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 					<property name="crs" value="EPSG:4326"/>
 					<property name="scaleBarEnabled" value="false"/>
 					<property name="panButtonsEnabled" value="false"/>
-					<property name="overview" value="mainMap"/>
 					<property name="maximumScale" value="100000"/>
 					<property name="initialBounds">
 						<bean class="org.geomajas.geometry.Bbox">
@@ -184,17 +159,17 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 					</property>
 					<property name="layers">
 						<list>
-							<ref bean="countriesInfo"/>
+							<ref bean="countriesLayer"/>
 						</list>
 					</property>
 				</bean>
 
-				<bean name="coordTestMap" class="org.geomajas.configuration.MapInfo">
+				<bean name="coordTestMap" class="org.geomajas.configuration.client.ClientMapInfo">
 					<property name="id" value="coordTestMap"/>
 					<property name="crs" value="EPSG:900913"/>
 					<property name="layers">
 						<list>
-							<ref bean="countriesInfo"/>
+							<ref bean="countriesLayer"/>
 						</list>
 					</property>
 					<property name="initialBounds">
@@ -208,86 +183,15 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 				</bean>
 			</list>
 		</property>
-<!--
-	<tool id="ToolbarSeparator" />
-	<tool id="ZoomIn">
-		<parameter name="delta" value="1.5"/>
-	</tool>
-	<tool id="ZoomOut">
-		<parameter name="delta" value="0.5"/>
-	</tool>
-	<tool id="ZoomInMode">
-		<parameter name="delta" value="0.25"/>
-	</tool>
-	<tool id="ZoomOutMode">
-		<parameter name="delta" value="0.25"/>
-	</tool>
-	<tool id="ZoomToRectangleMode" />
-	<tool id="ZoomToSelection" />
-	<tool id="PanToSelection" />
-	<tool id="PanMode">
-		<parameter name="hideLabelsOnDrag" value="true" />
-	</tool>
-	<tool id="DeselectAll" />
-	<tool id="MeasureDistanceMode">
-		<parameter name="simple" value="false" />
-		<parameter name="useSnapHelp" value="true" />
-	</tool>
-	<tool id="FeatureInfoMode" />
-	<tool id="SelectionMode">
-		<parameter name="singleSelection" value="false" />
-		<parameter name="supportEditing" value="true" />
-	</tool>
-	<tool id="MarkedEditMode">
-		<parameter name="useMarkings" value="true" />
-		<parameter name="useSnapHelp" value="true" />
-		<parameter name="allowHoles" value="true" />
-	</tool>
-	<tool id="EditMode">
-		<parameter name="useMarkings" value="false" />
-		<parameter name="useSnapHelp" value="true" />
-		<parameter name="allowHoles" value="true" />
-	</tool>
-	<tool id="SplitPolygonMode" />
-	<tool id="MergePolygonMode" />
-	<tool id="NavigateMode" />
-	<tool id="RectangleSelectionMode">
-		<parameter name="supportEditing" value="true" />
-	</tool>
-	<!++ LAYERTREE ACTIONS AND TOOLS ++>
-	<tool id="LayerVisibleTool" />
-	<tool id="LayerSnappingTool" />
-	<tool id="LayerLabeledTool" />
-	<tool id="ShowTableAction">
-		<parameter name="tableID" value="mainTable"/>
-	</tool>
-	<!++ PDF GENERATION ACTIONS ++>
-	<tool id="FetchPdf">
-		<parameter name="downloadMethod" value="0"/>
-	</tool>
--->
-<!--
-		<property name="toolbars">
-			<list>
+	</bean>
 
-	<toolbar id="toolio-the-toolbar">
-		<targetMap>mainMap</targetMap>
-		<toolRef>ZoomIn</toolRef>
-		<toolRef>ZoomOut</toolRef>
-		<toolRef>ZoomToRectangleMode</toolRef>
-		<toolRef>ZoomToSelection</toolRef>
-		<toolRef>PanMode</toolRef>
-		<toolRef>NavigateMode</toolRef>
-		<toolRef>ToolbarSeparator</toolRef>
-		<toolRef>RectangleSelectionMode</toolRef>
-		<toolRef>DeselectAll</toolRef>
-		<toolRef>ToolbarSeparator</toolRef>
-		<toolRef>MeasureDistanceMode</toolRef>
-		<toolRef>FeatureInfoMode</toolRef>
-	</toolbar>
-			</list>
-		</property>
--->
+	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="countriesLayer">
+		<property name="layerInfo" ref="countriesInfo" />
+		<property name="label" value="Countries of Africa"/>
+		<property name="visible" value="true"/>
+		<property name="viewScaleMin" value="0"/>
+		<property name="viewScaleMax" value="100000"/>
+		<property name="namedStyleInfo" ref="countriesStyleInfo" />
 	</bean>
 
 </beans>

@@ -22,7 +22,9 @@ dojo.provide("geomajas.config.common");
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 dojo.platformRequire({
-    common: ["geomajas.config.StyleInfo",
+    common: ["geomajas.config.FeatureStyleInfo",
+             "geomajas.config.LabelStyleInfo",
+             "geomajas.config.NamedStyleInfo",
              "geomajas.config.factories.LayerTreeFactory",
              "geomajas.config.factories.ToolbarFactory",
              "geomajas.config.ConfigManager"

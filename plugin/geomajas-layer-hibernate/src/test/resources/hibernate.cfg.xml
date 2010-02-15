@@ -12,7 +12,7 @@
 		<property name="cache.provider_class">org.hibernate.cache.HashtableCacheProvider</property>
 
 		<!-- Echo all executed SQL to stdout -->
-		<property name="show_sql">true</property>
+		<property name="show_sql">false</property>
 		<mapping class="org.geomajas.layer.hibernate.pojo.HibernateTestFeature" />
 		<mapping class="org.geomajas.layer.hibernate.pojo.HibernateTestManyToOne" />
 		<mapping class="org.geomajas.layer.hibernate.pojo.HibernateTestOneToMany" />

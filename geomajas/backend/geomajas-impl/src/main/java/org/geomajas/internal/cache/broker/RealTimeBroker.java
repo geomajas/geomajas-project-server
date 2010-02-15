@@ -35,6 +35,7 @@ import org.geomajas.cache.CacheException;
 import org.geomajas.cache.CacheService;
 import org.geomajas.cache.broker.Broker;
 import org.geomajas.cache.store.RenderContent;
+import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.internal.layer.tile.InternalTileImpl;
 import org.geomajas.internal.rendering.DefaultTilePaintContext;
@@ -45,7 +46,7 @@ import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.layer.tile.TileCode;
 import org.geomajas.rendering.image.TileImageCreator;
 import org.geomajas.rendering.painter.PaintFactory;
-import org.geomajas.rendering.painter.TilePaintContext;
+import org.geomajas.rendering.painter.StyledLayer;
 import org.geomajas.service.ApplicationService;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
@@ -106,8 +107,12 @@ public class RealTimeBroker implements Broker {
 		// 2: Get the Application/Map/Layer objects:
 		VectorLayer vLayer = runtime.getVectorLayer(layerId);
 
+		// 3: get the style
+		NamedStyleInfo styleInfo = vLayer.getLayerInfo().getNamedStyleInfo(
+				(String) params.get(CacheService.PARAM_STYLE_ID));
+
 		// 4: Create a context for rendering the image:
-		TilePaintContext tileContext = new DefaultTilePaintContext();
+		DefaultTilePaintContext tileContext = new DefaultTilePaintContext();
 		try {
 			tileContext.setCrs(CRS.decode(crs));
 		} catch (NoSuchAuthorityCodeException e) {
@@ -115,7 +120,7 @@ public class RealTimeBroker implements Broker {
 		} catch (FactoryException e) {
 			throw new CacheException(e, ExceptionCode.CRS_NO_DEFAULT, crs);
 		}
-		tileContext.add(vLayer.getLayerInfo());
+		tileContext.getLayers().add(new StyledLayer(vLayer.getLayerInfo(), styleInfo));
 		tileContext.setScale(scale);
 
 		// 5: Create the vector tile:
@@ -133,7 +138,7 @@ public class RealTimeBroker implements Broker {
 			imageCreator.registerPainter(new GeometryImagePainter(geoService));
 		}
 		if (paintLabels) {
-			imageCreator.registerPainter(new LabelImagePainter(vLayer.getLayerInfo().getLabelAttribute(), geoService));
+			imageCreator.registerPainter(new LabelImagePainter(styleInfo.getLabelStyle(), geoService));
 		}
 		RenderedImage image = imageCreator.paint(paintArea, tileContext);
 

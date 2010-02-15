@@ -32,13 +32,8 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 		>
 
 	<bean name="riversInfo" class="org.geomajas.configuration.VectorLayerInfo">
-	  	<property name="id" value="rivers"/>
-	  	<property name="label" value="Rivers (editable - linestring)"/>
-		<property name="visible" value="true"/>
 		<property name="layerType" value="MULTILINESTRING"/>
 		<property name="crs" value="EPSG:4326"/>
-		<property name="viewScaleMin" value="0"/>
-		<property name="viewScaleMax" value="100000"/>
 		<property name="maxExtent">
 			<bean class="org.geomajas.geometry.Bbox">
 				<property name="x" value="-85.05112877980659"/>
@@ -48,50 +43,13 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 			</bean>
 		</property>
 		<property name="maxTileLevel" value="16"/>
-        <property name="labelAttribute">
-            <bean class="org.geomajas.configuration.LabelAttributeInfo">
-                <property name="labelAttributeName" value="NAME"/>
-                <property name="fontStyle">
-                    <bean class="org.geomajas.configuration.StyleInfo">
-                        <property name="fillColor" value="#FFFFFF"/>
-                        <property name="fillOpacity" value="1"/>
-                    </bean>
-                </property>
-                <property name="backgroundStyle">
-                    <bean class="org.geomajas.configuration.StyleInfo">
-                        <property name="fillColor" value="#000000"/>
-                        <property name="fillOpacity" value=".7"/>
-                        <property name="strokeColor" value="#0000FF"/>
-                        <property name="strokeOpacity" value="1"/>
-                        <property name="strokeWidth" value="1"/>
-                    </bean>
-                </property>
-            </bean>
-        </property>
-        <property name="featureInfo" ref="riversFeatureInfo" />
-        <property name="snappingRules">
-            <list>
-                <bean class="org.geomajas.configuration.SnappingRuleInfo">
-                    <property name="distance" value="500000"/>
-                    <property name="type" value="NEAREST_POINT"/>
-                    <property name="layer" value="rivers" />
-                </bean>
-            </list>
-        </property>
-        <property name="styleDefinitions">
-            <list>
-                <bean class="org.geomajas.configuration.StyleInfo">
-                    <property name="id" value="1"/>
-                    <property name="name" value="Rivers"/>
-                    <property name="fillColor" value="#333399"/>
-                    <property name="fillOpacity" value="0"/>
-                    <property name="strokeColor" value="#333399"/>
-                    <property name="strokeOpacity" value="0.8"/>
-                    <property name="strokeWidth" value="2"/>
-                </bean>
-            </list>
-        </property>
-    </bean>
+		<property name="featureInfo" ref="riversFeatureInfo" />
+		<property name="namedStyleInfos">
+			<list>
+				<ref bean="riversStyleInfo" />
+			</list>
+		</property>
+	</bean>
 
     <bean class="org.geomajas.configuration.FeatureInfo" name="riversFeatureInfo">
          <property name="dataSourceName" value="Rivers"/>
@@ -117,11 +75,11 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
                      <property name="identifying" value="true"/>
                      <property name="type" value="STRING"/>
                      <property name="validator">
-						 <bean class="org.geomajas.configuration.ValidatorInfo">
+						 <bean class="org.geomajas.configuration.validation.ValidatorInfo">
 							<property name="toolTip" value="The name of the river."/>
 							<property name="constraints">
 								<list>
-									<bean class="org.geomajas.configuration.NotNullConstraintInfo"/>
+									<bean class="org.geomajas.configuration.validation.NotNullConstraintInfo"/>
 								</list>
 							</property>
 						</bean>
@@ -134,11 +92,11 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
                      <property name="identifying" value="true"/>
                      <property name="type" value="STRING"/>
                      <property name="validator">
-						 <bean class="org.geomajas.configuration.ValidatorInfo">
+						 <bean class="org.geomajas.configuration.validation.ValidatorInfo">
 							<property name="toolTip" value="River system."/>
 							<property name="constraints">
 								<list>
-									<bean class="org.geomajas.configuration.NotNullConstraintInfo"/>
+									<bean class="org.geomajas.configuration.validation.NotNullConstraintInfo"/>
 								</list>
 							</property>
 						</bean>
@@ -147,6 +105,42 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
              </list>
          </property>
      </bean>
+
+	<bean class="org.geomajas.configuration.NamedStyleInfo" name="riversStyleInfo">
+		<property name="featureStyles">
+			<list>
+                <bean class="org.geomajas.configuration.FeatureStyleInfo">
+                    <property name="name" value="Rivers"/>
+                    <property name="fillColor" value="#333399"/>
+                    <property name="fillOpacity" value="0"/>
+                    <property name="strokeColor" value="#333399"/>
+                    <property name="strokeOpacity" value="0.8"/>
+                    <property name="strokeWidth" value="2"/>
+                </bean>
+			</list>
+		</property>
+		<property name="labelStyle">
+			<bean class="org.geomajas.configuration.LabelStyleInfo">
+                <property name="labelAttributeName" value="NAME"/>
+                <property name="fontStyle">
+                    <bean class="org.geomajas.configuration.FeatureStyleInfo">
+                        <property name="fillColor" value="#FFFFFF"/>
+                        <property name="fillOpacity" value="1"/>
+                    </bean>
+                </property>
+                <property name="backgroundStyle">
+                    <bean class="org.geomajas.configuration.FeatureStyleInfo">
+                        <property name="fillColor" value="#000000"/>
+                        <property name="fillOpacity" value=".7"/>
+                        <property name="strokeColor" value="#0000FF"/>
+                        <property name="strokeOpacity" value="1"/>
+                        <property name="strokeWidth" value="1"/>
+                    </bean>
+                </property>
+			</bean>
+		</property>
+	</bean>
+
 
 	<bean name="rivers" class="org.geomajas.layer.shapeinmem.ShapeInMemLayer">
 		<property name="url" value="classpath:shapes/africa/Rivers.shp"/>

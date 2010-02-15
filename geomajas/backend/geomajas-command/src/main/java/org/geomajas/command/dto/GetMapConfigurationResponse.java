@@ -23,7 +23,7 @@
 package org.geomajas.command.dto;
 
 import org.geomajas.command.CommandResponse;
-import org.geomajas.configuration.MapInfo;
+import org.geomajas.configuration.client.ClientMapInfo;
 
 /**
  * <p>
@@ -36,20 +36,20 @@ public class GetMapConfigurationResponse extends CommandResponse {
 
 	private static final long serialVersionUID = 151L;
 
-	private MapInfo mapInfo;
+	private ClientMapInfo mapInfo;
 
 	public GetMapConfigurationResponse() {
 	}
 
-	public GetMapConfigurationResponse(MapInfo mapInfo) {
+	public GetMapConfigurationResponse(ClientMapInfo mapInfo) {
 		this.mapInfo = mapInfo;
 	}
 
-	public MapInfo getMapInfo() {
+	public ClientMapInfo getMapInfo() {
 		return mapInfo;
 	}
 
-	public void setMapInfo(MapInfo mapInfo) {
+	public void setMapInfo(ClientMapInfo mapInfo) {
 		this.mapInfo = mapInfo;
 	}
 }

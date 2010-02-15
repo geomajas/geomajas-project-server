@@ -34,12 +34,13 @@
 
 	<script type="text/javascript" src="js/dojo/dojo.js" djConfig="parseOnLoad:true, usePlainJson :true">
 	</script>
-	<script type="text/javascript" src="js/example/example.js" geomajasConfig="showLog :false"></script>
+	<script type="text/javascript" src="js/example/example.js" geomajasConfig="showLog :true"></script>
 
 	<!-- Add functionality on the onLoad event -->
 	<script type="text/javascript">
 
 		dojo.addOnLoad(function() {
+			geomajasConfig.userToken = null;
 			// custom extension of ConfigManager, this is our entry point
 			var attributesManager = new AttributesManager();
 			attributesManager.onLoad();

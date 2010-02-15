@@ -32,7 +32,7 @@ public class GwtTestDefaultAttributeFormFactory extends GWTTestCase {
 	List<AttributeInfoPair> pairs;
 
 	public String getModuleName() {
-		return "org.geomajas.gwt.GeomajasClient";
+		return "org.geomajas.gwt.GeomajasClientTest";
 	}
 
 	@Override

@@ -23,9 +23,13 @@
 
 package org.geomajas.gwt.client.map.workflow;
 
-import com.vividsolutions.jts.util.Assert;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.geomajas.configuration.client.ClientLayerInfo;
+import org.geomajas.configuration.client.ClientMapInfo;
+import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.configuration.LayerInfo;
-import org.geomajas.configuration.MapInfo;
 import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
@@ -39,8 +43,7 @@ import org.geomajas.gwt.client.spatial.geometry.Polygon;
 import org.geomajas.layer.LayerType;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.vividsolutions.jts.util.Assert;
 
 /**
  * Testcase for the SequenceProcessor implementation of the workflow.
@@ -53,15 +56,17 @@ public class TestSequenceProcessor {
 
 	public TestSequenceProcessor() {
 		mapModel = new MapModel("foobar");
-		MapInfo info = new MapInfo();
+		ClientMapInfo info = new ClientMapInfo();
 		info.setCrs("EPSG:4326");
 		info.setInitialBounds(new Bbox(0, 0, 180, 180));
 
-		VectorLayerInfo layerInfo = new VectorLayerInfo();
-		layerInfo.setLayerType(LayerType.POLYGON);
+		ClientVectorLayerInfo layerInfo = new ClientVectorLayerInfo();
+		VectorLayerInfo serverInfo = new VectorLayerInfo();
+		serverInfo.setLayerType(LayerType.POLYGON);
+		serverInfo.setId("test");
+		layerInfo.setLayerInfo(serverInfo);
 		layerInfo.setMaxExtent(new Bbox(0, 0, 180, 180));
-		layerInfo.setId("test");
-		List<LayerInfo> layers = new ArrayList<LayerInfo>();
+		List<ClientLayerInfo> layers = new ArrayList<ClientLayerInfo>();
 		layers.add(layerInfo);
 		info.setLayers(layers);
 

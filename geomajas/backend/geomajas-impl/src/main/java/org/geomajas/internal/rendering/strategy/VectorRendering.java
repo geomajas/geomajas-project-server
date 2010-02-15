@@ -23,12 +23,8 @@
 
 package org.geomajas.internal.rendering.strategy;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-import org.geomajas.configuration.ApplicationInfo;
-import org.geomajas.configuration.StyleInfo;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.internal.layer.tile.InternalTileImpl;
@@ -109,7 +105,7 @@ public class VectorRendering implements RenderingStrategy {
 	 * @throws RenderException
 	 *             Sometimes things go wrong...
 	 */
-	public InternalTile paint(TileMetadata metadata, ApplicationInfo application) throws RenderException {
+	public InternalTile paint(TileMetadata metadata) throws RenderException {
 		try {
 			// Get the map and layer objects:
 			VectorLayer vLayer = runtime.getVectorLayer(metadata.getLayerId());
@@ -133,18 +129,16 @@ public class VectorRendering implements RenderingStrategy {
 			}
 
 			// Get the features (always needs to include the geometry !)
-			List<StyleInfo> styleDefinitions = new ArrayList<StyleInfo>();
-			Collections.addAll(styleDefinitions, metadata.getStyleDefs());
-			List<InternalFeature> features = layerService.getFeatures(metadata.getLayerId(), crs, filter,
-					styleDefinitions, VectorLayerService.FEATURE_INCLUDE_ALL);
+			List<InternalFeature> features = layerService.getFeatures(metadata.getLayerId(), crs, filter, metadata
+					.getStyleInfo(), VectorLayerService.FEATURE_INCLUDE_ALL);
 
 			Coordinate panOrigin = new Coordinate(metadata.getPanOrigin().getX(), metadata.getPanOrigin().getY());
 			tiledFeatureService.fillTile(tile, features, vLayer, metadata.getCode(), metadata.getScale(), panOrigin);
 
 			// At this point, we have a tile with rendered features.
 			// Now we need to paint the tile itself:
-			TilePainter tilePainter = new StringContentTilePainter(vLayer, metadata.getRenderer(), metadata.getScale(),
-					panOrigin, geoService);
+			TilePainter tilePainter = new StringContentTilePainter(vLayer, metadata.getStyleInfo(), metadata
+					.getRenderer(), metadata.getScale(), panOrigin, geoService);
 			tilePainter.setPaintGeometries(metadata.isPaintGeometries());
 			tilePainter.setPaintLabels(metadata.isPaintLabels());
 			return tilePainter.paint(tile);

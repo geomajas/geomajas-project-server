@@ -30,8 +30,13 @@ dojo.require("dojox.collections.Dictionary");
  */
 dojo.declare("ConfigManager", null, {
 
-	statics : { cfgReqClass: "org.geomajas.command.EmptyCommandRequest", cfgCmd: "command.configuration.Get" },
+	statics : { cfgReqClass: "org.geomajas.command.dto.GetConfigurationRequest", cfgCmd: "command.configuration.Get" },
 
+	/**
+	 * Unique id of the application
+	 */
+	applicationId : null,
+	
 	/**
 	 * @class First version of a manager type object for majas configuration.
 	 *
@@ -55,6 +60,7 @@ dojo.declare("ConfigManager", null, {
 
 	getConfigWithJson : function () {
 		var command = new JsonCommand(this.statics.cfgCmd, this.statics.cfgReqClass, null, false);
+		command.addParam("applicationId", this.applicationId);
 		var deferred = this.dispatcher.execute(command);
 		deferred.addCallback(this,"configureApplication");
 	},
@@ -94,7 +100,7 @@ dojo.declare("ConfigManager", null, {
 					this._configureMap(maps[i]);
 				} catch (e) {
 					log.error("exception !!! ");
-					for (var i in e) log.error(e[i]);
+					for (var i in e) log.error(i +":"+ e[i]);
 				}			
 			}
 
@@ -170,7 +176,7 @@ dojo.declare("ConfigManager", null, {
 		var layersById = new dojox.collections.Dictionary();
 		for(var i = 0; i < layers.length; i++){
 			var layer = this._createLayer(mapInfo.id, layers[i], mapWidget, mapModel);
-			layersById.add(mapInfo.id+"."+layer.getId(),layer);
+			layersById.add(layer.getId(),layer);
             mapModel.registerLayer(layer);
 		}
 
@@ -206,10 +212,10 @@ dojo.declare("ConfigManager", null, {
 	_configureLayerTreeNodeRecursively : function (mapId, treeNodeConfig, mapModel) {
 		var node = new LayerTreeNode (treeNodeConfig.label, treeNodeConfig.label, eval(treeNodeConfig.expanded));
 		// loop over layers
-		var layerIds = treeNodeConfig.layerIds.list;
-		for(var i = 0; i < layerIds.length; i++){
-            var layer = mapModel.getLayerById(mapId+"."+layerIds[i]);
-            if (null == layer) log.error("LayerTree referenced layer " + layerIds[i]);
+		var layers = treeNodeConfig.layers.list;
+		for(var i = 0; i < layers.length; i++){
+            var layer = mapModel.getLayerById(mapId+"."+layers[i].id);
+            if (null == layer) log.error("LayerTree referenced layer " + layers[i].id);
 			node.addChild(layer);
 		}
 		// or loop children and go deeper
@@ -246,14 +252,11 @@ dojo.declare("ConfigManager", null, {
 		layer.setMaxTileLevel(lc.maxTileLevel);
 		layer.setMinViewScale(lc.viewScaleMin);
 		layer.setMaxViewScale(lc.viewScaleMax);
-		layer.setLabelAttribute(lc.labelAttribute);
-
-		var temp = lc.labelAttribute.fontStyle;
-		if (temp) {
-			var labelFontstyle = new ShapeStyle (temp.fillColor, temp.fillOpacity, temp.strokeColor,
-					temp.strokeOpacity, temp.strokeWidth, temp.dashArray, temp.symbol);
-			layer.setLabelFontStyle(labelFontstyle);
-		}
+		
+		// Style:
+		var style = new NamedStyleInfo();
+		style.fromJSON(lc.namedStyleInfo);
+		layer.setNamedStyle(style);
 
 		// EditPermissions:
 		var permissions = new EditPermissions();
@@ -296,15 +299,6 @@ dojo.declare("ConfigManager", null, {
 		}
 		layer.setSnappingRules(srList);
 
-		// styles:
-		var styleArray = lc.styleDefinitions.list;
-		for (var j=0; j<styleArray.length; j++) {
-			var sc = styleArray[j];
-			var style = new ShapeStyle (sc.fillColor, sc.fillOpacity, sc.strokeColor,
-										sc.strokeOpacity, sc.strokeWidth, sc.dashArray, sc.symbol);
-			var styleDef = new StyleDefinition (sc.id, sc.name, sc.formula, style);
-			layer.addStyle(styleDef);
-		}
 		layer.init();
         layer.setVisible(lc.visible);
         if (lc.snappingRules.mode) {

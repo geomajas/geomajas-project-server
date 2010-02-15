@@ -23,7 +23,9 @@
 dojo.provide("tutorial.AttributesManager");
 
 dojo.declare("AttributesManager", ConfigManager, {
-
+	
+	applicationId : "tutorial",
+	
 	/**
 	 * @class First version of a manager type object for attributes sample.
 	 *

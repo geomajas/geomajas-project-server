@@ -34,11 +34,12 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-import org.geomajas.configuration.LabelAttributeInfo;
-import org.geomajas.configuration.MapInfo;
-import org.geomajas.configuration.StyleInfo;
+import org.geomajas.configuration.FeatureStyleInfo;
+import org.geomajas.configuration.LabelStyleInfo;
+import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.configuration.SymbolInfo;
 import org.geomajas.configuration.VectorLayerInfo;
+import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.extension.printing.PdfContext;
 import org.geomajas.layer.Layer;
 import org.geomajas.layer.feature.InternalFeature;
@@ -72,8 +73,8 @@ import com.vividsolutions.jts.geom.PrecisionModel;
 @XmlRootElement
 public class VectorLayerComponent extends BaseLayerComponent {
 
-	/** Array of StyleDefinition for this layer. */
-	private List<StyleInfo> styleDefinitions;
+	/** Style for this layer. */
+	private NamedStyleInfo styleInfo;
 
 	/** CQL filter */
 	private String filter;
@@ -137,7 +138,7 @@ public class VectorLayerComponent extends BaseLayerComponent {
 			Collections.addAll(selectedFeatures, getSelectedFeatureIds());
 			// Fetch features
 			try {
-				MapInfo map = context.getMap(getMap().getMapId());
+				ClientMapInfo map = context.getMap(getMap().getMapId(), getMap().getApplicationId());
 				String geomName = ((VectorLayerInfo) context.getLayer(getLayerId()).getLayerInfo()).getFeatureInfo()
 						.getGeometryType().getName();
 				GeometryFactory factory = new GeometryFactory(new PrecisionModel(Math.pow(10, map.getPrecision())),
@@ -148,7 +149,7 @@ public class VectorLayerComponent extends BaseLayerComponent {
 					filter = filterCreator.createLogicFilter(CQL.toFilter(getFilter()), "and", filter);
 				}
 
-				features = layerService.getFeatures(getLayerId(), CRS.decode(map.getCrs()), filter, styleDefinitions,
+				features = layerService.getFeatures(getLayerId(), CRS.decode(map.getCrs()), filter, styleInfo,
 						VectorLayerService.FEATURE_INCLUDE_ALL);
 			} catch (Exception e) {
 				log.error("Error rendering vectorlayerRenderer", e);
@@ -167,7 +168,7 @@ public class VectorLayerComponent extends BaseLayerComponent {
 
 	private void drawLabel(PdfContext context, InternalFeature f) {
 		Layer<?> layer = context.getLayer(getLayerId());
-		LabelAttributeInfo labelType = ((VectorLayerInfo) layer.getLayerInfo()).getLabelAttribute();
+		LabelStyleInfo labelType = styleInfo.getLabelStyle();
 		String label = f.getLabel();
 
 		Font font = new Font("Helvetica", Font.ITALIC, 10);
@@ -237,7 +238,7 @@ public class VectorLayerComponent extends BaseLayerComponent {
 	}
 
 	private void drawFeature(PdfContext context, InternalFeature f) {
-		StyleInfo style = f.getStyleInfo();
+		FeatureStyleInfo style = f.getStyleInfo();
 
 		// Color, transparency, dash
 		Color fillColor = context.getColor(style.getFillColor(), style.getFillOpacity());
@@ -245,7 +246,7 @@ public class VectorLayerComponent extends BaseLayerComponent {
 		float[] dashArray = context.getDashArray(style.getDashArray());
 
 		// check if the feature is selected
-		MapInfo map = context.getMap(getMap().getMapId());
+		ClientMapInfo map = context.getMap(getMap().getMapId(), getMap().getApplicationId());
 		if (selectedFeatures.contains(f.getLocalId())) {
 			if (f.getGeometry() instanceof MultiPolygon || f.getGeometry() instanceof Polygon) {
 				fillColor = context.getColor(map.getPolygonSelectStyle().getFillColor(), style.getFillOpacity());
@@ -289,9 +290,8 @@ public class VectorLayerComponent extends BaseLayerComponent {
 		setParent((PrintComponent) parent);
 	}
 
-	public void setStyleDefinitions(StyleInfo... styleDefs) {
-		styleDefinitions = new ArrayList<StyleInfo>();
-		Collections.addAll(styleDefinitions, styleDefs);
+	public void setStyleInfo(NamedStyleInfo styleInfo) {
+		this.styleInfo = styleInfo;
 	}
 
 	public String[] getSelectedFeatureIds() {

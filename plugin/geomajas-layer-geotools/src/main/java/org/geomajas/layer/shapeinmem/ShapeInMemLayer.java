@@ -24,7 +24,6 @@
 package org.geomajas.layer.shapeinmem;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -34,15 +33,18 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
+
 import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.FeatureModel;
+import org.geomajas.layer.geotools.DataStoreFactory;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
-import org.geotools.data.shapefile.ShapefileDataStore;
+import org.geotools.data.DataStore;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
 import org.geotools.referencing.CRS;
@@ -101,7 +103,6 @@ public class ShapeInMemLayer extends FeatureSourceRetriever implements VectorLay
 	public void setLayerInfo(VectorLayerInfo layerInfo) throws LayerException {
 		this.layerInfo = layerInfo;
 		initCrs();
-		initFeatures();
 	}
 
 	public VectorLayerInfo getLayerInfo() {
@@ -120,28 +121,19 @@ public class ShapeInMemLayer extends FeatureSourceRetriever implements VectorLay
 		return true;
 	}
 
-	public void setUrl(URL url) throws LayerException {
-		this.url = url;
-		initFeatures();
-	}
-
 	public void setUrl(String url) throws LayerException {
 		try {
-			URL realUrl = null;
-			if (url.startsWith(CLASSPATH_URL_PROTOCOL)) {
-				ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-				if (null == classLoader) {
-					classLoader = this.getClass().getClassLoader();
-				}
-				realUrl = classLoader.getResource(url.substring(CLASSPATH_URL_PROTOCOL.length()));
-			}
-			if (null == realUrl) {
-				realUrl = new URL(url);
-			}
-			setUrl(realUrl);
-		} catch (MalformedURLException mue) {
+			Map<String, String> params = new HashMap<String, String>();
+			params.put("url", url);
+			DataStore store = DataStoreFactory.create(params);
+			setDataStore(store);
+		} catch (IOException ioe) {
 			throw new LayerException(ExceptionCode.INVALID_SHAPE_FILE_URL, url);
 		}
+	}
+
+	public void setDataStore(DataStore dataStore) throws LayerException {
+		super.setDataStore(dataStore);
 	}
 
 	/**
@@ -225,20 +217,10 @@ public class ShapeInMemLayer extends FeatureSourceRetriever implements VectorLay
 	}
 
 	// Private functions:
-
-	private void initFeatures() throws LayerException {
-		if (null == layerInfo || null == url) {
-			return;
-		}
+	@PostConstruct
+	protected void initFeatures() throws LayerException {
 		try {
-			InputStream in = url.openStream();
-			if (in == null) {
-				throw new IOException("File not found: " + url);
-			}
-			in.close();
-			setDataStore(new ShapefileDataStore(url));
 			setFeatureSourceName(layerInfo.getFeatureInfo().getDataSourceName());
-
 			featureModel = new ShapeInMemFeatureModel(getDataStore(), layerInfo.getFeatureInfo().getDataSourceName(),
 					geoService.getSridFromCrs(layerInfo.getCrs()));
 			FeatureCollection<SimpleFeatureType, SimpleFeature> col = getFeatureSource().getFeatures();

@@ -27,7 +27,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.command.CommandResponse;
-import org.geomajas.configuration.StyleInfo;
 import org.geomajas.command.dto.GetRenderedTileRequest;
 import org.geomajas.command.dto.GetRenderedTileResponse;
 import org.geomajas.gwt.client.command.CommandCallback;
@@ -160,7 +159,7 @@ public class VectorTile extends AbstractVectorTile {
 		request.setPanOrigin(cache.getLayer().getMapModel().getMapView().getPanOrigin());
 		request.setRenderer(SC.isIE() ? "VML" : "SVG");
 		request.setScale(cache.getLayer().getMapModel().getMapView().getCurrentScale());
-		request.setStyleDefs(cache.getLayer().getLayerInfo().getStyleDefinitions().toArray(new StyleInfo[] {}));
+		request.setStyleInfo(cache.getLayer().getLayerInfo().getNamedStyleInfo());
 		GwtCommand command = new GwtCommand("command.render.GetRenderedTile");
 		command.setCommandRequest(request);
 		return command;

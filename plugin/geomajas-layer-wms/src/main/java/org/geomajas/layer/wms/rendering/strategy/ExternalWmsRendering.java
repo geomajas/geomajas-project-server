@@ -25,12 +25,8 @@ package org.geomajas.layer.wms.rendering.strategy;
 
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
-import org.geomajas.configuration.ApplicationInfo;
-import org.geomajas.configuration.StyleInfo;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.VectorLayer;
@@ -110,7 +106,7 @@ public class ExternalWmsRendering implements RenderingStrategy {
 	 *            The application in which this tile is to be rendered.
 	 * @return Returns a completely rendered <code>RasterTile</code>.
 	 */
-	public InternalTile paint(TileMetadata metadata, ApplicationInfo application) throws RenderException {
+	public InternalTile paint(TileMetadata metadata) throws RenderException {
 		try {
 			// Get the map and layer objects:
 			VectorLayer vLayer = applicationService.getVectorLayer(metadata.getLayerId());
@@ -128,10 +124,8 @@ public class ExternalWmsRendering implements RenderingStrategy {
 			}
 
 			// Create a FeaturePainter and paint the features:
-			List<StyleInfo> styleDefinitions = new ArrayList<StyleInfo>();
-			Collections.addAll(styleDefinitions, metadata.getStyleDefs());
 			List<InternalFeature> features = layerService.getFeatures(metadata.getLayerId(), crs, filter,
-					styleDefinitions, VectorLayerService.FEATURE_INCLUDE_ALL);
+					metadata.getStyleInfo(), VectorLayerService.FEATURE_INCLUDE_ALL);
 
 			// At this point, we have a tile with rendered features.
 			// Now we need to paint the tile itself:

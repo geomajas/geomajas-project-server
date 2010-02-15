@@ -26,6 +26,8 @@ package org.geomajas.internal.rendering.painter.tile;
 import java.awt.geom.AffineTransform;
 import java.io.StringWriter;
 
+import org.geomajas.configuration.LabelStyleInfo;
+import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.internal.layer.feature.InternalFeatureImpl;
 import org.geomajas.internal.layer.tile.InternalTileImpl;
@@ -84,6 +86,11 @@ public class StringContentTilePainter implements TilePainter {
 	private VectorLayer layer;
 
 	/**
+	 * The layer style.
+	 */
+	private NamedStyleInfo style;
+
+	/**
 	 * Rendering output type. This can be either "SVG" or "VML". This depends on what the client requests.
 	 */
 	private String renderer;
@@ -134,6 +141,8 @@ public class StringContentTilePainter implements TilePainter {
 	 * 
 	 * @param layer
 	 *            The vector layer wherein the tiles lie.
+	 * @param style
+	 *            The rendering style.
 	 * @param renderer
 	 *            Rendering output type: "SVG" or "VML".
 	 * @param scale
@@ -142,9 +151,19 @@ public class StringContentTilePainter implements TilePainter {
 	 *            The current origin may differ, depending on whether or not the client has been panning.Needed for
 	 *            creating the world to view space coordinate transformer.
 	 */
-	public StringContentTilePainter(VectorLayer layer, String renderer, double scale, Coordinate panOrigin,
-			GeoService geoService) {
+	public StringContentTilePainter(VectorLayer layer, NamedStyleInfo style, String renderer, double scale,
+			Coordinate panOrigin, GeoService geoService) {
 		this.layer = layer;
+		// @todo: duplicate code, can we just depend on the VectorLayerService ?
+		if (style == null) {
+			// no style specified, take the first
+			style = layer.getLayerInfo().getNamedStyleInfos().get(0);
+		} else if (style.getFeatureStyles().isEmpty()) {
+			// only name specified, find it
+			style = layer.getLayerInfo().getNamedStyleInfo(style.getName());
+		}
+
+		this.style = style;
 		this.renderer = renderer;
 		this.scale = scale;
 		this.panOrigin = panOrigin;
@@ -189,7 +208,7 @@ public class StringContentTilePainter implements TilePainter {
 			if (paintLabels && labelDocument == null) {
 				StringWriter writer = new StringWriter();
 				try {
-					labelDocument = createLabelDocument(writer);
+					labelDocument = createLabelDocument(writer, style.getLabelStyle());
 					labelDocument.setRootId(layer.getLayerInfo().getId());
 					labelDocument.writeObject(tileToPaint, false);
 					labelDocument.flush();
@@ -261,12 +280,14 @@ public class StringContentTilePainter implements TilePainter {
 	/**
 	 * Create a document that parses the tile's labelFragment, using GraphicsWriter classes.
 	 */
-	private GraphicsDocument createLabelDocument(StringWriter writer) throws RenderException {
+	private GraphicsDocument createLabelDocument(StringWriter writer, LabelStyleInfo labelStyleInfo)
+			throws RenderException {
+
 		if (TileMetadata.PARAM_SVG_RENDERER.equalsIgnoreCase(renderer)) {
 			DefaultSvgDocument document = new DefaultSvgDocument(writer, false);
 			document.setMaximumFractionDigits(MAXIMUM_FRACTION_DIGITS);
-			document.registerWriter(InternalTileImpl.class, new SvgLabelTileWriter(getTransformer(), layer
-					.getLayerInfo().getLabelAttribute().getBackgroundStyle(), geoService));
+			document.registerWriter(InternalTileImpl.class, new SvgLabelTileWriter(getTransformer(), labelStyleInfo
+					.getBackgroundStyle(), geoService));
 			return document;
 		} else if (TileMetadata.PARAM_VML_RENDERER.equalsIgnoreCase(renderer)) {
 			DefaultVmlDocument document = new DefaultVmlDocument(writer);
@@ -275,7 +296,7 @@ public class StringContentTilePainter implements TilePainter {
 			document.registerWriter(InternalFeatureImpl.class, new VmlFeatureScreenWriter(getTransformer(), coordWidth,
 					coordHeight));
 			document.registerWriter(InternalTileImpl.class, new VmlLabelTileWriter(coordWidth, coordHeight,
-					getTransformer(), layer.getLayerInfo().getLabelAttribute().getBackgroundStyle(), geoService));
+					getTransformer(), labelStyleInfo.getBackgroundStyle(), geoService));
 			document.setMaximumFractionDigits(MAXIMUM_FRACTION_DIGITS);
 			return document;
 		} else {

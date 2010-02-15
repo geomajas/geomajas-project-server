@@ -23,6 +23,8 @@
 dojo.provide("tutorial.SearchManager");
 
 dojo.declare("SearchManager", ConfigManager, {
+	
+	applicationId : "tutorial",
 
 	/**
 	 * @class First version of a manager type object for demo sample.

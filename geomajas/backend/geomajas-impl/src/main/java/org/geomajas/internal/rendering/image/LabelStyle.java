@@ -23,7 +23,7 @@
 
 package org.geomajas.internal.rendering.image;
 
-import org.geomajas.configuration.StyleInfo;
+import org.geomajas.configuration.FeatureStyleInfo;
 import org.geotools.renderer.style.Style2D;
 
 import java.awt.AlphaComposite;
@@ -85,7 +85,7 @@ public class LabelStyle extends Style2D {
 	 * @param backgroundInfo
 	 *            Determines the background style.
 	 */
-	public LabelStyle(StyleInfo fontInfo, StyleInfo backgroundInfo) {
+	public LabelStyle(FeatureStyleInfo fontInfo, FeatureStyleInfo backgroundInfo) {
 		fontComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, fontInfo.getFillOpacity());
 		backgroundComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, backgroundInfo.getFillOpacity());
 		strokeComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, backgroundInfo.getStrokeOpacity());

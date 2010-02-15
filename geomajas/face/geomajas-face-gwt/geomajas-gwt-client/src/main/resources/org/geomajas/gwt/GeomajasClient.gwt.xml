@@ -7,8 +7,33 @@
 
 	<!-- Geomajas GWT source code, exclude unit tests -->
 
-	<source path="client">
-		<exclude name="**/*Test.java"/>
+	<source path="client/gfx/paintable">
+		<exclude name="*Test*.java"/>
 	</source>
+	<source path="client/map">
+		<exclude name="*Test*.java"/>
+	</source>
+	<source path="client/map/feature/operation">
+		<exclude name="*Test*.java"/>
+	</source>
+	<source path="client/map/layer">
+		<exclude name="*Test*.java"/>
+	</source>
+	<source path="client/map/workflow">
+		<exclude name="*Test*.java"/>
+	</source>
+	<source path="client/spatial/geometry">
+		<exclude name="*Test*.java"/>
+	</source>
+	<source path="client/spatial/geometry/operation">
+		<exclude name="*Test*.java"/>
+	</source>
+	<source path="client/spatial/snapping">
+		<exclude name="*Test*.java"/>
+	</source>
+	<source path="client/widget/attribute">
+		<exclude name="*Test*.java"/>
+	</source>
+	
 
 </module>

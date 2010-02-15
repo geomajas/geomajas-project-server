@@ -26,10 +26,10 @@ package org.geomajas.gwt.client.widget;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.geomajas.configuration.MapInfo;
+import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.Parameter;
-import org.geomajas.configuration.ToolInfo;
-import org.geomajas.configuration.ToolbarInfo;
+import org.geomajas.configuration.client.ClientToolInfo;
+import org.geomajas.configuration.client.ClientToolbarInfo;
 import org.geomajas.gwt.client.action.ConfigurableAction;
 import org.geomajas.gwt.client.action.ToolbarAction;
 import org.geomajas.gwt.client.action.ToolbarBaseAction;
@@ -98,10 +98,10 @@ public class Toolbar extends ToolStrip {
 	 * 
 	 * @param mapInfo
 	 */
-	public void initialize(MapInfo mapInfo) {
-		ToolbarInfo toolbarInfo = mapInfo.getToolbar();
+	public void initialize(ClientMapInfo mapInfo) {
+		ClientToolbarInfo toolbarInfo = mapInfo.getToolbar();
 
-		for (ToolInfo tool : toolbarInfo.getTools()) {
+		for (ClientToolInfo tool : toolbarInfo.getTools()) {
 			String id = tool.getId();
 			if (TOOLBAR_SEPARATOR.equals(id)) {
 				addToolbarSeparator();

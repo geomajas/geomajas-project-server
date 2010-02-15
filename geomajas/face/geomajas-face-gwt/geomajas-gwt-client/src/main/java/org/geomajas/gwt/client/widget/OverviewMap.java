@@ -82,6 +82,9 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 	 * @param id
 	 *            This map's unique identifier. Must resemble an ID from the XML configurations, so it can initialize
 	 *            itself.
+	 * @param applicationId
+	 *            This application's unique identifier. Must resemble an ID from the XML configurations, so it can
+	 *            initialize itself.
 	 * @param targetMap
 	 *            Reference to the main map, that this overview map is to follow.
 	 * @param useMaxExtent
@@ -90,8 +93,9 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 	 * @param drawTargetMaxExtent
 	 *            Draw the borders of the target map's maximum extent?
 	 */
-	public OverviewMap(String id, MapWidget targetMap, boolean useMaxExtent, boolean drawTargetMaxExtent) {
-		super(id);
+	public OverviewMap(String id, String applicationId, MapWidget targetMap, boolean useMaxExtent,
+			boolean drawTargetMaxExtent) {
+		super(id, applicationId);
 		if (null == targetMap) {
 			throw new IllegalArgumentException("Please provide a targetmap");
 		}
@@ -106,6 +110,7 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 		setZoomOnScrollEnabled(false);
 
 		targetMap.getMapModel().addMapModelHandler(new MapModelHandler() {
+
 			public void onMapModelChange(MapModelEvent event) {
 				initialize();
 			}
@@ -318,8 +323,8 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 
 		// zoom if current view is too small
 		if (dynamicOverview && !overviewBox.contains(targetBox)) {
-			//mapView.applyBounds(overviewBox.union(targetBox), MapView.ZoomOption.LEVEL_FIT);
-			//super.onMapViewChanged(null);
+			// mapView.applyBounds(overviewBox.union(targetBox), MapView.ZoomOption.LEVEL_FIT);
+			// super.onMapViewChanged(null);
 		}
 
 		// calculate boxSize
@@ -363,10 +368,10 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 
 	@Override
 	public void render(Paintable paintable, String status) {
-		super.render(paintable, status);	//To change body of overridden methods use File | Settings | File Templates.
+		super.render(paintable, status); // To change body of overridden methods use File | Settings | File Templates.
 	}
 
 	private native String getIsomorphicDir()/*-{
-		return $wnd.isomorphicDir;
-	}-*/;
+											return $wnd.isomorphicDir;
+											}-*/;
 }

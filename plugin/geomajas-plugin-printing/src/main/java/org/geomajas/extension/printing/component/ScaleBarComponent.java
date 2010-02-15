@@ -23,7 +23,7 @@
 package org.geomajas.extension.printing.component;
 
 import com.lowagie.text.Rectangle;
-import org.geomajas.configuration.MapInfo;
+import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.extension.printing.PdfContext;
 import org.geotools.referencing.CRS;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -39,7 +39,7 @@ import java.util.List;
 
 /**
  * ???
- *
+ * 
  * @author check subversion
  */
 @XmlRootElement
@@ -82,9 +82,9 @@ public class ScaleBarComponent extends BaseComponent {
 	 */
 	private float ticHeight;
 
-	private static final float[] ALLOW_TICK_NUMBERS = new float[] {1, 2, 5, 10, 25, 50, 100, 200, 250, 500, 750};
+	private static final float[] ALLOW_TICK_NUMBERS = new float[] { 1, 2, 5, 10, 25, 50, 100, 200, 250, 500, 750 };
 
-	private static final String[] UNIT_PREFIXES = new String[] {"n", "m", "", "k", "M"};
+	private static final String[] UNIT_PREFIXES = new String[] { "n", "m", "", "k", "M" };
 
 	public ScaleBarComponent() {
 		getConstraint().setAlignmentX(LayoutConstraint.LEFT);
@@ -96,7 +96,7 @@ public class ScaleBarComponent extends BaseComponent {
 
 	/**
 	 * Call back visitor.
-	 *
+	 * 
 	 * @param visitor
 	 */
 	public void accept(PrintComponentVisitor visitor) {
@@ -133,7 +133,7 @@ public class ScaleBarComponent extends BaseComponent {
 		int ticCount = getTicNumber();
 
 		// Calculate the labels
-		MapInfo map = context.getMap(getMap().getId());
+		ClientMapInfo map = context.getMap(getMap().getMapId(), getMap().getApplicationId());
 		if (map != null) {
 			log.debug("calculateSize getMap.getId({}), res {}", getMap().getId(), map);
 			CoordinateReferenceSystem crs;
@@ -200,7 +200,7 @@ public class ScaleBarComponent extends BaseComponent {
 		highX = 0.5f * tickSizes.get(0).getWidth();
 		highY = 0.6666f * ticHeight;
 		for (int i = 0; i <= ticNumber; i++) {
-			context.drawRelativePath(new float[] {0, 0}, new float[] {0, 1}, new Rectangle(highX, highY, highX,
+			context.drawRelativePath(new float[] { 0, 0 }, new float[] { 0, 1 }, new Rectangle(highX, highY, highX,
 					0.75f * ticHeight), Color.black, 0.5f, null);
 			highX += ticWidth;
 		}
@@ -239,7 +239,7 @@ public class ScaleBarComponent extends BaseComponent {
 
 	/**
 	 * Resets cyclic references like child -> parent relationship.
-	 *
+	 * 
 	 * @param u
 	 * @param parent
 	 */

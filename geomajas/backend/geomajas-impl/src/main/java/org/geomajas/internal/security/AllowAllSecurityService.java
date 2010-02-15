@@ -29,12 +29,16 @@ import org.geomajas.security.SecurityService;
 
 /**
  * Security Service which allows all access to everybody.
- *
+ * 
  * @author Joachim Van der Auwera
  */
 public class AllowAllSecurityService implements SecurityService {
 
-	private static final BaseAuthorization[] AUTHORIZATIONS = new BaseAuthorization[] {new AllowAllAuthorization()};
+	private static final BaseAuthorization[] AUTHORIZATIONS = new BaseAuthorization[] { new AllowAllAuthorization() };
+
+	public AllowAllSecurityService() {
+		System.out.println();
+	}
 
 	public String getId() {
 		return "AllowAll";

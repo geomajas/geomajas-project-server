@@ -24,8 +24,8 @@
 package org.geomajas.gwt.client.controller.editing;
 
 import org.geomajas.configuration.Parameter;
-import org.geomajas.configuration.ToolInfo;
-import org.geomajas.configuration.ToolbarInfo;
+import org.geomajas.configuration.client.ClientToolInfo;
+import org.geomajas.configuration.client.ClientToolbarInfo;
 import org.geomajas.gwt.client.action.ConfigurableAction;
 import org.geomajas.gwt.client.action.ToolbarBaseAction;
 import org.geomajas.gwt.client.action.menu.DeleteFeatureAction;
@@ -246,8 +246,8 @@ public class ParentEditController extends EditController {
 			pixelTolerance = 5;
 
 			// First try and get the pixelTolerance value from the selection controller configuration:
-			ToolbarInfo toolbarInfo = mapWidget.getMapModel().getDescription().getToolbar();
-			for (ToolInfo tool : toolbarInfo.getTools()) {
+			ClientToolbarInfo toolbarInfo = mapWidget.getMapModel().getDescription().getToolbar();
+			for (ClientToolInfo tool : toolbarInfo.getTools()) {
 				if ("SelectionMode".equals(tool.getId())) {
 					ToolbarBaseAction action = ToolbarRegistry.getToolbarAction(tool.getId(), mapWidget);
 					if (action instanceof SelectionModalAction) {

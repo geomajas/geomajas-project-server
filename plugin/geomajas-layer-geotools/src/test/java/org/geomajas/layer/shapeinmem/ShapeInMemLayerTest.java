@@ -22,79 +22,48 @@
  */
 package org.geomajas.layer.shapeinmem;
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 
-import org.geomajas.configuration.AttributeInfo;
-import org.geomajas.configuration.FeatureInfo;
-import org.geomajas.configuration.GeometricAttributeInfo;
-import org.geomajas.configuration.PrimitiveAttributeInfo;
-import org.geomajas.configuration.PrimitiveType;
-import org.geomajas.configuration.VectorLayerInfo;
+import org.geomajas.layer.LayerException;
 import org.geomajas.service.FilterService;
 import org.geotools.factory.CommonFactoryFinder;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.Filter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.context.support.AbstractApplicationContext;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKTReader;
 
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
+		"/org/geomajas/testdata/layerCountries.xml", "/org/geomajas/testdata/simplevectorsContext.xml",
+		"/org/geomajas/layer/shapeinmem/test.xml" })
 public class ShapeInMemLayerTest {
 
-	private static final String SHAPE_FILE = "classpath:org/geomajas/testdata/shapes/cities_world/cities.shp";
+	@Autowired
+	private FilterService filterService;
 
+	@Autowired()
+	@Qualifier("test")
 	private ShapeInMemLayer layer;
 
 	private Filter filter;
 
 	@Before
 	public void setUp() throws Exception {
-		ApplicationContext applicationContext = new ClassPathXmlApplicationContext(new String[] {
-				"org/geomajas/spring/geomajasContext.xml", "org/geomajas/testdata/layerCountries.xml",
-				"org/geomajas/testdata/simplevectorsContext.xml", "org/geomajas/layer/shapeinmem/test.xml" });
-		FilterService filterCreator = applicationContext.getBean("service.FilterService", FilterService.class);
-		layer = applicationContext.getBean("test", ShapeInMemLayer.class);
-		layer.setUrl(SHAPE_FILE);
-
-		FeatureInfo ft = new FeatureInfo();
-		ft.setDataSourceName("cities");
-
-		PrimitiveAttributeInfo ia = new PrimitiveAttributeInfo();
-		ia.setLabel("id");
-		ia.setName("Id");
-		ia.setType(PrimitiveType.STRING);
-		ft.setIdentifier(ia);
-
-		GeometricAttributeInfo ga = new GeometricAttributeInfo();
-		ga.setName("the_geom");
-		ga.setEditable(false);
-		ft.setGeometryType(ga);
-
-		List<AttributeInfo> attr = new ArrayList<AttributeInfo>();
-		PrimitiveAttributeInfo pa = new PrimitiveAttributeInfo();
-		pa.setLabel("City");
-		pa.setName("City");
-		pa.setEditable(false);
-		pa.setIdentifying(true);
-		pa.setType(PrimitiveType.STRING);
-
-		attr.add(pa);
-		ft.setAttributes(attr);
-
-		VectorLayerInfo layerInfo = new VectorLayerInfo();
-		layerInfo.setFeatureInfo(ft);
-		layerInfo.setCrs("EPSG:4326");
-
-		layer.setLayerInfo(layerInfo);
-		filter = filterCreator.createCompareFilter("Population", ">", "49900");
+		filter = filterService.createCompareFilter("Population", ">", "49900");
 	}
 
 	@Test
@@ -175,4 +144,10 @@ public class ShapeInMemLayerTest {
 		} catch (Exception e) {
 		}
 	}
+	
+	@After
+	public void refreshContext() throws LayerException {
+		layer.initFeatures();
+	}
+	
 }

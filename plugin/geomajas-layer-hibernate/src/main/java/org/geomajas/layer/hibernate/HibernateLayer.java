@@ -358,7 +358,7 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer {
 			for (AttributeInfo attribute : getFeatureInfo().getAttributes()) {
 				// We're looping over all associations:
 				if (attribute instanceof AssociationAttributeInfo) {
-					String name = ((AssociationAttributeInfo) attribute).getFeatureInfo().getDataSourceName();
+					String name = ((AssociationAttributeInfo) attribute).getFeature().getDataSourceName();
 					Object value = attributes.get(name);
 					if (value != null) {
 						// Find the association's meta-data:

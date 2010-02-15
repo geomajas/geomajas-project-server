@@ -24,7 +24,6 @@ package org.geomajas.extension.printing.document;
 
 import com.lowagie.text.Document;
 import com.lowagie.text.pdf.PdfWriter;
-import org.geomajas.configuration.ApplicationInfo;
 import org.geomajas.extension.printing.PdfContext;
 import org.geomajas.extension.printing.component.MapComponent;
 import org.geomajas.extension.printing.component.PageComponent;
@@ -50,11 +49,6 @@ public class SinglePageDocument extends AbstractDocument {
 	 */
 	protected PageComponent page;
 
-	/**
-	 * the application
-	 */
-	protected ApplicationInfo application;
-
 	protected ApplicationService runtime;
 
 	/**
@@ -75,10 +69,9 @@ public class SinglePageDocument extends AbstractDocument {
 	 * @param runtime
 	 * @param filters
 	 */
-	public SinglePageDocument(PageComponent page, ApplicationInfo application, ApplicationService runtime,
+	public SinglePageDocument(PageComponent page, ApplicationService runtime,
 			Map<String, String> filters) {
 		this.page = page;
-		this.application = application;
 		this.runtime = runtime;
 		this.filters = (filters == null ? new HashMap<String, String>() : filters);
 

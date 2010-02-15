@@ -26,7 +26,6 @@ import org.geomajas.command.Command;
 import org.geomajas.command.CommandDispatcher;
 import org.geomajas.command.CommandRequest;
 import org.geomajas.command.CommandResponse;
-import org.geomajas.configuration.ApplicationInfo;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.global.GeomajasSecurityException;
@@ -57,9 +56,6 @@ public final class CommandDispatcherImpl implements CommandDispatcher {
 
 	@Autowired
 	private ApplicationContext applicationContext;
-
-	@Autowired
-	private ApplicationInfo application;
 
 	@Autowired
 	private SecurityContext securityContext;

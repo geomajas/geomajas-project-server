@@ -29,16 +29,23 @@ import java.io.Serializable;
 
 /**
  * DTO bounding box definition.
- *
+ * 
  * @author Joachim Van der Auwera
  */
 public class Bbox implements Serializable {
 
 	private static final long serialVersionUID = 151L;
+
 	private double x;
+
 	private double y;
+
 	private double width;
+
 	private double height;
+
+	// huge bbox, should cover coordinate space of all known crses
+	public static final Bbox ALL = new Bbox(-1E20, -1E20, 2E20, 2E20);
 
 	public Bbox() {
 		this(0, 0, 0, 0);
@@ -59,8 +66,9 @@ public class Bbox implements Serializable {
 	/**
 	 * Set the height for the bounding box. The height should always be positive. When a negative height is set, the x
 	 * origin is adjusted to compensate and the height made positive.
-	 *
-	 * @param height height for the bounding box
+	 * 
+	 * @param height
+	 *            height for the bounding box
 	 */
 	public void setHeight(double height) {
 		if (height < 0) {
@@ -79,8 +87,9 @@ public class Bbox implements Serializable {
 	/**
 	 * Set the width for the bounding box. The width should always be positive. When a negative width is set, the x
 	 * origin is adjusted to compensate and the width made positive.
-	 *
-	 * @param width width for the bounding box
+	 * 
+	 * @param width
+	 *            width for the bounding box
 	 */
 	public void setWidth(double width) {
 		if (width < 0) {

@@ -22,53 +22,38 @@
  */
 package org.geomajas.command.configuration;
 
+import org.apache.commons.lang.SerializationUtils;
 import org.geomajas.command.Command;
-import org.geomajas.command.EmptyCommandRequest;
-import org.geomajas.configuration.ApplicationInfo;
-import org.geomajas.configuration.ClientApplicationInfo;
-import org.geomajas.configuration.MapInfo;
+import org.geomajas.command.dto.GetConfigurationRequest;
 import org.geomajas.command.dto.GetConfigurationResponse;
-import org.geomajas.layer.LayerException;
+import org.geomajas.configuration.client.ClientApplicationInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
- * This command fetches, and returns the initial application configuration for the user.
- * This is typically the first command to be executed.
- *
+ * This command fetches, and returns the initial application configuration for the user. This is typically the first
+ * command to be executed.
+ * 
  * @author Pieter De Graef
  */
 @Component()
-public class GetConfigurationCommand implements Command<EmptyCommandRequest, GetConfigurationResponse> {
+public class GetConfigurationCommand implements Command<GetConfigurationRequest, GetConfigurationResponse> {
 
 	@Autowired
-	private ApplicationInfo application;
-
-	@Autowired
-	private GetMapConfigurationCommand mapConfigurationCommand;
+	private ApplicationContext context;
 
 	public GetConfigurationResponse getEmptyCommandResponse() {
 		return new GetConfigurationResponse();
 	}
 
-	public void execute(EmptyCommandRequest request, GetConfigurationResponse response) throws Exception {
+	public void execute(GetConfigurationRequest request, GetConfigurationResponse response) throws Exception {
+		ClientApplicationInfo client = context.getBean(request.getApplicationId(), ClientApplicationInfo.class);
+		// clone it before modifying
+		ClientApplicationInfo clone = (ClientApplicationInfo) SerializationUtils.clone(client);
 		// @todo security, data should be filtered
-		ClientApplicationInfo cai = new ClientApplicationInfo();
-		cai.setId(application.getId());
-		cai.setName(application.getName());
-		cai.setMaps(getMaps());
-		cai.setScreenDpi(application.getScreenDpi());
-		response.setApplication(cai);
+		// ((ClientVectorLayerInfo)clone.getMaps().get(0).getLayers().get(0)).setCreatable(true);
+		response.setApplication(clone);
 	}
 
-	private List<MapInfo> getMaps() throws LayerException {
-		List<MapInfo> maps = new ArrayList<MapInfo>();
-		for (MapInfo map : application.getMaps()) {
-			maps.add(mapConfigurationCommand.getClientMapInfo(map));
-		}
-		return maps;
-	}
 }

@@ -23,7 +23,7 @@
 package org.geomajas.command.configuration;
 
 import org.geomajas.command.CommandDispatcher;
-import org.geomajas.configuration.MapInfo;
+import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.command.dto.GetMapConfigurationRequest;
 import org.geomajas.command.dto.GetMapConfigurationResponse;
 import org.geomajas.geometry.Bbox;
@@ -60,12 +60,16 @@ public class GetMapConfigurationCommandTest {
 		Assert.assertEquals(170.102257, configMaxExtent.getHeight(), DOUBLE_TOLERANCE);
 
 		GetMapConfigurationRequest request = new GetMapConfigurationRequest();
+		request.setApplicationId("simplevectors");
 		request.setMapId("coordTestMap");
 		CommandDispatcher dispatcher = applicationContext.getBean("command.CommandDispatcher", CommandDispatcher.class);
 		GetMapConfigurationResponse response = (GetMapConfigurationResponse) dispatcher.execute(
 				"command.configuration.GetMap", request, null, "en");
+		if (response.isError()) {
+			response.getErrors().get(0).printStackTrace();
+		}
 		Assert.assertFalse(response.isError());
-		MapInfo mapInfo = response.getMapInfo();
+		ClientMapInfo mapInfo = response.getMapInfo();
 		Assert.assertNotNull(mapInfo);
 		Bbox mapMaxExtent = mapInfo.getLayers().get(0).getMaxExtent();
 		// these values were registered during a first run, they have *not* been externally verified

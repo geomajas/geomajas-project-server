@@ -23,7 +23,7 @@
 
 package org.geomajas.internal.rendering.writers.vml;
 
-import org.geomajas.configuration.StyleInfo;
+import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.internal.layer.feature.InternalFeatureImpl;
 import org.geomajas.internal.layer.tile.InternalTileImpl;
 import org.geomajas.internal.rendering.writers.GraphicsWriter;
@@ -61,12 +61,12 @@ public class VmlLabelTileWriter implements GraphicsWriter {
 
 	private int coordHeight;
 
-	private StyleInfo bgStyle;
+	private FeatureStyleInfo bgStyle;
 
 	private GeoService geoService;
 
 	public VmlLabelTileWriter(int coordWidth, int coordHeight, GeometryCoordinateSequenceTransformer transformer,
-			StyleInfo bgStyle, GeoService geoService) {
+			FeatureStyleInfo bgStyle, GeoService geoService) {
 		this.coordWidth = coordWidth;
 		this.coordHeight = coordHeight;
 		this.bgStyle = bgStyle;

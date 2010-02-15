@@ -23,7 +23,7 @@
 package org.geomajas.extension.printing.component;
 
 import com.lowagie.text.Rectangle;
-import org.geomajas.configuration.StyleInfo;
+import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.extension.printing.PdfContext;
 import org.geomajas.layer.LayerType;
 
@@ -45,7 +45,7 @@ public class LegendItemComponent extends BaseComponent {
 				LayoutConstraint.FLOW_X, 0, 0, 5, 5));
 	}
 
-	public LegendItemComponent(StyleInfo def, String label, LayerType layerType, Font font) {
+	public LegendItemComponent(FeatureStyleInfo def, String label, LayerType layerType, Font font) {
 		setConstraint(new LayoutConstraint(LayoutConstraint.LEFT, LayoutConstraint.BOTTOM,
 				LayoutConstraint.FLOW_X, 0, 0, 5, 5));
 		LegendIconComponent icon = new LegendIconComponent();

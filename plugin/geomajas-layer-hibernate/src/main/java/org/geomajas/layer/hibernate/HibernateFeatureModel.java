@@ -357,7 +357,7 @@ public class HibernateFeatureModel extends HibernateLayerUtil implements Feature
 		} else if (parentAttribute instanceof AssociationAttributeInfo) {
 			// If the parent is an association:
 			AssociationAttributeInfo association = (AssociationAttributeInfo) parentAttribute;
-			for (AttributeInfo attr : association.getFeatureInfo().getAttributes()) {
+			for (AttributeInfo attr : association.getFeature().getAttributes()) {
 				if (attr.getName().equals(properties[0])) {
 					attribute = attr;
 					break;
@@ -429,10 +429,10 @@ public class HibernateFeatureModel extends HibernateLayerUtil implements Feature
 	@SuppressWarnings("unchecked")
 	private void copyArrayToPersistentCollection(Object[] array, AssociationAttributeInfo type, Object parent,
 			Collection<?> collection) throws LayerException {
-		ClassMetadata childMetaData = getMetadata(type.getFeatureInfo().getDataSourceName());
+		ClassMetadata childMetaData = getMetadata(type.getFeature().getDataSourceName());
 		if (null == childMetaData) {
 			throw new LayerException(ExceptionCode.MODEL_FEATURE_CLASS_NOT_FOUND,
-					type.getFeatureInfo().getDataSourceName());
+					type.getFeature().getDataSourceName());
 		}
 		// find the parent property
 		Type[] types = childMetaData.getPropertyTypes();
@@ -456,7 +456,7 @@ public class HibernateFeatureModel extends HibernateLayerUtil implements Feature
 				for (Object oldChild : collection) {
 					Serializable oldId = childMetaData.getIdentifier(oldChild, EntityMode.POJO);
 					if (oldId.equals(newId)) {
-						List<AttributeInfo> attribs = type.getFeatureInfo().getAttributes();
+						List<AttributeInfo> attribs = type.getFeature().getAttributes();
 						for (AttributeInfo attrib : attribs) {
 							// TODO: write a test for this case, because it has been changed without testing.
 							setAttributeRecursively(oldChild, attrib, attrib.getName(),

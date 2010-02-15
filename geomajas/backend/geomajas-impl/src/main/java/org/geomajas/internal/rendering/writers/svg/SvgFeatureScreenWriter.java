@@ -68,7 +68,7 @@ public class SvgFeatureScreenWriter implements GraphicsWriter {
 				document.writeObject(geom, true);
 				document.writeId(feature.getId());
 				String styleId =
-						feature.getLayer().getLayerInfo().getId() + "." + feature.getStyleInfo().getId() + ".style";
+						feature.getLayer().getLayerInfo().getId() + "." + feature.getStyleInfo().getIndex() + ".style";
 				document.writeAttribute("xlink:href", "#" + styleId);
 				document.closeElement();
 			} else {

@@ -82,6 +82,7 @@ public class GeomajasSimple implements EntryPoint {
 		if (!"org.geomajas.gwt.GeomajasSimple".equals(name)) {
 			return;
 		}
+		SC.showConsole();
 
 		// Debug console (ctrl-d)
 		if (!GWT.isScript()) {
@@ -104,7 +105,7 @@ public class GeomajasSimple implements EntryPoint {
 		layout.setMembersMargin(10);
 
 		// Create the left-side:
-		map = new MapWidget("sampleFeaturesMap");
+		map = new MapWidget("sampleFeaturesMap", "gwt-simple");
 		final Toolbar toolbar = new Toolbar(map);
 		toolbar.setButtonSize(Toolbar.BUTTON_SIZE_BIG);
 
@@ -137,7 +138,7 @@ public class GeomajasSimple implements EntryPoint {
 		layout.addMember(leftLayout);
 
 		// Create the right-side:
-		overviewMap = new OverviewMap("sampleOverviewMap", map, true, true);
+		overviewMap = new OverviewMap("sampleOverviewMap", "gwt-simple", map, true, true);
 		LayerTree layerTree = new LayerTree(map);
 		layerTree.setHeight("*");
 		legend = new Legend(map.getMapModel());
@@ -167,8 +168,8 @@ public class GeomajasSimple implements EntryPoint {
 		layout.draw();
 
 		// Install a loading screen:
-		LoadingScreen loadScreen = new LoadingScreen(map, "Simple GWT application using Geomajas " +
-				Geomajas.getVersion());
+		LoadingScreen loadScreen = new LoadingScreen(map, "Simple GWT application using Geomajas "
+				+ Geomajas.getVersion());
 		loadScreen.draw();
 
 		// Then initialize:

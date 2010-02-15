@@ -36,9 +36,9 @@ import java.util.Map;
  */
 public interface CacheService {
 
-	String PARAM_APPLICATION_ID = "appId";
-
 	String PARAM_LAYER_ID = "layerId";
+
+	String PARAM_STYLE_ID = "styleId";
 
 	String PARAM_CRS = "crs";
 

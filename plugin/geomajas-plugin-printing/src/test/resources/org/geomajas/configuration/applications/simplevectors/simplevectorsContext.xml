@@ -39,8 +39,8 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 			</list>
 		</property>
 	</bean>
-		
-	<bean name="application" class="org.geomajas.configuration.ApplicationInfo">
+
+	<bean name="application" class="org.geomajas.configuration.client.ClientApplicationInfo">
 		<property name="id" value="simplevectors"/>
 		<property name="name" value="Simple vectorial application focused on South Africa."/>
 		<property name="layers">
@@ -58,23 +58,23 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 		</property>
 		<property name="maps">
 			<list>
-				<bean name="mainMap" class="org.geomajas.configuration.MapInfo">
+				<bean name="mainMap" class="org.geomajas.configuration.client.ClientMapInfo">
 					<property name="id" value="mainMap"/>
 					<property name="backgroundColor" value="#E0E0E0"/>
 					<property name="lineSelectStyle">
-						<bean class="org.geomajas.configuration.StyleInfo">
+						<bean class="org.geomajas.configuration.FeatureStyleInfo">
 							<property name="fillOpacity" value="0"/>
 							<property name="strokeColor" value="#FF6600"/>
 							<property name="strokeOpacity" value="1"/>
 						</bean>
 					</property>
 					<property name="pointSelectStyle">
-						<bean class="org.geomajas.configuration.StyleInfo">
+						<bean class="org.geomajas.configuration.FeatureStyleInfo">
 							<property name="fillColor" value="#FFFF00"/>
 						</bean>
 					</property>
 					<property name="polygonSelectStyle">
-						<bean class="org.geomajas.configuration.StyleInfo">
+						<bean class="org.geomajas.configuration.FeatureStyleInfo">
 							<property name="fillColor" value="#FFFF00"/>
 							<property name="fillOpacity" value=".5"/>
 						</bean>
@@ -126,23 +126,23 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 						</list>
 					</property>
 				</bean>
-				<bean name="overviewMap" class="org.geomajas.configuration.MapInfo">
+				<bean name="overviewMap" class="org.geomajas.configuration.client.ClientMapInfo">
 					<property name="id" value="overviewMap"/>
 					<property name="backgroundColor" value="#FFFFFF"/>
 					<property name="lineSelectStyle">
-						<bean class="org.geomajas.configuration.StyleInfo">
+						<bean class="org.geomajas.configuration.FeatureStyleInfo">
 							<property name="fillOpacity" value="0"/>
 							<property name="strokeColor" value="#FF6600"/>
 							<property name="strokeOpacity" value="1"/>
 						</bean>
 					</property>
 					<property name="pointSelectStyle">
-						<bean class="org.geomajas.configuration.StyleInfo">
+						<bean class="org.geomajas.configuration.FeatureStyleInfo">
 							<property name="fillColor" value="#FFFF00"/>
 						</bean>
 					</property>
 					<property name="polygonSelectStyle">
-						<bean class="org.geomajas.configuration.StyleInfo">
+						<bean class="org.geomajas.configuration.FeatureStyleInfo">
 							<property name="fillColor" value="#FFFF00"/>
 							<property name="fillOpacity" value=".5"/>
 						</bean>

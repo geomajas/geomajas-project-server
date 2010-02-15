@@ -58,11 +58,12 @@ dojo.declare("VectorLayerPainter", Painter, {
 		
 
 		// Draw symbol types, these can change anytime as well:
-		for (var i=0; i<layer.getStyles().count; i++) {
-			var style = layer.getStyles().item(i).getStyle();
+		var styles = layer.getStyles();
+		for (var i=0; i<styles.count; i++) {
+			var style = styles.item(i).getStyle();
 			graphics.drawShapeType({
 				style:     style,
-				id:        layer.getLayerId()+"."+layer.getStyles().item(i).getId()+".style"
+				id:        layer.getLayerId()+"."+styles.item(i).getIndex()+".style"
 			});
 		}
 

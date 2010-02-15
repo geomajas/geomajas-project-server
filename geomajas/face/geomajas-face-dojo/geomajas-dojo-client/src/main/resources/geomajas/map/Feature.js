@@ -280,8 +280,8 @@ dojo.declare("Feature", PainterVisitable, {
 	 */
 	getLabel : function () {
 		if (this.layer) {
-			var attrName = this.layer.getLabelAttribute();
-			var value = this.getAttributeValue(attrName.labelAttributeName);
+			var attrName = this.layer.getLabelStyle().getLabelAttributeName();
+			var value = this.getAttributeValue(attrName);
 			if (value != null) {
 				return value;
 			}
@@ -333,7 +333,7 @@ dojo.declare("Feature", PainterVisitable, {
 	},
 
 	getStyle : function () {
-		return this.getLayer().getStyleById(this.styleId);
+		return this.getLayer().getStyleByIndex(this.styleId).getStyle();
 	},
 
 	setStyleId : function (styleId) {

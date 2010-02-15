@@ -25,9 +25,10 @@ package org.geomajas.gwt.client.widget;
 
 import java.util.List;
 
-import org.geomajas.configuration.LayerTreeInfo;
-import org.geomajas.configuration.LayerTreeNodeInfo;
-import org.geomajas.configuration.ToolInfo;
+import org.geomajas.configuration.client.ClientLayerInfo;
+import org.geomajas.configuration.client.ClientLayerTreeInfo;
+import org.geomajas.configuration.client.ClientLayerTreeNodeInfo;
+import org.geomajas.configuration.client.ClientToolInfo;
 import org.geomajas.gwt.client.action.ToolbarBaseAction;
 import org.geomajas.gwt.client.action.layertree.LayerTreeAction;
 import org.geomajas.gwt.client.action.layertree.LayerTreeModalAction;
@@ -209,8 +210,8 @@ public class LayerTree extends Canvas implements LeafClickHandler, FolderClickHa
 		toolStrip.setWidth100();
 		toolStrip.setPadding(3);
 
-		LayerTreeInfo layerTreeInfo = mapModel.getDescription().getLayerTree();
-		for (ToolInfo tool : layerTreeInfo.getTools()) {
+		ClientLayerTreeInfo layerTreeInfo = mapModel.getDescription().getLayerTree();
+		for (ClientToolInfo tool : layerTreeInfo.getTools()) {
 			String id = tool.getId();
 			IButton button = null;
 			ToolbarBaseAction action = LayerTreeRegistry.getToolbarAction(id, mapWidget);
@@ -245,8 +246,8 @@ public class LayerTree extends Canvas implements LeafClickHandler, FolderClickHa
 		final TreeNode nodeRoot = new TreeNode("ROOT");
 		tree.setRoot(nodeRoot); // invisible ROOT node (ROOT node is required)
 
-		LayerTreeInfo layerTreeInfo = mapModel.getDescription().getLayerTree();
-		LayerTreeNodeInfo treeNode = layerTreeInfo.getTreeNode();
+		ClientLayerTreeInfo layerTreeInfo = mapModel.getDescription().getLayerTree();
+		ClientLayerTreeNodeInfo treeNode = layerTreeInfo.getTreeNode();
 
 		processNode(treeNode, nodeRoot, tree, mapModel, false);
 
@@ -269,31 +270,29 @@ public class LayerTree extends Canvas implements LeafClickHandler, FolderClickHa
 	 * @param refresh
 	 *            True if the tree is refreshed (causing it to keep its expanded state)
 	 */
-	private void processNode(final LayerTreeNodeInfo treeNode, final TreeNode nodeRoot, final Tree tree,
+	private void processNode(final ClientLayerTreeNodeInfo treeNode, final TreeNode nodeRoot, final Tree tree,
 			final MapModel mapModel, final boolean refresh) {
 		String treeNodeLabel = treeNode.getLabel();
 		final TreeNode node = new TreeNode(treeNodeLabel);
 
 		tree.add(node, nodeRoot);
 
-		// layerIds
-		final List<String> layerIds = treeNode.getLayerIds();
 		// (final leafs)
-		for (String layerId : layerIds) {
-			Layer<?> layer = mapModel.getLayerByLayerId(layerId);
+		for (ClientLayerInfo info : treeNode.getLayers()) {
+			Layer<?> layer = mapModel.getLayerByLayerId(info.getId());
 			tree.add(new LayerTreeTreeNode(this.tree, layer), node);
 		}
 
 		// treeNodes
-		List<LayerTreeNodeInfo> childs = treeNode.getTreeNodes();
-		for (LayerTreeNodeInfo newNode : childs) {
+		List<ClientLayerTreeNodeInfo> childs = treeNode.getTreeNodes();
+		for (ClientLayerTreeNodeInfo newNode : childs) {
 			processNode(newNode, node, tree, mapModel, refresh);
 		}
 
 		// expand tree nodes
 		// when not refreshing expand them like configured
 		// when refreshing expand them as before the refresh
-		boolean isTreeNodeExpanded = Boolean.parseBoolean(treeNode.getExpanded());
+		boolean isTreeNodeExpanded = treeNode.isExpanded();
 		if (!refresh) {
 			if (isTreeNodeExpanded) {
 				tree.openFolder(node);

@@ -32,13 +32,8 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 		>
 
 	<bean name="provincesInfo" class="org.geomajas.configuration.VectorLayerInfo">
-	  	<property name="id" value="provinces"/>
-	  	<property name="label" value="Provinces"/>
-		<property name="visible" value="true"/>
 		<property name="layerType" value="MULTIPOLYGON"/>
 		<property name="crs" value="EPSG:900913"/>
-		<property name="viewScaleMin" value="0"/>
-		<property name="viewScaleMax" value="1000"/>
 		<property name="maxExtent">
 			<bean class="org.geomajas.geometry.Bbox">
 				<property name="x" value="272075"/>
@@ -48,80 +43,12 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 			</bean>
 		</property>
 		<property name="maxTileLevel" value="10"/>
-        <property name="labelAttribute">
-            <bean class="org.geomajas.configuration.LabelAttributeInfo">
-                <property name="labelAttributeName" value="NAAM"/>
-                <property name="fontStyle">
-                    <bean class="org.geomajas.configuration.StyleInfo">
-                        <property name="fillColor" value="#000000"/>
-                        <property name="fillOpacity" value="1"/>
-                    </bean>
-                </property>
-                <property name="backgroundStyle">
-                    <bean class="org.geomajas.configuration.StyleInfo">
-                        <property name="fillColor" value="#FFFFFF"/>
-                        <property name="fillOpacity" value=".7"/>
-                        <property name="strokeColor" value="#000099"/>
-                        <property name="strokeOpacity" value="1"/>
-                        <property name="strokeWidth" value="1"/>
-                    </bean>
-                </property>
-            </bean>
-        </property>
-        <property name="featureInfo" ref="provincesFeatureInfo"/>
-        <property name="styleDefinitions">
-            <list>
-                <bean class="org.geomajas.configuration.StyleInfo">
-                    <property name="id" value="1"/>
-                    <property name="name" value="Population>1500000"/>
-                    <property name="formula" value="(POPULATION > 1500000)"/>
-                    <property name="fillColor" value="#0000FF"/>
-                    <property name="fillOpacity" value=".6"/>
-                    <property name="strokeColor" value="#000033"/>
-                    <property name="strokeOpacity" value=".8"/>
-                    <property name="strokeWidth" value="1"/>
-                </bean>
-                <bean class="org.geomajas.configuration.StyleInfo">
-                    <property name="id" value="2"/>
-                    <property name="name" value="Population>1250000"/>
-                    <property name="formula" value="(POPULATION > 1250000)"/>
-                    <property name="fillColor" value="#3333FF"/>
-                    <property name="fillOpacity" value=".6"/>
-                    <property name="strokeColor" value="#000033"/>
-                    <property name="strokeOpacity" value=".8"/>
-                    <property name="strokeWidth" value="1"/>
-                </bean>
-                <bean class="org.geomajas.configuration.StyleInfo">
-                    <property name="id" value="3"/>
-                    <property name="name" value="Population>1000000"/>
-                    <property name="formula" value="(POPULATION > 1000000)"/>
-                    <property name="fillColor" value="#6666FF"/>
-                    <property name="fillOpacity" value=".6"/>
-                    <property name="strokeColor" value="#000033"/>
-                    <property name="strokeOpacity" value=".8"/>
-                    <property name="strokeWidth" value="1"/>
-                </bean>
-                <bean class="org.geomajas.configuration.StyleInfo">
-                    <property name="id" value="4"/>
-                    <property name="name" value="Population>750000"/>
-                    <property name="formula" value="(POPULATION > 750000)"/>
-                    <property name="fillColor" value="#9999FF"/>
-                    <property name="fillOpacity" value=".6"/>
-                    <property name="strokeColor" value="#000033"/>
-                    <property name="strokeOpacity" value=".8"/>
-                    <property name="strokeWidth" value="1"/>
-                </bean>
-                <bean class="org.geomajas.configuration.StyleInfo">
-                    <property name="id" value="5"/>
-                    <property name="name" value="Population&lt;=750000"/>
-                    <property name="fillColor" value="#CCCCFF"/>
-                    <property name="fillOpacity" value=".6"/>
-                    <property name="strokeColor" value="#000033"/>
-                    <property name="strokeOpacity" value=".8"/>
-                    <property name="strokeWidth" value="1"/>
-                </bean>
-            </list>
-        </property>
+		<property name="featureInfo" ref="provincesFeatureInfo" />
+		<property name="namedStyleInfos">
+			<list>
+				<ref bean="provincesStyleInfo" />
+			</list>
+		</property>
 	</bean>
 
     <bean class="org.geomajas.configuration.FeatureInfo" name="provincesFeatureInfo">
@@ -173,6 +100,77 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
             </list>
         </property>
     </bean>
+
+	<bean class="org.geomajas.configuration.NamedStyleInfo" name="provincesStyleInfo">
+		<property name="featureStyles">
+            <list>
+                <bean class="org.geomajas.configuration.FeatureStyleInfo">
+                    <property name="name" value="Population>1500000"/>
+                    <property name="formula" value="(POPULATION > 1500000)"/>
+                    <property name="fillColor" value="#0000FF"/>
+                    <property name="fillOpacity" value=".6"/>
+                    <property name="strokeColor" value="#000033"/>
+                    <property name="strokeOpacity" value=".8"/>
+                    <property name="strokeWidth" value="1"/>
+                </bean>
+                <bean class="org.geomajas.configuration.FeatureStyleInfo">
+                    <property name="name" value="Population>1250000"/>
+                    <property name="formula" value="(POPULATION > 1250000)"/>
+                    <property name="fillColor" value="#3333FF"/>
+                    <property name="fillOpacity" value=".6"/>
+                    <property name="strokeColor" value="#000033"/>
+                    <property name="strokeOpacity" value=".8"/>
+                    <property name="strokeWidth" value="1"/>
+                </bean>
+                <bean class="org.geomajas.configuration.FeatureStyleInfo">
+                    <property name="name" value="Population>1000000"/>
+                    <property name="formula" value="(POPULATION > 1000000)"/>
+                    <property name="fillColor" value="#6666FF"/>
+                    <property name="fillOpacity" value=".6"/>
+                    <property name="strokeColor" value="#000033"/>
+                    <property name="strokeOpacity" value=".8"/>
+                    <property name="strokeWidth" value="1"/>
+                </bean>
+                <bean class="org.geomajas.configuration.FeatureStyleInfo">
+                    <property name="name" value="Population>750000"/>
+                    <property name="formula" value="(POPULATION > 750000)"/>
+                    <property name="fillColor" value="#9999FF"/>
+                    <property name="fillOpacity" value=".6"/>
+                    <property name="strokeColor" value="#000033"/>
+                    <property name="strokeOpacity" value=".8"/>
+                    <property name="strokeWidth" value="1"/>
+                </bean>
+                <bean class="org.geomajas.configuration.FeatureStyleInfo">
+                    <property name="name" value="Population&lt;=750000"/>
+                    <property name="fillColor" value="#CCCCFF"/>
+                    <property name="fillOpacity" value=".6"/>
+                    <property name="strokeColor" value="#000033"/>
+                    <property name="strokeOpacity" value=".8"/>
+                    <property name="strokeWidth" value="1"/>
+                </bean>
+            </list>
+		</property>
+		<property name="labelStyle">
+			<bean class="org.geomajas.configuration.LabelStyleInfo">
+               <property name="labelAttributeName" value="NAAM"/>
+                <property name="fontStyle">
+                    <bean class="org.geomajas.configuration.FeatureStyleInfo">
+                        <property name="fillColor" value="#000000"/>
+                        <property name="fillOpacity" value="1"/>
+                    </bean>
+                </property>
+                <property name="backgroundStyle">
+                    <bean class="org.geomajas.configuration.FeatureStyleInfo">
+                        <property name="fillColor" value="#FFFFFF"/>
+                        <property name="fillOpacity" value=".7"/>
+                        <property name="strokeColor" value="#000099"/>
+                        <property name="strokeOpacity" value="1"/>
+                        <property name="strokeWidth" value="1"/>
+                    </bean>
+                </property>
+			</bean>
+		</property>
+	</bean>
 
 	<bean name="provinces" class="org.geomajas.layer.shapeinmem.ShapeInMemLayer">
 		<property name="layerInfo" ref="provincesInfo" />

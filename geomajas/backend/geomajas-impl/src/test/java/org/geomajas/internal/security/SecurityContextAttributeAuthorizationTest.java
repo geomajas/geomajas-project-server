@@ -23,7 +23,13 @@
 
 package org.geomajas.internal.security;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import junit.framework.Assert;
+
 import org.geomajas.internal.layer.feature.InternalFeatureImpl;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.security.AttributeAuthorization;
@@ -36,11 +42,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Testing of AttributeAuthorization related data in the security context.

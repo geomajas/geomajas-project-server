@@ -23,7 +23,6 @@
 
 package org.geomajas.internal.rendering.strategy;
 
-import org.geomajas.configuration.ApplicationInfo;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.layer.tile.TileMetadata;
@@ -31,11 +30,10 @@ import org.geomajas.rendering.RenderException;
 import org.geomajas.rendering.strategy.RenderingStrategy;
 
 /**
- * This class does exactly the same than ImageRendering. The only difference is
- * that this renderer will not return (Multi)Polygons to the client, as
- * complex geometries block the browser. Instead of the complex geometry, a
- * simple bounding box is returned.
- *
+ * This class does exactly the same than ImageRendering. The only difference is that this renderer will not return
+ * (Multi)Polygons to the client, as complex geometries block the browser. Instead of the complex geometry, a simple
+ * bounding box is returned.
+ * 
  * @author Oliver May
  * @author Pieter De Graef
  */
@@ -45,23 +43,20 @@ public class SimplifiedImageRendering implements RenderingStrategy {
 	private ImageRendering rendering = new ImageRendering();
 
 	/**
-	 *
+	 * 
 	 * @param metadata
-	 *            The command that holds all the spatial and styling
-	 *            information.
-	 * @param application
-	 *            The application in which this tile is defined.
+	 *            The command that holds all the spatial and styling information.
 	 * @return Returns a completely rendered <code>RasterTile</code>.
 	 */
-	public InternalTile paint(TileMetadata metadata, ApplicationInfo application) throws RenderException {
+	public InternalTile paint(TileMetadata metadata) throws RenderException {
 
-		InternalTile paintedTile = rendering.paint(metadata, application);
+		InternalTile paintedTile = rendering.paint(metadata);
 
 		// Remove loads of geometries from features.
 		for (InternalFeature feature : paintedTile.getFeatures()) {
 			String geometryType = feature.getGeometry().getGeometryType();
 			if ("MultiPolygon".equals(geometryType) || "Polygon".equals(geometryType)) {
-				//feature.setGeometry(feature.getGeometry().getBbox());
+				// feature.setGeometry(feature.getGeometry().getBbox());
 				feature.setGeometry(null);
 			}
 		}

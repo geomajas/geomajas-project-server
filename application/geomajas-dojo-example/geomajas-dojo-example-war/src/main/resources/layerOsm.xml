@@ -32,13 +32,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 		>
 
 	<bean name="osmInfo" class="org.geomajas.configuration.RasterLayerInfo">
-	  	<property name="id" value="osm"/>
-	  	<property name="label" value="OpenStreetMap (raster)"/>
-		<property name="visible" value="true"/>
-		<property name="layerType" value="RASTER"/>
 		<property name="crs" value="EPSG:900913"/>
-		<property name="viewScaleMin" value="0"/>
-		<property name="viewScaleMax" value="50"/>
 		<property name="maxExtent">
 			<bean class="org.geomajas.geometry.Bbox">
 				<property name="x" value="-20037508.34"/>
@@ -72,7 +66,6 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
         </property>
         <property name="tileWidth" value="256"/>
         <property name="tileHeight" value="256"/>
-        <property name="style" value="1"/>
 	</bean>
 
 	<bean name="osm" class="org.geomajas.layer.osm.OsmLayer" >

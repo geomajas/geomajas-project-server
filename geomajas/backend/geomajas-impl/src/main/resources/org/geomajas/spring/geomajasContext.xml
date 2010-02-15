@@ -52,6 +52,10 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 		</property>
 	</bean>
 
+	<bean class="org.springframework.validation.beanvalidation.BeanValidationPostProcessor">
+		<property name="afterInitialization" value="true"/>
+	</bean>
+
 
 	<context:component-scan base-package="org.geomajas" name-generator="org.geomajas.spring.GeomajasBeanNameGenerator"/>
 

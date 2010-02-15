@@ -29,8 +29,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 		>
 
-	<bean name="application" class="org.geomajas.configuration.ApplicationInfo"/>
-
 	<bean name="security.securityInfo" class="org.geomajas.security.SecurityInfo">
 		<property name="loopAllServices" value="false"/>
 		<property name="securityServices">

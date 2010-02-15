@@ -46,7 +46,7 @@ import javax.xml.bind.annotation.XmlTransient;
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
 import org.apache.commons.httpclient.methods.GetMethod;
-import org.geomajas.configuration.MapInfo;
+import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.extension.printing.PdfContext;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.layer.RasterLayer;
@@ -128,7 +128,7 @@ public class RasterLayerComponent extends BaseLayerComponent {
 					log.debug("rendering" + rasterlayer.getLayerInfo().getId() + " to [" + bbox.getMinX() + " "
 							+ bbox.getMinY() + " " + bbox.getWidth() + " " + bbox.getHeight() + "]");
 				}
-				MapInfo map = context.getMap(getMap().getMapId());
+				ClientMapInfo map = context.getMap(getMap().getMapId(), getMap().getApplicationId());
 				this.images = rasterlayer.paint(map.getCrs(), bbox, rasterScale);
 			} catch (Throwable e) {
 				log.error("could not paint raster layer " + rasterlayer.getLayerInfo().getId(), e);

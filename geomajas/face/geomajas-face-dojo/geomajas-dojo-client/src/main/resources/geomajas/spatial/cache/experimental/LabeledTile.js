@@ -81,11 +81,7 @@ dojo.declare("LabeledTile", RenderedTile, {
 		command.addParam("scale", this.cache.layer.getMapModel().getMapView().getCurrentScale());
 		command.addParam("filter", filter);
 		command.addParam("renderer", dojo.isIE ? "vml" : "svg");
-		var styleDefs = [];
-		for (var i=0; i<this.cache.layer.getStyles().count; i++) {
-			styleDefs.push (this.cache.layer.getStyles().item(i).toJSON());
-		}
-		command.addParam("styleDefs", styleDefs);
+		command.addParam("styleInfo", this.cache.layer.getNamedStyle().toJSON());
 		command.addParam("panOrigin", this.cache.layer.getMapModel().getMapView().getPanOrigin());
 		if (this.rendered) {
 			command.addParam("paintGeometries", false);

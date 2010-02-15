@@ -38,19 +38,18 @@ import java.util.Map;
 
 /**
  * <p>
- * General utility class for functions concerning caching. TODO: The filter
- * parameter is not yet used. This is quite urgent.
+ * General utility class for functions concerning caching. TODO: The filter parameter is not yet used. This is quite
+ * urgent.
  * </p>
- *
+ * 
  * @author Pieter De Graef
  */
 @Component()
 public final class CacheServiceImpl implements CacheService {
 
 	/**
-	 * Retrieve the necessary parameters form a <code>HttpServletRequest</code>
-	 * object.
-	 *
+	 * Retrieve the necessary parameters form a <code>HttpServletRequest</code> object.
+	 * 
 	 * @param request
 	 * @return
 	 * @throws org.geomajas.cache.CacheException
@@ -60,17 +59,17 @@ public final class CacheServiceImpl implements CacheService {
 		try {
 			Map<String, Object> parameters = new HashMap<String, Object>();
 
-			String temp = request.getParameter(PARAM_APPLICATION_ID);
-			if (temp == null) {
-				throw new CacheException(ExceptionCode.CACHE_NO_APPLICATION_ID);
-			}
-			parameters.put(PARAM_APPLICATION_ID, temp);
-
-			temp = request.getParameter(PARAM_LAYER_ID);
+			String temp = request.getParameter(PARAM_LAYER_ID);
 			if (temp == null) {
 				throw new CacheException(ExceptionCode.CACHE_NO_LAYER_ID);
 			}
 			parameters.put(PARAM_LAYER_ID, temp);
+
+			temp = request.getParameter(PARAM_STYLE_ID);
+			if (temp == null) {
+				throw new CacheException(ExceptionCode.CACHE_NO_STYLE_ID);
+			}
+			parameters.put(PARAM_STYLE_ID, temp);
 
 			parameters.put(PARAM_X, Integer.parseInt(request.getParameter(PARAM_X)));
 			parameters.put(PARAM_Y, Integer.parseInt(request.getParameter(PARAM_Y)));
@@ -107,43 +106,37 @@ public final class CacheServiceImpl implements CacheService {
 	}
 
 	/**
-	 * Create a unique ID given a set of parameters. This ID is used in the
-	 * <code>RenderContent</code> and <code>MetaRenderContent</code> objects.
-	 *
+	 * Create a unique ID given a set of parameters. This ID is used in the <code>RenderContent</code> and
+	 * <code>MetaRenderContent</code> objects.
+	 * 
 	 * @param parameters
-	 *            The same set of parameters, acquired by the
-	 *            "getTileParameters" function in this class.
-	 * @return Returns a unique hash-code ID. TODO AB: This is not 100% unique,
-	 *         but maybe enough for this usage. For instance
-	 *         "planbatenmainMap.refgem_5_4_26_nullfalse" is 40 chars. Quote
-	 *         http://mindprod.com/jgloss/hashcode.html: "equal hashCodes in
-	 *         general are not sufficient to ensure Object equality. However, if
-	 *         the hashCodes are not equal, you know the Objects can't possibly
-	 *         be equal. Consider how many 50-character Strings there are
-	 *         (6553550) and how many possible hashCodes there are (232). It
-	 *         should be obvious there are way more Strings than hashCodes. So
-	 *         the same hashCode has to be reused over and over for different
-	 *         Strings." Here: parameter values are normally ascii and only
-	 *         certain chars, assume 6440 = 2^(6*40) possibilities still much
-	 *         bigger than 232) So we maybe need an extra verification step by
-	 *         checking that the parameters are identical before using a cache
-	 *         entry. And no caching of object that matches existing hashkey but
-	 *         different parameters.
+	 *            The same set of parameters, acquired by the "getTileParameters" function in this class.
+	 * @return Returns a unique hash-code ID. TODO AB: This is not 100% unique, but maybe enough for this usage. For
+	 *         instance "planbatenmainMap.refgem_5_4_26_nullfalse" is 40 chars. Quote
+	 *         http://mindprod.com/jgloss/hashcode.html: "equal hashCodes in general are not sufficient to ensure Object
+	 *         equality. However, if the hashCodes are not equal, you know the Objects can't possibly be equal. Consider
+	 *         how many 50-character Strings there are (6553550) and how many possible hashCodes there are (232). It
+	 *         should be obvious there are way more Strings than hashCodes. So the same hashCode has to be reused over
+	 *         and over for different Strings." Here: parameter values are normally ascii and only certain chars, assume
+	 *         6440 = 2^(6*40) possibilities still much bigger than 232) So we maybe need an extra verification step by
+	 *         checking that the parameters are identical before using a cache entry. And no caching of object that
+	 *         matches existing hashkey but different parameters.
 	 */
 	public String createCacheId(Map<String, Object> parameters) {
-		return "" + parameters.get(PARAM_APPLICATION_ID) + "_" + parameters.get(PARAM_LAYER_ID) + "_"
-				+ parameters.get(PARAM_TILELEVEL) + "_" + parameters.get(PARAM_X) + "_"
-				+ parameters.get(PARAM_Y) + "_" + parameters.get(PARAM_FILTER) + "_"
-				+ parameters.get(PARAM_PAINT_GEOMETRIES) + "_" + parameters.get(PARAM_PAINT_LABELS) + "_"
-				+ parameters.get(PARAM_ORIG_X) + "_" + parameters.get(PARAM_ORIG_Y)
-				+ "_" + parameters.get(PARAM_SCALE);
+		return "" + parameters.get(PARAM_LAYER_ID) + "_" + parameters.get(PARAM_STYLE_ID) + "_"
+				+ parameters.get(PARAM_TILELEVEL) + "_" + parameters.get(PARAM_X) + "_" + parameters.get(PARAM_Y) + "_"
+				+ parameters.get(PARAM_FILTER) + "_" + parameters.get(PARAM_PAINT_GEOMETRIES) + "_"
+				+ parameters.get(PARAM_PAINT_LABELS) + "_" + parameters.get(PARAM_ORIG_X) + "_"
+				+ parameters.get(PARAM_ORIG_Y) + "_" + parameters.get(PARAM_SCALE);
 	}
 
 	/**
 	 * Try to find a suitable directory for caching.
-	 *
-	 * @param config servlet config
-	 * @param basePath base path
+	 * 
+	 * @param config
+	 *            servlet config
+	 * @param basePath
+	 *            base path
 	 * @return cache directory
 	 */
 	public File findCacheDirectory(ServletConfig config, String basePath) throws CacheException {
@@ -160,8 +153,7 @@ public final class CacheServiceImpl implements CacheService {
 		return file;
 	}
 
-	public RenderContent createRenderContent(Map<String, Object> parameters)
-			throws CacheException {
+	public RenderContent createRenderContent(Map<String, Object> parameters) throws CacheException {
 		return new DefaultRenderContent(parameters, this);
 	}
 }

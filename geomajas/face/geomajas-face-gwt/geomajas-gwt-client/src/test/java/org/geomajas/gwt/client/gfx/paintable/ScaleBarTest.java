@@ -1,6 +1,6 @@
 package org.geomajas.gwt.client.gfx.paintable;
 
-import org.geomajas.configuration.UnitType;
+import org.geomajas.configuration.client.UnitType;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;

@@ -24,6 +24,8 @@ package org.geomajas.configuration;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * Representation of a generic parameter for the configuration.
  *
@@ -32,7 +34,9 @@ import java.io.Serializable;
 public class Parameter implements Serializable {
 
 	private static final long serialVersionUID = 151L;
+	@NotNull
 	private String name;
+	@NotNull
 	private String value;
 
 	/**

@@ -27,21 +27,23 @@ import org.geomajas.layer.LayerType;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * Layer configuration info.
  *
  * @author Joachim Van der Auwera
  */
-public class LayerInfo implements Serializable, Cloneable {
+public class LayerInfo implements Serializable {
 
 	private static final long serialVersionUID = 151L;
+	@NotNull
 	private String id;
-	private String label;
-	private boolean visible;
+	@NotNull
 	private LayerType layerType;
+	@NotNull
 	private String crs;
-	private double viewScaleMin, viewScaleMax;
-	private Bbox maxExtent;
+	private Bbox maxExtent = Bbox.ALL;
 	private int maxTileLevel;
 
 	public String getId() {
@@ -50,22 +52,6 @@ public class LayerInfo implements Serializable, Cloneable {
 
 	public void setId(String id) {
 		this.id = id;
-	}
-
-	public String getLabel() {
-		return label;
-	}
-
-	public void setLabel(String label) {
-		this.label = label;
-	}
-
-	public boolean isVisible() {
-		return visible;
-	}
-
-	public void setVisible(boolean visible) {
-		this.visible = visible;
 	}
 
 	public LayerType getLayerType() {
@@ -84,22 +70,6 @@ public class LayerInfo implements Serializable, Cloneable {
 		this.crs = crs;
 	}
 
-	public double getViewScaleMin() {
-		return viewScaleMin;
-	}
-
-	public void setViewScaleMin(double viewScaleMin) {
-		this.viewScaleMin = viewScaleMin;
-	}
-
-	public double getViewScaleMax() {
-		return viewScaleMax;
-	}
-
-	public void setViewScaleMax(double viewScaleMax) {
-		this.viewScaleMax = viewScaleMax;
-	}
-
 	public Bbox getMaxExtent() {
 		return maxExtent;
 	}
@@ -116,27 +86,4 @@ public class LayerInfo implements Serializable, Cloneable {
 		this.maxTileLevel = maxTileLevel;
 	}
 
-	public LayerInfo clone() {
-		/* this is what the method should look like, but GWT cannot handle this (grmbl)
-		try {
-			return (LayerInfo) super.clone();
-		} catch (CloneNotSupportedException cns) {
-			throw new RuntimeException("Oops, impossible exception LayerInfo is cloneable!");
-		}
-		*/
-		return clone(new LayerInfo());
-	}
-
-	public LayerInfo clone(LayerInfo res) {
-		res.setId(id);
-		res.setLabel(label);
-		res.setVisible(visible);
-		res.setLayerType(layerType);
-		res.setCrs(crs);
-		res.setViewScaleMin(viewScaleMin);
-		res.setViewScaleMax(viewScaleMax);
-		res.setMaxExtent(maxExtent);
-		res.setMaxTileLevel(maxTileLevel);
-		return res;
-	}
 }

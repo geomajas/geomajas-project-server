@@ -28,7 +28,7 @@ import java.awt.geom.AffineTransform;
 
 import org.geomajas.configuration.CircleInfo;
 import org.geomajas.configuration.RectInfo;
-import org.geomajas.configuration.StyleInfo;
+import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.internal.rendering.image.Style2dFactory;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.rendering.painter.TilePaintContext;
@@ -155,7 +155,7 @@ public class GeometryImagePainter implements FeatureImagePainter {
 				* (env.getMinY() + env.getHeight())));
 	}
 
-	private Geometry convertPoint(StyleInfo style, Point point) {
+	private Geometry convertPoint(FeatureStyleInfo style, Point point) {
 		if (style.getSymbol() != null) {
 			if (style.getSymbol().getRect() != null) {
 				RectInfo rect = style.getSymbol().getRect();

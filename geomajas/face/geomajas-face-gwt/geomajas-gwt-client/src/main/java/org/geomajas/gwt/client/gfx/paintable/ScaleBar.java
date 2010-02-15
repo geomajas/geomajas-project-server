@@ -23,12 +23,13 @@
 
 package org.geomajas.gwt.client.gfx.paintable;
 
-import com.google.gwt.i18n.client.NumberFormat;
-import org.geomajas.configuration.UnitType;
+import org.geomajas.configuration.client.UnitType;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.gfx.style.FontStyle;
 import org.geomajas.gwt.client.gfx.style.ShapeStyle;
 import org.geomajas.gwt.client.spatial.Bbox;
+
+import com.google.gwt.i18n.client.NumberFormat;
 
 /**
  * Paints a Scalebar object

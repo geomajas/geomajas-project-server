@@ -23,12 +23,14 @@
 
 package org.geomajas.gwt.client.map.layer;
 
+import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.gwt.client.map.MapModel;
 import org.geomajas.gwt.client.map.event.LayerChangedHandler;
 import org.geomajas.gwt.client.map.event.LayerLabeledEvent;
 import org.geomajas.gwt.client.map.event.LayerShownEvent;
+import org.geomajas.layer.LayerType;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,7 +43,7 @@ import org.junit.Test;
 public class LayerChangedTest {
 
 	private MapModel mapModel;
-	private VectorLayerInfo vLayerInfo;
+	private ClientVectorLayerInfo vLayerInfo;
 	private int visibleCount;
 	private int labelCount;
 	private VectorLayer vLayer;
@@ -49,10 +51,12 @@ public class LayerChangedTest {
 	@Before
 	public void setUp() {
 		mapModel = new MapModel("test");
-		vLayerInfo = new VectorLayerInfo();
-		vLayerInfo.setMaxExtent(new Bbox(0, 0, 200, 100));
-		vLayerInfo.setId("layer1");
-
+		vLayerInfo = new ClientVectorLayerInfo();
+		VectorLayerInfo serverInfo = new VectorLayerInfo();
+		serverInfo.setLayerType(LayerType.POLYGON);
+		serverInfo.setId("test");
+		vLayerInfo.setLayerInfo(serverInfo);
+		vLayerInfo.setMaxExtent(new Bbox(0, 0, 180, 180));
 		vLayer = new VectorLayer(mapModel, vLayerInfo);
 
 		visibleCount = 0;

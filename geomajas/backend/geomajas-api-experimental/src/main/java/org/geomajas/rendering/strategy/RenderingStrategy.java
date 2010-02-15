@@ -23,7 +23,6 @@
 
 package org.geomajas.rendering.strategy;
 
-import org.geomajas.configuration.ApplicationInfo;
 import org.geomajas.global.ExpectAlternatives;
 import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.layer.tile.TileMetadata;
@@ -55,10 +54,9 @@ public interface RenderingStrategy {
 	 * Paint a tile! This is what this interface is all about.
 	 *
 	 * @param metadata The object that holds all the spatial and styling information for a tile.
-	 * @param application The application in which this tile is to be rendered.
 	 * @return The fully rendered tile! The different implementations of this <code>RenderedTile</code> will contain
 	 *         different rendering formats.
 	 * @throws RenderException rendering failed
 	 */
-	InternalTile paint(TileMetadata metadata, ApplicationInfo application) throws RenderException;
+	InternalTile paint(TileMetadata metadata) throws RenderException;
 }

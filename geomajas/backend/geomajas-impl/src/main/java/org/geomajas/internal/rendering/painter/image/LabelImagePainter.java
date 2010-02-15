@@ -31,7 +31,7 @@ import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 
-import org.geomajas.configuration.LabelAttributeInfo;
+import org.geomajas.configuration.LabelStyleInfo;
 import org.geomajas.internal.rendering.image.LabelStyle;
 import org.geomajas.rendering.painter.TilePaintContext;
 import org.geomajas.rendering.painter.image.FeatureImagePainter;
@@ -114,7 +114,7 @@ public class LabelImagePainter implements FeatureImagePainter {
 	 * Initialize this painter with a label type definition from a certain layer. This label type definition contains
 	 * styles etc.
 	 */
-	public LabelImagePainter(LabelAttributeInfo labelAttributeInfo, GeoService geoService) {
+	public LabelImagePainter(LabelStyleInfo labelAttributeInfo, GeoService geoService) {
 		this.geoService = geoService;
 		style = new LabelStyle(labelAttributeInfo.getFontStyle(), labelAttributeInfo.getBackgroundStyle());
 		try {

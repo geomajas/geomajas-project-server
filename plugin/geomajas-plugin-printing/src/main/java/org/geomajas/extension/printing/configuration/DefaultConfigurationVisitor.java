@@ -40,6 +40,8 @@ import java.util.Date;
  */
 public class DefaultConfigurationVisitor extends TopDownVisitor {
 
+	private String applicationId;
+
 	private String mapId;
 
 	private Coordinate mapLocation;
@@ -87,6 +89,14 @@ public class DefaultConfigurationVisitor extends TopDownVisitor {
 	public void setMapId(String mapId) {
 		this.mapId = mapId;
 	}
+	
+	public String getApplicationId() {
+		return applicationId;
+	}
+	
+	public void setApplicationId(String applicationId) {
+		this.applicationId = applicationId;
+	}
 
 	public Coordinate getMapLocation() {
 		return mapLocation;
@@ -118,6 +128,7 @@ public class DefaultConfigurationVisitor extends TopDownVisitor {
 			map.removeComponent(map.getChild(PrintTemplate.ARROW));
 		}
 		map.setMapId(mapId);
+		map.setApplicationId(applicationId);
 		map.setLocation(mapLocation);
 		map.setPpUnit(mapPpUnit);
 		map.setRasterResolution(mapRasterResolution);
@@ -126,6 +137,7 @@ public class DefaultConfigurationVisitor extends TopDownVisitor {
 	@Override
 	public void visit(LegendComponent legend) {
 		legend.setMapId(mapId);
+		legend.setApplicationId(applicationId);
 	}
 
 	@Override

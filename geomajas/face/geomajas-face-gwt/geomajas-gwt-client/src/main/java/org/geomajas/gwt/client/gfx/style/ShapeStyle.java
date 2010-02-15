@@ -23,7 +23,7 @@
 
 package org.geomajas.gwt.client.gfx.style;
 
-import org.geomajas.configuration.StyleInfo;
+import org.geomajas.configuration.FeatureStyleInfo;
 
 /**
  * <p>
@@ -99,9 +99,9 @@ public class ShapeStyle implements Style {
 	 * Initialize this style object with the values of a style configuration object.
 	 * 
 	 * @param info
-	 *            {@link StyleInfo} object to read the style from
+	 *            {@link FeatureStyleInfo} object to read the style from
 	 */
-	public ShapeStyle(StyleInfo info) {
+	public ShapeStyle(FeatureStyleInfo info) {
 		if (null != info) {
 			this.fillColor = info.getFillColor();
 			this.fillOpacity = info.getFillOpacity();

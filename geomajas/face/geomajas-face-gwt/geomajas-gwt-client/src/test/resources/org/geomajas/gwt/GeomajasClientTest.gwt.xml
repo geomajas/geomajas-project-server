@@ -1,0 +1,8 @@
+<module>
+	<!-- Internationalization requirements -->
+	<inherits name="com.google.gwt.user.User"/>
+	<inherits name="com.google.gwt.i18n.I18N"/>
+	<inherits name="org.geomajas.GeomajasDto"/>
+	<extend-property name="locale" values="nl"/>
+
+</module>

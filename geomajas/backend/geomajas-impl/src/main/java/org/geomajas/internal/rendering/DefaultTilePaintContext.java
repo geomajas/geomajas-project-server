@@ -27,7 +27,7 @@ import java.awt.RenderingHints;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.geomajas.configuration.VectorLayerInfo;
+import org.geomajas.rendering.painter.StyledLayer;
 import org.geomajas.rendering.painter.TilePaintContext;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
@@ -35,7 +35,7 @@ import com.vividsolutions.jts.geom.Envelope;
 
 /**
  * <p>
- * The map context is a general meta data object that is vital to the rendering process of creating images for tiles.
+ * The tile context is a general meta data object that is vital to the rendering process of creating images for tiles.
  * </p>
  * 
  * @see org.geomajas.internal.rendering.image.TileImageCreatorImpl
@@ -43,7 +43,7 @@ import com.vividsolutions.jts.geom.Envelope;
  */
 public class DefaultTilePaintContext implements TilePaintContext {
 
-	private List<VectorLayerInfo> layers;
+	private List<StyledLayer> layers = new ArrayList<StyledLayer>();
 
 	private CoordinateReferenceSystem crs;
 
@@ -58,53 +58,11 @@ public class DefaultTilePaintContext implements TilePaintContext {
 	// -------------------------------------------------------------------------
 
 	/**
-	 * Default constructor. Initializes an empty list of layers.
-	 */
-	public DefaultTilePaintContext() {
-		layers = new ArrayList<VectorLayerInfo>();
-	}
-
-	// -------------------------------------------------------------------------
-	// MapContext implementation:
-	// -------------------------------------------------------------------------
-
-	/**
-	 * Remove a layer's paint context from the list.
-	 * 
-	 * @param layer layer to remove
-	 * @return true when layer is removed
-	 */
-	public boolean remove(VectorLayerInfo layer) {
-		return layers.remove(layer);
-	}
-
-	/**
-	 * Add a layer to the list.
-	 *
-	 * @param layer layer to add
-	 * @return true when added (when false it was already in the list)
-	 */
-	public boolean add(VectorLayerInfo layer) {
-		if (!layers.contains(layer)) {
-			layers.add(layer);
-			return true;
-		}
-		return false;
-	}
-
-	/**
-	 * Return the number of layers in this map context.
-	 */
-	public int getLayerCount() {
-		return layers.size();
-	}
-
-	/**
 	 * Get the full list of layers that must be painted.
 	 * 
 	 * @return list of layers
 	 */
-	public List<VectorLayerInfo> getLayers() {
+	public List<StyledLayer> getLayers() {
 		return layers;
 	}
 
@@ -182,4 +140,5 @@ public class DefaultTilePaintContext implements TilePaintContext {
 	public void setRenderingHints(RenderingHints hints) {
 		java2dHints = hints;
 	}
+
 }

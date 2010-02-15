@@ -33,11 +33,11 @@ import java.awt.image.RenderedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.rendering.image.TileImageCreator;
+import org.geomajas.rendering.painter.StyledLayer;
 import org.geomajas.rendering.painter.TilePaintContext;
 import org.geomajas.rendering.painter.image.FeatureImagePainter;
 import org.geomajas.service.FilterService;
@@ -152,10 +152,10 @@ public class TileImageCreatorImpl implements TileImageCreator {
 		// ---------------------------------------------------------------------
 		// Processing all the layer paint contexts in the map context.
 		// ---------------------------------------------------------------------
-		final List<VectorLayerInfo> layers = tileContext.getLayers();
-		for (VectorLayerInfo layerInfo : layers) {
+		final List<StyledLayer> layers = tileContext.getLayers();
+		for (StyledLayer layer : layers) {
 			try {
-				paintLayer(graphics, layerInfo, tileContext);
+				paintLayer(graphics, layer, tileContext);
 			} catch (Throwable t) {
 				log.error(t.getLocalizedMessage());
 			}
@@ -278,17 +278,17 @@ public class TileImageCreatorImpl implements TileImageCreator {
 		return graphics;
 	}
 
-	private void paintLayer(final Graphics2D graphics2D, VectorLayerInfo layerInfo,
+	private void paintLayer(final Graphics2D graphics2D, StyledLayer layer,
 			TilePaintContext tileContext) throws GeomajasException {
 
 		// ---------------------------------------------------------------------
 		// Step1: fetch all the layer objects that need to be drawn:
 		// ---------------------------------------------------------------------
-		String geomName = layerInfo.getFeatureInfo().getGeometryType().getName();
+		String geomName = layer.getLayerInfo().getFeatureInfo().getGeometryType().getName();
 		Filter filter = filterService.createBboxFilter(tileContext.getCoordinateReferenceSystem().getIdentifiers()
 				.iterator().next().toString(), tileContext.getAreaOfInterest(), geomName);
-		List<InternalFeature> features = layerService.getFeatures(layerInfo.getId(), null, filter,
-				layerInfo.getStyleDefinitions(), VectorLayerService.FEATURE_INCLUDE_ALL);
+		List<InternalFeature> features = layerService.getFeatures(layer.getLayerInfo().getId(), null, filter,
+				layer.getStyleInfo(), VectorLayerService.FEATURE_INCLUDE_ALL);
 		// ---------------------------------------------------------------------
 		// Step2: Transform the layer objects to features:
 		// ---------------------------------------------------------------------

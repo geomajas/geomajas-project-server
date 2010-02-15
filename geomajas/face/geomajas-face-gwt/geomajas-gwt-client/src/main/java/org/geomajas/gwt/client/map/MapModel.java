@@ -28,10 +28,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.geomajas.configuration.LayerInfo;
-import org.geomajas.configuration.MapInfo;
-import org.geomajas.configuration.RasterLayerInfo;
-import org.geomajas.configuration.VectorLayerInfo;
+import org.geomajas.configuration.client.ClientLayerInfo;
+import org.geomajas.configuration.client.ClientMapInfo;
+import org.geomajas.configuration.client.ClientRasterLayerInfo;
+import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.gwt.client.gfx.Paintable;
 import org.geomajas.gwt.client.gfx.PainterVisitor;
 import org.geomajas.gwt.client.gfx.WorldPaintable;
@@ -88,7 +88,7 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 	/** Reference to the <code>MapView</code> object of the <code>MapWidget</code>. */
 	private MapView mapView;
 
-	private MapInfo description;
+	private ClientMapInfo description;
 
 	private FeatureEditor featureEditor;
 
@@ -201,7 +201,7 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 	 * @param mapInfo
 	 *            The configuration object.
 	 */
-	public void initialize(final MapInfo mapInfo) {
+	public void initialize(final ClientMapInfo mapInfo) {
 		description = mapInfo;
 		srid = Integer.parseInt(mapInfo.getCrs().substring(mapInfo.getCrs().indexOf(":") + 1));
 		if (mapInfo.isResolutionsRelative()) {
@@ -219,7 +219,7 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 		mapView.applyBounds(initialBounds, MapView.ZoomOption.LEVEL_CLOSEST);
 		removeAllLayers();
 		Bbox maxBounds = new Bbox(initialBounds);
-		for (LayerInfo layerInfo : mapInfo.getLayers()) {
+		for (ClientLayerInfo layerInfo : mapInfo.getLayers()) {
 			addLayer(layerInfo);
 			maxBounds = maxBounds.union(new Bbox(layerInfo.getMaxExtent()));
 		}
@@ -231,14 +231,14 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 		layers = new ArrayList<Layer>();
 	}
 
-	protected void addLayer(LayerInfo layerInfo) {
+	protected void addLayer(ClientLayerInfo layerInfo) {
 		Layer layer;
 		switch (layerInfo.getLayerType()) {
 			case RASTER:
-				layer = new RasterLayer(this, (RasterLayerInfo) layerInfo);
+				layer = new RasterLayer(this, (ClientRasterLayerInfo) layerInfo);
 				break;
 			default:
-				layer = new VectorLayer(this, (VectorLayerInfo) layerInfo);
+				layer = new VectorLayer(this, (ClientVectorLayerInfo) layerInfo);
 				break;
 		}
 		layers.add(layer);
@@ -426,7 +426,7 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 		return worldSpacePaintables;
 	}
 
-	public MapInfo getDescription() {
+	public ClientMapInfo getDescription() {
 		return description;
 	}
 

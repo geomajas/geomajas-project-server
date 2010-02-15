@@ -25,7 +25,6 @@ package org.geomajas.extension.printing.command.print;
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Rectangle;
 import org.geomajas.command.Command;
-import org.geomajas.configuration.ApplicationInfo;
 import org.geomajas.extension.printing.PdfContainer;
 import org.geomajas.extension.printing.command.dto.PrintGetTemplateRequest;
 import org.geomajas.extension.printing.command.dto.PrintGetTemplateResponse;
@@ -59,9 +58,6 @@ public class PrintGetTemplateCommand implements Command<PrintGetTemplateRequest,
 	@Autowired
 	private ApplicationService runtime;
 
-	@Autowired
-	private ApplicationInfo application;
-
 	public PrintGetTemplateResponse getEmptyCommandResponse() {
 		return new PrintGetTemplateResponse();
 	}
@@ -83,7 +79,7 @@ public class PrintGetTemplateCommand implements Command<PrintGetTemplateRequest,
 		if (request.getPageSize() != null) {
 			template.getPage().setSize(request.getPageSize(), true);
 		}
-		SinglePageDocument pdfDoc = new SinglePageDocument(template.getPage(), application, runtime, getFilters());
+		SinglePageDocument pdfDoc = new SinglePageDocument(template.getPage(), runtime, getFilters());
 		// Set file meta options
 		pdfDoc.setFileName(request.getFileName());
 		pdfDoc.setDownloadMethod(request.getDownloadMethod());

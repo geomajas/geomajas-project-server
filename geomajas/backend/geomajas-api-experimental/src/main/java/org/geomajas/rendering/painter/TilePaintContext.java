@@ -26,7 +26,6 @@ package org.geomajas.rendering.painter;
 import java.awt.RenderingHints;
 import java.util.List;
 
-import org.geomajas.configuration.VectorLayerInfo;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import com.vividsolutions.jts.geom.Envelope;
@@ -42,44 +41,11 @@ import com.vividsolutions.jts.geom.Envelope;
 public interface TilePaintContext {
 
 	/**
-	 * Remove a layer from the list.
-	 * 
-	 * @param layer
-	 *            layer to delete
-	 * @return true when object was removed
-	 */
-	boolean remove(VectorLayerInfo layer);
-
-	/**
-	 * Add a layer to the list of layers which need to be included.
-	 * 
-	 * @param layer
-	 *            layer to add
-	 * @return true when object was added
-	 */
-	boolean add(VectorLayerInfo layer);
-
-	/**
-	 * Return the number of layers in this context.
-	 * 
-	 * @return number of layers
-	 */
-	int getLayerCount();
-
-	/**
 	 * Get the full list of layers that must be painted.
 	 * 
 	 * @return list of layers (using the info object)
 	 */
-	List<VectorLayerInfo> getLayers();
-
-	/**
-	 * Set a new area of interest. Normally this would be the tile's bounding box in world space.
-	 * 
-	 * @param areaOfInterest
-	 *            The new area of interest.
-	 */
-	void setAreaOfInterest(Envelope areaOfInterest);
+	List<StyledLayer> getLayers();
 
 	/**
 	 * Get the current area of interest. Normally this would be the tile's bounding box in world space.
@@ -97,27 +63,11 @@ public interface TilePaintContext {
 	CoordinateReferenceSystem getCoordinateReferenceSystem();
 
 	/**
-	 * Set the <code>CoordinateReferenceSystem</code> for this map context.
-	 * 
-	 * @param crs
-	 *            coordinate reference system
-	 */
-	void setCrs(CoordinateReferenceSystem crs);
-
-	/**
 	 * Return the current client-side scale.
 	 * 
 	 * @return scale
 	 */
 	double getScale();
-
-	/**
-	 * Set the current client-side scale.
-	 * 
-	 * @param scale
-	 *            scale
-	 */
-	void setScale(double scale);
 
 	/**
 	 * Retrieve the rendering hints.
@@ -126,11 +76,4 @@ public interface TilePaintContext {
 	 */
 	RenderingHints getRenderingHints();
 
-	/**
-	 * Set new Java rendering hints, such as the of anti-aliasing etc.
-	 * 
-	 * @param hints
-	 *            The new hints with which to create images.
-	 */
-	void setRenderingHints(RenderingHints hints);
 }

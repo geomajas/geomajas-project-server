@@ -49,12 +49,8 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
 	<bean name="beansInfo" class="org.geomajas.configuration.VectorLayerInfo">
 		<property name="id" value="beans" />
-		<property name="label" value="Test beans" />
-		<property name="visible" value="true" />
 		<property name="layerType" value="MULTIPOLYGON" />
 		<property name="crs" value="EPSG:4326" />
-		<property name="viewScaleMin" value="0" />
-		<property name="viewScaleMax" value="100000" />
 		<property name="maxExtent">
 			<bean class="org.geomajas.geometry.Bbox">
 				<property name="x" value="-85.05112877980659" />
@@ -64,23 +60,10 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 			</bean>
 		</property>
 		<property name="maxTileLevel" value="16" />
-		<property name="labelAttribute">
-			<bean class="org.geomajas.configuration.LabelAttributeInfo">
-				<property name="labelAttributeName" value="stringAttr" />
-			</bean>
-		</property>
 		<property name="featureInfo" ref="beansFeatureInfo" />
-		<property name="styleDefinitions">
+		<property name="namedStyleInfos">
 			<list>
-				<bean class="org.geomajas.configuration.StyleInfo">
-					<property name="id" value="1" />
-					<property name="name" value="default" />
-					<property name="fillColor" value="#995500" />
-					<property name="fillOpacity" value=".6" />
-					<property name="strokeColor" value="#995500" />
-					<property name="strokeOpacity" value=".3" />
-					<property name="strokeWidth" value="1" />
-				</bean>
+				<ref bean="beansStyleInfo" />
 			</list>
 		</property>
 	</bean>
@@ -112,6 +95,42 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 			</list>
 		</property>
 	</bean>
+
+	<bean class="org.geomajas.configuration.NamedStyleInfo" id="beansStyleInfo">
+		<property name="featureStyles">
+			<list>
+				<bean class="org.geomajas.configuration.FeatureStyleInfo">
+					<property name="name" value="default" />
+					<property name="fillColor" value="#995500" />
+					<property name="fillOpacity" value=".6" />
+					<property name="strokeColor" value="#995500" />
+					<property name="strokeOpacity" value=".3" />
+					<property name="strokeWidth" value="1" />
+				</bean>
+			</list>
+		</property>
+		<property name="labelStyle">
+			<bean class="org.geomajas.configuration.LabelStyleInfo">
+				<property name="labelAttributeName" value="stringAttr" />
+				<property name="fontStyle">
+					<bean class="org.geomajas.configuration.FeatureStyleInfo">
+						<property name="fillColor" value="#998811" />
+						<property name="fillOpacity" value="1" />
+					</bean>
+				</property>
+				<property name="backgroundStyle">
+					<bean class="org.geomajas.configuration.FeatureStyleInfo">
+						<property name="fillColor" value="#000000" />
+						<property name="fillOpacity" value=".7" />
+						<property name="strokeColor" value="#998811" />
+						<property name="strokeOpacity" value="1" />
+						<property name="strokeWidth" value="1" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+
 
 	<bean name="beans" class="org.geomajas.layer.bean.BeanLayer">
 		<property name="layerInfo" ref="beansInfo" />

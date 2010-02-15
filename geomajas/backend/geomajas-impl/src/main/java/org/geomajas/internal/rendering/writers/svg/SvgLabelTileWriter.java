@@ -23,13 +23,13 @@
 
 package org.geomajas.internal.rendering.writers.svg;
 
-import org.geomajas.configuration.StyleInfo;
+import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.internal.layer.feature.InternalFeatureImpl;
 import org.geomajas.internal.layer.tile.InternalTileImpl;
 import org.geomajas.internal.rendering.writers.GraphicsWriter;
+import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.rendering.GraphicsDocument;
 import org.geomajas.rendering.RenderException;
-import org.geomajas.rendering.StyleFilter;
 import org.geomajas.service.GeoService;
 import org.geotools.geometry.jts.GeometryCoordinateSequenceTransformer;
 import org.opengis.referencing.operation.TransformException;
@@ -41,7 +41,7 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 
 /**
  * ???
- *
+ * 
  * @author check subversion
  */
 public class SvgLabelTileWriter implements GraphicsWriter {
@@ -52,11 +52,11 @@ public class SvgLabelTileWriter implements GraphicsWriter {
 
 	private GeometryCoordinateSequenceTransformer transformer;
 
-	private StyleInfo bgStyle;
+	private FeatureStyleInfo bgStyle;
 
 	private GeoService geoService;
 
-	public SvgLabelTileWriter(GeometryCoordinateSequenceTransformer transformer, StyleInfo bgStyle,
+	public SvgLabelTileWriter(GeometryCoordinateSequenceTransformer transformer, FeatureStyleInfo bgStyle,
 			GeoService geoService) {
 		this.transformer = transformer;
 		this.bgStyle = bgStyle;
@@ -68,56 +68,52 @@ public class SvgLabelTileWriter implements GraphicsWriter {
 		InternalTileImpl tile = (InternalTileImpl) object;
 		document.writeElement("g", asChild);
 		document.writeId("labels." + tile.getCode().toString());
-		for (org.geomajas.layer.feature.InternalFeature f : tile.getFeatures()) {
+		for (InternalFeature f : tile.getFeatures()) {
 			InternalFeatureImpl feature = (InternalFeatureImpl) f;
-			if (!feature.getStyleInfo().equals(StyleFilter.DEFAULT_STYLE_ID + "")) {
-				Coordinate pos = geoService.calcDefaultLabelPosition(feature);
-				if (pos == null) {
+			Coordinate pos = geoService.calcDefaultLabelPosition(feature);
+			if (pos == null) {
+				continue;
+			}
+			com.vividsolutions.jts.geom.Point p = factory.createPoint(pos);
+			com.vividsolutions.jts.geom.Point labelPos;
+			try {
+				String labelString = feature.getLabel();
+				labelPos = (com.vividsolutions.jts.geom.Point) transformer.transform(p);
+				boolean createChild = true;
+
+				// Background:
+				if (bgStyle != null && labelString != null && labelString.length() > 0) {
+					// We assume font-size = 12 !!!!
+					int width = labelString.length() * 8 + 10;
+					int height = 12;
+					document.writeElement("rect", createChild);
+					document.writeAttribute("id", feature.getId() + ".lblBG");
+					document.writeAttribute("x", labelPos.getX() - (width / 2));
+					document.writeAttribute("y", labelPos.getY() - (height - 2));
+					document.writeAttribute("width", width);
+					document.writeAttribute("height", height);
+					document.writeAttribute("style", "fill: " + bgStyle.getFillColor() + "; fill-opacity: "
+							+ bgStyle.getFillOpacity() + "; stroke: " + bgStyle.getStrokeColor() + "; stroke-opacity: "
+							+ bgStyle.getStrokeOpacity() + "; stroke-width: " + bgStyle.getStrokeWidth() + ";");
+					createChild = false;
+				}
+
+				// Text:
+				document.writeElement("text", createChild);
+				document.writeAttribute("id", feature.getId() + ".lblTXT");
+				document.writeAttribute("x", labelPos.getX());
+				document.writeAttribute("y", labelPos.getY());
+				// TODO: config option, center label
+				document.writeAttribute("text-anchor", "middle");
+
+				if (labelString == null) {
+					document.closeElement();
 					continue;
 				}
-				com.vividsolutions.jts.geom.Point p = factory.createPoint(pos);
-				com.vividsolutions.jts.geom.Point labelPos;
-				try {
-					String labelString = feature.getLabel();
-					labelPos = (com.vividsolutions.jts.geom.Point) transformer.transform(p);
-					boolean createChild = true;
-
-					// Background:
-					if (bgStyle != null && labelString != null && labelString.length() > 0) {
-						// We assume font-size = 12 !!!!
-						int width = labelString.length() * 8 + 10;
-						int height = 12;
-						document.writeElement("rect", createChild);
-						document.writeAttribute("id", feature.getId() + ".lblBG");
-						document.writeAttribute("x", labelPos.getX() - (width / 2));
-						document.writeAttribute("y", labelPos.getY() - (height - 2));
-						document.writeAttribute("width", width);
-						document.writeAttribute("height", height);
-						document.writeAttribute("style", "fill: " + bgStyle.getFillColor()
-								+ "; fill-opacity: " + bgStyle.getFillOpacity() + "; stroke: "
-								+ bgStyle.getStrokeColor() + "; stroke-opacity: "
-								+ bgStyle.getStrokeOpacity() + "; stroke-width: " + bgStyle.getStrokeWidth()
-								+ ";");
-						createChild = false;
-					}
-
-					// Text:
-					document.writeElement("text", createChild);
-					document.writeAttribute("id", feature.getId() + ".lblTXT");
-					document.writeAttribute("x", labelPos.getX());
-					document.writeAttribute("y", labelPos.getY());
-					// TODO: config option, center label
-					document.writeAttribute("text-anchor", "middle");
-
-					if (labelString == null) {
-						document.closeElement();
-						continue;
-					}
-					document.writeTextNode(labelString);
-					document.closeElement();
-				} catch (TransformException e) {
-					log.warn("Label for " + feature.getId() + " could not be written!");
-				}
+				document.writeTextNode(labelString);
+				document.closeElement();
+			} catch (TransformException e) {
+				log.warn("Label for " + feature.getId() + " could not be written!");
 			}
 		}
 		document.closeElement();

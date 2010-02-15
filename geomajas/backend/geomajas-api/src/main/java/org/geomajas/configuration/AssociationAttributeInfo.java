@@ -24,6 +24,8 @@ package org.geomajas.configuration;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * Linked attribute configuration information.
  * 
@@ -33,10 +35,13 @@ public class AssociationAttributeInfo extends AttributeInfo implements Serializa
 
 	private static final long serialVersionUID = 151L;
 
+	@NotNull
 	private AssociationType type;
 
-	private FeatureInfo featureInfo;
+	@NotNull
+	private FeatureInfo feature;
 
+	@NotNull
 	private PrimitiveAttributeInfo identifier;
 
 	/**
@@ -57,12 +62,12 @@ public class AssociationAttributeInfo extends AttributeInfo implements Serializa
 	 * 
 	 * @return feature information
 	 */
-	public FeatureInfo getFeatureInfo() {
-		return featureInfo;
+	public FeatureInfo getFeature() {
+		return feature;
 	}
 
-	public void setFeatureInfo(FeatureInfo featureInfo) {
-		this.featureInfo = featureInfo;
+	public void setFeature(FeatureInfo featureInfo) {
+		this.feature = featureInfo;
 	}
 
 	/**

@@ -24,7 +24,7 @@
 package org.geomajas.command.dto;
 
 import org.geomajas.command.LayerIdCommandRequest;
-import org.geomajas.configuration.StyleInfo;
+import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.layer.tile.TileCode;
 import org.geomajas.layer.tile.TileMetadata;
@@ -50,7 +50,7 @@ public class GetRenderedTileRequest extends LayerIdCommandRequest implements Til
 
 	private String renderer;
 
-	private StyleInfo[] styleDefs;
+	private NamedStyleInfo styleInfo;
 
 	private boolean paintGeometries;
 
@@ -105,6 +105,15 @@ public class GetRenderedTileRequest extends LayerIdCommandRequest implements Til
 	public void setCrs(String crs) {
 		this.crs = crs;
 	}
+	
+	public NamedStyleInfo getStyleInfo() {
+		return styleInfo;
+	}
+
+	
+	public void setStyleInfo(NamedStyleInfo styleInfo) {
+		this.styleInfo = styleInfo;
+	}
 
 	public String getRenderer() {
 		return renderer;
@@ -112,14 +121,6 @@ public class GetRenderedTileRequest extends LayerIdCommandRequest implements Til
 
 	public void setRenderer(String renderer) {
 		this.renderer = renderer;
-	}
-
-	public StyleInfo[] getStyleDefs() {
-		return styleDefs;
-	}
-
-	public void setStyleDefs(StyleInfo[] styleDefs) {
-		this.styleDefs = styleDefs;
 	}
 
 	public boolean isPaintGeometries() {

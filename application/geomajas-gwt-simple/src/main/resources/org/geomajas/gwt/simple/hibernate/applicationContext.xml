@@ -1,25 +1,18 @@
 
 	<!--
-		~ This file is part of Geomajas, a component framework for building ~
-		rich Internet applications (RIA) with sophisticated capabilities for
-		the ~ display, analysis and management of geographic information. ~ It
-		is a building block that allows developers to add maps ~ and other
-		geographic data capabilities to their web applications. ~ ~ Copyright
-		2008-2010 Geosparc, http://www.geosparc.com, Belgium ~ ~ This program
-		is free software: you can redistribute it and/or modify ~ it under the
-		terms of the GNU Affero General Public License as ~ published by the
-		Free Software Foundation, either version 3 of the ~ License, or (at
-		your option) any later version. ~ ~ This program is distributed in the
-		hope that it will be useful, ~ but WITHOUT ANY WARRANTY; without even
-		the implied warranty of ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR
-		PURPOSE. See the ~ GNU Affero General Public License for more details.
-		~ ~ You should have received a copy of the GNU Affero General Public
-		License ~ along with this program. If not, see
+		~ This file is part of Geomajas, a component framework for building ~ rich Internet applications (RIA) with
+		sophisticated capabilities for the ~ display, analysis and management of geographic information. ~ It is a building
+		block that allows developers to add maps ~ and other geographic data capabilities to their web applications. ~ ~
+		Copyright 2008-2010 Geosparc, http://www.geosparc.com, Belgium ~ ~ This program is free software: you can redistribute
+		it and/or modify ~ it under the terms of the GNU Affero General Public License as ~ published by the Free Software
+		Foundation, either version 3 of the ~ License, or (at your option) any later version. ~ ~ This program is distributed
+		in the hope that it will be useful, ~ but WITHOUT ANY WARRANTY; without even the implied warranty of ~ MERCHANTABILITY
+		or FITNESS FOR A PARTICULAR PURPOSE. See the ~ GNU Affero General Public License for more details. ~ ~ You should have
+		received a copy of the GNU Affero General Public License ~ along with this program. If not, see
 		<http://www.gnu.org/licenses/>.
 	-->
-<beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
-	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util" xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
 
 	xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
@@ -37,8 +30,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 
 
 	<!-- Hibernate SessionFactory -->
-	<bean id="simpleSessionFactory"
-		class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+	<bean id="simpleSessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
 		<property name="dataSource" ref="simpleDataSource" />
 		<property name="configLocation">
 			<value>classpath:/org/geomajas/gwt/simple/hibernate/cfg/hibernate.cfg.xml
@@ -55,8 +47,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 	-->
 	<tx:annotation-driven transaction-manager="transactionManager" />
 
-	<bean id="transactionManager"
-		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+	<bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
 		<property name="sessionFactory" ref="simpleSessionFactory" />
 	</bean>
 
@@ -69,36 +60,28 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		</property>
 	</bean>
 
-
-	<bean name="application" class="org.geomajas.configuration.ApplicationInfo">
+	<bean name="application" class="org.geomajas.configuration.client.ClientApplicationInfo">
 		<property name="id" value="gwt-simple" />
 		<property name="name" value="GWT simple example" />
-		<property name="layers">
-			<list>
-				<ref bean="osm" />
-				<ref bean="roads" />
-				<ref bean="structures" />
-			</list>
-		</property>
 		<property name="maps">
 			<list>
-				<bean name="worldMap" class="org.geomajas.configuration.MapInfo">
+				<bean name="worldMap" class="org.geomajas.configuration.client.ClientMapInfo">
 					<property name="id" value="sampleFeaturesMap" />
 					<property name="backgroundColor" value="#F0F0F0" />
 					<property name="lineSelectStyle">
-						<bean class="org.geomajas.configuration.StyleInfo">
+						<bean class="org.geomajas.configuration.FeatureStyleInfo">
 							<property name="fillOpacity" value="0" />
 							<property name="strokeColor" value="#FF6600" />
 							<property name="strokeOpacity" value="1" />
 						</bean>
 					</property>
 					<property name="pointSelectStyle">
-						<bean class="org.geomajas.configuration.StyleInfo">
+						<bean class="org.geomajas.configuration.FeatureStyleInfo">
 							<property name="fillColor" value="#FFFF00" />
 						</bean>
 					</property>
 					<property name="polygonSelectStyle">
-						<bean class="org.geomajas.configuration.StyleInfo">
+						<bean class="org.geomajas.configuration.FeatureStyleInfo">
 							<property name="fillColor" value="#FFFF00" />
 							<property name="fillOpacity" value=".5" />
 						</bean>
@@ -117,13 +100,53 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 					</property>
 					<property name="layers">
 						<list>
-							<ref bean="osmInfo" />
-							<ref bean="roadsInfo" />
-							<ref bean="structuresInfo" />
+							<bean class="org.geomajas.configuration.client.ClientRasterLayerInfo">
+								<property name="layerInfo" ref="osmInfo" />
+								<property name="label" value="OpenStreetMap (raster)" />
+								<property name="visible" value="true" />
+								<property name="viewScaleMin" value="0" />
+								<property name="viewScaleMax" value="50" />
+								<property name="style" value="1" />
+							</bean>
+							<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo">
+								<property name="layerInfo" ref="roadsInfo" />
+								<property name="label" value="Roads (editable - linestring)" />
+								<property name="visible" value="true" />
+								<property name="viewScaleMin" value="0" />
+								<property name="viewScaleMax" value="10" />
+								<property name="namedStyleInfo" ref="roadsStyleInfo" />
+								<property name="snappingRules">
+									<list>
+										<bean class="org.geomajas.configuration.SnappingRuleInfo">
+											<property name="distance" value="10" />
+											<property name="type" value="NEAREST_POINT" />
+											<property name="layerInfo" value="roadsInfo" />
+										</bean>
+									</list>
+								</property>
+							</bean>
+							<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo">
+								<property name="layerInfo" ref="structuresInfo" />
+								<property name="label" value="Structures (editable - polygon)" />
+								<property name="visible" value="true" />
+								<property name="viewScaleMin" value="0" />
+								<property name="viewScaleMax" value="10" />
+								<property name="namedStyleInfo" ref="structuresStyleInfo" />
+								<property name="snappingRules">
+									<list>
+										<bean class="org.geomajas.configuration.SnappingRuleInfo">
+											<property name="distance" value="10" />
+											<property name="type" value="NEAREST_POINT" />
+											<property name="layerInfo" value="structuresInfo" />
+										</bean>
+									</list>
+								</property>
+
+							</bean>
 						</list>
 					</property>
 					<property name="toolbar">
-						<bean class="org.geomajas.configuration.ToolbarInfo">
+						<bean class="org.geomajas.configuration.client.ClientToolbarInfo">
 							<property name="id" value="sampleFeaturesMapToolbar" />
 							<property name="tools">
 								<list>
@@ -143,7 +166,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 						</bean>
 					</property>
 					<property name="layerTree">
-						<bean class="org.geomajas.configuration.LayerTreeInfo">
+						<bean class="org.geomajas.configuration.client.ClientLayerTreeInfo">
 							<property name="id" value="sampleFeaturesTree" />
 							<property name="tools">
 								<list>
@@ -154,7 +177,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 								</list>
 							</property>
 							<property name="treeNode">
-								<bean class="org.geomajas.configuration.LayerTreeNodeInfo">
+								<bean class="org.geomajas.configuration.client.ClientLayerTreeNodeInfo">
 									<property name="label" value="Layers" />
 									<property name="layerIds">
 										<list>
@@ -171,23 +194,23 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 				</bean>
 
 
-				<bean name="worldMap" class="org.geomajas.configuration.MapInfo">
+				<bean name="worldMap" class="org.geomajas.configuration.client.ClientMapInfo">
 					<property name="id" value="sampleOverviewMap" />
 					<property name="backgroundColor" value="#F0F0F0" />
 					<property name="lineSelectStyle">
-						<bean class="org.geomajas.configuration.StyleInfo">
+						<bean class="org.geomajas.configuration.FeatureStyleInfo">
 							<property name="fillOpacity" value="0" />
 							<property name="strokeColor" value="#FF6600" />
 							<property name="strokeOpacity" value="1" />
 						</bean>
 					</property>
 					<property name="pointSelectStyle">
-						<bean class="org.geomajas.configuration.StyleInfo">
+						<bean class="org.geomajas.configuration.FeatureStyleInfo">
 							<property name="fillColor" value="#FFFF00" />
 						</bean>
 					</property>
 					<property name="polygonSelectStyle">
-						<bean class="org.geomajas.configuration.StyleInfo">
+						<bean class="org.geomajas.configuration.FeatureStyleInfo">
 							<property name="fillColor" value="#FFFF00" />
 							<property name="fillOpacity" value=".5" />
 						</bean>
@@ -215,10 +238,10 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 	</bean>
 
 
-	<bean name="ToolbarSeparator" class="org.geomajas.configuration.ToolInfo">
+	<bean name="ToolbarSeparator" class="org.geomajas.configuration.client.ClientToolInfo">
 		<property name="id" value="ToolbarSeparator" />
 	</bean>
-	<bean name="ZoomIn" class="org.geomajas.configuration.ToolInfo">
+	<bean name="ZoomIn" class="org.geomajas.configuration.client.ClientToolInfo">
 		<property name="id" value="ZoomIn" />
 		<property name="parameters">
 			<list>
@@ -229,7 +252,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 			</list>
 		</property>
 	</bean>
-	<bean name="ZoomOut" class="org.geomajas.configuration.ToolInfo">
+	<bean name="ZoomOut" class="org.geomajas.configuration.client.ClientToolInfo">
 		<property name="id" value="ZoomOut" />
 		<property name="parameters">
 			<list>
@@ -240,79 +263,74 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 			</list>
 		</property>
 	</bean>
-	<bean name="ZoomPrevious" class="org.geomajas.configuration.ToolInfo">
+	<bean name="ZoomPrevious" class="org.geomajas.configuration.client.ClientToolInfo">
 		<property name="id" value="ZoomPrevious" />
 	</bean>
-	<bean name="ZoomNext" class="org.geomajas.configuration.ToolInfo">
+	<bean name="ZoomNext" class="org.geomajas.configuration.client.ClientToolInfo">
 		<property name="id" value="ZoomNext" />
 	</bean>
-	<bean name="ZoomToRectangleMode" class="org.geomajas.configuration.ToolInfo">
+	<bean name="ZoomToRectangleMode" class="org.geomajas.configuration.client.ClientToolInfo">
 		<property name="id" value="ZoomToRectangleMode" />
 	</bean>
-	<bean name="PanMode" class="org.geomajas.configuration.ToolInfo">
+	<bean name="PanMode" class="org.geomajas.configuration.client.ClientToolInfo">
 		<property name="id" value="PanMode" />
 		<property name="parameters">
 			<list>
 				<!--
-					old <bean class="org.geomajas.configuration.Parameter"> <property
-					name="name" value="hideLabelsOnDrag"/> <property name="value"
-					value="true"/> </bean>
+					old <bean class="org.geomajas.configuration.Parameter"> <property name="name" value="hideLabelsOnDrag"/> <property
+					name="value" value="true"/> </bean>
 				-->
 			</list>
 		</property>
 	</bean>
 
-	<bean name="ZoomInMode" class="org.geomajas.configuration.ToolInfo">
+	<bean name="ZoomInMode" class="org.geomajas.configuration.client.ClientToolInfo">
 		<property name="id" value="ZoomInMode" />
 		<property name="parameters">
 			<list>
 				<!--
-					old <bean class="org.geomajas.configuration.Parameter"> <property
-					name="name" value="delta"/> <property name="value" value="2"/>
-					</bean>
+					old <bean class="org.geomajas.configuration.Parameter"> <property name="name" value="delta"/> <property
+					name="value" value="2"/> </bean>
 				-->
 			</list>
 		</property>
 	</bean>
-	<bean name="ZoomOutMode" class="org.geomajas.configuration.ToolInfo">
+	<bean name="ZoomOutMode" class="org.geomajas.configuration.client.ClientToolInfo">
 		<property name="id" value="ZoomOutMode" />
 		<property name="parameters">
 			<list>
 				<!--
-					old <bean class="org.geomajas.configuration.Parameter"> <property
-					name="name" value="delta"/> <property name="value" value=".5"/>
-					</bean>
+					old <bean class="org.geomajas.configuration.Parameter"> <property name="name" value="delta"/> <property
+					name="value" value=".5"/> </bean>
 				-->
 			</list>
 		</property>
 	</bean>
-	<bean name="ZoomToSelection" class="org.geomajas.configuration.ToolInfo">
+	<bean name="ZoomToSelection" class="org.geomajas.configuration.client.ClientToolInfo">
 		<property name="id" value="ZoomToSelection" />
 	</bean>
-	<bean name="PanToSelection" class="org.geomajas.configuration.ToolInfo">
+	<bean name="PanToSelection" class="org.geomajas.configuration.client.ClientToolInfo">
 		<property name="id" value="PanToSelection" />
 	</bean>
-	<bean name="DeselectAll" class="org.geomajas.configuration.ToolInfo">
+	<bean name="DeselectAll" class="org.geomajas.configuration.client.ClientToolInfo">
 		<property name="id" value="DeselectAll" />
 	</bean>
-	<bean name="MeasureDistanceMode" class="org.geomajas.configuration.ToolInfo">
+	<bean name="MeasureDistanceMode" class="org.geomajas.configuration.client.ClientToolInfo">
 		<property name="id" value="MeasureDistanceMode" />
 		<property name="parameters">
 			<list>
 				<!--
-					old <bean class="org.geomajas.configuration.Parameter"> <property
-					name="name" value="simple"/> <property name="value" value="false"/>
-					</bean> <bean class="org.geomajas.configuration.Parameter">
-					<property name="name" value="useSnapHelp"/> <property name="value"
-					value="true"/> </bean>
+					old <bean class="org.geomajas.configuration.Parameter"> <property name="name" value="simple"/> <property
+					name="value" value="false"/> </bean> <bean class="org.geomajas.configuration.Parameter"> <property name="name"
+					value="useSnapHelp"/> <property name="value" value="true"/> </bean>
 				-->
 			</list>
 		</property>
 	</bean>
-	<bean name="FeatureInfoMode" class="org.geomajas.configuration.ToolInfo">
+	<bean name="FeatureInfoMode" class="org.geomajas.configuration.client.ClientToolInfo">
 		<property name="id" value="FeatureInfoMode" />
 	</bean>
-	<bean name="SelectionMode" class="org.geomajas.configuration.ToolInfo">
+	<bean name="SelectionMode" class="org.geomajas.configuration.client.ClientToolInfo">
 		<property name="id" value="SelectionMode" />
 		<property name="parameters">
 			<list>
@@ -335,83 +353,74 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 			</list>
 		</property>
 	</bean>
-	<bean name="MarkedEditMode" class="org.geomajas.configuration.ToolInfo">
+	<bean name="MarkedEditMode" class="org.geomajas.configuration.client.ClientToolInfo">
 		<property name="id" value="MarkedEditMode" />
 		<property name="parameters">
 			<list>
 				<!--
-					old <bean class="org.geomajas.configuration.Parameter"> <property
-					name="name" value="useMarkings"/> <property name="value"
-					value="true"/> </bean> <bean
-					class="org.geomajas.configuration.Parameter"> <property name="name"
-					value="useSnapHelp"/> <property name="value" value="true"/> </bean>
-					<bean class="org.geomajas.configuration.Parameter"> <property
-					name="name" value="allowHoles"/> <property name="value"
+					old <bean class="org.geomajas.configuration.Parameter"> <property name="name" value="useMarkings"/> <property
+					name="value" value="true"/> </bean> <bean class="org.geomajas.configuration.Parameter"> <property name="name"
+					value="useSnapHelp"/> <property name="value" value="true"/> </bean> <bean
+					class="org.geomajas.configuration.Parameter"> <property name="name" value="allowHoles"/> <property name="value"
 					value="false"/> </bean>
 				-->
 			</list>
 		</property>
 	</bean>
-	<bean name="EditMode" class="org.geomajas.configuration.ToolInfo">
+	<bean name="EditMode" class="org.geomajas.configuration.client.ClientToolInfo">
 		<property name="id" value="EditMode" />
 		<property name="parameters">
 			<list>
 				<!--
-					old <bean class="org.geomajas.configuration.Parameter"> <property
-					name="name" value="useMarkings"/> <property name="value"
-					value="false"/> </bean> <bean
-					class="org.geomajas.configuration.Parameter"> <property name="name"
-					value="useSnapHelp"/> <property name="value" value="true"/> </bean>
-					<bean class="org.geomajas.configuration.Parameter"> <property
-					name="name" value="allowHoles"/> <property name="value"
-					value="true"/> </bean> <bean
-					class="org.geomajas.configuration.Parameter"> <property name="name"
-					value="allowSelfIntersection"/> <property name="value"
-					value="false"/> </bean>
+					old <bean class="org.geomajas.configuration.Parameter"> <property name="name" value="useMarkings"/> <property
+					name="value" value="false"/> </bean> <bean class="org.geomajas.configuration.Parameter"> <property name="name"
+					value="useSnapHelp"/> <property name="value" value="true"/> </bean> <bean
+					class="org.geomajas.configuration.Parameter"> <property name="name" value="allowHoles"/> <property name="value"
+					value="true"/> </bean> <bean class="org.geomajas.configuration.Parameter"> <property name="name"
+					value="allowSelfIntersection"/> <property name="value" value="false"/> </bean>
 				-->
 			</list>
 		</property>
 	</bean>
-	<bean name="SplitPolygonMode" class="org.geomajas.configuration.ToolInfo">
+	<bean name="SplitPolygonMode" class="org.geomajas.configuration.client.ClientToolInfo">
 		<property name="id" value="SplitPolygonMode" />
 	</bean>
-	<bean name="MergePolygonMode" class="org.geomajas.configuration.ToolInfo">
+	<bean name="MergePolygonMode" class="org.geomajas.configuration.client.ClientToolInfo">
 		<property name="id" value="MergePolygonMode" />
 	</bean>
-	<bean name="NavigateMode" class="org.geomajas.configuration.ToolInfo">
+	<bean name="NavigateMode" class="org.geomajas.configuration.client.ClientToolInfo">
 		<property name="id" value="NavigateMode" />
 	</bean>
-	<bean name="ShowDefaultPrint" class="org.geomajas.configuration.ToolInfo">
+	<bean name="ShowDefaultPrint" class="org.geomajas.configuration.client.ClientToolInfo">
 		<property name="id" value="ShowDefaultPrint" />
 		<property name="parameters">
 			<list>
 				<!--
-					old <bean class="org.geomajas.configuration.Parameter"> <property
-					name="name" value="downloadMethod"/> <property name="value"
-					value="0"/> </bean>
+					old <bean class="org.geomajas.configuration.Parameter"> <property name="name" value="downloadMethod"/> <property
+					name="value" value="0"/> </bean>
 				-->
 			</list>
 		</property>
 	</bean>
-	<bean name="PrintMode" class="org.geomajas.configuration.ToolInfo">
+	<bean name="PrintMode" class="org.geomajas.configuration.client.ClientToolInfo">
 		<property name="id" value="PrintMode" />
 	</bean>
 
 	<!-- LayerTree tools -->
 
-	<bean name="LayerVisibleTool" class="org.geomajas.configuration.ToolInfo">
+	<bean name="LayerVisibleTool" class="org.geomajas.configuration.client.ClientToolInfo">
 		<property name="id" value="LayerVisibleTool" />
 	</bean>
-	<bean name="LayerSnappingTool" class="org.geomajas.configuration.ToolInfo">
+	<bean name="LayerSnappingTool" class="org.geomajas.configuration.client.ClientToolInfo">
 		<property name="id" value="LayerSnappingTool" />
 	</bean>
-	<bean name="LayerLabeledTool" class="org.geomajas.configuration.ToolInfo">
+	<bean name="LayerLabeledTool" class="org.geomajas.configuration.client.ClientToolInfo">
 		<property name="id" value="LayerLabeledTool" />
 	</bean>
-	<bean name="ShowTableAction" class="org.geomajas.configuration.ToolInfo">
+	<bean name="ShowTableAction" class="org.geomajas.configuration.client.ClientToolInfo">
 		<property name="id" value="ShowTableAction" />
 	</bean>
-	<bean name="LayerRefreshAction" class="org.geomajas.configuration.ToolInfo">
+	<bean name="LayerRefreshAction" class="org.geomajas.configuration.client.ClientToolInfo">
 		<property name="id" value="LayerRefreshAction" />
 	</bean>
 

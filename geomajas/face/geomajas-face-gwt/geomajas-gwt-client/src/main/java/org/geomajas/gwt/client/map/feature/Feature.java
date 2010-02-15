@@ -202,8 +202,9 @@ public class Feature implements Paintable, Cloneable {
 	}
 
 	public String getLabel() {
-		String attributeName = layer.getLayerInfo().getLabelAttribute().getLabelAttributeName();
-		return getAttributeValue(attributeName).toString();
+		String attributeName = layer.getLayerInfo().getNamedStyleInfo().getLabelStyle().getLabelAttributeName();
+		Object attributeValue = getAttributeValue(attributeName);
+		return attributeValue == null ? "null" : attributeValue.toString();
 	}
 
 	// Getters and setters:
@@ -242,7 +243,7 @@ public class Feature implements Paintable, Cloneable {
 
 	/**
 	 * Is the logged in user allowed to edit this feature?
-	 *
+	 * 
 	 * @return true when edit/update is allowed for this feature
 	 */
 	public boolean isUpdatable() {
@@ -251,8 +252,9 @@ public class Feature implements Paintable, Cloneable {
 
 	/**
 	 * Set whether the logged in user is allowed to edit/update this feature.
-	 *
-	 * @param editable true when edit/update is allowed for this feature
+	 * 
+	 * @param editable
+	 *            true when edit/update is allowed for this feature
 	 */
 	public void setUpdatable(boolean editable) {
 		this.updatable = editable;
@@ -260,7 +262,7 @@ public class Feature implements Paintable, Cloneable {
 
 	/**
 	 * Is the logged in user allowed to delete this feature?
-	 *
+	 * 
 	 * @return true when delete is allowed for this feature
 	 */
 	public boolean isDeletable() {
@@ -269,8 +271,9 @@ public class Feature implements Paintable, Cloneable {
 
 	/**
 	 * Set whether the logged in user is allowed to delete this feature.
-	 *
-	 * @param deletable true when deleting this feature is allowed
+	 * 
+	 * @param deletable
+	 *            true when deleting this feature is allowed
 	 */
 	public void setDeletable(boolean deletable) {
 		this.deletable = deletable;

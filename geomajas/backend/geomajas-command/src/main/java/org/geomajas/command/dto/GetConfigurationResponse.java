@@ -23,7 +23,7 @@
 package org.geomajas.command.dto;
 
 import org.geomajas.command.CommandResponse;
-import org.geomajas.configuration.ClientApplicationInfo;
+import org.geomajas.configuration.client.ClientApplicationInfo;
 
 /**
  * <p>

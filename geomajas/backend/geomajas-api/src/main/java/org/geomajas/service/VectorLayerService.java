@@ -25,7 +25,7 @@ package org.geomajas.service;
 
 import java.util.List;
 
-import org.geomajas.configuration.StyleInfo;
+import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.feature.InternalFeature;
 import org.opengis.filter.Filter;
@@ -96,13 +96,13 @@ public interface VectorLayerService {
 	 * @param layerId id of layer to get features from
 	 * @param crs which should be used for the geometries in the features
 	 * @param filter filter to be applied
-	 * @param styleDefinitions style definitions to apply
+	 * @param style style to apply
 	 * @param featureIncludes indicate which data to include in the features
 	 * @return reader of feature value objects
 	 * @throws GeomajasException oops
 	 */
 	List<InternalFeature> getFeatures(String layerId, CoordinateReferenceSystem crs, Filter filter,
-			List<StyleInfo> styleDefinitions, int featureIncludes)
+			NamedStyleInfo style, int featureIncludes)
 			throws GeomajasException;
 
 	/**
@@ -113,7 +113,7 @@ public interface VectorLayerService {
 	 * @param layerId id of layer to get features from
 	 * @param crs which should be used for the geometries in the features
 	 * @param filter filter to be applied
-	 * @param styleDefinitions style definitions to apply
+	 * @param styleInfo style to apply
 	 * @param featureIncludes indicate which data to include in the features
 	 * @param offset Skip the first 'offset' features in the result. This is meant for paging.
 	 * @param maxResultSize Limit the result to a maximum number of features. Can be used for paging.
@@ -121,7 +121,7 @@ public interface VectorLayerService {
 	 * @throws GeomajasException oops
 	 */
 	List<InternalFeature> getFeatures(String layerId, CoordinateReferenceSystem crs, Filter filter,
-			List<StyleInfo> styleDefinitions, int featureIncludes, int offset, int maxResultSize)
+			NamedStyleInfo style, int featureIncludes, int offset, int maxResultSize)
 			throws GeomajasException;
 
 	/**

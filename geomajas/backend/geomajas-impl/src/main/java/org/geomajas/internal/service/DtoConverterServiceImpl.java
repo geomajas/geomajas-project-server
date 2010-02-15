@@ -203,7 +203,7 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		dto.setLabel(feature.getLabel());
 		dto.setGeometry(toDto(feature.getGeometry()));
 		if (feature.getStyleInfo() != null) {
-			dto.setStyleId((int) feature.getStyleInfo().getId());
+			dto.setStyleId(feature.getStyleInfo().getIndex());
 		}
 		InternalFeatureImpl vFeature = (InternalFeatureImpl) feature;
 		dto.setClipped(vFeature.isClipped());

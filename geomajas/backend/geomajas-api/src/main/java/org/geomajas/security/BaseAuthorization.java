@@ -49,7 +49,7 @@ public interface BaseAuthorization {
 	/**
 	 * Check whether the tool with given id is allowed to be used.
 	 *
-	 * @param toolId tool id, as specified in {@link org.geomajas.configuration.ToolInfo}.
+	 * @param toolId tool id, as specified in {@link org.geomajas.configuration.client.ClientToolInfo}.
 	 * @return true when access is allowed
 	 */
 	boolean isToolAuthorized(String toolId);

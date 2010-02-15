@@ -26,39 +26,23 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * Information about a vector layer.
  * 
  * @author Joachim Van der Auwera
  */
-public class VectorLayerInfo extends LayerInfo implements Serializable, Cloneable {
+public class VectorLayerInfo extends LayerInfo implements Serializable {
 
 	private static final long serialVersionUID = 151L;
 
-	private LabelAttributeInfo labelAttribute;
-
 	private String filter;
 
+	@NotNull
 	private FeatureInfo featureInfo;
 
-	private List<SnappingRuleInfo> snappingRules;
-
-	private List<StyleInfo> styleDefinitions;
-
-	private boolean creatable;
-
-	private boolean updatable;
-
-	private boolean deletable;
-
-
-	public LabelAttributeInfo getLabelAttribute() {
-		return labelAttribute;
-	}
-
-	public void setLabelAttribute(LabelAttributeInfo label) {
-		this.labelAttribute = label;
-	}
+	private List<NamedStyleInfo> namedStyleInfos = new ArrayList<NamedStyleInfo>();
 
 	public String getFilter() {
 		return filter;
@@ -76,103 +60,21 @@ public class VectorLayerInfo extends LayerInfo implements Serializable, Cloneabl
 		this.featureInfo = featureInfo;
 	}
 
-	public List<SnappingRuleInfo> getSnappingRules() {
-		if (null == snappingRules) {
-			snappingRules = new ArrayList<SnappingRuleInfo>();
+	public List<NamedStyleInfo> getNamedStyleInfos() {
+		return namedStyleInfos;
+	}
+
+	public void setNamedStyleInfos(List<NamedStyleInfo> namedStyleInfos) {
+		this.namedStyleInfos = namedStyleInfos;
+	}
+
+	public NamedStyleInfo getNamedStyleInfo(String name) {
+		for (NamedStyleInfo info : namedStyleInfos) {
+			if (info.getName().equals(name)) {
+				return info;
+			}
 		}
-		return snappingRules;
-	}
-
-	public void setSnappingRules(List<SnappingRuleInfo> snappingRules) {
-		this.snappingRules = snappingRules;
-	}
-
-	public List<StyleInfo> getStyleDefinitions() {
-		if (null == styleDefinitions) {
-			styleDefinitions = new ArrayList<StyleInfo>();
-		}
-		return styleDefinitions;
-	}
-
-	public void setStyleDefinitions(List<StyleInfo> styleDefinitions) {
-		this.styleDefinitions = styleDefinitions;
-	}
-
-	/**
-	 * Is the logged in user allowed to create new features?
-	 *
-	 * @return true when creating new features is allowed
-	 */
-	public boolean isCreatable() {
-		return creatable;
-	}
-
-	/**
-	 * Set whether the logged in user is allowed to create new features.
-	 * <p/>
-	 * This should not be set in configuration, it is set in the GetConfigurationCommand based on security settings.
-	 *
-	 * @param creatable true when creating new features is allowed
-	 */
-	public void setCreatable(boolean creatable) {
-		this.creatable = creatable;
-	}
-
-	/**
-	 * Is the logged in user allowed to edit some features?
-	 *
-	 * @return true when update is allowed for some features
-	 */
-	public boolean isUpdatable() {
-		return updatable;
-	}
-
-	/**
-	 * Set whether the logged in user is allowed to edit/update some features.
-	 * <p/>
-	 * This should not be set in configuration, it is set in the GetConfigurationCommand based on security settings.
-	 *
-	 * @param editable true when edit/update is allowed for some features
-	 */
-	public void setUpdatable(boolean editable) {
-		this.updatable = editable;
-	}
-
-	/**
-	 * Is the logged in user allowed to delete (some) features?
-	 *
-	 * @return true when delete is allowed
-	 */
-	public boolean isDeletable() {
-		return deletable;
-	}
-
-	/**
-	 * Set whether the logged in user is allowed to delete (some) features.
-	 * <p/>
-	 * This should not be set in configuration, it is set in the GetConfigurationCommand based on security settings.
-	 *
-	 * @param deletable true when deleting is allowed
-	 */
-	public void setDeletable(boolean deletable) {
-		this.deletable = deletable;
-	}
-
-	public VectorLayerInfo clone() {
-		/*
-		 * this is what the method should look like, but GWT cannot handle this (grmbl) return (VectorLayerInfo)
-		 * super.clone();
-		 */
-		VectorLayerInfo res = (VectorLayerInfo) super.clone(new VectorLayerInfo());
-		res.setLabelAttribute(labelAttribute);
-		res.setFilter(filter);
-		res.setCreatable(isCreatable());
-		res.setUpdatable(isUpdatable());
-		res.setDeletable(isDeletable());
-		res.setFeatureInfo(featureInfo);
-		res.setSnappingRules(snappingRules);
-		res.setStyleDefinitions(styleDefinitions);
-		return res;
+		return null;
 	}
 
 }

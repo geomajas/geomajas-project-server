@@ -23,7 +23,7 @@
 
 package org.geomajas.layer.tile;
 
-import org.geomajas.configuration.StyleInfo;
+import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.geometry.Coordinate;
 
 /**
@@ -67,9 +67,9 @@ public interface TileMetadata {
 
 	void setFilter(String filter);
 
-	StyleInfo[] getStyleDefs();
+	NamedStyleInfo getStyleInfo();
 
-	void setStyleDefs(StyleInfo[] styleDefs);
+	void setStyleInfo(NamedStyleInfo styleInfo);
 
 	boolean isPaintGeometries();
 

@@ -41,7 +41,7 @@ import com.vividsolutions.jts.geom.MultiPoint;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
-import org.geomajas.configuration.MapInfo;
+import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.SymbolInfo;
 import org.geomajas.layer.Layer;
 import org.geomajas.service.ApplicationService;
@@ -54,30 +54,35 @@ import java.net.URL;
 import java.util.Stack;
 
 /**
- * Context for PDF printing. This is a wrapper on a PdfWriter on which
- * components of a print template can render themselves. Components do not need
- * to know about the template's layout and can draw in a relative coordinate
- * system in which their bottom-left origin corresponds to (0,0).
- *
+ * Context for PDF printing. This is a wrapper on a PdfWriter on which components of a print template can render
+ * themselves. Components do not need to know about the template's layout and can draw in a relative coordinate system
+ * in which their bottom-left origin corresponds to (0,0).
+ * 
  * @author Jan De Moerloose
  */
 public class PdfContext {
 
 	private PdfWriter writer;
+
 	private PdfTemplate template;
+
 	// current origin
 	private float origX;
+
 	private float origY;
+
 	// stack of previous origins
 	private Stack<Float> prevOrigX = new Stack<Float>();
+
 	private Stack<Float> prevOrigY = new Stack<Float>();
+
 	private ApplicationService runtime;
 
 	private final Logger log = LoggerFactory.getLogger(PdfContext.class);
 
 	/**
 	 * Constructs a context for the specified writer and application.
-	 *
+	 * 
 	 * @param writer
 	 * @param runtime
 	 */
@@ -88,7 +93,7 @@ public class PdfContext {
 
 	/**
 	 * Initializes context size.
-	 *
+	 * 
 	 * @param rectangle
 	 */
 	public void initSize(Rectangle rectangle) {
@@ -110,17 +115,18 @@ public class PdfContext {
 
 	/**
 	 * Return the map with this id.
-	 *
+	 * 
 	 * @param mapId
+	 * @param applicationId
 	 * @return
 	 */
-	public MapInfo getMap(String mapId) {
-		return runtime.getMap(mapId);
+	public ClientMapInfo getMap(String mapId, String applicationId) {
+		return runtime.getMap(mapId, applicationId);
 	}
 
 	/**
 	 * Return the text box for the specified text and font.
-	 *
+	 * 
 	 * @param text
 	 * @param font
 	 * @return
@@ -146,7 +152,7 @@ public class PdfContext {
 
 	/**
 	 * Draw text in the center of the specified box.
-	 *
+	 * 
 	 * @param text
 	 * @param font
 	 * @param box
@@ -180,7 +186,7 @@ public class PdfContext {
 
 	/**
 	 * Draw a rectangular boundary.
-	 *
+	 * 
 	 * @param rect
 	 */
 	public void strokeRectangle(Rectangle rect) {
@@ -189,10 +195,13 @@ public class PdfContext {
 
 	/**
 	 * Draw a rectangular boundary with this color and linewidth.
-	 *
-	 * @param rect rectangle
-	 * @param color color
-	 * @param linewidth line width
+	 * 
+	 * @param rect
+	 *            rectangle
+	 * @param color
+	 *            color
+	 * @param linewidth
+	 *            line width
 	 */
 	public void strokeRectangle(Rectangle rect, Color color, float linewidth) {
 		strokeRectangle(rect, color, linewidth, null);
@@ -208,7 +217,7 @@ public class PdfContext {
 
 	/**
 	 * Draw a rounded rectangular boundary.
-	 *
+	 * 
 	 * @param rect
 	 */
 	public void strokeRoundRectangle(Rectangle rect, Color color, float linewidth, float r) {
@@ -221,7 +230,7 @@ public class PdfContext {
 
 	/**
 	 * Draw a rectangle's interior.
-	 *
+	 * 
 	 * @param rect
 	 */
 	public void fillRectangle(Rectangle rect) {
@@ -230,7 +239,7 @@ public class PdfContext {
 
 	/**
 	 * Draw a rectangle's interior with this color.
-	 *
+	 * 
 	 * @param rect
 	 */
 	public void fillRectangle(Rectangle rect, Color color) {
@@ -251,7 +260,7 @@ public class PdfContext {
 
 	/**
 	 * Draw an elliptical interior with this color.
-	 *
+	 * 
 	 * @param rect
 	 */
 	public void strokeEllipse(Rectangle rect, Color color, float linewidth) {
@@ -272,7 +281,7 @@ public class PdfContext {
 
 	/**
 	 * Move this rectangle to the specified bottom-left point.
-	 *
+	 * 
 	 * @param rect
 	 * @param x
 	 * @param y
@@ -288,7 +297,7 @@ public class PdfContext {
 
 	/**
 	 * Translate this rectangle over the specified following distances.
-	 *
+	 * 
 	 * @param rect
 	 * @param dx
 	 * @param dy
@@ -341,9 +350,8 @@ public class PdfContext {
 	}
 
 	/**
-	 * Draws the specified image with the first rect's bounds, clipping with the
-	 * second one.
-	 *
+	 * Draws the specified image with the first rect's bounds, clipping with the second one.
+	 * 
 	 * @param img
 	 * @param rect
 	 * @param clipRect
@@ -368,9 +376,8 @@ public class PdfContext {
 	}
 
 	/**
-	 * Draw a path specified by relative coordinates in [0,1] range wrt the
-	 * specified rectangle.
-	 *
+	 * Draw a path specified by relative coordinates in [0,1] range wrt the specified rectangle.
+	 * 
 	 * @param x
 	 * @param y
 	 * @param rect
@@ -422,7 +429,7 @@ public class PdfContext {
 
 	/**
 	 * Draw the specified geometry.
-	 *
+	 * 
 	 * @param geometry
 	 * @param symbol
 	 * @param fillColor
@@ -513,7 +520,7 @@ public class PdfContext {
 
 	/**
 	 * Return this context as an image.
-	 *
+	 * 
 	 * @return
 	 * @throws BadElementException
 	 */
@@ -553,6 +560,7 @@ public class PdfContext {
 
 	/**
 	 * Converts an absolute rectangle to a relative one wrt to the current coordinate system.
+	 * 
 	 * @param rect
 	 * @return
 	 */

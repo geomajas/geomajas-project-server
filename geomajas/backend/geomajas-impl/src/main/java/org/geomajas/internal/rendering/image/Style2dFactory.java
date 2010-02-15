@@ -23,7 +23,7 @@
 
 package org.geomajas.internal.rendering.image;
 
-import org.geomajas.configuration.StyleInfo;
+import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.layer.LayerType;
 import org.geotools.renderer.style.LineStyle2D;
 import org.geotools.renderer.style.PolygonStyle2D;
@@ -58,7 +58,7 @@ public final class Style2dFactory {
 	 * @param layerType The layer type.
 	 * @return Returns a GeoTools style object.
 	 */
-	public static Style2D createStyle(StyleInfo styleInfo, LayerType layerType) {
+	public static Style2D createStyle(FeatureStyleInfo styleInfo, LayerType layerType) {
 		if (layerType == LayerType.LINESTRING || layerType == LayerType.MULTILINESTRING) {
 			return createLineStyle(styleInfo);
 		} else if (layerType == LayerType.POLYGON || layerType == LayerType.MULTIPOLYGON) {
@@ -80,7 +80,7 @@ public final class Style2dFactory {
 	 *            The font to use.
 	 * @return Returns a GeoTools style object.
 	 */
-	public static TextStyle2D createStyle(StyleInfo styleInfo, String label, Font font) {
+	public static TextStyle2D createStyle(FeatureStyleInfo styleInfo, String label, Font font) {
 		TextStyle2D style = new TextStyle2D();
 		float opacity = styleInfo.getFillOpacity();
 		AlphaComposite composite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, opacity);
@@ -124,7 +124,7 @@ public final class Style2dFactory {
 	// Private methods:
 	// -------------------------------------------------------------------------
 
-	private static LineStyle2D createLineStyle(StyleInfo styleInfo) {
+	private static LineStyle2D createLineStyle(FeatureStyleInfo styleInfo) {
 		LineStyle2D style = new LineStyle2D();
 
 		// Stroke color:
@@ -160,7 +160,7 @@ public final class Style2dFactory {
 		return style;
 	}
 
-	private static PolygonStyle2D createPolygonStyle(StyleInfo styleInfo) {
+	private static PolygonStyle2D createPolygonStyle(FeatureStyleInfo styleInfo) {
 		PolygonStyle2D style = new PolygonStyle2D();
 
 		// Stroke color:

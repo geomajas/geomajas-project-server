@@ -31,7 +31,7 @@ http://www.springframework.org/schema/context
 http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 		>
 
-	<bean name="application" class="org.geomajas.configuration.ApplicationInfo"/>
+	<bean name="application" class="org.geomajas.configuration.client.ClientApplicationInfo"/>
 
 	<bean name="security.securityInfo" class="org.geomajas.security.SecurityInfo">
 		<property name="loopAllServices" value="true"/>

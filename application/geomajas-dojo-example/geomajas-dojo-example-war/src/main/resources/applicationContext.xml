@@ -1,656 +1,705 @@
-<!--
-  ~ This file is part of Geomajas, a component framework for building
-  ~ rich Internet applications (RIA) with sophisticated capabilities for the
-  ~ display, analysis and management of geographic information.
-  ~ It is a building block that allows developers to add maps
-  ~ and other geographic data capabilities to their web applications.
-  ~
-  ~ Copyright 2008-2010 Geosparc, http://www.geosparc.com, Belgium
-  ~
-  ~ This program is free software: you can redistribute it and/or modify
-  ~ it under the terms of the GNU Affero General Public License as
-  ~ published by the Free Software Foundation, either version 3 of the
-  ~ License, or (at your option) any later version.
-  ~
-  ~ This program is distributed in the hope that it will be useful,
-  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~ GNU Affero General Public License for more details.
-  ~
-  ~ You should have received a copy of the GNU Affero General Public License
-  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
-  -->
-<beans
-		xmlns="http://www.springframework.org/schema/beans"
-		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		xmlns:context="http://www.springframework.org/schema/context"
-		xmlns:util="http://www.springframework.org/schema/util"
-		xsi:schemaLocation="
+
+	<!--
+		~ This file is part of Geomajas, a component framework for building ~ rich Internet applications (RIA) with
+		sophisticated capabilities for the ~ display, analysis and management of geographic information. ~ It is a building
+		block that allows developers to add maps ~ and other geographic data capabilities to their web applications. ~ ~
+		Copyright 2008-2010 Geosparc, http://www.geosparc.com, Belgium ~ ~ This program is free software: you can redistribute
+		it and/or modify ~ it under the terms of the GNU Affero General Public License as ~ published by the Free Software
+		Foundation, either version 3 of the ~ License, or (at your option) any later version. ~ ~ This program is distributed
+		in the hope that it will be useful, ~ but WITHOUT ANY WARRANTY; without even the implied warranty of ~ MERCHANTABILITY
+		or FITNESS FOR A PARTICULAR PURPOSE. See the ~ GNU Affero General Public License for more details. ~ ~ You should have
+		received a copy of the GNU Affero General Public License ~ along with this program. If not, see
+		<http://www.gnu.org/licenses/>.
+	-->
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
-http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd"
-		>
+http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
 
 	<bean name="security.securityInfo" class="org.geomajas.security.SecurityInfo">
-		<property name="loopAllServices" value="false"/>
+		<property name="loopAllServices" value="false" />
 		<property name="securityServices">
 			<list>
-				<bean class="org.geomajas.internal.security.AllowAllSecurityService"/>
+				<bean class="org.geomajas.internal.security.AllowAllSecurityService" />
 			</list>
 		</property>
 	</bean>
 
-    <bean name="application" class="org.geomajas.configuration.ApplicationInfo" >
-        <property name="id" value="tutorial" />
-        <property name="name" value="tutorial application" />
-        <property name="layers">
-            <list>
-                <ref bean="belt"/>
-                <ref bean="bluemarble"/>
-                <ref bean="cities"/>
-                <ref bean="countries"/>
-                <ref bean="lakes"/>
-                <ref bean="osm"/>
-                <ref bean="provinces"/>
-                <ref bean="rivers"/>
-                <ref bean="roads"/>
-                <ref bean="structures"/>
-            </list>
-        </property>
-        <property name="maps">
-            <list>
-                <ref bean="sampleFeaturesMap"/>
-                <ref bean="sampleEditingMap"/>
-                <ref bean="sampleSearchMap"/>
-                <ref bean="sampleFutureMap"/>
-            </list>
-        </property>
-    </bean>
-    
-    <bean name="sampleFeaturesMap" class="org.geomajas.configuration.MapInfo">
-        <property name="id" value="sampleFeaturesMap"/>
-        <property name="backgroundColor" value="#FFFFFF" />
-        <property name="lineSelectStyle">
-            <bean class="org.geomajas.configuration.StyleInfo">
-                <property name="fillOpacity" value="0" />
-                <property name="strokeColor" value="#FF6600" />
-                <property name="strokeOpacity" value="1" />
-            </bean>
-        </property>
-        <property name="pointSelectStyle">
-            <bean class="org.geomajas.configuration.StyleInfo">
-                <property name="fillColor" value="#FFFF00" />
-            </bean>
-        </property>
-        <property name="polygonSelectStyle">
-            <bean class="org.geomajas.configuration.StyleInfo">
-                <property name="fillColor" value="#FFFF00" />
-                <property name="fillOpacity" value=".5" />
-            </bean>
-        </property>
-        <property name="crs" value="EPSG:900913"/>
-        <property name="scaleBarEnabled" value="true"/>
-        <property name="panButtonsEnabled" value="true"/>
-        <property name="maximumScale" value="9.5"/>
-        <property name="initialBounds">
-            <bean class="org.geomajas.geometry.Bbox">
-                <property name="x" value="286075"/>
-                <property name="y" value="6379447"/>
-                <property name="width" value="500000"/>
-                <property name="height" value="400000"/>
-            </bean>
-        </property>
-		<property name="layers">
+	<bean name="tutorial" class="org.geomajas.configuration.client.ClientApplicationInfo">
+		<property name="maps">
 			<list>
-				<ref bean="osmInfo"/>
-				<ref bean="provincesInfo"/>
+				<ref bean="sampleFeaturesMap" />
+				<ref bean="sampleEditingMap" />
+				<ref bean="sampleSearchMap" />
+				<ref bean="sampleFutureMap" />
 			</list>
 		</property>
-        <property name="toolbar">
-            <bean class="org.geomajas.configuration.ToolbarInfo">
-                <property name="id" value="sampleFeaturesMapToolbar"/>
-                <property name="tools">
-                    <list>
-                        <ref bean="ZoomIn"/>
-                        <ref bean="ZoomOut"/>
-                        <ref bean="ZoomToRectangleMode"/>
-                        <ref bean="PanMode"/>
-                        <ref bean="ToolbarSeparator"/>
-                        <ref bean="ZoomPrevious"/>
-                        <ref bean="ZoomNext"/>
-                        <ref bean="ToolbarSeparator"/>
-                        <ref bean="SelectionMode"/>
-                        <ref bean="DeselectAll"/>
-                        <ref bean="ToolbarSeparator"/>
-                        <ref bean="ShowDefaultPrint"/>
-                        <ref bean="PrintMode"/>
-                    </list>
-                </property>
-            </bean>
-        </property>
-        <property name="layerTree">
-            <bean class="org.geomajas.configuration.LayerTreeInfo">
-                <property name="id" value="sampleFeaturesTree"/>
-                <property name="tools">
-                    <list>
-                        <ref bean="LayerVisibleTool"/>
-                        <ref bean="LayerLabeledTool"/>
-                    </list>
-                </property>
-				<property name="treeNode">
-					<bean class="org.geomajas.configuration.LayerTreeNodeInfo">
-						<property name="label" value="Layers" />
-						<property name="layerIds">
-							<list>
-							  <value>osm</value>
-							  <value>provinces</value>
-							</list>
-						</property>
-						<property name="expanded" value="true" />
-					</bean>
-				</property>
-            </bean>
-        </property>
-    </bean>
-    <bean name="sampleEditingMap" class="org.geomajas.configuration.MapInfo">
-        <property name="id" value="sampleEditingMap"/>
-        <property name="backgroundColor" value="#E0E0E0" />
-        <property name="lineSelectStyle">
-            <bean class="org.geomajas.configuration.StyleInfo">
-                <property name="fillOpacity" value="0" />
-                <property name="strokeColor" value="#DDEE00" />
-                <property name="strokeOpacity" value="1" />
-            </bean>
-        </property>
-        <property name="pointSelectStyle">
-            <bean class="org.geomajas.configuration.StyleInfo">
-                <property name="fillColor" value="#FFFF00" />
-            </bean>
-        </property>
-        <property name="polygonSelectStyle">
-            <bean class="org.geomajas.configuration.StyleInfo">
-                <property name="fillColor" value="#DDFF00" />
-                <property name="fillOpacity" value=".7" />
-            </bean>
-        </property>
-        <property name="crs" value="EPSG:900913"/>
-        <property name="scaleBarEnabled" value="true"/>
-        <property name="panButtonsEnabled" value="true"/>
-        <property name="maximumScale" value="9.5"/>
-        <property name="initialBounds">
-            <bean class="org.geomajas.geometry.Bbox">
-                <property name="x" value="506356"/>
-                <property name="y" value="6588779"/>
-                <property name="width" value="330"/>
-                <property name="height" value="260"/>
-            </bean>
-        </property>
-		<property name="layers">
-			<list>
-				<ref bean="osmInfo"/>
-				<ref bean="roadsInfo"/>
-				<ref bean="structuresInfo"/>
-			</list>
-		</property>
-        <property name="toolbar">
-            <bean class="org.geomajas.configuration.ToolbarInfo">
-                <property name="id" value="sampleEditingMapToolbar"/>
-                <property name="tools">
-                    <list>
-                        <ref bean="ZoomIn"/>
-                        <ref bean="ZoomOut"/>
-                        <ref bean="ZoomToRectangleMode"/>
-                        <ref bean="PanMode"/>
-                        <ref bean="ToolbarSeparator"/>
-                        <ref bean="ZoomPrevious"/>
-                        <ref bean="ZoomNext"/>
-                        <ref bean="ToolbarSeparator"/>
-                        <ref bean="DeselectAll"/>
-                        <ref bean="ZoomToSelection"/>
-                        <ref bean="EditMode"/>
-                        <ref bean="SplitPolygonMode"/>
-                        <ref bean="MergePolygonMode"/>
-                        <ref bean="ToolbarSeparator"/>
-                        <ref bean="ShowDefaultPrint"/>
-                        <ref bean="PrintMode"/>
-                    </list>
-                </property>
-            </bean>
-        </property>
-        <property name="layerTree">
-            <bean class="org.geomajas.configuration.LayerTreeInfo">
-                <property name="id" value="sampleEditingTree"/>
-                <property name="tools">
-                    <list>
-                        <ref bean="LayerVisibleTool"/>
-                        <ref bean="LayerLabeledTool"/>
-                        <ref bean="LayerSnappingTool"/>
-                    </list>
-                </property>
-				<property name="treeNode">
-					<bean class="org.geomajas.configuration.LayerTreeNodeInfo">
-						<property name="label" value="Layers" />
-						<property name="layerIds">
-							<list>
-							  <value>osm</value>
-							  <value>roads</value>
-							  <value>structures</value>
-							</list>
-						</property>
-						<property name="expanded" value="true" />
-					</bean>
-				</property>
-            </bean>
-        </property>
-    </bean>
-    <bean name="sampleSearchMap" class="org.geomajas.configuration.MapInfo">
-        <property name="id" value="sampleSearchMap"/>
-        <property name="backgroundColor" value="#FFFFFF" />
-        <property name="lineSelectStyle">
-            <bean class="org.geomajas.configuration.StyleInfo">
-                <property name="fillOpacity" value="0" />
-                <property name="strokeColor" value="#FF6600" />
-                <property name="strokeOpacity" value="1" />
-            </bean>
-        </property>
-        <property name="pointSelectStyle">
-            <bean class="org.geomajas.configuration.StyleInfo">
-                <property name="fillColor" value="#FFFF00" />
-                <property name="fillOpacity" value=".6" />
-            </bean>
-        </property>
-        <property name="polygonSelectStyle">
-            <bean class="org.geomajas.configuration.StyleInfo">
-                <property name="fillColor" value="#FFFF00" />
-                <property name="fillOpacity" value=".6" />
-            </bean>
-        </property>
-        <property name="crs" value="EPSG:4326"/>
-        <property name="scaleBarEnabled" value="true"/>
-        <property name="panButtonsEnabled" value="true"/>
-        <property name="maximumScale" value="99999999"/>
-        <property name="initialBounds">
-            <bean class="org.geomajas.geometry.Bbox">
-                <property name="x" value="-31.44"/>
-                <property name="y" value="-37.43"/>
-                <property name="width" value="89.83"/>
-                <property name="height" value="89.83"/>
-            </bean>
-        </property>
-		<property name="layers">
-			<list>
-				<ref bean="bluemarbleInfo"/>
-				<ref bean="countriesInfo"/>
-			</list>
-		</property>
-        <property name="toolbar">
-            <bean class="org.geomajas.configuration.ToolbarInfo">
-                <property name="id" value="sampleSearchToolbar"/>
-                <property name="tools">
-                    <list>
-                    	<!--ref bean="ZoomToMaximumExtent"/-->
-                        <ref bean="ZoomIn"/>
-                        <ref bean="ZoomOut"/>
-                        <ref bean="ZoomToRectangleMode"/>
-                        <ref bean="PanMode"/>
-                        <ref bean="ToolbarSeparator"/>
-                        <ref bean="ZoomPrevious"/>
-                        <ref bean="ZoomNext"/>
-                        <ref bean="ToolbarSeparator"/>
-                        <ref bean="DeselectAll"/>
-                        <ref bean="ToolbarSeparator"/>
-                        <ref bean="FeatureInfoMode"/>
-                        <ref bean="ShowDefaultPrint"/>
-                        <ref bean="PrintMode"/>
-                    </list>
-                </property>
-            </bean>
-        </property>
-        <property name="layerTree">
-            <bean class="org.geomajas.configuration.LayerTreeInfo">
-                <property name="id" value="sampleSearchTree"/>
-                <property name="tools">
-                    <list>
-                        <ref bean="LayerVisibleTool"/>
-                        <ref bean="LayerLabeledTool"/>
-                    </list>
-                </property>
-				<property name="treeNode">
-					<bean class="org.geomajas.configuration.LayerTreeNodeInfo">
-						<property name="label" value="Layers" />
-						<property name="layerIds">
-							<list>
-							  <value>bluemarble</value>
-							  <value>countries</value>
-							</list>
-						</property>
-						<property name="expanded" value="true" />
-					</bean>
-				</property>
-            </bean>
-        </property>
-    </bean>
-    <bean name="sampleFutureMap" class="org.geomajas.configuration.MapInfo">
-        <property name="id" value="sampleFutureMap"/>
-        <property name="backgroundColor" value="#FFFFFF" />
-        <property name="lineSelectStyle">
-            <bean class="org.geomajas.configuration.StyleInfo">
-                <property name="fillOpacity" value="0" />
-                <property name="strokeColor" value="#FFC000" />
-                <property name="strokeOpacity" value="1" />
-            </bean>
-        </property>
-        <property name="pointSelectStyle">
-            <bean class="org.geomajas.configuration.StyleInfo">
-                <property name="fillColor" value="#FFC000" />
-            </bean>
-        </property>
-        <property name="polygonSelectStyle">
-            <bean class="org.geomajas.configuration.StyleInfo">
-                <property name="fillColor" value="#FFC000" />
-                <property name="fillOpacity" value=".8" />
-            </bean>
-        </property>
-        <property name="crs" value="EPSG:4326"/>
-        <property name="scaleBarEnabled" value="true"/>
-        <property name="panButtonsEnabled" value="true"/>
-        <property name="displayUnitType" value="ENGLISH"/>
-        <property name="maximumScale" value="99999999"/>
-        <property name="initialBounds">
-            <bean class="org.geomajas.geometry.Bbox">
-                <property name="x" value="-31.44"/>
-                <property name="y" value="-37.43"/>
-                <property name="width" value="89.83"/>
-                <property name="height" value="89.83"/>
-            </bean>
-        </property>
-        <property name="resolutions">
-            <!-- Using the NASA WMS resolutions -->
-            <list>
-                <value>0.5</value>
-                <value>0.25</value>
-                <value>0.125</value>
-                <value>0.0625</value>
-                <value>0.03125</value>
-                <value>0.015625</value>
-                <value>0.0078125</value>
-                <value>0.00390625</value>
-                <value>0.001953125</value>
-                <value>0.0009765625</value>
-                <value>0.00048828125</value>
-                <value>0.000244140625</value>
-                <value>0.000122070312</value>                            
-            </list>
-        </property>
-		<property name="layers">
-			<list>
-				<ref bean="bluemarbleInfo"/>
-				<ref bean="beltInfo"/>
-				<ref bean="riversInfo"/>
-				<ref bean="lakesInfo"/>
-				<ref bean="citiesInfo"/>
-			</list>
-		</property>
-        <property name="toolbar">
-            <bean class="org.geomajas.configuration.ToolbarInfo">
-                <property name="id" value="sampleFutureToolbar"/>
-                <property name="tools">
-                    <list>
-                        <ref bean="ZoomIn"/>
-                        <ref bean="ZoomOut"/>
-                        <ref bean="ZoomToRectangleMode"/>
-                        <ref bean="PanMode"/>
-                        <ref bean="ToolbarSeparator"/>
-                        <ref bean="ZoomPrevious"/>
-                        <ref bean="ZoomNext"/>
-                        <ref bean="ToolbarSeparator"/>
-                        <ref bean="ZoomToSelection"/>
-                        <ref bean="PanToSelection"/>
-                        <ref bean="SelectionMode"/>
-                        <ref bean="DeselectAll"/>
-                        <ref bean="ToolbarSeparator"/>
-                        <ref bean="EditMode"/>
-                        <ref bean="FeatureInfoMode"/>
-                        <ref bean="MeasureDistanceMode"/>
-                        <ref bean="ShowDefaultPrint"/>
-                        <ref bean="PrintMode"/>
-                    </list>
-                </property>
-            </bean>
-        </property>
-        <property name="layerTree">
-            <bean class="org.geomajas.configuration.LayerTreeInfo">
-                <property name="id" value="sampleFutureTree"/>
-				<property name="treeNode">
-					<bean class="org.geomajas.configuration.LayerTreeNodeInfo">
-						<property name="label" value="Layers" />
-						<property name="layerIds">
-							<list>
-							  <value>bluemarble</value>
-							  <value>belt</value>
-							  <value>rivers</value>
-							  <value>lakes</value>
-							  <value>cities</value>
-							</list>
-						</property>
-						<property name="expanded" value="true" />
-					</bean>
-				</property>
-                <property name="tools">
-                    <list>
-                        <ref bean="LayerVisibleTool"/>
-                        <ref bean="LayerLabeledTool"/>
-                        <ref bean="LayerSnappingTool"/>
-                    </list>
-                </property>
-            </bean>
-        </property>
-    </bean>
+	</bean>
 
-    <bean name="ToolbarSeparator" class="org.geomajas.configuration.ToolInfo">
-        <property name="id" value="ToolbarSeparator"/>
-    </bean>
-    <bean name="ZoomIn" class="org.geomajas.configuration.ToolInfo">
-        <property name="id" value="ZoomIn"/>
-        <property name="parameters">
+	<bean name="sampleFeaturesMap" class="org.geomajas.configuration.client.ClientMapInfo">
+		<property name="backgroundColor" value="#FFFFFF" />
+		<property name="lineSelectStyle">
+			<bean class="org.geomajas.configuration.FeatureStyleInfo">
+				<property name="fillOpacity" value="0" />
+				<property name="strokeColor" value="#FF6600" />
+				<property name="strokeOpacity" value="1" />
+			</bean>
+		</property>
+		<property name="pointSelectStyle">
+			<bean class="org.geomajas.configuration.FeatureStyleInfo">
+				<property name="fillColor" value="#FFFF00" />
+			</bean>
+		</property>
+		<property name="polygonSelectStyle">
+			<bean class="org.geomajas.configuration.FeatureStyleInfo">
+				<property name="fillColor" value="#FFFF00" />
+				<property name="fillOpacity" value=".5" />
+			</bean>
+		</property>
+		<property name="crs" value="EPSG:900913" />
+		<property name="scaleBarEnabled" value="true" />
+		<property name="panButtonsEnabled" value="true" />
+		<property name="maximumScale" value="9.5" />
+		<property name="initialBounds">
+			<bean class="org.geomajas.geometry.Bbox">
+				<property name="x" value="286075" />
+				<property name="y" value="6379447" />
+				<property name="width" value="500000" />
+				<property name="height" value="400000" />
+			</bean>
+		</property>
+		<property name="layers">
+			<list>
+				<ref bean="osmLayer" />
+				<ref bean="provincesLayer" />
+			</list>
+		</property>
+		<property name="toolbar">
+			<bean name="sampleFeaturesMapToolbar" class="org.geomajas.configuration.client.ClientToolbarInfo">
+				<property name="tools">
+					<list>
+						<ref bean="ZoomIn" />
+						<ref bean="ZoomOut" />
+						<ref bean="ZoomToRectangleMode" />
+						<ref bean="PanMode" />
+						<ref bean="ToolbarSeparator" />
+						<ref bean="ZoomPrevious" />
+						<ref bean="ZoomNext" />
+						<ref bean="ToolbarSeparator" />
+						<ref bean="SelectionMode" />
+						<ref bean="DeselectAll" />
+						<ref bean="ToolbarSeparator" />
+						<ref bean="ShowDefaultPrint" />
+						<ref bean="PrintMode" />
+					</list>
+				</property>
+			</bean>
+		</property>
+		<property name="layerTree">
+			<bean name="sampleFeaturesTree" class="org.geomajas.configuration.client.ClientLayerTreeInfo">
+				<property name="tools">
+					<list>
+						<ref bean="LayerVisibleTool" />
+						<ref bean="LayerLabeledTool" />
+					</list>
+				</property>
+				<property name="treeNode">
+					<bean class="org.geomajas.configuration.client.ClientLayerTreeNodeInfo">
+						<property name="label" value="Layers" />
+						<property name="layers">
+							<list>
+								<ref bean="osmLayer" />
+								<ref bean="provincesLayer" />
+							</list>
+						</property>
+						<property name="expanded" value="true" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<bean name="sampleEditingMap" class="org.geomajas.configuration.client.ClientMapInfo">
+		<property name="backgroundColor" value="#E0E0E0" />
+		<property name="lineSelectStyle">
+			<bean class="org.geomajas.configuration.FeatureStyleInfo">
+				<property name="fillOpacity" value="0" />
+				<property name="strokeColor" value="#DDEE00" />
+				<property name="strokeOpacity" value="1" />
+			</bean>
+		</property>
+		<property name="pointSelectStyle">
+			<bean class="org.geomajas.configuration.FeatureStyleInfo">
+				<property name="fillColor" value="#FFFF00" />
+			</bean>
+		</property>
+		<property name="polygonSelectStyle">
+			<bean class="org.geomajas.configuration.FeatureStyleInfo">
+				<property name="fillColor" value="#DDFF00" />
+				<property name="fillOpacity" value=".7" />
+			</bean>
+		</property>
+		<property name="crs" value="EPSG:900913" />
+		<property name="scaleBarEnabled" value="true" />
+		<property name="panButtonsEnabled" value="true" />
+		<property name="maximumScale" value="9.5" />
+		<property name="initialBounds">
+			<bean class="org.geomajas.geometry.Bbox">
+				<property name="x" value="506356" />
+				<property name="y" value="6588779" />
+				<property name="width" value="330" />
+				<property name="height" value="260" />
+			</bean>
+		</property>
+		<property name="layers">
+			<list>
+				<ref bean="osmLayer" />
+				<ref bean="roadsLayer" />
+				<ref bean="structuresLayer" />
+			</list>
+		</property>
+		<property name="toolbar">
+			<bean name="sampleEditingMapToolbar" class="org.geomajas.configuration.client.ClientToolbarInfo">
+				<property name="tools">
+					<list>
+						<ref bean="ZoomIn" />
+						<ref bean="ZoomOut" />
+						<ref bean="ZoomToRectangleMode" />
+						<ref bean="PanMode" />
+						<ref bean="ToolbarSeparator" />
+						<ref bean="ZoomPrevious" />
+						<ref bean="ZoomNext" />
+						<ref bean="ToolbarSeparator" />
+						<ref bean="DeselectAll" />
+						<ref bean="ZoomToSelection" />
+						<ref bean="EditMode" />
+						<ref bean="SplitPolygonMode" />
+						<ref bean="MergePolygonMode" />
+						<ref bean="ToolbarSeparator" />
+						<ref bean="ShowDefaultPrint" />
+						<ref bean="PrintMode" />
+					</list>
+				</property>
+			</bean>
+		</property>
+		<property name="layerTree">
+			<bean name="sampleEditingTree" class="org.geomajas.configuration.client.ClientLayerTreeInfo">
+				<property name="tools">
+					<list>
+						<ref bean="LayerVisibleTool" />
+						<ref bean="LayerLabeledTool" />
+						<ref bean="LayerSnappingTool" />
+					</list>
+				</property>
+				<property name="treeNode">
+					<bean class="org.geomajas.configuration.client.ClientLayerTreeNodeInfo">
+						<property name="label" value="Layers" />
+						<property name="layers">
+							<list>
+								<ref bean="osmLayer" />
+								<ref bean="roadsLayer" />
+								<ref bean="structuresLayer" />
+							</list>
+						</property>
+						<property name="expanded" value="true" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<bean name="sampleSearchMap" class="org.geomajas.configuration.client.ClientMapInfo">
+		<property name="backgroundColor" value="#FFFFFF" />
+		<property name="lineSelectStyle">
+			<bean class="org.geomajas.configuration.FeatureStyleInfo">
+				<property name="fillOpacity" value="0" />
+				<property name="strokeColor" value="#FF6600" />
+				<property name="strokeOpacity" value="1" />
+			</bean>
+		</property>
+		<property name="pointSelectStyle">
+			<bean class="org.geomajas.configuration.FeatureStyleInfo">
+				<property name="fillColor" value="#FFFF00" />
+				<property name="fillOpacity" value=".6" />
+			</bean>
+		</property>
+		<property name="polygonSelectStyle">
+			<bean class="org.geomajas.configuration.FeatureStyleInfo">
+				<property name="fillColor" value="#FFFF00" />
+				<property name="fillOpacity" value=".6" />
+			</bean>
+		</property>
+		<property name="crs" value="EPSG:4326" />
+		<property name="scaleBarEnabled" value="true" />
+		<property name="panButtonsEnabled" value="true" />
+		<property name="maximumScale" value="99999999" />
+		<property name="initialBounds">
+			<bean class="org.geomajas.geometry.Bbox">
+				<property name="x" value="-31.44" />
+				<property name="y" value="-37.43" />
+				<property name="width" value="89.83" />
+				<property name="height" value="89.83" />
+			</bean>
+		</property>
+		<property name="layers">
+			<list>
+				<ref bean="bluemarbleLayer" />
+				<ref bean="countriesLayer" />
+			</list>
+		</property>
+		<property name="toolbar">
+			<bean name="sampleSearchToolbar" class="org.geomajas.configuration.client.ClientToolbarInfo">
+				<property name="tools">
+					<list>
+						<ref bean="ZoomIn" />
+						<ref bean="ZoomOut" />
+						<ref bean="ZoomToRectangleMode" />
+						<ref bean="PanMode" />
+						<ref bean="ToolbarSeparator" />
+						<ref bean="ZoomPrevious" />
+						<ref bean="ZoomNext" />
+						<ref bean="ToolbarSeparator" />
+						<ref bean="DeselectAll" />
+						<ref bean="ToolbarSeparator" />
+						<ref bean="FeatureInfoMode" />
+						<ref bean="ShowDefaultPrint" />
+						<ref bean="PrintMode" />
+					</list>
+				</property>
+			</bean>
+		</property>
+		<property name="layerTree">
+			<bean name="sampleSearchTree" class="org.geomajas.configuration.client.ClientLayerTreeInfo">
+				<property name="tools">
+					<list>
+						<ref bean="LayerVisibleTool" />
+						<ref bean="LayerLabeledTool" />
+					</list>
+				</property>
+				<property name="treeNode">
+					<bean class="org.geomajas.configuration.client.ClientLayerTreeNodeInfo">
+						<property name="label" value="Layers" />
+						<property name="layers">
+							<list>
+								<ref bean="bluemarbleLayer" />
+								<ref bean="countriesLayer" />
+							</list>
+						</property>
+						<property name="expanded" value="true" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<bean name="sampleFutureMap" class="org.geomajas.configuration.client.ClientMapInfo">
+		<property name="backgroundColor" value="#FFFFFF" />
+		<property name="lineSelectStyle">
+			<bean class="org.geomajas.configuration.FeatureStyleInfo">
+				<property name="fillOpacity" value="0" />
+				<property name="strokeColor" value="#FFC000" />
+				<property name="strokeOpacity" value="1" />
+			</bean>
+		</property>
+		<property name="pointSelectStyle">
+			<bean class="org.geomajas.configuration.FeatureStyleInfo">
+				<property name="fillColor" value="#FFC000" />
+			</bean>
+		</property>
+		<property name="polygonSelectStyle">
+			<bean class="org.geomajas.configuration.FeatureStyleInfo">
+				<property name="fillColor" value="#FFC000" />
+				<property name="fillOpacity" value=".8" />
+			</bean>
+		</property>
+		<property name="crs" value="EPSG:4326" />
+		<property name="scaleBarEnabled" value="true" />
+		<property name="panButtonsEnabled" value="true" />
+		<property name="displayUnitType" value="ENGLISH" />
+		<property name="maximumScale" value="99999999" />
+		<property name="initialBounds">
+			<bean class="org.geomajas.geometry.Bbox">
+				<property name="x" value="-31.44" />
+				<property name="y" value="-37.43" />
+				<property name="width" value="89.83" />
+				<property name="height" value="89.83" />
+			</bean>
+		</property>
+		<property name="resolutions">
+			<!-- Using the NASA WMS resolutions -->
+			<list>
+				<value>0.5</value>
+				<value>0.25</value>
+				<value>0.125</value>
+				<value>0.0625</value>
+				<value>0.03125</value>
+				<value>0.015625</value>
+				<value>0.0078125</value>
+				<value>0.00390625</value>
+				<value>0.001953125</value>
+				<value>0.0009765625</value>
+				<value>0.00048828125</value>
+				<value>0.000244140625</value>
+				<value>0.000122070312</value>
+			</list>
+		</property>
+		<property name="layers">
+			<list>
+				<ref bean="bluemarbleLayer" />
+				<ref bean="beltLayer" />
+				<ref bean="riversLayer" />
+				<ref bean="lakesLayer" />
+				<ref bean="citiesLayer" />
+			</list>
+		</property>
+		<property name="toolbar">
+			<bean name="sampleFutureToolbar" class="org.geomajas.configuration.client.ClientToolbarInfo">
+				<property name="tools">
+					<list>
+						<ref bean="ZoomIn" />
+						<ref bean="ZoomOut" />
+						<ref bean="ZoomToRectangleMode" />
+						<ref bean="PanMode" />
+						<ref bean="ToolbarSeparator" />
+						<ref bean="ZoomPrevious" />
+						<ref bean="ZoomNext" />
+						<ref bean="ToolbarSeparator" />
+						<ref bean="ZoomToSelection" />
+						<ref bean="PanToSelection" />
+						<ref bean="SelectionMode" />
+						<ref bean="DeselectAll" />
+						<ref bean="ToolbarSeparator" />
+						<ref bean="EditMode" />
+						<ref bean="FeatureInfoMode" />
+						<ref bean="MeasureDistanceMode" />
+						<ref bean="ShowDefaultPrint" />
+						<ref bean="PrintMode" />
+					</list>
+				</property>
+			</bean>
+		</property>
+		<property name="layerTree">
+			<bean name="sampleFutureTree" class="org.geomajas.configuration.client.ClientLayerTreeInfo">
+				<property name="treeNode">
+					<bean class="org.geomajas.configuration.client.ClientLayerTreeNodeInfo">
+						<property name="label" value="Layers" />
+						<property name="layers">
+							<list>
+								<ref bean="bluemarbleLayer" />
+								<ref bean="beltLayer" />
+								<ref bean="riversLayer" />
+								<ref bean="lakesLayer" />
+								<ref bean="citiesLayer" />
+							</list>
+						</property>
+						<property name="expanded" value="true" />
+					</bean>
+				</property>
+				<property name="tools">
+					<list>
+						<ref bean="LayerVisibleTool" />
+						<ref bean="LayerLabeledTool" />
+						<ref bean="LayerSnappingTool" />
+					</list>
+				</property>
+			</bean>
+		</property>
+	</bean>
+
+	<!-- client layers -->
+
+	<bean class="org.geomajas.configuration.client.ClientRasterLayerInfo" id="beltLayer">
+		<property name="layerInfo" ref="osmInfo" />
+		<property name="label" value="OpenStreetMap (raster)" />
+		<property name="visible" value="true" />
+		<property name="viewScaleMin" value="0" />
+		<property name="viewScaleMax" value="50" />
+		<property name="style" value="1" />
+	</bean>
+
+	<bean class="org.geomajas.configuration.client.ClientRasterLayerInfo" id="bluemarbleLayer">
+		<property name="layerInfo" ref="bluemarbleInfo" />
+	  	<property name="label" value="NASA Blue Marble - WMS"/>
+		<property name="visible" value="true"/>
+		<property name="viewScaleMin" value="0"/>
+		<property name="viewScaleMax" value="100000"/>
+        <property name="style" value="opacity:1;"/>
+	</bean>
+
+	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="citiesLayer">
+		<property name="layerInfo" ref="citiesInfo" />
+        <property name="label" value="Cities (editable - point)"/>
+        <property name="visible" value="true"/>
+        <property name="viewScaleMin" value="0"/>
+        <property name="viewScaleMax" value="100000"/>
+		<property name="namedStyleInfo" ref="roadsStyleInfo" />
+	</bean>
+
+	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="countriesLayer">
+		<property name="layerInfo" ref="countriesInfo" />
+	  	<property name="label" value="Countries of Africa"/>
+		<property name="visible" value="true"/>
+		<property name="viewScaleMin" value="0"/>
+		<property name="viewScaleMax" value="100000"/>
+		<property name="namedStyleInfo" ref="countriesStyleInfo" />
+	</bean>
+	
+	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="lakesLayer">
+		<property name="layerInfo" ref="lakesInfo" />
+        <property name="label" value="Lakes (editable - polygon)"/>
+        <property name="visible" value="true"/>
+        <property name="viewScaleMin" value="0"/>
+        <property name="viewScaleMax" value="100000"/>
+		<property name="namedStyleInfo" ref="lakesStyleInfo" />
+	</bean>
+	
+	<bean class="org.geomajas.configuration.client.ClientRasterLayerInfo" id="osmLayer">
+		<property name="layerInfo" ref="osmInfo" />
+		<property name="label" value="OpenStreetMap (raster)" />
+		<property name="visible" value="true" />
+		<property name="viewScaleMin" value="0"/>
+		<property name="viewScaleMax" value="50"/>
+		<property name="style" value="1" />
+	</bean>
+
+	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="provincesLayer">
+		<property name="layerInfo" ref="provincesInfo" />
+	  	<property name="label" value="Provinces"/>
+		<property name="visible" value="true"/>
+		<property name="viewScaleMin" value="0"/>
+		<property name="viewScaleMax" value="1000"/>
+		<property name="namedStyleInfo" ref="provincesStyleInfo" />
+	</bean>
+	
+	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="riversLayer">
+		<property name="layerInfo" ref="riversInfo" />
+	  	<property name="label" value="Rivers (editable - linestring)"/>
+		<property name="visible" value="true"/>
+		<property name="viewScaleMin" value="0"/>
+		<property name="viewScaleMax" value="100000"/>
+		<property name="namedStyleInfo" ref="riversStyleInfo" />
+        <property name="snappingRules">
             <list>
-                <bean class="org.geomajas.configuration.Parameter">
-                    <property name="name" value="delta"/>
-                    <property name="value" value="2"/>
+                <bean class="org.geomajas.configuration.SnappingRuleInfo">
+                    <property name="distance" value="500000"/>
+                    <property name="type" value="NEAREST_POINT"/>
+                    <property name="layerInfo" ref="riversInfo" />
                 </bean>
             </list>
         </property>
-    </bean>
-    <bean name="ZoomInMode" class="org.geomajas.configuration.ToolInfo">
-        <property name="id" value="ZoomInMode"/>
-        <property name="parameters">
-            <list>
-                <bean class="org.geomajas.configuration.Parameter">
-                    <property name="name" value="delta"/>
-                    <property name="value" value="2"/>
-                </bean>
-            </list>
-        </property>
-    </bean>
-    <bean name="ZoomOut" class="org.geomajas.configuration.ToolInfo">
-        <property name="id" value="ZoomOut"/>
-        <property name="parameters">
-            <list>
-                <bean class="org.geomajas.configuration.Parameter">
-                    <property name="name" value="delta"/>
-                    <property name="value" value=".5"/>
-                </bean>
-            </list>
-        </property>
-    </bean>
-    <bean name="ZoomOutMode" class="org.geomajas.configuration.ToolInfo">
-        <property name="id" value="ZoomOutMode"/>
-        <property name="parameters">
-            <list>
-                <bean class="org.geomajas.configuration.Parameter">
-                    <property name="name" value="delta"/>
-                    <property name="value" value=".5"/>
-                </bean>
-            </list>
-        </property>
-    </bean>
-    <bean name="ZoomPrevious" class="org.geomajas.configuration.ToolInfo">
-        <property name="id" value="ZoomPrevious"/>
-    </bean>
-    <bean name="ZoomNext" class="org.geomajas.configuration.ToolInfo">
-        <property name="id" value="ZoomNext"/>
-    </bean>
-    <bean name="ZoomToRectangleMode" class="org.geomajas.configuration.ToolInfo">
-        <property name="id" value="ZoomToRectangleMode"/>
-    </bean>
-    <bean name="ZoomToSelection" class="org.geomajas.configuration.ToolInfo">
-        <property name="id" value="ZoomToSelection"/>
-    </bean>
-    <bean name="ZoomToMaximumExtent" class="org.geomajas.configuration.ToolInfo">
-        <property name="id" value="ZoomToMaximumExtent"/>
-        <property name="parameters">
-            <list>
-                <bean class="org.geomajas.configuration.Parameter">
-                    <property name="name" value="includeLayers"/>
-                    <property name="value" value="countries"/>
-                </bean>
-            </list>
-        </property>
-    </bean>
-    <bean name="PanToSelection" class="org.geomajas.configuration.ToolInfo">
-        <property name="id" value="PanToSelection"/>
-    </bean>
-    <bean name="PanMode" class="org.geomajas.configuration.ToolInfo">
-        <property name="id" value="PanMode"/>
-        <property name="parameters">
-            <list>
-                <bean class="org.geomajas.configuration.Parameter">
-                    <property name="name" value="hideLabelsOnDrag"/>
-                    <property name="value" value="true"/>
-                </bean>
-            </list>
-        </property>
-    </bean>
-    <bean name="DeselectAll" class="org.geomajas.configuration.ToolInfo">
-        <property name="id" value="DeselectAll"/>
-    </bean>
-    <bean name="MeasureDistanceMode" class="org.geomajas.configuration.ToolInfo">
-        <property name="id" value="MeasureDistanceMode"/>
-        <property name="parameters">
-            <list>
-                <bean class="org.geomajas.configuration.Parameter">
-                    <property name="name" value="simple"/>
-                    <property name="value" value="false"/>
-                </bean>
-                <bean class="org.geomajas.configuration.Parameter">
-                    <property name="name" value="useSnapHelp"/>
-                    <property name="value" value="true"/>
-                </bean>
-            </list>
-        </property>
-    </bean>
-    <bean name="FeatureInfoMode"  class="org.geomajas.configuration.ToolInfo">
-        <property name="id" value="FeatureInfoMode"/>
-    </bean>
-    <bean name="SelectionMode" class="org.geomajas.configuration.ToolInfo">
-        <property name="id" value="SelectionMode"/>
-        <property name="parameters">
-            <list>
-                <bean class="org.geomajas.configuration.Parameter">
-                    <property name="name" value="supportEditing"/>
-                    <property name="value" value="true"/>
-                </bean>
+	</bean>
+	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="roadsLayer">
+		<property name="layerInfo" ref="roadsInfo" />
+		<property name="label" value="Roads (editable - linestring)" />
+		<property name="visible" value="true" />
+		<property name="viewScaleMin" value="0" />
+		<property name="viewScaleMax" value="10" />
+		<property name="namedStyleInfo" ref="roadsStyleInfo" />
+		<property name="snappingRules">
+			<list>
+				<bean class="org.geomajas.configuration.SnappingRuleInfo">
+					<property name="distance" value="10" />
+					<property name="type" value="NEAREST_POINT" />
+					<property name="layerInfo" ref="roadsInfo" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="structuresLayer">
+		<property name="layerInfo" ref="structuresInfo" />
+		<property name="label" value="Structures (editable - polygon)" />
+		<property name="visible" value="true" />
+		<property name="viewScaleMin" value="0" />
+		<property name="viewScaleMax" value="10" />
+		<property name="namedStyleInfo" ref="structuresStyleInfo" />
+		<property name="snappingRules">
+			<list>
+				<bean class="org.geomajas.configuration.SnappingRuleInfo">
+					<property name="distance" value="10" />
+					<property name="type" value="NEAREST_POINT" />
+					<property name="layerInfo" ref="structuresInfo" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean name="ToolbarSeparator" class="org.geomajas.configuration.client.ClientToolInfo"/>
+
+	<bean name="ZoomIn" class="org.geomajas.configuration.client.ClientToolInfo">
+		<property name="parameters">
+			<list>
 				<bean class="org.geomajas.configuration.Parameter">
-					<property name="name" value="coverageRatio"/>
-					<property name="value" value="0.8"/>
+					<property name="name" value="delta" />
+					<property name="value" value="2" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+	<bean name="ZoomInMode" class="org.geomajas.configuration.client.ClientToolInfo">
+		<property name="parameters">
+			<list>
+				<bean class="org.geomajas.configuration.Parameter">
+					<property name="name" value="delta" />
+					<property name="value" value="2" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+	<bean name="ZoomOut" class="org.geomajas.configuration.client.ClientToolInfo">
+		<property name="parameters">
+			<list>
+				<bean class="org.geomajas.configuration.Parameter">
+					<property name="name" value="delta" />
+					<property name="value" value=".5" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+	<bean name="ZoomOutMode" class="org.geomajas.configuration.client.ClientToolInfo">
+		<property name="parameters">
+			<list>
+				<bean class="org.geomajas.configuration.Parameter">
+					<property name="name" value="delta" />
+					<property name="value" value=".5" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+	<bean name="ZoomPrevious" class="org.geomajas.configuration.client.ClientToolInfo"/>
+
+	<bean name="ZoomNext" class="org.geomajas.configuration.client.ClientToolInfo"/>
+
+	<bean name="ZoomToRectangleMode" class="org.geomajas.configuration.client.ClientToolInfo"/>
+
+	<bean name="ZoomToSelection" class="org.geomajas.configuration.client.ClientToolInfo"/>
+	
+	<bean name="ZoomToMaximumExtent" class="org.geomajas.configuration.client.ClientToolInfo">
+		<property name="parameters">
+			<list>
+				<bean class="org.geomajas.configuration.Parameter">
+					<property name="name" value="includeLayers" />
+					<property name="value" value="countries" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+	<bean name="PanToSelection" class="org.geomajas.configuration.client.ClientToolInfo"/>
+	<bean name="PanMode" class="org.geomajas.configuration.client.ClientToolInfo">
+		<property name="parameters">
+			<list>
+				<bean class="org.geomajas.configuration.Parameter">
+					<property name="name" value="hideLabelsOnDrag" />
+					<property name="value" value="true" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+	<bean name="DeselectAll" class="org.geomajas.configuration.client.ClientToolInfo"/>
+	<bean name="MeasureDistanceMode" class="org.geomajas.configuration.client.ClientToolInfo">
+		<property name="parameters">
+			<list>
+				<bean class="org.geomajas.configuration.Parameter">
+					<property name="name" value="simple" />
+					<property name="value" value="false" />
 				</bean>
 				<bean class="org.geomajas.configuration.Parameter">
-					<property name="name" value="priorityToSelectedLayer"/>
-					<property name="value" value="true"/>
+					<property name="name" value="useSnapHelp" />
+					<property name="value" value="true" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+	<bean name="FeatureInfoMode" class="org.geomajas.configuration.client.ClientToolInfo"/>
+	<bean name="SelectionMode" class="org.geomajas.configuration.client.ClientToolInfo">
+		<property name="parameters">
+			<list>
+				<bean class="org.geomajas.configuration.Parameter">
+					<property name="name" value="supportEditing" />
+					<property name="value" value="true" />
 				</bean>
 				<bean class="org.geomajas.configuration.Parameter">
-					<property name="name" value="pixelTolerance"/>
-					<property name="value" value="7"/>
+					<property name="name" value="coverageRatio" />
+					<property name="value" value="0.8" />
 				</bean>
-            </list>
-        </property>
-    </bean>
-    <bean name="MarkedEditMode" class="org.geomajas.configuration.ToolInfo">
-        <property name="id" value="MarkedEditMode"/>
-        <property name="parameters">
-            <list>
-                <bean class="org.geomajas.configuration.Parameter">
-                    <property name="name" value="useMarkings"/>
-                    <property name="value" value="true"/>
-                </bean>
-                <bean class="org.geomajas.configuration.Parameter">
-                    <property name="name" value="useSnapHelp"/>
-                    <property name="value" value="true"/>
-                </bean>
-                <bean class="org.geomajas.configuration.Parameter">
-                    <property name="name" value="allowHoles"/>
-                    <property name="value" value="false"/>
-                </bean>
-            </list>
-        </property>
-    </bean>
-    <bean name="EditMode" class="org.geomajas.configuration.ToolInfo">
-        <property name="id" value="EditMode"/>
-        <property name="parameters">
-            <list>
-                <bean class="org.geomajas.configuration.Parameter">
-                    <property name="name" value="useMarkings"/>
-                    <property name="value" value="false"/>
-                </bean>
-                <bean class="org.geomajas.configuration.Parameter">
-                    <property name="name" value="useSnapHelp"/>
-                    <property name="value" value="true"/>
-                </bean>
-                <bean class="org.geomajas.configuration.Parameter">
-                    <property name="name" value="allowHoles"/>
-                    <property name="value" value="true"/>
-                </bean>
-                <bean class="org.geomajas.configuration.Parameter">
-                    <property name="name" value="allowSelfIntersection"/>
-                    <property name="value" value="false"/>
-                </bean>
-            </list>
-        </property>
-    </bean>
-    <bean name="SplitPolygonMode" class="org.geomajas.configuration.ToolInfo">
-        <property name="id" value="SplitPolygonMode"/>
-    </bean>
-    <bean name="MergePolygonMode" class="org.geomajas.configuration.ToolInfo" >
-        <property name="id" value="MergePolygonMode"/>
-    </bean>
-    <bean name="NavigateMode" class="org.geomajas.configuration.ToolInfo" >
-        <property name="id" value="NavigateMode"/>
-    </bean>
-    <bean name="ShowDefaultPrint" class="org.geomajas.configuration.ToolInfo">
-        <property name="id" value="ShowDefaultPrint"/>
-        <property name="parameters">
-            <list>
-                <bean class="org.geomajas.configuration.Parameter">
-                    <property name="name" value="downloadMethod"/>
-                    <property name="value" value="0"/>
-                </bean>
-            </list>
-        </property>
-    </bean>
-    <bean name="PrintMode" class="org.geomajas.configuration.ToolInfo">
-        <property name="id" value="PrintMode"/>
-    </bean>
-    <bean name="LayerVisibleTool" class="org.geomajas.configuration.ToolInfo">
-        <property name="id" value="LayerVisibleTool"/>
-    </bean>
-    <bean name="LayerSnappingTool" class="org.geomajas.configuration.ToolInfo">
-        <property name="id" value="LayerSnappingTool"/>
-    </bean>
-    <bean name="LayerLabeledTool" class="org.geomajas.configuration.ToolInfo">
-        <property name="id" value="LayerLabeledTool"/>
-    </bean>
-    <bean name="ShowTableAction" class="org.geomajas.configuration.ToolInfo">
-        <property name="id" value="ShowTableAction"/>
-    </bean>
+				<bean class="org.geomajas.configuration.Parameter">
+					<property name="name" value="priorityToSelectedLayer" />
+					<property name="value" value="true" />
+				</bean>
+				<bean class="org.geomajas.configuration.Parameter">
+					<property name="name" value="pixelTolerance" />
+					<property name="value" value="7" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+	<bean name="MarkedEditMode" class="org.geomajas.configuration.client.ClientToolInfo">
+		<property name="parameters">
+			<list>
+				<bean class="org.geomajas.configuration.Parameter">
+					<property name="name" value="useMarkings" />
+					<property name="value" value="true" />
+				</bean>
+				<bean class="org.geomajas.configuration.Parameter">
+					<property name="name" value="useSnapHelp" />
+					<property name="value" value="true" />
+				</bean>
+				<bean class="org.geomajas.configuration.Parameter">
+					<property name="name" value="allowHoles" />
+					<property name="value" value="false" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+	<bean name="EditMode" class="org.geomajas.configuration.client.ClientToolInfo">
+		<property name="parameters">
+			<list>
+				<bean class="org.geomajas.configuration.Parameter">
+					<property name="name" value="useMarkings" />
+					<property name="value" value="false" />
+				</bean>
+				<bean class="org.geomajas.configuration.Parameter">
+					<property name="name" value="useSnapHelp" />
+					<property name="value" value="true" />
+				</bean>
+				<bean class="org.geomajas.configuration.Parameter">
+					<property name="name" value="allowHoles" />
+					<property name="value" value="true" />
+				</bean>
+				<bean class="org.geomajas.configuration.Parameter">
+					<property name="name" value="allowSelfIntersection" />
+					<property name="value" value="false" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+	<bean name="SplitPolygonMode" class="org.geomajas.configuration.client.ClientToolInfo"/>
+
+	<bean name="MergePolygonMode" class="org.geomajas.configuration.client.ClientToolInfo"/>
+
+	<bean name="NavigateMode" class="org.geomajas.configuration.client.ClientToolInfo"/>
+
+	<bean name="ShowDefaultPrint" class="org.geomajas.configuration.client.ClientToolInfo">
+		<property name="parameters">
+			<list>
+				<bean class="org.geomajas.configuration.Parameter">
+					<property name="name" value="downloadMethod" />
+					<property name="value" value="0" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+	<bean name="PrintMode" class="org.geomajas.configuration.client.ClientToolInfo"/>
+
+	<!-- LayerTree tools -->
+
+	<bean name="LayerVisibleTool" class="org.geomajas.configuration.client.ClientToolInfo"/>
+
+	<bean name="LayerSnappingTool" class="org.geomajas.configuration.client.ClientToolInfo"/>
+
+	<bean name="LayerLabeledTool" class="org.geomajas.configuration.client.ClientToolInfo"/>
+
+	<bean name="ShowTableAction" class="org.geomajas.configuration.client.ClientToolInfo"/>
+
+	<bean name="LayerRefreshAction" class="org.geomajas.configuration.client.ClientToolInfo"/>
 
 </beans>

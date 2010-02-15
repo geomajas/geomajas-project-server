@@ -24,7 +24,6 @@ package org.geomajas.extension.printing.command.print;
 
 import org.geomajas.command.Command;
 import org.geomajas.command.EmptyCommandRequest;
-import org.geomajas.configuration.ApplicationInfo;
 import org.geomajas.extension.printing.command.dto.DtoPrintTemplate;
 import org.geomajas.extension.printing.command.dto.PrintListTemplatesResponse;
 import org.geomajas.extension.printing.configuration.PrintConfiguration;
@@ -56,9 +55,6 @@ public class PrintListTemplatesCommand implements Command<EmptyCommandRequest, P
 	@Autowired
 	private ApplicationService runtime;
 
-	@Autowired
-	private ApplicationInfo application;
-
 	public PrintListTemplatesResponse getEmptyCommandResponse() {
 		return new PrintListTemplatesResponse();
 	}
@@ -73,7 +69,7 @@ public class PrintListTemplatesCommand implements Command<EmptyCommandRequest, P
 					template.decode();
 					// calculate the sizes (if not already calculated !)
 					SinglePageDocument document =
-							new SinglePageDocument(template.getPage(), application, runtime, getFilters());
+							new SinglePageDocument(template.getPage(), runtime, getFilters());
 					document.setLayoutOnly(true);
 					document.render();
 					// add to the result
@@ -106,7 +102,7 @@ public class PrintListTemplatesCommand implements Command<EmptyCommandRequest, P
 	private DtoPrintTemplate createDefault(String pagesize, boolean landscape) {
 		PrintTemplate template = PrintTemplate.createDefaultTemplate(pagesize, landscape);
 		// calculate the sizes (if not already calculated !)
-		SinglePageDocument document = new SinglePageDocument(template.getPage(), application, runtime, getFilters());
+		SinglePageDocument document = new SinglePageDocument(template.getPage(), runtime, getFilters());
 		document.setLayoutOnly(true);
 		document.render();
 		return template.toDto();

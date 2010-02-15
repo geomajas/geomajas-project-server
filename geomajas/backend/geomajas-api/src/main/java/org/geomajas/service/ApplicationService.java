@@ -22,7 +22,7 @@
  */
 package org.geomajas.service;
 
-import org.geomajas.configuration.MapInfo;
+import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.layer.Layer;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.VectorLayer;
@@ -52,12 +52,13 @@ public interface ApplicationService {
 	Layer<?> getLayer(String id);
 
 	/**
-	 * Get information about the map with given id.
+	 * Get information about the map with specified mapId in the application with the specified applicationId.
 	 *
-	 * @param id map id
-	 * @return {@link org.geomajas.configuration.MapInfo}
+	 * @param mapId map Id
+	 * @param applicationId  application id
+	 * @return {@link org.geomajas.configuration.client.ClientMapInfo}
 	 */
-	MapInfo getMap(String id);
+	ClientMapInfo getMap(String mapId, String applicationId);
 
 	/**
 	 * Get the {@link org.opengis.referencing.crs.CoordinateReferenceSystem} with given code.

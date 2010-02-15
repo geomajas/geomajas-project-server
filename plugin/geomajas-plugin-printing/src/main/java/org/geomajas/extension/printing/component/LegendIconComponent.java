@@ -24,7 +24,7 @@ package org.geomajas.extension.printing.component;
 
 import com.lowagie.text.Image;
 import com.lowagie.text.Rectangle;
-import org.geomajas.configuration.StyleInfo;
+import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.SymbolInfo;
 import org.geomajas.extension.printing.PdfContext;
 import org.geomajas.layer.LayerType;
@@ -45,7 +45,7 @@ public class LegendIconComponent extends BaseComponent {
 
 	private LayerType layerType;
 
-	private StyleInfo styleInfo;
+	private FeatureStyleInfo styleInfo;
 
 	public LegendIconComponent() {
 	}
@@ -66,11 +66,11 @@ public class LegendIconComponent extends BaseComponent {
 		this.layerType = layerType;
 	}
 
-	public StyleInfo getStyleInfo() {
+	public FeatureStyleInfo getStyleInfo() {
 		return styleInfo;
 	}
 
-	public void setStyleInfo(StyleInfo styleInfo) {
+	public void setStyleInfo(FeatureStyleInfo styleInfo) {
 		this.styleInfo = styleInfo;
 	}
 

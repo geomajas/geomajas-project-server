@@ -45,6 +45,11 @@ public class MapComponent extends BaseComponent {
 	/**
 	 * Map id
 	 */
+	private String applicationId;
+
+	/**
+	 * Map id
+	 */
 	private String mapId;
 
 	/**
@@ -109,6 +114,14 @@ public class MapComponent extends BaseComponent {
 
 	public void setMapId(String mapId) {
 		this.mapId = mapId;
+	}
+	
+	public String getApplicationId() {
+		return applicationId;
+	}
+	
+	public void setApplicationId(String applicationId) {
+		this.applicationId = applicationId;
 	}
 
 	public float getPpUnit() {

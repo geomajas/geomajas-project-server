@@ -22,52 +22,26 @@
  */
 package org.geomajas.command.configuration;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import org.apache.commons.lang.SerializationUtils;
 import org.geomajas.command.Command;
-import org.geomajas.configuration.ApplicationInfo;
-import org.geomajas.configuration.LayerInfo;
-import org.geomajas.configuration.MapInfo;
 import org.geomajas.command.dto.GetMapConfigurationRequest;
 import org.geomajas.command.dto.GetMapConfigurationResponse;
-import org.geomajas.geometry.Bbox;
-import org.geomajas.global.ExceptionCode;
-import org.geomajas.global.GeomajasException;
-import org.geomajas.layer.LayerException;
-import org.geomajas.service.DtoConverterService;
-import org.geomajas.service.GeoService;
-import org.geotools.geometry.DirectPosition2D;
-import org.geotools.geometry.jts.JTS;
-import org.geotools.referencing.CRS;
-import org.geotools.referencing.GeodeticCalculator;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.TransformException;
+import org.geomajas.configuration.client.ClientApplicationInfo;
+import org.geomajas.configuration.client.ClientMapInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
-
-import com.vividsolutions.jts.geom.Envelope;
 
 /**
  * This command fetches, and returns the initial application configuration for a specific MapWidget.
- *
+ * 
  * @author Pieter De Graef
  */
 @Component()
 public class GetMapConfigurationCommand implements Command<GetMapConfigurationRequest, GetMapConfigurationResponse> {
 
 	@Autowired
-	private ApplicationInfo application;
-
-	@Autowired
-	private DtoConverterService converterService;
-
-	@Autowired
-	private GeoService geoService;
-
-	private static double METER_PER_INCH = 0.0254;
+	private ApplicationContext context;
 
 	public GetMapConfigurationResponse getEmptyCommandResponse() {
 		return new GetMapConfigurationResponse();
@@ -75,71 +49,15 @@ public class GetMapConfigurationCommand implements Command<GetMapConfigurationRe
 
 	public void execute(GetMapConfigurationRequest request, GetMapConfigurationResponse response) throws Exception {
 		// @todo security, data should be filtered
-		String mapId = request.getMapId();
-		if (null == mapId) {
-			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "mapId");
-		}
-		for (MapInfo mapInfo : application.getMaps()) {
-			if (mapId.equals(mapInfo.getId())) {
-				response.setMapInfo(getClientMapInfo(mapInfo));
+		ClientApplicationInfo client = context.getBean(request.getApplicationId(), ClientApplicationInfo.class);
+		for (ClientMapInfo map : client.getMaps()) {
+			if (request.getMapId().equals(map.getId())) {
+				// clone it before modifying !
+				ClientMapInfo clone = (ClientMapInfo) SerializationUtils.clone(map);
+				// @todo security, data should be filtered
+				// ((ClientVectorLayerInfo)map.getLayers().get(0)).setCreatable(true);
+				response.setMapInfo(clone);
 			}
-		}
-	}
-
-	public MapInfo getClientMapInfo(MapInfo server) throws LayerException {
-		MapInfo client = server.clone();
-		client.setLayers(getClientLayers(server.getCrs(), server.getLayers()));
-		client.setUnitLength(getUnitLength(server.getCrs(), server.getInitialBounds()));
-		client.setPixelLength(METER_PER_INCH / client.getUnitLength() / application.getScreenDpi());
-		return client;
-	}
-
-	public List<LayerInfo> getClientLayers(String mapCrs, List<LayerInfo> serverLayers) throws LayerException {
-		List<LayerInfo> clientLayers = new ArrayList<LayerInfo>();
-		for (LayerInfo serverLayer : serverLayers) {
-			clientLayers.add(getClientLayer(mapCrs, serverLayer));
-		}
-		return clientLayers;
-	}
-
-	public LayerInfo getClientLayer(String mapCrs, LayerInfo server) throws LayerException {
-		LayerInfo client = server.clone();
-		client.setMaxExtent(getClientMaxExtent(mapCrs, server.getCrs(), server.getMaxExtent()));
-		return client;
-	}
-
-	public Bbox getClientMaxExtent(String mapCrsKey, String layerCrsKey, Bbox serverBbox) throws LayerException {
-		if (mapCrsKey.equals(layerCrsKey)) {
-			return serverBbox;
-		}
-		try {
-			CoordinateReferenceSystem mapCrs = CRS.decode(mapCrsKey);
-			CoordinateReferenceSystem layerCrs = CRS.decode(layerCrsKey);
-			Envelope serverEnvelope = converterService.toInternal(serverBbox);
-			MathTransform transformer = geoService.findMathTransform(layerCrs, mapCrs);
-			return converterService.toDto(JTS.transform(serverEnvelope, transformer));
-		} catch (FactoryException e) {
-			throw new LayerException(e, ExceptionCode.LAYER_CRS_INIT_PROBLEM);
-		} catch (TransformException e) {
-			throw new LayerException(e, ExceptionCode.LAYER_CRS_INIT_PROBLEM);
-		}
-	}
-
-	private double getUnitLength(String mapCrsKey, Bbox mapBounds) throws LayerException {
-		try {
-			if (null == mapBounds) {
-				throw new LayerException(ExceptionCode.MAP_MAX_EXTENT_MISSING);
-			}
-			CoordinateReferenceSystem crs = CRS.decode(mapCrsKey);
-			GeodeticCalculator calculator = new GeodeticCalculator(crs);
-			calculator.setStartingPosition(new DirectPosition2D(crs, mapBounds.getX(), mapBounds.getY()));
-			calculator.setDestinationPosition(new DirectPosition2D(crs, mapBounds.getMaxX(), mapBounds.getY()));
-			double distance = calculator.getOrthodromicDistance();
-			return distance / mapBounds.getWidth();
-		} catch (FactoryException e) {
-			throw new LayerException(e, ExceptionCode.LAYER_CRS_INIT_PROBLEM);
-		} catch (TransformException e) {
-			throw new LayerException(e, ExceptionCode.LAYER_CRS_INIT_PROBLEM);
 		}
 	}
 

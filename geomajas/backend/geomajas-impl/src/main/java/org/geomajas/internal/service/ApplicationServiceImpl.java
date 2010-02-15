@@ -22,9 +22,9 @@
  */
 package org.geomajas.internal.service;
 
-import org.geomajas.configuration.ApplicationInfo;
 import org.geomajas.configuration.LayerInfo;
-import org.geomajas.configuration.MapInfo;
+import org.geomajas.configuration.client.ClientApplicationInfo;
+import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.layer.Layer;
 import org.geomajas.layer.LayerException;
@@ -35,19 +35,20 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 /**
  * Container class which contains runtime information about the parameters and other information for Geomajas. Values
  * are injected using Spring.
- *
+ * 
  * @author Joachim Van der Auwera
  */
 @Component
 public class ApplicationServiceImpl implements ApplicationService {
 
 	@Autowired
-	private ApplicationInfo applicationInfo;
+	private ApplicationContext applicationContext;
 
 	public VectorLayer getVectorLayer(String id) {
 		Layer layer = getLayer(id);
@@ -61,7 +62,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 		if (null == id) {
 			return null;
 		}
-		for (Layer layer : applicationInfo.getLayers()) {
+		for (Layer layer : applicationContext.getBeansOfType(Layer.class).values()) {
 			LayerInfo li = layer.getLayerInfo();
 			if (null == li) {
 				throw new RuntimeException("Layer without LayerInfo found");
@@ -73,13 +74,17 @@ public class ApplicationServiceImpl implements ApplicationService {
 		return null;
 	}
 
-	public MapInfo getMap(String id) {
-		if (null == id) {
+	public ClientMapInfo getMap(String mapId, String applicationId) {
+		if (null == mapId || null == applicationId) {
 			return null;
 		}
-		for (MapInfo map : applicationInfo.getMaps()) {
-			if (id.equals(map.getId())) {
-				return map;
+		ClientApplicationInfo application = (ClientApplicationInfo) applicationContext.getBean(applicationId,
+				ClientApplicationInfo.class);
+		if (application != null) {
+			for (ClientMapInfo map : application.getMaps()) {
+				if (mapId.equals(map.getId())) {
+					return map;
+				}
 			}
 		}
 		return null;

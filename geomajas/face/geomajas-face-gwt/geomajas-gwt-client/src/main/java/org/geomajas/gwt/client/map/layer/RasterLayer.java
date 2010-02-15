@@ -22,7 +22,7 @@
  */
 package org.geomajas.gwt.client.map.layer;
 
-import org.geomajas.configuration.RasterLayerInfo;
+import org.geomajas.configuration.client.ClientRasterLayerInfo;
 import org.geomajas.gwt.client.gfx.PainterVisitor;
 import org.geomajas.gwt.client.map.MapModel;
 import org.geomajas.gwt.client.map.cache.tile.RasterTile;
@@ -36,7 +36,7 @@ import org.geomajas.gwt.client.spatial.Bbox;
  *
  * @author Jan De Moerloose
  */
-public class RasterLayer extends AbstractLayer<RasterLayerInfo> {
+public class RasterLayer extends AbstractLayer<ClientRasterLayerInfo> {
 
 	private RasterLayerStore store;
 
@@ -45,7 +45,7 @@ public class RasterLayer extends AbstractLayer<RasterLayerInfo> {
 	 *
 	 * @param mapModel The model of layers and features behind a map. This layer will be a part of this model.
 	 */
-	public RasterLayer(MapModel mapModel, RasterLayerInfo layerInfo) {
+	public RasterLayer(MapModel mapModel, ClientRasterLayerInfo layerInfo) {
 		super(mapModel, layerInfo);
 		store = new DefaultRasterLayerStore(this);
 	}

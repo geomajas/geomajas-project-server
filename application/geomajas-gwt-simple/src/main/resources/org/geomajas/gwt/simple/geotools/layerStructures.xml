@@ -32,69 +32,62 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 
 
 	<bean name="structuresInfo" class="org.geomajas.configuration.VectorLayerInfo">
-		<property name="id" value="structures"/>
-		<property name="label" value="Structures (editable - polygon)"/>
-		<property name="visible" value="true"/>
-		<property name="layerType" value="MULTIPOLYGON"/>
-		<property name="crs" value="EPSG:900913"/>
-		<property name="viewScaleMin" value="0"/>
-		<property name="viewScaleMax" value="10"/>
+		<property name="id" value="structures" />
+		<property name="layerType" value="MULTIPOLYGON" />
+		<property name="crs" value="EPSG:900913" />
 		<property name="maxExtent">
 			<bean class="org.geomajas.geometry.Bbox">
-				<property name="x" value="505500"/>
-				<property name="y" value="6588000"/>
-				<property name="width" value="2000"/>
-				<property name="height" value="2000"/>
+				<property name="x" value="505500" />
+				<property name="y" value="6588000" />
+				<property name="width" value="2000" />
+				<property name="height" value="2000" />
 			</bean>
 		</property>
-		<property name="maxTileLevel" value="20"/>
-		<property name="labelAttribute">
-			<bean class="org.geomajas.configuration.LabelAttributeInfo">
-				<property name="labelAttributeName" value="id"/>
-				<property name="fontStyle">
-					<bean class="org.geomajas.configuration.StyleInfo">
-						<property name="fillColor" value="#66AA22"/>
-						<property name="fillOpacity" value="1"/>
-					</bean>
-				</property>
-				<property name="backgroundStyle">
-					<bean class="org.geomajas.configuration.StyleInfo">
-						<property name="fillColor" value="#000000"/>
-						<property name="fillOpacity" value=".7"/>
-						<property name="strokeColor" value="#668822"/>
-						<property name="strokeOpacity" value="1"/>
-						<property name="strokeWidth" value="1"/>
-					</bean>
-				</property>
-			</bean>
-		</property>
-		<property name="featureInfo" ref="structuresFeatureInfo"/>
-		<property name="snappingRules">
+		<property name="maxTileLevel" value="20" />
+		<property name="featureInfo" ref="structuresFeatureInfo" />
+		<property name="namedStyleInfos">
 			<list>
-				<bean class="org.geomajas.configuration.SnappingRuleInfo">
-					<property name="distance" value="10"/>
-					<property name="type" value="NEAREST_POINT"/>
-					<property name="layer" value="structures"/>
-				</bean>
-			</list>
-		</property>
-		<property name="styleDefinitions">
-			<list>
-				<bean class="org.geomajas.configuration.StyleInfo">
-					<property name="id" value="1"/>
-					<property name="name" value="Structures"/>
-					<property name="fillColor" value="#66AA22"/>
-					<property name="fillOpacity" value=".6"/>
-					<property name="strokeColor" value="#668822"/>
-					<property name="strokeOpacity" value="1"/>
-					<property name="strokeWidth" value="1"/>
+				<bean class="org.geomajas.configuration.NamedStyleInfo" name="structures">
+					<property name="featureStyles">
+						<list>
+							<bean class="org.geomajas.configuration.FeatureStyleInfo">
+								<property name="id" value="1" />
+								<property name="name" value="Structures" />
+								<property name="fillColor" value="#66AA22" />
+								<property name="fillOpacity" value=".6" />
+								<property name="strokeColor" value="#668822" />
+								<property name="strokeOpacity" value="1" />
+								<property name="strokeWidth" value="1" />
+							</bean>
+						</list>
+					</property>
+					<property name="labelStyle">
+						<bean class="org.geomajas.configuration.LabelStyleInfo">
+							<property name="labelAttributeName" value="id" />
+							<property name="fontStyle">
+								<bean class="org.geomajas.configuration.FeatureStyleInfo">
+									<property name="fillColor" value="#66AA22" />
+									<property name="fillOpacity" value="1" />
+								</bean>
+							</property>
+							<property name="backgroundStyle">
+								<bean class="org.geomajas.configuration.FeatureStyleInfo">
+									<property name="fillColor" value="#000000" />
+									<property name="fillOpacity" value=".7" />
+									<property name="strokeColor" value="#668822" />
+									<property name="strokeOpacity" value="1" />
+									<property name="strokeWidth" value="1" />
+								</bean>
+							</property>
+						</bean>
+					</property>
 				</bean>
 			</list>
 		</property>
 	</bean>
 
 	<bean class="org.geomajas.configuration.FeatureInfo" name="structuresFeatureInfo">
-		<property name="dataSourceName" value="structures"/>
+		<property name="dataSourceName" value="structures" />
 		<property name="identifier">
 			<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
 				<property name="label" value="gid" />
@@ -104,8 +97,8 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		</property>
 		<property name="geometryType">
 			<bean class="org.geomajas.configuration.GeometricAttributeInfo">
-				<property name="name" value="the_geom"/>
-				<property name="editable" value="true"/>
+				<property name="name" value="geometry" />
+				<property name="editable" value="true" />
 			</bean>
 		</property>
 		<property name="attributes">
@@ -116,63 +109,63 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 					<property name="type" value="LONG" />
 				</bean>
 				<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
-					<property name="label" value="Area"/>
-					<property name="name" value="area"/>
-					<property name="editable" value="true"/>
-					<property name="identifying" value="true"/>
-					<property name="type" value="FLOAT"/>
+					<property name="label" value="Area" />
+					<property name="name" value="area" />
+					<property name="editable" value="true" />
+					<property name="identifying" value="true" />
+					<property name="type" value="FLOAT" />
 					<property name="validator">
-						<bean class="org.geomajas.configuration.ValidatorInfo">
+						<bean class="org.geomajas.configuration.validation.ValidatorInfo">
 							<property name="constraints">
 								<list>
-									<bean class="org.geomajas.configuration.DecimalMinConstraintInfo">
-										<property name="value" value="0"/>
+									<bean class="org.geomajas.configuration.validation.DecimalMinConstraintInfo">
+										<property name="value" value="0" />
 									</bean>
 								</list>
 							</property>
-							<property name="toolTip" value="Area you may wish to fill in."/>
+							<property name="toolTip" value="Area you may wish to fill in." />
 						</bean>
 					</property>
 				</bean>
 				<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
-					<property name="label" value="Perimeter"/>
-					<property name="name" value="perimeter"/>
-					<property name="editable" value="true"/>
-					<property name="identifying" value="true"/>
-					<property name="type" value="DOUBLE"/>
+					<property name="label" value="Perimeter" />
+					<property name="name" value="perimeter" />
+					<property name="editable" value="true" />
+					<property name="identifying" value="true" />
+					<property name="type" value="DOUBLE" />
 				</bean>
 				<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
-					<property name="label" value="Type"/>
-					<property name="name" value="type"/>
-					<property name="editable" value="true"/>
-					<property name="identifying" value="false"/>
-					<property name="type" value="STRING"/>
+					<property name="label" value="Type" />
+					<property name="name" value="type" />
+					<property name="editable" value="true" />
+					<property name="identifying" value="false" />
+					<property name="type" value="STRING" />
 					<property name="validator">
-						<bean class="org.geomajas.configuration.ValidatorInfo">
-							<property name="toolTip" value="The type of structure. Will be used as label."/>
+						<bean class="org.geomajas.configuration.validation.ValidatorInfo">
+							<property name="toolTip" value="The type of structure. Will be used as label." />
 						</bean>
 					</property>
 				</bean>
 				<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
-					<property name="label" value="Image"/>
-					<property name="name" value="image"/>
-					<property name="editable" value="true"/>
-					<property name="identifying" value="true"/>
-					<property name="type" value="IMGURL"/>
+					<property name="label" value="Image" />
+					<property name="name" value="image" />
+					<property name="editable" value="true" />
+					<property name="identifying" value="true" />
+					<property name="type" value="IMGURL" />
 				</bean>
 				<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
-					<property name="label" value="Cost"/>
-					<property name="name" value="cost"/>
-					<property name="editable" value="true"/>
-					<property name="identifying" value="true"/>
-					<property name="type" value="CURRENCY"/>
+					<property name="label" value="Cost" />
+					<property name="name" value="cost" />
+					<property name="editable" value="true" />
+					<property name="identifying" value="true" />
+					<property name="type" value="CURRENCY" />
 				</bean>
 				<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
-					<property name="label" value="For sale?"/>
-					<property name="name" value="forsale"/>
-					<property name="editable" value="true"/>
-					<property name="identifying" value="true"/>
-					<property name="type" value="BOOLEAN"/>
+					<property name="label" value="For sale?" />
+					<property name="name" value="forsale" />
+					<property name="editable" value="true" />
+					<property name="identifying" value="true" />
+					<property name="type" value="BOOLEAN" />
 				</bean>
 			</list>
 		</property>

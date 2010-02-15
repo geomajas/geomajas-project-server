@@ -271,7 +271,7 @@ public class BeanFeatureModel implements FeatureModel {
 		} else if (parentAttribute instanceof AssociationAttributeInfo) {
 			// If the parent is an association:
 			AssociationAttributeInfo association = (AssociationAttributeInfo) parentAttribute;
-			for (AttributeInfo attr : association.getFeatureInfo().getAttributes()) {
+			for (AttributeInfo attr : association.getFeature().getAttributes()) {
 				if (attr.getName().equals(properties[0])) {
 					attribute = attr;
 					break;
@@ -359,7 +359,7 @@ public class BeanFeatureModel implements FeatureModel {
 			} else {
 				// update
 				Object oldChild = childMap.get(id);
-				List<AttributeInfo> attribs = aso.getFeatureInfo().getAttributes();
+				List<AttributeInfo> attribs = aso.getFeature().getAttributes();
 				for (AttributeInfo attrib : attribs) {
 					Object newAttrib = readProperty(newChild, attrib.getName());
 					writeProperty(oldChild, newAttrib, attrib.getName());

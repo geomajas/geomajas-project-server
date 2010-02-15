@@ -42,7 +42,7 @@ public class AttributeBaseInfo implements Serializable {
 	 * This is also the name which is used to identify the attribute at the data level and
 	 * is assumed to be unique across the attributes for the feature.
 	 * <p/>
-	 * It depends on the layer whether an attribute name is case dependend or independent.
+	 * It depends on the layer whether an attribute name is case dependent or independent.
 	 *
 	 * @return attribute name
 	 */

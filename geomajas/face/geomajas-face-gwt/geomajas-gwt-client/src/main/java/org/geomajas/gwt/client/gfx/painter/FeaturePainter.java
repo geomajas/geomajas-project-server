@@ -23,7 +23,7 @@
 
 package org.geomajas.gwt.client.gfx.painter;
 
-import org.geomajas.configuration.StyleInfo;
+import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.gwt.client.gfx.GraphicsContext;
 import org.geomajas.gwt.client.gfx.Paintable;
 import org.geomajas.gwt.client.gfx.Painter;
@@ -141,9 +141,9 @@ public class FeaturePainter implements Painter {
 	// Private methods:
 
 	private ShapeStyle createStyleForFeature(Feature feature) {
-		StyleInfo styleInfo = null;
-		for (StyleInfo style : feature.getLayer().getLayerInfo().getStyleDefinitions()) {
-			if (feature.getStyleId() == style.getId()) {
+		FeatureStyleInfo styleInfo = null;
+		for (FeatureStyleInfo style : feature.getLayer().getLayerInfo().getNamedStyleInfo().getFeatureStyles()) {
+			if (feature.getStyleId() == style.getIndex()) {
 				styleInfo = style;
 				break;
 			}

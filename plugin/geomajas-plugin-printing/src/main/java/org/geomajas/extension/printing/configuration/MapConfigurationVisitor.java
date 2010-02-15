@@ -26,11 +26,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.geomajas.configuration.LayerInfo;
-import org.geomajas.configuration.MapInfo;
-import org.geomajas.configuration.RasterLayerInfo;
-import org.geomajas.configuration.StyleInfo;
-import org.geomajas.configuration.VectorLayerInfo;
+import org.geomajas.configuration.client.ClientLayerInfo;
+import org.geomajas.configuration.client.ClientMapInfo;
+import org.geomajas.configuration.client.ClientRasterLayerInfo;
+import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.extension.printing.component.LegendComponent;
 import org.geomajas.extension.printing.component.MapComponent;
 import org.geomajas.extension.printing.component.RasterLayerComponent;
@@ -68,13 +67,12 @@ public class MapConfigurationVisitor extends TopDownVisitor {
 	@Override
 	public void visit(LegendComponent legend) {
 		legend.clearItems();
-		String mapId = legend.getMapId();
-		MapInfo map = runtime.getMap(mapId);
-		for (LayerInfo info : map.getLayers()) {
-			if (info instanceof VectorLayerInfo) {
-				legend.addVectorLayer((VectorLayerInfo) info);
-			} else if (info instanceof RasterLayerInfo) {
-				legend.addRasterLayer((RasterLayerInfo) info);
+		ClientMapInfo map = runtime.getMap(legend.getMapId(), legend.getApplicationId());
+		for (ClientLayerInfo info : map.getLayers()) {
+			if (info instanceof ClientVectorLayerInfo) {
+				legend.addVectorLayer((ClientVectorLayerInfo) info);
+			} else if (info instanceof ClientRasterLayerInfo) {
+				legend.addRasterLayer((ClientRasterLayerInfo) info);
 			}
 		}
 	}
@@ -82,20 +80,18 @@ public class MapConfigurationVisitor extends TopDownVisitor {
 	@Override
 	public void visit(MapComponent mapComponent) {
 		mapComponent.clearLayers();
-		String mapId = mapComponent.getMapId();
-		MapInfo map = runtime.getMap(mapId);
-		List<LayerInfo> layers = new ArrayList<LayerInfo>(map.getLayers());
+		ClientMapInfo map = runtime.getMap(mapComponent.getMapId(), mapComponent.getApplicationId());
+		List<ClientLayerInfo> layers = new ArrayList<ClientLayerInfo>(map.getLayers());
 		Collections.reverse(layers);
-		for (LayerInfo info : layers) {
-			if (info instanceof VectorLayerInfo) {
+		for (ClientLayerInfo info : layers) {
+			if (info instanceof ClientVectorLayerInfo) {
 				VectorLayerComponent comp = new VectorLayerComponent(geoService, filterCreator, layerService);
 				comp.setLabelsVisible(false);
 				comp.setLayerId(info.getId());
-				List<StyleInfo> sdef = ((VectorLayerInfo) info).getStyleDefinitions();
-				comp.setStyleDefinitions(sdef.toArray(new StyleInfo[sdef.size()]));
+				comp.setStyleInfo(((ClientVectorLayerInfo) info).getNamedStyleInfo());
 				comp.setVisible(true);
 				mapComponent.addComponent(0, comp);
-			} else if (info instanceof RasterLayerInfo) {
+			} else if (info instanceof ClientRasterLayerInfo) {
 				RasterLayerComponent comp = new RasterLayerComponent();
 				comp.setLayerId(info.getId());
 				comp.setVisible(true);

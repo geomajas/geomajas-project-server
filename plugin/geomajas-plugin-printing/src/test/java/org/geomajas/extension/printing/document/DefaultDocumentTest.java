@@ -30,7 +30,6 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
-import org.geomajas.configuration.ApplicationInfo;
 import org.geomajas.extension.printing.component.PageComponent;
 import org.geomajas.extension.printing.configuration.DefaultConfigurationVisitor;
 import org.geomajas.service.ApplicationService;
@@ -46,8 +45,6 @@ import com.vividsolutions.jts.geom.Coordinate;
 
 public class DefaultDocumentTest {
 
-	private ApplicationInfo application;
-
 	private ApplicationService runtime;
 
 	private GeoService geoService;
@@ -62,7 +59,6 @@ public class DefaultDocumentTest {
 				"org/geomajas/spring/geomajasContext.xml", "org/geomajas/testdata/layerBluemarble.xml",
 				"org/geomajas/testdata/layerCountries.xml", "org/geomajas/testdata/simplemixedContext.xml" });
 		// load the configuration (context-wide object);
-		application = applicationContext.getBean("application", ApplicationInfo.class);
 		runtime = applicationContext.getBean("service.ApplicationService", ApplicationService.class);
 		geoService = applicationContext.getBean("service.GeoService", GeoService.class);
 		filterCreator = applicationContext.getBean("service.FilterService", FilterService.class);
@@ -71,8 +67,8 @@ public class DefaultDocumentTest {
 
 	@Test
 	public void testRender() throws Exception {
-		DefaultDocument document = new DefaultDocument("A4", application, runtime, null, getDefaultVisitor(-31.44,
-				-37.43, 89.83f), geoService, filterCreator, layerService);
+		DefaultDocument document = new DefaultDocument("A4", runtime, null, getDefaultVisitor(-31.44, -37.43, 80.83f),
+				geoService, filterCreator, layerService);
 		document.render();
 
 		JAXBContext context = JAXBContext.newInstance("org.geomajas.extension.printing.component", getClass()
@@ -86,7 +82,7 @@ public class DefaultDocumentTest {
 		Object result = u.unmarshal(new StringReader(baos.toString()));
 		PageComponent pageCopy = (PageComponent) result;
 
-		SinglePageDocument doc = new SinglePageDocument(pageCopy, application, runtime, null);
+		SinglePageDocument doc = new SinglePageDocument(pageCopy, runtime, null);
 		doc.render();
 		FileOutputStream fo = new FileOutputStream("target/test.pdf");
 		doc.getOutputStream().writeTo(fo);
@@ -127,6 +123,7 @@ public class DefaultDocumentTest {
 	private DefaultConfigurationVisitor getDefaultVisitor(double x, double y, float widthInUnits) {
 		// 842, 595
 		DefaultConfigurationVisitor config = new DefaultConfigurationVisitor();
+		config.setApplicationId("application");
 		config.setMapId("mainMap");
 		config.setMapRasterResolution(72);
 		config.setMapPpUnit(822 / widthInUnits);

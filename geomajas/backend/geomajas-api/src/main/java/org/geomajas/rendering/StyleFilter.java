@@ -22,7 +22,7 @@
  */
 package org.geomajas.rendering;
 
-import org.geomajas.configuration.StyleInfo;
+import org.geomajas.configuration.FeatureStyleInfo;
 import org.opengis.filter.Filter;
 
 /**
@@ -33,11 +33,6 @@ import org.opengis.filter.Filter;
  * @author Pieter De Graef
  */
 public interface StyleFilter {
-
-	/**
-	 * Only needed in case no LayerStyleDefinition is given in the constructor.
-	 */
-	int DEFAULT_STYLE_ID = 9999;
 
 	/**
 	 * Return the opengis filter implementation coupled to a style.
@@ -51,5 +46,5 @@ public interface StyleFilter {
 	 *
 	 * @return style info
 	 */
-	StyleInfo getStyleDefinition();
+	FeatureStyleInfo getStyleDefinition();
 }

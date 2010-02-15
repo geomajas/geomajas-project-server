@@ -24,6 +24,8 @@ package org.geomajas.configuration;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * Snapping rule configuration information.
  *
@@ -43,9 +45,11 @@ public class SnappingRuleInfo implements Serializable {
 
 	private double distance;
 
+	@NotNull
 	private SnappingType type;
 
-	private String layer;
+	@NotNull
+	private VectorLayerInfo layerInfo;
 
 	public SnappingRuleInfo() {
 	}
@@ -66,11 +70,11 @@ public class SnappingRuleInfo implements Serializable {
 		this.type = type;
 	}
 
-	public String getLayer() {
-		return layer;
+	public VectorLayerInfo getLayerInfo() {
+		return layerInfo;
 	}
 
-	public void setLayer(String layer) {
-		this.layer = layer;
+	public void setLayerInfo(VectorLayerInfo layer) {
+		this.layerInfo = layer;
 	}
 }

@@ -1,21 +1,16 @@
 package org.geomajas.gwt.client.spatial.snapping;
 
-import org.geomajas.configuration.ApplicationInfo;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.geomajas.configuration.SnappingRuleInfo;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.spatial.geometry.Geometry;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class SnappingModeTest {
 
 	private static final String SHAPE_FILE = "org/geomajas/testdata/shapes/cities_world/cities.shp";
-
-	@Autowired
-	private ApplicationInfo application;
 
 	private List<Geometry> geometries = new ArrayList<Geometry>();
 

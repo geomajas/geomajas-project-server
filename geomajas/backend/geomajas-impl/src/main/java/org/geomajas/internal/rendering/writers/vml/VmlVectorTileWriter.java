@@ -23,7 +23,7 @@
 
 package org.geomajas.internal.rendering.writers.vml;
 
-import org.geomajas.configuration.StyleInfo;
+import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.internal.layer.feature.InternalFeatureImpl;
 import org.geomajas.internal.layer.tile.InternalTileImpl;
@@ -55,7 +55,7 @@ public class VmlVectorTileWriter implements GraphicsWriter {
 		String style = null;
 		for (org.geomajas.layer.feature.InternalFeature f : tile.getFeatures()) {
 			InternalFeatureImpl feature = (InternalFeatureImpl) f;
-			String nextStyle = feature.getStyleInfo().getId() + "";
+			String nextStyle = feature.getStyleInfo().getIndex() + "";
 			if (style == null || !style.equals(nextStyle)) {
 				if (style != null) {
 					document.closeElement();
@@ -79,7 +79,7 @@ public class VmlVectorTileWriter implements GraphicsWriter {
 					// document.writeAttribute("filled", "t");
 					// document.writeAttribute("stroked", "t");
 					document.writeAttribute("coordsize", coordWidth + "," + coordHeight);
-					StyleInfo info = feature.getStyleInfo();
+					FeatureStyleInfo info = feature.getStyleInfo();
 					document.writeAttribute("fillcolor", info.getFillColor());
 					document.writeAttribute("strokecolor", info.getStrokeColor());
 					document.writeAttribute("strokeweight", info.getStrokeWidth() + "px");

@@ -22,19 +22,20 @@
  */
 package org.geomajas.extension.printing.component;
 
-import org.geomajas.common.parser.FontAdapter;
-import org.geomajas.configuration.RasterLayerInfo;
-import org.geomajas.configuration.StyleInfo;
-import org.geomajas.configuration.VectorLayerInfo;
-import org.geomajas.extension.printing.PdfContext;
-import org.geomajas.extension.printing.configuration.PrintTemplate;
+import java.awt.Font;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
-import java.awt.Font;
-import java.util.ArrayList;
-import java.util.List;
+
+import org.geomajas.common.parser.FontAdapter;
+import org.geomajas.configuration.client.ClientRasterLayerInfo;
+import org.geomajas.configuration.client.ClientVectorLayerInfo;
+import org.geomajas.configuration.FeatureStyleInfo;
+import org.geomajas.extension.printing.PdfContext;
+import org.geomajas.extension.printing.configuration.PrintTemplate;
 
 /**
  * ???
@@ -44,6 +45,11 @@ import java.util.List;
 @XmlRootElement
 public class LegendComponent extends BaseComponent {
 
+	/**
+	 * Application id
+	 */
+	private String applicationId;
+	
 	/**
 	 * Map id
 	 */
@@ -127,6 +133,15 @@ public class LegendComponent extends BaseComponent {
 	public void setMapId(String mapId) {
 		this.mapId = mapId;
 	}
+	
+	public String getApplicationId() {
+		return applicationId;
+	}
+
+	
+	public void setApplicationId(String applicationId) {
+		this.applicationId = applicationId;
+	}
 
 	/**
 	 * Resets cyclic references like child -> parent relationship.
@@ -159,10 +174,10 @@ public class LegendComponent extends BaseComponent {
 		}
 	}
 
-	public void addVectorLayer(VectorLayerInfo info) {
+	public void addVectorLayer(ClientVectorLayerInfo info) {
 		String label = info.getLabel();
-		List<StyleInfo> defs = info.getStyleDefinitions();
-		for (StyleInfo styleDefinition : defs) {
+		List<FeatureStyleInfo> defs = info.getNamedStyleInfo().getFeatureStyles();
+		for (FeatureStyleInfo styleDefinition : defs) {
 			String text = "";
 			if (defs.size() > 1) {
 				text = label + "(" + styleDefinition.getName() + ")";
@@ -174,7 +189,7 @@ public class LegendComponent extends BaseComponent {
 		}
 	}
 
-	public void addRasterLayer(RasterLayerInfo info) {
+	public void addRasterLayer(ClientRasterLayerInfo info) {
 		LegendItemComponent item = new LegendItemComponent(null, info.getLabel(), info.getLayerType(),
 				getFont());
 		addComponent(item);

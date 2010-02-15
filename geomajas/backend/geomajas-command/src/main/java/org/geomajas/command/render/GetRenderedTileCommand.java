@@ -23,7 +23,6 @@
 package org.geomajas.command.render;
 
 import org.geomajas.command.Command;
-import org.geomajas.configuration.ApplicationInfo;
 import org.geomajas.command.dto.GetRenderedTileRequest;
 import org.geomajas.command.dto.GetRenderedTileResponse;
 import org.geomajas.global.ExceptionCode;
@@ -57,9 +56,6 @@ public class GetRenderedTileCommand implements Command<GetRenderedTileRequest, G
 	private ApplicationService runtimeParameters;
 
 	@Autowired
-	private ApplicationInfo application;
-
-	@Autowired
 	private RenderingStrategyFactory renderingStrategyFactory;
 
 	@Autowired
@@ -74,7 +70,7 @@ public class GetRenderedTileCommand implements Command<GetRenderedTileRequest, G
 
 	public void execute(GetRenderedTileRequest request, GetRenderedTileResponse response) throws Exception {
 		String layerId = request.getLayerId();
-		log.debug("request start layer {}, crs {}", layerId, request.getCrs());
+		log.info("request start layer {}, crs {}", layerId, request.getCrs());
 		if (null == layerId) {
 			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "layer");
 		}
@@ -82,6 +78,7 @@ public class GetRenderedTileCommand implements Command<GetRenderedTileRequest, G
 			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "crs");
 		}
 		if (!securityContext.isLayerVisible(layerId)) {
+			log.info("layer layer {}, crs {} not visible", layerId, request.getCrs());
 			throw new GeomajasSecurityException(ExceptionCode.LAYER_NOT_VISIBLE, layerId);
 		}
 
@@ -90,7 +87,7 @@ public class GetRenderedTileCommand implements Command<GetRenderedTileRequest, G
 			throw new GeomajasException(ExceptionCode.LAYER_NOT_FOUND, request.getLayerId());
 		}
 		RenderingStrategy strategy = renderingStrategyFactory.createRenderingStrategy(vLayer.getLayerInfo(), request);
-		InternalTile tile = strategy.paint(request, application);
+		InternalTile tile = strategy.paint(request);
 		response.setTile(converter.toDto(tile));
 	}
 }

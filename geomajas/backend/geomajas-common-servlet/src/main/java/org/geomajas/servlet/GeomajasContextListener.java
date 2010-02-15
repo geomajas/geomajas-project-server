@@ -22,14 +22,14 @@
  */
 package org.geomajas.servlet;
 
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-import java.util.ArrayList;
-import java.util.StringTokenizer;
+
+import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
  * Initialise the servlet context. This assures the Spring application context is created and stored in the servlet
@@ -65,13 +65,10 @@ public class GeomajasContextListener implements ServletContextListener {
 				allContextLocations.add(st.nextToken());
 			}
 		}
-		try {
-			ApplicationContext applicationContext = new ClassPathXmlApplicationContext(allContextLocations
-					.toArray((new String[allContextLocations.size()])));
-			ApplicationContextUtils.setApplicationContext(servletContext, applicationContext);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext();
+		applicationContext.setConfigLocations(allContextLocations.toArray((new String[allContextLocations.size()])));
+		applicationContext.refresh();
+		ApplicationContextUtils.setApplicationContext(servletContext, applicationContext);
 	}
 
 	/**

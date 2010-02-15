@@ -53,12 +53,10 @@ dojo.declare("VectorLayer", [LayerTreeNode], {
 		this.labeled = false;
 		this.editPermissions = null;
 
-		this.labelAttribute = null;
-		this.labelFontStyle = null;
+		this.namedStyle = null;
 		this.featureType = null;
 
 		this.snappingRules = new dojox.collections.ArrayList();
-		this.styles = new dojox.collections.ArrayList();
 
 		this.workflowHandler = new WorkflowHandler();
 
@@ -85,30 +83,25 @@ dojo.declare("VectorLayer", [LayerTreeNode], {
 		dojo.connect(this, "setLabeled", dojo.hitch(this, "_onSetLabeled"));
 	},
 
-	addStyle : function (style) {
-		this.styles.add (style);
+	addStyle : function (/*FeatureStyleInfo*/ style) {
+		this.namedStyle.addStyle(style);
 	},
 	
 	replaceStyle : function (style){
-		var styleArray = this.styles.toArray();
-		for(var i = 0; i < styleArray.length; i++){
-			if(styleArray[i].getName() == style.getName()){
-				this.styles.removeAt(i);
-				this.styles.insert(i,style);
-				return;
-			}
-		}
-		this.styles.insert(0,style);
+		this.namedStyle.replaceStyle(style);
 	},
 	
-	getStyleById : function (id) {
-		var styleArray = this.styles.toArray();
-		for(var i = 0; i < styleArray.length; i++){
-			if(styleArray[i].getId() == id){
-				return styleArray[i].getStyle();
-			}
+	getStyleByIndex : function (index) {
+		var s = this.namedStyle.getStyleByIndex(index);
+		if(s != null) {
+			return s.getStyle();
+		} else {
+			return this.getDefaultStyle();
 		}
-		return this.getDefaultStyle();
+	},
+	
+	getLabelFontStyle : function() {
+		return this.namedStyle.getLabelStyle().getFontStyle();
 	},
 	
 	getLayerId : function(){
@@ -225,12 +218,12 @@ dojo.declare("VectorLayer", [LayerTreeNode], {
 		this.minViewScale = minViewScale;
 	},
 
-	getLabelAttribute : function () {
-		return this.labelAttribute;
+	getLabelStyle : function () {
+		return this.namedStyle.getLabelStyle();
 	},
 
-	setLabelAttribute : function (labelAttribute) {
-		this.labelAttribute = labelAttribute;
+	setLabelStyle : function (labelStyle) {
+		this.namedStyle.setLabelStyle(labelStyle);
 	},
 	
 	getEditPermissions : function () {
@@ -257,13 +250,21 @@ dojo.declare("VectorLayer", [LayerTreeNode], {
 		this.snappingRules = snappingRules;
 	},
 
-	getStyles : function () {
-		return this.styles;
+	getNamedStyle : function () {
+		return this.namedStyle;
 	},
 
-	setStyles : function (styles) {
-		this.styles = styles;
+	setNamedStyle : function (namedStyle) {
+		this.namedStyle = namedStyle;
 	},
+	
+	getStyles : function () {
+		return this.namedStyle.getStyles();
+	},
+	
+	getStyleByIndex : function (index) {
+		return this.namedStyle.getStyleByIndex(index);
+	},	
 
 	getWorkflowHandler : function () {
 		return this.workflowHandler;
@@ -333,14 +334,6 @@ dojo.declare("VectorLayer", [LayerTreeNode], {
 			this.featureStore.clear();
 		}
 		this.filterEnabled = filterEnabled;
-	},
-
-	getLabelFontStyle : function () {
-		return this.labelFontStyle;
-	},
-
-	setLabelFontStyle : function (labelFontStyle) {
-		this.labelFontStyle = labelFontStyle;
 	},
 
 	// Private functions:

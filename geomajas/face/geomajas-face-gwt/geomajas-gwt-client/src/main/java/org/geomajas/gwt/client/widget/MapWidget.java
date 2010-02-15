@@ -26,10 +26,10 @@ package org.geomajas.gwt.client.widget;
 import java.util.List;
 
 import org.geomajas.command.CommandResponse;
-import org.geomajas.configuration.MapInfo;
-import org.geomajas.configuration.UnitType;
 import org.geomajas.command.dto.GetMapConfigurationRequest;
 import org.geomajas.command.dto.GetMapConfigurationResponse;
+import org.geomajas.configuration.client.ClientMapInfo;
+import org.geomajas.configuration.client.UnitType;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.Geomajas;
 import org.geomajas.gwt.client.action.menu.AboutAction;
@@ -140,14 +140,16 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	private boolean resizedHandlerDisabled;
 
 	private Menu defaultMenu;
+	
+	protected String applicationId;
 
 	// -------------------------------------------------------------------------
 	// Constructor:
 	// -------------------------------------------------------------------------
 
-	public MapWidget(String id) {
+	public MapWidget(String id, String applicationId) {
 		super(id);
-
+		this.applicationId = applicationId;
 		mapModel = new MapModel(getID() + "Graphics");
 		mapModel.addMapModelHandler(this);
 		mapModel.getMapView().addMapViewChangedHandler(this);
@@ -187,11 +189,14 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	/**
 	 * Initialize the MapWidget. This function must always be explicitly called! It fetches the needed configuration
 	 * from the server, and applies it.
+	 * 
+	 * @param applicationId
+	 *            application unique id
 	 */
 	public void initialize() {
 		if (!initialized) {
 			GwtCommand commandRequest = new GwtCommand("command.configuration.GetMap");
-			commandRequest.setCommandRequest(new GetMapConfigurationRequest(id));
+			commandRequest.setCommandRequest(new GetMapConfigurationRequest(id, applicationId));
 			GwtCommandDispatcher.getInstance().execute(commandRequest, new CommandCallback() {
 
 				public void execute(CommandResponse response) {
@@ -222,7 +227,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 
 	protected void initializationCallback(GetMapConfigurationResponse r) {
 		if (r.getMapInfo() != null) {
-			MapInfo info = r.getMapInfo();
+			ClientMapInfo info = r.getMapInfo();
 			unitType = info.getDisplayUnitType();
 			unitLength = info.getUnitLength();
 			pixelLength = info.getPixelLength();

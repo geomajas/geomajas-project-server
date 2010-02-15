@@ -32,13 +32,8 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
         >
 
     <bean name="roadsInfo" class="org.geomajas.configuration.VectorLayerInfo">
-        <property name="id" value="roads"/>
-        <property name="label" value="Roads (editable - linestring)"/>
-        <property name="visible" value="true"/>
         <property name="layerType" value="LINESTRING"/>
         <property name="crs" value="EPSG:900913"/>
-        <property name="viewScaleMin" value="0"/>
-        <property name="viewScaleMax" value="10"/>
         <property name="maxExtent">
             <bean class="org.geomajas.geometry.Bbox">
                 <property name="x" value="502116"/>
@@ -47,51 +42,14 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
                 <property name="height" value="7901"/>
             </bean>
         </property>
-        <property name="maxTileLevel" value="16"/>
-        <property name="labelAttribute">
-            <bean class="org.geomajas.configuration.LabelAttributeInfo">
-                <property name="labelAttributeName" value="TYPE"/>
-                <property name="fontStyle">
-                    <bean class="org.geomajas.configuration.StyleInfo">
-                        <property name="fillColor" value="#998811"/>
-                        <property name="fillOpacity" value="1"/>
-                    </bean>
-                </property>
-                <property name="backgroundStyle">
-                    <bean class="org.geomajas.configuration.StyleInfo">
-                        <property name="fillColor" value="#000000"/>
-                        <property name="fillOpacity" value=".7"/>
-                        <property name="strokeColor" value="#998811"/>
-                        <property name="strokeOpacity" value="1"/>
-                        <property name="strokeWidth" value="1"/>
-                    </bean>
-                </property>
-            </bean>
-        </property>
-        <property name="featureInfo" ref="roadsFeatureInfo"/>
-        <property name="snappingRules">
-            <list>
-                <bean class="org.geomajas.configuration.SnappingRuleInfo">
-                    <property name="distance" value="10"/>
-                    <property name="type" value="NEAREST_POINT"/>
-                    <property name="layer" value="roads"/>
-                </bean>
-            </list>
-        </property>
-        <property name="styleDefinitions">
-            <list>
-                <bean class="org.geomajas.configuration.StyleInfo">
-                    <property name="id" value="1"/>
-                    <property name="name" value="Roads"/>
-                    <property name="fillColor" value="#FFFFFF"/>
-                    <property name="fillOpacity" value="0"/>
-                    <property name="strokeColor" value="#998811"/>
-                    <property name="strokeOpacity" value="1"/>
-                    <property name="strokeWidth" value="4"/>
-                </bean>
-            </list>
-        </property>
-    </bean>
+		<property name="maxTileLevel" value="16" />
+		<property name="featureInfo" ref="roadsFeatureInfo" />
+		<property name="namedStyleInfos">
+			<list>
+				<ref bean="roadsStyleInfo" />
+			</list>
+		</property>
+	</bean>
 
     <bean class="org.geomajas.configuration.FeatureInfo" name="roadsFeatureInfo">
         <property name="dataSourceName" value="roadnet_l"/>
@@ -124,7 +82,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
                     <property name="identifying" value="true"/>
                     <property name="type" value="STRING"/>
                     <property name="validator">
-						<bean class="org.geomajas.configuration.ValidatorInfo">
+						<bean class="org.geomajas.configuration.validation.ValidatorInfo">
 						   <property name="toolTip" value="The type of road. Will be used as label."/>
 					   </bean>
                      </property>
@@ -132,6 +90,42 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
             </list>
         </property>
     </bean>
+
+	<bean class="org.geomajas.configuration.NamedStyleInfo" name="roadsStyleInfo">
+		<property name="featureStyles">
+			<list>
+                <bean class="org.geomajas.configuration.FeatureStyleInfo">
+                    <property name="name" value="Roads"/>
+                    <property name="fillColor" value="#FFFFFF"/>
+                    <property name="fillOpacity" value="0"/>
+                    <property name="strokeColor" value="#998811"/>
+                    <property name="strokeOpacity" value="1"/>
+                    <property name="strokeWidth" value="4"/>
+                </bean>
+			</list>
+		</property>
+		<property name="labelStyle">
+			<bean class="org.geomajas.configuration.LabelStyleInfo">
+                <property name="labelAttributeName" value="TYPE"/>
+                <property name="fontStyle">
+                    <bean class="org.geomajas.configuration.FeatureStyleInfo">
+                        <property name="fillColor" value="#998811"/>
+                        <property name="fillOpacity" value="1"/>
+                    </bean>
+                </property>
+                <property name="backgroundStyle">
+                    <bean class="org.geomajas.configuration.FeatureStyleInfo">
+                        <property name="fillColor" value="#000000"/>
+                        <property name="fillOpacity" value=".7"/>
+                        <property name="strokeColor" value="#998811"/>
+                        <property name="strokeOpacity" value="1"/>
+                        <property name="strokeWidth" value="1"/>
+                    </bean>
+                </property>
+			</bean>
+		</property>
+	</bean>
+
 
     <bean name="roads" class="org.geomajas.layer.shapeinmem.ShapeInMemLayer">
         <property name="url" value="classpath:shapes/belgium/roadnet_l.shp"/>

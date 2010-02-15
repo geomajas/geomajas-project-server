@@ -26,7 +26,7 @@ package org.geomajas.gwt.client.widget;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.geomajas.configuration.StyleInfo;
+import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.Geomajas;
 import org.geomajas.gwt.client.gfx.style.FontStyle;
@@ -129,7 +129,7 @@ public class Legend extends Canvas {
 					VectorLayer vLayer = (VectorLayer) layer;
 
 					// For vector layer; loop over the style definitions:
-					for (StyleInfo styleInfo : vLayer.getLayerInfo().getStyleDefinitions()) {
+					for (FeatureStyleInfo styleInfo : vLayer.getLayerInfo().getNamedStyleInfo().getFeatureStyles()) {
 						ShapeStyle style = new ShapeStyle(styleInfo);
 						lineCount++;
 

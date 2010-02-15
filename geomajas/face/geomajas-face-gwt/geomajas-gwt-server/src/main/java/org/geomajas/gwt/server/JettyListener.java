@@ -22,6 +22,7 @@
  */
 package org.geomajas.gwt.server;
 
+import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
@@ -29,19 +30,23 @@ import javax.servlet.ServletContextListener;
  * Listener to prepare the jetty class loader for Spring component scanning.
  * 
  * @author Jan De Moerloose
- *
+ * 
  */
 public class JettyListener implements ServletContextListener {
+
+	/** Name of servlet context parameter with a space, comma or semi-comma separated list of classes to preload. */
+	public static final String PRELOAD_CLASSES_PARAMETER = "preloadClasses";
+
 	public void contextInitialized(ServletContextEvent servletContextEvent) {
-		try {
-			// adds command library to webapp classloader
-			Class.forName("org.geomajas.command.general.LogCommand");
-			// adds impl library to webapp classloader
-			Class.forName("org.geomajas.spring.GeomajasBeanNameGenerator");
-			//Class.forName("org.geomajas.plugin.springsecurity.command.dto.LoginRequest");
-		} catch (ClassNotFoundException e) {
-			// ignore
-			e.printStackTrace();
+		ServletContext servletContext = servletContextEvent.getServletContext();
+		String param = servletContext.getInitParameter(PRELOAD_CLASSES_PARAMETER);
+		String[] preloadClasses = param.split("[\\s,;]+");
+		for (String className : preloadClasses) {
+			try {
+				Class.forName(className);
+			} catch (ClassNotFoundException e) {
+				// ignore
+			}
 		}
 	}
 

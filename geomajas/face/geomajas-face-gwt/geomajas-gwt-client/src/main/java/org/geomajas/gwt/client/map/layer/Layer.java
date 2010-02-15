@@ -23,11 +23,12 @@
 
 package org.geomajas.gwt.client.map.layer;
 
-import com.google.gwt.event.shared.HandlerRegistration;
-import org.geomajas.configuration.LayerInfo;
+import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.gwt.client.gfx.Paintable;
 import org.geomajas.gwt.client.map.MapModel;
 import org.geomajas.gwt.client.map.event.LayerChangedHandler;
+
+import com.google.gwt.event.shared.HandlerRegistration;
 
 /**
  * <p>
@@ -35,11 +36,11 @@ import org.geomajas.gwt.client.map.event.LayerChangedHandler;
  * <code>Paintable</code> interface.
  * </p>
  *
- * @param <T> layer info type, {@link LayerInfo}
+ * @param <T> layer info type, {@link ClientLayerInfo}
  *
  * @author Pieter De Graef
  */
-public interface Layer<T extends LayerInfo> extends Paintable {
+public interface Layer<T extends ClientLayerInfo> extends Paintable {
 
 	// -------------------------------------------------------------------------
 	// Paintable implementation:

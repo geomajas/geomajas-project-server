@@ -26,6 +26,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * Information about a Feature, indicates how an object can be converted to a feature.
 
@@ -34,12 +36,13 @@ import java.util.List;
 public class FeatureInfo implements Serializable {
 
 	private static final long serialVersionUID = 151L;
+	@NotNull
 	private String dataSourceName;
 	private PrimitiveAttributeInfo identifier;
 	private String sortAttributeName;
 	private SortType sortType;
 	private GeometricAttributeInfo geometryType;
-	private List<AttributeInfo> attributes;
+	private List<AttributeInfo> attributes = new ArrayList<AttributeInfo>();
 
 	public String getDataSourceName() {
 		return dataSourceName;
@@ -82,9 +85,6 @@ public class FeatureInfo implements Serializable {
 	}
 
 	public List<AttributeInfo> getAttributes() {
-		if (null == attributes) {
-			attributes = new ArrayList<AttributeInfo>();
-		}
 		return attributes;
 	}
 

@@ -23,7 +23,7 @@
 
 package org.geomajas.gwt.client.map.layer;
 
-import org.geomajas.configuration.VectorLayerInfo;
+import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.gwt.client.gfx.PainterVisitor;
 import org.geomajas.gwt.client.map.MapModel;
 import org.geomajas.gwt.client.map.cache.TileCache;
@@ -40,7 +40,7 @@ import org.geomajas.gwt.client.spatial.Bbox;
  *
  * @author Pieter De Graef
  */
-public class VectorLayer extends AbstractLayer<VectorLayerInfo> {
+public class VectorLayer extends AbstractLayer<ClientVectorLayerInfo> {
 
 	/** Storage of features in this layer. */
 	private TileCache cache;
@@ -57,7 +57,7 @@ public class VectorLayer extends AbstractLayer<VectorLayerInfo> {
 	 * @param mapModel
 	 *            The model of layers and features behind a map. This layer will be a part of this model.
 	 */
-	public VectorLayer(MapModel mapModel, VectorLayerInfo layerInfo) {
+	public VectorLayer(MapModel mapModel, ClientVectorLayerInfo layerInfo) {
 		super(mapModel, layerInfo);
 		Bbox maxExtent = new Bbox(layerInfo.getMaxExtent().getX(), layerInfo.getMaxExtent().getY(), layerInfo
 				.getMaxExtent().getWidth(), layerInfo.getMaxExtent().getHeight());

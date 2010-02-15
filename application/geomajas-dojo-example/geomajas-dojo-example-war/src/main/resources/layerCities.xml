@@ -1,261 +1,248 @@
-<!--
-  ~ This file is part of Geomajas, a component framework for building
-  ~ rich Internet applications (RIA) with sophisticated capabilities for the
-  ~ display, analysis and management of geographic information.
-  ~ It is a building block that allows developers to add maps
-  ~ and other geographic data capabilities to their web applications.
-  ~
-  ~ Copyright 2008-2010 Geosparc, http://www.geosparc.com, Belgium
-  ~
-  ~ This program is free software: you can redistribute it and/or modify
-  ~ it under the terms of the GNU Affero General Public License as
-  ~ published by the Free Software Foundation, either version 3 of the
-  ~ License, or (at your option) any later version.
-  ~
-  ~ This program is distributed in the hope that it will be useful,
-  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~ GNU Affero General Public License for more details.
-  ~
-  ~ You should have received a copy of the GNU Affero General Public License
-  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
-  -->
-<beans
-        xmlns="http://www.springframework.org/schema/beans"
-        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xmlns:context="http://www.springframework.org/schema/context"
-        xsi:schemaLocation="
+
+	<!--
+		~ This file is part of Geomajas, a component framework for building ~ rich Internet applications (RIA) with
+		sophisticated capabilities for the ~ display, analysis and management of geographic information. ~ It is a building
+		block that allows developers to add maps ~ and other geographic data capabilities to their web applications. ~ ~
+		Copyright 2008-2010 Geosparc, http://www.geosparc.com, Belgium ~ ~ This program is free software: you can redistribute
+		it and/or modify ~ it under the terms of the GNU Affero General Public License as ~ published by the Free Software
+		Foundation, either version 3 of the ~ License, or (at your option) any later version. ~ ~ This program is distributed
+		in the hope that it will be useful, ~ but WITHOUT ANY WARRANTY; without even the implied warranty of ~ MERCHANTABILITY
+		or FITNESS FOR A PARTICULAR PURPOSE. See the ~ GNU Affero General Public License for more details. ~ ~ You should have
+		received a copy of the GNU Affero General Public License ~ along with this program. If not, see
+		<http://www.gnu.org/licenses/>.
+	-->
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
 http://www.springframework.org/schema/beans
 http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 http://www.springframework.org/schema/context
-http://www.springframework.org/schema/context/spring-context-2.5.xsd"
-        >
+http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-    <bean name="citiesInfo" class="org.geomajas.configuration.VectorLayerInfo">
-        <property name="id" value="cities"/>
-        <property name="label" value="Cities (editable - point)"/>
-        <property name="visible" value="true"/>
-        <property name="layerType" value="POINT"/>
-        <property name="crs" value="EPSG:4326"/>
-        <property name="viewScaleMin" value="0"/>
-        <property name="viewScaleMax" value="100000"/>
-        <property name="maxExtent">
-            <bean class="org.geomajas.geometry.Bbox">
-                <property name="x" value="-85.05112877980659"/>
-                <property name="y" value="-85.05112877980659"/>
-                <property name="width" value="170.102257"/>
-                <property name="height" value="170.102257"/>
-            </bean>
-        </property>
-        <property name="maxTileLevel" value="16"/>
-        <property name="labelAttribute">
-            <bean class="org.geomajas.configuration.LabelAttributeInfo">
-                <property name="labelAttributeName" value="NAME"/>
-                <property name="fontStyle">
-                    <bean class="org.geomajas.configuration.StyleInfo">
-                        <property name="fillColor" value="#FF0000"/>
-                        <property name="fillOpacity" value="1"/>
-                    </bean>
-                </property>
-                <property name="backgroundStyle">
-                    <bean class="org.geomajas.configuration.StyleInfo">
-                        <property name="fillColor" value="#000000"/>
-                        <property name="fillOpacity" value=".7"/>
-                        <property name="strokeColor" value="#FF0000"/>
-                        <property name="strokeOpacity" value="1"/>
-                        <property name="strokeWidth" value="1"/>
-                    </bean>
-                </property>
-            </bean>
-        </property>
-        <property name="featureInfo" ref="citiesFeatureInfo"/>
-        <property name="styleDefinitions">
-            <list>
-                <bean class="org.geomajas.configuration.StyleInfo">
-                    <property name="id" value="1"/>
-                    <property name="name" value="Cities: population > 1000000"/>
-                    <property name="formula" value="(POPULATION > 1000000)"/>
-                    <property name="fillColor" value="#663333"/>
-                    <property name="fillOpacity" value=".75"/>
-                    <property name="strokeColor" value="#333333"/>
-                    <property name="strokeOpacity" value="1"/>
-                    <property name="strokeWidth" value="1"/>
-                    <property name="symbol">
-                        <bean class="org.geomajas.configuration.SymbolInfo">
-                            <property name="rect">
-                                <bean class="org.geomajas.configuration.RectInfo">
-                                    <property name="w" value="12"/>
-                                    <property name="h" value="12"/>
-                                </bean>
-                            </property>
-                        </bean>
-                    </property>
-                </bean>
-                <bean class="org.geomajas.configuration.StyleInfo">
-                    <property name="id" value="2"/>
-                    <property name="name" value="Cities: population > 500000"/>
-                    <property name="formula" value="(POPULATION > 500000)"/>
-                    <property name="fillColor" value="#993333"/>
-                    <property name="fillOpacity" value=".7"/>
-                    <property name="strokeColor" value="#333333"/>
-                    <property name="strokeOpacity" value="1"/>
-                    <property name="strokeWidth" value="1"/>
-                    <property name="symbol">
-                        <bean class="org.geomajas.configuration.SymbolInfo">
-                            <property name="rect">
-                                <bean class="org.geomajas.configuration.RectInfo">
-                                    <property name="w" value="10"/>
-                                    <property name="h" value="10"/>
-                                </bean>
-                            </property>
-                        </bean>
-                    </property>
-                </bean>
-                <bean class="org.geomajas.configuration.StyleInfo">
-                    <property name="id" value="3"/>
-                    <property name="name" value="Cities: population > 100000"/>
-                    <property name="formula" value="(POPULATION > 100000)"/>
-                    <property name="fillColor" value="#CC3333"/>
-                    <property name="fillOpacity" value=".7"/>
-                    <property name="strokeColor" value="#333333"/>
-                    <property name="strokeOpacity" value="1"/>
-                    <property name="strokeWidth" value="1"/>
-                    <property name="symbol">
-                        <bean class="org.geomajas.configuration.SymbolInfo">
-                            <property name="rect">
-                                <bean class="org.geomajas.configuration.RectInfo">
-                                    <property name="w" value="7"/>
-                                    <property name="h" value="7"/>
-                                </bean>
-                            </property>
-                        </bean>
-                    </property>
-                </bean>
-                <bean class="org.geomajas.configuration.StyleInfo">
-                    <property name="id" value="4"/>
-                    <property name="name" value="Cities: population &lt;= 100000"/>
-                    <property name="fillColor" value="#FF3333"/>
-                    <property name="fillOpacity" value=".7"/>
-                    <property name="strokeColor" value="#333333"/>
-                    <property name="strokeOpacity" value="1"/>
-                    <property name="strokeWidth" value="1"/>
-                    <property name="symbol">
-                        <bean class="org.geomajas.configuration.SymbolInfo">
-                            <property name="rect">
-                                <bean class="org.geomajas.configuration.RectInfo">
-                                    <property name="w" value="5"/>
-                                    <property name="h" value="5"/>
-                                </bean>
-                            </property>
-                        </bean>
-                    </property>
-                </bean>
-            </list>
-        </property>
-    </bean>
+	<bean name="citiesInfo" class="org.geomajas.configuration.VectorLayerInfo">
+		<property name="layerType" value="POINT" />
+		<property name="crs" value="EPSG:4326" />
+		<property name="maxExtent">
+			<bean class="org.geomajas.geometry.Bbox">
+				<property name="x" value="-85.05112877980659" />
+				<property name="y" value="-85.05112877980659" />
+				<property name="width" value="170.102257" />
+				<property name="height" value="170.102257" />
+			</bean>
+		</property>
+		<property name="maxTileLevel" value="16" />
+		<property name="featureInfo" ref="citiesFeatureInfo" />
+		<property name="namedStyleInfos">
+			<list>
+				<ref bean="citiesStyleInfo" />
+			</list>
+		</property>
+	</bean>
 
-    <bean class="org.geomajas.configuration.FeatureInfo" name="citiesFeatureInfo">
-        <property name="dataSourceName" value="Cities"/>
-        <property name="identifier">
-            <bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
-                <property name="label" value="Id"/>
-                <property name="name" value="ID"/>
-                <property name="type" value="LONG"/>
-            </bean>
-        </property>
-        <property name="geometryType">
-            <bean class="org.geomajas.configuration.GeometricAttributeInfo">
-                <property name="name" value="the_geom"/>
-                <property name="editable" value="true"/>
-            </bean>
-        </property>
-        <property name="attributes">
-            <list>
-                <bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
-                    <property name="label" value="Name"/>
-                    <property name="name" value="NAME"/>
-                    <property name="editable" value="true"/>
-                    <property name="identifying" value="true"/>
-                    <property name="type" value="STRING"/>
-                    <property name="validator">
-						<bean class="org.geomajas.configuration.ValidatorInfo">
-							<property name="toolTip" value="The city's name."/>
-							<property name="errorMessage" value="Invalid value!"/>
+	<bean class="org.geomajas.configuration.FeatureInfo" name="citiesFeatureInfo">
+		<property name="dataSourceName" value="Cities" />
+		<property name="identifier">
+			<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+				<property name="label" value="Id" />
+				<property name="name" value="ID" />
+				<property name="type" value="LONG" />
+			</bean>
+		</property>
+		<property name="geometryType">
+			<bean class="org.geomajas.configuration.GeometricAttributeInfo">
+				<property name="name" value="the_geom" />
+				<property name="editable" value="true" />
+			</bean>
+		</property>
+		<property name="attributes">
+			<list>
+				<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+					<property name="label" value="Name" />
+					<property name="name" value="NAME" />
+					<property name="editable" value="true" />
+					<property name="identifying" value="true" />
+					<property name="type" value="STRING" />
+					<property name="validator">
+						<bean class="org.geomajas.configuration.validation.ValidatorInfo">
+							<property name="toolTip" value="The city's name." />
+							<property name="errorMessage" value="Invalid value!" />
 							<property name="constraints">
 								<list>
-									<bean class="org.geomajas.configuration.NotNullConstraintInfo"/>
+									<bean class="org.geomajas.configuration.validation.NotNullConstraintInfo" />
 								</list>
 							</property>
 						</bean>
-                    </property>
-                </bean>
-                <bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
-                    <property name="label" value="Country"/>
-                    <property name="name" value="COUNTRY"/>
-                    <property name="editable" value="true"/>
-                    <property name="identifying" value="true"/>
-                    <property name="type" value="STRING"/>
-                    <property name="validator">
- 						<bean class="org.geomajas.configuration.ValidatorInfo">
-							<property name="toolTip" value="The name of the country in which the city lies."/>
-							<property name="errorMessage" value="Invalid value!"/>
+					</property>
+				</bean>
+				<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+					<property name="label" value="Country" />
+					<property name="name" value="COUNTRY" />
+					<property name="editable" value="true" />
+					<property name="identifying" value="true" />
+					<property name="type" value="STRING" />
+					<property name="validator">
+						<bean class="org.geomajas.configuration.validation.ValidatorInfo">
+							<property name="toolTip" value="The name of the country in which the city lies." />
+							<property name="errorMessage" value="Invalid value!" />
 							<property name="constraints">
 								<list>
-									<bean class="org.geomajas.configuration.NotNullConstraintInfo"/>
+									<bean class="org.geomajas.configuration.validation.NotNullConstraintInfo" />
 								</list>
 							</property>
 						</bean>
-                    </property>
-                </bean>
-                <bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
-                    <property name="label" value="Population"/>
-                    <property name="name" value="POPULATION"/>
-                    <property name="editable" value="true"/>
-                    <property name="identifying" value="true"/>
-                    <property name="type" value="INTEGER"/>
-                    <property name="validator">
-						<bean class="org.geomajas.configuration.ValidatorInfo">
-						   <property name="toolTip" value="The name of the country in which the city lies."/>
-						   <property name="errorMessage" value="Invalid value!"/>
-						   <property name="constraints">
-							   <list>
-								   <bean class="org.geomajas.configuration.NotNullConstraintInfo"/>
-								   <bean class="org.geomajas.configuration.MinConstraintInfo">
-									   <property name="value" value="0"/>
-								   </bean>
-							   </list>
-						   </property>
-					   </bean>
-                    </property>
-                </bean>
-                <bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
-                    <property name="label" value="Capital"/>
-                    <property name="name" value="CAPITAL"/>
-                    <property name="editable" value="true"/>
-                    <property name="identifying" value="true"/>
-                    <property name="type" value="STRING"/>
-                    <property name="validator">
-						<bean class="org.geomajas.configuration.ValidatorInfo">
-						   <property name="toolTip" value="Is this city a capital city or not? (Y or N)"/>
-						   <property name="errorMessage" value="Invalid value: The value must be either Y or N."/>
-						   <property name="constraints">
-							   <list>
-								   <bean class="org.geomajas.configuration.NotNullConstraintInfo"/>
-								   <bean class="org.geomajas.configuration.PatternConstraintInfo">
-									   <property name="regexp" value="[YN]$"/>
-								   </bean>
-							   </list>
-						   </property>
-					   </bean>
-                     </property>
-                </bean>
-            </list>
-        </property>
-    </bean>
+					</property>
+				</bean>
+				<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+					<property name="label" value="Population" />
+					<property name="name" value="POPULATION" />
+					<property name="editable" value="true" />
+					<property name="identifying" value="true" />
+					<property name="type" value="INTEGER" />
+					<property name="validator">
+						<bean class="org.geomajas.configuration.validation.ValidatorInfo">
+							<property name="toolTip" value="The name of the country in which the city lies." />
+							<property name="errorMessage" value="Invalid value!" />
+							<property name="constraints">
+								<list>
+									<bean class="org.geomajas.configuration.validation.NotNullConstraintInfo" />
+									<bean class="org.geomajas.configuration.validation.MinConstraintInfo">
+										<property name="value" value="0" />
+									</bean>
+								</list>
+							</property>
+						</bean>
+					</property>
+				</bean>
+				<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+					<property name="label" value="Capital" />
+					<property name="name" value="CAPITAL" />
+					<property name="editable" value="true" />
+					<property name="identifying" value="true" />
+					<property name="type" value="STRING" />
+					<property name="validator">
+						<bean class="org.geomajas.configuration.validation.ValidatorInfo">
+							<property name="toolTip" value="Is this city a capital city or not? (Y or N)" />
+							<property name="errorMessage" value="Invalid value: The value must be either Y or N." />
+							<property name="constraints">
+								<list>
+									<bean class="org.geomajas.configuration.validation.NotNullConstraintInfo" />
+									<bean class="org.geomajas.configuration.validation.PatternConstraintInfo">
+										<property name="regexp" value="[YN]$" />
+									</bean>
+								</list>
+							</property>
+						</bean>
+					</property>
+				</bean>
+			</list>
+		</property>
+	</bean>
 
-    <bean name="cities" class="org.geomajas.layer.shapeinmem.ShapeInMemLayer">
-		<property name="layerInfo" ref="citiesInfo"/>
-        <property name="url" value="classpath:shapes/africa/Cities.shp"/>
-    </bean>
+	<bean class="org.geomajas.configuration.NamedStyleInfo" name="citiesStyleInfo">
+		<property name="featureStyles">
+			<list>
+				<bean class="org.geomajas.configuration.FeatureStyleInfo">
+					<property name="name" value="Cities: population > 1000000" />
+					<property name="formula" value="(POPULATION > 1000000)" />
+					<property name="fillColor" value="#663333" />
+					<property name="fillOpacity" value=".75" />
+					<property name="strokeColor" value="#333333" />
+					<property name="strokeOpacity" value="1" />
+					<property name="strokeWidth" value="1" />
+					<property name="symbol">
+						<bean class="org.geomajas.configuration.SymbolInfo">
+							<property name="rect">
+								<bean class="org.geomajas.configuration.RectInfo">
+									<property name="w" value="12" />
+									<property name="h" value="12" />
+								</bean>
+							</property>
+						</bean>
+					</property>
+				</bean>
+				<bean class="org.geomajas.configuration.FeatureStyleInfo">
+					<property name="name" value="Cities: population > 500000" />
+					<property name="formula" value="(POPULATION > 500000)" />
+					<property name="fillColor" value="#993333" />
+					<property name="fillOpacity" value=".7" />
+					<property name="strokeColor" value="#333333" />
+					<property name="strokeOpacity" value="1" />
+					<property name="strokeWidth" value="1" />
+					<property name="symbol">
+						<bean class="org.geomajas.configuration.SymbolInfo">
+							<property name="rect">
+								<bean class="org.geomajas.configuration.RectInfo">
+									<property name="w" value="10" />
+									<property name="h" value="10" />
+								</bean>
+							</property>
+						</bean>
+					</property>
+				</bean>
+				<bean class="org.geomajas.configuration.FeatureStyleInfo">
+					<property name="name" value="Cities: population > 100000" />
+					<property name="formula" value="(POPULATION > 100000)" />
+					<property name="fillColor" value="#CC3333" />
+					<property name="fillOpacity" value=".7" />
+					<property name="strokeColor" value="#333333" />
+					<property name="strokeOpacity" value="1" />
+					<property name="strokeWidth" value="1" />
+					<property name="symbol">
+						<bean class="org.geomajas.configuration.SymbolInfo">
+							<property name="rect">
+								<bean class="org.geomajas.configuration.RectInfo">
+									<property name="w" value="7" />
+									<property name="h" value="7" />
+								</bean>
+							</property>
+						</bean>
+					</property>
+				</bean>
+				<bean class="org.geomajas.configuration.FeatureStyleInfo">
+					<property name="name" value="Cities: population &lt;= 100000" />
+					<property name="fillColor" value="#FF3333" />
+					<property name="fillOpacity" value=".7" />
+					<property name="strokeColor" value="#333333" />
+					<property name="strokeOpacity" value="1" />
+					<property name="strokeWidth" value="1" />
+					<property name="symbol">
+						<bean class="org.geomajas.configuration.SymbolInfo">
+							<property name="rect">
+								<bean class="org.geomajas.configuration.RectInfo">
+									<property name="w" value="5" />
+									<property name="h" value="5" />
+								</bean>
+							</property>
+						</bean>
+					</property>
+				</bean>
+			</list>
+		</property>
+		<property name="labelStyle">
+			<bean class="org.geomajas.configuration.LabelStyleInfo">
+				<property name="labelAttributeName" value="NAME" />
+				<property name="fontStyle">
+					<bean class="org.geomajas.configuration.FeatureStyleInfo">
+						<property name="fillColor" value="#FF0000" />
+						<property name="fillOpacity" value="1" />
+					</bean>
+				</property>
+				<property name="backgroundStyle">
+					<bean class="org.geomajas.configuration.FeatureStyleInfo">
+						<property name="fillColor" value="#000000" />
+						<property name="fillOpacity" value=".7" />
+						<property name="strokeColor" value="#FF0000" />
+						<property name="strokeOpacity" value="1" />
+						<property name="strokeWidth" value="1" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+
+	<bean name="cities" class="org.geomajas.layer.shapeinmem.ShapeInMemLayer">
+		<property name="layerInfo" ref="citiesInfo" />
+		<property name="url" value="classpath:shapes/africa/Cities.shp" />
+	</bean>
 
 </beans>

@@ -23,18 +23,17 @@
 
 package org.geomajas.internal.rendering.writers.svg;
 
-import org.geomajas.configuration.StyleInfo;
+import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.internal.layer.feature.InternalFeatureImpl;
 import org.geomajas.internal.layer.tile.InternalTileImpl;
 import org.geomajas.internal.rendering.writers.GraphicsWriter;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.rendering.GraphicsDocument;
 import org.geomajas.rendering.RenderException;
-import org.geomajas.rendering.StyleFilter;
 
 /**
  * ???
- *
+ * 
  * @author check subversion
  */
 public class SvgFeatureTileWriter implements GraphicsWriter {
@@ -46,7 +45,7 @@ public class SvgFeatureTileWriter implements GraphicsWriter {
 		String style = null;
 		for (InternalFeature f : tile.getFeatures()) {
 			InternalFeatureImpl feature = (InternalFeatureImpl) f;
-			String nextStyle = feature.getStyleInfo().getId() + "";
+			String nextStyle = feature.getStyleInfo().getIndex() + "";
 			if (style == null || !style.equals(nextStyle)) {
 				if (style != null) {
 					document.closeElement();
@@ -56,7 +55,7 @@ public class SvgFeatureTileWriter implements GraphicsWriter {
 				}
 				style = nextStyle;
 				document.writeAttribute("style", parseStyle(feature.getStyleInfo()));
-				document.writeId(feature.getStyleInfo().getId() + "");
+				document.writeId(feature.getStyleInfo().getIndex() + "");
 				document.writeObject(feature, true);
 			} else {
 				document.writeObject(feature, false);
@@ -64,8 +63,8 @@ public class SvgFeatureTileWriter implements GraphicsWriter {
 		}
 	}
 
-	private String parseStyle(StyleInfo style) {
-		if (!(style.getId() == StyleFilter.DEFAULT_STYLE_ID)) {
+	private String parseStyle(FeatureStyleInfo style) {
+		if (!(style.getIndex() == FeatureStyleInfo.DEFAULT_STYLE_INDEX)) {
 			StringBuilder css = new StringBuilder();
 			addToCss(css, "fill", style.getFillColor());
 			addToCss(css, "fill-opacity", style.getFillOpacity());

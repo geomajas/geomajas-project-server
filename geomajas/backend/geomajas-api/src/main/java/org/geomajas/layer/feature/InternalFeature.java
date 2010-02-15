@@ -24,7 +24,7 @@ package org.geomajas.layer.feature;
 
 import java.util.Map;
 
-import org.geomajas.configuration.StyleInfo;
+import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.layer.VectorLayer;
 
 import com.vividsolutions.jts.geom.Envelope;
@@ -80,9 +80,9 @@ public interface InternalFeature extends Cloneable, Comparable<InternalFeature> 
 
 	void setGeometry(Geometry geometry);
 
-	StyleInfo getStyleInfo();
+	FeatureStyleInfo getStyleInfo();
 
-	void setStyleDefinition(StyleInfo style);
+	void setStyleDefinition(FeatureStyleInfo style);
 
 	VectorLayer getLayer();
 

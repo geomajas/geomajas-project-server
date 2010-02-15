@@ -172,7 +172,7 @@ dojo.declare("geomajas.widget.LegendWidget", [dijit.layout.BorderContainer, diji
 						count++;
 					}
 				} else if (layer instanceof RasterLayer) {
-					legendStyleDef[count] = new StyleDefinition(null, layer.getLabel(), null, new PictureStyle(layer.getStyle()));
+					legendStyleDef[count] = new FeatureStyleInfo(null, layer.getLabel(), null, new PictureStyle(layer.getStyle()));
 					legendLayerType[count] = layer.getLayerType();
 					width = this.textMargin + legendStyleDef[count].getName().length * this.letterWidth;
 					if (width > maxWidth) {

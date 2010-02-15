@@ -22,6 +22,10 @@
  */
 package org.geomajas.configuration;
 
+import javax.validation.constraints.NotNull;
+
+import org.geomajas.configuration.validation.ValidatorInfo;
+
 /**
  * Attribute information class.
  *
@@ -30,6 +34,7 @@ package org.geomajas.configuration;
 public class AttributeInfo extends AttributeBaseInfo {
 
 	private static final long serialVersionUID = 152L;
+	@NotNull
 	private String label;
 	private boolean identifying;
 	private boolean hidden;

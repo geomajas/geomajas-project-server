@@ -23,7 +23,7 @@
 
 package org.geomajas.internal.rendering;
 
-import org.geomajas.configuration.StyleInfo;
+import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.rendering.StyleFilter;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.cql2.CQLException;
@@ -48,7 +48,7 @@ public class StyleFilterImpl implements StyleFilter {
 	/**
 	 * The style definition object contains styling information, a name, an id, ...
 	 */
-	private StyleInfo definition;
+	private FeatureStyleInfo definition;
 
 	// -------------------------------------------------------------------------
 	// Constructors:
@@ -59,12 +59,12 @@ public class StyleFilterImpl implements StyleFilter {
 	 */
 	public StyleFilterImpl() {
 		this.filter = Filter.INCLUDE;
-		StyleInfo style = new StyleInfo();
+		FeatureStyleInfo style = new FeatureStyleInfo();
 		style.setFillColor("#FFFFFF");
 		style.setFillOpacity(0);
 		style.setStrokeColor("#FFFFFF");
 		style.setStrokeOpacity(0);
-		style.setId(DEFAULT_STYLE_ID);
+		style.setIndex(FeatureStyleInfo.DEFAULT_STYLE_INDEX);
 		style.setName("invisible-style");
 		style.setFormula("");
 	}
@@ -76,7 +76,7 @@ public class StyleFilterImpl implements StyleFilter {
 	 * @param definition
 	 *            The style definition.
 	 */
-	public StyleFilterImpl(StyleInfo definition) {
+	public StyleFilterImpl(FeatureStyleInfo definition) {
 		try {
 			String formula = definition.getFormula();
 			if (null != formula && formula.length() > 0) {
@@ -97,7 +97,7 @@ public class StyleFilterImpl implements StyleFilter {
 	/**
 	 * Return the styling definition.
 	 */
-	public StyleInfo getStyleDefinition() {
+	public FeatureStyleInfo getStyleDefinition() {
 		return definition;
 	}
 

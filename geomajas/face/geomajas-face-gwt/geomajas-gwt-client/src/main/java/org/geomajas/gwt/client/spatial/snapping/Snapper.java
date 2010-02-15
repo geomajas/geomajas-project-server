@@ -23,14 +23,14 @@
 
 package org.geomajas.gwt.client.spatial.snapping;
 
+import java.util.List;
+
 import org.geomajas.configuration.SnappingRuleInfo;
 import org.geomajas.configuration.SnappingRuleInfo.SnappingType;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.map.MapModel;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.layer.LayerType;
-
-import java.util.List;
 
 /**
  * <p>
@@ -125,9 +125,9 @@ public class Snapper {
 			// Get the target snap layer:
 			VectorLayer snapLayer;
 			try {
-				snapLayer = (VectorLayer) mapModel.getLayerByLayerId(rule.getLayer());
+				snapLayer = (VectorLayer) mapModel.getLayerByLayerId(rule.getLayerInfo().getId());
 			} catch (Exception e) {
-				throw new IllegalArgumentException("Target snapping layer (" + rule.getLayer()
+				throw new IllegalArgumentException("Target snapping layer (" + rule.getLayerInfo().getId()
 						+ ") was not a vector layer.");
 			}
 

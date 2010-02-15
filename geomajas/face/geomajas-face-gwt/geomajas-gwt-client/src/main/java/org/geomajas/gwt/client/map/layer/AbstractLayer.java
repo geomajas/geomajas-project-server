@@ -22,9 +22,7 @@
  */
 package org.geomajas.gwt.client.map.layer;
 
-import com.google.gwt.event.shared.HandlerManager;
-import com.google.gwt.event.shared.HandlerRegistration;
-import org.geomajas.configuration.LayerInfo;
+import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.gwt.client.gfx.PainterVisitor;
 import org.geomajas.gwt.client.map.MapModel;
 import org.geomajas.gwt.client.map.event.HasLayerChangedHandlers;
@@ -32,6 +30,9 @@ import org.geomajas.gwt.client.map.event.LayerChangedHandler;
 import org.geomajas.gwt.client.map.event.LayerLabeledEvent;
 import org.geomajas.gwt.client.map.event.LayerShownEvent;
 import org.geomajas.gwt.client.spatial.Bbox;
+
+import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.event.shared.HandlerRegistration;
 
 /**
  * <p>
@@ -46,7 +47,7 @@ import org.geomajas.gwt.client.spatial.Bbox;
  * @author Jan De Moerloose
  * @author Frank Wynants
  */
-public abstract class AbstractLayer<T extends LayerInfo> implements Layer<T>, HasLayerChangedHandlers {
+public abstract class AbstractLayer<T extends ClientLayerInfo> implements Layer<T>, HasLayerChangedHandlers {
 
 	private T layerInfo;
 
