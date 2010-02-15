@@ -34,11 +34,13 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class SpringSecurityService implements SecurityService {
 
+	public static final String SECURITY_SERVICE_ID = "SpringSecurity";
+
 	@Autowired
 	private AuthenticationTokenService authenticationTokenService;
 
 	public String getId() {
-		return "SpringSecurity"; 
+		return SECURITY_SERVICE_ID; 
 	}
 
 	public Authentication getAuthentication(String token) {

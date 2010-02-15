@@ -27,6 +27,7 @@ import org.geomajas.command.Command;
 import org.geomajas.command.EmptyCommandRequest;
 import org.geomajas.command.SuccessCommandResponse;
 import org.geomajas.plugin.springsecurity.security.AuthenticationTokenService;
+import org.geomajas.plugin.springsecurity.security.SpringSecurityService;
 import org.geomajas.security.Authentication;
 import org.geomajas.security.SecurityContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,7 +55,7 @@ public class LogoutCommand implements Command<EmptyCommandRequest, SuccessComman
 			throws Exception {
 		commandResponse.setSucces(false);
 		for (Authentication auth : securityContext.getSecurityServiceResults()) {
-			if ("SecurityService".equals(auth.getSecurityServiceId())) {
+			if (SpringSecurityService.SECURITY_SERVICE_ID.equals(auth.getSecurityServiceId())) {
 				tokenService.logout(securityContext.getToken());
 				commandResponse.setSucces(true);
 			}

@@ -27,6 +27,7 @@ import org.geomajas.command.EmptyCommandRequest;
 import org.geomajas.command.SuccessCommandResponse;
 import org.geomajas.internal.security.SecurityContextImpl;
 import org.geomajas.plugin.springsecurity.security.AuthenticationTokenService;
+import org.geomajas.plugin.springsecurity.security.SpringSecurityService;
 import org.geomajas.security.Authentication;
 import org.geomajas.security.BaseAuthorization;
 import org.geomajas.security.SecurityContext;
@@ -63,7 +64,7 @@ public class LogoutCommandTest {
 	public void testLogout() throws Exception {
 		Authentication auth = new Authentication();
 		auth.setAuthorizations(new BaseAuthorization[0]);
-		auth.setSecurityServiceId("SecurityService"); // mimic that this comes from the SpringSecurity stuff
+		auth.setSecurityServiceId(SpringSecurityService.SECURITY_SERVICE_ID); // mimic that this comes from the SpringSecurity stuff
 		String token = tokenService.login(auth);
 		SecurityContextImpl securityContext = (SecurityContextImpl) this.securityContext;
 		List<Authentication> auths = new ArrayList<Authentication>();
