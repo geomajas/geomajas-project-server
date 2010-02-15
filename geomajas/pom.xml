@@ -753,7 +753,7 @@
 	</profiles>
 
 	<properties>
-		<geotools-version>2.5.7</geotools-version>
+		<geotools-version>2.5.8</geotools-version>
 		<gwt-version>2.0.0</gwt-version>
 		<smartgwt-version>2.0</smartgwt-version>
 		<spring-version>3.0.0.RELEASE</spring-version>
