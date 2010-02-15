@@ -90,10 +90,10 @@ public class ShapeInMemLayer extends FeatureSourceRetriever implements VectorLay
 		try {
 			crs = CRS.decode(layerInfo.getCrs());
 		} catch (NoSuchAuthorityCodeException e) {
-			throw new LayerException(ExceptionCode.LAYER_CRS_UNKNOWN_AUTHORITY, e, layerInfo.getId(), getLayerInfo()
+			throw new LayerException(e, ExceptionCode.LAYER_CRS_UNKNOWN_AUTHORITY, layerInfo.getId(), getLayerInfo()
 					.getCrs());
 		} catch (FactoryException exception) {
-			throw new LayerException(ExceptionCode.LAYER_CRS_PROBLEMATIC, exception, layerInfo.getId(), getLayerInfo()
+			throw new LayerException(exception, ExceptionCode.LAYER_CRS_PROBLEMATIC, layerInfo.getId(), getLayerInfo()
 					.getCrs());
 		}
 	}
@@ -185,7 +185,7 @@ public class ShapeInMemLayer extends FeatureSourceRetriever implements VectorLay
 			FeatureCollection<SimpleFeatureType, SimpleFeature> fc = getFeatureSource().getFeatures(filter);
 			return fc.getBounds();
 		} catch (IOException ioe) {
-			throw new LayerException(ExceptionCode.FEATURE_MODEL_PROBLEM, ioe);
+			throw new LayerException(ioe, ExceptionCode.FEATURE_MODEL_PROBLEM);
 		}
 	}
 
@@ -257,13 +257,13 @@ public class ShapeInMemLayer extends FeatureSourceRetriever implements VectorLay
 			nextId++;
 
 		} catch (NumberFormatException nfe) {
-			throw new LayerException(ExceptionCode.FEATURE_MODEL_PROBLEM, nfe);
+			throw new LayerException(nfe, ExceptionCode.FEATURE_MODEL_PROBLEM);
 		} catch (MalformedURLException e) {
 			throw new LayerException(ExceptionCode.INVALID_SHAPE_FILE_URL, url);
 		} catch (IOException ioe) {
-			throw new LayerException(ExceptionCode.CANNOT_CREATE_LAYER_MODEL, ioe, url);
+			throw new LayerException(ioe, ExceptionCode.CANNOT_CREATE_LAYER_MODEL, url);
 		} catch (GeomajasException ge) {
-			throw new LayerException(ExceptionCode.CANNOT_CREATE_LAYER_MODEL, ge, url);
+			throw new LayerException(ge, ExceptionCode.CANNOT_CREATE_LAYER_MODEL, url);
 		}
 	}
 

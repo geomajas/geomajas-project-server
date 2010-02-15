@@ -111,9 +111,9 @@ public class RealTimeBroker implements Broker {
 		try {
 			tileContext.setCrs(CRS.decode(crs));
 		} catch (NoSuchAuthorityCodeException e) {
-			throw new CacheException(ExceptionCode.CRS_DECODE_FAILURE_FOR_MAP, e, crs);
+			throw new CacheException(e, ExceptionCode.CRS_DECODE_FAILURE_FOR_MAP, crs);
 		} catch (FactoryException e) {
-			throw new CacheException(ExceptionCode.CRS_NO_DEFAULT, e, crs);
+			throw new CacheException(e, ExceptionCode.CRS_NO_DEFAULT, crs);
 		}
 		tileContext.add(vLayer.getLayerInfo());
 		tileContext.setScale(scale);
@@ -168,7 +168,7 @@ public class RealTimeBroker implements Broker {
 			result = out.toByteArray();
 			out.close();
 		} catch (IOException e) {
-			throw new CacheException(ExceptionCode.CACHE_UNEXPECTED_ERROR_WHILE_WRITING, e);
+			throw new CacheException(e, ExceptionCode.CACHE_UNEXPECTED_ERROR_WHILE_WRITING);
 		}
 		return result;
 	}

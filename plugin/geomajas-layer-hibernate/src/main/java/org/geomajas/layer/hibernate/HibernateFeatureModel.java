@@ -88,8 +88,7 @@ public class HibernateFeatureModel extends HibernateLayerUtil implements Feature
 		try {
 			return getAttributeRecursively(feature, name);
 		} catch (Exception e) {
-			log.error("Getting attribute " + name + " failed for " + feature, e);
-			throw new LayerException(ExceptionCode.HIBERNATE_ATTRIBUTE_GET_FAILED, e, name, feature.toString());
+			throw new LayerException(e, ExceptionCode.HIBERNATE_ATTRIBUTE_GET_FAILED, name, feature.toString());
 		}
 	}
 
@@ -106,7 +105,7 @@ public class HibernateFeatureModel extends HibernateLayerUtil implements Feature
 			return attribs;
 		} catch (Exception e) {
 			log.error("Getting all attributes failed ", e);
-			throw new LayerException(ExceptionCode.HIBERNATE_ATTRIBUTE_ALL_GET_FAILED, feature.toString());
+			throw new LayerException(ExceptionCode.HIBERNATE_ATTRIBUTE_ALL_GET_FAILED, feature);
 		}
 	}
 
@@ -140,8 +139,7 @@ public class HibernateFeatureModel extends HibernateLayerUtil implements Feature
 		try {
 			return getEntityMetadata().instantiate(null, EntityMode.POJO);
 		} catch (Exception e) {
-			log.error("Unexpected failure to create a POJO for entity " + getFeatureInfo().getDataSourceName(), e);
-			throw new LayerException(ExceptionCode.HIBERNATE_CANNOT_CREATE_POJO, e,
+			throw new LayerException(e, ExceptionCode.HIBERNATE_CANNOT_CREATE_POJO,
 					getFeatureInfo().getDataSourceName());
 		}
 	}
@@ -152,8 +150,7 @@ public class HibernateFeatureModel extends HibernateLayerUtil implements Feature
 					.getIdentifierType().getReturnedClass());
 			return getEntityMetadata().instantiate(ser, EntityMode.POJO);
 		} catch (Exception e) {
-			log.error("Unexpected failure to create a POJO for entity " + getFeatureInfo().getDataSourceName(), e);
-			throw new LayerException(ExceptionCode.HIBERNATE_CANNOT_CREATE_POJO, e,
+			throw new LayerException(e, ExceptionCode.HIBERNATE_CANNOT_CREATE_POJO,
 					getFeatureInfo().getDataSourceName());
 		}
 	}
@@ -166,7 +163,7 @@ public class HibernateFeatureModel extends HibernateLayerUtil implements Feature
 				if (null == loader) loader = this.getClass().getClassLoader();
 				return loader.loadClass(info.getExtends());
 			} catch (ClassNotFoundException e) {
-				throw new LayerException(ExceptionCode.SUPERCLASS_NOT_FOUND, e, info.getExtends());
+				throw new LayerException(e, ExceptionCode.SUPERCLASS_NOT_FOUND, info.getExtends());
 			}
 		} else {
 			return null;
@@ -195,8 +192,7 @@ public class HibernateFeatureModel extends HibernateLayerUtil implements Feature
 			getSessionFactory().getClassMetadata(realFeature.getClass()).setPropertyValue(realFeature, name, geometry,
 					EntityMode.POJO);
 		} catch (Exception e) {
-			log.error("Failed to set geometry for " + getFeatureInfo().getDataSourceName(), e);
-			throw new LayerException(ExceptionCode.GEOMETRY_SET_FAILED, e, getFeatureInfo().getDataSourceName());
+			throw new LayerException(e, ExceptionCode.GEOMETRY_SET_FAILED, e, getFeatureInfo().getDataSourceName());
 		}
 	}
 
@@ -387,9 +383,7 @@ public class HibernateFeatureModel extends HibernateLayerUtil implements Feature
 					try {
 						PropertyUtils.setSimpleProperty(parent, properties[0], value);
 					} catch (Throwable t) {
-						// no further ideas !
-						log.error("could not set " + attribute.getName() + "=" + value, t);
-						throw new HibernateLayerException(ExceptionCode.HIBERNATE_ATTRIBUTE_SET_FAILED, t,
+						throw new HibernateLayerException(t, ExceptionCode.HIBERNATE_ATTRIBUTE_SET_FAILED,
 								attribute.getName(), value.toString());
 					}
 				}

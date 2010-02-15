@@ -97,10 +97,10 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer {
 		try {
 			crs = CRS.decode(getLayerInfo().getCrs());
 		} catch (NoSuchAuthorityCodeException e) {
-			throw new LayerException(ExceptionCode.LAYER_CRS_UNKNOWN_AUTHORITY, e, getLayerInfo().getId(),
+			throw new LayerException(e, ExceptionCode.LAYER_CRS_UNKNOWN_AUTHORITY, getLayerInfo().getId(),
 					getLayerInfo().getCrs());
 		} catch (FactoryException exception) {
-			throw new LayerException(ExceptionCode.LAYER_CRS_PROBLEMATIC, exception, getLayerInfo().getId(),
+			throw new LayerException(exception, ExceptionCode.LAYER_CRS_PROBLEMATIC, getLayerInfo().getId(),
 					getLayerInfo().getCrs());
 		}
 	}
@@ -173,8 +173,7 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer {
 			List<?> list = criteria.list();
 			return list.iterator();
 		} catch (HibernateException he) {
-			log.error("failed to load " + getFeatureInfo().getDataSourceName() + " with filter " + filter, he);
-			throw new HibernateLayerException(ExceptionCode.HIBERNATE_LOAD_FILTER_FAIL, he, getFeatureInfo()
+			throw new HibernateLayerException(he, ExceptionCode.HIBERNATE_LOAD_FILTER_FAIL, getFeatureInfo()
 					.getDataSourceName(), filter.toString());
 		}
 	}
@@ -323,8 +322,7 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer {
 			}
 			return bounds;
 		} catch (HibernateException he) {
-			log.error("failed to load " + getFeatureInfo().getDataSourceName() + " with filter " + filter, he);
-			throw new HibernateLayerException(ExceptionCode.HIBERNATE_LOAD_FILTER_FAIL, he, getFeatureInfo()
+			throw new HibernateLayerException(he, ExceptionCode.HIBERNATE_LOAD_FILTER_FAIL, getFeatureInfo()
 					.getDataSourceName(), filter.toString());
 		}
 	}

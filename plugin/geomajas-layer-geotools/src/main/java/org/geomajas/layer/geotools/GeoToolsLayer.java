@@ -99,11 +99,11 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 		try {
 			crs = CRS.decode(layerInfo.getCrs());
 		} catch (NoSuchAuthorityCodeException e) {
-			throw new LayerException(ExceptionCode.LAYER_CRS_UNKNOWN_AUTHORITY, e, layerInfo.getId(), getLayerInfo()
-					.getCrs());
-		} catch (FactoryException exception) {
-			throw new LayerException(ExceptionCode.LAYER_CRS_PROBLEMATIC, exception, layerInfo.getId(), getLayerInfo()
-					.getCrs());
+			throw new LayerException(e, ExceptionCode.LAYER_CRS_UNKNOWN_AUTHORITY, e, layerInfo.getId(),
+					getLayerInfo().getCrs());
+		} catch (FactoryException e) {
+			throw new LayerException(e, ExceptionCode.LAYER_CRS_PROBLEMATIC, layerInfo.getId(),
+					getLayerInfo().getCrs());
 		}
 	}
 
@@ -168,7 +168,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 			try {
 				store.addFeatures(col);
 			} catch (IOException ioe) {
-				throw new LayerException(ExceptionCode.LAYER_MODEL_IO_EXCEPTION, ioe);
+				throw new LayerException(ioe, ExceptionCode.LAYER_MODEL_IO_EXCEPTION);
 			}
 			return feature;
 		} else {
@@ -204,7 +204,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 						filter);
 				log.debug("Updated feature {} in {}", filter.getIDs().iterator().next(), getFeatureSourceName());
 			} catch (IOException ioe) {
-				throw new LayerException(ExceptionCode.LAYER_MODEL_IO_EXCEPTION, ioe);
+				throw new LayerException(ioe, ExceptionCode.LAYER_MODEL_IO_EXCEPTION);
 			}
 		} else {
 			log.error("Don't know how to create or update " + getFeatureSourceName() + ", class "
@@ -230,7 +230,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 					log.debug("Deleted feature {} in {}", filter.getIDs().iterator().next(), getFeatureSourceName());
 				}
 			} catch (IOException ioe) {
-				throw new LayerException(ExceptionCode.LAYER_MODEL_IO_EXCEPTION, ioe);
+				throw new LayerException(ioe, ExceptionCode.LAYER_MODEL_IO_EXCEPTION);
 			}
 		} else {
 			log.error("Don't know how to delete from " + getFeatureSourceName() + ", class "
@@ -280,7 +280,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 			}
 			return fc.getBounds();
 		} catch (Throwable t) {
-			throw new LayerException(ExceptionCode.UNEXPECTED_PROBLEM, t);
+			throw new LayerException(t, ExceptionCode.UNEXPECTED_PROBLEM);
 		}
 	}
 
@@ -307,7 +307,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 			}
 			return fc.getBounds();
 		} catch (Throwable t) {
-			throw new LayerException(ExceptionCode.LAYER_MODEL_IO_EXCEPTION, t);
+			throw new LayerException(t, ExceptionCode.LAYER_MODEL_IO_EXCEPTION);
 		}
 	}
 
@@ -332,7 +332,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 			}
 			return it;
 		} catch (Throwable t) {
-			throw new LayerException(ExceptionCode.UNEXPECTED_PROBLEM, t);
+			throw new LayerException(t, ExceptionCode.UNEXPECTED_PROBLEM);
 		}
 	}
 

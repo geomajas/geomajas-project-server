@@ -157,7 +157,7 @@ public class DefaultSvgDocument implements GraphicsDocument {
 			}
 			writer.write(WebSafeStringEncoder.escapeHTML(text));
 		} catch (IOException ioe) {
-			throw new RenderException(ExceptionCode.RENDER_DOCUMENT_IO_EXCEPTION, ioe);
+			throw new RenderException(ioe, ExceptionCode.RENDER_DOCUMENT_IO_EXCEPTION);
 		}
 	}
 
@@ -179,7 +179,7 @@ public class DefaultSvgDocument implements GraphicsDocument {
 			checkState(false);
 			writer.write(" " + name + "=" + "\"" + value + "\"");
 		} catch (IOException ioe) {
-			throw new RenderException(ExceptionCode.RENDER_DOCUMENT_IO_EXCEPTION, ioe);
+			throw new RenderException(ioe, ExceptionCode.RENDER_DOCUMENT_IO_EXCEPTION);
 		}
 	}
 
@@ -189,7 +189,7 @@ public class DefaultSvgDocument implements GraphicsDocument {
 			writer.write("\"");
 			inAttribute = false;
 		} catch (IOException ioe) {
-			throw new RenderException(ExceptionCode.RENDER_DOCUMENT_IO_EXCEPTION, ioe);
+			throw new RenderException(ioe, ExceptionCode.RENDER_DOCUMENT_IO_EXCEPTION);
 		}
 	}
 
@@ -199,7 +199,7 @@ public class DefaultSvgDocument implements GraphicsDocument {
 			writer.write(" " + name + "=\"");
 			inAttribute = true;
 		} catch (IOException ioe) {
-			throw new RenderException(ExceptionCode.RENDER_DOCUMENT_IO_EXCEPTION, ioe);
+			throw new RenderException(ioe, ExceptionCode.RENDER_DOCUMENT_IO_EXCEPTION);
 		}
 	}
 
@@ -226,7 +226,7 @@ public class DefaultSvgDocument implements GraphicsDocument {
 			writer.write("<" + name);
 			elements.push(new ElementState(name));
 		} catch (IOException ioe) {
-			throw new RenderException(ExceptionCode.RENDER_DOCUMENT_IO_EXCEPTION, ioe);
+			throw new RenderException(ioe, ExceptionCode.RENDER_DOCUMENT_IO_EXCEPTION);
 		}
 	}
 
@@ -246,7 +246,7 @@ public class DefaultSvgDocument implements GraphicsDocument {
 				unwindId();
 			}
 		} catch (IOException ioe) {
-			throw new RenderException(ExceptionCode.RENDER_DOCUMENT_IO_EXCEPTION, ioe);
+			throw new RenderException(ioe, ExceptionCode.RENDER_DOCUMENT_IO_EXCEPTION);
 		}
 	}
 
@@ -256,7 +256,7 @@ public class DefaultSvgDocument implements GraphicsDocument {
 			writePathContent(coords);
 			writer.write('Z');
 		} catch (IOException ioe) {
-			throw new RenderException(ExceptionCode.RENDER_DOCUMENT_IO_EXCEPTION, ioe);
+			throw new RenderException(ioe, ExceptionCode.RENDER_DOCUMENT_IO_EXCEPTION);
 		}
 	}
 
@@ -286,7 +286,7 @@ public class DefaultSvgDocument implements GraphicsDocument {
 				}
 			}
 		} catch (IOException ioe) {
-			throw new RenderException(ExceptionCode.RENDER_DOCUMENT_IO_EXCEPTION, ioe);
+			throw new RenderException(ioe, ExceptionCode.RENDER_DOCUMENT_IO_EXCEPTION);
 		}
 	}
 
@@ -307,7 +307,7 @@ public class DefaultSvgDocument implements GraphicsDocument {
 			unwindId();
 			writer.flush();
 		} catch (IOException ioe) {
-			throw new RenderException(ExceptionCode.RENDER_DOCUMENT_IO_EXCEPTION, ioe);
+			throw new RenderException(ioe, ExceptionCode.RENDER_DOCUMENT_IO_EXCEPTION);
 		}
 	}
 

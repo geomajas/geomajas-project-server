@@ -102,10 +102,10 @@ public class OsmLayer implements RasterLayer {
 		try {
 			crs = CRS.decode(layerInfo.getCrs());
 		} catch (NoSuchAuthorityCodeException exception) {
-			throw new LayerException(ExceptionCode.LAYER_CRS_UNKNOWN_AUTHORITY, exception, layerInfo.getId(),
+			throw new LayerException(exception, ExceptionCode.LAYER_CRS_UNKNOWN_AUTHORITY, layerInfo.getId(),
 					getLayerInfo().getCrs());
 		} catch (FactoryException exception) {
-			throw new LayerException(ExceptionCode.LAYER_CRS_PROBLEMATIC, exception, layerInfo.getId(), getLayerInfo()
+			throw new LayerException(exception, ExceptionCode.LAYER_CRS_PROBLEMATIC, layerInfo.getId(), getLayerInfo()
 					.getCrs());
 		}
 	}
@@ -228,8 +228,7 @@ public class OsmLayer implements RasterLayer {
 		} catch (FactoryException e) {
 			throw new RenderException(ExceptionCode.RENDER_TRANSFORMATION_FAILED);
 		} catch (TransformException e) {
-			log.error("paint() : transformation failed", e);
-			throw new RenderException(ExceptionCode.RENDER_TRANSFORMATION_FAILED, e);
+			throw new RenderException(e, ExceptionCode.RENDER_TRANSFORMATION_FAILED);
 		}
 	}
 

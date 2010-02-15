@@ -102,7 +102,7 @@ public final class CacheServiceImpl implements CacheService {
 		} catch (CacheException e) {
 			throw e;
 		} catch (Exception e) {
-			throw new CacheException(ExceptionCode.CACHE_UNEXPECTED_FAILURE, e);
+			throw new CacheException(e, ExceptionCode.CACHE_UNEXPECTED_FAILURE);
 		}
 	}
 

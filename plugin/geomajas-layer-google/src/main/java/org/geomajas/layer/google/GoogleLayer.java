@@ -102,10 +102,10 @@ public class GoogleLayer implements RasterLayer {
 		try {
 			crs = CRS.decode(layerInfo.getCrs());
 		} catch (NoSuchAuthorityCodeException exception) {
-			throw new LayerException(ExceptionCode.LAYER_CRS_UNKNOWN_AUTHORITY, exception, layerInfo.getId(),
+			throw new LayerException(exception, ExceptionCode.LAYER_CRS_UNKNOWN_AUTHORITY, layerInfo.getId(),
 					getLayerInfo().getCrs());
 		} catch (FactoryException exception) {
-			throw new LayerException(ExceptionCode.LAYER_CRS_PROBLEMATIC, exception, layerInfo.getId(), getLayerInfo()
+			throw new LayerException(exception, ExceptionCode.LAYER_CRS_PROBLEMATIC, layerInfo.getId(), getLayerInfo()
 					.getCrs());
 		}
 	}

@@ -176,8 +176,7 @@ class HibernateLayerUtil {
 				entityMetadata = sessionFactory.getClassMetadata(layerInfo.getFeatureInfo().getDataSourceName());
 			}
 		} catch (Exception e) {
-			log.error("Couldn't configure sessionfactory.\nReason: " + e.getMessage());
-			throw new HibernateLayerException(ExceptionCode.HIBERNATE_NO_SESSION_FACTORY, e);
+			throw new HibernateLayerException(e, ExceptionCode.HIBERNATE_NO_SESSION_FACTORY);
 		}
 	}
 }

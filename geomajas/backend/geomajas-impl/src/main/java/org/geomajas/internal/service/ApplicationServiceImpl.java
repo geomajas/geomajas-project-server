@@ -89,9 +89,9 @@ public class ApplicationServiceImpl implements ApplicationService {
 		try {
 			return CRS.decode(crs);
 		} catch (NoSuchAuthorityCodeException e) {
-			throw new LayerException(ExceptionCode.CRS_DECODE_FAILURE_FOR_MAP, e, crs);
+			throw new LayerException(e, ExceptionCode.CRS_DECODE_FAILURE_FOR_MAP, crs);
 		} catch (FactoryException e) {
-			throw new LayerException(ExceptionCode.LAYER_CRS_PROBLEMATIC, e, crs);
+			throw new LayerException(e, ExceptionCode.LAYER_CRS_PROBLEMATIC, crs);
 		}
 	}
 

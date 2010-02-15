@@ -158,13 +158,13 @@ public class FileContentStore implements ContentStore {
 			content = read(in);
 		} catch (IOException ioe) {
 			unlock(path);
-			throw new CacheException(ExceptionCode.CACHE_IO_EXCEPTION_ON_PATH, ioe, path);
+			throw new CacheException(ioe, ExceptionCode.CACHE_IO_EXCEPTION_ON_PATH, path);
 		} finally {
 			try {
 				in.close();
 				unlock(path);
 			} catch (IOException ioe) {
-				throw new CacheException(ExceptionCode.CACHE_IO_EXCEPTION_ON_PATH, ioe, path);
+				throw new CacheException(ioe, ExceptionCode.CACHE_IO_EXCEPTION_ON_PATH, path);
 			}
 		}
 
@@ -190,7 +190,7 @@ public class FileContentStore implements ContentStore {
 		try {
 			out = new FileOutputStream(file);
 		} catch (FileNotFoundException ioe) {
-			throw new CacheException(ExceptionCode.CACHE_IO_EXCEPTION_ON_PATH, ioe, path);
+			throw new CacheException(ioe, ExceptionCode.CACHE_IO_EXCEPTION_ON_PATH, path);
 		} finally {
 			unlock(path);
 		}
@@ -198,14 +198,14 @@ public class FileContentStore implements ContentStore {
 		try {
 			out.write(renderContent.getContent());
 		} catch (IOException ioe) {
-			throw new CacheException(ExceptionCode.CACHE_IO_EXCEPTION_ON_PATH, ioe, path);
+			throw new CacheException(ioe, ExceptionCode.CACHE_IO_EXCEPTION_ON_PATH, path);
 		} finally {
 			try {
 				out.close();
 				unlock(path);
 			} catch (IOException ioe) {
 				unlock(path);
-				throw new CacheException(ExceptionCode.CACHE_IO_EXCEPTION_ON_PATH, ioe, path);
+				throw new CacheException(ioe, ExceptionCode.CACHE_IO_EXCEPTION_ON_PATH, path);
 			}
 		}
 	}
@@ -237,7 +237,7 @@ public class FileContentStore implements ContentStore {
 		try {
 			waitForLock(dir);
 		} catch (CacheException e) {
-			throw new CacheException(ExceptionCode.CACHE_CANNOT_CREATE_DIRECTORY, e, dir);
+			throw new CacheException(e, ExceptionCode.CACHE_CANNOT_CREATE_DIRECTORY, dir);
 		}
 		lock(dir);
 		if (!d.mkdir()) {
@@ -266,7 +266,7 @@ public class FileContentStore implements ContentStore {
 			try {
 				Thread.sleep(LOCK_RETRY_TIME);
 			} catch (InterruptedException e) {
-				throw new CacheException(ExceptionCode.CACHE_INTERRUPTED_WHILE_WAITING_FOR_LOCK, e, file);
+				throw new CacheException(e, ExceptionCode.CACHE_INTERRUPTED_WHILE_WAITING_FOR_LOCK, file);
 			}
 		}
 	}

@@ -97,10 +97,10 @@ public class WmsLayer implements RasterLayer {
 		try {
 			crs = CRS.decode(layerInfo.getCrs());
 		} catch (NoSuchAuthorityCodeException e) {
-			throw new LayerException(ExceptionCode.LAYER_CRS_UNKNOWN_AUTHORITY, e, layerInfo.getId(), getLayerInfo()
+			throw new LayerException(e, ExceptionCode.LAYER_CRS_UNKNOWN_AUTHORITY, layerInfo.getId(), getLayerInfo()
 					.getCrs());
 		} catch (FactoryException exception) {
-			throw new LayerException(ExceptionCode.LAYER_CRS_PROBLEMATIC, exception, layerInfo.getId(), getLayerInfo()
+			throw new LayerException(exception, ExceptionCode.LAYER_CRS_PROBLEMATIC, layerInfo.getId(), getLayerInfo()
 					.getCrs());
 		}
 	}
@@ -237,13 +237,13 @@ public class WmsLayer implements RasterLayer {
 					}
 				}
 			} catch (MismatchedDimensionException e) {
-				throw new RenderException(ExceptionCode.RENDER_DIMENSION_MISMATCH, e);
+				throw new RenderException(e, ExceptionCode.RENDER_DIMENSION_MISMATCH);
 			} catch (TransformException e) {
-				throw new RenderException(ExceptionCode.RENDER_TRANSFORMATION_FAILED, e);
+				throw new RenderException(e, ExceptionCode.RENDER_TRANSFORMATION_FAILED);
 			} catch (FactoryException e) {
-				throw new RenderException(ExceptionCode.RENDER_TRANSFORMATION_FAILED, e);
+				throw new RenderException(e, ExceptionCode.RENDER_TRANSFORMATION_FAILED);
 			} catch (LayerException e) {
-				throw new RenderException(ExceptionCode.RENDER_TRANSFORMATION_FAILED, e);
+				throw new RenderException(e, ExceptionCode.RENDER_TRANSFORMATION_FAILED);
 			}
 		}
 		return result;
