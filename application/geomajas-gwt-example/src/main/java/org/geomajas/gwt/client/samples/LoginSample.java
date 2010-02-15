@@ -97,6 +97,6 @@ public class LoginSample extends SamplePanel {
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] {/* Security configuration files??? */};
+		return new String[] { "/org/geomajas/gwt/samples/security/security.xml" };
 	}
 }
