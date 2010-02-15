@@ -48,7 +48,8 @@ import com.smartgwt.client.widgets.layout.VLayout;
 public class LoginSample extends SamplePanel {
 
 	public LoginSample() {
-		super("Login", I18nProvider.getSampleMessages().loginTitle(), "[ISOMORPHIC]/geomajas/springsecurity/key_go.png");
+		super("Login", I18nProvider.getSampleMessages().loginTitle(), 
+				"[ISOMORPHIC]/geomajas/springsecurity/key_go.png");
 	}
 
 	public Canvas getViewPanel() {
