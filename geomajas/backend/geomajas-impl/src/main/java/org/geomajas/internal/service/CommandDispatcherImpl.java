@@ -43,17 +43,17 @@ import java.util.List;
 import java.util.Locale;
 
 /**
- * The <code>CommandDispatcher</code> is the main command execution center. It
- * accepts command from the client and executes them on the server.
- *
+ * The <code>CommandDispatcher</code> is the main command execution center. It accepts command from the client and
+ * executes them on the server.
+ * 
  * @author Joachim Van der Auwera
  */
 @Component()
 public final class CommandDispatcherImpl implements CommandDispatcher {
 
 	private static final long serialVersionUID = -1334372707950671271L;
-	private final Logger log = LoggerFactory
-			.getLogger(CommandDispatcherImpl.class);
+
+	private final Logger log = LoggerFactory.getLogger(CommandDispatcherImpl.class);
 
 	@Autowired
 	private ApplicationContext applicationContext;
@@ -74,7 +74,7 @@ public final class CommandDispatcherImpl implements CommandDispatcher {
 	 * <p/>
 	 * The security context is built for the authentication token. The security context is cleared again at the end of
 	 * processing if the security context was changed.
-	 *
+	 * 
 	 * @param commandName
 	 *            name of command to execute
 	 * @param request
@@ -85,11 +85,11 @@ public final class CommandDispatcherImpl implements CommandDispatcher {
 	 *            which should be used for the error messages in the response
 	 * @return {@link CommandResponse} command response
 	 */
-	public CommandResponse execute(String commandName, CommandRequest request,
-			String userToken, String locale) {
+	public CommandResponse execute(String commandName, CommandRequest request, String userToken, String locale) {
 		String id = Long.toString(++commandCount); // NOTE this is not thread safe
 		// safe or cluster aware
-		log.info("{} execute command {} for user token {}", new Object[] {id, commandName, userToken});
+		log.info("{} execute command {} for user token {} in locale {}", new Object[] { id, commandName, userToken,
+				locale });
 		long begin = System.currentTimeMillis();
 		CommandResponse response;
 
@@ -113,8 +113,7 @@ public final class CommandDispatcherImpl implements CommandDispatcher {
 				try {
 					command = applicationContext.getBean(commandName, Command.class);
 				} catch (BeansException be) {
-					log.error("could not create command bean for {}",
-							new Object[] {commandName}, be);
+					log.error("could not create command bean for {}", new Object[] { commandName }, be);
 				}
 				if (null != command) {
 					response = command.getEmptyCommandResponse();
@@ -134,8 +133,9 @@ public final class CommandDispatcherImpl implements CommandDispatcher {
 				// not authorized
 				response = new CommandResponse();
 				response.setId(id);
-				response.getErrors().add(new GeomajasSecurityException(ExceptionCode.COMMAND_ACCESS_DENIED,
-						commandName, securityContext.getUserId()));
+				response.getErrors().add(
+						new GeomajasSecurityException(ExceptionCode.COMMAND_ACCESS_DENIED, commandName, securityContext
+								.getUserId()));
 			}
 
 			// now process the errors for display on the client

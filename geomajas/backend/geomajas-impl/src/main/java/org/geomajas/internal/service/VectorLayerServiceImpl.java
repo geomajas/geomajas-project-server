@@ -139,7 +139,11 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 					// create new feature
 					transformGeometry(newFeature, mapToLayer);
 					if (securityContext.isFeatureCreateAuthorized(layerId, oldFeature)) {
-						feature = featureModel.newInstance(newFeature.getLocalId());
+						if (newFeature.getLocalId() == null) {
+							feature = featureModel.newInstance();
+						} else {
+							feature = featureModel.newInstance(newFeature.getLocalId());
+						}
 					} else {
 						throw new GeomajasSecurityException(ExceptionCode.FEATURE_CREATE_PROHIBITED,
 								securityContext.getUserId());

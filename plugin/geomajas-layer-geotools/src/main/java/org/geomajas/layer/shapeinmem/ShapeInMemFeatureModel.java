@@ -42,8 +42,6 @@ import java.util.Map;
  */
 public class ShapeInMemFeatureModel extends FeatureSourceRetriever implements FeatureModel {
 
-	// private final Logger log = LoggerFactory.getLogger(ShapeInMemFeatureModel.class);
-
 	private int srid;
 
 	@Autowired
@@ -137,5 +135,9 @@ public class ShapeInMemFeatureModel extends FeatureSourceRetriever implements Fe
 			return featureId;
 		}
 		return null;
+	}
+	
+	void setNextId(long nextId) {
+		this.nextId = nextId;
 	}
 }

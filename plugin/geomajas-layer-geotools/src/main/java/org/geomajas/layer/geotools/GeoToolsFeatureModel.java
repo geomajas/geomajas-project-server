@@ -103,7 +103,7 @@ public class GeoToolsFeatureModel extends FeatureSourceRetriever implements Feat
 		if (builder == null) {
 			throw new LayerException(ExceptionCode.CREATE_FEATURE_NO_FEATURE_TYPE);
 		}
-		return builder.buildFeature(Integer.toString(nextId++));
+		return builder.buildFeature(Long.toString(nextId++));
 	}
 
 	public Object newInstance(String id) throws LayerException {

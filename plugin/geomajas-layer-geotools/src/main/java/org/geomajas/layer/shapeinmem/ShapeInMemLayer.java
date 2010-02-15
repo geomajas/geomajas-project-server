@@ -253,9 +253,7 @@ public class ShapeInMemLayer extends FeatureSourceRetriever implements VectorLay
 				}
 			}
 			col.close(iterator);
-			// getNextId();
-			nextId++;
-
+			((ShapeInMemFeatureModel) featureModel).setNextId(++nextId);
 		} catch (NumberFormatException nfe) {
 			throw new LayerException(nfe, ExceptionCode.FEATURE_MODEL_PROBLEM);
 		} catch (MalformedURLException e) {
