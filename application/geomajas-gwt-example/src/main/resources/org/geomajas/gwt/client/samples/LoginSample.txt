@@ -6,32 +6,32 @@
 		// Create a log out button, and attach an event handler:
 		LogoutButton logoutButton = new LogoutButton(new LogoutHandler() {
 
+			// Show localized messages:
 			public void onLogoutFailure(LogoutFailureEvent event) {
-				SC.warn("Logging out has failed...");
+				SC.warn(I18nProvider.getSampleMessages().logoutFailure());
 			}
 
 			public void onLogoutSuccess(LogoutSuccessEvent event) {
-				SC.warn("User has been logged out...");
+				SC.say(I18nProvider.getSampleMessages().logoutSuccess());
 			}
 		});
 
 		// Create a login window, and attach an event handler:
 		LoginWindow loginWindow = new LoginWindow(new LoginHandler() {
 
+			// Show localized messages:
 			public void onLoginFailure(LoginFailureEvent event) {
-				SC.warn("Login attempt failed...");
+				SC.warn(I18nProvider.getSampleMessages().loginFailure());
 			}
 
 			public void onLoginSuccess(LoginSuccessEvent event) {
-				SC.say("Login attempt was successful. User token=" + event.getToken());
+				SC.say(I18nProvider.getSampleMessages().loginSuccess(event.getToken()));
 			}
 		});
 
 		// Make sure the window can't be dragged outside of parent:
 		loginWindow.setKeepInParentRect(true);
-
-		loginWindow.setTop(100);
-		loginWindow.setLayoutAlign(Alignment.CENTER);
+		loginWindow.setTop(40);
 
 		layout.addChild(logoutButton);
 		layout.addChild(loginWindow);
