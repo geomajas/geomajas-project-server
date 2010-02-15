@@ -29,8 +29,10 @@ import org.geomajas.command.dto.GetRasterDataRequest;
 import org.geomajas.command.dto.GetRasterDataResponse;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
+import org.geomajas.global.GeomajasSecurityException;
 import org.geomajas.layer.RasterLayer;
 import org.geomajas.layer.tile.RasterTile;
+import org.geomajas.security.SecurityContext;
 import org.geomajas.service.ApplicationService;
 import org.geomajas.service.DtoConverterService;
 import org.slf4j.Logger;
@@ -62,18 +64,26 @@ public class GetRasterDataCommand implements Command<GetRasterDataRequest, GetRa
 	@Autowired
 	private DtoConverterService converterService;
 
+	@Autowired
+	private SecurityContext securityContext;
+
 	public GetRasterDataResponse getEmptyCommandResponse() {
 		return new GetRasterDataResponse();
 	}
 
 	public void execute(GetRasterDataRequest request, GetRasterDataResponse response) throws Exception {
 		log.debug("request start layer {}, crs {}", request.getLayerId(), request.getCrs());
-		if (null == request.getLayerId()) {
+		String layerId = request.getLayerId();
+		if (null == layerId) {
 			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "layer");
 		}
 		if (null == request.getCrs()) {
 			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "crs");
 		}
+		if (!securityContext.isLayerVisible(layerId)) {
+			throw new GeomajasSecurityException(ExceptionCode.LAYER_NOT_VISIBLE, layerId);
+		}
+
 		RasterLayer rasterlayer = (RasterLayer) runtimeParameters.getLayer(request.getLayerId());
 		log.debug("execute() : bbox {}", request.getBbox());
 		List<RasterTile> images = rasterlayer.paint(request.getCrs(), converterService.toInternal(request.getBbox()),

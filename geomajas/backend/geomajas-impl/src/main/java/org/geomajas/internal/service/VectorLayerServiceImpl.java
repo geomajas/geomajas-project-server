@@ -24,8 +24,10 @@
 package org.geomajas.internal.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import org.geomajas.configuration.LayerInfo;
 import org.geomajas.configuration.StyleInfo;
@@ -154,8 +156,16 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 								securityContext.getUserId());
 					}
 				}
-				// @todo security verify attribute editable authorizations
-				featureModel.setAttributes(feature, newFeature.getAttributes());
+
+				// Assure only writable attributes are set
+				Map<String, Object> requestAttributes = newFeature.getAttributes();
+				Map<String, Object> filteredAttributes = new HashMap<String, Object>();
+				for (String key : requestAttributes.keySet()) {
+					if (securityContext.isAttributeWritable(layerId, newFeature, key)) {
+						filteredAttributes.put(key, requestAttributes.get(key));
+					}
+				}
+				featureModel.setAttributes(feature, filteredAttributes);
 
 				if (newFeature.getGeometry() != null) {
 					featureModel.setGeometry(feature, newFeature.getGeometry());
@@ -179,6 +189,7 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 	 *
 	 * @param feature feature in which the geometry should be updated
 	 * @param mapToLayer transformation to apply
+	 * @throws GeomajasException oops
 	 */
 	private void transformGeometry(InternalFeature feature, MathTransform mapToLayer) throws GeomajasException {
 		if (feature.getGeometry() != null) {
@@ -217,9 +228,9 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 		List<InternalFeature> res = new ArrayList<InternalFeature>();
 		Iterator<?> it = layer.getElements(filter, offset, maxResultSize);
 		while (it.hasNext()) {
-			InternalFeature feature = convertFeature(it.next(), layer, transformation, styleFilters, featureIncludes);
+			InternalFeature feature = convertFeature(it.next(), layerId, layer, transformation, styleFilters,
+					featureIncludes);
 			if (securityContext.isFeatureVisible(layerId, feature)) {
-				// @todo security filter attributes which are not visible
 				feature.setEditable(securityContext.isFeatureUpdateAuthorized(layerId, feature));
 				feature.setDeletable(securityContext.isFeatureDeleteAuthorized(layerId, feature));
 				res.add(feature);
@@ -239,6 +250,8 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 	 * 
 	 * @param feature
 	 *            A feature object that comes directly from the {@link VectorLayer}
+	 * @param layerId
+	 *            layer id
 	 * @param layer
 	 *            vector layer for the feature
 	 * @param transformation
@@ -251,8 +264,8 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 	 * @throws GeomajasException
 	 *             oops
 	 */
-	private InternalFeature convertFeature(Object feature, VectorLayer layer, MathTransform transformation,
-			List<StyleFilter> styles, int featureIncludes) throws GeomajasException {
+	private InternalFeature convertFeature(Object feature, String layerId, VectorLayer layer,
+			MathTransform transformation, List<StyleFilter> styles, int featureIncludes) throws GeomajasException {
 		LayerInfo layerInfo = layer.getLayerInfo();
 		FeatureModel featureModel = layer.getFeatureModel();
 		InternalFeatureImpl res = new InternalFeatureImpl();
@@ -291,7 +304,16 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 
 		// If allowed, add the attributes to the InternalFeature:
 		if ((featureIncludes & FEATURE_INCLUDE_ATTRIBUTES) != 0) {
-			res.setAttributes(featureModel.getAttributes(feature));
+			// Assure only readable attributes are set
+			Map<String, Object> featureAttributes = featureModel.getAttributes(feature);
+			res.setAttributes(featureAttributes); // to allow isAttributeReadable to see full object
+			Map<String, Object> filteredAttributes = new HashMap<String, Object>();
+			for (String key : featureAttributes.keySet()) {
+				if (securityContext.isAttributeReadable(layerId, res, key)) {
+					filteredAttributes.put(key, featureAttributes.get(key));
+				}
+			}
+			res.setAttributes(filteredAttributes); // overwrite with filtered attributes
 		}
 
 		return res;
@@ -362,6 +384,7 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 	 * @param layerInfo layer info (matching the layer id)
 	 * @param queryFilter base query filter if any
 	 * @return filter to apply
+	 * @throws GeomajasException oops
 	 */
 	private Filter getLayerFilter(VectorLayerInfo layerInfo, Filter queryFilter) throws GeomajasException {
 		Filter filter = queryFilter;

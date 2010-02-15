@@ -61,7 +61,7 @@ public class MergePolygonCommand implements Command<MergePolygonRequest, MergePo
 			try {
 				polygons[i] = (Polygon) converter.toInternal(request.getPolygons()[i]);
 			} catch (Exception e) {
-				throw new GeomajasException(ExceptionCode.MERGE_NO_POLYGON);
+				throw new GeomajasException(e, ExceptionCode.MERGE_NO_POLYGON);
 			}
 		}
 		int precision = polygons[0].getPrecisionModel().getMaximumSignificantDigits() - 1;

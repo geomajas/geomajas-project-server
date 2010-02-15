@@ -33,6 +33,7 @@ import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.Feature;
 import org.geomajas.layer.feature.InternalFeature;
+import org.geomajas.security.SecurityContext;
 import org.geomajas.service.ApplicationService;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.FilterService;
@@ -88,6 +89,9 @@ public class SearchByLocationCommand implements Command<SearchByLocationRequest,
 	@Autowired
 	private VectorLayerService layerService;
 
+	@Autowired
+	private SecurityContext securityContext;
+
 	// -------------------------------------------------------------------------
 	// Command implementation:
 	// -------------------------------------------------------------------------
@@ -113,63 +117,65 @@ public class SearchByLocationCommand implements Command<SearchByLocationRequest,
 
 		if (layerIds != null && layerIds.length > 0) {
 			for (String layerId : layerIds) {
-				VectorLayer vectorLayer = applicationService.getVectorLayer(layerId);
-				if (vectorLayer != null) {
-					String geomName = vectorLayer.getLayerInfo().getFeatureInfo().getGeometryType().getName();
+				if (securityContext.isLayerVisible(layerId)) {
+					VectorLayer vectorLayer = applicationService.getVectorLayer(layerId);
+					if (vectorLayer != null) {
+						String geomName = vectorLayer.getLayerInfo().getFeatureInfo().getGeometryType().getName();
 
-					// Check if a buffer should be added around the location:
-					Geometry geometry = location;
-					if (request.getBuffer() > 0) {
-						geometry = location.buffer(request.getBuffer());
-					}
+						// Check if a buffer should be added around the location:
+						Geometry geometry = location;
+						if (request.getBuffer() > 0) {
+							geometry = location.buffer(request.getBuffer());
+						}
 
-					// Create the correct Filter object:
-					Filter f = null;
-					switch (queryType) {
-						case SearchByLocationRequest.QUERY_INTERSECTS:
-							f = filterCreator.createIntersectsFilter(geometry, geomName);
-							break;
-						case SearchByLocationRequest.QUERY_CONTAINS:
-							f = filterCreator.createContainsFilter(geometry, geomName);
-							break;
-						case SearchByLocationRequest.QUERY_TOUCHES:
-							f = filterCreator.createTouchesFilter(geometry, geomName);
-							break;
-						case SearchByLocationRequest.QUERY_WITHIN:
-							f = filterCreator.createWithinFilter(geometry, geomName);
-							break;
-					}
+						// Create the correct Filter object:
+						Filter f = null;
+						switch (queryType) {
+							case SearchByLocationRequest.QUERY_INTERSECTS:
+								f = filterCreator.createIntersectsFilter(geometry, geomName);
+								break;
+							case SearchByLocationRequest.QUERY_CONTAINS:
+								f = filterCreator.createContainsFilter(geometry, geomName);
+								break;
+							case SearchByLocationRequest.QUERY_TOUCHES:
+								f = filterCreator.createTouchesFilter(geometry, geomName);
+								break;
+							case SearchByLocationRequest.QUERY_WITHIN:
+								f = filterCreator.createWithinFilter(geometry, geomName);
+								break;
+						}
 
-					// Gett the features
-					List<InternalFeature> temp = layerService.getFeatures(layerId, applicationService.getCrs(request
-							.getCrs()), f, null, VectorLayerService.FEATURE_INCLUDE_ALL);
-					if (temp.size() > 0) {
-						List<Feature> features = new ArrayList<Feature>();
+						// Get the features
+						List<InternalFeature> temp = layerService.getFeatures(layerId, applicationService.getCrs(request
+								.getCrs()), f, null, VectorLayerService.FEATURE_INCLUDE_ALL);
+						if (temp.size() > 0) {
+							List<Feature> features = new ArrayList<Feature>();
 
-						// Calculate overlap ratio in case of intersects:
-						if (queryType == SearchByLocationRequest.QUERY_INTERSECTS && ratio >= 0 && ratio < 1) {
-							for (InternalFeature feature : temp) {
-								double minimalOverlap = feature.getGeometry().getArea() * ratio;
-								Geometry overlap = location.intersection(feature.getGeometry());
-								double effectiveOverlap = overlap.getArea();
-								if (minimalOverlap <= effectiveOverlap) {
+							// Calculate overlap ratio in case of intersects:
+							if (queryType == SearchByLocationRequest.QUERY_INTERSECTS && ratio >= 0 && ratio < 1) {
+								for (InternalFeature feature : temp) {
+									double minimalOverlap = feature.getGeometry().getArea() * ratio;
+									Geometry overlap = location.intersection(feature.getGeometry());
+									double effectiveOverlap = overlap.getArea();
+									if (minimalOverlap <= effectiveOverlap) {
+										features.add(converter.toDto(feature));
+									}
+								}
+							} else {
+								for (InternalFeature feature : temp) {
 									features.add(converter.toDto(feature));
 								}
 							}
-						} else {
-							for (InternalFeature feature : temp) {
-								features.add(converter.toDto(feature));
-							}
-						}
 
-						// features.size can again be 0... so check:
-						if (features.size() > 0) {
-							// We have a response for this layer!
-							response.addLayer(layerId, features);
+							// features.size can again be 0... so check:
+							if (features.size() > 0) {
+								// We have a response for this layer!
+								response.addLayer(layerId, features);
 
-							// If searchType == SEARCH_FIRST_LAYER, we should search no further:
-							if (searchType == SearchByLocationRequest.SEARCH_FIRST_LAYER) {
-								break;
+								// If searchType == SEARCH_FIRST_LAYER, we should search no further:
+								if (searchType == SearchByLocationRequest.SEARCH_FIRST_LAYER) {
+									break;
+								}
 							}
 						}
 					}

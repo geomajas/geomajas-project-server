@@ -55,11 +55,8 @@ public class SplitPolygonCommand implements Command<SplitPolygonRequest, SplitPo
 	public void execute(SplitPolygonRequest request, SplitPolygonResponse response) throws Exception {
 		// convert to most accurate precision model
 		Polygon polygon = null;
-		try {
-			polygon = (Polygon) converter.toInternal(request.getPolygon());
-		} catch (Exception e) {
-			// throw new GeomajasException();
-		}
+		polygon = (Polygon) converter.toInternal(request.getPolygon());
+
 		// Convert to the polygons precision model:
 		LineString preciseLine = (LineString) polygon.getFactory().createGeometry(
 				converter.toInternal(request.getLineString()));

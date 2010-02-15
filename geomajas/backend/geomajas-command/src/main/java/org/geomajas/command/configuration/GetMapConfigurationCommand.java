@@ -74,6 +74,7 @@ public class GetMapConfigurationCommand implements Command<GetMapConfigurationRe
 	}
 
 	public void execute(GetMapConfigurationRequest request, GetMapConfigurationResponse response) throws Exception {
+		// @todo security, data should be filtered
 		String mapId = request.getMapId();
 		if (null == mapId) {
 			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "mapId");

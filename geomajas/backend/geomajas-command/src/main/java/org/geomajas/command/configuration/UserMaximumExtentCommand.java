@@ -30,6 +30,7 @@ import org.geomajas.command.dto.UserMaximumExtentResponse;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.layer.Layer;
 import org.geomajas.layer.LayerType;
+import org.geomajas.security.SecurityContext;
 import org.geomajas.service.ApplicationService;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
@@ -68,6 +69,9 @@ public class UserMaximumExtentCommand implements Command<UserMaximumExtentReques
 	@Autowired
 	private VectorLayerService layerService;
 
+	@Autowired
+	private SecurityContext securityContext;
+
 	public UserMaximumExtentResponse getEmptyCommandResponse() {
 		return new UserMaximumExtentResponse();
 	}
@@ -78,7 +82,7 @@ public class UserMaximumExtentCommand implements Command<UserMaximumExtentReques
 		String includeLayers = request.getIncludeLayers();
 		boolean excludeRasterLayers = request.isExcludeRasterLayers();
 		if (includeLayers != null && includeLayers.length() > 0) {
-			for (String layer : includeLayers.split("\\, ")) {
+			for (String layer : includeLayers.split(",")) {
 				Layer<?> l = runtimeParameters.getLayer(layer.trim());
 				if (!excludeRasterLayers || l.getLayerInfo().getLayerType() != LayerType.RASTER) {
 					tempLayers.add(l.getLayerInfo().getId());
@@ -100,8 +104,7 @@ public class UserMaximumExtentCommand implements Command<UserMaximumExtentReques
 				if (layer != null) {
 					Envelope bounds;
 					if (layer.getLayerInfo().getLayerType() == LayerType.RASTER) {
-						// @todo need to limit based on security
-						bounds = converterService.toInternal(layer.getLayerInfo().getMaxExtent());
+						bounds = securityContext.getVisibleArea(layerId).getEnvelopeInternal();
 						MathTransform transformer = geoService.findMathTransform(layer.getCrs(), targetCrs);
 						bounds = JTS.transform(bounds, transformer);
 					} else {

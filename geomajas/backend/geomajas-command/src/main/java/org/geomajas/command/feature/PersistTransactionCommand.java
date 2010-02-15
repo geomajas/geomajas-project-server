@@ -76,7 +76,6 @@ public class PersistTransactionCommand implements Command<PersistTransactionRequ
 			return;
 		}
 
-		// @todo for now I am assuming the same feature is always at the same position
 		List<InternalFeature> oldFeatures = new ArrayList<InternalFeature>();
 		List<InternalFeature> newFeatures = new ArrayList<InternalFeature>();
 		if (featureTransaction.getOldFeatures() != null) {
