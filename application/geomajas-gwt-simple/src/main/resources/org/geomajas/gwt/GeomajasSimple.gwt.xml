@@ -22,6 +22,7 @@
   -->
 
 <module>
+	<inherits name="com.smartgwt.tools.SmartGwtTools"/>
     <inherits name="org.geomajas.gwt.GeomajasClient"/>
     <entry-point class="org.geomajas.gwt.client.GeomajasSimple"/>
 </module>

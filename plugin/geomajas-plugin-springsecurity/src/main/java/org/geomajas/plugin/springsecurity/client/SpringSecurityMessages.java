@@ -21,46 +21,38 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.gwt.client;
+package org.geomajas.plugin.springsecurity.client;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.google.gwt.i18n.client.Messages;
 
 /**
  * <p>
- * Global settings for the Geomajas GWT face.
+ * Localization messages for the GWT face of the SpringSecurity plugin.
  * </p>
  * 
  * @author Pieter De Graef
  */
-public final class Geomajas {
+public interface SpringSecurityMessages extends Messages {
 
-	private Geomajas() {
-	}
+	// Login window messages:
 
-	/** Returns the current version of Geomajas as a string. */
-	public static String getVersion() {
-		return "1.5.3-SNAPSHOT";
-	}
+	String loginWindowTitle();
 
-	/**
-	 * Returns a list of locales that can be used in this version of Geomajas. The default is english, and 'native'
-	 * means that your browsers locale should be used (if supported - default otherwise).
-	 */
-	public static Map<String, String> getSupportedLocales() {
-		Map<String, String> locales = new HashMap<String, String>();
-		locales.put("default", "English");
-		locales.put("nl", "Nederlands");
-		return locales;
-	}
+	String loginUserName();
 
-	/**
-	 * Return the base directory for the web application.
-	 * 
-	 * @return
-	 */
-	public static native String getIsomorphicDir()
-	/*-{
-		return $wnd.isomorphicDir;
-	}-*/;
+	String loginPassword();
+
+	String loginBtnLogin();
+
+	String loginBtnReset();
+
+	String loginNoUserName();
+
+	String loginNoPassword();
+
+	String loginFailure();
+
+	// Logout button messages:
+
+	String logoutBtnTitle();
 }

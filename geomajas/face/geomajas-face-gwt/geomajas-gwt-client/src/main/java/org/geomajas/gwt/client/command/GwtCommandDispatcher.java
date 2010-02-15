@@ -23,13 +23,6 @@
 
 package org.geomajas.gwt.client.command;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.shared.HandlerManager;
-import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.i18n.client.LocaleInfo;
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.rpc.ServiceDefTarget;
-import com.smartgwt.client.util.SC;
 import org.geomajas.command.CommandResponse;
 import org.geomajas.gwt.client.GeomajasService;
 import org.geomajas.gwt.client.GeomajasServiceAsync;
@@ -38,6 +31,15 @@ import org.geomajas.gwt.client.command.event.DispatchStartedHandler;
 import org.geomajas.gwt.client.command.event.DispatchStoppedEvent;
 import org.geomajas.gwt.client.command.event.DispatchStoppedHandler;
 import org.geomajas.gwt.client.command.event.HasDispatchHandlers;
+import org.geomajas.gwt.client.i18n.I18nProvider;
+
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.i18n.client.LocaleInfo;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.rpc.ServiceDefTarget;
+import com.smartgwt.client.util.SC;
 
 /**
  * The central client side dispatcher for all commands. Use the {@link #execute(GwtCommand, CommandCallback)} function
@@ -56,6 +58,8 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 	private int nrOfDispatchedCommands;
 
 	private String locale;
+
+	private String userToken;
 
 	private GwtCommandDispatcher() {
 		locale = LocaleInfo.getCurrentLocale().getLocaleName();
@@ -96,17 +100,17 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 	public void execute(GwtCommand command, final CommandCallback onSuccess) {
 		incrementDispatched();
 		command.setLocale(locale);
+		command.setUserToken(userToken);
 		service.execute(command, new AsyncCallback<CommandResponse>() {
 
 			public void onFailure(Throwable error) {
-				String message = "An error occurred on the server:";
-				SC.warn(message + "\n" + error.getMessage(), null);
+				SC.warn(I18nProvider.getGlobal().commandError() + ":\n" + error.getMessage(), null);
 				decrementDispatched();
 			}
 
 			public void onSuccess(CommandResponse response) {
 				if (response.isError()) {
-					String message = "An error occurred on the server:";
+					String message = I18nProvider.getGlobal().commandError() + ":";
 					for (String error : response.getErrorMessages()) {
 						message += "\n" + error;
 					}
@@ -126,6 +130,15 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 	 */
 	public boolean isBusy() {
 		return nrOfDispatchedCommands != 0;
+	}
+
+	/**
+	 * Set the user token, so it can be sent in very command.
+	 * 
+	 * @param userToken
+	 */
+	public void setUserToken(String userToken) {
+		this.userToken = userToken;
 	}
 
 	// -------------------------------------------------------------------------

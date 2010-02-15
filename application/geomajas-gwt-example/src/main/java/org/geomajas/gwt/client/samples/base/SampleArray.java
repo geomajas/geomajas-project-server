@@ -23,7 +23,9 @@
 
 package org.geomajas.gwt.client.samples.base;
 
+import org.geomajas.gwt.client.samples.LoginSample;
 import org.geomajas.gwt.client.samples.OpenStreetMapSample;
+import org.geomajas.gwt.client.samples.i18n.I18nProvider;
 
 /**
  * <p>
@@ -37,7 +39,11 @@ public final class SampleArray {
 	}
 
 	public static SampleTreeNode[] getSampleArray() {
-		return new SampleTreeNode[] { new SampleTreeNode("MapWidget", "/images/world.png", "MapWidget", "topLevel"),
-				new SampleTreeNode(new OpenStreetMapSample(), "OSM", "MapWidget") };
+		return new SampleTreeNode[] {
+				new SampleTreeNode("MapWidget", "/images/world.png", "MapWidget", "topLevel"),
+				new SampleTreeNode(new OpenStreetMapSample(), "OSM", "MapWidget"),
+				new SampleTreeNode(I18nProvider.getSampleMessages().treeGroupSecurity(),
+						"[ISOMORPHIC]/geomajas/silk/key.png", "Security", "topLevel"),
+				new SampleTreeNode(new LoginSample(), "Login", "Security") };
 	}
 }

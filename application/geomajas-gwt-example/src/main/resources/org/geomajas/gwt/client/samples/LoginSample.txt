@@ -1,0 +1,39 @@
+	public Canvas getViewPanel() {
+		final VLayout layout = new VLayout();
+		layout.setWidth100();
+		layout.setHeight100();
+
+		// Create a log out button, and attach an event handler:
+		LogoutButton logoutButton = new LogoutButton(new LogoutHandler() {
+
+			public void onLogoutFailure(LogoutFailureEvent event) {
+				SC.warn("Logging out has failed...");
+			}
+
+			public void onLogoutSuccess(LogoutSuccessEvent event) {
+				SC.warn("User has been logged out...");
+			}
+		});
+
+		// Create a login window, and attach an event handler:
+		LoginWindow loginWindow = new LoginWindow(new LoginHandler() {
+
+			public void onLoginFailure(LoginFailureEvent event) {
+				SC.warn("Login attempt failed...");
+			}
+
+			public void onLoginSuccess(LoginSuccessEvent event) {
+				SC.say("Login attempt was successful. User token=" + event.getToken());
+			}
+		});
+
+		// Make sure the window can't be dragged outside of parent:
+		loginWindow.setKeepInParentRect(true);
+
+		loginWindow.setTop(100);
+		loginWindow.setLayoutAlign(Alignment.CENTER);
+
+		layout.addChild(logoutButton);
+		layout.addChild(loginWindow);
+		return layout;
+	}

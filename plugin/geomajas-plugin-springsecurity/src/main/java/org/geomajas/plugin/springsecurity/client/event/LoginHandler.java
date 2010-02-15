@@ -21,46 +21,35 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.gwt.client;
+package org.geomajas.plugin.springsecurity.client.event;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.google.gwt.event.shared.EventHandler;
+import com.google.gwt.event.shared.GwtEvent;
 
 /**
  * <p>
- * Global settings for the Geomajas GWT face.
+ * Handler for a logging in.
  * </p>
  * 
  * @author Pieter De Graef
  */
-public final class Geomajas {
+public interface LoginHandler extends EventHandler {
 
-	private Geomajas() {
-	}
-
-	/** Returns the current version of Geomajas as a string. */
-	public static String getVersion() {
-		return "1.5.3-SNAPSHOT";
-	}
+	GwtEvent.Type<LoginHandler> TYPE = new GwtEvent.Type<LoginHandler>();
 
 	/**
-	 * Returns a list of locales that can be used in this version of Geomajas. The default is english, and 'native'
-	 * means that your browsers locale should be used (if supported - default otherwise).
-	 */
-	public static Map<String, String> getSupportedLocales() {
-		Map<String, String> locales = new HashMap<String, String>();
-		locales.put("default", "English");
-		locales.put("nl", "Nederlands");
-		return locales;
-	}
-
-	/**
-	 * Return the base directory for the web application.
+	 * Called when a login attempt was successful.
 	 * 
-	 * @return
+	 * @param event
+	 *            The login success event. Contains the user token.
 	 */
-	public static native String getIsomorphicDir()
-	/*-{
-		return $wnd.isomorphicDir;
-	}-*/;
+	void onLoginSuccess(LoginSuccessEvent event);
+
+	/**
+	 * Called when a login attempt has failed.
+	 * 
+	 * @param event
+	 *            The login failure event. Contains the error message.
+	 */
+	void onLoginFailure(LoginFailureEvent event);
 }

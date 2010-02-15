@@ -41,12 +41,12 @@ import java.util.StringTokenizer;
  * <p/>
  * Note: In case of multiple config locations, later bean definitions will override ones defined in earlier loaded
  * files. This can be leveraged to deliberately override certain bean definitions via an extra XML file.
- *
+ * 
  * @author Joachim Van der Auwera
  */
 public class GeomajasContextListener implements ServletContextListener {
 
-	//private final Logger log = LoggerFactory.getLogger(GeomajasContextListener.class);
+	// private final Logger log = LoggerFactory.getLogger(GeomajasContextListener.class);
 
 	/** Name of servlet context parameter that can specify additional config locations for the spring context. */
 	public static final String CONFIG_LOCATION_PARAMETER = "contextConfigLocation";
@@ -65,15 +65,20 @@ public class GeomajasContextListener implements ServletContextListener {
 				allContextLocations.add(st.nextToken());
 			}
 		}
-		ApplicationContext applicationContext = new ClassPathXmlApplicationContext(
-				allContextLocations.toArray((new String[allContextLocations.size()])));
-		ApplicationContextUtils.setApplicationContext(servletContext, applicationContext);
+		try {
+			ApplicationContext applicationContext = new ClassPathXmlApplicationContext(allContextLocations
+					.toArray((new String[allContextLocations.size()])));
+			ApplicationContextUtils.setApplicationContext(servletContext, applicationContext);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
 	 * Close the root web application context.
-	 *
-	 * @param servletContextEvent servlet context event
+	 * 
+	 * @param servletContextEvent
+	 *            servlet context event
 	 */
 	public void contextDestroyed(ServletContextEvent servletContextEvent) {
 		// nothing to do

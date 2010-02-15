@@ -43,7 +43,7 @@ public class OpenStreetMapSample extends SamplePanel {
 	private MapWidget map;
 
 	public OpenStreetMapSample() {
-		super("OSM", I18nProvider.getSampleMessages().osmTitle(), "/images/application_view_list.png");
+		super("OSM", I18nProvider.getSampleMessages().osmTitle(), "[ISOMORPHIC]/geomajas/layer-raster.png");
 	}
 
 	public Canvas getViewPanel() {

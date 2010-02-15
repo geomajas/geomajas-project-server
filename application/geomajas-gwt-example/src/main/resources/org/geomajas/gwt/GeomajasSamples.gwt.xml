@@ -22,6 +22,8 @@
   -->
 
 <module>
-    <inherits name="org.geomajas.gwt.GeomajasClient"/>
+    <inherits name="org.geomajas.gwt.GeomajasClient" />
+    <inherits name="org.geomajas.plugin.springsecurity.SpringSecurity" />
+
     <entry-point class="org.geomajas.gwt.client.GeomajasSamples"/>
 </module>

@@ -87,7 +87,7 @@ public class GeomajasSimple implements EntryPoint {
 		if (!GWT.isScript()) {
 			KeyIdentifier debugKey = new KeyIdentifier();
 			debugKey.setCtrlKey(true);
-			debugKey.setKeyName("D");
+			debugKey.setKeyName("Q");
 
 			Page.registerKey(debugKey, new KeyCallback() {
 

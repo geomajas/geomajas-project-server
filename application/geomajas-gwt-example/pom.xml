@@ -82,6 +82,19 @@
 			<version>1.0-M2</version>
 		</dependency>
 
+		<!-- Extra Geomajas plugins -->
+        <dependency>
+            <groupId>org.geomajas.plugin</groupId>
+            <artifactId>geomajas-plugin-springsecurity</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+		<dependency>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-plugin-springsecurity</artifactId>
+            <version>${project.version}</version>
+			<classifier>sources</classifier>
+		</dependency>
+
 		<!-- Google dependencies -->
 		<dependency>
 			<groupId>com.google.gwt</groupId>
@@ -170,24 +183,31 @@
 				</configuration>
 			</plugin>
 
-			<!--
-				plugin> <groupId>org.codehaus.mojo</groupId>
-				<artifactId>gwt-maven-plugin</artifactId> <version>1.2</version>
-				<configuration> <inplace>true</inplace>
-				<module>org.geomajas.gwt.GeomajasSamples</module>
-				<runTarget>samples.html</runTarget>
-				<warSourceDirectory>war</warSourceDirectory>
-				<disableCastChecking>true</disableCastChecking>
-				<disableClassMetadata>true</disableClassMetadata>
-				<extraJvmArgs>-Xmx512M -Xss1024k</extraJvmArgs>
-				<i18nConstantsWithLookupBundle>org.geomajas.gwt.client.simple.i18n.Simple
-				</i18nConstantsWithLookupBundle> </configuration> <executions>
-				<execution> <id>test</id> <goals> <goal>clean</goal>
-				<goal>compile</goal> <goal>generateAsync</goal> <goal>test</goal>
-				</goals> </execution> <execution> <id>i18n</id>
-				<phase>generate-resources</phase> <goals> <goal>i18n</goal> </goals>
-				</execution> </executions> </plugin
-			-->
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>gwt-maven-plugin</artifactId>
+				<version>1.2</version>
+				<configuration>
+					<inplace>true</inplace>
+					<module>org.geomajas.gwt.GeomajasSamples</module>
+					<runTarget>samples.html</runTarget>
+					<warSourceDirectory>war</warSourceDirectory>
+					<disableCastChecking>true</disableCastChecking>
+					<disableClassMetadata>true</disableClassMetadata>
+					<extraJvmArgs>-Xmx512M -Xss1024k</extraJvmArgs>
+				</configuration>
+				<executions>
+					<execution>
+						<id>test</id>
+						<goals>
+							<goal>clean</goal>
+							<goal>compile</goal>
+							<goal>generateAsync</goal>
+							<goal>test</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 
 			<!-- Run the application using "mvn jetty:run" -->
 			<plugin>

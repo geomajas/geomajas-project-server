@@ -47,10 +47,26 @@ public interface SampleMessages extends Messages {
 	String generalFile();
 
 	String generalDescription();
+	
+	String treeGroupSecurity();
 
 	// OpenStreetMap sample:
 
 	String osmTitle();
 
 	String osmDescription();
+
+	// Login sample:
+
+	String loginTitle();
+
+	String loginDescription();
+
+	String loginSuccess(String userToken);
+
+	String loginFailure();
+
+	String logoutSuccess();
+
+	String logoutFailure();
 }

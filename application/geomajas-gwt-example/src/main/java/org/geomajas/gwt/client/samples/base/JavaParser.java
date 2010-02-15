@@ -60,6 +60,8 @@ public final class JavaParser {
 		temp = temp.replaceAll("for", "<span style='color:#800080;'>for</span>");
 		temp = temp.replaceAll("while", "<span style='color:#800080;'>while</span>");
 		temp = temp.replaceAll("switch", "<span style='color:#800080;'>switch</span>");
+		temp = temp.replaceAll("true", "<span style='color:#800080;'>true</span>");
+		temp = temp.replaceAll("false", "<span style='color:#800080;'>false</span>");
 
 		String result = "";
 		boolean busy = true;

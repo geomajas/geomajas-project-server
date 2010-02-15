@@ -9,11 +9,15 @@
             org/geomajas/gwt/samples/applicationContext.xml
 			org/geomajas/gwt/samples/mapwidget/mapOsm.xml
 			org/geomajas/gwt/samples/mapwidget/layerOsm.xml
+			org/geomajas/gwt/samples/security/security.xml
         </param-value>
     </context-param>
 
 	<listener>
  		<listener-class>org.geomajas.gwt.server.JettyListener</listener-class>
+	</listener>
+	<listener>
+ 		<listener-class>org.geomajas.plugin.springsecurity.SecurityJettyListener</listener-class>
 	</listener>
 
 	<listener>

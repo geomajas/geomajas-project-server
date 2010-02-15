@@ -38,8 +38,10 @@ public class JettyListener implements ServletContextListener {
 			Class.forName("org.geomajas.command.general.LogCommand");
 			// adds impl library to webapp classloader
 			Class.forName("org.geomajas.spring.GeomajasBeanNameGenerator");
+			//Class.forName("org.geomajas.plugin.springsecurity.command.dto.LoginRequest");
 		} catch (ClassNotFoundException e) {
 			// ignore
+			e.printStackTrace();
 		}
 	}
 

@@ -20,47 +20,26 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+package org.geomajas.plugin.springsecurity.client.event;
 
-package org.geomajas.gwt.client;
-
-import java.util.HashMap;
-import java.util.Map;
+import com.google.gwt.event.shared.GwtEvent;
 
 /**
- * <p>
- * Global settings for the Geomajas GWT face.
- * </p>
+ * Event that reports when the user has successfully logged out.
  * 
  * @author Pieter De Graef
  */
-public final class Geomajas {
+public class LogoutSuccessEvent extends GwtEvent<LogoutHandler> {
 
-	private Geomajas() {
+	public LogoutSuccessEvent() {
 	}
 
-	/** Returns the current version of Geomajas as a string. */
-	public static String getVersion() {
-		return "1.5.3-SNAPSHOT";
+	@SuppressWarnings("unchecked")
+	public Type getAssociatedType() {
+		return LogoutHandler.TYPE;
 	}
 
-	/**
-	 * Returns a list of locales that can be used in this version of Geomajas. The default is english, and 'native'
-	 * means that your browsers locale should be used (if supported - default otherwise).
-	 */
-	public static Map<String, String> getSupportedLocales() {
-		Map<String, String> locales = new HashMap<String, String>();
-		locales.put("default", "English");
-		locales.put("nl", "Nederlands");
-		return locales;
+	protected void dispatch(LogoutHandler logoutHandler) {
+		logoutHandler.onLogoutSuccess(this);
 	}
-
-	/**
-	 * Return the base directory for the web application.
-	 * 
-	 * @return
-	 */
-	public static native String getIsomorphicDir()
-	/*-{
-		return $wnd.isomorphicDir;
-	}-*/;
 }

@@ -31,6 +31,8 @@ import com.google.gwt.i18n.client.Messages;
  */
 public interface GlobalMessages extends Messages {
 
+	String commandError();
+
 	String missingI18n();
 
 	String saveEditingAborted();

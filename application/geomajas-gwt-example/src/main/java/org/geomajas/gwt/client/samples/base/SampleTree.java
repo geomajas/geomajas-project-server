@@ -68,5 +68,6 @@ public class SampleTree extends TreeGrid {
 		tree.setData(SampleArray.getSampleArray());
 
 		setData(tree);
+		tree.openAll(tree.getRoot());
 	}
 }
