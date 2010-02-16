@@ -50,8 +50,6 @@ public class PrepareScanningContextListener implements ServletContextListener {
 		for (String className : preloadClasses) {
 			try {
 				Class<?> c = Class.forName(className);
-				ClassLoader cl = c.getClassLoader();
-				System.out.println(cl);
 			} catch (ClassNotFoundException e) {
 				// ignore
 			}
