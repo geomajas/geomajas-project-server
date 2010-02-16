@@ -14,6 +14,7 @@
 		<include name="CommandResponse.java"/>
 		<include name="EmptyCommandRequest.java"/>
 		<include name="LayerIdCommandRequest.java"/>
+		<include name="SuccessCommandResponse.java"/>
 	</source>
 	<source path="layer">
 		<include name="LayerType.java"/>
