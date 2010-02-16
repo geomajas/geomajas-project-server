@@ -33,7 +33,7 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 		<property name="loopAllServices" value="false"/>
 		<property name="securityServices">
 			<list>
-				<bean class="org.geomajas.plugin.springsecurity.security.SpringSecurityService"/>
+				<bean name="springsecurity" class="org.geomajas.plugin.springsecurity.security.SpringSecurityService"/>
 				<bean class="org.geomajas.plugin.springsecurity.security.LoginAllowedSecurityService"/>
 			</list>
 		</property>
