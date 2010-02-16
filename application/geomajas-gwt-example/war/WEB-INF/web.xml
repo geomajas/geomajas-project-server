@@ -13,11 +13,18 @@
         </param-value>
     </context-param>
 
+    <context-param>
+        <param-name>preloadClasses</param-name>
+        <param-value>
+			org.geomajas.command.general.LogCommand
+			org.geomajas.spring.GeomajasBeanNameGenerator
+			org.hibernate.validator.engine.ValidatorImpl
+			org.geomajas.plugin.springsecurity.command.dto.LoginRequest
+        </param-value>
+    </context-param>
+
 	<listener>
  		<listener-class>org.geomajas.gwt.server.JettyListener</listener-class>
-	</listener>
-	<listener>
- 		<listener-class>org.geomajas.plugin.springsecurity.SecurityJettyListener</listener-class>
 	</listener>
 
 	<listener>
