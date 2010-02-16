@@ -19,6 +19,7 @@
 			org.geomajas.command.general.LogCommand
 			org.geomajas.spring.GeomajasBeanNameGenerator
 			org.hibernate.validator.engine.ValidatorImpl
+			org.geotools.data.shapefile.ShapefileDataStoreFactory
         </param-value>
     </context-param>
 
