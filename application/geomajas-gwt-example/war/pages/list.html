@@ -1,98 +1,103 @@
 <div>
 <p>Full list with all tests that are planned. For showcases regarding non-GIS related widget functionality, go to the <a href="http://www.smartclient.com/smartgwt/showcase/">SmartGWT showcase page</a>.</p>
+<p>All samples are prioritized by a number (i.e. (<span style="color:#FF8800; font-weight:bold;">1</span>) ). Where 1 is the highest priority and 5 the lowest.</p>
 <h2>MapWidget</h2>
 <p>All mapWidget tests should use the ZoomOnScrollController and have the scalebar and panbuttons active by default.</p>
 <ul>
-<li>OpenStreetMap layer</li>
-<li>Google layer</li>
-<li>WMS layer</li>
-<li>Geotools layer</li>
-<li>Hibernate layer (later)</li>
-<li>Toggle panbuttons and scalebar on and off</li>
-<li>Change map unit types (metric versus english – meter versus mile)</li>
-<li>Toggle maxbounds</li>
-<li>Many buttons for navigation: zoom in, apply bounds, ....</li>
-<li>Simple CRS test: show 1 raster layer and 1 vector layer and a map, all in the same CRS. (make the layers as simple as possible – i.e. rectangle for vector...)</li>
-<li>CRS test: 2 layers. 1 raster, 1 vector where the layers use a different CRS then the map. This test should display that CRS transformation works in Geomajas.</li>
+<li>(<span style="color:#FF8800; font-weight:bold;">1</span>) OpenStreetMap layer</li>
+<li>(<span style="color:#FF8800; font-weight:bold;">4</span>) Google layer</li>
+<li>(<span style="color:#FF8800; font-weight:bold;">2</span>) WMS layer</li>
+<li>(<span style="color:#FF8800; font-weight:bold;">2</span>) Geotools layer</li>
+<li>(<span style="color:#FF8800; font-weight:bold;">4</span>) Hibernate layer</li>
+<li>(<span style="color:#FF8800; font-weight:bold;">3</span>) Toggle panbuttons and scalebar on and off</li>
+<li>(<span style="color:#FF8800; font-weight:bold;">2</span>) Change map unit types (metric versus english; meter versus mile)</li>
+<li>(<span style="color:#FF8800; font-weight:bold;">2</span>) Toggle use of maxbounds, and perhaps also draw the maxBounds if active.</li>
+<li>(<span style="color:#FF8800; font-weight:bold;">1</span>) Many buttons for navigation: zoom in, apply bounds, ....(see the MapView for methods)</li>
+<li>(<span style="color:#FF8800; font-weight:bold;">1</span>) Simple CRS test: show 1 raster layer and 1 vector layer and a map, all in the same CRS. (make the layers as simple as possible: i.e. rectangle for vector...)</li>
+<li>(<span style="color:#FF8800; font-weight:bold;">1</span>) CRS test: 2 layers. 1 raster, 1 vector where the layers use a different CRS then the map. This test should display that CRS transformation works in Geomajas.</li>
 </ul>
 
 <h2>Overview Map</h2>
 <ul>
-<li>Show an overview map.</li>
-<li>Button page, altering overview map display.</li>
+<li>(<span style="color:#FF8800; font-weight:bold;">3</span>) Show an overview map - and how it compares to a normal map.</li>
+<li>(<span style="color:#FF8800; font-weight:bold;">3</span>) Button page, altering overview map display: change the max extent style, change rectangle style, toggle drawing max extent.</li>
 </ul>
 
 <h2>Map Styling</h2>
 <ul>
-<li>Custom point layer styles (circle, square, image)</li>
-<li>Custom line layer styles </li>
-<li>Custom polygon layer styles</li>
+<li>(<span style="color:#FF8800; font-weight:bold;">4</span>) Custom point layer styles (circle, square, image)</li>
+<li>(<span style="color:#FF8800; font-weight:bold;">4</span>) Custom line layer styles </li>
+<li>(<span style="color:#FF8800; font-weight:bold;">4</span>) Custom polygon layer styles</li>
 </ul>
 
 <h2>Map Controller</h2>
 <ul>
-<li>Creating a custom controller</li>
-<li>Adding controllers to specific elements</li>
-<li>(low priority) Real time updating of the map (use a server side layer model that lets a feature go round and round and round in circles)</li>
-<li>SnappingController test</li>
-<li>RectangleContrller test</li>
+<li>(<span style="color:#FF8800; font-weight:bold;">1</span>) Creating a custom controller. i.e. when the user clicks on the map, show latlon coordinate.</li>
+<li>(<span style="color:#FF8800; font-weight:bold;">2</span>) Adding controllers to specific elements. i.e. draw an image somewhere that can be dragged around.</li>
+<li>(<span style="color:#FF8800; font-weight:bold;">5</span>) Real time updating of the map (use a server side layer model that lets a feature go round and round and round in circles)</li>
+<li>(<span style="color:#FF8800; font-weight:bold;">3</span>) SnappingController test: create some extension of the SnappingController, to test snapping on a vector layer. Can be a controller that draws a circle at the snapped cursor-position.</li>
+<li>(<span style="color:#FF8800; font-weight:bold;">3</span>) RectangleController test: create some extension of the RectangleController, to test drawing rectangles and acting upon it. Can be a measure area controller.</li>
 </ul>
 
 <h2>Security</h2>
 <ul>
-<li>Login knop met verschillende logins (filter op laag)</li>
-<li>Login knop met verschillende logins (filter op features)</li>
-<li>Login knop met verschillende logins (filter op attributen)</li>
-<li>Variable tools in the toolbar, depending on rights</li>
-<li>Command limitation, depending on rights (one user not allowed to see source :-)))</li>
+<li>(<span style="color:#FF8800; font-weight:bold;">1</span>) Sample that tests the login and logout widgets.</li>
+<li>(<span style="color:#FF8800; font-weight:bold;">1</span>) Security on layers with a few different users.</li>
+<li>(<span style="color:#FF8800; font-weight:bold;">1</span>) Security on features with a few different users.</li>
+<li>(<span style="color:#FF8800; font-weight:bold;">1</span>) Security on attributes with a few different users.</li>
+<li>(<span style="color:#FF8800; font-weight:bold;">1</span>) Variable tools in the toolbar, depending on rights (with a few different users who automatically see a different toolbar)</li>
+<li>(<span style="color:#FF8800; font-weight:bold;">1</span>) Command limitation, depending on rights (one user not allowed to see source :-)))</li>
 </ul>
 
 <h2>Localization</h2>
 <ul>
-<li>Tool that reports errors: tests server side error message translation.</li>
+<li>(<span style="color:#FF8800; font-weight:bold;">4</span>) Tool that reports errors: tests server side error message translation.</li>
 </ul>
 
-<h2>Toolbar</h2>
+<h2>Toolbar & Controllers</h2>
 <ul>
-<li>Toolbar navigational buttons</li>
-<li>Toolbar selection buttons</li>
-<li>Measure distance</li>
-<li>Display feature information</li>
-<li>Scale select</li>
-<li>Writing custom toolbar tools</li>
-<li>Writing custom toolbar</li>
+<li>(<span style="color:#FF8800; font-weight:bold;">2</span>) Toolbar navigational buttons (pan, zoom, zoom to rectangle...)</li>
+<li>(<span style="color:#FF8800; font-weight:bold;">2</span>) Toolbar selection buttons (selection tool, zoom to selection)</li>
+<li>(<span style="color:#FF8800; font-weight:bold;">3</span>) Measure distance</li>
+<li>(<span style="color:#FF8800; font-weight:bold;">3</span>) Display feature information</li>
+<li>(<span style="color:#FF8800; font-weight:bold;">2</span>) Scale select using the default zoomlevels from configuration</li>
+<li>(<span style="color:#FF8800; font-weight:bold;">2</span>) Scale select with custom zoomlevels</li>
+<li>(<span style="color:#FF8800; font-weight:bold;">2</span>) Writing custom toolbar tools (can use the latlon click controller from earlier)</li>
+<li>(<span style="color:#FF8800; font-weight:bold;">2</span>) Writing custom toolbar. Shows the code to set up a custom toolbar (no configuration)</li>
 </ul>
 
 <h2>LayerTree & Legend</h2>
 <p>Use different layer types, so that the legend is tested to display the different styles.</p>
 <ul>
-<li>Test initial state in the layer tree and legend</li>
-<li>LayerTree: test selected layer</li>
-<li>Page with map + layertree + legend: test the visibility toggle.</li>
-<li>Page with map + layertree: test the labels toggle</li>
-<li>layertree: test grouping within tree</li>
+<li>(<span style="color:#FF8800; font-weight:bold;">2</span>) Test initial state in the layer tree and legend (initial state from configuration)</li>
+<li>(<span style="color:#FF8800; font-weight:bold;">2</span>) LayerTree: test selected layer (some buttons that select layers, a trigger on the layer select to display selected layer as a label somewhere)</li>
+<li>(<span style="color:#FF8800; font-weight:bold;">3</span>) Page with map + LayerTree + legend: test the visibility toggle.</li>
+<li>(<span style="color:#FF8800; font-weight:bold;">3</span>) Page with map + LayerTree: test the labels toggle</li>
+<li>(<span style="color:#FF8800; font-weight:bold;">4</span>) LayerTree: test grouping within tree</li>
 </ul>
 
 <h2>FeatureListGrid</h2>
 <p>Page with map and FeatureListGrid, where all the features are immediately shown in the grid.</p>
 <ul>
-<li>Test all the toggle buttons (show ID, show all attributes, enable/disable double click)</li>
-<li>Test selection – together with toolbar</li>
-<li>Test sorting in table</li>
-<li>Test with all types of data</li>
-<li>Test using a custom type</li>
+<li>(<span style="color:#FF8800; font-weight:bold;">5</span>) Test all the toggle buttons (show ID, show all attributes, enable/disable double click)</li>
+<li>(<span style="color:#FF8800; font-weight:bold;">3</span>) Test selection together with toolbar (selection of features on the map and in grid should always be in sync)</li>
+<li>(<span style="color:#FF8800; font-weight:bold;">5</span>) Test sorting in table (is really a SmartGWT issue...)</li>
+<li>(<span style="color:#FF8800; font-weight:bold;">3</span>) Test with all types of data (every attribute definition supported by Geomajas)</li>
+<li>(<span style="color:#FF8800; font-weight:bold;">4</span>) Test using a custom attribute type</li>
 </ul>
 
 <h2>Search & Filtering</h2>
 <ul>
-<li>Using the default search handlers</li>
-<li>Using an example search handler</li>
-<li>Custom search criteria (all types of attributes)</li>
-<li>Apply custom filter on a layer (all types of attributes)</li>
-<li>Adjusting the maximum result size</li>
+<li>(<span style="color:#FF8800; font-weight:bold;">4</span>) Using the default search handlers</li>
+<li>(<span style="color:#FF8800; font-weight:bold;">5</span>) Using an example search handler (do something stupid with the returned list of features)</li>
+<li>(<span style="color:#FF8800; font-weight:bold;">3</span>) Custom search criteria (all types of attributes)</li>
+<li>(<span style="color:#FF8800; font-weight:bold;">3</span>) Apply custom filter on a layer (all types of attributes)</li>
+<li>(<span style="color:#FF8800; font-weight:bold;">5</span>) Adjusting the maximum result size</li>
 </ul>
 
 <h2>Editing</h2>
 <p>I would suggest we write separate tutorials here for different actions (new feature, update, delete, donut, split, merge, snapping)</p>
-<p>All test times 6: once for point layers, once for line layers and once for polygon layers, multi stuff.</p>
+<ul>
+<li>(<span style="color:#FF8800; font-weight:bold;">3</span>) All test times 6: once for point layers, once for line layers and once for polygon layers, multi stuff.</li>
+</ul>
 </div>
