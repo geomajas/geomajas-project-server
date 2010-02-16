@@ -28,17 +28,17 @@
 			<artifactId>geomajas-command</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.geomajas.layer</groupId>
+			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-layer-hibernate</artifactId>
 		</dependency>
 
 		<dependency>
-			<groupId>org.geomajas.layer</groupId>
+			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-layer-geotools</artifactId>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.geomajas.layer</groupId>
+			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-layer-wms</artifactId>
 			<scope>test</scope>
 		</dependency>
