@@ -81,22 +81,18 @@ public class SearchByLocationCommandTest {
 				"command.feature.SearchByLocation", request, null, "en");
 
 		// test
-		if (response.isError()) {
-			response.getErrors().get(0).printStackTrace();
-		}
+		Assert.assertFalse(response.isError());
 		List<Feature> features = response.getFeatureMap().get(LAYER_ID);
 		Assert.assertNotNull(features);
+		Assert.assertEquals(4, features.size());
 		List<String> actual = new ArrayList<String>();
 		for (Feature feature : features) {
 			actual.add(feature.getLabel());
 		}
-		List<String> expected = new ArrayList<String>();
-		// reverse order
-		expected.add("Country 4");
-		expected.add("Country 3");
-		expected.add("Country 2");
-		expected.add("Country 1");
-		Assert.assertEquals(expected, actual);
+		Assert.assertTrue(actual.contains("Country 4"));
+		Assert.assertTrue(actual.contains("Country 3"));
+		Assert.assertTrue(actual.contains("Country 2"));
+		Assert.assertTrue(actual.contains("Country 1"));
 	}
 
 	@Test
@@ -121,6 +117,7 @@ public class SearchByLocationCommandTest {
 				"command.feature.SearchByLocation", request, null, "en");
 
 		// test
+		Assert.assertFalse(response.isError());
 		List<Feature> features = response.getFeatureMap().get(LAYER_ID);
 		Assert.assertNotNull(features);
 		List<String> actual = new ArrayList<String>();

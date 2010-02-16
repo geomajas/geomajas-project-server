@@ -26,18 +26,24 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.geomajas.configuration.VectorLayerInfo;
+import org.geomajas.layer.feature.Attribute;
+import org.geomajas.layer.feature.attribute.IntegerAttribute;
+import org.geomajas.layer.feature.attribute.StringAttribute;
 import org.geotools.data.DataStore;
 import org.geotools.data.FeatureSource;
 import org.geotools.data.shapefile.ShapefileDataStore;
 import org.geotools.feature.FeatureIterator;
 import org.junit.Assert;
-import org.junit.BeforeClass;
+import org.junit.Before;
 import org.junit.Test;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.io.WKTReader;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 
 /**
  * <p>
@@ -57,12 +63,17 @@ public class GeoToolsFeatureModelTest extends AbstractGeoToolsTest {
 
 	private static SimpleFeature feature;
 
-	@BeforeClass
-	public static void init() throws Exception {
+	@Autowired
+	@Qualifier("citiesInfo")
+	private VectorLayerInfo citiesLayerInfo;
+
+	@Before
+	public void init() throws Exception {
 		ClassLoader classloader = Thread.currentThread().getContextClassLoader();
 		URL url = classloader.getResource(SHAPE_FILE);
 		DataStore dataStore = new ShapefileDataStore(url);
-		featureModel = new GeoToolsFeatureModel(dataStore, LAYER_NAME, 4326);
+		featureModel = new GeoToolsFeatureModel(dataStore, LAYER_NAME, 4326, converterService);
+		featureModel.setLayerInfo(citiesLayerInfo);
 
 		FeatureSource<SimpleFeatureType, SimpleFeature> fs = featureModel.getFeatureSource();
 		FeatureIterator<SimpleFeature> fi = fs.getFeatures().features();
@@ -74,27 +85,27 @@ public class GeoToolsFeatureModelTest extends AbstractGeoToolsTest {
 
 	@Test
 	public void testGetId() throws Exception {
-		Assert.assertEquals(featureModel.getId(feature), "4");
+		Assert.assertEquals("4", featureModel.getId(feature));
 	}
 
 	@Test
 	public void testGetAttribute() throws Exception {
-		Assert.assertEquals(featureModel.getAttribute(feature, "City"), "Heusweiler");
+		Assert.assertEquals("Heusweiler", featureModel.getAttribute(feature, "City").getValue());
 	}
 
 	@Test
 	public void testGetAttributes() throws Exception {
-		Assert.assertEquals(featureModel.getAttributes(feature).get("City"), "Heusweiler");
+		Assert.assertEquals("Heusweiler", featureModel.getAttributes(feature).get("City").getValue());
 	}
 
 	@Test
 	public void testGetGeometry() throws Exception {
-		Assert.assertEquals(featureModel.getGeometry(feature).getCoordinate().x, 6.93, 0.01);
+		Assert.assertEquals(6.93, featureModel.getGeometry(feature).getCoordinate().x, 0.01);
 	}
 
 	@Test
 	public void testGetGeometryAttributeName() throws Exception {
-		Assert.assertEquals(featureModel.getGeometryAttributeName(), "the_geom");
+		Assert.assertEquals("the_geom", featureModel.getGeometryAttributeName());
 	}
 
 	@Test
@@ -104,12 +115,12 @@ public class GeoToolsFeatureModelTest extends AbstractGeoToolsTest {
 
 	@Test
 	public void testSetAttributes() throws Exception {
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("City", "Heikant");
-		map.put("the_geom", featureModel.getGeometry(feature));
-		map.put("Population", 100);
+		Map<String, Attribute> map = new HashMap<String, Attribute>();
+		map.put("City", new StringAttribute("Heikant"));
+		//map.put("the_geom", new GeometryAttribute(featureModel.getGeometry(feature)));
+		map.put("Population", new IntegerAttribute(100));
 		featureModel.setAttributes(feature, map);
-		Assert.assertEquals(featureModel.getAttribute(feature, "City"), "Heikant");
+		Assert.assertEquals("Heikant", featureModel.getAttribute(feature, "City").getValue());
 	}
 
 	@Test

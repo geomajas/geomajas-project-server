@@ -29,13 +29,13 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.LineString;
 
-import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.PrecisionModel;
 import junit.framework.Assert;
 import org.geomajas.layer.bean.BeanLayer;
 import org.geomajas.layer.bean.FeatureBean;
 import org.geomajas.layer.feature.Feature;
 import org.geomajas.layer.feature.InternalFeature;
+import org.geomajas.layer.feature.attribute.StringAttribute;
 import org.geomajas.security.SecurityManager;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.FilterService;
@@ -105,9 +105,9 @@ public class VectorLayerServiceTest {
 		InternalFeature feature = oldFeatures.get(0);
 		List<InternalFeature> newFeatures = new ArrayList<InternalFeature>();
 		feature = feature.clone();
-		feature.getAttributes().put(STRING_ATTR, "changed");
+		feature.getAttributes().put(STRING_ATTR, new StringAttribute("changed"));
 		newFeatures.add(feature);
-		feature.getAttributes().put(STRING_ATTR, "changed");
+		feature.getAttributes().put(STRING_ATTR, new StringAttribute("changed"));
 		layerService.saveOrUpdate(LAYER_ID, crs, oldFeatures, newFeatures);
 
 		Iterator<FeatureBean> iterator =

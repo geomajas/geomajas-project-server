@@ -24,11 +24,15 @@
 package org.geomajas.layer.geotools;
 
 import com.vividsolutions.jts.geom.Geometry;
+import org.geomajas.configuration.AttributeInfo;
+import org.geomajas.configuration.FeatureInfo;
 import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.layer.LayerException;
+import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.FeatureModel;
 import org.geomajas.layer.shapeinmem.FeatureSourceRetriever;
+import org.geomajas.service.DtoConverterService;
 import org.geotools.data.DataStore;
 import org.geotools.feature.simple.SimpleFeatureBuilder;
 import org.opengis.feature.simple.SimpleFeature;
@@ -47,34 +51,51 @@ public class GeoToolsFeatureModel extends FeatureSourceRetriever implements Feat
 
 	private int srid;
 
+	private DtoConverterService converterService;
+
+	private Map<String, AttributeInfo> attributeInfoMap = new HashMap<String, AttributeInfo>();
+
 	// Constructor:
 
-	public GeoToolsFeatureModel(DataStore dataStore, String featureSourceName, int srid)
-			throws LayerException {
+	public GeoToolsFeatureModel(DataStore dataStore, String featureSourceName, int srid,
+			DtoConverterService converterService) throws LayerException {
 		setDataStore(dataStore);
 		setFeatureSourceName(featureSourceName);
 		this.srid = srid;
 		builder = new SimpleFeatureBuilder(getSchema());
+		this.converterService = converterService;
 	}
 
 	public void setLayerInfo(VectorLayerInfo vectorLayerInfo) throws LayerException {
-		//not used
+		FeatureInfo featureInfo = vectorLayerInfo.getFeatureInfo();
+		attributeInfoMap.put(featureInfo.getIdentifier().getName(), featureInfo.getIdentifier());
+		for (AttributeInfo info : featureInfo.getAttributes()) {
+			attributeInfoMap.put(info.getName(), info);
+		}
 	}
 
 	// FeatureModel implementation:
 
-	public Object getAttribute(Object feature, String name) throws LayerException {
-		return asFeature(feature).getAttribute(name);
+	public Attribute getAttribute(Object feature, String name) throws LayerException {
+		return convertAttribute(asFeature(feature).getAttribute(name), name);
 	}
 
-	public Map<String, Object> getAttributes(Object feature) throws LayerException {
+	public Map<String, Attribute> getAttributes(Object feature) throws LayerException {
 		SimpleFeature f = asFeature(feature);
-		HashMap<String, Object> attribs = new HashMap<String, Object>();
-		for (int i = 0; i < f.getAttributeCount(); i++) {
-			String name = f.getFeatureType().getAttributeDescriptors().get(i).getLocalName();
-			attribs.put(name, f.getAttribute(i));
+		HashMap<String, Attribute> attribs = new HashMap<String, Attribute>();
+		for (AttributeInfo attributeInfo : attributeInfoMap.values()) {
+			String name = attributeInfo.getName();
+			attribs.put(name, convertAttribute(f.getAttribute(name), name));
 		}
 		return attribs;
+	}
+
+	private Attribute convertAttribute(Object object, String name) throws LayerException {
+		AttributeInfo attributeInfo = attributeInfoMap.get(name);
+		if (null == attributeInfo) {
+			throw new LayerException(ExceptionCode.ATTRIBUTE_UNKNOWN, name);
+		}
+		return converterService.toDto(object, attributeInfo);
 	}
 
 	public Geometry getGeometry(Object feature) throws LayerException {
@@ -113,10 +134,10 @@ public class GeoToolsFeatureModel extends FeatureSourceRetriever implements Feat
 		return builder.buildFeature(id);
 	}
 
-	public void setAttributes(Object feature, Map<String, Object> attributes) throws LayerException {
-		for (Map.Entry<String, Object> entry : attributes.entrySet()) {
+	public void setAttributes(Object feature, Map<String, Attribute> attributes) throws LayerException {
+		for (Map.Entry<String, Attribute> entry : attributes.entrySet()) {
 			if (!entry.getKey().equals(getGeometryAttributeName())) {
-				asFeature(feature).setAttribute(entry.getKey(), entry.getValue());
+				asFeature(feature).setAttribute(entry.getKey(), entry.getValue().getValue());
 			}
 		}
 	}
@@ -127,9 +148,5 @@ public class GeoToolsFeatureModel extends FeatureSourceRetriever implements Feat
 
 	public boolean canHandle(Object feature) {
 		return feature instanceof SimpleFeature;
-	}
-
-	public Class<?> getSuperClass() throws LayerException {
-		return null;
 	}
 }

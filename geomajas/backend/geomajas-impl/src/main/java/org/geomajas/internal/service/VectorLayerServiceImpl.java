@@ -31,7 +31,6 @@ import java.util.Map;
 
 import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.LabelStyleInfo;
-import org.geomajas.configuration.LayerInfo;
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.global.ExceptionCode;
@@ -40,6 +39,8 @@ import org.geomajas.global.GeomajasSecurityException;
 import org.geomajas.internal.layer.feature.InternalFeatureImpl;
 import org.geomajas.internal.rendering.StyleFilterImpl;
 import org.geomajas.layer.VectorLayer;
+import org.geomajas.layer.VectorLayerAssociationSupport;
+import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.FeatureModel;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.rendering.StyleFilter;
@@ -168,11 +169,13 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 				}
 
 				// Assure only writable attributes are set
-				Map<String, Object> requestAttributes = newFeature.getAttributes();
-				Map<String, Object> filteredAttributes = new HashMap<String, Object>();
-				for (String key : requestAttributes.keySet()) {
-					if (securityContext.isAttributeWritable(layerId, newFeature, key)) {
-						filteredAttributes.put(key, requestAttributes.get(key));
+				Map<String, Attribute> requestAttributes = newFeature.getAttributes();
+				Map<String, Attribute> filteredAttributes = new HashMap<String, Attribute>();
+				if (null != requestAttributes) {
+					for (String key : requestAttributes.keySet()) {
+						if (securityContext.isAttributeWritable(layerId, newFeature, key)) {
+							filteredAttributes.put(key, requestAttributes.get(key));
+						}
 					}
 				}
 				featureModel.setAttributes(feature, filteredAttributes);
@@ -248,7 +251,7 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 		log.debug("getElements " + filter + ",offset = " + offset + ",maxResultSize= " + maxResultSize);
 		Iterator<?> it = layer.getElements(filter, offset, maxResultSize);
 		while (it.hasNext()) {
-			InternalFeature feature = convertFeature(it.next(), layer, transformation, styleFilters, style
+			InternalFeature feature = convertFeature(it.next(), layerId, layer, transformation, styleFilters, style
 					.getLabelStyle(), featureIncludes);
 			log.debug("checking feature");
 			if (securityContext.isFeatureVisible(layerId, feature)) {
@@ -282,26 +285,28 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 	 *            transformation to apply to the geometry
 	 * @param styles
 	 *            style filters to apply
+	 * @param labelStyle
+	 *            label style
 	 * @param featureIncludes
 	 *            aspects to include in features
 	 * @return actual feature
 	 * @throws GeomajasException
 	 *             oops
 	 */
-	private InternalFeature convertFeature(Object feature, VectorLayer layer, MathTransform transformation,
-			List<StyleFilter> styles, LabelStyleInfo labelStyle, int featureIncludes) throws GeomajasException {
-		LayerInfo layerInfo = layer.getLayerInfo();
+	private InternalFeature convertFeature(Object feature, String layerId, VectorLayer layer,
+			MathTransform transformation, List<StyleFilter> styles, LabelStyleInfo labelStyle, int featureIncludes)
+			throws GeomajasException {
 		FeatureModel featureModel = layer.getFeatureModel();
 		InternalFeatureImpl res = new InternalFeatureImpl();
-		res.setId(layerInfo.getId() + "." + featureModel.getId(feature));
+		res.setId(layerId + "." + featureModel.getId(feature));
 		res.setLayer(layer);
 
 		// If allowed, add the label to the InternalFeature:
 		if ((featureIncludes & FEATURE_INCLUDE_LABEL) != 0) {
 			String labelAttr = labelStyle.getLabelAttributeName();
-			Object attribute = featureModel.getAttribute(feature, labelAttr);
-			if (attribute != null) {
-				res.setLabel(attribute.toString());
+			Attribute attribute = featureModel.getAttribute(feature, labelAttr);
+			if (null != attribute && null != attribute.getValue()) {
+				res.setLabel(attribute.getValue().toString());
 			}
 		}
 
@@ -329,11 +334,13 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 		// If allowed, add the attributes to the InternalFeature:
 		if ((featureIncludes & FEATURE_INCLUDE_ATTRIBUTES) != 0) {
 			// Assure only readable attributes are set
-			Map<String, Object> featureAttributes = featureModel.getAttributes(feature);
+			Map<String, Attribute> featureAttributes = featureModel.getAttributes(feature);
 			res.setAttributes(featureAttributes); // to allow isAttributeReadable to see full object
-			Map<String, Object> filteredAttributes = new HashMap<String, Object>();
+			Map<String, Attribute> filteredAttributes = new HashMap<String, Attribute>();
 			for (String key : featureAttributes.keySet()) {
-				if (securityContext.isAttributeReadable(layer.getLayerInfo().getId(), res, key)) {
+				if (securityContext.isAttributeReadable(layerId, res, key)) {
+					Attribute attribute = featureAttributes.get(key);
+					attribute.setEditable(securityContext.isAttributeWritable(layerId, res, key));
 					filteredAttributes.put(key, featureAttributes.get(key));
 				}
 			}
@@ -464,9 +471,11 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 		// @todo security ??
 
 		List<Object> list = new ArrayList<Object>();
-		Iterator<?> it = layer.getObjects(attributeName, filter);
-		while (it.hasNext()) {
-			list.add(it.next());
+		if (layer instanceof VectorLayerAssociationSupport) {
+			Iterator<?> it = ((VectorLayerAssociationSupport) layer).getObjects(attributeName, filter);
+			while (it.hasNext()) {
+				list.add(it.next());
+			}
 		}
 		return list;
 	}

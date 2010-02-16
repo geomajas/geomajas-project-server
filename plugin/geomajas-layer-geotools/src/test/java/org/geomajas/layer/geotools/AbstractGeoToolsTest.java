@@ -22,6 +22,7 @@
  */
 package org.geomajas.layer.geotools;
 
+import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.FilterService;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,12 +31,16 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-
+/**
+ * Base for GeoTools tests.
+ *
+ * @author Jan De Moerloose
+ */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
-		"/org/geomajas/testdata/layerCountries.xml", "/org/geomajas/testdata/simplevectorsContext.xml",
-		"/org/geomajas/layer/geotools/test.xml" })
-@Transactional
+		"/org/geomajas/testdata/layerCountries.xml", "/org/geomajas/testdata/layerCities.xml",
+		"/org/geomajas/testdata/simplevectorsContext.xml", "/org/geomajas/layer/geotools/test.xml" })
+@Transactional(rollbackFor = {org.geomajas.global.GeomajasException.class})
 public abstract class AbstractGeoToolsTest {
 	@Autowired 
 	protected ApplicationContext applicationContext;
@@ -43,4 +48,6 @@ public abstract class AbstractGeoToolsTest {
 	@Autowired
 	protected FilterService filterCreator;
 
+	@Autowired
+	protected DtoConverterService converterService;
 }

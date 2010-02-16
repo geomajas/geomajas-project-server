@@ -31,6 +31,7 @@ import org.geomajas.command.dto.GetAttributesRequest;
 import org.geomajas.command.dto.GetAttributesResponse;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
+import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.VectorLayerService;
@@ -45,7 +46,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Pieter De Graef
  */
 @Component()
-@Transactional(readOnly = true)
+@Transactional(readOnly = true, rollbackFor = { Exception.class })
 public class GetAttributesCommand implements Command<GetAttributesRequest, GetAttributesResponse> {
 
 	@Autowired
@@ -74,7 +75,7 @@ public class GetAttributesCommand implements Command<GetAttributesRequest, GetAt
 			List<InternalFeature> features = layerService.getFeatures(layerId, null, filter, null,
 					VectorLayerService.FEATURE_INCLUDE_ATTRIBUTES);
 
-			Map<String, Object>[] attributes = new Map[featureIds.length];
+			Map<String, Attribute>[] attributes = new Map[featureIds.length];
 			for (InternalFeature feature : features) {
 				String id = feature.getId();
 				int index = searchFeatureIndex(id, featureIds);

@@ -40,7 +40,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
 		"/testContext.xml" })
-@Transactional
+@Transactional(rollbackFor = {org.geomajas.global.GeomajasException.class})
 public abstract class AbstractHibernateLayerModelTest {
 
 	public static final String PARAM_TEXT_ATTR = "textAttr";

@@ -49,7 +49,7 @@ import java.util.List;
  * @author Pieter De Graef
  */
 @Component()
-@Transactional(readOnly = true)
+@Transactional(readOnly = true, rollbackFor = { Exception.class })
 public class SearchFeatureCommand implements Command<SearchFeatureRequest, SearchFeatureResponse> {
 
 	@Autowired

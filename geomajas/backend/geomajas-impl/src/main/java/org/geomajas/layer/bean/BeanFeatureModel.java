@@ -41,10 +41,10 @@ import org.geomajas.configuration.PrimitiveAttributeInfo;
 import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.layer.LayerException;
+import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.FeatureModel;
+import org.geomajas.service.DtoConverterService;
 import org.springframework.beans.BeanUtils;
-import org.springframework.context.annotation.Scope;
-import org.springframework.stereotype.Component;
 
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
@@ -57,8 +57,6 @@ import com.vividsolutions.jts.io.WKTWriter;
  * 
  * @author Jan De Moerloose
  */
-@Component
-@Scope("prototype")
 public class BeanFeatureModel implements FeatureModel {
 
 	public static final String SEPARATOR_REGEXP = "\\.";
@@ -75,8 +73,15 @@ public class BeanFeatureModel implements FeatureModel {
 
 	private boolean wkt;
 
-	public BeanFeatureModel(VectorLayerInfo vectorLayerInfo, int srid) throws LayerException {
+	private DtoConverterService converterService;
+
+	private Map<String, AttributeInfo> attributeInfoMap = new HashMap<String, AttributeInfo>();
+
+	public BeanFeatureModel(VectorLayerInfo vectorLayerInfo, int srid, DtoConverterService converterService)
+			throws LayerException {
 		this.vectorLayerInfo = vectorLayerInfo;
+		this.converterService = converterService;
+
 		try {
 			beanClass = Class.forName(vectorLayerInfo.getFeatureInfo().getDataSourceName());
 		} catch (ClassNotFoundException e) {
@@ -96,23 +101,34 @@ public class BeanFeatureModel implements FeatureModel {
 			throw new LayerException(ExceptionCode.FEATURE_MODEL_PROBLEM, "Feature "
 					+ vectorLayerInfo.getFeatureInfo().getDataSourceName() + " has no valid geometry attribute");
 		}
+
+		FeatureInfo featureInfo = vectorLayerInfo.getFeatureInfo();
+		attributeInfoMap.put(featureInfo.getIdentifier().getName(), featureInfo.getIdentifier());
+		for (AttributeInfo info : featureInfo.getAttributes()) {
+			attributeInfoMap.put(info.getName(), info);
+		}		
 	}
 
 	public boolean canHandle(Object feature) {
 		return beanClass.isInstance(feature);
 	}
 
-	public Object getAttribute(Object feature, String name) throws LayerException {
-		return getAttributeRecursively(feature, name);
+	public Attribute getAttribute(Object feature, String name) throws LayerException {
+		Object attr = getAttributeRecursively(feature, name);
+		AttributeInfo attributeInfo = attributeInfoMap.get(name);
+		if (null == attributeInfo) {
+			throw new LayerException(ExceptionCode.ATTRIBUTE_UNKNOWN, name);
+		}
+		return converterService.toDto(attr, attributeInfo);
 	}
 
-	public Map<String, Object> getAttributes(Object feature) throws LayerException {
+	public Map<String, Attribute> getAttributes(Object feature) throws LayerException {
 		try {
-			Map<String, Object> attribs = new HashMap<String, Object>();
+			Map<String, Attribute> attribs = new HashMap<String, Attribute>();
 			for (AttributeInfo attribute : getFeatureInfo().getAttributes()) {
 				String name = attribute.getName();
 				if (!name.equals(getGeometryAttributeName())) {
-					Object value = this.getAttribute(feature, name);
+					Attribute value = this.getAttribute(feature, name);
 					attribs.put(name, value);
 				}
 			}
@@ -123,7 +139,7 @@ public class BeanFeatureModel implements FeatureModel {
 	}
 
 	public Geometry getGeometry(Object feature) throws LayerException {
-		Object geometry = getAttribute(feature, getGeometryAttributeName());
+		Object geometry = getAttributeRecursively(feature, getGeometryAttributeName());
 		if (!wkt || null == geometry) {
 			return (Geometry) geometry;
 		} else {
@@ -140,15 +156,11 @@ public class BeanFeatureModel implements FeatureModel {
 	}
 
 	public String getId(Object feature) throws LayerException {
-		return getAttribute(feature, getFeatureInfo().getIdentifier().getName()).toString();
+		return getAttributeRecursively(feature, getFeatureInfo().getIdentifier().getName()).toString();
 	}
 
 	public int getSrid() throws LayerException {
 		return srid;
-	}
-
-	public Class<?> getSuperClass() throws LayerException {
-		return null;
 	}
 
 	public Object newInstance() throws LayerException {
@@ -184,8 +196,8 @@ public class BeanFeatureModel implements FeatureModel {
 	/**
 	 * Does not support many-to-one and one-to-many....
 	 */
-	public void setAttributes(Object feature, Map<String, Object> attributes) throws LayerException {
-		for (Entry<String, Object> entry : attributes.entrySet()) {
+	public void setAttributes(Object feature, Map<String, Attribute> attributes) throws LayerException {
+		for (Entry<String, Attribute> entry : attributes.entrySet()) {
 			setAttributeRecursively(feature, null, entry.getKey(), entry.getValue());
 		}
 	}
@@ -401,7 +413,11 @@ public class BeanFeatureModel implements FeatureModel {
 		}
 	}
 
-	private void writeProperty(Object feature, Object value, String name) throws LayerException {
+	private void writeProperty(Object feature, Object wvalue, String name) throws LayerException {
+		Object value = wvalue;
+		if (value instanceof Attribute) {
+			value = ((Attribute) value).getValue();
+		}
 		if (feature != null) {
 			PropertyDescriptor d = BeanUtils.getPropertyDescriptor(feature.getClass(), name);
 			if (d != null && d.getWriteMethod() != null) {
@@ -415,7 +431,6 @@ public class BeanFeatureModel implements FeatureModel {
 					throw new LayerException(t, ExceptionCode.FEATURE_MODEL_PROBLEM);
 				}
 			}
-
 		}
 	}
 

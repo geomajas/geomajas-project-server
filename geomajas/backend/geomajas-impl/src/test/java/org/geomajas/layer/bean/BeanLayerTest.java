@@ -32,21 +32,22 @@ public class BeanLayerTest {
 	@Test
 	public void readPrimitives() throws LayerException {
 		Object bean = layer.read("1");
-		Assert.assertEquals(true, layer.getFeatureModel().getAttribute(bean, "booleanAttr"));
-		Assert.assertEquals("100,23", layer.getFeatureModel().getAttribute(bean, "currencyAttr"));
+		Assert.assertEquals("bean1", layer.getFeatureModel().getAttribute(bean, "stringAttr").getValue());
+		Assert.assertEquals(true, layer.getFeatureModel().getAttribute(bean, "booleanAttr").getValue());
+		Assert.assertEquals("100,23", layer.getFeatureModel().getAttribute(bean, "currencyAttr").getValue());
 		Calendar c = Calendar.getInstance();
 		c.set(2010, 1, 23, 0, 0, 0);
 		c.set(Calendar.MILLISECOND, 0);
-		Assert.assertEquals(c.getTime(), layer.getFeatureModel().getAttribute(bean, "dateAttr"));
-		Assert.assertEquals(123.456, layer.getFeatureModel().getAttribute(bean, "doubleAttr"));
-		Assert.assertEquals(456.789F, layer.getFeatureModel().getAttribute(bean, "floatAttr"));
+		Assert.assertEquals(c.getTime(), layer.getFeatureModel().getAttribute(bean, "dateAttr").getValue());
+		Assert.assertEquals(123.456, layer.getFeatureModel().getAttribute(bean, "doubleAttr").getValue());
+		Assert.assertEquals(456.789F, layer.getFeatureModel().getAttribute(bean, "floatAttr").getValue());
 		Assert.assertEquals("http://www.geomajas.org/image1", layer.getFeatureModel()
-				.getAttribute(bean, "imageUrlAttr"));
-		Assert.assertEquals(789, layer.getFeatureModel().getAttribute(bean, "integerAttr"));
-		Assert.assertEquals(123456789L, layer.getFeatureModel().getAttribute(bean, "longAttr"));
-		Assert.assertEquals((short) 123, layer.getFeatureModel().getAttribute(bean, "shortAttr"));
-		Assert.assertEquals("bean1", layer.getFeatureModel().getAttribute(bean, "stringAttr"));
-		Assert.assertEquals("http://www.geomajas.org/url1", layer.getFeatureModel().getAttribute(bean, "urlAttr"));
+				.getAttribute(bean, "imageUrlAttr").getValue());
+		Assert.assertEquals(789, layer.getFeatureModel().getAttribute(bean, "integerAttr").getValue());
+		Assert.assertEquals(123456789L, layer.getFeatureModel().getAttribute(bean, "longAttr").getValue());
+		Assert.assertEquals((short) 123, layer.getFeatureModel().getAttribute(bean, "shortAttr").getValue());
+		Assert.assertEquals("http://www.geomajas.org/url1", layer.getFeatureModel().getAttribute(bean, "urlAttr").
+				getValue());
 	}
 
 	@Test
@@ -59,6 +60,5 @@ public class BeanLayerTest {
 		MultiPolygon expected =factory.createMultiPolygon(new Polygon[]{p});
 		Geometry g = layer.getFeatureModel().getGeometry(bean);
 		Assert.assertTrue(expected.equalsExact(g, 0.00001));
-
 	}
 }

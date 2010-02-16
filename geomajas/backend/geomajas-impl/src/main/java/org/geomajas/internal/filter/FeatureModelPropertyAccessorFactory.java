@@ -78,7 +78,7 @@ public class FeatureModelPropertyAccessorFactory implements PropertyAccessorFact
 				} else if (ID_PATTERN.matcher(xpath).matches()) {
 					return fm.getId(object);
 				} else if (PROPERTY_PATTERN.matcher(xpath).matches()) {
-					return fm.getAttribute(object, xpath);
+					return fm.getAttribute(object, xpath).getValue();
 				} else {
 					return null;
 				}

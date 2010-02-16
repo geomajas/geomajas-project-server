@@ -41,7 +41,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Joachim Van der Auwera
  */
 @Component()
-@Transactional(readOnly = true)
+@Transactional(readOnly = true, rollbackFor = { Exception.class })
 public class GetAssociationCommand implements Command<GetAssociationRequest, GetAssociationResponse> {
 
 	@Autowired

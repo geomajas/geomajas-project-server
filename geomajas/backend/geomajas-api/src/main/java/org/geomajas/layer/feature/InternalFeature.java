@@ -57,39 +57,94 @@ public interface InternalFeature extends Cloneable, Comparable<InternalFeature> 
 	Envelope getBounds();
 
 	/**
-	 * Is this a new feature or not? This is tested by the ID. If the ID is null, then the feature is new.
-	 * 
-	 * @return true when new
-	 */
-	boolean isNew();
-
-	/**
 	 * This function compares style ID's between features. Features are usually sorted by style.
 	 */
 	int compareTo(InternalFeature o);
 
+	/**
+	 * Set the feature id.
+	 *
+	 * @param id feature id
+	 */
 	void setId(String id);
 
+	/**
+	 * Get the feature id.
+	 *
+	 * @return feature id
+	 */
 	String getId();
 
-	Map<String, Object> getAttributes();
+	/**
+	 * Get the attributes for the feature (can be null when the attributes are lazy loaded).
+	 *
+	 * @return attributes map
+	 */
+	Map<String, Attribute> getAttributes();
 
-	void setAttributes(Map<String, Object> attributes);
+	/**
+	 * Set the map with the attributes, keyed on the attribute name.
+	 *
+	 * @param attributes attributes map
+	 */
+	void setAttributes(Map<String, Attribute> attributes);
 
+	/**
+	 * Get the feature geometry (or null when it is lazy loaded).
+	 *
+	 * @return feature geometry
+	 */
 	Geometry getGeometry();
 
+	/**
+	 * Set the geometry for the feature.
+	 *
+	 * @param geometry geometry for the feature
+	 */
 	void setGeometry(Geometry geometry);
 
+	/**
+	 * Get the style info for this feature (of null when it is lazy loaded).
+	 *
+	 * @return style info
+	 */
 	FeatureStyleInfo getStyleInfo();
 
+	/**
+	 * Set the style info for this feature.
+	 *
+	 * @param style style
+	 */
 	void setStyleDefinition(FeatureStyleInfo style);
 
+	/**
+	 * Get the layer this feature is part of.
+	 *
+	 * @return layer which contains the feature
+	 */
 	VectorLayer getLayer();
 
+	/**
+	 * Set the layer this feature is part of.
+	 * <p/>
+	 * Setting this does not move the feature to a different layer!
+	 *
+	 * @param layer layer this feature is part of
+	 */
 	void setLayer(VectorLayer layer);
 
+	/**
+	 * Get the label for the feature (if any).
+	 *
+	 * @return label
+	 */
 	String getLabel();
 
+	/**
+	 * Ser the label for the feature.
+	 *
+	 * @param label
+	 */
 	void setLabel(String label);
 
 	/**

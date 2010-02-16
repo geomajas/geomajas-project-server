@@ -27,7 +27,6 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -42,6 +41,7 @@ import org.geomajas.layer.LayerException;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.FeatureModel;
 import org.geomajas.layer.geotools.DataStoreFactory;
+import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
 import org.geotools.data.DataStore;
@@ -79,6 +79,9 @@ public class ShapeInMemLayer extends FeatureSourceRetriever implements VectorLay
 
 	@Autowired
 	private GeoService geoService;
+
+	@Autowired
+	private DtoConverterService converterService;
 
 	private CoordinateReferenceSystem crs;
 
@@ -212,17 +215,14 @@ public class ShapeInMemLayer extends FeatureSourceRetriever implements VectorLay
 		features.remove(featureId);
 	}
 
-	public Iterator<?> getObjects(String attributeName, Filter filter) throws LayerException {
-		return Collections.EMPTY_LIST.iterator();
-	}
-
 	// Private functions:
 	@PostConstruct
 	protected void initFeatures() throws LayerException {
 		try {
 			setFeatureSourceName(layerInfo.getFeatureInfo().getDataSourceName());
 			featureModel = new ShapeInMemFeatureModel(getDataStore(), layerInfo.getFeatureInfo().getDataSourceName(),
-					geoService.getSridFromCrs(layerInfo.getCrs()));
+			geoService.getSridFromCrs(layerInfo.getCrs()), converterService);
+			featureModel.setLayerInfo(layerInfo);
 			FeatureCollection<SimpleFeatureType, SimpleFeature> col = getFeatureSource().getFeatures();
 			FeatureIterator<SimpleFeature> iterator = col.features();
 			while (iterator.hasNext()) {

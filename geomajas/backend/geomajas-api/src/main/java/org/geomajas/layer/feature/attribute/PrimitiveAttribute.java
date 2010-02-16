@@ -29,12 +29,12 @@ import org.geomajas.layer.feature.Attribute;
 /**
  * Primitive value attribute. This is the base class for simple attribute types such as integer, float, string,...
  *
- * @param <T> type which is represented by the primitive attribute
+ * @param <VALUE_TYPE> type which is represented by the primitive attribute
  * 
  * @author Jan De Moerloose
  * @author Pieter De Graef
  */
-public abstract class PrimitiveAttribute<T> implements Attribute {
+public abstract class PrimitiveAttribute<VALUE_TYPE> implements Attribute<VALUE_TYPE> {
 
 	private static final long serialVersionUID = 151L;
 
@@ -48,7 +48,7 @@ public abstract class PrimitiveAttribute<T> implements Attribute {
 	/**
 	 * The value this attribute currently holds.
 	 */
-	private T value;
+	private VALUE_TYPE value;
 
 	/**
 	 * Default constructor...the attribute will have no type or value, when you use this.
@@ -101,11 +101,11 @@ public abstract class PrimitiveAttribute<T> implements Attribute {
 		return value == null;
 	}
 
-	public T getValue() {
+	public VALUE_TYPE getValue() {
 		return value;
 	}
 
-	public void setValue(T value) {
+	public void setValue(VALUE_TYPE value) {
 		this.value = value;
 	}
 

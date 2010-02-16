@@ -26,11 +26,20 @@ import java.io.Serializable;
 
 /**
  * Attribute definition.
- * 
+ *
+ * @param <VALUE_TYPE> type for the attribute value
+ *
  * @author Jan De Moerloose
  * @author Joachim Van der Auwera
  */
-public interface Attribute extends Serializable {
+public interface Attribute<VALUE_TYPE> extends Serializable {
+
+	/**
+	 * Get the value for this attribute.
+	 *
+	 * @return attribute value
+	 */
+	VALUE_TYPE getValue();
 
 	/**
 	 * Is this a primitive attribute?

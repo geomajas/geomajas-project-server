@@ -23,9 +23,14 @@
 package org.geomajas.layer.shapeinmem;
 
 import com.vividsolutions.jts.geom.Geometry;
+import org.geomajas.configuration.AttributeInfo;
+import org.geomajas.configuration.FeatureInfo;
 import org.geomajas.configuration.VectorLayerInfo;
+import org.geomajas.global.ExceptionCode;
 import org.geomajas.layer.LayerException;
+import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.FeatureModel;
+import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
 import org.geotools.data.DataStore;
 import org.geotools.factory.CommonFactoryFinder;
@@ -47,29 +52,44 @@ public class ShapeInMemFeatureModel extends FeatureSourceRetriever implements Fe
 	@Autowired
 	private GeoService geoService;
 
+	private DtoConverterService converterService;
+
+	private Map<String, AttributeInfo> attributeInfoMap = new HashMap<String, AttributeInfo>();
+
 	// Constructor:
 
-	public ShapeInMemFeatureModel(DataStore dataStore, String featureSourceName, int srid) throws LayerException {
+	public ShapeInMemFeatureModel(DataStore dataStore, String featureSourceName, int srid,
+			DtoConverterService converterService) throws LayerException {
 		setDataStore(dataStore);
 		setFeatureSourceName(featureSourceName);
 		this.srid = srid;
+		this.converterService = converterService;
 	}
 
 	public void setLayerInfo(VectorLayerInfo vectorLayerInfo) throws LayerException {
-		// not used
+		FeatureInfo featureInfo = vectorLayerInfo.getFeatureInfo();
+		attributeInfoMap.put(featureInfo.getIdentifier().getName(), featureInfo.getIdentifier());
+		for (AttributeInfo info : featureInfo.getAttributes()) {
+			attributeInfoMap.put(info.getName(), info);
+		}
 	}
 
 	// FeatureModel implementation:
 
-	public Object getAttribute(Object feature, String name) throws LayerException {
-		return asFeature(feature).getAttribute(name);
+	public Attribute getAttribute(Object feature, String name) throws LayerException {
+		AttributeInfo attributeInfo = attributeInfoMap.get(name);
+		if (null == attributeInfo) {
+			throw new LayerException(ExceptionCode.ATTRIBUTE_UNKNOWN, name);
+		}
+		return converterService.toDto(asFeature(feature).getAttribute(name), attributeInfo);
 	}
 
-	public Map<String, Object> getAttributes(Object feature) throws LayerException {
+	public Map<String, Attribute> getAttributes(Object feature) throws LayerException {
 		SimpleFeature f = asFeature(feature);
-		HashMap<String, Object> attribs = new HashMap<String, Object>();
-		for (int i = 0; i < f.getAttributeCount(); i++) {
-			attribs.put(f.getFeatureType().getAttributeDescriptors().get(i).getLocalName(), f.getAttribute(i));
+		HashMap<String, Attribute> attribs = new HashMap<String, Attribute>();
+		for (Map.Entry<String, AttributeInfo> entry : attributeInfoMap.entrySet()) {
+			String name = entry.getKey();
+			attribs.put(name, converterService.toDto(f.getAttribute(name), entry.getValue()));
 		}
 		return attribs;
 	}
@@ -104,20 +124,16 @@ public class ShapeInMemFeatureModel extends FeatureSourceRetriever implements Fe
 				new Object[getSchema().getAttributeCount()], getSchema(), id);
 	}
 
-	public void setAttributes(Object feature, Map<String, Object> attributes) throws LayerException {
-		for (Map.Entry<String, Object> entry : attributes.entrySet()) {
+	public void setAttributes(Object feature, Map<String, Attribute> attributes) throws LayerException {
+		for (Map.Entry<String, Attribute> entry : attributes.entrySet()) {
 			if (!entry.getKey().equals(getGeometryAttributeName())) {
-				asFeature(feature).setAttribute(entry.getKey(), entry.getValue());
+				asFeature(feature).setAttribute(entry.getKey(), entry.getValue().getValue());
 			}
 		}
 	}
 
 	public void setGeometry(Object feature, Geometry geometry) throws LayerException {
 		asFeature(feature).setDefaultGeometry(geometry);
-	}
-
-	public Class<?> getSuperClass() throws LayerException {
-		return null;
 	}
 
 	public boolean canHandle(Object feature) {

@@ -62,5 +62,6 @@ public class AttributeConverterTest {
 		attributeInfo.setType(PrimitiveType.BOOLEAN);
 		Assert.assertTrue(converter.toDto(Boolean.TRUE, attributeInfo) instanceof BooleanAttribute);
 		Assert.assertTrue(((BooleanAttribute)converter.toDto(Boolean.TRUE, attributeInfo)).getValue());
+		Assert.assertFalse(((BooleanAttribute)converter.toDto(Boolean.FALSE, attributeInfo)).getValue());
 	}
 }

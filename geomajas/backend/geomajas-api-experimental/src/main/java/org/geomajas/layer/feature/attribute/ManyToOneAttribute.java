@@ -29,7 +29,7 @@ import org.geomajas.configuration.AssociationType;
  * 
  * @author Jan De Moerloose
  */
-public class ManyToOneAttribute extends AssociationAttribute {
+public class ManyToOneAttribute extends AssociationAttribute<Object> {
 
 	private static final long serialVersionUID = 151L;
 
@@ -39,5 +39,9 @@ public class ManyToOneAttribute extends AssociationAttribute {
 
 	public boolean isEmpty() {
 		return true;
+	}
+
+	public Object getValue() {
+		return null;
 	}
 }

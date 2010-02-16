@@ -74,7 +74,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * @author Pieter De Graef
  */
 @Component
-@Transactional(readOnly = true)
+@Transactional(readOnly = true, rollbackFor = { Exception.class })
 public class SearchByLocationCommand implements Command<SearchByLocationRequest, SearchByLocationResponse> {
 
 	@Autowired

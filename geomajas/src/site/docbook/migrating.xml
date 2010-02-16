@@ -83,7 +83,11 @@
       </listitem>
 
       <listitem>
-        <para />
+        <para>Layers are now more sensitive to the attributes which are
+        defined for the layer. Attributes which have not been defined in the
+        feature info are not accessible this is the result of the refactoring
+        where the <code>InternalFeature</code> store attributes as
+        <code>Attribute</code> objects).</para>
       </listitem>
     </itemizedlist>
 
@@ -337,7 +341,7 @@
         <listitem>
           <para>The replacement of the single style definition list by a set
           of named styles. These are styles that are preconfigured in the back
-          end. </para>
+          end.</para>
         </listitem>
 
         <listitem>
@@ -484,8 +488,6 @@
             <row>
               <entry>
                 <emphasis role="bold">ClientLayerTreeInfo</emphasis>
-
-                
               </entry>
 
               <entry>*</entry>

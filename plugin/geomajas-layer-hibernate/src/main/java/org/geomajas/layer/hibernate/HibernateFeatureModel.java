@@ -35,7 +35,9 @@ import java.util.Map.Entry;
 
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.beanutils.PropertyUtils;
+import org.geomajas.configuration.FeatureInfo;
 import org.geomajas.configuration.VectorLayerInfo;
+import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.FeatureModel;
 import org.geomajas.layer.LayerException;
 import org.geomajas.configuration.AssociationAttributeInfo;
@@ -43,6 +45,7 @@ import org.geomajas.configuration.AttributeInfo;
 import org.geomajas.configuration.PrimitiveAttributeInfo;
 import org.geomajas.configuration.PrimitiveType;
 import org.geomajas.global.ExceptionCode;
+import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
 import org.hibernate.EntityMode;
 import org.hibernate.HibernateException;
@@ -70,6 +73,11 @@ public class HibernateFeatureModel extends HibernateLayerUtil implements Feature
 	
 	private int srid;
 
+	@Autowired
+	private DtoConverterService converterService;
+
+	private Map<String, AttributeInfo> attributeInfoMap = new HashMap<String, AttributeInfo>();
+
 	// -------------------------------------------------------------------------
 	// Constructors:
 	// -------------------------------------------------------------------------
@@ -78,27 +86,37 @@ public class HibernateFeatureModel extends HibernateLayerUtil implements Feature
 	public void setLayerInfo(VectorLayerInfo layerInfo) throws LayerException {
 		super.setLayerInfo(layerInfo);
 		srid = geoService.getSridFromCrs(layerInfo.getCrs());
+
+		FeatureInfo featureInfo = layerInfo.getFeatureInfo();
+		attributeInfoMap.put(featureInfo.getIdentifier().getName(), featureInfo.getIdentifier());
+		for (AttributeInfo info : featureInfo.getAttributes()) {
+			attributeInfoMap.put(info.getName(), info);
+		}
 	}
 
 	// -------------------------------------------------------------------------
 	// FeatureModel implementation:
 	// -------------------------------------------------------------------------
 
-	public Object getAttribute(Object feature, String name) throws LayerException {
+	public Attribute getAttribute(Object feature, String name) throws LayerException {
 		try {
-			return getAttributeRecursively(feature, name);
+			AttributeInfo attributeInfo = attributeInfoMap.get(name);
+			if (null == attributeInfo) {
+				throw new LayerException(ExceptionCode.ATTRIBUTE_UNKNOWN, name);
+			}
+			return converterService.toDto(getAttributeRecursively(feature, name), attributeInfo);
 		} catch (Exception e) {
 			throw new LayerException(e, ExceptionCode.HIBERNATE_ATTRIBUTE_GET_FAILED, name, feature.toString());
 		}
 	}
 
-	public Map<String, Object> getAttributes(Object feature) throws LayerException {
+	public Map<String, Attribute> getAttributes(Object feature) throws LayerException {
 		try {
-			Map<String, Object> attribs = new HashMap<String, Object>();
+			Map<String, Attribute> attribs = new HashMap<String, Attribute>();
 			for (AttributeInfo attribute : getFeatureInfo().getAttributes()) {
 				String name = attribute.getName();
 				if (!name.equals(getGeometryAttributeName())) {
-					Object value = this.getAttribute(feature, name);
+					Attribute value = getAttribute(feature, name);
 					attribs.put(name, value);
 				}
 			}
@@ -110,7 +128,7 @@ public class HibernateFeatureModel extends HibernateLayerUtil implements Feature
 	}
 
 	public Geometry getGeometry(Object feature) throws LayerException {
-		Object obj = getAttribute(feature, getFeatureInfo().getGeometryType().getName());
+		Object obj = getAttributeRecursively(feature, getFeatureInfo().getGeometryType().getName());
 		if (obj == null) {
 			return null;
 		} else if (Geometry.class.isAssignableFrom(obj.getClass())) {
@@ -155,29 +173,16 @@ public class HibernateFeatureModel extends HibernateLayerUtil implements Feature
 		}
 	}
 
-	public Class<?> getSuperClass() throws LayerException {
-		/*
-		if (info.getExtends() != null) {
-			try {
-				ClassLoader loader = Thread.currentThread().getContextClassLoader();
-				if (null == loader) loader = this.getClass().getClassLoader();
-				return loader.loadClass(info.getExtends());
-			} catch (ClassNotFoundException e) {
-				throw new LayerException(e, ExceptionCode.SUPERCLASS_NOT_FOUND, info.getExtends());
-			}
-		} else {
-			return null;
-		}
-		*/
-		return null;
-	}
-
 	/**
 	 * Does not support many-to-one and one-to-many....
 	 */
-	public void setAttributes(Object feature, Map<String, Object> attributes) throws LayerException {
-		for (Entry<String, Object> entry : attributes.entrySet()) {
-			setAttributeRecursively(feature, null, entry.getKey(), entry.getValue());
+	public void setAttributes(Object feature, Map<String, Attribute> attributes) throws LayerException {
+		for (Entry<String, Attribute> entry : attributes.entrySet()) {
+			Object value = null;
+			if (null != entry.getValue()) {
+				value = entry.getValue().getValue(); 
+			}
+			setAttributeRecursively(feature, null, entry.getKey(), value);
 		}
 	}
 
@@ -230,7 +235,7 @@ public class HibernateFeatureModel extends HibernateLayerUtil implements Feature
 			String[] list = props[i].split("[\\[\\]]");
 
 			Class clazz = tempFeature.getClass();
-			ClassMetadata cmd = null;
+			ClassMetadata cmd;
 			try {
 				cmd = getSessionFactory().getClassMetadata(clazz);
 				tempFeature = cmd.getPropertyValue(tempFeature, list[0], EntityMode.POJO);
@@ -472,8 +477,7 @@ public class HibernateFeatureModel extends HibernateLayerUtil implements Feature
 		for (Object oldChild : collection) {
 			Serializable oldId = childMetaData.getIdentifier(oldChild, EntityMode.POJO);
 			boolean found = false;
-			for (int i = 0; i < array.length; i++) {
-				Object newChild = array[i];
+			for (Object newChild : array) {
 				Serializable newId = childMetaData.getIdentifier(newChild, EntityMode.POJO);
 				if (oldId.equals(newId)) {
 					found = true;

@@ -80,15 +80,13 @@ public class SearchFeatureCommandTest {
 		Assert.assertEquals(LAYER_ID, response.getLayerId());
 		List<Feature> features = Arrays.asList(response.getFeatures());
 		Assert.assertNotNull(features);
+		Assert.assertEquals(2, features.size());
 		List<String> actual = new ArrayList<String>();
 		for (Feature feature : features) {
 			actual.add(feature.getLabel());
 		}
-		List<String> expected = new ArrayList<String>();
-		// reverse order
-		expected.add("Country 2");
-		expected.add("Country 1");
-		Assert.assertEquals(expected, actual);
+		Assert.assertTrue(actual.contains("Country 1"));
+		Assert.assertTrue(actual.contains("Country 2"));
 	}
 
 	@Test
@@ -113,16 +111,17 @@ public class SearchFeatureCommandTest {
 		Assert.assertEquals(LAYER_ID, response.getLayerId());
 		List<Feature> features = Arrays.asList(response.getFeatures());
 		Assert.assertNotNull(features);
+		Assert.assertEquals(3, features.size());
 		List<String> actual = new ArrayList<String>();
 		for (Feature feature : features) {
 			actual.add(feature.getLabel());
 		}
-		List<String> expected = new ArrayList<String>();
-		// reverse order
-		expected.add("Country 4");
-		expected.add("Country 3");
-		expected.add("Country 2");
-		Assert.assertEquals(expected, actual);
+		int count = 0;
+		if (actual.contains("Country 1")) count++;
+		if (actual.contains("Country 2")) count++;
+		if (actual.contains("Country 3")) count++;
+		if (actual.contains("Country 4")) count++;
+		Assert.assertEquals(3, count);
 	}
 
 	@Test
@@ -151,17 +150,16 @@ public class SearchFeatureCommandTest {
 		Assert.assertEquals(LAYER_ID, response.getLayerId());
 		List<Feature> features = Arrays.asList(response.getFeatures());
 		Assert.assertNotNull(features);
+		Assert.assertEquals(4, features.size());
+		
 		List<String> actual = new ArrayList<String>();
 		for (Feature feature : features) {
 			actual.add(feature.getLabel());
 		}
-		List<String> expected = new ArrayList<String>();
-		// reverse order
-		expected.add("Country 4");
-		expected.add("Country 3");
-		expected.add("Country 2");
-		expected.add("Country 1");
-		Assert.assertEquals(expected, actual);
+		Assert.assertTrue(actual.contains("Country 1"));
+		Assert.assertTrue(actual.contains("Country 2"));
+		Assert.assertTrue(actual.contains("Country 3"));
+		Assert.assertTrue(actual.contains("Country 4"));
 	}
 
 	// @todo need to test filter

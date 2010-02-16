@@ -45,7 +45,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author check subversion
  */
 @Component()
-@Transactional
+@Transactional(rollbackFor = { Exception.class })
 public class PersistTransactionCommand implements Command<PersistTransactionRequest, PersistTransactionResponse> {
 
 	@Autowired

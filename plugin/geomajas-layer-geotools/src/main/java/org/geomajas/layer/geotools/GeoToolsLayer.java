@@ -35,8 +35,10 @@ import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.VectorLayer;
+import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.FeatureModel;
 import org.geomajas.layer.shapeinmem.FeatureSourceRetriever;
+import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
 import org.geotools.data.DataStore;
@@ -69,7 +71,7 @@ import com.vividsolutions.jts.geom.Envelope;
  * 
  * @author check subversion
  */
-@Transactional
+@Transactional(rollbackFor = { Exception.class })
 public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer {
 
 	private final Logger log = LoggerFactory.getLogger(GeoToolsLayer.class);
@@ -88,6 +90,9 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 
 	@Autowired(required = false)
 	private GeoToolsTransactionManager transactionManager;
+
+	@Autowired
+	private DtoConverterService converterService;
 
 	private CoordinateReferenceSystem crs;
 
@@ -152,7 +157,8 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 		}
 		this.filterFactory = CommonFactoryFinder.getFilterFactory(null);
 		this.featureModel = new GeoToolsFeatureModel(getDataStore(), layerInfo.getFeatureInfo().getDataSourceName(),
-				geoService.getSridFromCrs(layerInfo.getCrs()));
+				geoService.getSridFromCrs(layerInfo.getCrs()), converterService);
+		featureModel.setLayerInfo(layerInfo);
 	}
 
 	public Object create(Object feature) throws LayerException {
@@ -190,10 +196,10 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 				store.setTransaction(transactionManager.getTransaction());
 			}
 			List<AttributeDescriptor> descriptors = store.getSchema().getAttributeDescriptors();
-			Map<String, Object> attrMap = getFeatureModel().getAttributes(feature);
-			List<Object> attrList = new ArrayList<Object>();
+			Map<String, Attribute> attrMap = getFeatureModel().getAttributes(feature);
+			List<Attribute> attrList = new ArrayList<Attribute>();
 			for (int i = 0; i < attrMap.size(); i++) {
-				Object value = attrMap.get(descriptors.get(i).getName().toString());
+				Attribute value = attrMap.get(descriptors.get(i).getName().toString());
 				attrList.add(value);
 			}
 
@@ -350,9 +356,5 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 
 	public FeatureModel getFeatureModel() {
 		return this.featureModel;
-	}
-
-	public Iterator<?> getObjects(String attributeName, Filter filter) throws LayerException {
-		return Collections.EMPTY_LIST.iterator();
 	}
 }

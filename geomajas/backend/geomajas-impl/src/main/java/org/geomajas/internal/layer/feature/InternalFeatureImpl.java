@@ -29,6 +29,7 @@ import java.util.Map;
 import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.global.Json;
 import org.geomajas.layer.VectorLayer;
+import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.InternalFeature;
 
 import com.vividsolutions.jts.geom.Envelope;
@@ -52,7 +53,7 @@ public class InternalFeatureImpl implements InternalFeature {
 	private String id;
 
 	/** The full mapping of attributes. */
-	private Map<String, Object> attributes;
+	private Map<String, Attribute> attributes;
 
 	/** The feature's geometry. */
 	private Geometry geometry;
@@ -90,7 +91,7 @@ public class InternalFeatureImpl implements InternalFeature {
 	}
 
 	public InternalFeatureImpl(InternalFeature other) {
-		attributes = new HashMap<String, Object>(other.getAttributes());
+		attributes = new HashMap<String, Attribute>(other.getAttributes());
 		if (null != other.getGeometry()) {
 			geometry = (Geometry) other.getGeometry().clone();
 		}
@@ -108,7 +109,7 @@ public class InternalFeatureImpl implements InternalFeature {
 	 */
 	public InternalFeature clone() {
 		InternalFeatureImpl f = new InternalFeatureImpl();
-		f.setAttributes(new HashMap<String, Object>(attributes));
+		f.setAttributes(new HashMap<String, Attribute>(attributes));
 		if (null != geometry) {
 			f.setGeometry((Geometry) geometry.clone());
 		}
@@ -145,15 +146,6 @@ public class InternalFeatureImpl implements InternalFeature {
 			return geometry.getEnvelopeInternal();
 		}
 		return null;
-	}
-
-	/**
-	 * Is this a new feature or not? This is tested by the ID. If the ID is null, then the feature is new.
-	 * 
-	 * @return true when new
-	 */
-	public boolean isNew() {
-		return id == null;
 	}
 
 	/**
@@ -228,11 +220,11 @@ public class InternalFeatureImpl implements InternalFeature {
 		return id;
 	}
 
-	public Map<String, Object> getAttributes() {
+	public Map<String, Attribute> getAttributes() {
 		return attributes;
 	}
 
-	public void setAttributes(Map<String, Object> attributes) {
+	public void setAttributes(Map<String, Attribute> attributes) {
 		this.attributes = attributes;
 	}
 

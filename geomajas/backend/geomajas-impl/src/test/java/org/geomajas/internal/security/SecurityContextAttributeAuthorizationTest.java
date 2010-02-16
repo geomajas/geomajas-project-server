@@ -31,7 +31,9 @@ import java.util.Map;
 import junit.framework.Assert;
 
 import org.geomajas.internal.layer.feature.InternalFeatureImpl;
+import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.InternalFeature;
+import org.geomajas.layer.feature.attribute.StringAttribute;
 import org.geomajas.security.AttributeAuthorization;
 import org.geomajas.security.Authentication;
 import org.geomajas.security.BaseAuthorization;
@@ -73,9 +75,9 @@ public class SecurityContextAttributeAuthorizationTest {
 		securityContext.setAuthentications("token", authentications);
 
 		InternalFeature feature = new InternalFeatureImpl();
-		Map<String, Object> attributes = new HashMap<String, Object>();
+		Map<String, Attribute> attributes = new HashMap<String, Attribute>();
 		feature.setAttributes(attributes);
-		attributes.put(ATTRIBUTE_ID, "bla");
+		attributes.put(ATTRIBUTE_ID, new StringAttribute("bla"));
 		Assert.assertTrue(securityContext.isAttributeReadable(LAYER_ID, feature, ATTRIBUTE_ID));
 		Assert.assertTrue(securityContext.isAttributeWritable(LAYER_ID, feature, ATTRIBUTE_ID));
 	}
@@ -91,9 +93,9 @@ public class SecurityContextAttributeAuthorizationTest {
 		securityContext.setAuthentications("token", authentications);
 
 		InternalFeature feature = new InternalFeatureImpl();
-		Map<String, Object> attributes = new HashMap<String, Object>();
+		Map<String, Attribute> attributes = new HashMap<String, Attribute>();
 		feature.setAttributes(attributes);
-		attributes.put(ATTRIBUTE_ID, "bla");
+		attributes.put(ATTRIBUTE_ID, new StringAttribute("bla"));
 		Assert.assertTrue(securityContext.isAttributeReadable(LAYER_ID, feature, ATTRIBUTE_ID));
 		Assert.assertTrue(securityContext.isAttributeWritable(LAYER_ID, feature, ATTRIBUTE_ID));
 	}
@@ -109,17 +111,17 @@ public class SecurityContextAttributeAuthorizationTest {
 		securityContext.setAuthentications("token", authentications);
 
 		InternalFeature feature = new InternalFeatureImpl();
-		Map<String, Object> attributes = new HashMap<String, Object>();
+		Map<String, Attribute> attributes = new HashMap<String, Attribute>();
 		feature.setAttributes(attributes);
-		attributes.put(ATTRIBUTE_ID, "bla");
+		attributes.put(ATTRIBUTE_ID, new StringAttribute("bla"));
 		Assert.assertTrue(securityContext.isAttributeReadable(LAYER_ID, feature, ATTRIBUTE_ID));
 		Assert.assertTrue(securityContext.isAttributeWritable(LAYER_ID, feature, ATTRIBUTE_ID));
 
-		feature.getAttributes().put(ATTRIBUTE_ID, "rea");
+		feature.getAttributes().put(ATTRIBUTE_ID, new StringAttribute("rea"));
 		Assert.assertFalse(securityContext.isAttributeReadable(LAYER_ID, feature, ATTRIBUTE_ID));
 		Assert.assertTrue(securityContext.isAttributeWritable(LAYER_ID, feature, ATTRIBUTE_ID));
 
-		feature.getAttributes().put(ATTRIBUTE_ID, "wri");
+		feature.getAttributes().put(ATTRIBUTE_ID, new StringAttribute("wri"));
 		Assert.assertTrue(securityContext.isAttributeReadable(LAYER_ID, feature, ATTRIBUTE_ID));
 		Assert.assertFalse(securityContext.isAttributeWritable(LAYER_ID, feature, ATTRIBUTE_ID));
 	}
@@ -135,17 +137,17 @@ public class SecurityContextAttributeAuthorizationTest {
 		securityContext.setAuthentications("token", authentications);
 
 		InternalFeature feature = new InternalFeatureImpl();
-		Map<String, Object> attributes = new HashMap<String, Object>();
+		Map<String, Attribute> attributes = new HashMap<String, Attribute>();
 		feature.setAttributes(attributes);
-		attributes.put(ATTRIBUTE_ID, "bla");
+		attributes.put(ATTRIBUTE_ID, new StringAttribute("bla"));
 		Assert.assertTrue(securityContext.isAttributeReadable(LAYER_ID, feature, ATTRIBUTE_ID));
 		Assert.assertTrue(securityContext.isAttributeWritable(LAYER_ID, feature, ATTRIBUTE_ID));
 
-		feature.getAttributes().put(ATTRIBUTE_ID, "vis");
+		feature.getAttributes().put(ATTRIBUTE_ID, new StringAttribute("vis"));
 		Assert.assertFalse(securityContext.isAttributeReadable(LAYER_ID, feature, ATTRIBUTE_ID));
 		Assert.assertTrue(securityContext.isAttributeWritable(LAYER_ID, feature, ATTRIBUTE_ID));
 
-		feature.getAttributes().put(ATTRIBUTE_ID, "upd");
+		feature.getAttributes().put(ATTRIBUTE_ID, new StringAttribute("upd"));
 		Assert.assertTrue(securityContext.isAttributeReadable(LAYER_ID, feature, ATTRIBUTE_ID));
 		Assert.assertFalse(securityContext.isAttributeWritable(LAYER_ID, feature, ATTRIBUTE_ID));
 	}
@@ -170,11 +172,11 @@ public class SecurityContextAttributeAuthorizationTest {
 	private class TestAuthorization extends AllowAllAuthorization implements AttributeAuthorization {
 
 		public boolean isAttributeReadable(String layerId, InternalFeature feature, String attribute) {
-			return !"rea".equals(feature.getAttributes().get(attribute));
+			return !"rea".equals(feature.getAttributes().get(attribute).getValue());
 		}
 
 		public boolean isAttributeWritable(String layerId, InternalFeature feature, String attribute) {
-			return !"wri".equals(feature.getAttributes().get(attribute));
+			return !"wri".equals(feature.getAttributes().get(attribute).getValue());
 		}
 	}
 
@@ -189,25 +191,25 @@ public class SecurityContextAttributeAuthorizationTest {
 	private class TestFeatureAuthorization extends AllowAllAuthorization implements FeatureAuthorization {
 
 		public boolean isFeatureVisible(String layerId, InternalFeature feature) {
-			return !"vis".equals(feature.getAttributes().get(ATTRIBUTE_ID));
+			return !"vis".equals(feature.getAttributes().get(ATTRIBUTE_ID).getValue());
 		}
 
 		public boolean isFeatureUpdateAuthorized(String layerId, InternalFeature feature) {
-			return !"upd".equals(feature.getAttributes().get(ATTRIBUTE_ID));
+			return !"upd".equals(feature.getAttributes().get(ATTRIBUTE_ID).getValue());
 		}
 
 		public boolean isFeatureUpdateAuthorized(String layerId, InternalFeature orgFeature,
 				InternalFeature newFeature) {
-			return !"org".equals(orgFeature.getAttributes().get(ATTRIBUTE_ID)) &&
-					!"new".equals(newFeature.getAttributes().get(ATTRIBUTE_ID));
+			return !"org".equals(orgFeature.getAttributes().get(ATTRIBUTE_ID).getValue()) &&
+					!"new".equals(newFeature.getAttributes().get(ATTRIBUTE_ID).getValue());
 		}
 
 		public boolean isFeatureDeleteAuthorized(String layerId, InternalFeature feature) {
-			return !"del".equals(feature.getAttributes().get(ATTRIBUTE_ID));
+			return !"del".equals(feature.getAttributes().get(ATTRIBUTE_ID).getValue());
 		}
 
 		public boolean isFeatureCreateAuthorized(String layerId, InternalFeature feature) {
-			return !"cre".equals(feature.getAttributes().get(ATTRIBUTE_ID));
+			return !"cre".equals(feature.getAttributes().get(ATTRIBUTE_ID).getValue());
 		}
 	}
 }

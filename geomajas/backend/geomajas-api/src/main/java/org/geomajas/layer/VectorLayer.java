@@ -132,14 +132,4 @@ public interface VectorLayer extends Layer<VectorLayerInfo> {
 	 * @throws LayerException oops
 	 */
 	Envelope getBounds() throws LayerException;
-
-	/**
-	 * Return the list of possible object values.
-	 *
-	 * @param attributeName attribute to get objects for
-	 * @param filter filter to be applied
-	 * @return possible object values
-	 * @throws LayerException oops
-	 */
-	Iterator<?> getObjects(String attributeName, Filter filter) throws LayerException;
 }

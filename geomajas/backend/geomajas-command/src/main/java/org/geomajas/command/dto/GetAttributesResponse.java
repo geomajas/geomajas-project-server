@@ -24,6 +24,7 @@
 package org.geomajas.command.dto;
 
 import org.geomajas.command.CommandResponse;
+import org.geomajas.layer.feature.Attribute;
 
 import java.util.Map;
 
@@ -36,16 +37,16 @@ public class GetAttributesResponse extends CommandResponse {
 
 	private static final long serialVersionUID = 151L;
 
-	private Map<String, Object>[] attributes;
+	private Map<String, Attribute>[] attributes;
 
 	public GetAttributesResponse() {
 	}
 
-	public Map<String, Object>[] getAttributes() {
+	public Map<String, Attribute>[] getAttributes() {
 		return attributes;
 	}
 
-	public void setAttributes(Map<String, Object>[] attributes) {
+	public void setAttributes(Map<String, Attribute>[] attributes) {
 		this.attributes = attributes;
 	}
 }

@@ -38,6 +38,7 @@ import org.geomajas.global.ExceptionCode;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.FeatureModel;
+import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
 import org.geotools.referencing.CRS;
@@ -77,6 +78,9 @@ public class BeanLayer implements VectorLayer {
 
 	@Autowired
 	private GeoService geoService;
+
+	@Autowired
+	private DtoConverterService converterService;
 
 	private CoordinateReferenceSystem crs;
 
@@ -192,10 +196,6 @@ public class BeanLayer implements VectorLayer {
 		featuresById.remove(featureId);
 	}
 
-	public Iterator<?> getObjects(String attributeName, Filter filter) throws LayerException {
-		return Collections.EMPTY_LIST.iterator();
-	}
-
 	public List<Object> getFeatures() {
 		return features;
 	}
@@ -216,7 +216,7 @@ public class BeanLayer implements VectorLayer {
 	}
 
 	protected void initFeatureModel() throws LayerException {
-		featureModel = new BeanFeatureModel(layerInfo, geoService.getSridFromCrs(layerInfo.getCrs()));
+		featureModel = new BeanFeatureModel(layerInfo, geoService.getSridFromCrs(layerInfo.getCrs()), converterService);
 		filterService.registerFeatureModel(featureModel);
 		for (Object f : features) {
 			featuresById.put(featureModel.getId(f), f);

@@ -28,9 +28,11 @@ import org.geomajas.layer.feature.Attribute;
 /**
  * Association attribute.
  *
+ * @param <VALUE_TYPE> type for the attribute value
+ * 
  * @author Jan De Moerloose
  */
-public abstract class AssociationAttribute implements Attribute {
+public abstract class AssociationAttribute<VALUE_TYPE> implements Attribute<VALUE_TYPE> {
 
 	private static final long serialVersionUID = 151L;
 

@@ -143,6 +143,8 @@ public interface VectorLayerService {
 	 * @param filter filter to be applied
 	 * @return possible object values
 	 * @throws GeomajasException oops
+	 * @deprecated temporarily deprecated until the recommended way to get the associated objects is defined
 	 */
+	@Deprecated
 	List<Object> getObjects(String layerId, String attributeName, Filter filter) throws GeomajasException;
 }

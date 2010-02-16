@@ -38,6 +38,8 @@ import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.VectorLayer;
+import org.geomajas.layer.VectorLayerAssociationSupport;
+import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.FeatureModel;
 import org.geomajas.service.FilterService;
 import org.geotools.referencing.CRS;
@@ -60,7 +62,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * Hibernate layer model.
@@ -68,8 +69,8 @@ import com.vividsolutions.jts.geom.Geometry;
  * @author Pieter De Graef
  * @author Jan De Moerloose
  */
-@Transactional
-public class HibernateLayer extends HibernateLayerUtil implements VectorLayer {
+@Transactional(rollbackFor = { Exception.class })
+public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, VectorLayerAssociationSupport {
 
 	private final Logger log = LoggerFactory.getLogger(HibernateLayer.class);
 
@@ -180,19 +181,6 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer {
 
 	public Object create(Object feature) throws LayerException {
 		Session session = getSessionFactory().getCurrentSession();
-		// @todo This is a hack for features that should be transformed into a
-		// subclass of their own class. We delete the feature first and
-		// before recreating it as a subclass
-		// Problem: this changes the id for generated id's !!!!!
-		if (getFeatureModel().getSuperClass() != null) {
-			String id = getFeatureModel().getId(feature);
-			Object parent = session.get(getFeatureModel().getSuperClass(), (Serializable) ConvertUtils.convert(id,
-					getEntityMetadata().getIdentifierType().getReturnedClass()));
-			if (parent != null) {
-				getFeatureModel().setGeometry(feature, (Geometry) getFeatureModel().getGeometry(parent).clone());
-				session.delete(parent);
-			}
-		}
 
 		// Replace associations with persistent versions:
 		// Map<String, Object> attributes = featureModel.getAttributes(feature);
@@ -234,7 +222,7 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer {
 
 	public void update(Object feature) throws LayerException {
 		Object persistent = read(getFeatureModel().getId(feature));
-		Map<String, Object> attributes = featureModel.getAttributes(feature);
+		Map<String, Attribute> attributes = featureModel.getAttributes(feature);
 		// replace all modified attributes by their new values
 		featureModel.setAttributes(persistent, attributes);
 		featureModel.setGeometry(feature, featureModel.getGeometry(feature));
@@ -354,7 +342,7 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer {
 	@SuppressWarnings("unchecked")
 	private void setPersistentAssociations(Object feature) throws LayerException {
 		try {
-			Map<String, Object> attributes = featureModel.getAttributes(feature);
+			Map<String, Attribute> attributes = featureModel.getAttributes(feature);
 			for (AttributeInfo attribute : getFeatureInfo().getAttributes()) {
 				// We're looping over all associations:
 				if (attribute instanceof AssociationAttributeInfo) {

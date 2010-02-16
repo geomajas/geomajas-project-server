@@ -284,7 +284,6 @@
 	<properties>
 		<gwt-version>2.0.0</gwt-version>
 		<smartgwt-version>2.0</smartgwt-version>
-		<geotools-version>2.5.7</geotools-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 

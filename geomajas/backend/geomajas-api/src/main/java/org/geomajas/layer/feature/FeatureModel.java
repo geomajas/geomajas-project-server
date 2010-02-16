@@ -55,7 +55,7 @@ public interface FeatureModel {
 	 * @return attribute value
 	 * @throws LayerException oops
 	 */
-	Object getAttribute(Object feature, String name) throws LayerException;
+	Attribute getAttribute(Object feature, String name) throws LayerException;
 
 	/**
 	 * Return all attributes as a map with the attribute name as the key.
@@ -64,7 +64,7 @@ public interface FeatureModel {
 	 * @return map of attribute values
 	 * @throws LayerException oops
 	 */
-	Map<String, Object> getAttributes(Object feature) throws LayerException;
+	Map<String, Attribute> getAttributes(Object feature) throws LayerException;
 
 	/**
 	 * Return the id of a feature.
@@ -91,7 +91,7 @@ public interface FeatureModel {
 	 * @param attributes the attributes
 	 * @throws LayerException oops
 	 */
-	void setAttributes(Object feature, java.util.Map<String, Object> attributes) throws LayerException;
+	void setAttributes(Object feature, java.util.Map<String, Attribute> attributes) throws LayerException;
 
 	/**
 	 * Set the geometry of a feature.
@@ -135,14 +135,6 @@ public interface FeatureModel {
 	 * @throws LayerException oops
 	 */
 	String getGeometryAttributeName() throws LayerException;
-
-	/**
-	 * Return the class extended by this feature model's class.
-	 *
-	 * @return the super class or null if there is no super class
-	 * @throws LayerException if class could not be retrieved TODO: replace by super feature model !!!
-	 */
-	Class<?> getSuperClass() throws LayerException;
 
 	/**
 	 * Can a given 'feature' object be handled by this FeatureModel?

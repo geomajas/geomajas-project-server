@@ -25,9 +25,7 @@ package org.geomajas.internal.service;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.beanutils.ConvertUtilsBean;
 import org.geomajas.configuration.AssociationAttributeInfo;
@@ -199,7 +197,7 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		if (null != feature.getLayer() && null != feature.getLayer().getLayerInfo()) {
 			info = feature.getLayer().getLayerInfo().getFeatureInfo();
 		}
-		dto.setAttributes(toDto(feature.getAttributes(), info));
+		dto.setAttributes(feature.getAttributes());
 		dto.setLabel(feature.getLabel());
 		dto.setGeometry(toDto(feature.getGeometry()));
 		if (feature.getStyleInfo() != null) {
@@ -224,7 +222,7 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 			return null;
 		}
 		InternalFeatureImpl feature = new InternalFeatureImpl();
-		feature.setAttributes(toFeature(dto.getAttributes()));
+		feature.setAttributes(dto.getAttributes());
 		feature.setId(dto.getId());
 		feature.setLabel(dto.getLabel());
 		feature.setGeometry(toInternal(dto.getGeometry()));
@@ -232,34 +230,6 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		feature.setEditable(dto.isUpdatable());
 		feature.setDeletable(dto.isDeletable());
 		return feature;
-	}
-
-	// -------------------------------------------------------------------------
-	// Private methods - Feature conversion:
-	// -------------------------------------------------------------------------
-
-	private Map<String, Attribute> toDto(Map<String, Object> attributes, FeatureInfo info) {
-		HashMap<String, Attribute> map = new HashMap<String, Attribute>();
-		if (null != info) {
-			for (AttributeInfo attributeInfo : info.getAttributes()) {
-				String name = attributeInfo.getName();
-				if (attributes.containsKey(name)) {
-					Object attribute = attributes.get(name);
-					map.put(name, toDto(attribute, attributeInfo));
-				}
-			}
-		}
-		return map;
-	}
-
-	private Map<String, Object> toFeature(Map<String, Attribute> attributes) {
-		HashMap<String, Object> map = new HashMap<String, Object>();
-		if (null != attributes) {
-			for (String name : attributes.keySet()) {
-				map.put(name, toInternal(attributes.get(name)));
-			}
-		}
-		return map;
 	}
 
 	// -------------------------------------------------------------------------

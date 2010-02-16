@@ -47,7 +47,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Jan De Moerloose
  */
 @Component()
-@Transactional(readOnly = true)
+@Transactional(readOnly = true, rollbackFor = { Exception.class })
 public class GetRenderedTileCommand implements Command<GetRenderedTileRequest, GetRenderedTileResponse> {
 
 	private final Logger log = LoggerFactory.getLogger(GetRenderedTileCommand.class);
