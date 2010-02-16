@@ -20,11 +20,13 @@
 			org.geomajas.spring.GeomajasBeanNameGenerator
 			org.hibernate.validator.engine.ValidatorImpl
 			org.geotools.data.shapefile.ShapefileDataStoreFactory
+			org.opengis.filter.FilterFactory
+			org.geomajas.layer.hibernate.filter.ExtendedFilterFactory
         </param-value>
     </context-param>
 
 	<listener>
- 		<listener-class>org.geomajas.gwt.server.JettyListener</listener-class>
+ 		<listener-class>org.geomajas.gwt.server.PrepareScanningContextListener</listener-class>
 	</listener>
 
 	<listener>
