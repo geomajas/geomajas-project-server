@@ -135,7 +135,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		</property>
 		<property name="labelStyle">
 			<bean class="org.geomajas.configuration.LabelStyleInfo">
-				<property name="labelAttributeName" value="id" />
+				<property name="labelAttributeName" value="TYPE" />
 				<property name="fontStyle">
 					<bean class="org.geomajas.configuration.FeatureStyleInfo">
 						<property name="fillColor" value="#66AA22" />
