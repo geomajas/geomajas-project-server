@@ -44,6 +44,8 @@ import org.geomajas.layer.LayerException;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.FeatureModel;
 import org.geomajas.service.DtoConverterService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 
 import com.vividsolutions.jts.geom.Geometry;
@@ -58,6 +60,8 @@ import com.vividsolutions.jts.io.WKTWriter;
  * @author Jan De Moerloose
  */
 public class BeanFeatureModel implements FeatureModel {
+
+	private final Logger log = LoggerFactory.getLogger(BeanFeatureModel.class);
 
 	public static final String SEPARATOR_REGEXP = "\\.";
 
@@ -141,10 +145,13 @@ public class BeanFeatureModel implements FeatureModel {
 	public Geometry getGeometry(Object feature) throws LayerException {
 		Object geometry = getAttributeRecursively(feature, getGeometryAttributeName());
 		if (!wkt || null == geometry) {
+			log.debug("bean.getGeometry {}", geometry);
 			return (Geometry) geometry;
 		} else {
 			try {
-				return reader.read((String) geometry);
+				Geometry geom = reader.read((String) geometry);
+				log.debug("bean.getGeometry {}", geom);
+				return geom;
 			} catch (Throwable t) {
 				throw new LayerException(t, ExceptionCode.FEATURE_MODEL_PROBLEM, geometry);
 			}

@@ -26,28 +26,45 @@ package org.geomajas.test.security;
 import junit.framework.Assert;
 import org.geomajas.command.CommandDispatcher;
 import org.geomajas.command.CommandResponse;
+import org.geomajas.global.ExceptionCode;
+import org.geomajas.global.GeomajasSecurityException;
+import org.geomajas.layer.bean.BeanLayer;
+import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.plugin.springsecurity.command.dto.LoginRequest;
 import org.geomajas.plugin.springsecurity.command.dto.LoginResponse;
 import org.geomajas.security.SecurityManager;
+import org.geomajas.service.VectorLayerService;
+import org.geotools.referencing.CRS;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.List;
+
 /**
- * Tests for proper application of security in {@link org.geomajas.test.security.VectorLayerServiceTest}.
+ * Tests for proper application of security in {@link VectorLayerServiceInvisibleLayerTest}.
  *
  * @author Joachim Van der Auwera
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
-		"/org/geomajas/test/security/vectorLayerSecurity.xml"})
-public class VectorLayerServiceTest {
+		"/org/geomajas/layer/bean/beanContext.xml", "/org/geomajas/layer/bean/layerBeans.xml",
+		"/org/geomajas/test/security/vectorLayerSecurityInvisibleLayer.xml"})
+public class VectorLayerServiceInvisibleLayerTest {
 
 	private static final String LAYER_ID = "beans";
 	private static final String STRING_ATTR = "stringAttr";
 	private static final double ALLOWANCE = .00000001;
+
+	@Autowired
+	private VectorLayerService layerService;
+
+	@Autowired
+	@Qualifier("beans")
+	private BeanLayer beanLayer;
 
 	@Autowired
 	private SecurityManager securityManager;
@@ -67,17 +84,25 @@ public class VectorLayerServiceTest {
 	}
 
 	@Test
-	public void testGetFeaturesInvisibleLayer() {
+	public void testGetFeaturesInvisibleLayer() throws Exception {
 		// verify features are accessible when layer is visible
 		login("luc");
-		// @todo
+		List<InternalFeature> features = layerService.getFeatures(LAYER_ID,
+				CRS.decode(beanLayer.getLayerInfo().getCrs()), null, null, VectorLayerService.FEATURE_INCLUDE_NONE);
+		Assert.assertEquals(3, features.size());
 
 		// verify features are not accessible when layer is invisible
 		login("marino");
-		// @todo
+		try {
+			features = layerService.getFeatures(LAYER_ID,
+					CRS.decode(beanLayer.getLayerInfo().getCrs()), null, null, VectorLayerService.FEATURE_INCLUDE_NONE);
+			Assert.fail();
+		} catch (GeomajasSecurityException gse) {
+			Assert.assertEquals(ExceptionCode.LAYER_NOT_VISIBLE, gse.getExceptionCode());
+		}
 	}
 
-	/*
+	/* @todo other tests to provide
 	@Test
 	public void testGetFeaturesSecurityFilter() {
 		login("");

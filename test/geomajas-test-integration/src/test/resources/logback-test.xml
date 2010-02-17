@@ -1,11 +1,21 @@
 <configuration>
 
+	<appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<Pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</Pattern>
+		</layout>
+	</appender>
+
 	<root>
 		<level value="OFF"/>
+		<appender-ref ref="CONSOLE"/>
 	</root>
 
-	<!--
-	<logger name="org.geomajas.layer.hibernate.command.interceptor.HibernateTransactionInterceptor" level="DEBUG"/>
-	-->
+	<logger name="org.geomajas.layer.bean.BeanLayer">
+		<level value="DEBUG"/>
+	</logger>
+	<logger name="org.geomajas.layer.bean.BeanFeatureModel">
+		<level value="DEBUG"/>		
+	</logger>
 
 </configuration>

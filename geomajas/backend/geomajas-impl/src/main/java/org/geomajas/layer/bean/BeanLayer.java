@@ -224,7 +224,13 @@ public class BeanLayer implements VectorLayer {
 	}
 
 	protected void initComparator() throws LayerException {
-		comparator = new FeatureComparator(getFeatureInfo().getSortAttributeName(), getFeatureInfo().getSortType());
+		SortType sortType = getFeatureInfo().getSortType();
+		String name = getFeatureInfo().getSortAttributeName();
+		if (null == name) {
+			comparator = null;
+		} else {
+			comparator = new FeatureComparator(name, sortType);
+		}
 	}
 
 	/**
@@ -258,10 +264,9 @@ public class BeanLayer implements VectorLayer {
 			} catch (Throwable t) {
 				// can't throw !
 				log.warn("Can't compare " + getFeatureInfo().getDataSourceName() + " features for attribute "
-						+ attributeName);
+						+ attributeName + ", exception " + t.getMessage(), t);
 			}
 			return 0;
 		}
-
 	}
 }

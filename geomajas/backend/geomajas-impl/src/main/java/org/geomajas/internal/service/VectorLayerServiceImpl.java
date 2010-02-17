@@ -248,7 +248,9 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 		}
 
 		List<InternalFeature> res = new ArrayList<InternalFeature>();
-		log.debug("getElements " + filter + ",offset = " + offset + ",maxResultSize= " + maxResultSize);
+		if (log.isDebugEnabled()) {
+			log.debug("getElements " + filter + ", offset = " + offset + ", maxResultSize= " + maxResultSize);
+		}
 		Iterator<?> it = layer.getElements(filter, offset, maxResultSize);
 		while (it.hasNext()) {
 			InternalFeature feature = convertFeature(it.next(), layerId, layer, transformation, styleFilters, style
@@ -442,16 +444,18 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 
 		// apply visible area filter
 		Geometry visibleArea = securityContext.getVisibleArea(layerId);
-		String geometryName = layerInfo.getFeatureInfo().getGeometryType().getName();
-		if (securityContext.isPartlyVisibleSufficient(layerId)) {
-			filter = and(filter, filterService.createIntersectsFilter(visibleArea, geometryName));
+		if (null != visibleArea) {
+			String geometryName = layerInfo.getFeatureInfo().getGeometryType().getName();
+			if (securityContext.isPartlyVisibleSufficient(layerId)) {
+				filter = and(filter, filterService.createIntersectsFilter(visibleArea, geometryName));
+			} else {
+				filter = and(filter, filterService.createWithinFilter(visibleArea, geometryName));
+			}
 		} else {
-			filter = and(filter, filterService.createWithinFilter(visibleArea, geometryName));
+			log.warn("Visible area is null for layer " + layerId + "removing all content!");
+			filter = filterService.createFalseFilter();
 		}
 
-		if (null == filter) {
-			filter = filterService.createTrueFilter();
-		}
 		return filter;
 	}
 

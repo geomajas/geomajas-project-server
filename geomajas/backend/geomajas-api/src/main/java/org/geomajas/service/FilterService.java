@@ -193,11 +193,18 @@ public interface FilterService {
 	Filter createOverlapsFilter(Geometry geometry, String geomName);
 
 	/**
-	 * Creates a filter that evaluates everything.
+	 * Creates a filter that allows everything.
 	 *
 	 * @return filter
 	 */
 	Filter createTrueFilter();
+
+	/**
+	 * Creates a filter that allows nothing.
+	 *
+	 * @return filter
+	 */
+	Filter createFalseFilter();
 
 	/**
 	 * Register a feature model.

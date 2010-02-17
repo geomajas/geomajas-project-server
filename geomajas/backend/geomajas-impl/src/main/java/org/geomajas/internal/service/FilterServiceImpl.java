@@ -301,11 +301,20 @@ public final class FilterServiceImpl implements FilterService {
 	}
 
 	/**
-	 * Creates a filter that evaluates everything.
+	 * Creates a filter that allows everything.
 	 * 
 	 * @return filter
 	 */
 	public Filter createTrueFilter() {
+		return Filter.INCLUDE;
+	}
+
+	/**
+	 * Creates a filter that allows nothing.
+	 *
+	 * @return filter
+	 */
+	public Filter createFalseFilter() {
 		return Filter.INCLUDE;
 	}
 

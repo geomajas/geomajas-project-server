@@ -46,9 +46,7 @@ public class MarinoLoggedIn implements Command<EmptyCommandRequest, CommandRespo
 	}
 
 	public void execute(EmptyCommandRequest emptyCommandRequest, CommandResponse commandResponse) throws Exception {
-		System.out.println("token " + securityContext.getToken());
 		assert(null != securityContext.getToken());
-		System.out.println("userId " + securityContext.getUserId());
 		assert("marino".equals(securityContext.getUserId()));
 	}
 }

@@ -36,10 +36,6 @@ public class AllowAllSecurityService implements SecurityService {
 
 	private static final BaseAuthorization[] AUTHORIZATIONS = new BaseAuthorization[] { new AllowAllAuthorization() };
 
-	public AllowAllSecurityService() {
-		System.out.println();
-	}
-
 	public String getId() {
 		return "AllowAll";
 	}
