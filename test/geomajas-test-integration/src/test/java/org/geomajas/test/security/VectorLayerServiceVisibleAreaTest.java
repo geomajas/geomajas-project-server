@@ -52,8 +52,8 @@ import java.util.List;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
 		"/org/geomajas/layer/bean/beanContext.xml", "/org/geomajas/layer/bean/layerBeans.xml",
-		"/org/geomajas/test/security/VectorLayerSecurityInvisibleLayer.xml"})
-public class VectorLayerServiceInvisibleLayerTest {
+		"/org/geomajas/test/security/VectorLayerSecurityArea.xml"})
+public class VectorLayerServiceVisibleAreaTest {
 
 	private static final String LAYER_ID = "beans";
 	private static final String STRING_ATTR = "stringAttr";
@@ -84,21 +84,23 @@ public class VectorLayerServiceInvisibleLayerTest {
 	}
 
 	@Test
-	public void testGetFeaturesInvisibleLayer() throws Exception {
-		// verify features are accessible when layer is visible
-		login("luc");
-		List<InternalFeature> features = layerService.getFeatures(LAYER_ID,
-				CRS.decode(beanLayer.getLayerInfo().getCrs()), null, null, VectorLayerService.FEATURE_INCLUDE_NONE);
-		Assert.assertEquals(3, features.size());
+	public void testGetFeaturesVisibleArea() {
+		login("");
+		// @todo
+		Assert.fail();
+	}
 
-		// verify features are not accessible when layer is invisible
-		login("marino");
-		try {
-			features = layerService.getFeatures(LAYER_ID,
-					CRS.decode(beanLayer.getLayerInfo().getCrs()), null, null, VectorLayerService.FEATURE_INCLUDE_NONE);
-			Assert.fail();
-		} catch (GeomajasSecurityException gse) {
-			Assert.assertEquals(ExceptionCode.LAYER_NOT_VISIBLE, gse.getExceptionCode());
-		}
+	@Test
+	public void testGetBoundsVisibleArea() {
+		login("");
+		// @todo
+		Assert.fail();
+	}
+
+	@Test
+	public void testSaveOrUpdateCreateDeleteArea() {
+		login("");
+		// @todo
+		Assert.fail();
 	}
 }

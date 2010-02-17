@@ -95,50 +95,31 @@ public class LayerAuthorizationInfo implements AuthorizationInfo {
 		this.deleteAuthorizedLayers = deleteAuthorizedLayers;
 	}
 
-	private Object getLocalHash() {
-		return hashCode();
+	public List<String> getAllowedTools() {
+		return allowedTools;
+	}
+
+	public List<String> getAllowedCommands() {
+		return allowedCommands;
+	}
+
+	public List<String> getVisibleLayers() {
+		return visibleLayers;
+	}
+
+	public List<String> getUpdateAuthorizedLayers() {
+		return updateAuthorizedLayers;
+	}
+
+	public List<String> getCreateAuthorizedLayers() {
+		return createAuthorizedLayers;
+	}
+
+	public List<String> getDeleteAuthorizedLayers() {
+		return deleteAuthorizedLayers;
 	}
 
 	public BaseAuthorization getAuthorization() {
-		return new BaseAuthorization() {
-			public String getId() {
-				return "LayerAuthorizationInfo." + getLocalHash().toString();
-			}
-
-			private boolean check(String id, List<String> matches) {
-				if (null != matches) {
-					for (String test : matches) {
-						if ("*".equals(test) || id.equals(test)) {
-							return true;
-						}
-					}
-				}
-				return false;
-			}
-
-			public boolean isToolAuthorized(String toolId) {
-				return check(toolId, allowedTools);
-			}
-
-			public boolean isCommandAuthorized(String commandName) {
-				return check(commandName, allowedCommands);
-			}
-
-			public boolean isLayerVisible(String layerId) {
-				return check(layerId, visibleLayers);
-			}
-
-			public boolean isLayerUpdateAuthorized(String layerId) {
-				return check(layerId, updateAuthorizedLayers);
-			}
-
-			public boolean isLayerCreateAuthorized(String layerId) {
-				return check(layerId, createAuthorizedLayers);
-			}
-
-			public boolean isLayerDeleteAuthorized(String layerId) {
-				return check(layerId, deleteAuthorizedLayers);
-			}
-		};
+		return new LayerAuthorization(this);
 	}
 }

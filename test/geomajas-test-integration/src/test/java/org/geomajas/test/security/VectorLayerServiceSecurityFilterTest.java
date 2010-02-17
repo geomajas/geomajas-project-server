@@ -26,8 +26,6 @@ package org.geomajas.test.security;
 import junit.framework.Assert;
 import org.geomajas.command.CommandDispatcher;
 import org.geomajas.command.CommandResponse;
-import org.geomajas.global.ExceptionCode;
-import org.geomajas.global.GeomajasSecurityException;
 import org.geomajas.layer.bean.BeanLayer;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.plugin.springsecurity.command.dto.LoginRequest;
@@ -52,12 +50,10 @@ import java.util.List;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
 		"/org/geomajas/layer/bean/beanContext.xml", "/org/geomajas/layer/bean/layerBeans.xml",
-		"/org/geomajas/test/security/VectorLayerSecurityInvisibleLayer.xml"})
-public class VectorLayerServiceInvisibleLayerTest {
+		"/org/geomajas/test/security/VectorLayerSecurityFilter.xml"})
+public class VectorLayerServiceSecurityFilterTest {
 
 	private static final String LAYER_ID = "beans";
-	private static final String STRING_ATTR = "stringAttr";
-	private static final double ALLOWANCE = .00000001;
 
 	@Autowired
 	private VectorLayerService layerService;
@@ -84,21 +80,19 @@ public class VectorLayerServiceInvisibleLayerTest {
 	}
 
 	@Test
-	public void testGetFeaturesInvisibleLayer() throws Exception {
-		// verify features are accessible when layer is visible
+	public void testGetFeaturesSecurityFilter() throws Exception {
+		List<InternalFeature> features;
+
+		// check expected result when no filtering
 		login("luc");
-		List<InternalFeature> features = layerService.getFeatures(LAYER_ID,
+		features = layerService.getFeatures(LAYER_ID,
 				CRS.decode(beanLayer.getLayerInfo().getCrs()), null, null, VectorLayerService.FEATURE_INCLUDE_NONE);
 		Assert.assertEquals(3, features.size());
 
-		// verify features are not accessible when layer is invisible
+		// check expected result when filter is applied
 		login("marino");
-		try {
-			features = layerService.getFeatures(LAYER_ID,
-					CRS.decode(beanLayer.getLayerInfo().getCrs()), null, null, VectorLayerService.FEATURE_INCLUDE_NONE);
-			Assert.fail();
-		} catch (GeomajasSecurityException gse) {
-			Assert.assertEquals(ExceptionCode.LAYER_NOT_VISIBLE, gse.getExceptionCode());
-		}
+		features = layerService.getFeatures(LAYER_ID,
+				CRS.decode(beanLayer.getLayerInfo().getCrs()), null, null, VectorLayerService.FEATURE_INCLUDE_NONE);
+		Assert.assertEquals(1, features.size());
 	}
 }
