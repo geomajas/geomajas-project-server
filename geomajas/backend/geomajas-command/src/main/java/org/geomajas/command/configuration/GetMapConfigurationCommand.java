@@ -27,10 +27,22 @@ import org.geomajas.command.Command;
 import org.geomajas.command.dto.GetMapConfigurationRequest;
 import org.geomajas.command.dto.GetMapConfigurationResponse;
 import org.geomajas.configuration.client.ClientApplicationInfo;
+import org.geomajas.configuration.client.ClientLayerInfo;
+import org.geomajas.configuration.client.ClientLayerTreeInfo;
+import org.geomajas.configuration.client.ClientLayerTreeNodeInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
+import org.geomajas.configuration.client.ClientToolInfo;
+import org.geomajas.configuration.client.ClientToolbarInfo;
+import org.geomajas.configuration.client.ClientVectorLayerInfo;
+import org.geomajas.global.ExceptionCode;
+import org.geomajas.global.GeomajasException;
+import org.geomajas.security.SecurityContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This command fetches, and returns the initial application configuration for a specific MapWidget.
@@ -43,22 +55,146 @@ public class GetMapConfigurationCommand implements Command<GetMapConfigurationRe
 	@Autowired
 	private ApplicationContext context;
 
+	@Autowired
+	private SecurityContext securityContext;
+
 	public GetMapConfigurationResponse getEmptyCommandResponse() {
 		return new GetMapConfigurationResponse();
 	}
 
 	public void execute(GetMapConfigurationRequest request, GetMapConfigurationResponse response) throws Exception {
-		// @todo security, data should be filtered
-		ClientApplicationInfo client = context.getBean(request.getApplicationId(), ClientApplicationInfo.class);
-		for (ClientMapInfo map : client.getMaps()) {
-			if (request.getMapId().equals(map.getId())) {
-				// clone it before modifying !
-				ClientMapInfo clone = (ClientMapInfo) SerializationUtils.clone(map);
-				// @todo security, data should be filtered
-				// ((ClientVectorLayerInfo)map.getLayers().get(0)).setCreatable(true);
-				response.setMapInfo(clone);
+		if (null == request.getApplicationId()) {
+			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "applicationId");
+		}
+		String mapId = request.getMapId();
+		if (null == mapId) {
+			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "mapId");
+		}
+
+		ClientApplicationInfo application = context.getBean(request.getApplicationId(), ClientApplicationInfo.class);
+		for (ClientMapInfo map : application.getMaps()) {
+			if (mapId.equals(map.getId())) {
+				response.setMapInfo(securityClone(map));
 			}
 		}
 	}
 
+	public ClientMapInfo securityClone(ClientMapInfo original) {
+		// the data is explicitly copied as this assures the security is considered when copying.
+		if (null == original) {
+			return null;
+		}
+		ClientMapInfo client = new ClientMapInfo();
+		client.setBackgroundColor(original.getBackgroundColor());
+		client.setCrs(original.getCrs());
+		client.setDisplayUnitType(original.getDisplayUnitType());
+		client.setId(original.getId());
+		client.setInitialBounds(original.getInitialBounds());
+		List<ClientLayerInfo> layers = new ArrayList<ClientLayerInfo>();
+		client.setLayers(layers);
+		for (ClientLayerInfo layer : original.getLayers()) {
+			ClientLayerInfo clientLayer = securityClone(layer);
+			if (null != clientLayer) {
+				layers.add(clientLayer);
+			}
+		}
+		client.setLayerTree(securityClone(original.getLayerTree()));
+		client.setLineSelectStyle(original.getLineSelectStyle());
+		client.setMaxBounds(original.getMaxBounds());
+		client.setMaximumScale(original.getMaximumScale());
+		client.setPanButtonsEnabled(original.isPanButtonsEnabled());
+		client.setPixelLength(original.getPixelLength());
+		client.setPointSelectStyle(original.getPointSelectStyle());
+		client.setPolygonSelectStyle(original.getPolygonSelectStyle());
+		client.setPrecision(original.getPrecision());
+		client.setResolutions(original.getResolutions());
+		client.setResolutionsRelative(original.isResolutionsRelative());
+		client.setScaleBarEnabled(original.isScaleBarEnabled());
+		client.setToolbar(securityClone(original.getToolbar()));
+		client.setUnitLength(original.getUnitLength());
+		return client;
+	}
+
+	public ClientLayerInfo securityClone(ClientLayerInfo original) {
+		// the data is explicitly copied as this assures the security is considered when copying.
+		if (null == original) {
+			return null;
+		}
+		ClientLayerInfo client = null;
+		String layerId = original.getId();
+		if (securityContext.isLayerVisible(layerId)) {
+			client = (ClientLayerInfo) SerializationUtils.clone(original);
+			if (client instanceof ClientVectorLayerInfo) {
+				ClientVectorLayerInfo vectorLayer = (ClientVectorLayerInfo) client;
+				vectorLayer.setCreatable(securityContext.isLayerCreateAuthorized(layerId));
+				vectorLayer.setUpdatable(securityContext.isLayerUpdateAuthorized(layerId));
+				vectorLayer.setDeletable(securityContext.isLayerDeleteAuthorized(layerId));
+			}
+		}
+		return client;
+	}
+
+	public ClientLayerTreeInfo securityClone(ClientLayerTreeInfo original) {
+		if (null == original) {
+			return null;
+		}
+		// the data is explicitly copied as this assures the security is considered when copying.
+		ClientLayerTreeInfo client = new ClientLayerTreeInfo();
+		client.setId(original.getId());
+		client.setTools(securityClone(original.getTools()));
+		client.setTreeNode(securityClone(original.getTreeNode()));
+		return client;
+	}
+
+	public ClientLayerTreeNodeInfo securityClone(ClientLayerTreeNodeInfo original) {
+		if (null == original) {
+			return null;
+		}
+		ClientLayerTreeNodeInfo client = new ClientLayerTreeNodeInfo();
+		client.setLabel(original.getLabel());
+		List<ClientLayerInfo> layers = new ArrayList<ClientLayerInfo>();
+		client.setLayers(layers);
+		for (ClientLayerInfo layer : original.getLayers()) {
+			ClientLayerInfo copy = securityClone(layer);
+			if (null != copy) {
+				layers.add(copy);
+			}
+		}
+		List<ClientLayerTreeNodeInfo> nodes = new ArrayList<ClientLayerTreeNodeInfo>();
+		client.setTreeNodes(nodes);
+		for (ClientLayerTreeNodeInfo node : original.getTreeNodes()) {
+			ClientLayerTreeNodeInfo copy = securityClone(node);
+			if (null != copy) {
+				nodes.add(copy);
+			}
+		}
+		if (layers.size() > 0 && nodes.size() > 0) {
+			return client;
+		}
+		return null;
+	}
+
+	public ClientToolbarInfo securityClone(ClientToolbarInfo original) {
+		// the data is explicitly copied as this assures the security is considered when copying.
+		if (null == original) {
+			return null;
+		}
+		ClientToolbarInfo client = new ClientToolbarInfo();
+		client.setId(original.getId());
+		client.setTools(securityClone(original.getTools()));
+		return original;
+	}
+
+	public List<ClientToolInfo> securityClone(List<ClientToolInfo> original) {
+		if (null == original) {
+			return null;
+		}
+		List<ClientToolInfo> tools = new ArrayList<ClientToolInfo>();
+		for (ClientToolInfo tool : original) {
+			if (securityContext.isToolAuthorized(tool.getId())) {
+				tools.add(tool);
+			}
+		}
+		return tools;
+	}
 }

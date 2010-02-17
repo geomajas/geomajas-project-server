@@ -22,14 +22,19 @@
  */
 package org.geomajas.command.configuration;
 
-import org.apache.commons.lang.SerializationUtils;
 import org.geomajas.command.Command;
 import org.geomajas.command.dto.GetConfigurationRequest;
 import org.geomajas.command.dto.GetConfigurationResponse;
 import org.geomajas.configuration.client.ClientApplicationInfo;
+import org.geomajas.configuration.client.ClientMapInfo;
+import org.geomajas.global.ExceptionCode;
+import org.geomajas.global.GeomajasException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This command fetches, and returns the initial application configuration for the user. This is typically the first
@@ -43,17 +48,28 @@ public class GetConfigurationCommand implements Command<GetConfigurationRequest,
 	@Autowired
 	private ApplicationContext context;
 
+	@Autowired
+	private GetMapConfigurationCommand mapConfigurationCommand;
+
 	public GetConfigurationResponse getEmptyCommandResponse() {
 		return new GetConfigurationResponse();
 	}
 
 	public void execute(GetConfigurationRequest request, GetConfigurationResponse response) throws Exception {
-		ClientApplicationInfo client = context.getBean(request.getApplicationId(), ClientApplicationInfo.class);
-		// clone it before modifying
-		ClientApplicationInfo clone = (ClientApplicationInfo) SerializationUtils.clone(client);
-		// @todo security, data should be filtered
-		// ((ClientVectorLayerInfo)clone.getMaps().get(0).getLayers().get(0)).setCreatable(true);
-		response.setApplication(clone);
-	}
+		if (null == request.getApplicationId()) {
+			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "applicationId");
+		}
 
+		// the data is explicitly copied as this assures the security is considered when copying.
+		ClientApplicationInfo original = context.getBean(request.getApplicationId(), ClientApplicationInfo.class);
+		ClientApplicationInfo client = new ClientApplicationInfo();
+		client.setId(original.getId());
+		client.setScreenDpi(original.getScreenDpi());
+		List<ClientMapInfo> maps = new ArrayList<ClientMapInfo>();
+		client.setMaps(maps);
+		for (ClientMapInfo map : original.getMaps()) {
+			maps.add(mapConfigurationCommand.securityClone(map));
+		}
+		response.setApplication(client);
+	}
 }
