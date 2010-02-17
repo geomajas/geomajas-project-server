@@ -55,7 +55,10 @@ public class PrepareScanningContextListener implements ServletContextListener {
 			}
 		}
 		ClassLoader cl = Thread.currentThread().getContextClassLoader();
-		Thread.currentThread().setContextClassLoader(new ClassLoaderWrapper(cl, ClassLoader.getSystemClassLoader()));
+		if (cl instanceof URLClassLoader) {
+			Thread.currentThread().setContextClassLoader(
+					new ClassLoaderWrapper((URLClassLoader) cl, ClassLoader.getSystemClassLoader()));
+		}
 	}
 
 	public void contextDestroyed(ServletContextEvent sce) {
@@ -65,14 +68,14 @@ public class PrepareScanningContextListener implements ServletContextListener {
 	 * A class loader with a parent for Geotools.
 	 * 
 	 * @author Jan De Moerloose
-	 *
+	 * 
 	 */
 	public class ClassLoaderWrapper extends URLClassLoader {
 
 		private URLClassLoader delegate;
 
-		public ClassLoaderWrapper(ClassLoader delegate, ClassLoader parent) {
-			super(((URLClassLoader) delegate).getURLs(), parent);
+		public ClassLoaderWrapper(URLClassLoader delegate, ClassLoader parent) {
+			super(delegate.getURLs(), parent);
 			this.delegate = (URLClassLoader) delegate;
 		}
 
