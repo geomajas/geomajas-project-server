@@ -21,42 +21,42 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.gwt.client.samples;
+package org.geomajas.gwt.client.samples.security;
 
-import org.geomajas.gwt.client.controller.PanController;
+import org.geomajas.command.CommandResponse;
+import org.geomajas.command.dto.GetMapConfigurationRequest;
+import org.geomajas.gwt.client.command.CommandCallback;
+import org.geomajas.gwt.client.command.GwtCommand;
+import org.geomajas.gwt.client.command.GwtCommandDispatcher;
+import org.geomajas.gwt.client.samples.base.GetResourcesRequest;
 import org.geomajas.gwt.client.samples.base.SamplePanel;
 import org.geomajas.gwt.client.samples.base.SamplePanelFactory;
 import org.geomajas.gwt.client.samples.i18n.I18nProvider;
-import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.plugin.springsecurity.client.Authentication;
 
-import com.smartgwt.client.util.BooleanCallback;
+import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
-import com.smartgwt.client.widgets.events.DrawEvent;
-import com.smartgwt.client.widgets.events.DrawHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
  * <p>
- * Sample that tests security on layer level.
+ * Sample that tests security on command level.
  * </p>
  * 
  * @author Pieter De Graef
  */
-public class LayerSecuritySample extends SamplePanel {
+public class CommandSecuritySample extends SamplePanel {
 
-	public static final String LAYER_SECUTIRY_TITLE = "LayerSecurity";
-	
-	private MapWidget map;
+	public static final String TITLE = "CommandSecurity";
 
 	public static final SamplePanelFactory FACTORY = new SamplePanelFactory() {
 
 		public SamplePanel createPanel() {
-			return new LayerSecuritySample();
+			return new CommandSecuritySample();
 		}
 	};
 
@@ -71,35 +71,13 @@ public class LayerSecuritySample extends SamplePanel {
 		buttonLayout.setMembersMargin(10);
 		buttonLayout.setHeight(20);
 
-		// Map with ID duisburgMap is defined in the XML configuration. (mapDuisburg.xml)
-		map = new MapWidget("duisburgMap", "gwt-samples");
-		map.addDrawHandler(new DrawHandler() {
-
-			public void onDraw(DrawEvent event) {
-				map.initialize();
-			}
-		});
-
-		// Create login handler that re-initializes the map on a successful login:
-		final BooleanCallback initMapCallback = new BooleanCallback() {
-
-			public void execute(Boolean value) {
-				if (value) {
-					map.destroy();
-					map = new MapWidget("duisburgMap", "gwt-samples");
-					layout.addMember(map);
-					map.initialize();
-				}
-			}
-		};
-
-		// Create a button that logs in user "marino":
-		IButton loginButtonMarino = new IButton(I18nProvider.getSampleMessages().securityLogInWith("marino"));
+		// Create a button that logs in user "mark":
+		IButton loginButtonMarino = new IButton(I18nProvider.getSampleMessages().securityLogInWith("mark"));
 		loginButtonMarino.setWidth(150);
 		loginButtonMarino.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				Authentication.getInstance().login("marino", "marino", initMapCallback);
+				Authentication.getInstance().login("mark", "mark", null);
 			}
 		});
 		buttonLayout.addMember(loginButtonMarino);
@@ -110,21 +88,62 @@ public class LayerSecuritySample extends SamplePanel {
 		loginButtonLuc.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				Authentication.getInstance().login("luc", "luc", initMapCallback);
+				Authentication.getInstance().login("luc", "luc", null);
 			}
 		});
 		buttonLayout.addMember(loginButtonLuc);
 
-		// Set a panning controller on the map:
-		map.setController(new PanController(map));
+		// Create horizontal layout for login buttons:
+		HLayout commandLayout = new HLayout();
+		commandLayout.setMembersMargin(10);
+		commandLayout.setHeight(20);
+
+		// Create a button that calls the GetMapConfigurationCommand:
+		IButton getMapButton = new IButton("command.GetMap");
+		getMapButton.setWidth(150);
+		getMapButton.addClickHandler(new ClickHandler() {
+
+			public void onClick(ClickEvent event) {
+				GwtCommand commandRequest = new GwtCommand("command.configuration.GetMap");
+				commandRequest.setCommandRequest(new GetMapConfigurationRequest("osmMap", "gwt-samples"));
+				GwtCommandDispatcher.getInstance().execute(commandRequest, new CommandCallback() {
+
+					public void execute(CommandResponse response) {
+						SC.say("Command executed successfully");
+					}
+				});
+			}
+		});
+		commandLayout.addMember(getMapButton);
+
+		// Create a button that calls the GetMapConfigurationCommand:
+		IButton getResourcesButton = new IButton("command.GetResources");
+		getResourcesButton.setWidth(150);
+		getResourcesButton.addClickHandler(new ClickHandler() {
+
+			public void onClick(ClickEvent event) {
+				GetResourcesRequest request = new GetResourcesRequest(
+						new String[] { "/org/geomajas/gwt/samples/security/security.xml" });
+				GwtCommand command = new GwtCommand("gwt.server.samples.GetSourceCommand");
+				command.setCommandRequest(request);
+				GwtCommandDispatcher.getInstance().execute(command, new CommandCallback() {
+
+					public void execute(CommandResponse response) {
+						// User mark should never get here...
+						SC.say("Command executed successfully");
+					}
+				});
+			}
+		});
+		commandLayout.addMember(getResourcesButton);
 
 		layout.addMember(buttonLayout);
-		layout.addMember(map);
+		layout.addMember(commandLayout);
 		return layout;
 	}
 
 	public String getDescription() {
-		return I18nProvider.getSampleMessages().layerSecurityDescription();
+		return I18nProvider.getSampleMessages().commandSecurityDescription();
 	}
 
 	public String[] getConfigurationFiles() {

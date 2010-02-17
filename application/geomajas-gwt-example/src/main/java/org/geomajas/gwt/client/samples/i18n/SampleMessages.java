@@ -103,4 +103,10 @@ public interface SampleMessages extends Messages {
 	String commandSecurityTitle();
 
 	String commandSecurityDescription();
+
+	// ToolSecurity sample:
+
+	String toolSecurityTitle();
+
+	String toolSecurityDescription();
 }

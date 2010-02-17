@@ -12,6 +12,7 @@
 			org/geomajas/gwt/samples/mapwidget/mapWms.xml
 			org/geomajas/gwt/samples/mapwidget/layerWmsBluemarble.xml
 			org/geomajas/gwt/samples/security/security.xml
+			org/geomajas/gwt/samples/security/mapWmsToolbar.xml
 			org/geomajas/gwt/samples/shapeinmem/mapDuisburg.xml
 			org/geomajas/gwt/samples/shapeinmem/layerRoads.xml
 			org/geomajas/gwt/samples/shapeinmem/layerStructures.xml

@@ -21,7 +21,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.gwt.client.samples;
+package org.geomajas.gwt.client.samples.security;
 
 import org.geomajas.gwt.client.controller.PanController;
 import org.geomajas.gwt.client.samples.base.SamplePanel;
@@ -42,21 +42,21 @@ import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
  * <p>
- * Sample that tests security on feature level.
+ * Sample that tests security on layer level.
  * </p>
  * 
  * @author Pieter De Graef
  */
-public class FeatureSecuritySample extends SamplePanel {
+public class LayerSecuritySample extends SamplePanel {
 
-	public static final String FEATURE_SECUTIRY_TITLE = "FeatureSecurity";
+	public static final String LAYER_SECUTIRY_TITLE = "LayerSecurity";
 	
 	private MapWidget map;
 
 	public static final SamplePanelFactory FACTORY = new SamplePanelFactory() {
 
 		public SamplePanel createPanel() {
-			return new FeatureSecuritySample();
+			return new LayerSecuritySample();
 		}
 	};
 
@@ -124,7 +124,7 @@ public class FeatureSecuritySample extends SamplePanel {
 	}
 
 	public String getDescription() {
-		return I18nProvider.getSampleMessages().featureSecurityDescription();
+		return I18nProvider.getSampleMessages().layerSecurityDescription();
 	}
 
 	public String[] getConfigurationFiles() {
@@ -132,6 +132,6 @@ public class FeatureSecuritySample extends SamplePanel {
 	}
 
 	public String ensureUserLoggedIn() {
-		return null;
+		return "luc";
 	}
 }

@@ -21,16 +21,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.gwt.client.samples.base;
+package org.geomajas.gwt.client.samples;
 
-import org.geomajas.gwt.client.samples.CommandSecuritySample;
-import org.geomajas.gwt.client.samples.FeatureSecuritySample;
-import org.geomajas.gwt.client.samples.LayerSecuritySample;
-import org.geomajas.gwt.client.samples.LoginSample;
-import org.geomajas.gwt.client.samples.NavigationSample;
-import org.geomajas.gwt.client.samples.OpenStreetMapSample;
-import org.geomajas.gwt.client.samples.WmsSample;
+import org.geomajas.gwt.client.samples.base.SampleTreeNode;
 import org.geomajas.gwt.client.samples.i18n.I18nProvider;
+import org.geomajas.gwt.client.samples.mapwidget.NavigationSample;
+import org.geomajas.gwt.client.samples.mapwidget.OpenStreetMapSample;
+import org.geomajas.gwt.client.samples.mapwidget.WmsSample;
+import org.geomajas.gwt.client.samples.security.CommandSecuritySample;
+import org.geomajas.gwt.client.samples.security.FeatureSecuritySample;
+import org.geomajas.gwt.client.samples.security.LayerSecuritySample;
+import org.geomajas.gwt.client.samples.security.LoginSample;
+import org.geomajas.gwt.client.samples.security.ToolSecuritySample;
 
 /**
  * <p>
@@ -67,6 +69,9 @@ public final class SampleArray {
 						FeatureSecuritySample.FEATURE_SECUTIRY_TITLE, "Security", FeatureSecuritySample.FACTORY),
 				new SampleTreeNode(I18nProvider.getSampleMessages().commandSecurityTitle(),
 						"[ISOMORPHIC]/geomajas/springsecurity/key_go.png", CommandSecuritySample.TITLE, "Security",
-						CommandSecuritySample.FACTORY) };
+						CommandSecuritySample.FACTORY),
+				new SampleTreeNode(I18nProvider.getSampleMessages().toolSecurityTitle(),
+						"[ISOMORPHIC]/geomajas/springsecurity/key_go.png", ToolSecuritySample.TITLE, "Security",
+						ToolSecuritySample.FACTORY) };
 	}
 }

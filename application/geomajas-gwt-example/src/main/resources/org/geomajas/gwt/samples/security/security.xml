@@ -33,7 +33,7 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 	<bean name="SecurityService" class="org.geomajas.plugin.springsecurity.security.SpringSecurityService"/>
 	
 	<bean name="security.securityInfo" class="org.geomajas.security.SecurityInfo">
-		<property name="loopAllServices" value="false"/>
+		<property name="loopAllServices" value="true"/>
 		<property name="securityServices">
 			<list>
 				<ref bean="SecurityService"/>
@@ -118,6 +118,21 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 								<property name="allowedCommands">
 									<list>
 										<value>command.configuration.GetMap</value>
+										<value>command.render.GetRasterData</value>
+									</list>
+								</property>
+								<property name="allowedTools">
+									<list>
+										<value>ZoomIn</value>
+										<value>ZoomOut</value>
+										<value>ZoomToRectangleMode</value>
+										<value>PanMode</value>
+										<value>ToolbarSeparator</value>
+									</list>
+								</property>
+								<property name="visibleLayers">
+									<list>
+										<value>*</value>
 									</list>
 								</property>
 							</bean>

@@ -21,7 +21,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.gwt.client.samples;
+package org.geomajas.gwt.client.samples.mapwidget;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.controller.PanController;

@@ -24,6 +24,7 @@
 package org.geomajas.gwt.client.samples.base;
 
 import org.geomajas.gwt.client.Geomajas;
+import org.geomajas.gwt.client.samples.SampleArray;
 import org.geomajas.gwt.client.samples.i18n.I18nProvider;
 
 import com.smartgwt.client.types.SortArrow;

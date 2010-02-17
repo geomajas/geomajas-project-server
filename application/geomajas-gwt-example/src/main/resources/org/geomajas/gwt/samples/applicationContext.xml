@@ -33,6 +33,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 				<ref bean="osmMap" />
 				<ref bean="wmsMap" />
 				<ref bean="duisburgMap" />
+				<ref bean="wmsToolbarMap" />
 			</list>
 		</property>
 	</bean>

@@ -21,7 +21,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.gwt.client.samples;
+package org.geomajas.gwt.client.samples.mapwidget;
 
 import org.geomajas.gwt.client.controller.PanController;
 import org.geomajas.gwt.client.samples.base.SamplePanel;
@@ -36,19 +36,19 @@ import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
  * <p>
- * Sample that shows a map with a WMS layer.
+ * Sample that shows a map with an OpenStreetMap layer.
  * </p>
  * 
  * @author Pieter De Graef
  */
-public class WmsSample extends SamplePanel {
+public class OpenStreetMapSample extends SamplePanel {
 
-	public static final String WMS_TITLE = "WMS";
+	public static final String OSM_TITLE = "OSM";
 
 	public static final SamplePanelFactory FACTORY = new SamplePanelFactory() {
 
 		public SamplePanel createPanel() {
-			return new WmsSample();
+			return new OpenStreetMapSample();
 		}
 	};
 
@@ -57,8 +57,8 @@ public class WmsSample extends SamplePanel {
 		layout.setWidth100();
 		layout.setHeight100();
 
-		// Map with ID wmsMap is defined in the XML configuration. (mapWms.xml)
-		final MapWidget map = new MapWidget("wmsMap", "gwt-samples");
+		// Map with ID osmMap is defined in the XML configuration. (mapOsm.xml)
+		final MapWidget map = new MapWidget("osmMap", "gwt-samples");
 		map.addDrawHandler(new DrawHandler() {
 
 			public void onDraw(DrawEvent event) {
@@ -74,12 +74,12 @@ public class WmsSample extends SamplePanel {
 	}
 
 	public String getDescription() {
-		return I18nProvider.getSampleMessages().wmsDescription();
+		return I18nProvider.getSampleMessages().osmDescription();
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "/org/geomajas/gwt/samples/mapwidget/layerWmsBluemarble.xml",
-				"/org/geomajas/gwt/samples/mapwidget/mapWms.xml" };
+		return new String[] { "/org/geomajas/gwt/samples/mapwidget/layerOsm.xml",
+				"/org/geomajas/gwt/samples/mapwidget/mapOsm.xml" };
 	}
 
 	public String ensureUserLoggedIn() {
