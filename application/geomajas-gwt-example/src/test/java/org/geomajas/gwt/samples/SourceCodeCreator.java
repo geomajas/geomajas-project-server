@@ -52,29 +52,44 @@ public class SourceCodeCreator {
 	public void createSampleSourceCode() {
 		File folder = new File(SAMPLE_FOLDER);
 		for (File file : folder.listFiles()) {
-			if (!file.isDirectory() && file.getName().endsWith(".java")) {
-				try {
-					// Get the Java source:
-					String javaContent = new String(read(new FileInputStream(file)));
-					int position = javaContent.indexOf(SEARCH_STRING);
-					String blop = javaContent.substring(position);
-					position = blop.indexOf("\n\t}");
-					blop = blop.substring(0, position + 3);
-
-					// Create or overwrite the HTML file:
-					String fileName = file.getName().substring(0, file.getName().length() - 4) + "txt";
-					File htmlFile = new File(DESTINATION_FOLDER + fileName);
-					FileOutputStream out = new FileOutputStream(htmlFile);
-					out.write(blop.getBytes());
-					out.flush();
-					out.close();
-				} catch (FileNotFoundException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+			if (file.isDirectory()) {
+				scanFolder(file);
 			}
 		}
+	}
+	
+	private void scanFolder (File folder) {
+		for (File file : folder.listFiles()) {
+			if (!file.isDirectory() && file.getName().endsWith(".java")) {
+				createFile(file, DESTINATION_FOLDER + folder.getName() + "/");
+			}
+		}
+	}
+	
+	private void createFile(File file, String folder){
+		try {
+			// Get the Java source:
+			String javaContent = new String(read(new FileInputStream(file)));
+			int position = javaContent.indexOf(SEARCH_STRING);
+			if (position > 0) {
+				String blop = javaContent.substring(position);
+				position = blop.indexOf("\n\t}");
+				blop = blop.substring(0, position + 3);
+
+				// Create or overwrite the HTML file:
+				String fileName = file.getName().substring(0, file.getName().length() - 4) + "txt";
+				File htmlFile = new File(folder + fileName);
+				FileOutputStream out = new FileOutputStream(htmlFile);
+				out.write(blop.getBytes());
+				out.flush();
+				out.close();
+			}
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 	}
 
 	private byte[] read(InputStream in) throws IOException {

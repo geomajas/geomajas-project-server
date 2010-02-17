@@ -1,0 +1,69 @@
+	public Canvas getViewPanel() {
+		final VLayout layout = new VLayout();
+		layout.setWidth100();
+		layout.setHeight100();
+
+		// Create horizontal layout for login buttons:
+		HLayout buttonLayout = new HLayout();
+		buttonLayout.setMembersMargin(10);
+		buttonLayout.setHeight(30);
+
+		
+		// Map with ID wmsToolbarMap is defined in the XML configuration. (mapWmsToolbar.xml)
+		map = new MapWidget("wmsToolbarMap", "gwt-samples");
+		toolbar = new Toolbar(map);
+		map.addDrawHandler(new DrawHandler() {
+
+			public void onDraw(DrawEvent event) {
+				map.initialize();
+			}
+		});
+
+		// Create login handler that re-initializes the map on a successful login:
+		final BooleanCallback initMapCallback = new BooleanCallback() {
+
+			public void execute(Boolean value) {
+				if (value) {
+					toolbar.destroy();
+					map.destroy();
+					map = new MapWidget("wmsToolbarMap", "gwt-samples");
+					toolbar = new Toolbar(map);
+					layout.addMember(toolbar);
+					layout.addMember(map);
+					map.initialize();
+				}
+			}
+		};
+
+		// Create a button that logs in user "mark":
+		IButton loginButtonMarino = new IButton(I18nProvider.getSampleMessages().securityLogInWith("mark"));
+		loginButtonMarino.setWidth(150);
+		loginButtonMarino.addClickHandler(new ClickHandler() {
+
+			public void onClick(ClickEvent event) {
+				Authentication.getInstance().login("mark", "mark", initMapCallback);
+			}
+		});
+		buttonLayout.addMember(loginButtonMarino);
+
+		// Create a button that logs in user "luc":
+		IButton loginButtonLuc = new IButton(I18nProvider.getSampleMessages().securityLogInWith("luc"));
+		loginButtonLuc.setWidth(150);
+		loginButtonLuc.addClickHandler(new ClickHandler() {
+
+			public void onClick(ClickEvent event) {
+				Authentication.getInstance().login("luc", "luc", initMapCallback);
+			}
+		});
+		buttonLayout.addMember(loginButtonLuc);
+		
+
+		layout.addMember(buttonLayout);
+		
+		VLayout mapLayout = new VLayout();
+		mapLayout.setShowEdges(true);
+		mapLayout.addMember(toolbar);
+		mapLayout.addMember(map);
+		layout.addMember(mapLayout);
+		return layout;
+	}

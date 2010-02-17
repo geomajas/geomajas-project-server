@@ -9,7 +9,7 @@
 		buttonLayout.setMembersMargin(10);
 		buttonLayout.setHeight(20);
 
-		// Create a button that logs in user "marino":
+		// Create a button that logs in user "mark":
 		IButton loginButtonMarino = new IButton(I18nProvider.getSampleMessages().securityLogInWith("mark"));
 		loginButtonMarino.setWidth(150);
 		loginButtonMarino.addClickHandler(new ClickHandler() {
