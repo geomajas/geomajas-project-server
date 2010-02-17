@@ -24,7 +24,6 @@ package org.geomajas.command.dto;
 
 import org.geomajas.command.LayerIdCommandRequest;
 import org.geomajas.layer.feature.SearchCriterion;
-import org.geomajas.service.VectorLayerService;
 
 /**
  * Request object for {@link org.geomajas.command.feature.SearchFeatureCommand}.
@@ -47,7 +46,7 @@ public class SearchFeatureRequest extends LayerIdCommandRequest {
 
 	private String crs;
 
-	private int featureInclude = VectorLayerService.FEATURE_INCLUDE_ALL;
+	private int featureInclude = 0x7fff;
 
 	public SearchFeatureRequest() {
 	}

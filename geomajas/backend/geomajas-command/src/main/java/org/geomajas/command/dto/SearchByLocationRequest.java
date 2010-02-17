@@ -24,7 +24,6 @@ package org.geomajas.command.dto;
 
 import org.geomajas.command.CommandRequest;
 import org.geomajas.geometry.Geometry;
-import org.geomajas.service.VectorLayerService;
 
 /**
  * Request object for {@link org.geomajas.command.feature.SearchByLocationCommand}.
@@ -109,7 +108,7 @@ public class SearchByLocationRequest implements CommandRequest {
 	 */
 	private double buffer = -1;
 
-	private int featureInclude = VectorLayerService.FEATURE_INCLUDE_ALL;
+	private int featureInclude = 0x7fff;
 
 	// -------------------------------------------------------------------------
 	// Constructors:
