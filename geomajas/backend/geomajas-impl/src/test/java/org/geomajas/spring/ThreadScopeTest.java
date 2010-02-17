@@ -26,6 +26,7 @@ package org.geomajas.spring;
 import junit.framework.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.aop.scope.ScopedObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
@@ -33,15 +34,17 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  * Test to verify that thread scoped beans work properly.
- *
+ * 
  * @author Joachim Van der Auwera
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml", "/org/geomajas/spring/moreContext.xml"})
+@ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml", "/org/geomajas/spring/moreContext.xml" })
 public class ThreadScopeTest {
 
 	private static final String VALUE_FIRST = "first";
+
 	private static final String VALUE_OTHER = "other";
+
 	private static final String BEAN_NAME = "spring.ThreadedService";
 
 	@Autowired
@@ -60,24 +63,25 @@ public class ThreadScopeTest {
 		ThreadedService ts = applicationContext.getBean(BEAN_NAME, ThreadedService.class);
 		Assert.assertEquals(VALUE_FIRST, ts.getValue());
 
-		Thread thread = new Thread(new Runnable(){
+		Thread thread = new Thread(new Runnable() {
+
 			public void run() {
-				ThreadedService ts = applicationContext.getBean(BEAN_NAME, ThreadedService.class);
-				Assert.assertNull(ts.getValue());
-				ts.setValue(VALUE_OTHER);
-				ts = applicationContext.getBean(BEAN_NAME, ThreadedService.class);
-				Assert.assertEquals(VALUE_OTHER, ts.getValue());
-				//To change body of implemented methods use File | Settings | File Templates.
+				// we are in the thread, now create the autowired class and test:
+				testInOtherThread();
 			}
 		});
 		thread.start();
 		thread.join();
 
 		// now verify that we can clear the thread data
-		ts = applicationContext.getBean(BEAN_NAME, ThreadedService.class);
-		Assert.assertEquals(VALUE_FIRST, ts.getValue());
-		ThreadScopeContextHolder.getContext().remove(BEAN_NAME);
-		ts = applicationContext.getBean(BEAN_NAME, ThreadedService.class);
-		Assert.assertNull(ts.getValue());
+		Assert.assertEquals(VALUE_FIRST, threadedService.getValue());
+		((ScopedObject)threadedService).removeFromScope();
+		Assert.assertNull(threadedService.getValue());
+	}
+
+	private void testInOtherThread() {
+		Assert.assertNull(threadedService.getValue());
+		threadedService.setValue(VALUE_OTHER);
+		Assert.assertEquals(VALUE_OTHER, threadedService.getValue());
 	}
 }

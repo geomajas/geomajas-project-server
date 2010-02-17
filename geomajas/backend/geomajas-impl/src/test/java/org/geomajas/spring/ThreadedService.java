@@ -24,6 +24,7 @@
 package org.geomajas.spring;
 
 import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 
 /**
@@ -32,7 +33,7 @@ import org.springframework.stereotype.Component;
  * @author Joachim Van der Auwera
  */
 @Component
-@Scope("thread")
+@Scope(value = "thread", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class ThreadedService {
 
 	private String value;

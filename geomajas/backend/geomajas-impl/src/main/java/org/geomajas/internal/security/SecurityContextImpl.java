@@ -46,6 +46,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -64,7 +65,7 @@ import java.util.Map;
  * @author Joachim Van der Auwera
  */
 @Component
-@Scope("thread")
+@Scope(value = "thread", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class SecurityContextImpl implements SecurityContext {
 
 	private Logger log = LoggerFactory.getLogger(SecurityManagerImpl.class);
