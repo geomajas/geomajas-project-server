@@ -29,7 +29,6 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
-import org.geotools.factory.CommonFactoryFinder;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 /**
@@ -66,10 +65,6 @@ public class GeomajasContextListener implements ServletContextListener {
 				allContextLocations.add(st.nextToken());
 			}
 		}
-		ClassLoader old = Thread.currentThread().getContextClassLoader();
-		Thread.currentThread().setContextClassLoader(ClassLoader.getSystemClassLoader());
-		CommonFactoryFinder.scanForPlugins();
-		Thread.currentThread().setContextClassLoader(old);
 		
 		ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext();
 		applicationContext.setConfigLocations(allContextLocations.toArray((new String[allContextLocations.size()])));
