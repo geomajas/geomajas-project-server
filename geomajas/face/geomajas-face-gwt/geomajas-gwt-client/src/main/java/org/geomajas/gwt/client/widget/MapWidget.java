@@ -140,7 +140,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	private boolean resizedHandlerDisabled;
 
 	private Menu defaultMenu;
-	
+
 	protected String applicationId;
 
 	// -------------------------------------------------------------------------

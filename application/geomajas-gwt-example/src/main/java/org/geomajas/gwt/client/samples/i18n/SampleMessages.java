@@ -47,14 +47,28 @@ public interface SampleMessages extends Messages {
 	String generalFile();
 
 	String generalDescription();
-	
+
 	String treeGroupSecurity();
+
+	String introductionTitle();
 
 	// OpenStreetMap sample:
 
 	String osmTitle();
 
 	String osmDescription();
+
+	// WMS sample:
+
+	String wmsTitle();
+
+	String wmsDescription();
+
+	// Navigation sample:
+
+	String navigationTitle();
+
+	String navigationDescription();
 
 	// Login sample:
 
@@ -69,4 +83,24 @@ public interface SampleMessages extends Messages {
 	String logoutSuccess();
 
 	String logoutFailure();
+
+	// LayerSecurity sample:
+
+	String layerSecurityTitle();
+
+	String layerSecurityDescription();
+
+	String securityLogInWith(String name);
+
+	// FeatureSecurity sample:
+
+	String featureSecurityTitle();
+
+	String featureSecurityDescription();
+
+	// CommandSecurity sample:
+
+	String commandSecurityTitle();
+
+	String commandSecurityDescription();
 }

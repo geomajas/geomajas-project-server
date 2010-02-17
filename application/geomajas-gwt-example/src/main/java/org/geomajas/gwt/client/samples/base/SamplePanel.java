@@ -35,6 +35,7 @@ import org.geomajas.gwt.client.widget.MapWidget;
 
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.ContentsType;
+import com.smartgwt.client.types.HeaderControls;
 import com.smartgwt.client.types.Side;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.HTMLPane;
@@ -57,13 +58,7 @@ import com.smartgwt.client.widgets.tab.TabSet;
  */
 public abstract class SamplePanel extends VLayout {
 
-	protected String id;
-
-	protected String title;
-
-	protected String icon;
-
-	protected MapWidget map;
+	private MapWidget map;
 
 	private IButton sourceButton;
 
@@ -84,10 +79,7 @@ public abstract class SamplePanel extends VLayout {
 	 * @param icon
 	 *            The sample's icon (used in the tree and the tab-title)
 	 */
-	protected SamplePanel(String id, String title, String icon) {
-		this.id = id;
-		this.title = title;
-		this.icon = icon;
+	protected SamplePanel() {
 		setWidth100();
 		setHeight100();
 		setMembersMargin(10);
@@ -97,8 +89,8 @@ public abstract class SamplePanel extends VLayout {
 		hLayout.setWidth100();
 		hLayout.addMember(getViewPanel());
 
-		String intro = getDescription();
-		if (intro != null) {
+		String description = getDescription();
+		if (description != null) {
 			VLayout rightLayout = new VLayout();
 			rightLayout.setMembersMargin(15);
 
@@ -115,24 +107,24 @@ public abstract class SamplePanel extends VLayout {
 			});
 			rightLayout.addMember(sourceButton);
 
-			Window introWindow = new Window();
-			introWindow.setTitle(I18nProvider.getSampleMessages().generalDescription());
-			introWindow.setHeaderIcon("/images/geomajas_favicon.jpg", 16, 16);
-			introWindow.setShowEdges(true);
-			introWindow.setKeepInParentRect(true);
+			Window descriptionWindow = new Window();
+			descriptionWindow.setTitle(I18nProvider.getSampleMessages().generalDescription());
+			descriptionWindow.setHeaderIcon("/images/geomajas_favicon.jpg", 16, 16);
+			descriptionWindow.setShowEdges(true);
+			descriptionWindow.setKeepInParentRect(true);
+			descriptionWindow.setHeaderControls(HeaderControls.HEADER_ICON, HeaderControls.HEADER_LABEL);
 
-			String introContents = "<p>" + intro + "</p>";
 			Canvas contents = new Canvas();
 			contents.setCanSelectText(true);
-			contents.setPadding(10);
-			contents.setContents(introContents);
+			contents.setPadding(5);
+			contents.setContents(description);
 			contents.setDefaultWidth(200);
 
-			introWindow.setAutoSize(true);
-			introWindow.setAutoHeight();
-			introWindow.addItem(contents);
+			descriptionWindow.setAutoSize(true);
+			descriptionWindow.setAutoHeight();
+			descriptionWindow.addItem(contents);
 
-			rightLayout.addMember(introWindow);
+			rightLayout.addMember(descriptionWindow);
 			hLayout.addMember(rightLayout);
 		}
 
@@ -151,6 +143,9 @@ public abstract class SamplePanel extends VLayout {
 	public abstract String getDescription();
 
 	public abstract String[] getConfigurationFiles();
+	
+	/** If a user must be logged in before the sample can be shown, return his name here. */
+	public abstract String ensureUserLoggedIn();
 
 	/**
 	 * For automatic initialization, you can register a single map here.
@@ -175,14 +170,6 @@ public abstract class SamplePanel extends VLayout {
 
 	public String getId() {
 		return id;
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public String getIcon() {
-		return icon;
 	}
 
 	// -------------------------------------------------------------------------

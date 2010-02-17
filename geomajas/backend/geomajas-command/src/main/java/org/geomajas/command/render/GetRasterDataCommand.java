@@ -81,7 +81,7 @@ public class GetRasterDataCommand implements Command<GetRasterDataRequest, GetRa
 			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "crs");
 		}
 		if (!securityContext.isLayerVisible(layerId)) {
-			throw new GeomajasSecurityException(ExceptionCode.LAYER_NOT_VISIBLE, layerId);
+			throw new GeomajasSecurityException(ExceptionCode.LAYER_NOT_VISIBLE, layerId, securityContext.getUserId());
 		}
 
 		RasterLayer rasterlayer = (RasterLayer) runtimeParameters.getLayer(request.getLayerId());

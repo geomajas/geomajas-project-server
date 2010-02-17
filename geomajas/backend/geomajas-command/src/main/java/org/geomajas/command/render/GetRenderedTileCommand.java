@@ -79,7 +79,7 @@ public class GetRenderedTileCommand implements Command<GetRenderedTileRequest, G
 		}
 		if (!securityContext.isLayerVisible(layerId)) {
 			log.info("layer layer {}, crs {} not visible", layerId, request.getCrs());
-			throw new GeomajasSecurityException(ExceptionCode.LAYER_NOT_VISIBLE, layerId);
+			throw new GeomajasSecurityException(ExceptionCode.LAYER_NOT_VISIBLE, layerId, securityContext.getUserId());
 		}
 
 		VectorLayer vLayer = runtimeParameters.getVectorLayer(request.getLayerId());

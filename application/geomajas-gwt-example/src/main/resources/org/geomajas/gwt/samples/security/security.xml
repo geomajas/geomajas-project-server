@@ -29,6 +29,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 		>
 
+
 	<bean name="SecurityService" class="org.geomajas.plugin.springsecurity.security.SpringSecurityService"/>
 	
 	<bean name="security.securityInfo" class="org.geomajas.security.SecurityInfo">
@@ -99,8 +100,24 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 								</property>
 								<property name="visibleLayers">
 									<list>
+										<value>osm</value>
 										<value>roads</value>
-										<value>rivers</value>
+									</list>
+								</property>
+							</bean>
+						</list>
+					</property>
+				</bean>
+				<bean class="org.geomajas.plugin.springsecurity.configuration.UserInfo">
+					<property name="userId" value="mark"/>
+					<property name="password" value="7dbGxrB3eNTa17i3ZtGNLQ"/> <!-- "mark" -->
+					<property name="userName" value="Mark Herremans"/>
+					<property name="authorizations">
+						<list>
+							<bean class="org.geomajas.plugin.springsecurity.configuration.LayerAuthorizationInfo">
+								<property name="allowedCommands">
+									<list>
+										<value>command.configuration.GetMap</value>
 									</list>
 								</property>
 							</bean>
@@ -128,4 +145,3 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 	</bean>
 
 </beans>
-

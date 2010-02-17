@@ -23,8 +23,13 @@
 
 package org.geomajas.gwt.client.samples.base;
 
+import org.geomajas.gwt.client.samples.CommandSecuritySample;
+import org.geomajas.gwt.client.samples.FeatureSecuritySample;
+import org.geomajas.gwt.client.samples.LayerSecuritySample;
 import org.geomajas.gwt.client.samples.LoginSample;
+import org.geomajas.gwt.client.samples.NavigationSample;
 import org.geomajas.gwt.client.samples.OpenStreetMapSample;
+import org.geomajas.gwt.client.samples.WmsSample;
 import org.geomajas.gwt.client.samples.i18n.I18nProvider;
 
 /**
@@ -41,9 +46,27 @@ public final class SampleArray {
 	public static SampleTreeNode[] getSampleArray() {
 		return new SampleTreeNode[] {
 				new SampleTreeNode("MapWidget", "/images/world.png", "MapWidget", "topLevel"),
-				new SampleTreeNode(new OpenStreetMapSample(), "OSM", "MapWidget"),
+				new SampleTreeNode(I18nProvider.getSampleMessages().osmTitle(),
+						"[ISOMORPHIC]/geomajas/layer-raster.png", OpenStreetMapSample.OSM_TITLE, "MapWidget",
+						OpenStreetMapSample.FACTORY),
+				new SampleTreeNode(I18nProvider.getSampleMessages().wmsTitle(),
+						"[ISOMORPHIC]/geomajas/layer-raster.png", WmsSample.WMS_TITLE, "MapWidget", WmsSample.FACTORY),
+				new SampleTreeNode(I18nProvider.getSampleMessages().navigationTitle(),
+						"[ISOMORPHIC]/geomajas/layer.png", NavigationSample.TITLE, "MapWidget",
+						NavigationSample.FACTORY),
 				new SampleTreeNode(I18nProvider.getSampleMessages().treeGroupSecurity(),
 						"[ISOMORPHIC]/geomajas/silk/key.png", "Security", "topLevel"),
-				new SampleTreeNode(new LoginSample(), "Login", "Security") };
+				new SampleTreeNode(I18nProvider.getSampleMessages().loginTitle(),
+						"[ISOMORPHIC]/geomajas/springsecurity/key_go.png", LoginSample.LOGIN_TITLE, "Security",
+						LoginSample.FACTORY),
+				new SampleTreeNode(I18nProvider.getSampleMessages().layerSecurityTitle(),
+						"[ISOMORPHIC]/geomajas/springsecurity/key_go.png", LayerSecuritySample.LAYER_SECUTIRY_TITLE,
+						"Security", LayerSecuritySample.FACTORY),
+				new SampleTreeNode(I18nProvider.getSampleMessages().featureSecurityTitle(),
+						"[ISOMORPHIC]/geomajas/springsecurity/key_go.png",
+						FeatureSecuritySample.FEATURE_SECUTIRY_TITLE, "Security", FeatureSecuritySample.FACTORY),
+				new SampleTreeNode(I18nProvider.getSampleMessages().commandSecurityTitle(),
+						"[ISOMORPHIC]/geomajas/springsecurity/key_go.png", CommandSecuritySample.TITLE, "Security",
+						CommandSecuritySample.FACTORY) };
 	}
 }

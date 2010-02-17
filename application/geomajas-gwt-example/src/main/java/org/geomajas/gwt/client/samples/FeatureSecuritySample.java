@@ -23,102 +23,108 @@
 
 package org.geomajas.gwt.client.samples;
 
+import org.geomajas.gwt.client.controller.PanController;
 import org.geomajas.gwt.client.samples.base.SamplePanel;
 import org.geomajas.gwt.client.samples.base.SamplePanelFactory;
 import org.geomajas.gwt.client.samples.i18n.I18nProvider;
+import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.plugin.springsecurity.client.Authentication;
-import org.geomajas.plugin.springsecurity.client.LoginWindow;
-import org.geomajas.plugin.springsecurity.client.LogoutButton;
-import org.geomajas.plugin.springsecurity.client.event.LoginFailureEvent;
-import org.geomajas.plugin.springsecurity.client.event.LoginHandler;
-import org.geomajas.plugin.springsecurity.client.event.LoginSuccessEvent;
-import org.geomajas.plugin.springsecurity.client.event.LogoutFailureEvent;
-import org.geomajas.plugin.springsecurity.client.event.LogoutHandler;
-import org.geomajas.plugin.springsecurity.client.event.LogoutSuccessEvent;
 
-import com.smartgwt.client.util.SC;
+import com.smartgwt.client.util.BooleanCallback;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
+import com.smartgwt.client.widgets.events.DrawEvent;
+import com.smartgwt.client.widgets.events.DrawHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
  * <p>
- * Sample that shows a map with an OpenStreetMap layer.
+ * Sample that tests security on feature level.
  * </p>
  * 
  * @author Pieter De Graef
  */
-public class LoginSample extends SamplePanel {
+public class FeatureSecuritySample extends SamplePanel {
 
-	public static final String LOGIN_TITLE = "Login";
+	public static final String FEATURE_SECUTIRY_TITLE = "FeatureSecurity";
+	
+	private MapWidget map;
 
 	public static final SamplePanelFactory FACTORY = new SamplePanelFactory() {
 
 		public SamplePanel createPanel() {
-			return new LoginSample();
+			return new FeatureSecuritySample();
 		}
 	};
 
 	public Canvas getViewPanel() {
 		final VLayout layout = new VLayout();
+		layout.setMembersMargin(10);
 		layout.setWidth100();
 		layout.setHeight100();
-		layout.setMembersMargin(20);
 
-		// Create horizontal layout for the buttons:
+		// Create horizontal layout for login buttons:
 		HLayout buttonLayout = new HLayout();
 		buttonLayout.setMembersMargin(10);
-		buttonLayout.setHeight(25);
+		buttonLayout.setHeight(20);
 
-		// Create a button that displays the login window on click:
-		final IButton loginButton = new IButton("Log in");
-		loginButton.setIcon("[ISOMORPHIC]/geomajas/silk/key.png");
-		loginButton.addClickHandler(new ClickHandler() {
+		// Map with ID duisburgMap is defined in the XML configuration. (mapDuisburg.xml)
+		map = new MapWidget("duisburgMap", "gwt-samples");
+		map.addDrawHandler(new DrawHandler() {
+
+			public void onDraw(DrawEvent event) {
+				map.initialize();
+			}
+		});
+
+		// Create login handler that re-initializes the map on a successful login:
+		final BooleanCallback initMapCallback = new BooleanCallback() {
+
+			public void execute(Boolean value) {
+				if (value) {
+					map.destroy();
+					map = new MapWidget("duisburgMap", "gwt-samples");
+					layout.addMember(map);
+					map.initialize();
+				}
+			}
+		};
+
+		// Create a button that logs in user "marino":
+		IButton loginButtonMarino = new IButton(I18nProvider.getSampleMessages().securityLogInWith("marino"));
+		loginButtonMarino.setWidth(150);
+		loginButtonMarino.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				LoginWindow loginWindow = new LoginWindow();
-				loginWindow.setKeepInParentRect(true);
-				layout.addMember(loginWindow);
+				Authentication.getInstance().login("marino", "marino", initMapCallback);
 			}
 		});
+		buttonLayout.addMember(loginButtonMarino);
 
-		// Add a login handler that disables the login button on successful login:
-		Authentication.getInstance().addLoginHandler(new LoginHandler() {
+		// Create a button that logs in user "luc":
+		IButton loginButtonLuc = new IButton(I18nProvider.getSampleMessages().securityLogInWith("luc"));
+		loginButtonLuc.setWidth(150);
+		loginButtonLuc.addClickHandler(new ClickHandler() {
 
-			public void onLoginFailure(LoginFailureEvent event) {
-			}
-
-			public void onLoginSuccess(LoginSuccessEvent event) {
-				loginButton.setDisabled(true);
-			}
-		});
-
-		// Create a log out button, and attach an event handler:
-		LogoutButton logoutButton = new LogoutButton(new LogoutHandler() {
-
-			// Show localized messages:
-			public void onLogoutFailure(LogoutFailureEvent event) {
-				SC.warn(I18nProvider.getSampleMessages().logoutFailure());
-			}
-
-			// Logout success - enable the login button again:
-			public void onLogoutSuccess(LogoutSuccessEvent event) {
-				SC.say(I18nProvider.getSampleMessages().logoutSuccess());
-				loginButton.setDisabled(false);
+			public void onClick(ClickEvent event) {
+				Authentication.getInstance().login("luc", "luc", initMapCallback);
 			}
 		});
+		buttonLayout.addMember(loginButtonLuc);
 
-		buttonLayout.addMember(loginButton);
-		buttonLayout.addMember(logoutButton);
+		// Set a panning controller on the map:
+		map.setController(new PanController(map));
+
 		layout.addMember(buttonLayout);
+		layout.addMember(map);
 		return layout;
 	}
 
 	public String getDescription() {
-		return I18nProvider.getSampleMessages().loginDescription();
+		return I18nProvider.getSampleMessages().featureSecurityDescription();
 	}
 
 	public String[] getConfigurationFiles() {

@@ -3,8 +3,8 @@
 		layout.setWidth100();
 		layout.setHeight100();
 
-		// Map with ID osmMap is defined in the XML configuration. (mapOsm.xml)
-		final MapWidget map = new MapWidget("osmMap", "gwt-samples");
+		// Map with ID wmsMap is defined in the XML configuration. (mapWms.xml)
+		final MapWidget map = new MapWidget("wmsMap", "gwt-samples");
 		map.addDrawHandler(new DrawHandler() {
 
 			public void onDraw(DrawEvent event) {

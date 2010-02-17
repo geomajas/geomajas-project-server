@@ -30,7 +30,7 @@ import java.util.List;
 
 import org.geomajas.configuration.AttributeInfo;
 import org.geomajas.configuration.FeatureInfo;
-import org.geomajas.configuration.GeometricAttributeInfo;
+import org.geomajas.configuration.GeometryAttributeInfo;
 import org.geomajas.configuration.PrimitiveAttributeInfo;
 import org.geomajas.configuration.PrimitiveType;
 import org.geomajas.configuration.VectorLayerInfo;
@@ -68,7 +68,7 @@ public class GeoToolsLayerTest extends AbstractGeoToolsTest {
 		ia.setType(PrimitiveType.STRING);
 		ft.setIdentifier(ia);
 
-		GeometricAttributeInfo ga = new GeometricAttributeInfo();
+		GeometryAttributeInfo ga = new GeometryAttributeInfo();
 		ga.setName("the_geom");
 		ga.setEditable(false);
 		ft.setGeometryType(ga);

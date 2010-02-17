@@ -66,8 +66,6 @@ import com.vividsolutions.jts.geom.Envelope;
  */
 public class ShapeInMemLayer extends FeatureSourceRetriever implements VectorLayer {
 
-	private static final String CLASSPATH_URL_PROTOCOL = "classpath:";
-
 	private Map<String, SimpleFeature> features = new HashMap<String, SimpleFeature>();
 
 	private FeatureModel featureModel;
@@ -129,6 +127,9 @@ public class ShapeInMemLayer extends FeatureSourceRetriever implements VectorLay
 			Map<String, String> params = new HashMap<String, String>();
 			params.put("url", url);
 			DataStore store = DataStoreFactory.create(params);
+			if (store == null) {
+				throw new LayerException(ExceptionCode.INVALID_SHAPE_FILE_URL, url);
+			}
 			setDataStore(store);
 		} catch (IOException ioe) {
 			throw new LayerException(ExceptionCode.INVALID_SHAPE_FILE_URL, url);

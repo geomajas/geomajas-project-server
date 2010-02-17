@@ -85,7 +85,7 @@ public class LogoutButton extends IButton implements ClickHandler, LoginHandler,
 	 * Tries to log the user out. Uses the <code>Authentication.logout()</code> method.
 	 */
 	public void onClick(ClickEvent event) {
-		Authentication.getInstance().logout();
+		Authentication.getInstance().logout(null);
 	}
 
 	// -------------------------------------------------------------------------

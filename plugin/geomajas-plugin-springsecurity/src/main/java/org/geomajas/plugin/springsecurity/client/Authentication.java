@@ -39,6 +39,7 @@ import org.geomajas.plugin.springsecurity.command.dto.LoginResponse;
 
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.event.shared.HandlerRegistration;
+import com.smartgwt.client.util.BooleanCallback;
 
 /**
  * <p>
@@ -95,41 +96,50 @@ public final class Authentication {
 	}
 
 	/**
-	 * Execute a login attempt, given a user name and password.
+	 * Execute a login attempt, given a user name and password. If a user has already logged in, a logout will be called
+	 * first.
 	 * 
 	 * @param userId
 	 *            The unique user ID.
 	 * @param password
 	 *            The user's password.
+	 * @param callback
+	 *            A possible callback to be executed when the login has been done (successfully or not). Can be null.
 	 */
-	public void login(final String userId, final String password) {
-		LoginRequest request = new LoginRequest();
-		request.setLogin(userId);
-		request.setPassword(password);
-		GwtCommand command = new GwtCommand("command.Login");
-		command.setCommandRequest(request);
-		GwtCommandDispatcher.getInstance().execute(command, new CommandCallback() {
+	public void login(final String userId, final String password, final BooleanCallback callback) {
+		if (this.userId == null) {
+			loginUser(userId, password, callback);
+		} else if (this.userId.equals(userId)) {
+			// Already logged in...
+			return;
+		} else {
+			GwtCommand command = new GwtCommand("command.Logout");
+			GwtCommandDispatcher.getInstance().execute(command, new CommandCallback() {
 
-			public void execute(CommandResponse response) {
-				if (response instanceof LoginResponse) {
-					LoginResponse loginResponse = (LoginResponse) response;
-					if (loginResponse.getToken() == null) {
-						manager.fireEvent(new LoginFailureEvent(loginResponse.getErrorMessages()));
-					} else {
-						userToken = loginResponse.getToken();
-						Authentication.this.userId = userId;
-						GwtCommandDispatcher.getInstance().setUserToken(userToken);
-						manager.fireEvent(new LoginSuccessEvent(userToken));
+				public void execute(CommandResponse response) {
+					if (response instanceof SuccessCommandResponse) {
+						SuccessCommandResponse succesResponse = (SuccessCommandResponse) response;
+						if (succesResponse.isSucces()) {
+							userToken = null;
+							Authentication.this.userId = null;
+							manager.fireEvent(new LogoutSuccessEvent());
+							loginUser(userId, password, callback);
+						} else {
+							manager.fireEvent(new LogoutFailureEvent());
+						}
 					}
 				}
-			}
-		});
+			});
+		}
 	}
 
 	/**
 	 * Logs the user out.
+	 * 
+	 * @param callback
+	 *            A possible callback to be executed when the logout has been done (successfully or not). Can be null.
 	 */
-	public void logout() {
+	public void logout(final BooleanCallback callback) {
 		GwtCommand command = new GwtCommand("command.Logout");
 		GwtCommandDispatcher.getInstance().execute(command, new CommandCallback() {
 
@@ -138,8 +148,15 @@ public final class Authentication {
 					SuccessCommandResponse succesResponse = (SuccessCommandResponse) response;
 					if (succesResponse.isSucces()) {
 						userToken = null;
+						Authentication.this.userId = null;
+						if (callback != null) {
+							callback.execute(true);
+						}
 						manager.fireEvent(new LogoutSuccessEvent());
 					} else {
+						if (callback != null) {
+							callback.execute(false);
+						}
 						manager.fireEvent(new LogoutFailureEvent());
 					}
 				}
@@ -160,4 +177,40 @@ public final class Authentication {
 	public String getUserId() {
 		return userId;
 	}
+
+	// -------------------------------------------------------------------------
+	// Private methods:
+	// -------------------------------------------------------------------------
+
+	/** Effectively log in a certain user. */
+	private void loginUser(final String userId, final String password, final BooleanCallback callback) {
+		LoginRequest request = new LoginRequest();
+		request.setLogin(userId);
+		request.setPassword(password);
+		GwtCommand command = new GwtCommand("command.Login");
+		command.setCommandRequest(request);
+		GwtCommandDispatcher.getInstance().execute(command, new CommandCallback() {
+
+			public void execute(CommandResponse response) {
+				if (response instanceof LoginResponse) {
+					LoginResponse loginResponse = (LoginResponse) response;
+					if (loginResponse.getToken() == null) {
+						if (callback != null) {
+							callback.execute(false);
+						}
+						manager.fireEvent(new LoginFailureEvent(loginResponse.getErrorMessages()));
+					} else {
+						userToken = loginResponse.getToken();
+						Authentication.this.userId = userId;
+						GwtCommandDispatcher.getInstance().setUserToken(userToken);
+						if (callback != null) {
+							callback.execute(true);
+						}
+						manager.fireEvent(new LoginSuccessEvent(userToken));
+					}
+				}
+			}
+		});
+	}
+
 }

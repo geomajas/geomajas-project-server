@@ -25,13 +25,25 @@ package org.geomajas.gwt.client;
 
 import org.geomajas.gwt.client.samples.IntroductionTab;
 import org.geomajas.gwt.client.samples.base.SamplePanel;
+import org.geomajas.gwt.client.samples.base.SamplePanelFactory;
 import org.geomajas.gwt.client.samples.base.SampleTree;
 import org.geomajas.gwt.client.samples.base.SampleTreeNode;
+import org.geomajas.gwt.client.samples.i18n.I18nProvider;
+import org.geomajas.gwt.client.widget.ActivityMonitor;
 import org.geomajas.gwt.client.widget.LocaleSelect;
+import org.geomajas.plugin.springsecurity.client.Authentication;
+import org.geomajas.plugin.springsecurity.client.event.LoginFailureEvent;
+import org.geomajas.plugin.springsecurity.client.event.LoginHandler;
+import org.geomajas.plugin.springsecurity.client.event.LoginSuccessEvent;
+import org.geomajas.plugin.springsecurity.client.event.LogoutFailureEvent;
+import org.geomajas.plugin.springsecurity.client.event.LogoutHandler;
+import org.geomajas.plugin.springsecurity.client.event.LogoutSuccessEvent;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.smartgwt.client.types.TabBarControls;
+import com.smartgwt.client.util.BooleanCallback;
 import com.smartgwt.client.widgets.Canvas;
+import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.LayoutSpacer;
 import com.smartgwt.client.widgets.layout.VLayout;
@@ -71,17 +83,51 @@ public class GeomajasSamples implements EntryPoint {
 		leftTreeLayout.setHeight100();
 		leftTreeLayout.setWidth(200);
 		leftTreeLayout.setShowResizeBar(true);
+		leftTreeLayout.setMembersMargin(1);
 
 		sampleTree = new SampleTree();
 		sampleTree.addLeafClickHandler(new LeafClickHandler() {
 
 			public void onLeafClick(LeafClickEvent event) {
 				TreeNode node = event.getLeaf();
-				showSample(node);
+				prepareSample(node);
 			}
 		});
 
 		leftTreeLayout.addMember(sampleTree);
+
+		// Show a user label:
+		final Label userLabel = new Label();
+		userLabel.setHeight(20);
+		userLabel.setWidth100();
+		userLabel.setPadding(3);
+		userLabel.setBorder("1px solid #A0A0A0");
+
+		Authentication.getInstance().addLoginHandler(new LoginHandler() {
+
+			public void onLoginFailure(LoginFailureEvent event) {
+			}
+
+			public void onLoginSuccess(LoginSuccessEvent event) {
+				userLabel.setContents("Logged in with: " + Authentication.getInstance().getUserId());
+			}
+		});
+		Authentication.getInstance().addLogoutHandler(new LogoutHandler() {
+
+			public void onLogoutFailure(LogoutFailureEvent event) {
+			}
+
+			public void onLogoutSuccess(LogoutSuccessEvent event) {
+				userLabel.setContents("No user is logged in.");
+			}
+		});
+		Authentication.getInstance().login("luc", "luc", null);
+		leftTreeLayout.addMember(userLabel);
+
+		// Show an AcivityMonitor:
+		ActivityMonitor monitor = new ActivityMonitor();
+		leftTreeLayout.addMember(monitor);
+
 		hLayout.addMember(leftTreeLayout);
 
 		mainTabSet = new TabSet();
@@ -100,34 +146,67 @@ public class GeomajasSamples implements EntryPoint {
 		showIntroductionTab();
 	}
 
-	private void showSample(TreeNode node) {
+	private void prepareSample(TreeNode node) {
 		if (node instanceof SampleTreeNode) {
 			SampleTreeNode treeNode = (SampleTreeNode) node;
-			SamplePanel panel = treeNode.getSamplePanel();
-
-			Tab tab = null;
-			String tabId = panel.getId() + "_tab";
-			tab = mainTabSet.getTab(tabId);
-			if (tab == null) {
-				tab = new Tab();
-				tab.setID(tabId);
-				String imgHTML = Canvas.imgHTML(treeNode.getIcon(), 16, 16);
-				tab.setTitle("<span>" + imgHTML + "&nbsp;" + treeNode.getName() + "</span>");
-				tab.setPane(panel);
-				tab.setCanClose(true);
-				mainTabSet.addTab(tab);
-				panel.initialize();
+			SamplePanelFactory factory = treeNode.getFactory();
+			if (factory == null) {
+				return;
 			}
-			mainTabSet.selectTab(tab);
+			final SamplePanel panel = factory.createPanel();
+			final String name = treeNode.getName();
+			final String icon = treeNode.getIcon();
+
+			String userId = panel.ensureUserLoggedIn();
+			if (userId == null) {
+				// Log out, then show sample:
+				Authentication.getInstance().logout(new BooleanCallback() {
+
+					public void execute(Boolean value) {
+						if (value) {
+							showSample(panel, name, icon);
+						}
+					}
+				});
+			} else if (userId == Authentication.getInstance().getUserId()) {
+				showSample(panel, treeNode.getName(), treeNode.getIcon());
+			} else {
+				// Switch user, then show sample:
+				Authentication.getInstance().login(userId, userId, new BooleanCallback() {
+
+					public void execute(Boolean value) {
+						if (value) {
+							showSample(panel, name, icon);
+						}
+					}
+				});
+			}
 		}
+	}
+
+	private void showSample(SamplePanel panel, String name, String icon) {
+		Tab tab = null;
+		String tabId = panel.getId() + "_tab";
+		tab = mainTabSet.getTab(tabId);
+		if (tab == null) {
+			tab = new Tab();
+			tab.setID(tabId);
+			String imgHTML = Canvas.imgHTML(icon, 16, 16);
+			tab.setTitle("<span>" + imgHTML + "&nbsp;" + name + "</span>");
+			tab.setPane(panel);
+			tab.setCanClose(true);
+			mainTabSet.addTab(tab);
+			panel.initialize();
+		}
+		mainTabSet.selectTab(tab);
 	}
 
 	private void showIntroductionTab() {
 		IntroductionTab sample = new IntroductionTab();
 		Tab tab = new Tab();
 		tab.setID(sample.getId() + "_tab");
-		String imgHTML = Canvas.imgHTML(sample.getIcon(), 16, 16);
-		tab.setTitle("<span>" + imgHTML + "&nbsp;" + sample.getTitle() + "</span>");
+		String imgHTML = Canvas.imgHTML("/images/geomajas_favicon.jpg", 16, 16);
+		tab.setTitle("<span>" + imgHTML + "&nbsp;" + I18nProvider.getSampleMessages().introductionTitle() + "</span>");
 		tab.setPane(sample.getViewPanel());
 		mainTabSet.addTab(tab);
 		sample.initialize();

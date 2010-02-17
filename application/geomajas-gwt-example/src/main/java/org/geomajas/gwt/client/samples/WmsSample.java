@@ -23,60 +23,66 @@
 
 package org.geomajas.gwt.client.samples;
 
+import org.geomajas.gwt.client.controller.PanController;
 import org.geomajas.gwt.client.samples.base.SamplePanel;
+import org.geomajas.gwt.client.samples.base.SamplePanelFactory;
+import org.geomajas.gwt.client.samples.i18n.I18nProvider;
+import org.geomajas.gwt.client.widget.MapWidget;
 
-import com.google.gwt.i18n.client.LocaleInfo;
-import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.widgets.Canvas;
-import com.smartgwt.client.widgets.HTMLPane;
-import com.smartgwt.client.widgets.Img;
+import com.smartgwt.client.widgets.events.DrawEvent;
+import com.smartgwt.client.widgets.events.DrawHandler;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
  * <p>
- * First test.....not really used....
+ * Sample that shows a map with a WMS layer.
  * </p>
  * 
  * @author Pieter De Graef
  */
-public class IntroductionTab extends SamplePanel {
+public class WmsSample extends SamplePanel {
 
-	public IntroductionTab() {
-		super();
-	}
+	public static final String WMS_TITLE = "WMS";
+
+	public static final SamplePanelFactory FACTORY = new SamplePanelFactory() {
+
+		public SamplePanel createPanel() {
+			return new WmsSample();
+		}
+	};
 
 	public Canvas getViewPanel() {
 		VLayout layout = new VLayout();
 		layout.setWidth100();
 		layout.setHeight100();
 
-		Img logo = new Img("[ISOMORPHIC]/geomajas/temp/geomajas_logo.png");
-		logo.setWidth(400);
-		logo.setLayoutAlign(Alignment.CENTER);
+		// Map with ID wmsMap is defined in the XML configuration. (mapWms.xml)
+		final MapWidget map = new MapWidget("wmsMap", "gwt-samples");
+		map.addDrawHandler(new DrawHandler() {
 
-		HTMLPane pane = new HTMLPane();
-		String currentLocale = LocaleInfo.getCurrentLocale().getLocaleName();
-		if ("default".equals(currentLocale)) {
-			pane.setContentsURL("/pages/list.html");
-		} else if ("nl".equals(currentLocale)) {
-			pane.setContentsURL("/pages/list_nl.html");
-		}
+			public void onDraw(DrawEvent event) {
+				map.initialize();
+			}
+		});
 
-		layout.addMember(logo);
-		layout.addMember(pane);
+		// Set a panning controller on the map:
+		map.setController(new PanController(map));
+		layout.addMember(map);
 
 		return layout;
 	}
 
 	public String getDescription() {
-		return null;
+		return I18nProvider.getSampleMessages().wmsDescription();
 	}
 
 	public String[] getConfigurationFiles() {
-		return null;
+		return new String[] { "/org/geomajas/gwt/samples/mapwidget/layerWmsBluemarble.xml",
+				"/org/geomajas/gwt/samples/mapwidget/mapWms.xml" };
 	}
 
 	public String ensureUserLoggedIn() {
-		return null;
+		return "luc";
 	}
 }

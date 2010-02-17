@@ -106,7 +106,7 @@ public class ActivityMonitor extends Canvas implements DispatchStoppedHandler, D
 	 *            stopped event
 	 */
 	public void onDispatchStopped(DispatchStoppedEvent event) {
-		setBusy(false);
+		setBusy(GwtCommandDispatcher.getInstance().isBusy());
 	}
 
 	/**
@@ -124,6 +124,11 @@ public class ActivityMonitor extends Canvas implements DispatchStoppedHandler, D
 	// -------------------------------------------------------------------------
 	// Private methods:
 	// -------------------------------------------------------------------------
+
+	protected void onDraw() {
+		super.onDraw();
+		setBusy(false);
+	}
 
 	private void setBusy(boolean busy) {
 		this.busy = busy;

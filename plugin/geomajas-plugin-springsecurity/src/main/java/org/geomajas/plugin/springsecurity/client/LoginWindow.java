@@ -341,7 +341,7 @@ public class LoginWindow extends Window implements LoginHandler {
 				reportError(i18n.loginNoPassword());
 				return;
 			}
-			Authentication.getInstance().login(userId, password);
+			Authentication.getInstance().login(userId, password, null);
 		}
 	}
 
@@ -356,6 +356,5 @@ public class LoginWindow extends Window implements LoginHandler {
 			loginForm.setValue(FIELD_USER_NAME, "");
 			loginForm.setValue(FIELD_PASSWORD, "");
 		}
-
 	}
 }

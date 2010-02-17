@@ -34,29 +34,11 @@ import com.smartgwt.client.widgets.tree.TreeNode;
  */
 public class SampleTreeNode extends TreeNode {
 
-	private SamplePanel samplePanel;
+	private SamplePanelFactory factory;
 
 	// -------------------------------------------------------------------------
 	// Constructors:
 	// -------------------------------------------------------------------------
-
-	/**
-	 * When creating leaf nodes, use this constructor.
-	 * 
-	 * @param samplePanel
-	 *            The actual sample.
-	 * @param nodeId
-	 *            This node's identifier.
-	 * @param parentNodeId
-	 *            The parent node's identifier. If this is a valid value, this node will be attached to that parent.
-	 */
-	public SampleTreeNode(SamplePanel samplePanel, String nodeId, String parentNodeId) {
-		super(samplePanel.title);
-		setIcon(samplePanel.icon);
-		this.samplePanel = samplePanel;
-		setNodeId(nodeId);
-		setParentID(parentNodeId);
-	}
 
 	/**
 	 * When creating internal nodes, use this constructor. Note that no <code>SamplePanel</code> is required, since it's
@@ -72,20 +54,36 @@ public class SampleTreeNode extends TreeNode {
 	 *            The parent node's identifier. If this is a valid value, this node will be attached to that parent.
 	 */
 	public SampleTreeNode(String title, String icon, String nodeId, String parentNodeId) {
+		this(title, icon, nodeId, parentNodeId, null);
+	}
+
+	/**
+	 * When creating internal nodes, use this constructor. Note that no <code>SamplePanel</code> is required, since it's
+	 * an internal panel. It will simply open up a folder with more samples...yey.
+	 * 
+	 * @param title
+	 *            The tree node's title.
+	 * @param icon
+	 *            The tree node's icon.
+	 * @param nodeId
+	 *            This node's identifier.
+	 * @param parentNodeId
+	 *            The parent node's identifier. If this is a valid value, this node will be attached to that parent.
+	 * @param factory
+	 *            A factory for creating the correct SamplePanel instance.
+	 */
+	public SampleTreeNode(String title, String icon, String nodeId, String parentNodeId, SamplePanelFactory factory) {
 		super();
 		setName(title);
 		setIcon(icon);
 		setNodeId(nodeId);
 		setParentID(parentNodeId);
+		this.factory = factory;
 	}
 
 	// -------------------------------------------------------------------------
 	// Getters and setters:
 	// -------------------------------------------------------------------------
-
-	public SamplePanel getSamplePanel() {
-		return samplePanel;
-	}
 
 	public void setNodeId(String value) {
 		setAttribute("nodeId", value);
@@ -93,5 +91,9 @@ public class SampleTreeNode extends TreeNode {
 
 	public String getNodeId() {
 		return getAttribute("nodeId");
+	}
+
+	public SamplePanelFactory getFactory() {
+		return factory;
 	}
 }

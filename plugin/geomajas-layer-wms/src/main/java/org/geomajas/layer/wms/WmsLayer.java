@@ -120,6 +120,9 @@ public class WmsLayer implements RasterLayer {
 		symbols.setDecimalSeparator('.');
 		decimalFormat.setDecimalFormatSymbols(symbols);
 		layerId = layerInfo.getId();
+		if (layerInfo.getDataSourceName() != null) {
+			layerId = layerInfo.getDataSourceName();
+		}
 		List<Double> r = layerInfo.getResolutions();
 		if (r != null) {
 			calculatePredefinedResolutions(r);

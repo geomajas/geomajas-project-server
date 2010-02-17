@@ -1,16 +1,25 @@
-
-	<!--
-		~ This file is part of Geomajas, a component framework for building ~ rich Internet applications (RIA) with
-		sophisticated capabilities for the ~ display, analysis and management of geographic information. ~ It is a building
-		block that allows developers to add maps ~ and other geographic data capabilities to their web applications. ~ ~
-		Copyright 2008-2010 Geosparc, http://www.geosparc.com, Belgium ~ ~ This program is free software: you can redistribute
-		it and/or modify ~ it under the terms of the GNU Affero General Public License as ~ published by the Free Software
-		Foundation, either version 3 of the ~ License, or (at your option) any later version. ~ ~ This program is distributed
-		in the hope that it will be useful, ~ but WITHOUT ANY WARRANTY; without even the implied warranty of ~ MERCHANTABILITY
-		or FITNESS FOR A PARTICULAR PURPOSE. See the ~ GNU Affero General Public License for more details. ~ ~ You should have
-		received a copy of the GNU Affero General Public License ~ along with this program. If not, see
-		<http://www.gnu.org/licenses/>.
-	-->
+<!--
+  ~ This file is part of Geomajas, a component framework for building
+  ~ rich Internet applications (RIA) with sophisticated capabilities for the
+  ~ display, analysis and management of geographic information.
+  ~ It is a building block that allows developers to add maps
+  ~ and other geographic data capabilities to their web applications.
+  ~
+  ~ Copyright 2008-2010 Geosparc, http://www.geosparc.com, Belgium
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU Affero General Public License as
+  ~ published by the Free Software Foundation, either version 3 of the
+  ~ License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU Affero General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU Affero General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:context="http://www.springframework.org/schema/context" xmlns:util="http://www.springframework.org/schema/util"
 	xsi:schemaLocation="
@@ -18,19 +27,12 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
 http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
 
-	<bean name="security.securityInfo" class="org.geomajas.security.SecurityInfo">
-		<property name="loopAllServices" value="false" />
-		<property name="securityServices">
-			<list>
-				<bean class="org.geomajas.internal.security.AllowAllSecurityService" />
-			</list>
-		</property>
-	</bean>
-
 	<bean name="gwt-samples" class="org.geomajas.configuration.client.ClientApplicationInfo">
 		<property name="maps">
 			<list>
-				<ref bean="osmMap"/>
+				<ref bean="osmMap" />
+				<ref bean="wmsMap" />
+				<ref bean="duisburgMap" />
 			</list>
 		</property>
 	</bean>
@@ -62,17 +64,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	<bean name="ZoomPrevious" class="org.geomajas.configuration.client.ClientToolInfo" />
 	<bean name="ZoomNext" class="org.geomajas.configuration.client.ClientToolInfo" />
 	<bean name="ZoomToRectangleMode" class="org.geomajas.configuration.client.ClientToolInfo" />
-	<bean name="PanMode" class="org.geomajas.configuration.client.ClientToolInfo">
-		<property name="parameters">
-			<list>
-				<!--
-					old <bean class="org.geomajas.configuration.Parameter"> <property name="name" value="hideLabelsOnDrag"/> <property
-					name="value" value="true"/> </bean>
-				-->
-			</list>
-		</property>
-	</bean>
-
+	<bean name="PanMode" class="org.geomajas.configuration.client.ClientToolInfo" />
 	<bean name="ZoomInMode" class="org.geomajas.configuration.client.ClientToolInfo">
 		<property name="parameters">
 			<list>
@@ -127,19 +119,6 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 					<property name="name" value="pixelTolerance" />
 					<property name="value" value="10" />
 				</bean>
-			</list>
-		</property>
-	</bean>
-	<bean name="MarkedEditMode" class="org.geomajas.configuration.client.ClientToolInfo">
-		<property name="parameters">
-			<list>
-				<!--
-					old <bean class="org.geomajas.configuration.Parameter"> <property name="name" value="useMarkings"/> <property
-					name="value" value="true"/> </bean> <bean class="org.geomajas.configuration.Parameter"> <property name="name"
-					value="useSnapHelp"/> <property name="value" value="true"/> </bean> <bean
-					class="org.geomajas.configuration.Parameter"> <property name="name" value="allowHoles"/> <property name="value"
-					value="false"/> </bean>
-				-->
 			</list>
 		</property>
 	</bean>

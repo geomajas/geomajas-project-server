@@ -6,7 +6,7 @@
         </layout>
     </appender>
 
-    <logger name="org.geomajas.gwt">
+    <logger name="org.geomajas">
         <level value="DEBUG"/>
     </logger>
 

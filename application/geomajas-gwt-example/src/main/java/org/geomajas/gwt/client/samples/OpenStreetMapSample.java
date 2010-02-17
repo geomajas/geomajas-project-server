@@ -25,10 +25,13 @@ package org.geomajas.gwt.client.samples;
 
 import org.geomajas.gwt.client.controller.PanController;
 import org.geomajas.gwt.client.samples.base.SamplePanel;
+import org.geomajas.gwt.client.samples.base.SamplePanelFactory;
 import org.geomajas.gwt.client.samples.i18n.I18nProvider;
 import org.geomajas.gwt.client.widget.MapWidget;
 
 import com.smartgwt.client.widgets.Canvas;
+import com.smartgwt.client.widgets.events.DrawEvent;
+import com.smartgwt.client.widgets.events.DrawHandler;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
@@ -40,26 +43,33 @@ import com.smartgwt.client.widgets.layout.VLayout;
  */
 public class OpenStreetMapSample extends SamplePanel {
 
-	private MapWidget map;
+	public static final String OSM_TITLE = "OSM";
 
-	public OpenStreetMapSample() {
-		super("OSM", I18nProvider.getSampleMessages().osmTitle(), "[ISOMORPHIC]/geomajas/layer-raster.png");
-	}
+	public static final SamplePanelFactory FACTORY = new SamplePanelFactory() {
+
+		public SamplePanel createPanel() {
+			return new OpenStreetMapSample();
+		}
+	};
 
 	public Canvas getViewPanel() {
 		VLayout layout = new VLayout();
 		layout.setWidth100();
 		layout.setHeight100();
-		
+
 		// Map with ID osmMap is defined in the XML configuration. (mapOsm.xml)
-		map = new MapWidget("osmMap", "gwt-samples");
+		final MapWidget map = new MapWidget("osmMap", "gwt-samples");
+		map.addDrawHandler(new DrawHandler() {
+
+			public void onDraw(DrawEvent event) {
+				map.initialize();
+			}
+		});
 
 		// Set a panning controller on the map:
 		map.setController(new PanController(map));
 		layout.addMember(map);
 
-		// Specific to these samples; calls the MapWidget.initialize method when ready.
-		registerMap(map);
 		return layout;
 	}
 
@@ -70,5 +80,9 @@ public class OpenStreetMapSample extends SamplePanel {
 	public String[] getConfigurationFiles() {
 		return new String[] { "/org/geomajas/gwt/samples/mapwidget/layerOsm.xml",
 				"/org/geomajas/gwt/samples/mapwidget/mapOsm.xml" };
+	}
+
+	public String ensureUserLoggedIn() {
+		return "luc";
 	}
 }

@@ -9,7 +9,12 @@
             org/geomajas/gwt/samples/applicationContext.xml
 			org/geomajas/gwt/samples/mapwidget/mapOsm.xml
 			org/geomajas/gwt/samples/mapwidget/layerOsm.xml
+			org/geomajas/gwt/samples/mapwidget/mapWms.xml
+			org/geomajas/gwt/samples/mapwidget/layerWmsBluemarble.xml
 			org/geomajas/gwt/samples/security/security.xml
+			org/geomajas/gwt/samples/shapeinmem/mapDuisburg.xml
+			org/geomajas/gwt/samples/shapeinmem/layerRoads.xml
+			org/geomajas/gwt/samples/shapeinmem/layerStructures.xml
         </param-value>
     </context-param>
 
