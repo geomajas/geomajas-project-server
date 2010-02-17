@@ -35,6 +35,8 @@ dojo.declare("geomajas.widget.FeatureDetailTable", [dijit.layout.ContentPane, di
 
 	feature : null,
 	editorFactory : null,
+	formatterFactory: null,
+	isOnlyEditor: false,
 	ids : [],
 	
 	attributeString : "",
@@ -48,6 +50,7 @@ dojo.declare("geomajas.widget.FeatureDetailTable", [dijit.layout.ContentPane, di
 	
 	constructor : function () {
 		this.editorFactory = new AttributeEditorFactory();
+		this.formatterFactory = new AttributeFormatterFactory();
 	},
 
 	setFeature : function (feature) {
@@ -119,24 +122,32 @@ dojo.declare("geomajas.widget.FeatureDetailTable", [dijit.layout.ContentPane, di
 		var txt1 = document.createTextNode(atDef.getLabel());
 		td1.appendChild(txt1);
 
-		// Second TD : an appropriate editor. 
+		// Second TD : an appropriate editor or displayer
 		var td2 = document.createElement("td");
 		dojo.addClass(td2, "fdtTD");
-		var id = this._createEditorId(atDef);
-		if (dijit.byId(id)) {
-			dijit.byId(id).destroy();
+		if (!this.isOnlyEditor && !atDef.isEditable()) {
+			var value = this._createValue(atDef);
+			var formatter = this.formatterFactory.create(atDef);
+			var div = document.createElement("div");
+			div.setAttribute("class", "dijit dijitReset dijitInlineTable dijitLeft dijitTextBox dijitTextBoxDisabled dijitDisabled");
+			div.innerHTML = formatter(value);
+			td2.appendChild(div);
+		} else {
+			var id = this._createEditorId(atDef);
+			if (dijit.byId(id)) {
+				dijit.byId(id).destroy();
+			}
+			var editor = this.editorFactory.create(id , atDef, this.feature, document.createElement("div"));
+			this.ids.push(id);
+			if (!atDef.isEditable()) {
+				editor.setDisabled(true);
+			}
+			this.connect(editor, "onChange", dojo.hitch(this, "onChange"));
+			if (editor.validate) {
+				this.connect(editor, "validate", dojo.hitch(this, "onChange"));
+			}
+			td2.appendChild(editor.domNode);
 		}
-		var editor = this.editorFactory.create(id , atDef, this.feature, document.createElement("div"));
-		this.ids.push(id);
-		if (!atDef.isEditable()) {
-			editor.setDisabled(true);
-		}
-		this.connect(editor, "onChange", dojo.hitch(this, "onChange"));
-		if (editor.validate) {
-			this.connect(editor, "validate", dojo.hitch(this, "onChange"));
-		}
-		td2.appendChild(editor.domNode);
-
 		// Create the TR out of the TD's:
 		var tr = document.createElement("tr");
 		tr.appendChild(td1);
@@ -164,5 +175,13 @@ dojo.declare("geomajas.widget.FeatureDetailTable", [dijit.layout.ContentPane, di
 		} else {
 			return "atribute:editor:" + atDef.getName();
 		}
+	},
+	_createValue : function (atDef) {
+		var primitive = "";
+		if (this.feature != null) {
+			var value = this.feature.getAttributeValue(atDef.getName());
+			primitive = atDef.getPrimitiveValue(value);
+		}
+		return primitive;
 	}
 });
