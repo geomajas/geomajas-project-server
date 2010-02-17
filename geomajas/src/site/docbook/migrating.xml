@@ -130,6 +130,16 @@
           <code>org.geomajas.tile.InternalTile</code>. This tile is used
           internally on the backend.</para>
         </listitem>
+
+        <listitem>
+          <para><code>GeometricAttributeInfo</code> has been renamed to
+          <code>GeometryAttributeInfo</code>.</para>
+        </listitem>
+
+        <listitem>
+          <para><code>ApplicationService</code> has been renamed to
+          <code>ConfigurationService</code>.</para>
+        </listitem>
       </itemizedlist>
     </section>
 
