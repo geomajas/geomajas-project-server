@@ -28,7 +28,7 @@ import org.geomajas.extension.printing.PdfContext;
 import org.geomajas.extension.printing.component.MapComponent;
 import org.geomajas.extension.printing.component.PageComponent;
 import org.geomajas.extension.printing.component.PrintComponent;
-import org.geomajas.service.ApplicationService;
+import org.geomajas.service.ConfigurationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -49,7 +49,7 @@ public class SinglePageDocument extends AbstractDocument {
 	 */
 	protected PageComponent page;
 
-	protected ApplicationService runtime;
+	protected ConfigurationService runtime;
 
 	/**
 	 * filters to apply to layers
@@ -69,7 +69,7 @@ public class SinglePageDocument extends AbstractDocument {
 	 * @param runtime
 	 * @param filters
 	 */
-	public SinglePageDocument(PageComponent page, ApplicationService runtime,
+	public SinglePageDocument(PageComponent page, ConfigurationService runtime,
 			Map<String, String> filters) {
 		this.page = page;
 		this.runtime = runtime;

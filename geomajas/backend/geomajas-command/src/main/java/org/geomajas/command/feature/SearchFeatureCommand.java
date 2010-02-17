@@ -30,7 +30,7 @@ import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.feature.Feature;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.layer.feature.SearchCriterion;
-import org.geomajas.service.ApplicationService;
+import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.VectorLayerService;
@@ -53,7 +53,7 @@ import java.util.List;
 public class SearchFeatureCommand implements Command<SearchFeatureRequest, SearchFeatureResponse> {
 
 	@Autowired
-	private ApplicationService applicationService;
+	private ConfigurationService configurationService;
 
 	@Autowired
 	private DtoConverterService converter;
@@ -81,7 +81,7 @@ public class SearchFeatureCommand implements Command<SearchFeatureRequest, Searc
 		Filter filter = createFilter(request);
 
 		List<InternalFeature> features = layerService.getFeatures(layerId,
-				applicationService.getCrs(request.getCrs()), filter, null, request.getFeatureInclude());
+				configurationService.getCrs(request.getCrs()), filter, null, request.getFeatureInclude());
 		response.setLayerId(layerId);
 		int max = request.getMax();
 		if (max == SearchFeatureRequest.MAX_UNLIMITED) {

@@ -29,7 +29,7 @@ import org.geomajas.global.ExceptionCode;
 import org.geomajas.layer.Layer;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.VectorLayer;
-import org.geomajas.service.ApplicationService;
+import org.geomajas.service.ConfigurationService;
 import org.geotools.referencing.CRS;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
@@ -45,7 +45,7 @@ import org.springframework.stereotype.Component;
  * @author Joachim Van der Auwera
  */
 @Component
-public class ApplicationServiceImpl implements ApplicationService {
+public class ConfigurationServiceImpl implements ConfigurationService {
 
 	@Autowired
 	private ApplicationContext applicationContext;

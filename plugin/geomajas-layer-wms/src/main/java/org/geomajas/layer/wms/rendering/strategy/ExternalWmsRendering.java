@@ -39,7 +39,7 @@ import org.geomajas.rendering.image.RasterUrlBuilder;
 import org.geomajas.rendering.painter.PaintFactory;
 import org.geomajas.rendering.painter.tile.TilePainter;
 import org.geomajas.rendering.strategy.RenderingStrategy;
-import org.geomajas.service.ApplicationService;
+import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.VectorLayerService;
 import org.geotools.filter.text.cql2.CQL;
@@ -75,7 +75,7 @@ import com.vividsolutions.jts.geom.Envelope;
 public class ExternalWmsRendering implements RenderingStrategy {
 
 	@Autowired
-	private ApplicationService applicationService;
+	private ConfigurationService configurationService;
 
 	@Autowired
 	private FilterService filterCreator;
@@ -109,8 +109,8 @@ public class ExternalWmsRendering implements RenderingStrategy {
 	public InternalTile paint(TileMetadata metadata) throws RenderException {
 		try {
 			// Get the map and layer objects:
-			VectorLayer vLayer = applicationService.getVectorLayer(metadata.getLayerId());
-			CoordinateReferenceSystem crs = applicationService.getCrs(metadata.getCrs());
+			VectorLayer vLayer = configurationService.getVectorLayer(metadata.getLayerId());
+			CoordinateReferenceSystem crs = configurationService.getCrs(metadata.getCrs());
 
 			// Prepare the tile:
 			InternalTile tile = paintFactory.createRasterTile(metadata.getCode(), vLayer, metadata.getScale());
@@ -190,7 +190,7 @@ public class ExternalWmsRendering implements RenderingStrategy {
 		 * Create a WMS url.
 		 */
 		public String getImageUrl() {
-			WmsLayer wmsLayer = (WmsLayer) applicationService.getLayer(layerName);
+			WmsLayer wmsLayer = (WmsLayer) configurationService.getLayer(layerName);
 
 			String url = wmsLayer.getBaseWmsUrl();
 			int pos = url.lastIndexOf('?');

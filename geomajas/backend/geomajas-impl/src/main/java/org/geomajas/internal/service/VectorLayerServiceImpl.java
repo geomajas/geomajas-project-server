@@ -46,7 +46,7 @@ import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.rendering.StyleFilter;
 import org.geomajas.rendering.painter.PaintFactory;
 import org.geomajas.security.SecurityContext;
-import org.geomajas.service.ApplicationService;
+import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
 import org.geomajas.service.VectorLayerService;
@@ -82,7 +82,7 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 	private final Logger log = LoggerFactory.getLogger(VectorLayerServiceImpl.class);
 
 	@Autowired
-	private ApplicationService applicationService;
+	private ConfigurationService configurationService;
 
 	@Autowired
 	private GeoService geoService;
@@ -100,7 +100,7 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 		if (!securityContext.isLayerVisible(layerId)) {
 			throw new GeomajasSecurityException(ExceptionCode.LAYER_NOT_VISIBLE, layerId, securityContext.getUserId());
 		}
-		VectorLayer layer = applicationService.getVectorLayer(layerId);
+		VectorLayer layer = configurationService.getVectorLayer(layerId);
 		if (null == layer) {
 			throw new GeomajasException(ExceptionCode.VECTOR_LAYER_NOT_FOUND, layerId);
 		}

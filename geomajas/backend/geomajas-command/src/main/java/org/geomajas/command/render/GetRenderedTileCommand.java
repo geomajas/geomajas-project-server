@@ -33,7 +33,7 @@ import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.rendering.strategy.RenderingStrategy;
 import org.geomajas.rendering.strategy.RenderingStrategyFactory;
 import org.geomajas.security.SecurityContext;
-import org.geomajas.service.ApplicationService;
+import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.DtoConverterService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,7 +53,7 @@ public class GetRenderedTileCommand implements Command<GetRenderedTileRequest, G
 	private final Logger log = LoggerFactory.getLogger(GetRenderedTileCommand.class);
 
 	@Autowired
-	private ApplicationService runtimeParameters;
+	private ConfigurationService runtimeParameters;
 
 	@Autowired
 	private RenderingStrategyFactory renderingStrategyFactory;

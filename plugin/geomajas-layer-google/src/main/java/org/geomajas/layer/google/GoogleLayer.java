@@ -33,7 +33,7 @@ import org.geomajas.layer.RasterLayer;
 import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.layer.tile.TileCode;
 import org.geomajas.rendering.RenderException;
-import org.geomajas.service.ApplicationService;
+import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
 import org.geotools.geometry.DirectPosition2D;
@@ -82,7 +82,7 @@ public class GoogleLayer implements RasterLayer {
 	public static final int MAX_ZOOM_LEVEL = 17;
 
 	@Autowired
-	private ApplicationService runtime;
+	private ConfigurationService runtime;
 
 	@Autowired
 	private DtoConverterService converterService;

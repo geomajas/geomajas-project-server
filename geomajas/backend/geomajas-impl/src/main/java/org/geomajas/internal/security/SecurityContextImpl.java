@@ -37,7 +37,7 @@ import org.geomajas.security.BaseAuthorization;
 import org.geomajas.security.FeatureAuthorization;
 import org.geomajas.security.VectorLayerSelectFilterAuthorization;
 import org.geomajas.security.SecurityContext;
-import org.geomajas.service.ApplicationService;
+import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
@@ -85,7 +85,7 @@ public class SecurityContextImpl implements SecurityContext {
 	private FilterService filterService;
 
 	@Autowired
-	private ApplicationService applicationService;
+	private ConfigurationService configurationService;
 
 	@Autowired
 	private DtoConverterService converterService;
@@ -362,7 +362,7 @@ public class SecurityContextImpl implements SecurityContext {
 	}
 
 	private Geometry areaCombine(String layerId, AreaCombineGetter areaGetter) {
-		VectorLayer layer = applicationService.getVectorLayer(layerId);
+		VectorLayer layer = configurationService.getVectorLayer(layerId);
 		if (null == layer) {
 			log.error("areaCombine on unknown layer " + layerId);
 			return null;

@@ -33,7 +33,7 @@ import org.geomajas.global.GeomajasSecurityException;
 import org.geomajas.layer.RasterLayer;
 import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.security.SecurityContext;
-import org.geomajas.service.ApplicationService;
+import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.DtoConverterService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -59,7 +59,7 @@ public class GetRasterDataCommand implements Command<GetRasterDataRequest, GetRa
 	private final Logger log = LoggerFactory.getLogger(GetRasterDataCommand.class);
 
 	@Autowired
-	private ApplicationService runtimeParameters;
+	private ConfigurationService runtimeParameters;
 
 	@Autowired
 	private DtoConverterService converterService;

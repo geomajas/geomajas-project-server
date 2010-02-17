@@ -32,7 +32,7 @@ import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.feature.FeatureTransaction;
 import org.geomajas.layer.feature.InternalFeature;
-import org.geomajas.service.ApplicationService;
+import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.VectorLayerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,7 +49,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class PersistTransactionCommand implements Command<PersistTransactionRequest, PersistTransactionResponse> {
 
 	@Autowired
-	private ApplicationService runtimeParameters;
+	private ConfigurationService runtimeParameters;
 
 	@Autowired
 	private DtoConverterService converter;

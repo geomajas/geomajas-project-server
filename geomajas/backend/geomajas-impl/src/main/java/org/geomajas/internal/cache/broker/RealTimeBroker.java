@@ -47,7 +47,7 @@ import org.geomajas.layer.tile.TileCode;
 import org.geomajas.rendering.image.TileImageCreator;
 import org.geomajas.rendering.painter.PaintFactory;
 import org.geomajas.rendering.painter.StyledLayer;
-import org.geomajas.service.ApplicationService;
+import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
 import org.geotools.referencing.CRS;
@@ -70,7 +70,7 @@ import com.vividsolutions.jts.geom.Envelope;
 public class RealTimeBroker implements Broker {
 
 	@Autowired
-	private ApplicationService runtime;
+	private ConfigurationService runtime;
 
 	@Autowired
 	private PaintFactory paintFactory;

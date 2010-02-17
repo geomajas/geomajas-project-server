@@ -44,7 +44,7 @@ import com.vividsolutions.jts.geom.Polygon;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.SymbolInfo;
 import org.geomajas.layer.Layer;
-import org.geomajas.service.ApplicationService;
+import org.geomajas.service.ConfigurationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -76,7 +76,7 @@ public class PdfContext {
 
 	private Stack<Float> prevOrigY = new Stack<Float>();
 
-	private ApplicationService runtime;
+	private ConfigurationService runtime;
 
 	private final Logger log = LoggerFactory.getLogger(PdfContext.class);
 
@@ -86,7 +86,7 @@ public class PdfContext {
 	 * @param writer
 	 * @param runtime
 	 */
-	public PdfContext(PdfWriter writer, ApplicationService runtime) {
+	public PdfContext(PdfWriter writer, ConfigurationService runtime) {
 		this.writer = writer;
 		this.runtime = runtime;
 	}

@@ -33,7 +33,7 @@ import org.geomajas.configuration.TileCacheConfiguration;
 import org.geomajas.internal.cache.algorithm.RoundRobinCachingAlgorithm;
 import org.geomajas.internal.cache.store.FileContentStore;
 import org.geomajas.layer.VectorLayer;
-import org.geomajas.service.ApplicationService;
+import org.geomajas.service.ConfigurationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,7 +61,7 @@ public class CacheBroker implements Broker {
 	private ApplicationContext applicationContext;
 
 	@Autowired
-	private ApplicationService applicationService;
+	private ConfigurationService configurationService;
 
 	@Autowired
 	private TileCacheConfiguration tileCacheConfiguration;
@@ -161,7 +161,7 @@ public class CacheBroker implements Broker {
 		String layerId = (String) params.get(CacheService.PARAM_LAYER_ID);
 		VectorLayer vLayer;
 		try {
-			vLayer = applicationService.getVectorLayer(layerId);
+			vLayer = configurationService.getVectorLayer(layerId);
 		} catch (NullPointerException e) {
 			return false;
 		}

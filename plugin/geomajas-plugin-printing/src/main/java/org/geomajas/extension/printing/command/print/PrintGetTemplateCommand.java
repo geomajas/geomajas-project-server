@@ -34,7 +34,7 @@ import org.geomajas.extension.printing.component.LegendItemComponent;
 import org.geomajas.extension.printing.component.PrintComponent;
 import org.geomajas.extension.printing.configuration.PrintTemplate;
 import org.geomajas.extension.printing.document.SinglePageDocument;
-import org.geomajas.service.ApplicationService;
+import org.geomajas.service.ConfigurationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +56,7 @@ public class PrintGetTemplateCommand implements Command<PrintGetTemplateRequest,
 	private final Logger log = LoggerFactory.getLogger(PrintGetTemplateCommand.class);
 
 	@Autowired
-	private ApplicationService runtime;
+	private ConfigurationService runtime;
 
 	public PrintGetTemplateResponse getEmptyCommandResponse() {
 		return new PrintGetTemplateResponse();

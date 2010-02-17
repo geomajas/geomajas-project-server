@@ -41,7 +41,7 @@ import org.geomajas.rendering.RenderException;
 import org.geomajas.rendering.image.RasterUrlBuilder;
 import org.geomajas.rendering.painter.tile.TilePainter;
 import org.geomajas.rendering.strategy.RenderingStrategy;
-import org.geomajas.service.ApplicationService;
+import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.VectorLayerService;
@@ -70,7 +70,7 @@ import org.springframework.stereotype.Component;
 public class ImageRendering implements RenderingStrategy {
 
 	@Autowired
-	private ApplicationService runtime;
+	private ConfigurationService runtime;
 
 	@Autowired
 	private FilterService filterService;

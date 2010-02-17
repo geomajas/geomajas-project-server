@@ -37,7 +37,7 @@ import org.geomajas.layer.tile.VectorTile.VectorTileContentType;
 import org.geomajas.rendering.RenderException;
 import org.geomajas.rendering.painter.tile.TilePainter;
 import org.geomajas.rendering.strategy.RenderingStrategy;
-import org.geomajas.service.ApplicationService;
+import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
@@ -75,7 +75,7 @@ import com.vividsolutions.jts.geom.Coordinate;
 public class VectorRendering implements RenderingStrategy {
 
 	@Autowired
-	private ApplicationService runtime;
+	private ConfigurationService runtime;
 
 	@Autowired
 	private GeoService geoService;

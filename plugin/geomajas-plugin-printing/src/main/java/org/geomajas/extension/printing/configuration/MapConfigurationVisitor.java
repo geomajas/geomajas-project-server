@@ -35,7 +35,7 @@ import org.geomajas.extension.printing.component.MapComponent;
 import org.geomajas.extension.printing.component.RasterLayerComponent;
 import org.geomajas.extension.printing.component.TopDownVisitor;
 import org.geomajas.extension.printing.component.VectorLayerComponent;
-import org.geomajas.service.ApplicationService;
+import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
 import org.geomajas.service.VectorLayerService;
@@ -48,7 +48,7 @@ import org.geomajas.service.VectorLayerService;
  */
 public class MapConfigurationVisitor extends TopDownVisitor {
 
-	private ApplicationService runtime;
+	private ConfigurationService runtime;
 
 	private GeoService geoService;
 
@@ -56,7 +56,7 @@ public class MapConfigurationVisitor extends TopDownVisitor {
 
 	private VectorLayerService layerService;
 
-	public MapConfigurationVisitor(ApplicationService runtimeParameters, GeoService geoService,
+	public MapConfigurationVisitor(ConfigurationService runtimeParameters, GeoService geoService,
 			FilterService filterCreator, VectorLayerService layerService) {
 		this.runtime = runtimeParameters;
 		this.geoService = geoService;

@@ -31,7 +31,7 @@ import org.geomajas.geometry.Bbox;
 import org.geomajas.layer.Layer;
 import org.geomajas.layer.LayerType;
 import org.geomajas.security.SecurityContext;
-import org.geomajas.service.ApplicationService;
+import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
 import org.geomajas.service.VectorLayerService;
@@ -64,7 +64,7 @@ public class UserMaximumExtentCommand implements Command<UserMaximumExtentReques
 	private GeoService geoService;
 
 	@Autowired
-	private ApplicationService runtimeParameters;
+	private ConfigurationService runtimeParameters;
 
 	@Autowired
 	private VectorLayerService layerService;

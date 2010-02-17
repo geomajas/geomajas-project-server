@@ -30,8 +30,8 @@ public class SnappingModeTest {
 //		ApplicationContext applicationContext = new ClassPathXmlApplicationContext(new String[] {
 //		        "org/geomajas/spring/geomajasContext.xml", "org/geomajas/testdata/layerCountries.xml",
 //		        "org/geomajas/testdata/simplevectorsContext.xml" });
-//		ApplicationService runtimeParameters = applicationContext.getBean("service.ApplicationService",
-//		        ApplicationService.class);
+//		ConfigurationService runtimeParameters = applicationContext.getBean("service.ConfigurationService",
+//		        ConfigurationService.class);
 //		Layer<VectorLayerInfo> layer = runtimeParameters.getLayer("countries");
 //		vectorLayer = new VectorLayer(new MapModel("sampleFeaturesMap"), layer.getLayerInfo());
 //

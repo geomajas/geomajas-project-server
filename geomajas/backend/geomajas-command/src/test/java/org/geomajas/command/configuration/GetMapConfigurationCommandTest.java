@@ -28,7 +28,7 @@ import org.geomajas.command.dto.GetMapConfigurationRequest;
 import org.geomajas.command.dto.GetMapConfigurationResponse;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.layer.Layer;
-import org.geomajas.service.ApplicationService;
+import org.geomajas.service.ConfigurationService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;
@@ -50,8 +50,8 @@ public class GetMapConfigurationCommandTest {
 						"org/geomajas/testdata/layerCountries.xml",
 						"org/geomajas/testdata/simplevectorsContext.xml"});
 		// first verify that the configuration is as expected
-		ApplicationService runtimeParameters = applicationContext.getBean(
-				"service.ApplicationService", ApplicationService.class);
+		ConfigurationService runtimeParameters = applicationContext.getBean(
+				"service.ConfigurationService", ConfigurationService.class);
 		Layer layer = runtimeParameters.getLayer("countries");
 		Bbox configMaxExtent = layer.getLayerInfo().getMaxExtent();
 		Assert.assertEquals(-85.05112877980659, configMaxExtent.getX(), DOUBLE_TOLERANCE);

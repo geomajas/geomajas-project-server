@@ -32,7 +32,7 @@ import javax.xml.bind.Unmarshaller;
 
 import org.geomajas.extension.printing.component.PageComponent;
 import org.geomajas.extension.printing.configuration.DefaultConfigurationVisitor;
-import org.geomajas.service.ApplicationService;
+import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
 import org.geomajas.service.VectorLayerService;
@@ -45,7 +45,7 @@ import com.vividsolutions.jts.geom.Coordinate;
 
 public class DefaultDocumentTest {
 
-	private ApplicationService runtime;
+	private ConfigurationService runtime;
 
 	private GeoService geoService;
 
@@ -59,7 +59,7 @@ public class DefaultDocumentTest {
 				"org/geomajas/spring/geomajasContext.xml", "org/geomajas/testdata/layerBluemarble.xml",
 				"org/geomajas/testdata/layerCountries.xml", "org/geomajas/testdata/simplemixedContext.xml" });
 		// load the configuration (context-wide object);
-		runtime = applicationContext.getBean("service.ApplicationService", ApplicationService.class);
+		runtime = applicationContext.getBean("service.ConfigurationService", ConfigurationService.class);
 		geoService = applicationContext.getBean("service.GeoService", GeoService.class);
 		filterCreator = applicationContext.getBean("service.FilterService", FilterService.class);
 		layerService = applicationContext.getBean("service.VectorLayerService", VectorLayerService.class);

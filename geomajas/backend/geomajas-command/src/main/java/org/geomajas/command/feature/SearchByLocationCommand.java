@@ -34,7 +34,7 @@ import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.Feature;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.security.SecurityContext;
-import org.geomajas.service.ApplicationService;
+import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.VectorLayerService;
@@ -78,7 +78,7 @@ import com.vividsolutions.jts.geom.Geometry;
 public class SearchByLocationCommand implements Command<SearchByLocationRequest, SearchByLocationResponse> {
 
 	@Autowired
-	private ApplicationService applicationService;
+	private ConfigurationService configurationService;
 
 	@Autowired
 	private DtoConverterService converter;
@@ -118,7 +118,7 @@ public class SearchByLocationCommand implements Command<SearchByLocationRequest,
 		if (layerIds != null && layerIds.length > 0) {
 			for (String layerId : layerIds) {
 				if (securityContext.isLayerVisible(layerId)) {
-					VectorLayer vectorLayer = applicationService.getVectorLayer(layerId);
+					VectorLayer vectorLayer = configurationService.getVectorLayer(layerId);
 					if (vectorLayer != null) {
 						String geomName = vectorLayer.getLayerInfo().getFeatureInfo().getGeometryType().getName();
 
@@ -146,7 +146,7 @@ public class SearchByLocationCommand implements Command<SearchByLocationRequest,
 						}
 
 						// Get the features
-						List<InternalFeature> temp = layerService.getFeatures(layerId, applicationService.getCrs(request
+						List<InternalFeature> temp = layerService.getFeatures(layerId, configurationService.getCrs(request
 								.getCrs()), f, null, request.getFeatureInclude());
 						if (temp.size() > 0) {
 							List<Feature> features = new ArrayList<Feature>();

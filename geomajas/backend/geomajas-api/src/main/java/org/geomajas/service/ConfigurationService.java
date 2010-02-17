@@ -33,7 +33,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  * @author Joachim Van der Auwera
  */
-public interface ApplicationService {
+public interface ConfigurationService {
 
 	/**
 	 * Get the layer with given id.
