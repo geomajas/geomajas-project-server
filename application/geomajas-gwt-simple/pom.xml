@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas</groupId>
 	<artifactId>geomajas-gwt-simple</artifactId>
@@ -26,12 +27,12 @@
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-gwt-server</artifactId>
 			<version>${project.version}</version>
- 		</dependency>
+		</dependency>
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-command</artifactId>
 			<version>${project.version}</version>
-		</dependency>	
+		</dependency>
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-impl</artifactId>
@@ -47,11 +48,11 @@
 			<artifactId>geomajas-layer-geotools</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-        <dependency>
-            <groupId>org.geomajas.plugin</groupId>
-            <artifactId>geomajas-layer-openstreetmaps</artifactId>
-            <version>${project.version}</version>
-        </dependency>
+		<dependency>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-layer-openstreetmaps</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-layer-hibernate</artifactId>
@@ -78,7 +79,7 @@
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-servlet</artifactId>
 			<version>${gwt-version}</version>
-            <scope>runtime</scope>
+			<scope>runtime</scope>
 		</dependency>
 
 		<!-- logging dependencies, delegate all to slf4j and use logback -->
@@ -112,7 +113,7 @@
 				<artifactId>geomajas-checkstyle</artifactId>
 				<version>1.0.2</version>
 			</extension>
-		</extensions>		
+		</extensions>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -191,6 +192,7 @@
 				<artifactId>maven-jetty-plugin</artifactId>
 				<version>6.1.20</version>
 				<configuration>
+         			<webAppSourceDirectory>${basedir}/war</webAppSourceDirectory>
 					<webAppConfig>
 						<contextPath>/</contextPath>
 					</webAppConfig>
