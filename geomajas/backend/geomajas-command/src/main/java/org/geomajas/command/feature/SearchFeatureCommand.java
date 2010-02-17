@@ -81,7 +81,7 @@ public class SearchFeatureCommand implements Command<SearchFeatureRequest, Searc
 		Filter filter = createFilter(request);
 
 		List<InternalFeature> features = layerService.getFeatures(layerId,
-				applicationService.getCrs(request.getCrs()), filter, null, VectorLayerService.FEATURE_INCLUDE_ALL);
+				applicationService.getCrs(request.getCrs()), filter, null, request.getFeatureInclude());
 		response.setLayerId(layerId);
 		int max = request.getMax();
 		if (max == SearchFeatureRequest.MAX_UNLIMITED) {

@@ -871,74 +871,6 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
       get "command.configuration.Get" as registry key.</para>
 
       <para><table>
-          <title>GetAssociationCommand</title>
-
-          <tgroup cols="2">
-            <thead>
-              <row>
-                <entry>GetAssociationCommand</entry>
-              </row>
-            </thead>
-
-            <tbody>
-              <row>
-                <entry>Registry key</entry>
-
-                <entry>command.feature.GetAssociation</entry>
-              </row>
-
-              <row>
-                <entry>Module which provides this command</entry>
-
-                <entry>geomajas-extension-command</entry>
-              </row>
-
-              <row>
-                <entry>Request object class</entry>
-
-                <entry>org.geomajas.command.dto.GetAssociationRequest</entry>
-              </row>
-
-              <row>
-                <entry>Parameters</entry>
-
-                <entry><itemizedlist>
-                    <listitem>
-                      <para><emphasis>filter</emphasis> :</para>
-                    </listitem>
-
-                    <listitem>
-                      <para><emphasis>attributeName</emphasis> :</para>
-                    </listitem>
-                  </itemizedlist></entry>
-              </row>
-
-              <row>
-                <entry>Description</entry>
-
-                <entry>?????</entry>
-              </row>
-
-              <row>
-                <entry>Response object class</entry>
-
-                <entry>org.geomajas.command.dto.GetAssociationResponse</entry>
-              </row>
-
-              <row>
-                <entry>Response values</entry>
-
-                <entry><itemizedlist>
-                    <listitem>
-                      <para><emphasis>objects</emphasis> : ?????</para>
-                    </listitem>
-                  </itemizedlist></entry>
-              </row>
-            </tbody>
-          </tgroup>
-        </table></para>
-
-      <para><table>
           <title>GetConfigurationCommand</title>
 
           <tgroup cols="2">
@@ -958,7 +890,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
               <row>
                 <entry>Module which provides this command</entry>
 
-                <entry>geomajas-extension-command</entry>
+                <entry>geomajas-command</entry>
               </row>
 
               <row>
@@ -1034,7 +966,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
               <row>
                 <entry>Module which provides this command</entry>
 
-                <entry>geomajas-extension-command</entry>
+                <entry>geomajas-command</entry>
               </row>
 
               <row>
@@ -1102,7 +1034,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
               <row>
                 <entry>Module which provides this command</entry>
 
-                <entry>geomajas-extension-printing</entry>
+                <entry>geomajas-plugin-printing</entry>
               </row>
 
               <row>
@@ -1174,7 +1106,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
               <row>
                 <entry>Module which provides this command</entry>
 
-                <entry>geomajas-extension-printing</entry>
+                <entry>geomajas-plugin-printing</entry>
               </row>
 
               <row>
@@ -1235,7 +1167,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
               <row>
                 <entry>Module which provides this command</entry>
 
-                <entry>geomajas-extension-command</entry>
+                <entry>geomajas-command</entry>
               </row>
 
               <row>
@@ -1302,7 +1234,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
               <row>
                 <entry>Module which provides this command</entry>
 
-                <entry>geomajas-extension-command</entry>
+                <entry>geomajas-command</entry>
               </row>
 
               <row>
@@ -1366,7 +1298,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
               <row>
                 <entry>Module which provides this command</entry>
 
-                <entry>geomajas-extension-command</entry>
+                <entry>geomajas-command</entry>
               </row>
 
               <row>
@@ -1430,7 +1362,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
               <row>
                 <entry>Module which provides this command</entry>
 
-                <entry>geomajas-extension-command</entry>
+                <entry>geomajas-command</entry>
               </row>
 
               <row>
@@ -1494,7 +1426,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
               <row>
                 <entry>Module which provides this command</entry>
 
-                <entry>geomajas-extension-command</entry>
+                <entry>geomajas-command</entry>
               </row>
 
               <row>
@@ -1558,7 +1490,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
               <row>
                 <entry>Module which provides this command</entry>
 
-                <entry>geomajas-extension-printing</entry>
+                <entry>geomajas-plugin-printing</entry>
               </row>
 
               <row>
@@ -1622,13 +1554,13 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
               <row>
                 <entry>Module which provides this command</entry>
 
-                <entry>geomajas-extension-command</entry>
+                <entry>geomajas-command</entry>
               </row>
 
               <row>
                 <entry>Request object class</entry>
 
-                <entry></entry>
+                <entry>org.geomajas.command.dto.SearchByLocationRequest</entry>
               </row>
 
               <row>
@@ -1637,6 +1569,13 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
                 <entry><itemizedlist>
                     <listitem>
                       <para></para>
+                    </listitem>
+
+                    <listitem>
+                      <para><emphasis>featureInclude</emphasis> : indication
+                      of which data to include in the feature. Possible values
+                      (add to combine) : 1=attributes, 2=geometry, 4=style,
+                      8=label. Default value is to include everything.</para>
                     </listitem>
                   </itemizedlist></entry>
               </row>
@@ -1650,7 +1589,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
               <row>
                 <entry>Response object class</entry>
 
-                <entry></entry>
+                <entry>org.geomajas.command.dto.SearchByLocationResponse</entry>
               </row>
 
               <row>
@@ -1686,7 +1625,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
               <row>
                 <entry>Module which provides this command</entry>
 
-                <entry>geomajas-extension-command</entry>
+                <entry>geomajas-command</entry>
               </row>
 
               <row>
@@ -1728,6 +1667,13 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
                     <listitem>
                       <para><emphasis>filter</emphasis> : an additional layer
                       filter which needs to be applied when searching.</para>
+                    </listitem>
+
+                    <listitem>
+                      <para><emphasis>featureInclude</emphasis> : indication
+                      of which data to include in the feature. Possible values
+                      (add to combine) : 1=attributes, 2=geometry, 4=style,
+                      8=label. Default value is to include everything.</para>
                     </listitem>
                   </itemizedlist></entry>
               </row>
@@ -1786,7 +1732,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
               <row>
                 <entry>Module which provides this command</entry>
 
-                <entry>geomajas-extension-command</entry>
+                <entry>geomajas-command</entry>
               </row>
 
               <row>
@@ -1850,7 +1796,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
               <row>
                 <entry>Module which provides this command</entry>
 
-                <entry>geomajas-extension-command</entry>
+                <entry>geomajas-command</entry>
               </row>
 
               <row>

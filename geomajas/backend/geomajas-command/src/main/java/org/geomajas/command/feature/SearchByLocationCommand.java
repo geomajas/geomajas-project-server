@@ -147,7 +147,7 @@ public class SearchByLocationCommand implements Command<SearchByLocationRequest,
 
 						// Get the features
 						List<InternalFeature> temp = layerService.getFeatures(layerId, applicationService.getCrs(request
-								.getCrs()), f, null, VectorLayerService.FEATURE_INCLUDE_ALL);
+								.getCrs()), f, null, request.getFeatureInclude());
 						if (temp.size() > 0) {
 							List<Feature> features = new ArrayList<Feature>();
 

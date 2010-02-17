@@ -752,18 +752,6 @@
           </listitem>
 
           <listitem>
-            <para>feature.GetAssociation : empty return when attribute is not
-            readable, only return associated data for features where this
-            attribute is readable.</para>
-          </listitem>
-
-          <listitem>
-            <para>feature.GetAttributes : only return attributes which are
-            readable. Assure the editable flag is correct on the
-            attributes.</para>
-          </listitem>
-
-          <listitem>
             <para>feature.PersistTransaction : making changes to attributes
             which are not editable should cause a security exception.</para>
           </listitem>

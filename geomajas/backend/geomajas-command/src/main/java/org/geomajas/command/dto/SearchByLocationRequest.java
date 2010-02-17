@@ -24,6 +24,7 @@ package org.geomajas.command.dto;
 
 import org.geomajas.command.CommandRequest;
 import org.geomajas.geometry.Geometry;
+import org.geomajas.service.VectorLayerService;
 
 /**
  * Request object for {@link org.geomajas.command.feature.SearchByLocationCommand}.
@@ -107,6 +108,8 @@ public class SearchByLocationRequest implements CommandRequest {
 	 * The optional buffer that should be added around the location before executing the search.
 	 */
 	private double buffer = -1;
+
+	private int featureInclude = VectorLayerService.FEATURE_INCLUDE_ALL;
 
 	// -------------------------------------------------------------------------
 	// Constructors:
@@ -237,7 +240,7 @@ public class SearchByLocationRequest implements CommandRequest {
 	/**
 	 * Set a new type of search. Can be either 1 (=SEARCH_FIRST_LAYER), or 2 (=SEARCH_ALL_LAYERS).
 	 * 
-	 * @param searchType
+	 * @param searchType search type
 	 */
 	public void setSearchType(int searchType) {
 		this.searchType = searchType;
@@ -246,7 +249,7 @@ public class SearchByLocationRequest implements CommandRequest {
 	/**
 	 * Get the optional buffer that should be added around the location before executing the search.
 	 * 
-	 * @return
+	 * @return buffer size
 	 */
 	public double getBuffer() {
 		return buffer;
@@ -255,9 +258,29 @@ public class SearchByLocationRequest implements CommandRequest {
 	/**
 	 * Set a buffer that should be added to the location before executing the search.
 	 * 
-	 * @param buffer
+	 * @param buffer buffer size
 	 */
 	public void setBuffer(double buffer) {
 		this.buffer = buffer;
+	}
+
+	/**
+	 * Get which data should be included in the features. For possible values, see
+	 * {@link org.geomajas.service.VectorLayerService}.
+	 *
+	 * @return what to include
+	 */
+	public int getFeatureInclude() {
+		return featureInclude;
+	}
+
+	/**
+	 * Set the data to include in the features which are returned. For possible values, see
+	 * {@link org.geomajas.service.VectorLayerService}.
+	 *
+	 * @param featureInclude what the include
+	 */
+	public void setFeatureInclude(int featureInclude) {
+		this.featureInclude = featureInclude;
 	}
 }
