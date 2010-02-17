@@ -135,6 +135,7 @@ public class GetMapConfigurationCommand implements Command<GetMapConfigurationRe
 	}
 
 	public ClientLayerTreeInfo securityClone(ClientLayerTreeInfo original) {
+		// the data is explicitly copied as this assures the security is considered when copying.
 		if (null == original) {
 			return null;
 		}
@@ -147,6 +148,7 @@ public class GetMapConfigurationCommand implements Command<GetMapConfigurationRe
 	}
 
 	public ClientLayerTreeNodeInfo securityClone(ClientLayerTreeNodeInfo original) {
+		// the data is explicitly copied as this assures the security is considered when copying.
 		if (null == original) {
 			return null;
 		}
@@ -168,7 +170,7 @@ public class GetMapConfigurationCommand implements Command<GetMapConfigurationRe
 				nodes.add(copy);
 			}
 		}
-		if (layers.size() > 0 && nodes.size() > 0) {
+		if (layers.size() > 0 || nodes.size() > 0) {
 			return client;
 		}
 		return null;
@@ -186,6 +188,7 @@ public class GetMapConfigurationCommand implements Command<GetMapConfigurationRe
 	}
 
 	public List<ClientToolInfo> securityClone(List<ClientToolInfo> original) {
+		// the data is explicitly copied as this assures the security is considered when copying.
 		if (null == original) {
 			return null;
 		}
