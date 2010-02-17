@@ -51,7 +51,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 			</bean>
 		</property>
 		<property name="geometryType">
-			<bean class="org.geomajas.configuration.GeometricAttributeInfo">
+			<bean class="org.geomajas.configuration.GeometryAttributeInfo">
 				<property name="name" value="the_geom" />
 				<property name="editable" value="false" />
 			</bean>
@@ -83,7 +83,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 			</bean>
 		</property>
 		<property name="geometryType">
-			<bean class="org.geomajas.configuration.GeometricAttributeInfo">
+			<bean class="org.geomajas.configuration.GeometryAttributeInfo">
 				<property name="name" value="the_geom" />
 				<property name="editable" value="false" />
 			</bean>

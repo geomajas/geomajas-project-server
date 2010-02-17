@@ -27,7 +27,7 @@ package org.geomajas.configuration;
  *
  * @author Joachim Van der Auwera 
  */
-public class GeometricAttributeInfo extends AttributeBaseInfo {
+public class GeometryAttributeInfo extends AttributeBaseInfo {
 
 	private static final long serialVersionUID = 152L;
 }

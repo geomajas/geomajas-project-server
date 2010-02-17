@@ -78,7 +78,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		<property name="sortAttributeName" value="name" />
 		<property name="sortType" value="DESC" />
 		<property name="geometryType">
-			<bean class="org.geomajas.configuration.GeometricAttributeInfo">
+			<bean class="org.geomajas.configuration.GeometryAttributeInfo">
 				<property name="name" value="geometry" />
 				<property name="editable" value="false" />
 			</bean>

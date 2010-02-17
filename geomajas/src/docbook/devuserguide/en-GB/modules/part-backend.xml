@@ -532,7 +532,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         &lt;/bean&gt;
     &lt;/property&gt;
     &lt;property name="geometryType"&gt;
-        &lt;bean class="org.geomajas.configuration.GeometricAttributeInfo"&gt;
+        &lt;bean class="org.geomajas.configuration.GeometryAttributeInfo"&gt;
             &lt;property name="name" value="the_geom"/&gt;
             &lt;property name="editable" value="false"/&gt;
         &lt;/bean&gt;

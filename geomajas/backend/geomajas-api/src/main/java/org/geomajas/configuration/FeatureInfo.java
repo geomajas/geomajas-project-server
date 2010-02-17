@@ -41,7 +41,7 @@ public class FeatureInfo implements Serializable {
 	private PrimitiveAttributeInfo identifier;
 	private String sortAttributeName;
 	private SortType sortType;
-	private GeometricAttributeInfo geometryType;
+	private GeometryAttributeInfo geometryType;
 	private List<AttributeInfo> attributes = new ArrayList<AttributeInfo>();
 
 	public String getDataSourceName() {
@@ -76,11 +76,11 @@ public class FeatureInfo implements Serializable {
 		this.sortType = sortType;
 	}
 
-	public GeometricAttributeInfo getGeometryType() {
+	public GeometryAttributeInfo getGeometryType() {
 		return geometryType;
 	}
 
-	public void setGeometryType(GeometricAttributeInfo geometryType) {
+	public void setGeometryType(GeometryAttributeInfo geometryType) {
 		this.geometryType = geometryType;
 	}
 

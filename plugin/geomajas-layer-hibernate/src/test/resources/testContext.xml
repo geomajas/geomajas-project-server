@@ -74,7 +74,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		</property>
 		<property name="sortType" value="DESC" />
 		<property name="geometryType">
-			<bean class="org.geomajas.configuration.GeometricAttributeInfo">
+			<bean class="org.geomajas.configuration.GeometryAttributeInfo">
 				<property name="name">
 					<util:constant static-field="org.geomajas.layer.hibernate.AbstractHibernateLayerModelTest.PARAM_GEOMETRY_ATTR" />
 				</property>
