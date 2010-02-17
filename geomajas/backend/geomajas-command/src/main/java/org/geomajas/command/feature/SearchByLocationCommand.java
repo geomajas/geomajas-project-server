@@ -39,6 +39,7 @@ import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.VectorLayerService;
 import org.opengis.filter.Filter;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -146,8 +147,9 @@ public class SearchByLocationCommand implements Command<SearchByLocationRequest,
 						}
 
 						// Get the features
-						List<InternalFeature> temp = layerService.getFeatures(layerId, configurationService.getCrs(request
-								.getCrs()), f, null, request.getFeatureInclude());
+						CoordinateReferenceSystem crs = configurationService.getCrs(request.getCrs());
+						List<InternalFeature> temp = layerService.getFeatures(layerId, crs, f, null, request
+								.getFeatureInclude());
 						if (temp.size() > 0) {
 							List<Feature> features = new ArrayList<Feature>();
 
