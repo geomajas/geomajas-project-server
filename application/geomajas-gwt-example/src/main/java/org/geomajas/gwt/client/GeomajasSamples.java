@@ -70,7 +70,7 @@ public class GeomajasSamples implements EntryPoint {
 	private SampleTree sampleTree;
 
 	public void onModuleLoad() {
-		org.geomajas.gwt.client.i18n.I18nProvider.setLookUp(GWT.<ConstantsWithLookup> create(Samples.class));
+		org.geomajas.gwt.client.i18n.I18nProvider.setLookUp(GWT.<ConstantsWithLookup>create(Samples.class));
 
 		// Setup the overall layout:
 		VLayout main = new VLayout();
@@ -172,7 +172,7 @@ public class GeomajasSamples implements EntryPoint {
 						}
 					}
 				});
-			} else if (userId == Authentication.getInstance().getUserId()) {
+			} else if (userId.equals(Authentication.getInstance().getUserId())) {
 				showSample(panel, treeNode.getName(), treeNode.getIcon());
 			} else {
 				// Switch user, then show sample:
@@ -189,9 +189,8 @@ public class GeomajasSamples implements EntryPoint {
 	}
 
 	private void showSample(SamplePanel panel, String name, String icon) {
-		Tab tab = null;
 		String tabId = panel.getId() + "_tab";
-		tab = mainTabSet.getTab(tabId);
+		Tab tab = mainTabSet.getTab(tabId);
 		if (tab == null) {
 			tab = new Tab();
 			tab.setID(tabId);
