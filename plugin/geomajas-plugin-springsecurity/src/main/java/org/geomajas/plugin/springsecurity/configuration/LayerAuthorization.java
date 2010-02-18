@@ -26,6 +26,7 @@ package org.geomajas.plugin.springsecurity.configuration;
 import org.geomajas.security.BaseAuthorization;
 
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * Layer authorization matching LayerAuthorizationInfo.
@@ -44,10 +45,38 @@ public class LayerAuthorization implements BaseAuthorization {
 		return "LayerAuthorizationInfo." + Integer.toString(info.hashCode());
 	}
 
-	private boolean check(String id, List<String> matches) {
-		if (null != matches) {
-			for (String test : matches) {
-				if ("*".equals(test) || id.equals(test)) {
+	public boolean isToolAuthorized(String toolId) {
+		return check(toolId, info.getToolsInclude(), info.getToolsExclude());
+	}
+
+	public boolean isCommandAuthorized(String commandName) {
+		return check(commandName, info.getCommandsInclude(), info.getCommandsExclude());
+	}
+
+	public boolean isLayerVisible(String layerId) {
+		return check(layerId, info.getVisibleLayersInclude(), info.getVisibleLayersExclude());
+	}
+
+	public boolean isLayerUpdateAuthorized(String layerId) {
+		return check(layerId, info.getUpdateAuthorizedLayersInclude(), info.getUpdateAuthorizedLayersExclude());
+	}
+
+	public boolean isLayerCreateAuthorized(String layerId) {
+		return check(layerId, info.getCreateAuthorizedLayersInclude(), info.getCreateAuthorizedLayersExclude());
+	}
+
+	public boolean isLayerDeleteAuthorized(String layerId) {
+		return check(layerId, info.getDeleteAuthorizedLayersInclude(), info.getDeleteAuthorizedLayersExclude());
+	}
+
+	protected boolean check(String id, List<String> includes, List<String> excludes) {
+		return check(id, includes) && !check(id, excludes);
+	}
+
+	protected boolean check(String id, List<String> includes) {
+		if (null != includes) {
+			for (String check : includes) {
+				if (check(id, check)) {
 					return true;
 				}
 			}
@@ -55,28 +84,8 @@ public class LayerAuthorization implements BaseAuthorization {
 		return false;
 	}
 
-	public boolean isToolAuthorized(String toolId) {
-		return check(toolId, info.getAllowedTools());
+	protected boolean check(String value, String regex) {
+		Pattern pattern = Pattern.compile(regex);
+		return pattern.matcher(value).matches();
 	}
-
-	public boolean isCommandAuthorized(String commandName) {
-		return check(commandName, info.getAllowedCommands());
-	}
-
-	public boolean isLayerVisible(String layerId) {
-		return check(layerId, info.getVisibleLayers());
-	}
-
-	public boolean isLayerUpdateAuthorized(String layerId) {
-		return check(layerId, info.getUpdateAuthorizedLayers());
-	}
-
-	public boolean isLayerCreateAuthorized(String layerId) {
-		return check(layerId, info.getCreateAuthorizedLayers());
-	}
-
-	public boolean isLayerDeleteAuthorized(String layerId) {
-		return check(layerId, info.getDeleteAuthorizedLayers());
-	}
-
 }

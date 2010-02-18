@@ -52,34 +52,34 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 					<property name="authorizations">
 						<list>
 							<bean class="org.geomajas.plugin.springsecurity.configuration.LayerAuthorizationInfo">
-								<property name="allowedCommands">
+								<property name="commandsInclude">
 									<list>
-										<value>*</value>
+										<value>.*</value>
 									</list>
 								</property>
-								<property name="allowedTools">
+								<property name="toolsInclude">
 									<list>
-										<value>*</value>
+										<value>.*</value>
 									</list>
 								</property>
-								<property name="visibleLayers">
+								<property name="visibleLayersInclude">
 									<list>
-										<value>*</value>
+										<value>.*</value>
 									</list>
 								</property>
-								<property name="updateAuthorizedLayers">
+								<property name="updateAuthorizedLayersInclude">
 									<list>
-										<value>*</value>
+										<value>.*</value>
 									</list>
 								</property>
-								<property name="createAuthorizedLayers">
+								<property name="createAuthorizedLayersInclude">
 									<list>
-										<value>*</value>
+										<value>.*</value>
 									</list>
 								</property>
-								<property name="deleteAuthorizedLayers">
+								<property name="deleteAuthorizedLayersInclude">
 									<list>
-										<value>*</value>
+										<value>.*</value>
 									</list>
 								</property>
 							</bean>
@@ -93,12 +93,12 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 					<property name="authorizations">
 						<list>
 							<bean class="org.geomajas.plugin.springsecurity.configuration.LayerAuthorizationInfo">
-								<property name="allowedCommands">
+								<property name="commandsInclude">
 									<list>
-										<value>*</value>
+										<value>.*</value>
 									</list>
 								</property>
-								<property name="visibleLayers">
+								<property name="visibleLayersInclude">
 									<list>
 										<value>osm</value>
 										<value>roads</value>
@@ -115,13 +115,13 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 					<property name="authorizations">
 						<list>
 							<bean class="org.geomajas.plugin.springsecurity.configuration.LayerAuthorizationInfo">
-								<property name="allowedCommands">
+								<property name="commandsInclude">
 									<list>
 										<value>command.configuration.GetMap</value>
 										<value>command.render.GetRasterData</value>
 									</list>
 								</property>
-								<property name="allowedTools">
+								<property name="toolsInclude">
 									<list>
 										<value>ZoomIn</value>
 										<value>ZoomOut</value>
@@ -130,25 +130,9 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 										<value>ToolbarSeparator</value>
 									</list>
 								</property>
-								<property name="visibleLayers">
+								<property name="visibleLayersInclude">
 									<list>
-										<value>*</value>
-									</list>
-								</property>
-							</bean>
-						</list>
-					</property>
-				</bean>
-				<bean class="org.geomajas.plugin.springsecurity.configuration.UserInfo">
-					<property name="userId" value="empty"/>
-					<property name="password" value="fV4OclpOUTCXIXEOx1C6sQ"/> <!-- "" -->
-					<property name="userName" value="Mr. Nobody"/>
-					<property name="authorizations">
-						<list>
-							<bean class="org.geomajas.plugin.springsecurity.configuration.LayerAuthorizationInfo">
-								<property name="allowedCommands">
-									<list>
-										<value>*</value>
+										<value>.*</value>
 									</list>
 								</property>
 							</bean>

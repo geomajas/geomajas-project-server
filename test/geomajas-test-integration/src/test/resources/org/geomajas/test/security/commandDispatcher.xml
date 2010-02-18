@@ -49,9 +49,9 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 					<property name="authorizations">
 						<list>
 							<bean class="org.geomajas.plugin.springsecurity.configuration.LayerAuthorizationInfo">
-								<property name="allowedCommands">
+								<property name="commandsInclude">
 									<list>
-										<value>*</value>
+										<value>.*</value>
 									</list>
 								</property>
 							</bean>
@@ -65,12 +65,12 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 					<property name="authorizations">
 						<list>
 							<bean class="org.geomajas.plugin.springsecurity.configuration.LayerAuthorizationInfo">
-								<property name="allowedCommands">
+								<property name="commandsInclude">
 									<list>
 										<value>command.MarinoLoggedIn</value>
 									</list>
 								</property>
-								<property name="visibleLayers">
+								<property name="visibleLayersInclude">
 									<list>
 										<value>roads</value>
 										<value>rivers</value>
@@ -87,9 +87,9 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 					<property name="authorizations">
 						<list>
 							<bean class="org.geomajas.plugin.springsecurity.configuration.LayerAuthorizationInfo">
-								<property name="allowedCommands">
+								<property name="commandsInclude">
 									<list>
-										<value>*</value>
+										<value>.*</value>
 									</list>
 								</property>
 							</bean>

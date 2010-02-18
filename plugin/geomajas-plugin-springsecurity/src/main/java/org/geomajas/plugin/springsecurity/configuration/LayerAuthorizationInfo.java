@@ -29,94 +29,123 @@ import java.util.List;
 
 /**
  * Allow configuring authorizations at tool, command and layer level.
+ * <p/>
+ * You can specify a list a includes and excludes. Anything which is not included in not authorized. Anything which is
+ * included is only authorized if it is not excluded.
+ * <p/>
+ * Regex expressions can be used for the strings.
  *
  * @author Joachim Van der Auwera
  */
 public class LayerAuthorizationInfo implements AuthorizationInfo {
 
-	private List<String> allowedTools;
-	private List<String> allowedCommands;
-	private List<String> visibleLayers;
-	private List<String> updateAuthorizedLayers;
-	private List<String> createAuthorizedLayers;
-	private List<String> deleteAuthorizedLayers;
+	private List<String> toolsInclude;
+	private List<String> toolsExclude;
+	private List<String> commandsInclude;
+	private List<String> commandsExclude;
+	private List<String> visibleLayersInclude;
+	private List<String> visibleLayersExclude;
+	private List<String> updateAuthorizedLayersInclude;
+	private List<String> updateAuthorizedLayersExclude;
+	private List<String> createAuthorizedLayersInclude;
+	private List<String> createAuthorizedLayersExclude;
+	private List<String> deleteAuthorizedLayersInclude;
+	private List<String> deleteAuthorizedLayersExclude;
 
-	/**
-	 * Set list of allowed tools. You can include "*" to allow all tools.
-	 *
-	 * @param allowedTools list of tool ids which are authorized
-	 */
-	public void setAllowedTools(List<String> allowedTools) {
-		this.allowedTools = allowedTools;
+	public List<String> getToolsInclude() {
+		return toolsInclude;
 	}
 
-	/**
-	 * Set list of allowed commands. You can include "*" to allow all commands.
-	 *
-	 * @param allowedCommands list of command names which are authorized
-	 */
-	public void setAllowedCommands(List<String> allowedCommands) {
-		this.allowedCommands = allowedCommands;
+	public void setToolsInclude(List<String> toolsInclude) {
+		this.toolsInclude = toolsInclude;
 	}
 
-	/**
-	 * Set list of layers which should be visible. You can include "*" to allow all layers.
-	 *
-	 * @param visibleLayers list of layer ids which are authorized
-	 */
-	public void setVisibleLayers(List<String> visibleLayers) {
-		this.visibleLayers = visibleLayers;
+	public List<String> getToolsExclude() {
+		return toolsExclude;
 	}
 
-	/**
-	 * Set list of layers for which updates are authorized. You can include "*" to allow all layers.
-	 *
-	 * @param updateAuthorizedLayers list of layer ids which are authorized
-	 */
-	public void setUpdateAuthorizedLayers(List<String> updateAuthorizedLayers) {
-		this.updateAuthorizedLayers = updateAuthorizedLayers;
+	public void setToolsExclude(List<String> toolsExclude) {
+		this.toolsExclude = toolsExclude;
 	}
 
-	/**
-	 * Set list of layers for which creating features is authorized. You can include "*" to allow all layers.
-	 *
-	 * @param createAuthorizedLayers list of layer ids which are authorized
-	 */
-	public void setCreateAuthorizedLayers(List<String> createAuthorizedLayers) {
-		this.createAuthorizedLayers = createAuthorizedLayers;
+	public List<String> getCommandsInclude() {
+		return commandsInclude;
 	}
 
-	/**
-	 * Set list of layers for which deleting features is authorized. You can include "*" to allow all layers.
-	 *
-	 * @param deleteAuthorizedLayers list of layer ids which are authorized
-	 */
-	public void setDeleteAuthorizedLayers(List<String> deleteAuthorizedLayers) {
-		this.deleteAuthorizedLayers = deleteAuthorizedLayers;
+	public void setCommandsInclude(List<String> commandsInclude) {
+		this.commandsInclude = commandsInclude;
 	}
 
-	public List<String> getAllowedTools() {
-		return allowedTools;
+	public List<String> getCommandsExclude() {
+		return commandsExclude;
 	}
 
-	public List<String> getAllowedCommands() {
-		return allowedCommands;
+	public void setCommandsExclude(List<String> commandsExclude) {
+		this.commandsExclude = commandsExclude;
 	}
 
-	public List<String> getVisibleLayers() {
-		return visibleLayers;
+	public List<String> getVisibleLayersInclude() {
+		return visibleLayersInclude;
 	}
 
-	public List<String> getUpdateAuthorizedLayers() {
-		return updateAuthorizedLayers;
+	public void setVisibleLayersInclude(List<String> visibleLayersInclude) {
+		this.visibleLayersInclude = visibleLayersInclude;
 	}
 
-	public List<String> getCreateAuthorizedLayers() {
-		return createAuthorizedLayers;
+	public List<String> getVisibleLayersExclude() {
+		return visibleLayersExclude;
 	}
 
-	public List<String> getDeleteAuthorizedLayers() {
-		return deleteAuthorizedLayers;
+	public void setVisibleLayersExclude(List<String> visibleLayersExclude) {
+		this.visibleLayersExclude = visibleLayersExclude;
+	}
+
+	public List<String> getUpdateAuthorizedLayersInclude() {
+		return updateAuthorizedLayersInclude;
+	}
+
+	public void setUpdateAuthorizedLayersInclude(List<String> updateAuthorizedLayersInclude) {
+		this.updateAuthorizedLayersInclude = updateAuthorizedLayersInclude;
+	}
+
+	public List<String> getUpdateAuthorizedLayersExclude() {
+		return updateAuthorizedLayersExclude;
+	}
+
+	public void setUpdateAuthorizedLayersExclude(List<String> updateAuthorizedLayersExclude) {
+		this.updateAuthorizedLayersExclude = updateAuthorizedLayersExclude;
+	}
+
+	public List<String> getCreateAuthorizedLayersInclude() {
+		return createAuthorizedLayersInclude;
+	}
+
+	public void setCreateAuthorizedLayersInclude(List<String> createAuthorizedLayersInclude) {
+		this.createAuthorizedLayersInclude = createAuthorizedLayersInclude;
+	}
+
+	public List<String> getCreateAuthorizedLayersExclude() {
+		return createAuthorizedLayersExclude;
+	}
+
+	public void setCreateAuthorizedLayersExclude(List<String> createAuthorizedLayersExclude) {
+		this.createAuthorizedLayersExclude = createAuthorizedLayersExclude;
+	}
+
+	public List<String> getDeleteAuthorizedLayersInclude() {
+		return deleteAuthorizedLayersInclude;
+	}
+
+	public void setDeleteAuthorizedLayersInclude(List<String> deleteAuthorizedLayersInclude) {
+		this.deleteAuthorizedLayersInclude = deleteAuthorizedLayersInclude;
+	}
+
+	public List<String> getDeleteAuthorizedLayersExclude() {
+		return deleteAuthorizedLayersExclude;
+	}
+
+	public void setDeleteAuthorizedLayersExclude(List<String> deleteAuthorizedLayersExclude) {
+		this.deleteAuthorizedLayersExclude = deleteAuthorizedLayersExclude;
 	}
 
 	public BaseAuthorization getAuthorization() {

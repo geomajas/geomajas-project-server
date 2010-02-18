@@ -34,11 +34,11 @@ import org.slf4j.LoggerFactory;
 import java.util.Map;
 
 /**
- * Allow configuring authorizations at tool, allow setting a layer filter.
+ * Allow configuring authorizations including a layer filter.
  *
  * @author Joachim Van der Auwera
  */
-public class LayerFilterAuthorizationInfo extends LayerAuthorizationInfo implements AuthorizationInfo {
+public class LayerFilterAuthorizationInfo extends LayerAuthorizationInfo {
 
 	private final Logger log = LoggerFactory.getLogger(LayerFilterAuthorizationInfo.class);
 

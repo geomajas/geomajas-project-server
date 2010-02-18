@@ -20,6 +20,7 @@
   ~ You should have received a copy of the GNU Affero General Public License
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
+
 <beans
 		xmlns="http://www.springframework.org/schema/beans"
 		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -49,9 +50,9 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 					<property name="authorizations">
 						<list>
 							<bean class="org.geomajas.plugin.springsecurity.configuration.LayerAuthorizationInfo">
-								<property name="visibleLayers">
+								<property name="visibleLayersInclude">
 									<list>
-										<value>*</value>
+										<value>.*</value>
 									</list>
 								</property>
 							</bean>
@@ -65,16 +66,14 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 					<property name="authorizations">
 						<list>
 							<bean class="org.geomajas.plugin.springsecurity.configuration.LayerFilterAuthorizationInfo">
-								<property name="visibleLayers">
+								<property name="visibleLayersInclude">
 									<list>
-										<value>*</value>
+										<value>.*</value>
 									</list>
 								</property>
 								<property name="filters">
 									<map>
-										<entry key="beans">
-											<value>stringAttr='bean2'</value>
-										</entry>
+										<entry key="beans" value="stringAttr='bean2'"/>
 									</map>
 								</property>
 							</bean>
