@@ -37,10 +37,8 @@ import org.geomajas.layer.Layer;
 import org.geomajas.layer.LayerException;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
-import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.referencing.CRS;
-import org.geotools.referencing.GeodeticCalculator;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
@@ -52,6 +50,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.stereotype.Component;
 
+import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
 
 /**
@@ -159,11 +158,15 @@ public class ConfigurationBeanPostProcessor implements BeanPostProcessor {
 				throw new LayerException(ExceptionCode.MAP_MAX_EXTENT_MISSING);
 			}
 			CoordinateReferenceSystem crs = CRS.decode(mapCrsKey);
-			GeodeticCalculator calculator = new GeodeticCalculator(crs);
-			calculator.setStartingPosition(new DirectPosition2D(crs, mapBounds.getX(), mapBounds.getY()));
-			calculator.setDestinationPosition(new DirectPosition2D(crs, mapBounds.getMaxX(), mapBounds.getY()));
-			double distance = calculator.getOrthodromicDistance();
-			return distance / mapBounds.getWidth();
+//			GeodeticCalculator calculator = new GeodeticCalculator(crs);
+//			calculator.setStartingPosition(new DirectPosition2D(crs, mapBounds.getX(), mapBounds.getY()));
+//			calculator.setDestinationPosition(new DirectPosition2D(crs, mapBounds.getMaxX(), mapBounds.getY()));
+//			double distance = calculator.getOrthodromicDistance();
+//			return distance / mapBounds.getWidth();
+			Coordinate c1 = new Coordinate(0, 0);
+			Coordinate c2 = new Coordinate(1, 0);
+			double distance = JTS.orthodromicDistance(c1, c2, crs);
+			return distance;
 		} catch (FactoryException e) {
 			throw new LayerException(e, ExceptionCode.LAYER_CRS_INIT_PROBLEM);
 		} catch (TransformException e) {
