@@ -27,8 +27,8 @@ import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.PrecisionModel;
-import org.geomajas.configuration.VectorLayerInfo;
-import org.geomajas.layer.VectorLayer;
+import org.geomajas.configuration.LayerInfo;
+import org.geomajas.layer.Layer;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.security.AreaAuthorization;
 import org.geomajas.security.AttributeAuthorization;
@@ -363,12 +363,12 @@ public class SecurityContextImpl implements SecurityContext {
 	}
 
 	private Geometry areaCombine(String layerId, AreaCombineGetter areaGetter) {
-		VectorLayer layer = configurationService.getVectorLayer(layerId);
+		Layer layer = configurationService.getLayer(layerId);
 		if (null == layer) {
 			log.error("areaCombine on unknown layer " + layerId);
 			return null;
 		}
-		VectorLayerInfo layerInfo = layer.getLayerInfo();
+		LayerInfo layerInfo = layer.getLayerInfo();
 
 		// base is the max bounds of the layer
 		Envelope maxBounds = converterService.toInternal(layerInfo.getMaxExtent());

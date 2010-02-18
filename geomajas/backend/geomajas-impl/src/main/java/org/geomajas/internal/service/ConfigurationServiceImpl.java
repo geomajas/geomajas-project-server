@@ -20,6 +20,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package org.geomajas.internal.service;
 
 import org.geomajas.configuration.LayerInfo;
@@ -38,6 +39,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
+import java.util.Collection;
+
 /**
  * Container class which contains runtime information about the parameters and other information for Geomajas. Values
  * are injected using Spring.
@@ -49,6 +52,8 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 
 	@Autowired
 	private ApplicationContext applicationContext;
+
+	private static Collection<Layer> LAYERS;
 
 	public VectorLayer getVectorLayer(String id) {
 		Layer layer = getLayer(id);
@@ -62,7 +67,11 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 		if (null == id) {
 			return null;
 		}
-		for (Layer layer : applicationContext.getBeansOfType(Layer.class).values()) {
+
+		if (null == LAYERS) {
+			LAYERS = applicationContext.getBeansOfType(Layer.class).values();
+		}
+		for (Layer layer : LAYERS) {
 			LayerInfo li = layer.getLayerInfo();
 			if (null == li) {
 				throw new RuntimeException("Layer without LayerInfo found");
@@ -78,8 +87,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 		if (null == mapId || null == applicationId) {
 			return null;
 		}
-		ClientApplicationInfo application = (ClientApplicationInfo) applicationContext.getBean(applicationId,
-				ClientApplicationInfo.class);
+		ClientApplicationInfo application = applicationContext.getBean(applicationId, ClientApplicationInfo.class);
 		if (application != null) {
 			for (ClientMapInfo map : application.getMaps()) {
 				if (mapId.equals(map.getId())) {

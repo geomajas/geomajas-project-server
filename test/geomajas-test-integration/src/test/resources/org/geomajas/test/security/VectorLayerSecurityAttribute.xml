@@ -65,11 +65,42 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 					<property name="userName" value="Marino Van Hoenacker"/>
 					<property name="authorizations">
 						<list>
-							<bean class="org.geomajas.plugin.springsecurity.configuration.LayerAuthorizationInfo">
+							<bean class="org.geomajas.plugin.springsecurity.configuration.AttributeAuthorizationInfo">
 								<property name="visibleLayersInclude">
 									<list>
-										<value>roads</value>
+										<value>.*</value>
 									</list>
+								</property>
+								<property name="layers">
+									<map>
+										<entry key="beans">
+											<bean class="org.geomajas.plugin.springsecurity.configuration.LayerAttributeAuthorizationInfo">
+												<property name="readableIncludes">
+													<list>
+														<value>.*</value>
+													</list>
+												</property>
+												<property name="readableExcludes">
+													<list>
+														<value>booleanAttr</value>
+														<value>stringAttr@2</value>
+													</list>
+												</property>
+												<property name="writableIncludes">
+													<list>
+														<value>.*</value>
+													</list>
+												</property>
+												<property name="writableExcludes">
+													<list>
+														<value>booleanAttr</value>
+														<value>stringAttr</value>
+														<value>intAttr@2</value>
+													</list>
+												</property>
+											</bean>
+										</entry>
+									</map>
 								</property>
 							</bean>
 						</list>

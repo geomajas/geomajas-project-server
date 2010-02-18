@@ -300,7 +300,7 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 			throws GeomajasException {
 		FeatureModel featureModel = layer.getFeatureModel();
 		InternalFeatureImpl res = new InternalFeatureImpl();
-		res.setId(layerId + "." + featureModel.getId(feature));
+		res.setId(featureModel.getId(feature));
 		res.setLayer(layer);
 
 		// If allowed, add the label to the InternalFeature:

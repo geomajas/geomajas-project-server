@@ -315,7 +315,7 @@ public final class FilterServiceImpl implements FilterService {
 	 * @return filter
 	 */
 	public Filter createFalseFilter() {
-		return Filter.INCLUDE;
+		return Filter.EXCLUDE;
 	}
 
 	/**

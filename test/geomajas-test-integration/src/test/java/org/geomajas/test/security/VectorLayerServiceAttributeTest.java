@@ -57,7 +57,6 @@ public class VectorLayerServiceAttributeTest {
 
 	private static final String LAYER_ID = "beans";
 	private static final String STRING_ATTR = "stringAttr";
-	private static final double ALLOWANCE = .00000001;
 
 	@Autowired
 	private VectorLayerService layerService;
@@ -84,14 +83,14 @@ public class VectorLayerServiceAttributeTest {
 	}
 
 	@Test
-	public void testGetFeaturesAttributeAuthorization() {
+	public void testGetFeaturesAttributeAuthorization() throws Exception {
 		login("");
 		// @todo
 		Assert.fail();
 	}
 
 	@Test
-	public void testSaveOrUpdateAttributeWritable() {
+	public void testSaveOrUpdateAttributeWritable() throws Exception {
 		login("");
 		// @todo
 		Assert.fail();

@@ -30,18 +30,24 @@ import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasSecurityException;
 import org.geomajas.layer.bean.BeanLayer;
 import org.geomajas.layer.feature.InternalFeature;
+import org.geomajas.layer.feature.attribute.StringAttribute;
 import org.geomajas.plugin.springsecurity.command.dto.LoginRequest;
 import org.geomajas.plugin.springsecurity.command.dto.LoginResponse;
+import org.geomajas.security.SecurityContext;
 import org.geomajas.security.SecurityManager;
+import org.geomajas.service.FilterService;
 import org.geomajas.service.VectorLayerService;
 import org.geotools.referencing.CRS;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.opengis.filter.Filter;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -57,7 +63,6 @@ public class VectorLayerServiceFeatureTest {
 
 	private static final String LAYER_ID = "beans";
 	private static final String STRING_ATTR = "stringAttr";
-	private static final double ALLOWANCE = .00000001;
 
 	@Autowired
 	private VectorLayerService layerService;
@@ -70,7 +75,13 @@ public class VectorLayerServiceFeatureTest {
 	private SecurityManager securityManager;
 
 	@Autowired
+	private SecurityContext securityContext;
+
+	@Autowired
 	private CommandDispatcher commandDispatcher;
+
+	@Autowired
+	private FilterService filterService;
 
 	// assure we are logged in as a specific user to set correct authorizations
 	public void login(String name) {
@@ -81,26 +92,89 @@ public class VectorLayerServiceFeatureTest {
 		Assert.assertFalse(response.isError());
 		Assert.assertTrue(response instanceof LoginResponse);
 		securityManager.createSecurityContext(((LoginResponse)response).getToken());
+		System.out.println("logged in as " + name);
 	}
 
 	@Test
-	public void testGetFeaturesFeatureAuthorization() {
-		login("");
+	public void testGetFeaturesFeatureAuthorization() throws Exception {
+		List<InternalFeature> features;
+		CoordinateReferenceSystem crs = CRS.decode(beanLayer.getLayerInfo().getCrs());
+
+		login("luc");
+		features = layerService.getFeatures(LAYER_ID, crs, null, null, VectorLayerService.FEATURE_INCLUDE_NONE);
+		Assert.assertEquals(3, features.size());
+
+		login("marino");
+		features = layerService.getFeatures(LAYER_ID, crs, null, null, VectorLayerService.FEATURE_INCLUDE_NONE);
+		System.out.println("securityContext " + securityContext.getUserId());
+		Assert.assertEquals(2, features.size());
+	}
+
+	@Test
+	public void testSaveOrUpdateFeatureWritable() throws Exception {
+		Filter filter;
+		List<InternalFeature> oldFeatures;
+		List<InternalFeature> newFeatures;
+		InternalFeature feature;
+		CoordinateReferenceSystem crs = CRS.decode(beanLayer.getLayerInfo().getCrs());
+		login("marino");
+		// should be able to update feature "1"
+		filter = filterService.createFidFilter(new String[]{"1"});
+		oldFeatures = layerService.getFeatures(LAYER_ID, crs, filter, null, 
+				VectorLayerService.FEATURE_INCLUDE_ATTRIBUTES);
+		System.out.println("securityContext " + securityContext.getUserId());
+		System.out.println("oldFeatures " + oldFeatures + ", filter " + filter);
+		Assert.assertEquals(1, oldFeatures.size());
+		feature = oldFeatures.get(0);
+		newFeatures = new ArrayList<InternalFeature>();
+		feature = feature.clone();
+		newFeatures.add(feature);
+		feature.getAttributes().put(STRING_ATTR, new StringAttribute("changed"));
+		layerService.saveOrUpdate(LAYER_ID, crs, oldFeatures, newFeatures);
+		// should not able to update feature "3"
+		filter = filterService.createFidFilter(new String[]{"3"});
+		oldFeatures = layerService.getFeatures(LAYER_ID, crs, filter, null,
+				VectorLayerService.FEATURE_INCLUDE_ATTRIBUTES);
+		Assert.assertEquals(1, oldFeatures.size());
+		feature = oldFeatures.get(0);
+		newFeatures = new ArrayList<InternalFeature>();
+		feature = feature.clone();
+		newFeatures.add(feature);
+		feature.getAttributes().put(STRING_ATTR, new StringAttribute("changed"));
+		try {
+			layerService.saveOrUpdate(LAYER_ID, crs, oldFeatures, newFeatures);
+			Assert.fail("should have throw GeomajasSecurityException");
+		} catch (GeomajasSecurityException gse) {
+			Assert.assertEquals(ExceptionCode.FEATURE_UPDATE_PROHIBITED, gse.getExceptionCode());
+		}
+
+		login("luc");
+		// luc should be able to modify "3"
+		filter = filterService.createFidFilter(new String[]{"3"});
+		oldFeatures = layerService.getFeatures(LAYER_ID,
+				crs, filter, null, VectorLayerService.FEATURE_INCLUDE_ATTRIBUTES);
+		Assert.assertEquals(1, oldFeatures.size());
+		feature = oldFeatures.get(0);
+		newFeatures = new ArrayList<InternalFeature>();
+		feature = feature.clone();
+		newFeatures.add(feature);
+		feature.getAttributes().put(STRING_ATTR, new StringAttribute("changed"));
+		layerService.saveOrUpdate(LAYER_ID, crs, oldFeatures, newFeatures);
+	}
+
+	/*
+	@Test
+	public void testSaveOrUpdateDeleteFeature() throws Exception {
+		login("marino");
 		// @todo
 		Assert.fail();
 	}
 
 	@Test
-	public void testSaveOrUpdateFeatureWritable() {
-		login("");
+	public void testSaveOrUpdateCreateFeature() throws Exception {
+		login("marino");
 		// @todo
 		Assert.fail();
 	}
-
-	@Test
-	public void testSaveOrUpdateCreateDeleteFeature() {
-		login("");
-		// @todo
-		Assert.fail();
-	}
+	*/
 }

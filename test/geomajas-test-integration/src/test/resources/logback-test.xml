@@ -11,11 +11,13 @@
 		<appender-ref ref="CONSOLE"/>
 	</root>
 
+	<!--
 	<logger name="org.geomajas.layer.bean.BeanLayer">
 		<level value="DEBUG"/>
 	</logger>
 	<logger name="org.geomajas.layer.bean.BeanFeatureModel">
 		<level value="DEBUG"/>		
 	</logger>
+	-->
 
 </configuration>

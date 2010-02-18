@@ -55,6 +55,11 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 										<value>.*</value>
 									</list>
 								</property>
+								<property name="updateAuthorizedLayersInclude">
+									<list>
+										<value>.*</value>
+									</list>
+								</property>
 							</bean>
 						</list>
 					</property>
@@ -65,11 +70,46 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 					<property name="userName" value="Marino Van Hoenacker"/>
 					<property name="authorizations">
 						<list>
-							<bean class="org.geomajas.plugin.springsecurity.configuration.LayerAuthorizationInfo">
+							<bean class="org.geomajas.plugin.springsecurity.configuration.FeatureAuthorizationInfo">
 								<property name="visibleLayersInclude">
 									<list>
-										<value>roads</value>
+										<value>.*</value>
 									</list>
+								</property>
+								<property name="layers">
+									<map>
+										<entry key="beans">
+											<bean class="org.geomajas.plugin.springsecurity.configuration.LayerFeatureAuthorizationInfo">
+												<property name="createAuthorized" value="false"/>
+												<property name="visibleIncludes">
+													<list>
+														<value>.*</value>
+													</list>
+												</property>
+												<property name="visibleExcludes">
+													<list>
+														<value>2</value>
+													</list>
+												</property>
+												<property name="updateAuthorizedIncludes">
+													<list>
+														<value>.*</value>
+													</list>
+												</property>
+												<property name="updateAuthorizedExcludes">
+													<list>
+														<value>2</value>
+														<value>3</value>
+													</list>
+												</property>
+												<property name="deleteAuthorizedIncludes">
+													<list>
+														<value>1</value>
+													</list>
+												</property>
+											</bean>
+										</entry>
+									</map>
 								</property>
 							</bean>
 						</list>

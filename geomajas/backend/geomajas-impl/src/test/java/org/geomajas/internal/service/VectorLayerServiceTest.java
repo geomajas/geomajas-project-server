@@ -107,7 +107,6 @@ public class VectorLayerServiceTest {
 		feature = feature.clone();
 		feature.getAttributes().put(STRING_ATTR, new StringAttribute("changed"));
 		newFeatures.add(feature);
-		feature.getAttributes().put(STRING_ATTR, new StringAttribute("changed"));
 		layerService.saveOrUpdate(LAYER_ID, crs, oldFeatures, newFeatures);
 
 		Iterator<FeatureBean> iterator =

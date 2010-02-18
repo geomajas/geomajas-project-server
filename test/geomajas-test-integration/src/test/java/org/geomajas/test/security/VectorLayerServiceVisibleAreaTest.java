@@ -84,21 +84,21 @@ public class VectorLayerServiceVisibleAreaTest {
 	}
 
 	@Test
-	public void testGetFeaturesVisibleArea() {
+	public void testGetFeaturesVisibleArea() throws Exception {
 		login("");
 		// @todo
 		Assert.fail();
 	}
 
 	@Test
-	public void testGetBoundsVisibleArea() {
+	public void testGetBoundsVisibleArea() throws Exception {
 		login("");
 		// @todo
 		Assert.fail();
 	}
 
 	@Test
-	public void testSaveOrUpdateCreateDeleteArea() {
+	public void testSaveOrUpdateCreateDeleteArea() throws Exception {
 		login("");
 		// @todo
 		Assert.fail();
