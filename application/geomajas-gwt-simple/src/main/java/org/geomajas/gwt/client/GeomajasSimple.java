@@ -82,7 +82,6 @@ public class GeomajasSimple implements EntryPoint {
 		if (!"org.geomajas.gwt.GeomajasSimple".equals(name)) {
 			return;
 		}
-		SC.showConsole();
 
 		// Debug console (ctrl-d)
 		if (!GWT.isScript()) {
