@@ -70,7 +70,7 @@ dojo.declare("Feature", PainterVisitable, {
 	},
 
 	/**
-	 * Implemantation of the PainterVisitable interface.
+	 * Implementation of the PainterVisitable interface.
 	 * Accept visitor visiting.
 	 */
 	accept : function (/*PainterVisitor*/visitor, /*Bbox*/ bbox, recursive) {
