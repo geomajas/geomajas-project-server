@@ -50,6 +50,23 @@ public class SearchCriterion implements Serializable {
 	public SearchCriterion() {
 	}
 
+	/**
+	 * Constructor that initializes all fields with their values.
+	 * 
+	 * @param attributeName
+	 *            Set the name of the alpha numerical attribute on which this criterion operates. This attribute name is
+	 *            one of the attributes from the vector layer configuration.
+	 * @param operator
+	 *            The operator used in the criterion such as '=', '>', ...
+	 * @param value
+	 *            The value for this criterion as a formatted string.
+	 */
+	public SearchCriterion(String attributeName, String operator, String value) {
+		this.attributeName = attributeName;
+		this.operator = operator;
+		this.value = value;
+	}
+
 	// -------------------------------------------------------------------------
 	// Public methods:
 	// -------------------------------------------------------------------------

@@ -109,4 +109,11 @@ public interface SampleMessages extends Messages {
 	String toolSecurityTitle();
 
 	String toolSecurityDescription();
+
+	//AttributeSecurity sample:
+
+	String attributeSecurityTitle();
+
+	String attributeSecurityDescription();
+
 }

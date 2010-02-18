@@ -318,7 +318,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 			if (null == scalebar) {
 				scalebar = new ScaleBar("screen.scalebar");
 			}
-			scalebar.initialize(unitType, unitLength, new Coordinate(20, graphics.getHeight() - 30));
+			scalebar.initialize(unitType, unitLength, new Coordinate(20, graphics.getHeight() - 25));
 			scalebar.adjustScale(mapModel.getMapView().getCurrentScale());
 			render(scalebar, "all");
 		} else {

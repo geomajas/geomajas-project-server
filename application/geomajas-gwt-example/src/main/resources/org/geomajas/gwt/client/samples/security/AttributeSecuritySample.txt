@@ -1,0 +1,74 @@
+	public Canvas getViewPanel() {
+		final VLayout layout = new VLayout();
+		layout.setMembersMargin(10);
+		layout.setWidth100();
+		layout.setHeight100();
+
+		// Create horizontal layout for login buttons:
+		HLayout buttonLayout = new HLayout();
+		buttonLayout.setMembersMargin(10);
+		buttonLayout.setHeight(20);
+
+		// Create a button that logs in user "marino":
+		IButton loginButtonMarino = new IButton(I18nProvider.getSampleMessages().securityLogInWith("marino"));
+		loginButtonMarino.setWidth(150);
+		loginButtonMarino.addClickHandler(new ClickHandler() {
+
+			public void onClick(ClickEvent event) {
+				Authentication.getInstance().login("marino", "marino", null);
+			}
+		});
+		buttonLayout.addMember(loginButtonMarino);
+
+		// Create a button that logs in user "luc":
+		IButton loginButtonLuc = new IButton(I18nProvider.getSampleMessages().securityLogInWith("luc"));
+		loginButtonLuc.setWidth(150);
+		loginButtonLuc.addClickHandler(new ClickHandler() {
+
+			public void onClick(ClickEvent event) {
+				Authentication.getInstance().login("luc", "luc", null);
+			}
+		});
+		buttonLayout.addMember(loginButtonLuc);
+
+		// Features are bound to a map's model. So let's create a map first:
+		final MapWidget map = new MapWidget("duisburgMap", "gwt-samples");
+		map.initialize();
+
+		// Get a single feature from the server, using the SearchFeaturesCommand:
+		SearchFeatureRequest request = new SearchFeatureRequest();
+		request.setBooleanOperator("AND");
+		request.setCrs("EPSG:4326"); // Can normally be acquired from the MapModel.
+		request.setLayerId("roads");
+		request.setMax(1);
+		request.setCriteria(new SearchCriterion[] { new SearchCriterion("ID", "=", "1") });
+		final GwtCommand command = new GwtCommand("command.feature.Search");
+		command.setCommandRequest(request);
+
+		IButton editFeatureButton = new IButton("Show FeatureAttributeWindow widget");
+		editFeatureButton.setWidth(150);
+		editFeatureButton.addClickHandler(new ClickHandler() {
+
+			public void onClick(ClickEvent event) {
+				final VectorLayer layer = (VectorLayer) map.getMapModel().getLayerByLayerId("roads");
+				GwtCommandDispatcher.getInstance().execute(command, new CommandCallback() {
+
+					public void execute(CommandResponse response) {
+						if (response instanceof SearchFeatureResponse) {
+							SearchFeatureResponse resp = (SearchFeatureResponse) response;
+							for (org.geomajas.layer.feature.Feature dtoFeature : resp.getFeatures()) {
+								Feature feature = new Feature(dtoFeature, layer);
+								FeatureAttributeWindow editor = new FeatureAttributeWindow(feature, true);
+								editor.setWidth(400);
+								layout.addMember(editor);
+							}
+						}
+					}
+				});
+			}
+		});
+
+		layout.addMember(buttonLayout);
+		layout.addMember(editFeatureButton);
+		return layout;
+	}

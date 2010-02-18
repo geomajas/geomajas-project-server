@@ -162,7 +162,7 @@ public class FeatureAttributeEditor extends Canvas implements HasItemChangedHand
 	 */
 	public void setFeature(Feature feature) {
 		if (feature != null) {
-			// @todo why do these need to be cloned? document of fix
+			// TODO why do these need to be cloned? document of fix
 			this.original = (Feature) feature.clone();
 			this.feature = (Feature) feature.clone();
 			copyToForm(this.feature);

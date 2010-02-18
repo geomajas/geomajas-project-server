@@ -23,89 +23,65 @@
 
 package org.geomajas.gwt.client.samples.security;
 
+import org.geomajas.command.CommandResponse;
+import org.geomajas.command.dto.SearchFeatureRequest;
+import org.geomajas.command.dto.SearchFeatureResponse;
+import org.geomajas.gwt.client.command.CommandCallback;
+import org.geomajas.gwt.client.command.GwtCommand;
+import org.geomajas.gwt.client.command.GwtCommandDispatcher;
+import org.geomajas.gwt.client.map.feature.Feature;
+import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.samples.base.SamplePanel;
 import org.geomajas.gwt.client.samples.base.SamplePanelFactory;
 import org.geomajas.gwt.client.samples.i18n.I18nProvider;
+import org.geomajas.gwt.client.widget.FeatureAttributeWindow;
 import org.geomajas.gwt.client.widget.MapWidget;
-import org.geomajas.gwt.client.widget.Toolbar;
+import org.geomajas.layer.feature.SearchCriterion;
 import org.geomajas.plugin.springsecurity.client.Authentication;
 
-import com.smartgwt.client.util.BooleanCallback;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
-import com.smartgwt.client.widgets.events.DrawEvent;
-import com.smartgwt.client.widgets.events.DrawHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
  * <p>
- * Sample that tests security on toolbar tool level.
+ * Sample that tests security on attribute level.
  * </p>
  * 
  * @author Pieter De Graef
  */
-public class ToolSecuritySample extends SamplePanel {
+public class AttributeSecuritySample extends SamplePanel {
 
-	public static final String TITLE = "ToolSecurity";
-	
-	private MapWidget map;
-	
-	private Toolbar toolbar;
+	public static final String TITLE = "AttributeSecurity";
 
 	public static final SamplePanelFactory FACTORY = new SamplePanelFactory() {
 
 		public SamplePanel createPanel() {
-			return new ToolSecuritySample();
+			return new AttributeSecuritySample();
 		}
 	};
 
 	public Canvas getViewPanel() {
 		final VLayout layout = new VLayout();
+		layout.setMembersMargin(10);
 		layout.setWidth100();
 		layout.setHeight100();
 
 		// Create horizontal layout for login buttons:
 		HLayout buttonLayout = new HLayout();
 		buttonLayout.setMembersMargin(10);
-		buttonLayout.setHeight(30);
+		buttonLayout.setHeight(20);
 
-		
-		// Map with ID wmsToolbarMap is defined in the XML configuration. (mapWmsToolbar.xml)
-		map = new MapWidget("wmsToolbarMap", "gwt-samples");
-		toolbar = new Toolbar(map);
-		map.addDrawHandler(new DrawHandler() {
-
-			public void onDraw(DrawEvent event) {
-				map.initialize();
-			}
-		});
-
-		// Create login handler that re-initializes the map on a successful login:
-		final BooleanCallback initMapCallback = new BooleanCallback() {
-
-			public void execute(Boolean value) {
-				if (value) {
-					toolbar.destroy();
-					map.destroy();
-					map = new MapWidget("wmsToolbarMap", "gwt-samples");
-					toolbar = new Toolbar(map);
-					layout.addMember(toolbar);
-					layout.addMember(map);
-					map.initialize();
-				}
-			}
-		};
-
-		// Create a button that logs in user "mark":
-		IButton loginButtonMarino = new IButton(I18nProvider.getSampleMessages().securityLogInWith("mark"));
+		// Create a button that logs in user "marino":
+		IButton loginButtonMarino = new IButton(I18nProvider.getSampleMessages().securityLogInWith("marino"));
 		loginButtonMarino.setWidth(150);
 		loginButtonMarino.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				Authentication.getInstance().login("mark", "mark", initMapCallback);
+				Authentication.getInstance().login("marino", "marino", null);
 			}
 		});
 		buttonLayout.addMember(loginButtonMarino);
@@ -116,25 +92,59 @@ public class ToolSecuritySample extends SamplePanel {
 		loginButtonLuc.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				Authentication.getInstance().login("luc", "luc", initMapCallback);
+				Authentication.getInstance().login("luc", "luc", null);
 			}
 		});
 		buttonLayout.addMember(loginButtonLuc);
-		
+
+		// Features are bound to a map's model. So let's create a map first:
+		final MapWidget map = new MapWidget("duisburgMap", "gwt-samples");
+		map.initialize();
+
+		// Get a single feature from the server, using the SearchFeaturesCommand:
+		SearchFeatureRequest request = new SearchFeatureRequest();
+		request.setBooleanOperator("AND");
+		request.setCrs("EPSG:4326"); // Can normally be acquired from the MapModel.
+		request.setLayerId("roads");
+		request.setMax(1);
+		request.setCriteria(new SearchCriterion[] { new SearchCriterion("ID", "=", "1") });
+		final GwtCommand command = new GwtCommand("command.feature.Search");
+		command.setCommandRequest(request);
+
+		IButton editFeatureButton = new IButton("Show FeatureAttributeWindow widget");
+		editFeatureButton.setWidth(150);
+		editFeatureButton.addClickHandler(new ClickHandler() {
+
+			public void onClick(ClickEvent event) {
+				final VectorLayer layer = (VectorLayer) map.getMapModel().getLayerByLayerId("roads");
+				GwtCommandDispatcher.getInstance().execute(command, new CommandCallback() {
+
+					public void execute(CommandResponse response) {
+						if (response instanceof SearchFeatureResponse) {
+							SearchFeatureResponse resp = (SearchFeatureResponse) response;
+							for (org.geomajas.layer.feature.Feature dtoFeature : resp.getFeatures()) {
+								Feature feature = new Feature(dtoFeature, layer);
+								FeatureAttributeWindow editor = new FeatureAttributeWindow(feature, true);
+								editor.setWidth(400);
+								layout.addMember(editor);
+							}
+						}
+					}
+				});
+			}
+		});
 
 		layout.addMember(buttonLayout);
-		layout.addMember(toolbar);
-		layout.addMember(map);
+		layout.addMember(editFeatureButton);
 		return layout;
 	}
 
 	public String getDescription() {
-		return I18nProvider.getSampleMessages().toolSecurityDescription();
+		return I18nProvider.getSampleMessages().attributeSecurityDescription();
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "/org/geomajas/gwt/samples/security/security.xml",
-				"/org/geomajas/gwt/samples/security/mapWmsToolbar.xml" };
+		return new String[] { "/org/geomajas/gwt/samples/security/security.xml" };
 	}
 
 	public String ensureUserLoggedIn() {

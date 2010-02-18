@@ -93,7 +93,7 @@ public class AbstractAttributeForm {
 	 * @param attribute
 	 *            The attribute value.
 	 */
-	public void toForm(String name, Attribute attribute) {
+	public void toForm(String name, Attribute<?> attribute) {
 		AttributeInfo info = infos.get(name);
 		if (info instanceof PrimitiveAttributeInfo) {
 			PrimitiveAttribute<?> primitive = (PrimitiveAttribute<?>) attribute;
@@ -133,6 +133,7 @@ public class AbstractAttributeForm {
 						setValue(info.getName(), (DateAttribute) primitive);
 						break;
 				}
+				form.getField(info.getName()).setDisabled(!attribute.isEditable());
 			}
 		} else {
 			// TODO
@@ -149,7 +150,7 @@ public class AbstractAttributeForm {
 	 * @param attribute
 	 *            The actual attribute to place the value in.
 	 */
-	public void fromForm(String name, Attribute attribute) {
+	public void fromForm(String name, Attribute<?> attribute) {
 		AttributeInfo info = infos.get(name);
 		if (info instanceof PrimitiveAttributeInfo) {
 			PrimitiveAttribute<?> primitive = (PrimitiveAttribute<?>) attribute;

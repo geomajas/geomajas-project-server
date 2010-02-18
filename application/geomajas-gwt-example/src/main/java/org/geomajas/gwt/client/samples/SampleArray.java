@@ -28,6 +28,7 @@ import org.geomajas.gwt.client.samples.i18n.I18nProvider;
 import org.geomajas.gwt.client.samples.mapwidget.NavigationSample;
 import org.geomajas.gwt.client.samples.mapwidget.OpenStreetMapSample;
 import org.geomajas.gwt.client.samples.mapwidget.WmsSample;
+import org.geomajas.gwt.client.samples.security.AttributeSecuritySample;
 import org.geomajas.gwt.client.samples.security.CommandSecuritySample;
 import org.geomajas.gwt.client.samples.security.FeatureSecuritySample;
 import org.geomajas.gwt.client.samples.security.LayerSecuritySample;
@@ -47,6 +48,7 @@ public final class SampleArray {
 
 	public static SampleTreeNode[] getSampleArray() {
 		return new SampleTreeNode[] {
+				// MapWidget samples:
 				new SampleTreeNode("MapWidget", "/images/world.png", "MapWidget", "topLevel"),
 				new SampleTreeNode(I18nProvider.getSampleMessages().osmTitle(),
 						"[ISOMORPHIC]/geomajas/layer-raster.png", OpenStreetMapSample.OSM_TITLE, "MapWidget",
@@ -56,6 +58,8 @@ public final class SampleArray {
 				new SampleTreeNode(I18nProvider.getSampleMessages().navigationTitle(),
 						"[ISOMORPHIC]/geomajas/layer.png", NavigationSample.TITLE, "MapWidget",
 						NavigationSample.FACTORY),
+
+				// Security samples:
 				new SampleTreeNode(I18nProvider.getSampleMessages().treeGroupSecurity(),
 						"[ISOMORPHIC]/geomajas/silk/key.png", "Security", "topLevel"),
 				new SampleTreeNode(I18nProvider.getSampleMessages().loginTitle(),
@@ -67,6 +71,9 @@ public final class SampleArray {
 				new SampleTreeNode(I18nProvider.getSampleMessages().featureSecurityTitle(),
 						"[ISOMORPHIC]/geomajas/springsecurity/key_go.png",
 						FeatureSecuritySample.FEATURE_SECUTIRY_TITLE, "Security", FeatureSecuritySample.FACTORY),
+				new SampleTreeNode(I18nProvider.getSampleMessages().attributeSecurityTitle(),
+						"[ISOMORPHIC]/geomajas/springsecurity/key_go.png", AttributeSecuritySample.TITLE, "Security",
+						AttributeSecuritySample.FACTORY),
 				new SampleTreeNode(I18nProvider.getSampleMessages().commandSecurityTitle(),
 						"[ISOMORPHIC]/geomajas/springsecurity/key_go.png", CommandSecuritySample.TITLE, "Security",
 						CommandSecuritySample.FACTORY),

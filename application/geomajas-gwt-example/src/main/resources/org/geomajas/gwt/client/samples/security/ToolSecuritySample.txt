@@ -59,11 +59,7 @@
 		
 
 		layout.addMember(buttonLayout);
-		
-		VLayout mapLayout = new VLayout();
-		mapLayout.setShowEdges(true);
-		mapLayout.addMember(toolbar);
-		mapLayout.addMember(map);
-		layout.addMember(mapLayout);
+		layout.addMember(toolbar);
+		layout.addMember(map);
 		return layout;
 	}

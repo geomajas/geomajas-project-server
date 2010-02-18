@@ -29,6 +29,7 @@ import org.geomajas.gwt.client.samples.base.SamplePanelFactory;
 import org.geomajas.gwt.client.samples.base.SampleTree;
 import org.geomajas.gwt.client.samples.base.SampleTreeNode;
 import org.geomajas.gwt.client.samples.i18n.I18nProvider;
+import org.geomajas.gwt.client.samples.i18n.Samples;
 import org.geomajas.gwt.client.widget.ActivityMonitor;
 import org.geomajas.gwt.client.widget.LocaleSelect;
 import org.geomajas.plugin.springsecurity.client.Authentication;
@@ -40,6 +41,8 @@ import org.geomajas.plugin.springsecurity.client.event.LogoutHandler;
 import org.geomajas.plugin.springsecurity.client.event.LogoutSuccessEvent;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.i18n.client.ConstantsWithLookup;
 import com.smartgwt.client.types.TabBarControls;
 import com.smartgwt.client.util.BooleanCallback;
 import com.smartgwt.client.widgets.Canvas;
@@ -67,6 +70,7 @@ public class GeomajasSamples implements EntryPoint {
 	private SampleTree sampleTree;
 
 	public void onModuleLoad() {
+		org.geomajas.gwt.client.i18n.I18nProvider.setLookUp(GWT.<ConstantsWithLookup> create(Samples.class));
 
 		// Setup the overall layout:
 		VLayout main = new VLayout();

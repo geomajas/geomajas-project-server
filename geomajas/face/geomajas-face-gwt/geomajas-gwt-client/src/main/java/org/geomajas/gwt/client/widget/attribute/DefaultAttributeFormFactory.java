@@ -83,7 +83,9 @@ public class DefaultAttributeFormFactory implements AttributeFormFactory {
 		EditableAttributeForm form = new EditableAttributeForm(infos);
 		DataSource source = new DataSource();
 		for (AttributeInfo info : infos) {
-			source.addField(createField(info));
+			DataSourceField field = createField(info);
+			field.setCanEdit(info.isEditable());
+			source.addField(field);
 		}
 		form.setDataSource(source);
 		return form;

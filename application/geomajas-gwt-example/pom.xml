@@ -182,6 +182,8 @@
 					<disableCastChecking>true</disableCastChecking>
 					<disableClassMetadata>true</disableClassMetadata>
 					<extraJvmArgs>-Xmx512M -Xss1024k</extraJvmArgs>
+					<i18nConstantsWithLookupBundle>org.geomajas.gwt.client.samples.i18n.Samples
+					</i18nConstantsWithLookupBundle>
 				</configuration>
 				<executions>
 					<execution>
@@ -191,6 +193,13 @@
 							<goal>compile</goal>
 							<goal>generateAsync</goal>
 							<goal>test</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>i18n</id>
+						<phase>generate-resources</phase>
+						<goals>
+							<goal>i18n</goal>
 						</goals>
 					</execution>
 				</executions>
