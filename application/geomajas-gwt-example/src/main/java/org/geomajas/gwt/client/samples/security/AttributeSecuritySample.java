@@ -111,8 +111,8 @@ public class AttributeSecuritySample extends SamplePanel {
 		final GwtCommand command = new GwtCommand("command.feature.Search");
 		command.setCommandRequest(request);
 
-		IButton editFeatureButton = new IButton("Show FeatureAttributeWindow widget");
-		editFeatureButton.setWidth(150);
+		IButton editFeatureButton = new IButton(I18nProvider.getSampleMessages().attributeSecurityButtonTitle());
+		editFeatureButton.setWidth(200);
 		editFeatureButton.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {

@@ -67,13 +67,15 @@ public class NavigationSample extends SamplePanel {
 		
 		HLayout hLayout = new HLayout();
 		hLayout.setMembersMargin(15);
-		hLayout.setHeight(200);
+		hLayout.setHeight(75);
 		hLayout.setPadding(5);
 		hLayout.setShowEdges(true);
 		VLayout firstColumn = new VLayout();
 		firstColumn.setMembersMargin(5);
 		VLayout secondColumn = new VLayout();
 		secondColumn.setMembersMargin(5);
+		VLayout thirdColumn = new VLayout();
+		thirdColumn.setMembersMargin(5);
 
 		// Map with ID osmMap is defined in the XML configuration. (mapOsm.xml)
 		final MapWidget map = new MapWidget("osmMap", "gwt-samples");
@@ -88,8 +90,8 @@ public class NavigationSample extends SamplePanel {
 		map.setController(new PanController(map));
 
 		// Create a button that centers the map to (0,0):
-		Button centerBTN = new Button("center to (0,0)");
-		centerBTN.setWidth(120);
+		Button centerBTN = new Button(I18nProvider.getSampleMessages().navigationBtnPosition());
+		centerBTN.setWidth(160);
 		centerBTN.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
@@ -98,38 +100,38 @@ public class NavigationSample extends SamplePanel {
 		});
 
 		// Create a button that translate the map:
-		Button translateBTN = new Button("translate by (10, -5)");
-		translateBTN.setWidth(120);
+		Button translateBTN = new Button(I18nProvider.getSampleMessages().navigationBtnTranslate());
+		translateBTN.setWidth(160);
 		translateBTN.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				map.getMapModel().getMapView().translate(10, -5);
+				map.getMapModel().getMapView().translate(1000000, -500000);
 			}
 		});
 
 		// Create a button that applies a bounding box to zoom to:
-		Button bboxBTN = new Button("Apply bbox");
-		bboxBTN.setWidth(120);
-		translateBTN.addClickHandler(new ClickHandler() {
+		Button bboxBTN = new Button(I18nProvider.getSampleMessages().navigationBtnBbox());
+		bboxBTN.setWidth(160);
+		bboxBTN.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				map.getMapModel().getMapView().applyBounds(new Bbox(10, 10, 40, 40), ZoomOption.EXACT);
+				map.getMapModel().getMapView().applyBounds(new Bbox(0, 0, 5000000, 5000000), ZoomOption.EXACT);
 			}
 		});
 
 		// Create a button that zooms out:
-		Button zoomOutBTN = new Button("Zoom out");
-		zoomOutBTN.setWidth(120);
+		Button zoomOutBTN = new Button(I18nProvider.getSampleMessages().navigationBtnZoomOut());
+		zoomOutBTN.setWidth(160);
 		zoomOutBTN.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				map.getMapModel().getMapView().scale(2, ZoomOption.LEVEL_CHANGE);
+				map.getMapModel().getMapView().scale(0.5, ZoomOption.LEVEL_CHANGE);
 			}
 		});
 
 		// Create a button that zooms in:
-		Button zoomInBTN = new Button("Zoom in");
-		zoomInBTN.setWidth(120);
+		Button zoomInBTN = new Button(I18nProvider.getSampleMessages().navigationBtnZoomIn());
+		zoomInBTN.setWidth(160);
 		zoomInBTN.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
@@ -139,13 +141,15 @@ public class NavigationSample extends SamplePanel {
 
 		firstColumn.addMember(centerBTN);
 		firstColumn.addMember(translateBTN);
-		firstColumn.addMember(bboxBTN);
 		
 		secondColumn.addMember(zoomOutBTN);
 		secondColumn.addMember(zoomInBTN);
 		
+		thirdColumn.addMember(bboxBTN);
+		
 		hLayout.addMember(firstColumn);
 		hLayout.addMember(secondColumn);
+		hLayout.addMember(thirdColumn);
 		layout.addMember(hLayout);
 		layout.addMember(map);
 

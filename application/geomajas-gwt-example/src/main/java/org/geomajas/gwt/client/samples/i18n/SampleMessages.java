@@ -70,6 +70,16 @@ public interface SampleMessages extends Messages {
 
 	String navigationDescription();
 
+	String navigationBtnZoomIn();
+
+	String navigationBtnZoomOut();
+
+	String navigationBtnPosition();
+
+	String navigationBtnTranslate();
+
+	String navigationBtnBbox();
+
 	// Login sample:
 
 	String loginTitle();
@@ -110,10 +120,11 @@ public interface SampleMessages extends Messages {
 
 	String toolSecurityDescription();
 
-	//AttributeSecurity sample:
+	// AttributeSecurity sample:
 
 	String attributeSecurityTitle();
 
 	String attributeSecurityDescription();
 
+	String attributeSecurityButtonTitle();
 }
