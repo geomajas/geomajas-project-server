@@ -189,7 +189,7 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 				String id = featureModel.getId(feature);
 				newFeature.setId(layerId + "." + id);
 
-				newFeature.setAttributes(filterAttributes(featureModel.getAttributes(feature))); 
+				filterAttributes(layerId, newFeature, featureModel.getAttributes(feature)); 
 
 				newFeature.setEditable(securityContext.isFeatureUpdateAuthorized(layerId, newFeature));
 				newFeature.setDeletable(securityContext.isFeatureDeleteAuthorized(layerId, newFeature));
@@ -335,22 +335,24 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 
 		// If allowed, add the attributes to the InternalFeature:
 		if ((featureIncludes & FEATURE_INCLUDE_ATTRIBUTES) != 0) {
-			res.setAttributes(filterAttributes(featureModel.getAttributes(feature)));
+			filterAttributes(layerId, res, featureModel.getAttributes(feature));
 		}
 
 		return res;
 	}
 
-	private Map<String, Attribute> filterAttributes(Map<String, Attribute> featureAttributes) {
-		res.setAttributes(featureAttributes); // to allow isAttributeReadable to see full object
+	private Map<String, Attribute> filterAttributes(String layerId, InternalFeature feature,
+													Map<String, Attribute> featureAttributes) {
+		feature.setAttributes(featureAttributes); // to allow isAttributeReadable to see full object
 		Map<String, Attribute> filteredAttributes = new HashMap<String, Attribute>();
 		for (String key : featureAttributes.keySet()) {
-			if (securityContext.isAttributeReadable(layerId, res, key)) {
+			if (securityContext.isAttributeReadable(layerId, feature, key)) {
 				Attribute attribute = featureAttributes.get(key);
-				attribute.setEditable(securityContext.isAttributeWritable(layerId, res, key));
+				attribute.setEditable(securityContext.isAttributeWritable(layerId, feature, key));
 				filteredAttributes.put(key, featureAttributes.get(key));
 			}
 		}
+		feature.setAttributes(filteredAttributes);
 		return filteredAttributes;
 	}
 
