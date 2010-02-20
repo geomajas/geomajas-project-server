@@ -31,7 +31,6 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 
 	<bean name="application" class="org.geomajas.configuration.client.ClientApplicationInfo">
 		<property name="id" value="Empty"/>
-		<property name="name" value="Empty"/>
 	</bean>
 
 </beans>

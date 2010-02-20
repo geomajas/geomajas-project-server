@@ -94,7 +94,7 @@ public class GeoToolsLayerTest extends AbstractGeoToolsTest {
 
 	@Test
 	public void testRead() throws Exception {
-		SimpleFeature f = (SimpleFeature) layer.read("9703");
+		SimpleFeature f = (SimpleFeature) layer.read("cities.9703"); // id always starts with layer id
 		Assert.assertEquals("Elmhurst", f.getAttribute("City"));
 		Assert.assertEquals(45060, f.getAttribute("Population"));
 	}
@@ -103,7 +103,7 @@ public class GeoToolsLayerTest extends AbstractGeoToolsTest {
 	public void testUpdate() throws Exception {
 		Calendar cal = Calendar.getInstance();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-		SimpleFeature f = (SimpleFeature) layer.read("10");
+		SimpleFeature f = (SimpleFeature) layer.read("cities.10"); // id always starts with layer id
 		f.setAttribute("City", sdf.format(cal.getTime()));
 		layer.update(f);
 		Assert.assertEquals(sdf.format(cal.getTime()), f.getAttribute("City"));
@@ -123,9 +123,9 @@ public class GeoToolsLayerTest extends AbstractGeoToolsTest {
 
 	@Test
 	public void testDelete() throws Exception {
-		SimpleFeature f = (SimpleFeature) layer.read("10580");
+		SimpleFeature f = (SimpleFeature) layer.read("cities.10580"); // id always starts with layer id
 		Assert.assertNotNull(f);
-		layer.delete("10580");
+		layer.delete("cities.10580"); // id always starts with layer id
 		Assert.assertTrue(true);
 	}
 

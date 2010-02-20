@@ -295,8 +295,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 	 * 
 	 * @return the bounds of the specified features
 	 */
-	public Envelope getBounds(Filter queryFilter) throws LayerException {
-		Filter filter = convertFilter(queryFilter);
+	public Envelope getBounds(Filter filter) throws LayerException {
 		FeatureSource<SimpleFeatureType, SimpleFeature> source = getFeatureSource();
 		if (source instanceof FeatureStore<?, ?>) {
 			FeatureStore<SimpleFeatureType, SimpleFeature> store = 
@@ -320,8 +319,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 	/**
 	 * This implementation does not support the 'offset' and 'maxResultSize' parameters.
 	 */
-	public Iterator<?> getElements(Filter queryFilter, int offset, int maxResultSize) throws LayerException {
-		Filter filter = convertFilter(queryFilter);
+	public Iterator<?> getElements(Filter filter, int offset, int maxResultSize) throws LayerException {
 		FeatureSource<SimpleFeatureType, SimpleFeature> source = getFeatureSource();
 		if (source instanceof FeatureStore<?, ?>) {
 			FeatureStore<SimpleFeatureType, SimpleFeature> store = 
@@ -340,18 +338,6 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 		} catch (Throwable t) {
 			throw new LayerException(t, ExceptionCode.UNEXPECTED_PROBLEM);
 		}
-	}
-
-	private Filter convertFilter(Filter queryFilter) {
-		if (queryFilter instanceof Id) {
-			Iterator<?> iterator = ((Id) queryFilter).getIdentifiers().iterator();
-			List<String> identifiers = new ArrayList<String>();
-			while (iterator.hasNext()) {
-				identifiers.add(getFeatureSourceName() + "." + iterator.next());
-			}
-			return filterCreator.createFidFilter(identifiers.toArray(new String[identifiers.size()]));
-		}
-		return queryFilter;
 	}
 
 	public FeatureModel getFeatureModel() {

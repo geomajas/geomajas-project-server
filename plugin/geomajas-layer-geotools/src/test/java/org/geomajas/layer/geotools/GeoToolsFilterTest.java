@@ -154,7 +154,7 @@ public class GeoToolsFilterTest extends AbstractGeoToolsTest {
 
 	@Test
 	public void testFIDFilter() throws Exception {
-		Filter filter = filterCreator.createFidFilter(new String[] { "1" });
+		Filter filter = filterCreator.createFidFilter(new String[] { "filtertest.1" });
 		Iterator<?> it = layer.getElements(filter, 0, 0);
 		SimpleFeature f = (SimpleFeature) it.next();
 		Assert.assertEquals("centraal", f.getAttribute("textAttr"));
@@ -162,7 +162,7 @@ public class GeoToolsFilterTest extends AbstractGeoToolsTest {
 
 	@Test
 	public void testContainsFilter() throws Exception {
-		Geometry geom = (Geometry) ((SimpleFeature) layer.read("3")).getDefaultGeometry();
+		Geometry geom = (Geometry) ((SimpleFeature) layer.read("filtertest.3")).getDefaultGeometry();
 		Filter filter = filterCreator.createContainsFilter(geom, "the_geom");
 		Iterator<?> it = layer.getElements(filter, 0, 0);
 
@@ -176,7 +176,7 @@ public class GeoToolsFilterTest extends AbstractGeoToolsTest {
 
 	@Test
 	public void testWithinFilter() throws Exception {
-		Geometry geom = (Geometry) ((SimpleFeature) layer.read("1")).getDefaultGeometry();
+		Geometry geom = (Geometry) ((SimpleFeature) layer.read("filtertest.1")).getDefaultGeometry();
 		Filter filter = filterCreator.createWithinFilter(geom, "the_geom");
 		Iterator<?> it = layer.getElements(filter, 0, 0);
 
@@ -190,7 +190,7 @@ public class GeoToolsFilterTest extends AbstractGeoToolsTest {
 
 	@Test
 	public void testIntersectsFilter() throws Exception {
-		Geometry geom = (Geometry) ((SimpleFeature) layer.read("1")).getDefaultGeometry();
+		Geometry geom = (Geometry) ((SimpleFeature) layer.read("filtertest.1")).getDefaultGeometry();
 		Filter filter = filterCreator.createIntersectsFilter(geom, "the_geom");
 		Iterator<?> it = layer.getElements(filter, 0, 0);
 
@@ -204,7 +204,7 @@ public class GeoToolsFilterTest extends AbstractGeoToolsTest {
 
 	@Test
 	public void testTouchesFilter() throws Exception {
-		Geometry geom = (Geometry) ((SimpleFeature) layer.read("1")).getDefaultGeometry();
+		Geometry geom = (Geometry) ((SimpleFeature) layer.read("filtertest.1")).getDefaultGeometry();
 		Filter filter = filterCreator.createTouchesFilter(geom, "the_geom");
 		Iterator<?> it = layer.getElements(filter, 0, 0);
 
@@ -232,7 +232,7 @@ public class GeoToolsFilterTest extends AbstractGeoToolsTest {
 
 	@Test
 	public void testOverlapsFilter() throws Exception {
-		Geometry geom = (Geometry) ((SimpleFeature) layer.read("4")).getDefaultGeometry();
+		Geometry geom = (Geometry) ((SimpleFeature) layer.read("filtertest.4")).getDefaultGeometry();
 		Filter filter = filterCreator.createOverlapsFilter(geom, "the_geom");
 		Iterator<?> it = layer.getElements(filter, 0, 0);
 

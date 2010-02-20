@@ -51,7 +51,6 @@ import org.geotools.referencing.CRS;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
-import org.opengis.filter.Id;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -143,8 +142,7 @@ public class ShapeInMemLayer extends FeatureSourceRetriever implements VectorLay
 	/**
 	 * This implementation does not support the 'offset' and 'maxResultSize' parameters.
 	 */
-	public Iterator<?> getElements(Filter queryFilter, int offset, int maxResultSize) throws LayerException {
-		Filter filter = convertFilter(queryFilter);
+	public Iterator<?> getElements(Filter filter, int offset, int maxResultSize) throws LayerException {
 		List<SimpleFeature> filteredList = new ArrayList<SimpleFeature>();
 		for (SimpleFeature feature : features.values()) {
 			if (filter.evaluate(feature)) {
@@ -158,26 +156,13 @@ public class ShapeInMemLayer extends FeatureSourceRetriever implements VectorLay
 		return getBounds(Filter.INCLUDE);
 	}
 
-	private Filter convertFilter(Filter queryFilter) {
-		if (queryFilter instanceof Id) {
-			Iterator<?> iterator = ((Id) queryFilter).getIdentifiers().iterator();
-			List<String> identifiers = new ArrayList<String>();
-			while (iterator.hasNext()) {
-				identifiers.add(getFeatureSourceName() + "." + iterator.next());
-			}
-			return filterCreator.createFidFilter(identifiers.toArray(new String[identifiers.size()]));
-		}
-		return queryFilter;
-	}
-
 	/**
 	 * Retrieve the bounds of the specified features.
 	 * 
 	 * @return the bounds of the specified features
 	 */
-	public Envelope getBounds(Filter queryFilter) throws LayerException {
+	public Envelope getBounds(Filter filter) throws LayerException {
 		try {
-			Filter filter = convertFilter(queryFilter);
 			FeatureCollection<SimpleFeatureType, SimpleFeature> fc = getFeatureSource().getFeatures(filter);
 			return fc.getBounds();
 		} catch (IOException ioe) {
