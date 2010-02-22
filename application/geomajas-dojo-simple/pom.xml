@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas</groupId>
 	<artifactId>geomajas-dojo-simple</artifactId>
-	<version>1.5.3</version>
+	<version>1.5.4-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>Geomajas simple dojo application demo</name>
 	<url>http://files.geomajas.org/maven/trunk/dojo-simple</url>	
