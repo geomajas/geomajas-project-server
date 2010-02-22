@@ -8,7 +8,6 @@
 		buttonLayout.setMembersMargin(10);
 		buttonLayout.setHeight(30);
 
-		
 		// Map with ID wmsToolbarMap is defined in the XML configuration. (mapWmsToolbar.xml)
 		map = new MapWidget("wmsToolbarMap", "gwt-samples");
 		toolbar = new Toolbar(map);
@@ -56,7 +55,6 @@
 			}
 		});
 		buttonLayout.addMember(loginButtonLuc);
-		
 
 		layout.addMember(buttonLayout);
 		layout.addMember(toolbar);

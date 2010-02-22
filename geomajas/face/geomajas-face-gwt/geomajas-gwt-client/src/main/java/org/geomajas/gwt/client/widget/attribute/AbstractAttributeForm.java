@@ -97,41 +97,45 @@ public class AbstractAttributeForm {
 		AttributeInfo info = infos.get(name);
 		if (info instanceof PrimitiveAttributeInfo) {
 			PrimitiveAttribute<?> primitive = (PrimitiveAttribute<?>) attribute;
-			if (!primitive.isEmpty()) {
-				switch (primitive.getType()) {
-					case BOOLEAN:
-						setValue(info.getName(), (BooleanAttribute) primitive);
-						break;
-					case SHORT:
-						setValue(info.getName(), (ShortAttribute) primitive);
-						break;
-					case INTEGER:
-						setValue(info.getName(), (IntegerAttribute) primitive);
-						break;
-					case LONG:
-						setValue(info.getName(), (LongAttribute) primitive);
-						break;
-					case FLOAT:
-						setValue(info.getName(), (FloatAttribute) primitive);
-						break;
-					case DOUBLE:
-						setValue(info.getName(), (DoubleAttribute) primitive);
-						break;
-					case CURRENCY:
-						setValue(info.getName(), (CurrencyAttribute) primitive);
-						break;
-					case STRING:
-						setValue(info.getName(), (StringAttribute) primitive);
-						break;
-					case URL:
-						setValue(info.getName(), (UrlAttribute) primitive);
-						break;
-					case IMGURL:
-						setValue(info.getName(), (ImageUrlAttribute) primitive);
-						break;
-					case DATE:
-						setValue(info.getName(), (DateAttribute) primitive);
-						break;
+			if (attribute == null) {
+				form.getField(info.getName()).setDisabled(true);
+			} else {
+				if (!primitive.isEmpty()) {
+					switch (primitive.getType()) {
+						case BOOLEAN:
+							setValue(info.getName(), (BooleanAttribute) primitive);
+							break;
+						case SHORT:
+							setValue(info.getName(), (ShortAttribute) primitive);
+							break;
+						case INTEGER:
+							setValue(info.getName(), (IntegerAttribute) primitive);
+							break;
+						case LONG:
+							setValue(info.getName(), (LongAttribute) primitive);
+							break;
+						case FLOAT:
+							setValue(info.getName(), (FloatAttribute) primitive);
+							break;
+						case DOUBLE:
+							setValue(info.getName(), (DoubleAttribute) primitive);
+							break;
+						case CURRENCY:
+							setValue(info.getName(), (CurrencyAttribute) primitive);
+							break;
+						case STRING:
+							setValue(info.getName(), (StringAttribute) primitive);
+							break;
+						case URL:
+							setValue(info.getName(), (UrlAttribute) primitive);
+							break;
+						case IMGURL:
+							setValue(info.getName(), (ImageUrlAttribute) primitive);
+							break;
+						case DATE:
+							setValue(info.getName(), (DateAttribute) primitive);
+							break;
+					}
 				}
 				form.getField(info.getName()).setDisabled(!attribute.isEditable());
 			}
@@ -151,6 +155,9 @@ public class AbstractAttributeForm {
 	 *            The actual attribute to place the value in.
 	 */
 	public void fromForm(String name, Attribute<?> attribute) {
+		if (attribute == null) {
+			return;
+		}
 		AttributeInfo info = infos.get(name);
 		if (info instanceof PrimitiveAttributeInfo) {
 			PrimitiveAttribute<?> primitive = (PrimitiveAttribute<?>) attribute;

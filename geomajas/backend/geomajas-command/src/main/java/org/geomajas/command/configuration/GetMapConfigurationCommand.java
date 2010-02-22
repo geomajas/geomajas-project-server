@@ -184,7 +184,7 @@ public class GetMapConfigurationCommand implements Command<GetMapConfigurationRe
 		ClientToolbarInfo client = new ClientToolbarInfo();
 		client.setId(original.getId());
 		client.setTools(securityClone(original.getTools()));
-		return original;
+		return client;
 	}
 
 	public List<ClientToolInfo> securityClone(List<ClientToolInfo> original) {

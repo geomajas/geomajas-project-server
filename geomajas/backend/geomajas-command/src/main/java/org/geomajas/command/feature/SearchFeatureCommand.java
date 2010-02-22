@@ -22,11 +22,14 @@
  */
 package org.geomajas.command.feature;
 
+import java.util.List;
+
 import org.geomajas.command.Command;
 import org.geomajas.command.dto.SearchFeatureRequest;
 import org.geomajas.command.dto.SearchFeatureResponse;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
+import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.Feature;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.layer.feature.SearchCriterion;
@@ -41,11 +44,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
 /**
  * Search features based on a seat of search criteria.
- *
+ * 
  * @author Pieter De Graef
  */
 @Component()
@@ -77,11 +78,10 @@ public class SearchFeatureCommand implements Command<SearchFeatureRequest, Searc
 		}
 
 		String layerId = request.getLayerId();
+		Filter filter = createFilter(request, layerId);
 
-		Filter filter = createFilter(request);
-
-		List<InternalFeature> features = layerService.getFeatures(layerId,
-				configurationService.getCrs(request.getCrs()), filter, null, request.getFeatureInclude());
+		List<InternalFeature> features = layerService.getFeatures(layerId, configurationService
+				.getCrs(request.getCrs()), filter, null, request.getFeatureInclude(), 0, request.getMax());
 		response.setLayerId(layerId);
 		int max = request.getMax();
 		if (max == SearchFeatureRequest.MAX_UNLIMITED) {
@@ -97,20 +97,26 @@ public class SearchFeatureCommand implements Command<SearchFeatureRequest, Searc
 		response.setFeatures(maxList);
 	}
 
-	private Filter createFilter(SearchFeatureRequest request) throws GeomajasException {
+	private Filter createFilter(SearchFeatureRequest request, String layerId) throws GeomajasException {
 		Filter f = null;
+		VectorLayer layer = (VectorLayer) configurationService.getLayer(layerId);
+		String idName = layer.getLayerInfo().getFeatureInfo().getIdentifier().getName();
 		for (SearchCriterion criterion : request.getCriteria()) {
-			String c = criterion.toString();
-			c = c.replace('*', '%');
-			c = c.replace('?', '_');
 			try {
-				if (f == null) {
-					f = CQL.toFilter(c);
+				Filter temp;
+				if (criterion.getAttributeName().equals(idName)) {
+					temp = filterCreator.createFidFilter(new String[] { criterion.getValue() });
 				} else {
-					f = filterCreator.createLogicFilter(f, request.getBooleanOperator(), CQL.toFilter(c));
+					String c = criterion.toString().replace('*', '%').replace('?', '_');
+					temp = CQL.toFilter(c);
+				}
+				if (f == null) {
+					f = temp;
+				} else {
+					f = filterCreator.createLogicFilter(f, request.getBooleanOperator(), temp);
 				}
 			} catch (CQLException e) {
-				throw new GeomajasException(e, ExceptionCode.FILTER_APPLY_PROBLEM, c);
+				throw new GeomajasException(e, ExceptionCode.FILTER_APPLY_PROBLEM, criterion.toString());
 			}
 		}
 
@@ -135,5 +141,4 @@ public class SearchFeatureCommand implements Command<SearchFeatureRequest, Searc
 
 		return f;
 	}
-
 }

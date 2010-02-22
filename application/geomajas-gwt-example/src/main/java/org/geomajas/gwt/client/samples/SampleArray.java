@@ -30,7 +30,7 @@ import org.geomajas.gwt.client.samples.mapwidget.OpenStreetMapSample;
 import org.geomajas.gwt.client.samples.mapwidget.WmsSample;
 import org.geomajas.gwt.client.samples.security.AttributeSecuritySample;
 import org.geomajas.gwt.client.samples.security.CommandSecuritySample;
-import org.geomajas.gwt.client.samples.security.FeatureSecuritySample;
+import org.geomajas.gwt.client.samples.security.FilterSecuritySample;
 import org.geomajas.gwt.client.samples.security.LayerSecuritySample;
 import org.geomajas.gwt.client.samples.security.LoginSample;
 import org.geomajas.gwt.client.samples.security.ToolSecuritySample;
@@ -38,6 +38,7 @@ import org.geomajas.gwt.client.samples.security.ToolSecuritySample;
 /**
  * <p>
  * List of all test samples available in the <code>TreeGrid</code> on the left side.
+ * </p>
  * 
  * @author Pieter De Graef
  */
@@ -58,6 +59,8 @@ public final class SampleArray {
 				new SampleTreeNode(I18nProvider.getSampleMessages().navigationTitle(),
 						"[ISOMORPHIC]/geomajas/layer.png", NavigationSample.TITLE, "MapWidget",
 						NavigationSample.FACTORY),
+				// new SampleTreeNode(I18nProvider.getSampleMessages().crsTitle(),
+				// "[ISOMORPHIC]/geomajas/layer.png", CrsSample.TITLE, "MapWidget", CrsSample.FACTORY),
 
 				// Security samples:
 				new SampleTreeNode(I18nProvider.getSampleMessages().treeGroupSecurity(),
@@ -68,9 +71,12 @@ public final class SampleArray {
 				new SampleTreeNode(I18nProvider.getSampleMessages().layerSecurityTitle(),
 						"[ISOMORPHIC]/geomajas/springsecurity/key_go.png", LayerSecuritySample.LAYER_SECUTIRY_TITLE,
 						"Security", LayerSecuritySample.FACTORY),
-				new SampleTreeNode(I18nProvider.getSampleMessages().featureSecurityTitle(),
-						"[ISOMORPHIC]/geomajas/springsecurity/key_go.png",
-						FeatureSecuritySample.FEATURE_SECUTIRY_TITLE, "Security", FeatureSecuritySample.FACTORY),
+				// new SampleTreeNode(I18nProvider.getSampleMessages().featureSecurityTitle(),
+				// "[ISOMORPHIC]/geomajas/springsecurity/key_go.png",
+				// FeatureSecuritySample.FEATURE_SECUTIRY_TITLE, "Security", FeatureSecuritySample.FACTORY),
+				new SampleTreeNode(I18nProvider.getSampleMessages().filterSecurityTitle(),
+						"[ISOMORPHIC]/geomajas/springsecurity/key_go.png", FilterSecuritySample.TITLE, "Security",
+						FilterSecuritySample.FACTORY),
 				new SampleTreeNode(I18nProvider.getSampleMessages().attributeSecurityTitle(),
 						"[ISOMORPHIC]/geomajas/springsecurity/key_go.png", AttributeSecuritySample.TITLE, "Security",
 						AttributeSecuritySample.FACTORY),

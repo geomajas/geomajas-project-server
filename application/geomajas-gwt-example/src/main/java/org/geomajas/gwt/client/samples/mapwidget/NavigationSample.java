@@ -64,7 +64,7 @@ public class NavigationSample extends SamplePanel {
 		layout.setWidth100();
 		layout.setHeight100();
 		layout.setMembersMargin(10);
-		
+
 		HLayout hLayout = new HLayout();
 		hLayout.setMembersMargin(15);
 		hLayout.setHeight(75);
@@ -95,7 +95,7 @@ public class NavigationSample extends SamplePanel {
 		centerBTN.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				map.getMapModel().getMapView().setCenterPosition(new Coordinate(0, 0));
+				map.getMapModel().getMapView().setCenterPosition(new Coordinate(-10000000, 2000000));
 			}
 		});
 
@@ -139,14 +139,14 @@ public class NavigationSample extends SamplePanel {
 			}
 		});
 
-		firstColumn.addMember(centerBTN);
-		firstColumn.addMember(translateBTN);
-		
-		secondColumn.addMember(zoomOutBTN);
-		secondColumn.addMember(zoomInBTN);
-		
+		firstColumn.addMember(zoomOutBTN);
+		firstColumn.addMember(zoomInBTN);
+
+		secondColumn.addMember(centerBTN);
+		secondColumn.addMember(translateBTN);
+
 		thirdColumn.addMember(bboxBTN);
-		
+
 		hLayout.addMember(firstColumn);
 		hLayout.addMember(secondColumn);
 		hLayout.addMember(thirdColumn);

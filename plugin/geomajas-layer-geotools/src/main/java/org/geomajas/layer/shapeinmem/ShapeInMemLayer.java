@@ -42,7 +42,6 @@ import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.FeatureModel;
 import org.geomajas.layer.geotools.DataStoreFactory;
 import org.geomajas.service.DtoConverterService;
-import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
 import org.geotools.data.DataStore;
 import org.geotools.feature.FeatureCollection;
@@ -72,9 +71,6 @@ public class ShapeInMemLayer extends FeatureSourceRetriever implements VectorLay
 	private VectorLayerInfo layerInfo;
 
 	@Autowired
-	private FilterService filterCreator;
-
-	@Autowired
 	private GeoService geoService;
 
 	@Autowired
@@ -86,18 +82,6 @@ public class ShapeInMemLayer extends FeatureSourceRetriever implements VectorLay
 
 	public CoordinateReferenceSystem getCrs() {
 		return crs;
-	}
-
-	private void initCrs() throws LayerException {
-		try {
-			crs = CRS.decode(layerInfo.getCrs());
-		} catch (NoSuchAuthorityCodeException e) {
-			throw new LayerException(e, ExceptionCode.LAYER_CRS_UNKNOWN_AUTHORITY, layerInfo.getId(), getLayerInfo()
-					.getCrs());
-		} catch (FactoryException exception) {
-			throw new LayerException(exception, ExceptionCode.LAYER_CRS_PROBLEMATIC, layerInfo.getId(), getLayerInfo()
-					.getCrs());
-		}
 	}
 
 	public void setLayerInfo(VectorLayerInfo layerInfo) throws LayerException {
@@ -147,6 +131,9 @@ public class ShapeInMemLayer extends FeatureSourceRetriever implements VectorLay
 		for (SimpleFeature feature : features.values()) {
 			if (filter.evaluate(feature)) {
 				filteredList.add(feature);
+				if (filteredList.size() == maxResultSize) {
+					break;
+				}
 			}
 		}
 		return filteredList.iterator();
@@ -201,13 +188,28 @@ public class ShapeInMemLayer extends FeatureSourceRetriever implements VectorLay
 		features.remove(featureId);
 	}
 
+	// -------------------------------------------------------------------------
 	// Private functions:
+	// -------------------------------------------------------------------------
+
+	private void initCrs() throws LayerException {
+		try {
+			crs = CRS.decode(layerInfo.getCrs());
+		} catch (NoSuchAuthorityCodeException e) {
+			throw new LayerException(e, ExceptionCode.LAYER_CRS_UNKNOWN_AUTHORITY, layerInfo.getId(), getLayerInfo()
+					.getCrs());
+		} catch (FactoryException exception) {
+			throw new LayerException(exception, ExceptionCode.LAYER_CRS_PROBLEMATIC, layerInfo.getId(), getLayerInfo()
+					.getCrs());
+		}
+	}
+
 	@PostConstruct
 	protected void initFeatures() throws LayerException {
 		try {
 			setFeatureSourceName(layerInfo.getFeatureInfo().getDataSourceName());
 			featureModel = new ShapeInMemFeatureModel(getDataStore(), layerInfo.getFeatureInfo().getDataSourceName(),
-			geoService.getSridFromCrs(layerInfo.getCrs()), converterService);
+					geoService.getSridFromCrs(layerInfo.getCrs()), converterService);
 			featureModel.setLayerInfo(layerInfo);
 			FeatureCollection<SimpleFeatureType, SimpleFeature> col = getFeatureSource().getFeatures();
 			FeatureIterator<SimpleFeature> iterator = col.features();
@@ -232,5 +234,4 @@ public class ShapeInMemLayer extends FeatureSourceRetriever implements VectorLay
 			throw new LayerException(ge, ExceptionCode.CANNOT_CREATE_LAYER_MODEL, url);
 		}
 	}
-
 }

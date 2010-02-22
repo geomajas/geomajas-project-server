@@ -183,10 +183,14 @@ public class TiledFeatureService {
 			int nrOfTilesY = Math.max(1, MAXIMUM_TILE_COORDINATE / tileHeightPx);
 
 			double x1 = panOrigin.x - nrOfTilesX * tileWidth;
-			double x2 = x1 + (nrOfTilesX * tileWidth * 2);
+			//double x2 = x1 + (nrOfTilesX * tileWidth * 2);
+			double x2 = panOrigin.x + nrOfTilesX * tileWidth;
 			double y1 = panOrigin.y - nrOfTilesY * tileHeight;
-			double y2 = y1 + (nrOfTilesY * tileHeight * 2);
+			//double y2 = y1 + (nrOfTilesY * tileHeight * 2);
+			double y2 = panOrigin.y + nrOfTilesY * tileHeight;
 			maxScreenBbox = new Envelope(x1, x2, y1, y2);
+//			maxScreenEnvelope ;= new Envelope(panOrigin.x - nrOfTilesX * tileWidth, panOrigin.x + nrOfTilesX
+//					* tileWidth, panOrigin.y - nrOfTilesY * tileHeight, panOrigin.y + nrOfTilesY * tileHeight);
 		}
 		return maxScreenBbox;
 	}

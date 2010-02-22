@@ -45,6 +45,8 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 	<bean class="org.geomajas.plugin.springsecurity.configuration.SecurityServiceInfo">
 		<property name="users">
 			<list>
+			
+				<!-- User luc has full access. Lucky luc :-) -->
 				<bean class="org.geomajas.plugin.springsecurity.configuration.UserInfo">
 					<property name="userId" value="luc"/>
 					<property name="password" value="b7NMSP1pZN3Hi6nJGVe9JA"/> <!-- "luc" -->
@@ -86,6 +88,8 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 						</list>
 					</property>
 				</bean>
+
+				<!-- User marino has restricted layer access -->
 				<bean class="org.geomajas.plugin.springsecurity.configuration.UserInfo">
 					<property name="userId" value="marino"/>
 					<property name="password" value="kMSqVf2EMWilIKhZyV3dKA"/> <!-- "marino" -->
@@ -108,6 +112,8 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 						</list>
 					</property>
 				</bean>
+
+				<!-- user mark has restricted command and tool access -->
 				<bean class="org.geomajas.plugin.springsecurity.configuration.UserInfo">
 					<property name="userId" value="mark"/>
 					<property name="password" value="7dbGxrB3eNTa17i3ZtGNLQ"/> <!-- "mark" -->
@@ -127,13 +133,97 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 										<value>ZoomOut</value>
 										<value>ZoomToRectangleMode</value>
 										<value>PanMode</value>
-										<value>ToolbarSeparator</value>
 									</list>
 								</property>
 								<property name="visibleLayersInclude">
 									<list>
 										<value>.*</value>
 									</list>
+								</property>
+							</bean>
+						</list>
+					</property>
+				</bean>
+
+				<!-- User jan has restricted feature access on roads layer -->
+				<bean class="org.geomajas.plugin.springsecurity.configuration.UserInfo">
+					<property name="userId" value="jan"/>
+					<property name="password" value="k/yCnEyOOYzrK+Oe2fGM8Q"/> <!-- "jan" -->
+					<property name="userName" value="Jan Something"/>
+					<property name="authorizations">
+						<list>
+							<bean class="org.geomajas.plugin.springsecurity.configuration.LayerFilterAuthorizationInfo">
+								<property name="commandsInclude">
+									<list>
+										<value>.*</value>
+									</list>
+								</property>
+								<property name="visibleLayersInclude">
+									<list>
+										<value>.*</value>
+									</list>
+								</property>
+								<property name="filters">
+									<map>
+										<entry key="roads" value="LENGTH > 110"/>
+									</map>
+								</property>
+							</bean>
+						</list>
+					</property>
+				</bean>
+
+				<!-- User elvis has restricted attribute editing permissions on roads layer -->
+				<bean class="org.geomajas.plugin.springsecurity.configuration.UserInfo">
+					<property name="userId" value="elvis"/>
+					<property name="password" value="BUOMyQ95onvc7gMrMjFtDQ"/> <!-- "elvis" -->
+					<property name="userName" value="Elvis Presley"/>
+					<property name="authorizations">
+						<list>
+							<bean class="org.geomajas.plugin.springsecurity.configuration.AttributeAuthorizationInfo">
+								<property name="commandsInclude">
+									<list>
+										<value>.*</value>
+									</list>
+								</property>
+								<property name="visibleLayersInclude">
+									<list>
+										<value>.*</value>
+									</list>
+								</property>
+								<property name="updateAuthorizedLayersInclude">
+									<list>
+										<value>beans</value>
+									</list>
+								</property>
+								<property name="layers">
+									<map>
+										<entry key="beans">
+											<bean class="org.geomajas.plugin.springsecurity.configuration.LayerAttributeAuthorizationInfo">
+												<property name="readableIncludes">
+													<list>
+														<value>.*</value>
+													</list>
+												</property>
+												<property name="readableExcludes">
+													<list>
+														<value>longAttr</value>
+														<value>doubleAttr</value>
+													</list>
+												</property>
+												<property name="writableIncludes">
+													<list>
+														<value>.*</value>
+													</list>
+												</property>
+												<property name="writableExcludes">
+													<list>
+														<value>shortAttr</value>
+													</list>
+												</property>
+											</bean>
+										</entry>
+									</map>
 								</property>
 							</bean>
 						</list>

@@ -23,11 +23,11 @@
 
 package org.geomajas.gwt.client.samples.security;
 
+import org.geomajas.gwt.client.controller.PanController;
 import org.geomajas.gwt.client.samples.base.SamplePanel;
 import org.geomajas.gwt.client.samples.base.SamplePanelFactory;
 import org.geomajas.gwt.client.samples.i18n.I18nProvider;
 import org.geomajas.gwt.client.widget.MapWidget;
-import org.geomajas.gwt.client.widget.Toolbar;
 import org.geomajas.plugin.springsecurity.client.Authentication;
 
 import com.smartgwt.client.util.BooleanCallback;
@@ -42,39 +42,37 @@ import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
  * <p>
- * Sample that tests security on toolbar tool level.
+ * Sample that tests security on feature level by using filters.
  * </p>
  * 
  * @author Pieter De Graef
  */
-public class ToolSecuritySample extends SamplePanel {
+public class FilterSecuritySample extends SamplePanel {
 
-	public static final String TITLE = "ToolSecurity";
-
+	public static final String TITLE = "FilterSecurity";
+	
 	private MapWidget map;
-
-	private Toolbar toolbar;
 
 	public static final SamplePanelFactory FACTORY = new SamplePanelFactory() {
 
 		public SamplePanel createPanel() {
-			return new ToolSecuritySample();
+			return new FilterSecuritySample();
 		}
 	};
 
 	public Canvas getViewPanel() {
 		final VLayout layout = new VLayout();
+		layout.setMembersMargin(10);
 		layout.setWidth100();
 		layout.setHeight100();
 
 		// Create horizontal layout for login buttons:
 		HLayout buttonLayout = new HLayout();
 		buttonLayout.setMembersMargin(10);
-		buttonLayout.setHeight(30);
+		buttonLayout.setHeight(20);
 
-		// Map with ID wmsToolbarMap is defined in the XML configuration. (mapWmsToolbar.xml)
-		map = new MapWidget("wmsToolbarMap", "gwt-samples");
-		toolbar = new Toolbar(map);
+		// Map with ID duisburgMap is defined in the XML configuration. (mapDuisburg.xml)
+		map = new MapWidget("duisburgMap", "gwt-samples");
 		map.addDrawHandler(new DrawHandler() {
 
 			public void onDraw(DrawEvent event) {
@@ -87,24 +85,22 @@ public class ToolSecuritySample extends SamplePanel {
 
 			public void execute(Boolean value) {
 				if (value) {
-					toolbar.destroy();
 					map.destroy();
-					map = new MapWidget("wmsToolbarMap", "gwt-samples");
-					toolbar = new Toolbar(map);
-					layout.addMember(toolbar);
+					map = new MapWidget("duisburgMap", "gwt-samples");
 					layout.addMember(map);
 					map.initialize();
+					map.setController(new PanController(map));
 				}
 			}
 		};
 
-		// Create a button that logs in user "mark":
-		IButton loginButtonMarino = new IButton(I18nProvider.getSampleMessages().securityLogInWith("mark"));
+		// Create a button that logs in user "marino":
+		IButton loginButtonMarino = new IButton(I18nProvider.getSampleMessages().securityLogInWith("jan"));
 		loginButtonMarino.setWidth(150);
 		loginButtonMarino.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				Authentication.getInstance().login("mark", "mark", initMapCallback);
+				Authentication.getInstance().login("jan", "jan", initMapCallback);
 			}
 		});
 		buttonLayout.addMember(loginButtonMarino);
@@ -120,19 +116,23 @@ public class ToolSecuritySample extends SamplePanel {
 		});
 		buttonLayout.addMember(loginButtonLuc);
 
+		// Set a panning controller on the map:
+		map.setController(new PanController(map));
+
 		layout.addMember(buttonLayout);
-		layout.addMember(toolbar);
 		layout.addMember(map);
 		return layout;
 	}
 
 	public String getDescription() {
-		return I18nProvider.getSampleMessages().toolSecurityDescription();
+		return I18nProvider.getSampleMessages().filterSecurityDescription();
 	}
 
 	public String[] getConfigurationFiles() {
 		return new String[] { "/org/geomajas/gwt/samples/security/security.xml",
-				"/org/geomajas/gwt/samples/security/mapWmsToolbar.xml" };
+				"/org/geomajas/gwt/samples/shapeinmem/layerRoads.xml",
+				"/org/geomajas/gwt/samples/shapeinmem/layerStructures.xml",
+				"/org/geomajas/gwt/samples/shapeinmem/mapDuisburg.xml" };
 	}
 
 	public String ensureUserLoggedIn() {

@@ -80,6 +80,12 @@ public interface SampleMessages extends Messages {
 
 	String navigationBtnBbox();
 
+	// CRS sample:
+
+	String crsTitle();
+
+	String crsDescription();
+
 	// Login sample:
 
 	String loginTitle();
@@ -107,6 +113,12 @@ public interface SampleMessages extends Messages {
 	String featureSecurityTitle();
 
 	String featureSecurityDescription();
+
+	// FilterSecurity sample:
+
+	String filterSecurityTitle();
+
+	String filterSecurityDescription();
 
 	// CommandSecurity sample:
 

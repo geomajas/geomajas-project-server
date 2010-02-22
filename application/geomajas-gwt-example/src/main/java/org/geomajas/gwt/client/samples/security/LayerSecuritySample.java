@@ -50,7 +50,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
 public class LayerSecuritySample extends SamplePanel {
 
 	public static final String LAYER_SECUTIRY_TITLE = "LayerSecurity";
-	
+
 	private MapWidget map;
 
 	public static final SamplePanelFactory FACTORY = new SamplePanelFactory() {
@@ -89,6 +89,7 @@ public class LayerSecuritySample extends SamplePanel {
 					map = new MapWidget("duisburgMap", "gwt-samples");
 					layout.addMember(map);
 					map.initialize();
+					map.setController(new PanController(map));
 				}
 			}
 		};
@@ -128,7 +129,10 @@ public class LayerSecuritySample extends SamplePanel {
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "/org/geomajas/gwt/samples/security/security.xml" };
+		return new String[] { "/org/geomajas/gwt/samples/security/security.xml",
+				"/org/geomajas/gwt/samples/shapeinmem/layerRoads.xml",
+				"/org/geomajas/gwt/samples/shapeinmem/layerStructures.xml",
+				"/org/geomajas/gwt/samples/shapeinmem/mapDuisburg.xml" };
 	}
 
 	public String ensureUserLoggedIn() {

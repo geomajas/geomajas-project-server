@@ -75,6 +75,9 @@ public class LayerFilterAuthorizationInfo extends LayerAuthorizationInfo {
 		public Filter getFeatureFilter(String layerId) {
 			try {
 				String filter = filters.get(layerId);
+				if (filter == null) {
+					return Filter.INCLUDE;
+				}
 				return CQL.toFilter(filter);
 			} catch (CQLException cqlException) {
 				log.error(cqlException.getMessage(), cqlException);

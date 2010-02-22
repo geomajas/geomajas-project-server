@@ -157,6 +157,9 @@ public class GeomajasSamples implements EntryPoint {
 			if (factory == null) {
 				return;
 			}
+			if (mainTabSet.getNumTabs() > 1) {
+				mainTabSet.removeTab(1);
+			}
 			final SamplePanel panel = factory.createPanel();
 			final String name = treeNode.getName();
 			final String icon = treeNode.getIcon();

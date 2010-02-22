@@ -44,12 +44,17 @@ import org.geomajas.service.GeoService;
 import org.geomajas.service.VectorLayerService;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.cql2.CQLException;
+import org.geotools.geometry.jts.JTS;
 import org.opengis.filter.Filter;
+import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.operation.MathTransform;
+import org.opengis.referencing.operation.TransformException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * <p>
@@ -128,12 +133,33 @@ public class VectorRendering implements RenderingStrategy {
 				}
 			}
 
-			// Get the features (always needs to include the geometry !)
-			List<InternalFeature> features = layerService.getFeatures(metadata.getLayerId(), crs, filter, metadata
+			// Get the features, but do not transform yet!
+			List<InternalFeature> features = layerService.getFeatures(metadata.getLayerId(), null, filter, metadata
 					.getStyleInfo(), VectorLayerService.FEATURE_INCLUDE_ALL);
 
+			// See if the features really belong to the tile:
 			Coordinate panOrigin = new Coordinate(metadata.getPanOrigin().getX(), metadata.getPanOrigin().getY());
 			tiledFeatureService.fillTile(tile, features, vLayer, metadata.getCode(), metadata.getScale(), panOrigin);
+
+			// Now transform the Geometries to the correct CRS:
+			try {
+				MathTransform transformation = geoService.findMathTransform(vLayer.getCrs(), crs);
+				for (InternalFeature feature : tile.getFeatures()) {
+					Geometry transformed;
+					if (null != transformation) {
+						try {
+							transformed = JTS.transform(feature.getGeometry(), transformation);
+						} catch (TransformException te) {
+							throw new GeomajasException(te, ExceptionCode.GEOMETRY_TRANSFORMATION_FAILED);
+						}
+					} else {
+						transformed = feature.getGeometry();
+					}
+					feature.setGeometry(transformed);
+				}
+			} catch (FactoryException e) {
+				throw new RenderException(e, ExceptionCode.IMAGE_RENDERING_LAYER_PROBLEM);
+			}
 
 			// At this point, we have a tile with rendered features.
 			// Now we need to paint the tile itself:

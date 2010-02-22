@@ -89,6 +89,7 @@ public class FeatureSecuritySample extends SamplePanel {
 					map = new MapWidget("duisburgMap", "gwt-samples");
 					layout.addMember(map);
 					map.initialize();
+					map.setController(new PanController(map));
 				}
 			}
 		};

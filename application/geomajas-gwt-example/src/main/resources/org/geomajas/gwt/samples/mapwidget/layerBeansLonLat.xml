@@ -1,0 +1,131 @@
+<!--
+  ~ This file is part of Geomajas, a component framework for building
+  ~ rich Internet applications (RIA) with sophisticated capabilities for the
+  ~ display, analysis and management of geographic information.
+  ~ It is a building block that allows developers to add maps
+  ~ and other geographic data capabilities to their web applications.
+  ~
+  ~ Copyright 2008-2010 Geosparc, http://www.geosparc.com, Belgium
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU Affero General Public License as
+  ~ published by the Free Software Foundation, either version 3 of the
+  ~ License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU Affero General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU Affero General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+
+	<bean class="org.springframework.beans.factory.config.CustomEditorConfigurer">
+		<property name="customEditors">
+			<map>
+				<entry key="java.util.Date">
+					<bean class="org.springframework.beans.propertyeditors.CustomDateEditor">
+						<constructor-arg>
+							<bean class="java.text.SimpleDateFormat">
+								<constructor-arg value="yyyy-MM-dd" />
+								<constructor-arg value="null" />
+							</bean>
+						</constructor-arg>
+						<constructor-arg value="true" />
+					</bean>
+				</entry>
+			</map>
+		</property>
+	</bean>
+
+	<bean name="beansLonLatInfo" class="org.geomajas.configuration.VectorLayerInfo">
+		<property name="id" value="beans" />
+		<property name="layerType" value="MULTIPOLYGON" />
+		<property name="crs" value="EPSG:4326" />
+		<property name="maxExtent">
+			<bean class="org.geomajas.geometry.Bbox">
+				<property name="x" value="-179" />
+				<property name="y" value="-89" />
+				<property name="width" value="358" />
+				<property name="height" value="178" />
+			</bean>
+		</property>
+		<property name="maxTileLevel" value="16" />
+		<property name="featureInfo" ref="beansFeatureInfo" />
+		<property name="namedStyleInfos">
+			<list>
+				<ref bean="beansStyleInfo" />
+			</list>
+		</property>
+	</bean>
+
+	<bean class="org.geomajas.configuration.NamedStyleInfo" id="beansStyleInfo">
+		<property name="featureStyles">
+			<list>
+				<bean class="org.geomajas.configuration.FeatureStyleInfo">
+					<property name="name" value="default" />
+					<property name="fillColor" value="#995500" />
+					<property name="fillOpacity" value=".6" />
+					<property name="strokeColor" value="#995500" />
+					<property name="strokeOpacity" value=".3" />
+					<property name="strokeWidth" value="1" />
+				</bean>
+			</list>
+		</property>
+		<property name="labelStyle">
+			<bean class="org.geomajas.configuration.LabelStyleInfo">
+				<property name="labelAttributeName" value="stringAttr" />
+				<property name="fontStyle">
+					<bean class="org.geomajas.configuration.FeatureStyleInfo">
+						<property name="fillColor" value="#998811" />
+						<property name="fillOpacity" value="1" />
+					</bean>
+				</property>
+				<property name="backgroundStyle">
+					<bean class="org.geomajas.configuration.FeatureStyleInfo">
+						<property name="fillColor" value="#000000" />
+						<property name="fillOpacity" value=".7" />
+						<property name="strokeColor" value="#998811" />
+						<property name="strokeOpacity" value="1" />
+						<property name="strokeWidth" value="1" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+
+
+	<bean name="beansLonLat" class="org.geomajas.layer.bean.BeanLayer">
+		<property name="layerInfo" ref="beansLonLatInfo" />
+		<property name="features">
+			<list>
+				<bean class="org.geomajas.layer.bean.FeatureBean">
+					<property name="id" value="1" />
+					<property name="booleanAttr" value="true" />
+					<property name="currencyAttr" value="100,23" />
+					<property name="dateAttr" value="2010-02-23" />
+					<property name="doubleAttr" value="123.456" />
+					<property name="floatAttr" value="456.789" />
+					<property name="imageUrlAttr" value="http://www.geomajas.org/image1" />
+					<property name="integerAttr" value="789" />
+					<property name="longAttr" value="123456789" />
+					<property name="shortAttr" value="123" />
+					<property name="stringAttr" value="USA" />
+					<property name="urlAttr" value="http://www.geomajas.org/url1" />
+					<property name="geometry"
+						value="MULTIPOLYGON(((-124 24,-124 49,-62 49,-62 24,-124 24)))" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+</beans>
