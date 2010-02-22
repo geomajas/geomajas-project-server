@@ -1,0 +1,20 @@
+	public Canvas getViewPanel() {
+		VLayout layout = new VLayout();
+		layout.setWidth100();
+		layout.setHeight100();
+
+		// Map with ID osmMap is defined in the XML configuration. (mapOsm.xml)
+		final MapWidget map = new MapWidget("crsMap", "gwt-samples");
+		map.addDrawHandler(new DrawHandler() {
+
+			public void onDraw(DrawEvent event) {
+				map.initialize();
+			}
+		});
+
+		// Set a panning controller on the map:
+		map.setController(new PanController(map));
+		layout.addMember(map);
+
+		return layout;
+	}
