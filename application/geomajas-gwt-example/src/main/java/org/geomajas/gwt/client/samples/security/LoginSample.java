@@ -121,8 +121,12 @@ public class LoginSample extends SamplePanel {
 		return I18nProvider.getSampleMessages().loginDescription();
 	}
 
+	public String getSourceFileName() {
+		return "classpath:org/geomajas/gwt/client/samples/security/LoginSample.txt";
+	}
+
 	public String[] getConfigurationFiles() {
-		return new String[] { "/org/geomajas/gwt/samples/security/security.xml" };
+		return new String[] { "classpath:org/geomajas/gwt/samples/security/security.xml" };
 	}
 
 	public String ensureUserLoggedIn() {

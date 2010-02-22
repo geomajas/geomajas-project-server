@@ -57,9 +57,9 @@ public class IntroductionTab extends SamplePanel {
 		HTMLPane pane = new HTMLPane();
 		String currentLocale = LocaleInfo.getCurrentLocale().getLocaleName();
 		if ("default".equals(currentLocale)) {
-			pane.setContentsURL("/pages/list.html");
+			pane.setContentsURL("[ISOMORPHIC]/geomajas/example/pages/list.html");
 		} else if ("nl".equals(currentLocale)) {
-			pane.setContentsURL("/pages/list_nl.html");
+			pane.setContentsURL("[ISOMORPHIC]/geomajas/example/pages/list_nl.html");
 		}
 
 		layout.addMember(logo);
@@ -70,6 +70,10 @@ public class IntroductionTab extends SamplePanel {
 
 	public String getDescription() {
 		return null;
+	}
+
+	public String getSourceFileName() {
+		return "org.geomajas.gwt.client.samples.IntroductionTab.txt";
 	}
 
 	public String[] getConfigurationFiles() {

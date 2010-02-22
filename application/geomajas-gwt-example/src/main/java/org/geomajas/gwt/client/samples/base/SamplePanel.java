@@ -95,7 +95,7 @@ public abstract class SamplePanel extends VLayout {
 			rightLayout.setMembersMargin(15);
 
 			sourceButton = new IButton(I18nProvider.getSampleMessages().generalSourceButton());
-			sourceButton.setIcon("/images/script_go.png");
+			sourceButton.setIcon("[ISOMORPHIC]/geomajas/example/images/script_go.png");
 			sourceButton.setLayoutAlign(Alignment.RIGHT);
 			sourceButton.setShowDisabledIcon(false);
 			sourceButton.setWidth(125);
@@ -109,7 +109,7 @@ public abstract class SamplePanel extends VLayout {
 
 			Window descriptionWindow = new Window();
 			descriptionWindow.setTitle(I18nProvider.getSampleMessages().generalDescription());
-			descriptionWindow.setHeaderIcon("/images/geomajas_favicon.jpg", 16, 16);
+			descriptionWindow.setHeaderIcon("[ISOMORPHIC]/geomajas/example/images/geomajas_favicon.jpg", 16, 16);
 			descriptionWindow.setShowEdges(true);
 			descriptionWindow.setKeepInParentRect(true);
 			descriptionWindow.setHeaderControls(HeaderControls.HEADER_ICON, HeaderControls.HEADER_LABEL);
@@ -142,6 +142,8 @@ public abstract class SamplePanel extends VLayout {
 
 	public abstract String getDescription();
 
+	public abstract String getSourceFileName();
+	
 	public abstract String[] getConfigurationFiles();
 	
 	/** If a user must be logged in before the sample can be shown, return his name here. */
@@ -176,9 +178,9 @@ public abstract class SamplePanel extends VLayout {
 	// Private methods:
 	// -------------------------------------------------------------------------
 
-	private String getSourceFileName() {
-		return "/" + getClass().getName().replaceAll("\\.", "/") + ".txt";
-	}
+//	private String getSourceFileName() {
+//		return "/" + getClass().getName().replaceAll("\\.", "/") + ".txt";
+//	}
 
 	private void getJavaSource() {
 		String[] resourceFiles = new String[getConfigurationFiles().length + 1];
@@ -207,7 +209,7 @@ public abstract class SamplePanel extends VLayout {
 	private void showFiles(Map<String, String> fileContents) {
 		sourceWindow = new Window();
 		sourceWindow.setTitle(I18nProvider.getSampleMessages().generalSourceTitle());
-		sourceWindow.setHeaderIcon("/images/geomajas_favicon.jpg", 16, 16);
+		sourceWindow.setHeaderIcon("[ISOMORPHIC]/geomajas/example/images/geomajas_favicon.jpg", 16, 16);
 		sourceWindow.setKeepInParentRect(true);
 		sourceWindow.setWidth(640);
 		sourceWindow.setHeight(480);
@@ -249,7 +251,7 @@ public abstract class SamplePanel extends VLayout {
 				int pos = tabTitle.lastIndexOf('/');
 				tabTitle = tabTitle.substring(pos + 1);
 
-				Tab tab = new Tab(tabTitle, "/images/script_go.png");
+				Tab tab = new Tab(tabTitle, "[ISOMORPHIC]/geomajas/example/images/script_go.png");
 				tab.setPane(resourceLayout);
 				tabs.addTab(tab);
 			}
@@ -274,7 +276,7 @@ public abstract class SamplePanel extends VLayout {
 		int pos = tabTitle.lastIndexOf('/');
 		tabTitle = tabTitle.substring(pos + 1);
 
-		Tab tab = new Tab(tabTitle, "/images/script_go.png");
+		Tab tab = new Tab(tabTitle, "[ISOMORPHIC]/geomajas/example/images/script_go.png");
 		tab.setPane(sourceLayout);
 		tabs.addTab(tab);
 	}

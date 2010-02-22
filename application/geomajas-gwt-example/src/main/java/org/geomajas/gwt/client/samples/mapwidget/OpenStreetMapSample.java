@@ -77,9 +77,13 @@ public class OpenStreetMapSample extends SamplePanel {
 		return I18nProvider.getSampleMessages().osmDescription();
 	}
 
+	public String getSourceFileName() {
+		return "classpath:org/geomajas/gwt/client/samples/mapwidget/OpenStreetMapSample.txt";
+	}
+
 	public String[] getConfigurationFiles() {
-		return new String[] { "/org/geomajas/gwt/samples/mapwidget/layerOsm.xml",
-				"/org/geomajas/gwt/samples/mapwidget/mapOsm.xml" };
+		return new String[] { "classpath:org/geomajas/gwt/samples/mapwidget/layerOsm.xml",
+				"classpath:org/geomajas/gwt/samples/mapwidget/mapOsm.xml" };
 	}
 
 	public String ensureUserLoggedIn() {

@@ -130,9 +130,13 @@ public class ToolSecuritySample extends SamplePanel {
 		return I18nProvider.getSampleMessages().toolSecurityDescription();
 	}
 
+	public String getSourceFileName() {
+		return "classpath:org/geomajas/gwt/client/samples/security/ToolSecuritySample.txt";
+	}
+
 	public String[] getConfigurationFiles() {
-		return new String[] { "/org/geomajas/gwt/samples/security/security.xml",
-				"/org/geomajas/gwt/samples/security/mapWmsToolbar.xml" };
+		return new String[] { "classpath:org/geomajas/gwt/samples/security/security.xml",
+				"classpath:org/geomajas/gwt/samples/security/mapWmsToolbar.xml" };
 	}
 
 	public String ensureUserLoggedIn() {

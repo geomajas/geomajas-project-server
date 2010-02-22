@@ -60,7 +60,7 @@ import com.smartgwt.client.widgets.tree.events.LeafClickHandler;
  * <p>
  * The GWT test case sample application. Here here!
  * </p>
- * 
+ *
  * @author Pieter De Graef
  */
 public class GeomajasSamples implements EntryPoint {
@@ -211,7 +211,7 @@ public class GeomajasSamples implements EntryPoint {
 		IntroductionTab sample = new IntroductionTab();
 		Tab tab = new Tab();
 		tab.setID(sample.getId() + "_tab");
-		String imgHTML = Canvas.imgHTML("/images/geomajas_favicon.jpg", 16, 16);
+		String imgHTML = Canvas.imgHTML("[ISOMORPHIC]/geomajas/example/images/geomajas_favicon.jpg", 16, 16);
 		tab.setTitle("<span>" + imgHTML + "&nbsp;" + I18nProvider.getSampleMessages().introductionTitle() + "</span>");
 		tab.setPane(sample.getViewPanel());
 		mainTabSet.addTab(tab);

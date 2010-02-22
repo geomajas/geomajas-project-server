@@ -160,9 +160,13 @@ public class NavigationSample extends SamplePanel {
 		return I18nProvider.getSampleMessages().navigationDescription();
 	}
 
+	public String getSourceFileName() {
+		return "classpath:org/geomajas/gwt/client/samples/mapwidget/NavigationSample.txt";
+	}
+
 	public String[] getConfigurationFiles() {
-		return new String[] { "/org/geomajas/gwt/samples/mapwidget/layerOsm.xml",
-				"/org/geomajas/gwt/samples/mapwidget/mapOsm.xml" };
+		return new String[] { "classpath:org/geomajas/gwt/samples/mapwidget/layerOsm.xml",
+				"classpath:org/geomajas/gwt/samples/mapwidget/mapOsm.xml" };
 	}
 
 	public String ensureUserLoggedIn() {

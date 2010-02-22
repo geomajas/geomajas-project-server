@@ -24,6 +24,8 @@
 package org.geomajas.gwt.server.samples;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
@@ -33,6 +35,7 @@ import org.geomajas.command.Command;
 import org.geomajas.gwt.client.samples.base.GetResourcesRequest;
 import org.geomajas.gwt.client.samples.base.GetResourcesResponse;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ResourceUtils;
 
 /**
  * <p>
@@ -49,7 +52,8 @@ public class GetSourceCommand implements Command<GetResourcesRequest, GetResourc
 			Map<String, String> resources = new HashMap<String, String>();
 
 			for (int i = 0; i < request.getResources().length; i++) {
-				InputStream in = Class.class.getResourceAsStream(request.getResources()[i]);
+				File file = ResourceUtils.getFile(request.getResources()[i]);
+				InputStream in = new FileInputStream(file);
 				if (in != null) {
 					String content = new String(read(in));
 					resources.put(request.getResources()[i], content);

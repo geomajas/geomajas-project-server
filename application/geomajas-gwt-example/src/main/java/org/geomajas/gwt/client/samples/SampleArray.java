@@ -50,7 +50,8 @@ public final class SampleArray {
 	public static SampleTreeNode[] getSampleArray() {
 		return new SampleTreeNode[] {
 				// MapWidget samples:
-				new SampleTreeNode("MapWidget", "/images/world.png", "MapWidget", "topLevel"),
+				new SampleTreeNode("MapWidget", "[ISOMORPHIC]/geomajas/example/images/world.png", "MapWidget",
+						"topLevel"),
 				new SampleTreeNode(I18nProvider.getSampleMessages().osmTitle(),
 						"[ISOMORPHIC]/geomajas/layer-raster.png", OpenStreetMapSample.OSM_TITLE, "MapWidget",
 						OpenStreetMapSample.FACTORY),

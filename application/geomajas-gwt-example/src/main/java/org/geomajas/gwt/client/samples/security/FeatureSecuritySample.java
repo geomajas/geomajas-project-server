@@ -50,7 +50,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
 public class FeatureSecuritySample extends SamplePanel {
 
 	public static final String FEATURE_SECUTIRY_TITLE = "FeatureSecurity";
-	
+
 	private MapWidget map;
 
 	public static final SamplePanelFactory FACTORY = new SamplePanelFactory() {
@@ -128,8 +128,12 @@ public class FeatureSecuritySample extends SamplePanel {
 		return I18nProvider.getSampleMessages().featureSecurityDescription();
 	}
 
+	public String getSourceFileName() {
+		return "classpath:org/geomajas/gwt/client/samples/security/FeatureSecuritySample.txt";
+	}
+
 	public String[] getConfigurationFiles() {
-		return new String[] { "/org/geomajas/gwt/samples/security/security.xml" };
+		return new String[] { "classpath:org/geomajas/gwt/samples/security/security.xml" };
 	}
 
 	public String ensureUserLoggedIn() {

@@ -77,9 +77,13 @@ public class WmsSample extends SamplePanel {
 		return I18nProvider.getSampleMessages().wmsDescription();
 	}
 
+	public String getSourceFileName() {
+		return "classpath:org/geomajas/gwt/client/samples/mapwidget/WmsSample.txt";
+	}
+
 	public String[] getConfigurationFiles() {
-		return new String[] { "/org/geomajas/gwt/samples/mapwidget/layerWmsBluemarble.xml",
-				"/org/geomajas/gwt/samples/mapwidget/mapWms.xml" };
+		return new String[] { "classpath:org/geomajas/gwt/samples/mapwidget/layerWmsBluemarble.xml",
+				"classpath:org/geomajas/gwt/samples/mapwidget/mapWms.xml" };
 	}
 
 	public String ensureUserLoggedIn() {
