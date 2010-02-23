@@ -23,11 +23,10 @@
 
 package org.geomajas.test.security;
 
+import com.vividsolutions.jts.geom.Envelope;
 import junit.framework.Assert;
 import org.geomajas.command.CommandDispatcher;
 import org.geomajas.command.CommandResponse;
-import org.geomajas.global.ExceptionCode;
-import org.geomajas.global.GeomajasSecurityException;
 import org.geomajas.layer.bean.BeanLayer;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.plugin.springsecurity.command.dto.LoginRequest;
@@ -37,6 +36,7 @@ import org.geomajas.service.VectorLayerService;
 import org.geotools.referencing.CRS;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
@@ -85,22 +85,50 @@ public class VectorLayerServiceVisibleAreaTest {
 
 	@Test
 	public void testGetFeaturesVisibleArea() throws Exception {
-		login("");
-		// @todo
-		Assert.fail();
+		List<InternalFeature> features;
+		CoordinateReferenceSystem crs = CRS.decode(beanLayer.getLayerInfo().getCrs());
+
+		login("luc");
+		features = layerService.getFeatures(LAYER_ID,crs, null, null, VectorLayerService.FEATURE_INCLUDE_NONE);
+		Assert.assertEquals(3, features.size());
+
+		login("marino");
+		features = layerService.getFeatures(LAYER_ID, crs, null, null, VectorLayerService.FEATURE_INCLUDE_NONE);
+		Assert.assertEquals(2, features.size());
+		int check = 0;
+		for (InternalFeature feature : features) {
+			check |= 1 << (Integer.parseInt(feature.getId()) - 1);
+		}
+		Assert.assertEquals(6, check);
+
 	}
 
 	@Test
 	public void testGetBoundsVisibleArea() throws Exception {
-		login("");
-		// @todo
-		Assert.fail();
+		CoordinateReferenceSystem crs = CRS.decode(beanLayer.getLayerInfo().getCrs());
+		Envelope envelope;
+
+		login("luc");
+		envelope = layerService.getBounds(LAYER_ID, crs, null);
+		Assert.assertEquals(0, envelope.getMinX(), ALLOWANCE);
+		Assert.assertEquals(0, envelope.getMinY(), ALLOWANCE);
+		Assert.assertEquals(7, envelope.getMaxX(), ALLOWANCE);
+		Assert.assertEquals(3, envelope.getMaxY(), ALLOWANCE);
+
+		login("marino");
+		envelope = layerService.getBounds(LAYER_ID, crs, null);
+		Assert.assertEquals(2, envelope.getMinX(), ALLOWANCE);
+		Assert.assertEquals(0, envelope.getMinY(), ALLOWANCE);
+		Assert.assertEquals(7, envelope.getMaxX(), ALLOWANCE);
+		Assert.assertEquals(3, envelope.getMaxY(), ALLOWANCE);
 	}
 
+	/*
 	@Test
 	public void testSaveOrUpdateCreateDeleteArea() throws Exception {
 		login("");
 		// @todo
 		Assert.fail();
 	}
+	*/
 }

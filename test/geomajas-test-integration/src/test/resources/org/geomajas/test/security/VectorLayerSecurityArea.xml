@@ -55,6 +55,21 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 										<value>.*</value>
 									</list>
 								</property>
+								<property name="updateAuthorizedLayersInclude">
+									<list>
+										<value>.*</value>
+									</list>
+								</property>
+								<property name="createAuthorizedLayersInclude">
+									<list>
+										<value>.*</value>
+									</list>
+								</property>
+								<property name="deleteAuthorizedLayersInclude">
+									<list>
+										<value>.*</value>
+									</list>
+								</property>
 							</bean>
 						</list>
 					</property>
@@ -65,11 +80,38 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 					<property name="userName" value="Marino Van Hoenacker"/>
 					<property name="authorizations">
 						<list>
-							<bean class="org.geomajas.plugin.springsecurity.configuration.LayerAuthorizationInfo">
+							<bean class="org.geomajas.plugin.springsecurity.configuration.AreaAuthorizationInfo">
 								<property name="visibleLayersInclude">
 									<list>
-										<value>roads</value>
+										<value>.*</value>
 									</list>
+								</property>
+								<property name="updateAuthorizedLayersInclude">
+									<list>
+										<value>.*</value>
+									</list>
+								</property>
+								<property name="createAuthorizedLayersInclude">
+									<list>
+										<value>.*</value>
+									</list>
+								</property>
+								<property name="deleteAuthorizedLayersInclude">
+									<list>
+										<value>.*</value>
+									</list>
+								</property>
+								<property name="layers">
+									<map>
+										<entry key="beans">
+											<bean class="org.geomajas.plugin.springsecurity.configuration.LayerAreaAuthorizationInfo">
+												<property name="visibleArea" value="MULTIPOLYGON(((1 0,1 10,10 10,10 0,1 0)))" />
+												<property name="updateAuthorizedArea" value="MULTIPOLYGON(((1 0,1 10,10 10,10 0,1 0)))" />
+												<property name="createAuthorizedArea" value="MULTIPOLYGON(((1 0,1 10,10 10,10 0,1 0)))" />
+												<property name="deleteAuthorizedArea" value="MULTIPOLYGON(((1 0,1 10,10 10,10 0,1 0)))" />
+											</bean>
+										</entry>
+									</map>
 								</property>
 							</bean>
 						</list>
