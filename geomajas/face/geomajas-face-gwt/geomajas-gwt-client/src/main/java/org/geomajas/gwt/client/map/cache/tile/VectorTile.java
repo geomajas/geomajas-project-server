@@ -134,7 +134,7 @@ public class VectorTile extends AbstractVectorTile {
 					screenWidth = tile.getScreenWidth();
 					screenHeight = tile.getScreenHeight();
 					featureContent = tile.getFeatureContent();
-					labelContent = tile.getFeatureContent();
+					labelContent = tile.getLabelContent();
 					contentType = tile.getContentType();
 					try {
 						callback.execute(self);
