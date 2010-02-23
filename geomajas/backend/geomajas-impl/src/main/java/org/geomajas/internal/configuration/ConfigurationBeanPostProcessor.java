@@ -126,9 +126,8 @@ public class ConfigurationBeanPostProcessor implements BeanPostProcessor {
 			map.setUnitLength(getUnitLength(map.getCrs(), map.getInitialBounds()));
 			map.setPixelLength(METER_PER_INCH / map.getUnitLength() / client.getScreenDpi());
 			for (ClientLayerInfo layer : map.getLayers()) {
-				layer
-						.setMaxExtent(getClientMaxExtent(map.getCrs(), layer.getCrs(), layer.getLayerInfo()
-								.getMaxExtent()));
+				layer.setMaxExtent(getClientMaxExtent(map.getCrs(), layer.getCrs(),
+						layer.getLayerInfo().getMaxExtent()));
 			}
 		}
 		return client;

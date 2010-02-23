@@ -26,6 +26,8 @@ import org.apache.commons.lang.SerializationUtils;
 import org.geomajas.command.Command;
 import org.geomajas.command.dto.GetMapConfigurationRequest;
 import org.geomajas.command.dto.GetMapConfigurationResponse;
+import org.geomajas.configuration.AttributeInfo;
+import org.geomajas.configuration.FeatureInfo;
 import org.geomajas.configuration.client.ClientApplicationInfo;
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientLayerTreeInfo;
@@ -126,9 +128,20 @@ public class GetMapConfigurationCommand implements Command<GetMapConfigurationRe
 			client = (ClientLayerInfo) SerializationUtils.clone(original);
 			if (client instanceof ClientVectorLayerInfo) {
 				ClientVectorLayerInfo vectorLayer = (ClientVectorLayerInfo) client;
+				// set statuses
 				vectorLayer.setCreatable(securityContext.isLayerCreateAuthorized(layerId));
 				vectorLayer.setUpdatable(securityContext.isLayerUpdateAuthorized(layerId));
 				vectorLayer.setDeletable(securityContext.isLayerDeleteAuthorized(layerId));
+				// filter feature info
+				FeatureInfo featureInfo = vectorLayer.getFeatureInfo();
+				List<AttributeInfo> originalAttr = featureInfo.getAttributes();
+				List<AttributeInfo> filteredAttr = new ArrayList<AttributeInfo>();
+				featureInfo.setAttributes(filteredAttr);
+				for (AttributeInfo ai : originalAttr) {
+					if (securityContext.isAttributeReadable(layerId, null, ai.getName())) {
+						filteredAttr.add(ai);
+					}
+				}
 			}
 		}
 		return client;

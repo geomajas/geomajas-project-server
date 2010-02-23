@@ -88,7 +88,11 @@ public class AttributeAuthorizationInfo extends LayerAuthorizationInfo {
 
 		private boolean check(InternalFeature feature, String attributeName, List<String> includes,
 							  List<String> excludes) {
-			return check(feature.getId(), attributeName, includes) && !check(feature.getId(), attributeName, excludes);
+			String featureId = null;
+			if (null != feature) {
+				featureId = feature.getId();
+			}
+			return check(featureId, attributeName, includes) && !check(featureId, attributeName, excludes);
 		}
 
 		private boolean check(String featureId, String attributeId, List<String> includes) {
