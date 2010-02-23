@@ -55,6 +55,11 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 										<value>.*</value>
 									</list>
 								</property>
+								<property name="updateAuthorizedLayersInclude">
+									<list>
+										<value>.*</value>
+									</list>
+								</property>
 							</bean>
 						</list>
 					</property>

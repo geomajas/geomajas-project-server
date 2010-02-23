@@ -90,6 +90,12 @@ public class VectorLayerServiceInvisibleLayerTest {
 		List<InternalFeature> features = layerService.getFeatures(LAYER_ID,
 				CRS.decode(beanLayer.getLayerInfo().getCrs()), null, null, VectorLayerService.FEATURE_INCLUDE_NONE);
 		Assert.assertEquals(3, features.size());
+		Assert.assertTrue(features.get(0).isEditable());
+		Assert.assertFalse(features.get(0).isDeletable());
+		Assert.assertTrue(features.get(1).isEditable());
+		Assert.assertFalse(features.get(1).isDeletable());
+		Assert.assertTrue(features.get(2).isEditable());
+		Assert.assertFalse(features.get(2).isDeletable());
 
 		// verify features are not accessible when layer is invisible
 		login("marino");

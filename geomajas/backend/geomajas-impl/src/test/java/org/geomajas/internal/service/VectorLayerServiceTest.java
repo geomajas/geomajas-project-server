@@ -135,7 +135,7 @@ public class VectorLayerServiceTest {
 		List<InternalFeature> oldFeatures = new ArrayList<InternalFeature>();
 		List<InternalFeature> newFeatures = new ArrayList<InternalFeature>();
 		InternalFeature feature = converterService.toInternal(new Feature());
-		feature.setId("beans.4");
+		feature.setId("4");
 		feature.setLayer(beanLayer);
 		// feature needs a geometry or exceptions all over
 		GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel());
