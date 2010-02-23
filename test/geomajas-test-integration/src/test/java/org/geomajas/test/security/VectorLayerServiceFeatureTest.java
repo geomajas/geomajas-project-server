@@ -38,7 +38,6 @@ import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.layer.feature.attribute.StringAttribute;
 import org.geomajas.plugin.springsecurity.command.dto.LoginRequest;
 import org.geomajas.plugin.springsecurity.command.dto.LoginResponse;
-import org.geomajas.security.SecurityContext;
 import org.geomajas.security.SecurityManager;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.FilterService;
@@ -81,9 +80,6 @@ public class VectorLayerServiceFeatureTest {
 	private SecurityManager securityManager;
 
 	@Autowired
-	private SecurityContext securityContext;
-
-	@Autowired
 	private CommandDispatcher commandDispatcher;
 
 	@Autowired
@@ -101,7 +97,6 @@ public class VectorLayerServiceFeatureTest {
 		Assert.assertFalse(response.isError());
 		Assert.assertTrue(response instanceof LoginResponse);
 		securityManager.createSecurityContext(((LoginResponse)response).getToken());
-		System.out.println("logged in as " + name);
 	}
 
 	@Test
@@ -121,7 +116,6 @@ public class VectorLayerServiceFeatureTest {
 
 		login("marino");
 		features = layerService.getFeatures(LAYER_ID, crs, null, null, VectorLayerService.FEATURE_INCLUDE_NONE);
-		System.out.println("securityContext " + securityContext.getUserId());
 		Assert.assertEquals(2, features.size());
 		for (InternalFeature feature : features) {
 			if ("1".equals(feature.getId())) {
@@ -149,8 +143,6 @@ public class VectorLayerServiceFeatureTest {
 		filter = filterService.createFidFilter(new String[]{"1"});
 		oldFeatures = layerService.getFeatures(LAYER_ID, crs, filter, null, 
 				VectorLayerService.FEATURE_INCLUDE_ATTRIBUTES);
-		System.out.println("securityContext " + securityContext.getUserId());
-		System.out.println("oldFeatures " + oldFeatures + ", filter " + filter);
 		Assert.assertEquals(1, oldFeatures.size());
 		feature = oldFeatures.get(0);
 		newFeatures = new ArrayList<InternalFeature>();
@@ -194,7 +186,6 @@ public class VectorLayerServiceFeatureTest {
 		Filter filter;
 		List<InternalFeature> oldFeatures;
 		List<InternalFeature> newFeatures;
-		InternalFeature feature;
 		CoordinateReferenceSystem crs = CRS.decode(beanLayer.getLayerInfo().getCrs());
 
 		login("marino");
@@ -202,7 +193,6 @@ public class VectorLayerServiceFeatureTest {
 		oldFeatures = layerService.getFeatures(LAYER_ID,
 				crs, filter, null, VectorLayerService.FEATURE_INCLUDE_ATTRIBUTES);
 		Assert.assertEquals(1, oldFeatures.size());
-		feature = oldFeatures.get(0);
 		newFeatures = new ArrayList<InternalFeature>();
 		try {
 			layerService.saveOrUpdate(LAYER_ID, crs, oldFeatures, newFeatures);
@@ -216,7 +206,6 @@ public class VectorLayerServiceFeatureTest {
 		oldFeatures = layerService.getFeatures(LAYER_ID,
 				crs, filter, null, VectorLayerService.FEATURE_INCLUDE_ATTRIBUTES);
 		Assert.assertEquals(1, oldFeatures.size());
-		feature = oldFeatures.get(0);
 		newFeatures = new ArrayList<InternalFeature>();
 		layerService.saveOrUpdate(LAYER_ID, crs, oldFeatures, newFeatures);
 		oldFeatures = layerService.getFeatures(LAYER_ID,

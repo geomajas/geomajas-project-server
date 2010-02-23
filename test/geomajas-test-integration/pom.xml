@@ -82,11 +82,6 @@
 				<configuration>
 					<excludes>
 						<exclude>**/VectorLayerServiceVisibleAreaTest.java</exclude>
-						<exclude>**/VectorLayerServiceAttributeTest.java</exclude>
-						<!--
-						<exclude>**/VectorLayerServiceSecurityFilterTest.java</exclude>
-						<exclude>**/VectorLayerServiceFeatureTest.java</exclude>
-						-->
 					</excludes>
 				</configuration>
 			</plugin>
