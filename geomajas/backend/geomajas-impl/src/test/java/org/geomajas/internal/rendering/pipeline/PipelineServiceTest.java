@@ -59,7 +59,7 @@ public class PipelineServiceTest {
 		Assert.assertEquals("bla-step-1step-3", response.getValue());
 
 		pipelineService.execute(pipelineService.getPipeline("pipelineTest", "stop"), "stop-", response);
-		Assert.assertEquals("stop-s1", response.getValue());
+		Assert.assertEquals("stop-s1-STOP", response.getValue());
 	}
 
 	@Test

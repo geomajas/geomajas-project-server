@@ -45,8 +45,9 @@ public class StopStep implements PipelineStep<String, StringAttribute> {
 		this.id = id;
 	}
 
-	public void execute(String elementId, PipelineContext context, StringAttribute stringAttribute)
+	public void execute(String request, PipelineContext context, StringAttribute response)
 			throws GeomajasException {
-		context.setFinished(false);
+		response.setValue(response.getValue() + "-STOP");		
+		context.setFinished(true);
 	}
 }

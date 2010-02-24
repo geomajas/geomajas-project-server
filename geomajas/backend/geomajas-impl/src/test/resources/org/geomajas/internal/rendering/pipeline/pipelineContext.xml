@@ -66,20 +66,18 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 		<property name="id" value="pipelineTest.stop"/>
 		<property name="pipeline">
 			<list>
-				<list>
-					<bean class="org.geomajas.internal.rendering.pipeline.Step1">
-						<property name="id" value="s1"/>
-					</bean>
-					<bean class="org.geomajas.internal.rendering.pipeline.StopStep">
-						<property name="id" value="stop"/>
-					</bean>
-					<bean class="org.geomajas.internal.rendering.pipeline.Step2">
-						<property name="id" value="s2"/>
-					</bean>
-					<bean class="org.geomajas.internal.rendering.pipeline.Step2">
-						<property name="id" value="s3"/>
-					</bean>
-				</list>
+				<bean class="org.geomajas.internal.rendering.pipeline.Step1">
+					<property name="id" value="s1"/>
+				</bean>
+				<bean class="org.geomajas.internal.rendering.pipeline.StopStep">
+					<property name="id" value="stop"/>
+				</bean>
+				<bean class="org.geomajas.internal.rendering.pipeline.Step2">
+					<property name="id" value="s2"/>
+				</bean>
+				<bean class="org.geomajas.internal.rendering.pipeline.Step2">
+					<property name="id" value="s3"/>
+				</bean>
 			</list>
 		</property>
 	</bean>
