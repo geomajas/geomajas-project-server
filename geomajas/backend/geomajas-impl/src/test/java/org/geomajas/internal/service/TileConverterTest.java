@@ -56,7 +56,7 @@ public class TileConverterTest {
 
 	@Test
 	public void testToDto() {
-		InternalTileImpl internalTile = new InternalTileImpl(0, 0, 0, beansLayer, 0, converterService);
+		InternalTileImpl internalTile = new InternalTileImpl(0, 0, 0, beansLayer, 0);
 		internalTile.setContentType(VectorTileContentType.STRING_CONTENT);
 		VectorTile tile = converterService.toDto(internalTile);
 		Assert.assertNotNull(tile);

@@ -48,15 +48,15 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 	</bean>
 
 	<bean name="beansLonLatInfo" class="org.geomajas.configuration.VectorLayerInfo">
-		<property name="id" value="beans" />
+		<property name="id" value="beansLonLat" />
 		<property name="layerType" value="MULTIPOLYGON" />
 		<property name="crs" value="EPSG:4326" />
 		<property name="maxExtent">
 			<bean class="org.geomajas.geometry.Bbox">
-				<property name="x" value="-179" />
-				<property name="y" value="-89" />
-				<property name="width" value="358" />
-				<property name="height" value="178" />
+				<property name="x" value="-179.9" />
+				<property name="y" value="-85.0" />
+				<property name="width" value="359.8" />
+				<property name="height" value="170.0" />
 			</bean>
 		</property>
 		<property name="maxTileLevel" value="16" />

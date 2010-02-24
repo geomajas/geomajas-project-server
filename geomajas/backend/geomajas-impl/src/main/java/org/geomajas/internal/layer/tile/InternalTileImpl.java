@@ -26,13 +26,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.geomajas.layer.Layer;
+import org.geomajas.internal.rendering.strategy.TileService;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.layer.tile.TileCode;
 import org.geomajas.layer.tile.VectorTile.VectorTileContentType;
-import org.geomajas.service.DtoConverterService;
 
 import com.vividsolutions.jts.geom.Envelope;
 
@@ -53,9 +52,9 @@ public class InternalTileImpl implements InternalTile {
 
 	private double tileHeight;
 
-	private int screenWidth;
+	private double screenWidth;
 
-	private int screenHeight;
+	private double screenHeight;
 
 	private boolean clipped;
 
@@ -65,22 +64,20 @@ public class InternalTileImpl implements InternalTile {
 
 	private VectorTileContentType contentType;
 
-	private DtoConverterService converterService;
+	private Envelope bounds;
 
 	// -------------------------------------------------------------------------
 	// Constructors:
 	// -------------------------------------------------------------------------
 
-	public InternalTileImpl(TileCode code, VectorLayer layer, double scale, DtoConverterService converterService) {
+	public InternalTileImpl(TileCode code, VectorLayer layer, double scale) {
 		super();
 		this.code = code;
-		this.converterService = converterService;
 		init(layer, scale);
 	}
 
-	public InternalTileImpl(int x, int y, int tileLevel, VectorLayer layer, double scale,
-			DtoConverterService converterService) {
-		this(new TileCode(tileLevel, x, y), layer, scale, converterService);
+	public InternalTileImpl(int x, int y, int tileLevel, VectorLayer layer, double scale) {
+		this(new TileCode(tileLevel, x, y), layer, scale);
 	}
 
 	// -------------------------------------------------------------------------
@@ -88,22 +85,17 @@ public class InternalTileImpl implements InternalTile {
 	// -------------------------------------------------------------------------
 
 	public void init(VectorLayer layer, double scale) {
-		Envelope max = converterService.toInternal(layer.getLayerInfo().getMaxExtent());
-		double div = Math.pow(2, code.getTileLevel());
-		tileWidth = Math.ceil(scale * (max.getMaxX() - max.getMinX()) / div) / scale;
-		tileHeight = Math.ceil(scale * (max.getMaxY() - max.getMinY()) / div) / scale;
-		screenWidth = (int) Math.ceil(scale * tileWidth);
-		screenHeight = (int) Math.ceil(scale * tileHeight);
+		double[] worldSize = TileService.getTileWorldSize(code, layer, scale);
+		tileWidth = worldSize[0];
+		tileHeight = worldSize[1];
+		double[] screenSize = TileService.getTileScreenSize(worldSize, scale);
+		screenWidth = screenSize[0];
+		screenHeight = screenSize[1];
+		bounds = TileService.getTileBounds(code, layer, scale);
 	}
 
-	public Envelope getBbox(Layer<?> layer) {
-		if (tileWidth == 0) {
-			return null;
-		}
-		Envelope max = converterService.toInternal(layer.getLayerInfo().getMaxExtent());
-		double cX = max.getMinX() + code.getX() * tileWidth;
-		double cY = max.getMinY() + code.getY() * tileHeight;
-		return new Envelope(cX, cX + tileWidth, cY, cY + tileHeight);
+	public Envelope getBbox() {
+		return bounds;
 	}
 
 	public String codeAsString() {
@@ -269,7 +261,7 @@ public class InternalTileImpl implements InternalTile {
 	}
 
 	/** Return the tile's width, expressed in client side pixels. */
-	public int getScreenWidth() {
+	public double getScreenWidth() {
 		return screenWidth;
 	}
 
@@ -279,12 +271,12 @@ public class InternalTileImpl implements InternalTile {
 	 * @param screenWidth
 	 *            The new value.
 	 */
-	public void setScreenWidth(int screenWidth) {
+	public void setScreenWidth(double screenWidth) {
 		this.screenWidth = screenWidth;
 	}
 
 	/** Return the tile's height, expressed in client side pixels. */
-	public int getScreenHeight() {
+	public double getScreenHeight() {
 		return screenHeight;
 	}
 
@@ -294,7 +286,7 @@ public class InternalTileImpl implements InternalTile {
 	 * @param screenHeight
 	 *            The new value.
 	 */
-	public void setScreenHeight(int screenHeight) {
+	public void setScreenHeight(double screenHeight) {
 		this.screenHeight = screenHeight;
 	}
 

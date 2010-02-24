@@ -42,7 +42,6 @@ import org.geomajas.rendering.image.RasterUrlBuilder;
 import org.geomajas.rendering.painter.tile.TilePainter;
 import org.geomajas.rendering.strategy.RenderingStrategy;
 import org.geomajas.service.ConfigurationService;
-import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.VectorLayerService;
 import org.geotools.filter.text.cql2.CQL;
@@ -78,9 +77,6 @@ public class ImageRendering implements RenderingStrategy {
 	@Autowired
 	private VectorLayerService layerService;
 
-	@Autowired
-	private DtoConverterService converterService;
-
 	/**
 	 * Paint the tile! This function will create a <code>RasterTile</code> extension of the <code>RenderedTile</code>
 	 * class. This <code>RasterTile</code> not only holds all the drawn features and tiling info, but also an URL
@@ -97,21 +93,20 @@ public class ImageRendering implements RenderingStrategy {
 			CoordinateReferenceSystem crs = runtime.getCrs(metadata.getCrs());
 
 			// Prepare the tile:
-			InternalTileImpl tile = new InternalTileImpl(metadata.getCode(), vLayer, metadata.getScale(),
-					converterService);
+			InternalTileImpl tile = new InternalTileImpl(metadata.getCode(), vLayer, metadata.getScale());
 			tile.setContentType(VectorTileContentType.URL_CONTENT);
 
 			// Prepare any filtering:
 			String geomName = vLayer.getLayerInfo().getFeatureInfo().getGeometryType().getName();
 			Filter filter = filterService.createBboxFilter(crs.getIdentifiers().iterator().next().toString(), tile
-					.getBbox(vLayer), geomName);
+					.getBbox(), geomName);
 			if (metadata.getFilter() != null) {
 				filter = filterService.createLogicFilter(CQL.toFilter(metadata.getFilter()), "and", filter);
 			}
 
 			// Create a FeaturePainter and paint the features:
-			List<InternalFeature> features = layerService.getFeatures(metadata.getLayerId(), crs, filter,
-					metadata.getStyleInfo(), VectorLayerService.FEATURE_INCLUDE_ALL);
+			List<InternalFeature> features = layerService.getFeatures(metadata.getLayerId(), crs, filter, metadata
+					.getStyleInfo(), VectorLayerService.FEATURE_INCLUDE_ALL);
 
 			// At this point, we have a tile with rendered features.
 			// Now we need to paint the tile itself:
@@ -155,11 +150,10 @@ public class ImageRendering implements RenderingStrategy {
 		public String getImageUrl() {
 			TileCode c = metadata.getCode();
 			Coordinate p = metadata.getPanOrigin();
-			return "tile/" + UUID.randomUUID().toString() + ".png?layerId="
-					+ metadata.getLayerId() + "&x=" + c.getX() + "&y=" + c.getY() + "&tileLevel=" + c.getTileLevel()
-					+ "&scale=" + metadata.getScale() + "&origX=" + p.getX() + "&origY=" + p.getY() + "&filter="
-					+ metadata.getFilter() + "&setPaintGeometries=" + paintGeometries + "&setPaintLabels="
-					+ paintLabels;
+			return "tile/" + UUID.randomUUID().toString() + ".png?layerId=" + metadata.getLayerId() + "&x=" + c.getX()
+					+ "&y=" + c.getY() + "&tileLevel=" + c.getTileLevel() + "&scale=" + metadata.getScale() + "&origX="
+					+ p.getX() + "&origY=" + p.getY() + "&filter=" + metadata.getFilter() + "&setPaintGeometries="
+					+ paintGeometries + "&setPaintLabels=" + paintLabels;
 		}
 
 		public void paintGeometries(boolean enable) {

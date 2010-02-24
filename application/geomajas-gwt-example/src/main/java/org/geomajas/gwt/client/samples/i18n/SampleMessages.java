@@ -50,6 +50,8 @@ public interface SampleMessages extends Messages {
 
 	String treeGroupSecurity();
 
+	String treeGroupMapController();
+
 	String introductionTitle();
 
 	// OpenStreetMap sample:
@@ -85,6 +87,16 @@ public interface SampleMessages extends Messages {
 	String crsTitle();
 
 	String crsDescription();
+
+	// Custom Controller sample:
+
+	String customControllerTitle();
+
+	String customControllerDescription();
+
+	String customControllerScreenCoordinates();
+
+	String customControllerWorldCoordinates();
 
 	// Login sample:
 

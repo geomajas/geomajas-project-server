@@ -118,19 +118,19 @@ public class ExternalWmsRendering implements RenderingStrategy {
 			// Prepare any filtering:
 			String geomName = vLayer.getLayerInfo().getFeatureInfo().getGeometryType().getName();
 			Filter filter = filterCreator.createBboxFilter(crs.getIdentifiers().iterator().next().toString(), tile
-					.getBbox(vLayer), geomName);
+					.getBbox(), geomName);
 			if (metadata.getFilter() != null) {
 				filter = filterCreator.createLogicFilter(CQL.toFilter(metadata.getFilter()), "and", filter);
 			}
 
 			// Create a FeaturePainter and paint the features:
-			List<InternalFeature> features = layerService.getFeatures(metadata.getLayerId(), crs, filter,
-					metadata.getStyleInfo(), VectorLayerService.FEATURE_INCLUDE_ALL);
+			List<InternalFeature> features = layerService.getFeatures(metadata.getLayerId(), crs, filter, metadata
+					.getStyleInfo(), VectorLayerService.FEATURE_INCLUDE_ALL);
 
 			// At this point, we have a tile with rendered features.
 			// Now we need to paint the tile itself:
 			tile.setFeatures(features);
-			TilePainter tilePainter = paintFactory.createRasterTilePainter(new WmsUrlBuilder(tile, vLayer, layerName));
+			TilePainter tilePainter = paintFactory.createRasterTilePainter(new WmsUrlBuilder(tile, layerName));
 			return tilePainter.paint(tile);
 		} catch (CQLException cqle) {
 			throw new RenderException(cqle, ExceptionCode.FILTER_PARSE_PROBLEM, metadata.getFilter());
@@ -166,15 +166,12 @@ public class ExternalWmsRendering implements RenderingStrategy {
 
 		private DecimalFormat decimalFormat = new DecimalFormat();
 
-		private VectorLayer layer;
-
 		private InternalTile tile;
 
 		private String layerName;
 
-		public WmsUrlBuilder(InternalTile tile, VectorLayer layer, String layerName) {
+		public WmsUrlBuilder(InternalTile tile, String layerName) {
 			this.tile = tile;
-			this.layer = layer;
 			this.layerName = layerName;
 
 			decimalFormat.setDecimalSeparatorAlwaysShown(false);
@@ -205,7 +202,7 @@ public class ExternalWmsRendering implements RenderingStrategy {
 			url += "&width=" + tile.getScreenWidth();
 			url += "&height=" + tile.getScreenHeight();
 
-			Envelope env = tile.getBbox(this.layer);
+			Envelope env = tile.getBbox();
 			url += "&bbox=" + decimalFormat.format(env.getMinX()) + "," + decimalFormat.format(env.getMinY()) + ","
 					+ decimalFormat.format(env.getMaxX()) + "," + decimalFormat.format(env.getMaxY());
 			url += "&format=" + wmsLayer.getFormat();

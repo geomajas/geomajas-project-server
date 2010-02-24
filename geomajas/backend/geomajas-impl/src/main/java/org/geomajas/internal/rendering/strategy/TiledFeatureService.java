@@ -32,6 +32,7 @@ import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.layer.tile.TileCode;
 import org.geomajas.service.DtoConverterService;
 import org.geotools.geometry.jts.JTS;
+import org.opengis.referencing.operation.MathTransform;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -90,13 +91,16 @@ public class TiledFeatureService {
 	 * @param panOrigin
 	 *            When panning on the client, only this parameter changes. So we need to be aware of it as we calculate
 	 *            the maxScreenEnvelope.
+	 * @param transform
+	 *            Transformation between layer and map CRS. Needed to calculate correct tile bounds.
 	 */
 	public void fillTile(InternalTile tile, List<InternalFeature> features, VectorLayer layer, TileCode code,
-			double scale, Coordinate panOrigin) {
+			double scale, Coordinate panOrigin, MathTransform transform) {
 		for (InternalFeature feature : features) {
 			Geometry geometry = feature.getGeometry();
 
-			if (!tile.getBbox(layer).contains(geometry.getCoordinate())) {
+			Envelope transformedBounds = TileService.getTransformedTileBounds(tile, layer, transform);
+			if (!transformedBounds.contains(geometry.getCoordinate())) {
 				addTileCode(tile, layer, geometry);
 			} else {
 				// clip feature if necessary
@@ -183,14 +187,14 @@ public class TiledFeatureService {
 			int nrOfTilesY = Math.max(1, MAXIMUM_TILE_COORDINATE / tileHeightPx);
 
 			double x1 = panOrigin.x - nrOfTilesX * tileWidth;
-			//double x2 = x1 + (nrOfTilesX * tileWidth * 2);
+			// double x2 = x1 + (nrOfTilesX * tileWidth * 2);
 			double x2 = panOrigin.x + nrOfTilesX * tileWidth;
 			double y1 = panOrigin.y - nrOfTilesY * tileHeight;
-			//double y2 = y1 + (nrOfTilesY * tileHeight * 2);
+			// double y2 = y1 + (nrOfTilesY * tileHeight * 2);
 			double y2 = panOrigin.y + nrOfTilesY * tileHeight;
 			maxScreenBbox = new Envelope(x1, x2, y1, y2);
-//			maxScreenEnvelope ;= new Envelope(panOrigin.x - nrOfTilesX * tileWidth, panOrigin.x + nrOfTilesX
-//					* tileWidth, panOrigin.y - nrOfTilesY * tileHeight, panOrigin.y + nrOfTilesY * tileHeight);
+			// maxScreenEnvelope ;= new Envelope(panOrigin.x - nrOfTilesX * tileWidth, panOrigin.x + nrOfTilesX
+			// * tileWidth, panOrigin.y - nrOfTilesY * tileHeight, panOrigin.y + nrOfTilesY * tileHeight);
 		}
 		return maxScreenBbox;
 	}

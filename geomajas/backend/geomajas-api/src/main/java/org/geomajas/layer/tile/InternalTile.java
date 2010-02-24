@@ -24,7 +24,6 @@ package org.geomajas.layer.tile;
 
 import java.util.List;
 
-import org.geomajas.layer.Layer;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.layer.tile.VectorTile.VectorTileContentType;
@@ -60,7 +59,7 @@ public interface InternalTile {
 
 	void init(VectorLayer layer, double scale);
 
-	Envelope getBbox(Layer<?> layer);
+	Envelope getBbox();
 
 	String codeAsString();
 
@@ -78,13 +77,13 @@ public interface InternalTile {
 
 	void setTileHeight(double tileHeight);
 
-	int getScreenWidth();
+	double getScreenWidth();
 
-	void setScreenWidth(int screenWidth);
+	void setScreenWidth(double screenWidth);
 
-	int getScreenHeight();
+	double getScreenHeight();
 
-	void setScreenHeight(int screenHeight);
+	void setScreenHeight(double screenHeight);
 
 	void addCode(int level, int x, int y);
 

@@ -33,6 +33,7 @@ import org.geomajas.internal.layer.feature.InternalFeatureImpl;
 import org.geomajas.internal.layer.tile.InternalTileImpl;
 import org.geomajas.internal.rendering.DefaultSvgDocument;
 import org.geomajas.internal.rendering.DefaultVmlDocument;
+import org.geomajas.internal.rendering.strategy.TileService;
 import org.geomajas.internal.rendering.writers.svg.SvgFeatureScreenWriter;
 import org.geomajas.internal.rendering.writers.svg.SvgFeatureTileWriter;
 import org.geomajas.internal.rendering.writers.svg.SvgLabelTileWriter;
@@ -48,6 +49,8 @@ import org.geomajas.rendering.painter.tile.TilePainter;
 import org.geomajas.service.GeoService;
 import org.geotools.geometry.jts.GeometryCoordinateSequenceTransformer;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
+import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -132,6 +135,8 @@ public class StringContentTilePainter implements TilePainter {
 
 	private GeoService geoService;
 
+	private CoordinateReferenceSystem targetCrs;
+
 	// -------------------------------------------------------------------------
 	// Constructors:
 	// -------------------------------------------------------------------------
@@ -152,7 +157,7 @@ public class StringContentTilePainter implements TilePainter {
 	 *            creating the world to view space coordinate transformer.
 	 */
 	public StringContentTilePainter(VectorLayer layer, NamedStyleInfo style, String renderer, double scale,
-			Coordinate panOrigin, GeoService geoService) {
+			Coordinate panOrigin, GeoService geoService, CoordinateReferenceSystem targetCrs) {
 		this.layer = layer;
 		// @todo: duplicate code, can we just depend on the VectorLayerService ?
 		if (style == null) {
@@ -168,6 +173,7 @@ public class StringContentTilePainter implements TilePainter {
 		this.scale = scale;
 		this.panOrigin = panOrigin;
 		this.geoService = geoService;
+		this.targetCrs = targetCrs;
 	}
 
 	// -------------------------------------------------------------------------
@@ -265,8 +271,8 @@ public class StringContentTilePainter implements TilePainter {
 			return document;
 		} else if (TileMetadata.PARAM_VML_RENDERER.equalsIgnoreCase(renderer)) {
 			DefaultVmlDocument document = new DefaultVmlDocument(writer);
-			int coordWidth = tile.getScreenWidth();
-			int coordHeight = tile.getScreenHeight();
+			int coordWidth = (int) tile.getScreenWidth();
+			int coordHeight = (int) tile.getScreenHeight();
 			document.registerWriter(InternalFeatureImpl.class, new VmlFeatureScreenWriter(getTransformer(), coordWidth,
 					coordHeight));
 			document.registerWriter(InternalTileImpl.class, new VmlVectorTileWriter(coordWidth, coordHeight));
@@ -333,7 +339,11 @@ public class StringContentTilePainter implements TilePainter {
 	 */
 	private Envelope getTileBbox() {
 		if (bbox == null) {
-			bbox = tile.getBbox(layer);
+			try {
+				bbox = TileService.getTransformedTileBounds(tile, layer, geoService.findMathTransform(layer.getCrs(),
+						targetCrs));
+			} catch (FactoryException e) {
+			}
 		}
 		return bbox;
 	}

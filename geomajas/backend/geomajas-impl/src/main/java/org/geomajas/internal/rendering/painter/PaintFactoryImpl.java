@@ -34,7 +34,6 @@ import org.geomajas.rendering.image.RasterUrlBuilder;
 import org.geomajas.rendering.image.TileImageCreator;
 import org.geomajas.rendering.painter.PaintFactory;
 import org.geomajas.rendering.painter.tile.TilePainter;
-import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.VectorLayerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,9 +53,6 @@ public class PaintFactoryImpl implements PaintFactory {
 	@Autowired
 	private VectorLayerService layerService;
 
-	@Autowired
-	private DtoConverterService converterService;
-
 	public TileImageCreator createTileImageCreator(InternalTile tile, boolean transparent) {
 		return new TileImageCreatorImpl(tile, transparent, filterCreator, layerService);
 	}
@@ -66,7 +62,7 @@ public class PaintFactoryImpl implements PaintFactory {
 	}
 
 	public InternalTile createRasterTile(TileCode code, VectorLayer layer, double scale) {
-		InternalTileImpl tile = new InternalTileImpl(code, layer, scale, converterService);
+		InternalTileImpl tile = new InternalTileImpl(code, layer, scale);
 		tile.setContentType(VectorTileContentType.URL_CONTENT);
 		return tile;
 	}

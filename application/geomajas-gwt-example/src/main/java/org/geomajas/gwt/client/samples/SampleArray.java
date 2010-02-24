@@ -24,7 +24,9 @@
 package org.geomajas.gwt.client.samples;
 
 import org.geomajas.gwt.client.samples.base.SampleTreeNode;
+import org.geomajas.gwt.client.samples.controller.CustomControllerSample;
 import org.geomajas.gwt.client.samples.i18n.I18nProvider;
+import org.geomajas.gwt.client.samples.mapwidget.CrsSample;
 import org.geomajas.gwt.client.samples.mapwidget.NavigationSample;
 import org.geomajas.gwt.client.samples.mapwidget.OpenStreetMapSample;
 import org.geomajas.gwt.client.samples.mapwidget.WmsSample;
@@ -60,8 +62,15 @@ public final class SampleArray {
 				new SampleTreeNode(I18nProvider.getSampleMessages().navigationTitle(),
 						"[ISOMORPHIC]/geomajas/layer.png", NavigationSample.TITLE, "MapWidget",
 						NavigationSample.FACTORY),
-				// new SampleTreeNode(I18nProvider.getSampleMessages().crsTitle(),
-				// "[ISOMORPHIC]/geomajas/layer.png", CrsSample.TITLE, "MapWidget", CrsSample.FACTORY),
+				new SampleTreeNode(I18nProvider.getSampleMessages().crsTitle(), "[ISOMORPHIC]/geomajas/layer.png",
+						CrsSample.TITLE, "MapWidget", CrsSample.FACTORY),
+
+				// Map controller:
+				new SampleTreeNode(I18nProvider.getSampleMessages().treeGroupMapController(),
+						"[ISOMORPHIC]/geomajas/tools.png", "MapController", "topLevel"),
+				new SampleTreeNode(I18nProvider.getSampleMessages().customControllerTitle(),
+						"[ISOMORPHIC]/geomajas/tools.png", CustomControllerSample.TITLE, "MapController",
+						CustomControllerSample.FACTORY),
 
 				// Security samples:
 				new SampleTreeNode(I18nProvider.getSampleMessages().treeGroupSecurity(),

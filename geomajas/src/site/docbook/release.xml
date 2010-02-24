@@ -67,7 +67,7 @@ cd tmpgeomajas</programlisting>
       "geomajas-all" in prefix). <programlisting>mvn clean install -Dhudson
 mvn release:prepare -DautoVersionSubmodules=true -DreleaseVersion=$VERSION -Dtag=$VERSION
 sudo chmod -R 775 /var/www/maven.geomajas.org/htdocs/repository/org/geomajas/
-sudo chmod -R 775 /var/www/files.geomajas.org/htdocs/maven/trunk/
+sudo chmod -R 777 /var/www/files.geomajas.org/htdocs/maven/trunk/
 cd ..
 rm -rf tmpgeomajas</programlisting></para>
     </listitem>
@@ -118,12 +118,15 @@ cd geomajas-$VERSION</programlisting>
       <para>Create zip files for source and documentation.</para>
 
       <programlisting>cd ..
+rm -Rf geomajas-$VERSION
 svn checkout https://svn.geomajas.org/majas/tags/$VERSION geomajas-$VERSION
 zip -r geomajas-$VERSION.zip . -x .svn 
 rm -R geomajas-$VERSION
 cp -R /var/www/files.geomajas.org/htdocs/maven/$VERSION geomajas-$VERSION
 zip -r geomajas-doc-$VERSION.zip .  
-rm -Rf geomajas-$VERSION</programlisting>
+rm -Rf geomajas-$VERSION
+sudo chmod -R 775 /var/www/files.geomajas.org/htdocs/maven/trunk/
+sudo chmod -R 775 /var/www/maven.geomajas.org/htdocs/repository/org/geomajas/</programlisting>
     </listitem>
 
     <listitem>
