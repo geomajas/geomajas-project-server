@@ -73,4 +73,29 @@
 
 	</dependencies>
 
+	<profiles>
+		<profile>
+			<id>disable-some-tests-on-hudson</id>
+			<activation>
+				<property>
+					<name>hudson</name>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<configuration>
+							<excludes>
+								<exclude>**/VectorLayerServiceVisibleAreaTest.java</exclude>
+								<exclude>**/VectorLayerServiceVisibleAttributeTest.java</exclude>
+							</excludes>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+
 </project>
