@@ -21,43 +21,35 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.rendering.pipeline;
+package org.geomajas.internal.rendering.pipeline;
+
+import org.geomajas.rendering.pipeline.PipelineContext;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Context which is provided to a pipeline context to help execute.
  *
  * @author Joachim Van der Auwera
  */
-public interface PipelineContext {
+public class PipelineContextImpl implements PipelineContext {
 
-	/**
-	 * Get the value for a key.
-	 * <p/>
-	 * These values can be used to pass values between the pipeline steps.
-	 *
-	 * @param key key for which the value needs to be obtained.
-	 * @return value for key or null
-	 */
-	Object get(String key);
+	private Map<String, Object> map = new HashMap<String, Object>();
 
-	/**
-	 * Get the value for a key.
-	 * <p/>
-	 * These values can be used to pass values between the pipeline steps.
-	 *
-	 * @param key key for which the value needs to be obtained.
-	 * @param type class which needs to be used for the parameter
-	 * @param <TYPE> type for the object which needs to be get
-	 * @return value for key or null
-	 */
-	<TYPE> TYPE get(String key, Class<TYPE> type);
+	public Object get(String key) {
+		return map.get(key);
+	}
 
-	/**
-	 * Put context value which may be accessed by later pipeline steps.
-	 *
-	 * @param key key for value
-	 * @param value value for key
-	 * @return previous value stored for this key
-	 */
-	Object put(String key, Object value);
+	public <TYPE> TYPE get(String key, Class<TYPE> type) {
+		Object obj = map.get(key);
+		if (null != obj && type.isAssignableFrom(obj.getClass())) {
+			return (TYPE) obj;
+		}
+		return null;
+	}
+
+	public Object put(String key, Object value) {
+		return map.put(key, value);
+	}
 }

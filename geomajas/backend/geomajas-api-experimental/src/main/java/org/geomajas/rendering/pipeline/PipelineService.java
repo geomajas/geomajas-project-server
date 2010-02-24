@@ -40,8 +40,22 @@ public interface PipelineService<REQUEST, RESPONSE> {
 	 * 
 	 * @param pipeline pipeline steps / configuration
 	 * @param request request object to start pipeline
-	 * @return result object
+	 * @param response response object which is filled by the pipeline
 	 * @throws GeomajasException any exception which may have been throws during the execution
 	 */
-	RESPONSE execute(PipelineInfo<REQUEST, RESPONSE> pipeline, REQUEST request) throws GeomajasException;
+	void execute(PipelineInfo<REQUEST, RESPONSE> pipeline, REQUEST request, RESPONSE response)
+			throws GeomajasException;
+
+	/**
+	 * Get a pipeline configuration based on the key and optional layer id.
+	 * <p/>
+	 * This will attempt to get the layer specific pipeline and if that does not exist, it will use the general
+	 * pipeline. The layer specific pipeline is assumed to have bean name <code>key + "." + layerId</code>.
+	 *
+	 * @param key key for the pipeline
+	 * @param layerId layer if
+	 * @return pipeline configuration
+	 * @throws GeomajasException when pipeline info not found
+	 */
+	PipelineInfo<REQUEST, RESPONSE> getPipeline(String key, String layerId) throws GeomajasException;
 }

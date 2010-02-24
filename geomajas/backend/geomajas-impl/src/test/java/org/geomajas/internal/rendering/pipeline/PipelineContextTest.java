@@ -21,43 +21,40 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.rendering.pipeline;
+package org.geomajas.internal.rendering.pipeline;
+
+import junit.framework.Assert;
+import org.geomajas.rendering.pipeline.PipelineContext;
+import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Context which is provided to a pipeline context to help execute.
+ * Test for {@link PipelineContextImpl}.
  *
  * @author Joachim Van der Auwera
  */
-public interface PipelineContext {
+public class PipelineContextTest {
 
-	/**
-	 * Get the value for a key.
-	 * <p/>
-	 * These values can be used to pass values between the pipeline steps.
-	 *
-	 * @param key key for which the value needs to be obtained.
-	 * @return value for key or null
-	 */
-	Object get(String key);
+	@Test
+	public void testPutGet() {
+		PipelineContext context = new PipelineContextImpl();
+		context.put("text", "SomeText");
+		context.put("int", 17);
+		context.put("list", new ArrayList<String>());
 
-	/**
-	 * Get the value for a key.
-	 * <p/>
-	 * These values can be used to pass values between the pipeline steps.
-	 *
-	 * @param key key for which the value needs to be obtained.
-	 * @param type class which needs to be used for the parameter
-	 * @param <TYPE> type for the object which needs to be get
-	 * @return value for key or null
-	 */
-	<TYPE> TYPE get(String key, Class<TYPE> type);
+		Assert.assertNull(context.get("unknown"));
+		Assert.assertEquals("SomeText", context.get("text"));
+		Assert.assertEquals(17, context.get("int"));
+		Assert.assertEquals(0, ((List)context.get("list")).size());
 
-	/**
-	 * Put context value which may be accessed by later pipeline steps.
-	 *
-	 * @param key key for value
-	 * @param value value for key
-	 * @return previous value stored for this key
-	 */
-	Object put(String key, Object value);
+		Assert.assertEquals("SomeText", context.get("text", String.class));
+		Assert.assertEquals(17, (int)context.get("int", Integer.class));
+		Assert.assertEquals(0, context.get("list", List.class).size());
+		Assert.assertEquals(0, context.get("list", ArrayList.class).size());
+
+		Assert.assertEquals("SomeText", context.put("text", "someOtherText"));
+		Assert.assertEquals("someOtherText", context.get("text"));
+	}
 }

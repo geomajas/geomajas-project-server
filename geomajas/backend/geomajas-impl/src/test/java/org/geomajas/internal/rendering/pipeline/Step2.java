@@ -21,43 +21,37 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.rendering.pipeline;
+package org.geomajas.internal.rendering.pipeline;
+
+import junit.framework.Assert;
+import org.geomajas.global.GeomajasException;
+import org.geomajas.layer.feature.attribute.StringAttribute;
+import org.geomajas.rendering.pipeline.PipelineContext;
+import org.geomajas.rendering.pipeline.PipelineStep;
 
 /**
- * Context which is provided to a pipeline context to help execute.
+ * Second step in pipeline for testing.
  *
  * @author Joachim Van der Auwera
  */
-public interface PipelineContext {
+public class Step2 implements PipelineStep<String, StringAttribute> {
 
-	/**
-	 * Get the value for a key.
-	 * <p/>
-	 * These values can be used to pass values between the pipeline steps.
-	 *
-	 * @param key key for which the value needs to be obtained.
-	 * @return value for key or null
-	 */
-	Object get(String key);
+	private String id;
 
-	/**
-	 * Get the value for a key.
-	 * <p/>
-	 * These values can be used to pass values between the pipeline steps.
-	 *
-	 * @param key key for which the value needs to be obtained.
-	 * @param type class which needs to be used for the parameter
-	 * @param <TYPE> type for the object which needs to be get
-	 * @return value for key or null
-	 */
-	<TYPE> TYPE get(String key, Class<TYPE> type);
+	public String getId() {
+		return id;
+	}
 
-	/**
-	 * Put context value which may be accessed by later pipeline steps.
-	 *
-	 * @param key key for value
-	 * @param value value for key
-	 * @return previous value stored for this key
-	 */
-	Object put(String key, Object value);
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public void execute(String request, PipelineContext context, StringAttribute response) throws GeomajasException {
+		context.put("Step2", id);
+		Assert.assertEquals("bla", context.get("test", String.class));
+		Assert.assertNotNull(context.get("Step1"));
+		Assert.assertNotNull(context.get("Step2"));
+		
+		response.setValue(response.getValue() + id);
+	}
 }
