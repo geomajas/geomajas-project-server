@@ -21,49 +21,55 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.rendering.pipeline;
+package org.geomajas.internal.service.vector;
 
-import javax.validation.constraints.NotNull;
-import java.util.List;
+import org.geomajas.layer.feature.InternalFeature;
 
 /**
- * Configuration info for a pipeline service.
- *
- * @param <REQUEST> type of request object for the pipeline
- * @param <RESPONSE> type of response object for the pipeline
+ * Request and response object for the "vectorLayer.saveOrUpdateOne" pipeline.
  *
  * @author Joachim Van der Auwera
  */
-public class PipelineInfo<REQUEST, RESPONSE> {
+public class SaveOrUpdateOneContainer {
 
-	@NotNull
-	private String id;
+	private SaveOrUpdateContainer saveOrUpdateContainer;
+	private int index;
+	private InternalFeature oldFeature;
+	private InternalFeature newFeature;
 
-	private List<PipelineStep<REQUEST, RESPONSE>> pipeline;
-
-	public String getId() {
-		return id;
+	public SaveOrUpdateOneContainer(SaveOrUpdateContainer saveOrUpdateContainer) {
+		this.saveOrUpdateContainer = saveOrUpdateContainer;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public SaveOrUpdateContainer getSaveOrUpdateContainer() {
+		return saveOrUpdateContainer;
 	}
 
-	/**
-	 * Get the list of steps which form the pipeline.
-	 *
-	 * @return list of pipeline steps
-	 */
-	public List<PipelineStep<REQUEST, RESPONSE>> getPipeline() {
-		return pipeline;
+	public void setSaveOrUpdateContainer(SaveOrUpdateContainer saveOrUpdateContainer) {
+		this.saveOrUpdateContainer = saveOrUpdateContainer;
 	}
 
-	/**
-	 * Set the list of steps which form the pipeline.
-	 *
-	 * @param pipeline list of pipeline steps
-	 */
-	public void setPipeline(List<PipelineStep<REQUEST, RESPONSE>> pipeline) {
-		this.pipeline = pipeline;
+	public int getIndex() {
+		return index;
+	}
+
+	public void setIndex(int index) {
+		this.index = index;
+	}
+
+	public InternalFeature getOldFeature() {
+		return oldFeature;
+	}
+
+	public void setOldFeature(InternalFeature oldFeature) {
+		this.oldFeature = oldFeature;
+	}
+
+	public InternalFeature getNewFeature() {
+		return newFeature;
+	}
+
+	public void setNewFeature(InternalFeature newFeature) {
+		this.newFeature = newFeature;
 	}
 }

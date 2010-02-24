@@ -29,10 +29,11 @@ import org.geomajas.rendering.pipeline.PipelineContext;
 import org.geomajas.rendering.pipeline.PipelineInfo;
 import org.geomajas.rendering.pipeline.PipelineService;
 import org.geomajas.rendering.pipeline.PipelineStep;
-import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
+
+import java.util.Collection;
 
 /**
  * Service which is allows "executing" a pipeline.
@@ -59,16 +60,21 @@ public class PipelineServiceImpl<REQUEST, RESPONSE> implements PipelineService<R
 
 	/** @inheritDoc */
 	public PipelineInfo<REQUEST, RESPONSE> getPipeline(String key, String layerId) throws GeomajasException {
-		PipelineInfo<REQUEST, RESPONSE> pipeline;
-		try {
-			pipeline = applicationContext.getBean(key + "." + layerId, PipelineInfo.class);
-		} catch (NoSuchBeanDefinitionException nsbdeLayer) {
-			try {
-				pipeline = applicationContext.getBean(key, PipelineInfo.class);
-			} catch (NoSuchBeanDefinitionException nsbdePipeline) {
-				throw new GeomajasException(ExceptionCode.PIPELINE_UNKNOWN, key, layerId);
+		PipelineInfo<REQUEST, RESPONSE> generalPipeline = null;
+		String specificId = key + "." + layerId;
+		Collection<PipelineInfo> pipelines = applicationContext.getBeansOfType(PipelineInfo.class).values();
+		for (PipelineInfo pipeline : pipelines) {
+			String id = pipeline.getId();
+			if (id.equals(specificId)) {
+				return pipeline;
+			}
+			if (id.equals(key)) {
+				generalPipeline = pipeline;
 			}
 		}
-		return pipeline;
+		if (null == generalPipeline) {
+			throw new GeomajasException(ExceptionCode.PIPELINE_UNKNOWN, key, layerId);
+		}
+		return generalPipeline;
 	}
 }

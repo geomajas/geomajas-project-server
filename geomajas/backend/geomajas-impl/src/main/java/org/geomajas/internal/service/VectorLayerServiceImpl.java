@@ -38,6 +38,7 @@ import org.geomajas.global.GeomajasException;
 import org.geomajas.global.GeomajasSecurityException;
 import org.geomajas.internal.layer.feature.InternalFeatureImpl;
 import org.geomajas.internal.rendering.StyleFilterImpl;
+import org.geomajas.internal.service.vector.SaveOrUpdateContainer;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.VectorLayerAssociationSupport;
 import org.geomajas.layer.feature.Attribute;
@@ -45,6 +46,7 @@ import org.geomajas.layer.feature.FeatureModel;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.rendering.StyleFilter;
 import org.geomajas.rendering.painter.PaintFactory;
+import org.geomajas.rendering.pipeline.PipelineService;
 import org.geomajas.security.SecurityContext;
 import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.FilterService;
@@ -79,6 +81,9 @@ import com.vividsolutions.jts.geom.Geometry;
 @Component
 public class VectorLayerServiceImpl implements VectorLayerService {
 
+	public static final String PIPELINE_SAVE_OR_UPDATE = "vectorLayer.saveOrUpdate";
+	public static final String PIPELINE_SAVE_OR_UPDATE_ONE = "vectorLayer.saveOrUpdateOne";
+
 	private final Logger log = LoggerFactory.getLogger(VectorLayerServiceImpl.class);
 
 	@Autowired
@@ -96,6 +101,9 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 	@Autowired
 	private SecurityContext securityContext;
 
+	@Autowired
+	private PipelineService pipelineService;
+
 	private VectorLayer getVectorLayer(String layerId) throws GeomajasException {
 		if (!securityContext.isLayerVisible(layerId)) {
 			throw new GeomajasSecurityException(ExceptionCode.LAYER_NOT_VISIBLE, layerId, securityContext.getUserId());
@@ -107,114 +115,23 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 		return layer;
 	}
 
+	private MathTransform getCrsTransform(CoordinateReferenceSystem from, CoordinateReferenceSystem to)
+			throws GeomajasException {
+		try {
+			return geoService.findMathTransform(from, to);
+		} catch (FactoryException fe) {
+			throw new GeomajasException(fe, ExceptionCode.CRS_TRANSFORMATION_NOT_POSSIBLE, from, to);
+		}
+
+	}
+
 	public void saveOrUpdate(String layerId, CoordinateReferenceSystem crs, List<InternalFeature> oldFeatures,
 			List<InternalFeature> newFeatures) throws GeomajasException {
 		VectorLayer layer = getVectorLayer(layerId);
-		FeatureModel featureModel = layer.getFeatureModel();
-
-		MathTransform mapToLayer;
-		try {
-			mapToLayer = geoService.findMathTransform(crs, layer.getCrs());
-		} catch (FactoryException fe) {
-			throw new GeomajasException(fe, ExceptionCode.CRS_TRANSFORMATION_NOT_POSSIBLE, crs, layer.getCrs());
-		}
-
-		int count = Math.max(oldFeatures.size(), newFeatures.size());
-		while (oldFeatures.size() < count) {
-			oldFeatures.add(null);
-		}
-		while (newFeatures.size() < count) {
-			newFeatures.add(null);
-		}
-		for (int i = 0; i < count; i++) {
-			InternalFeature oldFeature = oldFeatures.get(i);
-			InternalFeature newFeature = newFeatures.get(i);
-			if (null == newFeature) {
-				// delete ?
-				if (null != oldFeature) {
-					if (securityContext.isFeatureDeleteAuthorized(layerId, oldFeature)) {
-						layer.delete(oldFeature.getLocalId());
-					} else {
-						throw new GeomajasSecurityException(ExceptionCode.FEATURE_DELETE_PROHIBITED,
-								oldFeature.getId(), securityContext.getUserId());
-					}
-				}
-			} else {
-				// create or update
-				Object feature;
-				if (null == oldFeature) {
-					// create new feature
-					transformGeometry(newFeature, mapToLayer);
-					if (securityContext.isFeatureCreateAuthorized(layerId, oldFeature)) {
-						if (newFeature.getLocalId() == null) {
-							feature = featureModel.newInstance();
-						} else {
-							feature = featureModel.newInstance(newFeature.getLocalId());
-						}
-					} else {
-						throw new GeomajasSecurityException(ExceptionCode.FEATURE_CREATE_PROHIBITED, securityContext
-								.getUserId());
-					}
-				} else {
-					if (null == oldFeature.getId() || !oldFeature.getId().equals(newFeature.getId())) {
-						throw new GeomajasException(ExceptionCode.FEATURE_ID_MISMATCH);
-					}
-					transformGeometry(newFeature, mapToLayer);
-					if (securityContext.isFeatureUpdateAuthorized(layerId, oldFeature, newFeature)) {
-						feature = layer.read(newFeature.getLocalId());
-					} else {
-						throw new GeomajasSecurityException(ExceptionCode.FEATURE_UPDATE_PROHIBITED,
-								oldFeature.getId(), securityContext.getUserId());
-					}
-				}
-
-				// Assure only writable attributes are set
-				Map<String, Attribute> requestAttributes = newFeature.getAttributes();
-				Map<String, Attribute> filteredAttributes = new HashMap<String, Attribute>();
-				if (null != requestAttributes) {
-					for (String key : requestAttributes.keySet()) {
-						if (securityContext.isAttributeWritable(layerId, newFeature, key)) {
-							filteredAttributes.put(key, requestAttributes.get(key));
-						}
-					}
-				}
-				featureModel.setAttributes(feature, filteredAttributes);
-
-				if (newFeature.getGeometry() != null) {
-					featureModel.setGeometry(feature, newFeature.getGeometry());
-				}
-				feature = layer.saveOrUpdate(feature);
-
-				// Not needed for existing features, but no problem to re-set feature id
-				String id = featureModel.getId(feature);
-				newFeature.setId(layerId + "." + id);
-
-				filterAttributes(layerId, newFeature, featureModel.getAttributes(feature)); 
-
-				newFeature.setEditable(securityContext.isFeatureUpdateAuthorized(layerId, newFeature));
-				newFeature.setDeletable(securityContext.isFeatureDeleteAuthorized(layerId, newFeature));
-			}
-		}
-	}
-
-	/**
-	 * Convert the geometry (if any) in the passed feature to layer crs.
-	 * 
-	 * @param feature
-	 *            feature in which the geometry should be updated
-	 * @param mapToLayer
-	 *            transformation to apply
-	 * @throws GeomajasException
-	 *             oops
-	 */
-	private void transformGeometry(InternalFeature feature, MathTransform mapToLayer) throws GeomajasException {
-		if (feature.getGeometry() != null) {
-			try {
-				feature.setGeometry(JTS.transform(feature.getGeometry(), mapToLayer));
-			} catch (TransformException te) {
-				throw new GeomajasException(te, ExceptionCode.GEOMETRY_TRANSFORMATION_FAILED);
-			}
-		}
+		MathTransform mapToLayer = getCrsTransform(crs, layer.getCrs());
+		SaveOrUpdateContainer container =
+				new SaveOrUpdateContainer(layerId, layer, crs, oldFeatures, newFeatures, mapToLayer);
+		pipelineService.execute(pipelineService.getPipeline(PIPELINE_SAVE_OR_UPDATE, layerId), container, container);
 	}
 
 	public List<InternalFeature> getFeatures(String layerId, CoordinateReferenceSystem crs, Filter queryFilter,

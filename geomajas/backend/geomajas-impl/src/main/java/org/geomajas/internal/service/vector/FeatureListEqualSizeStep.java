@@ -21,25 +21,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.rendering.pipeline;
+package org.geomajas.internal.service.vector;
 
-import javax.validation.constraints.NotNull;
+import org.geomajas.global.GeomajasException;
+import org.geomajas.layer.feature.InternalFeature;
+import org.geomajas.rendering.pipeline.PipelineContext;
+import org.geomajas.rendering.pipeline.PipelineStep;
+
 import java.util.List;
 
 /**
- * Configuration info for a pipeline service.
- *
- * @param <REQUEST> type of request object for the pipeline
- * @param <RESPONSE> type of response object for the pipeline
+ * Assure the lists of old and new features are the same size.
  *
  * @author Joachim Van der Auwera
  */
-public class PipelineInfo<REQUEST, RESPONSE> {
+public class FeatureListEqualSizeStep implements PipelineStep<SaveOrUpdateContainer, SaveOrUpdateContainer> {
 
-	@NotNull
 	private String id;
-
-	private List<PipelineStep<REQUEST, RESPONSE>> pipeline;
 
 	public String getId() {
 		return id;
@@ -49,21 +47,16 @@ public class PipelineInfo<REQUEST, RESPONSE> {
 		this.id = id;
 	}
 
-	/**
-	 * Get the list of steps which form the pipeline.
-	 *
-	 * @return list of pipeline steps
-	 */
-	public List<PipelineStep<REQUEST, RESPONSE>> getPipeline() {
-		return pipeline;
-	}
-
-	/**
-	 * Set the list of steps which form the pipeline.
-	 *
-	 * @param pipeline list of pipeline steps
-	 */
-	public void setPipeline(List<PipelineStep<REQUEST, RESPONSE>> pipeline) {
-		this.pipeline = pipeline;
+	public void execute(SaveOrUpdateContainer request, PipelineContext context,
+			SaveOrUpdateContainer response) throws GeomajasException {
+		List<InternalFeature> oldFeatures = request.getOldFeatures();
+		List<InternalFeature> newFeatures = request.getNewFeatures();
+		int count = Math.max(oldFeatures.size(), newFeatures.size());
+		while (oldFeatures.size() < count) {
+			oldFeatures.add(null);
+		}
+		while (newFeatures.size() < count) {
+			newFeatures.add(null);
+		}
 	}
 }
