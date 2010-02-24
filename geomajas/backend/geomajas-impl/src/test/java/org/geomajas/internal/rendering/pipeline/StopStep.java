@@ -23,43 +23,30 @@
 
 package org.geomajas.internal.rendering.pipeline;
 
+import org.geomajas.global.GeomajasException;
+import org.geomajas.layer.feature.attribute.StringAttribute;
 import org.geomajas.rendering.pipeline.PipelineContext;
-
-import java.util.HashMap;
-import java.util.Map;
+import org.geomajas.rendering.pipeline.PipelineStep;
 
 /**
- * Context which is provided to a pipeline context to help execute.
+ * Simple pipeline step for testing which stops the pipeline execution.
  *
  * @author Joachim Van der Auwera
  */
-public class PipelineContextImpl implements PipelineContext {
+public class StopStep implements PipelineStep<String, StringAttribute> {
 
-	private Map<String, Object> map = new HashMap<String, Object>();
+	private String id;
 
-	private boolean finished;
-
-	public Object get(String key) {
-		return map.get(key);
+	public String getId() {
+		return id;
 	}
 
-	public <TYPE> TYPE get(String key, Class<TYPE> type) {
-		Object obj = map.get(key);
-		if (null != obj && type.isAssignableFrom(obj.getClass())) {
-			return (TYPE) obj;
-		}
-		return null;
+	public void setId(String id) {
+		this.id = id;
 	}
 
-	public Object put(String key, Object value) {
-		return map.put(key, value);
-	}
-
-	public boolean isFinished() {
-		return finished;
-	}
-
-	public void setFinished(boolean finished) {
-		this.finished = finished;
+	public void execute(String elementId, PipelineContext context, StringAttribute stringAttribute)
+			throws GeomajasException {
+		context.setFinished(false);
 	}
 }

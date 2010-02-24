@@ -57,6 +57,9 @@ public class PipelineServiceTest {
 
 		pipelineService.execute(pipelineService.getPipeline("pipelineTest", "aLayer"), "bla-", response);
 		Assert.assertEquals("bla-step-1step-3", response.getValue());
+
+		pipelineService.execute(pipelineService.getPipeline("pipelineTest", "stop"), "stop-", response);
+		Assert.assertEquals("stop-s1", response.getValue());
 	}
 
 	@Test

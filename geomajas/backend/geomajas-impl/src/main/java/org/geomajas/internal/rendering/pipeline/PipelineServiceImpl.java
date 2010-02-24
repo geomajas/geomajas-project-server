@@ -54,6 +54,9 @@ public class PipelineServiceImpl<REQUEST, RESPONSE> implements PipelineService<R
 			throws GeomajasException {
 		PipelineContext context = new PipelineContextImpl();
 		for (PipelineStep<REQUEST, RESPONSE> step : pipeline.getPipeline()) {
+			if (context.isFinished()) {
+				break;
+			}
 			step.execute(request, context, response);
 		}
 	}

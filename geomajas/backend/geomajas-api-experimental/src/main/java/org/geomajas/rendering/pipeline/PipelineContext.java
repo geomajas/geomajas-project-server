@@ -60,4 +60,21 @@ public interface PipelineContext {
 	 * @return previous value stored for this key
 	 */
 	Object put(String key, Object value);
+
+	/**
+	 * Has the pipeline finished execution?
+	 * <p/>
+	 * Has a pipeline step indicated that the pipeline should finish executing?
+	 *
+	 * @return true when pipeline should finish
+	 */
+	boolean isFinished();
+
+	/**
+	 * By setting this to true, you can indicate that following steps in the pipeline should not be executed.
+	 *
+	 * @param finished indicates whether the pipeline should stop
+	 */
+	void setFinished(boolean finished);
+
 }
