@@ -21,63 +21,44 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.internal.rendering.pipeline;
+package org.geomajas.internal.service.vector;
 
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
+import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.rendering.pipeline.PipelineContext;
-
-import java.util.HashMap;
-import java.util.Map;
+import org.geomajas.rendering.pipeline.PipelineStep;
+import org.geomajas.security.SecurityContext;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * Context which is provided to a pipeline context to help execute.
+ * Sanity check to assure that the id of old and new feature value are th same before we start to update.
  *
  * @author Joachim Van der Auwera
  */
-public class PipelineContextImpl implements PipelineContext {
+public class SaveOrUpdateCheckIdStep implements PipelineStep<SaveOrUpdateOneContainer, SaveOrUpdateOneContainer> {
 
-	private Map<String, Object> map = new HashMap<String, Object>();
+	@Autowired
+	private SecurityContext securityContext;
 
-	private boolean finished;
+	private String id;
 
-	public Object get(String key) throws GeomajasException {
-		Object res = getOptional(key);
-		if (null == res) {
-			throw new GeomajasException(ExceptionCode.PIPELINE_CONTEXT_MISSING, key);
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public void execute(SaveOrUpdateOneContainer request, PipelineContext context,
+			SaveOrUpdateOneContainer response) throws GeomajasException {
+		InternalFeature oldFeature = request.getOldFeature();
+		if (null != oldFeature) {
+			InternalFeature newFeature = request.getNewFeature();
+			if (null == oldFeature.getId() || !oldFeature.getId().equals(newFeature.getId())) {
+				throw new GeomajasException(ExceptionCode.FEATURE_ID_MISMATCH, request.getIndex());
+			}
 		}
-		return res;
-	}
-
-	public Object getOptional(String key) {
-		return map.get(key);
-	}
-
-	public <TYPE> TYPE get(String key, Class<TYPE> type) throws GeomajasException {
-		TYPE res = getOptional(key, type);
-		if (null == res) {
-			throw new GeomajasException(ExceptionCode.PIPELINE_CONTEXT_MISSING, key);
-		}
-		return res;
-	}
-
-	public <TYPE> TYPE getOptional(String key, Class<TYPE> type) {
-		Object obj = map.get(key);
-		if (null != obj && type.isAssignableFrom(obj.getClass())) {
-			return (TYPE) obj;
-		}
-		return null;
-	}
-
-	public Object put(String key, Object value) {
-		return map.put(key, value);
-	}
-
-	public boolean isFinished() {
-		return finished;
-	}
-
-	public void setFinished(boolean finished) {
-		this.finished = finished;
 	}
 }

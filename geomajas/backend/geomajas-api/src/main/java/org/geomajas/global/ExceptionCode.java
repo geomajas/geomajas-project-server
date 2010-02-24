@@ -107,4 +107,5 @@ public interface ExceptionCode {
 	int FEATURE_DELETE_PROHIBITED = 71;
 	int FEATURE_ID_MISMATCH = 72;
 	int PIPELINE_UNKNOWN = 73;
+	int PIPELINE_CONTEXT_MISSING = 74;
 }

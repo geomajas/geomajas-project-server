@@ -82,12 +82,43 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<property name="id"><util:constant static-field="org.geomajas.internal.service.VectorLayerServiceImpl.PIPELINE_SAVE_OR_UPDATE_ONE"/></property>
 		<property name="pipeline">
 			<list>
-				<bean class="org.geomajas.internal.service.vector.FeatureListEqualSizeStep">
-					<property name="id" value="FeatureListEqualSizeStep"/>
+				<bean class="org.geomajas.internal.service.vector.SaveOrUpdateDeleteStep">
+					<property name="id" value="SaveOrUpdateDeleteStep"/>
 				</bean>
-				<bean class="org.geomajas.internal.service.vector.SaveOrUpdateEachStep">
-					<property name="id" value="SaveOrUpdateEachStep"/>
-					<property name="pipelineName"><util:constant static-field="org.geomajas.internal.service.VectorLayerServiceImpl.PIPELINE_SAVE_OR_UPDATE_ONE"/></property>
+				<bean class="org.geomajas.internal.service.vector.SaveOrUpdateCheckIdStep">
+					<property name="id" value="SaveOrUpdateCheckIdStep"/>
+				</bean>
+				<bean class="org.geomajas.internal.service.vector.FeatureTransformGeometryStep">
+					<property name="id" value="FeatureTransformGeometryStep"/>
+				</bean>
+				<bean class="org.geomajas.internal.service.vector.SaveOrUpdateCreateStep">
+					<property name="id" value="SaveOrUpdateCreateStep"/>
+				</bean>
+				<bean class="org.geomajas.internal.service.vector.SaveOrUpdateUpdateStep">
+					<property name="id" value="SaveOrUpdateUpdateStep"/>
+				</bean>
+				<bean class="org.geomajas.internal.service.vector.SaveOrUpdateSaveStep">
+					<property name="id" value="SaveOrUpdateUpdateStep"/>
+				</bean>
+				<bean class="org.geomajas.internal.service.vector.UpdateFeatureStep">
+					<property name="id" value="UpdateFeatureStep"/>
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean class="org.geomajas.rendering.pipeline.PipelineInfo">
+		<property name="id"><util:constant static-field="org.geomajas.internal.service.VectorLayerServiceImpl.PIPELINE_GET_FEATURES"/></property>
+		<property name="pipeline">
+			<list>
+				<bean class="org.geomajas.internal.service.vector.LayerFilterStep">
+					<property name="id" value="LayerFilterStep"/>
+				</bean>
+				<bean class="org.geomajas.internal.service.vector.GetFeaturesStyleStep">
+					<property name="id" value="GetFeaturesStyleStep"/>
+				</bean>
+				<bean class="org.geomajas.internal.service.vector.GetFeaturesEachStep">
+					<property name="id" value="GetFeaturesEachStep"/>
 				</bean>
 			</list>
 		</property>

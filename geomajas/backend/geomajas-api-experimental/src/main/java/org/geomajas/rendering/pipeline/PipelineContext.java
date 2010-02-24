@@ -23,6 +23,8 @@
 
 package org.geomajas.rendering.pipeline;
 
+import org.geomajas.global.GeomajasException;
+
 /**
  * Context which is provided to a pipeline context to help execute.
  *
@@ -36,9 +38,33 @@ public interface PipelineContext {
 	 * These values can be used to pass values between the pipeline steps.
 	 *
 	 * @param key key for which the value needs to be obtained.
+	 * @return value for key
+	 * @throws GeomajasException no value found for key
+	 */
+	Object get(String key) throws GeomajasException;
+
+	/**
+	 * Get the value for a key.
+	 * <p/>
+	 * These values can be used to pass values between the pipeline steps.
+	 *
+	 * @param key key for which the value needs to be obtained.
 	 * @return value for key or null
 	 */
-	Object get(String key);
+	Object getOptional(String key);
+
+	/**
+	 * Get the value for a key.
+	 * <p/>
+	 * These values can be used to pass values between the pipeline steps.
+	 *
+	 * @param key key for which the value needs to be obtained.
+	 * @param type class which needs to be used for the parameter
+	 * @param <TYPE> type for the object which needs to be get
+	 * @return value for key
+	 * @throws GeomajasException no value of correct type found for key
+	 */
+	<TYPE> TYPE get(String key, Class<TYPE> type) throws GeomajasException;
 
 	/**
 	 * Get the value for a key.
@@ -50,7 +76,7 @@ public interface PipelineContext {
 	 * @param <TYPE> type for the object which needs to be get
 	 * @return value for key or null
 	 */
-	<TYPE> TYPE get(String key, Class<TYPE> type);
+	<TYPE> TYPE getOptional(String key, Class<TYPE> type);
 
 	/**
 	 * Put context value which may be accessed by later pipeline steps.

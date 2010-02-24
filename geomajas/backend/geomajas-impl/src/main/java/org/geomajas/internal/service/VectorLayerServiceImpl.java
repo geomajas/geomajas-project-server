@@ -24,28 +24,21 @@
 package org.geomajas.internal.service;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
-import org.geomajas.configuration.FeatureStyleInfo;
-import org.geomajas.configuration.LabelStyleInfo;
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.global.GeomajasSecurityException;
-import org.geomajas.internal.layer.feature.InternalFeatureImpl;
-import org.geomajas.internal.rendering.StyleFilterImpl;
+import org.geomajas.internal.service.vector.GetFeaturesRequest;
 import org.geomajas.internal.service.vector.SaveOrUpdateContainer;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.VectorLayerAssociationSupport;
-import org.geomajas.layer.feature.Attribute;
-import org.geomajas.layer.feature.FeatureModel;
 import org.geomajas.layer.feature.InternalFeature;
-import org.geomajas.rendering.StyleFilter;
 import org.geomajas.rendering.painter.PaintFactory;
+import org.geomajas.rendering.pipeline.PipelineContext;
 import org.geomajas.rendering.pipeline.PipelineService;
 import org.geomajas.security.SecurityContext;
 import org.geomajas.service.ConfigurationService;
@@ -83,6 +76,10 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 
 	public static final String PIPELINE_SAVE_OR_UPDATE = "vectorLayer.saveOrUpdate";
 	public static final String PIPELINE_SAVE_OR_UPDATE_ONE = "vectorLayer.saveOrUpdateOne";
+	public static final String PIPELINE_GET_FEATURES = "vectorLayer.getFeatures";
+	
+	public static final String LAYER_KEY = "layer";
+	public static final String FILTER_KEY = "filter";
 
 	private final Logger log = LoggerFactory.getLogger(VectorLayerServiceImpl.class);
 
@@ -137,51 +134,17 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 	public List<InternalFeature> getFeatures(String layerId, CoordinateReferenceSystem crs, Filter queryFilter,
 			NamedStyleInfo style, int featureIncludes, int offset, int maxResultSize) throws GeomajasException {
 		VectorLayer layer = getVectorLayer(layerId);
-		Filter filter = getLayerFilter(layer.getLayerInfo(), queryFilter);
-
-		List<StyleFilter> styleFilters = null;
-		if (style == null) {
-			// no style specified, take the first
-			style = layer.getLayerInfo().getNamedStyleInfos().get(0);
-		} else if (style.getFeatureStyles().isEmpty()) {
-			// only name specified, find it
-			style = layer.getLayerInfo().getNamedStyleInfo(style.getName());
-		}
-
-		if ((featureIncludes & FEATURE_INCLUDE_STYLE) != 0) {
-			if (style == null) {
-				throw new GeomajasException(ExceptionCode.RENDER_FEATURE_MODEL_PROBLEM, "Style not found");
-			}
-			styleFilters = initStyleFilters(style.getFeatureStyles());
-		}
-
 		MathTransform transformation = null;
 		if ((featureIncludes & FEATURE_INCLUDE_GEOMETRY) != 0 && crs != null && !crs.equals(layer.getCrs())) {
-			try {
-				transformation = geoService.findMathTransform(layer.getCrs(), crs);
-			} catch (FactoryException fe) {
-				throw new GeomajasException(fe, ExceptionCode.CRS_TRANSFORMATION_NOT_POSSIBLE, crs, layer.getCrs());
-			}
+			transformation = getCrsTransform(layer.getCrs(), crs);
 		}
-
+		GetFeaturesRequest request = new GetFeaturesRequest(layerId, layer, crs, style, featureIncludes, offset,
+				maxResultSize, transformation);
 		List<InternalFeature> res = new ArrayList<InternalFeature>();
-		if (log.isDebugEnabled()) {
-			log.debug("getElements " + filter + ", offset = " + offset + ", maxResultSize= " + maxResultSize);
-		}
-		Iterator<?> it = layer.getElements(filter, offset, maxResultSize);
-		while (it.hasNext()) {
-			InternalFeature feature = convertFeature(it.next(), layerId, layer, transformation, styleFilters, style
-					.getLabelStyle(), featureIncludes);
-			log.debug("checking feature");
-			if (securityContext.isFeatureVisible(layerId, feature)) {
-				feature.setEditable(securityContext.isFeatureUpdateAuthorized(layerId, feature));
-				feature.setDeletable(securityContext.isFeatureDeleteAuthorized(layerId, feature));
-				res.add(feature);
-			} else {
-				log.debug("feature not visible");
-			}
-		}
-		log.debug("getElements done");
+		PipelineContext context = pipelineService.createContext();
+		context.put(FILTER_KEY, queryFilter);
+		context.put(LAYER_KEY, layer);
+		pipelineService.execute(pipelineService.getPipeline(PIPELINE_GET_FEATURES, layerId), request, res, context);
 		return res;
 	}
 
@@ -190,125 +153,6 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 		return getFeatures(layerId, crs, filter, style, featureIncludes, 0, 0);
 	}
 
-	/**
-	 * Convert the generic feature object (as obtained from te layer model) into a {@link InternalFeature}, with
-	 * requested data. Part may be lazy loaded.
-	 * 
-	 * @param feature
-	 *            A feature object that comes directly from the {@link VectorLayer}
-	 * @param layerId
-	 *            layer id
-	 * @param layer
-	 *            vector layer for the feature
-	 * @param transformation
-	 *            transformation to apply to the geometry
-	 * @param styles
-	 *            style filters to apply
-	 * @param labelStyle
-	 *            label style
-	 * @param featureIncludes
-	 *            aspects to include in features
-	 * @return actual feature
-	 * @throws GeomajasException
-	 *             oops
-	 */
-	private InternalFeature convertFeature(Object feature, String layerId, VectorLayer layer,
-			MathTransform transformation, List<StyleFilter> styles, LabelStyleInfo labelStyle, int featureIncludes)
-			throws GeomajasException {
-		FeatureModel featureModel = layer.getFeatureModel();
-		InternalFeatureImpl res = new InternalFeatureImpl();
-		res.setId(featureModel.getId(feature));
-		res.setLayer(layer);
-
-		// If allowed, add the label to the InternalFeature:
-		if ((featureIncludes & FEATURE_INCLUDE_LABEL) != 0) {
-			String labelAttr = labelStyle.getLabelAttributeName();
-			Attribute attribute = featureModel.getAttribute(feature, labelAttr);
-			if (null != attribute && null != attribute.getValue()) {
-				res.setLabel(attribute.getValue().toString());
-			}
-		}
-
-		// If allowed, add the geometry (transformed!) to the InternalFeature:
-		if ((featureIncludes & FEATURE_INCLUDE_GEOMETRY) != 0) {
-			Geometry geometry = featureModel.getGeometry(feature);
-			Geometry transformed;
-			if (null != transformation) {
-				try {
-					transformed = JTS.transform(geometry, transformation);
-				} catch (TransformException te) {
-					throw new GeomajasException(te, ExceptionCode.GEOMETRY_TRANSFORMATION_FAILED);
-				}
-			} else {
-				transformed = geometry;
-			}
-			res.setGeometry(transformed);
-		}
-
-		// If allowed, add the style definition to the InternalFeature:
-		if ((featureIncludes & FEATURE_INCLUDE_STYLE) != 0) {
-			res.setStyleDefinition(findStyleFilter(feature, styles).getStyleDefinition());
-		}
-
-		// If allowed, add the attributes to the InternalFeature:
-		if ((featureIncludes & FEATURE_INCLUDE_ATTRIBUTES) != 0) {
-			filterAttributes(layerId, res, featureModel.getAttributes(feature));
-		}
-
-		return res;
-	}
-
-	private Map<String, Attribute> filterAttributes(String layerId, InternalFeature feature,
-													Map<String, Attribute> featureAttributes) {
-		feature.setAttributes(featureAttributes); // to allow isAttributeReadable to see full object
-		Map<String, Attribute> filteredAttributes = new HashMap<String, Attribute>();
-		for (String key : featureAttributes.keySet()) {
-			if (securityContext.isAttributeReadable(layerId, feature, key)) {
-				Attribute attribute = featureAttributes.get(key);
-				attribute.setEditable(securityContext.isAttributeWritable(layerId, feature, key));
-				filteredAttributes.put(key, featureAttributes.get(key));
-			}
-		}
-		feature.setAttributes(filteredAttributes);
-		return filteredAttributes;
-	}
-
-	/**
-	 * Find the style filter that must be applied to this feature.
-	 * 
-	 * @param feature
-	 *            feature to find the style for
-	 * @param styles
-	 *            style filters to select from
-	 * @return a style filter
-	 */
-	private StyleFilter findStyleFilter(Object feature, List<StyleFilter> styles) {
-		for (StyleFilter styleFilter : styles) {
-			if (styleFilter.getFilter().evaluate(feature)) {
-				return styleFilter;
-			}
-		}
-		return new StyleFilterImpl();
-	}
-
-	/**
-	 * Build list of style filters from style definitions.
-	 * 
-	 * @param styleDefinitions
-	 *            list of style definitions
-	 * @return list of style filters
-	 */
-	private List<StyleFilter> initStyleFilters(List<FeatureStyleInfo> styleDefinitions) {
-		List<StyleFilter> styleFilters = new ArrayList<StyleFilter>();
-		if (styleDefinitions == null || styleDefinitions.size() == 0) {
-			styleFilters.add(new StyleFilterImpl()); // use default.
-		} else {
-			for (FeatureStyleInfo styleDef : styleDefinitions) {
-				styleFilters.add(new StyleFilterImpl(styleDef));
-			}
-		}
-		return styleFilters;
-	}
 
 	public Envelope getBounds(String layerId, CoordinateReferenceSystem crs, Filter queryFilter)
 			throws GeomajasException {

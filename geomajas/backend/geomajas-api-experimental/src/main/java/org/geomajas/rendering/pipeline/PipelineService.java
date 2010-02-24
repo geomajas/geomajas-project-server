@@ -47,6 +47,18 @@ public interface PipelineService<REQUEST, RESPONSE> {
 			throws GeomajasException;
 
 	/**
+	 * Execute the pipeline, starting with a known context.
+	 *
+	 * @param pipeline pipeline steps / configuration
+	 * @param request request object to start pipeline
+	 * @param response response object which is filled by the pipeline
+	 * @param context known context
+	 * @throws GeomajasException any exception which may have been throws during the execution
+	 */
+	void execute(PipelineInfo<REQUEST, RESPONSE> pipeline, REQUEST request, RESPONSE response, PipelineContext context)
+			throws GeomajasException;
+
+	/**
 	 * Get a pipeline configuration based on the key and optional layer id.
 	 * <p/>
 	 * This will attempt to get the layer specific pipeline and if that does not exist, it will use the general
@@ -58,4 +70,11 @@ public interface PipelineService<REQUEST, RESPONSE> {
 	 * @throws GeomajasException when pipeline info not found
 	 */
 	PipelineInfo<REQUEST, RESPONSE> getPipeline(String key, String layerId) throws GeomajasException;
+
+	/**
+	 * Get a new pipeline context.
+	 *
+	 * @return new pipeline context
+	 */
+	PipelineContext createContext();
 }

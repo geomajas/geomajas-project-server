@@ -52,7 +52,12 @@ public class PipelineServiceImpl<REQUEST, RESPONSE> implements PipelineService<R
 	/** @inheritDoc */
 	public void execute(PipelineInfo<REQUEST, RESPONSE> pipeline, REQUEST request, RESPONSE response)
 			throws GeomajasException {
-		PipelineContext context = new PipelineContextImpl();
+		execute(pipeline, request, response, createContext());
+	}
+
+	/** @inheritDoc */
+	public void execute(PipelineInfo<REQUEST, RESPONSE> pipeline, REQUEST request, RESPONSE response,
+			PipelineContext context) throws GeomajasException {
 		for (PipelineStep<REQUEST, RESPONSE> step : pipeline.getPipeline()) {
 			if (context.isFinished()) {
 				break;
@@ -79,5 +84,10 @@ public class PipelineServiceImpl<REQUEST, RESPONSE> implements PipelineService<R
 			throw new GeomajasException(ExceptionCode.PIPELINE_UNKNOWN, key, layerId);
 		}
 		return generalPipeline;
+	}
+
+	/** @inheritDoc */
+	public PipelineContext createContext() {
+		return new PipelineContextImpl();
 	}
 }

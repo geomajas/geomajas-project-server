@@ -24,6 +24,8 @@
 package org.geomajas.internal.rendering.pipeline;
 
 import junit.framework.Assert;
+import org.geomajas.global.ExceptionCode;
+import org.geomajas.global.GeomajasException;
 import org.geomajas.rendering.pipeline.PipelineContext;
 import org.junit.Test;
 
@@ -38,13 +40,19 @@ import java.util.List;
 public class PipelineContextTest {
 
 	@Test
-	public void testPutGet() {
+	public void testPutGet() throws Exception {
 		PipelineContext context = new PipelineContextImpl();
 		context.put("text", "SomeText");
 		context.put("int", 17);
 		context.put("list", new ArrayList<String>());
 
-		Assert.assertNull(context.get("unknown"));
+		Assert.assertNull(context.getOptional("unknown"));
+		try {
+			context.get("unknown");
+			Assert.fail("should have thrown an exception");
+		} catch (GeomajasException ge) {
+			Assert.assertEquals(ExceptionCode.PIPELINE_CONTEXT_MISSING, ge.getExceptionCode());
+		}
 		Assert.assertEquals("SomeText", context.get("text"));
 		Assert.assertEquals(17, context.get("int"));
 		Assert.assertEquals(0, ((List)context.get("list")).size());
