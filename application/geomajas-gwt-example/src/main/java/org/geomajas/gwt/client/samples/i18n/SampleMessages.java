@@ -103,7 +103,12 @@ public interface SampleMessages extends Messages {
 
 	String controllerOnElementDescription();
 	
+	//Rectange controller sample
+	String rectangleControllerTitle();
 	
+	String rectangleControllerDescription();
+	
+	String rectangeControllerOutput(double roundedKmWidth, double roundedKmHeight, double roundedArea);
 
 	// Login sample:
 

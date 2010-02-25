@@ -1,0 +1,48 @@
+	public Canvas getViewPanel() {
+		VLayout layout = new VLayout();
+		layout.setWidth100();
+		layout.setHeight100();
+
+		// Map with ID wmsMap is defined in the XML configuration. (mapWms.xml)
+		final MapWidget map = new MapWidget("wmsMap", "gwt-samples");
+		map.addDrawHandler(new DrawHandler() {
+
+			public void onDraw(DrawEvent event) {
+				map.initialize();
+				final MenuGraphicsContext graphics = map.getGraphics();
+				//after map initialization we draw an image on the map
+				graphics.drawImage("screen.image", Geomajas.getIsomorphicDir() + IMAGE, new Bbox(100, 100, 16, 16),
+						new PictureStyle(1.0), false);
+			}
+		});
+
+		// Create the custom controller:
+		GraphicsController customController = new AbstractGraphicsController(map) {
+
+			private boolean isDragging; //default is false
+
+			public void onMouseMove(MouseMoveEvent event) {
+				//When the user isDragging (mouse is down) we redraw the image at the location of the mousepointer
+				if (isDragging) {
+					Coordinate coordinate = this.getScreenPosition(event);
+					map.getGraphics().drawImage("screen.image", Geomajas.getIsomorphicDir() + IMAGE,
+							new Bbox(coordinate.getX(), coordinate.getY(), 16, 16), new PictureStyle(1.0), false);
+				}
+
+			}
+
+			public void onMouseDown(MouseDownEvent event) {
+				isDragging = true;
+			}
+
+			public void onMouseUp(MouseUpEvent event) {
+				isDragging = false;
+			}
+		};
+
+		// Set the controller on the map:
+		map.setController(customController);
+		layout.addMember(map);
+
+		return layout;
+	}
