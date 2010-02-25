@@ -23,36 +23,25 @@
 
 package org.geomajas.internal.service.vector;
 
-import org.geomajas.configuration.NamedStyleInfo;
+import com.vividsolutions.jts.geom.Envelope;
 import org.geomajas.layer.VectorLayer;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 
 /**
- * Request object for getFeatures in {@link org.geomajas.service.VectorLayerService}.
+ * Container for parameters and result of getBounds in {@link org.geomajas.service.VectorLayerService}.
  *
  * @author Joachim Van der Auwera
  */
-public class GetFeaturesRequest {
+public class GetBoundsContainer {
 
 	private String layerId;
 	private VectorLayer layer;
-	private CoordinateReferenceSystem crs;
-	private NamedStyleInfo style;
-	private int featureIncludes;
-	private int offset;
-	private int maxResultSize;
 	private MathTransform crsTransform;
+	private Envelope envelope;
 
-	public GetFeaturesRequest(String layerId, VectorLayer layer, CoordinateReferenceSystem crs,
-			NamedStyleInfo style, int featureIncludes, int offset, int maxResultSize, MathTransform crsTransform) {
+	public GetBoundsContainer(String layerId, VectorLayer layer, MathTransform crsTransform) {
 		this.layerId = layerId;
 		this.layer = layer;
-		this.crs = crs;
-		this.style = style;
-		this.featureIncludes = featureIncludes;
-		this.offset = offset;
-		this.maxResultSize = maxResultSize;
 		this.crsTransform = crsTransform;
 	}
 
@@ -72,51 +61,19 @@ public class GetFeaturesRequest {
 		this.layer = layer;
 	}
 
-	public CoordinateReferenceSystem getCrs() {
-		return crs;
-	}
-
-	public void setCrs(CoordinateReferenceSystem crs) {
-		this.crs = crs;
-	}
-
-	public NamedStyleInfo getStyle() {
-		return style;
-	}
-
-	public void setStyle(NamedStyleInfo style) {
-		this.style = style;
-	}
-
-	public int getFeatureIncludes() {
-		return featureIncludes;
-	}
-
-	public void setFeatureIncludes(int featureIncludes) {
-		this.featureIncludes = featureIncludes;
-	}
-
-	public int getOffset() {
-		return offset;
-	}
-
-	public void setOffset(int offset) {
-		this.offset = offset;
-	}
-
-	public int getMaxResultSize() {
-		return maxResultSize;
-	}
-
-	public void setMaxResultSize(int maxResultSize) {
-		this.maxResultSize = maxResultSize;
-	}
-
 	public MathTransform getCrsTransform() {
 		return crsTransform;
 	}
 
 	public void setCrsTransform(MathTransform crsTransform) {
 		this.crsTransform = crsTransform;
+	}
+
+	public Envelope getEnvelope() {
+		return envelope;
+	}
+
+	public void setEnvelope(Envelope envelope) {
+		this.envelope = envelope;
 	}
 }

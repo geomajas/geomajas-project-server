@@ -24,18 +24,17 @@
 package org.geomajas.internal.service;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import org.geomajas.configuration.NamedStyleInfo;
-import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.global.GeomajasSecurityException;
+import org.geomajas.internal.service.vector.GetBoundsContainer;
 import org.geomajas.internal.service.vector.GetFeaturesRequest;
+import org.geomajas.internal.service.vector.GetObjectsRequest;
 import org.geomajas.internal.service.vector.SaveOrUpdateContainer;
 import org.geomajas.layer.VectorLayer;
-import org.geomajas.layer.VectorLayerAssociationSupport;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.rendering.painter.PaintFactory;
 import org.geomajas.rendering.pipeline.PipelineContext;
@@ -45,21 +44,14 @@ import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
 import org.geomajas.service.VectorLayerService;
-import org.geotools.filter.text.cql2.CQL;
-import org.geotools.filter.text.cql2.CQLException;
-import org.geotools.geometry.jts.JTS;
 import org.opengis.filter.Filter;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.TransformException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * Implementation of {@link org.geomajas.service.VectorLayerService}, a service which allows accessing data from a
@@ -77,11 +69,11 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 	public static final String PIPELINE_SAVE_OR_UPDATE = "vectorLayer.saveOrUpdate";
 	public static final String PIPELINE_SAVE_OR_UPDATE_ONE = "vectorLayer.saveOrUpdateOne";
 	public static final String PIPELINE_GET_FEATURES = "vectorLayer.getFeatures";
-	
+	public static final String PIPELINE_GET_BOUNDS = "vectorLayer.getBounds";
+	public static final String PIPELINE_GET_OBJECTS = "vectorLayer.getObjects";
+
 	public static final String LAYER_KEY = "layer";
 	public static final String FILTER_KEY = "filter";
-
-	private final Logger log = LoggerFactory.getLogger(VectorLayerServiceImpl.class);
 
 	@Autowired
 	private ConfigurationService configurationService;
@@ -157,95 +149,23 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 	public Envelope getBounds(String layerId, CoordinateReferenceSystem crs, Filter queryFilter)
 			throws GeomajasException {
 		VectorLayer layer = getVectorLayer(layerId);
-		Filter filter = getLayerFilter(layer.getLayerInfo(), queryFilter);
-
-		MathTransform layerToTarget;
-		try {
-			layerToTarget = geoService.findMathTransform(layer.getCrs(), crs);
-		} catch (FactoryException fe) {
-			throw new GeomajasException(fe, ExceptionCode.CRS_TRANSFORMATION_NOT_POSSIBLE, crs, layer.getCrs());
-		}
-		Envelope bounds = layer.getBounds(filter);
-		try {
-			bounds = JTS.transform(bounds, layerToTarget);
-		} catch (TransformException te) {
-			throw new GeomajasException(te, ExceptionCode.GEOMETRY_TRANSFORMATION_FAILED);
-		}
-		return bounds;
-	}
-
-	/**
-	 * Get the (combined) filter to apply. Always returns a filter, never null.
-	 * <p/>
-	 * This combines the visible area, the security filter for the layer, the default filter for the layer,
-	 * 
-	 * @param layerInfo
-	 *            layer info (matching the layer id)
-	 * @param queryFilter
-	 *            base query filter if any
-	 * @return filter to apply
-	 * @throws GeomajasException
-	 *             oops
-	 */
-	private Filter getLayerFilter(VectorLayerInfo layerInfo, Filter queryFilter) throws GeomajasException {
-		Filter filter = queryFilter;
-		String layerId = layerInfo.getId();
-
-		// apply generic security filter
-		Filter layerFeatureFilter = securityContext.getFeatureFilter(layerId);
-		if (null != layerFeatureFilter) {
-			filter = and(filter, layerFeatureFilter);
-		}
-
-		// apply default filter
-		String defaultFilter = layerInfo.getFilter();
-		if (null != defaultFilter) {
-			try {
-				filter = and(filter, CQL.toFilter(defaultFilter));
-			} catch (CQLException ce) {
-				throw new GeomajasException(ce, ExceptionCode.FILTER_APPLY_PROBLEM, defaultFilter);
-			}
-		}
-
-		// apply visible area filter
-		Geometry visibleArea = securityContext.getVisibleArea(layerId);
-		if (null != visibleArea) {
-			String geometryName = layerInfo.getFeatureInfo().getGeometryType().getName();
-			if (securityContext.isPartlyVisibleSufficient(layerId)) {
-				filter = and(filter, filterService.createIntersectsFilter(visibleArea, geometryName));
-			} else {
-				filter = and(filter, filterService.createWithinFilter(visibleArea, geometryName));
-			}
-		} else {
-			log.warn("Visible area is null for layer " + layerId + "removing all content!");
-			filter = filterService.createFalseFilter();
-		}
-
-		return filter;
-	}
-
-	private Filter and(Filter f1, Filter f2) {
-		if (null == f1) {
-			return f2;
-		} else if (null == f2) {
-			return f1;
-		} else {
-			return filterService.createAndFilter(f1, f2);
-		}
+		GetBoundsContainer container = new GetBoundsContainer(layerId, layer, getCrsTransform(layer.getCrs(), crs));
+		PipelineContext context = pipelineService.createContext();
+		context.put(FILTER_KEY, queryFilter);
+		context.put(LAYER_KEY, layer);
+		pipelineService.execute(
+				pipelineService.getPipeline(PIPELINE_GET_BOUNDS, layerId), container, container, context);
+		return container.getEnvelope();
 	}
 
 	public List<Object> getObjects(String layerId, String attributeName, Filter queryFilter) throws GeomajasException {
 		VectorLayer layer = getVectorLayer(layerId);
-		Filter filter = getLayerFilter(layer.getLayerInfo(), queryFilter);
-		// @todo security ??
-
-		List<Object> list = new ArrayList<Object>();
-		if (layer instanceof VectorLayerAssociationSupport) {
-			Iterator<?> it = ((VectorLayerAssociationSupport) layer).getObjects(attributeName, filter);
-			while (it.hasNext()) {
-				list.add(it.next());
-			}
-		}
-		return list;
+		GetObjectsRequest request = new GetObjectsRequest(layerId, layer, attributeName);
+		PipelineContext context = pipelineService.createContext();
+		context.put(FILTER_KEY, queryFilter);
+		context.put(LAYER_KEY, layer);
+		List<Object> response = new ArrayList<Object>();
+		pipelineService.execute(pipelineService.getPipeline(PIPELINE_GET_OBJECTS, layerId), request, response, context);
+		return response;
 	}
 }

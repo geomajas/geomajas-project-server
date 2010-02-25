@@ -124,5 +124,34 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		</property>
 	</bean>
 
+	<bean class="org.geomajas.rendering.pipeline.PipelineInfo">
+		<property name="id"><util:constant static-field="org.geomajas.internal.service.VectorLayerServiceImpl.PIPELINE_GET_BOUNDS"/></property>
+		<property name="pipeline">
+			<list>
+				<bean class="org.geomajas.internal.service.vector.LayerFilterStep">
+					<property name="id" value="LayerFilterStep"/>
+				</bean>
+				<bean class="org.geomajas.internal.service.vector.GetBoundsStep">
+					<property name="id" value="GetBoundsStep"/>
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+
+	<bean class="org.geomajas.rendering.pipeline.PipelineInfo">
+		<property name="id"><util:constant static-field="org.geomajas.internal.service.VectorLayerServiceImpl.PIPELINE_GET_OBJECTS"/></property>
+		<property name="pipeline">
+			<list>
+				<bean class="org.geomajas.internal.service.vector.LayerFilterStep">
+					<property name="id" value="LayerFilterStep"/>
+				</bean>
+				<bean class="org.geomajas.internal.service.vector.GetObjectsStep">
+					<property name="id" value="GetObjectsStep"/>
+				</bean>
+			</list>
+		</property>
+	</bean>
+
 </beans>
 
