@@ -45,10 +45,11 @@ import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
  * <p>
- * Sample that shows a map one raster and one vector layer, both using the same CRS.
+ * Sample that shows how to add a customer controller to the map that can be dragged around by
+ * the user.
  * </p>
  * 
- * @author Pieter De Graef
+ * @author Frank Wynants
  */
 public class ControllerOnElementSample extends SamplePanel {
 
