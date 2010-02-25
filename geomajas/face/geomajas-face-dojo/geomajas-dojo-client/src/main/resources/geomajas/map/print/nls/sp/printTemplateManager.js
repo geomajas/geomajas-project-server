@@ -23,6 +23,6 @@
  */
 ( {
 	printExists :"A print with the same name exists, do you want to overwrite it ?",
-	printSaved :"Print succesfully saved!"
+	printSaved :"Print successfully saved!"
 
 })

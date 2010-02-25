@@ -23,6 +23,6 @@
  */
 ( {
 	printExists :"Een afdruk met deze naam bestaat al. Wilt u deze overschrijven ?",
-	printSaved :"Afdruk succesvol bewaard!"
+	printSaved :"Afdruk successvol bewaard!"
 
 })

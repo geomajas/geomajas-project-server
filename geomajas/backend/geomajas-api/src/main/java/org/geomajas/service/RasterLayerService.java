@@ -20,33 +20,17 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.geomajas.command;
+
+package org.geomajas.service;
 
 /**
- * Response object for {@link Command} which indicates success.
- * 
+ * Service which allows accessing data from a raster layer.
+ * <p/>
+ * All access to raster layers should be done through this service, not by accessing the layer directly as this
+ * adds possible modifications in the data. These services are implemented using pipelines
+ * (see {@link org.geomajas.rendering.pipeline.PipelineService}) to make them configurable.
+ *
  * @author Joachim Van der Auwera
  */
-public class SuccessCommandResponse extends CommandResponse {
-
-	private static final long serialVersionUID = 151L;
-	private boolean success;
-
-	/**
-	 * Was the command successful?
-	 *
-	 * @return true when command was successful
-	 */
-	public boolean isSuccess() {
-		return success;
-	}
-
-	/**
-	 * Set whether the command was successful.
-	 *
-	 * @param success true when successful
-	 */
-	public void setSuccess(boolean success) {
-		this.success = success;
-	}
+public class RasterLayerService {
 }

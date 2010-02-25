@@ -23,9 +23,12 @@
 
 package org.geomajas.command;
 
-
 /**
- * ...
+ * Command request object which contains a layer id. Should be extended when you need a layer id as request
+ * parameter.
+ * <p/>
+ * It is intended that this may be used for transaction support to assure transactions are started for relevant layers
+ * only.
  *
  * @author Joachim Van der Auwera
  */
@@ -43,6 +46,11 @@ public class LayerIdCommandRequest implements CommandRequest {
 		return layerId;
 	}
 
+	/**
+	 * Set the layer id.
+	 *
+	 * @param layerId layer id
+	 */
 	public void setLayerId(String layerId) {
 		this.layerId = layerId;
 	}

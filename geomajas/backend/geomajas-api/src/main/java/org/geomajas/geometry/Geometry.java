@@ -51,9 +51,19 @@ public class Geometry implements Serializable {
 	// Constructors
 	// -------------------------------------------------------------------------
 
+	/**
+	 * No-args creator, available for GWT.
+	 */
 	public Geometry() {
 	}
 
+	/**
+	 * Create geometry.
+	 *
+	 * @param geometryType geometry type
+	 * @param srid srid
+	 * @param precision precision
+	 */
 	public Geometry(String geometryType, int srid, int precision) {
 		this.geometryType = geometryType;
 		this.srid = srid;

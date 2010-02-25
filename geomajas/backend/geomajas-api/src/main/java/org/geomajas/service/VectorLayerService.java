@@ -34,9 +34,9 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import com.vividsolutions.jts.geom.Envelope;
 
 /**
- * Service which allows accessing data from a vector layer model.
+ * Service which allows accessing data from a vector layer.
  * <p/>
- * All access to layer models should be done through this service, not by accessing the layer models directly as this
+ * All access to vector layers should be done through this service, not by accessing the layer directly as this
  * adds possible caching, security etc. These services are implemented using pipelines
  * (see {@link org.geomajas.rendering.pipeline.PipelineService}) to make them configurable.
  *

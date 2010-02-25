@@ -95,6 +95,8 @@ public class VectorTile implements Serializable {
 	/**
 	 * Return the rendered content of a tile's features. Depending on the rendering method used, a different content
 	 * type will be stored. Basically, the returned string will contain a string rendering (SVG/VML) or a URL.
+	 *
+	 * @return rendered features as SVG, VML or URL
 	 */
 	public String getFeatureContent() {
 		return featureContent;
@@ -114,6 +116,8 @@ public class VectorTile implements Serializable {
 	/**
 	 * Return the rendered content of a tile's labels. Depending on the rendering method used, a different content type
 	 * will be stored. Basically, the returned string will contain a string rendering (SVG/VML) or a URL.
+	 *
+	 * @return rendered labels as SVG, VML or URL
 	 */
 	public String getLabelContent() {
 		return labelContent;
@@ -130,7 +134,11 @@ public class VectorTile implements Serializable {
 		this.labelContent = labelContent;
 	}
 
-	/** Returns the type of content for the rendered features and labels that are stored within this tile. */
+	/**
+	 * Returns the type of content for the rendered features and labels that are stored within this tile.
+	 *
+	 * @return content type
+	 */
 	public VectorTileContentType getContentType() {
 		return contentType;
 	}
@@ -145,7 +153,11 @@ public class VectorTile implements Serializable {
 		this.contentType = contentType;
 	}
 
-	/** Returns the list of features that are stored in this tile. */
+	/**
+	 * Returns the list of features that are stored in this tile.
+	 *
+	 * @return list of features in tile
+	 */
 	public List<Feature> getFeatures() {
 		return features;
 	}
@@ -181,7 +193,11 @@ public class VectorTile implements Serializable {
 		this.codes = codes;
 	}
 
-	/** Returns the unique code for this tile. Consider this it's unique identifier within a vector layer. */
+	/**
+	 * Returns the unique code for this tile. Consider this it's unique identifier within a vector layer.
+	 *
+	 * @return tile code
+	 */
 	public TileCode getCode() {
 		return code;
 	}
@@ -199,6 +215,8 @@ public class VectorTile implements Serializable {
 	/**
 	 * Return the tile's width, expressed in world coordinates. In other words, expressed in the coordinates system of
 	 * the map wherein this tile's layer lies.
+	 *
+	 * @return tile width
 	 */
 	public double getTileWidth() {
 		return tileWidth;
@@ -218,6 +236,8 @@ public class VectorTile implements Serializable {
 	/**
 	 * Return the tile's height, expressed in world coordinates. In other words, expressed in the coordinates system of
 	 * the map wherein this tile's layer lies.
+	 *
+	 * @return tile height
 	 */
 	public double getTileHeight() {
 		return tileHeight;
@@ -234,7 +254,11 @@ public class VectorTile implements Serializable {
 		this.tileHeight = tileHeight;
 	}
 
-	/** Return the tile's width, expressed in client side pixels. */
+	/**
+	 * Return the tile's width, expressed in client side pixels.
+	 *
+	 * @return tile width in pixels
+	 */
 	public int getScreenWidth() {
 		return screenWidth;
 	}
@@ -249,7 +273,11 @@ public class VectorTile implements Serializable {
 		this.screenWidth = screenWidth;
 	}
 
-	/** Return the tile's height, expressed in client side pixels. */
+	/**
+	 * Return the tile's height, expressed in client side pixels.
+	 *
+	 * @return tile height in pixels
+	 */
 	public int getScreenHeight() {
 		return screenHeight;
 	}
@@ -267,6 +295,8 @@ public class VectorTile implements Serializable {
 	/**
 	 * Returns whether or not at least one feature within this tile has been clipped. This may sometimes be necessary
 	 * when a feature's bounds are larger then the space allowed on the client side.
+	 *
+	 * @return true when at least one geometry is clipped
 	 */
 	public boolean isClipped() {
 		return clipped;

@@ -24,7 +24,7 @@
 package org.geomajas.service;
 
 /**
- * Simplifier to change fully qualified classnames into Geomajas bean names.
+ * Simplifier to change fully qualified class names into Geomajas bean names.
  *
  * @author Joachim Van der Auwera
  */

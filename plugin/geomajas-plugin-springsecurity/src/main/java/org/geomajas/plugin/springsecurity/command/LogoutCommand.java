@@ -53,11 +53,11 @@ public class LogoutCommand implements Command<EmptyCommandRequest, SuccessComman
 
 	public void execute(EmptyCommandRequest emptyCommandRequest, SuccessCommandResponse commandResponse)
 			throws Exception {
-		commandResponse.setSucces(false);
+		commandResponse.setSuccess(false);
 		for (Authentication auth : securityContext.getSecurityServiceResults()) {
 			if (SpringSecurityService.SECURITY_SERVICE_ID.equals(auth.getSecurityServiceId())) {
 				tokenService.logout(securityContext.getToken());
-				commandResponse.setSucces(true);
+				commandResponse.setSuccess(true);
 			}
 		}
 	}

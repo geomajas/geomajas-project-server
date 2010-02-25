@@ -44,13 +44,24 @@ public class Bbox implements Serializable {
 
 	private double height;
 
-	// huge bbox, should cover coordinate space of all known crses
+	// huge bbox, should cover coordinate space of all known crs-es
 	public static final Bbox ALL = new Bbox(-1E20, -1E20, 2E20, 2E20);
 
+	/**
+	 * Create a zero-size bounding box.
+	 */
 	public Bbox() {
 		this(0, 0, 0, 0);
 	}
 
+	/**
+	 * Create bounding box.
+	 *
+	 * @param x x origin
+	 * @param y y origin
+	 * @param width width of bounding box, should be positive
+	 * @param height height of bounding box, should be positive
+	 */
 	public Bbox(double x, double y, double width, double height) {
 		this.x = x;
 		this.y = y;
@@ -58,7 +69,11 @@ public class Bbox implements Serializable {
 		setHeight(height);
 	}
 
-	/** Return the height for the bounding box. This will always be a positive value. */
+	/**
+	 * Return the height for the bounding box. This will always be a positive value.
+	 *
+	 * @return height of the bbox
+	 */
 	public double getHeight() {
 		return height;
 	}
@@ -79,7 +94,11 @@ public class Bbox implements Serializable {
 		}
 	}
 
-	/** Return the width for the bounding box. This will always be a positive value. */
+	/**
+	 * Return the width for the bounding box. This will always be a positive value.
+	 *
+	 * @return width of the bbox
+	 */
 	public double getWidth() {
 		return width;
 	}
@@ -100,32 +119,67 @@ public class Bbox implements Serializable {
 		}
 	}
 
+	/**
+	 * Get the lowest x boundary of the bbox.
+	 *
+	 * @return lowest x
+	 */
 	public double getX() {
 		return x;
 	}
 
+	/**
+	 * Set the lowest x boundary for the bbox.
+	 *
+	 * @param x lowest x
+	 */
 	public void setX(double x) {
 		this.x = x;
 	}
 
+	/**
+	 * Get the lowest y boundary of the bbox.
+	 *
+	 * @return lowest y
+	 */
 	public double getY() {
 		return y;
 	}
 
+	/**
+	 * Set the lowest y boundary for the bbox.
+	 *
+	 * @param y lowest y
+	 */
 	public void setY(double y) {
 		this.y = y;
 	}
 
+	/**
+	 * Get the highest x boundary of the bbox.
+	 *
+	 * @return highest x
+	 */
 	@Json(serialize = false)
 	public double getMaxX() {
 		return getX() + getWidth();
 	}
 
+	/**
+	 * Get the highest y boundary of the bbox.
+	 *
+	 * @return highest y
+	 */
 	@Json(serialize = false)
 	public double getMaxY() {
 		return getY() + getHeight();
 	}
 
+	/**
+	 * Convert to readable string.
+	 *
+	 * @return readable string for bbox
+	 */
 	public String toString() {
 		return "Bbox[" + x + " " + y + " " + width + " " + height + "]";
 	}

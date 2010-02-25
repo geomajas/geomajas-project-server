@@ -98,10 +98,6 @@ public class InternalTileImpl implements InternalTile {
 		return bounds;
 	}
 
-	public String codeAsString() {
-		return (code.getX() == -1 ? "super" : code.getTileLevel() + "-" + code.getX() + "-" + code.getY());
-	}
-
 	public void addFeature(InternalFeature feature) {
 		features.add(feature);
 	}

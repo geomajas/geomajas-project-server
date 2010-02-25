@@ -88,12 +88,21 @@ public class TileCode implements Serializable {
 	// Public methods:
 	// -------------------------------------------------------------------------
 
-	/** Create a clone from this object. */
+	/**
+	 * Create a clone from this object.
+	 *
+	 * @return cloned tile code
+	 */
 	public TileCode clone() {
 		return new TileCode(tileLevel, x, y);
 	}
 
-	/** Is the given object a <code>TileCode</code>, and are it's values equals to this object's values? */
+	/**
+	 * Is the given object a <code>TileCode</code>, and are it's values equals to this object's values?
+	 *
+	 * @param obj object to compare
+	 * @return true when object equals this one
+	 */
 	public boolean equals(Object obj) {
 		if (obj == null || !(obj instanceof TileCode)) {
 			return false;
@@ -103,12 +112,20 @@ public class TileCode implements Serializable {
 		}
 	}
 
-	/** Return a unique hash code. */
+	/**
+	 * Return a unique hash code.
+	 *
+	 * @return hash code
+	 */
 	public int hashCode() {
 		return toString().hashCode();
 	}
 
-	/** Return the values as a readable text: <code>TileLevel-X-Y</code>. */
+	/**
+	 * Return the values as a readable text: <code>TileLevel-X-Y</code>.
+	 *
+	 * @return readable tile code
+	 */
 	public String toString() {
 		return tileLevel + "-" + x + "-" + y;
 	}
@@ -117,7 +134,11 @@ public class TileCode implements Serializable {
 	// Getters and setters:
 	// -------------------------------------------------------------------------
 
-	/** Get the tiling depth level. Where 0 means the top level. Make sure this is always a positive integer! */
+	/**
+	 * Get the tiling depth level. Where 0 means the top level. Make sure this is always a positive integer!
+	 *
+	 * @return tile level
+	 */
 	public int getTileLevel() {
 		return tileLevel;
 	}
@@ -132,7 +153,11 @@ public class TileCode implements Serializable {
 		this.tileLevel = tileLevel;
 	}
 
-	/** Get the X-ordinate at the given level: X=[0, (2^tileLevel) - 1]. */
+	/**
+	 * Get the X-ordinate at the given level: X=[0, (2^tileLevel) - 1].
+	 *
+	 * @return x-ordinate
+	 */
 	public int getX() {
 		return x;
 	}
@@ -147,7 +172,11 @@ public class TileCode implements Serializable {
 		this.x = x;
 	}
 
-	/** Get the Y-ordinate at the given level: Y=[0, (2^tileLevel) - 1]. */
+	/**
+	 * Get the Y-ordinate at the given level: Y=[0, (2^tileLevel) - 1].
+	 *
+	 * @return y-ordinate
+	 */
 	public int getY() {
 		return y;
 	}

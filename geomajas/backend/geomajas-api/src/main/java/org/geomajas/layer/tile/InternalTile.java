@@ -42,29 +42,54 @@ public interface InternalTile {
 
 	/**
 	 * Return the rendering method used.
+	 *
+	 * @return content type
 	 */
 	VectorTileContentType getContentType();
 
 	/**
 	 * Return the rendering of a tile's features. Depending on the rendering method used, the returned string will
 	 * contain an entire rendering (SVG/VML) or a URL.
+	 *
+	 * @return rendered features as SVG/VML or URL
 	 */
 	String getFeatureContent();
 
 	/**
 	 * Return the rendering of a tile's labels. Depending on the rendering method used, the returned string will contain
 	 * an entire rendering (SVG/VML) or a URL.
+	 *
+	 * @return rendered labels as SVG/VML or URL
 	 */
 	String getLabelContent();
 
+	/**
+	 * Initialise tile, set layer and scale.
+	 *
+	 * @param layer layer for tile
+	 * @param scale scale
+	 */
 	void init(VectorLayer layer, double scale);
 
+	/**
+	 * Get bounding box for the tile.
+	 *
+	 * @return bounding box
+	 */
 	Envelope getBbox();
 
-	String codeAsString();
-
+	/**
+	 * Get features for this tile.
+	 *
+	 * @return list of features
+	 */
 	List<InternalFeature> getFeatures();
 
+	/**
+	 * Set list of features for this tile.
+	 *
+	 * @param features list of features
+	 */
 	void setFeatures(List<InternalFeature> features);
 
 	void addFeature(InternalFeature feature);

@@ -34,25 +34,57 @@ public class LayerException extends GeomajasException {
 
 	private static final long serialVersionUID = 7528326795118453722L;
 
+	/**
+	 * Create LayerException.
+	 */
 	public LayerException() {
 	}
 
+	/**
+	 * Create LayerException.
+	 *
+	 * @param ex cause exception
+	 */
 	public LayerException(Throwable ex) {
 		super(ex);
 	}
 
+	/**
+	 * Create LayerException.
+	 *
+	 * @param ex cause exception
+	 * @param exceptionCode code which points to the message
+	 * @param parameters possible extra parameters
+	 */
 	public LayerException(Throwable ex, int exceptionCode, Object... parameters) {
 		super(ex, exceptionCode, parameters);
 	}
 
+	/**
+	 * Create LayerException.
+	 *
+	 * @param ex cause exception
+	 * @param exceptionCode code which points to the message
+	 */
 	public LayerException(Throwable ex, int exceptionCode) {
 		super(ex, exceptionCode);
 	}
 
+	/**
+	 * Create LayerException.
+	 *
+	 * @param exceptionCode code which points to the message
+	 * @param parameters possible extra parameters
+	 */
 	public LayerException(int exceptionCode, Object... parameters) {
 		super(exceptionCode, parameters);
 	}
 
+	/**
+	 * Create LayerException.
+	 *
+	 * @param exceptionCode code which points to the message
+	 */
 	public LayerException(int exceptionCode) {
 		super(exceptionCode);
 	}

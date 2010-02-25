@@ -39,12 +39,32 @@ public interface TileMetadata {
 
 	String PARAM_VML_RENDERER = "VML";
 
+	/**
+	 * Get layer id.
+	 *
+	 * @return layer id
+	 */
 	String getLayerId();
 
+	/**
+	 * Set layer id.
+	 *
+	 * @param layerId layer id
+	 */
 	void setLayerId(String layerId);
 
+	/**
+	 * Get crs code.
+	 *
+	 * @return crs
+	 */
 	String getCrs();
 
+	/**
+	 * Set crs code.
+	 *
+	 * @param crs crs
+	 */
 	void setCrs(String crs);
 
 	TileCode getCode();

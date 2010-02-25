@@ -34,25 +34,57 @@ public class RenderException extends GeomajasException {
 
 	private static final long serialVersionUID = 236362372152849178L;
 
+	/**
+	 * Create new RenderException.
+	 */
 	public RenderException() {
 	}
 
+	/**
+	 * Create new RenderException.
+	 *
+	 * @param ex cause exception
+	 */
 	public RenderException(Exception ex) {
 		super(ex);
 	}
 
+	/**
+	 * Create new RenderException.
+	 *
+	 * @param ex cause exception
+	 * @param exceptionCode code which points to the message
+	 * @param parameters possible extra parameters
+	 */
 	public RenderException(Throwable ex, int exceptionCode, Object... parameters) {
 		super(ex, exceptionCode, parameters);
 	}
 
+	/**
+	 * Create new RenderException.
+	 *
+	 * @param ex cause exception
+	 * @param exceptionCode code which points to the message
+	 */
 	public RenderException(Throwable ex, int exceptionCode) {
 		super(ex, exceptionCode);
 	}
 
+	/**
+	 * Create new RenderException.
+	 *
+	 * @param exceptionCode code which points to the message
+	 * @param parameters possible extra parameters
+	 */
 	public RenderException(int exceptionCode, Object... parameters) {
 		super(exceptionCode, parameters);
 	}
 
+	/**
+	 * Create new RenderException.
+	 *
+	 * @param exceptionCode code which points to the message
+	 */
 	public RenderException(int exceptionCode) {
 		super(exceptionCode);
 	}

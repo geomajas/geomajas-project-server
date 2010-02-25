@@ -75,7 +75,7 @@ public class LogoutCommandTest {
 		EmptyCommandRequest request = new EmptyCommandRequest();
 		SuccessCommandResponse response = logoutCommand.getEmptyCommandResponse();
 		logoutCommand.execute(request, response);
-		Assert.assertTrue(response.isSucces());
+		Assert.assertTrue(response.isSuccess());
 		Assert.assertNull(tokenService.getAuthentication(token));
 	}
 }

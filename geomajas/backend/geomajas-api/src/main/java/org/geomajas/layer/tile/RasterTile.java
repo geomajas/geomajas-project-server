@@ -74,6 +74,11 @@ public class RasterTile implements Serializable {
 	// Public methods:
 	// -------------------------------------------------------------------------
 
+	/**
+	 * Convert to readable string.
+	 *
+	 * @return readable string
+	 */
 	public String toString() {
 		if (code == null) {
 			return "[bounds=" + bounds + ",url=" + url + "]";
@@ -88,6 +93,8 @@ public class RasterTile implements Serializable {
 
 	/**
 	 * Return the unique identifier for this tile (normally, id = <layer id>+"."+<tile level>+"."+<x-index>,<y-index>).
+	 *
+	 * @return tile id
 	 */
 	public String getId() {
 		return id;
@@ -96,13 +103,17 @@ public class RasterTile implements Serializable {
 	/**
 	 * Set a new unique identifier for this tile.
 	 * 
-	 * @param id
+	 * @param id tile id
 	 */
 	public void setId(String id) {
 		this.id = id;
 	}
 
-	/** Returns the unique code for this tile. Consider this it's unique identifier within a raster layer. */
+	/**
+	 * Returns the unique code for this tile. Consider this it's unique identifier within a raster layer.
+	 *
+	 * @return tile code
+	 */
 	public TileCode getCode() {
 		return code;
 	}
@@ -117,7 +128,11 @@ public class RasterTile implements Serializable {
 		this.code = code;
 	}
 
-	/** Returns the bounds for the image on the client side. */
+	/**
+	 * Returns the bounds for the image on the client side.
+	 *
+	 * @return tile bounding box
+	 */
 	public Bbox getBounds() {
 		return bounds;
 	}
@@ -135,6 +150,8 @@ public class RasterTile implements Serializable {
 	/**
 	 * Return the URL to the actual image for this raster tile. It is that image that will really display the rendered
 	 * tile.
+	 *
+	 * @return URL for the raster image
 	 */
 	public String getUrl() {
 		return url;

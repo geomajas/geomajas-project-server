@@ -70,7 +70,7 @@ public class Coordinate implements Comparable<Coordinate>, Cloneable, Serializab
 	/**
 	 * Constructs a <code>Coordinate</code> having the same (x,y,z) values as <code>other</code>.
 	 *
-	 *@param c
+	 * @param c
 	 *            the <code>Coordinate</code> to copy.
 	 */
 	public Coordinate(Coordinate c) {
@@ -84,7 +84,7 @@ public class Coordinate implements Comparable<Coordinate>, Cloneable, Serializab
 	/**
 	 * Set this <code>Coordinate</code>s (x,y) values to that of <code>other</code>.
 	 *
-	 *@param other
+	 * @param other
 	 *            The <code>Coordinate</code> to copy
 	 */
 	public void setCoordinate(Coordinate other) {
@@ -95,9 +95,9 @@ public class Coordinate implements Comparable<Coordinate>, Cloneable, Serializab
 	/**
 	 * Return <code>true</code> if <code>other</code> has the same values for the x and y ordinates.
 	 *
-	 *@param other
+	 * @param other
 	 *            A <code>Coordinate</code> with which to do the comparison.
-	 *@return <code>true</code> if <code>other</code> is a <code>Coordinate</code> with the same values for the x and y
+	 * @return <code>true</code> if <code>other</code> is a <code>Coordinate</code> with the same values for the x and y
 	 *         ordinates.
 	 */
 	public boolean equals(Object other) {
@@ -122,9 +122,9 @@ public class Coordinate implements Comparable<Coordinate>, Cloneable, Serializab
 	 * </UL>
 	 * Note: This method assumes that ordinate values are valid numbers. NaN values are not handled correctly.
 	 *
-	 *@param other
+	 * @param other
 	 *            the <code>Coordinate</code> with which this <code>Coordinate</code> is being compared
-	 *@return -1, zero, or 1 as this <code>Coordinate</code> is less than, equal to, or greater than the specified
+	 * @return -1, zero, or 1 as this <code>Coordinate</code> is less than, equal to, or greater than the specified
 	 *         <code>Coordinate</code>
 	 */
 	public int compareTo(Coordinate other) {
@@ -146,12 +146,17 @@ public class Coordinate implements Comparable<Coordinate>, Cloneable, Serializab
 	/**
 	 * Return a <code>String</code> of the form <I>(x,y)</I> .
 	 *
-	 *@return a <code>String</code> of the form <I>(x,y)</I>
+	 * @return a <code>String</code> of the form <I>(x,y)</I>
 	 */
 	public String toString() {
 		return "(" + x + ", " + y + ")";
 	}
 
+	/**
+	 * Clone the coordinate.
+	 *
+	 * @return cloned coordinate
+	 */
 	public Object clone() {
 		return new Coordinate(x, y);
 	}
@@ -197,18 +202,38 @@ public class Coordinate implements Comparable<Coordinate>, Cloneable, Serializab
 
 	// Getters and setters:
 
+	/**
+	 * Get x component of the coordinate.
+	 *
+	 * @return x
+	 */
 	public double getX() {
 		return x;
 	}
 
+	/**
+	 * Set the x component for the coordinate.
+	 *
+	 * @param x x
+	 */
 	public void setX(double x) {
 		this.x = x;
 	}
 
+	/**
+	 * Get the y component of the coordinate.
+	 *
+	 * @return y
+	 */
 	public double getY() {
 		return y;
 	}
 
+	/**
+	 * Set the y component of the coordinate.
+	 *
+	 * @param y y
+	 */
 	public void setY(double y) {
 		this.y = y;
 	}

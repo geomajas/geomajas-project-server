@@ -118,8 +118,8 @@ public final class Authentication {
 
 				public void execute(CommandResponse response) {
 					if (response instanceof SuccessCommandResponse) {
-						SuccessCommandResponse succesResponse = (SuccessCommandResponse) response;
-						if (succesResponse.isSucces()) {
+						SuccessCommandResponse successResponse = (SuccessCommandResponse) response;
+						if (successResponse.isSuccess()) {
 							userToken = null;
 							Authentication.this.userId = null;
 							manager.fireEvent(new LogoutSuccessEvent());
@@ -145,8 +145,8 @@ public final class Authentication {
 
 			public void execute(CommandResponse response) {
 				if (response instanceof SuccessCommandResponse) {
-					SuccessCommandResponse succesResponse = (SuccessCommandResponse) response;
-					if (succesResponse.isSucces()) {
+					SuccessCommandResponse successResponse = (SuccessCommandResponse) response;
+					if (successResponse.isSuccess()) {
 						userToken = null;
 						Authentication.this.userId = null;
 						if (callback != null) {

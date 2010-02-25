@@ -23,6 +23,8 @@
 
 package org.geomajas.command;
 
+import org.geomajas.global.Json;
+
 
 /**
  * Placeholder class, useful for commands which don't have any parameters.
@@ -39,6 +41,7 @@ public class EmptyCommandRequest implements CommandRequest {
 	 *
 	 * @return 0
 	 */
+	@Json(serialize = false)
 	public int getDummy() {
 		return 0; 
 	}
