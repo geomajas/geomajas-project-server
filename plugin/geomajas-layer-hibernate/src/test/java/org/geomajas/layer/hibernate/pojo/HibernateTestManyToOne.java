@@ -4,6 +4,8 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,6 +14,16 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
+import org.geomajas.layer.feature.attribute.AssociationValue;
+import org.geomajas.layer.feature.attribute.BooleanAttribute;
+import org.geomajas.layer.feature.attribute.DateAttribute;
+import org.geomajas.layer.feature.attribute.DoubleAttribute;
+import org.geomajas.layer.feature.attribute.FloatAttribute;
+import org.geomajas.layer.feature.attribute.IntegerAttribute;
+import org.geomajas.layer.feature.attribute.LongAttribute;
+import org.geomajas.layer.feature.attribute.ManyToOneAttribute;
+import org.geomajas.layer.feature.attribute.PrimitiveAttribute;
+import org.geomajas.layer.feature.attribute.StringAttribute;
 
 @Entity
 @Table(name = "manyToOne")
@@ -146,6 +158,25 @@ public class HibernateTestManyToOne {
 		}
 		p.setDateAttr(date);
 		return p;
+	}
+
+	public static ManyToOneAttribute getDefaultAttributeInstance1(Long id) {
+		 Map<String, PrimitiveAttribute<?>> attributes = new HashMap<String, PrimitiveAttribute<?>>();
+		attributes.put("textAttr", new StringAttribute("manyToOne-1"));
+		attributes.put("booleanAttr", new BooleanAttribute(true));
+		attributes.put("intAttr", new IntegerAttribute(100));
+		attributes.put("floatAttr", new FloatAttribute(100.0f));
+		attributes.put("doubleAttr", new DoubleAttribute(100.0));
+		
+		DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+		Date date;
+		try {
+			date = format.parse("01/01/2009");
+		} catch (ParseException e) {
+			date = new Date();
+		}
+		attributes.put("dateAttr", new DateAttribute(date));
+		return new ManyToOneAttribute(new AssociationValue(new LongAttribute(id), attributes));
 	}
 
 	// Getters and setters:

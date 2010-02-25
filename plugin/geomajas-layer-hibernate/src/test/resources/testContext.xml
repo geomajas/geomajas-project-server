@@ -157,19 +157,19 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 					<property name="name">
 						<util:constant static-field="org.geomajas.layer.hibernate.AbstractHibernateLayerModelTest.PARAM_MANY_TO_ONE" />
 					</property>
-					<property name="identifier">
-						<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
-							<property name="label" value="Id" />
-							<property name="name" value="id" />
-							<property name="type" value="LONG" />
-						</bean>
-					</property>
 					<property name="editable" value="true" />
 					<property name="identifying" value="true" />
 					<property name="type" value="MANY_TO_ONE" />
 					<property name="feature">
 						<bean class="org.geomajas.configuration.FeatureInfo">
 							<property name="dataSourceName" value="org.geomajas.layer.hibernate.pojo.HibernateTestManyToOne" />
+							<property name="identifier">
+								<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+									<property name="label" value="Id" />
+									<property name="name" value="id" />
+									<property name="type" value="LONG" />
+								</bean>
+							</property>
 							<property name="attributes">
 								<list>
 									<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
@@ -253,16 +253,16 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 					<property name="editable" value="true" />
 					<property name="identifying" value="true" />
 					<property name="type" value="ONE_TO_MANY" />
-					<property name="identifier">
-						<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
-							<property name="label" value="Id" />
-							<property name="name" value="id" />
-							<property name="type" value="LONG" />
-						</bean>
-					</property>
 					<property name="feature">
 						<bean class="org.geomajas.configuration.FeatureInfo">
 							<property name="dataSourceName" value="org.geomajas.layer.hibernate.pojo.HibernateTestOneToMany" />
+							<property name="identifier">
+								<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+									<property name="label" value="Id" />
+									<property name="name" value="id" />
+									<property name="type" value="LONG" />
+								</bean>
+							</property>
 							<property name="attributes">
 								<list>
 									<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">

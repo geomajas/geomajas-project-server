@@ -41,9 +41,6 @@ public class AssociationAttributeInfo extends AttributeInfo implements Serializa
 	@NotNull
 	private FeatureInfo feature;
 
-	@NotNull
-	private PrimitiveAttributeInfo identifier;
-
 	/**
 	 * returns the type of the association (many-to-one, one-to-many, ...).
 	 * 
@@ -69,18 +66,4 @@ public class AssociationAttributeInfo extends AttributeInfo implements Serializa
 	public void setFeature(FeatureInfo featureInfo) {
 		this.feature = featureInfo;
 	}
-
-	/**
-	 * returns the metadata of the unique identifier of this association.
-	 * 
-	 * @return the identifier info
-	 */
-	public PrimitiveAttributeInfo getIdentifier() {
-		return identifier;
-	}
-
-	public void setIdentifier(PrimitiveAttributeInfo identifier) {
-		this.identifier = identifier;
-	}
-
 }

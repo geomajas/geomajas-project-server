@@ -23,23 +23,32 @@
 
 package org.geomajas.internal.service;
 
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.beanutils.ConvertUtilsBean;
 import org.geomajas.configuration.AssociationAttributeInfo;
+import org.geomajas.configuration.AssociationType;
 import org.geomajas.configuration.AttributeInfo;
 import org.geomajas.configuration.FeatureInfo;
 import org.geomajas.configuration.PrimitiveAttributeInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
+import org.geomajas.global.GeomajasException;
 import org.geomajas.internal.layer.feature.InternalFeatureImpl;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.Feature;
 import org.geomajas.layer.feature.InternalFeature;
+import org.geomajas.layer.feature.attribute.ArrayAttribute;
 import org.geomajas.layer.feature.attribute.AssociationAttribute;
+import org.geomajas.layer.feature.attribute.AssociationValue;
 import org.geomajas.layer.feature.attribute.BooleanAttribute;
 import org.geomajas.layer.feature.attribute.CurrencyAttribute;
 import org.geomajas.layer.feature.attribute.DateAttribute;
@@ -48,6 +57,8 @@ import org.geomajas.layer.feature.attribute.FloatAttribute;
 import org.geomajas.layer.feature.attribute.ImageUrlAttribute;
 import org.geomajas.layer.feature.attribute.IntegerAttribute;
 import org.geomajas.layer.feature.attribute.LongAttribute;
+import org.geomajas.layer.feature.attribute.ManyToOneAttribute;
+import org.geomajas.layer.feature.attribute.OneToManyAttribute;
 import org.geomajas.layer.feature.attribute.PrimitiveAttribute;
 import org.geomajas.layer.feature.attribute.ShortAttribute;
 import org.geomajas.layer.feature.attribute.StringAttribute;
@@ -55,6 +66,7 @@ import org.geomajas.layer.feature.attribute.UrlAttribute;
 import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.layer.tile.VectorTile;
 import org.geomajas.service.DtoConverterService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
 import com.vividsolutions.jts.geom.Envelope;
@@ -113,9 +125,17 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 	 */
 	public Attribute toDto(Object object, AttributeInfo info) {
 		if (info instanceof PrimitiveAttributeInfo) {
-			return toPrimitiveDto(object, (PrimitiveAttributeInfo) info);
+			if (object instanceof Object[]) {
+				return toArrayDto((Object[]) object, (PrimitiveAttributeInfo) info);
+			} else {
+				return toPrimitiveDto(object, (PrimitiveAttributeInfo) info);
+			}
 		} else if (info instanceof AssociationAttributeInfo) {
-			return toAssociationDto(object, (AssociationAttributeInfo) info);
+			try {
+				return toAssociationDto(object, (AssociationAttributeInfo) info);
+			} catch (GeomajasException e) {
+				return null;
+			}
 		} else {
 			throw new IllegalArgumentException("AttributeConverter does not support conversion of attribute info "
 					+ info);
@@ -126,8 +146,53 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 	// Private methods - Attribute conversion:
 	// -------------------------------------------------------------------------
 
-	private Attribute toAssociationDto(Object value, AssociationAttributeInfo associationAttributeInfo) {
-		// TODO: implement
+	private Attribute toAssociationDto(Object value, AssociationAttributeInfo associationAttributeInfo)
+			throws GeomajasException {
+		if (associationAttributeInfo.getType() == AssociationType.MANY_TO_ONE) {
+			return new ManyToOneAttribute(createAssociationValue(value, associationAttributeInfo));
+		} else if (associationAttributeInfo.getType() == AssociationType.ONE_TO_MANY) {
+			// Value should be an array of objects...
+			List<AssociationValue> associationValues = new ArrayList<AssociationValue>();
+			if (value instanceof Object[]) {
+				Object[] array = (Object[]) value;
+				for (Object bean : array) {
+					associationValues.add(createAssociationValue(bean, associationAttributeInfo));
+				}
+			}
+			return new OneToManyAttribute(associationValues);
+		}
+		return null;
+	}
+
+	private AssociationValue createAssociationValue(Object value, AssociationAttributeInfo associationAttributeInfo)
+			throws GeomajasException {
+		Map<String, PrimitiveAttribute<?>> attributes = new HashMap<String, PrimitiveAttribute<?>>();
+		for (AttributeInfo attributeInfo : associationAttributeInfo.getFeature().getAttributes()) {
+			Object propertyValue = getBeanProperty(value, attributeInfo.getName());
+			attributes.put(attributeInfo.getName(), (PrimitiveAttribute<?>) toDto(propertyValue, attributeInfo));
+		}
+		PrimitiveAttribute<?> id = (PrimitiveAttribute<?>) toDto(getBeanProperty(value, associationAttributeInfo
+				.getFeature().getIdentifier().getName()), associationAttributeInfo.getFeature().getIdentifier());
+		return new AssociationValue(id, attributes);
+	}
+
+	private Object getBeanProperty(Object bean, String property) throws GeomajasException {
+		PropertyDescriptor d = BeanUtils.getPropertyDescriptor(bean.getClass(), property);
+		if (d != null) {
+			Method m = d.getReadMethod();
+			if (m != null) {
+				if (!Modifier.isPublic(m.getDeclaringClass().getModifiers())) {
+					m.setAccessible(true);
+				}
+				Object value;
+				try {
+					value = m.invoke(bean);
+				} catch (Throwable t) {
+					throw new GeomajasException(t);
+				}
+				return value;
+			}
+		}
 		return null;
 	}
 
@@ -155,6 +220,78 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 				return new UrlAttribute((String) value);
 			case IMGURL:
 				return new ImageUrlAttribute((String) value);
+		}
+		throw new IllegalArgumentException("Cannot create primitive attribute of type " + info);
+	}
+
+	private ArrayAttribute<?> toArrayDto(Object[] value, PrimitiveAttributeInfo info) {
+		switch (info.getType()) {
+			case BOOLEAN:
+				Boolean[] booleans = new Boolean[value.length];
+				for (int i = 0; i < value.length; i++) {
+					booleans[i] = (Boolean) convertToClass(value[i], Boolean.class);
+				}
+				return new ArrayAttribute<Boolean>(booleans);
+			case SHORT:
+				Short[] shorts = new Short[value.length];
+				for (int i = 0; i < value.length; i++) {
+					shorts[i] = (Short) convertToClass(value[i], Short.class);
+				}
+				return new ArrayAttribute<Short>(shorts);
+			case INTEGER:
+				Integer[] ints = new Integer[value.length];
+				for (int i = 0; i < value.length; i++) {
+					ints[i] = (Integer) convertToClass(value[i], Integer.class);
+				}
+				return new ArrayAttribute<Integer>(ints);
+			case LONG:
+				Long[] longs = new Long[value.length];
+				for (int i = 0; i < value.length; i++) {
+					longs[i] = (Long) convertToClass(value[i], Long.class);
+				}
+				return new ArrayAttribute<Long>(longs);
+			case FLOAT:
+				Float[] floats = new Float[value.length];
+				for (int i = 0; i < value.length; i++) {
+					floats[i] = (Float) convertToClass(value[i], Float.class);
+				}
+				return new ArrayAttribute<Float>(floats);
+			case DOUBLE:
+				Double[] doubles = new Double[value.length];
+				for (int i = 0; i < value.length; i++) {
+					doubles[i] = (Double) convertToClass(value[i], Double.class);
+				}
+				return new ArrayAttribute<Double>(doubles);
+			case CURRENCY:
+				String[] values = new String[value.length];
+				for (int i = 0; i < value.length; i++) {
+					values[i] = (String) convertToClass(value[i], String.class);
+				}
+				return new ArrayAttribute<String>(values);
+			case STRING:
+				String[] strings = new String[value.length];
+				for (int i = 0; i < value.length; i++) {
+					strings[i] = (value[i] == null ? null : value[i].toString());
+				}
+				return new ArrayAttribute<String>(strings);
+			case DATE:
+				Date[] dates = new Date[value.length];
+				for (int i = 0; i < value.length; i++) {
+					dates[i] = (Date) convertToClass(value[i], Date.class);
+				}
+				return new ArrayAttribute<Date>(dates);
+			case URL:
+				String[] urls = new String[value.length];
+				for (int i = 0; i < value.length; i++) {
+					urls[i] = (value[i] == null ? null : value[i].toString());
+				}
+				return new ArrayAttribute<String>(urls);
+			case IMGURL:
+				String[] images = new String[value.length];
+				for (int i = 0; i < value.length; i++) {
+					images[i] = (value[i] == null ? null : value[i].toString());
+				}
+				return new ArrayAttribute<String>(images);
 		}
 		throw new IllegalArgumentException("Cannot create primitive attribute of type " + info);
 	}

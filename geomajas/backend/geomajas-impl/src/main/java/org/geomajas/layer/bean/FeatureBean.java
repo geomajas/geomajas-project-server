@@ -22,6 +22,7 @@
  */
 package org.geomajas.layer.bean;
 
+import java.util.List;
 import java.util.Date;
 
 /**
@@ -73,7 +74,7 @@ public class FeatureBean {
 
 	private ManyToOneAttributeBean manyToOneAttr;
 
-	private OneToManyAttributeBean onetoManyAttr;
+	private List<OneToManyAttributeBean> oneToManyAttr;
 
 	private String geometry;
 
@@ -181,12 +182,12 @@ public class FeatureBean {
 		this.manyToOneAttr = manyToOneAttr;
 	}
 
-	public OneToManyAttributeBean getOnetoManyAttr() {
-		return onetoManyAttr;
+	public List<OneToManyAttributeBean> getOneToManyAttr() {
+		return oneToManyAttr;
 	}
 
-	public void setOnetoManyAttr(OneToManyAttributeBean onetoManyAttr) {
-		this.onetoManyAttr = onetoManyAttr;
+	public void setOneToManyAttr(List<OneToManyAttributeBean> oneToManyAttr) {
+		this.oneToManyAttr = oneToManyAttr;
 	}
 
 	public String getGeometry() {
@@ -196,5 +197,4 @@ public class FeatureBean {
 	public void setGeometry(String geometry) {
 		this.geometry = geometry;
 	}
-
 }

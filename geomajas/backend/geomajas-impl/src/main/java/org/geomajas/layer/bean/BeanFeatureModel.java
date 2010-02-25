@@ -346,7 +346,7 @@ public class BeanFeatureModel implements FeatureModel {
 	private void copyArrayToPersistentCollection(Object[] array, AssociationAttributeInfo aso, Object parent,
 			Collection collection) throws LayerException {
 		// find collection id name
-		String identifier = aso.getIdentifier().getName();
+		String identifier = aso.getFeature().getIdentifier().getName();
 		// find the parent property
 		PropertyDescriptor pd = BeanUtils.getPropertyDescriptor(parent.getClass(), aso.getName());
 		PropertyDescriptor[] childProps = BeanUtils.getPropertyDescriptors(pd.getPropertyType());

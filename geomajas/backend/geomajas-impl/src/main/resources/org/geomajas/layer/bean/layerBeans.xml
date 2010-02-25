@@ -162,6 +162,66 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 					<property name="identifying" value="true" />
 					<property name="type" value="URL" />
 				</bean>
+				<bean class="org.geomajas.configuration.AssociationAttributeInfo">
+					<property name="label" value="ManyToOne attribute" />
+					<property name="name" value="manyToOneAttr" />
+					<property name="editable" value="true" />
+					<property name="identifying" value="true" />
+					<property name="type" value="MANY_TO_ONE" />
+					<property name="feature">
+						<bean class="org.geomajas.configuration.FeatureInfo">
+							<property name="dataSourceName" value="org.geomajas.layer.bean.ManyToOneAttributeBean" />
+							<property name="identifier">
+								<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+									<property name="label" value="Id" />
+									<property name="name" value="id" />
+									<property name="type" value="LONG" />
+								</bean>
+							</property>
+							<property name="attributes">
+								<list>
+									<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+										<property name="label" value="String attribute" />
+										<property name="name" value="stringAttr" />
+										<property name="editable" value="true" />
+										<property name="identifying" value="true" />
+										<property name="type" value="STRING" />
+									</bean>
+								</list>
+							</property>
+						</bean>
+					</property>
+				</bean>
+				<bean class="org.geomajas.configuration.AssociationAttributeInfo">
+					<property name="label" value="OneToMany attribute" />
+					<property name="name" value="onetoManyAttr" />
+					<property name="editable" value="true" />
+					<property name="identifying" value="true" />
+					<property name="type" value="ONE_TO_MANY" />
+					<property name="feature">
+						<bean class="org.geomajas.configuration.FeatureInfo">
+							<property name="dataSourceName" value="org.geomajas.layer.bean.OneToManyAttributeBean" />
+							<property name="identifier">
+								<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+									<property name="label" value="Id" />
+									<property name="name" value="id" />
+									<property name="type" value="LONG" />
+								</bean>
+							</property>
+							<property name="attributes">
+								<list>
+									<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+										<property name="label" value="String attribute" />
+										<property name="name" value="stringAttr" />
+										<property name="editable" value="true" />
+										<property name="identifying" value="true" />
+										<property name="type" value="STRING" />
+									</bean>
+								</list>
+							</property>
+						</bean>
+					</property>
+				</bean>
 			</list>
 		</property>
 	</bean>
@@ -219,6 +279,24 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 					<property name="shortAttr" value="123" />
 					<property name="stringAttr" value="bean1" />
 					<property name="urlAttr" value="http://www.geomajas.org/url1" />
+					<property name="manyToOneAttr">
+						<bean class="org.geomajas.layer.bean.ManyToOneAttributeBean">
+							<property name="id" value="1" />
+							<property name="stringAttr" value="manyToOne - bean1" />
+						</bean>
+					</property>
+					<property name="oneToManyAttr">
+						<list>
+							<bean class="org.geomajas.layer.bean.OneToManyAttributeBean">
+								<property name="id" value="1" />
+								<property name="stringAttr" value="oneToMany - 1" />
+							</bean>
+							<bean class="org.geomajas.layer.bean.OneToManyAttributeBean">
+								<property name="id" value="2" />
+								<property name="stringAttr" value="oneToMany - 2" />
+							</bean>
+						</list>
+					</property>
 					<property name="geometry"
 						value="MULTIPOLYGON(((0 0,1 0,1 1,0 1,0 0)))" />
 				</bean>

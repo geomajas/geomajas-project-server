@@ -35,16 +35,19 @@ import java.util.Map.Entry;
 
 import org.apache.commons.beanutils.ConvertUtils;
 import org.apache.commons.beanutils.PropertyUtils;
-import org.geomajas.configuration.FeatureInfo;
-import org.geomajas.configuration.VectorLayerInfo;
-import org.geomajas.layer.feature.Attribute;
-import org.geomajas.layer.feature.FeatureModel;
-import org.geomajas.layer.LayerException;
 import org.geomajas.configuration.AssociationAttributeInfo;
+import org.geomajas.configuration.AssociationType;
 import org.geomajas.configuration.AttributeInfo;
+import org.geomajas.configuration.FeatureInfo;
 import org.geomajas.configuration.PrimitiveAttributeInfo;
 import org.geomajas.configuration.PrimitiveType;
+import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.global.ExceptionCode;
+import org.geomajas.layer.LayerException;
+import org.geomajas.layer.feature.Attribute;
+import org.geomajas.layer.feature.FeatureModel;
+import org.geomajas.layer.feature.attribute.AssociationValue;
+import org.geomajas.layer.feature.attribute.PrimitiveAttribute;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
 import org.hibernate.EntityMode;
@@ -53,9 +56,9 @@ import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.type.Type;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vividsolutions.jts.geom.Geometry;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * <p>
@@ -70,7 +73,7 @@ public class HibernateFeatureModel extends HibernateLayerUtil implements Feature
 
 	@Autowired
 	private GeoService geoService;
-	
+
 	private int srid;
 
 	@Autowired
@@ -100,7 +103,8 @@ public class HibernateFeatureModel extends HibernateLayerUtil implements Feature
 
 	public Attribute getAttribute(Object feature, String name) throws LayerException {
 		try {
-			AttributeInfo attributeInfo = attributeInfoMap.get(name);
+			AttributeInfo attributeInfo = getRecursiveAttributeInfo(name, null);
+			// AttributeInfo attributeInfo = attributeInfoMap.get(getFirstAttributeName(name));
 			if (null == attributeInfo) {
 				throw new LayerException(ExceptionCode.ATTRIBUTE_UNKNOWN, name);
 			}
@@ -157,19 +161,19 @@ public class HibernateFeatureModel extends HibernateLayerUtil implements Feature
 		try {
 			return getEntityMetadata().instantiate(null, EntityMode.POJO);
 		} catch (Exception e) {
-			throw new LayerException(e, ExceptionCode.HIBERNATE_CANNOT_CREATE_POJO,
-					getFeatureInfo().getDataSourceName());
+			throw new LayerException(e, ExceptionCode.HIBERNATE_CANNOT_CREATE_POJO, getFeatureInfo()
+					.getDataSourceName());
 		}
 	}
 
 	public Object newInstance(String id) throws LayerException {
 		try {
-			Serializable ser = (Serializable) ConvertUtils.convert(id, getEntityMetadata()
-					.getIdentifierType().getReturnedClass());
+			Serializable ser = (Serializable) ConvertUtils.convert(id, getEntityMetadata().getIdentifierType()
+					.getReturnedClass());
 			return getEntityMetadata().instantiate(ser, EntityMode.POJO);
 		} catch (Exception e) {
-			throw new LayerException(e, ExceptionCode.HIBERNATE_CANNOT_CREATE_POJO,
-					getFeatureInfo().getDataSourceName());
+			throw new LayerException(e, ExceptionCode.HIBERNATE_CANNOT_CREATE_POJO, getFeatureInfo()
+					.getDataSourceName());
 		}
 	}
 
@@ -180,7 +184,7 @@ public class HibernateFeatureModel extends HibernateLayerUtil implements Feature
 		for (Entry<String, Attribute> entry : attributes.entrySet()) {
 			Object value = null;
 			if (null != entry.getValue()) {
-				value = entry.getValue().getValue(); 
+				value = entry.getValue().getValue();
 			}
 			setAttributeRecursively(feature, null, entry.getKey(), value);
 		}
@@ -214,12 +218,12 @@ public class HibernateFeatureModel extends HibernateLayerUtil implements Feature
 	// -------------------------------------------------------------------------
 
 	/**
-	 * ??? 
-	 *
+	 * ???
+	 * 
 	 * @param feature
 	 * @param name
 	 * @return
-	 *
+	 * 
 	 * @deprecated ???
 	 */
 	@SuppressWarnings("unchecked")
@@ -270,7 +274,8 @@ public class HibernateFeatureModel extends HibernateLayerUtil implements Feature
 	 * @param name
 	 *            The attribute's full name. (can be attr1.attr2)
 	 * @return Returns the value. In case a one-to-many is passed along the way, an array will be returned.
-	 * @throws LayerException oops
+	 * @throws LayerException
+	 *             oops
 	 */
 	private Object getAttributeRecursively(Object feature, String name) throws LayerException {
 		if (feature == null) {
@@ -301,6 +306,7 @@ public class HibernateFeatureModel extends HibernateLayerUtil implements Feature
 					tempFeature = PropertyUtils.getProperty(feature, properties[0]);
 				} catch (Exception e) {
 					// we are out of options...
+					throw new LayerException(e, ExceptionCode.ATTRIBUTE_UNKNOWN, feature);
 				}
 			} else {
 				// The normal way: ask the meta-data
@@ -339,6 +345,7 @@ public class HibernateFeatureModel extends HibernateLayerUtil implements Feature
 	 * @param baseValue
 	 * @throws LayerException
 	 */
+	@SuppressWarnings("unchecked")
 	private void setAttributeRecursively(Object parent, AttributeInfo parentAttribute, String propertyName,
 			Object baseValue) throws LayerException {
 		Object value = baseValue;
@@ -388,8 +395,8 @@ public class HibernateFeatureModel extends HibernateLayerUtil implements Feature
 					try {
 						PropertyUtils.setSimpleProperty(parent, properties[0], value);
 					} catch (Throwable t) {
-						throw new HibernateLayerException(t, ExceptionCode.HIBERNATE_ATTRIBUTE_SET_FAILED,
-								attribute.getName(), value.toString());
+						throw new HibernateLayerException(t, ExceptionCode.HIBERNATE_ATTRIBUTE_SET_FAILED, attribute
+								.getName(), value.toString());
 					}
 				}
 			} else if (attribute instanceof AssociationAttributeInfo) {
@@ -397,18 +404,18 @@ public class HibernateFeatureModel extends HibernateLayerUtil implements Feature
 				// In case the attribute is an association:
 				AssociationAttributeInfo aso = (AssociationAttributeInfo) attribute;
 				if (properties.length == 1) {
+
 					// If the first property is the only one: set the entire complex object:
-					String name = attribute.getName();
-					String asoType = aso.getType().value();
-					if ("many-to-one".equals(asoType)) {
-						getMetadata(parent.getClass()).setPropertyValue(parent, name, value, EntityMode.POJO);
-					} else if ("one-to-many".equals(asoType)) {
-						Type type = getMetadata(parent.getClass()).getPropertyType(name);
-						if (type.isCollectionType() && value instanceof Object[]) {
-							Object[] array = (Object[]) value;
-							copyArrayToPersistentCollection(array, aso, parent,
-									(Collection<?>) getMetadata(parent.getClass()).
-											getPropertyValue(parent, name, EntityMode.POJO));
+					if (aso.getType().equals(AssociationType.MANY_TO_ONE)) {
+						// Many-to-one; apply the AssociationValue on the correct bean:
+						setAssociationValue(parent, attribute.getName(), (AssociationValue) value);
+					} else if (aso.getType().equals(AssociationType.ONE_TO_MANY)) {
+						// One-to-many apply the list of AssociationValues on the correct bean:
+						Type type = getMetadata(parent.getClass()).getPropertyType(attribute.getName());
+						if (type.isCollectionType() && value instanceof List<?>) {
+							copyListToPersistentCollection((List<AssociationValue>) value, aso, parent,
+									(Collection<?>) getMetadata(parent.getClass()).getPropertyValue(parent,
+											attribute.getName(), EntityMode.POJO));
 						}
 					}
 				} else {
@@ -418,7 +425,7 @@ public class HibernateFeatureModel extends HibernateLayerUtil implements Feature
 
 					if (newParent instanceof Collection<?>) {
 						// one-to-many: go over all entries!
-						Collection<?> colParent  = (Collection<?>) newParent;
+						Collection<?> colParent = (Collection<?>) newParent;
 						for (Object parentEntry : colParent) {
 							setAttributeRecursively(parentEntry, aso, properties[1], value);
 						}
@@ -431,56 +438,80 @@ public class HibernateFeatureModel extends HibernateLayerUtil implements Feature
 		}
 	}
 
-	@SuppressWarnings("unchecked")
-	private void copyArrayToPersistentCollection(Object[] array, AssociationAttributeInfo type, Object parent,
-			Collection<?> collection) throws LayerException {
-		ClassMetadata childMetaData = getMetadata(type.getFeature().getDataSourceName());
-		if (null == childMetaData) {
-			throw new LayerException(ExceptionCode.MODEL_FEATURE_CLASS_NOT_FOUND,
-					type.getFeature().getDataSourceName());
+	private void setAssociationValue(Object parent, String property, AssociationValue value) {
+		ClassMetadata meta = getSessionFactory().getClassMetadata(parent.getClass());
+		Object bean = meta.getPropertyValue(parent, property, EntityMode.POJO);
+
+		ClassMetadata propertyMeta = getSessionFactory().getClassMetadata(bean.getClass());
+		for (Entry<String, PrimitiveAttribute<?>> entry : value.getAttributes().entrySet()) {
+			propertyMeta.setPropertyValue(bean, entry.getKey(), entry.getValue().getValue(), EntityMode.POJO);
 		}
-		// find the parent property
+	}
+
+	@SuppressWarnings("unchecked")
+	private void copyListToPersistentCollection(List<AssociationValue> values, AssociationAttributeInfo attributeInfo,
+			Object parent, Collection<?> collection) throws LayerException {
+		ClassMetadata childMetaData = getMetadata(attributeInfo.getFeature().getDataSourceName());
+		if (null == childMetaData) {
+			throw new LayerException(ExceptionCode.MODEL_FEATURE_CLASS_NOT_FOUND, attributeInfo.getFeature()
+					.getDataSourceName());
+		}
+
+		// Find the parent property (needed for setting properties):
 		Type[] types = childMetaData.getPropertyTypes();
 		String parentName = null;
 		for (int i = 0; i < types.length; i++) {
 			Type t = types[i];
 			if (t.getReturnedClass().equals(parent.getClass())) {
 				parentName = childMetaData.getPropertyNames()[i];
+				break;
 			}
 		}
-		// new and update
+
+		// Search for new rows and updates:
 		Collection toAdd = new ArrayList();
-		for (Object newChild : array) {
-			Serializable newId = childMetaData.getIdentifier(newChild, EntityMode.POJO);
-			if (newId == null) {
-				toAdd.add(newChild);
+		for (AssociationValue newChild : values) {
+			PrimitiveAttribute<?> identifier = newChild.getId();
+			if (identifier == null || identifier.getValue() == null) {
+				// No ID - A new row:
+				Object bean = childMetaData.instantiate(null, EntityMode.POJO);
+				ClassMetadata propertyMeta = getSessionFactory().getClassMetadata(bean.getClass());
+				for (Entry<String, PrimitiveAttribute<?>> entry : newChild.getAttributes().entrySet()) {
+					propertyMeta.setPropertyValue(bean, entry.getKey(), entry.getValue().getValue(), EntityMode.POJO);
+				}
+				toAdd.add(bean);
 				if (parentName != null) {
-					childMetaData.setPropertyValue(newChild, parentName, parent, EntityMode.POJO);
+					// Set the parent onto the child bean. OneToMany on one side is ManyToOne on the other side.
+					childMetaData.setPropertyValue(bean, parentName, parent, EntityMode.POJO);
 				}
 			} else {
+				// Update of an existing row - loop over all sub-attributes of the OneToMany object:
+				Serializable newId = (Serializable) newChild.getId().getValue();
 				for (Object oldChild : collection) {
 					Serializable oldId = childMetaData.getIdentifier(oldChild, EntityMode.POJO);
 					if (oldId.equals(newId)) {
-						List<AttributeInfo> attribs = type.getFeature().getAttributes();
+						List<AttributeInfo> attribs = attributeInfo.getFeature().getAttributes();
 						for (AttributeInfo attrib : attribs) {
-							// TODO: write a test for this case, because it has been changed without testing.
-							setAttributeRecursively(oldChild, attrib, attrib.getName(),
-									childMetaData.getPropertyValue(newChild, attrib
-											.getName(), EntityMode.POJO));
+							Object baseValue = newChild.getAttributes().get(attrib.getName()).getValue();
+							setAttributeRecursively(oldChild, attrib, attrib.getName(), baseValue);
 						}
 					}
 				}
 			}
 		}
-		// delete
+
+		// Search for rows that are not present in the new value list
+		// They should be deleted in the persistent collection as well.
 		Collection toDelete = new ArrayList();
 		for (Object oldChild : collection) {
 			Serializable oldId = childMetaData.getIdentifier(oldChild, EntityMode.POJO);
 			boolean found = false;
-			for (Object newChild : array) {
-				Serializable newId = childMetaData.getIdentifier(newChild, EntityMode.POJO);
-				if (oldId.equals(newId)) {
-					found = true;
+			for (AssociationValue newChild : values) {
+				if (newChild.getId() != null && newChild.getId().getValue() != null) {
+					Serializable newId = (Serializable) newChild.getId().getValue();
+					if (oldId.equals(newId)) {
+						found = true;
+					}
 				}
 			}
 			if (!found) {
@@ -533,7 +564,7 @@ public class HibernateFeatureModel extends HibernateLayerUtil implements Feature
 					case BOOLEAN:
 						value = Boolean.valueOf(value.toString());
 						break;
-					default :
+					default:
 						throw new RuntimeException(
 								"Invalid option for switch in HibernateFeatureModel.castPrimitiveValue " + type);
 				}
@@ -544,7 +575,7 @@ public class HibernateFeatureModel extends HibernateLayerUtil implements Feature
 
 	/**
 	 * ???
-	 *
+	 * 
 	 * @deprecated ???
 	 */
 	@Deprecated
@@ -566,5 +597,38 @@ public class HibernateFeatureModel extends HibernateLayerUtil implements Feature
 		public Object getValue() {
 			return this.value;
 		}
+	}
+
+	/**
+	 * Search recursively for the right attribute info object, using the name with dots as separators.
+	 * 
+	 * @param name
+	 *            The attribute name. Can be something like "manyToOneAttr.textAttr".
+	 * @param attributeInfo
+	 *            The attribute info to start searching in. If null, the attributeInfoMap is used (= top level).
+	 */
+	private AttributeInfo getRecursiveAttributeInfo(String name, AttributeInfo attributeInfo) {
+		int position = name.indexOf(SEPARATOR);
+		String first = name;
+		if (position > 0) {
+			first = name.substring(0, position);
+		}
+		AttributeInfo attrInfo = null;
+		if (attributeInfo == null) {
+			attrInfo = attributeInfoMap.get(first);
+		} else if (attributeInfo instanceof AssociationAttributeInfo) {
+			AssociationAttributeInfo asso = (AssociationAttributeInfo) attributeInfo;
+			for (AttributeInfo attrInfo2 : asso.getFeature().getAttributes()) {
+				if (attrInfo2.getName().equals(first)) {
+					attrInfo = attrInfo2;
+					break;
+				}
+			}
+		}
+
+		if (position > 0 && attrInfo != null) {
+			return getRecursiveAttributeInfo(name.substring(position + 1), attrInfo);
+		}
+		return attrInfo;
 	}
 }
