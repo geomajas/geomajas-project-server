@@ -167,6 +167,7 @@ public class GetMapConfigurationCommand implements Command<GetMapConfigurationRe
 		}
 		ClientLayerTreeNodeInfo client = new ClientLayerTreeNodeInfo();
 		client.setLabel(original.getLabel());
+		client.setExpanded(original.isExpanded());
 		List<ClientLayerInfo> layers = new ArrayList<ClientLayerInfo>();
 		client.setLayers(layers);
 		for (ClientLayerInfo layer : original.getLayers()) {
