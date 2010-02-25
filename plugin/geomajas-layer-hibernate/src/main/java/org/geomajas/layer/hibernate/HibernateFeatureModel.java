@@ -108,7 +108,11 @@ public class HibernateFeatureModel extends HibernateLayerUtil implements Feature
 			if (null == attributeInfo) {
 				throw new LayerException(ExceptionCode.ATTRIBUTE_UNKNOWN, name);
 			}
-			return converterService.toDto(getAttributeRecursively(feature, name), attributeInfo);
+			Object attribute = getAttributeRecursively(feature, name);
+			if (attribute == null) {
+				return null;
+			}
+			return converterService.toDto(attribute, attributeInfo);
 		} catch (Exception e) {
 			throw new LayerException(e, ExceptionCode.HIBERNATE_ATTRIBUTE_GET_FAILED, name, feature.toString());
 		}
@@ -439,9 +443,18 @@ public class HibernateFeatureModel extends HibernateLayerUtil implements Feature
 	}
 
 	private void setAssociationValue(Object parent, String property, AssociationValue value) {
+		// Find the correct child bean:
 		ClassMetadata meta = getSessionFactory().getClassMetadata(parent.getClass());
 		Object bean = meta.getPropertyValue(parent, property, EntityMode.POJO);
 
+		// If no bean yet, create it and add it to the parent:
+		if (bean == null) {
+			ClassMetadata beanMeta = getSessionFactory().getClassMetadata(meta.getPropertyType(property).getName());
+			bean = beanMeta.instantiate(null, EntityMode.POJO);
+			meta.setPropertyValue(parent, property, bean, EntityMode.POJO);
+		}
+
+		// Copy the individual bean properties to the bean:
 		ClassMetadata propertyMeta = getSessionFactory().getClassMetadata(bean.getClass());
 		for (Entry<String, PrimitiveAttribute<?>> entry : value.getAttributes().entrySet()) {
 			propertyMeta.setPropertyValue(bean, entry.getKey(), entry.getValue().getValue(), EntityMode.POJO);
@@ -523,6 +536,9 @@ public class HibernateFeatureModel extends HibernateLayerUtil implements Feature
 		collection.removeAll(toDelete);
 	}
 
+	/**
+	 * TODO: Now that we are using Attribute definitions, isn't this method obsolete?
+	 */
 	private Object castPrimitiveValue(PrimitiveType type, Object baseValue) {
 		Object value = baseValue;
 		if (value != null) {
