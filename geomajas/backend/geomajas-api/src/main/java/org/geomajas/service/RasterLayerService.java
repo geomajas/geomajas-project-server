@@ -23,6 +23,12 @@
 
 package org.geomajas.service;
 
+import com.vividsolutions.jts.geom.Envelope;
+import org.geomajas.global.GeomajasException;
+import org.geomajas.layer.tile.RasterTile;
+
+import java.util.List;
+
 /**
  * Service which allows accessing data from a raster layer.
  * <p/>
@@ -32,5 +38,17 @@ package org.geomajas.service;
  *
  * @author Joachim Van der Auwera
  */
-public class RasterLayerService {
+public interface RasterLayerService {
+
+	/**
+	 * Get the raster tiles for the specified bounds, optimized for the scale in pixels/unit.
+	 *
+	 * @param boundsCrs Coordinate reference system used for bounds
+	 * @param bounds bounds to request images for
+	 * @param scale scale or zoom level (unit?)
+	 * @return a list of raster images that covers the bounds
+	 * @throws GeomajasException oops
+	 */
+	List<RasterTile> getTiles(String boundsCrs, Envelope bounds, double scale) throws GeomajasException;
+
 }

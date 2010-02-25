@@ -38,7 +38,7 @@ import com.vividsolutions.jts.geom.Envelope;
 public interface RasterLayer extends Layer<RasterLayerInfo> {
 
 	/**
-	 * paints the specified bounds optimized for the specified scale in pixel/unit.
+	 * Paints the specified bounds optimized for the specified scale in pixel/unit.
 	 *
 	 * @param boundsCrs Coordinate reference system used for bounds
 	 * @param bounds bounds to request images for
@@ -47,4 +47,5 @@ public interface RasterLayer extends Layer<RasterLayerInfo> {
 	 * @throws RenderException oops
 	 */
 	List<RasterTile> paint(String boundsCrs, Envelope bounds, double scale) throws RenderException;
+	
 }
