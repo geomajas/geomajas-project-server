@@ -89,7 +89,7 @@
 						<configuration>
 							<excludes>
 								<exclude>**/VectorLayerServiceVisibleAreaTest.java</exclude>
-								<exclude>**/VectorLayerServiceVisibleAttributeTest.java</exclude>
+								<exclude>**/VectorLayerServiceAttributeTest.java</exclude>
 							</excludes>
 						</configuration>
 					</plugin>
