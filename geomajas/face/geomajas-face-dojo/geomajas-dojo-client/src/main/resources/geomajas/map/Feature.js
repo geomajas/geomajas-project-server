@@ -84,6 +84,8 @@ dojo.declare("Feature", PainterVisitable, {
 		var f = new Feature();
 		f.setId(this.id);
 		f.setLayer(this.getLayer());
+		f.styleId = this.styleId;
+		
 		if (this.geometry != null) {
 			f.setGeometry(this.geometry.clone()); // proxy or not; works on both
 		}
@@ -207,6 +209,9 @@ dojo.declare("Feature", PainterVisitable, {
 			var pos = this.id.lastIndexOf(".");
 			if (pos >= 0) {
 				return this.id.substring(pos + 1);
+			}
+			else{
+				return this.id;
 			}
 		}
 		return null;
