@@ -97,6 +97,13 @@ public interface SampleMessages extends Messages {
 	String customControllerScreenCoordinates();
 
 	String customControllerWorldCoordinates();
+	
+	//Controller On Element sample:
+	String controllerOnElementTitle();
+
+	String controllerOnElementDescription();
+	
+	
 
 	// Login sample:
 

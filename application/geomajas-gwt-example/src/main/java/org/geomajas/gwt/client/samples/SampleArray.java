@@ -24,6 +24,7 @@
 package org.geomajas.gwt.client.samples;
 
 import org.geomajas.gwt.client.samples.base.SampleTreeNode;
+import org.geomajas.gwt.client.samples.controller.ControllerOnElementSample;
 import org.geomajas.gwt.client.samples.controller.CustomControllerSample;
 import org.geomajas.gwt.client.samples.i18n.I18nProvider;
 import org.geomajas.gwt.client.samples.mapwidget.CrsSample;
@@ -71,6 +72,10 @@ public final class SampleArray {
 				new SampleTreeNode(I18nProvider.getSampleMessages().customControllerTitle(),
 						"[ISOMORPHIC]/geomajas/tools.png", CustomControllerSample.TITLE, "MapController",
 						CustomControllerSample.FACTORY),
+
+				new SampleTreeNode(I18nProvider.getSampleMessages().controllerOnElementTitle(),
+						"[ISOMORPHIC]/geomajas/tools.png", ControllerOnElementSample.TITLE, "MapController",
+						ControllerOnElementSample.FACTORY),
 
 				// Security samples:
 				new SampleTreeNode(I18nProvider.getSampleMessages().treeGroupSecurity(),
