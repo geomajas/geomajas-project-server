@@ -4,6 +4,7 @@ import junit.framework.Assert;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
+import org.geomajas.global.GeomajasException;
 import org.geomajas.service.DtoConverterService;
 import org.junit.Test;
 
@@ -30,8 +31,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * @author Pieter De Graef
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
-		"/org/geomajas/spring/moreContext.xml"})
+@ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
+		"/org/geomajas/spring/moreContext.xml" })
 public class GeometryConverterTest {
 
 	private static final int SRID = 31300;
@@ -103,49 +104,49 @@ public class GeometryConverterTest {
 	// -------------------------------------------------------------------------
 
 	@Test
-	public void jtsPointToDto() {
+	public void jtsPointToDto() throws GeomajasException {
 		// Test JTS Point to DTO:
 		Geometry point = converter.toDto(createJtsPoint());
 		Assert.assertEquals(jtsC1.x, point.getCoordinates()[0].getX());
 	}
 
 	@Test
-	public void jtsLineStringToDto() {
+	public void jtsLineStringToDto() throws GeomajasException {
 		// Test JTS LineString to DTO:
 		Geometry lineString = converter.toDto(createJtsLineString());
 		Assert.assertEquals(jtsC2.x, lineString.getCoordinates()[1].getX());
 	}
 
 	@Test
-	public void jtsLinearRingToDto() {
+	public void jtsLinearRingToDto() throws GeomajasException {
 		// Test JTS LinearRing to DTO:
 		Geometry linearRing = converter.toDto(createJtsLinearRing());
 		Assert.assertEquals(jtsC4.x, linearRing.getCoordinates()[3].getX());
 	}
 
 	@Test
-	public void jtsPolygonToDto() {
+	public void jtsPolygonToDto() throws GeomajasException {
 		// Test JTS Polygon to DTO:
 		Geometry polygon = converter.toDto(createJtsPolygon());
 		Assert.assertEquals(jtsC6.x, polygon.getGeometries()[1].getCoordinates()[1].getX());
 	}
 
 	@Test
-	public void jtsMultiPointToDto() {
+	public void jtsMultiPointToDto() throws GeomajasException {
 		// Test JTS MultiPoint to DTO:
 		Geometry multiPoint = converter.toDto(createJtsMultiPoint());
 		Assert.assertEquals(jtsC3.x, multiPoint.getGeometries()[2].getCoordinates()[0].getX());
 	}
 
 	@Test
-	public void jtsMultiLineStringToDto() {
+	public void jtsMultiLineStringToDto() throws GeomajasException {
 		// Test JTS MultiLineString to DTO:
 		Geometry multiLineString = converter.toDto(createJtsMultiLineString());
 		Assert.assertEquals(jtsC7.x, multiLineString.getGeometries()[1].getCoordinates()[2].getX());
 	}
 
 	@Test
-	public void jtsMultiPolygonToDto() {
+	public void jtsMultiPolygonToDto() throws GeomajasException {
 		// Test JTS MultiPolygon to DTO:
 		Geometry multiPolygon = converter.toDto(createJtsMultiPolygon());
 		Assert.assertEquals(jtsC7.x, multiPolygon.getGeometries()[1].getGeometries()[1].getCoordinates()[2].getX());
@@ -156,49 +157,49 @@ public class GeometryConverterTest {
 	// -------------------------------------------------------------------------
 
 	@Test
-	public void dtoPointToJts() {
+	public void dtoPointToJts() throws GeomajasException {
 		// Test DTO Point to JTS:
 		Point point = (Point) converter.toInternal(createDtoPoint());
 		Assert.assertEquals(dtoC1.getX(), point.getX());
 	}
 
 	@Test
-	public void dtoLineStringToJts() {
+	public void dtoLineStringToJts() throws GeomajasException {
 		// Test DTO LineString to JTS:
 		LineString lineString = (LineString) converter.toInternal(createDtoLineString());
 		Assert.assertEquals(dtoC3.getX(), lineString.getCoordinateN(2).x);
 	}
 
 	@Test
-	public void dtoLinearRingToJts() {
+	public void dtoLinearRingToJts() throws GeomajasException {
 		// Test DTO LinearRing to JTS:
 		LinearRing linearRing = (LinearRing) converter.toInternal(createDtoLinearRing());
 		Assert.assertEquals(dtoC3.getX(), linearRing.getCoordinateN(2).x);
 	}
 
 	@Test
-	public void dtoPolygonToJts() {
+	public void dtoPolygonToJts() throws GeomajasException {
 		// Test DTO Polygon to JTS:
 		Polygon polygon = (Polygon) converter.toInternal(createDtoPolygon());
 		Assert.assertEquals(dtoC6.getX(), polygon.getInteriorRingN(0).getCoordinateN(1).x);
 	}
 
 	@Test
-	public void dtoMultiPointToJts() {
+	public void dtoMultiPointToJts() throws GeomajasException {
 		// Test DTO MultiPoint to JTS:
 		MultiPoint multiPoint = (MultiPoint) converter.toInternal(createDtoMultiPoint());
 		Assert.assertEquals(dtoC2.getX(), multiPoint.getGeometryN(1).getCoordinate().x);
 	}
 
 	@Test
-	public void dtoMultiLineStringToJts() {
+	public void dtoMultiLineStringToJts() throws GeomajasException {
 		// Test DTO MultiLineString to JTS:
 		MultiLineString multiLineString = (MultiLineString) converter.toInternal(createDtoMultiLineString());
 		Assert.assertEquals(dtoC7.getX(), multiLineString.getGeometryN(1).getCoordinates()[2].x);
 	}
 
 	@Test
-	public void dtoMultiPolygonToJts() {
+	public void dtoMultiPolygonToJts() throws GeomajasException {
 		// Test DTO MultiPolygon to JTS:
 		MultiPolygon multiPolygon = (MultiPolygon) converter.toInternal(createDtoMultiPolygon());
 		Polygon polygon = (Polygon) multiPolygon.getGeometryN(1);

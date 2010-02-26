@@ -23,10 +23,13 @@
 
 package org.geomajas.internal.security;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.PrecisionModel;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+
 import org.geomajas.configuration.LayerInfo;
 import org.geomajas.layer.Layer;
 import org.geomajas.layer.feature.InternalFeature;
@@ -35,12 +38,11 @@ import org.geomajas.security.AttributeAuthorization;
 import org.geomajas.security.Authentication;
 import org.geomajas.security.BaseAuthorization;
 import org.geomajas.security.FeatureAuthorization;
-import org.geomajas.security.VectorLayerSelectFilterAuthorization;
 import org.geomajas.security.SecurityContext;
+import org.geomajas.security.VectorLayerSelectFilterAuthorization;
 import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.FilterService;
-import org.geomajas.service.GeoService;
 import org.opengis.filter.Filter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -49,19 +51,17 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.PrecisionModel;
 
 /**
  * {@link org.geomajas.security.SecurityContext} implementation.
  * <p/>
- * The security context is a thread scoped service which allows you to query the authorization details for the
- * logged in user.
- *
+ * The security context is a thread scoped service which allows you to query the authorization details for the logged in
+ * user.
+ * 
  * @author Joachim Van der Auwera
  */
 @Component
@@ -71,15 +71,20 @@ public class SecurityContextImpl implements SecurityContext {
 	private Logger log = LoggerFactory.getLogger(SecurityManagerImpl.class);
 
 	private List<Authentication> authentications = new ArrayList<Authentication>();
+
 	private String token;
 
 	private String id; // SecurityContext id
 
 	// user info
 	private String userId;
+
 	private String userName;
+
 	private Locale userLocale;
+
 	private String userOrganization;
+
 	private String userDivision;
 
 	@Autowired
@@ -90,9 +95,6 @@ public class SecurityContextImpl implements SecurityContext {
 
 	@Autowired
 	private DtoConverterService converterService;
-
-	@Autowired
-	private GeoService geoService;
 
 	public void setAuthentications(String token, List<Authentication> authentications) {
 		this.token = token;
@@ -217,9 +219,11 @@ public class SecurityContextImpl implements SecurityContext {
 	 * Combine user information strings.
 	 * <p/>
 	 * Extra information is appended (separated by a comma) if not yet present in the string.
-	 *
-	 * @param org base string to append to (avoiding duplication).
-	 * @param add string to add
+	 * 
+	 * @param org
+	 *            base string to append to (avoiding duplication).
+	 * @param add
+	 *            string to add
 	 * @return org + ", " + add
 	 */
 	private String combine(String org, String add) {
@@ -356,6 +360,7 @@ public class SecurityContextImpl implements SecurityContext {
 	 */
 	public Geometry getVisibleArea(final String layerId) {
 		return areaCombine(layerId, new AreaCombineGetter() {
+
 			public Geometry get(AreaAuthorization auth) {
 				return auth.getVisibleArea(layerId);
 			}
@@ -363,7 +368,7 @@ public class SecurityContextImpl implements SecurityContext {
 	}
 
 	private Geometry areaCombine(String layerId, AreaCombineGetter areaGetter) {
-		Layer layer = configurationService.getLayer(layerId);
+		Layer<?> layer = configurationService.getLayer(layerId);
 		if (null == layer) {
 			log.error("areaCombine on unknown layer " + layerId);
 			return null;
@@ -372,7 +377,7 @@ public class SecurityContextImpl implements SecurityContext {
 
 		// base is the max bounds of the layer
 		Envelope maxBounds = converterService.toInternal(layerInfo.getMaxExtent());
-		PrecisionModel precisionModel  = new PrecisionModel(PrecisionModel.FLOATING);
+		PrecisionModel precisionModel = new PrecisionModel(PrecisionModel.FLOATING);
 		GeometryFactory geometryFactory = new GeometryFactory(precisionModel);
 		Geometry geometry = geometryFactory.toGeometry(maxBounds);
 
@@ -392,6 +397,7 @@ public class SecurityContextImpl implements SecurityContext {
 	 */
 	public boolean isPartlyVisibleSufficient(final String layerId) {
 		return areaPartlySufficientCombine(new AuthorizationGetter<AreaAuthorization>() {
+
 			public boolean get(AreaAuthorization auth) {
 				return auth.isPartlyVisibleSufficient(layerId);
 			}
@@ -416,6 +422,7 @@ public class SecurityContextImpl implements SecurityContext {
 	 */
 	public Geometry getUpdateAuthorizedArea(final String layerId) {
 		return areaCombine(layerId, new AreaCombineGetter() {
+
 			public Geometry get(AreaAuthorization auth) {
 				return auth.getUpdateAuthorizedArea(layerId);
 			}
@@ -427,6 +434,7 @@ public class SecurityContextImpl implements SecurityContext {
 	 */
 	public boolean isPartlyUpdateAuthorizedSufficient(final String layerId) {
 		return areaPartlySufficientCombine(new AuthorizationGetter<AreaAuthorization>() {
+
 			public boolean get(AreaAuthorization auth) {
 				return auth.isPartlyUpdateAuthorizedSufficient(layerId);
 			}
@@ -438,6 +446,7 @@ public class SecurityContextImpl implements SecurityContext {
 	 */
 	public Geometry getCreateAuthorizedArea(final String layerId) {
 		return areaCombine(layerId, new AreaCombineGetter() {
+
 			public Geometry get(AreaAuthorization auth) {
 				return auth.getCreateAuthorizedArea(layerId);
 			}
@@ -449,6 +458,7 @@ public class SecurityContextImpl implements SecurityContext {
 	 */
 	public boolean isPartlyCreateAuthorizedSufficient(final String layerId) {
 		return areaPartlySufficientCombine(new AuthorizationGetter<AreaAuthorization>() {
+
 			public boolean get(AreaAuthorization auth) {
 				return auth.isPartlyCreateAuthorizedSufficient(layerId);
 			}
@@ -460,6 +470,7 @@ public class SecurityContextImpl implements SecurityContext {
 	 */
 	public Geometry getDeleteAuthorizedArea(final String layerId) {
 		return areaCombine(layerId, new AreaCombineGetter() {
+
 			public Geometry get(AreaAuthorization auth) {
 				return auth.getDeleteAuthorizedArea(layerId);
 			}
@@ -471,17 +482,19 @@ public class SecurityContextImpl implements SecurityContext {
 	 */
 	public boolean isPartlyDeleteAuthorizedSufficient(final String layerId) {
 		return areaPartlySufficientCombine(new AuthorizationGetter<AreaAuthorization>() {
+
 			public boolean get(AreaAuthorization auth) {
 				return auth.isPartlyDeleteAuthorizedSufficient(layerId);
 			}
 		});
 	}
-	
+
 	/**
 	 * @inheritDoc
 	 */
 	public boolean isFeatureVisible(final String layerId, final InternalFeature feature) {
 		return policyCombine(new AuthorizationGetter<BaseAuthorization>() {
+
 			public boolean get(BaseAuthorization auth) {
 				if (auth instanceof FeatureAuthorization) {
 					return ((FeatureAuthorization) auth).isFeatureVisible(layerId, feature);
@@ -506,6 +519,7 @@ public class SecurityContextImpl implements SecurityContext {
 	/** @inheritDoc */
 	public boolean isFeatureUpdateAuthorized(final String layerId, final InternalFeature feature) {
 		return policyCombine(new AuthorizationGetter<BaseAuthorization>() {
+
 			public boolean get(BaseAuthorization auth) {
 				if (auth instanceof FeatureAuthorization) {
 					return ((FeatureAuthorization) auth).isFeatureUpdateAuthorized(layerId, feature);
@@ -520,6 +534,7 @@ public class SecurityContextImpl implements SecurityContext {
 	public boolean isFeatureUpdateAuthorized(final String layerId, final InternalFeature orgFeature,
 			final InternalFeature newFeature) {
 		return policyCombine(new AuthorizationGetter<BaseAuthorization>() {
+
 			public boolean get(BaseAuthorization auth) {
 				if (auth instanceof FeatureAuthorization) {
 					return ((FeatureAuthorization) auth).isFeatureUpdateAuthorized(layerId, orgFeature, newFeature);
@@ -533,6 +548,7 @@ public class SecurityContextImpl implements SecurityContext {
 	/** @inheritDoc */
 	public boolean isFeatureDeleteAuthorized(final String layerId, final InternalFeature feature) {
 		return policyCombine(new AuthorizationGetter<BaseAuthorization>() {
+
 			public boolean get(BaseAuthorization auth) {
 				if (auth instanceof FeatureAuthorization) {
 					return ((FeatureAuthorization) auth).isFeatureDeleteAuthorized(layerId, feature);
@@ -546,6 +562,7 @@ public class SecurityContextImpl implements SecurityContext {
 	/** @inheritDoc */
 	public boolean isFeatureCreateAuthorized(final String layerId, final InternalFeature feature) {
 		return policyCombine(new AuthorizationGetter<BaseAuthorization>() {
+
 			public boolean get(BaseAuthorization auth) {
 				if (auth instanceof FeatureAuthorization) {
 					return ((FeatureAuthorization) auth).isFeatureCreateAuthorized(layerId, feature);
@@ -559,9 +576,9 @@ public class SecurityContextImpl implements SecurityContext {
 	/**
 	 * @inheritDoc
 	 */
-	public boolean isAttributeReadable(final String layerId, final InternalFeature feature,
-			final String attributeName) {
+	public boolean isAttributeReadable(final String layerId, final InternalFeature feature, final String attributeName) {
 		return policyCombine(new AuthorizationGetter<BaseAuthorization>() {
+
 			public boolean get(BaseAuthorization auth) {
 				if (auth instanceof AttributeAuthorization) {
 					return ((AttributeAuthorization) auth).isAttributeReadable(layerId, feature, attributeName);
@@ -577,9 +594,9 @@ public class SecurityContextImpl implements SecurityContext {
 	/**
 	 * @inheritDoc
 	 */
-	public boolean isAttributeWritable(final String layerId, final InternalFeature feature,
-			final String attributeName) {
+	public boolean isAttributeWritable(final String layerId, final InternalFeature feature, final String attributeName) {
 		return policyCombine(new AuthorizationGetter<BaseAuthorization>() {
+
 			public boolean get(BaseAuthorization auth) {
 				if (auth instanceof AttributeAuthorization) {
 					return ((AttributeAuthorization) auth).isAttributeWritable(layerId, feature, attributeName);
@@ -599,8 +616,9 @@ public class SecurityContextImpl implements SecurityContext {
 
 		/**
 		 * Get the area which needs to be combined.
-		 *
-		 * @param auth authorization object to get data from
+		 * 
+		 * @param auth
+		 *            authorization object to get data from
 		 * @return area to combine
 		 */
 		Geometry get(AreaAuthorization auth);
@@ -613,8 +631,9 @@ public class SecurityContextImpl implements SecurityContext {
 
 		/**
 		 * Get the "partly sufficient" status.
-		 *
-		 * @param auth authorization object to get data from
+		 * 
+		 * @param auth
+		 *            authorization object to get data from
 		 * @return true when part in area is sufficient
 		 */
 		boolean get(AUTH auth);

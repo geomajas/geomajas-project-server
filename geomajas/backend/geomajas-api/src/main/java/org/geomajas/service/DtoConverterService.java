@@ -26,6 +26,7 @@ package org.geomajas.service;
 import org.geomajas.configuration.AttributeInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Geometry;
+import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.Feature;
 import org.geomajas.layer.feature.InternalFeature;
@@ -55,7 +56,7 @@ public interface DtoConverterService {
 	 * @return The server side attribute representation. As we don't know at this point what kind of object the
 	 *         attribute is (that's a problem for the <code>FeatureModel</code>), we return an <code>Object</code>.
 	 */
-	Object toInternal(Attribute attribute);
+	Object toInternal(Attribute<?> attribute) throws GeomajasException;
 
 	/**
 	 * Converts a server-side attribute object into a DTO attribute.
@@ -66,7 +67,7 @@ public interface DtoConverterService {
 	 *            The attribute definition from the configuration.
 	 * @return Returns a DTO attribute.
 	 */
-	Attribute toDto(Object object, AttributeInfo info);
+	Attribute<?> toDto(Object object, AttributeInfo info) throws GeomajasException;
 
 	// -------------------------------------------------------------------------
 	// Feature conversion:
@@ -79,7 +80,7 @@ public interface DtoConverterService {
 	 *            The server-side feature representation.
 	 * @return Returns the DTO feature.
 	 */
-	Feature toDto(InternalFeature feature);
+	Feature toDto(InternalFeature feature) throws GeomajasException;
 
 	/**
 	 * Convert a DTO feature to a server-side feature.
@@ -88,7 +89,7 @@ public interface DtoConverterService {
 	 *            The DTO feature that comes from the client.
 	 * @return Returns a server-side feature object.
 	 */
-	InternalFeature toInternal(Feature dto);
+	InternalFeature toInternal(Feature dto) throws GeomajasException;
 
 	// -------------------------------------------------------------------------
 	// Geometry conversion:
@@ -101,7 +102,7 @@ public interface DtoConverterService {
 	 *            The geometry to convert into a DTO geometry.
 	 * @return Returns a DTO type geometry, that is serializable.
 	 */
-	Geometry toDto(com.vividsolutions.jts.geom.Geometry geometry);
+	Geometry toDto(com.vividsolutions.jts.geom.Geometry geometry) throws GeomajasException;
 
 	/**
 	 * Takes in a DTO geometry, and converts it into a JTS geometry.
@@ -110,7 +111,7 @@ public interface DtoConverterService {
 	 *            The DTO geometry to convert into a JTS geometry.
 	 * @return Returns a JTS geometry.
 	 */
-	com.vividsolutions.jts.geom.Geometry toInternal(Geometry geometry);
+	com.vividsolutions.jts.geom.Geometry toInternal(Geometry geometry) throws GeomajasException;
 
 	// -------------------------------------------------------------------------
 	// Tile conversion:
@@ -123,7 +124,7 @@ public interface DtoConverterService {
 	 *            The server-side representation of a tile.
 	 * @return Returns the DTO version that can be sent to the client.
 	 */
-	VectorTile toDto(InternalTile tile);
+	VectorTile toDto(InternalTile tile) throws GeomajasException;
 
 	// -------------------------------------------------------------------------
 	// Bounding box conversion:

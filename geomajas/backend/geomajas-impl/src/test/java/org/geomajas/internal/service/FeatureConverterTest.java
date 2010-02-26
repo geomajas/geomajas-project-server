@@ -24,6 +24,8 @@
 package org.geomajas.internal.service;
 
 import junit.framework.Assert;
+
+import org.geomajas.global.GeomajasException;
 import org.geomajas.internal.layer.feature.InternalFeatureImpl;
 import org.geomajas.layer.feature.Feature;
 import org.geomajas.layer.feature.InternalFeature;
@@ -35,20 +37,20 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
- * Tests for the DtoConverterService, specifically testing the feature conversions. 
- *
+ * Tests for the DtoConverterService, specifically testing the feature conversions.
+ * 
  * @author Joachim Van der Auwera
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
-		"/org/geomajas/spring/moreContext.xml"})
+@ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
+		"/org/geomajas/spring/moreContext.xml" })
 public class FeatureConverterTest {
 
 	@Autowired
 	private DtoConverterService converterService;
 
 	@Test
-	public void toInternal() {
+	public void toInternal() throws GeomajasException {
 		Feature feature = new Feature();
 		Assert.assertNotNull(converterService.toInternal(feature));
 
@@ -65,7 +67,7 @@ public class FeatureConverterTest {
 	}
 
 	@Test
-	public void toDto() {
+	public void toDto() throws GeomajasException {
 		InternalFeature internalFeature = new InternalFeatureImpl();
 		Assert.assertNotNull(converterService.toDto(internalFeature));
 

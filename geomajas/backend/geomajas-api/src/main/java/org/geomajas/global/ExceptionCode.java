@@ -108,4 +108,5 @@ public interface ExceptionCode {
 	int FEATURE_ID_MISMATCH = 72;
 	int PIPELINE_UNKNOWN = 73;
 	int PIPELINE_CONTEXT_MISSING = 74;
+	int CONVERSION_PROBLEM = 75;
 }

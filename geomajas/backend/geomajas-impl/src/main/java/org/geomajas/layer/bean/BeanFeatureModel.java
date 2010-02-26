@@ -40,6 +40,7 @@ import org.geomajas.configuration.FeatureInfo;
 import org.geomajas.configuration.PrimitiveAttributeInfo;
 import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.global.ExceptionCode;
+import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.FeatureModel;
@@ -110,7 +111,7 @@ public class BeanFeatureModel implements FeatureModel {
 		attributeInfoMap.put(featureInfo.getIdentifier().getName(), featureInfo.getIdentifier());
 		for (AttributeInfo info : featureInfo.getAttributes()) {
 			attributeInfoMap.put(info.getName(), info);
-		}		
+		}
 	}
 
 	public boolean canHandle(Object feature) {
@@ -123,7 +124,11 @@ public class BeanFeatureModel implements FeatureModel {
 		if (null == attributeInfo) {
 			throw new LayerException(ExceptionCode.ATTRIBUTE_UNKNOWN, name);
 		}
-		return converterService.toDto(attr, attributeInfo);
+		try {
+			return converterService.toDto(attr, attributeInfo);
+		} catch (GeomajasException e) {
+			throw new LayerException(e);
+		}
 	}
 
 	public Map<String, Attribute> getAttributes(Object feature) throws LayerException {
@@ -234,7 +239,8 @@ public class BeanFeatureModel implements FeatureModel {
 	 * @param name
 	 *            The attribute's full name. (can be attr1.attr2)
 	 * @return Returns the value. In case a one-to-many is passed along the way, an array will be returned.
-	 * @throws LayerException oops
+	 * @throws LayerException
+	 *             oops
 	 */
 	private Object getAttributeRecursively(Object feature, String name) throws LayerException {
 		if (feature == null) {
@@ -268,14 +274,14 @@ public class BeanFeatureModel implements FeatureModel {
 		}
 	}
 
-	private void setAttributeRecursively(Object parent, AttributeInfo parentAttribute, String propertyName,
-			Object value) throws LayerException {
+	private void setAttributeRecursively(Object parent, AttributeInfo parentAttribute, String property, Object value)
+			throws LayerException {
 		if (parent == null) {
 			return;
 		}
 
 		// Split up properties: the first and the rest.
-		String[] properties = propertyName.split(SEPARATOR_REGEXP, 2);
+		String[] properties = property.split(SEPARATOR_REGEXP, 2);
 
 		// Search for the attribute definition for the first property:
 		AttributeInfo attribute = null;

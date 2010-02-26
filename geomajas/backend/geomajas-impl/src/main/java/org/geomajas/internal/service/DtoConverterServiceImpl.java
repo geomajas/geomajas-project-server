@@ -36,11 +36,11 @@ import org.apache.commons.beanutils.ConvertUtilsBean;
 import org.geomajas.configuration.AssociationAttributeInfo;
 import org.geomajas.configuration.AssociationType;
 import org.geomajas.configuration.AttributeInfo;
-import org.geomajas.configuration.FeatureInfo;
 import org.geomajas.configuration.PrimitiveAttributeInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
+import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.internal.layer.feature.InternalFeatureImpl;
 import org.geomajas.layer.feature.Attribute;
@@ -104,13 +104,13 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 	 * @return The server side attribute representation. As we don't know at this point what kind of object the
 	 *         attribute is (that's a problem for the <code>FeatureModel</code>), we return an <code>Object</code>.
 	 */
-	public Object toInternal(Attribute attribute) {
+	public Object toInternal(Attribute<?> attribute) throws GeomajasException {
 		if (attribute instanceof PrimitiveAttribute<?>) {
 			return toPrimitiveObject((PrimitiveAttribute<?>) attribute);
-		} else if (attribute instanceof AssociationAttribute) {
-			return toAssociationObject((AssociationAttribute) attribute);
+		} else if (attribute instanceof AssociationAttribute<?>) {
+			return toAssociationObject((AssociationAttribute<?>) attribute);
 		} else {
-			throw new IllegalArgumentException("AttributeConverter does not support conversion of " + attribute);
+			throw new GeomajasException(ExceptionCode.CONVERSION_PROBLEM, attribute);
 		}
 	}
 
@@ -123,7 +123,7 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 	 *            The attribute definition from the configuration.
 	 * @return Returns a DTO attribute.
 	 */
-	public Attribute toDto(Object object, AttributeInfo info) {
+	public Attribute<?> toDto(Object object, AttributeInfo info) throws GeomajasException {
 		if (info instanceof PrimitiveAttributeInfo) {
 			if (object instanceof Object[]) {
 				return toArrayDto((Object[]) object, (PrimitiveAttributeInfo) info);
@@ -134,11 +134,10 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 			try {
 				return toAssociationDto(object, (AssociationAttributeInfo) info);
 			} catch (GeomajasException e) {
-				return null;
+				throw new GeomajasException(ExceptionCode.CONVERSION_PROBLEM, info.getName());
 			}
 		} else {
-			throw new IllegalArgumentException("AttributeConverter does not support conversion of attribute info "
-					+ info);
+			throw new GeomajasException(ExceptionCode.CONVERSION_PROBLEM, info.getName());
 		}
 	}
 
@@ -146,14 +145,14 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 	// Private methods - Attribute conversion:
 	// -------------------------------------------------------------------------
 
-	private Attribute toAssociationDto(Object value, AssociationAttributeInfo associationAttributeInfo)
+	private Attribute<?> toAssociationDto(Object value, AssociationAttributeInfo associationAttributeInfo)
 			throws GeomajasException {
 		if (associationAttributeInfo.getType() == AssociationType.MANY_TO_ONE) {
 			return new ManyToOneAttribute(createAssociationValue(value, associationAttributeInfo));
 		} else if (associationAttributeInfo.getType() == AssociationType.ONE_TO_MANY) {
 			// Value should be an array of objects...
 			List<AssociationValue> associationValues = new ArrayList<AssociationValue>();
-			if (value instanceof Object[]) {
+			if (value != null && value instanceof Object[]) {
 				Object[] array = (Object[]) value;
 				for (Object bean : array) {
 					associationValues.add(createAssociationValue(bean, associationAttributeInfo));
@@ -166,6 +165,9 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 
 	private AssociationValue createAssociationValue(Object value, AssociationAttributeInfo associationAttributeInfo)
 			throws GeomajasException {
+		if (value == null) {
+			return null;
+		}
 		Map<String, PrimitiveAttribute<?>> attributes = new HashMap<String, PrimitiveAttribute<?>>();
 		for (AttributeInfo attributeInfo : associationAttributeInfo.getFeature().getAttributes()) {
 			Object propertyValue = getBeanProperty(value, attributeInfo.getName());
@@ -196,7 +198,7 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		return null;
 	}
 
-	private Attribute toPrimitiveDto(Object value, PrimitiveAttributeInfo info) {
+	private Attribute<?> toPrimitiveDto(Object value, PrimitiveAttributeInfo info) {
 		switch (info.getType()) {
 			case BOOLEAN:
 				return new BooleanAttribute((Boolean) convertToClass(value, Boolean.class));
@@ -296,7 +298,7 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		throw new IllegalArgumentException("Cannot create primitive attribute of type " + info);
 	}
 
-	private Object toAssociationObject(AssociationAttribute primitiveAttribute) {
+	private Object toAssociationObject(AssociationAttribute<?> primitiveAttribute) {
 		// TODO: implement
 		return null;
 	}
@@ -325,15 +327,11 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 	 *            The server-side feature representation.
 	 * @return Returns the DTO feature.
 	 */
-	public Feature toDto(InternalFeature feature) {
+	public Feature toDto(InternalFeature feature) throws GeomajasException {
 		if (feature == null) {
 			return null;
 		}
 		Feature dto = new Feature(feature.getId());
-		FeatureInfo info = null;
-		if (null != feature.getLayer() && null != feature.getLayer().getLayerInfo()) {
-			info = feature.getLayer().getLayerInfo().getFeatureInfo();
-		}
 		dto.setAttributes(feature.getAttributes());
 		dto.setLabel(feature.getLabel());
 		dto.setGeometry(toDto(feature.getGeometry()));
@@ -354,7 +352,7 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 	 *            The DTO feature that comes from the client.
 	 * @return Returns a server-side feature object.
 	 */
-	public InternalFeature toInternal(Feature dto) {
+	public InternalFeature toInternal(Feature dto) throws GeomajasException {
 		if (dto == null) {
 			return null;
 		}
@@ -380,7 +378,7 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 	 *            The geometry to convert into a DTO geometry.
 	 * @return Returns a DTO type geometry, that is serializable.
 	 */
-	public Geometry toDto(com.vividsolutions.jts.geom.Geometry geometry) {
+	public Geometry toDto(com.vividsolutions.jts.geom.Geometry geometry) throws GeomajasException {
 		if (geometry == null) {
 			return null;
 		}
@@ -434,7 +432,7 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 	 *            The DTO geometry to convert into a JTS geometry.
 	 * @return Returns a JTS geometry.
 	 */
-	public com.vividsolutions.jts.geom.Geometry toInternal(Geometry geometry) {
+	public com.vividsolutions.jts.geom.Geometry toInternal(Geometry geometry) throws GeomajasException {
 		if (geometry == null) {
 			return null;
 		}
@@ -489,7 +487,7 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		return coordinates;
 	}
 
-	private Geometry[] convertGeometries(com.vividsolutions.jts.geom.Geometry geometry) {
+	private Geometry[] convertGeometries(com.vividsolutions.jts.geom.Geometry geometry) throws GeomajasException {
 		Geometry[] geometries = new Geometry[geometry.getNumGeometries()];
 		for (int i = 0; i < geometries.length; i++) {
 			geometries[i] = toDto(geometry.getGeometryN(i));
@@ -512,7 +510,7 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 	}
 
 	private com.vividsolutions.jts.geom.Geometry[] convertGeometries(Geometry geometry,
-			com.vividsolutions.jts.geom.Geometry[] geometries) {
+			com.vividsolutions.jts.geom.Geometry[] geometries) throws GeomajasException {
 		for (int i = 0; i < geometries.length; i++) {
 			geometries[i] = toInternal(geometry.getGeometries()[i]);
 		}
@@ -530,7 +528,7 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 	 *            The server-side representation of a tile.
 	 * @return Returns the DTO version that can be sent to the client.
 	 */
-	public VectorTile toDto(InternalTile tile) {
+	public VectorTile toDto(InternalTile tile) throws GeomajasException {
 		if (null != tile) {
 			VectorTile dto = new VectorTile();
 			dto.setClipped(tile.isClipped());

@@ -104,15 +104,10 @@ public class HibernateFeatureModel extends HibernateLayerUtil implements Feature
 	public Attribute getAttribute(Object feature, String name) throws LayerException {
 		try {
 			AttributeInfo attributeInfo = getRecursiveAttributeInfo(name, null);
-			// AttributeInfo attributeInfo = attributeInfoMap.get(getFirstAttributeName(name));
 			if (null == attributeInfo) {
 				throw new LayerException(ExceptionCode.ATTRIBUTE_UNKNOWN, name);
 			}
-			Object attribute = getAttributeRecursively(feature, name);
-			if (attribute == null) {
-				return null;
-			}
-			return converterService.toDto(attribute, attributeInfo);
+			return converterService.toDto(getAttributeRecursively(feature, name), attributeInfo);
 		} catch (Exception e) {
 			throw new LayerException(e, ExceptionCode.HIBERNATE_ATTRIBUTE_GET_FAILED, name, feature.toString());
 		}

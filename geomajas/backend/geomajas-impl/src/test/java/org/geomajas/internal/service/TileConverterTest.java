@@ -25,6 +25,7 @@ package org.geomajas.internal.service;
 
 import junit.framework.Assert;
 
+import org.geomajas.global.GeomajasException;
 import org.geomajas.internal.layer.tile.InternalTileImpl;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.tile.VectorTile;
@@ -55,7 +56,7 @@ public class TileConverterTest {
 	private VectorLayer beansLayer;
 
 	@Test
-	public void testToDto() {
+	public void testToDto() throws GeomajasException {
 		InternalTileImpl internalTile = new InternalTileImpl(0, 0, 0, beansLayer, 0);
 		internalTile.setContentType(VectorTileContentType.STRING_CONTENT);
 		VectorTile tile = converterService.toDto(internalTile);

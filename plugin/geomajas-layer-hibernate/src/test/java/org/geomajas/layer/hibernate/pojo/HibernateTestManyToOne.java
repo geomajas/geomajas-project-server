@@ -176,9 +176,6 @@ public class HibernateTestManyToOne {
 			date = new Date();
 		}
 		attributes.put("dateAttr", new DateAttribute(date));
-		if (id == null) {
-			return new ManyToOneAttribute(new AssociationValue(null, attributes));
-		}
 		return new ManyToOneAttribute(new AssociationValue(new LongAttribute(id), attributes));
 	}
 
