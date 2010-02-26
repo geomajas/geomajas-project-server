@@ -21,37 +21,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.internal.rendering.pipeline;
+package org.geomajas.service.pipeline;
 
-import junit.framework.Assert;
 import org.geomajas.global.GeomajasException;
-import org.geomajas.layer.feature.attribute.StringAttribute;
-import org.geomajas.rendering.pipeline.PipelineContext;
-import org.geomajas.rendering.pipeline.PipelineStep;
 
 /**
- * Second step in pipeline for testing.
+ * Definition of one execution step in a pipeline.
+ *
+ * @param <RESPONSE> type of response object for the pipeline
  *
  * @author Joachim Van der Auwera
  */
-public class Step2 implements PipelineStep<String, StringAttribute> {
+public interface PipelineStep<RESPONSE> {
 
-	private String id;
+	/**
+	 * Get the id for the step. This is used for possible skipping and looping in the pipeline.
+	 *
+	 * @return pipeline step id
+	 */
+	String getId();
 
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	public void execute(String request, PipelineContext context, StringAttribute response) throws GeomajasException {
-		context.put("Step2", id);
-		Assert.assertEquals("bla", context.get("test", String.class));
-		Assert.assertNotNull(context.get("Step1"));
-		Assert.assertNotNull(context.get("Step2"));
-		
-		response.setValue(response.getValue() + id);
-	}
+	/**
+	 * Execute this step in the pipeline.
+	 * <p/>
+	 * This is expected to modify and transform both the parameters and response objects.
+	 *
+	 * @param context contains a map of objects which are used as shared memory between the pipeline steps
+	 * @param response response object for the pipeline service
+	 * @throws GeomajasException any exception which may have been throws during the execution
+	 */
+	void execute(PipelineContext context, RESPONSE response) throws GeomajasException;
 }

@@ -30,28 +30,25 @@ import org.geomajas.command.dto.GetRasterDataResponse;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.global.GeomajasSecurityException;
-import org.geomajas.layer.RasterLayer;
 import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.security.SecurityContext;
 import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.DtoConverterService;
+import org.geomajas.service.RasterLayerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
- * GetRasterDataCommand
- * <p/>
- * <p>
- * Command that retrieves raster data. The result contains a list of raster images or tiles. Basic assumption is that
+ * Command that retrieves raster data. The result contains a list of raster tiles. Basic assumption is that
  * raster data is tiled in a pyramid structure based on to the layer's maximum extent and tile level. The optimum tile
  * level for the given scale is determined first. Once the tile level is known, it should be a piece of cake to
- * determine the indices. The client can cache as many tiles as it likes.
- * <p/>
- * </p>
- * 
- * @author Pieter De Graef, Jan De Moerloose
+ * determine the indexes. The client can cache as many tiles as it likes.
+ *
+ * @author Pieter De Graef
+ * @author Jan De Moerloose
+ * @author Joachim Van der Auwera
  */
 @Component()
 public class GetRasterDataCommand implements Command<GetRasterDataRequest, GetRasterDataResponse> {
@@ -59,13 +56,16 @@ public class GetRasterDataCommand implements Command<GetRasterDataRequest, GetRa
 	private final Logger log = LoggerFactory.getLogger(GetRasterDataCommand.class);
 
 	@Autowired
-	private ConfigurationService runtimeParameters;
+	private ConfigurationService configurationService;
 
 	@Autowired
 	private DtoConverterService converterService;
 
 	@Autowired
 	private SecurityContext securityContext;
+
+	@Autowired
+	private RasterLayerService layerService;
 
 	public GetRasterDataResponse getEmptyCommandResponse() {
 		return new GetRasterDataResponse();
@@ -84,14 +84,14 @@ public class GetRasterDataCommand implements Command<GetRasterDataRequest, GetRa
 			throw new GeomajasSecurityException(ExceptionCode.LAYER_NOT_VISIBLE, layerId, securityContext.getUserId());
 		}
 
-		RasterLayer rasterlayer = (RasterLayer) runtimeParameters.getLayer(request.getLayerId());
 		log.debug("execute() : bbox {}", request.getBbox());
-		List<RasterTile> images = rasterlayer.paint(request.getCrs(), converterService.toInternal(request.getBbox()),
-				request.getScale());
+		List<RasterTile> images = layerService.getTiles(layerId, configurationService.getCrs(request.getCrs()),
+				converterService.toInternal(request.getBbox()),	request.getScale());
 		log.debug("execute() : returning {} images", images.size());
+
 		response.setRasterData(images);
 		if (images.size() > 0) {
-			response.setNodeId(rasterlayer.getLayerInfo().getId() + "." + images.get(0).getCode().getTileLevel());
+			response.setNodeId(layerId + "." + images.get(0).getCode().getTileLevel());
 		}
 	}
 

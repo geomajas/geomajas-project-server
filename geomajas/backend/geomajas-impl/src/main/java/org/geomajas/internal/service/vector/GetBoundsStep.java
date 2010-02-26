@@ -26,12 +26,13 @@ package org.geomajas.internal.service.vector;
 import com.vividsolutions.jts.geom.Envelope;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
-import org.geomajas.internal.service.VectorLayerServiceImpl;
 import org.geomajas.layer.VectorLayer;
-import org.geomajas.rendering.pipeline.PipelineContext;
-import org.geomajas.rendering.pipeline.PipelineStep;
+import org.geomajas.service.pipeline.PipelineCode;
+import org.geomajas.service.pipeline.PipelineContext;
+import org.geomajas.service.pipeline.PipelineStep;
 import org.geotools.geometry.jts.JTS;
 import org.opengis.filter.Filter;
+import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
 
 /**
@@ -39,7 +40,7 @@ import org.opengis.referencing.operation.TransformException;
  *
  * @author Joachim Van der Auwera
  */
-public class GetBoundsStep implements PipelineStep<GetBoundsContainer, GetBoundsContainer> {
+public class GetBoundsStep implements PipelineStep<GetBoundsContainer> {
 
 	private String id;
 
@@ -51,13 +52,14 @@ public class GetBoundsStep implements PipelineStep<GetBoundsContainer, GetBounds
 		this.id = id;
 	}
 
-	public void execute(GetBoundsContainer request, PipelineContext context, GetBoundsContainer response)
+	public void execute(PipelineContext context, GetBoundsContainer response)
 			throws GeomajasException {
-		VectorLayer layer = request.getLayer();
-		Filter filter = context.get(VectorLayerServiceImpl.FILTER_KEY, Filter.class);
+		VectorLayer layer = context.get(PipelineCode.LAYER_KEY, VectorLayer.class);
+		MathTransform crsTransform = context.get(PipelineCode.CRS_TRANSFORM_KEY, MathTransform.class);
+		Filter filter = context.get(PipelineCode.FILTER_KEY, Filter.class);
 		Envelope bounds = layer.getBounds(filter);
 		try {
-			bounds = JTS.transform(bounds, request.getCrsTransform());
+			bounds = JTS.transform(bounds, crsTransform);
 		} catch (TransformException te) {
 			throw new GeomajasException(te, ExceptionCode.GEOMETRY_TRANSFORMATION_FAILED);
 		}

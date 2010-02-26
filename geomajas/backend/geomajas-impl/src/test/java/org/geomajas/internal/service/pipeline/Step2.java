@@ -21,20 +21,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.internal.rendering.pipeline;
+package org.geomajas.internal.service.pipeline;
 
 import junit.framework.Assert;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.feature.attribute.StringAttribute;
-import org.geomajas.rendering.pipeline.PipelineContext;
-import org.geomajas.rendering.pipeline.PipelineStep;
+import org.geomajas.service.pipeline.PipelineContext;
+import org.geomajas.service.pipeline.PipelineStep;
 
 /**
- * Third step in pipeline for testing.
+ * Second step in pipeline for testing.
  *
  * @author Joachim Van der Auwera
  */
-public class Step3 implements PipelineStep<String, StringAttribute> {
+public class Step2 implements PipelineStep<StringAttribute> {
 
 	private String id;
 
@@ -46,14 +46,12 @@ public class Step3 implements PipelineStep<String, StringAttribute> {
 		this.id = id;
 	}
 
-	public void execute(String request, PipelineContext context, StringAttribute response) throws GeomajasException {
-		context.put("Step3", id);
+	public void execute(PipelineContext context, StringAttribute response) throws GeomajasException {
+		context.put("Step2", id);
 		Assert.assertEquals("bla", context.get("test", String.class));
 		Assert.assertNotNull(context.get("Step1"));
-		if ("s3".equals(id)) {
-			Assert.assertNotNull(context.get("Step2"));
-		}
-		Assert.assertNotNull(context.get("Step3"));
+		Assert.assertNotNull(context.get("Step2"));
+		
 		response.setValue(response.getValue() + id);
 	}
 }

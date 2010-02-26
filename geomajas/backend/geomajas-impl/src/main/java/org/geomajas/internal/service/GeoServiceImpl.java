@@ -32,6 +32,8 @@ import com.vividsolutions.jts.geom.MultiLineString;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
+import org.geomajas.global.ExceptionCode;
+import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.service.GeoService;
 import org.geotools.referencing.CRS;
@@ -83,15 +85,18 @@ public final class GeoServiceImpl implements GeoService {
 	 * @inheritDoc
 	 */
 	public MathTransform findMathTransform(CoordinateReferenceSystem sourceCRS,
-			CoordinateReferenceSystem targetCRS) throws FactoryException {
-		// AllAuthoritiesFactory f;
-		MathTransform transform;
+			CoordinateReferenceSystem targetCRS) throws GeomajasException {
 		try {
-			transform = CRS.findMathTransform(sourceCRS, targetCRS);
-		} catch (Exception e) {
-			transform = CRS.findMathTransform(sourceCRS, targetCRS, true);
+			MathTransform transform;
+			try {
+				transform = CRS.findMathTransform(sourceCRS, targetCRS);
+			} catch (Exception e) {
+				transform = CRS.findMathTransform(sourceCRS, targetCRS, true);
+			}
+			return transform;
+		} catch (FactoryException fe) {
+			throw new GeomajasException(fe, ExceptionCode.CRS_TRANSFORMATION_NOT_POSSIBLE, sourceCRS, targetCRS);
 		}
-		return transform;
 	}
 
 	/**

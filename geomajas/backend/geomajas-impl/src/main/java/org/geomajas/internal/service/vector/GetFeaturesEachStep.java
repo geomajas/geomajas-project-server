@@ -30,14 +30,14 @@ import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.internal.layer.feature.InternalFeatureImpl;
 import org.geomajas.internal.rendering.StyleFilterImpl;
-import org.geomajas.internal.service.VectorLayerServiceImpl;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.FeatureModel;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.rendering.StyleFilter;
-import org.geomajas.rendering.pipeline.PipelineContext;
-import org.geomajas.rendering.pipeline.PipelineStep;
+import org.geomajas.service.pipeline.PipelineCode;
+import org.geomajas.service.pipeline.PipelineContext;
+import org.geomajas.service.pipeline.PipelineStep;
 import org.geomajas.security.SecurityContext;
 import org.geomajas.service.VectorLayerService;
 import org.geotools.geometry.jts.JTS;
@@ -54,11 +54,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * ...
+ * Get features from a vector layer.
  *
  * @author Joachim Van der Auwera
  */
-public class GetFeaturesEachStep implements PipelineStep<GetFeaturesRequest, List<InternalFeature>> {
+public class GetFeaturesEachStep implements PipelineStep<List<InternalFeature>> {
 
 	private final Logger log = LoggerFactory.getLogger(GetFeaturesEachStep.class);
 
@@ -75,16 +75,15 @@ public class GetFeaturesEachStep implements PipelineStep<GetFeaturesRequest, Lis
 		this.id = id;
 	}
 
-	public void execute(GetFeaturesRequest request, PipelineContext context,
-			List<InternalFeature> response) throws GeomajasException {
-		VectorLayer layer = request.getLayer();
-		Filter filter = context.get(VectorLayerServiceImpl.FILTER_KEY, Filter.class);
-		int offset = request.getOffset();
-		int maxResultSize = request.getMaxResultSize();
-		int featureIncludes = request.getFeatureIncludes();
-		String layerId = request.getLayerId();
-		NamedStyleInfo style = request.getStyle();
-		MathTransform transformation = request.getCrsTransform();
+	public void execute(PipelineContext context, List<InternalFeature> response) throws GeomajasException {
+		VectorLayer layer = context.get(PipelineCode.LAYER_KEY, VectorLayer.class);
+		Filter filter = context.get(PipelineCode.FILTER_KEY, Filter.class);
+		int offset = context.get(PipelineCode.OFFSET_KEY, Integer.class);
+		int maxResultSize = context.get(PipelineCode.MAX_RESULT_SIZE_KEY, Integer.class);
+		int featureIncludes = context.get(PipelineCode.FEATURE_INCLUDES_KEY, Integer.class);
+		String layerId = context.get(PipelineCode.LAYER_ID_KEY, String.class);
+		NamedStyleInfo style = context.get(PipelineCode.STYLE_KEY, NamedStyleInfo.class);
+		MathTransform transformation = context.getOptional(PipelineCode.CRS_TRANSFORM_KEY, MathTransform.class);
 		List<StyleFilter> styleFilters = context.getOptional(GetFeaturesStyleStep.STYLE_FILTERS_KEY, List.class);
 
 		if (log.isDebugEnabled()) {

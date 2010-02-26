@@ -38,7 +38,7 @@ import com.vividsolutions.jts.geom.Envelope;
  * <p/>
  * All access to vector layers should be done through this service, not by accessing the layer directly as this
  * adds possible caching, security etc. These services are implemented using pipelines
- * (see {@link org.geomajas.rendering.pipeline.PipelineService}) to make them configurable.
+ * (see {@link org.geomajas.service.pipeline.PipelineService}) to make them configurable.
  *
  * @author Joachim Van der Auwera
  */

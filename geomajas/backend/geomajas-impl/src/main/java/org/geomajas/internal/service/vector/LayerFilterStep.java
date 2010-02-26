@@ -27,10 +27,10 @@ import com.vividsolutions.jts.geom.Geometry;
 import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
-import org.geomajas.internal.service.VectorLayerServiceImpl;
 import org.geomajas.layer.VectorLayer;
-import org.geomajas.rendering.pipeline.PipelineContext;
-import org.geomajas.rendering.pipeline.PipelineStep;
+import org.geomajas.service.pipeline.PipelineCode;
+import org.geomajas.service.pipeline.PipelineContext;
+import org.geomajas.service.pipeline.PipelineStep;
 import org.geomajas.security.SecurityContext;
 import org.geomajas.service.FilterService;
 import org.geotools.filter.text.cql2.CQL;
@@ -47,7 +47,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  *
  * @author Joachim Van der Auwera
  */
-public class LayerFilterStep implements PipelineStep<Object, Object> {
+public class LayerFilterStep implements PipelineStep<Object> {
 
 	private final Logger log = LoggerFactory.getLogger(LayerFilterStep.class);
 
@@ -67,9 +67,9 @@ public class LayerFilterStep implements PipelineStep<Object, Object> {
 		this.id = id;
 	}
 
-	public void execute(Object request, PipelineContext context, Object response) throws GeomajasException {
-		VectorLayer layer = context.get(VectorLayerServiceImpl.LAYER_KEY, VectorLayer.class);
-		Filter filter = context.getOptional(VectorLayerServiceImpl.FILTER_KEY, Filter.class);
+	public void execute(PipelineContext context, Object response) throws GeomajasException {
+		VectorLayer layer = context.get(PipelineCode.LAYER_KEY, VectorLayer.class);
+		Filter filter = context.getOptional(PipelineCode.FILTER_KEY, Filter.class);
 		VectorLayerInfo layerInfo = layer.getLayerInfo();
 		String layerId = layerInfo.getId();
 
@@ -103,7 +103,7 @@ public class LayerFilterStep implements PipelineStep<Object, Object> {
 			filter = filterService.createFalseFilter();
 		}
 
-		context.put(VectorLayerServiceImpl.FILTER_KEY, filter);
+		context.put(PipelineCode.FILTER_KEY, filter);
 	}
 
 	private Filter and(Filter f1, Filter f2) {

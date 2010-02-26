@@ -31,51 +31,51 @@ http://www.springframework.org/schema/context
 http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 		>
 
-	<bean name="pipelineTest" class="org.geomajas.rendering.pipeline.PipelineInfo">
+	<bean name="pipelineTest" class="org.geomajas.service.pipeline.PipelineInfo">
 		<property name="id" value="pipelineTest"/>
 		<property name="pipeline">
 			<list>
-				<bean class="org.geomajas.internal.rendering.pipeline.Step1">
+				<bean class="org.geomajas.internal.service.pipeline.Step1">
 					<property name="id" value="s1"/>
 				</bean>
-				<bean class="org.geomajas.internal.rendering.pipeline.Step2">
+				<bean class="org.geomajas.internal.service.pipeline.Step2">
 					<property name="id" value="s2"/>
 				</bean>
-				<bean class="org.geomajas.internal.rendering.pipeline.Step3">
+				<bean class="org.geomajas.internal.service.pipeline.Step3">
 					<property name="id" value="s3"/>
 				</bean>
 			</list>
 		</property>
 	</bean>
 
-	<bean class="org.geomajas.rendering.pipeline.PipelineInfo">
+	<bean class="org.geomajas.service.pipeline.PipelineInfo">
 		<property name="id" value="pipelineTest.aLayer"/>
 		<property name="pipeline">
 			<list>
-				<bean class="org.geomajas.internal.rendering.pipeline.Step1">
+				<bean class="org.geomajas.internal.service.pipeline.Step1">
 					<property name="id" value="step-1"/>
 				</bean>
-				<bean class="org.geomajas.internal.rendering.pipeline.Step3">
+				<bean class="org.geomajas.internal.service.pipeline.Step3">
 					<property name="id" value="step-3"/>
 				</bean>
 			</list>
 		</property>
 	</bean>
 
-	<bean class="org.geomajas.rendering.pipeline.PipelineInfo">
+	<bean class="org.geomajas.service.pipeline.PipelineInfo">
 		<property name="id" value="pipelineTest.stop"/>
 		<property name="pipeline">
 			<list>
-				<bean class="org.geomajas.internal.rendering.pipeline.Step1">
+				<bean class="org.geomajas.internal.service.pipeline.Step1">
 					<property name="id" value="s1"/>
 				</bean>
-				<bean class="org.geomajas.internal.rendering.pipeline.StopStep">
+				<bean class="org.geomajas.internal.service.pipeline.StopStep">
 					<property name="id" value="stop"/>
 				</bean>
-				<bean class="org.geomajas.internal.rendering.pipeline.Step2">
+				<bean class="org.geomajas.internal.service.pipeline.Step2">
 					<property name="id" value="s2"/>
 				</bean>
-				<bean class="org.geomajas.internal.rendering.pipeline.Step2">
+				<bean class="org.geomajas.internal.service.pipeline.Step2">
 					<property name="id" value="s3"/>
 				</bean>
 			</list>

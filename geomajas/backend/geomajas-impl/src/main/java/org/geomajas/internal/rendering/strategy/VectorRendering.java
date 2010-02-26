@@ -44,7 +44,6 @@ import org.geomajas.service.VectorLayerService;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.cql2.CQLException;
 import org.opengis.filter.Filter;
-import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -96,8 +95,6 @@ public class VectorRendering implements RenderingStrategy {
 	 * 
 	 * @param metadata
 	 *            The object that holds all the spatial and styling information for a tile.
-	 * @param application
-	 *            The application in which this tile is to be rendered.
 	 * @return The fully rendered tile! The different implementations of this <code>RenderedTile</code> will contain
 	 *         different rendering formats.
 	 * @throws RenderException
@@ -131,10 +128,11 @@ public class VectorRendering implements RenderingStrategy {
 
 			// See if the features really belong to the tile:
 			Coordinate panOrigin = new Coordinate(metadata.getPanOrigin().getX(), metadata.getPanOrigin().getY());
-			MathTransform transform = null;
+			MathTransform transform;
 			try {
 				transform = geoService.findMathTransform(vLayer.getCrs(), crs);
-			} catch (FactoryException e) {
+			} catch (GeomajasException ge) {
+				throw new RenderException(ge);
 			}
 			tiledFeatureService.fillTile(tile, features, vLayer, metadata.getCode(), metadata.getScale(), panOrigin,
 					transform);

@@ -21,41 +21,40 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.rendering.pipeline;
+package org.geomajas.service.pipeline;
 
 import org.geomajas.global.GeomajasException;
 
 /**
  * Service which is allows "executing" a pipeline.
  *
- * @param <REQUEST> type of request object for the pipeline
  * @param <RESPONSE> type of response object for the pipeline
  *
  * @author Joachim Van der Auwera
  */
-public interface PipelineService<REQUEST, RESPONSE> {
-
-	/**
-	 * Execute the pipeline.
-	 * 
-	 * @param pipeline pipeline steps / configuration
-	 * @param request request object to start pipeline
-	 * @param response response object which is filled by the pipeline
-	 * @throws GeomajasException any exception which may have been throws during the execution
-	 */
-	void execute(PipelineInfo<REQUEST, RESPONSE> pipeline, REQUEST request, RESPONSE response)
-			throws GeomajasException;
+public interface PipelineService<RESPONSE> {
 
 	/**
 	 * Execute the pipeline, starting with a known context.
 	 *
 	 * @param pipeline pipeline steps / configuration
-	 * @param request request object to start pipeline
+	 * @param context known context (can be null if there are no parameters for the pipeline)
 	 * @param response response object which is filled by the pipeline
-	 * @param context known context
 	 * @throws GeomajasException any exception which may have been throws during the execution
 	 */
-	void execute(PipelineInfo<REQUEST, RESPONSE> pipeline, REQUEST request, RESPONSE response, PipelineContext context)
+	void execute(PipelineInfo<RESPONSE> pipeline, PipelineContext context, RESPONSE response)
+			throws GeomajasException;
+
+	/**
+	 * Execute the pipeline, starting with a known context.
+	 *
+	 * @param key key for the pipeline
+	 * @param layerId layer if
+	 * @param context known context (can be null if there are no parameters for the pipeline)
+	 * @param response response object which is filled by the pipeline
+	 * @throws GeomajasException any exception which may have been throws during the execution
+	 */
+	void execute(String key, String layerId, PipelineContext context, RESPONSE response)
 			throws GeomajasException;
 
 	/**
@@ -69,7 +68,7 @@ public interface PipelineService<REQUEST, RESPONSE> {
 	 * @return pipeline configuration
 	 * @throws GeomajasException when pipeline info not found
 	 */
-	PipelineInfo<REQUEST, RESPONSE> getPipeline(String key, String layerId) throws GeomajasException;
+	PipelineInfo<RESPONSE> getPipeline(String key, String layerId) throws GeomajasException;
 
 	/**
 	 * Get a new pipeline context.

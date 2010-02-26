@@ -25,24 +25,22 @@ package org.geomajas.internal.service.vector;
 
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.feature.InternalFeature;
-import org.geomajas.rendering.pipeline.PipelineContext;
-import org.geomajas.rendering.pipeline.PipelineInfo;
-import org.geomajas.rendering.pipeline.PipelineService;
-import org.geomajas.rendering.pipeline.PipelineStep;
+import org.geomajas.service.pipeline.PipelineCode;
+import org.geomajas.service.pipeline.PipelineContext;
+import org.geomajas.service.pipeline.PipelineInfo;
+import org.geomajas.service.pipeline.PipelineService;
+import org.geomajas.service.pipeline.PipelineStep;
 import org.geomajas.security.SecurityContext;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
 
 /**
  * Execute the vectorLayer.saveOrUpdateOne" pipeline for each of the features to saveOrUpdate.
  *
  * @author Joachim Van der Auwera
  */
-public class SaveOrUpdateEachStep implements PipelineStep<SaveOrUpdateContainer, SaveOrUpdateContainer> {
-
-	public static final String FEATURE_KEY = "feature";
-	public static final String CRS_TRANSFORM_KEY = "crsTransform";
-	public static final String FEATURE_DATA_OBJECT_KEY = "featureDataObject";
-	public static final String LAYER_KEY = "layer";
+public class SaveOrUpdateEachStep implements PipelineStep {
 
 	private String id;
 	private String pipelineName;
@@ -65,22 +63,20 @@ public class SaveOrUpdateEachStep implements PipelineStep<SaveOrUpdateContainer,
 		this.pipelineName = pipelineName;
 	}
 
-	public void execute(SaveOrUpdateContainer request, PipelineContext context,
-			SaveOrUpdateContainer response) throws GeomajasException {
-		SaveOrUpdateOneContainer oneContainer = new SaveOrUpdateOneContainer(request);
-		PipelineInfo pipelineInfo = pipelineService.getPipeline(pipelineName, request.getLayerId());
-		context.put(CRS_TRANSFORM_KEY, request.getMapToLayer());
-		context.put(LAYER_KEY, request.getLayer());
+	public void execute(PipelineContext context, Object response) throws GeomajasException {
+		String layerId = context.get(PipelineCode.LAYER_ID_KEY, String.class);
+		PipelineInfo pipelineInfo = pipelineService.getPipeline(pipelineName, layerId);
+		List<InternalFeature> oldFeatures = context.get(PipelineCode.OLD_FEATURES_KEY, List.class);
+		List<InternalFeature> newFeatures = context.get(PipelineCode.NEW_FEATURES_KEY, List.class);
 
-		int count = request.getOldFeatures().size();
+		int count = oldFeatures.size();
 		for (int i = 0; i < count; i++) {
-			oneContainer.setIndex(i);
-			oneContainer.setOldFeature(request.getOldFeatures().get(i));
-			InternalFeature newFeature = request.getNewFeatures().get(i);
-			oneContainer.setNewFeature(newFeature);
-			context.put(FEATURE_KEY, newFeature);
+			context.put(PipelineCode.INDEX_KEY, i);
+			context.put(PipelineCode.OLD_FEATURE_KEY, oldFeatures.get(i));
+			InternalFeature newFeature = newFeatures.get(i);
+			context.put(PipelineCode.FEATURE_KEY, newFeature);
 
-			pipelineService.execute(pipelineInfo, oneContainer, oneContainer, context);
+			pipelineService.execute(pipelineInfo, context, newFeature);
 		}
 	}
 	

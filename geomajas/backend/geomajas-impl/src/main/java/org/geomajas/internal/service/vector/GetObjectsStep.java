@@ -24,11 +24,11 @@
 package org.geomajas.internal.service.vector;
 
 import org.geomajas.global.GeomajasException;
-import org.geomajas.internal.service.VectorLayerServiceImpl;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.VectorLayerAssociationSupport;
-import org.geomajas.rendering.pipeline.PipelineContext;
-import org.geomajas.rendering.pipeline.PipelineStep;
+import org.geomajas.service.pipeline.PipelineCode;
+import org.geomajas.service.pipeline.PipelineContext;
+import org.geomajas.service.pipeline.PipelineStep;
 import org.opengis.filter.Filter;
 
 import java.util.Iterator;
@@ -39,7 +39,7 @@ import java.util.List;
  *
  * @author Joachim Van der Auwera
  */
-public class GetObjectsStep implements PipelineStep<GetObjectsRequest, List<Object>> {
+public class GetObjectsStep implements PipelineStep<List<Object>> {
 
 	private String id;
 
@@ -51,11 +51,10 @@ public class GetObjectsStep implements PipelineStep<GetObjectsRequest, List<Obje
 		this.id = id;
 	}
 
-	public void execute(GetObjectsRequest request, PipelineContext context, List<Object> response)
-			throws GeomajasException {
-		VectorLayer layer = request.getLayer();
-		Filter filter = context.get(VectorLayerServiceImpl.FILTER_KEY, Filter.class);
-		String attributeName = request.getAttributeName();
+	public void execute(PipelineContext context, List<Object> response) throws GeomajasException {
+		VectorLayer layer = context.get(PipelineCode.LAYER_KEY, VectorLayer.class);
+		Filter filter = context.get(PipelineCode.FILTER_KEY, Filter.class);
+		String attributeName = context.get(PipelineCode.ATTRIBUTE_NAME_KEY, String.class);
 		if (layer instanceof VectorLayerAssociationSupport) {
 			Iterator<?> it = ((VectorLayerAssociationSupport) layer).getObjects(attributeName, filter);
 			while (it.hasNext()) {

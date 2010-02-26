@@ -21,36 +21,44 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.rendering.pipeline;
+package org.geomajas.internal.service.raster;
 
+import com.vividsolutions.jts.geom.Envelope;
 import org.geomajas.global.GeomajasException;
+import org.geomajas.layer.RasterLayer;
+import org.geomajas.layer.tile.RasterTile;
+import org.geomajas.service.pipeline.PipelineCode;
+import org.geomajas.service.pipeline.PipelineContext;
+import org.geomajas.service.pipeline.PipelineStep;
+
+import java.util.List;
 
 /**
- * Definition of one execution step in a pipeline.
- *
- * @param <REQUEST> type of request object for the pipeline
- * @param <RESPONSE> type of response object for the pipeline
+ * Main step for the {@link org.geomajas.service.RasterLayerService} getTiles method.
+ * <p/>
+ * Actually gets the data from the layer.
  *
  * @author Joachim Van der Auwera
  */
-public interface PipelineStep<REQUEST, RESPONSE> {
+public class GetTilesGetStep implements PipelineStep<List<RasterTile>> {
 
-	/**
-	 * Get the id for the step. This is used for possible skipping and looping in the pipeline.
-	 *
-	 * @return pipeline step id
-	 */
-	String getId();
+	private String id;
 
-	/**
-	 * Execute this step in the pipeline.
-	 * <p/>
-	 * This is expected to modify and transform both the parameters and response objects.
-	 *
-	 * @param request request object, contains parameters for the pipeline service
-	 * @param context contains a map of objects which are used as shared memory between the pipeline steps
-	 * @param response response object for the pipeline service
-	 * @throws GeomajasException any exception which may have been throws during the execution
-	 */
-	void execute(REQUEST request, PipelineContext context, RESPONSE response) throws GeomajasException;
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public void execute(PipelineContext context, List<RasterTile> response) throws GeomajasException {
+		RasterLayer layer = context.get(PipelineCode.LAYER_KEY, RasterLayer.class);
+		Envelope bounds = context.get(PipelineCode.BOUNDS_KEY, Envelope.class);
+		double scale = context.get(PipelineCode.SCALE_KEY, Double.class);
+		String crs = context.get(PipelineCode.CRS_CODE_KEY, String.class);
+		List<RasterTile> images = layer.paint(crs, bounds, scale);
+		response.addAll(images);
+	}
+
 }

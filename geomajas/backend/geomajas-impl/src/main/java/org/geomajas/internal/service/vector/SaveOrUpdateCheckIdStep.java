@@ -26,8 +26,9 @@ package org.geomajas.internal.service.vector;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.feature.InternalFeature;
-import org.geomajas.rendering.pipeline.PipelineContext;
-import org.geomajas.rendering.pipeline.PipelineStep;
+import org.geomajas.service.pipeline.PipelineCode;
+import org.geomajas.service.pipeline.PipelineContext;
+import org.geomajas.service.pipeline.PipelineStep;
 import org.geomajas.security.SecurityContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -36,7 +37,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  *
  * @author Joachim Van der Auwera
  */
-public class SaveOrUpdateCheckIdStep implements PipelineStep<SaveOrUpdateOneContainer, SaveOrUpdateOneContainer> {
+public class SaveOrUpdateCheckIdStep implements PipelineStep {
 
 	@Autowired
 	private SecurityContext securityContext;
@@ -51,13 +52,13 @@ public class SaveOrUpdateCheckIdStep implements PipelineStep<SaveOrUpdateOneCont
 		this.id = id;
 	}
 
-	public void execute(SaveOrUpdateOneContainer request, PipelineContext context,
-			SaveOrUpdateOneContainer response) throws GeomajasException {
-		InternalFeature oldFeature = request.getOldFeature();
+	public void execute(PipelineContext context, Object response) throws GeomajasException {
+		InternalFeature oldFeature = context.getOptional(PipelineCode.OLD_FEATURE_KEY, InternalFeature.class);
 		if (null != oldFeature) {
-			InternalFeature newFeature = request.getNewFeature();
+			InternalFeature newFeature = context.get(PipelineCode.FEATURE_KEY, InternalFeature.class);
 			if (null == oldFeature.getId() || !oldFeature.getId().equals(newFeature.getId())) {
-				throw new GeomajasException(ExceptionCode.FEATURE_ID_MISMATCH, request.getIndex());
+				int index = context.get(PipelineCode.INDEX_KEY, Integer.class);
+				throw new GeomajasException(ExceptionCode.FEATURE_ID_MISMATCH, index);
 			}
 		}
 	}

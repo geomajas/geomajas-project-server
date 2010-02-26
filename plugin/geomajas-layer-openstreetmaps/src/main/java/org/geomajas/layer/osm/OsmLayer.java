@@ -28,6 +28,7 @@ import java.util.List;
 import org.geomajas.configuration.RasterLayerInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.global.ExceptionCode;
+import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.RasterLayer;
 import org.geomajas.layer.tile.RasterTile;
@@ -127,9 +128,8 @@ public class OsmLayer implements RasterLayer {
 
 	public List<RasterTile> paint(String boundsCrs, Envelope bounds, double scale) throws RenderException {
 		try {
-			CoordinateReferenceSystem google = CRS.decode("EPSG:900913");
-			MathTransform googleToLayer = geoService.findMathTransform(google, CRS.decode(boundsCrs));
-			MathTransform layerToGoogle = googleToLayer.inverse();
+			MathTransform layerToMap = geoService.findMathTransform(crs, CRS.decode(boundsCrs));
+			MathTransform mapToLayer = layerToMap.inverse();
 			// TODO: if bounds width or height is 0, we run out of memory ?
 			bounds = clipBounds(bounds);
 			if (bounds.isNull()) {
@@ -140,7 +140,7 @@ public class OsmLayer implements RasterLayer {
 			DirectPosition2D center = new DirectPosition2D(0.5 * (bounds.getMinX() + bounds.getMaxX()), 0.5 * (bounds
 					.getMinY() + bounds.getMaxY()));
 
-			double scaleRatio = calculateMapUnitPerGoogleMeter(layerToGoogle, center);
+			double scaleRatio = calculateMapUnitPerGoogleMeter(mapToLayer, center);
 
 			// find zoomlevel
 			// scale in pix/m should just above the given scale so we have at
@@ -156,24 +156,24 @@ public class OsmLayer implements RasterLayer {
 			// the resulting indices are floating point values as the center
 			// is not coincident with an image corner !!!!
 			Coordinate indicesCenter;
-			indicesCenter = getOsmIndicesFromMap(layerToGoogle, center, tileLevel);
+			indicesCenter = getOsmIndicesFromMap(mapToLayer, center, tileLevel);
 
 			// Calculate the width in map units of the image that contains the
 			// center
 			Coordinate indicesUpperLeft = new Coordinate(Math.floor(indicesCenter.x), Math.floor(indicesCenter.y));
 			Coordinate indicesLowerRight = new Coordinate(indicesUpperLeft.x + 1, indicesUpperLeft.y + 1);
-			DirectPosition mapUpperLeft = getMapFromOsmIndices(googleToLayer, indicesUpperLeft, tileLevel);
-			DirectPosition mapLowerRight = getMapFromOsmIndices(googleToLayer, indicesLowerRight, tileLevel);
+			DirectPosition mapUpperLeft = getMapFromOsmIndices(layerToMap, indicesUpperLeft, tileLevel);
+			DirectPosition mapLowerRight = getMapFromOsmIndices(layerToMap, indicesLowerRight, tileLevel);
 			double width = mapLowerRight.getOrdinate(0) - mapUpperLeft.getOrdinate(0);
 
-			// Calculate the position and indices of the center image corner
+			// Calculate the position and indexes of the center image corner
 			// in map space
 			double xCenter = center.x - (indicesCenter.x - indicesUpperLeft.x) * width;
 			double yCenter = center.y + (indicesCenter.y - indicesUpperLeft.y) * width;
 			int iCenter = (int) indicesUpperLeft.x;
 			int jCenter = (int) indicesUpperLeft.y;
 
-			// Calculate the position and indices of the upper left image corner
+			// Calculate the position and indexes of the upper left image corner
 			// that just falls off the screen
 			double xMin = xCenter;
 			int iMin = iCenter;
@@ -187,7 +187,7 @@ public class OsmLayer implements RasterLayer {
 				yMax += width;
 				jMin--;
 			}
-			// Calculate the indices of the lower right corner
+			// Calculate the indexes of the lower right corner
 			// that just falls off the screen
 			double xMax = xCenter;
 			int iMax = iCenter;
@@ -224,9 +224,14 @@ public class OsmLayer implements RasterLayer {
 			}
 			return result;
 		} catch (NoSuchAuthorityCodeException e) {
-			throw new RenderException(ExceptionCode.RENDER_TRANSFORMATION_FAILED);
-		} catch (FactoryException e) {
-			throw new RenderException(ExceptionCode.RENDER_TRANSFORMATION_FAILED);
+			throw new RenderException(e, ExceptionCode.RENDER_TRANSFORMATION_FAILED);
+		} catch (FactoryException fe) {
+			throw new RenderException(fe, ExceptionCode.RENDER_TRANSFORMATION_FAILED);
+		} catch (GeomajasException ge) {
+			if (ge instanceof RenderException) {
+				throw (RenderException) ge;
+			}
+			throw new RenderException(ge, ExceptionCode.RENDER_TRANSFORMATION_FAILED);
 		} catch (TransformException e) {
 			throw new RenderException(e, ExceptionCode.RENDER_TRANSFORMATION_FAILED);
 		}

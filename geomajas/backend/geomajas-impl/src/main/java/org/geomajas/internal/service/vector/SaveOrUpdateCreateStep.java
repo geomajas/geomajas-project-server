@@ -29,8 +29,9 @@ import org.geomajas.global.GeomajasSecurityException;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.FeatureModel;
 import org.geomajas.layer.feature.InternalFeature;
-import org.geomajas.rendering.pipeline.PipelineContext;
-import org.geomajas.rendering.pipeline.PipelineStep;
+import org.geomajas.service.pipeline.PipelineCode;
+import org.geomajas.service.pipeline.PipelineContext;
+import org.geomajas.service.pipeline.PipelineStep;
 import org.geomajas.security.SecurityContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -39,7 +40,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  *
  * @author Joachim Van der Auwera
  */
-public class SaveOrUpdateCreateStep implements PipelineStep<SaveOrUpdateOneContainer, SaveOrUpdateOneContainer> {
+public class SaveOrUpdateCreateStep implements PipelineStep {
 
 	@Autowired
 	private SecurityContext securityContext;
@@ -54,20 +55,19 @@ public class SaveOrUpdateCreateStep implements PipelineStep<SaveOrUpdateOneConta
 		this.id = id;
 	}
 
-	public void execute(SaveOrUpdateOneContainer request, PipelineContext context,
-			SaveOrUpdateOneContainer response) throws GeomajasException {
-		InternalFeature oldFeature = request.getOldFeature();
-		InternalFeature newFeature = request.getNewFeature();
+	public void execute(PipelineContext context, Object response) throws GeomajasException {
+		InternalFeature oldFeature = context.getOptional(PipelineCode.OLD_FEATURE_KEY, InternalFeature.class);
+		InternalFeature newFeature = context.get(PipelineCode.FEATURE_KEY, InternalFeature.class);
 		if (null == oldFeature) {
 			// create new feature
-			String layerId = request.getSaveOrUpdateContainer().getLayerId();
-			VectorLayer layer = request.getSaveOrUpdateContainer().getLayer();
+			String layerId = context.get(PipelineCode.LAYER_ID_KEY, String.class);
+			VectorLayer layer = context.get(PipelineCode.LAYER_KEY, VectorLayer.class);
 			FeatureModel featureModel = layer.getFeatureModel();
 			if (securityContext.isFeatureCreateAuthorized(layerId, oldFeature)) {
 				if (newFeature.getLocalId() == null) {
-					context.put(SaveOrUpdateEachStep.FEATURE_DATA_OBJECT_KEY, featureModel.newInstance());
+					context.put(PipelineCode.FEATURE_DATA_OBJECT_KEY, featureModel.newInstance());
 				} else {
-					context.put(SaveOrUpdateEachStep.FEATURE_DATA_OBJECT_KEY,
+					context.put(PipelineCode.FEATURE_DATA_OBJECT_KEY,
 							featureModel.newInstance(newFeature.getLocalId()));
 				}
 			} else {

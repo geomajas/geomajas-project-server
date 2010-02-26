@@ -21,36 +21,58 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.internal.rendering.pipeline;
+package org.geomajas.service.pipeline;
 
-import junit.framework.Assert;
-import org.geomajas.global.GeomajasException;
-import org.geomajas.layer.feature.attribute.StringAttribute;
-import org.geomajas.rendering.pipeline.PipelineContext;
-import org.geomajas.rendering.pipeline.PipelineStep;
+import javax.validation.constraints.NotNull;
+import java.util.List;
 
 /**
- * First step in pipeline for testing.
+ * Configuration info for a pipeline service.
+ *
+ * @param <RESPONSE> type of response object for the pipeline
  *
  * @author Joachim Van der Auwera
  */
-public class Step1 implements PipelineStep<String, StringAttribute> {
+public class PipelineInfo<RESPONSE> {
 
+	@NotNull
 	private String id;
 
+	private List<PipelineStep<RESPONSE>> pipeline;
+
+	/**
+	 * Get the pipeline id. This is the ide which is used to retrieve a specific pipeline.
+	 *
+	 * @return pipeline id
+	 */
 	public String getId() {
 		return id;
 	}
 
+	/**
+	 * Set the pipeline id.
+	 *
+	 * @param id pipeline id
+	 */
 	public void setId(String id) {
 		this.id = id;
 	}
 
-	public void execute(String request, PipelineContext context, StringAttribute response) throws GeomajasException {
-		context.put("Step1", id);
-		context.put("test", "bla");
-		Assert.assertNotNull(context.get("Step1"));
+	/**
+	 * Get the list of steps which form the pipeline.
+	 *
+	 * @return list of pipeline steps
+	 */
+	public List<PipelineStep<RESPONSE>> getPipeline() {
+		return pipeline;
+	}
 
-		response.setValue(request + id);
+	/**
+	 * Set the list of steps which form the pipeline.
+	 *
+	 * @param pipeline list of pipeline steps
+	 */
+	public void setPipeline(List<PipelineStep<RESPONSE>> pipeline) {
+		this.pipeline = pipeline;
 	}
 }

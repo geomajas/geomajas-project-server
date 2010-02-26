@@ -28,8 +28,9 @@ import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.FeatureModel;
 import org.geomajas.layer.feature.InternalFeature;
-import org.geomajas.rendering.pipeline.PipelineContext;
-import org.geomajas.rendering.pipeline.PipelineStep;
+import org.geomajas.service.pipeline.PipelineCode;
+import org.geomajas.service.pipeline.PipelineContext;
+import org.geomajas.service.pipeline.PipelineStep;
 import org.geomajas.security.SecurityContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -37,11 +38,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * ...
+ * Update an existing {@link InternalFeature} from the underlying feature data object.
  *
  * @author Joachim Van der Auwera
  */
-public class UpdateFeatureStep implements PipelineStep<Object, Object> {
+public class UpdateFeatureStep implements PipelineStep {
 
 	@Autowired
 	private SecurityContext securityContext;
@@ -56,10 +57,10 @@ public class UpdateFeatureStep implements PipelineStep<Object, Object> {
 		this.id = id;
 	}
 
-	public void execute(Object request, PipelineContext context, Object response) throws GeomajasException {
-		Object feature = context.get(SaveOrUpdateEachStep.FEATURE_DATA_OBJECT_KEY);
-		InternalFeature newFeature = context.get(SaveOrUpdateEachStep.FEATURE_KEY, InternalFeature.class);
-		VectorLayer layer = context.get(SaveOrUpdateEachStep.LAYER_KEY, VectorLayer.class);
+	public void execute(PipelineContext context, Object response) throws GeomajasException {
+		Object feature = context.get(PipelineCode.FEATURE_DATA_OBJECT_KEY);
+		InternalFeature newFeature = context.get(PipelineCode.FEATURE_KEY, InternalFeature.class);
+		VectorLayer layer = context.get(PipelineCode.LAYER_KEY, VectorLayer.class);
 		String layerId = layer.getLayerInfo().getId();
 		FeatureModel featureModel = layer.getFeatureModel();
 

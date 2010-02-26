@@ -21,25 +21,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.rendering.pipeline;
+package org.geomajas.internal.service.pipeline;
 
-import javax.validation.constraints.NotNull;
-import java.util.List;
+import junit.framework.Assert;
+import org.geomajas.global.GeomajasException;
+import org.geomajas.layer.feature.attribute.StringAttribute;
+import org.geomajas.service.pipeline.PipelineContext;
+import org.geomajas.service.pipeline.PipelineStep;
 
 /**
- * Configuration info for a pipeline service.
- *
- * @param <REQUEST> type of request object for the pipeline
- * @param <RESPONSE> type of response object for the pipeline
+ * First step in pipeline for testing.
  *
  * @author Joachim Van der Auwera
  */
-public class PipelineInfo<REQUEST, RESPONSE> {
+public class Step1 implements PipelineStep<StringAttribute> {
 
-	@NotNull
 	private String id;
-
-	private List<PipelineStep<REQUEST, RESPONSE>> pipeline;
 
 	public String getId() {
 		return id;
@@ -49,21 +46,13 @@ public class PipelineInfo<REQUEST, RESPONSE> {
 		this.id = id;
 	}
 
-	/**
-	 * Get the list of steps which form the pipeline.
-	 *
-	 * @return list of pipeline steps
-	 */
-	public List<PipelineStep<REQUEST, RESPONSE>> getPipeline() {
-		return pipeline;
-	}
+	public void execute(PipelineContext context, StringAttribute response) throws GeomajasException {
+		context.put("Step1", id);
+		context.put("test", "bla");
+		Assert.assertNotNull(context.get("Step1"));
 
-	/**
-	 * Set the list of steps which form the pipeline.
-	 *
-	 * @param pipeline list of pipeline steps
-	 */
-	public void setPipeline(List<PipelineStep<REQUEST, RESPONSE>> pipeline) {
-		this.pipeline = pipeline;
+		String start = context.get("start", String.class);
+
+		response.setValue(start + id);
 	}
 }

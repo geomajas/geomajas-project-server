@@ -31,8 +31,9 @@ import org.geomajas.internal.rendering.StyleFilterImpl;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.rendering.StyleFilter;
-import org.geomajas.rendering.pipeline.PipelineContext;
-import org.geomajas.rendering.pipeline.PipelineStep;
+import org.geomajas.service.pipeline.PipelineCode;
+import org.geomajas.service.pipeline.PipelineContext;
+import org.geomajas.service.pipeline.PipelineStep;
 import org.geomajas.service.VectorLayerService;
 
 import java.util.ArrayList;
@@ -43,7 +44,7 @@ import java.util.List;
  *
  * @author Joachim Van der Auwera
  */
-public class GetFeaturesStyleStep implements PipelineStep<GetFeaturesRequest, List<InternalFeature>> {
+public class GetFeaturesStyleStep implements PipelineStep<List<InternalFeature>> {
 
 	public static final String STYLE_FILTERS_KEY = "styleFilters";
 	private String id;
@@ -56,11 +57,10 @@ public class GetFeaturesStyleStep implements PipelineStep<GetFeaturesRequest, Li
 		this.id = id;
 	}
 
-	public void execute(GetFeaturesRequest request, PipelineContext context,
-			List<InternalFeature> response) throws GeomajasException {
-		NamedStyleInfo style = request.getStyle();
-		VectorLayer layer = request.getLayer();
-		int featureIncludes = request.getFeatureIncludes();
+	public void execute(PipelineContext context, List<InternalFeature> response) throws GeomajasException {
+		VectorLayer layer = context.get(PipelineCode.LAYER_KEY, VectorLayer.class);
+		int featureIncludes = context.get(PipelineCode.FEATURE_INCLUDES_KEY, Integer.class);
+		NamedStyleInfo style = context.getOptional(PipelineCode.STYLE_KEY, NamedStyleInfo.class);
 
 		List<StyleFilter> styleFilters = null;
 		if (style == null) {
@@ -70,7 +70,7 @@ public class GetFeaturesStyleStep implements PipelineStep<GetFeaturesRequest, Li
 			// only name specified, find it
 			style = layer.getLayerInfo().getNamedStyleInfo(style.getName());
 		}
-		request.setStyle(style);
+		context.put(PipelineCode.STYLE_KEY, style);
 
 		if ((featureIncludes & VectorLayerService.FEATURE_INCLUDE_STYLE) != 0) {
 			if (style == null) {

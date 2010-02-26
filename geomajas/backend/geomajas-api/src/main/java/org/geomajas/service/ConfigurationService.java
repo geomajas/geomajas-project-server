@@ -25,6 +25,7 @@ package org.geomajas.service;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.layer.Layer;
 import org.geomajas.layer.LayerException;
+import org.geomajas.layer.RasterLayer;
 import org.geomajas.layer.VectorLayer;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
@@ -36,12 +37,20 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 public interface ConfigurationService {
 
 	/**
-	 * Get the layer with given id.
+	 * Get the vector layer with given id.
 	 *
 	 * @param id layer id
 	 * @return layer
 	 */
 	VectorLayer getVectorLayer(String id);
+
+	/**
+	 * Get the raster layer with given id.
+	 *
+	 * @param id layer id
+	 * @return layer
+	 */
+	RasterLayer getRasterLayer(String id);
 
 	/**
 	 * Get the vector layer with given id.

@@ -29,6 +29,7 @@ import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.layer.Layer;
 import org.geomajas.layer.LayerException;
+import org.geomajas.layer.RasterLayer;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.service.ConfigurationService;
 import org.geotools.referencing.CRS;
@@ -59,6 +60,14 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 		Layer layer = getLayer(id);
 		if (null != layer && layer instanceof VectorLayer) {
 			return (VectorLayer) layer;
+		}
+		return null;
+	}
+
+	public RasterLayer getRasterLayer(String id) {
+		Layer layer = getLayer(id);
+		if (null != layer && layer instanceof RasterLayer) {
+			return (RasterLayer) layer;
 		}
 		return null;
 	}

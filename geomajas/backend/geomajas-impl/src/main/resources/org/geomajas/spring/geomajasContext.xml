@@ -63,8 +63,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 
 	<!-- define default pipelines for VectorLayerService -->
 
-	<bean class="org.geomajas.rendering.pipeline.PipelineInfo">
-		<property name="id"><util:constant static-field="org.geomajas.internal.service.VectorLayerServiceImpl.PIPELINE_SAVE_OR_UPDATE"/></property>
+	<bean class="org.geomajas.service.pipeline.PipelineInfo">
+		<property name="id"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_SAVE_OR_UPDATE"/></property>
 		<property name="pipeline">
 			<list>
 				<bean class="org.geomajas.internal.service.vector.FeatureListEqualSizeStep">
@@ -72,14 +72,14 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 				</bean>
 				<bean class="org.geomajas.internal.service.vector.SaveOrUpdateEachStep">
 					<property name="id" value="SaveOrUpdateEachStep"/>
-					<property name="pipelineName"><util:constant static-field="org.geomajas.internal.service.VectorLayerServiceImpl.PIPELINE_SAVE_OR_UPDATE_ONE"/></property>
+					<property name="pipelineName"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_SAVE_OR_UPDATE_ONE"/></property>
 				</bean>
 			</list>
 		</property>
 	</bean>
 
-	<bean class="org.geomajas.rendering.pipeline.PipelineInfo">
-		<property name="id"><util:constant static-field="org.geomajas.internal.service.VectorLayerServiceImpl.PIPELINE_SAVE_OR_UPDATE_ONE"/></property>
+	<bean class="org.geomajas.service.pipeline.PipelineInfo">
+		<property name="id"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_SAVE_OR_UPDATE_ONE"/></property>
 		<property name="pipeline">
 			<list>
 				<bean class="org.geomajas.internal.service.vector.SaveOrUpdateDeleteStep">
@@ -107,8 +107,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		</property>
 	</bean>
 
-	<bean class="org.geomajas.rendering.pipeline.PipelineInfo">
-		<property name="id"><util:constant static-field="org.geomajas.internal.service.VectorLayerServiceImpl.PIPELINE_GET_FEATURES"/></property>
+	<bean class="org.geomajas.service.pipeline.PipelineInfo">
+		<property name="id"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_GET_FEATURES"/></property>
 		<property name="pipeline">
 			<list>
 				<bean class="org.geomajas.internal.service.vector.LayerFilterStep">
@@ -124,8 +124,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		</property>
 	</bean>
 
-	<bean class="org.geomajas.rendering.pipeline.PipelineInfo">
-		<property name="id"><util:constant static-field="org.geomajas.internal.service.VectorLayerServiceImpl.PIPELINE_GET_BOUNDS"/></property>
+	<bean class="org.geomajas.service.pipeline.PipelineInfo">
+		<property name="id"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_GET_BOUNDS"/></property>
 		<property name="pipeline">
 			<list>
 				<bean class="org.geomajas.internal.service.vector.LayerFilterStep">
@@ -139,8 +139,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	</bean>
 
 
-	<bean class="org.geomajas.rendering.pipeline.PipelineInfo">
-		<property name="id"><util:constant static-field="org.geomajas.internal.service.VectorLayerServiceImpl.PIPELINE_GET_OBJECTS"/></property>
+	<bean class="org.geomajas.service.pipeline.PipelineInfo">
+		<property name="id"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_GET_OBJECTS"/></property>
 		<property name="pipeline">
 			<list>
 				<bean class="org.geomajas.internal.service.vector.LayerFilterStep">
@@ -148,6 +148,17 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 				</bean>
 				<bean class="org.geomajas.internal.service.vector.GetObjectsStep">
 					<property name="id" value="GetObjectsStep"/>
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean class="org.geomajas.service.pipeline.PipelineInfo">
+		<property name="id"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_GET_RASTER_TILES"/></property>
+		<property name="pipeline">
+			<list>
+				<bean class="org.geomajas.internal.service.raster.GetTilesGetStep">
+					<property name="id" value="GetTilesGetStep"/>
 				</bean>
 			</list>
 		</property>

@@ -21,14 +21,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.internal.rendering.pipeline;
+package org.geomajas.internal.service.pipeline;
 
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
-import org.geomajas.rendering.pipeline.PipelineContext;
-import org.geomajas.rendering.pipeline.PipelineInfo;
-import org.geomajas.rendering.pipeline.PipelineService;
-import org.geomajas.rendering.pipeline.PipelineStep;
+import org.geomajas.service.pipeline.PipelineContext;
+import org.geomajas.service.pipeline.PipelineInfo;
+import org.geomajas.service.pipeline.PipelineService;
+import org.geomajas.service.pipeline.PipelineStep;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -38,40 +38,43 @@ import java.util.Collection;
 /**
  * Service which is allows "executing" a pipeline.
  *
- * @param <REQUEST> type of request object for the pipeline
  * @param <RESPONSE> type of response object for the pipeline
  *
  * @author Joachim Van der Auwera
  */
 @Component
-public class PipelineServiceImpl<REQUEST, RESPONSE> implements PipelineService<REQUEST, RESPONSE> {
+public class PipelineServiceImpl<RESPONSE> implements PipelineService<RESPONSE> {
 
 	@Autowired
 	private ApplicationContext applicationContext;
 
 	/** @inheritDoc */
-	public void execute(PipelineInfo<REQUEST, RESPONSE> pipeline, REQUEST request, RESPONSE response)
+	public void execute(String key, String layerId, PipelineContext context, RESPONSE response)
 			throws GeomajasException {
-		execute(pipeline, request, response, createContext());
+		execute(getPipeline(key, layerId), context, response);
 	}
 
 	/** @inheritDoc */
-	public void execute(PipelineInfo<REQUEST, RESPONSE> pipeline, REQUEST request, RESPONSE response,
-			PipelineContext context) throws GeomajasException {
-		for (PipelineStep<REQUEST, RESPONSE> step : pipeline.getPipeline()) {
+	public void execute(PipelineInfo<RESPONSE> pipeline, PipelineContext startContext, RESPONSE response)
+			throws GeomajasException {
+		PipelineContext context = startContext;
+		if (null == context) {
+			context = createContext();
+		}
+		for (PipelineStep<RESPONSE> step : pipeline.getPipeline()) {
 			if (context.isFinished()) {
 				break;
 			}
-			step.execute(request, context, response);
+			step.execute(context, response);
 		}
 	}
 
 	/** @inheritDoc */
-	public PipelineInfo<REQUEST, RESPONSE> getPipeline(String key, String layerId) throws GeomajasException {
-		PipelineInfo<REQUEST, RESPONSE> generalPipeline = null;
+	public PipelineInfo<RESPONSE> getPipeline(String key, String layerId) throws GeomajasException {
+		PipelineInfo<RESPONSE> generalPipeline = null;
 		String specificId = key + "." + layerId;
 		Collection<PipelineInfo> pipelines = applicationContext.getBeansOfType(PipelineInfo.class).values();
-		for (PipelineInfo pipeline : pipelines) {
+		for (PipelineInfo<RESPONSE> pipeline : pipelines) {
 			String id = pipeline.getId();
 			if (id.equals(specificId)) {
 				return pipeline;

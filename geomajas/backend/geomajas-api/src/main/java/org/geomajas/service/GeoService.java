@@ -26,8 +26,8 @@ package org.geomajas.service;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.Point;
+import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.feature.InternalFeature;
-import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 
@@ -61,10 +61,10 @@ public interface GeoService {
 	 * @param sourceCrs crs used by source data
 	 * @param targetCrs crs to be used by target
 	 * @return transformation matrix
-	 * @throws FactoryException oops
+	 * @throws GeomajasException building the transformation is not possible
 	 */
 	MathTransform findMathTransform(CoordinateReferenceSystem sourceCrs,
-			CoordinateReferenceSystem targetCrs) throws FactoryException;
+			CoordinateReferenceSystem targetCrs) throws GeomajasException;
 
 	/**
 	 * Determine a default position for positioning the label for a feature.

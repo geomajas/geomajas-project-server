@@ -576,7 +576,8 @@ public class SecurityContextImpl implements SecurityContext {
 	/**
 	 * @inheritDoc
 	 */
-	public boolean isAttributeReadable(final String layerId, final InternalFeature feature, final String attributeName) {
+	public boolean isAttributeReadable(final String layerId, final InternalFeature feature,
+			final String attributeName) {
 		return policyCombine(new AuthorizationGetter<BaseAuthorization>() {
 
 			public boolean get(BaseAuthorization auth) {
@@ -594,7 +595,8 @@ public class SecurityContextImpl implements SecurityContext {
 	/**
 	 * @inheritDoc
 	 */
-	public boolean isAttributeWritable(final String layerId, final InternalFeature feature, final String attributeName) {
+	public boolean isAttributeWritable(final String layerId, final InternalFeature feature,
+			final String attributeName) {
 		return policyCombine(new AuthorizationGetter<BaseAuthorization>() {
 
 			public boolean get(BaseAuthorization auth) {

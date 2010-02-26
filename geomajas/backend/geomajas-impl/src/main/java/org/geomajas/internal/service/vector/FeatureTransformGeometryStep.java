@@ -26,8 +26,9 @@ package org.geomajas.internal.service.vector;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.feature.InternalFeature;
-import org.geomajas.rendering.pipeline.PipelineContext;
-import org.geomajas.rendering.pipeline.PipelineStep;
+import org.geomajas.service.pipeline.PipelineCode;
+import org.geomajas.service.pipeline.PipelineContext;
+import org.geomajas.service.pipeline.PipelineStep;
 import org.geomajas.security.SecurityContext;
 import org.geotools.geometry.jts.JTS;
 import org.opengis.referencing.operation.MathTransform;
@@ -39,7 +40,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  *
  * @author Joachim Van der Auwera
  */
-public class FeatureTransformGeometryStep implements PipelineStep<Object, Object> {
+public class FeatureTransformGeometryStep implements PipelineStep {
 
 	@Autowired
 	private SecurityContext securityContext;
@@ -54,11 +55,11 @@ public class FeatureTransformGeometryStep implements PipelineStep<Object, Object
 		this.id = id;
 	}
 
-	public void execute(Object request, PipelineContext context, Object response) throws GeomajasException {
-		InternalFeature feature = context.get(SaveOrUpdateEachStep.FEATURE_KEY, InternalFeature.class);
+	public void execute(PipelineContext context, Object response) throws GeomajasException {
+		InternalFeature feature = context.get(PipelineCode.FEATURE_KEY, InternalFeature.class);
 		if (null != feature.getGeometry()) {
 			try {
-				MathTransform mapToLayer = context.get(SaveOrUpdateEachStep.CRS_TRANSFORM_KEY, MathTransform.class);
+				MathTransform mapToLayer = context.get(PipelineCode.CRS_TRANSFORM_KEY, MathTransform.class);
 				feature.setGeometry(JTS.transform(feature.getGeometry(), mapToLayer));
 			} catch (TransformException te) {
 				throw new GeomajasException(te, ExceptionCode.GEOMETRY_TRANSFORMATION_FAILED);

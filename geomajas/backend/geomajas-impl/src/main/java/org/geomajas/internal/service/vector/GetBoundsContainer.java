@@ -24,50 +24,15 @@
 package org.geomajas.internal.service.vector;
 
 import com.vividsolutions.jts.geom.Envelope;
-import org.geomajas.layer.VectorLayer;
-import org.opengis.referencing.operation.MathTransform;
 
 /**
- * Container for parameters and result of getBounds in {@link org.geomajas.service.VectorLayerService}.
+ * Container for result of getBounds in {@link org.geomajas.service.VectorLayerService}.
  *
  * @author Joachim Van der Auwera
  */
 public class GetBoundsContainer {
 
-	private String layerId;
-	private VectorLayer layer;
-	private MathTransform crsTransform;
 	private Envelope envelope;
-
-	public GetBoundsContainer(String layerId, VectorLayer layer, MathTransform crsTransform) {
-		this.layerId = layerId;
-		this.layer = layer;
-		this.crsTransform = crsTransform;
-	}
-
-	public String getLayerId() {
-		return layerId;
-	}
-
-	public void setLayerId(String layerId) {
-		this.layerId = layerId;
-	}
-
-	public VectorLayer getLayer() {
-		return layer;
-	}
-
-	public void setLayer(VectorLayer layer) {
-		this.layer = layer;
-	}
-
-	public MathTransform getCrsTransform() {
-		return crsTransform;
-	}
-
-	public void setCrsTransform(MathTransform crsTransform) {
-		this.crsTransform = crsTransform;
-	}
 
 	public Envelope getEnvelope() {
 		return envelope;

@@ -21,11 +21,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.internal.rendering.pipeline;
+package org.geomajas.internal.service.pipeline;
 
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
-import org.geomajas.rendering.pipeline.PipelineContext;
+import org.geomajas.service.pipeline.PipelineContext;
 
 import java.util.HashMap;
 import java.util.Map;

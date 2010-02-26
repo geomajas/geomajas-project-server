@@ -21,14 +21,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.internal.rendering.pipeline;
+package org.geomajas.internal.service.pipeline;
 
 import junit.framework.Assert;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.feature.attribute.StringAttribute;
-import org.geomajas.rendering.pipeline.PipelineInfo;
-import org.geomajas.rendering.pipeline.PipelineService;
+import org.geomajas.service.pipeline.PipelineContext;
+import org.geomajas.service.pipeline.PipelineInfo;
+import org.geomajas.service.pipeline.PipelineService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,19 +53,23 @@ public class PipelineServiceTest {
 	public void testPipeline() throws Exception {
 		StringAttribute response = new StringAttribute("bla");
 
-		pipelineService.execute(pipelineService.getPipeline("pipelineTest", null), "start", response);
+		PipelineContext context = pipelineService.createContext();
+		context.put("start", "start");
+		pipelineService.execute("pipelineTest", null, context, response);
 		Assert.assertEquals("starts1s2s3", response.getValue());
 
-		pipelineService.execute(pipelineService.getPipeline("pipelineTest", "aLayer"), "bla-", response);
+		context.put("start", "bla-");
+		pipelineService.execute("pipelineTest", "aLayer", context, response);
 		Assert.assertEquals("bla-step-1step-3", response.getValue());
 
-		pipelineService.execute(pipelineService.getPipeline("pipelineTest", "stop"), "stop-", response);
+		context.put("start", "stop-");
+		pipelineService.execute("pipelineTest", "stop", context, response);
 		Assert.assertEquals("stop-s1-STOP", response.getValue());
 	}
 
 	@Test
 	public void testGetPipeline() throws Exception {
-		PipelineInfo<String, StringAttribute> pipelineInfo;
+		PipelineInfo<StringAttribute> pipelineInfo;
 
 		pipelineInfo = pipelineService.getPipeline("pipelineTest", "aLayer");
 		Assert.assertNotNull(pipelineInfo);

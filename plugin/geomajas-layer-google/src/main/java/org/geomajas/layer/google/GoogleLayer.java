@@ -28,6 +28,7 @@ import java.util.List;
 import org.geomajas.configuration.RasterLayerInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.global.ExceptionCode;
+import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.RasterLayer;
 import org.geomajas.layer.tile.RasterTile;
@@ -228,12 +229,13 @@ public class GoogleLayer implements RasterLayer {
 			}
 			return result;
 		} catch (NoSuchAuthorityCodeException e) {
-			throw new RenderException(ExceptionCode.RENDER_TRANSFORMATION_FAILED);
+			throw new RenderException(e, ExceptionCode.RENDER_TRANSFORMATION_FAILED);
 		} catch (FactoryException e) {
-			throw new RenderException(ExceptionCode.RENDER_TRANSFORMATION_FAILED);
+			throw new RenderException(e, ExceptionCode.RENDER_TRANSFORMATION_FAILED);
+		} catch (GeomajasException e) {
+			throw new RenderException(e, ExceptionCode.RENDER_TRANSFORMATION_FAILED);
 		} catch (TransformException e) {
-			log.error("paint() : transformation failed", e);
-			throw new RenderException(ExceptionCode.RENDER_TRANSFORMATION_FAILED);
+			throw new RenderException(e, ExceptionCode.RENDER_TRANSFORMATION_FAILED);
 		}
 	}
 

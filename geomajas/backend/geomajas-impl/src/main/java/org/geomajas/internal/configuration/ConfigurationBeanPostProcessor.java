@@ -33,6 +33,7 @@ import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.global.ExceptionCode;
+import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.Layer;
 import org.geomajas.layer.LayerException;
 import org.geomajas.service.DtoConverterService;
@@ -80,7 +81,7 @@ public class ConfigurationBeanPostProcessor implements BeanPostProcessor {
 				return postProcess((NamedStyleInfo) bean);
 			}
 			return bean;
-		} catch (LayerException e) {
+		} catch (GeomajasException e) {
 			throw new BeanInitializationException("Could not post process configuration", e);
 		}
 	}
@@ -120,7 +121,7 @@ public class ConfigurationBeanPostProcessor implements BeanPostProcessor {
 		}
 	}
 
-	private ClientApplicationInfo postProcess(ClientApplicationInfo client) throws LayerException {
+	private ClientApplicationInfo postProcess(ClientApplicationInfo client) throws GeomajasException {
 		// initialize maps
 		for (ClientMapInfo map : client.getMaps()) {
 			map.setUnitLength(getUnitLength(map.getCrs(), map.getInitialBounds()));
@@ -164,8 +165,7 @@ public class ConfigurationBeanPostProcessor implements BeanPostProcessor {
 //			return distance / mapBounds.getWidth();
 			Coordinate c1 = new Coordinate(0, 0);
 			Coordinate c2 = new Coordinate(1, 0);
-			double distance = JTS.orthodromicDistance(c1, c2, crs);
-			return distance;
+			return JTS.orthodromicDistance(c1, c2, crs);
 		} catch (FactoryException e) {
 			throw new LayerException(e, ExceptionCode.LAYER_CRS_INIT_PROBLEM);
 		} catch (TransformException e) {
@@ -173,7 +173,7 @@ public class ConfigurationBeanPostProcessor implements BeanPostProcessor {
 		}
 	}
 
-	public Bbox getClientMaxExtent(String mapCrsKey, String layerCrsKey, Bbox serverBbox) throws LayerException {
+	public Bbox getClientMaxExtent(String mapCrsKey, String layerCrsKey, Bbox serverBbox) throws GeomajasException {
 		if (mapCrsKey.equals(layerCrsKey)) {
 			return serverBbox;
 		}

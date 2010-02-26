@@ -29,6 +29,7 @@ import java.io.StringWriter;
 import org.geomajas.configuration.LabelStyleInfo;
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.global.ExceptionCode;
+import org.geomajas.global.GeomajasException;
 import org.geomajas.internal.layer.feature.InternalFeatureImpl;
 import org.geomajas.internal.layer.tile.InternalTileImpl;
 import org.geomajas.internal.rendering.DefaultSvgDocument;
@@ -49,7 +50,6 @@ import org.geomajas.rendering.painter.tile.TilePainter;
 import org.geomajas.service.GeoService;
 import org.geotools.geometry.jts.GeometryCoordinateSequenceTransformer;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
-import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -315,7 +315,7 @@ public class StringContentTilePainter implements TilePainter {
 	 * 
 	 * @return
 	 */
-	private GeometryCoordinateSequenceTransformer getTransformer() {
+	private GeometryCoordinateSequenceTransformer getTransformer() throws RenderException {
 		if (unitToPixel == null) {
 			unitToPixel = new GeometryCoordinateSequenceTransformer();
 			if (tile.isClipped()) {
@@ -336,13 +336,15 @@ public class StringContentTilePainter implements TilePainter {
 	 * Convenience method for fetching the tile's bbox.
 	 * 
 	 * @return bbox
+	 * @throws RenderException crs conversion problems
 	 */
-	private Envelope getTileBbox() {
+	private Envelope getTileBbox() throws RenderException {
 		if (bbox == null) {
 			try {
-				bbox = TileService.getTransformedTileBounds(tile, layer, geoService.findMathTransform(layer.getCrs(),
-						targetCrs));
-			} catch (FactoryException e) {
+				bbox = TileService.getTransformedTileBounds(tile, layer,
+						geoService.findMathTransform(layer.getCrs(), targetCrs));
+			} catch (GeomajasException ge) {
+				throw new RenderException(ge);
 			}
 		}
 		return bbox;

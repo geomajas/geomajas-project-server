@@ -21,49 +21,39 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.internal.service.vector;
+package org.geomajas.internal.service.pipeline;
 
-import org.geomajas.layer.VectorLayer;
+import junit.framework.Assert;
+import org.geomajas.global.GeomajasException;
+import org.geomajas.layer.feature.attribute.StringAttribute;
+import org.geomajas.service.pipeline.PipelineContext;
+import org.geomajas.service.pipeline.PipelineStep;
 
 /**
- * Parameters for the getObjects method in {@link org.geomajas.service.VectorLayerService}.
+ * Third step in pipeline for testing.
  *
  * @author Joachim Van der Auwera
  */
-public class GetObjectsRequest {
+public class Step3 implements PipelineStep<StringAttribute> {
 
-	private String layerId;
-	private VectorLayer layer;
-	private String attributeName;
+	private String id;
 
-	public GetObjectsRequest(String layerId, VectorLayer layer, String attributeName) {
-		this.layerId = layerId;
-		this.layer = layer;
-		this.attributeName = attributeName;
+	public String getId() {
+		return id;
 	}
 
-	public String getLayerId() {
-		return layerId;
+	public void setId(String id) {
+		this.id = id;
 	}
 
-	public void setLayerId(String layerId) {
-		this.layerId = layerId;
+	public void execute(PipelineContext context, StringAttribute response) throws GeomajasException {
+		context.put("Step3", id);
+		Assert.assertEquals("bla", context.get("test", String.class));
+		Assert.assertNotNull(context.get("Step1"));
+		if ("s3".equals(id)) {
+			Assert.assertNotNull(context.get("Step2"));
+		}
+		Assert.assertNotNull(context.get("Step3"));
+		response.setValue(response.getValue() + id);
 	}
-
-	public VectorLayer getLayer() {
-		return layer;
-	}
-
-	public void setLayer(VectorLayer layer) {
-		this.layer = layer;
-	}
-
-	public String getAttributeName() {
-		return attributeName;
-	}
-
-	public void setAttributeName(String attributeName) {
-		this.attributeName = attributeName;
-	}
-
 }

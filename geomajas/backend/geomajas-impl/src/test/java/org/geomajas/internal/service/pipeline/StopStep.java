@@ -21,19 +21,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.internal.rendering.pipeline;
+package org.geomajas.internal.service.pipeline;
 
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.feature.attribute.StringAttribute;
-import org.geomajas.rendering.pipeline.PipelineContext;
-import org.geomajas.rendering.pipeline.PipelineStep;
+import org.geomajas.service.pipeline.PipelineContext;
+import org.geomajas.service.pipeline.PipelineStep;
 
 /**
  * Simple pipeline step for testing which stops the pipeline execution.
  *
  * @author Joachim Van der Auwera
  */
-public class StopStep implements PipelineStep<String, StringAttribute> {
+public class StopStep implements PipelineStep<StringAttribute> {
 
 	private String id;
 
@@ -45,7 +45,7 @@ public class StopStep implements PipelineStep<String, StringAttribute> {
 		this.id = id;
 	}
 
-	public void execute(String request, PipelineContext context, StringAttribute response)
+	public void execute(PipelineContext context, StringAttribute response)
 			throws GeomajasException {
 		response.setValue(response.getValue() + "-STOP");		
 		context.setFinished(true);

@@ -28,8 +28,9 @@ import org.geomajas.global.GeomajasException;
 import org.geomajas.global.GeomajasSecurityException;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.InternalFeature;
-import org.geomajas.rendering.pipeline.PipelineContext;
-import org.geomajas.rendering.pipeline.PipelineStep;
+import org.geomajas.service.pipeline.PipelineCode;
+import org.geomajas.service.pipeline.PipelineContext;
+import org.geomajas.service.pipeline.PipelineStep;
 import org.geomajas.security.SecurityContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -38,7 +39,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  *
  * @author Joachim Van der Auwera
  */
-public class SaveOrUpdateUpdateStep implements PipelineStep<SaveOrUpdateOneContainer, SaveOrUpdateOneContainer> {
+public class SaveOrUpdateUpdateStep implements PipelineStep {
 
 	@Autowired
 	private SecurityContext securityContext;
@@ -53,15 +54,14 @@ public class SaveOrUpdateUpdateStep implements PipelineStep<SaveOrUpdateOneConta
 		this.id = id;
 	}
 
-	public void execute(SaveOrUpdateOneContainer request, PipelineContext context,
-			SaveOrUpdateOneContainer response) throws GeomajasException {
-		InternalFeature oldFeature = request.getOldFeature();
-		InternalFeature newFeature = request.getNewFeature();
+	public void execute(PipelineContext context, Object response) throws GeomajasException {
+		InternalFeature oldFeature = context.getOptional(PipelineCode.OLD_FEATURE_KEY, InternalFeature.class);
+		InternalFeature newFeature = context.get(PipelineCode.FEATURE_KEY, InternalFeature.class);
 		if (null != oldFeature) {
-			String layerId = request.getSaveOrUpdateContainer().getLayerId();
-			VectorLayer layer = request.getSaveOrUpdateContainer().getLayer();
+			String layerId = context.get(PipelineCode.LAYER_ID_KEY, String.class);
+			VectorLayer layer = context.get(PipelineCode.LAYER_KEY, VectorLayer.class);
 			if (securityContext.isFeatureUpdateAuthorized(layerId, oldFeature, newFeature)) {
-				context.put(SaveOrUpdateEachStep.FEATURE_DATA_OBJECT_KEY, layer.read(newFeature.getLocalId()));
+				context.put(PipelineCode.FEATURE_DATA_OBJECT_KEY, layer.read(newFeature.getLocalId()));
 			} else {
 				throw new GeomajasSecurityException(ExceptionCode.FEATURE_UPDATE_PROHIBITED,
 						oldFeature.getId(), securityContext.getUserId());

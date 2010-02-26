@@ -31,6 +31,7 @@ import java.util.List;
 import org.geomajas.configuration.RasterLayerInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.global.ExceptionCode;
+import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.RasterLayer;
 import org.geomajas.layer.tile.RasterTile;
@@ -245,7 +246,7 @@ public class WmsLayer implements RasterLayer {
 				throw new RenderException(e, ExceptionCode.RENDER_TRANSFORMATION_FAILED);
 			} catch (FactoryException e) {
 				throw new RenderException(e, ExceptionCode.RENDER_TRANSFORMATION_FAILED);
-			} catch (LayerException e) {
+			} catch (GeomajasException e) {
 				throw new RenderException(e, ExceptionCode.RENDER_TRANSFORMATION_FAILED);
 			}
 		}

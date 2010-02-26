@@ -28,8 +28,9 @@ import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.FeatureModel;
 import org.geomajas.layer.feature.InternalFeature;
-import org.geomajas.rendering.pipeline.PipelineContext;
-import org.geomajas.rendering.pipeline.PipelineStep;
+import org.geomajas.service.pipeline.PipelineCode;
+import org.geomajas.service.pipeline.PipelineContext;
+import org.geomajas.service.pipeline.PipelineStep;
 import org.geomajas.security.SecurityContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -41,7 +42,7 @@ import java.util.Map;
  *
  * @author Joachim Van der Auwera
  */
-public class SaveOrUpdateSaveStep implements PipelineStep<SaveOrUpdateOneContainer, SaveOrUpdateOneContainer> {
+public class SaveOrUpdateSaveStep implements PipelineStep {
 
 	@Autowired
 	private SecurityContext securityContext;
@@ -56,12 +57,11 @@ public class SaveOrUpdateSaveStep implements PipelineStep<SaveOrUpdateOneContain
 		this.id = id;
 	}
 
-	public void execute(SaveOrUpdateOneContainer request, PipelineContext context,
-			SaveOrUpdateOneContainer response) throws GeomajasException {
-		InternalFeature newFeature = request.getNewFeature();
-		Object feature = context.get(SaveOrUpdateEachStep.FEATURE_DATA_OBJECT_KEY);
-		String layerId = request.getSaveOrUpdateContainer().getLayerId();
-		VectorLayer layer = request.getSaveOrUpdateContainer().getLayer();
+	public void execute(PipelineContext context, Object response) throws GeomajasException {
+		InternalFeature newFeature = context.getOptional(PipelineCode.FEATURE_KEY, InternalFeature.class);
+		Object feature = context.get(PipelineCode.FEATURE_DATA_OBJECT_KEY);
+		String layerId = context.get(PipelineCode.LAYER_ID_KEY, String.class);
+		VectorLayer layer = context.get(PipelineCode.LAYER_KEY, VectorLayer.class);
 		FeatureModel featureModel = layer.getFeatureModel();
 
 		// Assure only writable attributes are set
@@ -79,6 +79,6 @@ public class SaveOrUpdateSaveStep implements PipelineStep<SaveOrUpdateOneContain
 		if (newFeature.getGeometry() != null) {
 			featureModel.setGeometry(feature, newFeature.getGeometry());
 		}
-		context.put(SaveOrUpdateEachStep.FEATURE_DATA_OBJECT_KEY, layer.saveOrUpdate(feature));
+		context.put(PipelineCode.FEATURE_DATA_OBJECT_KEY, layer.saveOrUpdate(feature));
 	}
 }
