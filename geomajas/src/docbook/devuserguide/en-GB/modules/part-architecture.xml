@@ -104,8 +104,7 @@
     modules. The base plumbing and some generic features are provided by the
     Geomajas-impl module.</para>
 
-    <para>There are five possible types of modules which define functionality
-    and allow extending the back-end.</para>
+    <para>There are four possible ways to extend the back-end.</para>
 
     <para><itemizedlist>
         <listitem>
@@ -117,32 +116,28 @@
         </listitem>
 
         <listitem>
-          <para><emphasis>layer model</emphasis> : This groups a set of access
+          <para><emphasis>layer</emphasis> : This groups a set of access
           options for all details of the layers of a map. A layer can be
-          either raster or vector based. A vector layer can have a "layer
-          model" which allows you to access and update the features. The
+          either raster or vector based. A vector layer can be editable. The
           features describing the objects which are part of the vector layer
           are accessed through the "feature model" which converts generic
           features into something Geomajas can use (this way, there is no need
           for the objects to implement a "Feature" interface, allowing the
           user of pojos as features). A feature can contain geometry objects,
-          attributes, style and labels.</para>
+          attributes, style and labels. Attributes can be complex, including
+          one-to-many and many-to-one relations to other objects.</para>
         </listitem>
 
         <listitem>
-          <para><emphasis>rendering strategy</emphasis> : This allows the
-          configuration of the rendering of layers. This only applies to
-          vector layers. Some options are rendering of the features to VML or
-          SVG, rendering to raster images, etc.</para>
-        </listitem>
+          <para><emphasis>pipeline</emphasis> : All geomajas backend services
+          which deal with layers are implemented using pipelines. A pipeline
+          is a list of steps (actions) executed in order. Each pipeline can be
+          overwritten for a layer, or you can change the default which is used
+          when not overwritten for a layer. </para>
 
-        <listitem>
-          <para><emphasis>caching strategy</emphasis> : The rendering is an
-          expensive process, so it makes sense to cache the results of
-          rendering. This can greatly benefit the response when "browsing" the
-          map (panning back and forth, zooming in and out). Caching is also
-          used in a few other places, for example to check authentication
-          tokens.</para>
+          <para>Configuring pipelines can be used to change the rendering
+          method, add additional rendering steps (for example marking the
+          editable area on a tile), to introduce caching,...</para>
         </listitem>
 
         <listitem>
@@ -195,9 +190,9 @@
 
         <listitem>
           <para>The <code>CommandDispatcher</code> will start by invoking the
-          <code>GeoSecurityManager</code> to check whether the execution of
-          the requested command is allowed. If it is allowed, the actual
-          Command is obtained using the spring context. The
+          <code>SecurityManager</code> to check whether the execution of the
+          requested command is allowed. If it is allowed, the actual Command
+          is obtained using the spring context. The
           <code>CommandResponse</code> object is created and the command is
           executed.</para>
         </listitem>
@@ -240,142 +235,75 @@
       <sect2>
         <title>Pipeline architecture</title>
 
-        <para>Some of the main services provided by the Geomajas backend are
-        pipelines. By using a <code>PipelineService</code>, blocks of
-        functionality become reusable and highly configurable with limited
-        coupling between the <emphasis>pipeline step</emphasis>s.</para>
+        <para>All the layer access services provided by the Geomajas backend
+        are implemented by invoking a pipeline. Using
+        <code>PipelineService</code>, blocks of functionality become reusable
+        and highly configurable with limited coupling between the
+        <emphasis>pipeline step</emphasis>s.</para>
 
         <para>Some of the services which are implemented as
         <code>PipelineService</code> include</para>
 
         <para><itemizedlist>
             <listitem>
-              <para><code>RenderRasterTilesService</code> : renders a tile for
-              a raster layer</para>
+              <para><code>RasterLayerService</code> : methods for accessing a
+              raster layer, especially getting tiles for a raster
+              layer.</para>
             </listitem>
 
             <listitem>
-              <para><code>RenderVectorTilesService</code> : renders a tile for
-              a vector layer</para>
-            </listitem>
-
-            <listitem>
-              <para><code>VectorLayerService</code> : fetches features for a
-              vector layer</para>
+              <para><code>VectorLayerService</code> : methods for accessing a
+              vector layer, for example for getting the features or obtaining
+              vector tiles</para>
             </listitem>
           </itemizedlist>Pipelines can even nest. One of the steps in the
-        RenderVectorTiles service will normally be an invocation to the
-        VectorLayer service as one of the steps.</para>
+        default "vectorLayer.saveOrUpdate" pipeline will loop over all
+        features to be updated and invoke the "vectorLayer.saveOrUpdateOne"
+        pipeline for each.</para>
 
-        <para>Pipeline services are server side only and will typically be
-        invoked by commands to allow client access.</para>
+        <para>Pipelines are server side only, client access is typically made
+        available by invoking a command.</para>
 
         <para>Pipelines are typically invoked for a specific layer. In that
-        case, the layer will normally allow default pipeline to be replaced by
-        a layer specific pipeline. This way, layer specific configurations
-        (like optimizations or specific rendering) can be applied. When a
-        layer does not overwrite a pipeline, the default is used.</para>
+        case, the default pipeline can be replaced by a layer specific
+        pipeline. This way, layer specific configurations (like optimizations
+        or specific rendering) can be applied. When a layer does not overwrite
+        a pipeline, the default is used. Pipelines are always selected on
+        pipeline id. You can create the layer specific pipeline by using the
+        id of the default pipeline followed by a dot and the layer id.</para>
 
         <para>A pipeline consists of a number of steps. A pipeline is
         configured using a <code>PipelineInfo</code> object which details the
-        steps. When a <code>PipelineService</code> is started, it fetches the
-        configuration (explicitly configured, an injected configuration or
-        from a layer) and then initializes the response object. The pipeline
-        is started by invoking the first step. Each step can gets three
-        parameters.</para>
+        pipeline id and steps. When a pipeline is started (using the
+        <code>PipelineService</code>) it executes the pipeline steps until the
+        pipeline is finished (a status which can be set by one of the steps),
+        or until no more steps are available in the pipeline. Each step can
+        gets two parameters.</para>
 
         <para><itemizedlist>
             <listitem>
-              <para>an object which contains the fixed parameters which are
-              needed for this (pipeline) service.</para>
+              <para>a context which contains a map of (typed) objects which
+              can be used to pass data between the steps (including initial
+              parameters for the pipeline).</para>
             </listitem>
 
             <listitem>
-              <para>a context which contains&lt;String,Object&gt; map which
-              can be used to pass data between the next steps</para>
-            </listitem>
-
-            <listitem>
-              <para>the result object</para>
+              <para>the result object which can be filled or transformed
+              during the pipeline's execution.</para>
             </listitem>
           </itemizedlist></para>
-
-        <para>Each step itself can do a check or transformation on the
-        response object. In future the context will be usable to control the
-        how the pipeline should continue. For now, all steps are always
-        executed consecutively (though it may be interrupted by an
-        exception).</para>
       </sect2>
 
       <sect2>
         <title>Application in the backend</title>
 
-        <para>The default <code>RenderRasterTilesService</code> pipeline looks
-        like this :</para>
+        <para>All the methods in both RasterLayerService and
+        VectorLayerService are implemented using pipelines.</para>
 
-        <orderedlist>
-          <listitem>
-            <para>Check whether the user is allowed access to the
-            layer.</para>
-          </listitem>
-
-          <listitem>
-            <para>Determine the raster tiles.</para>
-          </listitem>
-
-          <listitem>
-            <para>Filter the raster tiles based on security (which can either
-            remove tiles or obfuscate parts of the tiles).</para>
-          </listitem>
-        </orderedlist>
-
-        <para>The default <code>RenderVectorTilesService</code> pipeline looks
-        like this :</para>
-
-        <orderedlist>
-          <listitem>
-            <para>Check whether the user is allowed access to the
-            layer.</para>
-          </listitem>
-
-          <listitem>
-            <para>Invoke <code>VectorLayerService</code> to get the
-            features.</para>
-          </listitem>
-
-          <listitem>
-            <para>...</para>
-          </listitem>
-        </orderedlist>
-
-        <para>The default <code>VectorLayerService</code> pipeline for
-        fetching the features looks like this :</para>
-
-        <orderedlist>
-          <listitem>
-            <para>Check whether the user is allowed access to the
-            layer.</para>
-          </listitem>
-
-          <listitem>
-            <para>Build (security) filter which needs to be applied.</para>
-          </listitem>
-
-          <listitem>
-            <para>Get feature objects from the layer.</para>
-          </listitem>
-
-          <listitem>
-            <para>Convert the objects into features.</para>
-          </listitem>
-
-          <listitem>
-            <para>Filter the features based on security settings and set
-            editable/deletable flags.</para>
-          </listitem>
-        </orderedlist>
+        <para></para>
       </sect2>
 
+		<!--
       <sect2>
         <title>Rendering strategies</title>
 
@@ -406,6 +334,7 @@
           </listitem>
         </itemizedlist>
       </sect2>
+      -->
     </sect1>
 
     <sect1>
@@ -420,6 +349,7 @@
       get obtain the <code>layer data</code>.</para>
     </sect1>
 
+	  <!--
     <sect1>
       <title>Caching</title>
 
@@ -442,6 +372,7 @@
 
       <para></para>
     </sect1>
+    -->
 
     <sect1>
       <title>Security</title>

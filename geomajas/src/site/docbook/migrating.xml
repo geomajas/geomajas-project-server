@@ -29,6 +29,45 @@
   <toc />
 
   <section>
+    <title>Migrating from Geomajas 1.5.3 to Geomajas 1.5.4</title>
+
+    <para>
+      <itemizedlist>
+        <listitem>
+          <para>SuccessCommandResponse class contained typos. The methods
+          <code>isSucces()</code> and <code>getSucces()</code> have been
+          renamed to <code>isSuccess()</code> and <code>getSuccess()</code>
+          respectively.</para>
+        </listitem>
+
+        <listitem>
+          <para>Changes in pipeline and promotion to stable API.</para>
+        </listitem>
+
+        <listitem>
+          <para>The method <code>getRasterLayer()</code> has been added in
+          <code>ConfigurationService</code>.</para>
+        </listitem>
+
+        <listitem>
+          <para>The <code>findMathTransform()</code> method in
+          <code>GeoService</code> now throws <code>GeomajasException</code>
+          instead of <code>FactoryException</code>.</para>
+        </listitem>
+
+        <listitem>
+          <para>InternalTile changes : ???</para>
+        </listitem>
+
+        <listitem>
+          <para>Many <code>DtoConverterService</code> methods now throw
+          <code>GeomajasException</code>.</para>
+        </listitem>
+      </itemizedlist>
+    </para>
+  </section>
+
+  <section>
     <title>Migrating from Geomajas 1.5.2 to Geomajas 1.5.3</title>
 
     <itemizedlist>
