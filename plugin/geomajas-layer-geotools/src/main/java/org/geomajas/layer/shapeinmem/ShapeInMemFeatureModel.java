@@ -27,6 +27,7 @@ import org.geomajas.configuration.AttributeInfo;
 import org.geomajas.configuration.FeatureInfo;
 import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.global.ExceptionCode;
+import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.FeatureModel;
@@ -81,7 +82,11 @@ public class ShapeInMemFeatureModel extends FeatureSourceRetriever implements Fe
 		if (null == attributeInfo) {
 			throw new LayerException(ExceptionCode.ATTRIBUTE_UNKNOWN, name);
 		}
-		return converterService.toDto(asFeature(feature).getAttribute(name), attributeInfo);
+		try {
+			return converterService.toDto(asFeature(feature).getAttribute(name), attributeInfo);
+		} catch (GeomajasException e) {
+			throw new LayerException(e);
+		}
 	}
 
 	public Map<String, Attribute> getAttributes(Object feature) throws LayerException {
@@ -89,7 +94,11 @@ public class ShapeInMemFeatureModel extends FeatureSourceRetriever implements Fe
 		HashMap<String, Attribute> attribs = new HashMap<String, Attribute>();
 		for (Map.Entry<String, AttributeInfo> entry : attributeInfoMap.entrySet()) {
 			String name = entry.getKey();
-			attribs.put(name, converterService.toDto(f.getAttribute(name), entry.getValue()));
+			try {
+				attribs.put(name, converterService.toDto(f.getAttribute(name), entry.getValue()));
+			} catch (GeomajasException e) {
+				throw new LayerException(e);
+			}
 		}
 		return attribs;
 	}

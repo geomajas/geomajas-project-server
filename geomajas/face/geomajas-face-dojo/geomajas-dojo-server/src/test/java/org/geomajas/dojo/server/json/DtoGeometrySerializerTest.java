@@ -22,6 +22,15 @@
  */
 package org.geomajas.dojo.server.json;
 
+import junit.framework.TestCase;
+
+import org.geomajas.geometry.Geometry;
+import org.geomajas.global.GeomajasException;
+import org.geomajas.service.DtoConverterService;
+import org.json.JSONObject;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+
 import com.metaparadigm.jsonrpc.MarshallException;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
@@ -34,12 +43,6 @@ import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.geom.PrecisionModel;
 import com.vividsolutions.jts.geom.impl.CoordinateArraySequence;
 import com.vividsolutions.jts.util.Assert;
-import junit.framework.TestCase;
-import org.geomajas.geometry.Geometry;
-import org.geomajas.service.DtoConverterService;
-import org.json.JSONObject;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 public class DtoGeometrySerializerTest extends TestCase {
 
@@ -53,15 +56,15 @@ public class DtoGeometrySerializerTest extends TestCase {
 		dtoSerializer = new DtoGeometrySerializer();
 		jtsSerializer = new GeometrySerializer();
 
-		ApplicationContext applicationContext = new ClassPathXmlApplicationContext(
-				new String[] {"org/geomajas/spring/geomajasContext.xml", "org/geomajas/spring/emptyApplication.xml"});
+		ApplicationContext applicationContext = new ClassPathXmlApplicationContext(new String[] {
+				"org/geomajas/spring/geomajasContext.xml", "org/geomajas/spring/emptyApplication.xml" });
 		converter = applicationContext.getBean("service.DtoConverterService", DtoConverterService.class);
 	}
 
-	public void testPoint() throws MarshallException {
+	public void testPoint() throws MarshallException, GeomajasException {
 		GeometryFactory factory = new GeometryFactory(new PrecisionModel(10000.0), 31300);
-		CoordinateArraySequence coords = new CoordinateArraySequence(new Coordinate[] {new Coordinate(12.3456,
-				34567.3456)});
+		CoordinateArraySequence coords = new CoordinateArraySequence(new Coordinate[] { new Coordinate(12.3456,
+				34567.3456) });
 		Point p = new Point(coords, factory);
 		JSONObject jtsJson = (JSONObject) jtsSerializer.marshall(null, p);
 		Geometry dto = converter.toDto(p);
@@ -69,10 +72,10 @@ public class DtoGeometrySerializerTest extends TestCase {
 		Assert.equals(jtsJson.toString(), dtoJson.toString());
 	}
 
-	public void testLineString() throws MarshallException {
+	public void testLineString() throws MarshallException, GeomajasException {
 		GeometryFactory factory = new GeometryFactory(new PrecisionModel(10000.0), 31300);
-		CoordinateArraySequence coords = new CoordinateArraySequence(new Coordinate[] {new Coordinate(12.0, 34.23),
-				new Coordinate(12.000, 54.555), new Coordinate(-0.01, 0.0)});
+		CoordinateArraySequence coords = new CoordinateArraySequence(new Coordinate[] { new Coordinate(12.0, 34.23),
+				new Coordinate(12.000, 54.555), new Coordinate(-0.01, 0.0) });
 		LineString p = new LineString(coords, factory);
 		JSONObject jtsJson = (JSONObject) jtsSerializer.marshall(null, p);
 		Geometry dto = converter.toDto(p);
@@ -80,10 +83,10 @@ public class DtoGeometrySerializerTest extends TestCase {
 		Assert.equals(jtsJson.toString(), dtoJson.toString());
 	}
 
-	public void testPolygon() throws MarshallException {
+	public void testPolygon() throws MarshallException, GeomajasException {
 		GeometryFactory factory = new GeometryFactory(new PrecisionModel(10000.0), 31300);
-		CoordinateArraySequence coords = new CoordinateArraySequence(new Coordinate[] {new Coordinate(12.0, 34.23),
-				new Coordinate(12.000, 54.555), new Coordinate(7, 8), new Coordinate(12.0, 34.23)});
+		CoordinateArraySequence coords = new CoordinateArraySequence(new Coordinate[] { new Coordinate(12.0, 34.23),
+				new Coordinate(12.000, 54.555), new Coordinate(7, 8), new Coordinate(12.0, 34.23) });
 		LinearRing ring = new LinearRing(coords, factory);
 		Polygon p = new Polygon(ring, null, factory);
 		Geometry dto = converter.toDto(p);
@@ -104,13 +107,13 @@ public class DtoGeometrySerializerTest extends TestCase {
 		Assert.equals(jtsShell.get("coordinates").toString(), dtoShell.get("coordinates").toString());
 	}
 
-	public void testMultiPolygon() throws MarshallException {
+	public void testMultiPolygon() throws MarshallException, GeomajasException {
 		GeometryFactory factory = new GeometryFactory(new PrecisionModel(10000.0), 31300);
-		CoordinateArraySequence coords = new CoordinateArraySequence(new Coordinate[] {new Coordinate(12.0, 34.23),
-				new Coordinate(12.000, 54.555), new Coordinate(7, 8), new Coordinate(12.0, 34.23)});
+		CoordinateArraySequence coords = new CoordinateArraySequence(new Coordinate[] { new Coordinate(12.0, 34.23),
+				new Coordinate(12.000, 54.555), new Coordinate(7, 8), new Coordinate(12.0, 34.23) });
 		LinearRing ring = new LinearRing(coords, factory);
 		Polygon p = new Polygon(ring, new LinearRing[] {}, factory);
-		MultiPolygon m = new MultiPolygon(new Polygon[] {p}, factory);
+		MultiPolygon m = new MultiPolygon(new Polygon[] { p }, factory);
 		Geometry dto = converter.toDto(m);
 
 		JSONObject jtsJson = (JSONObject) jtsSerializer.marshall(null, m);
@@ -135,12 +138,12 @@ public class DtoGeometrySerializerTest extends TestCase {
 		Assert.equals(jtsShell.get("coordinates").toString(), dtoShell.get("coordinates").toString());
 	}
 
-	public void testMultiLineString() throws MarshallException {
+	public void testMultiLineString() throws MarshallException, GeomajasException {
 		GeometryFactory factory = new GeometryFactory(new PrecisionModel(10000.0), 31300);
-		CoordinateArraySequence coords = new CoordinateArraySequence(new Coordinate[] {new Coordinate(12.0, 34.23),
-				new Coordinate(12.000, 54.555), new Coordinate(-0.01, 0.0)});
+		CoordinateArraySequence coords = new CoordinateArraySequence(new Coordinate[] { new Coordinate(12.0, 34.23),
+				new Coordinate(12.000, 54.555), new Coordinate(-0.01, 0.0) });
 		LineString l = new LineString(coords, factory);
-		MultiLineString m = new MultiLineString(new LineString[] {l}, factory);
+		MultiLineString m = new MultiLineString(new LineString[] { l }, factory);
 		JSONObject jtsJson = (JSONObject) jtsSerializer.marshall(null, m);
 		Geometry dto = converter.toDto(m);
 		JSONObject dtoJson = (JSONObject) dtoSerializer.marshall(null, dto);

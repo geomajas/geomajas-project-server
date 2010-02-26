@@ -28,6 +28,7 @@ import org.geomajas.configuration.AttributeInfo;
 import org.geomajas.configuration.FeatureInfo;
 import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.global.ExceptionCode;
+import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.FeatureModel;
@@ -95,7 +96,11 @@ public class GeoToolsFeatureModel extends FeatureSourceRetriever implements Feat
 		if (null == attributeInfo) {
 			throw new LayerException(ExceptionCode.ATTRIBUTE_UNKNOWN, name);
 		}
-		return converterService.toDto(object, attributeInfo);
+		try {
+			return converterService.toDto(object, attributeInfo);
+		} catch (GeomajasException e) {
+			throw new LayerException(e);
+		}
 	}
 
 	public Geometry getGeometry(Object feature) throws LayerException {
