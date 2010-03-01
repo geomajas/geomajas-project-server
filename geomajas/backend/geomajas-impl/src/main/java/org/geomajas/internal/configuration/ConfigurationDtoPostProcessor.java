@@ -74,13 +74,13 @@ public class ConfigurationDtoPostProcessor {
 	@Autowired
 	private GeoService geoService;
 
-	@Autowired(required=false)
+	@Autowired(required = false)
 	protected Map<String, ClientApplicationInfo> applicationMap = new LinkedHashMap<String, ClientApplicationInfo>();
 
-	@Autowired(required=false)
+	@Autowired(required = false)
 	protected Map<String, NamedStyleInfo> namedStyleMap = new LinkedHashMap<String, NamedStyleInfo>();
 
-	@Autowired(required=false)
+	@Autowired(required = false)
 	protected Map<String, Layer<?>> layerMap = new LinkedHashMap<String, Layer<?>>();
 
 	public ConfigurationDtoPostProcessor() {
