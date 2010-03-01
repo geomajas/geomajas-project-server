@@ -30,12 +30,8 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 	<!-- Hibernate SessionFactory -->
 	<bean id="testSessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
 		<property name="dataSource" ref="testDataSource" />
-		<property name="configLocation">
-			<value>classpath:/hibernate.cfg.xml</value>
-		</property>
-		<property name="configurationClass">
-			<value>org.hibernate.cfg.AnnotationConfiguration</value>
-		</property>
+		<property name="configLocation" value="classpath:/hibernate.cfg.xml" />
+		<property name="configurationClass" value="org.hibernate.cfg.AnnotationConfiguration" />
 	</bean>
 
 	<!-- enable the configuration of transactional behavior based on annotations -->
@@ -341,7 +337,6 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 	</bean>
 
 	<bean name="layerInfo" class="org.geomajas.configuration.VectorLayerInfo">
-		<property name="id" value="hibernateLayer" />
 		<property name="crs" value="EPSG:4326" />
 		<property name="featureInfo" ref="featureInfo" />
 		<property name="layerType" value="MULTIPOLYGON"/>
