@@ -41,7 +41,6 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 				<property name="height" value="2000"/>
 			</bean>
 		</property>
-		<property name="maxTileLevel" value="16"/>
         <property name="resolutions">
             <list>
                 <value>156543.03</value>

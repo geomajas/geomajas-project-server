@@ -57,7 +57,6 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 				<property name="height" value="170.102257" />
 			</bean>
 		</property>
-		<property name="maxTileLevel" value="16" />
 		<property name="featureInfo" ref="countriesFeatureInfo" />
 		<property name="namedStyleInfos">
 			<list>

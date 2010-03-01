@@ -42,7 +42,6 @@ public class LayerInfo implements Serializable {
 	@NotNull
 	private String crs;
 	private Bbox maxExtent = Bbox.ALL;
-	private int maxTileLevel;
 
 	public LayerType getLayerType() {
 		return layerType;
@@ -66,14 +65,6 @@ public class LayerInfo implements Serializable {
 
 	public void setMaxExtent(Bbox maxExtent) {
 		this.maxExtent = maxExtent;
-	}
-
-	public int getMaxTileLevel() {
-		return maxTileLevel;
-	}
-
-	public void setMaxTileLevel(int maxTileLevel) {
-		this.maxTileLevel = maxTileLevel;
 	}
 
 }

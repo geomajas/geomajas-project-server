@@ -76,13 +76,10 @@ public class TileCache implements SpatialCache {
 	 *            Reference to the <code>VectorLayer</code> object.
 	 * @param layerBounds
 	 *            The maximum bounds for this cache.
-	 * @param maximumTileLevel
-	 *            The maximum tiling depth allowed in this cache.
 	 */
-	public TileCache(VectorLayer layer, Bbox layerBounds, int maximumTileLevel) {
+	public TileCache(VectorLayer layer, Bbox layerBounds) {
 		this.layer = layer;
 		this.layerBounds = layerBounds;
-		this.maximumTileLevel = maximumTileLevel;
 		tiles = new HashMap<String, VectorTile>();
 		features = new HashMap<String, Feature>();
 		currentMinX = 0;

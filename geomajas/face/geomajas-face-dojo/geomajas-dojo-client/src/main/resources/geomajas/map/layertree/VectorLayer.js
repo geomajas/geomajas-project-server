@@ -64,7 +64,6 @@ dojo.declare("VectorLayer", [LayerTreeNode], {
 		this.filter = null;
 		this.filterEnabled = false;
 		this.maxExtent = new Bbox(0,0,400000,400000);
-		this.maxTileLevel = 20;
 
 		this.featureStore = null;
 		this.selectionStore = null;
@@ -188,18 +187,6 @@ dojo.declare("VectorLayer", [LayerTreeNode], {
 
 	getMaxExtent : function () {
 		return this.maxExtent;
-	},
-
-	/**
-	 * Sets the maximum tiling level for a pyramid structure.
-	 * @param maxTileLevel The maximum tiling level.
-	 */
-	setMaxTileLevel : function (maxTileLevel) {
-		this.maxTileLevel = maxTileLevel;
-	},
-
-	getMaxTileLevel : function () {
-		return this.maxTileLevel;
 	},
 
 	getMaxViewScale : function () {

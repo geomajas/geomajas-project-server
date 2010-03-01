@@ -408,7 +408,6 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
             &lt;property name="height" value="532"/&gt;
         &lt;/bean&gt;
     &lt;/property&gt;
-    &lt;property name="maxTileLevel" value="20"/&gt;
     &lt;property name="resolutions"&gt;
         &lt;list&gt;
             &lt;value&gt;0.5&lt;/value&gt;
@@ -463,7 +462,6 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
             &lt;property name="height" value="170.102257"/&gt;
         &lt;/bean&gt;
     &lt;/property&gt;
-    &lt;property name="maxTileLevel" value="16"/&gt;
 </programlisting>
 
         <para>This defines the details common to both raster and vector

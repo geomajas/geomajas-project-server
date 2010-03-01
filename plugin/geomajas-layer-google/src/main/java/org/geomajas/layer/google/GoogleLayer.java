@@ -74,8 +74,6 @@ public class GoogleLayer implements RasterLayer {
 
 	protected double maxHeight;
 
-	protected int maxTileLevel;
-
 	public static final double EARTH_RADIUS_IN_METERS = 6378137.0;
 
 	public static final double EQUATOR_IN_METERS = 2 * Math.PI * EARTH_RADIUS_IN_METERS;
@@ -133,7 +131,6 @@ public class GoogleLayer implements RasterLayer {
 		tileHeight = layerInfo.getTileHeight();
 		maxWidth = layerInfo.getMaxExtent().getWidth();
 		maxHeight = layerInfo.getMaxExtent().getHeight();
-		maxTileLevel = layerInfo.getMaxTileLevel();
 		this.calculatePredefinedResolutions();
 	}
 
@@ -269,8 +266,7 @@ public class GoogleLayer implements RasterLayer {
 	}
 
 	private void calculatePredefinedResolutions() {
-		int max = (maxTileLevel < MAX_ZOOM_LEVEL) ? maxTileLevel : MAX_ZOOM_LEVEL;
-		for (int zoomLevel = 0; zoomLevel <= max; zoomLevel++) {
+		for (int zoomLevel = 0; zoomLevel <= MAX_ZOOM_LEVEL; zoomLevel++) {
 			double resolution = (EQUATOR_IN_METERS) / (256 * Math.pow(2.0, zoomLevel));
 			resolutions.add(new GoogleResolution(resolution, zoomLevel));
 		}

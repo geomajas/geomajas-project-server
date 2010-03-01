@@ -224,13 +224,4 @@ public abstract class ClientLayerInfo implements Serializable {
 		return layerInfo.getCrs();
 	}
 
-	/**
-	 * Get the maximum tile level of this layer (same as server layer).
-	 * 
-	 * @return maximum tile level
-	 */
-	public int getMaxTileLevel() {
-		return layerInfo.getMaxTileLevel();
-	}
-
 }

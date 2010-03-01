@@ -147,7 +147,7 @@ public class WmsLayer implements RasterLayer {
 		Bbox bbox = getLayerInfo().getMaxExtent();
 		double maxWidth = bbox.getWidth();
 		double maxHeight = bbox.getHeight();
-		for (int level = 0; level <= getTileLevel(); level++) {
+		for (int level = 0; level <= getLayerInfo().getResolutions().size(); level++) {
 			double width = maxWidth / Math.pow(2, level);
 			double height = maxHeight / Math.pow(2, level);
 			resolutions.add(new Resolution(Math.max(width / getTileWidth(), height / getTileHeight()), level,
@@ -336,10 +336,6 @@ public class WmsLayer implements RasterLayer {
 
 	protected int getTileHeight() {
 		return getLayerInfo().getTileHeight();
-	}
-
-	protected int getTileLevel() {
-		return getLayerInfo().getMaxTileLevel();
 	}
 
 	private Envelope clipBounds(Envelope bounds) {

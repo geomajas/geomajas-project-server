@@ -61,7 +61,7 @@ public class VectorLayer extends AbstractLayer<ClientVectorLayerInfo> {
 		super(mapModel, layerInfo);
 		Bbox maxExtent = new Bbox(layerInfo.getMaxExtent().getX(), layerInfo.getMaxExtent().getY(), layerInfo
 				.getMaxExtent().getWidth(), layerInfo.getMaxExtent().getHeight());
-		cache = new TileCache(this, maxExtent, layerInfo.getMaxTileLevel());
+		cache = new TileCache(this, maxExtent);
 	}
 
 	// -------------------------------------------------------------------------

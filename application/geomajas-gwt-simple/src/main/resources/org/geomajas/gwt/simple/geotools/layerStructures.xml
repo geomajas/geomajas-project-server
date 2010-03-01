@@ -43,7 +43,6 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 				<property name="height" value="2000" />
 			</bean>
 		</property>
-		<property name="maxTileLevel" value="20" />
 		<property name="featureInfo" ref="structuresFeatureInfo" />
 		<property name="namedStyleInfos">
 			<list>

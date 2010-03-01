@@ -54,7 +54,6 @@ dojo.declare("RasterLayer", [LayerTreeNode], {
 		this.selected = false;
 		this.mapWidget = mapWidget;
 		this.maxExtent = new Bbox(0,0,400000,400000);
-		this.maxTileLevel = 10;
 		this.imageFactory = new RasterImageFactory(this);
 		this.imageFactory.setLayer(this);
 		this.style = null;
@@ -138,18 +137,6 @@ dojo.declare("RasterLayer", [LayerTreeNode], {
 
 	getMaxExtent : function () {
 		return this.maxExtent;
-	},
-
-	/**
-	 * Sets the maximum tiling level for a pyramid structure.
-	 * @param maxTileLevel The maximum tiling level.
-	 */
-	setMaxTileLevel : function (maxTileLevel) {
-		this.maxTileLevel = maxTileLevel;
-	},
-
-	getMaxTileLevel : function () {
-		return this.maxTileLevel;
 	},
 
 	getMaxViewScale : function () {

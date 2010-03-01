@@ -39,9 +39,7 @@ dojo.declare("SpatialCacheStore", FeatureStore , {
 		this.layer = layer;
 		this.cache = new RenderingIndependentTileCache(
 			this.layer,
-			this.layer.getMaxExtent().clone(),
-			//this.layer.getMaxTileLevel()
-			256 // Getting rid of the MaxTileLevel.
+			this.layer.getMaxExtent().clone()
 		);
 
 		this.cleared = true;

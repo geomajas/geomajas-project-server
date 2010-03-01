@@ -70,8 +70,6 @@ public class OsmLayer implements RasterLayer {
 
 	protected double maxHeight;
 
-	protected int maxTileLevel;
-
 	public static final double EARTH_RADIUS_IN_METERS = 6378137.0;
 
 	public static final double EQUATOR_IN_METERS = 2 * Math.PI * EARTH_RADIUS_IN_METERS;
@@ -132,7 +130,6 @@ public class OsmLayer implements RasterLayer {
 		tileHeight = layerInfo.getTileHeight();
 		maxWidth = layerInfo.getMaxExtent().getWidth();
 		maxHeight = layerInfo.getMaxExtent().getHeight();
-		maxTileLevel = layerInfo.getMaxTileLevel();
 		this.calculatePredefinedResolutions();
 	}
 

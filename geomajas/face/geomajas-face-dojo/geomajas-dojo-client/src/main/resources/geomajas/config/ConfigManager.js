@@ -249,7 +249,6 @@ dojo.declare("ConfigManager", null, {
 		layer.setLayerType (lc.layerType.value);
         layer.setVisible(lc.visible);
 		layer.setMaxExtent(lc.maxExtent);
-		layer.setMaxTileLevel(lc.maxTileLevel);
 		layer.setMinViewScale(lc.viewScaleMin);
 		layer.setMaxViewScale(lc.viewScaleMax);
 		
@@ -322,7 +321,6 @@ dojo.declare("ConfigManager", null, {
 		layer.setLayerType (lc.layerType.value);
         layer.setVisible(lc.visible);
 		layer.setMaxExtent(lc.maxExtent);
-		layer.setMaxTileLevel(lc.maxTileLevel);
 		layer.setMinViewScale(lc.viewScaleMin);
 		layer.setMaxViewScale(lc.viewScaleMax);
 		layer.setStyle(new PictureStyle(lc.style));

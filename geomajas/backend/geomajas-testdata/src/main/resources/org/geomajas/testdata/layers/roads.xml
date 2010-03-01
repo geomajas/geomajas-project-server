@@ -37,7 +37,6 @@
 		<minY>-80</minY>
 		<maxY>80</maxY>
 	</maxExtent>
-	<maxTileLevel>17</maxTileLevel>
 	<layerDefinition>
 		<layerFactory>
 			org.geomajas.internal.application.DefaultLayerFactory

@@ -39,7 +39,6 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 				<property name="height" value="2000"/>
 			</bean>
 		</property>
-		<property name="maxTileLevel" value="16"/>
         <property name="resolutions">
             <list>
                 <value>156543.03</value>
