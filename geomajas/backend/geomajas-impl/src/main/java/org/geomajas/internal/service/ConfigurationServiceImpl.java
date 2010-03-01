@@ -50,16 +50,16 @@ import org.springframework.stereotype.Component;
 @Component
 public class ConfigurationServiceImpl implements ConfigurationService {
 
-	@Autowired(required=false)
+	@Autowired(required = false)
 	protected Map<String, Layer<?>> layerMap = new LinkedHashMap<String, Layer<?>>();
 
-	@Autowired(required=false)
+	@Autowired(required = false)
 	protected Map<String, VectorLayer> vectorLayerMap = new LinkedHashMap<String, VectorLayer>();
 
-	@Autowired(required=false)
+	@Autowired(required = false)
 	protected Map<String, RasterLayer> rasterLayerMap = new LinkedHashMap<String, RasterLayer>();
 
-	@Autowired(required=false)
+	@Autowired(required = false)
 	protected Map<String, ClientApplicationInfo> applicationMap = new LinkedHashMap<String, ClientApplicationInfo>();
 
 	public VectorLayer getVectorLayer(String id) {
