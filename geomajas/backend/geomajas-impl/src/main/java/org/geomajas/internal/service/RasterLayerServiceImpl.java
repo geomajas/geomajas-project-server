@@ -83,9 +83,10 @@ public class RasterLayerServiceImpl implements RasterLayerService {
 			throws GeomajasException {
 		PipelineContext context = pipelineService.createContext();
 		context.put(PipelineCode.LAYER_ID_KEY, layerId);
-		RasterLayer layer = configurationService.getRasterLayer(layerId);
+		RasterLayer layer = getRasterLayer(layerId);
 		context.put(PipelineCode.LAYER_KEY, layer);
-		context.put(PipelineCode.CRS_CODE_KEY, crs);
+		context.put(PipelineCode.CRS_CODE_KEY, "EPSG:" + geoService.getSridFromCrs(crs));
+		context.put(PipelineCode.CRS_KEY, crs);
 		context.put(PipelineCode.BOUNDS_KEY, bounds);
 		context.put(PipelineCode.SCALE_KEY, scale);
 		List<RasterTile> response = new ArrayList<RasterTile>();
