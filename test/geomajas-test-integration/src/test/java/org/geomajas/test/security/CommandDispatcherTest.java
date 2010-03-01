@@ -26,6 +26,8 @@ package org.geomajas.test.security;
 import org.geomajas.command.CommandDispatcher;
 import org.geomajas.command.CommandResponse;
 import org.geomajas.command.dto.LogRequest;
+import org.geomajas.global.ExceptionCode;
+import org.geomajas.global.GeomajasException;
 import org.geomajas.plugin.springsecurity.command.dto.LoginRequest;
 import org.geomajas.plugin.springsecurity.command.dto.LoginResponse;
 import org.geomajas.security.SecurityContext;
@@ -73,7 +75,8 @@ public class CommandDispatcherTest {
 		// this test to verify the command itself (should fail here as "luc" should be logged in).
 		response = commandDispatcher.execute("command.MarinoLoggedIn", null, token, "en");
 		Assert.assertTrue(response.isError());
-		Assert.assertTrue(response.getErrorMessages().size() > 0);
+		Assert.assertTrue(response.getErrors().get(0) instanceof GeomajasException);
+		Assert.assertEquals(ExceptionCode.TEST, ((GeomajasException)response.getErrors().get(0)).getExceptionCode());
 		Assert.assertNull(securityContext.getToken());
 	}
 

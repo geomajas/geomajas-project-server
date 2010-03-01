@@ -49,10 +49,10 @@ public class MarinoLoggedIn implements Command<EmptyCommandRequest, CommandRespo
 
 	public void execute(EmptyCommandRequest emptyCommandRequest, CommandResponse commandResponse) throws Exception {
 		if(securityContext.getToken() == null){
-			throw new GeomajasSecurityException(ExceptionCode.UNEXPECTED_PROBLEM);
+			throw new GeomajasSecurityException(ExceptionCode.TEST);
 		}
 		if(!"marino".equals(securityContext.getUserId())){
-			throw new GeomajasSecurityException(ExceptionCode.UNEXPECTED_PROBLEM);
+			throw new GeomajasSecurityException(ExceptionCode.TEST);
 		}
 	}
 }
