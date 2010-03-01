@@ -48,6 +48,13 @@ public interface InternalTile {
 	VectorTileContentType getContentType();
 
 	/**
+	 * Set the rendering method used.
+	 *
+	 * @param contentType content type
+	 */
+	void setContentType(VectorTileContentType contentType);
+
+	/**
 	 * Return the rendering of a tile's features. Depending on the rendering method used, the returned string will
 	 * contain an entire rendering (SVG/VML) or a URL.
 	 *
@@ -94,33 +101,118 @@ public interface InternalTile {
 
 	void addFeature(InternalFeature feature);
 
+	/**
+	 * Return the tile's width, expressed in world coordinates. In other words, expressed in the coordinates system of
+	 * the map wherein this tile's layer lies.
+	 *
+	 * @return tile width in world space
+	 */
 	double getTileWidth();
 
+	/**
+	 * Set the tile's width, expressed in world coordinates. In other words, expressed in the coordinates system of the
+	 * map wherein this tile's layer lies.
+	 *
+	 * @param tileWidth
+	 *            The tile's world space width.
+	 */
 	void setTileWidth(double tileWidth);
 
+	/**
+	 * Return the tile's height, expressed in world coordinates. In other words, expressed in the coordinates system of
+	 * the map wherein this tile's layer lies.
+	 *
+	 * @return tile height in world space
+	 */
 	double getTileHeight();
 
+	/**
+	 * Set the tile's height, expressed in world coordinates. In other words, expressed in the coordinates system of the
+	 * map wherein this tile's layer lies.
+	 *
+	 * @param tileHeight
+	 *            The tile's world space height.
+	 */
 	void setTileHeight(double tileHeight);
 
+	/**
+	 * Return the tile's width, expressed in client side pixels.
+	 *
+	 * @return tile width in client side pixels
+	 */
 	double getScreenWidth();
 
+	/**
+	 * Set the tile's width, expressed in client side pixels.
+	 *
+	 * @param screenWidth
+	 *            The new value.
+	 */
 	void setScreenWidth(double screenWidth);
 
+	/**
+	 * Return the tile's height, expressed in client side pixels.
+	 *
+	 * @return tile height in client side pixels
+	 */
 	double getScreenHeight();
 
+	/**
+	 * Set the tile's height, expressed in client side pixels.
+	 *
+	 * @param screenHeight
+	 *            The new value.
+	 */
 	void setScreenHeight(double screenHeight);
 
 	void addCode(int level, int x, int y);
 
+	/**
+	 * All tiles that have at least one feature that geographically intersects with this tile are called dependent
+	 * tiles. This list returns their codes.
+	 *
+	 * @return Return the list of tiles that are dependent on this one.
+	 */
 	List<TileCode> getCodes();
 
+	/**
+	 * All tiles that have at least one feature that geographically intersects with this tile are called dependent
+	 * tiles.
+	 *
+	 * @param codes
+	 *            Set the list of tiles that are dependent on this one.
+	 */
 	void setCodes(List<TileCode> codes);
 
+	/**
+	 * Returns whether or not at least one feature within this tile has been clipped. This may sometimes be necessary
+	 * when a feature's bounds are larger then the space allowed on the client side.
+	 *
+	 * @return true when at least one feature has a clipped geometry
+	 */
 	boolean isClipped();
 
+	/**
+	 * Set whether or not at least one feature within this tile has been clipped. This may sometimes be necessary when a
+	 * feature's bounds are larger then the space allowed on the client side.
+	 *
+	 * @param clipped
+	 *            The new value.
+	 */
 	void setClipped(boolean clipped);
 
+	/**
+	 * Returns the unique code for this tile. Consider this it's unique identifier within a vector layer.
+	 *
+	 * @return tile code
+	 */
 	TileCode getCode();
 
+	/**
+	 * Set the unique code for this tile. Consider this it's unique identifier within a vector layer.
+	 *
+	 * @param code
+	 *            The tile's code.
+	 */
 	void setCode(TileCode code);
 }

@@ -25,6 +25,7 @@ package org.geomajas.internal.rendering.strategy;
 
 import java.util.List;
 
+import org.geomajas.global.GeomajasException;
 import org.geomajas.internal.layer.feature.InternalFeatureImpl;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.InternalFeature;
@@ -93,9 +94,10 @@ public class TiledFeatureService {
 	 *            the maxScreenEnvelope.
 	 * @param transform
 	 *            Transformation between layer and map CRS. Needed to calculate correct tile bounds.
+	 * @throws GeomajasException oops
 	 */
 	public void fillTile(InternalTile tile, List<InternalFeature> features, VectorLayer layer, TileCode code,
-			double scale, Coordinate panOrigin, MathTransform transform) {
+			double scale, Coordinate panOrigin, MathTransform transform) throws GeomajasException {
 		for (InternalFeature feature : features) {
 			Geometry geometry = feature.getGeometry();
 

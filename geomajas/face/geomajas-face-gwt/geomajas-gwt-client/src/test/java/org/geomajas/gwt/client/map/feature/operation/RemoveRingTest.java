@@ -61,9 +61,7 @@ public class RemoveRingTest {
 		Polygon p = (Polygon) feature.getGeometry();
 		LinearRing r = p.getInteriorRingN(index.getInteriorRingIndex());
 		Assert.equals(60.0, r.getCoordinateN(0).getX());
-		System.out.println(feature.getGeometry().toWkt());
 		op.undo(feature);
-		System.out.println(feature.getGeometry().toWkt());
 		Assert.equals(polygon.toWkt(), feature.getGeometry().toWkt());
 	}
 
@@ -76,9 +74,7 @@ public class RemoveRingTest {
 		Polygon p = (Polygon) m.getGeometryN(index.getGeometryIndex());
 		LinearRing r = p.getInteriorRingN(index.getInteriorRingIndex());
 		Assert.equals(60.0, r.getCoordinateN(0).getX());
-		System.out.println(feature.getGeometry().toWkt());
 		op.undo(feature);
-		System.out.println(feature.getGeometry().toWkt());
 		Assert.equals(multiPolygon.toWkt(), feature.getGeometry().toWkt());
 	}
 }

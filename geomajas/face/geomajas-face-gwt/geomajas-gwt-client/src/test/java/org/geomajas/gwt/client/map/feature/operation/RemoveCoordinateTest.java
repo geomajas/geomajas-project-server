@@ -70,9 +70,7 @@ public class RemoveCoordinateTest {
 		op.execute(feature);
 		LineString l = (LineString) feature.getGeometry();
 		Assert.equals(30.0, l.getCoordinateN(index.getCoordinateIndex()).getX());
-		System.out.println(feature.getGeometry().toWkt());
 		op.undo(feature);
-		System.out.println(feature.getGeometry().toWkt());
 		Assert.equals(lineString.toWkt(), feature.getGeometry().toWkt());
 	}
 

@@ -38,16 +38,12 @@ import org.geomajas.rendering.RenderException;
 import org.geomajas.rendering.image.RasterUrlBuilder;
 import org.geomajas.rendering.painter.PaintFactory;
 import org.geomajas.rendering.painter.tile.TilePainter;
-import org.geomajas.rendering.strategy.RenderingStrategy;
 import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.VectorLayerService;
-import org.geotools.filter.text.cql2.CQL;
-import org.geotools.filter.text.cql2.CQLException;
 import org.opengis.filter.Filter;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import com.vividsolutions.jts.geom.Envelope;
 
@@ -70,15 +66,16 @@ import com.vividsolutions.jts.geom.Envelope;
  * </p>
  * 
  * @author Pieter De Graef
+ * @deprecated needs to be replaced by configuring the pipeline for VectorLayerService.getTile or getTileImage.
  */
-@Component()
-public class ExternalWmsRendering implements RenderingStrategy {
+@Deprecated
+public class ExternalWmsRendering /*implements RenderingStrategy*/ {
 
 	@Autowired
 	private ConfigurationService configurationService;
 
 	@Autowired
-	private FilterService filterCreator;
+	private FilterService filterService;
 
 	@Autowired
 	private PaintFactory paintFactory;
@@ -102,8 +99,6 @@ public class ExternalWmsRendering implements RenderingStrategy {
 	 * 
 	 * @param metadata
 	 *            The object that holds all the spatial and styling information for a tile.
-	 * @param application
-	 *            The application in which this tile is to be rendered.
 	 * @return Returns a completely rendered <code>RasterTile</code>.
 	 */
 	public InternalTile paint(TileMetadata metadata) throws RenderException {
@@ -117,10 +112,10 @@ public class ExternalWmsRendering implements RenderingStrategy {
 
 			// Prepare any filtering:
 			String geomName = vLayer.getLayerInfo().getFeatureInfo().getGeometryType().getName();
-			Filter filter = filterCreator.createBboxFilter(crs.getIdentifiers().iterator().next().toString(), tile
+			Filter filter = filterService.createBboxFilter(crs.getIdentifiers().iterator().next().toString(), tile
 					.getBbox(), geomName);
 			if (metadata.getFilter() != null) {
-				filter = filterCreator.createLogicFilter(CQL.toFilter(metadata.getFilter()), "and", filter);
+				filter = filterService.createAndFilter(filterService.parseFilter(metadata.getFilter()), filter);
 			}
 
 			// Create a FeaturePainter and paint the features:
@@ -132,8 +127,6 @@ public class ExternalWmsRendering implements RenderingStrategy {
 			tile.setFeatures(features);
 			TilePainter tilePainter = paintFactory.createRasterTilePainter(new WmsUrlBuilder(tile, layerName));
 			return tilePainter.paint(tile);
-		} catch (CQLException cqle) {
-			throw new RenderException(cqle, ExceptionCode.FILTER_PARSE_PROBLEM, metadata.getFilter());
 		} catch (RenderException re) {
 			throw re;
 		} catch (GeomajasException ge) {

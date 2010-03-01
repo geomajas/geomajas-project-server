@@ -57,8 +57,8 @@ import java.util.Stack;
 /**
  * <p>
  * GraphicsDocument implementation for writing VML documents. This document is
- * used when painting a tile's VML when the <code>VectorRendering</code>
- * rendering strategy is used, and the renderer specifies VML.
+ * used when painting a tile's VML in {@link org.geomajas.internal.service.vector.GetTileStringContentStep},
+ * and the renderer specifies VML.
  * </p>
  *
  * @author Pieter De Graef

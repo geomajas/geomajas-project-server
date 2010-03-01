@@ -46,7 +46,6 @@ import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
 import org.geomajas.service.VectorLayerService;
-import org.geotools.filter.text.cql2.CQL;
 import org.geotools.referencing.CRS;
 import org.opengis.filter.Filter;
 import org.slf4j.Logger;
@@ -104,7 +103,7 @@ public class VectorLayerComponent extends BaseLayerComponent {
 
 	private GeoService geoService;
 
-	private FilterService filterCreator;
+	private FilterService filterService;
 
 	private VectorLayerService layerService;
 
@@ -112,9 +111,9 @@ public class VectorLayerComponent extends BaseLayerComponent {
 		// todo needed for JAXB but looses the services, causing NPE later on
 	}
 
-	public VectorLayerComponent(GeoService geoService, FilterService filterCreator, VectorLayerService layerService) {
+	public VectorLayerComponent(GeoService geoService, FilterService filterService, VectorLayerService layerService) {
 		this.geoService = geoService;
-		this.filterCreator = filterCreator;
+		this.filterService = filterService;
 		this.layerService = layerService;
 
 		// stretch to map
@@ -144,9 +143,9 @@ public class VectorLayerComponent extends BaseLayerComponent {
 				GeometryFactory factory = new GeometryFactory(new PrecisionModel(Math.pow(10, map.getPrecision())),
 						geoService.getSridFromCrs(map.getCrs()));
 
-				Filter filter = filterCreator.createIntersectsFilter(factory.toGeometry(bbox), geomName);
+				Filter filter = filterService.createIntersectsFilter(factory.toGeometry(bbox), geomName);
 				if (getFilter() != null) {
-					filter = filterCreator.createLogicFilter(CQL.toFilter(getFilter()), "and", filter);
+					filter = filterService.createAndFilter(filterService.parseFilter(getFilter()), filter);
 				}
 
 				features = layerService.getFeatures(getLayerId(), CRS.decode(map.getCrs()), filter, styleInfo,

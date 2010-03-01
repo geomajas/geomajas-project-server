@@ -40,7 +40,6 @@ import org.geomajas.layer.tile.VectorTile.VectorTileContentType;
 import org.geomajas.rendering.RenderException;
 import org.geomajas.rendering.image.RasterUrlBuilder;
 import org.geomajas.rendering.painter.tile.TilePainter;
-import org.geomajas.rendering.strategy.RenderingStrategy;
 import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.VectorLayerService;
@@ -49,7 +48,6 @@ import org.geotools.filter.text.cql2.CQLException;
 import org.opengis.filter.Filter;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 /**
  * <p>
@@ -64,9 +62,10 @@ import org.springframework.stereotype.Component;
  * </p>
  * 
  * @author Pieter De Graef
+ * @deprecated needs to be replaced by configuring the pipeline for VectorLayerService.getTile or getTileImage.
  */
-@Component()
-public class ImageRendering implements RenderingStrategy {
+@Deprecated
+public class ImageRendering /*implements RenderingStrategy*/ {
 
 	@Autowired
 	private ConfigurationService runtime;

@@ -36,6 +36,7 @@ public interface PipelineCode {
 	String PIPELINE_GET_FEATURES = "vectorLayer.getFeatures";
 	String PIPELINE_GET_BOUNDS = "vectorLayer.getBounds";
 	String PIPELINE_GET_OBJECTS = "vectorLayer.getObjects";
+	String PIPELINE_GET_VECTOR_TILE = "vectorLayer.getTile";
 
 	String LAYER_ID_KEY = "layerId"; // String
 	String LAYER_KEY = "layer"; // Layer
@@ -56,5 +57,6 @@ public interface PipelineCode {
 	String ATTRIBUTE_NAME_KEY = "attributeName"; // String
 	String INDEX_KEY = "index"; // Integer
 	String FEATURE_DATA_OBJECT_KEY = "featureDataObject"; // Object
+	String TILE_METADATA_KEY = "tileMetadata"; // TileMetadata
 
 }

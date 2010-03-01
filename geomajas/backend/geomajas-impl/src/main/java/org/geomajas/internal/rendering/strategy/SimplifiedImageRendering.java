@@ -27,7 +27,6 @@ import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.layer.tile.TileMetadata;
 import org.geomajas.rendering.RenderException;
-import org.geomajas.rendering.strategy.RenderingStrategy;
 
 /**
  * This class does exactly the same than ImageRendering. The only difference is that this renderer will not return
@@ -36,8 +35,10 @@ import org.geomajas.rendering.strategy.RenderingStrategy;
  * 
  * @author Oliver May
  * @author Pieter De Graef
+ * @deprecated needs to be replaced by configuring the pipeline for VectorLayerService.getTile or getTileImage.
  */
-public class SimplifiedImageRendering implements RenderingStrategy {
+@Deprecated
+public class SimplifiedImageRendering /*implements RenderingStrategy*/ {
 
 	/* Rendering strategy to delegate to */
 	private ImageRendering rendering = new ImageRendering();
@@ -56,8 +57,7 @@ public class SimplifiedImageRendering implements RenderingStrategy {
 		for (InternalFeature feature : paintedTile.getFeatures()) {
 			String geometryType = feature.getGeometry().getGeometryType();
 			if ("MultiPolygon".equals(geometryType) || "Polygon".equals(geometryType)) {
-				// feature.setGeometry(feature.getGeometry().getBbox());
-				feature.setGeometry(null);
+				feature.setGeometry(feature.getGeometry().getEnvelope());
 			}
 		}
 		return paintedTile;

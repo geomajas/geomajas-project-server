@@ -58,8 +58,8 @@ import java.util.Stack;
 /**
  * <p>
  * GraphicsDocument implementation for writing VML documents. This document is
- * used when painting a tile's SVG when the <code>VectorRendering</code>
- * rendering strategy is used, and the renderer specifies SVG.
+ * used when painting a tile's SVG in {@link org.geomajas.internal.service.vector.GetTileStringContentStep}, 
+ * and the renderer specifies SVG.
  * </p>
  *
  * @author Pieter De Graef

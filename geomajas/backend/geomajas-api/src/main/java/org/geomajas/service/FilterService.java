@@ -25,6 +25,7 @@ package org.geomajas.service;
 
 import java.util.Date;
 
+import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.feature.FeatureModel;
 import org.opengis.filter.Filter;
 
@@ -223,4 +224,13 @@ public interface FilterService {
 	 * @return new filter combining the parameters using "and"
 	 */
 	Filter createAndFilter(Filter left, Filter right);
+
+	/**
+	 * Parse a string to build a filter object.
+	 *
+	 * @param filter filter as string
+	 * @return actual filter
+	 * @throws GeomajasException could not parse string to filter
+	 */
+	Filter parseFilter(String filter) throws GeomajasException;
 }

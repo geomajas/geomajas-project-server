@@ -59,7 +59,7 @@ import com.vividsolutions.jts.geom.Envelope;
 
 /**
  * <p>
- * TilePainter implementation for {@link InternalVectorTile} objects.
+ * TilePainter implementation for {@link InternalTile} objects.
  * </p>
  * 
  * @author Pieter De Graef
@@ -155,6 +155,8 @@ public class StringContentTilePainter implements TilePainter {
 	 * @param panOrigin
 	 *            The current origin may differ, depending on whether or not the client has been panning.Needed for
 	 *            creating the world to view space coordinate transformer.
+	 * @param geoService geo service for geometry conversions
+	 * @param targetCrs target crs
 	 */
 	public StringContentTilePainter(VectorLayer layer, NamedStyleInfo style, String renderer, double scale,
 			Coordinate panOrigin, GeoService geoService, CoordinateReferenceSystem targetCrs) {

@@ -26,11 +26,15 @@ package org.geomajas.internal.service;
 import java.util.Date;
 import java.util.HashSet;
 
+import org.geomajas.global.ExceptionCode;
+import org.geomajas.global.GeomajasException;
 import org.geomajas.internal.layer.feature.FeatureModelRegistry;
 import org.geomajas.layer.feature.FeatureModel;
 import org.geomajas.service.FilterService;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.filter.identity.FeatureIdImpl;
+import org.geotools.filter.text.cql2.CQL;
+import org.geotools.filter.text.cql2.CQLException;
 import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory2;
 import org.opengis.filter.expression.Expression;
@@ -339,4 +343,14 @@ public final class FilterServiceImpl implements FilterService {
 	public Filter createAndFilter(Filter left, Filter right) {
 		return FF.and(left, right);
 	}
+
+	/** @inheritDoc */
+	public Filter parseFilter(String filter) throws GeomajasException {
+		try {
+			return CQL.toFilter(filter);
+		} catch (CQLException e) {
+			throw new GeomajasException(e, ExceptionCode.FILTER_PARSE_PROBLEM, filter);
+		}
+	}
+
 }

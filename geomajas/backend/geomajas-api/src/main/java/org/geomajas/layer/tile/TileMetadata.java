@@ -99,4 +99,20 @@ public interface TileMetadata {
 
 	void setPaintLabels(boolean paintLabels);
 
+	/**
+	 * Get which data should be included in the features. For possible values, see
+	 * {@link org.geomajas.service.VectorLayerService}.
+	 *
+	 * @return what to include
+	 */
+	int getFeatureInclude();
+
+	/**
+	 * Set the data to include in the features which are returned. For possible values, see
+	 * {@link org.geomajas.service.VectorLayerService}.
+	 *
+	 * @param featureInclude what the include
+	 */
+	void setFeatureInclude(int featureInclude);
+
 }

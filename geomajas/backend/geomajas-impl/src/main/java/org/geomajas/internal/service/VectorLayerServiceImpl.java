@@ -30,9 +30,12 @@ import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.global.GeomajasSecurityException;
+import org.geomajas.internal.layer.tile.InternalTileImpl;
 import org.geomajas.internal.service.vector.GetBoundsContainer;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.InternalFeature;
+import org.geomajas.layer.tile.InternalTile;
+import org.geomajas.layer.tile.TileMetadata;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
 import org.geomajas.service.pipeline.PipelineService;
@@ -148,6 +151,22 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 		context.put(PipelineCode.ATTRIBUTE_NAME_KEY, attributeName);
 		List<Object> response = new ArrayList<Object>();
 		pipelineService.execute(PipelineCode.PIPELINE_GET_OBJECTS, layerId, context, response);
+		return response;
+	}
+
+	public InternalTile getTile(TileMetadata tileMetadata) throws GeomajasException {
+		String layerId = tileMetadata.getLayerId();
+		VectorLayer layer = getVectorLayer(layerId);
+		PipelineContext context = pipelineService.createContext();
+		context.put(PipelineCode.LAYER_ID_KEY, layerId);
+		context.put(PipelineCode.LAYER_KEY, layer);
+		context.put(PipelineCode.TILE_METADATA_KEY, tileMetadata);
+		context.put(PipelineCode.CRS_CODE_KEY, tileMetadata.getCrs());
+		CoordinateReferenceSystem crs = configurationService.getCrs(tileMetadata.getCrs());
+		context.put(PipelineCode.CRS_KEY, crs);
+		context.put(PipelineCode.CRS_TRANSFORM_KEY, geoService.findMathTransform(crs, layer.getCrs()));
+		InternalTile response = new InternalTileImpl(tileMetadata.getCode(), layer, tileMetadata.getScale());
+		pipelineService.execute(PipelineCode.PIPELINE_GET_VECTOR_TILE, layerId, context, response);
 		return response;
 	}
 }

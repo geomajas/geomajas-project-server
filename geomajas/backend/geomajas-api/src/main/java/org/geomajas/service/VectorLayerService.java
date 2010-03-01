@@ -28,6 +28,8 @@ import java.util.List;
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.feature.InternalFeature;
+import org.geomajas.layer.tile.InternalTile;
+import org.geomajas.layer.tile.TileMetadata;
 import org.opengis.filter.Filter;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
@@ -113,7 +115,7 @@ public interface VectorLayerService {
 	 * @param layerId id of layer to get features from
 	 * @param crs which should be used for the geometries in the features
 	 * @param filter filter to be applied
-	 * @param styleInfo style to apply
+	 * @param style style to apply
 	 * @param featureIncludes indicate which data to include in the features
 	 * @param offset Skip the first 'offset' features in the result. This is meant for paging.
 	 * @param maxResultSize Limit the result to a maximum number of features. Can be used for paging.
@@ -147,4 +149,17 @@ public interface VectorLayerService {
 	 */
 	@Deprecated
 	List<Object> getObjects(String layerId, String attributeName, Filter filter) throws GeomajasException;
+
+	/**
+	 * Get a vector tile for the request tile.
+	 *
+	 * @param tileMetadata description of the tile
+	 * @return internal vector tile
+	 * @throws GeomajasException oops
+	 */
+	InternalTile getTile(TileMetadata tileMetadata) throws GeomajasException;
+
+	/*
+	void getTileImage(String layerId, InternalTile tile, OutputStream destination) throws GeomajasException;
+	*/
 }

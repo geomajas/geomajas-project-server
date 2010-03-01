@@ -37,8 +37,6 @@ import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.VectorLayerService;
-import org.geotools.filter.text.cql2.CQL;
-import org.geotools.filter.text.cql2.CQLException;
 import org.opengis.filter.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -60,7 +58,7 @@ public class SearchFeatureCommand implements Command<SearchFeatureRequest, Searc
 	private DtoConverterService converter;
 
 	@Autowired
-	private FilterService filterCreator;
+	private FilterService filterService;
 
 	@Autowired
 	private VectorLayerService layerService;
@@ -99,44 +97,36 @@ public class SearchFeatureCommand implements Command<SearchFeatureRequest, Searc
 
 	private Filter createFilter(SearchFeatureRequest request, String layerId) throws GeomajasException {
 		Filter f = null;
-		VectorLayer layer = (VectorLayer) configurationService.getLayer(layerId);
+		VectorLayer layer = configurationService.getVectorLayer(layerId);
 		String idName = layer.getLayerInfo().getFeatureInfo().getIdentifier().getName();
 		for (SearchCriterion criterion : request.getCriteria()) {
-			try {
-				Filter temp;
-				if (criterion.getAttributeName().equals(idName)) {
-					temp = filterCreator.createFidFilter(new String[] { criterion.getValue() });
-				} else {
-					String c = criterion.toString().replace('*', '%').replace('?', '_');
-					temp = CQL.toFilter(c);
-				}
-				if (f == null) {
-					f = temp;
-				} else {
-					f = filterCreator.createLogicFilter(f, request.getBooleanOperator(), temp);
-				}
-			} catch (CQLException e) {
-				throw new GeomajasException(e, ExceptionCode.FILTER_APPLY_PROBLEM, criterion.toString());
+			Filter temp;
+			if (criterion.getAttributeName().equals(idName)) {
+				temp = filterService.createFidFilter(new String[] { criterion.getValue() });
+			} else {
+				String c = criterion.toString().replace('*', '%').replace('?', '_');
+				temp = filterService.parseFilter(c);
+			}
+			if (f == null) {
+				f = temp;
+			} else {
+				f = filterService.createLogicFilter(f, request.getBooleanOperator(), temp);
 			}
 		}
 
 		// AND the layer filter
 		String filter = request.getFilter();
 		if (filter != null) {
-			try {
-				if (f == null) {
-					f = CQL.toFilter(filter);
-				} else {
-					f = filterCreator.createLogicFilter(CQL.toFilter(filter), "and", f);
-				}
-			} catch (CQLException e) {
-				throw new GeomajasException(e, ExceptionCode.FILTER_APPLY_PROBLEM, filter);
+			if (f == null) {
+				f = filterService.parseFilter(filter);
+			} else {
+				f = filterService.createAndFilter(filterService.parseFilter(filter), f);
 			}
 		}
 
 		// If f is still null:
 		if (f == null) {
-			f = filterCreator.createTrueFilter();
+			f = filterService.createTrueFilter();
 		}
 
 		return f;

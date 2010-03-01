@@ -203,7 +203,11 @@ public class InternalTileImpl implements InternalTile {
 		this.codes = codes;
 	}
 
-	/** Returns the unique code for this tile. Consider this it's unique identifier within a vector layer. */
+	/**
+	 * Returns the unique code for this tile. Consider this it's unique identifier within a vector layer.
+	 *
+	 * @return tile code
+	 */
 	public TileCode getCode() {
 		return code;
 	}
@@ -221,6 +225,8 @@ public class InternalTileImpl implements InternalTile {
 	/**
 	 * Return the tile's width, expressed in world coordinates. In other words, expressed in the coordinates system of
 	 * the map wherein this tile's layer lies.
+	 *
+	 * @return tile width in world space
 	 */
 	public double getTileWidth() {
 		return tileWidth;
@@ -240,6 +246,8 @@ public class InternalTileImpl implements InternalTile {
 	/**
 	 * Return the tile's height, expressed in world coordinates. In other words, expressed in the coordinates system of
 	 * the map wherein this tile's layer lies.
+	 *
+	 * @return tile height in world space
 	 */
 	public double getTileHeight() {
 		return tileHeight;
@@ -256,7 +264,11 @@ public class InternalTileImpl implements InternalTile {
 		this.tileHeight = tileHeight;
 	}
 
-	/** Return the tile's width, expressed in client side pixels. */
+	/**
+	 * Return the tile's width, expressed in client side pixels.
+	 *
+	 * @return tile width in client side pixels
+	 */
 	public double getScreenWidth() {
 		return screenWidth;
 	}
@@ -271,7 +283,11 @@ public class InternalTileImpl implements InternalTile {
 		this.screenWidth = screenWidth;
 	}
 
-	/** Return the tile's height, expressed in client side pixels. */
+	/**
+	 * Return the tile's height, expressed in client side pixels.
+	 *
+	 * @return tile height in client side pixels
+	 */
 	public double getScreenHeight() {
 		return screenHeight;
 	}
@@ -289,6 +305,8 @@ public class InternalTileImpl implements InternalTile {
 	/**
 	 * Returns whether or not at least one feature within this tile has been clipped. This may sometimes be necessary
 	 * when a feature's bounds are larger then the space allowed on the client side.
+	 *
+	 * @return true when at least one feature has a clipped geometry
 	 */
 	public boolean isClipped() {
 		return clipped;

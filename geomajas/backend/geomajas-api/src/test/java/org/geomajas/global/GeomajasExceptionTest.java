@@ -74,7 +74,6 @@ public class GeomajasExceptionTest extends TestCase {
 	public void testMissingDifferentResourceBundle() {
 		try {
 			TestException exc = new TestException("test.bad.bundlename");
-			System.out.println(exc.getMessage());
 			fail("should have thrown MissingResourceException");
 			// if we come here it means the getResourceBundleName() method was not used
 		} catch (MissingResourceException e) {

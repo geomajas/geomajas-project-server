@@ -27,14 +27,9 @@ import org.geomajas.command.dto.GetRenderedTileRequest;
 import org.geomajas.command.dto.GetRenderedTileResponse;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
-import org.geomajas.global.GeomajasSecurityException;
-import org.geomajas.layer.VectorLayer;
-import org.geomajas.layer.tile.InternalTile;
-import org.geomajas.rendering.strategy.RenderingStrategy;
-import org.geomajas.rendering.strategy.RenderingStrategyFactory;
-import org.geomajas.security.SecurityContext;
 import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.DtoConverterService;
+import org.geomajas.service.VectorLayerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,13 +51,10 @@ public class GetRenderedTileCommand implements Command<GetRenderedTileRequest, G
 	private ConfigurationService runtimeParameters;
 
 	@Autowired
-	private RenderingStrategyFactory renderingStrategyFactory;
-
-	@Autowired
 	private DtoConverterService converter;
 
 	@Autowired
-	private SecurityContext securityContext;
+	private VectorLayerService layerService;
 
 	public GetRenderedTileResponse getEmptyCommandResponse() {
 		return new GetRenderedTileResponse();
@@ -77,17 +69,7 @@ public class GetRenderedTileCommand implements Command<GetRenderedTileRequest, G
 		if (null == request.getCrs()) {
 			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "crs");
 		}
-		if (!securityContext.isLayerVisible(layerId)) {
-			log.info("layer layer {}, crs {} not visible", layerId, request.getCrs());
-			throw new GeomajasSecurityException(ExceptionCode.LAYER_NOT_VISIBLE, layerId, securityContext.getUserId());
-		}
 
-		VectorLayer vLayer = runtimeParameters.getVectorLayer(request.getLayerId());
-		if (vLayer == null) {
-			throw new GeomajasException(ExceptionCode.LAYER_NOT_FOUND, request.getLayerId());
-		}
-		RenderingStrategy strategy = renderingStrategyFactory.createRenderingStrategy(vLayer.getLayerInfo(), request);
-		InternalTile tile = strategy.paint(request);
-		response.setTile(converter.toDto(tile));
+		response.setTile(converter.toDto(layerService.getTile(request)));
 	}
 }

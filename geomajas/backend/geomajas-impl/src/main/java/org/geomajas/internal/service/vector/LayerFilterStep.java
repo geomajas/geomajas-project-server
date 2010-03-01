@@ -23,7 +23,6 @@
 
 package org.geomajas.internal.service.vector;
 
-import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.security.SecurityContext;
@@ -31,8 +30,6 @@ import org.geomajas.service.FilterService;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
 import org.geomajas.service.pipeline.PipelineStep;
-import org.geotools.filter.text.cql2.CQL;
-import org.geotools.filter.text.cql2.CQLException;
 import org.opengis.filter.Filter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -81,11 +78,7 @@ public class LayerFilterStep implements PipelineStep<Object> {
 		// apply default filter
 		String defaultFilter = layer.getLayerInfo().getFilter();
 		if (null != defaultFilter) {
-			try {
-				filter = and(filter, CQL.toFilter(defaultFilter));
-			} catch (CQLException ce) {
-				throw new GeomajasException(ce, ExceptionCode.FILTER_APPLY_PROBLEM, defaultFilter);
-			}
+			filter = and(filter, filterService.parseFilter(defaultFilter));
 		}
 
 		// apply visible area filter

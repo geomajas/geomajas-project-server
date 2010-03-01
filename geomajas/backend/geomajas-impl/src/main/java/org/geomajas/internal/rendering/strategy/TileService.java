@@ -118,8 +118,11 @@ public final class TileService {
 	 * @param transform
 	 *            The transformation object.
 	 * @return Returns the transformed bounding box for the given tile.
+	 * @throws GeomajasException
+	 *             oops
 	 */
-	public static Envelope getTransformedTileBounds(InternalTile tile, VectorLayer layer, MathTransform transform) {
+	public static Envelope getTransformedTileBounds(InternalTile tile, VectorLayer layer, MathTransform transform)
+			throws GeomajasException {
 		if (tile.getTileWidth() == 0) {
 			return null;
 		}
@@ -127,9 +130,12 @@ public final class TileService {
 		double cX = max.getX() + tile.getCode().getX() * tile.getTileWidth();
 		double cY = max.getY() + tile.getCode().getY() * tile.getTileHeight();
 		Envelope tileBounds = new Envelope(cX, cX + tile.getTileWidth(), cY, cY + tile.getTileHeight());
-		try {
-			tileBounds = JTS.transform(tileBounds, transform);
-		} catch (TransformException e) {
+		if (null != transform) {
+			try {
+				tileBounds = JTS.transform(tileBounds, transform);
+			} catch (TransformException e) {
+				throw new GeomajasException(e);
+			}
 		}
 		return tileBounds;
 	}
