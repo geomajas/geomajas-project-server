@@ -38,21 +38,11 @@ public class LayerInfo implements Serializable {
 
 	private static final long serialVersionUID = 151L;
 	@NotNull
-	private String id;
-	@NotNull
 	private LayerType layerType;
 	@NotNull
 	private String crs;
 	private Bbox maxExtent = Bbox.ALL;
 	private int maxTileLevel;
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
 
 	public LayerType getLayerType() {
 		return layerType;

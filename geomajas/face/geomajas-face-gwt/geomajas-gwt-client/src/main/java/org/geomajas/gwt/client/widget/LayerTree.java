@@ -279,7 +279,7 @@ public class LayerTree extends Canvas implements LeafClickHandler, FolderClickHa
 
 		// (final leafs)
 		for (ClientLayerInfo info : treeNode.getLayers()) {
-			Layer<?> layer = mapModel.getLayerByLayerId(info.getId());
+			Layer<?> layer = mapModel.getLayerByLayerId(info.getServerLayerId());
 			tree.add(new LayerTreeTreeNode(this.tree, layer), node);
 		}
 

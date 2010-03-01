@@ -94,6 +94,16 @@ public class GoogleLayer implements RasterLayer {
 	private RasterLayerInfo layerInfo;
 
 	private CoordinateReferenceSystem crs;
+	
+	private String id;
+	
+	public String getId() {
+		return id;
+	}
+	
+	public void setId(String id) {
+		this.id = id;
+	}
 
 	public CoordinateReferenceSystem getCrs() {
 		return crs;
@@ -103,10 +113,10 @@ public class GoogleLayer implements RasterLayer {
 		try {
 			crs = CRS.decode(layerInfo.getCrs());
 		} catch (NoSuchAuthorityCodeException exception) {
-			throw new LayerException(exception, ExceptionCode.LAYER_CRS_UNKNOWN_AUTHORITY, layerInfo.getId(),
+			throw new LayerException(exception, ExceptionCode.LAYER_CRS_UNKNOWN_AUTHORITY, getId(),
 					getLayerInfo().getCrs());
 		} catch (FactoryException exception) {
-			throw new LayerException(exception, ExceptionCode.LAYER_CRS_PROBLEMATIC, layerInfo.getId(), getLayerInfo()
+			throw new LayerException(exception, ExceptionCode.LAYER_CRS_PROBLEMATIC, getId(), getLayerInfo()
 					.getCrs());
 		}
 	}
@@ -220,7 +230,7 @@ public class GoogleLayer implements RasterLayer {
 					int x = xScreenUpperLeft + (i - iMin) * screenWidth;
 					int y = yScreenUpperLeft - (j - jMin) * screenWidth;
 
-					RasterTile image = new RasterTile(new Bbox(x, -y, screenWidth, screenWidth), getLayerInfo().getId()
+					RasterTile image = new RasterTile(new Bbox(x, -y, screenWidth, screenWidth), getId()
 							+ "." + tileLevel + "." + i + "," + j);
 					image.setCode(new TileCode(tileLevel, i, j));
 					image.setUrl(getLayerName());

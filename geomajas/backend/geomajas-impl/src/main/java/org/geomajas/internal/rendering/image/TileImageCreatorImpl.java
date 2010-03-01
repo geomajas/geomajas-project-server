@@ -287,7 +287,7 @@ public class TileImageCreatorImpl implements TileImageCreator {
 		String geomName = layer.getLayerInfo().getFeatureInfo().getGeometryType().getName();
 		Filter filter = filterService.createBboxFilter(tileContext.getCoordinateReferenceSystem().getIdentifiers()
 				.iterator().next().toString(), tileContext.getAreaOfInterest(), geomName);
-		List<InternalFeature> features = layerService.getFeatures(layer.getLayerInfo().getId(), null, filter,
+		List<InternalFeature> features = layerService.getFeatures(layer.getId(), null, filter,
 				layer.getStyleInfo(), VectorLayerService.FEATURE_INCLUDE_ALL);
 		// ---------------------------------------------------------------------
 		// Step2: Transform the layer objects to features:

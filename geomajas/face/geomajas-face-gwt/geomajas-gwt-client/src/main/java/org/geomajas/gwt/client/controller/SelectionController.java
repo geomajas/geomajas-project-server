@@ -216,7 +216,7 @@ public class SelectionController extends RectangleController {
 		if (layer != null && layer instanceof VectorLayer) {
 			GwtCommand commandRequest = new GwtCommand("command.feature.SearchByLocation");
 			SearchByLocationRequest request = new SearchByLocationRequest();
-			request.setLayerIds(new String[] { layer.getLayerInfo().getId() });
+			request.setLayerIds(new String[] { layer.getId() });
 			Polygon polygon = mapWidget.getMapModel().getGeometryFactory().createPolygon(selectedArea);
 			request.setLocation(GeometryConverter.toDto(polygon));
 			request.setCrs(mapWidget.getMapModel().getCrs());

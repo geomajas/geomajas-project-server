@@ -85,7 +85,7 @@ public class UserMaximumExtentCommand implements Command<UserMaximumExtentReques
 			for (String layer : includeLayers.split(",")) {
 				Layer<?> l = runtimeParameters.getLayer(layer.trim());
 				if (!excludeRasterLayers || l.getLayerInfo().getLayerType() != LayerType.RASTER) {
-					tempLayers.add(l.getLayerInfo().getId());
+					tempLayers.add(l.getId());
 				}
 			}
 		}

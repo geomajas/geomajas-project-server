@@ -187,7 +187,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 	</bean>
 	
 	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="countriesLayer">
-		<property name="layerInfo" ref="countriesInfo" />
+		<property name="serverLayerId" value="countries" />
 		<property name="label" value="Countries of Africa"/>
 		<property name="visible" value="true"/>
 		<property name="viewScaleMin" value="0"/>
@@ -196,7 +196,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 	</bean>
 
 	<bean class="org.geomajas.configuration.client.ClientRasterLayerInfo" id="bluemarbleLayer">
-		<property name="layerInfo" ref="bluemarbleInfo" />
+		<property name="serverLayerId" value="bluemarble" />
 	  	<property name="label" value="NASA Blue Marble - WMS"/>
 		<property name="visible" value="true"/>
 		<property name="viewScaleMin" value="0"/>

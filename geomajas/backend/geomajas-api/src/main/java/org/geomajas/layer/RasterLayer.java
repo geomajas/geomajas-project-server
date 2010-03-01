@@ -46,6 +46,6 @@ public interface RasterLayer extends Layer<RasterLayerInfo> {
 	 * @return a list of raster images that covers the bounds
 	 * @throws RenderException oops
 	 */
-	List<RasterTile> paint(String boundsCrs, Envelope bounds, double scale) throws RenderException;
+	List<RasterTile> paint(String boundsCRS, Envelope bounds, double scale) throws RenderException;
 	
 }

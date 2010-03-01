@@ -161,7 +161,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 	</bean>
 
 	<bean class="org.geomajas.configuration.client.ClientRasterLayerInfo" id="osmLayer">
-		<property name="layerInfo" ref="osmInfo" />
+		<property name="serverLayerId" value="osm" />
 		<property name="label" value="OpenStreetMap (raster)" />
 		<property name="visible" value="true" />
 		<property name="viewScaleMin" value="0" />
@@ -170,7 +170,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 	</bean>
 
 	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="roadsLayer">
-		<property name="layerInfo" ref="roadsInfo" />
+		<property name="serverLayerId" value="roads" />
 		<property name="label" value="Roads (editable - linestring)" />
 		<property name="visible" value="true" />
 		<property name="viewScaleMin" value="0" />
@@ -181,14 +181,14 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 				<bean class="org.geomajas.configuration.SnappingRuleInfo">
 					<property name="distance" value="10" />
 					<property name="type" value="NEAREST_POINT" />
-					<property name="layerInfo" ref="roadsInfo" />
+					<property name="serverLayerId" ref="roads" />
 				</bean>
 			</list>
 		</property>
 	</bean>
 
 	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="structuresLayer">
-		<property name="layerInfo" ref="structuresInfo" />
+		<property name="serverLayerId" value="structures" />
 		<property name="label" value="Structures (editable - polygon)" />
 		<property name="visible" value="true" />
 		<property name="viewScaleMin" value="0" />
@@ -199,7 +199,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 				<bean class="org.geomajas.configuration.SnappingRuleInfo">
 					<property name="distance" value="10" />
 					<property name="type" value="NEAREST_POINT" />
-					<property name="layerInfo" ref="structuresInfo" />
+					<property name="serverLayerId" value="structures" />
 				</bean>
 			</list>
 		</property>

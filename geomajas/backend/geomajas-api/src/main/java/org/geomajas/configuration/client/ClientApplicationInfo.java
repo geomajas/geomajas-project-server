@@ -46,9 +46,9 @@ public class ClientApplicationInfo implements Serializable {
 	private int screenDpi = 96;
 
 	/**
-	 * Get the id for this application.
+	 * Get the unique id for this application (auto-copied from Spring context).
 	 * 
-	 * @return url start for this application
+	 * @return id unique id
 	 */
 	public String getId() {
 		return id;
@@ -58,12 +58,11 @@ public class ClientApplicationInfo implements Serializable {
 	 * Set the id for this application.
 	 * 
 	 * @param value
-	 *            start for this application
+	 *            id unique id
 	 */
 	public void setId(String value) {
 		this.id = value;
 	}
-
 
 	/**
 	 * Get the list of maps for this application.

@@ -64,8 +64,7 @@ public class GeomajasContextListener implements ServletContextListener {
 			while (st.hasMoreTokens()) {
 				allContextLocations.add(st.nextToken());
 			}
-		}
-		
+		}		
 		ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext();
 		applicationContext.setConfigLocations(allContextLocations.toArray((new String[allContextLocations.size()])));
 		applicationContext.refresh();

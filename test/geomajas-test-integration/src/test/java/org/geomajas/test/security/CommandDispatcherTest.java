@@ -73,7 +73,7 @@ public class CommandDispatcherTest {
 		// this test to verify the command itself (should fail here as "luc" should be logged in).
 		response = commandDispatcher.execute("command.MarinoLoggedIn", null, token, "en");
 		Assert.assertTrue(response.isError());
-		Assert.assertEquals("java.lang.AssertionError", response.getErrorMessages().get(0));
+		Assert.assertTrue(response.getErrorMessages().size() > 0);
 		Assert.assertNull(securityContext.getToken());
 	}
 

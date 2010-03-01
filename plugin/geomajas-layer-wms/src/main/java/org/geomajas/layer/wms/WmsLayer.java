@@ -86,6 +86,16 @@ public class WmsLayer implements RasterLayer {
 
 	private CoordinateReferenceSystem crs;
 
+	private String id;
+	
+	public String getId() {
+		return id;
+	}
+	
+	public void setId(String id) {
+		this.id = id;
+	}
+
 	public RasterLayerInfo getLayerInfo() {
 		return layerInfo;
 	}
@@ -98,10 +108,10 @@ public class WmsLayer implements RasterLayer {
 		try {
 			crs = CRS.decode(layerInfo.getCrs());
 		} catch (NoSuchAuthorityCodeException e) {
-			throw new LayerException(e, ExceptionCode.LAYER_CRS_UNKNOWN_AUTHORITY, layerInfo.getId(), getLayerInfo()
+			throw new LayerException(e, ExceptionCode.LAYER_CRS_UNKNOWN_AUTHORITY, getId(), getLayerInfo()
 					.getCrs());
 		} catch (FactoryException exception) {
-			throw new LayerException(exception, ExceptionCode.LAYER_CRS_PROBLEMATIC, layerInfo.getId(), getLayerInfo()
+			throw new LayerException(exception, ExceptionCode.LAYER_CRS_PROBLEMATIC, getId(), getLayerInfo()
 					.getCrs());
 		}
 	}
@@ -120,7 +130,7 @@ public class WmsLayer implements RasterLayer {
 		DecimalFormatSymbols symbols = new DecimalFormatSymbols();
 		symbols.setDecimalSeparator('.');
 		decimalFormat.setDecimalFormatSymbols(symbols);
-		layerId = layerInfo.getId();
+		layerId = getId();
 		if (layerInfo.getDataSourceName() != null) {
 			layerId = layerInfo.getDataSourceName();
 		}
@@ -186,7 +196,7 @@ public class WmsLayer implements RasterLayer {
 							- Math.round(scale * worldBox.getX()), Math.round(scale * worldBox.getMaxY())
 							- Math.round(scale * worldBox.getY()));
 
-					RasterTile image = new RasterTile(screenbox, getLayerInfo().getId() + "."
+					RasterTile image = new RasterTile(screenbox, getId() + "."
 							+ bestResolution.getLevel() + "." + i + "," + j);
 
 					image.setCode(new TileCode(bestResolution.getLevel(), i, j));
@@ -232,7 +242,7 @@ public class WmsLayer implements RasterLayer {
 								- Math.round(scale * worldBox.getX()), Math.round(scale * worldBox.getMaxY())
 								- Math.round(scale * worldBox.getY()));
 
-						RasterTile image = new RasterTile(screenbox, getLayerInfo().getId() + "."
+						RasterTile image = new RasterTile(screenbox, getId() + "."
 								+ bestResolution.getLevel() + "." + i + "," + j);
 
 						image.setCode(new TileCode(bestResolution.getLevel(), i, j));

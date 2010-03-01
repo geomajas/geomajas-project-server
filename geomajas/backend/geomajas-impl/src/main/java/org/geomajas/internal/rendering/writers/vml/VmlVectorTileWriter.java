@@ -73,7 +73,7 @@ public class VmlVectorTileWriter implements GraphicsWriter {
 				if (layerInfo.getLayerType() != LayerType.POINT && layerInfo.getLayerType() != LayerType.MULTIPOINT) {
 					// the shapetype
 					document.writeElement("vml:shapetype", true);
-					document.writeAttribute("id", feature.getLayer().getLayerInfo().getId() + "." + style + ".style");
+					document.writeAttribute("id", feature.getLayer().getId() + "." + style + ".style");
 					document.writeAttribute("style", "WIDTH: 100%; HEIGHT: 100%");
 					document.writeAttribute("style", "VISIBILITY: hidden");
 					// document.writeAttribute("filled", "t");

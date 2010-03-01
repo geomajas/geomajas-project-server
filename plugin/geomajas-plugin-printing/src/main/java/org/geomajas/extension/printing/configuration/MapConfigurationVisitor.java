@@ -87,7 +87,7 @@ public class MapConfigurationVisitor extends TopDownVisitor {
 			if (info instanceof ClientVectorLayerInfo) {
 				VectorLayerComponent comp = new VectorLayerComponent(geoService, filterCreator, layerService);
 				comp.setLabelsVisible(false);
-				comp.setLayerId(info.getId());
+				comp.setLayerId(info.getServerLayerId());
 				comp.setStyleInfo(((ClientVectorLayerInfo) info).getNamedStyleInfo());
 				comp.setVisible(true);
 				mapComponent.addComponent(0, comp);

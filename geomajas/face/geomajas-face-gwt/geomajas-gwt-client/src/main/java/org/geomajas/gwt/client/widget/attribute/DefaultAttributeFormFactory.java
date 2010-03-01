@@ -50,7 +50,6 @@ import com.smartgwt.client.data.fields.DataSourceDateField;
 import com.smartgwt.client.data.fields.DataSourceFloatField;
 import com.smartgwt.client.data.fields.DataSourceImageField;
 import com.smartgwt.client.data.fields.DataSourceIntegerField;
-import com.smartgwt.client.data.fields.DataSourceLinkField;
 import com.smartgwt.client.data.fields.DataSourceTextField;
 import com.smartgwt.client.widgets.form.fields.FormItem;
 import com.smartgwt.client.widgets.form.validator.DateRangeValidator;
@@ -167,7 +166,7 @@ public class DefaultAttributeFormFactory implements AttributeFormFactory {
 				field = new DataSourceDateField(info.getName(), info.getLabel());
 				break;
 			case URL:
-				field = new DataSourceLinkField(info.getName(), info.getLabel());
+				field = new DataSourceTextField(info.getName(), info.getLabel());
 				break;
 			case IMGURL:
 				field = new DataSourceImageField(info.getName(), info.getLabel());

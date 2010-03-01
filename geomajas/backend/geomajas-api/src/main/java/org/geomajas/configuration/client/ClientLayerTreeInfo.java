@@ -45,26 +45,56 @@ public class ClientLayerTreeInfo implements Serializable {
 
 	private List<ClientToolInfo> tools = new ArrayList<ClientToolInfo>();
 
+	/**
+	 * Get the unique id of this layer tree.
+	 * 
+	 * @return the unique id
+	 */
 	public String getId() {
 		return id;
 	}
 
+	/**
+	 * Set the unique id of this layer tree (auto-copied from Spring context).
+	 * 
+	 * @param id
+	 */
 	public void setId(String id) {
 		this.id = id;
 	}
 
+	/**
+	 * Get the root node this layer tree.
+	 * 
+	 * @return the root node
+	 */
 	public ClientLayerTreeNodeInfo getTreeNode() {
 		return treeNode;
 	}
 
+	/**
+	 * Set the root node.
+	 * 
+	 * @param treeNode root node
+	 */
 	public void setTreeNode(ClientLayerTreeNodeInfo treeNode) {
 		this.treeNode = treeNode;
 	}
 
+	/**
+	 * Get the list of tools for this layer tree.
+	 * 
+	 * @return the root node
+	 */
 	public List<ClientToolInfo> getTools() {
 		return tools;
 	}
 
+	/**
+	 * Set the list of tools for this layer tree.
+	 * 
+	 * @param tools list of tools
+	 */
 	public void setTools(List<ClientToolInfo> tools) {
 		this.tools = tools;
 	}

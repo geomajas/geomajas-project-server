@@ -116,7 +116,7 @@ public class RealTimeBroker implements Broker {
 		} catch (FactoryException e) {
 			throw new CacheException(e, ExceptionCode.CRS_NO_DEFAULT, crs);
 		}
-		tileContext.getLayers().add(new StyledLayer(vLayer.getLayerInfo(), styleInfo));
+		tileContext.getLayers().add(new StyledLayer(vLayer, styleInfo));
 		tileContext.setScale(scale);
 
 		// 5: Create the vector tile:

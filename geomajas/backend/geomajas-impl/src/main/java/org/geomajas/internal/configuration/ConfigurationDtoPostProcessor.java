@@ -22,7 +22,10 @@
  */
 package org.geomajas.internal.configuration;
 
-import java.beans.PropertyDescriptor;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
+import javax.annotation.PostConstruct;
 
 import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.NamedStyleInfo;
@@ -44,24 +47,24 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanInitializationException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.stereotype.Component;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
 
 /**
- * Post-processes configuration, mainly for setting ids and doing some coordinate transformations.
+ * Post-processes configuration DTOs. Generally responsible for any behavior that would violate the DTO contract
+ * (especially for GWT) if it would be added to the configuration objects themselves , such as hooking up client
+ * configurations to their server layers.
  * 
  * @author Jan De Moerloose
  * 
  */
 @Component
-public class ConfigurationBeanPostProcessor implements BeanPostProcessor {
+public class ConfigurationDtoPostProcessor {
 
 	private static final double METER_PER_INCH = 0.0254;
 
@@ -71,64 +74,50 @@ public class ConfigurationBeanPostProcessor implements BeanPostProcessor {
 	@Autowired
 	private GeoService geoService;
 
-	public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-		try {
-			if (bean instanceof ClientApplicationInfo) {
-				return postProcess((ClientApplicationInfo) bean);
-			} else if (bean instanceof ClientVectorLayerInfo) {
-				return postProcess((ClientVectorLayerInfo) bean);
-			} else if (bean instanceof NamedStyleInfo) {
-				return postProcess((NamedStyleInfo) bean);
+	@Autowired(required=false)
+	protected Map<String, ClientApplicationInfo> applicationMap = new LinkedHashMap<String, ClientApplicationInfo>();
+
+	@Autowired(required=false)
+	protected Map<String, NamedStyleInfo> namedStyleMap = new LinkedHashMap<String, NamedStyleInfo>();
+
+	@Autowired(required=false)
+	protected Map<String, Layer<?>> layerMap = new LinkedHashMap<String, Layer<?>>();
+
+	public ConfigurationDtoPostProcessor() {
+
+	}
+
+	@PostConstruct
+	public void processConfiguration() throws BeansException {
+		for (ClientApplicationInfo application : applicationMap.values()) {
+			try {
+				postProcess(application);
+			} catch (LayerException e) {
+				throw new BeanInitializationException("Could not post process configuration", e);
 			}
-			return bean;
-		} catch (GeomajasException e) {
-			throw new BeanInitializationException("Could not post process configuration", e);
+		}
+		for (NamedStyleInfo style : namedStyleMap.values()) {
+			postProcess(style);
 		}
 	}
 
-	public Object postProcessBeforeInitialization(Object bean, String beanName) throws BeansException {
-		if (bean instanceof Layer) {
-			// force the layer info to have the same id as the layer (so clients know this) !!!
-			Layer layer = (Layer) bean;
-			assignId(layer.getLayerInfo(), beanName, true);
-		} else {
-			// assign the spring id unless the configuration explicitly defines the id and/or name property
-			assignId(bean, beanName, false);
-		}
-		return bean;
-	}
-
-	private void assignId(Object bean, String beanName, boolean override) {
-		try {
-			PropertyDescriptor descriptor = BeanUtils.getPropertyDescriptor(bean.getClass(), "id");
-			if (descriptor != null) {
-				if (override || (descriptor.getReadMethod().invoke(bean, null) == null)) {
-					descriptor.getWriteMethod().invoke(bean, beanName);
-				}
-			}
-		} catch (Exception be) {
-			// ignore if no id property
-		}
-		try {
-			PropertyDescriptor descriptor = BeanUtils.getPropertyDescriptor(bean.getClass(), "name");
-			if (descriptor != null) {
-				if (override || (descriptor.getReadMethod().invoke(bean, null) == null)) {
-					descriptor.getWriteMethod().invoke(bean, beanName);
-				}
-			}
-		} catch (Exception be) {
-			// ignore if no name property
-		}
-	}
-
-	private ClientApplicationInfo postProcess(ClientApplicationInfo client) throws GeomajasException {
+	private ClientApplicationInfo postProcess(ClientApplicationInfo client) throws LayerException {
 		// initialize maps
 		for (ClientMapInfo map : client.getMaps()) {
 			map.setUnitLength(getUnitLength(map.getCrs(), map.getInitialBounds()));
 			map.setPixelLength(METER_PER_INCH / map.getUnitLength() / client.getScreenDpi());
 			for (ClientLayerInfo layer : map.getLayers()) {
-				layer.setMaxExtent(getClientMaxExtent(map.getCrs(), layer.getCrs(),
-						layer.getLayerInfo().getMaxExtent()));
+				Layer<?> serverLayer = layerMap.get(layer.getServerLayerId());
+				if (serverLayer == null) {
+					throw new LayerException(ExceptionCode.LAYER_NOT_FOUND, layer.getServerLayerId());
+				}
+				layer.setLayerInfo(serverLayer.getLayerInfo());
+				layer
+						.setMaxExtent(getClientMaxExtent(map.getCrs(), layer.getCrs(), layer.getLayerInfo()
+								.getMaxExtent()));
+				if (layer instanceof ClientVectorLayerInfo) {
+					postProcess((ClientVectorLayerInfo) layer);
+				}
 			}
 		}
 		return client;
@@ -143,7 +132,7 @@ public class ConfigurationBeanPostProcessor implements BeanPostProcessor {
 		return layer;
 	}
 
-	private NamedStyleInfo postProcess(NamedStyleInfo client) throws LayerException {
+	private NamedStyleInfo postProcess(NamedStyleInfo client) {
 		// index styles
 		int i = 0;
 		for (FeatureStyleInfo style : client.getFeatureStyles()) {
@@ -158,14 +147,15 @@ public class ConfigurationBeanPostProcessor implements BeanPostProcessor {
 				throw new LayerException(ExceptionCode.MAP_MAX_EXTENT_MISSING);
 			}
 			CoordinateReferenceSystem crs = CRS.decode(mapCrsKey);
-//			GeodeticCalculator calculator = new GeodeticCalculator(crs);
-//			calculator.setStartingPosition(new DirectPosition2D(crs, mapBounds.getX(), mapBounds.getY()));
-//			calculator.setDestinationPosition(new DirectPosition2D(crs, mapBounds.getMaxX(), mapBounds.getY()));
-//			double distance = calculator.getOrthodromicDistance();
-//			return distance / mapBounds.getWidth();
+			// GeodeticCalculator calculator = new GeodeticCalculator(crs);
+			// calculator.setStartingPosition(new DirectPosition2D(crs, mapBounds.getX(), mapBounds.getY()));
+			// calculator.setDestinationPosition(new DirectPosition2D(crs, mapBounds.getMaxX(), mapBounds.getY()));
+			// double distance = calculator.getOrthodromicDistance();
+			// return distance / mapBounds.getWidth();
 			Coordinate c1 = new Coordinate(0, 0);
 			Coordinate c2 = new Coordinate(1, 0);
-			return JTS.orthodromicDistance(c1, c2, crs);
+			double distance = JTS.orthodromicDistance(c1, c2, crs);
+			return distance;
 		} catch (FactoryException e) {
 			throw new LayerException(e, ExceptionCode.LAYER_CRS_INIT_PROBLEM);
 		} catch (TransformException e) {
@@ -173,7 +163,7 @@ public class ConfigurationBeanPostProcessor implements BeanPostProcessor {
 		}
 	}
 
-	public Bbox getClientMaxExtent(String mapCrsKey, String layerCrsKey, Bbox serverBbox) throws GeomajasException {
+	public Bbox getClientMaxExtent(String mapCrsKey, String layerCrsKey, Bbox serverBbox) throws LayerException {
 		if (mapCrsKey.equals(layerCrsKey)) {
 			return serverBbox;
 		}
@@ -186,6 +176,8 @@ public class ConfigurationBeanPostProcessor implements BeanPostProcessor {
 		} catch (FactoryException e) {
 			throw new LayerException(e, ExceptionCode.LAYER_CRS_INIT_PROBLEM);
 		} catch (TransformException e) {
+			throw new LayerException(e, ExceptionCode.LAYER_CRS_INIT_PROBLEM);
+		} catch (GeomajasException e) {
 			throw new LayerException(e, ExceptionCode.LAYER_CRS_INIT_PROBLEM);
 		}
 	}

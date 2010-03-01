@@ -123,7 +123,7 @@ public class GetMapConfigurationCommand implements Command<GetMapConfigurationRe
 			return null;
 		}
 		ClientLayerInfo client = null;
-		String layerId = original.getId();
+		String layerId = original.getServerLayerId();
 		if (securityContext.isLayerVisible(layerId)) {
 			client = (ClientLayerInfo) SerializationUtils.clone(original);
 			if (client instanceof ClientVectorLayerInfo) {

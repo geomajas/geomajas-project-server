@@ -58,10 +58,21 @@ public class FeatureStyleInfo implements Serializable {
 
 	private SymbolInfo symbol;
 
+	/**
+	 * Gets the ordering index of the style. Styles are applied in the incremental order determined by their index
+	 * values.
+	 * 
+	 * @returns index the ordering index
+	 */
 	public int getIndex() {
 		return index;
 	}
 
+	/**
+	 * Sets the ordering index of the style. (auto-set by Spring)
+	 * 
+	 * @param index
+	 */
 	public void setIndex(int index) {
 		this.index = index;
 	}

@@ -54,9 +54,9 @@ public class LayerChangedTest {
 		vLayerInfo = new ClientVectorLayerInfo();
 		VectorLayerInfo serverInfo = new VectorLayerInfo();
 		serverInfo.setLayerType(LayerType.POLYGON);
-		serverInfo.setId("test");
 		vLayerInfo.setLayerInfo(serverInfo);
 		vLayerInfo.setMaxExtent(new Bbox(0, 0, 180, 180));
+		vLayerInfo.setServerLayerId("test");
 		vLayer = new VectorLayer(mapModel, vLayerInfo);
 
 		visibleCount = 0;

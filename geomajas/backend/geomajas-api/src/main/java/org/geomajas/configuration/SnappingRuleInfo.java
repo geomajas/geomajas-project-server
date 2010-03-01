@@ -28,9 +28,9 @@ import javax.validation.constraints.NotNull;
 
 /**
  * Snapping rule configuration information.
- *
+ * 
  * @author Joachim Van der Auwera
- * @author Pieter De Graef 
+ * @author Pieter De Graef
  */
 public class SnappingRuleInfo implements Serializable {
 
@@ -49,7 +49,7 @@ public class SnappingRuleInfo implements Serializable {
 	private SnappingType type;
 
 	@NotNull
-	private VectorLayerInfo layerInfo;
+	private String serverLayerId;
 
 	public SnappingRuleInfo() {
 	}
@@ -70,11 +70,12 @@ public class SnappingRuleInfo implements Serializable {
 		this.type = type;
 	}
 
-	public VectorLayerInfo getLayerInfo() {
-		return layerInfo;
+	public String getServerLayerId() {
+		return serverLayerId;
 	}
 
-	public void setLayerInfo(VectorLayerInfo layer) {
-		this.layerInfo = layer;
+	public void setServerLayerId(String serverLayerId) {
+		this.serverLayerId = serverLayerId;
 	}
+
 }

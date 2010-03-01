@@ -48,7 +48,6 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 	</bean>
 
 	<bean name="beansLonLatInfo" class="org.geomajas.configuration.VectorLayerInfo">
-		<property name="id" value="beansLonLat" />
 		<property name="layerType" value="MULTIPOLYGON" />
 		<property name="crs" value="EPSG:4326" />
 		<property name="maxExtent">

@@ -214,8 +214,8 @@ dojo.declare("ConfigManager", null, {
 		// loop over layers
 		var layers = treeNodeConfig.layers.list;
 		for(var i = 0; i < layers.length; i++){
-            var layer = mapModel.getLayerById(mapId+"."+layers[i].id);
-            if (null == layer) log.error("LayerTree referenced layer " + layers[i].id);
+            var layer = mapModel.getLayerById(mapId+"."+layers[i].serverLayerId);
+            if (null == layer) log.error("LayerTree referenced layer " + layers[i].serverLayerId);
 			node.addChild(layer);
 		}
 		// or loop children and go deeper
@@ -243,8 +243,8 @@ dojo.declare("ConfigManager", null, {
 	 * @private
 	 */
 	_configureVectorLayer : function (mapId, lc, mapModel) {
-        log.debug("_configureVectorLayer="+mapId+"."+lc.id);
-		var layer = new VectorLayer(mapId, lc.id, mapModel);
+        log.debug("_configureVectorLayer="+mapId+"."+lc.serverLayerId);
+		var layer = new VectorLayer(mapId, lc.serverLayerId, mapModel);
 		layer.setLabel (lc.label);
 		layer.setLayerType (lc.layerType.value);
         layer.setVisible(lc.visible);
@@ -304,7 +304,7 @@ dojo.declare("ConfigManager", null, {
         if (lc.snappingRules.mode) {
         	layer.getSnapper().setMode(lc.snappingRules.mode);
         }
-		log.info("created vector layer "+lc.id);
+		log.info("created vector layer "+lc.serverLayerId);
 		return layer;
 	},
 
@@ -312,8 +312,8 @@ dojo.declare("ConfigManager", null, {
 	 * @private
 	 */
 	_configureRasterLayer : function (mapId, lc, mapWidget, mapModel) {
-		log.debug("_configureRasterLayer="+mapId+"."+lc.id);
-		var layer = new RasterLayer(mapId, lc.id, mapWidget, mapModel);
+		log.debug("_configureRasterLayer="+mapId+"."+lc.serverLayerId);
+		var layer = new RasterLayer(mapId, lc.serverLayerId, mapWidget, mapModel);
 		if(lc.rasterLayerFactoryRef == "google"){
 			log.debug("setting google image factory");
 			layer.setImageFactory(new GoogleImageFactory());

@@ -49,4 +49,13 @@ public interface Layer<T extends LayerInfo> {
 	 * @return Coordinate reference system for this layer.
 	 */
 	CoordinateReferenceSystem getCrs();
+	
+	/**
+	 * Get the unique id of this layer.
+	 * 
+	 * @return Unique id of the layer (auto-set to name of bean in Spring context)
+	 */
+	String getId();
+
+
 }

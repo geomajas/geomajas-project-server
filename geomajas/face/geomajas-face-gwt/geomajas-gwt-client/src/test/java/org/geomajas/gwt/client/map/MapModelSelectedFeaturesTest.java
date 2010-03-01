@@ -52,17 +52,17 @@ public class MapModelSelectedFeaturesTest {
 		mapModel = new MapModel("test");
 
 		VectorLayerInfo serverLayerInfo1 = new VectorLayerInfo();
-		serverLayerInfo1.setId("layer1");
 		ClientVectorLayerInfo layerInfo1 = new ClientVectorLayerInfo();
 		layerInfo1.setLayerInfo(serverLayerInfo1);
 		layerInfo1.setMaxExtent(new Bbox(0, 0, 200, 100));
+		layerInfo1.setServerLayerId("layer1");
 		layer1 = new VectorLayer(mapModel, layerInfo1);
 
 		VectorLayerInfo serverLayerInfo2 = new VectorLayerInfo();
-		serverLayerInfo2.setId("layer2");
 		ClientVectorLayerInfo layerInfo2 = new ClientVectorLayerInfo();
 		layerInfo2.setLayerInfo(serverLayerInfo2);
 		layerInfo2.setMaxExtent(new Bbox(0, 0, 250, 125));
+		layerInfo2.setServerLayerId("layer2");
 		layer2 = new VectorLayer(mapModel, layerInfo2);
 
 		mapModel.getLayers().add(layer1);

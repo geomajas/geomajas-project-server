@@ -52,26 +52,61 @@ public class ClientVectorLayerInfo extends ClientLayerInfo {
 
 	private FeatureInfo featureInfo;
 
+	/**
+	 * Returns the style used by this layer. If null, the first server-defined style will be used, if only the name of
+	 * the style is defined, the server-defined style with the same name will be used.
+	 * 
+	 * @return the style info
+	 */
 	public NamedStyleInfo getNamedStyleInfo() {
 		return namedStyleInfo;
 	}
 
+	/**
+	 * Sets the style used by this layer. If null, the first server-defined style will be used, if only the name of the
+	 * style is defined, the server-defined style with the same name will be used.
+	 * 
+	 * @param namedStyleInfo
+	 *            the style info
+	 */
 	public void setNamedStyleInfo(NamedStyleInfo namedStyleInfo) {
 		this.namedStyleInfo = namedStyleInfo;
 	}
 
+	/**
+	 * Returns the feature info for this layer.
+	 * 
+	 * @return the feature info for this layer
+	 */
 	public FeatureInfo getFeatureInfo() {
 		return featureInfo;
 	}
 
+	/**
+	 * Sets the feature info for this layer. This property is auto-set by Spring based on server layer info. It should
+	 * only be set if the user wants to override the feature info as defined in the server layer info. This could be the
+	 * case if one wants less attributes or different labels for the attributes or a different set of constraints,
+	 * etc... Attention : the code does not currently validate if such overriding is compatible with the server layer !
+	 * 
+	 * @param featureInfo
+	 */
 	public void setFeatureInfo(FeatureInfo featureInfo) {
 		this.featureInfo = featureInfo;
 	}
 
+	/**
+	 * Returns the snapping rules for this layer.
+	 * 
+	 * @return the snapping rules for this layer
+	 */
 	public List<SnappingRuleInfo> getSnappingRules() {
 		return snappingRules;
 	}
 
+	/**
+	 * Sets the snapping rules for this layer.
+	 * @param snappingRules the snapping rules for this layer
+	 */
 	public void setSnappingRules(List<SnappingRuleInfo> snappingRules) {
 		this.snappingRules = snappingRules;
 	}

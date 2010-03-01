@@ -26,6 +26,8 @@ package org.geomajas.test.security.command;
 import org.geomajas.command.Command;
 import org.geomajas.command.CommandResponse;
 import org.geomajas.command.EmptyCommandRequest;
+import org.geomajas.global.ExceptionCode;
+import org.geomajas.global.GeomajasSecurityException;
 import org.geomajas.security.SecurityContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -46,7 +48,11 @@ public class MarinoLoggedIn implements Command<EmptyCommandRequest, CommandRespo
 	}
 
 	public void execute(EmptyCommandRequest emptyCommandRequest, CommandResponse commandResponse) throws Exception {
-		assert(null != securityContext.getToken());
-		assert("marino".equals(securityContext.getUserId()));
+		if(securityContext.getToken() == null){
+			throw new GeomajasSecurityException(ExceptionCode.UNEXPECTED_PROBLEM);
+		}
+		if(!"marino".equals(securityContext.getUserId())){
+			throw new GeomajasSecurityException(ExceptionCode.UNEXPECTED_PROBLEM);
+		}
 	}
 }

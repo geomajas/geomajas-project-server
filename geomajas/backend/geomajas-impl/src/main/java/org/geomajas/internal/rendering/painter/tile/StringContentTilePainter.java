@@ -201,7 +201,7 @@ public class StringContentTilePainter implements TilePainter {
 				StringWriter writer = new StringWriter();
 				try {
 					featureDocument = createFeatureDocument(writer);
-					featureDocument.setRootId(layer.getLayerInfo().getId());
+					featureDocument.setRootId(layer.getId());
 					featureDocument.writeObject(tile, false);
 					featureDocument.flush();
 				} catch (RenderException e) {
@@ -215,7 +215,7 @@ public class StringContentTilePainter implements TilePainter {
 				StringWriter writer = new StringWriter();
 				try {
 					labelDocument = createLabelDocument(writer, style.getLabelStyle());
-					labelDocument.setRootId(layer.getLayerInfo().getId());
+					labelDocument.setRootId(layer.getId());
 					labelDocument.writeObject(tileToPaint, false);
 					labelDocument.flush();
 				} catch (RenderException e) {

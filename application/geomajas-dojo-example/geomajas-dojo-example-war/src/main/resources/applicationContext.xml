@@ -408,7 +408,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	<!-- client layers -->
 
 	<bean class="org.geomajas.configuration.client.ClientRasterLayerInfo" id="beltLayer">
-		<property name="layerInfo" ref="osmInfo" />
+		<property name="serverLayerId" value="osm" />
 		<property name="label" value="OpenStreetMap (raster)" />
 		<property name="visible" value="true" />
 		<property name="viewScaleMin" value="0" />
@@ -417,7 +417,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	</bean>
 
 	<bean class="org.geomajas.configuration.client.ClientRasterLayerInfo" id="bluemarbleLayer">
-		<property name="layerInfo" ref="bluemarbleInfo" />
+		<property name="serverLayerId" value="bluemarble" />
 	  	<property name="label" value="NASA Blue Marble - WMS"/>
 		<property name="visible" value="true"/>
 		<property name="viewScaleMin" value="0"/>
@@ -426,7 +426,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	</bean>
 
 	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="citiesLayer">
-		<property name="layerInfo" ref="citiesInfo" />
+		<property name="serverLayerId" value="cities" />
         <property name="label" value="Cities (editable - point)"/>
         <property name="visible" value="true"/>
         <property name="viewScaleMin" value="0"/>
@@ -435,7 +435,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	</bean>
 
 	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="countriesLayer">
-		<property name="layerInfo" ref="countriesInfo" />
+		<property name="serverLayerId" value="countries" />
 	  	<property name="label" value="Countries of Africa"/>
 		<property name="visible" value="true"/>
 		<property name="viewScaleMin" value="0"/>
@@ -444,7 +444,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	</bean>
 	
 	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="lakesLayer">
-		<property name="layerInfo" ref="lakesInfo" />
+		<property name="serverLayerId" value="lakes" />
         <property name="label" value="Lakes (editable - polygon)"/>
         <property name="visible" value="true"/>
         <property name="viewScaleMin" value="0"/>
@@ -453,7 +453,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	</bean>
 	
 	<bean class="org.geomajas.configuration.client.ClientRasterLayerInfo" id="osmLayer">
-		<property name="layerInfo" ref="osmInfo" />
+		<property name="serverLayerId" value="osm" />
 		<property name="label" value="OpenStreetMap (raster)" />
 		<property name="visible" value="true" />
 		<property name="viewScaleMin" value="0"/>
@@ -462,7 +462,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	</bean>
 
 	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="provincesLayer">
-		<property name="layerInfo" ref="provincesInfo" />
+		<property name="serverLayerId" value="provinces" />
 	  	<property name="label" value="Provinces"/>
 		<property name="visible" value="true"/>
 		<property name="viewScaleMin" value="0"/>
@@ -471,7 +471,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	</bean>
 	
 	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="riversLayer">
-		<property name="layerInfo" ref="riversInfo" />
+		<property name="serverLayerId" value="rivers" />
 	  	<property name="label" value="Rivers (editable - linestring)"/>
 		<property name="visible" value="true"/>
 		<property name="viewScaleMin" value="0"/>
@@ -482,13 +482,13 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
                 <bean class="org.geomajas.configuration.SnappingRuleInfo">
                     <property name="distance" value="500000"/>
                     <property name="type" value="NEAREST_POINT"/>
-                    <property name="layerInfo" ref="riversInfo" />
+                    <property name="serverLayerId" value="rivers" />
                 </bean>
             </list>
         </property>
 	</bean>
 	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="roadsLayer">
-		<property name="layerInfo" ref="roadsInfo" />
+		<property name="serverLayerId" value="roads" />
 		<property name="label" value="Roads (editable - linestring)" />
 		<property name="visible" value="true" />
 		<property name="viewScaleMin" value="0" />
@@ -499,14 +499,14 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 				<bean class="org.geomajas.configuration.SnappingRuleInfo">
 					<property name="distance" value="10" />
 					<property name="type" value="NEAREST_POINT" />
-					<property name="layerInfo" ref="roadsInfo" />
+					<property name="serverLayerId" value="roads" />
 				</bean>
 			</list>
 		</property>
 	</bean>
 
 	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="structuresLayer">
-		<property name="layerInfo" ref="structuresInfo" />
+		<property name="serverLayerId" value="structures" />
 		<property name="label" value="Structures (editable - polygon)" />
 		<property name="visible" value="true" />
 		<property name="viewScaleMin" value="0" />
@@ -517,7 +517,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 				<bean class="org.geomajas.configuration.SnappingRuleInfo">
 					<property name="distance" value="10" />
 					<property name="type" value="NEAREST_POINT" />
-					<property name="layerInfo" ref="structuresInfo" />
+					<property name="serverLayerId" value="structures" />
 				</bean>
 			</list>
 		</property>

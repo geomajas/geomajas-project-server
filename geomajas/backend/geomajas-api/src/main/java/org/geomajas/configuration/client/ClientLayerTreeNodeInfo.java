@@ -70,18 +70,40 @@ public class ClientLayerTreeNodeInfo implements Serializable {
 		this.label = label;
 	}
 
+	/**
+	 * Get the list of sub-nodes of this node.
+	 * 
+	 * @return the list of sub-nodes
+	 */
 	public List<ClientLayerTreeNodeInfo> getTreeNodes() {
 		return treeNodes;
 	}
 
+	/**
+	 * Set the list of sub-nodes of this node.
+	 * 
+	 * @param treeNodes
+	 *            list of sub-nodes
+	 */
 	public void setTreeNodes(List<ClientLayerTreeNodeInfo> treeNodes) {
 		this.treeNodes = treeNodes;
 	}
 
+	/**
+	 * Get the list of layers that are part this node.
+	 * 
+	 * @return list of layers
+	 */
 	public List<ClientLayerInfo> getLayers() {
 		return layers;
 	}
 
+	/**
+	 * Set the list of layers that are part this node.
+	 * 
+	 * @param layers
+	 *            list of layers
+	 */
 	public void setLayers(List<ClientLayerInfo> layers) {
 		this.layers = layers;
 	}

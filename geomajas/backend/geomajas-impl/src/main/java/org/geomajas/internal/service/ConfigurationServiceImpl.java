@@ -23,7 +23,9 @@
 
 package org.geomajas.internal.service;
 
-import org.geomajas.configuration.LayerInfo;
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import org.geomajas.configuration.client.ClientApplicationInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.global.ExceptionCode;
@@ -37,10 +39,7 @@ import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
-
-import java.util.Collection;
 
 /**
  * Container class which contains runtime information about the parameters and other information for Geomajas. Values
@@ -51,52 +50,35 @@ import java.util.Collection;
 @Component
 public class ConfigurationServiceImpl implements ConfigurationService {
 
-	@Autowired
-	private ApplicationContext applicationContext;
+	@Autowired(required=false)
+	protected Map<String, Layer<?>> layerMap = new LinkedHashMap<String, Layer<?>>();
 
-	private static Collection<Layer> LAYERS;
+	@Autowired(required=false)
+	protected Map<String, VectorLayer> vectorLayerMap = new LinkedHashMap<String, VectorLayer>();
+
+	@Autowired(required=false)
+	protected Map<String, RasterLayer> rasterLayerMap = new LinkedHashMap<String, RasterLayer>();
+
+	@Autowired(required=false)
+	protected Map<String, ClientApplicationInfo> applicationMap = new LinkedHashMap<String, ClientApplicationInfo>();
 
 	public VectorLayer getVectorLayer(String id) {
-		Layer layer = getLayer(id);
-		if (null != layer && layer instanceof VectorLayer) {
-			return (VectorLayer) layer;
-		}
-		return null;
+		return id == null ? null : vectorLayerMap.get(id);
 	}
 
 	public RasterLayer getRasterLayer(String id) {
-		Layer layer = getLayer(id);
-		if (null != layer && layer instanceof RasterLayer) {
-			return (RasterLayer) layer;
-		}
-		return null;
+		return id == null ? null : rasterLayerMap.get(id);
 	}
 
-	public Layer getLayer(String id) {
-		if (null == id) {
-			return null;
-		}
-
-		if (null == LAYERS) {
-			LAYERS = applicationContext.getBeansOfType(Layer.class).values();
-		}
-		for (Layer layer : LAYERS) {
-			LayerInfo li = layer.getLayerInfo();
-			if (null == li) {
-				throw new RuntimeException("Layer without LayerInfo found");
-			}
-			if (id.equals(li.getId())) {
-				return layer;
-			}
-		}
-		return null;
+	public Layer<?> getLayer(String id) {
+		return id == null ? null : layerMap.get(id);
 	}
 
 	public ClientMapInfo getMap(String mapId, String applicationId) {
 		if (null == mapId || null == applicationId) {
 			return null;
 		}
-		ClientApplicationInfo application = applicationContext.getBean(applicationId, ClientApplicationInfo.class);
+		ClientApplicationInfo application = applicationMap.get(applicationId);
 		if (application != null) {
 			for (ClientMapInfo map : application.getMaps()) {
 				if (mapId.equals(map.getId())) {

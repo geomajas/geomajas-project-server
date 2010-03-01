@@ -63,9 +63,9 @@ public class TestSequenceProcessor {
 		ClientVectorLayerInfo layerInfo = new ClientVectorLayerInfo();
 		VectorLayerInfo serverInfo = new VectorLayerInfo();
 		serverInfo.setLayerType(LayerType.POLYGON);
-		serverInfo.setId("test");
 		layerInfo.setLayerInfo(serverInfo);
 		layerInfo.setMaxExtent(new Bbox(0, 0, 180, 180));
+		layerInfo.setServerLayerId("test");
 		List<ClientLayerInfo> layers = new ArrayList<ClientLayerInfo>();
 		layers.add(layerInfo);
 		info.setLayers(layers);

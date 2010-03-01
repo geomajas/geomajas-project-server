@@ -121,7 +121,7 @@ public abstract class AbstractLayer<T extends ClientLayerInfo> implements Layer<
 	//-------------------------------------------------------------------------
 
 	public String getId() {
-		return layerInfo.getId();
+		return layerInfo.getServerLayerId();
 	}
 
 	public MapModel getMapModel() {

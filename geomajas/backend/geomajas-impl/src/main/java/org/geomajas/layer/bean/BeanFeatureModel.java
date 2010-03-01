@@ -321,6 +321,7 @@ public class BeanFeatureModel implements FeatureModel {
 					String name = attribute.getName();
 					switch (aso.getType()) {
 						case MANY_TO_ONE:
+							// how to get hold of the may-to-one ???
 							writeProperty(parent, value, name);
 							break;
 						case ONE_TO_MANY:

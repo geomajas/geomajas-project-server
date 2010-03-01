@@ -24,6 +24,7 @@ package org.geomajas.rendering.painter;
 
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.configuration.VectorLayerInfo;
+import org.geomajas.layer.VectorLayer;
 
 /**
  * A layer with a specific style, ready for rendering.
@@ -36,6 +37,8 @@ public class StyledLayer {
 	private VectorLayerInfo layerInfo;
 
 	private NamedStyleInfo styleInfo;
+	
+	private String id;
 
 	/**
 	 * Constructs a styled layer.
@@ -43,9 +46,14 @@ public class StyledLayer {
 	 * @param layerInfo the layer metadata
 	 * @param styleInfo the style metadata
 	 */
-	public StyledLayer(VectorLayerInfo layerInfo, NamedStyleInfo styleInfo) {
-		this.layerInfo = layerInfo;
+	public StyledLayer(VectorLayer layer, NamedStyleInfo styleInfo) {
+		this.layerInfo = layer.getLayerInfo();
 		this.styleInfo = styleInfo;
+		this.id = layer.getId();
+	}
+	
+	public String getId() {
+		return id;
 	}
 
 	public VectorLayerInfo getLayerInfo() {

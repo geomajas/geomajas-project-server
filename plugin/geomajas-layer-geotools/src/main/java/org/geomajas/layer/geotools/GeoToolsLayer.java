@@ -96,6 +96,16 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 
 	private CoordinateReferenceSystem crs;
 
+	private String id;
+	
+	public String getId() {
+		return id;
+	}
+	
+	public void setId(String id) {
+		this.id = id;
+	}
+
 	public CoordinateReferenceSystem getCrs() {
 		return crs;
 	}
@@ -104,10 +114,10 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 		try {
 			crs = CRS.decode(layerInfo.getCrs());
 		} catch (NoSuchAuthorityCodeException e) {
-			throw new LayerException(e, ExceptionCode.LAYER_CRS_UNKNOWN_AUTHORITY, e, layerInfo.getId(),
+			throw new LayerException(e, ExceptionCode.LAYER_CRS_UNKNOWN_AUTHORITY, e, getId(),
 					getLayerInfo().getCrs());
 		} catch (FactoryException e) {
-			throw new LayerException(e, ExceptionCode.LAYER_CRS_PROBLEMATIC, layerInfo.getId(),
+			throw new LayerException(e, ExceptionCode.LAYER_CRS_PROBLEMATIC, getId(),
 					getLayerInfo().getCrs());
 		}
 	}

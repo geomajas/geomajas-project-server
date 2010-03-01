@@ -23,22 +23,22 @@
 
 package org.geomajas.internal.service.vector;
 
-import com.vividsolutions.jts.geom.Geometry;
-import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.VectorLayer;
+import org.geomajas.security.SecurityContext;
+import org.geomajas.service.FilterService;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
 import org.geomajas.service.pipeline.PipelineStep;
-import org.geomajas.security.SecurityContext;
-import org.geomajas.service.FilterService;
 import org.geotools.filter.text.cql2.CQL;
 import org.geotools.filter.text.cql2.CQLException;
 import org.opengis.filter.Filter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * Extend the existing layer filter (in the context, if any) to include layer security.
@@ -70,8 +70,7 @@ public class LayerFilterStep implements PipelineStep<Object> {
 	public void execute(PipelineContext context, Object response) throws GeomajasException {
 		VectorLayer layer = context.get(PipelineCode.LAYER_KEY, VectorLayer.class);
 		Filter filter = context.getOptional(PipelineCode.FILTER_KEY, Filter.class);
-		VectorLayerInfo layerInfo = layer.getLayerInfo();
-		String layerId = layerInfo.getId();
+		String layerId = layer.getId();
 
 		// apply generic security filter
 		Filter layerFeatureFilter = securityContext.getFeatureFilter(layerId);
@@ -80,7 +79,7 @@ public class LayerFilterStep implements PipelineStep<Object> {
 		}
 
 		// apply default filter
-		String defaultFilter = layerInfo.getFilter();
+		String defaultFilter = layer.getLayerInfo().getFilter();
 		if (null != defaultFilter) {
 			try {
 				filter = and(filter, CQL.toFilter(defaultFilter));
@@ -92,7 +91,7 @@ public class LayerFilterStep implements PipelineStep<Object> {
 		// apply visible area filter
 		Geometry visibleArea = securityContext.getVisibleArea(layerId);
 		if (null != visibleArea) {
-			String geometryName = layerInfo.getFeatureInfo().getGeometryType().getName();
+			String geometryName = layer.getLayerInfo().getFeatureInfo().getGeometryType().getName();
 			if (securityContext.isPartlyVisibleSufficient(layerId)) {
 				filter = and(filter, filterService.createIntersectsFilter(visibleArea, geometryName));
 			} else {

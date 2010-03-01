@@ -63,6 +63,100 @@
           <para>Many <code>DtoConverterService</code> methods now throw
           <code>GeomajasException</code>.</para>
         </listitem>
+
+        <listitem>
+          <para>The method <code>getId()</code> has been added to
+          <code>Layer.</code>All server layers should have a unique id. The id
+          is automatically assigned based on the Spring bean name.</para>
+        </listitem>
+
+        <listitem>
+          <para>Configuration changes: the server-side layers are no longer
+          connected to the client-side layer configurations via the layerInfo
+          objects. Instead, client-side layers refer directly to the server
+          layer's id via a serverLayerId property. The references to the
+          layerinfo objects are injected by a configuration postprocessor, so
+          the layerInfo should no longer be set manually.</para>
+
+          <table>
+            <title>Back end configuration changes</title>
+
+            <tgroup cols="3">
+              <thead>
+                <row>
+                  <entry>Name</entry>
+
+                  <entry>Property</entry>
+
+                  <entry>Description</entry>
+                </row>
+              </thead>
+
+              <tbody>
+                <row>
+                  <entry>LayerInfo</entry>
+
+                  <entry>id</entry>
+
+                  <entry>Removed, use id property of Layer instead</entry>
+                </row>
+
+                <row>
+                  <entry>SnappingRuleInfo</entry>
+
+                  <entry>layerInfo</entry>
+
+                  <entry>Replaced with serverLayerId</entry>
+                </row>
+
+                <row>
+                  <entry />
+
+                  <entry>serverLayerId</entry>
+
+                  <entry>String ,should refer to id of Layer bean</entry>
+                </row>
+              </tbody>
+            </tgroup>
+          </table>
+
+          <para>
+            <table>
+              <title>Client configuration changes</title>
+
+              <tgroup cols="3">
+                <thead>
+                  <row>
+                    <entry>Name</entry>
+
+                    <entry>Property</entry>
+
+                    <entry>Description</entry>
+                  </row>
+                </thead>
+
+                <tbody>
+                  <row>
+                    <entry>ClientLayerInfo</entry>
+
+                    <entry>serverLayerId</entry>
+
+                    <entry>String ,should refer to id of Layer bean</entry>
+                  </row>
+
+                  <row>
+                    <entry />
+
+                    <entry>layerInfo</entry>
+
+                    <entry>Should no longer be set manually, will be set by
+                    Spring</entry>
+                  </row>
+                </tbody>
+              </tgroup>
+            </table>
+          </para>
+        </listitem>
       </itemizedlist>
     </para>
   </section>

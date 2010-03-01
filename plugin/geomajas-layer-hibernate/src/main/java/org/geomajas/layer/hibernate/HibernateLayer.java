@@ -90,6 +90,16 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, V
 
 	private CoordinateReferenceSystem crs;
 
+	private String id;
+	
+	public String getId() {
+		return id;
+	}
+	
+	public void setId(String id) {
+		this.id = id;
+	}
+
 	public CoordinateReferenceSystem getCrs() {
 		return crs;
 	}
@@ -98,10 +108,10 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, V
 		try {
 			crs = CRS.decode(getLayerInfo().getCrs());
 		} catch (NoSuchAuthorityCodeException e) {
-			throw new LayerException(e, ExceptionCode.LAYER_CRS_UNKNOWN_AUTHORITY, getLayerInfo().getId(),
+			throw new LayerException(e, ExceptionCode.LAYER_CRS_UNKNOWN_AUTHORITY, getId(),
 					getLayerInfo().getCrs());
 		} catch (FactoryException exception) {
-			throw new LayerException(exception, ExceptionCode.LAYER_CRS_PROBLEMATIC, getLayerInfo().getId(),
+			throw new LayerException(exception, ExceptionCode.LAYER_CRS_PROBLEMATIC, getId(),
 					getLayerInfo().getCrs());
 		}
 	}

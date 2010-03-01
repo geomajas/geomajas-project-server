@@ -55,7 +55,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		<property name="layers">
 			<list>
 				<bean class="org.geomajas.configuration.client.ClientRasterLayerInfo" id="wmsLayer">
-					<property name="layerInfo" ref="wmsBluemarbleInfo" />
+					<property name="serverLayerId" value="bluemarble" />
 					<property name="label" value="Blue marble WMS (raster)" />
 					<property name="visible" value="true" />
 					<property name="viewScaleMin" value="0" />

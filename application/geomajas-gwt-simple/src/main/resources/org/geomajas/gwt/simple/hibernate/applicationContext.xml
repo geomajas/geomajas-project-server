@@ -120,7 +120,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 										<bean class="org.geomajas.configuration.SnappingRuleInfo">
 											<property name="distance" value="10" />
 											<property name="type" value="NEAREST_POINT" />
-											<property name="layerInfo" value="roadsInfo" />
+											<property name="serverLayerId" value="roads" />
 										</bean>
 									</list>
 								</property>
@@ -137,7 +137,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 										<bean class="org.geomajas.configuration.SnappingRuleInfo">
 											<property name="distance" value="10" />
 											<property name="type" value="NEAREST_POINT" />
-											<property name="layerInfo" value="structuresInfo" />
+											<property name="serverLayerId" value="structures" />
 										</bean>
 									</list>
 								</property>

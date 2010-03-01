@@ -32,10 +32,20 @@ public class ClientRasterLayerInfo extends ClientLayerInfo {
 
 	private String style = "";
 
+	/**
+	 * Returns the opacity of the raster layer.
+	 * 
+	 * @return the opacity of the raster layer.
+	 */
 	public String getStyle() {
 		return style;
 	}
 
+	/**
+	 * Sets the opacity of the raster layer.
+	 * 
+	 * @param style the opacity as a string (eg '0.5')
+	 */
 	public void setStyle(String style) {
 		this.style = style;
 	}

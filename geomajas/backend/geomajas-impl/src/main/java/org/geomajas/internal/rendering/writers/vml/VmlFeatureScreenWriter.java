@@ -64,7 +64,7 @@ public class VmlFeatureScreenWriter implements GraphicsWriter {
 				geom = feature.getClippedGeometry();
 			}
 			geom = transformer.transform(geom);
-			String styleId = feature.getLayer().getLayerInfo().getId() + "." + feature.getStyleInfo().getIndex()
+			String styleId = feature.getLayer().getId() + "." + feature.getStyleInfo().getIndex()
 					+ ".style";
 
 			document.writeObject(geom, asChild);

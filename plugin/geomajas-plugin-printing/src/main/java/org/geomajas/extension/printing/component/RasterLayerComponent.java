@@ -125,13 +125,13 @@ public class RasterLayerComponent extends BaseLayerComponent {
 			RasterLayer rasterlayer = ((RasterLayer) context.getLayer(getLayerId()));
 			try {
 				if (log.isDebugEnabled()) {
-					log.debug("rendering" + rasterlayer.getLayerInfo().getId() + " to [" + bbox.getMinX() + " "
+					log.debug("rendering" + rasterlayer.getId() + " to [" + bbox.getMinX() + " "
 							+ bbox.getMinY() + " " + bbox.getWidth() + " " + bbox.getHeight() + "]");
 				}
 				ClientMapInfo map = context.getMap(getMap().getMapId(), getMap().getApplicationId());
 				this.images = rasterlayer.paint(map.getCrs(), bbox, rasterScale);
 			} catch (Throwable e) {
-				log.error("could not paint raster layer " + rasterlayer.getLayerInfo().getId(), e);
+				log.error("could not paint raster layer " + rasterlayer.getId(), e);
 				this.images = new ArrayList<RasterTile>();
 			}
 
