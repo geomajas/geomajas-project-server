@@ -71,6 +71,11 @@
         </listitem>
 
         <listitem>
+          <para>Configuration changes : <code>maxTileLevel</code> has been
+          removed as this was not used.</para>
+        </listitem>
+
+        <listitem>
           <para>Configuration changes: the server-side layers are no longer
           connected to the client-side layer configurations via the layerInfo
           objects. Instead, client-side layers refer directly to the server
