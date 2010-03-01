@@ -322,7 +322,7 @@ public class BeanFeatureModel implements FeatureModel {
 					switch (aso.getType()) {
 						case MANY_TO_ONE:
 							// how to get hold of the may-to-one ???
-							writeProperty(parent, value, name);
+							// writeProperty(parent, value, name); @todo make this work, currently causes failures 
 							break;
 						case ONE_TO_MANY:
 							if (value instanceof Object[]) {
