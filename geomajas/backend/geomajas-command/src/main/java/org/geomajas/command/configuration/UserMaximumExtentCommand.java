@@ -28,6 +28,9 @@ import org.geomajas.command.Command;
 import org.geomajas.command.dto.UserMaximumExtentRequest;
 import org.geomajas.command.dto.UserMaximumExtentResponse;
 import org.geomajas.geometry.Bbox;
+import org.geomajas.global.ExceptionCode;
+import org.geomajas.global.GeomajasException;
+import org.geomajas.global.GeomajasSecurityException;
 import org.geomajas.layer.Layer;
 import org.geomajas.layer.LayerType;
 import org.geomajas.security.SecurityContext;
@@ -83,7 +86,14 @@ public class UserMaximumExtentCommand implements Command<UserMaximumExtentReques
 		boolean excludeRasterLayers = request.isExcludeRasterLayers();
 		if (includeLayers != null && includeLayers.length() > 0) {
 			for (String layer : includeLayers.split(",")) {
-				Layer<?> l = configurationService.getLayer(layer.trim());
+				String layerId = layer.trim();
+				if (!securityContext.isLayerVisible(layerId)) {
+					throw new GeomajasSecurityException(ExceptionCode.LAYER_NOT_VISIBLE, layerId);
+				}
+				Layer<?> l = configurationService.getLayer(layerId);
+				if (null == l) {
+					throw new GeomajasException(ExceptionCode.LAYER_NOT_FOUND, layerId);
+				}
 				if (!excludeRasterLayers || l.getLayerInfo().getLayerType() != LayerType.RASTER) {
 					tempLayers.add(l.getId());
 				}
