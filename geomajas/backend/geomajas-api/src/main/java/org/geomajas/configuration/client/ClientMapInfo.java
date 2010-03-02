@@ -83,6 +83,8 @@ public class ClientMapInfo implements Serializable {
 
 	private Bbox maxBounds = Bbox.ALL;
 
+	private ClientUserDataInfo userData;
+
 	/**
 	 * Get the id of this map. This id is unique within the application.
 	 * 
@@ -430,14 +432,16 @@ public class ClientMapInfo implements Serializable {
 	/**
 	 * Set the unit length of the map (auto-set by Spring).
 	 * 
-	 * @param unitLength unit length in m
+	 * @param unitLength
+	 *            unit length in m
 	 */
 	public void setUnitLength(double unitLength) {
 		this.unitLength = unitLength;
 	}
 
 	/**
-	 *  Get the length in meters of a pixel on the map.
+	 * Get the length in meters of a pixel on the map.
+	 * 
 	 * @return
 	 */
 	public double getPixelLength() {
@@ -445,9 +449,10 @@ public class ClientMapInfo implements Serializable {
 	}
 
 	/**
-	 *  Set the unit length in meters of a pixel the map (auto-set by Spring).
-	 *  
-	 * @param pixelLength length of pixel in m
+	 * Set the unit length in meters of a pixel the map (auto-set by Spring).
+	 * 
+	 * @param pixelLength
+	 *            length of pixel in m
 	 */
 	public void setPixelLength(double pixelLength) {
 		this.pixelLength = pixelLength;
@@ -465,10 +470,29 @@ public class ClientMapInfo implements Serializable {
 	/**
 	 * Sets the maximum bounds/extent of this map.
 	 * 
-	 * @param maxBounds the maximum bounds
+	 * @param maxBounds
+	 *            the maximum bounds
 	 */
 	public void setMaxBounds(Bbox maxBounds) {
 		this.maxBounds = maxBounds;
 	}
 
+	/**
+	 * Get the custom configuration data.
+	 * 
+	 * @return custom configuration data
+	 */
+	public ClientUserDataInfo getUserData() {
+		return userData;
+	}
+
+	/**
+	 * Set the custom configuration data you wish to pass to the client.
+	 * 
+	 * @param userData
+	 *            Custom configuration data
+	 */
+	public void setUserData(ClientUserDataInfo userData) {
+		this.userData = userData;
+	}
 }

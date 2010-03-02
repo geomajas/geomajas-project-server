@@ -43,6 +43,8 @@ public class ClientApplicationInfo implements Serializable {
 
 	private List<ClientMapInfo> maps = new ArrayList<ClientMapInfo>();
 
+	private ClientUserDataInfo userData;
+
 	private int screenDpi = 96;
 
 	/**
@@ -103,5 +105,24 @@ public class ClientApplicationInfo implements Serializable {
 	 */
 	public void setScreenDpi(int screenDpi) {
 		this.screenDpi = screenDpi;
+	}
+
+	/**
+	 * Get the custom configuration data.
+	 * 
+	 * @return custom configuration data
+	 */
+	public ClientUserDataInfo getUserData() {
+		return userData;
+	}
+
+	/**
+	 * Set the custom configuration data you wish to pass to the client.
+	 * 
+	 * @param userData
+	 *            Custom configuration data
+	 */
+	public void setUserData(ClientUserDataInfo userData) {
+		this.userData = userData;
 	}
 }

@@ -39,6 +39,8 @@ import org.geomajas.layer.LayerType;
  */
 public abstract class ClientLayerInfo implements Serializable {
 
+	private static final long serialVersionUID = 151L;
+
 	@NotNull
 	private String label;
 
@@ -57,6 +59,8 @@ public abstract class ClientLayerInfo implements Serializable {
 
 	@NotNull
 	private String serverLayerId;
+
+	private ClientUserDataInfo userData;
 
 	/**
 	 * Get the unique id of this layer.
@@ -224,4 +228,22 @@ public abstract class ClientLayerInfo implements Serializable {
 		return layerInfo.getCrs();
 	}
 
+	/**
+	 * Get the custom configuration data.
+	 * 
+	 * @return custom configuration data
+	 */
+	public ClientUserDataInfo getUserData() {
+		return userData;
+	}
+
+	/**
+	 * Set the custom configuration data you wish to pass to the client.
+	 * 
+	 * @param userData
+	 *            Custom configuration data
+	 */
+	public void setUserData(ClientUserDataInfo userData) {
+		this.userData = userData;
+	}
 }
