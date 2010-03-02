@@ -168,8 +168,14 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<property name="id"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_GET_VECTOR_TILE"/></property>
 		<property name="pipeline">
 			<list>
-				<bean class="org.geomajas.internal.service.raster.GetTilesGetStep">
-					<property name="id" value="GetTilesGetStep"/>
+				<bean class="org.geomajas.internal.service.vector.GetTileFilterStep">
+					<property name="id" value="GetTileFilterStep"/>
+				</bean>
+				<bean class="org.geomajas.internal.service.vector.GetTileGetFeaturesStep">
+					<property name="id" value="GetTileGetFeaturesStep"/>
+				</bean>
+				<bean class="org.geomajas.internal.service.vector.GetTileStringContentStep">
+					<property name="id" value="GetTileStringContentStep"/>
 				</bean>
 			</list>
 		</property>
