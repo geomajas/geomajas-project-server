@@ -44,7 +44,9 @@ import com.vividsolutions.jts.geom.Polygon;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.SymbolInfo;
 import org.geomajas.layer.Layer;
+import org.geomajas.layer.LayerException;
 import org.geomajas.service.ConfigurationService;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -76,32 +78,28 @@ public class PdfContext {
 
 	private Stack<Float> prevOrigY = new Stack<Float>();
 
-	private ConfigurationService runtime;
+	private ConfigurationService configurationService;
 
 	private final Logger log = LoggerFactory.getLogger(PdfContext.class);
 
 	/**
 	 * Constructs a context for the specified writer and application.
 	 * 
-	 * @param writer
-	 * @param runtime
+	 * @param writer writer
+	 * @param configurationService configuration service
 	 */
-	public PdfContext(PdfWriter writer, ConfigurationService runtime) {
+	public PdfContext(PdfWriter writer, ConfigurationService configurationService) {
 		this.writer = writer;
-		this.runtime = runtime;
+		this.configurationService = configurationService;
 	}
 
 	/**
 	 * Initializes context size.
 	 * 
-	 * @param rectangle
+	 * @param rectangle rectangle
 	 */
 	public void initSize(Rectangle rectangle) {
 		template = writer.getDirectContent().createTemplate(rectangle.getWidth(), rectangle.getHeight());
-	}
-
-	public PdfTemplate getTemplate() {
-		return template;
 	}
 
 	public void setOrigin(float x, float y) {
@@ -110,26 +108,26 @@ public class PdfContext {
 	}
 
 	public Layer getLayer(String layerId) {
-		return runtime.getLayer(layerId);
+		return configurationService.getLayer(layerId);
 	}
 
 	/**
 	 * Return the map with this id.
 	 * 
-	 * @param mapId
-	 * @param applicationId
-	 * @return
+	 * @param mapId map id
+	 * @param applicationId applidation id
+	 * @return map info
 	 */
 	public ClientMapInfo getMap(String mapId, String applicationId) {
-		return runtime.getMap(mapId, applicationId);
+		return configurationService.getMap(mapId, applicationId);
 	}
 
 	/**
 	 * Return the text box for the specified text and font.
 	 * 
-	 * @param text
-	 * @param font
-	 * @return
+	 * @param text text
+	 * @param font font
+	 * @return text box
 	 */
 	public Rectangle getTextSize(String text, Font font) {
 		template.saveState();
@@ -153,10 +151,10 @@ public class PdfContext {
 	/**
 	 * Draw text in the center of the specified box.
 	 * 
-	 * @param text
-	 * @param font
-	 * @param box
-	 * @param fontColor
+	 * @param text text
+	 * @param font font
+	 * @param box box to put text int
+	 * @param fontColor colour
 	 */
 	public void drawText(String text, Font font, Rectangle box, Color fontColor) {
 		template.saveState();
@@ -187,7 +185,7 @@ public class PdfContext {
 	/**
 	 * Draw a rectangular boundary.
 	 * 
-	 * @param rect
+	 * @param rect rectangle
 	 */
 	public void strokeRectangle(Rectangle rect) {
 		strokeRectangle(rect, Color.black, 1, null);
@@ -218,7 +216,10 @@ public class PdfContext {
 	/**
 	 * Draw a rounded rectangular boundary.
 	 * 
-	 * @param rect
+	 * @param rect rectangle
+	 * @param color colour
+	 * @param linewidth line width
+	 * @param r radius for rounded corners
 	 */
 	public void strokeRoundRectangle(Rectangle rect, Color color, float linewidth, float r) {
 		template.saveState();
@@ -231,7 +232,7 @@ public class PdfContext {
 	/**
 	 * Draw a rectangle's interior.
 	 * 
-	 * @param rect
+	 * @param rect rectangle
 	 */
 	public void fillRectangle(Rectangle rect) {
 		fillRectangle(rect, Color.white);
@@ -240,7 +241,8 @@ public class PdfContext {
 	/**
 	 * Draw a rectangle's interior with this color.
 	 * 
-	 * @param rect
+	 * @param rect rectangle
+	 * @param color colour
 	 */
 	public void fillRectangle(Rectangle rect, Color color) {
 		template.saveState();
@@ -352,9 +354,9 @@ public class PdfContext {
 	/**
 	 * Draws the specified image with the first rect's bounds, clipping with the second one.
 	 * 
-	 * @param img
-	 * @param rect
-	 * @param clipRect
+	 * @param img image
+	 * @param rect rectangle
+	 * @param clipRect clipping bounds
 	 */
 	public void drawImage(Image img, Rectangle rect, Rectangle clipRect) {
 		try {
@@ -378,11 +380,12 @@ public class PdfContext {
 	/**
 	 * Draw a path specified by relative coordinates in [0,1] range wrt the specified rectangle.
 	 * 
-	 * @param x
-	 * @param y
-	 * @param rect
-	 * @param color
-	 * @param lineWidth
+	 * @param x x-ordinate
+	 * @param y y-ordinate
+	 * @param rect rectangle
+	 * @param color color to use
+	 * @param lineWidth line width
+	 * @param dashArray lengths for dashed and white area
 	 */
 	public void drawRelativePath(float[] x, float[] y, Rectangle rect, Color color, float lineWidth,
 			float[] dashArray) {
@@ -453,11 +456,6 @@ public class PdfContext {
 		template.restoreState();
 	}
 
-	public void drawGeometry(Geometry geometry, SymbolInfo symbol, Color fillColor, Color strokeColor, float lineWidth,
-			Rectangle clipRect) {
-		drawGeometry(geometry, symbol, fillColor, strokeColor, lineWidth, null, clipRect);
-	}
-
 	private void drawGeometry(Geometry g, SymbolInfo symbol) {
 		if (g instanceof MultiPolygon) {
 			MultiPolygon mpoly = (MultiPolygon) g;
@@ -521,8 +519,8 @@ public class PdfContext {
 	/**
 	 * Return this context as an image.
 	 * 
-	 * @return
-	 * @throws BadElementException
+	 * @return this context as image
+	 * @throws BadElementException oops
 	 */
 	public Image getImage() throws BadElementException {
 		return Image.getInstance(template);
@@ -561,12 +559,16 @@ public class PdfContext {
 	/**
 	 * Converts an absolute rectangle to a relative one wrt to the current coordinate system.
 	 * 
-	 * @param rect
-	 * @return
+	 * @param rect absolute rectangle
+	 * @return relative rectangle
 	 */
 	public Rectangle toRelative(Rectangle rect) {
 		return new Rectangle(rect.getLeft() - origX, rect.getBottom() - origY, rect.getRight() - origX, rect.getTop()
 				- origY);
+	}
+
+	public CoordinateReferenceSystem getCrs(String code) throws LayerException {
+		return configurationService.getCrs(code);
 	}
 
 }

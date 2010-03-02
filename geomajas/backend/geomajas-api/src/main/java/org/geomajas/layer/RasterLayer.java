@@ -29,6 +29,7 @@ import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.rendering.RenderException;
 
 import com.vividsolutions.jts.geom.Envelope;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
  * A layer of raster data (could be based on local files, WMS or some non-standard image server).
@@ -46,6 +47,6 @@ public interface RasterLayer extends Layer<RasterLayerInfo> {
 	 * @return a list of raster images that covers the bounds
 	 * @throws RenderException oops
 	 */
-	List<RasterTile> paint(String boundsCRS, Envelope bounds, double scale) throws RenderException;
+	List<RasterTile> paint(CoordinateReferenceSystem boundsCrs, Envelope bounds, double scale) throws RenderException;
 	
 }

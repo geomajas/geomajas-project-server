@@ -74,7 +74,7 @@ public class WmsLayer implements RasterLayer {
 	private String baseWmsUrl, format, version, styles = "";
 
 	@Autowired
-	private ConfigurationService runtime;
+	private ConfigurationService configurationService;
 
 	@Autowired
 	private DtoConverterService converterService;
@@ -166,7 +166,8 @@ public class WmsLayer implements RasterLayer {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<RasterTile> paint(String boundsCrs, Envelope orgBounds, double scale) throws RenderException {
+	public List<RasterTile> paint(CoordinateReferenceSystem boundsCrs, Envelope orgBounds, double scale)
+			throws RenderException {
 		List<RasterTile> result = new ArrayList<RasterTile>();
 		Envelope bounds = orgBounds;
 
@@ -175,8 +176,7 @@ public class WmsLayer implements RasterLayer {
 		// the latter implementation uses identity transform if crs's are equal
 		// for map and layer
 		// but might introduce bugs in rounding and/or conversions.
-		String crsCode = getLayerInfo().getCrs();
-		if (crsCode.equals(boundsCrs)) {
+		if (crs.equals(boundsCrs)) {
 			bounds = clipBounds(bounds);
 			if (bounds.isNull()) {
 				return Collections.EMPTY_LIST;
@@ -206,8 +206,7 @@ public class WmsLayer implements RasterLayer {
 			}
 		} else {
 			try {
-				MathTransform layerToMap = geoService.findMathTransform(CRS.decode(getLayerInfo().getCrs()), runtime
-						.getCrs(boundsCrs));
+				MathTransform layerToMap = geoService.findMathTransform(CRS.decode(getLayerInfo().getCrs()), boundsCrs);
 				MathTransform mapToLayer = layerToMap.inverse();
 
 				// Translate the map coordinates to layer coordinates

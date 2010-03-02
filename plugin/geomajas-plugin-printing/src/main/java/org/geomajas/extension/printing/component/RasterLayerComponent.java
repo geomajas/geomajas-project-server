@@ -129,7 +129,7 @@ public class RasterLayerComponent extends BaseLayerComponent {
 							+ bbox.getMinY() + " " + bbox.getWidth() + " " + bbox.getHeight() + "]");
 				}
 				ClientMapInfo map = context.getMap(getMap().getMapId(), getMap().getApplicationId());
-				this.images = rasterlayer.paint(map.getCrs(), bbox, rasterScale);
+				this.images = rasterlayer.paint(context.getCrs(map.getCrs()), bbox, rasterScale);
 			} catch (Throwable e) {
 				log.error("could not paint raster layer " + rasterlayer.getId(), e);
 				this.images = new ArrayList<RasterTile>();

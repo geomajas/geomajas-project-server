@@ -161,7 +161,6 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 		context.put(PipelineCode.LAYER_ID_KEY, layerId);
 		context.put(PipelineCode.LAYER_KEY, layer);
 		context.put(PipelineCode.TILE_METADATA_KEY, tileMetadata);
-		context.put(PipelineCode.CRS_CODE_KEY, tileMetadata.getCrs());
 		CoordinateReferenceSystem crs = configurationService.getCrs(tileMetadata.getCrs());
 		context.put(PipelineCode.CRS_KEY, crs);
 		context.put(PipelineCode.CRS_TRANSFORM_KEY, geoService.findMathTransform(crs, layer.getCrs()));

@@ -38,11 +38,8 @@ import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
 import org.geotools.geometry.DirectPosition2D;
-import org.geotools.referencing.CRS;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.MismatchedDimensionException;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
@@ -77,7 +74,7 @@ public class OsmLayer implements RasterLayer {
 	private final Logger log = LoggerFactory.getLogger(OsmLayer.class);
 
 	@Autowired
-	private ConfigurationService runtime;
+	private ConfigurationService configurationService;
 
 	@Autowired
 	private DtoConverterService converterService;
@@ -107,25 +104,13 @@ public class OsmLayer implements RasterLayer {
 		return crs;
 	}
 
-	private void initCrs() throws LayerException {
-		try {
-			crs = CRS.decode(layerInfo.getCrs());
-		} catch (NoSuchAuthorityCodeException exception) {
-			throw new LayerException(exception, ExceptionCode.LAYER_CRS_UNKNOWN_AUTHORITY, getId(),
-					getLayerInfo().getCrs());
-		} catch (FactoryException exception) {
-			throw new LayerException(exception, ExceptionCode.LAYER_CRS_PROBLEMATIC, getId(), getLayerInfo()
-					.getCrs());
-		}
-	}
-
 	public Envelope getMaxBounds() {
 		return converterService.toInternal(layerInfo.getMaxExtent());
 	}
 
 	public void setLayerInfo(RasterLayerInfo layerInfo) throws LayerException {
 		this.layerInfo = layerInfo;
-		initCrs();
+		crs = configurationService.getCrs("EPSG:900913"); // we overrule the declared crs, always use mercator/google
 		tileWidth = layerInfo.getTileWidth();
 		tileHeight = layerInfo.getTileHeight();
 		maxWidth = layerInfo.getMaxExtent().getWidth();
@@ -133,9 +118,10 @@ public class OsmLayer implements RasterLayer {
 		this.calculatePredefinedResolutions();
 	}
 
-	public List<RasterTile> paint(String boundsCrs, Envelope bounds, double scale) throws RenderException {
+	public List<RasterTile> paint(CoordinateReferenceSystem boundsCrs, Envelope bounds, double scale)
+			throws RenderException {
 		try {
-			MathTransform layerToMap = geoService.findMathTransform(crs, CRS.decode(boundsCrs));
+			MathTransform layerToMap = geoService.findMathTransform(crs, boundsCrs);
 			MathTransform mapToLayer = layerToMap.inverse();
 			// TODO: if bounds width or height is 0, we run out of memory ?
 			bounds = clipBounds(bounds);
@@ -230,14 +216,9 @@ public class OsmLayer implements RasterLayer {
 				}
 			}
 			return result;
-		} catch (NoSuchAuthorityCodeException e) {
-			throw new RenderException(e, ExceptionCode.RENDER_TRANSFORMATION_FAILED);
-		} catch (FactoryException fe) {
-			throw new RenderException(fe, ExceptionCode.RENDER_TRANSFORMATION_FAILED);
+		} catch (RenderException re) {
+			throw re;
 		} catch (GeomajasException ge) {
-			if (ge instanceof RenderException) {
-				throw (RenderException) ge;
-			}
 			throw new RenderException(ge, ExceptionCode.RENDER_TRANSFORMATION_FAILED);
 		} catch (TransformException e) {
 			throw new RenderException(e, ExceptionCode.RENDER_TRANSFORMATION_FAILED);

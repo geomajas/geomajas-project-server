@@ -31,6 +31,7 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd"		
 		>
 
+	<!-- default security configuration - should be overwritten to make something accessible -->
 	<bean name="security.securityInfo" class="org.geomajas.security.SecurityInfo">
 		<property name="loopAllServices" value="false"/>
 		<property name="securityServices">
@@ -40,9 +41,13 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		</property>
 	</bean>
 
+	<!-- default cache configuration - temporary, this needs to be handled properly -->
 	<bean name="configuration.TileCacheConfiguration" class="org.geomajas.configuration.TileCacheConfiguration">
 		<!-- no default configuration -->
 	</bean>
+
+
+	<!-- spring configurations -->
 
 	<bean class="org.springframework.beans.factory.config.CustomScopeConfigurer">
 		<property name="scopes">
@@ -58,8 +63,22 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<property name="afterInitialization" value="true"/>
 	</bean>
 
-
 	<context:component-scan base-package="org.geomajas" name-generator="org.geomajas.spring.GeomajasBeanNameGenerator"/>
+
+
+	<!-- define default pipelines for RasterLayerService -->
+
+	<bean class="org.geomajas.service.pipeline.PipelineInfo">
+		<property name="id"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_GET_RASTER_TILES"/></property>
+		<property name="pipeline">
+			<list>
+				<bean class="org.geomajas.internal.service.raster.GetTilesGetStep">
+					<property name="id" value="GetTilesGetStep"/>
+				</bean>
+			</list>
+		</property>
+	</bean>
+
 
 	<!-- define default pipelines for VectorLayerService -->
 
@@ -148,17 +167,6 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 				</bean>
 				<bean class="org.geomajas.internal.service.vector.GetObjectsStep">
 					<property name="id" value="GetObjectsStep"/>
-				</bean>
-			</list>
-		</property>
-	</bean>
-
-	<bean class="org.geomajas.service.pipeline.PipelineInfo">
-		<property name="id"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_GET_RASTER_TILES"/></property>
-		<property name="pipeline">
-			<list>
-				<bean class="org.geomajas.internal.service.raster.GetTilesGetStep">
-					<property name="id" value="GetTilesGetStep"/>
 				</bean>
 			</list>
 		</property>

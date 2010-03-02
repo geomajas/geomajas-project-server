@@ -30,6 +30,7 @@ import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
 import org.geomajas.service.pipeline.PipelineStep;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import java.util.List;
 
@@ -56,7 +57,7 @@ public class GetTilesGetStep implements PipelineStep<List<RasterTile>> {
 		RasterLayer layer = context.get(PipelineCode.LAYER_KEY, RasterLayer.class);
 		Envelope bounds = context.get(PipelineCode.BOUNDS_KEY, Envelope.class);
 		double scale = context.get(PipelineCode.SCALE_KEY, Double.class);
-		String crs = context.get(PipelineCode.CRS_CODE_KEY, String.class);
+		CoordinateReferenceSystem crs = context.get(PipelineCode.CRS_KEY, CoordinateReferenceSystem.class);
 		List<RasterTile> images = layer.paint(crs, bounds, scale);
 		response.addAll(images);
 	}

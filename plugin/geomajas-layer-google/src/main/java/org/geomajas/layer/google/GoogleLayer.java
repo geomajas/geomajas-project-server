@@ -38,11 +38,8 @@ import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
 import org.geotools.geometry.DirectPosition2D;
-import org.geotools.referencing.CRS;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.MismatchedDimensionException;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
@@ -81,7 +78,7 @@ public class GoogleLayer implements RasterLayer {
 	public static final int MAX_ZOOM_LEVEL = 17;
 
 	@Autowired
-	private ConfigurationService runtime;
+	private ConfigurationService configurationService;
 
 	@Autowired
 	private DtoConverterService converterService;
@@ -107,25 +104,13 @@ public class GoogleLayer implements RasterLayer {
 		return crs;
 	}
 
-	private void initCrs() throws LayerException {
-		try {
-			crs = CRS.decode(layerInfo.getCrs());
-		} catch (NoSuchAuthorityCodeException exception) {
-			throw new LayerException(exception, ExceptionCode.LAYER_CRS_UNKNOWN_AUTHORITY, getId(),
-					getLayerInfo().getCrs());
-		} catch (FactoryException exception) {
-			throw new LayerException(exception, ExceptionCode.LAYER_CRS_PROBLEMATIC, getId(), getLayerInfo()
-					.getCrs());
-		}
-	}
-
 	public Envelope getMaxBounds() {
 		return converterService.toInternal(layerInfo.getMaxExtent());
 	}
 
 	public void setLayerInfo(RasterLayerInfo layerInfo) throws LayerException {
 		this.layerInfo = layerInfo;
-		initCrs();
+		crs = configurationService.getCrs("EPSG:900913"); // we overrule the declared crs, always use mercator/google
 		layerName = layerInfo.getDataSourceName();
 		tileWidth = layerInfo.getTileWidth();
 		tileHeight = layerInfo.getTileHeight();
@@ -138,11 +123,11 @@ public class GoogleLayer implements RasterLayer {
 		return layerName;
 	}
 
-	public List<RasterTile> paint(String boundsCrs, Envelope bounds, double scale) throws RenderException {
+	public List<RasterTile> paint(CoordinateReferenceSystem boundsCrs, Envelope bounds, double scale)
+			throws RenderException {
 		try {
-			CoordinateReferenceSystem google = CRS.decode("EPSG:900913");
-			MathTransform googleToLayer = geoService.findMathTransform(google, CRS.decode(boundsCrs));
-			MathTransform layerToGoogle = googleToLayer.inverse();
+			MathTransform layerToMap = geoService.findMathTransform(crs, boundsCrs);
+			MathTransform mapToLayer = layerToMap.inverse();
 
 			// TODO: if bounds width or height is 0, we run out of memory ?
 			bounds = clipBounds(bounds);
@@ -150,7 +135,7 @@ public class GoogleLayer implements RasterLayer {
 			DirectPosition2D center = new DirectPosition2D(0.5 * (bounds.getMinX() + bounds.getMaxX()), 0.5 * (bounds
 					.getMinY() + bounds.getMaxY()));
 
-			double scaleRatio = calculateMapUnitPerGoogleMeter(layerToGoogle, center);
+			double scaleRatio = calculateMapUnitPerGoogleMeter(mapToLayer, center);
 
 			// find zoomlevel
 			// scale in pix/m should just above the given scale so we have at
@@ -167,14 +152,14 @@ public class GoogleLayer implements RasterLayer {
 			// the resulting indices are floating point values as the center
 			// is not coincident with an image corner !!!!
 			Coordinate indicesCenter;
-			indicesCenter = getGoogleIndicesFromMap(layerToGoogle, center, tileLevel);
+			indicesCenter = getGoogleIndicesFromMap(mapToLayer, center, tileLevel);
 
 			// Calculate the width in map units of the image that contains the
 			// center
 			Coordinate indicesUpperLeft = new Coordinate(Math.floor(indicesCenter.x), Math.floor(indicesCenter.y));
 			Coordinate indicesLowerRight = new Coordinate(indicesUpperLeft.x + 1, indicesUpperLeft.y + 1);
-			DirectPosition mapUpperLeft = getMapFromGoogleIndices(googleToLayer, indicesUpperLeft, tileLevel);
-			DirectPosition mapLowerRight = getMapFromGoogleIndices(googleToLayer, indicesLowerRight, tileLevel);
+			DirectPosition mapUpperLeft = getMapFromGoogleIndices(layerToMap, indicesUpperLeft, tileLevel);
+			DirectPosition mapLowerRight = getMapFromGoogleIndices(layerToMap, indicesLowerRight, tileLevel);
 			double width = mapLowerRight.getOrdinate(0) - mapUpperLeft.getOrdinate(0);
 
 			// Calculate the position and indices of the center image corner
@@ -235,10 +220,8 @@ public class GoogleLayer implements RasterLayer {
 				}
 			}
 			return result;
-		} catch (NoSuchAuthorityCodeException e) {
-			throw new RenderException(e, ExceptionCode.RENDER_TRANSFORMATION_FAILED);
-		} catch (FactoryException e) {
-			throw new RenderException(e, ExceptionCode.RENDER_TRANSFORMATION_FAILED);
+		} catch (RenderException re) {
+			throw re;
 		} catch (GeomajasException e) {
 			throw new RenderException(e, ExceptionCode.RENDER_TRANSFORMATION_FAILED);
 		} catch (TransformException e) {

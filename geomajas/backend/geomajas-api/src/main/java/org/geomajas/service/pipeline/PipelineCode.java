@@ -49,7 +49,6 @@ public interface PipelineCode {
 	String BOUNDS_KEY = "bounds"; // Envelope
 	String SCALE_KEY = "scale"; // Double
 	String CRS_KEY = "crs"; // CoordinateReferenceSystem
-	String CRS_CODE_KEY = "crsCode"; // String
 	String STYLE_KEY = "style"; // NamedStyleInfo
 	String FEATURE_INCLUDES_KEY = "featureIncludes"; // Integer
 	String OFFSET_KEY = "offset"; // Integer
