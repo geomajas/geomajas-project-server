@@ -125,6 +125,7 @@ public class VectorLayerServiceVisibleAreaTest {
 
 	/*
 	@Test
+	@DirtiesContext
 	public void testSaveOrUpdateCreateDeleteArea() throws Exception {
 		login("");
 		// @todo

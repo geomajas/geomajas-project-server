@@ -23,6 +23,7 @@
 
 package org.geomajas.spring;
 
+import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.beans.factory.config.Scope;
 import org.springframework.stereotype.Component;
@@ -33,7 +34,11 @@ import org.springframework.stereotype.Component;
  * @author Joachim Van der Auwera
  */
 @Component
-public class ThreadScope implements Scope {
+public class ThreadScope implements Scope, DisposableBean {
+
+	public ThreadScope() {
+		ThreadScopeContextHolder.clear();
+	}
 
 	/**
 	 * Get bean for given name in the "thread" scope.
@@ -89,4 +94,7 @@ public class ThreadScope implements Scope {
 		return Thread.currentThread().getName();
 	}
 
+	public void destroy() throws Exception {
+		ThreadScopeContextHolder.clear();
+	}
 }

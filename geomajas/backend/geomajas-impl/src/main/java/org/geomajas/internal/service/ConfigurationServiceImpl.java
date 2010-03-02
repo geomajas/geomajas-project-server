@@ -62,27 +62,16 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 	@Autowired(required = false)
 	protected Map<String, ClientApplicationInfo> applicationMap = new LinkedHashMap<String, ClientApplicationInfo>();
 
-	private static Map<String, Layer<?>> LAYERS_MAP; // @todo fix hack, see MAJ-744
-
 	public VectorLayer getVectorLayer(String id) {
-		if (null == LAYERS_MAP) {
-			LAYERS_MAP = layerMap; // @todo fix hack, see MAJ-744
-		}
 		return id == null ? null : vectorLayerMap.get(id);
 	}
 
 	public RasterLayer getRasterLayer(String id) {
-		if (null == LAYERS_MAP) {
-			LAYERS_MAP = layerMap; // @todo fix hack, see MAJ-744
-		}
 		return id == null ? null : rasterLayerMap.get(id);
 	}
 
 	public Layer<?> getLayer(String id) {
-		if (null == LAYERS_MAP) {
-			LAYERS_MAP = layerMap; // @todo fix hack, see MAJ-744
-		}
-		return id == null ? null : LAYERS_MAP.get(id);
+		return id == null ? null : layerMap.get(id);
 	}
 
 	public ClientMapInfo getMap(String mapId, String applicationId) {

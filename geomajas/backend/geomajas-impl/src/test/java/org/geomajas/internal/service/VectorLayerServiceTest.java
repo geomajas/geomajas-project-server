@@ -49,6 +49,7 @@ import org.opengis.filter.Filter;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -96,6 +97,7 @@ public class VectorLayerServiceTest {
 	}
 
 	@Test
+	@DirtiesContext
 	public void testUpdate() throws Exception {
 		Filter filter = filterService.createFidFilter(new String[]{"3"});
 		CoordinateReferenceSystem crs = CRS.decode(beanLayer.getLayerInfo().getCrs());
@@ -126,6 +128,7 @@ public class VectorLayerServiceTest {
 	}
 
 	@Test
+	@DirtiesContext
 	public void testCreateDelete() throws Exception {
 		// done in one test to assure the state is back to what is expected,
 		// the spring context is not rebuilt between test methods

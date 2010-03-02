@@ -49,6 +49,7 @@ import org.opengis.filter.Filter;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -131,6 +132,7 @@ public class VectorLayerServiceFeatureTest {
 	}
 
 	@Test
+	@DirtiesContext
 	public void testSaveOrUpdateFeatureWritable() throws Exception {
 		Filter filter;
 		List<InternalFeature> oldFeatures;
@@ -182,6 +184,7 @@ public class VectorLayerServiceFeatureTest {
 	}
 
 	@Test
+	@DirtiesContext
 	public void testSaveOrUpdateDeleteFeature() throws Exception {
 		Filter filter;
 		List<InternalFeature> oldFeatures;
@@ -214,6 +217,7 @@ public class VectorLayerServiceFeatureTest {
 	}
 
 	@Test
+	@DirtiesContext
 	public void testSaveOrUpdateCreateFeature() throws Exception {
 		Filter filter;
 		List<InternalFeature> oldFeatures;
