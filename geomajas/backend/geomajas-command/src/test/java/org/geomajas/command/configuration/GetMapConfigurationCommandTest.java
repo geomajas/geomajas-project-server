@@ -50,9 +50,9 @@ public class GetMapConfigurationCommandTest {
 						"org/geomajas/testdata/layerCountries.xml",
 						"org/geomajas/testdata/simplevectorsContext.xml"});
 		// first verify that the configuration is as expected
-		ConfigurationService runtimeParameters = applicationContext.getBean(
+		ConfigurationService configurationService = applicationContext.getBean(
 				"service.ConfigurationService", ConfigurationService.class);
-		Layer layer = runtimeParameters.getLayer("countries");
+		Layer layer = configurationService.getLayer("countries");
 		Bbox configMaxExtent = layer.getLayerInfo().getMaxExtent();
 		Assert.assertEquals(-85.05112877980659, configMaxExtent.getX(), DOUBLE_TOLERANCE);
 		Assert.assertEquals(-85.05112877980659, configMaxExtent.getY(), DOUBLE_TOLERANCE);

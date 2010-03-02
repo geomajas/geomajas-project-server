@@ -56,9 +56,9 @@ public class MapConfigurationVisitor extends TopDownVisitor {
 
 	private VectorLayerService layerService;
 
-	public MapConfigurationVisitor(ConfigurationService runtimeParameters, GeoService geoService,
+	public MapConfigurationVisitor(ConfigurationService configurationService, GeoService geoService,
 			FilterService filterCreator, VectorLayerService layerService) {
-		this.runtime = runtimeParameters;
+		this.runtime = configurationService;
 		this.geoService = geoService;
 		this.filterCreator = filterCreator;
 		this.layerService = layerService;

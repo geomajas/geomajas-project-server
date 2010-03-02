@@ -64,7 +64,7 @@ public class UserMaximumExtentCommand implements Command<UserMaximumExtentReques
 	private GeoService geoService;
 
 	@Autowired
-	private ConfigurationService runtimeParameters;
+	private ConfigurationService configurationService;
 
 	@Autowired
 	private VectorLayerService layerService;
@@ -83,7 +83,7 @@ public class UserMaximumExtentCommand implements Command<UserMaximumExtentReques
 		boolean excludeRasterLayers = request.isExcludeRasterLayers();
 		if (includeLayers != null && includeLayers.length() > 0) {
 			for (String layer : includeLayers.split(",")) {
-				Layer<?> l = runtimeParameters.getLayer(layer.trim());
+				Layer<?> l = configurationService.getLayer(layer.trim());
 				if (!excludeRasterLayers || l.getLayerInfo().getLayerType() != LayerType.RASTER) {
 					tempLayers.add(l.getId());
 				}
@@ -100,7 +100,7 @@ public class UserMaximumExtentCommand implements Command<UserMaximumExtentReques
 		} else {
 			Envelope extent = new Envelope();
 			for (String layerId : layers) {
-				layer = runtimeParameters.getLayer(layerId);
+				layer = configurationService.getLayer(layerId);
 				if (layer != null) {
 					Envelope bounds;
 					if (layer.getLayerInfo().getLayerType() == LayerType.RASTER) {

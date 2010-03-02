@@ -48,7 +48,7 @@ public class GetRenderedTileCommand implements Command<GetRenderedTileRequest, G
 	private final Logger log = LoggerFactory.getLogger(GetRenderedTileCommand.class);
 
 	@Autowired
-	private ConfigurationService runtimeParameters;
+	private ConfigurationService configurationService;
 
 	@Autowired
 	private DtoConverterService converter;

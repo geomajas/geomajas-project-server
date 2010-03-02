@@ -49,7 +49,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class PersistTransactionCommand implements Command<PersistTransactionRequest, PersistTransactionResponse> {
 
 	@Autowired
-	private ConfigurationService runtimeParameters;
+	private ConfigurationService configurationService;
 
 	@Autowired
 	private DtoConverterService converter;
@@ -89,7 +89,7 @@ public class PersistTransactionCommand implements Command<PersistTransactionRequ
 			}
 		}
 
-		layerService.saveOrUpdate(featureTransaction.getLayerId(), runtimeParameters.getCrs(request.getCrs()),
+		layerService.saveOrUpdate(featureTransaction.getLayerId(), configurationService.getCrs(request.getCrs()),
 				oldFeatures, newFeatures);
 
 		response.setFeatureTransaction(featureTransaction);

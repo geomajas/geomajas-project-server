@@ -33,8 +33,6 @@
 	</source>
 	<source path="configuration">
 		<exclude name="ApplicationInfo.java"/>
-		<exclude name="GeomajasRuntimeParameters.java"/>
-		<exclude name="parser/*"/>
 	</source>
 	<source path="geometry"/>
 	<source path="command/dto"/>
