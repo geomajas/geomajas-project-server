@@ -181,7 +181,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 				<bean class="org.geomajas.configuration.SnappingRuleInfo">
 					<property name="distance" value="10" />
 					<property name="type" value="NEAREST_POINT" />
-					<property name="serverLayerId" ref="roads" />
+					<property name="serverLayerId" value="roads" />
 				</bean>
 			</list>
 		</property>
