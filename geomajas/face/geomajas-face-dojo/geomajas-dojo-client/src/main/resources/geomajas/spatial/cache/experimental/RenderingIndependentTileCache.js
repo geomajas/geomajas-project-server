@@ -33,9 +33,8 @@ dojo.declare("RenderingIndependentTileCache", TileCache, {
 	 * @constructor
 	 * @param layer Reference to the VectorLayer.
 	 * @param bbox The maximum bounding box for the cache.
-	 * @param depth The maximum tiling depth. 
 	 */
-	constructor : function (layer, bbox, depth) {
+	constructor : function (layer, bbox) {
 	},
 
 

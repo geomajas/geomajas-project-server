@@ -34,12 +34,8 @@ dojo.declare("TileCache", SpatialCache, {
 	 * @constructor
 	 * @param layer Reference to the VectorLayer.
 	 * @param bbox The maximum bounding box for the cache.
-	 * @param depth The maximum tiling depth. 
 	 */
-	constructor : function (layer, bbox, depth) {
-		/** The maximum tiling depth. */
-		this.depth = depth;
-
+	constructor : function (layer, bbox) {
 		/** Feature dictionary. Uses feature.getLocalId() as key. */
 		this.features = new dojox.collections.Dictionary();
 
@@ -222,7 +218,7 @@ dojo.declare("TileCache", SpatialCache, {
 		var depth = 0;
 		var baseX = this.bbox.width;
 		var baseY = this.bbox.height;
-		while(baseX > bounds.getWidth() && baseY > bounds.getHeight() && depth < this.depth){
+		while(baseX > bounds.getWidth() && baseY > bounds.getHeight() && depth < 256){
 			depth++;
 			baseX /= 2.0;
 			baseY /= 2.0;	
