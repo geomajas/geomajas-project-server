@@ -78,6 +78,19 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 							<ref bean="beansLayer" />
 						</list>
 					</property>
+					<property name="toolbar">
+						<bean class="org.geomajas.configuration.client.ClientToolbarInfo">
+							<property name="id" value="toolbar"/>
+							<property name="tools">
+								<list>
+									<bean name="ZoomToSelection" class="org.geomajas.configuration.client.ClientToolInfo" />
+									<bean name="PanMode" class="org.geomajas.configuration.client.ClientToolInfo" />
+									<bean name="EditMode" class="org.geomajas.configuration.client.ClientToolInfo" />
+									<bean name="PrintMode" class="org.geomajas.configuration.client.ClientToolInfo" />
+								</list>
+							</property>
+						</bean>
+					</property>
 				</bean>
 			</list>
 		</property>
