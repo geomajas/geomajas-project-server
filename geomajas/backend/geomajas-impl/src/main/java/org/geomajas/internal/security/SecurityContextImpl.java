@@ -43,6 +43,7 @@ import org.geomajas.security.VectorLayerSelectFilterAuthorization;
 import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.FilterService;
+import org.geomajas.service.GeoService;
 import org.opengis.filter.Filter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -95,6 +96,9 @@ public class SecurityContextImpl implements SecurityContext {
 
 	@Autowired
 	private DtoConverterService converterService;
+
+	@Autowired
+	private GeoService geoService;
 
 	public void setAuthentications(String token, List<Authentication> authentications) {
 		this.token = token;
@@ -378,7 +382,8 @@ public class SecurityContextImpl implements SecurityContext {
 		// base is the max bounds of the layer
 		Envelope maxBounds = converterService.toInternal(layerInfo.getMaxExtent());
 		PrecisionModel precisionModel = new PrecisionModel(PrecisionModel.FLOATING);
-		GeometryFactory geometryFactory = new GeometryFactory(precisionModel);
+		int srid = geoService.getSridFromCrs(layer.getLayerInfo().getCrs());
+		GeometryFactory geometryFactory = new GeometryFactory(precisionModel, srid);
 		Geometry geometry = geometryFactory.toGeometry(maxBounds);
 
 		// limit based on authorizations
@@ -389,6 +394,7 @@ public class SecurityContextImpl implements SecurityContext {
 				}
 			}
 		}
+		geometry.setSRID(srid); // force srid, even when not set correctly by security service
 		return geometry;
 	}
 
