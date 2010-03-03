@@ -37,7 +37,6 @@ import org.geomajas.layer.RasterLayer;
 import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.layer.tile.TileCode;
 import org.geomajas.rendering.RenderException;
-import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
 import org.geotools.geometry.DirectPosition2D;
@@ -63,8 +62,6 @@ import com.vividsolutions.jts.geom.Envelope;
  */
 public class WmsLayer implements RasterLayer {
 
-	private String layerId;
-
 	protected List<Resolution> resolutions = new ArrayList<Resolution>();
 
 	private final Logger log = LoggerFactory.getLogger(WmsLayer.class);
@@ -72,9 +69,6 @@ public class WmsLayer implements RasterLayer {
 	private DecimalFormat decimalFormat = new DecimalFormat();
 
 	private String baseWmsUrl, format, version, styles = "";
-
-	@Autowired
-	private ConfigurationService configurationService;
 
 	@Autowired
 	private DtoConverterService converterService;
@@ -87,6 +81,8 @@ public class WmsLayer implements RasterLayer {
 	private CoordinateReferenceSystem crs;
 
 	private String id;
+	
+	private String layers;
 	
 	public String getId() {
 		return id;
@@ -130,30 +126,17 @@ public class WmsLayer implements RasterLayer {
 		DecimalFormatSymbols symbols = new DecimalFormatSymbols();
 		symbols.setDecimalSeparator('.');
 		decimalFormat.setDecimalFormatSymbols(symbols);
-		layerId = getId();
+		layers = getId();
 		if (layerInfo.getDataSourceName() != null) {
-			layerId = layerInfo.getDataSourceName();
+			layers = layerInfo.getDataSourceName();
 		}
 		List<Double> r = layerInfo.getResolutions();
 		if (r != null) {
 			calculatePredefinedResolutions(r);
-		} else {
-			calculateQuadTreeResolutions();
-		}
+		} 
 	}
 
-	private void calculateQuadTreeResolutions() {
-		// based on quad tree created by subdividing the maximum extent
-		Bbox bbox = getLayerInfo().getMaxExtent();
-		double maxWidth = bbox.getWidth();
-		double maxHeight = bbox.getHeight();
-		for (int level = 0; level <= getLayerInfo().getResolutions().size(); level++) {
-			double width = maxWidth / Math.pow(2, level);
-			double height = maxHeight / Math.pow(2, level);
-			resolutions.add(new Resolution(Math.max(width / getTileWidth(), height / getTileHeight()), level,
-					getTileWidth(), getTileHeight()));
-		}
-	}
+	
 
 	private void calculatePredefinedResolutions(List<Double> r) {
 		// sort in decreasing order !!!
@@ -181,7 +164,13 @@ public class WmsLayer implements RasterLayer {
 			if (bounds.isNull()) {
 				return Collections.EMPTY_LIST;
 			}
-			Resolution bestResolution = calculateBestResolution(scale);
+			Resolution bestResolution = null;
+			if (resolutions.size() > 0) {
+				bestResolution = calculateBestResolution(scale);
+			} else {
+				bestResolution = calculateBestQuadTreeResolution(scale);
+			}
+
 			RasterGrid grid = getRasterGrid(bounds, bestResolution.getTileWidth(), bestResolution.getTileHeight(),
 					scale);
 
@@ -274,7 +263,7 @@ public class WmsLayer implements RasterLayer {
 			url += "?SERVICE=WMS";
 		}
 		url += "&request=GetMap";
-		url += "&layers=" + layerId;
+		url += "&layers=" + layers;
 		url += "&srs=" + getLayerInfo().getCrs();
 		url += "&width=" + width;
 		url += "&height=" + height;
@@ -309,6 +298,37 @@ public class WmsLayer implements RasterLayer {
 		}
 		// should not occur !!!!
 		return resolutions.get(resolutions.size() - 1);
+	}
+
+	protected Resolution calculateBestQuadTreeResolution(double scale) {
+		double screenResolution = 1.0 / scale;
+		// based on quad tree created by subdividing the maximum extent
+		Bbox bbox = getLayerInfo().getMaxExtent();
+		double maxWidth = bbox.getWidth();
+		double maxHeight = bbox.getHeight();
+		
+		Resolution upper = new Resolution(Math.max(maxWidth / getTileWidth(), maxHeight / getTileHeight()), 0,
+				getTileWidth(), getTileHeight());
+		if (screenResolution >= upper.getResolution()) {
+			return upper;
+		} else {
+			int level = 0;
+			Resolution lower = null;
+			while (screenResolution < upper.getResolution()) {
+				lower = upper;
+				level++;
+				double width = maxWidth / Math.pow(2, level);
+				double height = maxHeight / Math.pow(2, level);
+				upper = new Resolution(Math.max(width / getTileWidth(), height / getTileHeight()), level,
+						getTileWidth(), getTileHeight());
+			}
+			if ((upper.getResolution() - screenResolution) > 2 * (screenResolution - lower.getResolution())) {
+				return lower;
+			} else {
+				return upper;
+			}
+		}
+		
 	}
 
 	protected RasterGrid getRasterGrid(Envelope bounds, double width, double height, double scale) {
