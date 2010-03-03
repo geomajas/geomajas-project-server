@@ -23,16 +23,16 @@
 
 package org.geomajas.internal.service.vector;
 
+import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
+import org.geomajas.global.GeomajasSecurityException;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.FeatureModel;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
-import org.geomajas.service.pipeline.PipelineStep;
-import org.geomajas.security.SecurityContext;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.opengis.filter.Filter;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -42,20 +42,7 @@ import java.util.Map;
  *
  * @author Joachim Van der Auwera
  */
-public class SaveOrUpdateSaveStep implements PipelineStep {
-
-	@Autowired
-	private SecurityContext securityContext;
-
-	private String id;
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
+public class SaveOrUpdateSaveStep extends AbstractSaveOrUpdateStep {
 
 	public void execute(PipelineContext context, Object response) throws GeomajasException {
 		InternalFeature newFeature = context.getOptional(PipelineCode.FEATURE_KEY, InternalFeature.class);
@@ -63,6 +50,11 @@ public class SaveOrUpdateSaveStep implements PipelineStep {
 		String layerId = context.get(PipelineCode.LAYER_ID_KEY, String.class);
 		VectorLayer layer = context.get(PipelineCode.LAYER_KEY, VectorLayer.class);
 		FeatureModel featureModel = layer.getFeatureModel();
+		Boolean isCreateObject = context.getOptional(PipelineCode.IS_CREATE_KEY, Boolean.class);
+		boolean isCreate  = false;
+		if (null != isCreateObject && isCreateObject) {
+			isCreate = true;
+		}
 
 		// Assure only writable attributes are set
 		Map<String, Attribute> requestAttributes = newFeature.getAttributes();
@@ -79,6 +71,20 @@ public class SaveOrUpdateSaveStep implements PipelineStep {
 		if (newFeature.getGeometry() != null) {
 			featureModel.setGeometry(feature, newFeature.getGeometry());
 		}
-		context.put(PipelineCode.FEATURE_DATA_OBJECT_KEY, layer.saveOrUpdate(feature));
+
+		Filter securityFilter;
+		int securityExceptionCode;
+		if (isCreate) {
+			securityFilter = getSecurityFilter(layer, securityContext.getCreateAuthorizedArea(layerId));
+			securityExceptionCode = ExceptionCode.FEATURE_CREATE_PROHIBITED;
+		} else {
+			securityFilter = getSecurityFilter(layer, securityContext.getUpdateAuthorizedArea(layerId));
+			securityExceptionCode = ExceptionCode.FEATURE_UPDATE_PROHIBITED;
+		}
+		if (securityFilter.evaluate(feature)) {
+			context.put(PipelineCode.FEATURE_DATA_OBJECT_KEY, layer.saveOrUpdate(feature));
+		} else {
+			throw new GeomajasSecurityException(securityExceptionCode, newFeature.getId(), securityContext.getUserId());
+		}
 	}
 }

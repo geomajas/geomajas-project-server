@@ -57,5 +57,6 @@ public interface PipelineCode {
 	String INDEX_KEY = "index"; // Integer
 	String FEATURE_DATA_OBJECT_KEY = "featureDataObject"; // Object
 	String TILE_METADATA_KEY = "tileMetadata"; // TileMetadata
+	String IS_CREATE_KEY = "isCreate"; // Boolean (or not set)
 
 }

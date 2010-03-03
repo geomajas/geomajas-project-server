@@ -30,9 +30,7 @@ import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
-import org.geomajas.service.pipeline.PipelineStep;
-import org.geomajas.security.SecurityContext;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.opengis.filter.Filter;
 
 /**
  * Handle possible delete of an individual feature in saveOrUpdate.
@@ -41,20 +39,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  *
  * @author Joachim Van der Auwera
  */
-public class SaveOrUpdateDeleteStep implements PipelineStep {
-
-	@Autowired
-	private SecurityContext securityContext;
-
-	private String id;
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
+public class SaveOrUpdateDeleteStep extends AbstractSaveOrUpdateStep {
 
 	public void execute(PipelineContext context, Object response) throws GeomajasException {
 		InternalFeature newFeature = context.getOptional(PipelineCode.FEATURE_KEY, InternalFeature.class);
@@ -65,7 +50,16 @@ public class SaveOrUpdateDeleteStep implements PipelineStep {
 				String layerId = context.get(PipelineCode.LAYER_ID_KEY, String.class);
 				if (securityContext.isFeatureDeleteAuthorized(layerId, oldFeature)) {
 					VectorLayer layer = context.get(PipelineCode.LAYER_KEY, VectorLayer.class);
-					layer.delete(oldFeature.getLocalId());
+					Filter securityFilter = getSecurityFilter(layer, securityContext.getDeleteAuthorizedArea(layerId));
+					Object featureObj = layer.read(oldFeature.getLocalId());
+					if (null != featureObj) {
+						if (securityFilter.evaluate(featureObj)) {
+							layer.delete(oldFeature.getLocalId());
+						} else {
+							throw new GeomajasSecurityException(ExceptionCode.FEATURE_DELETE_PROHIBITED,
+									oldFeature.getId(), securityContext.getUserId());
+						}
+					}
 				} else {
 					throw new GeomajasSecurityException(ExceptionCode.FEATURE_DELETE_PROHIBITED,
 							oldFeature.getId(), securityContext.getUserId());

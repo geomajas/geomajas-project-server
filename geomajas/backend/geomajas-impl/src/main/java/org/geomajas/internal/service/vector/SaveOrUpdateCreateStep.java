@@ -31,29 +31,13 @@ import org.geomajas.layer.feature.FeatureModel;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
-import org.geomajas.service.pipeline.PipelineStep;
-import org.geomajas.security.SecurityContext;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Create the feature it did not exist (and assure "featureDataObject" is available).
  *
  * @author Joachim Van der Auwera
  */
-public class SaveOrUpdateCreateStep implements PipelineStep {
-
-	@Autowired
-	private SecurityContext securityContext;
-
-	private String id;
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
+public class SaveOrUpdateCreateStep extends AbstractSaveOrUpdateStep {
 
 	public void execute(PipelineContext context, Object response) throws GeomajasException {
 		InternalFeature oldFeature = context.getOptional(PipelineCode.OLD_FEATURE_KEY, InternalFeature.class);
@@ -70,6 +54,7 @@ public class SaveOrUpdateCreateStep implements PipelineStep {
 					context.put(PipelineCode.FEATURE_DATA_OBJECT_KEY,
 							featureModel.newInstance(newFeature.getLocalId()));
 				}
+				context.put(PipelineCode.IS_CREATE_KEY, true);
 			} else {
 				throw new GeomajasSecurityException(ExceptionCode.FEATURE_CREATE_PROHIBITED, securityContext
 						.getUserId());

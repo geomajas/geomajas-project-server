@@ -106,9 +106,9 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 										<entry key="beans">
 											<bean class="org.geomajas.plugin.springsecurity.configuration.LayerAreaAuthorizationInfo">
 												<property name="visibleArea" value="MULTIPOLYGON(((1 0,1 10,10 10,10 0,1 0)))" />
-												<property name="updateAuthorizedArea" value="MULTIPOLYGON(((1 0,1 10,10 10,10 0,1 0)))" />
-												<property name="createAuthorizedArea" value="MULTIPOLYGON(((1 0,1 10,10 10,10 0,1 0)))" />
-												<property name="deleteAuthorizedArea" value="MULTIPOLYGON(((1 0,1 10,10 10,10 0,1 0)))" />
+												<property name="updateAuthorizedArea" value="MULTIPOLYGON(((4 0,4 10,10 10,10 0,4 0)))" />
+												<property name="createAuthorizedArea" value="MULTIPOLYGON(((1 0,1 5,10 5,10 0,1 0)))" />
+												<property name="deleteAuthorizedArea" value="MULTIPOLYGON(((1 0,1 2,10 2,10 0,1 0)))" />
 											</bean>
 										</entry>
 									</map>
