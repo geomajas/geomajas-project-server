@@ -41,7 +41,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
  * <p>
- * Sample that shows how to switch between european and english units
+ * Sample that shows how to switch between european and english units.
  * </p>
  * 
  * @author Frank Wynants
