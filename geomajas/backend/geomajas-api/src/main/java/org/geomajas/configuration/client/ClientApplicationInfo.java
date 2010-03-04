@@ -125,4 +125,14 @@ public class ClientApplicationInfo implements Serializable {
 	public void setUserData(ClientUserDataInfo userData) {
 		this.userData = userData;
 	}
+
+	/**
+	 * Dummy implementation to keep GWT serializer happy !
+	 * 
+	 * @author Jan De Moerloose
+	 *
+	 */
+	public static class DummyClientUserDataInfo implements ClientUserDataInfo {
+		private static final long serialVersionUID = 1L;
+	}
 }
