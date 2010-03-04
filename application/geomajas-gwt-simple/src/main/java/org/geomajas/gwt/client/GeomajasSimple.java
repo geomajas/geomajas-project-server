@@ -26,6 +26,7 @@ package org.geomajas.gwt.client;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.geomajas.gwt.client.action.toolbar.RefreshConfigurationAction;
 import org.geomajas.gwt.client.i18n.I18nProvider;
 import org.geomajas.gwt.client.map.event.MapModelEvent;
 import org.geomajas.gwt.client.map.event.MapModelHandler;
@@ -115,6 +116,8 @@ public class GeomajasSimple implements EntryPoint {
 				ScaleSelect scale = new ScaleSelect(map.getMapModel().getMapView(), map.getPixelLength());
 				scale.setScales(0.01, 0.001, 0.0001);
 				toolbar.addMember(scale);
+				toolbar.addActionButton(new RefreshConfigurationAction());
+
 			}
 		});
 

@@ -7,7 +7,7 @@
     </appender>
 
     <logger name="org.geomajas">
-        <level value="DEBUG"/>
+        <level value="INFO"/>
     </logger>
 
     <root>

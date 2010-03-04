@@ -79,6 +79,9 @@ public class GetMapConfigurationCommand implements Command<GetMapConfigurationRe
 				response.setMapInfo(securityClone(map));
 			}
 		}
+		if (response.getMapInfo() == null) {
+			throw new GeomajasException(ExceptionCode.MAP_NOT_FOUND, request.getApplicationId(), request.getMapId());
+		}
 	}
 
 	public ClientMapInfo securityClone(ClientMapInfo original) {
@@ -114,7 +117,7 @@ public class GetMapConfigurationCommand implements Command<GetMapConfigurationRe
 		client.setScaleBarEnabled(original.isScaleBarEnabled());
 		client.setToolbar(securityClone(original.getToolbar()));
 		client.setUnitLength(original.getUnitLength());
-		client.setUserData(original.getUserData());
+//		client.setUserData(original.getUserData());
 		return client;
 	}
 

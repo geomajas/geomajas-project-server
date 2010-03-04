@@ -20,39 +20,38 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+package org.geomajas.command.dto;
 
-package org.geomajas.gwt.client.i18n;
-
-import com.google.gwt.i18n.client.Constants;
+import org.geomajas.command.CommandRequest;
 
 /**
- * <p>
- * Localization constants for all ToolbarActions and ToolbarSelectActions.
- * </p>
- *
- * @author Pieter De Graef
+ * Request object for {@link RefreshConfigurationCommand}.
+ * 
+ * @author Jan De Moerloose
+ * 
  */
-public interface ToolbarConstants extends Constants {
+public class RefreshConfigurationRequest implements CommandRequest {
 
-	String editingSelect();
+	private String[] configLocations;
 
-	String measureSelect();
+	/**
+	 * Get the new array of resource locations in classpath notation.
+	 * 
+	 * @return array
+	 */
+	public String[] getConfigLocations() {
+		return configLocations;
+	}
 
-	String selectionSelect();
+	/**
+	 * Set the new array of resource locations in classpath notation, e.g.
+	 * ["path/to/applicationContext.xml","path/to/layer1.xml",...]
+	 * 
+	 * @param configLocations
+	 *            array of classpath resources
+	 */
+	public void setConfigLocations(String[] configLocations) {
+		this.configLocations = configLocations;
+	}
 
-	String zoomIn();
-
-	String zoomOut();
-
-	String pan();
-
-	String zoomToRectangle();
-
-	String zoomNext();
-
-	String zoomPrevious();
-
-	String scaleSelect();
-
-	String refreshConfiguration();
 }

@@ -104,21 +104,32 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 		service.execute(command, new AsyncCallback<CommandResponse>() {
 
 			public void onFailure(Throwable error) {
-				SC.warn(I18nProvider.getGlobal().commandError() + ":\n" + error.getMessage(), null);
-				decrementDispatched();
+				try {
+					SC.warn(I18nProvider.getGlobal().commandError() + ":\n" + error.getMessage(), null);
+					decrementDispatched();
+				} catch (Throwable t) {
+					GWT.log("Command failed on error callback", t);
+				} finally {
+					decrementDispatched();
+				}
 			}
 
 			public void onSuccess(CommandResponse response) {
-				if (response.isError()) {
-					String message = I18nProvider.getGlobal().commandError() + ":";
-					for (String error : response.getErrorMessages()) {
-						message += "\n" + error;
+				try {
+					if (response.isError()) {
+						String message = I18nProvider.getGlobal().commandError() + ":";
+						for (String error : response.getErrorMessages()) {
+							message += "\n" + error;
+						}
+						SC.warn(message, null);
+					} else {
+						onSuccess.execute(response);
 					}
-					SC.warn(message, null);
-				} else {
-					onSuccess.execute(response);
+				} catch (Throwable t) {
+					GWT.log("Command failed on success callback", t);
+				} finally {
+					decrementDispatched();
 				}
-				decrementDispatched();
 			}
 		});
 	}

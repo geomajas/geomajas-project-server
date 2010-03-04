@@ -62,9 +62,12 @@ public class GetConfigurationCommand implements Command<GetConfigurationRequest,
 
 		// the data is explicitly copied as this assures the security is considered when copying.
 		ClientApplicationInfo original = context.getBean(request.getApplicationId(), ClientApplicationInfo.class);
+		if (original == null) {
+			throw new GeomajasException(ExceptionCode.APPLICATION_NOT_FOUND, request.getApplicationId());
+		}
 		ClientApplicationInfo client = new ClientApplicationInfo();
 		client.setId(original.getId());
-		client.setUserData(original.getUserData());
+//		client.setUserData(original.getUserData());
 		client.setScreenDpi(original.getScreenDpi());
 		List<ClientMapInfo> maps = new ArrayList<ClientMapInfo>();
 		client.setMaps(maps);

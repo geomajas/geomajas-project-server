@@ -20,39 +20,36 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+package org.geomajas.command.dto;
 
-package org.geomajas.gwt.client.i18n;
-
-import com.google.gwt.i18n.client.Constants;
+import org.geomajas.command.CommandResponse;
 
 /**
- * <p>
- * Localization constants for all ToolbarActions and ToolbarSelectActions.
- * </p>
- *
- * @author Pieter De Graef
+ * Response object for {@link RefreshConfigurationCommand}.
+ * 
+ * @author Jan De Moerloose
+ * 
  */
-public interface ToolbarConstants extends Constants {
+public class RefreshConfigurationResponse extends CommandResponse {
 
-	String editingSelect();
+	private String[] applicationNames;
 
-	String measureSelect();
+	/**
+	 * Returns an array of client applications in the newly loaded context.
+	 * 
+	 * @return array of application names
+	 */
+	public String[] getApplicationNames() {
+		return applicationNames;
+	}
 
-	String selectionSelect();
-
-	String zoomIn();
-
-	String zoomOut();
-
-	String pan();
-
-	String zoomToRectangle();
-
-	String zoomNext();
-
-	String zoomPrevious();
-
-	String scaleSelect();
-
-	String refreshConfiguration();
+	/**
+	 * Sets an array of client applications in the newly loaded context.
+	 * @param applicationNames array of application names
+	 */
+	public void setApplicationNames(String[] applicationNames) {
+		this.applicationNames = applicationNames;
+	}
+	
+	
 }

@@ -23,27 +23,34 @@
 
 package org.geomajas.gwt.server;
 
-import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import java.io.IOException;
+
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.geomajas.command.CommandDispatcher;
 import org.geomajas.command.CommandResponse;
 import org.geomajas.gwt.client.GeomajasService;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.servlet.ApplicationContextUtils;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.event.ContextRefreshedEvent;
 
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import com.google.gwt.user.server.rpc.RemoteServiceServlet;
 
 /**
- * ???
- *
+ * Geomajas GWT service, implements communication between GWT face and back-end.
+ * 
  * @author Pieter De Graef
  * @author Joachim Van der Auwera
+ * @author Jan De Moerloose
  */
-public class GeomajasServiceImpl extends RemoteServiceServlet implements GeomajasService {
+public class GeomajasServiceImpl extends RemoteServiceServlet implements GeomajasService,
+		ApplicationListener<ContextRefreshedEvent> {
 
 	private static final long serialVersionUID = -4388317165048891159L;
 
@@ -56,7 +63,10 @@ public class GeomajasServiceImpl extends RemoteServiceServlet implements Geomaja
 
 		// register the controller object
 		applicationContext = ApplicationContextUtils.getApplicationContext(config);
-		commandDispatcher = applicationContext.getBean("command.CommandDispatcher", CommandDispatcher.class);
+		if (applicationContext instanceof ConfigurableApplicationContext) {
+			((ConfigurableApplicationContext) applicationContext).addApplicationListener(this);
+		}
+		initDispatcher();
 	}
 
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -76,4 +86,13 @@ public class GeomajasServiceImpl extends RemoteServiceServlet implements Geomaja
 		}
 		return null;
 	}
+
+	public void onApplicationEvent(ContextRefreshedEvent event) {
+			initDispatcher();
+	}
+
+	protected void initDispatcher() {
+		commandDispatcher = applicationContext.getBean("command.CommandDispatcher", CommandDispatcher.class);
+	}
+
 }

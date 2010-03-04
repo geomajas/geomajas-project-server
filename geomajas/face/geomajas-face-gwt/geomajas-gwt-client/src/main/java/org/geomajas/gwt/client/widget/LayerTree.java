@@ -210,21 +210,23 @@ public class LayerTree extends Canvas implements LeafClickHandler, FolderClickHa
 		toolStrip.setWidth100();
 		toolStrip.setPadding(3);
 
-		ClientLayerTreeInfo layerTreeInfo = mapModel.getDescription().getLayerTree();
-		for (ClientToolInfo tool : layerTreeInfo.getTools()) {
-			String id = tool.getId();
-			IButton button = null;
-			ToolbarBaseAction action = LayerTreeRegistry.getToolbarAction(id, mapWidget);
-			if (action instanceof LayerTreeAction) {
-				button = new LayerTreeButton(this, (LayerTreeAction) action);
-			} else if (action instanceof LayerTreeModalAction) {
-				button = new LayerTreeModalButton(this, (LayerTreeModalAction) action);
-			}
-			if (button != null) {
-				toolStrip.addMember(button);
-				LayoutSpacer spacer = new LayoutSpacer();
-				spacer.setWidth(2);
-				toolStrip.addMember(spacer);
+		ClientLayerTreeInfo layerTreeInfo = mapModel.getMapInfo().getLayerTree();
+		if (layerTreeInfo != null) {
+			for (ClientToolInfo tool : layerTreeInfo.getTools()) {
+				String id = tool.getId();
+				IButton button = null;
+				ToolbarBaseAction action = LayerTreeRegistry.getToolbarAction(id, mapWidget);
+				if (action instanceof LayerTreeAction) {
+					button = new LayerTreeButton(this, (LayerTreeAction) action);
+				} else if (action instanceof LayerTreeModalAction) {
+					button = new LayerTreeModalButton(this, (LayerTreeModalAction) action);
+				}
+				if (button != null) {
+					toolStrip.addMember(button);
+					LayoutSpacer spacer = new LayoutSpacer();
+					spacer.setWidth(2);
+					toolStrip.addMember(spacer);
+				}
 			}
 		}
 		Canvas[] toolStripMembers = toolStrip.getMembers();
@@ -246,10 +248,11 @@ public class LayerTree extends Canvas implements LeafClickHandler, FolderClickHa
 		final TreeNode nodeRoot = new TreeNode("ROOT");
 		tree.setRoot(nodeRoot); // invisible ROOT node (ROOT node is required)
 
-		ClientLayerTreeInfo layerTreeInfo = mapModel.getDescription().getLayerTree();
-		ClientLayerTreeNodeInfo treeNode = layerTreeInfo.getTreeNode();
-
-		processNode(treeNode, nodeRoot, tree, mapModel, false);
+		ClientLayerTreeInfo layerTreeInfo = mapModel.getMapInfo().getLayerTree();
+		if (layerTreeInfo != null) {
+			ClientLayerTreeNodeInfo treeNode = layerTreeInfo.getTreeNode();
+			processNode(treeNode, nodeRoot, tree, mapModel, false);
+		}
 
 		treeGrid.setData(tree);
 		treeGrid.addLeafClickHandler(this);

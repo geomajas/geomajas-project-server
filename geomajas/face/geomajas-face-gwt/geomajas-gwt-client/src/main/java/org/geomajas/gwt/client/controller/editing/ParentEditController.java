@@ -246,7 +246,7 @@ public class ParentEditController extends EditController {
 			pixelTolerance = 5;
 
 			// First try and get the pixelTolerance value from the selection controller configuration:
-			ClientToolbarInfo toolbarInfo = mapWidget.getMapModel().getDescription().getToolbar();
+			ClientToolbarInfo toolbarInfo = mapWidget.getMapModel().getMapInfo().getToolbar();
 			for (ClientToolInfo tool : toolbarInfo.getTools()) {
 				if ("SelectionMode".equals(tool.getId())) {
 					ToolbarBaseAction action = ToolbarRegistry.getToolbarAction(tool.getId(), mapWidget);

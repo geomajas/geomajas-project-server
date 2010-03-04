@@ -31,9 +31,7 @@
 		<exclude name="InternalTile.java"/>
 		<exclude name="InternalUrlTile.java"/>
 	</source>
-	<source path="configuration">
-		<exclude name="ApplicationInfo.java"/>
-	</source>
+	<source path="configuration"/>
 	<source path="geometry"/>
 	<source path="command/dto"/>
 	<source path="extension/printing/command/dto"/>

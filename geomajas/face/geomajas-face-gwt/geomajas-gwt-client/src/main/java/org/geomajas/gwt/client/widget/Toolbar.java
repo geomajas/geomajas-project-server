@@ -84,7 +84,7 @@ public class Toolbar extends ToolStrip {
 		mapWidget.getMapModel().addMapModelHandler(new MapModelHandler() {
 
 			public void onMapModelChange(MapModelEvent event) {
-				initialize(Toolbar.this.mapWidget.getMapModel().getDescription());
+				initialize(Toolbar.this.mapWidget.getMapModel().getMapInfo());
 			}
 		});
 	}
@@ -100,23 +100,24 @@ public class Toolbar extends ToolStrip {
 	 */
 	public void initialize(ClientMapInfo mapInfo) {
 		ClientToolbarInfo toolbarInfo = mapInfo.getToolbar();
-
-		for (ClientToolInfo tool : toolbarInfo.getTools()) {
-			String id = tool.getId();
-			if (TOOLBAR_SEPARATOR.equals(id)) {
-				addToolbarSeparator();
-			} else {
-				ToolbarBaseAction action = ToolbarRegistry.getToolbarAction(id, mapWidget);
-				if (action instanceof ConfigurableAction) {
-					for (Parameter parameter : tool.getParameters()) {
-						((ConfigurableAction) action).configure(parameter.getName(), parameter.getValue());
+		if (toolbarInfo != null) {
+			for (ClientToolInfo tool : toolbarInfo.getTools()) {
+				String id = tool.getId();
+				if (TOOLBAR_SEPARATOR.equals(id)) {
+					addToolbarSeparator();
+				} else {
+					ToolbarBaseAction action = ToolbarRegistry.getToolbarAction(id, mapWidget);
+					if (action instanceof ConfigurableAction) {
+						for (Parameter parameter : tool.getParameters()) {
+							((ConfigurableAction) action).configure(parameter.getName(), parameter.getValue());
+						}
 					}
-				}
-				if (action instanceof ToolbarModalAction) {
-					addModalButton((ToolbarModalAction) action);
-				}
-				if (action instanceof ToolbarAction) {
-					addActionButton((ToolbarAction) action);
+					if (action instanceof ToolbarModalAction) {
+						addModalButton((ToolbarModalAction) action);
+					}
+					if (action instanceof ToolbarAction) {
+						addActionButton((ToolbarAction) action);
+					}
 				}
 			}
 		}

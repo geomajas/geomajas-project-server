@@ -88,7 +88,7 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 	/** Reference to the <code>MapView</code> object of the <code>MapWidget</code>. */
 	private MapView mapView;
 
-	private ClientMapInfo description;
+	private ClientMapInfo mapInfo;
 
 	private FeatureEditor featureEditor;
 
@@ -202,7 +202,7 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 	 *            The configuration object.
 	 */
 	public void initialize(final ClientMapInfo mapInfo) {
-		description = mapInfo;
+		this.mapInfo = mapInfo;
 		srid = Integer.parseInt(mapInfo.getCrs().substring(mapInfo.getCrs().indexOf(":") + 1));
 		if (mapInfo.isResolutionsRelative()) {
 			List<Double> realResolutions = new ArrayList<Double>();
@@ -416,8 +416,8 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 	}
 
 	public int getPrecision() {
-		if (description != null) {
-			return description.getPrecision();
+		if (mapInfo != null) {
+			return mapInfo.getPrecision();
 		}
 		return -1;
 	}
@@ -426,8 +426,8 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 		return worldSpacePaintables;
 	}
 
-	public ClientMapInfo getDescription() {
-		return description;
+	public ClientMapInfo getMapInfo() {
+		return mapInfo;
 	}
 
 	/**

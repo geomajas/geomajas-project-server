@@ -22,19 +22,19 @@
  */
 package org.geomajas.dojo.server.servlet;
 
-import com.metaparadigm.jsonrpc.ArraySerializer;
-import com.metaparadigm.jsonrpc.BooleanSerializer;
-import com.metaparadigm.jsonrpc.DateSerializer;
-import com.metaparadigm.jsonrpc.DictionarySerializer;
-import com.metaparadigm.jsonrpc.ErrorInvocationCallback;
-import com.metaparadigm.jsonrpc.JSONRPCBridge;
-import com.metaparadigm.jsonrpc.JSONRPCResult;
-import com.metaparadigm.jsonrpc.ListSerializer;
-import com.metaparadigm.jsonrpc.MapSerializer;
-import com.metaparadigm.jsonrpc.NumberSerializer;
-import com.metaparadigm.jsonrpc.PrimitiveSerializer;
-import com.metaparadigm.jsonrpc.SetSerializer;
-import com.metaparadigm.jsonrpc.StringSerializer;
+import java.io.BufferedReader;
+import java.io.CharArrayWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.lang.reflect.Method;
+import java.text.ParseException;
+
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.geomajas.command.CommandDispatcher;
 import org.geomajas.dojo.server.json.AnnotatedBeanSerializer;
 import org.geomajas.dojo.server.json.BigNumberSerializer;
@@ -50,25 +50,30 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.ApplicationListener;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.event.ContextRefreshedEvent;
 
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedReader;
-import java.io.CharArrayWriter;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.lang.reflect.Method;
-import java.text.ParseException;
+import com.metaparadigm.jsonrpc.ArraySerializer;
+import com.metaparadigm.jsonrpc.BooleanSerializer;
+import com.metaparadigm.jsonrpc.DateSerializer;
+import com.metaparadigm.jsonrpc.DictionarySerializer;
+import com.metaparadigm.jsonrpc.ErrorInvocationCallback;
+import com.metaparadigm.jsonrpc.JSONRPCBridge;
+import com.metaparadigm.jsonrpc.JSONRPCResult;
+import com.metaparadigm.jsonrpc.ListSerializer;
+import com.metaparadigm.jsonrpc.MapSerializer;
+import com.metaparadigm.jsonrpc.NumberSerializer;
+import com.metaparadigm.jsonrpc.PrimitiveSerializer;
+import com.metaparadigm.jsonrpc.SetSerializer;
+import com.metaparadigm.jsonrpc.StringSerializer;
 
 /**
  * This servlet handles JSON-RPC requests over HTTP and hands them to a JSONRPCBridge instance registered in the
  * HttpSession.
  * <p />
- * By default, the GGISJSONServlet places an instance of the JSONRPCBridge object is automatically in
- * the HttpSession object registered under the attribute "JSONRPCBridge".
+ * By default, the GGISJSONServlet places an instance of the JSONRPCBridge object is automatically in the HttpSession
+ * object registered under the attribute "JSONRPCBridge".
  * <p />
  * The following can be added to your web.xml to export the servlet under the URI &quot;<code>/JSON-RPC</code>&quot;
  * <p />
@@ -82,15 +87,18 @@ import java.text.ParseException;
  *   &lt;url-pattern&gt;/JSON-RPC&lt;/url-pattern&gt;
  * &lt;/servlet-mapping&gt;
  * </code>
- *
+ * 
  * @author Jan De Moerloose
  * @author Pieter De Graef
  * @author Joachim Van der Auwera
  */
-public class JsonServlet extends HttpServlet implements ErrorInvocationCallback {
+public class JsonServlet extends HttpServlet implements ErrorInvocationCallback,
+		ApplicationListener<ContextRefreshedEvent> {
 
 	private static final int BUFFER_SIZE = 1024;
+
 	private static final String JSON_RPC_BRIDGE_ATTRIBUTE = "JSONRPCBridge";
+
 	private static final long serialVersionUID = -6972738675426509939L;
 
 	private final Logger log = LoggerFactory.getLogger(JsonServlet.class);
@@ -101,48 +109,19 @@ public class JsonServlet extends HttpServlet implements ErrorInvocationCallback 
 		log.info("JSON servlet init");
 		log.debug("current working directory = {}", System.getProperty("user.dir"));
 
-		// register the controller object
 		ApplicationContext applicationContext = ApplicationContextUtils.getApplicationContext(config);
+		if (applicationContext instanceof ConfigurableApplicationContext) {
+			((ConfigurableApplicationContext) applicationContext).addApplicationListener(this);
+		}
+		initBridge(config, applicationContext);
+	}
 
-		// Create the JSON RPC Bridge (context-wide object)
-		JSONRPCBridge jsonBridge = new JSONRPCBridge(false);
+	public void onApplicationEvent(ContextRefreshedEvent event) {
 		try {
-			// Order is important !!!!
-			jsonBridge.registerSerializer(applicationContext.getBean("dojo.server.json.AnnotatedBeanSerializer",
-					AnnotatedBeanSerializer.class));
-			jsonBridge.registerSerializer(new GeometrySerializer());
-			jsonBridge.registerSerializer(new DtoGeometrySerializer());
-			jsonBridge.registerSerializer(new BigNumberSerializer());
-			jsonBridge.registerSerializer(new ArraySerializer());
-			jsonBridge.registerSerializer(new DictionarySerializer());
-			jsonBridge.registerSerializer(new MapSerializer());
-			jsonBridge.registerSerializer(new SetSerializer());
-			jsonBridge.registerSerializer(new ListSerializer());
-			jsonBridge.registerSerializer(new DateSerializer());
-			jsonBridge.registerSerializer(new StringSerializer());
-			jsonBridge.registerSerializer(new NumberSerializer());
-			jsonBridge.registerSerializer(new BooleanSerializer());
-			jsonBridge.registerSerializer(new PrimitiveSerializer());
-			jsonBridge.registerSerializer(new RectangleSerializer());
-			jsonBridge.registerSerializer(new ColorSerializer());
-			jsonBridge.registerSerializer(new FontSerializer());
-		} catch (Exception e) {
-			throw new ServletException("json : could not register all serializers", e);
+			initBridge(getServletConfig(), event.getApplicationContext());
+		} catch (ServletException e) {
+			log.error("Could not reinitialize JSON bridge", e);
 		}
-
-		// register the controller object
-		CommandDispatcher commandDispatcher = applicationContext.getBean("command.CommandDispatcher",
-				CommandDispatcher.class);
-		if (null == commandDispatcher) {
-			throw new ServletException(
-					"Cannot find CommandDispatcher, the org.geomajas.internal.global.GeomajasContextListener " +
-							"was probably not registered.");
-		}
-		jsonBridge.registerObject("CommandDispatcher", commandDispatcher);
-		jsonBridge.registerCallback(this, HttpServletRequest.class);
-
-		// put in application context
-		config.getServletContext().setAttribute(JSON_RPC_BRIDGE_ATTRIBUTE, jsonBridge);
 	}
 
 	public void service(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -153,7 +132,7 @@ public class JsonServlet extends HttpServlet implements ErrorInvocationCallback 
 
 		JSONRPCBridge jsonBridge = (JSONRPCBridge) getServletContext().getAttribute(JSON_RPC_BRIDGE_ATTRIBUTE);
 
-		//updateUserContext(request);
+		// updateUserContext(request);
 
 		// Encode using UTF-8, although We are actually ASCII clean as
 		// all unicode data is JSON escaped using backslash u. This is
@@ -187,7 +166,7 @@ public class JsonServlet extends HttpServlet implements ErrorInvocationCallback 
 		try {
 			jsonReq = new JSONObject(data.toString());
 			// Process the request
-			jsonRes = jsonBridge.call(new Object[] {request}, jsonReq);
+			jsonRes = jsonBridge.call(new Object[] { request }, jsonReq);
 		} catch (ParseException e) {
 			log.error("can't parse call: " + data, e);
 			jsonRes = new JSONRPCResult(JSONRPCResult.CODE_ERR_PARSE, null, JSONRPCResult.MSG_ERR_PARSE);
@@ -224,4 +203,47 @@ public class JsonServlet extends HttpServlet implements ErrorInvocationCallback 
 	public void invocationError(Object context, Object instance, Method method, Throwable error) {
 		log.error("JSON invocation error", error);
 	}
+
+	private void initBridge(ServletConfig config, ApplicationContext applicationContext) throws ServletException {
+		// Create the JSON RPC Bridge (context-wide object)
+		JSONRPCBridge jsonBridge = new JSONRPCBridge(false);
+		try {
+			// Order is important !!!!
+			jsonBridge.registerSerializer(applicationContext.getBean("dojo.server.json.AnnotatedBeanSerializer",
+					AnnotatedBeanSerializer.class));
+			jsonBridge.registerSerializer(new GeometrySerializer());
+			jsonBridge.registerSerializer(new DtoGeometrySerializer());
+			jsonBridge.registerSerializer(new BigNumberSerializer());
+			jsonBridge.registerSerializer(new ArraySerializer());
+			jsonBridge.registerSerializer(new DictionarySerializer());
+			jsonBridge.registerSerializer(new MapSerializer());
+			jsonBridge.registerSerializer(new SetSerializer());
+			jsonBridge.registerSerializer(new ListSerializer());
+			jsonBridge.registerSerializer(new DateSerializer());
+			jsonBridge.registerSerializer(new StringSerializer());
+			jsonBridge.registerSerializer(new NumberSerializer());
+			jsonBridge.registerSerializer(new BooleanSerializer());
+			jsonBridge.registerSerializer(new PrimitiveSerializer());
+			jsonBridge.registerSerializer(new RectangleSerializer());
+			jsonBridge.registerSerializer(new ColorSerializer());
+			jsonBridge.registerSerializer(new FontSerializer());
+		} catch (Exception e) {
+			throw new ServletException("json : could not register all serializers", e);
+		}
+
+		// register the controller object
+		CommandDispatcher commandDispatcher = applicationContext.getBean("command.CommandDispatcher",
+				CommandDispatcher.class);
+		if (null == commandDispatcher) {
+			throw new ServletException(
+					"Cannot find CommandDispatcher, the org.geomajas.internal.global.GeomajasContextListener "
+							+ "was probably not registered.");
+		}
+		jsonBridge.registerObject("CommandDispatcher", commandDispatcher);
+		jsonBridge.registerCallback(this, HttpServletRequest.class);
+
+		// put in application context
+		config.getServletContext().setAttribute(JSON_RPC_BRIDGE_ATTRIBUTE, jsonBridge);
+	}
+
 }

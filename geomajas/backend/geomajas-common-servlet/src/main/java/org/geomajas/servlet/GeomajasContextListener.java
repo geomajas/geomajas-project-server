@@ -22,14 +22,11 @@
  */
 package org.geomajas.servlet;
 
-import java.util.ArrayList;
-import java.util.StringTokenizer;
-
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
-import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.geomajas.spring.ReconfigurableClassPathApplicationContext;
 
 /**
  * Initialise the servlet context. This assures the Spring application context is created and stored in the servlet
@@ -56,18 +53,13 @@ public class GeomajasContextListener implements ServletContextListener {
 		ServletContext servletContext = servletContextEvent.getServletContext();
 
 		// create Spring context
-		ArrayList<String> allContextLocations = new ArrayList<String>();
-		allContextLocations.add("org/geomajas/spring/geomajasContext.xml");
-		String additionSpringContextDefinitions = servletContext.getInitParameter(CONFIG_LOCATION_PARAMETER);
-		if (additionSpringContextDefinitions != null) {
-			StringTokenizer st = new StringTokenizer(additionSpringContextDefinitions, " \t\n\r,;");
-			while (st.hasMoreTokens()) {
-				allContextLocations.add(st.nextToken());
-			}
-		}		
-		ClassPathXmlApplicationContext applicationContext = new ClassPathXmlApplicationContext();
-		applicationContext.setConfigLocations(allContextLocations.toArray((new String[allContextLocations.size()])));
-		applicationContext.refresh();
+		String configLocation = "org/geomajas/spring/geomajasContext.xml";
+		String additionalLocations = servletContext.getInitParameter(CONFIG_LOCATION_PARAMETER);
+		if (additionalLocations != null) {
+			configLocation += "," + additionalLocations;
+		}
+		ReconfigurableClassPathApplicationContext applicationContext = new ReconfigurableClassPathApplicationContext(
+				configLocation);
 		ApplicationContextUtils.setApplicationContext(servletContext, applicationContext);
 	}
 
@@ -80,5 +72,5 @@ public class GeomajasContextListener implements ServletContextListener {
 	public void contextDestroyed(ServletContextEvent servletContextEvent) {
 		// nothing to do
 	}
-	
+
 }

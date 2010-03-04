@@ -201,16 +201,8 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 
 				public void execute(CommandResponse response) {
 					if (response instanceof GetMapConfigurationResponse) {
-						try {
-							GetMapConfigurationResponse r = (GetMapConfigurationResponse) response;
-							initializationCallback(r);
-						} catch (Throwable t) {
-							String st = t.getClass().getName() + ": " + t.getMessage();
-							for (StackTraceElement ste : t.getStackTrace()) {
-								st += "\n" + ste.toString();
-							}
-							st += "";
-						}
+						GetMapConfigurationResponse r = (GetMapConfigurationResponse) response;
+						initializationCallback(r);
 					}
 				}
 			});

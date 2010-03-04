@@ -20,39 +20,34 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+package org.geomajas.spring;
 
-package org.geomajas.gwt.client.i18n;
-
-import com.google.gwt.i18n.client.Constants;
+import org.geomajas.global.GeomajasException;
 
 /**
- * <p>
- * Localization constants for all ToolbarActions and ToolbarSelectActions.
- * </p>
- *
- * @author Pieter De Graef
+ * 
+ * Interface for Spring application context that supports rollback.
+ * 
+ * @author Jan De Moerloose
+ * 
  */
-public interface ToolbarConstants extends Constants {
+public interface ReconfigurableApplicationContext {
 
-	String editingSelect();
+	/**
+	 * Refresh this context with the specified configuration locations.
+	 * 
+	 * @param configLocations
+	 *            list of configuration resources (see implementation for specifics)
+	 * @throws GeomajasException
+	 *             indicates a problem with the new location files (see cause)
+	 */
+	void refresh(String[] configLocations) throws GeomajasException;
 
-	String measureSelect();
-
-	String selectionSelect();
-
-	String zoomIn();
-
-	String zoomOut();
-
-	String pan();
-
-	String zoomToRectangle();
-
-	String zoomNext();
-
-	String zoomPrevious();
-
-	String scaleSelect();
-
-	String refreshConfiguration();
+	/**
+	 * Roll back to the previous configuration.
+	 * 
+	 * @throws GeomajasException
+	 *             indicates an unlikely problem with the rollback (see cause)
+	 */
+	void rollback() throws GeomajasException;
 }

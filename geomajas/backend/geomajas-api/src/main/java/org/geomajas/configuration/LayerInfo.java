@@ -22,12 +22,12 @@
  */
 package org.geomajas.configuration;
 
-import org.geomajas.geometry.Bbox;
-import org.geomajas.layer.LayerType;
-
 import java.io.Serializable;
 
 import javax.validation.constraints.NotNull;
+
+import org.geomajas.geometry.Bbox;
+import org.geomajas.layer.LayerType;
 
 /**
  * Layer configuration info.
