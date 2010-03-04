@@ -88,6 +88,14 @@ public interface SampleMessages extends Messages {
 
 	String crsDescription();
 
+	// Unit types sample:
+
+	String unitTypesTitle();
+
+	String unitTypesDescription();
+
+	String switchUnitTypes();
+
 	// Custom Controller sample:
 
 	String customControllerTitle();
@@ -97,17 +105,17 @@ public interface SampleMessages extends Messages {
 	String customControllerScreenCoordinates();
 
 	String customControllerWorldCoordinates();
-	
-	//Controller On Element sample:
+
+	// Controller On Element sample:
 	String controllerOnElementTitle();
 
 	String controllerOnElementDescription();
-	
-	//Rectange controller sample
+
+	// Rectange controller sample
 	String rectangleControllerTitle();
-	
+
 	String rectangleControllerDescription();
-	
+
 	String rectangeControllerOutput(double roundedKmWidth, double roundedKmHeight, double roundedArea);
 
 	// Login sample:
