@@ -53,7 +53,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
  */
 public class ControllerOnElementSample extends SamplePanel {
 
-	private static final String IMAGE = "geomajas/target.gif";
+	private static final String IMAGE = "geomajas/smile.png";
 
 	public static final String TITLE = "ControllerOnElement";
 
@@ -77,7 +77,7 @@ public class ControllerOnElementSample extends SamplePanel {
 				map.initialize();
 				final MenuGraphicsContext graphics = map.getGraphics();
 				//after map initialization we draw an image on the map
-				graphics.drawImage("screen.image", Geomajas.getIsomorphicDir() + IMAGE, new Bbox(100, 100, 16, 16),
+				graphics.drawImage("screen.image", Geomajas.getIsomorphicDir() + IMAGE, new Bbox(300, 300, 48, 48),
 						new PictureStyle(1.0), false);
 			}
 		});
@@ -92,7 +92,8 @@ public class ControllerOnElementSample extends SamplePanel {
 				if (isDragging) {
 					Coordinate coordinate = this.getScreenPosition(event);
 					map.getGraphics().drawImage("screen.image", Geomajas.getIsomorphicDir() + IMAGE,
-							new Bbox(coordinate.getX(), coordinate.getY(), 16, 16), new PictureStyle(1.0), false);
+							new Bbox(coordinate.getX() - 24, coordinate.getY() - 24, 48, 48), new PictureStyle(1.0),
+							false);
 				}
 
 			}
