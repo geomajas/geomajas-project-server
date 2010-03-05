@@ -128,13 +128,12 @@ public class ClientApplicationInfo implements Serializable {
 
 	/**
 	 * Dummy implementation to keep GWT serializer happy !
-	 * 
+	 *
 	 * @author Jan De Moerloose
-	 * 
 	 */
 	public static class DummyClientUserDataInfo implements ClientUserDataInfo {
 
-		private static final long serialVersionUID = 1L;
+		private static final long serialVersionUID = 154L;
 
 		private String dummy;
 
@@ -145,6 +144,5 @@ public class ClientApplicationInfo implements Serializable {
 		public void setDummy(String dummy) {
 			this.dummy = dummy;
 		}
-
 	}
 }
