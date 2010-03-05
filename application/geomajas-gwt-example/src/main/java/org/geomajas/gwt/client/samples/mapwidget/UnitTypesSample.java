@@ -91,9 +91,11 @@ public class UnitTypesSample extends SamplePanel {
 							+ "<BR>Switching to METRIC");
 					map.getMapModel().getMapInfo().setDisplayUnitType(UnitType.METRIC); // set English
 				}
+				map.setScalebarEnabled(true); //FORCE an update of the scalebar
 				map.redraw("unittype switched");
-
-				// FIXME The scalebar remains in METRIC mode...
+				
+				//TODO map.setScalebarEnabled(true) doesn't work because UnitType isn't updated in the map
+				//TODO This code should work after TODO is fixed in MapWidget 
 			}
 		});
 
