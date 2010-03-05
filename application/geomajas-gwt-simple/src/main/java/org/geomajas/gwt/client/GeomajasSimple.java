@@ -117,7 +117,6 @@ public class GeomajasSimple implements EntryPoint {
 				scale.setScales(0.01, 0.001, 0.0001);
 				toolbar.addMember(scale);
 				toolbar.addActionButton(new RefreshConfigurationAction());
-
 			}
 		});
 
