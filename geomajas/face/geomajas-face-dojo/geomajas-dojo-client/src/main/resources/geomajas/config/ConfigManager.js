@@ -313,7 +313,8 @@ dojo.declare("ConfigManager", null, {
 	_configureRasterLayer : function (mapId, lc, mapWidget, mapModel) {
 		log.debug("_configureRasterLayer="+mapId+"."+lc.serverLayerId);
 		var layer = new RasterLayer(mapId, lc.serverLayerId, mapWidget, mapModel);
-		if(lc.rasterLayerFactoryRef == "google"){
+		
+		if(lc.layerInfo.dataSourceName != null && lc.layerInfo.dataSourceName.indexOf("G_") == 0){
 			log.debug("setting google image factory");
 			layer.setImageFactory(new GoogleImageFactory());
 		}
