@@ -96,6 +96,16 @@ public interface SampleMessages extends Messages {
 
 	String switchUnitTypes();
 
+	// Toggle maxbounds sample
+
+	String maxBoundsToggleTitle();
+
+	String maxBoundsToggleDescription();
+
+	String toggleMaxBoundsBelgium();
+
+	String toggleMaxBoundsWorld();
+
 	// Custom Controller sample:
 
 	String customControllerTitle();

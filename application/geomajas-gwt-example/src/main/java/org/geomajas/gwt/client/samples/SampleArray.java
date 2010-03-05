@@ -29,6 +29,7 @@ import org.geomajas.gwt.client.samples.controller.CustomControllerSample;
 import org.geomajas.gwt.client.samples.controller.RectangleControllerSample;
 import org.geomajas.gwt.client.samples.i18n.I18nProvider;
 import org.geomajas.gwt.client.samples.mapwidget.CrsSample;
+import org.geomajas.gwt.client.samples.mapwidget.MaxBoundsToggleSample;
 import org.geomajas.gwt.client.samples.mapwidget.NavigationSample;
 import org.geomajas.gwt.client.samples.mapwidget.OpenStreetMapSample;
 import org.geomajas.gwt.client.samples.mapwidget.UnitTypesSample;
@@ -69,6 +70,9 @@ public final class SampleArray {
 						CrsSample.TITLE, "MapWidget", CrsSample.FACTORY),
 				new SampleTreeNode(I18nProvider.getSampleMessages().unitTypesTitle(),
 						"[ISOMORPHIC]/geomajas/layer.png", UnitTypesSample.TITLE, "MapWidget", UnitTypesSample.FACTORY),
+				new SampleTreeNode(I18nProvider.getSampleMessages().maxBoundsToggleTitle(),
+						"[ISOMORPHIC]/geomajas/layer.png", MaxBoundsToggleSample.TITLE, "MapWidget",
+						MaxBoundsToggleSample.FACTORY),
 
 				// Map controller:
 				new SampleTreeNode(I18nProvider.getSampleMessages().treeGroupMapController(),
