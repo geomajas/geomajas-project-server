@@ -97,6 +97,19 @@ public class VectorLayerServiceTest {
 	}
 
 	@Test
+	public void testGetFeaturesLazy() throws Exception {
+		List<InternalFeature> features = layerService.getFeatures(LAYER_ID,
+				CRS.decode(beanLayer.getLayerInfo().getCrs()), null, null, VectorLayerService.FEATURE_INCLUDE_NONE);
+		Assert.assertEquals(3, features.size());
+		InternalFeature feature = features.get(0);
+		Assert.assertNotNull(feature.getId());
+		Assert.assertNull(feature.getGeometry());
+		Assert.assertNull(feature.getAttributes());
+		Assert.assertNull(feature.getLabel());
+		Assert.assertNull(feature.getStyleInfo());
+	}
+	
+	@Test
 	@DirtiesContext
 	public void testUpdate() throws Exception {
 		Filter filter = filterService.createFidFilter(new String[]{"3"});
@@ -178,19 +191,6 @@ public class VectorLayerServiceTest {
 		Assert.assertEquals(3, count);
 		Assert.assertEquals(7, check);
 
-	}
-
-	@Test
-	public void testGetFeaturesLazy() throws Exception {
-		List<InternalFeature> features = layerService.getFeatures(LAYER_ID,
-				CRS.decode(beanLayer.getLayerInfo().getCrs()), null, null, VectorLayerService.FEATURE_INCLUDE_NONE);
-		Assert.assertEquals(3, features.size());
-		InternalFeature feature = features.get(0);
-		Assert.assertNotNull(feature.getId());
-		Assert.assertNull(feature.getGeometry());
-		Assert.assertNull(feature.getAttributes());
-		Assert.assertNull(feature.getLabel());
-		Assert.assertNull(feature.getStyleInfo());
 	}
 
 	@Test
