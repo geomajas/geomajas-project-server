@@ -81,14 +81,15 @@ public class UnitTypesSample extends SamplePanel {
 		butSwitch.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				if (map.getMapModel().getDescription().getDisplayUnitType() == UnitType.METRIC) {
-					SC.say("Current unit: " + map.getMapModel().getDescription().getDisplayUnitType()
+				
+				if (map.getMapModel().getMapInfo().getDisplayUnitType() == UnitType.METRIC) {
+					SC.say("Current unit: " + map.getMapModel().getMapInfo().getDisplayUnitType()
 							+ "<BR>Switching to ENGLISH");
-					map.getMapModel().getDescription().setDisplayUnitType(UnitType.ENGLISH); // set English
+					map.getMapModel().getMapInfo().setDisplayUnitType(UnitType.ENGLISH); // set English
 				} else {
-					SC.say("Current unit: " + map.getMapModel().getDescription().getDisplayUnitType()
+					SC.say("Current unit: " + map.getMapModel().getMapInfo().getDisplayUnitType()
 							+ "<BR>Switching to METRIC");
-					map.getMapModel().getDescription().setDisplayUnitType(UnitType.METRIC); // set English
+					map.getMapModel().getMapInfo().setDisplayUnitType(UnitType.METRIC); // set English
 				}
 				map.redraw("unittype switched");
 
