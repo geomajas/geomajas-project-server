@@ -92,9 +92,11 @@ public class UnitTypesSample extends SamplePanel {
 							+ "<BR>Switching to METRIC");
 					map.getMapModel().getMapInfo().setDisplayUnitType(UnitType.METRIC); // set English
 				}
-				map.setScalebarEnabled(false); // try to force an update of the scalebar
-				map.setScalebarEnabled(true); // try to force an update of the scalebar //FIXME scalebar is broken after
-												// disable/enable
+				SC.say("after try refreshing the scalebar");
+				map.setScalebarEnabled(false); // try to force an update of the scalebar...
+				SC.say("after false");
+				map.setScalebarEnabled(true); // try to force an update of the scalebar //FIXME scalebar is
+				SC.say("after true");
 			}
 		});
 
