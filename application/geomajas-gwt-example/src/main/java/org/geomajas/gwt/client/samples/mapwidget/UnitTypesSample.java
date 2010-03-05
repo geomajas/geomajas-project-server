@@ -76,12 +76,13 @@ public class UnitTypesSample extends SamplePanel {
 		layout.addMember(map);
 
 		Button butSwitch = new Button(I18nProvider.getSampleMessages().switchUnitTypes());
+		butSwitch.setWidth100();
 		layout.addMember(butSwitch);
 
 		butSwitch.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				
+
 				if (map.getMapModel().getMapInfo().getDisplayUnitType() == UnitType.METRIC) {
 					SC.say("Current unit: " + map.getMapModel().getMapInfo().getDisplayUnitType()
 							+ "<BR>Switching to ENGLISH");
@@ -91,11 +92,9 @@ public class UnitTypesSample extends SamplePanel {
 							+ "<BR>Switching to METRIC");
 					map.getMapModel().getMapInfo().setDisplayUnitType(UnitType.METRIC); // set English
 				}
-				map.setScalebarEnabled(true); //FORCE an update of the scalebar
-				map.redraw("unittype switched");
-				
-				//TODO map.setScalebarEnabled(true) doesn't work because UnitType isn't updated in the map
-				//TODO This code should work after TODO is fixed in MapWidget 
+				map.setScalebarEnabled(false); // try to force an update of the scalebar
+				map.setScalebarEnabled(true); // try to force an update of the scalebar //FIXME scalebar is broken after
+												// disable/enable
 			}
 		});
 
