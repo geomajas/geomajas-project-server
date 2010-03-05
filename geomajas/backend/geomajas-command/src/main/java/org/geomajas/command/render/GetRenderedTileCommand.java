@@ -70,6 +70,7 @@ public class GetRenderedTileCommand implements Command<GetRenderedTileRequest, G
 			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "crs");
 		}
 
-		response.setTile(converter.toDto(layerService.getTile(request)));
+		response.setTile(converter.toDto(layerService.getTile(request), request.getCrs(),
+				request.getFeatureIncludes()));
 	}
 }

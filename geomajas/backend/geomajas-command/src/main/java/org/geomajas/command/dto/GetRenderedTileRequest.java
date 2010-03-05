@@ -56,7 +56,7 @@ public class GetRenderedTileRequest extends LayerIdCommandRequest implements Til
 
 	private boolean paintLabels;
 
-	private int featureInclude = 0x7fff;
+	private int featureIncludes = 0x7fff;
 
 	public TileCode getCode() {
 		return code;
@@ -147,17 +147,17 @@ public class GetRenderedTileRequest extends LayerIdCommandRequest implements Til
 	 *
 	 * @return what to include
 	 */
-	public int getFeatureInclude() {
-		return featureInclude;
+	public int getFeatureIncludes() {
+		return featureIncludes;
 	}
 
 	/**
 	 * Set the data to include in the features which are returned. For possible values, see
 	 * {@link org.geomajas.service.VectorLayerService}.
 	 *
-	 * @param featureInclude what the include
+	 * @param featureIncludes what the include
 	 */
-	public void setFeatureInclude(int featureInclude) {
-		this.featureInclude = featureInclude;
+	public void setFeatureIncludes(int featureIncludes) {
+		this.featureIncludes = featureIncludes;
 	}
 }

@@ -36,6 +36,8 @@ public class GetGeometryRequest extends LayerIdCommandRequest {
 
 	private String[] featureIds;
 
+	private String crs;
+
 	public GetGeometryRequest() {
 	}
 
@@ -45,5 +47,13 @@ public class GetGeometryRequest extends LayerIdCommandRequest {
 
 	public void setFeatureIds(String[] featureIds) {
 		this.featureIds = featureIds;
+	}
+
+	public String getCrs() {
+		return crs;
+	}
+
+	public void setCrs(String crs) {
+		this.crs = crs;
 	}
 }

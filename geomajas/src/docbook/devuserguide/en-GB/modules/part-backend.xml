@@ -1570,7 +1570,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
                     </listitem>
 
                     <listitem>
-                      <para><emphasis>featureInclude</emphasis> : indication
+                      <para><emphasis>featureIncludes</emphasis> : indication
                       of which data to include in the feature. Possible values
                       (add to combine) : 1=attributes, 2=geometry, 4=style,
                       8=label. Default value is to include everything.</para>
@@ -1668,7 +1668,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
                     </listitem>
 
                     <listitem>
-                      <para><emphasis>featureInclude</emphasis> : indication
+                      <para><emphasis>featureIncludes</emphasis> : indication
                       of which data to include in the feature. Possible values
                       (add to combine) : 1=attributes, 2=geometry, 4=style,
                       8=label. Default value is to include everything.</para>

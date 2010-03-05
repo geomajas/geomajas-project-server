@@ -78,6 +78,19 @@ public interface DtoConverterService {
 	 * 
 	 * @param feature
 	 *            The server-side feature representation.
+	 * @param featureIncludes
+	 *            Indicate which aspects of the should be included @see {@link VectorLayerService}
+	 * @return Returns the DTO feature.
+	 */
+	Feature toDto(InternalFeature feature, int featureIncludes) throws GeomajasException;
+
+	/**
+	 * Convert the server side feature to a DTO feature that can be sent to the client.
+	 * <p/>
+	 * All data which is contained in the InternalFeature will be included.
+	 *
+	 * @param feature
+	 *            The server-side feature representation.
 	 * @return Returns the DTO feature.
 	 */
 	Feature toDto(InternalFeature feature) throws GeomajasException;
@@ -120,6 +133,21 @@ public interface DtoConverterService {
 	/**
 	 * Convert a server-side tile representations into a DTO tile.
 	 * 
+	 * @param tile
+	 *            The server-side representation of a tile.
+	 * @param crs
+	 *            crs code to include in the features (can be null)
+	 * @param featureIncludes
+	 *            Indicate which aspects of the should be included @see {@link VectorLayerService}
+	 * @return Returns the DTO version that can be sent to the client.
+	 */
+	VectorTile toDto(InternalTile tile, String crs, int featureIncludes) throws GeomajasException;
+
+	/**
+	 * Convert a server-side tile representations into a DTO tile.
+	 * <p/>
+	 * All data which is contained in the InternalFeature will be included.
+	 *
 	 * @param tile
 	 *            The server-side representation of a tile.
 	 * @return Returns the DTO version that can be sent to the client.

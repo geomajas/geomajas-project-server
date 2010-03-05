@@ -40,6 +40,8 @@ public class Feature implements Serializable {
 
 	private String id;
 
+	private String crs;
+
 	private Map<String, Attribute> attributes;
 
 	private Geometry geometry;
@@ -231,5 +233,25 @@ public class Feature implements Serializable {
 	 */
 	public void setStyleId(int styleId) {
 		this.styleId = styleId;
+	}
+
+	/**
+	 * Crs code which is used (or should be used) for the geometry in the feature.
+	 * <p/>
+	 * This may be null if the crs is unknown.
+	 *
+	 * @return crs code
+	 */
+	public String getCrs() {
+		return crs;
+	}
+
+	/**
+	 * Set the crs code which us used (or should be used) for the geometry in the feature.
+	 *
+	 * @param crs crs code for feature
+	 */
+	public void setCrs(String crs) {
+		this.crs = crs;
 	}
 }

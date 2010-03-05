@@ -68,18 +68,19 @@ public class SearchFeatureCommand implements Command<SearchFeatureRequest, Searc
 	}
 
 	public void execute(SearchFeatureRequest request, SearchFeatureResponse response) throws Exception {
-		if (null == request.getLayerId()) {
+		String layerId = request.getLayerId();
+		if (null == layerId) {
 			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "layer");
 		}
-		if (null == request.getCrs()) {
+		String crs = request.getCrs();
+		if (null == crs) {
 			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "crs");
 		}
 
-		String layerId = request.getLayerId();
 		Filter filter = createFilter(request, layerId);
 
 		List<InternalFeature> features = layerService.getFeatures(layerId, configurationService
-				.getCrs(request.getCrs()), filter, null, request.getFeatureInclude(), 0, request.getMax());
+				.getCrs(request.getCrs()), filter, null, request.getFeatureIncludes(), 0, request.getMax());
 		response.setLayerId(layerId);
 		int max = request.getMax();
 		if (max == SearchFeatureRequest.MAX_UNLIMITED) {
@@ -90,7 +91,9 @@ public class SearchFeatureCommand implements Command<SearchFeatureRequest, Searc
 		}
 		Feature[] maxList = new Feature[max];
 		for (int i = 0; i < max; i++) {
-			maxList[i] = converter.toDto(features.get(i));
+			Feature feature = converter.toDto(features.get(i));
+			feature.setCrs(crs);
+			maxList[i] = feature;
 		}
 		response.setFeatures(maxList);
 	}
@@ -101,7 +104,8 @@ public class SearchFeatureCommand implements Command<SearchFeatureRequest, Searc
 		String idName = layer.getLayerInfo().getFeatureInfo().getIdentifier().getName();
 		for (SearchCriterion criterion : request.getCriteria()) {
 			Filter temp;
-			if (criterion.getAttributeName().equals(idName)) {
+			String attributeName = criterion.getAttributeName();
+			if (SearchFeatureRequest.ID_ATTRIBUTE.equals(attributeName) || attributeName.equals(idName)) {
 				temp = filterService.createFidFilter(new String[] { criterion.getValue() });
 			} else {
 				String c = criterion.toString().replace('*', '%').replace('?', '_');

@@ -24,31 +24,39 @@
 dojo.provide("geomajas.map.attributes.proxy.ProxyGeometry");
 dojo.declare("ProxyGeometry", null, {
 
-	constructor : function (layerId, featureId) {
+	constructor : function (layerId, featureId, crs) {
 		this.layerId = layerId;
 		this.featureId = featureId;
+		this.crs = crs;
 		
 		this.result = null;
 	},
 	
 	clone : function () {
-		return new ProxyGeometry(this.layerId, this.featureId);
+		return new ProxyGeometry(this.layerId, this.featureId, this.crs);
 	},
 
 	getValue : function () {
-		var command = new JsonCommand("command.geometry.GetGeometry",
-                "org.geomajas.command.dto.GetGeometryRequest", null, true);
+		var command = new JsonCommand("command.feature.Search",
+				"org.geomajas.command.dto.SearchFeatureRequest", null, false);
 		command.addParam("layerId", this.layerId);
-		command.addParam("featureId", this.featureId);
+		command.addParam("crs", this.crs);
+		command.addParam("criteria", [{
+			javaClass : "org.geomajas.layer.feature.SearchCriterion",
+			attributeName : "$id",
+			operator : "=",
+			value : this.featureId
+		}]);
+		command.addParam("featureIncludes", 2); // 1=attributes, 2=geometry
 		var deferred = geomajasConfig.dispatcher.execute(command);
 		deferred.addCallback(this, "_callback");
 		return this.result;
 	},
 
 	_callback : function (result){
-		if (result.geometry) {
+		if (result.features && result.features[0]) {
 			var deserializer = new GeometryDeserializer();
-			this.result = deserializer.createGeometryFromJSON(result.geometry);
+			this.result = deserializer.createGeometryFromJSON(result.features[0].geometry);
 		}
 	}
 });

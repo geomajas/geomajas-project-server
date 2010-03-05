@@ -108,6 +108,7 @@ dojo.declare("RenderedTile", SpatialNode, {
 		command.addParam("panOrigin", this.cache.layer.getMapModel().getMapView().getPanOrigin());
 		command.addParam("paintGeometries", true);
 		command.addParam("paintLabels", false);
+		command.addParam("featureIncludes", geomajasConfig.lazyFeatureIncludesDefault);
 
 		this.deferred = geomajasConfig.dispatcher.execute(command);
 		log.info("Tile.fetch : "+this.code);

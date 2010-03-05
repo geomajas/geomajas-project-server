@@ -207,6 +207,7 @@ dojo.declare("MapModel", PainterVisitable, {
 	 * @return Returns the selected layer object, or null if none is selected.
 	 */
 	getSelectedLayer : function () {
+		if (!this.rootNode || null == this.rootNode) return null;
 		return this._recursiveGetSelection(this.rootNode);
 	},
 
@@ -214,6 +215,7 @@ dojo.declare("MapModel", PainterVisitable, {
 	 * @private
 	 */
 	_recursiveGetSelection : function (node) {
+		debugger;
 		if ((node instanceof VectorLayer || node instanceof RasterLayer) && node.isSelected()) {
 			return node;
 		}

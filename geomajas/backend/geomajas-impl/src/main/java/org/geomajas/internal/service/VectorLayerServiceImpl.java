@@ -164,6 +164,7 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 		CoordinateReferenceSystem crs = configurationService.getCrs(tileMetadata.getCrs());
 		context.put(PipelineCode.CRS_KEY, crs);
 		context.put(PipelineCode.CRS_TRANSFORM_KEY, geoService.findMathTransform(crs, layer.getCrs()));
+		context.put(PipelineCode.FEATURE_INCLUDES_KEY, tileMetadata.getFeatureIncludes());
 		InternalTile response = new InternalTileImpl(tileMetadata.getCode(), layer, tileMetadata.getScale());
 		pipelineService.execute(PipelineCode.PIPELINE_GET_VECTOR_TILE, layerId, context, response);
 		return response;

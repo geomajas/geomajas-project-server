@@ -129,6 +129,7 @@ public class AttributeSecuritySample extends SamplePanel {
 		request.setCrs("EPSG:900913"); // Can normally be acquired from the MapModel.
 		request.setLayerId("beans");
 		request.setMax(1);
+		// request.setFeatureIncludes(); // @todo lazy loading
 		request.setCriteria(new SearchCriterion[] { new SearchCriterion("id", "=", "1") });
 		final GwtCommand command = new GwtCommand("command.feature.Search");
 		command.setCommandRequest(request);

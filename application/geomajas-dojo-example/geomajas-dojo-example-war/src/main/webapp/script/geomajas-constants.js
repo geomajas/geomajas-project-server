@@ -33,5 +33,9 @@ var djConfig={
 
 var geomajasConfig={
 	dijitTheme: "soria",
-	showLog: true
+	showLog: true,
+	useLazyLoading: true, // use lazy loading
+	lazyFeatureIncludesDefault: 0, // don't include anything by default
+	lazyFeatureIncludesSelect: 3, // don't include anything by default
+	lazyFeatureIncludesAll: 11 // attributes + geometry + label (no style, see VectorLayerService)
 };

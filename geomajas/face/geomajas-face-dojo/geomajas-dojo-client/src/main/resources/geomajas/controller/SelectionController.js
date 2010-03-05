@@ -197,6 +197,7 @@ dojo.declare("SelectionController", MouseListener, {
 		command.addParam ("queryType", 1);
 		command.addParam ("ratio", this.minInsideFactor);
         command.addParam ("crs", this.mapWidget.getMapModel().crs);
+		command.addParam("featureIncludes", geomajasConfig.lazyFeatureIncludesSelect);
 		var deferred = geomajasConfig["dispatcher"].execute(command);
 		deferred.addCallback(this, "_onGetByLocation");
 	},

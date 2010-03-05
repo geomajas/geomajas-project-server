@@ -105,14 +105,14 @@ public interface TileMetadata {
 	 *
 	 * @return what to include
 	 */
-	int getFeatureInclude();
+	int getFeatureIncludes();
 
 	/**
 	 * Set the data to include in the features which are returned. For possible values, see
 	 * {@link org.geomajas.service.VectorLayerService}.
 	 *
-	 * @param featureInclude what the include
+	 * @param featureIncludes what the include
 	 */
-	void setFeatureInclude(int featureInclude);
+	void setFeatureIncludes(int featureIncludes);
 
 }

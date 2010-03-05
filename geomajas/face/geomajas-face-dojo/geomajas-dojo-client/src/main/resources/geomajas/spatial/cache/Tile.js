@@ -97,6 +97,7 @@ dojo.declare("Tile", SpatialNode, {
 		command.addParam("scale", this.cache.layer.getMapModel().getMapView().getCurrentScale());
 		command.addParam("filter", filter);
 		command.addParam("renderer", dojo.isIE ? "vml" : "svg");
+		command.addParam("featureIncludes", geomajasConfig.lazyFeatureIncludesDefault);
 		var styleDefs = [];
 		for (var i=0; i<this.cache.layer.getStyles().count; i++) {
 			styleDefs.push (this.cache.layer.getStyles().item(i).toJSON());

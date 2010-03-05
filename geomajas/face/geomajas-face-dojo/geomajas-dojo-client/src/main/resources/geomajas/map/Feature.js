@@ -58,7 +58,7 @@ dojo.declare("Feature", PainterVisitable, {
 		this.path = null;
 
 		/** The identifier of this feature's style. */
-		this.styleId = null;
+		//this.styleId = null;
 
 		/** Coordinate for the label. */
 		this.labelPosition = null;
@@ -67,6 +67,8 @@ dojo.declare("Feature", PainterVisitable, {
 		this.clipped = false;
 		
 		this.editable = false;
+
+		this.crs = null;
 	},
 
 	/**
@@ -84,7 +86,8 @@ dojo.declare("Feature", PainterVisitable, {
 		var f = new Feature();
 		f.setId(this.id);
 		f.setLayer(this.getLayer());
-		f.styleId = this.styleId;
+		f.setCrs(this.crs);
+		//f.styleId = this.styleId;
 		
 		if (this.geometry != null) {
 			f.setGeometry(this.geometry.clone()); // proxy or not; works on both
@@ -158,20 +161,21 @@ dojo.declare("Feature", PainterVisitable, {
 		this.setId(json.id);
 		this.setClipped(json.clipped);
 		this.setPath(json.path);
+		this.setCrs(json.crs);
 
 		if (json.attributes) {
 			this.setAttributes(json.attributes.map);
 		} else {
-			this.attributes = new ProxyAttributeMap(this.getLayer().getId(), this.getLocalId());
+			this.attributes = new ProxyAttributeMap(this.getLayer().getLayerId(), this.getId(), this.crs);
 		}
 		
-		this.styleId = json.styleId;
+		//this.styleId = json.styleId;
 		if (json.geometry) {
 			var deser = new GeometryDeserializer();
 			var geometry = deser.createGeometryFromJSON (json.geometry);
 			this.setGeometry(geometry);
 		} else {
-			this.setGeometry(new ProxyGeometry(this.getLayer().getId(), this.getLocalId()));
+			this.setGeometry(new ProxyGeometry(this.getLayer().getLayerId(), this.getId(), this.crs));
 		}
 		if (json.labelPosition) {
 			this.setLabelPosition(new Coordinate(json.labelPosition.x, json.labelPosition.y));
@@ -337,6 +341,15 @@ dojo.declare("Feature", PainterVisitable, {
 		this.path = path;
 	},
 
+	getCrs : function () {
+		return this.crs;
+	},
+
+	setCrs : function (crs) {
+		this.crs = crs;
+	},
+
+	/*
 	getStyle : function () {
 		return this.getLayer().getStyleByIndex(this.styleId).getStyle();
 	},
@@ -348,6 +361,7 @@ dojo.declare("Feature", PainterVisitable, {
 	getStyleId : function () {
 		return this.styleId;
 	},
+	*/
 
 	getLabelPosition : function () {
 		return this.labelPosition;

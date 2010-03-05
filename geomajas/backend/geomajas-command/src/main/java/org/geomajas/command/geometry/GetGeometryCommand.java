@@ -29,6 +29,7 @@ import org.geomajas.command.dto.GetGeometryResponse;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.feature.InternalFeature;
+import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.VectorLayerService;
@@ -55,6 +56,9 @@ public class GetGeometryCommand implements Command<GetGeometryRequest, GetGeomet
 	@Autowired
 	private VectorLayerService layerService;
 
+	@Autowired
+	private ConfigurationService configurationService;
+
 	public GetGeometryResponse getEmptyCommandResponse() {
 		return new GetGeometryResponse();
 	}
@@ -62,6 +66,9 @@ public class GetGeometryCommand implements Command<GetGeometryRequest, GetGeomet
 	public void execute(GetGeometryRequest request, GetGeometryResponse response) throws Exception {
 		if (null == request.getLayerId()) {
 			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "layerId");
+		}
+		if (null == request.getCrs()) {
+			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "crs");
 		}
 		if (null == request.getFeatureIds()) {
 			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "featureIds");
@@ -72,8 +79,9 @@ public class GetGeometryCommand implements Command<GetGeometryRequest, GetGeomet
 		if (featureIds.length > 0) {
 			Filter filter = filterCreator.createFidFilter(featureIds);
 
-			List<InternalFeature> features = layerService.getFeatures(layerId, null, filter, null,
-					VectorLayerService.FEATURE_INCLUDE_ATTRIBUTES);
+			List<InternalFeature> features = layerService.getFeatures(layerId,
+					configurationService.getCrs(request.getCrs()), filter, null,
+					VectorLayerService.FEATURE_INCLUDE_GEOMETRY);
 
 			org.geomajas.geometry.Geometry[] geometries = new org.geomajas.geometry.Geometry[featureIds.length];
 			for (InternalFeature feature : features) {

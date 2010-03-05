@@ -89,6 +89,7 @@ dojo.declare("LabeledTile", RenderedTile, {
 			command.addParam("paintGeometries", true);
 		}
 		command.addParam("paintLabels", true);
+		command.addParam("featureIncludes", geomajasConfig.lazyFeatureIncludesDefault);
 
 		this.deferred = geomajasConfig.dispatcher.execute(command);
 		log.info("Tile.fetch : "+this.code);

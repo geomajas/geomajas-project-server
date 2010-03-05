@@ -64,13 +64,17 @@ var temp = document.URL.substring(0, document.URL.lastIndexOf("/applications")+1
 
 // geomajasConfig defined here, props now come from the script tag
 if (typeof geomajasConfig == 'undefined'){
-	geomajasConfig = {};	
+	geomajasConfig = {
+		useLazyLoading: false, // no lazy loading
+		lazyFeatureIncludesDefault: 0, // don't include anything by default
+		lazyFeatureIncludesSelect: 3, // attributes + geometry on select
+		lazyFeatureIncludesAll: 11 // attributes + geometry + label (no style, never used), see VectorLayerService)
+	};
+
 } 
 
 geomajasConfig.serverBase = temp;
 geomajasConfig.serverAddress = temp + "geomajas.do";
-
-
 
 
 // grab geomajasConfig props from script tag !!!
@@ -88,6 +92,16 @@ if(document && document.getElementsByTagName){
 			}
 		}
 	}
+}
+
+// assure proper defaults for lazy loading
+if (!geomajasConfig.lazyFeatureIncludesAll || 0 == geomajasConfig.lazyFeatureIncludesAll) {
+	geomajasConfig.lazyFeatureIncludesAll = 11; // attributes + geometry + label (no style, never used), see VectorLayerService)}
+}
+if (!geomajasConfig.useLazyLoading) {
+	geomajasConfig.lazyFeatureIncludesDefault = 11; // attributes + geometry + label (no style, never used), see VectorLayerService)
+	geomajasConfig.lazyFeatureIncludesSelect = 11; // attributes + geometry + label (no style, never used), see VectorLayerService)
+	geomajasConfig.lazyFeatureIncludesAll = 11; // attributes + geometry + label (no style, never used), see VectorLayerService)
 }
 
 

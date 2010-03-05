@@ -97,6 +97,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 				</property>
 			</bean>
 		</property>
+		<!--
 		<property name="layerTree">
 			<bean name="sampleFeaturesTree" class="org.geomajas.configuration.client.ClientLayerTreeInfo">
 				<property name="tools">
@@ -119,6 +120,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 				</property>
 			</bean>
 		</property>
+		-->
 	</bean>
 	<bean name="sampleEditingMap" class="org.geomajas.configuration.client.ClientMapInfo">
 		<property name="backgroundColor" value="#E0E0E0" />

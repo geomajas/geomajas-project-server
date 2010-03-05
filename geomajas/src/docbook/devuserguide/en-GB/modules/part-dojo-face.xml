@@ -133,6 +133,38 @@
 </programlisting> To finish, the servlet mappings need to be defined. You
     don't really have a lot of choice here, as the client side javascript
     expects these values.</para>
+
+    <para></para>
+
+    <para>In many cases you also want to do some client side configurations.
+    This can be done in one of two ways.</para>
+
+    <para>You can include a "geomajas-constants.js" file in your code (the
+    name of the file can differ).</para>
+
+    <para><programlisting>var djConfig={
+    isDebug: false,
+    parseOnLoad: true,
+    usePlainJson: true,
+    locale: "en"
+};
+
+var geomajasConfig={
+    dijitTheme: "soria",
+    showLog: true,
+    useLazyLoading: true, // use lazy loading
+    lazyFeatureIncludesDefault: 0, // don't include anything by default
+    lazyFeatureIncludesSelect: 3, // don't include anything by default
+    lazyFeatureIncludesAll: 11 // attributes + geometry + label (no style, see VectorLayerService)
+};</programlisting></para>
+
+    <para>You can override some configurations in your html file, on the
+    script tags in head..</para>
+
+    <para><programlisting>&lt;script type="text/javascript" src="js/dojo/dojo.js" djConfig="parseOnLoad:true, usePlainJson:true"&gt;&lt;/script&gt;
+&lt;script type="text/javascript" src="js/geomajas/geomajas.js" geomajasConfig="showLog:true, connectionPoint:'generalConnectionPoint'"&gt;&lt;/script&gt;</programlisting></para>
+
+    <para>...</para>
   </chapter>
 
   <chapter id="chapter-dojo-widgets">
@@ -204,7 +236,7 @@
 
     <para>As you can see, some configuration parameters can be passed as a
     geomajasConfig attribute in the script tag, exactly like dojo does with
-    djConfig. The above import statements </para>
+    djConfig. The above import statements</para>
 
     <para>The dojo plugin has the following targets:</para>
 
@@ -339,8 +371,8 @@
 
       <para>Our maven dojo plugin is capable of executing a custom dojo build
       from within maven. this essentially collects and/or compresses (using
-      shrinksafe) javascript modules that have been bundled as jar artifacts.
-      </para>
+      shrinksafe) javascript modules that have been bundled as jar
+      artifacts.</para>
 
       <para>A typical configuration looks as follows:</para>
 
@@ -438,7 +470,7 @@
               Beware:<itemizedlist>
                   <listitem>
                     <para>the modules should be added as jar dependencies
-                    first </para>
+                    first</para>
                   </listitem>
 
                   <listitem>

@@ -153,6 +153,7 @@ public class ToggleSelectionAction extends MenuAction {
 		request.setQueryType(SearchByLocationRequest.QUERY_INTERSECTS);
 		request.setSearchType(SearchByLocationRequest.SEARCH_FIRST_LAYER);
 		request.setBuffer(calculateBufferFromPixelTolerance());
+		// request.setFeatureIncludes(); // @todo lazy loading
 		commandRequest.setCommandRequest(request);
 		GwtCommandDispatcher.getInstance().execute(commandRequest, new CommandCallback() {
 

@@ -24,30 +24,38 @@
 dojo.provide("geomajas.map.attributes.proxy.ProxyAttributeMap");
 dojo.declare("ProxyAttributeMap", null, {
 
-	constructor : function (layerId, featureId) {
+	constructor : function (layerId, featureId, crs) {
 		this.layerId = layerId;
 		this.featureId = featureId;
+		this.crs = crs;
 		
 		this.result = null;
 	},
 	
 	clone : function () {
-		return new ProxyAttributeMap(this.layerId, this.featureId);
+		return new ProxyAttributeMap(this.layerId, this.featureId, this.crs);
 	},
 
 	getValue : function () {
-		var command = new JsonCommand("command.feature.GetAttributes",
-                "org.geomajas.command.dto.GetAttributesRequest", null, true);
+		var command = new JsonCommand("command.feature.Search",
+				"org.geomajas.command.dto.SearchFeatureRequest", null, false);
 		command.addParam("layerId", this.layerId);
-		command.addParam("featureIds", [this.featureId]);
+		command.addParam("crs", this.crs);
+		command.addParam("criteria", [{
+			javaClass : "org.geomajas.layer.feature.SearchCriterion",
+			attributeName : "$id",
+			operator : "=",
+			value : this.featureId
+		}]);
+		command.addParam("featureIncludes", 1); // 1=attributes, 2=geometry
 		var deferred = geomajasConfig.dispatcher.execute(command);
 		deferred.addCallback(this, "_callback");
 		return this.result;
 	},
 
 	_callback : function (result){
-		if (result.attributes && result.attributes[0].map) {
-			this.result = result.attributes[0].map;
+		if (result.features && result.features[0].attributes) {
+			this.result = result.features[0].attributes.map;
 		}
 	}
 });

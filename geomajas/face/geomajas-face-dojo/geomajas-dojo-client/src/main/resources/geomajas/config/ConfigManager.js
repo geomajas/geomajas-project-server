@@ -181,14 +181,16 @@ dojo.declare("ConfigManager", null, {
 		}
 
 		// recursively configure the layer tree nodes
-		var nodeConfig = mapInfo.layerTree.treeNode;
-		log.debug ("configureMap : configuring layer tree "+mapInfo.id);
-		var node = this._configureLayerTreeNodeRecursively(mapInfo.id, nodeConfig, mapModel);
-		mapModel.setRootNode(node);
-		node.id=mapInfo.id+".root";
-        this._configureLayerTree(mapInfo);
-		log.debug(node.getChildren());
-		log.debug(node.getChildren().count);
+		if (mapInfo.layerTree) {
+			var nodeConfig = mapInfo.layerTree.treeNode;
+			log.debug ("configureMap : configuring layer tree "+mapInfo.id);
+			var node = this._configureLayerTreeNodeRecursively(mapInfo.id, nodeConfig, mapModel);
+			mapModel.setRootNode(node);
+			node.id=mapInfo.id+".root";
+			this._configureLayerTree(mapInfo);
+			log.debug(node.getChildren());
+			log.debug(node.getChildren().count);
+		}
 
 		log.debug ("configureMap : setting overview ref");
 		if (mapInfo.overview != "" && mapInfo.overview != null) {

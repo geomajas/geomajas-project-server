@@ -107,7 +107,8 @@ public class SearchByLocationCommand implements Command<SearchByLocationRequest,
 		if (null == request.getLayerIds()) {
 			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "layerIds");
 		}
-		if (null == request.getCrs()) {
+		String crsCode = request.getCrs();
+		if (null == crsCode) {
 			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "crs");
 		}
 		String[] layerIds = request.getLayerIds();
@@ -115,6 +116,7 @@ public class SearchByLocationCommand implements Command<SearchByLocationRequest,
 		int queryType = request.getQueryType();
 		double ratio = request.getRatio();
 		int searchType = request.getSearchType();
+		CoordinateReferenceSystem crs = configurationService.getCrs(request.getCrs());
 
 		if (layerIds != null && layerIds.length > 0) {
 			for (String layerId : layerIds) {
@@ -147,9 +149,8 @@ public class SearchByLocationCommand implements Command<SearchByLocationRequest,
 						}
 
 						// Get the features
-						CoordinateReferenceSystem crs = configurationService.getCrs(request.getCrs());
 						List<InternalFeature> temp = layerService.getFeatures(layerId, crs, f, null, request
-								.getFeatureInclude());
+								.getFeatureIncludes());
 						if (temp.size() > 0) {
 							List<Feature> features = new ArrayList<Feature>();
 
@@ -165,7 +166,9 @@ public class SearchByLocationCommand implements Command<SearchByLocationRequest,
 								}
 							} else {
 								for (InternalFeature feature : temp) {
-									features.add(converter.toDto(feature));
+									Feature dto = converter.toDto(feature);
+									dto.setCrs(crsCode);
+									features.add(dto);
 								}
 							}
 

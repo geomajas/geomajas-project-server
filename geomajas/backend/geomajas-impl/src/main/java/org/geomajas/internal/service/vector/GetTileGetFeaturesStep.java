@@ -76,8 +76,9 @@ public class GetTileGetFeaturesStep implements PipelineStep<InternalTile> {
 		Filter filter = context.get(PipelineCode.FILTER_KEY, Filter.class);
 
 		// Get the features:
-		List<InternalFeature> features = layerService.getFeatures(metadata.getLayerId(), crs, filter, metadata
-				.getStyleInfo(), metadata.getFeatureInclude() | VectorLayerService.FEATURE_INCLUDE_GEOMETRY );
+		List<InternalFeature> features = layerService.getFeatures(metadata.getLayerId(), crs, filter,
+				metadata .getStyleInfo(), metadata.getFeatureIncludes() | VectorLayerService.FEATURE_INCLUDE_GEOMETRY  |
+				VectorLayerService.FEATURE_INCLUDE_STYLE );
 
 		// See if the features really belong to the tile:
 		Coordinate panOrigin = new Coordinate(metadata.getPanOrigin().getX(), metadata.getPanOrigin().getY());

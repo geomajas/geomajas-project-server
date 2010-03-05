@@ -223,6 +223,7 @@ public class SelectionController extends RectangleController {
 			request.setQueryType(SearchByLocationRequest.QUERY_INTERSECTS);
 			request.setRatio(coverageRatio);
 			request.setSearchType(SearchByLocationRequest.SEARCH_FIRST_LAYER);
+			// request.setFeatureIncludes(); // @todo lazy loading
 			commandRequest.setCommandRequest(request);
 			GwtCommandDispatcher.getInstance().execute(commandRequest, new CommandCallback() {
 

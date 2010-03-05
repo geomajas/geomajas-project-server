@@ -66,6 +66,7 @@ import org.geomajas.layer.feature.attribute.UrlAttribute;
 import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.layer.tile.VectorTile;
 import org.geomajas.service.DtoConverterService;
+import org.geomajas.service.VectorLayerService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
@@ -325,17 +326,25 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 	 * 
 	 * @param feature
 	 *            The server-side feature representation.
+	 * @param featureIncludes
+	 *            Indicate which aspects of the should be included @see {@link VectorLayerService}
 	 * @return Returns the DTO feature.
 	 */
-	public Feature toDto(InternalFeature feature) throws GeomajasException {
+	public Feature toDto(InternalFeature feature, int featureIncludes) throws GeomajasException {
 		if (feature == null) {
 			return null;
 		}
 		Feature dto = new Feature(feature.getId());
-		dto.setAttributes(feature.getAttributes());
-		dto.setLabel(feature.getLabel());
-		dto.setGeometry(toDto(feature.getGeometry()));
-		if (feature.getStyleInfo() != null) {
+		if ((featureIncludes & VectorLayerService.FEATURE_INCLUDE_ATTRIBUTES) != 0) {
+			dto.setAttributes(feature.getAttributes());
+		}
+		if ((featureIncludes & VectorLayerService.FEATURE_INCLUDE_LABEL) != 0) {
+			dto.setLabel(feature.getLabel());
+		}
+		if ((featureIncludes & VectorLayerService.FEATURE_INCLUDE_GEOMETRY) != 0) {
+			dto.setGeometry(toDto(feature.getGeometry()));
+		}
+		if ((featureIncludes & VectorLayerService.FEATURE_INCLUDE_STYLE) != 0 && null != feature.getStyleInfo()) {
 			dto.setStyleId(feature.getStyleInfo().getIndex());
 		}
 		InternalFeatureImpl vFeature = (InternalFeatureImpl) feature;
@@ -343,6 +352,10 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		dto.setUpdatable(feature.isEditable());
 		dto.setDeletable(feature.isDeletable());
 		return dto;
+	}
+
+	public Feature toDto(InternalFeature feature) throws GeomajasException {
+		return toDto(feature, VectorLayerService.FEATURE_INCLUDE_ALL);
 	}
 
 	/**
@@ -526,9 +539,13 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 	 * 
 	 * @param tile
 	 *            The server-side representation of a tile.
+	 * @param crs
+	 *            crs to include in features (if any)
+	 * @param featureIncludes
+	 *            Indicate which aspects of the should be included @see {@link VectorLayerService}
 	 * @return Returns the DTO version that can be sent to the client.
 	 */
-	public VectorTile toDto(InternalTile tile) throws GeomajasException {
+	public VectorTile toDto(InternalTile tile, String crs, int featureIncludes) throws GeomajasException {
 		if (null != tile) {
 			VectorTile dto = new VectorTile();
 			dto.setClipped(tile.isClipped());
@@ -540,7 +557,9 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 			dto.setTileWidth(tile.getTileWidth());
 			List<Feature> features = new ArrayList<Feature>();
 			for (InternalFeature feature : tile.getFeatures()) {
-				features.add(toDto(feature));
+				Feature fdto = toDto(feature, featureIncludes);
+				fdto.setCrs(crs);
+				features.add(fdto);
 			}
 			dto.setFeatures(features);
 			dto.setFeatureContent(tile.getFeatureContent());
@@ -550,6 +569,10 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		}
 
 		return null;
+	}
+
+	public VectorTile toDto(InternalTile tile) throws GeomajasException {
+		return toDto(tile, null, VectorLayerService.FEATURE_INCLUDE_ALL);
 	}
 
 	// -------------------------------------------------------------------------
