@@ -308,6 +308,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	 */
 	public void setScalebarEnabled(boolean enabled) {
 		scaleBarEnabled = enabled;
+		unitType = getMapModel().getMapInfo().getDisplayUnitType();
 		if (scaleBarEnabled) {
 			if (null == scalebar) {
 				scalebar = new ScaleBar("screen.scalebar");
