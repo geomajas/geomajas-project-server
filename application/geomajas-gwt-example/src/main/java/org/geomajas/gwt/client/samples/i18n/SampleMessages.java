@@ -105,7 +105,16 @@ public interface SampleMessages extends Messages {
 	String toggleMaxBoundsBelgium();
 
 	String toggleMaxBoundsWorld();
+	
+	// Toggle pan buttons and scalebar example
+	String panScaleToggleTitle();
+	
+	String panScaleToggleDescription();
+	
+	String togglePanButtons();
 
+	String toggleScaleBar();
+	
 	// Custom Controller sample:
 
 	String customControllerTitle();
@@ -115,7 +124,8 @@ public interface SampleMessages extends Messages {
 	String customControllerScreenCoordinates();
 
 	String customControllerWorldCoordinates();
-
+	
+	
 	// Controller On Element sample:
 	String controllerOnElementTitle();
 
