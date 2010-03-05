@@ -68,7 +68,7 @@ public class WmsLayer implements RasterLayer {
 
 	private DecimalFormat decimalFormat = new DecimalFormat();
 
-	private String baseWmsUrl, format, version, styles = "";
+	private String baseWmsUrl, format, version, styles = "", params = "";
 
 	@Autowired
 	private DtoConverterService converterService;
@@ -137,7 +137,6 @@ public class WmsLayer implements RasterLayer {
 	}
 
 	
-
 	private void calculatePredefinedResolutions(List<Double> r) {
 		// sort in decreasing order !!!
 		Collections.sort(r);
@@ -265,14 +264,18 @@ public class WmsLayer implements RasterLayer {
 		url += "&request=GetMap";
 		url += "&layers=" + layers;
 		url += "&srs=" + getLayerInfo().getCrs();
-		url += "&width=" + width;
-		url += "&height=" + height;
+		url += "&WIDTH=" + width;
+		url += "&HEIGHT=" + height;
+		
 
 		url += "&bbox=" + decimalFormat.format(box.getX()) + "," + decimalFormat.format(box.getY()) + ","
 				+ decimalFormat.format(box.getMaxX()) + "," + decimalFormat.format(box.getMaxY());
 		url += "&format=" + getFormat();
 		url += "&version=" + getVersion();
 		url += "&styles=" + getStyles();
+		if(null != getParams()) {
+			url += "&" + getParams();
+		}
 		log.debug(url);
 		image.setUrl(url);
 	}
@@ -391,6 +394,14 @@ public class WmsLayer implements RasterLayer {
 
 	public void setStyles(String styles) {
 		this.styles = styles;
+	}
+
+	public String getParams() {
+		return params;
+	}
+	
+	public void setParams(String params) {
+		this.params = params;
 	}
 
 	/**
