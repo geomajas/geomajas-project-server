@@ -286,8 +286,10 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 		}
 		if ("delete".equals(status)) {
 			List<Painter> painters = painterVisitor.getPaintersForObject(paintable);
-			for (Painter painter : painters) {
-				painter.deleteShape(paintable, graphics);
+			if (painters != null) {
+				for (Painter painter : painters) {
+					painter.deleteShape(paintable, graphics);
+				}
 			}
 		} else {
 			if ("all".equals(status)) {
