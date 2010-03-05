@@ -97,6 +97,12 @@ public class VectorLayerServiceTest {
 	}
 
 	@Test
+	@DirtiesContext
+	public void testDummy() throws Exception {
+		// dummy test method which (thanks to the DirtiesContext annotation) assure the ThreadScope is re-initialized.
+	}
+
+	@Test
 	public void testGetFeaturesLazy() throws Exception {
 		List<InternalFeature> features = layerService.getFeatures(LAYER_ID,
 				CRS.decode(beanLayer.getLayerInfo().getCrs()), null, null, VectorLayerService.FEATURE_INCLUDE_NONE);
