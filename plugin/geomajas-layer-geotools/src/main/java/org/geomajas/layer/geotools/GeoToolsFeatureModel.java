@@ -115,7 +115,7 @@ public class GeoToolsFeatureModel extends FeatureSourceRetriever implements Feat
 
 	public String getId(Object feature) throws LayerException {
 		SimpleFeature featureAsFeature = asFeature(feature);
-		return featureAsFeature.getID().substring(featureAsFeature.getID().lastIndexOf(".") + 1);
+		return featureAsFeature.getID();
 	}
 
 	public int getSrid() throws LayerException {

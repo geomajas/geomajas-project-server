@@ -208,7 +208,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 			List<AttributeDescriptor> descriptors = store.getSchema().getAttributeDescriptors();
 			Map<String, Attribute> attrMap = getFeatureModel().getAttributes(feature);
 			List<Attribute> attrList = new ArrayList<Attribute>();
-			for (int i = 0; i < attrMap.size(); i++) {
+			for (int i = 0; i < descriptors.size(); i++) {
 				Attribute value = attrMap.get(descriptors.get(i).getName().toString());
 				attrList.add(value);
 			}

@@ -70,7 +70,7 @@ public class ShapeInMemLayerTest {
 	public void read() {
 		SimpleFeature f = null;
 		try {
-			f = (SimpleFeature) layer.read("9703");
+			f = (SimpleFeature) layer.read("cities.9703");
 		} catch (Exception e) {
 		}
 
@@ -101,9 +101,9 @@ public class ShapeInMemLayerTest {
 	@Test
 	public void delete() {
 		try {
-			SimpleFeature f = (SimpleFeature) layer.read("10580");
+			SimpleFeature f = (SimpleFeature) layer.read("cities.10580");
 			Assert.assertNotNull(f);
-			layer.delete("10580");
+			layer.delete("cities.10580");
 			Assert.assertTrue(true);
 		} catch (Exception e) {
 			Assert.assertTrue(false);

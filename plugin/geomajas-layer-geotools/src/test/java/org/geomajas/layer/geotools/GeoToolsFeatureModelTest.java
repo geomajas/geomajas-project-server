@@ -85,7 +85,7 @@ public class GeoToolsFeatureModelTest extends AbstractGeoToolsTest {
 
 	@Test
 	public void testGetId() throws Exception {
-		Assert.assertEquals("4", featureModel.getId(feature));
+		Assert.assertEquals("cities.4", featureModel.getId(feature));
 	}
 
 	@Test

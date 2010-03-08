@@ -95,7 +95,7 @@ public class ShapeInMemFeatureModelTest {
 
 	@Test
 	public void getId() throws Exception {
-		Assert.assertEquals("4", featureModel.getId(feature));
+		Assert.assertEquals("cities.4", featureModel.getId(feature));
 	}
 
 	@Test

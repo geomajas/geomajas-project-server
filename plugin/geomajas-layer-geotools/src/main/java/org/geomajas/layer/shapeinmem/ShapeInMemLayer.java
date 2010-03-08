@@ -227,7 +227,7 @@ public class ShapeInMemLayer extends FeatureSourceRetriever implements VectorLay
 				SimpleFeature feature = iterator.next();
 				String id = featureModel.getId(feature);
 				features.put(id, feature);
-				int intId = Integer.parseInt(id);
+				int intId = Integer.parseInt(id.substring(id.lastIndexOf(".") + 1));
 				if (intId > nextId) {
 					nextId = intId;
 				}

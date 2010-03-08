@@ -118,7 +118,7 @@ public class ShapeInMemFeatureModel extends FeatureSourceRetriever implements Fe
 
 	public String getId(Object feature) throws LayerException {
 		SimpleFeature realFeature = asFeature(feature);
-		return getLocalId(realFeature.getID());
+		return realFeature.getID();
 	}
 
 	public Object newInstance() throws LayerException {
@@ -151,17 +151,6 @@ public class ShapeInMemFeatureModel extends FeatureSourceRetriever implements Fe
 
 	// Private functions:
 
-	private String getLocalId(String featureId) {
-		if (featureId != null) {
-			int pos = featureId.lastIndexOf(".");
-			if (pos >= 0) {
-				return featureId.substring(pos + 1);
-			}
-			return featureId;
-		}
-		return null;
-	}
-	
 	void setNextId(long nextId) {
 		this.nextId = nextId;
 	}
