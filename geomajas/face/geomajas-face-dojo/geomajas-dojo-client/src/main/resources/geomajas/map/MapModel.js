@@ -215,7 +215,6 @@ dojo.declare("MapModel", PainterVisitable, {
 	 * @private
 	 */
 	_recursiveGetSelection : function (node) {
-		debugger;
 		if ((node instanceof VectorLayer || node instanceof RasterLayer) && node.isSelected()) {
 			return node;
 		}
