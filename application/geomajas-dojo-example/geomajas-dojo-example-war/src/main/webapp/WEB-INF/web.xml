@@ -44,7 +44,7 @@
                 Files which are found at this locations are not cached.
             </description>
             <param-name>files-location</param-name>
-            <param-value>/home/joachim/apps/java/geomajas/geomajas/geomajas-dojo-client/src/main/resources</param-value>
+            <param-value>/home/joachim/apps/java/geomajas/geomajas/face/geomajas-face/dojo/geomajas-dojo-client/src/main/resources</param-value>
         </init-param>
         -->
 		<load-on-startup>3</load-on-startup>
