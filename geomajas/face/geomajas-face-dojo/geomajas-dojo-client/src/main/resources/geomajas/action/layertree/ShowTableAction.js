@@ -99,22 +99,39 @@ dojo.declare("ShowTableAction", LayerTreeAction, {
 		return true;
 	},
 	
-	_synchronizeFeatures : function (layerId) {
-		var ids = [];
-		for (var i=0; i<this.features.length; i++) {
-			ids.push(this.features[i].getLocalId());
-		}
-		var command = new JsonCommand("command.feature.GetAttributes","org.geomajas.command.dto.GetAttributesRequest", null, true);
+	_synchronizeFeatures : function (layerId, crs) {
+		var command = new JsonCommand("command.feature.Search",
+				"org.geomajas.command.dto.SearchFeatureRequest", null, true);
 		command.addParam("layerId", layerId);
 		command.addParam("featureIds", ids);
+		command.addParam("crs", crs);
+		var criteria = [];
+		for (var i=0; i<this.features.length; i++) {
+			criteria.push({
+				javaClass : "org.geomajas.layer.feature.SearchCriterion",
+				attributeName : "$id",
+				operator : "=",
+				value : this.features[i].getLocalId()
+			});
+		}
+		command.addParam("criteria", criteria);
+		command.addParam("featureIncludes", 1); // 1=attributes, 2=geometry
 		var deferred = geomajasConfig.dispatcher.execute(command);
 		deferred.addCallback(this, "_synchCallback");
 	},
 
 	_synchCallback : function (result) {
-		if (result.attributes) {
-			for (var i=0; i<result.attributes.length; i++) {
-				this.features[i].setAttributes(result.attributes[i].map);
+		// build map of indexes of features
+		var map = {};
+		for (var i=0; i<this.features.length; i++) {
+			map[this.features[i].getLocalId()] = i;
+		}
+		// update attributes in features
+		var feature;
+		if (result.features) {
+			for (var i=0; i<result.features.length; i++) {
+				feature = result.features[i];
+				this.features[map[feature.id]].setAttributes(feature.attributes.map);
 			}
 		}
 	},

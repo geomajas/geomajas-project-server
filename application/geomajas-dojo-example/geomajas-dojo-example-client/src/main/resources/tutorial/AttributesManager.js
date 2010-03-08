@@ -93,7 +93,12 @@ dojo.declare("AttributesManager", ConfigManager, {
 					flt.addFeature(feature); // Add them to the table one by one.
 					this.tableInitialized = true;
 				}
-			flt.render(); // Render the table!
+				/*
+				var updateAction = new ShowTableAction(null, map, null, flt);
+				updateAction.actionPerformed(null);
+				*/
+
+				flt.render(); // Render the table!
 			}
 			dijit.byId("loader").hideLoader();
 		}
