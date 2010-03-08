@@ -51,6 +51,8 @@ public interface SampleMessages extends Messages {
 	String treeGroupSecurity();
 
 	String treeGroupMapController();
+	
+	String treeGroupToolbarAndControllers();
 
 	String introductionTitle();
 
@@ -197,4 +199,10 @@ public interface SampleMessages extends Messages {
 	String attributeSecurityDescription();
 
 	String attributeSecurityButtonTitle();
+
+	// ToolbarNavigation Sample:
+
+	String toolbarNavigationTitle();
+	
+	String toolbarNavigationDescription();
 }
