@@ -316,10 +316,7 @@ dojo.declare("ConfigManager", null, {
 		log.debug("_configureRasterLayer="+mapId+"."+lc.serverLayerId);
 		var layer = new RasterLayer(mapId, lc.serverLayerId, mapWidget, mapModel);
 		
-		if(lc.layerInfo.dataSourceName != null && (lc.layerInfo.dataSourceName.indexOf("G_NORMAL_MAP") == 0 || 
-				lc.layerInfo.dataSourceName.indexOf("G_SATELLITE_MAP") == 0 || 
-				lc.layerInfo.dataSourceName.indexOf("G_HYBRID_MAP") == 0 || 
-				lc.layerInfo.dataSourceName.indexOf("G_PHYSICAL_MAP") == 0) {
+		if(lc.layerInfo.dataSourceName != null && lc.layerInfo.dataSourceName.indexOf("@GoogleLayer") > 0) {
 			log.debug("setting google image factory");
 			layer.setImageFactory(new GoogleImageFactory());
 		}
