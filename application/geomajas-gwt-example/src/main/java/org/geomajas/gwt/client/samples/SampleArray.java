@@ -29,6 +29,7 @@ import org.geomajas.gwt.client.samples.controller.CustomControllerSample;
 import org.geomajas.gwt.client.samples.controller.RectangleControllerSample;
 import org.geomajas.gwt.client.samples.i18n.I18nProvider;
 import org.geomajas.gwt.client.samples.mapwidget.CrsSample;
+import org.geomajas.gwt.client.samples.mapwidget.GeoSample;
 import org.geomajas.gwt.client.samples.mapwidget.MaxBoundsToggleSample;
 import org.geomajas.gwt.client.samples.mapwidget.NavigationSample;
 import org.geomajas.gwt.client.samples.mapwidget.OpenStreetMapSample;
@@ -64,6 +65,8 @@ public final class SampleArray {
 						OpenStreetMapSample.FACTORY),
 				new SampleTreeNode(I18nProvider.getSampleMessages().wmsTitle(),
 						"[ISOMORPHIC]/geomajas/layer-raster.png", WmsSample.WMS_TITLE, "MapWidget", WmsSample.FACTORY),
+				new SampleTreeNode(I18nProvider.getSampleMessages().geoTitle(),
+						"[ISOMORPHIC]/geomajas/layer-raster.png", GeoSample.GEO_TITLE, "MapWidget", GeoSample.FACTORY),
 				new SampleTreeNode(I18nProvider.getSampleMessages().navigationTitle(),
 						"[ISOMORPHIC]/geomajas/layer.png", NavigationSample.TITLE, "MapWidget",
 						NavigationSample.FACTORY),

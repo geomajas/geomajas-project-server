@@ -59,12 +59,18 @@ public interface SampleMessages extends Messages {
 	String osmTitle();
 
 	String osmDescription();
-
+	
 	// WMS sample:
 
 	String wmsTitle();
 
 	String wmsDescription();
+	
+	// GeoTools sample:
+	
+	String geoTitle();
+	
+	String geoDescription();
 
 	// Navigation sample:
 

@@ -15,6 +15,8 @@
 			org/geomajas/gwt/samples/mapwidget/layerBeansLonLat.xml
 			org/geomajas/gwt/samples/mapwidget/mapBeans.xml
 			org/geomajas/gwt/samples/mapwidget/mapCrs.xml
+			org/geomajas/gwt/samples/mapWidget/geoToolsLayer.xml
+			org/geomajas/gwt/samples/mapWidget/mapGeoTools.xml
 			org/geomajas/gwt/samples/security/security.xml
 			org/geomajas/gwt/samples/security/mapWmsToolbar.xml
 			org/geomajas/gwt/samples/shapeinmem/mapDuisburg.xml
