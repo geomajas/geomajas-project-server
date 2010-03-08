@@ -43,6 +43,7 @@ import org.geomajas.gwt.client.gfx.Painter;
 import org.geomajas.gwt.client.gfx.PainterVisitor;
 import org.geomajas.gwt.client.gfx.paintable.ScaleBar;
 import org.geomajas.gwt.client.gfx.painter.CirclePainter;
+import org.geomajas.gwt.client.gfx.painter.ScaleBarPainter;
 import org.geomajas.gwt.client.gfx.painter.FeaturePainter;
 import org.geomajas.gwt.client.gfx.painter.FeatureTransactionPainter;
 import org.geomajas.gwt.client.gfx.painter.GeometryPainter;
@@ -154,6 +155,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 		mapModel.addFeatureSelectionHandler(new MapWidgetFeatureSelectionHandler(this));
 
 		// Painter registration:
+		painterVisitor.registerPainter(new ScaleBarPainter());
 		painterVisitor.registerPainter(new CirclePainter());
 		painterVisitor.registerPainter(new RectanglePainter());
 		painterVisitor.registerPainter(new TextPainter());
@@ -302,6 +304,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	 *            set status
 	 */
 	public void setScalebarEnabled(boolean enabled) {
+		GWT.log("MapWidget::setScalebarEnabled: " + enabled, null);
 		scaleBarEnabled = enabled;
 		if (scaleBarEnabled) {
 			if (null == scalebar) {
@@ -312,6 +315,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 			scalebar.adjustScale(mapModel.getMapView().getCurrentScale());
 			render(scalebar, "all");
 		} else {
+			GWT.log("MapWidget::setScalebarEnabled: going to disable to scalebar" + enabled, null);
 			if (null != scalebar) {
 				render(scalebar, "delete");
 				scalebar = null;
