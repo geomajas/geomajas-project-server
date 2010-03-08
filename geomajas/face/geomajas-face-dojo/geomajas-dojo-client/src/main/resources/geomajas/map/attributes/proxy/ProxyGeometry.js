@@ -38,7 +38,7 @@ dojo.declare("ProxyGeometry", null, {
 
 	getValue : function () {
 		var command = new JsonCommand("command.feature.Search",
-				"org.geomajas.command.dto.SearchFeatureRequest", null, false);
+				"org.geomajas.command.dto.SearchFeatureRequest", null, true);
 		command.addParam("layerId", this.layerId);
 		command.addParam("crs", this.crs);
 		command.addParam("criteria", [{

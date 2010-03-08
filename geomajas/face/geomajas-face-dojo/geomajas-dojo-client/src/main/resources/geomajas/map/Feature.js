@@ -284,7 +284,7 @@ dojo.declare("Feature", PainterVisitable, {
 	},
 
 	/**
-	 * Return this feature's label. It uses the preconfigured labelattribute to
+	 * Return this feature's label. It uses the preconfigured label attribute to
 	 * do so. If no label is found, an empty string is returned.
 	 */
 	getLabel : function () {

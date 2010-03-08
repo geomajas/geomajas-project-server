@@ -84,7 +84,7 @@ dojo.declare("CommandDispatcher", null, {
 	},
 
 	/**
-	 * Allow other timeconsuming processes than Commands to use ActivityDiv too
+	 * Allow other time consuming processes than Commands to use ActivityDiv too
 	 *
 	 * DON'T FORGET TO DEACTIVATE WHEN FINISHED
 	 */

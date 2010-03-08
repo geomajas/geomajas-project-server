@@ -48,7 +48,7 @@ dojo.declare("ConfigManager", null, {
 		if(dispatcher){
 			this.dispatcher = dispatcher;
 		} else {
-			geomajasConfig.dispatcher = new CommandDispatcher ();
+			geomajasConfig.dispatcher = new CommandDispatcher();
 			this.dispatcher = geomajasConfig.dispatcher;
 		}
 		this.serverBase = geomajasConfig.serverBase;
@@ -315,11 +315,13 @@ dojo.declare("ConfigManager", null, {
 	_configureRasterLayer : function (mapId, lc, mapWidget, mapModel) {
 		log.debug("_configureRasterLayer="+mapId+"."+lc.serverLayerId);
 		var layer = new RasterLayer(mapId, lc.serverLayerId, mapWidget, mapModel);
-		
-		if(lc.layerInfo.dataSourceName != null && lc.layerInfo.dataSourceName.indexOf("@GoogleLayer") > 0) {
+
+		/*
+		if (null != lc.layerInfo.dataSourceName && lc.layerInfo.dataSourceName.indexOf("@GoogleLayer") > 0) {
 			log.debug("setting google image factory");
 			layer.setImageFactory(new GoogleImageFactory());
 		}
+		*/
 		layer.setLabel (lc.label);
 		layer.setLayerType (lc.layerType.value);
         layer.setVisible(lc.visible);
