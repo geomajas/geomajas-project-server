@@ -68,7 +68,9 @@ public class WmsLayer implements RasterLayer {
 
 	private DecimalFormat decimalFormat = new DecimalFormat();
 
-	private String baseWmsUrl, format, version, styles = "", params = "";
+	private String baseWmsUrl, format, version, styles = "";
+
+	private List<WmsLayerParameter> parameters;
 
 	@Autowired
 	private DtoConverterService converterService;
@@ -81,13 +83,13 @@ public class WmsLayer implements RasterLayer {
 	private CoordinateReferenceSystem crs;
 
 	private String id;
-	
+
 	private String layers;
-	
+
 	public String getId() {
 		return id;
 	}
-	
+
 	public void setId(String id) {
 		this.id = id;
 	}
@@ -104,11 +106,9 @@ public class WmsLayer implements RasterLayer {
 		try {
 			crs = CRS.decode(layerInfo.getCrs());
 		} catch (NoSuchAuthorityCodeException e) {
-			throw new LayerException(e, ExceptionCode.LAYER_CRS_UNKNOWN_AUTHORITY, getId(), getLayerInfo()
-					.getCrs());
+			throw new LayerException(e, ExceptionCode.LAYER_CRS_UNKNOWN_AUTHORITY, getId(), getLayerInfo().getCrs());
 		} catch (FactoryException exception) {
-			throw new LayerException(exception, ExceptionCode.LAYER_CRS_PROBLEMATIC, getId(), getLayerInfo()
-					.getCrs());
+			throw new LayerException(exception, ExceptionCode.LAYER_CRS_PROBLEMATIC, getId(), getLayerInfo().getCrs());
 		}
 	}
 
@@ -133,10 +133,9 @@ public class WmsLayer implements RasterLayer {
 		List<Double> r = layerInfo.getResolutions();
 		if (r != null) {
 			calculatePredefinedResolutions(r);
-		} 
+		}
 	}
 
-	
 	private void calculatePredefinedResolutions(List<Double> r) {
 		// sort in decreasing order !!!
 		Collections.sort(r);
@@ -184,8 +183,8 @@ public class WmsLayer implements RasterLayer {
 							- Math.round(scale * worldBox.getX()), Math.round(scale * worldBox.getMaxY())
 							- Math.round(scale * worldBox.getY()));
 
-					RasterTile image = new RasterTile(screenbox, getId() + "."
-							+ bestResolution.getLevel() + "." + i + "," + j);
+					RasterTile image = new RasterTile(screenbox, getId() + "." + bestResolution.getLevel() + "." + i
+							+ "," + j);
 
 					image.setCode(new TileCode(bestResolution.getLevel(), i, j));
 					resolveUrl(image, bestResolution.getTileWidthPx(), bestResolution.getTileHeightPx(), worldBox);
@@ -229,8 +228,8 @@ public class WmsLayer implements RasterLayer {
 								- Math.round(scale * worldBox.getX()), Math.round(scale * worldBox.getMaxY())
 								- Math.round(scale * worldBox.getY()));
 
-						RasterTile image = new RasterTile(screenbox, getId() + "."
-								+ bestResolution.getLevel() + "." + i + "," + j);
+						RasterTile image = new RasterTile(screenbox, getId() + "." + bestResolution.getLevel() + "."
+								+ i + "," + j);
 
 						image.setCode(new TileCode(bestResolution.getLevel(), i, j));
 						resolveUrl(image, (int) screenbox.getWidth(), (int) screenbox.getHeight(), worldBox);
@@ -266,15 +265,16 @@ public class WmsLayer implements RasterLayer {
 		url += "&srs=" + getLayerInfo().getCrs();
 		url += "&WIDTH=" + width;
 		url += "&HEIGHT=" + height;
-		
 
 		url += "&bbox=" + decimalFormat.format(box.getX()) + "," + decimalFormat.format(box.getY()) + ","
 				+ decimalFormat.format(box.getMaxX()) + "," + decimalFormat.format(box.getMaxY());
 		url += "&format=" + getFormat();
 		url += "&version=" + getVersion();
 		url += "&styles=" + getStyles();
-		if(null != getParams()) {
-			url += "&" + getParams();
+		if (null != getParameters()) {
+			for (WmsLayerParameter p : getParameters()) {
+				url += "&" + p.getKey() + "=" + p.getValue();
+			}
 		}
 		log.debug(url);
 		image.setUrl(url);
@@ -309,7 +309,7 @@ public class WmsLayer implements RasterLayer {
 		Bbox bbox = getLayerInfo().getMaxExtent();
 		double maxWidth = bbox.getWidth();
 		double maxHeight = bbox.getHeight();
-		
+
 		Resolution upper = new Resolution(Math.max(maxWidth / getTileWidth(), maxHeight / getTileHeight()), 0,
 				getTileWidth(), getTileHeight());
 		if (screenResolution >= upper.getResolution()) {
@@ -331,7 +331,7 @@ public class WmsLayer implements RasterLayer {
 				return upper;
 			}
 		}
-		
+
 	}
 
 	protected RasterGrid getRasterGrid(Envelope bounds, double width, double height, double scale) {
@@ -396,12 +396,12 @@ public class WmsLayer implements RasterLayer {
 		this.styles = styles;
 	}
 
-	public String getParams() {
-		return params;
+	public void setParameters(List<WmsLayerParameter> parameters) {
+		this.parameters = parameters;
 	}
-	
-	public void setParams(String params) {
-		this.params = params;
+
+	public List<WmsLayerParameter> getParameters() {
+		return parameters;
 	}
 
 	/**
