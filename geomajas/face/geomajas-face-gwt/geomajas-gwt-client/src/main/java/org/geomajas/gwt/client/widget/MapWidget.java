@@ -29,7 +29,6 @@ import org.geomajas.command.CommandResponse;
 import org.geomajas.command.dto.GetMapConfigurationRequest;
 import org.geomajas.command.dto.GetMapConfigurationResponse;
 import org.geomajas.configuration.client.ClientMapInfo;
-import org.geomajas.configuration.client.UnitType;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.Geomajas;
 import org.geomajas.gwt.client.action.menu.AboutAction;
@@ -121,9 +120,6 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	protected boolean scaleBarEnabled = true;
 
 	private ScaleBar scalebar;
-
-	// TODO: implement this: metric and English units; need: formatters, conversions, etc; can be static methods?
-	private UnitType unitType;
 
 	private double unitLength;
 
@@ -220,7 +216,6 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	protected void initializationCallback(GetMapConfigurationResponse r) {
 		if (r.getMapInfo() != null) {
 			ClientMapInfo info = r.getMapInfo();
-			unitType = info.getDisplayUnitType();
 			unitLength = info.getUnitLength();
 			pixelLength = info.getPixelLength();
 			graphics.setBackgroundColor(info.getBackgroundColor());
@@ -308,12 +303,12 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	 */
 	public void setScalebarEnabled(boolean enabled) {
 		scaleBarEnabled = enabled;
-		unitType = getMapModel().getMapInfo().getDisplayUnitType();
 		if (scaleBarEnabled) {
 			if (null == scalebar) {
 				scalebar = new ScaleBar("screen.scalebar");
 			}
-			scalebar.initialize(unitType, unitLength, new Coordinate(20, graphics.getHeight() - 25));
+			scalebar.initialize(getMapModel().getMapInfo().getDisplayUnitType(), unitLength, new Coordinate(20,
+					graphics.getHeight() - 25));
 			scalebar.adjustScale(mapModel.getMapView().getCurrentScale());
 			render(scalebar, "all");
 		} else {
