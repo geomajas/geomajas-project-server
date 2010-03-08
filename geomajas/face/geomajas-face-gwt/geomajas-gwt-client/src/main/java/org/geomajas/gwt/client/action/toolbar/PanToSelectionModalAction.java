@@ -21,25 +21,38 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.gwt.client.controller;
+package org.geomajas.gwt.client.action.toolbar;
 
-import org.geomajas.gwt.client.map.MapView;
-import org.geomajas.gwt.client.spatial.Bbox;
+import com.smartgwt.client.widgets.events.ClickEvent;
+import org.geomajas.gwt.client.action.ToolbarModalAction;
+import org.geomajas.gwt.client.controller.PanToSelectionController;
+import org.geomajas.gwt.client.i18n.I18nProvider;
 import org.geomajas.gwt.client.widget.MapWidget;
 
 /**
- * Allows zooming to a selection.
+ * Allow panning to the selection.
  *
- * @author Joachim Van der Auwera
+ * @author Frank Wynants
  */
-public class ZoomToRectangleController extends RectangleController {
+public class PanToSelectionModalAction extends ToolbarModalAction {
 
-	public ZoomToRectangleController(MapWidget mapWidget) {
-		super(mapWidget);
+	private MapWidget mapWidget;
+
+	private PanToSelectionController controller;
+
+	public PanToSelectionModalAction(MapWidget mapWidget) {
+		super("[ISOMORPHIC]/geomajas/pan.png", I18nProvider.getToolbar().panToSelection());
+		this.mapWidget = mapWidget;
+		controller = new PanToSelectionController(mapWidget);
 	}
 
 	@Override
-	protected void selectRectangle(Bbox worldBounds) {
-		mapWidget.getMapModel().getMapView().applyBounds(worldBounds, MapView.ZoomOption.LEVEL_CHANGE);
+	public void onSelect(ClickEvent event) {
+		mapWidget.setController(controller);
+	}
+
+	@Override
+	public void onDeselect(ClickEvent event) {
+		mapWidget.setController(null);
 	}
 }

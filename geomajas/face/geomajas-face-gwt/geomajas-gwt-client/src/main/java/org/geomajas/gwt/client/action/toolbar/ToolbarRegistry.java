@@ -86,8 +86,19 @@ public final class ToolbarRegistry {
 				return new ZoomPreviousAction(mapWidget);
 			}
 		});
+		REGISTRY.put("ZoomToSelection", new ToolCreator() {
+			
+			public ToolbarBaseAction createTool(MapWidget mapWidget) {
+				return new ZoomToSelectionModalAction(mapWidget);			
+			}
+		});
+		REGISTRY.put("PanToSelection", new ToolCreator() {
+			
+			public ToolbarBaseAction createTool(MapWidget mapWidget) {
+				return new PanToSelectionModalAction(mapWidget);			
+			}
+		});
 	}
-
 	private ToolbarRegistry() {
 		// utility class, hide constructor
 	}

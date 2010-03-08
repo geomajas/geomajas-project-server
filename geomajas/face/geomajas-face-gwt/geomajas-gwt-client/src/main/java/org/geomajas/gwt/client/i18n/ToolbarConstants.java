@@ -45,9 +45,13 @@ public interface ToolbarConstants extends Constants {
 	String zoomOut();
 
 	String pan();
+	
+	String panToSelection();
 
 	String zoomToRectangle();
 
+	String zoomToSelection();
+	
 	String zoomNext();
 
 	String zoomPrevious();
@@ -55,4 +59,5 @@ public interface ToolbarConstants extends Constants {
 	String scaleSelect();
 
 	String refreshConfiguration();
+
 }

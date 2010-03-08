@@ -29,12 +29,15 @@ import org.geomajas.gwt.client.widget.MapWidget;
 
 /**
  * Allows zooming to a selection.
- *
- * @author Joachim Van der Auwera
+ * 
+ * @author Frank Wynants
  */
-public class ZoomToRectangleController extends RectangleController {
+public class ZoomToSelectionController extends RectangleController {
 
-	public ZoomToRectangleController(MapWidget mapWidget) {
+	// TODO This needs to be reimplemented to do a pan to the current selection 
+	// Don't use a controller and modelAction... Base yourself on ZoomPreviousAction for example
+	// This class needs to be removed
+	public ZoomToSelectionController(MapWidget mapWidget) {
 		super(mapWidget);
 	}
 
