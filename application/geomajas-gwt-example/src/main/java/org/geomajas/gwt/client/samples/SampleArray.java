@@ -43,6 +43,7 @@ import org.geomajas.gwt.client.samples.security.LayerSecuritySample;
 import org.geomajas.gwt.client.samples.security.LoginSample;
 import org.geomajas.gwt.client.samples.security.ToolSecuritySample;
 import org.geomajas.gwt.client.samples.toolbarAndControllers.ToolbarNavigationSample;
+import org.geomajas.gwt.client.samples.toolbarAndControllers.ToolbarSelectionSample;
 
 /**
  * <p>
@@ -103,7 +104,11 @@ public final class SampleArray {
 				new SampleTreeNode(I18nProvider.getSampleMessages().toolbarNavigationTitle(),
 						"[ISOMORPHIC]/geomajas/pan.png", ToolbarNavigationSample.TITLE, "ToolbarAndControllers",
 						ToolbarNavigationSample.FACTORY),
-						
+
+				new SampleTreeNode(I18nProvider.getSampleMessages().toolbarSelectionTitle(),
+						"[ISOMORPHIC]/geomajas/select.png", ToolbarSelectionSample.TITLE, "ToolbarAndControllers",
+						ToolbarSelectionSample.FACTORY),
+		
 				// Security samples:
 				new SampleTreeNode(I18nProvider.getSampleMessages().treeGroupSecurity(),
 						"[ISOMORPHIC]/geomajas/silk/key.png", "Security", "topLevel"),

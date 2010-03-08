@@ -205,4 +205,10 @@ public interface SampleMessages extends Messages {
 	String toolbarNavigationTitle();
 	
 	String toolbarNavigationDescription();
+
+	// ToolbarSelection Sample:
+	
+	String toolbarSelectionTitle();
+
+	String toolbarSelectionDescription();
 }
