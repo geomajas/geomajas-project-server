@@ -192,13 +192,8 @@ public class WmsLayer implements RasterLayer {
 				MathTransform layerToMap = geoService.findMathTransform(CRS.decode(getLayerInfo().getCrs()), boundsCrs);
 				MathTransform mapToLayer = layerToMap.inverse();
 
-				// Translate the map coordinates to layer coordinates
-				DirectPosition leftTop = new DirectPosition2D(bounds.getMinX(), bounds.getMaxY());
-				DirectPosition rightBottom = new DirectPosition2D(bounds.getMaxX(), bounds.getMinY());
-				mapToLayer.transform(leftTop, leftTop);
-				mapToLayer.transform(rightBottom, rightBottom);
-				Envelope layerBounds = new Envelope(leftTop.getCoordinate()[0], rightBottom.getCoordinate()[0], leftTop
-						.getCoordinate()[1], rightBottom.getCoordinate()[1]);
+				// Translate the map coordinates to layer coordinates, assumes equal x-y orientation
+				Envelope layerBounds = transformBounds(bounds, mapToLayer);
 				double layerScale = bounds.getWidth() * scale / layerBounds.getWidth();
 
 				layerBounds = clipBounds(layerBounds);
@@ -211,12 +206,17 @@ public class WmsLayer implements RasterLayer {
 				RasterGrid grid = getRasterGrid(layerBounds, bestResolution.getTileWidth(), bestResolution
 						.getTileHeight(), layerScale);
 
+				// We calculate the first tile's screenbox with this assumption
+
 				for (int i = grid.getXmin(); i < grid.getXmax(); i++) {
 					for (int j = grid.getYmin(); j < grid.getYmax(); j++) {
 						double x = grid.getLowerLeft().x + (i - grid.getXmin()) * grid.getTileWidth();
 						double y = grid.getLowerLeft().y + (j - grid.getYmin()) * grid.getTileHeight();
-						Bbox worldBox = new Bbox(x, y, grid.getTileWidth(), grid.getTileHeight());
-
+						// layer coordinates
+						Bbox layerBox = new Bbox(x, y, grid.getTileWidth(), grid.getTileHeight());
+						// Transforming back to map coordinates will only result in a proper grid if the transformation
+						// is nearly affine
+						Bbox worldBox = transformBounds(layerBox, layerToMap);
 						// Rounding to avoid white space between raster tiles
 						// lower-left becomes upper-left in inverted y-space !!!
 						Bbox screenbox = new Bbox(Math.round(scale * worldBox.getX()), -Math.round(scale
@@ -228,7 +228,7 @@ public class WmsLayer implements RasterLayer {
 								+ i + "," + j);
 
 						image.setCode(new TileCode(bestResolution.getLevel(), i, j));
-						resolveUrl(image, (int) screenbox.getWidth(), (int) screenbox.getHeight(), worldBox);
+						resolveUrl(image, bestResolution.getTileWidthPx(), bestResolution.getTileHeightPx(), layerBox);
 						result.add(image);
 					}
 				}
@@ -242,6 +242,26 @@ public class WmsLayer implements RasterLayer {
 				throw new RenderException(e, ExceptionCode.RENDER_TRANSFORMATION_FAILED);
 			}
 		}
+		return result;
+	}
+
+	private Bbox transformBounds(Bbox box, MathTransform t) throws TransformException {
+		DirectPosition ll = new DirectPosition2D(box.getX(), box.getY());
+		DirectPosition ur = new DirectPosition2D(box.getMaxX(), box.getMaxY());
+		t.transform(ll, ll);
+		t.transform(ur, ur);
+		Bbox result = new Bbox(ll.getCoordinate()[0], ll.getCoordinate()[1], ur.getCoordinate()[0]
+				- ll.getCoordinate()[0], ur.getCoordinate()[1] - ll.getCoordinate()[1]);
+		return result;
+	}
+
+	private Envelope transformBounds(Envelope bounds, MathTransform t) throws TransformException {
+		DirectPosition leftTop = new DirectPosition2D(bounds.getMinX(), bounds.getMaxY());
+		DirectPosition rightBottom = new DirectPosition2D(bounds.getMaxX(), bounds.getMinY());
+		t.transform(leftTop, leftTop);
+		t.transform(rightBottom, rightBottom);
+		Envelope result = new Envelope(leftTop.getCoordinate()[0], rightBottom.getCoordinate()[0], leftTop
+				.getCoordinate()[1], rightBottom.getCoordinate()[1]);
 		return result;
 	}
 
@@ -290,8 +310,8 @@ public class WmsLayer implements RasterLayer {
 					Resolution upper = resolutions.get(i);
 					Resolution lower = resolutions.get(i + 1);
 					if (screenResolution <= upper.getResolution() && screenResolution >= lower.getResolution()) {
-						if ((upper.getResolution() - screenResolution) > 2 * 
-								(screenResolution - lower.getResolution())) {
+						if ((upper.getResolution() - screenResolution) > 
+							2 * (screenResolution - lower.getResolution())) {
 							return lower;
 						} else {
 							return upper;
