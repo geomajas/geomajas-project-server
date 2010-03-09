@@ -324,7 +324,7 @@ public class FeatureSearch extends Canvas {
 				request.setLayerId(layer.getId());
 				request.setMax(maximumResultSize);
 				request.setFilter(layer.getFilter());
-				// request.setFeatureIncludes(); // @todo lazy loading
+				request.setFeatureIncludes(GwtCommandDispatcher.getInstance().getLazyFeatureIncludesSelect());
 
 				GwtCommand command = new GwtCommand("command.feature.Search");
 				command.setCommandRequest(request);

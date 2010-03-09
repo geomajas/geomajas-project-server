@@ -26,6 +26,7 @@ package org.geomajas.service;
 import java.util.List;
 
 import org.geomajas.configuration.NamedStyleInfo;
+import org.geomajas.global.GeomajasConstant;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.InternalFeature;
@@ -45,38 +46,7 @@ import com.vividsolutions.jts.geom.Envelope;
  *
  * @author Joachim Van der Auwera
  */
-public interface VectorLayerService {
-
-	/**
-	 * Value to use when all aspects of the Feature should be lazy loaded.
-	 */
-	int FEATURE_INCLUDE_NONE = 0;
-
-	/**
-	 * Include attributes in the {@link InternalFeature}. (speed issue)
-	 */
-	int FEATURE_INCLUDE_ATTRIBUTES = 1;
-
-	/**
-	 * Include geometries in the {@link InternalFeature}. (speed issue)
-	 */
-	int FEATURE_INCLUDE_GEOMETRY = 2;
-
-	/**
-	 * Include style definitions in the {@link InternalFeature}. (speed issue)
-	 */
-	int FEATURE_INCLUDE_STYLE = 4;
-
-	/**
-	 * Include label string in the {@link InternalFeature}. (speed issue)
-	 */
-	int FEATURE_INCLUDE_LABEL = 8;
-
-	/**
-	 * The Features should include all aspects.
-	 */
-	int FEATURE_INCLUDE_ALL = FEATURE_INCLUDE_ATTRIBUTES + FEATURE_INCLUDE_GEOMETRY + FEATURE_INCLUDE_STYLE +
-			FEATURE_INCLUDE_LABEL;
+public interface VectorLayerService extends GeomajasConstant {
 
 	/**
 	 * Update an existing feature of the model or creates a new feature.

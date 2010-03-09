@@ -41,7 +41,7 @@ public interface GeomajasServiceAsync {
 	 *
 	 * @param gwtCommand
 	 *            The gwtCommand to be executed.
-	 * @return The result.
+	 * @param callback callback which will be invoked with command response
 	 */
 	void execute(GwtCommand gwtCommand, AsyncCallback<CommandResponse> callback);
 }

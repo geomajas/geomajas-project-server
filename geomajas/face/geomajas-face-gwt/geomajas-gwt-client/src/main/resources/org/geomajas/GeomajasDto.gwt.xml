@@ -35,5 +35,8 @@
 	<source path="geometry"/>
 	<source path="command/dto"/>
 	<source path="extension/printing/command/dto"/>
+	<source path="global">
+		<include name="GeomajasConstant.java"/>
+	</source>
 
 </module>

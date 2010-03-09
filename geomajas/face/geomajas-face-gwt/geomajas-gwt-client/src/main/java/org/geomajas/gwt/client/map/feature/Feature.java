@@ -87,6 +87,8 @@ public class Feature implements Paintable, Cloneable {
 	 */
 	private boolean deletable;
 
+	private String crs;
+
 	// Constructors:
 
 	public Feature() {
@@ -109,6 +111,7 @@ public class Feature implements Paintable, Cloneable {
 			id = dto.getId();
 			geometry = GeometryConverter.toGwt(dto.getGeometry());
 			styleId = dto.getStyleId();
+			crs = dto.getCrs();
 			setUpdatable(dto.isUpdatable());
 			setDeletable(dto.isDeletable());
 		}
@@ -156,6 +159,7 @@ public class Feature implements Paintable, Cloneable {
 		}
 		feature.id = id;
 		feature.styleId = styleId;
+		feature.crs = crs;
 		return feature;
 	}
 
@@ -190,7 +194,7 @@ public class Feature implements Paintable, Cloneable {
 	/**
 	 * Transform this object into a DTO feature.
 	 * 
-	 * @return
+	 * @return dto for this feature
 	 */
 	public org.geomajas.layer.feature.Feature toDto() {
 		org.geomajas.layer.feature.Feature dto = new org.geomajas.layer.feature.Feature();
@@ -198,6 +202,7 @@ public class Feature implements Paintable, Cloneable {
 		dto.setClipped(clipped);
 		dto.setId(id);
 		dto.setGeometry(GeometryConverter.toDto(geometry));
+		dto.setCrs(crs);
 		return dto;
 	}
 
@@ -209,17 +214,66 @@ public class Feature implements Paintable, Cloneable {
 
 	// Getters and setters:
 
+	/**
+	 * Crs as (optionally) set by the backend.
+	 *
+	 * @return crs for this feature
+	 */
+	public String getCrs() {
+		return crs;
+	}
+
+	/**
+	 * Get the attributes map, null when it needs to be lazy loaded.
+	 *
+	 * @return attributes map
+	 */
 	public Map<String, Attribute> getAttributes() {
 		return attributes;
 	}
+
+	/**
+	 * Get the attributes map, lazy loading it when not yet available.
+	 *
+	 * @param callback routine to call with value
+	 */
+	/*
+	public Map<String, Attribute> getAttributes(CommandCallback<Map<String, Attribute>> callback) {
+		if (null == attributes) {
+			lazyLoad(GeomajasConstant.FEATURE_INCLUDE_ATTRIBUTES, callback);
+		} else {
+			callback.execute(attributes);
+		}
+	}
+	*/
 
 	public void setAttributes(Map<String, Attribute> attributes) {
 		this.attributes = attributes;
 	}
 
+	/**
+	 * Get the feature's geometry, , null when it needs to be lazy loaded.
+	 *
+	 * @return geometry
+	 */
 	public Geometry getGeometry() {
 		return geometry;
 	}
+
+	/**
+	 * Get the feature's geometry, lazy loading it when not yet available.
+	 *
+	 * @param callback routine to call with value
+	 */
+	/*
+	public Geometry getGeometry(CommandCallback<Geometry> callback) {
+		if (null == geometry) {
+			lazyLoad(GeomajasConstant.FEATURE_INCLUDE_GEOMETRY, callback);
+		} else {
+			callback.execute(geometry);
+		}
+	}
+	*/
 
 	public void setGeometry(Geometry geometry) {
 		this.geometry = geometry;
@@ -278,4 +332,41 @@ public class Feature implements Paintable, Cloneable {
 	public void setDeletable(boolean deletable) {
 		this.deletable = deletable;
 	}
+
+	/* @todo
+	private void lazyLoad(final int featureIncludes, final CommandCallback callback) {
+		SearchFeatureRequest request = new SearchFeatureRequest();
+		request.setBooleanOperator("OR");
+		SearchCriterion[] criteria = new SearchCriterion[1];
+		criteria[0] = new SearchCriterion(SearchFeatureRequest.ID_ATTRIBUTE, "=", getId());
+		request.setCriteria(criteria);
+		request.setCrs(getCrs());
+		request.setLayerId(layer.getId());
+		request.setMax(0);
+		request.setFilter(layer.getFilter());
+		request.setFeatureIncludes(featureIncludes);
+
+		GwtCommand command = new GwtCommand("command.feature.Search");
+		command.setCommandRequest(request);
+		GwtCommandDispatcher.getInstance().execute(command, new CommandCallback() {
+
+			public void execute(CommandResponse response) {
+				if (response instanceof SearchFeatureResponse) {
+					SearchFeatureResponse resp = (SearchFeatureResponse) response;
+					if (null != resp.getFeatures() && resp.getFeatures().length > 0) {
+						org.geomajas.layer.feature.Feature dto = resp.getFeatures()[0];
+						if ((featureIncludes & GeomajasConstant.FEATURE_INCLUDE_ATTRIBUTES) != 0) {
+							attributes = dto.getAttributes();
+							callback.execute(attributes);
+						}
+						if ((featureIncludes & GeomajasConstant.FEATURE_INCLUDE_GEOMETRY) != 0) {
+							geometry = GeometryConverter.toGwt(dto.getGeometry());
+							callback.execute(geometry);
+						}
+					}
+				}
+			}
+		});
+	}
+	*/
 }

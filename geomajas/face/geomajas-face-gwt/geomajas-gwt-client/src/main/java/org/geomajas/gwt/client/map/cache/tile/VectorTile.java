@@ -160,7 +160,7 @@ public class VectorTile extends AbstractVectorTile {
 		request.setRenderer(SC.isIE() ? "VML" : "SVG");
 		request.setScale(cache.getLayer().getMapModel().getMapView().getCurrentScale());
 		request.setStyleInfo(cache.getLayer().getLayerInfo().getNamedStyleInfo());
-		//request.setFeatureIncludes(); // @todo lazy loading
+		request.setFeatureIncludes(GwtCommandDispatcher.getInstance().getLazyFeatureIncludesDefault());
 		GwtCommand command = new GwtCommand("command.render.GetRenderedTile");
 		command.setCommandRequest(request);
 		return command;
