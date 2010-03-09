@@ -816,7 +816,7 @@ dojo.extend(GraphicsContext, {
 			}
 			var value = parseFloat(style.strokeOpacity);
 			if (value >= 0 && value <= 1) {
-				element.fill.opacity = value;
+				element.stroke.opacity = value;
 			}
 		}
 		if (style.strokeWidth && style.strokeWidth !== "") {
