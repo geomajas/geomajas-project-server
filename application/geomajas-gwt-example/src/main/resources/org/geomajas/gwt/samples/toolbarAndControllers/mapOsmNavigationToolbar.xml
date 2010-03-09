@@ -28,34 +28,38 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 http://www.springframework.org/schema/context
 http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-	<bean name="wmsNavigationToolbarMap" class="org.geomajas.configuration.client.ClientMapInfo">
+	<!-- OpenStreetMap sample -->
+	<bean name="osmNavigationToolbarMap" class="org.geomajas.configuration.client.ClientMapInfo">
 		<property name="backgroundColor" value="#FFFFFF" />
 		<property name="lineSelectStyle">
-			<bean class="org.geomajas.configuration.FeatureStyleInfo" />
+			<bean class="org.geomajas.configuration.FeatureStyleInfo">
+			</bean>
 		</property>
 		<property name="pointSelectStyle">
-			<bean class="org.geomajas.configuration.FeatureStyleInfo" />
+			<bean class="org.geomajas.configuration.FeatureStyleInfo">
+			</bean>
 		</property>
 		<property name="polygonSelectStyle">
-			<bean class="org.geomajas.configuration.FeatureStyleInfo" />
+			<bean class="org.geomajas.configuration.FeatureStyleInfo">
+			</bean>
 		</property>
-		<property name="crs" value="EPSG:4326" />
+		<property name="crs" value="EPSG:900913" />
 		<property name="scaleBarEnabled" value="true" />
 		<property name="panButtonsEnabled" value="true" />
-		<property name="maximumScale" value="10000" />
+		<property name="maximumScale" value="9.5" />
 		<property name="initialBounds">
 			<bean class="org.geomajas.geometry.Bbox">
-                <property name="x" value="-180"/>
-                <property name="y" value="-90"/>
-                <property name="width" value="360"/>
-                <property name="height" value="180"/>
+				<property name="x" value="-20026376.393709917" />
+				<property name="y" value="-20026376.393709917" />
+				<property name="width" value="40052752.787419834" />
+				<property name="height" value="40052752.787419834" />
 			</bean>
 		</property>
 		<property name="layers">
 			<list>
-				<bean class="org.geomajas.configuration.client.ClientRasterLayerInfo" id="wmsLayer">
-					<property name="serverLayerId" value="bluemarble" />
-					<property name="label" value="Blue marble WMS (raster)" />
+				<bean class="org.geomajas.configuration.client.ClientRasterLayerInfo" id="osmLayer">
+					<property name="serverLayerId" value="osm" />
+					<property name="label" value="OpenStreetMap (raster)" />
 					<property name="visible" value="true" />
 					<property name="viewScaleMin" value="0" />
 					<property name="viewScaleMax" value="50" />
@@ -79,5 +83,4 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 			</bean>
 		</property>
 	</bean>
-
 </beans>
