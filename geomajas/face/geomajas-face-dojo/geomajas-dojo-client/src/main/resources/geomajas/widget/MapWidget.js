@@ -260,13 +260,14 @@ dojo.declare(
 		// When overview-map:
 		targetMapId : null,
 		targetRect : null,
+		targetImage : null,
 		setOverviewReference : function (targetMapId) {
 			this.targetMapId = targetMapId;
 			var targetMap = dijit.byId (targetMapId);
 			var targetView = targetMap.getMapView();
 			dojo.connect (targetMap, "render", this, "_onTargetMapRender");
 			dojo.connect (this, "layout", this, "_onTargetMapRender");
-			this._onTargetMapRender(null);
+//			this._onTargetMapRender(null);
 			this.mouseScrollListenerSubject.removeListener(new ZoomOnScrollController(this.mapView,0.5));
 		},
 
@@ -274,9 +275,9 @@ dojo.declare(
 		 * @private
 		 */
 		_onTargetMapRender : function (object, event) {
-			if (object || event == "update") {
-				return;
-			}
+//			if (object || event == "update") {
+//				return;
+//			}
 			var targetMap = dijit.byId (this.targetMapId);
 			
 			// MaxExtents:
@@ -308,23 +309,52 @@ dojo.declare(
 			var width = Math.abs(viewEnd.getX() - viewBegin.getX());
 			var height = Math.abs(viewEnd.getY() - viewBegin.getY());
 			viewBegin.setY(viewBegin.getY() - height);
-
-			if (this.targetRect == null) {
-				this.targetRect = new Rectangle(this.id+"target");
-				this.targetRect.setPosition(viewBegin);
-				this.targetRect.setWidth (width);
-				this.targetRect.setHeight (height);
-				this.targetRect.setStyle(new ShapeStyle("#FFCC00", "0.45", "#FF8800", "1", "1.5", null, null));
-				dojo.publish(this.renderTopic, [this.targetRect, "update"]);
-
-				var targetRectElement = this.graphics.getElementById(this.id+"target");
-				this.setController(new OverviewRectController(this, this.targetMapId));
+			
+			if (width < 20) {
+				if (this.targetRect) {
+					dojo.publish(this.renderTopic, [this.targetRect, "delete"]);
+					this.targetRect = null;
+				}
+				var x = viewBegin.x + (width / 2) - 10;
+				var y = viewBegin.y + (height / 2) - 10;
+				if (this.targetImage == null) {
+					this.targetImage = new Picture(this.id+"targetImage");
+					this.targetImage.setPosition (new Coordinate (x, y));
+					this.targetImage.setWidth (21);
+					this.targetImage.setHeight(21);
+					this.targetImage.setStyle(new PictureStyle("1"));
+					this.targetImage.setHref(dojo.moduleUrl("geomajas.widget", "html/images/target.gif"));
+					dojo.publish(this.renderTopic, [this.targetImage, "update"]);
+					
+					var targetRectElement = this.graphics.getElementById(this.id+"targetImage");
+					this.setController(new OverviewRectController(this, this.targetMapId));
+				} else {
+					this.targetImage.setPosition (new Coordinate (x, y));
+					dojo.publish(this.renderTopic, [this.targetImage, "update"]);
+				}
 			} else {
-				this.targetRect.setPosition(viewBegin);
-				this.targetRect.setWidth (width);
-				this.targetRect.setHeight (height);
-				dojo.publish(this.renderTopic, [this.targetRect, "update"]);
-			}			
+				if (this.targetImage) {
+					dojo.publish(this.renderTopic, [this.targetImage, "delete"]);
+					this.targetImage = null;
+				}
+				if (this.targetRect == null) {
+					this.targetRect = new Rectangle(this.id+"target");
+					this.targetRect.setPosition(viewBegin);
+					this.targetRect.setWidth (width);
+					this.targetRect.setHeight (height);
+					this.targetRect.setStyle(new ShapeStyle("#FFCC00", "0.45", "#FF8800", "1", "1.5", null, null));
+					dojo.publish(this.renderTopic, [this.targetRect, "update"]);
+
+					var targetRectElement = this.graphics.getElementById(this.id+"target");
+					this.setController(new OverviewRectController(this, this.targetMapId));
+				} else {
+					this.targetRect.setPosition(viewBegin);
+					this.targetRect.setWidth (width);
+					this.targetRect.setHeight (height);
+					dojo.publish(this.renderTopic, [this.targetRect, "update"]);
+				}			
+			}
+				
 		},
 
 		// Getters and setters:
@@ -342,7 +372,7 @@ dojo.declare(
 		},
 
 		setMapModel : function (/*MapModel*/mapModel) {
-            log.debug("set MapModel on "+this.id)
+            log.debug("set MapModel on "+this.id);
 			this.mapModel = mapModel;
 			this.mapModel.setMapView(this.mapView);
 			this.mapModel.enableSelection (this.id);
@@ -427,7 +457,12 @@ dojo.declare(
 		},
 
 		getTargetRect : function () {
-			return this.targetRect;
+			if(this.targetRect) {
+				return this.targetRect;
+			} else if (this.targetImage) {
+				return this.targetImage;
+			} 
+			return null;
 		},
 
 		setCursor : function (cursor) {
@@ -549,7 +584,7 @@ dojo.declare(
 			var upElement = this.graphics.getElementById(this.id + "_screen.upPanPicture");
 			var upSubject = new MouseListenerSubject(upElement);
 			upSubject.addListener(new SimplePanController(this.mapView, new Coordinate(0, 1)));
-			this.graphics.setCursor("pointer", this.id + "_screen.upPanPicture")
+			this.graphics.setCursor("pointer", this.id + "_screen.upPanPicture");
 			this.destroyables.push(upSubject);
 
 			// DOWN:
@@ -563,7 +598,7 @@ dojo.declare(
 			var downElement = this.graphics.getElementById(this.id + "_screen.downPanPicture");
 			var downSubject = new MouseListenerSubject(downElement);
 			downSubject.addListener(new SimplePanController(this.mapView, new Coordinate(0, -1)));
-			this.graphics.setCursor("pointer", this.id + "_screen.downPanPicture")
+			this.graphics.setCursor("pointer", this.id + "_screen.downPanPicture");
 			this.destroyables.push(downSubject);
 
 			// LEFT:
@@ -577,7 +612,7 @@ dojo.declare(
 			var leftElement = this.graphics.getElementById(this.id + "_screen.leftPanPicture");
 			var leftSubject = new MouseListenerSubject(leftElement);
 			leftSubject.addListener(new SimplePanController(this.mapView, new Coordinate(-1, 0)));
-			this.graphics.setCursor("pointer", this.id + "_screen.leftPanPicture")
+			this.graphics.setCursor("pointer", this.id + "_screen.leftPanPicture");
 			this.destroyables.push(leftSubject);
 
 			// RIGHT:
@@ -591,7 +626,7 @@ dojo.declare(
 			var rightElement = this.graphics.getElementById(this.id + "_screen.rightPanPicture");
 			var rightSubject = new MouseListenerSubject(rightElement);
 			rightSubject.addListener(new SimplePanController(this.mapView, new Coordinate(1, 0)));
-			this.graphics.setCursor("pointer", this.id + "_screen.rightPanPicture")
+			this.graphics.setCursor("pointer", this.id + "_screen.rightPanPicture");
 			this.destroyables.push(rightSubject);
 
 			// UP-RIGHT:
@@ -605,7 +640,7 @@ dojo.declare(
 			var upRightElement = this.graphics.getElementById(this.id + "_screen.upRightPanPicture");
 			var upRightSubject = new MouseListenerSubject(upRightElement);
 			upRightSubject.addListener(new SimplePanController(this.mapView, new Coordinate(1, 1)));
-			this.graphics.setCursor("pointer", this.id + "_screen.upRightPanPicture")
+			this.graphics.setCursor("pointer", this.id + "_screen.upRightPanPicture");
 			this.destroyables.push(upRightSubject);
 			
 			// DOWN-RIGHT:
@@ -619,7 +654,7 @@ dojo.declare(
 			var downRightElement = this.graphics.getElementById(this.id + "_screen.downRightPanPicture");
 			var downRightSubject = new MouseListenerSubject(downRightElement);
 			downRightSubject.addListener(new SimplePanController(this.mapView, new Coordinate(1, -1)));
-			this.graphics.setCursor("pointer", this.id + "_screen.downRightPanPicture")
+			this.graphics.setCursor("pointer", this.id + "_screen.downRightPanPicture");
 			this.destroyables.push(downRightSubject);
 
 			// DOWN-LEFT:
@@ -633,7 +668,7 @@ dojo.declare(
 			var downLeftElement = this.graphics.getElementById(this.id + "_screen.downLeftPanPicture");
 			var downLeftSubject = new MouseListenerSubject(downLeftElement);
 			downLeftSubject.addListener(new SimplePanController(this.mapView, new Coordinate(-1, -1)));
-			this.graphics.setCursor("pointer", this.id + "_screen.downLeftPanPicture")
+			this.graphics.setCursor("pointer", this.id + "_screen.downLeftPanPicture");
 			this.destroyables.push(downLeftSubject);
 
 			// UP-LEFT:
@@ -647,7 +682,7 @@ dojo.declare(
 			var upLeftElement = this.graphics.getElementById(this.id + "_screen.upLeftPanPicture");
 			var upLeftSubject = new MouseListenerSubject(upLeftElement);
 			upLeftSubject.addListener(new SimplePanController(this.mapView, new Coordinate(-1, 1)));
-			this.graphics.setCursor("pointer", this.id + "_screen.upLeftPanPicture")
+			this.graphics.setCursor("pointer", this.id + "_screen.upLeftPanPicture");
 			this.destroyables.push(upLeftSubject);
 		},
 
