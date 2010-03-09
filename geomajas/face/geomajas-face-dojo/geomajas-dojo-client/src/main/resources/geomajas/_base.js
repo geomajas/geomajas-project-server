@@ -96,12 +96,14 @@ if(document && document.getElementsByTagName){
 
 // assure proper defaults for lazy loading
 if (!geomajasConfig.lazyFeatureIncludesAll || 0 == geomajasConfig.lazyFeatureIncludesAll) {
-	geomajasConfig.lazyFeatureIncludesAll = 11; // attributes + geometry + label (no style, never used), see VectorLayerService)}
+	geomajasConfig.lazyFeatureIncludesDefault = 4; // style only, see VectorLayerService)
+	geomajasConfig.lazyFeatureIncludesSelect = 15; // attributes + geometry + style + label, see VectorLayerService)
+	geomajasConfig.lazyFeatureIncludesAll = 15; // attributes + geometry + style + label, see VectorLayerService)
 }
 if (!geomajasConfig.useLazyLoading) {
-	geomajasConfig.lazyFeatureIncludesDefault = 11; // attributes + geometry + label (no style, never used), see VectorLayerService)
-	geomajasConfig.lazyFeatureIncludesSelect = 11; // attributes + geometry + label (no style, never used), see VectorLayerService)
-	geomajasConfig.lazyFeatureIncludesAll = 11; // attributes + geometry + label (no style, never used), see VectorLayerService)
+	geomajasConfig.lazyFeatureIncludesDefault = 15; // attributes + geometry + style + label, see VectorLayerService)
+	geomajasConfig.lazyFeatureIncludesSelect = 15; // attributes + geometry + style + label, see VectorLayerService)
+	geomajasConfig.lazyFeatureIncludesAll = 15; // attributes + geometry + style + label, see VectorLayerService)
 }
 
 

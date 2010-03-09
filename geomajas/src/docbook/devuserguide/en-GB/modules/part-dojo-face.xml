@@ -153,9 +153,9 @@ var geomajasConfig={
     dijitTheme: "soria",
     showLog: true,
     useLazyLoading: true, // use lazy loading
-    lazyFeatureIncludesDefault: 0, // don't include anything by default
-    lazyFeatureIncludesSelect: 3, // don't include anything by default
-    lazyFeatureIncludesAll: 11 // attributes + geometry + label (no style, see VectorLayerService)
+    lazyFeatureIncludesDefault: 4, // by default, only include style
+    lazyFeatureIncludesSelect: 15, // attributes + geometry + style + label (see VectorLayerService)
+    lazyFeatureIncludesAll: 15 // attributes + geometry + style + label (see VectorLayerService)
 };</programlisting></para>
 
     <para>You can override some configurations in your html file, on the

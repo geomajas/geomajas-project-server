@@ -35,7 +35,7 @@ var geomajasConfig={
 	dijitTheme: "soria",
 	showLog: true,
 	useLazyLoading: true, // use lazy loading
-	lazyFeatureIncludesDefault: 0, // don't include anything by default
-	lazyFeatureIncludesSelect: 3, // include attributes and geometry when selecting
-	lazyFeatureIncludesAll: 11 // attributes + geometry + label (no style, see VectorLayerService)
+	lazyFeatureIncludesDefault: 4, // by default, only include style
+	lazyFeatureIncludesSelect: 15, // attributes + geometry + style + label (see VectorLayerService)
+	lazyFeatureIncludesAll: 15 // attributes + geometry + style + label (see VectorLayerService)
 };
