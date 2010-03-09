@@ -28,7 +28,6 @@ import org.geomajas.cache.CacheService;
 import org.geomajas.cache.store.RenderContent;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.internal.cache.store.DefaultRenderContent;
-import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.http.HttpServletRequest;
@@ -44,7 +43,7 @@ import java.util.Map;
  * 
  * @author Pieter De Graef
  */
-@Component()
+//@Component()
 public final class CacheServiceImpl implements CacheService {
 
 	/**
