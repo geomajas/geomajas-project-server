@@ -39,6 +39,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 				<ref bean="geotoolsMap" />
 				<ref bean="wmsNavigationToolbarMap" />
 				<ref bean="selectionMap" />
+				<ref bean="osmMeasureMap" />
 			</list>
 		</property>
 	</bean>

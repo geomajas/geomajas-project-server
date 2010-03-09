@@ -51,7 +51,7 @@ public interface SampleMessages extends Messages {
 	String treeGroupSecurity();
 
 	String treeGroupMapController();
-	
+
 	String treeGroupToolbarAndControllers();
 
 	String introductionTitle();
@@ -61,17 +61,17 @@ public interface SampleMessages extends Messages {
 	String osmTitle();
 
 	String osmDescription();
-	
+
 	// WMS sample:
 
 	String wmsTitle();
 
 	String wmsDescription();
-	
+
 	// GeoTools sample:
-	
+
 	String geoTitle();
-	
+
 	String geoDescription();
 
 	// Navigation sample:
@@ -113,16 +113,16 @@ public interface SampleMessages extends Messages {
 	String toggleMaxBoundsBelgium();
 
 	String toggleMaxBoundsWorld();
-	
+
 	// Toggle pan buttons and scalebar example
 	String panScaleToggleTitle();
-	
+
 	String panScaleToggleDescription();
-	
+
 	String togglePanButtons();
 
 	String toggleScaleBar();
-	
+
 	// Custom Controller sample:
 
 	String customControllerTitle();
@@ -132,8 +132,7 @@ public interface SampleMessages extends Messages {
 	String customControllerScreenCoordinates();
 
 	String customControllerWorldCoordinates();
-	
-	
+
 	// Controller On Element sample:
 	String controllerOnElementTitle();
 
@@ -203,12 +202,18 @@ public interface SampleMessages extends Messages {
 	// ToolbarNavigation Sample:
 
 	String toolbarNavigationTitle();
-	
+
 	String toolbarNavigationDescription();
 
 	// ToolbarSelection Sample:
-	
+
 	String toolbarSelectionTitle();
 
 	String toolbarSelectionDescription();
+
+	// ToolbarMeasure Sample:
+
+	String toolbarMeasureTitle();
+
+	String toolbarMeasureDescription();
 }
