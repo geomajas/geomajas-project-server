@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import org.geomajas.configuration.Parameter;
 import org.geomajas.configuration.RasterLayerInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.global.ExceptionCode;
@@ -70,7 +71,7 @@ public class WmsLayer implements RasterLayer {
 
 	private String baseWmsUrl, format, version, styles = "";
 
-	private List<WmsLayerParameter> parameters;
+	private List<Parameter> parameters;
 
 	@Autowired
 	private DtoConverterService converterService;
@@ -272,8 +273,8 @@ public class WmsLayer implements RasterLayer {
 		url += "&version=" + getVersion();
 		url += "&styles=" + getStyles();
 		if (null != getParameters()) {
-			for (WmsLayerParameter p : getParameters()) {
-				url += "&" + p.getKey() + "=" + p.getValue();
+			for (Parameter p : getParameters()) {
+				url += "&" + p.getName() + "=" + p.getValue();
 			}
 		}
 		log.debug(url);
@@ -396,11 +397,11 @@ public class WmsLayer implements RasterLayer {
 		this.styles = styles;
 	}
 
-	public void setParameters(List<WmsLayerParameter> parameters) {
+	public void setParameters(List<Parameter> parameters) {
 		this.parameters = parameters;
 	}
 
-	public List<WmsLayerParameter> getParameters() {
+	public List<Parameter> getParameters() {
 		return parameters;
 	}
 
