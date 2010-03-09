@@ -49,7 +49,7 @@ dojo.declare("SpatialCacheStore", FeatureStore , {
 		return this.cache.features;
 	},
 
-	getFeatureById : function (/*String (localId!!)*/id) {
+	getFeatureById : function (/*String*/id) {
 		var features = this.getElements();
 		var feature = null;
 		if (features.contains(id)) {
@@ -58,20 +58,20 @@ dojo.declare("SpatialCacheStore", FeatureStore , {
 		return feature;
 	},
 
-	contains : function (/*String (localId!!)*/id) {
+	contains : function (/*String*/id) {
 		var features = this.getElements();
 		return features.contains(id);
 	},
 
 	addElement : function (feature) {
 		var features = this.getElements();
-		features.add(feature.getLocalId(), feature);
+		features.add(feature.getId(), feature);
 	},
 
 	removeElement : function (feature) {
 		var features = this.getElements();
-		if (features.contains(feature.getLocalId())) {
-			features.remove(feature.getLocalId());
+		if (features.contains(feature.getId())) {
+			features.remove(feature.getId());
 		}
 	},
 

@@ -84,21 +84,8 @@ dojo.declare("AttributesManager", ConfigManager, {
 			flt.setMapWidget(map);
 			var layer = map.getMapModel().getLayerById("sampleFeaturesMap.provinces");
 			if (layer) {
-				flt.setLayer(layer); // Needed for the table's header.
-				var fs = layer.getFeatureStore();
-				var el = fs.getElements(); // Get all features.
-				var features = el.getValueList();
-				for (var i=0; i<features.length; i++) {
-					var feature = features[i];
-					flt.addFeature(feature); // Add them to the table one by one.
-					this.tableInitialized = true;
-				}
-				/*
-				var updateAction = new ShowTableAction(null, map, null, flt);
-				updateAction.actionPerformed(null);
-				*/
-
-				flt.render(); // Render the table!
+				var updateAction = new ShowTableAction(null, map, null, null);
+				updateAction.refreshTable(flt, layer);
 			}
 			dijit.byId("loader").hideLoader();
 		}

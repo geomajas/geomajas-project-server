@@ -67,29 +67,33 @@ dojo.declare("ShowTableAction", LayerTreeAction, {
 		if (layer != null && layer instanceof VectorLayer) {
 			var table = dijit.byId(this.featureTable);
 			if (table) {
-				try {
-					table.enableSelection(this.mapWidget.getMapModel().getSelectionTopic()); // Listens to the selection-topic!
-				} catch(e){}
-				table.setLayer (layer);
-	
-				var fs = layer.getFeatureStore();
-				var el = fs.getElements(); // All elements
-				this.features = el.getValueList();
-				
-				// First we synchronize all features in bulk (much faster then one-by-one)
-				this._synchronizeFeatures(layer.layerId);
-				
-				// Now they have their attributes, so we can add them to the table efficiently.
-				for (var i=0; i<this.features.length; i++) {
-					var feature = this.features[i];
-					table.addFeature (feature); // Add them to the table one by one.
-				}
-				if (this.selectTabFunction) {
-					this.selectTabFunction(); // Table should render automatically...
-				}
-				table.render();
+				refreshTable(table, layer);
 			}
 		}
+	},
+
+	refreshTable: function(table, layer) {
+		try {
+			table.enableSelection(this.mapWidget.getMapModel().getSelectionTopic()); // Listens to the selection-topic!
+		} catch(e){}
+		table.setLayer(layer);
+
+		var fs = layer.getFeatureStore();
+		var el = fs.getElements(); // All elements
+		this.features = el.getValueList();
+
+		// First we synchronize all features in bulk (much faster then one-by-one)
+		this._synchronizeFeatures(layer.layerId);
+
+		// Now they have their attributes, so we can add them to the table efficiently.
+		for (var i=0; i<this.features.length; i++) {
+			var feature = this.features[i];
+			table.addFeature (feature); // Add them to the table one by one.
+		}
+		if (this.selectTabFunction) {
+			this.selectTabFunction(); // Table should render automatically...
+		}
+		table.render();
 	},
 
 	getEnabledByLayer : function (layer) {
@@ -99,32 +103,35 @@ dojo.declare("ShowTableAction", LayerTreeAction, {
 		return true;
 	},
 	
-	_synchronizeFeatures : function (layerId, crs) {
-		var command = new JsonCommand("command.feature.Search",
-				"org.geomajas.command.dto.SearchFeatureRequest", null, true);
-		command.addParam("layerId", layerId);
-		command.addParam("featureIds", ids);
-		command.addParam("crs", crs);
-		var criteria = [];
-		for (var i=0; i<this.features.length; i++) {
-			criteria.push({
-				javaClass : "org.geomajas.layer.feature.SearchCriterion",
-				attributeName : "$id",
-				operator : "=",
-				value : this.features[i].getLocalId()
-			});
+	_synchronizeFeatures : function (layerId) {
+		if (this.features.length > 0) {
+			var crs = this.features[0].crs;
+			var command = new JsonCommand("command.feature.Search",
+					"org.geomajas.command.dto.SearchFeatureRequest", null, true);
+			command.addParam("layerId", layerId);
+			command.addParam("crs", crs);
+			command.addParam("booleanOperator", "OR");
+			var criteria = [];
+			for (var i=0; i<this.features.length; i++) {
+				criteria.push({
+					javaClass : "org.geomajas.layer.feature.SearchCriterion",
+					attributeName : "$id",
+					operator : "=",
+					value : this.features[i].getId()
+				});
+			}
+			command.addParam("criteria", criteria);
+			command.addParam("featureIncludes", 1); // 1=attributes, 2=geometry
+			var deferred = geomajasConfig.dispatcher.execute(command);
+			deferred.addCallback(this, "_synchCallback");
 		}
-		command.addParam("criteria", criteria);
-		command.addParam("featureIncludes", 1); // 1=attributes, 2=geometry
-		var deferred = geomajasConfig.dispatcher.execute(command);
-		deferred.addCallback(this, "_synchCallback");
 	},
 
 	_synchCallback : function (result) {
 		// build map of indexes of features
 		var map = {};
 		for (var i=0; i<this.features.length; i++) {
-			map[this.features[i].getLocalId()] = i;
+			map[this.features[i].getId()] = i;
 		}
 		// update attributes in features
 		var feature;

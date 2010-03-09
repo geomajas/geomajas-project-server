@@ -271,11 +271,11 @@ dojo.declare("VectorLayer", [LayerTreeNode], {
 	
 	selectFeature : function (feature) {
 		// FeatureStore does not always contain the features from selection, so keep it.
-		this.selectionStore.add(feature.getLocalId(),feature.clone());
+		this.selectionStore.add(feature.getId(),feature.clone());
 	},
 	
 	deselectFeature : function (feature) {
-		this.selectionStore.remove(feature.getLocalId());
+		this.selectionStore.remove(feature.getId());
 	},	
 
 	getRelativeId : function () {

@@ -99,7 +99,7 @@ dojo.declare("LabeledTile", RenderedTile, {
 					var features = this._fromJSON(json.tile);
 					if (features) {
 						for (var i=0; i<features.length; i++) {
-							this.cache.features.add(features[i].getLocalId(), features[i]);
+							this.cache.features.add(features[i].getId(), features[i]);
 						}
 					}
 					callback(this);

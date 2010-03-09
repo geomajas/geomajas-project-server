@@ -46,22 +46,18 @@ dojo.declare("InMemoryStore", FeatureStore , {
 	},
 
 	addElement : function (element) {
-		if (!this.elements.contains(element.getLocalId())) {
-			this.elements.add (element.getLocalId(), element);
+		if (!this.elements.contains(element.getId())) {
+			this.elements.add (element.getId(), element);
 		}
 	},
 
 	removeElement : function (element) {
-		if (this.elements.contains(element.getLocalId())) {
-			this.elements.remove (element.getLocalId());
+		if (this.elements.contains(element.getId())) {
+			this.elements.remove (element.getId());
 		}
 	},
 
 	getFeatureById : function (/*String*/id) {
-		var pos = id.lastIndexOf(".");
-		if (pos >= 0) {
-			id = id.substring(pos + 1);
-		}
 		if (this.elements.contains(id)) {
 			return this.elements.item(id);
 		}
@@ -69,10 +65,6 @@ dojo.declare("InMemoryStore", FeatureStore , {
 	},
 
 	contains : function (/*String*/id) {
-		var pos = id.lastIndexOf(".");
-		if (pos >= 0) {
-			id = id.substring(pos + 1);
-		}
 		return this.elements.contains(id);
 	},
 

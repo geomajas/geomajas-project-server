@@ -183,11 +183,11 @@ dojo.declare("Feature", PainterVisitable, {
 		if (json.editable) {
 			this.editable = json.editable;
 		}
-		// make sure selectionstore stays uptodate
+		// make sure selection store stays up-to-date
 		var selStore = this.getLayer().getSelectionStore();
-		if (selStore.contains(this.getLocalId())) {
-			selStore.remove(this.getLocalId());
-			selStore.add(this.getLocalId(),this);
+		if (selStore.contains(this.getId())) {
+			selStore.remove(this.getId());
+			selStore.add(this.getId(),this);
 		}
 	},
 
@@ -374,12 +374,7 @@ dojo.declare("Feature", PainterVisitable, {
 
 	isSelected : function () {
 		if (this.layer && this.layer instanceof VectorLayer) {
-//			var other = this.layer.getSelectionStore().item(this.getLocalId());
-//			if (other) {
-//				this.geometry = other.getGeometry();
-//				return true;
-//			}
-			return this.layer.getSelectionStore().contains(this.getLocalId());
+			return this.layer.getSelectionStore().contains(this.getId());
 		}
 		return false;
 	},

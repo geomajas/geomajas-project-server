@@ -187,7 +187,7 @@ dojo.declare("geomajas.widget.SearchTable", [dijit._Widget, dijit._Templated, di
 			feature.setLayer(this.layer);
 			feature.fromJSON(features[i]);
 			table.addFeature(feature);
-			if (!this.layer.getFeatureStore().contains(feature.getLocalId())) {
+			if (!this.layer.getFeatureStore().contains(feature.getId())) {
 				this.layer.getFeatureStore().addElement(feature);
 			}
 		}

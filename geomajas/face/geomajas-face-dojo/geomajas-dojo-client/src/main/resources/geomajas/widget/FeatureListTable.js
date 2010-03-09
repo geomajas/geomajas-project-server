@@ -170,9 +170,9 @@ dojo.declare("geomajas.widget.FeatureListTable",
 	 */
 	addFeature : function (feature) {
 		if (this.layer != null && this.layer instanceof VectorLayer) {
-			this.features.add(feature.getLocalId(), feature);
+			this.features.add(feature.getId(), feature);
 			var row = [];
-			row.push (feature.getLocalId());
+			row.push (feature.getId());
 			var attr = this.layer.getFeatureType().getVisibleIdentifyingAttributes();
 			var keys = attr.getKeyList();
 			for (var i=0; i<keys.length; i++) {
@@ -334,7 +334,7 @@ dojo.declare("geomajas.widget.FeatureListTable",
 	 */
 	_searchFeature : function (feature) {
 		if (feature != null && feature.getLayer() != null && this.layer != null && this.layer.getId() == feature.getLayer().getId()) {
-			var localId = feature.getLocalId();
+			var localId = feature.getId();
 			var length = this.grid.model.getRowCount();
 			for (var i=0; i<length; i++) {
 				var row = this.grid.model.getRow(i);
@@ -439,9 +439,9 @@ dojo.declare("geomajas.widget.FeatureListTable",
 					if (rowIndex != null) {
 						this._updateRow(this.data[rowIndex], feature);
 					}
-					if (this.features.contains(feature.getLocalId())) {
-						this.features.remove(feature.getLocalId());
-						this.features.add(feature.getLocalId(), feature);
+					if (this.features.contains(feature.getId())) {
+						this.features.remove(feature.getId());
+						this.features.add(feature.getId(), feature);
 					}
 				}
 			}
@@ -454,8 +454,8 @@ dojo.declare("geomajas.widget.FeatureListTable",
 					if (rowIndex != null) {
 						this._deleteRow(rowIndex);
 					}
-					if (this.features.contains(feature.getLocalId())) {
-						this.features.remove(feature.getLocalId());
+					if (this.features.contains(feature.getId())) {
+						this.features.remove(feature.getId());
 					}
 				}				
 			}
@@ -468,8 +468,8 @@ dojo.declare("geomajas.widget.FeatureListTable",
 					if (rowIndex != null) {
 						this._deleteRow(rowIndex);
 					}
-					if (this.features.contains(feature.getLocalId())) {
-						this.features.remove(feature.getLocalId());
+					if (this.features.contains(feature.getId())) {
+						this.features.remove(feature.getId());
 					}
 				}				
 			}

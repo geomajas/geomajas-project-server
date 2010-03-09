@@ -36,7 +36,7 @@ dojo.declare("TileCache", SpatialCache, {
 	 * @param bbox The maximum bounding box for the cache.
 	 */
 	constructor : function (layer, bbox) {
-		/** Feature dictionary. Uses feature.getLocalId() as key. */
+		/** Feature dictionary. Uses feature.getId() as key. */
 		this.features = new dojox.collections.Dictionary();
 
 

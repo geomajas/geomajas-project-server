@@ -114,7 +114,7 @@ dojo.declare("Tile", SpatialNode, {
 					var features = this._fromJSON(json.tile);
 					if (features) {
 						for (var i=0; i<features.length; i++) {
-							this.cache.features.add(features[i].getLocalId(), features[i]);
+							this.cache.features.add(features[i].getId(), features[i]);
 						}
 					}
 					callback(this);
@@ -303,7 +303,7 @@ dojo.declare("Tile", SpatialNode, {
 			feature.setLayer(this.cache.layer);
 			feature.fromJSON(json.features.list[i]);
 			features.push(feature);
-			this.featureIds.push(feature.getLocalId());
+			this.featureIds.push(feature.getId());
 		}
 		return features;
 	}
