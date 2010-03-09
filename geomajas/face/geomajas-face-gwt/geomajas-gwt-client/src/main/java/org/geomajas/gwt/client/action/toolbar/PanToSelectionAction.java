@@ -23,36 +23,23 @@
 
 package org.geomajas.gwt.client.action.toolbar;
 
-import com.smartgwt.client.widgets.events.ClickEvent;
-import org.geomajas.gwt.client.action.ToolbarModalAction;
-import org.geomajas.gwt.client.controller.PanToSelectionController;
+import org.geomajas.gwt.client.action.ToolbarAction;
 import org.geomajas.gwt.client.i18n.I18nProvider;
 import org.geomajas.gwt.client.widget.MapWidget;
 
+import com.smartgwt.client.widgets.events.ClickEvent;
+
 /**
- * Allow panning to the selection.
- *
+ * Pan so that the selected items are in the center of the screen.
+ * 
  * @author Frank Wynants
  */
-public class PanToSelectionModalAction extends ToolbarModalAction {
+public class PanToSelectionAction extends ToolbarAction {
 
-	private MapWidget mapWidget;
-
-	private PanToSelectionController controller;
-
-	public PanToSelectionModalAction(MapWidget mapWidget) {
+	public PanToSelectionAction(MapWidget mapWidget) {
 		super("[ISOMORPHIC]/geomajas/pan.png", I18nProvider.getToolbar().panToSelection());
-		this.mapWidget = mapWidget;
-		controller = new PanToSelectionController(mapWidget);
 	}
 
-	@Override
-	public void onSelect(ClickEvent event) {
-		mapWidget.setController(controller);
-	}
-
-	@Override
-	public void onDeselect(ClickEvent event) {
-		mapWidget.setController(null);
+	public void onClick(ClickEvent clickEvent) {
 	}
 }

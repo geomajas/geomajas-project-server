@@ -32,7 +32,7 @@ import java.util.Map;
 
 /**
  * Registry for mapping between tool id's and toolbar actions.
- *
+ * 
  * @author Joachim Van der Auwera
  */
 public final class ToolbarRegistry {
@@ -42,72 +42,84 @@ public final class ToolbarRegistry {
 	static {
 		REGISTRY = new HashMap<String, ToolCreator>();
 		REGISTRY.put("EditMode", new ToolCreator() {
+
 			public ToolbarBaseAction createTool(MapWidget mapWidget) {
 				return new EditingModalAction(mapWidget);
 			}
 		});
 		REGISTRY.put("MeasureDistanceMode", new ToolCreator() {
+
 			public ToolbarBaseAction createTool(MapWidget mapWidget) {
 				return new MeasureModalAction(mapWidget);
 			}
 		});
 		REGISTRY.put("SelectionMode", new ToolCreator() {
+
 			public ToolbarBaseAction createTool(MapWidget mapWidget) {
 				return new SelectionModalAction(mapWidget);
 			}
 		});
 		REGISTRY.put("ZoomIn", new ToolCreator() {
+
 			public ToolbarBaseAction createTool(MapWidget mapWidget) {
 				return new ZoomInModalAction(mapWidget);
 			}
 		});
 		REGISTRY.put("ZoomOut", new ToolCreator() {
+
 			public ToolbarBaseAction createTool(MapWidget mapWidget) {
 				return new ZoomOutModalAction(mapWidget);
 			}
 		});
 		REGISTRY.put("PanMode", new ToolCreator() {
+
 			public ToolbarBaseAction createTool(MapWidget mapWidget) {
 				return new PanModalAction(mapWidget);
 			}
 		});
 		REGISTRY.put("ZoomToRectangleMode", new ToolCreator() {
+
 			public ToolbarBaseAction createTool(MapWidget mapWidget) {
 				return new ZoomToRectangleModalAction(mapWidget);
 			}
 		});
 		REGISTRY.put("ZoomNext", new ToolCreator() {
+
 			public ToolbarBaseAction createTool(MapWidget mapWidget) {
 				return new ZoomNextAction(mapWidget);
 			}
 		});
 		REGISTRY.put("ZoomPrevious", new ToolCreator() {
+
 			public ToolbarBaseAction createTool(MapWidget mapWidget) {
 				return new ZoomPreviousAction(mapWidget);
 			}
 		});
 		REGISTRY.put("ZoomToSelection", new ToolCreator() {
-			
+
 			public ToolbarBaseAction createTool(MapWidget mapWidget) {
-				return new ZoomToSelectionModalAction(mapWidget);			
+				return new ZoomToSelectionAction(mapWidget);
 			}
 		});
 		REGISTRY.put("PanToSelection", new ToolCreator() {
-			
+
 			public ToolbarBaseAction createTool(MapWidget mapWidget) {
-				return new PanToSelectionModalAction(mapWidget);			
+				return new PanToSelectionAction(mapWidget);
 			}
 		});
 	}
+
 	private ToolbarRegistry() {
 		// utility class, hide constructor
 	}
 
 	/**
 	 * Add another key to the registry. This will overwrite the previous value.
-	 *
-	 * @param key key for the toolbar actions
-	 * @param toolCreator toolbar action creator
+	 * 
+	 * @param key
+	 *            key for the toolbar actions
+	 * @param toolCreator
+	 *            toolbar action creator
 	 */
 	public static void put(String key, ToolCreator toolCreator) {
 		if (null != key && null != toolCreator) {
@@ -117,9 +129,11 @@ public final class ToolbarRegistry {
 
 	/**
 	 * Get the toolbar action which matches the given key.
-	 *
-	 * @param key key for toolbar action
-	 * @param mapWidget map which will contain this tool
+	 * 
+	 * @param key
+	 *            key for toolbar action
+	 * @param mapWidget
+	 *            map which will contain this tool
 	 * @return toolbar action or null when key not found
 	 */
 	public static ToolbarBaseAction getToolbarAction(String key, MapWidget mapWidget) {

@@ -89,10 +89,6 @@ public class ToolbarSelectionSample extends SamplePanel {
 		});
 
 		return layout;
-		
-		//TODO mapDuisburgSelection configures ZoomToSelection and PanToSelection,
-		//     these need to be implemented in ToolbarRegistry.java 
-		
 	}
 
 	public String getDescription() {
@@ -104,8 +100,7 @@ public class ToolbarSelectionSample extends SamplePanel {
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "classpath:org/geomajas/gwt/samples/mapwidget/layerWmsBluemarble.xml", // TODO
-				"classpath:org/geomajas/gwt/samples/toolbarAndControllers/mapWmsNavigationToolbar.xml" }; // TODO
+		return new String[] { "classpath:org/geomajas/gwt/samples/toolbarAndControllers/mapDuisburgSelection.xml" };
 	}
 
 	public String ensureUserLoggedIn() {
