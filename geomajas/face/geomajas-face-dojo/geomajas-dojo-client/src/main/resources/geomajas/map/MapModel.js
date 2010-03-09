@@ -509,18 +509,10 @@ dojo.declare("MapModel", PainterVisitable, {
 
 	applyOnFeatureReference : function (featureReference, callback){
 		this.featureReference = featureReference; // awful, I know... no time for anything cleaner atm...
-		var feature = this.getFeatureById(featureReference.getFeatureId());
-		if (feature != null && (featureReference.getLayerIds() == null ||  featureReference.containsLayerId(feature.getLayer().id))  ){
-			try {
-				callback(feature);
-			} catch (e) {
-				log.error ("MapModel.applyOnFeatureReference : error executing callback on feature "+feature.getId()+".");
-			}
-		} else if (featureReference.getPosition() != null){
-			var trans = new WorldViewTransformation(this.mapView);
-			var factory = new GeometryFactory(this.srid, null);
+		if (featureReference != null && featureReference.getPosition() != null) {
 			this.callback = callback;
 
+			// Create the list of layer ID's:
 			var layerIds = [];
 			if (featureReference.getLayerIds() == null){
 				var list = this.getOrderedLayers();
@@ -534,19 +526,27 @@ dojo.declare("MapModel", PainterVisitable, {
 				layerIds = featureReference.getLayerIds();
 			}
 
+			// Create the location geometry: 
+			var trans = new WorldViewTransformation(this.mapView);
+			var factory = new GeometryFactory(this.srid, null);
 			var worldPos = trans.viewPointToWorld(featureReference.getPosition());
 			var point = factory.createPoint(worldPos);
 
+			// Set-up the search command:
 			var command = new JsonCommand("command.feature.SearchByLocation",
                     "org.geomajas.command.dto.SearchByLocationRequest", null, false);
             command.addParam ("crs", this.crs);
 			command.addParam ("layerIds", layerIds);
 			command.addParam ("location", point);
 			command.addParam ("searchType", featureReference.getSearchType());
-			command.addParam ("queryType", 1);
+			command.addParam ("queryType", featureReference.getQueryType());
+			command.addParam ("ratio", featureReference.getRatio());
+			command.addParam ("featureIncludes", featureReference.getFeatureIncludes());
 			if (featureReference.getBuffer() > 0) {
 				command.addParam ("buffer", featureReference.getBuffer());
 			}
+
+			// Execute search!
 			var deferred = geomajasConfig["dispatcher"].execute(command);
 			deferred.addCallback(this, "_onGetFeatureByCoordinate");
 		}

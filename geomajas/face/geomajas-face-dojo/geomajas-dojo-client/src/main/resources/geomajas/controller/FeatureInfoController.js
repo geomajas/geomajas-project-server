@@ -48,7 +48,7 @@ dojo.declare("FeatureInfoController", MouseListener, {
 
 	mouseReleased : function (event) {
 		if (event.getButton() != event.statics.RIGHT_MOUSE_BUTTON) {
-			var featureReference = new FeatureReference({event:event});
+			var featureReference = new FeatureReference(event);
 			var scale = this.mapWidget.getMapModel().getMapView().getCurrentScale();
 			featureReference.setBuffer(scale ? (5/scale) : 0);
 			this.mapWidget.getMapModel().applyOnFeatureReference(featureReference, dojo.hitch(this, "_showFeature"));

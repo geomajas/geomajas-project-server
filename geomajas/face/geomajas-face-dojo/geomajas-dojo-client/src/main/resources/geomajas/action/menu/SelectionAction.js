@@ -75,7 +75,7 @@ dojo.declare("SelectionAction", Action, {
 	 */
 	actionPerformed : function (event) {
 		// Create a feature reference object. By default this will search all visible layers.
-		var featureReference = new FeatureReference({event:event});
+		var featureReference = new FeatureReference(event);
 		featureReference.setBuffer(this._calculateBufferFromTolerance());
 
 		this.ctrl = event.isCtrlDown();

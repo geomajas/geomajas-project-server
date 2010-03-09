@@ -24,78 +24,57 @@ dojo.provide("geomajas.map.FeatureReference");
 
 dojo.declare("FeatureReference", null, {
 
-	/**
-	 * The feature's ID that can be used to search for a feature.
-	 */
-	featureId : null,
+	queryType : 1,
 
 	/**
-	 * If no feature ID is given, the position can be used.
+	 * This option can only be used in case of an intersects query. It accepts features whose geometry intersect with
+	 * the given geometry for at least the given ratio. This number must always be a value between 0 and 1.
 	 */
-	position : null,
-	
+	ratio : -1,
+
 	/**
-	 * If the position if used in searching for features, a searchType can also
-	 * be added. The type of search. Can be either 1 (=search for only one
-	 * feature), or 2 (=search all layers for features).
+	 * A list of layers we want to retrieve features from.
+	 */
+	layerIds : null,
+
+	/**
+	 * The type of search. Can be either 1 (=SEARCH_FIRST_LAYER), or 2 (=SEARCH_ALL_LAYERS).
 	 */
 	searchType : 1,
 
 	/**
-	 * If the position is used in searching for features, you may want to
-	 * specify in what layers to search. If no layerId's are given, the search
-	 * will go over all visible layers by default.
+	 * The optional buffer that should be added around the location before executing the search.
 	 */
-	layerIds : null,
-	
 	buffer : -1,
 
-	constructor : function (object) {
-		if (object != null) {
-			if (object.featureId){
-				this.featureId = object.featureId;
-			} else if (object.event) {
-				if (object.event.getTargetId() != "") {
-					this.featureId = object.event.getTargetId();
-					this.position = object.event.getPosition();
-				}
-			} else if (object.position) {
-				this.position = object.position;
-			}
-			if (object.searchType) {
-				this.searchType = object.searchType; // 1 or 2 !!
-			}
-			if (object.layerIds) {
-				this.layerIds = object.layerIds; // an array!!!
-			}
+	featureIncludes : 0x7fff,
+
+	position : null,
+
+	constructor : function (event) {
+		if (event != null) {
+			this.position = event.getPosition();
 		}
 	},
 
-	/**
-	 * Called when all the features have been located by the MapModel.
-	 * @param features Array of feature objects.
-	 */
-	onSetFeatureResult : function (features) {
-	},
-
-	getFeatureId : function () {
-		return this.featureId;
-	},
-
-	getPosition : function () {
+	getPosition : function() {
 		return this.position;
-	},
-
-	containsLayerId : function (layerId) {
-		for (i in this.layerIds) { 
-			if (layerId == this.layerIds[i]) 
-				return true;
-		}
-		return false;
 	},
 
 	getSearchType : function () {
 		return this.searchType;
+	},
+
+	setSearchType : function (searchType) {
+		this.searchType = searchType;
+	},
+
+	getQueryType : function () {
+		return this.queryType;
+	},
+
+	setQueryType : function () {
+		this.queryType = queryType;
 	},
 
 	getLayerIds : function () {
@@ -112,5 +91,21 @@ dojo.declare("FeatureReference", null, {
 
 	setBuffer : function (buffer) {
 		this.buffer = buffer;
+	},
+
+	getRatio : function () {
+		return this.ratio;
+	},
+
+	setRatio : function (ratio) {
+		this.ratio = ratio;
+	},
+
+	getFeatureIncludes : function () {
+		return this.featureIncludes;
+	},
+
+	setFeatureIncludes : function (featureIncludes) {
+		this.featureIncludes = featureIncludes;
 	}
 });
