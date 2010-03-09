@@ -20,48 +20,56 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package org.geomajas.layer.feature.attribute;
 
-import java.util.List;
-
-import org.geomajas.configuration.AssociationType;
+import java.io.Serializable;
+import java.util.Map;
 
 /**
  * <p>
- * Definition of the one-to-many association attribute. This type of attribute is not a simple primitive attribute with
- * a single value, but instead holds the values of an entire list of beans. This list of bean values has been defined in
- * the form of a list of {@link AssociationValue} objects.
+ * Definition of a value for association attributes. The {@link ManyToOneAttribute} will contain one of these, while the
+ * {@link OneToManyAttribute} will contain a whole list of these values.
+ * </p>
+ * <p>
+ * It basically defines the bean that holds the attribute value. These beans all have an identifier and a list of
+ * attributes themselves, so that is represented in the value object.
  * </p>
  * 
  * @author Pieter De Graef
  */
-public class OneToManyAttribute extends AssociationAttribute<List<AssociationValue>> {
+public class AssociationValue implements Serializable {
 
-	private static final long serialVersionUID = 154L;
+	private static final long serialVersionUID = 151L;
 
-	private List<AssociationValue> value;
+	private PrimitiveAttribute<?> id;
+
+	private Map<String, PrimitiveAttribute<?>> attributes;
 
 	// Constructors:
 
-	public OneToManyAttribute() {
+	public AssociationValue() {
 	}
 
-	public OneToManyAttribute(List<AssociationValue> value) {
-		this.value = value;
+	public AssociationValue(PrimitiveAttribute<?> id,  Map<String, PrimitiveAttribute<?>> attributes) {
+		this.id = id;
+		this.attributes = attributes;
 	}
 
-	// Attribute implementation:
+	// Getters and setters:
 
-	public AssociationType getType() {
-		return AssociationType.ONE_TO_MANY;
+	public PrimitiveAttribute<?> getId() {
+		return id;
 	}
 
-	public List<AssociationValue> getValue() {
-		return value;
+	public void setId(PrimitiveAttribute<?> id) {
+		this.id = id;
 	}
 
-	public boolean isEmpty() {
-		return value == null;
+	public  Map<String, PrimitiveAttribute<?>> getAttributes() {
+		return attributes;
+	}
+
+	public void setAttributes(Map<String, PrimitiveAttribute<?>> attributes) {
+		this.attributes = attributes;
 	}
 }

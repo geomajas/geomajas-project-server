@@ -76,7 +76,7 @@ dojo.declare("AttributeFormatterFactory", null, {
 						return "";
 					}
 					var associationName =  atDef.getAssociationAttributeName();
-					return attributeValue[associationName];
+					return attributeValue.attributes.map[associationName].value;
 				};
 			} else if (type == "one-to-many") {
 				formatter = function (attributeValue){

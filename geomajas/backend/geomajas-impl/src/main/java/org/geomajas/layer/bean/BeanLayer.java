@@ -31,12 +31,18 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.geomajas.configuration.AssociationAttributeInfo;
+import org.geomajas.configuration.AssociationType;
+import org.geomajas.configuration.AttributeInfo;
 import org.geomajas.configuration.FeatureInfo;
 import org.geomajas.configuration.SortType;
 import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.global.ExceptionCode;
+import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.VectorLayer;
+import org.geomajas.layer.VectorLayerAssociationSupport;
+import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.FeatureModel;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.FilterService;
@@ -58,7 +64,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * 
  * @author Jan De Moerloose
  */
-public class BeanLayer implements VectorLayer {
+public class BeanLayer implements VectorLayer, VectorLayerAssociationSupport {
 
 	private final Logger log = LoggerFactory.getLogger(BeanLayer.class);
 
@@ -87,11 +93,11 @@ public class BeanLayer implements VectorLayer {
 	protected Comparator<Object> comparator;
 
 	private String id;
-	
+
 	public String getId() {
 		return id;
 	}
-	
+
 	public void setId(String id) {
 		this.id = id;
 	}
@@ -104,11 +110,9 @@ public class BeanLayer implements VectorLayer {
 		try {
 			crs = CRS.decode(layerInfo.getCrs());
 		} catch (NoSuchAuthorityCodeException e) {
-			throw new LayerException(e, ExceptionCode.LAYER_CRS_UNKNOWN_AUTHORITY, getId(), getLayerInfo()
-					.getCrs());
+			throw new LayerException(e, ExceptionCode.LAYER_CRS_UNKNOWN_AUTHORITY, getId(), getLayerInfo().getCrs());
 		} catch (FactoryException exception) {
-			throw new LayerException(exception, ExceptionCode.LAYER_CRS_PROBLEMATIC, getId(), getLayerInfo()
-					.getCrs());
+			throw new LayerException(exception, ExceptionCode.LAYER_CRS_PROBLEMATIC, getId(), getLayerInfo().getCrs());
 		}
 	}
 
@@ -219,6 +223,35 @@ public class BeanLayer implements VectorLayer {
 				}
 			}
 		}
+	}
+
+	public List<Attribute<?>> getAttributes(String attributeName, Filter filter) throws LayerException {
+		log.debug("creating iterator for attribute {} and filter: {}", attributeName, filter);
+		AttributeInfo attributeInfo = null;
+		for (AttributeInfo info : getFeatureInfo().getAttributes()) {
+			if (info.getName().equals(attributeName)) {
+				attributeInfo = info;
+				break;
+			}
+		}
+
+		List<?> values = null;
+		if (attributeInfo instanceof AssociationAttributeInfo) {
+			AssociationAttributeInfo associationInfo = (AssociationAttributeInfo) attributeInfo;
+			if (associationInfo.getType().equals(AssociationType.MANY_TO_ONE)) {
+				values = ManyToOneAttributeBean.manyToOneValues();
+			}
+		}
+
+		List<Attribute<?>> attributes = new ArrayList<Attribute<?>>();
+		for (Object object : values) {
+			try {
+				attributes.add(converterService.toDto(object, attributeInfo));
+			} catch (GeomajasException e) {
+				throw new LayerException(ExceptionCode.CONVERSION_PROBLEM, attributeName);
+			}
+		}
+		return attributes;
 	}
 
 	protected FeatureInfo getFeatureInfo() {

@@ -20,28 +20,46 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package org.geomajas.layer.feature.attribute;
 
 import org.geomajas.configuration.AssociationType;
 
 /**
- * Attribute with value of type <code>AssociationType.MANY_TO_ONE</code>.
+ * <p>
+ * Definition of the many-to-one association attribute. This type of attribute is not a simple primitive attribute with
+ * a single value, but instead holds the value of an entire bean. This value has been defined in the form of a
+ * {@link AssociationValue}.
+ * </p>
  * 
- * @author Jan De Moerloose
+ * @author Pieter De Graef
  */
-public class ManyToOneAttribute extends AssociationAttribute<Object> {
+public class ManyToOneAttribute extends AssociationAttribute<AssociationValue> {
 
 	private static final long serialVersionUID = 151L;
+
+	private AssociationValue value;
+	
+	// Constructors:
+
+	public ManyToOneAttribute() {
+	}
+
+	public ManyToOneAttribute(AssociationValue value) {
+		this.value = value;
+	}
+	
+	// Attribute implementation:
 
 	public AssociationType getType() {
 		return AssociationType.MANY_TO_ONE;
 	}
 
-	public boolean isEmpty() {
-		return true;
+	public AssociationValue getValue() {
+		return value;
 	}
 
-	public Object getValue() {
-		return null;
+	public boolean isEmpty() {
+		return value == null || value.getAttributes() == null;
 	}
 }

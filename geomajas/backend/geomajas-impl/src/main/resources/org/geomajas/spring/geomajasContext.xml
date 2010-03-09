@@ -159,14 +159,14 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 
 
 	<bean class="org.geomajas.service.pipeline.PipelineInfo">
-		<property name="id"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_GET_OBJECTS"/></property>
+		<property name="id"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_GET_ATTRIBUTES"/></property>
 		<property name="pipeline">
 			<list>
 				<bean class="org.geomajas.internal.service.vector.LayerFilterStep">
 					<property name="id" value="LayerFilterStep"/>
 				</bean>
-				<bean class="org.geomajas.internal.service.vector.GetObjectsStep">
-					<property name="id" value="GetObjectsStep"/>
+				<bean class="org.geomajas.internal.service.vector.GetAttributesStep">
+					<property name="id" value="GetAttributesStep"/>
 				</bean>
 			</list>
 		</property>

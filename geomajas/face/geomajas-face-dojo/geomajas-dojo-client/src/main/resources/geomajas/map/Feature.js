@@ -257,6 +257,7 @@ dojo.declare("Feature", PainterVisitable, {
 		if(this.getLayer()) {
 			var attribute = this.getLayer().getFeatureType().getAttributeByName(name);
 			if(attribute.isAssociation()){
+				log.error ("set association attribute value....");
 				// TODO !!!
 			}  else {
 				this.attributes[name].value = value;

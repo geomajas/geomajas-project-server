@@ -57,7 +57,7 @@ dojo.declare("AssociationDefinition", AttributeDefinition, {
 		if (this.type == "many-to-one") {
 			var identifierName = this.getAssociationIdentifierName();
 			if(attributeValue != null){
-				return attributeValue[identifierName];
+				return attributeValue[identifierName].value;
 			} else {
 				return null;
 			}
@@ -106,20 +106,20 @@ dojo.declare("AssociationDefinition", AttributeDefinition, {
 	},
 
 	/**
-	 * Each association has an attribute used for labelling. This is always the
+	 * Each association has an attribute used for labeling. This is always the
 	 * first attribute in the associated type. This function will return it.
 	 */
 	getAssociationAttribute : function () {
 		if (this.object != null) {
-			var assoAttrs = this.object.attributes.attributeOrAssociation.list;
-			// The first attribute is used as labelling attribute.
+			var assoAttrs = this.object.attributes.list;
+			// The first attribute is used as labeling attribute.
 			return assoAttrs[0];
 		}
 		return null;
 	},
 
 	/**
-	 * Each association has an attribute used for labelling. This is always the
+	 * Each association has an attribute used for labeling. This is always the
 	 * first attribute in the associated type. This function will return it's
 	 * name.
 	 */
@@ -149,7 +149,7 @@ dojo.declare("AssociationDefinition", AttributeDefinition, {
 	 */
 	getAssociationAttributeList : function () {
 		if (this.object != null) {
-			return this.object.attributes.attributeOrAssociation.list;
+			return this.object.attributes.list;
 		}
 		return null;
 	},

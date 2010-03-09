@@ -33,16 +33,17 @@ import org.geomajas.global.GeomajasSecurityException;
 import org.geomajas.internal.layer.tile.InternalTileImpl;
 import org.geomajas.internal.service.vector.GetBoundsContainer;
 import org.geomajas.layer.VectorLayer;
+import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.layer.tile.TileMetadata;
-import org.geomajas.service.pipeline.PipelineCode;
-import org.geomajas.service.pipeline.PipelineContext;
-import org.geomajas.service.pipeline.PipelineService;
 import org.geomajas.security.SecurityContext;
 import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.GeoService;
 import org.geomajas.service.VectorLayerService;
+import org.geomajas.service.pipeline.PipelineCode;
+import org.geomajas.service.pipeline.PipelineContext;
+import org.geomajas.service.pipeline.PipelineService;
 import org.opengis.filter.Filter;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
@@ -150,7 +151,7 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 		context.put(PipelineCode.FILTER_KEY, queryFilter);
 		context.put(PipelineCode.ATTRIBUTE_NAME_KEY, attributeName);
 		List<Object> response = new ArrayList<Object>();
-		pipelineService.execute(PipelineCode.PIPELINE_GET_OBJECTS, layerId, context, response);
+		pipelineService.execute(PipelineCode.PIPELINE_GET_ATTRIBUTES, layerId, context, response);
 		return response;
 	}
 
@@ -167,6 +168,19 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 		context.put(PipelineCode.FEATURE_INCLUDES_KEY, tileMetadata.getFeatureIncludes());
 		InternalTile response = new InternalTileImpl(tileMetadata.getCode(), layer, tileMetadata.getScale());
 		pipelineService.execute(PipelineCode.PIPELINE_GET_VECTOR_TILE, layerId, context, response);
+		return response;
+	}
+
+	public List<Attribute<?>> getAttributes(String layerId, String attributeName, Filter filter)
+			throws GeomajasException {
+		VectorLayer layer = getVectorLayer(layerId);
+		PipelineContext context = pipelineService.createContext();
+		context.put(PipelineCode.LAYER_ID_KEY, layerId);
+		context.put(PipelineCode.LAYER_KEY, layer);
+		context.put(PipelineCode.FILTER_KEY, filter);
+		context.put(PipelineCode.ATTRIBUTE_NAME_KEY, attributeName);
+		List<Attribute<?>> response = new ArrayList<Attribute<?>>();
+		pipelineService.execute(PipelineCode.PIPELINE_GET_ATTRIBUTES, layerId, context, response);
 		return response;
 	}
 }

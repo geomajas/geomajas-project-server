@@ -25,6 +25,7 @@ package org.geomajas.layer.hibernate;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
@@ -36,11 +37,13 @@ import org.geomajas.configuration.AttributeInfo;
 import org.geomajas.configuration.SortType;
 import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.global.ExceptionCode;
+import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.VectorLayerAssociationSupport;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.FeatureModel;
+import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.FilterService;
 import org.geotools.referencing.CRS;
 import org.hibernate.Criteria;
@@ -88,14 +91,17 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, V
 	@Autowired
 	private FilterService filterService;
 
+	@Autowired
+	private DtoConverterService converterService;
+
 	private CoordinateReferenceSystem crs;
 
 	private String id;
-	
+
 	public String getId() {
 		return id;
 	}
-	
+
 	public void setId(String id) {
 		this.id = id;
 	}
@@ -108,11 +114,9 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, V
 		try {
 			crs = CRS.decode(getLayerInfo().getCrs());
 		} catch (NoSuchAuthorityCodeException e) {
-			throw new LayerException(e, ExceptionCode.LAYER_CRS_UNKNOWN_AUTHORITY, getId(),
-					getLayerInfo().getCrs());
+			throw new LayerException(e, ExceptionCode.LAYER_CRS_UNKNOWN_AUTHORITY, getId(), getLayerInfo().getCrs());
 		} catch (FactoryException exception) {
-			throw new LayerException(exception, ExceptionCode.LAYER_CRS_PROBLEMATIC, getId(),
-					getLayerInfo().getCrs());
+			throw new LayerException(exception, ExceptionCode.LAYER_CRS_PROBLEMATIC, getId(), getLayerInfo().getCrs());
 		}
 	}
 
@@ -259,8 +263,16 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, V
 		return getBoundsLocal(filter);
 	}
 
-	public Iterator<?> getObjects(String attributeName, Filter filter) throws LayerException {
+	public List<Attribute<?>> getAttributes(String attributeName, Filter filter) throws LayerException {
 		log.debug("creating iterator for attribute {} and filter: {}", attributeName, filter);
+		AttributeInfo attributeInfo = null;
+		for (AttributeInfo info : getFeatureInfo().getAttributes()) {
+			if (info.getName().equals(attributeName)) {
+				attributeInfo = info;
+				break;
+			}
+		}
+
 		String objectName = getObjectName(attributeName);
 		if (objectName == null) {
 			throw new HibernateLayerException(ExceptionCode.HIBERNATE_ATTRIBUTE_TYPE_PROBLEM, attributeName);
@@ -272,7 +284,15 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, V
 		if (c != null) {
 			criteria.add(c);
 		}
-		return criteria.list().iterator();
+		List<Attribute<?>> attributes = new ArrayList<Attribute<?>>();
+		for (Object object : criteria.list()) {
+			try {
+				attributes.add(converterService.toDto(object, attributeInfo));
+			} catch (GeomajasException e) {
+				throw new HibernateLayerException(ExceptionCode.HIBERNATE_ATTRIBUTE_TYPE_PROBLEM, attributeName);
+			}
+		}
+		return attributes;
 	}
 
 	// -------------------------------------------------------------------------

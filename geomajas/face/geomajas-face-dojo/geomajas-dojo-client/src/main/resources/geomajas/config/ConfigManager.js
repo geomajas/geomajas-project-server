@@ -261,9 +261,9 @@ dojo.declare("ConfigManager", null, {
 
 		// EditPermissions:
 		var permissions = new EditPermissions();
-		permissions.setCreatingAllowed = lc.creatable;
-		permissions.setUpdatingAllowed = lc.updatable;
-		permissions.setDeletingAllowed = lc.deletable;
+		permissions.setCreatingAllowed(lc.creatable);
+		permissions.setUpdatingAllowed(lc.updatable);
+		permissions.setDeletingAllowed(lc.deletable);
 		layer.setEditPermissions(permissions);
 
 		// Filters:
@@ -281,8 +281,8 @@ dojo.declare("ConfigManager", null, {
 		for (var j=0; j<viewArray.length; j++) {
 			var at = viewArray[j];
 			var atd = null;
-			if(at.object){
-				atd = new AssociationDefinition (layer, at.name, at.label, at.validator, at.type.value, at.editable, at.identifying, at.hidden, at.object);
+			if(at.feature){
+				atd = new AssociationDefinition (layer, at.name, at.label, at.validator, at.type.value, at.editable, at.identifying, at.hidden, at.feature);
 			} else {
 				atd = new AttributeDefinition (layer, at.name, at.label, at.validator, at.type.value, at.editable, at.identifying, at.hidden);
 			}

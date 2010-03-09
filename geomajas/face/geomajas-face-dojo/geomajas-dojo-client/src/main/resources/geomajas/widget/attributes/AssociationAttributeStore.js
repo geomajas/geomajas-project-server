@@ -101,12 +101,7 @@ dojo.declare("AssociationAttributeStore", dojo.data.ItemFileReadStore, {
 				deferred.addCallback(function(result){
 					try{
 						log.info("_load callback");
-						self._getItemsFromLoadedData(
-							{ 
-								items : result.objects.list,
-								identifier : self.atDef.getAssociationIdentifierName()
-							}
-						);
+						self._getItemsFromLoadedData(self._createDataItems(self.atDef, result));
 						self._loadFinished = true;
 						self._loadInProgress = false;							
 						filter(keywordArgs, self._getItemsArray(keywordArgs.queryOptions));
@@ -144,12 +139,7 @@ dojo.declare("AssociationAttributeStore", dojo.data.ItemFileReadStore, {
 				deferred.addCallback(function(result){
 					try{
 						log.info("_load callback");
-						self._getItemsFromLoadedData(
-							{ 
-								items : result.objects.list, 
-								identifier : self.atDef.getAssociationIdentifierName()
-							}
-						);
+						self._getItemsFromLoadedData(self._createDataItems(self.atDef, result));
 						self._loadFinished = true;
 						self._loadInProgress = false;							
 						var item = self._getItemByIdentity(keywordArgs.identity);
@@ -199,12 +189,7 @@ dojo.declare("AssociationAttributeStore", dojo.data.ItemFileReadStore, {
 				//TODO:  Revisit the loading scheme of this store to improve multi-initial
 				//request handling.
 				if (self._loadInProgress !== true && !self._loadFinished) {
-					self._getItemsFromLoadedData(
-						{ 
-							items : result.objects.list, 
-							identifier : self.atDef.getAssociationIdentifierName()
-						}
-					);
+					self._getItemsFromLoadedData(self._createDataItems(self.atDef, result));
 					self._loadFinished = true;
 				}
 			}catch(e){
@@ -220,11 +205,29 @@ dojo.declare("AssociationAttributeStore", dojo.data.ItemFileReadStore, {
 
 	executeCommand: function () {
 		// prepare the command
-		var command = new JsonCommand("command.feature.GetAssociation",
-                "org.geomajas.command.dto.GetAssociationRequest", null, true);
+		var command = new JsonCommand("command.feature.SearchAttributes",
+                "org.geomajas.command.dto.SearchAttributesRequest", null, true);
 		command.addParam("layerId", this.atDef.getLayer().layerId);
 		command.addParam("attributeName",this.atDef.getName());
 		var deferred =  geomajasConfig.dispatcher.execute(command);
 		return deferred;
+	},
+	
+	_createDataItems : function (atDef, result) {
+		var id = atDef.getAssociationIdentifierName();
+		var attributeItems = [];
+		for (var i=0; i<result.attributes.list.length; i++) {
+			var attrMap = result.attributes.list[i].value.attributes.map;
+			var attrValue = {};
+			attrValue[id] = result.attributes.list[i].value.id.value;
+			for (var property in attrMap) {
+				attrValue[property] = attrMap[property].value;
+			}
+			attributeItems.push(attrValue);
+		}
+		return { 
+			items : attributeItems, 
+			identifier : id
+		};
 	}
 });

@@ -35,7 +35,7 @@ public interface PipelineCode {
 	String PIPELINE_SAVE_OR_UPDATE_ONE = "vectorLayer.saveOrUpdateOne";
 	String PIPELINE_GET_FEATURES = "vectorLayer.getFeatures";
 	String PIPELINE_GET_BOUNDS = "vectorLayer.getBounds";
-	String PIPELINE_GET_OBJECTS = "vectorLayer.getObjects";
+	String PIPELINE_GET_ATTRIBUTES = "vectorLayer.getAttributes";
 	String PIPELINE_GET_VECTOR_TILE = "vectorLayer.getTile";
 
 	String LAYER_ID_KEY = "layerId"; // String

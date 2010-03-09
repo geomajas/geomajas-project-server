@@ -17,6 +17,8 @@
             layerRivers.xml
             layerRoads.xml
             layerStructures.xml
+            layerBeans.xml
+            mapBeans.xml
         </param-value>
 	</context-param>
 

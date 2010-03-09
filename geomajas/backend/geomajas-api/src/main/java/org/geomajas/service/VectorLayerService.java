@@ -27,6 +27,7 @@ import java.util.List;
 
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.global.GeomajasException;
+import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.layer.tile.TileMetadata;
@@ -149,7 +150,18 @@ public interface VectorLayerService {
 	 */
 	@Deprecated
 	List<Object> getObjects(String layerId, String attributeName, Filter filter) throws GeomajasException;
-
+	
+	/**
+	 * Return the list of possible attribute values.
+	 *
+	 * @param layerId id of layer to get objects from
+	 * @param attributeName attribute to get objects for
+	 * @param filter filter to be applied
+	 * @return possible object values
+	 * @throws GeomajasException oops
+	 */
+	List<Attribute<?>> getAttributes(String layerId, String attributeName, Filter filter) throws GeomajasException;
+	
 	/**
 	 * Get a vector tile for the request tile.
 	 *

@@ -22,7 +22,9 @@
  */
 package org.geomajas.layer.bean;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Java bean for many-to-one attribute.
@@ -55,6 +57,24 @@ public class ManyToOneAttributeBean {
 	private String stringAttr;
 
 	private String urlAttr;
+
+	public static List<ManyToOneAttributeBean> manyToOneValues() {
+		List<ManyToOneAttributeBean> values = new ArrayList<ManyToOneAttributeBean>();
+
+		ManyToOneAttributeBean bean1 = new ManyToOneAttributeBean();
+		bean1.setId(new Long(1));
+		bean1.setStringAttr("ManyToOne - 1");
+		bean1.setBooleanAttr(true);
+		values.add(bean1);
+
+		ManyToOneAttributeBean bean2 = new ManyToOneAttributeBean();
+		bean2.setId(new Long(2));
+		bean2.setStringAttr("ManyToOne - 2");
+		bean2.setBooleanAttr(true);
+		values.add(bean2);
+
+		return values;
+	}
 
 	public Long getId() {
 		return id;

@@ -20,31 +20,54 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+package org.geomajas.command.dto;
 
-package org.geomajas.layer;
-
-import java.util.List;
-
-import org.geomajas.layer.feature.Attribute;
-import org.opengis.filter.Filter;
+import org.geomajas.command.LayerIdCommandRequest;
 
 /**
- * Extension for vector layers which support associations.
+ * Request object for {@link org.geomajas.command.feature.SearchAttributesCommand}.
  * 
- * @author Joachim Van der Auwera
+ * @author Pieter De Graef
  */
-public interface VectorLayerAssociationSupport {
+public class SearchAttributesRequest extends LayerIdCommandRequest {
 
-	/**
-	 * Return the list of possible object values.
-	 * 
-	 * @param attributeName
-	 *            attribute to get objects for
-	 * @param filter
-	 *            filter to be applied
-	 * @return possible object values
-	 * @throws LayerException
-	 *             oops
-	 */
-	List<Attribute<?>> getAttributes(String attributeName, Filter filter) throws LayerException;
+	private static final long serialVersionUID = 154L;
+
+	private String attributeName;
+
+	private String filter;
+
+	// Constructors:
+
+	public SearchAttributesRequest() {
+	}
+
+	public SearchAttributesRequest(String layerId, String attributeName) {
+		setLayerId(layerId);
+		this.attributeName = attributeName;
+	}
+
+	public SearchAttributesRequest(String layerId, String attributeName, String filter) {
+		setLayerId(layerId);
+		this.attributeName = attributeName;
+		this.filter = filter;
+	}
+
+	// Getters and setters:
+
+	public String getAttributeName() {
+		return attributeName;
+	}
+
+	public void setAttributeName(String attributeName) {
+		this.attributeName = attributeName;
+	}
+
+	public String getFilter() {
+		return filter;
+	}
+
+	public void setFilter(String filter) {
+		this.filter = filter;
+	}
 }

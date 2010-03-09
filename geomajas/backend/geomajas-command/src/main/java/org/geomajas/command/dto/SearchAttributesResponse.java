@@ -20,31 +20,36 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-package org.geomajas.layer;
+package org.geomajas.command.dto;
 
 import java.util.List;
 
+import org.geomajas.command.CommandResponse;
 import org.geomajas.layer.feature.Attribute;
-import org.opengis.filter.Filter;
 
 /**
- * Extension for vector layers which support associations.
+ * Result object for {@link org.geomajas.command.feature.SearchAttributesCommand}.
  * 
- * @author Joachim Van der Auwera
+ * @author Pieter De Graef
  */
-public interface VectorLayerAssociationSupport {
+public class SearchAttributesResponse extends CommandResponse {
 
-	/**
-	 * Return the list of possible object values.
-	 * 
-	 * @param attributeName
-	 *            attribute to get objects for
-	 * @param filter
-	 *            filter to be applied
-	 * @return possible object values
-	 * @throws LayerException
-	 *             oops
-	 */
-	List<Attribute<?>> getAttributes(String attributeName, Filter filter) throws LayerException;
+	private static final long serialVersionUID = 151L;
+
+	private List<Attribute<?>> attributes;
+
+	// Constructors:
+
+	public SearchAttributesResponse() {
+	}
+
+	// Getters and setters:
+
+	public List<Attribute<?>> getAttributes() {
+		return attributes;
+	}
+
+	public void setAttributes(List<Attribute<?>> attributes) {
+		this.attributes = attributes;
+	}
 }
