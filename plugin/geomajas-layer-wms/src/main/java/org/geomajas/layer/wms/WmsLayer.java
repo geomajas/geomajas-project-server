@@ -163,12 +163,7 @@ public class WmsLayer implements RasterLayer {
 			if (bounds.isNull()) {
 				return Collections.EMPTY_LIST;
 			}
-			Resolution bestResolution = null;
-			if (resolutions.size() > 0) {
-				bestResolution = calculateBestResolution(scale);
-			} else {
-				bestResolution = calculateBestQuadTreeResolution(scale);
-			}
+			Resolution bestResolution = calculateBestResolution(scale);
 
 			RasterGrid grid = getRasterGrid(bounds, bestResolution.getTileWidth(), bestResolution.getTileHeight(),
 					scale);
@@ -282,20 +277,25 @@ public class WmsLayer implements RasterLayer {
 	}
 
 	protected Resolution calculateBestResolution(double scale) {
-		double screenResolution = 1.0 / scale;
-		if (screenResolution >= resolutions.get(0).getResolution()) {
-			return resolutions.get(0);
-		} else if (screenResolution <= resolutions.get(resolutions.size() - 1).getResolution()) {
-			return resolutions.get(resolutions.size() - 1);
+		if (null == resolutions || resolutions.size() == 0) {
+			return calculateBestQuadTreeResolution(scale);
 		} else {
-			for (int i = 0; i < resolutions.size() - 1; i++) {
-				Resolution upper = resolutions.get(i);
-				Resolution lower = resolutions.get(i + 1);
-				if (screenResolution <= upper.getResolution() && screenResolution >= lower.getResolution()) {
-					if ((upper.getResolution() - screenResolution) > 2 * (screenResolution - lower.getResolution())) {
-						return lower;
-					} else {
-						return upper;
+			double screenResolution = 1.0 / scale;
+			if (screenResolution >= resolutions.get(0).getResolution()) {
+				return resolutions.get(0);
+			} else if (screenResolution <= resolutions.get(resolutions.size() - 1).getResolution()) {
+				return resolutions.get(resolutions.size() - 1);
+			} else {
+				for (int i = 0; i < resolutions.size() - 1; i++) {
+					Resolution upper = resolutions.get(i);
+					Resolution lower = resolutions.get(i + 1);
+					if (screenResolution <= upper.getResolution() && screenResolution >= lower.getResolution()) {
+						if ((upper.getResolution() - screenResolution) > 2 * 
+								(screenResolution - lower.getResolution())) {
+							return lower;
+						} else {
+							return upper;
+						}
 					}
 				}
 			}
