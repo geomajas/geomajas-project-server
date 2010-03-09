@@ -87,8 +87,8 @@ public class ToolbarNavigationSample extends SamplePanel {
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "classpath:org/geomajas/gwt/samples/mapwidget/layerWmsBluemarble.xml",
-				"classpath:org/geomajas/gwt/samples/toolbarAndControllers/mapWmsNavigationToolbar.xml" };
+		return new String[] { "classpath:org/geomajas/gwt/samples/mapwidget/layerOsm.xml",
+				"classpath:org/geomajas/gwt/samples/toolbarAndControllers/mapOsmNavigationToolbar.xml" };
 	}
 
 	public String ensureUserLoggedIn() {
