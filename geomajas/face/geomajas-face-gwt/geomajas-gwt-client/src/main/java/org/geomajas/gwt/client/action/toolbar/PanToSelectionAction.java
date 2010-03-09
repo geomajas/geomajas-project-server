@@ -23,8 +23,15 @@
 
 package org.geomajas.gwt.client.action.toolbar;
 
+import java.util.Iterator;
+
 import org.geomajas.gwt.client.action.ToolbarAction;
 import org.geomajas.gwt.client.i18n.I18nProvider;
+import org.geomajas.gwt.client.map.feature.Feature;
+import org.geomajas.gwt.client.map.layer.Layer;
+import org.geomajas.gwt.client.map.layer.VectorLayer;
+import org.geomajas.gwt.client.map.store.VectorLayerStore;
+import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.widget.MapWidget;
 
 import com.smartgwt.client.widgets.events.ClickEvent;
@@ -36,10 +43,36 @@ import com.smartgwt.client.widgets.events.ClickEvent;
  */
 public class PanToSelectionAction extends ToolbarAction {
 
+	private MapWidget mapWidget;
+
 	public PanToSelectionAction(MapWidget mapWidget) {
 		super("[ISOMORPHIC]/geomajas/pan.png", I18nProvider.getToolbar().panToSelection());
+		this.mapWidget = mapWidget;
 	}
 
+	/**
+	 * Pan to the selected features.
+	 */
 	public void onClick(ClickEvent clickEvent) {
+		Bbox selectionBounds = new Bbox(0, 0, 0, 0);
+		// get the selected VectorLayer
+		Layer<?> selectedLayer = mapWidget.getMapModel().getSelectedLayer();
+		if (selectedLayer instanceof VectorLayer) {
+			// iterate all features of the selected layer
+			VectorLayerStore featureStore = ((VectorLayer) selectedLayer).getFeatureStore();
+			Iterator<Feature> features = featureStore.getFeatures().iterator();
+			while (features.hasNext()) {
+				Feature feature = features.next();
+				// if the feature is selected union the bounding box
+				if (feature.isSelected()) {
+					selectionBounds = selectionBounds.union(feature.getGeometry().getBounds());
+				}
+			}
+
+			// only pan when their where really some items selected
+			if ((selectionBounds.getWidth() != 0) && (selectionBounds.getHeight() != 0)) {
+				mapWidget.getMapModel().getMapView().setCenterPosition(selectionBounds.getCenterPoint());
+			}
+		}
 	}
 }
