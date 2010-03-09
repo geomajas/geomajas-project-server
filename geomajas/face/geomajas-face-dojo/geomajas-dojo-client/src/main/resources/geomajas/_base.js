@@ -106,7 +106,7 @@ if (!geomajasConfig.useLazyLoading) {
 
 
 createLog = function(show) {
-	if(show){
+	if (show) {
 		// Create the logger. "mylogger" is the unique name of the logger and
 		// can be any string.
 		var log = log4javascript.getLogger("mylogger"); 
@@ -127,7 +127,7 @@ createLog = function(show) {
 	} else {
 		return new DummyLog();
 	}
-}
+};
 
 DummyLog = function() {};
 
@@ -137,11 +137,11 @@ DummyLog.prototype = {
 	warn: function(msg) {},
 	error: function(msg) {},
 	fatal: function(msg) {}
-}
+};
 
 createDummyLog = function () {
 	return new DummyLog();
-}
+};
 
 if(geomajasConfig){
 	log = createLog(geomajasConfig.showLog);
@@ -160,11 +160,11 @@ hasSVGSupport = function () {
 		result = document.implementation.hasFeature("http://www.w3.org/TR/SVG11/feature#BasicStructure", "1.1");
 	}
 	return result;
-}
+};
 
 getResolution = function () {
 	return screen.width + "x" + screen.height;
-}
+};
 
 
 
@@ -177,7 +177,7 @@ getObjectProperties = function (object) {
 		result += property + ': ' + object[property] + '\r\n';
 	}
 	return result;
-}
+};
 
 getCompleteNodeHeight = function (node) {
 	var cs = dojo.getComputedStyle(node);
@@ -185,125 +185,128 @@ getCompleteNodeHeight = function (node) {
 	if (dojo.isIE) {
 		height = node.offsetHeight;
 	}
+	var temp;
 	if (cs.paddingTop != "" && cs.paddingTop != null) {
-		var temp = parseInt (cs.paddingTop);
+		temp = parseInt (cs.paddingTop);
 		if (!isNaN(temp)) {
 			height += temp;
 		}
 	}
 	if (cs.paddingBottom != "" && cs.paddingBottom != null) {
-		var temp = parseInt (cs.paddingBottom);
+		temp = parseInt (cs.paddingBottom);
 		if (!isNaN(temp)) {
 			height += temp;
 		}
 	}
 	if (cs.borderTopWidth != "" && cs.borderTopWidth != null) {
-		var temp = parseInt (cs.borderTopWidth);
+		temp = parseInt (cs.borderTopWidth);
 		if (!isNaN(temp)) {
 			height += temp;
 		}
 	}
 	if (cs.borderBottomWidth != "" && cs.borderBottomWidth != null) {
-		var temp = parseInt (cs.borderBottomWidth);
+		temp = parseInt (cs.borderBottomWidth);
 		if (!isNaN(temp)) {
 			height += temp;
 		}
 	}
 	if (cs.marginTop != "" && cs.marginTop != null) {
-		var temp = parseInt (cs.marginTop);
+		temp = parseInt (cs.marginTop);
 		if (!isNaN(temp)) {
 			height += temp;
 		}
 	}
 	if (cs.marginBottom != "" && cs.marginBottom != null) {
-		var temp = parseInt (cs.marginBottom);
+		temp = parseInt (cs.marginBottom);
 		if (!isNaN(temp)) {
 			height += temp;
 		}
 	}
 	return height;
-}
+};
 
 getMarginBorderPaddingHorizontal = function (node) {
 	var cs = dojo.getComputedStyle(node);
 	var height = 0;
+	var temp;
 	if (cs.paddingLeft != "" && cs.paddingLeft != null) {
-		var temp = parseInt (cs.paddingLeft);
+		temp = parseInt (cs.paddingLeft);
 		if (!isNaN(temp)) {
 			height += temp;
 		}
 	}
 	if (cs.paddingRight != "" && cs.paddingRight != null) {
-		var temp = parseInt (cs.paddingRight);
+		temp = parseInt (cs.paddingRight);
 		if (!isNaN(temp)) {
 			height += temp;
 		}
 	}
 	if (cs.borderLeftWidth != "" && cs.borderLeftWidth != null) {
-		var temp = parseInt (cs.borderLeftWidth);
+		temp = parseInt (cs.borderLeftWidth);
 		if (!isNaN(temp)) {
 			height += temp;
 		}
 	}
 	if (cs.borderRightWidth != "" && cs.borderRightWidth != null) {
-		var temp = parseInt (cs.borderRightWidth);
+		temp = parseInt (cs.borderRightWidth);
 		if (!isNaN(temp)) {
 			height += temp;
 		}
 	}
 	if (cs.marginLeft != "" && cs.marginLeft != null) {
-		var temp = parseInt (cs.marginLeft);
+		temp = parseInt (cs.marginLeft);
 		if (!isNaN(temp)) {
 			height += temp;
 		}
 	}
 	if (cs.marginRight != "" && cs.marginRight != null) {
-		var temp = parseInt (cs.marginRight);
+		temp = parseInt (cs.marginRight);
 		if (!isNaN(temp)) {
 			height += temp;
 		}
 	}
 	return height;
-}
+};
 
 getMarginBorderPaddingVertical = function (node) {
 	var cs = dojo.getComputedStyle(node);
 	var height = 0;
+	var temp;
 	if (cs.paddingTop != "" && cs.paddingTop != null) {
-		var temp = parseInt (cs.paddingTop);
+		temp = parseInt (cs.paddingTop);
 		if (!isNaN(temp)) {
 			height += temp;
 		}
 	}
 	if (cs.paddingBottom != "" && cs.paddingBottom != null) {
-		var temp = parseInt (cs.paddingBottom);
+		temp = parseInt (cs.paddingBottom);
 		if (!isNaN(temp)) {
 			height += temp;
 		}
 	}
 	if (cs.borderTopWidth != "" && cs.borderTopWidth != null) {
-		var temp = parseInt (cs.borderTopWidth);
+		temp = parseInt (cs.borderTopWidth);
 		if (!isNaN(temp)) {
 			height += temp;
 		}
 	}
 	if (cs.borderBottomWidth != "" && cs.borderBottomWidth != null) {
-		var temp = parseInt (cs.borderBottomWidth);
+		temp = parseInt (cs.borderBottomWidth);
 		if (!isNaN(temp)) {
 			height += temp;
 		}
 	}
 	if (cs.marginTop != "" && cs.marginTop != null) {
-		var temp = parseInt (cs.marginTop);
+		temp = parseInt (cs.marginTop);
 		if (!isNaN(temp)) {
 			height += temp;
 		}
 	}
 	if (cs.marginBottom != "" && cs.marginBottom != null) {
-		var temp = parseInt (cs.marginBottom);
+		temp = parseInt (cs.marginBottom);
 		if (!isNaN(temp)) {
 			height += temp;
 		}
 	}
 	return height;
-}
+};

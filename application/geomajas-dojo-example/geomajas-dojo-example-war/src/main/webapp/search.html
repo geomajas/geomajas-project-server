@@ -33,7 +33,14 @@
 	<link rel='stylesheet' href="js/geomajas/widget/themes/tundra/tundra.css">
 
 	<script type="text/javascript" src="js/dojo/dojo.js" djConfig="parseOnLoad:true, usePlainJson :true"></script>
-	<script type="text/javascript" src="js/example/example.js" geomajasConfig="showLog:false, connectionPoint:'generalConnectionPoint'"></script>
+	<script type="text/javascript" src="js/example/example.js" geomajasConfig="
+		showLog: false,
+		useLazyLoading: true,
+		lazyFeatureIncludesDefault: 0,
+		lazyFeatureIncludesSelect: 3,
+		lazyFeatureIncludesAll: 11,
+		connectionPoint:'generalConnectionPoint'
+		"></script>
 
 	<!-- Add functionality on the onLoad event -->
 	<script type="text/javascript">

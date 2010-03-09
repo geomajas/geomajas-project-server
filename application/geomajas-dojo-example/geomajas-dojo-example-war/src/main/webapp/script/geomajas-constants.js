@@ -36,6 +36,6 @@ var geomajasConfig={
 	showLog: true,
 	useLazyLoading: true, // use lazy loading
 	lazyFeatureIncludesDefault: 0, // don't include anything by default
-	lazyFeatureIncludesSelect: 3, // don't include anything by default
+	lazyFeatureIncludesSelect: 3, // include attributes and geometry when selecting
 	lazyFeatureIncludesAll: 11 // attributes + geometry + label (no style, see VectorLayerService)
 };

@@ -79,31 +79,23 @@ dojo.declare("SearchManager", ConfigManager, {
 			return;
 		}
 		// Add the features, and render the table:
-		dijit.byId("searchFLT").setMapWidget(dijit.byId("sampleSearchMap"));
+		var map = dijit.byId("sampleSearchMap");
+		var flt = dijit.byId("searchFLT");
+		flt.setMapWidget(map);
 
 		// Make the table listen to selection events:
-		dijit.byId("searchFLT").enableSelection(dijit.byId("sampleSearchMap").getMapModel().getSelectionTopic()); // Listens to the selection-topic!
+		flt.enableSelection(map.getMapModel().getSelectionTopic()); // Listens to the selection-topic!
 
-		var layer = dijit.byId("sampleSearchMap").getMapModel().getLayerById ("sampleSearchMap.countries");
+		var layer = dijit.byId("sampleSearchMap").getMapModel().getLayerById("sampleSearchMap.countries");
 		if (layer) {
-			var flt = dijit.byId("searchFLT");
-			flt.setLayer(layer); // Needed for the table's header.
-
-			var fs = layer.getFeatureStore();
-			var el = fs.getElements(); // Get all features.
-			var features = el.getValueList();
-			for (var i=0; i<features.length; i++) {
-				var feature = features[i];
-				flt.addFeature (feature); // Add them to the table one by one.
-				this.tableInitialized = true;
-			}
-			flt.render(); // Render the table!
+			var updateAction = new ShowTableAction(null, map, null, null);
+			updateAction.refreshTable(flt, layer);
 		}
 	},
 	
 	onZoom : function(scale) {
 		var mapWidget = dijit.byId("sampleSearchMap");
-		var countries = mapWidget.getMapModel().getLayerById ("sampleSearchMap.countries");
+		var countries = mapWidget.getMapModel().getLayerById("sampleSearchMap.countries");
 		if (scale > 15) {
 			countries.setLabeled(true);
 		} else {

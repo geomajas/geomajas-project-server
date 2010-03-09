@@ -32,10 +32,20 @@
 	<!-- Everything needed to start up Geomajas -->
 	<link rel='stylesheet' href="js/geomajas/widget/themes/soria/soria.css">
 
-	<script type="text/javascript" src="script/geomajas-constants.js"></script>
-	<script type="text/javascript" src="js/dojo/dojo.js" djConfig="parseOnLoad:true, usePlainJson :true">
+	<!--<script type="text/javascript" src="script/geomajas-constants.js"></script>-->
+	<script type="text/javascript" src="js/dojo/dojo.js" djConfig="
+		isDebug: false,
+		parseOnLoad: true,
+		usePlainJson: true,
+		locale: 'en'">
 	</script>
-	<script type="text/javascript" src="js/example/example.js" geomajasConfig="showLog :true"></script>
+	<script type="text/javascript" src="js/example/example.js" geomajasConfig="
+		dijitTheme: 'soria',
+		showLog: false,
+		useLazyLoading: true,
+		lazyFeatureIncludesDefault: 0,
+		lazyFeatureIncludesSelect: 3, 
+		lazyFeatureIncludesAll: 11 "></script>
 
 	<!-- Add functionality on the onLoad event -->
 	<script type="text/javascript">

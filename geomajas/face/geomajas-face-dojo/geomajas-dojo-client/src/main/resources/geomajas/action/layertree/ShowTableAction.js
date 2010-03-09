@@ -112,18 +112,26 @@ dojo.declare("ShowTableAction", LayerTreeAction, {
 			command.addParam("crs", crs);
 			command.addParam("booleanOperator", "OR");
 			var criteria = [];
+			var feature;
 			for (var i=0; i<this.features.length; i++) {
-				criteria.push({
-					javaClass : "org.geomajas.layer.feature.SearchCriterion",
-					attributeName : "$id",
-					operator : "=",
-					value : this.features[i].getId()
-				});
+				feature = this.features[i];
+				if (null == feature.attributes || feature.attributes instanceof ProxyAttributeMap ||
+						feature.attributes.declaredClass == "ProxyAttributeMap") {
+					criteria.push({
+						javaClass : "org.geomajas.layer.feature.SearchCriterion",
+						attributeName : "$id",
+						operator : "=",
+						value : feature.getId()
+					});
+				}
 			}
-			command.addParam("criteria", criteria);
-			command.addParam("featureIncludes", 1); // 1=attributes, 2=geometry
-			var deferred = geomajasConfig.dispatcher.execute(command);
-			deferred.addCallback(this, "_synchCallback");
+			if (criteria.length > 0)
+			{
+				command.addParam("criteria", criteria);
+				command.addParam("featureIncludes", 1); // 1=attributes, 2=geometry
+				var deferred = geomajasConfig.dispatcher.execute(command);
+				deferred.addCallback(this, "_synchCallback");
+			}
 		}
 	},
 
