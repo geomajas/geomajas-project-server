@@ -64,4 +64,10 @@ public class OneToManyAttribute extends AssociationAttribute<List<AssociationVal
 	public boolean isEmpty() {
 		return value == null;
 	}
+
+	// Setters:
+
+	public void setValue(List<AssociationValue> value) {
+		this.value = value;
+	}
 }

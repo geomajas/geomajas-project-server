@@ -39,7 +39,7 @@ public class ManyToOneAttribute extends AssociationAttribute<AssociationValue> {
 	private static final long serialVersionUID = 151L;
 
 	private AssociationValue value;
-	
+
 	// Constructors:
 
 	public ManyToOneAttribute() {
@@ -48,7 +48,7 @@ public class ManyToOneAttribute extends AssociationAttribute<AssociationValue> {
 	public ManyToOneAttribute(AssociationValue value) {
 		this.value = value;
 	}
-	
+
 	// Attribute implementation:
 
 	public AssociationType getType() {
@@ -61,5 +61,11 @@ public class ManyToOneAttribute extends AssociationAttribute<AssociationValue> {
 
 	public boolean isEmpty() {
 		return value == null || value.getAttributes() == null;
+	}
+
+	// Setters:
+
+	public void setValue(AssociationValue value) {
+		this.value = value;
 	}
 }

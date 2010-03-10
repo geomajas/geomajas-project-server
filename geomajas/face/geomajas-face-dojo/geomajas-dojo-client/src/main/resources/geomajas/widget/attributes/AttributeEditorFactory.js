@@ -106,7 +106,7 @@ dojo.declare("AttributeEditorFactory", null, {
 		} else if (atDef.getType() == "date") {
 			return value;
 		} else if(atDef.getType() == "many-to-one"){
-			return this._getBeanFromStoreItem(atDef, widget);
+			return this._getAssociationValueFromStoreItem(atDef, widget);
 		} else if (atDef.getType() == "one-to-many") {
 			return value;
 		}
@@ -230,7 +230,7 @@ dojo.declare("AttributeEditorFactory", null, {
 	 * what we need to a simple bean.
 	 * @private
 	 */
-	_getBeanFromStoreItem : function (atDef, widget) {
+	_getAssociationValueFromStoreItem : function (atDef, widget) {
 		var item = widget.item;
 		if (!item) {
 			// This happens in case the user has not changed the selectbox:
@@ -244,22 +244,7 @@ dojo.declare("AttributeEditorFactory", null, {
 		if (!item) {
 			return null;
 		}
-		var bean = {};
-		var javaClass = item.javaClass;
-		if (javaClass instanceof Array) {
-			bean["javaClass"] = javaClass[0];
-		} else {
-			bean["javaClass"] = javaClass;
-		}
-
-		var identifierName = atDef.getAssociationIdentifierName();
-		var identifier = item[identifierName];
-		if (identifier instanceof Array) {
-			bean[identifierName] = identifier[0];
-		} else {
-			bean[identifierName] = identifier;
-		}
-
+/*		
 		var attrs = atDef.getAssociationAttributeList();
 		for (var i=0; i<attrs.length; i++) {
 			var name = attrs[i].name;
@@ -270,6 +255,65 @@ dojo.declare("AttributeEditorFactory", null, {
 				bean[name] = value;
 			}
 		}
-		return bean;
+*/
+		// Get the identifier value:
+		var identifierValue = null;
+		var identifier = item[atDef.getAssociationIdentifierName()];
+		if (identifier instanceof Array) {
+			identifierValue = identifier[0];
+		} else {
+			identifierValue = identifier;
+		}
+
+		// Get the first attribute value:
+		var labelValue = null;
+		var labelAttribute = item[atDef.getAssociationAttributeName()];
+		if (labelAttribute instanceof Array) {
+			labelValue = labelAttribute[0];
+		} else {
+			labelValue = labelAttribute;
+		}
+
+		// Return the AssociationValue object:
+		return this._createManyToOneValue(atDef, identifierValue, labelValue);
+	},
+
+	_createManyToOneValue : function (atDef, identifierValue, labelValue) {
+		var attrs = { javaClass: "java.util.HashMap", map: {} };
+		var labelAttribute = this._createPrimitiveAttribute(atDef.getAssociationAttributeType(), labelValue);
+		attrs.map[atDef.getAssociationAttributeName()] = labelAttribute;
+		
+		return { 
+				javaClass: "org.geomajas.layer.feature.attribute.AssociationValue",
+				id : this._createPrimitiveAttribute(atDef.getAssociationIdentifierType(), identifierValue),
+				attributes: attrs
+		};
+	},
+
+	_createPrimitiveAttribute : function (type, primitiveValue) {
+		if (type == "short") {
+			return { javaClass: "org.geomajas.layer.feature.attribute.ShortAttribute", value: primitiveValue };
+		} else if (type == "integer") {
+			return { javaClass: "org.geomajas.layer.feature.attribute.IntegerAttribute", value: primitiveValue };
+		} else if (type == "long") {
+			return { javaClass: "org.geomajas.layer.feature.attribute.LongAttribute", value: primitiveValue };
+		} else if (type == "float") {
+			return { javaClass: "org.geomajas.layer.feature.attribute.FloatAttribute", value: primitiveValue };
+		} else if (type == "double") {
+			return { javaClass: "org.geomajas.layer.feature.attribute.DoubleAttribute", value: primitiveValue };
+		} else if (type == "boolean") {
+			return { javaClass: "org.geomajas.layer.feature.attribute.BooleanAttribute", value: primitiveValue };
+		} else if (type == "date") {
+			return { javaClass: "org.geomajas.layer.feature.attribute.DateAttribute", value: primitiveValue };
+		} else if (type == "string") {
+			return { javaClass: "org.geomajas.layer.feature.attribute.StringAttribute", value: primitiveValue };
+		} else if (type == "url") {
+			return { javaClass: "org.geomajas.layer.feature.attribute.UrlAttribute", value: primitiveValue };
+		} else if (type == "imgurl") {
+			return { javaClass: "org.geomajas.layer.feature.attribute.ImageUrlAttribute", value: primitiveValue };
+		} else if (type == "currency") {
+			return { javaClass: "org.geomajas.layer.feature.attribute.CurrencyAttribute", value: primitiveValue };
+		}
+		return null;
 	}
 });

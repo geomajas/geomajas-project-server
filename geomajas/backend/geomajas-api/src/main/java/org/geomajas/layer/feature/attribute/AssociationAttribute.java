@@ -27,8 +27,9 @@ import org.geomajas.layer.feature.Attribute;
 
 /**
  * Association attribute.
- *
- * @param <VALUE_TYPE> type for the attribute value
+ * 
+ * @param <VALUE_TYPE>
+ *            type for the attribute value
  * 
  * @author Jan De Moerloose
  */
@@ -60,4 +61,6 @@ public abstract class AssociationAttribute<VALUE_TYPE> implements Attribute<VALU
 	public void setEditable(boolean editable) {
 		this.editable = editable;
 	}
+
+	public abstract void setValue(VALUE_TYPE value);
 }

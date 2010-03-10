@@ -94,6 +94,13 @@ dojo.declare("AssociationDefinition", AttributeDefinition, {
 		return null;
 	},
 
+	getAssociationIdentifierType : function () {
+		if (this.object != null) {
+			return this.object.identifier.type.value;
+		}
+		return null;
+	},
+
 	/**
 	 * Return the name of the identifying attribute of an association
 	 * attribute.
@@ -127,6 +134,14 @@ dojo.declare("AssociationDefinition", AttributeDefinition, {
 		var associated = this.getAssociationAttribute();
 		if (associated != null) {
 			return associated.name;
+		}
+		return null;
+	},
+	
+	getAssociationAttributeType : function () {
+		var associated = this.getAssociationAttribute();
+		if (associated != null) {
+			return associated.type.value;
 		}
 		return null;
 	},

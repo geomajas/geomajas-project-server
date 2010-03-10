@@ -58,7 +58,7 @@ dojo.declare("Feature", PainterVisitable, {
 		this.path = null;
 
 		/** The identifier of this feature's style. */
-		//this.styleId = null;
+		this.styleId = null;
 
 		/** Coordinate for the label. */
 		this.labelPosition = null;
@@ -87,7 +87,7 @@ dojo.declare("Feature", PainterVisitable, {
 		f.setId(this.id);
 		f.setLayer(this.getLayer());
 		f.setCrs(this.crs);
-		//f.styleId = this.styleId;
+		f.styleId = this.styleId;
 		
 		if (this.geometry != null) {
 			f.setGeometry(this.geometry.clone()); // proxy or not; works on both
@@ -127,11 +127,12 @@ dojo.declare("Feature", PainterVisitable, {
         var temp = this.getAttributes(); // make sure they are actually fetched!
         for (attr in temp) {
             // special treatment for dates !
-            if(temp[attr] instanceof Date){
-                jsonAttr[attr]  = {
+            if(temp[attr].value instanceof Date){
+            	jsonAttr[attr] = temp[attr];
+            	jsonAttr[attr].value = {
                       "javaClass": "java.util.Date",
-                      "time": temp[attr].getTime()
-                }
+                      "time": temp[attr].value.getTime()
+                };
             } else if(temp[attr] instanceof Array && temp[attr].length == 0){
                 jsonAttr[attr]  = {
                       "javaClass": "java.util.ArrayList",
@@ -256,9 +257,9 @@ dojo.declare("Feature", PainterVisitable, {
 		this._checkAttributes();
 		if(this.getLayer()) {
 			var attribute = this.getLayer().getFeatureType().getAttributeByName(name);
-			if(attribute.isAssociation()){
-				log.error ("set association attribute value....");
-				// TODO !!!
+			if(attribute.isAssociation()) {
+				// The attribute may never be null! Only it's value can be null.
+				this.attributes[name].value = value;
 			}  else {
 				this.attributes[name].value = value;
 			}

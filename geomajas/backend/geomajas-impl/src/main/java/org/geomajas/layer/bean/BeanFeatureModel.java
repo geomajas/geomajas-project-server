@@ -44,6 +44,8 @@ import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.FeatureModel;
+import org.geomajas.layer.feature.attribute.ManyToOneAttribute;
+import org.geomajas.layer.feature.attribute.PrimitiveAttribute;
 import org.geomajas.service.DtoConverterService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -321,8 +323,18 @@ public class BeanFeatureModel implements FeatureModel {
 					String name = attribute.getName();
 					switch (aso.getType()) {
 						case MANY_TO_ONE:
-							// how to get hold of the may-to-one ???
-							// writeProperty(parent, value, name); @todo make this work, currently causes failures 
+							// Get the many-to-one attribute, then set it's identifier:
+							Object manyToOneBean = readProperty(parent, name);
+							String identifierName = aso.getFeature().getIdentifier().getName();
+							ManyToOneAttribute attrValue = (ManyToOneAttribute) value;
+							writeProperty(manyToOneBean, attrValue.getValue().getId().getValue(), identifierName);
+
+							// Write the other attributes:
+							for (String key : attrValue.getValue().getAttributes().keySet()) {
+								PrimitiveAttribute<?> attr = attrValue.getValue().getAttributes().get(key);
+								writeProperty(manyToOneBean, attr.getValue(), key);
+							}
+
 							break;
 						case ONE_TO_MANY:
 							if (value instanceof Object[]) {

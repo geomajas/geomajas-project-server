@@ -212,8 +212,29 @@ dojo.declare("AssociationAttributeStore", dojo.data.ItemFileReadStore, {
 		var deferred =  geomajasConfig.dispatcher.execute(command);
 		return deferred;
 	},
-	
+
 	_createDataItems : function (atDef, result) {
+		var id = atDef.getAssociationIdentifierName();
+		var attributeItems = [];
+		for (var i=0; i<result.attributes.list.length; i++) {
+			var attrMap = result.attributes.list[i].value.attributes.map;
+			var attrValue = {};
+			attrValue[id] = result.attributes.list[i].value.id.value;
+			attrValue["javaClass"] = result.attributes.list[i].javaClass;
+			for (var property in attrMap) {
+				attrValue[property] = attrMap[property].value;
+			}
+//			attrValue["tempPlaceHolder"] = result.attributes.list[i].value;
+//			attrValue["tempPlaceHolder"].toString = function (){ return ""; };
+			attributeItems.push(attrValue);
+		}
+		return { 
+			items : attributeItems, 
+			identifier : id
+		};
+	},
+
+	_createDataItems2 : function (atDef, result) {
 		var id = atDef.getAssociationIdentifierName();
 		var attributeItems = [];
 		for (var i=0; i<result.attributes.list.length; i++) {
@@ -223,6 +244,7 @@ dojo.declare("AssociationAttributeStore", dojo.data.ItemFileReadStore, {
 			for (var property in attrMap) {
 				attrValue[property] = attrMap[property].value;
 			}
+			attrValue["javaClass"] = result.attributes.list[i].javaClass;
 			attributeItems.push(attrValue);
 		}
 		return { 

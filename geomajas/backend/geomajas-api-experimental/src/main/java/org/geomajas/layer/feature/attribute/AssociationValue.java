@@ -50,7 +50,7 @@ public class AssociationValue implements Serializable {
 	public AssociationValue() {
 	}
 
-	public AssociationValue(PrimitiveAttribute<?> id,  Map<String, PrimitiveAttribute<?>> attributes) {
+	public AssociationValue(PrimitiveAttribute<?> id, Map<String, PrimitiveAttribute<?>> attributes) {
 		this.id = id;
 		this.attributes = attributes;
 	}
@@ -65,7 +65,7 @@ public class AssociationValue implements Serializable {
 		this.id = id;
 	}
 
-	public  Map<String, PrimitiveAttribute<?>> getAttributes() {
+	public Map<String, PrimitiveAttribute<?>> getAttributes() {
 		return attributes;
 	}
 
