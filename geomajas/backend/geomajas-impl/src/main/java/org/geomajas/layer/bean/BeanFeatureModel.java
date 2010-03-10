@@ -323,18 +323,33 @@ public class BeanFeatureModel implements FeatureModel {
 					String name = attribute.getName();
 					switch (aso.getType()) {
 						case MANY_TO_ONE:
-							// Get the many-to-one attribute, then set it's identifier:
-							Object manyToOneBean = readProperty(parent, name);
-							String identifierName = aso.getFeature().getIdentifier().getName();
 							ManyToOneAttribute attrValue = (ManyToOneAttribute) value;
-							writeProperty(manyToOneBean, attrValue.getValue().getId().getValue(), identifierName);
+							if (attrValue == null || attrValue.getValue() == null) {
+								writeProperty(parent, null, name);
+							} else {
+								// Get the many-to-one attribute
+								Object manyToOneBean = readProperty(parent, name);
+								if (manyToOneBean == null) {
+									// If no content yet, create it:
+									PropertyDescriptor d = BeanUtils.getPropertyDescriptor(parent.getClass(), name);
+									try {
+										manyToOneBean = d.getPropertyType().newInstance();
+										writeProperty(parent, manyToOneBean, name);
+									} catch (Throwable t) {
+										throw new LayerException(t);
+									}
+								}
+								
+								// Set the identifier:
+								String identifierName = aso.getFeature().getIdentifier().getName();
+								writeProperty(manyToOneBean, attrValue.getValue().getId().getValue(), identifierName);
 
-							// Write the other attributes:
-							for (String key : attrValue.getValue().getAttributes().keySet()) {
-								PrimitiveAttribute<?> attr = attrValue.getValue().getAttributes().get(key);
-								writeProperty(manyToOneBean, attr.getValue(), key);
+								// Write the other attributes:
+								for (String key : attrValue.getValue().getAttributes().keySet()) {
+									PrimitiveAttribute<?> attr = attrValue.getValue().getAttributes().get(key);
+									writeProperty(manyToOneBean, attr.getValue(), key);
+								}
 							}
-
 							break;
 						case ONE_TO_MANY:
 							if (value instanceof Object[]) {
