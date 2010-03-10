@@ -117,7 +117,7 @@ public class GetMapConfigurationCommand implements Command<GetMapConfigurationRe
 		client.setScaleBarEnabled(original.isScaleBarEnabled());
 		client.setToolbar(securityClone(original.getToolbar()));
 		client.setUnitLength(original.getUnitLength());
-//		client.setUserData(original.getUserData());
+		client.setUserData(original.getUserData());
 		return client;
 	}
 
