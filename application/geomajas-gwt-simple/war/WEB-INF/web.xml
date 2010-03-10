@@ -6,10 +6,17 @@
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
+             org/geomajas/gwt/simple/shapeinmem/applicationContext.xml
+            org/geomajas/gwt/simple/shapeinmem/layerRoads.xml
+			org/geomajas/gwt/simple/shapeinmem/layerStructures.xml
+			org/geomajas/gwt/simple/shapeinmem/layerOsm.xml
+  
+        <!--
             org/geomajas/gwt/simple/hibernate/applicationContext.xml
             org/geomajas/gwt/simple/hibernate/layerRoads.xml
 			org/geomajas/gwt/simple/hibernate/layerStructures.xml
 			org/geomajas/gwt/simple/hibernate/layerOsm.xml
+        -->
         </param-value>
     </context-param>
 
