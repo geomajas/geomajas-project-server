@@ -239,9 +239,8 @@ dojo.declare("geomajas.widget.attributes.CompositionEditor", [dijit.layout.Layou
 	 * Retrieves the list of attributes of the one-to-many objects.
 	 */
 	_getAttributesFromDefinition : function () {
-		if (this.atDef != null && this.atDef.object != null && this.atDef.object.attributes != null
-				&& this.atDef.object.attributes.attributeOrAssociation != null) {
-			return this.atDef.object.attributes.attributeOrAssociation.list;
+		if (this.atDef != null) {
+			return this.atDef.object.attributes.list;
 		}
 		return null;
 	},
@@ -295,13 +294,13 @@ dojo.declare("geomajas.widget.attributes.CompositionEditor", [dijit.layout.Layou
 	 */
 	_createGridDataFromValue : function (keys) {
 		data = [];
-		for (var i=0; i<this.value.length; i++) {
+		for (var i=0; i<this.value.list.length; i++) {
 			var row = [];
-			var val = this.value[i];
-			row.push(val.id); // First column = ID
+			var val = this.value.list[i];
+			row.push(val.id.value); // First column = ID
 			for (var j=0; j<keys.length; j++) {
 				var key = keys[j].name;
-				row.push(val[key]);
+				row.push(val.attributes.map[key].value);
 			}
 			data.push(row);
 		}

@@ -190,6 +190,50 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 						</bean>
 					</property>
 				</bean>
+				<bean class="org.geomajas.configuration.AssociationAttributeInfo">
+					<property name="label" value="OneToMany attribute" />
+					<property name="name" value="oneToManyAttr" />
+					<property name="editable" value="true" />
+					<property name="identifying" value="true" />
+					<property name="type" value="ONE_TO_MANY" />
+					<property name="feature">
+						<bean class="org.geomajas.configuration.FeatureInfo">
+							<property name="dataSourceName" value="org.geomajas.layer.bean.OneToManyAttributeBean" />
+							<property name="identifier">
+								<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+									<property name="label" value="Id" />
+									<property name="name" value="id" />
+									<property name="type" value="LONG" />
+								</bean>
+							</property>
+							<property name="attributes">
+								<list>
+									<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+										<property name="label" value="String attribute" />
+										<property name="name" value="stringAttr" />
+										<property name="editable" value="true" />
+										<property name="identifying" value="true" />
+										<property name="type" value="STRING" />
+									</bean>
+									<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+										<property name="label" value="Date attribute" />
+										<property name="name" value="dateAttr" />
+										<property name="editable" value="true" />
+										<property name="identifying" value="true" />
+										<property name="type" value="DATE" />
+									</bean>
+									<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+										<property name="label" value="Double attribute" />
+										<property name="name" value="doubleAttr" />
+										<property name="editable" value="true" />
+										<property name="identifying" value="true" />
+										<property name="type" value="DOUBLE" />
+									</bean>
+								</list>
+							</property>
+						</bean>
+					</property>
+				</bean>
 			</list>
 		</property>
 	</bean>
@@ -252,6 +296,22 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 							<property name="id" value="1" />
 							<property name="stringAttr" value="manyToOne - 1" />
 						</bean>
+					</property>
+					<property name="oneToManyAttr">
+						<list>
+							<bean class="org.geomajas.layer.bean.OneToManyAttributeBean">
+								<property name="id" value="1" />
+								<property name="stringAttr" value="oneToMany - 1" />
+								<property name="dateAttr" value="2010-02-23" />
+ 								<property name="doubleAttr" value="123.456" />
+							</bean>
+							<bean class="org.geomajas.layer.bean.OneToManyAttributeBean">
+								<property name="id" value="2" />
+								<property name="stringAttr" value="oneToMany - 2" />
+								<property name="dateAttr" value="2010-02-23" />
+ 								<property name="doubleAttr" value="123.456" />
+							</bean>
+						</list>
 					</property>
 					<property name="geometry"
 						value="MULTIPOLYGON(((500000 6000000, 500000 6500000, 1000000 6500000, 1000000 6000000, 500000 6000000)))" />

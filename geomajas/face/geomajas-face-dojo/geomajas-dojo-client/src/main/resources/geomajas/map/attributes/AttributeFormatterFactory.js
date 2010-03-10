@@ -80,18 +80,13 @@ dojo.declare("AttributeFormatterFactory", null, {
 				};
 			} else if (type == "one-to-many") {
 				formatter = function (attributeValue){
-					if (attributeValue == null) {
+					if (attributeValue == null || attributeValue.list == null) {
 						return "";
 					}
 					var simpleValue = [];
-					for (var i = 0; i < attributeValue.length; i++) {
-						var result = [];
-						for (var key in attributeValue[i]) {
-							if (key != "id" && key != "javaClass"){
-								result.push(key + "=" + attributeValue[i][key]);
-							}
-						}
-						simpleValue.push("{" + result.join(", ") + "}");
+					for (var i = 0; i < attributeValue.list.length; i++) {
+						var associationName = atDef.getAssociationAttributeName(); 
+						simpleValue.push("{" + attributeValue.list[i].attributes.map[associationName].value + "}");
 					}
 					return simpleValue;
 				};

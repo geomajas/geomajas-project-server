@@ -34,6 +34,7 @@ dojo.declare("geomajas.widget.attributes.CompositionFloater", dijit.form.Button,
 
 	connectionPoint : null,
 	floaterId : null,
+	disableEditor : false,
 
 	postMixInProperties : function () {
 		this.iconClass = "showTableIcon";
