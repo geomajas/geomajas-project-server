@@ -218,9 +218,9 @@ public class ButtonPage extends AbstractTestPage {
 				circle.setR(5);
 				symbol.setCircle(circle);
 
-				getMap().getGraphics().drawShapeType(null,"screen.circleShapeType", symbol,
+				getMap().getGraphics().drawShapeType(null, "screen.circleShapeType", symbol,
 						new ShapeStyle("#00FF88", 0.5f, "#009966", 1, 2), null);
-				getMap().getGraphics().drawSymbol(null,"screen.test1.symbol", new Coordinate(30, 30),
+				getMap().getGraphics().drawSymbol(null, "screen.test1.symbol", new Coordinate(30, 30),
 						new ShapeStyle("#00FF88", 0.5f, "#009966", 1, 2), "screen.circleShapeType");
 			}
 		});
