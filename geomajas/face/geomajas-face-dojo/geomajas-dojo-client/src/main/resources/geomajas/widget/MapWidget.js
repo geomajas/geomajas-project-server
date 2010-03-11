@@ -111,7 +111,7 @@ dojo.declare(
 			// Propagation policy:
 //			if (dojo.isIE) {
 				this.focus = true;
-				this.mouseListenerSubject.setStopPropagation(true);
+				this.mouseListenerSubject.setStopPropagation(false);
 //			} else {
 //				this.focus = false;
 //				this.mouseListenerSubject.setStopPropagation(false);
