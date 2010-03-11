@@ -23,10 +23,8 @@
 
 package org.geomajas.gwt.client.map.cache;
 
-import java.util.List;
-
 import org.geomajas.gwt.client.map.cache.tile.VectorTile;
-import org.geomajas.gwt.client.map.feature.Feature;
+import org.geomajas.gwt.client.map.feature.LazyLoadCallback;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.map.store.VectorLayerStore;
 import org.geomajas.layer.tile.TileCode;
@@ -47,21 +45,26 @@ public interface SpatialCache extends VectorLayerStore {
 	 *
 	 * @param tileCode
 	 *            A {@link TileCode} instance.
+	 * @return the previous tile with same code from the cache if any
 	 */
 	VectorTile addTile(TileCode tileCode);
 
 	/**
 	 * Return an array of all features in a certain {@link org.geomajas.gwt.client.map.cache.tile.AbstractVectorTile}.
-	 * This node is selected through it's unique {@link SpatialCode}.
+	 * This node is selected through it's unique {@link TileCode}.
 	 *
 	 * @param code
-	 *            A {@link SpatialCode} instance. If the node with this code is not present, an empty array will be
+	 *            A {@link TileCode} instance. If the node with this code is not present, an empty array will be
 	 *            returned.
+	 * @param featureIncludes what data should be available in the features
+	 * @param callback callback which gets the features
 	 */
-	List<Feature> getFeaturesByCode(TileCode code);
+	void getFeaturesByCode(TileCode code, int featureIncludes, LazyLoadCallback callback);
 
 	/**
-	 * Return the <code>VectorLayer</code> reference.
+	 * Return the <code>VectorLayer</code> for this cache.
+	 *
+	 * @return vector layer
 	 */
 	VectorLayer getLayer();
 }

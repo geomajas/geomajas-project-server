@@ -34,6 +34,7 @@ import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.map.cache.SpatialCache;
 import org.geomajas.gwt.client.map.feature.Feature;
+import org.geomajas.gwt.client.map.feature.LazyLoadCallback;
 import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.layer.tile.TileCode;
 import org.geomajas.layer.tile.VectorTile.VectorTileContentType;
@@ -41,7 +42,7 @@ import org.geomajas.layer.tile.VectorTile.VectorTileContentType;
 import com.smartgwt.client.util.SC;
 
 /**
- * TODO: not conform with latest Dojo implementation.
+ * Representation of a vector tile in the GWT client.
  * 
  * @author Pieter De Graef
  */
@@ -97,13 +98,12 @@ public class VectorTile extends AbstractVectorTile {
 	/**
 	 * Return all features in this tile. Warning : this will not return the features from other tiles that intersect
 	 * with this tile ! If you want to interact with all features, use the query() method.
+	 *
+	 * @param featureIncludes what data should be available in the features
+	 * @param callback callback which gets the features
 	 */
-	public List<Feature> getFeatures() {
-		List<Feature> features = new ArrayList<Feature>();
-		for (String featureId : featureIds) {
-			features.add(cache.getFeature(featureId));
-		}
-		return features;
+	public void getFeatures(int featureIncludes, LazyLoadCallback callback) {
+		cache.getFeatures(featureIncludes, callback);
 	}
 
 	/**

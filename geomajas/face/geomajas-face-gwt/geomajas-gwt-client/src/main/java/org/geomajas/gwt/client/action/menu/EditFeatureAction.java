@@ -106,7 +106,7 @@ public class EditFeatureAction extends MenuAction implements MenuItemIfFunction 
 		String featureId = mapWidget.getGraphics().getRightButtonName();
 		if (featureId != null) {
 			if (mapWidget.getMapModel().isFeatureSelected(featureId)) {
-				feature = mapWidget.getMapModel().getFeatureById(featureId);
+				feature = mapWidget.getMapModel().getPartialFeatureById(featureId);
 				return feature.isUpdatable();
 			}
 		}

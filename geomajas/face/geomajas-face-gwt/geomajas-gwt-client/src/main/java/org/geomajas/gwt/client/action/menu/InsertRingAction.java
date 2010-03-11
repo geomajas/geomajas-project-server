@@ -23,12 +23,16 @@
 
 package org.geomajas.gwt.client.action.menu;
 
+import org.geomajas.global.GeomajasConstant;
 import org.geomajas.gwt.client.action.MenuAction;
 import org.geomajas.gwt.client.controller.editing.ParentEditController;
 import org.geomajas.gwt.client.controller.editing.EditController.EditMode;
 import org.geomajas.gwt.client.gfx.MenuGraphicsContext;
 import org.geomajas.gwt.client.i18n.I18nProvider;
+import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.feature.FeatureTransaction;
+import org.geomajas.gwt.client.map.feature.LazyLoadCallback;
+import org.geomajas.gwt.client.map.feature.LazyLoader;
 import org.geomajas.gwt.client.map.feature.TransactionGeomIndex;
 import org.geomajas.gwt.client.map.feature.TransactionGeomIndexUtil;
 import org.geomajas.gwt.client.spatial.geometry.Geometry;
@@ -43,6 +47,9 @@ import com.smartgwt.client.widgets.menu.Menu;
 import com.smartgwt.client.widgets.menu.MenuItem;
 import com.smartgwt.client.widgets.menu.MenuItemIfFunction;
 import com.smartgwt.client.widgets.menu.events.MenuItemClickEvent;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Insert a new ring in the {@link Polygon} or {@link MultiPolygon} at a given index.
@@ -78,18 +85,24 @@ public class InsertRingAction extends MenuAction implements MenuItemIfFunction {
 	 *            The {@link MenuItemClickEvent} from clicking the action.
 	 */
 	public void onClick(MenuItemClickEvent event) {
-		FeatureTransaction ft = mapWidget.getMapModel().getFeatureEditor().getFeatureTransaction();
+		final FeatureTransaction ft = mapWidget.getMapModel().getFeatureEditor().getFeatureTransaction();
 		if (ft != null && index != null) {
-			controller.setEditMode(EditMode.INSERT_MODE);
-			Geometry geometry = ft.getNewFeatures()[index.getFeatureIndex()].getGeometry();
-			if (geometry instanceof Polygon) {
-				geometry = addRing((Polygon) geometry);
-			} else if (geometry instanceof MultiPolygon) {
-				geometry = addRing((MultiPolygon) geometry);
-			}
-			ft.getNewFeatures()[index.getFeatureIndex()].setGeometry(geometry);
-			controller.setGeometryIndex(index);
-			controller.hideGeometricInfo();
+			List<Feature> features = new ArrayList<Feature>();
+			features.add(ft.getNewFeatures()[index.getFeatureIndex()]);
+			LazyLoader.lazyLoad(features, GeomajasConstant.FEATURE_INCLUDE_GEOMETRY, new LazyLoadCallback() {
+				public void execute(List<Feature> response) {
+					controller.setEditMode(EditMode.INSERT_MODE);
+					Geometry geometry = response.get(0).getGeometry();
+					if (geometry instanceof Polygon) {
+						geometry = addRing((Polygon) geometry);
+					} else if (geometry instanceof MultiPolygon) {
+						geometry = addRing((MultiPolygon) geometry);
+					}
+					ft.getNewFeatures()[index.getFeatureIndex()].setGeometry(geometry);
+					controller.setGeometryIndex(index);
+					controller.hideGeometricInfo();
+				}
+			});
 		}
 	}
 

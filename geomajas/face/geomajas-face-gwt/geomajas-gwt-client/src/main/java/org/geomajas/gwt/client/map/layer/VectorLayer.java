@@ -32,8 +32,11 @@ import org.geomajas.gwt.client.map.cache.TileCache;
 import org.geomajas.gwt.client.map.cache.tile.TileFunction;
 import org.geomajas.gwt.client.map.cache.tile.VectorTile;
 import org.geomajas.gwt.client.map.feature.Feature;
+import org.geomajas.gwt.client.map.feature.LazyLoadCallback;
 import org.geomajas.gwt.client.map.store.VectorLayerStore;
 import org.geomajas.gwt.client.spatial.Bbox;
+
+import java.util.List;
 
 /**
  * <p>
@@ -76,11 +79,6 @@ public class VectorLayer extends AbstractLayer<ClientVectorLayerInfo> {
 	// Paintable implementation:
 	// -------------------------------------------------------------------------
 
-	/**
-	 * Return this layer's unique ID.
-	 *
-	 * @return
-	 */
 	public void accept(final PainterVisitor visitor, final Bbox bounds, boolean recursive) {
 		// Draw layer-specific stuff (see VectorLayerPainter)
 		visitor.visit(this);
@@ -90,13 +88,17 @@ public class VectorLayer extends AbstractLayer<ClientVectorLayerInfo> {
 			TileFunction<VectorTile> onDelete = new TileFunction<VectorTile>() {
 
 				// When deleting a tile, delete selected features in it first:
-				public void execute(VectorTile tile) {
-					for (Feature feature : tile.getFeatures()) {
-						if (feature != null && feature.isSelected()) {
-							visitor.remove(feature);
+				public void execute(final VectorTile tile) {
+					tile.getFeatures(0, new LazyLoadCallback() {
+						public void execute(List<Feature> response) {
+							for (Feature feature : response) {
+								if (feature != null && feature.isSelected()) {
+									visitor.remove(feature);
+								}
+							}
+							visitor.remove(tile);
 						}
-					}
-					visitor.remove(tile);
+					});
 				}
 			};
 			TileFunction<VectorTile> onUpdate = new TileFunction<VectorTile>() {
@@ -117,6 +119,7 @@ public class VectorLayer extends AbstractLayer<ClientVectorLayerInfo> {
 	/**
 	 * Return whether the feature with given id is selected.
 	 *
+	 * @param id feature id
 	 * @return true when the feature with given ide is selected
 	 */
 	public boolean isFeatureSelected(String id) {

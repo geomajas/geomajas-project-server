@@ -64,7 +64,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 
 	private boolean useLazyLoading = true;
 	private int lazyFeatureIncludesDefault =
-			GeomajasConstant.FEATURE_INCLUDE_ALL; // @todo should be FEATURE_INCLUDE_STYLE
+			GeomajasConstant.FEATURE_INCLUDE_STYLE + GeomajasConstant.FEATURE_INCLUDE_LABEL;
 	private int lazyFeatureIncludesSelect = GeomajasConstant.FEATURE_INCLUDE_ALL;
 	private int lazyFeatureIncludesAll = GeomajasConstant.FEATURE_INCLUDE_ALL;
 

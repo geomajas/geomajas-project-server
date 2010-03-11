@@ -23,12 +23,14 @@
 
 package org.geomajas.gwt.client.map.cache.tile;
 
-import java.util.Collection;
+import java.util.List;
 
+import org.geomajas.global.GeomajasConstant;
 import org.geomajas.gwt.client.gfx.PaintableGroup;
 import org.geomajas.gwt.client.gfx.PainterVisitor;
 import org.geomajas.gwt.client.map.cache.SpatialCache;
 import org.geomajas.gwt.client.map.feature.Feature;
+import org.geomajas.gwt.client.map.feature.LazyLoadCallback;
 import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.layer.tile.TileCode;
 
@@ -42,7 +44,7 @@ import org.geomajas.layer.tile.TileCode;
 public abstract class AbstractVectorTile implements Tile, PaintableGroup {
 
 	/**
-	 * ???
+	 * Possible statusses.
 	 */
 	static enum STATUS {
 
@@ -80,18 +82,21 @@ public abstract class AbstractVectorTile implements Tile, PaintableGroup {
 	// PainterVisitable implementation:
 	// -------------------------------------------------------------------------
 
-	public void accept(PainterVisitor visitor, Bbox bounds, boolean recursive) {
+	public void accept(final PainterVisitor visitor, final Bbox bounds, final boolean recursive) {
 		// Draw the tile and therefore all it's features:
 		visitor.visit(this);
 
 		// Draw all selected features:
 		if (recursive) {
-			Collection<Feature> features = getFeatures();
-			for (Feature feature : features) {
-				if (feature != null && feature.isSelected()) {
-					feature.accept(visitor, bounds, recursive);
+			getFeatures(GeomajasConstant.FEATURE_INCLUDE_ALL, new LazyLoadCallback() {
+				public void execute(List<Feature> response) {
+					for (Feature feature : response) {
+						if (feature != null && feature.isSelected()) {
+							feature.accept(visitor, bounds, recursive);
+						}
+					}
 				}
-			}
+			});
 		}
 	}
 
@@ -119,8 +124,11 @@ public abstract class AbstractVectorTile implements Tile, PaintableGroup {
 
 	/**
 	 * Return all features in this node.
+	 *
+	 * @param featureIncludes what data should be available in the features
+	 * @param callback callback which gets the features
 	 */
-	public abstract Collection<Feature> getFeatures();
+	public abstract void getFeatures(int featureIncludes, LazyLoadCallback callback);
 
 	public STATUS getStatus() {
 		return STATUS.EMPTY;

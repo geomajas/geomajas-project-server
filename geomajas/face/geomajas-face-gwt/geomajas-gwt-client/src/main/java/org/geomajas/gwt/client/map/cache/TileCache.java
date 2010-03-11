@@ -32,14 +32,16 @@ import java.util.Map;
 import org.geomajas.gwt.client.map.cache.tile.TileFunction;
 import org.geomajas.gwt.client.map.cache.tile.VectorTile;
 import org.geomajas.gwt.client.map.feature.Feature;
+import org.geomajas.gwt.client.map.feature.LazyLoadCallback;
+import org.geomajas.gwt.client.map.feature.LazyLoader;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.layer.tile.TileCode;
 
 /**
- * ???
+ * Cache for tiles and contained features.
  *
- * @author check subversion
+ * @author Pieter De Graef
  */
 public class TileCache implements SpatialCache {
 
@@ -107,14 +109,13 @@ public class TileCache implements SpatialCache {
 		return tile;
 	}
 
-	public List<Feature> getFeaturesByCode(TileCode code) {
+	public void getFeaturesByCode(TileCode code, int featureIncludes, LazyLoadCallback callback) {
 		if (code != null) {
-			VectorTile tile = (VectorTile) tiles.get(code.toString());
+			VectorTile tile = tiles.get(code.toString());
 			if (tile != null) {
-				return tile.getFeatures();
+				tile.getFeatures(featureIncludes, callback);
 			}
 		}
-		return null;
 	}
 
 	public VectorLayer getLayer() {
@@ -129,12 +130,19 @@ public class TileCache implements SpatialCache {
 		return features.containsKey(id);
 	}
 
-	public Feature getFeature(String id) {
+	public void getFeature(String id, int featureIncludes, LazyLoadCallback callback) {
+		List<Feature> list = new ArrayList<Feature>();
+		list.add(features.get(id));
+		LazyLoader.lazyLoad(list, featureIncludes, callback);
+	}
+
+	public Feature getPartialFeature(String id) {
 		return features.get(id);
 	}
 
-	public Collection<Feature> getFeatures() {
-		return features.values();
+	public void getFeatures(int featureIncludes, LazyLoadCallback callback) {
+		List<Feature> list = new ArrayList<Feature>(features.values());
+		LazyLoader.lazyLoad(list, featureIncludes, callback);
 	}
 
 	public boolean addFeature(Feature feature) {

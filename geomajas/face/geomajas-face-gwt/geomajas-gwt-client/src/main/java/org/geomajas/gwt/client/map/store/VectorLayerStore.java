@@ -23,11 +23,10 @@
 
 package org.geomajas.gwt.client.map.store;
 
-import java.util.Collection;
-
 import org.geomajas.gwt.client.map.cache.tile.TileFunction;
 import org.geomajas.gwt.client.map.cache.tile.VectorTile;
 import org.geomajas.gwt.client.map.feature.Feature;
+import org.geomajas.gwt.client.map.feature.LazyLoadCallback;
 import org.geomajas.gwt.client.spatial.Bbox;
 
 /**
@@ -52,18 +51,32 @@ public interface VectorLayerStore extends LayerStore<VectorTile> {
 	boolean contains(String id);
 
 	/**
-	 * Get a feature by it's identifier. If it can't be found, null is returned.
+	 * Get a feature by it's identifier.
 	 *
 	 * @param id
 	 *            The feature's identifier.
-	 * @return Returns the feature or null.
+	 * @param featureIncludes what data should be available in the features
+	 * @param callback callback which gets the features
 	 */
-	Feature getFeature(String id);
+	void getFeature(String id, int featureIncludes, LazyLoadCallback callback);
+
+	/**
+	 * Get a feature by it's identifier. If it can't be found, null is returned. The feature may require additional
+	 * lazy loading.
+	 *
+	 * @param id
+	 *            The feature's identifier.
+	 * @return feature which may require additional lazy loading
+	 */
+	Feature getPartialFeature(String id);
 
 	/**
 	 * Return a set of all features currently in the store.
+	 *
+	 * @param featureIncludes what data should be available in the features
+	 * @param callback callback which gets the features
 	 */
-	Collection<Feature> getFeatures();
+	void getFeatures(int featureIncludes, LazyLoadCallback callback);
 
 	/**
 	 * Add a new feature to the underlying data structure.
@@ -86,7 +99,7 @@ public interface VectorLayerStore extends LayerStore<VectorTile> {
 	/**
 	 * Return the current size of the store. How many features are stored here?
 	 *
-	 * @return
+	 * @return number of features in the store
 	 */
 	int size();
 

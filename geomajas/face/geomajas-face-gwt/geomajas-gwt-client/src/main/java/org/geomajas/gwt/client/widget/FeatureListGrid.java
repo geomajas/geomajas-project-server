@@ -30,11 +30,13 @@ import org.geomajas.configuration.AssociationAttributeInfo;
 import org.geomajas.configuration.AttributeInfo;
 import org.geomajas.configuration.PrimitiveAttributeInfo;
 import org.geomajas.configuration.PrimitiveType;
+import org.geomajas.global.GeomajasConstant;
 import org.geomajas.gwt.client.map.MapModel;
 import org.geomajas.gwt.client.map.event.FeatureDeselectedEvent;
 import org.geomajas.gwt.client.map.event.FeatureSelectedEvent;
 import org.geomajas.gwt.client.map.event.FeatureSelectionHandler;
 import org.geomajas.gwt.client.map.feature.Feature;
+import org.geomajas.gwt.client.map.feature.LazyLoadCallback;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 
 import com.google.gwt.event.shared.HandlerRegistration;
@@ -84,7 +86,7 @@ import com.smartgwt.client.widgets.grid.events.SelectionEvent;
 public class FeatureListGrid extends ListGrid implements FeatureSelectionHandler, SelectionChangedHandler {
 
 	/**
-	 * TODO: Used for the FeatureEditor and the selection. Can't we still remove it somehow??
+	 * TODO: Used for the FeatureEditor and the selection. Can't we remove it somehow??
 	 */
 	private MapModel mapModel;
 
@@ -360,9 +362,9 @@ public class FeatureListGrid extends ListGrid implements FeatureSelectionHandler
 
 		// Only deselect if it is actually selected:
 		boolean selected = false;
-		ListGridRecord[] selection = getSelection();
-		for (int i = 0; i < selection.length; i++) {
-			if (selection[i].getAttribute("featureId").equals(feature.getId())) {
+		ListGridRecord[] selections = getSelection();
+		for (ListGridRecord selection : selections) {
+			if (selection.getAttribute("featureId").equals(feature.getId())) {
 				selected = true;
 				break;
 			}
@@ -389,9 +391,9 @@ public class FeatureListGrid extends ListGrid implements FeatureSelectionHandler
 
 		// Only select if it is actually deselected:
 		boolean selected = false;
-		ListGridRecord[] selection = getSelection();
-		for (int i = 0; i < selection.length; i++) {
-			if (selection[i].getAttribute("featureId").equals(feature.getId())) {
+		ListGridRecord[] selections = getSelection();
+		for (ListGridRecord selection : selections) {
+			if (selection.getAttribute("featureId").equals(feature.getId())) {
 				selected = true;
 				break;
 			}
@@ -425,14 +427,20 @@ public class FeatureListGrid extends ListGrid implements FeatureSelectionHandler
 		if (event.getState()) {
 			// Only select a feature if it is not yet selected:
 			if (!mapModel.isFeatureSelected(featureId)) {
-				Feature feature = mapModel.getFeatureById(featureId);
-				mapModel.selectFeature(feature);
+				mapModel.getFeatureById(featureId, GeomajasConstant.FEATURE_INCLUDE_ALL, new LazyLoadCallback() {
+					public void execute(List<Feature> response) {
+						mapModel.selectFeature(response.get(0));
+					}
+				});
 			}
 		} else {
 			// Only deselect a feature if it is not yet deselected:
 			if (mapModel.isFeatureSelected(featureId)) {
-				Feature feature = mapModel.getFeatureById(featureId);
-				mapModel.deselectFeature(feature);
+				mapModel.getFeatureById(featureId, GeomajasConstant.FEATURE_INCLUDE_ALL, new LazyLoadCallback() {
+					public void execute(List<Feature> response) {
+						mapModel.deselectFeature(response.get(0));
+					}
+				});
 			}
 		}
 	}
@@ -460,13 +468,16 @@ public class FeatureListGrid extends ListGrid implements FeatureSelectionHandler
 					fields.add(createAttributeGridField(attributeInfo));
 				}
 			}
-			setFields(fields.toArray(new ListGridField[] {}));
+			setFields(fields.toArray(new ListGridField[fields.size()]));
 			setCanResizeFields(true);
 		}
 	}
 
 	/**
 	 * Create a single field definition from a attribute definition.
+	 *
+	 * @param attributeInfo attribute info
+	 * @return field for grid
 	 */
 	private ListGridField createAttributeGridField(final AttributeInfo attributeInfo) {
 		ListGridField gridField = new ListGridField(attributeInfo.getName(), attributeInfo.getLabel());
@@ -553,9 +564,14 @@ public class FeatureListGrid extends ListGrid implements FeatureSelectionHandler
 			ListGridRecord selected = getSelectedRecord();
 			String featureId = selected.getAttribute("featureId");
 			if (featureId != null && layer != null) {
-				Feature feature = layer.getFeatureStore().getFeature(featureId);
-				FeatureAttributeWindow window = new FeatureAttributeWindow(feature, editingEnabled);
-				window.draw();
+				layer.getFeatureStore()
+						.getFeature(featureId, GeomajasConstant.FEATURE_INCLUDE_ATTRIBUTES, new LazyLoadCallback() {
+							public void execute(List<Feature> response) {
+								FeatureAttributeWindow window =
+										new FeatureAttributeWindow(response.get(0), editingEnabled);
+								window.draw();
+							}
+						});
 			}
 		}
 	}

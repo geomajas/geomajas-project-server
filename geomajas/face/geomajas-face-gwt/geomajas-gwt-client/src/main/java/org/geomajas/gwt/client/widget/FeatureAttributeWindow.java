@@ -23,11 +23,14 @@
 
 package org.geomajas.gwt.client.widget;
 
+import org.geomajas.global.GeomajasConstant;
 import org.geomajas.gwt.client.action.menu.SaveEditingAction;
 import org.geomajas.gwt.client.i18n.I18nProvider;
 import org.geomajas.gwt.client.map.MapModel;
 import org.geomajas.gwt.client.map.MapView.ZoomOption;
 import org.geomajas.gwt.client.map.feature.Feature;
+import org.geomajas.gwt.client.map.feature.LazyLoadCallback;
+import org.geomajas.gwt.client.map.feature.LazyLoader;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.spatial.Bbox;
 
@@ -44,6 +47,9 @@ import com.smartgwt.client.widgets.layout.LayoutSpacer;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * <p>
  * The <code>FeatureAttributeWindow</code> is a floating window that uses a
@@ -58,7 +64,7 @@ import com.smartgwt.client.widgets.toolbar.ToolStrip;
  * <p>
  * On top of that, this widget has a few options regarding the editing of a feature's attributes:
  * <ul>
- * <li><b>editingAllowed</b>: Is editing überhaupt allowed? This must be set BEFORE the widget is actually drawn,
+ * <li><b>editingAllowed</b>: Is editing ï¿½berhaupt allowed? This must be set BEFORE the widget is actually drawn,
  * because afterwards it won't have any effect anymore.</li>
  * <li><b>editingEnabled</b>: Is editing currently enabled or not? This widget can toggle this value on the fly. When
  * editing is enabled, it will display an editable attribute form with save, cancel and reset buttons. When editing is
@@ -155,37 +161,44 @@ public class FeatureAttributeWindow extends Window {
 	}
 
 	/**
-	 * Apply a new feature onto this widget.
+	 * Apply a new feature onto this widget, assuring the attributes are loaded.
 	 * 
-	 * @param feature
+	 * @param feature feature
 	 */
 	public void setFeature(Feature feature) {
-		if (attributeTable == null) {
-			buildWidget(feature.getLayer());
-		}
-		if (feature != null) {
-			setTitle(I18nProvider.getAttribute().getAttributeWindowTitle(feature.getLabel()));
-		} else {
-			setTitle(I18nProvider.getAttribute().getAttributeWindowTitle(""));
-		}
-		attributeTable.setFeature(feature);
+		List<Feature> features = new ArrayList<Feature>();
+		features.add(feature);
+		LazyLoader.lazyLoad(features, GeomajasConstant.FEATURE_INCLUDE_ATTRIBUTES, new LazyLoadCallback() {
+			public void execute(List<Feature> response) {
+				Feature feature = response.get(0);
+				if (attributeTable == null) {
+					buildWidget(feature.getLayer());
+				}
+				if (feature != null) {
+					setTitle(I18nProvider.getAttribute().getAttributeWindowTitle(feature.getLabel()));
+				} else {
+					setTitle(I18nProvider.getAttribute().getAttributeWindowTitle(""));
+				}
+				attributeTable.setFeature(feature);
+			}
+		});
 	}
 
 	/**
-	 * Is editing überhaupt allowed? This must be set BEFORE the widget is actually drawn, because afterwards it won't
+	 * Is editing allowed? This must be set BEFORE the widget is actually drawn, because afterwards it won't
 	 * have any effect anymore.
 	 * 
-	 * @return
+	 * @return true when editing is allowed
 	 */
 	public boolean isEditingAllowed() {
 		return editingAllowed;
 	}
 
 	/**
-	 * Is editing überhaupt allowed? This must be set BEFORE the widget is actually drawn, because afterwards it won't
+	 * Is editing allowed? This must be set BEFORE the widget is actually drawn, because afterwards it won't
 	 * have any effect anymore.
 	 * 
-	 * @param editingAllowed
+	 * @param editingAllowed editing allowed status
 	 */
 	public void setEditingAllowed(boolean editingAllowed) {
 		this.editingAllowed = editingAllowed;
@@ -209,7 +222,7 @@ public class FeatureAttributeWindow extends Window {
 	 * buttons will disappear, and a simple attribute form is shown that displays the attribute values, but does not
 	 * allow for editing.
 	 * 
-	 * @param editingEnabled
+	 * @param editingEnabled editing enabled status
 	 */
 	public void setEditingEnabled(boolean editingEnabled) {
 		if (isEditingAllowed()) {
@@ -232,7 +245,11 @@ public class FeatureAttributeWindow extends Window {
 	// Private methods:
 	// -------------------------------------------------------------------------
 
-	/** Build the entire widget. */
+	/**
+	 * Build the entire widget.
+	 *
+	 * @param layer layer
+	 */
 	private void buildWidget(VectorLayer layer) {
 		mapModel = layer.getMapModel();
 

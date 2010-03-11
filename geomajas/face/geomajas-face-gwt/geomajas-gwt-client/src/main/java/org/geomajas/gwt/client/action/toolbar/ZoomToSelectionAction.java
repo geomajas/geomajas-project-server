@@ -23,12 +23,14 @@
 
 package org.geomajas.gwt.client.action.toolbar;
 
-import java.util.Iterator;
+import java.util.List;
 
+import org.geomajas.global.GeomajasConstant;
 import org.geomajas.gwt.client.action.ToolbarAction;
 import org.geomajas.gwt.client.i18n.I18nProvider;
 import org.geomajas.gwt.client.map.MapView;
 import org.geomajas.gwt.client.map.feature.Feature;
+import org.geomajas.gwt.client.map.feature.LazyLoadCallback;
 import org.geomajas.gwt.client.map.layer.Layer;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.map.store.VectorLayerStore;
@@ -55,25 +57,28 @@ public class ZoomToSelectionAction extends ToolbarAction {
 	 * Zoom to the selected features.
 	 */
 	public void onClick(ClickEvent clickEvent) {
-		Bbox selectionBounds = new Bbox(0, 0, 0, 0);
 		//get the selected VectorLayer
 		Layer<?> selectedLayer = mapWidget.getMapModel().getSelectedLayer();
 		if (selectedLayer instanceof VectorLayer) {
 			//iterate all features of the selected layer
 			VectorLayerStore featureStore = ((VectorLayer) selectedLayer).getFeatureStore();
-			Iterator<Feature> features = featureStore.getFeatures().iterator();
-			while (features.hasNext()) {
-				Feature feature = features.next();
-				//if the feature is selected union the bounding box
-				if (feature.isSelected()) {
-					selectionBounds = selectionBounds.union(feature.getGeometry().getBounds());
-				}
-			}
+			featureStore.getFeatures(GeomajasConstant.FEATURE_INCLUDE_GEOMETRY, new LazyLoadCallback() {
+				public void execute(List<Feature> features) {
+					Bbox selectionBounds = new Bbox(0, 0, 0, 0);
+					for (Feature feature : features) {
+						//if the feature is selected union the bounding box
+						if (feature.isSelected()) {
+							selectionBounds = selectionBounds.union(feature.getGeometry().getBounds());
+						}
+					}
 
-			// only zoom when their where really some items selected
-			if ((selectionBounds.getWidth() != 0) && (selectionBounds.getHeight() != 0)) {
-				mapWidget.getMapModel().getMapView().applyBounds(selectionBounds, MapView.ZoomOption.LEVEL_CHANGE);
-			}
+					// only zoom when their where really some items selected
+					if ((selectionBounds.getWidth() != 0) && (selectionBounds.getHeight() != 0)) {
+						mapWidget.getMapModel().getMapView().applyBounds(selectionBounds,
+								MapView.ZoomOption.LEVEL_CHANGE);
+					}
+				}
+			});
 		}
 	}
 }

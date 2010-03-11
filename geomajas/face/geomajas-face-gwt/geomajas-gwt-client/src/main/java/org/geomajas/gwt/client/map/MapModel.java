@@ -52,6 +52,7 @@ import org.geomajas.gwt.client.map.event.MapViewChangedHandler;
 import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.feature.FeatureEditor;
 import org.geomajas.gwt.client.map.feature.FeatureTransaction;
+import org.geomajas.gwt.client.map.feature.LazyLoadCallback;
 import org.geomajas.gwt.client.map.layer.Layer;
 import org.geomajas.gwt.client.map.layer.RasterLayer;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
@@ -195,7 +196,7 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 		}
 	}
 
-	/** Return this mapmodel's id. */
+	/** Return this map model's id. */
 	public String getId() {
 		return id;
 	}
@@ -381,9 +382,12 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 	 * 
 	 * @param featureId
 	 *            Must be the entire id: <layer>.<feature>
-	 * @return Returns the feature if it is found, null otherwise.
+	 * @param featureIncludes what data should be available in the features
+	 * @param callback callback which gets the features
 	 */
-	public Feature getFeatureById(String featureId) {
+	public void getFeatureById(String featureId, int featureIncludes, LazyLoadCallback callback) {
+		int pos = featureId.indexOf('.');
+		
 		String[] ids = featureId.split("\\."); // It's a regular expression, not literally.
 		Layer<?> layer = this.getLayerByLayerId(ids[0]);
 		if (layer != null && layer instanceof VectorLayer) {
@@ -397,7 +401,33 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 					count--;
 				}
 			}
-			return ((VectorLayer) layer).getFeatureStore().getFeature(featureId);
+			((VectorLayer) layer).getFeatureStore().getFeature(featureId, featureIncludes, callback);
+		}
+	}
+
+	/**
+	 * Retrieve a feature, by it's ID. The feature may have some still require lazy loading.
+	 *
+	 * @param featureId
+	 *            Must be the entire id: <layer>.<feature>
+	 */
+	public Feature getPartialFeatureById(String featureId) {
+		int pos = featureId.indexOf('.');
+
+		String[] ids = featureId.split("\\."); // It's a regular expression, not literally.
+		Layer<?> layer = this.getLayerByLayerId(ids[0]);
+		if (layer != null && layer instanceof VectorLayer) {
+			boolean ok = false;
+			int count = ids.length - 1;
+			while (!ok) {
+				String fid = ids[count];
+				if (!"use".equals(fid)) {
+					ok = true;
+				} else {
+					count--;
+				}
+			}
+			return ((VectorLayer) layer).getFeatureStore().getPartialFeature(featureId);
 		}
 		return null;
 	}

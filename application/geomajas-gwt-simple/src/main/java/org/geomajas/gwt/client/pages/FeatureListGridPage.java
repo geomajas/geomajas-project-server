@@ -23,7 +23,9 @@
 
 package org.geomajas.gwt.client.pages;
 
+import org.geomajas.global.GeomajasConstant;
 import org.geomajas.gwt.client.map.feature.Feature;
+import org.geomajas.gwt.client.map.feature.LazyLoadCallback;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.widget.FeatureListGrid;
 import org.geomajas.gwt.client.widget.MapWidget;
@@ -32,6 +34,8 @@ import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
+
+import java.util.List;
 
 /**
  * <p>
@@ -72,9 +76,13 @@ public class FeatureListGridPage extends AbstractTestPage {
 			public void onClick(ClickEvent event) {
 				VectorLayer layer = (VectorLayer) getMap().getMapModel().getLayerByLayerId("roads");
 				table.setLayer(layer);
-				for (Feature feature : layer.getFeatureStore().getFeatures()) {
-					table.addFeature(feature);
-				}
+				layer.getFeatureStore().getFeatures(GeomajasConstant.FEATURE_INCLUDE_ATTRIBUTES, new LazyLoadCallback() {
+					public void execute(List<Feature> response) {
+						for (Feature feature : response) {
+							table.addFeature(feature);
+						}
+					}
+				});
 			}
 		});
 		button1a.setWidth(110);
@@ -133,8 +141,8 @@ public class FeatureListGridPage extends AbstractTestPage {
 	/**
 	 * To add buttons to your test page, use this method.
 	 * 
-	 * @param text
-	 * @param handler
+	 * @param text button text
+	 * @param handler click handler
 	 */
 	protected void addButton(String text, ClickHandler handler) {
 		IButton button = new IButton(text);
