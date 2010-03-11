@@ -1,6 +1,7 @@
-package org.geomajas.gwt.client.gfx.paintable;
+package org.geomajas.gwt.client.gfx.paintable.mapaddon;
 
 import org.geomajas.configuration.client.UnitType;
+import org.geomajas.gwt.client.gfx.paintable.mapaddon.ScaleBar;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -9,7 +10,7 @@ public class ScaleBarTest {
 
 	@Test
 	public void testGetBestFitMetric() throws Exception {
-		ScaleBar sb = new ScaleBar();
+		ScaleBar sb = new ScaleBar("scaleBar", null);
 		sb.initialize(UnitType.METRIC, 1.0d, null);
 
 		sb.calculateBestFit(3.779527559055119); // 1:1000 (96 dpi), best fit is 25 meters for 125 pixels
@@ -23,7 +24,7 @@ public class ScaleBarTest {
 
 	@Test
 	public void testGetBestFitEnglish() throws Exception {
-		ScaleBar sb = new ScaleBar();
+		ScaleBar sb = new ScaleBar("scaleBar", null);
 		sb.initialize(UnitType.ENGLISH, 1.0d, null);
 
 		sb.calculateBestFit(3.779527559055119); // 1:1000 (96 dpi), best fit is 25 meters for 125 pixels
@@ -41,7 +42,7 @@ public class ScaleBarTest {
 	@Ignore
 	@Test
 	public void testformatUnitsMetric() throws Exception {
-		ScaleBar sb = new ScaleBar();
+		ScaleBar sb = new ScaleBar("scaleBar", null);
 		sb.initialize(UnitType.METRIC, 1.0d, null);
 		sb.calculateBestFit(3.779527559055119);
 

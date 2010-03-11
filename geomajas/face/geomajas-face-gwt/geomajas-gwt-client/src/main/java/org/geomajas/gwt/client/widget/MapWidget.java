@@ -23,25 +23,28 @@
 
 package org.geomajas.gwt.client.widget;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.geomajas.command.CommandResponse;
 import org.geomajas.command.dto.GetMapConfigurationRequest;
 import org.geomajas.command.dto.GetMapConfigurationResponse;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.gwt.client.Geomajas;
 import org.geomajas.gwt.client.action.menu.AboutAction;
 import org.geomajas.gwt.client.command.CommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.controller.GraphicsController;
-import org.geomajas.gwt.client.controller.PanArrowController;
 import org.geomajas.gwt.client.gfx.MenuGraphicsContext;
 import org.geomajas.gwt.client.gfx.Paintable;
 import org.geomajas.gwt.client.gfx.Painter;
 import org.geomajas.gwt.client.gfx.PainterVisitor;
-import org.geomajas.gwt.client.gfx.paintable.ScaleBar;
+import org.geomajas.gwt.client.gfx.paintable.mapaddon.MapAddon;
+import org.geomajas.gwt.client.gfx.paintable.mapaddon.PanButtonCollection;
+import org.geomajas.gwt.client.gfx.paintable.mapaddon.ScaleBar;
+import org.geomajas.gwt.client.gfx.paintable.mapaddon.Watermark;
 import org.geomajas.gwt.client.gfx.painter.CirclePainter;
 import org.geomajas.gwt.client.gfx.painter.FeaturePainter;
 import org.geomajas.gwt.client.gfx.painter.FeatureTransactionPainter;
@@ -51,11 +54,9 @@ import org.geomajas.gwt.client.gfx.painter.MapModelPainter;
 import org.geomajas.gwt.client.gfx.painter.RasterLayerPainter;
 import org.geomajas.gwt.client.gfx.painter.RasterTilePainter;
 import org.geomajas.gwt.client.gfx.painter.RectanglePainter;
-import org.geomajas.gwt.client.gfx.painter.ScaleBarPainter;
 import org.geomajas.gwt.client.gfx.painter.TextPainter;
 import org.geomajas.gwt.client.gfx.painter.VectorLayerPainter;
 import org.geomajas.gwt.client.gfx.painter.VectorTilePainter;
-import org.geomajas.gwt.client.gfx.style.PictureStyle;
 import org.geomajas.gwt.client.gfx.style.ShapeStyle;
 import org.geomajas.gwt.client.map.MapModel;
 import org.geomajas.gwt.client.map.MapView;
@@ -71,15 +72,15 @@ import org.geomajas.gwt.client.map.event.MapViewChangedEvent;
 import org.geomajas.gwt.client.map.event.MapViewChangedHandler;
 import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.layer.Layer;
-import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.spatial.Matrix;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.MouseWheelEvent;
 import com.google.gwt.event.dom.client.MouseWheelHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.user.client.Event;
+import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.Cursor;
+import com.smartgwt.client.types.VerticalAlignment;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.events.ResizedEvent;
 import com.smartgwt.client.widgets.events.ResizedHandler;
@@ -93,24 +94,6 @@ import com.smartgwt.client.widgets.menu.Menu;
  */
 public class MapWidget extends Canvas implements MapViewChangedHandler, MapModelHandler {
 
-	private static final String IMAGE_NAV_NORTH = "geomajas/nav_up.gif";
-
-	private static final String IMAGE_NAV_SOUTH = "geomajas/nav_down.gif";
-
-	private static final String IMAGE_NAV_WEST = "geomajas/nav_left.gif";
-
-	private static final String IMAGE_NAV_EAST = "geomajas/nav_right.gif";
-
-	private static final String IMAGE_NAV_NORTHWEST = "geomajas/nav_up_left.gif";
-
-	private static final String IMAGE_NAV_NORTHEAST = "geomajas/nav_up_right.gif";
-
-	private static final String IMAGE_NAV_SOUTHWEST = "geomajas/nav_down_left.gif";
-
-	private static final String IMAGE_NAV_SOUTHEAST = "geomajas/nav_down_right.gif";
-
-	private static final String POINTER_CURSOR = Cursor.POINTER.getValue();
-
 	private MapModel mapModel;
 
 	private GraphicsWidget graphics;
@@ -122,6 +105,8 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	protected boolean scaleBarEnabled = true;
 
 	private ScaleBar scalebar;
+
+	private Map<String, MapAddon> addons;
 
 	private double unitLength;
 
@@ -139,6 +124,8 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 
 	protected String applicationId;
 
+	private PanButtonCollection panButtons;
+
 	// -------------------------------------------------------------------------
 	// Constructor:
 	// -------------------------------------------------------------------------
@@ -154,7 +141,6 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 		mapModel.addFeatureSelectionHandler(new MapWidgetFeatureSelectionHandler(this));
 
 		// Painter registration:
-		painterVisitor.registerPainter(new ScaleBarPainter());
 		painterVisitor.registerPainter(new CirclePainter(mapModel.getScreenGroup()));
 		painterVisitor.registerPainter(new RectanglePainter(mapModel.getScreenGroup()));
 		painterVisitor.registerPainter(new TextPainter(mapModel.getScreenGroup()));
@@ -177,12 +163,13 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 		setDynamicContents(true);
 		addResizedHandler(new MapResizedHandler(this));
 		setZoomOnScrollEnabled(true);
+
+		addons = new HashMap<String, MapAddon>();
 	}
 
 	// -------------------------------------------------------------------------
 	// Class specific methods:
 	// -------------------------------------------------------------------------
-
 
 	public double getUnitLength() {
 		return unitLength;
@@ -216,6 +203,13 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 					}
 				});
 			}
+
+			// Register the watermark MapAddon:
+			Watermark watermark = new Watermark(id + ".watermark");
+			watermark.setAlignment(Alignment.RIGHT);
+			watermark.setVerticalAlignment(VerticalAlignment.BOTTOM);
+			watermark.setHorizontalMargin(10);
+			registerMapAddon(watermark);
 		}
 	}
 
@@ -225,6 +219,23 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 
 	public void unregisterPainter(Painter painter) {
 		painterVisitor.unregisterPainter(painter);
+	}
+
+	public void registerMapAddon(MapAddon addon) {
+		if (!addons.containsKey(addon.getId())) {
+			addons.put(addon.getId(), addon);
+			addon.setMapSize(getWidth(), getHeight());
+			render(addon, "all");
+			addon.onDraw();
+		}
+	}
+
+	public void unregisterMapAddon(MapAddon addon) {
+		if (addons.containsKey(addon.getId())) {
+			addons.remove(addon.getId());
+			graphics.deleteGroup(addon);
+			addon.onRemove();
+		}
 	}
 
 	public void setZoomOnScrollEnabled(boolean zoomOnScrollEnabled) {
@@ -287,16 +298,19 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 		scaleBarEnabled = enabled;
 		if (scaleBarEnabled) {
 			if (null == scalebar) {
-				scalebar = new ScaleBar("scalebar");
+				scalebar = new ScaleBar("scalebar", this);
+				scalebar.setVerticalAlignment(VerticalAlignment.BOTTOM);
+				scalebar.setHorizontalMargin(10);
+				scalebar.setVerticalMargin(2);
 			}
 			scalebar.initialize(getMapModel().getMapInfo().getDisplayUnitType(), unitLength, new Coordinate(20,
 					graphics.getHeight() - 25));
 			scalebar.adjustScale(mapModel.getMapView().getCurrentScale());
-			render(scalebar, "all");
+			registerMapAddon(scalebar);
 		} else {
 			GWT.log("MapWidget::setScalebarEnabled: going to disable to scalebar" + enabled, null);
 			if (null != scalebar) {
-				render(scalebar, "delete");
+				unregisterMapAddon(scalebar);
 				scalebar = null;
 			}
 		}
@@ -314,62 +328,15 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	 */
 	public void setPanButtonsEnabled(boolean enabled) {
 		panButtonsEnabled = enabled;
+
 		if (enabled) {
-			graphics.drawImage(mapModel.getScreenGroup(), "panNImage", Geomajas.getIsomorphicDir()
-					+ IMAGE_NAV_NORTH, new Bbox(graphics.getWidth() / 2 - 9, 0, 18, 18), new PictureStyle(0.7));
-			graphics.drawImage(mapModel.getScreenGroup(), "panSImage", Geomajas.getIsomorphicDir()
-					+ IMAGE_NAV_SOUTH, new Bbox(graphics.getWidth() / 2 - 9, graphics.getHeight() - 18, 18, 18),
-					new PictureStyle(0.7));
-			graphics.drawImage(mapModel.getScreenGroup(), "panWImage", Geomajas.getIsomorphicDir()
-					+ IMAGE_NAV_WEST, new Bbox(0, graphics.getHeight() / 2 - 9, 18, 18), new PictureStyle(0.7));
-			graphics.drawImage(mapModel.getScreenGroup(), "panEImage", Geomajas.getIsomorphicDir()
-					+ IMAGE_NAV_EAST, new Bbox(graphics.getWidth() - 18, graphics.getHeight() / 2 - 9, 18, 18),
-					new PictureStyle(0.7));
-			graphics.drawImage(mapModel.getScreenGroup(), "panNWImage", Geomajas.getIsomorphicDir()
-					+ IMAGE_NAV_NORTHWEST, new Bbox(0, 0, 18, 18), new PictureStyle(0.7));
-			graphics.drawImage(mapModel.getScreenGroup(), "panNEImage", Geomajas.getIsomorphicDir()
-					+ IMAGE_NAV_NORTHEAST, new Bbox(graphics.getWidth() - 18, 0, 18, 18), new PictureStyle(0.7));
-			graphics.drawImage(mapModel.getScreenGroup(), "panSWImage", Geomajas.getIsomorphicDir()
-					+ IMAGE_NAV_SOUTHWEST, new Bbox(0, graphics.getHeight() - 18, 18, 18), new PictureStyle(0.7));
-			graphics.drawImage(mapModel.getScreenGroup(), "panSEImage", Geomajas.getIsomorphicDir()
-					+ IMAGE_NAV_SOUTHEAST, new Bbox(graphics.getWidth() - 18, graphics.getHeight() - 18, 18, 18),
-					new PictureStyle(0.7));
-
-			graphics.setController(mapModel.getScreenGroup(), "panNImage", new PanArrowController(this, new Coordinate(
-					0, 1)), Event.MOUSEEVENTS);
-			graphics.setController(mapModel.getScreenGroup(), "panSImage", new PanArrowController(this, new Coordinate(
-					0, -1)), Event.MOUSEEVENTS);
-			graphics.setController(mapModel.getScreenGroup(), "panWImage", new PanArrowController(this, new Coordinate(
-					-1, 0)), Event.MOUSEEVENTS);
-			graphics.setController(mapModel.getScreenGroup(), "panEImage", new PanArrowController(this, new Coordinate(
-					1, 0)), Event.MOUSEEVENTS);
-			graphics.setController(mapModel.getScreenGroup(), "panNWImage", new PanArrowController(this,
-					new Coordinate(-1, 1)), Event.MOUSEEVENTS);
-			graphics.setController(mapModel.getScreenGroup(), "panNEImage", new PanArrowController(this,
-					new Coordinate(1, 1)), Event.MOUSEEVENTS);
-			graphics.setController(mapModel.getScreenGroup(), "panSWImage", new PanArrowController(this,
-					new Coordinate(-1, -1)), Event.MOUSEEVENTS);
-			graphics.setController(mapModel.getScreenGroup(), "panSEImage", new PanArrowController(this,
-					new Coordinate(1, -1)), Event.MOUSEEVENTS);
-
-			graphics.setCursor(mapModel.getScreenGroup(), "panNImage", POINTER_CURSOR);
-			graphics.setCursor(mapModel.getScreenGroup(), "panSImage", POINTER_CURSOR);
-			graphics.setCursor(mapModel.getScreenGroup(), "panWImage", POINTER_CURSOR);
-			graphics.setCursor(mapModel.getScreenGroup(), "panEImage", POINTER_CURSOR);
-			graphics.setCursor(mapModel.getScreenGroup(), "panNWImage", POINTER_CURSOR);
-			graphics.setCursor(mapModel.getScreenGroup(), "panNEImage", POINTER_CURSOR);
-			graphics.setCursor(mapModel.getScreenGroup(), "panSWImage", POINTER_CURSOR);
-			graphics.setCursor(mapModel.getScreenGroup(), "panSEImage", POINTER_CURSOR);
-
+			panButtons = new PanButtonCollection("panBTNCollection", this);
+			panButtons.setHorizontalMargin(10);
+			panButtons.setVerticalMargin(10);
+			registerMapAddon(panButtons);
 		} else {
-			graphics.deleteElement(mapModel.getScreenGroup(), "panNImage");
-			graphics.deleteElement(mapModel.getScreenGroup(), "panSImage");
-			graphics.deleteElement(mapModel.getScreenGroup(), "panWImage");
-			graphics.deleteElement(mapModel.getScreenGroup(), "panEImage");
-			graphics.deleteElement(mapModel.getScreenGroup(), "panNWImage");
-			graphics.deleteElement(mapModel.getScreenGroup(), "panNEImage");
-			graphics.deleteElement(mapModel.getScreenGroup(), "panSWImage");
-			graphics.deleteElement(mapModel.getScreenGroup(), "panSEImage");
+			unregisterMapAddon(panButtons);
+			panButtons = null;
 		}
 	}
 
@@ -551,13 +518,11 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 					final int width = map.getWidth();
 					final int height = map.getHeight();
 					mapModel.getMapView().setSize(width, height);
-					if (scaleBarEnabled) {
-						scalebar.setPosition(new Coordinate(20, graphics.getHeight() - 30));
-						render(scalebar, "update");
-					}
-					if (panButtonsEnabled) {
-						setPanButtonsEnabled(false);
-						setPanButtonsEnabled(true);
+
+					for (String addonId : addons.keySet()) {
+						MapAddon addon = addons.get(addonId);
+						addon.setMapSize(width, height);
+						render(addon, "update");
 					}
 
 					GWT.log("MapWidget has resized: " + width + "," + height, null);
