@@ -65,6 +65,10 @@ dojo.extend(MouseListenerSubject, {
 	},
 
 	click : function (evt) {	
+		var event = new HtmlMouseEvent(evt,this.offset);
+		if(this.isStopPropagation()){
+			event.stopPropagation();
+		}
 	},
 
 	doubleclick : function (evt) {
@@ -72,6 +76,9 @@ dojo.extend(MouseListenerSubject, {
 		var e = this.listeners.getIterator();
 		while(e.get()) {
 		 	e.element.value.doubleClick(event);
+		}
+		if(this.isStopPropagation()){
+			event.stopPropagation();
 		}
 	},
 
