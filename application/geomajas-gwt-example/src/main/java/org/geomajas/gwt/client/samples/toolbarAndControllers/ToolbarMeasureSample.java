@@ -88,7 +88,7 @@ public class ToolbarMeasureSample extends SamplePanel {
 	}
 
 	public String getSourceFileName() {
-		return "classpath:org/geomajas/gwt/client/samples/controller/ToolbarMeasureSample";
+		return "classpath:org/geomajas/gwt/client/samples/controller/ToolbarMeasureSample.txt";
 	}
 
 	public String[] getConfigurationFiles() {

@@ -100,7 +100,7 @@ public class ToolbarFeatureInfoSample extends SamplePanel {
 	}
 
 	public String getSourceFileName() {
-		return "classpath:org/geomajas/gwt/client/samples/controller/ToolbarFeatureInfoSample";
+		return "classpath:org/geomajas/gwt/client/samples/controller/ToolbarFeatureInfoSample.txt";
 	}
 
 	public String[] getConfigurationFiles() {

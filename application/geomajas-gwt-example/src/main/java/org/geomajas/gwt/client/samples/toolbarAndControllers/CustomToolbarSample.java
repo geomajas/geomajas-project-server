@@ -23,6 +23,10 @@
 
 package org.geomajas.gwt.client.samples.toolbarAndControllers;
 
+import org.geomajas.gwt.client.action.toolbar.ZoomToRectangleModalAction;
+import org.geomajas.gwt.client.controller.PanController;
+import org.geomajas.gwt.client.map.event.MapModelEvent;
+import org.geomajas.gwt.client.map.event.MapModelHandler;
 import org.geomajas.gwt.client.samples.base.SamplePanel;
 import org.geomajas.gwt.client.samples.base.SamplePanelFactory;
 import org.geomajas.gwt.client.samples.i18n.I18nProvider;
@@ -36,20 +40,19 @@ import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
  * <p>
- * Sample that shows how a toolbar can be added to the map. The toolbar contains some buttons the user can use to
- * navigate the map (zoom, pan, zoom to rectangle)
+ * Sample that shows how a custom toolbar can created without using configuration.
  * </p>
  * 
  * @author Frank Wynants
  */
-public class ToolbarNavigationSample extends SamplePanel {
+public class CustomToolbarSample extends SamplePanel {
 
-	public static final String TITLE = "ToolbarNavigation";
+	public static final String TITLE = "CustomToolbar";
 
 	public static final SamplePanelFactory FACTORY = new SamplePanelFactory() {
 
 		public SamplePanel createPanel() {
-			return new ToolbarNavigationSample();
+			return new CustomToolbarSample();
 		}
 	};
 
@@ -61,10 +64,14 @@ public class ToolbarNavigationSample extends SamplePanel {
 		layout.setWidth100();
 		layout.setHeight100();
 
-		// Map with ID wmsToolbarMap is defined in the XML configuration. (mapWmsNavigationToolbar.xml)
-		final MapWidget map = new MapWidget("osmNavigationToolbarMap", "gwt-samples");
+		final MapWidget map = new MapWidget("osmMap", "gwt-samples");
+
+		// Set a panning controller on the map:
+		map.setController(new PanController(map));
 
 		final Toolbar toolbar = new Toolbar(map);
+		// add a button in GWT code
+		toolbar.addModalButton(new ZoomToRectangleModalAction(map));
 
 		map.addDrawHandler(new DrawHandler() {
 
@@ -75,20 +82,31 @@ public class ToolbarNavigationSample extends SamplePanel {
 
 		layout.addMember(toolbar);
 		layout.addMember(map);
+
+		// wait for the map to be loaded and select the 1st layer
+		// the map only has one layer so selecting the 1st one is correct
+		// We need to select a layer cause the FeatureInfo works on selected layers only
+		map.getMapModel().addMapModelHandler(new MapModelHandler() {
+
+			public void onMapModelChange(MapModelEvent event) {
+				map.getMapModel().selectLayer(map.getMapModel().getLayers().get(0));
+			}
+		});
+
 		return layout;
 	}
 
 	public String getDescription() {
-		return I18nProvider.getSampleMessages().toolbarNavigationDescription();
+		return I18nProvider.getSampleMessages().customToolbarDescription();
 	}
 
 	public String getSourceFileName() {
-		return "classpath:org/geomajas/gwt/client/samples/controller/ToolbarNavigationSample.txt";
+		return "classpath:org/geomajas/gwt/client/samples/controller/CustomToolbarSample.txt";
 	}
 
 	public String[] getConfigurationFiles() {
 		return new String[] { "classpath:org/geomajas/gwt/samples/mapwidget/layerOsm.xml",
-				"classpath:org/geomajas/gwt/samples/toolbarAndControllers/mapOsmNavigationToolbar.xml" };
+				"classpath:org/geomajas/gwt/samples/mapwidget/mapOsm.xml" };
 	}
 
 	public String ensureUserLoggedIn() {

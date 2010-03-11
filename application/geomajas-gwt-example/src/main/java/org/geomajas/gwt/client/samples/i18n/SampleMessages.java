@@ -222,4 +222,10 @@ public interface SampleMessages extends Messages {
 	String toolbarFeatureInfoTitle();
 	
 	String toolbarFeatureInfoDescription();
+
+	// Custom toolbar sample
+	
+	String customToolbarTitle();
+	
+	String customToolbarDescription();
 }

@@ -1,0 +1,25 @@
+	public Canvas getViewPanel() {
+		VLayout layout = new VLayout();
+		layout.setWidth100();
+		layout.setHeight100();
+
+		// Map with ID wmsToolbarMap is defined in the XML configuration. (mapOsmMeasure.xml)
+		final MapWidget map = new MapWidget("osmMeasureMap", "gwt-samples");
+
+		// Set a panning controller on the map:
+		map.setController(new PanController(map));
+
+		final Toolbar toolbar = new Toolbar(map);
+
+		map.addDrawHandler(new DrawHandler() {
+
+			public void onDraw(DrawEvent event) {
+				map.initialize();
+			}
+		});
+
+		layout.addMember(toolbar);
+		layout.addMember(map);
+
+		return layout;
+	}

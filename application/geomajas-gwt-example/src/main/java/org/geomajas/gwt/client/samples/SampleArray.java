@@ -42,6 +42,7 @@ import org.geomajas.gwt.client.samples.security.FilterSecuritySample;
 import org.geomajas.gwt.client.samples.security.LayerSecuritySample;
 import org.geomajas.gwt.client.samples.security.LoginSample;
 import org.geomajas.gwt.client.samples.security.ToolSecuritySample;
+import org.geomajas.gwt.client.samples.toolbarAndControllers.CustomToolbarSample;
 import org.geomajas.gwt.client.samples.toolbarAndControllers.ToolbarFeatureInfoSample;
 import org.geomajas.gwt.client.samples.toolbarAndControllers.ToolbarMeasureSample;
 import org.geomajas.gwt.client.samples.toolbarAndControllers.ToolbarNavigationSample;
@@ -118,6 +119,10 @@ public final class SampleArray {
 				new SampleTreeNode(I18nProvider.getSampleMessages().toolbarFeatureInfoTitle(),
 						"[ISOMORPHIC]/geomajas/info.png", ToolbarFeatureInfoSample.TITLE,
 						"ToolbarAndControllers", ToolbarFeatureInfoSample.FACTORY),
+				
+				new SampleTreeNode(I18nProvider.getSampleMessages().customToolbarTitle(),
+						"[ISOMORPHIC]/geomajas/tools.png", CustomToolbarSample.TITLE,
+						"ToolbarAndControllers", CustomToolbarSample.FACTORY),
 						
 				// Security samples:
 				new SampleTreeNode(I18nProvider.getSampleMessages().treeGroupSecurity(),
