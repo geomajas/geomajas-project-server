@@ -23,7 +23,6 @@
 
 package org.geomajas.gwt.client.gfx;
 
-import com.google.gwt.user.client.Element;
 import org.geomajas.configuration.SymbolInfo;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.controller.GraphicsController;
@@ -34,15 +33,267 @@ import org.geomajas.gwt.client.gfx.style.Style;
 import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.spatial.Matrix;
 import org.geomajas.gwt.client.spatial.geometry.LineString;
-import org.geomajas.gwt.client.spatial.geometry.Point;
 import org.geomajas.gwt.client.spatial.geometry.Polygon;
 
+import com.google.gwt.user.client.Element;
+
 /**
- * ???
+ * Context to draw cross-browser vector graphics. The context is based on DOM tree manipulation and makes the following
+ * assumptions:
+ * <ul>
+ * <li>The DOM tree has a single root group (DIV or SVG/VML group)</li>
+ * <li>DOM tree branches are groups as well (DIV or SVG/VML group)</li>
+ * <li>Groups can be uniquely mapped to GWT objects</li>
+ * <li>DOM tree leafs are all other elements (line, rectangle, polygon)</li>
+ * <li>The context is responsible for generating unique id's for each group</li>
+ * <li>Appending DOM children (groups/elements) is done by providing the parent group object as an extra parameter or
+ * null for appending to the root group</li>
+ * <li>For non-group elements a name can be provided for later reference</li>
+ * <li>Deleting/updating groups is done by providing the group object</li>
+ * <li>Deleting/updating non-group elements is done by providing the parent group object and the name</li>
+ * </ul>
  * 
- * @author check subversion
+ * @author Jan De Moerloose
+ * @author Pieter De Graef
  */
 public interface GraphicsContext {
+
+	/**
+	 * Delete this element from the graphics DOM structure.
+	 * 
+	 * @param parent
+	 *            parent group object
+	 * @param name
+	 *            The element's name.
+	 */
+	void deleteElement(Object parent, String name);
+
+	/**
+	 * Delete this group from the graphics DOM structure.
+	 * 
+	 * @param object
+	 *            The group's object.
+	 */
+	void deleteGroup(Object object);
+
+	/**
+	 * Draw a circle on the <code>GraphicsContext</code>.
+	 * 
+	 * @param parent
+	 *            parent group object
+	 * @param name
+	 *            The circle's name.
+	 * @param position
+	 *            The center position as a coordinate.
+	 * @param radius
+	 *            The circle's radius.
+	 * @param style
+	 *            The styling object by which the circle should be drawn.
+	 */
+	void drawCircle(Object parent, String name, Coordinate position, double radius, ShapeStyle style);
+
+	/**
+	 * Draw inner group data directly (implementation-specific shortcut). This method can only be called once, creating
+	 * the group. Delete the group first to redraw with different data.
+	 * 
+	 * @param parent
+	 *            The parent group's object
+	 * @param object
+	 *            The group's object
+	 * @param data
+	 *            fragment of data type supported by this context (SVG, VML, ...)
+	 * @param transformation
+	 *            transformation to apply to the group
+	 */
+	void drawData(Object parent, Object object, String data, Matrix transformation);
+
+	/**
+	 * Creates a group element in the technology (SVG/VML/...) of this context. A group is meant to group other elements
+	 * together.
+	 * 
+	 * @param parent
+	 *            parent group object
+	 * @param object
+	 *            group object
+	 */
+	void drawGroup(Object parent, Object object);
+
+	/**
+	 * Creates a group element in the technology (SVG/VML/...) of this context. A group is meant to group other elements
+	 * together. Also this method gives you the opportunity to specify a transformation to the group. Warning: currently
+	 * supports translation only !
+	 * 
+	 * @param parent
+	 *            parent group object
+	 * @param object
+	 *            group object
+	 * @param transformation
+	 *            transformation to apply to the group
+	 */
+	void drawGroup(Object parent, Object object, Matrix transformation);
+
+	/**
+	 * Creates a group element in the technology (SVG/VML/...) of this context. A group is meant to group other elements
+	 * together, and in this case applying a style on them.
+	 * 
+	 * @param parent
+	 *            parent group object
+	 * @param object
+	 *            group object
+	 * @param style
+	 *            Add a style to a group.
+	 */
+	void drawGroup(Object parent, Object object, Style style);
+
+	/**
+	 * Creates a group element in the technology (SVG/VML/...) of this context. A group is meant to group other elements
+	 * together, possibly applying position and size to them. Warning: currently supports translation only !
+	 * 
+	 * @param parent
+	 *            parent group object
+	 * @param object
+	 *            group object
+	 * @param transformation
+	 *            transformation to apply to the group
+	 * @param style
+	 *            Add a style to a group.
+	 */
+	void drawGroup(Object parent, Object object, Matrix transformation, Style style);
+
+	/**
+	 * Draw an image onto the the <code>GraphicsContext</code>.
+	 * 
+	 * @param parent
+	 *            parent group object
+	 * @param name
+	 *            The image's name.
+	 * @param href
+	 *            The image's location (URL).
+	 * @param bounds
+	 *            The bounding box that sets the image's origin (x and y), it's width and it's height.
+	 * @param style
+	 *            A styling object to be passed along with the image. Can be null.
+	 */
+	void drawImage(Object parent, String name, String href, Bbox bounds, PictureStyle style);
+
+	/**
+	 * Draw a {@link LineString} geometry onto the <code>GraphicsContext</code>.
+	 * 
+	 * @param parent
+	 *            parent group object
+	 * @param name
+	 *            The LineString's name.
+	 * @param line
+	 *            The LineString to be drawn.
+	 * @param style
+	 *            The styling object for the LineString. Watch out for fill colors! If the fill opacity is not 0, then
+	 *            the LineString will have a fill surface.
+	 */
+	void drawLine(Object parent, String name, LineString line, ShapeStyle style);
+
+	/**
+	 * Draw a {@link Polygon} geometry onto the <code>GraphicsContext</code>.
+	 * 
+	 * @param parent
+	 *            parent group object
+	 * @param name
+	 *            The Polygon's name.
+	 * @param polygon
+	 *            The Polygon to be drawn.
+	 * @param style
+	 *            The styling object for the Polygon.
+	 */
+	void drawPolygon(Object parent, String name, Polygon polygon, ShapeStyle style);
+
+	/**
+	 * Draw a rectangle onto the <code>GraphicsContext</code>.
+	 * 
+	 * @param parent
+	 *            parent group object
+	 * @param name
+	 *            The rectangle's name.
+	 * @param rectangle
+	 *            The rectangle to be drawn. The bounding box's origin, is the rectangle's upper left corner on the
+	 *            screen.
+	 * @param style
+	 *            The styling object for the rectangle.
+	 */
+	void drawRectangle(Object parent, String name, Bbox rectangle, ShapeStyle style);
+
+	/**
+	 * Draw a type (def/symbol for svg, shapetype for vml).
+	 * 
+	 * @param parent
+	 *            the parent of the shapetype for vml, null for svg
+	 * @param id
+	 *            the types's unique identifier TODO: how can we ensure this is unique (it is defined on the server) ?
+	 * @param symbol
+	 *            the symbol information
+	 * @param style
+	 *            The style to apply on the symbol.
+	 * @param transformation
+	 *            the transformation to apply on the symbol
+	 */
+	void drawShapeType(Object parent, String id, SymbolInfo symbol, ShapeStyle style, Matrix transformation);
+
+	/**
+	 * Draw a symbol, using some predefined ShapeType.
+	 * 
+	 * @param parent
+	 *            parent group object
+	 * @param name
+	 *            The symbol's name.
+	 * @param symbol
+	 *            The symbol's (X,Y) location on the graphics.
+	 * @param style
+	 *            The style to apply on the symbol.
+	 * @param shapeTypeId
+	 *            The name of the predefined ShapeType. This symbol will create a reference to this predefined type and
+	 *            take on it's characteristics.
+	 */
+	void drawSymbol(Object parent, String name, Coordinate position, ShapeStyle style, String shapeTypeId);
+
+	/**
+	 * Draw a string of text onto the <code>GraphicsContext</code>.
+	 * 
+	 * @param parent
+	 *            parent group object
+	 * @param name
+	 *            The text's name.
+	 * @param text
+	 *            The actual string content.
+	 * @param position
+	 *            The upper left corner for the text to originate.
+	 * @param style
+	 *            The styling object for the text.
+	 */
+	void drawText(Object parent, String name, String text, Coordinate position, FontStyle style);
+
+	/**
+	 * Return the current graphics height.
+	 */
+	int getHeight();
+
+	/**
+	 * Return the element name for the specified id
+	 * 
+	 * @param id
+	 * @return the name of the element
+	 */
+	String getNameById(String id);
+
+	/**
+	 * Return the current graphics width.
+	 */
+	int getWidth();
+
+	/**
+	 * Hide the specified group. If the group does not exist, nothing will happen.
+	 * 
+	 * @param object
+	 *            The group object.
+	 */
+	void hide(Object object);
 
 	/**
 	 * The initialization function for the GraphicsContext. It will create the initial DOM structure setup.
@@ -53,247 +304,74 @@ public interface GraphicsContext {
 	void initialize(Element parent);
 
 	/**
-	 * Draw directly (implementation-specific shortcut).
-	 */
-	void drawData(String id, String data);
-
-	/**
-	 * Creates either a SVG/VML group or a HTML DIV element, depending on the name-space. A group is meant to group
-	 * other elements together.
+	 * Set the controller on an element of this <code>GraphicsContext</code> so it can react to events.
 	 * 
-	 * @param id
-	 *            The group's identifier.
-	 * @param namespace
-	 *            The name-space wherein the group is to be created. If the name-space is null, a HTML DIV element is
-	 *            created.
-	 */
-	void drawGroup(String id, String namespace);
-
-	/**
-	 * Creates either a SVG/VML group or a HTML DIV element, depending on the name-space. A group is meant to group
-	 * other elements together. Also this method gives you the opportunity to specify a specific width and height.
-	 * 
-	 * @param id
-	 *            The group's identifier.
-	 * @param namespace
-	 *            The name-space wherein the group is to be created. If the name-space is null, a HTML DIV element is
-	 *            created.
-	 * @param width
-	 *            A fixed width for the group.
-	 * @param height
-	 *            A fixed height for the group.
-	 * @param transformation
-	 *            On each group, it is possible to apply a matrix transformation (currently translation only). This is
-	 *            the real strength of a group element. Never apply transformations on any other kind of element.
-	 */
-	void drawGroup(String id, String namespace, int width, int height, Matrix transformation);
-
-	/**
-	 * Creates either a SVG/VML group or a HTML DIV element, depending on the name-space. A group is meant to group
-	 * other elements together, possibly applying a transformation upon them.
-	 * 
-	 * @param id
-	 *            The group's identifier.
-	 * @param namespace
-	 *            The name-space wherein the group is to be created. If the name-space is null, a HTML DIV element is
-	 *            created.
-	 * @param transformation
-	 *            On each group, it is possible to apply a matrix transformation (currently translation only). This is
-	 *            the real strength of a group element. Never apply transformations on any other kind of element.
-	 */
-	void drawGroup(String id, String namespace, Matrix transformation);
-
-	/**
-	 * Creates either a SVG/VML group or a HTML DIV element, depending on the name-space. A group is meant to group
-	 * other elements together, and in this case applying a style on them.
-	 * 
-	 * @param id
-	 *            The group's identifier.
-	 * @param namespace
-	 *            The name-space wherein the group is to be created. If the name-space is null, a HTML DIV element is
-	 *            created.
-	 * @param style
-	 *            Add a style to a group.
-	 */
-	void drawGroup(String id, String namespace, Style style);
-
-	/**
-	 * Creates either a SVG/VML group or a HTML DIV element, depending on the name-space. A group is meant to group
-	 * other elements together, possibly applying a transformation upon them.
-	 * 
-	 * @param id
-	 *            The group's identifier.
-	 * @param namespace
-	 *            The name-space wherein the group is to be created. If the name-space is null, a HTML DIV element is
-	 *            created.
-	 * @param transformation
-	 *            On each group, it is possible to apply a matrix transformation (currently translation only). This is
-	 *            the real strength of a group element. Never apply transformations on any other kind of element.
-	 * @param style
-	 *            Add a style to a group.
-	 */
-	void drawGroup(String id, String namespace, Matrix transformation, Style style);
-
-	/**
-	 * Draw a {@link LineString} geometry onto the <code>GraphicsContext</code>.
-	 * 
-	 * @param id
-	 *            The LineString's identifier.
-	 * @param line
-	 *            The LineString to be drawn.
-	 * @param style
-	 *            The styling object for the LineString. Watch out for fill colors! If the fill opacity is not 0, then
-	 *            the LineString will have a fill surface.
-	 */
-	void drawLine(String id, LineString line, ShapeStyle style);
-
-	/**
-	 * Draw a {@link Polygon} geometry onto the <code>GraphicsContext</code>.
-	 * 
-	 * @param id
-	 *            The Polygon's identifier.
-	 * @param polygon
-	 *            The Polygon to be drawn.
-	 * @param style
-	 *            The styling object for the Polygon.
-	 */
-	void drawPolygon(String id, Polygon polygon, ShapeStyle style);
-
-	/**
-	 * Draw a rectangle onto the <code>GraphicsContext</code>.
-	 * 
-	 * @param id
-	 *            The Rectangle's identifier.
-	 * @param rectangle
-	 *            The rectangle to be drawn. The bounding box's origin, is the rectangle's upper left corner on the
-	 *            screen.
-	 * @param style
-	 *            The styling object for the rectangle.
-	 */
-	void drawRectangle(String id, Bbox rectangle, ShapeStyle style);
-
-	/**
-	 * Draw a circle on the <code>GraphicsContext</code>.
-	 * 
-	 * @param id
-	 *            The circle's ID.
-	 * @param position
-	 *            The center position as a coordinate.
-	 * @param radius
-	 *            The circle's radius.
-	 * @param style
-	 *            The styling object by which the circle should be drawn.
-	 */
-	void drawCircle(String id, Coordinate position, double radius, ShapeStyle style);
-
-	/**
-	 * Draw a symbol/point object.
-	 */
-	void drawSymbol(String id, Point symbol, ShapeStyle style, String shapeTypeId);
-
-	/**
-	 * Draw an image onto the the <code>GraphicsContext</code>.
-	 * 
-	 * @param id
-	 *            The image's identifier.
-	 * @param href
-	 *            The image's location (URL).
-	 * @param bounds
-	 *            The bounding box that sets the image's origin (x and y), it's width and it's height.
-	 * @param style
-	 *            A styling object to be passed along with the image. Can be null.
-	 * @param asDiv
-	 *            Draw the image as a DIV HTML object. This can only be done in Internet Explorer.
-	 */
-	void drawImage(String id, String href, Bbox bounds, PictureStyle style, boolean asDiv);
-
-	/**
-	 * Draw a string of text onto the <code>GraphicsContext</code>.
-	 * 
-	 * @param id
-	 *            The text's identifier.
-	 * @param text
-	 *            The actual string content.
-	 * @param position
-	 *            The upper left corner for the text to originate.
-	 * @param style
-	 *            The styling object for the text.
-	 */
-	void drawText(String id, String text, Coordinate position, FontStyle style);
-
-	/**
-	 * Draw a type (def/symbol for svg, shapetype for vml).
-	 */
-	void drawShapeType(String id, SymbolInfo symbol, ShapeStyle style, Matrix transformation);
-
-	/**
-	 * Delete in the graphics DOM structure one or more elements. Which elements are to be removed is specified by the
-	 * parameters you give here.
-	 * 
-	 * @param id
-	 *            The ID of the element in question. Either this element and everything under it is removed, or this
-	 *            element's children are removed.
-	 * @param childrenOnly
-	 *            If this value of false, the element with id will be removed. If this value is true, then only the
-	 *            children of element id are removed, but element id itself remains.
-	 */
-	void deleteShape(String id, boolean childrenOnly);
-
-	/**
-	 * Set a specific cursor type on a specific element.
-	 * 
-	 * @param id
-	 *            optional. If not used, the cursor will be applied on the entire <code>GraphicsContext</code>.
-	 * @param cursor
-	 *            The string representation of the cursor to use.
-	 */
-	void setCursor(String id, String cursor);
-
-	/**
-	 * Set the controller of an element of this <code>GraphicsContext</code> so it can react to events.
-	 * 
-	 * @param id
-	 *            The id of the element of which the controller should be set.
+	 * @param object
+	 *            the element on which the controller should be set.
 	 * @param controller
 	 *            The new <code>GraphicsController</code>
 	 */
-	void setController(String id, GraphicsController controller);
+	void setController(Object object, GraphicsController controller);
 
 	/**
-	 * Set the controller of an element of this <code>GraphicsContext</code> so it can react to events.
+	 * Set the controller on an element of this <code>GraphicsContext</code> so it can react to events.
 	 * 
-	 * @param id
-	 *            The id of the element of which the controller should be set.
+	 * @param parent
+	 *            the parent of the element on which the controller should be set.
+	 * @param name
+	 *            the name of the child element on which the controller should be set
+	 * @param controller
+	 *            The new <code>GraphicsController</code>
+	 */
+	void setController(Object parent, String name, GraphicsController controller);
+
+	/**
+	 * Set the controller on an element of this <code>GraphicsContext</code> so it can react to events.
+	 * 
+	 * @param object
+	 *            the element on which the controller should be set.
 	 * @param controller
 	 *            The new <code>GraphicsController</code>
 	 * @param eventMask
 	 *            a bitmask to specify which events to listen for {@link com.google.gwt.user.client.Event}
 	 */
-	void setController(String id, GraphicsController controller, int eventMask);
+	void setController(Object object, GraphicsController controller, int eventMask);
 
 	/**
-	 * Set the background color of the entire GraphicsContext.
+	 * Set the controller on an element of this <code>GraphicsContext</code> so it can react to events.
 	 * 
-	 * @param color
-	 *            An HTML color code (i.e. #FF0000).
+	 * @param parent
+	 *            the parent of the element on which the controller should be set.
+	 * @param name
+	 *            the name of the child element on which the controller should be set
+	 * @param controller
+	 *            The new <code>GraphicsController</code>
+	 * @param eventMask
+	 *            a bitmask to specify which events to listen for {@link com.google.gwt.user.client.Event}
 	 */
-	void setBackgroundColor(String color);
+	void setController(Object parent, String name, GraphicsController controller, int eventMask);
 
 	/**
-	 * Hide the DOM element with the given id. If the element does not exist, nothing will happen.
+	 * Set a specific cursor on an element of this <code>GraphicsContext</code>.
 	 * 
-	 * @param id
-	 *            The identifier of the element to hide.
+	 * @param object
+	 *            the element on which the controller should be set.
+	 * @param cursor
+	 *            The string representation of the cursor to use.
 	 */
-	void hide(String id);
+	void setCursor(Object object, String cursor);
 
 	/**
-	 * Unhide (show) the DOM element with the given id. If the element does not exist, nothing will happen.
+	 * Set a specific cursor on an element of this <code>GraphicsContext</code>.
 	 * 
-	 * @param id
-	 *            The identifier of the element to show again.
+	 * @param parent
+	 *            the parent of the element on which the cursor should be set.
+	 * @param name
+	 *            the name of the child element on which the cursor should be set
+	 * @param cursor
+	 *            The string representation of the cursor to use.
 	 */
-	void unhide(String id);
+	void setCursor(Object parent, String name, String cursor);
 
 	/**
 	 * Set a new size for the graphics.
@@ -307,12 +385,10 @@ public interface GraphicsContext {
 	void setSize(int width, int height);
 
 	/**
-	 * Return the current graphics width.
+	 * Hide the specified group. If the group does not exist, nothing will happen.
+	 * 
+	 * @param object
+	 *            The group object.
 	 */
-	int getWidth();
-
-	/**
-	 * Return the current graphics height.
-	 */
-	int getHeight();
+	void unhide(Object object);
 }

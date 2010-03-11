@@ -22,9 +22,9 @@
  */
 package org.geomajas.gwt.client.widget.attribute;
 
-import org.geomajas.configuration.AttributeInfo;
-
 import java.util.List;
+
+import org.geomajas.configuration.AttributeInfo;
 
 /**
  * Definition of a factory that is able to create different types of attribute forms. An attribute form is meant to

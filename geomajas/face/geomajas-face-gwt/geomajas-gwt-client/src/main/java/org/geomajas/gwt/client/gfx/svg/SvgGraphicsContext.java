@@ -23,7 +23,6 @@
 
 package org.geomajas.gwt.client.gfx.svg;
 
-import com.google.gwt.user.client.Element;
 import org.geomajas.configuration.SymbolInfo;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.gfx.AbstractGraphicsContext;
@@ -32,13 +31,13 @@ import org.geomajas.gwt.client.gfx.style.PictureStyle;
 import org.geomajas.gwt.client.gfx.style.ShapeStyle;
 import org.geomajas.gwt.client.gfx.style.Style;
 import org.geomajas.gwt.client.gfx.svg.decoder.SvgPathDecoder;
-import org.geomajas.gwt.client.gfx.svg.decoder.SvgStyleDecoder;
 import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.spatial.Matrix;
 import org.geomajas.gwt.client.spatial.geometry.LineString;
-import org.geomajas.gwt.client.spatial.geometry.Point;
 import org.geomajas.gwt.client.spatial.geometry.Polygon;
 import org.geomajas.gwt.client.util.DOM;
+
+import com.google.gwt.user.client.Element;
 
 /**
  * Implementation of the GraphicsContext interface using the SVG language. This class is used in all browsers except
@@ -50,149 +49,23 @@ import org.geomajas.gwt.client.util.DOM;
  */
 public class SvgGraphicsContext extends AbstractGraphicsContext {
 
-	private String id;
-
-	private Element clipNode;
+	private Element rootNode;
 
 	private Element defs;
-
-	private Element backgroundNode;
-
-	private Element mapNode;
-
-	private Element screenNode;
-
-	private String backgroundColor = "#FFFFFF";
 
 	private int width;
 
 	private int height;
-
-	// -------------------------------------------------------------------------
-	// Constructor:
-	// -------------------------------------------------------------------------
-
-	/**
-	 * Default constructor for the SVG Graphics Context.
-	 */
-	public SvgGraphicsContext(String id) {
-		this.id = id;
-	}
-
-	// -------------------------------------------------------------------------
-	// Class specific functions:
-	// -------------------------------------------------------------------------
-
-	public void initialize(Element parent) {
-		clipNode = DOM.createElementNS(DOM.NS_SVG, "svg");
-		DOM.setElementAttribute(clipNode, "width", width + "");
-		DOM.setElementAttribute(clipNode, "height", height + "");
-		DOM.setElementAttribute(clipNode, "viewBox", "0 0 " + width + " " + height);
-
-		// Point style definitions:
-		defs = DOM.createElementNS(DOM.NS_SVG, "defs");
-		clipNode.appendChild(defs);
-
-		// Background:
-		Element backgroundGroup = DOM.createElementNS(DOM.NS_SVG, "g");
-		DOM.setElementAttribute(backgroundGroup, "style", "fill-opacity:1; stroke:" + backgroundColor
-				+ "; stroke-width:0;");
-		backgroundNode = DOM.createElementNS(DOM.NS_SVG, "rect");
-		DOM.setElementAttribute(backgroundNode, "x", 0 + "");
-		DOM.setElementAttribute(backgroundNode, "y", 0 + "");
-		DOM.setElementAttribute(backgroundNode, "width", "100%");
-		DOM.setElementAttribute(backgroundNode, "height", "100%");
-		backgroundGroup.appendChild(backgroundNode);
-		clipNode.appendChild(backgroundGroup);
-
-		// Map group:
-		mapNode = DOM.createElementNS(DOM.NS_SVG, "g");
-		DOM.setElementAttribute(mapNode, "id", id + ".map");
-		clipNode.appendChild(mapNode);
-
-		// World space group:
-		Element worldNode = DOM.createElementNS(DOM.NS_SVG, "g");
-		DOM.setElementAttribute(worldNode, "id", id + "_world");
-		clipNode.appendChild(worldNode);
-
-		// Screen space group:
-		screenNode = DOM.createElementNS(DOM.NS_SVG, "g");
-		DOM.setElementAttribute(screenNode, "id", id + "_screen");
-		clipNode.appendChild(screenNode);
-
-		// Append to parent:
-		parent.appendChild(clipNode);
-	}
-
-	/**
-	 * Apply a new size on the graphics context.
-	 * 
-	 * @param newWidth
-	 *            The new newWidth in pixels for this graphics context.
-	 * @param newHeight
-	 *            The new newHeight in pixels for this graphics context.
-	 */
-	public void setSize(int newWidth, int newHeight) {
-		this.width = newWidth;
-		this.height = newHeight;
-
-		if (clipNode != null) {
-			DOM.setElementAttribute(clipNode, "width", newWidth + "");
-			DOM.setElementAttribute(clipNode, "height", newHeight + "");
-			DOM.setElementAttribute(clipNode, "viewBox", "0 0 " + newWidth + " " + newHeight);
-		}
-	}
-
-	public Element getElement() {
-		return clipNode;
-	}
-
-	public int getHeight() {
-		return height;
-	}
-
-	public int getWidth() {
-		return width;
-	}
-
-	// -------------------------------------------------------------------------
-	// GraphicsContext implementation:
-	// -------------------------------------------------------------------------
-
-	/**
-	 * Delete in the graphics DOM structure one or more elements. Which elements are to be removed is specified by the
-	 * parameters you give here.
-	 * 
-	 * @param elementId
-	 *            The ID of the element in question. Either this element and everything under it is removed, or this
-	 *            element's children are removed.
-	 * @param childrenOnly
-	 *            If this value of false, the element with id will be removed. If this value is true, then only the
-	 *            children of element id are removed, but element id itself remains.
-	 */
-	public void deleteShape(String elementId, boolean childrenOnly) {
-		Element shape = DOM.getElementById(elementId);
-		if (shape != null) {
-			com.google.gwt.dom.client.Element parent = shape.getParentElement();
-			try {
-				if (childrenOnly) {
-					while (shape.hasChildNodes()) {
-						DOM.removeChild(shape, (com.google.gwt.user.client.Element) shape.getFirstChildElement());
-					}
-				} else if (parent != null) {
-					DOM.removeChild((com.google.gwt.user.client.Element) parent, shape);
-				}
-			} catch (Exception e) {
-				// do something...
-			}
-		}
-	}
+	
+	private String id;
 
 	/**
 	 * Draw a circle on the <code>GraphicsContext</code>.
 	 * 
-	 * @param elementId
-	 *            The circle's ID.
+	 * @param parent
+	 *            parent group object
+	 * @param name
+	 *            The circle's name.
 	 * @param position
 	 *            The center position as a coordinate.
 	 * @param radius
@@ -200,128 +73,50 @@ public class SvgGraphicsContext extends AbstractGraphicsContext {
 	 * @param style
 	 *            The styling object by which the circle should be drawn.
 	 */
-	public void drawCircle(String elementId, Coordinate position, double radius, ShapeStyle style) {
-		Element circle = findOrCreateElement(elementId, DOM.NS_SVG, "circle", style, null);
+	public void drawCircle(Object parent, String name, Coordinate position, double radius, ShapeStyle style) {
+		Element circle = createOrUpdateElement(DOM.NS_SVG, parent, name, "circle", style, null);
 		DOM.setElementAttribute(circle, "cx", (int) position.getX() + "");
 		DOM.setElementAttribute(circle, "cy", (int) position.getY() + "");
 		DOM.setElementAttribute(circle, "r", (int) radius + "");
 	}
 
-	public void drawData(String elementId, String data) {
-		Element g = DOM.getElementById(elementId);
-		if (g == null) {
-			g = findOrCreateElement(elementId, DOM.NS_SVG, "g", null, null);
-			DOM.setInnerSvg(g, data);
+	/**
+	 * Draw inner group data directly (implementation-specific shortcut). This method can only be called once, creating
+	 * the group. Delete the group first to redraw with different data.
+	 * 
+	 * @param parent
+	 *            The parent group's object
+	 * @param object
+	 *            The group's object
+	 * @param data
+	 *            SVG fragment
+	 * @param transformation
+	 *            transformation to apply to the group
+	 */
+	public void drawData(Object parent, Object object, String data, Matrix transformation) {
+		Element group = getGroup(object);
+		if (group == null) {
+			group = createOrUpdateGroup(parent, object, transformation, null);
+			DOM.setInnerSvg(group, data);
 		}
-	}
-
-	/**
-	 * Creates a SVG group (G), ignoring the name-space. A group is meant to group other elements together.
-	 * 
-	 * @param elementId
-	 *            The group's identifier.
-	 * @param namespace
-	 *            The name-space wherein the group is to be created. The SvgGraphicsContext always creates SVG elements,
-	 *            and therefore ignores this.
-	 */
-	public void drawGroup(String elementId, String namespace) {
-		findOrCreateElement(elementId, DOM.NS_SVG, "g", null, null);
-	}
-
-	/**
-	 * Creates a SVG group (G), ignoring the name-space. A group is meant to group other elements together. Also this
-	 * method gives you the opportunity to specify a specific width and height.
-	 * 
-	 * @param id
-	 *            The group's identifier.
-	 * @param namespace
-	 *            The name-space wherein the group is to be created. If the name-space is null, a HTML DIV element is
-	 *            created.
-	 * @param width
-	 *            A fixed width for the group.
-	 * @param height
-	 *            A fixed height for the group.
-	 * @param transformation
-	 *            On each group, it is possible to apply a matrix transformation (currently translation only). This is
-	 *            the real strength of a group element. Never apply transformations on any other kind of element.
-	 */
-	public void drawGroup(String id, String namespace, int width, int height, Matrix transformation) {
-		Element element = findOrCreateElement(id, DOM.NS_SVG, "g", null, transformation);
-		if (element != null) {
-			DOM.setElementAttribute(element, "width", width + "");
-			DOM.setElementAttribute(element, "height", height + "");
-		}
-	}
-
-	/**
-	 * Creates a SVG group (G), ignoring the name-space. A group is meant to group other elements together, and in this
-	 * case applying a style upon them.
-	 * 
-	 * @param elementId
-	 *            The group's identifier.
-	 * @param namespace
-	 *            The name-space wherein the group is to be created. The SvgGraphicsContext always creates SVG elements,
-	 *            and therefore ignores this.
-	 * @param style
-	 *            Add a style to a group.
-	 */
-	public void drawGroup(String elementId, String namespace, Style style) {
-		findOrCreateElement(elementId, DOM.NS_SVG, "g", style, null);
-	}
-
-	/**
-	 * Creates a SVG group (G), ignoring the name-space. A group is meant to group other elements together, possibly
-	 * applying a transformation upon them.
-	 * 
-	 * @param elementId
-	 *            The group's identifier.
-	 * @param namespace
-	 *            The name-space wherein the group is to be created. The SvgGraphicsContext always creates SVG elements,
-	 *            and therefore ignores this.
-	 * @param transformation
-	 *            On each group, it is possible to apply a matrix transformation (currently translation only). This is
-	 *            the real strength of a group element. Never apply transformations on any other kind of element.
-	 */
-	public void drawGroup(String elementId, String namespace, Matrix transformation) {
-		findOrCreateElement(elementId, DOM.NS_SVG, "g", null, transformation);
-	}
-
-	/**
-	 * Creates a SVG group (G), ignoring the name-space. A group is meant to group other elements together, possibly
-	 * applying a transformation upon them.
-	 * 
-	 * @param elementId
-	 *            The group's identifier.
-	 * @param namespace
-	 *            The name-space wherein the group is to be created. The SvgGraphicsContext always creates SVG elements,
-	 *            and therefore ignores this.
-	 * @param transformation
-	 *            On each group, it is possible to apply a matrix transformation (currently translation only). This is
-	 *            the real strength of a group element. Never apply transformations on any other kind of element.
-	 * @param style
-	 *            Add a style to a group.
-	 */
-	public void drawGroup(String elementId, String namespace, Matrix transformation, Style style) {
-		findOrCreateElement(elementId, DOM.NS_SVG, "g", style, transformation);
 	}
 
 	/**
 	 * Draw an image onto the the <code>GraphicsContext</code>.
 	 * 
-	 * @param elementId
-	 *            The image's identifier.
+	 * @param parent
+	 *            parent group object
+	 * @param name
+	 *            The image's name.
 	 * @param href
 	 *            The image's location (URL).
 	 * @param bounds
 	 *            The bounding box that sets the image's origin (x and y), it's width and it's height.
 	 * @param style
 	 *            A styling object to be passed along with the image. Can be null.
-	 * @param asDiv
-	 *            Draw the image as a DIV HTML object. This can only be done in Internet Explorer. The
-	 *            SvgGraphicsContext will ignore this parameter.
 	 */
-	public void drawImage(String elementId, String href, Bbox bounds, PictureStyle style, boolean asDiv) {
-		Element image = findOrCreateElement(elementId, DOM.NS_SVG, "image", style, null);
+	public void drawImage(Object parent, String name, String href, Bbox bounds, PictureStyle style) {
+		Element image = createOrUpdateElement(DOM.NS_SVG, parent, name, "image", style, null);
 		DOM.setElementAttribute(image, "x", (int) bounds.getX() + "");
 		DOM.setElementAttribute(image, "y", (int) bounds.getY() + "");
 		DOM.setElementAttribute(image, "width", (int) bounds.getWidth() + "");
@@ -332,16 +127,18 @@ public class SvgGraphicsContext extends AbstractGraphicsContext {
 	/**
 	 * Draw a {@link LineString} geometry onto the <code>GraphicsContext</code>.
 	 * 
-	 * @param elementId
-	 *            The LineString's identifier.
+	 * @param parent
+	 *            parent group object
+	 * @param name
+	 *            The LineString's name.
 	 * @param line
 	 *            The LineString to be drawn.
 	 * @param style
 	 *            The styling object for the LineString. Watch out for fill colors! If the fill opacity is not 0, then
 	 *            the LineString will have a fill surface.
 	 */
-	public void drawLine(String elementId, LineString line, ShapeStyle style) {
-		Element element = findOrCreateElement(elementId, DOM.NS_SVG, "path", style, null);
+	public void drawLine(Object parent, String name, LineString line, ShapeStyle style) {
+		Element element = createOrUpdateElement(DOM.NS_SVG, parent, name, "path", style, null);
 		if (line != null) {
 			DOM.setElementAttribute(element, "d", SvgPathDecoder.decode(line));
 		}
@@ -350,15 +147,17 @@ public class SvgGraphicsContext extends AbstractGraphicsContext {
 	/**
 	 * Draw a {@link Polygon} geometry onto the <code>GraphicsContext</code>.
 	 * 
-	 * @param elementId
-	 *            The Polygon's identifier.
+	 * @param parent
+	 *            parent group object
+	 * @param name
+	 *            The Polygon's name.
 	 * @param polygon
 	 *            The Polygon to be drawn.
 	 * @param style
 	 *            The styling object for the Polygon.
 	 */
-	public void drawPolygon(String elementId, Polygon polygon, ShapeStyle style) {
-		Element element = findOrCreateElement(elementId, DOM.NS_SVG, "path", style, null);
+	public void drawPolygon(Object parent, String name, Polygon polygon, ShapeStyle style) {
+		Element element = createOrUpdateElement(DOM.NS_SVG, parent, name, "path", style, null);
 		if (polygon != null) {
 			DOM.setElementAttribute(element, "d", SvgPathDecoder.decode(polygon));
 			DOM.setElementAttribute(element, "fill-rule", "evenodd");
@@ -368,37 +167,49 @@ public class SvgGraphicsContext extends AbstractGraphicsContext {
 	/**
 	 * Draw a rectangle onto the <code>GraphicsContext</code>.
 	 * 
-	 * @param elementId
-	 *            The Rectangle's identifier.
+	 * @param parent
+	 *            parent group object
+	 * @param name
+	 *            The rectangle's name.
 	 * @param rectangle
 	 *            The rectangle to be drawn. The bounding box's origin, is the rectangle's upper left corner on the
 	 *            screen.
 	 * @param style
 	 *            The styling object for the rectangle.
 	 */
-	public void drawRectangle(String elementId, Bbox rectangle, ShapeStyle style) {
-		Element element = findOrCreateElement(elementId, DOM.NS_SVG, "rect", style, null);
+	public void drawRectangle(Object parent, String name, Bbox rectangle, ShapeStyle style) {
+		Element element = createOrUpdateElement(DOM.NS_SVG, parent, name, "rect", style, null);
 		DOM.setElementAttribute(element, "x", rectangle.getX() + "");
 		DOM.setElementAttribute(element, "y", rectangle.getY() + "");
 		DOM.setElementAttribute(element, "width", rectangle.getWidth() + "");
 		DOM.setElementAttribute(element, "height", rectangle.getHeight() + "");
 	}
 
-	public void drawShapeType(String elementId, SymbolInfo symbol, ShapeStyle style, Matrix transformation) {
+	/**
+	 * Draw a type (def/symbol for svg).
+	 * 
+	 * @param parent
+	 *            ignored for svg
+	 * @param id
+	 *            the types's unique identifier
+	 * @param symbol
+	 *            the symbol information
+	 * @param style
+	 *            The style to apply on the symbol.
+	 * @param transformation
+	 *            the transformation to apply on the symbol
+	 */
+	public void drawShapeType(Object parent, String id, SymbolInfo symbol, ShapeStyle style, Matrix transformation) {
 		if (symbol == null) {
 			return;
 		}
-
 		// Step1: get or create the symbol element:
-		Element def = DOM.getElementById(elementId);
-		boolean exists = false;
-		if (def != null) {
-			exists = true;
-		} else {
-			def = DOM.createElementNS(DOM.NS_SVG, "symbol");
-			DOM.setElementAttribute(def, "id", elementId);
-			DOM.setElementAttribute(def, "overflow", "visible");
-		}
+		// check existence
+		Element def = DOM.getElementById(id);
+		boolean isNew = (def == null);
+		// create or update
+		def = createOrUpdateElement(DOM.NS_SVG, defs, id, "symbol", style, transformation, false);
+		DOM.setElementAttribute(def, "overflow", "visible");
 
 		// Step2: fill in the correct values:
 		Element node = null;
@@ -430,22 +241,24 @@ public class SvgGraphicsContext extends AbstractGraphicsContext {
 		}
 
 		// Step3: Append the symbol definition:
-		if (exists) {
+		if (isNew) {
+			def.appendChild(node);
+			defs.appendChild(def);
+		} else {
 			while (def.hasChildNodes()) {
 				DOM.removeChild(def, (com.google.gwt.user.client.Element) def.getFirstChildElement());
 			}
 			def.appendChild(node);
-		} else {
-			def.appendChild(node);
-			defs.appendChild(def);
 		}
 	}
 
 	/**
 	 * Draw a symbol, using some predefined ShapeType.
 	 * 
-	 * @param elementId
-	 *            The symbol's unique identifier.
+	 * @param parent
+	 *            parent group object
+	 * @param name
+	 *            The symbol's name.
 	 * @param symbol
 	 *            The symbol's (X,Y) location on the graphics.
 	 * @param style
@@ -454,29 +267,22 @@ public class SvgGraphicsContext extends AbstractGraphicsContext {
 	 *            The name of the predefined ShapeType. This symbol will create a reference to this predefined type and
 	 *            take on it's characteristics.
 	 */
-	public void drawSymbol(String elementId, Point symbol, ShapeStyle style, String shapeTypeId) {
-		// Step1: Create a group, and set the style:
-		findOrCreateElement(elementId, DOM.NS_SVG, "g", style, null);
-
-		// Step2: Create the "use" element, that refers to the ShapeType
-		// definition:
-		Element useElement = findOrCreateElement(elementId + ".use", DOM.NS_SVG, "use", null, null);
-		if (shapeTypeId == null) {
-			shapeTypeId = useElement.getParentElement().getId() + ".style";
-		}
+	public void drawSymbol(Object parent, String name, Coordinate position, ShapeStyle style, String shapeTypeId) {
+		Element useElement = createOrUpdateElement(DOM.NS_SVG, parent, name, "use", style, null);
 		DOM.setElementAttributeNS(DOM.NS_XLINK, useElement, "xlink:href", "#" + shapeTypeId);
-		if (symbol != null) {
-			Coordinate coordinate = symbol.getCoordinate();
-			DOM.setElementAttribute(useElement, "x", coordinate.getX() + "");
-			DOM.setElementAttribute(useElement, "y", coordinate.getY() + "");
+		if (position != null) {
+			DOM.setElementAttribute(useElement, "x", position.getX() + "");
+			DOM.setElementAttribute(useElement, "y", position.getY() + "");
 		}
 	}
 
 	/**
 	 * Draw a string of text onto the <code>GraphicsContext</code>.
 	 * 
-	 * @param elementId
-	 *            The text's identifier.
+	 * @param parent
+	 *            parent group object
+	 * @param name
+	 *            The text's name.
 	 * @param text
 	 *            The actual string content.
 	 * @param position
@@ -484,139 +290,211 @@ public class SvgGraphicsContext extends AbstractGraphicsContext {
 	 * @param style
 	 *            The styling object for the text.
 	 */
-	public void drawText(String elementId, String text, Coordinate position, FontStyle style) {
-		Element textElement = findOrCreateElement(elementId, DOM.NS_SVG, "text", style, null);
-		textElement.setInnerText(text);
+	public void drawText(Object parent, String name, String text, Coordinate position, FontStyle style) {
+		Element element = createOrUpdateElement(DOM.NS_SVG, parent, name, "text", style, null);
+		if (text != null) {
+			element.setInnerText(text);
+		}
 
 		if (position != null) {
 			int fontSize = 12;
 			if (style != null) {
 				fontSize = style.getFontSize();
 			}
-			DOM.setElementAttribute(textElement, "x", position.getX() + "");
-			DOM.setElementAttribute(textElement, "y", position.getY() + fontSize + "");
+			DOM.setElementAttribute(element, "x", position.getX() + "");
+			DOM.setElementAttribute(element, "y", position.getY() + fontSize + "");
 		}
 	}
 
 	/**
-	 * Set the background color for the entire GraphicsContext.
-	 * 
-	 * @param color
-	 *            An HTML color code (i.e. #FF0000).
+	 * Return the current graphics height.
 	 */
-	public void setBackgroundColor(String color) {
-		DOM.setElementAttribute(backgroundNode, "style", "fill:" + color);
+	public int getHeight() {
+		return height;
 	}
 
 	/**
-	 * Set a specific cursor type on a specific element.
-	 * 
-	 * @param id
-	 *            optional. If not used, the cursor will be applied on the entire <code>GraphicsContext</code>.
-	 * @param cursor
-	 *            The string representation of the cursor to use.
+	 * Return the current graphics width.
 	 */
-	public void setCursor(String id, String cursor) {
-		Element element = null;
-		if (id == null) {
-			element = clipNode;
-		} else {
-			element = DOM.getElementById(id);
-		}
-		if (element != null) {
-			DOM.setElementAttribute(element, "cursor", cursor);
-		}
+	public int getWidth() {
+		return width;
 	}
 
 	/**
-	 * Hide the DOM element with the given id. If the element does not exist, nothing will happen.
+	 * Returns the root element of this context.
 	 * 
-	 * @param elementId
-	 *            The identifier of the element to hide.
+	 * @return the root element
 	 */
-	public void hide(String elementId) {
-		Element element = DOM.getElementById(elementId);
+	protected Element getRootElement() {
+		return rootNode;
+	}
+
+	/**
+	 * Hide the specified group. If the group does not exist, nothing will happen.
+	 * 
+	 * @param group
+	 *            The group object.
+	 */
+	public void hide(Object group) {
+		Element element = getGroup(group);
 		if (element != null) {
 			DOM.setElementAttribute(element, "display", "none");
 		}
 	}
 
 	/**
-	 * Unhide (show) the DOM element with the given id. If the element does not exist, nothing will happen.
+	 * The initialization function for the GraphicsContext. It will create the initial DOM structure setup.
 	 * 
-	 * @param elementId
-	 *            The identifier of the element to show again.
+	 * @param parent
+	 *            The parent element, onto whom to attach the initial DOM structure.
 	 */
-	public void unhide(String elementId) {
-		Element element = DOM.getElementById(elementId);
+	public void initialize(Element parent) {
+		rootNode = DOM.createElementNS(DOM.NS_SVG, "svg");
+		id = DOM.createUniqueId();
+		rootNode.setId(id);
+		DOM.setElementAttribute(rootNode, "width", width + "");
+		DOM.setElementAttribute(rootNode, "height", height + "");
+		DOM.setElementAttribute(rootNode, "viewBox", "0 0 " + width + " " + height);
+
+		// Point style definitions:
+		defs = DOM.createElementNS(DOM.NS_SVG, "defs");
+		rootNode.appendChild(defs);
+		
+		// Append to parent:
+		parent.appendChild(rootNode);
+	}
+		
+	/**
+	 * Apply a new size on the graphics context.
+	 * 
+	 * @param newWidth
+	 *            The new newWidth in pixels for this graphics context.
+	 * @param newHeight
+	 *            The new newHeight in pixels for this graphics context.
+	 */
+	public void setSize(int newWidth, int newHeight) {
+		this.width = newWidth;
+		this.height = newHeight;
+
+		if (rootNode != null) {
+			DOM.setElementAttribute(rootNode, "width", newWidth + "");
+			DOM.setElementAttribute(rootNode, "height", newHeight + "");
+			DOM.setElementAttribute(rootNode, "viewBox", "0 0 " + newWidth + " " + newHeight);
+		}
+	}
+
+	/**
+	 * Hide the specified group. If the group does not exist, nothing will happen.
+	 * 
+	 * @param group
+	 *            The group object.
+	 */
+	public void unhide(Object group) {
+		Element element = getGroup(group);
 		if (element != null) {
 			DOM.setElementAttribute(element, "display", "inline");
 		}
 	}
 
-	// -------------------------------------------------------------------------
-	// Private methods:
-	// -------------------------------------------------------------------------
-
-	private Element findOrCreateElement(String elementId, String namespace, String name, Style style,
-			Matrix transformation) {
-
-		// Part 1: Find or create the element:
-		if (elementId == null) {
-			return null;
+	/**
+	 * Set a specific cursor on an element of this <code>GraphicsContext</code>.
+	 * 
+	 * @param element
+	 *            the element on which the cursor should be set.
+	 * @param cursor
+	 *            The string representation of the cursor to use.
+	 */
+	protected void doSetCursor(Element element, String cursor) {
+		if (element != null) {
+			DOM.setElementAttribute(element, "cursor", cursor);
 		}
-		Element element = null;
-		if (elementId.equals(id)) {
-			element = mapNode;
-		} else {
-			element = DOM.getElementById(elementId);
+	}
+	
+	/**
+	 * Creates either a SVG group or a HTML DIV element, depending on the name-space. A group is meant to group other
+	 * elements together. Also this method gives you the opportunity to specify a specific width and height.
+	 * 
+	 * @param parent
+	 *            parent group object
+	 * @param object
+	 *            group object
+	 * @param asDiv
+	 *            true if a HTML DIV element should be created, false otherwise
+	 * @param transformation
+	 *            On each group, it is possible to apply a matrix transformation (currently translation only). This is
+	 *            the real strength of a group element. Never apply transformations on any other kind of element.
+	 * @param style
+	 *            Add a style to a group.
+	 * @return the group element          
+	 */
+	protected Element createOrUpdateGroup(Object parent, Object object, Matrix transformation, Style style) {
+		Element group = null;
+		// check existence
+		if (object != null) {
+			group = getGroup(object);
 		}
-		Element parent = getParentForId(elementId);
-		if (element == null) {
-			element = DOM.createElementNS(namespace, name);
-			if (elementId != null) {
-				DOM.setElementAttribute(element, "id", elementId);
-			}
-			parent.appendChild(element);
-			// TODO add image load listener.
+		// create if necessary
+		if (group == null) {
+			group = createGroup(DOM.NS_SVG, parent, object, "g");
 		}
-
-		// Part 2: Apply styling on the element:
-		if (style != null) {
-			DOM.setElementAttribute(element, "style", SvgStyleDecoder.decode(style));
-		}
-
-		// Part 3: Apply transformation on the element:
+		// Apply transformation on the element:
 		if (transformation != null) {
-			DOM.setElementAttribute(element, "transform", parse(transformation));
+			DOM.setElementAttribute(group, "transform", parse(transformation));
 		}
-		return element;
+		// SVG style is just CSS, so ok for both
+		if (style != null) {
+			DOM.setElementAttribute(group, "style", decode(style));
+		}
+		return group;
 	}
 
 	/**
-	 * Will create if necessary. This is needed when a complex ID is to be created, when even the parents do not exist
-	 * yet.
-	 * 
-	 * @param nodeId
-	 * @return
+	 * Create or update an element in the DOM. The id will be generated.
+	 * @param namespace
+	 *            the name space (HTML or SVG)
+	 * @param parent
+	 *            the parent group
+	 * @param name
+	 *            the local group name of the element (should be unique within the group)
+	 * @param type
+	 *            the type of the element (tag name, e.g. 'image')
+	 * @param style
+	 *            The style to apply on the element.
+	 * @param transformation
+	 *            the transformation to apply on the element
+	 * @return the created or updated element or null if creation failed
 	 */
-	private Element getParentForId(String nodeId) {
-		int position = nodeId.lastIndexOf(".");
-		if (position >= 0) {
-			String groupId = nodeId.substring(0, position);
-			if (groupId.equals(id)) {
-				return mapNode;
-			} else {
-				Element parent = DOM.getElementById(groupId);
-				if (parent == null) {
-					return findOrCreateElement(groupId, DOM.NS_SVG, "g", null, null);
-				} else {
-					return parent;
-				}
-			}
-		} else {
-			return screenNode;
+	private Element createOrUpdateElement(String namespace, Object parent, String name, String type, Style style,
+			Matrix transformation) {
+		return createOrUpdateElement(namespace, parent, name, type, style, transformation, true);
+	}
+
+	/**
+	 * Create or update an element in the DOM. The id will be generated.
+	 * @param namespace
+	 *            the name space (HTML or SVG)
+	 * @param parent
+	 *            the parent group
+	 * @param name
+	 *            the local group name of the element (should be unique within the group)
+	 * @param type
+	 *            the type of the element (tag name, e.g. 'image')
+	 * @param style
+	 *            The style to apply on the element.
+	 * @param transformation
+	 *            the transformation to apply on the element
+	 * @param generateId
+	 *            true if a unique id may be generated, otherwise the name will be used as id
+	 * @return the created or updated element or null if creation failed
+	 */
+	private Element createOrUpdateElement(String namespace, Object parent, String name, String type, Style style,
+			Matrix transformation, boolean generateId) {
+		Element element = createOrUpdateElement(namespace, parent, name, type, transformation, generateId);
+		// Apply styling on the element:
+		if (element != null && style != null) {
+			DOM.setElementAttribute(element, "style", decode(style));
 		}
+		return element;
 	}
 
 	/**
@@ -642,4 +520,5 @@ public class SvgGraphicsContext extends AbstractGraphicsContext {
 		}
 		return transform;
 	}
+
 }

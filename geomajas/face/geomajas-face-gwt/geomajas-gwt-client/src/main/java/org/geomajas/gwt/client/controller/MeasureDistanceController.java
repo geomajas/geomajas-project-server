@@ -23,6 +23,16 @@
 
 package org.geomajas.gwt.client.controller;
 
+import org.geomajas.geometry.Coordinate;
+import org.geomajas.gwt.client.action.MenuAction;
+import org.geomajas.gwt.client.action.menu.ToggleSnappingAction;
+import org.geomajas.gwt.client.gfx.paintable.GfxGeometry;
+import org.geomajas.gwt.client.gfx.style.ShapeStyle;
+import org.geomajas.gwt.client.i18n.I18nProvider;
+import org.geomajas.gwt.client.spatial.geometry.GeometryFactory;
+import org.geomajas.gwt.client.spatial.geometry.operation.InsertCoordinateOperation;
+import org.geomajas.gwt.client.widget.MapWidget;
+
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
@@ -34,15 +44,6 @@ import com.smartgwt.client.widgets.menu.Menu;
 import com.smartgwt.client.widgets.menu.MenuItem;
 import com.smartgwt.client.widgets.menu.MenuItemIfFunction;
 import com.smartgwt.client.widgets.menu.events.MenuItemClickEvent;
-import org.geomajas.geometry.Coordinate;
-import org.geomajas.gwt.client.action.MenuAction;
-import org.geomajas.gwt.client.action.menu.ToggleSnappingAction;
-import org.geomajas.gwt.client.gfx.paintable.GfxGeometry;
-import org.geomajas.gwt.client.gfx.style.ShapeStyle;
-import org.geomajas.gwt.client.i18n.I18nProvider;
-import org.geomajas.gwt.client.spatial.geometry.GeometryFactory;
-import org.geomajas.gwt.client.spatial.geometry.operation.InsertCoordinateOperation;
-import org.geomajas.gwt.client.widget.MapWidget;
 
 /**
  * <p> Controller that measures distances on the map, by clicking points. The actual distances are displayed in a label

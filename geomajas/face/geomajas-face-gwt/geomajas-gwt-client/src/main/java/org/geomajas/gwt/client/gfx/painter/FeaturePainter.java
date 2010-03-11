@@ -26,6 +26,7 @@ package org.geomajas.gwt.client.gfx.painter;
 import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.gwt.client.gfx.GraphicsContext;
 import org.geomajas.gwt.client.gfx.Paintable;
+import org.geomajas.gwt.client.gfx.PaintableGroup;
 import org.geomajas.gwt.client.gfx.Painter;
 import org.geomajas.gwt.client.gfx.style.ShapeStyle;
 import org.geomajas.gwt.client.map.feature.Feature;
@@ -89,25 +90,27 @@ public class FeaturePainter implements Painter {
 					.getWorldViewTransformer();
 			Geometry geometry = worldViewTransformer.worldToPan(feature.getGeometry());
 			ShapeStyle style = createStyleForFeature(feature);
+			PaintableGroup selectionGroup = feature.getLayer().getSelectionGroup();
 			if (geometry instanceof LineString) {
-				graphics.drawLine(feature.getSelectionId(), (LineString) geometry, style);
+				graphics.drawLine(selectionGroup, feature.getId(), (LineString) geometry, style);
 			} else if (geometry instanceof MultiLineString) {
 				MultiLineString m = (MultiLineString) geometry;
-				graphics.drawLine(feature.getSelectionId(), (LineString) m.getGeometryN(0), style);
+				graphics.drawLine(selectionGroup, feature.getId(), (LineString) m.getGeometryN(0), style);
 			} else if (geometry instanceof Polygon) {
-				graphics.drawPolygon(feature.getSelectionId(), (Polygon) geometry, style);
+				graphics.drawPolygon(selectionGroup, feature.getId(), (Polygon) geometry, style);
 			} else if (geometry instanceof MultiPolygon) {
 				MultiPolygon m = (MultiPolygon) geometry;
-				graphics.drawPolygon(feature.getSelectionId(), (Polygon) m.getGeometryN(0), style);
+				graphics.drawPolygon(selectionGroup, feature.getId(), (Polygon) m.getGeometryN(0), style);
 			} else if (geometry instanceof Point) {
-				graphics.drawSymbol(feature.getSelectionId(), (Point) geometry, style, null);
+				graphics.drawSymbol(selectionGroup, feature.getId(), geometry.getCoordinate(), style, null);
 			}
 		}
 	}
 
 	public void deleteShape(Paintable paintable, GraphicsContext graphics) {
 		Feature feature = (Feature) paintable;
-		graphics.deleteShape(feature.getSelectionId(), false);
+		PaintableGroup selectionGroup = feature.getLayer().getSelectionGroup();
+		graphics.deleteElement(selectionGroup, feature.getId());
 	}
 
 	// -------------------------------------------------------------------------

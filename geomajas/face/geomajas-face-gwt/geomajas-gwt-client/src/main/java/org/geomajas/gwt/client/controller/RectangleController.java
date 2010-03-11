@@ -23,13 +23,8 @@
 
 package org.geomajas.gwt.client.controller;
 
-import com.google.gwt.dom.client.NativeEvent;
-import com.google.gwt.event.dom.client.MouseDownEvent;
-import com.google.gwt.event.dom.client.MouseEvent;
-import com.google.gwt.event.dom.client.MouseMoveEvent;
-import com.google.gwt.event.dom.client.MouseOutEvent;
-import com.google.gwt.event.dom.client.MouseUpEvent;
-import com.smartgwt.client.widgets.menu.Menu;
+import java.util.Date;
+
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.gfx.paintable.Rectangle;
 import org.geomajas.gwt.client.gfx.style.ShapeStyle;
@@ -37,7 +32,13 @@ import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.spatial.transform.WorldViewTransformer;
 import org.geomajas.gwt.client.widget.MapWidget;
 
-import java.util.Date;
+import com.google.gwt.dom.client.NativeEvent;
+import com.google.gwt.event.dom.client.MouseDownEvent;
+import com.google.gwt.event.dom.client.MouseEvent;
+import com.google.gwt.event.dom.client.MouseMoveEvent;
+import com.google.gwt.event.dom.client.MouseOutEvent;
+import com.google.gwt.event.dom.client.MouseUpEvent;
+import com.smartgwt.client.widgets.menu.Menu;
 
 /**
  * Base controller which handles the display of the rectangle which allows selection.

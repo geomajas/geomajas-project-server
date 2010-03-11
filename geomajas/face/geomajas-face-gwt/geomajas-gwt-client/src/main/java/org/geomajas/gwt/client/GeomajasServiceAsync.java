@@ -23,9 +23,10 @@
 
 package org.geomajas.gwt.client;
 
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import org.geomajas.command.CommandResponse;
 import org.geomajas.gwt.client.command.GwtCommand;
+
+import com.google.gwt.user.client.rpc.AsyncCallback;
 
 /**
  * <p>

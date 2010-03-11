@@ -24,7 +24,7 @@
 package org.geomajas.gwt.client.map.layer;
 
 import org.geomajas.configuration.client.ClientLayerInfo;
-import org.geomajas.gwt.client.gfx.Paintable;
+import org.geomajas.gwt.client.gfx.PaintableGroup;
 import org.geomajas.gwt.client.map.MapModel;
 import org.geomajas.gwt.client.map.event.LayerChangedHandler;
 
@@ -40,7 +40,7 @@ import com.google.gwt.event.shared.HandlerRegistration;
  *
  * @author Pieter De Graef
  */
-public interface Layer<T extends ClientLayerInfo> extends Paintable {
+public interface Layer<T extends ClientLayerInfo> extends PaintableGroup {
 
 	// -------------------------------------------------------------------------
 	// Paintable implementation:

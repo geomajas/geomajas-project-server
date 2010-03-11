@@ -34,8 +34,6 @@ import org.geomajas.gwt.client.widget.MapWidget;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.Label;
-import com.smartgwt.client.widgets.events.DrawEvent;
-import com.smartgwt.client.widgets.events.DrawHandler;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
@@ -63,12 +61,6 @@ public class CustomControllerSample extends SamplePanel {
 
 		// Map with ID wmsMap is defined in the XML configuration. (mapWms.xml)
 		final MapWidget map = new MapWidget("wmsMap", "gwt-samples");
-		map.addDrawHandler(new DrawHandler() {
-
-			public void onDraw(DrawEvent event) {
-				map.initialize();
-			}
-		});
 
 		VLayout labelLayout = new VLayout();
 		final Label label = new Label();

@@ -108,11 +108,10 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 		rectangleStyle = new ShapeStyle("#FF9900", 0.2f, "#FF9900", 1f, 2);
 		targetMaxExtentRectangleStyle = new ShapeStyle("#555555", 0.4f, "#555555", 1f, 1);
 		setZoomOnScrollEnabled(false);
-
 		targetMap.getMapModel().addMapModelHandler(new MapModelHandler() {
 
 			public void onMapModelChange(MapModelEvent event) {
-				initialize();
+				updateMaxExtent();
 			}
 		});
 	}
@@ -124,9 +123,7 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 	protected void initializationCallback(GetMapConfigurationResponse r) {
 		super.initializationCallback(r);
 		setController(new OverviewMapController(this));
-		if (useMaxExtent) {
-			setMaxExtent();
-		}
+		updateMaxExtent();
 	}
 
 	// ------------------------------------------------------------------------
@@ -230,7 +227,7 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 
 		// Immediately draw or remove the max extent rectangle:
 		if (drawTargetMaxExtent) {
-			targetMaxExtentRectangle = new GfxGeometry("screen.targetMaxExtentRectangle");
+			targetMaxExtentRectangle = new GfxGeometry("targetMaxExtentRectangle");
 			targetMaxExtentRectangle.setStyle(targetMaxExtentRectangleStyle);
 
 			// Use the targetMap bounds, no this map's bounds!!!
@@ -283,28 +280,25 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 	/**
 	 * Apply a maximum extent. This will take the target map's maximum extent (actually 5% bigger)
 	 */
-	private void setMaxExtent() {
-		MapView mapView = getMapModel().getMapView();
+	private void updateMaxExtent(){
+		if(useMaxExtent && targetMap.getMapModel().isInitialized()) {
+			MapView mapView = getMapModel().getMapView();
 
-		// Calculate the map extent from the target map:
-		Bbox targetMaxBounds = targetMap.getMapModel().getMapView().getMaxBounds();
+			// Calculate the map extent from the target map:
+			Bbox targetMaxBounds = targetMap.getMapModel().getMapView().getMaxBounds();
 
-		// If targetMap has no maxBounds....then calculate from it's layers:
-		if (null == targetMaxBounds) { // global maxBounds of layer
-			// Draw a bigger map, so the target max extent rectangle remains visible...
-			targetMaxBounds = new Bbox(targetMap.getMapModel().getLayers().get(0).getLayerInfo().getMaxExtent());
+			targetMaxBounds = targetMaxBounds.buffer(targetMaxBounds.getWidth() / 20);
+
+			// Set the maxBounds on this map as well:
+			mapView.setMaxBounds(targetMaxBounds.buffer(targetMaxBounds.getWidth()));
+
+			// Then apply the map extent:
+			mapView.applyBounds(targetMaxBounds, MapView.ZoomOption.LEVEL_FIT);
+			super.onMapViewChanged(null);
+
+			// Immediately draw or remove the max extent rectangle:
+			setDrawTargetMaxExtent(drawTargetMaxExtent);
 		}
-		targetMaxBounds = targetMaxBounds.buffer(targetMaxBounds.getWidth() / 20);
-
-		// Set the maxBounds on this map as well:
-		mapView.setMaxBounds(targetMaxBounds.buffer(targetMaxBounds.getWidth()));
-
-		// Then apply the map extent:
-		mapView.applyBounds(targetMaxBounds, MapView.ZoomOption.LEVEL_FIT);
-		super.onMapViewChanged(null);
-
-		// Immediately draw or remove the max extent rectangle:
-		setDrawTargetMaxExtent(drawTargetMaxExtent);
 	}
 
 	/**
@@ -342,7 +336,7 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 				targetRectangle = null;
 			}
 			if (null == targetReticle) {
-				targetReticle = new Image("screen.targetReticle");
+				targetReticle = new Image("targetReticle");
 				targetReticle.setHref(getIsomorphicDir() + TARGET_RETICLE_IMAGE);
 				targetReticle.setBounds(new Bbox(0, 0, 21, 21));
 			}
@@ -358,7 +352,7 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 				targetReticle = null;
 			}
 			if (null == targetRectangle) {
-				targetRectangle = new Rectangle("screen.targetRect");
+				targetRectangle = new Rectangle("targetRect");
 				targetRectangle.setStyle(rectangleStyle);
 			}
 			targetRectangle.setBounds(new Bbox(viewBegin.getX(), viewBegin.getY(), width, height));

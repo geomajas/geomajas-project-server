@@ -24,6 +24,7 @@ package org.geomajas.command.configuration;
 
 import org.geomajas.command.CommandDispatcher;
 import org.geomajas.configuration.client.ClientMapInfo;
+import org.geomajas.configuration.client.ClientUserDataInfo;
 import org.geomajas.command.dto.GetMapConfigurationRequest;
 import org.geomajas.command.dto.GetMapConfigurationResponse;
 import org.geomajas.geometry.Bbox;
@@ -77,6 +78,10 @@ public class GetMapConfigurationCommandTest {
 		Assert.assertEquals(-2.0037508342789236E7, mapMaxExtent.getY(), DOUBLE_TOLERANCE);
 		Assert.assertEquals(1.8935696632026553E7, mapMaxExtent.getWidth(), DOUBLE_TOLERANCE);
 		Assert.assertEquals(4.007501596344786E7, mapMaxExtent.getHeight(), DOUBLE_TOLERANCE);
+		// user data
+		ClientUserDataInfo info = response.getMapInfo().getUserData();
+		Assert.assertNotNull(info);
+		
 	}
 
 }

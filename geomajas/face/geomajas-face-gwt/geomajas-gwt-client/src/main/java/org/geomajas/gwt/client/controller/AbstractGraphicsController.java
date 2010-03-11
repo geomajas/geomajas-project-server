@@ -23,6 +23,11 @@
 
 package org.geomajas.gwt.client.controller;
 
+import org.geomajas.geometry.Coordinate;
+import org.geomajas.gwt.client.spatial.transform.WorldViewTransformer;
+import org.geomajas.gwt.client.util.GwtEventUtil;
+import org.geomajas.gwt.client.widget.MapWidget;
+
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.MouseDownEvent;
@@ -32,10 +37,6 @@ import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.google.gwt.event.dom.client.MouseWheelEvent;
-import org.geomajas.geometry.Coordinate;
-import org.geomajas.gwt.client.spatial.transform.WorldViewTransformer;
-import org.geomajas.gwt.client.util.GwtEventUtil;
-import org.geomajas.gwt.client.widget.MapWidget;
 
 /**
  * <p>

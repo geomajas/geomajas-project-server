@@ -22,8 +22,9 @@
  */
 package org.geomajas.gwt.client.map.event;
 
-import com.google.gwt.event.shared.GwtEvent;
 import org.geomajas.layer.feature.FeatureTransaction;
+
+import com.google.gwt.event.shared.GwtEvent;
 
 /**
  * Event that reports the commit of a {@link FeatureTransaction}.

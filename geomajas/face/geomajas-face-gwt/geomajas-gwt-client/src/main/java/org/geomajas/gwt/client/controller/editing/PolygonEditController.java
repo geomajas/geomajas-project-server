@@ -111,7 +111,7 @@ public class PolygonEditController extends EditController {
 			index = new TransactionGeomIndex();
 			index.setFeatureIndex(0);
 			index.setCoordinateIndex(0);
-			index.setExteriorRingIndex(0);
+			index.setExteriorRing(true);
 		}
 		return index;
 	}

@@ -118,20 +118,20 @@ public class ScaleBar extends Composite {
 		this.unitType = unitType;
 		this.unitLength = unitLength;
 
-		backGround = new Rectangle((null == getId() ? "" : getId() + ".bg"));
+		backGround = new Rectangle((null == getGroupName() ? "" : getGroupName() + ".bg"));
 		backGround.setBounds(new Bbox(0, 0, 5, markerHeight + 2 * verticalMargin));
 		backGround.setStyle(STYLE_BACKGROUND);
-		leftMarker = new Rectangle((null == getId() ? "" : getId() + ".lm"));
+		leftMarker = new Rectangle((null == getGroupName() ? "" : getGroupName() + ".lm"));
 		leftMarker.setStyle(STYLE_MARKER);
 		leftMarker.setBounds(new Bbox(0, 0, 1, markerHeight));
 
-		rightMarker = new Rectangle((null == getId() ? "" : getId() + ".rm"));
+		rightMarker = new Rectangle((null == getGroupName() ? "" : getGroupName() + ".rm"));
 		rightMarker.setStyle(STYLE_MARKER);
 		rightMarker.setBounds(new Bbox(0, 0, 1, markerHeight));
-		bottomLine = new Rectangle((null == getId() ? "" : getId() + ".bm"));
+		bottomLine = new Rectangle((null == getGroupName() ? "" : getGroupName() + ".bm"));
 		bottomLine.setStyle(STYLE_MARKER);
 		bottomLine.setBounds(new Bbox(0, 0, 0, 1));
-		distance = new Text((null == getId() ? "" : getId() + ".di"));
+		distance = new Text((null == getGroupName() ? "" : getGroupName() + ".di"));
 		distance.setStyle(STYLE_FONT);
 
 		addChild(backGround);

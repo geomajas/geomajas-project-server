@@ -23,10 +23,11 @@
 
 package org.geomajas.gwt.client.map.workflow;
 
-import com.smartgwt.client.util.SC;
+import java.util.List;
+
 import org.geomajas.gwt.client.map.workflow.activity.Activity;
 
-import java.util.List;
+import com.smartgwt.client.util.SC;
 
 /**
  * <p>

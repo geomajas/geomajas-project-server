@@ -94,7 +94,7 @@ public class InsertPointAction extends MenuAction implements MenuItemIfFunction 
 			MenuGraphicsContext graphics = mapWidget.getGraphics();
 			coordinate = mapWidget.getMapModel().getMapView().getWorldViewTransformer().viewToWorld(
 					graphics.getRightButtonCoordinate());
-			String targetId = graphics.getRightButtonTarget();
+			String targetId = graphics.getRightButtonName();
 			if (targetId != null && TransactionGeomIndexUtil.isEdge(targetId)) {
 				index = TransactionGeomIndexUtil.getIndex(targetId);
 				return true;

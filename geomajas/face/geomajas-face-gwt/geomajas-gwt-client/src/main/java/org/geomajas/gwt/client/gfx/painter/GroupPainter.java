@@ -22,41 +22,26 @@
  */
 package org.geomajas.gwt.client.gfx.painter;
 
-import org.geomajas.gwt.client.gfx.GraphicsContext;
-import org.geomajas.gwt.client.gfx.Paintable;
+import org.geomajas.gwt.client.gfx.PaintableGroup;
 import org.geomajas.gwt.client.gfx.Painter;
-import org.geomajas.gwt.client.map.cache.tile.RasterTile;
 
 /**
- * Paints a raster tile.
- *
+ * Base class for painters that need a reference to a group.
+ * 
  * @author Jan De Moerloose
+ * 
  */
-public class RasterTilePainter implements Painter {
+public abstract class GroupPainter implements Painter {
 
-	public RasterTilePainter() {
-	}
-
-	public String getPaintableClassName() {
-		return RasterTile.class.getName();
-	}
-
-	public void paint(Paintable paintable, GraphicsContext graphics) {
-		RasterTile tile = (RasterTile) paintable;
-		graphics.drawImage(tile.getStore().getLayer(), 
-				tile.getCode().toString(), tile.getUrl(), tile.getBounds(), tile.getStyle());
-	}
+	protected PaintableGroup group;
 
 	/**
-	 * Delete a <code>Paintable</code> object from the given <code>GraphicsContext</code>. It the object does not exist,
-	 * nothing will be done.
-	 *
-	 * @param paintable The MapModel
-	 * @param graphics The context to paint on.
+	 * Constructs a painter for this group.
+	 * @param group the group
 	 */
-	public void deleteShape(Paintable paintable, GraphicsContext graphics) {
-		RasterTile tile = (RasterTile) paintable;
-		graphics.deleteElement(tile.getStore().getLayer(), tile.getCode().toString());
+	public GroupPainter(PaintableGroup group) {
+		this.group = group;
 	}
-}
+	
 
+}

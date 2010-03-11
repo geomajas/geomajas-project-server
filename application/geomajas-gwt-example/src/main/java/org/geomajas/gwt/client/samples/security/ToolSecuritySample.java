@@ -35,8 +35,6 @@ import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
-import com.smartgwt.client.widgets.events.DrawEvent;
-import com.smartgwt.client.widgets.events.DrawHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
@@ -75,12 +73,6 @@ public class ToolSecuritySample extends SamplePanel {
 		// Map with ID wmsToolbarMap is defined in the XML configuration. (mapWmsToolbar.xml)
 		map = new MapWidget("wmsToolbarMap", "gwt-samples");
 		toolbar = new Toolbar(map);
-		map.addDrawHandler(new DrawHandler() {
-
-			public void onDraw(DrawEvent event) {
-				map.initialize();
-			}
-		});
 
 		// Create login handler that re-initializes the map on a successful login:
 		final BooleanCallback initMapCallback = new BooleanCallback() {
@@ -93,7 +85,6 @@ public class ToolSecuritySample extends SamplePanel {
 					toolbar = new Toolbar(map);
 					layout.addMember(toolbar);
 					layout.addMember(map);
-					map.initialize();
 				}
 			}
 		};

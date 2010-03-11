@@ -23,17 +23,18 @@
 
 package org.geomajas.gwt.client.controller.editing;
 
-import com.smartgwt.client.types.VerticalAlignment;
-import com.smartgwt.client.widgets.Label;
-import com.smartgwt.client.widgets.events.ClickEvent;
-import com.smartgwt.client.widgets.events.ClickHandler;
-import com.smartgwt.client.widgets.menu.Menu;
 import org.geomajas.gwt.client.controller.AbstractSnappingController;
 import org.geomajas.gwt.client.map.feature.FeatureTransaction;
 import org.geomajas.gwt.client.map.feature.TransactionGeomIndex;
 import org.geomajas.gwt.client.spatial.geometry.Geometry;
 import org.geomajas.gwt.client.spatial.transform.WorldViewTransformer;
 import org.geomajas.gwt.client.widget.MapWidget;
+
+import com.smartgwt.client.types.VerticalAlignment;
+import com.smartgwt.client.widgets.Label;
+import com.smartgwt.client.widgets.events.ClickEvent;
+import com.smartgwt.client.widgets.events.ClickHandler;
+import com.smartgwt.client.widgets.menu.Menu;
 
 /**
  * Basic template for a controller that handles the editing of certain types of geometries.

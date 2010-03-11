@@ -116,7 +116,6 @@ public class RectangleControllerSample extends SamplePanel {
 		map.addDrawHandler(new DrawHandler() {
 
 			public void onDraw(DrawEvent event) {
-				map.initialize();
 				AreaController areaController = new AreaController(map);
 				map.setController(areaController);
 			}

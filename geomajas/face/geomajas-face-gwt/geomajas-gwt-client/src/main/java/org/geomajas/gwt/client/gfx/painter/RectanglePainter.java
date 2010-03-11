@@ -25,23 +25,26 @@ package org.geomajas.gwt.client.gfx.painter;
 
 import org.geomajas.gwt.client.gfx.GraphicsContext;
 import org.geomajas.gwt.client.gfx.Paintable;
-import org.geomajas.gwt.client.gfx.Painter;
+import org.geomajas.gwt.client.gfx.PaintableGroup;
 import org.geomajas.gwt.client.gfx.paintable.Rectangle;
 import org.geomajas.gwt.client.gfx.style.ShapeStyle;
 
 /**
  * <p>
- * Painter implementation for circles.
+ * Painter implementation for rectangles.
  * </p>
  * 
  * @author Pieter De Graef
+ * @author Jan De Moerloose
  */
-public class RectanglePainter implements Painter {
+public class RectanglePainter extends GroupPainter {
 
 	/**
-	 * Empty default constructor.
+	 * Constructs a painter for this group.
+	 * @param group the group
 	 */
-	public RectanglePainter() {
+	public RectanglePainter(PaintableGroup group) {
+		super(group);
 	}
 
 	/**
@@ -63,7 +66,7 @@ public class RectanglePainter implements Painter {
 	 */
 	public void paint(Paintable paintable, GraphicsContext graphics) {
 		Rectangle rectangle = (Rectangle) paintable;
-		graphics.drawRectangle(rectangle.getId(), rectangle.getBounds(), (ShapeStyle) rectangle.getStyle());
+		graphics.drawRectangle(group, rectangle.getId(), rectangle.getBounds(), (ShapeStyle) rectangle.getStyle());
 	}
 
 	/**
@@ -76,6 +79,7 @@ public class RectanglePainter implements Painter {
 	 *            The context to paint on.
 	 */
 	public void deleteShape(Paintable paintable, GraphicsContext graphics) {
-		graphics.deleteShape(paintable.getId(), false);
+		Rectangle rectangle = (Rectangle) paintable;
+		graphics.deleteElement(group, rectangle.getId());
 	}
 }

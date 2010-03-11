@@ -23,12 +23,13 @@
 
 package org.geomajas.gwt.client.action.menu;
 
-import com.smartgwt.client.widgets.menu.events.MenuItemClickEvent;
 import org.geomajas.gwt.client.action.MenuAction;
 import org.geomajas.gwt.client.controller.editing.ParentEditController;
 import org.geomajas.gwt.client.i18n.I18nProvider;
 import org.geomajas.gwt.client.map.feature.FeatureTransaction;
 import org.geomajas.gwt.client.widget.MapWidget;
+
+import com.smartgwt.client.widgets.menu.events.MenuItemClickEvent;
 
 /**
  * Action that stops the editing and also removes any {@link org.geomajas.gwt.client.map.feature.FeatureTransaction}

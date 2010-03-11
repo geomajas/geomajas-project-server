@@ -23,13 +23,14 @@
 
 package org.geomajas.gwt.client.controller;
 
+import org.geomajas.geometry.Coordinate;
+import org.geomajas.gwt.client.widget.OverviewMap;
+
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
 import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.smartgwt.client.types.Cursor;
-import org.geomajas.geometry.Coordinate;
-import org.geomajas.gwt.client.widget.OverviewMap;
 
 /**
  * Controller used by OverviewMap to handle panning.

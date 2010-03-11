@@ -102,7 +102,7 @@ public class InsertRingAction extends MenuAction implements MenuItemIfFunction {
 		FeatureTransaction featureTransaction = mapWidget.getMapModel().getFeatureEditor().getFeatureTransaction();
 		if (featureTransaction != null) {
 			MenuGraphicsContext graphics = mapWidget.getGraphics();
-			String targetId = graphics.getRightButtonTarget();
+			String targetId = graphics.getRightButtonName();
 			if (targetId != null && TransactionGeomIndexUtil.isExteriorRing(targetId, true)) {
 				index = TransactionGeomIndexUtil.getIndex(targetId);
 				return true;
@@ -119,7 +119,7 @@ public class InsertRingAction extends MenuAction implements MenuItemIfFunction {
 		LinearRing interiorRing = polygon.getGeometryFactory().createLinearRing(null);
 		AddRingOperation op = new AddRingOperation(interiorRing);
 		index.setInteriorRingIndex(polygon.getNumInteriorRing());
-		index.setExteriorRingIndex(-1);
+		index.setExteriorRing(false);
 		return (Polygon) op.execute(polygon);
 	}
 

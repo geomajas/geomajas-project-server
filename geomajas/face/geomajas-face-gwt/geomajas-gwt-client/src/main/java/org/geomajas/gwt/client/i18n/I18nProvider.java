@@ -22,11 +22,11 @@
  */
 package org.geomajas.gwt.client.i18n;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.i18n.client.ConstantsWithLookup;
-
 import java.util.Map;
 import java.util.MissingResourceException;
+
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.i18n.client.ConstantsWithLookup;
 
 /**
  * Central provider for all i18n constants.

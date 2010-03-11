@@ -25,7 +25,7 @@ package org.geomajas.gwt.client.gfx.painter;
 
 import org.geomajas.gwt.client.gfx.GraphicsContext;
 import org.geomajas.gwt.client.gfx.Paintable;
-import org.geomajas.gwt.client.gfx.Painter;
+import org.geomajas.gwt.client.gfx.PaintableGroup;
 import org.geomajas.gwt.client.gfx.paintable.GfxGeometry;
 import org.geomajas.gwt.client.gfx.style.ShapeStyle;
 import org.geomajas.gwt.client.spatial.geometry.Geometry;
@@ -37,17 +37,20 @@ import org.geomajas.gwt.client.spatial.geometry.Polygon;
 
 /**
  * <p>
- * Painter implementation for text.
+ * Painter implementation for geometries.
  * </p>
  * 
  * @author Pieter De Graef
+ * @author Jan De Moerloose
  */
-public class GeometryPainter implements Painter {
+public class GeometryPainter extends GroupPainter {
 
 	/**
-	 * Empty default constructor.
+	 * Constructs a painter for this group.
+	 * @param group the group
 	 */
-	public GeometryPainter() {
+	public GeometryPainter(PaintableGroup group) {
+		super(group);
 	}
 
 	/**
@@ -72,19 +75,22 @@ public class GeometryPainter implements Painter {
 			GfxGeometry gfxGeometry = (GfxGeometry) paintable;
 			Geometry geometry = gfxGeometry.getGeometry();
 			if (geometry instanceof LineString) {
-				graphics.drawLine(gfxGeometry.getId(), (LineString) geometry, (ShapeStyle) gfxGeometry.getStyle());
+				graphics.drawLine(group, gfxGeometry.getId(), (LineString) geometry, (ShapeStyle) gfxGeometry
+						.getStyle());
 			} else if (geometry instanceof MultiLineString) {
 				MultiLineString m = (MultiLineString) geometry;
-				graphics.drawLine(gfxGeometry.getId(), (LineString) m.getGeometryN(0), (ShapeStyle) gfxGeometry
+				graphics.drawLine(group, gfxGeometry.getId(), (LineString) m.getGeometryN(0), (ShapeStyle) gfxGeometry
 						.getStyle());
 			} else if (geometry instanceof Polygon) {
-				graphics.drawPolygon(gfxGeometry.getId(), (Polygon) geometry, (ShapeStyle) gfxGeometry.getStyle());
+				graphics.drawPolygon(group, gfxGeometry.getId(), (Polygon) geometry, (ShapeStyle) gfxGeometry
+						.getStyle());
 			} else if (geometry instanceof MultiPolygon) {
 				MultiPolygon m = (MultiPolygon) geometry;
-				graphics.drawPolygon(gfxGeometry.getId(), (Polygon) m.getGeometryN(0), (ShapeStyle) gfxGeometry
+				graphics.drawPolygon(group, gfxGeometry.getId(), (Polygon) m.getGeometryN(0), (ShapeStyle) gfxGeometry
 						.getStyle());
 			} else if (geometry instanceof Point) {
-				graphics.drawSymbol(gfxGeometry.getId(), (Point) geometry, (ShapeStyle) gfxGeometry.getStyle(), null);
+				graphics.drawSymbol(group, gfxGeometry.getId(), geometry.getCoordinate(), (ShapeStyle) gfxGeometry
+						.getStyle(), null);
 			}
 		}
 	}
@@ -99,6 +105,7 @@ public class GeometryPainter implements Painter {
 	 *            The context to paint on.
 	 */
 	public void deleteShape(Paintable paintable, GraphicsContext graphics) {
-		graphics.deleteShape(paintable.getId(), false);
+		GfxGeometry gfxGeometry = (GfxGeometry) paintable;
+		graphics.deleteElement(group, gfxGeometry.getId());
 	}
 }

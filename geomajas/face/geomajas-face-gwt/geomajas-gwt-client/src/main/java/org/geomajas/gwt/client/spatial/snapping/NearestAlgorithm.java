@@ -23,12 +23,12 @@
 
 package org.geomajas.gwt.client.spatial.snapping;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.spatial.LineSegment;
 import org.geomajas.gwt.client.spatial.geometry.Geometry;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * <p>

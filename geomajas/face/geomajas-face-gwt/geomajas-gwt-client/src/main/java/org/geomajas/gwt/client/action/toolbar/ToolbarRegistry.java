@@ -23,12 +23,12 @@
 
 package org.geomajas.gwt.client.action.toolbar;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.geomajas.gwt.client.action.ToolCreator;
 import org.geomajas.gwt.client.action.ToolbarBaseAction;
 import org.geomajas.gwt.client.widget.MapWidget;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Registry for mapping between tool id's and toolbar actions.

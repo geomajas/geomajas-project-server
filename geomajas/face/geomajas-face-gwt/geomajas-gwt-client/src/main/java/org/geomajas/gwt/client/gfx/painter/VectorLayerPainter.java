@@ -28,7 +28,6 @@ import org.geomajas.gwt.client.gfx.Paintable;
 import org.geomajas.gwt.client.gfx.Painter;
 import org.geomajas.gwt.client.gfx.style.FontStyle;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
-import org.geomajas.gwt.client.util.DOM;
 
 /**
  * ???
@@ -55,34 +54,32 @@ public class VectorLayerPainter implements Painter {
 		VectorLayer layer = (VectorLayer) paintable;
 
 		// Create the needed groups in the correct order:
-		graphics.drawGroup(getUniqueLayerId(layer), DOM.NS_VML); // layer.getDefaultStyle???
-		graphics.drawGroup(getUniqueLayerId(layer) + ".features", DOM.NS_VML);
-		graphics.drawGroup(getUniqueLayerId(layer) + ".selection", DOM.NS_VML);
-		graphics.drawGroup(getUniqueLayerId(layer) + ".labels", DOM.NS_VML);
+		graphics.drawGroup(layer.getMapModel().getMapGroup(), layer); // layer.getDefaultStyle???
+		graphics.drawGroup(layer, layer.getFeatureGroup());
+		graphics.drawGroup(layer, layer.getSelectionGroup());
+		graphics.drawGroup(layer, layer.getLabelGroup(), labelStyle);
 
-		// Draw symbol types, as these can change any time:
-		// for (var i=0; i<layer.getStyles().count; i++) {
-		// var style = layer.getStyles().item(i).getStyle();
-		// graphics.drawShapeType({
-		// style: style,
-		// id: layer.getId()+"."+layer.getStyles().item(i).getId()+".style"
-		// });
-		// }
+		 //Draw symbol types, as these can change any time:
+//		 for (var i=0; i<layer.getStyles().count; i++) {
+//		 var style = layer.getStyles().item(i).getStyle();
+//		 graphics.drawShapeType({
+//		 style: style,
+//		 id: layer.getId()+"."+layer.getStyles().item(i).getId()+".style"
+//		 });
+//		 }
 
 		// Check layer visibility:
 		if (layer.isShowing()) {
-			graphics.unhide(getUniqueLayerId(layer));
+			graphics.unhide(layer);
 		} else {
-			graphics.hide(getUniqueLayerId(layer));
+			graphics.hide(layer);
 		}
 
 		// Check label visibility:
 		if (layer.isLabeled()) {
-			// TODO get label style from the layer???
-			graphics.drawGroup(getUniqueLayerId(layer) + ".labels", null, null, labelStyle);
-			graphics.unhide(getUniqueLayerId(layer) + ".labels");
+			graphics.unhide(layer.getLabelGroup());
 		} else {
-			graphics.hide(getUniqueLayerId(layer) + ".labels");
+			graphics.hide(layer.getLabelGroup());
 		}
 	}
 
@@ -96,8 +93,7 @@ public class VectorLayerPainter implements Painter {
 	 *            The context to paint on.
 	 */
 	public void deleteShape(Paintable paintable, GraphicsContext graphics) {
-		VectorLayer layer = (VectorLayer) paintable;
-		graphics.deleteShape(getUniqueLayerId(layer), false);
+		graphics.deleteGroup(paintable);
 	}
 
 	// Getters and setters:
@@ -119,9 +115,4 @@ public class VectorLayerPainter implements Painter {
 		this.labelStyle = labelStyle;
 	}
 
-	// Private methods:
-
-	private String getUniqueLayerId(VectorLayer layer) {
-		return layer.getMapModel().getId() + "." + layer.getId();
-	}
 }

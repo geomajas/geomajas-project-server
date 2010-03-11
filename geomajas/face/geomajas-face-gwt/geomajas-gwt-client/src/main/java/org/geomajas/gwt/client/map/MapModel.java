@@ -35,6 +35,7 @@ import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.gwt.client.gfx.Paintable;
 import org.geomajas.gwt.client.gfx.PainterVisitor;
 import org.geomajas.gwt.client.gfx.WorldPaintable;
+import org.geomajas.gwt.client.gfx.paintable.Composite;
 import org.geomajas.gwt.client.map.event.FeatureDeselectedEvent;
 import org.geomajas.gwt.client.map.event.FeatureSelectedEvent;
 import org.geomajas.gwt.client.map.event.FeatureSelectionHandler;
@@ -100,6 +101,15 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 	private Map<String, Feature> selectedFeatures = new HashMap<String, Feature>();
 
 	private GeometryFactory geometryFactory;
+	
+	private Composite mapGroup = new Composite("map");
+	
+	private Composite worldGroup = new Composite("world");
+	
+	private Composite screenGroup = new Composite("screen");
+	
+	private boolean initialized;
+	
 
 	// -------------------------------------------------------------------------
 	// Constructors:
@@ -225,6 +235,15 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 		}
 		mapView.setMaxBounds(maxBounds);
 		handlerManager.fireEvent(new MapModelEvent());
+		initialized = true;
+	}
+	
+	/**
+	 * Is this map model initialized yet ?
+	 * @return true if initialized
+	 */
+	public boolean isInitialized() {
+		return initialized;
 	}
 
 	protected void removeAllLayers() {
@@ -428,6 +447,20 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 
 	public ClientMapInfo getMapInfo() {
 		return mapInfo;
+	}
+	
+	public Composite getMapGroup() {
+		return mapGroup;
+	}
+
+	
+	public Composite getWorldGroup() {
+		return worldGroup;
+	}
+
+	
+	public Composite getScreenGroup() {
+		return screenGroup;
 	}
 
 	/**

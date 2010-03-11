@@ -23,14 +23,15 @@
 
 package org.geomajas.gwt.client.controller;
 
-import com.google.gwt.event.dom.client.MouseEvent;
+import java.util.List;
+
 import org.geomajas.configuration.SnappingRuleInfo;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.spatial.snapping.Snapper;
 import org.geomajas.gwt.client.spatial.snapping.Snapper.SnapMode;
 import org.geomajas.gwt.client.widget.MapWidget;
 
-import java.util.List;
+import com.google.gwt.event.dom.client.MouseEvent;
 
 /**
  * <p>

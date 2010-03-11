@@ -160,16 +160,6 @@ public abstract class SamplePanel extends VLayout {
 		}
 	}
 
-	/**
-	 * Initialize the sample. If a map is registered, that map will be initialized. If you need more complex stuff to be
-	 * done, overwrite this method.
-	 */
-	public void initialize() {
-		if (map != null) {
-			map.initialize();
-		}
-	}
-
 	public String getId() {
 		return id;
 	}

@@ -74,26 +74,25 @@ public class ControllerOnElementSample extends SamplePanel {
 		map.addDrawHandler(new DrawHandler() {
 
 			public void onDraw(DrawEvent event) {
-				map.initialize();
 				final MenuGraphicsContext graphics = map.getGraphics();
-				//after map initialization we draw an image on the map
-				graphics.drawImage("screen.image", Geomajas.getIsomorphicDir() + IMAGE, new Bbox(300, 300, 48, 48),
-						new PictureStyle(1.0), false);
+				// after map initialization we draw an image on the map
+				graphics.drawImage(map.getMapModel().getScreenGroup(), "image", Geomajas.getIsomorphicDir() + IMAGE,
+						new Bbox(300, 300, 48, 48), new PictureStyle(1.0));
 			}
 		});
 
 		// Create the custom controller:
 		GraphicsController customController = new AbstractGraphicsController(map) {
 
-			private boolean isDragging; //default is false
+			private boolean isDragging; // default is false
 
 			public void onMouseMove(MouseMoveEvent event) {
-				//When the user isDragging (mouse is down) we redraw the image at the location of the mousepointer
+				// When the user isDragging (mouse is down) we redraw the image at the location of the mousepointer
 				if (isDragging) {
 					Coordinate coordinate = this.getScreenPosition(event);
-					map.getGraphics().drawImage("screen.image", Geomajas.getIsomorphicDir() + IMAGE,
-							new Bbox(coordinate.getX() - 24, coordinate.getY() - 24, 48, 48), new PictureStyle(1.0),
-							false);
+					map.getGraphics().drawImage(map.getMapModel().getScreenGroup(), "image",
+							Geomajas.getIsomorphicDir() + IMAGE,
+							new Bbox(coordinate.getX() - 24, coordinate.getY() - 24, 48, 48), new PictureStyle(1.0));
 				}
 
 			}

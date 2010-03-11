@@ -25,23 +25,26 @@ package org.geomajas.gwt.client.gfx.painter;
 
 import org.geomajas.gwt.client.gfx.GraphicsContext;
 import org.geomajas.gwt.client.gfx.Paintable;
-import org.geomajas.gwt.client.gfx.Painter;
+import org.geomajas.gwt.client.gfx.PaintableGroup;
 import org.geomajas.gwt.client.gfx.paintable.Image;
 import org.geomajas.gwt.client.gfx.style.PictureStyle;
 
 /**
  * <p>
- * Painter implementation for circles.
+ * Painter implementation for images.
  * </p>
  * 
  * @author Pieter De Graef
+ * @author Jan De Moerloose
  */
-public class ImagePainter implements Painter {
+public class ImagePainter extends GroupPainter {
 
 	/**
-	 * Empty default constructor.
+	 * Constructs a painter for this group.
+	 * @param group the group
 	 */
-	public ImagePainter() {
+	public ImagePainter(PaintableGroup group) {
+		super(group);
 	}
 
 	/**
@@ -63,7 +66,7 @@ public class ImagePainter implements Painter {
 	 */
 	public void paint(Paintable paintable, GraphicsContext graphics) {
 		Image image = (Image) paintable;
-		graphics.drawImage(image.getId(), image.getHref(), image.getBounds(), (PictureStyle) image.getStyle(), false);
+		graphics.drawImage(group, image.getId(), image.getHref(), image.getBounds(), (PictureStyle) image.getStyle());
 	}
 
 	/**
@@ -76,6 +79,7 @@ public class ImagePainter implements Painter {
 	 *            The context to paint on.
 	 */
 	public void deleteShape(Paintable paintable, GraphicsContext graphics) {
-		graphics.deleteShape(paintable.getId(), false);
+		Image image = (Image) paintable;
+		graphics.deleteElement(group, image.getId());
 	}
 }

@@ -26,8 +26,8 @@ package org.geomajas.gwt.client.widget;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.Parameter;
+import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientToolInfo;
 import org.geomajas.configuration.client.ClientToolbarInfo;
 import org.geomajas.gwt.client.action.ConfigurableAction;

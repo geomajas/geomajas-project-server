@@ -23,12 +23,12 @@
 
 package org.geomajas.gwt.client.map.store;
 
+import java.util.Collection;
+
 import org.geomajas.gwt.client.map.cache.tile.TileFunction;
 import org.geomajas.gwt.client.map.cache.tile.VectorTile;
 import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.spatial.Bbox;
-
-import java.util.Collection;
 
 /**
  * <p>

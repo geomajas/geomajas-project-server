@@ -202,7 +202,6 @@ public class GeomajasSamples implements EntryPoint {
 			tab.setPane(panel);
 			tab.setCanClose(true);
 			mainTabSet.addTab(tab);
-			panel.initialize();
 		}
 		mainTabSet.selectTab(tab);
 	}
@@ -215,6 +214,5 @@ public class GeomajasSamples implements EntryPoint {
 		tab.setTitle("<span>" + imgHTML + "&nbsp;" + I18nProvider.getSampleMessages().introductionTitle() + "</span>");
 		tab.setPane(sample.getViewPanel());
 		mainTabSet.addTab(tab);
-		sample.initialize();
 	}
 }

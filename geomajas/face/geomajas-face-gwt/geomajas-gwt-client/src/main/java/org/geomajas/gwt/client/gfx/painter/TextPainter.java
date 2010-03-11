@@ -25,7 +25,7 @@ package org.geomajas.gwt.client.gfx.painter;
 
 import org.geomajas.gwt.client.gfx.GraphicsContext;
 import org.geomajas.gwt.client.gfx.Paintable;
-import org.geomajas.gwt.client.gfx.Painter;
+import org.geomajas.gwt.client.gfx.PaintableGroup;
 import org.geomajas.gwt.client.gfx.paintable.Text;
 import org.geomajas.gwt.client.gfx.style.FontStyle;
 
@@ -35,13 +35,16 @@ import org.geomajas.gwt.client.gfx.style.FontStyle;
  * </p>
  * 
  * @author Pieter De Graef
+ * @author Jan De Moerloose
  */
-public class TextPainter implements Painter {
+public class TextPainter extends GroupPainter {
 
 	/**
-	 * Empty default constructor.
+	 * Constructs a painter for this group.
+	 * @param group the group
 	 */
-	public TextPainter() {
+	public TextPainter(PaintableGroup group) {
+		super(group);
 	}
 
 	/**
@@ -63,7 +66,7 @@ public class TextPainter implements Painter {
 	 */
 	public void paint(Paintable paintable, GraphicsContext graphics) {
 		Text text = (Text) paintable;
-		graphics.drawText(text.getId(), text.getContent(), text.getPosition(), (FontStyle) text.getStyle());
+		graphics.drawText(null, text.getId(), text.getContent(), text.getPosition(), (FontStyle) text.getStyle());
 	}
 
 	/**
@@ -76,6 +79,7 @@ public class TextPainter implements Painter {
 	 *            The context to paint on.
 	 */
 	public void deleteShape(Paintable paintable, GraphicsContext graphics) {
-		graphics.deleteShape(paintable.getId(), false);
+		Text text = (Text) paintable;
+		graphics.deleteElement(null, text.getId());
 	}
 }

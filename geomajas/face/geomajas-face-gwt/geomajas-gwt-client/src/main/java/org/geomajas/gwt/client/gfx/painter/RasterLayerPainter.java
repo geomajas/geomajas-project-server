@@ -42,13 +42,13 @@ public class RasterLayerPainter implements Painter {
 		RasterLayer layer = (RasterLayer) paintable;
 
 		// Create the needed groups in the correct order:
-		graphics.drawGroup(getUniqueLayerId(layer), null); // layer.getDefaultStyle???
+		graphics.drawGroup(layer.getMapModel().getMapGroup(), layer); // layer.getDefaultStyle???
 
 		// Check layer visibility:
 		if (layer.isShowing()) {
-			graphics.unhide(getUniqueLayerId(layer));
+			graphics.unhide(layer);
 		} else {
-			graphics.hide(getUniqueLayerId(layer));
+			graphics.hide(layer);
 		}
 
 	}
@@ -63,13 +63,7 @@ public class RasterLayerPainter implements Painter {
 	 *            The context to paint on.
 	 */
 	public void deleteShape(Paintable paintable, GraphicsContext graphics) {
-		RasterLayer layer = (RasterLayer) paintable;
-		graphics.deleteShape(getUniqueLayerId(layer), false);
+		graphics.deleteGroup(paintable);
 	}
 
-	// Private methods:
-
-	private String getUniqueLayerId(RasterLayer layer) {
-		return layer.getMapModel().getId() + "." + layer.getId();
-	}
 }

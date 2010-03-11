@@ -25,7 +25,7 @@ package org.geomajas.gwt.client.gfx.painter;
 
 import org.geomajas.gwt.client.gfx.GraphicsContext;
 import org.geomajas.gwt.client.gfx.Paintable;
-import org.geomajas.gwt.client.gfx.Painter;
+import org.geomajas.gwt.client.gfx.PaintableGroup;
 import org.geomajas.gwt.client.gfx.paintable.Circle;
 import org.geomajas.gwt.client.gfx.style.ShapeStyle;
 
@@ -35,13 +35,16 @@ import org.geomajas.gwt.client.gfx.style.ShapeStyle;
  * </p>
  * 
  * @author Pieter De Graef
+ * @author Jan De Moerloose
  */
-public class CirclePainter implements Painter {
+public class CirclePainter extends GroupPainter {
 
 	/**
-	 * Empty default constructor.
+	 * Constructs a painter for this group.
+	 * @param group the group
 	 */
-	public CirclePainter() {
+	public CirclePainter(PaintableGroup group) {
+		super(group);
 	}
 
 	/**
@@ -63,7 +66,8 @@ public class CirclePainter implements Painter {
 	 */
 	public void paint(Paintable paintable, GraphicsContext graphics) {
 		Circle circle = (Circle) paintable;
-		graphics.drawCircle(circle.getId(), circle.getPosition(), circle.getRadius(), (ShapeStyle) circle.getStyle());
+		graphics.drawCircle(null, circle.getId(), circle.getPosition(), circle.getRadius(), (ShapeStyle) circle
+				.getStyle());
 	}
 
 	/**
@@ -76,6 +80,7 @@ public class CirclePainter implements Painter {
 	 *            The context to paint on.
 	 */
 	public void deleteShape(Paintable paintable, GraphicsContext graphics) {
-		graphics.deleteShape(paintable.getId(), false);
+		Circle circle = (Circle) paintable;
+		graphics.deleteElement(null, circle.getId());
 	}
 }

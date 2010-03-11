@@ -53,15 +53,18 @@ public class MapModelPainter implements Painter {
 
 	public void paint(Paintable paintable, GraphicsContext graphics) {
 		MapModel mapModel = (MapModel) paintable;
+		
+		// Group for objects in pan space
+		graphics
+				.drawGroup(null, mapModel.getMapGroup(), 
+						mapWidget.getMapModel().getMapView().getPanToViewTranslation());
 
-		// Draw the group (DIV) and translate for world space:
-		graphics.drawGroup(mapModel.getId(), null, mapWidget.getMapModel().getMapView().getPanToViewTranslation());
-
-		// Prepare a group for objects being painted in world space:
-		if (mapModel.getWorldSpacePaintables() != null && mapModel.getWorldSpacePaintables().size() > 0) {
-			graphics.drawGroup(mapModel.getId() + "_world", null, mapWidget.getMapModel().getMapView()
-					.getWorldToViewTransformation());
-		}
+		// Group for objects in world space
+		graphics.drawGroup(null, mapModel.getWorldGroup(), mapWidget.getMapModel().getMapView()
+				.getWorldToViewTransformation());
+		
+		// Group for objects in screen space
+		graphics.drawGroup(null, mapModel.getScreenGroup());
 	}
 
 	/**
@@ -74,6 +77,7 @@ public class MapModelPainter implements Painter {
 	 *            The context to paint on.
 	 */
 	public void deleteShape(Paintable paintable, GraphicsContext graphics) {
-		graphics.deleteShape(paintable.getId(), false);
+		graphics.deleteGroup(paintable);
 	}
+	
 }

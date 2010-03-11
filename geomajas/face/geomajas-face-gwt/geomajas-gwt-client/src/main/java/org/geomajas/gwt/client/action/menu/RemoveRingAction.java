@@ -84,7 +84,7 @@ public class RemoveRingAction extends MenuAction implements MenuItemIfFunction {
 		FeatureTransaction featureTransaction = mapWidget.getMapModel().getFeatureEditor().getFeatureTransaction();
 		if (featureTransaction != null) {
 			MenuGraphicsContext graphics = mapWidget.getGraphics();
-			String targetId = graphics.getRightButtonTarget();
+			String targetId = graphics.getRightButtonName();
 			if (targetId != null && TransactionGeomIndexUtil.isInteriorRing(targetId, true)) {
 				index = TransactionGeomIndexUtil.getIndex(targetId);
 				return true;

@@ -23,9 +23,10 @@
 
 package org.geomajas.gwt.client.action.layertree;
 
-import com.smartgwt.client.util.SC;
 import org.geomajas.gwt.client.i18n.I18nProvider;
 import org.geomajas.gwt.client.map.layer.Layer;
+
+import com.smartgwt.client.util.SC;
 
 /**
  * An optional action for the LayerTree, that displays a help overview of how to use the LayerTree.

@@ -23,10 +23,10 @@
 
 package org.geomajas.gwt.client.spatial.geometry;
 
+import java.io.Serializable;
+
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.spatial.Bbox;
-
-import java.io.Serializable;
 
 /**
  * ???

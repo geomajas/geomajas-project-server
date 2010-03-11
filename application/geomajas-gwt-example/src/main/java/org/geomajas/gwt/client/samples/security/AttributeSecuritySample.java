@@ -84,7 +84,6 @@ public class AttributeSecuritySample extends SamplePanel {
 		map = new MapWidget("beansMap", "gwt-samples");
 		map.setVisible(false);
 		layout.addMember(map);
-		map.initialize();
 
 		// Create login handler that re-initializes the map on a successful login:
 		final BooleanCallback initMapCallback = new BooleanCallback() {
@@ -95,7 +94,6 @@ public class AttributeSecuritySample extends SamplePanel {
 					map = new MapWidget("beansMap", "gwt-samples");
 					map.setVisible(false);
 					layout.addMember(map);
-					map.initialize();
 				}
 			}
 		};

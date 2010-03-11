@@ -23,9 +23,9 @@
 
 package org.geomajas.gwt.client.map.store;
 
-import org.geomajas.gwt.client.map.cache.tile.Tile;
-
 import java.util.Collection;
+
+import org.geomajas.gwt.client.map.cache.tile.Tile;
 
 /**
  * A store is a collection of tiles for a particular layer.

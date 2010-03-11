@@ -31,22 +31,16 @@ import org.geomajas.gwt.client.spatial.Bbox;
  * <code>PainterVisitor</code> which visits registered painter, who in turn know when to call the paintable's accept
  * functions.
  * </p>
- *
+ * 
  * @author Pieter De Graef
+ * @author Jan De Moerloose
  */
+
 public interface Paintable {
 
 	/**
-	 * A preferably unique ID that identifies the object even after it is painted. This can later be used to update or
-	 * delete it from the <code>GraphicsContext</code>.
-	 *
-	 * @return
-	 */
-	String getId();
-
-	/**
 	 * The accept function. Usually it simply calls the visitor's visit function. But sometimes, more needs to be done.
-	 *
+	 * 
 	 * @param visitor
 	 *            The visitor
 	 * @param bounds
@@ -55,4 +49,5 @@ public interface Paintable {
 	 *            Should the painting be a recursive operation (accept -> visit -> paint -> accept, ...)
 	 */
 	void accept(PainterVisitor visitor, Bbox bounds, boolean recursive);
+
 }

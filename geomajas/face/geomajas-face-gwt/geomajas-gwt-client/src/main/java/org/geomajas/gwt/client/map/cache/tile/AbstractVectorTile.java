@@ -23,14 +23,14 @@
 
 package org.geomajas.gwt.client.map.cache.tile;
 
-import org.geomajas.gwt.client.gfx.Paintable;
+import java.util.Collection;
+
+import org.geomajas.gwt.client.gfx.PaintableGroup;
 import org.geomajas.gwt.client.gfx.PainterVisitor;
 import org.geomajas.gwt.client.map.cache.SpatialCache;
 import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.layer.tile.TileCode;
-
-import java.util.Collection;
 
 /**
  * <p>
@@ -39,7 +39,7 @@ import java.util.Collection;
  * 
  * @author Pieter De Graef
  */
-public abstract class AbstractVectorTile implements Tile, Paintable {
+public abstract class AbstractVectorTile implements Tile, PaintableGroup {
 
 	/**
 	 * ???
@@ -111,6 +111,10 @@ public abstract class AbstractVectorTile implements Tile, Paintable {
 	 */
 	public TileCode getCode() {
 		return code;
+	}
+
+	public String getGroupName() {
+		return code.toString();
 	}
 
 	/**

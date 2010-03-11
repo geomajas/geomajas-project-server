@@ -180,6 +180,12 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 							<property name="height" value="26"/>
 						</bean>
 					</property>					
+					<property name="userData">
+						<bean
+							class="org.geomajas.configuration.client.ClientApplicationInfo.DummyClientUserDataInfo">
+							<property name="dummy" value="some data" />
+						</bean>
+					</property>
 				</bean>
 			</list>
 		</property>

@@ -23,14 +23,15 @@
 
 package org.geomajas.gwt.client.gfx.vml.decoder;
 
-import com.google.gwt.dom.client.Element;
-import com.google.gwt.dom.client.NodeList;
-import com.smartgwt.client.util.SC;
 import org.geomajas.gwt.client.gfx.style.FontStyle;
 import org.geomajas.gwt.client.gfx.style.PictureStyle;
 import org.geomajas.gwt.client.gfx.style.ShapeStyle;
 import org.geomajas.gwt.client.gfx.style.Style;
 import org.geomajas.gwt.client.util.DOM;
+
+import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.NodeList;
+import com.smartgwt.client.util.SC;
 
 /**
  * <p>

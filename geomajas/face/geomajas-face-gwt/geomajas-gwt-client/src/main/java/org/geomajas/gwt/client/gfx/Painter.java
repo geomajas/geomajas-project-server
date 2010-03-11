@@ -23,19 +23,38 @@
 
 package org.geomajas.gwt.client.gfx;
 
+
 /**
  * <p>
  * General interface for painter. Implementations of this class can paint <code>Paintable</code> objects in a
  * <code>GraphicsContext</code>, or delete them.
  * </p>
- *
+ * 
  * @author Pieter De Graef
  */
 public interface Painter {
 
 	/**
+	 * Map groups.
+	 */
+	public enum Group {
+		/**
+		 * The pan group. Drawing should be done in pan coordinates.
+		 */
+		PAN,
+		/**
+		 * The world group. Drawing should be done in world coordinates.
+		 */
+		WORLD,
+		/**
+		 * The screen group. Drawing should be done in screen coordinates.
+		 */
+		SCREEN
+	}
+	
+	/**
 	 * Return the class-name of the type of object this painter can paint.
-	 *
+	 * 
 	 * @return Return the class-name as a string.
 	 */
 	String getPaintableClassName();
@@ -43,7 +62,7 @@ public interface Painter {
 	/**
 	 * Paint a <code>Paintable</code> object on the given <code>GraphicsContext</code>. It the object already exists, it
 	 * will be updated.
-	 *
+	 * 
 	 * @param paintable
 	 *            The object to be painted.
 	 * @param graphics
@@ -54,7 +73,7 @@ public interface Painter {
 	/**
 	 * Delete a <code>Paintable</code> object from the given <code>GraphicsContext</code>. It the object does not exist,
 	 * nothing will be done.
-	 *
+	 * 
 	 * @param paintable
 	 *            The object to be painted.
 	 * @param graphics

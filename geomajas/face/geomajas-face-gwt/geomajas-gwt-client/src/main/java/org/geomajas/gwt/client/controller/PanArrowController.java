@@ -23,13 +23,14 @@
 
 package org.geomajas.gwt.client.controller;
 
+import org.geomajas.geometry.Coordinate;
+import org.geomajas.gwt.client.spatial.Bbox;
+import org.geomajas.gwt.client.widget.MapWidget;
+
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
 import com.google.gwt.event.dom.client.MouseUpEvent;
-import org.geomajas.geometry.Coordinate;
-import org.geomajas.gwt.client.spatial.Bbox;
-import org.geomajas.gwt.client.widget.MapWidget;
 
 /**
  * Pans the map in a given direction (distance is half the size of the viewport).

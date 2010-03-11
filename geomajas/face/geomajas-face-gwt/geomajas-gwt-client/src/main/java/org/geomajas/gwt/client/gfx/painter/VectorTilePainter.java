@@ -25,6 +25,7 @@ package org.geomajas.gwt.client.gfx.painter;
 
 import org.geomajas.gwt.client.gfx.GraphicsContext;
 import org.geomajas.gwt.client.gfx.Paintable;
+import org.geomajas.gwt.client.gfx.PaintableGroup;
 import org.geomajas.gwt.client.gfx.Painter;
 import org.geomajas.gwt.client.gfx.style.PictureStyle;
 import org.geomajas.gwt.client.map.MapView;
@@ -32,7 +33,6 @@ import org.geomajas.gwt.client.map.cache.tile.VectorTile;
 import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.spatial.Matrix;
 import org.geomajas.gwt.client.spatial.transform.WorldViewTransformer;
-import org.geomajas.gwt.client.util.DOM;
 
 /**
  * Paints a vector tile.
@@ -60,33 +60,30 @@ public class VectorTilePainter implements Painter {
 
 		// Paint the feature content:
 		if (tile.getFeatureContent() != null) {
+			PaintableGroup group = tile.getCache().getLayer().getFeatureGroup();
 			switch (tile.getContentType()) {
 				case STRING_CONTENT:
-					graphics.drawGroup(tile.getId(), DOM.NS_VML, (int) tile.getScreenWidth(), (int) tile
-							.getScreenHeight(), transformationMatrix);
-					graphics.drawData(tile.getId() + ".data", tile.getFeatureContent());
+					graphics.drawData(group, tile, tile.getFeatureContent(), transformationMatrix);
 					break;
 				case URL_CONTENT:
-					graphics.drawGroup(tile.getId(), DOM.NS_VML, transformationMatrix);
-					graphics.drawImage(tile.getId() + ".img", tile.getFeatureContent(), new Bbox(0, 0, tile
-							.getScreenWidth(), tile.getScreenHeight()), new PictureStyle(1), false);
+					graphics.drawGroup(group, tile, transformationMatrix);
+					graphics.drawImage(tile, "img", tile.getFeatureContent(), new Bbox(0, 0, tile
+							.getScreenWidth(), tile.getScreenHeight()), new PictureStyle(1));
 
 			}
 		}
-		
+
 		// Paint the label content:
 		if (tile.getLabelContent() != null) {
+			PaintableGroup group = tile.getCache().getLayer().getLabelGroup();
 			switch (tile.getContentType()) {
 				case STRING_CONTENT:
-					graphics.drawGroup(createLabelId(tile), DOM.NS_VML, (int) tile.getScreenWidth(), (int) tile
-							.getScreenHeight(), transformationMatrix);
-					graphics.drawData(createLabelId(tile) + ".data", tile.getLabelContent());
+					graphics.drawData(group, tile, tile.getLabelContent(), transformationMatrix);
 					break;
 				case URL_CONTENT:
-					graphics.drawGroup(tile.getId(), DOM.NS_VML, transformationMatrix);
-					graphics.drawImage(tile.getId() + ".img", tile.getFeatureContent(), new Bbox(0, 0, tile
-							.getScreenWidth(), tile.getScreenHeight()), new PictureStyle(1), false);
-
+					graphics.drawGroup(group, tile, transformationMatrix);
+					graphics.drawImage(tile, "img", tile.getLabelContent(), new Bbox(0, 0, tile
+							.getScreenWidth(), tile.getScreenHeight()), new PictureStyle(1));
 			}
 		}
 	}
@@ -101,16 +98,7 @@ public class VectorTilePainter implements Painter {
 	 *            The context to paint on.
 	 */
 	public void deleteShape(Paintable paintable, GraphicsContext graphics) {
-		graphics.deleteShape(paintable.getId(), false);
-		graphics.deleteShape(createLabelId(paintable), false);
-	}
-
-	// -------------------------------------------------------------------------
-	// Private methods:
-	// -------------------------------------------------------------------------
-
-	private String createLabelId(Paintable paintable) {
-		return paintable.getId().replace("features", "labels");
+		graphics.deleteGroup(paintable);
 	}
 
 	private Matrix createTransformationMatrix(VectorTile tile) {

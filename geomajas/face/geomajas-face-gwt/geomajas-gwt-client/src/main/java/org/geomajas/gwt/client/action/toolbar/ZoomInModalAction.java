@@ -22,12 +22,13 @@
  */
 package org.geomajas.gwt.client.action.toolbar;
 
-import com.smartgwt.client.widgets.events.ClickEvent;
 import org.geomajas.gwt.client.action.ConfigurableAction;
 import org.geomajas.gwt.client.action.ToolbarModalAction;
 import org.geomajas.gwt.client.controller.ZoomOnClickController;
 import org.geomajas.gwt.client.i18n.I18nProvider;
 import org.geomajas.gwt.client.widget.MapWidget;
+
+import com.smartgwt.client.widgets.events.ClickEvent;
 
 /**
  * Tool which allows zooming in on a position of the map by clicking it.

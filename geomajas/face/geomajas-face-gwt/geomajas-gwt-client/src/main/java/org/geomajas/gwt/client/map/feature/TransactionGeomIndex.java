@@ -39,7 +39,7 @@ public class TransactionGeomIndex {
 
 	private int geometryIndex = -1;
 
-	private int exteriorRingIndex = -1;
+	private boolean exteriorRing;
 
 	private int interiorRingIndex = -1;
 
@@ -67,7 +67,7 @@ public class TransactionGeomIndex {
 			}
 		} else if (geometry instanceof Polygon) {
 			Polygon polygon = (Polygon) geometry;
-			if (exteriorRingIndex == 0) {
+			if (exteriorRing) {
 				return polygon.getExteriorRing();
 			} else if (interiorRingIndex >= 0 && interiorRingIndex < polygon.getNumInteriorRing()) {
 				return polygon.getInteriorRingN(interiorRingIndex);
@@ -101,13 +101,14 @@ public class TransactionGeomIndex {
 	public void setCoordinateIndex(int coordinateIndex) {
 		this.coordinateIndex = coordinateIndex;
 	}
-
-	public int getExteriorRingIndex() {
-		return exteriorRingIndex;
+	
+	public boolean isExteriorRing() {
+		return exteriorRing;
 	}
 
-	public void setExteriorRingIndex(int exteriorRingIndex) {
-		this.exteriorRingIndex = exteriorRingIndex;
+	
+	public void setExteriorRing(boolean exteriorRing) {
+		this.exteriorRing = exteriorRing;
 	}
 
 	public int getInteriorRingIndex() {

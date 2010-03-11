@@ -23,8 +23,9 @@
 
 package org.geomajas.gwt.client.map.event;
 
-import com.google.gwt.event.shared.GwtEvent;
 import org.geomajas.gwt.client.spatial.Bbox;
+
+import com.google.gwt.event.shared.GwtEvent;
 
 /**
  * Custom defined event that is triggered every time the view on a map changes. This can be due to zooming in or

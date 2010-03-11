@@ -103,8 +103,7 @@ public class EditFeatureAction extends MenuAction implements MenuItemIfFunction 
 	 * existing features.
 	 */
 	public boolean execute(Canvas target, Menu menu, MenuItem item) {
-		String selectionId = mapWidget.getGraphics().getRightButtonTarget();
-		String featureId = Feature.getFeatureIdFromSelectionId(selectionId);
+		String featureId = mapWidget.getGraphics().getRightButtonName();
 		if (featureId != null) {
 			if (mapWidget.getMapModel().isFeatureSelected(featureId)) {
 				feature = mapWidget.getMapModel().getFeatureById(featureId);

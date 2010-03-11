@@ -23,9 +23,9 @@
 
 package org.geomajas.gwt.client.command;
 
-import org.geomajas.command.CommandRequest;
-
 import java.io.Serializable;
+
+import org.geomajas.command.CommandRequest;
 
 /**
  * <p>

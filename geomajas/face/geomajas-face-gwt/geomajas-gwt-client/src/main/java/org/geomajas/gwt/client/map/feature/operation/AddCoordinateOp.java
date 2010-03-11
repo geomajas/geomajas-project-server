@@ -120,7 +120,7 @@ public class AddCoordinateOp extends GeometryEditor implements FeatureOperation 
 
 	private void execute(Polygon polygon) {
 		LinearRing ring = null;
-		if (index.getExteriorRingIndex() >= 0) {
+		if (index.isExteriorRing()) {
 			ring = polygon.getExteriorRing();
 			if (ring == null) {
 				ring = polygon.getGeometryFactory().createLinearRing(new Coordinate[] {coordinate});
@@ -171,7 +171,7 @@ public class AddCoordinateOp extends GeometryEditor implements FeatureOperation 
 
 	private void undo(Polygon polygon) {
 		LinearRing ring = null;
-		if (index.getExteriorRingIndex() >= 0) {
+		if (index.isExteriorRing()) {
 			ring = polygon.getExteriorRing();
 			LineString lineString = undo(ring);
 			setExteriorRing(polygon, (LinearRing) lineString);

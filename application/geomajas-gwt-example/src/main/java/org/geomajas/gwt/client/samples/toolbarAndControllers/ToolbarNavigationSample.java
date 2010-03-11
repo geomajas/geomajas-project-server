@@ -30,8 +30,6 @@ import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.Toolbar;
 
 import com.smartgwt.client.widgets.Canvas;
-import com.smartgwt.client.widgets.events.DrawEvent;
-import com.smartgwt.client.widgets.events.DrawHandler;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
@@ -66,12 +64,6 @@ public class ToolbarNavigationSample extends SamplePanel {
 
 		final Toolbar toolbar = new Toolbar(map);
 
-		map.addDrawHandler(new DrawHandler() {
-
-			public void onDraw(DrawEvent event) {
-				map.initialize();
-			}
-		});
 
 		layout.addMember(toolbar);
 		layout.addMember(map);

@@ -20,43 +20,22 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.geomajas.gwt.client.gfx.painter;
+package org.geomajas.gwt.client.gfx;
 
-import org.geomajas.gwt.client.gfx.GraphicsContext;
-import org.geomajas.gwt.client.gfx.Paintable;
-import org.geomajas.gwt.client.gfx.Painter;
-import org.geomajas.gwt.client.map.cache.tile.RasterTile;
 
 /**
- * Paints a raster tile.
- *
+ * Implemented by complex paintable objects that will be represented by a group in the map.
+ * 
  * @author Jan De Moerloose
+ * 
  */
-public class RasterTilePainter implements Painter {
-
-	public RasterTilePainter() {
-	}
-
-	public String getPaintableClassName() {
-		return RasterTile.class.getName();
-	}
-
-	public void paint(Paintable paintable, GraphicsContext graphics) {
-		RasterTile tile = (RasterTile) paintable;
-		graphics.drawImage(tile.getStore().getLayer(), 
-				tile.getCode().toString(), tile.getUrl(), tile.getBounds(), tile.getStyle());
-	}
+public interface PaintableGroup extends Paintable {
 
 	/**
-	 * Delete a <code>Paintable</code> object from the given <code>GraphicsContext</code>. It the object does not exist,
-	 * nothing will be done.
-	 *
-	 * @param paintable The MapModel
-	 * @param graphics The context to paint on.
+	 * Returns a nice name for the group to use in the DOM, not necessarily unique.
+	 * 
+	 * @return name
 	 */
-	public void deleteShape(Paintable paintable, GraphicsContext graphics) {
-		RasterTile tile = (RasterTile) paintable;
-		graphics.deleteElement(tile.getStore().getLayer(), tile.getCode().toString());
-	}
-}
+	String getGroupName();
 
+}

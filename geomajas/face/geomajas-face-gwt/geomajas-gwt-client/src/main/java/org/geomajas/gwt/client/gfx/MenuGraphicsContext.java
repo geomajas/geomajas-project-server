@@ -33,12 +33,12 @@ import org.geomajas.geometry.Coordinate;
 public interface MenuGraphicsContext extends GraphicsContext {
 
 	/**
-	 * Retrieve the DOM element ID of the last right mouse event.
+	 * Retrieve the element name of the last right mouse event.
 	 * 
-	 * @return Returns the DOM element's ID.
+	 * @return Returns the name part of the element id.
 	 */
-	String getRightButtonTarget();
-
+	String getRightButtonName();
+	
 	/**
 	 * Retrieve the coordinate of the last right mouse event.
 	 * 

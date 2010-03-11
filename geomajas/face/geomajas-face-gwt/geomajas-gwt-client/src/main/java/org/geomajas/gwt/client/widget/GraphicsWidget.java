@@ -23,20 +23,9 @@
 
 package org.geomajas.gwt.client.widget;
 
-import com.google.gwt.dom.client.Document;
-import com.google.gwt.event.dom.client.DoubleClickEvent;
-import com.google.gwt.event.dom.client.DoubleClickHandler;
-import com.google.gwt.event.dom.client.HasDoubleClickHandlers;
-import com.google.gwt.event.dom.client.MouseUpEvent;
-import com.google.gwt.event.dom.client.MouseUpHandler;
-import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.user.client.Element;
-import com.google.gwt.user.client.Event;
-import com.google.gwt.user.client.ui.FocusWidget;
-import com.smartgwt.client.util.SC;
-import com.smartgwt.client.widgets.Canvas;
-import com.smartgwt.client.widgets.events.ResizedEvent;
-import com.smartgwt.client.widgets.events.ResizedHandler;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.geomajas.configuration.SymbolInfo;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.controller.GraphicsController;
@@ -51,28 +40,47 @@ import org.geomajas.gwt.client.gfx.vml.VmlGraphicsContext;
 import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.spatial.Matrix;
 import org.geomajas.gwt.client.spatial.geometry.LineString;
-import org.geomajas.gwt.client.spatial.geometry.Point;
 import org.geomajas.gwt.client.spatial.geometry.Polygon;
-import org.geomajas.gwt.client.util.DOM;
 import org.geomajas.gwt.client.util.GwtEventUtil;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.google.gwt.dom.client.Document;
+import com.google.gwt.event.dom.client.DoubleClickEvent;
+import com.google.gwt.event.dom.client.DoubleClickHandler;
+import com.google.gwt.event.dom.client.HasDoubleClickHandlers;
+import com.google.gwt.event.dom.client.MouseUpEvent;
+import com.google.gwt.event.dom.client.MouseUpHandler;
+import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.user.client.Element;
+import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.ui.FocusWidget;
+import com.smartgwt.client.util.SC;
+import com.smartgwt.client.widgets.Canvas;
+import com.smartgwt.client.widgets.events.ResizedEvent;
+import com.smartgwt.client.widgets.events.ResizedHandler;
 
 /**
- * <p> GWT widget implementation meant for actual drawing. To this end it implements the <code>GraphicsContext</code>
+ * <p>
+ * GWT widget implementation meant for actual drawing. To this end it implements the <code>GraphicsContext</code>
  * interface. Actually it delegates the real work to either a {@link org.geomajas.gwt.client.gfx.vml.VmlGraphicsContext}
- * or a {@link org.geomajas.gwt.client.gfx.svg.SvgGraphicsContext} object. </p> <p> By default this widget will draw in
- * screen space. It will check the given ID's and add the screen space group in front of it if the ID is not compatible
- * (meaning if an ID does not start with the graphicsId...). </p> <p> It is also responsible for handling {@link
- * org.geomajas.gwt.client.controller.GraphicsController}s (only one at a time). The reason to place the controller
- * handling here, is because we needed a default GWT widget to handle the events, not a SmartGWT widget. The SmartGWT
- * events do not contain the actual DOM elements for MouseEvents, while the default GWT events do. </p> <p> One extra
- * function this widget has, is to store the latest right mouse click. Usually the right mouse button is used for
- * drawing context menus. But sometimes it is necessary to have the DOM element onto which the context menu was clicked,
- * to influence this menu. That is why this widget always stores this latest event (or at least it's DOM element ID, and
- * screen location). </p>
- *
+ * or a {@link org.geomajas.gwt.client.gfx.svg.SvgGraphicsContext} object.
+ * </p>
+ * <p>
+ * By default this widget will draw in screen space. It will check the given ID's and add the screen space group in
+ * front of it if the ID is not compatible (meaning if an ID does not start with the graphicsId...).
+ * </p>
+ * <p>
+ * It is also responsible for handling {@link org.geomajas.gwt.client.controller.GraphicsController}s (only one at a
+ * time). The reason to place the controller handling here, is because we needed a default GWT widget to handle the
+ * events, not a SmartGWT widget. The SmartGWT events do not contain the actual DOM elements for MouseEvents, while the
+ * default GWT events do.
+ * </p>
+ * <p>
+ * One extra function this widget has, is to store the latest right mouse click. Usually the right mouse button is used
+ * for drawing context menus. But sometimes it is necessary to have the DOM element onto which the context menu was
+ * clicked, to influence this menu. That is why this widget always stores this latest event (or at least it's DOM
+ * element ID, and screen location).
+ * </p>
+ * 
  * @author Pieter De Graef
  */
 public class GraphicsWidget extends FocusWidget implements MenuGraphicsContext, HasDoubleClickHandlers {
@@ -81,9 +89,9 @@ public class GraphicsWidget extends FocusWidget implements MenuGraphicsContext, 
 	private String graphicsId;
 
 	/**
-	 * The actual GraphicsContext implementation that does the drawing. Depending on the browser the user uses,
-	 * this will be the {@link org.geomajas.gwt.client.gfx.vml.VmlGraphicsContext} or the {@link
-	 * org.geomajas.gwt.client.gfx.svg.SvgGraphicsContext}.
+	 * The actual GraphicsContext implementation that does the drawing. Depending on the browser the user uses, this
+	 * will be the {@link org.geomajas.gwt.client.gfx.vml.VmlGraphicsContext} or the
+	 * {@link org.geomajas.gwt.client.gfx.svg.SvgGraphicsContext}.
 	 */
 	private GraphicsContext delegate;
 
@@ -104,6 +112,7 @@ public class GraphicsWidget extends FocusWidget implements MenuGraphicsContext, 
 
 	/** Base canvas to insert this widget in */
 	private Canvas base;
+
 	// -------------------------------------------------------------------------
 	// Constructors:
 	// -------------------------------------------------------------------------
@@ -111,18 +120,20 @@ public class GraphicsWidget extends FocusWidget implements MenuGraphicsContext, 
 	/**
 	 * Create and initialise a graphics widget. It will instantiate the correct delegate <code>GraphicsContext</code>
 	 * and build the initial DOM elements.
-	 *
-	 * @param parent The canvas to which this widget will be added as a child.
-	 * @param graphicsId The ID from which to start building the rendering DOM tree.
+	 * 
+	 * @param parent
+	 *            The canvas to which this widget will be added as a child.
+	 * @param graphicsId
+	 *            The ID from which to start building the rendering DOM tree.
 	 */
 	public GraphicsWidget(Canvas parent, String graphicsId) {
 		super(Document.get().createDivElement());
 		this.parent = parent;
 		this.graphicsId = graphicsId;
 		if (SC.isIE()) {
-			delegate = new VmlGraphicsContext(graphicsId);
+			delegate = new VmlGraphicsContext();
 		} else {
-			delegate = new SvgGraphicsContext(graphicsId);
+			delegate = new SvgGraphicsContext();
 		}
 
 		initialize(getElement());
@@ -157,8 +168,9 @@ public class GraphicsWidget extends FocusWidget implements MenuGraphicsContext, 
 	 * Apply a new <code>GraphicsController</code> on the graphics. When an old controller is to be removed for this new
 	 * controller, its <code>onDeactivate</code> method will be called. For the new controller, its
 	 * <code>onActivate</code> method will be called.
-	 *
-	 * @param graphicsController The new <code>GraphicsController</code> to be applied on the graphics.
+	 * 
+	 * @param graphicsController
+	 *            The new <code>GraphicsController</code> to be applied on the graphics.
 	 */
 	public void setController(GraphicsController graphicsController) {
 		for (HandlerRegistration registration : handlers) {
@@ -184,9 +196,11 @@ public class GraphicsWidget extends FocusWidget implements MenuGraphicsContext, 
 
 	/**
 	 * Set the controller of an element of this <code>GraphicsWidget</code> so it can react to events.
-	 *
-	 * @param id The id of the element of which the controller should be set.
-	 * @param controller The new <code>GraphicsController</code>
+	 * 
+	 * @param id
+	 *            The id of the element of which the controller should be set.
+	 * @param controller
+	 *            The new <code>GraphicsController</code>
 	 */
 	public void setController(String id, GraphicsController controller) {
 		delegate.setController(checkId(id), controller);
@@ -194,10 +208,13 @@ public class GraphicsWidget extends FocusWidget implements MenuGraphicsContext, 
 
 	/**
 	 * Set the controller of an element of this <code>GraphicsWidget</code> so it can react to events.
-	 *
-	 * @param id The id of the element of which the controller should be set.
-	 * @param controller The new <code>GraphicsController</code>
-	 * @param eventMask a bitmask to specify exactly which events you wish to listen for @see {@link Event}
+	 * 
+	 * @param id
+	 *            The id of the element of which the controller should be set.
+	 * @param controller
+	 *            The new <code>GraphicsController</code>
+	 * @param eventMask
+	 *            a bitmask to specify exactly which events you wish to listen for @see {@link Event}
 	 */
 	public void setController(String id, GraphicsController controller, int eventMask) {
 		delegate.setController(checkId(id), controller, eventMask);
@@ -213,7 +230,7 @@ public class GraphicsWidget extends FocusWidget implements MenuGraphicsContext, 
 
 	/**
 	 * Retrieve the coordinate of the last right mouse event.
-	 *
+	 * 
 	 * @return Returns the event's position.
 	 */
 	public Coordinate getRightButtonCoordinate() {
@@ -221,11 +238,29 @@ public class GraphicsWidget extends FocusWidget implements MenuGraphicsContext, 
 	}
 
 	/**
+	 * Return the element name for the specified id
+	 * @param id
+	 * @return the name of the element
+	 */
+	public String getNameById(String id) {
+		return delegate.getNameById(id);
+	}
+	
+	/**
+	 * Retrieve the element name of the last right mouse event.
+	 * 
+	 * @return Returns the name part of the element id.
+	 */
+	public String getRightButtonName() {
+		return delegate.getNameById(rightButtonTarget);
+	}
+	
+	/**
 	 * Retrieve the DOM element ID of the last right mouse event.
-	 *
+	 * 
 	 * @return Returns the DOM element's ID.
 	 */
-	public String getRightButtonTarget() {
+	public Object getRightButtonObject() {
 		return rightButtonTarget;
 	}
 
@@ -234,7 +269,7 @@ public class GraphicsWidget extends FocusWidget implements MenuGraphicsContext, 
 	// -------------------------------------------------------------------------
 
 	public void setSize(int width, int height) {
-		if (isReady()) {
+		if (isAttached()) {
 			delegate.setSize(width, height);
 		}
 	}
@@ -243,93 +278,141 @@ public class GraphicsWidget extends FocusWidget implements MenuGraphicsContext, 
 		delegate.initialize(parent);
 	}
 
-	public void deleteShape(String id, boolean childrenOnly) {
-		if (isReady()) {
-			delegate.deleteShape(checkId(id), childrenOnly);
+	public void deleteElement(Object parent, String name) {
+		if (isAttached()) {
+			delegate.deleteElement(parent, name);
 		}
 	}
 
-	public void drawCircle(String id, Coordinate position, double radius, ShapeStyle style) {
-		if (isReady()) {
-			delegate.drawCircle(checkId(id), position, radius, style);
+	public void deleteGroup(Object object) {
+		if (isAttached()) {
+			delegate.deleteGroup(object);
 		}
 	}
 
-	public void drawData(String id, String data) {
-		if (isReady()) {
-			delegate.drawData(id, data);
+	public void drawCircle(Object parent, String name, Coordinate position, double radius, ShapeStyle style) {
+		if (isAttached()) {
+			delegate.drawCircle(parent, name, position, radius, style);
 		}
 	}
 
-	public void drawGroup(String id, String namespace) {
-		if (isReady()) {
-			delegate.drawGroup(checkId(id), namespace);
+	public void drawData(Object parent, Object object, String data, Matrix transformation) {
+		if (isAttached()) {
+			delegate.drawData(parent, object, data, transformation);
 		}
 	}
 
-	public void drawGroup(String id, String namespace, int width, int height, Matrix transformation) {
-		if (isReady()) {
-			delegate.drawGroup(checkId(id), namespace, width, height, transformation);
+	public void drawGroup(Object parent, Object object, Matrix transform, Style style) {
+		if (isAttached()) {
+			delegate.drawGroup(parent, object, transform, style);
 		}
 	}
 
-	public void drawGroup(String id, String namespace, Matrix transformation) {
-		if (isReady()) {
-			delegate.drawGroup(checkId(id), namespace, transformation);
+	public void drawGroup(Object parent, Object object, Matrix transform) {
+		if (isAttached()) {
+			delegate.drawGroup(parent, object, transform);
 		}
 	}
 
-	public void drawGroup(String id, String namespace, Style style) {
-		if (isReady()) {
-			delegate.drawGroup(checkId(id), namespace, style);
+	public void drawGroup(Object parent, Object object, Style style) {
+		if (isAttached()) {
+			delegate.drawGroup(parent, object, style);
 		}
 	}
 
-	public void drawGroup(String id, String namespace, Matrix transformation, Style style) {
-		if (isReady()) {
-			delegate.drawGroup(checkId(id), namespace, transformation, style);
+	public void drawGroup(Object parent, Object object) {
+		if (isAttached()) {
+			delegate.drawGroup(parent, object);
 		}
 	}
 
-	public void drawImage(String id, String href, Bbox bounds, PictureStyle style, boolean asDiv) {
-		if (isReady()) {
-			delegate.drawImage(checkId(id), href, bounds, style, asDiv);
+	public void drawImage(Object parent, String name, String href, Bbox bounds, PictureStyle style) {
+		if (isAttached()) {
+			delegate.drawImage(parent, name, href, bounds, style);
 		}
 	}
 
-	public void drawLine(String id, LineString line, ShapeStyle style) {
-		if (isReady()) {
-			delegate.drawLine(checkId(id), line, style);
+	public void drawLine(Object parent, String name, LineString line, ShapeStyle style) {
+		if (isAttached()) {
+			delegate.drawLine(parent, name, line, style);
 		}
 	}
 
-	public void drawPolygon(String id, Polygon polygon, ShapeStyle style) {
-		if (isReady()) {
-			delegate.drawPolygon(checkId(id), polygon, style);
+	public void drawPolygon(Object parent, String name, Polygon polygon, ShapeStyle style) {
+		if (isAttached()) {
+			delegate.drawPolygon(parent, name, polygon, style);
 		}
 	}
 
-	public void drawRectangle(String id, Bbox rectangle, ShapeStyle style) {
-		if (isReady()) {
-			delegate.drawRectangle(checkId(id), rectangle, style);
+	public void drawRectangle(Object parent, String name, Bbox rectangle, ShapeStyle style) {
+		if (isAttached()) {
+			delegate.drawRectangle(parent, name, rectangle, style);
 		}
 	}
 
-	public void drawShapeType(String id, SymbolInfo symbol, ShapeStyle style, Matrix transformation) {
-		if (isReady()) {
-			delegate.drawShapeType(checkId(id), symbol, style, transformation);
+	public void drawShapeType(Object parent, String id, SymbolInfo symbol, ShapeStyle style, Matrix transformation) {
+		if (isAttached()) {
+			delegate.drawShapeType(parent, id, symbol, style, transformation);
 		}
 	}
 
-	public void drawSymbol(String id, Point symbol, ShapeStyle style, String shapeTypeId) {
-		if (isReady()) {
-			delegate.drawSymbol(checkId(id), symbol, style, checkId(shapeTypeId));
+	public void drawSymbol(Object parent, String name, Coordinate position, ShapeStyle style, String shapeTypeId) {
+		if (isAttached()) {
+			delegate.drawSymbol(parent, name, position, style, shapeTypeId);
 		}
 	}
 
-	public void drawText(String id, String text, Coordinate position, FontStyle style) {
-		if (isReady()) {
-			delegate.drawText(checkId(id), text, position, style);
+	public void drawText(Object parent, String name, String text, Coordinate position, FontStyle style) {
+		if (isAttached()) {
+			delegate.drawText(parent, name, text, position, style);
+		}
+	}
+
+	public void hide(Object object) {
+		if (isAttached()) {
+			delegate.hide(object);
+		}
+	}
+
+	public void setController(Object object, GraphicsController controller, int eventMask) {
+		if (isAttached()) {
+			delegate.setController(object, controller, eventMask);
+		}
+	}
+
+	public void setController(Object object, GraphicsController controller) {
+		if (isAttached()) {
+			delegate.setController(object, controller);
+		}
+	}
+
+	public void setController(Object parent, String name, GraphicsController controller, int eventMask) {
+		if (isAttached()) {
+			delegate.setController(parent, name, controller, eventMask);
+		}
+	}
+
+	public void setController(Object parent, String name, GraphicsController controller) {
+		if (isAttached()) {
+			delegate.setController(parent, name, controller);
+		}
+	}
+
+	public void setCursor(Object parent, String name, String cursor) {
+		if (isAttached()) {
+			delegate.setCursor(parent, name, cursor);
+		}
+	}
+
+	public void setCursor(Object object, String cursor) {
+		if (isAttached()) {
+			delegate.setCursor(object, cursor);
+		}
+	}
+
+	public void unhide(Object object) {
+		if (isAttached()) {
+			delegate.unhide(object);
 		}
 	}
 
@@ -341,29 +424,8 @@ public class GraphicsWidget extends FocusWidget implements MenuGraphicsContext, 
 		return delegate.getWidth();
 	}
 
-	public void hide(String id) {
-		delegate.hide(checkId(id));
-	}
-
 	public void setBackgroundColor(String color) {
 		base.setBackgroundColor(color);
-		delegate.setBackgroundColor(color);
-	}
-
-	public void setCursor(String id, String cursor) {
-		delegate.setCursor(checkId(id), cursor);
-	}
-
-	public void unhide(String id) {
-		delegate.unhide(checkId(id));
-	}
-
-	/**
-	 * Workaround for a bug that is probably caused by the GWTResizedHandler, checks if getElementById() can be used.
-	 * @return
-	 */
-	private boolean isReady() {
-		return DOM.getElementById(graphicsId + "_screen") != null;
 	}
 
 	// -------------------------------------------------------------------------

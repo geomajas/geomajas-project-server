@@ -23,6 +23,17 @@
 
 package org.geomajas.gwt.client.widget;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.LinkedHashMap;
+import java.util.List;
+
+import org.geomajas.gwt.client.i18n.I18nProvider;
+import org.geomajas.gwt.client.map.MapView;
+import org.geomajas.gwt.client.map.event.MapViewChangedEvent;
+import org.geomajas.gwt.client.map.event.MapViewChangedHandler;
+
 import com.google.gwt.i18n.client.NumberFormat;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.form.DynamicForm;
@@ -32,16 +43,6 @@ import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
 import com.smartgwt.client.widgets.form.validator.CustomValidator;
-import org.geomajas.gwt.client.i18n.I18nProvider;
-import org.geomajas.gwt.client.map.MapView;
-import org.geomajas.gwt.client.map.event.MapViewChangedEvent;
-import org.geomajas.gwt.client.map.event.MapViewChangedHandler;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.LinkedHashMap;
-import java.util.List;
 
 /**
  * A drop down selection box for setting and displaying the current scale of a map. The displayed scale is a relative

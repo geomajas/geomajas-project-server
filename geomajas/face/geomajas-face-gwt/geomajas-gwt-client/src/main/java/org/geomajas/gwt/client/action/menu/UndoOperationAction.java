@@ -23,16 +23,17 @@
 
 package org.geomajas.gwt.client.action.menu;
 
-import com.smartgwt.client.widgets.Canvas;
-import com.smartgwt.client.widgets.menu.Menu;
-import com.smartgwt.client.widgets.menu.MenuItem;
-import com.smartgwt.client.widgets.menu.MenuItemIfFunction;
-import com.smartgwt.client.widgets.menu.events.MenuItemClickEvent;
 import org.geomajas.gwt.client.action.MenuAction;
 import org.geomajas.gwt.client.controller.editing.EditController;
 import org.geomajas.gwt.client.i18n.I18nProvider;
 import org.geomajas.gwt.client.map.feature.FeatureTransaction;
 import org.geomajas.gwt.client.widget.MapWidget;
+
+import com.smartgwt.client.widgets.Canvas;
+import com.smartgwt.client.widgets.menu.Menu;
+import com.smartgwt.client.widgets.menu.MenuItem;
+import com.smartgwt.client.widgets.menu.MenuItemIfFunction;
+import com.smartgwt.client.widgets.menu.events.MenuItemClickEvent;
 
 /**
  * Undo the last operation performed on the {@link FeatureTransaction}.

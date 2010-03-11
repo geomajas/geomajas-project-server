@@ -116,7 +116,7 @@ public class Legend extends Canvas {
 	 */
 	public void render() {
 		// First reset the legend:
-		graphics.deleteShape("screen.legend", true);
+		graphics.deleteElement(null, "legend");
 
 		// Then go over all layers, to draw styles:
 		int lineCount = 0;
@@ -142,12 +142,12 @@ public class Legend extends Canvas {
 							coordinates[2] = new Coordinate(10 + 5, y + 10);
 							coordinates[3] = new Coordinate(10 + 15, y + 15);
 							LineString line = mapModel.getGeometryFactory().createLineString(coordinates);
-							graphics.drawLine("screen.legend.style" + lineCount, line, style);
+							graphics.drawLine(null, "legend.style" + lineCount, line, style);
 						} else if (vLayer.getLayerInfo().getLayerType() == LayerType.POLYGON
 								|| vLayer.getLayerInfo().getLayerType() == LayerType.MULTIPOLYGON) {
 							// Polygons: draw a rectangle:
 							Bbox rect = new Bbox(10, y, 16, 16);
-							graphics.drawRectangle("screen.legend.style" + lineCount, rect, style);
+							graphics.drawRectangle(null, "legend.style" + lineCount, rect, style);
 						} else if (vLayer.getLayerInfo().getLayerType() == LayerType.POINT
 								|| vLayer.getLayerInfo().getLayerType() == LayerType.MULTIPOINT) {
 							SC.warn("Legend.render: implement point layers...");
@@ -155,18 +155,18 @@ public class Legend extends Canvas {
 
 						// After the style, draw the style's name:
 						Coordinate textPosition = new Coordinate(30, y - 2);
-						graphics.drawText("screen.legend.text" + lineCount, styleInfo.getName(), textPosition,
-								fontStyle);
+						graphics.drawText(null, "legend.text" + lineCount, 
+								styleInfo.getName(), textPosition, fontStyle);
 						y += 21;
 					}
 				} else if (layer instanceof RasterLayer) {
 					// For raster layers; show a nice symbol:
 					lineCount++;
 
-					graphics.drawImage("screen.legend.style" + lineCount, Geomajas.getIsomorphicDir()
-							+ "geomajas/layer-raster.png", new Bbox(10, y, 16, 16), new PictureStyle(1), false);
+					graphics.drawImage(null, "legend.style" + lineCount, Geomajas.getIsomorphicDir()
+							+ "geomajas/layer-raster.png", new Bbox(10, y, 16, 16), new PictureStyle(1));
 					Coordinate textPosition = new Coordinate(30, y - 2);
-					graphics.drawText("screen.legend.text" + lineCount, layer.getLabel(), textPosition, fontStyle);
+					graphics.drawText(null, "legend.text" + lineCount, layer.getLabel(), textPosition, fontStyle);
 					y += 20;
 				}
 			}

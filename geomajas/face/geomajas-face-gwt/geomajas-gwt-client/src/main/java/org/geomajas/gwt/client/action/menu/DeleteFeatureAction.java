@@ -23,6 +23,12 @@
 
 package org.geomajas.gwt.client.action.menu;
 
+import org.geomajas.gwt.client.action.MenuAction;
+import org.geomajas.gwt.client.controller.editing.ParentEditController;
+import org.geomajas.gwt.client.i18n.I18nProvider;
+import org.geomajas.gwt.client.map.feature.Feature;
+import org.geomajas.gwt.client.widget.MapWidget;
+
 import com.smartgwt.client.util.BooleanCallback;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Canvas;
@@ -30,11 +36,6 @@ import com.smartgwt.client.widgets.menu.Menu;
 import com.smartgwt.client.widgets.menu.MenuItem;
 import com.smartgwt.client.widgets.menu.MenuItemIfFunction;
 import com.smartgwt.client.widgets.menu.events.MenuItemClickEvent;
-import org.geomajas.gwt.client.action.MenuAction;
-import org.geomajas.gwt.client.controller.editing.ParentEditController;
-import org.geomajas.gwt.client.i18n.I18nProvider;
-import org.geomajas.gwt.client.map.feature.Feature;
-import org.geomajas.gwt.client.widget.MapWidget;
 
 /**
  * Menu action that deletes a selected feature on the map.
@@ -93,8 +94,7 @@ public class DeleteFeatureAction extends MenuAction implements MenuItemIfFunctio
 	 * existing features.
 	 */
 	public boolean execute(Canvas target, Menu menu, MenuItem item) {
-		String selectionId = mapWidget.getGraphics().getRightButtonTarget();
-		String featureId = Feature.getFeatureIdFromSelectionId(selectionId);
+		String featureId = mapWidget.getGraphics().getRightButtonName();
 		if (featureId != null) {
 			if (mapWidget.getMapModel().isFeatureSelected(featureId)) {
 				feature = mapWidget.getMapModel().getFeatureById(featureId);

@@ -28,8 +28,8 @@ import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.widget.attribute.AttributeFormFactory;
 import org.geomajas.gwt.client.widget.attribute.DefaultAttributeFormFactory;
-import org.geomajas.gwt.client.widget.attribute.SimpleAttributeForm;
 import org.geomajas.gwt.client.widget.attribute.EditableAttributeForm;
+import org.geomajas.gwt.client.widget.attribute.SimpleAttributeForm;
 
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.smartgwt.client.widgets.Canvas;

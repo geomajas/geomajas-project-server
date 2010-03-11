@@ -23,7 +23,6 @@
 
 package org.geomajas.gwt.client.controller.editing;
 
-import com.google.gwt.event.dom.client.MouseEvent;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.map.feature.FeatureTransaction;
 import org.geomajas.gwt.client.map.feature.TransactionGeomIndex;
@@ -31,6 +30,8 @@ import org.geomajas.gwt.client.spatial.geometry.LineString;
 import org.geomajas.gwt.client.spatial.geometry.LinearRing;
 import org.geomajas.gwt.client.spatial.geometry.MultiPolygon;
 import org.geomajas.gwt.client.widget.MapWidget;
+
+import com.google.gwt.event.dom.client.MouseEvent;
 
 /**
  * Editing controller for MultiPolygon geometries. Supports MultiPolygons with only one Polygon at the moment.
@@ -54,7 +55,7 @@ public class MultiPolygonEditController extends PolygonEditController {
 	public TransactionGeomIndex getGeometryIndex() {
 		if (index == null) {
 			index = new TransactionGeomIndex();
-			index.setExteriorRingIndex(0);
+			index.setExteriorRing(true);
 			index.setGeometryIndex(0);
 			index.setCoordinateIndex(0);
 			index.setFeatureIndex(0);

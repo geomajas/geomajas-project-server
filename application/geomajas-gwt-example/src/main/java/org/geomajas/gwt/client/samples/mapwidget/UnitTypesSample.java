@@ -35,8 +35,6 @@ import com.smartgwt.client.widgets.Button;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
-import com.smartgwt.client.widgets.events.DrawEvent;
-import com.smartgwt.client.widgets.events.DrawHandler;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
@@ -64,12 +62,6 @@ public class UnitTypesSample extends SamplePanel {
 
 		// Map with ID osmMap is defined in the XML configuration. (mapOsm.xml)
 		final MapWidget map = new MapWidget("osmMap", "gwt-samples");
-		map.addDrawHandler(new DrawHandler() {
-
-			public void onDraw(DrawEvent event) {
-				map.initialize();
-			}
-		});
 
 		// Set a panning controller on the map:
 		map.setController(new PanController(map));

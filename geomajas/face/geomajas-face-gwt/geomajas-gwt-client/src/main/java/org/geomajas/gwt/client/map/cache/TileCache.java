@@ -23,18 +23,18 @@
 
 package org.geomajas.gwt.client.map.cache;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.geomajas.gwt.client.map.cache.tile.TileFunction;
 import org.geomajas.gwt.client.map.cache.tile.VectorTile;
 import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.layer.tile.TileCode;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * ???

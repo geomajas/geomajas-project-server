@@ -22,11 +22,12 @@
  */
 package org.geomajas.gwt.client.controller;
 
-import com.google.gwt.event.dom.client.MouseUpEvent;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.map.MapView;
 import org.geomajas.gwt.client.spatial.transform.WorldViewTransformer;
 import org.geomajas.gwt.client.widget.MapWidget;
+
+import com.google.gwt.event.dom.client.MouseUpEvent;
 
 /**
  * Controller for zooming when clicking.

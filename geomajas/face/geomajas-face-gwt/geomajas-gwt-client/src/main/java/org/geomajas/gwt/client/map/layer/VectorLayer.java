@@ -24,7 +24,9 @@
 package org.geomajas.gwt.client.map.layer;
 
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
+import org.geomajas.gwt.client.gfx.PaintableGroup;
 import org.geomajas.gwt.client.gfx.PainterVisitor;
+import org.geomajas.gwt.client.gfx.paintable.Composite;
 import org.geomajas.gwt.client.map.MapModel;
 import org.geomajas.gwt.client.map.cache.TileCache;
 import org.geomajas.gwt.client.map.cache.tile.TileFunction;
@@ -46,6 +48,12 @@ public class VectorLayer extends AbstractLayer<ClientVectorLayerInfo> {
 	private TileCache cache;
 
 	private String filter;
+	
+	private Composite featureGroup = new Composite("features");
+	
+	private Composite selectionGroup = new Composite("selection");
+	
+	private Composite labelGroup = new Composite("labels");
 
 	// -------------------------------------------------------------------------
 	// Constructors:
@@ -126,4 +134,18 @@ public class VectorLayer extends AbstractLayer<ClientVectorLayerInfo> {
 	public VectorLayerStore getFeatureStore() {
 		return cache;
 	}
+
+	
+	public PaintableGroup getFeatureGroup() {
+		return featureGroup;
+	}
+	
+	public PaintableGroup getSelectionGroup() {
+		return selectionGroup;
+	}
+	
+	public PaintableGroup getLabelGroup() {
+		return labelGroup;
+	}
+	
 }

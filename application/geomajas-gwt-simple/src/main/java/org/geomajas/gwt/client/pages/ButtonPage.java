@@ -26,11 +26,8 @@ package org.geomajas.gwt.client.pages;
 import org.geomajas.configuration.CircleInfo;
 import org.geomajas.configuration.SymbolInfo;
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.gwt.client.gfx.paintable.Circle;
-import org.geomajas.gwt.client.gfx.paintable.GfxGeometry;
+import org.geomajas.gwt.client.gfx.paintable.Composite;
 import org.geomajas.gwt.client.gfx.paintable.Image;
-import org.geomajas.gwt.client.gfx.paintable.Rectangle;
-import org.geomajas.gwt.client.gfx.paintable.Text;
 import org.geomajas.gwt.client.gfx.style.FontStyle;
 import org.geomajas.gwt.client.gfx.style.PictureStyle;
 import org.geomajas.gwt.client.gfx.style.ShapeStyle;
@@ -39,12 +36,11 @@ import org.geomajas.gwt.client.spatial.Matrix;
 import org.geomajas.gwt.client.spatial.geometry.GeometryFactory;
 import org.geomajas.gwt.client.spatial.geometry.LineString;
 import org.geomajas.gwt.client.spatial.geometry.LinearRing;
-import org.geomajas.gwt.client.util.DOM;
+import org.geomajas.gwt.client.spatial.geometry.Polygon;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.OverviewMap;
 
 import com.google.gwt.core.client.GWT;
-import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.events.ClickEvent;
@@ -94,6 +90,11 @@ public class ButtonPage extends AbstractTestPage {
 		layout10.setWidth100();
 		horizontal.addMember(layout10);
 		mainLayout.addMember(horizontal);
+		
+		final Composite group1 = new Composite("group1");
+		final Composite group2 = new Composite("group2");
+		final Composite group3 = new Composite("group3");
+		
 
 		// ---------------------------------------------------------------------
 		// Part1: adding buttons:
@@ -111,11 +112,9 @@ public class ButtonPage extends AbstractTestPage {
 		addButton("Draw circle", new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				Circle circle = new Circle("screen.test1.circle");
-				circle.setPosition(new Coordinate(200, 100));
-				circle.setRadius(30);
-				circle.setStyle(new ShapeStyle("#00FF00", 0.5f, "#009900", 1, 2));
-				getMap().render(circle, "all");
+				getMap().getGraphics().drawGroup(null, group1);
+				ShapeStyle style = new ShapeStyle("#00FF00", 0.5f, "#009900", 1, 2);
+				getMap().getGraphics().drawCircle(group1, "circle", new Coordinate(200, 100), 30, style);
 			}
 		});
 
@@ -123,13 +122,12 @@ public class ButtonPage extends AbstractTestPage {
 		addButton("Draw LineString", new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				GfxGeometry gfx = new GfxGeometry("screen.test2.LineString");
+				getMap().getGraphics().drawGroup(null, group2);
 				GeometryFactory factory = new GeometryFactory(4326, -1);
 				LineString geometry = factory.createLineString(new Coordinate[] { new Coordinate(10, 10),
 						new Coordinate(100, 50), new Coordinate(50, 100) });
-				gfx.setGeometry(geometry);
-				gfx.setStyle(new ShapeStyle("#00FF00", 0.5f, "#0000FF", 1, 2));
-				getMap().render(gfx, "all");
+				ShapeStyle style = new ShapeStyle("#00FF00", 0.5f, "#0000FF", 1, 2);
+				getMap().getGraphics().drawLine(group2, "LineString", geometry, style);
 			}
 		});
 
@@ -137,7 +135,7 @@ public class ButtonPage extends AbstractTestPage {
 		addButton("Draw Polygon", new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				GfxGeometry gfx = new GfxGeometry("screen.test2.Polygon");
+				getMap().getGraphics().drawGroup(null, group3);
 				GeometryFactory factory = new GeometryFactory(4326, -1);
 				LinearRing shell = factory.createLinearRing(new Coordinate[] { new Coordinate(110, 10),
 						new Coordinate(210, 10), new Coordinate(210, 110), new Coordinate(110, 110),
@@ -145,32 +143,32 @@ public class ButtonPage extends AbstractTestPage {
 				LinearRing hole = factory.createLinearRing(new Coordinate[] { new Coordinate(140, 40),
 						new Coordinate(170, 40), new Coordinate(170, 70), new Coordinate(140, 70),
 						new Coordinate(140, 40) });
-				gfx.setGeometry(factory.createPolygon(shell, new LinearRing[] { hole }));
-				gfx.setStyle(new ShapeStyle("#A0A0A0", 0.5f, "#000000", 1, 2));
-				getMap().render(gfx, "all");
+				Polygon polygon = factory.createPolygon(shell, new LinearRing[] { hole });
+				ShapeStyle style = new ShapeStyle("#A0A0A0", 0.5f, "#000000", 1, 2);
+				getMap().getGraphics().drawPolygon(group2, "Polygon", polygon, style);
 			}
 		});
 
 		// Button5: Draw Text
 		addButton("Draw text", new ClickHandler() {
-
 			public void onClick(ClickEvent event) {
-				Text text = new Text("screen.test1.text");
-				text.setContent("This is some text...");
-				text.setPosition(new Coordinate(200, 100));
-				text.setStyle(new FontStyle("#00FF00", 12, "Verdana", "normal", "normal"));
-				getMap().render(text, "all");
+				try {
+					getMap().getGraphics().drawGroup(null, group1);
+					FontStyle style = new FontStyle("#00FF00", 12, "Verdana", "normal", "normal");
+					getMap().getGraphics().drawText(group1, "text", "This is some text...", new Coordinate(200, 100),
+							style);
+				} catch (Throwable t) {
+					GWT.log("Draw text failed", t);
+				}
 			}
 		});
 
 		// Button6: Draw Rectangle
 		addButton("Draw Rectangle", new ClickHandler() {
-
 			public void onClick(ClickEvent event) {
-				Rectangle rect = new Rectangle("screen.test2.test3.rectangle");
-				rect.setBounds(new Bbox(50, 200, 200, 50));
-				rect.setStyle(new ShapeStyle("#00FF00", 0.5f, "#009900", 1, 2));
-				getMap().render(rect, "all");
+				getMap().getGraphics().drawGroup(null, group2);
+				ShapeStyle style = new ShapeStyle("#00FF00", 0.5f, "#009900", 1, 2);
+				getMap().getGraphics().drawRectangle(group2, "rectangle", new Bbox(50, 200, 200, 50), style);
 			}
 		});
 
@@ -178,11 +176,15 @@ public class ButtonPage extends AbstractTestPage {
 		addButton("Draw Image", new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
+				getMap().getGraphics().drawGroup(null, group1);
 				Image image = new Image("screen.test1.image");
 				image.setHref("http://www.geomajas.org/sites/all/themes/geomajas/images/header_logo.gif");
 				image.setBounds(new Bbox(1, 1, 760, 120));
 				image.setStyle(new PictureStyle(0.5));
 				getMap().render(image, "all");
+				getMap().getGraphics().drawImage(group1, "image",
+						"http://www.geomajas.org/sites/all/themes/geomajas/images/header_logo.gif",
+						new Bbox(1, 1, 760, 120), new PictureStyle(0.5));
 			}
 		});
 
@@ -193,15 +195,9 @@ public class ButtonPage extends AbstractTestPage {
 				Matrix matrix1 = new Matrix(0, 0, 0, 0, 40, 10);
 				Matrix matrix2 = new Matrix(0, 0, 0, 0, 10, 40);
 				Matrix matrix3 = new Matrix(0, 0, 0, 0, -10, -100);
-				String ns;
-				if (SC.isIE()) {
-					ns = DOM.NS_VML;
-				} else {
-					ns = DOM.NS_SVG;
-				}
-				getMap().getGraphics().drawGroup("screen.test1", null, matrix1);
-				getMap().getGraphics().drawGroup("screen.test2", ns, matrix2);
-				getMap().getGraphics().drawGroup("screen.test2.test3", ns, matrix3);
+				getMap().getGraphics().drawGroup(null, group1, matrix1);
+				getMap().getGraphics().drawGroup(null, group2, matrix2);
+				getMap().getGraphics().drawGroup(null, group3, matrix3);
 			}
 		});
 
@@ -209,7 +205,7 @@ public class ButtonPage extends AbstractTestPage {
 		addButton("New cursor on circle", new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				getMap().getGraphics().setCursor("screen.test1.circle", "wait");
+				getMap().getGraphics().setCursor(group1, "circle", "wait");
 			}
 		});
 
@@ -222,10 +218,9 @@ public class ButtonPage extends AbstractTestPage {
 				circle.setR(5);
 				symbol.setCircle(circle);
 
-				getMap().getGraphics().drawShapeType("screen.circleShapeType", symbol,
+				getMap().getGraphics().drawShapeType(null,"screen.circleShapeType", symbol,
 						new ShapeStyle("#00FF88", 0.5f, "#009966", 1, 2), null);
-				GeometryFactory factory = new GeometryFactory(4326, -1);
-				getMap().getGraphics().drawSymbol("screen.test1.symbol", factory.createPoint(new Coordinate(30, 30)),
+				getMap().getGraphics().drawSymbol(null,"screen.test1.symbol", new Coordinate(30, 30),
 						new ShapeStyle("#00FF88", 0.5f, "#009966", 1, 2), "screen.circleShapeType");
 			}
 		});
@@ -242,7 +237,7 @@ public class ButtonPage extends AbstractTestPage {
 		addButton2("Hide + busy", new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				getMap().getGraphics().hide("screen.test1");
+				getMap().getGraphics().hide(group1);
 			}
 		});
 
@@ -250,7 +245,7 @@ public class ButtonPage extends AbstractTestPage {
 		addButton2("Unhide - busy", new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				getMap().getGraphics().unhide("screen.test1");
+				getMap().getGraphics().unhide(group1);
 			}
 		});
 
@@ -258,8 +253,8 @@ public class ButtonPage extends AbstractTestPage {
 		addButton2("Delete", new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				getMap().getGraphics().deleteShape("screen.test1", false);
-				getMap().getGraphics().deleteShape("screen.test2", true);
+				getMap().getGraphics().deleteGroup(group1);
+				getMap().getGraphics().deleteGroup(group2);
 			}
 		});
 

@@ -23,6 +23,9 @@
 
 package org.geomajas.gwt.client.map.feature;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.gfx.Paintable;
 import org.geomajas.gwt.client.gfx.PainterVisitor;
@@ -42,9 +45,6 @@ import org.geomajas.layer.feature.attribute.LongAttribute;
 import org.geomajas.layer.feature.attribute.ShortAttribute;
 import org.geomajas.layer.feature.attribute.StringAttribute;
 import org.geomajas.layer.feature.attribute.UrlAttribute;
-
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * <p>
@@ -125,23 +125,6 @@ public class Feature implements Paintable, Cloneable {
 
 	public String getId() {
 		return id;
-	}
-
-	/**
-	 * Id which should be used for this feature when rendered as "selected".
-	 * 
-	 * @return selected id
-	 */
-	public String getSelectionId() {
-		return layer.getMapModel().getId() + "." + layer.getId() + ".selection." + getId();
-	}
-
-	public static String getFeatureIdFromSelectionId(String selectionId) {
-		String[] ids = selectionId.split("\\."); // It's a regular expression, not literally.
-		if (ids.length > 2) {
-			return ids[ids.length - 2] + "." + ids[ids.length - 1];
-		}
-		return null;
 	}
 
 	// Class specific functions:
@@ -333,6 +316,7 @@ public class Feature implements Paintable, Cloneable {
 		this.deletable = deletable;
 	}
 
+	
 	/* @todo
 	private void lazyLoad(final int featureIncludes, final CommandCallback callback) {
 		SearchFeatureRequest request = new SearchFeatureRequest();

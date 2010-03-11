@@ -23,13 +23,6 @@
 
 package org.geomajas.gwt.client.controller.editing;
 
-import com.google.gwt.event.dom.client.MouseDownEvent;
-import com.google.gwt.event.dom.client.MouseEvent;
-import com.google.gwt.event.dom.client.MouseMoveEvent;
-import com.google.gwt.event.dom.client.MouseUpEvent;
-import com.google.gwt.user.client.Event;
-import com.smartgwt.client.widgets.menu.Menu;
-import com.smartgwt.client.widgets.menu.MenuItemSeparator;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.action.menu.CancelEditingAction;
 import org.geomajas.gwt.client.action.menu.InsertPointAction;
@@ -50,6 +43,14 @@ import org.geomajas.gwt.client.map.feature.operation.FeatureOperation;
 import org.geomajas.gwt.client.map.feature.operation.SetCoordinateOp;
 import org.geomajas.gwt.client.spatial.geometry.LineString;
 import org.geomajas.gwt.client.widget.MapWidget;
+
+import com.google.gwt.event.dom.client.MouseDownEvent;
+import com.google.gwt.event.dom.client.MouseEvent;
+import com.google.gwt.event.dom.client.MouseMoveEvent;
+import com.google.gwt.event.dom.client.MouseUpEvent;
+import com.google.gwt.user.client.Event;
+import com.smartgwt.client.widgets.menu.Menu;
+import com.smartgwt.client.widgets.menu.MenuItemSeparator;
 
 /**
  * Editing controller for LineString geometries.

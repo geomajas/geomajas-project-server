@@ -183,7 +183,6 @@ public class GeomajasSimple implements EntryPoint {
 	}
 
 	private void initialize() {
-		map.initialize();
 		legend.setHeight(200);
 		overviewMap.setHeight(200);
 

@@ -35,8 +35,6 @@ import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
-import com.smartgwt.client.widgets.events.DrawEvent;
-import com.smartgwt.client.widgets.events.DrawHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
@@ -73,12 +71,6 @@ public class FilterSecuritySample extends SamplePanel {
 
 		// Map with ID duisburgMap is defined in the XML configuration. (mapDuisburg.xml)
 		map = new MapWidget("duisburgMap", "gwt-samples");
-		map.addDrawHandler(new DrawHandler() {
-
-			public void onDraw(DrawEvent event) {
-				map.initialize();
-			}
-		});
 
 		// Create login handler that re-initializes the map on a successful login:
 		final BooleanCallback initMapCallback = new BooleanCallback() {
@@ -88,7 +80,6 @@ public class FilterSecuritySample extends SamplePanel {
 					map.destroy();
 					map = new MapWidget("duisburgMap", "gwt-samples");
 					layout.addMember(map);
-					map.initialize();
 					map.setController(new PanController(map));
 				}
 			}

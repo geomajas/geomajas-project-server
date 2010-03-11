@@ -23,11 +23,12 @@
 
 package org.geomajas.gwt.client.util;
 
+import org.geomajas.geometry.Coordinate;
+
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.EventTarget;
 import com.google.gwt.event.dom.client.DomEvent;
 import com.google.gwt.event.dom.client.MouseEvent;
-import org.geomajas.geometry.Coordinate;
 
 /**
  * Utility class regarding GWT mouse events. These functions can be very handy in the {@link GraphicsController}

@@ -55,6 +55,16 @@ public class DOM extends com.google.gwt.user.client.DOM {
 	public static final String NS_VML = "vml";
 
 	/**
+	 * General HTML name-space.
+	 */
+	public static final String NS_HTML = "html";
+
+	/**
+	 * Separator character for DOM element id's.
+	 */
+	public static final String ID_SEPARATOR = "-";
+
+	/**
 	 * Initialization of the VML name-spaces. In order to be able to use VML in a page, this function has to be called
 	 * first!
 	 */
@@ -63,6 +73,21 @@ public class DOM extends com.google.gwt.user.client.DOM {
 			initVMLNamespaceForIE();
 		}
 	}
+	
+	/**
+	 * Assemble an DOM id.
+	 * 
+	 * @param id
+	 * @param suffixes
+	 * @return id
+	 */
+	public static String assembleId(String id, String... suffixes) {
+		for (String s : suffixes) {
+			id += DOM.ID_SEPARATOR + s;
+		}
+		return id;
+	}
+
 
 	private static native void initVMLNamespaceForIE()
 	/*-{
@@ -75,7 +100,7 @@ public class DOM extends com.google.gwt.user.client.DOM {
 
 	/**
 	 * <p>
-	 * Creates a new DOM element in the given name-space. If the name-space is null, a normal element will be created.
+	 * Creates a new DOM element in the given name-space. If the name-space is HTML, a normal element will be created.
 	 * </p>
 	 * <p>
 	 * There is an exception when using Internet Explorer! For Internet Explorer a new element will be created of type
@@ -89,7 +114,7 @@ public class DOM extends com.google.gwt.user.client.DOM {
 	 * @return Returns a newly created DOM element in the given name-space.
 	 */
 	public static Element createElementNS(String ns, String tag) {
-		if (ns == null) {
+		if (ns == NS_HTML) {
 			return createElement(tag);
 		} else {
 			if (isIE()) {
@@ -179,7 +204,8 @@ public class DOM extends com.google.gwt.user.client.DOM {
 	 *            The string of SVG to set on the element.
 	 */
 	public static void setInnerSvg(Element element, String svg) {
-		svg = "<g xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">" + svg + "</g>";
+		svg = "<g xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">"
+				+ svg + "</g>";
 		if (isFireFox()) {
 			setFireFoxInnerHTML(element, svg);
 		} else if (isChrome()) {

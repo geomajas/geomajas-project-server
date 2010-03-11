@@ -30,8 +30,6 @@ import org.geomajas.gwt.client.samples.i18n.I18nProvider;
 import org.geomajas.gwt.client.widget.MapWidget;
 
 import com.smartgwt.client.widgets.Canvas;
-import com.smartgwt.client.widgets.events.DrawEvent;
-import com.smartgwt.client.widgets.events.DrawHandler;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
@@ -59,12 +57,6 @@ public class OpenStreetMapSample extends SamplePanel {
 
 		// Map with ID osmMap is defined in the XML configuration. (mapOsm.xml)
 		final MapWidget map = new MapWidget("osmMap", "gwt-samples");
-		map.addDrawHandler(new DrawHandler() {
-
-			public void onDraw(DrawEvent event) {
-				map.initialize();
-			}
-		});
 
 		// Set a panning controller on the map:
 		map.setController(new PanController(map));

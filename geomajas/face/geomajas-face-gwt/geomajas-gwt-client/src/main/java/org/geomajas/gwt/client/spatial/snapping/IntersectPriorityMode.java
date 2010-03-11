@@ -23,6 +23,9 @@
 
 package org.geomajas.gwt.client.spatial.snapping;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.geomajas.configuration.SnappingRuleInfo;
 import org.geomajas.configuration.SnappingRuleInfo.SnappingType;
 import org.geomajas.geometry.Coordinate;
@@ -33,9 +36,6 @@ import org.geomajas.gwt.client.spatial.geometry.Geometry;
 import org.geomajas.gwt.client.spatial.geometry.MultiLineString;
 import org.geomajas.gwt.client.spatial.geometry.MultiPoint;
 import org.geomajas.gwt.client.spatial.geometry.MultiPolygon;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * <p>

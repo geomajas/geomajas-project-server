@@ -22,6 +22,9 @@
  */
 package org.geomajas.gwt.client.controller;
 
+import org.geomajas.geometry.Coordinate;
+import org.geomajas.gwt.client.widget.MapWidget;
+
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseEvent;
@@ -29,8 +32,6 @@ import com.google.gwt.event.dom.client.MouseMoveEvent;
 import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.smartgwt.client.types.Cursor;
-import org.geomajas.geometry.Coordinate;
-import org.geomajas.gwt.client.widget.MapWidget;
 
 /**
  * Handle panning by dragging the map. Also allows zoom to rectangle when using shift or ctrl when you start to drag.

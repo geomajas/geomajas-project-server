@@ -123,7 +123,7 @@ public final class TransactionGeomIndexUtil {
 				index.setGeometryIndex(getIndex(identifier, "point"));
 			}
 
-			index.setExteriorRingIndex(getIndex(identifier, "shell"));
+			index.setExteriorRing(hasIdentifier(identifier, "shell"));
 			index.setInteriorRingIndex(getIndex(identifier, "hole"));
 
 			// Coordinate index (coordinate or edge):
@@ -143,6 +143,11 @@ public final class TransactionGeomIndexUtil {
 			return readInteger(temp);
 		}
 		return -1;
+	}
+	
+	private static boolean hasIdentifier(String identifier, String subIdentifier) {
+		int position = identifier.indexOf(subIdentifier);
+		return position > 0;
 	}
 
 	private static int readInteger(String identifier) {

@@ -41,7 +41,7 @@ import com.google.gwt.event.shared.HandlerRegistration;
  * </p>
  * 
  * @param <T>
- *            layer info {@link LayerInfo}
+ *            layer info {@link ClientLayerInfo}
  * 
  * @author Pieter De Graef
  * @author Jan De Moerloose
@@ -122,6 +122,15 @@ public abstract class AbstractLayer<T extends ClientLayerInfo> implements Layer<
 
 	public String getId() {
 		return layerInfo.getServerLayerId();
+	}
+	
+	/**
+	 * Returns a nice name for the group to use in the DOM, not necessarily unique.
+	 * 
+	 * @return name
+	 */
+	public String getGroupName() {
+		return layerInfo.getId();
 	}
 
 	public MapModel getMapModel() {

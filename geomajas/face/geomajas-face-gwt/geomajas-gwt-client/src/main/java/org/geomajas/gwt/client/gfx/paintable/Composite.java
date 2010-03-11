@@ -23,31 +23,31 @@
 
 package org.geomajas.gwt.client.gfx.paintable;
 
-import org.geomajas.gwt.client.gfx.Paintable;
-import org.geomajas.gwt.client.gfx.PainterVisitor;
-import org.geomajas.gwt.client.spatial.Bbox;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import org.geomajas.gwt.client.gfx.Paintable;
+import org.geomajas.gwt.client.gfx.PaintableGroup;
+import org.geomajas.gwt.client.gfx.PainterVisitor;
+import org.geomajas.gwt.client.spatial.Bbox;
 
 /**
  * A <code>Paintable</code> that contains other <code>Paintables</code>,
  * allowing you to create complex <code>Paintable</code>s (composite like pattern).
  *
- * <p><code>Paintable</code> has no <code>setId()</code> so you are responsible for setting correct id's of children.
  * <p>Children are visited (painted) in the order they were added.
  * <p><code>Paintables</code> are not aware of parents, so all positioning is absolute.
  *
  * @author Kristof Heirwegh
  */
-public class Composite implements Paintable {
+public class Composite implements PaintableGroup {
 
 	/**
 	 * A preferably unique ID that identifies the object even after it is
 	 * painted. This can later be used to update or delete it from the
 	 * <code>GraphicsContext</code>.
 	 */
-	private String id;
+	private String groupName;
 
 	protected final List<Paintable> children = new ArrayList<Paintable>();
 
@@ -55,13 +55,12 @@ public class Composite implements Paintable {
 	}
 
 	/**
-	 * Set the id of this <code>Paintable</code>.
-	 *
-	 * @param id
-	 *            new id of this <code>Paintable</code>
+	 * Construct a composite with the specified name.
+	 * 
+	 * @param groupName a nice group name for the paintable to use in the DOM, not necessarily unique
 	 */
-	public Composite(String id) {
-		this.id = id;
+	public Composite(String groupName) {
+		this.groupName = groupName;
 	}
 
 	// ----------------------------------------------------------
@@ -72,12 +71,13 @@ public class Composite implements Paintable {
 		}
 	}
 
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
+	/**
+	 * Returns a nice name for the group to use in the DOM, not necessarily unique.
+	 * 
+	 * @return name
+	 */
+	public String getGroupName() {
+		return groupName;
 	}
 
 	/**

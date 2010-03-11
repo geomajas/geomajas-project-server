@@ -34,6 +34,7 @@ import org.geomajas.gwt.client.spatial.geometry.Geometry;
 import org.geomajas.gwt.client.spatial.geometry.LineString;
 import org.geomajas.gwt.client.spatial.geometry.LinearRing;
 import org.geomajas.gwt.client.spatial.geometry.MultiLineString;
+import org.geomajas.gwt.client.spatial.geometry.MultiPoint;
 import org.geomajas.gwt.client.spatial.geometry.MultiPolygon;
 import org.geomajas.gwt.client.spatial.geometry.Point;
 import org.geomajas.gwt.client.spatial.geometry.Polygon;
@@ -91,19 +92,23 @@ public class FeatureTransactionPainter implements Painter {
 		if (features == null) {
 			return;
 		}
+		graphics.drawGroup(mapWidget.getMapModel().getScreenGroup(), featureTransaction);
 		for (int i = 0; i < features.length; i++) {
 			Geometry geometry = mapWidget.getMapModel().getMapView().getWorldViewTransformer().worldToView(
 					features[i].getGeometry());
+			graphics.drawGroup(featureTransaction, features[i]);
 			if (geometry instanceof Point) {
-				paint(featureTransaction.getId() + ".feature" + i, (Point) geometry, graphics);
+				paint(features[i], "featureTransaction.feature" + i, (Point) geometry, graphics);
+			} else if (geometry instanceof MultiPoint) {
+				paint(features[i], "featureTransaction.feature" + i, (MultiPoint) geometry, graphics);
 			} else if (geometry instanceof LineString) {
-				paint(featureTransaction.getId() + ".feature" + i, (LineString) geometry, graphics);
+				paint(features[i], "featureTransaction.feature" + i, (LineString) geometry, graphics);
 			} else if (geometry instanceof MultiLineString) {
-				paint(featureTransaction.getId() + ".feature" + i, (MultiLineString) geometry, graphics);
+				paint(features[i], "featureTransaction.feature" + i, (MultiLineString) geometry, graphics);
 			} else if (geometry instanceof Polygon) {
-				paint(featureTransaction.getId() + ".feature" + i, (Polygon) geometry, graphics);
+				paint(features[i], "featureTransaction.feature" + i, (Polygon) geometry, graphics);
 			} else if (geometry instanceof MultiPolygon) {
-				paint(featureTransaction.getId() + ".feature" + i, (MultiPolygon) geometry, graphics);
+				paint(features[i], "featureTransaction.feature" + i, (MultiPolygon) geometry, graphics);
 			}
 		}
 	}
@@ -118,74 +123,89 @@ public class FeatureTransactionPainter implements Painter {
 	 *            The context to paint on.
 	 */
 	public void deleteShape(Paintable paintable, GraphicsContext graphics) {
-		graphics.deleteShape(paintable.getId(), false);
+		graphics.deleteGroup(paintable);
 	}
 
 	// -------------------------------------------------------------------------
 	// Private drawing functions:
 	// -------------------------------------------------------------------------
 
-	private void paint(String id, Point point, GraphicsContext graphics) {
+	private void paint(Object parent, String name, Point point, GraphicsContext graphics) {
 		if (!point.isEmpty()) {
-			graphics.drawCircle(id + ".coordinate0", point.getCoordinate(), 5.0f, pointStyle);
+			paint(parent, name + ".coordinate0", point.getCoordinate(), graphics);
 		}
 	}
-
-	private void paint(String id, LineString lineString, GraphicsContext graphics) {
+	
+	private void paint(Object parent, String name, LineString lineString, GraphicsContext graphics) {
+		// Draw the group
+		graphics.drawGroup(parent, lineString);
 		// Draw LineString fill area:
-		graphics.drawLine(id + ".area", lineString, lineStringStyle);
+		graphics.drawLine(lineString, name + ".area", lineString, lineStringStyle);
 
 		// Draw individual edges:
 		Coordinate[] coordinates = lineString.getCoordinates();
 		for (int i = 1; i < coordinates.length; i++) {
 			LineString edge = lineString.getGeometryFactory().createLineString(
-					new Coordinate[] {coordinates[i - 1], coordinates[i]});
-			graphics.drawLine(id + ".edge" + i, edge, edgeStyle);
+					new Coordinate[] { coordinates[i - 1], coordinates[i] });
+			graphics.drawLine(lineString, name + ".edge" + i, edge, edgeStyle);
 		}
 
 		// Draw individual vertices:
 		for (int i = 0; i < coordinates.length; i++) {
-			graphics.drawCircle(id + ".coordinate" + i, coordinates[i], 5.0f, pointStyle);
+			graphics.drawCircle(lineString, name + ".coordinate" + i, coordinates[i], 5.0f, pointStyle);
 		}
 	}
 
-	private void paint(String id, LinearRing linearRing, GraphicsContext graphics) {
+	private void paint(Object parent, String name, Polygon polygon, GraphicsContext graphics) {
+		graphics.drawPolygon(parent, "background", polygon, polygonStyle);
+		if (polygon.getExteriorRing() != null) {
+			paint(parent, name + ".shell", polygon.getExteriorRing(), graphics);
+		}
+		for (int i = 0; i < polygon.getNumInteriorRing(); i++) {
+			paint(parent, name + ".hole" + i, polygon.getInteriorRingN(i), graphics);
+		}
+	}
+
+	private void paint(Object parent, String name, MultiPoint multipoint, GraphicsContext graphics) {
+		for (int i = 0; i < multipoint.getNumGeometries(); i++) {
+			paint(parent, name + ".point" + i, (Point) multipoint.getGeometryN(i), graphics);
+		}
+	}
+
+	private void paint(Object parent, String name, MultiLineString multiline, GraphicsContext graphics) {
+		for (int i = 0; i < multiline.getNumGeometries(); i++) {
+			paint(parent, name + ".linestring" + i, (LineString) multiline.getGeometryN(i), graphics);
+		}
+	}
+
+
+	private void paint(Object parent, String name, MultiPolygon multipolygon, GraphicsContext graphics) {
+		for (int i = 0; i < multipolygon.getNumGeometries(); i++) {
+			paint(parent, name + ".polygon" + i, (Polygon) multipolygon.getGeometryN(i), graphics);
+		}
+	}
+
+	private void paint(Object parent, String name, Coordinate coordinate, GraphicsContext graphics) {
+		graphics.drawCircle(parent, name, coordinate, 5.0f, pointStyle);
+	}
+
+
+	private void paint(Object parent, String name, LinearRing linearRing, GraphicsContext graphics) {
 		// Draw LineString fill area:
-		graphics.drawLine(id + ".area", linearRing, linearRingStyle);
+		graphics.drawLine(parent, name + ".area", linearRing, linearRingStyle);
 
 		// Draw individual edges:
 		Coordinate[] coordinates = linearRing.getCoordinates();
 		for (int i = 1; i < coordinates.length; i++) {
 			LineString edge = linearRing.getGeometryFactory().createLineString(
-					new Coordinate[] {coordinates[i - 1], coordinates[i]});
-			graphics.drawLine(id + ".edge" + i, edge, edgeStyle);
+					new Coordinate[] { coordinates[i - 1], coordinates[i] });
+			graphics.drawLine(parent, name + ".edge" + i, edge, edgeStyle);
 		}
 
 		// Draw individual vertices:
 		for (int i = 0; i < coordinates.length - 1; i++) {
-			graphics.drawCircle(id + ".coordinate" + i, coordinates[i], 5.0f, pointStyle);
+			graphics.drawCircle(parent, name + ".coordinate" + i, coordinates[i], 5.0f, pointStyle);
 		}
 	}
 
-	private void paint(String id, MultiLineString multi, GraphicsContext graphics) {
-		for (int i = 0; i < multi.getNumGeometries(); i++) {
-			paint(id + ".lineString" + i, (LineString) multi.getGeometryN(i), graphics);
-		}
-	}
-
-	private void paint(String id, Polygon polygon, GraphicsContext graphics) {
-		graphics.drawPolygon(id + ".background", polygon, polygonStyle);
-		if (polygon.getExteriorRing() != null) {
-			paint(id + ".shell0", polygon.getExteriorRing(), graphics);
-		}
-		for (int i = 0; i < polygon.getNumInteriorRing(); i++) {
-			paint(id + ".hole" + i, polygon.getInteriorRingN(i), graphics);
-		}
-	}
-
-	private void paint(String id, MultiPolygon multi, GraphicsContext graphics) {
-		for (int i = 0; i < multi.getNumGeometries(); i++) {
-			paint(id + ".polygon" + i, (Polygon) multi.getGeometryN(i), graphics);
-		}
-	}
 }

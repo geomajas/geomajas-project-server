@@ -23,8 +23,10 @@
 
 package org.geomajas.gwt.client.map;
 
-import com.google.gwt.event.shared.HandlerManager;
-import com.google.gwt.event.shared.HandlerRegistration;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.map.event.MapViewChangedEvent;
 import org.geomajas.gwt.client.map.event.MapViewChangedHandler;
@@ -32,9 +34,8 @@ import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.spatial.Matrix;
 import org.geomajas.gwt.client.spatial.transform.WorldViewTransformer;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.event.shared.HandlerRegistration;
 
 /**
  * <p>

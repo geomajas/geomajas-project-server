@@ -23,13 +23,13 @@
 
 package org.geomajas.gwt.client.map.feature;
 
+import java.util.Stack;
+
 import org.geomajas.gwt.client.gfx.Paintable;
 import org.geomajas.gwt.client.gfx.PainterVisitor;
 import org.geomajas.gwt.client.map.feature.operation.FeatureOperation;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.spatial.Bbox;
-
-import java.util.Stack;
 
 /**
  * ???

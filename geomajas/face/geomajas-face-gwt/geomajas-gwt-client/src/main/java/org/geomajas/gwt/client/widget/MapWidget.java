@@ -43,7 +43,6 @@ import org.geomajas.gwt.client.gfx.Painter;
 import org.geomajas.gwt.client.gfx.PainterVisitor;
 import org.geomajas.gwt.client.gfx.paintable.ScaleBar;
 import org.geomajas.gwt.client.gfx.painter.CirclePainter;
-import org.geomajas.gwt.client.gfx.painter.ScaleBarPainter;
 import org.geomajas.gwt.client.gfx.painter.FeaturePainter;
 import org.geomajas.gwt.client.gfx.painter.FeatureTransactionPainter;
 import org.geomajas.gwt.client.gfx.painter.GeometryPainter;
@@ -52,6 +51,7 @@ import org.geomajas.gwt.client.gfx.painter.MapModelPainter;
 import org.geomajas.gwt.client.gfx.painter.RasterLayerPainter;
 import org.geomajas.gwt.client.gfx.painter.RasterTilePainter;
 import org.geomajas.gwt.client.gfx.painter.RectanglePainter;
+import org.geomajas.gwt.client.gfx.painter.ScaleBarPainter;
 import org.geomajas.gwt.client.gfx.painter.TextPainter;
 import org.geomajas.gwt.client.gfx.painter.VectorLayerPainter;
 import org.geomajas.gwt.client.gfx.painter.VectorTilePainter;
@@ -72,6 +72,7 @@ import org.geomajas.gwt.client.map.event.MapViewChangedHandler;
 import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.layer.Layer;
 import org.geomajas.gwt.client.spatial.Bbox;
+import org.geomajas.gwt.client.spatial.Matrix;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.MouseWheelEvent;
@@ -132,8 +133,6 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	/** Registration for the zoom on scroll handler. */
 	private HandlerRegistration zoomOnScrollRegistration;
 
-	private boolean initialized;
-
 	private boolean resizedHandlerDisabled;
 
 	private Menu defaultMenu;
@@ -156,11 +155,11 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 
 		// Painter registration:
 		painterVisitor.registerPainter(new ScaleBarPainter());
-		painterVisitor.registerPainter(new CirclePainter());
-		painterVisitor.registerPainter(new RectanglePainter());
-		painterVisitor.registerPainter(new TextPainter());
-		painterVisitor.registerPainter(new GeometryPainter());
-		painterVisitor.registerPainter(new ImagePainter());
+		painterVisitor.registerPainter(new CirclePainter(mapModel.getScreenGroup()));
+		painterVisitor.registerPainter(new RectanglePainter(mapModel.getScreenGroup()));
+		painterVisitor.registerPainter(new TextPainter(mapModel.getScreenGroup()));
+		painterVisitor.registerPainter(new GeometryPainter(mapModel.getScreenGroup()));
+		painterVisitor.registerPainter(new ImagePainter(mapModel.getScreenGroup()));
 		painterVisitor.registerPainter(new MapModelPainter(this));
 		painterVisitor.registerPainter(new RasterLayerPainter());
 		painterVisitor.registerPainter(new RasterTilePainter());
@@ -184,28 +183,6 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	// Class specific methods:
 	// -------------------------------------------------------------------------
 
-	/**
-	 * Initialize the MapWidget. This function must always be explicitly called! It fetches the needed configuration
-	 * from the server, and applies it.
-	 * 
-	 * @param applicationId
-	 *            application unique id
-	 */
-	public void initialize() {
-		if (!initialized) {
-			GwtCommand commandRequest = new GwtCommand("command.configuration.GetMap");
-			commandRequest.setCommandRequest(new GetMapConfigurationRequest(id, applicationId));
-			GwtCommandDispatcher.getInstance().execute(commandRequest, new CommandCallback() {
-
-				public void execute(CommandResponse response) {
-					if (response instanceof GetMapConfigurationResponse) {
-						GetMapConfigurationResponse r = (GetMapConfigurationResponse) response;
-						initializationCallback(r);
-					}
-				}
-			});
-		}
-	}
 
 	public double getUnitLength() {
 		return unitLength;
@@ -239,7 +216,6 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 					}
 				});
 			}
-			initialized = true;
 		}
 	}
 
@@ -278,6 +254,9 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	}
 
 	public void render(Paintable paintable, String status) {
+		if (!graphics.isAttached()) {
+			return;
+		}
 		if (paintable == null) {
 			paintable = this.mapModel;
 		}
@@ -308,7 +287,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 		scaleBarEnabled = enabled;
 		if (scaleBarEnabled) {
 			if (null == scalebar) {
-				scalebar = new ScaleBar("screen.scalebar");
+				scalebar = new ScaleBar("scalebar");
 			}
 			scalebar.initialize(getMapModel().getMapInfo().getDisplayUnitType(), unitLength, new Coordinate(20,
 					graphics.getHeight() - 25));
@@ -336,58 +315,61 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	public void setPanButtonsEnabled(boolean enabled) {
 		panButtonsEnabled = enabled;
 		if (enabled) {
-			graphics.drawImage("screen.panNImage", Geomajas.getIsomorphicDir() + IMAGE_NAV_NORTH, new Bbox(graphics
-					.getWidth() / 2 - 9, 0, 18, 18), new PictureStyle(0.7), false);
-			graphics.drawImage("screen.panSImage", Geomajas.getIsomorphicDir() + IMAGE_NAV_SOUTH, new Bbox(graphics
-					.getWidth() / 2 - 9, graphics.getHeight() - 18, 18, 18), new PictureStyle(0.7), false);
-			graphics.drawImage("screen.panWImage", Geomajas.getIsomorphicDir() + IMAGE_NAV_WEST, new Bbox(0, graphics
-					.getHeight() / 2 - 9, 18, 18), new PictureStyle(0.7), false);
-			graphics.drawImage("screen.panEImage", Geomajas.getIsomorphicDir() + IMAGE_NAV_EAST, new Bbox(graphics
-					.getWidth() - 18, graphics.getHeight() / 2 - 9, 18, 18), new PictureStyle(0.7), false);
-			graphics.drawImage("screen.panNWImage", Geomajas.getIsomorphicDir() + IMAGE_NAV_NORTHWEST, new Bbox(0, 0,
-					18, 18), new PictureStyle(0.7), false);
-			graphics.drawImage("screen.panNEImage", Geomajas.getIsomorphicDir() + IMAGE_NAV_NORTHEAST, new Bbox(
-					graphics.getWidth() - 18, 0, 18, 18), new PictureStyle(0.7), false);
-			graphics.drawImage("screen.panSWImage", Geomajas.getIsomorphicDir() + IMAGE_NAV_SOUTHWEST, new Bbox(0,
-					graphics.getHeight() - 18, 18, 18), new PictureStyle(0.7), false);
-			graphics.drawImage("screen.panSEImage", Geomajas.getIsomorphicDir() + IMAGE_NAV_SOUTHEAST, new Bbox(
-					graphics.getWidth() - 18, graphics.getHeight() - 18, 18, 18), new PictureStyle(0.7), false);
+			graphics.drawImage(mapModel.getScreenGroup(), "panNImage", Geomajas.getIsomorphicDir()
+					+ IMAGE_NAV_NORTH, new Bbox(graphics.getWidth() / 2 - 9, 0, 18, 18), new PictureStyle(0.7));
+			graphics.drawImage(mapModel.getScreenGroup(), "panSImage", Geomajas.getIsomorphicDir()
+					+ IMAGE_NAV_SOUTH, new Bbox(graphics.getWidth() / 2 - 9, graphics.getHeight() - 18, 18, 18),
+					new PictureStyle(0.7));
+			graphics.drawImage(mapModel.getScreenGroup(), "panWImage", Geomajas.getIsomorphicDir()
+					+ IMAGE_NAV_WEST, new Bbox(0, graphics.getHeight() / 2 - 9, 18, 18), new PictureStyle(0.7));
+			graphics.drawImage(mapModel.getScreenGroup(), "panEImage", Geomajas.getIsomorphicDir()
+					+ IMAGE_NAV_EAST, new Bbox(graphics.getWidth() - 18, graphics.getHeight() / 2 - 9, 18, 18),
+					new PictureStyle(0.7));
+			graphics.drawImage(mapModel.getScreenGroup(), "panNWImage", Geomajas.getIsomorphicDir()
+					+ IMAGE_NAV_NORTHWEST, new Bbox(0, 0, 18, 18), new PictureStyle(0.7));
+			graphics.drawImage(mapModel.getScreenGroup(), "panNEImage", Geomajas.getIsomorphicDir()
+					+ IMAGE_NAV_NORTHEAST, new Bbox(graphics.getWidth() - 18, 0, 18, 18), new PictureStyle(0.7));
+			graphics.drawImage(mapModel.getScreenGroup(), "panSWImage", Geomajas.getIsomorphicDir()
+					+ IMAGE_NAV_SOUTHWEST, new Bbox(0, graphics.getHeight() - 18, 18, 18), new PictureStyle(0.7));
+			graphics.drawImage(mapModel.getScreenGroup(), "panSEImage", Geomajas.getIsomorphicDir()
+					+ IMAGE_NAV_SOUTHEAST, new Bbox(graphics.getWidth() - 18, graphics.getHeight() - 18, 18, 18),
+					new PictureStyle(0.7));
 
-			graphics.setController("screen.panNImage", new PanArrowController(this, new Coordinate(0, 1)),
-					Event.MOUSEEVENTS);
-			graphics.setController("screen.panSImage", new PanArrowController(this, new Coordinate(0, -1)),
-					Event.MOUSEEVENTS);
-			graphics.setController("screen.panWImage", new PanArrowController(this, new Coordinate(-1, 0)),
-					Event.MOUSEEVENTS);
-			graphics.setController("screen.panEImage", new PanArrowController(this, new Coordinate(1, 0)),
-					Event.MOUSEEVENTS);
-			graphics.setController("screen.panNWImage", new PanArrowController(this, new Coordinate(-1, 1)),
-					Event.MOUSEEVENTS);
-			graphics.setController("screen.panNEImage", new PanArrowController(this, new Coordinate(1, 1)),
-					Event.MOUSEEVENTS);
-			graphics.setController("screen.panSWImage", new PanArrowController(this, new Coordinate(-1, -1)),
-					Event.MOUSEEVENTS);
-			graphics.setController("screen.panSEImage", new PanArrowController(this, new Coordinate(1, -1)),
-					Event.MOUSEEVENTS);
+			graphics.setController(mapModel.getScreenGroup(), "panNImage", new PanArrowController(this, new Coordinate(
+					0, 1)), Event.MOUSEEVENTS);
+			graphics.setController(mapModel.getScreenGroup(), "panSImage", new PanArrowController(this, new Coordinate(
+					0, -1)), Event.MOUSEEVENTS);
+			graphics.setController(mapModel.getScreenGroup(), "panWImage", new PanArrowController(this, new Coordinate(
+					-1, 0)), Event.MOUSEEVENTS);
+			graphics.setController(mapModel.getScreenGroup(), "panEImage", new PanArrowController(this, new Coordinate(
+					1, 0)), Event.MOUSEEVENTS);
+			graphics.setController(mapModel.getScreenGroup(), "panNWImage", new PanArrowController(this,
+					new Coordinate(-1, 1)), Event.MOUSEEVENTS);
+			graphics.setController(mapModel.getScreenGroup(), "panNEImage", new PanArrowController(this,
+					new Coordinate(1, 1)), Event.MOUSEEVENTS);
+			graphics.setController(mapModel.getScreenGroup(), "panSWImage", new PanArrowController(this,
+					new Coordinate(-1, -1)), Event.MOUSEEVENTS);
+			graphics.setController(mapModel.getScreenGroup(), "panSEImage", new PanArrowController(this,
+					new Coordinate(1, -1)), Event.MOUSEEVENTS);
 
-			graphics.setCursor("screen.panNImage", POINTER_CURSOR);
-			graphics.setCursor("screen.panSImage", POINTER_CURSOR);
-			graphics.setCursor("screen.panWImage", POINTER_CURSOR);
-			graphics.setCursor("screen.panEImage", POINTER_CURSOR);
-			graphics.setCursor("screen.panNWImage", POINTER_CURSOR);
-			graphics.setCursor("screen.panNEImage", POINTER_CURSOR);
-			graphics.setCursor("screen.panSWImage", POINTER_CURSOR);
-			graphics.setCursor("screen.panSEImage", POINTER_CURSOR);
+			graphics.setCursor(mapModel.getScreenGroup(), "panNImage", POINTER_CURSOR);
+			graphics.setCursor(mapModel.getScreenGroup(), "panSImage", POINTER_CURSOR);
+			graphics.setCursor(mapModel.getScreenGroup(), "panWImage", POINTER_CURSOR);
+			graphics.setCursor(mapModel.getScreenGroup(), "panEImage", POINTER_CURSOR);
+			graphics.setCursor(mapModel.getScreenGroup(), "panNWImage", POINTER_CURSOR);
+			graphics.setCursor(mapModel.getScreenGroup(), "panNEImage", POINTER_CURSOR);
+			graphics.setCursor(mapModel.getScreenGroup(), "panSWImage", POINTER_CURSOR);
+			graphics.setCursor(mapModel.getScreenGroup(), "panSEImage", POINTER_CURSOR);
 
 		} else {
-			graphics.deleteShape("screen.panNImage", false);
-			graphics.deleteShape("screen.panSImage", false);
-			graphics.deleteShape("screen.panWImage", false);
-			graphics.deleteShape("screen.panEImage", false);
-			graphics.deleteShape("screen.panNWImage", false);
-			graphics.deleteShape("screen.panNEImage", false);
-			graphics.deleteShape("screen.panSWImage", false);
-			graphics.deleteShape("screen.panSEImage", false);
+			graphics.deleteElement(mapModel.getScreenGroup(), "panNImage");
+			graphics.deleteElement(mapModel.getScreenGroup(), "panSImage");
+			graphics.deleteElement(mapModel.getScreenGroup(), "panWImage");
+			graphics.deleteElement(mapModel.getScreenGroup(), "panEImage");
+			graphics.deleteElement(mapModel.getScreenGroup(), "panNWImage");
+			graphics.deleteElement(mapModel.getScreenGroup(), "panNEImage");
+			graphics.deleteElement(mapModel.getScreenGroup(), "panSWImage");
+			graphics.deleteElement(mapModel.getScreenGroup(), "panSEImage");
 		}
 	}
 
@@ -425,14 +407,29 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	// -------------------------------------------------------------------------
 
 	protected void onDraw() {
+		super.onDraw();
+		// must be called before anything else !
+		render(mapModel, "all");
 		final int width = getWidth();
 		final int height = getHeight();
 		mapModel.getMapView().setSize(width, height);
 		graphics.setSize(width, height);
+		GwtCommand commandRequest = new GwtCommand("command.configuration.GetMap");
+		commandRequest.setCommandRequest(new GetMapConfigurationRequest(id, applicationId));
+		GwtCommandDispatcher.getInstance().execute(commandRequest, new CommandCallback() {
+
+			public void execute(CommandResponse response) {
+				if (response instanceof GetMapConfigurationResponse) {
+					GetMapConfigurationResponse r = (GetMapConfigurationResponse) response;
+					initializationCallback(r);
+				}
+			}
+		});
+
 	}
 
 	public void onMapViewChanged(MapViewChangedEvent event) {
-		if (initialized) {
+		if (isDrawn()) {
 			if (scaleBarEnabled && scalebar != null) {
 				scalebar.adjustScale(mapModel.getMapView().getCurrentScale());
 				render(scalebar, "update");
@@ -509,6 +506,14 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 
 	public void setDefaultMenu(Menu defaultMenu) {
 		this.defaultMenu = defaultMenu;
+	}
+
+	public Matrix getWorldToViewTranslation() {
+		return mapModel.getMapView().getWorldToViewTranslation();
+	}
+
+	public Matrix getWorldToPanTranslation() {
+		return mapModel.getMapView().getWorldToPanTranslation();
 	}
 
 	// -------------------------------------------------------------------------

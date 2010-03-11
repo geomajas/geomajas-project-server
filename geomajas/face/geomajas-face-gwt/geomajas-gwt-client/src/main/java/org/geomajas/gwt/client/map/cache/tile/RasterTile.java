@@ -95,4 +95,9 @@ public class RasterTile implements Tile, Paintable {
 	public String getUrl() {
 		return url;
 	}
+	
+	public RasterLayerStore getStore() {
+		return store;
+	}
+	
 }

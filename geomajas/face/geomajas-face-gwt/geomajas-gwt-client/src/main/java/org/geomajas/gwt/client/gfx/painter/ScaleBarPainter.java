@@ -74,6 +74,6 @@ public class ScaleBarPainter implements Painter {
 	 *            The context to paint on.
 	 */
 	public void deleteShape(Paintable paintable, GraphicsContext graphics) {
-		graphics.deleteShape(paintable.getId(), false);
+		graphics.deleteGroup(paintable);
 	}
 }
