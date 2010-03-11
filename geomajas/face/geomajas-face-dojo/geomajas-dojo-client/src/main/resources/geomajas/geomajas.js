@@ -66,6 +66,7 @@ dojo.require("geomajas.widget.SearchTable");
 dojo.require("geomajas.widget.TemplatePrintWidget");
 dojo.require("geomajas.widget.DefaultPrintWidget");
 dojo.require("geomajas.widget.TextBalloon");
+dojo.require("geomajas.widget.ZoomSlider");
 
 dojo.require("geomajas.widget.experimental.LoadingScreen");
 dojo.require("geomajas.widget.experimental.Profiler");
