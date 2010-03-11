@@ -415,7 +415,7 @@ dojo.extend(GraphicsContext, {
 			if(options.id){
 				element.setAttribute ("id", options.id);
 			}
-			if (element instanceof SVGImageElement) {
+			if (element.tagName == "image") {
 				element.addEventListener("load", this._setLoadingImageFinished, false);
 			}
 		}
@@ -463,7 +463,7 @@ dojo.extend(GraphicsContext, {
 	_updateAttributeNS : function (ns, element, name, value){
 		var old = element.getAttribute(name);
 		if(old == null || value != old){
-			if (element instanceof SVGImageElement) {
+			if (element.tagname == "image") {
 				this._setLoadingImageStarted();
 			}
 			element.setAttributeNS(ns, name, value);
