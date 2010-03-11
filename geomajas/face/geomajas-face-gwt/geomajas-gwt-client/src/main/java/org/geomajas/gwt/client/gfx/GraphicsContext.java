@@ -275,7 +275,7 @@ public interface GraphicsContext {
 	int getHeight();
 
 	/**
-	 * Return the element name for the specified id
+	 * Return the element name for the specified id.
 	 * 
 	 * @param id
 	 * @return the name of the element

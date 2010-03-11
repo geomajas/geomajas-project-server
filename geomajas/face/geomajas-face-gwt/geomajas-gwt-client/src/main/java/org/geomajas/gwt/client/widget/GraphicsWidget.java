@@ -238,7 +238,7 @@ public class GraphicsWidget extends FocusWidget implements MenuGraphicsContext, 
 	}
 
 	/**
-	 * Return the element name for the specified id
+	 * Return the element name for the specified id.
 	 * @param id
 	 * @return the name of the element
 	 */
