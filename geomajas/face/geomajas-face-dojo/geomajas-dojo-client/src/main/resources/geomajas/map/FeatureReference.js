@@ -57,6 +57,13 @@ dojo.declare("FeatureReference", null, {
 		}
 	},
 
+	/**
+	 * Called when all the features have been located by the MapModel.
+	 * @param features Array of feature objects.
+	 */
+	onSetFeatureResult : function (features) {
+	},
+
 	getPosition : function() {
 		return this.position;
 	},
