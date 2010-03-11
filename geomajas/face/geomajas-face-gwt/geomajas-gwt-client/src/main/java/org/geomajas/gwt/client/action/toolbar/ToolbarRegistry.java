@@ -107,6 +107,12 @@ public final class ToolbarRegistry {
 				return new PanToSelectionAction(mapWidget);
 			}
 		});
+		REGISTRY.put("FeatureInfoMode", new ToolCreator() {
+
+			public ToolbarBaseAction createTool(MapWidget mapWidget) {
+				return new FeatureInfoModalAction(mapWidget);
+			}
+		});
 	}
 
 	private ToolbarRegistry() {

@@ -60,4 +60,6 @@ public interface ToolbarConstants extends Constants {
 
 	String refreshConfiguration();
 
+	String featureInfo();
+
 }
