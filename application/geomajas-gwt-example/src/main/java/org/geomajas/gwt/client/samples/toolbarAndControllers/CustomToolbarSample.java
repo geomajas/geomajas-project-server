@@ -73,13 +73,6 @@ public class CustomToolbarSample extends SamplePanel {
 		// add a button in GWT code
 		toolbar.addModalButton(new ZoomToRectangleModalAction(map));
 
-		map.addDrawHandler(new DrawHandler() {
-
-			public void onDraw(DrawEvent event) {
-				map.initialize();
-			}
-		});
-
 		layout.addMember(toolbar);
 		layout.addMember(map);
 
