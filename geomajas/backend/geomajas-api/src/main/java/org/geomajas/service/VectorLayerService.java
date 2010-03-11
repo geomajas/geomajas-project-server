@@ -116,19 +116,6 @@ public interface VectorLayerService extends GeomajasConstant {
 	 * @param filter filter to be applied
 	 * @return possible object values
 	 * @throws GeomajasException oops
-	 * @deprecated temporarily deprecated until the recommended way to get the associated objects is defined
-	 */
-	@Deprecated
-	List<Object> getObjects(String layerId, String attributeName, Filter filter) throws GeomajasException;
-	
-	/**
-	 * Return the list of possible attribute values.
-	 *
-	 * @param layerId id of layer to get objects from
-	 * @param attributeName attribute to get objects for
-	 * @param filter filter to be applied
-	 * @return possible object values
-	 * @throws GeomajasException oops
 	 */
 	List<Attribute<?>> getAttributes(String layerId, String attributeName, Filter filter) throws GeomajasException;
 	

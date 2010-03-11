@@ -143,18 +143,6 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 		return container.getEnvelope();
 	}
 
-	public List<Object> getObjects(String layerId, String attributeName, Filter queryFilter) throws GeomajasException {
-		VectorLayer layer = getVectorLayer(layerId);
-		PipelineContext context = pipelineService.createContext();
-		context.put(PipelineCode.LAYER_ID_KEY, layerId);
-		context.put(PipelineCode.LAYER_KEY, layer);
-		context.put(PipelineCode.FILTER_KEY, queryFilter);
-		context.put(PipelineCode.ATTRIBUTE_NAME_KEY, attributeName);
-		List<Object> response = new ArrayList<Object>();
-		pipelineService.execute(PipelineCode.PIPELINE_GET_ATTRIBUTES, layerId, context, response);
-		return response;
-	}
-
 	public InternalTile getTile(TileMetadata tileMetadata) throws GeomajasException {
 		String layerId = tileMetadata.getLayerId();
 		VectorLayer layer = getVectorLayer(layerId);

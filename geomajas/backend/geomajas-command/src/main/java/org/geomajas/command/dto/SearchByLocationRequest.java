@@ -24,6 +24,7 @@ package org.geomajas.command.dto;
 
 import org.geomajas.command.CommandRequest;
 import org.geomajas.geometry.Geometry;
+import org.geomajas.global.GeomajasConstant;
 
 /**
  * Request object for {@link org.geomajas.command.feature.SearchByLocationCommand}.
@@ -108,7 +109,7 @@ public class SearchByLocationRequest implements CommandRequest {
 	 */
 	private double buffer = -1;
 
-	private int featureIncludes = 0x7fff;
+	private int featureIncludes = GeomajasConstant.FEATURE_INCLUDE_ALL;
 
 	// -------------------------------------------------------------------------
 	// Constructors:

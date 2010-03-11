@@ -23,6 +23,7 @@
 package org.geomajas.command.dto;
 
 import org.geomajas.command.LayerIdCommandRequest;
+import org.geomajas.global.GeomajasConstant;
 import org.geomajas.layer.feature.SearchCriterion;
 
 /**
@@ -48,7 +49,7 @@ public class SearchFeatureRequest extends LayerIdCommandRequest {
 
 	private String crs;
 
-	private int featureIncludes = 0x7fff;
+	private int featureIncludes = GeomajasConstant.FEATURE_INCLUDE_ALL;
 
 	public SearchFeatureRequest() {
 	}
