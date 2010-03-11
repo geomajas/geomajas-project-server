@@ -280,7 +280,7 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 	/**
 	 * Apply a maximum extent. This will take the target map's maximum extent (actually 5% bigger)
 	 */
-	private void updateMaxExtent(){
+	private void updateMaxExtent() {
 		if (useMaxExtent && targetMap.getMapModel().isInitialized()) {
 			MapView mapView = getMapModel().getMapView();
 
