@@ -60,8 +60,8 @@ dojo.declare("FeatureInfoTool", ToolbarTool, {
 	 */
 	onSelect : function (event) {
 		this.selected = true;
-		this.mapWidget.setCursor("help");
 		this.mapWidget.setController(this.controller);
+		this.mapWidget.setCursor("help");
 	},
 
 	/**

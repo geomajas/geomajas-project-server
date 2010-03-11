@@ -60,8 +60,8 @@ dojo.declare("PanTool", ToolbarTool, {
 	 */
 	onSelect : function (event) {
 		this.selected = true;
-		this.mapWidget.setCursor("move");
 		this.mapWidget.setController(this.controller);
+		this.mapWidget.setCursor("move");
 	},
 
 	/**

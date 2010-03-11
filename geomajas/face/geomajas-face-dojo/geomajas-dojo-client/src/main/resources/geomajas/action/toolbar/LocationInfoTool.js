@@ -59,8 +59,8 @@ dojo.declare("LocationInfoTool", ToolbarTool, {
 	 */
 	onSelect : function (event) {
 		this.selected = true;
-		this.mapWidget.setCursor("crosshair");
 		this.mapWidget.setController (this.controller);
+		this.mapWidget.setCursor("crosshair");		
 	},
 
 	/**
