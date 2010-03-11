@@ -62,9 +62,14 @@ public class FeatureListGridPage extends AbstractTestPage {
 			public void onClick(ClickEvent event) {
 				VectorLayer layer = (VectorLayer) getMap().getMapModel().getLayerByLayerId("structures");
 				table.setLayer(layer);
-				for (Feature feature : layer.getFeatureStore().getFeatures()) {
-					table.addFeature(feature);
-				}
+				layer.getFeatureStore().getFeatures(GeomajasConstant.FEATURE_INCLUDE_ATTRIBUTES,
+						new LazyLoadCallback() {
+							public void execute(List<Feature> response) {
+								for (Feature feature : response) {
+									table.addFeature(feature);
+								}
+							}
+						});
 			}
 		});
 		button1.setWidth(120);
