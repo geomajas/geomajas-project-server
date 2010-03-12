@@ -59,11 +59,11 @@ public class ToolbarNavigationSample extends SamplePanel {
 		layout.setWidth100();
 		layout.setHeight100();
 
-		// Map with ID wmsToolbarMap is defined in the XML configuration. (mapWmsNavigationToolbar.xml)
+		// Map with ID osmNavigationToolbarMap is defined in the XML configuration. (mapWmsNavigationToolbar.xml)
 		final MapWidget map = new MapWidget("osmNavigationToolbarMap", "gwt-samples");
 
 		final Toolbar toolbar = new Toolbar(map);
-
+		toolbar.setButtonSize(Toolbar.BUTTON_SIZE_BIG);
 
 		layout.addMember(toolbar);
 		layout.addMember(map);

@@ -59,7 +59,7 @@ public class ScaleBar extends MapAddon {
 
 	private static final int VERTICALPADDING = 3; // px
 
-	private static final int MARKERHEIGHT = 15; // px
+	private static final int MARKERHEIGHT = 13; // px
 
 	// max width this scalebar should be
 	private static final int MAXSIZEINPIXELS = 125;

@@ -67,6 +67,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 			<bean name="sampleFeaturesMapToolbar" class="org.geomajas.configuration.client.ClientToolbarInfo">
 				<property name="tools">
 					<list>
+						<ref bean="PanMode" />
 						<ref bean="FeatureInfoMode" />
 					</list>
 				</property>

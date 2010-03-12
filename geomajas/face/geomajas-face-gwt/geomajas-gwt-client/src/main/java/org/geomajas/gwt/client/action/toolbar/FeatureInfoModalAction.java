@@ -39,11 +39,18 @@ public class FeatureInfoModalAction extends ToolbarModalAction {
 
 	private FeatureInfoController controller;
 
+	/** Number of pixels that describes the tolerance allowed when trying to select features. */
+	private int pixelTolerance = 5;
+
+	// Constructor:
+
 	public FeatureInfoModalAction(MapWidget mapWidget) {
 		super("[ISOMORPHIC]/geomajas/info.png", I18nProvider.getToolbar().featureInfo());
 		this.mapWidget = mapWidget;
-		controller = new FeatureInfoController(mapWidget);
+		controller = new FeatureInfoController(mapWidget, pixelTolerance);
 	}
+
+	// ToolbarModalAction implementation:
 
 	@Override
 	public void onSelect(ClickEvent event) {
@@ -53,5 +60,15 @@ public class FeatureInfoModalAction extends ToolbarModalAction {
 	@Override
 	public void onDeselect(ClickEvent event) {
 		mapWidget.setController(null);
+	}
+
+	// Getters and setters:
+
+	public int getPixelTolerance() {
+		return pixelTolerance;
+	}
+
+	public void setPixelTolerance(int pixelTolerance) {
+		this.pixelTolerance = pixelTolerance;
 	}
 }

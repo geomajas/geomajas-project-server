@@ -23,8 +23,26 @@
 
 package org.geomajas.gwt.client.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import org.geomajas.command.CommandResponse;
+import org.geomajas.command.dto.SearchByLocationRequest;
+import org.geomajas.command.dto.SearchByLocationResponse;
+import org.geomajas.geometry.Coordinate;
+import org.geomajas.gwt.client.command.CommandCallback;
+import org.geomajas.gwt.client.command.GwtCommand;
+import org.geomajas.gwt.client.command.GwtCommandDispatcher;
+import org.geomajas.gwt.client.map.MapModel;
+import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.layer.Layer;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
+import org.geomajas.gwt.client.spatial.Mathlib;
+import org.geomajas.gwt.client.spatial.geometry.Point;
+import org.geomajas.gwt.client.spatial.transform.WorldViewTransformer;
+import org.geomajas.gwt.client.util.GeometryConverter;
+import org.geomajas.gwt.client.widget.FeatureAttributeWindow;
 import org.geomajas.gwt.client.widget.MapWidget;
 
 import com.google.gwt.event.dom.client.MouseUpEvent;
@@ -33,19 +51,80 @@ import com.google.gwt.event.dom.client.MouseUpEvent;
  * Shows information about the clicked feature.
  * 
  * @author Frank Wynants
+ * @author Pieter De Graef
  */
 public class FeatureInfoController extends AbstractGraphicsController {
 
-	public FeatureInfoController(MapWidget mapWidget) {
+	/** Number of pixels that describes the tolerance allowed when trying to select features. */
+	private int pixelTolerance;
+
+	public FeatureInfoController(MapWidget mapWidget, int pixelTolerance) {
 		super(mapWidget);
+		this.pixelTolerance = pixelTolerance;
 	}
 
-	@Override
+	/**
+	 * On mouse up, execute the search by location, and display a
+	 * {@link org.geomajas.gwt.client.widget.FeatureAttributeWindow} if a result is found.
+	 */
 	public void onMouseUp(MouseUpEvent event) {
-		Layer<?> selectedLayer = mapWidget.getMapModel().getSelectedLayer();
-		if (selectedLayer instanceof VectorLayer) {
-			// TODO This should show info about the feature the user has clicked using
-			// clickedLayer.getFeatureStore().getFeatures()
+		Coordinate worldPosition = getWorldPosition(event);
+		Point point = mapWidget.getMapModel().getGeometryFactory().createPoint(worldPosition);
+
+		SearchByLocationRequest request = new SearchByLocationRequest();
+		request.setLocation(GeometryConverter.toDto(point));
+		request.setCrs(mapWidget.getMapModel().getCrs());
+		request.setQueryType(SearchByLocationRequest.QUERY_INTERSECTS);
+		request.setSearchType(SearchByLocationRequest.SEARCH_FIRST_LAYER);
+		request.setBuffer(calculateBufferFromPixelTolerance());
+		request.setFeatureIncludes(GwtCommandDispatcher.getInstance().getLazyFeatureIncludesSelect());
+		request.setLayerIds(getLayerIds(mapWidget.getMapModel()));
+
+		GwtCommand commandRequest = new GwtCommand("command.feature.SearchByLocation");
+		commandRequest.setCommandRequest(request);
+		GwtCommandDispatcher.getInstance().execute(commandRequest, new CommandCallback() {
+
+			public void execute(CommandResponse commandResponse) {
+				if (commandResponse instanceof SearchByLocationResponse) {
+					SearchByLocationResponse response = (SearchByLocationResponse) commandResponse;
+					Map<String, List<org.geomajas.layer.feature.Feature>> featureMap = response.getFeatureMap();
+					for (String layerId : featureMap.keySet()) {
+						Layer<?> layer = mapWidget.getMapModel().getLayer(layerId);
+						if (layer != null && layer instanceof VectorLayer) {
+							VectorLayer vectorLayer = (VectorLayer) layer;
+							List<org.geomajas.layer.feature.Feature> orgFeatures = featureMap.get(layerId);
+							if (orgFeatures.size() > 0) {
+								Feature feature = new Feature(orgFeatures.get(0), vectorLayer);
+								FeatureAttributeWindow window = new FeatureAttributeWindow(feature, false);
+								window.setPageTop(mapWidget.getAbsoluteTop() + 10);
+								window.setPageLeft(mapWidget.getAbsoluteLeft() + 10);
+								window.draw();
+							}
+						}
+					}
+				}
+			}
+		});
+	}
+
+	// -------------------------------------------------------------------------
+	// Private methods:
+	// -------------------------------------------------------------------------
+
+	private String[] getLayerIds(MapModel mapModel) {
+		List<String> layerIds = new ArrayList<String>();
+		for (Layer<?> layer : mapModel.getLayers()) {
+			if (layer.isShowing()) {
+				layerIds.add(layer.getId());
+			}
 		}
+		return layerIds.toArray(new String[] {});
+	}
+
+	private double calculateBufferFromPixelTolerance() {
+		WorldViewTransformer transformer = mapWidget.getMapModel().getMapView().getWorldViewTransformer();
+		Coordinate c1 = transformer.viewToWorld(new Coordinate(0, 0));
+		Coordinate c2 = transformer.viewToWorld(new Coordinate(pixelTolerance, 0));
+		return Mathlib.distance(c1, c2);
 	}
 }

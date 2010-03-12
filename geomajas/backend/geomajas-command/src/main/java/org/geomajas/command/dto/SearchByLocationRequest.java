@@ -41,11 +41,12 @@ public class SearchByLocationRequest implements CommandRequest {
 
 	/**
 	 * Search type in which the layers are searched from the beginning to the end of the array until a result is found.
+	 * In other words when a layer returns a successful result, the command will look no further.
 	 */
 	public static final int SEARCH_FIRST_LAYER = 1;
 
 	/**
-	 * Search type in which all layers are searched for a result.
+	 * Search type in which all layers are searched for a result, and more than one result may be returned.
 	 */
 	public static final int SEARCH_ALL_LAYERS = 2;
 
@@ -240,7 +241,8 @@ public class SearchByLocationRequest implements CommandRequest {
 	/**
 	 * Set a new type of search. Can be either 1 (=SEARCH_FIRST_LAYER), or 2 (=SEARCH_ALL_LAYERS).
 	 * 
-	 * @param searchType search type
+	 * @param searchType
+	 *            search type
 	 */
 	public void setSearchType(int searchType) {
 		this.searchType = searchType;
@@ -258,7 +260,8 @@ public class SearchByLocationRequest implements CommandRequest {
 	/**
 	 * Set a buffer that should be added to the location before executing the search.
 	 * 
-	 * @param buffer buffer size
+	 * @param buffer
+	 *            buffer size
 	 */
 	public void setBuffer(double buffer) {
 		this.buffer = buffer;
@@ -267,7 +270,7 @@ public class SearchByLocationRequest implements CommandRequest {
 	/**
 	 * Get which data should be included in the features. For possible values, see
 	 * {@link org.geomajas.service.VectorLayerService}.
-	 *
+	 * 
 	 * @return what to include
 	 */
 	public int getFeatureIncludes() {
@@ -277,8 +280,9 @@ public class SearchByLocationRequest implements CommandRequest {
 	/**
 	 * Set the data to include in the features which are returned. For possible values, see
 	 * {@link org.geomajas.service.VectorLayerService}.
-	 *
-	 * @param featureIncludes what the include
+	 * 
+	 * @param featureIncludes
+	 *            what the include
 	 */
 	public void setFeatureIncludes(int featureIncludes) {
 		this.featureIncludes = featureIncludes;

@@ -63,11 +63,11 @@ public class CustomToolbarSample extends SamplePanel {
 		layout.setHeight100();
 
 		final MapWidget map = new MapWidget("osmMap", "gwt-samples");
-
-		// Set a panning controller on the map:
 		map.setController(new PanController(map));
 
 		final Toolbar toolbar = new Toolbar(map);
+		toolbar.setButtonSize(Toolbar.BUTTON_SIZE_BIG);
+
 		// add a button in GWT code
 		toolbar.addModalButton(new ZoomToRectangleModalAction(map));
 

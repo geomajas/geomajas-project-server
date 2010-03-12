@@ -23,7 +23,6 @@
 
 package org.geomajas.gwt.client.samples.toolbarAndControllers;
 
-import org.geomajas.gwt.client.controller.PanController;
 import org.geomajas.gwt.client.samples.base.SamplePanel;
 import org.geomajas.gwt.client.samples.base.SamplePanelFactory;
 import org.geomajas.gwt.client.samples.i18n.I18nProvider;
@@ -60,14 +59,11 @@ public class ToolbarMeasureSample extends SamplePanel {
 		layout.setWidth100();
 		layout.setHeight100();
 
-		// Map with ID wmsToolbarMap is defined in the XML configuration. (mapOsmMeasure.xml)
+		// Map with ID osmMeasureMap is defined in the XML configuration. (mapOsmMeasure.xml)
 		final MapWidget map = new MapWidget("osmMeasureMap", "gwt-samples");
 
-		// Set a panning controller on the map:
-		map.setController(new PanController(map));
-
 		final Toolbar toolbar = new Toolbar(map);
-
+		toolbar.setButtonSize(Toolbar.BUTTON_SIZE_BIG);
 
 		layout.addMember(toolbar);
 		layout.addMember(map);
