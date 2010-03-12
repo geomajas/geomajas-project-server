@@ -35,6 +35,7 @@ import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
+import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
@@ -65,17 +66,23 @@ public class MaxBoundsToggleSample extends SamplePanel {
 		VLayout layout = new VLayout();
 		layout.setWidth100();
 		layout.setHeight100();
+		layout.setMembersMargin(10);
+
+		HLayout mapLayout = new HLayout();
+		mapLayout.setShowEdges(true);
 
 		// Map with ID osmMap is defined in the XML configuration. (mapOsm.xml)
 		final MapWidget map = new MapWidget("osmMap", "gwt-samples");
-		// Set a panning controller on the map:
 		map.setController(new PanController(map));
-		layout.addMember(map);
+		mapLayout.addMember(map);
+
+		HLayout buttonLayout = new HLayout();
+		buttonLayout.setMembersMargin(10);
 
 		// Create a button to toggle bounds between the whole world an Belgium
 		final IButton butToggleMaxBounds = new IButton(I18nProvider.getSampleMessages().toggleMaxBoundsBelgium());
 		butToggleMaxBounds.setWidth100();
-		layout.addMember(butToggleMaxBounds);
+		buttonLayout.addMember(butToggleMaxBounds);
 
 		butToggleMaxBounds.addClickHandler(new ClickHandler() {
 
@@ -88,7 +95,7 @@ public class MaxBoundsToggleSample extends SamplePanel {
 					// first set the maxBounds
 					map.getMapModel().getMapView().setMaxBounds(belgiumBounds);
 					// force a new scalelevel so we go inside the bounding box of Belgium
-					map.getMapModel().getMapView().setCurrentScale(0.0012207899981186248, ZoomOption.LEVEL_FIT);
+					map.getMapModel().getMapView().applyBounds(belgiumBounds, ZoomOption.LEVEL_FIT);
 					isBelgiumBoundsEnabled = true;
 					butToggleMaxBounds.setTitle(I18nProvider.getSampleMessages().toggleMaxBoundsWorld());
 				}
@@ -96,6 +103,10 @@ public class MaxBoundsToggleSample extends SamplePanel {
 		});
 		// default bounds is whole world, set this as maxBounds value
 		maxBounds = map.getMapModel().getMapView().getMaxBounds();
+
+		layout.addMember(mapLayout);
+		layout.addMember(buttonLayout);
+
 		return layout;
 	}
 
