@@ -229,6 +229,12 @@ public interface SampleMessages extends Messages {
 	
 	String scaleSelectDefaultDescription();
 	
+	// ScaleSelect with custom zoomlevels
+	
+	String scaleSelectCustomTitle();
+	
+	String scaleSelectCustomDescription();
+
 	// Custom toolbar sample
 	
 	String customToolbarTitle();
