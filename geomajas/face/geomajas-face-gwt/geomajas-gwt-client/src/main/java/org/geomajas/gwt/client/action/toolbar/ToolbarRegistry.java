@@ -62,10 +62,22 @@ public final class ToolbarRegistry {
 		REGISTRY.put("ZoomIn", new ToolCreator() {
 
 			public ToolbarBaseAction createTool(MapWidget mapWidget) {
-				return new ZoomInModalAction(mapWidget);
+				return new ZoomInAction(mapWidget);
 			}
 		});
 		REGISTRY.put("ZoomOut", new ToolCreator() {
+
+			public ToolbarBaseAction createTool(MapWidget mapWidget) {
+				return new ZoomOutAction(mapWidget);
+			}
+		});
+		REGISTRY.put("ZoomInMode", new ToolCreator() {
+
+			public ToolbarBaseAction createTool(MapWidget mapWidget) {
+				return new ZoomInModalAction(mapWidget);
+			}
+		});
+		REGISTRY.put("ZoomOutMode", new ToolCreator() {
 
 			public ToolbarBaseAction createTool(MapWidget mapWidget) {
 				return new ZoomOutModalAction(mapWidget);
