@@ -49,8 +49,7 @@ public class ScaleBar extends MapAddon {
 
 	private static final ShapeStyle STYLE_MARKER = new ShapeStyle("black", 1f, null, 0f, 0);
 
-	private static final FontStyle STYLE_FONT = new FontStyle("#000000", 10, "Courier New, Arial, Verdana", "normal",
-			"normal");
+	private static final FontStyle STYLE_FONT = new FontStyle("#000000", 10, "Arial, Verdana", "normal", "normal");
 
 	private static final double METERSINMILE = 1609.344d;
 

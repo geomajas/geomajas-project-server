@@ -54,9 +54,23 @@ public class PanButton extends MapAddon {
 		NORTH, NORTHEAST, EAST, SOUTHEAST, SOUTH, SOUTHWEST, WEST, NORTHWEST
 	}
 
-	private PanButtonDirection direction;
+	private String northImage = Geomajas.getIsomorphicDir() + "geomajas/nav_up.gif";
 
-	private String imgUrl;
+	private String northEastImage = Geomajas.getIsomorphicDir() + "geomajas/nav_up_right.gif";
+
+	private String eastImage = Geomajas.getIsomorphicDir() + "geomajas/nav_right.gif";
+
+	private String southEastImage = Geomajas.getIsomorphicDir() + "geomajas/nav_down_right.gif";
+
+	private String southImage = Geomajas.getIsomorphicDir() + "geomajas/nav_down.gif";
+
+	private String southWestImage = Geomajas.getIsomorphicDir() + "geomajas/nav_down_left.gif";
+
+	private String westImage = Geomajas.getIsomorphicDir() + "geomajas/nav_left.gif";
+
+	private String northWestImage = Geomajas.getIsomorphicDir() + "geomajas/nav_up_left.gif";
+
+	private PanButtonDirection direction;
 
 	private GraphicsController controller;
 
@@ -104,8 +118,13 @@ public class PanButton extends MapAddon {
 		image.setBounds(new Bbox(getUpperLeftCorner().getX(), getUpperLeftCorner().getY(), getWidth(), getHeight()));
 
 		// Then draw:
-		map.getGraphics().drawImage(parent, getId(), image.getHref(), image.getBounds(),
-				(PictureStyle) image.getStyle());
+		if (parent != null) {
+			map.getGraphics().drawImage(parent, getId(), image.getHref(), image.getBounds(),
+					(PictureStyle) image.getStyle());
+		} else {
+			map.getGraphics().drawImage(map.getMapModel().getScreenGroup(), getId(), image.getHref(),
+					image.getBounds(), (PictureStyle) image.getStyle());
+		}
 	}
 
 	/**
@@ -126,42 +145,113 @@ public class PanButton extends MapAddon {
 	// Getters and setters:
 	// -------------------------------------------------------------------------
 
-	public PanButtonDirection getDirection() {
-		return direction;
-	}
-
-	public void setDirection(PanButtonDirection direction) {
-		this.direction = direction;
-		applyDirection();
-	}
-
-	public String getImgUrl() {
-		return imgUrl;
-	}
-
-	public void setImgUrl(String imgUrl) {
-		this.imgUrl = imgUrl;
-	}
-
-	public Image getImage() {
-		return image;
-	}
-
+	/**
+	 * Return the current style used for the pan button image.
+	 */
 	public PictureStyle getStyle() {
 		return style;
 	}
 
+	/**
+	 * Apply a new style to be used on this pan button image. To make it visible, simply redraw the pan button.
+	 * 
+	 * @param style
+	 *            The new style for the pan button image.
+	 */
 	public void setStyle(PictureStyle style) {
 		this.style = style;
 		image.setStyle(style);
 	}
 
+	/**
+	 * When rendering, where should the pan button be drawn? If this parent is not null, the pan button will be added to
+	 * the parent's group.
+	 */
 	public Object getParent() {
 		return parent;
 	}
 
+	/**
+	 * When rendering, where should the pan button be drawn? If this parent is not null, the pan button will be added to
+	 * the parent's group. If the parent is null, the map's screen group will be used instead.
+	 * 
+	 * @param parent
+	 *            The parent to whom to attach this pan button when drawing.
+	 */
 	public void setParent(Object parent) {
 		this.parent = parent;
+	}
+
+	public String getNorthImage() {
+		return northImage;
+	}
+
+	public void setNorthImage(String northImage) {
+		this.northImage = northImage;
+		applyDirection();
+	}
+
+	public String getNorthEastImage() {
+		return northEastImage;
+	}
+
+	public void setNorthEastImage(String northEastImage) {
+		this.northEastImage = northEastImage;
+		applyDirection();
+	}
+
+	public String getEastImage() {
+		return eastImage;
+	}
+
+	public void setEastImage(String eastImage) {
+		this.eastImage = eastImage;
+		applyDirection();
+	}
+
+	public String getSouthEastImage() {
+		return southEastImage;
+	}
+
+	public void setSouthEastImage(String southEastImage) {
+		this.southEastImage = southEastImage;
+		applyDirection();
+	}
+
+	public String getSouthImage() {
+		return southImage;
+	}
+
+	public void setSouthImage(String southImage) {
+		this.southImage = southImage;
+		applyDirection();
+	}
+
+	public String getSouthWestImage() {
+		return southWestImage;
+	}
+
+	public void setSouthWestImage(String southWestImage) {
+		this.southWestImage = southWestImage;
+		applyDirection();
+	}
+
+	public String getWestImage() {
+		return westImage;
+	}
+
+	public void setWestImage(String westImage) {
+		this.westImage = westImage;
+		applyDirection();
+	}
+
+	public String getNorthWestImage() {
+		return northWestImage;
+	}
+
+	public void setNorthWestImage(String northWestImage) {
+		this.northWestImage = northWestImage;
+		applyDirection();
 	}
 
 	// -------------------------------------------------------------------------
@@ -169,38 +259,39 @@ public class PanButton extends MapAddon {
 	// -------------------------------------------------------------------------
 
 	private void applyDirection() {
+		String imgUrl = "";
 		switch (direction) {
 			case NORTH:
 				panVector = new Coordinate(0, 1);
-				imgUrl = Geomajas.getIsomorphicDir() + "geomajas/temp/pan_up.gif";
+				imgUrl = northImage;
 				break;
 			case NORTHEAST:
 				panVector = new Coordinate(1, 1);
-				imgUrl = Geomajas.getIsomorphicDir() + "geomajas/nav_up_right.gif";
+				imgUrl = northEastImage;
 				break;
 			case EAST:
 				panVector = new Coordinate(1, 0);
-				imgUrl = Geomajas.getIsomorphicDir() + "geomajas/temp/pan_right.gif";
+				imgUrl = eastImage;
 				break;
 			case SOUTHEAST:
 				panVector = new Coordinate(1, -1);
-				imgUrl = Geomajas.getIsomorphicDir() + "geomajas/nav_down_right.gif";
+				imgUrl = southEastImage;
 				break;
 			case SOUTH:
 				panVector = new Coordinate(0, -1);
-				imgUrl = Geomajas.getIsomorphicDir() + "geomajas/temp/pan_down.gif";
+				imgUrl = southImage;
 				break;
 			case SOUTHWEST:
 				panVector = new Coordinate(-1, -1);
-				imgUrl = Geomajas.getIsomorphicDir() + "geomajas/nav_down_left.gif";
+				imgUrl = southWestImage;
 				break;
 			case WEST:
 				panVector = new Coordinate(-1, 0);
-				imgUrl = Geomajas.getIsomorphicDir() + "geomajas/temp/pan_left.gif";
+				imgUrl = westImage;
 				break;
 			case NORTHWEST:
 				panVector = new Coordinate(-1, 1);
-				imgUrl = Geomajas.getIsomorphicDir() + "geomajas/nav_up_left.gif";
+				imgUrl = northWestImage;
 				break;
 		}
 		controller = new PanArrowController(map, panVector);
