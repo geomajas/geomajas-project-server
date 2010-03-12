@@ -29,3 +29,4 @@ dojo.require("tutorial.DemoManager");
 dojo.require("tutorial.EditingManager");
 dojo.require("tutorial.SearchManager");
 dojo.require("tutorial.AssociationManager");
+dojo.require("tutorial.OtherManager");

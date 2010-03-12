@@ -34,6 +34,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 				<ref bean="sampleEditingMap" />
 				<ref bean="sampleSearchMap" />
 				<ref bean="sampleFutureMap" />
+				<ref bean="sampleOtherMap" />
+				<ref bean="sampleOtherOverviewMap" />
 				<ref bean="beansMap" />
 			</list>
 		</property>
@@ -407,6 +409,167 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 			</bean>
 		</property>
 	</bean>
+	<bean name="sampleOtherMap" class="org.geomajas.configuration.client.ClientMapInfo">
+		<property name="backgroundColor" value="#FFFFFF" />
+		<property name="lineSelectStyle">
+			<bean class="org.geomajas.configuration.FeatureStyleInfo">
+				<property name="fillOpacity" value="0" />
+				<property name="strokeColor" value="#FFC000" />
+				<property name="strokeOpacity" value="1" />
+			</bean>
+		</property>
+		<property name="pointSelectStyle">
+			<bean class="org.geomajas.configuration.FeatureStyleInfo">
+				<property name="fillColor" value="#FFC000" />
+			</bean>
+		</property>
+		<property name="polygonSelectStyle">
+			<bean class="org.geomajas.configuration.FeatureStyleInfo">
+				<property name="fillColor" value="#FFC000" />
+				<property name="fillOpacity" value=".8" />
+			</bean>
+		</property>
+		<property name="crs" value="EPSG:4326" />
+		<property name="scaleBarEnabled" value="true" />
+		<property name="panButtonsEnabled" value="true" />
+		<property name="displayUnitType" value="ENGLISH" />
+		<property name="maximumScale" value="99999999" />
+		<property name="initialBounds">
+			<bean class="org.geomajas.geometry.Bbox">
+				<property name="x" value="-31.44" />
+				<property name="y" value="-37.43" />
+				<property name="width" value="89.83" />
+				<property name="height" value="89.83" />
+			</bean>
+		</property>
+		<property name="resolutions">
+			<!-- Using the NASA WMS resolutions -->
+			<list>
+				<value>0.5</value>
+				<value>0.25</value>
+				<value>0.125</value>
+				<value>0.0625</value>
+				<value>0.03125</value>
+				<value>0.015625</value>
+				<value>0.0078125</value>
+				<value>0.00390625</value>
+				<value>0.001953125</value>
+				<value>0.0009765625</value>
+				<value>0.00048828125</value>
+				<value>0.000244140625</value>
+				<value>0.000122070312</value>
+			</list>
+		</property>
+		<property name="layers">
+			<list>
+				<ref bean="bluemarbleLayer" />
+				<ref bean="beltLayer" />
+				<ref bean="riversLayer" />
+				<ref bean="lakesLayer" />
+				<ref bean="citiesLayer" />
+			</list>
+		</property>
+		<property name="toolbar">
+			<bean name="sampleOtherToolbar" class="org.geomajas.configuration.client.ClientToolbarInfo">
+				<property name="tools">
+					<list>
+						<ref bean="ZoomIn" />
+						<ref bean="ZoomOut" />
+						<ref bean="ZoomToRectangleMode" />
+						<ref bean="PanMode" />
+						<ref bean="ToolbarSeparator" />
+						<ref bean="ZoomPrevious" />
+						<ref bean="ZoomNext" />
+						<ref bean="ToolbarSeparator" />
+						<ref bean="MouseInfoMode" />
+					</list>
+				</property>
+			</bean>
+		</property>
+		<property name="layerTree">
+			<bean name="sampleOtherTree" class="org.geomajas.configuration.client.ClientLayerTreeInfo">
+				<property name="treeNode">
+					<bean class="org.geomajas.configuration.client.ClientLayerTreeNodeInfo">
+						<property name="label" value="Layers" />
+						<property name="layers">
+							<list>
+								<ref bean="bluemarbleLayer" />
+								<ref bean="beltLayer" />
+								<ref bean="riversLayer" />
+								<ref bean="lakesLayer" />
+								<ref bean="citiesLayer" />
+							</list>
+						</property>
+						<property name="expanded" value="true" />
+					</bean>
+				</property>
+				<property name="tools">
+					<list>
+						<ref bean="LayerVisibleTool" />
+						<ref bean="LayerLabeledTool" />
+						<ref bean="LayerSnappingTool" />
+					</list>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	<bean name="sampleOtherOverviewMap" class="org.geomajas.configuration.client.ClientMapInfo">
+		<property name="backgroundColor" value="#FFFFFF" />
+		<property name="lineSelectStyle">
+			<bean class="org.geomajas.configuration.FeatureStyleInfo">
+				<property name="fillOpacity" value="0" />
+				<property name="strokeColor" value="#FFC000" />
+				<property name="strokeOpacity" value="1" />
+			</bean>
+		</property>
+		<property name="pointSelectStyle">
+			<bean class="org.geomajas.configuration.FeatureStyleInfo">
+				<property name="fillColor" value="#FFC000" />
+			</bean>
+		</property>
+		<property name="polygonSelectStyle">
+			<bean class="org.geomajas.configuration.FeatureStyleInfo">
+				<property name="fillColor" value="#FFC000" />
+				<property name="fillOpacity" value=".8" />
+			</bean>
+		</property>
+		<property name="crs" value="EPSG:4326" />
+		<property name="scaleBarEnabled" value="false" />
+		<property name="panButtonsEnabled" value="false" />
+		<property name="displayUnitType" value="ENGLISH" />
+		<property name="maximumScale" value="99999999" />
+		<property name="initialBounds">
+			<bean class="org.geomajas.geometry.Bbox">
+				<property name="x" value="-31.44" />
+				<property name="y" value="-37.43" />
+				<property name="width" value="89.83" />
+				<property name="height" value="89.83" />
+			</bean>
+		</property>
+		<property name="resolutions">
+			<!-- Using the NASA WMS resolutions -->
+			<list>
+				<value>0.5</value>
+				<value>0.25</value>
+				<value>0.125</value>
+				<value>0.0625</value>
+				<value>0.03125</value>
+				<value>0.015625</value>
+				<value>0.0078125</value>
+				<value>0.00390625</value>
+				<value>0.001953125</value>
+				<value>0.0009765625</value>
+				<value>0.00048828125</value>
+				<value>0.000244140625</value>
+				<value>0.000122070312</value>
+			</list>
+		</property>
+		<property name="layers">
+			<list>
+				<ref bean="bluemarbleLayer" />
+			</list>
+		</property>
+	</bean>
 
 	<!-- client layers -->
 
@@ -705,4 +868,32 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 
 	<bean name="LayerRefreshAction" class="org.geomajas.configuration.client.ClientToolInfo"/>
 
+	<bean name="MouseInfoMode" class="org.geomajas.configuration.client.ClientToolInfo">
+		<property name="id" value="MouseInfoMode" />
+		<property name="parameters">
+			<list>
+				<bean class="org.geomajas.configuration.Parameter">
+					<property name="name" value="showViewCoords" />
+					<property name="value" value="false" />
+				</bean>
+				<bean class="org.geomajas.configuration.Parameter">
+					<property name="name" value="showWorldCoords" />
+					<property name="value" value="true" />
+				</bean>
+				<bean class="org.geomajas.configuration.Parameter">
+					<property name="name" value="bottom" />
+					<property name="value" value="50" />
+				</bean>
+				<bean class="org.geomajas.configuration.Parameter">
+					<property name="name" value="left" />
+					<property name="value" value="25" />
+				</bean>
+				<bean class="org.geomajas.configuration.Parameter">
+					<property name="name" value="opacity" />
+					<property name="value" value="0.75" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+	
 </beans>
