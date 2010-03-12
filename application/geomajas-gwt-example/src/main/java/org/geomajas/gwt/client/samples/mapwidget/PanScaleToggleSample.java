@@ -33,6 +33,7 @@ import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
+import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
@@ -58,18 +59,25 @@ public class PanScaleToggleSample extends SamplePanel {
 		VLayout layout = new VLayout();
 		layout.setWidth100();
 		layout.setHeight100();
+		layout.setMembersMargin(10);
+
+		HLayout mapLayout = new HLayout();
+		mapLayout.setShowEdges(true);
 
 		// Map with ID osmMap is defined in the XML configuration. (mapOsm.xml)
 		final MapWidget map = new MapWidget("osmMap", "gwt-samples");
 
 		// Set a panning controller on the map:
 		map.setController(new PanController(map));
-		layout.addMember(map);
+		mapLayout.addMember(map);
+
+		HLayout buttonLayout = new HLayout();
+		buttonLayout.setMembersMargin(10);
 
 		// Create a button to toggle the panbuttons on and off
 		final IButton butTogglePanButton = new IButton(I18nProvider.getSampleMessages().togglePanButtons());
 		butTogglePanButton.setWidth100();
-		layout.addMember(butTogglePanButton);
+		buttonLayout.addMember(butTogglePanButton);
 
 		butTogglePanButton.addClickHandler(new ClickHandler() {
 
@@ -81,7 +89,7 @@ public class PanScaleToggleSample extends SamplePanel {
 		// Create a button to toggle the scalebar on and off
 		final IButton butToggleScaleBar = new IButton(I18nProvider.getSampleMessages().toggleScaleBar());
 		butToggleScaleBar.setWidth100();
-		layout.addMember(butToggleScaleBar);
+		buttonLayout.addMember(butToggleScaleBar);
 
 		butToggleScaleBar.addClickHandler(new ClickHandler() {
 
@@ -89,6 +97,9 @@ public class PanScaleToggleSample extends SamplePanel {
 				map.setScalebarEnabled(!map.isScaleBarEnabled());
 			}
 		});
+
+		layout.addMember(mapLayout);
+		layout.addMember(buttonLayout);
 
 		return layout;
 	}
