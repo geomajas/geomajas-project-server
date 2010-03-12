@@ -32,10 +32,6 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
-import org.geotools.factory.FactoryRegistry;
-import org.geotools.factory.GeoTools;
-import org.geotools.util.ConverterFactory;
-import org.geotools.util.Converters;
 import org.slf4j.LoggerFactory;
 
 /**
