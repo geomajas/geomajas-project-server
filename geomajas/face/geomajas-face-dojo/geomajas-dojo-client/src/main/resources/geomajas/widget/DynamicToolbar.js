@@ -29,6 +29,7 @@ dojo.require("dojox.collections.Dictionary");
 
 dojo.require("geomajas.widget.TBButton");
 dojo.require("geomajas.widget.TBToggleButton");
+dojo.require("geomajas.widget.TBMultiToggleButton");
 dojo.require("geomajas.action.common");
 
 /**
@@ -122,7 +123,22 @@ dojo.declare(
 			}
 			return false;
 		},
-
+		/**
+		 * Allows Toggle like tools, but multiple buttons can be toggled at the same time
+		 */
+		addMultiToggleTool: function (tool, position) {
+			if (!this.buttons.contains(tool.getId())) {
+				var tbButton = new geomajas.widget.TBMultiToggleButton({name:tool.getId(), id:tool.getId(), iconClass:tool.getImage(), label:tool.getTooltip(), showLabel:false}, document.createElement('div'));
+				tbButton.init(tool);
+				this.addChild(tbButton);
+				this.buttons.add (tool.getId(), tbButton);
+				if (!tool.isEnabled()) {
+					tbButton.setDisabled(true);
+				}
+				return true;
+			}
+			return false;
+		},
 		/**
 		 * Adds a toolbar separator to the toolbar. This is a vertical line
 		 * without any funcionality. It's only purpose is to divide groups of
@@ -177,8 +193,8 @@ dojo.declare(
 			log.info("post config for toolbar "+this.id);
 			dojo.forEach(this.buttons.getValueList(), 
 					function onConfigDone(button){ 
-				      if(button.action) {button.action.onConfigDone()};
-				      if(button.tool) {button.tool.onConfigDone()};
+				      if(button.action) {button.action.onConfigDone();};
+				      if(button.tool) {button.tool.onConfigDone();};
 			});
 		}		
 	}

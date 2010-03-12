@@ -56,12 +56,20 @@ dojo.declare("ToolbarFactory", null, {
 									if (!toolbar.addTool (tool, "after")) {
 										break;
 									}
-								} 
+								} else {
+									tool = this._createMultiToggleTool(toolbarConfig.id, config.id, config.parameters.list);
+									if (tool != null) {
+										tool.init(this.mapWidget);
+										if (!toolbar.addMultiToggleTool (tool, "after")) {
+											break;
+										}
+									} 
+								}
 							}
 						}
 					}
-					return toolbar;
 				}
+				return toolbar;
 			}
 		}
 		return null;
@@ -144,6 +152,26 @@ dojo.declare("ToolbarFactory", null, {
 		return null;
 	},
 
+	/**
+	 * For creating tools that can be toggled at the same time
+	 */
+	_createMultiToggleTool : function(toolbarId, name, params) {
+		log.debug("trying to create multitoggle tool");
+		if (!name) {
+			return null;
+		}
+		if  (name == "MouseInfoMode") {
+			return new MouseInfoTool (toolbarId + ".MouseInfoMode", this.mapWidget, 
+					this._getParamValue(params,"showViewCoords"), 
+					this._getParamValue(params,"showWorldCoords"), 
+					this._getParamValue(params,"left"), 
+					this._getParamValue(params,"right"),
+					this._getParamValue(params,"top"), 
+					this._getParamValue(params,"bottom"),
+					this._getParamValue(params,"opacity"));
+		}
+		return null;
+	},
 	/**
 	 * @private
 	 */

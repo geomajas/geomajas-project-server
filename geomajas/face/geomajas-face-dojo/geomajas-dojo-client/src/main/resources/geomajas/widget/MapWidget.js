@@ -30,6 +30,7 @@ dojo.require("geomajas.gfx.common");
 dojo.require("geomajas.map.common");
 dojo.require("geomajas.controller.SimplePanController");
 dojo.require("geomajas.controller.OverviewRectController");
+dojo.require("geomajas.controller.internal.MouseListenerController");
 
 /**
  * This is the main widget representing a map...
@@ -80,10 +81,15 @@ dojo.declare(
 			this.painterVisitor = new PainterVisitor(this.graphics);
 			// floating panes can move without render(), capture this event before it gets to the map !!!
 			this.offsetHandler = this.connect(this.graphics.getNode(), "onmousedown", "updateOffset");
-
+			
 			this.mouseListenerSubject = new MouseListenerSubject (this.graphics.getNode(), 30);
 			this.mouseScrollListenerSubject = new MouseScrollListenerSubject (this.graphics.getNode());
 			this.mouseScrollListenerSubject.addListener(new ZoomOnScrollController(this.mapView, 2, 0.5));
+			
+			// Add the mouseListenerController that provides a public api for multi listening
+			this.listenerController = new MouseListenerController();
+			this.mouseListenerSubject.addListener(this.listenerController);
+			
 			this.renderTopicHandler = dojo.subscribe(this.renderTopic, this, "render");
 			this.addPainter("MapModel", new MapModelPainter(this.mapView));
 			this.addPainter("VectorLayer", new VectorLayerPainter(this.mapView));
@@ -176,7 +182,22 @@ dojo.declare(
 		 */
 		onSetController : function (oldController, newController) {			
 		},
-
+		
+		/**
+		 * Adds a Listener to the mapswidget MouseListenerController
+		 * A Listener is actually a controller, the difference with setController 
+		 * is that addListener allows multiple Controller to be attached to the map.
+		 */
+		addListener: function(listener) {
+			this.listenerController.addListener(listener);
+		},
+		/**
+		 * Removes a Listener from the mapswidget MouseListenerController
+		 */
+		removeListener: function(listener) {
+			this.listenerController.removeListener(listener);
+		},
+		
 		addPainter : function (/*String*/clazz, /*Painter*/painter) {
 			this.painterVisitor.registerPainter (clazz, painter);
 		},

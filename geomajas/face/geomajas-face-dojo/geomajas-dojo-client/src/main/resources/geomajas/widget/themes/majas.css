@@ -275,3 +275,10 @@
 	height: 18px;
 	text-align: center;
 }
+.mouseInfoToolIcon {
+	background-image:url("images/mouse_info_tool.png");
+	background-repeat:no-repeat;
+	height:16px;
+	text-align:center;
+	width:16px;
+}

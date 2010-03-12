@@ -48,7 +48,8 @@ dojo.platformRequire({
              "geomajas.action.toolbar.SplitPolygonTool",
              "geomajas.action.toolbar.MergePolygonTool",
              "geomajas.action.toolbar.LocationInfoTool",
-             "geomajas.action.toolbar.FeatureInfoTool"
+             "geomajas.action.toolbar.FeatureInfoTool",
+             "geomajas.action.toolbar.MouseInfoTool"
             ],
     browser: []
 });
