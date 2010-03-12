@@ -1152,6 +1152,20 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
           </listitem>
 
           <listitem>
+            <para><emphasis>ZoomToSelection</emphasis> : First select some
+            items on the map. After clicking on the the zoomToSelection button
+            the map will be zoomed so that all selected items will fit nicely
+            on the screen.</para>
+          </listitem>
+
+          <listitem>
+            <para><emphasis>panToSelection</emphasis> : irst select some items
+            on the map. After clicking on the panToSelection button the map
+            will be panned in such a way that the center of the selected items
+            is in the center of the screen.</para>
+          </listitem>
+
+          <listitem>
             <para><emphasis>ZoomPrevious</emphasis> : go back to the previous
             zoom level (and location).</para>
           </listitem>
@@ -1399,7 +1413,7 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
       present in the given <code>MapModel</code>. If false, this widget will
       react to the layer select events that come from the
       <code>MapMdodel</code>. In that case searching happens in the selected
-      layer (if it's a vector layer). </para>
+      layer (if it's a vector layer).</para>
 
       <para>By executing a search, this widget will ask the server to actually
       perform the search. When the result returns, a <code>SearchEvent</code>
