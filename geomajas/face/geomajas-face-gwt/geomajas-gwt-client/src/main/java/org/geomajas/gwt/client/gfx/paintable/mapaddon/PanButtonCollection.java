@@ -87,7 +87,7 @@ public class PanButtonCollection extends MapAddon {
 
 		background = new Image(getId() + "_panImageBG");
 		background.setHref(Geomajas.getIsomorphicDir() + "geomajas/temp/panbg.png");
-		background.setStyle(new PictureStyle(0.55));
+		background.setStyle(new PictureStyle(0.65));
 
 		applyPosition();
 	}

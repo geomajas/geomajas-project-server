@@ -36,6 +36,7 @@ import org.geomajas.gwt.client.samples.mapwidget.OpenStreetMapSample;
 import org.geomajas.gwt.client.samples.mapwidget.PanScaleToggleSample;
 import org.geomajas.gwt.client.samples.mapwidget.UnitTypesSample;
 import org.geomajas.gwt.client.samples.mapwidget.WmsSample;
+import org.geomajas.gwt.client.samples.overviewmap.OverviewMapSample;
 import org.geomajas.gwt.client.samples.security.AttributeSecuritySample;
 import org.geomajas.gwt.client.samples.security.CommandSecuritySample;
 import org.geomajas.gwt.client.samples.security.FilterSecuritySample;
@@ -89,6 +90,13 @@ public final class SampleArray {
 						"[ISOMORPHIC]/geomajas/layer.png", PanScaleToggleSample.TITLE, "MapWidget",
 						PanScaleToggleSample.FACTORY),
 
+				// Overview map:
+				new SampleTreeNode(I18nProvider.getSampleMessages().treeGroupOverviewMap(),
+						"[ISOMORPHIC]/geomajas/region.png", "OverviewMapBlah", "topLevel"),
+				new SampleTreeNode(I18nProvider.getSampleMessages().overviewMapTitle(),
+						"[ISOMORPHIC]/geomajas/region.png", OverviewMapSample.TITLE, "OverviewMapBlah",
+						OverviewMapSample.FACTORY),
+
 				// Map controller:
 				new SampleTreeNode(I18nProvider.getSampleMessages().treeGroupMapController(),
 						"[ISOMORPHIC]/geomajas/tools.png", "MapController", "topLevel"),
@@ -120,12 +128,12 @@ public final class SampleArray {
 						"ToolbarAndControllers", ToolbarMeasureSample.FACTORY),
 
 				new SampleTreeNode(I18nProvider.getSampleMessages().toolbarFeatureInfoTitle(),
-						"[ISOMORPHIC]/geomajas/info.png", ToolbarFeatureInfoSample.TITLE,
-						"ToolbarAndControllers", ToolbarFeatureInfoSample.FACTORY),
+						"[ISOMORPHIC]/geomajas/info.png", ToolbarFeatureInfoSample.TITLE, "ToolbarAndControllers",
+						ToolbarFeatureInfoSample.FACTORY),
 
 				new SampleTreeNode(I18nProvider.getSampleMessages().scaleSelectDefaultTitle(),
-						"[ISOMORPHIC]/geomajas/tools.png", ScaleSelectDefaultSample.TITLE,
-						"ToolbarAndControllers", ScaleSelectDefaultSample.FACTORY),
+						"[ISOMORPHIC]/geomajas/tools.png", ScaleSelectDefaultSample.TITLE, "ToolbarAndControllers",
+						ScaleSelectDefaultSample.FACTORY),
 
 				new SampleTreeNode(I18nProvider.getSampleMessages().scaleSelectCustomTitle(),
 						"[ISOMORPHIC]/geomajas/tools.png", ScaleSelectCustomSample.TITLE,
@@ -136,9 +144,9 @@ public final class SampleArray {
 						"ToolbarAndControllers", CustomToolbarToolsSample.FACTORY),
 						
 				new SampleTreeNode(I18nProvider.getSampleMessages().customToolbarTitle(),
-						"[ISOMORPHIC]/geomajas/tools.png", CustomToolbarSample.TITLE,
-						"ToolbarAndControllers", CustomToolbarSample.FACTORY),
-						
+						"[ISOMORPHIC]/geomajas/tools.png", CustomToolbarSample.TITLE, "ToolbarAndControllers",
+						CustomToolbarSample.FACTORY),
+
 				// Security samples:
 				new SampleTreeNode(I18nProvider.getSampleMessages().treeGroupSecurity(),
 						"[ISOMORPHIC]/geomajas/silk/key.png", "Security", "topLevel"),

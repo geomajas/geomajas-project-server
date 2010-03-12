@@ -50,6 +50,8 @@ public interface SampleMessages extends Messages {
 
 	String treeGroupSecurity();
 
+	String treeGroupOverviewMap();
+
 	String treeGroupMapController();
 
 	String treeGroupToolbarAndControllers();
@@ -115,6 +117,7 @@ public interface SampleMessages extends Messages {
 	String toggleMaxBoundsWorld();
 
 	// Toggle pan buttons and scalebar example
+
 	String panScaleToggleTitle();
 
 	String panScaleToggleDescription();
@@ -122,6 +125,18 @@ public interface SampleMessages extends Messages {
 	String togglePanButtons();
 
 	String toggleScaleBar();
+
+	// OverviewMap sample:
+
+	String overviewMapTitle();
+
+	String overviewMapDescription();
+
+	String overviewMapToggleRectStyle();
+
+	String overviewMapToggleExtentStyle();
+
+	String overviewMapToggleExtent();
 
 	// Custom Controller sample:
 
@@ -218,35 +233,34 @@ public interface SampleMessages extends Messages {
 	String toolbarMeasureDescription();
 
 	// ToolbarFeatureInfo Sample:
-	
+
 	String toolbarFeatureInfoTitle();
-	
+
 	String toolbarFeatureInfoDescription();
 
 	// ScaleSelect with default zoomlevels
-	
+
 	String scaleSelectDefaultTitle();
-	
+
 	String scaleSelectDefaultDescription();
-	
+
 	// ScaleSelect with custom zoomlevels
-	
+
 	String scaleSelectCustomTitle();
-	
+
 	String scaleSelectCustomDescription();
 
 	// Custom toolbartools sample
 	String customToolbarToolsTitle();
-	
-	String customToolbarToolsDescription();
-	
-	String customToolbarToolsTooltip();
-	
-	// Custom toolbar sample
-	
-	String customToolbarTitle();
-	
-	String customToolbarDescription();
 
+	String customToolbarToolsDescription();
+
+	String customToolbarToolsTooltip();
+
+	// Custom toolbar sample
+
+	String customToolbarTitle();
+
+	String customToolbarDescription();
 
 }

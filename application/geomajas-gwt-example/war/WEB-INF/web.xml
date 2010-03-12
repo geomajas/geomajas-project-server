@@ -17,6 +17,7 @@
 			org/geomajas/gwt/samples/mapwidget/mapCrs.xml
 			org/geomajas/gwt/samples/mapwidget/geoToolsLayer.xml
 			org/geomajas/gwt/samples/mapwidget/mapGeoTools.xml
+			org/geomajas/gwt/samples/overviewmap/overviewMapOsm.xml
 			org/geomajas/gwt/samples/security/security.xml
 			org/geomajas/gwt/samples/security/mapWmsToolbar.xml
 			org/geomajas/gwt/samples/toolbarAndControllers/mapOsmNavigationToolbar.xml

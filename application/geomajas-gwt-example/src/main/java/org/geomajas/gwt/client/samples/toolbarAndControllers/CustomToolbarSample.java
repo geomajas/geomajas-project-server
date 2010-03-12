@@ -24,7 +24,6 @@
 package org.geomajas.gwt.client.samples.toolbarAndControllers;
 
 import org.geomajas.gwt.client.action.toolbar.ZoomToRectangleModalAction;
-import org.geomajas.gwt.client.controller.PanController;
 import org.geomajas.gwt.client.map.event.MapModelEvent;
 import org.geomajas.gwt.client.map.event.MapModelHandler;
 import org.geomajas.gwt.client.samples.base.SamplePanel;
@@ -63,7 +62,6 @@ public class CustomToolbarSample extends SamplePanel {
 		layout.setHeight100();
 
 		final MapWidget map = new MapWidget("osmMap", "gwt-samples");
-		map.setController(new PanController(map));
 
 		final Toolbar toolbar = new Toolbar(map);
 		toolbar.setButtonSize(Toolbar.BUTTON_SIZE_BIG);

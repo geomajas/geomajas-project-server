@@ -222,7 +222,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	}
 
 	public void registerMapAddon(MapAddon addon) {
-		if (!addons.containsKey(addon.getId())) {
+		if (addon != null && !addons.containsKey(addon.getId())) {
 			addons.put(addon.getId(), addon);
 			addon.setMapSize(getWidth(), getHeight());
 			render(addon, "all");
@@ -231,7 +231,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	}
 
 	public void unregisterMapAddon(MapAddon addon) {
-		if (addons.containsKey(addon.getId())) {
+		if (addon != null && addons.containsKey(addon.getId())) {
 			addons.remove(addon.getId());
 			graphics.deleteGroup(addon);
 			addon.onRemove();

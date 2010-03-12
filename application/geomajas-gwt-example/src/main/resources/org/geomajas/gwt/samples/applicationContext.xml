@@ -41,6 +41,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 				<ref bean="selectionMap" />
 				<ref bean="osmMeasureMap" />
 				<ref bean="osmFeatureInfoMap" />
+				<ref bean="overviewOsmMap" />
 			</list>
 		</property>
 	</bean>
