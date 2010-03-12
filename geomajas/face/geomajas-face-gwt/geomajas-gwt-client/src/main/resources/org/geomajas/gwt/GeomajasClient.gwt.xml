@@ -10,6 +10,9 @@
 	<source path="client/gfx/paintable">
 		<exclude name="*Test*.java"/>
 	</source>
+	<source path="client/gfx/paintable/mapaddon">
+		<exclude name="*Test*.java"/>
+	</source>
 	<source path="client/map">
 		<exclude name="*Test*.java"/>
 	</source>

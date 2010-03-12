@@ -88,6 +88,19 @@ public class DOM extends com.google.gwt.user.client.DOM {
 		return id;
 	}
 
+	/**
+	 * Assemble an DOM id.
+	 * 
+	 * @param id
+	 * @param suffixes
+	 * @return id
+	 */
+	public static String disAssembleId(String id, String... suffixes) {
+		for (String s : suffixes) {
+			id = id.substring(0, id.length() - s.length() - DOM.ID_SEPARATOR.length());
+		}
+		return id;
+	}
 
 	private static native void initVMLNamespaceForIE()
 	/*-{

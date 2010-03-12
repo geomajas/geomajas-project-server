@@ -51,10 +51,10 @@ public class SaveOrUpdateDeleteStep extends AbstractSaveOrUpdateStep {
 				if (securityContext.isFeatureDeleteAuthorized(layerId, oldFeature)) {
 					VectorLayer layer = context.get(PipelineCode.LAYER_KEY, VectorLayer.class);
 					Filter securityFilter = getSecurityFilter(layer, securityContext.getDeleteAuthorizedArea(layerId));
-					Object featureObj = layer.read(oldFeature.getLocalId());
+					Object featureObj = layer.read(oldFeature.getId());
 					if (null != featureObj) {
 						if (securityFilter.evaluate(featureObj)) {
-							layer.delete(oldFeature.getLocalId());
+							layer.delete(oldFeature.getId());
 						} else {
 							throw new GeomajasSecurityException(ExceptionCode.FEATURE_DELETE_PROHIBITED,
 									oldFeature.getId(), securityContext.getUserId());

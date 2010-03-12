@@ -56,7 +56,7 @@ import org.geomajas.layer.feature.attribute.UrlAttribute;
  */
 public class Feature implements Paintable, Cloneable {
 
-	/** Unique identifier, over layers */
+	/** Unique identifier */
 	private String id;
 
 	/** Reference to the layer. */
@@ -143,6 +143,8 @@ public class Feature implements Paintable, Cloneable {
 		feature.id = id;
 		feature.styleId = styleId;
 		feature.crs = crs;
+		feature.deletable = deletable;
+		feature.updatable = updatable;
 		return feature;
 	}
 

@@ -138,7 +138,7 @@ public class AttributeSecuritySample extends SamplePanel {
 		editFeatureButton.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				layer = (VectorLayer) map.getMapModel().getLayerByLayerId("beans");
+				layer = (VectorLayer) map.getMapModel().getLayer("beans");
 				GwtCommandDispatcher.getInstance().execute(command, new CommandCallback() {
 
 					public void execute(CommandResponse response) {

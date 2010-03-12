@@ -55,14 +55,14 @@ public class MapModelSelectedFeaturesTest {
 		ClientVectorLayerInfo layerInfo1 = new ClientVectorLayerInfo();
 		layerInfo1.setLayerInfo(serverLayerInfo1);
 		layerInfo1.setMaxExtent(new Bbox(0, 0, 200, 100));
-		layerInfo1.setServerLayerId("layer1");
+		layerInfo1.setId("layer1");
 		layer1 = new VectorLayer(mapModel, layerInfo1);
 
 		VectorLayerInfo serverLayerInfo2 = new VectorLayerInfo();
 		ClientVectorLayerInfo layerInfo2 = new ClientVectorLayerInfo();
 		layerInfo2.setLayerInfo(serverLayerInfo2);
 		layerInfo2.setMaxExtent(new Bbox(0, 0, 250, 125));
-		layerInfo2.setServerLayerId("layer2");
+		layerInfo2.setId("layer2");
 		layer2 = new VectorLayer(mapModel, layerInfo2);
 
 		mapModel.getLayers().add(layer1);
@@ -87,11 +87,11 @@ public class MapModelSelectedFeaturesTest {
 	@Test
 	public void testSelectDeselectFeature() {
 		org.geomajas.layer.feature.Feature dto1 = new org.geomajas.layer.feature.Feature();
-		dto1.setId("layer1.feat1");
+		dto1.setId("feat1");
 		Feature feature1 = new Feature(dto1, layer1);
 
 		org.geomajas.layer.feature.Feature dto2 = new org.geomajas.layer.feature.Feature();
-		dto2.setId("layer1.feat2");
+		dto2.setId("feat2");
 		Feature feature2 = new Feature(dto2, layer1);
 
 		Assert.assertFalse(feature1.isSelected());
@@ -100,7 +100,7 @@ public class MapModelSelectedFeaturesTest {
 		Assert.assertEquals(0, deselectedCount);
 		Assert.assertNull(lastFeatureId);
 
-		mapModel.selectFeature(feature1);
+		layer1.selectFeature(feature1);
 		Assert.assertTrue(feature1.isSelected());
 		Assert.assertFalse(feature2.isSelected());
 		Assert.assertEquals(1, selectedCount);
@@ -108,14 +108,14 @@ public class MapModelSelectedFeaturesTest {
 		Assert.assertEquals("layer1.feat1", lastFeatureId);
 		lastFeatureId = null;
 
-		mapModel.deselectFeature(feature2);
+		layer1.selectFeature(feature2);
 		Assert.assertTrue(feature1.isSelected());
 		Assert.assertFalse(feature2.isSelected());
 		Assert.assertEquals(1, selectedCount);
 		Assert.assertEquals(0, deselectedCount);
 		Assert.assertNull(lastFeatureId);
 
-		mapModel.deselectFeature(feature1);
+		layer1.deselectFeature(feature1);
 		Assert.assertFalse(feature1.isSelected());
 		Assert.assertFalse(feature2.isSelected());
 		Assert.assertEquals(1, selectedCount);
@@ -144,8 +144,8 @@ public class MapModelSelectedFeaturesTest {
 		Assert.assertEquals(0, selectedCount);
 		Assert.assertEquals(0, deselectedCount);
 
-		mapModel.selectFeature(feature1);
-		mapModel.selectFeature(feature2);
+		layer1.selectFeature(feature1);
+		layer1.selectFeature(feature2);
 		Assert.assertTrue(feature1.isSelected());
 		Assert.assertTrue(feature2.isSelected());
 		Assert.assertEquals(2, selectedCount);

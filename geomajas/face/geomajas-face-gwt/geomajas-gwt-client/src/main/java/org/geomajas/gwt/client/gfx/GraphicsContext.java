@@ -283,6 +283,14 @@ public interface GraphicsContext {
 	String getNameById(String id);
 
 	/**
+	 * Return the (enclosing) group for the specified element id.
+	 * 
+	 * @param id
+	 * @return the group object
+	 */
+	Object getGroupById(String id);
+
+	/**
 	 * Return the current graphics width.
 	 */
 	int getWidth();

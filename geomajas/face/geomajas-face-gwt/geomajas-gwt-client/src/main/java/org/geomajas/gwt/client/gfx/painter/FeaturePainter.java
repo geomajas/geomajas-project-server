@@ -91,18 +91,20 @@ public class FeaturePainter implements Painter {
 			Geometry geometry = worldViewTransformer.worldToPan(feature.getGeometry());
 			ShapeStyle style = createStyleForFeature(feature);
 			PaintableGroup selectionGroup = feature.getLayer().getSelectionGroup();
+			graphics.drawGroup(selectionGroup, feature);
+			String name = feature.getLayer().getId() + "-" + feature.getId();
 			if (geometry instanceof LineString) {
-				graphics.drawLine(selectionGroup, feature.getId(), (LineString) geometry, style);
+				graphics.drawLine(feature, name, (LineString) geometry, style);
 			} else if (geometry instanceof MultiLineString) {
 				MultiLineString m = (MultiLineString) geometry;
-				graphics.drawLine(selectionGroup, feature.getId(), (LineString) m.getGeometryN(0), style);
+				graphics.drawLine(feature, name, (LineString) m.getGeometryN(0), style);
 			} else if (geometry instanceof Polygon) {
-				graphics.drawPolygon(selectionGroup, feature.getId(), (Polygon) geometry, style);
+				graphics.drawPolygon(feature, name, (Polygon) geometry, style);
 			} else if (geometry instanceof MultiPolygon) {
 				MultiPolygon m = (MultiPolygon) geometry;
-				graphics.drawPolygon(selectionGroup, feature.getId(), (Polygon) m.getGeometryN(0), style);
+				graphics.drawPolygon(feature, name, (Polygon) m.getGeometryN(0), style);
 			} else if (geometry instanceof Point) {
-				graphics.drawSymbol(selectionGroup, feature.getId(), geometry.getCoordinate(), style, null);
+				graphics.drawSymbol(feature, name, geometry.getCoordinate(), style, null);
 			}
 		}
 	}

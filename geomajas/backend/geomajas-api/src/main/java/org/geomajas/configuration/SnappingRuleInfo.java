@@ -49,7 +49,7 @@ public class SnappingRuleInfo implements Serializable {
 	private SnappingType type;
 
 	@NotNull
-	private String serverLayerId;
+	private String layerId;
 
 	public SnappingRuleInfo() {
 	}
@@ -70,12 +70,12 @@ public class SnappingRuleInfo implements Serializable {
 		this.type = type;
 	}
 
-	public String getServerLayerId() {
-		return serverLayerId;
+	public String getLayerId() {
+		return layerId;
 	}
 
-	public void setServerLayerId(String serverLayerId) {
-		this.serverLayerId = serverLayerId;
+	public void setLayerId(String layerId) {
+		this.layerId = layerId;
 	}
 
 }

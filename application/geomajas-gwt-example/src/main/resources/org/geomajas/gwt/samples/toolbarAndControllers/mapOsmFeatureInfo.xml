@@ -86,7 +86,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 				<bean class="org.geomajas.configuration.SnappingRuleInfo">
 					<property name="distance" value="10" />
 					<property name="type" value="NEAREST_POINT" />
-					<property name="serverLayerId" value="structures" />
+					<property name="layerId" value="structuresLayer" />
 				</bean>
 			</list>
 		</property>

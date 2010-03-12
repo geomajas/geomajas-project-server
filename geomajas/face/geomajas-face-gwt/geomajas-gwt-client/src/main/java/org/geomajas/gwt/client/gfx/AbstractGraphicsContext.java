@@ -65,6 +65,11 @@ public abstract class AbstractGraphicsContext implements GraphicsContext {
 	private Map<Object, String> groupToId = new IdentityHashMap<Object, String>();
 
 	/**
+	 * Mapping between DOM id's and objects.
+	 */
+	private Map<String, Object> idToGroup = new HashMap<String, Object>();
+
+	/**
 	 * Mapping between objects and DOM id's.
 	 */
 	private Map<String, String> elementToName = new HashMap<String, String>();
@@ -405,6 +410,21 @@ public abstract class AbstractGraphicsContext implements GraphicsContext {
 	}
 	
 	/**
+	 * Return the (enclosing) group for the specified element id.
+	 * 
+	 * @param id
+	 * @return the group object
+	 */
+	public Object getGroupById(String id) {
+		String name = elementToName.get(id);
+		if (name != null) {
+			return idToGroup.get(DOM.disAssembleId(id, name));
+		} else {
+			return null;
+		}
+	}
+
+	/**
 	 * Return the element name for the specified id.
 	 * 
 	 * @param id
@@ -445,6 +465,7 @@ public abstract class AbstractGraphicsContext implements GraphicsContext {
 				id = DOM.assembleId(id, ((PaintableGroup) group).getGroupName());
 			}
 			groupToId.put(group, id);
+			idToGroup.put(id, group);
 			DOM.setElementAttribute(element, "id", id);
 			return element;
 		}

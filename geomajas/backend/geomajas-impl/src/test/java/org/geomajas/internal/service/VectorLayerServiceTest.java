@@ -206,7 +206,7 @@ public class VectorLayerServiceTest {
 				CRS.decode(beanLayer.getLayerInfo().getCrs()), filter, null, VectorLayerService.FEATURE_INCLUDE_ALL);
 		Assert.assertEquals(1, features.size());
 		InternalFeature feature = features.get(0);
-		Assert.assertEquals("3", feature.getLocalId());
+		Assert.assertEquals("3", feature.getId());
 		Assert.assertNotNull(feature.getGeometry());
 		Assert.assertNotNull(feature.getAttributes().get(STRING_ATTR));
 	}

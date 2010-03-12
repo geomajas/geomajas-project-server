@@ -124,19 +124,6 @@ public class InternalFeatureImpl implements InternalFeature {
 	}
 
 	/**
-	 * Retrieve the local feature ID. That is the ID without the layer ID attached to it. This ID will still be unique
-	 * within the layer.
-	 * 
-	 * @return local id
-	 */
-	public String getLocalId() {
-		if (id != null) {
-			return id.substring(id.indexOf('.') + 1);
-		}
-		return null;
-	}
-
-	/**
 	 * Get the feature's bounding box.
 	 * 
 	 * @return feature's bounding box
@@ -180,6 +167,7 @@ public class InternalFeatureImpl implements InternalFeature {
 	}
 
 	public int hashCode() {
+		// TODO: this violates hashcode contract, why ???
 		String temp = id + geometry.toString();
 		return temp.hashCode();
 	}

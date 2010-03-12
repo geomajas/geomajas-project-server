@@ -485,7 +485,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
                 <bean class="org.geomajas.configuration.SnappingRuleInfo">
                     <property name="distance" value="500000"/>
                     <property name="type" value="NEAREST_POINT"/>
-                    <property name="serverLayerId" value="rivers" />
+                    <property name="layerId" value="riversLayer" />
                 </bean>
             </list>
         </property>
@@ -502,7 +502,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 				<bean class="org.geomajas.configuration.SnappingRuleInfo">
 					<property name="distance" value="10" />
 					<property name="type" value="NEAREST_POINT" />
-					<property name="serverLayerId" value="roads" />
+					<property name="layerId" value="roadsLayer" />
 				</bean>
 			</list>
 		</property>
@@ -520,7 +520,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 				<bean class="org.geomajas.configuration.SnappingRuleInfo">
 					<property name="distance" value="10" />
 					<property name="type" value="NEAREST_POINT" />
-					<property name="serverLayerId" value="structures" />
+					<property name="layerId" value="structuresLayer" />
 				</bean>
 			</list>
 		</property>

@@ -42,14 +42,6 @@ import com.vividsolutions.jts.geom.Geometry;
 public interface InternalFeature extends Cloneable, Comparable<InternalFeature> {
 
 	/**
-	 * Retrieve the local feature ID. That is the ID without the layer ID attached to it. This ID will still be unique
-	 * within the layer.
-	 * 
-	 * @return local feature id
-	 */
-	String getLocalId();
-
-	/**
 	 * Get the feature's bounding box.
 	 * 
 	 * @return feature bounds

@@ -31,6 +31,8 @@
 			org.geomajas.layer.hibernate.filter.ExtendedFilterFactory
 			org.springframework.transaction.config.TxNamespaceHandler
 			org.hibernatespatial.postgis.PostgisDialect
+ 			org.geotools.util.ConverterFactory
+			org.geotools.util.CommonsConverterFactory
         </param-value>
     </context-param>
 
@@ -39,8 +41,18 @@
 	</listener>
 
 	<listener>
- 		<listener-class>org.geomajas.servlet.GeomajasContextListener</listener-class>
+		<listener-class>org.geomajas.servlet.GeomajasContextListener</listener-class>
 	</listener>
+
+	<filter>
+		<filter-name>JettyFilter</filter-name>
+		<filter-class>org.geomajas.servlet.JettyThreadParentFilter</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>JettyFilter</filter-name>
+		<servlet-name>GeomajasServiceServlet</servlet-name>
+	</filter-mapping>
 
 	<servlet>
 		<servlet-name>GeomajasServiceServlet</servlet-name>

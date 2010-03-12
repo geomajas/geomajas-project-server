@@ -250,7 +250,7 @@ public class SelectionController extends RectangleController {
 			}
 			for (org.geomajas.layer.feature.Feature orgFeature : orgFeatures) {
 				Feature feature = new Feature(orgFeature, vectorLayer);
-				mapModel.selectFeature(feature);
+				vectorLayer.selectFeature(feature);
 			}
 		}
 	}

@@ -71,7 +71,7 @@ public class TestSequenceProcessor {
 		info.setLayers(layers);
 
 		mapModel.initialize(info);
-		mapModel.selectLayer(mapModel.getLayerByLayerId("test"));
+		mapModel.selectLayer(mapModel.getLayer("test"));
 
 		Feature feature = new Feature();
 		GeometryFactory factory = new GeometryFactory(4326, -1);

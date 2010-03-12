@@ -426,19 +426,22 @@ public class FeatureListGrid extends ListGrid implements FeatureSelectionHandler
 		// Check if selection and deselection are really necessary, to avoid useless events.
 		if (event.getState()) {
 			// Only select a feature if it is not yet selected:
-			if (!mapModel.isFeatureSelected(featureId)) {
-				mapModel.getFeatureById(featureId, GeomajasConstant.FEATURE_INCLUDE_ALL, new LazyLoadCallback() {
+			if (!layer.isFeatureSelected(featureId)) {
+				layer.getFeatureStore().getFeature(featureId, GeomajasConstant.FEATURE_INCLUDE_ALL,
+						new LazyLoadCallback() {
+
 					public void execute(List<Feature> response) {
-						mapModel.selectFeature(response.get(0));
+						layer.selectFeature(response.get(0));
 					}
 				});
 			}
 		} else {
 			// Only deselect a feature if it is not yet deselected:
-			if (mapModel.isFeatureSelected(featureId)) {
-				mapModel.getFeatureById(featureId, GeomajasConstant.FEATURE_INCLUDE_ALL, new LazyLoadCallback() {
+			if (layer.isFeatureSelected(featureId)) {
+				layer.getFeatureStore().getFeature(featureId, GeomajasConstant.FEATURE_INCLUDE_ALL,
+						new LazyLoadCallback() {
 					public void execute(List<Feature> response) {
-						mapModel.deselectFeature(response.get(0));
+						layer.deselectFeature(response.get(0));
 					}
 				});
 			}

@@ -215,19 +215,18 @@ public class ToggleSelectionAction extends MenuAction {
 	private void selectFeatures(String layerId, List<org.geomajas.layer.feature.Feature> orgFeatures,
 			boolean clearSelection) {
 		MapModel mapModel = mapWidget.getMapModel();
-		Layer<?> layer = mapWidget.getMapModel().getLayerByLayerId(layerId);
-		if (layer != null && layer instanceof VectorLayer) {
-			VectorLayer vectorLayer = (VectorLayer) layer;
+		VectorLayer layer = mapWidget.getMapModel().getVectorLayer(layerId);
+		if (layer != null) {
 			for (org.geomajas.layer.feature.Feature orgFeature : orgFeatures) {
 				org.geomajas.gwt.client.map.feature.Feature feature = new org.geomajas.gwt.client.map.feature.Feature(
-						orgFeature, vectorLayer);
-				if (mapModel.isFeatureSelected(feature.getId())) {
-					mapModel.deselectFeature(feature);
+						orgFeature, layer);
+				if (layer.isFeatureSelected(feature.getId())) {
+					layer.deselectFeature(feature);
 				} else {
 					if (clearSelection) {
 						mapModel.clearSelectedFeatures();
 					}
-					mapModel.selectFeature(feature);
+					layer.selectFeature(feature);
 				}
 			}
 		}

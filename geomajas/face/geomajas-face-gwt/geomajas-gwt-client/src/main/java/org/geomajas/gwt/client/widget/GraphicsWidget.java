@@ -247,6 +247,16 @@ public class GraphicsWidget extends FocusWidget implements MenuGraphicsContext, 
 	}
 	
 	/**
+	 * Return the (enclosing) group for the specified element id.
+	 * 
+	 * @param id
+	 * @return the group object
+	 */
+	public Object getGroupById(String id) {
+		return delegate.getGroupById(id);
+	}
+
+	/**
 	 * Retrieve the element name of the last right mouse event.
 	 * 
 	 * @return Returns the name part of the element id.
@@ -261,7 +271,7 @@ public class GraphicsWidget extends FocusWidget implements MenuGraphicsContext, 
 	 * @return Returns the DOM element's ID.
 	 */
 	public Object getRightButtonObject() {
-		return rightButtonTarget;
+		return delegate.getGroupById(rightButtonTarget);
 	}
 
 	// -------------------------------------------------------------------------

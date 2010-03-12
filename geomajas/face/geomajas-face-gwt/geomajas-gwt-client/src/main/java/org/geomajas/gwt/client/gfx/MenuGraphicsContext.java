@@ -35,10 +35,17 @@ public interface MenuGraphicsContext extends GraphicsContext {
 	/**
 	 * Retrieve the element name of the last right mouse event.
 	 * 
-	 * @return Returns the name part of the element id.
+	 * @return Returns the name of the element or null if no element found.
 	 */
 	String getRightButtonName();
 	
+	/**
+	 * Retrieve the group object of the last right mouse event's group.
+	 * 
+	 * @return Returns the group or null if no group found
+	 */
+	Object getRightButtonObject();
+
 	/**
 	 * Retrieve the coordinate of the last right mouse event.
 	 * 

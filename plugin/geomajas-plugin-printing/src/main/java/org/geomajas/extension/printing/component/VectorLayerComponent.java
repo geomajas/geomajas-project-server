@@ -246,7 +246,7 @@ public class VectorLayerComponent extends BaseLayerComponent {
 
 		// check if the feature is selected
 		ClientMapInfo map = context.getMap(getMap().getMapId(), getMap().getApplicationId());
-		if (selectedFeatures.contains(f.getLocalId())) {
+		if (selectedFeatures.contains(f.getId())) {
 			if (f.getGeometry() instanceof MultiPolygon || f.getGeometry() instanceof Polygon) {
 				fillColor = context.getColor(map.getPolygonSelectStyle().getFillColor(), style.getFillOpacity());
 			} else if (f.getGeometry() instanceof MultiLineString || f.getGeometry() instanceof LineString) {

@@ -24,9 +24,7 @@
 package org.geomajas.gwt.client.map;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
@@ -49,10 +47,8 @@ import org.geomajas.gwt.client.map.event.MapModelEvent;
 import org.geomajas.gwt.client.map.event.MapModelHandler;
 import org.geomajas.gwt.client.map.event.MapViewChangedEvent;
 import org.geomajas.gwt.client.map.event.MapViewChangedHandler;
-import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.feature.FeatureEditor;
 import org.geomajas.gwt.client.map.feature.FeatureTransaction;
-import org.geomajas.gwt.client.map.feature.LazyLoadCallback;
 import org.geomajas.gwt.client.map.layer.Layer;
 import org.geomajas.gwt.client.map.layer.RasterLayer;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
@@ -98,9 +94,6 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 
 	private HandlerManager handlerManager;
 
-	/** Contains a */
-	private Map<String, Feature> selectedFeatures = new HashMap<String, Feature>();
-
 	private GeometryFactory geometryFactory;
 	
 	private Composite mapGroup = new Composite("map");
@@ -110,6 +103,8 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 	private Composite screenGroup = new Composite("screen");
 	
 	private boolean initialized;
+	
+	private LayerSelectionPropagator selectionPropagator = new LayerSelectionPropagator();
 	
 
 	// -------------------------------------------------------------------------
@@ -252,16 +247,17 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 	}
 
 	protected void addLayer(ClientLayerInfo layerInfo) {
-		Layer layer;
 		switch (layerInfo.getLayerType()) {
 			case RASTER:
-				layer = new RasterLayer(this, (ClientRasterLayerInfo) layerInfo);
+				RasterLayer rasterLayer = new RasterLayer(this, (ClientRasterLayerInfo) layerInfo);
+				layers.add(rasterLayer);
 				break;
 			default:
-				layer = new VectorLayer(this, (ClientVectorLayerInfo) layerInfo);
+				VectorLayer vectorLayer = new VectorLayer(this, (ClientVectorLayerInfo) layerInfo);
+				layers.add(vectorLayer);
+				vectorLayer.addFeatureSelectionHandler(selectionPropagator);
 				break;
 		}
-		layers.add(layer);
 	}
 
 	/**
@@ -271,9 +267,27 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 	 *            The layer's ID.
 	 * @return Returns either a Layer, or null.
 	 */
-	public Layer getLayerByLayerId(String layerId) {
+	public Layer getLayer(String layerId) {
 		if (layers != null) {
 			for (Layer layer : layers) {
+				if (layer.getId().equals(layerId)) {
+					return layer;
+				}
+			}
+		}
+		return null;
+	}
+
+	/**
+	 * Search a vector layer by it's id.
+	 * 
+	 * @param layerId
+	 *            The layer's ID.
+	 * @return Returns either a Layer, or null.
+	 */
+	public VectorLayer getVectorLayer(String layerId) {
+		if (layers != null) {
+			for (VectorLayer layer : getVectorLayers()) {
 				if (layer.getId().equals(layerId)) {
 					return layer;
 				}
@@ -314,51 +328,23 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 			handlerManager.fireEvent(new LayerDeselectedEvent(layer));
 		}
 	}
-
-	/**
-	 * Return whether the feature with given id is selected.
-	 * 
-	 * @param featureId
-	 *            feature id to test
-	 * @return true when the feature with given ide is selected
-	 */
-	public boolean isFeatureSelected(String featureId) {
-		return selectedFeatures.containsKey(featureId);
-	}
-
-	/**
-	 * Select a feature: set the feature's selected state and add it to the layer's selection.
-	 * 
-	 * @param feature
-	 *            The feature that is to be selected.
-	 */
-	public void selectFeature(Feature feature) {
-		if (!selectedFeatures.containsKey(feature.getId())) {
-			Feature clone = feature.clone();
-			selectedFeatures.put(clone.getId(), clone);
-			handlerManager.fireEvent(new FeatureSelectedEvent(clone));
+	
+	private List<VectorLayer> getVectorLayers() {
+		ArrayList<VectorLayer> list = new ArrayList<VectorLayer>();
+		for (Layer layer : layers) {
+			if (layer instanceof VectorLayer) {
+				list.add((VectorLayer) layer);
+			}
 		}
+		return list;
 	}
-
-	/**
-	 * Deselect a feature: set the feature's selected state and remove it from the layer's selection.
-	 * 
-	 * @param feature
-	 *            The feature that is to be selected.
-	 */
-	public void deselectFeature(Feature feature) {
-		if (selectedFeatures.containsKey(feature.getId())) {
-			Feature org = selectedFeatures.remove(feature.getId());
-			handlerManager.fireEvent(new FeatureDeselectedEvent(org));
-		}
-	}
+	
 
 	/** Clear the list of selected features. */
 	public void clearSelectedFeatures() {
-		for (Feature feature : selectedFeatures.values()) {
-			handlerManager.fireEvent(new FeatureDeselectedEvent(feature));
+		for (VectorLayer layer : getVectorLayers()) {
+			layer.clearSelectedFeatures();
 		}
-		selectedFeatures.clear();
 	}
 
 	/**
@@ -373,61 +359,6 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 					return layer;
 				}
 			}
-		}
-		return null;
-	}
-
-	/**
-	 * Retrieve a feature, by it's ID.
-	 * 
-	 * @param featureId
-	 *            Must be the entire id: <layer>.<feature>
-	 * @param featureIncludes what data should be available in the features
-	 * @param callback callback which gets the features
-	 */
-	public void getFeatureById(String featureId, int featureIncludes, LazyLoadCallback callback) {
-		int pos = featureId.indexOf('.');
-		
-		String[] ids = featureId.split("\\."); // It's a regular expression, not literally.
-		Layer<?> layer = this.getLayerByLayerId(ids[0]);
-		if (layer != null && layer instanceof VectorLayer) {
-			boolean ok = false;
-			int count = ids.length - 1;
-			while (!ok) {
-				String fid = ids[count];
-				if (!"use".equals(fid)) {
-					ok = true;
-				} else {
-					count--;
-				}
-			}
-			((VectorLayer) layer).getFeatureStore().getFeature(featureId, featureIncludes, callback);
-		}
-	}
-
-	/**
-	 * Retrieve a feature, by it's ID. The feature may have some still require lazy loading.
-	 *
-	 * @param featureId
-	 *            Must be the entire id: <layer>.<feature>
-	 */
-	public Feature getPartialFeatureById(String featureId) {
-		int pos = featureId.indexOf('.');
-
-		String[] ids = featureId.split("\\."); // It's a regular expression, not literally.
-		Layer<?> layer = this.getLayerByLayerId(ids[0]);
-		if (layer != null && layer instanceof VectorLayer) {
-			boolean ok = false;
-			int count = ids.length - 1;
-			while (!ok) {
-				String fid = ids[count];
-				if (!"use".equals(fid)) {
-					ok = true;
-				} else {
-					count--;
-				}
-			}
-			return ((VectorLayer) layer).getFeatureStore().getPartialFeature(featureId);
 		}
 		return null;
 	}
@@ -513,5 +444,23 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 			geometryFactory = new GeometryFactory(srid, -1); // @todo precision is not yet implemented
 		}
 		return geometryFactory;
+	}
+	
+	/**
+	 * Propagates selection events to interested listeners.
+	 * 
+	 * @author Jan De Moerloose
+	 * 
+	 */
+	class LayerSelectionPropagator implements FeatureSelectionHandler {
+
+		public void onFeatureDeselected(FeatureDeselectedEvent event) {
+			handlerManager.fireEvent(event);
+		}
+
+		public void onFeatureSelected(FeatureSelectedEvent event) {
+			handlerManager.fireEvent(event);
+		}
+
 	}
 }

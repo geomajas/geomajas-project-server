@@ -23,6 +23,11 @@
 
 package org.geomajas.gwt.client.map.layer;
 
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.gwt.client.gfx.PaintableGroup;
 import org.geomajas.gwt.client.gfx.PainterVisitor;
@@ -31,12 +36,17 @@ import org.geomajas.gwt.client.map.MapModel;
 import org.geomajas.gwt.client.map.cache.TileCache;
 import org.geomajas.gwt.client.map.cache.tile.TileFunction;
 import org.geomajas.gwt.client.map.cache.tile.VectorTile;
+import org.geomajas.gwt.client.map.event.FeatureDeselectedEvent;
+import org.geomajas.gwt.client.map.event.FeatureSelectedEvent;
+import org.geomajas.gwt.client.map.event.FeatureSelectionHandler;
+import org.geomajas.gwt.client.map.event.HasFeatureSelectionHandlers;
 import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.feature.LazyLoadCallback;
 import org.geomajas.gwt.client.map.store.VectorLayerStore;
 import org.geomajas.gwt.client.spatial.Bbox;
 
-import java.util.List;
+import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.event.shared.HandlerRegistration;
 
 /**
  * <p>
@@ -45,7 +55,7 @@ import java.util.List;
  *
  * @author Pieter De Graef
  */
-public class VectorLayer extends AbstractLayer<ClientVectorLayerInfo> {
+public class VectorLayer extends AbstractLayer<ClientVectorLayerInfo> implements HasFeatureSelectionHandlers {
 
 	/** Storage of features in this layer. */
 	private TileCache cache;
@@ -57,6 +67,12 @@ public class VectorLayer extends AbstractLayer<ClientVectorLayerInfo> {
 	private Composite selectionGroup = new Composite("selection");
 	
 	private Composite labelGroup = new Composite("labels");
+	
+	private HandlerManager handlerManager = new HandlerManager(this);
+
+	/** selected features id -> feature map */
+	private Map<String, Feature> selectedFeatures = new HashMap<String, Feature>();
+
 
 	// -------------------------------------------------------------------------
 	// Constructors:
@@ -73,6 +89,10 @@ public class VectorLayer extends AbstractLayer<ClientVectorLayerInfo> {
 		Bbox maxExtent = new Bbox(layerInfo.getMaxExtent().getX(), layerInfo.getMaxExtent().getY(), layerInfo
 				.getMaxExtent().getWidth(), layerInfo.getMaxExtent().getHeight());
 		cache = new TileCache(this, maxExtent);
+	}
+
+	public final HandlerRegistration addFeatureSelectionHandler(FeatureSelectionHandler handler) {
+		return handlerManager.addHandler(FeatureSelectionHandler.TYPE, handler);
 	}
 
 	// -------------------------------------------------------------------------
@@ -118,12 +138,57 @@ public class VectorLayer extends AbstractLayer<ClientVectorLayerInfo> {
 
 	/**
 	 * Return whether the feature with given id is selected.
-	 *
+	 * 
+	 * @param featureId
+	 *            feature id to test
 	 * @param id feature id
 	 * @return true when the feature with given ide is selected
 	 */
-	public boolean isFeatureSelected(String id) {
-		return mapModel.isFeatureSelected(id);
+	public boolean isFeatureSelected(String featureId) {
+		return selectedFeatures.containsKey(featureId);
+	}
+
+	/**
+	 * Select a feature: set the feature's selected state and add it to the layer's selection.
+	 * 
+	 * @param feature
+	 *            The feature that is to be selected.
+	 * @return true when the feature was deselected
+	 */
+	public boolean selectFeature(Feature feature) {
+		if (!selectedFeatures.containsKey(feature.getId())) {
+			selectedFeatures.put(feature.getId(), feature);
+			handlerManager.fireEvent(new FeatureSelectedEvent(feature));
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/**
+	 * Deselect a feature: set the feature's selected state and remove it from the layer's selection.
+	 * 
+	 * @param feature
+	 *            The feature that is to be selected.
+	 * @return true when the feature was selected
+	 */
+	public boolean deselectFeature(Feature feature) {
+		if (selectedFeatures.containsKey(feature.getId())) {
+			Feature org = selectedFeatures.remove(feature.getId());
+			handlerManager.fireEvent(new FeatureDeselectedEvent(org));
+			return true;
+		} else {
+			return false;
+		}
+	}
+
+	/** Clear the list of selected features. */
+	public void clearSelectedFeatures() {
+		List<Feature> clone = new LinkedList<Feature>(selectedFeatures.values());
+		for (Feature feature : clone) {
+			selectedFeatures.remove(feature);
+			handlerManager.fireEvent(new FeatureDeselectedEvent(feature));
+		}
 	}
 
 	public String getFilter() {

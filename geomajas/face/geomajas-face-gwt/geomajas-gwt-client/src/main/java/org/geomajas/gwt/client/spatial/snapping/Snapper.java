@@ -125,9 +125,9 @@ public class Snapper {
 			// Get the target snap layer:
 			VectorLayer snapLayer;
 			try {
-				snapLayer = (VectorLayer) mapModel.getLayerByLayerId(rule.getServerLayerId());
+				snapLayer = mapModel.getVectorLayer(rule.getLayerId());
 			} catch (Exception e) {
-				throw new IllegalArgumentException("Target snapping layer (" + rule.getServerLayerId()
+				throw new IllegalArgumentException("Target snapping layer (" + rule.getLayerId()
 						+ ") was not a vector layer.");
 			}
 

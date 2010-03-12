@@ -64,9 +64,9 @@ public class UpdateFeatureStep implements PipelineStep {
 		String layerId = layer.getId();
 		FeatureModel featureModel = layer.getFeatureModel();
 
-		// Not needed for existing features, but no problem to re-set feature id
-		String id = featureModel.getId(feature);
-		newFeature.setId(layerId + "." + id);
+//		// Not needed for existing features, but no problem to re-set feature id
+//		String id = featureModel.getId(feature);
+//		newFeature.setId(id);
 
 		filterAttributes(layerId, newFeature, featureModel.getAttributes(feature));
 

@@ -77,7 +77,7 @@ public class DeleteFeatureAction extends MenuAction implements MenuItemIfFunctio
 
 						public void execute(Boolean value) {
 							if (value) {
-								mapWidget.getMapModel().deselectFeature(feature);
+								feature.getLayer().deselectFeature(feature);
 								mapWidget.getMapModel().getFeatureEditor()
 										.startEditing(new Feature[] {feature}, null);
 								SaveEditingAction action = new SaveEditingAction(mapWidget, controller);
@@ -94,10 +94,9 @@ public class DeleteFeatureAction extends MenuAction implements MenuItemIfFunctio
 	 * existing features.
 	 */
 	public boolean execute(Canvas target, Menu menu, MenuItem item) {
-		String featureId = mapWidget.getGraphics().getRightButtonName();
-		if (featureId != null) {
-			if (mapWidget.getMapModel().isFeatureSelected(featureId)) {
-				feature = mapWidget.getMapModel().getPartialFeatureById(featureId);
+		Feature feature = (Feature) mapWidget.getGraphics().getRightButtonObject();
+		if (feature != null) {
+			if (feature.isSelected()) {
 				return feature.isDeletable();
 			}
 		}

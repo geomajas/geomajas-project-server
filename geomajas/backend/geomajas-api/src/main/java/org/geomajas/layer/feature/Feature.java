@@ -70,7 +70,7 @@ public class Feature implements Serializable {
 	 * Initialize a feature with it's identifier.
 	 * 
 	 * @param id
-	 *            The feature's unique identifier. It's format is as follows: "[layer ID].[local ID]".
+	 *            The feature's unique identifier in the layer.
 	 */
 	public Feature(String id) {
 		this.id = id;
@@ -90,14 +90,14 @@ public class Feature implements Serializable {
 	// -------------------------------------------------------------------------
 
 	/**
-	 * Get the feature's unique identifier. It's format is as follows: "[layer ID].[local ID]".
+	 * Get the feature's unique identifier.
 	 */
 	public String getId() {
 		return id;
 	}
 
 	/**
-	 * Set the feature's unique identifier. It's format is as follows: "[layer ID].[local ID]".
+	 * Set the feature's unique identifier.
 	 */
 	public void setId(String id) {
 		this.id = id;
