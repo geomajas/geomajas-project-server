@@ -25,7 +25,7 @@ dojo.provide("geomajas.widget.ZoomSlider");
 dojo.require("dijit.form.Slider");
 dojo.require("geomajas.controller.PanToolController");
 /**
- * This widget creates a slider and panbuttons on the given mapwidget
+ * This class creates a slider widget and panbuttons on the given mapwidget
  * @author An Buyle
  * @author Balder Van Camp
  */
@@ -39,7 +39,17 @@ dojo.declare("geomajas.widget.ZoomSlider", null, {
 	postCreate: function() {
 	},
 
-	constructor : function () {
+	constructor : function (id) {
+		if (id) {
+			this.id = id;
+		}
+	},
+	/**
+	 * If a toolbarId is given the toolbarId will be passed to the PanToolController
+	 * @param toolbarid
+	 */
+	setToolbarId : function(toolbarId) {
+		this.toolbarid = toolbarid;
 	},
 	/**
 	 * On setting the mapWidget the slider will be initialized. The map should already by fully build.
@@ -50,8 +60,7 @@ dojo.declare("geomajas.widget.ZoomSlider", null, {
 		this.mapWidget = mapWidget;
 		var resolutions = mapWidget.getMapView().getResolutions();
 		var scales = [];
-		
-		this.mapWidgetSlider = mapWidget;
+
 		if (resolutions != null) {
 			for(var i=0; i<resolutions.length; i++) {
 				var value = Math.round(mapWidget.getScaleUtil().getUnitLength() * resolutions[i] / 
@@ -207,7 +216,7 @@ dojo.declare("geomajas.widget.ZoomSlider", null, {
 		}
 		var rendertopic = this.mapWidget.getRenderTopic();
 		// Make sure the featureTransaction is always underneath the pan-buttons:
-		this.mapWidget.getGraphics().drawGroup({id:"featureTransaction"});
+		this.mapWidget.getGraphics().drawGroup({id:"zoomSliderfeatureTransaction"});
 
 		// CENTER: Activate/deactivate Pan Tool:
 		this.panInPanGroupPicture = new Picture(this.id + "_screen.centerPanPicture");
@@ -222,9 +231,11 @@ dojo.declare("geomajas.widget.ZoomSlider", null, {
 		dojo.publish(rendertopic, [this.panInPanGroupPicture, "all"]);
 		var panToolElement = this.mapWidget.getGraphics().getElementById(this.id + "_screen.centerPanPicture");
 		var panToolSubject = new MouseListenerSubject(panToolElement);
-		
-		panToolSubject.addListener(new geomajas.controller.PanToolController(this.mapWidget, true/*hideLabelsOnDrag*/));
-		
+		if (this.toolbarid) {
+			panToolSubject.addListener(new geomajas.controller.PanToolController(this.mapWidget, true/*hideLabelsOnDrag*/, this.toolbarid));
+		} else {
+			panToolSubject.addListener(new geomajas.controller.PanToolController(this.mapWidget, true/*hideLabelsOnDrag*/));
+		}
 		this.mapWidget.getGraphics().setCursor("pointer", this.id + "_screen.centerPanPicture");
 		this.destroyables.push(panToolSubject);		
 		

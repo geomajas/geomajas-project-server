@@ -25,22 +25,27 @@ dojo.provide("geomajas.controller.PanToolController");
 dojo.require("geomajas.event.MouseListener");
 dojo.require("geomajas.controller.PanController");
 /**
- * PanToolController is a Controller that lets the ZoomSlider widget take control over PanController.
- * @author An Buyle
- * @author Balder Van Camp
+ * PanToolController is a Controller that lets the ZoomSlider widget take control over a PanController.
+ * @author An Buyle, Balder Van Camp 
  */
 dojo.declare("geomajas.controller.PanToolController", MouseListener, {
-
-	constructor : function(mapWidget, hideLabelsOnDrag) {
+	/**
+	 * @param mapWidget
+	 * @param boolean hideLabelsOnDrag
+	 * @param toolbarId widget of the toolbar optional.
+	 */
+	constructor : function(mapWidget, hideLabelsOnDrag, toolbarId) {
 		/** Reference to the MapWidget. */
 		this.mapWidget = mapWidget;
 		this.selected = false;
-		/** Reference to the MapWidget. */
-		this.mapWidget = mapWidget;
 
+		if (toolbarId && toolbarId != null) { 
+			this.toolbarid = toolbarid;
+			this.controller = new PanController (mapWidget, hideLabelsOnDrag, toolbarId);
+		} else {
+			this.controller = new PanController (mapWidget, hideLabelsOnDrag);
+		}
 		/** MouseListener that defines the actions for mouse-events on the map */
-		this.controller = new PanController (mapWidget, hideLabelsOnDrag);
-		 
 		this.handle = dojo.connect(this.controller, "onDeactivate", this, "_onMyPanCtrlDeactivate");
 			/* Note that when another controller is activated, this.controller.onDeactivate will be called. 
 			 * By connecting to this call, we can deactivate the tool defined here 
@@ -112,12 +117,16 @@ dojo.declare("geomajas.controller.PanToolController", MouseListener, {
 		else {
 			log.debug(this.getName() + ".toggleActiveness(): activate");
 			this.selected = true;
-			var mainToolbar = dijit.byId("mainToolbar");
-			if (mainToolbar) {
-				mainToolbar.onSelect(null); /* deselect the currently active tool (and its controller) 
-				on the toolbar, if any. */ 
+			if(this.toolbarid) {
+				var mainToolbar = dijit.byId(this.toolbarid);
+				if (mainToolbar) {
+					mainToolbar.onSelect(null);
+					/* deselect the currently active tool (and its controller) 
+					on the toolbar, if any. */ 
+				}
 			}
 			this.mapWidget.setController(this.controller);
+			//dojo.hitch(this, 'deactivate' , this.mapWidget, 'onSetController');
 			this.mapWidget.setCursor("move");
 
 		}
