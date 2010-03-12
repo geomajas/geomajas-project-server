@@ -49,8 +49,6 @@ public class TileCache implements SpatialCache {
 
 	protected Bbox layerBounds;
 
-	protected int maximumTileLevel;
-
 	protected Map<String, VectorTile> tiles;
 
 	protected Map<String, Feature> features;
@@ -64,6 +62,8 @@ public class TileCache implements SpatialCache {
 	private int currentMaxX;
 
 	private int currentMaxY;
+	
+	private List<VectorTile> evictedTiles;
 
 	protected List<TileCode> currentTileCodes;
 
@@ -84,6 +84,7 @@ public class TileCache implements SpatialCache {
 		this.layerBounds = layerBounds;
 		tiles = new HashMap<String, VectorTile>();
 		features = new HashMap<String, Feature>();
+		evictedTiles = new ArrayList<VectorTile>();
 		currentMinX = 0;
 		currentMinY = 0;
 		currentMaxX = 0;
@@ -148,8 +149,20 @@ public class TileCache implements SpatialCache {
 	public boolean addFeature(Feature feature) {
 		if (feature != null && !features.containsKey(feature.getId())) {
 			features.put(feature.getId(), feature);
+			return true;
+		} else {
+			Feature localFeature = features.get(feature.getId());
+			if (feature.isAttributesLoaded()) {
+				localFeature.setAttributes(feature.getAttributes());
+			}
+			if (feature.isGeometryLoaded()) {
+				localFeature.setGeometry(feature.getGeometry());
+			}
+			localFeature.setDeletable(feature.isDeletable());
+			localFeature.setUpdatable(feature.isUpdatable());
+			localFeature.setStyleId(feature.getStyleId());
+			return false;
 		}
-		return false;
 	}
 
 	public Feature removeFeature(String id) {
@@ -193,13 +206,17 @@ public class TileCache implements SpatialCache {
 	}
 
 	public void queryAndSync(Bbox bbox, String filter, TileFunction onDelete, TileFunction onUpdate) {
-		if (!layer.getMapModel().getMapView().isPanning() || isClear()) {
+		if (!layer.getMapModel().getMapView().isPanning()) {
+			clear();
+		}
+
+		if (isDirty()) {
 			// Delete all tiles
-			for (VectorTile tile : tiles.values()) {
+			for (VectorTile tile : evictedTiles) {
 				tile.cancel();
 				onDelete.execute(tile);
 			}
-			tiles.clear();
+			evictedTiles.clear();
 		}
 
 		// Only fetch when inside the layer bounds:
@@ -239,11 +256,13 @@ public class TileCache implements SpatialCache {
 	// -------------------------------------------------------------------------
 
 	public void clear() {
-		features = new HashMap<String, Feature>();
+		// clear the tiles, the features should not be dropped as they are reloaded anyhow
+		evictedTiles.addAll(tiles.values());
+		tiles.clear();
 	}
 
-	public boolean isClear() {
-		return features.isEmpty();
+	public boolean isDirty() {
+		return !evictedTiles.isEmpty();
 	}
 
 	public Collection<VectorTile> getTiles() {
@@ -258,14 +277,10 @@ public class TileCache implements SpatialCache {
 	 * Calculate the best tile level to use for a certain view-bounds.
 	 */
 	protected int calculateTileLevel(Bbox bounds) {
-		int tileLevel = 0;
 		double baseX = layerBounds.getWidth();
 		double baseY = layerBounds.getHeight();
-		while (baseX > bounds.getWidth() && baseY > bounds.getHeight() && tileLevel < maximumTileLevel) {
-			tileLevel++;
-			baseX /= 2.0;
-			baseY /= 2.0;
-		}
+		double tileFactor = Math.min(baseX / bounds.getWidth(), baseY / bounds.getHeight());
+		int tileLevel = (int) Math.ceil(Math.log(tileFactor) / Math.log(2.0));
 		return tileLevel;
 	}
 

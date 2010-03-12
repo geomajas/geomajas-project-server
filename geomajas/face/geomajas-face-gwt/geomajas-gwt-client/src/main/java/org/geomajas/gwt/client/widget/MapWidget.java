@@ -106,7 +106,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 
 	private ScaleBar scalebar;
 
-	private Map<String, MapAddon> addons;
+	private Map<String, MapAddon> addons = new HashMap<String, MapAddon>();
 
 	private double unitLength;
 
@@ -163,8 +163,6 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 		setDynamicContents(true);
 		addResizedHandler(new MapResizedHandler(this));
 		setZoomOnScrollEnabled(true);
-
-		addons = new HashMap<String, MapAddon>();
 	}
 
 	// -------------------------------------------------------------------------
@@ -335,7 +333,9 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 			panButtons.setVerticalMargin(10);
 			registerMapAddon(panButtons);
 		} else {
-			unregisterMapAddon(panButtons);
+			if (panButtons != null) {
+				unregisterMapAddon(panButtons);
+			}
 			panButtons = null;
 		}
 	}

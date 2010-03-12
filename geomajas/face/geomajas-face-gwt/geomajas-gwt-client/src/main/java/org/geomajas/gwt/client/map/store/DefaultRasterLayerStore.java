@@ -56,14 +56,14 @@ public class DefaultRasterLayerStore implements RasterLayerStore {
 
 	private RasterCallBack callBack;
 
-	private boolean clear;
+	private boolean dirty;
 
 	public DefaultRasterLayerStore(RasterLayer rasterLayer) {
 		this.rasterLayer = rasterLayer;
 	}
 
 	public void applyAndSync(Bbox bounds, TileFunction<RasterTile> onDelete, TileFunction<RasterTile> onUpdate) {
-		if (!rasterLayer.getMapModel().getMapView().isPanning() || isClear()) {
+		if (!rasterLayer.getMapModel().getMapView().isPanning() || isDirty()) {
 			if (callBack != null) {
 				callBack.cancel();
 			}
@@ -71,7 +71,7 @@ public class DefaultRasterLayerStore implements RasterLayerStore {
 				onDelete.execute(tile);
 			}
 			tiles.clear();
-			clear = false;
+			dirty = false;
 		}
 		fetchAndUpdateTiles(bounds, onUpdate);
 	}
@@ -81,11 +81,11 @@ public class DefaultRasterLayerStore implements RasterLayerStore {
 	}
 
 	public void clear() {
-		clear = true;
+		dirty = true;
 	}
 
-	public boolean isClear() {
-		return clear;
+	public boolean isDirty() {
+		return dirty;
 	}
 
 	public Collection<RasterTile> getTiles() {

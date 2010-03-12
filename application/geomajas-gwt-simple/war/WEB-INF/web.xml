@@ -30,9 +30,7 @@
 			org.opengis.filter.FilterFactory
 			org.geomajas.layer.hibernate.filter.ExtendedFilterFactory
 			org.springframework.transaction.config.TxNamespaceHandler
-			org.hibernatespatial.postgis.PostgisDialect
- 			org.geotools.util.ConverterFactory
-			org.geotools.util.CommonsConverterFactory
+			<!--  org.hibernatespatial.postgis.PostgisDialect -->			
         </param-value>
     </context-param>
 

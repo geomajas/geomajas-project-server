@@ -41,7 +41,6 @@ import org.geomajas.gwt.client.map.event.FeatureSelectedEvent;
 import org.geomajas.gwt.client.map.event.FeatureSelectionHandler;
 import org.geomajas.gwt.client.map.event.HasFeatureSelectionHandlers;
 import org.geomajas.gwt.client.map.feature.Feature;
-import org.geomajas.gwt.client.map.feature.LazyLoadCallback;
 import org.geomajas.gwt.client.map.store.VectorLayerStore;
 import org.geomajas.gwt.client.spatial.Bbox;
 
@@ -107,18 +106,14 @@ public class VectorLayer extends AbstractLayer<ClientVectorLayerInfo> implements
 		if (recursive && isShowing()) {
 			TileFunction<VectorTile> onDelete = new TileFunction<VectorTile>() {
 
-				// When deleting a tile, delete selected features in it first:
+				// When deleting a tile, delete selected features from the paint !
 				public void execute(final VectorTile tile) {
-					tile.getFeatures(0, new LazyLoadCallback() {
-						public void execute(List<Feature> response) {
-							for (Feature feature : response) {
-								if (feature != null && feature.isSelected()) {
-									visitor.remove(feature);
-								}
-							}
-							visitor.remove(tile);
+					for (Feature feature : tile.getPartialFeatures()) {
+						if (feature != null && feature.isSelected()) {
+							visitor.remove(feature);
 						}
-					});
+					}
+					visitor.remove(tile);
 				}
 			};
 			TileFunction<VectorTile> onUpdate = new TileFunction<VectorTile>() {
@@ -126,6 +121,11 @@ public class VectorLayer extends AbstractLayer<ClientVectorLayerInfo> implements
 				// Updating a tile, is simply re-rendering it:
 				public void execute(VectorTile tile) {
 					tile.accept(visitor, bounds, true);
+					// also re-render the selected features !
+					for (Feature feature : selectedFeatures.values()) {
+						visitor.visit(feature);
+					}
+
 				}
 			};
 			cache.queryAndSync(bounds, filter, onDelete, onUpdate);
@@ -157,6 +157,8 @@ public class VectorLayer extends AbstractLayer<ClientVectorLayerInfo> implements
 	 */
 	public boolean selectFeature(Feature feature) {
 		if (!selectedFeatures.containsKey(feature.getId())) {
+			// make sure we get the layer's instance !
+			feature = getFeatureStore().getPartialFeature(feature.getId());
 			selectedFeatures.put(feature.getId(), feature);
 			handlerManager.fireEvent(new FeatureSelectedEvent(feature));
 			return true;

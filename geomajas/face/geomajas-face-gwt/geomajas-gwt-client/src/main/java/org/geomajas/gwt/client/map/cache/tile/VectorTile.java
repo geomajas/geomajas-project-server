@@ -107,6 +107,19 @@ public class VectorTile extends AbstractVectorTile {
 	}
 
 	/**
+	 * Return all partial features in this tile. Warning : this will return possibly incomplete features !
+	 * 
+	 *@return a list of all features in this tile
+	 */
+	public List<Feature> getPartialFeatures() {
+		List<Feature> partials = new ArrayList<Feature>();
+		for (String id : featureIds) {
+			partials.add(getCache().getPartialFeature(id));
+		}
+		return partials;
+	}
+	
+	/**
 	 * Fetch all data related to this tile.
 	 * 
 	 * @param filter

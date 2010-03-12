@@ -110,9 +110,7 @@ public class FeaturePainter implements Painter {
 	}
 
 	public void deleteShape(Paintable paintable, GraphicsContext graphics) {
-		Feature feature = (Feature) paintable;
-		PaintableGroup selectionGroup = feature.getLayer().getSelectionGroup();
-		graphics.deleteElement(selectionGroup, feature.getId());
+		graphics.deleteGroup(paintable);
 	}
 
 	// -------------------------------------------------------------------------

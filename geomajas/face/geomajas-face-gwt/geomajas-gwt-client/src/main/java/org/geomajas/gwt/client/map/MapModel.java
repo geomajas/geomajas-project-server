@@ -47,6 +47,7 @@ import org.geomajas.gwt.client.map.event.MapModelEvent;
 import org.geomajas.gwt.client.map.event.MapModelHandler;
 import org.geomajas.gwt.client.map.event.MapViewChangedEvent;
 import org.geomajas.gwt.client.map.event.MapViewChangedHandler;
+import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.feature.FeatureEditor;
 import org.geomajas.gwt.client.map.feature.FeatureTransaction;
 import org.geomajas.gwt.client.map.layer.Layer;
@@ -367,8 +368,14 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 		if (ft != null) {
 			VectorLayer layer = ft.getLayer();
 			if (layer != null) {
+				// clear all the tiles TODO: limit this a bit more ?
 				layer.getFeatureStore().clear();
 			}
+			// now update/add the features
+			for (Feature feature : ft.getNewFeatures()) {
+				ft.getLayer().getFeatureStore().addFeature(feature);
+			}
+			// make it fetch the tiles
 			mapView.translate(0, 0);
 		}
 	}

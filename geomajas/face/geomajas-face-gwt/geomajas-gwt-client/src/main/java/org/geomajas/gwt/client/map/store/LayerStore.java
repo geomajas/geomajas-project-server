@@ -40,11 +40,11 @@ public interface LayerStore<T extends Tile> {
 	void clear();
 
 	/**
-	 * Has the <code>LayerStore</code> been cleared?
+	 * Is the <code>LayerStore</code> out of sync ?
 	 *
-	 * @return true if cleared
+	 * @return true if dirty
 	 */
-	boolean isClear();
+	boolean isDirty();
 
 	/** Return an array of all the <code>SpatialNode</code>s currently present in the cache. */
 	Collection<T> getTiles();
