@@ -14,18 +14,6 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-dojo-client</artifactId>
-			<version>${project.version}</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-dojo-example-client</artifactId>
-			<version>${project.version}</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-dojo-server</artifactId>
 			<version>${project.version}</version>
 		</dependency>
@@ -49,11 +37,13 @@
 								<module>
 									<groupId>org.geomajas</groupId>
 									<artifactId>geomajas-dojo-client</artifactId>
+									<version>${project.version}</version>
 									<requires>geomajas.geomajas</requires>
 								</module>
 								<module>
 									<groupId>org.geomajas</groupId>
 									<artifactId>geomajas-dojo-example-client</artifactId>
+									<version>${project.version}</version>
 									<requires>tutorial.tutorial</requires>
 								</module>
 							</modules>

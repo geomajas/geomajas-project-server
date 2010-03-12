@@ -41,7 +41,7 @@
 
         <dependency>
             <groupId>org.springframework</groupId>
-            <artifactId>spring-orm</artifactId>
+            <artifactId>spring-tx</artifactId>
         </dependency>
 
         <dependency>
@@ -49,17 +49,6 @@
             <artifactId>spring-test</artifactId>
             <scope>test</scope>
         </dependency>
-
-       	<dependency>
-      		<groupId>cglib</groupId>
-	      	<artifactId>cglib-nodep</artifactId>
-    	</dependency>
-
-		<dependency>
-			<groupId>javax.annotation</groupId>
-			<artifactId>jsr250-api</artifactId>
-		</dependency>
-    	
 
 		<dependency>
 			<groupId>org.geotools</groupId>

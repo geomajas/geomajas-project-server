@@ -36,37 +36,21 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
+			<artifactId>spring-tx</artifactId>
+		</dependency>		
+		<dependency>
+			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-
 		<dependency>
 			<groupId>cglib</groupId>
 			<artifactId>cglib-nodep</artifactId>
-			<version>2.2</version>
-		</dependency>
-
-		<dependency>
-			<groupId>javax.annotation</groupId>
-			<artifactId>jsr250-api</artifactId>
 		</dependency>
 
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>xml-apis</groupId>
-			<artifactId>xml-apis</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>javax.xml.bind</groupId>
-			<artifactId>jaxb-api</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.sun.xml.bind</groupId>
-			<artifactId>jaxb-impl</artifactId>
 		</dependency>
 
 		<dependency>
@@ -84,28 +68,6 @@
 		<dependency>
 			<groupId>org.geotools</groupId>
 			<artifactId>gt-epsg-wkt</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.geotools</groupId>
-			<artifactId>gt-postgis</artifactId>
-			<exclusions>
-				<exclusion>
-					<groupId>org.postgis</groupId>
-					<artifactId>postgis-driver</artifactId>
-				</exclusion>
-				<exclusion>
-					<groupId>postgresql</groupId>
-					<artifactId>postgresql</artifactId>
-				</exclusion>
-			</exclusions>
-		</dependency>
-		<dependency>
-			<groupId>org.geotools</groupId>
-			<artifactId>gt-shapefile</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.geotools</groupId>
-			<artifactId>gt-xml</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.geotools</groupId>
@@ -134,62 +96,13 @@
 		</dependency>
 
 		<dependency>
-			<groupId>xalan</groupId>
-			<artifactId>xalan</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>c3p0</groupId>
-			<artifactId>c3p0</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>commons-beanutils</groupId>
 			<artifactId>commons-beanutils</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>commons-lang</groupId>
-			<artifactId>commons-lang</artifactId>
-		</dependency>
 
-		<!-- @todo this dependency should be removed once CacheService is "fixed" -->
-		<dependency>
-			<groupId>javax.servlet</groupId>
-			<artifactId>servlet-api</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>xerces</groupId>
-			<artifactId>xercesImpl</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.metaparadigm</groupId>
-			<artifactId>json-rpc</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>javax.media</groupId>
-			<artifactId>jai_core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>javax.media</groupId>
-			<artifactId>jai_codec</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>javax.media</groupId>
-			<artifactId>jai_imageio</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.lowagie</groupId>
-			<artifactId>itext</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>com.thoughtworks.xstream</groupId>
-			<artifactId>xstream</artifactId>
 		</dependency>
 	</dependencies>
 

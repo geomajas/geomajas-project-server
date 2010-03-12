@@ -17,11 +17,8 @@
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-api-experimental</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-impl</artifactId>
+			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -29,15 +26,18 @@
 		</dependency>
 
 		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+		</dependency>
+
+		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
 		</dependency>
-        
 		<dependency>
 			<groupId>org.springframework</groupId>
-			<artifactId>spring-orm</artifactId>
+			<artifactId>spring-tx</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>

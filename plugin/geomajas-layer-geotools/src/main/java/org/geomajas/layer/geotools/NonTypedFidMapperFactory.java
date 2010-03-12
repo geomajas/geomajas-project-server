@@ -30,9 +30,10 @@ import java.sql.Connection;
 import java.util.logging.Level;
 
 /**
- * ???
+ * Improved fid mapper for gt-postgis.
  *
- * @author check subversion
+ * @author Jan De Moerloose
+ * @author Pieter De Graef
  */
 public class NonTypedFidMapperFactory extends DefaultFIDMapperFactory {
 
@@ -48,9 +49,9 @@ public class NonTypedFidMapperFactory extends DefaultFIDMapperFactory {
 	 * Get the appropriate FIDMapper for the specified table. Overridden to
 	 * return a non-typed mapper !!!!
 	 *
-	 * @param catalog
-	 * @param schema
-	 * @param tableName
+	 * @param catalog catalog
+	 * @param schema schema
+	 * @param tableName table name
 	 * @param connection the active database connection to get table key information
 	 *
 	 * @return the appropriate FIDMapper for the specified table.
@@ -60,7 +61,7 @@ public class NonTypedFidMapperFactory extends DefaultFIDMapperFactory {
 	public FIDMapper getMapper(String catalog, String schema, String tableName, Connection connection)
 			throws IOException {
 		ColumnInfo[] colInfos = getPkColumnInfo(catalog, schema, tableName, connection);
-		FIDMapper mapper = null;
+		FIDMapper mapper;
 
 		if (colInfos.length == 0) {
 			mapper = buildNoPKMapper(schema, tableName, connection);
@@ -68,7 +69,6 @@ public class NonTypedFidMapperFactory extends DefaultFIDMapperFactory {
 			mapper = buildMultiColumnFIDMapper(schema, tableName, connection, colInfos);
 		} else {
 			ColumnInfo ci = colInfos[0];
-
 			mapper = buildSingleColumnFidMapper(schema, tableName, connection, ci);
 		}
 

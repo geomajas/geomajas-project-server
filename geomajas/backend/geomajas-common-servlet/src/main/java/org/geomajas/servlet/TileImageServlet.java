@@ -23,10 +23,8 @@
 
 package org.geomajas.servlet;
 
-import org.geomajas.cache.CacheException;
 import org.geomajas.cache.CacheService;
 import org.geomajas.cache.TileCacheService;
-import org.geomajas.cache.store.RenderContent;
 import org.geomajas.configuration.TileCacheConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -100,7 +98,8 @@ public class TileImageServlet extends HttpServlet {
 		ApplicationContext applicationContext = ApplicationContextUtils.getApplicationContext(config);
 		cacheService = applicationContext.getBean("cache.CacheService", CacheService.class);
 
-		File baseDirectory;
+		File baseDirectory = null;
+		/*
 		try {
 			baseDirectory = cacheService.findCacheDirectory(config, basePath);
 		} catch (CacheException e1) {
@@ -111,6 +110,7 @@ public class TileImageServlet extends HttpServlet {
 				baseDirectory = null;
 			}
 		}
+		*/
 
 		TileCacheConfiguration tileCacheConfiguration =
 				applicationContext.getBean("configuration.TileCacheConfiguration", TileCacheConfiguration.class);
@@ -129,7 +129,8 @@ public class TileImageServlet extends HttpServlet {
 			IOException {
 		long start = System.currentTimeMillis();
 
-		RenderContent content;
+		/* @todo needs to be fixed when caching/rendering is handled properly
+		RenderContent content = null;
 		try {
 			content = service.get(cacheService.createRenderContent(cacheService.getTileParameters(request)));
 		} catch (CacheException e) {
@@ -152,6 +153,7 @@ public class TileImageServlet extends HttpServlet {
 			response.setContentType("text/html");
 			response.setStatus(500);
 		}
+		*/
 
 		long time = System.currentTimeMillis() - start;
 		COUNT++;

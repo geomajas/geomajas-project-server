@@ -24,9 +24,6 @@ package org.geomajas.cache;
 
 import org.geomajas.cache.store.RenderContent;
 
-import javax.servlet.ServletConfig;
-import javax.servlet.http.HttpServletRequest;
-import java.io.File;
 import java.util.Map;
 
 /**
@@ -68,7 +65,7 @@ public interface CacheService {
 	 * @return tile parameters map
 	 * @throws CacheException This exception is thrown if any parsing goes wrong.
 	 */
-	Map<String, Object> getTileParameters(HttpServletRequest request) throws CacheException;
+	//Map<String, Object> getTileParameters(HttpServletRequest request) throws CacheException;
 
 	/**
 	 * Create a unique ID given a set of parameters. This ID is used in the
@@ -104,14 +101,13 @@ public interface CacheService {
 	 * @return cache directory
 	 * @throws CacheException oops
 	 */
-	File findCacheDirectory(ServletConfig config, String basePath) throws CacheException;
+	//File findCacheDirectory(ServletConfig config, String basePath) throws CacheException;
 
 	/**
 	 * Create a render content for the cache.
 	 *
 	 * @param parameters parameters from the servlet request
-	 * @param userContext user context
-	 * @throws CacheException oops 
+	 * @throws CacheException oops
 	 */
 	RenderContent createRenderContent(Map<String, Object> parameters) throws CacheException;
 }

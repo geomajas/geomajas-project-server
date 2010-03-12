@@ -26,13 +26,8 @@ package org.geomajas.internal.cache;
 import org.geomajas.cache.CacheException;
 import org.geomajas.cache.CacheService;
 import org.geomajas.cache.store.RenderContent;
-import org.geomajas.global.ExceptionCode;
 import org.geomajas.internal.cache.store.DefaultRenderContent;
 
-import javax.servlet.ServletConfig;
-import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -54,7 +49,9 @@ public final class CacheServiceImpl implements CacheService {
 	 * @throws org.geomajas.cache.CacheException
 	 *             This exception is thrown if any parsing goes wrong.
 	 */
+	/* disabled to avoid dependency
 	public Map<String, Object> getTileParameters(HttpServletRequest request) throws CacheException {
+
 		try {
 			Map<String, Object> parameters = new HashMap<String, Object>();
 
@@ -103,6 +100,7 @@ public final class CacheServiceImpl implements CacheService {
 			throw new CacheException(e, ExceptionCode.CACHE_UNEXPECTED_FAILURE);
 		}
 	}
+	*/
 
 	/**
 	 * Create a unique ID given a set of parameters. This ID is used in the <code>RenderContent</code> and
@@ -138,6 +136,7 @@ public final class CacheServiceImpl implements CacheService {
 	 *            base path
 	 * @return cache directory
 	 */
+	/*
 	public File findCacheDirectory(ServletConfig config, String basePath) throws CacheException {
 		File file = new File(basePath);
 		if (!file.exists() || !file.isDirectory() || !file.canWrite()) {
@@ -151,6 +150,7 @@ public final class CacheServiceImpl implements CacheService {
 		}
 		return file;
 	}
+	*/
 
 	public RenderContent createRenderContent(Map<String, Object> parameters) throws CacheException {
 		return new DefaultRenderContent(parameters, this);

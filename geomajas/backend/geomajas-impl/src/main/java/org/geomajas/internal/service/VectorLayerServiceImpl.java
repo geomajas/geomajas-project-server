@@ -51,6 +51,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.vividsolutions.jts.geom.Envelope;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Implementation of {@link org.geomajas.service.VectorLayerService}, a service which allows accessing data from a
@@ -62,6 +63,7 @@ import com.vividsolutions.jts.geom.Envelope;
  * 
  * @author Joachim Van der Auwera
  */
+@Transactional(rollbackFor = { Exception.class })
 @Component
 public class VectorLayerServiceImpl implements VectorLayerService {
 

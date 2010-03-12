@@ -32,7 +32,6 @@ import org.geomajas.command.dto.RefreshConfigurationResponse;
 import org.geomajas.configuration.client.ClientApplicationInfo;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
-import org.geomajas.internal.service.CommandDispatcherImpl;
 import org.geomajas.spring.ReconfigurableApplicationContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,7 +51,7 @@ public class RefreshConfigurationCommand implements Command<RefreshConfiguration
 	@Autowired
 	private ApplicationContext context;
 
-	private final Logger log = LoggerFactory.getLogger(CommandDispatcherImpl.class);
+	private final Logger log = LoggerFactory.getLogger(RefreshConfigurationCommand.class);
 
 	public void execute(RefreshConfigurationRequest request, RefreshConfigurationResponse response) throws Exception {
 		if (context instanceof ReconfigurableApplicationContext) {
