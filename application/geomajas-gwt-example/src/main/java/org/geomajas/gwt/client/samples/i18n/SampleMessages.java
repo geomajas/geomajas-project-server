@@ -235,9 +235,18 @@ public interface SampleMessages extends Messages {
 	
 	String scaleSelectCustomDescription();
 
+	// Custom toolbartools sample
+	String customToolbarToolsTitle();
+	
+	String customToolbarToolsDescription();
+	
+	String customToolbarToolsTooltip();
+	
 	// Custom toolbar sample
 	
 	String customToolbarTitle();
 	
 	String customToolbarDescription();
+
+
 }
