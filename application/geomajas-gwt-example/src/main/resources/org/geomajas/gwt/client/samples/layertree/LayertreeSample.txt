@@ -1,0 +1,30 @@
+	public Canvas getViewPanel() {
+		// configure some layouts
+		HLayout mainLayout = new HLayout();
+		VLayout layertreeAndLegendLayout = new VLayout();
+		layertreeAndLegendLayout.setWidth("25%");
+		mainLayout.setWidth100();
+		mainLayout.setHeight100();
+
+		// build the map
+		final MapWidget map = new MapWidget("layerTreeMap", "gwt-samples");
+		map.setWidth("75%");
+		mainLayout.addMember(map);
+		// Set a panning controller on the map:
+		map.setController(new PanController(map));
+
+		// build the layertree
+		final LayerTree layerTree = new LayerTree(map);
+		layerTree.setHeight("50%");
+		layertreeAndLegendLayout.addMember(layerTree);
+
+		// build the legend
+		final Legend legend = new Legend(map.getMapModel());
+		legend.setHeight("50%");
+		layertreeAndLegendLayout.addMember(legend);
+
+		// add layertree and legend to layout
+		mainLayout.addMember(layertreeAndLegendLayout);
+
+		return mainLayout;
+	}

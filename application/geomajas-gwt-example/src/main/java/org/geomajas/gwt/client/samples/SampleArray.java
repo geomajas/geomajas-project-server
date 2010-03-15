@@ -28,6 +28,7 @@ import org.geomajas.gwt.client.samples.controller.ControllerOnElementSample;
 import org.geomajas.gwt.client.samples.controller.CustomControllerSample;
 import org.geomajas.gwt.client.samples.controller.RectangleControllerSample;
 import org.geomajas.gwt.client.samples.i18n.I18nProvider;
+import org.geomajas.gwt.client.samples.layertree.LayertreeSample;
 import org.geomajas.gwt.client.samples.mapwidget.CrsSample;
 import org.geomajas.gwt.client.samples.mapwidget.GeoSample;
 import org.geomajas.gwt.client.samples.mapwidget.MaxBoundsToggleSample;
@@ -136,16 +137,22 @@ public final class SampleArray {
 						ScaleSelectDefaultSample.FACTORY),
 
 				new SampleTreeNode(I18nProvider.getSampleMessages().scaleSelectCustomTitle(),
-						"[ISOMORPHIC]/geomajas/tools.png", ScaleSelectCustomSample.TITLE,
-						"ToolbarAndControllers", ScaleSelectCustomSample.FACTORY),
+						"[ISOMORPHIC]/geomajas/tools.png", ScaleSelectCustomSample.TITLE, "ToolbarAndControllers",
+						ScaleSelectCustomSample.FACTORY),
 
 				new SampleTreeNode(I18nProvider.getSampleMessages().customToolbarToolsTitle(),
-						"[ISOMORPHIC]/geomajas/tools.png", CustomToolbarToolsSample.TITLE,
-						"ToolbarAndControllers", CustomToolbarToolsSample.FACTORY),
-						
+						"[ISOMORPHIC]/geomajas/tools.png", CustomToolbarToolsSample.TITLE, "ToolbarAndControllers",
+						CustomToolbarToolsSample.FACTORY),
+
 				new SampleTreeNode(I18nProvider.getSampleMessages().customToolbarTitle(),
 						"[ISOMORPHIC]/geomajas/tools.png", CustomToolbarSample.TITLE, "ToolbarAndControllers",
 						CustomToolbarSample.FACTORY),
+
+				// LayerTree & Legend samples:
+				new SampleTreeNode(I18nProvider.getSampleMessages().treeGroupLayerTree(),
+						"[ISOMORPHIC]/geomajas/layer.png", "Layertree", "topLevel"),
+				new SampleTreeNode(I18nProvider.getSampleMessages().layertreeTitle(),
+						"[ISOMORPHIC]/geomajas/layer.png", LayertreeSample.TITLE, "Layertree", LayertreeSample.FACTORY),
 
 				// Security samples:
 				new SampleTreeNode(I18nProvider.getSampleMessages().treeGroupSecurity(),

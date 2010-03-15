@@ -28,6 +28,7 @@
 			org/geomajas/gwt/samples/shapeinmem/mapDuisburg.xml
 			org/geomajas/gwt/samples/shapeinmem/layerRoads.xml
 			org/geomajas/gwt/samples/shapeinmem/layerStructures.xml
+			org/geomajas/gwt/samples/layertree/mapLayerTree.xml
         </param-value>
     </context-param>
 

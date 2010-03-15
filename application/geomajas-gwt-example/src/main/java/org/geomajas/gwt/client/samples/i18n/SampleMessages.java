@@ -263,4 +263,12 @@ public interface SampleMessages extends Messages {
 
 	String customToolbarDescription();
 
+	// Layer tree	
+	String treeGroupLayerTree();
+
+	// Layer tree sample
+	
+	String layertreeTitle();
+	
+	String layertreeDescription();
 }
