@@ -27,12 +27,12 @@ import com.metaparadigm.jsonrpc.MarshallException;
 import com.metaparadigm.jsonrpc.ObjectMatch;
 import com.metaparadigm.jsonrpc.SerializerState;
 import com.metaparadigm.jsonrpc.UnmarshallException;
-import org.geomajas.common.parser.ColorAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.util.StringTokenizer;
 
 /**
  * Serializes java.awt.Color to JSON and back.
@@ -49,8 +49,6 @@ public class ColorSerializer extends AbstractSerializer {
 
 	private static Class[] JSON_CLASSES = new Class[] {String.class};
 
-	private ColorAdapter adapter = new ColorAdapter();
-
 	public Class[] getSerializableClasses() {
 		return SERIALIZABLE_CLASSES;
 	}
@@ -62,7 +60,7 @@ public class ColorSerializer extends AbstractSerializer {
 	public ObjectMatch tryUnmarshall(SerializerState state, Class clazz, Object jso)
 			throws UnmarshallException {
 		try {
-			adapter.unmarshal((String) jso);
+			unmarshal((String) jso);
 		} catch (Exception e) {
 			throw new UnmarshallException("cannot convert object " + jso + " to type " + clazz.getName());
 		}
@@ -71,7 +69,7 @@ public class ColorSerializer extends AbstractSerializer {
 
 	public Object unmarshall(SerializerState state, Class clazz, Object jso) throws UnmarshallException {
 		try {
-			return adapter.unmarshal((String) jso);
+			return unmarshal((String) jso);
 		} catch (Exception e) {
 			log.error("cannot convert object " + jso + " to type " + clazz.getName(), e);
 			throw new UnmarshallException("cannot convert object " + jso + " to type " + clazz.getName());
@@ -80,8 +78,34 @@ public class ColorSerializer extends AbstractSerializer {
 
 	public Object marshall(SerializerState state, Object o) throws MarshallException {
 		if (o instanceof Font) {
-			return adapter.marshal((Color) o);
+			return marshal((Color) o);
 		}
 		return null;
 	}
+
+	private Color unmarshal(String s) {
+		StringTokenizer st = new StringTokenizer(s, "rgba,=");
+		int r = 255;
+		int g = 255;
+		int b = 255;
+		int a = 255;
+		if (st.hasMoreTokens()) {
+			r = Integer.parseInt(st.nextToken());
+		}
+		if (st.hasMoreTokens()) {
+			g = Integer.parseInt(st.nextToken());
+		}
+		if (st.hasMoreTokens()) {
+			b = Integer.parseInt(st.nextToken());
+		}
+		if (st.hasMoreTokens()) {
+			a = Integer.parseInt(st.nextToken());
+		}
+		return new Color(r, g, b, a);
+	}
+
+	private String marshal(Color c) {
+		return "r=" + c.getRed() + ",g=" + c.getGreen() + ",b=" + c.getBlue() + ",a=" + c.getAlpha();
+	}
+
 }

@@ -20,47 +20,42 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.geomajas.common.parser;
+package org.geomajas.extension.printing.parser;
 
 import javax.xml.bind.annotation.adapters.XmlAdapter;
-import java.awt.Font;
+import java.awt.Color;
 import java.util.StringTokenizer;
 
 /**
- * ???
+ * Adapter for marshalling and unmarshalling colours.
  *
- * @author check subversion
+ * @author Jan De Moerloose
  */
-public class FontAdapter extends XmlAdapter<String, Font> {
+public class ColorAdapter extends XmlAdapter<String, Color> {
 
-	public Font unmarshal(String s) {
-		StringTokenizer st = new StringTokenizer(s, ",");
-		if (st.countTokens() < 2) {
-			throw new IllegalArgumentException("Not enough tokens (<3) in font " + s);
+	public Color unmarshal(String s) {
+		StringTokenizer st = new StringTokenizer(s, "rgba,=");
+		int r = 255;
+		int g = 255;
+		int b = 255;
+		int a = 255;
+		if (st.hasMoreTokens()) {
+			r = Integer.parseInt(st.nextToken());
 		}
-		int count = st.countTokens();
-
-		String name = st.nextToken();
-		int styleIndex = Font.PLAIN;
-		if (count > 2) {
-			String style = st.nextToken();
-			if (style.equalsIgnoreCase("bold")) {
-				styleIndex = Font.BOLD;
-			} else if (style.equalsIgnoreCase("italic")) {
-				styleIndex = Font.ITALIC;
-			}
+		if (st.hasMoreTokens()) {
+			g = Integer.parseInt(st.nextToken());
 		}
-		int size = Integer.parseInt(st.nextToken());
-		return new Font(name, styleIndex, size);
+		if (st.hasMoreTokens()) {
+			b = Integer.parseInt(st.nextToken());
+		}
+		if (st.hasMoreTokens()) {
+			a = Integer.parseInt(st.nextToken());
+		}
+		return new Color(r, g, b, a);
 	}
 
-	public String marshal(Font font) {
-		String style = null;
-		if (font.getStyle() == Font.BOLD) {
-			style = "bold";
-		} else if (font.getStyle() == Font.ITALIC) {
-			style = "italic";
-		}
-		return font.getName() + (style == null ? "" : "," + style) + "," + font.getSize();
+	public String marshal(Color c) {
+		return "r=" + c.getRed() + ",g=" + c.getGreen() + ",b=" + c.getBlue() + ",a=" + c.getAlpha();
 	}
+
 }

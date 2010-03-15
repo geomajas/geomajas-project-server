@@ -20,7 +20,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.geomajas.common.parser;
+package org.geomajas.extension.printing.parser;
 
 import com.lowagie.text.Rectangle;
 
@@ -28,9 +28,9 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 import java.util.StringTokenizer;
 
 /**
- * ???
+ * Adapter for converting an iText Rectangle to XML and back.
  *
- * @author check subversion
+ * @author Jan De Moerloose
  */
 public class RectangleAdapter extends XmlAdapter<String, Rectangle> {
 

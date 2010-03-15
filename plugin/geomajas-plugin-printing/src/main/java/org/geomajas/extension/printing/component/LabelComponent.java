@@ -23,8 +23,8 @@
 package org.geomajas.extension.printing.component;
 
 import com.lowagie.text.Rectangle;
-import org.geomajas.common.parser.ColorAdapter;
-import org.geomajas.common.parser.FontAdapter;
+import org.geomajas.extension.printing.parser.ColorAdapter;
+import org.geomajas.extension.printing.parser.FontAdapter;
 import org.geomajas.extension.printing.PdfContext;
 
 import javax.xml.bind.Unmarshaller;

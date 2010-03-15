@@ -23,7 +23,7 @@
 package org.geomajas.extension.printing.component;
 
 import com.lowagie.text.Rectangle;
-import org.geomajas.common.parser.RectangleAdapter;
+import org.geomajas.extension.printing.parser.RectangleAdapter;
 import org.geomajas.extension.printing.PdfContext;
 import org.geomajas.global.Json;
 
