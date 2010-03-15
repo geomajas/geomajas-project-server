@@ -38,6 +38,7 @@
 									<artifactId>geomajas-dojo-client</artifactId>
 									<version>${project.version}</version>
 									<requires>geomajas.geomajas</requires>
+									<type>jar</type>
 								</module>
 							</modules>
 						</configuration>

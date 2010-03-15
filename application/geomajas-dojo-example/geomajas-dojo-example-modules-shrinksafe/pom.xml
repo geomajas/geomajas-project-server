@@ -39,12 +39,14 @@
 									<artifactId>geomajas-dojo-client</artifactId>
 									<version>${project.version}</version>
 									<requires>geomajas.geomajas</requires>
+									<type>jar</type>
 								</module>
 								<module>
 									<groupId>org.geomajas</groupId>
 									<artifactId>geomajas-dojo-example-client</artifactId>
 									<version>${project.version}</version>
 									<requires>tutorial.tutorial</requires>
+									<type>jar</type>
 								</module>
 							</modules>
 						</configuration>
