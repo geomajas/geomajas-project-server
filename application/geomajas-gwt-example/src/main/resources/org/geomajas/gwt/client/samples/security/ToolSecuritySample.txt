@@ -11,12 +11,6 @@
 		// Map with ID wmsToolbarMap is defined in the XML configuration. (mapWmsToolbar.xml)
 		map = new MapWidget("wmsToolbarMap", "gwt-samples");
 		toolbar = new Toolbar(map);
-		map.addDrawHandler(new DrawHandler() {
-
-			public void onDraw(DrawEvent event) {
-				map.initialize();
-			}
-		});
 
 		// Create login handler that re-initializes the map on a successful login:
 		final BooleanCallback initMapCallback = new BooleanCallback() {
@@ -29,7 +23,6 @@
 					toolbar = new Toolbar(map);
 					layout.addMember(toolbar);
 					layout.addMember(map);
-					map.initialize();
 				}
 			}
 		};

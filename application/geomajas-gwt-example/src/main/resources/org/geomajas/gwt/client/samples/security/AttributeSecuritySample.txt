@@ -13,7 +13,6 @@
 		map = new MapWidget("beansMap", "gwt-samples");
 		map.setVisible(false);
 		layout.addMember(map);
-		map.initialize();
 
 		// Create login handler that re-initializes the map on a successful login:
 		final BooleanCallback initMapCallback = new BooleanCallback() {
@@ -24,7 +23,6 @@
 					map = new MapWidget("beansMap", "gwt-samples");
 					map.setVisible(false);
 					layout.addMember(map);
-					map.initialize();
 				}
 			}
 		};
@@ -69,7 +67,7 @@
 		editFeatureButton.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				layer = (VectorLayer) map.getMapModel().getLayerByLayerId("beans");
+				layer = (VectorLayer) map.getMapModel().getLayer("beans");
 				GwtCommandDispatcher.getInstance().execute(command, new CommandCallback() {
 
 					public void execute(CommandResponse response) {

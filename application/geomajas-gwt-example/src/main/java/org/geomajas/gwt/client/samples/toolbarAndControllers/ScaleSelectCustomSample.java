@@ -91,7 +91,7 @@ public class ScaleSelectCustomSample extends SamplePanel {
 	}
 
 	public String getSourceFileName() {
-		return "classpath:org/geomajas/gwt/client/samples/controller/ScaleSelectCustomSample.txt";
+		return "classpath:org/geomajas/gwt/client/samples/toolbarAndControllers/ScaleSelectCustomSample.txt";
 	}
 
 	public String[] getConfigurationFiles() {

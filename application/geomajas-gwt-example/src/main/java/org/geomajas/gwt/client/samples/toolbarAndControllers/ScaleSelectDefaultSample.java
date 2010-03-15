@@ -89,7 +89,7 @@ public class ScaleSelectDefaultSample extends SamplePanel {
 	}
 
 	public String getSourceFileName() {
-		return "classpath:org/geomajas/gwt/client/samples/controller/ScaleSelectDefaultSample.txt";
+		return "classpath:org/geomajas/gwt/client/samples/toolbarAndControllers/ScaleSelectDefaultSample.txt";
 	}
 
 	public String[] getConfigurationFiles() {

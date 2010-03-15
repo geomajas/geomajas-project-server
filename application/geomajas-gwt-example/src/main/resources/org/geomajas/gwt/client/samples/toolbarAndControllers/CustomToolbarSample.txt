@@ -5,19 +5,11 @@
 
 		final MapWidget map = new MapWidget("osmMap", "gwt-samples");
 
-		// Set a panning controller on the map:
-		map.setController(new PanController(map));
-
 		final Toolbar toolbar = new Toolbar(map);
-		//add a button in GWT code
+		toolbar.setButtonSize(Toolbar.BUTTON_SIZE_BIG);
+
+		// add a button in GWT code
 		toolbar.addModalButton(new ZoomToRectangleModalAction(map));
-
-		map.addDrawHandler(new DrawHandler() {
-
-			public void onDraw(DrawEvent event) {
-				map.initialize();
-			}
-		});
 
 		layout.addMember(toolbar);
 		layout.addMember(map);

@@ -5,12 +5,6 @@
 
 		// Map with ID geoMap is defined in the XML configuration. (mapGeo.xml) 
 		final MapWidget map = new MapWidget("geotoolsMap", "gwt-samples");
-		map.addDrawHandler(new DrawHandler() {
-
-			public void onDraw(DrawEvent event) {
-				map.initialize();
-			}
-		});
 
 		// Set a panning controller on the map:
 		map.setController(new PanController(map));
