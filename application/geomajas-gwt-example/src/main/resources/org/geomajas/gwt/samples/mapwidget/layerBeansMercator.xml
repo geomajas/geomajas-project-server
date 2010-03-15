@@ -47,9 +47,9 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		</property>
 	</bean>
 
-	<bean name="beansLonLatInfo" class="org.geomajas.configuration.VectorLayerInfo">
+	<bean name="beansMercatorInfo" class="org.geomajas.configuration.VectorLayerInfo">
 		<property name="layerType" value="MULTIPOLYGON" />
-		<property name="crs" value="EPSG:4326" />
+		<property name="crs" value="EPSG:900913" />
 		<property name="maxExtent">
 			<bean class="org.geomajas.geometry.Bbox">
 				<property name="x" value="-179.9" />
@@ -61,19 +61,19 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		<property name="featureInfo" ref="beansFeatureInfo" />
 		<property name="namedStyleInfos">
 			<list>
-				<ref bean="beansLonLatStyleInfo" />
+				<ref bean="beansMercatorStyleInfo" />
 			</list>
 		</property>
 	</bean>
 
-	<bean class="org.geomajas.configuration.NamedStyleInfo" id="beansLonLatStyleInfo">
+	<bean class="org.geomajas.configuration.NamedStyleInfo" id="beansMercatorStyleInfo">
 		<property name="featureStyles">
 			<list>
 				<bean class="org.geomajas.configuration.FeatureStyleInfo">
 					<property name="name" value="default" />
-					<property name="fillColor" value="#00FF00" />
+					<property name="fillColor" value="#FF0000" />
 					<property name="fillOpacity" value=".6" />
-					<property name="strokeColor" value="#00FF00" />
+					<property name="strokeColor" value="#FF0000" />
 					<property name="strokeOpacity" value=".3" />
 					<property name="strokeWidth" value="1" />
 				</bean>
@@ -102,47 +102,51 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 	</bean>
 
 
-	<bean name="beansLonLat" class="org.geomajas.layer.bean.BeanLayer">
-		<property name="layerInfo" ref="beansLonLatInfo" />
+	<bean name="beansMercator" class="org.geomajas.layer.bean.BeanLayer">
+		<property name="layerInfo" ref="beansMercatorInfo" />
 		<property name="features">
 			<list>
-				<bean class="org.geomajas.layer.bean.FeatureBean">
-					<property name="id" value="1" />
-					<property name="booleanAttr" value="true" />
-					<property name="currencyAttr" value="100,23" />
-					<property name="dateAttr" value="2010-02-23" />
-					<property name="doubleAttr" value="123.456" />
-					<property name="floatAttr" value="456.789" />
-					<property name="imageUrlAttr" value="http://www.geomajas.org/image1" />
-					<property name="integerAttr" value="789" />
-					<property name="longAttr" value="123456789" />
-					<property name="shortAttr" value="123" />
-					<property name="stringAttr" value="USA" />
-					<property name="urlAttr" value="http://www.geomajas.org/url1" />
-					<property name="geometry"
-						value="MULTIPOLYGON(((-124 24,-124 49,-62 49,-62 24,-124 24)))" />
-				</bean>
+				<!-- coordinates converted from lon lat using http://home.hiwaay.net/~taylorc/toolbox/geography/geoutm.html -->
 				<bean class="org.geomajas.layer.bean.FeatureBean">
 					<property name="id" value="10" />
-					<property name="geometry" value="MULTIPOLYGON(((0 0, 0 20, 20 20, 20 0, 0 0)))" />
+					<!--<property name="geometry" value="MULTIPOLYGON(((0 0,
+					                                                0 20,
+					                                                20 20,
+					                                                20 0,
+					                                                0 0)))" />-->
+					<property name="geometry" value="MULTIPOLYGON(((166021.44309606554 0,
+					                                                186073.67956703535 2214294.0261653117,
+					                                                395390.67616779124 2211793.55600484,
+					                                                388719.3491086509 0,
+					                                                166021.44309606554 0)))" />
 				</bean>
 				<bean class="org.geomajas.layer.bean.FeatureBean">
 					<property name="id" value="11" />
-					<property name="geometry" value="MULTIPOLYGON(((31 11,
-						                                            39 11,
-						                                            39 39,
-						                                            31 39,
-						                                            31 11)))" />
+					<!--<property name="geometry" value="MULTIPOLYGON(((30 10,
+						                                            40 10,
+						                                            40 40,
+						                                            30 40,
+						                                            30 10)))" />-->
+					<property name="geometry" value="MULTIPOLYGON(((171071.2639519578 1106908.8541585722,
+						                                            609600.7725145431 1105578.5891084543,
+						                                            585360.4618441382 4428236.064366762,
+						                                            243900.3520219237 4432069.056632294,
+						                                            171071.2639519578 1106908.8541585722)))" />
 				</bean>
 				<bean class="org.geomajas.layer.bean.FeatureBean">
 					<property name="id" value="12" />
-					<property name="geometry" value="MULTIPOLYGON(((-15 30,
-						                                            20 30,
-						                                            20 40,
-						                                            -15 40,
-						                                            -15 30)))" />
+					<!--<property name="geometry" value="MULTIPOLYGON(((-14 31,
+						                                            19 31,
+						                                            19 39,
+						                                            -14 39,
+						                                            -14 31)))" />-->
+					<property name="geometry" value="MULTIPOLYGON(((595468.3536669689 3430031.04850218,
+						                                            309049.5360168804 3431318.843293236,
+						                                            326809.0996820293 4318679.291975872,
+						                                            586592.6780286559 4317252.16436678,
+						                                            595468.3536669689 3430031.04850218)))" />
 				</bean>
-
+				
 			</list>
 		</property>
 	</bean>

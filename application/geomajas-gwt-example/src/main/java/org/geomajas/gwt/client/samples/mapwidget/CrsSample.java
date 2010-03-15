@@ -55,7 +55,7 @@ public class CrsSample extends SamplePanel {
 		layout.setWidth100();
 		layout.setHeight100();
 
-		// Map with ID osmMap is defined in the XML configuration. (mapOsm.xml)
+		// Map with ID crsMap is defined in the XML configuration. (mapOsm.xml)
 		final MapWidget map = new MapWidget("crsMap", "gwt-samples");
 
 		// Set a panning controller on the map:
@@ -74,8 +74,9 @@ public class CrsSample extends SamplePanel {
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "classpath:org/geomajas/gwt/samples/mapwidget/layerOsm.xml",
-				"classpath:org/geomajas/gwt/samples/mapwidget/mapOsm.xml" };
+		return new String[] { "classpath:org/geomajas/gwt/samples/mapwidget/mapCrs.xml",
+				"classpath:org/geomajas/gwt/samples/mapwidget/layerOsm.xml",
+				"classpath:org/geomajas/gwt/samples/mapwidget/layerBeans.xml" };
 	}
 
 	public String ensureUserLoggedIn() {

@@ -13,6 +13,7 @@
 			org/geomajas/gwt/samples/mapwidget/layerWmsBluemarble.xml
 			org/geomajas/gwt/samples/mapwidget/layerBeans.xml
 			org/geomajas/gwt/samples/mapwidget/layerBeansLonLat.xml
+			org/geomajas/gwt/samples/mapwidget/layerBeansMercator.xml
 			org/geomajas/gwt/samples/mapwidget/mapBeans.xml
 			org/geomajas/gwt/samples/mapwidget/mapCrs.xml
 			org/geomajas/gwt/samples/mapwidget/geoToolsLayer.xml

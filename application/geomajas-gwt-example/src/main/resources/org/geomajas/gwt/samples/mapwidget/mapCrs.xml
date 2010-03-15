@@ -43,35 +43,35 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 			<bean class="org.geomajas.configuration.FeatureStyleInfo">
 			</bean>
 		</property>
-		<property name="crs" value="EPSG:900913" />
+		<property name="crs" value="EPSG:4326" />
 		<property name="scaleBarEnabled" value="true" />
 		<property name="panButtonsEnabled" value="true" />
 		<property name="maximumScale" value="9.5" />
 		<property name="initialBounds">
 			<bean class="org.geomajas.geometry.Bbox">
-				<property name="x" value="-20026376.393709917" />
-				<property name="y" value="-20026376.393709917" />
-				<property name="width" value="40052752.787419834" />
-				<property name="height" value="40052752.787419834" />
+				<property name="x" value="-25" />
+				<property name="y" value="-10" />
+				<property name="width" value="75" />
+				<property name="height" value="60" />
 			</bean>
 		</property>
 		<property name="layers">
 			<list>
-				<bean class="org.geomajas.configuration.client.ClientRasterLayerInfo" id="osmLayer">
-					<property name="serverLayerId" value="osm" />
-					<property name="label" value="OpenStreetMap (raster)" />
-					<property name="visible" value="true" />
-					<property name="viewScaleMin" value="0" />
-					<property name="viewScaleMax" value="100000" />
-					<property name="style" value="1" />
-				</bean>
-				<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="beansLayer">
+				<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="beansLonLatLayer">
 					<property name="serverLayerId" value="beansLonLat" />
-					<property name="label" value="Beans lonlat" />
+					<property name="label" value="Beans Lon Lat" />
 					<property name="visible" value="true" />
 					<property name="viewScaleMin" value="0" />
 					<property name="viewScaleMax" value="100000" />
-					<property name="namedStyleInfo" ref="beansStyleInfo" />
+					<property name="namedStyleInfo" ref="beansLonLatStyleInfo" />
+				</bean>
+				<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="beansMercatorLayer">
+					<property name="serverLayerId" value="beansMercator" />
+					<property name="label" value="Beans Mercator" />
+					<property name="visible" value="true" />
+					<property name="viewScaleMin" value="0" />
+					<property name="viewScaleMax" value="100000" />
+					<property name="namedStyleInfo" ref="beansMercatorStyleInfo" />
 				</bean>
 			</list>
 		</property>

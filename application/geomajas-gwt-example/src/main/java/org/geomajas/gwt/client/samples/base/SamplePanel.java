@@ -31,7 +31,6 @@ import org.geomajas.gwt.client.command.CommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.samples.i18n.I18nProvider;
-import org.geomajas.gwt.client.widget.MapWidget;
 
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.ContentsType;
@@ -58,12 +57,6 @@ import com.smartgwt.client.widgets.tab.TabSet;
  */
 public abstract class SamplePanel extends VLayout {
 
-	private MapWidget map;
-
-	private IButton sourceButton;
-
-	private Window sourceWindow;
-
 	// -------------------------------------------------------------------------
 	// Constructors:
 	// -------------------------------------------------------------------------
@@ -71,13 +64,6 @@ public abstract class SamplePanel extends VLayout {
 	/**
 	 * Constructor for the base sample panel. All extensions should have a public default constructor that uses this
 	 * constructor.
-	 * 
-	 * @param id
-	 *            The panel's identifier (used for the tabs)
-	 * @param title
-	 *            The sample's title (used in the tree and the tab-title)
-	 * @param icon
-	 *            The sample's icon (used in the tree and the tab-title)
 	 */
 	protected SamplePanel() {
 		setWidth100();
@@ -94,7 +80,7 @@ public abstract class SamplePanel extends VLayout {
 			VLayout rightLayout = new VLayout();
 			rightLayout.setMembersMargin(15);
 
-			sourceButton = new IButton(I18nProvider.getSampleMessages().generalSourceButton());
+			IButton sourceButton = new IButton(I18nProvider.getSampleMessages().generalSourceButton());
 			sourceButton.setIcon("[ISOMORPHIC]/geomajas/example/images/script_go.png");
 			sourceButton.setLayoutAlign(Alignment.RIGHT);
 			sourceButton.setShowDisabledIcon(false);
@@ -137,6 +123,8 @@ public abstract class SamplePanel extends VLayout {
 
 	/**
 	 * Implement this! It is the actual sample panel...
+	 *
+	 * @return the {@link Canvas} which contains the example
 	 */
 	public abstract Canvas getViewPanel();
 
@@ -146,19 +134,12 @@ public abstract class SamplePanel extends VLayout {
 	
 	public abstract String[] getConfigurationFiles();
 	
-	/** If a user must be logged in before the sample can be shown, return his name here. */
-	public abstract String ensureUserLoggedIn();
-
 	/**
-	 * For automatic initialization, you can register a single map here.
-	 * 
-	 * @param map
+	 * If a user must be logged in before the sample can be shown, return his name here.
+	 *
+	 * @return user which needs to be logged in
 	 */
-	public void registerMap(MapWidget map) {
-		if (map != null) {
-			this.map = map;
-		}
-	}
+	public abstract String ensureUserLoggedIn();
 
 	public String getId() {
 		return id;
@@ -197,7 +178,7 @@ public abstract class SamplePanel extends VLayout {
 	}
 
 	private void showFiles(Map<String, String> fileContents) {
-		sourceWindow = new Window();
+		Window sourceWindow = new Window();
 		sourceWindow.setTitle(I18nProvider.getSampleMessages().generalSourceTitle());
 		sourceWindow.setHeaderIcon("[ISOMORPHIC]/geomajas/example/images/geomajas_favicon.jpg", 16, 16);
 		sourceWindow.setKeepInParentRect(true);
