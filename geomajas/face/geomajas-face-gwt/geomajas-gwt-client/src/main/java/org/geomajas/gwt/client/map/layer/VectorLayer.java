@@ -141,7 +141,6 @@ public class VectorLayer extends AbstractLayer<ClientVectorLayerInfo> implements
 	 * 
 	 * @param featureId
 	 *            feature id to test
-	 * @param id feature id
 	 * @return true when the feature with given ide is selected
 	 */
 	public boolean isFeatureSelected(String featureId) {
@@ -157,10 +156,15 @@ public class VectorLayer extends AbstractLayer<ClientVectorLayerInfo> implements
 	 */
 	public boolean selectFeature(Feature feature) {
 		if (!selectedFeatures.containsKey(feature.getId())) {
-			// make sure we get the layer's instance !
-			feature = getFeatureStore().getPartialFeature(feature.getId());
-			selectedFeatures.put(feature.getId(), feature);
-			handlerManager.fireEvent(new FeatureSelectedEvent(feature));
+			// make sure we get the layer's instance (if we can find it) !
+			Feature layerFeature = getFeatureStore().getPartialFeature(feature.getId());
+			if (null != layerFeature) {
+				selectedFeatures.put(layerFeature.getId(), layerFeature);
+				handlerManager.fireEvent(new FeatureSelectedEvent(layerFeature));
+			} else {
+				selectedFeatures.put(feature.getId(), feature);
+				handlerManager.fireEvent(new FeatureSelectedEvent(feature));
+			}
 			return true;
 		} else {
 			return false;
@@ -188,7 +192,7 @@ public class VectorLayer extends AbstractLayer<ClientVectorLayerInfo> implements
 	public void clearSelectedFeatures() {
 		List<Feature> clone = new LinkedList<Feature>(selectedFeatures.values());
 		for (Feature feature : clone) {
-			selectedFeatures.remove(feature);
+			selectedFeatures.remove(feature.getId());
 			handlerManager.fireEvent(new FeatureDeselectedEvent(feature));
 		}
 	}
