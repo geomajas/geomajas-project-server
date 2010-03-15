@@ -42,6 +42,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 				<ref bean="osmMeasureMap" />
 				<ref bean="osmFeatureInfoMap" />
 				<ref bean="overviewOsmMap" />
+				<ref bean="osmMapResolutions" />
 			</list>
 		</property>
 	</bean>

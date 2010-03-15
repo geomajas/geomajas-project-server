@@ -24,6 +24,7 @@
 			org/geomajas/gwt/samples/toolbarAndControllers/mapDuisburgSelection.xml			
 			org/geomajas/gwt/samples/toolbarAndControllers/mapOsmMeasure.xml
 			org/geomajas/gwt/samples/toolbarAndControllers/mapOsmFeatureInfo.xml
+			org/geomajas/gwt/samples/toolbarAndControllers/mapOsmResolutions.xml
 			org/geomajas/gwt/samples/shapeinmem/mapDuisburg.xml
 			org/geomajas/gwt/samples/shapeinmem/layerRoads.xml
 			org/geomajas/gwt/samples/shapeinmem/layerStructures.xml

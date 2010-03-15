@@ -62,7 +62,7 @@ public class ScaleSelectDefaultSample extends SamplePanel {
 		layout.setWidth100();
 		layout.setHeight100();
 
-		final MapWidget map = new MapWidget("osmMap", "gwt-samples");
+		final MapWidget map = new MapWidget("osmMapResolutions", "gwt-samples");
 
 		// Set a panning controller on the map:
 		map.setController(new PanController(map));
@@ -94,7 +94,7 @@ public class ScaleSelectDefaultSample extends SamplePanel {
 
 	public String[] getConfigurationFiles() {
 		return new String[] { "classpath:org/geomajas/gwt/samples/mapwidget/layerOsm.xml",
-				"classpath:org/geomajas/gwt/samples/mapwidget/mapOsm.xml" };
+				"classpath:org/geomajas/gwt/samples/mapwidget/mapOsmResolutions.xml" };
 	}
 
 	public String ensureUserLoggedIn() {
