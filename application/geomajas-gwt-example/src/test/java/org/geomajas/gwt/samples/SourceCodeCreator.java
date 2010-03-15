@@ -79,6 +79,8 @@ public class SourceCodeCreator {
 				// Create or overwrite the HTML file:
 				String fileName = file.getName().substring(0, file.getName().length() - 4) + "txt";
 				File htmlFile = new File(folder + fileName);
+				File folderFile = new File(folder);
+				folderFile .mkdir();
 				FileOutputStream out = new FileOutputStream(htmlFile);
 				out.write(blop.getBytes());
 				out.flush();
