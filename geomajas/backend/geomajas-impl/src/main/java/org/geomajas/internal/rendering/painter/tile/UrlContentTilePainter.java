@@ -34,7 +34,7 @@ import org.geomajas.rendering.painter.tile.TilePainter;
  * <p>
  * TilePainter implementation for painting raster tiles. This painter is actually very simple. It will simply create a
  * URL where the actual image can be found. To do this, it uses the {@link RasterUrlBuilder} contained within the tile.
- * One condition for this to work is that the <code>RenderedTile</code> is an instance of {@link InternalRasterTile},
+ * One condition for this to work is that the <code>RenderedTile</code> is an instance of {@link InternalTile},
  * and that this raster tile's {@link RasterUrlBuilder} is not null!
  * </p>
  * 
@@ -76,8 +76,8 @@ public class UrlContentTilePainter implements TilePainter {
 	 * Painter the tile, by building a URL where the image can be found.
 	 * 
 	 * @param tile
-	 *            Must be an instance of {@link InternalRasterTile}, and must have a non-null {@link RasterUrlBuilder}.
-	 * @return Returns a {@link InternalRasterTile}.
+	 *            Must be an instance of {@link InternalTile}, and must have a non-null {@link RasterUrlBuilder}.
+	 * @return Returns a {@link InternalTile}.
 	 */
 	public InternalTile paint(InternalTile tile) throws RenderException {
 		if (tile.getContentType().equals(VectorTileContentType.URL_CONTENT)) {

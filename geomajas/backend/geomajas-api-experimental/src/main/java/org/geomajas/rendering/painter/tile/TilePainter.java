@@ -49,9 +49,9 @@ public interface TilePainter {
 	 * This function will take a tile, and render it. In the tile, there should already be rendered features which can
 	 * be used in actually creating the rendering output format.
 	 *
-	 * @param tile
-	 * @return
-	 * @throws RenderException
+	 * @param tile tile which needs to be painter
+	 * @return the tile which needs to be painted (same as parameter)
+	 * @throws RenderException painting failed
 	 */
 	InternalTile paint(InternalTile tile) throws RenderException;
 
