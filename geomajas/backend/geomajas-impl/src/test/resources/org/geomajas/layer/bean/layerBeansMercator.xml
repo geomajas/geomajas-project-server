@@ -47,7 +47,24 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		</property>
 	</bean>
 
-	<bean name="beansMercatorInfo" class="org.geomajas.configuration.VectorLayerInfo">
+	<bean class="org.geomajas.configuration.FeatureInfo" name="beansFeatureInfo">
+		<property name="dataSourceName" value="org.geomajas.layer.bean.FeatureBean" />
+		<property name="identifier">
+			<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+				<property name="label" value="Id" />
+				<property name="name" value="id" />
+				<property name="type" value="LONG" />
+			</bean>
+		</property>
+		<property name="geometryType">
+			<bean class="org.geomajas.configuration.GeometryAttributeInfo">
+				<property name="name" value="geometry" />
+				<property name="editable" value="true" />
+			</bean>
+		</property>
+	</bean>
+
+	<bean name="beansInfo" class="org.geomajas.configuration.VectorLayerInfo">
 		<property name="layerType" value="MULTIPOLYGON" />
 		<property name="crs" value="EPSG:900913" />
 		<property name="maxExtent">
@@ -61,12 +78,12 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		<property name="featureInfo" ref="beansFeatureInfo" />
 		<property name="namedStyleInfos">
 			<list>
-				<ref bean="beansMercatorStyleInfo" />
+				<ref bean="beansStyleInfo" />
 			</list>
 		</property>
 	</bean>
 
-	<bean class="org.geomajas.configuration.NamedStyleInfo" id="beansMercatorStyleInfo">
+	<bean class="org.geomajas.configuration.NamedStyleInfo" id="beansStyleInfo">
 		<property name="featureStyles">
 			<list>
 				<bean class="org.geomajas.configuration.FeatureStyleInfo">
@@ -102,8 +119,8 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 	</bean>
 
 
-	<bean name="beansMercator" class="org.geomajas.layer.bean.BeanLayer">
-		<property name="layerInfo" ref="beansMercatorInfo" />
+	<bean name="beans" class="org.geomajas.layer.bean.BeanLayer">
+		<property name="layerInfo" ref="beansInfo" />
 		<property name="features">
 			<list>
 				<bean class="org.geomajas.layer.bean.FeatureBean">
