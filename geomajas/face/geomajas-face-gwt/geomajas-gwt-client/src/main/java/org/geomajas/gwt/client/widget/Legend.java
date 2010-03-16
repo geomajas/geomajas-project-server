@@ -57,9 +57,6 @@ import com.smartgwt.client.widgets.events.ResizedHandler;
  * Widget that shows the styles of the currently visible layers. For vector layers, there can be many styles. Note that
  * this widget will react automatically to the visibility status of the layers.
  * </p>
- * <p>
- * TODO: Use the events to trigger a redraw of the Legend, showing only the styles of visible layers.
- * </p>
  * 
  * @author Frank Wynants, Pieter De Graef
  */
@@ -116,7 +113,7 @@ public class Legend extends Canvas {
 	 */
 	public void render() {
 		// First reset the legend:
-		graphics.deleteElement(null, "legend");
+		graphics.reset();
 
 		// Then go over all layers, to draw styles:
 		int lineCount = 0;
