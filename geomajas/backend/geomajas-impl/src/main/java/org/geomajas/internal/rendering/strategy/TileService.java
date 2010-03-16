@@ -53,16 +53,14 @@ public final class TileService {
 	 *            The unique tile code. Determines what tile we're talking about.
 	 * @param layer
 	 *            The layer for which we're calculating. The width and height are dependent on the layer's max extent.
-	 * @param scale
-	 *            The current client side scale.
 	 * @return Returns an array of double values where the first value is the tile width and the second value is the
 	 *         tile height.
 	 */
-	public static double[] getTileWorldSize(TileCode code, VectorLayer layer, double scale) {
+	public static double[] getTileLayerSize(TileCode code, VectorLayer layer) {
 		Bbox max = layer.getLayerInfo().getMaxExtent();
 		double div = Math.pow(2, code.getTileLevel());
-		double tileWidth = (scale * (max.getMaxX() - max.getX()) / div) / scale;
-		double tileHeight = (scale * (max.getMaxY() - max.getY()) / div) / scale;
+		double tileWidth = max.getWidth() / div;
+		double tileHeight = max.getHeight() / div;
 		return new double[] { tileWidth, tileHeight };
 	}
 
@@ -97,14 +95,14 @@ public final class TileService {
 	 * @return Returns the bounding box for the tile, expressed in the layer's coordinate system.
 	 */
 	public static Envelope getTileBounds(TileCode code, VectorLayer layer, double scale) {
-		double[] worldSize = getTileWorldSize(code, layer, scale);
-		if (worldSize[0] == 0) {
+		double[] layerSize = getTileLayerSize(code, layer);
+		if (layerSize[0] == 0) {
 			return null;
 		}
 		Bbox max = layer.getLayerInfo().getMaxExtent();
-		double cX = max.getX() + code.getX() * worldSize[0];
-		double cY = max.getY() + code.getY() * worldSize[1];
-		return new Envelope(cX, cX + worldSize[0], cY, cY + worldSize[1]);
+		double cX = max.getX() + code.getX() * layerSize[0];
+		double cY = max.getY() + code.getY() * layerSize[1];
+		return new Envelope(cX, cX + layerSize[0], cY, cY + layerSize[1]);
 	}
 
 	/**
@@ -113,23 +111,15 @@ public final class TileService {
 	 * 
 	 * @param tile
 	 *            The actual tile.
-	 * @param layer
-	 *            The layer wherein the tile exists.
 	 * @param transform
 	 *            The transformation object.
 	 * @return Returns the transformed bounding box for the given tile.
 	 * @throws GeomajasException
 	 *             oops
 	 */
-	public static Envelope getTransformedTileBounds(InternalTile tile, VectorLayer layer, MathTransform transform)
+	public static Envelope getTransformedTileBounds(InternalTile tile, MathTransform transform)
 			throws GeomajasException {
-		if (tile.getTileWidth() == 0) {
-			return null;
-		}
-		Bbox max = layer.getLayerInfo().getMaxExtent();
-		double cX = max.getX() + tile.getCode().getX() * tile.getTileWidth();
-		double cY = max.getY() + tile.getCode().getY() * tile.getTileHeight();
-		Envelope tileBounds = new Envelope(cX, cX + tile.getTileWidth(), cY, cY + tile.getTileHeight());
+		Envelope tileBounds = new Envelope(tile.getBounds());
 		if (null != transform) {
 			try {
 				tileBounds = JTS.transform(tileBounds, transform);
@@ -141,7 +131,7 @@ public final class TileService {
 	}
 
 	/**
-	 * When the layer and map's coordinate systems differ, the screen width and height should also be transformed to
+	 * When the layer and map's coordinate systems differ, the tile and screen width and height should be transformed to
 	 * accommodate for this.
 	 * 
 	 * @param tile
@@ -151,11 +141,15 @@ public final class TileService {
 	 * @throws GeomajasException
 	 *             oops
 	 */
-	public static void transformScreenSize(InternalTile tile, MathTransform transform) throws GeomajasException {
+	public static void transformTileSizes(InternalTile tile, MathTransform transform) throws GeomajasException {
 		try {
 			Envelope size = JTS.transform(new Envelope(0, tile.getScreenWidth(), 0, tile.getScreenHeight()), transform);
 			tile.setScreenWidth(Math.ceil(size.getWidth()));
 			tile.setScreenHeight(Math.ceil(size.getHeight()));
+			size = JTS.transform(new Envelope(0, tile.getTileWidth(), 0, tile.getTileHeight()), transform);
+			tile.setTileWidth(Math.ceil(size.getWidth()));
+			tile.setTileHeight(Math.ceil(size.getHeight()));
+			tile.setBounds(JTS.transform(tile.getBounds(), transform));
 		} catch (TransformException e) {
 			throw new GeomajasException(e);
 		}

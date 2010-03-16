@@ -104,18 +104,20 @@ public class VectorTilePainter implements Painter {
 	private Matrix createTransformationMatrix(VectorTile tile) {
 		// We assume the geometries are in screen space, beginning from a tile's upper-left corner.
 
-		// The map has already been translated by this, so we compensate again.
-		Matrix trans = mapView.getPanToViewTranslation();
 		double dX = 0;
 		double dY = 0;
 
 		// clipped tiles have the pan origin as origin, so no need to translate:
+		/*
 		if (!tile.isClipped()) {
+			// The map has already been translated by this, so we compensate again.
+			Matrix trans = mapView.getPanToViewTranslation();
 			// To find the origin of the tile, we transform it's bounds to view space.
 			Bbox viewBounds = transformer.worldToView(tile.getBounds());
 			dX = Math.round(viewBounds.getX() - trans.getDx());
 			dY = Math.round(viewBounds.getY() - trans.getDy());
 		}
+		*/
 
 		return new Matrix(1, 0, 0, 1, dX, dY);
 	}

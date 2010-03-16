@@ -29,18 +29,16 @@ import java.io.StringWriter;
 import org.geomajas.configuration.LabelStyleInfo;
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.global.ExceptionCode;
-import org.geomajas.global.GeomajasException;
 import org.geomajas.internal.layer.feature.InternalFeatureImpl;
 import org.geomajas.internal.layer.tile.InternalTileImpl;
 import org.geomajas.internal.rendering.DefaultSvgDocument;
 import org.geomajas.internal.rendering.DefaultVmlDocument;
-import org.geomajas.internal.rendering.strategy.TileService;
-import org.geomajas.internal.rendering.writers.svg.SvgFeatureScreenWriter;
-import org.geomajas.internal.rendering.writers.svg.SvgFeatureTileWriter;
+import org.geomajas.internal.rendering.writers.svg.SvgFeatureWriter;
+import org.geomajas.internal.rendering.writers.svg.SvgTileWriter;
 import org.geomajas.internal.rendering.writers.svg.SvgLabelTileWriter;
-import org.geomajas.internal.rendering.writers.vml.VmlFeatureScreenWriter;
+import org.geomajas.internal.rendering.writers.vml.VmlFeatureWriter;
 import org.geomajas.internal.rendering.writers.vml.VmlLabelTileWriter;
-import org.geomajas.internal.rendering.writers.vml.VmlVectorTileWriter;
+import org.geomajas.internal.rendering.writers.vml.VmlTileWriter;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.layer.tile.TileMetadata;
@@ -50,7 +48,6 @@ import org.geomajas.rendering.painter.tile.TilePainter;
 import org.geomajas.service.GeoService;
 import org.geotools.geometry.jts.GeometryCoordinateSequenceTransformer;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -109,11 +106,6 @@ public class StringContentTilePainter implements TilePainter {
 	private double scale;
 
 	/**
-	 * The tile's bounding box.
-	 */
-	private Envelope bbox;
-
-	/**
 	 * Transformer that transforms the feature's geometries from world to view space.
 	 */
 	private GeometryCoordinateSequenceTransformer unitToPixel;
@@ -135,8 +127,6 @@ public class StringContentTilePainter implements TilePainter {
 
 	private GeoService geoService;
 
-	private CoordinateReferenceSystem targetCrs;
-
 	// -------------------------------------------------------------------------
 	// Constructors:
 	// -------------------------------------------------------------------------
@@ -156,10 +146,9 @@ public class StringContentTilePainter implements TilePainter {
 	 *            The current origin may differ, depending on whether or not the client has been panning.Needed for
 	 *            creating the world to view space coordinate transformer.
 	 * @param geoService geo service for geometry conversions
-	 * @param targetCrs target crs
 	 */
 	public StringContentTilePainter(VectorLayer layer, NamedStyleInfo style, String renderer, double scale,
-			Coordinate panOrigin, GeoService geoService, CoordinateReferenceSystem targetCrs) {
+			Coordinate panOrigin, GeoService geoService) {
 		this.layer = layer;
 		// @todo: duplicate code, can we just depend on the VectorLayerService ?
 		if (style == null) {
@@ -175,7 +164,6 @@ public class StringContentTilePainter implements TilePainter {
 		this.scale = scale;
 		this.panOrigin = panOrigin;
 		this.geoService = geoService;
-		this.targetCrs = targetCrs;
 	}
 
 	// -------------------------------------------------------------------------
@@ -268,16 +256,16 @@ public class StringContentTilePainter implements TilePainter {
 		if (TileMetadata.PARAM_SVG_RENDERER.equalsIgnoreCase(renderer)) {
 			DefaultSvgDocument document = new DefaultSvgDocument(writer, false);
 			document.setMaximumFractionDigits(MAXIMUM_FRACTION_DIGITS);
-			document.registerWriter(InternalFeatureImpl.class, new SvgFeatureScreenWriter(getTransformer()));
-			document.registerWriter(InternalTileImpl.class, new SvgFeatureTileWriter());
+			document.registerWriter(InternalFeatureImpl.class, new SvgFeatureWriter(getTransformer()));
+			document.registerWriter(InternalTileImpl.class, new SvgTileWriter());
 			return document;
 		} else if (TileMetadata.PARAM_VML_RENDERER.equalsIgnoreCase(renderer)) {
 			DefaultVmlDocument document = new DefaultVmlDocument(writer);
 			int coordWidth = (int) tile.getScreenWidth();
 			int coordHeight = (int) tile.getScreenHeight();
-			document.registerWriter(InternalFeatureImpl.class, new VmlFeatureScreenWriter(getTransformer(), coordWidth,
+			document.registerWriter(InternalFeatureImpl.class, new VmlFeatureWriter(getTransformer(), coordWidth,
 					coordHeight));
-			document.registerWriter(InternalTileImpl.class, new VmlVectorTileWriter(coordWidth, coordHeight));
+			document.registerWriter(InternalTileImpl.class, new VmlTileWriter(coordWidth, coordHeight));
 			document.setMaximumFractionDigits(MAXIMUM_FRACTION_DIGITS);
 			return document;
 		} else {
@@ -287,6 +275,11 @@ public class StringContentTilePainter implements TilePainter {
 
 	/**
 	 * Create a document that parses the tile's labelFragment, using GraphicsWriter classes.
+	 *
+	 * @param writer writer
+	 * @param labelStyleInfo label style info
+	 * @return graphics document
+	 * @throws RenderException cannot render
 	 */
 	private GraphicsDocument createLabelDocument(StringWriter writer, LabelStyleInfo labelStyleInfo)
 			throws RenderException {
@@ -299,9 +292,10 @@ public class StringContentTilePainter implements TilePainter {
 			return document;
 		} else if (TileMetadata.PARAM_VML_RENDERER.equalsIgnoreCase(renderer)) {
 			DefaultVmlDocument document = new DefaultVmlDocument(writer);
-			int coordWidth = (int) Math.round(scale * getTileBbox().getWidth());
-			int coordHeight = (int) Math.round(scale * getTileBbox().getHeight());
-			document.registerWriter(InternalFeatureImpl.class, new VmlFeatureScreenWriter(getTransformer(), coordWidth,
+			Envelope bounds = tile.getBounds();
+			int coordWidth = (int) Math.round(scale * bounds.getWidth());
+			int coordHeight = (int) Math.round(scale * bounds.getHeight());
+			document.registerWriter(InternalFeatureImpl.class, new VmlFeatureWriter(getTransformer(), coordWidth,
 					coordHeight));
 			document.registerWriter(InternalTileImpl.class, new VmlLabelTileWriter(coordWidth, coordHeight,
 					getTransformer(), labelStyleInfo.getBackgroundStyle(), geoService));
@@ -313,42 +307,17 @@ public class StringContentTilePainter implements TilePainter {
 	}
 
 	/**
-	 * Can't we get this out of this class???
+	 * Get transformer to use.
 	 * 
-	 * @return
+	 * @return transformation to apply
 	 */
-	private GeometryCoordinateSequenceTransformer getTransformer() throws RenderException {
+	private GeometryCoordinateSequenceTransformer getTransformer() {
 		if (unitToPixel == null) {
 			unitToPixel = new GeometryCoordinateSequenceTransformer();
-			if (tile.isClipped()) {
-				// find coords wrt to pan origin (0,0) and scale (pix/unit)
-				unitToPixel.setMathTransform(ProjectiveTransform.create(new AffineTransform(scale, 0, 0, -scale, -scale
-						* panOrigin.x, scale * panOrigin.y)));
-			} else {
-				// find coords wrt to upper left corner (0,0) and scale
-				// (pix/unit)
-				unitToPixel.setMathTransform(ProjectiveTransform.create(new AffineTransform(scale, 0, 0, -scale, -scale
-						* getTileBbox().getMinX(), scale * (getTileBbox().getMinY() + getTileBbox().getHeight()))));
-			}
+			unitToPixel.setMathTransform(ProjectiveTransform.create(new AffineTransform(scale, 0, 0, -scale, -scale
+					* panOrigin.x, scale * panOrigin.y)));
 		}
 		return unitToPixel;
 	}
 
-	/**
-	 * Convenience method for fetching the tile's bbox.
-	 * 
-	 * @return bbox
-	 * @throws RenderException crs conversion problems
-	 */
-	private Envelope getTileBbox() throws RenderException {
-		if (bbox == null) {
-			try {
-				bbox = TileService.getTransformedTileBounds(tile, layer,
-						geoService.findMathTransform(layer.getCrs(), targetCrs));
-			} catch (GeomajasException ge) {
-				throw new RenderException(ge);
-			}
-		}
-		return bbox;
-	}
 }

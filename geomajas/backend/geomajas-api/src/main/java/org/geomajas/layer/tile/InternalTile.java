@@ -79,21 +79,29 @@ public interface InternalTile {
 	void init(VectorLayer layer, double scale);
 
 	/**
-	 * Get bounding box for the tile.
+	 * Get bounding box for the tile (in layer coordinates).
 	 *
 	 * @return bounding box
 	 */
-	Envelope getBbox();
+	Envelope getBounds();
 
 	/**
-	 * Get features for this tile.
+	 * Set bounding box for the tile.
+	 *
+	 * @param bounds bounding box
+	 */
+	void setBounds(Envelope bounds);
+
+	/**
+	 * Get features for this tile (contained {@link com.vividsolutions.jts.geom.Geometry} objects use map coordinates).
 	 *
 	 * @return list of features
 	 */
 	List<InternalFeature> getFeatures();
 
 	/**
-	 * Set list of features for this tile.
+	 * Set list of features for this tile (contained {@link com.vividsolutions.jts.geom.Geometry} objects use map
+	 * coordinates).
 	 *
 	 * @param features list of features
 	 */
@@ -102,36 +110,32 @@ public interface InternalTile {
 	void addFeature(InternalFeature feature);
 
 	/**
-	 * Return the tile's width, expressed in world coordinates. In other words, expressed in the coordinates system of
-	 * the map wherein this tile's layer lies.
+	 * Return the tile's width. Initially these are layer coordinates, but they may be converted to map coordinates.
 	 *
-	 * @return tile width in world space
+	 * @return tile width
 	 */
 	double getTileWidth();
 
 	/**
-	 * Set the tile's width, expressed in world coordinates. In other words, expressed in the coordinates system of the
-	 * map wherein this tile's layer lies.
+	 * Set the tile's width. Initially these are layer coordinates, but they may be converted to map coordinates.
 	 *
 	 * @param tileWidth
-	 *            The tile's world space width.
+	 *            The tile's width.
 	 */
 	void setTileWidth(double tileWidth);
 
 	/**
-	 * Return the tile's height, expressed in world coordinates. In other words, expressed in the coordinates system of
-	 * the map wherein this tile's layer lies.
+	 * Return the tile's height. Initially these are layer coordinates, but they may be converted to map coordinates.
 	 *
-	 * @return tile height in world space
+	 * @return tile height
 	 */
 	double getTileHeight();
 
 	/**
-	 * Set the tile's height, expressed in world coordinates. In other words, expressed in the coordinates system of the
-	 * map wherein this tile's layer lies.
+	 * Set the tile's height. Initially these are layer coordinates, but they may be converted to map coordinates.
 	 *
 	 * @param tileHeight
-	 *            The tile's world space height.
+	 *            The tile's height.
 	 */
 	void setTileHeight(double tileHeight);
 

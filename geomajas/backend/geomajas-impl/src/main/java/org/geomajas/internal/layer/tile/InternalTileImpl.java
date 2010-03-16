@@ -85,17 +85,21 @@ public class InternalTileImpl implements InternalTile {
 	// -------------------------------------------------------------------------
 
 	public void init(VectorLayer layer, double scale) {
-		double[] worldSize = TileService.getTileWorldSize(code, layer, scale);
-		tileWidth = worldSize[0];
-		tileHeight = worldSize[1];
-		double[] screenSize = TileService.getTileScreenSize(worldSize, scale);
+		double[] layerSize = TileService.getTileLayerSize(code, layer);
+		tileWidth = layerSize[0];
+		tileHeight = layerSize[1];
+		double[] screenSize = TileService.getTileScreenSize(layerSize, scale);
 		screenWidth = screenSize[0];
 		screenHeight = screenSize[1];
 		bounds = TileService.getTileBounds(code, layer, scale);
 	}
 
-	public Envelope getBbox() {
+	public Envelope getBounds() {
 		return bounds;
+	}
+
+	public void setBounds(Envelope bounds) {
+		this.bounds = bounds;
 	}
 
 	public void addFeature(InternalFeature feature) {
@@ -223,42 +227,28 @@ public class InternalTileImpl implements InternalTile {
 	}
 
 	/**
-	 * Return the tile's width, expressed in world coordinates. In other words, expressed in the coordinates system of
-	 * the map wherein this tile's layer lies.
-	 *
-	 * @return tile width in world space
+	 * @inheritDoc
 	 */
 	public double getTileWidth() {
 		return tileWidth;
 	}
 
 	/**
-	 * Set the tile's width, expressed in world coordinates. In other words, expressed in the coordinates system of the
-	 * map wherein this tile's layer lies.
-	 * 
-	 * @param tileWidth
-	 *            The tile's world space width.
+	 * @inheritDoc
 	 */
 	public void setTileWidth(double tileWidth) {
 		this.tileWidth = tileWidth;
 	}
 
 	/**
-	 * Return the tile's height, expressed in world coordinates. In other words, expressed in the coordinates system of
-	 * the map wherein this tile's layer lies.
-	 *
-	 * @return tile height in world space
+	 * @inheritDoc
 	 */
 	public double getTileHeight() {
 		return tileHeight;
 	}
 
 	/**
-	 * Set the tile's height, expressed in world coordinates. In other words, expressed in the coordinates system of the
-	 * map wherein this tile's layer lies.
-	 * 
-	 * @param tileHeight
-	 *            The tile's world space height.
+	 * @inheritDoc
 	 */
 	public void setTileHeight(double tileHeight) {
 		this.tileHeight = tileHeight;
@@ -321,5 +311,23 @@ public class InternalTileImpl implements InternalTile {
 	 */
 	public void setClipped(boolean clipped) {
 		this.clipped = clipped;
+	}
+
+	@Override
+	public String toString() {
+		return "InternalTileImpl{" +
+				"features=" + features +
+				", codes=" + codes +
+				", code=" + code +
+				", tileWidth=" + tileWidth +
+				", tileHeight=" + tileHeight +
+				", screenWidth=" + screenWidth +
+				", screenHeight=" + screenHeight +
+				", clipped=" + clipped +
+				", featureContent='" + featureContent + '\'' +
+				", labelContent='" + labelContent + '\'' +
+				", contentType=" + contentType +
+				", bounds=" + bounds +
+				'}';
 	}
 }

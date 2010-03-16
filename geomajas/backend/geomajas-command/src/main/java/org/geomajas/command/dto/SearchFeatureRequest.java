@@ -26,6 +26,8 @@ import org.geomajas.command.LayerIdCommandRequest;
 import org.geomajas.global.GeomajasConstant;
 import org.geomajas.layer.feature.SearchCriterion;
 
+import java.util.Arrays;
+
 /**
  * Request object for {@link org.geomajas.command.feature.SearchFeatureCommand}.
  *
@@ -162,5 +164,17 @@ public class SearchFeatureRequest extends LayerIdCommandRequest {
 	 */
 	public void setFeatureIncludes(int featureIncludes) {
 		this.featureIncludes = featureIncludes;
-	}	
+	}
+
+	@Override
+	public String toString() {
+		return "SearchFeatureRequest{" +
+				"max=" + max +
+				", booleanOperator='" + booleanOperator + '\'' +
+				", criteria=" + (criteria == null ? null : Arrays.asList(criteria)) +
+				", filter='" + filter + '\'' +
+				", crs='" + crs + '\'' +
+				", featureIncludes=" + featureIncludes +
+				'}';
+	}
 }

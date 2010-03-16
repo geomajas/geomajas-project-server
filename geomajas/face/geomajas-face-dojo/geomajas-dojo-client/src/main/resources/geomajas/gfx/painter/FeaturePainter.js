@@ -86,7 +86,7 @@ dojo.declare("FeaturePainter", Painter, {
 		};
 		
 		
-		if(feature.isClipped() && feature.getPath()){
+		//if(feature.isClipped() && feature.getPath()){
 			log.info("FeaturePainter : painting with (clipped) path");
 			options.path = feature.getPath();
 			if(geometry.declaredClass == geomajas.GeometryTypes.POLYGON){
@@ -100,7 +100,7 @@ dojo.declare("FeaturePainter", Painter, {
 			} else if (geometry.type == geomajas.GeometryTypes.POINT) {
 				graphics.drawSymbol (null,options);
 			}
-		} else {
+		/*} else {
 			var viewGeometry = this.transform.worldGeometryToPan(geometry);
 			if(geometry.declaredClass == geomajas.GeometryTypes.POLYGON){
 				graphics.drawPolygon (viewGeometry,options);
@@ -114,7 +114,7 @@ dojo.declare("FeaturePainter", Painter, {
 				options.styleId = feature.getLayer().getLayerId() + "." + feature.styleId + ".style";
 				graphics.drawSymbol (viewGeometry,options);
 			}
-		}
+		}*/
 	},
 
 	/**

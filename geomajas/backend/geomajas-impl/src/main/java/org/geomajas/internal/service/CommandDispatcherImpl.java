@@ -84,8 +84,8 @@ public final class CommandDispatcherImpl implements CommandDispatcher {
 	public CommandResponse execute(String commandName, CommandRequest request, String userToken, String locale) {
 		String id = Long.toString(++commandCount); // NOTE this is not thread safe
 		// safe or cluster aware
-		log.info("{} execute command {} for user token {} in locale {}", new Object[] { id, commandName, userToken,
-				locale });
+		log.info("{} execute command {} for user token {} in locale {}, request {}", new Object[] { id, commandName,
+				userToken, locale, request });
 		long begin = System.currentTimeMillis();
 		CommandResponse response;
 

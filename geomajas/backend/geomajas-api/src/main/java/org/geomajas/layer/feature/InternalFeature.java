@@ -135,9 +135,37 @@ public interface InternalFeature extends Cloneable, Comparable<InternalFeature> 
 	/**
 	 * Ser the label for the feature.
 	 *
-	 * @param label
+	 * @param label label for feature
 	 */
 	void setLabel(String label);
+
+	/**
+	 * Has the feature geometry been clipped ?
+	 *
+	 * @return is geometry clipped
+	 */
+	boolean isClipped();
+
+	/**
+	 * Set clipped status for feature.
+	 *
+	 * @param clipped clipped status
+	 */
+	void setClipped(boolean clipped);
+
+	/**
+	 * Get the clipped geometry.
+	 *
+	 * @return clipped geometry
+	 */
+	Geometry getClippedGeometry();
+
+	/**
+	 * Set the clipped geometry.
+	 *
+	 * @param clippedGeometry clipped geometry
+	 */
+	void setClippedGeometry(Geometry clippedGeometry);
 
 	/**
 	 * Is the logged in user allowed to edit this feature?

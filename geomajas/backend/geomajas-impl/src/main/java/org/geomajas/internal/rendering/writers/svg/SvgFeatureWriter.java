@@ -36,17 +36,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * ???
+ * Writer for converting features to svg.
  *
- * @author check subversion
+ * @author Jan De Moerloose
+ * @author Pieter De Graef
  */
-public class SvgFeatureScreenWriter implements GraphicsWriter {
+public class SvgFeatureWriter implements GraphicsWriter {
 
-	private final Logger log = LoggerFactory.getLogger(SvgFeatureScreenWriter.class);
+	private final Logger log = LoggerFactory.getLogger(SvgFeatureWriter.class);
 
 	private GeometryCoordinateSequenceTransformer transformer;
 
-	public SvgFeatureScreenWriter(GeometryCoordinateSequenceTransformer transformer) {
+	public SvgFeatureWriter(GeometryCoordinateSequenceTransformer transformer) {
 		this.transformer = transformer;
 	}
 

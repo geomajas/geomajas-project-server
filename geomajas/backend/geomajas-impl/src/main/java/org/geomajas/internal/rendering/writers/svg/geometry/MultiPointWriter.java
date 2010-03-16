@@ -29,16 +29,15 @@ import org.geomajas.rendering.GraphicsDocument;
 import org.geomajas.rendering.RenderException;
 
 /**
- * MultiPointWriter
- *
  * <p>
  * Writer for <code>MultiPoint</code> objects. Extends the
  * <code>PointWriter</code>.
  * </p>
  *
- * TODO: check what happens with style defintion in the enclosing group !!!!
+ * TODO: check what happens with style definition in the enclosing group !!!!
  *
- * @author Pieter De Graef, Jan De Moerloose
+ * @author Pieter De Graef
+ * @author Jan De Moerloose
  */
 public class MultiPointWriter implements GraphicsWriter {
 

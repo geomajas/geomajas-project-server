@@ -9,6 +9,15 @@
     <logger name="org.geomajas.gwt">
         <level value="DEBUG"/>
     </logger>
+    <logger name="org.geomajas.internal.service">
+        <level value="DEBUG"/>
+    </logger>
+    <logger name="org.geomajas.internal.service.vector">
+        <level value="INFO"/>
+    </logger>
+    <logger name="org.geomajas.internal.rendering.strategy">
+        <level value="DEBUG"/>
+    </logger>
 
     <root>
         <level value="INFO"/>

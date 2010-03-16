@@ -24,10 +24,9 @@
 package org.geomajas.internal.rendering.writers.svg;
 
 import org.geomajas.configuration.FeatureStyleInfo;
-import org.geomajas.internal.layer.feature.InternalFeatureImpl;
-import org.geomajas.internal.layer.tile.InternalTileImpl;
 import org.geomajas.internal.rendering.writers.GraphicsWriter;
 import org.geomajas.layer.feature.InternalFeature;
+import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.rendering.GraphicsDocument;
 import org.geomajas.rendering.RenderException;
 import org.geomajas.service.GeoService;
@@ -40,13 +39,14 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 
 /**
- * ???
+ * Writer for tile labels.
  * 
- * @author check subversion
+ * @author Jan De Moerloose
+ * @author Pieter De Graef
  */
 public class SvgLabelTileWriter implements GraphicsWriter {
 
-	private final Logger log = LoggerFactory.getLogger(SvgFeatureScreenWriter.class);
+	private final Logger log = LoggerFactory.getLogger(SvgLabelTileWriter.class);
 
 	private GeometryFactory factory;
 
@@ -65,11 +65,10 @@ public class SvgLabelTileWriter implements GraphicsWriter {
 	}
 
 	public void writeObject(Object object, GraphicsDocument document, boolean asChild) throws RenderException {
-		InternalTileImpl tile = (InternalTileImpl) object;
+		InternalTile tile = (InternalTile) object;
 		document.writeElement("g", asChild);
 		document.writeId("labels." + tile.getCode().toString());
-		for (InternalFeature f : tile.getFeatures()) {
-			InternalFeatureImpl feature = (InternalFeatureImpl) f;
+		for (InternalFeature feature : tile.getFeatures()) {
 			Coordinate pos = geoService.calcDefaultLabelPosition(feature);
 			if (pos == null) {
 				continue;

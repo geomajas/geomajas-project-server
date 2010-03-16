@@ -102,21 +102,21 @@ dojo.declare("TilePainter", Painter, {
 	_createTransformationMatrix : function (tile) {
 		// We assume the geometries are in screen space, beginning from a tile's upper-left corner.
 	
-		// The map has already been translated by this, so we compensate again.
-		var trans = this.mapView.getPanToViewTranslation();
-		
 		var dX = null;
 		var dY = null;
-		if(tile.isClipped()){
+		//if(tile.isClipped()){
 			// clipped tiles have the pan origin as origin, so no need to translate
 			dX = 0;
 			dY = 0;
-		} else {
+		/*} else {
+			// The map has already been translated by this, so we compensate again.
+			var trans = this.mapView.getPanToViewTranslation();
+
 			// To find the origin of the tile, we transform it's bounds to view space.
 			var viewTileBounds = this.transform.worldBoundsToView (tile.getBounds());
 			dX = viewTileBounds.getX() - trans.dx;
 			dY = viewTileBounds.getY() - trans.dy;
-		}
+		}*/
 		
 		// var sc = this.mapView.getCurrentScale();
 

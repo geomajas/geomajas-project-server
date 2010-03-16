@@ -34,6 +34,9 @@ import org.geomajas.layer.tile.TileCode;
 import org.geomajas.service.DtoConverterService;
 import org.geotools.geometry.jts.JTS;
 import org.opengis.referencing.operation.MathTransform;
+import org.opengis.referencing.operation.TransformException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -62,6 +65,8 @@ import com.vividsolutions.jts.geom.Geometry;
 @Component
 public class TiledFeatureService {
 
+	private Logger log = LoggerFactory.getLogger(TiledFeatureService.class);
+
 	@Autowired
 	private DtoConverterService converterService;
 
@@ -82,7 +87,7 @@ public class TiledFeatureService {
 	 * @param tile
 	 *            tile to put features in
 	 * @param features
-	 *            features to include
+	 *            features to include (the {@link Geometry} in the feature is in map coordinates)
 	 * @param layer
 	 *            layer
 	 * @param code
@@ -98,26 +103,29 @@ public class TiledFeatureService {
 	 */
 	public void fillTile(InternalTile tile, List<InternalFeature> features, VectorLayer layer, TileCode code,
 			double scale, Coordinate panOrigin, MathTransform transform) throws GeomajasException {
-		for (InternalFeature feature : features) {
-			Geometry geometry = feature.getGeometry();
-
-			Envelope transformedBounds = TileService.getTransformedTileBounds(tile, layer, transform);
-			if (!transformedBounds.contains(geometry.getCoordinate())) {
-				addTileCode(tile, layer, geometry);
-			} else {
-				// clip feature if necessary
-				if (exceedsScreenDimensions(feature, scale)) {
-					InternalFeatureImpl vectorFeature = new InternalFeatureImpl(feature);
-					tile.setClipped(true);
-					vectorFeature.setClipped(true);
-					Geometry clipped = JTS.toGeometry(getMaxScreenBbox(layer, code, scale, panOrigin)).intersection(
-							feature.getGeometry());
-					vectorFeature.setClippedGeometry(clipped);
-					tile.addFeature(vectorFeature);
-				} else {
-					tile.addFeature(feature);
+		try {
+			Envelope tileBounds = tile.getBounds();
+			Envelope layerBounds = JTS.transform(converterService.toInternal(layer.getLayerInfo().getMaxExtent()),
+					transform);
+			for (InternalFeature feature : features) {
+				if (!addTileCode(tile, tileBounds, layerBounds, feature.getGeometry())) {
+					log.debug("add feature");
+					// clip feature if necessary
+					if (exceedsScreenDimensions(feature, scale)) {
+						InternalFeatureImpl vectorFeature = new InternalFeatureImpl(feature);
+						tile.setClipped(true);
+						vectorFeature.setClipped(true);
+						Geometry clipped = JTS.toGeometry(getMaxScreenEnvelope(layer, code, scale, panOrigin)).
+								intersection(feature.getGeometry());
+						vectorFeature.setClippedGeometry(clipped);
+						tile.addFeature(vectorFeature);
+					} else {
+						tile.addFeature(feature);
+					}
 				}
 			}
+		} catch (TransformException te) {
+			throw new GeomajasException(te);
 		}
 	}
 
@@ -130,19 +138,45 @@ public class TiledFeatureService {
 	 * 
 	 * @param tile
 	 *            tile in which to add dependent tile
-	 * @param layer
-	 *            layer
-	 * @param geometry
-	 *            geometry
+	 * @param tileBounds tile bounds in map coordinates
+	 * @param layerBounds layer bounds in map coordinates
+	 * @param geometry geometry for feature
+	 * @return true when tilecode was added and feature will be contained in another tile
 	 */
-	private void addTileCode(InternalTile tile, VectorLayer layer, Geometry geometry) {
-		Coordinate c = geometry.getCoordinate();
-		Envelope max = converterService.toInternal(layer.getLayerInfo().getMaxExtent());
-		if (c != null && max.contains(c)) {
-			int i = (int) ((c.x - layer.getLayerInfo().getMaxExtent().getX()) / tile.getTileWidth());
-			int j = (int) ((c.y - layer.getLayerInfo().getMaxExtent().getY()) / tile.getTileHeight());
+	private boolean addTileCode(InternalTile tile, Envelope tileBounds, Envelope layerBounds, Geometry geometry) {
+		if (log.isDebugEnabled()) {
+			log.debug("addTileCode " + tileBounds + " " + layerBounds + " " + geometry);
+		}
+		TileCode tileCode = tile.getCode();
+		int tileX = tileCode.getX();
+		int tileY = tileCode.getY();
+		for (Coordinate coordinate : geometry.getCoordinates()) {
+			if (layerBounds.contains(coordinate)) {
+				if (tileBounds.contains(coordinate)) {
+					return false;
+				} else {
+					int i = (int) ((coordinate.x - layerBounds.getMinX()) / tile.getTileWidth());
+					int j = (int) ((coordinate.y - layerBounds.getMinY()) / tile.getTileHeight());
+
+					// check for possible rounding problems, when i,j is "this" tile
+					if (i == tileX && j == tileY) {
+						return false;
+					}
+					
+					int level = tile.getCode().getTileLevel();
+					tile.addCode(level, i, j);
+					return true;
+				}
+			}
+		}
+		// all points of the geometry are outside all tiles. Should be put in tile 0,0
+		if (0 == tileX && 0 == tileY) {
+			// this is tile 0,0, so leave it here
+			return false;
+		} else {
 			int level = tile.getCode().getTileLevel();
-			tile.addCode(level, i, j);
+			tile.addCode(level, 0, 0);
+			return true;
 		}
 	}
 
@@ -177,7 +211,7 @@ public class TiledFeatureService {
 	 *            pan origin
 	 * @return max screen bbox
 	 */
-	private Envelope getMaxScreenBbox(VectorLayer layer, TileCode code, double scale, Coordinate panOrigin) {
+	private Envelope getMaxScreenEnvelope(VectorLayer layer, TileCode code, double scale, Coordinate panOrigin) {
 		if (maxScreenBbox == null) {
 			Envelope max = converterService.toInternal(layer.getLayerInfo().getMaxExtent());
 			double div = Math.pow(2, code.getTileLevel());

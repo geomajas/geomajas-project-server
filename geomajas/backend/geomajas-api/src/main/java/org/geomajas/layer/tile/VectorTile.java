@@ -65,10 +65,6 @@ public class VectorTile implements Serializable {
 
 	private TileCode code;
 
-	private double tileWidth;
-
-	private double tileHeight;
-
 	private int screenWidth;
 
 	private int screenHeight;
@@ -210,48 +206,6 @@ public class VectorTile implements Serializable {
 	 */
 	public void setCode(TileCode code) {
 		this.code = code;
-	}
-
-	/**
-	 * Return the tile's width, expressed in world coordinates. In other words, expressed in the coordinates system of
-	 * the map wherein this tile's layer lies.
-	 *
-	 * @return tile width
-	 */
-	public double getTileWidth() {
-		return tileWidth;
-	}
-
-	/**
-	 * Set the tile's width, expressed in world coordinates. In other words, expressed in the coordinates system of the
-	 * map wherein this tile's layer lies.
-	 * 
-	 * @param tileWidth
-	 *            The tile's world space width.
-	 */
-	public void setTileWidth(double tileWidth) {
-		this.tileWidth = tileWidth;
-	}
-
-	/**
-	 * Return the tile's height, expressed in world coordinates. In other words, expressed in the coordinates system of
-	 * the map wherein this tile's layer lies.
-	 *
-	 * @return tile height
-	 */
-	public double getTileHeight() {
-		return tileHeight;
-	}
-
-	/**
-	 * Set the tile's height, expressed in world coordinates. In other words, expressed in the coordinates system of the
-	 * map wherein this tile's layer lies.
-	 * 
-	 * @param tileHeight
-	 *            The tile's world space height.
-	 */
-	public void setTileHeight(double tileHeight) {
-		this.tileHeight = tileHeight;
 	}
 
 	/**

@@ -25,36 +25,35 @@ package org.geomajas.internal.rendering.writers.vml;
 
 import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.VectorLayerInfo;
-import org.geomajas.internal.layer.feature.InternalFeatureImpl;
-import org.geomajas.internal.layer.tile.InternalTileImpl;
 import org.geomajas.internal.rendering.writers.GraphicsWriter;
 import org.geomajas.layer.LayerType;
+import org.geomajas.layer.feature.InternalFeature;
+import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.rendering.GraphicsDocument;
 import org.geomajas.rendering.RenderException;
 
 /**
  * This class writes the features of a feature tile as styled VML. Note that there is no surrounding group element for
  * the following reasons: - the result can be immediately assigned to innerHTML in IE - the position of the tile in
- * screen space is not known yet - the result is always cacheable
+ * screen space is not known yet - the result is always cachable.
  * 
  * @author Jan De Moerloose
  */
-public class VmlVectorTileWriter implements GraphicsWriter {
+public class VmlTileWriter implements GraphicsWriter {
 
 	private int coordWidth;
 
 	private int coordHeight;
 
-	public VmlVectorTileWriter(int coordWidth, int coordHeight) {
+	public VmlTileWriter(int coordWidth, int coordHeight) {
 		this.coordWidth = coordWidth;
 		this.coordHeight = coordHeight;
 	}
 
 	public void writeObject(Object object, GraphicsDocument document, boolean asChild) throws RenderException {
-		InternalTileImpl tile = (InternalTileImpl) object;
+		InternalTile tile = (InternalTile) object;
 		String style = null;
-		for (org.geomajas.layer.feature.InternalFeature f : tile.getFeatures()) {
-			InternalFeatureImpl feature = (InternalFeatureImpl) f;
+		for (InternalFeature feature : tile.getFeatures()) {
 			String nextStyle = feature.getStyleInfo().getIndex() + "";
 			if (style == null || !style.equals(nextStyle)) {
 				if (style != null) {

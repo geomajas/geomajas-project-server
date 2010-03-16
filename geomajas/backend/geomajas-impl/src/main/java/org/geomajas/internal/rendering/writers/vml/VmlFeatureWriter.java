@@ -24,9 +24,8 @@
 package org.geomajas.internal.rendering.writers.vml;
 
 import com.vividsolutions.jts.geom.Geometry;
-import org.geomajas.internal.layer.feature.InternalFeatureImpl;
 import org.geomajas.internal.rendering.writers.GraphicsWriter;
-import org.geomajas.internal.rendering.writers.svg.SvgFeatureScreenWriter;
+import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.rendering.GraphicsDocument;
 import org.geomajas.rendering.RenderException;
 import org.geotools.geometry.jts.GeometryCoordinateSequenceTransformer;
@@ -35,13 +34,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * ???
+ * Vml writer for features.
  *
- * @author check subversion
+ * @author Pieter De Graef
+ * @author Jan De Moerloose
  */
-public class VmlFeatureScreenWriter implements GraphicsWriter {
+public class VmlFeatureWriter implements GraphicsWriter {
 
-	private final Logger log = LoggerFactory.getLogger(SvgFeatureScreenWriter.class);
+	private final Logger log = LoggerFactory.getLogger(VmlFeatureWriter.class);
 
 	private GeometryCoordinateSequenceTransformer transformer;
 
@@ -49,7 +49,7 @@ public class VmlFeatureScreenWriter implements GraphicsWriter {
 
 	private int coordHeight;
 
-	public VmlFeatureScreenWriter(GeometryCoordinateSequenceTransformer transformer, int coordWidth,
+	public VmlFeatureWriter(GeometryCoordinateSequenceTransformer transformer, int coordWidth,
 			int coordHeight) {
 		this.transformer = transformer;
 		this.coordWidth = coordWidth;
@@ -58,7 +58,7 @@ public class VmlFeatureScreenWriter implements GraphicsWriter {
 
 	public void writeObject(Object object, GraphicsDocument document, boolean asChild) throws RenderException {
 		try {
-			InternalFeatureImpl feature = (InternalFeatureImpl) object;
+			InternalFeature feature = (InternalFeature) object;
 			Geometry geom = feature.getGeometry();
 			if (feature.isClipped()) {
 				geom = feature.getClippedGeometry();

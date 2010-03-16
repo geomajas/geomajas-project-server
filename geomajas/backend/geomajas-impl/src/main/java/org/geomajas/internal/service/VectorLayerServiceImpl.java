@@ -47,6 +47,8 @@ import org.geomajas.service.pipeline.PipelineService;
 import org.opengis.filter.Filter;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -66,6 +68,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(rollbackFor = { Exception.class })
 @Component
 public class VectorLayerServiceImpl implements VectorLayerService {
+
+	private Logger log = LoggerFactory.getLogger(VectorLayerServiceImpl.class);
 
 	@Autowired
 	private ConfigurationService configurationService;
@@ -148,6 +152,7 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 	public InternalTile getTile(TileMetadata tileMetadata) throws GeomajasException {
 		String layerId = tileMetadata.getLayerId();
 		VectorLayer layer = getVectorLayer(layerId);
+		log.debug("getTile request TileMetadata {}", tileMetadata);
 		PipelineContext context = pipelineService.createContext();
 		context.put(PipelineCode.LAYER_ID_KEY, layerId);
 		context.put(PipelineCode.LAYER_KEY, layer);
@@ -158,6 +163,7 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 		context.put(PipelineCode.FEATURE_INCLUDES_KEY, tileMetadata.getFeatureIncludes());
 		InternalTile response = new InternalTileImpl(tileMetadata.getCode(), layer, tileMetadata.getScale());
 		pipelineService.execute(PipelineCode.PIPELINE_GET_VECTOR_TILE, layerId, context, response);
+		log.debug("getTile response InternalTile {}", response);
 		return response;
 	}
 

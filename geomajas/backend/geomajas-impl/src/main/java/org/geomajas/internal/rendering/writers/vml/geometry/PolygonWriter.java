@@ -33,7 +33,8 @@ import org.geomajas.rendering.RenderException;
  * VML writer for <code>Polygon</code> objects.
  * </p>
  *
- * @author Pieter De Graef, Jan De Moerloose
+ * @author Pieter De Graef
+ * @author Jan De Moerloose
  */
 public class PolygonWriter implements GraphicsWriter {
 

@@ -259,7 +259,7 @@ public class SvgGraphicsContext extends AbstractGraphicsContext {
 	 *            parent group object
 	 * @param name
 	 *            The symbol's name.
-	 * @param symbol
+	 * @param position
 	 *            The symbol's (X,Y) location on the graphics.
 	 * @param style
 	 *            The style to apply on the symbol.

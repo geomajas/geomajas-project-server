@@ -553,8 +553,6 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 			dto.setCodes(tile.getCodes());
 			dto.setScreenHeight((int) tile.getScreenHeight());
 			dto.setScreenWidth((int) tile.getScreenWidth());
-			dto.setTileHeight(tile.getTileHeight());
-			dto.setTileWidth(tile.getTileWidth());
 			List<Feature> features = new ArrayList<Feature>();
 			for (InternalFeature feature : tile.getFeatures()) {
 				Feature fdto = toDto(feature, featureIncludes);

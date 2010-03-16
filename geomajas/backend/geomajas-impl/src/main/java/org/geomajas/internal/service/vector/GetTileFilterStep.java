@@ -28,6 +28,7 @@ import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.layer.tile.TileMetadata;
 import org.geomajas.service.FilterService;
+import org.geomajas.service.GeoService;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
 import org.geomajas.service.pipeline.PipelineStep;
@@ -47,6 +48,9 @@ public class GetTileFilterStep implements PipelineStep<InternalTile> {
 	@Autowired
 	private FilterService filterService;
 
+	@Autowired
+	private GeoService geoService;
+
 	public String getId() {
 		return id;
 	}
@@ -61,8 +65,8 @@ public class GetTileFilterStep implements PipelineStep<InternalTile> {
 		CoordinateReferenceSystem crs = context.get(PipelineCode.CRS_KEY, CoordinateReferenceSystem.class);
 		
 		String geomName = layer.getLayerInfo().getFeatureInfo().getGeometryType().getName();
-		Filter filter = filterService.createBboxFilter(crs.getIdentifiers().iterator().next().toString(),
-				response.getBbox(), geomName);
+		Filter filter = filterService.createBboxFilter(Integer.toString(geoService.getSridFromCrs(crs)),
+				response.getBounds(), geomName);
 		if (null != metadata.getFilter()) {
 			filter = filterService.createAndFilter(filterService.parseFilter(metadata.getFilter()), filter);
 		}

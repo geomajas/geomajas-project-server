@@ -27,7 +27,6 @@ import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.internal.layer.feature.InternalFeatureImpl;
 import org.geomajas.internal.layer.tile.InternalTileImpl;
 import org.geomajas.internal.rendering.writers.GraphicsWriter;
-import org.geomajas.internal.rendering.writers.svg.SvgFeatureScreenWriter;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.rendering.GraphicsDocument;
 import org.geomajas.rendering.RenderException;
@@ -41,13 +40,14 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.GeometryFactory;
 
 /**
- * ???
+ * Writer for tile labels.
  * 
- * @author check subversion
+ * @author Jan De Moerloose
+ * @author Pieter De Graef
  */
 public class VmlLabelTileWriter implements GraphicsWriter {
 
-	private final Logger log = LoggerFactory.getLogger(SvgFeatureScreenWriter.class);
+	private final Logger log = LoggerFactory.getLogger(VmlLabelTileWriter.class);
 
 	private static final float FONT_WIDTH = 7.2f;
 

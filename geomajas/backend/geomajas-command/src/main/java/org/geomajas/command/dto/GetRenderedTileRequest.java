@@ -160,4 +160,20 @@ public class GetRenderedTileRequest extends LayerIdCommandRequest implements Til
 	public void setFeatureIncludes(int featureIncludes) {
 		this.featureIncludes = featureIncludes;
 	}
+
+	@Override
+	public String toString() {
+		return "GetRenderedTileRequest{" +
+				"code=" + code +
+				", scale=" + scale +
+				", panOrigin=" + panOrigin +
+				", filter='" + filter + '\'' +
+				", crs='" + crs + '\'' +
+				", renderer='" + renderer + '\'' +
+				", styleInfo=" + styleInfo +
+				", paintGeometries=" + paintGeometries +
+				", paintLabels=" + paintLabels +
+				", featureIncludes=" + featureIncludes +
+				'}';
+	}
 }

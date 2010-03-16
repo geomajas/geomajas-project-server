@@ -24,27 +24,26 @@
 package org.geomajas.internal.rendering.writers.svg;
 
 import org.geomajas.configuration.FeatureStyleInfo;
-import org.geomajas.internal.layer.feature.InternalFeatureImpl;
-import org.geomajas.internal.layer.tile.InternalTileImpl;
 import org.geomajas.internal.rendering.writers.GraphicsWriter;
 import org.geomajas.layer.feature.InternalFeature;
+import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.rendering.GraphicsDocument;
 import org.geomajas.rendering.RenderException;
 
 /**
- * ???
+ * Writer for tiles.
  * 
- * @author check subversion
+ * @author Jan De Moerloose
+ * @author Pieter De Graef
  */
-public class SvgFeatureTileWriter implements GraphicsWriter {
+public class SvgTileWriter implements GraphicsWriter {
 
 	public void writeObject(Object object, GraphicsDocument document, boolean asChild) throws RenderException {
-		InternalTileImpl tile = (InternalTileImpl) object;
+		InternalTile tile = (InternalTile) object;
 		document.writeElement("g", true);
 		document.writeId("features." + tile.getCode().toString());
 		String style = null;
-		for (InternalFeature f : tile.getFeatures()) {
-			InternalFeatureImpl feature = (InternalFeatureImpl) f;
+		for (InternalFeature feature : tile.getFeatures()) {
 			String nextStyle = feature.getStyleInfo().getIndex() + "";
 			if (style == null || !style.equals(nextStyle)) {
 				if (style != null) {

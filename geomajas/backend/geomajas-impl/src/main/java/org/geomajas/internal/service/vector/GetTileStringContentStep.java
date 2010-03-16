@@ -35,7 +35,6 @@ import org.geomajas.service.GeoService;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
 import org.geomajas.service.pipeline.PipelineStep;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -61,12 +60,11 @@ public class GetTileStringContentStep implements PipelineStep<InternalTile> {
 	public void execute(PipelineContext context, InternalTile response) throws GeomajasException {
 		VectorLayer layer = context.get(PipelineCode.LAYER_KEY, VectorLayer.class);
 		TileMetadata metadata = context.get(PipelineCode.TILE_METADATA_KEY, TileMetadata.class);
-		CoordinateReferenceSystem crs = context.get(PipelineCode.CRS_KEY, CoordinateReferenceSystem.class);
 
 		response.setContentType(VectorTile.VectorTileContentType.STRING_CONTENT);
 		Coordinate panOrigin = new Coordinate(metadata.getPanOrigin().getX(), metadata.getPanOrigin().getY());
 		TilePainter tilePainter = new StringContentTilePainter(layer, metadata.getStyleInfo(), metadata
-				.getRenderer(), metadata.getScale(), panOrigin, geoService, crs);
+				.getRenderer(), metadata.getScale(), panOrigin, geoService);
 		tilePainter.setPaintGeometries(metadata.isPaintGeometries());
 		tilePainter.setPaintLabels(metadata.isPaintLabels());
 		tilePainter.paint(response);

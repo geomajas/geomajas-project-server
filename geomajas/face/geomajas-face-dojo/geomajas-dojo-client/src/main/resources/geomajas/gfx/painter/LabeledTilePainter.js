@@ -132,12 +132,14 @@ dojo.declare("LabeledTilePainter", Painter, {
 		var dY = 0;
 
 		// clipped tiles have the pan origin as origin, so no need to translate
+		/*
 		if(!tile.isClipped()){
 			// To find the origin of the tile, we transform it's bounds to view space.
 			var viewTileBounds = this.transform.worldBoundsToView (tile.getBounds());
 			dX = parseInt(viewTileBounds.getX() - trans.dx);
 			dY = parseInt(viewTileBounds.getY() - trans.dy);
 		}
+		*/
 		return {xx: 1, xy: 0, yx: 0, yy: 1, dx: dX, dy: dY};
 	}
 

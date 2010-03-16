@@ -25,6 +25,7 @@ package org.geomajas.internal.service.vector;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import org.geomajas.global.GeomajasException;
+import org.geomajas.internal.rendering.strategy.TileService;
 import org.geomajas.internal.rendering.strategy.TiledFeatureService;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.InternalFeature;
@@ -88,8 +89,8 @@ public class GetTileGetFeaturesStep implements PipelineStep<InternalTile> {
 		} catch (GeomajasException ge) {
 			throw new RenderException(ge);
 		}
+		TileService.transformTileSizes(response, transform);
 		tiledFeatureService.fillTile(response, features, layer, metadata.getCode(), metadata.getScale(), panOrigin,
 				transform);
-		// TileService.transformScreenSize(tile, transform);
 	}
 }
