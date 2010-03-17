@@ -85,7 +85,7 @@ public abstract class AbstractVectorTile implements Tile, PaintableGroup {
 
 		// Draw all selected features:
 		if (recursive) {
-			getFeatures(GeomajasConstant.FEATURE_INCLUDE_ALL, new LazyLoadCallback() {
+			getFeatures(GeomajasConstant.FEATURE_INCLUDE_NONE, new LazyLoadCallback() {
 				public void execute(List<Feature> response) {
 					for (Feature feature : response) {
 						if (feature != null && feature.isSelected()) {

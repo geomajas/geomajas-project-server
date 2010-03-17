@@ -64,12 +64,11 @@ public final class LazyLoader {
 	public static void lazyLoad(final List<Feature> features, final int featureIncludes,
 			final LazyLoadCallback callback) {
 		List<SearchCriterion> criteria = new ArrayList<SearchCriterion>();
+		final boolean incAttr = (featureIncludes & GeomajasConstant.FEATURE_INCLUDE_ATTRIBUTES) != 0;
+		final boolean incGeom = (featureIncludes & GeomajasConstant.FEATURE_INCLUDE_GEOMETRY) != 0;
 		if (null != features) {
 			for (Feature feature : features) {
-				if (((featureIncludes & GeomajasConstant.FEATURE_INCLUDE_ATTRIBUTES) != 0 &&
-						!feature.isAttributesLoaded()) ||
-						((featureIncludes & GeomajasConstant.FEATURE_INCLUDE_GEOMETRY) != 0 &&
-								!feature.isAttributesLoaded())) {
+				if ((incAttr && !feature.isAttributesLoaded()) || (incGeom && !feature.isGeometryLoaded())) {
 					criteria.add(new SearchCriterion(SearchFeatureRequest.ID_ATTRIBUTE, "=", feature.getId()));
 				}
 			}
@@ -102,10 +101,10 @@ public final class LazyLoader {
 
 							for (org.geomajas.layer.feature.Feature dto : resp.getFeatures()) {
 								Feature feature = features.get(map.get(dto.getId()));
-								if ((featureIncludes & GeomajasConstant.FEATURE_INCLUDE_ATTRIBUTES) != 0) {
+								if (incAttr) {
 									feature.setAttributes(dto.getAttributes());
 								}
-								if ((featureIncludes & GeomajasConstant.FEATURE_INCLUDE_GEOMETRY) != 0) {
+								if (incGeom) {
 									Geometry geometry = GeometryConverter.toGwt(dto.getGeometry());
 									feature.setGeometry(geometry);
 								}
