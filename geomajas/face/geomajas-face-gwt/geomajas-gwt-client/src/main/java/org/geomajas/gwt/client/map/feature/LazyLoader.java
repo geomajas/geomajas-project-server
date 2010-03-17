@@ -80,7 +80,7 @@ public final class LazyLoader {
 			request.setBooleanOperator("OR");
 			request.setCriteria(criteria.toArray(new SearchCriterion[criteria.size()]));
 			request.setCrs(first.getCrs());
-			request.setLayerId(first.getLayer().getId());
+			request.setLayerId(first.getLayer().getServerLayerId());
 			request.setMax(0);
 			request.setFilter(first.getLayer().getFilter());
 			request.setFeatureIncludes(featureIncludes);

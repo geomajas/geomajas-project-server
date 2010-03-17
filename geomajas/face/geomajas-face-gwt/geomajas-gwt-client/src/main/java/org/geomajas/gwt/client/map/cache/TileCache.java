@@ -42,6 +42,7 @@ import org.geomajas.layer.tile.TileCode;
  * Cache for tiles and contained features.
  *
  * @author Pieter De Graef
+ * @author Jan De Moerloose
  */
 public class TileCache implements SpatialCache {
 
@@ -53,7 +54,7 @@ public class TileCache implements SpatialCache {
 
 	protected Map<String, Feature> features;
 
-	private int currentTileLevel; // is never set... can't be right???
+	private int currentTileLevel;
 
 	private int currentMinX;
 
@@ -298,7 +299,7 @@ public class TileCache implements SpatialCache {
 		double x = layerBounds.getX() + tileCode.getX() * tileWidth;
 		double y = layerBounds.getY() + tileCode.getY() * tileHeight;
 		return new Bbox(x, y, tileWidth, tileHeight);
-	}
+}
 
 	/**
 	 * @private Saves the complete array of TileCode objects for the given bounds (and the current scale).

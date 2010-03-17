@@ -49,10 +49,17 @@ public interface Layer<T extends ClientLayerInfo> extends PaintableGroup {
 	/**
 	 * Return this layer's client ID.
 	 *
-	 * @return
+	 * @return id of the client layer
 	 */
 	String getId();
 
+	/**
+	 * Return this layer's server ID.
+	 *
+	 * @return id of the server layer
+	 */
+	String getServerLayerId();
+	
 	// -------------------------------------------------------------------------
 	// Layer status functions:
 	// -------------------------------------------------------------------------

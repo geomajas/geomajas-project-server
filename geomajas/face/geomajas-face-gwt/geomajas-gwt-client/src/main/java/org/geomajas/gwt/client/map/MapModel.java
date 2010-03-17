@@ -82,7 +82,7 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 	 * An ordered list of layers. The drawing order on the map is as follows: the first layer will be placed at the
 	 * bottom, the last layer on top.
 	 */
-	private List<Layer> layers = new ArrayList<Layer>();
+	private List<Layer<?>> layers = new ArrayList<Layer<?>>();
 
 	/** Reference to the <code>MapView</code> object of the <code>MapWidget</code>. */
 	private MapView mapView;
@@ -244,7 +244,7 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 	}
 
 	protected void removeAllLayers() {
-		layers = new ArrayList<Layer>();
+		layers = new ArrayList<Layer<?>>();
 	}
 
 	protected void addLayer(ClientLayerInfo layerInfo) {
@@ -265,12 +265,12 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 	 * Search a layer by it's id.
 	 * 
 	 * @param layerId
-	 *            The layer's ID.
+	 *            The layer's client ID.
 	 * @return Returns either a Layer, or null.
 	 */
-	public Layer getLayer(String layerId) {
+	public Layer<?> getLayer(String layerId) {
 		if (layers != null) {
-			for (Layer layer : layers) {
+			for (Layer<?> layer : layers) {
 				if (layer.getId().equals(layerId)) {
 					return layer;
 				}
@@ -280,10 +280,48 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 	}
 
 	/**
+	 * Get all layers with the specified server layer id.
+	 * 
+	 * @param layerId
+	 *            The layer's server layer ID.
+	 * @return Returns list of layers with the specified server layer id.
+	 */
+	public List<Layer<?>> getLayersByServerId(String serverLayerId) {
+		List<Layer<?>> l = new ArrayList<Layer<?>>();
+		if (layers != null) {
+			for (Layer<?> layer : layers) {
+				if (layer.getServerLayerId().equals(serverLayerId)) {
+					l.add(layer);
+				}
+			}
+		}
+		return l;
+	}
+
+	/**
+	 * Get all vector layers with the specified server layer id.
+	 * 
+	 * @param layerId
+	 *            The layer's server layer ID.
+	 * @return Returns list of layers with the specified server layer id.
+	 */
+	public List<VectorLayer> getVectorLayersByServerId(String serverLayerId) {
+		List<VectorLayer> l = new ArrayList<VectorLayer>();
+		if (layers != null) {
+			for (VectorLayer layer : getVectorLayers()) {
+				if (layer.getServerLayerId().equals(serverLayerId)) {
+					l.add(layer);
+				}
+			}
+		}
+		return l;
+	}
+
+	/**
 	 * Search a vector layer by it's id.
 	 * 
 	 * @param layerId
-	 *            The layer's ID.
+	 *            The layer's client ID.
 	 * @return Returns either a Layer, or null.
 	 */
 	public VectorLayer getVectorLayer(String layerId) {
@@ -304,11 +342,11 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 	 * @param layer
 	 *            The layer to select. If layer is null, then the currently selected layer will be deselected!
 	 */
-	public void selectLayer(Layer layer) {
+	public void selectLayer(Layer<?> layer) {
 		if (layer == null) {
 			deselectLayer(this.getSelectedLayer());
 		} else {
-			Layer selLayer = this.getSelectedLayer();
+			Layer<?> selLayer = this.getSelectedLayer();
 			if (selLayer != null && !layer.getId().equals(selLayer.getId())) {
 				deselectLayer(selLayer);
 			}
@@ -323,16 +361,16 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 	 * @param layer
 	 *            layer to clear
 	 */
-	private void deselectLayer(Layer layer) {
+	private void deselectLayer(Layer<?> layer) {
 		if (layer != null) {
 			layer.setSelected(false);
 			handlerManager.fireEvent(new LayerDeselectedEvent(layer));
 		}
 	}
 	
-	private List<VectorLayer> getVectorLayers() {
+	public List<VectorLayer> getVectorLayers() {
 		ArrayList<VectorLayer> list = new ArrayList<VectorLayer>();
-		for (Layer layer : layers) {
+		for (Layer<?> layer : layers) {
 			if (layer instanceof VectorLayer) {
 				list.add((VectorLayer) layer);
 			}
@@ -382,7 +420,7 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 
 	// Getters and setters:
 
-	public List<Layer> getLayers() {
+	public List<Layer<?>> getLayers() {
 		return layers;
 	}
 

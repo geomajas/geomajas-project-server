@@ -78,7 +78,7 @@ public class FeatureInfoController extends AbstractGraphicsController {
 		request.setSearchType(SearchByLocationRequest.SEARCH_FIRST_LAYER);
 		request.setBuffer(calculateBufferFromPixelTolerance());
 		request.setFeatureIncludes(GwtCommandDispatcher.getInstance().getLazyFeatureIncludesSelect());
-		request.setLayerIds(getLayerIds(mapWidget.getMapModel()));
+		request.setLayerIds(getServerLayerIds(mapWidget.getMapModel()));
 
 		GwtCommand commandRequest = new GwtCommand("command.feature.SearchByLocation");
 		commandRequest.setCommandRequest(request);
@@ -88,11 +88,10 @@ public class FeatureInfoController extends AbstractGraphicsController {
 				if (commandResponse instanceof SearchByLocationResponse) {
 					SearchByLocationResponse response = (SearchByLocationResponse) commandResponse;
 					Map<String, List<org.geomajas.layer.feature.Feature>> featureMap = response.getFeatureMap();
-					for (String layerId : featureMap.keySet()) {
-						Layer<?> layer = mapWidget.getMapModel().getLayer(layerId);
-						if (layer != null && layer instanceof VectorLayer) {
-							VectorLayer vectorLayer = (VectorLayer) layer;
-							List<org.geomajas.layer.feature.Feature> orgFeatures = featureMap.get(layerId);
+					for (String serverLayerId : featureMap.keySet()) {
+						List<VectorLayer> layers = mapWidget.getMapModel().getVectorLayersByServerId(serverLayerId);
+						for (VectorLayer vectorLayer : layers) {
+							List<org.geomajas.layer.feature.Feature> orgFeatures = featureMap.get(serverLayerId);
 							if (orgFeatures.size() > 0) {
 								Feature feature = new Feature(orgFeatures.get(0), vectorLayer);
 								FeatureAttributeWindow window = new FeatureAttributeWindow(feature, false);
@@ -111,11 +110,11 @@ public class FeatureInfoController extends AbstractGraphicsController {
 	// Private methods:
 	// -------------------------------------------------------------------------
 
-	private String[] getLayerIds(MapModel mapModel) {
+	private String[] getServerLayerIds(MapModel mapModel) {
 		List<String> layerIds = new ArrayList<String>();
 		for (Layer<?> layer : mapModel.getLayers()) {
 			if (layer.isShowing()) {
-				layerIds.add(layer.getId());
+				layerIds.add(layer.getServerLayerId());
 			}
 		}
 		return layerIds.toArray(new String[] {});

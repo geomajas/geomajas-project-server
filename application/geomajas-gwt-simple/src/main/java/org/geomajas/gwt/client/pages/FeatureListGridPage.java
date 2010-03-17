@@ -60,7 +60,7 @@ public class FeatureListGridPage extends AbstractTestPage {
 		button1.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				VectorLayer layer = (VectorLayer) getMap().getMapModel().getLayer("structures");
+				VectorLayer layer = (VectorLayer) getMap().getMapModel().getLayer("structuresLayer");
 				table.setLayer(layer);
 				layer.getFeatureStore().getFeatures(GeomajasConstant.FEATURE_INCLUDE_ATTRIBUTES,
 						new LazyLoadCallback() {
@@ -79,7 +79,7 @@ public class FeatureListGridPage extends AbstractTestPage {
 		button1a.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				VectorLayer layer = (VectorLayer) getMap().getMapModel().getLayer("roads");
+				VectorLayer layer = (VectorLayer) getMap().getMapModel().getLayer("roadsLayer");
 				table.setLayer(layer);
 				layer.getFeatureStore().getFeatures(GeomajasConstant.FEATURE_INCLUDE_ATTRIBUTES,
 						new LazyLoadCallback() {

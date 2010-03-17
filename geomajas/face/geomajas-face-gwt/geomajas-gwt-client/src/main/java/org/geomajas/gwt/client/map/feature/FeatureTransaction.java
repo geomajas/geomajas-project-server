@@ -143,7 +143,7 @@ public class FeatureTransaction implements Paintable {
 	 */
 	public org.geomajas.layer.feature.FeatureTransaction toDto() {
 		org.geomajas.layer.feature.FeatureTransaction dto = new org.geomajas.layer.feature.FeatureTransaction();
-		dto.setLayerId(layer.getId());
+		dto.setLayerId(layer.getServerLayerId());
 		if (oldFeatures != null) {
 			org.geomajas.layer.feature.Feature[] oldDto = new org.geomajas.layer.feature.Feature[oldFeatures.length];
 			for (int i = 0; i < oldFeatures.length; i++) {

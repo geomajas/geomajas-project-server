@@ -66,12 +66,13 @@ public class TestSequenceProcessor {
 		layerInfo.setLayerInfo(serverInfo);
 		layerInfo.setMaxExtent(new Bbox(0, 0, 180, 180));
 		layerInfo.setServerLayerId("test");
+		layerInfo.setId("testLayer");
 		List<ClientLayerInfo> layers = new ArrayList<ClientLayerInfo>();
 		layers.add(layerInfo);
 		info.setLayers(layers);
 
 		mapModel.initialize(info);
-		mapModel.selectLayer(mapModel.getLayer("test"));
+		mapModel.selectLayer(mapModel.getLayer("testLayer"));
 
 		Feature feature = new Feature();
 		GeometryFactory factory = new GeometryFactory(4326, -1);

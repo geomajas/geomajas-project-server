@@ -65,8 +65,6 @@ public abstract class AbstractVectorTile implements Tile, PaintableGroup {
 	 */
 	protected Bbox bbox;
 
-	protected String id;
-
 	// -------------------------------------------------------------------------
 	// Constructor:
 	// -------------------------------------------------------------------------
@@ -75,7 +73,6 @@ public abstract class AbstractVectorTile implements Tile, PaintableGroup {
 		this.code = code;
 		this.bbox = bbox;
 		this.cache = cache;
-		id = cache.getLayer().getMapModel().getId() + "." + cache.getLayer().getId() + ".features." + code.toString();
 	}
 
 	// -------------------------------------------------------------------------
@@ -98,13 +95,6 @@ public abstract class AbstractVectorTile implements Tile, PaintableGroup {
 				}
 			});
 		}
-	}
-
-	/**
-	 * Return the unique value of the spatial code for this node.
-	 */
-	public String getId() {
-		return id;
 	}
 
 	// -------------------------------------------------------------------------

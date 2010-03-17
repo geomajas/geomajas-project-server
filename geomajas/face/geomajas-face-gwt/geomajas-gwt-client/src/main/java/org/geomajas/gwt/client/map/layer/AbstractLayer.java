@@ -120,10 +120,24 @@ public abstract class AbstractLayer<T extends ClientLayerInfo> implements Layer<
 	// Getters and setters:
 	//-------------------------------------------------------------------------
 
+	/**
+	 * Return this layer's client ID as defined in the configuration.
+	 *
+	 * @return id of the client layer
+	 */
 	public String getId() {
-		return layerInfo.getServerLayerId();
+		return layerInfo.getId();
 	}
 	
+	/**
+	 * Return this layer's server ID as defined in the configuration.
+	 *
+	 * @return id of the server layer
+	 */
+	public String getServerLayerId() {
+		return layerInfo.getServerLayerId();
+	}
+
 	/**
 	 * Returns a nice name for the group to use in the DOM, not necessarily unique.
 	 * 

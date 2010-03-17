@@ -23,6 +23,7 @@
 
 package org.geomajas.gwt.client.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -212,42 +213,51 @@ public class SelectionController extends RectangleController {
 
 	@Override
 	protected void selectRectangle(Bbox selectedArea) {
-		Layer<?> layer = mapWidget.getMapModel().getSelectedLayer();
-		if (layer != null && layer instanceof VectorLayer) {
-			GwtCommand commandRequest = new GwtCommand("command.feature.SearchByLocation");
-			SearchByLocationRequest request = new SearchByLocationRequest();
-			request.setLayerIds(new String[] { layer.getId() });
-			Polygon polygon = mapWidget.getMapModel().getGeometryFactory().createPolygon(selectedArea);
-			request.setLocation(GeometryConverter.toDto(polygon));
-			request.setCrs(mapWidget.getMapModel().getCrs());
-			request.setQueryType(SearchByLocationRequest.QUERY_INTERSECTS);
-			request.setRatio(coverageRatio);
-			request.setSearchType(SearchByLocationRequest.SEARCH_FIRST_LAYER);
-			request.setFeatureIncludes(GwtCommandDispatcher.getInstance().getLazyFeatureIncludesSelect());
-			commandRequest.setCommandRequest(request);
-			GwtCommandDispatcher.getInstance().execute(commandRequest, new CommandCallback() {
+		GwtCommand commandRequest = new GwtCommand("command.feature.SearchByLocation");
+		SearchByLocationRequest request = new SearchByLocationRequest();
+		request.setLayerIds(getSelectionLayerIds());
+		Polygon polygon = mapWidget.getMapModel().getGeometryFactory().createPolygon(selectedArea);
+		request.setLocation(GeometryConverter.toDto(polygon));
+		request.setCrs(mapWidget.getMapModel().getCrs());
+		request.setQueryType(SearchByLocationRequest.QUERY_INTERSECTS);
+		request.setRatio(coverageRatio);
+		request.setSearchType(SearchByLocationRequest.SEARCH_FIRST_LAYER);
+		request.setFeatureIncludes(GwtCommandDispatcher.getInstance().getLazyFeatureIncludesSelect());
+		commandRequest.setCommandRequest(request);
+		GwtCommandDispatcher.getInstance().execute(commandRequest, new CommandCallback() {
 
-				public void execute(CommandResponse commandResponse) {
-					if (commandResponse instanceof SearchByLocationResponse) {
-						SearchByLocationResponse response = (SearchByLocationResponse) commandResponse;
-						Map<String, List<org.geomajas.layer.feature.Feature>> featureMap = response.getFeatureMap();
-						for (String layerId : featureMap.keySet()) {
-							selectFeatures(featureMap.get(layerId));
-						}
+			public void execute(CommandResponse commandResponse) {
+				if (commandResponse instanceof SearchByLocationResponse) {
+					SearchByLocationResponse response = (SearchByLocationResponse) commandResponse;
+					Map<String, List<org.geomajas.layer.feature.Feature>> featureMap = response.getFeatureMap();
+					for (String layerId : featureMap.keySet()) {
+						selectFeatures(layerId, featureMap.get(layerId));
 					}
 				}
-			});
-		}
+			}
+		});
 	}
 
-	private void selectFeatures(List<org.geomajas.layer.feature.Feature> orgFeatures) {
-		MapModel mapModel = mapWidget.getMapModel();
+	private String[] getSelectionLayerIds() {
 		Layer<?> layer = mapWidget.getMapModel().getSelectedLayer();
+		List<String> ids = new ArrayList<String>();
 		if (layer != null && layer instanceof VectorLayer) {
-			VectorLayer vectorLayer = (VectorLayer) layer;
-			if (!shiftOrCtrl) {
-				mapModel.clearSelectedFeatures();
+			ids.add(layer.getServerLayerId());
+		} else {
+			for (VectorLayer v : mapWidget.getMapModel().getVectorLayers()) {
+				ids.add(v.getServerLayerId());
 			}
+		}
+		return ids.toArray(new String[0]);
+	}
+
+	private void selectFeatures(String serverLayerId, List<org.geomajas.layer.feature.Feature> orgFeatures) {
+		MapModel mapModel = mapWidget.getMapModel();
+		if (!shiftOrCtrl) {
+			mapModel.clearSelectedFeatures();
+		}
+		List<VectorLayer> layers = mapWidget.getMapModel().getVectorLayersByServerId(serverLayerId);
+		for (VectorLayer vectorLayer : layers) {
 			for (org.geomajas.layer.feature.Feature orgFeature : orgFeatures) {
 				Feature feature = new Feature(orgFeature, vectorLayer);
 				vectorLayer.selectFeature(feature);

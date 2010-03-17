@@ -97,7 +97,7 @@ public class DefaultRasterLayerStore implements RasterLayerStore {
 		request.setBbox(new org.geomajas.geometry.Bbox(bounds.getX(), bounds.getY(), bounds.getWidth(), bounds
 				.getHeight()));
 		request.setCrs(getLayer().getMapModel().getCrs());
-		request.setLayerId(getLayer().getId());
+		request.setLayerId(getLayer().getServerLayerId());
 		request.setScale(getLayer().getMapModel().getMapView().getCurrentScale());
 		GwtCommand command = new GwtCommand("command.render.GetRasterData");
 		command.setCommandRequest(request);

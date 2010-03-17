@@ -143,9 +143,9 @@ public class ToggleSelectionAction extends MenuAction {
 			if (!layer.isShowing()) {
 				return;
 			}
-			request.setLayerIds(new String[] { layer.getId() });
+			request.setLayerIds(new String[] { layer.getServerLayerId() });
 		} else {
-			request.setLayerIds(getLayerIds(mapModel));
+			request.setLayerIds(getVisibleServerLayerIds(mapModel));
 		}
 		Point point = mapModel.getGeometryFactory().createPoint(worldPosition);
 		request.setLocation(GeometryConverter.toDto(point));
@@ -212,31 +212,30 @@ public class ToggleSelectionAction extends MenuAction {
 	// Private methods:
 	// -------------------------------------------------------------------------
 
-	private void selectFeatures(String layerId, List<org.geomajas.layer.feature.Feature> orgFeatures,
+	private void selectFeatures(String serverLayerId, List<org.geomajas.layer.feature.Feature> orgFeatures,
 			boolean clearSelection) {
-		MapModel mapModel = mapWidget.getMapModel();
-		VectorLayer layer = mapWidget.getMapModel().getVectorLayer(layerId);
-		if (layer != null) {
+		List<VectorLayer> layers = mapWidget.getMapModel().getVectorLayersByServerId(serverLayerId);
+		if (clearSelection) {
+			mapWidget.getMapModel().clearSelectedFeatures();
+		}
+		for (VectorLayer vectorLayer : layers) {
 			for (org.geomajas.layer.feature.Feature orgFeature : orgFeatures) {
 				org.geomajas.gwt.client.map.feature.Feature feature = new org.geomajas.gwt.client.map.feature.Feature(
-						orgFeature, layer);
-				if (layer.isFeatureSelected(feature.getId())) {
-					layer.deselectFeature(feature);
+						orgFeature, vectorLayer);
+				if (vectorLayer.isFeatureSelected(feature.getId())) {
+					vectorLayer.deselectFeature(feature);
 				} else {
-					if (clearSelection) {
-						mapModel.clearSelectedFeatures();
-					}
-					layer.selectFeature(feature);
+					vectorLayer.selectFeature(feature);
 				}
 			}
 		}
 	}
 
-	private String[] getLayerIds(MapModel mapModel) {
+	private String[] getVisibleServerLayerIds(MapModel mapModel) {
 		List<String> layerIds = new ArrayList<String>();
 		for (Layer<?> layer : mapModel.getLayers()) {
 			if (layer.isShowing()) {
-				layerIds.add(layer.getId());
+				layerIds.add(layer.getServerLayerId());
 			}
 		}
 		return layerIds.toArray(new String[] {});

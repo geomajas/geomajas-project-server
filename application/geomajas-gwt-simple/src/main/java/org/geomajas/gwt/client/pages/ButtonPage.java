@@ -229,7 +229,7 @@ public class ButtonPage extends AbstractTestPage {
 		addButton2("Select a layer", new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				getMap().getMapModel().selectLayer(getMap().getMapModel().getLayer("structures"));
+				getMap().getMapModel().selectLayer(getMap().getMapModel().getLayer("structuresLayer"));
 			}
 		});
 

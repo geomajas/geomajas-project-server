@@ -321,7 +321,7 @@ public class FeatureSearch extends Canvas {
 				}
 				request.setCriteria(criteria.toArray(new SearchCriterion[0]));
 				request.setCrs(mapModel.getCrs());
-				request.setLayerId(layer.getId());
+				request.setLayerId(layer.getServerLayerId());
 				request.setMax(maximumResultSize);
 				request.setFilter(layer.getFilter());
 				request.setFeatureIncludes(GwtCommandDispatcher.getInstance().getLazyFeatureIncludesSelect());

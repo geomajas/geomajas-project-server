@@ -165,7 +165,7 @@ public class VectorTile extends AbstractVectorTile {
 		request.setCode(code);
 		request.setCrs(cache.getLayer().getMapModel().getCrs());
 		request.setFilter(filter);
-		request.setLayerId(cache.getLayer().getId());
+		request.setLayerId(cache.getLayer().getServerLayerId());
 		// always paint geometries in first fetch
 		request.setPaintGeometries(!rendered);
 		request.setPaintLabels(cache.getLayer().isLabeled());
