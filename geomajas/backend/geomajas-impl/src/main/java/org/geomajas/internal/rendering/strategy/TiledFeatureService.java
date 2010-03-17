@@ -76,11 +76,6 @@ public class TiledFeatureService {
 	private static int MAXIMUM_TILE_COORDINATE = 10000;
 
 	/**
-	 * The tile's maximum bounds in screen space. Needed for clipping calculations.
-	 */
-	private Envelope maxScreenBbox;
-
-	/**
 	 * Paint an individual feature. In other words transform the generic feature object into a
 	 * <code>VectorFeature</code>, and prepare it for a certain tile.
 	 * 
@@ -104,19 +99,21 @@ public class TiledFeatureService {
 	public void fillTile(InternalTile tile, List<InternalFeature> features, VectorLayer layer, TileCode code,
 			double scale, Coordinate panOrigin, MathTransform transform) throws GeomajasException {
 		try {
-			Envelope tileBounds = tile.getBounds();
 			Envelope layerBounds = JTS.transform(converterService.toInternal(layer.getLayerInfo().getMaxExtent()),
 					transform);
+			Geometry maxScreenBbox = null; // The tile's maximum bounds in screen space. Used for clipping.
 			for (InternalFeature feature : features) {
-				if (!addTileCode(tile, tileBounds, layerBounds, feature.getGeometry())) {
+				if (!addTileCode(tile, layerBounds, feature.getGeometry())) {
 					log.debug("add feature");
 					// clip feature if necessary
 					if (exceedsScreenDimensions(feature, scale)) {
 						InternalFeatureImpl vectorFeature = new InternalFeatureImpl(feature);
 						tile.setClipped(true);
 						vectorFeature.setClipped(true);
-						Geometry clipped = JTS.toGeometry(getMaxScreenEnvelope(layer, code, scale, panOrigin)).
-								intersection(feature.getGeometry());
+						if (null == maxScreenBbox) {
+							maxScreenBbox = JTS.toGeometry(getMaxScreenEnvelope(layer, code, scale, panOrigin));
+						}
+						Geometry clipped = maxScreenBbox.intersection(feature.getGeometry());
 						vectorFeature.setClippedGeometry(clipped);
 						tile.addFeature(vectorFeature);
 					} else {
@@ -135,38 +132,36 @@ public class TiledFeatureService {
 
 	/**
 	 * Add dependent tiles for this geometry.
+	 * <p/>
+	 * It checks the correct tile for the first coordinate in the geometry which is ind
 	 * 
 	 * @param tile
 	 *            tile in which to add dependent tile
-	 * @param tileBounds tile bounds in map coordinates
 	 * @param layerBounds layer bounds in map coordinates
 	 * @param geometry geometry for feature
 	 * @return true when tilecode was added and feature will be contained in another tile
 	 */
-	private boolean addTileCode(InternalTile tile, Envelope tileBounds, Envelope layerBounds, Geometry geometry) {
+	private boolean addTileCode(InternalTile tile, Envelope layerBounds, Geometry geometry) {
 		if (log.isDebugEnabled()) {
-			log.debug("addTileCode " + tileBounds + " " + layerBounds + " " + geometry);
+			log.debug("addTileCode {} {}", layerBounds, geometry);
 		}
 		TileCode tileCode = tile.getCode();
 		int tileX = tileCode.getX();
 		int tileY = tileCode.getY();
 		for (Coordinate coordinate : geometry.getCoordinates()) {
 			if (layerBounds.contains(coordinate)) {
-				if (tileBounds.contains(coordinate)) {
-					return false;
-				} else {
-					int i = (int) ((coordinate.x - layerBounds.getMinX()) / tile.getTileWidth());
-					int j = (int) ((coordinate.y - layerBounds.getMinY()) / tile.getTileHeight());
+				int i = (int) ((coordinate.x - layerBounds.getMinX()) / tile.getTileWidth());
+				int j = (int) ((coordinate.y - layerBounds.getMinY()) / tile.getTileHeight());
+				log.debug("feature in tile {}-{}", i, j);
 
-					// check for possible rounding problems, when i,j is "this" tile
-					if (i == tileX && j == tileY) {
-						return false;
-					}
-					
-					int level = tile.getCode().getTileLevel();
-					tile.addCode(level, i, j);
-					return true;
+				// check for possible rounding problems, when i,j is "this" tile
+				if (i == tileX && j == tileY) {
+					return false;
 				}
+
+				int level = tile.getCode().getTileLevel();
+				tile.addCode(level, i, j);
+				return true;
 			}
 		}
 		// all points of the geometry are outside all tiles. Should be put in tile 0,0
@@ -212,26 +207,21 @@ public class TiledFeatureService {
 	 * @return max screen bbox
 	 */
 	private Envelope getMaxScreenEnvelope(VectorLayer layer, TileCode code, double scale, Coordinate panOrigin) {
-		if (maxScreenBbox == null) {
-			Envelope max = converterService.toInternal(layer.getLayerInfo().getMaxExtent());
-			double div = Math.pow(2, code.getTileLevel());
-			int tileWidthPx = (int) Math.ceil(scale * max.getWidth() / div);
-			double tileWidth = tileWidthPx / scale;
-			int tileHeightPx = (int) Math.ceil(scale * max.getWidth() / div);
-			double tileHeight = tileHeightPx / scale;
-			int nrOfTilesX = Math.max(1, MAXIMUM_TILE_COORDINATE / tileWidthPx);
-			int nrOfTilesY = Math.max(1, MAXIMUM_TILE_COORDINATE / tileHeightPx);
+		Envelope max = converterService.toInternal(layer.getLayerInfo().getMaxExtent());
+		double div = Math.pow(2, code.getTileLevel());
+		int tileWidthPx = (int) Math.ceil(scale * max.getWidth() / div);
+		double tileWidth = tileWidthPx / scale;
+		int tileHeightPx = (int) Math.ceil(scale * max.getWidth() / div);
+		double tileHeight = tileHeightPx / scale;
+		int nrOfTilesX = Math.max(1, MAXIMUM_TILE_COORDINATE / tileWidthPx);
+		int nrOfTilesY = Math.max(1, MAXIMUM_TILE_COORDINATE / tileHeightPx);
 
-			double x1 = panOrigin.x - nrOfTilesX * tileWidth;
-			// double x2 = x1 + (nrOfTilesX * tileWidth * 2);
-			double x2 = panOrigin.x + nrOfTilesX * tileWidth;
-			double y1 = panOrigin.y - nrOfTilesY * tileHeight;
-			// double y2 = y1 + (nrOfTilesY * tileHeight * 2);
-			double y2 = panOrigin.y + nrOfTilesY * tileHeight;
-			maxScreenBbox = new Envelope(x1, x2, y1, y2);
-			// maxScreenEnvelope ;= new Envelope(panOrigin.x - nrOfTilesX * tileWidth, panOrigin.x + nrOfTilesX
-			// * tileWidth, panOrigin.y - nrOfTilesY * tileHeight, panOrigin.y + nrOfTilesY * tileHeight);
-		}
-		return maxScreenBbox;
+		double x1 = panOrigin.x - nrOfTilesX * tileWidth;
+		// double x2 = x1 + (nrOfTilesX * tileWidth * 2);
+		double x2 = panOrigin.x + nrOfTilesX * tileWidth;
+		double y1 = panOrigin.y - nrOfTilesY * tileHeight;
+		// double y2 = y1 + (nrOfTilesY * tileHeight * 2);
+		double y2 = panOrigin.y + nrOfTilesY * tileHeight;
+		return new Envelope(x1, x2, y1, y2);
 	}
 }
