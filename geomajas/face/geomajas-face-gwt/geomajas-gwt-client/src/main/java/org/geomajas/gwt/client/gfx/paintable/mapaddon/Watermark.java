@@ -23,10 +23,10 @@
 
 package org.geomajas.gwt.client.gfx.paintable.mapaddon;
 
-import org.geomajas.geometry.Coordinate;
+import org.geomajas.gwt.client.Geomajas;
 import org.geomajas.gwt.client.gfx.PainterVisitor;
-import org.geomajas.gwt.client.gfx.paintable.Text;
-import org.geomajas.gwt.client.gfx.style.FontStyle;
+import org.geomajas.gwt.client.gfx.paintable.Image;
+import org.geomajas.gwt.client.gfx.style.PictureStyle;
 import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.widget.MapWidget;
 
@@ -41,23 +41,17 @@ public class Watermark extends MapAddon {
 
 	private MapWidget map;
 
-	private Text text1;
-
-	private Text text2;
-
-	private Text text3;
+	private Image image;
 
 	// Constructor:
 
 	public Watermark(String id, MapWidget map) {
-		super(id, 122, 12);
-		this.map = map;
-		text1 = new Text(id + "-text1", "powered by", getUpperLeftCorner(), new FontStyle("#000000", 10, "Arial",
-				"normal", "normal"));
-		text2 = new Text(id + "-text2", "geo", getUpperLeftCorner(), new FontStyle("#000000", 10, "Arial", "bold",
-				"normal"));
-		text3 = new Text(id + "-text3", "majas", getUpperLeftCorner(), new FontStyle("#259447", 10, "Arial", "bold",
-				"normal"));
+		super(id, 125, 12);
+
+		image = new Image(id + "-img");
+		image.setBounds(new Bbox(0, 0, 125, 12));
+		image.setHref(Geomajas.getIsomorphicDir() + "geomajas/temp/powered_by_geomajas.gif");
+		image.setStyle(new PictureStyle(1));
 	}
 
 	// MapAddon implementation:
@@ -65,16 +59,10 @@ public class Watermark extends MapAddon {
 	public void accept(PainterVisitor visitor, Bbox bounds, boolean recursive) {
 		map.getGraphics().drawGroup(map.getMapModel().getScreenGroup(), this);
 
-		text1.setPosition(getUpperLeftCorner());
-		text2.setPosition(new Coordinate(getUpperLeftCorner().getX() + 62, getUpperLeftCorner().getY()));
-		text3.setPosition(new Coordinate(getUpperLeftCorner().getX() + 83, getUpperLeftCorner().getY()));
-
-		map.getGraphics().drawText(this, text1.getId(), text1.getContent(), text1.getPosition(),
-				(FontStyle) text1.getStyle());
-		map.getGraphics().drawText(this, text2.getId(), text2.getContent(), text2.getPosition(),
-				(FontStyle) text2.getStyle());
-		map.getGraphics().drawText(this, text3.getId(), text3.getContent(), text3.getPosition(),
-				(FontStyle) text3.getStyle());
+		image.getBounds().setX(getUpperLeftCorner().getX());
+		image.getBounds().setY(getUpperLeftCorner().getY());
+		map.getGraphics().drawImage(this, image.getId(), image.getHref(), image.getBounds(),
+				(PictureStyle) image.getStyle());
 	}
 
 	public void onDraw() {
