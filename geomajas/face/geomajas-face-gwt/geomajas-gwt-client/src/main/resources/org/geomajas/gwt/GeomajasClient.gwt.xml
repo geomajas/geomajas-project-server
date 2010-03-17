@@ -5,6 +5,9 @@
 	<inherits name="org.geomajas.GeomajasDto"/>
 	<extend-property name="locale" values="nl"/>
 
+	<!-- make sure the default is there -->
+	<source path="client"/>
+
 	<!-- Geomajas GWT source code, exclude unit tests -->
 
 	<source path="client/gfx/paintable">
