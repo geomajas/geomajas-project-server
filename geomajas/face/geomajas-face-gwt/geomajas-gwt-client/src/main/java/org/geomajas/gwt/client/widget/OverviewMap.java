@@ -41,6 +41,9 @@ import org.geomajas.gwt.client.spatial.geometry.LinearRing;
 import org.geomajas.gwt.client.spatial.geometry.Polygon;
 import org.geomajas.gwt.client.spatial.transform.WorldViewTransformer;
 
+import com.smartgwt.client.widgets.events.ResizedEvent;
+import com.smartgwt.client.widgets.events.ResizedHandler;
+
 /**
  * MapWidget that listens to another MapWidget and shows an overview of it.
  * 
@@ -48,6 +51,7 @@ import org.geomajas.gwt.client.spatial.transform.WorldViewTransformer;
  */
 public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 
+	
 	private static final String TARGET_RETICLE_IMAGE = "geomajas/target.gif";
 
 	/** Reference to the main map, that this overview map is to follow. */
@@ -114,6 +118,7 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 				updateMaxExtent();
 			}
 		});
+		addResizedHandler(new OverviewMapResizedHandler());
 	}
 
 	/**
@@ -368,4 +373,19 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 	private native String getIsomorphicDir()/*-{
 											return $wnd.isomorphicDir;
 											}-*/;
+	/**
+	 * Updates the max extent on resize.
+	 * 
+	 * @author Jan De Moerloose
+	 *
+	 */
+	public class OverviewMapResizedHandler implements ResizedHandler {
+
+		public void onResized(ResizedEvent event) {
+			updateMaxExtent();
+		}
+
+	}
+
+
 }
