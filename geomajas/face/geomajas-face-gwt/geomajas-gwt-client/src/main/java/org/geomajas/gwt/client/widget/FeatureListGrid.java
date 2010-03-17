@@ -375,7 +375,7 @@ public class FeatureListGrid extends ListGrid implements FeatureSelectionHandler
 			ListGridRecord[] records = this.getRecords();
 			for (int i = 0; i < records.length; i++) {
 				if (records[i].getAttribute("featureId").equals(feature.getId())) {
-					deselectRecord(i);
+					deselectRecord(records[i]);
 					break;
 				}
 			}

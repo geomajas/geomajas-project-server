@@ -134,6 +134,10 @@ public class ToggleSelectionAction extends MenuAction {
 		if (null == coordinate) {
 			return;
 		}
+		// we can clear here !
+		if (clearSelection) {
+			mapWidget.getMapModel().clearSelectedFeatures();
+		}
 		MapModel mapModel = mapWidget.getMapModel();
 		Coordinate worldPosition = mapModel.getMapView().getWorldViewTransformer().viewToWorld(coordinate);
 		GwtCommand commandRequest = new GwtCommand("command.feature.SearchByLocation");
@@ -151,7 +155,7 @@ public class ToggleSelectionAction extends MenuAction {
 		request.setLocation(GeometryConverter.toDto(point));
 		request.setCrs(mapWidget.getMapModel().getCrs());
 		request.setQueryType(SearchByLocationRequest.QUERY_INTERSECTS);
-		request.setSearchType(SearchByLocationRequest.SEARCH_FIRST_LAYER);
+		request.setSearchType(SearchByLocationRequest.SEARCH_ALL_LAYERS);
 		request.setBuffer(calculateBufferFromPixelTolerance());
 		request.setFeatureIncludes(GwtCommandDispatcher.getInstance().getLazyFeatureIncludesSelect());
 		commandRequest.setCommandRequest(request);
@@ -162,7 +166,7 @@ public class ToggleSelectionAction extends MenuAction {
 					SearchByLocationResponse response = (SearchByLocationResponse) commandResponse;
 					Map<String, List<Feature>> featureMap = response.getFeatureMap();
 					for (String layerId : featureMap.keySet()) {
-						selectFeatures(layerId, featureMap.get(layerId), clearSelection);
+						selectFeatures(layerId, featureMap.get(layerId));
 					}
 				}
 			}
@@ -212,12 +216,8 @@ public class ToggleSelectionAction extends MenuAction {
 	// Private methods:
 	// -------------------------------------------------------------------------
 
-	private void selectFeatures(String serverLayerId, List<org.geomajas.layer.feature.Feature> orgFeatures,
-			boolean clearSelection) {
+	private void selectFeatures(String serverLayerId, List<org.geomajas.layer.feature.Feature> orgFeatures) {
 		List<VectorLayer> layers = mapWidget.getMapModel().getVectorLayersByServerId(serverLayerId);
-		if (clearSelection) {
-			mapWidget.getMapModel().clearSelectedFeatures();
-		}
 		for (VectorLayer vectorLayer : layers) {
 			for (org.geomajas.layer.feature.Feature orgFeature : orgFeatures) {
 				org.geomajas.gwt.client.map.feature.Feature feature = new org.geomajas.gwt.client.map.feature.Feature(
@@ -233,7 +233,7 @@ public class ToggleSelectionAction extends MenuAction {
 
 	private String[] getVisibleServerLayerIds(MapModel mapModel) {
 		List<String> layerIds = new ArrayList<String>();
-		for (Layer<?> layer : mapModel.getLayers()) {
+		for (VectorLayer layer : mapModel.getVectorLayers()) {
 			if (layer.isShowing()) {
 				layerIds.add(layer.getServerLayerId());
 			}
