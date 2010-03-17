@@ -170,6 +170,8 @@ public class SearchFeatureRequest extends LayerIdCommandRequest {
 	public String toString() {
 		return "SearchFeatureRequest{" +
 				"max=" + max +
+				", layerId=" + getLayerId() +
+				", crs=" + getCrs() +
 				", booleanOperator='" + booleanOperator + '\'' +
 				", criteria=" + (criteria == null ? null : Arrays.asList(criteria)) +
 				", filter='" + filter + '\'' +

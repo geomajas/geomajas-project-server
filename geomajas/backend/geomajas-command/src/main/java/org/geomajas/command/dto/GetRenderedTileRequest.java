@@ -165,6 +165,8 @@ public class GetRenderedTileRequest extends LayerIdCommandRequest implements Til
 	public String toString() {
 		return "GetRenderedTileRequest{" +
 				"code=" + code +
+				", layerId=" + getLayerId() +
+				", crs=" + getCrs() +
 				", scale=" + scale +
 				", panOrigin=" + panOrigin +
 				", filter='" + filter + '\'' +
