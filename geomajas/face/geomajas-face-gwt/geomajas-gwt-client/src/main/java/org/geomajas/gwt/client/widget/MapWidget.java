@@ -203,7 +203,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 			}
 
 			// Register the watermark MapAddon:
-			Watermark watermark = new Watermark(id + ".watermark");
+			Watermark watermark = new Watermark(id + "-watermark", this);
 			watermark.setAlignment(Alignment.RIGHT);
 			watermark.setVerticalAlignment(VerticalAlignment.BOTTOM);
 			watermark.setHorizontalMargin(10);

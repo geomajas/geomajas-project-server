@@ -53,7 +53,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
  */
 public class ControllerOnElementSample extends SamplePanel {
 
-	private static final String IMAGE = "geomajas/smile.png";
+	private static final String IMAGE = "geomajas/example/images/smile.png";
 
 	public static final String TITLE = "ControllerOnElement";
 

@@ -26,6 +26,7 @@ package org.geomajas.gwt.client.gfx.vml;
 import org.geomajas.configuration.SymbolInfo;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.gfx.AbstractGraphicsContext;
+import org.geomajas.gwt.client.gfx.PaintableGroup;
 import org.geomajas.gwt.client.gfx.style.FontStyle;
 import org.geomajas.gwt.client.gfx.style.PictureStyle;
 import org.geomajas.gwt.client.gfx.style.ShapeStyle;
@@ -38,6 +39,7 @@ import org.geomajas.gwt.client.spatial.geometry.LineString;
 import org.geomajas.gwt.client.spatial.geometry.Polygon;
 import org.geomajas.gwt.client.util.DOM;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.user.client.Element;
 import com.smartgwt.client.util.SC;
@@ -69,6 +71,10 @@ public class VmlGraphicsContext extends AbstractGraphicsContext {
 	public VmlGraphicsContext() {
 		// Initialize the VML namespace:
 		DOM.initVMLNamespace();
+	}
+
+	public PaintableGroup getDefsGroup() {
+		return null;
 	}
 
 	/**
@@ -156,6 +162,7 @@ public class VmlGraphicsContext extends AbstractGraphicsContext {
 		if (line != null) {
 			DOM.setElementAttribute(element, "path", VmlPathDecoder.decode(line));
 			DOM.setStyleAttribute(element, "position", "absolute");
+			applyElementSize(element, width, height, false);
 		}
 	}
 
@@ -177,6 +184,7 @@ public class VmlGraphicsContext extends AbstractGraphicsContext {
 			DOM.setStyleAttribute(element, "position", "absolute");
 			DOM.setElementAttribute(element, "fill-rule", "evenodd");
 			DOM.setElementAttribute(element, "path", VmlPathDecoder.decode(polygon));
+			applyElementSize(element, getWidth(), getHeight(), false);
 		}
 	}
 
@@ -217,23 +225,22 @@ public class VmlGraphicsContext extends AbstractGraphicsContext {
 		if (symbol == null) {
 			return;
 		}
-		// Step1: get or create the shapetype element:
-		// check existence
+
+		// Step1: get or create the shape-type element:
 		Element shapeType = DOM.getElementById(id);
 		boolean isNew = (shapeType == null);
-		// create or update
-		shapeType = createOrUpdateElement(DOM.NS_VML, parent, id, "symbol", style, transformation, false);
-		DOM.setStyleAttribute(shapeType, "visibility", "hidden");
+		shapeType = createOrUpdateElement(DOM.NS_VML, null, id, "shapetype", style, transformation, false);
 
 		// If it is a new shape-type, define the necessary elements:
 		if (isNew) {
+			GWT.log("ShapeType is new", null);
 			Element formulas = DOM.createElementNS(DOM.NS_VML, "formulas");
 			shapeType.appendChild(formulas);
+			DOM.setElementAttribute(shapeType, "coordsize", "1000 1000");
 
-			// prepare 4 formulas TODO: how to extend this for complex geometries????
+			// Prepare 4 formulas TODO: how to extend this for complex geometries????
 			for (int i = 0; i < 4; i++) {
-				Element formula = DOM.createElementNS(DOM.NS_VML, "f");
-				formulas.appendChild(formula);
+				formulas.appendChild(DOM.createElementNS(DOM.NS_VML, "f"));
 			}
 		}
 
@@ -250,15 +257,15 @@ public class VmlGraphicsContext extends AbstractGraphicsContext {
 			DOM.setElementAttribute(formula, "eqn", "sum #0 " + "0 " + (int) (width / 2));
 			formulas.getItem(0).getParentNode().replaceChild(formula, formulas.getItem(0));
 
-			formula = DOM.createElementNS(DOM.NS_VML, "f");
+			formula = (Element) formulas.getItem(1);
 			DOM.setElementAttribute(formula, "eqn", "sum #1 " + "0 " + (int) (height / 2));
 			formulas.getItem(0).getParentNode().replaceChild(formula, formulas.getItem(1));
 
-			formula = DOM.createElementNS(DOM.NS_VML, "f");
+			formula = (Element) formulas.getItem(2);
 			DOM.setElementAttribute(formula, "eqn", "sum #0 " + (int) (width / 2) + " 0");
 			formulas.getItem(0).getParentNode().replaceChild(formula, formulas.getItem(2));
 
-			formula = DOM.createElementNS(DOM.NS_VML, "f");
+			formula = (Element) formulas.getItem(3);
 			DOM.setElementAttribute(formula, "eqn", "sum #1 " + (int) (height / 2) + " 0");
 			formulas.getItem(0).getParentNode().replaceChild(formula, formulas.getItem(3));
 
@@ -267,7 +274,6 @@ public class VmlGraphicsContext extends AbstractGraphicsContext {
 
 			// Define a circle:
 			NodeList<com.google.gwt.dom.client.Element> formulas = shapeType.getElementsByTagName("f");
-			float radius = symbol.getCircle().getR();
 
 			// Create the circle definition:
 			Element formula = DOM.createElementNS(DOM.NS_VML, "f");
@@ -278,6 +284,7 @@ public class VmlGraphicsContext extends AbstractGraphicsContext {
 			DOM.setElementAttribute(formula, "eqn", "sum #1 0 0");
 			formulas.getItem(0).getParentNode().replaceChild(formula, formulas.getItem(1));
 
+			float radius = symbol.getCircle().getR();
 			DOM.setElementAttribute(shapeType, "path", "al @0 @1 " + radius + " " + radius + " 0 23592600x");
 		}
 	}
@@ -297,8 +304,20 @@ public class VmlGraphicsContext extends AbstractGraphicsContext {
 	 *            The name of the predefined ShapeType. This symbol will create a reference to this predefined type and
 	 *            take on it's characteristics.
 	 */
+	public void drawSymbol2(Object parent, String name, Coordinate position, ShapeStyle style, String shapeTypeId) {
+		Element group = createOrUpdateElement(DOM.NS_VML, parent, name, "group", null);
+		applyAbsolutePosition(group, new Coordinate(0, 0));
+		applyElementSize(group, width, height, true);
+
+		String content = "<vml:shape style='position:absolute;width:100%;height:100%;left:" + position.getX()
+				+ "px; top:" + position.getY() + "px;' type=#" + shapeTypeId + " coordsize='" + width + "," + height
+				+ "'></vml:shape>";
+		group.setInnerHTML(content);
+		GWT.log(getRootElement().getInnerHTML(), null);
+	}
+
 	public void drawSymbol(Object parent, String name, Coordinate position, ShapeStyle style, String shapeTypeId) {
-		Element shape = createOrUpdateElement(DOM.NS_VML, parent, name, "shape", style, null);
+		Element shape = createOrUpdateElement(DOM.NS_VML, parent, name, "shape", null, null);
 		if (shapeTypeId != null) {
 			shape.setAttribute("type", "#" + shapeTypeId);
 		} else if (shape.getParentNode() instanceof Element) {
@@ -307,8 +326,10 @@ public class VmlGraphicsContext extends AbstractGraphicsContext {
 		}
 		if (position != null) {
 			applyAbsolutePosition(shape, position);
+			DOM.setStyleAttribute(shape, "width", "100%");
+			DOM.setStyleAttribute(shape, "height", "100%");
+			DOM.setElementAttribute(shape, "coordsize", width + " " + height);
 		}
-
 	}
 
 	/**
@@ -391,6 +412,7 @@ public class VmlGraphicsContext extends AbstractGraphicsContext {
 		rootNode.setId(id);
 		applyElementSize(rootNode, width, height, false);
 		DOM.setStyleAttribute(rootNode, "clip", "rect(0 " + width + "px " + height + "px 0)");
+		DOM.setStyleAttribute(rootNode, "overflow", "hidden");
 		parent.appendChild(rootNode);
 	}
 
@@ -458,7 +480,7 @@ public class VmlGraphicsContext extends AbstractGraphicsContext {
 	 *            the real strength of a group element. Never apply transformations on any other kind of element.
 	 * @param style
 	 *            Add a style to a group.
-	 * @return the group element          
+	 * @return the group element
 	 */
 	protected Element createOrUpdateGroup(Object parent, Object object, Matrix transformation, Style style) {
 		Element group = null;
@@ -469,14 +491,26 @@ public class VmlGraphicsContext extends AbstractGraphicsContext {
 		// create if necessary
 		if (group == null) {
 			group = createGroup(DOM.NS_VML, parent, object, "group");
-			Element parentElement = getGroup(parent);
+		}
+
+		if (group != null) {
+			// Get the parent element:
+			Element parentElement = null;
+			if (parent == null) {
+				parentElement = getRootElement();
+			} else {
+				parentElement = getGroup(parent);
+			}
+
 			// Inherit size from parent if not specified
-			String width = DOM.getStyleAttribute(parentElement, "width");
-			String height = DOM.getStyleAttribute(parentElement, "height");
-			// sizes should be numbers + px
-			int w = Integer.parseInt(width.substring(0, width.indexOf('p')));
-			int h = Integer.parseInt(height.substring(0, height.indexOf('p')));
-			applyElementSize(group, w, h, true);
+			if (parentElement != null) {
+				String width = DOM.getStyleAttribute(parentElement, "width");
+				String height = DOM.getStyleAttribute(parentElement, "height");
+				// sizes should be numbers + px
+				int w = Integer.parseInt(width.substring(0, width.indexOf('p')));
+				int h = Integer.parseInt(height.substring(0, height.indexOf('p')));
+				applyElementSize(group, w, h, true);
+			}
 
 			// Determine element position:
 			if (transformation != null) {
@@ -535,9 +569,16 @@ public class VmlGraphicsContext extends AbstractGraphicsContext {
 	private Element createOrUpdateElement(String namespace, Object parent, String name, String type, Style style,
 			Matrix transformation, boolean generateId) {
 
-		boolean isNew = (getElement(parent, name) == null);
+		boolean isNew = true;
+		if (generateId) {
+			isNew = (getElement(parent, name) == null);
+		} else {
+			isNew = (DOM.getElementById(name) == null);
+		}
+
 		Element element = createOrUpdateElement(namespace, parent, name, type, transformation, generateId);
 		Element parentElement = getGroup(parent);
+
 		// Part 2: Apply styling and/or transformation on the element:
 		if (namespace != null && namespace.equals(DOM.NS_VML)) {
 			if (isNew) {
@@ -552,7 +593,7 @@ public class VmlGraphicsContext extends AbstractGraphicsContext {
 				if (coordsize != null && coordsize.length() > 0) {
 					element.setAttribute("coordsize", coordsize);
 					DOM.setStyleAttribute(element, "width", "100%"); // dangerous! coordsize of the next element will
-																		// fail...
+					// fail...
 					DOM.setStyleAttribute(element, "height", "100%"); // better use absolute px.
 				} else {
 					applyElementSize(element, getWidth(), getHeight(), true);

@@ -241,13 +241,14 @@ public class GraphicsWidget extends FocusWidget implements MenuGraphicsContext, 
 
 	/**
 	 * Return the element name for the specified id.
+	 * 
 	 * @param id
 	 * @return the name of the element
 	 */
 	public String getNameById(String id) {
 		return delegate.getNameById(id);
 	}
-	
+
 	/**
 	 * Return the (enclosing) group for the specified element id.
 	 * 
@@ -266,7 +267,7 @@ public class GraphicsWidget extends FocusWidget implements MenuGraphicsContext, 
 	public String getRightButtonName() {
 		return delegate.getNameById(rightButtonTarget);
 	}
-	
+
 	/**
 	 * Retrieve the DOM element ID of the last right mouse event.
 	 * 
@@ -439,7 +440,7 @@ public class GraphicsWidget extends FocusWidget implements MenuGraphicsContext, 
 	public void setBackgroundColor(String color) {
 		base.setBackgroundColor(color);
 	}
-	
+
 	/**
 	 * Resets the graphicsWidget. Completely clears the GraphicsWidget and initialize it again
 	 */

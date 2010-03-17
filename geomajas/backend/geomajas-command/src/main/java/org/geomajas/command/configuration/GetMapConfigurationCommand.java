@@ -80,7 +80,7 @@ public class GetMapConfigurationCommand implements Command<GetMapConfigurationRe
 			}
 		}
 		if (response.getMapInfo() == null) {
-			throw new GeomajasException(ExceptionCode.MAP_NOT_FOUND, request.getApplicationId(), request.getMapId());
+			throw new GeomajasException(ExceptionCode.MAP_NOT_FOUND, request.getMapId(), request.getApplicationId());
 		}
 	}
 

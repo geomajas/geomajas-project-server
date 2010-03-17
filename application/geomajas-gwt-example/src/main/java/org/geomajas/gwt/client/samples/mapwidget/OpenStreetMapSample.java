@@ -61,7 +61,6 @@ public class OpenStreetMapSample extends SamplePanel {
 		// Set a panning controller on the map:
 		map.setController(new PanController(map));
 		layout.addMember(map);
-
 		return layout;
 	}
 

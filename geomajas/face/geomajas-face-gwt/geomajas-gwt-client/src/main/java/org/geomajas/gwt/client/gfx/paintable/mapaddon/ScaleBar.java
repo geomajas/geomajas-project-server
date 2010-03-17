@@ -74,6 +74,8 @@ public class ScaleBar extends MapAddon {
 
 	private Rectangle bottomLine;
 
+	private Rectangle dummy;
+
 	private int[] lengths = new int[] { 1, 2, 5, 10, 25, 50, 100, 250, 500, 750, 1000, 2000, 5000, 10000, 25000, 50000,
 			75000, 100000, 250000, 500000, 750000, 1000000, 2000000, 5000000, 10000000 };
 
@@ -108,6 +110,11 @@ public class ScaleBar extends MapAddon {
 
 	public void accept(PainterVisitor visitor, Bbox bounds, boolean recursive) {
 		map.getGraphics().drawGroup(map.getMapModel().getScreenGroup(), this);
+
+		// Draw a dummy at 0,0 so that Internet Explorer knows where coordinate 0,0 is. If this is not drawn, the text
+		// will disappear, because the parent group will have coordinate 0,0 at the upper left corner of the union of
+		// all the rectangles that are drawn here.
+		map.getGraphics().drawRectangle(this, dummy.getId(), dummy.getBounds(), (ShapeStyle) dummy.getStyle());
 
 		map.getGraphics().drawRectangle(this, backGround.getId(), backGround.getBounds(),
 				(ShapeStyle) backGround.getStyle());
@@ -144,21 +151,25 @@ public class ScaleBar extends MapAddon {
 		this.unitType = unitType;
 		this.unitLength = unitLength;
 
-		backGround = new Rectangle((null == getId() ? "" : getId() + ".bg"));
+		backGround = new Rectangle((null == getId() ? "" : getId() + "-bg"));
 		backGround.setBounds(new Bbox(0, 0, 5, MARKERHEIGHT + 2 * VERTICALPADDING));
 		backGround.setStyle(STYLE_BACKGROUND);
-		leftMarker = new Rectangle((null == getId() ? "" : getId() + ".lm"));
+		leftMarker = new Rectangle((null == getId() ? "" : getId() + "-lm"));
 		leftMarker.setStyle(STYLE_MARKER);
 		leftMarker.setBounds(new Bbox(0, 0, 1, MARKERHEIGHT));
 
-		rightMarker = new Rectangle((null == getId() ? "" : getId() + ".rm"));
+		rightMarker = new Rectangle((null == getId() ? "" : getId() + "-rm"));
 		rightMarker.setStyle(STYLE_MARKER);
 		rightMarker.setBounds(new Bbox(0, 0, 1, MARKERHEIGHT));
-		bottomLine = new Rectangle((null == getId() ? "" : getId() + ".bm"));
+		bottomLine = new Rectangle((null == getId() ? "" : getId() + "-bm"));
 		bottomLine.setStyle(STYLE_MARKER);
 		bottomLine.setBounds(new Bbox(0, 0, 0, 1));
-		distance = new Text((null == getId() ? "" : getId() + ".di"));
+		distance = new Text((null == getId() ? "" : getId() + "-text"));
 		distance.setStyle(STYLE_FONT);
+
+		dummy = new Rectangle(getId() + "-dummy");
+		dummy.setStyle(new ShapeStyle("#FFFFFF", 0, "#FFFFFF", 0, 0));
+		dummy.setBounds(new Bbox(0, 0, 1, 1));
 	}
 
 	// ----------------------------------------------------------

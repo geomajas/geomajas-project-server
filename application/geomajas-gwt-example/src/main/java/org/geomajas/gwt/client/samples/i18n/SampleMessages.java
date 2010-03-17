@@ -50,6 +50,8 @@ public interface SampleMessages extends Messages {
 
 	String treeGroupSecurity();
 
+	String treeGroupEditing();
+
 	String treeGroupOverviewMap();
 
 	String treeGroupMapController();
@@ -125,6 +127,18 @@ public interface SampleMessages extends Messages {
 	String togglePanButtons();
 
 	String toggleScaleBar();
+
+	// Rendering Sample:
+
+	String renderingTitle();
+
+	String renderingDescription();
+
+	// Editing a point layer:
+
+	String editPointLayerTitle();
+
+	String editPointLayerDescription();
 
 	// OverviewMap sample:
 

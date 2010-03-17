@@ -44,6 +44,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 				<ref bean="overviewOsmMap" />
 				<ref bean="osmMapResolutions" />
 				<ref bean="layerTreeMap" />
+				<ref bean="editPointLayerMap" />
 			</list>
 		</property>
 	</bean>

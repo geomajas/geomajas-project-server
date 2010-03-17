@@ -119,8 +119,9 @@ public abstract class AbstractGraphicsContext implements GraphicsContext {
 		if (name != null) {
 			if (!generateId) {
 				element = DOM.getElementById(name);
+			} else {
+				element = getElement(parent, name);
 			}
-			element = getElement(parent, name);
 		} else {
 			return null;
 		}

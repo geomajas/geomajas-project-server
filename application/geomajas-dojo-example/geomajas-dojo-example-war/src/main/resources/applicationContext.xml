@@ -597,7 +597,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
         <property name="visible" value="true"/>
         <property name="viewScaleMin" value="0"/>
         <property name="viewScaleMax" value="100000"/>
-		<property name="namedStyleInfo" ref="roadsStyleInfo" />
+		<property name="namedStyleInfo" ref="citiesStyleInfo" />
 	</bean>
 
 	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="countriesLayer">

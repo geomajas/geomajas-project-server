@@ -60,11 +60,11 @@ public class VmlTileWriter implements GraphicsWriter {
 					document.closeElement();
 					document.writeElement("vml:group", false);
 					document.writeAttribute("coordsize", coordWidth + "," + coordHeight);
-					document.writeAttribute("style", "WIDTH: 100%; HEIGHT: 100%");
+					document.writeAttribute("style", "WIDTH: " + coordWidth + "; HEIGHT: " + coordHeight);
 				} else {
 					document.writeElement("vml:group", true);
 					document.writeAttribute("coordsize", coordWidth + "," + coordHeight);
-					document.writeAttribute("style", "WIDTH: 100%; HEIGHT: 100%");
+					document.writeAttribute("style", "WIDTH: " + coordWidth + "; HEIGHT: " + coordHeight);
 				}
 				style = nextStyle;
 
@@ -75,8 +75,6 @@ public class VmlTileWriter implements GraphicsWriter {
 					document.writeAttribute("id", feature.getLayer().getId() + "." + style + ".style");
 					document.writeAttribute("style", "WIDTH: 100%; HEIGHT: 100%");
 					document.writeAttribute("style", "VISIBILITY: hidden");
-					// document.writeAttribute("filled", "t");
-					// document.writeAttribute("stroked", "t");
 					document.writeAttribute("coordsize", coordWidth + "," + coordHeight);
 					FeatureStyleInfo info = feature.getStyleInfo();
 					document.writeAttribute("fillcolor", info.getFillColor());

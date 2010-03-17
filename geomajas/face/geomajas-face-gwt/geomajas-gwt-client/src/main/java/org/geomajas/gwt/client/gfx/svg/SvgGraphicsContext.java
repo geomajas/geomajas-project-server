@@ -26,6 +26,7 @@ package org.geomajas.gwt.client.gfx.svg;
 import org.geomajas.configuration.SymbolInfo;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.gfx.AbstractGraphicsContext;
+import org.geomajas.gwt.client.gfx.paintable.Composite;
 import org.geomajas.gwt.client.gfx.style.FontStyle;
 import org.geomajas.gwt.client.gfx.style.PictureStyle;
 import org.geomajas.gwt.client.gfx.style.ShapeStyle;
@@ -50,6 +51,8 @@ import com.google.gwt.user.client.Element;
 public class SvgGraphicsContext extends AbstractGraphicsContext {
 
 	private Element rootNode;
+
+	private Composite defsGroup;
 
 	private Element defs;
 
@@ -203,12 +206,13 @@ public class SvgGraphicsContext extends AbstractGraphicsContext {
 		if (symbol == null) {
 			return;
 		}
+
 		// Step1: get or create the symbol element:
 		// check existence
 		Element def = DOM.getElementById(id);
 		boolean isNew = (def == null);
 		// create or update
-		def = createOrUpdateElement(DOM.NS_SVG, defs, id, "symbol", style, transformation, false);
+		def = createOrUpdateElement(DOM.NS_SVG, defsGroup, id, "symbol", style, transformation, false);
 		DOM.setElementAttribute(def, "overflow", "visible");
 
 		// Step2: fill in the correct values:
@@ -357,8 +361,8 @@ public class SvgGraphicsContext extends AbstractGraphicsContext {
 		DOM.setElementAttribute(rootNode, "viewBox", "0 0 " + width + " " + height);
 
 		// Point style definitions:
-		defs = DOM.createElementNS(DOM.NS_SVG, "defs");
-		rootNode.appendChild(defs);
+		defsGroup = new Composite("style_defs");
+		defs = createGroup(DOM.NS_SVG, null, defsGroup, "defs");
 		
 		// Append to parent:
 		parent.appendChild(rootNode);
@@ -519,6 +523,11 @@ public class SvgGraphicsContext extends AbstractGraphicsContext {
 			// no space between 'translate' and '(' !!!
 		}
 		return transform;
+	}
+
+	
+	public Composite getDefsGroup() {
+		return defsGroup;
 	}
 
 }

@@ -21,36 +21,36 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.gwt.client.samples.mapwidget;
+package org.geomajas.gwt.client.samples.editing;
 
-import org.geomajas.gwt.client.controller.PanController;
+import org.geomajas.gwt.client.map.event.MapModelEvent;
+import org.geomajas.gwt.client.map.event.MapModelHandler;
 import org.geomajas.gwt.client.samples.base.SamplePanel;
 import org.geomajas.gwt.client.samples.base.SamplePanelFactory;
 import org.geomajas.gwt.client.samples.i18n.I18nProvider;
 import org.geomajas.gwt.client.widget.MapWidget;
+import org.geomajas.gwt.client.widget.Toolbar;
 
-import com.google.gwt.core.client.GWT;
-import com.smartgwt.client.widgets.Button;
 import com.smartgwt.client.widgets.Canvas;
-import com.smartgwt.client.widgets.events.ClickEvent;
-import com.smartgwt.client.widgets.events.ClickHandler;
+import com.smartgwt.client.widgets.Label;
+import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
  * <p>
- * Sample that shows a map one raster and one vector layer, both using the same CRS.
+ * Sample that shows how editing a point layer can be done.
  * </p>
  * 
  * @author Pieter De Graef
  */
-public class CrsSample extends SamplePanel {
+public class EditPointLayerSample extends SamplePanel {
 
-	public static final String TITLE = "Crs";
+	public static final String TITLE = "EditPointLayer";
 
 	public static final SamplePanelFactory FACTORY = new SamplePanelFactory() {
 
 		public SamplePanel createPanel() {
-			return new CrsSample();
+			return new EditPointLayerSample();
 		}
 	};
 
@@ -59,28 +59,46 @@ public class CrsSample extends SamplePanel {
 		layout.setWidth100();
 		layout.setHeight100();
 
-		// Map with ID crsMap is defined in the XML configuration. (mapOsm.xml)
-		final MapWidget map = new MapWidget("crsMap", "gwt-samples");
+		VLayout mapLayout = new VLayout();
+		mapLayout.setShowEdges(true);
 
-		// Set a panning controller on the map:
-		map.setController(new PanController(map));
-		layout.addMember(map);
+		// Map with ID editPointLayerMap is defined in the XML configuration.
+		final MapWidget map = new MapWidget("editPointLayerMap", "gwt-samples");
+		map.getMapModel().addMapModelHandler(new MapModelHandler() {
+
+			// When the map is initialized: select the cities layer:
+			public void onMapModelChange(MapModelEvent event) {
+				map.getMapModel().selectLayer(map.getMapModel().getLayer("cities"));
+			}
+		});
+
+		final Toolbar toolbar = new Toolbar(map);
+		toolbar.setButtonSize(Toolbar.BUTTON_SIZE_BIG);
+		toolbar.setBorder("0px");
+		
+		mapLayout.addMember(toolbar);
+		mapLayout.addMember(map);
+
+		HLayout infoLayout = new HLayout();
+		infoLayout.addMember(new Label("Explanation....todo"));
+		
+		layout.addMember(mapLayout);
+		layout.addMember(infoLayout);
 
 		return layout;
 	}
 
 	public String getDescription() {
-		return I18nProvider.getSampleMessages().crsDescription();
+		return I18nProvider.getSampleMessages().editPointLayerDescription();
 	}
 
 	public String getSourceFileName() {
-		return "classpath:org/geomajas/gwt/client/samples/mapwidget/CrsSample.txt";
+		return "classpath:org/geomajas/gwt/client/samples/editing/EditPointLayerSample.txt";
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "classpath:org/geomajas/gwt/samples/mapwidget/mapCrs.xml",
-				"classpath:org/geomajas/gwt/samples/mapwidget/layerOsm.xml",
-				"classpath:org/geomajas/gwt/samples/mapwidget/layerBeans.xml" };
+		return new String[] { "classpath:org/geomajas/gwt/samples/mapwidget/layerOsm.xml",
+				"classpath:org/geomajas/gwt/samples/editing/mapEditPointLayer.xml" };
 	}
 
 	public String ensureUserLoggedIn() {

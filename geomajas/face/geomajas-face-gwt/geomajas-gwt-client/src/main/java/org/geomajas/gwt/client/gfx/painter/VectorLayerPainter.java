@@ -23,16 +23,20 @@
 
 package org.geomajas.gwt.client.gfx.painter;
 
+import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.gwt.client.gfx.GraphicsContext;
 import org.geomajas.gwt.client.gfx.Paintable;
 import org.geomajas.gwt.client.gfx.Painter;
 import org.geomajas.gwt.client.gfx.style.FontStyle;
+import org.geomajas.gwt.client.gfx.style.ShapeStyle;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 
 /**
- * ???
+ * Painter for a VectorLayer object. Prepares the necessary groups for features, selected features and labels. Also
+ * initiates shape-types, in case the vector layer is a point layer. On every draw, this painter will also check the
+ * labeled and visible flags, and act accordingly.
  * 
- * @author check subversion
+ * @author Pieter De Graef
  */
 public class VectorLayerPainter implements Painter {
 
@@ -59,14 +63,11 @@ public class VectorLayerPainter implements Painter {
 		graphics.drawGroup(layer, layer.getSelectionGroup());
 		graphics.drawGroup(layer, layer.getLabelGroup(), labelStyle);
 
-		 //Draw symbol types, as these can change any time:
-//		 for (var i=0; i<layer.getStyles().count; i++) {
-//		 var style = layer.getStyles().item(i).getStyle();
-//		 graphics.drawShapeType({
-//		 style: style,
-//		 id: layer.getId()+"."+layer.getStyles().item(i).getId()+".style"
-//		 });
-//		 }
+		// Draw symbol types, as these can change any time:
+		for (FeatureStyleInfo style : layer.getLayerInfo().getNamedStyleInfo().getFeatureStyles()) {
+			graphics.drawShapeType(null, layer.getId() + "." + style.getIndex() + ".style", style
+					.getSymbol(), new ShapeStyle(style), null);
+		}
 
 		// Check layer visibility:
 		if (layer.isShowing()) {
