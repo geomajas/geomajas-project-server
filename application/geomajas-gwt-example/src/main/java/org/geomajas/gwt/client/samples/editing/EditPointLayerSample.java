@@ -75,13 +75,13 @@ public class EditPointLayerSample extends SamplePanel {
 		final Toolbar toolbar = new Toolbar(map);
 		toolbar.setButtonSize(Toolbar.BUTTON_SIZE_BIG);
 		toolbar.setBorder("0px");
-		
+
 		mapLayout.addMember(toolbar);
 		mapLayout.addMember(map);
 
 		HLayout infoLayout = new HLayout();
 		infoLayout.addMember(new Label("Explanation....todo"));
-		
+
 		layout.addMember(mapLayout);
 		layout.addMember(infoLayout);
 

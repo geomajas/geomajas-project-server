@@ -39,7 +39,6 @@ import org.geomajas.gwt.client.spatial.geometry.LineString;
 import org.geomajas.gwt.client.spatial.geometry.Polygon;
 import org.geomajas.gwt.client.util.DOM;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.user.client.Element;
 import com.smartgwt.client.util.SC;
@@ -217,7 +216,7 @@ public class VmlGraphicsContext extends AbstractGraphicsContext {
 	 * @param symbol
 	 *            the symbol information
 	 * @param style
-	 *            The style to apply on the symbol.
+	 *            The default style to apply on the shape-type. Can be overridden when a shape uses this shape-type.
 	 * @param transformation
 	 *            the transformation to apply on the symbol
 	 */
@@ -233,7 +232,6 @@ public class VmlGraphicsContext extends AbstractGraphicsContext {
 
 		// If it is a new shape-type, define the necessary elements:
 		if (isNew) {
-			GWT.log("ShapeType is new", null);
 			Element formulas = DOM.createElementNS(DOM.NS_VML, "formulas");
 			shapeType.appendChild(formulas);
 			DOM.setElementAttribute(shapeType, "coordsize", "1000 1000");
@@ -304,20 +302,8 @@ public class VmlGraphicsContext extends AbstractGraphicsContext {
 	 *            The name of the predefined ShapeType. This symbol will create a reference to this predefined type and
 	 *            take on it's characteristics.
 	 */
-	public void drawSymbol2(Object parent, String name, Coordinate position, ShapeStyle style, String shapeTypeId) {
-		Element group = createOrUpdateElement(DOM.NS_VML, parent, name, "group", null);
-		applyAbsolutePosition(group, new Coordinate(0, 0));
-		applyElementSize(group, width, height, true);
-
-		String content = "<vml:shape style='position:absolute;width:100%;height:100%;left:" + position.getX()
-				+ "px; top:" + position.getY() + "px;' type=#" + shapeTypeId + " coordsize='" + width + "," + height
-				+ "'></vml:shape>";
-		group.setInnerHTML(content);
-		GWT.log(getRootElement().getInnerHTML(), null);
-	}
-
 	public void drawSymbol(Object parent, String name, Coordinate position, ShapeStyle style, String shapeTypeId) {
-		Element shape = createOrUpdateElement(DOM.NS_VML, parent, name, "shape", null, null);
+		Element shape = createOrUpdateElement(DOM.NS_VML, parent, name, "shape", style, null);
 		if (shapeTypeId != null) {
 			shape.setAttribute("type", "#" + shapeTypeId);
 		} else if (shape.getParentNode() instanceof Element) {

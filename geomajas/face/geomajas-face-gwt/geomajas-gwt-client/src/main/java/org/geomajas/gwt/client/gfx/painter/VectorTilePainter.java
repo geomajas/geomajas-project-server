@@ -28,11 +28,9 @@ import org.geomajas.gwt.client.gfx.Paintable;
 import org.geomajas.gwt.client.gfx.PaintableGroup;
 import org.geomajas.gwt.client.gfx.Painter;
 import org.geomajas.gwt.client.gfx.style.PictureStyle;
-import org.geomajas.gwt.client.map.MapView;
 import org.geomajas.gwt.client.map.cache.tile.VectorTile;
 import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.spatial.Matrix;
-import org.geomajas.gwt.client.spatial.transform.WorldViewTransformer;
 
 /**
  * Paints a vector tile.
@@ -41,13 +39,7 @@ import org.geomajas.gwt.client.spatial.transform.WorldViewTransformer;
  */
 public class VectorTilePainter implements Painter {
 
-	private MapView mapView;
-
-	private WorldViewTransformer transformer;
-
-	public VectorTilePainter(MapView mapView) {
-		this.mapView = mapView;
-		transformer = new WorldViewTransformer(mapView);
+	public VectorTilePainter() {
 	}
 
 	public String getPaintableClassName() {
@@ -67,8 +59,8 @@ public class VectorTilePainter implements Painter {
 					break;
 				case URL_CONTENT:
 					graphics.drawGroup(group, tile, transformationMatrix);
-					graphics.drawImage(tile, "img", tile.getFeatureContent(), new Bbox(0, 0, tile
-							.getScreenWidth(), tile.getScreenHeight()), new PictureStyle(1));
+					graphics.drawImage(tile, "img", tile.getFeatureContent(), new Bbox(0, 0, tile.getScreenWidth(),
+							tile.getScreenHeight()), new PictureStyle(1));
 
 			}
 		}
@@ -82,8 +74,8 @@ public class VectorTilePainter implements Painter {
 					break;
 				case URL_CONTENT:
 					graphics.drawGroup(group, tile, transformationMatrix);
-					graphics.drawImage(tile, "img", tile.getLabelContent(), new Bbox(0, 0, tile
-							.getScreenWidth(), tile.getScreenHeight()), new PictureStyle(1));
+					graphics.drawImage(tile, "img", tile.getLabelContent(), new Bbox(0, 0, tile.getScreenWidth(), tile
+							.getScreenHeight()), new PictureStyle(1));
 			}
 		}
 	}
@@ -109,15 +101,11 @@ public class VectorTilePainter implements Painter {
 
 		// clipped tiles have the pan origin as origin, so no need to translate:
 		/*
-		if (!tile.isClipped()) {
-			// The map has already been translated by this, so we compensate again.
-			Matrix trans = mapView.getPanToViewTranslation();
-			// To find the origin of the tile, we transform it's bounds to view space.
-			Bbox viewBounds = transformer.worldToView(tile.getBounds());
-			dX = Math.round(viewBounds.getX() - trans.getDx());
-			dY = Math.round(viewBounds.getY() - trans.getDy());
-		}
-		*/
+		 * if (!tile.isClipped()) { // The map has already been translated by this, so we compensate again. Matrix trans
+		 * = mapView.getPanToViewTranslation(); // To find the origin of the tile, we transform it's bounds to view
+		 * space. Bbox viewBounds = transformer.worldToView(tile.getBounds()); dX = Math.round(viewBounds.getX() -
+		 * trans.getDx()); dY = Math.round(viewBounds.getY() - trans.getDy()); }
+		 */
 
 		return new Matrix(1, 0, 0, 1, dX, dY);
 	}

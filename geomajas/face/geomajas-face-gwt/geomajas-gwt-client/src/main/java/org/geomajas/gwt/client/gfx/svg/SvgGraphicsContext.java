@@ -192,13 +192,13 @@ public class SvgGraphicsContext extends AbstractGraphicsContext {
 	 * Draw a type (def/symbol for svg).
 	 * 
 	 * @param parent
-	 *            ignored for svg
+	 *            All shape-types are placed in the "defs" group. This parameter is therefore ignored.
 	 * @param id
 	 *            the types's unique identifier
 	 * @param symbol
 	 *            the symbol information
 	 * @param style
-	 *            The style to apply on the symbol.
+	 *            No default style is allowed at the moment in SVG. This parameter is ignored.
 	 * @param transformation
 	 *            the transformation to apply on the symbol
 	 */
@@ -212,7 +212,7 @@ public class SvgGraphicsContext extends AbstractGraphicsContext {
 		Element def = DOM.getElementById(id);
 		boolean isNew = (def == null);
 		// create or update
-		def = createOrUpdateElement(DOM.NS_SVG, defsGroup, id, "symbol", style, transformation, false);
+		def = createOrUpdateElement(DOM.NS_SVG, defsGroup, id, "symbol", null, transformation, false);
 		DOM.setElementAttribute(def, "overflow", "visible");
 
 		// Step2: fill in the correct values:

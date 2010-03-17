@@ -36,6 +36,8 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		</property>
 		<property name="pointSelectStyle">
 			<bean class="org.geomajas.configuration.FeatureStyleInfo">
+				<property name="fillColor" value="#E0E000" />
+				<property name="fillOpacity" value=".75" />
 			</bean>
 		</property>
 		<property name="polygonSelectStyle">
