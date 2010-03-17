@@ -137,6 +137,7 @@ public class ConfigurationDtoPostProcessor {
 		int i = 0;
 		for (FeatureStyleInfo style : client.getFeatureStyles()) {
 			style.setIndex(i++);
+			style.setStyleId(client.getName() + "-" + style.getIndex());
 		}
 		return client;
 	}

@@ -70,13 +70,14 @@ public class VmlTileWriter implements GraphicsWriter {
 
 				VectorLayerInfo layerInfo = feature.getLayer().getLayerInfo();
 				if (layerInfo.getLayerType() != LayerType.POINT && layerInfo.getLayerType() != LayerType.MULTIPOINT) {
+
 					// the shapetype
+					FeatureStyleInfo info = feature.getStyleInfo();
 					document.writeElement("vml:shapetype", true);
-					document.writeAttribute("id", feature.getLayer().getId() + "." + style + ".style");
+					document.writeAttribute("id", info.getStyleId());
 					document.writeAttribute("style", "WIDTH: 100%; HEIGHT: 100%");
 					document.writeAttribute("style", "VISIBILITY: hidden");
 					document.writeAttribute("coordsize", coordWidth + "," + coordHeight);
-					FeatureStyleInfo info = feature.getStyleInfo();
 					document.writeAttribute("fillcolor", info.getFillColor());
 					document.writeAttribute("strokecolor", info.getStrokeColor());
 					document.writeAttribute("strokeweight", info.getStrokeWidth() + "px");

@@ -208,7 +208,9 @@ public abstract class EditController extends AbstractSnappingController {
 	// -------------------------------------------------------------------------
 
 	/**
-	 * ???
+	 * Label that displays some basic geometric information, such as length and area.
+	 * 
+	 * @author Pieter De Graef
 	 */
 	private class GeometricInfoLabel extends Label {
 

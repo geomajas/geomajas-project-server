@@ -23,10 +23,10 @@
 
 package org.geomajas.layer.feature;
 
-import org.geomajas.geometry.Geometry;
-
 import java.io.Serializable;
 import java.util.Map;
+
+import org.geomajas.geometry.Geometry;
 
 /**
  * DTO version of a {@link InternalFeature}. This object can be sent to the client.
@@ -54,7 +54,7 @@ public class Feature implements Serializable {
 
 	private boolean deletable;
 
-	private int styleId;
+	private String styleId;
 
 	// -------------------------------------------------------------------------
 	// Constructors:
@@ -219,7 +219,7 @@ public class Feature implements Serializable {
 	 * configuration, only 1 style can be valid for a feature. In the tile's it is that style that is used to render the
 	 * feature. This can be handy for some client side rendering of this feature.
 	 */
-	public int getStyleId() {
+	public String getStyleId() {
 		return styleId;
 	}
 
@@ -231,7 +231,7 @@ public class Feature implements Serializable {
 	 * @param styleId
 	 *            The style configuration identifier from the vector layer's styling configuration.
 	 */
-	public void setStyleId(int styleId) {
+	public void setStyleId(String styleId) {
 		this.styleId = styleId;
 	}
 
@@ -239,7 +239,7 @@ public class Feature implements Serializable {
 	 * Crs code which is used (or should be used) for the geometry in the feature.
 	 * <p/>
 	 * This may be null if the crs is unknown.
-	 *
+	 * 
 	 * @return crs code
 	 */
 	public String getCrs() {
@@ -248,8 +248,9 @@ public class Feature implements Serializable {
 
 	/**
 	 * Set the crs code which us used (or should be used) for the geometry in the feature.
-	 *
-	 * @param crs crs code for feature
+	 * 
+	 * @param crs
+	 *            crs code for feature
 	 */
 	public void setCrs(String crs) {
 		this.crs = crs;

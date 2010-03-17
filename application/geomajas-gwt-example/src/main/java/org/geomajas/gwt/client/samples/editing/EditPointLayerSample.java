@@ -31,8 +31,12 @@ import org.geomajas.gwt.client.samples.i18n.I18nProvider;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.Toolbar;
 
+import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.widgets.Canvas;
+import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.Label;
+import com.smartgwt.client.widgets.events.ClickEvent;
+import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
@@ -81,6 +85,14 @@ public class EditPointLayerSample extends SamplePanel {
 
 		HLayout infoLayout = new HLayout();
 		infoLayout.addMember(new Label("Explanation....todo"));
+		IButton button = new IButton("log");
+		button.addClickHandler(new ClickHandler() {
+
+			public void onClick(ClickEvent event) {
+				GWT.log(map.getDOM().getInnerHTML(), null);
+			}
+		});
+		infoLayout.addMember(button);
 
 		layout.addMember(mapLayout);
 		layout.addMember(infoLayout);

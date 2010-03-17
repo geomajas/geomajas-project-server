@@ -47,6 +47,8 @@ dojo.declare("FeatureStyleInfo", null, {
 
 		/** A Style object. */
 		this.style = style;
+		
+		this.styleId = null;
 	},
 	
 	// Serialization methods:
@@ -72,6 +74,7 @@ dojo.declare("FeatureStyleInfo", null, {
 		this.index = json.index;
 		this.name = json.name;
 		this.formula = json.formula;
+		this.styleId = json.styleId;
 		this.style = new ShapeStyle();
 		// only non-null elements !
 		this.style.copyFrom(json);

@@ -69,7 +69,7 @@ public class Feature implements Paintable, Cloneable {
 	private Geometry geometry;
 
 	/** The identifier of this feature's style. */
-	private int styleId;
+	private String styleId;
 
 	/** Coordinate for the label. */
 	private Coordinate labelPosition;
@@ -103,7 +103,7 @@ public class Feature implements Paintable, Cloneable {
 		this.layer = layer;
 		this.attributes = new HashMap<String, Attribute>();
 		this.geometry = null;
-		this.styleId = 1;
+		this.styleId = null;
 		this.labelPosition = null;
 		this.clipped = false;
 		if (dto != null) {
@@ -201,7 +201,7 @@ public class Feature implements Paintable, Cloneable {
 
 	/**
 	 * Crs as (optionally) set by the backend.
-	 *
+	 * 
 	 * @return crs for this feature
 	 */
 	public String getCrs() {
@@ -210,9 +210,10 @@ public class Feature implements Paintable, Cloneable {
 
 	/**
 	 * Get the attributes map, null when it needs to be lazy loaded.
-	 *
+	 * 
 	 * @return attributes map
-	 * @throws IllegalStateException attributes not present because of lazy loading
+	 * @throws IllegalStateException
+	 *             attributes not present because of lazy loading
 	 */
 	public Map<String, Attribute> getAttributes() throws IllegalStateException {
 		if (null == attributes) {
@@ -223,8 +224,9 @@ public class Feature implements Paintable, Cloneable {
 
 	/**
 	 * Set the attributes map.
-	 *
-	 * @param attributes attributes map
+	 * 
+	 * @param attributes
+	 *            attributes map
 	 */
 	public void setAttributes(Map<String, Attribute> attributes) {
 		this.attributes = attributes;
@@ -232,7 +234,7 @@ public class Feature implements Paintable, Cloneable {
 
 	/**
 	 * Check whether the attributes are already available or should be lazy loaded.
-	 *
+	 * 
 	 * @return true when attributes are available
 	 */
 	public boolean isAttributesLoaded() {
@@ -241,9 +243,10 @@ public class Feature implements Paintable, Cloneable {
 
 	/**
 	 * Get the feature's geometry, , null when it needs to be lazy loaded.
-	 *
+	 * 
 	 * @return geometry
-	 * @throws IllegalStateException attributes not present because of lazy loading
+	 * @throws IllegalStateException
+	 *             attributes not present because of lazy loading
 	 */
 	public Geometry getGeometry() throws IllegalStateException {
 		if (null == geometry) {
@@ -254,8 +257,9 @@ public class Feature implements Paintable, Cloneable {
 
 	/**
 	 * Set the geometry.
-	 *
-	 * @param geometry geometry
+	 * 
+	 * @param geometry
+	 *            geometry
 	 */
 	public void setGeometry(Geometry geometry) {
 		this.geometry = geometry;
@@ -263,19 +267,11 @@ public class Feature implements Paintable, Cloneable {
 
 	/**
 	 * Check whether the geometry is already available or should be lazy loaded.
-	 *
+	 * 
 	 * @return true when geometry are available
 	 */
 	public boolean isGeometryLoaded() {
 		return geometry != null;
-	}
-
-	public int getStyleId() {
-		return styleId;
-	}
-
-	public void setStyleId(int styleId) {
-		this.styleId = styleId;
 	}
 
 	public boolean isSelected() {
@@ -324,4 +320,11 @@ public class Feature implements Paintable, Cloneable {
 		this.deletable = deletable;
 	}
 
+	public String getStyleId() {
+		return styleId;
+	}
+
+	public void setStyleId(String styleId) {
+		this.styleId = styleId;
+	}
 }

@@ -345,7 +345,7 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 			dto.setGeometry(toDto(feature.getGeometry()));
 		}
 		if ((featureIncludes & VectorLayerService.FEATURE_INCLUDE_STYLE) != 0 && null != feature.getStyleInfo()) {
-			dto.setStyleId(feature.getStyleInfo().getIndex());
+			dto.setStyleId(feature.getStyleInfo().getStyleId());
 		}
 		InternalFeatureImpl vFeature = (InternalFeatureImpl) feature;
 		dto.setClipped(vFeature.isClipped());

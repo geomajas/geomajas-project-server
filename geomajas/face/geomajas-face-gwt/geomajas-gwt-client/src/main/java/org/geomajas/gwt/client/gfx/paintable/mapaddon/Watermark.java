@@ -27,6 +27,7 @@ import org.geomajas.gwt.client.Geomajas;
 import org.geomajas.gwt.client.gfx.PainterVisitor;
 import org.geomajas.gwt.client.gfx.paintable.Image;
 import org.geomajas.gwt.client.gfx.style.PictureStyle;
+import org.geomajas.gwt.client.gfx.style.ShapeStyle;
 import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.widget.MapWidget;
 
@@ -61,6 +62,9 @@ public class Watermark extends MapAddon {
 
 		image.getBounds().setX(getUpperLeftCorner().getX());
 		image.getBounds().setY(getUpperLeftCorner().getY());
+
+		map.getGraphics().drawRectangle(this, getId() + "-bg", image.getBounds(),
+				new ShapeStyle("#FFFFFF", 0.6f, "#FFFFFF", 0, 0));
 		map.getGraphics().drawImage(this, image.getId(), image.getHref(), image.getBounds(),
 				(PictureStyle) image.getStyle());
 	}

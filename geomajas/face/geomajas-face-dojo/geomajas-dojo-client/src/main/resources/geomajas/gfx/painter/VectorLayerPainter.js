@@ -55,16 +55,12 @@ dojo.declare("VectorLayerPainter", Painter, {
 		graphics.drawGroup ({id: layer.getId() + ".features"}); // create the group...
 		graphics.drawGroup ({id: layer.getId() + ".selection"}); // create the group...
 		graphics.drawGroup ({id: layer.getId() + ".labels"}); // create the group...
-		
 
 		// Draw symbol types, these can change anytime as well:
 		var styles = layer.getStyles();
 		for (var i=0; i<styles.count; i++) {
-			var style = styles.item(i).getStyle();
-			graphics.drawShapeType({
-				style:     style,
-				id:        layer.getLayerId()+"."+styles.item(i).getIndex()+".style"
-			});
+			var style = styles.item(i);
+			graphics.drawShapeType({ style: style.getStyle(), id: style.styleId	});
 		}
 
 		// Check layer visibility:

@@ -35,7 +35,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Vml writer for features.
- *
+ * 
  * @author Pieter De Graef
  * @author Jan De Moerloose
  */
@@ -49,8 +49,7 @@ public class VmlFeatureWriter implements GraphicsWriter {
 
 	private int coordHeight;
 
-	public VmlFeatureWriter(GeometryCoordinateSequenceTransformer transformer, int coordWidth,
-			int coordHeight) {
+	public VmlFeatureWriter(GeometryCoordinateSequenceTransformer transformer, int coordWidth, int coordHeight) {
 		this.transformer = transformer;
 		this.coordWidth = coordWidth;
 		this.coordHeight = coordHeight;
@@ -64,15 +63,12 @@ public class VmlFeatureWriter implements GraphicsWriter {
 				geom = feature.getClippedGeometry();
 			}
 			geom = transformer.transform(geom);
-			String styleId = feature.getLayer().getId() + "." + feature.getStyleInfo().getIndex()
-					+ ".style";
 
 			document.writeObject(geom, asChild);
 			document.writeAttribute("style", "WIDTH: 100%; HEIGHT: 100%");
 			document.writeAttribute("coordsize", coordWidth + "," + coordHeight);
-			document.writeAttribute("type", "#" + styleId);
+			document.writeAttribute("type", "#" + feature.getStyleInfo().getStyleId());
 			document.writeAttribute("id", feature.getId());
-
 		} catch (TransformException e) {
 			log.warn("could not render feature");
 		}

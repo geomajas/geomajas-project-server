@@ -24,6 +24,8 @@ package org.geomajas.configuration;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.Null;
+
 /**
  * Style configuration information.
  * 
@@ -57,6 +59,9 @@ public class FeatureStyleInfo implements Serializable {
 	private String dashArray;
 
 	private SymbolInfo symbol;
+
+	@Null
+	private String styleId;
 
 	/**
 	 * Gets the ordering index of the style. Styles are applied in the incremental order determined by their index
@@ -147,5 +152,17 @@ public class FeatureStyleInfo implements Serializable {
 
 	public void setSymbol(SymbolInfo symbol) {
 		this.symbol = symbol;
+	}
+
+	/**
+	 * Return a unique style identifier for this client side style definition. This value is set automatically on the
+	 * server during initialization so don't set it in the configuration.
+	 */
+	public String getStyleId() {
+		return styleId;
+	}
+
+	public void setStyleId(String styleId) {
+		this.styleId = styleId;
 	}
 }

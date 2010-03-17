@@ -64,13 +64,11 @@ public class SvgFeatureWriter implements GraphicsWriter {
 				// write the enclosing group
 				document.writeElement("g", asChild);
 				document.writeAttribute("id", feature.getId());
-				// document.writeAttribute("style", feature.getCssStyle());
+
 				// write the point
 				document.writeObject(geom, true);
 				document.writeId(feature.getId());
-				String styleId =
-						feature.getLayer().getId() + "." + feature.getStyleInfo().getIndex() + ".style";
-				document.writeAttribute("xlink:href", "#" + styleId);
+				document.writeAttribute("xlink:href", "#" + feature.getStyleInfo().getStyleId());
 				document.closeElement();
 			} else {
 				document.writeObject(geom, asChild);

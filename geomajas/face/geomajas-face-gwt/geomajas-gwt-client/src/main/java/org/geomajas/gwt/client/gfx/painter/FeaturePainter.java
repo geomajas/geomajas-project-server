@@ -104,7 +104,7 @@ public class FeaturePainter implements Painter {
 				MultiPolygon m = (MultiPolygon) geometry;
 				graphics.drawPolygon(feature, name, (Polygon) m.getGeometryN(0), style);
 			} else if (geometry instanceof Point) {
-				graphics.drawSymbol(feature, name, geometry.getCoordinate(), style, getShapeTypeId(feature));
+				graphics.drawSymbol(feature, name, geometry.getCoordinate(), style, feature.getStyleId());
 			}
 		}
 	}
@@ -146,7 +146,7 @@ public class FeaturePainter implements Painter {
 	private ShapeStyle createStyleForFeature(Feature feature) {
 		FeatureStyleInfo styleInfo = null;
 		for (FeatureStyleInfo style : feature.getLayer().getLayerInfo().getNamedStyleInfo().getFeatureStyles()) {
-			if (feature.getStyleId() == style.getIndex()) {
+			if (feature.getStyleId().equals(style.getStyleId())) {
 				styleInfo = style;
 				break;
 			}
@@ -161,9 +161,5 @@ public class FeaturePainter implements Painter {
 			style.merge(pointSelectStyle);
 		}
 		return style;
-	}
-
-	private String getShapeTypeId(Feature feature) {
-		return feature.getLayer().getId() + "." + feature.getStyleId() + ".style";
 	}
 }

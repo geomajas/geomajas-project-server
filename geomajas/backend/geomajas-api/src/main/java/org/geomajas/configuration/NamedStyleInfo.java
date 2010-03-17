@@ -37,6 +37,8 @@ import javax.validation.constraints.NotNull;
  */
 public class NamedStyleInfo implements Serializable {
 
+	private static final long serialVersionUID = 154L;
+
 	private List<FeatureStyleInfo> featureStyles = new ArrayList<FeatureStyleInfo>();
 	
 	@NotNull

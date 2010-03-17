@@ -206,7 +206,6 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 			Watermark watermark = new Watermark(id + "-watermark", this);
 			watermark.setAlignment(Alignment.RIGHT);
 			watermark.setVerticalAlignment(VerticalAlignment.BOTTOM);
-			watermark.setHorizontalMargin(10);
 			registerMapAddon(watermark);
 		}
 	}
@@ -298,7 +297,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 			if (null == scalebar) {
 				scalebar = new ScaleBar("scalebar", this);
 				scalebar.setVerticalAlignment(VerticalAlignment.BOTTOM);
-				scalebar.setHorizontalMargin(10);
+				scalebar.setHorizontalMargin(2);
 				scalebar.setVerticalMargin(2);
 			}
 			scalebar.initialize(getMapModel().getMapInfo().getDisplayUnitType(), unitLength, new Coordinate(20,
