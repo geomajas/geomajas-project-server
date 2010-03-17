@@ -32,6 +32,8 @@ import org.geomajas.command.dto.GetRenderedTileResponse;
 import org.geomajas.gwt.client.command.CommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
+import org.geomajas.gwt.client.gfx.PaintableGroup;
+import org.geomajas.gwt.client.gfx.PainterVisitor;
 import org.geomajas.gwt.client.map.cache.SpatialCache;
 import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.feature.LazyLoadCallback;
@@ -51,13 +53,13 @@ public class VectorTile extends AbstractVectorTile {
 	/**
 	 * Data holder: contains SVG or VML from the server for features.
 	 */
-	private String featureContent;
+	private ContentHolder featureContent;
 
 	/**
 	 * Data holder: contains SVG or VML from the server for labels.
 	 */
-	private String labelContent;
-	
+	private ContentHolder labelContent;
+
 	private VectorTileContentType contentType;
 
 	/** Array of feature ID's. */
@@ -87,8 +89,8 @@ public class VectorTile extends AbstractVectorTile {
 
 	public VectorTile(TileCode code, Bbox bbox, SpatialCache cache) {
 		super(code, bbox, cache);
-		this.featureContent = null;
-
+		featureContent = new ContentHolder(code.toString());
+		labelContent = new ContentHolder(code.toString());
 	}
 
 	// -------------------------------------------------------------------------
@@ -98,9 +100,11 @@ public class VectorTile extends AbstractVectorTile {
 	/**
 	 * Return all features in this tile. Warning : this will not return the features from other tiles that intersect
 	 * with this tile ! If you want to interact with all features, use the query() method.
-	 *
-	 * @param featureIncludes what data should be available in the features
-	 * @param callback callback which gets the features
+	 * 
+	 * @param featureIncludes
+	 *            what data should be available in the features
+	 * @param callback
+	 *            callback which gets the features
 	 */
 	public void getFeatures(int featureIncludes, LazyLoadCallback callback) {
 		cache.getFeatures(featureIncludes, callback);
@@ -118,7 +122,7 @@ public class VectorTile extends AbstractVectorTile {
 		}
 		return partials;
 	}
-	
+
 	/**
 	 * Fetch all data related to this tile.
 	 * 
@@ -146,8 +150,8 @@ public class VectorTile extends AbstractVectorTile {
 					// TODO: is it normal to round from double to int in the tile width and height??
 					screenWidth = tile.getScreenWidth();
 					screenHeight = tile.getScreenHeight();
-					featureContent = tile.getFeatureContent();
-					labelContent = tile.getLabelContent();
+					featureContent.setContent(tile.getFeatureContent());
+					labelContent.setContent(tile.getLabelContent());
 					contentType = tile.getContentType();
 					try {
 						callback.execute(self);
@@ -248,14 +252,6 @@ public class VectorTile extends AbstractVectorTile {
 		return clipped;
 	}
 
-	public String getFeatureContent() {
-		return featureContent;
-	}
-
-	public String getLabelContent() {
-		return labelContent;
-	}
-
 	public void cancel() {
 		canceled = true;
 	}
@@ -267,9 +263,18 @@ public class VectorTile extends AbstractVectorTile {
 	public double getScreenHeight() {
 		return screenHeight;
 	}
+		
+	public ContentHolder getFeatureContent() {
+		return featureContent;
+	}
+
+	
+	public ContentHolder getLabelContent() {
+		return labelContent;
+	}
 
 	public boolean isComplete() {
-		if (cache.getLayer().isLabeled() && labelContent == null) {
+		if (cache.getLayer().isLabeled() && !getLabelContent().isLoaded()) {
 			return false;
 		}
 		return true;
@@ -277,5 +282,41 @@ public class VectorTile extends AbstractVectorTile {
 
 	public VectorTileContentType getContentType() {
 		return contentType;
+	}
+
+	/**
+	 * Holds string content + TODO: hash for the content ?
+	 * 
+	 * @author Jan De Moerloose
+	 * 
+	 */
+	public class ContentHolder implements PaintableGroup {
+
+		private String groupName;
+
+		private String content;
+
+		ContentHolder(String groupName) {
+			this.groupName = groupName;
+		}
+
+		public String getGroupName() {
+			return groupName;
+		}
+
+		public String getContent() {
+			return content;
+		}
+
+		public void setContent(String content) {
+			this.content = content;
+		}
+
+		public boolean isLoaded() {
+			return content != null;
+		}
+
+		public void accept(PainterVisitor visitor, Bbox bounds, boolean recursive) {
+		}
 	}
 }

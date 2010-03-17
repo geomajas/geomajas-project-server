@@ -29,6 +29,7 @@ import org.geomajas.gwt.client.gfx.PaintableGroup;
 import org.geomajas.gwt.client.gfx.Painter;
 import org.geomajas.gwt.client.gfx.style.PictureStyle;
 import org.geomajas.gwt.client.map.cache.tile.VectorTile;
+import org.geomajas.gwt.client.map.cache.tile.VectorTile.ContentHolder;
 import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.spatial.Matrix;
 
@@ -48,35 +49,27 @@ public class VectorTilePainter implements Painter {
 
 	public void paint(Paintable paintable, GraphicsContext graphics) {
 		VectorTile tile = (VectorTile) paintable;
-		Matrix transformationMatrix = createTransformationMatrix(tile);
 
 		// Paint the feature content:
-		if (tile.getFeatureContent() != null) {
-			PaintableGroup group = tile.getCache().getLayer().getFeatureGroup();
-			switch (tile.getContentType()) {
-				case STRING_CONTENT:
-					graphics.drawData(group, tile, tile.getFeatureContent(), transformationMatrix);
-					break;
-				case URL_CONTENT:
-					graphics.drawGroup(group, tile, transformationMatrix);
-					graphics.drawImage(tile, "img", tile.getFeatureContent(), new Bbox(0, 0, tile.getScreenWidth(),
-							tile.getScreenHeight()), new PictureStyle(1));
-
-			}
+		if (tile.getFeatureContent().isLoaded()) {
+			drawContent(tile.getCache().getLayer().getFeatureGroup(), tile, tile.getFeatureContent(), graphics);
 		}
 
 		// Paint the label content:
-		if (tile.getLabelContent() != null) {
-			PaintableGroup group = tile.getCache().getLayer().getLabelGroup();
-			switch (tile.getContentType()) {
-				case STRING_CONTENT:
-					graphics.drawData(group, tile, tile.getLabelContent(), transformationMatrix);
-					break;
-				case URL_CONTENT:
-					graphics.drawGroup(group, tile, transformationMatrix);
-					graphics.drawImage(tile, "img", tile.getLabelContent(), new Bbox(0, 0, tile.getScreenWidth(), tile
-							.getScreenHeight()), new PictureStyle(1));
-			}
+		if (tile.getLabelContent().isLoaded()) {
+			drawContent(tile.getCache().getLayer().getLabelGroup(), tile, tile.getLabelContent(), graphics);
+		}
+	}
+
+	private void drawContent(PaintableGroup group, VectorTile tile, ContentHolder holder, GraphicsContext graphics) {
+		switch (tile.getContentType()) {
+			case STRING_CONTENT:
+				graphics.drawData(group, holder, holder.getContent(), createTransformationMatrix(tile));
+				break;
+			case URL_CONTENT:
+				graphics.drawGroup(group, holder, createTransformationMatrix(tile));
+				graphics.drawImage(tile, "img", holder.getContent(), new Bbox(0, 0, tile.getScreenWidth(), tile
+						.getScreenHeight()), new PictureStyle(1));
 		}
 	}
 
@@ -90,7 +83,9 @@ public class VectorTilePainter implements Painter {
 	 *            The context to paint on.
 	 */
 	public void deleteShape(Paintable paintable, GraphicsContext graphics) {
-		graphics.deleteGroup(paintable);
+		VectorTile tile = (VectorTile) paintable;
+		graphics.deleteGroup(tile.getFeatureContent());
+		graphics.deleteGroup(tile.getLabelContent());
 	}
 
 	private Matrix createTransformationMatrix(VectorTile tile) {
