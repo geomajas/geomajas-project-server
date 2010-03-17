@@ -238,7 +238,7 @@ dojo.declare("FeatureTransaction", PainterVisitable, {
 	},
 
 	/**
-	 * CommandStack is not yet cloned!!!!!!!!!!
+	 * CommandStack is not yet cloned!!!
 	 */
 	clone : function () {
 		var newFeatures = null;

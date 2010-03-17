@@ -18,6 +18,9 @@
     <logger name="org.geomajas.internal.rendering.strategy">
         <level value="DEBUG"/>
     </logger>
+	<logger name="org.geomajas.internal.service.vector.GetFeaturesEachStep">
+		<level value="DEBUG"/>
+	</logger>
 
     <root>
         <level value="INFO"/>

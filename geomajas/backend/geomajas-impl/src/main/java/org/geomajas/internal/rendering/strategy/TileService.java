@@ -90,11 +90,9 @@ public final class TileService {
 	 *            The layer for which we're calculating. The width and height are dependent on the layer's max extent,
 	 *            and also the starting point in the coordinate system is dependent on the bottom left coordinate of the
 	 *            max extent.
-	 * @param scale
-	 *            The current client side scale.
 	 * @return Returns the bounding box for the tile, expressed in the layer's coordinate system.
 	 */
-	public static Envelope getTileBounds(TileCode code, VectorLayer layer, double scale) {
+	public static Envelope getTileBounds(TileCode code, VectorLayer layer) {
 		double[] layerSize = getTileLayerSize(code, layer);
 		if (layerSize[0] == 0) {
 			return null;
@@ -105,30 +103,6 @@ public final class TileService {
 		return new Envelope(cX, cX + layerSize[0], cY, cY + layerSize[1]);
 	}
 
-	/**
-	 * Transform a tile's bounding box, using a given transformation object. This is usually used for transforming the
-	 * tile's bounds to the map's coordinate system when the layer's and the map's coordinate systems differ.
-	 * 
-	 * @param tile
-	 *            The actual tile.
-	 * @param transform
-	 *            The transformation object.
-	 * @return Returns the transformed bounding box for the given tile.
-	 * @throws GeomajasException
-	 *             oops
-	 */
-	public static Envelope getTransformedTileBounds(InternalTile tile, MathTransform transform)
-			throws GeomajasException {
-		Envelope tileBounds = new Envelope(tile.getBounds());
-		if (null != transform) {
-			try {
-				tileBounds = JTS.transform(tileBounds, transform);
-			} catch (TransformException e) {
-				throw new GeomajasException(e);
-			}
-		}
-		return tileBounds;
-	}
 
 	/**
 	 * When the layer and map's coordinate systems differ, the tile and screen width and height should be transformed to

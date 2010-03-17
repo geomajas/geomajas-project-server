@@ -48,7 +48,7 @@ dojo.declare("CommandDispatcher", null, {
 	execute : function (/*JsonCommand*/command) {
 		var params = [command.cmdName, command.forSerialization(), geomajasConfig.userToken, dojo.locale];
 
-		// returns a deferred request handler !!!!!!
+		// returns a deferred request handler
 		this.service.setSync(command.isSync());
 		var deferred = this.service.callRemote("CommandDispatcher.execute", params);
 		deferred.addCallback(this, "onCallback");
@@ -71,7 +71,7 @@ dojo.declare("CommandDispatcher", null, {
 			}
 		} catch (e) {
 		}
-		// !!!!! must return result for the next callback !!!!
+		// must return result for the next callback 
 		return result;
 	},
 

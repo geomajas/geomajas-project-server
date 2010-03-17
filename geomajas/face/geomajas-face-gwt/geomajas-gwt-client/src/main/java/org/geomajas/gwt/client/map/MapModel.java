@@ -171,8 +171,7 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 						// nrDeferred++;
 					}
 				} else {
-					// JDM: paint the top part of the layer, if not we loose the
-					// map order !!!!!
+					// JDM: paint the top part of the layer, if not we loose the map order
 					layer.accept(visitor, bounds, false);
 				}
 			}

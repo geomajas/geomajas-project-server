@@ -91,7 +91,7 @@ public class InternalTileImpl implements InternalTile {
 		double[] screenSize = TileService.getTileScreenSize(layerSize, scale);
 		screenWidth = screenSize[0];
 		screenHeight = screenSize[1];
-		bounds = TileService.getTileBounds(code, layer, scale);
+		bounds = TileService.getTileBounds(code, layer);
 	}
 
 	public Envelope getBounds() {

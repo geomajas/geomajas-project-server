@@ -75,6 +75,8 @@ public class TiledFeatureService {
 	 */
 	private static int MAXIMUM_TILE_COORDINATE = 10000;
 
+	private static final double ROUNDING_TOLERANCE = .0000000005;
+
 	/**
 	 * Paint an individual feature. In other words transform the generic feature object into a
 	 * <code>VectorFeature</code>, and prepare it for a certain tile.
@@ -150,17 +152,32 @@ public class TiledFeatureService {
 		int tileY = tileCode.getY();
 		for (Coordinate coordinate : geometry.getCoordinates()) {
 			if (layerBounds.contains(coordinate)) {
-				int i = (int) ((coordinate.x - layerBounds.getMinX()) / tile.getTileWidth());
-				int j = (int) ((coordinate.y - layerBounds.getMinY()) / tile.getTileHeight());
-				log.debug("feature in tile {}-{}", i, j);
+				System.out.println(
+						"+++++ " + coordinate.x + "-" + layerBounds.getMinX() + ") /" + tile.getTileWidth() + " = " +
+								((coordinate.x - layerBounds.getMinX()) / tile.getTileWidth()));
+				System.out.println(
+						"+++++ " + coordinate.y + "-" + layerBounds.getMinY() + ") /" + tile.getTileHeight() + " = " +
+								((coordinate.y - layerBounds.getMinY()) / tile.getTileHeight()));
+				// We jump through some hoops to (try to) avoid rounding problems.
+				// This may result in having the feature in two adjacent tiles, but that should still be better than
+				// loosing the feature. Just hope the tolerance is small enough.
+				double xd = ((coordinate.x - layerBounds.getMinX()) / tile.getTileWidth());
+				double yd = ((coordinate.y - layerBounds.getMinY()) / tile.getTileHeight());
+				int x1 = (int) (xd);
+				int x2 = (int) (xd + ROUNDING_TOLERANCE);
+				int y1 = (int) (yd);
+				int y2 = (int) (yd + ROUNDING_TOLERANCE);
+				if (log.isDebugEnabled()) {
+					log.debug("feature in tile " + x1 + "-" + y1 + " or " + x2 + "-" + y2);
+				}
 
 				// check for possible rounding problems, when i,j is "this" tile
-				if (i == tileX && j == tileY) {
+				if ((x1 == tileX || x2 == tileX) && (y1 == tileY || y2 == tileY)) {
 					return false;
 				}
 
 				int level = tile.getCode().getTileLevel();
-				tile.addCode(level, i, j);
+				tile.addCode(level, x1, y1);
 				return true;
 			}
 		}
