@@ -47,7 +47,7 @@ public class Watermark extends MapAddon {
 
 	public Watermark(String id, MapWidget map) {
 		super(id, 125, 12);
-
+		this.map = map;
 		image = new Image(id + "-img");
 		image.setBounds(new Bbox(0, 0, 125, 12));
 		image.setHref(Geomajas.getIsomorphicDir() + "geomajas/temp/powered_by_geomajas.gif");
