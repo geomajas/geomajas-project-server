@@ -85,36 +85,20 @@ dojo.declare("FeaturePainter", Painter, {
 			worldspace : true
 		};
 		
-		
-		//if(feature.isClipped() && feature.getPath()){
-			log.info("FeaturePainter : painting with (clipped) path");
-			options.path = feature.getPath();
-			if(geometry.declaredClass == geomajas.GeometryTypes.POLYGON){
-				graphics.drawPolygon (null,options);
-			} else if (geometry.declaredClass == geomajas.GeometryTypes.LINESTRING) {
-				graphics.drawLine (null,options);
-			} else if (geometry.declaredClass == geomajas.GeometryTypes.MULTIPOLYGON) {
-				graphics.drawPolygon (null,options);
-			} else if (geometry.declaredClass == geomajas.GeometryTypes.MULTILINESTRING) {
-				graphics.drawLine (null,options);		
-			} else if (geometry.type == geomajas.GeometryTypes.POINT) {
-				graphics.drawSymbol (null,options);
-			}
-		/*} else {
-			var viewGeometry = this.transform.worldGeometryToPan(geometry);
-			if(geometry.declaredClass == geomajas.GeometryTypes.POLYGON){
-				graphics.drawPolygon (viewGeometry,options);
-			} else if (geometry.declaredClass == geomajas.GeometryTypes.LINESTRING) {
-				graphics.drawLine (viewGeometry,options);
-			} else if (geometry.declaredClass == geomajas.GeometryTypes.MULTIPOLYGON) {
-				graphics.drawPolygon (viewGeometry,options);
-			} else if (geometry.declaredClass == geomajas.GeometryTypes.MULTILINESTRING) {
-				graphics.drawLine (viewGeometry,options);
-			} else if (geometry.type == geomajas.GeometryTypes.POINT) {
-				options.styleId = feature.getLayer().getLayerId() + "." + feature.styleId + ".style";
-				graphics.drawSymbol (viewGeometry,options);
-			}
-		}*/
+		// clipped and normal drawing is the same now ?
+		var viewGeometry = this.transform.worldGeometryToPan(geometry);
+		if(geometry.declaredClass == geomajas.GeometryTypes.POLYGON){
+			graphics.drawPolygon (viewGeometry,options);
+		} else if (geometry.declaredClass == geomajas.GeometryTypes.LINESTRING) {
+			graphics.drawLine (viewGeometry,options);
+		} else if (geometry.declaredClass == geomajas.GeometryTypes.MULTIPOLYGON) {
+			graphics.drawPolygon (viewGeometry,options);
+		} else if (geometry.declaredClass == geomajas.GeometryTypes.MULTILINESTRING) {
+			graphics.drawLine (viewGeometry,options);
+		} else if (geometry.type == geomajas.GeometryTypes.POINT) {
+			options.styleId = feature.getLayer().getLayerId() + "." + feature.styleId + ".style";
+			graphics.drawSymbol (viewGeometry,options);
+		}
 	},
 
 	/**
