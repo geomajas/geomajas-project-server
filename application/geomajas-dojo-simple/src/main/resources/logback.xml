@@ -6,6 +6,7 @@
         </layout>
     </appender>
 
+	<!--
     <logger name="org.geomajas.dojo.server.json.AnnotatedBeanSerializer">
         <level value="INFO"/>
     </logger>
@@ -18,6 +19,7 @@
     <logger name="org.geomajas.command.render.GetRasterDataCommand">
         <level value="DEBUG"/>
     </logger>
+    -->
 
     <root>
         <level value="INFO"/>
