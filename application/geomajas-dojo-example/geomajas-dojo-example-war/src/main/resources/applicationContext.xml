@@ -93,9 +93,11 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 						<ref bean="ToolbarSeparator" />
 						<ref bean="SelectionMode" />
 						<ref bean="DeselectAll" />
+						<!--
 						<ref bean="ToolbarSeparator" />
 						<ref bean="ShowDefaultPrint" />
 						<ref bean="PrintMode" />
+						-->
 					</list>
 				</property>
 			</bean>
@@ -181,9 +183,11 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 						<ref bean="EditMode" />
 						<ref bean="SplitPolygonMode" />
 						<ref bean="MergePolygonMode" />
+						<!--
 						<ref bean="ToolbarSeparator" />
 						<ref bean="ShowDefaultPrint" />
 						<ref bean="PrintMode" />
+						-->
 					</list>
 				</property>
 			</bean>
@@ -267,8 +271,10 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 						<ref bean="DeselectAll" />
 						<ref bean="ToolbarSeparator" />
 						<ref bean="FeatureInfoMode" />
+						<!--
 						<ref bean="ShowDefaultPrint" />
 						<ref bean="PrintMode" />
+						-->
 					</list>
 				</property>
 			</bean>
@@ -376,8 +382,10 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 						<ref bean="EditMode" />
 						<ref bean="FeatureInfoMode" />
 						<ref bean="MeasureDistanceMode" />
+						<!--
 						<ref bean="ShowDefaultPrint" />
 						<ref bean="PrintMode" />
+						-->
 					</list>
 				</property>
 			</bean>
