@@ -316,12 +316,10 @@ dojo.declare("ConfigManager", null, {
 		log.debug("_configureRasterLayer="+mapId+"."+lc.serverLayerId);
 		var layer = new RasterLayer(mapId, lc.serverLayerId, mapWidget, mapModel);
 
-		/*
 		if (null != lc.layerInfo.dataSourceName && lc.layerInfo.dataSourceName.indexOf("@GoogleLayer") > 0) {
 			log.debug("setting google image factory");
 			layer.setImageFactory(new GoogleImageFactory());
 		}
-		*/
 		layer.setLabel (lc.label);
 		layer.setLayerType (lc.layerType.value);
         layer.setVisible(lc.visible);

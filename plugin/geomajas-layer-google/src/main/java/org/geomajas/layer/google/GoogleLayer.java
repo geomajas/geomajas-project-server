@@ -57,6 +57,8 @@ import com.vividsolutions.jts.geom.Envelope;
  */
 public class GoogleLayer implements RasterLayer {
 
+	public static final String DATA_SOURCE_GOOGLE_INDICATOR = "@GoogleLayer";
+
 	private final Logger log = LoggerFactory.getLogger(GoogleLayer.class);
 
 	protected List<GoogleResolution> resolutions = new ArrayList<GoogleResolution>();
@@ -112,6 +114,11 @@ public class GoogleLayer implements RasterLayer {
 		this.layerInfo = layerInfo;
 		crs = configurationService.getCrs("EPSG:900913"); // we overrule the declared crs, always use mercator/google
 		layerName = layerInfo.getDataSourceName();
+		if (layerName.endsWith(DATA_SOURCE_GOOGLE_INDICATOR)) {
+			layerName = layerName.substring(0, layerName.length() - DATA_SOURCE_GOOGLE_INDICATOR.length());
+		} else {
+			layerInfo.setDataSourceName(layerName + DATA_SOURCE_GOOGLE_INDICATOR);
+		}
 		tileWidth = layerInfo.getTileWidth();
 		tileHeight = layerInfo.getTileHeight();
 		maxWidth = layerInfo.getMaxExtent().getWidth();
