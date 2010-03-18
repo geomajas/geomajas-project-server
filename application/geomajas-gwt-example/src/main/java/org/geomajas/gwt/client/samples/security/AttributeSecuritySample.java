@@ -62,6 +62,8 @@ public class AttributeSecuritySample extends SamplePanel {
 
 	private VectorLayer layer;
 
+	private FeatureAttributeWindow featureAttributeWindow;
+
 	public static final SamplePanelFactory FACTORY = new SamplePanelFactory() {
 
 		public SamplePanel createPanel() {
@@ -84,6 +86,7 @@ public class AttributeSecuritySample extends SamplePanel {
 		map = new MapWidget("beansMap", "gwt-samples");
 		map.setVisible(false);
 		layout.addMember(map);
+		map.init();
 
 		// Create login handler that re-initializes the map on a successful login:
 		final BooleanCallback initMapCallback = new BooleanCallback() {
@@ -94,6 +97,7 @@ public class AttributeSecuritySample extends SamplePanel {
 					map = new MapWidget("beansMap", "gwt-samples");
 					map.setVisible(false);
 					layout.addMember(map);
+					map.init();
 				}
 			}
 		};
@@ -105,6 +109,10 @@ public class AttributeSecuritySample extends SamplePanel {
 
 			public void onClick(ClickEvent event) {
 				Authentication.getInstance().login("elvis", "elvis", initMapCallback);
+				if (null != featureAttributeWindow) {
+					featureAttributeWindow.destroy();
+					featureAttributeWindow = null;
+				}
 			}
 		});
 		buttonLayout.addMember(loginButtonMarino);
@@ -116,6 +124,10 @@ public class AttributeSecuritySample extends SamplePanel {
 
 			public void onClick(ClickEvent event) {
 				Authentication.getInstance().login("luc", "luc", initMapCallback);
+				if (null != featureAttributeWindow) {
+					featureAttributeWindow.destroy();
+					featureAttributeWindow = null;
+				}
 			}
 		});
 		buttonLayout.addMember(loginButtonLuc);
@@ -146,9 +158,13 @@ public class AttributeSecuritySample extends SamplePanel {
 							SearchFeatureResponse resp = (SearchFeatureResponse) response;
 							for (org.geomajas.layer.feature.Feature dtoFeature : resp.getFeatures()) {
 								Feature feature = new Feature(dtoFeature, layer);
-								FeatureAttributeWindow editor = new FeatureAttributeWindow(feature, true);
-								editor.setWidth(400);
-								layout.addMember(editor);
+								if (null != featureAttributeWindow) {
+									featureAttributeWindow.destroy();
+									featureAttributeWindow = null;
+								}
+								featureAttributeWindow = new FeatureAttributeWindow(feature, true);
+								featureAttributeWindow.setWidth(400);
+								layout.addMember(featureAttributeWindow);
 							}
 						}
 					}

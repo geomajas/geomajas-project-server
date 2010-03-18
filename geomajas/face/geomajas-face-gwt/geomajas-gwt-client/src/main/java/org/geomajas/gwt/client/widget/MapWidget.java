@@ -178,6 +178,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	}
 
 	protected void initializationCallback(GetMapConfigurationResponse r) {
+		GWT.log("init mapWidget " + r.getMapInfo(), null);
 		if (r.getMapInfo() != null) {
 			ClientMapInfo info = r.getMapInfo();
 			unitLength = info.getUnitLength();
@@ -380,6 +381,10 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 		final int height = getHeight();
 		mapModel.getMapView().setSize(width, height);
 		graphics.setSize(width, height);
+		init();
+	}
+
+	public void init() {
 		GwtCommand commandRequest = new GwtCommand("command.configuration.GetMap");
 		commandRequest.setCommandRequest(new GetMapConfigurationRequest(id, applicationId));
 		GwtCommandDispatcher.getInstance().execute(commandRequest, new CommandCallback() {

@@ -191,7 +191,11 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 		}
 	}
 
-	/** Return this map model's id. */
+	/**
+	 * Return this map model's id.
+	 *
+	 * @return id
+	 */
 	public String getId() {
 		return id;
 	}
@@ -281,7 +285,7 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 	/**
 	 * Get all layers with the specified server layer id.
 	 * 
-	 * @param layerId
+	 * @param serverLayerId
 	 *            The layer's server layer ID.
 	 * @return Returns list of layers with the specified server layer id.
 	 */
@@ -300,7 +304,7 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 	/**
 	 * Get all vector layers with the specified server layer id.
 	 * 
-	 * @param layerId
+	 * @param serverLayerId
 	 *            The layer's server layer ID.
 	 * @return Returns list of layers with the specified server layer id.
 	 */

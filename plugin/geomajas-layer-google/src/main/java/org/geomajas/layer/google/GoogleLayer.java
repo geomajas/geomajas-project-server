@@ -54,16 +54,27 @@ import com.vividsolutions.jts.geom.Envelope;
  * Layer for displaying Google Maps images.
  * 
  * @author Jan De Moerloose
+ * @author Joachim Van der Auwera
+ * @author Frank Wijnants
  */
 public class GoogleLayer implements RasterLayer {
 
 	public static final String DATA_SOURCE_GOOGLE_INDICATOR = "@GoogleLayer";
 
+	public static final String LAYER_NAME_NORMAL = "G_NORMAL_MAP";
+	public static final String LAYER_NAME_SATELLITE = "G_SATELLITE_MAP";
+	public static final String LAYER_NAME_HYBRID = "G_HYBID_MAP";
+	public static final String LAYER_NAME_PHYSICAL = "G_PHYSICAL_MAP";
+
+	public static final double EARTH_RADIUS_IN_METERS = 6378137.0;
+
+	public static final double EQUATOR_IN_METERS = 2 * Math.PI * EARTH_RADIUS_IN_METERS;
+
+	public static final int MAX_ZOOM_LEVEL = 17;
+
 	private final Logger log = LoggerFactory.getLogger(GoogleLayer.class);
 
 	protected List<GoogleResolution> resolutions = new ArrayList<GoogleResolution>();
-
-	private String layerName;
 
 	protected int tileWidth;
 
@@ -73,11 +84,7 @@ public class GoogleLayer implements RasterLayer {
 
 	protected double maxHeight;
 
-	public static final double EARTH_RADIUS_IN_METERS = 6378137.0;
-
-	public static final double EQUATOR_IN_METERS = 2 * Math.PI * EARTH_RADIUS_IN_METERS;
-
-	public static final int MAX_ZOOM_LEVEL = 17;
+	private boolean satellite;
 
 	@Autowired
 	private ConfigurationService configurationService;
@@ -93,7 +100,18 @@ public class GoogleLayer implements RasterLayer {
 	private CoordinateReferenceSystem crs;
 	
 	private String id;
-	
+
+	protected static final int[] POWERS_OF_TWO;
+
+	static {
+		POWERS_OF_TWO = new int[31];
+		int b = 1;
+		for (int c = 0; c < POWERS_OF_TWO.length; c++) {
+			POWERS_OF_TWO[c] = b;
+			b *= 2;
+		}
+	}
+
 	public String getId() {
 		return id;
 	}
@@ -113,11 +131,14 @@ public class GoogleLayer implements RasterLayer {
 	public void setLayerInfo(RasterLayerInfo layerInfo) throws LayerException {
 		this.layerInfo = layerInfo;
 		crs = configurationService.getCrs("EPSG:900913"); // we overrule the declared crs, always use mercator/google
-		layerName = layerInfo.getDataSourceName();
-		if (layerName.endsWith(DATA_SOURCE_GOOGLE_INDICATOR)) {
-			layerName = layerName.substring(0, layerName.length() - DATA_SOURCE_GOOGLE_INDICATOR.length());
-		} else {
+		String layerName = layerInfo.getDataSourceName();
+		if (null == layerName) {
+			layerInfo.setDataSourceName(LAYER_NAME_NORMAL + DATA_SOURCE_GOOGLE_INDICATOR);
+		} else if (!layerName.endsWith(DATA_SOURCE_GOOGLE_INDICATOR)) {
 			layerInfo.setDataSourceName(layerName + DATA_SOURCE_GOOGLE_INDICATOR);
+			if (layerName.equals(LAYER_NAME_SATELLITE)) {
+				setSatellite(true);
+			}
 		}
 		tileWidth = layerInfo.getTileWidth();
 		tileHeight = layerInfo.getTileHeight();
@@ -126,8 +147,22 @@ public class GoogleLayer implements RasterLayer {
 		this.calculatePredefinedResolutions();
 	}
 
-	public String getLayerName() {
-		return layerName;
+	/**
+	 * Check whether this should be satellite pictures.
+	 *
+	 * @return true when satellite images are requested
+	 */
+	public boolean isSatellite() {
+		return satellite;
+	}
+
+	/**
+	 * Set whether to use satellite images.
+	 *
+	 * @param satellite use satellite ?
+	 */
+	public void setSatellite(boolean satellite) {
+		this.satellite = satellite;
 	}
 
 	public List<RasterTile> paint(CoordinateReferenceSystem boundsCrs, Envelope bounds, double scale)
@@ -168,11 +203,12 @@ public class GoogleLayer implements RasterLayer {
 			DirectPosition mapUpperLeft = getMapFromGoogleIndices(layerToMap, indicesUpperLeft, tileLevel);
 			DirectPosition mapLowerRight = getMapFromGoogleIndices(layerToMap, indicesLowerRight, tileLevel);
 			double width = mapLowerRight.getOrdinate(0) - mapUpperLeft.getOrdinate(0);
+			double height = mapLowerRight.getOrdinate(1) - mapUpperLeft.getOrdinate(1);
 
 			// Calculate the position and indices of the center image corner
 			// in map space
 			double xCenter = center.x - (indicesCenter.x - indicesUpperLeft.x) * width;
-			double yCenter = center.y + (indicesCenter.y - indicesUpperLeft.y) * width;
+			double yCenter = center.y + (indicesCenter.y - indicesUpperLeft.y) * height;
 			int iCenter = (int) indicesUpperLeft.x;
 			int jCenter = (int) indicesUpperLeft.y;
 
@@ -187,7 +223,7 @@ public class GoogleLayer implements RasterLayer {
 			double yMax = yCenter;
 			int jMin = jCenter;
 			while (yMax < bounds.getMaxY()) {
-				yMax += width;
+				yMax += height;
 				jMin--;
 			}
 			// Calculate the indices of the lower right corner
@@ -201,7 +237,7 @@ public class GoogleLayer implements RasterLayer {
 			double yMin = yCenter;
 			int jMax = jCenter;
 			while (yMin > bounds.getMinY()) {
-				yMin -= width;
+				yMin -= height;
 				jMax++;
 			}
 			Coordinate upperLeft = new Coordinate(xMin, yMax);
@@ -213,16 +249,21 @@ public class GoogleLayer implements RasterLayer {
 			int xScreenUpperLeft = (int) Math.round(upperLeft.x * scale);
 			int yScreenUpperLeft = (int) Math.round(upperLeft.y * scale);
 			int screenWidth = (int) Math.round(scale * width);
+			int screenHeight = (int) Math.round(scale * height);
 			for (int i = iMin; i <= iMax; i++) {
 				for (int j = jMin; j <= jMax; j++) {
 					// Using screen coordinates:
 					int x = xScreenUpperLeft + (i - iMin) * screenWidth;
 					int y = yScreenUpperLeft - (j - jMin) * screenWidth;
 
-					RasterTile image = new RasterTile(new Bbox(x, -y, screenWidth, screenWidth), getId()
+					RasterTile image = new RasterTile(new Bbox(x, -y, screenWidth, screenHeight), getId()
 							+ "." + tileLevel + "." + i + "," + j);
 					image.setCode(new TileCode(tileLevel, i, j));
-					image.setUrl(getLayerName());
+					if (isSatellite()) {
+						image.setUrl(getSatelliteTileUrl(i,j,tileLevel));
+					}else{
+						image.setUrl(getTileUrl(i,j,tileLevel));
+					}
 					result.add(image);
 				}
 			}
@@ -302,9 +343,98 @@ public class GoogleLayer implements RasterLayer {
 		return new Coordinate(xIndex, yIndex);
 	}
 
+	public RasterLayerInfo getLayerInfo() {
+		return layerInfo;
+	}
+
+	public String getTileUrl(int x, int y, int zoom) {
+		if ((zoom < 0) || (zoom > 17)) {
+			return null;
+		}
+		x = roundDownToMultiple(x, 256) / 256;
+		y = roundDownToMultiple(y, 256) / 256;
+		int d = getPowerOfTwo(zoom);
+		if ((y < 0) || (y >= d)) {
+			return null;
+		}
+		x = x % d;
+		if (x < 0) {
+			x += d;
+		}
+		String e = "mt" + ((x + y) % 4) + ".google.com";
+		return "http://" + e + "/mt?v=w2.95&x=" + x + "&y=" + y + "&z=" + zoom;
+	}
+
+	public String getSatelliteTileUrl(int x, int y, int zoom) {
+		if ((zoom < 0) || (zoom > 19)) {
+			return null;
+		}
+		x /= 256;
+		y /= 256;
+		int d = getPowerOfTwo(zoom);
+		if ((y < 0) || (y >= d)) {
+			return null;
+		}
+		x = x % d;
+		if (x < 0) {
+			x += d;
+		}
+		String e = "kh" + ((x + y) % 4) + ".google.com";
+		String f = "t";
+		for (int g = 0; g < zoom; g++) {
+			d /= 2;
+			if (y < d) {
+				if (x < d) {
+					f += "q";
+				} else {
+					f += "r";
+					x -= d;
+				}
+			} else {
+				y -= d;
+				if (x < d) {
+					f += "t";
+				} else {
+					f += "s";
+					x -= d;
+				}
+			}
+		}
+		return "http://" + e + "/kh?n=404&v=20&t=" + f;
+	}
+
+	/**
+	 * Returns the largest integer smaller or equal to the specified one which
+	 * is a multiple of the specified factor.
+	 *
+	 * @param value value to round down
+	 * @param factor factor which result needs to be a multiple of
+	 * @return largest multiple of factor <= value
+	 */
+	public int roundDownToMultiple(int value, int factor) {
+		int b = Math.abs(value) % factor;
+		if (b == 0) {
+			return value;
+		} else if (value >= 0) {
+			return value - b;
+		} else {
+			return value - (factor - b);
+		}
+	}
+
+	/**
+	 * Returns 2^n, for values of n between 0 and 31.
+	 *
+	 * @param n requested power
+	 * @return 2^n
+	 */
+	public int getPowerOfTwo(int n) {
+		return POWERS_OF_TWO[n];
+	}
+
 	/**
 	 * Single resolution in a Google layer.
-	 * 
+	 *
 	 * @author Jan De Moerloose
 	 */
 	private class GoogleResolution {
@@ -328,7 +458,4 @@ public class GoogleLayer implements RasterLayer {
 
 	}
 
-	public RasterLayerInfo getLayerInfo() {
-		return layerInfo;
-	}
 }

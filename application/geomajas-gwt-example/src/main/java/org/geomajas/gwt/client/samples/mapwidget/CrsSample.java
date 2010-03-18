@@ -75,8 +75,8 @@ public class CrsSample extends SamplePanel {
 
 	public String[] getConfigurationFiles() {
 		return new String[] { "classpath:org/geomajas/gwt/samples/mapwidget/mapCrs.xml",
-				"classpath:org/geomajas/gwt/samples/mapwidget/layerOsm.xml",
-				"classpath:org/geomajas/gwt/samples/mapwidget/layerBeans.xml" };
+				"classpath:org/geomajas/gwt/samples/mapwidget/layerBeansLonLat.xml",
+				"classpath:org/geomajas/gwt/samples/mapwidget/layerBeansMarcator.xml" };
 	}
 
 	public String ensureUserLoggedIn() {
