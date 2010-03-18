@@ -147,6 +147,9 @@ public final class CommandDispatcherImpl implements CommandDispatcher {
 						}
 						response.getErrorMessages().add(msg);
 					} else {
+						if (log.isDebugEnabled()) {
+							log.debug("exception occurred {}, stack trace\n{}", t, t.getStackTrace());
+						}
 						if (null == localeObject && null != locale) {
 							localeObject = new Locale(locale);
 						}

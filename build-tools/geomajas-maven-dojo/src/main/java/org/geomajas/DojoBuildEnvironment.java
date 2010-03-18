@@ -248,7 +248,9 @@ public class DojoBuildEnvironment {
 	 * Unpack the libraries in the repository so that Hosted mode browser can be executed without requirement to install
 	 * GWT on computer.
 	 *
-	 * @throws MojoExecutionException some error occured
+	 * @param archive jar file to unpack
+	 * @param destinationDirectory destination directory
+	 * @throws MojoExecutionException some error occurred
 	 */
 	private void unpackArchive(File archive, File destinationDirectory) throws MojoExecutionException {
 		try {

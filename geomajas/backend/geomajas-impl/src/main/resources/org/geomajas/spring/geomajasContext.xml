@@ -182,6 +182,9 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 				<bean class="org.geomajas.internal.service.vector.GetTileGetFeaturesStep">
 					<property name="id" value="GetTileGetFeaturesStep"/>
 				</bean>
+				<bean class="org.geomajas.internal.service.vector.GetTileTransformStep">
+					<property name="id" value="GetTileTransformStep"/>
+				</bean>
 				<bean class="org.geomajas.internal.service.vector.GetTileStringContentStep">
 					<property name="id" value="GetTileStringContentStep"/>
 				</bean>

@@ -158,9 +158,9 @@ public class ConfigurationDtoPostProcessor {
 			double distance = JTS.orthodromicDistance(c1, c2, crs);
 			return distance;
 		} catch (FactoryException e) {
-			throw new LayerException(e, ExceptionCode.LAYER_CRS_INIT_PROBLEM);
+			throw new LayerException(e, ExceptionCode.TRANSFORMER_CREATE_LAYER_TO_MAP_FAILED);
 		} catch (TransformException e) {
-			throw new LayerException(e, ExceptionCode.LAYER_CRS_INIT_PROBLEM);
+			throw new LayerException(e, ExceptionCode.TRANSFORMER_CREATE_LAYER_TO_MAP_FAILED);
 		}
 	}
 
@@ -175,11 +175,11 @@ public class ConfigurationDtoPostProcessor {
 			MathTransform transformer = geoService.findMathTransform(layerCrs, mapCrs);
 			return converterService.toDto(JTS.transform(serverEnvelope, transformer));
 		} catch (FactoryException e) {
-			throw new LayerException(e, ExceptionCode.LAYER_CRS_INIT_PROBLEM);
+			throw new LayerException(e, ExceptionCode.TRANSFORMER_CREATE_LAYER_TO_MAP_FAILED);
 		} catch (TransformException e) {
-			throw new LayerException(e, ExceptionCode.LAYER_CRS_INIT_PROBLEM);
+			throw new LayerException(e, ExceptionCode.TRANSFORMER_CREATE_LAYER_TO_MAP_FAILED);
 		} catch (GeomajasException e) {
-			throw new LayerException(e, ExceptionCode.LAYER_CRS_INIT_PROBLEM);
+			throw new LayerException(e, ExceptionCode.TRANSFORMER_CREATE_LAYER_TO_MAP_FAILED);
 		}
 	}
 

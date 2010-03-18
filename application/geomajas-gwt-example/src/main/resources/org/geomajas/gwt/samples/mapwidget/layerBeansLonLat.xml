@@ -107,22 +107,6 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		<property name="features">
 			<list>
 				<bean class="org.geomajas.layer.bean.FeatureBean">
-					<property name="id" value="1" />
-					<property name="booleanAttr" value="true" />
-					<property name="currencyAttr" value="100,23" />
-					<property name="dateAttr" value="2010-02-23" />
-					<property name="doubleAttr" value="123.456" />
-					<property name="floatAttr" value="456.789" />
-					<property name="imageUrlAttr" value="http://www.geomajas.org/image1" />
-					<property name="integerAttr" value="789" />
-					<property name="longAttr" value="123456789" />
-					<property name="shortAttr" value="123" />
-					<property name="stringAttr" value="USA" />
-					<property name="urlAttr" value="http://www.geomajas.org/url1" />
-					<property name="geometry"
-						value="MULTIPOLYGON(((-124 24,-124 49,-62 49,-62 24,-124 24)))" />
-				</bean>
-				<bean class="org.geomajas.layer.bean.FeatureBean">
 					<property name="id" value="10" />
 					<property name="geometry" value="MULTIPOLYGON(((0 0, 0 20, 20 20, 20 0, 0 0)))" />
 				</bean>

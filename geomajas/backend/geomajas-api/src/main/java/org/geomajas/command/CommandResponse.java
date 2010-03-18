@@ -48,7 +48,7 @@ public class CommandResponse implements Serializable {
 	/**
 	 * Determine whether an error occurred while dispatching the command.
 	 *
-	 * @return true when an exception occured during command processing
+	 * @return true when an exception occurred during command processing
 	 */
 	public boolean isError() {
 		return (null != errorMessages && errorMessages.size() > 0) || (null != errors && errors.size() > 0);

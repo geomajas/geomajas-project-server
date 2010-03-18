@@ -23,6 +23,7 @@
 
 package org.geomajas.internal.rendering.strategy;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.global.GeomajasException;
@@ -33,8 +34,6 @@ import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.layer.tile.TileCode;
 import org.geomajas.service.DtoConverterService;
 import org.geotools.geometry.jts.JTS;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.TransformException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -78,13 +77,33 @@ public class TiledFeatureService {
 	private static final double ROUNDING_TOLERANCE = .0000000005;
 
 	/**
-	 * Paint an individual feature. In other words transform the generic feature object into a
-	 * <code>VectorFeature</code>, and prepare it for a certain tile.
+	 * Put features in a tile. This will assure all features are only added in one tile. When a feature's unique tile
+	 * is different from this one a link is added in the tile.
 	 * 
 	 * @param tile
 	 *            tile to put features in
 	 * @param features
-	 *            features to include (the {@link Geometry} in the feature is in map coordinates)
+	 *            features to include (the {@link Geometry} in the feature is in layer coordinates)
+	 * @param layer
+	 *            layer
+	 * @throws GeomajasException oops
+	 */
+	public void fillTile(InternalTile tile, List<InternalFeature> features, VectorLayer layer)
+			throws GeomajasException {
+		Envelope layerBounds = converterService.toInternal(layer.getLayerInfo().getMaxExtent());
+		for (InternalFeature feature : features) {
+			if (!addTileCode(tile, layerBounds, feature.getGeometry())) {
+				log.debug("add feature");
+					tile.addFeature(feature);
+			}
+		}
+	}
+
+	/**
+	 * Apply clipping to the features in a tile. The tile and its features should already be in map space.
+	 *
+	 * @param tile
+	 *            tile to put features in
 	 * @param layer
 	 *            layer
 	 * @param code
@@ -94,39 +113,31 @@ public class TiledFeatureService {
 	 * @param panOrigin
 	 *            When panning on the client, only this parameter changes. So we need to be aware of it as we calculate
 	 *            the maxScreenEnvelope.
-	 * @param transform
-	 *            Transformation between layer and map CRS. Needed to calculate correct tile bounds.
 	 * @throws GeomajasException oops
 	 */
-	public void fillTile(InternalTile tile, List<InternalFeature> features, VectorLayer layer, TileCode code,
-			double scale, Coordinate panOrigin, MathTransform transform) throws GeomajasException {
-		try {
-			Envelope layerBounds = JTS.transform(converterService.toInternal(layer.getLayerInfo().getMaxExtent()),
-					transform);
-			Geometry maxScreenBbox = null; // The tile's maximum bounds in screen space. Used for clipping.
-			for (InternalFeature feature : features) {
-				if (!addTileCode(tile, layerBounds, feature.getGeometry())) {
-					log.debug("add feature");
-					// clip feature if necessary
-					if (exceedsScreenDimensions(feature, scale)) {
-						InternalFeatureImpl vectorFeature = new InternalFeatureImpl(feature);
-						tile.setClipped(true);
-						vectorFeature.setClipped(true);
-						if (null == maxScreenBbox) {
-							maxScreenBbox = JTS.toGeometry(getMaxScreenEnvelope(layer, code, scale, panOrigin));
-						}
-						Geometry clipped = maxScreenBbox.intersection(feature.getGeometry());
-						vectorFeature.setClippedGeometry(clipped);
-						tile.addFeature(vectorFeature);
-					} else {
-						tile.addFeature(feature);
-					}
+	public void clipTile(InternalTile tile, VectorLayer layer, TileCode code,
+			double scale, Coordinate panOrigin) throws GeomajasException {
+		List<InternalFeature> orgFeatures = tile.getFeatures();
+		tile.setFeatures(new ArrayList<InternalFeature>());
+		Geometry maxScreenBbox = null; // The tile's maximum bounds in screen space. Used for clipping.
+		for (InternalFeature feature : orgFeatures) {
+			// clip feature if necessary
+			if (exceedsScreenDimensions(feature, scale)) {
+				InternalFeatureImpl vectorFeature = new InternalFeatureImpl(feature);
+				tile.setClipped(true);
+				vectorFeature.setClipped(true);
+				if (null == maxScreenBbox) {
+					maxScreenBbox = JTS.toGeometry(getMaxScreenEnvelope(layer, code, scale, panOrigin));
 				}
+				Geometry clipped = maxScreenBbox.intersection(feature.getGeometry());
+				vectorFeature.setClippedGeometry(clipped);
+				tile.addFeature(vectorFeature);
+			} else {
+				tile.addFeature(feature);
 			}
-		} catch (TransformException te) {
-			throw new GeomajasException(te);
 		}
 	}
+
 
 	// -------------------------------------------------------------------------
 	// Private functions:
@@ -135,7 +146,9 @@ public class TiledFeatureService {
 	/**
 	 * Add dependent tiles for this geometry.
 	 * <p/>
-	 * It checks the correct tile for the first coordinate in the geometry which is ind
+	 * It checks the correct tile for the first coordinate in the geometry which is inside the layer bounds. When no
+	 * coordinates are inside the layer bounds, the feature is put in tile 0-0 (as this means the feature is bigger
+	 * than the tiles).
 	 * 
 	 * @param tile
 	 *            tile in which to add dependent tile
