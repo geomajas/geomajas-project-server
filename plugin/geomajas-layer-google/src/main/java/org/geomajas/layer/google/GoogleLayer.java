@@ -98,7 +98,7 @@ public class GoogleLayer implements RasterLayer {
 	private RasterLayerInfo layerInfo;
 
 	private CoordinateReferenceSystem crs;
-	
+
 	private String id;
 
 	protected static final int[] POWERS_OF_TWO;
@@ -115,7 +115,7 @@ public class GoogleLayer implements RasterLayer {
 	public String getId() {
 		return id;
 	}
-	
+
 	public void setId(String id) {
 		this.id = id;
 	}
@@ -260,9 +260,9 @@ public class GoogleLayer implements RasterLayer {
 							+ "." + tileLevel + "." + i + "," + j);
 					image.setCode(new TileCode(tileLevel, i, j));
 					if (isSatellite()) {
-						image.setUrl(getSatelliteTileUrl(i,j,tileLevel));
-					}else{
-						image.setUrl(getTileUrl(i,j,tileLevel));
+						image.setUrl(getSatelliteTileUrl(i, j, tileLevel));
+					} else {
+						image.setUrl(getTileUrl(i, j, tileLevel));
 					}
 					result.add(image);
 				}
@@ -404,8 +404,7 @@ public class GoogleLayer implements RasterLayer {
 	}
 
 	/**
-	 * Returns the largest integer smaller or equal to the specified one which
-	 * is a multiple of the specified factor.
+	 * Returns the largest integer smaller or equal to the specified one which is a multiple of the specified factor.
 	 *
 	 * @param value value to round down
 	 * @param factor factor which result needs to be a multiple of
