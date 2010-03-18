@@ -78,14 +78,12 @@ public class GetTileTransformStep implements PipelineStep<InternalTile> {
 		MathTransform transform = context.get(PipelineCode.CRS_TRANSFORM_KEY, MathTransform.class);
 
 		// convert tile data to layer
-		System.out.println("transform tile sizes");
 		TileService.transformTileSizes(response, transform, metadata.getScale());
 
 		// convert feature geometries to layer
 		for (InternalFeature feature : response.getFeatures()) {
 			if (null != feature.getGeometry()) {
 				try {
-					System.out.println("transform a feature");
 					feature.setGeometry(JTS.transform(feature.getGeometry(), transform));
 				} catch (TransformException te) {
 					throw new GeomajasException(te, ExceptionCode.GEOMETRY_TRANSFORMATION_FAILED);
@@ -94,7 +92,6 @@ public class GetTileTransformStep implements PipelineStep<InternalTile> {
 		}
 
 		// clipping of features in tile
-		System.out.println("clip tile");
 		Coordinate panOrigin = new Coordinate(metadata.getPanOrigin().getX(), metadata.getPanOrigin().getY());
 		tiledFeatureService.clipTile(response, layer, metadata.getCode(), metadata.getScale(), panOrigin);
 	}
