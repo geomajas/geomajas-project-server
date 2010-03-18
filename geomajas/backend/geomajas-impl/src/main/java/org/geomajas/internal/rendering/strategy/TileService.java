@@ -112,18 +112,20 @@ public final class TileService {
 	 *            The actual tile.
 	 * @param transform
 	 *            The transformation object.
+	 * @param scale
+	 *            Number of pixels per unitS
 	 * @throws GeomajasException
 	 *             oops
 	 */
-	public static void transformTileSizes(InternalTile tile, MathTransform transform) throws GeomajasException {
+	public static void transformTileSizes(InternalTile tile, MathTransform transform, double scale)
+			throws GeomajasException {
 		try {
-			Envelope size = JTS.transform(new Envelope(0, tile.getScreenWidth(), 0, tile.getScreenHeight()), transform);
-			tile.setScreenWidth(Math.ceil(size.getWidth()));
-			tile.setScreenHeight(Math.ceil(size.getHeight()));
-			size = JTS.transform(new Envelope(0, tile.getTileWidth(), 0, tile.getTileHeight()), transform);
+			Envelope size = JTS.transform(tile.getBounds(), transform);
 			tile.setTileWidth(Math.ceil(size.getWidth()));
 			tile.setTileHeight(Math.ceil(size.getHeight()));
-			tile.setBounds(JTS.transform(tile.getBounds(), transform));
+			tile.setBounds(size);
+			tile.setScreenWidth(Math.ceil(size.getWidth() * scale));
+			tile.setScreenHeight(Math.ceil(size.getHeight() * scale));
 		} catch (TransformException e) {
 			throw new GeomajasException(e);
 		}

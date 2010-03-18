@@ -89,7 +89,7 @@ public class GetTileGetFeaturesStep implements PipelineStep<InternalTile> {
 		} catch (GeomajasException ge) {
 			throw new RenderException(ge);
 		}
-		TileService.transformTileSizes(response, transform);
+		TileService.transformTileSizes(response, transform, metadata.getScale());
 		tiledFeatureService.fillTile(response, features, layer, metadata.getCode(), metadata.getScale(), panOrigin,
 				transform);
 	}
