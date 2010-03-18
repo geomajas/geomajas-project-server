@@ -67,6 +67,7 @@ public class StyleFilterImpl implements StyleFilter {
 		style.setIndex(FeatureStyleInfo.DEFAULT_STYLE_INDEX);
 		style.setName("invisible-style");
 		style.setFormula("");
+		style.setStyleId("default??");
 	}
 
 	/**

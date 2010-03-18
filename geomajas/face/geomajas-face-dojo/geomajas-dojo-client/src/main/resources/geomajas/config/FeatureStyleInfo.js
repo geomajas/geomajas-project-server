@@ -65,7 +65,8 @@ dojo.declare("FeatureStyleInfo", null, {
 			strokeOpacity : this.style.strokeOpacity,
 			strokeWidth : this.style.strokeWidth,
 			dashArray : this.style.dashArray,
-			symbol : this.style.symbol
+			symbol : this.style.symbol,
+			styleId : this.styleId
 		};
 		return json;
 	},
@@ -104,6 +105,14 @@ dojo.declare("FeatureStyleInfo", null, {
 	
 	setFormula : function (formula) {
 		this.formula = formula;
+	},
+
+	getStyleId : function () {
+		return this.styleId;
+	},
+	
+	setStyleId : function (styleId) {
+		this.styleId = styleId;
 	},
 
 	getStyle : function () {

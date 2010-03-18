@@ -27,7 +27,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.geomajas.configuration.FeatureStyleInfo;
-import org.geomajas.global.Json;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.InternalFeature;
@@ -39,9 +38,9 @@ import com.vividsolutions.jts.geom.Geometry;
  * <p>
  * Implementation of {@link InternalFeature}.
  * <p/>
- * This feature type has support for clipped geometries. This is sometimes necessary when features are huge, and the
- * map is zoomed in. In SVG and VML you would still be bothered by the useless extra points. So in some situations
- * clipped geometries provide faster SVG/VML rendering.
+ * This feature type has support for clipped geometries. This is sometimes necessary when features are huge, and the map
+ * is zoomed in. In SVG and VML you would still be bothered by the useless extra points. So in some situations clipped
+ * geometries provide faster SVG/VML rendering.
  * </p>
  * 
  * @author Pieter De Graef
@@ -184,12 +183,10 @@ public class InternalFeatureImpl implements InternalFeature {
 		this.clipped = clipped;
 	}
 
-	@Json(serialize = false)
 	public Geometry getClippedGeometry() {
 		return clippedGeometry;
 	}
 
-	@Json(serialize = false)
 	public void setClippedGeometry(Geometry clippedGeometry) {
 		this.clippedGeometry = clippedGeometry;
 	}
@@ -226,22 +223,18 @@ public class InternalFeatureImpl implements InternalFeature {
 		this.geometry = geometry;
 	}
 
-	@Json(serialize = false)
 	public FeatureStyleInfo getStyleInfo() {
 		return styleDefinition;
 	}
 
-	@Json(serialize = false)
 	public void setStyleDefinition(FeatureStyleInfo style) {
 		this.styleDefinition = style;
 	}
 
-	@Json(serialize = false)
 	public VectorLayer getLayer() {
 		return layer;
 	}
 
-	@Json(serialize = false)
 	public void setLayer(VectorLayer layer) {
 		this.layer = layer;
 	}
@@ -256,7 +249,7 @@ public class InternalFeatureImpl implements InternalFeature {
 
 	/**
 	 * Is the logged in user allowed to edit this feature?
-	 *
+	 * 
 	 * @return true when edit/update is allowed for this feature
 	 */
 	public boolean isEditable() {
@@ -265,8 +258,9 @@ public class InternalFeatureImpl implements InternalFeature {
 
 	/**
 	 * Set whether the logged in user is allowed to edit/update this feature.
-	 *
-	 * @param editable true when edit/update is allowed for this feature
+	 * 
+	 * @param editable
+	 *            true when edit/update is allowed for this feature
 	 */
 	public void setEditable(boolean editable) {
 		this.editable = editable;
@@ -274,7 +268,7 @@ public class InternalFeatureImpl implements InternalFeature {
 
 	/**
 	 * Is the logged in user allowed to delete this feature?
-	 *
+	 * 
 	 * @return true when delete is allowed for this feature
 	 */
 	public boolean isDeletable() {
@@ -283,8 +277,9 @@ public class InternalFeatureImpl implements InternalFeature {
 
 	/**
 	 * Set whether the logged in user is allowed to delete this feature.
-	 *
-	 * @param deletable true when deleting this feature is allowed
+	 * 
+	 * @param deletable
+	 *            true when deleting this feature is allowed
 	 */
 	public void setDeletable(boolean deletable) {
 		this.deletable = deletable;

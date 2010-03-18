@@ -352,7 +352,7 @@ dojo.declare("Feature", PainterVisitable, {
 	},
 
 	getStyle : function () {
-		return this.getLayer().getStyleByIndex(this.styleId).getStyle();
+		return this.getLayer().getStyleById(this.styleId);
 	},
 
 	setStyleId : function (styleId) {

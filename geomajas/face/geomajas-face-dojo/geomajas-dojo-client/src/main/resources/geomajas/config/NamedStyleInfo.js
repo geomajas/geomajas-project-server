@@ -97,9 +97,9 @@ dojo.declare("NamedStyleInfo", null, {
 		this.featureStyles.insert(0,style);
 	},
 	
-	getStyleByIndex : function (index) {
+	getStyleById : function (styleId) {
 		for(var i = 0; i < this.featureStyles.count; i++){
-			if(this.featureStyles.item(i).getIndex() == index){
+			if(this.featureStyles.item(i).getStyleId() == styleId){
 				return this.featureStyles.item(i);
 			}
 		}

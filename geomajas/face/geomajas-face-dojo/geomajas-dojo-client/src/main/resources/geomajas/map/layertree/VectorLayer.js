@@ -89,9 +89,9 @@ dojo.declare("VectorLayer", [LayerTreeNode], {
 	replaceStyle : function (style){
 		this.namedStyle.replaceStyle(style);
 	},
-	
-	getStyleByIndex : function (index) {
-		var s = this.namedStyle.getStyleByIndex(index);
+
+	getStyleById : function (styleId) {
+		var s = this.namedStyle.getStyleById(styleId);
 		if(s != null) {
 			return s.getStyle();
 		} else {
@@ -248,10 +248,6 @@ dojo.declare("VectorLayer", [LayerTreeNode], {
 	getStyles : function () {
 		return this.namedStyle.getStyles();
 	},
-	
-	getStyleByIndex : function (index) {
-		return this.namedStyle.getStyleByIndex(index);
-	},	
 
 	getWorkflowHandler : function () {
 		return this.workflowHandler;

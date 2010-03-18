@@ -96,7 +96,7 @@ public interface InternalFeature extends Cloneable, Comparable<InternalFeature> 
 	void setGeometry(Geometry geometry);
 
 	/**
-	 * Get the style info for this feature (of null when it is lazy loaded).
+	 * Get the style info for this feature (or null when it is lazy loaded).
 	 *
 	 * @return style info
 	 */
