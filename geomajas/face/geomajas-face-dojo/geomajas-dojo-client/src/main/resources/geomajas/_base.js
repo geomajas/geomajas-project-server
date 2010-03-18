@@ -66,9 +66,9 @@ var temp = document.URL.substring(0, document.URL.lastIndexOf("/applications")+1
 if (typeof geomajasConfig == 'undefined'){
 	geomajasConfig = {
 		useLazyLoading: false, // no lazy loading
-		lazyFeatureIncludesDefault: 0, // don't include anything by default
-		lazyFeatureIncludesSelect: 3, // attributes + geometry on select
-		lazyFeatureIncludesAll: 11 // attributes + geometry + label (no style, never used), see VectorLayerService)
+		lazyFeatureIncludesDefault: 15, // include all
+		lazyFeatureIncludesSelect: 15, // include all
+		lazyFeatureIncludesAll: 15 // include all
 	};
 
 } 
@@ -96,14 +96,14 @@ if(document && document.getElementsByTagName){
 
 // assure proper defaults for lazy loading
 if (!geomajasConfig.lazyFeatureIncludesAll || 0 == geomajasConfig.lazyFeatureIncludesAll) {
-	geomajasConfig.lazyFeatureIncludesDefault = 4; // style only, see VectorLayerService)
-	geomajasConfig.lazyFeatureIncludesSelect = 15; // attributes + geometry + style + label, see VectorLayerService)
-	geomajasConfig.lazyFeatureIncludesAll = 15; // attributes + geometry + style + label, see VectorLayerService)
+	geomajasConfig.lazyFeatureIncludesDefault = 12; // style + label only, see GeomajasConstant)
+	geomajasConfig.lazyFeatureIncludesSelect = 15; // attributes + geometry + style + label, see GeomajasConstant)
+	geomajasConfig.lazyFeatureIncludesAll = 15; // attributes + geometry + style + label, see GeomajasConstant)
 }
 if (!geomajasConfig.useLazyLoading) {
-	geomajasConfig.lazyFeatureIncludesDefault = 15; // attributes + geometry + style + label, see VectorLayerService)
-	geomajasConfig.lazyFeatureIncludesSelect = 15; // attributes + geometry + style + label, see VectorLayerService)
-	geomajasConfig.lazyFeatureIncludesAll = 15; // attributes + geometry + style + label, see VectorLayerService)
+	geomajasConfig.lazyFeatureIncludesDefault = 15; // attributes + geometry + style + label, see GeomajasConstant)
+	geomajasConfig.lazyFeatureIncludesSelect = 15; // attributes + geometry + style + label, see GeomajasConstant)
+	geomajasConfig.lazyFeatureIncludesAll = 15; // attributes + geometry + style + label, see GeomajasConstant)
 }
 
 
