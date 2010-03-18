@@ -82,9 +82,9 @@ public class RenderingSample extends SamplePanel {
 		mapLayout.addMember(map);
 
 		// Layout with a huge list of buttons to test the rendering:
-		VLayout buttonLayout = new VLayout();
+		HLayout buttonLayout = new HLayout();
 		buttonLayout.setPadding(10);
-		buttonLayout.setHeight(150);
+		buttonLayout.setHeight(120);
 		buttonLayout.setShowEdges(true);
 		buttonLayout.setMembersMargin(10);
 		VLayout column1 = new VLayout();
@@ -98,7 +98,7 @@ public class RenderingSample extends SamplePanel {
 		final Composite group2 = new Composite("another-group");
 
 		// Button1: Draw circle
-		IButton button1 = new IButton("Draw circle");
+		IButton button1 = new IButton(I18nProvider.getSampleMessages().renderingDrawCircle());
 		button1.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
@@ -111,7 +111,7 @@ public class RenderingSample extends SamplePanel {
 		column1.addMember(button1);
 
 		// Button2: Draw LineString
-		IButton button2 = new IButton("Draw LineString");
+		IButton button2 = new IButton(I18nProvider.getSampleMessages().renderingDrawLineString());
 		button2.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
@@ -126,7 +126,7 @@ public class RenderingSample extends SamplePanel {
 		column1.addMember(button2);
 
 		// Button3: Draw Polygon
-		IButton button3 = new IButton("Draw Polygon");
+		IButton button3 = new IButton(I18nProvider.getSampleMessages().renderingDrawPolygon());
 		button3.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
@@ -147,7 +147,7 @@ public class RenderingSample extends SamplePanel {
 		column1.addMember(button3);
 
 		// Button4: Draw Text
-		IButton button4 = new IButton("Draw text");
+		IButton button4 = new IButton(I18nProvider.getSampleMessages().renderingDrawText());
 		button4.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
@@ -160,7 +160,7 @@ public class RenderingSample extends SamplePanel {
 		column2.addMember(button4);
 
 		// Button5: Draw Rectangle
-		IButton button5 = new IButton("Draw Rectangle");
+		IButton button5 = new IButton(I18nProvider.getSampleMessages().renderingDrawRectangle());
 		button5.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
@@ -173,7 +173,7 @@ public class RenderingSample extends SamplePanel {
 		column2.addMember(button5);
 
 		// Button6: Draw Image
-		IButton button6 = new IButton("Draw Image");
+		IButton button6 = new IButton(I18nProvider.getSampleMessages().renderingDrawImage());
 		button6.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
@@ -191,7 +191,7 @@ public class RenderingSample extends SamplePanel {
 		column2.addMember(button6);
 
 		// Button7: Set cursor
-		IButton button7 = new IButton("New cursor on circle");
+		IButton button7 = new IButton(I18nProvider.getSampleMessages().renderingNewCursor());
 		button7.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
@@ -202,7 +202,7 @@ public class RenderingSample extends SamplePanel {
 		column3.addMember(button7);
 
 		// Button8: Transform elements
-		IButton button8 = new IButton("Transform elements");
+		IButton button8 = new IButton(I18nProvider.getSampleMessages().renderingTransform());
 		button8.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
@@ -214,7 +214,7 @@ public class RenderingSample extends SamplePanel {
 		column3.addMember(button8);
 
 		// Button9: Delete everything
-		IButton button9 = new IButton("Delete everything");
+		IButton button9 = new IButton(I18nProvider.getSampleMessages().renderingDelete());
 		button9.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {

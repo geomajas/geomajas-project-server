@@ -69,7 +69,6 @@ public class GeoToolsFeatureModel extends FeatureSourceRetriever implements Feat
 
 	public void setLayerInfo(VectorLayerInfo vectorLayerInfo) throws LayerException {
 		FeatureInfo featureInfo = vectorLayerInfo.getFeatureInfo();
-		attributeInfoMap.put(featureInfo.getIdentifier().getName(), featureInfo.getIdentifier());
 		for (AttributeInfo info : featureInfo.getAttributes()) {
 			attributeInfoMap.put(info.getName(), info);
 		}

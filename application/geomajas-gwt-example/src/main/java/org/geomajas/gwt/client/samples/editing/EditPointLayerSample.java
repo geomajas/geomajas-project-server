@@ -31,12 +31,8 @@ import org.geomajas.gwt.client.samples.i18n.I18nProvider;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.Toolbar;
 
-import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.widgets.Canvas;
-import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.Label;
-import com.smartgwt.client.widgets.events.ClickEvent;
-import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
@@ -62,6 +58,7 @@ public class EditPointLayerSample extends SamplePanel {
 		VLayout layout = new VLayout();
 		layout.setWidth100();
 		layout.setHeight100();
+		layout.setMembersMargin(10);
 
 		VLayout mapLayout = new VLayout();
 		mapLayout.setShowEdges(true);
@@ -70,7 +67,7 @@ public class EditPointLayerSample extends SamplePanel {
 		final MapWidget map = new MapWidget("editPointLayerMap", "gwt-samples");
 		map.getMapModel().addMapModelHandler(new MapModelHandler() {
 
-			// When the map is initialized: select the cities layer:
+			// When the map is initialized: select the cities layer - so that new features are created in this layer:
 			public void onMapModelChange(MapModelEvent event) {
 				map.getMapModel().selectLayer(map.getMapModel().getLayer("cities"));
 			}
@@ -83,16 +80,10 @@ public class EditPointLayerSample extends SamplePanel {
 		mapLayout.addMember(toolbar);
 		mapLayout.addMember(map);
 
+		// Add an explanation to the page that explains how editing is done:
 		HLayout infoLayout = new HLayout();
+		infoLayout.setShowEdges(true);
 		infoLayout.addMember(new Label("Explanation....todo"));
-		IButton button = new IButton("log");
-		button.addClickHandler(new ClickHandler() {
-
-			public void onClick(ClickEvent event) {
-				GWT.log(map.getDOM().getInnerHTML(), null);
-			}
-		});
-		infoLayout.addMember(button);
 
 		layout.addMember(mapLayout);
 		layout.addMember(infoLayout);

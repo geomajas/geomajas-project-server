@@ -23,14 +23,14 @@
 
 package org.geomajas.layer.shapeinmem;
 
+import java.io.IOException;
+
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.layer.LayerException;
 import org.geotools.data.DataStore;
 import org.geotools.data.FeatureSource;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
-
-import java.io.IOException;
 
 /**
  * Both the GeotoolsFeatureModel and the GeotoolsLayer use the same FeatureSource a their way of dealing with geotools

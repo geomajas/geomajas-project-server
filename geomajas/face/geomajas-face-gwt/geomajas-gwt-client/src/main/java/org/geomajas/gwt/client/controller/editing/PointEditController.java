@@ -118,7 +118,7 @@ public class PointEditController extends EditController {
 			TransactionGeomIndex index = TransactionGeomIndexUtil.getIndex(dragTargetId);
 
 			Feature feature = dragTransaction.getNewFeatures()[index.getFeatureIndex()];
-			FeatureOperation op = new SetCoordinateOp(index, getScreenPosition(event));
+			FeatureOperation op = new SetCoordinateOp(index, getWorldPosition(event));
 			op.execute(feature);
 
 			mapWidget.render(dragTransaction, "delete");
@@ -131,7 +131,7 @@ public class PointEditController extends EditController {
 			FeatureTransaction featureTransaction = getFeatureTransaction();
 			if (featureTransaction != null && parent.getEditMode() == EditMode.INSERT_MODE) {
 				// The creation of a new point:
-				FeatureOperation op = new AddCoordinateOp(getGeometryIndex(), getScreenPosition(event));
+				FeatureOperation op = new AddCoordinateOp(getGeometryIndex(), getWorldPosition(event));
 				featureTransaction.execute(op);
 				parent.setEditMode(EditMode.DRAG_MODE);
 
@@ -143,7 +143,7 @@ public class PointEditController extends EditController {
 				// Done dragging a point:
 				TransactionGeomIndex index = TransactionGeomIndexUtil.getIndex(dragTargetId);
 				// TODO: snap ???
-				FeatureOperation op = new SetCoordinateOp(index, getScreenPosition(event));
+				FeatureOperation op = new SetCoordinateOp(index, getWorldPosition(event));
 				featureTransaction.execute(op);
 				if (dragTransaction != null) {
 					mapWidget.render(dragTransaction, "delete");

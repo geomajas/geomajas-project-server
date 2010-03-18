@@ -134,6 +134,24 @@ public interface SampleMessages extends Messages {
 
 	String renderingDescription();
 
+	String renderingDrawCircle();
+
+	String renderingDrawLineString();
+
+	String renderingDrawPolygon();
+
+	String renderingDrawText();
+
+	String renderingDrawRectangle();
+
+	String renderingDrawImage();
+
+	String renderingTransform();
+
+	String renderingNewCursor();
+
+	String renderingDelete();
+
 	// Editing a point layer:
 
 	String editPointLayerTitle();
@@ -277,12 +295,12 @@ public interface SampleMessages extends Messages {
 
 	String customToolbarDescription();
 
-	// Layer tree	
+	// Layer tree
 	String treeGroupLayerTree();
 
 	// Layer tree sample
-	
+
 	String layertreeTitle();
-	
+
 	String layertreeDescription();
 }

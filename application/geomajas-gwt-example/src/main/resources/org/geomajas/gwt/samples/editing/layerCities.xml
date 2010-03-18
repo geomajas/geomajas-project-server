@@ -96,7 +96,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 					<property name="name" value="POPULATION" />
 					<property name="editable" value="true" />
 					<property name="identifying" value="true" />
-					<property name="type" value="INTEGER" />
+					<property name="type" value="LONG" />
 					<property name="validator">
 						<bean class="org.geomajas.configuration.validation.ValidatorInfo">
 							<property name="toolTip" value="The name of the country in which the city lies." />
