@@ -152,12 +152,14 @@ public class TiledFeatureService {
 		int tileY = tileCode.getY();
 		for (Coordinate coordinate : geometry.getCoordinates()) {
 			if (layerBounds.contains(coordinate)) {
+				/*
 				System.out.println(
 						"+++++ " + coordinate.x + "-" + layerBounds.getMinX() + ") /" + tile.getTileWidth() + " = " +
 								((coordinate.x - layerBounds.getMinX()) / tile.getTileWidth()));
 				System.out.println(
 						"+++++ " + coordinate.y + "-" + layerBounds.getMinY() + ") /" + tile.getTileHeight() + " = " +
 								((coordinate.y - layerBounds.getMinY()) / tile.getTileHeight()));
+				*/
 				// We jump through some hoops to (try to) avoid rounding problems.
 				// This may result in having the feature in two adjacent tiles, but that should still be better than
 				// loosing the feature. Just hope the tolerance is small enough.
