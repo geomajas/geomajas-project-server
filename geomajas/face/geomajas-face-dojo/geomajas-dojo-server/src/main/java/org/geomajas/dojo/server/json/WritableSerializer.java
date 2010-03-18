@@ -28,9 +28,10 @@ import com.metaparadigm.jsonrpc.SerializerState;
 import com.metaparadigm.jsonrpc.UnmarshallException;
 
 /**
- * ???
+ * Mechanism for assuring custom types can be JSON serialized.
  *
- * @author check subversion
+ * @author Jan De Moerloose
+ * @author Pieter De Graef
  */
 public class WritableSerializer {
 

@@ -27,8 +27,10 @@ import org.geomajas.layer.tile.VectorTile;
 
 /**
  * Response object for {@link org.geomajas.command.render.GetRenderedTileCommand}.
- * 
- * @author check subversion
+ *
+ * @author Jan De Moerloose
+ * @author Pieter De Graef
+ * @author Joachim Van der Auwera
  */
 public class GetRenderedTileResponse extends CommandResponse {
 

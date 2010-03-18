@@ -26,9 +26,10 @@ import java.io.IOException;
 import java.io.Writer;
 
 /**
- * ???
+ * Mechanism for assuring custom types can be JSON serialized.
  *
- * @author check subversion
+ * @author Jan De Moerloose
+ * @author Pieter De Graef
  */
 public interface Writable {
 

@@ -28,7 +28,9 @@ import org.geomajas.layer.feature.Feature;
 /**
  * Response object for {@link org.geomajas.command.feature.SearchFeatureCommand}.
  *
- * @author check subversion
+ * @author Jan De Moerloose
+ * @author Pieter De Graef
+ * @author Joachim Van der Auwera
  */
 public class SearchFeatureResponse extends CommandResponse {
 

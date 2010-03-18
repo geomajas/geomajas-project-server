@@ -42,7 +42,9 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  * A securityException will fail all, not just the feature(s) which are not allowed.
  * 
- * @author check subversion
+ * @author Jan De Moerloose
+ * @author Pieter De Graef
+ * @author Joachim Van der Auwera
  */
 @Component()
 @Transactional(rollbackFor = { Exception.class })

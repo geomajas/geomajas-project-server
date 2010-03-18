@@ -45,9 +45,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * ???
+ * Serialize Geomtry dtos to/from JSON.
  *
- * @author check subversion
+ * @author Jan De Moerloose
+ * @author Pieter De Graef
  */
 public class GeometrySerializer extends AbstractSerializer {
 

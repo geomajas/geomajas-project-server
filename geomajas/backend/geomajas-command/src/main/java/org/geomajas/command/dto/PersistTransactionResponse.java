@@ -28,7 +28,9 @@ import org.geomajas.layer.feature.FeatureTransaction;
 /**
  * Response object for {@link org.geomajas.command.feature.PersistTransactionCommand}.
  *
- * @author check subversion
+ * @author Jan De Moerloose
+ * @author Pieter De Graef
+ * @author Joachim Van der Auwera
  */
 public class PersistTransactionResponse extends CommandResponse {
 

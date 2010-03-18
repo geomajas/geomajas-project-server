@@ -28,7 +28,9 @@ import org.geomajas.geometry.Bbox;
 /**
  * Response object for {@link org.geomajas.command.configuration.UserMaximumExtentCommand}.
  *
- * @author check subversion
+ * @author Jan De Moerloose
+ * @author Pieter De Graef
+ * @author Joachim Van der Auwera
  */
 public class UserMaximumExtentResponse extends CommandResponse {
 

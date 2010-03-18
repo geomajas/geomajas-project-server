@@ -32,7 +32,9 @@ import java.util.Map;
 /**
  * Response object for {@link org.geomajas.command.feature.SearchByLocationCommand}.
  *
- * @author check subversion
+ * @author Jan De Moerloose
+ * @author Pieter De Graef
+ * @author Joachim Van der Auwera
  */
 public class SearchByLocationResponse extends CommandResponse {
 
