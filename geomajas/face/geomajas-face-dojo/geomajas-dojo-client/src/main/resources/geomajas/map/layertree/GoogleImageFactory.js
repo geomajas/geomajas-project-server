@@ -42,10 +42,10 @@ dojo.declare("GoogleImageFactory", null, {
 		log.info("checking for google maps : "+typeof(G_NORMAL_MAP));
 		
 		if(typeof(G_NORMAL_MAP) != "undefined"){
-			this.mapTypes.add("G_NORMAL_MAP", G_NORMAL_MAP);
-			this.mapTypes.add("G_SATELLITE_MAP", G_SATELLITE_MAP);
-			this.mapTypes.add("G_HYBRID_MAP", G_HYBRID_MAP);
-			this.mapTypes.add("G_PHYSICAL_MAP", G_PHYSICAL_MAP);
+			this.mapTypes.add("G_NORMAL_MAP@GoogleLayer", G_NORMAL_MAP);
+			this.mapTypes.add("G_SATELLITE_MAP@GoogleLayer", G_SATELLITE_MAP);
+			this.mapTypes.add("G_HYBRID_MAP@GoogleLayer", G_HYBRID_MAP);
+			this.mapTypes.add("G_PHYSICAL_MAP@GoogleLayer", G_PHYSICAL_MAP);
  		
 			// the current map type
 			this.currentMapType =G_NORMAL_MAP;
