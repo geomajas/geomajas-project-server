@@ -27,7 +27,6 @@ import org.geomajas.command.dto.GetRenderedTileRequest;
 import org.geomajas.command.dto.GetRenderedTileResponse;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
-import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.VectorLayerService;
 import org.slf4j.Logger;
@@ -46,9 +45,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class GetRenderedTileCommand implements Command<GetRenderedTileRequest, GetRenderedTileResponse> {
 
 	private final Logger log = LoggerFactory.getLogger(GetRenderedTileCommand.class);
-
-	@Autowired
-	private ConfigurationService configurationService;
 
 	@Autowired
 	private DtoConverterService converter;
