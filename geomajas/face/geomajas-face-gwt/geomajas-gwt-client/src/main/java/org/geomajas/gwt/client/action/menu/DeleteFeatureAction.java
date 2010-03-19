@@ -94,8 +94,9 @@ public class DeleteFeatureAction extends MenuAction implements MenuItemIfFunctio
 	 * existing features.
 	 */
 	public boolean execute(Canvas target, Menu menu, MenuItem item) {
-		Feature feature = (Feature) mapWidget.getGraphics().getRightButtonObject();
-		if (feature != null) {
+		Object o = mapWidget.getGraphics().getRightButtonObject();
+		if (o != null && o instanceof Feature) {
+			Feature feature = (Feature) o;
 			if (feature.isSelected()) {
 				return feature.isDeletable();
 			}

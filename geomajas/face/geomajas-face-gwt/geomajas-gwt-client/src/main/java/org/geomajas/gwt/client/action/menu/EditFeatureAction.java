@@ -103,8 +103,9 @@ public class EditFeatureAction extends MenuAction implements MenuItemIfFunction 
 	 * existing features.
 	 */
 	public boolean execute(Canvas target, Menu menu, MenuItem item) {
-		feature = (Feature) mapWidget.getGraphics().getRightButtonObject();
-		if (feature != null) {
+		Object o = mapWidget.getGraphics().getRightButtonObject();
+		if (o != null && o instanceof Feature) {
+			Feature feature = (Feature) o;
 			if (feature.isSelected()) {
 				return feature.isUpdatable();
 			}
