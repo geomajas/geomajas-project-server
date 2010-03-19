@@ -44,6 +44,8 @@ import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.spatial.geometry.Polygon;
 import org.geomajas.gwt.client.util.GeometryConverter;
 import org.geomajas.gwt.client.widget.MapWidget;
+import org.geomajas.gwt.client.widget.MapWidget.RenderGroup;
+import org.geomajas.gwt.client.widget.MapWidget.RenderStatus;
 
 import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.smartgwt.client.widgets.menu.Menu;
@@ -121,7 +123,7 @@ public class SelectionController extends RectangleController {
 		mapWidget.setContextMenu(null);
 		if (dragging) {
 			dragging = false;
-			mapWidget.render(rectangle, "delete");
+			mapWidget.render(rectangle, RenderGroup.SCREEN, RenderStatus.DELETE);
 		}
 	}
 

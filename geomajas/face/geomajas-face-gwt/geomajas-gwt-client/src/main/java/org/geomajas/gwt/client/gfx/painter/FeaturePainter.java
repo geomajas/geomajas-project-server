@@ -80,10 +80,12 @@ public class FeaturePainter implements Painter {
 	 * 
 	 * @param paintable
 	 *            A {@link org.geomajas.gwt.client.gfx.paintable.Text} object.
+	 * @param Object
+	 *            The group where the object resides in (optional).
 	 * @param graphics
 	 *            A GraphicsContext object, responsible for actual drawing.
 	 */
-	public void paint(Paintable paintable, GraphicsContext graphics) {
+	public void paint(Paintable paintable, Object group, GraphicsContext graphics) {
 		if (paintable != null) {
 			Feature feature = (Feature) paintable;
 			WorldViewTransformer worldViewTransformer = feature.getLayer().getMapModel().getMapView()
@@ -109,7 +111,18 @@ public class FeaturePainter implements Painter {
 		}
 	}
 
-	public void deleteShape(Paintable paintable, GraphicsContext graphics) {
+	/**
+	 * Delete a <code>Paintable</code> object from the given <code>GraphicsContext</code>. It the object does not exist,
+	 * nothing will be done.
+	 * 
+	 * @param paintable
+	 *            The object to be painted.
+	 * @param Object
+	 *            The group where the object resides in (optional).
+	 * @param graphics
+	 *            The context to paint on.
+	 */
+	public void deleteShape(Paintable paintable, Object group, GraphicsContext graphics) {
 		graphics.deleteGroup(paintable);
 	}
 

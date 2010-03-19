@@ -43,11 +43,13 @@ public interface Paintable {
 	 * 
 	 * @param visitor
 	 *            The visitor
+	 * @param group
+	 *            The group in which to draw
 	 * @param bounds
-	 *            ????
+	 *            The bounds that should be redrawn
 	 * @param recursive
 	 *            Should the painting be a recursive operation (accept -> visit -> paint -> accept, ...)
 	 */
-	void accept(PainterVisitor visitor, Bbox bounds, boolean recursive);
+	void accept(PainterVisitor visitor, Object group, Bbox bounds, boolean recursive);
 
 }

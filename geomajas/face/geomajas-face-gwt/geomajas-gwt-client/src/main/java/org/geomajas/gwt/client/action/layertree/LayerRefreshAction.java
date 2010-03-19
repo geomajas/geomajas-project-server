@@ -26,6 +26,8 @@ package org.geomajas.gwt.client.action.layertree;
 import org.geomajas.gwt.client.i18n.I18nProvider;
 import org.geomajas.gwt.client.map.layer.Layer;
 import org.geomajas.gwt.client.widget.MapWidget;
+import org.geomajas.gwt.client.widget.MapWidget.RenderGroup;
+import org.geomajas.gwt.client.widget.MapWidget.RenderStatus;
 
 /**
  * Refreshes the currently selected layer on the map.
@@ -43,8 +45,8 @@ public class LayerRefreshAction extends LayerTreeAction {
 	}
 
 	public void onClick(Layer<?> layer) {
-		map.render(layer, "delete");
-		map.render(layer, "all");
+		map.render(layer, RenderGroup.PAN, RenderStatus.DELETE);
+		map.render(layer, RenderGroup.PAN, RenderStatus.ALL);
 	}
 
 	public boolean isEnabled(Layer<?> layer) {

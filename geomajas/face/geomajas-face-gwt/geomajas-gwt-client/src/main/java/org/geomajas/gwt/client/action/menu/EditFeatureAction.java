@@ -36,6 +36,8 @@ import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.feature.FeatureTransaction;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.widget.MapWidget;
+import org.geomajas.gwt.client.widget.MapWidget.RenderGroup;
+import org.geomajas.gwt.client.widget.MapWidget.RenderStatus;
 import org.geomajas.layer.LayerType;
 
 import com.google.gwt.core.client.GWT;
@@ -80,7 +82,7 @@ public class EditFeatureAction extends MenuAction implements MenuItemIfFunction 
 		if (feature != null && feature.isSelected()) {
 			FeatureTransaction ft = mapWidget.getMapModel().getFeatureEditor().startEditing(
 					new Feature[] {feature.clone()}, new Feature[] {feature.clone()});
-			mapWidget.render(ft, "all");
+			mapWidget.render(ft, RenderGroup.SCREEN, RenderStatus.ALL);
 			VectorLayer vLayer = feature.getLayer();
 			if (vLayer.getLayerInfo().getLayerType() == LayerType.POINT) {
 				controller.setController(new PointEditController(mapWidget, controller));

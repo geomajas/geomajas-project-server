@@ -25,7 +25,7 @@ package org.geomajas.gwt.client.gfx.painter;
 
 import org.geomajas.gwt.client.gfx.GraphicsContext;
 import org.geomajas.gwt.client.gfx.Paintable;
-import org.geomajas.gwt.client.gfx.PaintableGroup;
+import org.geomajas.gwt.client.gfx.Painter;
 import org.geomajas.gwt.client.gfx.paintable.Rectangle;
 import org.geomajas.gwt.client.gfx.style.ShapeStyle;
 
@@ -37,15 +37,7 @@ import org.geomajas.gwt.client.gfx.style.ShapeStyle;
  * @author Pieter De Graef
  * @author Jan De Moerloose
  */
-public class RectanglePainter extends GroupPainter {
-
-	/**
-	 * Constructs a painter for this group.
-	 * @param group the group
-	 */
-	public RectanglePainter(PaintableGroup group) {
-		super(group);
-	}
+public class RectanglePainter implements Painter {
 
 	/**
 	 * Return the class-name of the type of object this painter can paint.
@@ -64,7 +56,7 @@ public class RectanglePainter extends GroupPainter {
 	 * @param graphics
 	 *            A GraphicsContext object, responsible for actual drawing.
 	 */
-	public void paint(Paintable paintable, GraphicsContext graphics) {
+	public void paint(Paintable paintable, Object group, GraphicsContext graphics) {
 		Rectangle rectangle = (Rectangle) paintable;
 		graphics.drawRectangle(group, rectangle.getId(), rectangle.getBounds(), (ShapeStyle) rectangle.getStyle());
 	}
@@ -75,10 +67,12 @@ public class RectanglePainter extends GroupPainter {
 	 * 
 	 * @param paintable
 	 *            The object to be painted.
+	 * @param Object
+	 *            The group where the object resides in (optional).
 	 * @param graphics
 	 *            The context to paint on.
 	 */
-	public void deleteShape(Paintable paintable, GraphicsContext graphics) {
+	public void deleteShape(Paintable paintable, Object group, GraphicsContext graphics) {
 		Rectangle rectangle = (Rectangle) paintable;
 		graphics.deleteElement(group, rectangle.getId());
 	}

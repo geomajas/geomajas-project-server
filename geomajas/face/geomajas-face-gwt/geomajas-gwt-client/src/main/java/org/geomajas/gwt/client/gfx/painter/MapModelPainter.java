@@ -28,6 +28,7 @@ import org.geomajas.gwt.client.gfx.Paintable;
 import org.geomajas.gwt.client.gfx.Painter;
 import org.geomajas.gwt.client.map.MapModel;
 import org.geomajas.gwt.client.widget.MapWidget;
+import org.geomajas.gwt.client.widget.MapWidget.RenderGroup;
 
 /**
  * Actual painter for the {@link MapModel} object. Prepares some groups, and sets the correct transformations. Also
@@ -51,19 +52,29 @@ public class MapModelPainter implements Painter {
 		return MapModel.class.getName();
 	}
 
-	public void paint(Paintable paintable, GraphicsContext graphics) {
+	/**
+	 * The actual painting function. Draws the basic groups.
+	 * 
+	 * @param object
+	 *            A {@link org.geomajas.gwt.client.map.MapModel} object.
+	 * @param Object
+	 *            The group where the object resides in (optional).
+	 * @param graphics
+	 *            A GraphicsContext object, responsible for actual drawing.
+	 */
+	public void paint(Paintable paintable, Object group, GraphicsContext graphics) {
 		MapModel mapModel = (MapModel) paintable;
 
 		// Group for objects in pan space
-		graphics.drawGroup(null, mapModel.getMapGroup(), 
+		graphics.drawGroup(null, mapWidget.getGroup(RenderGroup.PAN), 
 				mapWidget.getMapModel().getMapView().getPanToViewTranslation());
 
 		// Group for objects in world space
-		graphics.drawGroup(null, mapModel.getWorldGroup(), mapWidget.getMapModel().getMapView()
+		graphics.drawGroup(null, mapWidget.getGroup(RenderGroup.WORLD), mapWidget.getMapModel().getMapView()
 				.getWorldToViewTransformation());
 
 		// Group for objects in screen space
-		graphics.drawGroup(null, mapModel.getScreenGroup());
+		graphics.drawGroup(null,  mapWidget.getGroup(RenderGroup.SCREEN));
 	}
 
 	/**
@@ -72,10 +83,12 @@ public class MapModelPainter implements Painter {
 	 * 
 	 * @param paintable
 	 *            The MapModel
+	 * @param Object
+	 *            The group where the object resides in (optional).
 	 * @param graphics
 	 *            The context to paint on.
 	 */
-	public void deleteShape(Paintable paintable, GraphicsContext graphics) {
+	public void deleteShape(Paintable paintable, Object group, GraphicsContext graphics) {
 		graphics.deleteGroup(paintable);
 	}
 }

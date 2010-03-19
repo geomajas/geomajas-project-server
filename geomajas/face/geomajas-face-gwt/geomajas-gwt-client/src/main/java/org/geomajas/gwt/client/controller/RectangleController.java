@@ -31,6 +31,8 @@ import org.geomajas.gwt.client.gfx.style.ShapeStyle;
 import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.spatial.transform.WorldViewTransformer;
 import org.geomajas.gwt.client.widget.MapWidget;
+import org.geomajas.gwt.client.widget.MapWidget.RenderGroup;
+import org.geomajas.gwt.client.widget.MapWidget.RenderStatus;
 
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.dom.client.MouseDownEvent;
@@ -93,7 +95,7 @@ public abstract class RectangleController extends AbstractGraphicsController {
 			rectangle = new Rectangle("selectionRectangle");
 			rectangle.setStyle(rectangleStyle);
 			rectangle.setBounds(bounds);
-			mapWidget.render(rectangle, "update");
+			mapWidget.render(rectangle, RenderGroup.SCREEN, RenderStatus.UPDATE);
 		}
 	}
 
@@ -115,7 +117,7 @@ public abstract class RectangleController extends AbstractGraphicsController {
 			Bbox worldBounds = transformer.viewToWorld(bounds);
 			selectRectangle(worldBounds);
 
-			mapWidget.render(rectangle, "delete");
+			mapWidget.render(rectangle, RenderGroup.SCREEN, RenderStatus.DELETE);
 		}
 	}
 
@@ -131,7 +133,7 @@ public abstract class RectangleController extends AbstractGraphicsController {
 	public void onMouseMove(MouseMoveEvent event) {
 		if (dragging) {
 			updateRectangle(event);
-			mapWidget.render(rectangle, "update");
+			mapWidget.render(rectangle, RenderGroup.SCREEN, RenderStatus.UPDATE);
 		}
 	}
 
@@ -143,7 +145,7 @@ public abstract class RectangleController extends AbstractGraphicsController {
 	protected void stopDragging() {
 		if (dragging) {
 			dragging = false;
-			mapWidget.render(rectangle, "delete");
+			mapWidget.render(rectangle, RenderGroup.SCREEN, RenderStatus.DELETE);
 		}
 	}
 

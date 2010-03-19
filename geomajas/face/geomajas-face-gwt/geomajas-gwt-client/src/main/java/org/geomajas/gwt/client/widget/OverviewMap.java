@@ -26,7 +26,6 @@ package org.geomajas.gwt.client.widget;
 import org.geomajas.command.dto.GetMapConfigurationResponse;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.controller.OverviewMapController;
-import org.geomajas.gwt.client.gfx.Paintable;
 import org.geomajas.gwt.client.gfx.paintable.GfxGeometry;
 import org.geomajas.gwt.client.gfx.paintable.Image;
 import org.geomajas.gwt.client.gfx.paintable.Rectangle;
@@ -174,11 +173,11 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 	public void movePov(double deltaX, double deltaY) {
 		if (null != targetRectangle) {
 			targetRectangle.getBounds().translate(deltaX, deltaY);
-			render(targetRectangle, "update");
+			render(targetRectangle, RenderGroup.SCREEN, RenderStatus.UPDATE);
 
 		} else if (null != targetReticle) {
 			targetReticle.getBounds().translate(deltaX, deltaY);
-			render(targetReticle, "update");
+			render(targetReticle, RenderGroup.SCREEN, RenderStatus.UPDATE);
 		}
 		// else not initialized
 	}
@@ -214,7 +213,7 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 		this.rectangleStyle = rectangleStyle;
 		if (targetRectangle != null) {
 			targetRectangle.setStyle(rectangleStyle);
-			render(targetRectangle, "update");
+			render(targetRectangle, RenderGroup.SCREEN, RenderStatus.UPDATE);
 		}
 	}
 
@@ -251,9 +250,9 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 							new Coordinate(box.getX(), box.getMaxY()) });
 			Polygon polygon = getMapModel().getGeometryFactory().createPolygon(shell, new LinearRing[] { hole });
 			targetMaxExtentRectangle.setGeometry(polygon);
-			render(targetMaxExtentRectangle, "all");
+			render(targetMaxExtentRectangle, RenderGroup.SCREEN, RenderStatus.ALL);
 		} else {
-			render(targetMaxExtentRectangle, "delete");
+			render(targetMaxExtentRectangle, RenderGroup.SCREEN, RenderStatus.DELETE);
 			targetMaxExtentRectangle = null;
 		}
 	}
@@ -273,7 +272,7 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 		if (targetMaxExtentRectangle != null) {
 			targetMaxExtentRectangle.setStyle(targetMaxExtentRectangleStyle);
 			if (drawTargetMaxExtent) {
-				render(targetMaxExtentRectangle, "update");
+				render(targetMaxExtentRectangle, RenderGroup.SCREEN, RenderStatus.UPDATE);
 			}
 		}
 	}
@@ -337,7 +336,7 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 		// show recticle or box
 		if (width < 20) {
 			if (null != targetRectangle) {
-				render(targetRectangle, "delete");
+				render(targetRectangle, RenderGroup.SCREEN, RenderStatus.DELETE);
 				targetRectangle = null;
 			}
 			if (null == targetReticle) {
@@ -349,11 +348,11 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 			double y = viewBegin.getY() + (width / 2) - 10;
 			targetReticle.getBounds().setX(x);
 			targetReticle.getBounds().setY(y);
-			render(targetReticle, "update");
+			render(targetReticle, RenderGroup.SCREEN, RenderStatus.UPDATE);
 
 		} else {
 			if (null != targetReticle) {
-				render(targetReticle, "delete");
+				render(targetReticle, RenderGroup.SCREEN, RenderStatus.DELETE);
 				targetReticle = null;
 			}
 			if (null == targetRectangle) {
@@ -361,13 +360,8 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 				targetRectangle.setStyle(rectangleStyle);
 			}
 			targetRectangle.setBounds(new Bbox(viewBegin.getX(), viewBegin.getY(), width, height));
-			render(targetRectangle, "update");
+			render(targetRectangle, RenderGroup.SCREEN, RenderStatus.UPDATE);
 		}
-	}
-
-	@Override
-	public void render(Paintable paintable, String status) {
-		super.render(paintable, status); // To change body of overridden methods use File | Settings | File Templates.
 	}
 
 	private native String getIsomorphicDir()/*-{

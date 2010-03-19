@@ -57,8 +57,8 @@ public class Watermark extends MapAddon {
 
 	// MapAddon implementation:
 
-	public void accept(PainterVisitor visitor, Bbox bounds, boolean recursive) {
-		map.getGraphics().drawGroup(map.getMapModel().getScreenGroup(), this);
+	public void accept(PainterVisitor visitor, Object group, Bbox bounds, boolean recursive) {
+		map.getGraphics().drawGroup(group, this);
 
 		image.getBounds().setX(getUpperLeftCorner().getX());
 		image.getBounds().setY(getUpperLeftCorner().getY());

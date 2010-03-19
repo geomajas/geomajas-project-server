@@ -28,6 +28,8 @@ import org.geomajas.gwt.client.controller.editing.ParentEditController;
 import org.geomajas.gwt.client.i18n.I18nProvider;
 import org.geomajas.gwt.client.map.feature.FeatureTransaction;
 import org.geomajas.gwt.client.widget.MapWidget;
+import org.geomajas.gwt.client.widget.MapWidget.RenderGroup;
+import org.geomajas.gwt.client.widget.MapWidget.RenderStatus;
 
 import com.smartgwt.client.widgets.menu.events.MenuItemClickEvent;
 
@@ -67,7 +69,7 @@ public class CancelEditingAction extends MenuAction {
 		FeatureTransaction featureTransaction = mapWidget.getMapModel().getFeatureEditor().getFeatureTransaction();
 		if (featureTransaction != null) {
 			controller.cleanup();
-			mapWidget.render(featureTransaction, "delete");
+			mapWidget.render(featureTransaction,  RenderGroup.SCREEN, RenderStatus.DELETE);
 			mapWidget.getMapModel().getFeatureEditor().stopEditing();
 		}
 	}

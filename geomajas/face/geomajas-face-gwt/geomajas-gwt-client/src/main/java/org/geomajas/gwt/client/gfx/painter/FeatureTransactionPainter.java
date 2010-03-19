@@ -82,17 +82,19 @@ public class FeatureTransactionPainter implements Painter {
 	 *
 	 * @param paintable
 	 *            A {@link FeatureTransaction} object.
+	 * @param Object
+	 *            The group where the object resides in (optional).
 	 * @param graphics
 	 *            A GraphicsContext object, responsible for actual drawing.
 	 */
-	public void paint(Paintable paintable, GraphicsContext graphics) {
+	public void paint(Paintable paintable, Object group, GraphicsContext graphics) {
 		FeatureTransaction featureTransaction = (FeatureTransaction) paintable;
 
 		Feature[] features = featureTransaction.getNewFeatures();
 		if (features == null) {
 			return;
 		}
-		graphics.drawGroup(mapWidget.getMapModel().getScreenGroup(), featureTransaction);
+		graphics.drawGroup(group, featureTransaction);
 		for (int i = 0; i < features.length; i++) {
 			Geometry geometry = mapWidget.getMapModel().getMapView().getWorldViewTransformer().worldToView(
 					features[i].getGeometry());
@@ -119,10 +121,12 @@ public class FeatureTransactionPainter implements Painter {
 	 *
 	 * @param paintable
 	 *            The object to be painted.
+	 * @param Object
+	 *            The group where the object resides in (optional).
 	 * @param graphics
 	 *            The context to paint on.
 	 */
-	public void deleteShape(Paintable paintable, GraphicsContext graphics) {
+	public void deleteShape(Paintable paintable, Object group, GraphicsContext graphics) {
 		graphics.deleteGroup(paintable);
 	}
 

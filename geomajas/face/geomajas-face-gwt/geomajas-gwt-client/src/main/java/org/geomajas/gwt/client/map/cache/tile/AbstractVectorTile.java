@@ -79,9 +79,9 @@ public abstract class AbstractVectorTile implements Tile, PaintableGroup {
 	// PainterVisitable implementation:
 	// -------------------------------------------------------------------------
 
-	public void accept(final PainterVisitor visitor, final Bbox bounds, final boolean recursive) {
+	public void accept(final PainterVisitor visitor, final Object group, final Bbox bounds, final boolean recursive) {
 		// Draw the tile and therefore all it's features:
-		visitor.visit(this);
+		visitor.visit(this, group);
 
 		// Draw all selected features:
 		if (recursive) {
@@ -89,7 +89,7 @@ public abstract class AbstractVectorTile implements Tile, PaintableGroup {
 				public void execute(List<Feature> response) {
 					for (Feature feature : response) {
 						if (feature != null && feature.isSelected()) {
-							feature.accept(visitor, bounds, recursive);
+							feature.accept(visitor, group, bounds, recursive);
 						}
 					}
 				}

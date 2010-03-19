@@ -40,6 +40,8 @@ import org.geomajas.gwt.client.map.workflow.activity.Activity;
 import org.geomajas.gwt.client.map.workflow.activity.CommitActivity;
 import org.geomajas.gwt.client.map.workflow.activity.ValidationActivity;
 import org.geomajas.gwt.client.widget.MapWidget;
+import org.geomajas.gwt.client.widget.MapWidget.RenderGroup;
+import org.geomajas.gwt.client.widget.MapWidget.RenderStatus;
 
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.menu.events.MenuItemClickEvent;
@@ -112,7 +114,7 @@ public class SaveEditingAction extends MenuAction {
 				controller.cleanup();
 			}
 			if (mapWidget != null) {
-				mapWidget.render(featureTransaction, "delete");
+				mapWidget.render(featureTransaction, RenderGroup.SCREEN, RenderStatus.DELETE);
 			}
 			mapModel.getFeatureEditor().stopEditing();
 		}

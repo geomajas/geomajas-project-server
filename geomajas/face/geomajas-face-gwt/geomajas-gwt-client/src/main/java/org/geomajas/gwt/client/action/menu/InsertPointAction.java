@@ -32,6 +32,8 @@ import org.geomajas.gwt.client.map.feature.TransactionGeomIndex;
 import org.geomajas.gwt.client.map.feature.TransactionGeomIndexUtil;
 import org.geomajas.gwt.client.map.feature.operation.InsertCoordinateOp;
 import org.geomajas.gwt.client.widget.MapWidget;
+import org.geomajas.gwt.client.widget.MapWidget.RenderGroup;
+import org.geomajas.gwt.client.widget.MapWidget.RenderStatus;
 
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.menu.Menu;
@@ -76,10 +78,10 @@ public class InsertPointAction extends MenuAction implements MenuItemIfFunction 
 	public void onClick(MenuItemClickEvent event) {
 		FeatureTransaction ft = mapWidget.getMapModel().getFeatureEditor().getFeatureTransaction();
 		if (ft != null && index != null && coordinate != null) {
-			mapWidget.render(ft, "delete");
+			mapWidget.render(ft, RenderGroup.SCREEN, RenderStatus.DELETE);
 			InsertCoordinateOp op = new InsertCoordinateOp(index, coordinate);
 			ft.execute(op);
-			mapWidget.render(ft, "all");
+			mapWidget.render(ft, RenderGroup.SCREEN, RenderStatus.ALL);
 		}
 	}
 

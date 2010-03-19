@@ -32,6 +32,8 @@ import org.geomajas.gwt.client.i18n.I18nProvider;
 import org.geomajas.gwt.client.spatial.geometry.GeometryFactory;
 import org.geomajas.gwt.client.spatial.geometry.operation.InsertCoordinateOperation;
 import org.geomajas.gwt.client.widget.MapWidget;
+import org.geomajas.gwt.client.widget.MapWidget.RenderGroup;
+import org.geomajas.gwt.client.widget.MapWidget.RenderStatus;
 
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
@@ -75,10 +77,10 @@ public class MeasureDistanceController extends AbstractSnappingController {
 
 	public MeasureDistanceController(MapWidget mapWidget) {
 		super(mapWidget);
-		distanceLine = new GfxGeometry("world.measureDistanceLine");
+		distanceLine = new GfxGeometry("measureDistanceLine");
 		distanceLine.setStyle(lineStyle1);
 		distanceLine.setCompensatingForScale(true);
-		lineSegment = new GfxGeometry("world.measureDistanceLineSegment");
+		lineSegment = new GfxGeometry("measureDistanceLineSegment");
 		lineSegment.setStyle(lineStyle2);
 		lineSegment.setCompensatingForScale(true);
 		factory = mapWidget.getMapModel().getGeometryFactory();
@@ -102,8 +104,8 @@ public class MeasureDistanceController extends AbstractSnappingController {
 		menu.destroy();
 		menu = null;
 		mapWidget.setContextMenu(null);
-		mapWidget.getMapModel().getWorldSpacePaintables().remove(distanceLine);
-		mapWidget.getMapModel().getWorldSpacePaintables().remove(lineSegment);
+		mapWidget.getWorldSpacePaintables().remove(distanceLine);
+		mapWidget.getWorldSpacePaintables().remove(lineSegment);
 	}
 
 	/** Set a new point on the distance-line. */
@@ -112,8 +114,8 @@ public class MeasureDistanceController extends AbstractSnappingController {
 			Coordinate coordinate = getWorldPosition(event);
 			if (distanceLine.getGeometry() == null) {
 				distanceLine.setGeometry(factory.createLineString(new Coordinate[] {coordinate}));
-				mapWidget.getMapModel().getWorldSpacePaintables().add(distanceLine);
-				mapWidget.getMapModel().getWorldSpacePaintables().add(lineSegment);
+				mapWidget.getWorldSpacePaintables().add(distanceLine);
+				mapWidget.getWorldSpacePaintables().add(lineSegment);
 				label = new DistanceLabel();
 				label.setDistance(0, 0);
 				mapWidget.addChild(label);
@@ -124,7 +126,7 @@ public class MeasureDistanceController extends AbstractSnappingController {
 				tempLength = (float) distanceLine.getGeometry().getLength();
 				label.setDistance(tempLength, 0);
 			}
-			mapWidget.render(mapWidget.getMapModel(), "update");
+			mapWidget.render(mapWidget.getMapModel(), RenderGroup.PAN, RenderStatus.UPDATE);
 		}
 	}
 
@@ -135,15 +137,15 @@ public class MeasureDistanceController extends AbstractSnappingController {
 					.getNumPoints() - 1];
 			Coordinate coordinate2 = getWorldPosition(event);
 			lineSegment.setGeometry(factory.createLineString(new Coordinate[] {coordinate1, coordinate2}));
-			mapWidget.render(lineSegment, "update");
+			mapWidget.render(lineSegment, RenderGroup.WORLD, RenderStatus.UPDATE);
 			label.setDistance(tempLength, (float) lineSegment.getGeometry().getLength());
 		}
 	}
 
 	/** Stop the measuring. TODO: doesn't work yet. */
 	public void onDoubleClick(DoubleClickEvent event) {
-		mapWidget.render(distanceLine, "delete");
-		mapWidget.render(lineSegment, "delete");
+		mapWidget.render(distanceLine, RenderGroup.WORLD, RenderStatus.DELETE);
+		mapWidget.render(lineSegment,  RenderGroup.WORLD, RenderStatus.DELETE);
 		distanceLine.setGeometry(null);
 		if (label != null) {
 			label.destroy();

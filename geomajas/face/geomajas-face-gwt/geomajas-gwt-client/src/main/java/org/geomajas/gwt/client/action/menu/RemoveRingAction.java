@@ -31,6 +31,8 @@ import org.geomajas.gwt.client.map.feature.TransactionGeomIndex;
 import org.geomajas.gwt.client.map.feature.TransactionGeomIndexUtil;
 import org.geomajas.gwt.client.map.feature.operation.RemoveRingOp;
 import org.geomajas.gwt.client.widget.MapWidget;
+import org.geomajas.gwt.client.widget.MapWidget.RenderGroup;
+import org.geomajas.gwt.client.widget.MapWidget.RenderStatus;
 
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.menu.Menu;
@@ -68,10 +70,10 @@ public class RemoveRingAction extends MenuAction implements MenuItemIfFunction {
 	public void onClick(MenuItemClickEvent event) {
 		FeatureTransaction ft = mapWidget.getMapModel().getFeatureEditor().getFeatureTransaction();
 		if (ft != null && index != null) {
-			mapWidget.render(ft, "delete");
+			mapWidget.render(ft, RenderGroup.SCREEN, RenderStatus.DELETE);
 			RemoveRingOp op = new RemoveRingOp(index);
 			ft.execute(op);
-			mapWidget.render(ft, "all");
+			mapWidget.render(ft, RenderGroup.SCREEN, RenderStatus.ALL);
 		}
 	}
 

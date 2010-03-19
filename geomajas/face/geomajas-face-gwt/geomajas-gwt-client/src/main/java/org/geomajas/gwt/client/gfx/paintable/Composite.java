@@ -65,9 +65,9 @@ public class Composite implements PaintableGroup {
 
 	// ----------------------------------------------------------
 
-	public void accept(PainterVisitor visitor, Bbox bounds, boolean recursive) {
+	public void accept(PainterVisitor visitor, Object group, Bbox bounds, boolean recursive) {
 		for (Paintable p : children) {
-			visitor.visit(p);
+			visitor.visit(p, group);
 		}
 	}
 

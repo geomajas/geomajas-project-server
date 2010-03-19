@@ -31,6 +31,7 @@ import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientRasterLayerInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.gwt.client.gfx.Paintable;
+import org.geomajas.gwt.client.gfx.PaintableGroup;
 import org.geomajas.gwt.client.gfx.PainterVisitor;
 import org.geomajas.gwt.client.gfx.WorldPaintable;
 import org.geomajas.gwt.client.gfx.paintable.Composite;
@@ -91,17 +92,9 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 
 	private FeatureEditor featureEditor;
 
-	private List<WorldPaintable> worldSpacePaintables;
-
 	private HandlerManager handlerManager;
 
 	private GeometryFactory geometryFactory;
-
-	private Composite mapGroup = new Composite("map");
-
-	private Composite worldGroup = new Composite("world");
-
-	private Composite screenGroup = new Composite("screen");
 
 	private boolean initialized;
 
@@ -120,7 +113,6 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 	public MapModel(String id) {
 		this.id = id;
 		featureEditor = new FeatureEditor(this);
-		worldSpacePaintables = new ArrayList<WorldPaintable>();
 		handlerManager = new HandlerManager(this);
 		mapView = new MapView();
 		mapView.addMapViewChangedHandler(this);
@@ -157,36 +149,28 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 	 * Paintable implementation. First let the PainterVisitor paint this object, then if recursive is true, painter the
 	 * layers in order.
 	 */
-	public void accept(PainterVisitor visitor, Bbox bounds, boolean recursive) {
+	public void accept(PainterVisitor visitor, Object group, Bbox bounds, boolean recursive) {
 		// Paint the MapModel itself (see MapModelPainter):
-		visitor.visit(this);
+		visitor.visit(this, group);
 
 		// Paint the layers:
 		if (recursive) {
 			for (Layer<?> layer : layers) {
 				if (layer.isShowing()) {
-					layer.accept(visitor, bounds, recursive);
+					layer.accept(visitor, group, bounds, recursive);
 					if (layer instanceof VectorLayer) {
 						// nrDeferred++;
 					}
 				} else {
 					// JDM: paint the top part of the layer, if not we loose the map order
-					layer.accept(visitor, bounds, false);
+					layer.accept(visitor, group, bounds, false);
 				}
-			}
-		}
-
-		// Paint the world space paintable objects:
-		if (worldSpacePaintables != null) {
-			for (WorldPaintable paintable : worldSpacePaintables) {
-				paintable.scale(1 / mapView.getCurrentScale());
-				paintable.accept(visitor, bounds, recursive);
 			}
 		}
 
 		// Paint the editing of a feature (if a feature is being edited):
 		if (featureEditor.getFeatureTransaction() != null) {
-			featureEditor.getFeatureTransaction().accept(visitor, bounds, recursive);
+			featureEditor.getFeatureTransaction().accept(visitor, group, bounds, recursive);
 		}
 	}
 
@@ -451,24 +435,8 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 		return -1;
 	}
 
-	public List<WorldPaintable> getWorldSpacePaintables() {
-		return worldSpacePaintables;
-	}
-
 	public ClientMapInfo getMapInfo() {
 		return mapInfo;
-	}
-
-	public Composite getMapGroup() {
-		return mapGroup;
-	}
-
-	public Composite getWorldGroup() {
-		return worldGroup;
-	}
-
-	public Composite getScreenGroup() {
-		return screenGroup;
 	}
 
 	/**

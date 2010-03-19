@@ -30,6 +30,8 @@ import org.geomajas.gwt.client.spatial.geometry.LineString;
 import org.geomajas.gwt.client.spatial.geometry.LinearRing;
 import org.geomajas.gwt.client.spatial.geometry.MultiPolygon;
 import org.geomajas.gwt.client.widget.MapWidget;
+import org.geomajas.gwt.client.widget.MapWidget.RenderGroup;
+import org.geomajas.gwt.client.widget.MapWidget.RenderStatus;
 
 import com.google.gwt.event.dom.client.MouseEvent;
 
@@ -83,14 +85,14 @@ public class MultiPolygonEditController extends PolygonEditController {
 									new Coordinate[] {getTransformer().worldToView(lastCoordinate),
 											getScreenPosition(event)});
 					tempLine1.setGeometry(lineString1);
-					mapWidget.render(tempLine1, "all");
+					mapWidget.render(tempLine1, RenderGroup.SCREEN, RenderStatus.ALL);
 
 					LineString lineString2 = featureTransaction.getNewFeatures()[index.getFeatureIndex()].getGeometry()
 							.getGeometryFactory().createLineString(
 									new Coordinate[] {getTransformer().worldToView(coordinates[0]),
 											getScreenPosition(event)});
 					tempLine2.setGeometry(lineString2);
-					mapWidget.render(tempLine2, "all");
+					mapWidget.render(tempLine2, RenderGroup.SCREEN, RenderStatus.ALL);
 				}
 			}
 		}

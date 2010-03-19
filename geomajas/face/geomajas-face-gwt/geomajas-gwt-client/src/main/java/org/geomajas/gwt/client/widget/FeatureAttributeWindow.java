@@ -23,6 +23,9 @@
 
 package org.geomajas.gwt.client.widget;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.geomajas.global.GeomajasConstant;
 import org.geomajas.gwt.client.action.menu.SaveEditingAction;
 import org.geomajas.gwt.client.i18n.I18nProvider;
@@ -46,9 +49,6 @@ import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.LayoutSpacer;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * <p>

@@ -43,6 +43,8 @@ import org.geomajas.gwt.client.map.feature.operation.FeatureOperation;
 import org.geomajas.gwt.client.map.feature.operation.SetCoordinateOp;
 import org.geomajas.gwt.client.spatial.geometry.LineString;
 import org.geomajas.gwt.client.widget.MapWidget;
+import org.geomajas.gwt.client.widget.MapWidget.RenderGroup;
+import org.geomajas.gwt.client.widget.MapWidget.RenderStatus;
 
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseEvent;
@@ -126,8 +128,8 @@ public class LineStringEditController extends EditController {
 				if (dragTransaction == null) {
 					dragTransaction = (FeatureTransaction) featureTransaction.clone();
 				}
-				mapWidget.render(featureTransaction, "delete");
-				mapWidget.render(dragTransaction, "all");
+				mapWidget.render(featureTransaction, RenderGroup.SCREEN, RenderStatus.DELETE);
+				mapWidget.render(dragTransaction, RenderGroup.SCREEN, RenderStatus.ALL);
 				createTempLine(featureTransaction, event);
 			}
 		}
@@ -142,8 +144,8 @@ public class LineStringEditController extends EditController {
 			FeatureOperation op = new SetCoordinateOp(index, getWorldPosition(event));
 			op.execute(feature);
 
-			mapWidget.render(dragTransaction, "delete");
-			mapWidget.render(dragTransaction, "all");
+			mapWidget.render(dragTransaction, RenderGroup.SCREEN, RenderStatus.DELETE);
+			mapWidget.render(dragTransaction, RenderGroup.SCREEN, RenderStatus.ALL);
 		} else if (featureTransaction != null && parent.getEditMode() == EditMode.INSERT_MODE) {
 			updateTempLine(featureTransaction, event);
 		}
@@ -156,8 +158,8 @@ public class LineStringEditController extends EditController {
 				// The creation of a new point:
 				FeatureOperation op = new AddCoordinateOp(getGeometryIndex(), getWorldPosition(event));
 				featureTransaction.execute(op);
-				mapWidget.render(featureTransaction, "delete");
-				mapWidget.render(featureTransaction, "all");
+				mapWidget.render(featureTransaction, RenderGroup.SCREEN, RenderStatus.DELETE);
+				mapWidget.render(featureTransaction, RenderGroup.SCREEN, RenderStatus.ALL);
 				updateGeometricInfo();
 			} else if (featureTransaction != null && parent.getEditMode() == EditMode.DRAG_MODE &&
 					dragTargetId != null) {
@@ -167,10 +169,10 @@ public class LineStringEditController extends EditController {
 				FeatureOperation op = new SetCoordinateOp(index, getWorldPosition(event));
 				featureTransaction.execute(op);
 				if (dragTransaction != null) {
-					mapWidget.render(dragTransaction, "delete");
+					mapWidget.render(dragTransaction, RenderGroup.SCREEN, RenderStatus.DELETE);
 					dragTransaction = null;
 				}
-				mapWidget.render(featureTransaction, "all");
+				mapWidget.render(featureTransaction, RenderGroup.SCREEN, RenderStatus.ALL);
 				dragTargetId = null;
 				removeTempLine();
 				updateGeometricInfo();
@@ -198,7 +200,7 @@ public class LineStringEditController extends EditController {
 			tempLine = new GfxGeometry("LineStringEditController.updateLine");
 			tempLine.setGeometry(lineString);
 			tempLine.setStyle(new ShapeStyle("#FFFFFF", 0, "#FF3322", 1, 1));
-			mapWidget.render(tempLine, "all");
+			mapWidget.render(tempLine, RenderGroup.SCREEN, RenderStatus.ALL);
 		}
 	}
 
@@ -213,14 +215,14 @@ public class LineStringEditController extends EditController {
 				LineString lineString = featureTransaction.getNewFeatures()[0].getGeometry().getGeometryFactory()
 						.createLineString(new Coordinate[] { lastCoordinate, getScreenPosition(event) });
 				tempLine.setGeometry(lineString);
-				mapWidget.render(tempLine, "all");
+				mapWidget.render(tempLine, RenderGroup.SCREEN, RenderStatus.ALL);
 			}
 		}
 	}
 
 	private void removeTempLine() {
 		if (tempLine != null) {
-			mapWidget.render(tempLine, "delete");
+			mapWidget.render(tempLine, RenderGroup.SCREEN, RenderStatus.DELETE);
 			tempLine = null;
 		}
 	}

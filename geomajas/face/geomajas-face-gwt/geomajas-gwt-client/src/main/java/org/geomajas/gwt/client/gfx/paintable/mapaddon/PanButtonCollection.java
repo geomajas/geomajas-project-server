@@ -115,18 +115,18 @@ public class PanButtonCollection extends MapAddon {
 	/**
 	 * Apply the correct positions on all panning buttons, and render them.
 	 */
-	public void accept(PainterVisitor visitor, Bbox bounds, boolean recursive) {
+	public void accept(PainterVisitor visitor, Object group, Bbox bounds, boolean recursive) {
 		// Apply position on all pan buttons:
 		applyPosition();
 
 		// Then render them:
-		map.getGraphics().drawGroup(map.getMapModel().getScreenGroup(), this);
+		map.getGraphics().drawGroup(group, this);
 		map.getGraphics().drawImage(this, background.getId(), background.getHref(), background.getBounds(),
 				(PictureStyle) background.getStyle());
-		north.accept(visitor, bounds, recursive);
-		east.accept(visitor, bounds, recursive);
-		south.accept(visitor, bounds, recursive);
-		west.accept(visitor, bounds, recursive);
+		north.accept(visitor, group, bounds, recursive);
+		east.accept(visitor, group, bounds, recursive);
+		south.accept(visitor, group, bounds, recursive);
+		west.accept(visitor, group, bounds, recursive);
 	}
 
 	public void setMapSize(int mapWidth, int mapHeight) {

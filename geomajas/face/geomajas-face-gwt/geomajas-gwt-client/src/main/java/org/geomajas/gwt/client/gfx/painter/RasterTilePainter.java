@@ -41,7 +41,7 @@ public class RasterTilePainter implements Painter {
 		return RasterTile.class.getName();
 	}
 
-	public void paint(Paintable paintable, GraphicsContext graphics) {
+	public void paint(Paintable paintable, Object group, GraphicsContext graphics) {
 		RasterTile tile = (RasterTile) paintable;
 		graphics.drawImage(tile.getStore().getLayer(), 
 				tile.getCode().toString(), tile.getUrl(), tile.getBounds(), tile.getStyle());
@@ -50,11 +50,15 @@ public class RasterTilePainter implements Painter {
 	/**
 	 * Delete a <code>Paintable</code> object from the given <code>GraphicsContext</code>. It the object does not exist,
 	 * nothing will be done.
-	 *
-	 * @param paintable The MapModel
-	 * @param graphics The context to paint on.
+	 * 
+	 * @param paintable
+	 *            The object to be painted.
+	 * @param Object
+	 *            The group where the object resides in (optional).
+	 * @param graphics
+	 *            The context to paint on.
 	 */
-	public void deleteShape(Paintable paintable, GraphicsContext graphics) {
+	public void deleteShape(Paintable paintable, Object group, GraphicsContext graphics) {
 		RasterTile tile = (RasterTile) paintable;
 		graphics.deleteElement(tile.getStore().getLayer(), tile.getCode().toString());
 	}

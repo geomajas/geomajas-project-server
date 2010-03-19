@@ -92,7 +92,7 @@ public abstract class AbstractLayer<T extends ClientLayerInfo> implements Layer<
 	/**
 	 * The PainterVisitor accept function, that determines how this object should be rendered.
 	 */
-	public abstract void accept(PainterVisitor visitor, Bbox bounds, boolean recursive);
+	public abstract void accept(PainterVisitor visitor, Object group, Bbox bounds, boolean recursive);
 
 	/**
 	 * Is this layer currently selected or not?

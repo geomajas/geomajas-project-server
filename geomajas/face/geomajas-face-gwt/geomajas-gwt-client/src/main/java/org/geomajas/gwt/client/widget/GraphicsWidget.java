@@ -163,7 +163,7 @@ public class GraphicsWidget extends FocusWidget implements MenuGraphicsContext, 
 	// -------------------------------------------------------------------------
 
 	public HandlerRegistration addDoubleClickHandler(DoubleClickHandler handler) {
-		return addHandler(handler, DoubleClickEvent.getType());
+		return addDomHandler(handler, DoubleClickEvent.getType());
 	}
 
 	/**

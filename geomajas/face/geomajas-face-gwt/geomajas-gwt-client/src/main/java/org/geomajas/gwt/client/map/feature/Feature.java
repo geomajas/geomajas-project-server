@@ -119,8 +119,8 @@ public class Feature implements Paintable, Cloneable {
 
 	// Paintable implementation:
 
-	public void accept(PainterVisitor visitor, Bbox bounds, boolean recursive) {
-		visitor.visit(this);
+	public void accept(PainterVisitor visitor, Object group, Bbox bounds, boolean recursive) {
+		visitor.visit(this, group);
 	}
 
 	public String getId() {

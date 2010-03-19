@@ -316,7 +316,7 @@ public class VectorTile extends AbstractVectorTile {
 			return content != null;
 		}
 
-		public void accept(PainterVisitor visitor, Bbox bounds, boolean recursive) {
+		public void accept(PainterVisitor visitor, Object group, Bbox bounds, boolean recursive) {
 		}
 	}
 }

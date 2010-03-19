@@ -108,8 +108,8 @@ public class ScaleBar extends MapAddon {
 		this.map = map;
 	}
 
-	public void accept(PainterVisitor visitor, Bbox bounds, boolean recursive) {
-		map.getGraphics().drawGroup(map.getMapModel().getScreenGroup(), this);
+	public void accept(PainterVisitor visitor, Object group, Bbox bounds, boolean recursive) {
+		map.getGraphics().drawGroup(group, this);
 
 		// Draw a dummy at 0,0 so that Internet Explorer knows where coordinate 0,0 is. If this is not drawn, the text
 		// will disappear, because the parent group will have coordinate 0,0 at the upper left corner of the union of

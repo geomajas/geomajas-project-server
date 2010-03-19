@@ -51,19 +51,19 @@ public class RasterLayer extends AbstractLayer<ClientRasterLayerInfo> {
 	}
 
 	@Override
-	public void accept(final PainterVisitor visitor, final Bbox bounds, boolean recursive) {
-		visitor.visit(this);
+	public void accept(final PainterVisitor visitor, final Object group, final Bbox bounds, boolean recursive) {
+		visitor.visit(this, group);
 		// When visible, take care of fetching through an applyAndSync:
 		if (recursive && isShowing()) {
 			TileFunction<RasterTile> onDelete = new TileFunction<RasterTile>() {
 				public void execute(RasterTile tile) {
-					visitor.remove(tile);
+					visitor.remove(tile, group);
 				}
 			};
 			TileFunction<RasterTile> onUpdate = new TileFunction<RasterTile>() {
 				// Updating a tile, is simply re-rendering it:
 				public void execute(RasterTile tile) {
-					tile.accept(visitor, bounds, true);
+					tile.accept(visitor, group, bounds, true);
 				}
 			};
 			store.applyAndSync(bounds, onDelete, onUpdate);

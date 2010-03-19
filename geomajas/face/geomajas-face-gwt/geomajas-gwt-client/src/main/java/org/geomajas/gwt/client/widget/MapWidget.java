@@ -23,6 +23,7 @@
 
 package org.geomajas.gwt.client.widget;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,8 +40,11 @@ import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.controller.GraphicsController;
 import org.geomajas.gwt.client.gfx.MenuGraphicsContext;
 import org.geomajas.gwt.client.gfx.Paintable;
+import org.geomajas.gwt.client.gfx.PaintableGroup;
 import org.geomajas.gwt.client.gfx.Painter;
 import org.geomajas.gwt.client.gfx.PainterVisitor;
+import org.geomajas.gwt.client.gfx.WorldPaintable;
+import org.geomajas.gwt.client.gfx.paintable.Composite;
 import org.geomajas.gwt.client.gfx.paintable.mapaddon.MapAddon;
 import org.geomajas.gwt.client.gfx.paintable.mapaddon.PanButtonCollection;
 import org.geomajas.gwt.client.gfx.paintable.mapaddon.ScaleBar;
@@ -127,6 +131,48 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 
 	private PanButtonCollection panButtons;
 
+	private PaintableGroup panGroup = new Composite("pan");
+
+	private PaintableGroup worldGroup = new Composite("world");
+
+	private PaintableGroup screenGroup = new Composite("screen");
+
+	private List<WorldPaintable> worldSpacePaintables = new ArrayList<WorldPaintable>();
+	/**
+	 * Map groups.
+	 */
+	public enum RenderGroup {
+		/**
+		 * The pan group. Drawing should be done in pan coordinates.
+		 */
+		PAN,
+		/**
+		 * The world group. Drawing should be done in world coordinates.
+		 */
+		WORLD,
+		/**
+		 * The screen group. Drawing should be done in screen coordinates.
+		 */
+		SCREEN
+	}
+	
+	/**
+	 * Rendering statuses.
+	 */
+	public enum RenderStatus {
+		/**
+		 * Render paintable, including all children 
+		 */
+		ALL,
+		/**
+		 * Redraw paintable, parent only
+		 */
+		UPDATE,
+		/**
+		 * Delete the paintable.
+		 */
+		DELETE
+	}
 	// -------------------------------------------------------------------------
 	// Constructor:
 	// -------------------------------------------------------------------------
@@ -142,11 +188,11 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 		mapModel.addFeatureSelectionHandler(new MapWidgetFeatureSelectionHandler(this));
 
 		// Painter registration:
-		painterVisitor.registerPainter(new CirclePainter(mapModel.getScreenGroup()));
-		painterVisitor.registerPainter(new RectanglePainter(mapModel.getScreenGroup()));
-		painterVisitor.registerPainter(new TextPainter(mapModel.getScreenGroup()));
-		painterVisitor.registerPainter(new GeometryPainter(mapModel.getScreenGroup()));
-		painterVisitor.registerPainter(new ImagePainter(mapModel.getScreenGroup()));
+		painterVisitor.registerPainter(new CirclePainter());
+		painterVisitor.registerPainter(new RectanglePainter());
+		painterVisitor.registerPainter(new TextPainter());
+		painterVisitor.registerPainter(new GeometryPainter());
+		painterVisitor.registerPainter(new ImagePainter());
 		painterVisitor.registerPainter(new MapModelPainter(this));
 		painterVisitor.registerPainter(new RasterLayerPainter());
 		painterVisitor.registerPainter(new RasterTilePainter());
@@ -165,6 +211,23 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 		addResizedHandler(new MapResizedHandler(this));
 		setZoomOnScrollEnabled(true);
 	}
+	
+	public PaintableGroup getGroup(RenderGroup group) {
+		switch (group) {
+			case PAN:
+				return panGroup;
+			case WORLD:
+				return worldGroup;
+			case SCREEN:
+			default:
+				return screenGroup;
+		}
+	}
+	
+	public List<WorldPaintable> getWorldSpacePaintables() {
+		return worldSpacePaintables;
+	}
+
 
 	// -------------------------------------------------------------------------
 	// Class specific methods:
@@ -195,11 +258,11 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 				layer.addLayerChangedHandler(new LayerChangedHandler() {
 
 					public void onLabelChange(LayerLabeledEvent event) {
-						render(layer, "all");
+						render(layer, RenderGroup.PAN, RenderStatus.ALL);
 					}
 
 					public void onVisibleChange(LayerShownEvent event) {
-						render(layer, "all");
+						render(layer, RenderGroup.PAN, RenderStatus.ALL);
 					}
 				});
 			}
@@ -231,7 +294,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 		if (addon != null && !addons.containsKey(addon.getId())) {
 			addons.put(addon.getId(), addon);
 			addon.setMapSize(getWidth(), getHeight());
-			render(addon, "all");
+			render(addon, RenderGroup.SCREEN, RenderStatus.ALL);
 			addon.onDraw();
 		}
 	}
@@ -270,25 +333,35 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 		graphics.setController(controller);
 	}
 
-	public void render(Paintable paintable, String status) {
+	public void render(Paintable paintable, RenderGroup group, RenderStatus status) {
 		if (!graphics.isAttached()) {
 			return;
 		}
 		if (paintable == null) {
 			paintable = this.mapModel;
 		}
-		if ("delete".equals(status)) {
+		if (RenderStatus.DELETE.equals(status)) {
 			List<Painter> painters = painterVisitor.getPaintersForObject(paintable);
 			if (painters != null) {
 				for (Painter painter : painters) {
-					painter.deleteShape(paintable, graphics);
+					painter.deleteShape(paintable, getGroup(group), graphics);
 				}
 			}
 		} else {
-			if ("all".equals(status)) {
-				paintable.accept(painterVisitor, mapModel.getMapView().getBounds(), true);
-			} else if ("update".equals(status)) {
-				paintable.accept(painterVisitor, mapModel.getMapView().getBounds(), false);
+			if (RenderStatus.ALL.equals(status)) {
+				// Paint the world space paintable objects:
+				for (WorldPaintable worldPaintable : worldSpacePaintables) {
+					worldPaintable.scale(1 / getMapModel().getMapView().getCurrentScale());
+					worldPaintable.accept(painterVisitor, getGroup(RenderGroup.WORLD), mapModel.getMapView().getBounds(), true);
+				}
+				paintable.accept(painterVisitor, getGroup(group), mapModel.getMapView().getBounds(), true);
+			} else if (RenderStatus.UPDATE.equals(status)) {
+				// Paint the world space paintable objects:
+				for (WorldPaintable worldPaintable : worldSpacePaintables) {
+					worldPaintable.scale(1 / getMapModel().getMapView().getCurrentScale());
+					worldPaintable.accept(painterVisitor, getGroup(RenderGroup.WORLD), mapModel.getMapView().getBounds(), false);
+				}
+				paintable.accept(painterVisitor, getGroup(group), mapModel.getMapView().getBounds(), false);
 			}
 		}
 	}
@@ -384,7 +457,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	protected void onDraw() {
 		super.onDraw();
 		// must be called before anything else !
-		render(mapModel, "all");
+		render(mapModel, RenderGroup.PAN, RenderStatus.ALL);
 		final int width = getWidth();
 		final int height = getHeight();
 		mapModel.getMapView().setSize(width, height);
@@ -411,14 +484,14 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 		if (isDrawn()) {
 			if (scaleBarEnabled && scalebar != null) {
 				scalebar.adjustScale(mapModel.getMapView().getCurrentScale());
-				render(scalebar, "update");
+				render(scalebar, RenderGroup.SCREEN, RenderStatus.UPDATE);
 			}
-			render(mapModel, "all");
+			render(mapModel, RenderGroup.PAN, RenderStatus.ALL);
 		}
 	}
 
 	public void onMapModelChange(MapModelEvent event) {
-		render(mapModel, "all");
+		render(mapModel, RenderGroup.PAN, RenderStatus.ALL);
 	}
 
 	public ShapeStyle getLineSelectStyle() {
@@ -534,7 +607,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 					for (String addonId : addons.keySet()) {
 						MapAddon addon = addons.get(addonId);
 						addon.setMapSize(width, height);
-						render(addon, "update");
+						render(addon, RenderGroup.SCREEN, RenderStatus.UPDATE);
 					}
 
 					GWT.log("MapWidget has resized: " + width + "," + height, null);
@@ -573,11 +646,11 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 		}
 
 		public void onFeatureSelected(FeatureSelectedEvent event) {
-			mapWidget.render(event.getFeature(), "update");
+			mapWidget.render(event.getFeature(), RenderGroup.SCREEN, RenderStatus.UPDATE);
 		}
 
 		public void onFeatureDeselected(FeatureDeselectedEvent event) {
-			mapWidget.render(event.getFeature(), "delete");
+			mapWidget.render(event.getFeature(), RenderGroup.SCREEN, RenderStatus.DELETE);
 		}
 	}
 }

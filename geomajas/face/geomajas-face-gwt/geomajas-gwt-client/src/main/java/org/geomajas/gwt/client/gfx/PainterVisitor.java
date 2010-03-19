@@ -101,12 +101,12 @@ public class PainterVisitor {
 	 *
 	 * @param paintable
 	 */
-	public void visit(Paintable paintable) {
+	public void visit(Paintable paintable, Object group) {
 		String className = paintable.getClass().getName();
 		if (painters.containsKey(className)) {
 			List<Painter> list = painters.get(className);
 			for (Painter painter : list) {
-				painter.paint(paintable, graphics);
+				painter.paint(paintable, group, graphics);
 			}
 		}
 	}
@@ -116,12 +116,12 @@ public class PainterVisitor {
 	 *
 	 * @param paintable
 	 */
-	public void remove(Paintable paintable) {
+	public void remove(Paintable paintable, Object group) {
 		String className = paintable.getClass().getName();
 		if (painters.containsKey(className)) {
 			List<Painter> list = painters.get(className);
 			for (Painter painter : list) {
-				painter.deleteShape(paintable, graphics);
+				painter.deleteShape(paintable, group, graphics);
 			}
 		}
 	}

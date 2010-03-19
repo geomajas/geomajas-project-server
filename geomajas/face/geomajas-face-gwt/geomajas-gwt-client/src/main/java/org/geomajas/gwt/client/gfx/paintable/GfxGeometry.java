@@ -64,8 +64,8 @@ public class GfxGeometry extends AbstractWorldPaintable {
 	 * @param visitor
 	 *            A PainterVisitor object.
 	 */
-	public void accept(PainterVisitor visitor, Bbox bounds, boolean recursive) {
-		visitor.visit(this);
+	public void accept(PainterVisitor visitor, Object group, Bbox bounds, boolean recursive) {
+		visitor.visit(this, group);
 	}
 
 	// -------------------------------------------------------------------------

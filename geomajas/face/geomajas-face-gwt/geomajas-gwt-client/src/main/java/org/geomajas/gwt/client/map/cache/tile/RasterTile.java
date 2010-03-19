@@ -84,8 +84,8 @@ public class RasterTile implements Tile, Paintable {
 		return id;
 	}
 
-	public void accept(PainterVisitor visitor, Bbox bounds, boolean recursive) {
-		visitor.visit(this);
+	public void accept(PainterVisitor visitor, Object group, Bbox bounds, boolean recursive) {
+		visitor.visit(this, group);
 	}
 
 	public PictureStyle getStyle() {

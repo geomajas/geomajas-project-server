@@ -25,7 +25,7 @@ package org.geomajas.gwt.client.gfx.painter;
 
 import org.geomajas.gwt.client.gfx.GraphicsContext;
 import org.geomajas.gwt.client.gfx.Paintable;
-import org.geomajas.gwt.client.gfx.PaintableGroup;
+import org.geomajas.gwt.client.gfx.Painter;
 import org.geomajas.gwt.client.gfx.paintable.Text;
 import org.geomajas.gwt.client.gfx.style.FontStyle;
 
@@ -37,16 +37,7 @@ import org.geomajas.gwt.client.gfx.style.FontStyle;
  * @author Pieter De Graef
  * @author Jan De Moerloose
  */
-public class TextPainter extends GroupPainter {
-
-	/**
-	 * Constructs a painter for this group.
-	 * @param group the group
-	 */
-	public TextPainter(PaintableGroup group) {
-		super(group);
-	}
-
+public class TextPainter implements Painter {
 	/**
 	 * Return the class-name of the type of object this painter can paint.
 	 * 
@@ -61,12 +52,14 @@ public class TextPainter extends GroupPainter {
 	 * 
 	 * @param object
 	 *            A {@link Text} object.
+	 * @param Object
+	 *            The group where the object resides in (optional).
 	 * @param graphics
 	 *            A GraphicsContext object, responsible for actual drawing.
 	 */
-	public void paint(Paintable paintable, GraphicsContext graphics) {
+	public void paint(Paintable paintable, Object group, GraphicsContext graphics) {
 		Text text = (Text) paintable;
-		graphics.drawText(null, text.getId(), text.getContent(), text.getPosition(), (FontStyle) text.getStyle());
+		graphics.drawText(group, text.getId(), text.getContent(), text.getPosition(), (FontStyle) text.getStyle());
 	}
 
 	/**
@@ -75,10 +68,12 @@ public class TextPainter extends GroupPainter {
 	 * 
 	 * @param paintable
 	 *            The object to be painted.
+	 * @param Object
+	 *            The group where the object resides in (optional).
 	 * @param graphics
 	 *            The context to paint on.
 	 */
-	public void deleteShape(Paintable paintable, GraphicsContext graphics) {
+	public void deleteShape(Paintable paintable, Object group, GraphicsContext graphics) {
 		Text text = (Text) paintable;
 		graphics.deleteElement(null, text.getId());
 	}

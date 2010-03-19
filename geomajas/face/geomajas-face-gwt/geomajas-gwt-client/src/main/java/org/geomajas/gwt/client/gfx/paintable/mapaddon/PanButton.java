@@ -113,7 +113,7 @@ public class PanButton extends MapAddon {
 	/**
 	 * Paint this pan button!
 	 */
-	public void accept(PainterVisitor visitor, Bbox bounds, boolean recursive) {
+	public void accept(PainterVisitor visitor, Object group, Bbox bounds, boolean recursive) {
 		// First place the image at the correct location:
 		image.setBounds(new Bbox(getUpperLeftCorner().getX(), getUpperLeftCorner().getY(), getWidth(), getHeight()));
 
@@ -122,7 +122,7 @@ public class PanButton extends MapAddon {
 			map.getGraphics().drawImage(parent, getId(), image.getHref(), image.getBounds(),
 					(PictureStyle) image.getStyle());
 		} else {
-			map.getGraphics().drawImage(map.getMapModel().getScreenGroup(), getId(), image.getHref(),
+			map.getGraphics().drawImage(group, getId(), image.getHref(),
 					image.getBounds(), (PictureStyle) image.getStyle());
 		}
 	}

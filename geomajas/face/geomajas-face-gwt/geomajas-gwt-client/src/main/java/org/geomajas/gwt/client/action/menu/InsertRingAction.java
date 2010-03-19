@@ -23,6 +23,9 @@
 
 package org.geomajas.gwt.client.action.menu;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.geomajas.global.GeomajasConstant;
 import org.geomajas.gwt.client.action.MenuAction;
 import org.geomajas.gwt.client.controller.editing.ParentEditController;
@@ -47,9 +50,6 @@ import com.smartgwt.client.widgets.menu.Menu;
 import com.smartgwt.client.widgets.menu.MenuItem;
 import com.smartgwt.client.widgets.menu.MenuItemIfFunction;
 import com.smartgwt.client.widgets.menu.events.MenuItemClickEvent;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Insert a new ring in the {@link Polygon} or {@link MultiPolygon} at a given index.

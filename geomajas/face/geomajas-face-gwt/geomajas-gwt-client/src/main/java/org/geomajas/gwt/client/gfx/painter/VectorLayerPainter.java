@@ -54,11 +54,21 @@ public class VectorLayerPainter implements Painter {
 		return VectorLayer.class.getName();
 	}
 
-	public void paint(Paintable paintable, GraphicsContext graphics) {
+	/**
+	 * The actual painting function. Draws the groups.
+	 * 
+	 * @param object
+	 *            A {@link org.geomajas.gwt.client.map.VectorLayer} object.
+	 * @param Object
+	 *            The group where the object resides in (optional).
+	 * @param graphics
+	 *            A GraphicsContext object, responsible for actual drawing.
+	 */
+	public void paint(Paintable paintable, Object group, GraphicsContext graphics) {
 		VectorLayer layer = (VectorLayer) paintable;
 
 		// Create the needed groups in the correct order:
-		graphics.drawGroup(layer.getMapModel().getMapGroup(), layer); // layer.getDefaultStyle???
+		graphics.drawGroup(group, layer); // layer.getDefaultStyle???
 		graphics.drawGroup(layer, layer.getFeatureGroup());
 		graphics.drawGroup(layer, layer.getSelectionGroup());
 		graphics.drawGroup(layer, layer.getLabelGroup(), labelStyle);
@@ -88,11 +98,13 @@ public class VectorLayerPainter implements Painter {
 	 * nothing will be done.
 	 * 
 	 * @param paintable
-	 *            The MapModel
+	 *            The object to be painted.
+	 * @param Object
+	 *            The group where the object resides in (optional).
 	 * @param graphics
 	 *            The context to paint on.
 	 */
-	public void deleteShape(Paintable paintable, GraphicsContext graphics) {
+	public void deleteShape(Paintable paintable, Object group, GraphicsContext graphics) {
 		graphics.deleteGroup(paintable);
 	}
 

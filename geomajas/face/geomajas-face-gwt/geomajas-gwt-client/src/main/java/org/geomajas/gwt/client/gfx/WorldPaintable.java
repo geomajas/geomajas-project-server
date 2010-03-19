@@ -38,9 +38,6 @@ import org.geomajas.gwt.client.gfx.style.Style;
  * correct transformation matrix on the parent group of all world space objects, so they are drawn at the correct
  * location.
  * </p>
- * <p>
- * Also if you wish to render an object in world space, you must assign it an ID that starts with "<code>world.</code>".
- * </p>
  * 
  * @author Pieter De Graef
  */

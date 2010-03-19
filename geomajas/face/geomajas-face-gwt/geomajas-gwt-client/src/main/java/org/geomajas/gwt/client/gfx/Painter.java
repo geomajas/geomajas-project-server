@@ -33,24 +33,6 @@ package org.geomajas.gwt.client.gfx;
  * @author Pieter De Graef
  */
 public interface Painter {
-
-	/**
-	 * Map groups.
-	 */
-	public enum Group {
-		/**
-		 * The pan group. Drawing should be done in pan coordinates.
-		 */
-		PAN,
-		/**
-		 * The world group. Drawing should be done in world coordinates.
-		 */
-		WORLD,
-		/**
-		 * The screen group. Drawing should be done in screen coordinates.
-		 */
-		SCREEN
-	}
 	
 	/**
 	 * Return the class-name of the type of object this painter can paint.
@@ -65,19 +47,23 @@ public interface Painter {
 	 * 
 	 * @param paintable
 	 *            The object to be painted.
+	 * @param Object
+	 *            The group to paint in.
 	 * @param graphics
 	 *            The context to paint on.
 	 */
-	void paint(Paintable paintable, GraphicsContext graphics);
+	void paint(Paintable paintable, Object group, GraphicsContext graphics);
 
 	/**
 	 * Delete a <code>Paintable</code> object from the given <code>GraphicsContext</code>. It the object does not exist,
 	 * nothing will be done.
 	 * 
 	 * @param paintable
-	 *            The object to be painted.
+	 *            The object to be deleted.
+	 * @param Object
+	 *            The group where the object resides in (optional).
 	 * @param graphics
 	 *            The context to paint on.
 	 */
-	void deleteShape(Paintable paintable, GraphicsContext graphics);
+	void deleteShape(Paintable paintable, Object group, GraphicsContext graphics);
 }

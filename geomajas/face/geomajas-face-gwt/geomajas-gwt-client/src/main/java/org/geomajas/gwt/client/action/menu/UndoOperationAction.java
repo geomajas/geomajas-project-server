@@ -28,6 +28,8 @@ import org.geomajas.gwt.client.controller.editing.EditController;
 import org.geomajas.gwt.client.i18n.I18nProvider;
 import org.geomajas.gwt.client.map.feature.FeatureTransaction;
 import org.geomajas.gwt.client.widget.MapWidget;
+import org.geomajas.gwt.client.widget.MapWidget.RenderGroup;
+import org.geomajas.gwt.client.widget.MapWidget.RenderStatus;
 
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.menu.Menu;
@@ -67,9 +69,9 @@ public class UndoOperationAction extends MenuAction implements MenuItemIfFunctio
 	 */
 	public void onClick(MenuItemClickEvent event) {
 		FeatureTransaction featureTransaction = mapWidget.getMapModel().getFeatureEditor().getFeatureTransaction();
-		mapWidget.render(featureTransaction, "delete");
+		mapWidget.render(featureTransaction, RenderGroup.SCREEN, RenderStatus.DELETE);
 		featureTransaction.undoLastOperation();
-		mapWidget.render(featureTransaction, "all");
+		mapWidget.render(featureTransaction, RenderGroup.SCREEN, RenderStatus.ALL);
 		controller.cleanup();
 	}
 

@@ -20,7 +20,7 @@ public class CompositeTest {
 
 		PainterVisitor pv = new PainterVisitor(null);
 		pv.registerPainter(new MockPainter());
-		c.accept(pv, null, false);
+		c.accept(pv, null, null, false);
 		Assert.assertTrue("should have accepted visitor", r.visitorAccepted);
 	}
 
@@ -48,21 +48,21 @@ public class CompositeTest {
 			this.id = id;
 		}
 
-		public void accept(PainterVisitor visitor, Bbox bounds, boolean recursive) {
+		public void accept(PainterVisitor visitor, Object group, Bbox bounds, boolean recursive) {
 			visitorAccepted = true;
 		}
 	}
 
 	class MockPainter implements Painter {
 
-		public void deleteShape(Paintable paintable, GraphicsContext graphics) {
+		public void deleteShape(Paintable paintable, Object group, GraphicsContext graphics) {
 		}
 
 		public String getPaintableClassName() {
 			return MockPaintable.class.getName();
 		}
 
-		public void paint(Paintable paintable, GraphicsContext graphics) {
+		public void paint(Paintable paintable, Object group, GraphicsContext graphics) {
 			((MockPaintable) paintable).visitorAccepted = true;
 		}
 	}

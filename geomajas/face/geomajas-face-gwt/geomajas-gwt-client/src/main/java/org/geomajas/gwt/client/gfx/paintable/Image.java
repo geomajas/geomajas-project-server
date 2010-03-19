@@ -76,8 +76,8 @@ public class Image extends AbstractWorldPaintable {
 	 * @param recursive
 	 *            Not used here.
 	 */
-	public void accept(PainterVisitor visitor, Bbox bounds, boolean recursive) {
-		visitor.visit(this);
+	public void accept(PainterVisitor visitor, Object group, Bbox bounds, boolean recursive) {
+		visitor.visit(this, group);
 	}
 
 	// -------------------------------------------------------------------------

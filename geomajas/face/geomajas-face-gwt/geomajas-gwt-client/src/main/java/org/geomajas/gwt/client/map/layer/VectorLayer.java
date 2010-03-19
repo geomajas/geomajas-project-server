@@ -98,9 +98,9 @@ public class VectorLayer extends AbstractLayer<ClientVectorLayerInfo> implements
 	// Paintable implementation:
 	// -------------------------------------------------------------------------
 
-	public void accept(final PainterVisitor visitor, final Bbox bounds, boolean recursive) {
+	public void accept(final PainterVisitor visitor, final Object group, final Bbox bounds, boolean recursive) {
 		// Draw layer-specific stuff (see VectorLayerPainter)
-		visitor.visit(this);
+		visitor.visit(this, group);
 
 		// When visible, take care of fetching through an queryAndSync:
 		if (recursive && isShowing()) {
@@ -110,20 +110,20 @@ public class VectorLayer extends AbstractLayer<ClientVectorLayerInfo> implements
 				public void execute(final VectorTile tile) {
 					for (Feature feature : tile.getPartialFeatures()) {
 						if (feature != null && feature.isSelected()) {
-							visitor.remove(feature);
+							visitor.remove(feature, group);
 						}
 					}
-					visitor.remove(tile);
+					visitor.remove(tile, group);
 				}
 			};
 			TileFunction<VectorTile> onUpdate = new TileFunction<VectorTile>() {
 
 				// Updating a tile, is simply re-rendering it:
 				public void execute(VectorTile tile) {
-					tile.accept(visitor, bounds, true);
+					tile.accept(visitor, group, bounds, true);
 					// also re-render the selected features !
 					for (Feature feature : selectedFeatures.values()) {
-						visitor.visit(feature);
+						visitor.visit(feature, group);
 					}
 
 				}

@@ -177,11 +177,10 @@ public class ButtonPage extends AbstractTestPage {
 
 			public void onClick(ClickEvent event) {
 				getMap().getGraphics().drawGroup(null, group1);
-				Image image = new Image("screen.test1.image");
+				Image image = new Image("image");
 				image.setHref("http://www.geomajas.org/sites/all/themes/geomajas/images/header_logo.gif");
 				image.setBounds(new Bbox(1, 1, 760, 120));
 				image.setStyle(new PictureStyle(0.5));
-				getMap().render(image, "all");
 				getMap().getGraphics().drawImage(group1, "image",
 						"http://www.geomajas.org/sites/all/themes/geomajas/images/header_logo.gif",
 						new Bbox(1, 1, 760, 120), new PictureStyle(0.5));
