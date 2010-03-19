@@ -21,11 +21,11 @@
 			org/geomajas/gwt/samples/overviewmap/overviewMapOsm.xml
 			org/geomajas/gwt/samples/security/security.xml
 			org/geomajas/gwt/samples/security/mapWmsToolbar.xml
-			org/geomajas/gwt/samples/toolbarAndControllers/mapOsmNavigationToolbar.xml
-			org/geomajas/gwt/samples/toolbarAndControllers/mapDuisburgSelection.xml			
-			org/geomajas/gwt/samples/toolbarAndControllers/mapOsmMeasure.xml
-			org/geomajas/gwt/samples/toolbarAndControllers/mapOsmFeatureInfo.xml
-			org/geomajas/gwt/samples/toolbarAndControllers/mapOsmResolutions.xml
+			org/geomajas/gwt/samples/toolbar/mapOsmNavigationToolbar.xml
+			org/geomajas/gwt/samples/toolbar/mapDuisburgSelection.xml			
+			org/geomajas/gwt/samples/toolbar/mapOsmMeasure.xml
+			org/geomajas/gwt/samples/toolbar/mapOsmFeatureInfo.xml
+			org/geomajas/gwt/samples/toolbar/mapOsmResolutions.xml
 			org/geomajas/gwt/samples/shapeinmem/mapDuisburg.xml
 			org/geomajas/gwt/samples/shapeinmem/layerRoads.xml
 			org/geomajas/gwt/samples/shapeinmem/layerStructures.xml
