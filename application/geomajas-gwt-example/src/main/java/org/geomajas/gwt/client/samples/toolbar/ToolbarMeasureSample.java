@@ -21,10 +21,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.gwt.client.samples.toolbarAndControllers;
+package org.geomajas.gwt.client.samples.toolbar;
 
-import org.geomajas.gwt.client.map.event.MapModelEvent;
-import org.geomajas.gwt.client.map.event.MapModelHandler;
 import org.geomajas.gwt.client.samples.base.SamplePanel;
 import org.geomajas.gwt.client.samples.base.SamplePanelFactory;
 import org.geomajas.gwt.client.samples.i18n.I18nProvider;
@@ -36,20 +34,20 @@ import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
  * <p>
- * Sample that shows how a toolbar can be added to the map. The toolbar contains some buttons the user can use to do
- * select actions on the map (select items in a vector layer, zoom to selection)
+ * Sample that shows how a toolbar can be added to the map. The toolbar contains a buttons the user can use to do
+ * measurements actions on the map.
  * </p>
  * 
  * @author Frank Wynants
  */
-public class ToolbarSelectionSample extends SamplePanel {
+public class ToolbarMeasureSample extends SamplePanel {
 
-	public static final String TITLE = "ToolbarSelection";
+	public static final String TITLE = "ToolbarMeasure";
 
 	public static final SamplePanelFactory FACTORY = new SamplePanelFactory() {
 
 		public SamplePanel createPanel() {
-			return new ToolbarSelectionSample();
+			return new ToolbarMeasureSample();
 		}
 	};
 
@@ -61,8 +59,8 @@ public class ToolbarSelectionSample extends SamplePanel {
 		layout.setWidth100();
 		layout.setHeight100();
 
-		// Map with ID selectionMap is defined in the XML configuration.
-		final MapWidget map = new MapWidget("selectionMap", "gwt-samples");
+		// Map with ID osmMeasureMap is defined in the XML configuration. (mapOsmMeasure.xml)
+		final MapWidget map = new MapWidget("osmMeasureMap", "gwt-samples");
 
 		final Toolbar toolbar = new Toolbar(map);
 		toolbar.setButtonSize(Toolbar.BUTTON_SIZE_BIG);
@@ -70,29 +68,20 @@ public class ToolbarSelectionSample extends SamplePanel {
 		layout.addMember(toolbar);
 		layout.addMember(map);
 
-		// wait for the map to be loaded and select the 1st layer
-		// the map only has one layer so selecting the 1st one is correct
-		// We need to select a layer cause the SelectionMode works on selected layers only
-		map.getMapModel().addMapModelHandler(new MapModelHandler() {
-
-			public void onMapModelChange(MapModelEvent event) {
-				map.getMapModel().selectLayer(map.getMapModel().getLayers().get(0));
-			}
-		});
-
 		return layout;
 	}
 
 	public String getDescription() {
-		return I18nProvider.getSampleMessages().toolbarSelectionDescription();
+		return I18nProvider.getSampleMessages().toolbarMeasureDescription();
 	}
 
 	public String getSourceFileName() {
-		return "classpath:org/geomajas/gwt/client/samples/toolbarAndControllers/ToolbarSelectionSample.txt";
+		return "classpath:org/geomajas/gwt/client/samples/toolbar/ToolbarMeasureSample.txt";
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "classpath:org/geomajas/gwt/samples/toolbarAndControllers/mapDuisburgSelection.xml" };
+		return new String[] { "classpath:org/geomajas/gwt/samples/mapwidget/layerOsm.xml",
+				"classpath:org/geomajas/gwt/samples/toolbar/mapOsmMeasure.xml" };
 	}
 
 	public String ensureUserLoggedIn() {

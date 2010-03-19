@@ -21,16 +21,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.gwt.client.samples.toolbarAndControllers;
+package org.geomajas.gwt.client.samples.toolbar;
 
-import org.geomajas.gwt.client.controller.PanController;
-import org.geomajas.gwt.client.map.event.MapModelEvent;
-import org.geomajas.gwt.client.map.event.MapModelHandler;
 import org.geomajas.gwt.client.samples.base.SamplePanel;
 import org.geomajas.gwt.client.samples.base.SamplePanelFactory;
 import org.geomajas.gwt.client.samples.i18n.I18nProvider;
 import org.geomajas.gwt.client.widget.MapWidget;
-import org.geomajas.gwt.client.widget.ScaleSelect;
 import org.geomajas.gwt.client.widget.Toolbar;
 
 import com.smartgwt.client.widgets.Canvas;
@@ -38,19 +34,20 @@ import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
  * <p>
- * Sample that shows a ScaleSelect using custom zoomlevels defined in GWT.
+ * Sample that shows how a toolbar can be added to the map. The toolbar contains some buttons the user can use to
+ * navigate the map (zoom, pan, zoom to rectangle)
  * </p>
  * 
  * @author Frank Wynants
  */
-public class ScaleSelectCustomSample extends SamplePanel {
+public class ToolbarNavigationSample extends SamplePanel {
 
-	public static final String TITLE = "ScaleSelectCustom";
+	public static final String TITLE = "ToolbarNavigation";
 
 	public static final SamplePanelFactory FACTORY = new SamplePanelFactory() {
 
 		public SamplePanel createPanel() {
-			return new ScaleSelectCustomSample();
+			return new ToolbarNavigationSample();
 		}
 	};
 
@@ -62,41 +59,28 @@ public class ScaleSelectCustomSample extends SamplePanel {
 		layout.setWidth100();
 		layout.setHeight100();
 
-		final MapWidget map = new MapWidget("osmMap", "gwt-samples");
-
-		// Set a panning controller on the map:
-		map.setController(new PanController(map));
+		// Map with ID osmNavigationToolbarMap is defined in the XML configuration.
+		final MapWidget map = new MapWidget("osmNavigationToolbarMap", "gwt-samples");
 
 		final Toolbar toolbar = new Toolbar(map);
-		// add a button in GWT code
+		toolbar.setButtonSize(Toolbar.BUTTON_SIZE_BIG);
+
 		layout.addMember(toolbar);
 		layout.addMember(map);
-
-		// wait for the map to be loaded cause we need a correct map.getPixelLength
-		map.getMapModel().addMapModelHandler(new MapModelHandler() {
-
-			public void onMapModelChange(MapModelEvent event) {
-				ScaleSelect scaleSelect = new ScaleSelect(map.getMapModel().getMapView(), map.getPixelLength());
-				Double[] customScales = new Double[] { 1.0 / 100000000.0, 1.0 / 50000000.0, 1.0 / 2500000.0 };
-				scaleSelect.setScales(customScales);
-				toolbar.addChild(scaleSelect);
-			}
-		});
-
 		return layout;
 	}
 
 	public String getDescription() {
-		return I18nProvider.getSampleMessages().scaleSelectCustomDescription();
+		return I18nProvider.getSampleMessages().toolbarNavigationDescription();
 	}
 
 	public String getSourceFileName() {
-		return "classpath:org/geomajas/gwt/client/samples/toolbarAndControllers/ScaleSelectCustomSample.txt";
+		return "classpath:org/geomajas/gwt/client/samples/toolbar/ToolbarNavigationSample.txt";
 	}
 
 	public String[] getConfigurationFiles() {
 		return new String[] { "classpath:org/geomajas/gwt/samples/mapwidget/layerOsm.xml",
-				"classpath:org/geomajas/gwt/samples/mapwidget/mapOsm.xml" };
+				"classpath:org/geomajas/gwt/samples/toolbar/mapOsmNavigationToolbar.xml" };
 	}
 
 	public String ensureUserLoggedIn() {

@@ -69,7 +69,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 					<property name="name" value="AREA" />
 					<property name="editable" value="true" />
 					<property name="identifying" value="true" />
-					<property name="type" value="FLOAT" />
+					<property name="type" value="DOUBLE" />
 					<property name="validator">
 						<bean class="org.geomajas.configuration.validation.ValidatorInfo">
 							<property name="constraints">
@@ -101,27 +101,6 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 							<property name="toolTip" value="The type of structure. Will be used as label." />
 						</bean>
 					</property>
-				</bean>
-				<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
-					<property name="label" value="Image" />
-					<property name="name" value="IMAGE" />
-					<property name="editable" value="true" />
-					<property name="identifying" value="true" />
-					<property name="type" value="IMGURL" />
-				</bean>
-				<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
-					<property name="label" value="Cost" />
-					<property name="name" value="COST" />
-					<property name="editable" value="true" />
-					<property name="identifying" value="true" />
-					<property name="type" value="CURRENCY" />
-				</bean>
-				<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
-					<property name="label" value="For sale?" />
-					<property name="name" value="FORSALE" />
-					<property name="editable" value="true" />
-					<property name="identifying" value="true" />
-					<property name="type" value="BOOLEAN" />
 				</bean>
 			</list>
 		</property>

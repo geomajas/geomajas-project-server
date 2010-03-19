@@ -21,14 +21,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.gwt.client.samples.toolbarAndControllers;
+package org.geomajas.gwt.client.samples.toolbar;
 
+import org.geomajas.gwt.client.controller.PanController;
 import org.geomajas.gwt.client.map.event.MapModelEvent;
 import org.geomajas.gwt.client.map.event.MapModelHandler;
 import org.geomajas.gwt.client.samples.base.SamplePanel;
 import org.geomajas.gwt.client.samples.base.SamplePanelFactory;
 import org.geomajas.gwt.client.samples.i18n.I18nProvider;
 import org.geomajas.gwt.client.widget.MapWidget;
+import org.geomajas.gwt.client.widget.ScaleSelect;
 import org.geomajas.gwt.client.widget.Toolbar;
 
 import com.smartgwt.client.widgets.Canvas;
@@ -36,20 +38,19 @@ import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
  * <p>
- * Sample that shows how a toolbar can be added to the map. The toolbar contains a button that shows info about
- * features.
+ * Sample that shows a ScaleSelect using the default zoomlevels from the configuration.
  * </p>
  * 
  * @author Frank Wynants
  */
-public class ToolbarFeatureInfoSample extends SamplePanel {
+public class ScaleSelectDefaultSample extends SamplePanel {
 
-	public static final String TITLE = "ToolbarFeatureInfo";
+	public static final String TITLE = "ScaleSelectDefault";
 
 	public static final SamplePanelFactory FACTORY = new SamplePanelFactory() {
 
 		public SamplePanel createPanel() {
-			return new ToolbarFeatureInfoSample();
+			return new ScaleSelectDefaultSample();
 		}
 	};
 
@@ -61,22 +62,22 @@ public class ToolbarFeatureInfoSample extends SamplePanel {
 		layout.setWidth100();
 		layout.setHeight100();
 
-		// Map with ID osmFeatureInfoMap is defined in the XML configuration. (mapOsmFeatureInfo.xml)
-		final MapWidget map = new MapWidget("osmFeatureInfoMap", "gwt-samples");
+		final MapWidget map = new MapWidget("osmMapResolutions", "gwt-samples");
+
+		// Set a panning controller on the map:
+		map.setController(new PanController(map));
 
 		final Toolbar toolbar = new Toolbar(map);
-		toolbar.setButtonSize(Toolbar.BUTTON_SIZE_BIG);
-
+		// add a button in GWT code
 		layout.addMember(toolbar);
 		layout.addMember(map);
 
-		// wait for the map to be loaded and select the 1st layer
-		// the map only has one layer so selecting the 1st one is correct
-		// We need to select a layer cause the FeatureInfo works on selected layers only
+		// wait for the map to be loaded cause we need a correct map.getPixelLength
 		map.getMapModel().addMapModelHandler(new MapModelHandler() {
 
 			public void onMapModelChange(MapModelEvent event) {
-				map.getMapModel().selectLayer(map.getMapModel().getLayers().get(0));
+				ScaleSelect scaleSelect = new ScaleSelect(map.getMapModel().getMapView(), map.getPixelLength());
+				toolbar.addChild(scaleSelect);
 			}
 		});
 
@@ -84,16 +85,16 @@ public class ToolbarFeatureInfoSample extends SamplePanel {
 	}
 
 	public String getDescription() {
-		return I18nProvider.getSampleMessages().toolbarFeatureInfoDescription();
+		return I18nProvider.getSampleMessages().scaleSelectDefaultDescription();
 	}
 
 	public String getSourceFileName() {
-		return "classpath:org/geomajas/gwt/client/samples/toolbarAndControllers/ToolbarFeatureInfoSample.txt";
+		return "classpath:org/geomajas/gwt/client/samples/toolbar/ScaleSelectDefaultSample.txt";
 	}
 
 	public String[] getConfigurationFiles() {
 		return new String[] { "classpath:org/geomajas/gwt/samples/mapwidget/layerOsm.xml",
-				"classpath:org/geomajas/gwt/samples/toolbarAndControllers/mapOsmFeatureInfo.xml" };
+				"classpath:org/geomajas/gwt/samples/mapwidget/mapOsmResolutions.xml" };
 	}
 
 	public String ensureUserLoggedIn() {

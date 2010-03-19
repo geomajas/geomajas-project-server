@@ -21,15 +21,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.gwt.client.samples.toolbarAndControllers;
+package org.geomajas.gwt.client.samples.toolbar;
 
-import org.geomajas.gwt.client.action.toolbar.ZoomToRectangleModalAction;
+import org.geomajas.gwt.client.controller.PanController;
 import org.geomajas.gwt.client.map.event.MapModelEvent;
 import org.geomajas.gwt.client.map.event.MapModelHandler;
 import org.geomajas.gwt.client.samples.base.SamplePanel;
 import org.geomajas.gwt.client.samples.base.SamplePanelFactory;
 import org.geomajas.gwt.client.samples.i18n.I18nProvider;
 import org.geomajas.gwt.client.widget.MapWidget;
+import org.geomajas.gwt.client.widget.ScaleSelect;
 import org.geomajas.gwt.client.widget.Toolbar;
 
 import com.smartgwt.client.widgets.Canvas;
@@ -37,19 +38,19 @@ import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
  * <p>
- * Sample that shows how a custom toolbar can created without using configuration.
+ * Sample that shows a ScaleSelect using custom zoomlevels defined in GWT.
  * </p>
  * 
  * @author Frank Wynants
  */
-public class CustomToolbarSample extends SamplePanel {
+public class ScaleSelectCustomSample extends SamplePanel {
 
-	public static final String TITLE = "CustomToolbar";
+	public static final String TITLE = "ScaleSelectCustom";
 
 	public static final SamplePanelFactory FACTORY = new SamplePanelFactory() {
 
 		public SamplePanel createPanel() {
-			return new CustomToolbarSample();
+			return new ScaleSelectCustomSample();
 		}
 	};
 
@@ -63,22 +64,22 @@ public class CustomToolbarSample extends SamplePanel {
 
 		final MapWidget map = new MapWidget("osmMap", "gwt-samples");
 
+		// Set a panning controller on the map:
+		map.setController(new PanController(map));
+
 		final Toolbar toolbar = new Toolbar(map);
-		toolbar.setButtonSize(Toolbar.BUTTON_SIZE_BIG);
-
 		// add a button in GWT code
-		toolbar.addModalButton(new ZoomToRectangleModalAction(map));
-
 		layout.addMember(toolbar);
 		layout.addMember(map);
 
-		// wait for the map to be loaded and select the 1st layer
-		// the map only has one layer so selecting the 1st one is correct
-		// We need to select a layer cause the FeatureInfo works on selected layers only
+		// wait for the map to be loaded cause we need a correct map.getPixelLength
 		map.getMapModel().addMapModelHandler(new MapModelHandler() {
 
 			public void onMapModelChange(MapModelEvent event) {
-				map.getMapModel().selectLayer(map.getMapModel().getLayers().get(0));
+				ScaleSelect scaleSelect = new ScaleSelect(map.getMapModel().getMapView(), map.getPixelLength());
+				Double[] customScales = new Double[] { 1.0 / 100000000.0, 1.0 / 50000000.0, 1.0 / 2500000.0 };
+				scaleSelect.setScales(customScales);
+				toolbar.addChild(scaleSelect);
 			}
 		});
 
@@ -86,11 +87,11 @@ public class CustomToolbarSample extends SamplePanel {
 	}
 
 	public String getDescription() {
-		return I18nProvider.getSampleMessages().customToolbarDescription();
+		return I18nProvider.getSampleMessages().scaleSelectCustomDescription();
 	}
 
 	public String getSourceFileName() {
-		return "classpath:org/geomajas/gwt/client/samples/toolbarAndControllers/CustomToolbarSample.txt";
+		return "classpath:org/geomajas/gwt/client/samples/toolbar/ScaleSelectCustomSample.txt";
 	}
 
 	public String[] getConfigurationFiles() {

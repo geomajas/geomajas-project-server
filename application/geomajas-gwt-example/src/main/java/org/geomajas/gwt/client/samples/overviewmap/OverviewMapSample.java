@@ -155,7 +155,7 @@ public class OverviewMapSample extends SamplePanel {
 	public String[] getConfigurationFiles() {
 		return new String[] { "classpath:org/geomajas/gwt/samples/mapwidget/layerOsm.xml",
 				"classpath:org/geomajas/gwt/samples/overviewMap/overviewMapOsm.xml",
-				"classpath:org/geomajas/gwt/samples/toolbarAndControllers/mapOsmNavigationToolbar.xml" };
+				"classpath:org/geomajas/gwt/samples/toolbar/mapOsmNavigationToolbar.xml" };
 	}
 
 	public String ensureUserLoggedIn() {

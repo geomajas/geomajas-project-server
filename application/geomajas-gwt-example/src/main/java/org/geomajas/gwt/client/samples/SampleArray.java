@@ -48,14 +48,14 @@ import org.geomajas.gwt.client.samples.security.FilterSecuritySample;
 import org.geomajas.gwt.client.samples.security.LayerSecuritySample;
 import org.geomajas.gwt.client.samples.security.LoginSample;
 import org.geomajas.gwt.client.samples.security.ToolSecuritySample;
-import org.geomajas.gwt.client.samples.toolbarAndControllers.CustomToolbarSample;
-import org.geomajas.gwt.client.samples.toolbarAndControllers.CustomToolbarToolsSample;
-import org.geomajas.gwt.client.samples.toolbarAndControllers.ScaleSelectCustomSample;
-import org.geomajas.gwt.client.samples.toolbarAndControllers.ScaleSelectDefaultSample;
-import org.geomajas.gwt.client.samples.toolbarAndControllers.ToolbarFeatureInfoSample;
-import org.geomajas.gwt.client.samples.toolbarAndControllers.ToolbarMeasureSample;
-import org.geomajas.gwt.client.samples.toolbarAndControllers.ToolbarNavigationSample;
-import org.geomajas.gwt.client.samples.toolbarAndControllers.ToolbarSelectionSample;
+import org.geomajas.gwt.client.samples.toolbar.CustomToolbarSample;
+import org.geomajas.gwt.client.samples.toolbar.CustomToolbarToolsSample;
+import org.geomajas.gwt.client.samples.toolbar.ScaleSelectCustomSample;
+import org.geomajas.gwt.client.samples.toolbar.ScaleSelectDefaultSample;
+import org.geomajas.gwt.client.samples.toolbar.ToolbarFeatureInfoSample;
+import org.geomajas.gwt.client.samples.toolbar.ToolbarMeasureSample;
+import org.geomajas.gwt.client.samples.toolbar.ToolbarNavigationSample;
+import org.geomajas.gwt.client.samples.toolbar.ToolbarSelectionSample;
 
 /**
  * <p>
