@@ -60,7 +60,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		</property>
 		<property name="layers">
 			<list>
-				<ref bean="structuresLayer" />
+				<ref bean="dsStructuresLayer" />
 			</list>
 		</property>
 		<property name="toolbar">
@@ -77,7 +77,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		</property>
 	</bean>
 
-	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="structuresLayer">
+	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="dsStructuresLayer">
 		<property name="serverLayerId" value="structures" />
 		<property name="label" value="Structures (editable - polygon)" />
 		<property name="visible" value="true" />

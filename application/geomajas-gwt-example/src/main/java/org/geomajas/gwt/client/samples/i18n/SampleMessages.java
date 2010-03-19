@@ -78,6 +78,12 @@ public interface SampleMessages extends Messages {
 
 	String geoDescription();
 
+	// Google sample:
+
+	String googleTitle();
+
+	String googleDescription();
+
 	// Navigation sample:
 
 	String navigationTitle();

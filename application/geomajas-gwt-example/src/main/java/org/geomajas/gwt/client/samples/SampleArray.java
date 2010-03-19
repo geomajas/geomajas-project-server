@@ -35,6 +35,7 @@ import org.geomajas.gwt.client.samples.layertree.LayertreeSample;
 import org.geomajas.gwt.client.samples.layertree.LegendSample;
 import org.geomajas.gwt.client.samples.mapwidget.CrsSample;
 import org.geomajas.gwt.client.samples.mapwidget.GeoToolsSample;
+import org.geomajas.gwt.client.samples.mapwidget.GoogleSample;
 import org.geomajas.gwt.client.samples.mapwidget.MaxBoundsToggleSample;
 import org.geomajas.gwt.client.samples.mapwidget.NavigationSample;
 import org.geomajas.gwt.client.samples.mapwidget.OpenStreetMapSample;
@@ -83,6 +84,9 @@ public final class SampleArray {
 				new SampleTreeNode(I18nProvider.getSampleMessages().geoTitle(),
 						"[ISOMORPHIC]/geomajas/layer-raster.png", GeoToolsSample.TITLE, "MapWidget",
 						GeoToolsSample.FACTORY),
+				new SampleTreeNode(I18nProvider.getSampleMessages().googleTitle(),
+						"[ISOMORPHIC]/geomajas/layer-raster.png", GoogleSample.TITLE, "MapWidget",
+						GoogleSample.FACTORY),
 				new SampleTreeNode(I18nProvider.getSampleMessages().navigationTitle(),
 						"[ISOMORPHIC]/geomajas/layer.png", NavigationSample.TITLE, "MapWidget",
 						NavigationSample.FACTORY),

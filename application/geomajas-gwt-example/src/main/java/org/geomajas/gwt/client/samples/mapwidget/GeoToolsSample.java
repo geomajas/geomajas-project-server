@@ -75,7 +75,7 @@ public class GeoToolsSample extends SamplePanel {
 
 	public String[] getConfigurationFiles() {
 		return new String[] { "classpath:org/geomajas/gwt/samples/mapwidget/mapGeoTools.xml",
-				"classpath:org/geomajas/gwt/samples/mapwidget/geoToolsLayer.xml" }; 
+				"classpath:org/geomajas/gwt/samples/mapwidget/layerGeoTools.xml" };
 	}
 
 	public String ensureUserLoggedIn() {

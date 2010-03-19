@@ -47,6 +47,11 @@
 			<artifactId>geomajas-layer-hibernate</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-layer-google</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 
 		<!-- Extra Geomajas plugins -->
         <dependency>

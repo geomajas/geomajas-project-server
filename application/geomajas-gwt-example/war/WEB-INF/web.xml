@@ -14,10 +14,14 @@
 			org/geomajas/gwt/samples/mapwidget/layerBeans.xml
 			org/geomajas/gwt/samples/mapwidget/layerBeansLonLat.xml
 			org/geomajas/gwt/samples/mapwidget/layerBeansMercator.xml
+			org/geomajas/gwt/samples/mapwidget/layerGeoTools.xml
+			org/geomajas/gwt/samples/mapwidget/layerGoogle.xml
+			org/geomajas/gwt/samples/mapwidget/layerGoogleSat.xml
 			org/geomajas/gwt/samples/mapwidget/mapBeans.xml
 			org/geomajas/gwt/samples/mapwidget/mapCrs.xml
-			org/geomajas/gwt/samples/mapwidget/geoToolsLayer.xml
 			org/geomajas/gwt/samples/mapwidget/mapGeoTools.xml
+			org/geomajas/gwt/samples/mapwidget/mapGoogle.xml
+			org/geomajas/gwt/samples/mapwidget/mapGoogleSat.xml
 			org/geomajas/gwt/samples/overviewmap/overviewMapOsm.xml
 			org/geomajas/gwt/samples/security/security.xml
 			org/geomajas/gwt/samples/security/mapWmsToolbar.xml

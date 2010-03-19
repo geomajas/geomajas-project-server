@@ -72,6 +72,8 @@ public class GoogleLayer implements RasterLayer {
 
 	public static final int MAX_ZOOM_LEVEL = 17;
 
+	public static final int TILE_SIZE = 256; // tile size in pixels
+
 	private final Logger log = LoggerFactory.getLogger(GoogleLayer.class);
 
 	protected List<GoogleResolution> resolutions = new ArrayList<GoogleResolution>();
@@ -298,7 +300,7 @@ public class GoogleLayer implements RasterLayer {
 
 	private void calculatePredefinedResolutions() {
 		for (int zoomLevel = 0; zoomLevel <= MAX_ZOOM_LEVEL; zoomLevel++) {
-			double resolution = (EQUATOR_IN_METERS) / (256 * Math.pow(2.0, zoomLevel));
+			double resolution = (EQUATOR_IN_METERS) / (TILE_SIZE * Math.pow(2.0, zoomLevel));
 			resolutions.add(new GoogleResolution(resolution, zoomLevel));
 		}
 	}
@@ -351,8 +353,8 @@ public class GoogleLayer implements RasterLayer {
 		if ((zoom < 0) || (zoom > 17)) {
 			return null;
 		}
-		x = roundDownToMultiple(x, 256) / 256;
-		y = roundDownToMultiple(y, 256) / 256;
+		x = roundDownToMultiple(x, TILE_SIZE) / TILE_SIZE;
+		y = roundDownToMultiple(y, TILE_SIZE) / TILE_SIZE;
 		int d = getPowerOfTwo(zoom);
 		if ((y < 0) || (y >= d)) {
 			return null;
@@ -369,8 +371,8 @@ public class GoogleLayer implements RasterLayer {
 		if ((zoom < 0) || (zoom > 19)) {
 			return null;
 		}
-		x /= 256;
-		y /= 256;
+		x /= TILE_SIZE;
+		y /= TILE_SIZE;
 		int d = getPowerOfTwo(zoom);
 		if ((y < 0) || (y >= d)) {
 			return null;

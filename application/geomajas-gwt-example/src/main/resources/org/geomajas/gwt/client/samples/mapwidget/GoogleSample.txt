@@ -1,0 +1,17 @@
+	public Canvas getViewPanel() {
+		VLayout layout = new VLayout();
+		layout.setWidth100();
+		layout.setHeight100();
+
+		// Map with ID googleMap is defined in the XML configuration. (mapGoogle.xml)
+		final MapWidget googleMap = new MapWidget("googleMap", "gwt-samples");
+		final MapWidget googleSatMap = new MapWidget("googleSatMap", "gwt-samples");
+
+		// Set a panning controller on the map and add in layout
+		googleMap.setController(new PanController(googleMap));
+		layout.addMember(googleMap);
+		googleSatMap.setController(new PanController(googleSatMap));
+		layout.addMember(googleSatMap);
+
+		return layout;
+	}
