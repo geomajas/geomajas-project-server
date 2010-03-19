@@ -117,7 +117,7 @@ public final class TransactionGeomIndexUtil {
 			// Geometry index (polygon, lineString or point):
 			index.setGeometryIndex(getIndex(identifier, "polygon"));
 			if (index.getGeometryIndex() < 0) {
-				index.setGeometryIndex(getIndex(identifier, "lineString"));
+				index.setGeometryIndex(getIndex(identifier, "linestring"));
 			}
 			if (index.getGeometryIndex() < 0) {
 				index.setGeometryIndex(getIndex(identifier, "point"));

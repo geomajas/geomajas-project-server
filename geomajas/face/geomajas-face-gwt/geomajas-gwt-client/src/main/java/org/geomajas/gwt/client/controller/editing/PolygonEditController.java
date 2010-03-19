@@ -135,7 +135,9 @@ public class PolygonEditController extends EditController {
 			String targetId = getTargetId(event);
 			if (TransactionGeomIndexUtil.isVertex(targetId)) {
 				dragTargetId = targetId;
-				dragTransaction = (FeatureTransaction) featureTransaction.clone();
+				if (dragTransaction == null) {
+					dragTransaction = (FeatureTransaction) featureTransaction.clone();
+				}
 				mapWidget.render(featureTransaction, "delete");
 				mapWidget.render(dragTransaction, "all");
 				createTempLines(featureTransaction, event);

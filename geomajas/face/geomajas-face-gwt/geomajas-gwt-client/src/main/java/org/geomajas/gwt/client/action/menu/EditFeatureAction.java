@@ -107,6 +107,7 @@ public class EditFeatureAction extends MenuAction implements MenuItemIfFunction 
 		if (o != null && o instanceof Feature) {
 			Feature feature = (Feature) o;
 			if (feature.isSelected()) {
+				this.feature = feature;
 				return feature.isUpdatable();
 			}
 		}

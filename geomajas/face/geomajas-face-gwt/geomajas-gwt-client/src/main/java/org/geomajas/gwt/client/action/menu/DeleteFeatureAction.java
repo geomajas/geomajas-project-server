@@ -79,7 +79,7 @@ public class DeleteFeatureAction extends MenuAction implements MenuItemIfFunctio
 							if (value) {
 								feature.getLayer().deselectFeature(feature);
 								mapWidget.getMapModel().getFeatureEditor()
-										.startEditing(new Feature[] {feature}, null);
+										.startEditing(new Feature[] { feature }, null);
 								SaveEditingAction action = new SaveEditingAction(mapWidget, controller);
 								action.onClick(null);
 							}
@@ -98,6 +98,7 @@ public class DeleteFeatureAction extends MenuAction implements MenuItemIfFunctio
 		if (o != null && o instanceof Feature) {
 			Feature feature = (Feature) o;
 			if (feature.isSelected()) {
+				this.feature = feature;
 				return feature.isDeletable();
 			}
 		}

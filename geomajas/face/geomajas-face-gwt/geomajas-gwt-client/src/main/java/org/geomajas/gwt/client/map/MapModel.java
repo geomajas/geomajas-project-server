@@ -412,8 +412,10 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 				layer.getFeatureStore().clear();
 			}
 			// now update/add the features
-			for (Feature feature : ft.getNewFeatures()) {
-				ft.getLayer().getFeatureStore().addFeature(feature);
+			if (ft.getNewFeatures() != null) {
+				for (Feature feature : ft.getNewFeatures()) {
+					ft.getLayer().getFeatureStore().addFeature(feature);
+				}
 			}
 			// make it fetch the tiles
 			mapView.translate(0, 0);
