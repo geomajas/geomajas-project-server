@@ -57,14 +57,6 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		</property>
 		<property name="layers">
 			<list>
-				<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="geotoolsLayer">
-					<property name="serverLayerId" value="geotoolsStructures" />
-					<property name="label" value="Geotools layer" />
-					<property name="visible" value="true" />
-					<property name="viewScaleMin" value="0" />
-					<property name="viewScaleMax" value="100000" />
-					<property name="namedStyleInfo" ref="geotoolsStructuresStyleInfo" />
-				</bean>
 				<bean class="org.geomajas.configuration.client.ClientRasterLayerInfo" id="osmLayer">
 					<property name="serverLayerId" value="osm" />
 					<property name="label" value="OpenStreetMap (raster)" />
@@ -72,6 +64,14 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 					<property name="viewScaleMin" value="0" />
 					<property name="viewScaleMax" value="50" />
 					<property name="style" value="1" />
+				</bean>
+				<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="geotoolsLayer">
+					<property name="serverLayerId" value="geotoolsStructures" />
+					<property name="label" value="Geotools layer" />
+					<property name="visible" value="true" />
+					<property name="viewScaleMin" value="0" />
+					<property name="viewScaleMax" value="100000" />
+					<property name="namedStyleInfo" ref="geotoolsStructuresStyleInfo" />
 				</bean>
 			</list>
 		</property>

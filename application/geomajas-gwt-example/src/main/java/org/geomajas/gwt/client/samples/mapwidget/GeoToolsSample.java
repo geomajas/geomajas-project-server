@@ -34,19 +34,19 @@ import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
  * <p>
- * Sample that shows a map with a Geotools layer.
+ * Sample that shows a map with a GeoTools layer.
  * </p>
  * 
  * @author Frank Wynants
  */
-public class GeoSample extends SamplePanel {
+public class GeoToolsSample extends SamplePanel {
 
-	public static final String GEO_TITLE = "GEO";
+	public static final String TITLE = "GeoToolsLayer";
 
 	public static final SamplePanelFactory FACTORY = new SamplePanelFactory() {
 
 		public SamplePanel createPanel() {
-			return new GeoSample();
+			return new GeoToolsSample();
 		}
 	};
 
@@ -55,7 +55,7 @@ public class GeoSample extends SamplePanel {
 		layout.setWidth100();
 		layout.setHeight100();
 
-		// Map with ID geoMap is defined in the XML configuration. (mapGeo.xml) 
+		// Map with ID geotoolsMap is defined in the XML configuration. (mapGeoTools.xml) 
 		final MapWidget map = new MapWidget("geotoolsMap", "gwt-samples");
 
 		// Set a panning controller on the map:
@@ -70,12 +70,12 @@ public class GeoSample extends SamplePanel {
 	}
 
 	public String getSourceFileName() {
-		return "classpath:org/geomajas/gwt/client/samples/mapwidget/GeoSample.txt";
+		return "classpath:org/geomajas/gwt/client/samples/mapwidget/GeoToolsSample.txt";
 	}
 
 	public String[] getConfigurationFiles() {
 		return new String[] { "classpath:org/geomajas/gwt/samples/mapwidget/mapGeoTools.xml",
-				"classpath:org/geomajas/gwt/samples/shapeinmem/geoToolsLayer.xml" }; 
+				"classpath:org/geomajas/gwt/samples/mapwidget/geoToolsLayer.xml" }; 
 	}
 
 	public String ensureUserLoggedIn() {
