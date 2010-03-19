@@ -73,6 +73,7 @@ import org.geomajas.gwt.client.map.event.MapViewChangedHandler;
 import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.layer.Layer;
 import org.geomajas.gwt.client.spatial.Matrix;
+import org.geomajas.gwt.client.util.DOM;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.MouseWheelEvent;
@@ -208,6 +209,13 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 			watermark.setAlignment(Alignment.RIGHT);
 			watermark.setVerticalAlignment(VerticalAlignment.BOTTOM);
 			registerMapAddon(watermark);
+
+			// Resize - TODO this is a terrible solution; revisit this!
+			if (DOM.isIE()) {
+				// This is done to activate ShapeTypes....
+				resizeBy(0, 1);
+				resizeBy(0, -1);
+			}
 		}
 	}
 
