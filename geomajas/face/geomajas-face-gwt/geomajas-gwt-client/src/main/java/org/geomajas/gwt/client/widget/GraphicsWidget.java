@@ -44,8 +44,6 @@ import org.geomajas.gwt.client.spatial.geometry.Polygon;
 import org.geomajas.gwt.client.util.GwtEventUtil;
 
 import com.google.gwt.dom.client.Document;
-import com.google.gwt.dom.client.Node;
-import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.event.dom.client.HasDoubleClickHandlers;
@@ -363,9 +361,9 @@ public class GraphicsWidget extends FocusWidget implements MenuGraphicsContext, 
 		}
 	}
 
-	public void drawShapeType(Object parent, String id, SymbolInfo symbol, ShapeStyle style, Matrix transformation) {
+	public void drawSymbolDefinition(Object parent, String id, SymbolInfo symbol, ShapeStyle style, Matrix transformation) {
 		if (isAttached()) {
-			delegate.drawShapeType(parent, id, symbol, style, transformation);
+			delegate.drawSymbolDefinition(parent, id, symbol, style, transformation);
 		}
 	}
 
@@ -439,17 +437,6 @@ public class GraphicsWidget extends FocusWidget implements MenuGraphicsContext, 
 
 	public void setBackgroundColor(String color) {
 		base.setBackgroundColor(color);
-	}
-
-	/**
-	 * Resets the graphicsWidget. Completely clears the GraphicsWidget and initialize it again
-	 */
-	public void reset() {
-		NodeList<Node> nodes = this.getElement().getChildNodes();
-		for (int i = 0; i < nodes.getLength(); i++) {
-			nodes.getItem(i).removeFromParent();
-		}
-		this.initialize(this.getElement());
 	}
 
 	// -------------------------------------------------------------------------

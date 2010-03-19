@@ -75,7 +75,7 @@ public class VectorLayerPainter implements Painter {
 
 		// Draw symbol types, as these can change any time:
 		for (FeatureStyleInfo style : layer.getLayerInfo().getNamedStyleInfo().getFeatureStyles()) {
-			graphics.drawShapeType(null, style.getStyleId(), style.getSymbol(), new ShapeStyle(style), null);
+			graphics.drawSymbolDefinition(null, style.getStyleId(), style.getSymbol(), new ShapeStyle(style), null);
 		}
 
 		// Check layer visibility:

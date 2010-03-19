@@ -315,4 +315,10 @@ public interface SampleMessages extends Messages {
 	String layertreeTitle();
 
 	String layertreeDescription();
+
+	// Legend sample:
+
+	String legendTitle();
+
+	String legendDescription();
 }

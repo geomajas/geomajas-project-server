@@ -29,6 +29,7 @@ import java.util.List;
 import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.Geomajas;
+import org.geomajas.gwt.client.gfx.paintable.Composite;
 import org.geomajas.gwt.client.gfx.style.FontStyle;
 import org.geomajas.gwt.client.gfx.style.PictureStyle;
 import org.geomajas.gwt.client.gfx.style.ShapeStyle;
@@ -69,6 +70,8 @@ public class Legend extends Canvas {
 	private MapModel mapModel;
 
 	private GraphicsWidget graphics;
+
+	private Composite parentGroup = new Composite("legend-group");
 
 	private FontStyle fontStyle = new FontStyle("#000000", 14, "Arial", "normal", "normal");
 
@@ -112,8 +115,9 @@ public class Legend extends Canvas {
 	 * Render the legend. This triggers a complete redraw.
 	 */
 	public void render() {
-		// First reset the legend:
-		graphics.reset();
+		graphics.deleteGroup(parentGroup);
+		parentGroup = new Composite("legend-group");
+		graphics.drawGroup(null, parentGroup);
 
 		// Then go over all layers, to draw styles:
 		int lineCount = 0;
@@ -139,31 +143,33 @@ public class Legend extends Canvas {
 							coordinates[2] = new Coordinate(10 + 5, y + 10);
 							coordinates[3] = new Coordinate(10 + 15, y + 15);
 							LineString line = mapModel.getGeometryFactory().createLineString(coordinates);
-							graphics.drawLine(null, "legend.style" + lineCount, line, style);
+							graphics.drawLine(parentGroup, "style" + lineCount, line, style);
 						} else if (vLayer.getLayerInfo().getLayerType() == LayerType.POLYGON
 								|| vLayer.getLayerInfo().getLayerType() == LayerType.MULTIPOLYGON) {
 							// Polygons: draw a rectangle:
 							Bbox rect = new Bbox(10, y, 16, 16);
-							graphics.drawRectangle(null, "legend.style" + lineCount, rect, style);
+							graphics.drawRectangle(parentGroup, "style" + lineCount, rect, style);
 						} else if (vLayer.getLayerInfo().getLayerType() == LayerType.POINT
 								|| vLayer.getLayerInfo().getLayerType() == LayerType.MULTIPOINT) {
-							SC.warn("Legend.render: implement point layers...");
+							// Points: draw a symbol:
+							graphics.drawSymbol(parentGroup, "style" + lineCount, new Coordinate(18, y + 8), style,
+									styleInfo.getStyleId());
 						}
 
 						// After the style, draw the style's name:
 						Coordinate textPosition = new Coordinate(30, y - 2);
-						graphics.drawText(null, "legend.text" + lineCount, 
-								styleInfo.getName(), textPosition, fontStyle);
+						graphics
+								.drawText(parentGroup, "text" + lineCount, styleInfo.getName(), textPosition, fontStyle);
 						y += 21;
 					}
 				} else if (layer instanceof RasterLayer) {
 					// For raster layers; show a nice symbol:
 					lineCount++;
 
-					graphics.drawImage(null, "legend.style" + lineCount, Geomajas.getIsomorphicDir()
+					graphics.drawImage(parentGroup, "style" + lineCount, Geomajas.getIsomorphicDir()
 							+ "geomajas/layer-raster.png", new Bbox(10, y, 16, 16), new PictureStyle(1));
 					Coordinate textPosition = new Coordinate(30, y - 2);
-					graphics.drawText(null, "legend.text" + lineCount, layer.getLabel(), textPosition, fontStyle);
+					graphics.drawText(parentGroup, "text" + lineCount, layer.getLabel(), textPosition, fontStyle);
 					y += 20;
 				}
 			}
@@ -222,5 +228,4 @@ public class Legend extends Canvas {
 		loadedRegistration.removeHandler();
 		loadedRegistration = null;
 	}
-
 }

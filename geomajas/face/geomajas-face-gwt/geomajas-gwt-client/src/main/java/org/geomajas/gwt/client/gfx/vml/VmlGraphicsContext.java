@@ -220,7 +220,7 @@ public class VmlGraphicsContext extends AbstractGraphicsContext {
 	 * @param transformation
 	 *            the transformation to apply on the symbol
 	 */
-	public void drawShapeType(Object parent, String id, SymbolInfo symbol, ShapeStyle style, Matrix transformation) {
+	public void drawSymbolDefinition(Object parent, String id, SymbolInfo symbol, ShapeStyle style, Matrix transformation) {
 		if (symbol == null) {
 			return;
 		}
@@ -505,7 +505,7 @@ public class VmlGraphicsContext extends AbstractGraphicsContext {
 				applyAbsolutePosition(group, new Coordinate(0, 0));
 			}
 			if (style instanceof ShapeStyle) {
-				drawShapeType(object, DEFAULT_STYLE, null, (ShapeStyle) style, transformation);
+				drawSymbolDefinition(object, DEFAULT_STYLE, null, (ShapeStyle) style, transformation);
 			}
 		}
 		return group;

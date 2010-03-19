@@ -76,7 +76,6 @@ import org.geomajas.gwt.client.map.event.MapViewChangedEvent;
 import org.geomajas.gwt.client.map.event.MapViewChangedHandler;
 import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.layer.Layer;
-import org.geomajas.gwt.client.spatial.Matrix;
 import org.geomajas.gwt.client.util.DOM;
 
 import com.google.gwt.core.client.GWT;
@@ -278,6 +277,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 				// This is done to activate ShapeTypes....
 				resizeBy(0, 1);
 				resizeBy(0, -1);
+				mapModel.initialize(info); // This is here for a potential legend only to trigger it being redrawn...
 			}
 		}
 	}
@@ -558,14 +558,6 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 
 	public void setDefaultMenu(Menu defaultMenu) {
 		this.defaultMenu = defaultMenu;
-	}
-
-	public Matrix getWorldToViewTranslation() {
-		return mapModel.getMapView().getWorldToViewTranslation();
-	}
-
-	public Matrix getWorldToPanTranslation() {
-		return mapModel.getMapView().getWorldToPanTranslation();
 	}
 
 	// -------------------------------------------------------------------------

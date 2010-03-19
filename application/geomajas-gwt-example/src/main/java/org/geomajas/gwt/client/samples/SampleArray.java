@@ -32,6 +32,7 @@ import org.geomajas.gwt.client.samples.editing.EditPointLayerSample;
 import org.geomajas.gwt.client.samples.editing.EditPolygonLayerSample;
 import org.geomajas.gwt.client.samples.i18n.I18nProvider;
 import org.geomajas.gwt.client.samples.layertree.LayertreeSample;
+import org.geomajas.gwt.client.samples.layertree.LegendSample;
 import org.geomajas.gwt.client.samples.mapwidget.CrsSample;
 import org.geomajas.gwt.client.samples.mapwidget.GeoToolsSample;
 import org.geomajas.gwt.client.samples.mapwidget.MaxBoundsToggleSample;
@@ -173,6 +174,8 @@ public final class SampleArray {
 						"[ISOMORPHIC]/geomajas/layer.png", "Layertree", "topLevel"),
 				new SampleTreeNode(I18nProvider.getSampleMessages().layertreeTitle(),
 						"[ISOMORPHIC]/geomajas/layer.png", LayertreeSample.TITLE, "Layertree", LayertreeSample.FACTORY),
+				new SampleTreeNode(I18nProvider.getSampleMessages().legendTitle(), "[ISOMORPHIC]/geomajas/layer.png",
+						LegendSample.TITLE, "Layertree", LegendSample.FACTORY),
 
 				// Security samples:
 				new SampleTreeNode(I18nProvider.getSampleMessages().treeGroupSecurity(),

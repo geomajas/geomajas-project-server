@@ -234,7 +234,7 @@ public interface GraphicsContext {
 	 * @param transformation
 	 *            the transformation to apply on the symbol
 	 */
-	void drawShapeType(Object parent, String id, SymbolInfo symbol, ShapeStyle style, Matrix transformation);
+	void drawSymbolDefinition(Object parent, String id, SymbolInfo symbol, ShapeStyle style, Matrix transformation);
 
 	/**
 	 * Draw a symbol, using some predefined ShapeType.

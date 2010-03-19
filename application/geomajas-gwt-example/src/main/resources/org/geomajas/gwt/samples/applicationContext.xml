@@ -47,6 +47,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 				<ref bean="editPointLayerMap" />
 				<ref bean="editLineLayerMap" />
 				<ref bean="editPolygonLayerMap" />
+				<ref bean="legendMap" />
 			</list>
 		</property>
 	</bean>
