@@ -158,6 +158,18 @@ public interface SampleMessages extends Messages {
 
 	String editPointLayerDescription();
 
+	// Editing a line layer:
+
+	String editLineLayerTitle();
+
+	String editLineLayerDescription();
+
+	// Editing a polygon layer:
+
+	String editPolygonLayerTitle();
+
+	String editPolygonLayerDescription();
+
 	// OverviewMap sample:
 
 	String overviewMapTitle();

@@ -27,7 +27,9 @@ import org.geomajas.gwt.client.samples.base.SampleTreeNode;
 import org.geomajas.gwt.client.samples.controller.ControllerOnElementSample;
 import org.geomajas.gwt.client.samples.controller.CustomControllerSample;
 import org.geomajas.gwt.client.samples.controller.RectangleControllerSample;
+import org.geomajas.gwt.client.samples.editing.EditLineLayerSample;
 import org.geomajas.gwt.client.samples.editing.EditPointLayerSample;
+import org.geomajas.gwt.client.samples.editing.EditPolygonLayerSample;
 import org.geomajas.gwt.client.samples.i18n.I18nProvider;
 import org.geomajas.gwt.client.samples.layertree.LayertreeSample;
 import org.geomajas.gwt.client.samples.mapwidget.CrsSample;
@@ -78,7 +80,8 @@ public final class SampleArray {
 				new SampleTreeNode(I18nProvider.getSampleMessages().wmsTitle(),
 						"[ISOMORPHIC]/geomajas/layer-raster.png", WmsSample.WMS_TITLE, "MapWidget", WmsSample.FACTORY),
 				new SampleTreeNode(I18nProvider.getSampleMessages().geoTitle(),
-						"[ISOMORPHIC]/geomajas/layer-raster.png", GeoToolsSample.TITLE, "MapWidget", GeoToolsSample.FACTORY),
+						"[ISOMORPHIC]/geomajas/layer-raster.png", GeoToolsSample.TITLE, "MapWidget",
+						GeoToolsSample.FACTORY),
 				new SampleTreeNode(I18nProvider.getSampleMessages().navigationTitle(),
 						"[ISOMORPHIC]/geomajas/layer.png", NavigationSample.TITLE, "MapWidget",
 						NavigationSample.FACTORY),
@@ -92,8 +95,8 @@ public final class SampleArray {
 				new SampleTreeNode(I18nProvider.getSampleMessages().panScaleToggleTitle(),
 						"[ISOMORPHIC]/geomajas/layer.png", PanScaleToggleSample.TITLE, "MapWidget",
 						PanScaleToggleSample.FACTORY),
-				new SampleTreeNode(I18nProvider.getSampleMessages().renderingTitle(),
-						"[ISOMORPHIC]/geomajas/edit.png", RenderingSample.TITLE, "MapWidget", RenderingSample.FACTORY),
+				new SampleTreeNode(I18nProvider.getSampleMessages().renderingTitle(), "[ISOMORPHIC]/geomajas/edit.png",
+						RenderingSample.TITLE, "MapWidget", RenderingSample.FACTORY),
 
 				// Overview map:
 				new SampleTreeNode(I18nProvider.getSampleMessages().treeGroupOverviewMap(),
@@ -108,6 +111,12 @@ public final class SampleArray {
 				new SampleTreeNode(I18nProvider.getSampleMessages().editPointLayerTitle(),
 						"[ISOMORPHIC]/geomajas/edit.png", EditPointLayerSample.TITLE, "GeoGraphicEditing",
 						EditPointLayerSample.FACTORY),
+				new SampleTreeNode(I18nProvider.getSampleMessages().editLineLayerTitle(),
+						"[ISOMORPHIC]/geomajas/edit.png", EditLineLayerSample.TITLE, "GeoGraphicEditing",
+						EditLineLayerSample.FACTORY),
+				new SampleTreeNode(I18nProvider.getSampleMessages().editPolygonLayerTitle(),
+						"[ISOMORPHIC]/geomajas/edit.png", EditPolygonLayerSample.TITLE, "GeoGraphicEditing",
+						EditPolygonLayerSample.FACTORY),
 
 				// Map controller:
 				new SampleTreeNode(I18nProvider.getSampleMessages().treeGroupMapController(),

@@ -38,19 +38,19 @@ import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
  * <p>
- * Sample that shows how editing a point layer can be done.
+ * Sample that shows how editing a LineString layer can be done.
  * </p>
  * 
  * @author Pieter De Graef
  */
-public class EditPointLayerSample extends SamplePanel {
+public class EditLineLayerSample extends SamplePanel {
 
-	public static final String TITLE = "EditPointLayer";
+	public static final String TITLE = "EditLineLayer";
 
 	public static final SamplePanelFactory FACTORY = new SamplePanelFactory() {
 
 		public SamplePanel createPanel() {
-			return new EditPointLayerSample();
+			return new EditLineLayerSample();
 		}
 	};
 
@@ -63,13 +63,13 @@ public class EditPointLayerSample extends SamplePanel {
 		VLayout mapLayout = new VLayout();
 		mapLayout.setShowEdges(true);
 
-		// Map with ID editPointLayerMap is defined in the XML configuration.
-		final MapWidget map = new MapWidget("editPointLayerMap", "gwt-samples");
+		// Map with ID editLineLayerMap is defined in the XML configuration.
+		final MapWidget map = new MapWidget("editLineLayerMap", "gwt-samples");
 		map.getMapModel().addMapModelHandler(new MapModelHandler() {
 
 			// When the map is initialized: select the cities layer - so that new features are created in this layer:
 			public void onMapModelChange(MapModelEvent event) {
-				map.getMapModel().selectLayer(map.getMapModel().getLayer("cities"));
+				map.getMapModel().selectLayer(map.getMapModel().getLayer("roads"));
 			}
 		});
 
@@ -92,17 +92,17 @@ public class EditPointLayerSample extends SamplePanel {
 	}
 
 	public String getDescription() {
-		return I18nProvider.getSampleMessages().editPointLayerDescription();
+		return I18nProvider.getSampleMessages().editLineLayerDescription();
 	}
 
 	public String getSourceFileName() {
-		return "classpath:org/geomajas/gwt/client/samples/editing/EditPointLayerSample.txt";
+		return "classpath:org/geomajas/gwt/client/samples/editing/EditLineLayerSample.txt";
 	}
 
 	public String[] getConfigurationFiles() {
 		return new String[] { "classpath:org/geomajas/gwt/samples/mapwidget/layerOsm.xml",
-				"classpath:org/geomajas/gwt/samples/editing/mapEditPointLayer.xml",
-				"classpath:org/geomajas/gwt/samples/editing/layerCities.xml"};
+				"classpath:org/geomajas/gwt/samples/editing/mapEditLineLayer.xml",
+				"classpath:org/geomajas/gwt/samples/shapeinmem/layerRoads.xml" };
 	}
 
 	public String ensureUserLoggedIn() {
