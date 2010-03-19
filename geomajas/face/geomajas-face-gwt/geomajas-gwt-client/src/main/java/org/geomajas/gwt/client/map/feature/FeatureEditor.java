@@ -53,7 +53,7 @@ public class FeatureEditor {
 		Feature[] newFeatures = targetFeatures;
 		if (featureTransaction == null) {
 			if (oldFeatures == null || oldFeatures.length == 0) { // NEW FEATURE
-				Layer layer = mapModel.getSelectedLayer();
+				Layer<?> layer = mapModel.getSelectedLayer();
 				if (layer == null || !(layer instanceof VectorLayer)) {
 					return null;
 				}

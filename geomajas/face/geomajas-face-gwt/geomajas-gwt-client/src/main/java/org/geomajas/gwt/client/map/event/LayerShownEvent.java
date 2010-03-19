@@ -28,18 +28,18 @@ import com.google.gwt.event.shared.GwtEvent;
 
 /**
  * Event that reports <code>Layer</code> changes.
- *
+ * 
  * @author Frank Wynants
  */
 public class LayerShownEvent extends GwtEvent<LayerChangedHandler> {
 
-	private Layer layer;
+	private Layer<?> layer;
 
-	public LayerShownEvent(Layer layer) {
+	public LayerShownEvent(Layer<?> layer) {
 		this.layer = layer;
 	}
 
-	public Layer getLayer() {
+	public Layer<?> getLayer() {
 		return layer;
 	}
 

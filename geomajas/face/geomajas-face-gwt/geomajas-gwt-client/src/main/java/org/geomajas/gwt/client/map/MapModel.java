@@ -96,17 +96,16 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 	private HandlerManager handlerManager;
 
 	private GeometryFactory geometryFactory;
-	
+
 	private Composite mapGroup = new Composite("map");
-	
+
 	private Composite worldGroup = new Composite("world");
-	
+
 	private Composite screenGroup = new Composite("screen");
-	
+
 	private boolean initialized;
-	
+
 	private LayerSelectionPropagator selectionPropagator = new LayerSelectionPropagator();
-	
 
 	// -------------------------------------------------------------------------
 	// Constructors:
@@ -164,7 +163,7 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 
 		// Paint the layers:
 		if (recursive) {
-			for (Layer layer : layers) {
+			for (Layer<?> layer : layers) {
 				if (layer.isShowing()) {
 					layer.accept(visitor, bounds, recursive);
 					if (layer instanceof VectorLayer) {
@@ -193,7 +192,7 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 
 	/**
 	 * Return this map model's id.
-	 *
+	 * 
 	 * @return id
 	 */
 	public String getId() {
@@ -237,9 +236,10 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 		handlerManager.fireEvent(new MapModelEvent());
 		initialized = true;
 	}
-	
+
 	/**
 	 * Is this map model initialized yet ?
+	 * 
 	 * @return true if initialized
 	 */
 	public boolean isInitialized() {
@@ -370,7 +370,7 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 			handlerManager.fireEvent(new LayerDeselectedEvent(layer));
 		}
 	}
-	
+
 	public List<VectorLayer> getVectorLayers() {
 		ArrayList<VectorLayer> list = new ArrayList<VectorLayer>();
 		for (Layer<?> layer : layers) {
@@ -380,7 +380,6 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 		}
 		return list;
 	}
-	
 
 	/** Clear the list of selected features. */
 	public void clearSelectedFeatures() {
@@ -394,9 +393,9 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 	 * 
 	 * @return Returns the selected layer object, or null if none is selected.
 	 */
-	public Layer getSelectedLayer() {
+	public Layer<?> getSelectedLayer() {
 		if (layers != null) {
-			for (Layer layer : layers) {
+			for (Layer<?> layer : layers) {
 				if (layer.isSelected()) {
 					return layer;
 				}
@@ -457,17 +456,15 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 	public ClientMapInfo getMapInfo() {
 		return mapInfo;
 	}
-	
+
 	public Composite getMapGroup() {
 		return mapGroup;
 	}
 
-	
 	public Composite getWorldGroup() {
 		return worldGroup;
 	}
 
-	
 	public Composite getScreenGroup() {
 		return screenGroup;
 	}
@@ -479,7 +476,7 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 	 *            change event
 	 */
 	public void onMapViewChanged(MapViewChangedEvent event) {
-		for (Layer layer : layers) {
+		for (Layer<?> layer : layers) {
 			layer.updateShowing();
 		}
 	}
@@ -493,7 +490,7 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 		}
 		return geometryFactory;
 	}
-	
+
 	/**
 	 * Propagates selection events to interested listeners.
 	 * 

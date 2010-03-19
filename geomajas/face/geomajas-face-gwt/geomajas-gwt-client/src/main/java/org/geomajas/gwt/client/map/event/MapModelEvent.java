@@ -34,7 +34,7 @@ public class MapModelEvent extends GwtEvent<MapModelHandler> {
 	public static final Type<MapModelHandler> TYPE = new Type<MapModelHandler>();
 
 	@Override
-	public Type getAssociatedType() {
+	public Type<MapModelHandler> getAssociatedType() {
 		return TYPE;
 	}
 

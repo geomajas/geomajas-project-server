@@ -58,10 +58,10 @@ public class EditLineLayerSample extends SamplePanel {
 		VLayout layout = new VLayout();
 		layout.setWidth100();
 		layout.setHeight100();
-		layout.setMembersMargin(10);
 
 		VLayout mapLayout = new VLayout();
 		mapLayout.setShowEdges(true);
+		mapLayout.setShowResizeBar(true);
 
 		// Map with ID editLineLayerMap is defined in the XML configuration.
 		final MapWidget map = new MapWidget("editLineLayerMap", "gwt-samples");
@@ -82,6 +82,7 @@ public class EditLineLayerSample extends SamplePanel {
 
 		// Add an explanation to the page that explains how editing is done:
 		HLayout infoLayout = new HLayout();
+		infoLayout.setHeight("35%");
 		infoLayout.setShowEdges(true);
 		infoLayout.addMember(new Label("Explanation....todo"));
 

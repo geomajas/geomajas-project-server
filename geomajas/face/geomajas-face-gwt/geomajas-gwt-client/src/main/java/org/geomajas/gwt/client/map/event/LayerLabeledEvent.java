@@ -33,13 +33,13 @@ import com.google.gwt.event.shared.GwtEvent;
  */
 public class LayerLabeledEvent extends GwtEvent<LayerChangedHandler> {
 
-	private Layer layer;
+	private Layer<?> layer;
 
-	public LayerLabeledEvent(Layer layer) {
+	public LayerLabeledEvent(Layer<?> layer) {
 		this.layer = layer;
 	}
 
-	public Layer getLayer() {
+	public Layer<?> getLayer() {
 		return layer;
 	}
 

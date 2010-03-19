@@ -40,7 +40,7 @@ import org.geomajas.layer.tile.TileCode;
 
 /**
  * Cache for tiles and contained features.
- *
+ * 
  * @author Pieter De Graef
  * @author Jan De Moerloose
  */
@@ -63,7 +63,7 @@ public class TileCache implements SpatialCache {
 	private int currentMaxX;
 
 	private int currentMaxY;
-	
+
 	private List<VectorTile> evictedTiles;
 
 	protected List<TileCode> currentTileCodes;
@@ -74,7 +74,7 @@ public class TileCache implements SpatialCache {
 
 	/**
 	 * The default <code>SpatialCache</code> implementation. Caches <code>VectorTile</code>s, based on bounds.
-	 *
+	 * 
 	 * @param layer
 	 *            Reference to the <code>VectorLayer</code> object.
 	 * @param layerBounds
@@ -98,7 +98,7 @@ public class TileCache implements SpatialCache {
 
 	/**
 	 * Adds the tile with the specified code to the cache or simply returns the tile if it's already in the cache.
-	 *
+	 * 
 	 * @param tileCode
 	 *            A {@link TileCode} instance.
 	 */
@@ -178,7 +178,7 @@ public class TileCache implements SpatialCache {
 		return new Feature(getLayer());
 	}
 
-	public void query(Bbox bbox, TileFunction callback) {
+	public void query(Bbox bbox, TileFunction<VectorTile> callback) {
 		List<VectorTile> setTiles = new ArrayList<VectorTile>();
 
 		// Create the full list of tile on which to operate:
@@ -206,7 +206,8 @@ public class TileCache implements SpatialCache {
 		}
 	}
 
-	public void queryAndSync(Bbox bbox, String filter, TileFunction onDelete, TileFunction onUpdate) {
+	public void queryAndSync(Bbox bbox, String filter, TileFunction<VectorTile> onDelete,
+			TileFunction<VectorTile> onUpdate) {
 		if (!layer.getMapModel().getMapView().isPanning()) {
 			clear();
 		}
@@ -299,7 +300,7 @@ public class TileCache implements SpatialCache {
 		double x = layerBounds.getX() + tileCode.getX() * tileWidth;
 		double y = layerBounds.getY() + tileCode.getY() * tileHeight;
 		return new Bbox(x, y, tileWidth, tileHeight);
-}
+	}
 
 	/**
 	 * @private Saves the complete array of TileCode objects for the given bounds (and the current scale).
