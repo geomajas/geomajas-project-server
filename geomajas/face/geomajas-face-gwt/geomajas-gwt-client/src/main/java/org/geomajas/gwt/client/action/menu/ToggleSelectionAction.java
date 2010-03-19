@@ -222,6 +222,7 @@ public class ToggleSelectionAction extends MenuAction {
 			for (org.geomajas.layer.feature.Feature orgFeature : orgFeatures) {
 				org.geomajas.gwt.client.map.feature.Feature feature = new org.geomajas.gwt.client.map.feature.Feature(
 						orgFeature, vectorLayer);
+				vectorLayer.getFeatureStore().addFeature(feature);
 				if (vectorLayer.isFeatureSelected(feature.getId())) {
 					vectorLayer.deselectFeature(feature);
 				} else {

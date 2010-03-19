@@ -94,6 +94,7 @@ public class FeatureInfoController extends AbstractGraphicsController {
 							List<org.geomajas.layer.feature.Feature> orgFeatures = featureMap.get(serverLayerId);
 							if (orgFeatures.size() > 0) {
 								Feature feature = new Feature(orgFeatures.get(0), vectorLayer);
+								vectorLayer.getFeatureStore().addFeature(feature);
 								FeatureAttributeWindow window = new FeatureAttributeWindow(feature, false);
 								window.setPageTop(mapWidget.getAbsoluteTop() + 10);
 								window.setPageLeft(mapWidget.getAbsoluteLeft() + 10);

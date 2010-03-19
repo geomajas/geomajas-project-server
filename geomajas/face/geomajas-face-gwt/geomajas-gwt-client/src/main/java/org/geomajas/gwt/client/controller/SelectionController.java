@@ -261,6 +261,7 @@ public class SelectionController extends RectangleController {
 		for (VectorLayer vectorLayer : layers) {
 			for (org.geomajas.layer.feature.Feature orgFeature : orgFeatures) {
 				Feature feature = new Feature(orgFeature, vectorLayer);
+				vectorLayer.getFeatureStore().addFeature(feature);
 				vectorLayer.selectFeature(feature);
 			}
 		}
