@@ -158,8 +158,8 @@ public class Legend extends Canvas {
 
 						// After the style, draw the style's name:
 						Coordinate textPosition = new Coordinate(30, y - 2);
-						graphics
-								.drawText(parentGroup, "text" + lineCount, styleInfo.getName(), textPosition, fontStyle);
+						graphics.drawText(parentGroup, "text" + lineCount, styleInfo.getName(), textPosition,
+								fontStyle);
 						y += 21;
 					}
 				} else if (layer instanceof RasterLayer) {

@@ -202,7 +202,8 @@ public class SvgGraphicsContext extends AbstractGraphicsContext {
 	 * @param transformation
 	 *            the transformation to apply on the symbol
 	 */
-	public void drawSymbolDefinition(Object parent, String id, SymbolInfo symbol, ShapeStyle style, Matrix transformation) {
+	public void drawSymbolDefinition(Object parent, String id, SymbolInfo symbol, ShapeStyle style,
+			Matrix transformation) {
 		if (symbol == null) {
 			return;
 		}

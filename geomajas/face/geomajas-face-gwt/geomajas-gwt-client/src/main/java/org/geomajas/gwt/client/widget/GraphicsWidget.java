@@ -361,7 +361,8 @@ public class GraphicsWidget extends FocusWidget implements MenuGraphicsContext, 
 		}
 	}
 
-	public void drawSymbolDefinition(Object parent, String id, SymbolInfo symbol, ShapeStyle style, Matrix transformation) {
+	public void drawSymbolDefinition(Object parent, String id, SymbolInfo symbol, ShapeStyle style,
+			Matrix transformation) {
 		if (isAttached()) {
 			delegate.drawSymbolDefinition(parent, id, symbol, style, transformation);
 		}

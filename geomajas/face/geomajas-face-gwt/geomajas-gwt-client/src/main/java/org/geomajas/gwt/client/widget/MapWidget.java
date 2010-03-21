@@ -160,11 +160,11 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	 */
 	public enum RenderStatus {
 		/**
-		 * Render paintable, including all children 
+		 * Render paintable, including all children.
 		 */
 		ALL,
 		/**
-		 * Redraw paintable, parent only
+		 * Redraw paintable, parent only.
 		 */
 		UPDATE,
 		/**
@@ -352,14 +352,16 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 				// Paint the world space paintable objects:
 				for (WorldPaintable worldPaintable : worldSpacePaintables) {
 					worldPaintable.scale(1 / getMapModel().getMapView().getCurrentScale());
-					worldPaintable.accept(painterVisitor, getGroup(RenderGroup.WORLD), mapModel.getMapView().getBounds(), true);
+					worldPaintable.accept(painterVisitor, getGroup(RenderGroup.WORLD),
+							mapModel.getMapView().getBounds(), true);
 				}
 				paintable.accept(painterVisitor, getGroup(group), mapModel.getMapView().getBounds(), true);
 			} else if (RenderStatus.UPDATE.equals(status)) {
 				// Paint the world space paintable objects:
 				for (WorldPaintable worldPaintable : worldSpacePaintables) {
 					worldPaintable.scale(1 / getMapModel().getMapView().getCurrentScale());
-					worldPaintable.accept(painterVisitor, getGroup(RenderGroup.WORLD), mapModel.getMapView().getBounds(), false);
+					worldPaintable.accept(painterVisitor, getGroup(RenderGroup.WORLD),
+							mapModel.getMapView().getBounds(), false);
 				}
 				paintable.accept(painterVisitor, getGroup(group), mapModel.getMapView().getBounds(), false);
 			}
