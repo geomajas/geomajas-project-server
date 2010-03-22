@@ -175,6 +175,7 @@ public class GoogleLayer implements RasterLayer {
 
 			// TODO: if bounds width or height is 0, we run out of memory ?
 			bounds = clipBounds(bounds);
+			System.out.println("bounds=" + bounds);
 			// find the center of the map in map coordinates (positive y-axis)
 			DirectPosition2D center = new DirectPosition2D(0.5 * (bounds.getMinX() + bounds.getMaxX()), 0.5 * (bounds
 					.getMinY() + bounds.getMaxY()));
@@ -201,11 +202,12 @@ public class GoogleLayer implements RasterLayer {
 			// Calculate the width in map units of the image that contains the
 			// center
 			Coordinate indicesUpperLeft = new Coordinate(Math.floor(indicesCenter.x), Math.floor(indicesCenter.y));
-			Coordinate indicesLowerRight = new Coordinate(indicesUpperLeft.x + 1, indicesUpperLeft.y + 1);
+			Coordinate indicesLowerRight = new Coordinate(indicesUpperLeft.x + 1, indicesUpperLeft.y - 1);
 			DirectPosition mapUpperLeft = getMapFromGoogleIndices(layerToMap, indicesUpperLeft, tileLevel);
 			DirectPosition mapLowerRight = getMapFromGoogleIndices(layerToMap, indicesLowerRight, tileLevel);
 			double width = mapLowerRight.getOrdinate(0) - mapUpperLeft.getOrdinate(0);
 			double height = mapLowerRight.getOrdinate(1) - mapUpperLeft.getOrdinate(1);
+			System.out.println("width=" + width + ", height=" + height);
 
 			// Calculate the position and indices of the center image corner
 			// in map space
@@ -213,6 +215,7 @@ public class GoogleLayer implements RasterLayer {
 			double yCenter = center.y + (indicesCenter.y - indicesUpperLeft.y) * height;
 			int iCenter = (int) indicesUpperLeft.x;
 			int jCenter = (int) indicesUpperLeft.y;
+			System.out.println("iCenter=" + iCenter + ", jCenter=" + jCenter);
 
 			// Calculate the position and indices of the upper left image corner
 			// that just falls off the screen
@@ -262,8 +265,10 @@ public class GoogleLayer implements RasterLayer {
 							+ "." + tileLevel + "." + i + "," + j);
 					image.setCode(new TileCode(tileLevel, i, j));
 					if (isSatellite()) {
+						System.out.println("calc satellite url " + i + ":" + j + ":" + tileLevel);
 						image.setUrl(getSatelliteTileUrl(i, j, tileLevel));
 					} else {
+						System.out.println("calc normal url " + i + ":" + j + ":" + tileLevel);
 						image.setUrl(getTileUrl(i, j, tileLevel));
 					}
 					result.add(image);
@@ -364,6 +369,7 @@ public class GoogleLayer implements RasterLayer {
 			x += d;
 		}
 		String e = "mt" + ((x + y) % 4) + ".google.com";
+		System.out.println("http://" + e + "/mt?v=w2.95&x=" + x + "&y=" + y + "&z=" + zoom);
 		return "http://" + e + "/mt?v=w2.95&x=" + x + "&y=" + y + "&z=" + zoom;
 	}
 
@@ -402,6 +408,7 @@ public class GoogleLayer implements RasterLayer {
 				}
 			}
 		}
+		System.out.println("http://" + e + "/kh?n=404&v=20&t=" + f);
 		return "http://" + e + "/kh?n=404&v=20&t=" + f;
 	}
 
