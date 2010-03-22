@@ -63,7 +63,7 @@ public class DefaultRasterLayerStore implements RasterLayerStore {
 	}
 
 	public void applyAndSync(Bbox bounds, TileFunction<RasterTile> onDelete, TileFunction<RasterTile> onUpdate) {
-		if (!rasterLayer.getMapModel().getMapView().isPanning() || isDirty()) {
+		if (!rasterLayer.getMapModel().getMapView().isSameScaleLevel() || isDirty()) {
 			if (callBack != null) {
 				callBack.cancel();
 			}

@@ -208,7 +208,7 @@ public class TileCache implements SpatialCache {
 
 	public void queryAndSync(Bbox bbox, String filter, TileFunction<VectorTile> onDelete,
 			TileFunction<VectorTile> onUpdate) {
-		if (!layer.getMapModel().getMapView().isPanning()) {
+		if (!layer.getMapModel().getMapView().isSameScaleLevel()) {
 			clear();
 		}
 

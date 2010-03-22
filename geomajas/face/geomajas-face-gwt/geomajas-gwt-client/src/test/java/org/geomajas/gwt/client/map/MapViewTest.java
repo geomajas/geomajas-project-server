@@ -125,7 +125,7 @@ public class MapViewTest {
 		}
 
 		public void expect(Bbox bounds, double scale, boolean panning) {
-			MapViewChangedEvent event = new MapViewChangedEvent(bounds, scale, panning);
+			MapViewChangedEvent event = new MapViewChangedEvent(bounds, scale, panning, false);
 			expectedEvents.add(event);
 		}
 
@@ -137,7 +137,7 @@ public class MapViewTest {
 				Assert.assertTrue(
 						"Expected " + expected.getBounds() + " but was " + actual.getBounds() + " for precision " +
 								(delta), expected.getBounds().equals(actual.getBounds(), delta));
-				Assert.assertEquals(expected.isPanning(), actual.isPanning());
+				Assert.assertEquals(expected.isSameScaleLevel(), actual.isSameScaleLevel());
 			}
 			Assert.assertTrue(actualEvents.size() + " unexpected events", actualEvents.isEmpty());
 		}

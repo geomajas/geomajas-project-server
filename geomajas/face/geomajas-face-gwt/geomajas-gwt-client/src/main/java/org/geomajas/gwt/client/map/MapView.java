@@ -110,6 +110,8 @@ public class MapView {
 
 	private WorldViewTransformer worldViewTransformer;
 
+	private boolean panDragging;
+
 	// -------------------------------------------------------------------------
 	// Constructors:
 	// -------------------------------------------------------------------------
@@ -329,7 +331,7 @@ public class MapView {
 	 * 
 	 * @return true if panning
 	 */
-	public boolean isPanning() {
+	public boolean isSameScaleLevel() {
 		return Math.abs(currentScale - previousScale) < 1.0E-10
 				&& previousPanOrigin.equalsDelta(this.panOrigin, 1.0E-10);
 	}
@@ -362,6 +364,14 @@ public class MapView {
 
 	public void setMaxBounds(Bbox maxBounds) {
 		this.maxBounds = maxBounds;
+	}
+
+	public boolean isPanDragging() {
+		return panDragging;
+	}
+
+	public void setPanDragging(boolean panDragging) {
+		this.panDragging = panDragging;
 	}
 
 	public String toString() {
@@ -453,7 +463,8 @@ public class MapView {
 
 	/** Fire an event. */
 	private void fireEvent() {
-		handlerManager.fireEvent(new MapViewChangedEvent(getBounds(), getCurrentScale(), isPanning()));
+		handlerManager.fireEvent(new MapViewChangedEvent(getBounds(), getCurrentScale(), isSameScaleLevel(),
+				panDragging));
 	}
 
 	/**

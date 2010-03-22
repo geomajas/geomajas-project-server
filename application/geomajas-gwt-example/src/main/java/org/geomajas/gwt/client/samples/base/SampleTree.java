@@ -49,7 +49,7 @@ public class SampleTree extends TreeGrid {
 		setCustomIconProperty("icon");
 		setAnimateFolderTime(100);
 		setAnimateFolders(true);
-		setAnimateFolderSpeed(700);
+		setAnimateFolderSpeed(500);
 		setNodeIcon("[ISOMORPHIC]/geomajas/example/images/application_view_list.png");
 		setShowSortArrow(SortArrow.CORNER);
 		setShowAllRecords(true);

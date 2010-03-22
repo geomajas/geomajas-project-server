@@ -35,7 +35,7 @@ import com.smartgwt.client.types.Cursor;
 
 /**
  * Handle panning by dragging the map. Also allows zoom to rectangle when using shift or ctrl when you start to drag.
- *
+ * 
  * @author Joachim Van der Auwera
  */
 public class PanController extends AbstractGraphicsController {
@@ -47,7 +47,7 @@ public class PanController extends AbstractGraphicsController {
 	private Coordinate begin;
 
 	private ZoomToRectangleController zoomToRectangleController;
-	
+
 	// Constructors:
 
 	public PanController(MapWidget mapWidget) {
@@ -62,6 +62,7 @@ public class PanController extends AbstractGraphicsController {
 			zoomToRectangleController.onMouseDown(event);
 		} else if (event.getNativeButton() != NativeEvent.BUTTON_RIGHT) {
 			dragging = true;
+			mapWidget.getMapModel().getMapView().setPanDragging(true);
 			begin = getScreenPosition(event);
 			mapWidget.setCursor(Cursor.MOVE);
 		}
@@ -98,6 +99,7 @@ public class PanController extends AbstractGraphicsController {
 	// Private methods:
 
 	private void stopPanning(MouseUpEvent event) {
+		mapWidget.getMapModel().getMapView().setPanDragging(false);
 		dragging = false;
 		mapWidget.setCursor(Cursor.DEFAULT);
 		if (null != event) {
@@ -109,8 +111,8 @@ public class PanController extends AbstractGraphicsController {
 		Coordinate end = getScreenPosition(event);
 		Coordinate beginWorld = getTransformer().viewToWorld(begin);
 		Coordinate endWorld = getTransformer().viewToWorld(end);
-		mapWidget.getMapModel().getMapView()
-				.translate(beginWorld.getX() - endWorld.getX(), beginWorld.getY() - endWorld.getY());
+		mapWidget.getMapModel().getMapView().translate(beginWorld.getX() - endWorld.getX(),
+				beginWorld.getY() - endWorld.getY());
 		begin = end;
 	}
 }

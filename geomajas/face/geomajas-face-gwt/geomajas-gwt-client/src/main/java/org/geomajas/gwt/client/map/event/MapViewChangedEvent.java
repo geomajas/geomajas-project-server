@@ -30,7 +30,7 @@ import com.google.gwt.event.shared.GwtEvent;
 /**
  * Custom defined event that is triggered every time the view on a map changes. This can be due to zooming in or
  * panning. This event contains the new bounding box and scale.
- *
+ * 
  * @author Pieter De Graef
  */
 public class MapViewChangedEvent extends GwtEvent<MapViewChangedHandler> {
@@ -53,10 +53,12 @@ public class MapViewChangedEvent extends GwtEvent<MapViewChangedHandler> {
 	/**
 	 * Is it a panning event ?
 	 */
-	private boolean panning;
+	private boolean sameScaleLevel;
+
+	private boolean panDragging;
 
 	/**
-	 *
+	 * 
 	 * @param bounds
 	 * @param scale
 	 * @param panning
@@ -65,10 +67,11 @@ public class MapViewChangedEvent extends GwtEvent<MapViewChangedHandler> {
 	// -------------------------------------------------------------------------
 	// Constructor:
 	// -------------------------------------------------------------------------
-	public MapViewChangedEvent(Bbox bounds, double scale, boolean panning) {
+	public MapViewChangedEvent(Bbox bounds, double scale, boolean sameScaleLevel, boolean panDragging) {
 		this.bounds = bounds;
 		this.scale = scale;
-		this.panning = panning;
+		this.sameScaleLevel = sameScaleLevel;
+		this.panDragging = panDragging;
 	}
 
 	// -------------------------------------------------------------------------
@@ -77,7 +80,7 @@ public class MapViewChangedEvent extends GwtEvent<MapViewChangedHandler> {
 
 	/**
 	 * Get the type associated with this event.
-	 *
+	 * 
 	 * @return returns the handler type
 	 */
 	public static Type<MapViewChangedHandler> getType() {
@@ -107,7 +110,11 @@ public class MapViewChangedEvent extends GwtEvent<MapViewChangedHandler> {
 		return scale;
 	}
 
-	public boolean isPanning() {
-		return panning;
+	public boolean isSameScaleLevel() {
+		return sameScaleLevel;
+	}
+
+	public boolean isPanDragging() {
+		return panDragging;
 	}
 }
