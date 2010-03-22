@@ -69,8 +69,6 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		</property>
         <property name="resolutions">
             <list>
-                <value>156543.03</value>
-                <value>78271.52</value>
                 <value>39135.76</value>
                 <value>19567.88</value>
                 <value>9783.94</value>

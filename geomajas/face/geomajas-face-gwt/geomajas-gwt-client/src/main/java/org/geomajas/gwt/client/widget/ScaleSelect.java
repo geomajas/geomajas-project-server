@@ -105,7 +105,7 @@ public class ScaleSelect extends Canvas implements KeyPressHandler, ChangedHandl
 	// -------------------------------------------------------------------------
 
 	/**
-	 * Set the specified relative scale values in the combobox.
+	 * Set the specified relative scale values in the select item.
 	 * 
 	 * @param scales
 	 *            array of relative scales (should be multiplied by pixelLength if in pixels/m)
@@ -153,13 +153,18 @@ public class ScaleSelect extends Canvas implements KeyPressHandler, ChangedHandl
 		this.updatingScaleList = updatingScaleList;
 	}
 
+	/**
+	 * When the MapView changes, update the select item to the correct scale.
+	 */
 	public void onMapViewChanged(MapViewChangedEvent event) {
-		if (!event.isPanning()) {
-			double currentScale = mapView.getCurrentScale() * pixelLength;
-			setDisplayScale(currentScale);
+		if (!event.isPanning() || scaleItem.getDisplayValue() == null || scaleItem.getDisplayValue().equals("")) {
+			setDisplayScale(mapView.getCurrentScale() * pixelLength);
 		}
 	}
 
+	/**
+	 * Make sure that the scale in the scale select is applied on the map, when the user presses the 'Enter' key.
+	 */
 	public void onKeyPress(KeyPressEvent event) {
 		String name = event.getKeyName();
 		if (name.equalsIgnoreCase("enter")) {
@@ -167,6 +172,9 @@ public class ScaleSelect extends Canvas implements KeyPressHandler, ChangedHandl
 		}
 	}
 
+	/**
+	 * When the user selects a different scale, have the map zoom to it.
+	 */
 	public void onChanged(ChangedEvent event) {
 		String value = (String) scaleItem.getValue();
 		Double scale = valueToScale.get(value);
