@@ -33,7 +33,7 @@ dojo.declare("GoogleImageFactory", null, {
 	 * 
 	 * @constructor
 	 */
-	constructor : function () {
+	constructor : function (type) {
 		// init map types
 		this.mapTypes = new dojox.collections.Dictionary();
 		this.layer = null;
@@ -49,6 +49,8 @@ dojo.declare("GoogleImageFactory", null, {
  		
 			// the current map type
 			this.currentMapType =G_NORMAL_MAP;
+
+			this._assertMapType(type);
 		} else {
 			log.warn("no google maps");
 		}
@@ -61,8 +63,6 @@ dojo.declare("GoogleImageFactory", null, {
 	createImage : function (jsonImage, mapId) {
 			var image = new RasterImage();
 			image.setId(mapId + "." + jsonImage.id);
-			// abusing the url to pass the map type !!!
-			this._assertMapType(jsonImage.url);			
 			image.setUrl(jsonImage.url);
 			var b = jsonImage.bounds;
 			image.setBounds(new Bbox(b.x,b.y,b.width,b.height));
