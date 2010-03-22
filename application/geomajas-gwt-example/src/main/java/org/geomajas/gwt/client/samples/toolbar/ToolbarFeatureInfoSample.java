@@ -92,7 +92,7 @@ public class ToolbarFeatureInfoSample extends SamplePanel {
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "classpath:org/geomajas/gwt/samples/mapwidget/layerOsm.xml",
+		return new String[] { "classpath:org/geomajas/gwt/samples/shapeinmem/layerStructures.xml",
 				"classpath:org/geomajas/gwt/samples/toolbar/mapOsmFeatureInfo.xml" };
 	}
 

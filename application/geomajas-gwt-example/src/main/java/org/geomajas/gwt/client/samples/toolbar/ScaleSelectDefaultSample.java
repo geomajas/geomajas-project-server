@@ -94,7 +94,7 @@ public class ScaleSelectDefaultSample extends SamplePanel {
 
 	public String[] getConfigurationFiles() {
 		return new String[] { "classpath:org/geomajas/gwt/samples/mapwidget/layerOsm.xml",
-				"classpath:org/geomajas/gwt/samples/mapwidget/mapOsmResolutions.xml" };
+				"classpath:org/geomajas/gwt/samples/toolbar/mapOsmResolutions.xml" };
 	}
 
 	public String ensureUserLoggedIn() {

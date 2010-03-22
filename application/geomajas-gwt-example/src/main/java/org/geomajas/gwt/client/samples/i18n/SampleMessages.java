@@ -114,6 +114,10 @@ public interface SampleMessages extends Messages {
 
 	String switchUnitTypes();
 
+	String unitTypeEnglish();
+
+	String unitTypeMetric();
+
 	// Toggle maxbounds sample
 
 	String maxBoundsToggleTitle();
