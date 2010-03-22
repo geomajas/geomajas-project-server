@@ -93,7 +93,7 @@ public class GoogleLayer implements RasterLayer {
 
 	private String id;
 
-	protected static final double[] resolutions = new double[MAX_ZOOM_LEVEL + 1];
+	protected static final double[] RESOLUTIONS = new double[MAX_ZOOM_LEVEL + 1];
 
 	protected static final int[] POWERS_OF_TWO;
 
@@ -106,7 +106,7 @@ public class GoogleLayer implements RasterLayer {
 		}
 		for (int zoomLevel = 0; zoomLevel <= MAX_ZOOM_LEVEL; zoomLevel++) {
 			double resolution = (EQUATOR_IN_METERS) / (TILE_SIZE * POWERS_OF_TWO[zoomLevel]);
-			resolutions[zoomLevel] = resolution;
+			RESOLUTIONS[zoomLevel] = resolution;
 		}
 	}
 
@@ -192,9 +192,13 @@ public class GoogleLayer implements RasterLayer {
 			Coordinate mapUpperLeft = getMapFromGoogleIndices(layerToMap, indicesUpperLeft, tileLevel);
 			Coordinate mapLowerRight = getMapFromGoogleIndices(layerToMap, indicesLowerRight, tileLevel);
 			double width = Math.abs(mapLowerRight.x - mapUpperLeft.x);
-			if (0 == width) width = 1.0;
+			if (0 == width) {
+				width = 1.0;
+			}
 			double height = Math.abs(mapLowerRight.y - mapUpperLeft.y);
-			if (0 == height) height = 1.0;
+			if (0 == height) {
+				height = 1.0;
+			}
 
 			// Calculate the position and indices of the center image corner
 			// in map space
@@ -285,19 +289,19 @@ public class GoogleLayer implements RasterLayer {
 		}
 		double scaleInPixPerMeter = scale * scaleRatio;
 		double screenResolution = 1.0 / scaleInPixPerMeter;
-		if (screenResolution >= resolutions[0]) {
+		if (screenResolution >= RESOLUTIONS[0]) {
 			return 0;
-		} else if (screenResolution <= resolutions[MAX_ZOOM_LEVEL]) {
+		} else if (screenResolution <= RESOLUTIONS[MAX_ZOOM_LEVEL]) {
 			return MAX_ZOOM_LEVEL;
 		} else {
 			for (int i = 0; i < MAX_ZOOM_LEVEL; i++) {
-				double upper = resolutions[i];
-				double lower = resolutions[i + 1];
+				double upper = RESOLUTIONS[i];
+				double lower = RESOLUTIONS[i + 1];
 				if (screenResolution <= upper && screenResolution >= lower) {
 					if ((upper - screenResolution) > 2 * (screenResolution - lower)) {
 						return i;
 					} else {
-						return i+1;
+						return i + 1;
 					}
 				}
 			}
