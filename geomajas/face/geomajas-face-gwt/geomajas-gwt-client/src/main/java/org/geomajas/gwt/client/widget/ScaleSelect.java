@@ -45,10 +45,16 @@ import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
 import com.smartgwt.client.widgets.form.validator.CustomValidator;
 
 /**
+ * <p>
  * A drop down selection box for setting and displaying the current scale of a map. The displayed scale is a relative
- * scale and is expressed as an abstract number, as opposed to the mapview scale which is expressed in pixels per map
- * unit. An arbitary scale can be filled in by the user. Implemented as a canvas so it can be added where needed.
- *
+ * scale and is expressed as an abstract number, as opposed to the MapView scale which is expressed in pixels per map
+ * unit. An arbitrary scale can be filled in by the user. Implemented as a canvas so it can be added where needed.
+ * </p>
+ * <p>
+ * This widget has the option to add new scale levels to the list, as the user types them (and presses 'Enter'). By
+ * default this option is turned off. Turn it on using the <code>setUpdatingScaleList</code> method.
+ * </p>
+ * 
  * @author Jan De Moerloose
  */
 public class ScaleSelect extends Canvas implements KeyPressHandler, ChangedHandler, MapViewChangedHandler {
@@ -66,16 +72,25 @@ public class ScaleSelect extends Canvas implements KeyPressHandler, ChangedHandl
 
 	// bidirectional lookup
 	private LinkedHashMap<Double, String> scaleToValue;
+
 	private LinkedHashMap<String, Double> valueToScale;
 
 	// pixel length in map units
 	private double pixelLength;
 
+	private boolean updatingScaleList;
+
+	// -------------------------------------------------------------------------
+	// Constructor:
+	// -------------------------------------------------------------------------
+
 	/**
 	 * Constructs a ScaleSelect that acts on the specified map view.
-	 *
-	 * @param mapView the map view
-	 * @param pixelLength the pixel length in map units
+	 * 
+	 * @param mapView
+	 *            the map view
+	 * @param pixelLength
+	 *            the pixel length in map units
 	 */
 	public ScaleSelect(MapView mapView, double pixelLength) {
 		this.mapView = mapView;
@@ -85,10 +100,15 @@ public class ScaleSelect extends Canvas implements KeyPressHandler, ChangedHandl
 		init();
 	}
 
+	// -------------------------------------------------------------------------
+	// Public methods:
+	// -------------------------------------------------------------------------
+
 	/**
 	 * Set the specified relative scale values in the combobox.
-	 *
-	 * @param scales array of relative scales (should be multiplied by pixelLength if in pix/m)
+	 * 
+	 * @param scales
+	 *            array of relative scales (should be multiplied by pixelLength if in pixels/m)
 	 */
 	public void setScales(Double... scales) {
 		// sort decreasing
@@ -115,6 +135,24 @@ public class ScaleSelect extends Canvas implements KeyPressHandler, ChangedHandl
 		return mapView;
 	}
 
+	/**
+	 * When typing custom scale levels in the select item, should these new scale levels be added to the list or not?
+	 */
+	public boolean isUpdatingScaleList() {
+		return updatingScaleList;
+	}
+
+	/**
+	 * When typing custom scale levels in the select item, should these new scale levels be added to the list or not?
+	 * The default value is false, which means that the list of scales in the select item does not change.
+	 * 
+	 * @param updatingScaleList
+	 *            Should the new scale be added?
+	 */
+	public void setUpdatingScaleList(boolean updatingScaleList) {
+		this.updatingScaleList = updatingScaleList;
+	}
+
 	public void onMapViewChanged(MapViewChangedEvent event) {
 		if (!event.isPanning()) {
 			double currentScale = mapView.getCurrentScale() * pixelLength;
@@ -136,6 +174,10 @@ public class ScaleSelect extends Canvas implements KeyPressHandler, ChangedHandl
 			mapView.setCurrentScale(scale / pixelLength, MapView.ZoomOption.LEVEL_CLOSEST);
 		}
 	}
+
+	// -------------------------------------------------------------------------
+	// Private methods:
+	// -------------------------------------------------------------------------
 
 	protected void setDisplayScale(double scale) {
 		scaleItem.setValue(scaleToString(scale));
@@ -187,10 +229,12 @@ public class ScaleSelect extends Canvas implements KeyPressHandler, ChangedHandl
 		if (value != null) {
 			Double scale = valueToScale.get(value);
 			if (scale == null) {
-				List<Double> newScales = new ArrayList<Double>(valueToScale.values());
 				scale = stringToScale(value);
-				newScales.add(scale);
-				setScales(newScales.toArray(new Double[0]));
+				if (updatingScaleList) {
+					List<Double> newScales = new ArrayList<Double>(valueToScale.values());
+					newScales.add(scale);
+					setScales(newScales.toArray(new Double[0]));
+				}
 			}
 			scaleItem.setValue(scaleToValue.get(scale));
 			mapView.setCurrentScale(scale / pixelLength, MapView.ZoomOption.LEVEL_CLOSEST);

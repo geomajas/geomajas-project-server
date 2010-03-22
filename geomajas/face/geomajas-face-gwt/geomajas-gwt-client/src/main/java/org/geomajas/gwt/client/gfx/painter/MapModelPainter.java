@@ -63,8 +63,6 @@ public class MapModelPainter implements Painter {
 	 *            A GraphicsContext object, responsible for actual drawing.
 	 */
 	public void paint(Paintable paintable, Object group, GraphicsContext graphics) {
-		MapModel mapModel = (MapModel) paintable;
-
 		// Group for objects in pan space
 		graphics.drawGroup(null, mapWidget.getGroup(RenderGroup.PAN), 
 				mapWidget.getMapModel().getMapView().getPanToViewTranslation());

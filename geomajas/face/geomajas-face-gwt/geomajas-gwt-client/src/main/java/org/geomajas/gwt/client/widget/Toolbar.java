@@ -81,6 +81,7 @@ public class Toolbar extends ToolStrip {
 		toolbarActionHandlers = new ArrayList<HandlerRegistration>();
 		setButtonSize(BUTTON_SIZE_SMALL);
 		setPadding(2);
+		setWidth100();
 		mapWidget.getMapModel().addMapModelHandler(new MapModelHandler() {
 
 			public void onMapModelChange(MapModelEvent event) {
