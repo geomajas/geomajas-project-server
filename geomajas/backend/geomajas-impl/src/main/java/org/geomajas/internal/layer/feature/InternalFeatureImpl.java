@@ -90,7 +90,9 @@ public class InternalFeatureImpl implements InternalFeature {
 	}
 
 	public InternalFeatureImpl(InternalFeature other) {
-		attributes = new HashMap<String, Attribute>(other.getAttributes());
+		if (null != other.getAttributes()) {
+			attributes = new HashMap<String, Attribute>(other.getAttributes());
+		}
 		if (null != other.getGeometry()) {
 			geometry = (Geometry) other.getGeometry().clone();
 		}
