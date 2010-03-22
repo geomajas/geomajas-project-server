@@ -37,9 +37,7 @@ import org.geomajas.rendering.RenderException;
 import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
-import org.geotools.geometry.DirectPosition2D;
-import org.opengis.geometry.DirectPosition;
-import org.opengis.geometry.MismatchedDimensionException;
+import org.geotools.geometry.jts.JTS;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
@@ -66,21 +64,13 @@ public class GoogleLayer implements RasterLayer {
 	public static final String LAYER_NAME_HYBRID = "G_HYBID_MAP";
 	public static final String LAYER_NAME_PHYSICAL = "G_PHYSICAL_MAP";
 
-	public static final double EARTH_RADIUS_IN_METERS = 6378137.0;
-
-	public static final double EQUATOR_IN_METERS = 2 * Math.PI * EARTH_RADIUS_IN_METERS;
+	public static final double EQUATOR_IN_METERS = 40075016.686;
 
 	public static final int MAX_ZOOM_LEVEL = 17;
 
 	public static final int TILE_SIZE = 256; // tile size in pixels
 
 	private final Logger log = LoggerFactory.getLogger(GoogleLayer.class);
-
-	protected List<GoogleResolution> resolutions = new ArrayList<GoogleResolution>();
-
-	protected int tileWidth;
-
-	protected int tileHeight;
 
 	protected double maxWidth;
 
@@ -103,6 +93,8 @@ public class GoogleLayer implements RasterLayer {
 
 	private String id;
 
+	protected static final double[] resolutions = new double[MAX_ZOOM_LEVEL + 1];
+
 	protected static final int[] POWERS_OF_TWO;
 
 	static {
@@ -111,6 +103,10 @@ public class GoogleLayer implements RasterLayer {
 		for (int c = 0; c < POWERS_OF_TWO.length; c++) {
 			POWERS_OF_TWO[c] = b;
 			b *= 2;
+		}
+		for (int zoomLevel = 0; zoomLevel <= MAX_ZOOM_LEVEL; zoomLevel++) {
+			double resolution = (EQUATOR_IN_METERS) / (TILE_SIZE * POWERS_OF_TWO[zoomLevel]);
+			resolutions[zoomLevel] = resolution;
 		}
 	}
 
@@ -142,11 +138,8 @@ public class GoogleLayer implements RasterLayer {
 				setSatellite(true);
 			}
 		}
-		tileWidth = layerInfo.getTileWidth();
-		tileHeight = layerInfo.getTileHeight();
 		maxWidth = layerInfo.getMaxExtent().getWidth();
 		maxHeight = layerInfo.getMaxExtent().getHeight();
-		this.calculatePredefinedResolutions();
 	}
 
 	/**
@@ -173,21 +166,15 @@ public class GoogleLayer implements RasterLayer {
 			MathTransform layerToMap = geoService.findMathTransform(crs, boundsCrs);
 			MathTransform mapToLayer = layerToMap.inverse();
 
-			// TODO: if bounds width or height is 0, we run out of memory ?
 			bounds = clipBounds(bounds);
-			System.out.println("bounds=" + bounds);
 			// find the center of the map in map coordinates (positive y-axis)
-			DirectPosition2D center = new DirectPosition2D(0.5 * (bounds.getMinX() + bounds.getMaxX()), 0.5 * (bounds
+			Coordinate center = new Coordinate(0.5 * (bounds.getMinX() + bounds.getMaxX()), 0.5 * (bounds
 					.getMinY() + bounds.getMaxY()));
 
-			double scaleRatio = calculateMapUnitPerGoogleMeter(mapToLayer, center);
-
 			// find zoomlevel
-			// scale in pix/m should just above the given scale so we have at
-			// least
-			// 1
+			// scale in pix/m should just above the given scale so we have at least one
 			// screen pixel per google pixel ! (otherwise text unreadable)
-			int tileLevel = getBestGoogleZoomLevelForScaleInPixPerMeter(scale * scaleRatio);
+			int tileLevel = getBestGoogleZoomLevelForScaleInPixPerMeter(mapToLayer, center, scale);
 			log.info("zoomLevel=" + tileLevel);
 
 			// find the google indices for the center
@@ -196,18 +183,18 @@ public class GoogleLayer implements RasterLayer {
 			// the big google square for the given zoom zoomLevel
 			// the resulting indices are floating point values as the center
 			// is not coincident with an image corner !!!!
-			Coordinate indicesCenter;
-			indicesCenter = getGoogleIndicesFromMap(mapToLayer, center, tileLevel);
+			Coordinate indicesCenter = getGoogleIndicesFromMap(mapToLayer, center, tileLevel);
 
 			// Calculate the width in map units of the image that contains the
 			// center
 			Coordinate indicesUpperLeft = new Coordinate(Math.floor(indicesCenter.x), Math.floor(indicesCenter.y));
-			Coordinate indicesLowerRight = new Coordinate(indicesUpperLeft.x + 1, indicesUpperLeft.y - 1);
-			DirectPosition mapUpperLeft = getMapFromGoogleIndices(layerToMap, indicesUpperLeft, tileLevel);
-			DirectPosition mapLowerRight = getMapFromGoogleIndices(layerToMap, indicesLowerRight, tileLevel);
-			double width = mapLowerRight.getOrdinate(0) - mapUpperLeft.getOrdinate(0);
-			double height = mapLowerRight.getOrdinate(1) - mapUpperLeft.getOrdinate(1);
-			System.out.println("width=" + width + ", height=" + height);
+			Coordinate indicesLowerRight = new Coordinate(indicesUpperLeft.x + 1, indicesUpperLeft.y + 1);
+			Coordinate mapUpperLeft = getMapFromGoogleIndices(layerToMap, indicesUpperLeft, tileLevel);
+			Coordinate mapLowerRight = getMapFromGoogleIndices(layerToMap, indicesLowerRight, tileLevel);
+			double width = Math.abs(mapLowerRight.x - mapUpperLeft.x);
+			if (0 == width) width = 1.0;
+			double height = Math.abs(mapLowerRight.y - mapUpperLeft.y);
+			if (0 == height) height = 1.0;
 
 			// Calculate the position and indices of the center image corner
 			// in map space
@@ -215,7 +202,6 @@ public class GoogleLayer implements RasterLayer {
 			double yCenter = center.y + (indicesCenter.y - indicesUpperLeft.y) * height;
 			int iCenter = (int) indicesUpperLeft.x;
 			int jCenter = (int) indicesUpperLeft.y;
-			System.out.println("iCenter=" + iCenter + ", jCenter=" + jCenter);
 
 			// Calculate the position and indices of the upper left image corner
 			// that just falls off the screen
@@ -259,16 +245,14 @@ public class GoogleLayer implements RasterLayer {
 				for (int j = jMin; j <= jMax; j++) {
 					// Using screen coordinates:
 					int x = xScreenUpperLeft + (i - iMin) * screenWidth;
-					int y = yScreenUpperLeft - (j - jMin) * screenWidth;
+					int y = yScreenUpperLeft - (j - jMin) * screenHeight;
 
 					RasterTile image = new RasterTile(new Bbox(x, -y, screenWidth, screenHeight), getId()
 							+ "." + tileLevel + "." + i + "," + j);
 					image.setCode(new TileCode(tileLevel, i, j));
 					if (isSatellite()) {
-						System.out.println("calc satellite url " + i + ":" + j + ":" + tileLevel);
 						image.setUrl(getSatelliteTileUrl(i, j, tileLevel));
 					} else {
-						System.out.println("calc normal url " + i + ":" + j + ":" + tileLevel);
 						image.setUrl(getTileUrl(i, j, tileLevel));
 					}
 					result.add(image);
@@ -284,69 +268,56 @@ public class GoogleLayer implements RasterLayer {
 		}
 	}
 
-	private double calculateMapUnitPerGoogleMeter(MathTransform layerToGoogle, DirectPosition2D mapPosition) {
-		try {
-			DirectPosition p1 = layerToGoogle.transform(mapPosition, null);
-			DirectPosition mapdx = new DirectPosition2D(mapPosition.x + 1, mapPosition.y);
-			DirectPosition p2 = layerToGoogle.transform(mapdx, null);
-			return 1. / (p2.getOrdinate(0) - p1.getOrdinate(0));
-		} catch (MismatchedDimensionException e) {
-			log.warn("calculateMapUnitPerGoogleMeter() : transformation failed", e);
-			return 0.653;
-		} catch (TransformException e) {
-			log.warn("calculateMapUnitPerGoogleMeter() : transformation failed", e);
-			return 0.653;
-		}
-	}
-
 	private Envelope clipBounds(Envelope bounds) {
 		return bounds.intersection(getMaxBounds());
 	}
 
-	private void calculatePredefinedResolutions() {
-		for (int zoomLevel = 0; zoomLevel <= MAX_ZOOM_LEVEL; zoomLevel++) {
-			double resolution = (EQUATOR_IN_METERS) / (TILE_SIZE * Math.pow(2.0, zoomLevel));
-			resolutions.add(new GoogleResolution(resolution, zoomLevel));
+	private int getBestGoogleZoomLevelForScaleInPixPerMeter(MathTransform layerToGoogle, Coordinate mapPosition,
+			double scale) {
+		double scaleRatio = 0.653;
+		try {
+			Coordinate mercatorCenter = JTS.transform(mapPosition, new Coordinate(), layerToGoogle);
+			Coordinate dx = JTS.transform(new Coordinate(mapPosition.x + 1, mapPosition.y), new Coordinate(),
+					layerToGoogle);
+			scaleRatio = 1.0 / (dx.x - mercatorCenter.x);
+		} catch (TransformException e) {
+			log.warn("calculateMapUnitPerGoogleMeter() : transformation failed", e);
 		}
-	}
-
-	private int getBestGoogleZoomLevelForScaleInPixPerMeter(double scaleInPixPerMeter) {
+		double scaleInPixPerMeter = scale * scaleRatio;
 		double screenResolution = 1.0 / scaleInPixPerMeter;
-		if (screenResolution >= resolutions.get(0).getResolution()) {
-			return resolutions.get(0).getZoomLevel();
-		} else if (screenResolution <= resolutions.get(resolutions.size() - 1).getResolution()) {
-			return resolutions.get(resolutions.size() - 1).getZoomLevel();
+		if (screenResolution >= resolutions[0]) {
+			return 0;
+		} else if (screenResolution <= resolutions[MAX_ZOOM_LEVEL]) {
+			return MAX_ZOOM_LEVEL;
 		} else {
-			for (int i = 0; i < resolutions.size() - 1; i++) {
-				GoogleResolution upper = resolutions.get(i);
-				GoogleResolution lower = resolutions.get(i + 1);
-				if (screenResolution <= upper.getResolution() && screenResolution >= lower.getResolution()) {
-					if ((upper.getResolution() - screenResolution) > 2 * (screenResolution - lower.getResolution())) {
-						return lower.getZoomLevel();
+			for (int i = 0; i < MAX_ZOOM_LEVEL; i++) {
+				double upper = resolutions[i];
+				double lower = resolutions[i + 1];
+				if (screenResolution <= upper && screenResolution >= lower) {
+					if ((upper - screenResolution) > 2 * (screenResolution - lower)) {
+						return i;
 					} else {
-						return upper.getZoomLevel();
+						return i+1;
 					}
 				}
 			}
 		}
 		// should not occur !!!!
-		return resolutions.get(resolutions.size() - 1).getZoomLevel();
+		return MAX_ZOOM_LEVEL;
 	}
 
-	private DirectPosition getMapFromGoogleIndices(MathTransform googleToLayer, Coordinate indices, int zoomLevel)
+	private Coordinate getMapFromGoogleIndices(MathTransform mapToLayer, Coordinate indices, int zoomLevel)
 			throws TransformException {
-		double xMeter = EQUATOR_IN_METERS * indices.x / Math.pow(2.0, zoomLevel) - 0.5 * EQUATOR_IN_METERS;
-		double yMeter = -EQUATOR_IN_METERS * indices.y / Math.pow(2.0, zoomLevel) + 0.5 * EQUATOR_IN_METERS;
-		return googleToLayer.transform(new DirectPosition2D(xMeter, yMeter), null);
+		double xMeter = EQUATOR_IN_METERS * indices.x / POWERS_OF_TWO[zoomLevel] - 0.5 * EQUATOR_IN_METERS;
+		double yMeter = -EQUATOR_IN_METERS * indices.y / POWERS_OF_TWO[zoomLevel] + 0.5 * EQUATOR_IN_METERS;
+		return JTS.transform(new Coordinate(xMeter, yMeter), new Coordinate(), mapToLayer);
 	}
 
-	private Coordinate getGoogleIndicesFromMap(MathTransform layerToGoogle, DirectPosition2D map, int zoomLevel)
+	private Coordinate getGoogleIndicesFromMap(MathTransform mapToLayer, Coordinate center, int zoomLevel)
 			throws TransformException {
-		DirectPosition google = layerToGoogle.transform(map, null);
-		double xIndex = (google.getOrdinate(0) + 0.5 * EQUATOR_IN_METERS) * Math.pow(2.0, zoomLevel)
-				/ (EQUATOR_IN_METERS);
-		double yIndex = (-google.getOrdinate(1) + 0.5 * EQUATOR_IN_METERS) * Math.pow(2.0, zoomLevel)
-				/ (EQUATOR_IN_METERS);
+		Coordinate googleCenter = JTS.transform(center, new Coordinate(), mapToLayer);
+		double xIndex = (googleCenter.x + 0.5 * EQUATOR_IN_METERS) * POWERS_OF_TWO[zoomLevel] / (EQUATOR_IN_METERS);
+		double yIndex = (-googleCenter.y + 0.5 * EQUATOR_IN_METERS) * POWERS_OF_TWO[zoomLevel] / (EQUATOR_IN_METERS);
 		return new Coordinate(xIndex, yIndex);
 	}
 
@@ -355,11 +326,9 @@ public class GoogleLayer implements RasterLayer {
 	}
 
 	public String getTileUrl(int x, int y, int zoom) {
-		if ((zoom < 0) || (zoom > 17)) {
+		if ((zoom < 0) || (zoom > MAX_ZOOM_LEVEL)) {
 			return null;
 		}
-		x = roundDownToMultiple(x, TILE_SIZE) / TILE_SIZE;
-		y = roundDownToMultiple(y, TILE_SIZE) / TILE_SIZE;
 		int d = getPowerOfTwo(zoom);
 		if ((y < 0) || (y >= d)) {
 			return null;
@@ -369,16 +338,13 @@ public class GoogleLayer implements RasterLayer {
 			x += d;
 		}
 		String e = "mt" + ((x + y) % 4) + ".google.com";
-		System.out.println("http://" + e + "/mt?v=w2.95&x=" + x + "&y=" + y + "&z=" + zoom);
-		return "http://" + e + "/mt?v=w2.95&x=" + x + "&y=" + y + "&z=" + zoom;
+		return "http://" + e + "/vt?v=w2.95&x=" + x + "&y=" + y + "&z=" + zoom;
 	}
 
 	public String getSatelliteTileUrl(int x, int y, int zoom) {
-		if ((zoom < 0) || (zoom > 19)) {
+		if ((zoom < 0) || (zoom > MAX_ZOOM_LEVEL)) {
 			return null;
 		}
-		x /= TILE_SIZE;
-		y /= TILE_SIZE;
 		int d = getPowerOfTwo(zoom);
 		if ((y < 0) || (y >= d)) {
 			return null;
@@ -387,47 +353,8 @@ public class GoogleLayer implements RasterLayer {
 		if (x < 0) {
 			x += d;
 		}
-		String e = "kh" + ((x + y) % 4) + ".google.com";
-		String f = "t";
-		for (int g = 0; g < zoom; g++) {
-			d /= 2;
-			if (y < d) {
-				if (x < d) {
-					f += "q";
-				} else {
-					f += "r";
-					x -= d;
-				}
-			} else {
-				y -= d;
-				if (x < d) {
-					f += "t";
-				} else {
-					f += "s";
-					x -= d;
-				}
-			}
-		}
-		System.out.println("http://" + e + "/kh?n=404&v=20&t=" + f);
-		return "http://" + e + "/kh?n=404&v=20&t=" + f;
-	}
-
-	/**
-	 * Returns the largest integer smaller or equal to the specified one which is a multiple of the specified factor.
-	 *
-	 * @param value value to round down
-	 * @param factor factor which result needs to be a multiple of
-	 * @return largest multiple of factor <= value
-	 */
-	public int roundDownToMultiple(int value, int factor) {
-		int b = Math.abs(value) % factor;
-		if (b == 0) {
-			return value;
-		} else if (value >= 0) {
-			return value - b;
-		} else {
-			return value - (factor - b);
-		}
+		String e = "khm" + ((x + y) % 4) + ".google.com";
+		return "http://" + e + "/kh?v=57&x=" + x + "&y=" + y + "&z=" + zoom;
 	}
 
 	/**
@@ -438,32 +365,6 @@ public class GoogleLayer implements RasterLayer {
 	 */
 	public int getPowerOfTwo(int n) {
 		return POWERS_OF_TWO[n];
-	}
-
-	/**
-	 * Single resolution in a Google layer.
-	 *
-	 * @author Jan De Moerloose
-	 */
-	private class GoogleResolution {
-
-		private double resolution;
-
-		private int zoomLevel;
-
-		public GoogleResolution(double resolution, int zoomLevel) {
-			this.resolution = resolution;
-			this.zoomLevel = zoomLevel;
-		}
-
-		public int getZoomLevel() {
-			return zoomLevel;
-		}
-
-		public double getResolution() {
-			return resolution;
-		}
-
 	}
 
 }

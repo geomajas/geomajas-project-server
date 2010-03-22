@@ -34,6 +34,10 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		<property name="crs" value="EPSG:900913"/>
 		<property name="maxExtent">
 			<bean class="org.geomajas.geometry.Bbox">
+				<!--
+				see http://cfis.savagexi.com/2006/05/03/google-maps-deconstructed
+				-20037508.342789, -20037508.342789 to 20037508.342789, 20037508.342789
+				-->
 				<property name="x" value="-20026376.393709917"/>
 				<property name="y" value="-20026376.393709917"/>
 				<property name="width" value="40052752.787419834"/>
