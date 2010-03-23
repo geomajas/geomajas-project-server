@@ -43,7 +43,7 @@ public class Deferred {
 
 	private List<Function> onErrorCallbacks = new ArrayList<Function>();
 
-	private boolean canceled;
+	private boolean cancelled;
 
 	public Deferred() {
 	}
@@ -51,10 +51,10 @@ public class Deferred {
 	public void cancel() {
 		onSuccessCallbacks.clear();
 		onErrorCallbacks.clear();
-		canceled = true;
+		cancelled = true;
 	}
 
-	public void addSuccesCallback(CommandCallback onSuccess) {
+	public void addSuccessCallback(CommandCallback onSuccess) {
 		onSuccessCallbacks.add(onSuccess);
 		if (onSuccessCallbacks.size() > 1) {
 			GWT.log("Adding another callback", null);
@@ -73,7 +73,7 @@ public class Deferred {
 		return onErrorCallbacks;
 	}
 
-	public boolean isCanceled() {
-		return canceled;
+	public boolean isCancelled() {
+		return cancelled;
 	}
 }

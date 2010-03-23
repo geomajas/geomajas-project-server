@@ -58,12 +58,17 @@ public class DefaultRasterLayerStore implements RasterLayerStore {
 
 	private boolean dirty;
 
+	private double previousScale = -1;
+
 	public DefaultRasterLayerStore(RasterLayer rasterLayer) {
 		this.rasterLayer = rasterLayer;
 	}
 
 	public void applyAndSync(Bbox bounds, TileFunction<RasterTile> onDelete, TileFunction<RasterTile> onUpdate) {
-		if (!rasterLayer.getMapModel().getMapView().isSameScaleLevel() || isDirty()) {
+		boolean scaleChanged = previousScale > 0 &&
+				rasterLayer.getMapModel().getMapView().getCurrentScale() != previousScale;
+		if (scaleChanged || isDirty()) {
+			GWT.log("clearing raster layer store", null);
 			if (callBack != null) {
 				callBack.cancel();
 			}
@@ -73,6 +78,7 @@ public class DefaultRasterLayerStore implements RasterLayerStore {
 			tiles.clear();
 			dirty = false;
 		}
+		previousScale = rasterLayer.getMapModel().getMapView().getCurrentScale();
 		fetchAndUpdateTiles(bounds, onUpdate);
 	}
 
@@ -81,7 +87,9 @@ public class DefaultRasterLayerStore implements RasterLayerStore {
 	}
 
 	public void clear() {
-		dirty = true;
+		if (tiles.size() > 0) {
+			dirty = true;
+		}
 	}
 
 	public boolean isDirty() {
@@ -118,11 +126,11 @@ public class DefaultRasterLayerStore implements RasterLayerStore {
 	}
 
 	/**
-	 * ???
+	 * Raster layer callback for fetching tiles.
 	 */
 	private final class RasterCallBack implements CommandCallback {
 
-		private boolean canceled;
+		private boolean cancelled;
 
 		private TileFunction<RasterTile> callback;
 
@@ -131,19 +139,19 @@ public class DefaultRasterLayerStore implements RasterLayerStore {
 		}
 
 		public void execute(CommandResponse response) {
-			if (!canceled) {
+			if (!cancelled) {
 				GetRasterDataResponse r = (GetRasterDataResponse) response;
 				addTiles(r.getRasterData());
 				for (RasterTile tile : tiles.values()) {
 					callback.execute(tile);
 				}
 			} else {
-				GWT.log("canceled ", null);
+				GWT.log("raster callback cancelled ", null);
 			}
 		}
 
 		public void cancel() {
-			canceled = true;
+			cancelled = true;
 		}
 	}
 

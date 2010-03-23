@@ -29,6 +29,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.gwt.core.client.GWT;
 import org.geomajas.gwt.client.map.cache.tile.TileFunction;
 import org.geomajas.gwt.client.map.cache.tile.VectorTile;
 import org.geomajas.gwt.client.map.feature.Feature;
@@ -66,8 +67,6 @@ public class TileCache implements SpatialCache {
 
 	private List<VectorTile> evictedTiles;
 
-	protected List<TileCode> currentTileCodes;
-
 	// -------------------------------------------------------------------------
 	// Constructors:
 	// -------------------------------------------------------------------------
@@ -103,7 +102,7 @@ public class TileCache implements SpatialCache {
 	 *            A {@link TileCode} instance.
 	 */
 	public VectorTile addTile(TileCode tileCode) {
-		VectorTile tile = (VectorTile) tiles.get(tileCode.toString());
+		VectorTile tile = tiles.get(tileCode.toString());
 		if (tile == null) {
 			tile = new VectorTile(tileCode, calcBoundsForTileCode(tileCode), this);
 			tiles.put(tileCode.toString(), tile);
@@ -148,7 +147,7 @@ public class TileCache implements SpatialCache {
 	}
 
 	public boolean addFeature(Feature feature) {
-		if (feature != null && !features.containsKey(feature.getId())) {
+		if (!features.containsKey(feature.getId())) {
 			features.put(feature.getId(), feature);
 			return true;
 		} else {
@@ -185,14 +184,14 @@ public class TileCache implements SpatialCache {
 		List<TileCode> tileCodes = calcCodesForBounds(bbox);
 		for (TileCode tileCode : tileCodes) {
 			if (tiles.containsKey(tileCode.toString())) {
-				VectorTile tile = (VectorTile) tiles.get(tileCode.toString());
+				VectorTile tile = tiles.get(tileCode.toString());
 				if (!setTiles.contains(tile)) {
 					setTiles.add(tile);
 				}
 				// Also process tiles of features that partly lie in this tile but were assigned to another tile.
 				List<TileCode> codesExtraFeatures = tile.getCodes();
 				for (TileCode extraCode : codesExtraFeatures) {
-					VectorTile extraTile = (VectorTile) tiles.get(extraCode.toString());
+					VectorTile extraTile = tiles.get(extraCode.toString());
 					if (!setTiles.contains(extraTile)) {
 						setTiles.add(extraTile);
 					}
@@ -212,6 +211,7 @@ public class TileCache implements SpatialCache {
 			clear();
 		}
 
+		GWT.log("isDirty " + isDirty(), null);
 		if (isDirty()) {
 			// Delete all tiles
 			for (VectorTile tile : evictedTiles) {
@@ -223,6 +223,7 @@ public class TileCache implements SpatialCache {
 			evictedTiles.clear();
 		}
 
+		GWT.log("check bbox", null);
 		// Only fetch when inside the layer bounds:
 		if (bbox.intersects(layerBounds)) {
 			// Check tile level:
@@ -236,6 +237,7 @@ public class TileCache implements SpatialCache {
 
 			// Make a clone, as we are going to modify the actual node map:
 			Map<String, VectorTile> currentNodes = new HashMap<String, VectorTile>(tiles);
+			GWT.log("tile to fetch " + tileCodes, null);
 			for (TileCode tileCode : tileCodes) {
 				if (!currentNodes.containsKey(tileCode.toString())) {
 					// Add the node:
@@ -280,6 +282,9 @@ public class TileCache implements SpatialCache {
 
 	/**
 	 * Calculate the best tile level to use for a certain view-bounds.
+	 *
+	 * @param bounds view bounds
+	 * @return best tile level for view bounds
 	 */
 	protected int calculateTileLevel(Bbox bounds) {
 		double baseX = layerBounds.getWidth();
@@ -290,7 +295,10 @@ public class TileCache implements SpatialCache {
 	}
 
 	/**
-	 * Calculate the exact bounding box for a tile, given it's tile-code:
+	 * Calculate the exact bounding box for a tile, given it's tile-code.
+	 *
+	 * @param tileCode tile code
+	 * @return bbox for tile
 	 */
 	protected Bbox calcBoundsForTileCode(TileCode tileCode) {
 		// Calculate tile width and height for tileLevel=tileCode.getTileLevel()
@@ -306,7 +314,10 @@ public class TileCache implements SpatialCache {
 	}
 
 	/**
-	 * @private Saves the complete array of TileCode objects for the given bounds (and the current scale).
+	 * Saves the complete array of TileCode objects for the given bounds (and the current scale).
+	 *
+	 * @param bounds view bounds
+	 * @return list of tiles in these bounds
 	 */
 	protected List<TileCode> calcCodesForBounds(Bbox bounds) {
 		// Calculate tile width and height for tileLevel=currentTileLevel

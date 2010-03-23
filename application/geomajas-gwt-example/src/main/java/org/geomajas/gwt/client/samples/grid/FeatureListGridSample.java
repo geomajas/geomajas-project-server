@@ -25,8 +25,11 @@ package org.geomajas.gwt.client.samples.grid;
 
 import java.util.List;
 
+import com.google.gwt.core.client.GWT;
 import org.geomajas.global.GeomajasConstant;
+import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.controller.PanController;
+import org.geomajas.gwt.client.map.MapModel;
 import org.geomajas.gwt.client.map.cache.tile.TileFunction;
 import org.geomajas.gwt.client.map.cache.tile.VectorTile;
 import org.geomajas.gwt.client.map.event.MapModelEvent;
@@ -37,6 +40,7 @@ import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.samples.base.SamplePanel;
 import org.geomajas.gwt.client.samples.base.SamplePanelFactory;
 import org.geomajas.gwt.client.samples.i18n.I18nProvider;
+import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.widget.FeatureListGrid;
 import org.geomajas.gwt.client.widget.MapWidget;
 
@@ -67,6 +71,9 @@ public class FeatureListGridSample extends SamplePanel {
 		layout.setHeight100();
 		layout.setMembersMargin(10);
 
+		// switch off lazy loading, we want to get everything
+		GwtCommandDispatcher.getInstance().setUseLazyLoading(false);
+
 		VLayout mapLayout = new VLayout();
 		mapLayout.setShowEdges(true);
 
@@ -83,15 +90,20 @@ public class FeatureListGridSample extends SamplePanel {
 		map.getMapModel().addMapModelHandler(new MapModelHandler() {
 
 			public void onMapModelChange(MapModelEvent event) {
-				VectorLayer layer = (VectorLayer) map.getMapModel().getLayer("countriesLayer");
+				GWT.log("+++ map model changed", null);
+				MapModel mapModel = map.getMapModel();
+				VectorLayer layer = (VectorLayer) mapModel.getLayer("mflgCountriesLayer");
 				grid.setLayer(layer);
-				layer.getFeatureStore().queryAndSync(map.getMapModel().getMapView().getBounds(), null, null,
+				Bbox bounds = mapModel.getMapView().getBounds(); 
+				layer.getFeatureStore().queryAndSync(bounds, null, null,
 						new TileFunction<VectorTile>() {
 
 							public void execute(VectorTile tile) {
+								GWT.log("+++ get features", null);
 								tile.getFeatures(GeomajasConstant.FEATURE_INCLUDE_ALL, new LazyLoadCallback() {
 
 									public void execute(List<Feature> response) {
+										GWT.log("+++ add features in grid", null);
 										for (Feature feature : response) {
 											grid.addFeature(feature);
 										}
@@ -117,8 +129,10 @@ public class FeatureListGridSample extends SamplePanel {
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "classpath:org/geomajas/gwt/samples/shapeinmem/layerStructures.xml",
-				"classpath:org/geomajas/gwt/samples/toolbar/mapOsmFeatureInfo.xml" };
+		return new String[] { "classpath:org/geomajas/gwt/samples/grid/mapFeatureListGrid.xml",
+				"classpath:org/geomajas/gwt/samples/shapeinmem/layerCountries.xml",
+				"classpath:org/geomajas/gwt/samples/mapwidget/layerWmsBluemarble.xml",
+		};
 	}
 
 	public String ensureUserLoggedIn() {

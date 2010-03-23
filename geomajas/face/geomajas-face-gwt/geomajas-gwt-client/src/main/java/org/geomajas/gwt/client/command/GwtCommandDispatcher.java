@@ -44,8 +44,8 @@ import com.smartgwt.client.core.Function;
 import com.smartgwt.client.util.SC;
 
 /**
- * The central client side dispatcher for all commands. Use the {@link #execute(GwtCommand, CommandCallback)} function
- * to execute an asynchronous command on the server.
+ * The central client side dispatcher for all commands. Use the {@link #execute(GwtCommand, CommandCallback...)}
+ * function to execute an asynchronous command on the server.
  * 
  * @author Pieter De Graef
  */
@@ -65,12 +65,11 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 
 	private boolean useLazyLoading = true;
 
-	private int lazyFeatureIncludesDefault = GeomajasConstant.FEATURE_INCLUDE_STYLE
-			+ GeomajasConstant.FEATURE_INCLUDE_LABEL;
+	private int lazyFeatureIncludesDefault;
 
-	private int lazyFeatureIncludesSelect = GeomajasConstant.FEATURE_INCLUDE_ALL;
+	private int lazyFeatureIncludesSelect;
 
-	private int lazyFeatureIncludesAll = GeomajasConstant.FEATURE_INCLUDE_ALL;
+	private int lazyFeatureIncludesAll;
 
 	private GwtCommandDispatcher() {
 		locale = LocaleInfo.getCurrentLocale().getLocaleName();
@@ -78,6 +77,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 		ServiceDefTarget endpoint = (ServiceDefTarget) service;
 		String moduleRelativeURL = GWT.getModuleBaseURL() + "geomajasService";
 		endpoint.setServiceEntryPoint(moduleRelativeURL);
+		setUseLazyLoading(true);
 	}
 
 	// -------------------------------------------------------------------------
@@ -104,12 +104,21 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 		return manager.addHandler(DispatchStoppedEvent.getType(), handler);
 	}
 
+	/**
+	 * The execution function. Executes a server side command.
+	 *
+	 * @param command
+	 *            The command to be executed. This command is a wrapper around the actual request object.
+	 * @param onSuccess
+	 *            A <code>CommandCallback</code> function to be executed when the command successfully returns.
+	 * @return deferred object which can be used to add extra callbacks
+	 */
 	public Deferred execute(GwtCommand command, final CommandCallback... onSuccess) {
 		incrementDispatched();
 
 		final Deferred deferred = new Deferred();
 		for (CommandCallback callback : onSuccess) {
-			deferred.addSuccesCallback(callback);
+			deferred.addSuccessCallback(callback);
 		}
 
 		command.setLocale(locale);
@@ -138,11 +147,10 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 						}
 						SC.warn(message, null);
 					} else {
-						if (deferred.getOnSuccessCallbacks().size() > 1) {
-							GWT.log("??", null);
-						}
 						for (CommandCallback callback : deferred.getOnSuccessCallbacks()) {
-							callback.execute(response);
+							if (!deferred.isCancelled()) {
+								callback.execute(response);
+							}
 						}
 					}
 				} catch (Throwable t) {
@@ -154,51 +162,6 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 		});
 		return deferred;
 	}
-
-	/**
-	 * The execution function. Executes a server side command.
-	 * 
-	 * @param command
-	 *            The command to be executed. This command is a wrapper around the actual request object.
-	 * @param onSuccess
-	 *            A <code>CommandCallback</code> function to be executed when the command successfully returns.
-	 */
-//	public void execute(GwtCommand command, final CommandCallback onSuccess) {
-//		incrementDispatched();
-//		command.setLocale(locale);
-//		command.setUserToken(userToken);
-//		service.execute(command, new AsyncCallback<CommandResponse>() {
-//
-//			public void onFailure(Throwable error) {
-//				try {
-//					SC.warn(I18nProvider.getGlobal().commandError() + ":\n" + error.getMessage(), null);
-//					decrementDispatched();
-//				} catch (Throwable t) {
-//					GWT.log("Command failed on error callback", t);
-//				} finally {
-//					decrementDispatched();
-//				}
-//			}
-//
-//			public void onSuccess(CommandResponse response) {
-//				try {
-//					if (response.isError()) {
-//						String message = I18nProvider.getGlobal().commandError() + ":";
-//						for (String error : response.getErrorMessages()) {
-//							message += "\n" + error;
-//						}
-//						SC.warn(message, null);
-//					} else {
-//						onSuccess.execute(response);
-//					}
-//				} catch (Throwable t) {
-//					GWT.log("Command failed on success callback", t);
-//				} finally {
-//					decrementDispatched();
-//				}
-//			}
-//		});
-//	}
 
 	/**
 	 * Is the dispatcher busy ?
@@ -235,12 +198,19 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 	 *            lazy feature loading status
 	 */
 	public void setUseLazyLoading(boolean useLazyLoading) {
-		this.useLazyLoading = useLazyLoading;
-		if (!useLazyLoading) {
-			lazyFeatureIncludesDefault = GeomajasConstant.FEATURE_INCLUDE_ALL;
-			lazyFeatureIncludesSelect = GeomajasConstant.FEATURE_INCLUDE_ALL;
-			lazyFeatureIncludesAll = GeomajasConstant.FEATURE_INCLUDE_ALL;
+		if (useLazyLoading != this.useLazyLoading) {
+			if (useLazyLoading) {
+				lazyFeatureIncludesDefault = GeomajasConstant.FEATURE_INCLUDE_STYLE
+						+ GeomajasConstant.FEATURE_INCLUDE_LABEL;
+				lazyFeatureIncludesSelect = GeomajasConstant.FEATURE_INCLUDE_ALL;
+				lazyFeatureIncludesAll = GeomajasConstant.FEATURE_INCLUDE_ALL;
+			} else {
+				lazyFeatureIncludesDefault = GeomajasConstant.FEATURE_INCLUDE_ALL;
+				lazyFeatureIncludesSelect = GeomajasConstant.FEATURE_INCLUDE_ALL;
+				lazyFeatureIncludesAll = GeomajasConstant.FEATURE_INCLUDE_ALL;
+			}
 		}
+		this.useLazyLoading = useLazyLoading;
 	}
 
 	/**
@@ -259,6 +229,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 	 *            default for "featureIncludes"
 	 */
 	public void setLazyFeatureIncludesDefault(int lazyFeatureIncludesDefault) {
+		setUseLazyLoading(false);
 		this.lazyFeatureIncludesDefault = lazyFeatureIncludesDefault;
 	}
 
@@ -278,6 +249,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 	 *            default "featureIncludes" for select commands
 	 */
 	public void setLazyFeatureIncludesSelect(int lazyFeatureIncludesSelect) {
+		setUseLazyLoading(false);
 		this.lazyFeatureIncludesSelect = lazyFeatureIncludesSelect;
 	}
 
@@ -297,6 +269,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 	 *            "featureIncludes" value when all should be included
 	 */
 	public void setLazyFeatureIncludesAll(int lazyFeatureIncludesAll) {
+		setUseLazyLoading(false);
 		this.lazyFeatureIncludesAll = lazyFeatureIncludesAll;
 	}
 

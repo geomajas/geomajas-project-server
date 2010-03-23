@@ -239,7 +239,7 @@ public class FeatureListGrid extends ListGrid implements FeatureSelectionHandler
 	 * Is this grid currently tied in to the selection of features in the {@link MapModel}? What this means is that when
 	 * selection is enabled, selected rows in the grid will result in selected features in the MapModel and vice versa.
 	 * 
-	 * @return
+	 * @return is selection enabled?
 	 */
 	public boolean isSelectionEnabled() {
 		return selectionEnabled;
@@ -249,7 +249,7 @@ public class FeatureListGrid extends ListGrid implements FeatureSelectionHandler
 	 * Adds or removes this widget as a handler for selection onto the MapModel. What this means is that when selection
 	 * is enabled, selected rows in the grid will result in selected features in the MapModel and vice versa.
 	 * 
-	 * @param selectionEnabled
+	 * @param selectionEnabled is selection enabled?
 	 */
 	public void setSelectionEnabled(boolean selectionEnabled) {
 		// Clean up first! Otherwise the handler list would just keep on growing.
@@ -555,7 +555,7 @@ public class FeatureListGrid extends ListGrid implements FeatureSelectionHandler
 	}
 
 	/**
-	 * ???
+	 * Handler for double click on feature. Shows the feature edit window.
 	 */
 	private class FeatureDoubleClickHandler implements DoubleClickHandler {
 

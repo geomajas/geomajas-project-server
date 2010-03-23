@@ -76,11 +76,6 @@ public class VectorTile extends AbstractVectorTile {
 	/** dependent tile codes */
 	private List<TileCode> codes = new ArrayList<TileCode>();
 
-	/**
-	 * Is the tile clipped : clipping is necessary to avoid too big coordinates
-	 */
-	private boolean clipped;
-
 	private boolean rendered;
 
 	private Deferred deferred;
@@ -139,7 +134,7 @@ public class VectorTile extends AbstractVectorTile {
 		deferred = GwtCommandDispatcher.getInstance().execute(command, new CommandCallback() {
 
 			public void execute(CommandResponse response) {
-				if (!deferred.isCanceled() && response instanceof GetRenderedTileResponse) {
+				if (!deferred.isCancelled() && response instanceof GetRenderedTileResponse) {
 					GetRenderedTileResponse tileResponse = (GetRenderedTileResponse) response;
 					if (tileResponse.getTile().getFeatures() != null) {
 						for (org.geomajas.layer.feature.Feature dto : tileResponse.getTile().getFeatures()) {
@@ -149,7 +144,6 @@ public class VectorTile extends AbstractVectorTile {
 					}
 					org.geomajas.layer.tile.VectorTile tile = tileResponse.getTile();
 					code = tile.getCode();
-					// TODO: is it normal to round from double to int in the tile width and height??
 					screenWidth = tile.getScreenWidth();
 					screenHeight = tile.getScreenHeight();
 					featureContent.setContent(tile.getFeatureContent());
@@ -162,6 +156,7 @@ public class VectorTile extends AbstractVectorTile {
 					}
 					rendered = true;
 				}
+				deferred = null;
 			}
 		});
 	}
@@ -201,13 +196,13 @@ public class VectorTile extends AbstractVectorTile {
 	 * </ul>
 	 */
 	public STATUS getStatus() {
+		if (featureContent.isLoaded()) {
+			return STATUS.LOADED;
+		}
 		if (deferred == null) {
 			return STATUS.EMPTY;
 		}
-		if (featureIds == null || featureIds.size() == 0) {
-			return STATUS.LOADING;
-		}
-		return STATUS.LOADED;
+		return STATUS.LOADING;
 	}
 
 	/**
@@ -225,10 +220,6 @@ public class VectorTile extends AbstractVectorTile {
 
 	public List<TileCode> getCodes() {
 		return codes;
-	}
-
-	public boolean isClipped() {
-		return clipped;
 	}
 
 	public double getScreenWidth() {
@@ -252,7 +243,7 @@ public class VectorTile extends AbstractVectorTile {
 	}
 
 	/**
-	 * Holds string content + TODO: hash for the content ?
+	 * Holds string content.
 	 * 
 	 * @author Jan De Moerloose
 	 * 
@@ -294,7 +285,7 @@ public class VectorTile extends AbstractVectorTile {
 	/**
 	 * Execute a TileFunction on this tile. If the tile is not yet loaded, attach it to the isLoaded event.
 	 * 
-	 * @param callback
+	 * @param callback callback to call
 	 */
 	private void apply(final String filter, final TileFunction<VectorTile> callback) {
 		switch (getStatus()) {
@@ -303,10 +294,10 @@ public class VectorTile extends AbstractVectorTile {
 				break;
 			case LOADING:
 				final VectorTile self = this;
-				deferred.addSuccesCallback(new CommandCallback() {
+				deferred.addSuccessCallback(new CommandCallback() {
 
 					public void execute(CommandResponse response) {
-						if (!deferred.isCanceled() && response instanceof GetRenderedTileResponse) {
+						if (response instanceof GetRenderedTileResponse) {
 							callback.execute(self);
 						}
 					}
