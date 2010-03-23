@@ -29,9 +29,9 @@ import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.tab.Tab;
 
 /**
- * ???
+ * Test functioning of printing module.
  * 
- * @author check subversion
+ * @author Jan De Moerloose
  */
 public abstract class AbstractTestPage extends Tab {
 

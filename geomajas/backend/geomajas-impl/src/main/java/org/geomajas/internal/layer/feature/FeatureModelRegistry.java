@@ -30,7 +30,7 @@ import java.util.List;
 /**
  * Feature model registry.
  *
- * @author check subversion
+ * @author Pieter De Graef
  */
 public class FeatureModelRegistry {
 

@@ -44,7 +44,8 @@ import java.util.Map;
 /**
  * Feature model for handle shape files in memory.
  *
- * @author check subversion
+ * @author Jan De Moerloose
+ * @author Pieter De Graef
  */
 public class ShapeInMemFeatureModel extends FeatureSourceRetriever implements FeatureModel {
 

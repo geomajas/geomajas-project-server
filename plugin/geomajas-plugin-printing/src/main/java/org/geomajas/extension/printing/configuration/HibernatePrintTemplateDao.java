@@ -33,9 +33,9 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * ???
+ * Dao proxy for stored print templates.
  *
- * @author check subversion
+ * @author Jan De Moerloose
  */
 public class HibernatePrintTemplateDao extends GenericHibernateDao<PrintTemplate, Long> implements
 		PrintTemplateDao {

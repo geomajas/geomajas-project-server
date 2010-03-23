@@ -27,12 +27,13 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * ???
+ * Generic dao for hibernate features.
  *
- * @param <T>
- * @param <ID>
+ * @param <T> object type
+ * @param <ID> id type
  *
- * @author check subversion
+ * @author Jan De Moerloose
+ * @author Pieter De Graef
  */
 public interface GenericDao<T, ID extends Serializable> {
 

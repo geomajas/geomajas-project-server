@@ -52,7 +52,7 @@ import java.io.StringReader;
 /**
  * ???
  *
- * @author check subversion
+ * @author Jan De Moerloose
  */
 @Entity
 @Table(name = "print_template")

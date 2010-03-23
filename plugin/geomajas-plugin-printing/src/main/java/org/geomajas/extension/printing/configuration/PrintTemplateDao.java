@@ -28,9 +28,9 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * ???
+ * Dao for accessing print templates.
  *
- * @author check subversion
+ * @author Jan De Moerloose
  */
 public interface PrintTemplateDao extends GenericDao<PrintTemplate, Long> {
 

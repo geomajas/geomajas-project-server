@@ -60,7 +60,8 @@ import com.vividsolutions.jts.geom.Envelope;
 /**
  * Layer model for handling shape files in memory.
  * 
- * @author check subversion
+ * @author Jan De Moerloose
+ * @author Pieter De Graef
  */
 public class ShapeInMemLayer extends FeatureSourceRetriever implements VectorLayer {
 

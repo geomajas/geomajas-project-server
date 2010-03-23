@@ -59,7 +59,8 @@ import com.vividsolutions.jts.geom.Envelope;
 /**
  * Layer model for accessing raster data from WMS servers.
  * 
- * @author check subversion
+ * @author Jan De Moerloose
+ * @author Pieter De Graef
  */
 public class WmsLayer implements RasterLayer {
 

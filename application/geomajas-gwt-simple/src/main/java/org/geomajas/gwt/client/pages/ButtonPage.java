@@ -49,9 +49,9 @@ import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
- * ???
+ * Test for a page with buttons.
  * 
- * @author check subversion
+ * @author Jan De Moerloose
  */
 public class ButtonPage extends AbstractTestPage {
 

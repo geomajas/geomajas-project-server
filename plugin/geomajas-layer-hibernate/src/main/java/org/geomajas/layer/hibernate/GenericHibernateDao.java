@@ -36,12 +36,13 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * ???
+ * Generic hibernate feature dao implementation.
  *
- * @param <T>
- * @param <ID>
+ * @param <T> feature object type
+ * @param <ID> id attribute type
  *
- * @author check subversion
+ * @author Jan De Moerloose
+ * @author Pieter De Graef
  */
 public abstract class GenericHibernateDao<T, ID extends Serializable> implements GenericDao<T, ID> {
 

@@ -54,9 +54,10 @@ import java.util.Collections;
 import java.util.Map;
 
 /**
- * ???
+ * Extended data store for GeoTools.
  *
- * @author check subversion
+ * @author Jan De Moerloose
+ * @author Pieter De Graef
  */
 public class ExtendedDataStore extends JDBC1DataStore implements DataStore {
 

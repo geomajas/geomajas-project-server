@@ -31,9 +31,9 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * ???
+ * In memory representation for stored print template.
  *
- * @author check subversion
+ * @author Jan De Moerloose
  */
 public class InMemoryPrintTemplateDao implements PrintTemplateDao {
 

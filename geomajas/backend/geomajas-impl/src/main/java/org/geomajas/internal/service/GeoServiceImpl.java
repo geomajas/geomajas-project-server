@@ -45,7 +45,9 @@ import org.springframework.stereotype.Component;
 /**
  * Collection of utility functions concerning geometries.
  *
- * @author check subversion
+ * @author Joachim Van der Auwera
+ * @author Jan De Moerloose
+ * @author Pieter De Graef
  */
 @Component()
 public final class GeoServiceImpl implements GeoService {

@@ -24,9 +24,9 @@
 package org.geomajas.internal.util;
 
 /**
- * ???
+ * Utility to assure strings are web/url safe.
  *
- * @author check subversion
+ * @author Pieter De Graef
  */
 public final class WebSafeStringEncoder {
 

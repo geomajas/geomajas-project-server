@@ -69,7 +69,8 @@ import com.vividsolutions.jts.geom.Envelope;
 /**
  * Geotools layer model.
  * 
- * @author check subversion
+ * @author Jan De Moerloose
+ * @author Pieter De Graef
  */
 @Transactional(rollbackFor = { Exception.class })
 public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer {

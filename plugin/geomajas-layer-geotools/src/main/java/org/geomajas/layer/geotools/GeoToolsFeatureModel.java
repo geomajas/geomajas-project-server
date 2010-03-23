@@ -44,7 +44,8 @@ import java.util.Map;
 /**
  * Geotools feature model. Should be able to use any geotools data source.
  *
- * @author check subversion
+ * @author Jan De Moerloose
+ * @author Pieter De Graef
  */
 public class GeoToolsFeatureModel extends FeatureSourceRetriever implements FeatureModel {
 

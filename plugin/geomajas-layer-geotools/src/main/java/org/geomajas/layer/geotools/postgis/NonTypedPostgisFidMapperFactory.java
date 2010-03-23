@@ -33,9 +33,10 @@ import java.sql.Connection;
 import java.util.logging.Level;
 
 /**
- * ???
+ * Feature id mapper factory for postgis.
  *
- * @author check subversion
+ * @author Jan De Moerloose
+ * @author Pieter De Graef
  */
 public class NonTypedPostgisFidMapperFactory extends DefaultFIDMapperFactory {
 

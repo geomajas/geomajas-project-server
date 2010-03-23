@@ -53,7 +53,7 @@ import com.vividsolutions.jts.geom.Envelope;
 /**
  * Layer for displaying OpenStreetMaps images.
  * 
- * @author check subversion
+ * @author Jan De Moerloose
  */
 public class OsmLayer implements RasterLayer {
 
