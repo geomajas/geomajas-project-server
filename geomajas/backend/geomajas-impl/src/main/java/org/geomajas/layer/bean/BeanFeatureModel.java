@@ -74,10 +74,6 @@ public class BeanFeatureModel implements FeatureModel {
 
 	private VectorLayerInfo vectorLayerInfo;
 
-	private WKTReader reader;
-
-	private WKTWriter writer;
-
 	private boolean wkt;
 
 	private DtoConverterService converterService;
@@ -96,8 +92,6 @@ public class BeanFeatureModel implements FeatureModel {
 					+ vectorLayerInfo.getFeatureInfo().getDataSourceName() + " was not found");
 		}
 		this.srid = srid;
-		reader = new WKTReader(new GeometryFactory(new PrecisionModel(), srid));
-		writer = new WKTWriter();
 		PropertyDescriptor d = BeanUtils.getPropertyDescriptor(beanClass, getGeometryAttributeName());
 		Class geometryClass = d.getPropertyType();
 		if (Geometry.class.isAssignableFrom(geometryClass.getClass())) {
@@ -156,6 +150,7 @@ public class BeanFeatureModel implements FeatureModel {
 			return (Geometry) geometry;
 		} else {
 			try {
+				WKTReader reader = new WKTReader(new GeometryFactory(new PrecisionModel(), srid));
 				Geometry geom = reader.read((String) geometry);
 				log.debug("bean.getGeometry {}", geom);
 				return geom;
@@ -218,6 +213,7 @@ public class BeanFeatureModel implements FeatureModel {
 
 	public void setGeometry(Object feature, Geometry geometry) throws LayerException {
 		if (wkt) {
+			WKTWriter writer = new WKTWriter();
 			String wktStr = writer.write(geometry);
 			writeProperty(feature, wktStr, getGeometryAttributeName());
 		} else {
@@ -398,7 +394,7 @@ public class BeanFeatureModel implements FeatureModel {
 			childMap.put(readProperty(old, identifier), old);
 		}
 
-		Set newOrUpdate = new HashSet();
+		Set<Object> newOrUpdate = new HashSet<Object>();
 		// new and update
 		for (Object newChild : array) {
 			Object id = readProperty(newChild, identifier);
@@ -420,7 +416,7 @@ public class BeanFeatureModel implements FeatureModel {
 			}
 		}
 		// delete
-		Collection toDelete = new ArrayList();
+		Collection<Object> toDelete = new ArrayList<Object>();
 		for (Object old : collection) {
 			Object id = readProperty(old, identifier);
 			if (!newOrUpdate.contains(id)) {
