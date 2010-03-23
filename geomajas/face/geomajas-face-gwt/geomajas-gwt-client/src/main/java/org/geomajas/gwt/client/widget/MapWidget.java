@@ -137,24 +137,28 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	private PaintableGroup screenGroup = new Composite("screen");
 
 	private List<WorldPaintable> worldSpacePaintables = new ArrayList<WorldPaintable>();
+
 	/**
 	 * Map groups.
 	 */
 	public enum RenderGroup {
 		/**
-		 * The pan group. Drawing should be done in pan coordinates.
+		 * The pan group. Drawing should be done in pan coordinates. All layers, their selection and their labels are
+		 * drawn in pan coordinates.
 		 */
 		PAN,
 		/**
-		 * The world group. Drawing should be done in world coordinates.
+		 * The world group. Drawing should be done in world coordinates. World coordinates means that the map coordinate
+		 * system is used.
 		 */
 		WORLD,
 		/**
-		 * The screen group. Drawing should be done in screen coordinates.
+		 * The screen group. Drawing should be done in screen coordinates. Screen coordinates are expressed in pixels,
+		 * starting from the top left corner of the map.
 		 */
 		SCREEN
 	}
-	
+
 	/**
 	 * Rendering statuses.
 	 */
@@ -172,6 +176,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 		 */
 		DELETE
 	}
+
 	// -------------------------------------------------------------------------
 	// Constructor:
 	// -------------------------------------------------------------------------
@@ -210,7 +215,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 		addResizedHandler(new MapResizedHandler(this));
 		setZoomOnScrollEnabled(true);
 	}
-	
+
 	public PaintableGroup getGroup(RenderGroup group) {
 		switch (group) {
 			case PAN:
@@ -222,11 +227,10 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 				return screenGroup;
 		}
 	}
-	
+
 	public List<WorldPaintable> getWorldSpacePaintables() {
 		return worldSpacePaintables;
 	}
-
 
 	// -------------------------------------------------------------------------
 	// Class specific methods:
@@ -242,7 +246,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 
 	protected void initializationCallback(GetMapConfigurationResponse r) {
 		GWT.log("init mapWidget " + r.getMapInfo(), null);
-		if (r.getMapInfo() != null) {
+		if (r.getMapInfo() != null && !mapModel.isInitialized()) {
 			ClientMapInfo info = r.getMapInfo();
 			unitLength = info.getUnitLength();
 			pixelLength = info.getPixelLength();
@@ -352,16 +356,16 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 				// Paint the world space paintable objects:
 				for (WorldPaintable worldPaintable : worldSpacePaintables) {
 					worldPaintable.scale(1 / getMapModel().getMapView().getCurrentScale());
-					worldPaintable.accept(painterVisitor, getGroup(RenderGroup.WORLD),
-							mapModel.getMapView().getBounds(), true);
+					worldPaintable.accept(painterVisitor, getGroup(RenderGroup.WORLD), mapModel.getMapView()
+							.getBounds(), true);
 				}
 				paintable.accept(painterVisitor, getGroup(group), mapModel.getMapView().getBounds(), true);
 			} else if (RenderStatus.UPDATE.equals(status)) {
 				// Paint the world space paintable objects:
 				for (WorldPaintable worldPaintable : worldSpacePaintables) {
 					worldPaintable.scale(1 / getMapModel().getMapView().getCurrentScale());
-					worldPaintable.accept(painterVisitor, getGroup(RenderGroup.WORLD),
-							mapModel.getMapView().getBounds(), false);
+					worldPaintable.accept(painterVisitor, getGroup(RenderGroup.WORLD), mapModel.getMapView()
+							.getBounds(), false);
 				}
 				paintable.accept(painterVisitor, getGroup(group), mapModel.getMapView().getBounds(), false);
 			}

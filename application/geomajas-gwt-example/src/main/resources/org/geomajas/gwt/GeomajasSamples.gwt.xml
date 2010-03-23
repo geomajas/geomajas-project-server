@@ -22,8 +22,13 @@
   -->
 
 <module>
+	<inherits name="com.smartgwt.tools.SmartGwtTools"/>
     <inherits name="org.geomajas.gwt.GeomajasClient" />
     <inherits name="org.geomajas.plugin.springsecurity.SpringSecurity" />
 
+	<inherits name="com.smartclient.theme.enterprise.EnterpriseResources"/>
+	<inherits name="com.smartclient.theme.enterpriseblue.EnterpriseBlueResources"/>
+	<inherits name="com.smartclient.theme.graphite.GraphiteResources"/>
+	
     <entry-point class="org.geomajas.gwt.client.GeomajasSamples"/>
 </module>

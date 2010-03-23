@@ -24,16 +24,14 @@
 			public void onClick(ClickEvent event) {
 
 				if (map.getMapModel().getMapInfo().getDisplayUnitType() == UnitType.METRIC) {
-					SC.say("Current unit: " + map.getMapModel().getMapInfo().getDisplayUnitType()
-							+ "<BR>Switching to ENGLISH");
+					SC.say(I18nProvider.getSampleMessages().unitTypeEnglish());
 					map.getMapModel().getMapInfo().setDisplayUnitType(UnitType.ENGLISH); // set English
 				} else {
-					SC.say("Current unit: " + map.getMapModel().getMapInfo().getDisplayUnitType()
-							+ "<BR>Switching to METRIC");
-					map.getMapModel().getMapInfo().setDisplayUnitType(UnitType.METRIC); // set English
+					SC.say(I18nProvider.getSampleMessages().unitTypeMetric());
+					map.getMapModel().getMapInfo().setDisplayUnitType(UnitType.METRIC); // set Metric
 				}
-				map.setScalebarEnabled(false); // force an update of the scalebar...
-				map.setScalebarEnabled(true); // force an update of the scalebar
+				map.setScalebarEnabled(false); // force an update of the scale-bar...
+				map.setScalebarEnabled(true); // force an update of the scale-bar...
 			}
 		});
 

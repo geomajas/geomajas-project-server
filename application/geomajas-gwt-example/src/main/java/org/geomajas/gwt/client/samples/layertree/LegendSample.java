@@ -42,7 +42,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * Sample that shows how the legend reacts when layers become visible/invisible.
  * </p>
  * 
- * @author Frank Wynants
+ * @author Pieter De Graef
  */
 public class LegendSample extends SamplePanel {
 

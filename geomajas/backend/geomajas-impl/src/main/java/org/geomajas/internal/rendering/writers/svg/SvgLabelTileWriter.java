@@ -24,6 +24,7 @@
 package org.geomajas.internal.rendering.writers.svg;
 
 import org.geomajas.configuration.FeatureStyleInfo;
+import org.geomajas.configuration.LabelStyleInfo;
 import org.geomajas.internal.rendering.writers.GraphicsWriter;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.layer.tile.InternalTile;
@@ -52,20 +53,21 @@ public class SvgLabelTileWriter implements GraphicsWriter {
 
 	private GeometryCoordinateSequenceTransformer transformer;
 
-	private FeatureStyleInfo bgStyle;
+	private LabelStyleInfo labelStyle;
 
 	private GeoService geoService;
 
-	public SvgLabelTileWriter(GeometryCoordinateSequenceTransformer transformer, FeatureStyleInfo bgStyle,
+	public SvgLabelTileWriter(GeometryCoordinateSequenceTransformer transformer, LabelStyleInfo labelStyle,
 			GeoService geoService) {
 		this.transformer = transformer;
-		this.bgStyle = bgStyle;
+		this.labelStyle = labelStyle;
 		this.geoService = geoService;
 		this.factory = new GeometryFactory();
 	}
 
 	public void writeObject(Object object, GraphicsDocument document, boolean asChild) throws RenderException {
 		InternalTile tile = (InternalTile) object;
+		FeatureStyleInfo bgStyle = labelStyle.getBackgroundStyle();
 		document.writeElement("g", asChild);
 		document.writeId("labels." + tile.getCode().toString());
 		for (InternalFeature feature : tile.getFeatures()) {
@@ -81,7 +83,7 @@ public class SvgLabelTileWriter implements GraphicsWriter {
 				boolean createChild = true;
 
 				// Background:
-				if (bgStyle != null && labelString != null && labelString.length() > 0) {
+				if (labelStyle != null && labelString != null && labelString.length() > 0) {
 					// We assume font-size = 12 !!!!
 					int width = labelString.length() * 8 + 10;
 					int height = 12;
@@ -104,6 +106,8 @@ public class SvgLabelTileWriter implements GraphicsWriter {
 				document.writeAttribute("y", labelPos.getY());
 				// TODO: config option, center label
 				document.writeAttribute("text-anchor", "middle");
+				document.writeAttribute("style", "fill: " + labelStyle.getFontStyle().getFillColor()
+						+ "; fill-opacity: " + labelStyle.getFontStyle().getFillOpacity());
 
 				if (labelString == null) {
 					document.closeElement();

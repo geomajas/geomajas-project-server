@@ -28,11 +28,9 @@ import org.geomajas.gwt.client.samples.base.SamplePanel;
 import org.geomajas.gwt.client.samples.base.SamplePanelFactory;
 import org.geomajas.gwt.client.samples.i18n.I18nProvider;
 import org.geomajas.gwt.client.widget.LayerTree;
-import org.geomajas.gwt.client.widget.Legend;
 import org.geomajas.gwt.client.widget.MapWidget;
 
 import com.smartgwt.client.widgets.Canvas;
-import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
@@ -54,32 +52,25 @@ public class LayertreeSample extends SamplePanel {
 	};
 
 	public Canvas getViewPanel() {
-		// configure some layouts
-		HLayout mainLayout = new HLayout();
-		VLayout layertreeAndLegendLayout = new VLayout();
-		layertreeAndLegendLayout.setWidth("25%");
+		VLayout mainLayout = new VLayout();
 		mainLayout.setWidth100();
 		mainLayout.setHeight100();
+		mainLayout.setMembersMargin(10);
 
-		// build the map
-		final MapWidget map = new MapWidget("layerTreeMap", "gwt-samples");
-		map.setWidth("75%");
-		mainLayout.addMember(map);
-		// Set a panning controller on the map:
+		VLayout mapLayout = new VLayout();
+		mapLayout.setShowEdges(true);
+		final MapWidget map = new MapWidget("legendMap", "gwt-samples");
 		map.setController(new PanController(map));
+		mapLayout.addMember(map);
 
 		// build the layertree
 		final LayerTree layerTree = new LayerTree(map);
-		layerTree.setHeight("50%");
-		layertreeAndLegendLayout.addMember(layerTree);
+		layerTree.setHeight(180);
+		layerTree.setWidth100();
+		layerTree.setShowEdges(true);
 
-		// build the legend
-		final Legend legend = new Legend(map.getMapModel());
-		legend.setHeight("50%");
-		layertreeAndLegendLayout.addMember(legend);
-
-		// add layertree and legend to layout
-		mainLayout.addMember(layertreeAndLegendLayout);
+		mainLayout.addMember(layerTree);
+		mainLayout.addMember(mapLayout);
 
 		return mainLayout;
 	}

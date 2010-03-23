@@ -42,6 +42,7 @@ import org.geomajas.gwt.client.map.event.MapModelEvent;
 import org.geomajas.gwt.client.map.event.MapModelHandler;
 import org.geomajas.gwt.client.map.layer.Layer;
 
+import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.SelectionType;
 import com.smartgwt.client.widgets.Canvas;
@@ -85,10 +86,16 @@ public class LayerTree extends Canvas implements LeafClickHandler, FolderClickHa
 
 	private MapModel mapModel;
 
+	private boolean initialized;
+
 	// -------------------------------------------------------------------------
 	// Constructor:
 	// -------------------------------------------------------------------------
 
+	/**
+	 * Initialize the LayerTree, using a MapWidget as base reference. It will display the map's layers, as configured in
+	 * the XML configuration, and select/deselect the layer as the user clicks on them in the tree.
+	 */
 	public LayerTree(final MapWidget mapWidget) {
 		super();
 		setHeight100();
@@ -99,20 +106,23 @@ public class LayerTree extends Canvas implements LeafClickHandler, FolderClickHa
 		mapModel.addMapModelHandler(new MapModelHandler() {
 
 			public void onMapModelChange(MapModelEvent event) {
-				buildTree(mapModel);
-				toolStrip = buildToolstrip(mapWidget);
+				if (!initialized) {
+					buildTree(mapModel);
+					toolStrip = buildToolstrip(mapWidget);
 
-				// display the toolbar and the tree
-				VLayout vLayout = new VLayout();
-				vLayout.setSize("100%", "100%");
-				vLayout.addMember(toolStrip);
-				htmlSelectedLayer.setBackgroundColor("#cccccc");
-				htmlSelectedLayer.setAlign(Alignment.CENTER);
-				vLayout.addMember(htmlSelectedLayer);
-				vLayout.addMember(treeGrid);
-				treeGrid.redraw();
-				LayerTree.this.addChild(vLayout);
-				LayerTree.this.redraw();
+					// display the toolbar and the tree
+					VLayout vLayout = new VLayout();
+					vLayout.setSize("100%", "100%");
+					vLayout.addMember(toolStrip);
+					htmlSelectedLayer.setBackgroundColor("#cccccc");
+					htmlSelectedLayer.setAlign(Alignment.CENTER);
+					vLayout.addMember(htmlSelectedLayer);
+					vLayout.addMember(treeGrid);
+					treeGrid.redraw();
+					LayerTree.this.addChild(vLayout);
+					LayerTree.this.redraw();
+				}
+				initialized = true;
 			}
 		});
 		mapModel.addLayerSelectionHandler(this);
@@ -133,6 +143,7 @@ public class LayerTree extends Canvas implements LeafClickHandler, FolderClickHa
 		}
 		selectedLayerTreeNode = null;
 		htmlSelectedLayer.setContents(I18nProvider.getLayerTree().activeLayer(I18nProvider.getLayerTree().none()));
+
 		Canvas[] toolStripMembers = toolStrip.getMembers();
 		updateButtonIconsAndStates(toolStripMembers);
 	}
@@ -346,8 +357,12 @@ public class LayerTree extends Canvas implements LeafClickHandler, FolderClickHa
 			addClickHandler(new ClickHandler() {
 
 				public void onClick(ClickEvent event) {
-					action.onClick(tree.getSelectedLayerTreeNode().getLayer());
-					update();
+					try {
+						action.onClick(tree.getSelectedLayerTreeNode().getLayer());
+						update();
+					} catch (Throwable t) {
+						GWT.log("LayerTreeButton", t);
+					}
 				}
 			});
 		}
@@ -414,6 +429,14 @@ public class LayerTree extends Canvas implements LeafClickHandler, FolderClickHa
 
 		public void update() {
 			LayerTreeTreeNode selected = tree.getSelectedLayerTreeNode();
+			if (selected != null && modalAction.isEnabled(selected.getLayer())) {
+				setDisabled(false);
+			} else {
+				setSelected(false);
+				setDisabled(true);
+				setIcon(modalAction.getDisabledIcon());
+				setTooltip("");
+			}
 			if (selected != null && modalAction.isSelected(selected.getLayer())) {
 				setIcon(modalAction.getSelectedIcon());
 				setTooltip(modalAction.getSelectedTooltip());
@@ -422,13 +445,6 @@ public class LayerTree extends Canvas implements LeafClickHandler, FolderClickHa
 				setIcon(modalAction.getDeselectedIcon());
 				setTooltip(modalAction.getDeselectedTooltip());
 				deselect();
-			}
-			if (selected != null && modalAction.isEnabled(selected.getLayer())) {
-				setDisabled(false);
-			} else {
-				setDisabled(true);
-				setIcon(modalAction.getDisabledIcon());
-				setTooltip("");
 			}
 		}
 	}

@@ -51,7 +51,11 @@ import com.smartgwt.client.widgets.toolbar.ToolStrip;
 import com.smartgwt.client.widgets.toolbar.ToolStripSeparator;
 
 /**
- * ???
+ * A toolbar that supports two types of buttons:
+ * <ul>
+ * <li>modal (radiobutton-like) buttons.</li>
+ * <li>non-modal or action buttons.</li>
+ * </ul>
  * 
  * @author Pieter De Graef
  * @author Joachim Van der Auwera
@@ -71,6 +75,8 @@ public class Toolbar extends ToolStrip {
 	private int buttonSize;
 
 	private List<HandlerRegistration> toolbarActionHandlers;
+
+	private boolean initialized;
 
 	// -------------------------------------------------------------------------
 	// Constructor:
@@ -100,27 +106,30 @@ public class Toolbar extends ToolStrip {
 	 * @param mapInfo
 	 */
 	public void initialize(ClientMapInfo mapInfo) {
-		ClientToolbarInfo toolbarInfo = mapInfo.getToolbar();
-		if (toolbarInfo != null) {
-			for (ClientToolInfo tool : toolbarInfo.getTools()) {
-				String id = tool.getId();
-				if (TOOLBAR_SEPARATOR.equals(id)) {
-					addToolbarSeparator();
-				} else {
-					ToolbarBaseAction action = ToolbarRegistry.getToolbarAction(id, mapWidget);
-					if (action instanceof ConfigurableAction) {
-						for (Parameter parameter : tool.getParameters()) {
-							((ConfigurableAction) action).configure(parameter.getName(), parameter.getValue());
+		if (!initialized) {
+			ClientToolbarInfo toolbarInfo = mapInfo.getToolbar();
+			if (toolbarInfo != null) {
+				for (ClientToolInfo tool : toolbarInfo.getTools()) {
+					String id = tool.getId();
+					if (TOOLBAR_SEPARATOR.equals(id)) {
+						addToolbarSeparator();
+					} else {
+						ToolbarBaseAction action = ToolbarRegistry.getToolbarAction(id, mapWidget);
+						if (action instanceof ConfigurableAction) {
+							for (Parameter parameter : tool.getParameters()) {
+								((ConfigurableAction) action).configure(parameter.getName(), parameter.getValue());
+							}
 						}
-					}
-					if (action instanceof ToolbarModalAction) {
-						addModalButton((ToolbarModalAction) action);
-					}
-					if (action instanceof ToolbarAction) {
-						addActionButton((ToolbarAction) action);
+						if (action instanceof ToolbarModalAction) {
+							addModalButton((ToolbarModalAction) action);
+						}
+						if (action instanceof ToolbarAction) {
+							addActionButton((ToolbarAction) action);
+						}
 					}
 				}
 			}
+			initialized = true;
 		}
 	}
 

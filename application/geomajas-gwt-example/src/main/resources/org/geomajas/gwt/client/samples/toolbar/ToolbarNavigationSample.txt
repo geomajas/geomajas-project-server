@@ -3,7 +3,7 @@
 		layout.setWidth100();
 		layout.setHeight100();
 
-		// Map with ID osmNavigationToolbarMap is defined in the XML configuration. (mapWmsNavigationToolbar.xml)
+		// Map with ID osmNavigationToolbarMap is defined in the XML configuration.
 		final MapWidget map = new MapWidget("osmNavigationToolbarMap", "gwt-samples");
 
 		final Toolbar toolbar = new Toolbar(map);

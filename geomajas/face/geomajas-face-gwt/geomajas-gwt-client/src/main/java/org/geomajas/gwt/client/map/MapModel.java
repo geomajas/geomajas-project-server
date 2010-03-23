@@ -192,28 +192,30 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 	 *            The configuration object.
 	 */
 	public void initialize(final ClientMapInfo mapInfo) {
-		this.mapInfo = mapInfo;
-		srid = Integer.parseInt(mapInfo.getCrs().substring(mapInfo.getCrs().indexOf(":") + 1));
-		if (mapInfo.isResolutionsRelative()) {
-			List<Double> realResolutions = new ArrayList<Double>();
-			for (Double resolution : mapInfo.getResolutions()) {
-				realResolutions.add(resolution * mapInfo.getPixelLength());
+		if (!initialized) {
+			this.mapInfo = mapInfo;
+			srid = Integer.parseInt(mapInfo.getCrs().substring(mapInfo.getCrs().indexOf(":") + 1));
+			if (mapInfo.isResolutionsRelative()) {
+				List<Double> realResolutions = new ArrayList<Double>();
+				for (Double resolution : mapInfo.getResolutions()) {
+					realResolutions.add(resolution * mapInfo.getPixelLength());
+				}
+				mapView.setResolutions(realResolutions);
+			} else {
+				mapView.setResolutions(mapInfo.getResolutions());
 			}
-			mapView.setResolutions(realResolutions);
-		} else {
-			mapView.setResolutions(mapInfo.getResolutions());
+			mapView.setMaximumScale(mapInfo.getMaximumScale());
+			Bbox initialBounds = new Bbox(mapInfo.getInitialBounds().getX(), mapInfo.getInitialBounds().getY(), mapInfo
+					.getInitialBounds().getWidth(), mapInfo.getInitialBounds().getHeight());
+			removeAllLayers();
+			Bbox maxBounds = new Bbox(initialBounds);
+			for (ClientLayerInfo layerInfo : mapInfo.getLayers()) {
+				addLayer(layerInfo);
+				maxBounds = maxBounds.union(new Bbox(layerInfo.getMaxExtent()));
+			}
+			mapView.setMaxBounds(maxBounds);
+			mapView.applyBounds(initialBounds, MapView.ZoomOption.LEVEL_CLOSEST);
 		}
-		mapView.setMaximumScale(mapInfo.getMaximumScale());
-		Bbox initialBounds = new Bbox(mapInfo.getInitialBounds().getX(), mapInfo.getInitialBounds().getY(), mapInfo
-				.getInitialBounds().getWidth(), mapInfo.getInitialBounds().getHeight());
-		removeAllLayers();
-		Bbox maxBounds = new Bbox(initialBounds);
-		for (ClientLayerInfo layerInfo : mapInfo.getLayers()) {
-			addLayer(layerInfo);
-			maxBounds = maxBounds.union(new Bbox(layerInfo.getMaxExtent()));
-		}
-		mapView.setMaxBounds(maxBounds);
-		mapView.applyBounds(initialBounds, MapView.ZoomOption.LEVEL_CLOSEST);
 		handlerManager.fireEvent(new MapModelEvent());
 		initialized = true;
 	}

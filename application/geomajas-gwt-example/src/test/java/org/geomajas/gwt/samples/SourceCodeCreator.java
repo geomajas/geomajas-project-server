@@ -57,16 +57,16 @@ public class SourceCodeCreator {
 			}
 		}
 	}
-	
-	private void scanFolder (File folder) {
+
+	private void scanFolder(File folder) {
 		for (File file : folder.listFiles()) {
 			if (!file.isDirectory() && file.getName().endsWith(".java")) {
 				createFile(file, DESTINATION_FOLDER + folder.getName() + "/");
 			}
 		}
 	}
-	
-	private void createFile(File file, String folder){
+
+	private void createFile(File file, String folder) {
 		try {
 			// Get the Java source:
 			String javaContent = new String(read(new FileInputStream(file)));
@@ -80,7 +80,7 @@ public class SourceCodeCreator {
 				String fileName = file.getName().substring(0, file.getName().length() - 4) + "txt";
 				File htmlFile = new File(folder + fileName);
 				File folderFile = new File(folder);
-				folderFile .mkdir();
+				folderFile.mkdir();
 				FileOutputStream out = new FileOutputStream(htmlFile);
 				out.write(blop.getBytes());
 				out.flush();
@@ -91,7 +91,7 @@ public class SourceCodeCreator {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	private byte[] read(InputStream in) throws IOException {

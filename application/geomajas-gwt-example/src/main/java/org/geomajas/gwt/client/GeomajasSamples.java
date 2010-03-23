@@ -23,6 +23,8 @@
 
 package org.geomajas.gwt.client;
 
+import java.util.LinkedHashMap;
+
 import org.geomajas.gwt.client.samples.IntroductionTab;
 import org.geomajas.gwt.client.samples.base.SamplePanel;
 import org.geomajas.gwt.client.samples.base.SamplePanelFactory;
@@ -43,15 +45,23 @@ import org.geomajas.plugin.springsecurity.client.event.LogoutSuccessEvent;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.ConstantsWithLookup;
+import com.google.gwt.user.client.Cookies;
 import com.smartgwt.client.types.TabBarControls;
 import com.smartgwt.client.util.BooleanCallback;
+import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Canvas;
+import com.smartgwt.client.widgets.Img;
 import com.smartgwt.client.widgets.Label;
+import com.smartgwt.client.widgets.form.fields.SelectItem;
+import com.smartgwt.client.widgets.form.fields.events.ChangeEvent;
+import com.smartgwt.client.widgets.form.fields.events.ChangeHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.LayoutSpacer;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.tab.Tab;
 import com.smartgwt.client.widgets.tab.TabSet;
+import com.smartgwt.client.widgets.toolbar.ToolStrip;
+import com.smartgwt.client.widgets.toolbar.ToolStripButton;
 import com.smartgwt.client.widgets.tree.TreeNode;
 import com.smartgwt.client.widgets.tree.events.LeafClickEvent;
 import com.smartgwt.client.widgets.tree.events.LeafClickHandler;
@@ -60,7 +70,7 @@ import com.smartgwt.client.widgets.tree.events.LeafClickHandler;
  * <p>
  * The GWT test case sample application. Here here!
  * </p>
- *
+ * 
  * @author Pieter De Graef
  */
 public class GeomajasSamples implements EntryPoint {
@@ -76,12 +86,70 @@ public class GeomajasSamples implements EntryPoint {
 		VLayout main = new VLayout();
 		main.setWidth100();
 		main.setHeight100();
-		main.setLayoutMargin(5);
 		main.setStyleName("tabSetContainer");
 
+		// Top bar:
+		ToolStrip topBar = new ToolStrip();
+		topBar.setHeight(33);
+		topBar.setWidth100();
+		topBar.addSpacer(6);
+
+		Img icon = new Img("[ISOMORPHIC]/geomajas/example/images/geomajas_desktopicoon_small.png");
+		icon.setSize(24);
+		topBar.addMember(icon);
+
+		Label title = new Label("Geomajas GWT Showcase");
+		title.setStyleName("sgwtTitle");
+		title.setWidth(300);
+		topBar.addMember(title);
+		topBar.addFill();
+
+		ToolStripButton devConsoleButton = new ToolStripButton();
+		devConsoleButton.setTitle("Developer Console");
+		devConsoleButton.setIcon("[ISOMORPHIC]/geomajas/silk/bug.png");
+		devConsoleButton.addClickHandler(new com.smartgwt.client.widgets.events.ClickHandler() {
+
+			public void onClick(com.smartgwt.client.widgets.events.ClickEvent event) {
+				SC.showConsole();
+			}
+		});
+
+		topBar.addButton(devConsoleButton);
+
+		topBar.addSeparator();
+
+		// Skin select:
+		SelectItem selectItem = new SelectItem();
+		selectItem.setHeight(21);
+		selectItem.setWidth(130);
+		LinkedHashMap<String, String> valueMap = new LinkedHashMap<String, String>();
+		valueMap.put("EnterpriseBlue", "Enterprise Blue");
+		valueMap.put("Enterprise", "Enterprise Gray");
+		valueMap.put("Graphite", "Graphite");
+
+		selectItem.setValueMap(valueMap);
+
+		String currentSkin = Cookies.getCookie("skin_name");
+		if (currentSkin == null) {
+			currentSkin = "EnterpriseBlue";
+		}
+		selectItem.setDefaultValue(currentSkin);
+		selectItem.setShowTitle(false);
+		selectItem.addChangeHandler(new ChangeHandler() {
+
+			public void onChange(ChangeEvent event) {
+				Cookies.setCookie("skin_name", (String) event.getValue());
+				com.google.gwt.user.client.Window.Location.reload();
+			}
+		});
+		topBar.addFormItem(selectItem);
+		main.addMember(topBar);
+
+		// Horizontal layout:
 		HLayout hLayout = new HLayout();
 		hLayout.setWidth100();
 		hLayout.setHeight100();
+		hLayout.setLayoutMargin(5);
 
 		VLayout leftTreeLayout = new VLayout();
 		leftTreeLayout.setHeight100();
@@ -145,6 +213,7 @@ public class GeomajasSamples implements EntryPoint {
 				.setTabBarControls(TabBarControls.TAB_SCROLLER, TabBarControls.TAB_PICKER, layoutSpacer, localeSelect);
 
 		hLayout.addMember(mainTabSet);
+
 		main.addMember(hLayout);
 		main.draw();
 		showIntroductionTab();
@@ -210,7 +279,7 @@ public class GeomajasSamples implements EntryPoint {
 		IntroductionTab sample = new IntroductionTab();
 		Tab tab = new Tab();
 		tab.setID(sample.getId() + "_tab");
-		String imgHTML = Canvas.imgHTML("[ISOMORPHIC]/geomajas/example/images/geomajas_favicon.jpg", 16, 16);
+		String imgHTML = Canvas.imgHTML("[ISOMORPHIC]/geomajas/example/images/geomajas_desktopicoon_small.png", 16, 16);
 		tab.setTitle("<span>" + imgHTML + "&nbsp;" + I18nProvider.getSampleMessages().introductionTitle() + "</span>");
 		tab.setPane(sample.getViewPanel());
 		mainTabSet.addTab(tab);

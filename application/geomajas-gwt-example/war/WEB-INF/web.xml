@@ -40,7 +40,6 @@
 			org/geomajas/gwt/samples/editing/mapEditPointLayer.xml
 			org/geomajas/gwt/samples/editing/mapEditLineLayer.xml
 			org/geomajas/gwt/samples/editing/mapEditPolygonLayer.xml
-			org/geomajas/gwt/samples/layertree/mapLayerTree.xml
 			org/geomajas/gwt/samples/layertree/mapLegend.xml
 			org/geomajas/gwt/samples/grid/mapFeatureListGrid.xml
         </param-value>

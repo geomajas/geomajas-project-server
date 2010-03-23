@@ -13,6 +13,7 @@
 		map = new MapWidget("beansMap", "gwt-samples");
 		map.setVisible(false);
 		layout.addMember(map);
+		map.init();
 
 		// Create login handler that re-initializes the map on a successful login:
 		final BooleanCallback initMapCallback = new BooleanCallback() {
@@ -23,6 +24,7 @@
 					map = new MapWidget("beansMap", "gwt-samples");
 					map.setVisible(false);
 					layout.addMember(map);
+					map.init();
 				}
 			}
 		};
@@ -34,6 +36,10 @@
 
 			public void onClick(ClickEvent event) {
 				Authentication.getInstance().login("elvis", "elvis", initMapCallback);
+				if (null != featureAttributeWindow) {
+					featureAttributeWindow.destroy();
+					featureAttributeWindow = null;
+				}
 			}
 		});
 		buttonLayout.addMember(loginButtonMarino);
@@ -45,6 +51,10 @@
 
 			public void onClick(ClickEvent event) {
 				Authentication.getInstance().login("luc", "luc", initMapCallback);
+				if (null != featureAttributeWindow) {
+					featureAttributeWindow.destroy();
+					featureAttributeWindow = null;
+				}
 			}
 		});
 		buttonLayout.addMember(loginButtonLuc);
@@ -75,9 +85,13 @@
 							SearchFeatureResponse resp = (SearchFeatureResponse) response;
 							for (org.geomajas.layer.feature.Feature dtoFeature : resp.getFeatures()) {
 								Feature feature = new Feature(dtoFeature, layer);
-								FeatureAttributeWindow editor = new FeatureAttributeWindow(feature, true);
-								editor.setWidth(400);
-								layout.addMember(editor);
+								if (null != featureAttributeWindow) {
+									featureAttributeWindow.destroy();
+									featureAttributeWindow = null;
+								}
+								featureAttributeWindow = new FeatureAttributeWindow(feature, true);
+								featureAttributeWindow.setWidth(400);
+								layout.addMember(featureAttributeWindow);
 							}
 						}
 					}

@@ -34,8 +34,8 @@ import org.geomajas.internal.layer.tile.InternalTileImpl;
 import org.geomajas.internal.rendering.DefaultSvgDocument;
 import org.geomajas.internal.rendering.DefaultVmlDocument;
 import org.geomajas.internal.rendering.writers.svg.SvgFeatureWriter;
-import org.geomajas.internal.rendering.writers.svg.SvgTileWriter;
 import org.geomajas.internal.rendering.writers.svg.SvgLabelTileWriter;
+import org.geomajas.internal.rendering.writers.svg.SvgTileWriter;
 import org.geomajas.internal.rendering.writers.vml.VmlFeatureWriter;
 import org.geomajas.internal.rendering.writers.vml.VmlLabelTileWriter;
 import org.geomajas.internal.rendering.writers.vml.VmlTileWriter;
@@ -145,7 +145,8 @@ public class StringContentTilePainter implements TilePainter {
 	 * @param panOrigin
 	 *            The current origin may differ, depending on whether or not the client has been panning.Needed for
 	 *            creating the world to view space coordinate transformer.
-	 * @param geoService geo service for geometry conversions
+	 * @param geoService
+	 *            geo service for geometry conversions
 	 */
 	public StringContentTilePainter(VectorLayer layer, NamedStyleInfo style, String renderer, double scale,
 			Coordinate panOrigin, GeoService geoService) {
@@ -275,11 +276,14 @@ public class StringContentTilePainter implements TilePainter {
 
 	/**
 	 * Create a document that parses the tile's labelFragment, using GraphicsWriter classes.
-	 *
-	 * @param writer writer
-	 * @param labelStyleInfo label style info
+	 * 
+	 * @param writer
+	 *            writer
+	 * @param labelStyleInfo
+	 *            label style info
 	 * @return graphics document
-	 * @throws RenderException cannot render
+	 * @throws RenderException
+	 *             cannot render
 	 */
 	private GraphicsDocument createLabelDocument(StringWriter writer, LabelStyleInfo labelStyleInfo)
 			throws RenderException {
@@ -287,8 +291,8 @@ public class StringContentTilePainter implements TilePainter {
 		if (TileMetadata.PARAM_SVG_RENDERER.equalsIgnoreCase(renderer)) {
 			DefaultSvgDocument document = new DefaultSvgDocument(writer, false);
 			document.setMaximumFractionDigits(MAXIMUM_FRACTION_DIGITS);
-			document.registerWriter(InternalTileImpl.class, new SvgLabelTileWriter(getTransformer(), labelStyleInfo
-					.getBackgroundStyle(), geoService));
+			document.registerWriter(InternalTileImpl.class, new SvgLabelTileWriter(getTransformer(), labelStyleInfo,
+					geoService));
 			return document;
 		} else if (TileMetadata.PARAM_VML_RENDERER.equalsIgnoreCase(renderer)) {
 			DefaultVmlDocument document = new DefaultVmlDocument(writer);
@@ -298,7 +302,7 @@ public class StringContentTilePainter implements TilePainter {
 			document.registerWriter(InternalFeatureImpl.class, new VmlFeatureWriter(getTransformer(), coordWidth,
 					coordHeight));
 			document.registerWriter(InternalTileImpl.class, new VmlLabelTileWriter(coordWidth, coordHeight,
-					getTransformer(), labelStyleInfo.getBackgroundStyle(), geoService));
+					getTransformer(), labelStyleInfo, geoService));
 			document.setMaximumFractionDigits(MAXIMUM_FRACTION_DIGITS);
 			return document;
 		} else {

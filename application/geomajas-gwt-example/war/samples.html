@@ -8,7 +8,28 @@
 
         <!-- Name defined in the module xml (=geomajas). -->
         <script type="text/javascript" language="javascript">var isomorphicDir = "org.geomajas.gwt.GeomajasSamples/sc/";</script>
+        <script>
+			function readCookie(name) {
+				var nameEQ = name + "=";
+				var ca = document.cookie.split(';');
+				for(var i=0;i < ca.length;i++) {
+					var c = ca[i];
+					while (c.charAt(0)==' ') c = c.substring(1,c.length);
+					if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+				}
+				return null;
+			}
+			
+			// Determine what skin file to load
+			var currentSkin = readCookie('skin_name');
+			if (currentSkin == null) currentSkin = "Graphite";
+		</script>
+			
         <script type="text/javascript" language="javascript" src="org.geomajas.gwt.GeomajasSamples/org.geomajas.gwt.GeomajasSamples.nocache.js"></script>
+		<!--load skin-->
+		<script type="text/javascript">
+			document.write("<"+"script src=org.geomajas.gwt.GeomajasSamples/sc/skins/" + currentSkin + "/load_skin.js><"+"/script>");
+		</script>
     </head>
 
     <body>

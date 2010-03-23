@@ -24,6 +24,7 @@
 package org.geomajas.internal.rendering.writers.vml;
 
 import org.geomajas.configuration.FeatureStyleInfo;
+import org.geomajas.configuration.LabelStyleInfo;
 import org.geomajas.internal.layer.feature.InternalFeatureImpl;
 import org.geomajas.internal.layer.tile.InternalTileImpl;
 import org.geomajas.internal.rendering.writers.GraphicsWriter;
@@ -61,15 +62,15 @@ public class VmlLabelTileWriter implements GraphicsWriter {
 
 	private int coordHeight;
 
-	private FeatureStyleInfo bgStyle;
+	private LabelStyleInfo labelStyle;
 
 	private GeoService geoService;
 
 	public VmlLabelTileWriter(int coordWidth, int coordHeight, GeometryCoordinateSequenceTransformer transformer,
-			FeatureStyleInfo bgStyle, GeoService geoService) {
+			LabelStyleInfo labelStyle, GeoService geoService) {
 		this.coordWidth = coordWidth;
 		this.coordHeight = coordHeight;
-		this.bgStyle = bgStyle;
+		this.labelStyle = labelStyle;
 		this.transformer = transformer;
 		this.geoService = geoService;
 		factory = new GeometryFactory();
@@ -77,10 +78,12 @@ public class VmlLabelTileWriter implements GraphicsWriter {
 
 	public void writeObject(Object object, GraphicsDocument document, boolean asChild) throws RenderException {
 		InternalTileImpl tile = (InternalTileImpl) object;
+		FeatureStyleInfo bgStyle = labelStyle.getBackgroundStyle();
+
 		document.writeElement("vml:group", asChild);
 		document.writeId("labels." + tile.getCode().toString());
-		document.writeAttribute("style", "WIDTH: 100%; HEIGHT: 100%");
 		document.writeAttribute("coordsize", coordWidth + "," + coordHeight);
+		document.writeAttribute("style", "WIDTH: " + coordWidth + "; HEIGHT: " + coordHeight);
 
 		// the shapetype
 		document.writeElement("vml:shapetype", true);
@@ -146,9 +149,17 @@ public class VmlLabelTileWriter implements GraphicsWriter {
 				// Then the label-text:
 				document.writeElement("vml:textbox", true);
 				document.writeAttribute("id", feature.getId() + ".text");
-				document.writeAttribute("style", "font-family: monospace;font-size: 8pt;");
+				document.writeAttribute("style", "font-family: monospace;font-size: 8pt; color: "
+						+ labelStyle.getFontStyle().getFillColor() + ";");
+				document.writeAttribute("fillcolor", labelStyle.getFontStyle().getFillColor());
 				document.writeAttribute("inset", "0px, 0px, 0px, 0px");
-				document.writeTextNode(label.replaceAll(" ", "&nbsp;"));
+				if (labelStyle.getFontStyle().getFillOpacity() > 0) {
+					document.writeElement("vml:fill", true);
+					document.writeAttribute("opacity", Float.toString(labelStyle.getFontStyle().getFillOpacity()));
+					document.closeElement();
+				}
+				// document.writeTextNode(label.replaceAll(" ", "&nbsp;"));
+				document.writeTextNode(label);
 				document.closeElement();
 
 				// Close the vml:rect

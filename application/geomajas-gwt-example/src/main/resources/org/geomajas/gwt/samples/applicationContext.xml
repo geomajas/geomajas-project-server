@@ -46,7 +46,6 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 				<ref bean="osmFeatureInfoMap" />
 				<ref bean="overviewOsmMap" />
 				<ref bean="osmMapResolutions" />
-				<ref bean="layerTreeMap" />
 				<ref bean="editPointLayerMap" />
 				<ref bean="editLineLayerMap" />
 				<ref bean="editPolygonLayerMap" />
