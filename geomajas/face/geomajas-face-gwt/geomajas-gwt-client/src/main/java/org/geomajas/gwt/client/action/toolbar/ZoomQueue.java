@@ -33,8 +33,6 @@ import org.geomajas.gwt.client.map.event.MapViewChangedEvent;
 import org.geomajas.gwt.client.map.event.MapViewChangedHandler;
 import org.geomajas.gwt.client.widget.MapWidget;
 
-import com.google.gwt.core.client.GWT;
-
 /**
  * Manages the queue of zoom levels for the next and previous zoom level buttons.
  * 
@@ -80,7 +78,6 @@ public final class ZoomQueue implements MapViewChangedHandler {
 			if ((null != peek && sameEvent(event, peek)) || event.isPanDragging()) {
 				return;
 			}
-			GWT.log("ZoomQueue: adding bounds.... isPanning=" + event.isSameScaleLevel(), null);
 			previous.addFirst(event);
 			while (previous.size() > MAX_STACK_SIZE) {
 				previous.removeLast();

@@ -46,7 +46,6 @@ import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.spatial.geometry.LineString;
 import org.geomajas.layer.LayerType;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Canvas;
@@ -94,7 +93,6 @@ public class Legend extends Canvas {
 		addResizedHandler(new ResizedHandler() {
 
 			public void onResized(ResizedEvent event) {
-				GWT.log("Legend resizing: " + getWidth() + ", " + getHeight(), null);
 				graphics.setSize(getWidth(), getHeight());
 			}
 		});

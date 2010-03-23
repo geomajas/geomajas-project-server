@@ -40,8 +40,6 @@ import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.spatial.Matrix;
 import org.geomajas.layer.tile.TileCode;
 
-import com.google.gwt.core.client.GWT;
-
 /**
  * A raster layer store that keeps tiles in cache while panning, only clearing them when a non-panning move occurs, see
  * {@link org.geomajas.gwt.client.map.MapView}.
@@ -68,7 +66,6 @@ public class DefaultRasterLayerStore implements RasterLayerStore {
 		boolean scaleChanged = previousScale > 0 &&
 				rasterLayer.getMapModel().getMapView().getCurrentScale() != previousScale;
 		if (scaleChanged || isDirty()) {
-			GWT.log("clearing raster layer store", null);
 			if (callBack != null) {
 				callBack.cancel();
 			}
@@ -145,8 +142,6 @@ public class DefaultRasterLayerStore implements RasterLayerStore {
 				for (RasterTile tile : tiles.values()) {
 					callback.execute(tile);
 				}
-			} else {
-				GWT.log("raster callback cancelled ", null);
 			}
 		}
 

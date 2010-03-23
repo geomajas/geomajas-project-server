@@ -26,7 +26,6 @@ package org.geomajas.gwt.client.command;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.core.Function;
 
 /**
@@ -56,9 +55,6 @@ public class Deferred {
 
 	public void addSuccessCallback(CommandCallback onSuccess) {
 		onSuccessCallbacks.add(onSuccess);
-		if (onSuccessCallbacks.size() > 1) {
-			GWT.log("Adding another callback", null);
-		}
 	}
 
 	public void addErrorCallback(Function onError) {

@@ -38,6 +38,7 @@ import org.geomajas.gwt.client.gfx.PainterVisitor;
 import org.geomajas.gwt.client.map.cache.SpatialCache;
 import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.feature.LazyLoadCallback;
+import org.geomajas.gwt.client.map.feature.LazyLoader;
 import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.layer.tile.TileCode;
 import org.geomajas.layer.tile.VectorTile.VectorTileContentType;
@@ -104,7 +105,14 @@ public class VectorTile extends AbstractVectorTile {
 	 *            callback which gets the features
 	 */
 	public void getFeatures(int featureIncludes, LazyLoadCallback callback) {
-		cache.getFeatures(featureIncludes, callback);
+		List<Feature> list = new ArrayList<Feature>();
+		for (String id : featureIds) {
+			Feature feature = cache.getPartialFeature(id);
+			if (null != feature) {
+				list.add(feature);
+			}
+		}
+		LazyLoader.lazyLoad(list, featureIncludes, callback);
 	}
 
 	/**
@@ -136,13 +144,13 @@ public class VectorTile extends AbstractVectorTile {
 			public void execute(CommandResponse response) {
 				if (!deferred.isCancelled() && response instanceof GetRenderedTileResponse) {
 					GetRenderedTileResponse tileResponse = (GetRenderedTileResponse) response;
-					if (tileResponse.getTile().getFeatures() != null) {
+					org.geomajas.layer.tile.VectorTile tile = tileResponse.getTile();
+					if (tile.getFeatures() != null) {
 						for (org.geomajas.layer.feature.Feature dto : tileResponse.getTile().getFeatures()) {
 							cache.addFeature(new Feature(dto, cache.getLayer()));
 							featureIds.add(dto.getId());
 						}
 					}
-					org.geomajas.layer.tile.VectorTile tile = tileResponse.getTile();
 					code = tile.getCode();
 					screenWidth = tile.getScreenWidth();
 					screenHeight = tile.getScreenHeight();
@@ -284,10 +292,11 @@ public class VectorTile extends AbstractVectorTile {
 
 	/**
 	 * Execute a TileFunction on this tile. If the tile is not yet loaded, attach it to the isLoaded event.
-	 * 
+	 *
+	 * @param filter filter which needs to be applied when fetching
 	 * @param callback callback to call
 	 */
-	private void apply(final String filter, final TileFunction<VectorTile> callback) {
+	public void apply(final String filter, final TileFunction<VectorTile> callback) {
 		switch (getStatus()) {
 			case EMPTY:
 				fetch(filter, callback);

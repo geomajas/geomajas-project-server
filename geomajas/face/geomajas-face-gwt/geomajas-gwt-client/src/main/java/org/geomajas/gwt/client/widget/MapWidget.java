@@ -245,7 +245,6 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	}
 
 	protected void initializationCallback(GetMapConfigurationResponse r) {
-		GWT.log("init mapWidget " + r.getMapInfo(), null);
 		if (r.getMapInfo() != null && !mapModel.isInitialized()) {
 			ClientMapInfo info = r.getMapInfo();
 			unitLength = info.getUnitLength();
@@ -379,7 +378,6 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	 *            set status
 	 */
 	public void setScalebarEnabled(boolean enabled) {
-		GWT.log("MapWidget::setScalebarEnabled: " + enabled, null);
 		scaleBarEnabled = enabled;
 		if (scaleBarEnabled) {
 			if (null == scalebar) {
@@ -393,7 +391,6 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 			scalebar.adjustScale(mapModel.getMapView().getCurrentScale());
 			registerMapAddon(scalebar);
 		} else {
-			GWT.log("MapWidget::setScalebarEnabled: going to disable to scalebar" + enabled, null);
 			if (null != scalebar) {
 				unregisterMapAddon(scalebar);
 				scalebar = null;
@@ -607,10 +604,8 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 						addon.setMapSize(width, height);
 						render(addon, RenderGroup.SCREEN, RenderStatus.UPDATE);
 					}
-
-					GWT.log("MapWidget has resized: " + width + "," + height, null);
 				} catch (Exception e) {
-					GWT.log("OnResized", null);
+					GWT.log("OnResized", e);
 				}
 			}
 		}

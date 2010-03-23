@@ -31,7 +31,6 @@ import org.geomajas.gwt.client.map.event.MapModelEvent;
 import org.geomajas.gwt.client.map.event.MapModelHandler;
 import org.geomajas.gwt.client.util.DOM;
 
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Timer;
 import com.smartgwt.client.types.Alignment;
@@ -224,7 +223,6 @@ public class LoadingScreen extends VLayout {
 									onDispatchStoppenRegistration.removeHandler();
 									setCursor(Cursor.DEFAULT);
 
-									GWT.log("Loading screen starts to fade out....", null);
 									setAnimateTime(1000);
 
 									if (!DOM.isIE()) {
@@ -234,7 +232,6 @@ public class LoadingScreen extends VLayout {
 									animateFade(0, new AnimationCallback() {
 
 										public void execute(boolean earlyFinish) {
-											GWT.log("Loading screen destroy", null);
 											mapWidget.setResizedHandlerDisabled(false);
 											LoadingScreen.this.destroy();
 										}

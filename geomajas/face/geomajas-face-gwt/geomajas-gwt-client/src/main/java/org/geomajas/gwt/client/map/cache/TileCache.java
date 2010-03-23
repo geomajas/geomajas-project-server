@@ -29,7 +29,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.google.gwt.core.client.GWT;
 import org.geomajas.gwt.client.map.cache.tile.TileFunction;
 import org.geomajas.gwt.client.map.cache.tile.VectorTile;
 import org.geomajas.gwt.client.map.feature.Feature;
@@ -66,6 +65,8 @@ public class TileCache implements SpatialCache {
 	private int currentMaxY;
 
 	private List<VectorTile> evictedTiles;
+
+	private double previousScale;
 
 	// -------------------------------------------------------------------------
 	// Constructors:
@@ -207,12 +208,9 @@ public class TileCache implements SpatialCache {
 
 	public void queryAndSync(Bbox bbox, String filter, TileFunction<VectorTile> onDelete,
 			TileFunction<VectorTile> onUpdate) {
-		if (!layer.getMapModel().getMapView().isSameScaleLevel()) {
-			clear();
-		}
-
-		GWT.log("isDirty " + isDirty(), null);
-		if (isDirty()) {
+		boolean scaleChanged = previousScale > 0 &&
+				layer.getMapModel().getMapView().getCurrentScale() != previousScale;
+		if (scaleChanged || isDirty()) {
 			// Delete all tiles
 			for (VectorTile tile : evictedTiles) {
 				tile.cancel();
@@ -222,8 +220,8 @@ public class TileCache implements SpatialCache {
 			}
 			evictedTiles.clear();
 		}
+		previousScale = layer.getMapModel().getMapView().getCurrentScale();
 
-		GWT.log("check bbox", null);
 		// Only fetch when inside the layer bounds:
 		if (bbox.intersects(layerBounds)) {
 			// Check tile level:
@@ -237,23 +235,13 @@ public class TileCache implements SpatialCache {
 
 			// Make a clone, as we are going to modify the actual node map:
 			Map<String, VectorTile> currentNodes = new HashMap<String, VectorTile>(tiles);
-			GWT.log("tile to fetch " + tileCodes, null);
 			for (TileCode tileCode : tileCodes) {
-				if (!currentNodes.containsKey(tileCode.toString())) {
-					// Add the node:
-					VectorTile tile = addTile(tileCode);
-					tile.fetch(filter, onUpdate);
-					tile.applyConnected(filter, onUpdate);
-				} else {
-					VectorTile tile = currentNodes.get(tileCode.toString());
-					tile.applyConnected(filter, onUpdate);
-//					if (tile.isComplete()) {
-//						tile.apply(onUpdate);
-//					} else {
-//						tile.fetch(filter, onUpdate);
-//						tile.applyConnected(filter, onUpdate);
-//					}
+				VectorTile tile = currentNodes.get(tileCode.toString());
+				if (null == tile) {
+					tile = addTile(tileCode); // Add the node
 				}
+				tile.apply(filter, onUpdate);
+				tile.applyConnected(filter, onUpdate);
 			}
 		}
 	}

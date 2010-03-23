@@ -468,11 +468,11 @@ public class MapView {
 	}
 
 	/**
-	 * finds an optimal scale by snapping to resolutions
+	 * Finds an optimal scale by snapping to resolutions.
 	 * 
-	 * @param scale
-	 * @param option
-	 * @return
+	 * @param scale scale which needs to be snapped
+	 * @param option snapping option
+	 * @return snapped scale
 	 */
 	private double snapToResolution(double scale, ZoomOption option) {
 		// clip upperbounds
