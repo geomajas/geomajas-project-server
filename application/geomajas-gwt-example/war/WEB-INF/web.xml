@@ -35,12 +35,14 @@
 			org/geomajas/gwt/samples/shapeinmem/layerStructures.xml
 			org/geomajas/gwt/samples/shapeinmem/layerRivers.xml
 			org/geomajas/gwt/samples/shapeinmem/layerLakes.xml
+			org/geomajas/gwt/samples/shapeinmem/layerCountries.xml
 			org/geomajas/gwt/samples/editing/layerCities.xml
 			org/geomajas/gwt/samples/editing/mapEditPointLayer.xml
 			org/geomajas/gwt/samples/editing/mapEditLineLayer.xml
 			org/geomajas/gwt/samples/editing/mapEditPolygonLayer.xml
 			org/geomajas/gwt/samples/layertree/mapLayerTree.xml
 			org/geomajas/gwt/samples/layertree/mapLegend.xml
+			org/geomajas/gwt/samples/grid/mapFeatureListGrid.xml
         </param-value>
     </context-param>
 

@@ -216,7 +216,9 @@ public class TileCache implements SpatialCache {
 			// Delete all tiles
 			for (VectorTile tile : evictedTiles) {
 				tile.cancel();
-				onDelete.execute(tile);
+				if (onDelete != null) {
+					onDelete.execute(tile);
+				}
 			}
 			evictedTiles.clear();
 		}
@@ -242,12 +244,13 @@ public class TileCache implements SpatialCache {
 					tile.applyConnected(filter, onUpdate);
 				} else {
 					VectorTile tile = currentNodes.get(tileCode.toString());
-					if (tile.isComplete()) {
-						tile.apply(onUpdate);
-					} else {
-						tile.fetch(filter, onUpdate);
-						tile.applyConnected(filter, onUpdate);
-					}
+					tile.applyConnected(filter, onUpdate);
+//					if (tile.isComplete()) {
+//						tile.apply(onUpdate);
+//					} else {
+//						tile.fetch(filter, onUpdate);
+//						tile.applyConnected(filter, onUpdate);
+//					}
 				}
 			}
 		}

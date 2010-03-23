@@ -40,6 +40,7 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.i18n.client.LocaleInfo;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.ServiceDefTarget;
+import com.smartgwt.client.core.Function;
 import com.smartgwt.client.util.SC;
 
 /**
@@ -63,11 +64,13 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 	private String userToken;
 
 	private boolean useLazyLoading = true;
-	private int lazyFeatureIncludesDefault =
-			GeomajasConstant.FEATURE_INCLUDE_STYLE + GeomajasConstant.FEATURE_INCLUDE_LABEL;
-	private int lazyFeatureIncludesSelect = GeomajasConstant.FEATURE_INCLUDE_ALL;
-	private int lazyFeatureIncludesAll = GeomajasConstant.FEATURE_INCLUDE_ALL;
 
+	private int lazyFeatureIncludesDefault = GeomajasConstant.FEATURE_INCLUDE_STYLE
+			+ GeomajasConstant.FEATURE_INCLUDE_LABEL;
+
+	private int lazyFeatureIncludesSelect = GeomajasConstant.FEATURE_INCLUDE_ALL;
+
+	private int lazyFeatureIncludesAll = GeomajasConstant.FEATURE_INCLUDE_ALL;
 
 	private GwtCommandDispatcher() {
 		locale = LocaleInfo.getCurrentLocale().getLocaleName();
@@ -83,7 +86,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 
 	/**
 	 * Get the only static instance of this class. This should be the object you work with.
-	 *
+	 * 
 	 * @return singleton instance
 	 */
 	public static GwtCommandDispatcher getInstance() {
@@ -101,24 +104,24 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 		return manager.addHandler(DispatchStoppedEvent.getType(), handler);
 	}
 
-	/**
-	 * The execution function. Executes a server side command.
-	 * 
-	 * @param command
-	 *            The command to be executed. This command is a wrapper around the actual request object.
-	 * @param onSuccess
-	 *            A <code>CommandCallback</code> function to be executed when the command successfully returns.
-	 */
-	public void execute(GwtCommand command, final CommandCallback onSuccess) {
+	public Deferred execute(GwtCommand command, final CommandCallback... onSuccess) {
 		incrementDispatched();
+
+		final Deferred deferred = new Deferred();
+		for (CommandCallback callback : onSuccess) {
+			deferred.addSuccesCallback(callback);
+		}
+
 		command.setLocale(locale);
 		command.setUserToken(userToken);
 		service.execute(command, new AsyncCallback<CommandResponse>() {
 
 			public void onFailure(Throwable error) {
 				try {
+					for (Function callback : deferred.getOnErrorCallbacks()) {
+						callback.execute();
+					}
 					SC.warn(I18nProvider.getGlobal().commandError() + ":\n" + error.getMessage(), null);
-					decrementDispatched();
 				} catch (Throwable t) {
 					GWT.log("Command failed on error callback", t);
 				} finally {
@@ -135,7 +138,12 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 						}
 						SC.warn(message, null);
 					} else {
-						onSuccess.execute(response);
+						if (deferred.getOnSuccessCallbacks().size() > 1) {
+							GWT.log("??", null);
+						}
+						for (CommandCallback callback : deferred.getOnSuccessCallbacks()) {
+							callback.execute(response);
+						}
 					}
 				} catch (Throwable t) {
 					GWT.log("Command failed on success callback", t);
@@ -144,7 +152,53 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 				}
 			}
 		});
+		return deferred;
 	}
+
+	/**
+	 * The execution function. Executes a server side command.
+	 * 
+	 * @param command
+	 *            The command to be executed. This command is a wrapper around the actual request object.
+	 * @param onSuccess
+	 *            A <code>CommandCallback</code> function to be executed when the command successfully returns.
+	 */
+//	public void execute(GwtCommand command, final CommandCallback onSuccess) {
+//		incrementDispatched();
+//		command.setLocale(locale);
+//		command.setUserToken(userToken);
+//		service.execute(command, new AsyncCallback<CommandResponse>() {
+//
+//			public void onFailure(Throwable error) {
+//				try {
+//					SC.warn(I18nProvider.getGlobal().commandError() + ":\n" + error.getMessage(), null);
+//					decrementDispatched();
+//				} catch (Throwable t) {
+//					GWT.log("Command failed on error callback", t);
+//				} finally {
+//					decrementDispatched();
+//				}
+//			}
+//
+//			public void onSuccess(CommandResponse response) {
+//				try {
+//					if (response.isError()) {
+//						String message = I18nProvider.getGlobal().commandError() + ":";
+//						for (String error : response.getErrorMessages()) {
+//							message += "\n" + error;
+//						}
+//						SC.warn(message, null);
+//					} else {
+//						onSuccess.execute(response);
+//					}
+//				} catch (Throwable t) {
+//					GWT.log("Command failed on success callback", t);
+//				} finally {
+//					decrementDispatched();
+//				}
+//			}
+//		});
+//	}
 
 	/**
 	 * Is the dispatcher busy ?
@@ -158,7 +212,8 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 	/**
 	 * Set the user token, so it can be sent in very command.
 	 * 
-	 * @param userToken user token
+	 * @param userToken
+	 *            user token
 	 */
 	public void setUserToken(String userToken) {
 		this.userToken = userToken;
@@ -166,7 +221,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 
 	/**
 	 * Is lazy feature loading enabled ?
-	 *
+	 * 
 	 * @return true when lazy feature loading is enabled
 	 */
 	public boolean isUseLazyLoading() {
@@ -175,8 +230,9 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 
 	/**
 	 * Set lazy feature loading status.
-	 *
-	 * @param useLazyLoading lazy feature loading status
+	 * 
+	 * @param useLazyLoading
+	 *            lazy feature loading status
 	 */
 	public void setUseLazyLoading(boolean useLazyLoading) {
 		this.useLazyLoading = useLazyLoading;
@@ -189,7 +245,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 
 	/**
 	 * Get default value for "featureIncludes" when getting features.
-	 *
+	 * 
 	 * @return default "featureIncludes" value
 	 */
 	public int getLazyFeatureIncludesDefault() {
@@ -198,8 +254,9 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 
 	/**
 	 * Set default value for "featureIncludes" when getting features.
-	 *
-	 * @param lazyFeatureIncludesDefault default for "featureIncludes"
+	 * 
+	 * @param lazyFeatureIncludesDefault
+	 *            default for "featureIncludes"
 	 */
 	public void setLazyFeatureIncludesDefault(int lazyFeatureIncludesDefault) {
 		this.lazyFeatureIncludesDefault = lazyFeatureIncludesDefault;
@@ -207,7 +264,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 
 	/**
 	 * Get "featureIncludes" to use when selecting features.
-	 *
+	 * 
 	 * @return default "featureIncludes" for select commands
 	 */
 	public int getLazyFeatureIncludesSelect() {
@@ -216,8 +273,9 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 
 	/**
 	 * Set default "featureIncludes" for select commands.
-	 *
-	 * @param lazyFeatureIncludesSelect default "featureIncludes" for select commands
+	 * 
+	 * @param lazyFeatureIncludesSelect
+	 *            default "featureIncludes" for select commands
 	 */
 	public void setLazyFeatureIncludesSelect(int lazyFeatureIncludesSelect) {
 		this.lazyFeatureIncludesSelect = lazyFeatureIncludesSelect;
@@ -225,7 +283,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 
 	/**
 	 * Value to use for "featureIncludes" when all should be included.
-	 *
+	 * 
 	 * @return value for "featureIncludes" when all should be included
 	 */
 	public int getLazyFeatureIncludesAll() {
@@ -234,8 +292,9 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 
 	/**
 	 * Set "featureIncludes" value when all should be included.
-	 *
-	 * @param lazyFeatureIncludesAll "featureIncludes" value when all should be included
+	 * 
+	 * @param lazyFeatureIncludesAll
+	 *            "featureIncludes" value when all should be included
 	 */
 	public void setLazyFeatureIncludesAll(int lazyFeatureIncludesAll) {
 		this.lazyFeatureIncludesAll = lazyFeatureIncludesAll;

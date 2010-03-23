@@ -20,6 +20,7 @@
   ~ You should have received a copy of the GNU Affero General Public License
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
+
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:context="http://www.springframework.org/schema/context"
 	xsi:schemaLocation="
@@ -28,44 +29,61 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 http://www.springframework.org/schema/context
 http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-	<!-- OpenStreetMap sample -->
-	<bean name="wmsMap" class="org.geomajas.configuration.client.ClientMapInfo">
+	<bean name="africanCountriesMap" class="org.geomajas.configuration.client.ClientMapInfo">
 		<property name="backgroundColor" value="#FFFFFF" />
 		<property name="lineSelectStyle">
-			<bean class="org.geomajas.configuration.FeatureStyleInfo" />
+			<bean class="org.geomajas.configuration.FeatureStyleInfo">
+			</bean>
 		</property>
 		<property name="pointSelectStyle">
-			<bean class="org.geomajas.configuration.FeatureStyleInfo" />
+			<bean class="org.geomajas.configuration.FeatureStyleInfo">
+			</bean>
 		</property>
 		<property name="polygonSelectStyle">
-			<bean class="org.geomajas.configuration.FeatureStyleInfo" />
+			<bean class="org.geomajas.configuration.FeatureStyleInfo">
+				<property name="fillColor" value="#FFFF00" />
+				<property name="fillOpacity" value=".75" />
+			</bean>
 		</property>
 		<property name="crs" value="EPSG:4326" />
 		<property name="scaleBarEnabled" value="true" />
 		<property name="panButtonsEnabled" value="true" />
-		<property name="maximumScale" value="10000" />
+		<property name="maximumScale" value="9.5" />
 		<property name="initialBounds">
 			<bean class="org.geomajas.geometry.Bbox">
-                <property name="x" value="-180"/>
-                <property name="y" value="-90"/>
-                <property name="width" value="360"/>
-                <property name="height" value="180"/>
+				<property name="x" value="-31.44" />
+				<property name="y" value="-37.43" />
+				<property name="width" value="89.83" />
+				<property name="height" value="89.83" />
 			</bean>
 		</property>
 		<property name="layers">
 			<list>
 				<ref bean="wmsLayer" />
+				<ref bean="countriesLayer" />
 			</list>
+		</property>
+		<property name="toolbar">
+			<bean name="editPointLayerMapToolbar" class="org.geomajas.configuration.client.ClientToolbarInfo">
+				<property name="tools">
+					<list>
+						<ref bean="ZoomIn" />
+						<ref bean="ZoomOut" />
+						<ref bean="ToolbarSeparator" />
+						<ref bean="EditMode" />
+					</list>
+				</property>
+			</bean>
 		</property>
 	</bean>
 
-	<bean class="org.geomajas.configuration.client.ClientRasterLayerInfo" id="wmsLayer">
-		<property name="serverLayerId" value="bluemarble" />
-		<property name="label" value="Blue marble WMS (raster)" />
-		<property name="visible" value="true" />
-		<property name="viewScaleMin" value="0" />
-		<property name="viewScaleMax" value="100000" />
-		<property name="style" value="1" />
+	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="countriesLayer">
+		<property name="serverLayerId" value="countries" />
+	  	<property name="label" value="Countries of Africa"/>
+		<property name="visible" value="true"/>
+		<property name="viewScaleMin" value="0"/>
+		<property name="viewScaleMax" value="100000"/>
+		<property name="namedStyleInfo" ref="countriesStyleInfo" />
 	</bean>
 
 </beans>

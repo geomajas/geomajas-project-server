@@ -331,4 +331,10 @@ public interface SampleMessages extends Messages {
 	String legendTitle();
 
 	String legendDescription();
+
+	// FeatureListGrid sample:
+
+	String fltTitle();
+
+	String fltDescription();
 }

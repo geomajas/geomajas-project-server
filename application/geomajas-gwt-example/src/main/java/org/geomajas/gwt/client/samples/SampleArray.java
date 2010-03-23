@@ -30,6 +30,7 @@ import org.geomajas.gwt.client.samples.controller.RectangleControllerSample;
 import org.geomajas.gwt.client.samples.editing.EditLineLayerSample;
 import org.geomajas.gwt.client.samples.editing.EditPointLayerSample;
 import org.geomajas.gwt.client.samples.editing.EditPolygonLayerSample;
+import org.geomajas.gwt.client.samples.grid.FeatureListGridSample;
 import org.geomajas.gwt.client.samples.i18n.I18nProvider;
 import org.geomajas.gwt.client.samples.layertree.LayertreeSample;
 import org.geomajas.gwt.client.samples.layertree.LegendSample;
@@ -85,8 +86,7 @@ public final class SampleArray {
 						"[ISOMORPHIC]/geomajas/layer-raster.png", GeoToolsSample.TITLE, "MapWidget",
 						GeoToolsSample.FACTORY),
 				new SampleTreeNode(I18nProvider.getSampleMessages().googleTitle(),
-						"[ISOMORPHIC]/geomajas/layer-raster.png", GoogleSample.TITLE, "MapWidget",
-						GoogleSample.FACTORY),
+						"[ISOMORPHIC]/geomajas/layer-raster.png", GoogleSample.TITLE, "MapWidget", GoogleSample.FACTORY),
 				new SampleTreeNode(I18nProvider.getSampleMessages().navigationTitle(),
 						"[ISOMORPHIC]/geomajas/layer.png", NavigationSample.TITLE, "MapWidget",
 						NavigationSample.FACTORY),
@@ -180,6 +180,12 @@ public final class SampleArray {
 						"[ISOMORPHIC]/geomajas/layer.png", LayertreeSample.TITLE, "Layertree", LayertreeSample.FACTORY),
 				new SampleTreeNode(I18nProvider.getSampleMessages().legendTitle(), "[ISOMORPHIC]/geomajas/layer.png",
 						LegendSample.TITLE, "Layertree", LegendSample.FACTORY),
+
+				// FeatureListGrid samples:
+				new SampleTreeNode(I18nProvider.getSampleMessages().fltTitle(), "[ISOMORPHIC]/geomajas/layer.png",
+						"FeatureListGridGroup", "topLevel"),
+				new SampleTreeNode(I18nProvider.getSampleMessages().fltTitle(), "[ISOMORPHIC]/geomajas/layer.png",
+						FeatureListGridSample.TITLE, "FeatureListGridGroup", FeatureListGridSample.FACTORY),
 
 				// Security samples:
 				new SampleTreeNode(I18nProvider.getSampleMessages().treeGroupSecurity(),

@@ -30,6 +30,7 @@ import org.geomajas.command.CommandResponse;
 import org.geomajas.command.dto.GetRenderedTileRequest;
 import org.geomajas.command.dto.GetRenderedTileResponse;
 import org.geomajas.gwt.client.command.CommandCallback;
+import org.geomajas.gwt.client.command.Deferred;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.gfx.PaintableGroup;
@@ -41,6 +42,7 @@ import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.layer.tile.TileCode;
 import org.geomajas.layer.tile.VectorTile.VectorTileContentType;
 
+import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.util.SC;
 
 /**
@@ -81,7 +83,7 @@ public class VectorTile extends AbstractVectorTile {
 
 	private boolean rendered;
 
-	private boolean canceled;
+	private Deferred deferred;
 
 	// -------------------------------------------------------------------------
 	// Constructors:
@@ -134,10 +136,10 @@ public class VectorTile extends AbstractVectorTile {
 	public void fetch(String filter, final TileFunction<VectorTile> callback) {
 		GwtCommand command = createCommand(filter);
 		final VectorTile self = this;
-		GwtCommandDispatcher.getInstance().execute(command, new CommandCallback() {
+		deferred = GwtCommandDispatcher.getInstance().execute(command, new CommandCallback() {
 
 			public void execute(CommandResponse response) {
-				if (!canceled && response instanceof GetRenderedTileResponse) {
+				if (!deferred.isCanceled() && response instanceof GetRenderedTileResponse) {
 					GetRenderedTileResponse tileResponse = (GetRenderedTileResponse) response;
 					if (tileResponse.getTile().getFeatures() != null) {
 						for (org.geomajas.layer.feature.Feature dto : tileResponse.getTile().getFeatures()) {
@@ -156,31 +158,12 @@ public class VectorTile extends AbstractVectorTile {
 					try {
 						callback.execute(self);
 					} catch (Throwable t) {
-						// log some error....
+						GWT.log("VectorTile: error calling the callback after a fetch.", t);
 					}
 					rendered = true;
 				}
 			}
 		});
-	}
-
-	private GwtCommand createCommand(String filter) {
-		GetRenderedTileRequest request = new GetRenderedTileRequest();
-		request.setCode(code);
-		request.setCrs(cache.getLayer().getMapModel().getCrs());
-		request.setFilter(filter);
-		request.setLayerId(cache.getLayer().getServerLayerId());
-		// always paint geometries in first fetch
-		request.setPaintGeometries(!rendered);
-		request.setPaintLabels(cache.getLayer().isLabeled());
-		request.setPanOrigin(cache.getLayer().getMapModel().getMapView().getPanOrigin());
-		request.setRenderer(SC.isIE() ? "VML" : "SVG");
-		request.setScale(cache.getLayer().getMapModel().getMapView().getCurrentScale());
-		request.setStyleInfo(cache.getLayer().getLayerInfo().getNamedStyleInfo());
-		request.setFeatureIncludes(GwtCommandDispatcher.getInstance().getLazyFeatureIncludesDefault());
-		GwtCommand command = new GwtCommand("command.render.GetRenderedTile");
-		command.setCommandRequest(request);
-		return command;
 	}
 
 	/**
@@ -193,7 +176,7 @@ public class VectorTile extends AbstractVectorTile {
 	 *            The actual <code>TileFunction</code> to be executed on the connected tiles.
 	 */
 	public void applyConnected(final String filter, final TileFunction<VectorTile> callback) {
-		apply(new TileFunction<VectorTile>() {
+		apply(filter, new TileFunction<VectorTile>() {
 
 			public void execute(VectorTile tile) {
 				List<TileCode> tileCodes = tile.getCodes();
@@ -202,24 +185,11 @@ public class VectorTile extends AbstractVectorTile {
 					if (temp.getStatus() == STATUS.EMPTY) {
 						temp.fetch(filter, callback);
 					} else {
-						apply(callback);
+						temp.apply(filter, callback);
 					}
 				}
 			}
 		});
-	}
-
-	/**
-	 * Execute a TileFunction on this tile. If the tile is not yet loaded, attach it to the isLoaded event.
-	 * 
-	 * @param callback
-	 */
-	public void apply(TileFunction<VectorTile> callback) {
-		if (getStatus() == STATUS.LOADED) {
-			callback.execute(this);
-		} else {
-			// TODO: add the callback to the deffered (find alternative first)
-		}
 	}
 
 	/**
@@ -231,13 +201,22 @@ public class VectorTile extends AbstractVectorTile {
 	 * </ul>
 	 */
 	public STATUS getStatus() {
-		// if (deferred == false) { // TODO: find an alternative for the Dojo deferred.
-		// return STATUS.EMPTY;
-		// }
+		if (deferred == null) {
+			return STATUS.EMPTY;
+		}
 		if (featureIds == null || featureIds.size() == 0) {
 			return STATUS.LOADING;
 		}
 		return STATUS.LOADED;
+	}
+
+	/**
+	 * Cancel the fetching of this tile. No callback will be executed anymore.
+	 */
+	public void cancel() {
+		if (deferred != null) {
+			deferred.cancel();
+		}
 	}
 
 	// -------------------------------------------------------------------------
@@ -252,10 +231,6 @@ public class VectorTile extends AbstractVectorTile {
 		return clipped;
 	}
 
-	public void cancel() {
-		canceled = true;
-	}
-
 	public double getScreenWidth() {
 		return screenWidth;
 	}
@@ -263,21 +238,13 @@ public class VectorTile extends AbstractVectorTile {
 	public double getScreenHeight() {
 		return screenHeight;
 	}
-		
+
 	public ContentHolder getFeatureContent() {
 		return featureContent;
 	}
 
-	
 	public ContentHolder getLabelContent() {
 		return labelContent;
-	}
-
-	public boolean isComplete() {
-		if (cache.getLayer().isLabeled() && !getLabelContent().isLoaded()) {
-			return false;
-		}
-		return true;
 	}
 
 	public VectorTileContentType getContentType() {
@@ -319,4 +286,54 @@ public class VectorTile extends AbstractVectorTile {
 		public void accept(PainterVisitor visitor, Object group, Bbox bounds, boolean recursive) {
 		}
 	}
+	
+	//-------------------------------------------------------------------------
+	// Private methods:
+	//-------------------------------------------------------------------------
+
+	/**
+	 * Execute a TileFunction on this tile. If the tile is not yet loaded, attach it to the isLoaded event.
+	 * 
+	 * @param callback
+	 */
+	private void apply(final String filter, final TileFunction<VectorTile> callback) {
+		switch (getStatus()) {
+			case EMPTY:
+				fetch(filter, callback);
+				break;
+			case LOADING:
+				final VectorTile self = this;
+				deferred.addSuccesCallback(new CommandCallback() {
+
+					public void execute(CommandResponse response) {
+						if (!deferred.isCanceled() && response instanceof GetRenderedTileResponse) {
+							callback.execute(self);
+						}
+					}
+				});
+				break;
+			case LOADED:
+				callback.execute(this);
+		}
+	}
+
+	private GwtCommand createCommand(String filter) {
+		GetRenderedTileRequest request = new GetRenderedTileRequest();
+		request.setCode(code);
+		request.setCrs(cache.getLayer().getMapModel().getCrs());
+		request.setFilter(filter);
+		request.setLayerId(cache.getLayer().getServerLayerId());
+		// always paint geometries in first fetch
+		request.setPaintGeometries(!rendered);
+		request.setPaintLabels(cache.getLayer().isLabeled());
+		request.setPanOrigin(cache.getLayer().getMapModel().getMapView().getPanOrigin());
+		request.setRenderer(SC.isIE() ? "VML" : "SVG");
+		request.setScale(cache.getLayer().getMapModel().getMapView().getCurrentScale());
+		request.setStyleInfo(cache.getLayer().getLayerInfo().getNamedStyleInfo());
+		request.setFeatureIncludes(GwtCommandDispatcher.getInstance().getLazyFeatureIncludesDefault());
+		GwtCommand command = new GwtCommand("command.render.GetRenderedTile");
+		command.setCommandRequest(request);
+		return command;
+	}
+
 }

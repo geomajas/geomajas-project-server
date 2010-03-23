@@ -50,6 +50,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 				<ref bean="editLineLayerMap" />
 				<ref bean="editPolygonLayerMap" />
 				<ref bean="legendMap" />
+				<ref bean="africanCountriesMap" />
 			</list>
 		</property>
 	</bean>
