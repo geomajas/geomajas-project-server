@@ -165,6 +165,33 @@ var geomajasConfig={
 &lt;script type="text/javascript" src="js/geomajas/geomajas.js" geomajasConfig="showLog:true, connectionPoint:'generalConnectionPoint'"&gt;&lt;/script&gt;</programlisting></para>
 
     <para>...</para>
+
+    <section>
+      <title>Using Google maps raster layer</title>
+
+      <para>To use the Google maps raster layer in the dojo face, you have to
+      include the Google maps API files in your application to allow Geomajas
+      to use those. This can be done using code like the following</para>
+
+      <programlisting>&lt;script  type="text/javascript"
+    src="http://maps.google.com/maps?file=api&amp;amp;v=2&amp;amp;sensor=false&amp;amp;key=ABCDEF"&gt;&lt;/script&gt;</programlisting>
+
+      <para>or</para>
+
+      <programlisting>&lt;script type="text/javascript" src="http://www.google.com/jsapi?key=ABCDEFG"&gt;&lt;/script&gt;
+&lt;script type="text/javascript"&gt;
+    google.load("maps", "2.95");
+&lt;/script&gt;</programlisting>
+
+      <para>Note that you do need to have a Google maps key ("ABCDEF") is used
+      in the example above if you want to deploy your site (it should work
+      without when running your tests on "localhost").</para>
+
+      <para>In your layer, you can determine the kind of layer by setting the
+      "satellite" property. When this is true, satellite images will be
+      displayed. When this is false, the normal Google maps images are used
+      (street map).</para>
+    </section>
   </chapter>
 
   <chapter id="chapter-dojo-widgets">

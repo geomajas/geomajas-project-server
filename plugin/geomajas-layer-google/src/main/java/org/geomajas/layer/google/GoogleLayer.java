@@ -61,8 +61,8 @@ public class GoogleLayer implements RasterLayer {
 
 	public static final String LAYER_NAME_NORMAL = "G_NORMAL_MAP";
 	public static final String LAYER_NAME_SATELLITE = "G_SATELLITE_MAP";
-	public static final String LAYER_NAME_HYBRID = "G_HYBID_MAP";
-	public static final String LAYER_NAME_PHYSICAL = "G_PHYSICAL_MAP";
+	//public static final String LAYER_NAME_HYBRID = "G_HYBID_MAP"; // doesn't seem to work
+	//public static final String LAYER_NAME_PHYSICAL = "G_PHYSICAL_MAP"; doesn' seem to work
 
 	public static final double EQUATOR_IN_METERS = 40075016.686;
 
@@ -131,7 +131,11 @@ public class GoogleLayer implements RasterLayer {
 		crs = configurationService.getCrs("EPSG:900913"); // we overrule the declared crs, always use mercator/google
 		String layerName = layerInfo.getDataSourceName();
 		if (null == layerName) {
-			layerInfo.setDataSourceName(LAYER_NAME_NORMAL + DATA_SOURCE_GOOGLE_INDICATOR);
+			if (isSatellite()) {
+			    layerInfo.setDataSourceName(LAYER_NAME_SATELLITE + DATA_SOURCE_GOOGLE_INDICATOR);
+			} else {
+				layerInfo.setDataSourceName(LAYER_NAME_NORMAL + DATA_SOURCE_GOOGLE_INDICATOR);
+			}
 		} else if (!layerName.endsWith(DATA_SOURCE_GOOGLE_INDICATOR)) {
 			layerInfo.setDataSourceName(layerName + DATA_SOURCE_GOOGLE_INDICATOR);
 			if (layerName.equals(LAYER_NAME_SATELLITE)) {
