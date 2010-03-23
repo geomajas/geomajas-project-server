@@ -132,7 +132,7 @@ public class GoogleLayer implements RasterLayer {
 		String layerName = layerInfo.getDataSourceName();
 		if (null == layerName) {
 			if (isSatellite()) {
-			    layerInfo.setDataSourceName(LAYER_NAME_SATELLITE + DATA_SOURCE_GOOGLE_INDICATOR);
+				layerInfo.setDataSourceName(LAYER_NAME_SATELLITE + DATA_SOURCE_GOOGLE_INDICATOR);
 			} else {
 				layerInfo.setDataSourceName(LAYER_NAME_NORMAL + DATA_SOURCE_GOOGLE_INDICATOR);
 			}
