@@ -57,18 +57,38 @@ public class AssociationValue implements Serializable {
 
 	// Getters and setters:
 
+	/**
+	 * Get the id for the associated object.
+	 *
+	 * @return id for associated object
+	 */
 	public PrimitiveAttribute<?> getId() {
 		return id;
 	}
 
+	/**
+	 * Set the id for the associated object.
+	 *
+	 * @param id id for associated object
+	 */
 	public void setId(PrimitiveAttribute<?> id) {
 		this.id = id;
 	}
 
+	/**
+	 * Get the attributes for the associated object.
+	 *
+	 * @return attributes for associated objects
+	 */
 	public Map<String, PrimitiveAttribute<?>> getAttributes() {
 		return attributes;
 	}
 
+	/**
+	 * Set the attributes for the associated object.
+	 *
+	 * @param attributes attributes for associated objects
+	 */
 	public void setAttributes(Map<String, PrimitiveAttribute<?>> attributes) {
 		this.attributes = attributes;
 	}

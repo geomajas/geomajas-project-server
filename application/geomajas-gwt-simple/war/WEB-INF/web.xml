@@ -35,7 +35,7 @@
     </context-param>
 
 	<listener>
- 		<listener-class>org.geomajas.gwt.server.PrepareScanningContextListener</listener-class>
+ 		<listener-class>org.geomajas.servlet.PrepareScanningContextListener</listener-class>
 	</listener>
 
 	<listener>

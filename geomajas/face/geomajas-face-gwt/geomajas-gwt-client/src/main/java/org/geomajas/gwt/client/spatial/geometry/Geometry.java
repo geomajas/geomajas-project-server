@@ -29,7 +29,7 @@ import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.spatial.Bbox;
 
 /**
- * ???
+ * Gwt client-side Geometry representation.
  *
  * @author check subversion
  */

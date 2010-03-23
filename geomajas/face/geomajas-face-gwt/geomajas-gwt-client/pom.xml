@@ -23,26 +23,12 @@
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-api-experimental</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-api-experimental</artifactId>
-			<classifier>sources</classifier>
-		</dependency>
-		<dependency>
-			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-command</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<classifier>sources</classifier>
 			<artifactId>geomajas-command</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-gwt-server</artifactId>
-            <scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas</groupId>

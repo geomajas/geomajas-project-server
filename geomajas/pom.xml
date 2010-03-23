@@ -368,11 +368,6 @@
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-gwt-server</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-command</artifactId>
 				<version>${project.version}</version>
 			</dependency>

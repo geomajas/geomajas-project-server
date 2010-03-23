@@ -938,14 +938,6 @@
             <row>
               <entry></entry>
 
-              <entry>gwt-server</entry>
-
-              <entry>Server side module for the GWT interface.</entry>
-            </row>
-
-            <row>
-              <entry></entry>
-
               <entry>common-servlet</entry>
 
               <entry>Code which is shared by the different faces which are
