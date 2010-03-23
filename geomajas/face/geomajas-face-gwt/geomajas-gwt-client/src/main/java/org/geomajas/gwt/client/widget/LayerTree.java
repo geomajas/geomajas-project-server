@@ -110,9 +110,9 @@ public class LayerTree extends Canvas implements LeafClickHandler, FolderClickHa
 				htmlSelectedLayer.setAlign(Alignment.CENTER);
 				vLayout.addMember(htmlSelectedLayer);
 				vLayout.addMember(treeGrid);
-				treeGrid.draw();
+				treeGrid.redraw();
 				LayerTree.this.addChild(vLayout);
-				LayerTree.this.draw();
+				LayerTree.this.redraw();
 			}
 		});
 		mapModel.addLayerSelectionHandler(this);
