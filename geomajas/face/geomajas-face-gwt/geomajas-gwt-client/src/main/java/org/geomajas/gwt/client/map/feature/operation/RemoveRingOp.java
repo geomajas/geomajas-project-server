@@ -36,7 +36,7 @@ import org.geomajas.gwt.client.spatial.geometry.operation.RemoveRingOperation;
 /**
  * ???
  *
- * @author check subversion
+ * @author Pieter De Graef
  */
 public class RemoveRingOp extends GeometryEditor implements FeatureOperation {
 

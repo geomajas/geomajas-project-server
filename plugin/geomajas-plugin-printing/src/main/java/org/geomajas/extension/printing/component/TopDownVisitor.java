@@ -23,9 +23,9 @@
 package org.geomajas.extension.printing.component;
 
 /**
- * ???
+ * Visitor for rendering the printed documents.
  *
- * @author check subversion
+ * @author Jan De Moerloose
  */
 public abstract class TopDownVisitor implements PrintComponentVisitor {
 

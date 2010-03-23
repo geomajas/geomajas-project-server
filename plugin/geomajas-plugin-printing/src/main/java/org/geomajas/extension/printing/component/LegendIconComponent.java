@@ -34,9 +34,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 import java.awt.Color;
 
 /**
- * ???
+ * Legend icon inclusion in printed document.
  *
- * @author check subversion
+ * @author Jan De Moerloose
  */
 @XmlRootElement
 public class LegendIconComponent extends BaseComponent {

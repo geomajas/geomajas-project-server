@@ -39,7 +39,7 @@ import org.geomajas.gwt.client.spatial.geometry.operation.SetCoordinateOperation
 /**
  * ???
  *
- * @author check subversion
+ * @author Pieter De Graef
  */
 public class SetCoordinateOp extends GeometryEditor implements FeatureOperation {
 

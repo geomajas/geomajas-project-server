@@ -30,7 +30,7 @@ import org.geomajas.gwt.client.spatial.Mathlib;
 /**
  * ???
  *
- * @author check subversion
+ * @author Pieter De Graef
  */
 public class LineString extends AbstractGeometry {
 

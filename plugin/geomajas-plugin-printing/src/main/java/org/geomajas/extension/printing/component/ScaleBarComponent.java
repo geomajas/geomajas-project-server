@@ -38,9 +38,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * ???
+ * Scale bar component for inclusion in printed documents.
  * 
- * @author check subversion
+ * @author Jan De Moerloose
  */
 @XmlRootElement
 public class ScaleBarComponent extends BaseComponent {

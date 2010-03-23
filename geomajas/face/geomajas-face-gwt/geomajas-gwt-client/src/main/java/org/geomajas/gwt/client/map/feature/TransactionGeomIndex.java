@@ -31,7 +31,7 @@ import org.geomajas.gwt.client.spatial.geometry.Polygon;
 /**
  * ???
  *
- * @author check subversion
+ * @author Pieter De Graef
  */
 public class TransactionGeomIndex {
 

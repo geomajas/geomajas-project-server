@@ -27,7 +27,7 @@ import com.google.gwt.event.shared.EventHandler;
 /**
  * Interface for handling map model events.
  *
- * @author check subversion
+ * @author Pieter De Graef
  */
 public interface MapModelHandler extends EventHandler {
 

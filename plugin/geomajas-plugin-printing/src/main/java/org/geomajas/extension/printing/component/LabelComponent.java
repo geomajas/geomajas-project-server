@@ -34,9 +34,9 @@ import java.awt.Color;
 import java.awt.Font;
 
 /**
- * ???
+ * Inclusion of label in printed document.
  *
- * @author check subversion
+ * @author Jan De Moerloose
  */
 @XmlRootElement
 public class LabelComponent extends BaseComponent {

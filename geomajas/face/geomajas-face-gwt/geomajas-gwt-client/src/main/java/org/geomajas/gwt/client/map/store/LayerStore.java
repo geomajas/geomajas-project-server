@@ -32,7 +32,7 @@ import org.geomajas.gwt.client.map.cache.tile.Tile;
  *
  * @param <T>
  *
- * @author check subversion
+ * @author Pieter De Graef
  */
 public interface LayerStore<T extends Tile> {
 

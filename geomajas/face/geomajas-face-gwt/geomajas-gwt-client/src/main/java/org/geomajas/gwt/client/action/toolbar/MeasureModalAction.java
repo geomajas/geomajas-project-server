@@ -33,7 +33,7 @@ import com.smartgwt.client.widgets.events.ClickEvent;
 /**
  * ???
  *
- * @author check subversion
+ * @author Pieter De Graef
  */
 public class MeasureModalAction extends ToolbarModalAction {
 

@@ -33,9 +33,9 @@ import org.geomajas.service.GeoService;
 import org.geomajas.service.VectorLayerService;
 
 /**
- * ???
+ * Default document for printing.
  * 
- * @author check subversion
+ * @author Jan De Moerloose
  */
 public class DefaultDocument extends SinglePageDocument {
 

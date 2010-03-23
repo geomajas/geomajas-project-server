@@ -29,7 +29,7 @@ import org.geomajas.gwt.client.spatial.Mathlib;
 /**
  * ???
  *
- * @author check subversion
+ * @author Pieter De Graef
  */
 public abstract class AbstractGeometry implements Geometry {
 

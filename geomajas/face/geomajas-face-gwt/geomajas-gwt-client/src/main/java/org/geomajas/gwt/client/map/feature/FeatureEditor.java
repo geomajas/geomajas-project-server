@@ -34,7 +34,7 @@ import org.geomajas.layer.LayerType;
  *
  * TODO: redesign!
  *
- * @author check subversion
+ * @author Pieter De Graef
  */
 public class FeatureEditor {
 

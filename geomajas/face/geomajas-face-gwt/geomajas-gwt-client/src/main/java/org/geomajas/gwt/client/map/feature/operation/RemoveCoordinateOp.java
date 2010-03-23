@@ -39,7 +39,7 @@ import org.geomajas.gwt.client.spatial.geometry.operation.RemoveCoordinateOperat
 /**
  * ???
  *
- * @author check subversion
+ * @author Pieter De Graef
  */
 public class RemoveCoordinateOp extends GeometryEditor implements FeatureOperation {
 

@@ -38,9 +38,9 @@ import org.geomajas.extension.printing.PdfContext;
 import org.geomajas.extension.printing.configuration.PrintTemplate;
 
 /**
- * ???
+ * Inclusion of legend in printed document.
  *
- * @author check subversion
+ * @author Jan De Moerloose
  */
 @XmlRootElement
 public class LegendComponent extends BaseComponent {

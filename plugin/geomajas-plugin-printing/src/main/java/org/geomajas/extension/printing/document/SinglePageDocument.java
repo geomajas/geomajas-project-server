@@ -36,9 +36,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * ???
+ * Single page document for printing.
  *
- * @author check subversion
+ * @author Jan De Moerloose
  */
 public class SinglePageDocument extends AbstractDocument {
 

@@ -33,9 +33,9 @@ import java.awt.Color;
 import java.awt.Font;
 
 /**
- * ???
+ * Legend item component for printed document.
  *
- * @author check subversion
+ * @author Jan De Moerloose
  */
 @XmlRootElement
 public class LegendItemComponent extends BaseComponent {

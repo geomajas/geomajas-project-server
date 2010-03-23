@@ -29,9 +29,9 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * ???
+ * Page component for inclusion in printed document.
  *
- * @author check subversion
+ * @author Jan De Moerloose
  */
 @XmlRootElement
 public class PageComponent extends BaseComponent {

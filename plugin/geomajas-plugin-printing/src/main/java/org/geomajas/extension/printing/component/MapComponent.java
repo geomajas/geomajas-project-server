@@ -35,9 +35,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * ???
+ * Map component for inclusion in printed documents.
  *
- * @author check subversion
+ * @author Jan De Moerloose
  */
 @XmlRootElement
 public class MapComponent extends BaseComponent {

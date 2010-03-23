@@ -31,7 +31,7 @@ import org.geomajas.gwt.client.spatial.Bbox;
 /**
  * Gwt client-side Geometry representation.
  *
- * @author check subversion
+ * @author Pieter De Graef
  */
 public interface Geometry extends Serializable {
 

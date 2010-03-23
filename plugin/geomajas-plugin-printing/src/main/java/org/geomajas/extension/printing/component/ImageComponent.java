@@ -30,9 +30,9 @@ import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlRootElement;
 
 /**
- * ???
+ * Inclusion of image in printed document.
  *
- * @author check subversion
+ * @author Jan De Moerloose
  */
 @XmlRootElement
 public class ImageComponent extends BaseComponent {

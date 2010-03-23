@@ -34,7 +34,7 @@ import org.geomajas.gwt.client.spatial.Bbox;
 /**
  * ???
  *
- * @author check subversion
+ * @author Pieter De Graef
  */
 public class FeatureTransaction implements Paintable {
 

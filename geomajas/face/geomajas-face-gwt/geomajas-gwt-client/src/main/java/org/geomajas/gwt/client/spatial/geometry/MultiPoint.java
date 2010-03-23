@@ -30,7 +30,7 @@ import org.geomajas.gwt.client.spatial.LineSegment;
 /**
  * ???
  *
- * @author check subversion
+ * @author Pieter De Graef
  */
 public class MultiPoint extends AbstractGeometry {
 

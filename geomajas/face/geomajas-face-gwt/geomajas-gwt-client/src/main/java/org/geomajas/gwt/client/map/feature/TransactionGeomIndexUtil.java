@@ -26,7 +26,7 @@ package org.geomajas.gwt.client.map.feature;
 /**
  * ???
  *
- * @author check subversion
+ * @author Pieter De Graef
  */
 public final class TransactionGeomIndexUtil {
 

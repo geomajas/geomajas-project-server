@@ -35,7 +35,7 @@ import java.util.NoSuchElementException;
 /**
  * Servlet for serviing PDf documents.
  *
- * @author check subversion
+ * @author Jan De Moerloose
  */
 public class PdfServlet extends HttpServlet {
 
