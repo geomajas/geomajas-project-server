@@ -232,15 +232,15 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 				<property name="labelAttributeName" value="NAME" />
 				<property name="fontStyle">
 					<bean class="org.geomajas.configuration.FeatureStyleInfo">
-						<property name="fillColor" value="#FF0000" />
+						<property name="fillColor" value="#FEFEFE" />
 						<property name="fillOpacity" value="1" />
 					</bean>
 				</property>
 				<property name="backgroundStyle">
 					<bean class="org.geomajas.configuration.FeatureStyleInfo">
-						<property name="fillColor" value="#000000" />
-						<property name="fillOpacity" value=".7" />
-						<property name="strokeColor" value="#FF0000" />
+						<property name="fillColor" value="#666666" />
+						<property name="fillOpacity" value=".8" />
+						<property name="strokeColor" value="#CC0000" />
 						<property name="strokeOpacity" value="1" />
 						<property name="strokeWidth" value="1" />
 					</bean>
