@@ -95,7 +95,8 @@ public abstract class SamplePanel extends VLayout {
 
 			Window descriptionWindow = new Window();
 			descriptionWindow.setTitle(I18nProvider.getSampleMessages().generalDescription());
-			descriptionWindow.setHeaderIcon("[ISOMORPHIC]/geomajas/example/images/geomajas_favicon.jpg", 16, 16);
+			descriptionWindow.setHeaderIcon("[ISOMORPHIC]/geomajas/example/images/geomajas_desktopicoon_small.png", 16,
+					16);
 			descriptionWindow.setShowEdges(true);
 			descriptionWindow.setKeepInParentRect(true);
 			descriptionWindow.setHeaderControls(HeaderControls.HEADER_ICON, HeaderControls.HEADER_LABEL);
@@ -123,7 +124,7 @@ public abstract class SamplePanel extends VLayout {
 
 	/**
 	 * Implement this! It is the actual sample panel...
-	 *
+	 * 
 	 * @return the {@link Canvas} which contains the example
 	 */
 	public abstract Canvas getViewPanel();
@@ -131,12 +132,12 @@ public abstract class SamplePanel extends VLayout {
 	public abstract String getDescription();
 
 	public abstract String getSourceFileName();
-	
+
 	public abstract String[] getConfigurationFiles();
-	
+
 	/**
 	 * If a user must be logged in before the sample can be shown, return his name here.
-	 *
+	 * 
 	 * @return user which needs to be logged in
 	 */
 	public abstract String ensureUserLoggedIn();
@@ -149,9 +150,9 @@ public abstract class SamplePanel extends VLayout {
 	// Private methods:
 	// -------------------------------------------------------------------------
 
-//	private String getSourceFileName() {
-//		return "/" + getClass().getName().replaceAll("\\.", "/") + ".txt";
-//	}
+	// private String getSourceFileName() {
+	// return "/" + getClass().getName().replaceAll("\\.", "/") + ".txt";
+	// }
 
 	private void getJavaSource() {
 		String[] resourceFiles = new String[getConfigurationFiles().length + 1];
@@ -180,7 +181,7 @@ public abstract class SamplePanel extends VLayout {
 	private void showFiles(Map<String, String> fileContents) {
 		Window sourceWindow = new Window();
 		sourceWindow.setTitle(I18nProvider.getSampleMessages().generalSourceTitle());
-		sourceWindow.setHeaderIcon("[ISOMORPHIC]/geomajas/example/images/geomajas_favicon.jpg", 16, 16);
+		sourceWindow.setHeaderIcon("[ISOMORPHIC]/geomajas/example/images/geomajas_desktopicoon_small.png", 16, 16);
 		sourceWindow.setKeepInParentRect(true);
 		sourceWindow.setWidth(640);
 		sourceWindow.setHeight(480);

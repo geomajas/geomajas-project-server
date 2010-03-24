@@ -23,17 +23,18 @@
 
 package org.geomajas.gwt.client.samples.mapwidget;
 
-import com.smartgwt.client.widgets.Canvas;
-import com.smartgwt.client.widgets.layout.VLayout;
 import org.geomajas.gwt.client.controller.PanController;
 import org.geomajas.gwt.client.samples.base.SamplePanel;
 import org.geomajas.gwt.client.samples.base.SamplePanelFactory;
 import org.geomajas.gwt.client.samples.i18n.I18nProvider;
 import org.geomajas.gwt.client.widget.MapWidget;
 
+import com.smartgwt.client.widgets.Canvas;
+import com.smartgwt.client.widgets.layout.VLayout;
+
 /**
  * Sample that shows two Google maps, one with normal, one satellite.
- *
+ * 
  * @author Joachim Van der Auwera
  */
 public class GoogleSample extends SamplePanel {
@@ -51,16 +52,25 @@ public class GoogleSample extends SamplePanel {
 		VLayout layout = new VLayout();
 		layout.setWidth100();
 		layout.setHeight100();
+		layout.setMembersMargin(10);
 
-		// Map with ID googleMap is defined in the XML configuration. (mapGoogle.xml) 
+		// Create map with Google layer, and add a PanController to it:
+		VLayout mapLayout1 = new VLayout();
+		mapLayout1.setShowEdges(true);
 		final MapWidget googleMap = new MapWidget("googleMap", "gwt-samples");
-		final MapWidget googleSatMap = new MapWidget("googleSatMap", "gwt-samples");
-
-		// Set a panning controller on the map and add in layout
 		googleMap.setController(new PanController(googleMap));
-		layout.addMember(googleMap);
+		mapLayout1.addMember(googleMap);
+
+		// Create map with Google layer (satellite), and add a PanController to it:
+		VLayout mapLayout2 = new VLayout();
+		mapLayout2.setShowEdges(true);
+		final MapWidget googleSatMap = new MapWidget("googleSatMap", "gwt-samples");
 		googleSatMap.setController(new PanController(googleSatMap));
-		layout.addMember(googleSatMap);
+		mapLayout2.addMember(googleSatMap);
+
+		// Place both in the layout:
+		layout.addMember(mapLayout1);
+		layout.addMember(mapLayout2);
 
 		return layout;
 	}
@@ -74,8 +84,7 @@ public class GoogleSample extends SamplePanel {
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] {
-				"classpath:org/geomajas/gwt/samples/mapwidget/mapGoogle.xml",
+		return new String[] { "classpath:org/geomajas/gwt/samples/mapwidget/mapGoogle.xml",
 				"classpath:org/geomajas/gwt/samples/mapwidget/layerGoogle.xml",
 				"classpath:org/geomajas/gwt/samples/mapwidget/mapGoogleSat.xml",
 				"classpath:org/geomajas/gwt/samples/mapwidget/layerGoogleSat.xml" };

@@ -50,10 +50,10 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		<property name="maximumScale" value="9.5" />
 		<property name="initialBounds">
 			<bean class="org.geomajas.geometry.Bbox">
-				<property name="x" value="505500" />
-				<property name="y" value="6588000" />
-				<property name="width" value="2000" />
-				<property name="height" value="2000" />
+				<property name="x" value="272075"/>
+				<property name="y" value="6325193"/>
+				<property name="width" value="454935"/>
+				<property name="height" value="392154"/>
 			</bean>
 		</property>
 		<property name="layers">
@@ -66,13 +66,13 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 					<property name="viewScaleMax" value="50" />
 					<property name="style" value="1" />
 				</bean>
-				<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="geotoolsLayer">
-					<property name="serverLayerId" value="geotoolsStructures" />
-					<property name="label" value="Geotools layer" />
-					<property name="visible" value="true" />
-					<property name="viewScaleMin" value="0" />
-					<property name="viewScaleMax" value="100000" />
-					<property name="namedStyleInfo" ref="geotoolsStructuresStyleInfo" />
+				<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="provincesGTLayer">
+					<property name="serverLayerId" value="provinces" />
+				  	<property name="label" value="Provinces"/>
+					<property name="visible" value="true"/>
+					<property name="viewScaleMin" value="0"/>
+					<property name="viewScaleMax" value="1000"/>
+					<property name="namedStyleInfo" ref="provincesStyleInfo" />
 				</bean>
 			</list>
 		</property>

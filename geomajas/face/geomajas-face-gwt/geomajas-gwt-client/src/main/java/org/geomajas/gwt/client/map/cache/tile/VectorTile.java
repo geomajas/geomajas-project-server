@@ -136,13 +136,13 @@ public class VectorTile extends AbstractVectorTile {
 	 * @param callback
 	 *            When this node's data comes from the server, it will be handled by this callback function.
 	 */
-	public void fetch(String filter, final TileFunction<VectorTile> callback) {
+	public void fetch(final String filter, final TileFunction<VectorTile> callback) {
 		GwtCommand command = createCommand(filter);
 		final VectorTile self = this;
 		deferred = GwtCommandDispatcher.getInstance().execute(command, new CommandCallback() {
 
 			public void execute(CommandResponse response) {
-				if (!deferred.isCancelled() && response instanceof GetRenderedTileResponse) {
+				if (!(deferred != null && deferred.isCancelled()) && response instanceof GetRenderedTileResponse) {
 					GetRenderedTileResponse tileResponse = (GetRenderedTileResponse) response;
 					org.geomajas.layer.tile.VectorTile tile = tileResponse.getTile();
 					if (tile.getFeatures() != null) {
@@ -150,6 +150,9 @@ public class VectorTile extends AbstractVectorTile {
 							cache.addFeature(new Feature(dto, cache.getLayer()));
 							featureIds.add(dto.getId());
 						}
+					}
+					for (TileCode relatedTile : tile.getCodes()) {
+						codes.add(relatedTile);
 					}
 					code = tile.getCode();
 					screenWidth = tile.getScreenWidth();
@@ -193,6 +196,40 @@ public class VectorTile extends AbstractVectorTile {
 				}
 			}
 		});
+	}
+
+	/**
+	 * Execute a TileFunction on this tile. If the tile is not yet loaded, attach it to the isLoaded event.
+	 * 
+	 * @param filter
+	 *            filter which needs to be applied when fetching
+	 * @param callback
+	 *            callback to call
+	 */
+	public void apply(final String filter, final TileFunction<VectorTile> callback) {
+		switch (getStatus()) {
+			case EMPTY:
+				fetch(filter, callback);
+				break;
+			case LOADING:
+				final VectorTile self = this;
+				deferred.addSuccessCallback(new CommandCallback() {
+
+					public void execute(CommandResponse response) {
+						if (response instanceof GetRenderedTileResponse) {
+							callback.execute(self);
+						}
+					}
+				});
+				break;
+			case LOADED:
+				if (cache.getLayer().isLabeled() && !labelContent.isLoaded()) {
+					// Check if the labels need to be fetched as well:
+					fetch(filter, callback);
+				} else {
+					callback.execute(this);
+				}
+		}
 	}
 
 	/**
@@ -285,37 +322,10 @@ public class VectorTile extends AbstractVectorTile {
 		public void accept(PainterVisitor visitor, Object group, Bbox bounds, boolean recursive) {
 		}
 	}
-	
-	//-------------------------------------------------------------------------
+
+	// -------------------------------------------------------------------------
 	// Private methods:
-	//-------------------------------------------------------------------------
-
-	/**
-	 * Execute a TileFunction on this tile. If the tile is not yet loaded, attach it to the isLoaded event.
-	 *
-	 * @param filter filter which needs to be applied when fetching
-	 * @param callback callback to call
-	 */
-	public void apply(final String filter, final TileFunction<VectorTile> callback) {
-		switch (getStatus()) {
-			case EMPTY:
-				fetch(filter, callback);
-				break;
-			case LOADING:
-				final VectorTile self = this;
-				deferred.addSuccessCallback(new CommandCallback() {
-
-					public void execute(CommandResponse response) {
-						if (response instanceof GetRenderedTileResponse) {
-							callback.execute(self);
-						}
-					}
-				});
-				break;
-			case LOADED:
-				callback.execute(this);
-		}
-	}
+	// -------------------------------------------------------------------------
 
 	private GwtCommand createCommand(String filter) {
 		GetRenderedTileRequest request = new GetRenderedTileRequest();

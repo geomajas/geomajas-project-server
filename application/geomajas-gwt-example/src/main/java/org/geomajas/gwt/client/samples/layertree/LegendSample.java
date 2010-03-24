@@ -23,6 +23,7 @@
 
 package org.geomajas.gwt.client.samples.layertree;
 
+import org.geomajas.gwt.client.controller.PanController;
 import org.geomajas.gwt.client.map.layer.Layer;
 import org.geomajas.gwt.client.samples.base.SamplePanel;
 import org.geomajas.gwt.client.samples.base.SamplePanelFactory;
@@ -73,6 +74,7 @@ public class LegendSample extends SamplePanel {
 		VLayout mapLayout = new VLayout();
 		mapLayout.setShowEdges(true);
 		final MapWidget map = new MapWidget("legendMap", "gwt-samples");
+		map.setController(new PanController(map));
 		mapLayout.addMember(map);
 
 		IButton rasterButton = new IButton("Toggle Raster layer");

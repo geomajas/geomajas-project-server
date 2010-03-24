@@ -123,15 +123,15 @@ public class GeomajasSamples implements EntryPoint {
 		selectItem.setHeight(21);
 		selectItem.setWidth(130);
 		LinkedHashMap<String, String> valueMap = new LinkedHashMap<String, String>();
+		valueMap.put("Graphite", "Graphite");
 		valueMap.put("EnterpriseBlue", "Enterprise Blue");
 		valueMap.put("Enterprise", "Enterprise Gray");
-		valueMap.put("Graphite", "Graphite");
 
 		selectItem.setValueMap(valueMap);
 
 		String currentSkin = Cookies.getCookie("skin_name");
 		if (currentSkin == null) {
-			currentSkin = "EnterpriseBlue";
+			currentSkin = "Graphite";
 		}
 		selectItem.setDefaultValue(currentSkin);
 		selectItem.setShowTitle(false);

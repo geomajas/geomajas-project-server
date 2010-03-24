@@ -55,20 +55,23 @@ public class LayertreeSample extends SamplePanel {
 		VLayout mainLayout = new VLayout();
 		mainLayout.setWidth100();
 		mainLayout.setHeight100();
-		mainLayout.setMembersMargin(10);
 
+		// Build a map, and set a PanController:
 		VLayout mapLayout = new VLayout();
 		mapLayout.setShowEdges(true);
 		final MapWidget map = new MapWidget("legendMap", "gwt-samples");
 		map.setController(new PanController(map));
 		mapLayout.addMember(map);
 
-		// build the layertree
+		// Build the LayerTree:
 		final LayerTree layerTree = new LayerTree(map);
 		layerTree.setHeight(180);
 		layerTree.setWidth100();
 		layerTree.setShowEdges(true);
+		layerTree.setShowResizeBar(true);
+		layerTree.setMinHeight(100);
 
+		// Add both to the main layout:
 		mainLayout.addMember(layerTree);
 		mainLayout.addMember(mapLayout);
 
@@ -84,9 +87,10 @@ public class LayertreeSample extends SamplePanel {
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "classpath:org/geomajas/gwt/samples/layertree/mapLayerTree.xml",
+		return new String[] { "classpath:org/geomajas/gwt/samples/layertree/mapLegend.xml",
 				"classpath:org/geomajas/gwt/samples/layertree/layerStructures.xml",
-				"classpath:org/geomajas/gwt/samples/layertree/layerRoads.xml" };
+				"classpath:org/geomajas/gwt/samples/layertree/layerRoads.xml",
+				"classpath:org/geomajas/gwt/samples/editing/layerCities.xml" };
 	}
 
 	public String ensureUserLoggedIn() {

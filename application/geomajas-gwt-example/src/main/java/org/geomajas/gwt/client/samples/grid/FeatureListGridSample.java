@@ -99,13 +99,10 @@ public class FeatureListGridSample extends SamplePanel {
 						new TileFunction<VectorTile>() {
 
 							public void execute(VectorTile tile) {
-								GWT.log("+++ get features", null);
 								tile.getFeatures(GeomajasConstant.FEATURE_INCLUDE_ALL, new LazyLoadCallback() {
 
 									public void execute(List<Feature> response) {
-										GWT.log("+++ add features in grid " + response, null);
 										for (Feature feature : response) {
-											GWT.log("+++ add feature in grid " + feature, null);
 											grid.addFeature(feature);
 										}
 									}
