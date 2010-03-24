@@ -63,7 +63,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 
 	private String userToken;
 
-	private boolean useLazyLoading = true;
+	private boolean useLazyLoading;
 
 	private int lazyFeatureIncludesDefault;
 
