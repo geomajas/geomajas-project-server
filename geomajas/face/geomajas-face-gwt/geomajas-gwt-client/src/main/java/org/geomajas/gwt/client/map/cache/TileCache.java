@@ -208,10 +208,11 @@ public class TileCache implements SpatialCache {
 
 	public void queryAndSync(Bbox bbox, String filter, TileFunction<VectorTile> onDelete,
 			TileFunction<VectorTile> onUpdate) {
-		boolean scaleChanged = previousScale > 0 &&
-				layer.getMapModel().getMapView().getCurrentScale() != previousScale;
+		boolean scaleChanged = previousScale > 0 && layer.getMapModel().getMapView().getCurrentScale() != previousScale;
+
 		if (scaleChanged || isDirty()) {
 			// Delete all tiles
+			clear();
 			for (VectorTile tile : evictedTiles) {
 				tile.cancel();
 				if (onDelete != null) {
@@ -270,8 +271,9 @@ public class TileCache implements SpatialCache {
 
 	/**
 	 * Calculate the best tile level to use for a certain view-bounds.
-	 *
-	 * @param bounds view bounds
+	 * 
+	 * @param bounds
+	 *            view bounds
 	 * @return best tile level for view bounds
 	 */
 	protected int calculateTileLevel(Bbox bounds) {
@@ -284,8 +286,9 @@ public class TileCache implements SpatialCache {
 
 	/**
 	 * Calculate the exact bounding box for a tile, given it's tile-code.
-	 *
-	 * @param tileCode tile code
+	 * 
+	 * @param tileCode
+	 *            tile code
 	 * @return bbox for tile
 	 */
 	protected Bbox calcBoundsForTileCode(TileCode tileCode) {
@@ -303,8 +306,9 @@ public class TileCache implements SpatialCache {
 
 	/**
 	 * Saves the complete array of TileCode objects for the given bounds (and the current scale).
-	 *
-	 * @param bounds view bounds
+	 * 
+	 * @param bounds
+	 *            view bounds
 	 * @return list of tiles in these bounds
 	 */
 	protected List<TileCode> calcCodesForBounds(Bbox bounds) {
