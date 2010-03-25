@@ -38,8 +38,23 @@ public final class XmlParser {
 	}
 
 	public static String parseXML(String xml) {
-		String temp = xml.replaceAll("<", "&lt;").replaceAll(">", "&gt;");
-		temp = temp.replaceAll("\t", "&nbsp;&nbsp;&nbsp;&nbsp;");
+		String temp = xml;
+
+		// remove copyright at start
+		int pos1 = xml.indexOf("www.geosparc.com");
+		int pos2 = xml.indexOf("-->");
+		if (pos1>0 && pos1 < pos2) {
+			pos2 += 3;
+			//while (Character.isWhitespace(temp.charAt(pos2))) {
+			while ((""+temp.charAt(pos2)).matches("\\s")) {
+				pos2++;
+			}
+			temp = temp.substring(pos2);
+		}
+
+		// base replacements for proper html
+		temp = temp.replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+		temp = temp.replaceAll("\\t", "&nbsp;&nbsp;&nbsp;&nbsp;");
 
 		String result = "";
 		boolean busy = true;
