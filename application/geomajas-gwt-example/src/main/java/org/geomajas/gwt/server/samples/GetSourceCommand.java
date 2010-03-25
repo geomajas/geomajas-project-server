@@ -55,7 +55,7 @@ public class GetSourceCommand implements Command<GetResourcesRequest, GetResourc
 				File file = ResourceUtils.getFile(request.getResources()[i]);
 				InputStream in = new FileInputStream(file);
 				if (in != null) {
-					String content = new String(read(in));
+					String content = new String(read(in), "UTF-8");
 					resources.put(request.getResources()[i], content);
 				} else {
 					throw new IllegalArgumentException("Resource file " + request.getResources()[i]

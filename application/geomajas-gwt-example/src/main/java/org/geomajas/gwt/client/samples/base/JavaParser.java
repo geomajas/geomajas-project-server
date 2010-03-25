@@ -83,7 +83,7 @@ public final class JavaParser {
 				commentString = commentString.replaceAll("<span style='color:#800080;'>", "");
 				commentString = commentString.replaceAll("</span>", "");
 				result += "<span style='color:#009900;'>" + commentString + "</span>";
-				temp = temp.substring(position + 1);
+				temp = temp.substring(position);
 			} else if (isMultiLineComment(temp)) {
 				int position = temp.indexOf("*/") + 2;
 				String commentString = temp.substring(0, position);
@@ -104,16 +104,10 @@ public final class JavaParser {
 	}
 
 	private static boolean isSingleLineComment(String content) {
-		if (content.startsWith("//")) {
-			return true;
-		}
-		return false;
+		return content.startsWith("//");
 	}
 	
 	private static boolean isMultiLineComment(String content) {
-		if ((content.startsWith("/*")) || (content.startsWith("/**"))) {
-			return true;
-		}
-		return false;
+		return content.startsWith("/*");
 	}
 }

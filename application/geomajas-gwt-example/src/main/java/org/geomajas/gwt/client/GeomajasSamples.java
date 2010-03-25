@@ -77,8 +77,6 @@ public class GeomajasSamples implements EntryPoint {
 
 	private TabSet mainTabSet;
 
-	private SampleTree sampleTree;
-
 	public void onModuleLoad() {
 		org.geomajas.gwt.client.i18n.I18nProvider.setLookUp(GWT.<ConstantsWithLookup>create(Samples.class));
 
@@ -157,7 +155,7 @@ public class GeomajasSamples implements EntryPoint {
 		leftTreeLayout.setShowResizeBar(true);
 		leftTreeLayout.setMembersMargin(1);
 
-		sampleTree = new SampleTree();
+		SampleTree sampleTree = new SampleTree();
 		sampleTree.addLeafClickHandler(new LeafClickHandler() {
 
 			public void onLeafClick(LeafClickEvent event) {
@@ -196,7 +194,7 @@ public class GeomajasSamples implements EntryPoint {
 		Authentication.getInstance().login("luc", "luc", null);
 		leftTreeLayout.addMember(userLabel);
 
-		// Show an AcivityMonitor:
+		// Show an ActivityMonitor:
 		ActivityMonitor monitor = new ActivityMonitor();
 		leftTreeLayout.addMember(monitor);
 

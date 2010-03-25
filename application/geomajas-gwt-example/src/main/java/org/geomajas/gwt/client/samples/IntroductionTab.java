@@ -34,7 +34,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
  * <p>
- * First test.....not really used....
+ * Show introduction message.
  * </p>
  * 
  * @author Pieter De Graef
