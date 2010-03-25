@@ -43,10 +43,10 @@ public final class XmlParser {
 		// remove copyright at start
 		int pos1 = xml.indexOf("www.geosparc.com");
 		int pos2 = xml.indexOf("-->");
-		if (pos1>0 && pos1 < pos2) {
+		if (pos1 > 0 && pos1 < pos2) {
 			pos2 += 3;
-			//while (Character.isWhitespace(temp.charAt(pos2))) {
-			while ((""+temp.charAt(pos2)).matches("\\s")) {
+			// while (Character.isWhitespace(temp.charAt(pos2))) {
+			while (("" + temp.charAt(pos2)).matches("\\s")) {
 				pos2++;
 			}
 			temp = temp.substring(pos2);
