@@ -137,13 +137,14 @@
 				<version>1.2</version>
 				<configuration>
 					<inplace>true</inplace>
-					<module>org.geomajas.gwt.GeomajasSimple</module>
+					<module>mypackage.GeomajasSimple</module>
 					<runTarget>index.html</runTarget>
 					<warSourceDirectory>war</warSourceDirectory>
 					<disableCastChecking>true</disableCastChecking>
 					<disableClassMetadata>true</disableClassMetadata>
 					<extraJvmArgs>-Xmx512M -Xss1024k</extraJvmArgs>
-					<i18nConstantsWithLookupBundle>org.geomajas.gwt.client.simple.i18n.Simple
+					<i18nConstantsWithLookupBundle>
+						mypackage.client.i18n.Simple
 					</i18nConstantsWithLookupBundle>
 				</configuration>
 				<executions>
@@ -190,7 +191,7 @@
 						<configuration>
 							<tasks>
 								<delete dir="war/WEB-INF/lib" />
-								<delete dir="war/org.geomajas.gwt.GeomajasSimple" />
+								<delete dir="war/mypackage.GeomajasSimple" />
 							</tasks>
 						</configuration>
 						<goals>
@@ -229,7 +230,7 @@
 						<version>1.2</version>
 						<configuration>
 							<inplace>true</inplace>
-							<module>org.geomajas.gwt.GeomajasSimple</module>
+							<module>mypackage.GeomajasSimple</module>
 							<runTarget>index.html</runTarget>
 							<warSourceDirectory>war</warSourceDirectory>
 							<disableCastChecking>true</disableCastChecking>

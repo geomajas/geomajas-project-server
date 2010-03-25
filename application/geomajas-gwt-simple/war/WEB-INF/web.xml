@@ -6,16 +6,16 @@
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
-            org/geomajas/gwt/simple/shapeinmem/applicationContext.xml
-            org/geomajas/gwt/simple/shapeinmem/layerRoads.xml
-			org/geomajas/gwt/simple/shapeinmem/layerStructures.xml
-			org/geomajas/gwt/simple/shapeinmem/layerOsm.xml
+            mypackage/shapeinmem/applicationContext.xml
+            mypackage/shapeinmem/layerRoads.xml
+			mypackage/shapeinmem/layerStructures.xml
+			mypackage/shapeinmem/layerOsm.xml
   
         <!--
-            org/geomajas/gwt/simple/hibernate/applicationContext.xml
-            org/geomajas/gwt/simple/hibernate/layerRoads.xml
-			org/geomajas/gwt/simple/hibernate/layerStructures.xml
-			org/geomajas/gwt/simple/hibernate/layerOsm.xml
+            mypackage/hibernate/applicationContext.xml
+            mypackage/hibernate/layerRoads.xml
+			mypackage/hibernate/layerStructures.xml
+			mypackage/hibernate/layerOsm.xml
         -->
         </param-value>
     </context-param>
@@ -59,7 +59,7 @@
 
 	<servlet-mapping>
 		<servlet-name>GeomajasServiceServlet</servlet-name>
-		<url-pattern>/org.geomajas.gwt.GeomajasSimple/geomajasService</url-pattern>
+		<url-pattern>/mypackage.GeomajasSimple/geomajasService</url-pattern>
 	</servlet-mapping>
 
 	<welcome-file-list>

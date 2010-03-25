@@ -21,20 +21,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.gwt.client;
+package mypackage.client;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.geomajas.gwt.client.Geomajas;
 import org.geomajas.gwt.client.action.toolbar.RefreshConfigurationAction;
 import org.geomajas.gwt.client.i18n.I18nProvider;
 import org.geomajas.gwt.client.map.event.MapModelEvent;
 import org.geomajas.gwt.client.map.event.MapModelHandler;
-import org.geomajas.gwt.client.pages.AbstractTestPage;
-import org.geomajas.gwt.client.pages.ButtonPage;
-import org.geomajas.gwt.client.pages.FeatureListGridPage;
-import org.geomajas.gwt.client.pages.SearchPage;
-import org.geomajas.gwt.client.simple.i18n.Simple;
+import mypackage.client.pages.AbstractTestPage;
+import mypackage.client.pages.ButtonPage;
+import mypackage.client.pages.FeatureListGridPage;
+import mypackage.client.pages.SearchPage;
+import mypackage.client.i18n.Simple;
 import org.geomajas.gwt.client.widget.ActivityMonitor;
 import org.geomajas.gwt.client.widget.LayerTree;
 import org.geomajas.gwt.client.widget.Legend;
@@ -80,7 +81,7 @@ public class GeomajasSimple implements EntryPoint {
 	public void onModuleLoad() {
 		I18nProvider.setLookUp(GWT.<ConstantsWithLookup>create(Simple.class));
 		String name = GWT.getModuleName();
-		if (!"org.geomajas.gwt.GeomajasSimple".equals(name)) {
+		if (!"mypackage.GeomajasSimple".equals(name)) {
 			return;
 		}
 

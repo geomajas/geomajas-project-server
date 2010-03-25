@@ -33,7 +33,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 	<bean id="simpleSessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
 		<property name="dataSource" ref="simpleDataSource" />
 		<property name="configLocation">
-			<value>classpath:/org/geomajas/gwt/simple/hibernate/cfg/hibernate.cfg.xml
+			<value>classpath:/mypackage/hibernate/cfg/hibernate.cfg.xml
 			</value>
 		</property>
 		<property name="configurationClass">

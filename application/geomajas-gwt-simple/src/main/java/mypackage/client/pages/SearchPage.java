@@ -21,7 +21,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.gwt.client.pages;
+package mypackage.client.pages;
 
 import org.geomajas.gwt.client.widget.FeatureListGrid;
 import org.geomajas.gwt.client.widget.FeatureSearch;
@@ -39,12 +39,10 @@ import com.smartgwt.client.widgets.tab.TabSet;
  */
 public class SearchPage extends AbstractTestPage {
 
-	private FeatureSearch searchWidget;
-
 	public SearchPage(MapWidget map, final TabSet tabSet, FeatureListGrid table) {
 		super("Search", map);
 
-		searchWidget = new FeatureSearch(map.getMapModel(), true);
+		FeatureSearch searchWidget = new FeatureSearch(map.getMapModel(), true);
 		searchWidget.addSearchHandler(new DefaultSearchHandler(table) {
 
 			public void afterSearch() {
