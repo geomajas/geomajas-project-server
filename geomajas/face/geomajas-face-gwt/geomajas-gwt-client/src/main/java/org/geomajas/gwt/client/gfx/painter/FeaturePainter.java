@@ -30,6 +30,7 @@ import org.geomajas.gwt.client.gfx.PaintableGroup;
 import org.geomajas.gwt.client.gfx.Painter;
 import org.geomajas.gwt.client.gfx.style.ShapeStyle;
 import org.geomajas.gwt.client.map.feature.Feature;
+import org.geomajas.gwt.client.spatial.WorldViewTransformer;
 import org.geomajas.gwt.client.spatial.geometry.Geometry;
 import org.geomajas.gwt.client.spatial.geometry.LineString;
 import org.geomajas.gwt.client.spatial.geometry.MultiLineString;
@@ -37,7 +38,6 @@ import org.geomajas.gwt.client.spatial.geometry.MultiPoint;
 import org.geomajas.gwt.client.spatial.geometry.MultiPolygon;
 import org.geomajas.gwt.client.spatial.geometry.Point;
 import org.geomajas.gwt.client.spatial.geometry.Polygon;
-import org.geomajas.gwt.client.spatial.transform.WorldViewTransformer;
 
 /**
  * Painter implementation for {@link Feature}s.

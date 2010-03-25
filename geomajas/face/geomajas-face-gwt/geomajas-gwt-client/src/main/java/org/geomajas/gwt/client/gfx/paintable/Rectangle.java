@@ -37,7 +37,7 @@ import org.geomajas.gwt.client.spatial.Bbox;
  */
 public class Rectangle extends AbstractWorldPaintable {
 
-	private Bbox bounds;
+	private ShapeStyle style;
 
 	// -------------------------------------------------------------------------
 	// Constructors:
@@ -70,14 +70,18 @@ public class Rectangle extends AbstractWorldPaintable {
 	// -------------------------------------------------------------------------
 
 	public void setStyle(ShapeStyle style) {
-		setOriginalStyle(style);
+		this.style = style;
+	}
+
+	public ShapeStyle getStyle() {
+		return style;
 	}
 
 	public Bbox getBounds() {
-		return bounds;
+		return (Bbox) getLocation();
 	}
 
 	public void setBounds(Bbox bounds) {
-		this.bounds = bounds;
+		setOriginalLocation(bounds);
 	}
 }

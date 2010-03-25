@@ -32,7 +32,7 @@ import org.geomajas.gwt.client.map.event.MapViewChangedEvent;
 import org.geomajas.gwt.client.map.event.MapViewChangedHandler;
 import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.spatial.Matrix;
-import org.geomajas.gwt.client.spatial.transform.WorldViewTransformer;
+import org.geomajas.gwt.client.spatial.WorldViewTransformer;
 
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.event.shared.HandlerRegistration;

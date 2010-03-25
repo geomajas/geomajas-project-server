@@ -39,7 +39,7 @@ public class Text extends AbstractWorldPaintable {
 
 	private String content;
 
-	private Coordinate position;
+	private FontStyle style;
 
 	// -------------------------------------------------------------------------
 	// Constructors:
@@ -52,8 +52,8 @@ public class Text extends AbstractWorldPaintable {
 	public Text(String id, String content, Coordinate position, FontStyle style) {
 		super(id);
 		this.content = content;
-		this.position = position;
-		setOriginalStyle(style);
+		this.original = position;
+		this.style = style;
 	}
 
 	// -------------------------------------------------------------------------
@@ -69,15 +69,19 @@ public class Text extends AbstractWorldPaintable {
 	// -------------------------------------------------------------------------
 
 	public void setStyle(FontStyle style) {
-		setOriginalStyle(style);
+		this.style = style;
+	}
+
+	public FontStyle getStyle() {
+		return style;
 	}
 
 	public Coordinate getPosition() {
-		return position;
+		return (Coordinate) getLocation();
 	}
 
 	public void setPosition(Coordinate position) {
-		this.position = position;
+		setOriginalLocation(position);
 	}
 
 	public String getContent() {

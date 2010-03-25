@@ -23,8 +23,11 @@
 
 package org.geomajas.gwt.client.gfx.paintable;
 
+import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.gfx.WorldPaintable;
-import org.geomajas.gwt.client.gfx.style.Style;
+import org.geomajas.gwt.client.spatial.Bbox;
+import org.geomajas.gwt.client.spatial.WorldViewTransformer;
+import org.geomajas.gwt.client.spatial.geometry.Geometry;
 
 /**
  * <p>
@@ -33,8 +36,8 @@ import org.geomajas.gwt.client.gfx.style.Style;
  * </p>
  * <p>
  * See the {@link WorldPaintable} interface for more information on how to draw objects in world space. This abstract
- * implementation, facilitates the scaling of the style objects, so that for example the stroke-widths remain constant
- * even while zooming in and out.
+ * implementation, facilitates the transformation of the location objects, while still storing the original location
+ * object.
  * </p>
  * 
  * @author Pieter De Graef
@@ -43,11 +46,9 @@ public abstract class AbstractWorldPaintable implements WorldPaintable {
 
 	private String id;
 
-	private Style original;
+	protected Object original;
 
-	private Style scaled;
-
-	private boolean compensatingForScale;
+	protected Object transformed;
 
 	// -------------------------------------------------------------------------
 	// Package visible constructor:
@@ -57,7 +58,7 @@ public abstract class AbstractWorldPaintable implements WorldPaintable {
 	 * Package visible constructor that requires you to immediately set the ID.
 	 * 
 	 * @param parent
-	 *            parent group's object  
+	 *            parent group's object
 	 * @param id
 	 *            A preferably unique ID that identifies the object even after it is painted. This can later be used to
 	 *            update or delete it from the <code>GraphicsContext</code>.
@@ -71,41 +72,6 @@ public abstract class AbstractWorldPaintable implements WorldPaintable {
 	// -------------------------------------------------------------------------
 
 	/**
-	 * <p>
-	 * Scale the object. The scale parameter will usually be the opposite of the <code>MapView</code> scale. By default
-	 * only the style object will be scaled.
-	 * </p>
-	 * <p>
-	 * This method will created a clone from the original style, and scale that. This is only done when
-	 * <code>compensatingForScale</code> is set to <code>true</code>, otherwise this method does nothing.
-	 * </p>
-	 * 
-	 * @param scale
-	 *            The new scale factor to be applied on the style object.
-	 */
-	public void scale(double scale) {
-		if (compensatingForScale) {
-			scaled = original.clone();
-			scaled.scale(scale);
-		}
-	}
-
-	/** Returns the boolean value that determines whether or not the scaling should happen. */
-	public boolean isCompensatingForScale() {
-		return compensatingForScale;
-	}
-
-	/**
-	 * Boolean value that determines whether or not the scaling should happen.
-	 * 
-	 * @param compensatingForScale
-	 *            Set a new value.
-	 */
-	public void setCompensatingForScale(boolean compensatingForScale) {
-		this.compensatingForScale = compensatingForScale;
-	}
-
-	/**
 	 * Returns a preferably unique ID that identifies the object even after it is painted. This can later be used to
 	 * update or delete it from the <code>GraphicsContext</code>.
 	 */
@@ -113,28 +79,42 @@ public abstract class AbstractWorldPaintable implements WorldPaintable {
 		return id;
 	}
 
-	/**
-	 * Return the currently valid scale. When drawing in screen space or when not compensating for scale, this will
-	 * always return the original style. But when compensating for scale, and drawing in world space, this method will
-	 * return a scaled style object.
-	 */
-	public Style getStyle() {
-		if (compensatingForScale) {
-			return scaled;
-		}
+	/** Get the object that represents the original location (usually a coordinate, bbox or geometry). */
+	public Object getOriginalLocation() {
 		return original;
 	}
 
-	// -------------------------------------------------------------------------
-	// Protected methods:
-	// -------------------------------------------------------------------------
-
 	/**
-	 * A protected method that allows you to set the original style. This original will never be touched. It will be
-	 * used on the other hand to create clones as scaled style objects.
+	 * Perform a transformation from world space to pan space, so the location object can than be shown on the map,
+	 * using the pan group. Supports only {@link Coordinate}, {@link Bbox} and {@link Geometry} classes as location
+	 * object.
+	 * 
+	 * @param transformer
+	 *            The map's transformer.
 	 */
-	protected void setOriginalStyle(Style original) {
-		this.original = original;
-		this.scaled = original.clone();
+	public void transform(WorldViewTransformer transformer) {
+		if (original != null) {
+			if (original instanceof Coordinate) {
+				transformed = transformer.worldToPan((Coordinate) original);
+			} else if (original instanceof Bbox) {
+				transformed = transformer.worldToPan((Bbox) original);
+			} else if (original instanceof Geometry) {
+				transformed = transformer.worldToPan((Geometry) original);
+			}
+		}
+	}
+
+	/** Set a new original location object. Also resets the transformed location to null. */
+	protected void setOriginalLocation(Object location) {
+		original = location;
+		transformed = null;
+	}
+
+	/** Return the general location object. Preferably the transformed one, but if that is null, return the original. */
+	protected Object getLocation() {
+		if (transformed != null) {
+			return transformed;
+		}
+		return original;
 	}
 }

@@ -42,10 +42,7 @@ public class Image extends AbstractWorldPaintable {
 	 */
 	private String href;
 
-	/**
-	 * Bounding box storing position, width and height of the image.
-	 */
-	private Bbox bounds;
+	private PictureStyle style;
 
 	// -------------------------------------------------------------------------
 	// Constructors:
@@ -58,8 +55,8 @@ public class Image extends AbstractWorldPaintable {
 	public Image(RasterTile raster) {
 		super(raster.getId());
 		href = raster.getUrl();
-		bounds = new Bbox(raster.getBounds());
-		setOriginalStyle(new PictureStyle(1));
+		original = new Bbox(raster.getBounds());
+		style = new PictureStyle(1);
 	}
 
 	// -------------------------------------------------------------------------
@@ -85,15 +82,19 @@ public class Image extends AbstractWorldPaintable {
 	// -------------------------------------------------------------------------
 
 	public void setStyle(PictureStyle style) {
-		setOriginalStyle(style);
+		this.style = style;
+	}
+
+	public PictureStyle getStyle() {
+		return style;
 	}
 
 	public Bbox getBounds() {
-		return bounds;
+		return (Bbox) getLocation();
 	}
 
 	public void setBounds(Bbox bounds) {
-		this.bounds = bounds;
+		setOriginalLocation(bounds);
 	}
 
 	public String getHref() {

@@ -26,8 +26,8 @@ package org.geomajas.gwt.client.controller.editing;
 import org.geomajas.gwt.client.controller.AbstractSnappingController;
 import org.geomajas.gwt.client.map.feature.FeatureTransaction;
 import org.geomajas.gwt.client.map.feature.TransactionGeomIndex;
+import org.geomajas.gwt.client.spatial.WorldViewTransformer;
 import org.geomajas.gwt.client.spatial.geometry.Geometry;
-import org.geomajas.gwt.client.spatial.transform.WorldViewTransformer;
 import org.geomajas.gwt.client.widget.MapWidget;
 
 import com.smartgwt.client.types.VerticalAlignment;
@@ -129,7 +129,7 @@ public abstract class EditController extends AbstractSnappingController {
 			infoLabel = new GeometricInfoLabel(getTransformer());
 			infoLabel.addClickHandler(new DestroyLabelInfoOnClick());
 			infoLabel.setGeometry(ft.getNewFeatures()[0].getGeometry());
-			mapWidget.addChild(infoLabel);
+			infoLabel.animateMove(mapWidget.getWidth() - 155, 10);
 		}
 	}
 
@@ -221,13 +221,16 @@ public abstract class EditController extends AbstractSnappingController {
 		// Constructors:
 
 		protected GeometricInfoLabel(WorldViewTransformer transformer) {
+			setParentElement(mapWidget);
 			this.transformer = transformer;
 			setValign(VerticalAlignment.TOP);
 			setShowEdges(true);
-			setWidth(140);
-			setLeft(5);
-			setTop(5);
+			setWidth(145);
+			setPadding(3);
+			setLeft(mapWidget.getWidth() - 155);
+			setTop(-80);
 			setBackgroundColor("#FFFFFF");
+			setAnimateTime(500);
 		}
 
 		// Getters and setters:

@@ -64,15 +64,15 @@ public class MapModelPainter implements Painter {
 	 */
 	public void paint(Paintable paintable, Object group, GraphicsContext graphics) {
 		// Group for objects in pan space
-		graphics.drawGroup(null, mapWidget.getGroup(RenderGroup.PAN), 
-				mapWidget.getMapModel().getMapView().getPanToViewTranslation());
+		graphics.drawGroup(null, mapWidget.getGroup(RenderGroup.PAN), mapWidget.getMapModel().getMapView()
+				.getPanToViewTranslation());
 
 		// Group for objects in world space
 		graphics.drawGroup(null, mapWidget.getGroup(RenderGroup.WORLD), mapWidget.getMapModel().getMapView()
-				.getWorldToViewTransformation());
+				.getPanToViewTranslation());
 
 		// Group for objects in screen space
-		graphics.drawGroup(null,  mapWidget.getGroup(RenderGroup.SCREEN));
+		graphics.drawGroup(null, mapWidget.getGroup(RenderGroup.SCREEN));
 	}
 
 	/**

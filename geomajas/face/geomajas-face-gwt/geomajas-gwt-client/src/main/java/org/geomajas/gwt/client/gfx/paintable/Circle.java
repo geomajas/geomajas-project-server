@@ -37,15 +37,10 @@ import org.geomajas.gwt.client.spatial.Bbox;
  */
 public class Circle extends AbstractWorldPaintable {
 
-	/**
-	 * A circle needs to be drawn at a certain location.
-	 */
-	private Coordinate position;
-
-	/**
-	 * Radius of the circle.
-	 */
+	/** Radius of the circle. */
 	private float radius;
+
+	private ShapeStyle style;
 
 	// -------------------------------------------------------------------------
 	// Constructors:
@@ -59,7 +54,7 @@ public class Circle extends AbstractWorldPaintable {
 	}
 
 	// -------------------------------------------------------------------------
-	// Paintable implementation:
+	// WorldPaintable implementation:
 	// -------------------------------------------------------------------------
 
 	/**
@@ -76,14 +71,16 @@ public class Circle extends AbstractWorldPaintable {
 		visitor.visit(this, group);
 	}
 
+	// -------------------------------------------------------------------------
 	// Getters and setters:
+	// -------------------------------------------------------------------------
 
 	public Coordinate getPosition() {
-		return position;
+		return (Coordinate) getLocation();
 	}
 
 	public void setPosition(Coordinate position) {
-		this.position = position;
+		setOriginalLocation(position);
 	}
 
 	public float getRadius() {
@@ -94,7 +91,11 @@ public class Circle extends AbstractWorldPaintable {
 		this.radius = radius;
 	}
 
+	public ShapeStyle getStyle() {
+		return style;
+	}
+
 	public void setStyle(ShapeStyle style) {
-		setOriginalStyle(style);
+		this.style = style;
 	}
 }

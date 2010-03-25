@@ -43,7 +43,7 @@ import org.geomajas.gwt.client.spatial.geometry.Polygon;
  * @author Pieter De Graef
  * @author Jan De Moerloose
  */
-public class GeometryPainter  implements Painter {
+public class GeometryPainter implements Painter {
 
 	/**
 	 * Return the class-name of the type of object this painter can paint.

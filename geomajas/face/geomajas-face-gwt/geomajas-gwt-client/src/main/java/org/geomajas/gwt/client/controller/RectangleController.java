@@ -29,7 +29,7 @@ import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.gfx.paintable.Rectangle;
 import org.geomajas.gwt.client.gfx.style.ShapeStyle;
 import org.geomajas.gwt.client.spatial.Bbox;
-import org.geomajas.gwt.client.spatial.transform.WorldViewTransformer;
+import org.geomajas.gwt.client.spatial.WorldViewTransformer;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.MapWidget.RenderGroup;
 import org.geomajas.gwt.client.widget.MapWidget.RenderStatus;

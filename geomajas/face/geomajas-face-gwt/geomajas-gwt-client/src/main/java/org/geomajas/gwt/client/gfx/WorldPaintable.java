@@ -23,20 +23,18 @@
 
 package org.geomajas.gwt.client.gfx;
 
-import org.geomajas.gwt.client.gfx.style.Style;
+import org.geomajas.gwt.client.spatial.WorldViewTransformer;
 
 /**
  * <p>
- * A {@link Paintable} object that has the ability to also be drawn in world space (next to screen space). For objects
- * in world space, it is important that they have the ability to scale their styles, as stroke-widths for example, may
- * become completely invisible when zooming out. Since this effect may not always be wanted, this interface allows you
- * to set it as an option.
+ * A {@link Paintable} object that has the ability to also be drawn in world space (next to screen space). To
+ * effectively draw your objects in world space, and have them move about automatically when navigating, you must not
+ * only render them, but also add them to the <code>MapWidget</code>. This <code>MapWidget</code> will apply the correct
+ * transformation matrix on the parent group of all world space objects, so they are drawn at the correct location.
  * </p>
  * <p>
- * Also to effectively draw your objects in world space, and have them move about automatically when navigating, you
- * must not only render them, but also add them to the <code>MapModel</code>. This <code>MapModel</code> will apply the
- * correct transformation matrix on the parent group of all world space objects, so they are drawn at the correct
- * location.
+ * To redraw the WorldPaintable objects, use the following piece of code:<br>
+ * <code>mapWidget.render(mapWidget.getMapModel(), RenderGroup.PAN, RenderStatus.UPDATE);</code>
  * </p>
  * 
  * @author Pieter De Graef
@@ -44,29 +42,16 @@ import org.geomajas.gwt.client.gfx.style.Style;
 public interface WorldPaintable extends Paintable {
 
 	/**
-	 * Retrieve the style to be used for this particular instance. When the <code>MapModel</code> transforms the
-	 * <code>WorldPaintable</code>s, it may also scale it's style object (i.e. to keep stroke-width constant).
+	 * Get the object that represents the original location (usually a coordinate, bbox or geometry).
 	 */
-	Style getStyle();
+	Object getOriginalLocation();
 
 	/**
-	 * Scale the object. The scale parameter will usually be the opposite of the <code>MapView</code> scale. By default
-	 * only the style object will be scaled. If you really want to scale the entire object, consider simply drawing in
-	 * screen space.
+	 * Perform a transformation from world space to pan space, so the location object can than be shown on the map,
+	 * using the pan group.
 	 * 
-	 * @param scale
-	 *            The new scale factor to be applied on this object.
+	 * @param transformer
+	 *            The map's transformer.
 	 */
-	void scale(double scale);
-
-	/**
-	 * Boolean value that determines whether or not the scaling should happen.
-	 * 
-	 * @param compensatingForScale
-	 *            Set a new value.
-	 */
-	void setCompensatingForScale(boolean compensatingForScale);
-
-	/** Returns the boolean value that determines whether or not the scaling should happen. */
-	boolean isCompensatingForScale();
+	void transform(WorldViewTransformer transformer);
 }

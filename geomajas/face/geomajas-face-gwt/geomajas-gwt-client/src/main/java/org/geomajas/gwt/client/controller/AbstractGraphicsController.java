@@ -24,7 +24,7 @@
 package org.geomajas.gwt.client.controller;
 
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.gwt.client.spatial.transform.WorldViewTransformer;
+import org.geomajas.gwt.client.spatial.WorldViewTransformer;
 import org.geomajas.gwt.client.util.GwtEventUtil;
 import org.geomajas.gwt.client.widget.MapWidget;
 

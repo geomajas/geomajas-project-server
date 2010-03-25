@@ -499,9 +499,15 @@ public class VmlGraphicsContext extends AbstractGraphicsContext {
 				applyElementSize(group, w, h, true);
 			}
 
-			// Determine element position:
+			// Apply element transformation:
 			if (transformation != null) {
 				applyAbsolutePosition(group, new Coordinate(transformation.getDx(), transformation.getDy()));
+
+				if (transformation.getXx() != 1) {
+					int w = Math.abs((int) Math.ceil(width / transformation.getXx()));
+					int h = Math.abs((int) Math.ceil(height / transformation.getYy()));
+					DOM.setElementAttribute(group, "coordsize", w + " " + h);
+				}
 			} else {
 				applyAbsolutePosition(group, new Coordinate(0, 0));
 			}

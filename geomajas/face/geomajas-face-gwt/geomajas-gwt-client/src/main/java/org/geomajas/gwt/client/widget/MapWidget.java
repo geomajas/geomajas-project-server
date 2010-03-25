@@ -352,19 +352,23 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 			}
 		} else {
 			if (RenderStatus.ALL.equals(status)) {
-				// Paint the world space paintable objects:
-				for (WorldPaintable worldPaintable : worldSpacePaintables) {
-					worldPaintable.scale(1 / getMapModel().getMapView().getCurrentScale());
-					worldPaintable.accept(painterVisitor, getGroup(RenderGroup.WORLD), mapModel.getMapView()
-							.getBounds(), true);
+				if (paintable == this.mapModel) {
+					// Paint the world space paintable objects:
+					for (WorldPaintable worldPaintable : worldSpacePaintables) {
+						worldPaintable.transform(mapModel.getMapView().getWorldViewTransformer());
+						worldPaintable.accept(painterVisitor, getGroup(RenderGroup.WORLD), mapModel.getMapView()
+								.getBounds(), true);
+					}
 				}
 				paintable.accept(painterVisitor, getGroup(group), mapModel.getMapView().getBounds(), true);
 			} else if (RenderStatus.UPDATE.equals(status)) {
-				// Paint the world space paintable objects:
-				for (WorldPaintable worldPaintable : worldSpacePaintables) {
-					worldPaintable.scale(1 / getMapModel().getMapView().getCurrentScale());
-					worldPaintable.accept(painterVisitor, getGroup(RenderGroup.WORLD), mapModel.getMapView()
-							.getBounds(), false);
+				if (paintable == this.mapModel) {
+					// Paint the world space paintable objects:
+					for (WorldPaintable worldPaintable : worldSpacePaintables) {
+						worldPaintable.transform(mapModel.getMapView().getWorldViewTransformer());
+						worldPaintable.accept(painterVisitor, getGroup(RenderGroup.WORLD), mapModel.getMapView()
+								.getBounds(), false);
+					}
 				}
 				paintable.accept(painterVisitor, getGroup(group), mapModel.getMapView().getBounds(), false);
 			}

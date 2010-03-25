@@ -38,7 +38,7 @@ import org.geomajas.gwt.client.spatial.geometry.Geometry;
  */
 public class GfxGeometry extends AbstractWorldPaintable {
 
-	private Geometry geometry;
+	private ShapeStyle style;
 
 	// -------------------------------------------------------------------------
 	// Constructors:
@@ -50,8 +50,8 @@ public class GfxGeometry extends AbstractWorldPaintable {
 
 	public GfxGeometry(String id, Geometry geometry, ShapeStyle style) {
 		super(id);
-		this.geometry = geometry;
-		setOriginalStyle(style);
+		this.style = style;
+		original = geometry;
 	}
 
 	// -------------------------------------------------------------------------
@@ -73,14 +73,18 @@ public class GfxGeometry extends AbstractWorldPaintable {
 	// -------------------------------------------------------------------------
 
 	public void setStyle(ShapeStyle style) {
-		setOriginalStyle(style);
+		this.style = style;
+	}
+
+	public ShapeStyle getStyle() {
+		return style;
 	}
 
 	public Geometry getGeometry() {
-		return geometry;
+		return (Geometry) getLocation();
 	}
 
 	public void setGeometry(Geometry geometry) {
-		this.geometry = geometry;
+		setOriginalLocation(geometry);
 	}
 }
