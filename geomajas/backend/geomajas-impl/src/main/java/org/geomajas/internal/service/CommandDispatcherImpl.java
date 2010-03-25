@@ -138,14 +138,14 @@ public final class CommandDispatcherImpl implements CommandDispatcher {
 			List<Throwable> errors = response.getErrors();
 			Locale localeObject = null;
 			if (null != errors && !errors.isEmpty()) {
+				StringBuilder logMessage = new StringBuilder("Command caused exceptions, passed on to caller:\n");
 				for (Throwable t : errors) {
+					String msg;
 					if (!(t instanceof GeomajasException)) {
-						log.error("unexpected " + t.getMessage(), t); // unexpected so log also
-						String msg = t.getMessage();
+						msg = t.getMessage();
 						if (null == msg) {
 							msg = t.getClass().getName();
 						}
-						response.getErrorMessages().add(msg);
 					} else {
 						if (log.isDebugEnabled()) {
 							log.debug("exception occurred {}, stack trace\n{}", t, t.getStackTrace());
@@ -153,15 +153,21 @@ public final class CommandDispatcherImpl implements CommandDispatcher {
 						if (null == localeObject && null != locale) {
 							localeObject = new Locale(locale);
 						}
-						response.getErrorMessages().add(((GeomajasException) t).getMessage(localeObject));
+						msg = ((GeomajasException) t).getMessage(localeObject);
 					}
+					response.getErrorMessages().add(msg);
+					logMessage.append(t.getMessage());
+					logMessage.append('\n');
+					logMessage.append(t.getStackTrace());
+					logMessage.append('\n');
 				}
+				log.warn(logMessage.toString());
 			}
 			response.setExecutionTime(System.currentTimeMillis() - begin);
 			return response;
 		} finally {
 			if (!tokenIdentical) {
-				// clear security context to previous
+				// clear security context
 				securityManager.clearSecurityContext();
 			}
 		}
