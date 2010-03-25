@@ -59,7 +59,7 @@ public class GeometryPainter  implements Painter {
 	 * 
 	 * @param paintable
 	 *            A {@link org.geomajas.gwt.client.gfx.paintable.Text} object.
-	 * @param Object
+	 * @param group
 	 *            The group where the object resides in (optional).
 	 * @param graphics
 	 *            A GraphicsContext object, responsible for actual drawing.
@@ -90,12 +90,12 @@ public class GeometryPainter  implements Painter {
 	}
 
 	/**
-	 * Delete a <code>Paintable</code> object from the given <code>GraphicsContext</code>. It the object does not exist,
+	 * Delete a {@link Paintable} object from the given {@link GraphicsContext}. It the object does not exist,
 	 * nothing will be done.
 	 * 
 	 * @param paintable
 	 *            The object to be painted.
-	 * @param Object
+	 * @param group
 	 *            The group where the object resides in (optional).
 	 * @param graphics
 	 *            The context to paint on.

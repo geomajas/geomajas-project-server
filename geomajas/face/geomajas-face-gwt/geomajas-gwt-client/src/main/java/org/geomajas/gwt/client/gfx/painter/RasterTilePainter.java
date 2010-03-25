@@ -48,12 +48,12 @@ public class RasterTilePainter implements Painter {
 	}
 
 	/**
-	 * Delete a <code>Paintable</code> object from the given <code>GraphicsContext</code>. It the object does not exist,
+	 * Delete a {@link Paintable} object from the given {@link GraphicsContext}. It the object does not exist,
 	 * nothing will be done.
 	 * 
 	 * @param paintable
 	 *            The object to be painted.
-	 * @param Object
+	 * @param group
 	 *            The group where the object resides in (optional).
 	 * @param graphics
 	 *            The context to paint on.
