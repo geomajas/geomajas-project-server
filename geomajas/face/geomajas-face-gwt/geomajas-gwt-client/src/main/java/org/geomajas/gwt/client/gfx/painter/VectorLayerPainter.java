@@ -30,6 +30,7 @@ import org.geomajas.gwt.client.gfx.Painter;
 import org.geomajas.gwt.client.gfx.style.FontStyle;
 import org.geomajas.gwt.client.gfx.style.ShapeStyle;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
+import org.geomajas.layer.LayerType;
 
 /**
  * Painter for a VectorLayer object. Prepares the necessary groups for features, selected features and labels. Also
@@ -74,8 +75,11 @@ public class VectorLayerPainter implements Painter {
 		graphics.drawGroup(layer, layer.getLabelGroup(), labelStyle);
 
 		// Draw symbol types, as these can change any time:
-		for (FeatureStyleInfo style : layer.getLayerInfo().getNamedStyleInfo().getFeatureStyles()) {
-			graphics.drawSymbolDefinition(null, style.getStyleId(), style.getSymbol(), new ShapeStyle(style), null);
+		if (layer.getLayerInfo().getLayerType().equals(LayerType.POINT)
+				|| layer.getLayerInfo().getLayerType().equals(LayerType.MULTIPOINT)) {
+			for (FeatureStyleInfo style : layer.getLayerInfo().getNamedStyleInfo().getFeatureStyles()) {
+				graphics.drawSymbolDefinition(null, style.getStyleId(), style.getSymbol(), new ShapeStyle(style), null);
+			}
 		}
 
 		// Check layer visibility:
@@ -94,8 +98,8 @@ public class VectorLayerPainter implements Painter {
 	}
 
 	/**
-	 * Delete a {@link Paintable} object from the given {@link GraphicsContext}. It the object does not exist,
-	 * nothing will be done.
+	 * Delete a {@link Paintable} object from the given {@link GraphicsContext}. It the object does not exist, nothing
+	 * will be done.
 	 * 
 	 * @param paintable
 	 *            The object to be painted.
@@ -112,7 +116,7 @@ public class VectorLayerPainter implements Painter {
 
 	/**
 	 * Get the default font style used to draw labels.
-	 *
+	 * 
 	 * @return font style
 	 */
 	public FontStyle getLabelStyle() {
