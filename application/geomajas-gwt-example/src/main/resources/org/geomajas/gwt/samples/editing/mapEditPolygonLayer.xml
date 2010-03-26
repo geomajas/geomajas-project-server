@@ -69,6 +69,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 					<list>
 						<ref bean="ZoomIn" />
 						<ref bean="ZoomOut" />
+						<ref bean="PanMode" />
 						<ref bean="ToolbarSeparator" />
 						<ref bean="EditMode" />
 					</list>

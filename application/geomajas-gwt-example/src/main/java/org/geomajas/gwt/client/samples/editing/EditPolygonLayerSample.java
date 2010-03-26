@@ -23,13 +23,13 @@
 
 package org.geomajas.gwt.client.samples.editing;
 
-import org.geomajas.gwt.client.controller.editing.ParentEditController;
 import org.geomajas.gwt.client.map.event.MapModelEvent;
 import org.geomajas.gwt.client.map.event.MapModelHandler;
 import org.geomajas.gwt.client.samples.base.SamplePanel;
 import org.geomajas.gwt.client.samples.base.SamplePanelFactory;
 import org.geomajas.gwt.client.samples.i18n.I18nProvider;
 import org.geomajas.gwt.client.widget.MapWidget;
+import org.geomajas.gwt.client.widget.Toolbar;
 
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.Label;
@@ -72,7 +72,12 @@ public class EditPolygonLayerSample extends SamplePanel {
 				map.getMapModel().selectLayer(map.getMapModel().getLayer("structuresLayer"));
 			}
 		});
-		map.setController(new ParentEditController(map));
+
+		// Create a toolbar for this map:
+		final Toolbar toolbar = new Toolbar(map);
+		toolbar.setButtonSize(Toolbar.BUTTON_SIZE_BIG);
+
+		mapLayout.addMember(toolbar);
 		mapLayout.addMember(map);
 
 		// Add an explanation to the page that explains how editing is done:
