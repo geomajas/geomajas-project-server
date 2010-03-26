@@ -69,7 +69,7 @@ public class EditLineLayerSample extends SamplePanel {
 
 			// When the map is initialized: select the cities layer - so that new features are created in this layer:
 			public void onMapModelChange(MapModelEvent event) {
-				map.getMapModel().selectLayer(map.getMapModel().getLayer("roadsLayer"));
+				map.getMapModel().selectLayer(map.getMapModel().getLayer("duisburgRoadsLayer"));
 			}
 		});
 		map.setController(new ParentEditController(map));

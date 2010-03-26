@@ -25,13 +25,15 @@ package org.geomajas.gwt.client.action.layertree;
 
 import org.geomajas.gwt.client.i18n.I18nProvider;
 import org.geomajas.gwt.client.map.layer.Layer;
+import org.geomajas.gwt.client.map.layer.RasterLayer;
+import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.MapWidget.RenderGroup;
 import org.geomajas.gwt.client.widget.MapWidget.RenderStatus;
 
 /**
  * Refreshes the currently selected layer on the map.
- *
+ * 
  * @author Pieter De Graef
  */
 public class LayerRefreshAction extends LayerTreeAction {
@@ -45,7 +47,13 @@ public class LayerRefreshAction extends LayerTreeAction {
 	}
 
 	public void onClick(Layer<?> layer) {
-		map.render(layer, RenderGroup.PAN, RenderStatus.DELETE);
+		if (layer instanceof VectorLayer) {
+			VectorLayer vLayer = (VectorLayer) layer;
+			vLayer.getFeatureStore().clear();
+		} else if (layer instanceof RasterLayer) {
+			RasterLayer rLayer = (RasterLayer) layer;
+			rLayer.getStore().clear();
+		}
 		map.render(layer, RenderGroup.PAN, RenderStatus.ALL);
 	}
 

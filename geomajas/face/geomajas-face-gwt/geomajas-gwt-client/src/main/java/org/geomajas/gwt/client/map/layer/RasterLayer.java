@@ -32,8 +32,10 @@ import org.geomajas.gwt.client.map.store.RasterLayerStore;
 import org.geomajas.gwt.client.spatial.Bbox;
 
 /**
- * <p> The client side representation of a raster layer. </p>
- *
+ * <p>
+ * The client side representation of a raster layer.
+ * </p>
+ * 
  * @author Jan De Moerloose
  */
 public class RasterLayer extends AbstractLayer<ClientRasterLayerInfo> {
@@ -42,8 +44,9 @@ public class RasterLayer extends AbstractLayer<ClientRasterLayerInfo> {
 
 	/**
 	 * The only constructor! Set the MapModel and the layer info.
-	 *
-	 * @param mapModel The model of layers and features behind a map. This layer will be a part of this model.
+	 * 
+	 * @param mapModel
+	 *            The model of layers and features behind a map. This layer will be a part of this model.
 	 */
 	public RasterLayer(MapModel mapModel, ClientRasterLayerInfo layerInfo) {
 		super(mapModel, layerInfo);
@@ -53,14 +56,17 @@ public class RasterLayer extends AbstractLayer<ClientRasterLayerInfo> {
 	@Override
 	public void accept(final PainterVisitor visitor, final Object group, final Bbox bounds, boolean recursive) {
 		visitor.visit(this, group);
+
 		// When visible, take care of fetching through an applyAndSync:
 		if (recursive && isShowing()) {
 			TileFunction<RasterTile> onDelete = new TileFunction<RasterTile>() {
+
 				public void execute(RasterTile tile) {
 					visitor.remove(tile, group);
 				}
 			};
 			TileFunction<RasterTile> onUpdate = new TileFunction<RasterTile>() {
+
 				// Updating a tile, is simply re-rendering it:
 				public void execute(RasterTile tile) {
 					tile.accept(visitor, group, bounds, true);
@@ -70,4 +76,7 @@ public class RasterLayer extends AbstractLayer<ClientRasterLayerInfo> {
 		}
 	}
 
+	public RasterLayerStore getStore() {
+		return store;
+	}
 }
