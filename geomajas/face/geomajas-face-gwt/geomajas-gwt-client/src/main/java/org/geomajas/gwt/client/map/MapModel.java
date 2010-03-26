@@ -137,6 +137,10 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 	public HandlerRegistration addLayerSelectionHandler(LayerSelectionHandler handler) {
 		return handlerManager.addHandler(LayerSelectionHandler.TYPE, handler);
 	}
+	
+	public void removeMapModelHandler(MapModelHandler handler) {
+		handlerManager.removeHandler(MapModelEvent.TYPE, handler);
+	}
 
 	// -------------------------------------------------------------------------
 	// Implementation of the Paintable interface:

@@ -130,6 +130,8 @@ public class Legend extends Canvas {
 					// For vector layer; loop over the style definitions:
 					for (FeatureStyleInfo styleInfo : vLayer.getLayerInfo().getNamedStyleInfo().getFeatureStyles()) {
 						ShapeStyle style = new ShapeStyle(styleInfo);
+						graphics.drawSymbolDefinition(null, styleInfo.getStyleId(), styleInfo.getSymbol(),
+								new ShapeStyle(styleInfo), null);
 						lineCount++;
 
 						if (vLayer.getLayerInfo().getLayerType() == LayerType.LINESTRING

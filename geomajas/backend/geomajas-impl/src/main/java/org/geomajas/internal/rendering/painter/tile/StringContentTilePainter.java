@@ -52,7 +52,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Envelope;
 
 /**
  * <p>
@@ -296,9 +295,8 @@ public class StringContentTilePainter implements TilePainter {
 			return document;
 		} else if (TileMetadata.PARAM_VML_RENDERER.equalsIgnoreCase(renderer)) {
 			DefaultVmlDocument document = new DefaultVmlDocument(writer);
-			Envelope bounds = tile.getBounds();
-			int coordWidth = (int) Math.round(scale * bounds.getWidth());
-			int coordHeight = (int) Math.round(scale * bounds.getHeight());
+			int coordWidth = (int) tile.getScreenWidth();
+			int coordHeight = (int) tile.getScreenHeight();
 			document.registerWriter(InternalFeatureImpl.class, new VmlFeatureWriter(getTransformer(), coordWidth,
 					coordHeight));
 			document.registerWriter(InternalTileImpl.class, new VmlLabelTileWriter(coordWidth, coordHeight,

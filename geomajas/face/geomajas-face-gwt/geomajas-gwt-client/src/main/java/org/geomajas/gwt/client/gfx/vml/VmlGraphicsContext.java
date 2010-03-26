@@ -23,6 +23,9 @@
 
 package org.geomajas.gwt.client.gfx.vml;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.geomajas.configuration.SymbolInfo;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.gfx.AbstractGraphicsContext;
@@ -39,7 +42,6 @@ import org.geomajas.gwt.client.spatial.geometry.LineString;
 import org.geomajas.gwt.client.spatial.geometry.Polygon;
 import org.geomajas.gwt.client.util.DOM;
 
-import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.user.client.Element;
 import com.smartgwt.client.util.SC;
 
@@ -59,6 +61,8 @@ public class VmlGraphicsContext extends AbstractGraphicsContext {
 	private int height;
 
 	private String id;
+	
+	private Map<String, SymbolDefinition> symbolDefs = new HashMap<String, SymbolDefinition>();
 
 	// -------------------------------------------------------------------------
 	// Constructor:
@@ -225,67 +229,68 @@ public class VmlGraphicsContext extends AbstractGraphicsContext {
 		if (symbol == null) {
 			return;
 		}
+		symbolDefs.put(id, new SymbolDefinition(symbol, style));
 
-		// Step1: get or create the shape-type element:
-		Element shapeType = DOM.getElementById(id);
-		boolean isNew = (shapeType == null);
-		shapeType = createOrUpdateElement(DOM.NS_VML, null, id, "shapetype", style, transformation, false);
-
-		// If it is a new shape-type, define the necessary elements:
-		if (isNew) {
-			Element formulas = DOM.createElementNS(DOM.NS_VML, "formulas");
-			shapeType.appendChild(formulas);
-			DOM.setElementAttribute(shapeType, "coordsize", "1000 1000");
-
-			// Prepare 4 formulas TODO: how to extend this for complex geometries????
-			for (int i = 0; i < 4; i++) {
-				formulas.appendChild(DOM.createElementNS(DOM.NS_VML, "f"));
-			}
-		}
-
-		// Check what type of symbol:
-		if (symbol.getRect() != null) {
-
-			// Define a rectangle:
-			NodeList<com.google.gwt.dom.client.Element> formulas = shapeType.getElementsByTagName("f");
-			float width = symbol.getRect().getW();
-			float height = symbol.getRect().getH();
-
-			// Create the rectangle definition:
-			Element formula = DOM.createElementNS(DOM.NS_VML, "f");
-			DOM.setElementAttribute(formula, "eqn", "sum #0 " + "0 " + (int) (width / 2));
-			formulas.getItem(0).getParentNode().replaceChild(formula, formulas.getItem(0));
-
-			formula = (Element) formulas.getItem(1);
-			DOM.setElementAttribute(formula, "eqn", "sum #1 " + "0 " + (int) (height / 2));
-			formulas.getItem(0).getParentNode().replaceChild(formula, formulas.getItem(1));
-
-			formula = (Element) formulas.getItem(2);
-			DOM.setElementAttribute(formula, "eqn", "sum #0 " + (int) (width / 2) + " 0");
-			formulas.getItem(0).getParentNode().replaceChild(formula, formulas.getItem(2));
-
-			formula = (Element) formulas.getItem(3);
-			DOM.setElementAttribute(formula, "eqn", "sum #1 " + (int) (height / 2) + " 0");
-			formulas.getItem(0).getParentNode().replaceChild(formula, formulas.getItem(3));
-
-			DOM.setElementAttribute(shapeType, "path", "m@0@1 l@2@1 @2@3 @0@3xe");
-		} else if (symbol.getCircle() != null) {
-
-			// Define a circle:
-			NodeList<com.google.gwt.dom.client.Element> formulas = shapeType.getElementsByTagName("f");
-
-			// Create the circle definition:
-			Element formula = DOM.createElementNS(DOM.NS_VML, "f");
-			DOM.setElementAttribute(formula, "eqn", "sum #0 0 0");
-			formulas.getItem(0).getParentNode().replaceChild(formula, formulas.getItem(0));
-
-			formula = DOM.createElementNS(DOM.NS_VML, "f");
-			DOM.setElementAttribute(formula, "eqn", "sum #1 0 0");
-			formulas.getItem(0).getParentNode().replaceChild(formula, formulas.getItem(1));
-
-			float radius = symbol.getCircle().getR();
-			DOM.setElementAttribute(shapeType, "path", "al @0 @1 " + radius + " " + radius + " 0 23592600x");
-		}
+//		// Step1: get or create the shape-type element:
+//		Element shapeType = DOM.getElementById(id);
+//		boolean isNew = (shapeType == null);
+//		shapeType = createOrUpdateElement(DOM.NS_VML, null, id, "shapetype", style, transformation, false);
+//
+//		// If it is a new shape-type, define the necessary elements:
+//		if (isNew) {
+//			Element formulas = DOM.createElementNS(DOM.NS_VML, "formulas");
+//			shapeType.appendChild(formulas);
+//			DOM.setElementAttribute(shapeType, "coordsize", "1000 1000");
+//
+//			// Prepare 4 formulas TODO: how to extend this for complex geometries????
+//			for (int i = 0; i < 4; i++) {
+//				formulas.appendChild(DOM.createElementNS(DOM.NS_VML, "f"));
+//			}
+//		}
+//
+//		// Check what type of symbol:
+//		if (symbol.getRect() != null) {
+//
+//			// Define a rectangle:
+//			NodeList<com.google.gwt.dom.client.Element> formulas = shapeType.getElementsByTagName("f");
+//			float width = symbol.getRect().getW();
+//			float height = symbol.getRect().getH();
+//
+//			// Create the rectangle definition:
+//			Element formula = DOM.createElementNS(DOM.NS_VML, "f");
+//			DOM.setElementAttribute(formula, "eqn", "sum #0 " + "0 " + (int) (width / 2));
+//			formulas.getItem(0).getParentNode().replaceChild(formula, formulas.getItem(0));
+//
+//			formula = (Element) formulas.getItem(1);
+//			DOM.setElementAttribute(formula, "eqn", "sum #1 " + "0 " + (int) (height / 2));
+//			formulas.getItem(0).getParentNode().replaceChild(formula, formulas.getItem(1));
+//
+//			formula = (Element) formulas.getItem(2);
+//			DOM.setElementAttribute(formula, "eqn", "sum #0 " + (int) (width / 2) + " 0");
+//			formulas.getItem(0).getParentNode().replaceChild(formula, formulas.getItem(2));
+//
+//			formula = (Element) formulas.getItem(3);
+//			DOM.setElementAttribute(formula, "eqn", "sum #1 " + (int) (height / 2) + " 0");
+//			formulas.getItem(0).getParentNode().replaceChild(formula, formulas.getItem(3));
+//
+//			DOM.setElementAttribute(shapeType, "path", "m@0@1 l@2@1 @2@3 @0@3xe");
+//		} else if (symbol.getCircle() != null) {
+//
+//			// Define a circle:
+//			NodeList<com.google.gwt.dom.client.Element> formulas = shapeType.getElementsByTagName("f");
+//
+//			// Create the circle definition:
+//			Element formula = DOM.createElementNS(DOM.NS_VML, "f");
+//			DOM.setElementAttribute(formula, "eqn", "sum #0 0 0");
+//			formulas.getItem(0).getParentNode().replaceChild(formula, formulas.getItem(0));
+//
+//			formula = DOM.createElementNS(DOM.NS_VML, "f");
+//			DOM.setElementAttribute(formula, "eqn", "sum #1 0 0");
+//			formulas.getItem(0).getParentNode().replaceChild(formula, formulas.getItem(1));
+//
+//			float radius = symbol.getCircle().getR();
+//			DOM.setElementAttribute(shapeType, "path", "al @0 @1 " + radius + " " + radius + " 0 23592600x");
+//		}
 	}
 
 	/**
@@ -304,19 +309,37 @@ public class VmlGraphicsContext extends AbstractGraphicsContext {
 	 *            take on it's characteristics.
 	 */
 	public void drawSymbol(Object parent, String name, Coordinate position, ShapeStyle style, String shapeTypeId) {
-		Element shape = createOrUpdateElement(DOM.NS_VML, parent, name, "shape", style, null);
-		if (shapeTypeId != null) {
-			shape.setAttribute("type", "#" + shapeTypeId);
-		} else if (shape.getParentNode() instanceof Element) {
-			Element parentElement = (Element) shape.getParentNode();
-			shape.setAttribute("type", "#" + parentElement.getId() + ".style");
+		SymbolDefinition definition = symbolDefs.get(shapeTypeId);
+		if (position == null) {
+			return;
 		}
-		if (position != null) {
-			applyAbsolutePosition(shape, position);
-			DOM.setStyleAttribute(shape, "width", "100%");
-			DOM.setStyleAttribute(shape, "height", "100%");
-			DOM.setElementAttribute(shape, "coordsize", width + " " + height);
+		if (style == null) {
+			style = definition.getStyle();
 		}
+		SymbolInfo symbol = definition.getSymbol();
+		if (symbol.getRect() != null) {
+			Element rect = createOrUpdateElement(DOM.NS_VML, parent, name, "rect", style, null);
+
+			// Real position is the upper left corner of the rectangle:
+			float w = symbol.getRect().getW();
+			float h = symbol.getRect().getH();
+			applyAbsolutePosition(rect, new Coordinate(position.getX() - 0.5 * w, position.getY() - 0.5 * h));
+
+			// width and height
+			applyElementSize(rect, (int) w, (int) h, false);
+
+		} else if (symbol.getCircle() != null) {
+			Element circle = createOrUpdateElement(DOM.NS_VML, parent, name, "oval", style, null);
+
+			// Real position is the upper left corner of the circle:
+			float radius = symbol.getCircle().getR();
+			applyAbsolutePosition(circle, new Coordinate(position.getX() - radius, position.getY() - radius));
+
+			// width and height are both radius*2
+			int size = (int) (2 * radius);
+			applyElementSize(circle, size, size, false);
+		}
+
 	}
 
 	/**
@@ -649,4 +672,32 @@ public class VmlGraphicsContext extends AbstractGraphicsContext {
 			DOM.setStyleAttribute(element, "height", height + "px");
 		}
 	}
+	
+	/**
+	 * Symbol definition data.
+	 * 
+	 * @author Jan De Moerloose
+	 *
+	 */
+	public class SymbolDefinition extends SymbolInfo {
+
+		private SymbolInfo symbol;
+
+		private ShapeStyle style;
+
+		public SymbolDefinition(SymbolInfo symbol, ShapeStyle style) {
+			this.symbol = symbol;
+			this.style = style;
+		}
+
+		public SymbolInfo getSymbol() {
+			return symbol;
+		}
+
+		public ShapeStyle getStyle() {
+			return style;
+		}
+
+	}
+
 }

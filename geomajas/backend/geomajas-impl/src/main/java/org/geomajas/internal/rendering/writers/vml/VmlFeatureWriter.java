@@ -23,8 +23,10 @@
 
 package org.geomajas.internal.rendering.writers.vml;
 
-import com.vividsolutions.jts.geom.Geometry;
+import org.geomajas.configuration.FeatureStyleInfo;
+import org.geomajas.configuration.SymbolInfo;
 import org.geomajas.internal.rendering.writers.GraphicsWriter;
+import org.geomajas.layer.LayerType;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.rendering.GraphicsDocument;
 import org.geomajas.rendering.RenderException;
@@ -32,6 +34,9 @@ import org.geotools.geometry.jts.GeometryCoordinateSequenceTransformer;
 import org.opengis.referencing.operation.TransformException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * Vml writer for features.
@@ -63,14 +68,53 @@ public class VmlFeatureWriter implements GraphicsWriter {
 				geom = feature.getClippedGeometry();
 			}
 			geom = transformer.transform(geom);
+			if (isPointLike(feature)) {
+				if (feature.getStyleInfo().getSymbol() != null) {
+					SymbolInfo info = feature.getStyleInfo().getSymbol();
+					if (info.getRect() != null) {
+						for (Coordinate coordinate : geom.getCoordinates()) {
+							document.writeElement("vml:rect", true);
+							document.writeAttribute("id", feature.getId());
+							int width = (int) info.getRect().getW();
+							int height = (int) info.getRect().getH();
+							int left = (int) coordinate.x - width / 2;
+							int top = (int) coordinate.y - height / 2;
+							document.writeAttribute("style", "WIDTH: " + width + "px; HEIGHT: " + height + "px;TOP: "
+									+ top + "px; LEFT: " + left + "px;");
+							FeatureStyleInfo style = feature.getStyleInfo();
+							document.writeAttribute("fillcolor", style.getFillColor());
+							document.writeAttribute("strokecolor", style.getStrokeColor());
+							document.writeAttribute("strokeweight", style.getStrokeWidth());
 
-			document.writeObject(geom, asChild);
-			document.writeAttribute("style", "WIDTH: 100%; HEIGHT: 100%");
-			document.writeAttribute("coordsize", coordWidth + "," + coordHeight);
-			document.writeAttribute("type", "#" + feature.getStyleInfo().getStyleId());
-			document.writeAttribute("id", feature.getId());
+							// Rect-fill element:
+							document.writeElement("vml:fill", true);
+							document.writeAttribute("opacity", Float.toString(style.getFillOpacity()));
+							document.closeElement();
+
+							// Rect-stroke element:
+							document.writeElement("vml:stroke", true);
+							document.writeAttribute("opacity", Float.toString(style.getStrokeOpacity()));
+							document.closeElement();
+
+							// Rect element
+							document.closeElement();
+						}
+					}
+				}
+			} else {
+				document.writeObject(geom, asChild);
+				document.writeAttribute("style", "WIDTH: 100%; HEIGHT: 100%");
+				document.writeAttribute("coordsize", coordWidth + "," + coordHeight);
+				document.writeAttribute("type", "#" + feature.getStyleInfo().getStyleId());
+				document.writeAttribute("id", feature.getId());
+			}
 		} catch (TransformException e) {
 			log.warn("could not render feature");
 		}
+	}
+	
+	private boolean isPointLike(InternalFeature feature) {
+		return feature.getLayer().getLayerInfo().getLayerType() == LayerType.POINT
+				|| feature.getLayer().getLayerInfo().getLayerType() == LayerType.MULTIPOINT;
 	}
 }
