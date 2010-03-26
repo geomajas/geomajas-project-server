@@ -2,7 +2,7 @@
 	<parent>
 		<groupId>org.geomajas</groupId>
 		<artifactId>geomajas</artifactId>
-		<version>1.5.4</version>
+		<version>1.6.0-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.test</groupId>
