@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas</groupId>
 	<artifactId>geomajas</artifactId>
-	<version>1.5.4-SNAPSHOT</version>
+	<version>1.5.4</version>
 	<packaging>pom</packaging>
 	<name>Geomajas framework</name>
 	<description>
@@ -13,9 +13,9 @@
 	<url>http://files.geomajas.org/maven/trunk/geomajas</url>
 
 	<scm>
-		<connection>scm:svn:https://svn.geomajas.org/majas/trunk</connection>
-		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk</developerConnection>
-		<url>https://svn.geomajas.org/majas/trunk</url>
+		<connection>scm:svn:https://svn.geomajas.org/majas/tags/1.5.4</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/1.5.4</developerConnection>
+		<url>https://svn.geomajas.org/majas/tags/1.5.4</url>
 	</scm>
 
 	<organization>
