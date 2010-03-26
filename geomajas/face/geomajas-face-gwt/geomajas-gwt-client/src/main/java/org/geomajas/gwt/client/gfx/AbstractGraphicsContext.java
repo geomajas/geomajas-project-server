@@ -301,7 +301,11 @@ public abstract class AbstractGraphicsContext implements GraphicsContext {
 	 *            The string representation of the cursor to use.
 	 */
 	public void setCursor(Object object, String cursor) {
-		doSetCursor(getGroup(object), cursor);
+		if (object == null) {
+			doSetCursor(getRootElement(), cursor);
+		} else {
+			doSetCursor(getGroup(object), cursor);
+		}
 	}
 
 	/**
