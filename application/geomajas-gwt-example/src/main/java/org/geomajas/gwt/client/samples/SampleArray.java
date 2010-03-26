@@ -124,6 +124,20 @@ public final class SampleArray {
 						"[ISOMORPHIC]/geomajas/edit.png", EditPolygonLayerSample.TITLE, "GeoGraphicEditing",
 						EditPolygonLayerSample.FACTORY),
 
+				// LayerTree & Legend samples:
+				new SampleTreeNode(I18nProvider.getSampleMessages().treeGroupLayerTree(),
+						"[ISOMORPHIC]/geomajas/layer.png", "Layertree", "topLevel"),
+				new SampleTreeNode(I18nProvider.getSampleMessages().layertreeTitle(),
+						"[ISOMORPHIC]/geomajas/layer.png", LayertreeSample.TITLE, "Layertree", LayertreeSample.FACTORY),
+				new SampleTreeNode(I18nProvider.getSampleMessages().legendTitle(), "[ISOMORPHIC]/geomajas/layer.png",
+						LegendSample.TITLE, "Layertree", LegendSample.FACTORY),
+
+				// FeatureListGrid samples:
+				new SampleTreeNode(I18nProvider.getSampleMessages().fltTitle(), "[ISOMORPHIC]/geomajas/layer.png",
+						"FeatureListGridGroup", "topLevel"),
+				new SampleTreeNode(I18nProvider.getSampleMessages().fltTitle(), "[ISOMORPHIC]/geomajas/layer.png",
+						FeatureListGridSample.TITLE, "FeatureListGridGroup", FeatureListGridSample.FACTORY),
+
 				// Map controller:
 				new SampleTreeNode(I18nProvider.getSampleMessages().treeGroupMapController(),
 						"[ISOMORPHIC]/geomajas/tools.png", "MapController", "topLevel"),
@@ -173,20 +187,6 @@ public final class SampleArray {
 				new SampleTreeNode(I18nProvider.getSampleMessages().customToolbarTitle(),
 						"[ISOMORPHIC]/geomajas/tools.png", CustomToolbarSample.TITLE, "ToolbarAndControllers",
 						CustomToolbarSample.FACTORY),
-
-				// LayerTree & Legend samples:
-				new SampleTreeNode(I18nProvider.getSampleMessages().treeGroupLayerTree(),
-						"[ISOMORPHIC]/geomajas/layer.png", "Layertree", "topLevel"),
-				new SampleTreeNode(I18nProvider.getSampleMessages().layertreeTitle(),
-						"[ISOMORPHIC]/geomajas/layer.png", LayertreeSample.TITLE, "Layertree", LayertreeSample.FACTORY),
-				new SampleTreeNode(I18nProvider.getSampleMessages().legendTitle(), "[ISOMORPHIC]/geomajas/layer.png",
-						LegendSample.TITLE, "Layertree", LegendSample.FACTORY),
-
-				// FeatureListGrid samples:
-				new SampleTreeNode(I18nProvider.getSampleMessages().fltTitle(), "[ISOMORPHIC]/geomajas/layer.png",
-						"FeatureListGridGroup", "topLevel"),
-				new SampleTreeNode(I18nProvider.getSampleMessages().fltTitle(), "[ISOMORPHIC]/geomajas/layer.png",
-						FeatureListGridSample.TITLE, "FeatureListGridGroup", FeatureListGridSample.FACTORY),
 
 				// Security samples:
 				new SampleTreeNode(I18nProvider.getSampleMessages().treeGroupSecurity(),

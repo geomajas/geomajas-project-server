@@ -25,6 +25,7 @@ package org.geomajas.gwt.client.samples.editing;
 
 import org.geomajas.gwt.client.map.event.MapModelEvent;
 import org.geomajas.gwt.client.map.event.MapModelHandler;
+import org.geomajas.gwt.client.samples.base.EditingManual;
 import org.geomajas.gwt.client.samples.base.SamplePanel;
 import org.geomajas.gwt.client.samples.base.SamplePanelFactory;
 import org.geomajas.gwt.client.samples.i18n.I18nProvider;
@@ -32,7 +33,6 @@ import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.Toolbar;
 
 import com.smartgwt.client.widgets.Canvas;
-import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
 
@@ -84,7 +84,7 @@ public class EditPointLayerSample extends SamplePanel {
 		HLayout infoLayout = new HLayout();
 		infoLayout.setHeight("35%");
 		infoLayout.setShowEdges(true);
-		infoLayout.addMember(new Label("Explanation....todo"));
+		infoLayout.addMember(new EditingManual());
 
 		layout.addMember(mapLayout);
 		layout.addMember(infoLayout);
