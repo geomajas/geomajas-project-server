@@ -52,7 +52,8 @@ public class IntroductionTab extends SamplePanel {
 
 		Img logo = new Img("[ISOMORPHIC]/geomajas/temp/geomajas_logo.png");
 		logo.setWidth(600);
-		logo.setHeight(160);
+		logo.setHeight(220);
+		logo.setMargin(30);
 		logo.setLayoutAlign(Alignment.CENTER);
 
 		HTMLPane pane = new HTMLPane();
