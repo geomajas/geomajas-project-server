@@ -44,50 +44,109 @@ public class FeatureInfo implements Serializable {
 	private GeometryAttributeInfo geometryType;
 	private List<AttributeInfo> attributes = new ArrayList<AttributeInfo>();
 
+	/**
+	 * Get the data source name. This is used by the layer to know which data source to contact.
+	 *
+	 * @return data source name
+	 */
 	public String getDataSourceName() {
 		return dataSourceName;
 	}
 
+	/**
+	 * Set the data source name. This is used by the layer to know which data source to contact.
+	 *
+	 * @param dataSourceName data source name
+	 */
 	public void setDataSourceName(String dataSourceName) {
 		this.dataSourceName = dataSourceName;
 	}
 
+	/**
+	 * Get identifier description.
+	 *
+	 * @return identifier description
+	 */
 	public PrimitiveAttributeInfo getIdentifier() {
 		return identifier;
 	}
 
+	/**
+	 * Set the identifier description.
+	 *
+	 * @param identifier identifier description
+	 */
 	public void setIdentifier(PrimitiveAttributeInfo identifier) {
 		this.identifier = identifier;
 	}
 
+	/**
+	 * Get name of the sort attribute.
+	 *
+	 * @return sort attribute name
+	 */
 	public String getSortAttributeName() {
 		return sortAttributeName;
 	}
 
+	/**
+	 * Set the name of the sort attribute
+	 * @param sortAttributeName sort attribute name
+	 */
 	public void setSortAttributeName(String sortAttributeName) {
 		this.sortAttributeName = sortAttributeName;
 	}
 
+	/**
+	 * Get sort type (which indicates ascending or descending).
+	 *
+	 * @return sort type
+	 */
 	public SortType getSortType() {
 		return sortType;
 	}
 
+	/**
+	 * Set sort type (ascending or descending).
+	 *
+	 * @param sortType sort type
+	 */
 	public void setSortType(SortType sortType) {
 		this.sortType = sortType;
 	}
 
+	/**
+	 * Get geometry type, information about the geometry attribute.
+	 *
+	 * @return geometry attribute info
+	 */
 	public GeometryAttributeInfo getGeometryType() {
 		return geometryType;
 	}
 
+	/**
+	 * Set information about the geometry attribute.
+	 *
+	 * @param geometryType geometry attribute info
+	 */
 	public void setGeometryType(GeometryAttributeInfo geometryType) {
 		this.geometryType = geometryType;
 	}
 
+	/**
+	 * Get the attribute definitions.
+	 *
+	 * @return list of attribute info
+	 */
 	public List<AttributeInfo> getAttributes() {
 		return attributes;
 	}
 
+	/**
+	 * Set the list with attribute definitions.
+	 *
+	 * @param attributes attributes list
+	 */
 	public void setAttributes(List<AttributeInfo> attributes) {
 		this.attributes = attributes;
 	}

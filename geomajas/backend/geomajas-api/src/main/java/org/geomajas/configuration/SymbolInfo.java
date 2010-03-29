@@ -35,18 +35,38 @@ public class SymbolInfo implements Serializable {
 	private CircleInfo circle;
 	private RectInfo rect;
 
+	/**
+	 * Get the circle for the symbol.
+	 *
+	 * @return circle
+	 */
 	public CircleInfo getCircle() {
 		return circle;
 	}
 
+	/**
+	 * Set circle for the symbol.
+	 *
+	 * @param circle circle
+	 */
 	public void setCircle(CircleInfo circle) {
 		this.circle = circle;
 	}
 
+	/**
+	 * Get the rectangle for this symbol.
+	 *
+	 * @return rectangle
+	 */
 	public RectInfo getRect() {
 		return rect;
 	}
 
+	/**
+	 * Set the rectangle for this symbol.
+	 *
+	 * @param rect rectangle
+	 */
 	public void setRect(RectInfo rect) {
 		this.rect = rect;
 	}

@@ -51,29 +51,62 @@ public class SnappingRuleInfo implements Serializable {
 	@NotNull
 	private String layerId;
 
+	/**
+	 * Create snapping rule.
+	 */
 	public SnappingRuleInfo() {
 	}
 
+	/**
+	 * Get distance, the size of the raster which needs to be snapped to.
+	 *
+	 * @return snapping distance or granularity
+	 */
 	public double getDistance() {
 		return distance;
 	}
 
+	/**
+	 * Set the snapping distance of granularity.
+	 *
+	 * @param distance snapping distance or granularity
+	 */
 	public void setDistance(double distance) {
 		this.distance = distance;
 	}
 
+	/**
+	 * Get snapping type.
+	 *
+	 * @return snapping type
+	 */
 	public SnappingType getType() {
 		return type;
 	}
 
+	/**
+	 * Set the snapping type.
+	 *
+	 * @param type snapping type
+	 */
 	public void setType(SnappingType type) {
 		this.type = type;
 	}
 
+	/**
+	 * Get the id of the layer this snapping info applies to.
+	 *
+	 * @return layer id
+	 */
 	public String getLayerId() {
 		return layerId;
 	}
 
+	/**
+	 * Set the id of the layer this snapping info applies to.
+	 *
+	 * @param layerId layer id
+	 */
 	public void setLayerId(String layerId) {
 		this.layerId = layerId;
 	}

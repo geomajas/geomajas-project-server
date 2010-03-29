@@ -42,7 +42,7 @@ public class AssociationAttributeInfo extends AttributeInfo implements Serializa
 	private FeatureInfo feature;
 
 	/**
-	 * returns the type of the association (many-to-one, one-to-many, ...).
+	 * returns the type of the association (many-to-one, one-to-many).
 	 * 
 	 * @return association type
 	 */
@@ -50,12 +50,17 @@ public class AssociationAttributeInfo extends AttributeInfo implements Serializa
 		return type;
 	}
 
+	/**
+	 * Set the type of the association (many-to-one, one-to-many).
+	 *
+	 * @param type association type
+	 */
 	public void setType(AssociationType type) {
 		this.type = type;
 	}
 
 	/**
-	 * returns the feature information of this attribute (represented as feature).
+	 * Get the feature information of this attribute (represented as feature).
 	 * 
 	 * @return feature information
 	 */
@@ -63,6 +68,11 @@ public class AssociationAttributeInfo extends AttributeInfo implements Serializa
 		return feature;
 	}
 
+	/**
+	 * Set the feature information.
+	 *
+	 * @param featureInfo feature info
+	 */
 	public void setFeature(FeatureInfo featureInfo) {
 		this.feature = featureInfo;
 	}

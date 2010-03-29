@@ -38,10 +38,12 @@ public enum AssociationType {
 		value = v;
 	}
 
-	public String value() {
-		return value;
-	}
-
+	/**
+	 * Convert from string to enum value.
+	 *
+	 * @param value string representation
+	 * @return enum value
+	 */
 	public static AssociationType fromValue(String value) {
 		for (AssociationType c : AssociationType.values()) {
 			if (c.value.equals(value)) {
@@ -51,6 +53,11 @@ public enum AssociationType {
 		throw new IllegalArgumentException(value);
 	}
 
+	/**
+	 * Convert to string representation.
+	 *
+	 * @return string value
+	 */
 	@Override
 	public String toString() {
 		return value;

@@ -121,10 +121,6 @@ public class LegendIconComponent extends BaseComponent {
 				SymbolInfo symbol = styleInfo.getSymbol();
 				if (symbol.getRect() != null) {
 					context.fillRectangle(iconRect, fillColor);
-					if (symbol.getRect().getSrc() != null) {
-						img = context.getImage(symbol.getRect().getSrc());
-						context.drawImage(img, iconRect, null);
-					}
 					context.strokeRectangle(iconRect, strokeColor, baseWidth / 2);
 				} else {
 					context.fillEllipse(iconRect, fillColor);

@@ -34,7 +34,9 @@ public class PrimitiveAttributeInfo extends AttributeInfo implements Serializabl
 	private static final long serialVersionUID = 151L;
 	private PrimitiveType type;
 
-	/** Default constructor for GWT. */
+	/**
+	 * Default constructor for GWT.
+	 */
 	public PrimitiveAttributeInfo() {
 		this(null, null, null);
 	}
@@ -51,10 +53,20 @@ public class PrimitiveAttributeInfo extends AttributeInfo implements Serializabl
 		this.type = type;
 	}
 
+	/**
+	 * Get type for the value of the attribute.
+	 *
+	 * @return type for the value
+	 */
 	public PrimitiveType getType() {
 		return type;
 	}
 
+	/**
+	 * Set type for the value of the attribute.
+	 *
+	 * @param type type
+	 */
 	public void setType(PrimitiveType type) {
 		this.type = type;
 	}

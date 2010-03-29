@@ -34,28 +34,39 @@ public class RectInfo implements Serializable {
 	private static final long serialVersionUID = 151L;
 	private float h;
 	private float w;
-	private String src;
 
+	/**
+	 * Get height for the rectangle.
+	 *
+	 * @return rectangle height
+	 */
 	public float getH() {
 		return h;
 	}
 
+	/**
+	 * Set rectangle height.
+	 *
+	 * @param value rectangle height
+	 */
 	public void setH(float value) {
 		this.h = value;
 	}
 
-	public String getSrc() {
-		return src;
-	}
-
-	public void setSrc(String value) {
-		this.src = value;
-	}
-
+	/**
+	 * Get rectangle width.
+	 *
+	 * @return rectangle width
+	 */
 	public float getW() {
 		return w;
 	}
 
+	/**
+	 * Set rectangle width.
+	 *
+	 * @param value rectangle width
+	 */
 	public void setW(float value) {
 		this.w = value;
 	}

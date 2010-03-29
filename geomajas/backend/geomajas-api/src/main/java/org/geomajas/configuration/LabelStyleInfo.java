@@ -40,26 +40,56 @@ public class LabelStyleInfo implements Serializable {
 	private FeatureStyleInfo fontStyle;
 	private FeatureStyleInfo backgroundStyle;
 
+	/**
+	 * Get label attribute name.
+	 *
+	 * @return label attribute name
+	 */
 	public String getLabelAttributeName() {
 		return labelAttributeName;
 	}
 
+	/**
+	 * Set label attribute name.
+	 *
+	 * @param labelAttributeName label attribute name
+	 */
 	public void setLabelAttributeName(String labelAttributeName) {
 		this.labelAttributeName = labelAttributeName;
 	}
 
+	/**
+	 * Get font style for label.
+	 *
+	 * @return font style
+	 */
 	public FeatureStyleInfo getFontStyle() {
 		return fontStyle;
 	}
 
+	/**
+	 * Set font style for label.
+	 *
+	 * @param fontStyle font style
+	 */
 	public void setFontStyle(FeatureStyleInfo fontStyle) {
 		this.fontStyle = fontStyle;
 	}
 
+	/**
+	 * Get the background style for the labels.
+	 *
+	 * @return background style for label
+	 */
 	public FeatureStyleInfo getBackgroundStyle() {
 		return backgroundStyle;
 	}
 
+	/**
+	 * Set background style for labels.
+	 *
+	 * @param backgroundStyle background style for label
+	 */
 	public void setBackgroundStyle(FeatureStyleInfo backgroundStyle) {
 		this.backgroundStyle = backgroundStyle;
 	}

@@ -142,7 +142,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-checkstyle-plugin</artifactId>
-				<version>2.4</version>
+				<version>2.5</version>
 				<configuration>
 					<configLocation>config/geomajas-checkstyle.xml</configLocation>
 				</configuration>
@@ -158,7 +158,7 @@
 					<dependency>
 						<groupId>org.geomajas</groupId>
 						<artifactId>geomajas-checkstyle</artifactId>
-						<version>1.0.2</version>
+						<version>1.0.3</version>
 					</dependency>
 				</dependencies>
 			</plugin>

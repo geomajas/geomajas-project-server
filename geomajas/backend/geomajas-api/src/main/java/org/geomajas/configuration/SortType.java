@@ -32,6 +32,11 @@ public enum SortType {
 	ASC,
 	DESC;
 
+	/**
+	 * Get string value for type.
+	 *
+	 * @return value for type
+	 */
 	public String value() {
 		return name();
 	}

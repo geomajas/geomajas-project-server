@@ -60,9 +60,9 @@ public class AttributeInfo extends AttributeBaseInfo {
 	/**
 	 * Full-option constructor.
 	 *
-	 * @param editable
-	 * @param hidden
-	 * @param identifying
+	 * @param editable editable status
+	 * @param hidden hidden status
+	 * @param identifying is attribute identifying?
 	 * @param label attribute label
 	 * @param name attribute name
 	 */
@@ -74,34 +74,74 @@ public class AttributeInfo extends AttributeBaseInfo {
 		setName(name);
 	}
 
+	/**
+	 * Get label for attribute.
+	 *
+	 * @return label
+	 */
 	public String getLabel() {
 		return label;
 	}
 
+	/**
+	 * Set label for attribute.
+	 *
+	 * @param label label
+	 */
 	public void setLabel(String label) {
 		this.label = label;
 	}
 
+	/**
+	 * Is this an identifying attribute? Is it part of the feature id?
+	 *
+	 * @return true when attribute is part of the feature id
+	 */
 	public boolean isIdentifying() {
 		return identifying;
 	}
 
+	/**
+	 * Set whether the attribute is part of the feature id.
+	 *
+	 * @param identifying true when attribute is part of the feature id
+	 */
 	public void setIdentifying(boolean identifying) {
 		this.identifying = identifying;
 	}
 
+	/**
+	 * Get whether the attribute should be hidden.
+	 *
+	 * @return true when hidden
+	 */
 	public boolean isHidden() {
 		return hidden;
 	}
 
+	/**
+	 * Set whether the attribute should be hidden.
+	 *
+	 * @param hidden hidden status
+	 */
 	public void setHidden(boolean hidden) {
 		this.hidden = hidden;
 	}
 
+	/**
+	 * Get validator for attribute.
+	 *
+	 * @return validator
+	 */
 	public ValidatorInfo getValidator() {
 		return validator;
 	}
 
+	/**
+	 * Set validator for attribute.
+	 *
+	 * @param validator validator
+	 */
 	public void setValidator(ValidatorInfo validator) {
 		this.validator = validator;
 	}

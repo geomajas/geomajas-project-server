@@ -43,23 +43,35 @@ public enum PrimitiveType {
 
 	private final String value;
 
+	/**
+	 * Create primitive type.
+	 *
+	 * @param v value
+	 */
 	PrimitiveType(String v) {
 		value = v;
 	}
 
-	public String value() {
-		return value;
-	}
-
+	/**
+	 * Get enum value from
+	 *
+	 * @param value string representation for enum
+	 * @return enum value
+	 */
 	public static PrimitiveType fromValue(String value) {
 		for (PrimitiveType c : PrimitiveType.values()) {
 			if (c.value.equals(value)) {
 				return c;
 			}
 		}
-		throw new IllegalArgumentException(value.toString());
+		throw new IllegalArgumentException(value);
 	}
 
+	/**
+	 * Get string representation of enum.
+	 *
+	 * @return string representation
+	 */
 	@Override
 	public String toString() {
 		return value;
