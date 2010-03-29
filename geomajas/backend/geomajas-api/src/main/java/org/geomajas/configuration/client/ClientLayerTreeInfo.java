@@ -57,7 +57,7 @@ public class ClientLayerTreeInfo implements Serializable {
 	/**
 	 * Set the unique id of this layer tree (auto-copied from Spring context).
 	 * 
-	 * @param id
+	 * @param id id
 	 */
 	public void setId(String id) {
 		this.id = id;

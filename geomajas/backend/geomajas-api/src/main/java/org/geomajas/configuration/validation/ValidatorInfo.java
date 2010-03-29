@@ -42,26 +42,56 @@ public class ValidatorInfo implements Serializable {
 
 	private String errorMessage;
 
+	/**
+	 * Get constraints which need to be validated.
+	 *
+	 * @return contraints
+	 */
 	public List<ConstraintInfo> getConstraints() {
 		return constraints;
 	}
 
+	/**
+	 * Set constraints which need to be validated.
+	 *
+	 * @param constraints constraints
+	 */
 	public void setConstraints(List<ConstraintInfo> constraints) {
 		this.constraints = constraints;
 	}
 
+	/**
+	 * Get tooltip for attribute.
+	 *
+	 * @return tooltip
+	 */
 	public String getToolTip() {
 		return toolTip;
 	}
 
+	/**
+	 * Set tooltip for attribute.
+	 *
+	 * @param toolTip tooltip text
+	 */
 	public void setToolTip(String toolTip) {
 		this.toolTip = toolTip;
 	}
 
+	/**
+	 * Get message to display when validation failed.
+	 *
+	 * @return error message
+	 */
 	public String getErrorMessage() {
 		return errorMessage;
 	}
 
+	/**
+	 * Set message to display when validation failed.
+	 *
+	 * @param errorMessage error message
+	 */
 	public void setErrorMessage(String errorMessage) {
 		this.errorMessage = errorMessage;
 	}

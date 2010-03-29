@@ -44,30 +44,66 @@ public class VectorLayerInfo extends LayerInfo implements Serializable {
 
 	private List<NamedStyleInfo> namedStyleInfos = new ArrayList<NamedStyleInfo>();
 
+	/**
+	 * Get filter which needs to be applied to all queries on this layer.
+	 *
+	 * @return layer filter
+	 */
 	public String getFilter() {
 		return filter;
 	}
 
+	/**
+	 * Set filter which needs to be applied to all queries on this layer.
+	 *
+	 * @param filter layer filter
+	 */
 	public void setFilter(String filter) {
 		this.filter = filter;
 	}
 
+	/**
+	 * Get feature info, the configuration of the features for this layer.
+	 *
+	 * @return feature info
+	 */
 	public FeatureInfo getFeatureInfo() {
 		return featureInfo;
 	}
 
+	/**
+	 * Set feature info, the configuration of the features for this layer.
+	 *
+	 * @param featureInfo feature info
+	 */
 	public void setFeatureInfo(FeatureInfo featureInfo) {
 		this.featureInfo = featureInfo;
 	}
 
+	/**
+	 * Get possible styles which may be applied for this layer.
+	 *
+	 * @return possible layer styles
+	 */
 	public List<NamedStyleInfo> getNamedStyleInfos() {
 		return namedStyleInfos;
 	}
 
+	/**
+	 * Set possible styles which may be applied for this layer.
+	 *
+	 * @param namedStyleInfos possible layer styles
+	 */
 	public void setNamedStyleInfos(List<NamedStyleInfo> namedStyleInfos) {
 		this.namedStyleInfos = namedStyleInfos;
 	}
 
+	/**
+	 * Get layer style by name.
+	 *
+	 * @param name layer style name
+	 * @return layer style
+	 */
 	public NamedStyleInfo getNamedStyleInfo(String name) {
 		for (NamedStyleInfo info : namedStyleInfos) {
 			if (info.getName().equals(name)) {

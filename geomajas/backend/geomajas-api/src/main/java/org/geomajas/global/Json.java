@@ -34,7 +34,7 @@ import java.lang.annotation.RetentionPolicy;
 public @interface Json {
 
 	/**
-	 * @return true if serializable by JSON
+	 * Should field be serialized?
 	 */
 	boolean serialize();
 }

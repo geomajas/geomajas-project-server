@@ -44,6 +44,11 @@ public enum LayerType implements Serializable {
 
 	private int code;
 
+	/**
+	 * Create layer type.
+	 *
+	 * @param code code to apply
+	 */
 	private LayerType(int code) {
 		this.code = code;
 	}

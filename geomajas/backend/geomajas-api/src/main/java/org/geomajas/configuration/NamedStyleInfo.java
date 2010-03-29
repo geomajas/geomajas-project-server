@@ -47,27 +47,58 @@ public class NamedStyleInfo implements Serializable {
 	@NotNull
 	private String name;
 
+	/**
+	 * Get possible styles for features. These are traversed from the beginning, the first style for which the
+	 * formula evaluates successfully is applied.
+	 *
+	 * @return list of feature styles
+	 */
 	public List<FeatureStyleInfo> getFeatureStyles() {
 		return featureStyles;
 	}
 
+	/**
+	 * Set list of possible styles for features. These are traversed from the beginning, the first style for which the
+	 * formula evaluates successfully is applied.
+	 *
+	 * @param featureStyles list of feature styles
+	 */
 	public void setFeatureStyles(List<FeatureStyleInfo> featureStyles) {
 		this.featureStyles = featureStyles;
 	}
 
+	/**
+	 * Name for style info.
+	 *
+	 * @return name
+	 */
 	public String getName() {
 		return name;
 	}
 
+	/**
+	 * Set name for style info.
+	 *
+	 * @param name name
+	 */
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
+	/**
+	 * Get label style.
+	 *
+	 * @return label style
+	 */
 	public LabelStyleInfo getLabelStyle() {
 		return labelStyle;
 	}
 
-	
+	/**
+	 * Set label style.
+	 *
+	 * @param labelStyleInfo label style
+	 */
 	public void setLabelStyle(LabelStyleInfo labelStyleInfo) {
 		this.labelStyle = labelStyleInfo;
 	}

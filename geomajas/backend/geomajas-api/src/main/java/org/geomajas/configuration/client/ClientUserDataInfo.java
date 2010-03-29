@@ -25,7 +25,7 @@ package org.geomajas.configuration.client;
 import java.io.Serializable;
 
 /**
- * Use this interface to define custom dataclasses to be passed to the client.
+ * Use this interface to define custom data classes to be passed to the client.
  * 
  * @see {@link ClientApplicationInfo}, {@link ClientMapInfo}, {@link ClientLayerInfo}
  * 

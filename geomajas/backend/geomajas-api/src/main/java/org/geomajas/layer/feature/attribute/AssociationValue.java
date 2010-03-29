@@ -54,7 +54,8 @@ public class AssociationValue implements Serializable {
 	/**
 	 * Create attribute with specified value.
 	 *
-	 * @param value value for attribute
+	 * @param id id attribute for association
+	 * @param attributes values for the attributes
 	 */
 	public AssociationValue(PrimitiveAttribute<?> id, Map<String, PrimitiveAttribute<?>> attributes) {
 		this.id = id;

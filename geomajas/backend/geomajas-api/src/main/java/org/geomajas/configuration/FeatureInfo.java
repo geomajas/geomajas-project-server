@@ -90,7 +90,8 @@ public class FeatureInfo implements Serializable {
 	}
 
 	/**
-	 * Set the name of the sort attribute
+	 * Set the name of the sort attribute.
+	 * 
 	 * @param sortAttributeName sort attribute name
 	 */
 	public void setSortAttributeName(String sortAttributeName) {

@@ -74,7 +74,7 @@ public abstract class ClientLayerInfo implements Serializable {
 	/**
 	 * Set the unique id of this layer (auto-copied from Spring context).
 	 * 
-	 * @param id
+	 * @param id id
 	 */
 	public void setId(String id) {
 		this.id = id;
@@ -92,7 +92,7 @@ public abstract class ClientLayerInfo implements Serializable {
 	/**
 	 * Set the server layer id. This should be the name of an existing {@link org.geomajas.layer.Layer} bean.
 	 * 
-	 * @param id
+	 * @param serverLayerId server layer id
 	 */
 	public void setServerLayerId(String serverLayerId) {
 		this.serverLayerId = serverLayerId;
@@ -110,7 +110,7 @@ public abstract class ClientLayerInfo implements Serializable {
 	/**
 	 * Set the user label of this layer.
 	 * 
-	 * @param label
+	 * @param label label
 	 */
 	public void setLabel(String label) {
 		this.label = label;
@@ -128,7 +128,7 @@ public abstract class ClientLayerInfo implements Serializable {
 	/**
 	 * Set this layer visible at startup.
 	 * 
-	 * @param visible
+	 * @param visible visible status
 	 */
 	public void setVisible(boolean visible) {
 		this.visible = visible;
@@ -146,7 +146,7 @@ public abstract class ClientLayerInfo implements Serializable {
 	/**
 	 * Set the minimum scale for which this layer should be visible (maximum zoom out).
 	 * 
-	 * @param minimum
+	 * @param viewScaleMin
 	 *            scale (pix/map unit)
 	 */
 	public void setViewScaleMin(double viewScaleMin) {
@@ -165,7 +165,7 @@ public abstract class ClientLayerInfo implements Serializable {
 	/**
 	 * Set the maximum scale for which this layer should be visible (maximum zoom in).
 	 * 
-	 * @param maximum
+	 * @param viewScaleMax
 	 *            scale (pix/map unit)
 	 */
 	public void setViewScaleMax(double viewScaleMax) {
@@ -184,7 +184,7 @@ public abstract class ClientLayerInfo implements Serializable {
 	/**
 	 * Set the maximum visible extent of this layer in map space (auto-set by Spring).
 	 * 
-	 * @param maximum
+	 * @param maxExtent
 	 *            visible extent
 	 */
 	public void setMaxExtent(Bbox maxExtent) {
@@ -203,7 +203,7 @@ public abstract class ClientLayerInfo implements Serializable {
 	/**
 	 * Set the layer information of this layer (auto-copied from Spring context).
 	 * 
-	 * @param layer
+	 * @param layerInfo
 	 *            information
 	 */
 	public void setLayerInfo(LayerInfo layerInfo) {

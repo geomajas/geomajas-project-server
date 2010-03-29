@@ -43,26 +43,62 @@ public class LayerInfo implements Serializable {
 	private String crs;
 	private Bbox maxExtent = Bbox.ALL;
 
+	/**
+	 * Get layer type, indicating whether it is a raster layer or which type of geometries which are contained in the
+	 * layer if it is a vector layer.
+	 *
+	 * @return layer type
+	 */
 	public LayerType getLayerType() {
 		return layerType;
 	}
 
+	/**
+	 * Set layer type. This indicates either that it is a raster layer, or the type of geometry when it is a vector
+	 * layer.
+	 *
+	 * @param layerType layer type
+	 */
 	public void setLayerType(LayerType layerType) {
 		this.layerType = layerType;
 	}
 
+	/**
+	 * Get the CRS code which is used for expressing the coordinated in this layer.
+	 *
+	 * @return CRS code for this layer
+	 */
 	public String getCrs() {
 		return crs;
 	}
 
+	/**
+	 * Set the CRS code which is used for expressing the coordinated in this layer.
+	 *
+	 * @param crs CRS code for this layer
+	 */
 	public void setCrs(String crs) {
 		this.crs = crs;
 	}
 
+	/**
+	 * Get the maximum extent for the layer, the bounding box for the visible/usable area for this layer.
+	 * <p/>
+	 * Note that this may need to be limited some more based on security configuration.
+	 *
+	 * @return maximum extent for layer
+	 */
 	public Bbox getMaxExtent() {
 		return maxExtent;
 	}
 
+	/**
+	 * Set the maximum extent for the layer, the bounding box for the visible/usable area for this layer.
+	 * <p/>
+	 * Note that this is the largest area for any user. It may be limited based on logged in user.
+	 *
+	 * @param maxExtent maximum extent for layer
+	 */
 	public void setMaxExtent(Bbox maxExtent) {
 		this.maxExtent = maxExtent;
 	}

@@ -48,6 +48,9 @@ public class ClientLayerTreeNodeInfo implements Serializable {
 	@NotNull
 	private boolean expanded;
 
+	/**
+	 * Create client layer tree node info instance. 
+	 */
 	public ClientLayerTreeNodeInfo() {
 	}
 

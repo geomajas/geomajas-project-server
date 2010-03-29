@@ -35,7 +35,6 @@ import org.geomajas.configuration.SnappingRuleInfo;
  * Client side vector layer metadata.
  * 
  * @author Jan De Moerloose
- * 
  */
 public class ClientVectorLayerInfo extends ClientLayerInfo {
 
@@ -88,7 +87,7 @@ public class ClientVectorLayerInfo extends ClientLayerInfo {
 	 * case if one wants less attributes or different labels for the attributes or a different set of constraints,
 	 * etc... Attention : the code does not currently validate if such overriding is compatible with the server layer !
 	 * 
-	 * @param featureInfo
+	 * @param featureInfo feature info
 	 */
 	public void setFeatureInfo(FeatureInfo featureInfo) {
 		this.featureInfo = featureInfo;

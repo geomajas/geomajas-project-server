@@ -55,6 +55,7 @@ public interface DtoConverterService {
 	 *            The DTO attribute.
 	 * @return The server side attribute representation. As we don't know at this point what kind of object the
 	 *         attribute is (that's a problem for the <code>FeatureModel</code>), we return an <code>Object</code>.
+	 * @throws GeomajasException conversion failed
 	 */
 	Object toInternal(Attribute<?> attribute) throws GeomajasException;
 
@@ -66,6 +67,7 @@ public interface DtoConverterService {
 	 * @param info
 	 *            The attribute definition from the configuration.
 	 * @return Returns a DTO attribute.
+	 * @throws GeomajasException conversion failed
 	 */
 	Attribute<?> toDto(Object object, AttributeInfo info) throws GeomajasException;
 
@@ -81,6 +83,7 @@ public interface DtoConverterService {
 	 * @param featureIncludes
 	 *            Indicate which aspects of the should be included @see {@link VectorLayerService}
 	 * @return Returns the DTO feature.
+	 * @throws GeomajasException conversion failed
 	 */
 	Feature toDto(InternalFeature feature, int featureIncludes) throws GeomajasException;
 
@@ -92,6 +95,7 @@ public interface DtoConverterService {
 	 * @param feature
 	 *            The server-side feature representation.
 	 * @return Returns the DTO feature.
+	 * @throws GeomajasException conversion failed
 	 */
 	Feature toDto(InternalFeature feature) throws GeomajasException;
 
@@ -101,6 +105,7 @@ public interface DtoConverterService {
 	 * @param dto
 	 *            The DTO feature that comes from the client.
 	 * @return Returns a server-side feature object.
+	 * @throws GeomajasException conversion failed
 	 */
 	InternalFeature toInternal(Feature dto) throws GeomajasException;
 
@@ -114,6 +119,7 @@ public interface DtoConverterService {
 	 * @param geometry
 	 *            The geometry to convert into a DTO geometry.
 	 * @return Returns a DTO type geometry, that is serializable.
+	 * @throws GeomajasException conversion failed
 	 */
 	Geometry toDto(com.vividsolutions.jts.geom.Geometry geometry) throws GeomajasException;
 
@@ -123,6 +129,7 @@ public interface DtoConverterService {
 	 * @param geometry
 	 *            The DTO geometry to convert into a JTS geometry.
 	 * @return Returns a JTS geometry.
+	 * @throws GeomajasException conversion failed
 	 */
 	com.vividsolutions.jts.geom.Geometry toInternal(Geometry geometry) throws GeomajasException;
 
@@ -140,6 +147,7 @@ public interface DtoConverterService {
 	 * @param featureIncludes
 	 *            Indicate which aspects of the should be included @see {@link VectorLayerService}
 	 * @return Returns the DTO version that can be sent to the client.
+	 * @throws GeomajasException conversion failed
 	 */
 	VectorTile toDto(InternalTile tile, String crs, int featureIncludes) throws GeomajasException;
 
@@ -151,6 +159,7 @@ public interface DtoConverterService {
 	 * @param tile
 	 *            The server-side representation of a tile.
 	 * @return Returns the DTO version that can be sent to the client.
+	 * @throws GeomajasException conversion failed
 	 */
 	VectorTile toDto(InternalTile tile) throws GeomajasException;
 

@@ -98,7 +98,7 @@ public class ClientMapInfo implements Serializable {
 	 * Set the id of this map (auto-set by spring). The id must not be globally unique, but must be unique within the
 	 * application.
 	 * 
-	 * @param id
+	 * @param id id
 	 */
 	public void setId(String id) {
 		this.id = id;
@@ -309,7 +309,7 @@ public class ClientMapInfo implements Serializable {
 	 * Set the startup bounds/extent of this map. Warning: the map's view will be fitted to the initial bounds, but the
 	 * view's aspect ratio will not be affected !
 	 * 
-	 * @param initialBounds
+	 * @param initialBounds initial bounds
 	 */
 	public void setInitialBounds(Bbox initialBounds) {
 		this.initialBounds = initialBounds;
@@ -442,7 +442,7 @@ public class ClientMapInfo implements Serializable {
 	/**
 	 * Get the length in meters of a pixel on the map.
 	 * 
-	 * @return
+	 * @return length in meters of a pixel on the map (measured at the center of the map)
 	 */
 	public double getPixelLength() {
 		return pixelLength;

@@ -53,7 +53,7 @@ public enum PrimitiveType {
 	}
 
 	/**
-	 * Get enum value from
+	 * Get enum value from.
 	 *
 	 * @param value string representation for enum
 	 * @return enum value

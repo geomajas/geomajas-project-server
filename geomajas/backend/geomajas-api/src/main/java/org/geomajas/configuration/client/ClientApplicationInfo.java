@@ -137,10 +137,20 @@ public class ClientApplicationInfo implements Serializable {
 
 		private String dummy;
 
+		/**
+		 * Dummy field, otherwise checkstyle complains.
+		 *
+		 * @return dummy field value
+		 */
 		public String getDummy() {
 			return dummy;
 		}
 
+		/**
+		 * Dummy field, otherwise checkstyle complains.
+		 *
+		 * @param dummy dummy field value
+		 */
 		public void setDummy(String dummy) {
 			this.dummy = dummy;
 		}

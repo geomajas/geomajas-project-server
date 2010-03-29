@@ -45,38 +45,93 @@ public class RasterLayerInfo extends LayerInfo implements Serializable {
 	private int tileHeight;
 	private List<Double> resolutions;
 
+	/**
+	 * Create raster layer.
+	 */
 	public RasterLayerInfo() {
 		setLayerType(LayerType.RASTER);
 	}
 
+	/**
+	 * Get the data source name. This is used by the layer to know which data source to contact.
+	 *
+	 * @return data source name
+	 */
 	public String getDataSourceName() {
 		return dataSourceName;
 	}
 
+	/**
+	 * Set the data source name. This is used by the layer to know which data source to contact.
+	 *
+	 * @param dataSourceName data source name
+	 */
 	public void setDataSourceName(String dataSourceName) {
 		this.dataSourceName = dataSourceName;
 	}
 
+	/**
+	 * Get tile width in pixels.
+	 * <p/>
+	 * Raster layers often use fixed tile sizes which need to be combined to get the full picture.
+	 * This allows you to get the width of these tiles (when applicable).
+	 *
+	 * @return tile width in pixels
+	 */
 	public int getTileWidth() {
 		return tileWidth;
 	}
 
+	/**
+	 * Set tile width in pixels.
+	 * <p/>
+	 * Raster layers often use fixed tile sizes which need to be combined to get the full picture.
+	 * This allows you to get the width of these tiles (when applicable).
+	 *
+	 * @param tileWidth tile width
+	 */
 	public void setTileWidth(int tileWidth) {
 		this.tileWidth = tileWidth;
 	}
 
+	/**
+	 * Get tile height in pixels.
+	 * <p/>
+	 * Raster layers often use fixed tile sizes which need to be combined to get the full picture.
+	 * This allows you to get the height of these tiles (when applicable).
+	 *
+	 * @return tile height
+	 */
 	public int getTileHeight() {
 		return tileHeight;
 	}
 
+	/**
+	 * Set tile height in pixels.
+	 * <p/>
+	 * Raster layers often use fixed tile sizes which need to be combined to get the full picture.
+	 * This allows you to get the height of these tiles (when applicable).
+	 *
+	 * @param tileHeight tile height
+	 */
 	public void setTileHeight(int tileHeight) {
 		this.tileHeight = tileHeight;
 	}
 
+	/**
+	 * Get the list of supported resolutions for the layer.
+	 *
+	 * @return list of supported resolutions
+	 */
 	public List<Double> getResolutions() {
 		return resolutions;
 	}
 
+	/**
+	 * Set the list of supported resolutions.
+	 *
+	 * @param resolutions resolutions 
+	 */
 	public void setResolutions(List<Double> resolutions) {
 		this.resolutions = resolutions;
 	}

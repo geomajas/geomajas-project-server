@@ -68,6 +68,9 @@ public interface GeomajasConstant {
 	 */
 	public static class GeomajasConstantImpl implements GeomajasConstant {
 
+		/**
+		 * Dummy method to keep checkstyle from complaining.
+		 */
 		public void dummy() {
 			// nothing to do, just to keep checkstyle busy
 		}
