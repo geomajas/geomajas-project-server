@@ -3,7 +3,7 @@
 	<groupId>org.geomajas</groupId>
 	<artifactId>geomajas-checkstyle</artifactId>
 	<packaging>jar</packaging>
-	<version>1.0.2</version>
+	<version>1.0.3</version>
 	<name>Geomajas checkstyle configuration</name>
 	<url>http://files.geomajas.org/maven/trunk/geomajas-checkstyle</url>
 
