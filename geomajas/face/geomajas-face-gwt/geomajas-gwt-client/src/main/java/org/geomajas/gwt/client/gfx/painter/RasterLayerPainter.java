@@ -64,8 +64,8 @@ public class RasterLayerPainter implements Painter {
 	}
 
 	/**
-	 * Delete a {@link Paintable} object from the given {@link GraphicsContext}. It the object does not exist,
-	 * nothing will be done.
+	 * Delete a {@link Paintable} object from the given {@link GraphicsContext}. It the object does not exist, nothing
+	 * will be done.
 	 * 
 	 * @param paintable
 	 *            The raster layer

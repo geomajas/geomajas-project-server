@@ -30,6 +30,8 @@ import org.geomajas.gwt.client.map.MapModel;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.MapWidget.RenderGroup;
 
+import com.google.gwt.core.client.GWT;
+
 /**
  * Actual painter for the {@link MapModel} object. Prepares some groups, and sets the correct transformations. Also
  * prepares a group for objects that are to be painted in world space. (the MapModel's WorldSpacePaintables)
@@ -63,6 +65,8 @@ public class MapModelPainter implements Painter {
 	 *            A GraphicsContext object, responsible for actual drawing.
 	 */
 	public void paint(Paintable paintable, Object group, GraphicsContext graphics) {
+		GWT.log("Map: " + mapWidget.getMapModel().getMapView().getPanToViewTranslation().toString(), null);
+
 		// Group for objects in pan space
 		graphics.drawGroup(null, mapWidget.getGroup(RenderGroup.PAN), mapWidget.getMapModel().getMapView()
 				.getPanToViewTranslation());
@@ -76,8 +80,8 @@ public class MapModelPainter implements Painter {
 	}
 
 	/**
-	 * Delete a {@link Paintable} object from the given {@link GraphicsContext}. It the object does not exist,
-	 * nothing will be done.
+	 * Delete a {@link Paintable} object from the given {@link GraphicsContext}. It the object does not exist, nothing
+	 * will be done.
 	 * 
 	 * @param paintable
 	 *            The MapModel

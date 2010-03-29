@@ -57,6 +57,8 @@ public class MapViewChangedEvent extends GwtEvent<MapViewChangedHandler> {
 
 	private boolean panDragging;
 
+	private boolean mapResized;
+
 	/**
 	 * 
 	 * @param bounds
@@ -67,11 +69,13 @@ public class MapViewChangedEvent extends GwtEvent<MapViewChangedHandler> {
 	// -------------------------------------------------------------------------
 	// Constructor:
 	// -------------------------------------------------------------------------
-	public MapViewChangedEvent(Bbox bounds, double scale, boolean sameScaleLevel, boolean panDragging) {
+	public MapViewChangedEvent(Bbox bounds, double scale, boolean sameScaleLevel, boolean panDragging,
+			boolean mapResized) {
 		this.bounds = bounds;
 		this.scale = scale;
 		this.sameScaleLevel = sameScaleLevel;
 		this.panDragging = panDragging;
+		this.mapResized = mapResized;
 	}
 
 	// -------------------------------------------------------------------------
@@ -116,5 +120,9 @@ public class MapViewChangedEvent extends GwtEvent<MapViewChangedHandler> {
 
 	public boolean isPanDragging() {
 		return panDragging;
+	}
+
+	public boolean isMapResized() {
+		return mapResized;
 	}
 }

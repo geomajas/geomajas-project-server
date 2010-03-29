@@ -31,6 +31,7 @@ import org.geomajas.command.CommandResponse;
 import org.geomajas.command.dto.GetRasterDataRequest;
 import org.geomajas.command.dto.GetRasterDataResponse;
 import org.geomajas.gwt.client.command.CommandCallback;
+import org.geomajas.gwt.client.command.Deferred;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.map.cache.tile.RasterTile;
@@ -58,13 +59,15 @@ public class DefaultRasterLayerStore implements RasterLayerStore {
 
 	private double previousScale = -1;
 
+	private Deferred deferred;
+
 	public DefaultRasterLayerStore(RasterLayer rasterLayer) {
 		this.rasterLayer = rasterLayer;
 	}
 
 	public void applyAndSync(Bbox bounds, TileFunction<RasterTile> onDelete, TileFunction<RasterTile> onUpdate) {
-		boolean scaleChanged = previousScale > 0 &&
-				rasterLayer.getMapModel().getMapView().getCurrentScale() != previousScale;
+		boolean scaleChanged = previousScale > 0
+				&& rasterLayer.getMapModel().getMapView().getCurrentScale() != previousScale;
 		if (scaleChanged || isDirty()) {
 			if (callBack != null) {
 				callBack.cancel();
@@ -84,8 +87,11 @@ public class DefaultRasterLayerStore implements RasterLayerStore {
 	}
 
 	public void clear() {
-		if (tiles.size() > 0) {
+		if (tiles.size() > 0 || deferred != null) {
 			dirty = true;
+			if (deferred != null) {
+				deferred.cancel();
+			}
 		}
 	}
 
@@ -107,19 +113,22 @@ public class DefaultRasterLayerStore implements RasterLayerStore {
 		GwtCommand command = new GwtCommand("command.render.GetRasterData");
 		command.setCommandRequest(request);
 		callBack = new RasterCallBack(onUpdate);
-		GwtCommandDispatcher.getInstance().execute(command, callBack);
+		deferred = GwtCommandDispatcher.getInstance().execute(command, callBack);
 	}
 
 	private void addTiles(List<org.geomajas.layer.tile.RasterTile> images) {
 		for (org.geomajas.layer.tile.RasterTile image : images) {
 			TileCode code = image.getCode().clone();
 			if (!tiles.containsKey(code)) {
+				// TODO The WorldToPan matrix may be different than at the moment the request was sent. This may result
+				// in tiles at the wrong location. (see MapModel.onMapViewChanged for partial quick fix)
 				RasterTile tile = new RasterTile(code, new Bbox(image.getBounds()), image.getUrl(), this);
 				Matrix t = rasterLayer.getMapModel().getMapView().getWorldToPanTranslation();
 				tile.getBounds().translate(Math.round(t.getDx()), Math.round(t.getDy()));
 				tiles.put(code, tile);
 			}
 		}
+		deferred = null;
 	}
 
 	/**
@@ -149,5 +158,4 @@ public class DefaultRasterLayerStore implements RasterLayerStore {
 			cancelled = true;
 		}
 	}
-
 }

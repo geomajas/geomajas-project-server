@@ -62,6 +62,9 @@ public class Deferred {
 	}
 
 	public List<CommandCallback> getOnSuccessCallbacks() {
+		if (cancelled) {
+			return new ArrayList<CommandCallback>();
+		}
 		return onSuccessCallbacks;
 	}
 

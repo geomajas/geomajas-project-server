@@ -29,7 +29,7 @@ import org.geomajas.gwt.client.map.cache.tile.RasterTile;
 
 /**
  * Paints a raster tile.
- *
+ * 
  * @author Jan De Moerloose
  */
 public class RasterTilePainter implements Painter {
@@ -43,13 +43,13 @@ public class RasterTilePainter implements Painter {
 
 	public void paint(Paintable paintable, Object group, GraphicsContext graphics) {
 		RasterTile tile = (RasterTile) paintable;
-		graphics.drawImage(tile.getStore().getLayer(), 
-				tile.getCode().toString(), tile.getUrl(), tile.getBounds(), tile.getStyle());
+		graphics.drawImage(tile.getStore().getLayer(), tile.getCode().toString(), tile.getUrl(), tile.getBounds(), tile
+				.getStyle());
 	}
 
 	/**
-	 * Delete a {@link Paintable} object from the given {@link GraphicsContext}. It the object does not exist,
-	 * nothing will be done.
+	 * Delete a {@link Paintable} object from the given {@link GraphicsContext}. It the object does not exist, nothing
+	 * will be done.
 	 * 
 	 * @param paintable
 	 *            The object to be painted.
@@ -63,4 +63,3 @@ public class RasterTilePainter implements Painter {
 		graphics.deleteElement(tile.getStore().getLayer(), tile.getCode().toString());
 	}
 }
-

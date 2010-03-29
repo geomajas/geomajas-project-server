@@ -681,6 +681,8 @@ public class VmlGraphicsContext extends AbstractGraphicsContext {
 	 */
 	public class SymbolDefinition extends SymbolInfo {
 
+		private static final long serialVersionUID = 154L;
+
 		private SymbolInfo symbol;
 
 		private ShapeStyle style;

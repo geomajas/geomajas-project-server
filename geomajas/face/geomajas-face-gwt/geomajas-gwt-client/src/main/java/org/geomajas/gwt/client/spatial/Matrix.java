@@ -30,7 +30,7 @@ package org.geomajas.gwt.client.spatial;
  * <p>
  * TODO: Should we not make a more useful matrix class?
  * </p>
- *
+ * 
  * @author Pieter De Graef
  */
 public class Matrix {
@@ -63,7 +63,7 @@ public class Matrix {
 
 	/**
 	 * Initialize this matrix with all it's fields.
-	 *
+	 * 
 	 * @param xx
 	 * @param xy
 	 * @param yx
@@ -71,14 +71,19 @@ public class Matrix {
 	 * @param dx
 	 * @param dy
 	 */
-	public Matrix(double xx, double xy, double yx, double yy, double dx,
-			double dy) {
+	public Matrix(double xx, double xy, double yx, double yy, double dx, double dy) {
 		this.xx = xx;
 		this.xy = xy;
 		this.yx = yx;
 		this.yy = yy;
 		this.dx = dx;
 		this.dy = dy;
+	}
+
+	// Public methods:
+
+	public String toString() {
+		return "[" + xx + ", " + xy + ", " + yx + ", " + yy + ", " + dx + ", " + dy + "]";
 	}
 
 	// Getters:

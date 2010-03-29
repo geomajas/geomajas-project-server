@@ -125,7 +125,7 @@ public class MapViewTest {
 		}
 
 		public void expect(Bbox bounds, double scale, boolean panning) {
-			MapViewChangedEvent event = new MapViewChangedEvent(bounds, scale, panning, false);
+			MapViewChangedEvent event = new MapViewChangedEvent(bounds, scale, panning, false, false);
 			expectedEvents.add(event);
 		}
 

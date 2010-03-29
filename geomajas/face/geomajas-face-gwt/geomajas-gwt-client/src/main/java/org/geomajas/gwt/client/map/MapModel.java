@@ -137,7 +137,7 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 	public HandlerRegistration addLayerSelectionHandler(LayerSelectionHandler handler) {
 		return handlerManager.addHandler(LayerSelectionHandler.TYPE, handler);
 	}
-	
+
 	public void removeMapModelHandler(MapModelHandler handler) {
 		handlerManager.removeHandler(MapModelEvent.TYPE, handler);
 	}
@@ -451,6 +451,13 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 	public void onMapViewChanged(MapViewChangedEvent event) {
 		for (Layer<?> layer : layers) {
 			layer.updateShowing();
+
+			// If the map is resized quickly after a previous resize, tile requests are sent out, but when they come
+			// back, the world-to-pan matrix will have altered, and so the tiles are placed at the wrong positions....
+			// so we clear the store.
+			if (layer instanceof RasterLayer && event.isMapResized()) {
+				((RasterLayer) layer).getStore().clear();
+			}
 		}
 	}
 
