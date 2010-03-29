@@ -108,6 +108,13 @@ public class Coordinate implements Comparable<Coordinate>, Cloneable, Serializab
 		return x == c.x && y == c.y;
 	}
 
+	/**
+	 * Comparison using a tolerance for the equality check.
+	 *
+	 * @param coordinate coordinate to compare with
+	 * @param delta maximum deviation (along one axis, the actual maximum distance is sqrt(2*delta^2))
+	 * @return true
+	 */
 	public boolean equalsDelta(Coordinate coordinate, double delta) {
 		return (Math.abs(this.x - coordinate.x) < delta && Math.abs(this.y - coordinate.y) < delta);
 	}

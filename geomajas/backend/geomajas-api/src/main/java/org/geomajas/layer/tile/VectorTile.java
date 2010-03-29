@@ -81,6 +81,9 @@ public class VectorTile implements Serializable {
 	// Constructors:
 	// -------------------------------------------------------------------------
 
+	/**
+	 * Create a vector tile.
+	 */
 	public VectorTile() {
 	}
 

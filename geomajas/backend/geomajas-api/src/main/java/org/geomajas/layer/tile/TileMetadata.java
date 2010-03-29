@@ -35,8 +35,14 @@ import org.geomajas.geometry.Coordinate;
  */
 public interface TileMetadata {
 
+	/**
+	 * Render the tile as svg vector data for display in non-IE browsers.
+	 */
 	String PARAM_SVG_RENDERER = "SVG";
 
+	/**
+	 * The the tile as vml vector data for display in IE browsers.
+	 */
 	String PARAM_VML_RENDERER = "VML";
 
 	/**
@@ -67,36 +73,116 @@ public interface TileMetadata {
 	 */
 	void setCrs(String crs);
 
+	/**
+	 * Get tile code, which is the tile id.
+	 *
+	 * @return tile code
+	 */
 	TileCode getCode();
 
+	/**
+	 * Set tile code.
+	 *
+	 * @param code tile code
+	 */
 	void setCode(TileCode code);
 
+	/**
+	 * Get scale for tile.
+	 *
+	 * @return scale in pix/map unit (at map center)
+	 */
 	double getScale();
 
+	/**
+	 * Set the scale (in pixels per map unit at the center of the map).
+	 *
+	 * @param scale scale in pix/map unit (at map center)
+	 */
 	void setScale(double scale);
 
+	/**
+	 * Get the pan origin.
+	 *
+	 * @return pan origin
+	 */
 	Coordinate getPanOrigin();
 
+	/**
+	 * Set the pan origin.
+	 *
+	 * @param panOrigin pan origin
+	 */
 	void setPanOrigin(Coordinate panOrigin);
 
+	/**
+	 * Get the renderer to use. This indicates the kind of data for the tile content.
+	 *
+	 * @return renderer type
+	 */
 	String getRenderer();
 
+	/**
+	 * Set the renderer to use. This indicates the kind of data for the tile content.
+	 *
+	 * @param renderer renderer type
+	 */
 	void setRenderer(String renderer);
 
+	/**
+	 * Get filter which needs to be applied for in the tile (apart from security and layer specific filters).
+	 *
+	 * @return filter which needs to be applied for the tile
+	 */
 	String getFilter();
 
+	/**
+	 * Set the filter which needs to be applied for in the tile (apart from security and layer specific filters).
+	 *
+	 * @param filter filter which needs to be applied for the tile
+	 */
 	void setFilter(String filter);
 
+	/**
+	 * Get the style info which needs to be applied when rendering the tile content.
+	 *
+	 * @return style info for rendering the tile
+	 */
 	NamedStyleInfo getStyleInfo();
 
+	/**
+	 * Set the style info which needs to be applied when rendering the tile content.
+	 *
+	 * @param styleInfo style info for rendering the tile
+	 */
 	void setStyleInfo(NamedStyleInfo styleInfo);
 
+	/**
+	 * Should the geometries be painted?
+	 *
+	 * @return true when geometries should be rendered
+	 */
 	boolean isPaintGeometries();
 
+	/**
+	 * Set whether geometries should be rendered.
+	 *
+	 * @param paintGeometries include geometries when rendering?
+	 */
 	void setPaintGeometries(boolean paintGeometries);
 
+	/**
+	 * Should the labels be painted?
+	 *
+	 * @return true when labels should be rendered
+	 */
 	boolean isPaintLabels();
 
+	/**
+	 * Set whether labels should be rendered.
+	 *
+	 * @param paintLabels include labels when rendering?
+	 */
 	void setPaintLabels(boolean paintLabels);
 
 	/**

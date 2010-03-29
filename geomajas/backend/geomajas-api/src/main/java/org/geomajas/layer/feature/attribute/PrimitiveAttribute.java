@@ -87,6 +87,8 @@ public abstract class PrimitiveAttribute<VALUE_TYPE> implements Attribute<VALUE_
 
 	/**
 	 * Return true, as this type is the very definition of a primitive attribute.
+	 *
+	 * @return true as this is a primitive attribute
 	 */
 	@Json(serialize = false)
 	public boolean isPrimitive() {
@@ -101,10 +103,18 @@ public abstract class PrimitiveAttribute<VALUE_TYPE> implements Attribute<VALUE_
 		return value == null;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public VALUE_TYPE getValue() {
 		return value;
 	}
 
+	/**
+	 * Set the actual value for the attribute.
+	 *
+	 * @param value value for the attribute
+	 */
 	public void setValue(VALUE_TYPE value) {
 		this.value = value;
 	}

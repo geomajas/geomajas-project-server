@@ -33,10 +33,18 @@ public class IntegerAttribute extends PrimitiveAttribute<Integer> {
 
 	private static final long serialVersionUID = 151L;
 
+	/**
+	 * Create attribute without value (needed for GWT).
+	 */
 	public IntegerAttribute() {
 		this(null);
 	}
 
+	/**
+	 * Create attribute with specified value.
+	 *
+	 * @param value value for attribute
+	 */
 	public IntegerAttribute(Integer value) {
 		super(PrimitiveType.INTEGER);
 		setValue(value);

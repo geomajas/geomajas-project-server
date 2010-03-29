@@ -83,38 +83,83 @@ public class Geometry implements Serializable {
 		return srid;
 	}
 
+	/**
+	 * Get the precision for the geometry.
+	 *
+	 * @return geometry precision
+	 */
 	public int getPrecision() {
 		return precision;
 	}
 
+	/**
+	 * Get the geometry type.
+	 *
+	 * @return geometry type
+	 */
 	public String getGeometryType() {
 		return geometryType;
 	}
 
+	/**
+	 * Get the geometry type.
+	 *
+	 * @param geometryType geometry type
+	 */
 	public void setGeometryType(String geometryType) {
 		this.geometryType = geometryType;
 	}
 
+	/**
+	 * Set the SRID (the "x" in a 'EPSG:x" CRS code) for the geometry.
+	 *
+	 * @param srid spatial reference id
+	 */
 	public void setSrid(int srid) {
 		this.srid = srid;
 	}
 
+	/**
+	 * Set the precision for the geometry.
+	 *
+	 * @param precision precision
+	 */
 	public void setPrecision(int precision) {
 		this.precision = precision;
 	}
 
+	/**
+	 * Get the coordinates for this geometry.
+	 *
+	 * @return coordinates for geometry
+	 */
 	public Coordinate[] getCoordinates() {
 		return coordinates;
 	}
 
+	/**
+	 * Set the coordinates for this geometry.
+	 *
+	 * @param coordinates coordinates for geometry
+	 */
 	public void setCoordinates(Coordinate[] coordinates) {
 		this.coordinates = coordinates;
 	}
 
+	/**
+	 * Get the contained geometries for this geometry.
+	 *
+	 * @return contained geometries
+	 */
 	public Geometry[] getGeometries() {
 		return geometries;
 	}
 
+	/**
+	 * Set the contained geometries.
+	 *
+	 * @param geometries contained geometries
+	 */
 	public void setGeometries(Geometry[] geometries) {
 		this.geometries = geometries;
 	}

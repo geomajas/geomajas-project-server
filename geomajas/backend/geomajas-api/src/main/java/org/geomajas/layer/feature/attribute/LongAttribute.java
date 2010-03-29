@@ -33,10 +33,18 @@ public class LongAttribute extends PrimitiveAttribute<Long> {
 
 	private static final long serialVersionUID = 151L;
 
+	/**
+	 * Create attribute without value (needed for GWT).
+	 */
 	public LongAttribute() {
 		this(null);
 	}
 
+	/**
+	 * Create attribute with specified value.
+	 *
+	 * @param value value for attribute
+	 */
 	public LongAttribute(Long value) {
 		super(PrimitiveType.LONG);
 		setValue(value);

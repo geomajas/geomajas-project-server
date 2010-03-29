@@ -40,31 +40,46 @@ public class ManyToOneAttribute extends AssociationAttribute<AssociationValue> {
 
 	private AssociationValue value;
 
-	// Constructors:
 
+	/**
+	 * Create attribute without value (needed for GWT).
+	 */
 	public ManyToOneAttribute() {
 	}
 
+	/**
+	 * Create attribute with specified value.
+	 *
+	 * @param value value for attribute
+	 */
 	public ManyToOneAttribute(AssociationValue value) {
 		this.value = value;
 	}
 
-	// Attribute implementation:
-
+	/**
+	 * {@inheritDoc}
+	 */
 	public AssociationType getType() {
 		return AssociationType.MANY_TO_ONE;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public AssociationValue getValue() {
 		return value;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public boolean isEmpty() {
 		return value == null || value.getAttributes() == null;
 	}
 
-	// Setters:
-
+	/**
+	 * {@inheritDoc}
+	 */
 	public void setValue(AssociationValue value) {
 		this.value = value;
 	}

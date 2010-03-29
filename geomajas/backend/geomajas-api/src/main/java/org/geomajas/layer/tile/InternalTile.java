@@ -107,6 +107,11 @@ public interface InternalTile {
 	 */
 	void setFeatures(List<InternalFeature> features);
 
+	/**
+	 * Add a feature in the tile.
+	 *
+	 * @param feature feature to add
+	 */
 	void addFeature(InternalFeature feature);
 
 	/**
@@ -169,6 +174,16 @@ public interface InternalTile {
 	 */
 	void setScreenHeight(double screenHeight);
 
+	/**
+	 * Add another details (code) for another tile which should be added to the list of dependent tiles.
+	 * <p/>
+	 * Tile levels indicate zooming. Level 0 containd the entire extent for the layer. Level 1 contains 4 tiles ((0,0)
+	 * till (1,1)), level 2 contains 16 tiles ((0,0) till (3,3)),...
+	 *
+	 * @param level tile level for dependent tile
+	 * @param x x ordinate for dependent tile
+	 * @param y y ordinate for dependent tile
+	 */
 	void addCode(int level, int x, int y);
 
 	/**

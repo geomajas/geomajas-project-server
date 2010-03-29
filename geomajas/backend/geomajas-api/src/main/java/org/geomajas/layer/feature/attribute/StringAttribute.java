@@ -33,10 +33,18 @@ public class StringAttribute extends PrimitiveAttribute<String> {
 
 	private static final long serialVersionUID = 151L;
 
+	/**
+	 * Create attribute without value (needed for GWT).
+	 */
 	public StringAttribute() {
 		this(null);
 	}
 
+	/**
+	 * Create attribute with specified value.
+	 *
+	 * @param value value for attribute
+	 */
 	public StringAttribute(String value) {
 		super(PrimitiveType.STRING);
 		setValue(value);

@@ -45,17 +45,21 @@ public class AssociationValue implements Serializable {
 
 	private Map<String, PrimitiveAttribute<?>> attributes;
 
-	// Constructors:
-
+	/**
+	 * Constructor, create attribute without value (needed for GWT).
+	 */
 	public AssociationValue() {
 	}
 
+	/**
+	 * Create attribute with specified value.
+	 *
+	 * @param value value for attribute
+	 */
 	public AssociationValue(PrimitiveAttribute<?> id, Map<String, PrimitiveAttribute<?>> attributes) {
 		this.id = id;
 		this.attributes = attributes;
 	}
-
-	// Getters and setters:
 
 	/**
 	 * Get the id for the associated object.

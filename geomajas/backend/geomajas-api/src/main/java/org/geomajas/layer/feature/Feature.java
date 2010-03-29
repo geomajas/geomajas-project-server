@@ -80,7 +80,11 @@ public class Feature implements Serializable {
 	// Class specific functions:
 	// -------------------------------------------------------------------------
 
-	/** Transform this feature to an easily readable string (id + " - " + label). */
+	/**
+	 * Transform this feature to an easily readable string (id + " - " + label).
+	 *
+	 * @return human readable representation
+	 */
 	public String toString() {
 		return id + " - " + label;
 	}
@@ -91,6 +95,8 @@ public class Feature implements Serializable {
 
 	/**
 	 * Get the feature's unique identifier.
+	 *
+	 * @return feature id
 	 */
 	public String getId() {
 		return id;
@@ -98,6 +104,8 @@ public class Feature implements Serializable {
 
 	/**
 	 * Set the feature's unique identifier.
+	 *
+	 * @param id feature id
 	 */
 	public void setId(String id) {
 		this.id = id;
@@ -106,6 +114,8 @@ public class Feature implements Serializable {
 	/**
 	 * Get the full mapping of attributes for this feature. The attribute names are those from the vector layer
 	 * configuration, and the {@link Attribute} objects contain the actual values for this feature.
+	 *
+	 * @return map which contains the attribute values indexed on the name
 	 */
 	public Map<String, Attribute> getAttributes() {
 		return attributes;
@@ -125,6 +135,8 @@ public class Feature implements Serializable {
 	/**
 	 * Get this feature's geometric attribute. It is always considered separately from the alphanumerical mapping of
 	 * attributes.
+	 *
+	 * @return geometry for this feature
 	 */
 	public Geometry getGeometry() {
 		return geometry;
@@ -143,6 +155,8 @@ public class Feature implements Serializable {
 
 	/**
 	 * Get the label-string for this feature.
+	 *
+	 * @return label
 	 */
 	public String getLabel() {
 		return label;
@@ -161,6 +175,8 @@ public class Feature implements Serializable {
 	/**
 	 * Has this feature's geometry been clipped? If so, it was probably because it was too large for the client to
 	 * handle. In that case the client must make sure that it is never persisted again to the layer.
+	 *
+	 * @return true when feature geometry is clipped
 	 */
 	public boolean isClipped() {
 		return clipped;
@@ -218,6 +234,8 @@ public class Feature implements Serializable {
 	 * Get the identifier for the styling that applies on this feature. Depending on the vector layer styling
 	 * configuration, only 1 style can be valid for a feature. In the tile's it is that style that is used to render the
 	 * feature. This can be handy for some client side rendering of this feature.
+	 *
+	 * @return style id
 	 */
 	public String getStyleId() {
 		return styleId;

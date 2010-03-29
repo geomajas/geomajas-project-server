@@ -33,10 +33,18 @@ public class FloatAttribute extends PrimitiveAttribute<Float> {
 
 	private static final long serialVersionUID = 151L;
 
+	/**
+	 * Create attribute without value (needed for GWT).
+	 */
 	public FloatAttribute() {
 		this(null);
 	}
 
+	/**
+	 * Create attribute with specified value.
+	 *
+	 * @param value value for attribute
+	 */
 	public FloatAttribute(Float value) {
 		super(PrimitiveType.FLOAT);
 		setValue(value);

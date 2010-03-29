@@ -39,6 +39,9 @@ public abstract class AssociationAttribute<VALUE_TYPE> implements Attribute<VALU
 
 	private boolean editable;
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public abstract AssociationType getType();
 
 	/**
@@ -62,5 +65,10 @@ public abstract class AssociationAttribute<VALUE_TYPE> implements Attribute<VALU
 		this.editable = editable;
 	}
 
+	/**
+	 * Set the association value.
+	 *
+	 * @param value associated value
+	 */
 	public abstract void setValue(VALUE_TYPE value);
 }

@@ -33,10 +33,18 @@ public class UrlAttribute extends PrimitiveAttribute<String> {
 
 	private static final long serialVersionUID = 151L;
 
+	/**
+	 * Create attribute without value (needed for GWT).
+	 */
 	public UrlAttribute() {
 		this(null);
 	}
 
+	/**
+	 * Create attribute with specified value.
+	 *
+	 * @param value value for attribute
+	 */
 	public UrlAttribute(String value) {
 		super(PrimitiveType.URL);
 		setValue(value);

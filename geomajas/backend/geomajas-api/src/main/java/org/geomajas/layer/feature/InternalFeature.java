@@ -50,8 +50,12 @@ public interface InternalFeature extends Cloneable, Comparable<InternalFeature> 
 
 	/**
 	 * This function compares style ID's between features. Features are usually sorted by style.
+	 *
+	 * @param other {@link org.geomajas.layer.feature.InternalFeature} to compare with
+	 * @return a negative integer, zero, or a positive integer as this object is less than, equal to, or greater than
+	 * the specified object.
 	 */
-	int compareTo(InternalFeature o);
+	int compareTo(InternalFeature other);
 
 	/**
 	 * Set the feature id.

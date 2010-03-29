@@ -54,7 +54,11 @@ public class FeatureTransaction implements Serializable {
 	// Getters and setters:
 	// -------------------------------------------------------------------------
 
-	/** Get the identifier of the vector layer wherein this transaction should take place. */
+	/**
+	 * Get the identifier of the vector layer wherein this transaction should take place.
+	 *
+	 * @return layer id
+	 */
 	public String getLayerId() {
 		return layerId;
 	}
@@ -72,6 +76,8 @@ public class FeatureTransaction implements Serializable {
 	/**
 	 * Returns the array of features with their original values. Can be empty or null when new features are to be
 	 * created.
+	 *
+	 * @return the original values for each of the features
 	 */
 	public Feature[] getOldFeatures() {
 		return oldFeatures;
@@ -89,6 +95,8 @@ public class FeatureTransaction implements Serializable {
 
 	/**
 	 * Return the list of features with the new values. Can be empty or null when features are to be deleted.
+	 *
+	 * @return the new values for each of the features
 	 */
 	public Feature[] getNewFeatures() {
 		return newFeatures;
@@ -97,7 +105,7 @@ public class FeatureTransaction implements Serializable {
 	/**
 	 * Set the list of features with the new values. When deleting existing features, this array should be null.
 	 * 
-	 * @param newFeatures
+	 * @param newFeatures the new values for each of the features
 	 */
 	public void setNewFeatures(Feature[] newFeatures) {
 		this.newFeatures = newFeatures;

@@ -44,29 +44,45 @@ public class OneToManyAttribute extends AssociationAttribute<List<AssociationVal
 
 	// Constructors:
 
+	/**
+	 * Create attribute without value (needed for GWT).
+	 */
 	public OneToManyAttribute() {
 	}
 
+	/**
+	 * Create attribute with specified value.
+	 *
+	 * @param value value for attribute
+	 */
 	public OneToManyAttribute(List<AssociationValue> value) {
 		this.value = value;
 	}
 
-	// Attribute implementation:
-
+	/**
+	 * {@inheritDoc}
+	 */
 	public AssociationType getType() {
 		return AssociationType.ONE_TO_MANY;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public List<AssociationValue> getValue() {
 		return value;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public boolean isEmpty() {
 		return value == null;
 	}
 
-	// Setters:
-
+	/**
+	 * {@inheritDoc}
+	 */
 	public void setValue(List<AssociationValue> value) {
 		this.value = value;
 	}

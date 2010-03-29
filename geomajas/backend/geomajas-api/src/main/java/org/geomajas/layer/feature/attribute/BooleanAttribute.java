@@ -33,10 +33,18 @@ public class BooleanAttribute extends PrimitiveAttribute<Boolean> {
 
 	private static final long serialVersionUID = 151L;
 
+	/**
+	 * Constructor, create attribute without value (needed for GWT).
+	 */
 	public BooleanAttribute() {
 		this(null);
 	}
 
+	/**
+	 * Create attribute with given boolean value.
+	 *
+	 * @param value value for attribute
+	 */
 	public BooleanAttribute(Boolean value) {
 		super(PrimitiveType.BOOLEAN);
 		setValue(value);

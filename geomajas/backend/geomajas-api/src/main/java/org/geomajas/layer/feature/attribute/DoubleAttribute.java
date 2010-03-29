@@ -33,10 +33,18 @@ public class DoubleAttribute extends PrimitiveAttribute<Double> {
 
 	private static final long serialVersionUID = 151L;
 
+	/**
+	 * Constructor, create attribute without value (needed for GWT).
+	 */
 	public DoubleAttribute() {
 		this(null);
 	}
 
+	/**
+	 * Create attribute with specified double value.
+	 *
+	 * @param value value for attribute
+	 */
 	public DoubleAttribute(Double value) {
 		super(PrimitiveType.DOUBLE);
 		setValue(value);

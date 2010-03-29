@@ -48,6 +48,11 @@ public enum LayerType implements Serializable {
 		this.code = code;
 	}
 
+	/**
+	 * Convert to string.
+	 *
+	 * @return string representation of layer type
+	 */
 	public String toString() {
 		return Integer.toString(code);
 	}

@@ -43,29 +43,52 @@ public class ArrayAttribute<VALUE_TYPE> implements Attribute<VALUE_TYPE[]> {
 
 	private VALUE_TYPE[] value;
 
+	/**
+	 * Constructor, create attribute without value (needed for GWT).
+	 */
 	public ArrayAttribute() {
 	}
 
+	/**
+	 * Create array attribute with given array as value.
+	 *
+	 * @param value value for array
+	 */
 	public ArrayAttribute(VALUE_TYPE[] value) {
 		this.value = value;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public VALUE_TYPE[] getValue() {
 		return value;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public boolean isEditable() {
 		return editable;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public boolean isEmpty() {
 		return value == null;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public boolean isPrimitive() {
 		return false;
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	public void setEditable(boolean editable) {
 		this.editable = editable;
 	}

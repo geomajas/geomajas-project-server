@@ -71,6 +71,11 @@ public class SearchCriterion implements Serializable {
 	// Public methods:
 	// -------------------------------------------------------------------------
 
+	/**
+	 * Convert to human readable form.
+	 *
+	 * @return human readable form
+	 */
 	public String toString() {
 		return "(" + attributeName + " " + operator + " " + value + ")";
 	}
@@ -81,6 +86,8 @@ public class SearchCriterion implements Serializable {
 
 	/**
 	 * Return the operator used in the criterion such as '=', '>', ...
+	 *
+	 * @return operator
 	 */
 	public String getOperator() {
 		return operator;
@@ -99,6 +106,8 @@ public class SearchCriterion implements Serializable {
 	/**
 	 * Get the name of the alpha numerical attribute on which this criterion operates. This attribute name is one of the
 	 * attributes from the vector layer configuration.
+	 *
+	 * @return attribute name
 	 */
 	public String getAttributeName() {
 		return attributeName;
@@ -115,7 +124,11 @@ public class SearchCriterion implements Serializable {
 		this.attributeName = attributeName;
 	}
 
-	/** Get the value for this criterion as a formatted string. */
+	/**
+	 * Get the value for this criterion as a formatted string.
+	 *
+	 * @return value for comparison
+	 */
 	public String getValue() {
 		return value;
 	}

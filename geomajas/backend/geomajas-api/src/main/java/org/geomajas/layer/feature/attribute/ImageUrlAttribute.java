@@ -33,10 +33,18 @@ public class ImageUrlAttribute extends PrimitiveAttribute<String> {
 
 	private static final long serialVersionUID = 151L;
 
+	/**
+	 * Create attribute without value (needed for GWT).
+	 */
 	public ImageUrlAttribute() {
 		this(null);
 	}
 
+	/**
+	 * Create attribute with specified double value.
+	 *
+	 * @param value value for attribute
+	 */
 	public ImageUrlAttribute(String value) {
 		super(PrimitiveType.IMGURL);
 		setValue(value);
