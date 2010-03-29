@@ -107,7 +107,7 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 		this.drawTargetMaxExtent = drawTargetMaxExtent;
 		targetMap.getMapModel().getMapView().addMapViewChangedHandler(this);
 		scaleBarEnabled = false;
-		panButtonsEnabled = false;
+		navigationAddonEnabled = false;
 		rectangleStyle = new ShapeStyle("#FF9900", 0.2f, "#FF9900", 1f, 2);
 		targetMaxExtentRectangleStyle = new ShapeStyle("#555555", 0.4f, "#555555", 1f, 1);
 		setZoomOnScrollEnabled(false);

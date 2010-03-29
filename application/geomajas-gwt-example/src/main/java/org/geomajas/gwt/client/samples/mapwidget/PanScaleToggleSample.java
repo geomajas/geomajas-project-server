@@ -74,7 +74,7 @@ public class PanScaleToggleSample extends SamplePanel {
 		HLayout buttonLayout = new HLayout();
 		buttonLayout.setMembersMargin(10);
 
-		// Create a button to toggle the panbuttons on and off
+		// Create a button to toggle the navigation addons on and off
 		final IButton butTogglePanButton = new IButton(I18nProvider.getSampleMessages().togglePanButtons());
 		butTogglePanButton.setWidth100();
 		buttonLayout.addMember(butTogglePanButton);
@@ -82,7 +82,7 @@ public class PanScaleToggleSample extends SamplePanel {
 		butTogglePanButton.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				map.setPanButtonsEnabled(!map.isPanButtonsEnabled());
+				map.setNavigationAddonEnabled(!map.isNavigationAddonEnabled());
 			}
 		});
 

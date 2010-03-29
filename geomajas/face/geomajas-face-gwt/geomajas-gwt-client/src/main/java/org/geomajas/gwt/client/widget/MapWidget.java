@@ -49,6 +49,7 @@ import org.geomajas.gwt.client.gfx.paintable.mapaddon.MapAddon;
 import org.geomajas.gwt.client.gfx.paintable.mapaddon.PanButtonCollection;
 import org.geomajas.gwt.client.gfx.paintable.mapaddon.ScaleBar;
 import org.geomajas.gwt.client.gfx.paintable.mapaddon.Watermark;
+import org.geomajas.gwt.client.gfx.paintable.mapaddon.ZoomAddon;
 import org.geomajas.gwt.client.gfx.painter.CirclePainter;
 import org.geomajas.gwt.client.gfx.painter.FeaturePainter;
 import org.geomajas.gwt.client.gfx.painter.FeatureTransactionPainter;
@@ -103,7 +104,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 
 	private PainterVisitor painterVisitor;
 
-	protected boolean panButtonsEnabled = true;
+	protected boolean navigationAddonEnabled = true;
 
 	protected boolean scaleBarEnabled = true;
 
@@ -128,6 +129,8 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	protected String applicationId;
 
 	private PanButtonCollection panButtons;
+
+	private ZoomAddon zoomAddon;
 
 	private PaintableGroup panGroup = new Composite("pan");
 
@@ -250,7 +253,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 			pixelLength = info.getPixelLength();
 			graphics.setBackgroundColor(info.getBackgroundColor());
 			mapModel.initialize(info);
-			setPanButtonsEnabled(info.isPanButtonsEnabled());
+			setNavigationAddonEnabled(info.isPanButtonsEnabled());
 			setScalebarEnabled(info.isScaleBarEnabled());
 			painterVisitor.registerPainter(new FeaturePainter(new ShapeStyle(info.getPointSelectStyle()),
 					new ShapeStyle(info.getLineSelectStyle()), new ShapeStyle(info.getPolygonSelectStyle())));
@@ -273,6 +276,10 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 			watermark.setAlignment(Alignment.RIGHT);
 			watermark.setVerticalAlignment(VerticalAlignment.BOTTOM);
 			registerMapAddon(watermark);
+			//			
+			// // Register ZoomAddon:
+			// ZoomAddon zoomAddon = new ZoomAddon(id + "-zoom", this);
+			// registerMapAddon(zoomAddon);
 		}
 	}
 
@@ -403,24 +410,31 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	 * @param enabled
 	 *            enabled status
 	 */
-	public void setPanButtonsEnabled(boolean enabled) {
-		panButtonsEnabled = enabled;
+	public void setNavigationAddonEnabled(boolean enabled) {
+		navigationAddonEnabled = enabled;
 
 		if (enabled) {
 			panButtons = new PanButtonCollection("panBTNCollection", this);
-			panButtons.setHorizontalMargin(10);
-			panButtons.setVerticalMargin(10);
+			panButtons.setHorizontalMargin(5);
+			panButtons.setVerticalMargin(5);
 			registerMapAddon(panButtons);
+
+			zoomAddon = new ZoomAddon("zoomAddon", this);
+			zoomAddon.setHorizontalMargin(20);
+			zoomAddon.setVerticalMargin(65);
+			registerMapAddon(zoomAddon);
 		} else {
 			if (panButtons != null) {
 				unregisterMapAddon(panButtons);
+				unregisterMapAddon(zoomAddon);
 			}
 			panButtons = null;
+			zoomAddon = null;
 		}
 	}
 
-	public boolean isPanButtonsEnabled() {
-		return panButtonsEnabled;
+	public boolean isNavigationAddonEnabled() {
+		return navigationAddonEnabled;
 	}
 
 	// -------------------------------------------------------------------------
