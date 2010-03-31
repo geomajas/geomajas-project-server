@@ -454,11 +454,11 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
                   meter, this means that 1 pixel represents a square area of 5
                   by 5 m. Images are usually optimized for a specific (set of)
                   resolution(s), so it is important to specify these here if
-                  they are known. On top of that, someservers provide specific
-                  tile caching for these predefined resolutions (WMS-T). Care
-                  has to be taken, however: the same resolutions should be
-                  defined in the map as well if one wants to avoid linear
-                  distortion of the images.</entry>
+                  they are known. On top of that, some servers provide
+                  specific tile caching for these predefined resolutions
+                  (WMS-T). Care has to be taken, however: the same resolutions
+                  should be defined in the map as well if one wants to avoid
+                  linear distortion of the images.</entry>
                 </row>
 
                 <row>
@@ -471,6 +471,16 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
                   <entry>tileHeight</entry>
 
                   <entry>Height in pixels of the requested images</entry>
+                </row>
+
+                <row>
+                  <entry>parameters</entry>
+
+                  <entry>You can define additional parameters which can be
+                  passed to the WMS server. These are name/value pairs which
+                  are passed in
+                  <code>org.geomajas.configuration.Parameter</code>
+                  objects.</entry>
                 </row>
               </tbody>
             </tgroup>
@@ -788,7 +798,42 @@ public class Road {
         <section>
           <title>GeoTools layer configuration</title>
 
-          <para>TODO</para>
+          <para>Apart from a reference to the layer info, you can set the
+          following parameters :</para>
+
+          <table>
+            <title>Raster Layer info</title>
+
+            <tgroup cols="2">
+              <thead>
+                <row>
+                  <entry>Name</entry>
+
+                  <entry>Description</entry>
+                </row>
+              </thead>
+
+              <tbody>
+                <row>
+                  <entry>url</entry>
+
+                  <entry>Url for the data source.</entry>
+                </row>
+
+                <row>
+                  <entry>parameters</entry>
+
+                  <entry>You can define additional parameters which can be
+                  passed to the GeoTools data store. These are name/value
+                  pairs which are passed in
+                  <code>org.geomajas.configuration.Parameter</code>
+                  objects.</entry>
+                </row>
+              </tbody>
+            </tgroup>
+          </table>
+
+          <para></para>
         </section>
 
         <section>

@@ -31,6 +31,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.NoSuchElementException;
 
+import org.geomajas.configuration.Parameter;
 import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.layer.LayerException;
@@ -71,6 +72,7 @@ import com.vividsolutions.jts.geom.Envelope;
  * 
  * @author Jan De Moerloose
  * @author Pieter De Graef
+ * @author Joachim Van der Auwera
  */
 @Transactional(rollbackFor = { Exception.class })
 public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer {
@@ -82,6 +84,8 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 	private FeatureModel featureModel;
 
 	private VectorLayerInfo layerInfo;
+
+	private List<Parameter> parameters;
 
 	@Autowired
 	private FilterService filterCreator;
@@ -105,6 +109,14 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 	
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public List<Parameter> getParameters() {
+		return parameters;
+	}
+
+	public void setParameters(List<Parameter> parameters) {
+		this.parameters = parameters;
 	}
 
 	public CoordinateReferenceSystem getCrs() {
@@ -150,6 +162,11 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 		try {
 			Map<String, String> params = new HashMap<String, String>();
 			params.put("url", url);
+			if (null != parameters) {
+				for (Parameter parameter : parameters) {
+					params.put(parameter.getName(), parameter.getValue());
+				}
+			}
 			DataStore store = DataStoreFactory.create(params);
 			setDataStore(store);
 		} catch (IOException ioe) {
