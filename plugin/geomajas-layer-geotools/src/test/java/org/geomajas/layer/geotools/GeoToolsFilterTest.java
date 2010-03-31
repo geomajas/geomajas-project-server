@@ -95,6 +95,7 @@ public class GeoToolsFilterTest extends AbstractGeoToolsTest {
 		layerInfo.setCrs("EPSG:4326");
 
 		layer.setLayerInfo(layerInfo);
+		layer.initFeatures();
 	}
 
 	@Test

@@ -67,6 +67,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.vividsolutions.jts.geom.Envelope;
 
+import javax.annotation.PostConstruct;
+
 /**
  * Geotools layer model.
  * 
@@ -85,6 +87,8 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 
 	private VectorLayerInfo layerInfo;
 
+	private String url;
+	private String dbtype;
 	private List<Parameter> parameters;
 
 	@Autowired
@@ -109,6 +113,22 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 	
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
+
+	public String getDbtype() {
+		return dbtype;
+	}
+
+	public void setDbtype(String dbtype) {
+		this.dbtype = dbtype;
 	}
 
 	public List<Parameter> getParameters() {
@@ -139,7 +159,6 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 		this.layerInfo = layerInfo;
 		initCrs();
 		setFeatureSourceName(layerInfo.getFeatureInfo().getDataSourceName());
-		initFeatures();
 	}
 
 	public VectorLayerInfo getLayerInfo() {
@@ -158,35 +177,42 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 		return true;
 	}
 
-	public void setUrl(String url) throws LayerException {
+	public void setDataStore(DataStore dataStore) throws LayerException {
+		super.setDataStore(dataStore);
+	}
+
+	@PostConstruct
+	public void initFeatures() throws LayerException {
+		if (null == layerInfo) {
+			return;
+		}
 		try {
-			Map<String, String> params = new HashMap<String, String>();
-			params.put("url", url);
-			if (null != parameters) {
-				for (Parameter parameter : parameters) {
-					params.put(parameter.getName(), parameter.getValue());
+			if (null == getDataStore()) {
+				Map<String, String> params = new HashMap<String, String>();
+				if (null != url) {
+					params.put("url", url);
 				}
+				if (null != dbtype) {
+					params.put("dbtype", dbtype);
+				}
+				if (null != parameters) {
+					for (Parameter parameter : parameters) {
+						params.put(parameter.getName(), parameter.getValue());
+					}
+				}
+				DataStore store = DataStoreFactory.create(params);
+				setDataStore(store);
 			}
-			DataStore store = DataStoreFactory.create(params);
-			setDataStore(store);
+			if (null == getDataStore()) {
+				return;
+			}
+			this.filterFactory = CommonFactoryFinder.getFilterFactory(null);
+			this.featureModel = new GeoToolsFeatureModel(getDataStore(), layerInfo.getFeatureInfo().getDataSourceName(),
+					geoService.getSridFromCrs(layerInfo.getCrs()), converterService);
+			featureModel.setLayerInfo(layerInfo);
 		} catch (IOException ioe) {
 			throw new LayerException(ExceptionCode.INVALID_SHAPE_FILE_URL, url);
 		}
-	}
-
-	public void setDataStore(DataStore dataStore) throws LayerException {
-		super.setDataStore(dataStore);
-		initFeatures();
-	}
-
-	private void initFeatures() throws LayerException {
-		if (null == layerInfo || null == getDataStore()) {
-			return;
-		}
-		this.filterFactory = CommonFactoryFinder.getFilterFactory(null);
-		this.featureModel = new GeoToolsFeatureModel(getDataStore(), layerInfo.getFeatureInfo().getDataSourceName(),
-				geoService.getSridFromCrs(layerInfo.getCrs()), converterService);
-		featureModel.setLayerInfo(layerInfo);
 	}
 
 	public Object create(Object feature) throws LayerException {

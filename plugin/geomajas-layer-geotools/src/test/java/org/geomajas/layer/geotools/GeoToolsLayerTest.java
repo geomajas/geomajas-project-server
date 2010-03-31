@@ -89,6 +89,7 @@ public class GeoToolsLayerTest extends AbstractGeoToolsTest {
 		layerInfo.setCrs("EPSG:4326");
 
 		layer.setLayerInfo(layerInfo);
+		layer.initFeatures();
 		filter = filterCreator.createCompareFilter("Population", ">", "49900");
 	}
 

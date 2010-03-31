@@ -817,7 +817,15 @@ public class Road {
                 <row>
                   <entry>url</entry>
 
-                  <entry>Url for the data source.</entry>
+                  <entry>Url for the data source, typically used for accessing
+                  files.</entry>
+                </row>
+
+                <row>
+                  <entry>dbtype</entry>
+
+                  <entry>Database type, useful when the data store is a
+                  database.</entry>
                 </row>
 
                 <row>
