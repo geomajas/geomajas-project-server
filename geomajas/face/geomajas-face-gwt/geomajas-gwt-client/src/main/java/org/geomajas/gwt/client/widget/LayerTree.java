@@ -286,33 +286,35 @@ public class LayerTree extends Canvas implements LeafClickHandler, FolderClickHa
 	 */
 	private void processNode(final ClientLayerTreeNodeInfo treeNode, final TreeNode nodeRoot, final Tree tree,
 			final MapModel mapModel, final boolean refresh) {
-		String treeNodeLabel = treeNode.getLabel();
-		final TreeNode node = new TreeNode(treeNodeLabel);
+		if (null != treeNode) {
+			String treeNodeLabel = treeNode.getLabel();
+			final TreeNode node = new TreeNode(treeNodeLabel);
 
-		tree.add(node, nodeRoot);
+			tree.add(node, nodeRoot);
 
-		// (final leafs)
-		for (ClientLayerInfo info : treeNode.getLayers()) {
-			Layer<?> layer = mapModel.getLayer(info.getId());
-			tree.add(new LayerTreeTreeNode(this.tree, layer), node);
-		}
-
-		// treeNodes
-		List<ClientLayerTreeNodeInfo> childs = treeNode.getTreeNodes();
-		for (ClientLayerTreeNodeInfo newNode : childs) {
-			processNode(newNode, node, tree, mapModel, refresh);
-		}
-
-		// expand tree nodes
-		// when not refreshing expand them like configured
-		// when refreshing expand them as before the refresh
-		boolean isTreeNodeExpanded = treeNode.isExpanded();
-		if (!refresh) {
-			if (isTreeNodeExpanded) {
-				tree.openFolder(node);
+			// (final leafs)
+			for (ClientLayerInfo info : treeNode.getLayers()) {
+				Layer<?> layer = mapModel.getLayer(info.getId());
+				tree.add(new LayerTreeTreeNode(this.tree, layer), node);
 			}
-		} else {
-			// TODO close previously opened tree nodes, close others
+
+			// treeNodes
+			List<ClientLayerTreeNodeInfo> childs = treeNode.getTreeNodes();
+			for (ClientLayerTreeNodeInfo newNode : childs) {
+				processNode(newNode, node, tree, mapModel, refresh);
+			}
+
+			// expand tree nodes
+			// when not refreshing expand them like configured
+			// when refreshing expand them as before the refresh
+			boolean isTreeNodeExpanded = treeNode.isExpanded();
+			if (!refresh) {
+				if (isTreeNodeExpanded) {
+					tree.openFolder(node);
+				}
+			} else {
+				// TODO close previously opened tree nodes, close others
+			}
 		}
 	}
 
