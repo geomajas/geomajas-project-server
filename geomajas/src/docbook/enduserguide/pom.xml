@@ -1,0 +1,134 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.geomajas.documentation</groupId>
+		<artifactId>docbook</artifactId>
+		<version>1.6.0-SNAPSHOT</version>
+	</parent>
+	<groupId>org.geomajas.documentation</groupId>
+	<artifactId>docbook-enduserguide</artifactId>
+	<packaging>jdocbook</packaging>
+	<name>User Guide for End Users (${translation})</name>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.geomajas.documentation</groupId>
+			<artifactId>geomajas-jdocbook-xslt</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas.documentation</groupId>
+			<artifactId>geomajas-jdocbook-style</artifactId>
+			<version>${project.version}</version>
+			<type>jdocbook-style</type>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>unpack-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/resources</outputDirectory>
+							<includeArtifactIds>geomajas-jdocbook-xslt</includeArtifactIds>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+
+			<plugin>
+				<groupId>org.jboss.maven.plugins</groupId>
+				<artifactId>maven-jdocbook-plugin</artifactId>
+				<version>2.0.0</version>
+				<extensions>true</extensions>
+				<configuration>
+					<sourceDocumentName>master.xml</sourceDocumentName>
+					<imageResource>
+						<directory>${basedir}/${translation}</directory>
+						<excludes>
+							<exclude>*.xml</exclude>
+						</excludes>
+					</imageResource>
+					<cssResource>
+						<directory>${basedir}/${translation}</directory>
+						<excludes>
+							<exclude>*.xml</exclude>
+						</excludes>
+					</cssResource>
+					<formats>
+
+						<format>
+							<formatName>pdf</formatName>
+
+							<!--stylesheetResource>classpath:/standard/fopdf.xsl</stylesheetResource-->
+
+							<finalName>End_User_Guide.pdf</finalName>
+						</format>
+
+						<format>
+							<formatName>html</formatName>
+							<stylesheetResource>file:${project.build.directory}/resources/xslt/org/jboss/main-html.xsl
+							</stylesheetResource>
+							<finalName>index.html</finalName>
+						</format>
+
+						<format>
+							<formatName>html_single</formatName>
+							<stylesheetResource>
+								file:${project.build.directory}/resources/xslt/org/jboss/nochunk-html.xsl
+							</stylesheetResource>
+							<finalName>index.html</finalName>
+						</format>
+
+						<!--                        <format>
+								  <formatName>eclipse</formatName>
+								  <stylesheetResource>classpath:/xslt/main-eclipse.xsl</stylesheetResource>
+								  <finalName>index.html</finalName>
+							  </format>
+	  -->
+					</formats>
+					<options>
+						<xincludeSupported>true</xincludeSupported>
+						<xmlTransformerType>saxon</xmlTransformerType>
+						<!-- needed for uri-resolvers; can be ommitted if using 'current' uri scheme -->
+						<!--     could also locate the docbook dependency and inspect its version... -->
+						<docbookVersion>1.72.0</docbookVersion>
+					</options>
+
+					<sourceDirectory>${basedir}/${translation}</sourceDirectory>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<pluginRepositories>
+		<pluginRepository>
+			<id>repository.jboss.org</id>
+			<url>http://repository.jboss.org/maven2</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+		<pluginRepository>
+			<id>snapshots.jboss.org</id>
+			<url>http://snapshots.jboss.org/maven2</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
+
+	<properties>
+		<translation>en-GB</translation>
+	</properties>
+
+</project>

@@ -12,6 +12,8 @@
 		<module>style</module>
 		<module>xslt</module>
 		<module>devuserguide</module>
+		<module>enduserguide</module>
+		<module>committerguide</module>
 	</modules>
 
 </project>

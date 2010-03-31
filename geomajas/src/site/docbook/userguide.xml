@@ -23,7 +23,7 @@
   ~ You should have received a copy of the GNU Affero General Public License
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
-<article id="release" lang="en">
+<article id="documentation" lang="en">
   <title>User guides</title>
 
   <para>User guide for people who want to develop applications using
@@ -41,6 +41,40 @@
 
       <listitem>
         <para><ulink url="devuserguide/html_single/index.html">as large one page HTML</ulink></para>
+      </listitem>
+    </itemizedlist></para>
+
+  <para>User guide for end users who want to use a Geomajas application</para>
+
+  <para><itemizedlist>
+      <listitem>
+        <para><ulink url="enduserguide/pdf/End_User_Guide.pdf">as
+        PDF</ulink></para>
+      </listitem>
+
+      <listitem>
+        <para><ulink url="enduserguide/html/index.html">as HTML</ulink></para>
+      </listitem>
+
+      <listitem>
+        <para><ulink url="enduserguide/html_single/index.html">as large one page HTML</ulink></para>
+      </listitem>
+    </itemizedlist></para>
+
+  <para>Committer guide</para>
+
+  <para><itemizedlist>
+      <listitem>
+        <para><ulink url="committerguide/pdf/Committer_Guide.pdf">as
+        PDF</ulink></para>
+      </listitem>
+
+      <listitem>
+        <para><ulink url="committerguide/html/index.html">as HTML</ulink></para>
+      </listitem>
+
+      <listitem>
+        <para><ulink url="committerguide/html_single/index.html">as large one page HTML</ulink></para>
       </listitem>
     </itemizedlist></para>
 </article>

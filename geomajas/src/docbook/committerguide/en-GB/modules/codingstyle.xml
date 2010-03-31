@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE article PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
 "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
 <!--
   ~ This file is part of Geomajas, a component framework for building
@@ -23,10 +23,8 @@
   ~ You should have received a copy of the GNU Affero General Public License
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
-<article id="release" lang="en">
+<chapter id="codingstyle" lang="en">
   <title>Coding quality and style</title>
-
-  <toc />
 
   <!--
 References
@@ -342,4 +340,4 @@ public class Foo implements Serializable {
       class.</para>
     </section>
   </section>
-</article>
+</chapter>

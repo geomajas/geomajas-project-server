@@ -23,8 +23,8 @@
   ~ You should have received a copy of the GNU Affero General Public License
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
-<book id="developer" lang="en">
-	<title>Geomajas user guide for developers</title>
+<book id="committer" lang="en">
+	<title>Geomajas committer guide</title>
 
 	<bookinfo>
 		<copyright>
@@ -44,26 +44,15 @@
 
 	<toc></toc>
 
-	<xi:include href="modules/part-introduction.xml"
+	<xi:include href="modules/developers.xml"
 				xmlns:xi="http://www.w3.org/2001/XInclude"/>
-
-	<xi:include href="modules/part-architecture.xml"
+	<xi:include href="modules/codingstyle.xml"
 				xmlns:xi="http://www.w3.org/2001/XInclude"/>
-
-	<xi:include href="modules/part-backend.xml"
+	<xi:include href="modules/jira.xml"
 				xmlns:xi="http://www.w3.org/2001/XInclude"/>
-
-	<xi:include href="modules/part-faces-general.xml"
+	<xi:include href="modules/spring.xml"
 				xmlns:xi="http://www.w3.org/2001/XInclude"/>
-
-	<xi:include href="modules/part-dojo-face.xml"
+	<xi:include href="modules/release.xml"
 				xmlns:xi="http://www.w3.org/2001/XInclude"/>
-
-	<xi:include href="modules/part-gwt-face.xml"
-				xmlns:xi="http://www.w3.org/2001/XInclude"/>
-
-	<xi:include href="modules/part-installation.xml"
-				xmlns:xi="http://www.w3.org/2001/XInclude"/>
-
 	
 </book>
