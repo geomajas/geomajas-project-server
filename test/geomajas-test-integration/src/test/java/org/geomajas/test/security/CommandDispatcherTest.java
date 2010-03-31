@@ -96,7 +96,7 @@ public class CommandDispatcherTest {
 		logRequest.setStatement("test log command access");
 		response = commandDispatcher.execute("command.general.Log", logRequest, token, "en");
 		Assert.assertTrue(response.isError());
-		Assert.assertEquals("User marino is not authorized to use the command command.general.Log. ",
+		Assert.assertEquals("User marino is not authorized to use the command command.general.Log.",
 				response.getErrorMessages().get(0)); // needs to be updated when messages file is changed
 		Assert.assertNull(securityContext.getToken());
 
