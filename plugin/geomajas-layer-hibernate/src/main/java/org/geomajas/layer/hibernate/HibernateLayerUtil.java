@@ -43,6 +43,7 @@ class HibernateLayerUtil {
 
 	private final Logger log = LoggerFactory.getLogger(HibernateLayerUtil.class);
 
+	public static final String XPATH_SEPARATOR = "/";
 	public static final String SEPARATOR = ".";
 
 	public static final String SEPARATOR_REGEXP = "\\.";
@@ -96,6 +97,9 @@ class HibernateLayerUtil {
 	 *             Throws an exception if the property name could not be retrieved.
 	 */
 	protected Class<?> getPropertyClass(ClassMetadata meta, String propertyName) throws HibernateLayerException {
+		if (propertyName.indexOf(XPATH_SEPARATOR) > 0) {
+			propertyName = propertyName.replace(XPATH_SEPARATOR, SEPARATOR);
+		}
 		if (propertyName.contains(SEPARATOR)) {
 			String directProperty = propertyName.substring(0, propertyName.indexOf(SEPARATOR));
 			try {
