@@ -118,7 +118,6 @@ dojo.declare("MapModel", PainterVisitable, {
 
 		var layers = this.layerOrder;
 		// always do the layers to accommodate for mapview changes
-		// TODO: need more control on the depth of the visit ???
 		if(recursive){
 			for (var i=0; i<layers.count; i++) {
 				var layer = layers.item(i);

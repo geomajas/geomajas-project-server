@@ -37,7 +37,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
- * TODO: document me !
+ * Test for attribute converter.
  *
  * @author Jan De Moerloose
  */

@@ -336,13 +336,15 @@ public class HibernateFeatureModel extends HibernateLayerUtil implements Feature
 	}
 
 	/**
-	 * TODO Do we allow an ID to be set by the setAttributes method? I suggest not.(PDG)
+	 * Set an attribute.
+	 * <p/>
+	 * It is not allowed to modify a id attribute.
 	 * 
 	 * @param parent
 	 * @param parentAttribute
 	 * @param propertyName
 	 * @param baseValue
-	 * @throws LayerException
+	 * @throws LayerException oops
 	 */
 	@SuppressWarnings("unchecked")
 	private void setAttributeRecursively(Object parent, AttributeInfo parentAttribute, String propertyName,
@@ -531,9 +533,6 @@ public class HibernateFeatureModel extends HibernateLayerUtil implements Feature
 		collection.removeAll(toDelete);
 	}
 
-	/**
-	 * TODO: Now that we are using Attribute definitions, isn't this method obsolete?
-	 */
 	private Object castPrimitiveValue(PrimitiveType type, Object baseValue) {
 		Object value = baseValue;
 		if (value != null) {

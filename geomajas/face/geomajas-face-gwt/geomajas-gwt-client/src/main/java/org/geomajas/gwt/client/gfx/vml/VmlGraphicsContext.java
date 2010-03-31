@@ -230,67 +230,6 @@ public class VmlGraphicsContext extends AbstractGraphicsContext {
 			return;
 		}
 		symbolDefs.put(id, new SymbolDefinition(symbol, style));
-
-//		// Step1: get or create the shape-type element:
-//		Element shapeType = DOM.getElementById(id);
-//		boolean isNew = (shapeType == null);
-//		shapeType = createOrUpdateElement(DOM.NS_VML, null, id, "shapetype", style, transformation, false);
-//
-//		// If it is a new shape-type, define the necessary elements:
-//		if (isNew) {
-//			Element formulas = DOM.createElementNS(DOM.NS_VML, "formulas");
-//			shapeType.appendChild(formulas);
-//			DOM.setElementAttribute(shapeType, "coordsize", "1000 1000");
-//
-//			// Prepare 4 formulas TODO: how to extend this for complex geometries????
-//			for (int i = 0; i < 4; i++) {
-//				formulas.appendChild(DOM.createElementNS(DOM.NS_VML, "f"));
-//			}
-//		}
-//
-//		// Check what type of symbol:
-//		if (symbol.getRect() != null) {
-//
-//			// Define a rectangle:
-//			NodeList<com.google.gwt.dom.client.Element> formulas = shapeType.getElementsByTagName("f");
-//			float width = symbol.getRect().getW();
-//			float height = symbol.getRect().getH();
-//
-//			// Create the rectangle definition:
-//			Element formula = DOM.createElementNS(DOM.NS_VML, "f");
-//			DOM.setElementAttribute(formula, "eqn", "sum #0 " + "0 " + (int) (width / 2));
-//			formulas.getItem(0).getParentNode().replaceChild(formula, formulas.getItem(0));
-//
-//			formula = (Element) formulas.getItem(1);
-//			DOM.setElementAttribute(formula, "eqn", "sum #1 " + "0 " + (int) (height / 2));
-//			formulas.getItem(0).getParentNode().replaceChild(formula, formulas.getItem(1));
-//
-//			formula = (Element) formulas.getItem(2);
-//			DOM.setElementAttribute(formula, "eqn", "sum #0 " + (int) (width / 2) + " 0");
-//			formulas.getItem(0).getParentNode().replaceChild(formula, formulas.getItem(2));
-//
-//			formula = (Element) formulas.getItem(3);
-//			DOM.setElementAttribute(formula, "eqn", "sum #1 " + (int) (height / 2) + " 0");
-//			formulas.getItem(0).getParentNode().replaceChild(formula, formulas.getItem(3));
-//
-//			DOM.setElementAttribute(shapeType, "path", "m@0@1 l@2@1 @2@3 @0@3xe");
-//		} else if (symbol.getCircle() != null) {
-//
-//			// Define a circle:
-//			NodeList<com.google.gwt.dom.client.Element> formulas = shapeType.getElementsByTagName("f");
-//
-//			// Create the circle definition:
-//			Element formula = DOM.createElementNS(DOM.NS_VML, "f");
-//			DOM.setElementAttribute(formula, "eqn", "sum #0 0 0");
-//			formulas.getItem(0).getParentNode().replaceChild(formula, formulas.getItem(0));
-//
-//			formula = DOM.createElementNS(DOM.NS_VML, "f");
-//			DOM.setElementAttribute(formula, "eqn", "sum #1 0 0");
-//			formulas.getItem(0).getParentNode().replaceChild(formula, formulas.getItem(1));
-//
-//			float radius = symbol.getCircle().getR();
-//			DOM.setElementAttribute(shapeType, "path", "al @0 @1 " + radius + " " + radius + " 0 23592600x");
-//		}
 	}
 
 	/**
@@ -300,7 +239,7 @@ public class VmlGraphicsContext extends AbstractGraphicsContext {
 	 *            parent group object
 	 * @param name
 	 *            The symbol's name.
-	 * @param symbol
+	 * @param position
 	 *            The symbol's (X,Y) location on the graphics.
 	 * @param style
 	 *            The style to apply on the symbol.
@@ -364,7 +303,7 @@ public class VmlGraphicsContext extends AbstractGraphicsContext {
 			VmlStyleUtil.applyStyle(element, style);
 
 			// Set width, because this may change otherwise...
-			int textWidth = width - (int) position.getX(); // @todo ??????
+			int textWidth = width - (int) position.getX();
 			if (textWidth <= 0) {
 				textWidth = 10;
 			}

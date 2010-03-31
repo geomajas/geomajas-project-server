@@ -240,7 +240,7 @@ public class Toolbar extends ToolStrip {
 	/**
 	 * Set the size of the buttons. Use this before the toolbar is drawn, because afterwards, it won't work anymore.
 	 * 
-	 * @param buttonSize
+	 * @param buttonSize button size
 	 */
 	public void setButtonSize(int buttonSize) {
 		this.buttonSize = buttonSize;

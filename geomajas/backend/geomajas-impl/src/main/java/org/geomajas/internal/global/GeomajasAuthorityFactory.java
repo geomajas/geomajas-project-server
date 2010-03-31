@@ -29,7 +29,7 @@ import org.opengis.referencing.crs.CRSFactory;
 import java.net.URL;
 
 /**
- * Pulls in Google Mercator CRS. TODO: EPSGCRSAuthorityFactory is deprecated !!!
+ * Pulls in Google Mercator CRS.
  *
  * @author Jan De Moerloose
  *

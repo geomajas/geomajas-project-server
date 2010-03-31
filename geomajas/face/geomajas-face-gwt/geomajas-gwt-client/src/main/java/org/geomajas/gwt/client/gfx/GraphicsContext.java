@@ -243,7 +243,7 @@ public interface GraphicsContext {
 	 *            parent group object
 	 * @param name
 	 *            The symbol's name.
-	 * @param symbol
+	 * @param position
 	 *            The symbol's (X,Y) location on the graphics.
 	 * @param style
 	 *            The style to apply on the symbol.
@@ -271,13 +271,15 @@ public interface GraphicsContext {
 
 	/**
 	 * Return the current graphics height.
+	 *
+	 * @return graphics height
 	 */
 	int getHeight();
 
 	/**
 	 * Return the element name for the specified id.
 	 * 
-	 * @param id
+	 * @param id id
 	 * @return the name of the element
 	 */
 	String getNameById(String id);
@@ -285,13 +287,15 @@ public interface GraphicsContext {
 	/**
 	 * Return the (enclosing) group for the specified element id.
 	 * 
-	 * @param id
+	 * @param id id
 	 * @return the group object
 	 */
 	Object getGroupById(String id);
 
 	/**
 	 * Return the current graphics width.
+	 *
+	 * @return graphics width
 	 */
 	int getWidth();
 

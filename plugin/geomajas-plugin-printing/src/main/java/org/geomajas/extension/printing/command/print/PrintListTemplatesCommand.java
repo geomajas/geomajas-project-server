@@ -38,9 +38,7 @@ import org.springframework.stereotype.Component;
 
 import javax.xml.bind.JAXBException;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * List print templates command.
@@ -68,8 +66,7 @@ public class PrintListTemplatesCommand implements Command<EmptyCommandRequest, P
 					// decode the page
 					template.decode();
 					// calculate the sizes (if not already calculated !)
-					SinglePageDocument document =
-							new SinglePageDocument(template.getPage(), runtime, getFilters());
+					SinglePageDocument document = new SinglePageDocument(template.getPage(), runtime, null);
 					document.setLayoutOnly(true);
 					document.render();
 					// add to the result
@@ -102,15 +99,10 @@ public class PrintListTemplatesCommand implements Command<EmptyCommandRequest, P
 	private DtoPrintTemplate createDefault(String pagesize, boolean landscape) {
 		PrintTemplate template = PrintTemplate.createDefaultTemplate(pagesize, landscape);
 		// calculate the sizes (if not already calculated !)
-		SinglePageDocument document = new SinglePageDocument(template.getPage(), runtime, getFilters());
+		SinglePageDocument document = new SinglePageDocument(template.getPage(), runtime, null);
 		document.setLayoutOnly(true);
 		document.render();
 		return template.toDto();
-	}
-
-	private Map<String, String> getFilters() {
-		// @todo security, provide data filters for the layers
-		return new HashMap<String, String>();
 	}
 
 }

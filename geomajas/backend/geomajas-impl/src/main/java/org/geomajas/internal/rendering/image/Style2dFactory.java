@@ -138,11 +138,12 @@ public final class Style2dFactory {
 			float[] dash = new float[tokenizer.countTokens()];
 			int count = 0;
 			while (tokenizer.hasMoreElements()) {
+				String token = tokenizer.nextElement().toString().trim();
 				try {
-					float f = Float.parseFloat(tokenizer.nextElement().toString());
+					float f = Float.parseFloat(token);
 					dash[count++] = f;
-				} catch (Exception e) {
-					// @todo is this correct?
+				} catch (NumberFormatException e) {
+					throw new IllegalStateException("Invalid dash array value " + token);
 				}
 			}
 			stroke = new BasicStroke(styleInfo.getStrokeWidth(), BasicStroke.CAP_ROUND,

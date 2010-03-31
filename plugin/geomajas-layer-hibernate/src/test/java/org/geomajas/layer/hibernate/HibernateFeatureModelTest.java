@@ -249,7 +249,7 @@ public class HibernateFeatureModelTest extends AbstractHibernateLayerModelTest {
 		Assert.assertEquals(date, featureModel.getAttribute(feature1, ATTR__MANY_TO_ONE__DOT__DATE).getValue());
 	}
 
-	// TODO when setting new one-to-many values that are NEW, they cannot have an ID! We expect ID generation i guess.
+	// TODO when setting new one-to-many values that are NEW, they cannot have an ID! We expect ID generation I guess.
 	@SuppressWarnings("unchecked")
 	@Test
 	public void setAttributesOneToMany() throws Exception {

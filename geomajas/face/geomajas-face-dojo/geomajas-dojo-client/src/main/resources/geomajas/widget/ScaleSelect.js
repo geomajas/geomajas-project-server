@@ -38,9 +38,6 @@ dojo.requireLocalization("geomajas.widget", "scaleSelect");
  * Also, this widget can be added to a toolbar, with the toolbar.addChild() 
  * method.
  * 
- * TODO: A combobox is a ValidationTextBox, so perhaps we should take 
- * advantage of the regexp, the promptmessage, the invalidmessage, etc.
- * 
  * @author Pieter De Graef
  */
 dojo.declare("geomajas.widget.ScaleSelect", [ dijit._Widget, dijit._Templated,

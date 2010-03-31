@@ -380,8 +380,6 @@ public class ExtendedLikeFilterImpl extends AbstractFilterImpl implements LikeFi
 	 *            Specified feature to examine.
 	 * 
 	 * @return Flag confirming whether or not this feature is inside the filter.
-	 * 
-	 * @todo REVISIT: could the pattern be null such that a null = null?
 	 */
 	public boolean evaluate(Object feature) {
 		// Checks to ensure that the attribute has been set
@@ -415,7 +413,6 @@ public class ExtendedLikeFilterImpl extends AbstractFilterImpl implements LikeFi
 	 * @return String representation of this like filter.
 	 */
 	public String toString() {
-		// TODO test if change affects anything else
 		return "[ " + attribute.toString() + " like '" + pattern + "' ]";
 	}
 

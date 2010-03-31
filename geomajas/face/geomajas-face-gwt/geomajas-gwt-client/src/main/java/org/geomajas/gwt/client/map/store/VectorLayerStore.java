@@ -110,8 +110,8 @@ public interface VectorLayerStore extends LayerStore<VectorTile> {
 	 * @param bbox
 	 *            The bounding box wherein we are to search for tiles.
 	 * @param filter
-	 *            In case a node is missing, it is fetched with this extra filter. Is usually null though. TODO: check
-	 *            if this is true.
+	 *            Additional filter which can be applied in the query. This is usually null, but could for example be
+	 *            used when a node is missing.
 	 * @param onDelete
 	 *            The function to be applied on the tiles deleted by this sync. This function should take a node as
 	 *            parameter.

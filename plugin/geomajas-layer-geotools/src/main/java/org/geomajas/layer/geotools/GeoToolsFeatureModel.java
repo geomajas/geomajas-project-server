@@ -122,9 +122,6 @@ public class GeoToolsFeatureModel extends FeatureSourceRetriever implements Feat
 		return srid;
 	}
 
-	/**
-	 * TODO I have my doubts if this function actually works.
-	 */
 	public Object newInstance() throws LayerException {
 		if (builder == null) {
 			throw new LayerException(ExceptionCode.CREATE_FEATURE_NO_FEATURE_TYPE);

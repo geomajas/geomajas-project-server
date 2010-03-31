@@ -24,8 +24,6 @@
 dojo.provide("geomajas.widget.LTToggleButton");
 dojo.require("dijit.form.Button");
 
-// TODO: Needs decent disable/enable functions.
-
 /**
  * Extension of a dojo button widget, that resembles the functionality of a
  * checkbox. The "LT" stands for LayerTree, and it's purpose is to set

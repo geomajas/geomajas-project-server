@@ -160,7 +160,6 @@ dojo.declare("Geometry", null, {
 	// Getters and setters:
 
 	/**
-	 * // TODO: extend this to complex geometries !
 	 * Append a point to this geometry
 	 * @param coordinate of point
 	*/

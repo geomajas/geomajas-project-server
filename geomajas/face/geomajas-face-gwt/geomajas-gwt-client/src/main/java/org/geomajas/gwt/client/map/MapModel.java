@@ -395,7 +395,7 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 		if (ft != null) {
 			VectorLayer layer = ft.getLayer();
 			if (layer != null) {
-				// clear all the tiles TODO: limit this a bit more ?
+				// clear all the tiles
 				layer.getFeatureStore().clear();
 			}
 			// now update/add the features

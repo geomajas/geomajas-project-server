@@ -54,7 +54,7 @@ dojo.declare("ToolbarAction", Action, {
 	 */
 	setEnabled : function (enabled) {
 		this.enabled = enabled;
-		var button = dijit.byId (this.id); // TODO: fout fout fout!
+		var button = dijit.byId (this.id);
 		if (button != null) {
 			if (this.enabled) {
 				button.setDisabled(false);

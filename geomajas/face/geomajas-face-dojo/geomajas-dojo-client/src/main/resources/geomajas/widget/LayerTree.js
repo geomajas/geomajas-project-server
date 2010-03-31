@@ -171,7 +171,7 @@ dojo.declare(
 				button.setAction (action);
 				this.actionHandles.push (dojo.connect(button, "onClick", dojo.hitch(this, "_checkButtons"))); // Check all buttons again after every click on one of them.
 				this.buttonsEl.appendChild (button.domNode);
-				button.applyLayer(null); // TODO: event=null, kan problemen geven?? Misschien deftige disable functie in de LTButton steken...
+				button.applyLayer(null);
 				this.buttons.add (button);
 				return true
 			}
@@ -190,7 +190,7 @@ dojo.declare(
 				button.setTool (tool);
 				this.toolHandles.push (dojo.connect(button, "onClick", dojo.hitch(this, "_checkButtons"))); // Check all buttons again after every click on one of them.
 				this.buttonsEl.appendChild (button.domNode);
-				button.applyLayer(null); // TODO: event=null, kan problemen geven?? Misschien deftige disable functie in de LTButton steken...
+				button.applyLayer(null);
 				this.buttons.add (button);
 				return true;
 			}

@@ -85,9 +85,6 @@ import com.smartgwt.client.widgets.grid.events.SelectionEvent;
  */
 public class FeatureListGrid extends ListGrid implements FeatureSelectionHandler, SelectionChangedHandler {
 
-	/**
-	 * TODO: Used for the FeatureEditor and the selection. Can't we remove it somehow??
-	 */
 	private MapModel mapModel;
 
 	/**
@@ -96,11 +93,6 @@ public class FeatureListGrid extends ListGrid implements FeatureSelectionHandler
 	 */
 	private VectorLayer layer;
 
-	/**
-	 * <p>
-	 * TODO How to handle the selectionType that the parent ListGrid supports? Currently it is completely disabled.
-	 * </p>
-	 */
 	private boolean selectionEnabled;
 
 	/**

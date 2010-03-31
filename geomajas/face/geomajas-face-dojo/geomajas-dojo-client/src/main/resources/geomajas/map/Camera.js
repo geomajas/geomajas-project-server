@@ -32,9 +32,6 @@ dojo.declare("Camera", null, {
 	 * The x and y are in world coordinates, but after transformation to
 	 * viewspace, they are supposed to lie in the center of the SVG map.
 	 *
-	 * TODO: Perhaps the scale should be here as well???
-	 *       Depends on whether we view the scale as a Z-factor or a FOV-focus.....
-	 *       If we view the scale as a Z-factor, we should move it here.
 	 * @author Pieter De Graef
 	 *
 	 * @constructor

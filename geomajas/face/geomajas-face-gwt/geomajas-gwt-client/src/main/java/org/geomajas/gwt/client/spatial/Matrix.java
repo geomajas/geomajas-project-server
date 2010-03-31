@@ -27,10 +27,7 @@ package org.geomajas.gwt.client.spatial;
  * <p>
  * A very simple matrix class, that is actually nothing more then a POJO object.
  * </p>
- * <p>
- * TODO: Should we not make a more useful matrix class?
- * </p>
- * 
+ *
  * @author Pieter De Graef
  */
 public class Matrix {

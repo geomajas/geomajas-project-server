@@ -75,7 +75,6 @@ public class ExtendedDataStore extends JDBC1DataStore implements DataStore {
 			DefaultSQLBuilder builder = (DefaultSQLBuilder) getSqlBuilder(table1);
 			// no way we can get at 2 tables ????
 			builder.sqlWhere(sqlBuffer, (org.geotools.filter.Filter) filter1);
-			// TODO
 			return Collections.EMPTY_MAP;
 		} catch (SQLEncoderException e) {
 			throw new IOException("Could not encode sql for relationship query : " + e.getMessage());

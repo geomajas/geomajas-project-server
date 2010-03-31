@@ -42,7 +42,7 @@ import org.geomajas.gwt.client.spatial.geometry.Polygon;
  * while view space is expressed in the pixel coordinates on the GraphicsContext.
  * </p>
  * <p>
- * TODO: Has no support for rotating maps, perhaps in the future we might need this...
+ * Note that this class has no support for rotating maps, perhaps in the future we might need this...
  * </p>
  * 
  * @author Pieter De Graef

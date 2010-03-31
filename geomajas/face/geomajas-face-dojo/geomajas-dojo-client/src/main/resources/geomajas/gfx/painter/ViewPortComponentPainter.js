@@ -78,7 +78,7 @@ dojo.declare("ViewPortComponentPainter", BaseComponentPainter, {
 			}
 		}
 		// view label
-		if(dojo.isIE != 0){ // Ugly : TODO make drawText work for both !
+		if(dojo.isIE != 0){
 			var textId = component.getId()+".idle.main.bounds.text_0_"+component.getLabel();
 		} else {
 			var textId = component.getId()+".text.0";

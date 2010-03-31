@@ -303,7 +303,7 @@ dojo.declare("LinearRing", LineString, {
 			for (var iPoly2=1; iPoly2< poly2.coordinates.length; iPoly2++) {
 
 				/* TODO: store the intersection points of the edges only once in a matrix[][],
-				 * with matrix[i][j] = intersection point of edge i of poly1 and edhe j of poly 2
+				 * with matrix[i][j] = intersection point of edge i of poly1 and edge j of poly 2
 				 * */
 
 				var coord = mathLib.lineSegmentIntersection(poly2.coordinates[iPoly2-1], poly2.coordinates[iPoly2],

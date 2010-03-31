@@ -158,13 +158,13 @@ public class FeatureAttributeEditor extends Canvas implements HasItemChangedHand
 	/**
 	 * Apply a new feature onto this widget. The feature will be immediately shown on the attribute form.
 	 * 
-	 * @param feature
+	 * @param feature feature
 	 */
 	public void setFeature(Feature feature) {
 		if (feature != null) {
-			// TODO why do these need to be cloned? document of fix
-			this.original = (Feature) feature.clone();
-			this.feature = (Feature) feature.clone();
+			// TODO why do these need to be cloned? document or fix
+			this.original = feature.clone();
+			this.feature = feature.clone();
 			copyToForm(this.feature);
 		} else {
 			original = null;

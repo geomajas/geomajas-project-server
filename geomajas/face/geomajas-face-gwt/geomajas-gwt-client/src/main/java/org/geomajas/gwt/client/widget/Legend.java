@@ -216,7 +216,7 @@ public class Legend extends Canvas {
 	}
 
 	/**
-	 * TODO: Removing all handler on unload. Never tested if this works though...
+	 * Remove all handlers on unload.
 	 */
 	protected void onUnload() {
 		super.onUnload();

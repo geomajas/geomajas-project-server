@@ -30,8 +30,7 @@ import org.geomajas.rendering.RenderException;
 
 /**
  * <p>
- * SVG writer for <code>GeometryCollection</code> objects. TODO: Does not yet
- * work!
+ * SVG writer for <code>GeometryCollection</code> objects.
  * </p>
  *
  * @author Jan De Moerloose

@@ -36,7 +36,6 @@ public class LabelStyleInfo implements Serializable {
 	private static final long serialVersionUID = 151L;
 	@NotNull
 	private String labelAttributeName;
-	// @todo : shouldn't this be a real font style ?
 	private FeatureStyleInfo fontStyle;
 	private FeatureStyleInfo backgroundStyle;
 

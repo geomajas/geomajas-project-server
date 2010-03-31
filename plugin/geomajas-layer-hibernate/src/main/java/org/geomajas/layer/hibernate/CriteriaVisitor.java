@@ -226,7 +226,6 @@ public class CriteriaVisitor implements FilterVisitor {
 		String propertyName = ((PropertyName) filter.getExpression()).getPropertyName();
 		String finalName = parsePropertyName(propertyName, userData);
 
-		// TODO check to see if changing wildcards here is the correct place to do it.
 		String value = filter.getLiteral();
 		value = value.replaceAll("\\*", "%");
 		value = value.replaceAll("\\?", "_");

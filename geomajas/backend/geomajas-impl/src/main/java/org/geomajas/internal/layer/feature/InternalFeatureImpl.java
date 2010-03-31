@@ -168,9 +168,11 @@ public class InternalFeatureImpl implements InternalFeature {
 	}
 
 	public int hashCode() {
-		// TODO: this violates hashcode contract, why ???
-		String temp = id + geometry.toString();
-		return temp.hashCode();
+		// return hashcode from id, consistent with equals() behaviour
+		if (null != id) {
+			return id.hashCode();
+		}
+		return super.hashCode();
 	}
 
 	// -------------------------------------------------------------------------

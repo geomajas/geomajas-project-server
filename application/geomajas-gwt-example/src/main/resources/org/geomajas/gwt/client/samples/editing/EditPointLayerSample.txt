@@ -23,7 +23,7 @@
 		HLayout infoLayout = new HLayout();
 		infoLayout.setHeight("35%");
 		infoLayout.setShowEdges(true);
-		infoLayout.addMember(new Label("Explanation....todo"));
+		infoLayout.addMember(new Label("Explanation...."));
 
 		layout.addMember(mapLayout);
 		layout.addMember(infoLayout);

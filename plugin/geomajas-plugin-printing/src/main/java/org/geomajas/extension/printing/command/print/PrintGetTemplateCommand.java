@@ -40,9 +40,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * <p>
  * This command returns a link to a generated template-based pdf file of the current view.
@@ -79,7 +76,7 @@ public class PrintGetTemplateCommand implements Command<PrintGetTemplateRequest,
 		if (request.getPageSize() != null) {
 			template.getPage().setSize(request.getPageSize(), true);
 		}
-		SinglePageDocument pdfDoc = new SinglePageDocument(template.getPage(), runtime, getFilters());
+		SinglePageDocument pdfDoc = new SinglePageDocument(template.getPage(), runtime, null);
 		// Set file meta options
 		pdfDoc.setFileName(request.getFileName());
 		pdfDoc.setDownloadMethod(request.getDownloadMethod());
@@ -115,8 +112,4 @@ public class PrintGetTemplateCommand implements Command<PrintGetTemplateRequest,
 		return (r.getWidth() / PageSize.A3.getWidth() + r.getHeight() / PageSize.A3.getHeight()) / 2;
 	}
 
-	private Map<String, String> getFilters() {
-		// @todo security, provide data filters for the layers
-		return new HashMap<String, String>();
-	}
 }
