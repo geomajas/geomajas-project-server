@@ -24,5 +24,8 @@
 <module>
 	<inherits name="com.smartgwt.tools.SmartGwtTools"/>
     <inherits name="org.geomajas.gwt.GeomajasClient"/>
+
+	<extend-property name="locale" values="nl"/>
+	
     <entry-point class="mypackage.client.GeomajasSimple"/>
 </module>

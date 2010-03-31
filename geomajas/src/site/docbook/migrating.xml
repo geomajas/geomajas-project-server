@@ -24,9 +24,24 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <article id="release" lang="en">
-  <title>Migrating between Geomajas version</title>
+  <title>Migrating between Geomajas versions</title>
 
   <toc />
+
+  <section>
+    <title>Migrating from Geomajas 1.5.4 to Geomajas 1.6.0</title>
+
+    <para>
+      <itemizedlist>
+        <listitem>
+          <para>The gwt-client module no longer automatically adds the "nl"
+          locale to the application. This should now be done by the
+          application. You can do this by adding the line <programlisting>&lt;extend-property name="locale" values="nl"/&gt;</programlisting>
+          to your gwt.xml file.</para>
+        </listitem>
+      </itemizedlist>
+    </para>
+  </section>
 
   <section>
     <title>Migrating from Geomajas 1.5.3 to Geomajas 1.5.4</title>
@@ -56,7 +71,8 @@
         </listitem>
 
         <listitem>
-          <para>InternalTile changes : ???</para>
+          <para>InternalTile changes (should not affect anybody as these are
+          used internally in the backend).</para>
         </listitem>
 
         <listitem>
@@ -146,7 +162,7 @@
 
                     <entry>serverLayerId</entry>
 
-                    <entry>String ,should refer to id of Layer bean</entry>
+                    <entry>String, should refer to id of Layer bean</entry>
                   </row>
 
                   <row>

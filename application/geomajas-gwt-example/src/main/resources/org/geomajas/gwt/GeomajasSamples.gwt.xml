@@ -29,6 +29,8 @@
 	<inherits name="com.smartclient.theme.enterprise.EnterpriseResources"/>
 	<inherits name="com.smartclient.theme.enterpriseblue.EnterpriseBlueResources"/>
 	<inherits name="com.smartclient.theme.graphite.GraphiteResources"/>
+
+	<extend-property name="locale" values="nl"/>
 	
     <entry-point class="org.geomajas.gwt.client.GeomajasSamples"/>
 </module>
