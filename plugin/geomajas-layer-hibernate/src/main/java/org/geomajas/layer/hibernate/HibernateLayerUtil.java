@@ -97,9 +97,9 @@ class HibernateLayerUtil {
 	 *             Throws an exception if the property name could not be retrieved.
 	 */
 	protected Class<?> getPropertyClass(ClassMetadata meta, String propertyName) throws HibernateLayerException {
-		if (propertyName.indexOf(XPATH_SEPARATOR) > 0) {
-			propertyName = propertyName.replace(XPATH_SEPARATOR, SEPARATOR);
-		}
+		// try to assure the correct separator is used
+		propertyName = propertyName.replace(XPATH_SEPARATOR, SEPARATOR);
+
 		if (propertyName.contains(SEPARATOR)) {
 			String directProperty = propertyName.substring(0, propertyName.indexOf(SEPARATOR));
 			try {
