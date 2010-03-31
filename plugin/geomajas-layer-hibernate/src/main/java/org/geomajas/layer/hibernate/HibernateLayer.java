@@ -33,6 +33,7 @@ import java.util.Map;
 
 import org.apache.commons.beanutils.ConvertUtils;
 import org.geomajas.configuration.AssociationAttributeInfo;
+import org.geomajas.configuration.AssociationType;
 import org.geomajas.configuration.AttributeInfo;
 import org.geomajas.configuration.SortType;
 import org.geomajas.configuration.VectorLayerInfo;
@@ -384,15 +385,15 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, V
 						AssociationAttributeInfo aso = (AssociationAttributeInfo) attribute;
 						ClassMetadata meta = getSessionFactory().getClassMetadata(aso.getName());
 
-						String asoType = aso.getType().value();
-						if ("many-to-one".equals(asoType)) {
+						AssociationType asoType = aso.getType();
+						if (asoType == AssociationType.MANY_TO_ONE) {
 							// Many-to-one:
 							Serializable id = meta.getIdentifier(value, EntityMode.POJO);
 							if (id != null) { // We can only replace it, if it has an ID:
 								value = session.load(aso.getName(), id);
 								getEntityMetadata().setPropertyValue(feature, name, value, EntityMode.POJO);
 							}
-						} else if ("one-to-many".equals(aso.getType().value())) {
+						} else if (asoType == AssociationType.ONE_TO_MANY) {
 							// One-to-many - value is a collection:
 
 							// Get the reflection property name:
