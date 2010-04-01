@@ -7,7 +7,7 @@
     </appender>
 
 	<!--
-    <logger name="org.geomajas.gwt">
+    <logger name="org.geomajas.example.gwt">
         <level value="DEBUG"/>
     </logger>
 	-->

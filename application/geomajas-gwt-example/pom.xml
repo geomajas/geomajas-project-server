@@ -169,13 +169,13 @@
 				<version>1.2</version>
 				<configuration>
 					<inplace>true</inplace>
-					<module>org.geomajas.gwt.GeomajasSamples</module>
+					<module>org.geomajas.example.gwt.GeomajasSamples</module>
 					<runTarget>samples.html</runTarget>
 					<warSourceDirectory>war</warSourceDirectory>
 					<disableCastChecking>true</disableCastChecking>
 					<disableClassMetadata>true</disableClassMetadata>
 					<extraJvmArgs>-Xmx512M -Xss1024k</extraJvmArgs>
-					<i18nConstantsWithLookupBundle>org.geomajas.gwt.client.samples.i18n.Samples
+					<i18nConstantsWithLookupBundle>org.geomajas.example.gwt.client.samples.i18n.Samples
 					</i18nConstantsWithLookupBundle>
 				</configuration>
 				<executions>
@@ -222,7 +222,7 @@
 						<configuration>
 							<tasks>
 								<delete dir="war/WEB-INF/lib" />
-								<delete dir="war/org.geomajas.gwt.GeomajasSamples" />
+								<delete dir="war/org.geomajas.example.gwt.GeomajasSamples" />
 							</tasks>
 						</configuration>
 						<goals>
@@ -261,7 +261,7 @@
 						<version>1.2</version>
 						<configuration>
 							<inplace>true</inplace>
-							<module>org.geomajas.gwt.GeomajasSamples</module>
+							<module>org.geomajas.example.gwt.GeomajasSamples</module>
 							<runTarget>index.html</runTarget>
 							<warSourceDirectory>war</warSourceDirectory>
 							<disableCastChecking>true</disableCastChecking>
