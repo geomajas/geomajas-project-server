@@ -58,6 +58,8 @@ public class DefaultRasterLayerStore implements RasterLayerStore {
 	private boolean dirty;
 
 	private double previousScale = -1;
+	
+	private Bbox tileBounds;
 
 	private Deferred deferred;
 
@@ -76,10 +78,15 @@ public class DefaultRasterLayerStore implements RasterLayerStore {
 				onDelete.execute(tile);
 			}
 			tiles.clear();
+			tileBounds = null;
 			dirty = false;
 		}
 		previousScale = rasterLayer.getMapModel().getMapView().getCurrentScale();
-		fetchAndUpdateTiles(bounds, onUpdate);
+		if (tileBounds == null || !tileBounds.contains(bounds)) {
+			fetchAndUpdateTiles(bounds, onUpdate);
+		} else {
+			updateTiles(bounds, onUpdate);
+		}
 	}
 
 	public RasterLayer getLayer() {
@@ -104,27 +111,49 @@ public class DefaultRasterLayerStore implements RasterLayerStore {
 	}
 
 	private void fetchAndUpdateTiles(Bbox bounds, final TileFunction<RasterTile> onUpdate) {
+		// fetch a bigger area to avoid server requests while panning 
+		tileBounds = bounds.scale(3);
 		GetRasterDataRequest request = new GetRasterDataRequest();
-		request.setBbox(new org.geomajas.geometry.Bbox(bounds.getX(), bounds.getY(), bounds.getWidth(), bounds
-				.getHeight()));
+		request.setBbox(new org.geomajas.geometry.Bbox(tileBounds.getX(), tileBounds.getY(), tileBounds.getWidth(),
+				tileBounds.getHeight()));
 		request.setCrs(getLayer().getMapModel().getCrs());
 		request.setLayerId(getLayer().getServerLayerId());
 		request.setScale(getLayer().getMapModel().getMapView().getCurrentScale());
 		GwtCommand command = new GwtCommand("command.render.GetRasterData");
 		command.setCommandRequest(request);
-		callBack = new RasterCallBack(onUpdate);
+		callBack = new RasterCallBack(worldToPan(bounds), onUpdate);
 		deferred = GwtCommandDispatcher.getInstance().execute(command, callBack);
+	}
+	
+	private void updateTiles(Bbox bounds, final TileFunction<RasterTile> onUpdate) {
+		Bbox panBounds = worldToPan(bounds);
+		for (RasterTile tile : tiles.values()) {
+			if (panBounds.intersects(tile.getBounds())) {
+				onUpdate.execute(tile);
+			}
+		}
+	}
+	
+
+	private Bbox worldToPan(Bbox bounds) {
+		Matrix t = rasterLayer.getMapModel().getMapView().getWorldToPanTransformation();
+		return bounds.transform(t);
 	}
 
 	private void addTiles(List<org.geomajas.layer.tile.RasterTile> images) {
+		Matrix t = rasterLayer.getMapModel().getMapView().getWorldToPanTranslation();
+		Bbox cacheBounds = null;
 		for (org.geomajas.layer.tile.RasterTile image : images) {
 			TileCode code = image.getCode().clone();
 			if (!tiles.containsKey(code)) {
-				// TODO The WorldToPan matrix may be different than at the moment the request was sent. This may result
-				// in tiles at the wrong location. (see MapModel.onMapViewChanged for partial quick fix)
-				RasterTile tile = new RasterTile(code, new Bbox(image.getBounds()), image.getUrl(), this);
-				Matrix t = rasterLayer.getMapModel().getMapView().getWorldToPanTranslation();
-				tile.getBounds().translate(Math.round(t.getDx()), Math.round(t.getDy()));
+				Bbox panBounds = new Bbox(image.getBounds());
+				panBounds.translate(Math.round(t.getDx()), Math.round(t.getDy()));
+				if (cacheBounds == null) {
+					cacheBounds = panBounds;
+				} else {
+					cacheBounds = cacheBounds.union(panBounds);
+				}
+				RasterTile tile = new RasterTile(code, panBounds, image.getUrl(), this);
 				tiles.put(code, tile);
 			}
 		}
@@ -139,9 +168,12 @@ public class DefaultRasterLayerStore implements RasterLayerStore {
 		private boolean cancelled;
 
 		private TileFunction<RasterTile> callback;
+		
+		private Bbox bounds;
 
-		private RasterCallBack(TileFunction<RasterTile> callback) {
+		private RasterCallBack(Bbox bounds, TileFunction<RasterTile> callback) {
 			this.callback = callback;
+			this.bounds = bounds;
 		}
 
 		public void execute(CommandResponse response) {
@@ -149,7 +181,9 @@ public class DefaultRasterLayerStore implements RasterLayerStore {
 				GetRasterDataResponse r = (GetRasterDataResponse) response;
 				addTiles(r.getRasterData());
 				for (RasterTile tile : tiles.values()) {
-					callback.execute(tile);
+					if (bounds.intersects(tile.getBounds())) {
+						callback.execute(tile);
+					}
 				}
 			}
 		}

@@ -23,11 +23,11 @@
 
 package org.geomajas.gwt.client.gfx.painter;
 
-import org.geomajas.gwt.client.gfx.GraphicsContext;
 import org.geomajas.gwt.client.gfx.Paintable;
 import org.geomajas.gwt.client.gfx.Painter;
 import org.geomajas.gwt.client.gfx.paintable.Rectangle;
 import org.geomajas.gwt.client.gfx.style.ShapeStyle;
+import org.geomajas.gwt.client.widget.MapContext;
 
 /**
  * <p>
@@ -53,16 +53,17 @@ public class RectanglePainter implements Painter {
 	 * 
 	 * @param paintable
 	 *            A {@link Rectangle} object.
-	 * @param graphics
-	 *            A GraphicsContext object, responsible for actual drawing.
+	 * @param context
+	 *            A MapContext object, responsible for actual drawing.
 	 */
-	public void paint(Paintable paintable, Object group, GraphicsContext graphics) {
+	public void paint(Paintable paintable, Object group, MapContext context) {
 		Rectangle rectangle = (Rectangle) paintable;
-		graphics.drawRectangle(group, rectangle.getId(), rectangle.getBounds(), (ShapeStyle) rectangle.getStyle());
+		context.getVectorContext().drawRectangle(group, rectangle.getId(), rectangle.getBounds(),
+				(ShapeStyle) rectangle.getStyle());
 	}
 
 	/**
-	 * Delete a {@link Paintable} object from the given {@link GraphicsContext}. It the object does not exist,
+	 * Delete a {@link Paintable} object from the given {@link MapContext}. It the object does not exist,
 	 * nothing will be done.
 	 * 
 	 * @param paintable
@@ -72,8 +73,8 @@ public class RectanglePainter implements Painter {
 	 * @param graphics
 	 *            The context to paint on.
 	 */
-	public void deleteShape(Paintable paintable, Object group, GraphicsContext graphics) {
+	public void deleteShape(Paintable paintable, Object group, MapContext context) {
 		Rectangle rectangle = (Rectangle) paintable;
-		graphics.deleteElement(group, rectangle.getId());
+		context.getVectorContext().deleteElement(group, rectangle.getId());
 	}
 }

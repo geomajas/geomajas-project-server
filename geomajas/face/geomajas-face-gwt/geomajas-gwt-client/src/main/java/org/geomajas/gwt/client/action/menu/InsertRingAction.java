@@ -30,7 +30,7 @@ import org.geomajas.global.GeomajasConstant;
 import org.geomajas.gwt.client.action.MenuAction;
 import org.geomajas.gwt.client.controller.editing.ParentEditController;
 import org.geomajas.gwt.client.controller.editing.EditController.EditMode;
-import org.geomajas.gwt.client.gfx.MenuGraphicsContext;
+import org.geomajas.gwt.client.gfx.MenuContext;
 import org.geomajas.gwt.client.i18n.I18nProvider;
 import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.feature.FeatureTransaction;
@@ -114,7 +114,7 @@ public class InsertRingAction extends MenuAction implements MenuItemIfFunction {
 	public boolean execute(Canvas target, Menu menu, MenuItem item) {
 		FeatureTransaction featureTransaction = mapWidget.getMapModel().getFeatureEditor().getFeatureTransaction();
 		if (featureTransaction != null) {
-			MenuGraphicsContext graphics = mapWidget.getGraphics();
+			MenuContext graphics = mapWidget.getMenuContext();
 			String targetId = graphics.getRightButtonName();
 			if (targetId != null && TransactionGeomIndexUtil.isExteriorRing(targetId, true)) {
 				index = TransactionGeomIndexUtil.getIndex(targetId);

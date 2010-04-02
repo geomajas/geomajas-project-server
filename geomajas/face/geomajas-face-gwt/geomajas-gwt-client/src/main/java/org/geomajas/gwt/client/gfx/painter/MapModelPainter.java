@@ -23,10 +23,10 @@
 
 package org.geomajas.gwt.client.gfx.painter;
 
-import org.geomajas.gwt.client.gfx.GraphicsContext;
 import org.geomajas.gwt.client.gfx.Paintable;
 import org.geomajas.gwt.client.gfx.Painter;
 import org.geomajas.gwt.client.map.MapModel;
+import org.geomajas.gwt.client.widget.MapContext;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.MapWidget.RenderGroup;
 
@@ -61,26 +61,31 @@ public class MapModelPainter implements Painter {
 	 *            A {@link org.geomajas.gwt.client.map.MapModel} object.
 	 * @param group
 	 *            The group where the object resides in (optional).
-	 * @param graphics
-	 *            A GraphicsContext object, responsible for actual drawing.
+	 * @param context
+	 *            A MapContext object, responsible for actual drawing.
 	 */
-	public void paint(Paintable paintable, Object group, GraphicsContext graphics) {
+	public void paint(Paintable paintable, Object group, MapContext context) {
 		GWT.log("Map: " + mapWidget.getMapModel().getMapView().getPanToViewTranslation().toString(), null);
+		// Group for objects in raster space
+		context.getRasterContext().drawGroup(null, mapWidget.getGroup(RenderGroup.RASTER),
+				mapWidget.getMapModel().getMapView()
 
-		// Group for objects in pan space
-		graphics.drawGroup(null, mapWidget.getGroup(RenderGroup.PAN), mapWidget.getMapModel().getMapView()
 				.getPanToViewTranslation());
+
+		// Group for objects in vector space
+		context.getVectorContext().drawGroup(null, mapWidget.getGroup(RenderGroup.VECTOR),
+				mapWidget.getMapModel().getMapView().getPanToViewTranslation());
 
 		// Group for objects in world space
-		graphics.drawGroup(null, mapWidget.getGroup(RenderGroup.WORLD), mapWidget.getMapModel().getMapView()
-				.getPanToViewTranslation());
+		context.getVectorContext().drawGroup(null, mapWidget.getGroup(RenderGroup.WORLD),
+				mapWidget.getMapModel().getMapView().getPanToViewTranslation());
 
 		// Group for objects in screen space
-		graphics.drawGroup(null, mapWidget.getGroup(RenderGroup.SCREEN));
+		context.getVectorContext().drawGroup(null, mapWidget.getGroup(RenderGroup.SCREEN));
 	}
 
 	/**
-	 * Delete a {@link Paintable} object from the given {@link GraphicsContext}. It the object does not exist, nothing
+	 * Delete a {@link Paintable} object from the given {@link MapContext}. It the object does not exist, nothing
 	 * will be done.
 	 * 
 	 * @param paintable
@@ -90,7 +95,10 @@ public class MapModelPainter implements Painter {
 	 * @param graphics
 	 *            The context to paint on.
 	 */
-	public void deleteShape(Paintable paintable, Object group, GraphicsContext graphics) {
-		graphics.deleteGroup(paintable);
+	public void deleteShape(Paintable paintable, Object group, MapContext context) {
+		context.getRasterContext().deleteGroup(mapWidget.getGroup(RenderGroup.RASTER));
+		context.getVectorContext().deleteGroup(mapWidget.getGroup(RenderGroup.VECTOR));
+		context.getVectorContext().deleteGroup(mapWidget.getGroup(RenderGroup.WORLD));
+		context.getVectorContext().deleteGroup(mapWidget.getGroup(RenderGroup.SCREEN));
 	}
 }

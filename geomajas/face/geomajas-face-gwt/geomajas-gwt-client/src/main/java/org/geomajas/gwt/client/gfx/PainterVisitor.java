@@ -28,6 +28,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.geomajas.gwt.client.widget.MapContext;
+
 /**
  * <p>
  * Visitor pattern implementation for painter.
@@ -40,7 +42,7 @@ public class PainterVisitor {
 	/**
 	 * The context on which all painter registered here should be applied.
 	 */
-	private GraphicsContext graphics;
+	private MapContext context;
 
 	/**
 	 * Dictionary of registered painter. It is possible that more then one
@@ -54,10 +56,10 @@ public class PainterVisitor {
 	 * will apply their painting skills on it.
 	 *
 	 * @param graphics
-	 *            Implementation of the GraphicsContext interface.
+	 *            Implementation of the MapContext interface.
 	 */
-	public PainterVisitor(GraphicsContext graphics) {
-		this.graphics = graphics;
+	public PainterVisitor(MapContext context) {
+		this.context = context;
 		this.painters = new HashMap<String, List<Painter>>();
 	}
 
@@ -106,7 +108,7 @@ public class PainterVisitor {
 		if (painters.containsKey(className)) {
 			List<Painter> list = painters.get(className);
 			for (Painter painter : list) {
-				painter.paint(paintable, group, graphics);
+				painter.paint(paintable, group, context);
 			}
 		}
 	}
@@ -121,7 +123,7 @@ public class PainterVisitor {
 		if (painters.containsKey(className)) {
 			List<Painter> list = painters.get(className);
 			for (Painter painter : list) {
-				painter.deleteShape(paintable, group, graphics);
+				painter.deleteShape(paintable, group, context);
 			}
 		}
 	}

@@ -157,6 +157,16 @@ public class MapView {
 		return new Matrix(1, 0, 0, 1, 0, 0);
 	}
 
+	/** Return the world-to-pan space translation matrix. */
+	public Matrix getWorldToPanTransformation() {
+		if (currentScale > 0) {
+			double dX = -(panOrigin.getX() * currentScale);
+			double dY = panOrigin.getY() * currentScale;
+			return new Matrix(currentScale, 0, 0, -this.currentScale, dX, dY);
+		}
+		return new Matrix(1, 0, 0, 1, 0, 0);
+	}
+
 	/** Return the translation of coordinates relative to the pan origin to view coordinates. */
 	public Matrix getPanToViewTranslation() {
 		if (currentScale > 0) {

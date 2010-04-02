@@ -103,9 +103,9 @@ public class RenderingSample extends SamplePanel {
 		button1.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				map.getGraphics().drawGroup(map.getGroup(RenderGroup.SCREEN), group1);
+				map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), group1);
 				ShapeStyle style = new ShapeStyle("#66CC22", 0.5f, "#66AA22", 1, 2);
-				map.getGraphics().drawCircle(group1, "circle", new Coordinate(200, 100), 30, style);
+				map.getVectorContext().drawCircle(group1, "circle", new Coordinate(200, 100), 30, style);
 			}
 		});
 		button1.setWidth100();
@@ -116,11 +116,11 @@ public class RenderingSample extends SamplePanel {
 		button2.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				map.getGraphics().drawGroup(map.getGroup(RenderGroup.SCREEN), group2);
+				map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), group2);
 				LineString geometry = map.getMapModel().getGeometryFactory().createLineString(
 						new Coordinate[] { new Coordinate(60, 20), new Coordinate(120, 80), new Coordinate(80, 100) });
 				ShapeStyle style = new ShapeStyle("#994488", 0.0f, "#993388", 1, 2);
-				map.getGraphics().drawLine(group2, "LineString", geometry, style);
+				map.getVectorContext().drawLine(group2, "LineString", geometry, style);
 			}
 		});
 		button2.setWidth100();
@@ -131,7 +131,7 @@ public class RenderingSample extends SamplePanel {
 		button3.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				map.getGraphics().drawGroup(map.getGroup(RenderGroup.SCREEN), group1);
+				map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), group1);
 				GeometryFactory factory = map.getMapModel().getGeometryFactory();
 				LinearRing shell = factory.createLinearRing(new Coordinate[] { new Coordinate(110, 10),
 						new Coordinate(210, 10), new Coordinate(210, 110), new Coordinate(110, 110),
@@ -141,7 +141,7 @@ public class RenderingSample extends SamplePanel {
 						new Coordinate(140, 40) });
 				Polygon polygon = factory.createPolygon(shell, new LinearRing[] { hole });
 				ShapeStyle style = new ShapeStyle("#9933EE", 0.5f, "#9900FF", 1, 2);
-				map.getGraphics().drawPolygon(group2, "Polygon", polygon, style);
+				map.getVectorContext().drawPolygon(group2, "Polygon", polygon, style);
 			}
 		});
 		button3.setWidth100();
@@ -152,9 +152,10 @@ public class RenderingSample extends SamplePanel {
 		button4.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				map.getGraphics().drawGroup(map.getGroup(RenderGroup.SCREEN), group1);
+				map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), group1);
 				FontStyle style = new FontStyle("#009900", 12, "Verdana", "normal", "normal");
-				map.getGraphics().drawText(group1, "text", "This is some text...", new Coordinate(100, 120), style);
+				map.getVectorContext()
+						.drawText(group1, "text", "This is some text...", new Coordinate(100, 120), style);
 			}
 		});
 		button4.setWidth100();
@@ -165,9 +166,9 @@ public class RenderingSample extends SamplePanel {
 		button5.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				map.getGraphics().drawGroup(map.getGroup(RenderGroup.SCREEN), group2);
+				map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), group2);
 				ShapeStyle style = new ShapeStyle("#337788", 0.5f, "#337766", 1, 2);
-				map.getGraphics().drawRectangle(group2, "rectangle", new Bbox(50, 200, 200, 50), style);
+				map.getVectorContext().drawRectangle(group2, "rectangle", new Bbox(50, 200, 200, 50), style);
 			}
 		});
 		button5.setWidth100();
@@ -178,13 +179,13 @@ public class RenderingSample extends SamplePanel {
 		button6.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				map.getGraphics().drawGroup(map.getGroup(RenderGroup.SCREEN), group1);
+				map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), group1);
 				Image image = new Image("image");
 				image.setHref(Geomajas.getIsomorphicDir() + "geomajas/example/images/smile.png");
 				image.setBounds(new Bbox(30, 70, 48, 48));
 				image.setStyle(new PictureStyle(0.5));
 				// map.render(image, "all");
-				map.getGraphics().drawImage(group1, image.getId(), image.getHref(), image.getBounds(),
+				map.getVectorContext().drawImage(group1, image.getId(), image.getHref(), image.getBounds(),
 						(PictureStyle) image.getStyle());
 			}
 		});
@@ -196,7 +197,7 @@ public class RenderingSample extends SamplePanel {
 		button7.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				map.getGraphics().setCursor(group1, "circle", "wait");
+				map.getVectorContext().setCursor(group1, "circle", "wait");
 			}
 		});
 		button7.setWidth100();
@@ -207,8 +208,10 @@ public class RenderingSample extends SamplePanel {
 		button8.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				map.getGraphics().drawGroup(map.getGroup(RenderGroup.SCREEN), group1, new Matrix(0, 0, 0, 0, 50, 00));
-				map.getGraphics().drawGroup(map.getGroup(RenderGroup.SCREEN), group2, new Matrix(0, 0, 0, 0, 0, 50));
+				map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), group1,
+						new Matrix(0, 0, 0, 0, 50, 00));
+				map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), group2,
+						new Matrix(0, 0, 0, 0, 0, 50));
 			}
 		});
 		button8.setWidth100();
@@ -219,8 +222,8 @@ public class RenderingSample extends SamplePanel {
 		button9.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				map.getGraphics().deleteGroup(group1);
-				map.getGraphics().deleteGroup(group2);
+				map.getVectorContext().deleteGroup(group1);
+				map.getVectorContext().deleteGroup(group2);
 			}
 		});
 		button9.setWidth100();

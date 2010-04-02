@@ -24,7 +24,7 @@
 package org.geomajas.gwt.client.action.menu;
 
 import org.geomajas.gwt.client.action.MenuAction;
-import org.geomajas.gwt.client.gfx.MenuGraphicsContext;
+import org.geomajas.gwt.client.gfx.MenuContext;
 import org.geomajas.gwt.client.i18n.I18nProvider;
 import org.geomajas.gwt.client.map.feature.FeatureTransaction;
 import org.geomajas.gwt.client.map.feature.TransactionGeomIndex;
@@ -85,7 +85,7 @@ public class RemoveRingAction extends MenuAction implements MenuItemIfFunction {
 	public boolean execute(Canvas target, Menu menu, MenuItem item) {
 		FeatureTransaction featureTransaction = mapWidget.getMapModel().getFeatureEditor().getFeatureTransaction();
 		if (featureTransaction != null) {
-			MenuGraphicsContext graphics = mapWidget.getGraphics();
+			MenuContext graphics = mapWidget.getMenuContext();
 			String targetId = graphics.getRightButtonName();
 			if (targetId != null && TransactionGeomIndexUtil.isInteriorRing(targetId, true)) {
 				index = TransactionGeomIndexUtil.getIndex(targetId);

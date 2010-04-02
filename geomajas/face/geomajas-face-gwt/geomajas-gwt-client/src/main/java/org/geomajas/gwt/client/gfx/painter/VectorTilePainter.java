@@ -32,6 +32,7 @@ import org.geomajas.gwt.client.map.cache.tile.VectorTile;
 import org.geomajas.gwt.client.map.cache.tile.VectorTile.ContentHolder;
 import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.spatial.Matrix;
+import org.geomajas.gwt.client.widget.MapContext;
 
 /**
  * Paints a vector tile.
@@ -54,20 +55,22 @@ public class VectorTilePainter implements Painter {
 	 *            A {@link VectorTile} object.
 	 * @param group
 	 *            The group where the object resides in (optional).
-	 * @param graphics
-	 *            A GraphicsContext object, responsible for actual drawing.
+	 * @param context
+	 *            A MapContext object, responsible for actual drawing.
 	 */
-	public void paint(Paintable paintable, Object group, GraphicsContext graphics) {
+	public void paint(Paintable paintable, Object group, MapContext context) {
 		VectorTile tile = (VectorTile) paintable;
 
 		// Paint the feature content:
 		if (tile.getFeatureContent().isLoaded()) {
-			drawContent(tile.getCache().getLayer().getFeatureGroup(), tile, tile.getFeatureContent(), graphics);
+			drawContent(tile.getCache().getLayer().getFeatureGroup(), tile, tile.getFeatureContent(), context
+					.getVectorContext());
 		}
 
 		// Paint the label content:
 		if (tile.getLabelContent().isLoaded()) {
-			drawContent(tile.getCache().getLayer().getLabelGroup(), tile, tile.getLabelContent(), graphics);
+			drawContent(tile.getCache().getLayer().getLabelGroup(), tile, tile.getLabelContent(), context
+					.getVectorContext());
 		}
 	}
 
@@ -94,10 +97,10 @@ public class VectorTilePainter implements Painter {
 	 * @param graphics
 	 *            The context to paint on.
 	 */
-	public void deleteShape(Paintable paintable, Object group, GraphicsContext graphics) {
+	public void deleteShape(Paintable paintable, Object group, MapContext context) {
 		VectorTile tile = (VectorTile) paintable;
-		graphics.deleteGroup(tile.getFeatureContent());
-		graphics.deleteGroup(tile.getLabelContent());
+		context.getVectorContext().deleteGroup(tile.getFeatureContent());
+		context.getVectorContext().deleteGroup(tile.getLabelContent());
 	}
 
 	private Matrix createTransformationMatrix(VectorTile tile) {

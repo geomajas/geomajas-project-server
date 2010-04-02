@@ -23,7 +23,6 @@
 
 package org.geomajas.gwt.client.gfx.painter;
 
-import org.geomajas.gwt.client.gfx.GraphicsContext;
 import org.geomajas.gwt.client.gfx.Paintable;
 import org.geomajas.gwt.client.gfx.Painter;
 import org.geomajas.gwt.client.gfx.paintable.GfxGeometry;
@@ -34,6 +33,7 @@ import org.geomajas.gwt.client.spatial.geometry.MultiLineString;
 import org.geomajas.gwt.client.spatial.geometry.MultiPolygon;
 import org.geomajas.gwt.client.spatial.geometry.Point;
 import org.geomajas.gwt.client.spatial.geometry.Polygon;
+import org.geomajas.gwt.client.widget.MapContext;
 
 /**
  * <p>
@@ -61,36 +61,36 @@ public class GeometryPainter implements Painter {
 	 *            A {@link org.geomajas.gwt.client.gfx.paintable.Text} object.
 	 * @param group
 	 *            The group where the object resides in (optional).
-	 * @param graphics
-	 *            A GraphicsContext object, responsible for actual drawing.
+	 * @param context
+	 *            A MapContext object, responsible for actual drawing.
 	 */
-	public void paint(Paintable paintable, Object group, GraphicsContext graphics) {
+	public void paint(Paintable paintable, Object group, MapContext context) {
 		if (paintable != null) {
 			GfxGeometry gfxGeometry = (GfxGeometry) paintable;
 			Geometry geometry = gfxGeometry.getGeometry();
 			if (geometry instanceof LineString) {
-				graphics.drawLine(group, gfxGeometry.getId(), (LineString) geometry, (ShapeStyle) gfxGeometry
-						.getStyle());
+				context.getVectorContext().drawLine(group, gfxGeometry.getId(), (LineString) geometry,
+						(ShapeStyle) gfxGeometry.getStyle());
 			} else if (geometry instanceof MultiLineString) {
 				MultiLineString m = (MultiLineString) geometry;
-				graphics.drawLine(group, gfxGeometry.getId(), (LineString) m.getGeometryN(0), (ShapeStyle) gfxGeometry
-						.getStyle());
+				context.getVectorContext().drawLine(group, gfxGeometry.getId(), (LineString) m.getGeometryN(0),
+						(ShapeStyle) gfxGeometry.getStyle());
 			} else if (geometry instanceof Polygon) {
-				graphics.drawPolygon(group, gfxGeometry.getId(), (Polygon) geometry, (ShapeStyle) gfxGeometry
-						.getStyle());
+				context.getVectorContext().drawPolygon(group, gfxGeometry.getId(), (Polygon) geometry,
+						(ShapeStyle) gfxGeometry.getStyle());
 			} else if (geometry instanceof MultiPolygon) {
 				MultiPolygon m = (MultiPolygon) geometry;
-				graphics.drawPolygon(group, gfxGeometry.getId(), (Polygon) m.getGeometryN(0), (ShapeStyle) gfxGeometry
-						.getStyle());
+				context.getVectorContext().drawPolygon(group, gfxGeometry.getId(), (Polygon) m.getGeometryN(0),
+						(ShapeStyle) gfxGeometry.getStyle());
 			} else if (geometry instanceof Point) {
-				graphics.drawSymbol(group, gfxGeometry.getId(), geometry.getCoordinate(), (ShapeStyle) gfxGeometry
-						.getStyle(), null);
+				context.getVectorContext().drawSymbol(group, gfxGeometry.getId(), geometry.getCoordinate(),
+						(ShapeStyle) gfxGeometry.getStyle(), null);
 			}
 		}
 	}
 
 	/**
-	 * Delete a {@link Paintable} object from the given {@link GraphicsContext}. It the object does not exist,
+	 * Delete a {@link Paintable} object from the given {@link MapContext}. It the object does not exist,
 	 * nothing will be done.
 	 * 
 	 * @param paintable
@@ -100,8 +100,8 @@ public class GeometryPainter implements Painter {
 	 * @param graphics
 	 *            The context to paint on.
 	 */
-	public void deleteShape(Paintable paintable, Object group, GraphicsContext graphics) {
+	public void deleteShape(Paintable paintable, Object group, MapContext context) {
 		GfxGeometry gfxGeometry = (GfxGeometry) paintable;
-		graphics.deleteElement(group, gfxGeometry.getId());
+		context.getVectorContext().deleteElement(group, gfxGeometry.getId());
 	}
 }

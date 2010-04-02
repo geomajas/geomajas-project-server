@@ -20,63 +20,36 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.geomajas.command.dto;
 
-import java.util.List;
+package org.geomajas.gwt.client.gfx;
 
-import org.geomajas.command.CommandResponse;
-import org.geomajas.layer.tile.RasterTile;
+import org.geomajas.geometry.Coordinate;
 
 /**
- * Response object for {@link org.geomajas.command.render.GetRasterDataCommand}.
- *
+ * Adds support for right-mouse context menu.
+ * 
  * @author Jan De Moerloose
  */
-public class GetRasterDataResponse extends CommandResponse {
-
-	private static final long serialVersionUID = 151L;
-
-	private List<RasterTile> rasterData;
-
-	private String nodeId;
-
-	public GetRasterDataResponse() {
-	}
+public interface MenuContext {
 
 	/**
-	 * Get list of raster image metadata.
-	 *
-	 * @return list of raster data
+	 * Retrieve the element name of the last right mouse event.
+	 * 
+	 * @return Returns the name of the element or null if no element found.
 	 */
-	public List<RasterTile> getRasterData() {
-		return rasterData;
-	}
-
-	/**
-	 * Set list of raster tiles.
-	 *
-	 * @param rasterData new list with raster tiles
-	 */
-	public void setRasterData(List<RasterTile> rasterData) {
-		this.rasterData = rasterData;
-	}
-
-	/**
-	 * Get node id, which is (layer id) + "." + level.
-	 *
-	 * @return node id
-	 */
-	public String getNodeId() {
-		return nodeId;
-	}
-
-	/**
-	 * Set node id, which is (layer id) + "." + level.
-	 *
-	 * @param nodeId node id
-	 */
-	public void setNodeId(String nodeId) {
-		this.nodeId = nodeId;
-	}
+	String getRightButtonName();
 	
+	/**
+	 * Retrieve the group object of the last right mouse event's group.
+	 * 
+	 * @return Returns the group or null if no group found
+	 */
+	Object getRightButtonObject();
+
+	/**
+	 * Retrieve the coordinate of the last right mouse event.
+	 * 
+	 * @return Returns the event's position.
+	 */
+	Coordinate getRightButtonCoordinate();
 }

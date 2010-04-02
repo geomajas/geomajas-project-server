@@ -30,7 +30,7 @@ import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.Geomajas;
 import org.geomajas.gwt.client.controller.AbstractGraphicsController;
 import org.geomajas.gwt.client.controller.GraphicsController;
-import org.geomajas.gwt.client.gfx.MenuGraphicsContext;
+import org.geomajas.gwt.client.gfx.GraphicsContext;
 import org.geomajas.gwt.client.gfx.style.PictureStyle;
 import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.widget.MapWidget;
@@ -75,7 +75,7 @@ public class ControllerOnElementSample extends SamplePanel {
 		map.addDrawHandler(new DrawHandler() {
 
 			public void onDraw(DrawEvent event) {
-				final MenuGraphicsContext graphics = map.getGraphics();
+				final GraphicsContext graphics = map.getVectorContext();
 				// after map initialization we draw an image on the map
 				graphics.drawImage(map.getGroup(RenderGroup.SCREEN), "image", Geomajas.getIsomorphicDir() + IMAGE,
 						new Bbox(300, 300, 48, 48), new PictureStyle(1.0));
@@ -91,7 +91,7 @@ public class ControllerOnElementSample extends SamplePanel {
 				// When the user isDragging (mouse is down) we redraw the image at the location of the mousepointer
 				if (isDragging) {
 					Coordinate coordinate = this.getScreenPosition(event);
-					map.getGraphics().drawImage(map.getGroup(RenderGroup.SCREEN), "image",
+					map.getVectorContext().drawImage(map.getGroup(RenderGroup.SCREEN), "image",
 							Geomajas.getIsomorphicDir() + IMAGE,
 							new Bbox(coordinate.getX() - 24, coordinate.getY() - 24, 48, 48), new PictureStyle(1.0));
 				}

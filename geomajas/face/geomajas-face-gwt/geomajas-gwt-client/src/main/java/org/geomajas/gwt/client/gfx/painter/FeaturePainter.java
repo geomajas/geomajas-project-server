@@ -24,7 +24,6 @@
 package org.geomajas.gwt.client.gfx.painter;
 
 import org.geomajas.configuration.FeatureStyleInfo;
-import org.geomajas.gwt.client.gfx.GraphicsContext;
 import org.geomajas.gwt.client.gfx.Paintable;
 import org.geomajas.gwt.client.gfx.PaintableGroup;
 import org.geomajas.gwt.client.gfx.Painter;
@@ -38,6 +37,7 @@ import org.geomajas.gwt.client.spatial.geometry.MultiPoint;
 import org.geomajas.gwt.client.spatial.geometry.MultiPolygon;
 import org.geomajas.gwt.client.spatial.geometry.Point;
 import org.geomajas.gwt.client.spatial.geometry.Polygon;
+import org.geomajas.gwt.client.widget.MapContext;
 
 /**
  * Painter implementation for {@link Feature}s.
@@ -82,10 +82,10 @@ public class FeaturePainter implements Painter {
 	 *            A {@link org.geomajas.gwt.client.gfx.paintable.Text} object.
 	 * @param group
 	 *            The group where the object resides in (optional).
-	 * @param graphics
-	 *            A GraphicsContext object, responsible for actual drawing.
+	 * @param context
+	 *            A MapContext object, responsible for actual drawing.
 	 */
-	public void paint(Paintable paintable, Object group, GraphicsContext graphics) {
+	public void paint(Paintable paintable, Object group, MapContext context) {
 		if (paintable != null) {
 			Feature feature = (Feature) paintable;
 			WorldViewTransformer worldViewTransformer = feature.getLayer().getMapModel().getMapView()
@@ -93,26 +93,27 @@ public class FeaturePainter implements Painter {
 			Geometry geometry = worldViewTransformer.worldToPan(feature.getGeometry());
 			ShapeStyle style = createStyleForFeature(feature);
 			PaintableGroup selectionGroup = feature.getLayer().getSelectionGroup();
-			graphics.drawGroup(selectionGroup, feature);
+			context.getVectorContext().drawGroup(selectionGroup, feature);
 			String name = feature.getLayer().getId() + "-" + feature.getId();
 			if (geometry instanceof LineString) {
-				graphics.drawLine(feature, name, (LineString) geometry, style);
+				context.getVectorContext().drawLine(feature, name, (LineString) geometry, style);
 			} else if (geometry instanceof MultiLineString) {
 				MultiLineString m = (MultiLineString) geometry;
-				graphics.drawLine(feature, name, (LineString) m.getGeometryN(0), style);
+				context.getVectorContext().drawLine(feature, name, (LineString) m.getGeometryN(0), style);
 			} else if (geometry instanceof Polygon) {
-				graphics.drawPolygon(feature, name, (Polygon) geometry, style);
+				context.getVectorContext().drawPolygon(feature, name, (Polygon) geometry, style);
 			} else if (geometry instanceof MultiPolygon) {
 				MultiPolygon m = (MultiPolygon) geometry;
-				graphics.drawPolygon(feature, name, (Polygon) m.getGeometryN(0), style);
+				context.getVectorContext().drawPolygon(feature, name, (Polygon) m.getGeometryN(0), style);
 			} else if (geometry instanceof Point) {
-				graphics.drawSymbol(feature, name, geometry.getCoordinate(), style, feature.getStyleId());
+				context.getVectorContext().drawSymbol(feature, name, geometry.getCoordinate(), style,
+						feature.getStyleId());
 			}
 		}
 	}
 
 	/**
-	 * Delete a {@link Paintable} object from the given {@link GraphicsContext}. It the object does not exist,
+	 * Delete a {@link Paintable} object from the given {@link MapContext}. It the object does not exist,
 	 * nothing will be done.
 	 * 
 	 * @param paintable
@@ -122,8 +123,8 @@ public class FeaturePainter implements Painter {
 	 * @param graphics
 	 *            The context to paint on.
 	 */
-	public void deleteShape(Paintable paintable, Object group, GraphicsContext graphics) {
-		graphics.deleteGroup(paintable);
+	public void deleteShape(Paintable paintable, Object group, MapContext context) {
+		context.getVectorContext().deleteGroup(paintable);
 	}
 
 	// -------------------------------------------------------------------------

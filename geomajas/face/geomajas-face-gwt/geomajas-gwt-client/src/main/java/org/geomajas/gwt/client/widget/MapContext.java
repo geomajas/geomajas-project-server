@@ -20,36 +20,37 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+package org.geomajas.gwt.client.widget;
 
-package org.geomajas.gwt.client.gfx;
-
-import org.geomajas.geometry.Coordinate;
+import org.geomajas.gwt.client.gfx.GraphicsContext;
+import org.geomajas.gwt.client.gfx.ImageContext;
+import org.geomajas.gwt.client.gfx.MenuContext;
 
 /**
- * Adds support for right-mouse context menu.
+ * Abstraction of the map for painting rasters and vectors.
  * 
  * @author Jan De Moerloose
+ *
  */
-public interface MenuGraphicsContext extends GraphicsContext {
+public interface MapContext {
 
 	/**
-	 * Retrieve the element name of the last right mouse event.
+	 * Get the context for rendering vector data.
 	 * 
-	 * @return Returns the name of the element or null if no element found.
+	 * @return a graphics context
 	 */
-	String getRightButtonName();
-	
-	/**
-	 * Retrieve the group object of the last right mouse event's group.
-	 * 
-	 * @return Returns the group or null if no group found
-	 */
-	Object getRightButtonObject();
+	GraphicsContext getVectorContext();
 
 	/**
-	 * Retrieve the coordinate of the last right mouse event.
-	 * 
-	 * @return Returns the event's position.
+	 * Get the context for rendering raster images.
+	 * @return an image context
 	 */
-	Coordinate getRightButtonCoordinate();
+	ImageContext getRasterContext();
+
+	/**
+	 * Get the right mouse menu context.
+	 * @return a menu context
+	 */
+	MenuContext getMenuContext();
+
 }

@@ -23,11 +23,11 @@
 
 package org.geomajas.gwt.client.gfx.painter;
 
-import org.geomajas.gwt.client.gfx.GraphicsContext;
 import org.geomajas.gwt.client.gfx.Paintable;
 import org.geomajas.gwt.client.gfx.Painter;
 import org.geomajas.gwt.client.gfx.paintable.Image;
 import org.geomajas.gwt.client.gfx.style.PictureStyle;
+import org.geomajas.gwt.client.widget.MapContext;
 
 /**
  * <p>
@@ -55,16 +55,17 @@ public class ImagePainter implements Painter {
 	 *            A {@link org.geomajas.gwt.client.gfx.paintable.Image} object.
 	 * @param group
 	 *            The group where the object resides in (optional).
-	 * @param graphics
-	 *            A GraphicsContext object, responsible for actual drawing.
+	 * @param context
+	 *            A MapContext object, responsible for actual drawing.
 	 */
-	public void paint(Paintable paintable, Object group, GraphicsContext graphics) {
+	public void paint(Paintable paintable, Object group, MapContext context) {
 		Image image = (Image) paintable;
-		graphics.drawImage(group, image.getId(), image.getHref(), image.getBounds(), (PictureStyle) image.getStyle());
+		context.getVectorContext().drawImage(group, image.getId(), image.getHref(), image.getBounds(),
+				(PictureStyle) image.getStyle());
 	}
 
 	/**
-	 * Delete a {@link Paintable} object from the given {@link GraphicsContext}. It the object does not exist,
+	 * Delete a {@link Paintable} object from the given {@link MapContext}. It the object does not exist,
 	 * nothing will be done.
 	 * 
 	 * @param paintable
@@ -74,8 +75,8 @@ public class ImagePainter implements Painter {
 	 * @param graphics
 	 *            The context to paint on.
 	 */
-	public void deleteShape(Paintable paintable, Object group, GraphicsContext graphics) {
+	public void deleteShape(Paintable paintable, Object group, MapContext context) {
 		Image image = (Image) paintable;
-		graphics.deleteElement(group, image.getId());
+		context.getVectorContext().deleteElement(group, image.getId());
 	}
 }

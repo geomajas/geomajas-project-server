@@ -29,6 +29,7 @@ import java.util.List;
 import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.Geomajas;
+import org.geomajas.gwt.client.gfx.GraphicsContext;
 import org.geomajas.gwt.client.gfx.paintable.Composite;
 import org.geomajas.gwt.client.gfx.style.FontStyle;
 import org.geomajas.gwt.client.gfx.style.PictureStyle;
@@ -49,8 +50,6 @@ import org.geomajas.layer.LayerType;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Canvas;
-import com.smartgwt.client.widgets.events.ResizedEvent;
-import com.smartgwt.client.widgets.events.ResizedHandler;
 
 /**
  * <p>
@@ -68,7 +67,9 @@ public class Legend extends Canvas {
 
 	private MapModel mapModel;
 
-	private GraphicsWidget graphics;
+	private GraphicsWidget widget;
+
+	private GraphicsContext graphics;
 
 	private Composite parentGroup = new Composite("legend-group");
 
@@ -86,16 +87,11 @@ public class Legend extends Canvas {
 		super();
 		this.mapModel = mapModel;
 
-		graphics = new GraphicsWidget(this, SC.generateID());
-		graphics.setBackgroundColor("#FFFFFF");
-		addChild(graphics);
-
-		addResizedHandler(new ResizedHandler() {
-
-			public void onResized(ResizedEvent event) {
-				graphics.setSize(getWidth(), getHeight());
-			}
-		});
+		widget = new GraphicsWidget(this, SC.generateID());
+		widget.setBackgroundColor("#FFFFFF");
+		addChild(widget);
+		
+		graphics = widget.getVectorContext();
 
 		mapModel.addMapModelHandler(new MapModelHandler() {
 

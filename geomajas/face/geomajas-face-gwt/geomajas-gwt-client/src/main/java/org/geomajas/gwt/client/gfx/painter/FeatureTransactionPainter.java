@@ -38,6 +38,7 @@ import org.geomajas.gwt.client.spatial.geometry.MultiPoint;
 import org.geomajas.gwt.client.spatial.geometry.MultiPolygon;
 import org.geomajas.gwt.client.spatial.geometry.Point;
 import org.geomajas.gwt.client.spatial.geometry.Polygon;
+import org.geomajas.gwt.client.widget.MapContext;
 import org.geomajas.gwt.client.widget.MapWidget;
 
 /**
@@ -84,33 +85,35 @@ public class FeatureTransactionPainter implements Painter {
 	 *            A {@link FeatureTransaction} object.
 	 * @param group
 	 *            The group where the object resides in (optional).
-	 * @param graphics
-	 *            A GraphicsContext object, responsible for actual drawing.
+	 * @param context
+	 *            A MapContext object, responsible for actual drawing.
 	 */
-	public void paint(Paintable paintable, Object group, GraphicsContext graphics) {
+	public void paint(Paintable paintable, Object group, MapContext context) {
 		FeatureTransaction featureTransaction = (FeatureTransaction) paintable;
 
 		Feature[] features = featureTransaction.getNewFeatures();
 		if (features == null) {
 			return;
 		}
-		graphics.drawGroup(group, featureTransaction);
+		context.getVectorContext().drawGroup(group, featureTransaction);
 		for (int i = 0; i < features.length; i++) {
 			Geometry geometry = mapWidget.getMapModel().getMapView().getWorldViewTransformer().worldToView(
 					features[i].getGeometry());
-			graphics.drawGroup(featureTransaction, features[i]);
+			context.getVectorContext().drawGroup(featureTransaction, features[i]);
 			if (geometry instanceof Point) {
-				paint(features[i], "featureTransaction.feature" + i, (Point) geometry, graphics);
+				paint(features[i], "featureTransaction.feature" + i, (Point) geometry, context.getVectorContext());
 			} else if (geometry instanceof MultiPoint) {
-				paint(features[i], "featureTransaction.feature" + i, (MultiPoint) geometry, graphics);
+				paint(features[i], "featureTransaction.feature" + i, (MultiPoint) geometry, context.getVectorContext());
 			} else if (geometry instanceof LineString) {
-				paint(features[i], "featureTransaction.feature" + i, (LineString) geometry, graphics);
+				paint(features[i], "featureTransaction.feature" + i, (LineString) geometry, context.getVectorContext());
 			} else if (geometry instanceof MultiLineString) {
-				paint(features[i], "featureTransaction.feature" + i, (MultiLineString) geometry, graphics);
+				paint(features[i], "featureTransaction.feature" + i, (MultiLineString) geometry, context
+						.getVectorContext());
 			} else if (geometry instanceof Polygon) {
-				paint(features[i], "featureTransaction.feature" + i, (Polygon) geometry, graphics);
+				paint(features[i], "featureTransaction.feature" + i, (Polygon) geometry, context.getVectorContext());
 			} else if (geometry instanceof MultiPolygon) {
-				paint(features[i], "featureTransaction.feature" + i, (MultiPolygon) geometry, graphics);
+				paint(features[i], "featureTransaction.feature" + i, (MultiPolygon) geometry, context
+						.getVectorContext());
 			}
 		}
 	}
@@ -126,8 +129,8 @@ public class FeatureTransactionPainter implements Painter {
 	 * @param graphics
 	 *            The context to paint on.
 	 */
-	public void deleteShape(Paintable paintable, Object group, GraphicsContext graphics) {
-		graphics.deleteGroup(paintable);
+	public void deleteShape(Paintable paintable, Object group, MapContext context) {
+		context.getVectorContext().deleteGroup(paintable);
 	}
 
 	// -------------------------------------------------------------------------

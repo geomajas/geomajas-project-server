@@ -24,12 +24,14 @@
 package org.geomajas.gwt.client.gfx.painter;
 
 import org.geomajas.configuration.FeatureStyleInfo;
-import org.geomajas.gwt.client.gfx.GraphicsContext;
 import org.geomajas.gwt.client.gfx.Paintable;
 import org.geomajas.gwt.client.gfx.Painter;
 import org.geomajas.gwt.client.gfx.style.FontStyle;
 import org.geomajas.gwt.client.gfx.style.ShapeStyle;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
+import org.geomajas.gwt.client.widget.MapContext;
+import org.geomajas.gwt.client.widget.MapWidget;
+import org.geomajas.gwt.client.widget.MapWidget.RenderGroup;
 import org.geomajas.layer.LayerType;
 
 /**
@@ -42,12 +44,15 @@ import org.geomajas.layer.LayerType;
 public class VectorLayerPainter implements Painter {
 
 	private FontStyle labelStyle;
+	
+	private MapWidget mapWidget;
 
-	public VectorLayerPainter() {
-		this(new FontStyle("#FF0000", 10, "Courier New, Arial", "normal", "normal"));
+	public VectorLayerPainter(MapWidget mapWidget) {
+		this(mapWidget, new FontStyle("#FF0000", 10, "Courier New, Arial", "normal", "normal"));
 	}
 
-	public VectorLayerPainter(FontStyle labelStyle) {
+	public VectorLayerPainter(MapWidget mapWidget, FontStyle labelStyle) {
+		this.mapWidget = mapWidget;
 		this.labelStyle = labelStyle;
 	}
 
@@ -62,43 +67,44 @@ public class VectorLayerPainter implements Painter {
 	 *            A {@link VectorLayer} object.
 	 * @param group
 	 *            The group where the object resides in (optional).
-	 * @param graphics
-	 *            A GraphicsContext object, responsible for actual drawing.
+	 * @param context
+	 *            A MapContext object, responsible for actual drawing.
 	 */
-	public void paint(Paintable paintable, Object group, GraphicsContext graphics) {
+	public void paint(Paintable paintable, Object group, MapContext context) {
 		VectorLayer layer = (VectorLayer) paintable;
 
 		// Create the needed groups in the correct order:
-		graphics.drawGroup(group, layer); // layer.getDefaultStyle???
-		graphics.drawGroup(layer, layer.getFeatureGroup());
-		graphics.drawGroup(layer, layer.getSelectionGroup());
-		graphics.drawGroup(layer, layer.getLabelGroup(), labelStyle);
+		context.getVectorContext().drawGroup(mapWidget.getGroup(RenderGroup.VECTOR), layer); // layer.getDefaultStyle???
+		context.getVectorContext().drawGroup(layer, layer.getFeatureGroup());
+		context.getVectorContext().drawGroup(layer, layer.getSelectionGroup());
+		context.getVectorContext().drawGroup(layer, layer.getLabelGroup(), labelStyle);
 
 		// Draw symbol types, as these can change any time:
 		if (layer.getLayerInfo().getLayerType().equals(LayerType.POINT)
 				|| layer.getLayerInfo().getLayerType().equals(LayerType.MULTIPOINT)) {
 			for (FeatureStyleInfo style : layer.getLayerInfo().getNamedStyleInfo().getFeatureStyles()) {
-				graphics.drawSymbolDefinition(null, style.getStyleId(), style.getSymbol(), new ShapeStyle(style), null);
+				context.getVectorContext().drawSymbolDefinition(null, style.getStyleId(), style.getSymbol(),
+						new ShapeStyle(style), null);
 			}
 		}
 
 		// Check layer visibility:
 		if (layer.isShowing()) {
-			graphics.unhide(layer);
+			context.getVectorContext().unhide(layer);
 		} else {
-			graphics.hide(layer);
+			context.getVectorContext().hide(layer);
 		}
 
 		// Check label visibility:
 		if (layer.isLabeled()) {
-			graphics.unhide(layer.getLabelGroup());
+			context.getVectorContext().unhide(layer.getLabelGroup());
 		} else {
-			graphics.hide(layer.getLabelGroup());
+			context.getVectorContext().hide(layer.getLabelGroup());
 		}
 	}
 
 	/**
-	 * Delete a {@link Paintable} object from the given {@link GraphicsContext}. It the object does not exist, nothing
+	 * Delete a {@link Paintable} object from the given {@link MapContext}. It the object does not exist, nothing
 	 * will be done.
 	 * 
 	 * @param paintable
@@ -108,8 +114,8 @@ public class VectorLayerPainter implements Painter {
 	 * @param graphics
 	 *            The context to paint on.
 	 */
-	public void deleteShape(Paintable paintable, Object group, GraphicsContext graphics) {
-		graphics.deleteGroup(paintable);
+	public void deleteShape(Paintable paintable, Object group, MapContext context) {
+		context.getVectorContext().deleteGroup(paintable);
 	}
 
 	// Getters and setters:

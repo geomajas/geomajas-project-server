@@ -26,21 +26,14 @@ package org.geomajas.gwt.client.widget;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.geomajas.configuration.SymbolInfo;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.controller.GraphicsController;
+import org.geomajas.gwt.client.gfx.DefaultImageContext;
 import org.geomajas.gwt.client.gfx.GraphicsContext;
-import org.geomajas.gwt.client.gfx.MenuGraphicsContext;
-import org.geomajas.gwt.client.gfx.style.FontStyle;
-import org.geomajas.gwt.client.gfx.style.PictureStyle;
-import org.geomajas.gwt.client.gfx.style.ShapeStyle;
-import org.geomajas.gwt.client.gfx.style.Style;
+import org.geomajas.gwt.client.gfx.ImageContext;
+import org.geomajas.gwt.client.gfx.MenuContext;
 import org.geomajas.gwt.client.gfx.svg.SvgGraphicsContext;
 import org.geomajas.gwt.client.gfx.vml.VmlGraphicsContext;
-import org.geomajas.gwt.client.spatial.Bbox;
-import org.geomajas.gwt.client.spatial.Matrix;
-import org.geomajas.gwt.client.spatial.geometry.LineString;
-import org.geomajas.gwt.client.spatial.geometry.Polygon;
 import org.geomajas.gwt.client.util.GwtEventUtil;
 
 import com.google.gwt.dom.client.Document;
@@ -50,7 +43,6 @@ import com.google.gwt.event.dom.client.HasDoubleClickHandlers;
 import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.google.gwt.event.dom.client.MouseUpHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.FocusWidget;
 import com.smartgwt.client.util.SC;
@@ -83,7 +75,7 @@ import com.smartgwt.client.widgets.events.ResizedHandler;
  * 
  * @author Pieter De Graef
  */
-public class GraphicsWidget extends FocusWidget implements MenuGraphicsContext, HasDoubleClickHandlers {
+public class GraphicsWidget extends FocusWidget implements MapContext, HasDoubleClickHandlers {
 
 	/** The ID from which to start building the rendering DOM tree. */
 	private String graphicsId;
@@ -93,8 +85,18 @@ public class GraphicsWidget extends FocusWidget implements MenuGraphicsContext, 
 	 * will be the {@link org.geomajas.gwt.client.gfx.vml.VmlGraphicsContext} or the
 	 * {@link org.geomajas.gwt.client.gfx.svg.SvgGraphicsContext}.
 	 */
-	private GraphicsContext delegate;
-
+	private GraphicsContext vectorContext;
+	
+	/**
+	 * The context for drawing raster images.
+	 */
+	private DefaultImageContext rasterContext;
+	
+	/**
+	 * The menu context.
+	 */
+	private MenuContext menuContext;
+	
 	/** The current controller on the map. Can be only one at a time! */
 	private GraphicsController controller;
 
@@ -130,13 +132,15 @@ public class GraphicsWidget extends FocusWidget implements MenuGraphicsContext, 
 		super(Document.get().createDivElement());
 		this.parent = parent;
 		this.graphicsId = graphicsId;
+		// append a raster context
+		rasterContext = new DefaultImageContext(this);
+		// append a vector context
 		if (SC.isIE()) {
-			delegate = new VmlGraphicsContext();
+			vectorContext = new VmlGraphicsContext(this);
 		} else {
-			delegate = new SvgGraphicsContext();
+			vectorContext = new SvgGraphicsContext(this);
 		}
-
-		initialize(getElement());
+		menuContext = new MapMenuContext();
 		handlers = new ArrayList<HandlerRegistration>();
 
 		addMouseUpHandler(new MouseUpHandler() {
@@ -148,9 +152,11 @@ public class GraphicsWidget extends FocusWidget implements MenuGraphicsContext, 
 				}
 			}
 		});
+		// workaround for an unsupported mix of SmartGWT and pure DOM
 		base = new Canvas();
 		base.setWidth100();
 		base.setHeight100();
+		// raster at the back
 		base.addChild(this);
 		parent.addChild(base);
 		parent.addResizedHandler(new GWTResizedHandler());
@@ -194,31 +200,6 @@ public class GraphicsWidget extends FocusWidget implements MenuGraphicsContext, 
 		}
 	}
 
-	/**
-	 * Set the controller of an element of this <code>GraphicsWidget</code> so it can react to events.
-	 * 
-	 * @param id
-	 *            The id of the element of which the controller should be set.
-	 * @param controller
-	 *            The new <code>GraphicsController</code>
-	 */
-	public void setController(String id, GraphicsController controller) {
-		delegate.setController(checkId(id), controller);
-	}
-
-	/**
-	 * Set the controller of an element of this <code>GraphicsWidget</code> so it can react to events.
-	 * 
-	 * @param id
-	 *            The id of the element of which the controller should be set.
-	 * @param controller
-	 *            The new <code>GraphicsController</code>
-	 * @param eventMask
-	 *            a bitmask to specify exactly which events you wish to listen for @see {@link Event}
-	 */
-	public void setController(String id, GraphicsController controller, int eventMask) {
-		delegate.setController(checkId(id), controller, eventMask);
-	}
 
 	// -------------------------------------------------------------------------
 	// Getters and setters:
@@ -228,232 +209,18 @@ public class GraphicsWidget extends FocusWidget implements MenuGraphicsContext, 
 		return graphicsId;
 	}
 
-	/**
-	 * Retrieve the coordinate of the last right mouse event.
-	 * 
-	 * @return Returns the event's position.
-	 */
-	public Coordinate getRightButtonCoordinate() {
-		return rightButtonCoordinate;
-	}
-
-	/**
-	 * Return the element name for the specified id.
-	 * 
-	 * @param id
-	 * @return the name of the element
-	 */
-	public String getNameById(String id) {
-		return delegate.getNameById(id);
-	}
-
-	/**
-	 * Return the (enclosing) group for the specified element id.
-	 * 
-	 * @param id
-	 * @return the group object
-	 */
-	public Object getGroupById(String id) {
-		return delegate.getGroupById(id);
-	}
-
-	/**
-	 * Retrieve the element name of the last right mouse event.
-	 * 
-	 * @return Returns the name part of the element id.
-	 */
-	public String getRightButtonName() {
-		return delegate.getNameById(rightButtonTarget);
-	}
-
-	/**
-	 * Retrieve the DOM element ID of the last right mouse event.
-	 * 
-	 * @return Returns the DOM element's ID.
-	 */
-	public Object getRightButtonObject() {
-		return delegate.getGroupById(rightButtonTarget);
-	}
-
-	// -------------------------------------------------------------------------
-	// GraphicsContext implementation:
-	// -------------------------------------------------------------------------
-
-	public void setSize(int width, int height) {
-		if (isAttached()) {
-			delegate.setSize(width, height);
-		}
-	}
-
-	public void initialize(Element parent) {
-		delegate.initialize(parent);
-	}
-
-	public void deleteElement(Object parent, String name) {
-		if (isAttached()) {
-			delegate.deleteElement(parent, name);
-		}
-	}
-
-	public void deleteGroup(Object object) {
-		if (isAttached()) {
-			delegate.deleteGroup(object);
-		}
-	}
-
-	public void drawCircle(Object parent, String name, Coordinate position, double radius, ShapeStyle style) {
-		if (isAttached()) {
-			delegate.drawCircle(parent, name, position, radius, style);
-		}
-	}
-
-	public void drawData(Object parent, Object object, String data, Matrix transformation) {
-		if (isAttached()) {
-			delegate.drawData(parent, object, data, transformation);
-		}
-	}
-
-	public void drawGroup(Object parent, Object object, Matrix transform, Style style) {
-		if (isAttached()) {
-			delegate.drawGroup(parent, object, transform, style);
-		}
-	}
-
-	public void drawGroup(Object parent, Object object, Matrix transform) {
-		if (isAttached()) {
-			delegate.drawGroup(parent, object, transform);
-		}
-	}
-
-	public void drawGroup(Object parent, Object object, Style style) {
-		if (isAttached()) {
-			delegate.drawGroup(parent, object, style);
-		}
-	}
-
-	public void drawGroup(Object parent, Object object) {
-		if (isAttached()) {
-			delegate.drawGroup(parent, object);
-		}
-	}
-
-	public void drawImage(Object parent, String name, String href, Bbox bounds, PictureStyle style) {
-		if (isAttached()) {
-			delegate.drawImage(parent, name, href, bounds, style);
-		}
-	}
-
-	public void drawLine(Object parent, String name, LineString line, ShapeStyle style) {
-		if (isAttached()) {
-			delegate.drawLine(parent, name, line, style);
-		}
-	}
-
-	public void drawPolygon(Object parent, String name, Polygon polygon, ShapeStyle style) {
-		if (isAttached()) {
-			delegate.drawPolygon(parent, name, polygon, style);
-		}
-	}
-
-	public void drawRectangle(Object parent, String name, Bbox rectangle, ShapeStyle style) {
-		if (isAttached()) {
-			delegate.drawRectangle(parent, name, rectangle, style);
-		}
-	}
-
-	public void drawSymbolDefinition(Object parent, String id, SymbolInfo symbol, ShapeStyle style,
-			Matrix transformation) {
-		if (isAttached()) {
-			delegate.drawSymbolDefinition(parent, id, symbol, style, transformation);
-		}
-	}
-
-	public void drawSymbol(Object parent, String name, Coordinate position, ShapeStyle style, String shapeTypeId) {
-		if (isAttached()) {
-			delegate.drawSymbol(parent, name, position, style, shapeTypeId);
-		}
-	}
-
-	public void drawText(Object parent, String name, String text, Coordinate position, FontStyle style) {
-		if (isAttached()) {
-			delegate.drawText(parent, name, text, position, style);
-		}
-	}
-
-	public void hide(Object object) {
-		if (isAttached()) {
-			delegate.hide(object);
-		}
-	}
-
-	public void setController(Object object, GraphicsController controller, int eventMask) {
-		if (isAttached()) {
-			delegate.setController(object, controller, eventMask);
-		}
-	}
-
-	public void setController(Object object, GraphicsController controller) {
-		if (isAttached()) {
-			delegate.setController(object, controller);
-		}
-	}
-
-	public void setController(Object parent, String name, GraphicsController controller, int eventMask) {
-		if (isAttached()) {
-			delegate.setController(parent, name, controller, eventMask);
-		}
-	}
-
-	public void setController(Object parent, String name, GraphicsController controller) {
-		if (isAttached()) {
-			delegate.setController(parent, name, controller);
-		}
-	}
-
-	public void setCursor(Object parent, String name, String cursor) {
-		if (isAttached()) {
-			delegate.setCursor(parent, name, cursor);
-		}
-	}
-
-	public void setCursor(Object object, String cursor) {
-		if (isAttached()) {
-			delegate.setCursor(object, cursor);
-		}
-	}
-
-	public void unhide(Object object) {
-		if (isAttached()) {
-			delegate.unhide(object);
-		}
-	}
-
 	public int getHeight() {
-		return delegate.getHeight();
+		return vectorContext.getHeight();
 	}
 
 	public int getWidth() {
-		return delegate.getWidth();
+		return vectorContext.getWidth();
 	}
 
 	public void setBackgroundColor(String color) {
 		base.setBackgroundColor(color);
 	}
 
-	// -------------------------------------------------------------------------
-	// Private methods:
-	// -------------------------------------------------------------------------
-
-	private String checkId(String elementId) {
-		if (elementId == null) {
-			return null;
-		} else if (elementId.indexOf("screen") == 0) {
-			return graphicsId + "_" + elementId;
-		} else if (elementId.indexOf("world") == 0) {
-			return graphicsId + "_" + elementId;
-		}
-		return elementId;
-	}
 
 	/** Fixes resize problem by manually re-adding this component */
 	private class GWTResizedHandler implements ResizedHandler {
@@ -463,11 +230,55 @@ public class GraphicsWidget extends FocusWidget implements MenuGraphicsContext, 
 			final int height = parent.getHeight();
 			setHeight(base.getHeight() + "px");
 			setWidth(base.getWidth() + "px");
-			setSize(width, height);
+			vectorContext.setSize(width, height);
 			parent.removeChild(base);
 			parent.addChild(base);
 			parent.redraw();
 		}
+	}
+
+	public MenuContext getMenuContext() {
+		return menuContext;
+	}
+
+	public ImageContext getRasterContext() {
+		return rasterContext;
+	}
+
+	public GraphicsContext getVectorContext() {
+		return vectorContext;
+	}
+	
+	/**
+	 * Menu context that captures raster and vector context events.
+	 *  
+	 * @author Jan De Moerloose
+	 *
+	 */
+	public class MapMenuContext implements MenuContext {
+
+		public Coordinate getRightButtonCoordinate() {
+			return rightButtonCoordinate;
+		}
+
+		public String getRightButtonName() {
+			String name = vectorContext.getNameById(rightButtonTarget);
+			if (name != null) {
+				return name;
+			} else {
+				return rasterContext.getNameById(rightButtonTarget);
+			}
+		}
+
+		public Object getRightButtonObject() {
+			Object object = vectorContext.getGroupById(rightButtonTarget);
+			if (object != null) {
+				return object;
+			} else {
+				return rasterContext.getGroupById(rightButtonTarget);
+			}
+		}
+		
 	}
 
 }

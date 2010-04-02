@@ -28,7 +28,6 @@ import org.geomajas.gwt.client.map.layer.Layer;
 import org.geomajas.gwt.client.map.layer.RasterLayer;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.widget.MapWidget;
-import org.geomajas.gwt.client.widget.MapWidget.RenderGroup;
 import org.geomajas.gwt.client.widget.MapWidget.RenderStatus;
 
 /**
@@ -54,7 +53,7 @@ public class LayerRefreshAction extends LayerTreeAction {
 			RasterLayer rLayer = (RasterLayer) layer;
 			rLayer.getStore().clear();
 		}
-		map.render(layer, RenderGroup.PAN, RenderStatus.ALL);
+		map.render(layer, null, RenderStatus.ALL);
 	}
 
 	public boolean isEnabled(Layer<?> layer) {

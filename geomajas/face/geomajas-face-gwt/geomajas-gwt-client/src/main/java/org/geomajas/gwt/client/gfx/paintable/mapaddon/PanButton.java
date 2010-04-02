@@ -119,10 +119,10 @@ public class PanButton extends MapAddon {
 
 		// Then draw:
 		if (parent != null) {
-			map.getGraphics().drawImage(parent, getId(), image.getHref(), image.getBounds(),
+			map.getVectorContext().drawImage(parent, getId(), image.getHref(), image.getBounds(),
 					(PictureStyle) image.getStyle());
 		} else {
-			map.getGraphics().drawImage(group, getId(), image.getHref(),
+			map.getVectorContext().drawImage(group, getId(), image.getHref(),
 					image.getBounds(), (PictureStyle) image.getStyle());
 		}
 	}
@@ -131,8 +131,8 @@ public class PanButton extends MapAddon {
 	 * When this pan button is drawn for the first time, add a pan controller to it that reacts on the click event.
 	 */
 	public void onDraw() {
-		map.getGraphics().setController(parent, getId(), controller, Event.MOUSEEVENTS);
-		map.getGraphics().setCursor(parent, getId(), Cursor.POINTER.getValue());
+		map.getVectorContext().setController(parent, getId(), controller, Event.MOUSEEVENTS);
+		map.getVectorContext().setCursor(parent, getId(), Cursor.POINTER.getValue());
 	}
 
 	/**

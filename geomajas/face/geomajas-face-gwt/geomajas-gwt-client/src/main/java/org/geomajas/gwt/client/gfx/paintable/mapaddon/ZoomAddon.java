@@ -60,30 +60,30 @@ public class ZoomAddon extends MapAddon {
 	 * Paint this pan button!
 	 */
 	public void accept(PainterVisitor visitor, Object group, Bbox bounds, boolean recursive) {
-		map.getGraphics().drawGroup(group, this);
+		map.getVectorContext().drawGroup(group, this);
 
 		Coordinate c = getUpperLeftCorner();
-		map.getGraphics().drawImage(this, "bg", Geomajas.getIsomorphicDir() + "geomajas/temp/zoombg.png",
+		map.getVectorContext().drawImage(this, "bg", Geomajas.getIsomorphicDir() + "geomajas/temp/zoombg.png",
 				new Bbox(c.getX(), c.getY(), 20, 60), new PictureStyle(1));
 
-		map.getGraphics().drawImage(this, "plus", Geomajas.getIsomorphicDir() + "geomajas/temp/zoomPlus.png",
+		map.getVectorContext().drawImage(this, "plus", Geomajas.getIsomorphicDir() + "geomajas/temp/zoomPlus.png",
 				new Bbox(c.getX(), c.getY(), 20, 20), new PictureStyle(1));
 
-		map.getGraphics().drawImage(this, "minus", Geomajas.getIsomorphicDir() + "geomajas/temp/zoomMinus.png",
+		map.getVectorContext().drawImage(this, "minus", Geomajas.getIsomorphicDir() + "geomajas/temp/zoomMinus.png",
 				new Bbox(c.getX(), c.getY() + 40, 20, 20), new PictureStyle(1));
 
-		map.getGraphics().drawImage(this, "max", Geomajas.getIsomorphicDir() + "geomajas/temp/maxextent.png",
+		map.getVectorContext().drawImage(this, "max", Geomajas.getIsomorphicDir() + "geomajas/temp/maxextent.png",
 				new Bbox(c.getX(), c.getY() + 20, 20, 20), new PictureStyle(1));
 
 		if (firstTime) {
-			map.getGraphics().setController(this, "plus", new ZoomController(map, 2), Event.ONMOUSEUP);
-			map.getGraphics().setCursor(this, "plus", Cursor.POINTER.getValue());
+			map.getVectorContext().setController(this, "plus", new ZoomController(map, 2), Event.ONMOUSEUP);
+			map.getVectorContext().setCursor(this, "plus", Cursor.POINTER.getValue());
 
-			map.getGraphics().setController(this, "minus", new ZoomController(map, 0.5), Event.ONMOUSEUP);
-			map.getGraphics().setCursor(this, "minus", Cursor.POINTER.getValue());
+			map.getVectorContext().setController(this, "minus", new ZoomController(map, 0.5), Event.ONMOUSEUP);
+			map.getVectorContext().setCursor(this, "minus", Cursor.POINTER.getValue());
 
-			map.getGraphics().setController(this, "max", new MaxExtentController(map), Event.ONMOUSEUP);
-			map.getGraphics().setCursor(this, "max", Cursor.POINTER.getValue());
+			map.getVectorContext().setController(this, "max", new MaxExtentController(map), Event.ONMOUSEUP);
+			map.getVectorContext().setCursor(this, "max", Cursor.POINTER.getValue());
 		}
 		firstTime = false;
 	}

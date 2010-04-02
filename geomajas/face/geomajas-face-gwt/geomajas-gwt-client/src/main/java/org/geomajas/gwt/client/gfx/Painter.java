@@ -23,6 +23,7 @@
 
 package org.geomajas.gwt.client.gfx;
 
+import org.geomajas.gwt.client.widget.MapContext;
 
 /**
  * <p>
@@ -33,7 +34,7 @@ package org.geomajas.gwt.client.gfx;
  * @author Pieter De Graef
  */
 public interface Painter {
-	
+
 	/**
 	 * Return the class-name of the type of object this painter can paint.
 	 * 
@@ -49,10 +50,10 @@ public interface Painter {
 	 *            The object to be painted.
 	 * @param Object
 	 *            The group to paint in.
-	 * @param graphics
+	 * @param context
 	 *            The context to paint on.
 	 */
-	void paint(Paintable paintable, Object group, GraphicsContext graphics);
+	void paint(Paintable paintable, Object group, MapContext context);
 
 	/**
 	 * Delete a <code>Paintable</code> object from the given <code>GraphicsContext</code>. It the object does not exist,
@@ -62,8 +63,8 @@ public interface Painter {
 	 *            The object to be deleted.
 	 * @param Object
 	 *            The group where the object resides in (optional).
-	 * @param graphics
+	 * @param context
 	 *            The context to paint on.
 	 */
-	void deleteShape(Paintable paintable, Object group, GraphicsContext graphics);
+	void deleteShape(Paintable paintable, Object group, MapContext context);
 }

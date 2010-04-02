@@ -22,10 +22,12 @@
  */
 package org.geomajas.gwt.client.gfx.painter;
 
-import org.geomajas.gwt.client.gfx.GraphicsContext;
 import org.geomajas.gwt.client.gfx.Paintable;
 import org.geomajas.gwt.client.gfx.Painter;
 import org.geomajas.gwt.client.map.layer.RasterLayer;
+import org.geomajas.gwt.client.widget.MapContext;
+import org.geomajas.gwt.client.widget.MapWidget;
+import org.geomajas.gwt.client.widget.MapWidget.RenderGroup;
 
 /**
  * Paints a raster layer.
@@ -34,6 +36,12 @@ import org.geomajas.gwt.client.map.layer.RasterLayer;
  */
 public class RasterLayerPainter implements Painter {
 
+	private MapWidget mapWidget;
+
+	public RasterLayerPainter(MapWidget mapWidget) {
+		this.mapWidget = mapWidget;
+	}
+	
 	public String getPaintableClassName() {
 		return RasterLayer.class.getName();
 	}
@@ -45,26 +53,26 @@ public class RasterLayerPainter implements Painter {
 	 *            A {@link RasterLayer} object.
 	 * @param group
 	 *            The group where the object resides in (optional).
-	 * @param graphics
-	 *            A GraphicsContext object, responsible for actual drawing.
+	 * @param context
+	 *            A MapContext object, responsible for actual drawing.
 	 */
-	public void paint(Paintable paintable, Object group, GraphicsContext graphics) {
+	public void paint(Paintable paintable, Object group, MapContext context) {
 		RasterLayer layer = (RasterLayer) paintable;
 
 		// Create the needed groups in the correct order:
-		graphics.drawGroup(group, layer); // layer.getDefaultStyle???
+		context.getRasterContext().drawGroup(mapWidget.getGroup(RenderGroup.RASTER), layer); // layer.getDefaultStyle???
 
 		// Check layer visibility:
 		if (layer.isShowing()) {
-			graphics.unhide(layer);
+			context.getRasterContext().unhide(layer);
 		} else {
-			graphics.hide(layer);
+			context.getRasterContext().hide(layer);
 		}
 
 	}
 
 	/**
-	 * Delete a {@link Paintable} object from the given {@link GraphicsContext}. It the object does not exist, nothing
+	 * Delete a {@link Paintable} object from the given {@link MapContext}. It the object does not exist, nothing
 	 * will be done.
 	 * 
 	 * @param paintable
@@ -74,8 +82,8 @@ public class RasterLayerPainter implements Painter {
 	 * @param graphics
 	 *            The context to paint on.
 	 */
-	public void deleteShape(Paintable paintable, Object group, GraphicsContext graphics) {
-		graphics.deleteGroup(paintable);
+	public void deleteShape(Paintable paintable, Object group, MapContext context) {
+		context.getRasterContext().deleteGroup(paintable);
 	}
 
 }

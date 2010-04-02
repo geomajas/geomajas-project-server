@@ -118,7 +118,7 @@ public class ToggleSelectionAction extends MenuAction {
 	 * selection first.
 	 */
 	public void onClick(MenuItemClickEvent menuItemClickEvent) {
-		toggle(mapWidget.getGraphics().getRightButtonCoordinate(), true);
+		toggle(mapWidget.getMenuContext().getRightButtonCoordinate(), true);
 	}
 
 	/**

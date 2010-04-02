@@ -120,8 +120,8 @@ public class PanButtonCollection extends MapAddon {
 		applyPosition();
 
 		// Then render them:
-		map.getGraphics().drawGroup(group, this);
-		map.getGraphics().drawImage(this, background.getId(), background.getHref(), background.getBounds(),
+		map.getVectorContext().drawGroup(group, this);
+		map.getVectorContext().drawImage(this, background.getId(), background.getHref(), background.getBounds(),
 				(PictureStyle) background.getStyle());
 		north.accept(visitor, group, bounds, recursive);
 		east.accept(visitor, group, bounds, recursive);

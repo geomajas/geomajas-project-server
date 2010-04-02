@@ -191,7 +191,7 @@ public class Bbox {
 	 * @return true if the other intersects this one, false otherwise.
 	 */
 	public boolean intersects(Bbox other) {
-		if (other.getX() > this.getEndPoint().getY()) {
+		if (other.getX() > this.getEndPoint().getX()) {
 			return false;
 		}
 		if (other.getY() > this.getEndPoint().getY()) {
@@ -263,6 +263,26 @@ public class Bbox {
 		}
 		return null;
 	}
+	
+	/**
+	 * Return a new bounding box which has the same center position but has been scaled with the specified factor.
+	 * 
+	 * @param factor
+	 *            The scale factor (must be > 0).
+	 * @return
+	 */
+	public Bbox scale(double factor) {
+		if (factor > 0) {
+			double scaledWidth = width * factor;
+			double scaledHeight = height * factor;
+			Coordinate center = getCenterPoint();
+			return new Bbox(center.getX() - scaledWidth / 2, center.getY() - scaledHeight / 2, scaledWidth,
+					scaledHeight);
+		} else {
+			return new Bbox(this);
+		}
+	}
+	
 
 	/**
 	 * Translates this bounds with displacement dx and dy.
@@ -275,6 +295,19 @@ public class Bbox {
 	public void translate(double dx, double dy) {
 		this.x = this.x + dx;
 		this.y = this.y + dy;
+	}
+	
+	/**
+	 * Create a new bounds by transforming this bounds with the specified tranformation matrix.
+	 * @param t the transformation matrix
+	 * @return the transformed bounds
+	 */
+	public Bbox transform(Matrix t) {
+		Coordinate c1 = transform(t, new Coordinate(x, y));
+		Coordinate c2 = transform(t, new Coordinate(x + width, y + height));
+		Coordinate origin = new Coordinate(Math.min(c1.getX(), c2.getX()), Math.min(c1.getY(), c2.getY()));
+		Coordinate endPoint = new Coordinate(Math.max(c1.getX(), c2.getX()), Math.max(c1.getY(), c2.getY()));
+		return new Bbox(origin.getX(), origin.getY(), endPoint.getX() - origin.getX(), endPoint.getY() - origin.getY());
 	}
 
 	/**
@@ -355,4 +388,11 @@ public class Bbox {
 	protected boolean equals(double d1, double d2, double delta) {
 		return Math.abs(d1 - d2) <= delta;
 	}
+	
+	private Coordinate transform(Matrix t, Coordinate coordinate) {
+		double x = t.getXx() * coordinate.getX() + t.getXy() * coordinate.getY() + t.getDx();
+		double y = t.getYx() * coordinate.getY() + t.getYy() * coordinate.getY() + t.getDy();
+		return new Coordinate(x, y);
+	}
+
 }

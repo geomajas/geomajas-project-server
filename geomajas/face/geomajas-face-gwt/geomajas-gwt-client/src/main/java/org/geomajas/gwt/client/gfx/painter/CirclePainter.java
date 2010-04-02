@@ -23,11 +23,11 @@
 
 package org.geomajas.gwt.client.gfx.painter;
 
-import org.geomajas.gwt.client.gfx.GraphicsContext;
 import org.geomajas.gwt.client.gfx.Paintable;
 import org.geomajas.gwt.client.gfx.Painter;
 import org.geomajas.gwt.client.gfx.paintable.Circle;
 import org.geomajas.gwt.client.gfx.style.ShapeStyle;
+import org.geomajas.gwt.client.widget.MapContext;
 
 /**
  * <p>
@@ -55,17 +55,17 @@ public class CirclePainter implements Painter {
 	 *            A {@link Circle} object.
 	 * @param group
 	 *            The group where the object resides in (optional).
-	 * @param graphics
-	 *            A GraphicsContext object, responsible for actual drawing.
+	 * @param context
+	 *            A MapContext object, responsible for actual drawing.
 	 */
-	public void paint(Paintable paintable, Object group, GraphicsContext graphics) {
+	public void paint(Paintable paintable, Object group, MapContext context) {
 		Circle circle = (Circle) paintable;
-		graphics.drawCircle(group, circle.getId(), circle.getPosition(), circle.getRadius(), (ShapeStyle) circle
-				.getStyle());
+		context.getVectorContext().drawCircle(group, circle.getId(), circle.getPosition(), circle.getRadius(),
+				(ShapeStyle) circle.getStyle());
 	}
 
 	/**
-	 * Delete a {@link Paintable} object from the given {@link GraphicsContext}. It the object does not exist,
+	 * Delete a {@link Paintable} object from the given {@link MapContext}. It the object does not exist,
 	 * nothing will be done.
 	 * 
 	 * @param paintable
@@ -75,8 +75,8 @@ public class CirclePainter implements Painter {
 	 * @param graphics
 	 *            The context to paint on.
 	 */
-	public void deleteShape(Paintable paintable, Object group, GraphicsContext graphics) {
+	public void deleteShape(Paintable paintable, Object group,  MapContext context) {
 		Circle circle = (Circle) paintable;
-		graphics.deleteElement(group, circle.getId());
+		context.getVectorContext().deleteElement(group, circle.getId());
 	}
 }

@@ -109,22 +109,22 @@ public class ScaleBar extends MapAddon {
 	}
 
 	public void accept(PainterVisitor visitor, Object group, Bbox bounds, boolean recursive) {
-		map.getGraphics().drawGroup(group, this);
+		map.getVectorContext().drawGroup(group, this);
 
 		// Draw a dummy at 0,0 so that Internet Explorer knows where coordinate 0,0 is. If this is not drawn, the text
 		// will disappear, because the parent group will have coordinate 0,0 at the upper left corner of the union of
 		// all the rectangles that are drawn here.
-		map.getGraphics().drawRectangle(this, dummy.getId(), dummy.getBounds(), (ShapeStyle) dummy.getStyle());
+		map.getVectorContext().drawRectangle(this, dummy.getId(), dummy.getBounds(), (ShapeStyle) dummy.getStyle());
 
-		map.getGraphics().drawRectangle(this, backGround.getId(), backGround.getBounds(),
+		map.getVectorContext().drawRectangle(this, backGround.getId(), backGround.getBounds(),
 				(ShapeStyle) backGround.getStyle());
-		map.getGraphics().drawRectangle(this, bottomLine.getId(), bottomLine.getBounds(),
+		map.getVectorContext().drawRectangle(this, bottomLine.getId(), bottomLine.getBounds(),
 				(ShapeStyle) bottomLine.getStyle());
-		map.getGraphics().drawRectangle(this, leftMarker.getId(), leftMarker.getBounds(),
+		map.getVectorContext().drawRectangle(this, leftMarker.getId(), leftMarker.getBounds(),
 				(ShapeStyle) leftMarker.getStyle());
-		map.getGraphics().drawRectangle(this, rightMarker.getId(), rightMarker.getBounds(),
+		map.getVectorContext().drawRectangle(this, rightMarker.getId(), rightMarker.getBounds(),
 				(ShapeStyle) rightMarker.getStyle());
-		map.getGraphics().drawText(this, distance.getId(), distance.getContent(), distance.getPosition(),
+		map.getVectorContext().drawText(this, distance.getId(), distance.getContent(), distance.getPosition(),
 				(FontStyle) distance.getStyle());
 	}
 

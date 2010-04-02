@@ -58,14 +58,14 @@ public class Watermark extends MapAddon {
 	// MapAddon implementation:
 
 	public void accept(PainterVisitor visitor, Object group, Bbox bounds, boolean recursive) {
-		map.getGraphics().drawGroup(group, this);
+		map.getVectorContext().drawGroup(group, this);
 
 		image.getBounds().setX(getUpperLeftCorner().getX());
 		image.getBounds().setY(getUpperLeftCorner().getY());
 
-		map.getGraphics().drawRectangle(this, getId() + "-bg", image.getBounds(),
+		map.getVectorContext().drawRectangle(this, getId() + "-bg", image.getBounds(),
 				new ShapeStyle("#FFFFFF", 0.6f, "#FFFFFF", 0, 0));
-		map.getGraphics().drawImage(this, image.getId(), image.getHref(), image.getBounds(),
+		map.getVectorContext().drawImage(this, image.getId(), image.getHref(), image.getBounds(),
 				(PictureStyle) image.getStyle());
 	}
 

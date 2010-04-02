@@ -38,7 +38,8 @@ import org.geomajas.gwt.client.command.CommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.controller.GraphicsController;
-import org.geomajas.gwt.client.gfx.MenuGraphicsContext;
+import org.geomajas.gwt.client.gfx.GraphicsContext;
+import org.geomajas.gwt.client.gfx.MenuContext;
 import org.geomajas.gwt.client.gfx.Paintable;
 import org.geomajas.gwt.client.gfx.PaintableGroup;
 import org.geomajas.gwt.client.gfx.Painter;
@@ -131,8 +132,10 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	private PanButtonCollection panButtons;
 
 	private ZoomAddon zoomAddon;
-
-	private PaintableGroup panGroup = new Composite("pan");
+	
+	private PaintableGroup rasterGroup = new Composite("raster");
+	
+	private PaintableGroup vectorGroup = new Composite("vector");
 
 	private PaintableGroup worldGroup = new Composite("world");
 
@@ -148,7 +151,12 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 		 * The pan group. Drawing should be done in pan coordinates. All layers, their selection and their labels are
 		 * drawn in pan coordinates.
 		 */
-		PAN,
+		RASTER,
+		/**
+		 * The pan group. Drawing should be done in pan coordinates. All layers, their selection and their labels are
+		 * drawn in pan coordinates.
+		 */
+		VECTOR,
 		/**
 		 * The world group. Drawing should be done in world coordinates. World coordinates means that the map coordinate
 		 * system is used.
@@ -200,9 +208,9 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 		painterVisitor.registerPainter(new GeometryPainter());
 		painterVisitor.registerPainter(new ImagePainter());
 		painterVisitor.registerPainter(new MapModelPainter(this));
-		painterVisitor.registerPainter(new RasterLayerPainter());
+		painterVisitor.registerPainter(new RasterLayerPainter(this));
 		painterVisitor.registerPainter(new RasterTilePainter());
-		painterVisitor.registerPainter(new VectorLayerPainter());
+		painterVisitor.registerPainter(new VectorLayerPainter(this));
 		painterVisitor.registerPainter(new VectorTilePainter());
 		painterVisitor.registerPainter(new FeatureTransactionPainter(this));
 
@@ -220,8 +228,10 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 
 	public PaintableGroup getGroup(RenderGroup group) {
 		switch (group) {
-			case PAN:
-				return panGroup;
+			case RASTER:
+				return rasterGroup;
+			case VECTOR:
+				return vectorGroup;
 			case WORLD:
 				return worldGroup;
 			case SCREEN:
@@ -262,11 +272,11 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 				layer.addLayerChangedHandler(new LayerChangedHandler() {
 
 					public void onLabelChange(LayerLabeledEvent event) {
-						render(layer, RenderGroup.PAN, RenderStatus.ALL);
+						render(layer, null, RenderStatus.ALL);
 					}
 
 					public void onVisibleChange(LayerShownEvent event) {
-						render(layer, RenderGroup.PAN, RenderStatus.ALL);
+						render(layer, null, RenderStatus.ALL);
 					}
 				});
 			}
@@ -303,7 +313,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	public void unregisterMapAddon(MapAddon addon) {
 		if (addon != null && addons.containsKey(addon.getId())) {
 			addons.remove(addon.getId());
-			graphics.deleteGroup(addon);
+			graphics.getVectorContext().deleteGroup(addon);
 			addon.onRemove();
 		}
 	}
@@ -334,7 +344,11 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 		graphics.setController(controller);
 	}
 
-	public void render(Paintable paintable, RenderGroup group, RenderStatus status) {
+	public void render(Paintable paintable, RenderGroup renderGroup, RenderStatus status) {
+		PaintableGroup group = null;
+		if (renderGroup != null) {
+			group = getGroup(renderGroup); 
+		}
 		if (!graphics.isAttached()) {
 			return;
 		}
@@ -345,7 +359,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 			List<Painter> painters = painterVisitor.getPaintersForObject(paintable);
 			if (painters != null) {
 				for (Painter painter : painters) {
-					painter.deleteShape(paintable, getGroup(group), graphics);
+					painter.deleteShape(paintable, group, graphics);
 				}
 			}
 		} else {
@@ -358,7 +372,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 								.getBounds(), true);
 					}
 				}
-				paintable.accept(painterVisitor, getGroup(group), mapModel.getMapView().getBounds(), true);
+				paintable.accept(painterVisitor, group, mapModel.getMapView().getBounds(), true);
 			} else if (RenderStatus.UPDATE.equals(status)) {
 				if (paintable == this.mapModel) {
 					// Paint the world space paintable objects:
@@ -368,7 +382,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 								.getBounds(), false);
 					}
 				}
-				paintable.accept(painterVisitor, getGroup(group), mapModel.getMapView().getBounds(), false);
+				paintable.accept(painterVisitor, group, mapModel.getMapView().getBounds(), false);
 			}
 		}
 	}
@@ -445,8 +459,12 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 		return mapModel;
 	}
 
-	public MenuGraphicsContext getGraphics() {
-		return graphics;
+	public MenuContext getMenuContext() {
+		return graphics.getMenuContext();
+	}
+	
+	public GraphicsContext getVectorContext() {
+		return graphics.getVectorContext();
 	}
 
 	public PainterVisitor getPainterVisitor() {
@@ -469,11 +487,10 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	protected void onDraw() {
 		super.onDraw();
 		// must be called before anything else !
-		render(mapModel, RenderGroup.PAN, RenderStatus.ALL);
+		render(mapModel, null, RenderStatus.ALL);
 		final int width = getWidth();
 		final int height = getHeight();
 		mapModel.getMapView().setSize(width, height);
-		graphics.setSize(width, height);
 		init();
 	}
 
@@ -498,12 +515,12 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 				scalebar.adjustScale(mapModel.getMapView().getCurrentScale());
 				render(scalebar, RenderGroup.SCREEN, RenderStatus.UPDATE);
 			}
-			render(mapModel, RenderGroup.PAN, RenderStatus.ALL);
+			render(mapModel, null, RenderStatus.ALL);
 		}
 	}
 
 	public void onMapModelChange(MapModelEvent event) {
-		render(mapModel, RenderGroup.PAN, RenderStatus.ALL);
+		render(mapModel, null, RenderStatus.ALL);
 	}
 
 	public ShapeStyle getLineSelectStyle() {
@@ -553,7 +570,8 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 
 	public void setCursor(Cursor cursor) {
 		super.setCursor(cursor);
-		graphics.setCursor(null, cursor.getValue());
+		graphics.getRasterContext().setCursor(null, cursor.getValue());
+		graphics.getVectorContext().setCursor(null, cursor.getValue());
 	}
 
 	public boolean isResizedHandlerDisabled() {
@@ -656,4 +674,5 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 			mapWidget.render(event.getFeature(), RenderGroup.SCREEN, RenderStatus.DELETE);
 		}
 	}
+
 }

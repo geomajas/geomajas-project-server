@@ -127,7 +127,7 @@ public class MeasureDistanceController extends AbstractSnappingController {
 				tempLength = (float) geometry.getLength();
 				label.setDistance(tempLength, 0);
 			}
-			mapWidget.render(mapWidget.getMapModel(), RenderGroup.PAN, RenderStatus.UPDATE);
+			mapWidget.render(mapWidget.getMapModel(), RenderGroup.VECTOR, RenderStatus.UPDATE);
 		}
 	}
 
@@ -138,7 +138,7 @@ public class MeasureDistanceController extends AbstractSnappingController {
 			Coordinate coordinate1 = geometry.getCoordinates()[distanceLine.getGeometry().getNumPoints() - 1];
 			Coordinate coordinate2 = getWorldPosition(event);
 			lineSegment.setGeometry(factory.createLineString(new Coordinate[] { coordinate1, coordinate2 }));
-			mapWidget.render(mapWidget.getMapModel(), RenderGroup.PAN, RenderStatus.UPDATE);
+			mapWidget.render(mapWidget.getMapModel(), RenderGroup.VECTOR, RenderStatus.UPDATE);
 			label.setDistance(tempLength, (float) lineSegment.getGeometry().getLength());
 		}
 	}

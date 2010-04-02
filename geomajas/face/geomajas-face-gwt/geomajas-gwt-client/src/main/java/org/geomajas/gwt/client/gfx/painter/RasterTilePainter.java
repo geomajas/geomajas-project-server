@@ -22,10 +22,10 @@
  */
 package org.geomajas.gwt.client.gfx.painter;
 
-import org.geomajas.gwt.client.gfx.GraphicsContext;
 import org.geomajas.gwt.client.gfx.Paintable;
 import org.geomajas.gwt.client.gfx.Painter;
 import org.geomajas.gwt.client.map.cache.tile.RasterTile;
+import org.geomajas.gwt.client.widget.MapContext;
 
 /**
  * Paints a raster tile.
@@ -41,14 +41,24 @@ public class RasterTilePainter implements Painter {
 		return RasterTile.class.getName();
 	}
 
-	public void paint(Paintable paintable, Object group, GraphicsContext graphics) {
+	/**
+	 * The actual painting function. Draws the groups.
+	 * 
+	 * @param paintable
+	 *            A {@link RasterTile} object.
+	 * @param group
+	 *            The group where the object resides in (optional).
+	 * @param context
+	 *            A MapContext object, responsible for actual drawing.
+	 */
+	public void paint(Paintable paintable, Object group, MapContext context) {
 		RasterTile tile = (RasterTile) paintable;
-		graphics.drawImage(tile.getStore().getLayer(), tile.getCode().toString(), tile.getUrl(), tile.getBounds(), tile
-				.getStyle());
+		context.getRasterContext().drawImage(tile.getStore().getLayer(), 
+				tile.getCode().toString(), tile.getUrl(), tile.getBounds(), tile.getStyle());
 	}
 
 	/**
-	 * Delete a {@link Paintable} object from the given {@link GraphicsContext}. It the object does not exist, nothing
+	 * Delete a {@link Paintable} object from the given {@link MapContext}. It the object does not exist, nothing
 	 * will be done.
 	 * 
 	 * @param paintable
@@ -58,8 +68,8 @@ public class RasterTilePainter implements Painter {
 	 * @param graphics
 	 *            The context to paint on.
 	 */
-	public void deleteShape(Paintable paintable, Object group, GraphicsContext graphics) {
+	public void deleteShape(Paintable paintable, Object group, MapContext context) {
 		RasterTile tile = (RasterTile) paintable;
-		graphics.deleteElement(tile.getStore().getLayer(), tile.getCode().toString());
+		context.getRasterContext().deleteElement(tile.getStore().getLayer(), tile.getCode().toString());
 	}
 }

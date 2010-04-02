@@ -1,10 +1,10 @@
 package org.geomajas.gwt.client.gfx.paintable;
 
-import org.geomajas.gwt.client.gfx.GraphicsContext;
 import org.geomajas.gwt.client.gfx.Paintable;
 import org.geomajas.gwt.client.gfx.Painter;
 import org.geomajas.gwt.client.gfx.PainterVisitor;
 import org.geomajas.gwt.client.spatial.Bbox;
+import org.geomajas.gwt.client.widget.MapContext;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -55,14 +55,14 @@ public class CompositeTest {
 
 	class MockPainter implements Painter {
 
-		public void deleteShape(Paintable paintable, Object group, GraphicsContext graphics) {
+		public void deleteShape(Paintable paintable, Object group, MapContext context) {
 		}
 
 		public String getPaintableClassName() {
 			return MockPaintable.class.getName();
 		}
 
-		public void paint(Paintable paintable, Object group, GraphicsContext graphics) {
+		public void paint(Paintable paintable, Object group, MapContext context) {
 			((MockPaintable) paintable).visitorAccepted = true;
 		}
 	}
