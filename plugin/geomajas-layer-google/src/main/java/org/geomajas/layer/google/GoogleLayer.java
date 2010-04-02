@@ -303,9 +303,9 @@ public class GoogleLayer implements RasterLayer {
 				double lower = RESOLUTIONS[i + 1];
 				if (screenResolution <= upper && screenResolution >= lower) {
 					if ((upper - screenResolution) > 2 * (screenResolution - lower)) {
-						return i;
-					} else {
 						return i + 1;
+					} else {
+						return i;
 					}
 				}
 			}
