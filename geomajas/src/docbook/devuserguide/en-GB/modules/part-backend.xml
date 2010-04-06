@@ -841,7 +841,94 @@ public class Road {
             </tgroup>
           </table>
 
-          <para></para>
+          <para>In most cases, you will need to pass data using the parameters
+          property to get a functional GeoTools layer. This would look similar
+          to this:</para>
+
+          <programlisting>&lt;bean name="blabla" class="org.geomajas.layer.geotools.GeoToolsLayer"&gt;
+    &lt;property name="parameters"&gt;
+        &lt;list&gt;
+            &lt;bean class="org.geomajas.configuration.Parameter"&gt;
+                &lt;property name="name" value="WFSDataStoreFactory:GET_CAPABILITIES_URL" /&gt;
+                &lt;property name="value" value="aaaaaaa" /&gt;
+            &lt;/bean&gt;
+            &lt;bean class="org.geomajas.configuration.Parameter"&gt;
+                &lt;property name="name" value="WFSDataStoreFactory:TIMEOUT" /&gt;
+                &lt;property name="value" value="bbbbbbb" /&gt;
+            &lt;/bean&gt;
+        &lt;/list&gt;
+    &lt;/property&gt;
+    &lt;property name="layerInfo" ref="blablaInfo" /&gt;
+&lt;/bean&gt; </programlisting>
+
+          <para>The names which are valid depend on the GeoTools data
+          store.</para>
+
+          <para>To access a WFS server, the following names can be used as
+          parameters.</para>
+
+          <para><itemizedlist>
+              <listitem>
+                <para><emphasis>WFSDataStoreFactory:GET_CAPABILITIES_URL</emphasis>
+                : Represents a URL to the getCapabilities document or a server
+                instance.</para>
+              </listitem>
+
+              <listitem>
+                <para><emphasis>WFSDataStoreFactory:PROTOCOL</emphasis> : Sets
+                a preference for the HTTP protocol to use when requesting WFS
+                functionality. Set this value to "true" for POST, "false" for
+                GET or NULL for AUTO.</para>
+              </listitem>
+
+              <listitem>
+                <para><emphasis>WFSDataStoreFactory:USERNAME</emphasis> : This
+                allows the user to specify a username. This parameter should
+                not be used without the password parameter.</para>
+              </listitem>
+
+              <listitem>
+                <para><emphasis>WFSDataStoreFactory:PASSWORD</emphasis> : This
+                allows the user to specify a password. This param should not
+                be used without the username param.</para>
+              </listitem>
+
+              <listitem>
+                <para><emphasis>WFSDataStoreFactory:TIMEOUT</emphasis> : This
+                allows the user to specify a timeout in milliseconds. This
+                param has a default value of 3000ms.</para>
+              </listitem>
+
+              <listitem>
+                <para><emphasis>WFSDataStoreFactory:BUFFER_SIZE</emphasis> :
+                This allows the user to specify a buffer size in features.
+                This param has a default value of 10 features.</para>
+              </listitem>
+
+              <listitem>
+                <para><emphasis>WFSDataStoreFactory:TRY_GZIP</emphasis> :
+                Indicates that datastore should use gzip to transfer data if
+                the server supports it. Default is true.</para>
+              </listitem>
+
+              <listitem>
+                <para><emphasis>WFSDataStoreFactory:LENIENT</emphasis> :
+                Indicates that datastore should do its best to create features
+                from the provided data even if it does not accurately match
+                the schema. Errors will be logged but the parsing will
+                continue if this is true. Default is false. </para>
+              </listitem>
+            </itemizedlist></para>
+
+          <para>You also have to assure the GeoTools WFS data store is added
+          as dependecy in your project. When using maven, you can add the
+          following dependency.</para>
+
+          <programlisting>&lt;dependency&gt;
+      &lt;groupId&gt;org.geotools&lt;/groupId&gt;
+      &lt;artifactId&gt;gt-wfs&lt;/artifactId&gt;
+      &lt;version&gt;${geotools-version}&lt;/version&gt;
+&lt;/dependency&gt;</programlisting>
         </section>
 
         <section>
