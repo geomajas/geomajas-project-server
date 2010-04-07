@@ -33,6 +33,7 @@
 			<id>full-build</id>
 			<modules>
 				<module>build-tools</module>
+				<module>documentation</module>
 			</modules>
 		</profile>
 	</profiles>

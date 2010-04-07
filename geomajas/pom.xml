@@ -10,7 +10,6 @@
 		for the display, analysis and management of geographic information. It is a building block that allows
 		developers to add maps and other geographic data capabilities to their web applications.
 	</description>
-	<url>http://files.geomajas.org/maven/trunk/geomajas</url>
 
 	<scm>
 		<connection>scm:svn:https://svn.geomajas.org/majas/trunk</connection>
@@ -164,93 +163,6 @@
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-site-plugin</artifactId>
-				<version>2.0.1</version>
-				<dependencies>
-					<dependency>
-						<groupId>org.apache.maven.doxia</groupId>
-						<artifactId>doxia-module-docbook-simple</artifactId>
-						<version>1.0</version>
-					</dependency>
-				</dependencies>
-			</plugin>
-			<plugin>
-				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-maven-plugin</artifactId>
-				<version>1.0.0</version>
-				<inherited>false</inherited>
-				<executions>
-					<execution>
-						<id>extract-listings</id>
-						<phase>pre-site</phase>
-						<goals>
-							<goal>extract</goal>
-						</goals>
-						<configuration>
-							<sourceDirectory>${basedir}/../application</sourceDirectory>
-							<destinationDirectory>${basedir}/src/docbook/devuserguide/en-GB/listing</destinationDirectory>
-						</configuration>
-					</execution>
-				</executions>					
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<inherited>false</inherited>
-				<executions>
-					<execution>
-						<id>gen-docbook</id>
-						<phase>pre-site</phase>
-						<configuration>
-							<tasks>
-								<condition property="maven.exec" value="mvn">
-									<os family="unix" />
-								</condition>
-								<condition property="maven.exec" value="mvn.bat">
-									<os family="windows" />
-								</condition>
-								<exec dir="${basedir}/src/docbook" executable="${maven.exec}" failonerror="true">
-									<arg line="install" />
-								</exec>
-								<copy todir="${basedir}/target/site/devuserguide">
-									<fileset dir="${basedir}/src/docbook/devuserguide/target/docbook" />
-								</copy>
-								<copy todir="${basedir}/target/site/enduserguide">
-									<fileset dir="${basedir}/src/docbook/enduserguide/target/docbook" />
-								</copy>
-								<copy todir="${basedir}/target/site/committerguide">
-									<fileset dir="${basedir}/src/docbook/committerguide/target/docbook" />
-								</copy>
-							</tasks>
-						</configuration>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>clean-docbook</id>
-						<phase>clean</phase>
-						<configuration>
-							<tasks>
-								<condition property="maven.exec" value="mvn">
-									<os family="unix" />
-								</condition>
-								<condition property="maven.exec" value="mvn.bat">
-									<os family="windows" />
-								</condition>
-								<exec dir="${basedir}/src/docbook" executable="${maven.exec}" failonerror="true">
-									<arg line="clean" />
-								</exec>
-							</tasks>
-						</configuration>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
 				<executions>
 					<execution>
@@ -308,19 +220,6 @@
 			</plugins>
 		</pluginManagement>
 	</build>
-	<reporting>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<configuration>
-					<links>
-						<link>http://java.sun.com/j2se/1.5.0/docs/api/</link>
-					</links>
-				</configuration>
-			</plugin>
-		</plugins>
-	</reporting>
 
 	<dependencyManagement>
 		<dependencies>

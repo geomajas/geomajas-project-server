@@ -29,6 +29,25 @@
 	<build>
 		<plugins>
 			<plugin>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-maven-plugin</artifactId>
+				<version>1.0.0</version>
+				<inherited>false</inherited>
+				<executions>
+					<execution>
+						<id>extract-listings</id>
+						<phase>pre-site</phase>
+						<goals>
+							<goal>extract</goal>
+						</goals>
+						<configuration>
+							<sourceDirectory>${basedir}/../../application</sourceDirectory>
+							<destinationDirectory>${basedir}/en-GB/listing</destinationDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
 				<artifactId>maven-dependency-plugin</artifactId>
 				<executions>
 					<execution>
@@ -43,7 +62,6 @@
 					</execution>
 				</executions>
 			</plugin>
-
 
 			<plugin>
 				<groupId>org.jboss.maven.plugins</groupId>
