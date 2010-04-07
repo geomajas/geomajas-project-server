@@ -91,8 +91,6 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 						<bean name="sampleFeaturesMapToolbar" class="org.geomajas.configuration.client.ClientToolbarInfo">
 							<property name="tools">
 								<list>
-									<ref bean="ZoomIn" />
-									<ref bean="ZoomOut" />
 									<ref bean="ZoomToRectangleMode" />
 									<ref bean="PanMode" />
 									<ref bean="ToolbarSeparator" />

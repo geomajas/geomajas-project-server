@@ -23,6 +23,8 @@
 
 package mypackage.client.pages;
 
+import java.util.List;
+
 import org.geomajas.global.GeomajasConstant;
 import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.feature.LazyLoadCallback;
@@ -35,54 +37,56 @@ import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
 
-import java.util.List;
-
 /**
  * <p>
- * Example page using the FeatureListTable, and showing some test-buttons.
+ * This class represents a tab that displays a {@link FeatureGrid} widget together with 2 buttons to fill the grid.
  * </p>
  * 
  * @author Pieter De Graef
  */
-public class FeatureListGridPage extends AbstractTestPage {
+public class FeatureListGridPage extends AbstractTab {
 
 	private FeatureListGrid table;
-
-	// private boolean selectionFilter;
 
 	public FeatureListGridPage(MapWidget map) {
 		super("FeatureListGrid", map);
 
+		// Create a horizontal layout for the buttons:
 		HLayout buttonLayout = new HLayout();
 		buttonLayout.setMembersMargin(5);
 		buttonLayout.setHeight(25);
+
+		// Create a button to show the "structures" objects into a FeatureGrid:
 		IButton button1 = new IButton("Show structures");
 		button1.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
 				VectorLayer layer = (VectorLayer) getMap().getMapModel().getLayer("structuresLayer");
 				table.setLayer(layer);
-				layer.getFeatureStore().getFeatures(GeomajasConstant.FEATURE_INCLUDE_ATTRIBUTES,
-						new LazyLoadCallback() {
-							public void execute(List<Feature> response) {
-								for (Feature feature : response) {
-									table.addFeature(feature);
-								}
-							}
-						});
+				layer.getFeatureStore().getFeatures(GeomajasConstant.FEATURE_INCLUDE_ALL, new LazyLoadCallback() {
+
+					// Add all the features currently in the layer's FeatureStore to the grid:
+					public void execute(List<Feature> response) {
+						for (Feature feature : response) {
+							table.addFeature(feature);
+						}
+					}
+				});
 			}
 		});
 		button1.setWidth(120);
 		buttonLayout.addMember(button1);
 
+		// Create a button to show the "roads" objects into a FeatureGrid:
 		IButton button1a = new IButton("Show roads");
 		button1a.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
 				VectorLayer layer = (VectorLayer) getMap().getMapModel().getLayer("roadsLayer");
 				table.setLayer(layer);
-				layer.getFeatureStore().getFeatures(GeomajasConstant.FEATURE_INCLUDE_ATTRIBUTES,
-						new LazyLoadCallback() {
+				layer.getFeatureStore().getFeatures(GeomajasConstant.FEATURE_INCLUDE_ALL, new LazyLoadCallback() {
+
+					// Add all the features currently in the layer's FeatureStore to the grid:
 					public void execute(List<Feature> response) {
 						for (Feature feature : response) {
 							table.addFeature(feature);
@@ -93,72 +97,15 @@ public class FeatureListGridPage extends AbstractTestPage {
 		});
 		button1a.setWidth(110);
 		buttonLayout.addMember(button1a);
-
-		IButton button2 = new IButton("Clear Table");
-		button2.addClickHandler(new ClickHandler() {
-
-			public void onClick(ClickEvent event) {
-				table.empty();
-			}
-		});
-		button2.setWidth(100);
-		buttonLayout.addMember(button2);
-
-		// BUTTON3 : toggle ID in table
-		IButton button3 = new IButton("Toggle idInTable");
-		button3.addClickHandler(new ClickHandler() {
-
-			public void onClick(ClickEvent event) {
-				table.setIdInTable(!table.isIdInTable());
-			}
-		});
-		button3.setWidth(120);
-		buttonLayout.addMember(button3);
-
-		// BUTTON4 : toggle showAllAttributes
-		IButton button4 = new IButton("Toggle showAllAttributes");
-		button4.addClickHandler(new ClickHandler() {
-
-			public void onClick(ClickEvent event) {
-				table.setAllAttributesDisplayed(!table.isAllAttributesDisplayed());
-			}
-		});
-		button4.setWidth(175);
-		buttonLayout.addMember(button4);
-
-		// BUTTON5 : toggle double click
-		IButton button5 = new IButton("Toggle editing");
-		button5.addClickHandler(new ClickHandler() {
-
-			public void onClick(ClickEvent event) {
-				table.setEditingEnabled(!table.isEditingEnabled());
-			}
-		});
-		button5.setWidth(130);
-		buttonLayout.addMember(button5);
-
 		mainLayout.addMember(buttonLayout);
 
+		// Create the FeatureGrid that shows alpha-numerical attributes of features:
 		table = new FeatureListGrid(map.getMapModel());
 		table.setEditingEnabled(true);
 		mainLayout.addMember(table);
 	}
 
-	/**
-	 * To add buttons to your test page, use this method.
-	 * 
-	 * @param text button text
-	 * @param handler click handler
-	 */
-	protected void addButton(String text, ClickHandler handler) {
-		IButton button = new IButton(text);
-		button.addClickHandler(handler);
-		button.setWidth(180);
-		mainLayout.addMember(button);
-	}
-
 	public void initialize() {
-		table.setShowImageAttributeOnHover(true);
 	}
 
 	public FeatureListGrid getTable() {

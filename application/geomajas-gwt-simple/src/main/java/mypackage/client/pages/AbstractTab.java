@@ -29,17 +29,17 @@ import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.tab.Tab;
 
 /**
- * Test functioning of printing module.
+ * Basic implementation for a tab in the geomajas-simple project. The tabs are added bottom left.
  * 
  * @author Jan De Moerloose
  */
-public abstract class AbstractTestPage extends Tab {
+public abstract class AbstractTab extends Tab {
 
 	protected final MapWidget map;
 
 	protected VLayout mainLayout;
 
-	AbstractTestPage(String title, MapWidget map) {
+	AbstractTab(String title, MapWidget map) {
 		super(title);
 		this.map = map;
 		mainLayout = new VLayout();
