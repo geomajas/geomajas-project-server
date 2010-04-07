@@ -73,6 +73,9 @@ public class ExtractSourcePlugin extends AbstractMojo {
 		try {
 			File source = new File(sourceDirectory);
 			File destination = new File(destinationDirectory);
+
+			System.out.println("Extract source " + source.getAbsolutePath());
+			System.out.println("Extract dest   " + destination.getAbsolutePath());
 			scanDirectory(source, destination);
 		}
 		catch (Throwable ex) {
@@ -92,7 +95,13 @@ public class ExtractSourcePlugin extends AbstractMojo {
 	public void scanDirectory(File source, File destination) throws IOException {
 		for (File file : source.listFiles()) {
 			String name = file.getName();
-			if (!name.startsWith(".") && !name.endsWith("~") && !name.endsWith(".bak")) {
+			if (!name.startsWith(".") &&
+					!name.endsWith("~") && !name.endsWith(".bak") &&
+					!name.endsWith(".exe") &&
+					!name.endsWith(".jpg") && !name.endsWith(".jpeg") &&
+					!name.endsWith(".png") &&
+					!name.endsWith(".gif") && 
+					!name.endsWith(".tif") && !name.endsWith(".tiff")) {
 				if (file.isDirectory()) {
 					scanDirectory(file, destination);
 				} else {
@@ -120,6 +129,7 @@ public class ExtractSourcePlugin extends AbstractMojo {
 		while ((line = reader.readLine()) != null) {
 			if (null != declaration) {
 				if (line.contains(endAnnotation)) {
+					prepareLines(lines);
 					createFile(declaration, lines, destination);
 					declaration = null;
 					lines.clear();
@@ -132,38 +142,104 @@ public class ExtractSourcePlugin extends AbstractMojo {
 				}
 			}
 		}
+		
+		reader.close();
 
 		if (null != declaration) {
+			prepareLines(lines);
 			createFile(declaration, lines, destination);
 		}
 	}
 
+	/**
+	 * Prepare lines for inclusion in XML. Includes removing the indentation from the entire group, replacing tabs and
+	 * assuring no invalid characters are used.
+	 *
+	 * @param lines lines to prepare
+	 */
+	public void prepareLines(List<String> lines) {
+		if (lines.size() > 0) {
+			int indentation = Integer.MAX_VALUE;
+			for (int i = 0 ; i < lines.size() ; i++) {
+				String line = lines.get(i);
+				line = line.replace("\t", "    ");
+				indentation = Math.min(indentation, countIndent(line));
+				lines.set(i, line);
+			}
+			for (int i = 0 ; i < lines.size() ; i++) {
+				String line = lines.get(i);
+				line = line.substring(indentation);
+				line = line.replace("&", "&amp;");
+				line = line.replace("<", "&lt;");
+				line = line.replace(">", "&gt;");
+				lines.set(i, line);
+			}
+		}
+	}
+
+	/**
+	 * Count number of characters indentation for the line.
+	 *
+	 * @param line line to find indentation for
+	 * @return indentation in characters
+	 */
+	public int countIndent(String line) {
+		for (int i = 0 ; i < line.length() ; i++) {
+			if (!Character.isSpaceChar(line.charAt(i))) {
+				return i;
+			}
+		}
+		return line.length();
+	}
+
+	/**
+	 * Create file for inclusion in docbook document.
+	 * <p/>
+	 * The filename and optional caption are extracted from the declaration (the first comment line).
+	 * The file is created in the destination directory.
+	 *
+	 * @param declaration part of comment line after marker, contains filename and optional caption separated by comma
+	 * @param lines lines to store in file
+	 * @param destinationDir directory to put file
+	 * @throws IOException oops while creating file
+	 */
 	public void createFile(String declaration, List<String> lines, File destinationDir) throws IOException {
-		// @todo	
-	}
+		if(!destinationDir.isDirectory()) {
+			destinationDir.mkdirs();
+		}
+		String filename = declaration;
+		String caption = "";
+		int pos = declaration.indexOf(',');
+		if (pos > 0) {
+			filename = declaration.substring(0, pos).trim();
+			caption = declaration.substring(pos + 1).trim();
+		}
+		if (caption.endsWith("-->")) {
+			caption = caption.substring(0, caption.length() - 3).trim();
+		}
+		caption = caption.replace("&","&amp;");
+		caption = caption.replace("<","&lt;");
+		caption = caption.replace(">","&gt;");
 
-	public BufferedWriter createXiIncludeFile(String file, File destination) throws IOException {
-
-		File targetFile = new File(destination, file + ".xml");
-
+		File targetFile = new File(destinationDir, filename + ".xml");
 		BufferedWriter writer = new BufferedWriter(new FileWriter(targetFile));
-
-		// write
-		writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-		writer.newLine();
-		writer.write("<para>");
-		writer.newLine();
+		writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+		writer.write("<example>\n");
+		writer.write("<title>");
+		writer.write(caption);
+		writer.write("</title>\n");
 		writer.write("<programlisting><![CDATA[");
-		writer.newLine();
-		return writer;
-	}
-
-	public void closeFile(BufferedWriter writer) throws IOException {
-		writer.write("...]]>");
-		writer.newLine();
-		writer.write("</programlisting>");
-		writer.newLine();
-		writer.write("</para>");
+		boolean first = true;
+		for (String line : lines) {
+			if (!first) {
+				writer.newLine();
+			}
+			first = false;
+			writer.write(line);
+		}
+		writer.write("]]>\n");
+		writer.write("</programlisting>\n");
+		writer.write("</example>\n");
 		writer.flush();
 		writer.close();
 	}

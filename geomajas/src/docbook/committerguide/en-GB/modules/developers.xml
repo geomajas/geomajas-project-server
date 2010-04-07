@@ -112,24 +112,79 @@
     </section>
   </section>
 
-  <section><title>Documentation</title> <para>The documentation is split in
-  two parts. There is general documentation which is intended for the Geomajas
-  developers only, which is included as part of the project site and written
-  using wiki format. These are in the source at geomajas/src/main/site.
-  </para><para>There is also the user documentation which is written in
-  docbook format to allow both PDF and HTML output formats. These are in the
-  source at geomajas/src/main/docbook. </para><para>To generate the commands,
-  from the Geomajas source tree, do the following to build the docbook output.
-  </para><programlisting>cd geomajas/src/docbook
-mvn install</programlisting>To generate the project site, do (from the
-  Geomajas source tree again) <programlisting>cd geomajas
-mvn site</programlisting><para>For editing the docbook files, we recommend
-  using <ulink url="http://www.xmlmind.com/xmleditor/">XMLMind</ulink>. The
-  personal version is free and can (at the time of writing) be used for
-  editing open source documentation. </para><para>The docbook files are
-  currently formatted using XMLMind. When using another tool for editing,
-  please keep the current formatting to assure diffs remain usable.
-  </para></section>
+  <section>
+    <title>Documentation</title>
+
+    <para>The documentation is split in three books.</para>
+
+    <para><itemizedlist>
+        <listitem>
+          <para>developers guide : guide for developer who want to use
+          Geomajas in their application.</para>
+        </listitem>
+
+        <listitem>
+          <para>contributors guide : guide for people who want to contribute
+          to the project or want to know more about the functioning of the
+          project.</para>
+        </listitem>
+
+        <listitem>
+          <para>end user guide : documentation for end users of applications
+          built using Geomajas.</para>
+        </listitem>
+      </itemizedlist></para>
+
+    <para>These documents are all written in docbook format to allow both PDF
+    and HTML output formats. The sources can be found in the "documentation"
+    directory of the project.</para>
+
+    <!--
+    <para>To generate the commands, from the Geomajas source tree, do the
+    following to build the docbook output.</para>
+
+    <programlisting>cd geomajas/src/docbook
+mvn install</programlisting>
+
+     To generate the project site, do (from the Geomajas source tree again) 
+
+    <programlisting>cd geomajas
+mvn site</programlisting>
+-->
+
+    <para>For editing the docbook files, we recommend using <ulink
+    url="http://www.xmlmind.com/xmleditor/">XMLMind</ulink>. The personal
+    version is free and can (at the time of writing) be used for editing open
+    source documentation.</para>
+
+    <para>The docbook files are currently formatted using XMLMind. When using
+    another tool for editing, please keep the current formatting to assure
+    diffs remain usable.</para>
+
+    <para>The devuserguide includes a lot of examples which are excerpts from
+    the source of the example applications. This prevents copy-paste mistakes.
+    The build process for the documentation automatically updates these
+    excepts. It scans all files in the "application" directory. Excepts can be
+    annotated using annotations like</para>
+
+    <para><programlisting>&lt;!-- @extract-start AllowAllSecurity, Allow full access to everybody --&gt;
+&lt;bean name="security.securityInfo" class="org.geomajas.security.SecurityInfo"&gt;
+    &lt;property name="loopAllServices" value="false"/&gt;
+&lt;/bean&gt;
+&lt;!-- @extract-end --&gt;</programlisting></para>
+
+    <para>for XML or</para>
+
+    <para><programlisting>// @extract-start filename, title
+for (String line : lines) {
+    // do something
+}
+// @extract-end</programlisting></para>
+
+    <para>for java files. The start annotation includes the filename which
+    should be used (all files are placed in the "listing" directory) and
+    optionally a title for the example.</para>
+  </section>
 
   <section>
     <title>Versioning</title>
@@ -137,17 +192,17 @@ mvn site</programlisting><para>For editing the docbook files, we recommend
     <para>Version have a major.minor.patch structure.</para>
 
     <itemizedlist>
-      <listitem>major : indicates that this release has major advances over
-      previous releases. New major versions do not need to be backwards
-      compatible.</listitem>
+      <listitem>
+         major : indicates that this release has major advances over previous releases. New major versions do not need to be backwards compatible. 
+      </listitem>
 
-      <listitem>minor : indicates that there are important new features that
-      do not break compatibility with previous versions with the same major
-      number. Even minor versions are used for "stable" versions which will be
-      supported by Geosparc. Odd minor versions are used for work-in-progress
-      and stabilisation efforts.</listitem>
+      <listitem>
+         minor : indicates that there are important new features that do not break compatibility with previous versions with the same major number. Even minor versions are used for "stable" versions which will be supported by Geosparc. Odd minor versions are used for work-in-progress and stabilisation efforts. 
+      </listitem>
 
-      <listitem>patch : bugfixes and smaller improvements.</listitem>
+      <listitem>
+         patch : bugfixes and smaller improvements. 
+      </listitem>
     </itemizedlist>
   </section>
 
@@ -202,10 +257,18 @@ mvn site</programlisting><para>For editing the docbook files, we recommend
           <code>isDebugEnabled()</code>.</para>
         </listitem>
 
-        <listitem>all logging is done through slf4f, logger is created using
-        <programlisting>private final Logger log = LoggerFactory.getLogger( ContainingClassName.class );</programlisting></listitem>
+        <listitem>
+           all logging is done through slf4f, logger is created using 
 
-        <listitem>logging levels<table>
+          <programlisting>private final Logger log = LoggerFactory.getLogger( ContainingClassName.class );</programlisting>
+
+           
+        </listitem>
+
+        <listitem>
+           logging levels 
+
+          <table>
             <title>logging levels</title>
 
             <tgroup cols="3">
@@ -273,11 +336,14 @@ mvn site</programlisting><para>For editing the docbook files, we recommend
                 </row>
               </tbody>
             </tgroup>
-          </table></listitem>
+          </table>
 
-        <listitem>When an exception is caught and (another exception) thrown
-        you should not log the exception. You should however include the cause
-        in the newly thrown exception.</listitem>
+           
+        </listitem>
+
+        <listitem>
+           When an exception is caught and (another exception) thrown you should not log the exception. You should however include the cause in the newly thrown exception. 
+        </listitem>
       </itemizedlist>
     </section>
 
@@ -289,7 +355,10 @@ mvn site</programlisting><para>For editing the docbook files, we recommend
       used.</para>
 
       <itemizedlist>
-        <listitem>Advantages of unit testing: <itemizedlist>
+        <listitem>
+           Advantages of unit testing: 
+
+          <itemizedlist>
             <listitem>
               <para>Capturing a <ulink
               url="http://jira.geomajas.org/">JIRA</ulink> bug report in a
@@ -298,9 +367,15 @@ mvn site</programlisting><para>For editing the docbook files, we recommend
 
             <listitem>Allowing you to specify exactly the behaviour you want,
             before you start coding.</listitem>
-          </itemizedlist></listitem>
+          </itemizedlist>
 
-        <listitem>How unit testing should be done: <itemizedlist>
+           
+        </listitem>
+
+        <listitem>
+           How unit testing should be done: 
+
+          <itemizedlist>
             <listitem>If you are testing
             src/main/java/org/geomajas/ToBeTestedClass.java, create a class
             src/test/java/org/geomajas/ToBeTestedClassTest.java. Actual test
@@ -311,10 +386,14 @@ mvn site</programlisting><para>For editing the docbook files, we recommend
               <para>The test will automatically be run when running "<code>mvn
               install</code>".</para>
             </listitem>
-          </itemizedlist></listitem>
+          </itemizedlist>
 
-        <listitem>Integration tests should also be provided. These can also be
-        used for testing the user interface (thanks to selenium).</listitem>
+           
+        </listitem>
+
+        <listitem>
+           Integration tests should also be provided. These can also be used for testing the user interface (thanks to selenium). 
+        </listitem>
       </itemizedlist>
     </section>
 
@@ -369,32 +448,49 @@ mvn site</programlisting><para>For editing the docbook files, we recommend
     <para>This combines the artifacts from the following repositories :</para>
 
     <itemizedlist>
-      <listitem>maven central : http://repo1.maven.org/maven2/</listitem>
+      <listitem>
+         maven central : http://repo1.maven.org/maven2/ 
+      </listitem>
 
-      <listitem>java.net repo : http://download.java.net/maven/2/</listitem>
+      <listitem>
+         java.net repo : http://download.java.net/maven/2/ 
+      </listitem>
 
-      <listitem>jts4gwt :
-      http://jts4gwt.sourceforge.net/maven/repository/</listitem>
+      <listitem>
+         jts4gwt : http://jts4gwt.sourceforge.net/maven/repository/ 
+      </listitem>
 
-      <listitem>OSGeo : http://download.osgeo.org/webdav/geotools/</listitem>
+      <listitem>
+         OSGeo : http://download.osgeo.org/webdav/geotools/ 
+      </listitem>
 
-      <listitem>staticwiki : http://maven.progs.be/m2repo</listitem>
+      <listitem>
+         staticwiki : http://maven.progs.be/m2repo 
+      </listitem>
 
-      <listitem>refractions : http://lists.refractions.net/m2</listitem>
+      <listitem>
+         refractions : http://lists.refractions.net/m2 
+      </listitem>
 
-      <listitem>smartgwt : http://www.smartclient.com/maven2</listitem>
+      <listitem>
+         smartgwt : http://www.smartclient.com/maven2 
+      </listitem>
 
-      <listitem>spring milestones :
-      http://repository.springsource.com/maven/bundles/milestone</listitem>
+      <listitem>
+         spring milestones : http://repository.springsource.com/maven/bundles/milestone 
+      </listitem>
 
-      <listitem>spring releases :
-      http://repository.springsource.com/maven/bundles/release</listitem>
+      <listitem>
+         spring releases : http://repository.springsource.com/maven/bundles/release 
+      </listitem>
 
-      <listitem>selenium :
-      http://nexus.openqa.org/content/repositories/releases</listitem>
+      <listitem>
+         selenium : http://nexus.openqa.org/content/repositories/releases 
+      </listitem>
 
-      <listitem>selenium snapshots :
-      http://nexus.openqa.org/content/repositories/snapshots</listitem>
+      <listitem>
+         selenium snapshots : http://nexus.openqa.org/content/repositories/snapshots 
+      </listitem>
     </itemizedlist>
   </section>
 </chapter>

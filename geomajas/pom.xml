@@ -175,6 +175,25 @@
 				</dependencies>
 			</plugin>
 			<plugin>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-maven-plugin</artifactId>
+				<version>1.0.0</version>
+				<inherited>false</inherited>
+				<executions>
+					<execution>
+						<id>extract-listings</id>
+						<phase>pre-site</phase>
+						<goals>
+							<goal>extract</goal>
+						</goals>
+						<configuration>
+							<sourceDirectory>${basedir}/../application</sourceDirectory>
+							<destinationDirectory>${basedir}/src/docbook/devuserguide/en-GB/listing</destinationDirectory>
+						</configuration>
+					</execution>
+				</executions>					
+			</plugin>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-antrun-plugin</artifactId>
 				<inherited>false</inherited>
