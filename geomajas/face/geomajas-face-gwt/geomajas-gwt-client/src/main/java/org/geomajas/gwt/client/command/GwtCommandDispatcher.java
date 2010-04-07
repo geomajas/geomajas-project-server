@@ -147,8 +147,8 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 						}
 						SC.warn(message, null);
 					} else {
-						for (CommandCallback callback : deferred.getOnSuccessCallbacks()) {
-							if (!deferred.isCancelled()) {
+						if (!deferred.isCancelled()) {
+							for (CommandCallback callback : deferred.getOnSuccessCallbacks()) {
 								callback.execute(response);
 							}
 						}
