@@ -60,6 +60,7 @@ public class LocaleSelect extends Canvas implements ChangedHandler {
 		super();
 		locales = Geomajas.getSupportedLocales();
 		setHeight(28);
+		setWidth(200);
 
 		// Build a small form with a select item for locales:
 		DynamicForm form = new DynamicForm();

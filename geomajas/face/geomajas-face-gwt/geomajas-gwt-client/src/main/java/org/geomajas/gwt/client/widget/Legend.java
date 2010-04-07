@@ -85,6 +85,8 @@ public class Legend extends Canvas {
 	 */
 	public Legend(MapModel mapModel) {
 		super();
+		setWidth100();
+		setHeight100();
 		this.mapModel = mapModel;
 
 		widget = new GraphicsWidget(this, SC.generateID());

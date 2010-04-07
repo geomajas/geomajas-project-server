@@ -665,10 +665,6 @@ public class SvgGraphicsContext implements GraphicsContext {
 		}
 	}
 
-	private Composite getDefsGroup() {
-		return defsGroup;
-	}
-
 	private boolean isAttached() {
 		return parent != null && parent.isAttached();
 	}
