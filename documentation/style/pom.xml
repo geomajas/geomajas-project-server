@@ -13,7 +13,6 @@
 	<packaging>jdocbook-style</packaging>
 	<name>JDocBook styles for User Guide for Developers</name>
 
-
 	<build>
 		<plugins>
 			<plugin>

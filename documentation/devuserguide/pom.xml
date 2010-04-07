@@ -36,7 +36,7 @@
 				<executions>
 					<execution>
 						<id>extract-listings</id>
-						<phase>pre-site</phase>
+						<phase>process-resources</phase>
 						<goals>
 							<goal>extract</goal>
 						</goals>

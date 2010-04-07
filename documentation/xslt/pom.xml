@@ -13,7 +13,6 @@
 	<packaging>jar</packaging>
 	<name>XSLT for User Guide for Developers</name>
 
-
 	<dependencies>
 		<dependency>
 			<groupId>net.sf.docbook</groupId>
