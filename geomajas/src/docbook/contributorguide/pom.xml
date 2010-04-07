@@ -8,9 +8,9 @@
 		<version>1.6.0-SNAPSHOT</version>
 	</parent>
 	<groupId>org.geomajas.documentation</groupId>
-	<artifactId>docbook-commiterguide</artifactId>
+	<artifactId>docbook-contributorguide</artifactId>
 	<packaging>jdocbook</packaging>
-	<name>Commiter Guide (${translation})</name>
+	<name>Contributor Guide (${translation})</name>
 
 	<dependencies>
 		<dependency>
@@ -71,7 +71,7 @@
 
 							<!--stylesheetResource>classpath:/standard/fopdf.xsl</stylesheetResource-->
 
-							<finalName>Committer_Guide.pdf</finalName>
+							<finalName>Contributor_Guide.pdf</finalName>
 						</format>
 
 						<format>

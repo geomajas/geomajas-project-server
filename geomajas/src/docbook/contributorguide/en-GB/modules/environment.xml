@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ This file is part of Geomajas, a component framework for building
+  ~ rich Internet applications (RIA) with sophisticated capabilities for the
+  ~ display, analysis and management of geographic information.
+  ~ It is a building block that allows developers to add maps
+  ~ and other geographic data capabilities to their web applications.
+  ~
+  ~ Copyright 2008-2010 Geosparc, http://www.geosparc.com, Belgium
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU Affero General Public License as
+  ~ published by the Free Software Foundation, either version 3 of the
+  ~ License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU Affero General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU Affero General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+<chapter id="part-installation">
+  <title>Setting up your development environment</title>
+
+  <section>
+    <title>Prerequisites</title>
+
+    <section>
+      <title>Maven</title>
+
+      <para>Geomajas is uses the Apache Maven project management tool for its
+      build and documentation process. Maven can be downloaded from the Apache
+      project site: <ulink
+      url="http://maven.apache.org">http://maven.apache.org </ulink>
+      Installing Maven is quite simple: just unzip the distribution file in
+      the directory of your choice and make some environment changes so you
+      can access the executable. More information for your specific OS can be
+      found at the bottom of <ulink
+      url="http://maven.apache.org/download.html">http://maven.apache.org/download.html
+      </ulink></para>
+    </section>
+
+    <section>
+      <title>Subversion</title>
+
+      <para>Geomajas uses subversion as its version control system. Accessing
+      subversion requires you to at least install a compatible client. There
+      are numerous client solutions available, some as standalone clients and
+      some as IDE plugins:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para>Tortoise SVN: an excellent SVN client for Windows (<ulink
+          url="http://tortoisesvn.tigris.org/">http://tortoisesvn.tigris.org/</ulink>)</para>
+        </listitem>
+
+        <listitem>
+          <para>Subversive: Eclipse plugin, can be found on the following
+          Eclipse update site ( <ulink
+          url="http://download.eclipse.org/releases/galileo">
+          http://download.eclipse.org/releases/galileo </ulink> &gt;
+          Collaboration Tools)</para>
+        </listitem>
+
+        <listitem>
+          <para>Subclipse: Eclipse plugin, can be found on the following
+          Eclipse update site (<ulink
+          url="http://subclipse.tigris.org/update_1.6.x">
+          http://subclipse.tigris.org/update_1.6.x</ulink>)</para>
+        </listitem>
+
+        <listitem>
+          <para>IDEA SVN plugin (part of the default IDEA installation)</para>
+        </listitem>
+      </itemizedlist>
+
+      <para>The Geomajas repository can be found at<ulink
+      url="https://svn.geomajas.org/majas">https://svn.geomajas.org/majas</ulink>.
+      The standard SVN repository layout is followed : trunk, tags and
+      branches. For the latest and greatest code (including GWT face) you
+      should check out the trunk:<ulink
+      url="https://svn.geomajas.org/majas/trunk">https://svn.geomajas.org/majas/trunk</ulink>.</para>
+    </section>
+
+    <section>
+      <title>GWT</title>
+
+      <para>The GWT (Google Web Toolkit) software development kit (SDK) should
+      be downloaded from the Google site:<ulink
+      url="http://code.google.com/webtoolkit/download.html">
+      http://code.google.com/webtoolkit/download.html</ulink>. After
+      downloading you should unzip it in a directory of choice.</para>
+    </section>
+
+    <section>
+      <title>Build procedure</title>
+
+      <para>Start by recursively checking out the trunk directory to a new
+      local folder with a name of your choice (e.g. geomajas-trunk). You will
+      see that the source code layout follows the recommended hierarchical
+      layout structure for multimodule maven projects:</para>
+
+      <figure>
+        <title>Hierarchical project layout</title>
+
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="../images/project-layout.png" width="40%" />
+          </imageobject>
+        </mediaobject>
+      </figure>
+
+      <para>Build the code by running the install command on the pom in the
+      top directory:</para>
+
+      <para><prompt>geomajas-trunk&gt;</prompt> <command>mvn install
+      </command></para>
+
+      <figure>
+        <title>Command prompt after running 'mvn install'</title>
+
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="../images/mvn-install.png" width="80%" />
+          </imageobject>
+        </mediaobject>
+      </figure>
+
+      <para>The install procedure will build all code, run all unit tests and
+      install the artifacts in the repository. Integration tests based on
+      Selenium will also be run.</para>
+    </section>
+  </section>
+
+  <section>
+    <title>Eclipse</title>
+
+    <para>Eclipse project configurations can be generated using the maven
+    Eclipse plugin. This requires you to run the following command:</para>
+
+    <para><prompt>geomajas-trunk&gt;</prompt> <command>mvn eclipse:eclipse
+    </command></para>
+
+    <para>After the command has completed, Eclipse project definitions will
+    have been generated for all subprojects (except the pom projects). These
+    projects can now be imported into Eclipse.</para>
+
+    <para>If you will be working with the GWT face, you may want to make use
+    of the GWT Eclipse plugin of Google. Detailed instructions can be found on
+    the following site:<ulink
+    url="http://code.google.com/eclipse/docs/download.html">
+    http://code.google.com/eclipse/docs/download.html</ulink>. We have
+    experienced a problem with the project dependencies in Eclipse, which can
+    be solved by running the gwt:eclipse goal of the GWT maven plugin. This
+    goal should be run the GWT project directory: geomajas-gwt-simple or
+    geomajas-gwt-example (currently in development).</para>
+
+    <para><prompt>geomajas-gwt-simple&gt;</prompt> <command>mvn gwt:eclipse
+    </command></para>
+
+    <para>If you run this goal it will install the dependent libraries in the
+    lib folder of the GWT war layout. Unfortunately, however, GWT does not
+    allow Eclipse to automatically deploy in this folder.</para>
+
+    <para>After importing and building the GWT projects, make sure you convert
+    them to GWT projects in the project properties dialog:</para>
+
+    <figure>
+      <title>Eclipse project properties dialog</title>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="../images/gwt-eclipse-properties.png"
+                     width="60%" />
+        </imageobject>
+      </mediaobject>
+    </figure>
+
+    <para>Check the "Use Google Web Toolkit" checkbox. The GWT SDK can be
+    configured by clicking on the " <code>Configure SDKs..."</code> link.
+    After configuration, you should now be able to run the project as a GWT
+    Web application.</para>
+  </section>
+
+  <section>
+    <title>IDEA</title>
+
+    <para>The setup in IntelliJ IDEA is quite straightforward and does not
+    require running a separate maven command. Make sure you use the maven
+    import wizard to open your project, it can be activated from the File
+    menu:<code>File-&gt;New Project</code>and select<code>"Import project from
+    external model"</code>. The recommended settings for the import dialog are
+    shown below:</para>
+
+    <para></para>
+
+    <figure>
+      <title>Import settings for Geomajas project (replace root directory with
+      your own)</title>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="../images/idea-import.png" width="80%" />
+        </imageobject>
+      </mediaobject>
+    </figure>
+
+    <para>Developing with the GWT face will require you to install the latest
+    version of IntelliJ IDEA (9.0) as this is the only version that supports
+    GWT 2.0. The IDE will recognize the GWT projects and assign the correct
+    facet but as always you will have to make your own run configuration
+    (which is fortunately trivial).</para>
+
+    <para>Some additional settings have to be done in the porject structure
+    dialog. Apart from specifying the GWT installation directory, there is a
+    specific project setting which has to be done manually, which is setting
+    the target Web facet to "Web". The project structure for the simple GWT
+    project should look as follows:</para>
+
+    <figure>
+      <title>Project structure for simple GWT project</title>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="../images/idea-gwt.png" width="80%" />
+        </imageobject>
+      </mediaobject>
+    </figure>
+
+    <para>After this, you should be able to run the project.</para>
+  </section>
+
+  <section>
+    <title>Maven</title>
+
+    <para>If you are working with another IDE or not using an IDE, it is
+    always possible to run the example projects directly from maven. For the
+    Dojo face (geomajas-dojo-simple and geomajas-dojo-example-war) the maven
+    command is as follows:</para>
+
+    <para><prompt>geomajas-dojo-simple&gt;</prompt> <command>mvn jetty:run
+    </command></para>
+
+    <para>This command will start up the Jetty servlet engine, after which you
+    can connect to the process for debugging.</para>
+
+    <para>In a GWT project, you should run the following goal:</para>
+
+    <para><prompt>geomajas-gwt-simple&gt;</prompt> <command>mvn gwt:debug
+    </command></para>
+
+    <para>This will start up GWT development mode, debugging should also be
+    possible here.</para>
+  </section>
+</chapter>
