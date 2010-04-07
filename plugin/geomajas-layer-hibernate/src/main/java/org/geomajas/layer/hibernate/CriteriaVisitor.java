@@ -328,6 +328,9 @@ public class CriteriaVisitor implements FilterVisitor {
 	 *            "Criteria".
 	 */
 	private String parsePropertyName(String propertyName, Object userData) {
+		// try to assure the correct separator is used
+		propertyName = propertyName.replace(HibernateLayerUtil.XPATH_SEPARATOR, HibernateLayerUtil.SEPARATOR);
+
 		// split the path (separator is defined in the HibernateLayerUtil)
 		String[] props = propertyName.split(HibernateLayerUtil.SEPARATOR_REGEXP);
 		String finalName = null;

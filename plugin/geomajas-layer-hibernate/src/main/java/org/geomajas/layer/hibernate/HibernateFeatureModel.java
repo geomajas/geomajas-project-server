@@ -228,7 +228,8 @@ public class HibernateFeatureModel extends HibernateLayerUtil implements Feature
 	@SuppressWarnings("unchecked")
 	@Deprecated
 	private NameValuePair getPropertyNameValuePair(Object feature, String name) {
-		// return getPropertyNameValuePairRecursive(feature, name);
+		// try to assure the correct separator is used
+		name = name.replace(HibernateLayerUtil.XPATH_SEPARATOR, HibernateLayerUtil.SEPARATOR);
 
 		String[] props = name.split(SEPARATOR_REGEXP);
 		Object tempFeature = feature;
@@ -280,6 +281,9 @@ public class HibernateFeatureModel extends HibernateLayerUtil implements Feature
 		if (feature == null) {
 			return null;
 		}
+		// try to assure the correct separator is used
+		name = name.replace(HibernateLayerUtil.XPATH_SEPARATOR, HibernateLayerUtil.SEPARATOR);
+
 		// Split up properties: the first and the rest.
 		String[] properties = name.split(SEPARATOR_REGEXP, 2);
 		Object tempFeature = feature;
@@ -353,6 +357,9 @@ public class HibernateFeatureModel extends HibernateLayerUtil implements Feature
 		if (parent == null) {
 			return;
 		}
+
+		// try to assure the correct separator is used
+		propertyName = propertyName.replace(HibernateLayerUtil.XPATH_SEPARATOR, HibernateLayerUtil.SEPARATOR);
 
 		// Split up properties: the first and the rest.
 		String[] properties = propertyName.split(SEPARATOR_REGEXP, 2);
@@ -618,6 +625,9 @@ public class HibernateFeatureModel extends HibernateLayerUtil implements Feature
 	 *            The attribute info to start searching in. If null, the attributeInfoMap is used (= top level).
 	 */
 	private AttributeInfo getRecursiveAttributeInfo(String name, AttributeInfo attributeInfo) {
+		// try to assure the correct separator is used
+		name = name.replace(HibernateLayerUtil.XPATH_SEPARATOR, HibernateLayerUtil.SEPARATOR);				
+
 		int position = name.indexOf(SEPARATOR);
 		String first = name;
 		if (position > 0) {
