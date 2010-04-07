@@ -13,7 +13,7 @@
 		<module>xslt</module>
 		<module>devuserguide</module>
 		<module>enduserguide</module>
-		<module>committerguide</module>
+		<module>contributorguide</module>
 	</modules>
 
 </project>
