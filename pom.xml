@@ -22,7 +22,8 @@
 
 	<name>Grouping of all Geomajas modules</name>
 	<modules>
-		<module>geomajas</module>
+		<module>backend</module>
+		<module>face</module>
 		<module>plugin</module>
 		<module>application</module>
 		<module>test</module>
@@ -33,6 +34,15 @@
 			<id>full-build</id>
 			<modules>
 				<module>build-tools</module>
+				<module>documentation</module>
+			</modules>
+		</profile>
+		<profile>
+			<id>hudson</id>
+			<activation>
+				<property>hudson</property>
+			</activation>
+			<modules>
 				<module>documentation</module>
 			</modules>
 		</profile>

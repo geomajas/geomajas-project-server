@@ -79,7 +79,7 @@ public class GeomajasSimple implements EntryPoint {
 	}
 
 	public void onModuleLoad() {
-		I18nProvider.setLookUp(GWT.<ConstantsWithLookup> create(Simple.class));
+		I18nProvider.setLookUp(GWT.<ConstantsWithLookup>create(Simple.class));
 
 		VLayout mainLayout = new VLayout();
 		mainLayout.setWidth100();
