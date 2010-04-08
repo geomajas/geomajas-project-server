@@ -13,10 +13,7 @@
 
 		<menu name="geomajas">
 			<item name="Introduction" href="index.html"/>
-			<item name="Documentation" collapse="false">
-				<item name="User Guides" href="userguide.html"/>
-				<item name="Migrating" href="migrating.html"/>
-			</item>
+			<item name="Documentation" href="userguide.html"/>
 		</menu>
 
 		<menu ref="modules"/>

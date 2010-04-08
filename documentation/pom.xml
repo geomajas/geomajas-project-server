@@ -155,6 +155,26 @@
 							<goal>run</goal>
 						</goals>
 					</execution>
+					<execution>
+						<id>copy-docbook</id>
+						<phase>pre-site</phase>
+						<configuration>
+							<tasks>
+								<copy todir="${basedir}/target/site/devuserguide">
+									<fileset dir="${basedir}/devuserguide/target/docbook"/>
+								</copy>
+								<copy todir="${basedir}/target/site/enduserguide">
+									<fileset dir="${basedir}/enduserguide/target/docbook"/>
+								</copy>
+								<copy todir="${basedir}/target/site/contributorguide">
+									<fileset dir="${basedir}/contributorguide/target/docbook"/>
+								</copy>
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
 				</executions>
 			</plugin>			
 		</plugins>
