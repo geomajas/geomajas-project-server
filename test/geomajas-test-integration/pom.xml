@@ -7,6 +7,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.test</groupId>
 	<artifactId>geomajas-test-integration</artifactId>
+	<version>1.6.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>Geomajas integration tests</name>
 

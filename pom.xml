@@ -40,7 +40,9 @@
 		<profile>
 			<id>hudson</id>
 			<activation>
-				<property>hudson</property>
+				<property>
+					<name>hudson</name>
+				</property>
 			</activation>
 			<modules>
 				<module>documentation</module>

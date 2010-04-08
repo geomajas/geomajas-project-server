@@ -7,6 +7,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas</groupId>
 	<artifactId>geomajas-face-dojo</artifactId>
+	<version>1.5.5-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Geomajas dojo face</name>
 
