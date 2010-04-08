@@ -40,6 +40,9 @@ dojo.declare("FeatureEditor", null, {
 	 */
 	constructor : function (mapModel) {
 		this.mapModel = mapModel;
+		this.editMapLayerMode = true; /* editing a layer of the map, not used for drawing-only */
+		this.layerType = null;
+		
 		this.featureTransaction = null;
 		this.factory = new GeometryFactory(
 			mapModel.getSRID(),
@@ -51,32 +54,52 @@ dojo.declare("FeatureEditor", null, {
 	 */
 	startEditing : function (oldFeatures, newFeatures) {
 		if (oldFeatures == null || oldFeatures.length == 0) { // NEW FEATURE
-			var layer = this.mapModel.getSelectedLayer ();
-			if (layer == null) {
-				log.error ("FeatureEditor:startEditing => geen laag geselecteerd! (knop zou disabled moeten zijn)");
-				return null;
+			var layerType = this.layerType;
+			var layer = null;
+			
+			if (this.editMapLayerMode) {
+				layer = this.mapModel.getSelectedLayer ();
+				if (layer == null) {
+					log.error ("FeatureEditor:startEditing => geen laag geselecteerd! (knop zou disabled moeten zijn)");
+					return null;
+				}
+				layerType = layer.getLayerType(); 
 			}
+			else { /* not editing a layer of the map, used for drawing-only */
+				/* Create dummy vector layer (only layerType attribute is used) */
+				layer =  new VectorLayer("DummyDrawMap"/*mapId*/, "DummyDrawLayer"/*serverLayerId*/, null/*mapModel*/);
+				layer.setLayerType (layerType);
+			}
+			
 			newFeatures = [new Feature ()];
 			newFeatures[0].setLayer(layer);
-			if (layer.getLayerType() == geomajas.LayerTypes.POINT) {
+			if (layerType== geomajas.LayerTypes.POINT) {
 				newFeatures[0].setGeometry (this.factory.createPoint(null));
-			} else if (layer.getLayerType() == geomajas.LayerTypes.LINESTRING) {
+			} else if (layerType == geomajas.LayerTypes.LINESTRING) {
 				newFeatures[0].setGeometry (this.factory.createLineString(null));
-			} else if (layer.getLayerType() == geomajas.LayerTypes.MULTILINESTRING) {
+			} else if (layerType == geomajas.LayerTypes.MULTILINESTRING) {
 				var lineString = this.factory.createLineString(null);
 				newFeatures[0].setGeometry (this.factory.createMultiLineString([lineString]));
-			} else if (layer.getLayerType() == geomajas.LayerTypes.POLYGON) {
+			} else if (layerType == geomajas.LayerTypes.POLYGON) {
 				var ring = this.factory.createLinearRing(null);
 				newFeatures[0].setGeometry (this.factory.createPolygon(ring, null));
-			} else if (layer.getLayerType() == geomajas.LayerTypes.MULTIPOLYGON) {
+			} else if (layerType == geomajas.LayerTypes.MULTIPOLYGON) {
 				var ring = this.factory.createLinearRing(null);
 				var poly = this.factory.createPolygon(ring, null);
 				newFeatures[0].setGeometry (this.factory.createMultiPolygon([poly]));
 			}
 			this.featureTransaction = new FeatureTransaction(null, newFeatures, layer, this.mapModel.getCrs());
 		} else if (newFeatures == null || newFeatures.length == 0) { // DELETE (oldFeatures will not be empty, because that would get us in the first 'if')
+			if (!this.editMapLayerMode) {
+				log.error ("FeatureEditor:startEditing => a delete is not possible when not in editMapLayerMode! (action should be disabled)");
+				return null;
+			}
 			this.featureTransaction = new FeatureTransaction(oldFeatures, null, oldFeatures[0].getLayer(), this.mapModel.getCrs());
 		} else { // EDIT EXISTING
+			if (!this.editMapLayerMode) {
+				log.error ("FeatureEditor:startEditing => edit an existing feature is not possible when not in editMapLayerMode! (action should be disabled)");
+				return null;
+			}
 			this.featureTransaction = new FeatureTransaction(oldFeatures, newFeatures, oldFeatures[0].getLayer(), this.mapModel.getCrs());
 		}
 		this.onFeatureTransactionChanged();
@@ -125,6 +148,20 @@ dojo.declare("FeatureEditor", null, {
 	 *  event for feature transaction changes.
 	 */
 	onFeatureTransactionChanged : function () {
+	},
+	
+	/**
+	 *  @param editMapLayerMode: if true set mode to editing a layer of the map, if false used for drawing-only
+	 *  @param geomType: desired geometry type if used for drawing-only
+	 */	
+	setEditMapLayerMode : function (editMapLayerMode, geomType) {
+		this.editMapLayerMode = editMapLayerMode;
+		if (!editMapLayerMode) {
+			this.layerType = geomType;
+		}
+		else {
+			this.layerType = null;
+		}
 	}
 
 });

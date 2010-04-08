@@ -374,6 +374,15 @@ dojo.declare("MultiLineStringEditController", MouseListener, {
 		this._menu.getChildren()[5].setDisabled (true);
 		this._menu.getChildren()[7].setDisabled (true);
 		
+		if (this.parent.isDrawOnlyMode()) {
+			this._menu.getChildren()[1].setDisabled(true); /* Save Feature action */
+			this._menu.getChildren()[10].setDisabled(true); /* Edit attributes */
+		}
+		else {
+			this._menu.getChildren()[1].setDisabled(false);  /* Save Feature action */
+			this._menu.getChildren()[10].setDisabled(false); /* Edit attributes */
+		}
+		
 		if (trans.getCommandStack().count > 0) {
 			this._menu.getChildren()[0].setDisabled(false);
 		}

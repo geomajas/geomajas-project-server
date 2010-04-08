@@ -303,7 +303,7 @@ dojo.declare("LineStringEditController", MouseListener, {
 		
 		var pMenu = dijit.byId (this.menuId);
         if (pMenu != null){ return pMenu; } 
-		
+
 		pMenu = new Menu({id:this.menuId});
 			
 		var action0 = new UndoEditingAction(this.menuId+".undo", this.mapWidget, this.parent);
@@ -371,6 +371,14 @@ dojo.declare("LineStringEditController", MouseListener, {
 		
 		if (trans.getCommandStack().count > 0) {
 			this._menu.getChildren()[0].setDisabled(false);
+		}
+		if (this.parent.isDrawOnlyMode()) {
+			this._menu.getChildren()[1].setDisabled(true); /* Save Feature action */
+			this._menu.getChildren()[10].setDisabled(true); /* Edit attributes */
+		}
+		else {
+			this._menu.getChildren()[1].setDisabled(false);  /* Save Feature action */
+			this._menu.getChildren()[10].setDisabled(false); /* Edit attributes */
 		}
 		
 		if (this.parent.isDragging()) { // DRAG-MODE

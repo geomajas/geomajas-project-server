@@ -48,7 +48,12 @@ dojo.declare("CancelEditingAction", Action, {
 		this.id = id;
 
 		/** The action can be displayed as text only. */
-		this.text = "Cancel Editing";
+		if (editController && editController.isDrawOnlyMode()) {
+			this.text = "Cancel Drawing";
+		} 
+		else {
+			this.text = "Cancel Editing";
+		}
 	},
 
 	/**

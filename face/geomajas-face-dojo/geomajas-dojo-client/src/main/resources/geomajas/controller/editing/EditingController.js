@@ -54,11 +54,15 @@ dojo.declare("EditingController", MouseListener, {
 	 * @constructor
 	 * @extends MouseListener
 	 * @param mapWidget The MapWidget object we editing on.
+	 * 		isDrawOnly (optional): if true the controller is only used for drawing (default: false)
 	 */
-	constructor : function (mapWidget, useSnapHelp, allowHoles) {
+	constructor : function (mapWidget, useSnapHelp, allowHoles, isDrawOnly) {
 		/** Can be either insert-mode or drag-mode. */
 		this.mode = this.statics.DRAG_MODE;
-		
+		this.isDrawOnly = false;
+		if (isDrawOnly != null) {
+			this.isDrawOnly = isDrawOnly;
+		}
 		/** Reference to the MapWidget object. */
 		this.mapWidget = mapWidget;
 		
@@ -70,8 +74,14 @@ dojo.declare("EditingController", MouseListener, {
 		
 		/** @private Used in the DOM. */
 		this.menuId = "editingMenu";
-		this._menu = this._getOrCreateMenu();	
 		
+		if (!this.isDrawOnlyMode()) {
+			this._menu = this._getOrCreateMenu();	
+		}
+		else {
+			this._menu = null;
+		}
+			
 		/** @private */
 		this.transform = new WorldViewTransformation(this.mapWidget.getMapView());
 			
@@ -101,7 +111,9 @@ dojo.declare("EditingController", MouseListener, {
 	 */
 	onActivate : function () {
 		log.info(this.getName() + ".onActivate()");
-		this._menu.bindDomNode(this.mapWidget.id);
+		if (this._menu) {
+			this._menu.bindDomNode(this.mapWidget.id);
+		}
 	},
 
 	/**
@@ -109,7 +121,9 @@ dojo.declare("EditingController", MouseListener, {
 	 */
 	onDeactivate : function () {
 		log.info(this.getName() + ".onDeactivate()");
-		this._menu.unBindDomNode(this.mapWidget.id);
+		if (this._menu) {
+			this._menu.unBindDomNode(this.mapWidget.id);
+		}
 		if (this.snapController != null) {
 			this.snapController.removeGraphicalContent();
 		}
@@ -200,7 +214,7 @@ dojo.declare("EditingController", MouseListener, {
 		} else {
 			
 			if (event.getButton() != event.statics.RIGHT_MOUSE_BUTTON) {
-				if (this._menu.isShowingNow) {
+				if (this._menu && this._menu.isShowingNow) {
 					dijit.popup.close(this._menu);
 				}
 			}
@@ -234,13 +248,22 @@ dojo.declare("EditingController", MouseListener, {
 	},
 
 	contextMenu : function (/*HtmlMouseEvent*/event) {
-		this._configureMenu(event);		
+		if (!this.isDrawOnlyMode()) {
+			this._configureMenu(event);
+		}
 		if(this.controller) {
 			this.controller.contextMenu(event);
 		}
 		 // Override the stop-propagation! We need a right mouse menu in this controller.
 	},
 
+
+	/*
+	 * Returns true if controller is only used for drawing 
+	 */
+	isDrawOnlyMode : function(isDrawOnly) {
+		return (this.isDrawOnly);
+	},
 	/**
 	 * While in insertmode, dragging lines are drawn that follow the cursor.
 	 * This function removes threm from the map.
@@ -284,6 +307,10 @@ dojo.declare("EditingController", MouseListener, {
 		if (curCon == null || (!(curCon instanceof  EditingController))) 
 		{
 			log.info("--- current mapcontroller is not an editingcontroller - aborting");
+			return;
+		}
+		if (curCon != this) {
+			log.info("--- current mapcontroller is not this editingcontroller - aborting");
 			return;
 		}
 		if (this.controller != null) {
@@ -387,6 +414,9 @@ dojo.declare("EditingController", MouseListener, {
 	_configureMenu : function (event) {
 		log.info(this.getName() + "._configureMenu(event) for targetId: " + event.getTargetId());
 
+		if (this._menu == null) {
+			return;
+		}
 		//NOTE: pass the HtmlMouseEvent we get here to each of the menuitems.
 		dojo.forEach(this._menu.getChildren(), function(child){ if(child.setOriginalEvent) {child.setOriginalEvent(event);} });
 		

@@ -269,6 +269,14 @@ dojo.declare("PointEditController", MouseListener, {
 		
 		//disable these unless specified otherwise later on
 		this._menu.getChildren()[0].setDisabled (true);
+		if (this.parent.isDrawOnlyMode()) {
+			this._menu.getChildren()[1].setDisabled(true); /* Save Feature action */
+			this._menu.getChildren()[4].setDisabled(true); /* Edit attributes */
+		}
+		else {
+			this._menu.getChildren()[1].setDisabled(false); /* Save Feature action */
+			this._menu.getChildren()[4].setDisabled(false);	/* Edit attributes */
+		}		
 		
 		if (trans.getCommandStack().count > 0) {
 			this._menu.getChildren()[0].setDisabled(false);
