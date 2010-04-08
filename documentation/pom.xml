@@ -110,14 +110,6 @@
 		</developer>
 	</developers>
 	
-	<modules>
-		<module>style</module>
-		<module>xslt</module>
-		<module>devuserguide</module>
-		<module>enduserguide</module>
-		<module>contributorguide</module>
-	</modules>
-
 	<repositories>
 		<repository>
 			<id>Geomajas</id>
@@ -180,6 +172,25 @@
 			</plugin>
 		</plugins>
 	</reporting>
+
+	<profiles>
+		<profile>
+			<id>site</id>
+		</profile>
+		<profile>
+			<id>build</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<modules>
+				<module>style</module>
+				<module>xslt</module>
+				<module>devuserguide</module>
+				<module>enduserguide</module>
+				<module>contributorguide</module>
+			</modules>
+		</profile>
+	</profiles>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
