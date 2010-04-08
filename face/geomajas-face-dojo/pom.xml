@@ -33,4 +33,8 @@
 		</profile>
 	</profiles>
 
+	<properties>
+		<geomajas-backend-version>1.6.0-SNAPSHOT</geomajas-backend-version>
+	</properties>
+	
 </project>

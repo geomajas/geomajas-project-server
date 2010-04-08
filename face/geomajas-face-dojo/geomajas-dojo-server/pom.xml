@@ -1,8 +1,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
 		<groupId>org.geomajas</groupId>
-		<artifactId>geomajas</artifactId>
-		<version>1.6.0-SNAPSHOT</version>
+		<artifactId>geomajas-face-dojo</artifactId>
+		<version>1.5.5-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas</groupId>
@@ -14,15 +14,17 @@
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-api</artifactId>
+			<version>${geomajas-backend-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-command</artifactId>
-		</dependency>		
-
+			<version>${geomajas-backend-version}</version>
+		</dependency>
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-common-servlet</artifactId>
+			<version>${geomajas-backend-version}</version>
 		</dependency>
 
         <dependency>

@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas</groupId>
 	<artifactId>geomajas</artifactId>
-	<version>1.6.0-SNAPSHOT</version>
+	<version>${geomajas-backend-version}</version>
 	<packaging>pom</packaging>
 	<name>Geomajas framework</name>
 	<description>
@@ -230,86 +230,56 @@
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-api</artifactId>
-				<version>${project.version}</version>
+				<version>${geomajas-backend-version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-api</artifactId>
 				<classifier>sources</classifier>
-				<version>${project.version}</version>
+				<version>${geomajas-backend-version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-api-experimental</artifactId>
-				<version>${project.version}</version>
+				<version>${geomajas-backend-version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-api-experimental</artifactId>
 				<classifier>sources</classifier>
-				<version>${project.version}</version>
+				<version>${geomajas-backend-version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-impl</artifactId>
-				<version>${project.version}</version>
+				<version>${geomajas-backend-version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-impl</artifactId>
 				<classifier>sources</classifier>
-				<version>${project.version}</version>
+				<version>${geomajas-backend-version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-common-servlet</artifactId>
-				<version>${project.version}</version>
+				<version>${geomajas-backend-version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-testdata</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-dojo-server</artifactId>
-				<version>${project.version}</version>
+				<version>${geomajas-backend-version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-command</artifactId>
-				<version>${project.version}</version>
+				<version>${geomajas-backend-version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-command</artifactId>
 				<classifier>sources</classifier>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-layer-hibernate</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-layer-geotools</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-layer-google</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-layer-openstreetmaps</artifactId>
-				<version>${project.version}</version>
-			</dependency>
-			<dependency>
-				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-layer-wms</artifactId>
-				<version>${project.version}</version>
+				<version>${geomajas-backend-version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.dojo</groupId>
@@ -582,6 +552,7 @@
 	</dependencyManagement>
 
 	<properties>
+		<geomajas-backend-version>1.6.0-SNAPSHOT</geomajas-backend-version>
 		<geotools-version>2.5.8</geotools-version>
 		<gwt-version>2.0.0</gwt-version>
 		<smartgwt-version>2.1</smartgwt-version>

@@ -25,44 +25,44 @@
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-gwt-client</artifactId>
-			<version>${project.version}</version>
+			<version>${geomajas-face-gwt-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-layer-geotools</artifactId>
-			<version>${project.version}</version>
+			<version>${geomajas-layer-geotools-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-layer-openstreetmaps</artifactId>
-			<version>${project.version}</version>
+			<version>${geomajas-layer-openstreetmaps-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-layer-wms</artifactId>
-			<version>${project.version}</version>
+			<version>${geomajas-layer-wms-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-layer-hibernate</artifactId>
-			<version>${project.version}</version>
+			<version>${geomajas-layer-hibernate-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-layer-google</artifactId>
-			<version>${project.version}</version>
+			<version>${geomajas-layer-google-version}</version>
 		</dependency>
 
 		<!-- Extra Geomajas plugins -->
         <dependency>
             <groupId>org.geomajas.plugin</groupId>
             <artifactId>geomajas-plugin-springsecurity</artifactId>
-            <version>${project.version}</version>
+            <version>${geomajas-plugin-springsecurity-version}</version>
         </dependency>
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-plugin-springsecurity</artifactId>
-            <version>${project.version}</version>
+            <version>${geomajas-plugin-springsecurity-version}</version>
 			<classifier>sources</classifier>
 		</dependency>
 
@@ -285,6 +285,13 @@
 	</profiles>
 
 	<properties>
+		<geomajas-face-gwt-version>1.6.0-SNAPSHOT</geomajas-face-gwt-version>
+		<geomajas-layer-geotools-version>1.6.0-SNAPSHOT</geomajas-layer-geotools-version>
+		<geomajas-layer-hibernate-version>1.6.0-SNAPSHOT</geomajas-layer-hibernate-version>
+		<geomajas-layer-google-version>1.6.0-SNAPSHOT</geomajas-layer-google-version>
+		<geomajas-layer-openstreetmaps-version>1.6.0-SNAPSHOT</geomajas-layer-openstreetmaps-version>
+		<geomajas-layer-wms-version>1.6.0-SNAPSHOT</geomajas-layer-wms-version>
+		<geomajas-plugin-springsecurity-version>1.6.0-SNAPSHOT</geomajas-plugin-springsecurity-version>
 		<gwt-version>2.0.0</gwt-version>
 		<smartgwt-version>2.0</smartgwt-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

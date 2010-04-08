@@ -7,7 +7,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-plugin-printing</artifactId>
-	<version>1.6.0-SNAPSHOT</version>
+	<version>1.5.5-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>Geomajas extension for printing</name>
 
@@ -15,38 +15,46 @@
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-api</artifactId>
+			<version>${geomajas-backend-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-common-servlet</artifactId>
+			<version>${geomajas-backend-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-command</artifactId>
+			<version>${geomajas-backend-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-layer-hibernate</artifactId>
+			<version>${geomajas-backend-version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-layer-geotools</artifactId>
+			<version>${geomajas-backend-version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-layer-wms</artifactId>
+			<version>${geomajas-backend-version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-impl</artifactId>
+			<version>${geomajas-backend-version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-testdata</artifactId>
+			<version>${geomajas-backend-version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -96,5 +104,9 @@
 		</dependency>
 
 	</dependencies>
+
+	<properties>
+		<geomajas-backend-version>1.6.0-SNAPSHOT</geomajas-backend-version>
+	</properties>
 
 </project>

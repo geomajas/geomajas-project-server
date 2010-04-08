@@ -38,20 +38,10 @@
             <artifactId>geomajas-layer-wms</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <!--dependency>
-            <groupId>org.geomajas.plugin</groupId>
-            <artifactId>geomajas-layer-hibernate</artifactId>
-            <version>${project.version}</version>
-        </dependency-->
-        <!--dependency>
-            <groupId>org.geomajas.plugin</groupId>
-            <artifactId>geomajas-layer-google</artifactId>
-            <version>${project.version}</version>
-        </dependency-->
         <dependency>
             <groupId>org.geomajas.plugin</groupId>
             <artifactId>geomajas-plugin-printing</artifactId>
-            <version>${project.version}</version>
+            <version>${geomajas-plugin-printing-version}</version>
         </dependency>
 
 		<!-- logging dependencies, delegate all to slf4j and use logback -->

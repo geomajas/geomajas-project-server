@@ -15,7 +15,7 @@
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-dojo-server</artifactId>
-			<version>${project.version}</version>
+			<version>${geomajas-face-dojo-version}</version>
 		</dependency>
 	</dependencies>
 
@@ -37,7 +37,7 @@
 								<module>
 									<groupId>org.geomajas</groupId>
 									<artifactId>geomajas-dojo-client</artifactId>
-									<version>${project.version}</version>
+									<version>${geomajas-face-dojo-version}</version>
 									<requires>geomajas.geomajas</requires>
 									<type>jar</type>
 								</module>

@@ -42,6 +42,31 @@
 		<module>geomajas-dojo-example-war</module>
 	</modules>
 
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-layer-geotools</artifactId>
+				<version>${geomajas-layer-geotools-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-layer-openstreetmaps</artifactId>
+				<version>${geomajas-layer-openstreetmaps-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-layer-wms</artifactId>
+				<version>${geomajas-layer-wms-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-printing</artifactId>
+				<version>${geomajas-plugin-printing-version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
 	<profiles>
 		<profile>
 			<!-- development profile, no shrinking -->
@@ -65,5 +90,14 @@
 			</activation>
 		</profile>
 	</profiles>
+
+	<properties>
+		<geomajas-face-dojo-version>1.5.5-SNAPSHOT</geomajas-face-dojo-version>
+		<geomajas-layer-geotools-version>1.6.0-SNAPSHOT</geomajas-layer-geotools-version>
+		<geomajas-layer-openstreetmaps-version>1.6.0-SNAPSHOT</geomajas-layer-openstreetmaps-version>
+		<geomajas-layer-wms-version>1.6.0-SNAPSHOT</geomajas-layer-wms-version>
+		<geomajas-plugin-printing-version>1.5.5-SNAPSHOT</geomajas-plugin-printing-version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
 
 </project>
