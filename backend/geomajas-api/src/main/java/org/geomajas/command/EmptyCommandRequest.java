@@ -23,6 +23,7 @@
 
 package org.geomajas.command;
 
+import org.geomajas.global.Api;
 import org.geomajas.global.Json;
 
 
@@ -32,6 +33,7 @@ import org.geomajas.global.Json;
  *
  * @author Joachim Van der Auwera
  */
+@Api(allMethods = true)
 public class EmptyCommandRequest implements CommandRequest {
 
 	private static final long serialVersionUID = 151L;

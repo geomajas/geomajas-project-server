@@ -24,6 +24,7 @@
 package org.geomajas.gwt.client;
 
 import org.geomajas.command.CommandResponse;
+import org.geomajas.global.Api;
 import org.geomajas.gwt.client.command.GwtCommand;
 
 import com.google.gwt.user.client.rpc.RemoteService;
@@ -35,6 +36,7 @@ import com.google.gwt.user.client.rpc.RemoteService;
  *
  * @author Jan De Moerloose
  */
+@Api(allMethods = true)
 public interface GeomajasService extends RemoteService {
 
 	/**

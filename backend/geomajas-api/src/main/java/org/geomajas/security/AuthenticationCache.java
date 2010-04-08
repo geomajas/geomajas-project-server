@@ -23,6 +23,8 @@
 
 package org.geomajas.security;
 
+import org.geomajas.global.Api;
+
 /**
  * Authentication cache service.
  * <p/>
@@ -30,6 +32,7 @@ package org.geomajas.security;
  *
  * @author Joachim Van der Auwera
  */
+@Api(allMethods = true)
 public interface AuthenticationCache {
 
 	/**

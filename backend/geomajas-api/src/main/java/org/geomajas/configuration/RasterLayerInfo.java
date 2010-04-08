@@ -27,6 +27,7 @@ import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
+import org.geomajas.global.Api;
 import org.geomajas.layer.LayerType;
 
 /**
@@ -34,6 +35,7 @@ import org.geomajas.layer.LayerType;
  *
  * @author Joachim Van der Auwera
  */
+@Api(allMethods = true)
 public class RasterLayerInfo extends LayerInfo implements Serializable {
 
 	private static final long serialVersionUID = 151L;

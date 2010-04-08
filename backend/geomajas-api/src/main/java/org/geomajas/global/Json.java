@@ -31,6 +31,7 @@ import java.lang.annotation.RetentionPolicy;
  * @author Jan De Moerloose
  */
 @Retention(RetentionPolicy.RUNTIME)
+@Api(allMethods = true)
 public @interface Json {
 
 	/**

@@ -28,6 +28,7 @@ import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.PrecisionModel;
 import com.vividsolutions.jts.io.ParseException;
 import com.vividsolutions.jts.io.WKTReader;
+import org.geomajas.global.Api;
 import org.geomajas.security.AreaAuthorization;
 import org.geomajas.security.BaseAuthorization;
 
@@ -38,6 +39,7 @@ import java.util.Map;
  *
  * @author Joachim Van der Auwera
  */
+@Api(allMethods = true)
 public class AreaAuthorizationInfo extends LayerAuthorizationInfo {
 
 	private Map<String, LayerAreaAuthorizationInfo> layers;

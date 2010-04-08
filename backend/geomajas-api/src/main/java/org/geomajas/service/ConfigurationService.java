@@ -23,6 +23,7 @@
 package org.geomajas.service;
 
 import org.geomajas.configuration.client.ClientMapInfo;
+import org.geomajas.global.Api;
 import org.geomajas.layer.Layer;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.RasterLayer;
@@ -34,6 +35,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  * @author Joachim Van der Auwera
  */
+@Api(allMethods = true)
 public interface ConfigurationService {
 
 	/**

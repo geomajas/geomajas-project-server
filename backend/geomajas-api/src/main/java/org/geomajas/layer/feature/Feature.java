@@ -27,6 +27,7 @@ import java.io.Serializable;
 import java.util.Map;
 
 import org.geomajas.geometry.Geometry;
+import org.geomajas.global.Api;
 
 /**
  * DTO version of a {@link InternalFeature}. This object can be sent to the client.
@@ -34,6 +35,7 @@ import org.geomajas.geometry.Geometry;
  * @author Pieter De Graef
  * @author Joachim Van der Auwera
  */
+@Api(allMethods = true)
 public class Feature implements Serializable {
 
 	private static final long serialVersionUID = 151L;

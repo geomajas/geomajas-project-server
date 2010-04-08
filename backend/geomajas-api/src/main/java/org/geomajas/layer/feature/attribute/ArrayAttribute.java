@@ -22,6 +22,7 @@
  */
 package org.geomajas.layer.feature.attribute;
 
+import org.geomajas.global.Api;
 import org.geomajas.layer.feature.Attribute;
 
 /**
@@ -35,6 +36,7 @@ import org.geomajas.layer.feature.Attribute;
  * 
  * @author Pieter De Graef
  */
+@Api(allMethods = true)
 public class ArrayAttribute<VALUE_TYPE> implements Attribute<VALUE_TYPE[]> {
 
 	private static final long serialVersionUID = 151L;

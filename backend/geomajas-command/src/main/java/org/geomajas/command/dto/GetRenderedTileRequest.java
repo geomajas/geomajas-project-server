@@ -26,6 +26,7 @@ package org.geomajas.command.dto;
 import org.geomajas.command.LayerIdCommandRequest;
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.global.Api;
 import org.geomajas.layer.tile.TileCode;
 import org.geomajas.layer.tile.TileMetadata;
 
@@ -34,6 +35,7 @@ import org.geomajas.layer.tile.TileMetadata;
  *
  * @author Joachim Van der Auwera
  */
+@Api(allMethods = true)
 public class GetRenderedTileRequest extends LayerIdCommandRequest implements TileMetadata {
 
 	private static final long serialVersionUID = 151L;

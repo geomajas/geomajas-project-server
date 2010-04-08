@@ -23,6 +23,7 @@
 package org.geomajas.layer.feature.attribute;
 
 import org.geomajas.configuration.AssociationType;
+import org.geomajas.global.Api;
 import org.geomajas.layer.feature.Attribute;
 
 /**
@@ -33,6 +34,7 @@ import org.geomajas.layer.feature.Attribute;
  * 
  * @author Jan De Moerloose
  */
+@Api(allMethods = true)
 public abstract class AssociationAttribute<VALUE_TYPE> implements Attribute<VALUE_TYPE> {
 
 	private static final long serialVersionUID = 151L;

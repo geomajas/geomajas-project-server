@@ -24,12 +24,14 @@ package org.geomajas.command.dto;
 
 import org.geomajas.command.LayerIdCommandRequest;
 import org.geomajas.geometry.Bbox;
+import org.geomajas.global.Api;
 
 /**
  * Request object for {@link org.geomajas.command.render.GetRasterDataCommand}.
  *
  * @author Joachim Van der Auwera
  */
+@Api(allMethods = true)
 public class GetRasterDataRequest extends LayerIdCommandRequest {
 
 	private static final long serialVersionUID = 151L;

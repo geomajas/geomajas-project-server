@@ -23,6 +23,7 @@
 
 package org.geomajas.rendering;
 
+import org.geomajas.global.Api;
 import org.geomajas.global.GeomajasException;
 
 /**
@@ -30,6 +31,7 @@ import org.geomajas.global.GeomajasException;
  *
  * @author Joachim Van der Auwera
  */
+@Api(allMethods = true)
 public class RenderException extends GeomajasException {
 
 	private static final long serialVersionUID = 236362372152849178L;

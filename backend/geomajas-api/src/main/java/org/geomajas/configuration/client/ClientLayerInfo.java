@@ -29,6 +29,7 @@ import javax.validation.constraints.Null;
 
 import org.geomajas.configuration.LayerInfo;
 import org.geomajas.geometry.Bbox;
+import org.geomajas.global.Api;
 import org.geomajas.layer.LayerType;
 
 /**
@@ -37,6 +38,7 @@ import org.geomajas.layer.LayerType;
  * 
  * @author Jan De Moerloose
  */
+@Api(allMethods = true)
 public abstract class ClientLayerInfo implements Serializable {
 
 	private static final long serialVersionUID = 151L;

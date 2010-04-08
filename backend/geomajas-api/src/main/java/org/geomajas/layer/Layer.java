@@ -23,6 +23,7 @@
 package org.geomajas.layer;
 
 import org.geomajas.configuration.LayerInfo;
+import org.geomajas.global.Api;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 /**
@@ -34,6 +35,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * @author Joachim Van der Auwera
  * @author Jan De Moerloose
  */
+@Api(allMethods = true)
 public interface Layer<T extends LayerInfo> {
 
 	/**

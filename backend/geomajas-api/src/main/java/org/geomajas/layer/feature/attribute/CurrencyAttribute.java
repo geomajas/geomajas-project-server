@@ -23,6 +23,7 @@
 package org.geomajas.layer.feature.attribute;
 
 import org.geomajas.configuration.PrimitiveType;
+import org.geomajas.global.Api;
 
 /**
  * Attribute with value of type <code>PrimitiveType.CURRENCY</code>. GWT has no support for BigDecimal, so we have to
@@ -30,6 +31,7 @@ import org.geomajas.configuration.PrimitiveType;
  * 
  * @author Jan De Moerloose
  */
+@Api(allMethods = true)
 public class CurrencyAttribute extends PrimitiveAttribute<String> {
 
 	private static final long serialVersionUID = 151L;

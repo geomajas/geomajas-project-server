@@ -25,6 +25,7 @@ package org.geomajas.command.dto;
 import java.util.List;
 
 import org.geomajas.command.CommandResponse;
+import org.geomajas.global.Api;
 import org.geomajas.layer.tile.RasterTile;
 
 /**
@@ -32,6 +33,7 @@ import org.geomajas.layer.tile.RasterTile;
  *
  * @author Jan De Moerloose
  */
+@Api(allMethods = true)
 public class GetRasterDataResponse extends CommandResponse {
 
 	private static final long serialVersionUID = 151L;

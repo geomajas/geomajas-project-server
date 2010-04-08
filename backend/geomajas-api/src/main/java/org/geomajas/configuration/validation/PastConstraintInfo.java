@@ -22,6 +22,8 @@
  */
 package org.geomajas.configuration.validation;
 
+import org.geomajas.global.Api;
+
 /**
  * The constrained date attribute value must be a date in the past. Now is defined as the current time according to the
  * virtual machine The calendar used if the compared type is of type Calendar  is the calendar based on the current
@@ -29,6 +31,7 @@ package org.geomajas.configuration.validation;
  *
  * @author Jan De Moerloose
  */
+@Api(allMethods = true)
 public class PastConstraintInfo implements ConstraintInfo {
 
 }

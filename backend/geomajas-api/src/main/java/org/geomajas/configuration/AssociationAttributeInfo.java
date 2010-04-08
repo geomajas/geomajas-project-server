@@ -22,6 +22,8 @@
  */
 package org.geomajas.configuration;
 
+import org.geomajas.global.Api;
+
 import java.io.Serializable;
 
 import javax.validation.constraints.NotNull;
@@ -31,6 +33,7 @@ import javax.validation.constraints.NotNull;
  * 
  * @author Jan De Moerloose
  */
+@Api(allMethods = true)
 public class AssociationAttributeInfo extends AttributeInfo implements Serializable {
 
 	private static final long serialVersionUID = 151L;

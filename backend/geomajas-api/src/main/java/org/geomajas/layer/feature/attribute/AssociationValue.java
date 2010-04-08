@@ -22,6 +22,8 @@
  */
 package org.geomajas.layer.feature.attribute;
 
+import org.geomajas.global.Api;
+
 import java.io.Serializable;
 import java.util.Map;
 
@@ -37,6 +39,7 @@ import java.util.Map;
  * 
  * @author Pieter De Graef
  */
+@Api(allMethods = true)
 public class AssociationValue implements Serializable {
 
 	private static final long serialVersionUID = 151L;

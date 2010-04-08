@@ -23,6 +23,8 @@
 
 package org.geomajas.layer.feature;
 
+import org.geomajas.global.Api;
+
 import java.io.Serializable;
 
 /**
@@ -30,6 +32,7 @@ import java.io.Serializable;
  * 
  * @author Pieter De Graef
  */
+@Api(allMethods = true)
 public class FeatureTransaction implements Serializable {
 
 	private static final long serialVersionUID = 151L;

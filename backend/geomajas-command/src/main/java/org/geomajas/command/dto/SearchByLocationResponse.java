@@ -23,6 +23,7 @@
 package org.geomajas.command.dto;
 
 import org.geomajas.command.CommandResponse;
+import org.geomajas.global.Api;
 import org.geomajas.layer.feature.Feature;
 
 import java.util.HashMap;
@@ -36,6 +37,7 @@ import java.util.Map;
  * @author Pieter De Graef
  * @author Joachim Van der Auwera
  */
+@Api(allMethods = true)
 public class SearchByLocationResponse extends CommandResponse {
 
 	private static final long serialVersionUID = 151L;

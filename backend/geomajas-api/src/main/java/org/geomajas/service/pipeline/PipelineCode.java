@@ -23,11 +23,14 @@
 
 package org.geomajas.service.pipeline;
 
+import org.geomajas.global.Api;
+
 /**
  * Constants for the pipelines. These include pipeline names and keys for data put in the context.
  *
  * @author Joachim Van der Auwera
  */
+@Api(allMethods = true)
 public interface PipelineCode {
 
 	String PIPELINE_GET_RASTER_TILES = "rasterLayer.getTiles";

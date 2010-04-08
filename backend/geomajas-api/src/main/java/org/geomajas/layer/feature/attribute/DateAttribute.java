@@ -25,6 +25,7 @@ package org.geomajas.layer.feature.attribute;
 import java.util.Date;
 
 import org.geomajas.configuration.PrimitiveType;
+import org.geomajas.global.Api;
 
 /**
  * Attribute with value of type <code>PrimitiveType.DATE</code>.
@@ -33,6 +34,7 @@ import org.geomajas.configuration.PrimitiveType;
  * 
  * @author Jan De Moerloose
  */
+@Api(allMethods = true)
 public class DateAttribute extends PrimitiveAttribute<Date> {
 
 	private static final long serialVersionUID = 151L;

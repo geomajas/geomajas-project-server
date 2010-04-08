@@ -24,6 +24,7 @@ package org.geomajas.command.dto;
 
 import org.geomajas.command.CommandResponse;
 import org.geomajas.configuration.client.ClientMapInfo;
+import org.geomajas.global.Api;
 
 /**
  * <p>
@@ -32,6 +33,7 @@ import org.geomajas.configuration.client.ClientMapInfo;
  *
  * @author Pieter De Graef
  */
+@Api(allMethods = true)
 public class GetMapConfigurationResponse extends CommandResponse {
 
 	private static final long serialVersionUID = 151L;

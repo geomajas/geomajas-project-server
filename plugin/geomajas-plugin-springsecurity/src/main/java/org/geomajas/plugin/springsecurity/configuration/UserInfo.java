@@ -23,6 +23,8 @@
 
 package org.geomajas.plugin.springsecurity.configuration;
 
+import org.geomajas.global.Api;
+
 import java.util.List;
 import java.util.Locale;
 
@@ -31,6 +33,7 @@ import java.util.Locale;
  *
  * @author Joachim Van der Auwera
  */
+@Api(allMethods = true)
 public class UserInfo implements org.geomajas.security.UserInfo {
 
 	private String userId;

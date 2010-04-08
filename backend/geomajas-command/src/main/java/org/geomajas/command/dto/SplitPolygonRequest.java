@@ -24,12 +24,14 @@ package org.geomajas.command.dto;
 
 import org.geomajas.command.CommandRequest;
 import org.geomajas.geometry.Geometry;
+import org.geomajas.global.Api;
 
 /**
  * Request object for {@link org.geomajas.command.geometry.SplitPolygonCommand}.
  *
  * @author Joachim Van der Auwera
  */
+@Api(allMethods = true)
 public class SplitPolygonRequest implements CommandRequest {
 
 	private static final long serialVersionUID = 151L;

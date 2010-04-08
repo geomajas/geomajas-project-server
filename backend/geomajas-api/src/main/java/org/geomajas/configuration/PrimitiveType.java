@@ -22,11 +22,14 @@
  */
 package org.geomajas.configuration;
 
+import org.geomajas.global.Api;
+
 /**
  * List of possible primitive types.
  *
  * @author Joachim Van der Auwera
  */
+@Api(allMethods = true)
 public enum PrimitiveType {
 
 	BOOLEAN("boolean"),

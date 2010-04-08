@@ -22,6 +22,8 @@
  */
 package org.geomajas.configuration.validation;
 
+import org.geomajas.global.Api;
+
 import javax.validation.constraints.NotNull;
 
 /**
@@ -29,6 +31,7 @@ import javax.validation.constraints.NotNull;
  *
  * @author Jan De Moerloose
  */
+@Api(allMethods = true)
 public class DecimalMinConstraintInfo implements ConstraintInfo {
 
 	@NotNull

@@ -30,12 +30,14 @@ import javax.validation.constraints.NotNull;
 
 import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.geometry.Bbox;
+import org.geomajas.global.Api;
 
 /**
  * Map configuration.
  * 
  * @author Joachim Van der Auwera
  */
+@Api(allMethods = true)
 public class ClientMapInfo implements Serializable {
 
 	private static final long serialVersionUID = 151L;

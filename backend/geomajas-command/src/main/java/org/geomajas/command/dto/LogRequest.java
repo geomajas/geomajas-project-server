@@ -23,12 +23,14 @@
 package org.geomajas.command.dto;
 
 import org.geomajas.command.CommandRequest;
+import org.geomajas.global.Api;
 
 /**
  * Request object for {@link org.geomajas.command.general.LogCommand}.
  *
  * @author Joachim Van der Auwera
  */
+@Api(allMethods = true)
 public class LogRequest implements CommandRequest {
 
 	private static final long serialVersionUID = 151L;

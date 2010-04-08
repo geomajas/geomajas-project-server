@@ -22,6 +22,7 @@
  */
 package org.geomajas.gwt.client.widget;
 
+import org.geomajas.global.Api;
 import org.geomajas.gwt.client.gfx.GraphicsContext;
 import org.geomajas.gwt.client.gfx.ImageContext;
 import org.geomajas.gwt.client.gfx.MenuContext;
@@ -32,6 +33,7 @@ import org.geomajas.gwt.client.gfx.MenuContext;
  * @author Jan De Moerloose
  *
  */
+@Api(allMethods = true)
 public interface MapContext {
 
 	/**

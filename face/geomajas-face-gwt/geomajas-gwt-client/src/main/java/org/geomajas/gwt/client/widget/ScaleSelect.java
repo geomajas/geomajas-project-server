@@ -29,6 +29,7 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+import org.geomajas.global.Api;
 import org.geomajas.gwt.client.i18n.I18nProvider;
 import org.geomajas.gwt.client.map.MapView;
 import org.geomajas.gwt.client.map.event.MapViewChangedEvent;
@@ -57,6 +58,7 @@ import com.smartgwt.client.widgets.form.validator.CustomValidator;
  * 
  * @author Jan De Moerloose
  */
+@Api
 public class ScaleSelect extends Canvas implements KeyPressHandler, ChangedHandler, MapViewChangedHandler {
 
 	private MapView mapView;

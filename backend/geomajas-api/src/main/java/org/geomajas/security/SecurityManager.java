@@ -23,12 +23,15 @@
 
 package org.geomajas.security;
 
+import org.geomajas.global.Api;
+
 /**
  * The security manager tries to find the authorization objects for an authentication token.
  * It can be used to create or clear the security context for the current thread.
  *
  * @author Joachim Van der Auwera
  */
+@Api(allMethods = true)
 public interface SecurityManager {
 
 	/**

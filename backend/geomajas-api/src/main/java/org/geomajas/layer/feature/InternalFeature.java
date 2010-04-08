@@ -25,6 +25,7 @@ package org.geomajas.layer.feature;
 import java.util.Map;
 
 import org.geomajas.configuration.FeatureStyleInfo;
+import org.geomajas.global.Api;
 import org.geomajas.layer.VectorLayer;
 
 import com.vividsolutions.jts.geom.Envelope;
@@ -39,6 +40,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * 
  * @author Pieter De Graef
  */
+@Api(allMethods = true)
 public interface InternalFeature extends Cloneable, Comparable<InternalFeature> {
 
 	/**

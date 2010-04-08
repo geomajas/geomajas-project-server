@@ -33,6 +33,7 @@ import org.geomajas.command.dto.GetMapConfigurationRequest;
 import org.geomajas.command.dto.GetMapConfigurationResponse;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.global.Api;
 import org.geomajas.gwt.client.action.menu.AboutAction;
 import org.geomajas.gwt.client.command.CommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
@@ -97,6 +98,7 @@ import com.smartgwt.client.widgets.menu.Menu;
  * 
  * @author Pieter De Graef
  */
+@Api
 public class MapWidget extends Canvas implements MapViewChangedHandler, MapModelHandler {
 
 	private MapModel mapModel;

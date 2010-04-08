@@ -25,6 +25,7 @@ package org.geomajas.service;
 
 import java.util.Date;
 
+import org.geomajas.global.Api;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.feature.FeatureModel;
 import org.opengis.filter.Filter;
@@ -37,6 +38,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * 
  * @author Joachim Van der Auwera
  */
+@Api(allMethods = true)
 public interface FilterService {
 
 	/**

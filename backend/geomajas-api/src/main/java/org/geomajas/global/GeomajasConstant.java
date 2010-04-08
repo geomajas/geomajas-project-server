@@ -30,6 +30,7 @@ package org.geomajas.global;
  *
  * @author Joachim Van der Auwera
  */
+@Api(allMethods = true)
 public interface GeomajasConstant {
 
 	/**

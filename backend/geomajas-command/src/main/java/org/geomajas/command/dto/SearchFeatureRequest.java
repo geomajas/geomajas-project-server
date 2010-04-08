@@ -23,6 +23,7 @@
 package org.geomajas.command.dto;
 
 import org.geomajas.command.LayerIdCommandRequest;
+import org.geomajas.global.Api;
 import org.geomajas.global.GeomajasConstant;
 import org.geomajas.layer.feature.SearchCriterion;
 
@@ -33,6 +34,7 @@ import java.util.Arrays;
  *
  * @author Joachim Van der Auwera
  */
+@Api(allMethods = true)
 public class SearchFeatureRequest extends LayerIdCommandRequest {
 
 	private static final long serialVersionUID = 151L;

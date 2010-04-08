@@ -23,12 +23,14 @@
 package org.geomajas.command.dto;
 
 import org.geomajas.command.CommandRequest;
+import org.geomajas.global.Api;
 
 /**
  * Request object for {@link org.geomajas.command.configuration.UserMaximumExtentCommand}.
  *
  * @author Joachim Van der Auwera
  */
+@Api(allMethods = true)
 public class UserMaximumExtentRequest implements CommandRequest {
 
 	private static final long serialVersionUID = 151L;

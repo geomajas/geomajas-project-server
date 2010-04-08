@@ -23,11 +23,14 @@
 
 package org.geomajas.service;
 
+import org.geomajas.global.Api;
+
 /**
  * Simplifier to change fully qualified class names into Geomajas bean names.
  *
  * @author Joachim Van der Auwera
  */
+@Api(allMethods = true)
 public interface BeanNameSimplifier {
 
 	/**

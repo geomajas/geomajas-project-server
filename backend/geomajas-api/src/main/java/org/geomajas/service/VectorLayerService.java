@@ -26,6 +26,7 @@ package org.geomajas.service;
 import java.util.List;
 
 import org.geomajas.configuration.NamedStyleInfo;
+import org.geomajas.global.Api;
 import org.geomajas.global.GeomajasConstant;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.feature.Attribute;
@@ -46,6 +47,7 @@ import com.vividsolutions.jts.geom.Envelope;
  *
  * @author Joachim Van der Auwera
  */
+@Api(allMethods = true)
 public interface VectorLayerService extends GeomajasConstant {
 
 	/**

@@ -23,6 +23,8 @@
 
 package org.geomajas.plugin.springsecurity.configuration;
 
+import org.geomajas.global.Api;
+
 import java.util.List;
 
 /**
@@ -35,6 +37,7 @@ import java.util.List;
  *
  * @author Joachim Van der Auwera
  */
+@Api(allMethods = true)
 public class LayerFeatureAuthorizationInfo {
 	private List<String> visibleIncludes;
 	private List<String> visibleExcludes;

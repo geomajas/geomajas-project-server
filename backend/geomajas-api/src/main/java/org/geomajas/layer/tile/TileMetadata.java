@@ -25,6 +25,7 @@ package org.geomajas.layer.tile;
 
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.global.Api;
 
 /**
  * <p>
@@ -33,6 +34,7 @@ import org.geomajas.geometry.Coordinate;
  *
  * @author Pieter De Graef
  */
+@Api(allMethods = true)
 public interface TileMetadata {
 
 	/**

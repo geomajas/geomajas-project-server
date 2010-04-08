@@ -22,6 +22,8 @@
  */
 package org.geomajas.layer.feature;
 
+import org.geomajas.global.Api;
+
 import java.io.Serializable;
 
 /**
@@ -32,6 +34,7 @@ import java.io.Serializable;
  * @author Jan De Moerloose
  * @author Joachim Van der Auwera
  */
+@Api(allMethods = true)
 public interface Attribute<VALUE_TYPE> extends Serializable {
 
 	/**

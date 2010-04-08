@@ -24,6 +24,7 @@ package org.geomajas.layer.feature;
 
 import com.vividsolutions.jts.geom.Geometry;
 import org.geomajas.configuration.VectorLayerInfo;
+import org.geomajas.global.Api;
 import org.geomajas.layer.LayerException;
 
 import java.util.Map;
@@ -37,6 +38,7 @@ import java.util.Map;
  *
  * @author Jan De Moerloose
  */
+@Api(allMethods = true)
 public interface FeatureModel {
 
 	/**

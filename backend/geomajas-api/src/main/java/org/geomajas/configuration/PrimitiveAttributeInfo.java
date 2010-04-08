@@ -22,6 +22,8 @@
  */
 package org.geomajas.configuration;
 
+import org.geomajas.global.Api;
+
 import java.io.Serializable;
 
 /**
@@ -29,6 +31,7 @@ import java.io.Serializable;
  *
  * @author Jan De Moerloose
  */
+@Api(allMethods = true)
 public class PrimitiveAttributeInfo extends AttributeInfo implements Serializable {
 
 	private static final long serialVersionUID = 151L;

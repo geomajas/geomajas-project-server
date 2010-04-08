@@ -22,11 +22,14 @@
  */
 package org.geomajas.command;
 
+import org.geomajas.global.Api;
+
 /**
  * Response object for {@link Command} which indicates success.
  * 
  * @author Joachim Van der Auwera
  */
+@Api(allMethods = true)
 public class SuccessCommandResponse extends CommandResponse {
 
 	private static final long serialVersionUID = 151L;

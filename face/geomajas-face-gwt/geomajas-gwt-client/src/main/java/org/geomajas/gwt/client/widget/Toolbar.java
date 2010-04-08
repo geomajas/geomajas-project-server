@@ -30,6 +30,7 @@ import org.geomajas.configuration.Parameter;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientToolInfo;
 import org.geomajas.configuration.client.ClientToolbarInfo;
+import org.geomajas.global.Api;
 import org.geomajas.gwt.client.action.ConfigurableAction;
 import org.geomajas.gwt.client.action.ToolbarAction;
 import org.geomajas.gwt.client.action.ToolbarBaseAction;
@@ -60,6 +61,7 @@ import com.smartgwt.client.widgets.toolbar.ToolStripSeparator;
  * @author Pieter De Graef
  * @author Joachim Van der Auwera
  */
+@Api
 public class Toolbar extends ToolStrip {
 
 	public static final int BUTTON_SIZE_SMALL = 24;

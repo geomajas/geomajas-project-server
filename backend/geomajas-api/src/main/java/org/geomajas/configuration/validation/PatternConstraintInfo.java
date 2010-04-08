@@ -22,12 +22,15 @@
  */
 package org.geomajas.configuration.validation;
 
+import org.geomajas.global.Api;
+
 /**
  * The constrained string attribute must match the following regular expression. The regular expression follows the Java
  * regular expression conventions see java.util.regex.Pattern. Accepts String. null elements are considered valid.
  *
  * @author Jan De Moerloose
  */
+@Api(allMethods = true)
 public class PatternConstraintInfo implements ConstraintInfo {
 
 	private String regexp;

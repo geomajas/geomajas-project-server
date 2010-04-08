@@ -25,6 +25,7 @@ package org.geomajas.gwt.client.widget;
 
 import org.geomajas.command.dto.GetMapConfigurationResponse;
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.global.Api;
 import org.geomajas.gwt.client.controller.OverviewMapController;
 import org.geomajas.gwt.client.gfx.paintable.GfxGeometry;
 import org.geomajas.gwt.client.gfx.paintable.Image;
@@ -48,8 +49,8 @@ import com.smartgwt.client.widgets.events.ResizedHandler;
  * 
  * @author Kristof Heirwegh, Pieter De Graef
  */
+@Api
 public class OverviewMap extends MapWidget implements MapViewChangedHandler {
-
 	
 	private static final String TARGET_RETICLE_IMAGE = "geomajas/target.gif";
 

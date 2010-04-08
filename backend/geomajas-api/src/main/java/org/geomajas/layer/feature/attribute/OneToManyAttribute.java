@@ -26,6 +26,7 @@ package org.geomajas.layer.feature.attribute;
 import java.util.List;
 
 import org.geomajas.configuration.AssociationType;
+import org.geomajas.global.Api;
 
 /**
  * <p>
@@ -36,6 +37,7 @@ import org.geomajas.configuration.AssociationType;
  * 
  * @author Pieter De Graef
  */
+@Api(allMethods = true)
 public class OneToManyAttribute extends AssociationAttribute<List<AssociationValue>> {
 
 	private static final long serialVersionUID = 154L;

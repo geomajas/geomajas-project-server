@@ -22,11 +22,14 @@
  */
 package org.geomajas.configuration.validation;
 
+import org.geomajas.global.Api;
+
 /**
  * The value of the constrained attribute must not be null.
  *
  * @author Jan De Moerloose
  */
+@Api(allMethods = true)
 public class NotNullConstraintInfo implements ConstraintInfo {
 
 }

@@ -35,6 +35,7 @@ import java.util.ResourceBundle;
  *
  * @author Joachim Van der Auwera
  */
+@Api(allMethods = true)
 public class GeomajasException extends Exception {
 
 	private static final long serialVersionUID = 6523420918533106345L;

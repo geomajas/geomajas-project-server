@@ -27,6 +27,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.geomajas.global.Api;
 import org.geomajas.layer.feature.Feature;
 
 /**
@@ -36,6 +37,7 @@ import org.geomajas.layer.feature.Feature;
  * 
  * @author Pieter De Graef
  */
+@Api(allMethods = true)
 public class VectorTile implements Serializable {
 
 	private static final long serialVersionUID = 151L;

@@ -22,11 +22,14 @@
  */
 package org.geomajas.configuration;
 
+import org.geomajas.global.Api;
+
 /**
  * Geometric attribute configuration information.
  *
  * @author Joachim Van der Auwera 
  */
+@Api(allMethods = true)
 public class GeometryAttributeInfo extends AttributeBaseInfo {
 
 	private static final long serialVersionUID = 152L;

@@ -22,6 +22,8 @@
  */
 package org.geomajas.command;
 
+import org.geomajas.global.Api;
+
 import java.io.Serializable;
 
 /**
@@ -29,6 +31,7 @@ import java.io.Serializable;
  *
  * @author Joachim Van der Auwera
  */
+@Api(allMethods = true)
 public interface CommandRequest extends Serializable {
 
 }

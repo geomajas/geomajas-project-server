@@ -44,6 +44,13 @@
             <para>In the GWT face, you should now use <code>MapContext</code>
             instead of directly accessing <code>GraphicsContext</code>.</para>
           </listitem>
+
+          <listitem>
+            <para><code>RasterLayer.paint()</code> now throws
+            <code>GeomajasException</code> instead of
+            <code>RenderException</code>. The <code>RenderException</code>
+            class has been moved to api-experimental.</para>
+          </listitem>
         </itemizedlist></para>
     </section>
 

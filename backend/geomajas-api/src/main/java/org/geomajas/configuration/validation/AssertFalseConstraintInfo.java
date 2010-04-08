@@ -22,11 +22,14 @@
  */
 package org.geomajas.configuration.validation;
 
+import org.geomajas.global.Api;
+
 /**
  * The constrained attribute must be false.
  *
  * @author Jan De Moerloose
  */
+@Api(allMethods = true)
 public class AssertFalseConstraintInfo implements ConstraintInfo {
 
 }

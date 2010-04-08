@@ -26,6 +26,7 @@ package org.geomajas.service;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.Point;
+import org.geomajas.global.Api;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.feature.InternalFeature;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -36,6 +37,7 @@ import org.opengis.referencing.operation.MathTransform;
  *
  * @author Joachim Van der Auwera
  */
+@Api(allMethods = true)
 public interface GeoService {
 
 	/**

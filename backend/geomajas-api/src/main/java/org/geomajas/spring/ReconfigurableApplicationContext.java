@@ -22,6 +22,7 @@
  */
 package org.geomajas.spring;
 
+import org.geomajas.global.Api;
 import org.geomajas.global.GeomajasException;
 
 /**
@@ -31,6 +32,7 @@ import org.geomajas.global.GeomajasException;
  * @author Jan De Moerloose
  * 
  */
+@Api(allMethods = true)
 public interface ReconfigurableApplicationContext {
 
 	/**

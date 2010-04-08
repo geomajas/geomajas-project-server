@@ -23,6 +23,8 @@
 
 package org.geomajas.layer;
 
+import org.geomajas.global.Api;
+
 import java.io.Serializable;
 
 /**
@@ -32,6 +34,7 @@ import java.io.Serializable;
  *
  * @author Pieter De Graef
  */
+@Api(allMethods = true)
 public enum LayerType implements Serializable {
 
 	RASTER(1),

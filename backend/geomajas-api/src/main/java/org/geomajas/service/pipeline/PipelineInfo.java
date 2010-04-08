@@ -23,6 +23,8 @@
 
 package org.geomajas.service.pipeline;
 
+import org.geomajas.global.Api;
+
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -33,6 +35,7 @@ import java.util.List;
  *
  * @author Joachim Van der Auwera
  */
+@Api(allMethods = true)
 public class PipelineInfo<RESPONSE> {
 
 	@NotNull

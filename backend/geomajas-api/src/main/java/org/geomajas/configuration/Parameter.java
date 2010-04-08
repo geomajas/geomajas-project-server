@@ -22,6 +22,8 @@
  */
 package org.geomajas.configuration;
 
+import org.geomajas.global.Api;
+
 import java.io.Serializable;
 
 import javax.validation.constraints.NotNull;
@@ -31,6 +33,7 @@ import javax.validation.constraints.NotNull;
  *
  * @author Joachim Van der Auwera
  */
+@Api(allMethods = true)
 public class Parameter implements Serializable {
 
 	private static final long serialVersionUID = 151L;

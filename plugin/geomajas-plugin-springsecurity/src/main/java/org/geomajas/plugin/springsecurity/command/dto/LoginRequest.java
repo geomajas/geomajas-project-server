@@ -24,12 +24,14 @@
 package org.geomajas.plugin.springsecurity.command.dto;
 
 import org.geomajas.command.CommandRequest;
+import org.geomajas.global.Api;
 
 /**
  * Request object for the login command.
  *
  * @author Joachim Van der Auwera
  */
+@Api(allMethods = true)
 public class LoginRequest implements CommandRequest {
 
 	private String login;

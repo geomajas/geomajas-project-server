@@ -37,7 +37,6 @@ import org.geomajas.layer.LayerException;
 import org.geomajas.layer.RasterLayer;
 import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.layer.tile.TileCode;
-import org.geomajas.rendering.RenderException;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
 import org.geotools.geometry.DirectPosition2D;
@@ -150,7 +149,7 @@ public class WmsLayer implements RasterLayer {
 
 	@SuppressWarnings("unchecked")
 	public List<RasterTile> paint(CoordinateReferenceSystem boundsCrs, Envelope orgBounds, double scale)
-			throws RenderException {
+			throws GeomajasException {
 		List<RasterTile> result = new ArrayList<RasterTile>();
 		Envelope bounds = orgBounds;
 
@@ -234,13 +233,11 @@ public class WmsLayer implements RasterLayer {
 					}
 				}
 			} catch (MismatchedDimensionException e) {
-				throw new RenderException(e, ExceptionCode.RENDER_DIMENSION_MISMATCH);
+				throw new GeomajasException(e, ExceptionCode.RENDER_DIMENSION_MISMATCH);
 			} catch (TransformException e) {
-				throw new RenderException(e, ExceptionCode.RENDER_TRANSFORMATION_FAILED);
+				throw new GeomajasException(e, ExceptionCode.RENDER_TRANSFORMATION_FAILED);
 			} catch (FactoryException e) {
-				throw new RenderException(e, ExceptionCode.RENDER_TRANSFORMATION_FAILED);
-			} catch (GeomajasException e) {
-				throw new RenderException(e, ExceptionCode.RENDER_TRANSFORMATION_FAILED);
+				throw new GeomajasException(e, ExceptionCode.RENDER_TRANSFORMATION_FAILED);
 			}
 		}
 		return result;
@@ -266,10 +263,10 @@ public class WmsLayer implements RasterLayer {
 		return result;
 	}
 
-	protected void resolveUrl(RasterTile image, int width, int height, Bbox box) throws RenderException {
+	protected void resolveUrl(RasterTile image, int width, int height, Bbox box) throws GeomajasException {
 		String url = getBaseWmsUrl();
 		if (null == url) {
-			throw new RenderException(ExceptionCode.PARAMETER_MISSING, "baseWmsUrl");
+			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "baseWmsUrl");
 		}
 		int pos = url.lastIndexOf('?');
 		if (pos > 0) {

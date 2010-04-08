@@ -24,6 +24,7 @@ package org.geomajas.command.dto;
 
 import org.geomajas.command.CommandRequest;
 import org.geomajas.geometry.Geometry;
+import org.geomajas.global.Api;
 import org.geomajas.global.GeomajasConstant;
 
 /**
@@ -31,6 +32,7 @@ import org.geomajas.global.GeomajasConstant;
  * 
  * @author Joachim Van der Auwera
  */
+@Api(allMethods = true)
 public class SearchByLocationRequest implements CommandRequest {
 
 	private static final long serialVersionUID = 151L;

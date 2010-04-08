@@ -22,11 +22,14 @@
  */
 package org.geomajas.configuration;
 
+import org.geomajas.global.Api;
+
 /**
  * Sort type.
  *
  * @author Joachim Van der Auwera
  */
+@Api(allMethods = true)
 public enum SortType {
 
 	ASC,

@@ -22,11 +22,14 @@
  */
 package org.geomajas.configuration.validation;
 
+import org.geomajas.global.Api;
+
 /**
  * The constrained attribute must have a size between the specified boundaries (included).
  *
  * @author Jan De Moerloose
  */
+@Api(allMethods = true)
 public class SizeConstraintInfo implements ConstraintInfo {
 
 	private int min;

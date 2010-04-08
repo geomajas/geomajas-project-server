@@ -23,6 +23,8 @@
 
 package org.geomajas.geometry;
 
+import org.geomajas.global.Api;
+
 import java.io.Serializable;
 
 /**
@@ -33,6 +35,7 @@ import java.io.Serializable;
  * 
  * @author Pieter De Graef
  */
+@Api(allMethods = true)
 public class Geometry implements Serializable {
 
 	private static final long serialVersionUID = -6330507241114727324L;

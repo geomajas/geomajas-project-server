@@ -22,11 +22,14 @@
  */
 package org.geomajas.configuration.validation;
 
+import org.geomajas.global.Api;
+
 /**
  * The value of the constrained number attribute (integer type) must be higher or equal to the specified minimum.
  *
  * @author Jan De Moerloose
  */
+@Api(allMethods = true)
 public class MinConstraintInfo implements ConstraintInfo {
 
 	private long value;

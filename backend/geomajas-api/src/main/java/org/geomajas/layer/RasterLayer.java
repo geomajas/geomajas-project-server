@@ -25,8 +25,9 @@ package org.geomajas.layer;
 import java.util.List;
 
 import org.geomajas.configuration.RasterLayerInfo;
+import org.geomajas.global.Api;
+import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.tile.RasterTile;
-import org.geomajas.rendering.RenderException;
 
 import com.vividsolutions.jts.geom.Envelope;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -36,6 +37,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  *
  * @author Jan De Moerloose
  */
+@Api(allMethods = true)
 public interface RasterLayer extends Layer<RasterLayerInfo> {
 
 	/**
@@ -45,8 +47,8 @@ public interface RasterLayer extends Layer<RasterLayerInfo> {
 	 * @param bounds bounds to request images for
 	 * @param scale scale or zoom level (unit?)
 	 * @return a list of raster images that covers the bounds
-	 * @throws RenderException oops
+	 * @throws GeomajasException oops
 	 */
-	List<RasterTile> paint(CoordinateReferenceSystem boundsCrs, Envelope bounds, double scale) throws RenderException;
+	List<RasterTile> paint(CoordinateReferenceSystem boundsCrs, Envelope bounds, double scale) throws GeomajasException;
 	
 }

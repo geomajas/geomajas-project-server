@@ -23,12 +23,14 @@
 package org.geomajas.command.dto;
 
 import org.geomajas.command.LayerIdCommandRequest;
+import org.geomajas.global.Api;
 
 /**
  * Request object for {@link org.geomajas.command.feature.SearchAttributesCommand}.
  * 
  * @author Pieter De Graef
  */
+@Api(allMethods = true)
 public class SearchAttributesRequest extends LayerIdCommandRequest {
 
 	private static final long serialVersionUID = 154L;

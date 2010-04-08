@@ -22,6 +22,8 @@
  */
 package org.geomajas.command;
 
+import org.geomajas.global.Api;
+
 /**
  * Command definition.
  *
@@ -30,6 +32,7 @@ package org.geomajas.command;
  *
  * @author Joachim Van der Auwera  
  */
+@Api(allMethods = true)
 public interface Command<REQUEST extends CommandRequest, RESPONSE extends CommandResponse> {
 
 	/**

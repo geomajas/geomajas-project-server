@@ -23,6 +23,7 @@
 
 package org.geomajas.plugin.springsecurity.configuration;
 
+import org.geomajas.global.Api;
 import org.geomajas.security.BaseAuthorization;
 
 import java.util.List;
@@ -37,6 +38,7 @@ import java.util.List;
  *
  * @author Joachim Van der Auwera
  */
+@Api(allMethods = true)
 public class LayerAuthorizationInfo implements AuthorizationInfo {
 
 	private List<String> toolsInclude;

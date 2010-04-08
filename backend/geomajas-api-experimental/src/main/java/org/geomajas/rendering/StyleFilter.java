@@ -23,6 +23,7 @@
 package org.geomajas.rendering;
 
 import org.geomajas.configuration.FeatureStyleInfo;
+import org.geomajas.global.Api;
 import org.opengis.filter.Filter;
 
 /**
@@ -32,6 +33,7 @@ import org.opengis.filter.Filter;
  *
  * @author Pieter De Graef
  */
+@Api(allMethods = true)
 public interface StyleFilter {
 
 	/**

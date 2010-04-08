@@ -22,6 +22,8 @@
  */
 package org.geomajas.configuration.validation;
 
+import org.geomajas.global.Api;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +34,7 @@ import java.util.List;
  * @author Joachim Van der Auwera
  * @author Jan De Moerloose
  */
+@Api(allMethods = true)
 public class ValidatorInfo implements Serializable {
 
 	private static final long serialVersionUID = 151L;

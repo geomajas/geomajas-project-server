@@ -22,11 +22,14 @@
  */
 package org.geomajas.configuration.client;
 
+import org.geomajas.global.Api;
+
 /**
  * Unit type.
  *
  * @author Joachim Van der Auwera
  */
+@Api(allMethods = true)
 public enum UnitType {
 
 	METRIC,

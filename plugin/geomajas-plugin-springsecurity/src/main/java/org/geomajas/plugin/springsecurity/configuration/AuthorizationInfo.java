@@ -23,6 +23,7 @@
 
 package org.geomajas.plugin.springsecurity.configuration;
 
+import org.geomajas.global.Api;
 import org.geomajas.security.BaseAuthorization;
 
 /**
@@ -30,6 +31,7 @@ import org.geomajas.security.BaseAuthorization;
  *
  * @author Joachim Van der Auwera
  */
+@Api(allMethods = true)
 public interface AuthorizationInfo {
 
 	BaseAuthorization getAuthorization();

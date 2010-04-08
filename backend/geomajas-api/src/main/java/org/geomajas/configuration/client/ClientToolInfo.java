@@ -29,12 +29,14 @@ import java.util.List;
 import javax.validation.constraints.NotNull;
 
 import org.geomajas.configuration.Parameter;
+import org.geomajas.global.Api;
 
 /**
  * Representation of a tool.
  * 
  * @author Joachim Van der Auwera
  */
+@Api(allMethods = true)
 public class ClientToolInfo implements Serializable {
 
 	private static final long serialVersionUID = 151L;

@@ -30,12 +30,14 @@ import javax.validation.constraints.NotNull;
 import org.geomajas.configuration.FeatureInfo;
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.configuration.SnappingRuleInfo;
+import org.geomajas.global.Api;
 
 /**
  * Client side vector layer metadata.
  * 
  * @author Jan De Moerloose
  */
+@Api(allMethods = true)
 public class ClientVectorLayerInfo extends ClientLayerInfo {
 
 	@NotNull

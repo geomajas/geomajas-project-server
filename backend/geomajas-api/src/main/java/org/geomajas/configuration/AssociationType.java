@@ -22,11 +22,14 @@
  */
 package org.geomajas.configuration;
 
+import org.geomajas.global.Api;
+
 /**
  * Association type.
  *
  * @author Joachim Van der Auwera
  */
+@Api(allMethods = true)
 public enum AssociationType {
 
 	MANY_TO_ONE("many-to-one"),

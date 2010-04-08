@@ -24,6 +24,7 @@ package org.geomajas.command.dto;
 
 import org.geomajas.command.CommandResponse;
 import org.geomajas.geometry.Bbox;
+import org.geomajas.global.Api;
 
 /**
  * Response object for {@link org.geomajas.command.configuration.UserMaximumExtentCommand}.
@@ -32,6 +33,7 @@ import org.geomajas.geometry.Bbox;
  * @author Pieter De Graef
  * @author Joachim Van der Auwera
  */
+@Api(allMethods = true)
 public class UserMaximumExtentResponse extends CommandResponse {
 
 	private static final long serialVersionUID = 151L;

@@ -23,11 +23,14 @@
 
 package org.geomajas.security;
 
+import org.geomajas.global.Api;
+
 /**
  * Handle the mapping between an individual authentication store and policy store.
  *
  * @author Joachim Van der Auwera
  */
+@Api(allMethods = true)
 public interface SecurityService {
 
 	/**

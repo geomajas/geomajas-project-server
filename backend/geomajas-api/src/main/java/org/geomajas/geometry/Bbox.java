@@ -23,6 +23,7 @@
 
 package org.geomajas.geometry;
 
+import org.geomajas.global.Api;
 import org.geomajas.global.Json;
 
 import java.io.Serializable;
@@ -32,6 +33,7 @@ import java.io.Serializable;
  * 
  * @author Joachim Van der Auwera
  */
+@Api(allMethods = true)
 public class Bbox implements Serializable {
 
 	private static final long serialVersionUID = 151L;

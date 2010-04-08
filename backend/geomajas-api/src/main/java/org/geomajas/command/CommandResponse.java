@@ -23,6 +23,7 @@
 
 package org.geomajas.command;
 
+import org.geomajas.global.Api;
 import org.geomajas.global.Json;
 
 import java.io.Serializable;
@@ -35,6 +36,7 @@ import java.util.List;
  * @author Jan De Moerloose
  * @author Joachim Van der Auwera
  */
+@Api(allMethods = true)
 public class CommandResponse implements Serializable {
 
 	private static final long serialVersionUID = 151L;

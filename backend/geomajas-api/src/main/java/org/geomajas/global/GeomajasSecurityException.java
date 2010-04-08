@@ -28,6 +28,7 @@ package org.geomajas.global;
  *
  * @author Joachim Van der Auwera
  */
+@Api(allMethods = true)
 public class GeomajasSecurityException extends GeomajasException {
 
 	private static final long serialVersionUID = 153L;

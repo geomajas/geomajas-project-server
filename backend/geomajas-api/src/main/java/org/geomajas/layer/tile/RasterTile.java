@@ -23,6 +23,7 @@
 package org.geomajas.layer.tile;
 
 import org.geomajas.geometry.Bbox;
+import org.geomajas.global.Api;
 
 import java.io.Serializable;
 
@@ -35,6 +36,7 @@ import java.io.Serializable;
  * 
  * @author Jan De Moerloose
  */
+@Api(allMethods = true)
 public class RasterTile implements Serializable {
 
 	private static final long serialVersionUID = 151L;

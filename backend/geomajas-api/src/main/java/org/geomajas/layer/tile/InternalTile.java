@@ -24,6 +24,7 @@ package org.geomajas.layer.tile;
 
 import java.util.List;
 
+import org.geomajas.global.Api;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.layer.tile.VectorTile.VectorTileContentType;
@@ -38,6 +39,7 @@ import com.vividsolutions.jts.geom.Envelope;
  * 
  * @author Pieter De Graef
  */
+@Api(allMethods = true)
 public interface InternalTile {
 
 	/**

@@ -23,6 +23,7 @@
 
 package org.geomajas.plugin.springsecurity.configuration;
 
+import org.geomajas.global.Api;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.security.AttributeAuthorization;
 import org.geomajas.security.BaseAuthorization;
@@ -35,6 +36,7 @@ import java.util.Map;
  *
  * @author Joachim Van der Auwera
  */
+@Api(allMethods = true)
 public class AttributeAuthorizationInfo extends LayerAuthorizationInfo {
 
 	private Map<String, LayerAttributeAuthorizationInfo> layers;

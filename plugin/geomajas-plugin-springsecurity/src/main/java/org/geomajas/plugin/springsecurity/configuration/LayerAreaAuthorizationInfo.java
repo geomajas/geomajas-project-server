@@ -23,11 +23,14 @@
 
 package org.geomajas.plugin.springsecurity.configuration;
 
+import org.geomajas.global.Api;
+
 /**
  * Area authorization info for a specific layer.
  *
  * @author Joachim Van der Auwera
  */
+@Api(allMethods = true)
 public class LayerAreaAuthorizationInfo {
 
 	private String visibleArea;

@@ -23,6 +23,7 @@
 
 package org.geomajas.plugin.springsecurity.configuration;
 
+import org.geomajas.global.Api;
 import org.geomajas.security.BaseAuthorization;
 import org.geomajas.security.VectorLayerSelectFilterAuthorization;
 import org.geotools.filter.text.cql2.CQL;
@@ -38,6 +39,7 @@ import java.util.Map;
  *
  * @author Joachim Van der Auwera
  */
+@Api(allMethods = true)
 public class LayerFilterAuthorizationInfo extends LayerAuthorizationInfo {
 
 	private final Logger log = LoggerFactory.getLogger(LayerFilterAuthorizationInfo.class);

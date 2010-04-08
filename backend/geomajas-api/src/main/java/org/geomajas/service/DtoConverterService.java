@@ -26,6 +26,7 @@ package org.geomajas.service;
 import org.geomajas.configuration.AttributeInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Geometry;
+import org.geomajas.global.Api;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.Feature;
@@ -42,6 +43,7 @@ import com.vividsolutions.jts.geom.Envelope;
  * @author Joachim Van der Auwera
  * @author Pieter De Graef
  */
+@Api(allMethods = true)
 public interface DtoConverterService {
 
 	// -------------------------------------------------------------------------

@@ -22,6 +22,8 @@
  */
 package org.geomajas.configuration;
 
+import org.geomajas.global.Api;
+
 import java.io.Serializable;
 
 import javax.validation.constraints.NotNull;
@@ -32,6 +34,7 @@ import javax.validation.constraints.NotNull;
  * @author Joachim Van der Auwera
  * @author Pieter De Graef
  */
+@Api(allMethods = true)
 public class SnappingRuleInfo implements Serializable {
 
 	private static final long serialVersionUID = 151L;

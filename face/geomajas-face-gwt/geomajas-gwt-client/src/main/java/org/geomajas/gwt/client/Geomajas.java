@@ -23,6 +23,8 @@
 
 package org.geomajas.gwt.client;
 
+import org.geomajas.global.Api;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,6 +35,7 @@ import java.util.Map;
  * 
  * @author Pieter De Graef
  */
+@Api(allMethods = true)
 public final class Geomajas {
 
 	private Geomajas() {

@@ -23,6 +23,7 @@
 
 package org.geomajas.security;
 
+import org.geomajas.global.Api;
 import org.opengis.filter.Filter;
 
 /**
@@ -34,6 +35,7 @@ import org.opengis.filter.Filter;
  *
  * @author Joachim Van der Auwera
  */
+@Api(allMethods = true)
 public interface VectorLayerSelectFilterAuthorization extends BaseAuthorization {
 
 	/**

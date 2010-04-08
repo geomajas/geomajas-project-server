@@ -25,12 +25,14 @@ package org.geomajas.configuration;
 import javax.validation.constraints.NotNull;
 
 import org.geomajas.configuration.validation.ValidatorInfo;
+import org.geomajas.global.Api;
 
 /**
  * Attribute information class.
  *
  * @author Jan De Moerloose
  */
+@Api(allMethods = true)
 public class AttributeInfo extends AttributeBaseInfo {
 
 	private static final long serialVersionUID = 152L;

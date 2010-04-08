@@ -33,7 +33,6 @@ import org.geomajas.layer.LayerException;
 import org.geomajas.layer.RasterLayer;
 import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.layer.tile.TileCode;
-import org.geomajas.rendering.RenderException;
 import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
@@ -119,7 +118,7 @@ public class OsmLayer implements RasterLayer {
 	}
 
 	public List<RasterTile> paint(CoordinateReferenceSystem boundsCrs, Envelope bounds, double scale)
-			throws RenderException {
+			throws GeomajasException {
 		try {
 			MathTransform layerToMap = geoService.findMathTransform(crs, boundsCrs);
 			MathTransform mapToLayer = layerToMap.inverse();
@@ -216,12 +215,8 @@ public class OsmLayer implements RasterLayer {
 				}
 			}
 			return result;
-		} catch (RenderException re) {
-			throw re;
-		} catch (GeomajasException ge) {
-			throw new RenderException(ge, ExceptionCode.RENDER_TRANSFORMATION_FAILED);
 		} catch (TransformException e) {
-			throw new RenderException(e, ExceptionCode.RENDER_TRANSFORMATION_FAILED);
+			throw new GeomajasException(e, ExceptionCode.RENDER_TRANSFORMATION_FAILED);
 		}
 	}
 

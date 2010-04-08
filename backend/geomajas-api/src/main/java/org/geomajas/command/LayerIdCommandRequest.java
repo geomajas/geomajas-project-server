@@ -23,6 +23,8 @@
 
 package org.geomajas.command;
 
+import org.geomajas.global.Api;
+
 /**
  * Command request object which contains a layer id. Should be extended when you need a layer id as request
  * parameter.
@@ -32,6 +34,7 @@ package org.geomajas.command;
  *
  * @author Joachim Van der Auwera
  */
+@Api(allMethods = true)
 public class LayerIdCommandRequest implements CommandRequest {
 
 	private static final long serialVersionUID = 151L;

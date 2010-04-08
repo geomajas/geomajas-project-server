@@ -23,6 +23,7 @@
 
 package org.geomajas.service.pipeline;
 
+import org.geomajas.global.Api;
 import org.geomajas.global.GeomajasException;
 
 /**
@@ -32,6 +33,7 @@ import org.geomajas.global.GeomajasException;
  *
  * @author Joachim Van der Auwera
  */
+@Api(allMethods = true)
 public interface PipelineStep<RESPONSE> {
 
 	/**

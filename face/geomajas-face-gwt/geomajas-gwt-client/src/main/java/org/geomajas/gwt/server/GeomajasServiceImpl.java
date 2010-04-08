@@ -32,6 +32,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.geomajas.command.CommandDispatcher;
 import org.geomajas.command.CommandResponse;
+import org.geomajas.global.Api;
 import org.geomajas.gwt.client.GeomajasService;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.servlet.ApplicationContextUtils;
@@ -49,6 +50,7 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
  * @author Joachim Van der Auwera
  * @author Jan De Moerloose
  */
+@Api(allMethods = true)
 public class GeomajasServiceImpl extends RemoteServiceServlet implements GeomajasService,
 		ApplicationListener<ContextRefreshedEvent> {
 

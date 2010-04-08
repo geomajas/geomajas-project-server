@@ -23,12 +23,14 @@
 package org.geomajas.layer.feature.attribute;
 
 import org.geomajas.configuration.PrimitiveType;
+import org.geomajas.global.Api;
 
 /**
  * Attribute with value of type <code>PrimitiveType.SHORT</code>.
  * 
  * @author Jan De Moerloose
  */
+@Api(allMethods = true)
 public class ShortAttribute extends PrimitiveAttribute<Short> {
 
 	private static final long serialVersionUID = 151L;

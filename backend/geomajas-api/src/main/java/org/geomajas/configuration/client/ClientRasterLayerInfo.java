@@ -22,12 +22,15 @@
  */
 package org.geomajas.configuration.client;
 
+import org.geomajas.global.Api;
+
 /**
  * Client side raster layer metadata.
  * 
  * @author Jan De Moerloose
  * 
  */
+@Api(allMethods = true)
 public class ClientRasterLayerInfo extends ClientLayerInfo {
 
 	private String style = "";

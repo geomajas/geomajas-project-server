@@ -24,6 +24,7 @@
 package org.geomajas.command.dto;
 
 import org.geomajas.command.CommandRequest;
+import org.geomajas.global.Api;
 import org.geomajas.layer.feature.FeatureTransaction;
 
 /**
@@ -31,6 +32,7 @@ import org.geomajas.layer.feature.FeatureTransaction;
  *
  * @author Joachim Van der Auwera
  */
+@Api(allMethods = true)
 public class PersistTransactionRequest implements CommandRequest {
 
 	private static final long serialVersionUID = 151L;

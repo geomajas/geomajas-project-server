@@ -22,6 +22,8 @@
  */
 package org.geomajas.configuration.validation;
 
+import org.geomajas.global.Api;
+
 import java.io.Serializable;
 
 /**
@@ -29,6 +31,7 @@ import java.io.Serializable;
  *
  * @author Jan De Moerloose
  */
+@Api(allMethods = true)
 public interface ConstraintInfo extends Serializable {
 
 }

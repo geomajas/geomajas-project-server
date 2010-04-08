@@ -22,6 +22,8 @@
  */
 package org.geomajas.configuration.client;
 
+import org.geomajas.global.Api;
+
 import java.io.Serializable;
 
 /**
@@ -31,6 +33,7 @@ import java.io.Serializable;
  * 
  * @author Kristof Heirwegh
  */
+@Api(allMethods = true)
 public interface ClientUserDataInfo extends Serializable {
 
 }

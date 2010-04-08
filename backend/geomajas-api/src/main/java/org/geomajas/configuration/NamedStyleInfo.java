@@ -22,6 +22,8 @@
  */
 package org.geomajas.configuration;
 
+import org.geomajas.global.Api;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +37,7 @@ import javax.validation.constraints.NotNull;
  * @author Jan De Moerloose
  * 
  */
+@Api(allMethods = true)
 public class NamedStyleInfo implements Serializable {
 
 	private static final long serialVersionUID = 154L;

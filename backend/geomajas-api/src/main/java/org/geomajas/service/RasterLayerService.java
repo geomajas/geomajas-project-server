@@ -24,6 +24,7 @@
 package org.geomajas.service;
 
 import com.vividsolutions.jts.geom.Envelope;
+import org.geomajas.global.Api;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.tile.RasterTile;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -39,6 +40,7 @@ import java.util.List;
  *
  * @author Joachim Van der Auwera
  */
+@Api(allMethods = true)
 public interface RasterLayerService {
 
 	/**
