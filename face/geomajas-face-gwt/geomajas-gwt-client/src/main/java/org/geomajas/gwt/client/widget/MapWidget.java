@@ -123,7 +123,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	private boolean zoomOnScrollEnabled;
 
 	/** Registration for the zoom on scroll handler. */
-	private HandlerRegistration zoomOnScrollRegistration;
+	private HandlerRegistration mouseWheelRegistration;
 
 	private boolean resizedHandlerDisabled;
 
@@ -134,9 +134,9 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	private PanButtonCollection panButtons;
 
 	private ZoomAddon zoomAddon;
-	
+
 	private PaintableGroup rasterGroup = new Composite("raster");
-	
+
 	private PaintableGroup vectorGroup = new Composite("vector");
 
 	private PaintableGroup worldGroup = new Composite("world");
@@ -320,17 +320,26 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 		}
 	}
 
+	/**
+	 * Determines whether or not the zooming using the mouse wheel should be enabled or not.
+	 * 
+	 * @param zoomOnScrollEnabled
+	 *            True or false. Enable or disable zooming using the mouse wheel.
+	 */
 	public void setZoomOnScrollEnabled(boolean zoomOnScrollEnabled) {
-		if (zoomOnScrollRegistration != null) {
-			zoomOnScrollRegistration.removeHandler();
-			zoomOnScrollRegistration = null;
+		if (mouseWheelRegistration != null) {
+			mouseWheelRegistration.removeHandler();
+			mouseWheelRegistration = null;
 		}
 		this.zoomOnScrollEnabled = zoomOnScrollEnabled;
 		if (zoomOnScrollEnabled) {
-			zoomOnScrollRegistration = graphics.addMouseWheelHandler(new ZoomOnScrollController());
+			mouseWheelRegistration = graphics.addMouseWheelHandler(new ZoomOnScrollController());
 		}
 	}
 
+	/**
+	 * Is the zooming using the mouse wheel currently enabled or not?
+	 */
 	public boolean isZoomOnScrollEnabled() {
 		return zoomOnScrollEnabled;
 	}
@@ -346,10 +355,22 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 		graphics.setController(controller);
 	}
 
+	/**
+	 * Set a new mouse wheel controller on the map. If the zoom on scroll is currently enabled, it will be disabled
+	 * first.
+	 * 
+	 * @param controller
+	 *            The new mouse wheel controller to be applied on the map.
+	 */
+	public void setMouseWheelController(MouseWheelHandler controller) {
+		setZoomOnScrollEnabled(false);
+		mouseWheelRegistration = graphics.addMouseWheelHandler(controller);
+	}
+
 	public void render(Paintable paintable, RenderGroup renderGroup, RenderStatus status) {
 		PaintableGroup group = null;
 		if (renderGroup != null) {
-			group = getGroup(renderGroup); 
+			group = getGroup(renderGroup);
 		}
 		if (!graphics.isAttached()) {
 			return;
@@ -464,7 +485,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	public MenuContext getMenuContext() {
 		return graphics.getMenuContext();
 	}
-	
+
 	public GraphicsContext getVectorContext() {
 		return graphics.getVectorContext();
 	}
