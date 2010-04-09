@@ -895,7 +895,7 @@ public class Road {
                 Indicates that datastore should do its best to create features
                 from the provided data even if it does not accurately match
                 the schema. Errors will be logged but the parsing will
-                continue if this is true. Default is false. </para>
+                continue if this is true. Default is false.</para>
               </listitem>
             </itemizedlist></para>
 
@@ -1409,109 +1409,142 @@ public class Road {
   <chapter id="chapter-api">
     <title>API</title>
 
-    <para>The full details about the API can be found in the published
-    javadoc, available on the Geomajas site at
-    <uri>http://files.geomajas.org/maven/trunk/geomajas/apidocs/index.html</uri>.
-    If you replace the "trunk" in the URL with a version number, you can get
-    access to the API docs for a specific version.</para>
+    <section>
+      <title>API annotation</title>
 
-    <para>The API contains only interfaces, exceptions and data transfer
-    objects. The data transfer objects are classes which only contain getters
-    and setters.</para>
+      <para>As there "backwards compatible" guarantee for versions with the
+      same minor version (the Y in vX.Y.Z) only refers to what is considered
+      API, it is important that it is clear which classes and interfaces and
+      which methods in these classes and interfaces are considered as part of
+      the API.</para>
 
-    <para>The API is divided in the following packages :</para>
+      <para>For this reason, we have introduced the "@Api" annotation. A class
+      of interface is only considered part of the public API when it is
+      annotated using "<code>@Api</code>". When all public methods in the
+      class or interface are considered part of the API, you could use
+      "<code>@Api(allMethods = true)</code>". The alternative is to annotate
+      the individual methods.</para>
+    </section>
 
-    <itemizedlist>
-      <listitem>
-        <para><emphasis>cache</emphasis> : all interfaces, services,
-        exceptions and data transfer objects related with the cache extension
-        points.</para>
-      </listitem>
+    <section>
+      <title>Backend API</title>
 
-      <listitem>
-        <para><emphasis>command</emphasis> : all interfaces, services,
-        exceptions and data transfer objects related with the command
-        extension points.</para>
-      </listitem>
+      <para>The full details about the API can be found in the published
+      javadoc, available on the Geomajas site at
+      <uri>http://www.geomajas.org/gis-documentation</uri>. There you can find
+      the links for the different versions.</para>
 
-      <listitem>
-        <para><emphasis>configuration</emphasis> : data transfer objects which
-        are used for defining the configuration in Geomajas.</para>
-      </listitem>
+      <para>There API for the Geomajas backend is contained in the
+      geomajas-api module. This contains only interfaces, exceptions and data
+      transfer objects. The data transfer objects are classes which only
+      contain getters and setters. The backend API is divided in the following
+      packages :</para>
 
-      <listitem>
-        <para><emphasis>geometry</emphasis> : Geomajas geometry related data
-        transfer objects.</para>
-      </listitem>
+      <itemizedlist>
+        <listitem>
+          <para><emphasis>cache</emphasis> : all interfaces, services,
+          exceptions and data transfer objects related with the cache
+          extension points.</para>
+        </listitem>
 
-      <listitem>
-        <para><emphasis>global</emphasis> : Some interfaces and exceptions
-        which are relevant for a combination of several extension
-        points.</para>
-      </listitem>
+        <listitem>
+          <para><emphasis>command</emphasis> : all interfaces, services,
+          exceptions and data transfer objects related with the command
+          extension points.</para>
+        </listitem>
 
-      <listitem>
-        <para><emphasis>layer</emphasis> : all interfaces, services,
-        exceptions and data transfer objects related with the layer extension
-        points. These include the definition of a layer, features and feature
-        models.</para>
-      </listitem>
+        <listitem>
+          <para><emphasis>configuration</emphasis> : data transfer objects
+          which are used for defining the configuration in Geomajas.</para>
+        </listitem>
 
-      <listitem>
-        <para><emphasis>rendering</emphasis> : all interfaces, services,
-        exceptions and data transfer objects related with the rendering
-        extension points.</para>
-      </listitem>
+        <listitem>
+          <para><emphasis>geometry</emphasis> : Geomajas geometry related data
+          transfer objects.</para>
+        </listitem>
 
-      <listitem>
-        <para><emphasis>security</emphasis> : all interfaces, services,
-        exceptions and data transfer objects related with the security
-        extension points and security handling.</para>
-      </listitem>
+        <listitem>
+          <para><emphasis>global</emphasis> : Some interfaces and exceptions
+          which are relevant for a combination of several extension
+          points.</para>
+        </listitem>
 
-      <listitem>
-        <para><emphasis>service</emphasis> : utility services which may be
-        useful for all extensions.</para>
-      </listitem>
-    </itemizedlist>
+        <listitem>
+          <para><emphasis>layer</emphasis> : all interfaces, services,
+          exceptions and data transfer objects related with the layer
+          extension points. These include the definition of a layer, features
+          and feature models.</para>
+        </listitem>
 
-    <para>The interfaces typically are extension points or services which are
-    provided. Some additional information about the extension points is given
-    in later chapters.</para>
+        <listitem>
+          <para><emphasis>rendering</emphasis> : all interfaces, services,
+          exceptions and data transfer objects related with the rendering
+          extension points.</para>
+        </listitem>
 
-    <para>The most important service interfaces which are provided include
-    :</para>
+        <listitem>
+          <para><emphasis>security</emphasis> : all interfaces, services,
+          exceptions and data transfer objects related with the security
+          extension points and security handling.</para>
+        </listitem>
 
-    <itemizedlist>
-      <listitem>
-        <para><code>CommandDispatcher</code> : allows you to invoke a command
-        based on a <code>CommandRequest</code> object (which includes the
-        command name).</para>
-      </listitem>
+        <listitem>
+          <para><emphasis>service</emphasis> : utility services which may be
+          useful for all extensions.</para>
+        </listitem>
+      </itemizedlist>
 
-      <listitem>
-        <para>.....</para>
-      </listitem>
-    </itemizedlist>
+      <para>The interfaces typically are extension points or services which
+      are provided. Some additional information about the extension points is
+      given in later chapters.</para>
 
-    <para>There is also a set of utility services which handle things like
-    data type conversions. These include :</para>
+      <para>The most important service interfaces which are provided include
+      :</para>
 
-    <itemizedlist>
-      <listitem>
-        <para><code>ApplicationService</code> :</para>
-      </listitem>
+      <itemizedlist>
+        <listitem>
+          <para><code>CommandDispatcher</code> : allows you to invoke a
+          command based on a <code>CommandRequest</code> object (which
+          includes the command name).</para>
+        </listitem>
 
-      <listitem>
-        <para><code>BboxService</code> :</para>
-      </listitem>
+        <listitem>
+          <para>.....</para>
+        </listitem>
+      </itemizedlist>
 
-      <listitem>
-        <para>.....</para>
-      </listitem>
-    </itemizedlist>
+      <para>There is also a set of utility services which handle things like
+      data type conversions. These include :</para>
 
-    <para></para>
+      <itemizedlist>
+        <listitem>
+          <para><code>ApplicationService</code> :</para>
+        </listitem>
+
+        <listitem>
+          <para><code>BboxService</code> :</para>
+        </listitem>
+
+        <listitem>
+          <para>.....</para>
+        </listitem>
+      </itemizedlist>
+
+      <para>The backend also contains a module geomajas-api-experimental. This
+      contains</para>
+    </section>
+
+    <section>
+      <title>Command and plugins API</title>
+
+      <para></para>
+    </section>
+
+    <section>
+      <title>GWT face API</title>
+
+      <para></para>
+    </section>
   </chapter>
 
   <chapter id="chapter-commands">
