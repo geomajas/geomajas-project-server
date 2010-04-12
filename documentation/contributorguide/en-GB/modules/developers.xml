@@ -27,7 +27,16 @@
   <title>Developers information</title>
 
   <section>
-    <title>maven targets, profiles, variables</title>
+    <title>maven compilation, targets, profiles, variables</title>
+
+    <para>When doing an initial compilation of Geomajas, you may need to start
+    compilation from the "backend" directory. Only when that is compiled,
+    compilation from the project root will succeed.</para>
+
+    <programlisting>cd backend
+mvn install
+cd ..
+mvn install</programlisting>
 
     <para>The source contains one main pom which allows building of the
     Geomajas framework and each of the sample applications in one go.</para>
