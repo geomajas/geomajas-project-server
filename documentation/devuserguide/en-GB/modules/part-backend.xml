@@ -1449,9 +1449,8 @@ public class Road {
 
       <itemizedlist>
         <listitem>
-          <para><emphasis>command</emphasis> : all interfaces, services,
-          exceptions and data transfer objects related with the command
-          extension points.</para>
+          <para><emphasis>command</emphasis> : interfaces, services and data
+          transfer objects related with the command extension points.</para>
         </listitem>
 
         <listitem>
@@ -1465,84 +1464,61 @@ public class Road {
         </listitem>
 
         <listitem>
-          <para><emphasis>global</emphasis> : Some interfaces and exceptions
-          which are relevant for a combination of several extension
-          points.</para>
+          <para><emphasis>global</emphasis> : Some general interfaces,
+          annotations and exceptions which are relevant for a combination of
+          several extension points or the entire API.</para>
         </listitem>
 
         <listitem>
-          <para><emphasis>layer</emphasis> : all interfaces, services,
-          exceptions and data transfer objects related with the layer
-          extension points. These include the definition of a layer, features
-          and feature models.</para>
+          <para><emphasis>layer</emphasis> : interfaces, exceptions, data
+          transfer objects and some internal objects related with the layers
+          and objects in a layer. These include the definition of a layer,
+          tiles, features and feature models.</para>
         </listitem>
 
         <listitem>
-          <para><emphasis>security</emphasis> : all interfaces, services,
-          exceptions and data transfer objects related with the security
-          extension points and security handling.</para>
+          <para><emphasis>security</emphasis> : interfaces, services and data
+          transfer objects related with the security extension points and
+          security handling.</para>
         </listitem>
 
         <listitem>
-          <para><emphasis>service</emphasis> : utility services which may be
-          useful for all extensions.</para>
-        </listitem>
-
-        <listitem>
-          <para><emphasis>spring</emphasis> : </para>
-        </listitem>
-      </itemizedlist>
-
-      <para>The interfaces typically are extension points or services which
-      are provided. Some additional information about the extension points is
-      given in later chapters.</para>
-
-      <para>The most important service interfaces which are provided include
-      :</para>
-
-      <itemizedlist>
-        <listitem>
-          <para><code>CommandDispatcher</code> : allows you to invoke a
-          command based on a <code>CommandRequest</code> object (which
-          includes the command name).</para>
-        </listitem>
-
-        <listitem>
-          <para>.....</para>
-        </listitem>
-      </itemizedlist>
-
-      <para>There is also a set of utility services which handle things like
-      data type conversions. These include :</para>
-
-      <itemizedlist>
-        <listitem>
-          <para><code>ApplicationService</code> :</para>
-        </listitem>
-
-        <listitem>
-          <para><code>BboxService</code> :</para>
-        </listitem>
-
-        <listitem>
-          <para>.....</para>
+          <para><emphasis>service</emphasis> : services provided by Geomajas,
+          some are utilities, others (like raster and vector layer) provide
+          more fundamental functionalities.</para>
         </listitem>
       </itemizedlist>
 
       <para>The backend also contains a module geomajas-api-experimental. This
-      contains</para>
+      contains some experimental stuff which may be promoted to the supported
+      API when useful, or may be changed or dumped. As this is
+      <emphasis>not</emphasis> part of the API, it may changes between
+      revisions.</para>
     </section>
 
     <section>
       <title>Command and plugins API</title>
 
-      <para></para>
+      <para>For commands and plugins, the same rule applies as for the backend
+      API. That means that the "<code>@Api</code>" annotation indicates the
+      stability of the interfaces, classes and methods.</para>
+
+      <para>These classes can typically be found in packages containing
+      "command.dto" for command request and response objects or packages
+      containing "configuration" for objects which are expected to be defined
+      from the spring configuration files.</para>
     </section>
 
     <section>
       <title>GWT face API</title>
 
-      <para></para>
+      <para>The GWT plugin also uses the "<code>@Api</code>" annotation to
+      indicate classes and methods which are supported to remain stable
+      between minor versions of the face.</para>
+
+      <para>You can expect to find this annotation on all widgets, though it
+      is likely that not all public methods will be considered part of the
+      API.</para>
     </section>
   </chapter>
 

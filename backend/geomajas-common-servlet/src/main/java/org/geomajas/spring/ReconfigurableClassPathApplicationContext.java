@@ -43,8 +43,8 @@ public class ReconfigurableClassPathApplicationContext extends ClassPathXmlAppli
 	/**
 	 * Create a context for the specified location (string with multiple locations separated by white space or ,;).
 	 * 
-	 * @param configLocation
-	 * @throws BeansException
+	 * @param configLocation string containing configuration locations
+	 * @throws BeansException oops
 	 */
 	public ReconfigurableClassPathApplicationContext(String configLocation) throws BeansException {
 		super();

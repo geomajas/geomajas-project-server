@@ -32,7 +32,6 @@ import org.geomajas.global.GeomajasException;
  * @author Jan De Moerloose
  * 
  */
-@Api(allMethods = true)
 public interface ReconfigurableApplicationContext {
 
 	/**
