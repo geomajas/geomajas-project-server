@@ -20,7 +20,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
 http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 
-
+	<!-- @extract-start GeoToolsTx, GeoTools transaction configuration -->
 	<bean name="simpleDatastore" class="org.geomajas.layer.geotools.DataStoreFactory" factory-method="create">
 		<constructor-arg>
 			<map>
@@ -39,6 +39,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 
 	<bean id="transactionManager" class="org.geomajas.layer.geotools.GeoToolsTransactionManager">
 	</bean>
+	<!-- @extract-end -->
 
 	<bean name="security.securityInfo" class="org.geomajas.security.SecurityInfo">
 		<property name="loopAllServices" value="false"/>

@@ -27,55 +27,83 @@
   <title>back-end</title>
 
   <chapter id="chapter-configuration">
-    <title>Modules</title>
+    <title>Plugins</title>
 
-    <para>Then there are two main sets of modules which provide extra
+    <para>Then there are two main sets of plugins which provide extra
     features.</para>
 
-    <para>The layer models provide the actual data which can be combined for
-    the maps. There are basically two types of layer models, providing either
-    raster data (bitmaps) or vector data. The provided vector layers
-    are</para>
+    <para>The layer plugins provide access to the actual data which needs to
+    be displayed as part of a maps. There are basically two types of layers,
+    providing either raster data (bitmaps) or vector data. The layers which
+    are provided as part of the normal distribution include</para>
 
     <para><itemizedlist>
         <listitem>
-          <para><emphasis>hibernate</emphasis> (vector) :</para>
+          <para><emphasis>geomajas-layer-hibernate</emphasis> (vector) : allow
+          access to any kind of features which are stored in a spatial
+          (relational) database. The data is accessed using the hibernate and
+          hibernate-spatial open source libraries.</para>
         </listitem>
 
         <listitem>
-          <para><emphasis>geotools</emphasis> (vector) :</para>
+          <para><emphasis>geomajas-layer-geotools</emphasis> (vector) : access
+          data from any vector data source which has a GeoTools data store
+          defined for it
+          (<uri>http://geotools.org/javadocs/org/geotools/data/DataStore.html</uri>).</para>
         </listitem>
 
         <listitem>
-          <para><emphasis>google</emphasis> (raster) :</para>
+          <para><emphasis>geomajas-layer-google</emphasis> (raster) : include
+          Google rasters. This allows access to the normal and satellite views
+          provided by Google. You still need to include the Google API in your
+          application to use this
+          (<code>http://code.google.com/apis/maps/</code>).</para>
         </listitem>
 
         <listitem>
-          <para><emphasis>openstreetmaps</emphasis> (raster) :</para>
+          <para><emphasis>geomajas-layer-openstreetmaps</emphasis> (raster) :
+          support for raster data coming from the OpenStreetMap project
+          (<uri>http://www.openstreetmap.org/</uri>).</para>
         </listitem>
 
         <listitem>
-          <para><emphasis>wms</emphasis> (raster) :</para>
+          <para><emphasis>geomajas-layer-wms</emphasis> (raster) : access data
+          from a WMS server
+          (<uri>http://www.opengeospatial.org/standards/wms</uri>).</para>
         </listitem>
 
         <listitem>
-          <para><emphasis>shapeinmem</emphasis> (vector) :</para>
-        </listitem>
-      </itemizedlist>Other extensions typically provide additional
-    commands.</para>
-
-    <para><itemizedlist>
-        <listitem>
-          <para><emphasis>command</emphasis> : set of commands which are
-          provided as part of the standard distribution.</para>
-        </listitem>
-
-        <listitem>
-          <para><emphasis>printing</emphasis> :</para>
+          <para><emphasis>geomajas-layer-shapeinmem</emphasis> (vector) :
+          access data from an ESRI shape file which handled in memory. The
+          actual data access if done using GeoTools
+          (<uri>http://www.esri.com/library/whitepapers/pdfs/shapefile.pdf</uri>).</para>
         </listitem>
       </itemizedlist></para>
 
-    <para></para>
+    <para>Other plugins allow extensions in functionality, either by providing
+    additional commands or extending the rendering pipelines, or provide
+    additional security services.</para>
+
+    <para><itemizedlist>
+        <listitem>
+          <para><emphasis>geomajas-command</emphasis> : set of commands which
+          are provided as part of the standard distribution. This is so
+          fundamental to using Geomajas that it is provided as a backend
+          module.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>geomajas-plugin-printing</emphasis> : printing
+          extensions for the framework</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>geomajas-plugin-springsecurity</emphasis> : a basic
+          security service which can be configured as part of the spring
+          security and does not use an external source for users or policies,
+          making the security configuration entirely static.</para>
+        </listitem>
+      </itemizedlist></para>
   </chapter>
 
   <chapter>
@@ -93,27 +121,8 @@
     <para>Apart from the servlets (which are specific for each face), your
     web.xml needs an excerpt similar to the following :</para>
 
-    <programlisting>&lt;context-param&gt;
-    &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;
-    &lt;param-value&gt;
-        applicationContext.xml
-        layerBelt.xml
-        layerBluemarble.xml
-        layerCities.xml
-        layerCountries.xml
-        layerLakes.xml
-        layerOsm.xml
-        layerProvinces.xml
-        layerRivers.xml
-        layerRoads.xml
-        layerStructures.xml
-    &lt;/param-value&gt;
-&lt;/context-param&gt;
-
-&lt;listener&gt;
-    &lt;listener-class&gt;org.geomajas.servlet.GeomajasContextListener&lt;/listener-class&gt;
-&lt;/listener&gt;
-</programlisting>
+    <xi:include href="../listing/WebXmlSpringConfiguration.xml"
+                xmlns:xi="http://www.w3.org/2001/XInclude" />
 
     <para>The listener class initialises the application context as needed for
     Geomajas. It appends the context configuration locations which are
@@ -160,22 +169,19 @@
       <code>contextConfigLocation</code> context parameter in the web.xml
       file, the reference is resolved.</para>
 
-      <para>The initial bean which needs to be defined is the
-      <emphasis>application</emphasis> bean.</para>
+      <para>The initial bean which needs to be defined is a bean indicating
+      the <emphasis>client application info</emphasis>.</para>
 
-      <para><programlisting>&lt;bean name="application" class="org.geomajas.configuration.client.ClientApplicationInfo" &gt;
-    &lt;property name="maps"&gt;
-        &lt;list&gt;
-            &lt;ref bean="sampleMap"/&gt;
-        &lt;/list&gt;
-    &lt;/property&gt;
-    &lt;screenDpi&gt;96&lt;/screenDpi&gt;
-&lt;/bean&gt;</programlisting></para>
+      <xi:include href="../listing/ClientApplicationInfo.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-      <para>As you can see, this defines the name of the application, the list
-      of maps and an (optional) screen DPI parameter. The DPI refers to the
-      resolution in pixels per inch of your monitor, for a PC its usually 96
-      (our default) or 72.</para>
+      <para>As you can see, this defines the list of maps for the application.
+      It may (optionally) also define some additional user info and a screen
+      DPI parameter. The DPI refers to the resolution in pixels per inch of
+      your monitor, for a PC its usually 96 (the default) or 72.</para>
+
+      <para>There needs to be at least one ClientApplicationInfo bean. The
+      bean name is used when requesting the application info.</para>
     </section>
 
     <section>
@@ -208,7 +214,7 @@
         technology should therefore provide its own implementation of the
         Spring class <code>PlatformTransactionManager</code>. For most generic
         platforms this is already part of the Spring libraries, but for
-        Geotools we had to make our own implementation.</para>
+        GeoTools we had to make our own implementation.</para>
 
         <para>Transaction management is typically only needed for editable
         database layers (although we support and encourage it for read-only
@@ -218,35 +224,13 @@
         managers, although configurations with multiple transaction managers
         should at least theoretically be possible and the subject will be
         investigated further. In practice this means that you currently must
-        not mix editable Hibernate and Geotools layers.</para>
+        not mix editable Hibernate and GeoTools layers.</para>
 
         <para>For Hibernate layers, the following configuration should be
         used:</para>
 
-        <programlisting>&lt;!-- DataSource Property --&gt;
-&lt;bean id="simpleDataSource" class="org.apache.commons.dbcp.BasicDataSource"&gt;
-  &lt;property name="driverClassName" value="org.postgresql.Driver" /&gt;
-  &lt;property name="url" value="jdbc:postgresql://127.0.0.1:5432/simple" /&gt;
-  &lt;property name="username" value="simple" /&gt;
-  &lt;property name="password" value="simple" /&gt;
-&lt;/bean&gt;
-
-
-&lt;!-- Hibernate SessionFactory --&gt;
-&lt;bean id="simpleSessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean"&gt;
-  &lt;property name="dataSource" ref="simpleDataSource" /&gt;
-  &lt;property name="configurationClass"&gt;
-   &lt;value&gt;org.hibernate.cfg.AnnotationConfiguration&lt;/value&gt;
-  &lt;/property&gt;
-&lt;/bean&gt;
-
-&lt;!-- enable the configuration of transactional behavior based on annotations --&gt;
-&lt;tx:annotation-driven transaction-manager="transactionManager" /&gt;
-
-&lt;!-- Transaction Manager --&gt;
-&lt;bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager"&gt;
-  &lt;property name="sessionFactory" ref="simpleSessionFactory" /&gt;
-&lt;/bean&gt;</programlisting>
+        <xi:include href="../listing/HibernateTx.xml"
+                    xmlns:xi="http://www.w3.org/2001/XInclude" />
 
         <para>Starting from the top, the following are defined:</para>
 
@@ -274,36 +258,17 @@
           </listitem>
         </itemizedlist>
 
-        <para>For Geotools layers, the configuration is as follows:</para>
+        <para>For GeoTools layers, the configuration is as follows:</para>
 
-        <programlisting>&lt;!-- Geotools datastore --&gt;
-&lt;bean name="simpleDatastore" class="org.geomajas.layer.geotools.DataStoreFactory" factory-method="create"&gt;
-  &lt;constructor-arg&gt;
-   &lt;map&gt;
-    &lt;entry key="namespace" value="postgis" /&gt;
-    &lt;entry key="user" value="simple" /&gt;
-    &lt;entry key="passwd" value="simple" /&gt;
-    &lt;entry key="database" value="simple" /&gt;
-    &lt;entry key="host" value="localhost" /&gt;
-    &lt;entry key="port" value="5432" /&gt;
-    &lt;entry key="dbtype" value="postgis" /&gt;
-   &lt;/map&gt;
-  &lt;/constructor-arg&gt;
-&lt;/bean&gt;
-
-&lt;!-- enable the configuration of transactional behavior based on annotations --&gt;
-&lt;tx:annotation-driven proxy-target-class="true" transaction-manager="transactionManager" /&gt;
-
-&lt;!-- Transaction Manager --&gt;
-&lt;bean id="transactionManager" class="org.geomajas.layer.geotools.GeoToolsTransactionManager"&gt;
-&lt;/bean&gt;</programlisting>
+        <xi:include href="../listing/GeoToolsTx.xml"
+                    xmlns:xi="http://www.w3.org/2001/XInclude" />
 
         <para>Starting from the top, the following are defined:</para>
 
         <itemizedlist>
           <listitem>
-            <para>The datastore : this is geotools' primary data object and
-            will be referenced in the Geotools layer. The parameters define
+            <para>The data store : this is GeoTools' primary data object and
+            will be referenced in the GeoTools layer. The parameters define
             the connection properties of the underlying physical medium
             (PostGis in this case)</para>
           </listitem>
@@ -315,7 +280,7 @@
           </listitem>
 
           <listitem>
-            <para>The platform transaction manager for Geotools</para>
+            <para>The platform transaction manager for GeoTools</para>
           </listitem>
         </itemizedlist>
       </section>
@@ -465,8 +430,6 @@
             </tgroup>
           </table>
 
-          <para></para>
-
           <para>The location of the images or tiles is defined by calculating
           the real width and height (based on the resolution) and "paving" the
           maximum extent with tiles starting at the origin (x,y) of the
@@ -524,8 +487,6 @@
               </tbody>
             </tgroup>
           </table>
-
-          <para></para>
         </section>
 
         <section>
@@ -766,7 +727,9 @@ public class Road {
           the validation rules for the attributes. An example definition of
           this object is given below:</para>
 
-          <para><programlisting></programlisting></para>
+          <para><programlisting>
+			  TODO
+          </programlisting></para>
 
           <para>The following table describes the properties of the
           <code>VectorLayerInfo</code> object:</para>
@@ -1092,7 +1055,7 @@ public class Road {
       <section>
         <title>Raster layer</title>
 
-        <para></para>
+        <para>...</para>
       </section>
 
       <section>
@@ -1279,8 +1242,6 @@ public class Road {
       <section>
         <title>Layer specific configurations</title>
 
-        <para></para>
-
         <section>
           <title>Shape in memory layer</title>
 
@@ -1313,18 +1274,18 @@ public class Road {
         </section>
 
         <section>
-          <title>Geotools layer</title>
+          <title>GeoTools layer</title>
 
-          <para>The Geotools layer has a few settings which should be
+          <para>The GeoTools layer has a few settings which should be
           set</para>
 
           <para><table>
-              <title>GeotoolsLayer configuration</title>
+              <title>GeoToolsLayer configuration</title>
 
               <tgroup cols="2">
                 <thead>
                   <row>
-                    <entry>GeotoolsLayer configuration</entry>
+                    <entry>GeoToolsLayer configuration</entry>
                   </row>
                 </thead>
 
@@ -1368,7 +1329,7 @@ public class Road {
                   <row>
                     <entry>format</entry>
 
-                    <entry></entry>
+                    <entry>...</entry>
                   </row>
 
                   <row>
@@ -1392,8 +1353,31 @@ public class Road {
         <section>
           <title>Google layer</title>
 
-          <para>This layer does not need additional configuration. It gets all
-          the parameters from the layer configuration information.</para>
+          <para>Note that you need to include the Google API code in your
+          application to be allowed to use this module (otherwise you will
+          violate Google's terms of use).</para>
+
+          <para><table>
+              <title>GoogleLayer configuration</title>
+
+              <tgroup cols="2">
+                <thead>
+                  <row>
+                    <entry>GoogleLayer configuration</entry>
+                  </row>
+                </thead>
+
+                <tbody>
+                  <row>
+                    <entry>satellite</entry>
+
+                    <entry>Set to true to use satellite view from Google. When
+                    false (the default), the normal view (showing streets)
+                    will be used.</entry>
+                  </row>
+                </tbody>
+              </tgroup>
+            </table></para>
         </section>
 
         <section>
@@ -1914,7 +1898,7 @@ public class Road {
               <row>
                 <entry>Request object class</entry>
 
-                <entry></entry>
+                <entry>?????</entry>
               </row>
 
               <row>
@@ -1922,7 +1906,7 @@ public class Road {
 
                 <entry><itemizedlist>
                     <listitem>
-                      <para></para>
+                      <para>?????</para>
                     </listitem>
                   </itemizedlist></entry>
               </row>
@@ -1930,13 +1914,13 @@ public class Road {
               <row>
                 <entry>Description</entry>
 
-                <entry></entry>
+                <entry>?????</entry>
               </row>
 
               <row>
                 <entry>Response object class</entry>
 
-                <entry></entry>
+                <entry>?????</entry>
               </row>
 
               <row>
@@ -1944,7 +1928,7 @@ public class Road {
 
                 <entry><itemizedlist>
                     <listitem>
-                      <para></para>
+                      <para>?????</para>
                     </listitem>
                   </itemizedlist></entry>
               </row>
@@ -1978,7 +1962,7 @@ public class Road {
               <row>
                 <entry>Request object class</entry>
 
-                <entry></entry>
+                <entry>?????</entry>
               </row>
 
               <row>
@@ -1986,7 +1970,7 @@ public class Road {
 
                 <entry><itemizedlist>
                     <listitem>
-                      <para></para>
+                      <para>?????</para>
                     </listitem>
                   </itemizedlist></entry>
               </row>
@@ -2000,7 +1984,7 @@ public class Road {
               <row>
                 <entry>Response object class</entry>
 
-                <entry></entry>
+                <entry>?????</entry>
               </row>
 
               <row>
@@ -2008,7 +1992,7 @@ public class Road {
 
                 <entry><itemizedlist>
                     <listitem>
-                      <para></para>
+                      <para>?????</para>
                     </listitem>
                   </itemizedlist></entry>
               </row>
@@ -2042,7 +2026,7 @@ public class Road {
               <row>
                 <entry>Request object class</entry>
 
-                <entry></entry>
+                <entry>?????</entry>
               </row>
 
               <row>
@@ -2050,7 +2034,7 @@ public class Road {
 
                 <entry><itemizedlist>
                     <listitem>
-                      <para></para>
+                      <para>?????</para>
                     </listitem>
                   </itemizedlist></entry>
               </row>
@@ -2064,7 +2048,7 @@ public class Road {
               <row>
                 <entry>Response object class</entry>
 
-                <entry></entry>
+                <entry>?????</entry>
               </row>
 
               <row>
@@ -2072,7 +2056,7 @@ public class Road {
 
                 <entry><itemizedlist>
                     <listitem>
-                      <para></para>
+                      <para>?????</para>
                     </listitem>
                   </itemizedlist></entry>
               </row>
@@ -2106,7 +2090,7 @@ public class Road {
               <row>
                 <entry>Request object class</entry>
 
-                <entry></entry>
+                <entry>?????</entry>
               </row>
 
               <row>
@@ -2114,7 +2098,7 @@ public class Road {
 
                 <entry><itemizedlist>
                     <listitem>
-                      <para></para>
+                      <para>?????</para>
                     </listitem>
                   </itemizedlist></entry>
               </row>
@@ -2128,7 +2112,7 @@ public class Road {
               <row>
                 <entry>Response object class</entry>
 
-                <entry></entry>
+                <entry>?????</entry>
               </row>
 
               <row>
@@ -2136,7 +2120,7 @@ public class Road {
 
                 <entry><itemizedlist>
                     <listitem>
-                      <para></para>
+                      <para>?????</para>
                     </listitem>
                   </itemizedlist></entry>
               </row>
@@ -2170,7 +2154,7 @@ public class Road {
               <row>
                 <entry>Request object class</entry>
 
-                <entry></entry>
+                <entry>?????</entry>
               </row>
 
               <row>
@@ -2178,7 +2162,7 @@ public class Road {
 
                 <entry><itemizedlist>
                     <listitem>
-                      <para></para>
+                      <para>?????</para>
                     </listitem>
                   </itemizedlist></entry>
               </row>
@@ -2192,7 +2176,7 @@ public class Road {
               <row>
                 <entry>Response object class</entry>
 
-                <entry></entry>
+                <entry>?????</entry>
               </row>
 
               <row>
@@ -2200,7 +2184,7 @@ public class Road {
 
                 <entry><itemizedlist>
                     <listitem>
-                      <para></para>
+                      <para>?????</para>
                     </listitem>
                   </itemizedlist></entry>
               </row>
@@ -2242,7 +2226,7 @@ public class Road {
 
                 <entry><itemizedlist>
                     <listitem>
-                      <para></para>
+                      <para>?????</para>
                     </listitem>
 
                     <listitem>
@@ -2271,7 +2255,7 @@ public class Road {
 
                 <entry><itemizedlist>
                     <listitem>
-                      <para></para>
+                      <para>?????</para>
                     </listitem>
                   </itemizedlist></entry>
               </row>
@@ -2412,7 +2396,7 @@ public class Road {
               <row>
                 <entry>Request object class</entry>
 
-                <entry></entry>
+                <entry>?????</entry>
               </row>
 
               <row>
@@ -2420,7 +2404,7 @@ public class Road {
 
                 <entry><itemizedlist>
                     <listitem>
-                      <para></para>
+                      <para>?????</para>
                     </listitem>
                   </itemizedlist></entry>
               </row>
@@ -2434,7 +2418,7 @@ public class Road {
               <row>
                 <entry>Response object class</entry>
 
-                <entry></entry>
+                <entry>?????</entry>
               </row>
 
               <row>
@@ -2442,7 +2426,7 @@ public class Road {
 
                 <entry><itemizedlist>
                     <listitem>
-                      <para></para>
+                      <para>?????</para>
                     </listitem>
                   </itemizedlist></entry>
               </row>
@@ -2476,7 +2460,7 @@ public class Road {
               <row>
                 <entry>Request object class</entry>
 
-                <entry></entry>
+                <entry>?????</entry>
               </row>
 
               <row>
@@ -2484,7 +2468,7 @@ public class Road {
 
                 <entry><itemizedlist>
                     <listitem>
-                      <para></para>
+                      <para>?????</para>
                     </listitem>
                   </itemizedlist></entry>
               </row>
@@ -2498,7 +2482,7 @@ public class Road {
               <row>
                 <entry>Response object class</entry>
 
-                <entry></entry>
+                <entry>?????</entry>
               </row>
 
               <row>
@@ -2506,7 +2490,7 @@ public class Road {
 
                 <entry><itemizedlist>
                     <listitem>
-                      <para></para>
+                      <para>?????</para>
                     </listitem>
                   </itemizedlist></entry>
               </row>
@@ -2538,30 +2522,8 @@ public class Road {
 
       <para>The basic command implementation looks like this :</para>
 
-      <programlisting>package com.my.program.command.mysuper;
-
-import com.my.program.command.mysuper.MySuperDoItRequest;
-import com.my.program.command.mysuper.MySuperDoItResponse;
-import org.geomajas.command.Command;
-import org.slf4j.LoggerFactory;
-import org.slf4j.Logger;
-import org.springframework.stereotype.Component;
-
-@Component()
-public class MySuperDoItCommand implements Command&lt;MySuperDoItRequest, MySuperDoItResponse&gt; {
-
-    private final Logger log = LoggerFactory.getLogger(MySuperDoItCommand.class);
-
-    public MySuperDoItResponse getEmptyCommandResponse() {
-        return new MySuperDoItResponse();
-    }
-
-    public void execute(LogRequest request, MySuperDoItResponse response) throws Exception {
-        log.debug("called");
-        // ..... perform the actual command
-    }
-
-}</programlisting>
+      <xi:include href="../listing/ExampleCommand.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
 
       <para>Note the presence of the "@Component" annotation which assure the
       command is registered. You could add the name under which the command
@@ -2575,7 +2537,8 @@ public class MySuperDoItCommand implements Command&lt;MySuperDoItRequest, MySupe
       case above, this could be done by including the following XML fragment
       in one of your spring configuration files.</para>
 
-      <programlisting>&lt;context:component-scan base-package="com.my.program" name-generator="org.geomajas.spring.GeomajasBeanNameGenerator"/&gt;</programlisting>
+      <xi:include href="../listing/ExampleCommandScan.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
 
       <para>The command will be executed using a singleton. The use of object
       variables is not recommended. Any object variables will be shared
@@ -2591,27 +2554,15 @@ public class MySuperDoItCommand implements Command&lt;MySuperDoItRequest, MySupe
     </sect1>
   </chapter>
 
-  <chapter id="chapter-layer-models">
+  <chapter id="chapter-layers">
     <title>Layers</title>
 
-    <para></para>
-  </chapter>
-
-  <chapter id="chapter-rendering-strategy">
-    <title>Rendering strategy</title>
-
-    <para></para>
-  </chapter>
-
-  <chapter id="chapter-caching-strategy">
-    <title>Caching strategy</title>
-
-    <para></para>
+    <para>?????</para>
   </chapter>
 
   <chapter id="chapter-security">
     <title>Security</title>
 
-    <para></para>
+    <para>?????</para>
   </chapter>
 </part>

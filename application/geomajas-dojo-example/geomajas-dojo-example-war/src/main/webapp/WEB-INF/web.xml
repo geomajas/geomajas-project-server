@@ -3,6 +3,7 @@
 		"http://java.sun.com/dtd/web-app_2_3.dtd" >
 <web-app>
 	<display-name>Geomajas dojo face example application</display-name>
+	<!-- @extract-start WebXmlSpringConfiguration, Defining spring configuration locations in web.xml -->
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
@@ -25,6 +26,7 @@
 	<listener>
  		<listener-class>org.geomajas.servlet.GeomajasContextListener</listener-class>
 	</listener>
+	<!-- @extract-end -->
 
 	<servlet>
 		<servlet-name>PdfServlet</servlet-name>
