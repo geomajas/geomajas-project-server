@@ -25,6 +25,7 @@ package org.geomajas.gwt.client.gfx.painter;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.gfx.GraphicsContext;
+import org.geomajas.gwt.client.gfx.MapContext;
 import org.geomajas.gwt.client.gfx.Paintable;
 import org.geomajas.gwt.client.gfx.Painter;
 import org.geomajas.gwt.client.gfx.style.ShapeStyle;
@@ -38,7 +39,6 @@ import org.geomajas.gwt.client.spatial.geometry.MultiPoint;
 import org.geomajas.gwt.client.spatial.geometry.MultiPolygon;
 import org.geomajas.gwt.client.spatial.geometry.Point;
 import org.geomajas.gwt.client.spatial.geometry.Polygon;
-import org.geomajas.gwt.client.widget.MapContext;
 import org.geomajas.gwt.client.widget.MapWidget;
 
 /**

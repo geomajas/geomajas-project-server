@@ -23,11 +23,11 @@
 
 package org.geomajas.gwt.client.gfx.painter;
 
+import org.geomajas.gwt.client.gfx.MapContext;
 import org.geomajas.gwt.client.gfx.Paintable;
 import org.geomajas.gwt.client.gfx.Painter;
 import org.geomajas.gwt.client.gfx.paintable.Image;
 import org.geomajas.gwt.client.gfx.style.PictureStyle;
-import org.geomajas.gwt.client.widget.MapContext;
 
 /**
  * <p>

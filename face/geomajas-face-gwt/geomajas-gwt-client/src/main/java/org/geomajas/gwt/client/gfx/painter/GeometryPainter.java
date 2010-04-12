@@ -23,6 +23,7 @@
 
 package org.geomajas.gwt.client.gfx.painter;
 
+import org.geomajas.gwt.client.gfx.MapContext;
 import org.geomajas.gwt.client.gfx.Paintable;
 import org.geomajas.gwt.client.gfx.Painter;
 import org.geomajas.gwt.client.gfx.paintable.GfxGeometry;
@@ -33,7 +34,6 @@ import org.geomajas.gwt.client.spatial.geometry.MultiLineString;
 import org.geomajas.gwt.client.spatial.geometry.MultiPolygon;
 import org.geomajas.gwt.client.spatial.geometry.Point;
 import org.geomajas.gwt.client.spatial.geometry.Polygon;
-import org.geomajas.gwt.client.widget.MapContext;
 
 /**
  * <p>

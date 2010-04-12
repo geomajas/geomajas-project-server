@@ -200,7 +200,7 @@ public class MapView {
 	// -------------------------------------------------------------------------
 
 	/**
-	 * Recenters the map to a new position.
+	 * Re-centers the map to a new position.
 	 * 
 	 * @param coordinate
 	 *            the new center position
@@ -305,6 +305,10 @@ public class MapView {
 		setCurrentScale(currentScale * delta, option);
 	}
 
+	//-------------------------------------------------------------------------
+	// Getters:
+	//-------------------------------------------------------------------------
+	
 	/** Return the current scale. */
 	public double getCurrentScale() {
 		return currentScale;
@@ -336,6 +340,11 @@ public class MapView {
 		Collections.sort(this.resolutions, Collections.reverseOrder());
 	}
 
+	/** Get the list of predefined map resolutions (resolution = inverse of scale). */
+	public List<Double> getResolutions() {
+		return resolutions;
+	}
+
 	/**
 	 * are we panning ?
 	 * 
@@ -346,8 +355,17 @@ public class MapView {
 				&& previousPanOrigin.equalsDelta(this.panOrigin, 1.0E-10);
 	}
 
+	/** Return the internal camera that is used to represent the map's point of view. */
 	public Camera getCamera() {
 		return camera;
+	}
+
+	/** Return the transformer that is used to transform coordinate and geometries between world and screen space. */
+	public WorldViewTransformer getWorldViewTransformer() {
+		if (null == worldViewTransformer) {
+			worldViewTransformer = new WorldViewTransformer(this);
+		}
+		return worldViewTransformer;
 	}
 
 	public int getWidth() {
@@ -573,17 +591,6 @@ public class MapView {
 			}
 		}
 		return worldCenter;
-	}
-
-	public WorldViewTransformer getWorldViewTransformer() {
-		if (null == worldViewTransformer) {
-			worldViewTransformer = new WorldViewTransformer(this);
-		}
-		return worldViewTransformer;
-	}
-
-	public List<Double> getResolutions() {
-		return resolutions;
 	}
 
 	/**

@@ -42,7 +42,7 @@ import org.geomajas.layer.LayerType;
  * All you have to do to make use of snapping, is to make an instance of this class, and call the <code>snap</code>
  * method.
  * </p>
- *
+ * 
  * @author Pieter De Graef
  */
 public class Snapper {
@@ -53,11 +53,8 @@ public class Snapper {
 	 * to geometries that intersect the given coordinate (@see IntersectPriorityMode).
 	 */
 	public static enum SnapMode {
-
 		ALL_GEOMETRIES_EQUAL, PRIORITY_TO_INTERSECTING_GEOMETRIES
-	}
-
-	;
+	};
 
 	/**
 	 * The MapModel that contains the layers to which snapping is possible. If a snapping rule should exist that points
@@ -103,7 +100,7 @@ public class Snapper {
 
 	/**
 	 * Execute the actual snapping!
-	 *
+	 * 
 	 * @param coordinate
 	 *            The original coordinate that needs snapping.
 	 * @return Returns the given coordinate, or a snapped coordinate if one was found.

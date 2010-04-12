@@ -23,10 +23,10 @@
 
 package org.geomajas.gwt.client.gfx.painter;
 
+import org.geomajas.gwt.client.gfx.MapContext;
 import org.geomajas.gwt.client.gfx.Paintable;
 import org.geomajas.gwt.client.gfx.Painter;
 import org.geomajas.gwt.client.map.MapModel;
-import org.geomajas.gwt.client.widget.MapContext;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.MapWidget.RenderGroup;
 

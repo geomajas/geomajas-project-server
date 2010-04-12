@@ -146,27 +146,35 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	private List<WorldPaintable> worldSpacePaintables = new ArrayList<WorldPaintable>();
 
 	/**
-	 * Map groups.
+	 * Map groups: rendering should be done in one of these. Try to always use either the SCREEN or the WORLD group,
+	 * unless you need something very specific and you know what you are doing.
 	 */
 	public enum RenderGroup {
 		/**
-		 * The pan group. Drawing should be done in pan coordinates. All layers, their selection and their labels are
-		 * drawn in pan coordinates.
+		 * The pan group. Drawing should be done in pan coordinates. All raster layers are drawn in pan coordinates. In
+		 * essence this means that the coordinates are expected to have been scaled for the current scale before
+		 * drawing, and that only the translation still needs to occur. For advanced use only.
 		 */
 		RASTER,
+
 		/**
-		 * The pan group. Drawing should be done in pan coordinates. All layers, their selection and their labels are
-		 * drawn in pan coordinates.
+		 * The pan group. Drawing should be done in pan coordinates. All vector layers, their selection and their labels
+		 * are drawn in pan coordinates. In essence this means that the coordinates are expected to have been scaled for
+		 * the current scale before drawing, and that only the translation still needs to occur. For advanced use only.
 		 */
 		VECTOR,
+
 		/**
 		 * The world group. Drawing should be done in world coordinates. World coordinates means that the map coordinate
-		 * system is used.
+		 * system is used. The advantage of rendering objects in the world group, is that when the user moves the map
+		 * around, the objects will move with it.
 		 */
 		WORLD,
+
 		/**
 		 * The screen group. Drawing should be done in screen coordinates. Screen coordinates are expressed in pixels,
-		 * starting from the top left corner of the map.
+		 * starting from the top left corner of the map. When rendering objects in the screen group they will always
+		 * appear at a fixed position, even when the user moves the map about.
 		 */
 		SCREEN
 	}
@@ -179,10 +187,12 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 		 * Render paintable, including all children.
 		 */
 		ALL,
+
 		/**
 		 * Redraw paintable, parent only.
 		 */
 		UPDATE,
+
 		/**
 		 * Delete the paintable.
 		 */
@@ -367,6 +377,15 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 		mouseWheelRegistration = graphics.addMouseWheelHandler(controller);
 	}
 
+	/**
+	 * The main rendering method. Renders some paintable object in the given group, using the given status.
+	 * 
+	 * @param paintable
+	 *            The actual object to be rendered. Should always contain location and styling information.
+	 * @param renderGroup
+	 *            In what group to render the paintable object?
+	 * @param status
+	 */
 	public void render(Paintable paintable, RenderGroup renderGroup, RenderStatus status) {
 		PaintableGroup group = null;
 		if (renderGroup != null) {

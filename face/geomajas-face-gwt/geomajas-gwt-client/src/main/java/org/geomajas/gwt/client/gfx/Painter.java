@@ -23,7 +23,6 @@
 
 package org.geomajas.gwt.client.gfx;
 
-import org.geomajas.gwt.client.widget.MapContext;
 
 /**
  * <p>

@@ -219,10 +219,10 @@ public interface GraphicsContext {
 	void drawRectangle(Object parent, String name, Bbox rectangle, ShapeStyle style);
 
 	/**
-	 * Draw a type (def/symbol for svg, shapetype for vml).
+	 * Draw a type (def/symbol for SVG, shapetype for VML).
 	 * 
 	 * @param parent
-	 *            the parent of the shapetype for vml, null for svg
+	 *            the parent of the shapetype for VML, null for SVG
 	 * @param id
 	 *            the types's unique identifier TODO: how can we ensure this is unique (it is defined on the server) ?
 	 * @param symbol

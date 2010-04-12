@@ -92,7 +92,7 @@ public final class Mathlib {
 	 *            End point of the second line segment.
 	 * @return Returns a coordinate or null if not a single intersection point.
 	 */
-	Coordinate lineSegmentIntersection(Coordinate c1, Coordinate c2, Coordinate c3, Coordinate c4) {
+	public Coordinate lineSegmentIntersection(Coordinate c1, Coordinate c2, Coordinate c3, Coordinate c4) {
 		LineSegment ls1 = new LineSegment(c1, c2);
 		LineSegment ls2 = new LineSegment(c3, c4);
 		return ls1.getIntersectionSegments(ls2);

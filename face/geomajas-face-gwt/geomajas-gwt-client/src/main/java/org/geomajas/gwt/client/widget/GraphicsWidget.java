@@ -28,12 +28,13 @@ import java.util.List;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.controller.GraphicsController;
-import org.geomajas.gwt.client.gfx.DefaultImageContext;
 import org.geomajas.gwt.client.gfx.GraphicsContext;
 import org.geomajas.gwt.client.gfx.ImageContext;
+import org.geomajas.gwt.client.gfx.MapContext;
 import org.geomajas.gwt.client.gfx.MenuContext;
-import org.geomajas.gwt.client.gfx.svg.SvgGraphicsContext;
-import org.geomajas.gwt.client.gfx.vml.VmlGraphicsContext;
+import org.geomajas.gwt.client.gfx.context.DefaultImageContext;
+import org.geomajas.gwt.client.gfx.context.SvgGraphicsContext;
+import org.geomajas.gwt.client.gfx.context.VmlGraphicsContext;
 import org.geomajas.gwt.client.util.GwtEventUtil;
 
 import com.google.gwt.dom.client.Document;
@@ -53,8 +54,8 @@ import com.smartgwt.client.widgets.events.ResizedHandler;
 /**
  * <p>
  * GWT widget implementation meant for actual drawing. To this end it implements the <code>GraphicsContext</code>
- * interface. Actually it delegates the real work to either a {@link org.geomajas.gwt.client.gfx.vml.VmlGraphicsContext}
- * or a {@link org.geomajas.gwt.client.gfx.svg.SvgGraphicsContext} object.
+ * interface. Actually it delegates the real work to either a {@link org.geomajas.gwt.client.gfx.context.VmlGraphicsContext}
+ * or a {@link org.geomajas.gwt.client.gfx.context.SvgGraphicsContext} object.
  * </p>
  * <p>
  * By default this widget will draw in screen space. It will check the given ID's and add the screen space group in
@@ -82,21 +83,21 @@ public class GraphicsWidget extends FocusWidget implements MapContext, HasDouble
 
 	/**
 	 * The actual GraphicsContext implementation that does the drawing. Depending on the browser the user uses, this
-	 * will be the {@link org.geomajas.gwt.client.gfx.vml.VmlGraphicsContext} or the
-	 * {@link org.geomajas.gwt.client.gfx.svg.SvgGraphicsContext}.
+	 * will be the {@link org.geomajas.gwt.client.gfx.context.VmlGraphicsContext} or the
+	 * {@link org.geomajas.gwt.client.gfx.context.SvgGraphicsContext}.
 	 */
 	private GraphicsContext vectorContext;
-	
+
 	/**
 	 * The context for drawing raster images.
 	 */
 	private DefaultImageContext rasterContext;
-	
+
 	/**
 	 * The menu context.
 	 */
 	private MenuContext menuContext;
-	
+
 	/** The current controller on the map. Can be only one at a time! */
 	private GraphicsController controller;
 
@@ -200,7 +201,6 @@ public class GraphicsWidget extends FocusWidget implements MapContext, HasDouble
 		}
 	}
 
-
 	// -------------------------------------------------------------------------
 	// Getters and setters:
 	// -------------------------------------------------------------------------
@@ -221,22 +221,6 @@ public class GraphicsWidget extends FocusWidget implements MapContext, HasDouble
 		base.setBackgroundColor(color);
 	}
 
-
-	/** Fixes resize problem by manually re-adding this component */
-	private class GWTResizedHandler implements ResizedHandler {
-
-		public void onResized(ResizedEvent event) {
-			final int width = parent.getWidth();
-			final int height = parent.getHeight();
-			setHeight(base.getHeight() + "px");
-			setWidth(base.getWidth() + "px");
-			vectorContext.setSize(width, height);
-			parent.removeChild(base);
-			parent.addChild(base);
-			parent.redraw();
-		}
-	}
-
 	public MenuContext getMenuContext() {
 		return menuContext;
 	}
@@ -248,12 +232,12 @@ public class GraphicsWidget extends FocusWidget implements MapContext, HasDouble
 	public GraphicsContext getVectorContext() {
 		return vectorContext;
 	}
-	
+
 	/**
 	 * Menu context that captures raster and vector context events.
-	 *  
+	 * 
 	 * @author Jan De Moerloose
-	 *
+	 * 
 	 */
 	public class MapMenuContext implements MenuContext {
 
@@ -278,7 +262,21 @@ public class GraphicsWidget extends FocusWidget implements MapContext, HasDouble
 				return rasterContext.getGroupById(rightButtonTarget);
 			}
 		}
-		
+	}
+
+	/** Fixes resize problem by manually re-adding this component */
+	private class GWTResizedHandler implements ResizedHandler {
+
+		public void onResized(ResizedEvent event) {
+			final int width = parent.getWidth();
+			final int height = parent.getHeight();
+			setHeight(base.getHeight() + "px");
+			setWidth(base.getWidth() + "px");
+			vectorContext.setSize(width, height);
+			parent.removeChild(base);
+			parent.addChild(base);
+			parent.redraw();
+		}
 	}
 
 }

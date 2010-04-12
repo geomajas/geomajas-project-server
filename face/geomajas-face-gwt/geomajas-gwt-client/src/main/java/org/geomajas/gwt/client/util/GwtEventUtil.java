@@ -31,9 +31,15 @@ import com.google.gwt.event.dom.client.DomEvent;
 import com.google.gwt.event.dom.client.MouseEvent;
 
 /**
- * Utility class regarding GWT mouse events. These functions can be very handy in the {@link GraphicsController}
- * implementations.
- *
+ * <p>
+ * Utility class regarding GWT mouse events. These functions can be very handy in the
+ * {@link org.geomajas.gwt.client.controller.GraphicsController} implementations.
+ * </p>
+ * <p>
+ * <b>Warning</b>: When events are triggered above a symbol using the Chrome browser, this class is unable to find the
+ * target element.
+ * </p>
+ * 
  * @author Pieter De Graef
  */
 public final class GwtEventUtil {
@@ -43,7 +49,7 @@ public final class GwtEventUtil {
 
 	/**
 	 * Get the position of a mouse event.
-	 *
+	 * 
 	 * @param event
 	 *            The mouse event itself.
 	 * @return Returns a coordinate holding the event's X and Y ordinate, where the origin is the upper left corner of
@@ -56,7 +62,7 @@ public final class GwtEventUtil {
 
 	/**
 	 * Get the target DOM element of the mouse event.
-	 *
+	 * 
 	 * @param event
 	 *            The mouse event itself.
 	 * @return Returns the DOM element or null if something went wrong.
@@ -71,7 +77,7 @@ public final class GwtEventUtil {
 
 	/**
 	 * Return the ID of the DOM element of the mouse event.
-	 *
+	 * 
 	 * @param event
 	 *            The mouse event itself.
 	 * @return Returns the ID of the DOM element or null if something went wrong.

@@ -20,22 +20,36 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.geomajas.gwt.client.map.event;
+package org.geomajas.gwt.client.gfx;
 
-import com.google.gwt.event.shared.EventHandler;
+import org.geomajas.global.Api;
 
 /**
- * Interface for handling commit events for feature transactions.
+ * Abstraction of the map for painting rasters and vectors.
+ * 
+ * @author Jan De Moerloose
  *
- * @author Pieter De Graef
  */
-public interface FeatureTransactionHandler extends EventHandler {
+@Api(allMethods = true)
+public interface MapContext {
 
 	/**
-	 * Called when a {@link org.geomajas.layer.feature.FeatureTransaction} has been committed.
-	 *
-	 * @param event
-	 *            commit event
+	 * Get the context for rendering vector data.
+	 * 
+	 * @return a graphics context
 	 */
-	void onFeatureTransactionCommit(FeatureTransactionEvent event);
+	GraphicsContext getVectorContext();
+
+	/**
+	 * Get the context for rendering raster images.
+	 * @return an image context
+	 */
+	ImageContext getRasterContext();
+
+	/**
+	 * Get the right mouse menu context.
+	 * @return a menu context
+	 */
+	MenuContext getMenuContext();
+
 }

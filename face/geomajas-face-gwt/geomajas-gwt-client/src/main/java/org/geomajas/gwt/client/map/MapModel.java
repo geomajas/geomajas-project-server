@@ -35,8 +35,6 @@ import org.geomajas.gwt.client.gfx.PainterVisitor;
 import org.geomajas.gwt.client.map.event.FeatureDeselectedEvent;
 import org.geomajas.gwt.client.map.event.FeatureSelectedEvent;
 import org.geomajas.gwt.client.map.event.FeatureSelectionHandler;
-import org.geomajas.gwt.client.map.event.FeatureTransactionEvent;
-import org.geomajas.gwt.client.map.event.FeatureTransactionHandler;
 import org.geomajas.gwt.client.map.event.HasFeatureSelectionHandlers;
 import org.geomajas.gwt.client.map.event.LayerDeselectedEvent;
 import org.geomajas.gwt.client.map.event.LayerSelectedEvent;
@@ -115,6 +113,10 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 		mapView.addMapViewChangedHandler(this);
 	}
 
+	// -------------------------------------------------------------------------
+	// MapModel event handling:
+	// -------------------------------------------------------------------------
+
 	/**
 	 * Adds this handler to the model.
 	 * 
@@ -126,19 +128,15 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 		return handlerManager.addHandler(MapModelEvent.TYPE, handler);
 	}
 
-	public final HandlerRegistration addFeatureSelectionHandler(FeatureSelectionHandler handler) {
+	public final HandlerRegistration addFeatureSelectionHandler(final FeatureSelectionHandler handler) {
 		return handlerManager.addHandler(FeatureSelectionHandler.TYPE, handler);
 	}
 
-	public HandlerRegistration addFeatureTransactionHandler(FeatureTransactionHandler handler) {
-		return handlerManager.addHandler(FeatureTransactionEvent.TYPE, handler);
-	}
-
-	public HandlerRegistration addLayerSelectionHandler(LayerSelectionHandler handler) {
+	public HandlerRegistration addLayerSelectionHandler(final LayerSelectionHandler handler) {
 		return handlerManager.addHandler(LayerSelectionHandler.TYPE, handler);
 	}
 
-	public void removeMapModelHandler(MapModelHandler handler) {
+	public void removeMapModelHandler(final MapModelHandler handler) {
 		handlerManager.removeHandler(MapModelEvent.TYPE, handler);
 	}
 
@@ -185,7 +183,30 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 	}
 
 	// -------------------------------------------------------------------------
-	// Class specific functions:
+	// Implementation of the MapViewChangedHandler interface:
+	// -------------------------------------------------------------------------
+
+	/**
+	 * Update the visibility of the layers.
+	 * 
+	 * @param event
+	 *            change event
+	 */
+	public void onMapViewChanged(MapViewChangedEvent event) {
+		for (Layer<?> layer : layers) {
+			layer.updateShowing();
+
+			// If the map is resized quickly after a previous resize, tile requests are sent out, but when they come
+			// back, the world-to-pan matrix will have altered, and so the tiles are placed at the wrong positions....
+			// so we clear the store.
+			if (layer instanceof RasterLayer && event.isMapResized()) {
+				((RasterLayer) layer).getStore().clear();
+			}
+		}
+	}
+
+	// -------------------------------------------------------------------------
+	// Public methods:
 	// -------------------------------------------------------------------------
 
 	/**
@@ -231,24 +252,6 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 	 */
 	public boolean isInitialized() {
 		return initialized;
-	}
-
-	protected void removeAllLayers() {
-		layers = new ArrayList<Layer<?>>();
-	}
-
-	protected void addLayer(ClientLayerInfo layerInfo) {
-		switch (layerInfo.getLayerType()) {
-			case RASTER:
-				RasterLayer rasterLayer = new RasterLayer(this, (ClientRasterLayerInfo) layerInfo);
-				layers.add(rasterLayer);
-				break;
-			default:
-				VectorLayer vectorLayer = new VectorLayer(this, (ClientVectorLayerInfo) layerInfo);
-				layers.add(vectorLayer);
-				vectorLayer.addFeatureSelectionHandler(selectionPropagator);
-				break;
-		}
 	}
 
 	/**
@@ -345,19 +348,7 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 		}
 	}
 
-	/**
-	 * Deselect the currently selected layer, includes sending the deselect events.
-	 * 
-	 * @param layer
-	 *            layer to clear
-	 */
-	private void deselectLayer(Layer<?> layer) {
-		if (layer != null) {
-			layer.setSelected(false);
-			handlerManager.fireEvent(new LayerDeselectedEvent(layer));
-		}
-	}
-
+	/** Return a list containing all vector layers within this model. */
 	public List<VectorLayer> getVectorLayers() {
 		ArrayList<VectorLayer> list = new ArrayList<VectorLayer>();
 		for (Layer<?> layer : layers) {
@@ -391,6 +382,13 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 		return null;
 	}
 
+	/**
+	 * Apply a certain feature transaction onto the client side map model. This method is usually called after that same
+	 * feature transaction has been successfully applied on the server.
+	 * 
+	 * @param ft
+	 *            The feature transaction to apply. It can create, update or delete features.
+	 */
 	public void applyFeatureTransaction(FeatureTransaction ft) {
 		if (ft != null) {
 			VectorLayer layer = ft.getLayer();
@@ -409,7 +407,9 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 		}
 	}
 
-	// Getters and setters:
+	// -------------------------------------------------------------------------
+	// Getters:
+	// -------------------------------------------------------------------------
 
 	public List<Layer<?>> getLayers() {
 		return layers;
@@ -443,24 +443,9 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 	}
 
 	/**
-	 * Update the visibility of the layers.
-	 * 
-	 * @param event
-	 *            change event
+	 * Return a factory for geometries that is suited perfectly for geometries within this model. The SRID and precision
+	 * will for the factory will be correct.
 	 */
-	public void onMapViewChanged(MapViewChangedEvent event) {
-		for (Layer<?> layer : layers) {
-			layer.updateShowing();
-
-			// If the map is resized quickly after a previous resize, tile requests are sent out, but when they come
-			// back, the world-to-pan matrix will have altered, and so the tiles are placed at the wrong positions....
-			// so we clear the store.
-			if (layer instanceof RasterLayer && event.isMapResized()) {
-				((RasterLayer) layer).getStore().clear();
-			}
-		}
-	}
-
 	public GeometryFactory getGeometryFactory() {
 		if (null == geometryFactory) {
 			if (0 == srid) {
@@ -471,13 +456,52 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 		return geometryFactory;
 	}
 
+	// -------------------------------------------------------------------------
+	// Private methods:
+	// -------------------------------------------------------------------------
+
+	private void removeAllLayers() {
+		layers = new ArrayList<Layer<?>>();
+	}
+
+	private void addLayer(ClientLayerInfo layerInfo) {
+		switch (layerInfo.getLayerType()) {
+			case RASTER:
+				RasterLayer rasterLayer = new RasterLayer(this, (ClientRasterLayerInfo) layerInfo);
+				layers.add(rasterLayer);
+				break;
+			default:
+				VectorLayer vectorLayer = new VectorLayer(this, (ClientVectorLayerInfo) layerInfo);
+				layers.add(vectorLayer);
+				vectorLayer.addFeatureSelectionHandler(selectionPropagator);
+				break;
+		}
+	}
+
 	/**
-	 * Propagates selection events to interested listeners.
+	 * Deselect the currently selected layer, includes sending the deselect events.
+	 * 
+	 * @param layer
+	 *            layer to clear
+	 */
+	private void deselectLayer(Layer<?> layer) {
+		if (layer != null) {
+			layer.setSelected(false);
+			handlerManager.fireEvent(new LayerDeselectedEvent(layer));
+		}
+	}
+
+	// -------------------------------------------------------------------------
+	// Private classes:
+	// -------------------------------------------------------------------------
+
+	/**
+	 * Propagates layer selection events to interested listeners.
 	 * 
 	 * @author Jan De Moerloose
 	 * 
 	 */
-	class LayerSelectionPropagator implements FeatureSelectionHandler {
+	private class LayerSelectionPropagator implements FeatureSelectionHandler {
 
 		public void onFeatureDeselected(FeatureDeselectedEvent event) {
 			handlerManager.fireEvent(event);
@@ -486,6 +510,5 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 		public void onFeatureSelected(FeatureSelectedEvent event) {
 			handlerManager.fireEvent(event);
 		}
-
 	}
 }

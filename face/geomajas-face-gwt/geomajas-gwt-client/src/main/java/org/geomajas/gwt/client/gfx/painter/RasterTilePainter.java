@@ -22,10 +22,10 @@
  */
 package org.geomajas.gwt.client.gfx.painter;
 
+import org.geomajas.gwt.client.gfx.MapContext;
 import org.geomajas.gwt.client.gfx.Paintable;
 import org.geomajas.gwt.client.gfx.Painter;
 import org.geomajas.gwt.client.map.cache.tile.RasterTile;
-import org.geomajas.gwt.client.widget.MapContext;
 
 /**
  * Paints a raster tile.

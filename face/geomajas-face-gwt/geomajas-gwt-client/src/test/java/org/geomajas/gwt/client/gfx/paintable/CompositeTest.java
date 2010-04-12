@@ -1,10 +1,10 @@
 package org.geomajas.gwt.client.gfx.paintable;
 
+import org.geomajas.gwt.client.gfx.MapContext;
 import org.geomajas.gwt.client.gfx.Paintable;
 import org.geomajas.gwt.client.gfx.Painter;
 import org.geomajas.gwt.client.gfx.PainterVisitor;
 import org.geomajas.gwt.client.spatial.Bbox;
-import org.geomajas.gwt.client.widget.MapContext;
 import org.junit.Assert;
 import org.junit.Test;
 
