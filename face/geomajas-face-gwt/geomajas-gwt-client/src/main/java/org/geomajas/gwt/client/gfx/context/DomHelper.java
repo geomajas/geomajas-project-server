@@ -29,7 +29,6 @@ import java.util.Map;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.controller.GraphicsController;
-import org.geomajas.gwt.client.gfx.GraphicsContext;
 import org.geomajas.gwt.client.gfx.PaintableGroup;
 import org.geomajas.gwt.client.gfx.style.FontStyle;
 import org.geomajas.gwt.client.gfx.style.PictureStyle;
@@ -58,7 +57,7 @@ import com.google.gwt.user.client.EventListener;
  * (HTML, SVG or VML) - and a set of Java objects. Shields the caller from id management by mapping object references to
  * unique document ids.
  * 
- * @see GraphicsContext
+ * @see org.geomajas.gwt.client.gfx.GraphicsContext
  * 
  * @author Kristof Heirwegh
  * @author Jan De Moerloose
@@ -94,7 +93,7 @@ public class DomHelper {
 	 * Namespace enumeration.
 	 * 
 	 * @author Jan De Moerloose
-	 *
+	 * 
 	 */
 	public enum Namespace {
 		HTML, VML, SVG
@@ -394,7 +393,6 @@ public class DomHelper {
 		}
 	}
 
-
 	/**
 	 * Parse a matrix object into a string, suitable for the SVG 'transform' attribute.
 	 * 
@@ -444,8 +442,7 @@ public class DomHelper {
 	 */
 	public void setController(Object parent, String name, GraphicsController controller) {
 		// set them all
-		doSetController(getElement(parent, name), controller, 
-				Event.MOUSEEVENTS | Event.ONDBLCLICK | Event.ONMOUSEWHEEL);
+		doSetController(getElement(parent, name), controller, Event.MOUSEEVENTS | Event.ONDBLCLICK | Event.ONMOUSEWHEEL);
 	}
 
 	/**
@@ -767,7 +764,6 @@ public class DomHelper {
 			return element;
 		}
 	}
-
 
 	/**
 	 * Delete this element from the graphics DOM structure.

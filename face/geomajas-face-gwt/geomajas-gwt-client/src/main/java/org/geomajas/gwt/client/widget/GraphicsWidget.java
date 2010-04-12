@@ -54,8 +54,9 @@ import com.smartgwt.client.widgets.events.ResizedHandler;
 /**
  * <p>
  * GWT widget implementation meant for actual drawing. To this end it implements the <code>GraphicsContext</code>
- * interface. Actually it delegates the real work to either a {@link org.geomajas.gwt.client.gfx.context.VmlGraphicsContext}
- * or a {@link org.geomajas.gwt.client.gfx.context.SvgGraphicsContext} object.
+ * interface. Actually it delegates the real work to either a
+ * {@link org.geomajas.gwt.client.gfx.context.VmlGraphicsContext} or a
+ * {@link org.geomajas.gwt.client.gfx.context.SvgGraphicsContext} object.
  * </p>
  * <p>
  * By default this widget will draw in screen space. It will check the given ID's and add the screen space group in
