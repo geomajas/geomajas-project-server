@@ -442,7 +442,8 @@ public class DomHelper {
 	 */
 	public void setController(Object parent, String name, GraphicsController controller) {
 		// set them all
-		doSetController(getElement(parent, name), controller, Event.MOUSEEVENTS | Event.ONDBLCLICK | Event.ONMOUSEWHEEL);
+		doSetController(getElement(parent, name), controller,
+				Event.MOUSEEVENTS | Event.ONDBLCLICK | Event.ONMOUSEWHEEL);
 	}
 
 	/**
