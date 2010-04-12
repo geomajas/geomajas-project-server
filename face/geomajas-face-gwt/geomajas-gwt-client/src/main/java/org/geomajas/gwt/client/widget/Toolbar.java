@@ -222,9 +222,7 @@ public class Toolbar extends ToolStrip {
 		addMember(button);
 	}
 
-	/**
-	 * Add a vertical line to the toolbar.
-	 */
+	/** Add a vertical line to the toolbar. */
 	public void addToolbarSeparator() {
 		ToolStripSeparator stripSeparator = new ToolStripSeparator();
 		stripSeparator.setHeight(8);
@@ -235,14 +233,20 @@ public class Toolbar extends ToolStrip {
 	// Getters and setters:
 	// -------------------------------------------------------------------------
 
+	/**
+	 * Get the size of the buttons. Set this before the toolbar is drawn, because afterwards, it can't be changed
+	 * anymore.
+	 */
 	public int getButtonSize() {
 		return buttonSize;
 	}
 
 	/**
-	 * Set the size of the buttons. Use this before the toolbar is drawn, because afterwards, it won't work anymore.
+	 * Set the size of the buttons. Use this before the toolbar is drawn, because afterwards, it can't be changed
+	 * anymore.
 	 * 
-	 * @param buttonSize button size
+	 * @param buttonSize
+	 *            The new button size.
 	 */
 	public void setButtonSize(int buttonSize) {
 		this.buttonSize = buttonSize;

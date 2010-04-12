@@ -32,7 +32,7 @@ import org.geomajas.gwt.client.widget.MapWidget;
  *
  * @author Joachim Van der Auwera
  */
-public class ZoomToRectangleController extends RectangleController {
+public class ZoomToRectangleController extends AbstractRectangleController {
 
 	public ZoomToRectangleController(MapWidget mapWidget) {
 		super(mapWidget);

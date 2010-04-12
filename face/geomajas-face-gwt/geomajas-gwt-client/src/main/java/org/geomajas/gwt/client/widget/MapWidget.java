@@ -238,6 +238,16 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 		setZoomOnScrollEnabled(true);
 	}
 
+	// -------------------------------------------------------------------------
+	// Class specific methods:
+	// -------------------------------------------------------------------------
+
+	/**
+	 * Return the Object that represents one the default RenderGroups in the DOM tree when drawing.
+	 * 
+	 * @param group
+	 *            The general group definition (RenderGroup.SCREEN, RenderGroup.WORLD, ...)
+	 */
 	public PaintableGroup getGroup(RenderGroup group) {
 		switch (group) {
 			case RASTER:
@@ -252,13 +262,12 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 		}
 	}
 
+	/**
+	 * Get the full list of registered WorldPaintable objects in this map. It is possible to add new instances to it.
+	 */
 	public List<WorldPaintable> getWorldSpacePaintables() {
 		return worldSpacePaintables;
 	}
-
-	// -------------------------------------------------------------------------
-	// Class specific methods:
-	// -------------------------------------------------------------------------
 
 	public double getUnitLength() {
 		return unitLength;
@@ -266,43 +275,6 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 
 	public double getPixelLength() {
 		return pixelLength;
-	}
-
-	protected void initializationCallback(GetMapConfigurationResponse r) {
-		if (r.getMapInfo() != null && !mapModel.isInitialized()) {
-			ClientMapInfo info = r.getMapInfo();
-			unitLength = info.getUnitLength();
-			pixelLength = info.getPixelLength();
-			graphics.setBackgroundColor(info.getBackgroundColor());
-			mapModel.initialize(info);
-			setNavigationAddonEnabled(info.isPanButtonsEnabled());
-			setScalebarEnabled(info.isScaleBarEnabled());
-			painterVisitor.registerPainter(new FeaturePainter(new ShapeStyle(info.getPointSelectStyle()),
-					new ShapeStyle(info.getLineSelectStyle()), new ShapeStyle(info.getPolygonSelectStyle())));
-
-			for (final Layer<?> layer : mapModel.getLayers()) {
-				layer.addLayerChangedHandler(new LayerChangedHandler() {
-
-					public void onLabelChange(LayerLabeledEvent event) {
-						render(layer, null, RenderStatus.ALL);
-					}
-
-					public void onVisibleChange(LayerShownEvent event) {
-						render(layer, null, RenderStatus.ALL);
-					}
-				});
-			}
-
-			// Register the watermark MapAddon:
-			Watermark watermark = new Watermark(id + "-watermark", this);
-			watermark.setAlignment(Alignment.RIGHT);
-			watermark.setVerticalAlignment(VerticalAlignment.BOTTOM);
-			registerMapAddon(watermark);
-			//			
-			// // Register ZoomAddon:
-			// ZoomAddon zoomAddon = new ZoomAddon(id + "-zoom", this);
-			// registerMapAddon(zoomAddon);
-		}
 	}
 
 	public void registerPainter(Painter painter) {
@@ -522,20 +494,6 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 		}
 	}
 
-	// -------------------------------------------------------------------------
-	// Private methods:
-	// -------------------------------------------------------------------------
-
-	protected void onDraw() {
-		super.onDraw();
-		// must be called before anything else !
-		render(mapModel, null, RenderStatus.ALL);
-		final int width = getWidth();
-		final int height = getHeight();
-		mapModel.getMapView().setSize(width, height);
-		init();
-	}
-
 	public void init() {
 		GwtCommand commandRequest = new GwtCommand("command.configuration.GetMap");
 		commandRequest.setCommandRequest(new GetMapConfigurationRequest(id, applicationId));
@@ -644,6 +602,49 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 			}
 		}
 		return null;
+	}
+
+	protected void onDraw() {
+		super.onDraw();
+		// must be called before anything else !
+		render(mapModel, null, RenderStatus.ALL);
+		final int width = getWidth();
+		final int height = getHeight();
+		mapModel.getMapView().setSize(width, height);
+		init();
+	}
+
+	protected void initializationCallback(GetMapConfigurationResponse r) {
+		if (r.getMapInfo() != null && !mapModel.isInitialized()) {
+			ClientMapInfo info = r.getMapInfo();
+			unitLength = info.getUnitLength();
+			pixelLength = info.getPixelLength();
+			graphics.setBackgroundColor(info.getBackgroundColor());
+			mapModel.initialize(info);
+			setNavigationAddonEnabled(info.isPanButtonsEnabled());
+			setScalebarEnabled(info.isScaleBarEnabled());
+			painterVisitor.registerPainter(new FeaturePainter(new ShapeStyle(info.getPointSelectStyle()),
+					new ShapeStyle(info.getLineSelectStyle()), new ShapeStyle(info.getPolygonSelectStyle())));
+
+			for (final Layer<?> layer : mapModel.getLayers()) {
+				layer.addLayerChangedHandler(new LayerChangedHandler() {
+
+					public void onLabelChange(LayerLabeledEvent event) {
+						render(layer, null, RenderStatus.ALL);
+					}
+
+					public void onVisibleChange(LayerShownEvent event) {
+						render(layer, null, RenderStatus.ALL);
+					}
+				});
+			}
+
+			// Register the watermark MapAddon:
+			Watermark watermark = new Watermark(id + "-watermark", this);
+			watermark.setAlignment(Alignment.RIGHT);
+			watermark.setVerticalAlignment(VerticalAlignment.BOTTOM);
+			registerMapAddon(watermark);
+		}
 	}
 
 	// -------------------------------------------------------------------------

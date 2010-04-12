@@ -47,7 +47,7 @@ import com.smartgwt.client.widgets.menu.Menu;
  * 
  * @author Joachim Van der Auwera
  */
-public abstract class RectangleController extends AbstractGraphicsController {
+public abstract class AbstractRectangleController extends AbstractGraphicsController {
 
 	protected Rectangle rectangle;
 
@@ -65,7 +65,7 @@ public abstract class RectangleController extends AbstractGraphicsController {
 
 	protected Menu menu;
 
-	public RectangleController(MapWidget mapWidget) {
+	public AbstractRectangleController(MapWidget mapWidget) {
 		super(mapWidget);
 	}
 

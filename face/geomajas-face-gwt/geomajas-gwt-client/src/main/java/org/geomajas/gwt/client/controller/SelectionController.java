@@ -57,7 +57,7 @@ import com.smartgwt.client.widgets.menu.Menu;
  * @author Joachim Van der Auwera
  * @author Pieter De Graef
  */
-public class SelectionController extends RectangleController {
+public class SelectionController extends AbstractRectangleController {
 
 	private boolean shiftOrCtrl;
 

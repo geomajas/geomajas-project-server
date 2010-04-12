@@ -26,6 +26,7 @@ package org.geomajas.gwt.client.widget;
 import org.geomajas.command.dto.GetMapConfigurationResponse;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.global.Api;
+import org.geomajas.gwt.client.Geomajas;
 import org.geomajas.gwt.client.controller.OverviewMapController;
 import org.geomajas.gwt.client.gfx.paintable.GfxGeometry;
 import org.geomajas.gwt.client.gfx.paintable.Image;
@@ -118,17 +119,12 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 				updateMaxExtent();
 			}
 		});
-		addResizedHandler(new OverviewMapResizedHandler());
-	}
+		addResizedHandler(new ResizedHandler() {
 
-	/**
-	 * Override the initialize method, to set a controller, and perhaps apply the target map's max extent.
-	 */
-	@Override
-	protected void initializationCallback(GetMapConfigurationResponse r) {
-		super.initializationCallback(r);
-		setController(new OverviewMapController(this));
-		updateMaxExtent();
+			public void onResized(ResizedEvent event) {
+				updateMaxExtent();
+			}
+		});
 	}
 
 	// ------------------------------------------------------------------------
@@ -283,6 +279,16 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 	// ------------------------------------------------------------------------
 
 	/**
+	 * Override the initialize method, to set a controller, and perhaps apply the target map's max extent.
+	 */
+	@Override
+	protected void initializationCallback(GetMapConfigurationResponse r) {
+		super.initializationCallback(r);
+		setController(new OverviewMapController(this));
+		updateMaxExtent();
+	}
+
+	/**
 	 * Apply a maximum extent. This will take the target map's maximum extent (actually 5% bigger)
 	 */
 	private void updateMaxExtent() {
@@ -342,7 +348,7 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 			}
 			if (null == targetReticle) {
 				targetReticle = new Image("targetReticle");
-				targetReticle.setHref(getIsomorphicDir() + TARGET_RETICLE_IMAGE);
+				targetReticle.setHref(Geomajas.getIsomorphicDir() + TARGET_RETICLE_IMAGE);
 				targetReticle.setBounds(new Bbox(0, 0, 21, 21));
 			}
 			double x = viewBegin.getX() + (width / 2) - 10;
@@ -364,23 +370,4 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 			render(targetRectangle, RenderGroup.SCREEN, RenderStatus.UPDATE);
 		}
 	}
-
-	private native String getIsomorphicDir()/*-{
-											return $wnd.isomorphicDir;
-											}-*/;
-	/**
-	 * Updates the max extent on resize.
-	 * 
-	 * @author Jan De Moerloose
-	 *
-	 */
-	public class OverviewMapResizedHandler implements ResizedHandler {
-
-		public void onResized(ResizedEvent event) {
-			updateMaxExtent();
-		}
-
-	}
-
-
 }

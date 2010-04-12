@@ -25,7 +25,7 @@ package org.geomajas.example.gwt.client.samples.controller;
 
 import org.geomajas.example.gwt.client.samples.base.SamplePanel;
 import org.geomajas.example.gwt.client.samples.base.SamplePanelFactory;
-import org.geomajas.gwt.client.controller.RectangleController;
+import org.geomajas.gwt.client.controller.AbstractRectangleController;
 import org.geomajas.example.gwt.client.samples.i18n.I18nProvider;
 import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.widget.MapWidget;
@@ -68,7 +68,7 @@ public class RectangleControllerSample extends SamplePanel {
 		 * @author Frank Wynants
 		 *
 		 */
-		class AreaController extends RectangleController { // A RectangleController that prints out the size of the
+		class AreaController extends AbstractRectangleController { // A RectangleController that prints out the size of the
 															// selected area
 			/**
 			 * Constructor
