@@ -23,6 +23,7 @@
 package org.geomajas.command;
 
 import org.geomajas.global.Api;
+import org.geomajas.global.UserImplemented;
 
 /**
  * Command definition.
@@ -33,6 +34,7 @@ import org.geomajas.global.Api;
  * @author Joachim Van der Auwera  
  */
 @Api(allMethods = true)
+@UserImplemented
 public interface Command<REQUEST extends CommandRequest, RESPONSE extends CommandResponse> {
 
 	/**

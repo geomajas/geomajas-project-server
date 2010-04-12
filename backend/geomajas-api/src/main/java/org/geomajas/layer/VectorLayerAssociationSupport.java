@@ -26,6 +26,7 @@ package org.geomajas.layer;
 import java.util.List;
 
 import org.geomajas.global.Api;
+import org.geomajas.global.UserImplemented;
 import org.geomajas.layer.feature.Attribute;
 import org.opengis.filter.Filter;
 
@@ -35,6 +36,7 @@ import org.opengis.filter.Filter;
  * @author Joachim Van der Auwera
  */
 @Api(allMethods = true)
+@UserImplemented
 public interface VectorLayerAssociationSupport {
 
 	/**

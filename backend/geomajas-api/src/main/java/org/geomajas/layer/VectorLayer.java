@@ -25,6 +25,7 @@ package org.geomajas.layer;
 import com.vividsolutions.jts.geom.Envelope;
 import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.global.Api;
+import org.geomajas.global.UserImplemented;
 import org.geomajas.layer.feature.FeatureModel;
 import org.opengis.filter.Filter;
 
@@ -40,6 +41,7 @@ import java.util.Iterator;
  * @author Jan De Moerloose
  */
 @Api(allMethods = true)
+@UserImplemented
 public interface VectorLayer extends Layer<VectorLayerInfo> {
 
 	/**

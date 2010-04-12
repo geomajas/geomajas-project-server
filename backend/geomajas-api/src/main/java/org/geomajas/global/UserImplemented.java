@@ -21,32 +21,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.security;
+package org.geomajas.global;
 
-import org.geomajas.global.Api;
-import org.geomajas.global.UserImplemented;
-import org.opengis.filter.Filter;
+import java.lang.annotation.Documented;
+import java.lang.annotation.ElementType;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+import java.lang.annotation.Target;
 
 /**
- * Extra filter which should be applied by the layer model when selecting features.
- * <p/>
- * Note that while it is possible to use this filter to limit the features returned by the layer, it does not affect
- * creation of features and may not be applied when trying to fetch features by id. When such checks are needed, you
- * should also implement {@link org.geomajas.security.FeatureAuthorization} and do the checks there.
+ * Marker annotation which indicates that an interface is expected to be implemented by client code and thus indicates
+ * that no methods may be added to the interface without breaking API compatibility.
  *
  * @author Joachim Van der Auwera
  */
-@Api(allMethods = true)
-@UserImplemented
-public interface VectorLayerSelectFilterAuthorization extends BaseAuthorization {
-
-	/**
-	 * Get a filter which limits the visible data which can be used.
-	 * <p/>
-	 * This allows for example filtering cities on number of inhabitants, features on their area etc.
-	 *
-	 * @param layerId layer id for which the filter applies
-	 * @return string representation of the filter
-	 */
-	Filter getFeatureFilter(String layerId);
+@Retention(RetentionPolicy.SOURCE)
+@Target({ ElementType.TYPE })
+@Documented
+public @interface UserImplemented {
 }

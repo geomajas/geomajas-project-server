@@ -24,6 +24,7 @@
 package org.geomajas.security;
 
 import org.geomajas.global.Api;
+import org.geomajas.global.UserImplemented;
 
 import java.util.Locale;
 
@@ -33,6 +34,7 @@ import java.util.Locale;
  * @author Joachim Van der Auwera
  */
 @Api(allMethods = true)
+@UserImplemented
 public interface UserInfo {
 
 	/**

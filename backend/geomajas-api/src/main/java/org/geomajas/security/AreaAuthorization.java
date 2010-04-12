@@ -25,6 +25,7 @@ package org.geomajas.security;
 
 import com.vividsolutions.jts.geom.Geometry;
 import org.geomajas.global.Api;
+import org.geomajas.global.UserImplemented;
 
 /**
  * Authorizations based on area.
@@ -32,6 +33,7 @@ import org.geomajas.global.Api;
  * @author Joachim Van der Auwera
  */
 @Api(allMethods = true)
+@UserImplemented
 public interface AreaAuthorization extends BaseAuthorization {
 
 	/**

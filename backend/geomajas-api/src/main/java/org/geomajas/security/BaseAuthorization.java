@@ -24,6 +24,7 @@
 package org.geomajas.security;
 
 import org.geomajas.global.Api;
+import org.geomajas.global.UserImplemented;
 
 /**
  * Base authorization, determines authorization of tools and commands and entire layers.
@@ -31,6 +32,7 @@ import org.geomajas.global.Api;
  * @author Joachim Van der Auwera
  */
 @Api(allMethods = true)
+@UserImplemented
 public interface BaseAuthorization {
 
 	/**

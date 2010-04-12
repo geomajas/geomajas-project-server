@@ -24,6 +24,7 @@
 package org.geomajas.security;
 
 import org.geomajas.global.Api;
+import org.geomajas.global.UserImplemented;
 import org.geomajas.layer.feature.InternalFeature;
 
 /**
@@ -32,6 +33,7 @@ import org.geomajas.layer.feature.InternalFeature;
  * @author Joachim Van der Auwera
  */
 @Api(allMethods = true)
+@UserImplemented
 public interface AttributeAuthorization extends BaseAuthorization {
 
 	/**

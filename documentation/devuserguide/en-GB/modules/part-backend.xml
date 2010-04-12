@@ -1424,6 +1424,13 @@ public class Road {
       class or interface are considered part of the API, you could use
       "<code>@Api(allMethods = true)</code>". The alternative is to annotate
       the individual methods.</para>
+
+      <para>The API includes many interfaces. These interfaces should only be
+      implemented by client code when they are annotated by
+      "<code>@<code>UserImplemented</code></code>". All other interfaces are
+      provided to indicate the methods available on instances which are
+      obtained through the API and may have extra methods added in future
+      versions.</para>
     </section>
 
     <section>
@@ -1441,12 +1448,6 @@ public class Road {
       packages :</para>
 
       <itemizedlist>
-        <listitem>
-          <para><emphasis>cache</emphasis> : all interfaces, services,
-          exceptions and data transfer objects related with the cache
-          extension points.</para>
-        </listitem>
-
         <listitem>
           <para><emphasis>command</emphasis> : all interfaces, services,
           exceptions and data transfer objects related with the command
@@ -1477,12 +1478,6 @@ public class Road {
         </listitem>
 
         <listitem>
-          <para><emphasis>rendering</emphasis> : all interfaces, services,
-          exceptions and data transfer objects related with the rendering
-          extension points.</para>
-        </listitem>
-
-        <listitem>
           <para><emphasis>security</emphasis> : all interfaces, services,
           exceptions and data transfer objects related with the security
           extension points and security handling.</para>
@@ -1491,6 +1486,10 @@ public class Road {
         <listitem>
           <para><emphasis>service</emphasis> : utility services which may be
           useful for all extensions.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>spring</emphasis> : </para>
         </listitem>
       </itemizedlist>
 
