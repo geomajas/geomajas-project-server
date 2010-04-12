@@ -22,7 +22,6 @@
  */
 package org.geomajas.spring;
 
-import org.geomajas.global.Api;
 import org.geomajas.global.GeomajasException;
 
 /**
