@@ -73,18 +73,21 @@ public class SaveOrUpdateSaveStep extends AbstractSaveOrUpdateStep {
 		}
 
 		Filter securityFilter;
-		int securityExceptionCode;
 		if (isCreate) {
 			securityFilter = getSecurityFilter(layer, securityContext.getCreateAuthorizedArea(layerId));
-			securityExceptionCode = ExceptionCode.FEATURE_CREATE_PROHIBITED;
 		} else {
 			securityFilter = getSecurityFilter(layer, securityContext.getUpdateAuthorizedArea(layerId));
-			securityExceptionCode = ExceptionCode.FEATURE_UPDATE_PROHIBITED;
 		}
 		if (securityFilter.evaluate(feature)) {
 			context.put(PipelineCode.FEATURE_DATA_OBJECT_KEY, layer.saveOrUpdate(feature));
 		} else {
-			throw new GeomajasSecurityException(securityExceptionCode, newFeature.getId(), securityContext.getUserId());
+			if (isCreate) {
+				throw new GeomajasSecurityException(ExceptionCode.FEATURE_CREATE_PROHIBITED,
+						securityContext.getUserId());
+			} else {
+				throw new GeomajasSecurityException(ExceptionCode.FEATURE_UPDATE_PROHIBITED, newFeature.getId(),
+						securityContext.getUserId());				
+			}
 		}
 	}
 }
