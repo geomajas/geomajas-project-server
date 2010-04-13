@@ -23,7 +23,7 @@
   ~ You should have received a copy of the GNU Affero General Public License
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
-<part id="part-back-end" xmlns:xi="http://www.w3.org/2001/XInclude" >
+<part id="part-back-end">
   <title>back-end</title>
 
   <chapter id="chapter-configuration">
@@ -135,7 +135,7 @@
     <section>
       <title>General principles</title>
 
-      <para>Each of the configuration files needs the following header:</para>
+      <para>Each of the configuration files needs the following header :</para>
 
       <xi:include href="../listing/SpringConfigurationPreamble.xml"
 				  xmlns:xi="http://www.w3.org/2001/XInclude" />
@@ -191,7 +191,7 @@
       <para>The back-end configuration consists of security, transaction and
       layer configurations. It can of course be extended with additional
       Spring configuration that is needed by your custom application. There
-      are two basic types of layers: raster and vector layers.</para>
+      are two basic types of layers : raster and vector layers.</para>
 
       <section>
         <title>Security configuration</title>
@@ -219,7 +219,7 @@
 
         <para>Transaction management is typically only needed for editable
         database layers (although we support and encourage it for read-only
-        layers as well), of which we provide two types:
+        layers as well), of which we provide two types :
         <code>HibernateLayer</code> and <code>GeoToolsLayer</code>. There is
         currently no support for having multiple platform transaction
         managers, although configurations with multiple transaction managers
@@ -228,12 +228,12 @@
         not mix editable Hibernate and GeoTools layers.</para>
 
         <para>For Hibernate layers, the following configuration should be
-        used:</para>
+        used :</para>
 
         <xi:include href="../listing/HibernateTx.xml"
                     xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-        <para>Starting from the top, the following are defined:</para>
+        <para>Starting from the top, the following are defined :</para>
 
         <itemizedlist>
           <listitem>
@@ -259,12 +259,12 @@
           </listitem>
         </itemizedlist>
 
-        <para>For GeoTools layers, the configuration is as follows:</para>
+        <para>For GeoTools layers, the configuration is as follows :</para>
 
         <xi:include href="../listing/GeoToolsTx.xml"
                     xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-        <para>Starting from the top, the following are defined:</para>
+        <para>Starting from the top, the following are defined :</para>
 
         <itemizedlist>
           <listitem>
@@ -303,12 +303,12 @@
           <title>WMS layer configuration</title>
 
           <para>Make sure your classpath contains the required plug-in. If you
-          are using maven, add the following dependency to your pom:</para>
+          are using maven, add the following dependency to your pom :</para>
 
           <xi:include href="../listing/WmsLayerDependency.xml"
                       xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-          <para>A complete WMS layer configuration looks as follows:</para>
+          <para>A complete WMS layer configuration looks as follows :</para>
 
           <xi:include href="../listing/WmsLayerSample.xml"
                       xmlns:xi="http://www.w3.org/2001/XInclude" />
@@ -318,7 +318,7 @@
 
           <para>The first property is the layer info object, which describes
           the metadata common to all raster layers. The following properties
-          are needed for this object:</para>
+          are needed for this object :</para>
 
           <para><table>
               <title>Raster Layer info</title>
@@ -344,7 +344,7 @@
                     <entry>crs</entry>
 
                     <entry>The coordinate reference system, expressed as
-                    "EPSG:&lt;srid&gt;". Caveat: make sure this is the same as
+                    "EPSG:&lt;srid&gt;". Caveat : make sure this is the same as
                     the maps' CRS as full raster image reprojection is not
                     supported ! If the CRS's differ, an attempt will be done
                     to rescale and align the center coordinates,
@@ -371,7 +371,7 @@
                     (set of) resolution(s), so it is important to specify
                     these here if they are known. On top of that, some servers
                     provide specific tile caching for these predefined
-                    resolutions (WMS-T). Care has to be taken, however: the
+                    resolutions (WMS-T). Care has to be taken, the
                     same resolutions should be defined in the map as well if
                     one wants to avoid linear distortion of the
                     images.</entry>
@@ -401,7 +401,7 @@
           width/height ration of the tile.</para>
 
           <para>The layer object contains some extra properties which are
-          specifically tied to the WMS server:</para>
+          specifically tied to the WMS server :</para>
 
           <table>
             <title>WMS layer properties</title>
@@ -465,13 +465,13 @@
           <title>OpenStreetMap layer configuration</title>
 
           <para>Make sure your classpath contains the required plug-in. If you
-          are using maven, add the following dependency to your pom:</para>
+          are using maven, add the following dependency to your pom :</para>
 
           <xi:include href="../listing/OsmLayerDependency.xml"
                       xmlns:xi="http://www.w3.org/2001/XInclude" />
 
           <para>A complete OpenStreetMap layer configuration looks as
-          follows:</para>
+          follows :</para>
 
           <xi:include href="../listing/OsmLayerSample.xml"
                       xmlns:xi="http://www.w3.org/2001/XInclude" />
@@ -489,12 +489,12 @@
           <title>Google Maps layer configuration</title>
 
           <para>Make sure your classpath contains the required plug-in. If you
-          are using maven, add the following dependency to your pom:</para>
+          are using maven, add the following dependency to your pom :</para>
 
           <xi:include href="../listing/GoogleLayerDependency.xml"
                       xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-          <para>A complete Google layer configuration looks as follows:</para>
+          <para>A complete Google layer configuration looks as follows :</para>
 
           <xi:include href="../listing/GoogleLayerSample.xml"
                       xmlns:xi="http://www.w3.org/2001/XInclude" />
@@ -598,10 +598,10 @@
         <para>Attributes can be either primitive attributes or association
         attributes. Primitive attributes represent primitive Java types as
         well as some common types like Date and String. The following
-        primitive attribute types are defined: BOOLEAN, SHORT, INTEGER, LONG,
+        primitive attribute types are defined : BOOLEAN, SHORT, INTEGER, LONG,
         FLOAT, DOUBLE, CURRENCY, STRING, DATE, URL and IMGURL. Association
         attributes represent non-primitive Java types. There are two types of
-        association attributes defined: MANY-TO-ONE and ONE-TO-MANY. These
+        association attributes defined : MANY-TO-ONE and ONE-TO-MANY. These
         reflect the many-to-one and one-to-many relationships as defined in an
         entity-relationship model and can only be used in conjunction with the
         <code>HibernateLayer</code>.</para>
@@ -611,7 +611,7 @@
 
           <para>Most feature attributes should be validated before they can be
           saved to a file or database. Validation is a concern that stretches
-          across many layers of a typical application: there is usually a need
+          across many layers of a typical application : there is usually a need
           for client-side validation (making the app more user friendly) ,
           server-side validation (to protect the server from invalid data) as
           well as database validation (to preserve data integrity). Preferably
@@ -672,7 +672,7 @@
 
           <para>Once the Java class mapping is finished, the actual layer
           configuration can be made. An example configuration that matches the
-          <code>Road.java</code> class is shown below:</para>
+          <code>Road.java</code> class is shown below :</para>
 
           <xi:include href="../listing/HibernateRoadsLayer.xml"
                       xmlns:xi="http://www.w3.org/2001/XInclude" />
@@ -696,13 +696,13 @@
 
           <para>As already mentioned, the bulk part of the layer's metadata is
           defined through the <code>VectorLayerInfo</code> object. An example
-          definition of this object is given below:</para>
+          definition of this object is given below :</para>
 
           <xi:include href="../listing/HibernateRoadsInfo.xml"
                       xmlns:xi="http://www.w3.org/2001/XInclude" />
 
           <para>The following table describes the properties of the
-          <code>VectorLayerInfo</code> object:</para>
+          <code>VectorLayerInfo</code> object :</para>
 
           <para><table>
               <title>VectorLayer info</title>
@@ -751,13 +751,13 @@
           <code>FeatureInfo</code> object. This objects contains the complete
           feature type description (id, attributes and geometry) as well as
           the validation rules for the attributes. An example definition of
-          this object is given below:</para>
+          this object is given below :</para>
 
           <xi:include href="../listing/HibernateRoadsFeatureInfo.xml"
                       xmlns:xi="http://www.w3.org/2001/XInclude" />
 
           <para>The following table describes the properties of the
-          <code>FeatureInfo</code> object:</para>
+          <code>FeatureInfo</code> object :</para>
 
           <table>
             <title>Feature info configuration</title>
@@ -832,7 +832,7 @@
 
           <para>In most cases, you will need to pass data using the parameters
           property to get a functional GeoTools layer. This would look similar
-          to this:</para>
+          to this :</para>
 
           <example>
             <title>GeoTools WFS configuration skeleton</title>
