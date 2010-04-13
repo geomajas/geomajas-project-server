@@ -169,9 +169,6 @@ public class ExtractSourcePlugin extends AbstractMojo {
 			for (int i = 0 ; i < lines.size() ; i++) {
 				String line = lines.get(i);
 				line = line.substring(indentation);
-				line = line.replace("&", "&amp;");
-				line = line.replace("<", "&lt;");
-				line = line.replace(">", "&gt;");
 				lines.set(i, line);
 			}
 		}

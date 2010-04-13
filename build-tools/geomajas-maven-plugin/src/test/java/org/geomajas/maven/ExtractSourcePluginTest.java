@@ -64,6 +64,8 @@ public class ExtractSourcePluginTest {
 		list.add("<test>black & white</test>");
 		ExtractSourcePlugin esp = new ExtractSourcePlugin();
 		esp.prepareLines(list);
-		Assert.assertEquals("&lt;test&gt;black &amp; white&lt;/test&gt;", list.get(0));
+		// should not replace, block will be stored in CDATA
+		//Assert.assertEquals("&lt;test&gt;black &amp; white&lt;/test&gt;", list.get(0));
+		Assert.assertEquals("<test>black & white</test>", list.get(0));
 	}
 }

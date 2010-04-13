@@ -61,6 +61,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 					<property name="editable" value="true" />
 					<property name="identifying" value="true" />
 					<property name="type" value="FLOAT" />
+					<!-- @extract-start AttributeValidator, Attribute validator configuration -->
 					<property name="validator">
 						<bean class="org.geomajas.configuration.validation.ValidatorInfo">
 							<property name="constraints">
@@ -73,6 +74,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 							<property name="toolTip" value="Area you may wish to fill in." />
 						</bean>
 					</property>
+					<!-- @extract-end -->
 				</bean>
 				<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
 					<property name="label" value="Perimeter" />

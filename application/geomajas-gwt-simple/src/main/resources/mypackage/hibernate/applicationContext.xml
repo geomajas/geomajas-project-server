@@ -62,7 +62,28 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 	<bean id="gwt-simple" class="org.geomajas.configuration.client.ClientApplicationInfo">
 		<property name="maps">
 			<list>
+				<!-- @extract-start ClientMapInfoPart1, Client map configuration -->
 				<bean name="sampleFeaturesMap" class="org.geomajas.configuration.client.ClientMapInfo">
+					<property name="crs" value="EPSG:900913" />
+					<property name="displayUnitType" value="METRIC" />
+					<property name="maximumScale" value="9.5" />
+					<property name="initialBounds">
+						<bean class="org.geomajas.geometry.Bbox">
+							<property name="x" value="506356" />
+							<property name="y" value="6588779" />
+							<property name="width" value="330" />
+							<property name="height" value="260" />
+						</bean>
+					</property>
+					<property name="layers">
+						<list>
+							<ref bean="osmLayer" />
+							<ref bean="roadsLayer" />
+							<ref bean="structuresLayer" />
+						</list>
+					</property>
+				<!-- @extract-end -->
+				<!-- @extract-start ClientMapInfoPart2, Client map configuration -->
 					<property name="backgroundColor" value="#F0F0F0" />
 					<property name="lineSelectStyle">
 						<bean class="org.geomajas.configuration.FeatureStyleInfo">
@@ -82,25 +103,10 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 							<property name="fillOpacity" value=".5" />
 						</bean>
 					</property>
-					<property name="crs" value="EPSG:900913" />
 					<property name="scaleBarEnabled" value="true" />
 					<property name="panButtonsEnabled" value="true" />
-					<property name="maximumScale" value="9.5" />
-					<property name="initialBounds">
-						<bean class="org.geomajas.geometry.Bbox">
-							<property name="x" value="506356" />
-							<property name="y" value="6588779" />
-							<property name="width" value="330" />
-							<property name="height" value="260" />
-						</bean>
-					</property>
-					<property name="layers">
-						<list>
-							<ref bean="osmLayer" />
-							<ref bean="roadsLayer" />
-							<ref bean="structuresLayer" />
-						</list>
-					</property>
+				<!-- @extract-end -->
+				<!-- @extract-start ClientMapInfoPart3, Client map configuration -->
 					<property name="toolbar">
 						<bean name="sampleFeaturesMapToolbar" class="org.geomajas.configuration.client.ClientToolbarInfo">
 							<property name="tools">
@@ -120,6 +126,8 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 							</property>
 						</bean>
 					</property>
+				<!-- @extract-end -->
+				<!-- @extract-start ClientMapInfoPart4, Client map configuration -->
 					<property name="layerTree">
 						<bean name="sampleFeaturesTree" class="org.geomajas.configuration.client.ClientLayerTreeInfo">
 							<property name="tools">
@@ -146,6 +154,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 						</bean>
 					</property>
 				</bean>
+				<!-- @extract-end -->
 
 
 				<bean name="sampleOverviewMap" class="org.geomajas.configuration.client.ClientMapInfo">
@@ -237,6 +246,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 
 	<bean name="ToolbarSeparator" class="org.geomajas.configuration.client.ClientToolInfo"/>
 
+	<!-- @extract-start ZoomInToolInfo, Tool configuration -->
 	<bean name="ZoomIn" class="org.geomajas.configuration.client.ClientToolInfo">
 		<property name="parameters">
 			<list>
@@ -247,6 +257,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 			</list>
 		</property>
 	</bean>
+	<!-- @extract-end -->
 	<bean name="ZoomOut" class="org.geomajas.configuration.client.ClientToolInfo">
 		<property name="parameters">
 			<list>

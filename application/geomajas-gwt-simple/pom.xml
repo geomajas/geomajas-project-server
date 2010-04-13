@@ -38,16 +38,24 @@
 			<version>${geomajas-layer-openstreetmaps-version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-layer-hibernate</artifactId>
-			<version>${geomajas-layer-hibernate-version}</version>
-		</dependency>
-		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-testdata</artifactId>
 			<version>${geomajas-backend-version}</version>
 		</dependency>
 
+		<!-- @extract-start HibernateLayerDependency, Hibernate layer dependency -->
+		<dependency>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-layer-hibernate</artifactId>
+			<version>${geomajas-layer-hibernate-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernatespatial</groupId>
+			<artifactId>hibernate-spatial-postgis</artifactId>
+			<version>1.0-M2</version>
+		</dependency>
+		<!-- @extract-end -->
+		
 		<!-- Google dependencies -->
 		<dependency>
 			<groupId>com.google.gwt</groupId>

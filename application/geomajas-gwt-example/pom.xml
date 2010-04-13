@@ -32,26 +32,32 @@
 			<artifactId>geomajas-layer-geotools</artifactId>
 			<version>${geomajas-layer-geotools-version}</version>
 		</dependency>
+		<!-- @extract-start OsmLayerDependency, OpenStreetMap layer dependency -->
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-layer-openstreetmaps</artifactId>
 			<version>${geomajas-layer-openstreetmaps-version}</version>
 		</dependency>
+		<!-- @extract-end -->
+		<!-- @extract-start WmsLayerDependency, WMS layer dependency -->
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-layer-wms</artifactId>
 			<version>${geomajas-layer-wms-version}</version>
 		</dependency>
+		<!-- @extract-end -->
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-layer-hibernate</artifactId>
 			<version>${geomajas-layer-hibernate-version}</version>
 		</dependency>
+		<!-- @extract-start GoogleLayerDependency, Google layer dependency -->
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-layer-google</artifactId>
 			<version>${geomajas-layer-google-version}</version>
 		</dependency>
+		<!-- @extract-end -->
 
 		<!-- Extra Geomajas plugins -->
         <dependency>

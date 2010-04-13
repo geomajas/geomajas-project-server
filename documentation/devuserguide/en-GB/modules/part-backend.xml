@@ -23,16 +23,16 @@
   ~ You should have received a copy of the GNU Affero General Public License
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
-<part id="part-backend">
+<part id="part-back-end">
   <title>back-end</title>
 
   <chapter id="chapter-configuration">
-    <title>Plugins</title>
+    <title>Plug-ins</title>
 
-    <para>Then there are two main sets of plugins which provide extra
+    <para>Then there are two main sets of plug-ins which provide extra
     features.</para>
 
-    <para>The layer plugins provide access to the actual data which needs to
+    <para>The layer plug-ins provide access to the actual data which needs to
     be displayed as part of a maps. There are basically two types of layers,
     providing either raster data (bitmaps) or vector data. The layers which
     are provided as part of the normal distribution include</para>
@@ -48,47 +48,48 @@
         <listitem>
           <para><emphasis>geomajas-layer-geotools</emphasis> (vector) : access
           data from any vector data source which has a GeoTools data store
-          defined for it
-          (<uri>http://geotools.org/javadocs/org/geotools/data/DataStore.html</uri>).</para>
+          defined for it (<ulink
+          url="http://geotools.org/javadocs/org/geotools/data/DataStore.html">http://geotools.org/javadocs/org/geotools/data/DataStore.html</ulink>).</para>
         </listitem>
 
         <listitem>
           <para><emphasis>geomajas-layer-google</emphasis> (raster) : include
           Google rasters. This allows access to the normal and satellite views
           provided by Google. You still need to include the Google API in your
-          application to use this
-          (<code>http://code.google.com/apis/maps/</code>).</para>
+          application to use this (<ulink
+          url="http://code.google.com/apis/maps/">http://code.google.com/apis/maps/</ulink>).</para>
         </listitem>
 
         <listitem>
           <para><emphasis>geomajas-layer-openstreetmaps</emphasis> (raster) :
           support for raster data coming from the OpenStreetMap project
-          (<uri>http://www.openstreetmap.org/</uri>).</para>
+          (<ulink
+          url="http://www.openstreetmap.org/">http://www.openstreetmap.org/</ulink>).</para>
         </listitem>
 
         <listitem>
           <para><emphasis>geomajas-layer-wms</emphasis> (raster) : access data
-          from a WMS server
-          (<uri>http://www.opengeospatial.org/standards/wms</uri>).</para>
+          from a WMS server (<ulink
+          url="http://www.opengeospatial.org/standards/wms">http://www.opengeospatial.org/standards/wms</ulink>).</para>
         </listitem>
 
         <listitem>
           <para><emphasis>geomajas-layer-shapeinmem</emphasis> (vector) :
           access data from an ESRI shape file which handled in memory. The
-          actual data access if done using GeoTools
-          (<uri>http://www.esri.com/library/whitepapers/pdfs/shapefile.pdf</uri>).</para>
+          actual data access if done using GeoTools (<ulink
+          url="http://www.esri.com/library/whitepapers/pdfs/shapefile.pdf">http://www.esri.com/library/whitepapers/pdfs/shapefile.pdf</ulink>).</para>
         </listitem>
       </itemizedlist></para>
 
-    <para>Other plugins allow extensions in functionality, either by providing
-    additional commands or extending the rendering pipelines, or provide
-    additional security services.</para>
+    <para>Other plug-ins allow extensions in functionality, either by
+    providing additional commands or extending the rendering pipelines, or
+    provide additional security services.</para>
 
     <para><itemizedlist>
         <listitem>
           <para><emphasis>geomajas-command</emphasis> : set of commands which
           are provided as part of the standard distribution. This is so
-          fundamental to using Geomajas that it is provided as a backend
+          fundamental to using Geomajas that it is provided as a back-end
           module.</para>
         </listitem>
 
@@ -129,7 +130,7 @@
     specified in the <code>contextConfigLocation</code> context parameter to
     the list of internal configuration locations and uses these to build the
     application context. All locations which are specified are read from the
-    classpath.</para>
+    class path.</para>
 
     <section>
       <title>General principles</title>
@@ -151,7 +152,7 @@
       <code>org.geomajas.configuration</code> package and have a class name
       ending in "Info". These classes are actually used to represent the DTO
       part of the back-end layers, thereby allowing to transfer information or
-      metadata of these layers to the client.</para>
+      meta-data of these layers to the client.</para>
 
       <para>Before we explain the back-end configuration, we will shortly
       memorize some basics of the Spring configuration files. For a full
@@ -180,8 +181,8 @@
       DPI parameter. The DPI refers to the resolution in pixels per inch of
       your monitor, for a PC its usually 96 (the default) or 72.</para>
 
-      <para>There needs to be at least one ClientApplicationInfo bean. The
-      bean name is used when requesting the application info.</para>
+      <para>There needs to be at least one <code>ClientApplicationInfo</code>
+      bean. The bean name is used when requesting the application info.</para>
     </section>
 
     <section>
@@ -209,7 +210,7 @@
         <para>Spring has support declarative transaction management, which
         relieves us from the burden of writing our own transaction demarcation
         and exception handling code. Of course, spring transaction management
-        has to be hooked up with the transaction definition and lifecycle of
+        has to be hooked up with the transaction definition and life cycle of
         the underlying data platform (hibernate, JTA, JDBC) . Each data access
         technology should therefore provide its own implementation of the
         Spring class <code>PlatformTransactionManager</code>. For most generic
@@ -236,8 +237,8 @@
 
         <itemizedlist>
           <listitem>
-            <para>The datasource : this specifies the connection pool type and
-            the connection properties of the database (PostGis in this
+            <para>The data source : this specifies the connection pool type
+            and the connection properties of the database (PostGis in this
             case)</para>
           </listitem>
 
@@ -301,47 +302,16 @@
         <section>
           <title>WMS layer configuration</title>
 
-          <para>Make sure your classpath contains the required plugin. If you
+          <para>Make sure your classpath contains the required plug-in. If you
           are using maven, add the following dependency to your pom:</para>
 
-          <programlisting>        &lt;dependency&gt;
-            &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
-            &lt;artifactId&gt;geomajas-layer-wms&lt;/artifactId&gt;
-            &lt;version&gt;${project.version}&lt;/version&gt;
-        &lt;/dependency&gt;</programlisting>
+          <xi:include href="../listing/WmsLayerDependency.xml"
+                      xmlns:xi="http://www.w3.org/2001/XInclude" />
 
           <para>A complete WMS layer configuration looks as follows:</para>
 
-          <programlisting>&lt;bean name="bluemarble" class="org.geomajas.layer.wms.WmsLayer" &gt;
-    &lt;property name="layerInfo"
-        &lt;bean class="org.geomajas.configuration.RasterLayerInfo"&gt;
-            &lt;property name="dataSourceName" value="bluemarble"/&gt;
-            &lt;property name="crs" value="EPSG:4326"/&gt;
-            &lt;property name="maxExtent"&gt;
-                &lt;bean class="org.geomajas.geometry.Bbox"&gt;
-                    &lt;property name="x" value="-180"/&gt;
-                    &lt;property name="y" value="-442"/&gt;
-                    &lt;property name="width" value="512"/&gt;
-                    &lt;property name="height" value="512"/&gt;
-                &lt;/bean&gt;
-            &lt;/property&gt;
-            &lt;property name="resolutions"&gt;
-                &lt;list&gt;
-                    &lt;value&gt;0.5&lt;/value&gt;
-                    &lt;value&gt;0.25&lt;/value&gt;
-                    &lt;!-- more resolution values --&gt;
-                &lt;/list&gt;
-            &lt;/property&gt;
-            &lt;property name="tileWidth" value="512"/&gt;
-            &lt;property name="tileHeight" value="512"/&gt;
-        &lt;/bean&gt;
-    &lt;/property&gt;
-    &lt;!-- When configuring your own applications, please do not use this WMS server --&gt;
-    &lt;property name="baseWmsUrl" value="http://apps.geomajas.org/geoserver/wms"/&gt;
-    &lt;property name="version" value="1.1.1"/&gt;
-    &lt;property name="format" value="image/jpeg"/&gt;
-    &lt;property name="styles" value=""/&gt;
-&lt;/bean&gt;</programlisting>
+          <xi:include href="../listing/WmsLayerSample.xml"
+                      xmlns:xi="http://www.w3.org/2001/XInclude" />
 
           <para>As you can see, the bean class refers to the actual layer type
           : <code>org.geomajas.layer.wms.WmsLayer</code>.</para>
@@ -350,85 +320,77 @@
           the metadata common to all raster layers. The following properties
           are needed for this object:</para>
 
-          <table>
-            <title>Raster Layer info</title>
+          <para><table>
+              <title>Raster Layer info</title>
 
-            <tgroup cols="2">
-              <thead>
-                <row>
-                  <entry>Name</entry>
+              <tgroup cols="2">
+                <thead>
+                  <row>
+                    <entry>Name</entry>
 
-                  <entry>Description</entry>
-                </row>
-              </thead>
+                    <entry>Description</entry>
+                  </row>
+                </thead>
 
-              <tbody>
-                <row>
-                  <entry>dataSourceName</entry>
+                <tbody>
+                  <row>
+                    <entry>dataSourceName</entry>
 
-                  <entry>The name of the WMS layer. This may be a
-                  comma-separated list of names as well.</entry>
-                </row>
+                    <entry>The name of the WMS layer. This may be a
+                    comma-separated list of names as well.</entry>
+                  </row>
 
-                <row>
-                  <entry>crs</entry>
+                  <row>
+                    <entry>crs</entry>
 
-                  <entry>The coordinate reference system, expressed as
-                  "EPSG:&lt;srid&gt;". Caveat: make sure this is the same as
-                  the maps' CRS as full raster image reprojection is not
-                  supported ! If the CRS's differ, an attempt will be done to
-                  rescale and align the center coordinates, though.</entry>
-                </row>
+                    <entry>The coordinate reference system, expressed as
+                    "EPSG:&lt;srid&gt;". Caveat: make sure this is the same as
+                    the maps' CRS as full raster image reprojection is not
+                    supported ! If the CRS's differ, an attempt will be done
+                    to rescale and align the center coordinates,
+                    though.</entry>
+                  </row>
 
-                <row>
-                  <entry>maxExtent</entry>
+                  <row>
+                    <entry>maxExtent</entry>
 
-                  <entry>The bounds of the layer, specified in layer
-                  coordinates. After transformation to map coordinates, this
-                  determines the locations and absolute size of the
-                  tiles.</entry>
-                </row>
+                    <entry>The bounds of the layer, specified in layer
+                    coordinates. After transformation to map coordinates, this
+                    determines the locations and absolute size of the
+                    tiles.</entry>
+                  </row>
 
-                <row>
-                  <entry>resolutions</entry>
+                  <row>
+                    <entry>resolutions</entry>
 
-                  <entry>A list of resolution values. An image or tile
-                  resolution is defined as the ratio between map units and
-                  pixels for a tile. If a resolution is 5 and the map unit is
-                  meter, this means that 1 pixel represents a square area of 5
-                  by 5 m. Images are usually optimized for a specific (set of)
-                  resolution(s), so it is important to specify these here if
-                  they are known. On top of that, some servers provide
-                  specific tile caching for these predefined resolutions
-                  (WMS-T). Care has to be taken, however: the same resolutions
-                  should be defined in the map as well if one wants to avoid
-                  linear distortion of the images.</entry>
-                </row>
+                    <entry>A list of resolution values. An image or tile
+                    resolution is defined as the ratio between map units and
+                    pixels for a tile. If a resolution is 5 and the map unit
+                    is meter, this means that 1 pixel represents a square area
+                    of 5 by 5 m. Images are usually optimized for a specific
+                    (set of) resolution(s), so it is important to specify
+                    these here if they are known. On top of that, some servers
+                    provide specific tile caching for these predefined
+                    resolutions (WMS-T). Care has to be taken, however: the
+                    same resolutions should be defined in the map as well if
+                    one wants to avoid linear distortion of the
+                    images.</entry>
+                  </row>
 
-                <row>
-                  <entry>tileWidth</entry>
+                  <row>
+                    <entry>tileWidth</entry>
 
-                  <entry>Width in pixels of the requested images</entry>
-                </row>
+                    <entry>Width in pixels of the requested images</entry>
+                  </row>
 
-                <row>
-                  <entry>tileHeight</entry>
+                  <row>
+                    <entry>tileHeight</entry>
 
-                  <entry>Height in pixels of the requested images</entry>
-                </row>
-
-                <row>
-                  <entry>parameters</entry>
-
-                  <entry>You can define additional parameters which can be
-                  passed to the WMS server. These are name/value pairs which
-                  are passed in
-                  <code>org.geomajas.configuration.Parameter</code>
-                  objects.</entry>
-                </row>
-              </tbody>
-            </tgroup>
-          </table>
+                    <entry>Height in pixels of the requested images</entry>
+                  </row>
+                </tbody>
+              </tgroup>
+            </table></para>
 
           <para>The location of the images or tiles is defined by calculating
           the real width and height (based on the resolution) and "paving" the
@@ -484,6 +446,16 @@
                   layers. Check your server configuration for possible
                   values.</entry>
                 </row>
+
+                <row>
+                  <entry>parameters</entry>
+
+                  <entry>You can define additional parameters which can be
+                  passed to the WMS server. These are name/value pairs which
+                  are passed in
+                  <code>org.geomajas.configuration.Parameter</code>
+                  objects.</entry>
+                </row>
               </tbody>
             </tgroup>
           </table>
@@ -492,57 +464,17 @@
         <section>
           <title>OpenStreetMap layer configuration</title>
 
-          <para>Make sure your classpath contains the required plugin. If you
+          <para>Make sure your classpath contains the required plug-in. If you
           are using maven, add the following dependency to your pom:</para>
 
-          <programlisting>        &lt;dependency&gt;
-            &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
-            &lt;artifactId&gt;geomajas-layer-openstreetmaps&lt;/artifactId&gt;
-            &lt;version&gt;${project.version}&lt;/version&gt;
-        &lt;/dependency&gt;</programlisting>
+          <xi:include href="../listing/OsmLayerDependency.xml"
+                      xmlns:xi="http://www.w3.org/2001/XInclude" />
 
           <para>A complete OpenStreetMap layer configuration looks as
           follows:</para>
 
-          <programlisting>&lt;bean name="osm" class="org.geomajas.layer.osm.OsmLayer" &gt;
-    &lt;property name="layerInfo" /&gt;
-        &lt;bean class="org.geomajas.configuration.RasterLayerInfo"&gt;
-            &lt;property name="crs" value="EPSG:900913"/&gt;
-            &lt;property name="maxExtent"&gt;
-                &lt;bean class="org.geomajas.geometry.Bbox"&gt;
-                &lt;property name="x" value="505500"/&gt;
-                &lt;property name="y" value="6588000"/&gt;
-                &lt;property name="width" value="2000"/&gt;
-                &lt;property name="height" value="2000"/&gt;
-                &lt;/bean&gt;
-            &lt;/property&gt;
-            &lt;property name="resolutions"&gt;
-                &lt;list&gt;
-                    &lt;value&gt;156543.03&lt;/value&gt;
-                    &lt;value&gt;78271.52&lt;/value&gt;
-                    &lt;value&gt;39135.76&lt;/value&gt;
-                    &lt;value&gt;19567.88&lt;/value&gt;
-                    &lt;value&gt;9783.94&lt;/value&gt;
-                    &lt;value&gt;4891.97&lt;/value&gt;
-                    &lt;value&gt;2445.98&lt;/value&gt;
-                    &lt;value&gt;1222.99&lt;/value&gt;
-                    &lt;value&gt;611.49&lt;/value&gt;
-                    &lt;value&gt;305.75&lt;/value&gt;
-                    &lt;value&gt;152.874057&lt;/value&gt;
-                    &lt;value&gt;76.4370283&lt;/value&gt;
-                    &lt;value&gt;38.2185141&lt;/value&gt;
-                    &lt;value&gt;19.1092571&lt;/value&gt;
-                    &lt;value&gt;9.55462853&lt;/value&gt;
-                    &lt;value&gt;4.77731427&lt;/value&gt;
-                    &lt;value&gt;2.38865713&lt;/value&gt;
-                    &lt;value&gt;1.19432857&lt;/value&gt;
-                &lt;/list&gt;
-            &lt;/property&gt;
-            &lt;property name="tileWidth" value="256"/&gt;
-            &lt;property name="tileHeight" value="256"/&gt;
-        &lt;/bean&gt;
-    &lt;/property&gt;
-&lt;/bean&gt;</programlisting>
+          <xi:include href="../listing/OsmLayerSample.xml"
+                      xmlns:xi="http://www.w3.org/2001/XInclude" />
 
           <para>The layer info inner bean has the same general content as
           usual, with one exception : the dataSourceName property is not
@@ -556,7 +488,56 @@
         <section>
           <title>Google Maps layer configuration</title>
 
-          <para>TODO</para>
+          <para>Make sure your classpath contains the required plug-in. If you
+          are using maven, add the following dependency to your pom:</para>
+
+          <xi:include href="../listing/GoogleLayerDependency.xml"
+                      xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+          <para>A complete Google layer configuration looks as follows:</para>
+
+          <xi:include href="../listing/GoogleLayerSample.xml"
+                      xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+          <para><table>
+              <title>GoogleLayer configuration</title>
+
+              <tgroup cols="2">
+                <thead>
+                  <row>
+                    <entry>GoogleLayer configuration</entry>
+                  </row>
+                </thead>
+
+                <tbody>
+                  <row>
+                    <entry>satellite</entry>
+
+                    <entry>Set to true to use satellite view from Google. When
+                    false (the default), the normal view (showing streets)
+                    will be used.</entry>
+                  </row>
+                </tbody>
+              </tgroup>
+            </table></para>
+
+          <para>The layer info inner bean has the same general content as
+          usual. There are some simplifications though. There is no need to
+          provide resolutions or tile size (256x256 is always used). The crs
+          should always be set to Mercator ("EPSG:900913").</para>
+
+          <para>On the layer, you can set the "satellite" property to choose
+          between using normal display (showing streets) or satellite view (by
+          setting this to "true").</para>
+
+          <note>
+            <para>You need to include the Google API code in your application
+            to be allowed to use this module (otherwise you will violate
+            Google's terms of use, see <ulink
+            url="http://code.google.com/apis/maps/">http://code.google.com/apis/maps/</ulink>).
+            See the documentation for the face you are using for more
+            info.</para>
+          </note>
         </section>
       </section>
 
@@ -573,6 +554,83 @@
         Depending on the type of layer, extra properties are needed to provide
         a full configuration.</para>
 
+        <para>The definition of the actual layer is similar to the definition
+        of a raster layer.</para>
+
+        <xi:include href="../listing/ShapeInMemCountries.xml"
+                    xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+        <para>The "layerInfo" property always needs to be set. Other
+        properties depend on the layer class (options are detailed
+        below).</para>
+
+        <para>For the layer configuration, you have to create the layer info
+        object.</para>
+
+        <xi:include href="../listing/ShapeInMemCountriesInfo.xml"
+                    xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+        <para>This defines the details common to both raster and vector
+        layers, like layer id, crs, layer type, max extent (bounding box)
+        etc.</para>
+
+        <para>There is also the definition of the features (featureInfo), and
+        the style which needs to be used for the label. Note that the
+        <emphasis>labelAttributeName</emphasis> refers to the name of an
+        attribute as defined in the feature info.</para>
+
+        <xi:include href="../listing/ShapeInMemCountriesStyleInfo.xml"
+                    xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+        <para>Last but not least, you can define one or more style definitions
+        which should be used for rendering of the layer. You can define
+        formulas to determine which style should be used. The first style
+        which passes the formula will be applied for the feature.</para>
+
+        <para>We also have to define the features.</para>
+
+        <xi:include href="../listing/ShapeInMemCountriesFeatureInfo.xml"
+                    xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+        <para>This defines the identifier, geometry object and attributes for
+        the feature.</para>
+
+        <para>Attributes can be either primitive attributes or association
+        attributes. Primitive attributes represent primitive Java types as
+        well as some common types like Date and String. The following
+        primitive attribute types are defined: BOOLEAN, SHORT, INTEGER, LONG,
+        FLOAT, DOUBLE, CURRENCY, STRING, DATE, URL and IMGURL. Association
+        attributes represent non-primitive Java types. There are two types of
+        association attributes defined: MANY-TO-ONE and ONE-TO-MANY. These
+        reflect the many-to-one and one-to-many relationships as defined in an
+        entity-relationship model and can only be used in conjunction with the
+        <code>HibernateLayer</code>.</para>
+
+        <section>
+          <title>Validation</title>
+
+          <para>Most feature attributes should be validated before they can be
+          saved to a file or database. Validation is a concern that stretches
+          across many layers of a typical application: there is usually a need
+          for client-side validation (making the app more user friendly) ,
+          server-side validation (to protect the server from invalid data) as
+          well as database validation (to preserve data integrity). Preferably
+          validation rules should be defined as much as possible in a single
+          place to avoid conflicts and duplication.</para>
+
+          <para>Our attribute configuration supports several types of
+          validation by defining a <code>"validator"</code> property inside
+          the attribute:</para>
+
+          <xi:include href="../listing/AttributeValidator.xml"
+                      xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+          <para>This property contains some general validator information and
+          a set of constraints that should be applied to the attribute. The
+          available constraint types have been based on the new JavaBeans
+          standard : JSR-303.</para>
+        </section>
+
         <section>
           <title>Hibernate layer configuration</title>
 
@@ -585,55 +643,39 @@
           definition of spatial types and the execution of spatial queries in
           a database independent way.</para>
 
+          <para>You need to include the following dependencies to make this
+          work. This needs to include the hibernate spatial provider, in this
+          example, postgis.</para>
+
+          <xi:include href="../listing/HibernateLayerDependency.xml"
+                      xmlns:xi="http://www.w3.org/2001/XInclude" />
+
           <para>A Hibernate layer cannot be defined by configuration only. As
-          in every OM-based model, there first has to be a mapping between
-          Java classes and tables in the database. In the most simple case
-          there is a one-to-one mapping between a single class and a single
-          spatial table.</para>
+          in every OR model, there has to be a mapping between Java classes
+          and tables in the database. In the most simple case there is a
+          one-to-one mapping between a single class and a single spatial
+          table.</para>
 
           <para>The following listing shows the (partial) definition of a
-          Hibernate annotated Java class <code>Roads.java</code> that is
-          mapped to a table <code>roads</code> in the
-          database.<programlisting>@Entity
-@Table(name = "roads")
-public class Road {
+          Hibernate annotated Java class <code>Road.java</code> that is mapped
+          to a table <code>roads</code> in the database.</para>
 
-    @Id
-    @GeneratedValue(strategy = javax.persistence.GenerationType.IDENTITY)
-    @Column(name = "gid")
-    private Long gid;
-    private String type;
-    private Float length;
+          <xi:include href="../listing/HibernateRoadsSample.xml"
+                      xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-    @Type(type = "org.hibernatespatial.GeometryUserType")
-    @Column(name = "the_geom")
-    private Geometry geometry;
-
-   (...)
-}</programlisting></para>
-
-          <para>As usual, the field annotations describe the relation between
-          the fields of the class and the columns in the table. A special
-          annotation <code>@Type</code> with type
+          <para>The field annotations describe the relation between the fields
+          of the class and the columns in the table. A special annotation
+          <code>@Type</code> with type
           <code>org.hibernatespatial.GeometryUserType</code> is used to map
           the <code>geometry</code> field to the <code>the_geom</code> spatial
-          column. This is all that is typically needed to map a Java class to
-          a spatial table.</para>
+          column.</para>
 
           <para>Once the Java class mapping is finished, the actual layer
           configuration can be made. An example configuration that matches the
-          <code>Roads.java</code> class is shown below:</para>
+          <code>Road.java</code> class is shown below:</para>
 
-          <programlisting>&lt;bean name="roads" class="org.geomajas.layer.hibernate.HibernateLayer"&gt;
-    &lt;property name="layerInfo" ref="roadsInfo" /&gt;
-    &lt;property name="featureModel"&gt;
-        &lt;bean class="org.geomajas.layer.hibernate.HibernateFeatureModel"&gt;
-            &lt;property name="sessionFactory" ref="simpleSessionFactory" /&gt;
-        &lt;/bean&gt;
-    &lt;/property&gt;
-    &lt;property name="sessionFactory" ref="simpleSessionFactory" /&gt;
-    &lt;property name="dateFormat" ref="simpleDateFormat" /&gt;
-&lt;/bean&gt;</programlisting>
+          <xi:include href="../listing/HibernateRoadsLayer.xml"
+                      xmlns:xi="http://www.w3.org/2001/XInclude" />
 
           <para>The first property <code>layerInfo</code> is the reference to
           the <code>VectorLayerInfo</code> object. While it can be defined
@@ -656,24 +698,8 @@ public class Road {
           defined through the <code>VectorLayerInfo</code> object. An example
           definition of this object is given below:</para>
 
-          <para><programlisting>&lt;bean name="roadsInfo" class="org.geomajas.configuration.VectorLayerInfo"&gt;
-        &lt;property name="layerType" value="MULTILINESTRING" /&gt;
-        &lt;property name="crs" value="EPSG:900913" /&gt;
-        &lt;property name="maxExtent"&gt;
-            &lt;bean class="org.geomajas.geometry.Bbox"&gt;
-                &lt;property name="x" value="505500" /&gt;
-                &lt;property name="y" value="6588000" /&gt;
-                &lt;property name="width" value="2000" /&gt;
-                &lt;property name="height" value="2000" /&gt;
-            &lt;/bean&gt;
-        &lt;/property&gt;
-        &lt;property name="featureInfo" ref="roadsFeatureInfo" /&gt;
-        &lt;property name="namedStyleInfos"&gt;
-            &lt;list&gt;
-                &lt;ref bean="roadsStyleInfo" /&gt;
-            &lt;/list&gt;
-        &lt;/property&gt;
-    &lt;/bean&gt;</programlisting></para>
+          <xi:include href="../listing/HibernateRoadsInfo.xml"
+                      xmlns:xi="http://www.w3.org/2001/XInclude" />
 
           <para>The following table describes the properties of the
           <code>VectorLayerInfo</code> object:</para>
@@ -727,12 +753,11 @@ public class Road {
           the validation rules for the attributes. An example definition of
           this object is given below:</para>
 
-          <para><programlisting>
-			  TODO
-          </programlisting></para>
+          <xi:include href="../listing/HibernateRoadsFeatureInfo.xml"
+                      xmlns:xi="http://www.w3.org/2001/XInclude" />
 
           <para>The following table describes the properties of the
-          <code>VectorLayerInfo</code> object:</para>
+          <code>FeatureInfo</code> object:</para>
 
           <para>TODO</para>
         </section>
@@ -744,7 +769,7 @@ public class Road {
           following parameters :</para>
 
           <table>
-            <title>Raster Layer info</title>
+            <title>GeoToolsLayer configuration</title>
 
             <tgroup cols="2">
               <thead>
@@ -759,8 +784,10 @@ public class Road {
                 <row>
                   <entry>url</entry>
 
-                  <entry>Url for the data source, typically used for accessing
-                  files.</entry>
+                  <entry>Url for the shape file. Apart from standard protocols
+                  supported by java, you can also use the "classpath:"
+                  protocol (the resource location should not start with a
+                  slash) to refer to shape files on the classpath.</entry>
                 </row>
 
                 <row>
@@ -787,7 +814,10 @@ public class Road {
           property to get a functional GeoTools layer. This would look similar
           to this:</para>
 
-          <programlisting>&lt;bean name="blabla" class="org.geomajas.layer.geotools.GeoToolsLayer"&gt;
+          <example>
+            <title>GeoTools WFS configuration skeleton</title>
+
+            <programlisting>&lt;bean name="blabla" class="org.geomajas.layer.geotools.GeoToolsLayer"&gt;
     &lt;property name="parameters"&gt;
         &lt;list&gt;
             &lt;bean class="org.geomajas.configuration.Parameter"&gt;
@@ -802,6 +832,7 @@ public class Road {
     &lt;/property&gt;
     &lt;property name="layerInfo" ref="blablaInfo" /&gt;
 &lt;/bean&gt; </programlisting>
+          </example>
 
           <para>The names which are valid depend on the GeoTools data
           store.</para>
@@ -863,384 +894,19 @@ public class Road {
             </itemizedlist></para>
 
           <para>You also have to assure the GeoTools WFS data store is added
-          as dependecy in your project. When using maven, you can add the
+          as dependency in your project. When using maven, you can add the
           following dependency.</para>
 
-          <programlisting>&lt;dependency&gt;
+          <example>
+            <title>GeoTools WFS dependency</title>
+
+            <programlisting>&lt;dependency&gt;
       &lt;groupId&gt;org.geotools&lt;/groupId&gt;
       &lt;artifactId&gt;gt-wfs&lt;/artifactId&gt;
       &lt;version&gt;${geotools-version}&lt;/version&gt;
 &lt;/dependency&gt;</programlisting>
+          </example>
         </section>
-
-        <section>
-          <title>Bean layer configuration</title>
-
-          <para>TODO</para>
-        </section>
-
-        <section>
-          <title>In memory shape layer configuration</title>
-
-          <para>This layer is backed by a shape file that is loaded in memory
-          at startup. All layer updates are performed in memory, so this layer
-          is not really useful except for examples.</para>
-        </section>
-      </section>
-    </section>
-
-    <section>
-      <title>Map configuration</title>
-
-      <para>A map is a client side object. The Geomajas backend works almost
-      exclusively on layers.TODO<footnote>
-          <para>The only current exception is the printing command which
-          converts maps to PDF document. Clearly this also uses the map
-          configuration.</para>
-        </footnote>On the client side however, these layers are combined into
-      maps. In general, the backend never needs to know which map the layer is
-      displayed in when doing its work. However the backend does need to know
-      the coordinate reference system which is used.</para>
-
-      <programlisting>&lt;bean name="sampleMap" class="org.geomajas.configuration.client.ClientMapInfo"&gt;
-    &lt;property name="crs" value="EPSG:4326"/&gt;
-    &lt;property name="displayUnitType" value="METRIC"/&gt;
-    &lt;property name="maximumScale" value="99999999"/&gt;
-    &lt;property name="initialBounds"&gt;
-        &lt;bean class="org.geomajas.geometry.Bbox"&gt;
-            &lt;property name="x" value="-31.44"/&gt;
-            &lt;property name="y" value="-37.43"/&gt;
-            &lt;property name="width" value="89.83"/&gt;
-            &lt;property name="height" value="89.83"/&gt;
-        &lt;/bean&gt;
-    &lt;/property&gt;
-    &lt;property name="layers"&gt;
-        &lt;list&gt;
-            &lt;ref bean="bluemarbleLayer"/&gt;
-            &lt;ref bean="countriesLayer"/&gt;
-        &lt;/list&gt;
-    &lt;/property&gt;
-
-    &lt;!-- other configurations --&gt;
-&lt;/bean&gt;
-</programlisting>
-
-      <para>The layers refers to the layer configuration, not the actual
-      layers (as were referred in the application bean).</para>
-
-      <para>For the client side, a lot of additional information can be
-      included in the map configuration. This includes information about the
-      styles used for displaying the map.</para>
-
-      <programlisting>    &lt;property name="backgroundColor" value="#FFFFFF" /&gt;
-    &lt;property name="lineSelectStyle"&gt;
-        &lt;bean class="org.geomajas.configuration.StyleInfo"&gt;
-            &lt;property name="fillOpacity" value="0" /&gt;
-            &lt;property name="strokeColor" value="#FF6600" /&gt;
-            &lt;property name="strokeOpacity" value="1" /&gt;
-        &lt;/bean&gt;
-    &lt;/property&gt;
-    &lt;property name="pointSelectStyle"&gt;
-        &lt;bean class="org.geomajas.configuration.StyleInfo"&gt;
-            &lt;property name="fillColor" value="#FFFF00" /&gt;
-            &lt;property name="fillOpacity" value=".6" /&gt;
-        &lt;/bean&gt;
-    &lt;/property&gt;
-    &lt;property name="polygonSelectStyle"&gt;
-        &lt;bean class="org.geomajas.configuration.StyleInfo"&gt;
-            &lt;property name="fillColor" value="#FFFF00" /&gt;
-            &lt;property name="fillOpacity" value=".6" /&gt;
-        &lt;/bean&gt;
-    &lt;/property&gt;
-    &lt;property name="scaleBarEnabled" value="true"/&gt;
-    &lt;property name="panButtonsEnabled" value="true"/&gt;
-</programlisting>
-
-      <para>A map typically also contains a tool bar. This can also be
-      defined.</para>
-
-      <programlisting>    &lt;property name="toolbar"&gt;
-        &lt;bean class="org.geomajas.configuration.ToolbarInfo"&gt;
-            &lt;property name="id" value="sampleToolbar"/&gt;
-            &lt;property name="tools"&gt;
-                &lt;list&gt;
-                    &lt;ref bean="ZoomIn"/&gt;
-                    &lt;ref bean="ZoomOut"/&gt;
-                    &lt;ref bean="ZoomToRectangleMode"/&gt;
-                    &lt;ref bean="PanMode"/&gt;
-                    &lt;ref bean="ToolbarSeparator"/&gt;
-                    &lt;ref bean="ZoomPrevious"/&gt;
-                    &lt;ref bean="ZoomNext"/&gt;
-                    &lt;ref bean="ToolbarSeparator"/&gt;
-                    &lt;ref bean="DeselectAll"/&gt;
-                    &lt;ref bean="ToolbarSeparator"/&gt;
-                    &lt;ref bean="FeatureInfoMode"/&gt;
-                    &lt;ref bean="ShowDefaultPrint"/&gt;
-                    &lt;ref bean="PrintMode"/&gt;
-                &lt;/list&gt;
-            &lt;/property&gt;
-        &lt;/bean&gt;
-    &lt;/property&gt;
-</programlisting>
-
-      <para>Obviously the tools themselves need to be defined as well. You can
-      pass some parameters to the tools. An example tool definition look like
-      this.</para>
-
-      <programlisting>&lt;bean name="ZoomIn" class="org.geomajas.configuration.ToolInfo"&gt;
-    &lt;property name="id" value="ZoomIn"/&gt;
-    &lt;property name="parameters"&gt;
-        &lt;list&gt;
-            &lt;bean class="org.geomajas.configuration.Parameter"&gt;
-                &lt;property name="name" value="delta"/&gt;
-                &lt;property name="value" value="2"/&gt;
-            &lt;/bean&gt;
-        &lt;/list&gt;
-    &lt;/property&gt;
-&lt;/bean&gt;
-</programlisting>
-
-      <para>Note that the tool id and the names of the parameters are
-      interpreted by the client, so it is the client face which defines the
-      possible values.</para>
-
-      <para>Last but not least, you can also configure the layer tree
-      component which may be connected to the map.</para>
-
-      <programlisting>    &lt;property name="layerTree"&gt;
-        &lt;bean class="org.geomajas.configuration.LayerTreeInfo"&gt;
-            &lt;property name="id" value="sampleSearchTree"/&gt;
-            &lt;property name="tools"&gt;
-                &lt;list&gt;
-                    &lt;ref bean="LayerVisibleTool"/&gt;
-                    &lt;ref bean="LayerLabeledTool"/&gt;
-                &lt;/list&gt;
-            &lt;/property&gt;
-            &lt;property name="treeNode"&gt;
-                &lt;bean class="org.geomajas.configuration.LayerTreeNodeInfo"&gt;
-                    &lt;property name="label" value="Layers" /&gt;
-                    &lt;property name="treeNodes"&gt;
-                        &lt;list&gt;&lt;/list&gt;
-                    &lt;/property&gt;
-                    &lt;property name="layerIds"&gt;
-                        &lt;list&gt;
-                          &lt;value&gt;bluemarble&lt;/value&gt;
-                          &lt;value&gt;countries&lt;/value&gt;
-                        &lt;/list&gt;
-                    &lt;/property&gt;
-                    &lt;property name="expanded" value="true" /&gt;
-                &lt;/bean&gt;
-            &lt;/property&gt;
-        &lt;/bean&gt;
-    &lt;/property&gt;
-</programlisting>
-
-      <para>This defines the tools which are available in the layer tree
-      widget, and the tree of layers (as a node, which can contain a list of
-      nodes etc).</para>
-
-      <para>Note that the layers are referred here by id, as defined in the
-      layer configuration info.</para>
-    </section>
-
-    <section>
-      <title>Layer configuration</title>
-
-      <para>Layer configuration is split in two (linked) parts. You have to
-      create the actual layer which is used n the backend, and this layer
-      needs to know the configuration information which is also used on the
-      client side. Secondly, there is a distinction between raster and vector
-      layers as they each needs a lot of specific information.</para>
-
-      <section>
-        <title>Raster layer</title>
-
-        <para>...</para>
-      </section>
-
-      <section>
-        <title>Vector layer</title>
-
-        <para>Vector layers are feature-based layers that are backed by
-        shapefiles or database tables.</para>
-
-        <para>The definition of the actual layer is similar to the definition
-        of a raster layer.</para>
-
-        <programlisting>&lt;bean name="countries" class="org.geomajas.layer.shapeinmem.ShapeInMemLayer" &gt;
-    &lt;property name="layerInfo" ref="countriesInfo" /&gt;
-    &lt;property name="url" value="classpath:shapes/africa/country.shp"/&gt;
-&lt;/bean&gt;</programlisting>
-
-        <para>The "layerInfo" property always needs to be set. Other
-        properties depend on the layer class (options are detailed
-        below).</para>
-
-        <para>For the layer configuration, you have to create the layer info
-        object.</para>
-
-        <programlisting>&lt;bean name="countriesInfo" class="org.geomajas.configuration.VectorLayerInfo"&gt;
-    &lt;property name="id" value="countries"/&gt;
-    &lt;property name="label" value="Countries of Africa"/&gt;
-    &lt;property name="visible" value="true"/&gt;
-    &lt;property name="layerType" value="MULTIPOLYGON"/&gt;
-    &lt;property name="crs" value="EPSG:4326"/&gt;
-    &lt;property name="viewScaleMin" value="0"/&gt;
-    &lt;property name="viewScaleMax" value="100000"/&gt;
-    &lt;property name="maxExtent"&gt;
-        &lt;bean class="org.geomajas.geometry.Bbox"&gt;
-            &lt;property name="x" value="-85.05112877980659"/&gt;
-            &lt;property name="y" value="-85.05112877980659"/&gt;
-            &lt;property name="width" value="170.102257"/&gt;
-            &lt;property name="height" value="170.102257"/&gt;
-        &lt;/bean&gt;
-    &lt;/property&gt;
-</programlisting>
-
-        <para>This defines the details common to both raster and vector
-        layers, like layer id, crs, layer type, max extent (bounding box)
-        etc.</para>
-
-        <programlisting>    &lt;property name="featureInfo" ref="countriesFeatureInfo" /&gt;
-    &lt;property name="labelAttribute"&gt;
-        &lt;bean class="org.geomajas.configuration.LabelAttributeInfo"&gt;
-            &lt;property name="labelAttributeName" value="CNTRY_NAME"/&gt;
-            &lt;property name="fontStyle"&gt;
-                &lt;bean class="org.geomajas.configuration.StyleInfo"&gt;
-                    &lt;property name="fillColor" value="#000000"/&gt;
-                    &lt;property name="fillOpacity" value="1"/&gt;
-                &lt;/bean&gt;
-            &lt;/property&gt;
-            &lt;property name="backgroundStyle"&gt;
-                &lt;bean class="org.geomajas.configuration.StyleInfo"&gt;
-                    &lt;property name="fillColor" value="#FFFFFF"/&gt;
-                    &lt;property name="fillOpacity" value="0"/&gt;
-                    &lt;property name="strokeColor" value="#000000"/&gt;
-                    &lt;property name="strokeOpacity" value="0"/&gt;
-                    &lt;property name="strokeWidth" value="1"/&gt;
-                &lt;/bean&gt;
-            &lt;/property&gt;
-        &lt;/bean&gt;
-    &lt;/property&gt;
-</programlisting>
-
-        <para>There is also the definition of the features (featureInfo), and
-        the style which needs to be used for the label. Note that the
-        <emphasis>labelAttributeName</emphasis> refers to the name of an
-        attribute as defined in the feature info.</para>
-
-        <programlisting>    &lt;property name="styleDefinitions"&gt;
-        &lt;list&gt;
-            &lt;bean class="org.geomajas.configuration.StyleInfo"&gt;
-                &lt;property name="id" value="1"/&gt;
-                &lt;property name="name" value="OPEC and UNESCO Member"/&gt;
-                &lt;property name="formula" value="((OPEC == 1) AND (UNESCO == 1))"/&gt;
-                &lt;property name="fillColor" value="#995500"/&gt;
-                &lt;property name="fillOpacity" value=".6"/&gt;
-                &lt;property name="strokeColor" value="#995500"/&gt;
-                &lt;property name="strokeOpacity" value=".3"/&gt;
-                &lt;property name="strokeWidth" value="1"/&gt;
-            &lt;/bean&gt;
-            &lt;!-- more style definitions --&gt;
-        &lt;/list&gt;
-    &lt;/property&gt;
-&lt;/bean&gt;</programlisting>
-
-        <para>Last but not least, you can define one or more style definitions
-        which should be used for rendering of the layer. You can define
-        formulas to determine which style should be used. The first style
-        which passes the formula will be applied for the feature.</para>
-
-        <para>We also have to define the features.</para>
-
-        <programlisting>&lt;bean class="org.geomajas.configuration.FeatureInfo" name="countriesFeatureInfo"&gt;
-    &lt;property name="dataSourceName" value="country"/&gt;
-    &lt;property name="identifier"&gt;
-        &lt;bean class="org.geomajas.configuration.PrimitiveAttributeInfo"&gt;
-            &lt;property name="label" value="Id"/&gt;
-            &lt;property name="name" value="ID"/&gt;
-            &lt;property name="type" value="LONG"/&gt;
-        &lt;/bean&gt;
-    &lt;/property&gt;
-    &lt;property name="geometryType"&gt;
-        &lt;bean class="org.geomajas.configuration.GeometryAttributeInfo"&gt;
-            &lt;property name="name" value="the_geom"/&gt;
-            &lt;property name="editable" value="false"/&gt;
-        &lt;/bean&gt;
-    &lt;/property&gt;
-    &lt;property name="attributes"&gt;
-        &lt;list&gt;
-            &lt;bean class="org.geomajas.configuration.PrimitiveAttributeInfo"&gt;
-                &lt;property name="label" value="Name"/&gt;
-                &lt;property name="name" value="CNTRY_NAME"/&gt;
-                &lt;property name="editable" value="true"/&gt;
-                &lt;property name="identifying" value="true"/&gt;
-                &lt;property name="type" value="STRING"/&gt;
-            &lt;/bean&gt;
-            &lt;bean class="org.geomajas.configuration.PrimitiveAttributeInfo"&gt;
-                &lt;property name="label" value="Label"/&gt;
-                &lt;property name="name" value="COUNTRY"/&gt;
-                &lt;property name="editable" value="false"/&gt;
-                &lt;property name="identifying" value="true"/&gt;
-                &lt;property name="type" value="STRING"/&gt;
-            &lt;/bean&gt;
-        &lt;/list&gt;
-    &lt;/property&gt;
-&lt;/bean&gt;
-</programlisting>
-
-        <para>This defines the identifier, geometry object and attributes for
-        the feature.</para>
-
-        <para>Attributes can be either primitive attributes or association
-        attributes. Primitive attributes represent primitive Java types as
-        well as some common types like Date and String. The following
-        primitive attribute types are defined: BOOLEAN, SHORT, INTEGER, LONG,
-        FLOAT, DOUBLE, CURRENCY, STRING, DATE, URL and IMGURL. Association
-        attributes represent non-primitive Java types. There are two types of
-        association attributes defined: MANY-TO-ONE and ONE-TO-MANY. These
-        reflect the many-to-one and one-to-many relationships as defined in an
-        entity-relationship model and can only be used in conjunction with the
-        <code>HibernateLayer</code>.</para>
-
-        <section>
-          <title>Validation</title>
-
-          <para>Most feature attributes should be validated before they can be
-          saved to a file or database. Validation is a concern that stretches
-          across many layers of a typical application: there is usually a need
-          for client-side validation (making the app more user friendly) ,
-          server-side validation (to protect the server from invalid data) as
-          well as database validation (to preserve data integrity). Preferably
-          validation rules should be defined as much as possible in a single
-          place to avoid conflicts and duplication.</para>
-
-          <para>Our attribute configuration supports several types of
-          validation by defining a <code>"validator"</code> property inside
-          the attribute:</para>
-
-          <programlisting>&lt;property name="validator"&gt;
-    &lt;bean class="org.geomajas.configuration.ValidatorInfo"&gt;
-        &lt;property name="constraints"&gt;
-            &lt;list&gt;
-                &lt;bean class="org.geomajas.configuration.DecimalMinConstraintInfo"&gt;
-                    &lt;property name="value" value="0"/&gt;
-                &lt;/bean&gt;
-            &lt;/list&gt;
-        &lt;/property&gt;
-        &lt;property name="toolTip" value="Area you may wish to fill in."/&gt;
-    &lt;/bean&gt;
-&lt;/property&gt;</programlisting>
-
-          <para>This property contains some general validator information and
-          a set of constraints that should be applied to the attribute. The
-          available constraint types have been based on the new JavaBeans
-          standard : JSR-303.</para>
-        </section>
-      </section>
-
-      <section>
-        <title>Layer specific configurations</title>
 
         <section>
           <title>Shape in memory layer</title>
@@ -1274,117 +940,100 @@ public class Road {
         </section>
 
         <section>
-          <title>GeoTools layer</title>
+          <title>Bean layer configuration</title>
 
-          <para>The GeoTools layer has a few settings which should be
-          set</para>
-
-          <para><table>
-              <title>GeoToolsLayer configuration</title>
-
-              <tgroup cols="2">
-                <thead>
-                  <row>
-                    <entry>GeoToolsLayer configuration</entry>
-                  </row>
-                </thead>
-
-                <tbody>
-                  <row>
-                    <entry>url</entry>
-
-                    <entry>Url for the shape file. Apart from standard
-                    protocols supported by java, you can also use the
-                    "classpath:" protocol (the resource location should not
-                    start with a slash) to refer to shape files on the
-                    classpath.</entry>
-                  </row>
-                </tbody>
-              </tgroup>
-            </table></para>
+          <para>TODO</para>
         </section>
 
         <section>
-          <title>WMS layer</title>
+          <title>In memory shape layer configuration</title>
 
-          <para>The WMS layer has a few settings which should be set</para>
+          <para>This layer is backed by a shape file that is loaded in memory
+          at startup. All layer updates are performed in memory, so this layer
+          is not really useful except for examples.</para>
+        </section>
+      </section>
+    </section>
 
-          <para><table>
-              <title>WmsLayer configuration</title>
+    <section>
+      <title>Client configuration</title>
 
-              <tgroup cols="2">
-                <thead>
-                  <row>
-                    <entry>WmsLayer configuration</entry>
-                  </row>
-                </thead>
+      <section>
+        <title>Map configuration</title>
 
-                <tbody>
-                  <row>
-                    <entry>baseWmsUrl</entry>
+        <para>A map is a client side object. The Geomajas back-end works
+        almost exclusively on layers.TODO<footnote>
+            <para>The only current exception is the printing command which
+            converts maps to PDF document. Clearly this also uses the map
+            configuration.</para>
+          </footnote>On the client side however, these layers are combined
+        into maps. In general, the back-end never needs to know which map the
+        layer is displayed in when doing its work. However the back-end does
+        need to know the coordinate reference system which is used.</para>
 
-                    <entry>Base url of the WMS server.</entry>
-                  </row>
+        <xi:include href="../listing/ClientMapInfoPart1.xml"
+                    xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-                  <row>
-                    <entry>format</entry>
+        <para>The layers refers to the layer configuration, not the actual
+        layers (as were referred in the application bean).</para>
 
-                    <entry>...</entry>
-                  </row>
+        <para>For the client side, a lot of additional information can be
+        included in the map configuration. This includes information about the
+        styles used for displaying the map.</para>
 
-                  <row>
-                    <entry>version</entry>
+        <xi:include href="../listing/ClientMapInfoPart2.xml"
+                    xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-                    <entry>Version of the WMS format which should be used.
-                    Check your server configuration for possible
-                    values.</entry>
-                  </row>
+        <para>A map typically also contains a tool bar. This can also be
+        defined.</para>
 
-                  <row>
-                    <entry>styles</entry>
+        <xi:include href="../listing/ClientMapInfoPart3.xml"
+                    xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-                    <entry>Styles parameter for the generates image.</entry>
-                  </row>
-                </tbody>
-              </tgroup>
-            </table></para>
+        <para>Obviously the tools themselves need to be defined as well. You
+        can pass some parameters to the tools. An example tool definition look
+        like this.</para>
+
+        <xi:include href="../listing/ZoomInToolInfo.xml"
+                    xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+        <para>Note that the tool id and the names of the parameters are
+        interpreted by the client, so it is the client face which defines the
+        possible values.</para>
+
+        <para>Last but not least, you can also configure the layer tree
+        component which may be connected to the map.</para>
+
+        <xi:include href="../listing/ClientMapInfoPart4.xml"
+                    xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+        <para>This defines the tools which are available in the layer tree
+        widget, and the tree of layers (as a node, which can contain a list of
+        nodes etc).</para>
+
+        <para>Note that the layers are referred here by id, as defined in the
+        layer configuration info.</para>
+      </section>
+
+      <section>
+        <title>Client layer configuration</title>
+
+        <para>Layer configuration is split in two (linked) parts. You have to
+        create the actual layer which is used in the back-end, and this layer
+        needs to know the configuration information which is also used on the
+        client side. Secondly, there is a distinction between raster and
+        vector layers as they each needs a lot of specific information.</para>
+
+        <section>
+          <title>Raster layer</title>
+
+          <para>...</para>
         </section>
 
         <section>
-          <title>Google layer</title>
+          <title>Vector layer</title>
 
-          <para>Note that you need to include the Google API code in your
-          application to be allowed to use this module (otherwise you will
-          violate Google's terms of use).</para>
-
-          <para><table>
-              <title>GoogleLayer configuration</title>
-
-              <tgroup cols="2">
-                <thead>
-                  <row>
-                    <entry>GoogleLayer configuration</entry>
-                  </row>
-                </thead>
-
-                <tbody>
-                  <row>
-                    <entry>satellite</entry>
-
-                    <entry>Set to true to use satellite view from Google. When
-                    false (the default), the normal view (showing streets)
-                    will be used.</entry>
-                  </row>
-                </tbody>
-              </tgroup>
-            </table></para>
-        </section>
-
-        <section>
-          <title>Openstreetmaps layer</title>
-
-          <para>This layer does not need additional configuration. It gets all
-          the parameters from the layer configuration information.</para>
+          <para>...</para>
         </section>
       </section>
     </section>
@@ -1418,18 +1067,18 @@ public class Road {
     </section>
 
     <section>
-      <title>Backend API</title>
+      <title>Back-end API</title>
 
       <para>The full details about the API can be found in the published
-      javadoc, available on the Geomajas site at
-      <uri>http://www.geomajas.org/gis-documentation</uri>. There you can find
-      the links for the different versions.</para>
+      javadoc, available on the Geomajas site at <ulink
+      url="http://www.geomajas.org/gis-documentation">http://www.geomajas.org/gis-documentation</ulink>.
+      There you can find the links for the different versions.</para>
 
-      <para>There API for the Geomajas backend is contained in the
+      <para>There API for the Geomajas back-end is contained in the
       geomajas-api module. This contains only interfaces, exceptions and data
       transfer objects. The data transfer objects are classes which only
-      contain getters and setters. The backend API is divided in the following
-      packages :</para>
+      contain getters and setters. The back-end API is divided in the
+      following packages :</para>
 
       <itemizedlist>
         <listitem>
@@ -1473,19 +1122,19 @@ public class Road {
         </listitem>
       </itemizedlist>
 
-      <para>The backend also contains a module geomajas-api-experimental. This
-      contains some experimental stuff which may be promoted to the supported
-      API when useful, or may be changed or dumped. As this is
+      <para>The back-end also contains a module geomajas-api-experimental.
+      This contains some experimental stuff which may be promoted to the
+      supported API when useful, or may be changed or dumped. As this is
       <emphasis>not</emphasis> part of the API, it may changes between
       revisions.</para>
     </section>
 
     <section>
-      <title>Command and plugins API</title>
+      <title>Command and plug-in API</title>
 
-      <para>For commands and plugins, the same rule applies as for the backend
-      API. That means that the "<code>@Api</code>" annotation indicates the
-      stability of the interfaces, classes and methods.</para>
+      <para>For commands and plug-ins, the same rule applies as for the
+      back-end API. That means that the "<code>@Api</code>" annotation
+      indicates the stability of the interfaces, classes and methods.</para>
 
       <para>These classes can typically be found in packages containing
       "command.dto" for command request and response objects or packages
@@ -1496,7 +1145,7 @@ public class Road {
     <section>
       <title>GWT face API</title>
 
-      <para>The GWT plugin also uses the "<code>@Api</code>" annotation to
+      <para>The GWT plug-in also uses the "<code>@Api</code>" annotation to
       indicate classes and methods which are supported to remain stable
       between minor versions of the face.</para>
 
@@ -1509,7 +1158,7 @@ public class Road {
   <chapter id="chapter-commands">
     <title>Commands</title>
 
-    <sect1>
+    <section>
       <title>Provided Commands</title>
 
       <para>The commands are all registered in the spring context. The
@@ -2497,9 +2146,9 @@ public class Road {
             </tbody>
           </tgroup>
         </table></para>
-    </sect1>
+    </section>
 
-    <sect1>
+    <section>
       <title>Writing your own Commands</title>
 
       <para>A Geomajas command consist of three class, the actual command
@@ -2551,7 +2200,7 @@ public class Road {
       require a layer id, then use <code>LayerIdCommandRequest</code>. If you
       only return a success code, you could use the
       <code>SuccessCommandResponse</code> class.</para>
-    </sect1>
+    </section>
   </chapter>
 
   <chapter id="chapter-layers">

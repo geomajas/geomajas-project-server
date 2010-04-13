@@ -66,10 +66,10 @@ public class RectangleControllerSample extends SamplePanel {
 		 * A RectangleController that calculates the size of the selected area and outputs it.
 		 * </p>
 		 * @author Frank Wynants
-		 *
 		 */
-		class AreaController extends AbstractRectangleController { // A RectangleController that prints out the size of the
-															// selected area
+		class AreaController extends AbstractRectangleController {
+			// A RectangleController that prints the size of the selected area
+			
 			/**
 			 * Constructor
 			 * 

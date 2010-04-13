@@ -27,6 +27,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
 http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 
+	<!-- @extract-start HibernateRoadsInfo, Hibernate roads layer info -->
 	<bean name="roadsInfo" class="org.geomajas.configuration.VectorLayerInfo">
 		<property name="layerType" value="MULTILINESTRING" />
 		<property name="crs" value="EPSG:900913" />
@@ -45,6 +46,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 			</list>
 		</property>
 	</bean>
+	<!-- @extract-end -->
 
 	<bean class="org.geomajas.configuration.NamedStyleInfo" name="roadsStyleInfo">
 		<property name="featureStyles">
@@ -81,6 +83,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		</property>
 	</bean>
 
+	<!-- @extract-start HibernateRoadsFeatureInfo, Hibernate roads layer feature info -->
 	<bean class="org.geomajas.configuration.FeatureInfo" name="roadsFeatureInfo">
 		<property name="dataSourceName" value="org.geomajas.gwt.server.Road" />
 		<property name="identifier">
@@ -153,11 +156,13 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 			</list>
 		</property>
 	</bean>
+	<!-- @extract-end -->
 
 	<bean name="simpleDateFormat" class="java.text.SimpleDateFormat">
 		<constructor-arg type="java.lang.String" value="dd/MM/yyyy" />
 	</bean>
 
+	<!-- @extract-start HibernateRoadsLayer, Hibernate roads layer definition -->
 	<bean name="roads" class="org.geomajas.layer.hibernate.HibernateLayer">
 		<property name="layerInfo" ref="roadsInfo" />
 		<property name="featureModel">
@@ -168,5 +173,6 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		<property name="sessionFactory" ref="simpleSessionFactory" />
 		<property name="dateFormat" ref="simpleDateFormat" />
 	</bean>
+	<!-- @extract-end -->
 
 </beans>

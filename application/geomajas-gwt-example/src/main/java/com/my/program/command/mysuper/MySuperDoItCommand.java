@@ -39,16 +39,16 @@ import org.springframework.stereotype.Component;
 @Component()
 public class MySuperDoItCommand implements Command<MySuperDoItRequest, MySuperDoItResponse> {
 
-    private final Logger log = LoggerFactory.getLogger(MySuperDoItCommand.class);
+	private final Logger log = LoggerFactory.getLogger(MySuperDoItCommand.class);
 
-    public MySuperDoItResponse getEmptyCommandResponse() {
-        return new MySuperDoItResponse();
-    }
+	public MySuperDoItResponse getEmptyCommandResponse() {
+		return new MySuperDoItResponse();
+	}
 
-    public void execute(MySuperDoItRequest request, MySuperDoItResponse response) throws Exception {
-        log.debug("called");
-        // ..... perform the actual command
-    }
+	public void execute(MySuperDoItRequest request, MySuperDoItResponse response) throws Exception {
+		log.debug("called");
+		// ..... perform the actual command
+	}
 
 }
 // @extract-end

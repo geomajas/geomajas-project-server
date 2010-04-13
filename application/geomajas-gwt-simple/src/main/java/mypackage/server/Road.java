@@ -40,9 +40,8 @@ import com.vividsolutions.jts.geom.Geometry;
  * Roads object for hibernate layer model.
  * 
  * @author Jan De Moerloose
- *
  */
-
+// @extract-start HibernateRoadsSample, Hibernate entity
 @Entity
 @Table(name = "roads")
 public class Road {
@@ -69,7 +68,7 @@ public class Road {
 	@Type(type = "org.hibernatespatial.GeometryUserType")
 	@Column(name = "the_geom")
 	private Geometry geometry;
-
+// @extract-end
 	
 	public Long getGid() {
 		return gid;
