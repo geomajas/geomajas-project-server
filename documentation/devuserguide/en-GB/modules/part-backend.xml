@@ -759,7 +759,27 @@
           <para>The following table describes the properties of the
           <code>FeatureInfo</code> object:</para>
 
-          <para>TODO</para>
+          <table>
+            <title>Feature info configuration</title>
+
+            <tgroup cols="2">
+              <thead>
+                <row>
+                  <entry>Name</entry>
+
+                  <entry>Description</entry>
+                </row>
+              </thead>
+
+              <tbody>
+                <row>
+                  <entry>TODO.....</entry>
+
+                  <entry>TODO.....</entry>
+                </row>
+              </tbody>
+            </tgroup>
+          </table>
         </section>
 
         <section>
@@ -942,7 +962,7 @@
         <section>
           <title>Bean layer configuration</title>
 
-          <para>TODO</para>
+          <para>TODO.....</para>
         </section>
 
         <section>
@@ -962,7 +982,7 @@
         <title>Map configuration</title>
 
         <para>A map is a client side object. The Geomajas back-end works
-        almost exclusively on layers.TODO<footnote>
+        almost exclusively on layers.<footnote>
             <para>The only current exception is the printing command which
             converts maps to PDF document. Clearly this also uses the map
             configuration.</para>
@@ -1239,7 +1259,7 @@
                       <para><emphasis>maps</emphasis> : list of configured
                       maps for the application. Note that the layer
                       information which is contained in the maps has the
-                      coordinates. transformed according to the crs of the
+                      coordinates transformed according to the crs of the
                       map.</para>
                     </listitem>
 
@@ -1322,12 +1342,12 @@
         </table></para>
 
       <para><table>
-          <title>PrintGetTemplateCommand</title>
+          <title>GetRasterDataCommand</title>
 
           <tgroup cols="2">
             <thead>
               <row>
-                <entry>GetTemplatePrintCommand</entry>
+                <entry>GetRasterDataCommand</entry>
               </row>
             </thead>
 
@@ -1335,19 +1355,19 @@
               <row>
                 <entry>Registry key</entry>
 
-                <entry>command.print.GetTemplate</entry>
+                <entry>command.render.GetRasterData</entry>
               </row>
 
               <row>
                 <entry>Module which provides this command</entry>
 
-                <entry>geomajas-plugin-printing</entry>
+                <entry>geomajas-command</entry>
               </row>
 
               <row>
                 <entry>Request object class</entry>
 
-                <entry>org.geomajas.extension.printing.command.dto.PrintGetTemplateRequest</entry>
+                <entry>org.geomajas.command.dto.?????</entry>
               </row>
 
               <row>
@@ -1355,15 +1375,7 @@
 
                 <entry><itemizedlist>
                     <listitem>
-                      <para><emphasis>template</emphasis> : ?????</para>
-                    </listitem>
-
-                    <listitem>
-                      <para><emphasis>fileName</emphasis> : ?????</para>
-                    </listitem>
-
-                    <listitem>
-                      <para><emphasis>pageSize</emphasis> : ?????</para>
+                      <para>?????</para>
                     </listitem>
                   </itemizedlist></entry>
               </row>
@@ -1377,7 +1389,7 @@
               <row>
                 <entry>Response object class</entry>
 
-                <entry>org.geomajas.extension.printing.command.dto.PrintGetTemplateResponse</entry>
+                <entry>org.geomajas.command.dto.?????</entry>
               </row>
 
               <row>
@@ -1385,7 +1397,7 @@
 
                 <entry><itemizedlist>
                     <listitem>
-                      <para><emphasis>documentId</emphasis> :</para>
+                      <para>?????</para>
                     </listitem>
                   </itemizedlist></entry>
               </row>
@@ -1394,12 +1406,12 @@
         </table></para>
 
       <para><table>
-          <title>PrintListTemplatesCommand</title>
+          <title>GetRenderedTileCommand</title>
 
           <tgroup cols="2">
             <thead>
               <row>
-                <entry>ListTemplatesCommand</entry>
+                <entry>GetRenderedTileCommand</entry>
               </row>
             </thead>
 
@@ -1407,25 +1419,29 @@
               <row>
                 <entry>Registry key</entry>
 
-                <entry>command.print.ListTemplates</entry>
+                <entry>command.render.GetRenderedTile</entry>
               </row>
 
               <row>
                 <entry>Module which provides this command</entry>
 
-                <entry>geomajas-plugin-printing</entry>
+                <entry>geomajas-command</entry>
               </row>
 
               <row>
                 <entry>Request object class</entry>
 
-                <entry>org.geomajas.command.EmptyCommandRequest</entry>
+                <entry>org.geomajas.command.dto.?????</entry>
               </row>
 
               <row>
                 <entry>Parameters</entry>
 
-                <entry>none</entry>
+                <entry><itemizedlist>
+                    <listitem>
+                      <para>?????</para>
+                    </listitem>
+                  </itemizedlist></entry>
               </row>
 
               <row>
@@ -1437,7 +1453,7 @@
               <row>
                 <entry>Response object class</entry>
 
-                <entry>org.geomajas.extension.printing.command.dto.PrintListTemplatesResponse</entry>
+                <entry>org.geomajas.command.dto.?????</entry>
               </row>
 
               <row>
@@ -1445,8 +1461,7 @@
 
                 <entry><itemizedlist>
                     <listitem>
-                      <para><emphasis>templates</emphasis> : list of possible
-                      print templates.</para>
+                      <para>?????</para>
                     </listitem>
                   </itemizedlist></entry>
               </row>
@@ -1547,7 +1562,7 @@
               <row>
                 <entry>Request object class</entry>
 
-                <entry>?????</entry>
+                <entry>org.geomajas.command.dto.MergePolygonRequest</entry>
               </row>
 
               <row>
@@ -1569,7 +1584,7 @@
               <row>
                 <entry>Response object class</entry>
 
-                <entry>?????</entry>
+                <entry>org.geomajas.command.dto.MergePolygonResponse</entry>
               </row>
 
               <row>
@@ -1611,7 +1626,7 @@
               <row>
                 <entry>Request object class</entry>
 
-                <entry>?????</entry>
+                <entry>org.geomajas.command.dto.?????</entry>
               </row>
 
               <row>
@@ -1633,7 +1648,7 @@
               <row>
                 <entry>Response object class</entry>
 
-                <entry>?????</entry>
+                <entry>org.geomajas.command.dto.?????</entry>
               </row>
 
               <row>
@@ -1650,12 +1665,12 @@
         </table></para>
 
       <para><table>
-          <title>RetrieveRasterDataCommand</title>
+          <title>PrintGetTemplateCommand</title>
 
           <tgroup cols="2">
             <thead>
               <row>
-                <entry>RetrieveRasterDataCommand</entry>
+                <entry>PrintGetTemplateCommand</entry>
               </row>
             </thead>
 
@@ -1663,19 +1678,19 @@
               <row>
                 <entry>Registry key</entry>
 
-                <entry>command.render.RetrieveRasterData</entry>
+                <entry>command.print.GetTemplate</entry>
               </row>
 
               <row>
                 <entry>Module which provides this command</entry>
 
-                <entry>geomajas-command</entry>
+                <entry>geomajas-plugin-printing</entry>
               </row>
 
               <row>
                 <entry>Request object class</entry>
 
-                <entry>?????</entry>
+                <entry>org.geomajas.extension.printing.command.dto.PrintGetTemplateRequest</entry>
               </row>
 
               <row>
@@ -1683,7 +1698,15 @@
 
                 <entry><itemizedlist>
                     <listitem>
-                      <para>?????</para>
+                      <para><emphasis>template</emphasis> : ?????</para>
+                    </listitem>
+
+                    <listitem>
+                      <para><emphasis>fileName</emphasis> : ?????</para>
+                    </listitem>
+
+                    <listitem>
+                      <para><emphasis>pageSize</emphasis> : ?????</para>
                     </listitem>
                   </itemizedlist></entry>
               </row>
@@ -1697,7 +1720,7 @@
               <row>
                 <entry>Response object class</entry>
 
-                <entry>?????</entry>
+                <entry>org.geomajas.extension.printing.command.dto.PrintGetTemplateResponse</entry>
               </row>
 
               <row>
@@ -1705,7 +1728,7 @@
 
                 <entry><itemizedlist>
                     <listitem>
-                      <para>?????</para>
+                      <para><emphasis>documentId</emphasis> :</para>
                     </listitem>
                   </itemizedlist></entry>
               </row>
@@ -1714,12 +1737,12 @@
         </table></para>
 
       <para><table>
-          <title>RetrieveRenderedTileCommand</title>
+          <title>PrintListTemplatesCommand</title>
 
           <tgroup cols="2">
             <thead>
               <row>
-                <entry>RetrieveRenderedTileCommand</entry>
+                <entry>PrintListTemplatesCommand</entry>
               </row>
             </thead>
 
@@ -1727,29 +1750,25 @@
               <row>
                 <entry>Registry key</entry>
 
-                <entry>command.render.RetrieveRenderedTile</entry>
+                <entry>command.print.ListTemplates</entry>
               </row>
 
               <row>
                 <entry>Module which provides this command</entry>
 
-                <entry>geomajas-command</entry>
+                <entry>geomajas-plugin-printing</entry>
               </row>
 
               <row>
                 <entry>Request object class</entry>
 
-                <entry>?????</entry>
+                <entry>org.geomajas.command.EmptyCommandRequest</entry>
               </row>
 
               <row>
                 <entry>Parameters</entry>
 
-                <entry><itemizedlist>
-                    <listitem>
-                      <para>?????</para>
-                    </listitem>
-                  </itemizedlist></entry>
+                <entry>none</entry>
               </row>
 
               <row>
@@ -1761,7 +1780,7 @@
               <row>
                 <entry>Response object class</entry>
 
-                <entry>?????</entry>
+                <entry>org.geomajas.extension.printing.command.dto.PrintListTemplatesResponse</entry>
               </row>
 
               <row>
@@ -1769,7 +1788,8 @@
 
                 <entry><itemizedlist>
                     <listitem>
-                      <para>?????</para>
+                      <para><emphasis>templates</emphasis> : list of possible
+                      print templates.</para>
                     </listitem>
                   </itemizedlist></entry>
               </row>
@@ -1783,7 +1803,7 @@
           <tgroup cols="2">
             <thead>
               <row>
-                <entry>SavePrintTemplateCommand</entry>
+                <entry>PrintSaveTemplateCommand</entry>
               </row>
             </thead>
 
@@ -1803,7 +1823,7 @@
               <row>
                 <entry>Request object class</entry>
 
-                <entry>?????</entry>
+                <entry>org.geomajas.extension.printing.command.dto.PrintSaveTemplateRequest</entry>
               </row>
 
               <row>
@@ -1825,17 +1845,13 @@
               <row>
                 <entry>Response object class</entry>
 
-                <entry>?????</entry>
+                <entry>org.geomajas.command.CommandResponse</entry>
               </row>
 
               <row>
                 <entry>Response values</entry>
 
-                <entry><itemizedlist>
-                    <listitem>
-                      <para>?????</para>
-                    </listitem>
-                  </itemizedlist></entry>
+                <entry>none</entry>
               </row>
             </tbody>
           </tgroup>
@@ -2045,7 +2061,7 @@
               <row>
                 <entry>Request object class</entry>
 
-                <entry>?????</entry>
+                <entry>org.geomajas.command.dto.SplitPolygonRequest</entry>
               </row>
 
               <row>
@@ -2067,7 +2083,7 @@
               <row>
                 <entry>Response object class</entry>
 
-                <entry>?????</entry>
+                <entry>org.geomajas.command.dto.SplitPolygonResponse</entry>
               </row>
 
               <row>
@@ -2109,7 +2125,7 @@
               <row>
                 <entry>Request object class</entry>
 
-                <entry>?????</entry>
+                <entry>org.geomajas.command.dto.UserMaximumExtentRequest</entry>
               </row>
 
               <row>
@@ -2131,7 +2147,7 @@
               <row>
                 <entry>Response object class</entry>
 
-                <entry>?????</entry>
+                <entry>org.geomajas.command.dto.UserMaximumExtentResponse</entry>
               </row>
 
               <row>
@@ -2206,12 +2222,54 @@
   <chapter id="chapter-layers">
     <title>Layers</title>
 
-    <para>?????</para>
+    <para>Layers allow access to data which needs to be displayed in a
+    map.</para>
+
+    <para>For the existing layers, the details about configuring you map to
+    include that layer are included in the <link
+    linkend="chapter-configuration">configuration</link> section above.</para>
+
+    <section>
+      <title>Writing your own layer</title>
+
+      <para>TODO.....</para>
+    </section>
   </chapter>
 
   <chapter id="chapter-security">
     <title>Security</title>
 
-    <para>?????</para>
+    <para>Geomajas has security built-in. If you don't provide a security
+    configuration, nothing will be authorized. For unsecured access, you can
+    add</para>
+
+    <xi:include href="../listing/AllowAllSecurity.xml"
+                xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+    <para>TODO.....</para>
+
+    <section>
+      <title>Authentication versus authorization</title>
+
+      <para>TODO.....</para>
+    </section>
+
+    <section>
+      <title>What can be authorized</title>
+
+      <para>TODO.....</para>
+    </section>
+
+    <section>
+      <title>Springsecurity configuration</title>
+
+      <para>TODO.....</para>
+    </section>
+
+    <section>
+      <title>Writing your own security service</title>
+
+      <para>TODO.....</para>
+    </section>
   </chapter>
 </part>
