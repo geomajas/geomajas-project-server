@@ -135,11 +135,12 @@
     <section>
       <title>General principles</title>
 
-      <para>Each of the configuration files needs the following header :</para>
+      <para>Each of the configuration files needs the following header
+      :</para>
 
       <xi:include href="../listing/SpringConfigurationPreamble.xml"
-				  xmlns:xi="http://www.w3.org/2001/XInclude" />
- 
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
+
       <para>This defines the most common schemas which are needed. The
       configuration is built by populating the configuration classes. The
       configuration classes are split up between client and server side or
@@ -227,8 +228,8 @@
         investigated further. In practice this means that you currently must
         not mix editable Hibernate and GeoTools layers.</para>
 
-        <para>For Hibernate layers, the following configuration should be
-        used :</para>
+        <para>For Hibernate layers, the following configuration should be used
+        :</para>
 
         <xi:include href="../listing/HibernateTx.xml"
                     xmlns:xi="http://www.w3.org/2001/XInclude" />
@@ -344,8 +345,8 @@
                     <entry>crs</entry>
 
                     <entry>The coordinate reference system, expressed as
-                    "EPSG:&lt;srid&gt;". Caveat : make sure this is the same as
-                    the maps' CRS as full raster image reprojection is not
+                    "EPSG:&lt;srid&gt;". Caveat : make sure this is the same
+                    as the maps' CRS as full raster image reprojection is not
                     supported ! If the CRS's differ, an attempt will be done
                     to rescale and align the center coordinates,
                     though.</entry>
@@ -371,10 +372,9 @@
                     (set of) resolution(s), so it is important to specify
                     these here if they are known. On top of that, some servers
                     provide specific tile caching for these predefined
-                    resolutions (WMS-T). Care has to be taken, the
-                    same resolutions should be defined in the map as well if
-                    one wants to avoid linear distortion of the
-                    images.</entry>
+                    resolutions (WMS-T). Care has to be taken, the same
+                    resolutions should be defined in the map as well if one
+                    wants to avoid linear distortion of the images.</entry>
                   </row>
 
                   <row>
@@ -470,8 +470,8 @@
           <xi:include href="../listing/OsmLayerDependency.xml"
                       xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-          <para>A complete OpenStreetMap layer configuration looks as
-          follows :</para>
+          <para>A complete OpenStreetMap layer configuration looks as follows
+          :</para>
 
           <xi:include href="../listing/OsmLayerSample.xml"
                       xmlns:xi="http://www.w3.org/2001/XInclude" />
@@ -494,7 +494,8 @@
           <xi:include href="../listing/GoogleLayerDependency.xml"
                       xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-          <para>A complete Google layer configuration looks as follows :</para>
+          <para>A complete Google layer configuration looks as follows
+          :</para>
 
           <xi:include href="../listing/GoogleLayerSample.xml"
                       xmlns:xi="http://www.w3.org/2001/XInclude" />
@@ -611,12 +612,12 @@
 
           <para>Most feature attributes should be validated before they can be
           saved to a file or database. Validation is a concern that stretches
-          across many layers of a typical application : there is usually a need
-          for client-side validation (making the app more user friendly) ,
-          server-side validation (to protect the server from invalid data) as
-          well as database validation (to preserve data integrity). Preferably
-          validation rules should be defined as much as possible in a single
-          place to avoid conflicts and duplication.</para>
+          across many layers of a typical application : there is usually a
+          need for client-side validation (making the app more user friendly)
+          , server-side validation (to protect the server from invalid data)
+          as well as database validation (to preserve data integrity).
+          Preferably validation rules should be defined as much as possible in
+          a single place to avoid conflicts and duplication.</para>
 
           <para>Our attribute configuration supports several types of
           validation by defining a <code>"validator"</code> property inside
