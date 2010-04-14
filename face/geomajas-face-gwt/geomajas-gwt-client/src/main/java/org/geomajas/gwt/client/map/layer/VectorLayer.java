@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.gwt.client.gfx.PaintableGroup;
@@ -51,7 +52,7 @@ import com.google.gwt.event.shared.HandlerRegistration;
  * <p>
  * The client side representation of a vector layer.
  * </p>
- *
+ * 
  * @author Pieter De Graef
  */
 public class VectorLayer extends AbstractLayer<ClientVectorLayerInfo> implements HasFeatureSelectionHandlers {
@@ -60,18 +61,17 @@ public class VectorLayer extends AbstractLayer<ClientVectorLayerInfo> implements
 	private TileCache cache;
 
 	private String filter;
-	
+
 	private Composite featureGroup = new Composite("features");
-	
+
 	private Composite selectionGroup = new Composite("selection");
-	
+
 	private Composite labelGroup = new Composite("labels");
-	
+
 	private HandlerManager handlerManager = new HandlerManager(this);
 
 	/** selected features id -> feature map */
 	private Map<String, Feature> selectedFeatures = new HashMap<String, Feature>();
-
 
 	// -------------------------------------------------------------------------
 	// Constructors:
@@ -79,7 +79,7 @@ public class VectorLayer extends AbstractLayer<ClientVectorLayerInfo> implements
 
 	/**
 	 * The only constructor! Set the MapModel and the metadata.
-	 *
+	 * 
 	 * @param mapModel
 	 *            The model of layers and features behind a map. This layer will be a part of this model.
 	 */
@@ -133,7 +133,7 @@ public class VectorLayer extends AbstractLayer<ClientVectorLayerInfo> implements
 	}
 
 	// -------------------------------------------------------------------------
-	// Class specific functions:
+	// Public methods for feature Selection
 	// -------------------------------------------------------------------------
 
 	/**
@@ -197,6 +197,15 @@ public class VectorLayer extends AbstractLayer<ClientVectorLayerInfo> implements
 		}
 	}
 
+	/** Returns a set of selected features in this layer by their ID's. */
+	public Set<String> getSelectedFeatures() {
+		return selectedFeatures.keySet();
+	}
+
+	// -------------------------------------------------------------------------
+	// Public methods:
+	// -------------------------------------------------------------------------
+
 	public String getFilter() {
 		return filter;
 	}
@@ -209,17 +218,15 @@ public class VectorLayer extends AbstractLayer<ClientVectorLayerInfo> implements
 		return cache;
 	}
 
-	
 	public PaintableGroup getFeatureGroup() {
 		return featureGroup;
 	}
-	
+
 	public PaintableGroup getSelectionGroup() {
 		return selectionGroup;
 	}
-	
+
 	public PaintableGroup getLabelGroup() {
 		return labelGroup;
 	}
-	
 }

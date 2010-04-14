@@ -359,11 +359,20 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 		return list;
 	}
 
-	/** Clear the list of selected features. */
+	/** Clear the list of selected features in all vector layers. */
 	public void clearSelectedFeatures() {
 		for (VectorLayer layer : getVectorLayers()) {
 			layer.clearSelectedFeatures();
 		}
+	}
+
+	/** Return the total number of selected features in all vector layers. */
+	public int getNrSelectedFeatures() {
+		int count = 0;
+		for (VectorLayer layer : getVectorLayers()) {
+			count += layer.getSelectedFeatures().size();
+		}
+		return count;
 	}
 
 	/**

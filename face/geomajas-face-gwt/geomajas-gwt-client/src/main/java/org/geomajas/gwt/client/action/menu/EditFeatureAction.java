@@ -49,7 +49,7 @@ import com.smartgwt.client.widgets.menu.events.MenuItemClickEvent;
 
 /**
  * Menu action that starts editing a selected feature on the map.
- *
+ * 
  * @author Pieter De Graef
  */
 public class EditFeatureAction extends MenuAction implements MenuItemIfFunction {
@@ -62,7 +62,7 @@ public class EditFeatureAction extends MenuAction implements MenuItemIfFunction 
 
 	/**
 	 * Constructor for the menu action to edit a selected feature on the map.
-	 *
+	 * 
 	 * @param mapWidget
 	 *            The <code>MapWidget</code> on which editing is in progress.
 	 * @param controller
@@ -81,7 +81,7 @@ public class EditFeatureAction extends MenuAction implements MenuItemIfFunction 
 	public void onClick(MenuItemClickEvent event) {
 		if (feature != null && feature.isSelected()) {
 			FeatureTransaction ft = mapWidget.getMapModel().getFeatureEditor().startEditing(
-					new Feature[] {feature.clone()}, new Feature[] {feature.clone()});
+					new Feature[] { feature.clone() }, new Feature[] { feature.clone() });
 			mapWidget.render(ft, RenderGroup.SCREEN, RenderStatus.ALL);
 			VectorLayer vLayer = feature.getLayer();
 			if (vLayer.getLayerInfo().getLayerType() == LayerType.POINT) {
@@ -105,13 +105,16 @@ public class EditFeatureAction extends MenuAction implements MenuItemIfFunction 
 	 * existing features.
 	 */
 	public boolean execute(Canvas target, Menu menu, MenuItem item) {
-		Object o = mapWidget.getMenuContext().getRightButtonObject();
-		if (o != null && o instanceof Feature) {
-			Feature feature = (Feature) o;
-			if (feature.isSelected()) {
-				this.feature = feature;
-				return feature.isUpdatable();
+		int count = mapWidget.getMapModel().getNrSelectedFeatures();
+		if (count == 1) {
+			for (VectorLayer layer : mapWidget.getMapModel().getVectorLayers()) {
+				if (layer.getSelectedFeatures().size() == 1) {
+					// It's already selected, so we assume the feature is fully loaded:
+					feature = layer.getFeatureStore().getPartialFeature(layer.getSelectedFeatures().iterator().next());
+					return true;
+				}
 			}
+			return true;
 		}
 		return false;
 	}

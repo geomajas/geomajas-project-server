@@ -38,7 +38,7 @@ public class DeselectAllAction extends MenuAction {
 	private MapModel mapModel;
 
 	public DeselectAllAction(MapModel mapModel) {
-		super(I18nProvider.getMenu().deselectAll(), "[ISOMORPHIC]/geomajas/deselect.gif");
+		super(I18nProvider.getMenu().deselectAll(), "[ISOMORPHIC]/geomajas/selected-delete.png");
 		this.mapModel = mapModel;
 	}
 

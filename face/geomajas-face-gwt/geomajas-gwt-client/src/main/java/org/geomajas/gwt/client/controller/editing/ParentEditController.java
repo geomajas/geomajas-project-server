@@ -29,6 +29,7 @@ import org.geomajas.configuration.client.ClientToolbarInfo;
 import org.geomajas.gwt.client.action.ConfigurableAction;
 import org.geomajas.gwt.client.action.ToolbarBaseAction;
 import org.geomajas.gwt.client.action.menu.DeleteFeatureAction;
+import org.geomajas.gwt.client.action.menu.DeselectAllAction;
 import org.geomajas.gwt.client.action.menu.EditFeatureAction;
 import org.geomajas.gwt.client.action.menu.NewFeatureAction;
 import org.geomajas.gwt.client.action.menu.ToggleSelectionAction;
@@ -106,7 +107,7 @@ public class ParentEditController extends EditController {
 			menu.addItem(new EditFeatureAction(mapWidget, this));
 			menu.addItem(new DeleteFeatureAction(mapWidget, this));
 			menu.addItem(new MenuItemSeparator());
-			menu.addItem(new ToggleSelectionAction(mapWidget, 5));
+			menu.addItem(new DeselectAllAction(mapWidget.getMapModel()));
 		}
 		return menu;
 	}

@@ -27,6 +27,7 @@ import org.geomajas.gwt.client.action.MenuAction;
 import org.geomajas.gwt.client.controller.editing.ParentEditController;
 import org.geomajas.gwt.client.i18n.I18nProvider;
 import org.geomajas.gwt.client.map.feature.Feature;
+import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.widget.MapWidget;
 
 import com.smartgwt.client.util.BooleanCallback;
@@ -94,13 +95,16 @@ public class DeleteFeatureAction extends MenuAction implements MenuItemIfFunctio
 	 * existing features.
 	 */
 	public boolean execute(Canvas target, Menu menu, MenuItem item) {
-		Object o = mapWidget.getMenuContext().getRightButtonObject();
-		if (o != null && o instanceof Feature) {
-			Feature feature = (Feature) o;
-			if (feature.isSelected()) {
-				this.feature = feature;
-				return feature.isDeletable();
+		int count = mapWidget.getMapModel().getNrSelectedFeatures();
+		if (count == 1) {
+			for (VectorLayer layer : mapWidget.getMapModel().getVectorLayers()) {
+				if (layer.getSelectedFeatures().size() == 1) {
+					// It's already selected, so we assume the feature is fully loaded:
+					feature = layer.getFeatureStore().getPartialFeature(layer.getSelectedFeatures().iterator().next());
+					return true;
+				}
 			}
+			return true;
 		}
 		return false;
 	}

@@ -57,6 +57,9 @@
       command successfully returns, more than one action can be attached to
       it. Without that <code>Deferred</code> object, the client would have to
       send the same command again to add a new callback method to it.</para>
+
+      <xi:include href="../listing/GwtCommandExecution.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
     </section>
 
     <section>
@@ -576,7 +579,7 @@ public interface GeometryOperation {
         <code>render</code> method (as explained above). When using the direct
         approach, one has to call the methods of one of the different
         rendering contexts. A MapWidget contains a MapContext implementation,
-        that in turn contains 3 different contexts: </para>
+        that in turn contains 3 different contexts:</para>
 
         <itemizedlist>
           <listitem>
@@ -752,7 +755,7 @@ public interface GeometryOperation {
             <code>RenderGroup</code>, and a <code>RenderStatus</code>. If you
             are unfamiliar with these, visit the <link
             linkend="graphics">beginning of this chapter</link> for a detailed
-            description. </para>
+            description.</para>
 
             <para>Let us start with an example, where we draw a rectangle in
             screen space (=pixel coordinates). The code would look something
@@ -1374,7 +1377,7 @@ public interface GraphicsController extends MouseDownHandler, MouseUpHandler,
             <listitem>
               <para><emphasis>AbstractRectangleController</emphasis>: abstract
               controller that handles drawing a rectangle by dragging the
-              mouse on the map. </para>
+              mouse on the map.</para>
             </listitem>
 
             <listitem>
@@ -1443,8 +1446,8 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
     Geomajas has added on top of the SmartGWT widget list. Each widget will be
     handled in detail so that developers might get a better understanding of
     what they are here for, and how to use them. Know that many of these
-    widgets are closely connected, either through configuration or coding.
-    </para>
+    widgets are closely connected, either through configuration or
+    coding.</para>
 
     <section>
       <title>GraphicsWidget</title>
@@ -1820,7 +1823,7 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
       the <code>MapModel</code>. At the same time the <code>LayerTree</code>
       listens to layer selection events, to adjust it's own appearance. For
       example, if a layer is selected, the proper noode should be selected as
-      well. But more than that, all the buttons need updating as well. </para>
+      well. But more than that, all the buttons need updating as well.</para>
 
       <para>The <code>LayerTreeAction</code> and
       <code>LayerTreeModalAction</code> are also specifically designed to cope
@@ -1969,7 +1972,7 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
         <listitem>
           <para>editingAllowed: Is editing überhaupt allowed? This must be set
           BEFORE the widget is actually drawn, because afterwards it won't
-          have any effect anymore. This </para>
+          have any effect anymore. This</para>
         </listitem>
 
         <listitem>
@@ -2080,6 +2083,17 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
       searched. By default this limit is set to 100. Change the value of
       <code>maximumResultSize</code> to change this. Note that this can have a
       serious impact on performance!</para>
+
+      <screenshot>
+        <screeninfo>FeatureSearch example</screeninfo>
+
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center"
+                       fileref="../images/gwtface_widget_featuresearch.png" />
+          </imageobject>
+        </mediaobject>
+      </screenshot>
     </section>
 
     <section>
@@ -2087,8 +2101,8 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
 
       <para>A GWT unit test should inherit from the <code>GWTTestcase</code>
       base class and should be named <code>GwtTestXxx.java</code>. GWT unit
-      tests are run inside a hosted mode environment and can refer to most of
-      the GWT API. To run a GWT test case, run the maven command
+      tests are run inside a development mode environment and can refer to
+      most of the GWT API. To run a GWT test case, run the maven command
       <command>gwt:test </command>or execute the integration test
       phase.</para>
     </section>
