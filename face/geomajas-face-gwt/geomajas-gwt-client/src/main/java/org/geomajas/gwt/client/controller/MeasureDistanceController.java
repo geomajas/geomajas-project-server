@@ -29,6 +29,7 @@ import org.geomajas.gwt.client.action.menu.ToggleSnappingAction;
 import org.geomajas.gwt.client.gfx.paintable.GfxGeometry;
 import org.geomajas.gwt.client.gfx.style.ShapeStyle;
 import org.geomajas.gwt.client.i18n.I18nProvider;
+import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.spatial.geometry.Geometry;
 import org.geomajas.gwt.client.spatial.geometry.GeometryFactory;
 import org.geomajas.gwt.client.spatial.geometry.operation.InsertCoordinateOperation;
@@ -95,7 +96,7 @@ public class MeasureDistanceController extends AbstractSnappingController {
 	public void onActivate() {
 		menu = new Menu();
 		menu.addItem(new CancelMeasuringAction(this));
-		menu.addItem(new ToggleSnappingAction(mapWidget.getMapModel(), this));
+		menu.addItem(new ToggleSnappingAction((VectorLayer) mapWidget.getMapModel().getSelectedLayer(), this));
 		mapWidget.setContextMenu(menu);
 	}
 

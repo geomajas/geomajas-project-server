@@ -103,7 +103,7 @@ public class PolygonEditController extends EditController {
 			menu.addItem(new RemoveRingAction(mapWidget));
 			menu.addItem(new MenuItemSeparator());
 			menu.addItem(new ToggleGeometricInfoAction(this));
-			menu.addItem(new ToggleSnappingAction(mapWidget.getMapModel(), this));
+			menu.addItem(new ToggleSnappingAction(getFeatureTransaction().getLayer(), this));
 		}
 		return menu;
 	}

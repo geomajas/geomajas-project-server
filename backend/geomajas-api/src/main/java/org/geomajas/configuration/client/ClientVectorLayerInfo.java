@@ -40,6 +40,8 @@ import org.geomajas.global.Api;
 @Api(allMethods = true)
 public class ClientVectorLayerInfo extends ClientLayerInfo {
 
+	private static final long serialVersionUID = 160L;
+
 	@NotNull
 	private NamedStyleInfo namedStyleInfo;
 

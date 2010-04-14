@@ -26,8 +26,6 @@ package org.geomajas.gwt.client.action.menu;
 import org.geomajas.gwt.client.action.MenuAction;
 import org.geomajas.gwt.client.controller.AbstractSnappingController;
 import org.geomajas.gwt.client.i18n.MenuMessages;
-import org.geomajas.gwt.client.map.MapModel;
-import org.geomajas.gwt.client.map.layer.Layer;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.spatial.snapping.Snapper.SnapMode;
 
@@ -48,26 +46,22 @@ import com.smartgwt.client.widgets.menu.events.MenuItemClickEvent;
  * action will effectively toggle this setting. Also this action is only enabled when the MapModel has a selected layer,
  * and that selected layer is a VectorLayer and that VectorLayer has at least 1 snapping rule.
  * </p>
- *
+ * 
  * @author Pieter De Graef
  */
 public class ToggleSnappingAction extends MenuAction {
 
-	/**
-	 * Snapping occurs using the snapping rules of the selected layer. This MapModel should contain that selected layer.
-	 */
-	private final MapModel mapModel;
+	/** Snapping occurs using the snapping rules of this layer. */
+	private final VectorLayer layer;
 
-	/**
-	 * The controller onto whom to activate snapping.
-	 */
+	/** The controller onto whom to activate snapping. */
 	private final AbstractSnappingController controller;
 
 	// Constructors:
 
-	public ToggleSnappingAction(final MapModel mapModel, final AbstractSnappingController controller) {
+	public ToggleSnappingAction(final VectorLayer layer, final AbstractSnappingController controller) {
 		super(((MenuMessages) GWT.create(MenuMessages.class)).toggleMeasureSnapping(), null);
-		this.mapModel = mapModel;
+		this.layer = layer;
 		this.controller = controller;
 
 		setCheckIfCondition(new MenuItemIfFunction() {
@@ -80,26 +74,22 @@ public class ToggleSnappingAction extends MenuAction {
 		setEnableIfCondition(new MenuItemIfFunction() {
 
 			public boolean execute(Canvas target, Menu menu, MenuItem item) {
-				Layer<?> layer = mapModel.getSelectedLayer();
-				if (layer != null && layer instanceof VectorLayer) {
-					VectorLayer vLayer = (VectorLayer) layer;
-					return vLayer.getLayerInfo().getSnappingRules() != null
-							&& !vLayer.getLayerInfo().getSnappingRules().isEmpty();
+				if (layer != null) {
+					return layer.getLayerInfo().getSnappingRules() != null
+							&& !layer.getLayerInfo().getSnappingRules().isEmpty();
 				}
 				return false;
 			}
 		});
 	}
 
+	// ClickHandler implementation:
+
 	public void onClick(MenuItemClickEvent event) {
 		if (controller.isSnappingActive()) {
 			controller.deactivateSnapping();
-		} else {
-			Layer<?> layer = mapModel.getSelectedLayer();
-			if (layer != null && layer instanceof VectorLayer) {
-				VectorLayer vLayer = (VectorLayer) layer;
-				controller.activateSnapping(vLayer.getLayerInfo().getSnappingRules(), SnapMode.ALL_GEOMETRIES_EQUAL);
-			}
+		} else if (layer != null) {
+			controller.activateSnapping(layer.getLayerInfo().getSnappingRules(), SnapMode.ALL_GEOMETRIES_EQUAL);
 		}
 	}
 }

@@ -110,6 +110,7 @@ public class Snapper {
 			return coordinate;
 		}
 		Coordinate snappedCoordinate = coordinate;
+		double snappedDistance = Double.MAX_VALUE;
 
 		for (int i = 0; i < rules.size(); i++) {
 			SnappingRuleInfo rule = rules.get(i);
@@ -144,9 +145,12 @@ public class Snapper {
 			}
 
 			// Calculate snapping:
-			handler.setCoordinate(snappedCoordinate);
+			handler.setCoordinate(coordinate);
 			snapLayer.getFeatureStore().query(handler.getBounds(), handler);
-			snappedCoordinate = handler.getSnappedCoordinate();
+			if (handler.getDistance() < snappedDistance) {
+				snappedCoordinate = handler.getSnappedCoordinate();
+				snappedDistance = handler.getDistance();
+			}
 		}
 		return snappedCoordinate;
 	}

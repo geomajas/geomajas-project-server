@@ -29,6 +29,8 @@ import org.geomajas.gwt.client.map.feature.TransactionGeomIndex;
 import org.geomajas.gwt.client.spatial.WorldViewTransformer;
 import org.geomajas.gwt.client.spatial.geometry.Geometry;
 import org.geomajas.gwt.client.widget.MapWidget;
+import org.geomajas.gwt.client.widget.MapWidget.RenderGroup;
+import org.geomajas.gwt.client.widget.MapWidget.RenderStatus;
 
 import com.smartgwt.client.types.VerticalAlignment;
 import com.smartgwt.client.widgets.Label;
@@ -190,6 +192,9 @@ public abstract class EditController extends AbstractSnappingController {
 		}
 		hideGeometricInfo();
 		cleanup();
+		if (getFeatureTransaction() != null) {
+			mapWidget.render(getFeatureTransaction(), RenderGroup.SCREEN, RenderStatus.DELETE);
+		}
 	}
 
 	// -------------------------------------------------------------------------
