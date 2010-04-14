@@ -61,12 +61,12 @@ import com.smartgwt.client.widgets.tab.TabSet;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 
 /**
- * Entry point and main class for GWT simple application. This class defines the layout and functionality of this
+ * Entry point and main class for GWT application. This class defines the layout and functionality of this
  * application.
  * 
  * @author Pieter De Graef
  */
-public class GeomajasSimple implements EntryPoint {
+public class GeomajasEntryPoint implements EntryPoint {
 
 	private MapWidget map;
 
@@ -78,7 +78,7 @@ public class GeomajasSimple implements EntryPoint {
 
 	private List<AbstractTab> tabs = new ArrayList<AbstractTab>();
 
-	public GeomajasSimple() {
+	public GeomajasEntryPoint() {
 	}
 
 	public void onModuleLoad() {

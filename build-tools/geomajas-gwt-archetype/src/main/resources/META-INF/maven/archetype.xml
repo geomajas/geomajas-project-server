@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><archetype>
-  <id>geomajas-gwt-simple</id>
+  <id>geomajas-gwt-archetype</id>
   <sources>
-    <source>src/main/java/client/GeomajasSimple.java</source>
+    <source>src/main/java/client/GeomajasEntryPoint.java</source>
     <source>src/main/java/client/pages/AbstractTab.java</source>
     <source>src/main/java/client/pages/FeatureListGridPage.java</source>
     <source>src/main/java/client/pages/SearchPage.java</source>
@@ -17,7 +17,7 @@
     <resource>src/main/resources/shapeinmem/shapes/roads.prj</resource>
     <resource>src/main/resources/shapeinmem/shapes/roads.shx</resource>
     <resource>src/main/resources/shapeinmem/layerOsm.xml</resource>
-    <resource>src/main/resources/GeomajasSimple.gwt.xml</resource>
+    <resource>src/main/resources/GeomajasEntryPoint.gwt.xml</resource>
     <resource>src/main/resources/geotools/applicationContext.xml</resource>
     <resource>src/main/resources/geotools/layerRoads.xml</resource>
     <resource>src/main/resources/geotools/layerOsm.xml</resource>

@@ -60,7 +60,7 @@
 
 	<servlet-mapping>
 		<servlet-name>GeomajasServiceServlet</servlet-name>
-		<url-pattern>/${packageInPathFormat}.GeomajasSimple/geomajasService</url-pattern>
+		<url-pattern>/${packageInPathFormat}.GeomajasEntryPoint/geomajasService</url-pattern>
 	</servlet-mapping>
 
 	<welcome-file-list>

@@ -2,29 +2,6 @@
 #set( $symbol_dollar = '$' )
 #set( $symbol_escape = '\' )
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  ~ This file is part of Geomajas, a component framework for building
-  ~ rich Internet applications (RIA) with sophisticated capabilities for the
-  ~ display, analysis and management of geographic information.
-  ~ It is a building block that allows developers to add maps
-  ~ and other geographic data capabilities to their web applications.
-  ~
-  ~ Copyright 2008-2010 Geosparc, http://www.geosparc.com, Belgium
-  ~
-  ~ This program is free software: you can redistribute it and/or modify
-  ~ it under the terms of the GNU Affero General Public License as
-  ~ published by the Free Software Foundation, either version 3 of the
-  ~ License, or (at your option) any later version.
-  ~
-  ~ This program is distributed in the hope that it will be useful,
-  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~ GNU Affero General Public License for more details.
-  ~
-  ~ You should have received a copy of the GNU Affero General Public License
-  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
-  -->
-
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>${groupId}</groupId>
@@ -120,31 +97,7 @@
 
 	<build>
 		<outputDirectory>war/WEB-INF/classes</outputDirectory>
-		<extensions>
-			<extension>
-				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-checkstyle</artifactId>
-				<version>1.0.3</version>
-			</extension>
-		</extensions>
 		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-checkstyle-plugin</artifactId>
-				<version>2.4</version>
-				<configuration>
-					<configLocation>config/geomajas-checkstyle.xml</configLocation>
-				</configuration>
-				<executions>
-					<execution>
-						<phase>verify</phase>
-						<goals>
-							<goal>check</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -170,7 +123,7 @@
 				<version>1.2</version>
 				<configuration>
 					<inplace>true</inplace>
-					<module>${package}.GeomajasSimple</module>
+					<module>${package}.GeomajasEntryPoint</module>
 					<runTarget>index.html</runTarget>
 					<warSourceDirectory>war</warSourceDirectory>
 					<disableCastChecking>true</disableCastChecking>
@@ -222,7 +175,7 @@
 						<configuration>
 							<tasks>
 								<delete dir="war/WEB-INF/lib" />
-								<delete dir="war/${package}.GeomajasSimple" />
+								<delete dir="war/${package}.GeomajasEntryPoint" />
 							</tasks>
 						</configuration>
 						<goals>
@@ -249,40 +202,6 @@
 			<url>http://apps.geomajas.org/nexus/content/groups/public</url>
 		</pluginRepository>
 	</pluginRepositories>
-
-	<profiles>
-		<profile>
-			<id>jrebel</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>gwt-maven-plugin</artifactId>
-						<version>1.2</version>
-						<configuration>
-							<inplace>true</inplace>
-							<module>${package}.GeomajasSimple</module>
-							<runTarget>index.html</runTarget>
-							<warSourceDirectory>war</warSourceDirectory>
-							<disableCastChecking>true</disableCastChecking>
-							<disableClassMetadata>true</disableClassMetadata>
-							<extraJvmArgs>-Xmx512M -Xss1024k</extraJvmArgs>
-						</configuration>
-						<executions>
-							<execution>
-								<goals>
-									<goal>clean</goal>
-									<goal>compile</goal>
-									<goal>generateAsync</goal>
-									<goal>test</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
 
 	<properties>
 		<geomajas-face-gwt-version>1.6.0-SNAPSHOT</geomajas-face-gwt-version>
