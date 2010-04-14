@@ -5,7 +5,7 @@
 	<packaging>maven-plugin</packaging>
 	<version>1.0.1</version>
 	<name>Geomajas maven plugin</name>
-	<url>http://files.geomajas.org/maven/trunk/geomajas-mave-plugin</url>
+	<url>http://files.geomajas.org/maven/trunk/geomajas-maven-plugin</url>
 
 	<distributionManagement>
 		<repository>
@@ -16,7 +16,7 @@
 		<site>
 			<id>Geomajas project site</id>
 			<name>Mapping with Asynchronous Java and SVG</name>
-			<url>file:/var/www/files.geomajas.org/htdocs/maven/trunk/geomajas-checkstyle</url>
+			<url>file:/var/www/files.geomajas.org/htdocs/maven/trunk/geomajas-maven-plugin</url>
 		</site>
 	</distributionManagement>
 

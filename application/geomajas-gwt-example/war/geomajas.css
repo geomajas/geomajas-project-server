@@ -1,7 +1,7 @@
 .sgwtTitle {
-    font-family:Arial,Verdana,tahoma,serif;
-    color:#454545;
-    font-size:18px;
+    font-family: Arial,Verdana,tahoma,serif;
+    color: #454545;
+    font-size: 18px;
 }
 
 /*------------- ATTRIBUTE FORMS -------------*/
@@ -13,10 +13,9 @@
 {
 	/* Style for the form TD's */
 	padding: 3px 10px;
-	border-top: 1px solid #EBEADB;
-	border-right: 1px solid #D5CDB5;
-	border-bottom: 1px solid #EBEADB;
-	border-left: 1px solid #EBEADB;
+	border: 1px solid #EBEADB;
+	border-right-color: #D5CDB5;
+
 	background-color: #FFFFFF;
 }
 .attributeForm .formTitleError, .attributeForm .formCellError {
@@ -33,15 +32,15 @@
 .attributeForm .labelAnchorDisabled
 {
 	/* Style for the disabled forms */
-	border: 0px;
+	border: 0;
 	padding-top: 4px;
 	color: #000000;
 }
 
 .attributeForm .formCellError div {
 	/* Style for error signs, when typing faulty data */
-	border: 0px;
-	padding: 0px;
+	border: 0;
+	padding: 0;
 }
 
 .attributeForm table {
@@ -56,11 +55,11 @@
 .searchHeader {
 	height: 24px;
 	line-height: 24px;
-	padding: 0px 5px;
+	padding: 0 5px;
 }
 
 .searchRow {
-	border-bottom: 1px solid lightgrey;
+	border-bottom: 1px solid lightgray;
 	height: 32px;
 	line-height: 32px;
 }
@@ -71,7 +70,7 @@
 /*------------- LOADING SCREEN -------------*/
 
 .loadingScreenLabel {
-	font-family: Verdana;
+	font-family: Arial,Verdana,tahoma,serif;
 	font-weight: normal;
 	font-size: 10px;
 	color: #FFFFFF;
