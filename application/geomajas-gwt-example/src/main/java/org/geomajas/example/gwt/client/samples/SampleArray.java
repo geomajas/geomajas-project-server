@@ -31,6 +31,7 @@ import org.geomajas.example.gwt.client.samples.editing.EditLineLayerSample;
 import org.geomajas.example.gwt.client.samples.editing.EditPointLayerSample;
 import org.geomajas.example.gwt.client.samples.editing.EditPolygonLayerSample;
 import org.geomajas.example.gwt.client.samples.grid.FeatureListGridSample;
+import org.geomajas.example.gwt.client.samples.grid.SearchSample;
 import org.geomajas.example.gwt.client.samples.i18n.I18nProvider;
 import org.geomajas.example.gwt.client.samples.layertree.LayertreeSample;
 import org.geomajas.example.gwt.client.samples.layertree.LegendSample;
@@ -81,8 +82,7 @@ public final class SampleArray {
 						"[ISOMORPHIC]/geomajas/layer-raster.png", OpenStreetMapSample.OSM_TITLE, "MapWidget",
 						OpenStreetMapSample.FACTORY),
 				new SampleTreeNode(I18nProvider.getSampleMessages().googleTitle(),
-						"[ISOMORPHIC]/geomajas/layer-raster.png", GoogleSample.TITLE, "MapWidget",
-						GoogleSample.FACTORY),
+						"[ISOMORPHIC]/geomajas/layer-raster.png", GoogleSample.TITLE, "MapWidget", GoogleSample.FACTORY),
 				new SampleTreeNode(I18nProvider.getSampleMessages().wmsTitle(),
 						"[ISOMORPHIC]/geomajas/layer-raster.png", WmsSample.WMS_TITLE, "MapWidget", WmsSample.FACTORY),
 				new SampleTreeNode(I18nProvider.getSampleMessages().geoTitle(),
@@ -133,10 +133,12 @@ public final class SampleArray {
 						LegendSample.TITLE, "Layertree", LegendSample.FACTORY),
 
 				// FeatureListGrid samples:
-				new SampleTreeNode(I18nProvider.getSampleMessages().fltTitle(), "[ISOMORPHIC]/geomajas/layer.png",
-						"FeatureListGridGroup", "topLevel"),
+				new SampleTreeNode(I18nProvider.getSampleMessages().treeGroupAttributes(),
+						"[ISOMORPHIC]/geomajas/layer.png", "FeatureListGridGroup", "topLevel"),
 				new SampleTreeNode(I18nProvider.getSampleMessages().fltTitle(), "[ISOMORPHIC]/geomajas/layer.png",
 						FeatureListGridSample.TITLE, "FeatureListGridGroup", FeatureListGridSample.FACTORY),
+				new SampleTreeNode(I18nProvider.getSampleMessages().searchTitle(), "[ISOMORPHIC]/geomajas/layer.png",
+						SearchSample.TITLE, "FeatureListGridGroup", SearchSample.FACTORY),
 
 				// Map controller:
 				new SampleTreeNode(I18nProvider.getSampleMessages().treeGroupMapController(),

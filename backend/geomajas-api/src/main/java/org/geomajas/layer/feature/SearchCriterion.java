@@ -80,6 +80,9 @@ public class SearchCriterion implements Serializable {
 	 * @return human readable form
 	 */
 	public String toString() {
+		if ("contains".equals(operator)) {
+			return "(" + attributeName + " like '%" + value + "%')";
+		}
 		return "(" + attributeName + " " + operator + " " + value + ")";
 	}
 

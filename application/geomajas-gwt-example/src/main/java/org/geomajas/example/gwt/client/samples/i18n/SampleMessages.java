@@ -58,6 +58,8 @@ public interface SampleMessages extends Messages {
 
 	String treeGroupToolbarAndControllers();
 
+	String treeGroupAttributes();
+
 	String introductionTitle();
 
 	// OpenStreetMap sample:
@@ -337,4 +339,10 @@ public interface SampleMessages extends Messages {
 	String fltTitle();
 
 	String fltDescription();
+
+	// FeatureSearch sample:
+
+	String searchTitle();
+
+	String searchDescription();
 }

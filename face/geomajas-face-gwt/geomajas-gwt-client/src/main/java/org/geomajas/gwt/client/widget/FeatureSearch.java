@@ -64,6 +64,7 @@ import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.events.ChangedEvent;
 import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
+import com.smartgwt.client.widgets.layout.LayoutSpacer;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.layout.VStack;
 
@@ -444,6 +445,7 @@ public class FeatureSearch extends Canvas {
 		leftLayout.setAlign(Alignment.LEFT);
 
 		HLayout layerLayout = new HLayout();
+		layerLayout.setWidth(420);
 		DynamicForm layerForm = new DynamicForm();
 		layerForm.setHeight(30);
 		if (manualLayerSelection) {
@@ -504,10 +506,12 @@ public class FeatureSearch extends Canvas {
 		leftLayout.addMember(layerLayout);
 		DynamicForm logicalForm = new DynamicForm();
 		logicalForm.setFields(logicalOperatorRadio);
+		leftLayout.setWidth(420);
 		leftLayout.addMember(logicalForm);
 
 		VLayout rightLayout = new VLayout();
-		rightLayout.setAlign(Alignment.RIGHT);
+		rightLayout.setLayoutAlign(VerticalAlignment.TOP);
+		rightLayout.setMargin(5);
 		rightLayout.setMembersMargin(5);
 		rightLayout.setWidth(100);
 		searchButton = new IButton(I18nProvider.getSearch().btnSearch());
@@ -534,12 +538,12 @@ public class FeatureSearch extends Canvas {
 		rightLayout.addMember(resetButton);
 
 		optionLayout.addMember(leftLayout);
+		optionLayout.addMember(new LayoutSpacer());
 		optionLayout.addMember(rightLayout);
 
 		// Create a header for the criterionStack:
 		HLayout headerLayout = new HLayout();
 		headerLayout.setHeight(26);
-		headerLayout.setWidth100();
 		headerLayout.setStyleName("headerBar");
 		HTMLPane attrHeader = new HTMLPane();
 		attrHeader.setStyleName("searchHeader");
@@ -552,7 +556,6 @@ public class FeatureSearch extends Canvas {
 		HTMLPane valueHeader = new HTMLPane();
 		valueHeader.setContents("Value");
 		valueHeader.setStyleName("searchHeader");
-		valueHeader.setWidth100();
 
 		criterionStack = new VStack();
 		criterionStack.setAlign(VerticalAlignment.TOP);
@@ -573,8 +576,6 @@ public class FeatureSearch extends Canvas {
 		HLayout searchGrid = new HLayout();
 		searchGrid.addMember(criterionStack);
 		searchGrid.addMember(buttonStack);
-		searchGrid.setWidth100();
-		searchGrid.setHeight100();
 		searchGrid.setBorder("1px solid lightgrey");
 
 		layout.addMember(optionLayout);
