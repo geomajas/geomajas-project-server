@@ -1,0 +1,70 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
+<!DOCTYPE web-app PUBLIC
+ "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
+ "http://java.sun.com/dtd/web-app_2_3.dtd" >
+<web-app>
+	<display-name>Geomajas GWT face simple example application</display-name>
+    <context-param>
+        <param-name>contextConfigLocation</param-name>
+        <param-value>
+            ${packageInPathFormat}/shapeinmem/applicationContext.xml
+            ${packageInPathFormat}/shapeinmem/layerRoads.xml
+			${packageInPathFormat}/shapeinmem/layerOsm.xml
+  
+        <!--
+            ${packageInPathFormat}/hibernate/applicationContext.xml
+            ${packageInPathFormat}/hibernate/layerRoads.xml
+			${packageInPathFormat}/hibernate/layerOsm.xml
+        -->
+        </param-value>
+    </context-param>
+
+    <context-param>
+        <param-name>preloadClasses</param-name>
+        <param-value>
+			org.geomajas.command.general.LogCommand
+			org.geomajas.spring.GeomajasBeanNameGenerator
+			org.hibernate.validator.engine.ValidatorImpl
+			org.geotools.data.shapefile.ShapefileDataStoreFactory
+			org.opengis.filter.FilterFactory
+			org.geomajas.layer.hibernate.filter.ExtendedFilterFactory
+			org.springframework.transaction.config.TxNamespaceHandler
+			<!--  org.hibernatespatial.postgis.PostgisDialect -->			
+        </param-value>
+    </context-param>
+
+	<listener>
+ 		<listener-class>org.geomajas.servlet.PrepareScanningContextListener</listener-class>
+	</listener>
+
+	<listener>
+		<listener-class>org.geomajas.servlet.GeomajasContextListener</listener-class>
+	</listener>
+
+	<filter>
+		<filter-name>JettyFilter</filter-name>
+		<filter-class>org.geomajas.servlet.JettyThreadParentFilter</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>JettyFilter</filter-name>
+		<servlet-name>GeomajasServiceServlet</servlet-name>
+	</filter-mapping>
+
+	<servlet>
+		<servlet-name>GeomajasServiceServlet</servlet-name>
+		<servlet-class>org.geomajas.gwt.server.GeomajasServiceImpl</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>GeomajasServiceServlet</servlet-name>
+		<url-pattern>/${packageInPathFormat}.GeomajasSimple/geomajasService</url-pattern>
+	</servlet-mapping>
+
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
+</web-app>
