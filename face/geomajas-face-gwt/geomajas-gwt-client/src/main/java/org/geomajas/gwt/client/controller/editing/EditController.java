@@ -185,6 +185,10 @@ public abstract class EditController extends AbstractSnappingController {
 	}
 
 	public void onDeactivate() {
+		if (getFeatureTransaction() != null) {
+			mapWidget.render(getFeatureTransaction(), RenderGroup.SCREEN, RenderStatus.DELETE);
+			mapWidget.getMapModel().getFeatureEditor().stopEditing();
+		}
 		if (menu != null) {
 			menu.destroy();
 			menu = null;
@@ -192,9 +196,6 @@ public abstract class EditController extends AbstractSnappingController {
 		}
 		hideGeometricInfo();
 		cleanup();
-		if (getFeatureTransaction() != null) {
-			mapWidget.render(getFeatureTransaction(), RenderGroup.SCREEN, RenderStatus.DELETE);
-		}
 	}
 
 	// -------------------------------------------------------------------------
