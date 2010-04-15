@@ -1146,7 +1146,7 @@
       <para>The back-end also contains a module geomajas-api-experimental.
       This contains some experimental stuff which may be promoted to the
       supported API when useful, or may be changed or dumped. As this is
-      <emphasis>not</emphasis> part of the API, it may changes between
+      <emphasis>not</emphasis> part of the API, it may change between
       revisions.</para>
     </section>
 

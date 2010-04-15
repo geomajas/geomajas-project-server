@@ -76,7 +76,7 @@
 
 						<format>
 							<formatName>html</formatName>
-							<stylesheetResource>file:${project.build.directory}/resources/xslt/org/jboss/main-html.xsl
+							<stylesheetResource>file:${project.build.directory}/resources/xslt/org/geomajas/main-html.xsl
 							</stylesheetResource>
 							<finalName>index.html</finalName>
 						</format>
@@ -84,7 +84,7 @@
 						<format>
 							<formatName>html_single</formatName>
 							<stylesheetResource>
-								file:${project.build.directory}/resources/xslt/org/jboss/nochunk-html.xsl
+								file:${project.build.directory}/resources/xslt/org/geomajas/nochunk-html.xsl
 							</stylesheetResource>
 							<finalName>index.html</finalName>
 						</format>

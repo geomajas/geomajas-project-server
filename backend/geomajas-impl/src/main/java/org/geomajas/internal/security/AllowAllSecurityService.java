@@ -23,6 +23,7 @@
 
 package org.geomajas.internal.security;
 
+import org.geomajas.global.Api;
 import org.geomajas.security.Authentication;
 import org.geomajas.security.BaseAuthorization;
 import org.geomajas.security.SecurityService;
@@ -32,6 +33,7 @@ import org.geomajas.security.SecurityService;
  * 
  * @author Joachim Van der Auwera
  */
+@Api
 public class AllowAllSecurityService implements SecurityService {
 
 	private static final BaseAuthorization[] AUTHORIZATIONS = new BaseAuthorization[] { new AllowAllAuthorization() };

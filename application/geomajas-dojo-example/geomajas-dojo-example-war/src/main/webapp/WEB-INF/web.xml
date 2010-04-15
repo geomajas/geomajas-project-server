@@ -59,7 +59,7 @@
 	</servlet>
 <!-- @extract-end -->
 
-<!-- @extract-start WebXmlDojoPart2, Servlet mappings -->
+<!-- @extract-start WebXmlDojoPart3, Servlet mappings -->
 	<servlet-mapping>
 		<servlet-name>PdfServlet</servlet-name>
 		<url-pattern>*.pdf</url-pattern>

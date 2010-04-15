@@ -198,16 +198,16 @@
           <para>The <code>LayerModel</code> class has been integrated in
           <code>VectorLayer</code>. This modifies the configuration. Where
           before you would have written <programlisting>&lt;bean name="countriesModel" class="org.geomajas.layermodel.shapeinmem.ShapeInMemLayer"&gt;
-		&lt;property name="url" value="classpath:shapes/africa/country.shp"/&gt;
-	&lt;/bean&gt;
-	&lt;bean name="countries" class="org.geomajas.internal.layer.layertree.DefaultVectorLayer" &gt;
-		&lt;property name="layerInfo" ref="countriesInfo" /&gt;
-		&lt;property name="layerModel" ref="countriesModel" /&gt;
-	&lt;/bean&gt;</programlisting> into <programlisting>&lt;bean name="countries" class="org.geomajas.layer.shapeinmem.ShapeInMemLayer"&gt;
-		&lt;property name="layerInfo" ref="countriesInfo" /&gt;
-		&lt;property name="url" value="classpath:shapes/africa/country.shp"/&gt;
-	&lt;/bean&gt;</programlisting>Note that this includes changing "layermodel"
-          to "layer" in all module and package names.</para>
+    &lt;property name="url" value="classpath:shapes/africa/country.shp"/&gt;
+&lt;/bean&gt;
+&lt;bean name="countries" class="org.geomajas.internal.layer.layertree.DefaultVectorLayer" &gt;
+    &lt;property name="layerInfo" ref="countriesInfo" /&gt;
+    &lt;property name="layerModel" ref="countriesModel" /&gt;
+&lt;/bean&gt;</programlisting> into <programlisting>&lt;bean name="countries" class="org.geomajas.layer.shapeinmem.ShapeInMemLayer"&gt;
+    &lt;property name="layerInfo" ref="countriesInfo" /&gt;
+    &lt;property name="url" value="classpath:shapes/africa/country.shp"/&gt;
+&lt;/bean&gt;</programlisting>Note that this includes changing "layermodel" to
+          "layer" in all module and package names.</para>
         </listitem>
 
         <listitem>
@@ -236,13 +236,13 @@
           include the following excerpt in your configuration file.</para>
 
           <programlisting>&lt;bean name="security.securityInfo" class="org.geomajas.security.SecurityInfo"&gt;
-		&lt;property name="loopAllServices" value="false"/&gt;
-		&lt;property name="securityServices"&gt;
-			&lt;list&gt;
-				&lt;bean class="org.geomajas.internal.security.AllowAllSecurityService"/&gt;
-			&lt;/list&gt;
-		&lt;/property&gt;
-	&lt;/bean&gt;</programlisting>
+    &lt;property name="loopAllServices" value="false"/&gt;
+    &lt;property name="securityServices"&gt;
+        &lt;list&gt;
+            &lt;bean class="org.geomajas.internal.security.AllowAllSecurityService"/&gt;
+        &lt;/list&gt;
+    &lt;/property&gt;
+&lt;/bean&gt;</programlisting>
         </listitem>
 
         <listitem>
@@ -330,8 +330,8 @@
               clients without restarting the server.</para>
             </listitem>
           </itemizedlist>The configuration API has profoundly changed. Where
-        possible, the back-end classes have retained their original (before the
-        split) names, after pruning them to remove all client related
+        possible, the back-end classes have retained their original (before
+        the split) names, after pruning them to remove all client related
         information. The client classes have been mostly created from scratch
         and have been named <code>ClientXxxInfo.java</code> for consistency.
         They have been located in a separate package, called
