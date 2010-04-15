@@ -298,8 +298,7 @@
 		<geomajas-layer-openstreetmaps-version>1.6.0-SNAPSHOT</geomajas-layer-openstreetmaps-version>
 		<geomajas-layer-wms-version>1.6.0-SNAPSHOT</geomajas-layer-wms-version>
 		<geomajas-plugin-springsecurity-version>1.6.0-SNAPSHOT</geomajas-plugin-springsecurity-version>
-		<gwt-version>2.0.0</gwt-version>
-		<smartgwt-version>2.0</smartgwt-version>
+		<gwt-version>2.0.3</gwt-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 

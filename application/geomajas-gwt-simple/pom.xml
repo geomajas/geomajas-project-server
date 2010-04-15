@@ -268,8 +268,7 @@
 		<geomajas-layer-hibernate-version>1.6.0-SNAPSHOT</geomajas-layer-hibernate-version>
 		<geomajas-layer-google-version>1.6.0-SNAPSHOT</geomajas-layer-google-version>
 		<geomajas-layer-openstreetmaps-version>1.6.0-SNAPSHOT</geomajas-layer-openstreetmaps-version>
-		<gwt-version>2.0.0</gwt-version>
-		<smartgwt-version>2.0</smartgwt-version>
+		<gwt-version>2.0.3</gwt-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
