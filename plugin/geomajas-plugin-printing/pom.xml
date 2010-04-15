@@ -30,19 +30,19 @@
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-layer-hibernate</artifactId>
-			<version>${geomajas-backend-version}</version>
+			<version>${geomajas-layer-hibernate-version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-layer-geotools</artifactId>
-			<version>${geomajas-backend-version}</version>
+			<version>${geomajas-layer-geotools-version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-layer-wms</artifactId>
-			<version>${geomajas-backend-version}</version>
+			<version>${geomajas-layer-wms-version}</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -107,6 +107,9 @@
 
 	<properties>
 		<geomajas-backend-version>1.6.0-SNAPSHOT</geomajas-backend-version>
+		<geomajas-layer-hibernate-version>1.6.0-SNAPSHOT</geomajas-layer-hibernate-version>
+		<geomajas-layer-geotools-version>1.6.0-SNAPSHOT</geomajas-layer-geotools-version>
+		<geomajas-layer-wms-version>1.6.0-SNAPSHOT</geomajas-layer-wms-version>
 	</properties>
 
 </project>
