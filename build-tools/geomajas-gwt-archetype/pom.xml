@@ -8,6 +8,21 @@
 	<version>1.6.0-SNAPSHOT</version>
 	<packaging>maven-archetype</packaging>
 	<name>Geomajas GWT application archetype</name>
+	<url>http://files.geomajas.org/maven/trunk/build-tools/geomajas-gwt-archetype</url>
+
+	<distributionManagement>
+		<repository>
+			<id>Geomajas repository</id>
+			<name>Mapping with Asynchronous Java and SVG</name>
+			<url>file:/var/www/maven.geomajas.org/htdocs/repository</url>
+		</repository>
+		<site>
+			<id>Geomajas project site</id>
+			<name>Mapping with Asynchronous Java and SVG</name>
+			<url>file:/var/www/files.geomajas.org/htdocs/maven/trunk/build-tools/geomajas-gwt-archetype</url>
+		</site>
+	</distributionManagement>
+
 	<build>
 		<extensions>
 			<extension>
