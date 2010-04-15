@@ -80,8 +80,8 @@ dojo.declare("MergePolygonAction", Action, {
 		// make it a new feature !!!
 		feature.setId(null);
 		var layer = this._getLayer();
-		if (result.multiPolygon != null) {
-			var multiPolygon = deserializer.createGeometryFromJSON(result.multiPolygon);
+		if (result.geometry != null) {
+			var multiPolygon = deserializer.createGeometryFromJSON(result.geometry);
 			if (layer.getLayerType() == geomajas.LayerTypes.POLYGON) {
 				feature.setGeometry(polygon.getGeometryN(0));
 			} else if (layer.getLayerType() == geomajas.LayerTypes.MULTIPOLYGON) {

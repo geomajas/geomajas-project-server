@@ -23,14 +23,12 @@
 package org.geomajas.command.dto;
 
 import org.geomajas.command.CommandRequest;
-import org.geomajas.global.Api;
 
 /**
  * Request object for {@link org.geomajas.command.configuration.UserMaximumExtentCommand}.
- *
+ * 
  * @author Joachim Van der Auwera
  */
-@Api(allMethods = true)
 public class UserMaximumExtentRequest implements CommandRequest {
 
 	private static final long serialVersionUID = 151L;
@@ -62,7 +60,7 @@ public class UserMaximumExtentRequest implements CommandRequest {
 
 	/**
 	 * Get the coordinate reference space which should be used for the returned bounding box.
-	 *
+	 * 
 	 * @return crs
 	 */
 	public String getCrs() {
@@ -71,8 +69,9 @@ public class UserMaximumExtentRequest implements CommandRequest {
 
 	/**
 	 * Set the coordinate reference space which should be used for the returned bounding box.
-	 *
-	 * @param crs crs
+	 * 
+	 * @param crs
+	 *            crs
 	 */
 	public void setCrs(String crs) {
 		this.crs = crs;

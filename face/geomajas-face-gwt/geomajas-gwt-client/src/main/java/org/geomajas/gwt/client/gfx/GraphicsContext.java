@@ -25,6 +25,7 @@ package org.geomajas.gwt.client.gfx;
 
 import org.geomajas.configuration.SymbolInfo;
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.global.Api;
 import org.geomajas.gwt.client.controller.GraphicsController;
 import org.geomajas.gwt.client.gfx.style.FontStyle;
 import org.geomajas.gwt.client.gfx.style.PictureStyle;
@@ -54,6 +55,7 @@ import org.geomajas.gwt.client.spatial.geometry.Polygon;
  * @author Jan De Moerloose
  * @author Pieter De Graef
  */
+@Api
 public interface GraphicsContext {
 
 	/**

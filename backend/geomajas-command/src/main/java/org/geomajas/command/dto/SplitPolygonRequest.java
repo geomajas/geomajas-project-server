@@ -28,7 +28,7 @@ import org.geomajas.global.Api;
 
 /**
  * Request object for {@link org.geomajas.command.geometry.SplitPolygonCommand}.
- *
+ * 
  * @author Joachim Van der Auwera
  */
 @Api(allMethods = true)
@@ -36,26 +36,26 @@ public class SplitPolygonRequest implements CommandRequest {
 
 	private static final long serialVersionUID = 151L;
 
-	private Geometry polygon;
+	private Geometry geometry;
 
-	private Geometry lineString;
+	private Geometry splitter;
 
 	public SplitPolygonRequest() {
 	}
 
-	public Geometry getPolygon() {
-		return polygon;
+	public Geometry getGeometry() {
+		return geometry;
 	}
 
-	public void setPolygon(Geometry polygon) {
-		this.polygon = polygon;
+	public void setGeometry(Geometry geometry) {
+		this.geometry = geometry;
 	}
 
-	public Geometry getLineString() {
-		return lineString;
+	public Geometry getSplitter() {
+		return splitter;
 	}
 
-	public void setLineString(Geometry lineString) {
-		this.lineString = lineString;
+	public void setSplitter(Geometry splitter) {
+		this.splitter = splitter;
 	}
 }

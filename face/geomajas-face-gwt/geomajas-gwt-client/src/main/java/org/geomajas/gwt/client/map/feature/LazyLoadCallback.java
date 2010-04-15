@@ -27,16 +27,16 @@ import java.util.List;
 
 /**
  * Execution function that can be passed on to the LazyLoader to be executed when the lazy loading completes.
- *
+ * 
  * @author Joachim Van der Auwera
  */
 public interface LazyLoadCallback {
 
 	/**
 	 * The actual execution function. When the lazy loading is finished, this will be executed.
-	 *
-	 * @param response updated features
+	 * 
+	 * @param response
+	 *            updated features
 	 */
 	void execute(List<Feature> response);
-
 }

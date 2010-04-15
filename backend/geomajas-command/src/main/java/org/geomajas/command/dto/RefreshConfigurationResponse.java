@@ -23,7 +23,7 @@
 package org.geomajas.command.dto;
 
 import org.geomajas.command.CommandResponse;
-import org.geomajas.global.Api;
+import org.geomajas.command.configuration.RefreshConfigurationCommand;
 
 /**
  * Response object for {@link RefreshConfigurationCommand}.
@@ -31,8 +31,9 @@ import org.geomajas.global.Api;
  * @author Jan De Moerloose
  * 
  */
-@Api(allMethods = true)
 public class RefreshConfigurationResponse extends CommandResponse {
+
+	private static final long serialVersionUID = 1L;
 
 	private String[] applicationNames;
 
@@ -47,11 +48,12 @@ public class RefreshConfigurationResponse extends CommandResponse {
 
 	/**
 	 * Sets an array of client applications in the newly loaded context.
-	 * @param applicationNames array of application names
+	 * 
+	 * @param applicationNames
+	 *            array of application names
 	 */
 	public void setApplicationNames(String[] applicationNames) {
 		this.applicationNames = applicationNames;
 	}
-	
-	
+
 }

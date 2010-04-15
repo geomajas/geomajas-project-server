@@ -22,6 +22,8 @@
  */
 package org.geomajas.gwt.client.map.event;
 
+import org.geomajas.global.Api;
+
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent.Type;
 
@@ -30,6 +32,7 @@ import com.google.gwt.event.shared.GwtEvent.Type;
  *
  *   @author Frank Wynants
  */
+@Api
 public interface LayerChangedHandler extends EventHandler {
 
 	Type<LayerChangedHandler> TYPE = new Type<LayerChangedHandler>();

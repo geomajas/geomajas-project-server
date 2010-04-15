@@ -26,15 +26,17 @@ package org.geomajas.gwt.client.action.layertree;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.geomajas.global.Api;
 import org.geomajas.gwt.client.action.ToolCreator;
 import org.geomajas.gwt.client.action.ToolbarBaseAction;
 import org.geomajas.gwt.client.widget.MapWidget;
 
 /**
  * Registry for mapping between tool id's and LayerTree actions.
- *
+ * 
  * @author Pieter De Graef
  */
+@Api(allMethods = true)
 public final class LayerTreeRegistry {
 
 	private static final Map<String, ToolCreator> REGISTRY;
@@ -42,26 +44,31 @@ public final class LayerTreeRegistry {
 	static {
 		REGISTRY = new HashMap<String, ToolCreator>();
 		REGISTRY.put("LayerVisibleTool", new ToolCreator() {
+
 			public ToolbarBaseAction createTool(MapWidget mapWidget) {
 				return new LayerVisibleModalAction();
 			}
 		});
 		REGISTRY.put("LayerSnappingTool", new ToolCreator() {
+
 			public ToolbarBaseAction createTool(MapWidget mapWidget) {
 				return null;
 			}
 		});
 		REGISTRY.put("LayerLabeledTool", new ToolCreator() {
+
 			public ToolbarBaseAction createTool(MapWidget mapWidget) {
 				return new LayerLabeledModalAction();
 			}
 		});
 		REGISTRY.put("ShowTableAction", new ToolCreator() {
+
 			public ToolbarBaseAction createTool(MapWidget mapWidget) {
 				return null;
 			}
 		});
 		REGISTRY.put("LayerRefreshAction", new ToolCreator() {
+
 			public ToolbarBaseAction createTool(MapWidget mapWidget) {
 				return new LayerRefreshAction(mapWidget);
 			}
@@ -74,9 +81,11 @@ public final class LayerTreeRegistry {
 
 	/**
 	 * Add another key to the registry. This will overwrite the previous value.
-	 *
-	 * @param key key for the toolbar actions
-	 * @param toolCreator toolbar action creator
+	 * 
+	 * @param key
+	 *            key for the toolbar actions
+	 * @param toolCreator
+	 *            toolbar action creator
 	 */
 	public static void put(String key, ToolCreator toolCreator) {
 		if (null != key && null != toolCreator) {
@@ -86,9 +95,11 @@ public final class LayerTreeRegistry {
 
 	/**
 	 * Get the toolbar action which matches the given key.
-	 *
-	 * @param key key for toolbar action
-	 * @param mapWidget map which will contain this tool
+	 * 
+	 * @param key
+	 *            key for toolbar action
+	 * @param mapWidget
+	 *            map which will contain this tool
 	 * @return toolbar action or null when key not found
 	 */
 	public static ToolbarBaseAction getToolbarAction(String key, MapWidget mapWidget) {

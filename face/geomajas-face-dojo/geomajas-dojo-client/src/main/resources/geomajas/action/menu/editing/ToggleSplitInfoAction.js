@@ -79,8 +79,8 @@ dojo.declare("ToggleSplitInfoAction", Action, {
 			return;
 		}
 		var command = new JsonCommand("command.geometry.SplitPolygon","org.geomajas.command.dto.SplitPolygonRequest", null, false);
-		command.addParam("lineString", lineString);
-		command.addParam("polygon", polygon);
+		command.addParam("splitter", lineString);
+		command.addParam("geometry", polygon);
 		var deferred = geomajasConfig.dispatcher.execute(command);
 		deferred.addCallback(this, "_callback");
 	},
@@ -94,8 +94,8 @@ dojo.declare("ToggleSplitInfoAction", Action, {
 
 		var deserializer = new GeometryDeserializer();
 		var polygons = [];
-		for (var i=0; i<result.polygons.length; i++) {
-			polygons.push (deserializer.createGeometryFromJSON(result.polygons[i]));
+		for (var i=0; i<result.geometries.length; i++) {
+			polygons.push (deserializer.createGeometryFromJSON(result.geometries[i]));
 		}
 		this._createSplitInfoBalloons(polygons);
 		return result;

@@ -23,7 +23,6 @@
 
 package org.geomajas.gwt.client.widget;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -93,13 +92,24 @@ import com.smartgwt.client.widgets.events.ResizedHandler;
 import com.smartgwt.client.widgets.menu.Menu;
 
 /**
- * The map widget is responsible for rendering the map model. It has a Model-View relationship with the map model. A
- * single controller for capturing user events can be set on the map.
+ * <p>
+ * The most important widget in this framework. This is the central map. It is built using a model-view-controller
+ * paradigm, where this widget basically holds the 3 components in one. The model is represented by the {@link MapModel}
+ * class, the view is represented by the graphics contexts (check the {@link MapContext} class), and the controller by a
+ * {@link GraphicsController}.
+ * </p>
+ * <p>
+ * This widget will initialize itself automatically on the onDraw event. The initialization means that it will fetch the
+ * correct XML configuration (using the map's ID and the applicationID - see constructor), and build the MapModel. From
+ * that point on, rendering is possible.
+ * </p>
  * 
  * @author Pieter De Graef
  */
 @Api
 public class MapWidget extends Canvas implements MapViewChangedHandler, MapModelHandler {
+
+	// Private fields regarding internal workings:
 
 	private MapModel mapModel;
 
@@ -107,33 +117,28 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 
 	private PainterVisitor painterVisitor;
 
-	protected boolean navigationAddonEnabled = true;
-
-	protected boolean scaleBarEnabled = true;
-
-	private ScaleBar scalebar;
-
-	private Map<String, MapAddon> addons = new HashMap<String, MapAddon>();
-
 	private double unitLength;
 
 	private double pixelLength;
 
-	/** Is zooming in and out using the mouse wheel enabled or not? This is true by default. */
-	private boolean zoomOnScrollEnabled;
-
-	/** Registration for the zoom on scroll handler. */
 	private HandlerRegistration mouseWheelRegistration;
-
-	private boolean resizedHandlerDisabled;
 
 	private Menu defaultMenu;
 
 	protected String applicationId;
 
-	private PanButtonCollection panButtons;
+	// MapWidget options:
 
-	private ZoomAddon zoomAddon;
+	protected boolean navigationAddonEnabled = true;
+
+	protected boolean scaleBarEnabled = true;
+
+	/** Is zooming in and out using the mouse wheel enabled or not? This is true by default. */
+	private boolean zoomOnScrollEnabled;
+
+	private boolean resizedHandlerDisabled;
+
+	// Rendering related fields:
 
 	private PaintableGroup rasterGroup = new Composite("raster");
 
@@ -143,7 +148,9 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 
 	private PaintableGroup screenGroup = new Composite("screen");
 
-	private List<WorldPaintable> worldSpacePaintables = new ArrayList<WorldPaintable>();
+	private Map<String, WorldPaintable> worldPaintables = new HashMap<String, WorldPaintable>();
+
+	private Map<String, MapAddon> addons = new HashMap<String, MapAddon>();
 
 	/**
 	 * Map groups: rendering should be done in one of these. Try to always use either the SCREEN or the WORLD group,
@@ -203,6 +210,22 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	// Constructor:
 	// -------------------------------------------------------------------------
 
+	/**
+	 * <p>
+	 * Initialize a map with a unique ID that can be retrieved in the server side configuration, and an additional
+	 * application ID that too can be retrieved in the server side configuration. When the onDraw event occurs, a map
+	 * will automatically initialize itself.
+	 * </p>
+	 * <p>
+	 * This constructor will register a whole list of default painters, set a default context menu and apply a zoom
+	 * controller that reacts on mouse wheel events.
+	 * </p>
+	 * 
+	 * @param id
+	 *            The map's unique identifier, retrievable in the XML configuration.
+	 * @param applicationId
+	 *            The identifier of the application to which this map belongs.
+	 */
 	public MapWidget(String id, String applicationId) {
 		super(id);
 		this.applicationId = applicationId;
@@ -226,6 +249,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 		painterVisitor.registerPainter(new VectorTilePainter());
 		painterVisitor.registerPainter(new FeatureTransactionPainter(this));
 
+		// Install a default menu:
 		defaultMenu = new Menu();
 		defaultMenu.addItem(new AboutAction());
 		setContextMenu(defaultMenu);
@@ -239,7 +263,37 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	}
 
 	// -------------------------------------------------------------------------
-	// Class specific methods:
+	// Initialization:
+	// -------------------------------------------------------------------------
+
+	/**
+	 * <p>
+	 * The map's initialization method. This method is triggered automatically on the "onDraw" event. So in normal cases
+	 * you should never have to call it. Nevertheless, there are a few cases where the onDraw event might never come, so
+	 * it is still possible to initialize the map directly.
+	 * </p>
+	 * <p>
+	 * Know that without this method, the map would be an empty shell. This method will ask the server for the correct
+	 * configuration, so that it is possible to build a model (MapModel).
+	 * </p>
+	 */
+	public void init() {
+		GwtCommand commandRequest = new GwtCommand("command.configuration.GetMap");
+		commandRequest.setCommandRequest(new GetMapConfigurationRequest(id, applicationId));
+		GwtCommandDispatcher.getInstance().execute(commandRequest, new CommandCallback() {
+
+			public void execute(CommandResponse response) {
+				if (response instanceof GetMapConfigurationResponse) {
+					GetMapConfigurationResponse r = (GetMapConfigurationResponse) response;
+					initializationCallback(r);
+				}
+			}
+		});
+
+	}
+
+	// -------------------------------------------------------------------------
+	// Rendering related methods:
 	// -------------------------------------------------------------------------
 
 	/**
@@ -260,93 +314,6 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 			default:
 				return screenGroup;
 		}
-	}
-
-	/**
-	 * Get the full list of registered WorldPaintable objects in this map. It is possible to add new instances to it.
-	 */
-	public List<WorldPaintable> getWorldSpacePaintables() {
-		return worldSpacePaintables;
-	}
-
-	public double getUnitLength() {
-		return unitLength;
-	}
-
-	public double getPixelLength() {
-		return pixelLength;
-	}
-
-	public void registerPainter(Painter painter) {
-		painterVisitor.registerPainter(painter);
-	}
-
-	public void unregisterPainter(Painter painter) {
-		painterVisitor.unregisterPainter(painter);
-	}
-
-	public void registerMapAddon(MapAddon addon) {
-		if (addon != null && !addons.containsKey(addon.getId())) {
-			addons.put(addon.getId(), addon);
-			addon.setMapSize(getWidth(), getHeight());
-			render(addon, RenderGroup.SCREEN, RenderStatus.ALL);
-			addon.onDraw();
-		}
-	}
-
-	public void unregisterMapAddon(MapAddon addon) {
-		if (addon != null && addons.containsKey(addon.getId())) {
-			addons.remove(addon.getId());
-			graphics.getVectorContext().deleteGroup(addon);
-			addon.onRemove();
-		}
-	}
-
-	/**
-	 * Determines whether or not the zooming using the mouse wheel should be enabled or not.
-	 * 
-	 * @param zoomOnScrollEnabled
-	 *            True or false. Enable or disable zooming using the mouse wheel.
-	 */
-	public void setZoomOnScrollEnabled(boolean zoomOnScrollEnabled) {
-		if (mouseWheelRegistration != null) {
-			mouseWheelRegistration.removeHandler();
-			mouseWheelRegistration = null;
-		}
-		this.zoomOnScrollEnabled = zoomOnScrollEnabled;
-		if (zoomOnScrollEnabled) {
-			mouseWheelRegistration = graphics.addMouseWheelHandler(new ZoomOnScrollController());
-		}
-	}
-
-	/**
-	 * Is the zooming using the mouse wheel currently enabled or not?
-	 */
-	public boolean isZoomOnScrollEnabled() {
-		return zoomOnScrollEnabled;
-	}
-
-	/**
-	 * Apply a new <code>GraphicsController</code> on the map. This controller will handle all mouse-events that are
-	 * global for the map. Only one controller can be set at any given time.
-	 * 
-	 * @param controller
-	 *            The new <code>MapController</code> object.
-	 */
-	public void setController(GraphicsController controller) {
-		graphics.setController(controller);
-	}
-
-	/**
-	 * Set a new mouse wheel controller on the map. If the zoom on scroll is currently enabled, it will be disabled
-	 * first.
-	 * 
-	 * @param controller
-	 *            The new mouse wheel controller to be applied on the map.
-	 */
-	public void setMouseWheelController(MouseWheelHandler controller) {
-		setZoomOnScrollEnabled(false);
-		mouseWheelRegistration = graphics.addMouseWheelHandler(controller);
 	}
 
 	/**
@@ -380,7 +347,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 			if (RenderStatus.ALL.equals(status)) {
 				if (paintable == this.mapModel) {
 					// Paint the world space paintable objects:
-					for (WorldPaintable worldPaintable : worldSpacePaintables) {
+					for (WorldPaintable worldPaintable : worldPaintables.values()) {
 						worldPaintable.transform(mapModel.getMapView().getWorldViewTransformer());
 						worldPaintable.accept(painterVisitor, getGroup(RenderGroup.WORLD), mapModel.getMapView()
 								.getBounds(), true);
@@ -390,7 +357,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 			} else if (RenderStatus.UPDATE.equals(status)) {
 				if (paintable == this.mapModel) {
 					// Paint the world space paintable objects:
-					for (WorldPaintable worldPaintable : worldSpacePaintables) {
+					for (WorldPaintable worldPaintable : worldPaintables.values()) {
 						worldPaintable.transform(mapModel.getMapView().getWorldViewTransformer());
 						worldPaintable.accept(painterVisitor, getGroup(RenderGroup.WORLD), mapModel.getMapView()
 								.getBounds(), false);
@@ -402,32 +369,171 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	}
 
 	/**
-	 * Enables or disables the scalebar. This setting has immediate effect on the map.
+	 * Apply a new cursor on the map.
+	 * 
+	 * @param cursor
+	 *            The new cursor to be used when the mouse hovers over the map.
+	 */
+	public void setCursor(Cursor cursor) {
+		super.setCursor(cursor);
+		graphics.getRasterContext().setCursor(null, cursor.getValue());
+		graphics.getVectorContext().setCursor(null, cursor.getValue());
+	}
+
+	/**
+	 * Apply a new context menu on the map.
+	 * 
+	 * @param contextMenu
+	 *            The new context menu to be used when the user right clicks on the map.
+	 */
+	public void setContextMenu(Menu contextMenu) {
+		if (null == contextMenu) {
+			super.setContextMenu(defaultMenu);
+		} else {
+			super.setContextMenu(contextMenu);
+		}
+	}
+
+	// -------------------------------------------------------------------------
+	// Registration of functional objects:
+	// -------------------------------------------------------------------------
+
+	/**
+	 * Register a new painter. A painter is responsible for painting <code>Paintable</code> objects of a certain class.
+	 * 
+	 * @param painter
+	 *            The new painter to be registered. If that painter is already in the list, nothing will happen.
+	 */
+	public void registerPainter(Painter painter) {
+		painterVisitor.registerPainter(painter);
+	}
+
+	/**
+	 * Remove a certain painter from the list again, so that it is no longer used.
+	 * 
+	 * @param painter
+	 *            The registered painter to be removed. If it can't be found in the list, nothing will happen.
+	 */
+	public void unregisterPainter(Painter painter) {
+		painterVisitor.unregisterPainter(painter);
+	}
+
+	/**
+	 * Register a certain <code>MapAddon</code> to be placed on the map. Map add-ons are fixed position entities on a
+	 * map with possibly additional functionality. Examples are the scale bar, and navigation buttons.
+	 * 
+	 * @param addon
+	 *            The new add-on to be added to the map.
+	 */
+	public void registerMapAddon(MapAddon addon) {
+		if (addon != null && !addons.containsKey(addon.getId())) {
+			addons.put(addon.getId(), addon);
+			addon.setMapSize(getWidth(), getHeight());
+			render(addon, RenderGroup.SCREEN, RenderStatus.ALL);
+			addon.onDraw();
+		}
+	}
+
+	/**
+	 * Remove a registered map add-on from the map. Map add-ons are fixed position entities on a map with possibly
+	 * additional functionality. Examples are the scale bar, and navigation buttons.
+	 * 
+	 * @param addon
+	 *            The add-on to be removed from the map. If it can't be found, nothing happens.
+	 */
+	public void unregisterMapAddon(MapAddon addon) {
+		if (addon != null && addons.containsKey(addon.getId())) {
+			addons.remove(addon.getId());
+			graphics.getVectorContext().deleteGroup(addon);
+			addon.onRemove();
+		}
+	}
+
+	/**
+	 * <p>
+	 * Register a <code>WorldPaintable</code> object to be painted on the map. By doing so, the object will be painted
+	 * immediately on the correct position, and when the user navigates around, the map will automatically make sure the
+	 * <code>WorldPaintable</code> object is re-drawn at the correct location.
+	 * </p>
+	 * <p>
+	 * If you want to draw objects in World Space, this would be the way to go.
+	 * </p>
+	 * 
+	 * @param worldPaintable
+	 *            The new WorldPaintable object to be rendered on the map.
+	 */
+	public void registerWorldPaintable(WorldPaintable worldPaintable) {
+		if (worldPaintable != null && !worldPaintables.containsKey(worldPaintable.getId())) {
+			worldPaintables.put(worldPaintable.getId(), worldPaintable);
+			worldPaintable.transform(mapModel.getMapView().getWorldViewTransformer());
+			render(worldPaintable, RenderGroup.WORLD, RenderStatus.ALL);
+		}
+	}
+
+	/**
+	 * Remove a registered <code>WorldPaintable</code> object from the list and from the map.
+	 * 
+	 * @param worldPaintable
+	 *            The registered WorldPaintable object to be removed again from the map.
+	 */
+	public void unregisterWorldPaintable(WorldPaintable worldPaintable) {
+		if (worldPaintable != null && worldPaintables.containsKey(worldPaintable.getId())) {
+			render(worldPaintable, RenderGroup.WORLD, RenderStatus.DELETE);
+			worldPaintables.remove(worldPaintable.getId());
+		}
+	}
+
+	// -------------------------------------------------------------------------
+	// Applying options:
+	// -------------------------------------------------------------------------
+
+	/**
+	 * Determines whether or not the zooming using the mouse wheel should be enabled or not.
+	 * 
+	 * @param zoomOnScrollEnabled
+	 *            True or false. Enable or disable zooming using the mouse wheel.
+	 */
+	public void setZoomOnScrollEnabled(boolean zoomOnScrollEnabled) {
+		if (mouseWheelRegistration != null) {
+			mouseWheelRegistration.removeHandler();
+			mouseWheelRegistration = null;
+		}
+		this.zoomOnScrollEnabled = zoomOnScrollEnabled;
+		if (zoomOnScrollEnabled) {
+			mouseWheelRegistration = graphics.addMouseWheelHandler(new ZoomOnScrollController());
+		}
+	}
+
+	/** Is the zooming using the mouse wheel currently enabled or not? */
+	public boolean isZoomOnScrollEnabled() {
+		return zoomOnScrollEnabled;
+	}
+
+	/**
+	 * Enables or disables the scale bar. This setting has immediate effect on the map.
 	 * 
 	 * @param enabled
 	 *            set status
 	 */
 	public void setScalebarEnabled(boolean enabled) {
 		scaleBarEnabled = enabled;
+		final String scaleBarId = "scalebar";
+
 		if (scaleBarEnabled) {
-			if (null == scalebar) {
-				scalebar = new ScaleBar("scalebar", this);
-				scalebar.setVerticalAlignment(VerticalAlignment.BOTTOM);
-				scalebar.setHorizontalMargin(2);
-				scalebar.setVerticalMargin(2);
-			}
+			ScaleBar scalebar = new ScaleBar("scalebar", this);
+			scalebar.setVerticalAlignment(VerticalAlignment.BOTTOM);
+			scalebar.setHorizontalMargin(2);
+			scalebar.setVerticalMargin(2);
 			scalebar.initialize(getMapModel().getMapInfo().getDisplayUnitType(), unitLength, new Coordinate(20,
 					graphics.getHeight() - 25));
 			scalebar.adjustScale(mapModel.getMapView().getCurrentScale());
 			registerMapAddon(scalebar);
 		} else {
-			if (null != scalebar) {
-				unregisterMapAddon(scalebar);
-				scalebar = null;
-			}
+			unregisterMapAddon(addons.get(scaleBarId));
 		}
 	}
 
+	/** Is the scale bar (MapAddon) currently enabled/visible or not? */
 	public boolean isScaleBarEnabled() {
 		return scaleBarEnabled;
 	}
@@ -440,87 +546,100 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	 */
 	public void setNavigationAddonEnabled(boolean enabled) {
 		navigationAddonEnabled = enabled;
+		final String panId = "panBTNCollection";
+		final String zoomId = "zoomAddon";
 
 		if (enabled) {
-			panButtons = new PanButtonCollection("panBTNCollection", this);
+			PanButtonCollection panButtons = new PanButtonCollection(panId, this);
 			panButtons.setHorizontalMargin(5);
 			panButtons.setVerticalMargin(5);
 			registerMapAddon(panButtons);
 
-			zoomAddon = new ZoomAddon("zoomAddon", this);
+			ZoomAddon zoomAddon = new ZoomAddon(zoomId, this);
 			zoomAddon.setHorizontalMargin(20);
 			zoomAddon.setVerticalMargin(65);
 			registerMapAddon(zoomAddon);
 		} else {
-			if (panButtons != null) {
-				unregisterMapAddon(panButtons);
-				unregisterMapAddon(zoomAddon);
-			}
-			panButtons = null;
-			zoomAddon = null;
+			unregisterMapAddon(addons.get(panId));
+			unregisterMapAddon(addons.get(zoomId));
 		}
 	}
 
+	/** Is the navigation (MapAddon) currently enabled/visible or not? */
 	public boolean isNavigationAddonEnabled() {
 		return navigationAddonEnabled;
+	}
+
+	/** Will the map automatically react on resize events or not? This option is turned on be default. */
+	public boolean isResizedHandlerDisabled() {
+		return resizedHandlerDisabled;
+	}
+
+	/**
+	 * Determine whether or not the map should automatically react and resize when it receives a resize event.
+	 * 
+	 * @param resizedHandlerDisabled
+	 *            true or false
+	 */
+	public void setResizedHandlerDisabled(boolean resizedHandlerDisabled) {
+		this.resizedHandlerDisabled = resizedHandlerDisabled;
 	}
 
 	// -------------------------------------------------------------------------
 	// Getters and setters:
 	// -------------------------------------------------------------------------
 
+	/**
+	 * Apply a new <code>GraphicsController</code> on the map. This controller will handle all mouse-events that are
+	 * global for the map. Only one controller can be set at any given time.
+	 * 
+	 * @param controller
+	 *            The new <code>MapController</code> object.
+	 */
+	public void setController(GraphicsController controller) {
+		graphics.setController(controller);
+	}
+
+	/**
+	 * Set a new mouse wheel controller on the map. If the zoom on scroll is currently enabled, it will be disabled
+	 * first.
+	 * 
+	 * @param controller
+	 *            The new mouse wheel controller to be applied on the map.
+	 */
+	public void setMouseWheelController(MouseWheelHandler controller) {
+		setZoomOnScrollEnabled(false);
+		mouseWheelRegistration = graphics.addMouseWheelHandler(controller);
+	}
+
+	public double getUnitLength() {
+		return unitLength;
+	}
+
+	public double getPixelLength() {
+		return pixelLength;
+	}
+
+	/**
+	 * Return the map's inner model. This model contains all the layers, handles selection, etc.
+	 */
 	public MapModel getMapModel() {
 		return mapModel;
 	}
 
+	/**
+	 * Return the context that handles right mouse clicks.
+	 */
 	public MenuContext getMenuContext() {
 		return graphics.getMenuContext();
 	}
 
+	/**
+	 * Return the drawing context for rendering in general. If you are not using the render method, this would be an
+	 * alternative - for advanced users only.
+	 */
 	public GraphicsContext getVectorContext() {
 		return graphics.getVectorContext();
-	}
-
-	public PainterVisitor getPainterVisitor() {
-		return painterVisitor;
-	}
-
-	@Override
-	public void setContextMenu(Menu contextMenu) {
-		if (null == contextMenu) {
-			super.setContextMenu(defaultMenu);
-		} else {
-			super.setContextMenu(contextMenu);
-		}
-	}
-
-	public void init() {
-		GwtCommand commandRequest = new GwtCommand("command.configuration.GetMap");
-		commandRequest.setCommandRequest(new GetMapConfigurationRequest(id, applicationId));
-		GwtCommandDispatcher.getInstance().execute(commandRequest, new CommandCallback() {
-
-			public void execute(CommandResponse response) {
-				if (response instanceof GetMapConfigurationResponse) {
-					GetMapConfigurationResponse r = (GetMapConfigurationResponse) response;
-					initializationCallback(r);
-				}
-			}
-		});
-
-	}
-
-	public void onMapViewChanged(MapViewChangedEvent event) {
-		if (isDrawn()) {
-			if (scaleBarEnabled && scalebar != null) {
-				scalebar.adjustScale(mapModel.getMapView().getCurrentScale());
-				render(scalebar, RenderGroup.SCREEN, RenderStatus.UPDATE);
-			}
-			render(mapModel, null, RenderStatus.ALL);
-		}
-	}
-
-	public void onMapModelChange(MapModelEvent event) {
-		render(mapModel, null, RenderStatus.ALL);
 	}
 
 	public ShapeStyle getLineSelectStyle() {
@@ -568,26 +687,39 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 		}
 	}
 
-	public void setCursor(Cursor cursor) {
-		super.setCursor(cursor);
-		graphics.getRasterContext().setCursor(null, cursor.getValue());
-		graphics.getVectorContext().setCursor(null, cursor.getValue());
-	}
-
-	public boolean isResizedHandlerDisabled() {
-		return resizedHandlerDisabled;
-	}
-
-	public void setResizedHandlerDisabled(boolean resizedHandlerDisabled) {
-		this.resizedHandlerDisabled = resizedHandlerDisabled;
-	}
-
 	public Menu getDefaultMenu() {
 		return defaultMenu;
 	}
 
 	public void setDefaultMenu(Menu defaultMenu) {
 		this.defaultMenu = defaultMenu;
+	}
+
+	// -------------------------------------------------------------------------
+	// MapViewChangedHandler implementation:
+	// -------------------------------------------------------------------------
+
+	/** If the map view changes, redraw the map model and the scale bar. */
+	public void onMapViewChanged(MapViewChangedEvent event) {
+		if (isDrawn()) {
+			if (scaleBarEnabled) {
+				ScaleBar scalebar = (ScaleBar) addons.get("scalebar");
+				if (scalebar != null) {
+					scalebar.adjustScale(mapModel.getMapView().getCurrentScale());
+					render(scalebar, RenderGroup.SCREEN, RenderStatus.UPDATE);
+				}
+			}
+			render(mapModel, null, RenderStatus.ALL);
+		}
+	}
+
+	// -------------------------------------------------------------------------
+	// MapModelHandler implementation:
+	// -------------------------------------------------------------------------
+
+	/** When the initialization of the map's model is done: render it. */
+	public void onMapModelChange(MapModelEvent event) {
+		render(mapModel, null, RenderStatus.ALL);
 	}
 
 	// -------------------------------------------------------------------------

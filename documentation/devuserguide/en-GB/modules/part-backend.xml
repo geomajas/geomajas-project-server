@@ -321,7 +321,8 @@
           the metadata common to all raster layers. The following properties
           are needed for this object :</para>
 
-          <para><table>
+          <para>
+            <table>
               <title>Raster Layer info</title>
 
               <tgroup cols="2">
@@ -390,7 +391,8 @@
                   </row>
                 </tbody>
               </tgroup>
-            </table></para>
+            </table>
+          </para>
 
           <para>The location of the images or tiles is defined by calculating
           the real width and height (based on the resolution) and "paving" the
@@ -500,7 +502,8 @@
           <xi:include href="../listing/GoogleLayerSample.xml"
                       xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-          <para><table>
+          <para>
+            <table>
               <title>GoogleLayer configuration</title>
 
               <tgroup cols="2">
@@ -520,7 +523,8 @@
                   </row>
                 </tbody>
               </tgroup>
-            </table></para>
+            </table>
+          </para>
 
           <para>The layer info inner bean has the same general content as
           usual. There are some simplifications though. There is no need to
@@ -705,7 +709,8 @@
           <para>The following table describes the properties of the
           <code>VectorLayerInfo</code> object :</para>
 
-          <para><table>
+          <para>
+            <table>
               <title>VectorLayer info</title>
 
               <tgroup cols="2">
@@ -746,7 +751,8 @@
                   </row>
                 </tbody>
               </tgroup>
-            </table></para>
+            </table>
+          </para>
 
           <para>The feature metadata can be found in the
           <code>FeatureInfo</code> object. This objects contains the complete
@@ -861,7 +867,8 @@
           <para>To access a WFS server, the following names can be used as
           parameters.</para>
 
-          <para><itemizedlist>
+          <para>
+            <itemizedlist>
               <listitem>
                 <para><emphasis>WFSDataStoreFactory:GET_CAPABILITIES_URL</emphasis>
                 : Represents a URL to the getCapabilities document or a server
@@ -912,7 +919,8 @@
                 the schema. Errors will be logged but the parsing will
                 continue if this is true. Default is false.</para>
               </listitem>
-            </itemizedlist></para>
+            </itemizedlist>
+          </para>
 
           <para>You also have to assure the GeoTools WFS data store is added
           as dependency in your project. When using maven, you can add the
@@ -935,7 +943,8 @@
           <para>The shape in memory layer has a few settings which should be
           set</para>
 
-          <para><table>
+          <para>
+            <table>
               <title>ShapeInMemLayer configuration</title>
 
               <tgroup cols="2">
@@ -957,7 +966,8 @@
                   </row>
                 </tbody>
               </tgroup>
-            </table></para>
+            </table>
+          </para>
         </section>
 
         <section>
@@ -1332,9 +1342,9 @@
 
                 <entry><itemizedlist>
                     <listitem>
-                      <para>mapInfo : information about the requested map.
-                      Note that the layer information which is contained in
-                      the maps has the coordinates.</para>
+                      <para><emphasis>mapInfo</emphasis> : information about
+                      the requested map. Note that the layer information which
+                      is contained in the maps has the coordinates.</para>
                     </listitem>
                   </itemizedlist></entry>
               </row>
@@ -1376,7 +1386,23 @@
 
                 <entry><itemizedlist>
                     <listitem>
-                      <para>?????</para>
+                      <para><emphasis>crs</emphasis>: Coordinate reference
+                      system that the map uses.</para>
+                    </listitem>
+
+                    <listitem>
+                      <para><emphasis>bbox</emphasis>: Total bounding box
+                      wherein to fetch raster tiles.</para>
+                    </listitem>
+
+                    <listitem>
+                      <para><emphasis>scale</emphasis>: Current scale in the
+                      client side map.</para>
+                    </listitem>
+
+                    <listitem>
+                      <para><emphasis>layerId</emphasis>: The ID of the raster
+                      layer to fetch tiles for.</para>
                     </listitem>
                   </itemizedlist></entry>
               </row>
@@ -1384,13 +1410,15 @@
               <row>
                 <entry>Description</entry>
 
-                <entry>?????</entry>
+                <entry>Retrieve a set of raster tiles as images for a given
+                layer within a certain bounding box expressed in a certain
+                coordinate reference system.</entry>
               </row>
 
               <row>
                 <entry>Response object class</entry>
 
-                <entry>org.geomajas.command.dto.?????</entry>
+                <entry>org.geomajas.command.dto.GetRasterDataRequest</entry>
               </row>
 
               <row>
@@ -1398,7 +1426,13 @@
 
                 <entry><itemizedlist>
                     <listitem>
-                      <para>?????</para>
+                      <para><emphasis>rasterData</emphasis>: List of
+                      RasterTile objects</para>
+                    </listitem>
+
+                    <listitem>
+                      <para><emphasis>nodeId</emphasis>: Identifier to be used
+                      in the DOM tree.</para>
                     </listitem>
                   </itemizedlist></entry>
               </row>
@@ -1432,7 +1466,7 @@
               <row>
                 <entry>Request object class</entry>
 
-                <entry>org.geomajas.command.dto.?????</entry>
+                <entry>org.geomajas.command.dto.GetRenderedTileRequest</entry>
               </row>
 
               <row>
@@ -1440,7 +1474,58 @@
 
                 <entry><itemizedlist>
                     <listitem>
-                      <para>?????</para>
+                      <para><emphasis>layerId</emphasis>: The ID of the vector
+                      layer to fetch a tile in.</para>
+                    </listitem>
+
+                    <listitem>
+                      <para><emphasis>code</emphasis>: The unique code of the
+                      tile to retrieve.</para>
+                    </listitem>
+
+                    <listitem>
+                      <para><emphasis>scale</emphasis>: The current scale on
+                      the map, client side.</para>
+                    </listitem>
+
+                    <listitem>
+                      <para><emphasis>panOrigin</emphasis>: translation for
+                      the tile on the client-side</para>
+                    </listitem>
+
+                    <listitem>
+                      <para><emphasis>filter</emphasis>: Extra filter that can
+                      be used to filter out data.</para>
+                    </listitem>
+
+                    <listitem>
+                      <para><emphasis>crs</emphasis>: The map's coordinate
+                      reference system.</para>
+                    </listitem>
+
+                    <listitem>
+                      <para><emphasis>renderer</emphasis>: Should the server
+                      render to SVG or VML?</para>
+                    </listitem>
+
+                    <listitem>
+                      <para><emphasis>styleInfo</emphasis>: Extra styles that
+                      can override the originally configured styles.</para>
+                    </listitem>
+
+                    <listitem>
+                      <para><emphasis>paintGeometries</emphasis>: Should the
+                      geometries be painted in the tile? (default true)</para>
+                    </listitem>
+
+                    <listitem>
+                      <para><emphasis>paintLabels</emphasis>: Should labels be
+                      painted in the tile?</para>
+                    </listitem>
+
+                    <listitem>
+                      <para><emphasis>featureIncludes</emphasis>: Lazy loading
+                      parameter</para>
                     </listitem>
                   </itemizedlist></entry>
               </row>
@@ -1448,13 +1533,15 @@
               <row>
                 <entry>Description</entry>
 
-                <entry>?????</entry>
+                <entry>Fetches a single tile for a vector layer. The tile can
+                contain both vectors and labels. This command is used to paint
+                vector layers in the map.</entry>
               </row>
 
               <row>
                 <entry>Response object class</entry>
 
-                <entry>org.geomajas.command.dto.?????</entry>
+                <entry>org.geomajas.command.dto.GetRenderedTileResponse</entry>
               </row>
 
               <row>
@@ -1462,7 +1549,8 @@
 
                 <entry><itemizedlist>
                     <listitem>
-                      <para>?????</para>
+                      <para><emphasis>tile</emphasis>: The actual resulting
+                      tile.</para>
                     </listitem>
                   </itemizedlist></entry>
               </row>
@@ -1571,7 +1659,14 @@
 
                 <entry><itemizedlist>
                     <listitem>
-                      <para>?????</para>
+                      <para><emphasis>polygons</emphasis>: Array of polygons
+                      that need to be merged</para>
+                    </listitem>
+
+                    <listitem>
+                      <para><emphasis>allowMultiPolygon</emphasis>: Is a
+                      MultiPolygon allowed when merging ultiple
+                      polygons?</para>
                     </listitem>
                   </itemizedlist></entry>
               </row>
@@ -1579,7 +1674,8 @@
               <row>
                 <entry>Description</entry>
 
-                <entry>?????</entry>
+                <entry>This command allows the user to merge multiple polygons
+                into a single polygon or multipolygon.</entry>
               </row>
 
               <row>
@@ -1593,7 +1689,8 @@
 
                 <entry><itemizedlist>
                     <listitem>
-                      <para>?????</para>
+                      <para><emphasis>geometry</emphasis>: The resulting
+                      geometry after the merge.</para>
                     </listitem>
                   </itemizedlist></entry>
               </row>
@@ -1627,7 +1724,7 @@
               <row>
                 <entry>Request object class</entry>
 
-                <entry>org.geomajas.command.dto.?????</entry>
+                <entry>org.geomajas.command.dto.PersistTransactionRequest</entry>
               </row>
 
               <row>
@@ -1635,7 +1732,15 @@
 
                 <entry><itemizedlist>
                     <listitem>
-                      <para>?????</para>
+                      <para><emphasis>featureTransaction</emphasis>: The
+                      actual transaction object. Contains a list of features
+                      as they where, and a list of features as they should
+                      be.</para>
+                    </listitem>
+
+                    <listitem>
+                      <para><emphasis>crs</emphasis>: The map's coordinate
+                      reference system.</para>
                     </listitem>
                   </itemizedlist></entry>
               </row>
@@ -1643,13 +1748,14 @@
               <row>
                 <entry>Description</entry>
 
-                <entry>?????</entry>
+                <entry>Persist a single transaction on the backend. (create,
+                update, delete of features)</entry>
               </row>
 
               <row>
                 <entry>Response object class</entry>
 
-                <entry>org.geomajas.command.dto.?????</entry>
+                <entry>org.geomajas.command.dto.PersistTransactionResponse</entry>
               </row>
 
               <row>
@@ -1657,7 +1763,10 @@
 
                 <entry><itemizedlist>
                     <listitem>
-                      <para>?????</para>
+                      <para><emphasis>featureTransaction</emphasis>: The same
+                      transaction that was send to the server. Unless
+                      something went wrong, in which case this could be
+                      null.</para>
                     </listitem>
                   </itemizedlist></entry>
               </row>
@@ -1666,12 +1775,12 @@
         </table></para>
 
       <para><table>
-          <title>PrintGetTemplateCommand</title>
+          <title>SearchAttributesCommand</title>
 
           <tgroup cols="2">
             <thead>
               <row>
-                <entry>PrintGetTemplateCommand</entry>
+                <entry>SearchAttributesCommand</entry>
               </row>
             </thead>
 
@@ -1679,19 +1788,19 @@
               <row>
                 <entry>Registry key</entry>
 
-                <entry>command.print.GetTemplate</entry>
+                <entry>command.SearchAttributes</entry>
               </row>
 
               <row>
                 <entry>Module which provides this command</entry>
 
-                <entry>geomajas-plugin-printing</entry>
+                <entry>geomajas-command</entry>
               </row>
 
               <row>
                 <entry>Request object class</entry>
 
-                <entry>org.geomajas.extension.printing.command.dto.PrintGetTemplateRequest</entry>
+                <entry>org.geomajas.command.dto.SearchAttributesRequest</entry>
               </row>
 
               <row>
@@ -1699,15 +1808,18 @@
 
                 <entry><itemizedlist>
                     <listitem>
-                      <para><emphasis>template</emphasis> : ?????</para>
+                      <para><emphasis>layerId</emphasis>: The layer to search
+                      in.</para>
                     </listitem>
 
                     <listitem>
-                      <para><emphasis>fileName</emphasis> : ?????</para>
+                      <para><emphasis>attributeName</emphasis>: The name of
+                      the attribute as configured in the XML's</para>
                     </listitem>
 
                     <listitem>
-                      <para><emphasis>pageSize</emphasis> : ?????</para>
+                      <para><emphasis>filter</emphasis>: Add a possible
+                      filter, to limit the returned list.</para>
                     </listitem>
                   </itemizedlist></entry>
               </row>
@@ -1715,13 +1827,15 @@
               <row>
                 <entry>Description</entry>
 
-                <entry>?????</entry>
+                <entry>Search for attribute values for a certain attribute
+                type. This command is only used for ManyToOne and OneToMany
+                relationships, to search for possible values.</entry>
               </row>
 
               <row>
                 <entry>Response object class</entry>
 
-                <entry>org.geomajas.extension.printing.command.dto.PrintGetTemplateResponse</entry>
+                <entry>org.geomajas.command.dto.SearchAttributesResponse</entry>
               </row>
 
               <row>
@@ -1729,130 +1843,10 @@
 
                 <entry><itemizedlist>
                     <listitem>
-                      <para><emphasis>documentId</emphasis> :</para>
+                      <para><emphasis>attributes</emphasis>: A list of
+                      attribute values.</para>
                     </listitem>
                   </itemizedlist></entry>
-              </row>
-            </tbody>
-          </tgroup>
-        </table></para>
-
-      <para><table>
-          <title>PrintListTemplatesCommand</title>
-
-          <tgroup cols="2">
-            <thead>
-              <row>
-                <entry>PrintListTemplatesCommand</entry>
-              </row>
-            </thead>
-
-            <tbody>
-              <row>
-                <entry>Registry key</entry>
-
-                <entry>command.print.ListTemplates</entry>
-              </row>
-
-              <row>
-                <entry>Module which provides this command</entry>
-
-                <entry>geomajas-plugin-printing</entry>
-              </row>
-
-              <row>
-                <entry>Request object class</entry>
-
-                <entry>org.geomajas.command.EmptyCommandRequest</entry>
-              </row>
-
-              <row>
-                <entry>Parameters</entry>
-
-                <entry>none</entry>
-              </row>
-
-              <row>
-                <entry>Description</entry>
-
-                <entry>?????</entry>
-              </row>
-
-              <row>
-                <entry>Response object class</entry>
-
-                <entry>org.geomajas.extension.printing.command.dto.PrintListTemplatesResponse</entry>
-              </row>
-
-              <row>
-                <entry>Response values</entry>
-
-                <entry><itemizedlist>
-                    <listitem>
-                      <para><emphasis>templates</emphasis> : list of possible
-                      print templates.</para>
-                    </listitem>
-                  </itemizedlist></entry>
-              </row>
-            </tbody>
-          </tgroup>
-        </table></para>
-
-      <para><table>
-          <title>PrintSaveTemplateCommand</title>
-
-          <tgroup cols="2">
-            <thead>
-              <row>
-                <entry>PrintSaveTemplateCommand</entry>
-              </row>
-            </thead>
-
-            <tbody>
-              <row>
-                <entry>Registry key</entry>
-
-                <entry>command.print.SaveTemplate</entry>
-              </row>
-
-              <row>
-                <entry>Module which provides this command</entry>
-
-                <entry>geomajas-plugin-printing</entry>
-              </row>
-
-              <row>
-                <entry>Request object class</entry>
-
-                <entry>org.geomajas.extension.printing.command.dto.PrintSaveTemplateRequest</entry>
-              </row>
-
-              <row>
-                <entry>Parameters</entry>
-
-                <entry><itemizedlist>
-                    <listitem>
-                      <para>?????</para>
-                    </listitem>
-                  </itemizedlist></entry>
-              </row>
-
-              <row>
-                <entry>Description</entry>
-
-                <entry>?????</entry>
-              </row>
-
-              <row>
-                <entry>Response object class</entry>
-
-                <entry>org.geomajas.command.CommandResponse</entry>
-              </row>
-
-              <row>
-                <entry>Response values</entry>
-
-                <entry>none</entry>
               </row>
             </tbody>
           </tgroup>
@@ -1892,7 +1886,46 @@
 
                 <entry><itemizedlist>
                     <listitem>
-                      <para>?????</para>
+                      <para><emphasis>location</emphasis>: A geometry the
+                      specifies the location where to search for
+                      features.</para>
+                    </listitem>
+
+                    <listitem>
+                      <para><emphasis>queryType</emphasis>: Specify exactly
+                      whether to search using INTERSECT, TOUCHES, WITHIN or
+                      CONTAINS. </para>
+                    </listitem>
+
+                    <listitem>
+                      <para><emphasis>ratio</emphasis>: If queryType is
+                      INTERSECT, you can additionally specify what percentage
+                      of overlap is enough to be included in the
+                      search.</para>
+                    </listitem>
+
+                    <listitem>
+                      <para><emphasis>layerIds</emphasis>: Array of layer ID's
+                      to search in.</para>
+                    </listitem>
+
+                    <listitem>
+                      <para><emphasis>searchType</emphasis>: Determines
+                      whether to stop searching once something in one of the
+                      layers is found (in order of course), or whether to
+                      continue searching, and go over all layers.</para>
+                    </listitem>
+
+                    <listitem>
+                      <para><emphasis>crs</emphasis>: The map's coordinate
+                      reference system. The location geometry will also be
+                      expressed in this CRS.</para>
+                    </listitem>
+
+                    <listitem>
+                      <para><emphasis>buffer</emphasis>: Before any
+                      calculation is made, it is possible to have the location
+                      be buffered by this value.</para>
                     </listitem>
 
                     <listitem>
@@ -1907,7 +1940,8 @@
               <row>
                 <entry>Description</entry>
 
-                <entry>?????</entry>
+                <entry>This command allows you to search for features, based
+                on geographic location.</entry>
               </row>
 
               <row>
@@ -1921,7 +1955,9 @@
 
                 <entry><itemizedlist>
                     <listitem>
-                      <para>?????</para>
+                      <para><emphasis>featureMap</emphasis>: A dictionary
+                      where for each layer wherein features where found, you
+                      can find a list of these features.</para>
                     </listitem>
                   </itemizedlist></entry>
               </row>
@@ -1968,6 +2004,12 @@
                     </listitem>
 
                     <listitem>
+                      <para><emphasis>max</emphasis>: Maximum number of
+                      features to allow in the result. 0 means
+                      unlimited.</para>
+                    </listitem>
+
+                    <listitem>
                       <para><emphasis>crs</emphasis> : crs which needs to be
                       used for the geometry in the retrieved features.</para>
                     </listitem>
@@ -2005,8 +2047,9 @@
               <row>
                 <entry>Description</entry>
 
-                <entry>Search features for a layer. You can specify multiple
-                search criteria and a filter.</entry>
+                <entry>This command allows you to search for features, based
+                on alphanumerical attributes. You can specify multiple search
+                criteria and a filter.</entry>
               </row>
 
               <row>
@@ -2070,7 +2113,13 @@
 
                 <entry><itemizedlist>
                     <listitem>
-                      <para>?????</para>
+                      <para><emphasis>geometry</emphasis>: The geometry that
+                      needs splitting</para>
+                    </listitem>
+
+                    <listitem>
+                      <para><emphasis>splitter</emphasis>: The splitting
+                      geometry (usually a LineString)</para>
                     </listitem>
                   </itemizedlist></entry>
               </row>
@@ -2078,7 +2127,8 @@
               <row>
                 <entry>Description</entry>
 
-                <entry>?????</entry>
+                <entry>Split up a geometry into many pieces by means of a
+                splitting geometry.</entry>
               </row>
 
               <row>
@@ -2092,7 +2142,8 @@
 
                 <entry><itemizedlist>
                     <listitem>
-                      <para>?????</para>
+                      <para><emphasis>geometries</emphasis>: The list of
+                      resulting geometries after the split.</para>
                     </listitem>
                   </itemizedlist></entry>
               </row>

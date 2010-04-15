@@ -23,6 +23,8 @@
 
 package org.geomajas.gwt.client.controller;
 
+import org.geomajas.global.Api;
+
 import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.event.dom.client.MouseDownHandler;
 import com.google.gwt.event.dom.client.MouseMoveHandler;
@@ -37,6 +39,7 @@ import com.google.gwt.event.dom.client.MouseWheelHandler;
  *
  * @author Pieter De Graef
  */
+@Api
 public interface GraphicsController extends MouseDownHandler, MouseUpHandler, MouseMoveHandler, MouseOutHandler,
 		MouseOverHandler, MouseWheelHandler, DoubleClickHandler {
 

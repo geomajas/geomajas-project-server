@@ -60,8 +60,8 @@ dojo.declare("SaveSplittingAction", Action, {
 			return;
 		}
 		var command = new JsonCommand("command.geometry.SplitPolygon","org.geomajas.command.dto.SplitPolygonRequest", null, false);
-		command.addParam("lineString", lineString);
-		command.addParam("polygon", polygon);
+		command.addParam("splitter", lineString);
+		command.addParam("geometry", polygon);
 		var deferred = geomajasConfig.dispatcher.execute(command);
 		deferred.addCallback(this, "_callback");
 	},
@@ -75,11 +75,11 @@ dojo.declare("SaveSplittingAction", Action, {
 
 		var deserializer = new GeometryDeserializer();
 		var features = [];
-		if (result.polygons.length > 1) {
-			for (var i=0; i<result.polygons.length; i++) {
+		if (result.geometries.length > 1) {
+			for (var i=0; i<result.geometries.length; i++) {
 				var feature = this.selected.clone();
 				feature.setId(null);
-				var polygon = deserializer.createGeometryFromJSON(result.polygons[i]);
+				var polygon = deserializer.createGeometryFromJSON(result.geometries[i]);
 				if (layer.getLayerType() == geomajas.LayerTypes.MULTIPOLYGON) {
 					var factory = polygon.getGeometryFactory();
 					var multiPolygon = factory.createMultiPolygon([polygon]);

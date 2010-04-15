@@ -39,10 +39,10 @@ import com.vividsolutions.jts.geom.PrecisionModel;
 
 /**
  * <p>
- * This command splits a polygon or multipolygon by a linestring, and returns an
- * array of resulting polygons/multipolygons.
+ * This command splits a polygon or multipolygon by a linestring, and returns an array of resulting
+ * polygons/multipolygons.
  * </p>
- *
+ * 
  * @author Pieter De Graef
  */
 @Component()
@@ -74,11 +74,11 @@ public class MergePolygonCommand implements Command<MergePolygonRequest, MergePo
 			temp = temp.union(polygon.buffer(Math.pow(10.0, -(precision - 1))));
 		}
 		if (temp instanceof Polygon) {
-			MultiPolygon mp = factory.createMultiPolygon(new Polygon[] {(Polygon) temp});
-			response.setMultiPolygon(converter.toDto(mp));
+			MultiPolygon mp = factory.createMultiPolygon(new Polygon[] { (Polygon) temp });
+			response.setGeometry(converter.toDto(mp));
 		} else if (temp instanceof MultiPolygon && temp.getNumGeometries() != 0
 				&& (request.isAllowMultiPolygon() || temp.getNumGeometries() == 1)) {
-			response.setMultiPolygon(converter.toDto(temp));
+			response.setGeometry(converter.toDto(temp));
 		} else {
 			throw new GeomajasException(ExceptionCode.MERGE_NO_POLYGON);
 		}

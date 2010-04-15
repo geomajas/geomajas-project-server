@@ -26,6 +26,7 @@ package org.geomajas.gwt.client.action.toolbar;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.geomajas.global.Api;
 import org.geomajas.gwt.client.action.ToolCreator;
 import org.geomajas.gwt.client.action.ToolbarBaseAction;
 import org.geomajas.gwt.client.widget.MapWidget;
@@ -35,6 +36,7 @@ import org.geomajas.gwt.client.widget.MapWidget;
  * 
  * @author Joachim Van der Auwera
  */
+@Api(allMethods = true)
 public final class ToolbarRegistry {
 
 	private static final Map<String, ToolCreator> REGISTRY;

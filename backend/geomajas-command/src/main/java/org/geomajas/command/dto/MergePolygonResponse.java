@@ -28,7 +28,7 @@ import org.geomajas.global.Api;
 
 /**
  * Result object for {@link org.geomajas.command.geometry.MergePolygonCommand}.
- *
+ * 
  * @author Pieter De Graef
  */
 @Api(allMethods = true)
@@ -36,13 +36,13 @@ public class MergePolygonResponse extends CommandResponse {
 
 	private static final long serialVersionUID = 151L;
 
-	private Geometry multiPolygon;
+	private Geometry geometry;
 
-	public Geometry getMultiPolygon() {
-		return multiPolygon;
+	public Geometry getGeometry() {
+		return geometry;
 	}
 
-	public void setMultiPolygon(Geometry multiPolygon) {
-		this.multiPolygon = multiPolygon;
+	public void setGeometry(Geometry geometry) {
+		this.geometry = geometry;
 	}
 }

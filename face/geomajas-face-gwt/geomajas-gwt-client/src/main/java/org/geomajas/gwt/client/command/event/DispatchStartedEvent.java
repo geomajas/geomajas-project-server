@@ -22,6 +22,8 @@
  */
 package org.geomajas.gwt.client.command.event;
 
+import org.geomajas.global.Api;
+
 import com.google.gwt.event.shared.GwtEvent;
 
 /**
@@ -29,6 +31,7 @@ import com.google.gwt.event.shared.GwtEvent;
  *
  * @author Jan De Moerloose
  */
+@Api(allMethods = true)
 public class DispatchStartedEvent extends GwtEvent<DispatchStartedHandler> {
 
 	/** Handler type. */

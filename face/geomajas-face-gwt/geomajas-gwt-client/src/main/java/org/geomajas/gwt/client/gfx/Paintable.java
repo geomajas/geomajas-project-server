@@ -35,7 +35,6 @@ import org.geomajas.gwt.client.spatial.Bbox;
  * @author Pieter De Graef
  * @author Jan De Moerloose
  */
-
 public interface Paintable {
 
 	/**
@@ -51,5 +50,4 @@ public interface Paintable {
 	 *            Should the painting be a recursive operation (accept -> visit -> paint -> accept, ...)
 	 */
 	void accept(PainterVisitor visitor, Object group, Bbox bounds, boolean recursive);
-
 }

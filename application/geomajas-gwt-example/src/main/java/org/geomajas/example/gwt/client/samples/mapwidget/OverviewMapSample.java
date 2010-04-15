@@ -21,7 +21,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.example.gwt.client.samples.overviewmap;
+package org.geomajas.example.gwt.client.samples.mapwidget;
 
 import org.geomajas.example.gwt.client.samples.base.SamplePanel;
 import org.geomajas.example.gwt.client.samples.base.SamplePanelFactory;
@@ -149,12 +149,12 @@ public class OverviewMapSample extends SamplePanel {
 	}
 
 	public String getSourceFileName() {
-		return "classpath:org/geomajas/gwt/client/samples/overviewmap/OverviewMapSample.txt";
+		return "classpath:org/geomajas/gwt/client/samples/mapwidget/OverviewMapSample.txt";
 	}
 
 	public String[] getConfigurationFiles() {
 		return new String[] { "classpath:org/geomajas/gwt/samples/mapwidget/layerOsm.xml",
-				"classpath:org/geomajas/gwt/samples/overviewMap/overviewMapOsm.xml",
+				"classpath:org/geomajas/gwt/samples/mapWidget/overviewMapOsm.xml",
 				"classpath:org/geomajas/gwt/samples/toolbar/mapOsmNavigationToolbar.xml" };
 	}
 

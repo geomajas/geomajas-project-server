@@ -23,6 +23,8 @@
 
 package org.geomajas.gwt.client.action;
 
+import org.geomajas.global.Api;
+
 import com.smartgwt.client.widgets.menu.MenuItem;
 import com.smartgwt.client.widgets.menu.events.ClickHandler;
 
@@ -32,6 +34,7 @@ import com.smartgwt.client.widgets.menu.events.ClickHandler;
  *
  * @author Pieter De Graef
  */
+@Api(allMethods = true)
 public abstract class MenuAction extends MenuItem implements ClickHandler {
 
 	/**

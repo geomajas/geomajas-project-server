@@ -23,6 +23,7 @@
 
 package org.geomajas.gwt.client.action;
 
+import org.geomajas.global.Api;
 import org.geomajas.gwt.client.action.event.ToolbarActionDisabledEvent;
 import org.geomajas.gwt.client.action.event.ToolbarActionEnabledEvent;
 import org.geomajas.gwt.client.action.event.ToolbarActionHandler;
@@ -35,6 +36,7 @@ import com.google.gwt.event.shared.HandlerRegistration;
  * 
  * @author Joachim Van der Auwera
  */
+@Api(allMethods = true)
 public abstract class ToolbarBaseAction {
 
 	/** Link to the image icon that should represent the action's button in the toolbar. */

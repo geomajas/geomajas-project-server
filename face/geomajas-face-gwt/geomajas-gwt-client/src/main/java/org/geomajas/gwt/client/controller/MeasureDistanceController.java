@@ -106,8 +106,10 @@ public class MeasureDistanceController extends AbstractSnappingController {
 		menu.destroy();
 		menu = null;
 		mapWidget.setContextMenu(null);
-		mapWidget.getWorldSpacePaintables().remove(distanceLine);
-		mapWidget.getWorldSpacePaintables().remove(lineSegment);
+		//mapWidget.getWorldSpacePaintables().remove(distanceLine);
+		//mapWidget.getWorldSpacePaintables().remove(lineSegment);
+		mapWidget.unregisterWorldPaintable(distanceLine);
+		mapWidget.unregisterWorldPaintable(lineSegment);
 	}
 
 	/** Set a new point on the distance-line. */
@@ -116,8 +118,10 @@ public class MeasureDistanceController extends AbstractSnappingController {
 			Coordinate coordinate = getWorldPosition(event);
 			if (distanceLine.getOriginalLocation() == null) {
 				distanceLine.setGeometry(factory.createLineString(new Coordinate[] { coordinate }));
-				mapWidget.getWorldSpacePaintables().add(distanceLine);
-				mapWidget.getWorldSpacePaintables().add(lineSegment);
+				//mapWidget.getWorldSpacePaintables().add(distanceLine);
+				//mapWidget.getWorldSpacePaintables().add(lineSegment);
+				mapWidget.registerWorldPaintable(distanceLine);
+				mapWidget.registerWorldPaintable(lineSegment);
 				label = new DistanceLabel();
 				label.setDistance(0, 0);
 				label.animateMove(mapWidget.getWidth() - 130, 10);
@@ -146,8 +150,10 @@ public class MeasureDistanceController extends AbstractSnappingController {
 
 	/** Stop the measuring, and remove all graphics from the map. */
 	public void onDoubleClick(DoubleClickEvent event) {
-		mapWidget.render(distanceLine, RenderGroup.WORLD, RenderStatus.DELETE);
-		mapWidget.render(lineSegment, RenderGroup.WORLD, RenderStatus.DELETE);
+		mapWidget.unregisterWorldPaintable(distanceLine);
+		mapWidget.unregisterWorldPaintable(lineSegment);
+		//mapWidget.render(distanceLine, RenderGroup.WORLD, RenderStatus.DELETE);
+		//mapWidget.render(lineSegment, RenderGroup.WORLD, RenderStatus.DELETE);
 		distanceLine.setGeometry(null);
 		lineSegment.setGeometry(null);
 		if (label != null) {

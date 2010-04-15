@@ -23,6 +23,7 @@
 
 package org.geomajas.gwt.client.action.event;
 
+import org.geomajas.global.Api;
 import org.geomajas.gwt.client.action.ToolbarBaseAction;
 
 import com.google.gwt.event.shared.GwtEvent;
@@ -34,6 +35,7 @@ import com.google.gwt.event.shared.GwtEvent;
  * 
  * @author Pieter De Graef
  */
+@Api(allMethods = true)
 public class ToolbarActionEnabledEvent extends GwtEvent<ToolbarActionHandler> {
 
 	public Type<ToolbarActionHandler> getAssociatedType() {

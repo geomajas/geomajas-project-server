@@ -51,5 +51,4 @@ public interface MapContext {
 	 * @return a menu context
 	 */
 	MenuContext getMenuContext();
-
 }

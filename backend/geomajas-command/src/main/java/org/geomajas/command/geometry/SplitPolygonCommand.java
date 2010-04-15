@@ -55,24 +55,23 @@ public class SplitPolygonCommand implements Command<SplitPolygonRequest, SplitPo
 	public void execute(SplitPolygonRequest request, SplitPolygonResponse response) throws Exception {
 		// convert to most accurate precision model
 		Polygon polygon = null;
-		polygon = (Polygon) converter.toInternal(request.getPolygon());
+		polygon = (Polygon) converter.toInternal(request.getGeometry());
 
 		// Convert to the polygons precision model:
 		LineString preciseLine = (LineString) polygon.getFactory().createGeometry(
-				converter.toInternal(request.getLineString()));
+				converter.toInternal(request.getSplitter()));
 		int precision = polygon.getPrecisionModel().getMaximumSignificantDigits() - 1;
 		com.vividsolutions.jts.geom.Geometry bufferedLine = preciseLine.buffer(Math.pow(10.0, -precision));
 		com.vividsolutions.jts.geom.Geometry diff = polygon.difference(bufferedLine);
 
 		if (diff instanceof Polygon) {
-			response.setPolygons(new Geometry[] { converter.toDto(diff) });
+			response.setGeometries(new Geometry[] { converter.toDto(diff) });
 		} else if (diff instanceof MultiPolygon) {
 			Geometry[] polygons = new Geometry[diff.getNumGeometries()];
 			for (int i = 0; i < diff.getNumGeometries(); i++) {
 				polygons[i] = converter.toDto(diff.getGeometryN(i));
-				// makePrecise(polygon.getPrecisionModel(), polygons[i]);
 			}
-			response.setPolygons(polygons);
+			response.setGeometries(polygons);
 		}
 	}
 }

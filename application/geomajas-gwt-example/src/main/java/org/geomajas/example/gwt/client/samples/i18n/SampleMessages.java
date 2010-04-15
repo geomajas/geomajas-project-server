@@ -48,6 +48,10 @@ public interface SampleMessages extends Messages {
 
 	String generalDescription();
 
+	String treeGroupLayers();
+
+	String treeGroupMap();
+
 	String treeGroupSecurity();
 
 	String treeGroupEditing();
@@ -163,6 +167,20 @@ public interface SampleMessages extends Messages {
 	String renderingNewCursor();
 
 	String renderingDelete();
+
+	// Screen versus World space
+
+	String screenWorldTitle();
+
+	String screenWorldDescription();
+
+	String screenWorldBTNScreen();
+
+	String screenWorldBTNWorld();
+
+	String screenWorldBTNScreenDelete();
+
+	String screenWorldBTNWorldDelete();
 
 	// Editing a point layer:
 

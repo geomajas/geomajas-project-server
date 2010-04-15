@@ -23,7 +23,7 @@
 package org.geomajas.command.dto;
 
 import org.geomajas.command.CommandRequest;
-import org.geomajas.global.Api;
+import org.geomajas.command.configuration.RefreshConfigurationCommand;
 
 /**
  * Request object for {@link RefreshConfigurationCommand}.
@@ -31,8 +31,9 @@ import org.geomajas.global.Api;
  * @author Jan De Moerloose
  * 
  */
-@Api(allMethods = true)
 public class RefreshConfigurationRequest implements CommandRequest {
+
+	private static final long serialVersionUID = 1L;
 
 	private String[] configLocations;
 

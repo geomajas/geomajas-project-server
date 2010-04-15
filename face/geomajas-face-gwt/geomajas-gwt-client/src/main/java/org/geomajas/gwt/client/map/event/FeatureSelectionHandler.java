@@ -23,6 +23,8 @@
 
 package org.geomajas.gwt.client.map.event;
 
+import org.geomajas.global.Api;
+
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 
@@ -31,6 +33,7 @@ import com.google.gwt.event.shared.GwtEvent;
  *
  * @author Joachim Van der Auwera
  */
+@Api
 public interface FeatureSelectionHandler extends EventHandler {
 
 	GwtEvent.Type<FeatureSelectionHandler> TYPE = new GwtEvent.Type<FeatureSelectionHandler>();

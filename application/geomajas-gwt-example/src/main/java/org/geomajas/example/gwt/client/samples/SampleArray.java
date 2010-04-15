@@ -41,11 +41,12 @@ import org.geomajas.example.gwt.client.samples.mapwidget.GoogleSample;
 import org.geomajas.example.gwt.client.samples.mapwidget.MaxBoundsToggleSample;
 import org.geomajas.example.gwt.client.samples.mapwidget.NavigationSample;
 import org.geomajas.example.gwt.client.samples.mapwidget.OpenStreetMapSample;
+import org.geomajas.example.gwt.client.samples.mapwidget.OverviewMapSample;
 import org.geomajas.example.gwt.client.samples.mapwidget.PanScaleToggleSample;
 import org.geomajas.example.gwt.client.samples.mapwidget.RenderingSample;
 import org.geomajas.example.gwt.client.samples.mapwidget.UnitTypesSample;
 import org.geomajas.example.gwt.client.samples.mapwidget.WmsSample;
-import org.geomajas.example.gwt.client.samples.overviewmap.OverviewMapSample;
+import org.geomajas.example.gwt.client.samples.mapwidget.WorldScreenSample;
 import org.geomajas.example.gwt.client.samples.security.AttributeSecuritySample;
 import org.geomajas.example.gwt.client.samples.security.CommandSecuritySample;
 import org.geomajas.example.gwt.client.samples.security.FilterSecuritySample;
@@ -76,40 +77,43 @@ public final class SampleArray {
 	public static SampleTreeNode[] getSampleArray() {
 		return new SampleTreeNode[] {
 				// MapWidget samples:
-				new SampleTreeNode("MapWidget", "[ISOMORPHIC]/geomajas/example/images/world.png", "MapWidget",
-						"topLevel"),
+				new SampleTreeNode(I18nProvider.getSampleMessages().treeGroupLayers(),
+						"[ISOMORPHIC]/geomajas/layer.png", "Layers", "topLevel"),
 				new SampleTreeNode(I18nProvider.getSampleMessages().osmTitle(),
-						"[ISOMORPHIC]/geomajas/layer-raster.png", OpenStreetMapSample.OSM_TITLE, "MapWidget",
+						"[ISOMORPHIC]/geomajas/layer-raster.png", OpenStreetMapSample.OSM_TITLE, "Layers",
 						OpenStreetMapSample.FACTORY),
 				new SampleTreeNode(I18nProvider.getSampleMessages().googleTitle(),
-						"[ISOMORPHIC]/geomajas/layer-raster.png", GoogleSample.TITLE, "MapWidget",
-						GoogleSample.FACTORY),
-				new SampleTreeNode(I18nProvider.getSampleMessages().wmsTitle(),
-						"[ISOMORPHIC]/geomajas/layer-raster.png", WmsSample.WMS_TITLE, "MapWidget", WmsSample.FACTORY),
+						"[ISOMORPHIC]/geomajas/layer-raster.png", GoogleSample.TITLE, "Layers", GoogleSample.FACTORY),
+				new SampleTreeNode(I18nProvider.getSampleMessages().wmsTitle(), "[ISOMORPHIC]/geomajas/layer-wms.png",
+						WmsSample.WMS_TITLE, "Layers", WmsSample.FACTORY),
 				new SampleTreeNode(I18nProvider.getSampleMessages().geoTitle(),
-						"[ISOMORPHIC]/geomajas/layer-raster.png", GeoToolsSample.TITLE, "MapWidget",
+						"[ISOMORPHIC]/geomajas/layer-vector.png", GeoToolsSample.TITLE, "Layers",
 						GeoToolsSample.FACTORY),
+
+				new SampleTreeNode(I18nProvider.getSampleMessages().treeGroupMap(),
+						"[ISOMORPHIC]/geomajas/example/images/world.png", "MapWidget", "topLevel"),
 				new SampleTreeNode(I18nProvider.getSampleMessages().navigationTitle(),
-						"[ISOMORPHIC]/geomajas/layer.png", NavigationSample.TITLE, "MapWidget",
+						"[ISOMORPHIC]/geomajas/example/images/world.png", NavigationSample.TITLE, "MapWidget",
 						NavigationSample.FACTORY),
-				new SampleTreeNode(I18nProvider.getSampleMessages().crsTitle(), "[ISOMORPHIC]/geomajas/layer.png",
-						CrsSample.TITLE, "MapWidget", CrsSample.FACTORY),
+				new SampleTreeNode(I18nProvider.getSampleMessages().crsTitle(),
+						"[ISOMORPHIC]/geomajas/example/images/world.png", CrsSample.TITLE, "MapWidget",
+						CrsSample.FACTORY),
 				new SampleTreeNode(I18nProvider.getSampleMessages().unitTypesTitle(),
-						"[ISOMORPHIC]/geomajas/layer.png", UnitTypesSample.TITLE, "MapWidget", UnitTypesSample.FACTORY),
+						"[ISOMORPHIC]/geomajas/example/images/world.png", UnitTypesSample.TITLE, "MapWidget",
+						UnitTypesSample.FACTORY),
 				new SampleTreeNode(I18nProvider.getSampleMessages().maxBoundsToggleTitle(),
-						"[ISOMORPHIC]/geomajas/layer.png", MaxBoundsToggleSample.TITLE, "MapWidget",
+						"[ISOMORPHIC]/geomajas/example/images/world.png", MaxBoundsToggleSample.TITLE, "MapWidget",
 						MaxBoundsToggleSample.FACTORY),
 				new SampleTreeNode(I18nProvider.getSampleMessages().panScaleToggleTitle(),
-						"[ISOMORPHIC]/geomajas/layer.png", PanScaleToggleSample.TITLE, "MapWidget",
+						"[ISOMORPHIC]/geomajas/example/images/world.png", PanScaleToggleSample.TITLE, "MapWidget",
 						PanScaleToggleSample.FACTORY),
 				new SampleTreeNode(I18nProvider.getSampleMessages().renderingTitle(), "[ISOMORPHIC]/geomajas/edit.png",
 						RenderingSample.TITLE, "MapWidget", RenderingSample.FACTORY),
-
-				// Overview map:
-				new SampleTreeNode(I18nProvider.getSampleMessages().treeGroupOverviewMap(),
-						"[ISOMORPHIC]/geomajas/region.png", "OverviewMapSample", "topLevel"),
+				new SampleTreeNode(I18nProvider.getSampleMessages().screenWorldTitle(),
+						"[ISOMORPHIC]/geomajas/edit.png", WorldScreenSample.TITLE, "MapWidget",
+						WorldScreenSample.FACTORY),
 				new SampleTreeNode(I18nProvider.getSampleMessages().overviewMapTitle(),
-						"[ISOMORPHIC]/geomajas/region.png", OverviewMapSample.TITLE, "OverviewMapSample",
+						"[ISOMORPHIC]/geomajas/region.png", OverviewMapSample.TITLE, "MapWidget",
 						OverviewMapSample.FACTORY),
 
 				// Editing:

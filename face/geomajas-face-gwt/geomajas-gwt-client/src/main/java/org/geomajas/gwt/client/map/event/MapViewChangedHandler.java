@@ -23,6 +23,8 @@
 
 package org.geomajas.gwt.client.map.event;
 
+import org.geomajas.global.Api;
+
 import com.google.gwt.event.shared.EventHandler;
 
 /**
@@ -30,6 +32,7 @@ import com.google.gwt.event.shared.EventHandler;
  *
  * @author Pieter De Graef
  */
+@Api
 public interface MapViewChangedHandler extends EventHandler {
 
 	/**

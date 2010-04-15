@@ -23,6 +23,8 @@
 
 package org.geomajas.gwt.client.action;
 
+import org.geomajas.global.Api;
+
 import com.smartgwt.client.widgets.events.ClickEvent;
 
 /**
@@ -34,6 +36,7 @@ import com.smartgwt.client.widgets.events.ClickEvent;
  *
  * @author Pieter De Graef
  */
+@Api(allMethods = true)
 public abstract class ToolbarModalAction extends ToolbarBaseAction {
 
 	public ToolbarModalAction(String icon, String tooltip) {

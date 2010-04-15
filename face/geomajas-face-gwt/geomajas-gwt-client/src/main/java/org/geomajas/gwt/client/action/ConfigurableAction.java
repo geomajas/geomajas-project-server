@@ -22,11 +22,14 @@
  */
 package org.geomajas.gwt.client.action;
 
+import org.geomajas.global.Api;
+
 /**
  * Marker which indicates that a toolbar action is configurable, and process the configuration.
  *
  * @author Joachim Van der Auwera
  */
+@Api(allMethods = true)
 public interface ConfigurableAction {
 
 	/**

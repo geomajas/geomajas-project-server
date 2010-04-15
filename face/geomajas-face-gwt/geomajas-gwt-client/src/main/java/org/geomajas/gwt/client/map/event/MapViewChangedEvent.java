@@ -23,6 +23,7 @@
 
 package org.geomajas.gwt.client.map.event;
 
+import org.geomajas.global.Api;
 import org.geomajas.gwt.client.spatial.Bbox;
 
 import com.google.gwt.event.shared.GwtEvent;
@@ -33,6 +34,7 @@ import com.google.gwt.event.shared.GwtEvent;
  * 
  * @author Pieter De Graef
  */
+@Api
 public class MapViewChangedEvent extends GwtEvent<MapViewChangedHandler> {
 
 	/**

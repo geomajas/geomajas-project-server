@@ -28,7 +28,7 @@ import org.geomajas.global.Api;
 
 /**
  * Result object for {@link org.geomajas.command.geometry.SplitPolygonCommand}.
- *
+ * 
  * @author Pieter De Graef
  */
 @Api(allMethods = true)
@@ -36,16 +36,16 @@ public class SplitPolygonResponse extends CommandResponse {
 
 	private static final long serialVersionUID = 151L;
 
-	private Geometry[] polygons;
+	private Geometry[] geometries;
 
 	public SplitPolygonResponse() {
 	}
 
-	public Geometry[] getPolygons() {
-		return polygons;
+	public Geometry[] getGeometries() {
+		return geometries;
 	}
 
-	public void setPolygons(Geometry[] polygons) {
-		this.polygons = polygons;
+	public void setGeometries(Geometry[] geometries) {
+		this.geometries = geometries;
 	}
 }

@@ -54,4 +54,6 @@ public interface WorldPaintable extends Paintable {
 	 *            The map's transformer.
 	 */
 	void transform(WorldViewTransformer transformer);
+	
+	String getId();
 }

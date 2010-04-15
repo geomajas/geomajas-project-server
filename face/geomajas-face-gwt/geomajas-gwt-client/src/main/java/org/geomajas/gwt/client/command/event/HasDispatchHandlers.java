@@ -22,6 +22,8 @@
  */
 package org.geomajas.gwt.client.command.event;
 
+import org.geomajas.global.Api;
+
 import com.google.gwt.event.shared.HandlerRegistration;
 
 /**
@@ -30,6 +32,7 @@ import com.google.gwt.event.shared.HandlerRegistration;
  *
  * @author Jan De Moerloose
  */
+@Api
 public interface HasDispatchHandlers {
 
 	/**
@@ -49,5 +52,4 @@ public interface HasDispatchHandlers {
 	 */
 	HandlerRegistration addDispatchStoppedHandler(DispatchStoppedHandler
 			handler);
-
 }

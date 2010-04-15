@@ -26,6 +26,7 @@ package org.geomajas.gwt.client.command;
 import java.io.Serializable;
 
 import org.geomajas.command.CommandRequest;
+import org.geomajas.global.Api;
 
 /**
  * <p>
@@ -35,6 +36,7 @@ import org.geomajas.command.CommandRequest;
  *
  * @author Pieter De Graef
  */
+@Api
 public class GwtCommand implements Serializable {
 
 	private static final long serialVersionUID = 5594368814162458480L;
