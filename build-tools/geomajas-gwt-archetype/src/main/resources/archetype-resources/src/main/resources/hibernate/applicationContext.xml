@@ -10,17 +10,17 @@ http://www.springframework.org/schema/aop http://www.springframework.org/schema/
 http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 
 	<!-- DataSource Property -->
-	<bean id="simpleDataSource" class="org.apache.commons.dbcp.BasicDataSource">
+	<bean id="appDataSource" class="org.apache.commons.dbcp.BasicDataSource">
 		<property name="driverClassName" value="org.postgresql.Driver" />
-		<property name="url" value="jdbc:postgresql://127.0.0.1:5432/simple" />
-		<property name="username" value="simple" />
-		<property name="password" value="simple" />
+		<property name="url" value="jdbc:postgresql://127.0.0.1:5432/app" />
+		<property name="username" value="app" />
+		<property name="password" value="app" />
 	</bean>
 
 
 	<!-- Hibernate SessionFactory -->
-	<bean id="simpleSessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
-		<property name="dataSource" ref="simpleDataSource" />
+	<bean id="appSessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource" ref="appDataSource" />
 		<property name="configLocation">
 			<value>classpath:/${packageInPathFormat}/hibernate/cfg/hibernate.cfg.xml
 			</value>
@@ -34,7 +34,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 	<tx:annotation-driven transaction-manager="transactionManager" />
 
 	<bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
-		<property name="sessionFactory" ref="simpleSessionFactory" />
+		<property name="sessionFactory" ref="appSessionFactory" />
 	</bean>
 
 	<bean name="security.securityInfo" class="org.geomajas.security.SecurityInfo">
@@ -46,7 +46,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		</property>
 	</bean>
 
-	<bean id="gwt-simple" class="org.geomajas.configuration.client.ClientApplicationInfo">
+	<bean id="gwt-app" class="org.geomajas.configuration.client.ClientApplicationInfo">
 		<property name="maps">
 			<list>
 				<bean name="sampleFeaturesMap" class="org.geomajas.configuration.client.ClientMapInfo">

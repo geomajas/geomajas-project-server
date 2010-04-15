@@ -138,14 +138,14 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		</property>
 	</bean>
 
-	<bean name="simpleDateFormat" class="java.text.SimpleDateFormat">
+	<bean name="appDateFormat" class="java.text.SimpleDateFormat">
 		<constructor-arg type="java.lang.String" value="dd/MM/yyyy" />
 	</bean>
 
 
 	<bean name="roads" class="org.geomajas.layer.geotools.GeoToolsLayer">
 		<property name="layerInfo" ref="roadsInfo"/>
-		<property name="dataStore" ref="simpleDatastore" />
+		<property name="dataStore" ref="appDatastore" />
 	</bean>
 
 </beans>

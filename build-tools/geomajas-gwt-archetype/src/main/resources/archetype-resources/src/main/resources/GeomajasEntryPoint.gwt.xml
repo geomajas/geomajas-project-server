@@ -3,7 +3,9 @@
 	<inherits name="com.smartgwt.tools.SmartGwtTools"/>
     <inherits name="org.geomajas.gwt.GeomajasClient"/>
 
+	<!-- add required languages
 	<extend-property name="locale" values="nl"/>
+	-->
 
     <entry-point class="${package}.client.GeomajasEntryPoint"/>
 </module>

@@ -9,7 +9,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.tab.Tab;
 
 /**
- * Basic implementation for a tab in the geomajas-simple project. The tabs are added bottom left.
+ * Basic implementation for a tab. The tabs are added bottom left.
  * 
  * @author Jan De Moerloose
  */

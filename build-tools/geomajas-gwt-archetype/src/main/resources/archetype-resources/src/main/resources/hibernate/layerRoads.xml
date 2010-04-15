@@ -138,7 +138,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		</property>
 	</bean>
 
-	<bean name="simpleDateFormat" class="java.text.SimpleDateFormat">
+	<bean name="appDateFormat" class="java.text.SimpleDateFormat">
 		<constructor-arg type="java.lang.String" value="dd/MM/yyyy" />
 	</bean>
 
@@ -146,11 +146,11 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		<property name="layerInfo" ref="roadsInfo" />
 		<property name="featureModel">
 			<bean class="org.geomajas.layer.hibernate.HibernateFeatureModel">
-				<property name="sessionFactory" ref="simpleSessionFactory" />
+				<property name="sessionFactory" ref="appSessionFactory" />
 			</bean>
 		</property>
-		<property name="sessionFactory" ref="simpleSessionFactory" />
-		<property name="dateFormat" ref="simpleDateFormat" />
+		<property name="sessionFactory" ref="appSessionFactory" />
+		<property name="dateFormat" ref="appDateFormat" />
 	</bean>
 
 </beans>

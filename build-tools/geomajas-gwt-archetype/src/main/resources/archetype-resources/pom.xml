@@ -8,21 +8,7 @@
 	<artifactId>${artifactId}</artifactId>
 	<version>${version}</version>
 	<packaging>war</packaging>
-	<name>Geomajas simple gwt application demo</name>
-	<url>http://files.geomajas.org/maven/trunk/gwt-simple</url>
-
-	<distributionManagement>
-		<repository>
-			<id>Geomajas repository</id>
-			<name>Mapping with Asynchronous Java and SVG</name>
-			<url>file:/var/www/maven.geomajas.org/htdocs/repository</url>
-		</repository>
-		<site>
-			<id>Geomajas project site</id>
-			<name>Mapping with Asynchronous Java and SVG</name>
-			<url>file:/var/www/files.geomajas.org/htdocs/maven/trunk/geomajas-gwt-simple</url>
-		</site>
-	</distributionManagement>
+	<name>Geomajas GWT application</name>
 
 	<dependencies>
 		<!-- Geomajas dependencies -->
@@ -129,7 +115,7 @@
 					<disableCastChecking>true</disableCastChecking>
 					<disableClassMetadata>true</disableClassMetadata>
 					<extraJvmArgs>-Xmx512M -Xss1024k</extraJvmArgs>
-					<i18nConstantsWithLookupBundle>${package}.client.i18n.Simple</i18nConstantsWithLookupBundle>
+					<i18nConstantsWithLookupBundle>${package}.client.i18n.Translation</i18nConstantsWithLookupBundle>
 				</configuration>
 				<executions>
 					<execution>
@@ -210,8 +196,7 @@
 		<geomajas-layer-hibernate-version>1.6.0-SNAPSHOT</geomajas-layer-hibernate-version>
 		<geomajas-layer-google-version>1.6.0-SNAPSHOT</geomajas-layer-google-version>
 		<geomajas-layer-openstreetmaps-version>1.6.0-SNAPSHOT</geomajas-layer-openstreetmaps-version>
-		<gwt-version>2.0.0</gwt-version>
-		<smartgwt-version>2.0</smartgwt-version>
+		<gwt-version>2.0.3</gwt-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 

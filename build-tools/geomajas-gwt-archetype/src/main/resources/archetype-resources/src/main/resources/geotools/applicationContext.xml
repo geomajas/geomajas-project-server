@@ -10,13 +10,13 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
 http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 
-	<bean name="simpleDatastore" class="org.geomajas.layer.geotools.DataStoreFactory" factory-method="create">
+	<bean name="appDatastore" class="org.geomajas.layer.geotools.DataStoreFactory" factory-method="create">
 		<constructor-arg>
 			<map>
 				<entry key="namespace" value="postgis" />
-				<entry key="user" value="simple" />
-				<entry key="passwd" value="simple" />
-				<entry key="database" value="simple" />
+				<entry key="user" value="app" />
+				<entry key="passwd" value="app" />
+				<entry key="database" value="app" />
 				<entry key="host" value="localhost" />
 				<entry key="port" value="5432" />
 				<entry key="dbtype" value="postgis" />
@@ -38,8 +38,8 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		</property>
 	</bean>
 
-	<bean id="gwt-simple" class="org.geomajas.configuration.client.ClientApplicationInfo">
-		<property name="name" value="GWT simple example" />
+	<bean id="gwt-app" class="org.geomajas.configuration.client.ClientApplicationInfo">
+		<property name="name" value="Geomajas application" />
 		<property name="maps">
 			<list>
 				<bean name="worldMap" class="org.geomajas.configuration.client.ClientMapInfo">
@@ -278,7 +278,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		<property name="parameters">
 			<list>
 				<!--
-					old <bean class="org.geomajas.configuration.Parameter"> <property name="name" value="simple"/> <property
+					old <bean class="org.geomajas.configuration.Parameter"> <property name="name" value="app"/> <property
 					name="value" value="false"/> </bean> <bean class="org.geomajas.configuration.Parameter"> <property name="name"
 					value="useSnapHelp"/> <property name="value" value="true"/> </bean>
 				-->

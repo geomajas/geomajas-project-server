@@ -5,7 +5,7 @@
  "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
  "http://java.sun.com/dtd/web-app_2_3.dtd" >
 <web-app>
-	<display-name>Geomajas GWT face simple example application</display-name>
+	<display-name>Geomajas application</display-name>
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
@@ -60,7 +60,7 @@
 
 	<servlet-mapping>
 		<servlet-name>GeomajasServiceServlet</servlet-name>
-		<url-pattern>/${packageInPathFormat}.GeomajasEntryPoint/geomajasService</url-pattern>
+		<url-pattern>/${package}.GeomajasEntryPoint/geomajasService</url-pattern>
 	</servlet-mapping>
 
 	<welcome-file-list>

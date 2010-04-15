@@ -29,7 +29,7 @@ package ${package}.client;
 import java.util.ArrayList;
 import java.util.List;
 
-import ${package}.client.i18n.Simple;
+import ${package}.client.i18n.Translation;
 import ${package}.client.pages.AbstractTab;
 import ${package}.client.pages.FeatureListGridPage;
 import ${package}.client.pages.SearchPage;
@@ -82,7 +82,7 @@ public class GeomajasEntryPoint implements EntryPoint {
 	}
 
 	public void onModuleLoad() {
-		I18nProvider.setLookUp(GWT.<ConstantsWithLookup>create(Simple.class));
+		I18nProvider.setLookUp(GWT.<ConstantsWithLookup>create(Translation.class));
 
 		VLayout mainLayout = new VLayout();
 		mainLayout.setWidth100();
@@ -101,7 +101,7 @@ public class GeomajasEntryPoint implements EntryPoint {
 		topBar.addMember(icon);
 		topBar.addSpacer(6);
 
-		Label title = new Label("Geomajas Simple application");
+		Label title = new Label("Geomajas application");
 		title.setStyleName("sgwtTitle");
 		title.setWidth(300);
 		topBar.addMember(title);
@@ -119,7 +119,7 @@ public class GeomajasEntryPoint implements EntryPoint {
 		// ---------------------------------------------------------------------
 		// Create the left-side (map and tabs):
 		// ---------------------------------------------------------------------
-		map = new MapWidget("sampleFeaturesMap", "gwt-simple");
+		map = new MapWidget("sampleFeaturesMap", "gwt-app");
 		final Toolbar toolbar = new Toolbar(map);
 		toolbar.setButtonSize(Toolbar.BUTTON_SIZE_BIG);
 
@@ -163,7 +163,7 @@ public class GeomajasEntryPoint implements EntryPoint {
 		overviewWindow.setTitle("Overview map");
 		overviewWindow.setHeight(230);
 		overviewWindow.setHeaderControls(HeaderControls.HEADER_LABEL, HeaderControls.MINIMIZE_BUTTON);
-		overviewMap = new OverviewMap("sampleOverviewMap", "gwt-simple", map, true, true);
+		overviewMap = new OverviewMap("sampleOverviewMap", "gwt-app", map, true, true);
 		overviewWindow.addItem(overviewMap);
 
 		// LayerTree layout:
@@ -204,7 +204,7 @@ public class GeomajasEntryPoint implements EntryPoint {
 
 		// Install a loading screen
 		// This only works if the application initially shows a map with at least 1 vector layer:
-		LoadingScreen loadScreen = new LoadingScreen(map, "Simple GWT application using Geomajas "
+		LoadingScreen loadScreen = new LoadingScreen(map, "GWT application using Geomajas "
 				+ Geomajas.getVersion());
 		loadScreen.draw();
 
