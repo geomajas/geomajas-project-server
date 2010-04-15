@@ -4,19 +4,21 @@
 <web-app>
 	<display-name>Geomajas dojo face simple example application</display-name>
 
+	<!-- @extract-start WebXmlSpringConfiguration, Defining spring configuration locations in web.xml -->
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
             org/geomajas/dojo/simple/applicationContext.xml
             org/geomajas/dojo/simple/layerRoads.xml
-		org/geomajas/dojo/simple/layerStructures.xml
-		org/geomajas/dojo/simple/layerOsm.xml
+			org/geomajas/dojo/simple/layerStructures.xml
+			org/geomajas/dojo/simple/layerOsm.xml
         </param-value>
     </context-param>
 
     <listener>
          <listener-class>org.geomajas.servlet.GeomajasContextListener</listener-class>
     </listener>
+	<!-- @extract-end -->
 
     <servlet>
         <servlet-name>PdfServlet</servlet-name>

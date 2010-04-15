@@ -21,6 +21,7 @@
 
 	<build>
 		<plugins>
+			<!-- @extract-start MavenDojoPluginConfiguration, Maven Dojo plugin configuration -->
 			<plugin>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-maven-dojo</artifactId>
@@ -53,6 +54,7 @@
 					</execution>
 				</executions>
 			</plugin>
+			<!-- @extract-end -->
 		</plugins>
 	</build>
 </project>

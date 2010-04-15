@@ -41,7 +41,7 @@ References
 -->
 
   <para>As a general note, the coding style and naming conventions should be
-  adhered to. Some parts are even checked by the checkstyle maven plugin.
+  adhered to. Some parts are even checked by the checkstyle maven plug-in.
   However, deviations are always allowed when this enhances code
   readability.</para>
 

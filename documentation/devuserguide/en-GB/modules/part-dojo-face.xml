@@ -33,70 +33,19 @@
     web.xml contains the references to the necessary information and servlets.
     Let's dissect an example web.xml file.</para>
 
-    <programlisting>&lt;!DOCTYPE web-app PUBLIC
-        "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
-        "http://java.sun.com/dtd/web-app_2_3.dtd" &gt;
-&lt;web-app&gt;
-    &lt;display-name&gt;Geomajas dojo face example application&lt;/display-name&gt;
-    &lt;context-param&gt;
-        &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;
-        &lt;param-value&gt;
-            applicationContext.xml
-            layerBelt.xml
-            layerBluemarble.xml
-            layerCities.xml
-            layerCountries.xml
-            layerLakes.xml
-            layerOsm.xml
-            layerProvinces.xml
-            layerRivers.xml
-            layerRoads.xml
-            layerStructures.xml
-        &lt;/param-value&gt;
-    &lt;/context-param&gt;
-
-    &lt;listener&gt;
-        &lt;listener-class&gt;org.geomajas.servlet.GeomajasContextListener&lt;/listener-class&gt;
-    &lt;/listener&gt;
-</programlisting>
+    <xi:include href="../listing/WebXmlDojoPart1.xml"
+                xmlns:xi="http://www.w3.org/2001/XInclude" />
 
     <para>The file starts with the reference and configuration of the Geomajas
     context listener. This assures the application configuration is available
     for Geomajas and indicates the location of the additional configuration
     files.</para>
 
-    <para><programlisting>    &lt;servlet&gt;
-        &lt;servlet-name&gt;PdfServlet&lt;/servlet-name&gt;
-        &lt;servlet-class&gt;org.geomajas.extension.printing.PdfServlet&lt;/servlet-class&gt;
-        &lt;load-on-startup&gt;1&lt;/load-on-startup&gt;
-    &lt;/servlet&gt;
-    &lt;servlet&gt;
-        &lt;servlet-name&gt;JsonServlet&lt;/servlet-name&gt;
-        &lt;servlet-class&gt;org.geomajas.dojo.server.servlet.JsonServlet&lt;/servlet-class&gt;
-        &lt;load-on-startup&gt;2&lt;/load-on-startup&gt;
-    &lt;/servlet&gt;
-    &lt;servlet&gt;
-        &lt;servlet-name&gt;ResourceServlet&lt;/servlet-name&gt;
-        &lt;servlet-class&gt;org.geomajas.servlet.ResourceServlet&lt;/servlet-class&gt;
-        &lt;load-on-startup&gt;3&lt;/load-on-startup&gt;
-    &lt;/servlet&gt;
+    <xi:include href="../listing/WebXmlDojoPart2.xml"
+                xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-    &lt;servlet-mapping&gt;
-        &lt;servlet-name&gt;PdfServlet&lt;/servlet-name&gt;
-        &lt;url-pattern&gt;*.pdf&lt;/url-pattern&gt;
-    &lt;/servlet-mapping&gt;
-    &lt;servlet-mapping&gt;
-        &lt;servlet-name&gt;JsonServlet&lt;/servlet-name&gt;
-        &lt;url-pattern&gt;*.do&lt;/url-pattern&gt;
-    &lt;/servlet-mapping&gt;
-    &lt;servlet-mapping&gt;
-        &lt;servlet-name&gt;ResourceServlet&lt;/servlet-name&gt;
-        &lt;url-pattern&gt;/js/*&lt;/url-pattern&gt;
-    &lt;/servlet-mapping&gt;
-&lt;/web-app&gt;
-</programlisting>Next up is the definition of the actual servlets which are
-    needed. The order in which they need to be initialised is also
-    specified.</para>
+    <para>Next up is the definition of the actual servlets which are needed.
+    The order in which they need to be initialised is also specified.</para>
 
     <itemizedlist>
       <listitem>
@@ -117,24 +66,12 @@
       </listitem>
     </itemizedlist>
 
-    <para><programlisting>    &lt;servlet-mapping&gt;
-        &lt;servlet-name&gt;PdfServlet&lt;/servlet-name&gt;
-        &lt;url-pattern&gt;*.pdf&lt;/url-pattern&gt;
-    &lt;/servlet-mapping&gt;
-    &lt;servlet-mapping&gt;
-        &lt;servlet-name&gt;JsonServlet&lt;/servlet-name&gt;
-        &lt;url-pattern&gt;*.do&lt;/url-pattern&gt;
-    &lt;/servlet-mapping&gt;
-    &lt;servlet-mapping&gt;
-        &lt;servlet-name&gt;ResourceServlet&lt;/servlet-name&gt;
-        &lt;url-pattern&gt;/js/*&lt;/url-pattern&gt;
-    &lt;/servlet-mapping&gt;
-&lt;/web-app&gt;
-</programlisting> To finish, the servlet mappings need to be defined. You
-    don't really have a lot of choice here, as the client side javascript
-    expects these values.</para>
+    <xi:include href="../listing/WebXmlDojoPart3.xml"
+                xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-    <para></para>
+    <para>To finish, the servlet mappings need to be defined. You don't really
+    have a lot of choice here, as the client side javascript expects these
+    values.</para>
 
     <para>In many cases you also want to do some client side configurations.
     This can be done in one of two ways.</para>
@@ -142,29 +79,14 @@
     <para>You can include a "geomajas-constants.js" file in your code (the
     name of the file can differ).</para>
 
-    <para><programlisting>var djConfig={
-    isDebug: false,
-    parseOnLoad: true,
-    usePlainJson: true,
-    locale: "en"
-};
-
-var geomajasConfig={
-    dijitTheme: "soria",
-    showLog: true,
-    useLazyLoading: true, // use lazy loading
-    lazyFeatureIncludesDefault: 12, // by default, only include style + label
-    lazyFeatureIncludesSelect: 15, // attributes + geometry + style + label (see GeomajasConstant)
-    lazyFeatureIncludesAll: 15 // attributes + geometry + style + label (see GeomajasConstant)
-};</programlisting></para>
+    <xi:include href="../listing/GeomajasConstantsJs.xml"
+                xmlns:xi="http://www.w3.org/2001/XInclude" />
 
     <para>You can override some configurations in your html file, on the
     script tags in head..</para>
 
-    <para><programlisting>&lt;script type="text/javascript" src="js/dojo/dojo.js" djConfig="parseOnLoad:true, usePlainJson:true"&gt;&lt;/script&gt;
-&lt;script type="text/javascript" src="js/geomajas/geomajas.js" geomajasConfig="showLog:true, connectionPoint:'generalConnectionPoint'"&gt;&lt;/script&gt;</programlisting></para>
-
-    <para>...</para>
+    <xi:include href="../listing/HtmlIncludeConfig.xml"
+                xmlns:xi="http://www.w3.org/2001/XInclude" />
 
     <section>
       <title>Using Google maps raster layer</title>
@@ -173,18 +95,26 @@ var geomajasConfig={
       include the Google maps API files in your application to allow Geomajas
       to use those. This can be done using code like the following</para>
 
-      <programlisting>&lt;script  type="text/javascript"
-    src="http://maps.google.com/maps?file=api&amp;amp;v=2&amp;amp;sensor=false&amp;amp;key=ABCDEF"&gt;&lt;/script&gt;</programlisting>
+      <example>
+        <title>Google API inclusion</title>
+
+        <programlisting>&lt;script type="text/javascript"
+				src="http://maps.google.com/maps?file=api&amp;amp;v=2&amp;amp;sensor=false&amp;amp;key=ABCDEF"&gt;&lt;/script&gt;</programlisting>
+      </example>
 
       <para>or</para>
 
-      <programlisting>&lt;script type="text/javascript" src="http://www.google.com/jsapi?key=ABCDEFG"&gt;&lt;/script&gt;
-&lt;script type="text/javascript"&gt;
-    google.load("maps", "2.95");
-&lt;/script&gt;</programlisting>
+      <example>
+        <title>Google API inclusion using Google loader</title>
 
-      <para>Note that you do need to have a Google maps key ("ABCDEF") is used
-      in the example above if you want to deploy your site (it should work
+        <programlisting>&lt;script type="text/javascript" src="http://www.google.com/jsapi?key=ABCDEFG"&gt;&lt;/script&gt;
+				&lt;script type="text/javascript"&gt;
+				google.load("maps", "2.95");
+				&lt;/script&gt;</programlisting>
+      </example>
+
+      <para>Note that you do need to have a Google maps key ("ABCDEF" is used
+      in the example above) if you want to deploy your site (it should work
       without when running your tests on "localhost").</para>
 
       <para>In your layer, you can determine the kind of layer by setting the
@@ -205,93 +135,12 @@ var geomajasConfig={
   <chapter>
     <title>dojo example application</title>
 
-    <para>The dojo-example project shows an example of a full application
-    using the dojo face. The project layout is as follows:</para>
-
-    <table>
-      <title>List of dojo-example projects</title>
-
-      <tgroup cols="2">
-        <tbody>
-          <row>
-            <entry>geomajas-dojo-example-client</entry>
-
-            <entry>javascript module code</entry>
-          </row>
-
-          <row>
-            <entry>geomajas-dojo-example-modules</entry>
-
-            <entry>generates dojo layer script with collected modules</entry>
-          </row>
-
-          <row>
-            <entry>geomajas-dojo-example-modules-shrinksafe</entry>
-
-            <entry>generates compressed version (shrinksafe) of dojo
-            layer</entry>
-          </row>
-
-          <row>
-            <entry>geomajas-dojo-example-modules-war</entry>
-
-            <entry>web application with html and configuration</entry>
-          </row>
-        </tbody>
-      </tgroup>
-    </table>
-
-    <para>As opposed to conventional practice of putting javascipt directly in
-    the war project, our module concept requires you to put this code in a
-    separate jar project. This jar will be added to the web application as a
-    normal library and the javascript files in it will be served from the
-    classpath by the ResourceServlet. The appropriate mapping should of course
-    be added to the web.xml:</para>
-
-    <programlisting>&lt;servlet-mapping&gt;
-  &lt;servlet-name&gt;ResourceServlet&lt;/servlet-name&gt;
-  &lt;url-pattern&gt;/js/*&lt;/url-pattern&gt;
-&lt;/servlet-mapping&gt;</programlisting>
-
-    <para>By structuring javascript code as jar artifacts, our maven dojo
-    plugin is capable of making this code accessible to the browser by
-    importing a single dojo layer script in the web page. If the name of the
-    layer is <emphasis role="bold">example</emphasis>, the import statements
-    are <programlisting>&lt;script type="text/javascript" src="js/dojo/dojo.js" djConfig="parseOnLoad:true, usePlainJson :true"&gt;&lt;/script&gt;
-&lt;script type="text/javascript" src="js/<emphasis role="bold">example</emphasis>/<emphasis
-          role="bold">example</emphasis>.js" geomajasConfig="showLog :false"&gt;&lt;/script&gt;</programlisting></para>
-
-    <para>As you can see, some configuration parameters can be passed as a
-    geomajasConfig attribute in the script tag, exactly like dojo does with
-    djConfig. The above import statements</para>
-
-    <para>The dojo plugin has the following targets:</para>
-
-    <itemizedlist>
-      <listitem>
-        <para><code>collect:</code> generates a dojo layer script with the
-        necessary dojo.require(...) statements to import all the
-        modules</para>
-      </listitem>
-
-      <listitem>
-        <para><code>build:</code> generates a compressed version (shrinksafe)
-        of the dojo layer</para>
-      </listitem>
-    </itemizedlist>
-
-    <para></para>
-  </chapter>
-
-  <chapter>
-    <title>dojo example application</title>
-
     <sect1>
       <title>Project layout</title>
 
       <para>The geomajas-dojo-example project shows an example of a full
-      application using the dojo face. This project is a multimodule project
-      with the following list of subprojects:</para>
+      application using the dojo face. This project is a multi-module project
+      with the following list of sub-projects:</para>
 
       <table>
         <title>List of dojo-example projects</title>
@@ -331,21 +180,29 @@ var geomajasConfig={
       directly in the war project, our module concept requires you to put this
       code in a separate jar project. This jar will be added to the web
       application as a normal java library and the javascript files in it will
-      be served from the classpath by the ResourceServlet. The appropriate
+      be served from the class path by the ResourceServlet. The appropriate
       mapping should of course be added to the web.xml:</para>
 
       <programlisting>&lt;servlet-mapping&gt;
-  &lt;servlet-name&gt;ResourceServlet&lt;/servlet-name&gt;
-  &lt;url-pattern&gt;/js/*&lt;/url-pattern&gt;
-&lt;/servlet-mapping&gt;</programlisting>
+				&lt;servlet-name&gt;ResourceServlet&lt;/servlet-name&gt;
+				&lt;url-pattern&gt;/js/*&lt;/url-pattern&gt;
+				&lt;/servlet-mapping&gt;</programlisting>
 
       <para>By structuring javascript code as jar artifacts, our maven dojo
-      plugin is capable of making this code accessible to the browser by
+      plug-in is capable of making this code accessible to the browser by
       importing a single dojo layer script in the web page. If the name of the
-      layer is <emphasis role="bold">example</emphasis>, the import statements
-      will be: <programlisting>&lt;script type="text/javascript" src="js/dojo/dojo.js" djConfig="parseOnLoad:true, usePlainJson :true"&gt;&lt;/script&gt;
-&lt;script type="text/javascript" src="js/<emphasis role="bold">example</emphasis>/<emphasis
-            role="bold">example</emphasis>.js" geomajasConfig="showLog :false"&gt;&lt;/script&gt;</programlisting></para>
+      layer is<emphasis role="bold">example</emphasis>, the import statements
+      will be:</para>
+
+      <example>
+        <title>Custom built script inclusion</title>
+
+        <programlisting>&lt;script type="text/javascript" src="js/dojo/dojo.js" djConfig="parseOnLoad:true,
+					usePlainJson :true"&gt;&lt;/script&gt;
+					&lt;script type="text/javascript" src="js/<emphasis role="bold">example</emphasis>/<emphasis
+            role="bold">example</emphasis>.js" geomajasConfig="showLog :false"&gt;&lt;/script&gt;
+				</programlisting>
+      </example>
 
       <para>As you can see, some configuration parameters can be passed by
       adding a geomajasConfig attribute to the script tag, exactly like dojo
@@ -355,7 +212,7 @@ var geomajasConfig={
       the dojo custom build facility), the uncompressed version is just a set
       of dojo.require(...) statements, one for each module.</para>
 
-      <para>Our maven dojo plugin has two different configurations, depending
+      <para>Our maven dojo plug-in has two different configurations, depending
       on whether the custom build should be applied or not. The two different
       configurations have been applied in the
       geomajas-dojo-example-modules-shrinksafe and
@@ -368,71 +225,30 @@ var geomajasConfig={
 
       <itemizedlist>
         <listitem>
-          <para>compressed/shrunk build : <code>mvn -P shrink
-          install</code></para>
+          <para>compressed/shrunk build : <code>mvn -P shrink install
+          </code></para>
         </listitem>
 
         <listitem>
           <para>uncompressed build : <code>mvn install</code></para>
         </listitem>
       </itemizedlist>
-
-      <para>The dojo plugin has the following targets:</para>
-
-      <itemizedlist>
-        <listitem>
-          <para><code>collect:</code> generates a dojo layer script with the
-          necessary dojo.require(...) statements to import all the
-          modules</para>
-        </listitem>
-
-        <listitem>
-          <para><code>build:</code> generates a compressed version
-          (shrinksafe) of the dojo layer script</para>
-        </listitem>
-      </itemizedlist>
     </sect1>
 
     <sect1>
-      <title>Maven dojo plugin</title>
+      <title>Maven dojo plug-in</title>
 
-      <para>Our maven dojo plugin is capable of executing a custom dojo build
-      from within maven. this essentially collects and/or compresses (using
+      <para>The maven dojo plug-in is capable of executing a custom dojo build
+      from within maven. This essentially collects and/or compresses (using
       shrinksafe) javascript modules that have been bundled as jar
       artifacts.</para>
 
       <para>A typical configuration looks as follows:</para>
 
-      <programlisting>&lt;plugin&gt;
- &lt;groupId&gt;org.geomajas&lt;/groupId&gt;
- &lt;artifactId&gt;geomajas-maven-dojo&lt;/artifactId&gt;
- &lt;version&gt;1.1&lt;/version&gt;
- &lt;executions&gt;
-  &lt;execution&gt;
-   &lt;goals&gt;
-    &lt;goal&gt;build&lt;/goa
-   &lt;/goals&gt;
-   &lt;configuration&gt;
-    &lt;layerName&gt;example&lt;/layerName&gt;
-    &lt;localeList&gt;en,fr,nl,pt,sp&lt;/localeList&gt;
-    &lt;modules&gt;
-     &lt;module&gt;
-      &lt;groupId&gt;org.geomajas&lt;/groupId&gt;
-      &lt;artifactId&gt;geomajas-dojo-client&lt;/artifactId&gt;
-      &lt;requires&gt;geomajas.geomajas&lt;/requires&gt;
-     &lt;/module&gt;
-     &lt;module&gt;
-      &lt;groupId&gt;org.geomajas&lt;/groupId&gt;
-      &lt;artifactId&gt;geomajas-dojo-example-client&lt;/artifactId&gt;
-      &lt;requires&gt;tutorial.tutorial&lt;/requires&gt;
-     &lt;/module&gt;
-    &lt;/modules&gt;
-   &lt;/configuration&gt;
-  &lt;/execution&gt;
- &lt;/executions&gt;
-&lt;/plugin&gt;</programlisting>
+      <xi:include href="../listing/MavenDojoPluginConfiguration.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-      <para>The plugin has the following goals:</para>
+      <para>The plug-in has the following goals:</para>
 
       <itemizedlist>
         <listitem>
@@ -450,7 +266,7 @@ var geomajasConfig={
       <para>The following parameters can be configured:</para>
 
       <table>
-        <title>Dojo plugin configuration parameters</title>
+        <title>Dojo plug-in configuration parameters</title>
 
         <tgroup cols="3">
           <tbody>
@@ -467,7 +283,8 @@ var geomajasConfig={
 
               <entry>The name of the target layer file (without the .js
               extension). The file is put in its own module directory and has
-              to be imported as follows: <programlisting>&lt;script src="js/&lt;layerName&gt;/&lt;layerName&gt;.js"/&gt;</programlisting></entry>
+              to be imported as follows: <programlisting>&lt;script
+									src="js/&lt;layerName&gt;/&lt;layerName&gt;.js"/&gt;</programlisting></entry>
 
               <entry>modules</entry>
             </row>
@@ -494,7 +311,7 @@ var geomajasConfig={
               <entry>modules</entry>
 
               <entry>A list of module tags, one for each javascript module.
-              Beware:<itemizedlist>
+              Beware: <itemizedlist>
                   <listitem>
                     <para>the modules should be added as jar dependencies
                     first</para>
@@ -505,10 +322,10 @@ var geomajasConfig={
                     <code>provided</code> for a shrink build (this reduces the
                     size of the war)</para>
                   </listitem>
-                </itemizedlist><para>Each module tag should provide a requires
-              parameter. This parameter is the argument of the
+                </itemizedlist> <para>Each module tag should provide a
+              requires parameter. This parameter is the argument of the
               dojo.require(...) statement needed to import the module from
-              dojo.</para></entry>
+              dojo. </para></entry>
 
               <entry>empty list</entry>
             </row>
@@ -516,7 +333,7 @@ var geomajasConfig={
         </tgroup>
       </table>
 
-      <para>The output of the plugin consists of generated javascript files.
+      <para>The output of the plug-in consists of generated javascript files.
       The precise output is dependent on the goal. If the goal is
       <code>collect</code>, it is just a single layer file. If the goal is
       <code>build</code>, it is the complete contents of the release directory

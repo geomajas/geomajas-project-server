@@ -82,7 +82,7 @@
 
           <listitem>
             <para>InternalTile changes (should not affect anybody as these are
-            used internally in the backend).</para>
+            used internally in the back-end).</para>
           </listitem>
 
           <listitem>
@@ -273,7 +273,7 @@
 
           <listitem>
             <para>Introduction of a DtoConverterService that is able to
-            convert DTO objects from and to backend internal
+            convert DTO objects from and to back-end internal
             representations.</para>
           </listitem>
 
@@ -292,7 +292,7 @@
             layers and <code>org.geomajas.layer.tile.RasterTile</code> - used
             in raster layers. The third is the
             <code>org.geomajas.tile.InternalTile</code>. This tile is used
-            internally on the backend.</para>
+            internally on the back-end.</para>
           </listitem>
 
           <listitem>
@@ -310,33 +310,33 @@
       <section>
         <title>Configuration changes</title>
 
-        <para>The configuration API has been split up in a backend part and a
+        <para>The configuration API has been split up in a back-end part and a
         client (or faces) part. The following general rules have been kept in
         mind:</para>
 
         <para><itemizedlist>
             <listitem>
-              <para>Backend configuration should be restricted to those
-              properties that are functionally needed on the backend. We
-              essentially regard the backend as a container of layers or, in
+              <para>Back-end configuration should be restricted to those
+              properties that are functionally needed on the back-end. We
+              essentially regard the back-end as a container of layers or, in
               WFS terms, feature types. Higher level concepts like map or
               application should be dealt with at the client (or faces)
               level.</para>
             </listitem>
 
             <listitem>
-              <para>Client configuration should not impact the backend state.
+              <para>Client configuration should not impact the bac-kend state.
               In the near future, this will make it possible to reconfigure
               clients without restarting the server.</para>
             </listitem>
           </itemizedlist>The configuration API has profoundly changed. Where
-        possible, the backend classes have retained their original (before the
+        possible, the back-end classes have retained their original (before the
         split) names, after pruning them to remove all client related
         information. The client classes have been mostly created from scratch
         and have been named <code>ClientXxxInfo.java</code> for consistency.
         They have been located in a separate package, called
         <code>org.geomajas.configuration.client.</code>The following table
-        gives a top-down overview of the backend configuration classes (new
+        gives a top-down overview of the back-end configuration classes (new
         classes and properties have been marked in <emphasis
         role="bold">bold</emphasis>):</para>
 
@@ -521,7 +521,7 @@
 
         <para>The client or face classes are largely new and have been
         relocated to the <code>org.geomajas.configuration.client</code>
-        package. The following table gives a top-down overview of the backend
+        package. The following table gives a top-down overview of the back-end
         configuration classes (new classes and properties have been marked in
         <emphasis role="bold">bold</emphasis>):</para>
 
@@ -588,7 +588,7 @@
 
                 <entry>layerInfo</entry>
 
-                <entry>reference to backend LayerInfo</entry>
+                <entry>reference to back-end LayerInfo</entry>
               </row>
 
               <row>
@@ -596,7 +596,7 @@
 
                 <entry>maxExtent</entry>
 
-                <entry>transformed extent from backend</entry>
+                <entry>transformed extent from back-end</entry>
               </row>
 
               <row>
@@ -614,7 +614,7 @@
                 <entry><emphasis role="bold">namedStyleInfo</emphasis></entry>
 
                 <entry>The style to apply on the layer. Should be a reference
-                to one of the backend layer's predefined styles (see
+                to one of the back-end layer's predefined styles (see
                 VectorLayerInfo).</entry>
               </row>
 
@@ -631,7 +631,7 @@
 
                 <entry><emphasis role="bold">featureInfo</emphasis></entry>
 
-                <entry>optional replacement of the backend layer's
+                <entry>optional replacement of the back-end layer's
                 FeatureInfo. If present, it is used instead.</entry>
               </row>
 

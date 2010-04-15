@@ -153,7 +153,7 @@
       <code>org.geomajas.configuration</code> package and have a class name
       ending in "Info". These classes are actually used to represent the DTO
       part of the back-end layers, thereby allowing to transfer information or
-      meta-data of these layers to the client.</para>
+      metadata of these layers to the client.</para>
 
       <para>Before we explain the back-end configuration, we will shortly
       memorize some basics of the Spring configuration files. For a full

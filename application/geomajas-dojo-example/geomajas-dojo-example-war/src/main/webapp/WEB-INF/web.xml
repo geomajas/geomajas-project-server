@@ -1,9 +1,10 @@
+<!-- @extract-start WebXmlDojoPart1, Context listener and configuration locations -->
 <!DOCTYPE web-app PUBLIC
 		"-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
 		"http://java.sun.com/dtd/web-app_2_3.dtd" >
 <web-app>
 	<display-name>Geomajas dojo face example application</display-name>
-	<!-- @extract-start WebXmlSpringConfiguration, Defining spring configuration locations in web.xml -->
+
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
@@ -26,8 +27,9 @@
 	<listener>
  		<listener-class>org.geomajas.servlet.GeomajasContextListener</listener-class>
 	</listener>
-	<!-- @extract-end -->
+<!-- @extract-end -->
 
+<!-- @extract-start WebXmlDojoPart2, Servlet definitions -->
 	<servlet>
 		<servlet-name>PdfServlet</servlet-name>
 		<servlet-class>org.geomajas.extension.printing.PdfServlet</servlet-class>
@@ -55,7 +57,9 @@
         -->
 		<load-on-startup>3</load-on-startup>
 	</servlet>
+<!-- @extract-end -->
 
+<!-- @extract-start WebXmlDojoPart2, Servlet mappings -->
 	<servlet-mapping>
 		<servlet-name>PdfServlet</servlet-name>
 		<url-pattern>*.pdf</url-pattern>
@@ -69,3 +73,4 @@
 		<url-pattern>/js/*</url-pattern>
 	</servlet-mapping>
 </web-app>
+<!-- @extract-end -->

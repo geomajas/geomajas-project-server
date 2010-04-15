@@ -24,6 +24,7 @@
 
 // these constants should be set by the maven profile !!!
 
+// @extract-start GeomajasConstantsJs, Define constants in external file
 var djConfig={
 	isDebug: false,
 	parseOnLoad: true,
@@ -39,3 +40,4 @@ var geomajasConfig={
 	lazyFeatureIncludesSelect: 15, // attributes + geometry + style + label (see GeomajasConstant)
 	lazyFeatureIncludesAll: 15 // attributes + geometry + style + label (see GeomajasConstant)
 };
+// @extract-end

@@ -50,7 +50,7 @@
       <para>Geomajas uses subversion as its version control system. Accessing
       subversion requires you to at least install a compatible client. There
       are numerous client solutions available, some as standalone clients and
-      some as IDE plugins:</para>
+      some as IDE plug-ins:</para>
 
       <itemizedlist>
         <listitem>
@@ -59,7 +59,7 @@
         </listitem>
 
         <listitem>
-          <para>Subversive: Eclipse plugin, can be found on the following
+          <para>Subversive: Eclipse plug-in, can be found on the following
           Eclipse update site ( <ulink
           url="http://download.eclipse.org/releases/galileo">
           http://download.eclipse.org/releases/galileo </ulink> &gt;
@@ -67,14 +67,14 @@
         </listitem>
 
         <listitem>
-          <para>Subclipse: Eclipse plugin, can be found on the following
+          <para>Subclipse: Eclipse plug-in, can be found on the following
           Eclipse update site (<ulink
           url="http://subclipse.tigris.org/update_1.6.x">
           http://subclipse.tigris.org/update_1.6.x</ulink>)</para>
         </listitem>
 
         <listitem>
-          <para>IDEA SVN plugin (part of the default IDEA installation)</para>
+          <para>IDEA SVN plug-in (part of the default IDEA installation)</para>
         </listitem>
       </itemizedlist>
 
@@ -140,7 +140,7 @@
     <title>Eclipse</title>
 
     <para>Eclipse project configurations can be generated using the maven
-    Eclipse plugin. This requires you to run the following command:</para>
+    Eclipse plug-in. This requires you to run the following command:</para>
 
     <para><prompt>geomajas-trunk&gt;</prompt> <command>mvn eclipse:eclipse
     </command></para>
@@ -150,12 +150,12 @@
     projects can now be imported into Eclipse.</para>
 
     <para>If you will be working with the GWT face, you may want to make use
-    of the GWT Eclipse plugin of Google. Detailed instructions can be found on
+    of the GWT Eclipse plug-in of Google. Detailed instructions can be found on
     the following site:<ulink
     url="http://code.google.com/eclipse/docs/download.html">
     http://code.google.com/eclipse/docs/download.html</ulink>. We have
     experienced a problem with the project dependencies in Eclipse, which can
-    be solved by running the gwt:eclipse goal of the GWT maven plugin. This
+    be solved by running the gwt:eclipse goal of the GWT maven plug-in. This
     goal should be run the GWT project directory: geomajas-gwt-simple or
     geomajas-gwt-example (currently in development).</para>
 
