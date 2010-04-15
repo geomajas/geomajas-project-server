@@ -217,6 +217,13 @@
 					<name>hudson</name>
 				</property>
 			</activation>
+			<modules>
+				<module>style</module>
+				<module>xslt</module>
+				<module>devuserguide</module>
+				<module>enduserguide</module>
+				<module>contributorguide</module>
+			</modules>
 			<build>
 				<plugins>
 					<plugin>
