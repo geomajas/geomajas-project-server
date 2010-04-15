@@ -19,7 +19,7 @@
 	<!-- We need to override the imported html/chunk.xsl from eclipse/eclipse.xsl to generate valid XHTML -->
 	<xsl:import href="http://docbook.sourceforge.net/release/xsl/1.72.0/xhtml/chunk.xsl"/>
 
-	<xsl:include href="redhat.xsl"/>
+	<xsl:include href="geosparc.xsl"/>
 	<xsl:include href="xhtml-common.xsl"/>
 
 	<!-- This is needed to generate the correct xhtml-strict DOCTYPE on the front page -->

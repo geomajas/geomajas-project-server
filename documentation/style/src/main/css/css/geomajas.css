@@ -10,7 +10,7 @@ body {
 	font-family: 'Lucida Grande', Geneva, Verdana, Arial, sans-serif;
 	font-size: 12px;
 	max-width: 55em;
-	padding: 0em 2em;
+	padding: 0 2em;
 	color: #333;
 	line-height: 150%;
 }
@@ -33,7 +33,7 @@ div.longdesc-link {
 h1, h2, h3, h4, h5, h6 {
 	color: #4a5d75;
 	line-height: 130%;
-	margin-top: 0em;
+	margin-top: 0;
 	font-family: 'Lucida Grande', Geneva, Verdana, Arial, sans-serif;
 	background-color: transparent;
 }
@@ -55,14 +55,14 @@ h2 {
 
 h3 {
 	font-size: 1.3em;
-	padding-top: 0em;
-	padding-bottom: 0em;
+	padding-top: 0;
+	padding-bottom: 0;
 }
 
 h4 {
 	font-size: 1.1em;
-	padding-top: 0em;
-	padding-bottom: 0em;
+	padding-top: 0;
+	padding-bottom: 0;
 }
 
 h5.formalpara {

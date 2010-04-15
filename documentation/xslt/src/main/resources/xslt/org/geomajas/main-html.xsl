@@ -19,7 +19,7 @@
 	<xsl:include href="http://docbook.sourceforge.net/release/xsl/1.72.0/xhtml/chunk-code.xsl"/>
 	<xsl:include href="http://docbook.sourceforge.net/release/xsl/1.72.0/xhtml/manifest.xsl"/>
 
-	<xsl:include href="redhat.xsl"/>
+	<xsl:include href="geosparc.xsl"/>
 	<xsl:include href="xhtml-common.xsl"/>
 	<xsl:param name="confidential" select="0"/>
 
@@ -96,10 +96,10 @@
 								<xsl:text>http://www.geomajas.org</xsl:text>
 							</xsl:attribute>
 							<xsl:attribute name="class">
-								<xsl:text>jbossOrg_href</xsl:text>
+								<xsl:text>geomajas_href</xsl:text>
 							</xsl:attribute>
 							<strong>
-								JBoss.org
+								Geomajas
 							</strong>
 						</a>
 						<a>

@@ -21,7 +21,7 @@
 
 	<xsl:import href="http://docbook.sourceforge.net/release/xsl/1.72.0/fo/docbook.xsl"/>
 	<xsl:import href="http://docbook.sourceforge.net/release/xsl/1.72.0/fo/graphics.xsl"/>
-	<xsl:import href="redhat.xsl"/>
+	<xsl:import href="geosparc.xsl"/>
 	<xsl:param name="alignment">left</xsl:param>
 	<xsl:param name="use.extensions" select="0"/>
 	<xsl:param name="tablecolumns.extensions" select="0"/>

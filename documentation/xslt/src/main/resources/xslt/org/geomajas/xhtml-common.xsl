@@ -25,7 +25,7 @@
 	<xsl:param name="chunker.output.encoding" select="'UTF-8'"/>
 	<xsl:param name="chunker.output.indent" select="'yes'"/>
 
-	<xsl:param name="html.stylesheet" select="'css/jbossorg.css'"/>
+	<xsl:param name="html.stylesheet" select="'css/geomajas.css'"/>
 	<xsl:param name="html.stylesheet.type" select="'text/css'"/>
 	<xsl:param name="html.cleanup" select="1"/>
 	<xsl:param name="html.ext" select="'.html'"/>

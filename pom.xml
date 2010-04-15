@@ -44,9 +44,6 @@
 					<name>hudson</name>
 				</property>
 			</activation>
-			<modules>
-				<module>documentation</module>
-			</modules>
 		</profile>
 	</profiles>
 
