@@ -232,7 +232,7 @@
 						<executions>
 							<execution>
 								<id>gen-docbook</id>
-								<phase>pre-site</phase>
+								<phase>install</phase>
 								<configuration>
 									<tasks>
 										<condition property="maven.exec" value="mvn">
