@@ -116,7 +116,8 @@ public class ExtractSourcePlugin extends AbstractMojo {
 		String startAnnotation = START_XML_ANNOTATION;
 		String endAnnotation = END_XML_ANNOTATION;
 
-		if (file.getName().toLowerCase().endsWith(".java")) {
+		String fileNameLower = file.getName().toLowerCase();
+		if (fileNameLower.endsWith(".java") || fileNameLower.endsWith(".js")) {
 			startAnnotation = START_JAVA_ANNOTATION;
 			endAnnotation = END_JAVA_ANNOTATION;
 		}
