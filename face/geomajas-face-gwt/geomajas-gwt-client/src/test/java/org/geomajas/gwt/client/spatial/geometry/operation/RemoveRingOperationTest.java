@@ -23,11 +23,11 @@
 
 package org.geomajas.gwt.client.spatial.geometry.operation;
 
-import com.vividsolutions.jts.util.Assert;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.spatial.geometry.GeometryFactory;
 import org.geomajas.gwt.client.spatial.geometry.LinearRing;
 import org.geomajas.gwt.client.spatial.geometry.Polygon;
+import org.junit.Assert;
 import org.junit.Test;
 
 /**
@@ -37,9 +37,11 @@ import org.junit.Test;
  */
 public class RemoveRingOperationTest {
 
-	private final static int SRID = 4326;
+	private static final int SRID = 4326;
 
-	private final static int PRECISION = -1;
+	private static final double TOLERANCE = .000001;
+
+	private static final int PRECISION = -1;
 
 	private Polygon polygon;
 
@@ -75,15 +77,15 @@ public class RemoveRingOperationTest {
 	public void testLineStringBigIndex() {
 		GeometryOperation op = new RemoveRingOperation(polygon.getNumInteriorRing());
 		Polygon result = (Polygon) op.execute(polygon);
-		Assert.equals(polygon.getNumInteriorRing() - 1, result.getNumInteriorRing());
-		Assert.equals(12.0, result.getInteriorRingN(0).getCoordinate().getX());
+		Assert.assertEquals(polygon.getNumInteriorRing() - 1, result.getNumInteriorRing());
+		Assert.assertEquals(12.0, result.getInteriorRingN(0).getCoordinate().getX(), TOLERANCE);
 	}
 
 	@Test
 	public void testLineStringMiddleIndex() {
 		GeometryOperation op = new RemoveRingOperation(1);
 		Polygon result = (Polygon) op.execute(polygon);
-		Assert.equals(polygon.getNumInteriorRing() - 1, result.getNumInteriorRing());
-		Assert.equals(12.0, result.getInteriorRingN(0).getCoordinate().getX());
+		Assert.assertEquals(polygon.getNumInteriorRing() - 1, result.getNumInteriorRing());
+		Assert.assertEquals(12.0, result.getInteriorRingN(0).getCoordinate().getX(), TOLERANCE);
 	}
 }
