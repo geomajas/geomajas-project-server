@@ -217,13 +217,6 @@
 					<name>hudson</name>
 				</property>
 			</activation>
-			<modules>
-				<module>style</module>
-				<module>xslt</module>
-				<module>devuserguide</module>
-				<module>enduserguide</module>
-				<module>contributorguide</module>
-			</modules>
 			<build>
 				<plugins>
 					<plugin>
@@ -241,6 +234,10 @@
 										<condition property="maven.exec" value="mvn.bat">
 											<os family="windows"/>
 										</condition>
+										<exec dir="${basedir}" executable="${maven.exec}"
+											  failonerror="true">
+											<arg line="clean install"/>
+										</exec>
 										<exec dir="${basedir}" executable="${maven.exec}"
 											  failonerror="true">
 											<arg line="-Psite site-deploy"/>
