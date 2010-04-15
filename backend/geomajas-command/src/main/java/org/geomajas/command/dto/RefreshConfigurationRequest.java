@@ -23,13 +23,11 @@
 package org.geomajas.command.dto;
 
 import org.geomajas.command.CommandRequest;
-import org.geomajas.command.configuration.RefreshConfigurationCommand;
 
 /**
- * Request object for {@link RefreshConfigurationCommand}.
+ * Request object for {@link org.geomajas.command.configuration.RefreshConfigurationCommand}.
  * 
  * @author Jan De Moerloose
- * 
  */
 public class RefreshConfigurationRequest implements CommandRequest {
 

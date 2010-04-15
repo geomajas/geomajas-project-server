@@ -23,10 +23,9 @@
 package org.geomajas.command.dto;
 
 import org.geomajas.command.CommandResponse;
-import org.geomajas.command.configuration.RefreshConfigurationCommand;
 
 /**
- * Response object for {@link RefreshConfigurationCommand}.
+ * Response object for {@link org.geomajas.command.configuration.RefreshConfigurationCommand}.
  * 
  * @author Jan De Moerloose
  * 

@@ -43,7 +43,6 @@ import org.springframework.stereotype.Component;
  * This commands forces a complete reload of the configuration based on the provided list of configuration locations.
  * 
  * @author Jan De Moerloose
- * 
  */
 @Component
 public class RefreshConfigurationCommand implements Command<RefreshConfigurationRequest, RefreshConfigurationResponse> {
