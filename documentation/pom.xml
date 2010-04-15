@@ -157,7 +157,7 @@
 					</execution>
 					<execution>
 						<id>copy-docbook</id>
-						<phase>pre-site</phase>
+						<phase>post-site</phase>
 						<configuration>
 							<tasks>
 								<copy todir="${basedir}/target/site/devuserguide">
