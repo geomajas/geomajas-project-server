@@ -23,6 +23,7 @@
 
 package org.geomajas.gwt.client;
 
+import com.google.gwt.i18n.client.LocaleInfo;
 import org.geomajas.global.Api;
 
 import java.util.HashMap;
@@ -52,8 +53,10 @@ public final class Geomajas {
 	 */
 	public static Map<String, String> getSupportedLocales() {
 		Map<String, String> locales = new HashMap<String, String>();
-		locales.put("default", "English");
-		locales.put("nl", "Nederlands");
+		for (String localeName : LocaleInfo.getAvailableLocaleNames()) {
+			String displayName = LocaleInfo.getLocaleNativeDisplayName(localeName);
+			locales.put(localeName, displayName);
+		}
 		return locales;
 	}
 

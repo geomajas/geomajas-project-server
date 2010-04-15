@@ -58,9 +58,10 @@ public class LocaleSelect extends Canvas implements ChangedHandler {
 	// Constructors:
 	// -------------------------------------------------------------------------
 
-	public LocaleSelect() {
+	public LocaleSelect(String defaultLocaleLabel) {
 		super();
 		locales = Geomajas.getSupportedLocales();
+		locales.put("default", defaultLocaleLabel);
 		setHeight(28);
 		setWidth(200);
 

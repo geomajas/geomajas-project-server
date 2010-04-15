@@ -69,8 +69,8 @@ public class RemoveRingOperationTest {
 	public void testLineStringZeroIndex() {
 		GeometryOperation op = new RemoveRingOperation(0);
 		Polygon result = (Polygon) op.execute(polygon);
-		Assert.equals(polygon.getNumInteriorRing() - 1, result.getNumInteriorRing());
-		Assert.equals(16.0, result.getInteriorRingN(0).getCoordinate().getX());
+		Assert.assertEquals(polygon.getNumInteriorRing() - 1, result.getNumInteriorRing());
+		Assert.assertEquals(16.0, result.getInteriorRingN(0).getCoordinate().getX(), TOLERANCE);
 	}
 
 	@Test

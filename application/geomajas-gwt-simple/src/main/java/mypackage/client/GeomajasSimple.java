@@ -103,7 +103,7 @@ public class GeomajasSimple implements EntryPoint {
 		title.setWidth(300);
 		topBar.addMember(title);
 		topBar.addFill();
-		topBar.addMember(new LocaleSelect());
+		topBar.addMember(new LocaleSelect("English"));
 
 		mainLayout.addMember(topBar);
 
