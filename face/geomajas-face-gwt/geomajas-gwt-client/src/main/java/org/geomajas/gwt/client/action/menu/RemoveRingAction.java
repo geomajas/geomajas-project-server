@@ -56,7 +56,7 @@ public class RemoveRingAction extends MenuAction implements MenuItemIfFunction {
 	 *            The map on which editing is going on.
 	 */
 	public RemoveRingAction(MapWidget mapWidget) {
-		super(I18nProvider.getMenu().removeRing(), "[ISOMORPHIC]/geomajas/ring-delete.png");
+		super(I18nProvider.getMenu().removeRing(), "[ISOMORPHIC]/geomajas/osgeo/ring-delete.png");
 		this.mapWidget = mapWidget;
 		setEnableIfCondition(this);
 	}

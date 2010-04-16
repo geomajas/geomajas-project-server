@@ -39,7 +39,7 @@ public class ZoomNextAction extends ToolbarAction {
 	private ZoomQueue zoomQueue;
 
 	public ZoomNextAction(MapWidget mapWidget) {
-		super("[ISOMORPHIC]/geomajas/zoom-next.png", I18nProvider.getToolbar().zoomNext());
+		super("[ISOMORPHIC]/geomajas/osgeo/zoom-next.png", I18nProvider.getToolbar().zoomNext());
 		zoomQueue = ZoomQueue.getZoomQueue(mapWidget);
 		zoomQueue.setZoomNextAction(this);
 		setDisabled(true);

@@ -53,7 +53,7 @@ import com.smartgwt.client.widgets.events.ResizedHandler;
 @Api
 public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 	
-	private static final String TARGET_RETICLE_IMAGE = "geomajas/target.gif";
+	private static final String TARGET_RETICLE_IMAGE = "geomajas/widget/target.gif";
 
 	/** Reference to the main map, that this overview map is to follow. */
 	private MapWidget targetMap;

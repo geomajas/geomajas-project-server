@@ -42,7 +42,7 @@ public class ZoomOutAction extends ToolbarAction implements ConfigurableAction {
 	private double zoomFactor = 0.5;
 
 	public ZoomOutAction(MapWidget mapWidget) {
-		super("[ISOMORPHIC]/geomajas/zoom-out.png", I18nProvider.getToolbar().zoomOut());
+		super("[ISOMORPHIC]/geomajas/osgeo/zoom-out.png", I18nProvider.getToolbar().zoomOut());
 		this.mapWidget = mapWidget;
 	}
 

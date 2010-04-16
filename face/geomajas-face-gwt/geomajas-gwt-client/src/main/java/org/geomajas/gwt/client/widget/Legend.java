@@ -165,7 +165,7 @@ public class Legend extends Canvas {
 					lineCount++;
 
 					graphics.drawImage(parentGroup, "style" + lineCount, Geomajas.getIsomorphicDir()
-							+ "geomajas/layer-raster.png", new Bbox(10, y, 16, 16), new PictureStyle(1));
+							+ "geomajas/osgeo/layer-raster.png", new Bbox(10, y, 16, 16), new PictureStyle(1));
 					Coordinate textPosition = new Coordinate(30, y - 2);
 					graphics.drawText(parentGroup, "text" + lineCount, layer.getLabel(), textPosition, fontStyle);
 					y += 20;

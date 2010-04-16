@@ -313,7 +313,7 @@ public class FeatureAttributeWindow extends Window {
 	private class EditButton extends IButton implements com.smartgwt.client.widgets.events.ClickHandler {
 
 		public EditButton() {
-			setIcon("[ISOMORPHIC]/geomajas/edit.png");
+			setIcon("[ISOMORPHIC]/geomajas/osgeo/edit.png");
 			setShowDisabledIcon(false);
 			setTitle(I18nProvider.getAttribute().btnEditTitle());
 			setTooltip(I18nProvider.getAttribute().btnEditTooltip());
@@ -342,7 +342,7 @@ public class FeatureAttributeWindow extends Window {
 	private class ZoomButton extends IButton implements com.smartgwt.client.widgets.events.ClickHandler {
 
 		public ZoomButton() {
-			setIcon("[ISOMORPHIC]/geomajas/zoom-selection.png");
+			setIcon("[ISOMORPHIC]/geomajas/osgeo/zoom-selection.png");
 			setShowDisabledIcon(false);
 			setTitle(I18nProvider.getAttribute().btnZoomFeature());
 			setTooltip(I18nProvider.getAttribute().btnZoomTooltip());
@@ -364,7 +364,7 @@ public class FeatureAttributeWindow extends Window {
 	private class SaveButton extends IButton implements com.smartgwt.client.widgets.events.ClickHandler {
 
 		public SaveButton() {
-			setIcon("[ISOMORPHIC]/geomajas/save1.png");
+			setIcon("[ISOMORPHIC]/geomajas/osgeo/save1.png");
 			setShowDisabledIcon(false);
 			setTitle(I18nProvider.getAttribute().btnSaveTitle());
 			setTooltip(I18nProvider.getAttribute().btnSaveTooltip());
@@ -399,7 +399,7 @@ public class FeatureAttributeWindow extends Window {
 	private class ResetButton extends IButton implements com.smartgwt.client.widgets.events.ClickHandler {
 
 		public ResetButton() {
-			setIcon("[ISOMORPHIC]/geomajas/undo.png");
+			setIcon("[ISOMORPHIC]/geomajas/osgeo/undo.png");
 			setShowDisabledIcon(false);
 			setTitle(I18nProvider.getAttribute().btnResetTitle());
 			setTooltip(I18nProvider.getAttribute().btnResetTooltip());
@@ -419,7 +419,7 @@ public class FeatureAttributeWindow extends Window {
 	private class CancelButton extends IButton implements com.smartgwt.client.widgets.events.ClickHandler {
 
 		public CancelButton() {
-			setIcon("[ISOMORPHIC]/geomajas/quit.png");
+			setIcon("[ISOMORPHIC]/geomajas/osgeo/quit.png");
 			setShowDisabledIcon(false);
 			setTitle(I18nProvider.getAttribute().btnCancelTitle());
 			setTooltip(I18nProvider.getAttribute().btnCancelTooltip());

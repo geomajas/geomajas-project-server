@@ -50,7 +50,7 @@ public class IntroductionTab extends SamplePanel {
 		layout.setWidth100();
 		layout.setHeight100();
 
-		Img logo = new Img("[ISOMORPHIC]/geomajas/temp/geomajas_logo.png");
+		Img logo = new Img("[ISOMORPHIC]/geomajas/geomajas_logo.png");
 		logo.setWidth(600);
 		logo.setHeight(220);
 		logo.setMargin(30);

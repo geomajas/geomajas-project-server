@@ -48,7 +48,7 @@ public class PanToSelectionAction extends ToolbarAction {
 	private MapWidget mapWidget;
 
 	public PanToSelectionAction(MapWidget mapWidget) {
-		super("[ISOMORPHIC]/geomajas/pan_to_selection.png", I18nProvider.getToolbar().panToSelection());
+		super("[ISOMORPHIC]/geomajas/osgeo/pan_to_selection.png", I18nProvider.getToolbar().panToSelection());
 		this.mapWidget = mapWidget;
 	}
 

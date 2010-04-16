@@ -56,7 +56,7 @@ public class RemovePointAction extends MenuAction implements MenuItemIfFunction 
 	 *            The map on which editing is going on.
 	 */
 	public RemovePointAction(MapWidget mapWidget) {
-		super(I18nProvider.getMenu().removePoint(), "[ISOMORPHIC]/geomajas/vertex-delete.png");
+		super(I18nProvider.getMenu().removePoint(), "[ISOMORPHIC]/geomajas/osgeo/vertex-delete.png");
 		this.mapWidget = mapWidget;
 		setEnableIfCondition(this);
 	}

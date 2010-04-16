@@ -51,24 +51,16 @@ public class PanButton extends MapAddon {
 	 * @author Pieter De Graef
 	 */
 	public enum PanButtonDirection {
-		NORTH, NORTHEAST, EAST, SOUTHEAST, SOUTH, SOUTHWEST, WEST, NORTHWEST
+		NORTH, EAST, SOUTH, WEST
 	}
 
-	private String northImage = Geomajas.getIsomorphicDir() + "geomajas/nav_up.gif";
+	private String northImage = Geomajas.getIsomorphicDir() + "geomajas/mapaddon/pan_up.gif";
 
-	private String northEastImage = Geomajas.getIsomorphicDir() + "geomajas/nav_up_right.gif";
+	private String eastImage = Geomajas.getIsomorphicDir() + "geomajas/mapaddon/pan_right.gif";
 
-	private String eastImage = Geomajas.getIsomorphicDir() + "geomajas/nav_right.gif";
+	private String southImage = Geomajas.getIsomorphicDir() + "geomajas/mapaddon/pan_down.gif";
 
-	private String southEastImage = Geomajas.getIsomorphicDir() + "geomajas/nav_down_right.gif";
-
-	private String southImage = Geomajas.getIsomorphicDir() + "geomajas/nav_down.gif";
-
-	private String southWestImage = Geomajas.getIsomorphicDir() + "geomajas/nav_down_left.gif";
-
-	private String westImage = Geomajas.getIsomorphicDir() + "geomajas/nav_left.gif";
-
-	private String northWestImage = Geomajas.getIsomorphicDir() + "geomajas/nav_up_left.gif";
+	private String westImage = Geomajas.getIsomorphicDir() + "geomajas/mapaddon/pan_left.gif";
 
 	private PanButtonDirection direction;
 
@@ -122,8 +114,8 @@ public class PanButton extends MapAddon {
 			map.getVectorContext().drawImage(parent, getId(), image.getHref(), image.getBounds(),
 					(PictureStyle) image.getStyle());
 		} else {
-			map.getVectorContext().drawImage(group, getId(), image.getHref(),
-					image.getBounds(), (PictureStyle) image.getStyle());
+			map.getVectorContext().drawImage(group, getId(), image.getHref(), image.getBounds(),
+					(PictureStyle) image.getStyle());
 		}
 	}
 
@@ -191,30 +183,12 @@ public class PanButton extends MapAddon {
 		applyDirection();
 	}
 
-	public String getNorthEastImage() {
-		return northEastImage;
-	}
-
-	public void setNorthEastImage(String northEastImage) {
-		this.northEastImage = northEastImage;
-		applyDirection();
-	}
-
 	public String getEastImage() {
 		return eastImage;
 	}
 
 	public void setEastImage(String eastImage) {
 		this.eastImage = eastImage;
-		applyDirection();
-	}
-
-	public String getSouthEastImage() {
-		return southEastImage;
-	}
-
-	public void setSouthEastImage(String southEastImage) {
-		this.southEastImage = southEastImage;
 		applyDirection();
 	}
 
@@ -227,30 +201,12 @@ public class PanButton extends MapAddon {
 		applyDirection();
 	}
 
-	public String getSouthWestImage() {
-		return southWestImage;
-	}
-
-	public void setSouthWestImage(String southWestImage) {
-		this.southWestImage = southWestImage;
-		applyDirection();
-	}
-
 	public String getWestImage() {
 		return westImage;
 	}
 
 	public void setWestImage(String westImage) {
 		this.westImage = westImage;
-		applyDirection();
-	}
-
-	public String getNorthWestImage() {
-		return northWestImage;
-	}
-
-	public void setNorthWestImage(String northWestImage) {
-		this.northWestImage = northWestImage;
 		applyDirection();
 	}
 
@@ -265,33 +221,17 @@ public class PanButton extends MapAddon {
 				panVector = new Coordinate(0, 1);
 				imgUrl = northImage;
 				break;
-			case NORTHEAST:
-				panVector = new Coordinate(1, 1);
-				imgUrl = northEastImage;
-				break;
 			case EAST:
 				panVector = new Coordinate(1, 0);
 				imgUrl = eastImage;
-				break;
-			case SOUTHEAST:
-				panVector = new Coordinate(1, -1);
-				imgUrl = southEastImage;
 				break;
 			case SOUTH:
 				panVector = new Coordinate(0, -1);
 				imgUrl = southImage;
 				break;
-			case SOUTHWEST:
-				panVector = new Coordinate(-1, -1);
-				imgUrl = southWestImage;
-				break;
 			case WEST:
 				panVector = new Coordinate(-1, 0);
 				imgUrl = westImage;
-				break;
-			case NORTHWEST:
-				panVector = new Coordinate(-1, 1);
-				imgUrl = northWestImage;
 				break;
 		}
 		controller = new PanArrowController(map, panVector);

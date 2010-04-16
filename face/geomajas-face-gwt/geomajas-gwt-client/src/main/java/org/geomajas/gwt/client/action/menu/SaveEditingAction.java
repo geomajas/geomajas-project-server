@@ -83,7 +83,7 @@ public class SaveEditingAction extends MenuAction {
 	 *            The <code>MapModel</code> on which editing is in progress.
 	 */
 	public SaveEditingAction(MapModel mapModel) {
-		super(I18nProvider.getMenu().saveEditing(), "[ISOMORPHIC]/geomajas/save.png");
+		super(I18nProvider.getMenu().saveEditing(), "[ISOMORPHIC]/geomajas/osgeo/save.png");
 		this.mapModel = mapModel;
 	}
 

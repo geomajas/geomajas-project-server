@@ -45,7 +45,7 @@ public class FeatureInfoModalAction extends ToolbarModalAction {
 	// Constructor:
 
 	public FeatureInfoModalAction(MapWidget mapWidget) {
-		super("[ISOMORPHIC]/geomajas/info.png", I18nProvider.getToolbar().featureInfo());
+		super("[ISOMORPHIC]/geomajas/osgeo/info.png", I18nProvider.getToolbar().featureInfo());
 		this.mapWidget = mapWidget;
 		controller = new FeatureInfoController(mapWidget, pixelTolerance);
 	}

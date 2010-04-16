@@ -54,7 +54,7 @@ public class CancelEditingAction extends MenuAction {
 	 *            The current parent editing controller active on the map.
 	 */
 	public CancelEditingAction(MapWidget mapWidget, ParentEditController controller) {
-		super(I18nProvider.getMenu().cancelEditing(), "[ISOMORPHIC]/geomajas/quit.png");
+		super(I18nProvider.getMenu().cancelEditing(), "[ISOMORPHIC]/geomajas/osgeo/quit.png");
 		this.mapWidget = mapWidget;
 		this.controller = controller;
 	}

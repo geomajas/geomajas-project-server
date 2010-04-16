@@ -96,7 +96,7 @@ public class GeomajasEntryPoint implements EntryPoint {
 		topBar.setWidth100();
 		topBar.addSpacer(6);
 
-		Img icon = new Img("[ISOMORPHIC]/geomajas/temp/geomajas_desktopicoon_small.png");
+		Img icon = new Img("[ISOMORPHIC]/geomajas/geomajas_desktopicon_small.png");
 		icon.setSize(24);
 		topBar.addMember(icon);
 		topBar.addSpacer(6);

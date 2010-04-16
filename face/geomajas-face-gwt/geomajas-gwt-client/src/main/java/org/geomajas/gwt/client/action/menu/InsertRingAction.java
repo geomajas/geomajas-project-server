@@ -71,7 +71,7 @@ public class InsertRingAction extends MenuAction implements MenuItemIfFunction {
 	 *            The current parent editing controller active on the map.
 	 */
 	public InsertRingAction(MapWidget mapWidget, ParentEditController controller) {
-		super(I18nProvider.getMenu().insertRing(), "[ISOMORPHIC]/geomajas/ring-add.png");
+		super(I18nProvider.getMenu().insertRing(), "[ISOMORPHIC]/geomajas/osgeo/ring-add.png");
 		this.mapWidget = mapWidget;
 		this.controller = controller;
 		setEnableIfCondition(this);

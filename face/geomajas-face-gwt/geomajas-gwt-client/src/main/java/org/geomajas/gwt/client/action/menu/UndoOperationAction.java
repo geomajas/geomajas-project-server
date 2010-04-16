@@ -55,7 +55,7 @@ public class UndoOperationAction extends MenuAction implements MenuItemIfFunctio
 	 *            The actual child edit controller, not the parent!
 	 */
 	public UndoOperationAction(MapWidget mapWidget, EditController controller) {
-		super(I18nProvider.getMenu().undoOperation(), "[ISOMORPHIC]/geomajas/undo.png");
+		super(I18nProvider.getMenu().undoOperation(), "[ISOMORPHIC]/geomajas/osgeo/undo.png");
 		this.mapWidget = mapWidget;
 		this.controller = controller;
 		setEnableIfCondition(this);

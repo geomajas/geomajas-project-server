@@ -45,10 +45,10 @@ import com.smartgwt.client.widgets.Canvas;
 public class ActivityMonitor extends Canvas implements DispatchStoppedHandler, DispatchStartedHandler {
 
 	/** The icon to use when the client is not in busy state. */
-	private String notBusyIcon = "geomajas/not_busy.gif";
+	private String notBusyIcon = "geomajas/widget/not_busy.gif";
 
 	/** The icon to use when the client is in busy state. */
-	private String busyIcon = "geomajas/busy.gif";
+	private String busyIcon = "geomajas/widget/busy.gif";
 
 	/** The busy state. */
 	private boolean busy;

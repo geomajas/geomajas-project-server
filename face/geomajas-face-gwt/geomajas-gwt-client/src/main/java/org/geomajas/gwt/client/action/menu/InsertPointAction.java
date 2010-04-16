@@ -62,7 +62,7 @@ public class InsertPointAction extends MenuAction implements MenuItemIfFunction 
 	 *            The map on which editing is going on.
 	 */
 	public InsertPointAction(MapWidget mapWidget) {
-		super(I18nProvider.getMenu().insertPoint(), "[ISOMORPHIC]/geomajas/vertex-create.png");
+		super(I18nProvider.getMenu().insertPoint(), "[ISOMORPHIC]/geomajas/osgeo/vertex-create.png");
 		this.mapWidget = mapWidget;
 		setEnableIfCondition(this);
 	}

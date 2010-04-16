@@ -66,7 +66,7 @@ public class SelectionModalAction extends ToolbarModalAction implements Configur
 	private int pixelTolerance = 5;
 
 	public SelectionModalAction(MapWidget mapWidget) {
-		super("[ISOMORPHIC]/geomajas/select.png", I18nProvider.getToolbar().selectionSelect());
+		super("[ISOMORPHIC]/geomajas/osgeo/select.png", I18nProvider.getToolbar().selectionSelect());
 		this.map = mapWidget;
 	}
 

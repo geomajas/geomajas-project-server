@@ -95,7 +95,7 @@ public abstract class SamplePanel extends VLayout {
 
 			Window descriptionWindow = new Window();
 			descriptionWindow.setTitle(I18nProvider.getSampleMessages().generalDescription());
-			descriptionWindow.setHeaderIcon("[ISOMORPHIC]/geomajas/example/images/geomajas_desktopicoon_small.png", 16,
+			descriptionWindow.setHeaderIcon("[ISOMORPHIC]/geomajas/geomajas_desktopicon_small.png", 16,
 					16);
 			descriptionWindow.setShowEdges(true);
 			descriptionWindow.setKeepInParentRect(true);
@@ -181,7 +181,7 @@ public abstract class SamplePanel extends VLayout {
 	private void showFiles(Map<String, String> fileContents) {
 		Window sourceWindow = new Window();
 		sourceWindow.setTitle(I18nProvider.getSampleMessages().generalSourceTitle());
-		sourceWindow.setHeaderIcon("[ISOMORPHIC]/geomajas/example/images/geomajas_desktopicoon_small.png", 16, 16);
+		sourceWindow.setHeaderIcon("[ISOMORPHIC]/geomajas/geomajas_desktopicon_small.png", 16, 16);
 		sourceWindow.setKeepInParentRect(true);
 		sourceWindow.setWidth(640);
 		sourceWindow.setHeight(480);

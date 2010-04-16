@@ -70,7 +70,7 @@ public class LoadingScreen extends VLayout {
 
 	private int logoWidth = 300;
 
-	private String logo = "[ISOMORPHIC]/geomajas/temp/geomajas_logo.png";
+	private String logo = "[ISOMORPHIC]/geomajas/geomajas_logo.png";
 
 	private Label label;
 
@@ -152,7 +152,7 @@ public class LoadingScreen extends VLayout {
 		inner.setLayoutAlign(VerticalAlignment.CENTER);
 		inner.setWidth(500);
 		inner.setHeight(300);
-		inner.setBackgroundImage("[ISOMORPHIC]/geomajas/temp/background.png");
+		inner.setBackgroundImage("[ISOMORPHIC]/geomajas/widget/background.png");
 		inner.setEdgeOpacity(70);
 		inner.setAlign(Alignment.CENTER);
 		inner.addMember(banner);

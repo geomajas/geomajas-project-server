@@ -45,13 +45,13 @@ public class AboutAction extends MenuAction {
 	 *            The map on this menu action is used.
 	 */
 	public AboutAction() {
-		super(I18nProvider.getGlobal().aboutMenuTitle(), "[ISOMORPHIC]/geomajas/tips.png");
+		super(I18nProvider.getGlobal().aboutMenuTitle(), "[ISOMORPHIC]/geomajas/osgeo/tips.png");
 	}
 
 	public void onClick(MenuItemClickEvent event) {
 		VLayout layout = new VLayout();
 		layout.setPadding(10);
-		Img logo = new Img("[ISOMORPHIC]/geomajas/temp/geomajas_logo.png");
+		Img logo = new Img("[ISOMORPHIC]/geomajas/geomajas_logo.png");
 		layout.addMember(logo);
 		HTMLFlow flow = new HTMLFlow("<h2>Geomajas " + Geomajas.getVersion() + "</h2>" + "<p>"
 				+ I18nProvider.getGlobal().aboutCopyRight() + "</p>" + "<p>" + I18nProvider.getGlobal().aboutVisit()
@@ -59,6 +59,7 @@ public class AboutAction extends MenuAction {
 		layout.addMember(flow);
 
 		Window window = new Window();
+		window.setHeaderIcon("[ISOMORPHIC]/geomajas/geomajas_desktopicon_small.png");
 		window.setTitle(I18nProvider.getGlobal().aboutMenuTitle());
 		window.setWidth(400);
 		window.setHeight(250);

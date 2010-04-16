@@ -42,7 +42,7 @@ public class ZoomToRectangleModalAction extends ToolbarModalAction {
 	private ZoomToRectangleController controller;
 
 	public ZoomToRectangleModalAction(MapWidget mapWidget) {
-		super("[ISOMORPHIC]/geomajas/zoom-selection.png", I18nProvider.getToolbar().zoomToRectangle());
+		super("[ISOMORPHIC]/geomajas/osgeo/zoom-selection.png", I18nProvider.getToolbar().zoomToRectangle());
 		this.mapWidget = mapWidget;
 		controller = new ZoomToRectangleController(mapWidget);
 	}

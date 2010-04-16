@@ -42,7 +42,7 @@ public class ZoomInModalAction extends ToolbarModalAction implements Configurabl
 	private ZoomOnClickController controller;
 
 	public ZoomInModalAction(MapWidget mapWidget) {
-		super("[ISOMORPHIC]/geomajas/zoom-in.png", I18nProvider.getToolbar().zoomIn());
+		super("[ISOMORPHIC]/geomajas/osgeo/zoom-in.png", I18nProvider.getToolbar().zoomIn());
 		this.mapWidget = mapWidget;
 		controller = new ZoomOnClickController(mapWidget, 2.0);
 	}

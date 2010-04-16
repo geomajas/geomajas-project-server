@@ -63,7 +63,7 @@ public class NewFeatureAction extends MenuAction implements MenuItemIfFunction {
 	 *            The current parent editing controller active on the map.
 	 */
 	public NewFeatureAction(MapWidget mapWidget, ParentEditController controller) {
-		super(I18nProvider.getMenu().newFeature(), "[ISOMORPHIC]/geomajas/vector-create.png");
+		super(I18nProvider.getMenu().newFeature(), "[ISOMORPHIC]/geomajas/osgeo/vector-create.png");
 		this.mapWidget = mapWidget;
 		this.controller = controller;
 		setEnableIfCondition(this);

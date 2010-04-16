@@ -92,7 +92,7 @@ public class GeomajasSamples implements EntryPoint {
 		topBar.setWidth100();
 		topBar.addSpacer(6);
 
-		Img icon = new Img("[ISOMORPHIC]/geomajas/example/images/geomajas_desktopicoon_small.png");
+		Img icon = new Img("[ISOMORPHIC]/geomajas/geomajas_desktopicon_small.png");
 		icon.setSize(24);
 		topBar.addMember(icon);
 
@@ -277,7 +277,7 @@ public class GeomajasSamples implements EntryPoint {
 		IntroductionTab sample = new IntroductionTab();
 		Tab tab = new Tab();
 		tab.setID(sample.getId() + "_tab");
-		String imgHTML = Canvas.imgHTML("[ISOMORPHIC]/geomajas/example/images/geomajas_desktopicoon_small.png", 16, 16);
+		String imgHTML = Canvas.imgHTML("[ISOMORPHIC]/geomajas/geomajas_desktopicon_small.png", 16, 16);
 		tab.setTitle("<span>" + imgHTML + "&nbsp;" + I18nProvider.getSampleMessages().introductionTitle() + "</span>");
 		tab.setPane(sample.getViewPanel());
 		mainTabSet.addTab(tab);

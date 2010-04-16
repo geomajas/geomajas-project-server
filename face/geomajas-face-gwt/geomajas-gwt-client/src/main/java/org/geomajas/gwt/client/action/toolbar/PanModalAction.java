@@ -41,7 +41,7 @@ public class PanModalAction extends ToolbarModalAction {
 	private PanController controller;
 
 	public PanModalAction(MapWidget mapWidget) {
-		super("[ISOMORPHIC]/geomajas/pan.png", I18nProvider.getToolbar().pan());
+		super("[ISOMORPHIC]/geomajas/osgeo/pan.png", I18nProvider.getToolbar().pan());
 		this.mapWidget = mapWidget;
 		controller = new PanController(mapWidget);
 	}

@@ -43,7 +43,7 @@ public class EditingModalAction extends ToolbarModalAction {
 	private MapWidget mapWidget;
 
 	public EditingModalAction(MapWidget mapWidget) {
-		super("[ISOMORPHIC]/geomajas/edit.png", I18nProvider.getToolbar().editingSelect());
+		super("[ISOMORPHIC]/geomajas/osgeo/edit.png", I18nProvider.getToolbar().editingSelect());
 		this.mapWidget = mapWidget;
 	}
 

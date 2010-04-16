@@ -60,7 +60,7 @@ public class DeleteFeatureAction extends MenuAction implements MenuItemIfFunctio
 	 *            The current parent editing controller active on the map.
 	 */
 	public DeleteFeatureAction(MapWidget mapWidget, ParentEditController controller) {
-		super(I18nProvider.getMenu().deleteFeature(), "[ISOMORPHIC]/geomajas/vector-remove.png");
+		super(I18nProvider.getMenu().deleteFeature(), "[ISOMORPHIC]/geomajas/osgeo/vector-remove.png");
 		this.mapWidget = mapWidget;
 		this.controller = controller;
 		setEnableIfCondition(this);

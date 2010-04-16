@@ -43,7 +43,7 @@ public class ToggleGeometricInfoAction extends MenuAction {
 	 *            The edit controller currently active.
 	 */
 	public ToggleGeometricInfoAction(EditController editController) {
-		super(I18nProvider.getMenu().toggleGeometricInfo(), "[ISOMORPHIC]/geomajas/info.png");
+		super(I18nProvider.getMenu().toggleGeometricInfo(), "[ISOMORPHIC]/geomajas/osgeo/info.png");
 		this.editController = editController;
 	}
 

@@ -51,7 +51,7 @@ public class Watermark extends MapAddon {
 		this.map = map;
 		image = new Image(id + "-img");
 		image.setBounds(new Bbox(0, 0, 125, 12));
-		image.setHref(Geomajas.getIsomorphicDir() + "geomajas/temp/powered_by_geomajas.gif");
+		image.setHref(Geomajas.getIsomorphicDir() + "geomajas/mapaddon/powered_by_geomajas.gif");
 		image.setStyle(new PictureStyle(1));
 	}
 

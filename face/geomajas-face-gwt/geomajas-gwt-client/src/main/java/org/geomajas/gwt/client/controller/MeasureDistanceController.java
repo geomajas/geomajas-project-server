@@ -209,7 +209,7 @@ public class MeasureDistanceController extends AbstractSnappingController {
 		private final MeasureDistanceController controller;
 
 		public CancelMeasuringAction(final MeasureDistanceController controller) {
-			super(I18nProvider.getMenu().cancelMeasuring(), "[ISOMORPHIC]/geomajas/quit.png");
+			super(I18nProvider.getMenu().cancelMeasuring(), "[ISOMORPHIC]/geomajas/osgeo/quit.png");
 			this.controller = controller;
 			setEnableIfCondition(new MenuItemIfFunction() {
 

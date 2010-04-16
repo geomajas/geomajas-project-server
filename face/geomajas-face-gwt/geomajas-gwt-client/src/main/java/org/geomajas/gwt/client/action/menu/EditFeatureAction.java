@@ -69,7 +69,8 @@ public class EditFeatureAction extends MenuAction implements MenuItemIfFunction 
 	 *            The current parent editing controller active on the map.
 	 */
 	public EditFeatureAction(MapWidget mapWidget, ParentEditController controller) {
-		super(((MenuMessages) GWT.create(MenuMessages.class)).editFeature(), "[ISOMORPHIC]/geomajas/vector-edit.png");
+		super(((MenuMessages) GWT.create(MenuMessages.class)).editFeature(),
+				"[ISOMORPHIC]/geomajas/osgeo/vector-edit.png");
 		this.mapWidget = mapWidget;
 		this.controller = controller;
 		setEnableIfCondition(this);

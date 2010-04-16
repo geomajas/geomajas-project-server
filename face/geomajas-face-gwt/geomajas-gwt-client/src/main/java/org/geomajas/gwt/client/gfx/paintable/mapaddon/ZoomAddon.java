@@ -63,16 +63,17 @@ public class ZoomAddon extends MapAddon {
 		map.getVectorContext().drawGroup(group, this);
 
 		Coordinate c = getUpperLeftCorner();
-		map.getVectorContext().drawImage(this, "bg", Geomajas.getIsomorphicDir() + "geomajas/temp/zoombg.png",
+		map.getVectorContext().drawImage(this, "bg", Geomajas.getIsomorphicDir() + "geomajas/mapaddon/zoombg.png",
 				new Bbox(c.getX(), c.getY(), 20, 60), new PictureStyle(1));
 
-		map.getVectorContext().drawImage(this, "plus", Geomajas.getIsomorphicDir() + "geomajas/temp/zoomPlus.png",
+		map.getVectorContext().drawImage(this, "plus", Geomajas.getIsomorphicDir() + "geomajas/mapaddon/zoomPlus.png",
 				new Bbox(c.getX(), c.getY(), 20, 20), new PictureStyle(1));
 
-		map.getVectorContext().drawImage(this, "minus", Geomajas.getIsomorphicDir() + "geomajas/temp/zoomMinus.png",
+		map.getVectorContext().drawImage(this, "minus",
+				Geomajas.getIsomorphicDir() + "geomajas/mapaddon/zoomMinus.png",
 				new Bbox(c.getX(), c.getY() + 40, 20, 20), new PictureStyle(1));
 
-		map.getVectorContext().drawImage(this, "max", Geomajas.getIsomorphicDir() + "geomajas/temp/maxextent.png",
+		map.getVectorContext().drawImage(this, "max", Geomajas.getIsomorphicDir() + "geomajas/mapaddon/maxextent.png",
 				new Bbox(c.getX(), c.getY() + 20, 20, 20), new PictureStyle(1));
 
 		if (firstTime) {
@@ -128,6 +129,5 @@ public class ZoomAddon extends MapAddon {
 			Bbox max = mapWidget.getMapModel().getMapView().getMaxBounds();
 			mapWidget.getMapModel().getMapView().applyBounds(max, ZoomOption.LEVEL_FIT);
 		}
-
 	}
 }

@@ -42,7 +42,7 @@ public class ZoomOutModalAction extends ToolbarModalAction implements Configurab
 	private ZoomOnClickController controller;
 
 	public ZoomOutModalAction(MapWidget mapWidget) {
-		super("[ISOMORPHIC]/geomajas/zoom-out.png", I18nProvider.getToolbar().zoomOut());
+		super("[ISOMORPHIC]/geomajas/osgeo/zoom-out.png", I18nProvider.getToolbar().zoomOut());
 		this.mapWidget = mapWidget;
 		controller = new ZoomOnClickController(mapWidget, .5);
 	}

@@ -49,7 +49,7 @@ public class ZoomToSelectionAction extends ToolbarAction {
 	private MapWidget mapWidget;
 
 	public ZoomToSelectionAction(MapWidget mapWidget) {
-		super("[ISOMORPHIC]/geomajas/zoom-selection.png", I18nProvider.getToolbar().zoomToSelection());
+		super("[ISOMORPHIC]/geomajas/osgeo/zoom-selection.png", I18nProvider.getToolbar().zoomToSelection());
 		this.mapWidget = mapWidget;
 	}
 
