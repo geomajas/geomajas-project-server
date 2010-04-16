@@ -24,16 +24,16 @@
 package org.geomajas.example.gwt.client.samples.mapwidget;
 
 import org.geomajas.example.gwt.client.samples.base.SamplePanel;
+import org.geomajas.example.gwt.client.samples.base.SamplePanelFactory;
 import org.geomajas.example.gwt.client.samples.i18n.I18nProvider;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.controller.PanController;
 import org.geomajas.gwt.client.map.MapView.ZoomOption;
-import org.geomajas.example.gwt.client.samples.base.SamplePanelFactory;
 import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.widget.MapWidget;
 
-import com.smartgwt.client.widgets.Button;
 import com.smartgwt.client.widgets.Canvas;
+import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
@@ -65,9 +65,9 @@ public class NavigationSample extends SamplePanel {
 
 		HLayout hLayout = new HLayout();
 		hLayout.setMembersMargin(15);
-		hLayout.setHeight(75);
+		// hLayout.setHeight(75);
 		hLayout.setPadding(5);
-		hLayout.setShowEdges(true);
+		// hLayout.setShowEdges(true);
 		VLayout firstColumn = new VLayout();
 		firstColumn.setMembersMargin(5);
 		VLayout secondColumn = new VLayout();
@@ -81,9 +81,14 @@ public class NavigationSample extends SamplePanel {
 		// Set a panning controller on the map:
 		map.setController(new PanController(map));
 
+		VLayout mapLayout = new VLayout();
+		mapLayout.setShowEdges(true);
+		mapLayout.setHeight("60%");
+		mapLayout.addMember(map);
+
 		// Create a button that centers the map to (0,0):
-		Button centerBTN = new Button(I18nProvider.getSampleMessages().navigationBtnPosition());
-		centerBTN.setWidth(160);
+		IButton centerBTN = new IButton(I18nProvider.getSampleMessages().navigationBtnPosition());
+		centerBTN.setWidth100();
 		centerBTN.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
@@ -92,8 +97,8 @@ public class NavigationSample extends SamplePanel {
 		});
 
 		// Create a button that translate the map:
-		Button translateBTN = new Button(I18nProvider.getSampleMessages().navigationBtnTranslate());
-		translateBTN.setWidth(160);
+		IButton translateBTN = new IButton(I18nProvider.getSampleMessages().navigationBtnTranslate());
+		translateBTN.setWidth100();
 		translateBTN.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
@@ -102,8 +107,8 @@ public class NavigationSample extends SamplePanel {
 		});
 
 		// Create a button that applies a bounding box to zoom to:
-		Button bboxBTN = new Button(I18nProvider.getSampleMessages().navigationBtnBbox());
-		bboxBTN.setWidth(160);
+		IButton bboxBTN = new IButton(I18nProvider.getSampleMessages().navigationBtnBbox());
+		bboxBTN.setWidth100();
 		bboxBTN.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
@@ -112,8 +117,8 @@ public class NavigationSample extends SamplePanel {
 		});
 
 		// Create a button that zooms out:
-		Button zoomOutBTN = new Button(I18nProvider.getSampleMessages().navigationBtnZoomOut());
-		zoomOutBTN.setWidth(160);
+		IButton zoomOutBTN = new IButton(I18nProvider.getSampleMessages().navigationBtnZoomOut());
+		zoomOutBTN.setWidth100();
 		zoomOutBTN.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
@@ -122,8 +127,8 @@ public class NavigationSample extends SamplePanel {
 		});
 
 		// Create a button that zooms in:
-		Button zoomInBTN = new Button(I18nProvider.getSampleMessages().navigationBtnZoomIn());
-		zoomInBTN.setWidth(160);
+		IButton zoomInBTN = new IButton(I18nProvider.getSampleMessages().navigationBtnZoomIn());
+		zoomInBTN.setWidth100();
 		zoomInBTN.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
@@ -142,8 +147,9 @@ public class NavigationSample extends SamplePanel {
 		hLayout.addMember(firstColumn);
 		hLayout.addMember(secondColumn);
 		hLayout.addMember(thirdColumn);
+
+		layout.addMember(mapLayout);
 		layout.addMember(hLayout);
-		layout.addMember(map);
 
 		return layout;
 	}

@@ -31,8 +31,10 @@ import org.geomajas.gwt.client.gfx.style.ShapeStyle;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.OverviewMap;
 
-import com.smartgwt.client.widgets.Button;
+import com.smartgwt.client.types.Alignment;
+import com.smartgwt.client.types.VerticalAlignment;
 import com.smartgwt.client.widgets.Canvas;
+import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
@@ -73,17 +75,22 @@ public class OverviewMapSample extends SamplePanel {
 
 		// Create a layout for the overview map:
 		HLayout bottomLayout = new HLayout();
+		bottomLayout.setHeight(300);
 		bottomLayout.setMembersMargin(10);
+		bottomLayout.setAlign(Alignment.CENTER);
 
 		VLayout overviewMapLayout = new VLayout();
 		overviewMapLayout.setShowEdges(true);
+		overviewMapLayout.setWidth(300);
 
 		// Create an overview map:
 		final OverviewMap overviewMap = new OverviewMap("overviewOsmMap", "gwt-samples", map, true, true);
 		overviewMapLayout.addMember(overviewMap);
 
 		// Create a layout for a few buttons:
-		VLayout buttonLayout = new VLayout();
+		HLayout buttonLayout = new HLayout();
+		buttonLayout.setHeight(20);
+		buttonLayout.setAlign(VerticalAlignment.BOTTOM);
 		buttonLayout.setMembersMargin(10);
 
 		// ---------------------------------------------------------------------
@@ -91,7 +98,7 @@ public class OverviewMapSample extends SamplePanel {
 		// ---------------------------------------------------------------------
 
 		// Button1: Toggle the rectangle style:
-		Button button1 = new Button(I18nProvider.getSampleMessages().overviewMapToggleRectStyle());
+		IButton button1 = new IButton(I18nProvider.getSampleMessages().overviewMapToggleRectStyle());
 		button1.addClickHandler(new ClickHandler() {
 
 			private ShapeStyle nextStyle = new ShapeStyle("#000000", 0.6f, "#000000", 1, 1);
@@ -106,10 +113,10 @@ public class OverviewMapSample extends SamplePanel {
 		buttonLayout.addMember(button1);
 
 		// Button2: Toggle the maximum extent style:
-		Button button2 = new Button(I18nProvider.getSampleMessages().overviewMapToggleExtentStyle());
+		IButton button2 = new IButton(I18nProvider.getSampleMessages().overviewMapToggleExtentStyle());
 		button2.addClickHandler(new ClickHandler() {
 
-			private ShapeStyle nextStyle = new ShapeStyle("#FF0000", 0, "#FF0000", 1, 3);
+			private ShapeStyle nextStyle = new ShapeStyle("#FF0000", 0.6f, "#FF0000", 1, 3);
 
 			public void onClick(ClickEvent event) {
 				ShapeStyle temp = nextStyle;
@@ -121,7 +128,7 @@ public class OverviewMapSample extends SamplePanel {
 		buttonLayout.addMember(button2);
 
 		// Button3: Toggle drawing the maximum extent:
-		Button button3 = new Button(I18nProvider.getSampleMessages().overviewMapToggleExtent());
+		IButton button3 = new IButton(I18nProvider.getSampleMessages().overviewMapToggleExtent());
 		button3.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
@@ -136,10 +143,11 @@ public class OverviewMapSample extends SamplePanel {
 		// ---------------------------------------------------------------------
 
 		bottomLayout.addMember(overviewMapLayout);
-		bottomLayout.addMember(buttonLayout);
+		//bottomLayout.addMember(buttonLayout);
 
 		layout.addMember(mapLayout);
 		layout.addMember(bottomLayout);
+		layout.addMember(buttonLayout);
 
 		return layout;
 	}

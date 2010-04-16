@@ -26,13 +26,13 @@ package org.geomajas.example.gwt.client.samples.mapwidget;
 import org.geomajas.configuration.client.UnitType;
 import org.geomajas.example.gwt.client.samples.base.SamplePanel;
 import org.geomajas.example.gwt.client.samples.base.SamplePanelFactory;
-import org.geomajas.gwt.client.controller.PanController;
 import org.geomajas.example.gwt.client.samples.i18n.I18nProvider;
+import org.geomajas.gwt.client.controller.PanController;
 import org.geomajas.gwt.client.widget.MapWidget;
 
 import com.smartgwt.client.util.SC;
-import com.smartgwt.client.widgets.Button;
 import com.smartgwt.client.widgets.Canvas;
+import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.layout.HLayout;
@@ -64,6 +64,7 @@ public class UnitTypesSample extends SamplePanel {
 
 		HLayout mapLayout = new HLayout();
 		mapLayout.setShowEdges(true);
+		mapLayout.setHeight("60%");
 
 		// Map with ID osmMap is defined in the XML configuration. (mapOsm.xml)
 		final MapWidget map = new MapWidget("osmMap", "gwt-samples");
@@ -73,7 +74,7 @@ public class UnitTypesSample extends SamplePanel {
 		HLayout buttonLayout = new HLayout();
 		buttonLayout.setMembersMargin(10);
 
-		Button butSwitch = new Button(I18nProvider.getSampleMessages().switchUnitTypes());
+		IButton butSwitch = new IButton(I18nProvider.getSampleMessages().switchUnitTypes());
 		butSwitch.setWidth100();
 		buttonLayout.addMember(butSwitch);
 

@@ -26,6 +26,7 @@ package org.geomajas.example.gwt.client.samples.security;
 import org.geomajas.example.gwt.client.samples.base.SamplePanel;
 import org.geomajas.example.gwt.client.samples.base.SamplePanelFactory;
 import org.geomajas.example.gwt.client.samples.i18n.I18nProvider;
+import org.geomajas.gwt.client.controller.PanController;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.Toolbar;
 import org.geomajas.plugin.springsecurity.client.Authentication;
@@ -62,17 +63,23 @@ public class ToolSecuritySample extends SamplePanel {
 
 	public Canvas getViewPanel() {
 		final VLayout layout = new VLayout();
+		layout.setMembersMargin(10);
 		layout.setWidth100();
 		layout.setHeight100();
+
+		// Map with ID duisburgMap is defined in the XML configuration. (mapDuisburg.xml)
+		VLayout mapLayout = new VLayout();
+		mapLayout.setShowEdges(true);
+		mapLayout.setHeight("60%");
+		map = new MapWidget("wmsToolbarMap", "gwt-samples");
+		map.setController(new PanController(map));
+		toolbar = new Toolbar(map);
+		mapLayout.addMember(toolbar);
+		mapLayout.addMember(map);
 
 		// Create horizontal layout for login buttons:
 		HLayout buttonLayout = new HLayout();
 		buttonLayout.setMembersMargin(10);
-		buttonLayout.setHeight(30);
-
-		// Map with ID wmsToolbarMap is defined in the XML configuration. (mapWmsToolbar.xml)
-		map = new MapWidget("wmsToolbarMap", "gwt-samples");
-		toolbar = new Toolbar(map);
 
 		// Create login handler that re-initializes the map on a successful login:
 		final BooleanCallback initMapCallback = new BooleanCallback() {
@@ -91,7 +98,7 @@ public class ToolSecuritySample extends SamplePanel {
 
 		// Create a button that logs in user "mark":
 		IButton loginButtonMarino = new IButton(I18nProvider.getSampleMessages().securityLogInWith("mark"));
-		loginButtonMarino.setWidth(150);
+		loginButtonMarino.setWidth("50%");
 		loginButtonMarino.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
@@ -102,7 +109,7 @@ public class ToolSecuritySample extends SamplePanel {
 
 		// Create a button that logs in user "luc":
 		IButton loginButtonLuc = new IButton(I18nProvider.getSampleMessages().securityLogInWith("luc"));
-		loginButtonLuc.setWidth(150);
+		loginButtonLuc.setWidth("50%");
 		loginButtonLuc.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
@@ -111,9 +118,8 @@ public class ToolSecuritySample extends SamplePanel {
 		});
 		buttonLayout.addMember(loginButtonLuc);
 
+		layout.addMember(mapLayout);
 		layout.addMember(buttonLayout);
-		layout.addMember(toolbar);
-		layout.addMember(map);
 		return layout;
 	}
 

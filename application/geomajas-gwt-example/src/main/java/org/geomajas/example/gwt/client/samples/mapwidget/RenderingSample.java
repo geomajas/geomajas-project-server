@@ -76,6 +76,7 @@ public class RenderingSample extends SamplePanel {
 
 		HLayout mapLayout = new HLayout();
 		mapLayout.setShowEdges(true);
+		mapLayout.setHeight("60%");
 
 		// Map with ID wmsMap is defined in the XML configuration. (mapOsm.xml)
 		final MapWidget map = new MapWidget("osmMap", "gwt-samples");
@@ -85,8 +86,6 @@ public class RenderingSample extends SamplePanel {
 		// Layout with a huge list of buttons to test the rendering:
 		HLayout buttonLayout = new HLayout();
 		buttonLayout.setPadding(10);
-		buttonLayout.setHeight(120);
-		buttonLayout.setShowEdges(true);
 		buttonLayout.setMembersMargin(10);
 		VLayout column1 = new VLayout();
 		column1.setMembersMargin(10);
@@ -153,7 +152,7 @@ public class RenderingSample extends SamplePanel {
 
 			public void onClick(ClickEvent event) {
 				map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), group1);
-				FontStyle style = new FontStyle("#009900", 12, "Verdana", "normal", "normal");
+				FontStyle style = new FontStyle("#FF0000", 12, "Verdana", "normal", "normal");
 				map.getVectorContext()
 						.drawText(group1, "text", "This is some text...", new Coordinate(100, 120), style);
 			}
@@ -182,7 +181,7 @@ public class RenderingSample extends SamplePanel {
 				map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), group1);
 				Image image = new Image("image");
 				image.setHref(Geomajas.getIsomorphicDir() + "geomajas/example/images/smile.png");
-				image.setBounds(new Bbox(30, 70, 48, 48));
+				image.setBounds(new Bbox(250, 70, 48, 48));
 				image.setStyle(new PictureStyle(0.5));
 				// map.render(image, "all");
 				map.getVectorContext().drawImage(group1, image.getId(), image.getHref(), image.getBounds(),
@@ -209,9 +208,9 @@ public class RenderingSample extends SamplePanel {
 
 			public void onClick(ClickEvent event) {
 				map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), group1,
-						new Matrix(0, 0, 0, 0, 50, 00));
+						new Matrix(0, 0, 0, 0, 150, 00));
 				map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), group2,
-						new Matrix(0, 0, 0, 0, 0, 50));
+						new Matrix(0, 0, 0, 0, 0, 100));
 			}
 		});
 		button8.setWidth100();
@@ -233,8 +232,8 @@ public class RenderingSample extends SamplePanel {
 		buttonLayout.addMember(column2);
 		buttonLayout.addMember(column3);
 
-		layout.addMember(buttonLayout);
 		layout.addMember(mapLayout);
+		layout.addMember(buttonLayout);
 
 		return layout;
 	}

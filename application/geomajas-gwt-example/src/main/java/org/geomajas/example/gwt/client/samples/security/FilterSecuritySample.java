@@ -23,10 +23,10 @@
 
 package org.geomajas.example.gwt.client.samples.security;
 
-import org.geomajas.example.gwt.client.samples.i18n.I18nProvider;
-import org.geomajas.gwt.client.controller.PanController;
 import org.geomajas.example.gwt.client.samples.base.SamplePanel;
 import org.geomajas.example.gwt.client.samples.base.SamplePanelFactory;
+import org.geomajas.example.gwt.client.samples.i18n.I18nProvider;
+import org.geomajas.gwt.client.controller.PanController;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.plugin.springsecurity.client.Authentication;
 
@@ -64,13 +64,17 @@ public class FilterSecuritySample extends SamplePanel {
 		layout.setWidth100();
 		layout.setHeight100();
 
+		// Map with ID duisburgMap is defined in the XML configuration. (mapDuisburg.xml)
+		VLayout mapLayout = new VLayout();
+		mapLayout.setShowEdges(true);
+		mapLayout.setHeight("60%");
+		map = new MapWidget("duisburgMap", "gwt-samples");
+		map.setController(new PanController(map));
+		mapLayout.addMember(map);
+
 		// Create horizontal layout for login buttons:
 		HLayout buttonLayout = new HLayout();
 		buttonLayout.setMembersMargin(10);
-		buttonLayout.setHeight(20);
-
-		// Map with ID duisburgMap is defined in the XML configuration. (mapDuisburg.xml)
-		map = new MapWidget("duisburgMap", "gwt-samples");
 
 		// Create login handler that re-initializes the map on a successful login:
 		final BooleanCallback initMapCallback = new BooleanCallback() {
@@ -87,7 +91,7 @@ public class FilterSecuritySample extends SamplePanel {
 
 		// Create a button that logs in user "marino":
 		IButton loginButtonMarino = new IButton(I18nProvider.getSampleMessages().securityLogInWith("jan"));
-		loginButtonMarino.setWidth(150);
+		loginButtonMarino.setWidth("50%");
 		loginButtonMarino.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
@@ -98,7 +102,7 @@ public class FilterSecuritySample extends SamplePanel {
 
 		// Create a button that logs in user "luc":
 		IButton loginButtonLuc = new IButton(I18nProvider.getSampleMessages().securityLogInWith("luc"));
-		loginButtonLuc.setWidth(150);
+		loginButtonLuc.setWidth("50%");
 		loginButtonLuc.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
@@ -107,11 +111,8 @@ public class FilterSecuritySample extends SamplePanel {
 		});
 		buttonLayout.addMember(loginButtonLuc);
 
-		// Set a panning controller on the map:
-		map.setController(new PanController(map));
-
+		layout.addMember(mapLayout);
 		layout.addMember(buttonLayout);
-		layout.addMember(map);
 		return layout;
 	}
 

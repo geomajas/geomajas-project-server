@@ -70,6 +70,7 @@ public class MaxBoundsToggleSample extends SamplePanel {
 
 		HLayout mapLayout = new HLayout();
 		mapLayout.setShowEdges(true);
+		mapLayout.setHeight("60%");
 
 		// Map with ID osmMap is defined in the XML configuration. (mapOsm.xml)
 		final MapWidget map = new MapWidget("osmMap", "gwt-samples");

@@ -67,6 +67,8 @@ public class WorldScreenSample extends SamplePanel {
 		// Create map with OSM layer, and add a PanController to it:
 		VLayout mapLayout = new VLayout();
 		mapLayout.setShowEdges(true);
+		mapLayout.setHeight("60%");
+
 		final MapWidget map = new MapWidget("osmMap", "gwt-samples");
 		map.setController(new PanController(map));
 		mapLayout.addMember(map);

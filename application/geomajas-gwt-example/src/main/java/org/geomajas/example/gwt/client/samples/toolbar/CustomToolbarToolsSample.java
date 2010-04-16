@@ -85,7 +85,7 @@ public class CustomToolbarToolsSample extends SamplePanel {
 		};
 
 		// Add the customController to the toolbar using a custom ToolbarModalAction button
-		toolbar.addModalButton(new ToolbarModalAction("[ISOMORPHIC]/geomajas/target.gif", I18nProvider
+		toolbar.addModalButton(new ToolbarModalAction("[ISOMORPHIC]/geomajas/widget/target.gif", I18nProvider
 				.getSampleMessages().customToolbarToolsTooltip()) {
 
 			@Override
