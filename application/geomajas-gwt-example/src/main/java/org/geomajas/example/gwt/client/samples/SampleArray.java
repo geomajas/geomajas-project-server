@@ -132,20 +132,21 @@ public final class SampleArray {
 
 				// LayerTree & Legend samples:
 				new SampleTreeNode(I18nProvider.getSampleMessages().treeGroupLayerTree(),
-						"[ISOMORPHIC]/geomajas/layer.png", "Layertree", "topLevel"),
+						"[ISOMORPHIC]/geomajas/mapset.png", "Layertree", "topLevel"),
 				new SampleTreeNode(I18nProvider.getSampleMessages().layertreeTitle(),
-						"[ISOMORPHIC]/geomajas/layer.png", LayertreeSample.TITLE, "Layertree", LayertreeSample.FACTORY),
-				new SampleTreeNode(I18nProvider.getSampleMessages().legendTitle(), "[ISOMORPHIC]/geomajas/layer.png",
-						LegendSample.TITLE, "Layertree", LegendSample.FACTORY),
+						"[ISOMORPHIC]/geomajas/mapset.png", LayertreeSample.TITLE, "Layertree",
+						LayertreeSample.FACTORY),
+				new SampleTreeNode(I18nProvider.getSampleMessages().legendTitle(),
+						"[ISOMORPHIC]/geomajas/legend-add.png", LegendSample.TITLE, "Layertree", LegendSample.FACTORY),
 
-				// FeatureListGrid samples:
+				// Attribute samples:
 				new SampleTreeNode(I18nProvider.getSampleMessages().treeGroupAttributes(),
-						"[ISOMORPHIC]/geomajas/layer.png", "FeatureListGridGroup", "topLevel"),
-				new SampleTreeNode(I18nProvider.getSampleMessages().fltTitle(), "[ISOMORPHIC]/geomajas/layer.png",
+						"[ISOMORPHIC]/geomajas/table.png", "FeatureListGridGroup", "topLevel"),
+				new SampleTreeNode(I18nProvider.getSampleMessages().fltTitle(), "[ISOMORPHIC]/geomajas/table.png",
 						FeatureListGridSample.TITLE, "FeatureListGridGroup", FeatureListGridSample.FACTORY),
-				new SampleTreeNode(I18nProvider.getSampleMessages().searchTitle(), "[ISOMORPHIC]/geomajas/layer.png",
+				new SampleTreeNode(I18nProvider.getSampleMessages().searchTitle(), "[ISOMORPHIC]/geomajas/table.png",
 						SearchSample.TITLE, "FeatureListGridGroup", SearchSample.FACTORY),
-				new SampleTreeNode(I18nProvider.getSampleMessages().search2Title(), "[ISOMORPHIC]/geomajas/layer.png",
+				new SampleTreeNode(I18nProvider.getSampleMessages().search2Title(), "[ISOMORPHIC]/geomajas/table.png",
 						AttributeSearchSample.TITLE, "FeatureListGridGroup", AttributeSearchSample.FACTORY),
 
 				// Map controller:
