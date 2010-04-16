@@ -26,6 +26,8 @@ import java.util.List;
 
 import org.geomajas.configuration.AttributeInfo;
 
+import com.smartgwt.client.data.DataSourceField;
+
 /**
  * Definition of a factory that is able to create different types of attribute forms. An attribute form is meant to
  * display (and/or edit and/or validate) the attributes of one single feature.
@@ -52,4 +54,14 @@ public interface AttributeFormFactory {
 	 * @return An attribute form that does not allow editing, but simply display the values.
 	 */
 	SimpleAttributeForm createSimpleForm(List<AttributeInfo> infos);
+
+	/**
+	 * Create a DataSourceField that represents a single attribute. On the DataSourceField, you'll immediately find
+	 * default validators.
+	 * 
+	 * @param info
+	 *            The type of attribute to create a suitable DataSourceField for.
+	 * @return Returns an appropriate DataSourceField for the type of attribute.
+	 */
+	DataSourceField createDataSourceField(AttributeInfo info);
 }

@@ -22,9 +22,9 @@
  */
 package org.geomajas.layer.feature;
 
-import org.geomajas.global.Api;
-
 import java.io.Serializable;
+
+import org.geomajas.global.Api;
 
 /**
  * A single criterion DTO that can be used to set up filters and search for features by their alpha numerical
@@ -76,13 +76,10 @@ public class SearchCriterion implements Serializable {
 
 	/**
 	 * Convert to human readable form.
-	 *
+	 * 
 	 * @return human readable form
 	 */
 	public String toString() {
-		if ("contains".equals(operator)) {
-			return "(" + attributeName + " like '%" + value + "%')";
-		}
 		return "(" + attributeName + " " + operator + " " + value + ")";
 	}
 
@@ -92,7 +89,7 @@ public class SearchCriterion implements Serializable {
 
 	/**
 	 * Return the operator used in the criterion such as '=', '>', ...
-	 *
+	 * 
 	 * @return operator
 	 */
 	public String getOperator() {
@@ -112,7 +109,7 @@ public class SearchCriterion implements Serializable {
 	/**
 	 * Get the name of the alpha numerical attribute on which this criterion operates. This attribute name is one of the
 	 * attributes from the vector layer configuration.
-	 *
+	 * 
 	 * @return attribute name
 	 */
 	public String getAttributeName() {
@@ -132,7 +129,7 @@ public class SearchCriterion implements Serializable {
 
 	/**
 	 * Get the value for this criterion as a formatted string.
-	 *
+	 * 
 	 * @return value for comparison
 	 */
 	public String getValue() {

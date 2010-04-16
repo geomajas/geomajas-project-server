@@ -85,6 +85,7 @@ public class DefaultAttributeFormItemFactory implements AttributeFormItemFactory
 		switch (info.getType()) {
 			case BOOLEAN:
 				item = new BooleanItem();
+				item.setValue(false); // avoid the null value
 				break;
 			case SHORT:
 				item = new IntegerItem();
@@ -133,6 +134,7 @@ public class DefaultAttributeFormItemFactory implements AttributeFormItemFactory
 		item.setName(info.getName());
 		item.setTitle(info.getLabel());
 		item.setDisabled(true);
+		item.setValidateOnChange(true);
 		return item;
 	}
 

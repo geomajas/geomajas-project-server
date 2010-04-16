@@ -77,9 +77,7 @@ public class AttributeFormItem extends CanvasItem {
 	// Public methods:
 	// -------------------------------------------------------------------------
 
-	/**
-	 * Return the current active attribute information.
-	 */
+	/** Return the current active attribute information. */
 	public AttributeInfo getAttributeInfo() {
 		return attributeInfo;
 	}
@@ -103,9 +101,7 @@ public class AttributeFormItem extends CanvasItem {
 		}
 	}
 
-	/**
-	 * Set a new width on this instance. Delegates to the internal form.
-	 */
+	/** Set a new width on this instance. Delegates to the internal form. */
 	public void setWidth(int width) {
 		form.setWidth(width);
 		if (formItem != null) {
@@ -113,13 +109,16 @@ public class AttributeFormItem extends CanvasItem {
 		}
 	}
 
-	/**
-	 * Get the current value form the internal <code>FormItem</code>.
-	 */
+	/** Get the current value form the internal <code>FormItem</code>. */
 	public Object getValue() {
 		if (formItem != null) {
 			return formItem.getValue();
 		}
 		return null;
+	}
+
+	/** Return the form for the inner FormItem. On the returned form, validation will work. */
+	public DynamicForm getForm(){
+		return form;
 	}
 }

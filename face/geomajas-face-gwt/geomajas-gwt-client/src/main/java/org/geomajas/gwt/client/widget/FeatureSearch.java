@@ -271,10 +271,17 @@ public class FeatureSearch extends Canvas {
 	public List<SearchCriterion> getSearchCriteria() {
 		List<SearchCriterion> criteria = new ArrayList<SearchCriterion>();
 		for (AttributeCriterionPane criterionPane : criterionPanes) {
+			if (criterionPane.hasErrors()) {
+				SC.warn(I18nProvider.getSearch().warningInvalidCriteria());
+				return null;
+			}
 			SearchCriterion criterion = criterionPane.getSearchCriterion();
 			if (criterion != null) {
 				criteria.add(criterion);
 			}
+		}
+		if (criteria == null || criteria.size() == 0) {
+			SC.warn(I18nProvider.getSearch().warningNoCriteria());
 		}
 		return criteria;
 	}
@@ -345,8 +352,8 @@ public class FeatureSearch extends Canvas {
 						}
 					}
 				});
-			} else {
-				SC.warn(I18nProvider.getSearch().warningNoCriteria());
+//			} else {
+//				SC.warn(I18nProvider.getSearch().warningNoCriteria());
 			}
 		}
 	}

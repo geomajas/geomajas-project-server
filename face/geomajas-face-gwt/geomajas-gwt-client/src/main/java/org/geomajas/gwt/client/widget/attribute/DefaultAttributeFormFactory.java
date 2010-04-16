@@ -82,7 +82,7 @@ public class DefaultAttributeFormFactory implements AttributeFormFactory {
 		EditableAttributeForm form = new EditableAttributeForm(infos);
 		DataSource source = new DataSource();
 		for (AttributeInfo info : infos) {
-			DataSourceField field = createField(info);
+			DataSourceField field = createDataSourceField(info);
 			field.setCanEdit(info.isEditable());
 			source.addField(field);
 		}
@@ -110,17 +110,25 @@ public class DefaultAttributeFormFactory implements AttributeFormFactory {
 		return form;
 	}
 
-	// -------------------------------------------------------------------------
-	// Private methods for creating fields:
-	// -------------------------------------------------------------------------
-
-	protected DataSourceField createField(AttributeInfo info) {
+	/**
+	 * Create a DataSourceField that represents a single attribute. On the DataSourceField, you'll immediately find
+	 * default validators.
+	 * 
+	 * @param info
+	 *            The type of attribute to create a suitable DataSourceField for.
+	 * @return Returns an appropriate DataSourceField for the type of attribute.
+	 */
+	public DataSourceField createDataSourceField(AttributeInfo info) {
 		if (info instanceof PrimitiveAttributeInfo) {
 			return createPrimitiveField((PrimitiveAttributeInfo) info);
 		} else {
 			return createAssociationField((AssociationAttributeInfo) info);
 		}
 	}
+
+	// -------------------------------------------------------------------------
+	// Private methods for creating fields:
+	// -------------------------------------------------------------------------
 
 	private DataSourceField createPrimitiveField(PrimitiveAttributeInfo info) {
 		List<Validator> validators = convertConstraints(info);

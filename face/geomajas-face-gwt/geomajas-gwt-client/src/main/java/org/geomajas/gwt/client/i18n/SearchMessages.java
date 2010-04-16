@@ -56,6 +56,8 @@ public interface SearchMessages extends Messages {
 
 	String warningNoCriteria();
 
+	String warningInvalidCriteria();
+
 	String operatorContains();
 
 	String operatorEquals();
@@ -69,4 +71,8 @@ public interface SearchMessages extends Messages {
 	String operatorBT();
 
 	String operatorBE();
+
+	String operatorBefore();
+
+	String operatorAfter();
 }

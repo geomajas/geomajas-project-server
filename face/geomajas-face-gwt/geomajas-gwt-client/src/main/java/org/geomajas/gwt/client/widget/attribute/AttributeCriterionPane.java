@@ -24,14 +24,17 @@
 package org.geomajas.gwt.client.widget.attribute;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.geomajas.configuration.AttributeInfo;
 import org.geomajas.configuration.PrimitiveAttributeInfo;
+import org.geomajas.configuration.PrimitiveType;
 import org.geomajas.gwt.client.i18n.I18nProvider;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.layer.feature.SearchCriterion;
 
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
@@ -87,6 +90,11 @@ public class AttributeCriterionPane extends Canvas {
 	// Public methods:
 	// -------------------------------------------------------------------------
 
+	/** Validate the value that the user filled in. If it is not valid, don't ask for the SearchCriterion. */
+	public boolean hasErrors() {
+		return valueItem.getForm().hasErrors();
+	}
+
 	/**
 	 * Return the actual search criterion object, or null if not all fields have been properly filled.
 	 */
@@ -95,10 +103,47 @@ public class AttributeCriterionPane extends Canvas {
 		Object value = valueItem.getValue();
 
 		if (selectedAttribute != null && operator != null && value != null) {
+			String operatorString = getOperatorCodeFromLabel(operator.toString());
+			String valueString = value.toString();
+
+			// CQL does not recognize "contains", so change to "like":
+			if ("contains".equals(operatorString)) {
+				operatorString = "LIKE";
+				valueString = "%" + valueString + "%";
+			}
+
+			if (selectedAttribute instanceof PrimitiveAttributeInfo) {
+				PrimitiveAttributeInfo attr = (PrimitiveAttributeInfo) selectedAttribute;
+
+				if (attr.getType().equals(PrimitiveType.STRING) || attr.getType().equals(PrimitiveType.IMGURL)
+						|| attr.getType().equals(PrimitiveType.URL)) {
+					// In case of a string, add quotes:
+					valueString = "'" + valueString + "'";
+
+				} else if (attr.getType().equals(PrimitiveType.DATE)) {
+					if (value instanceof Date) {
+						// In case of a date, parse correctly for CQL: 2006-11-30T01:30:00Z
+						DateTimeFormat format = DateTimeFormat.getFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+
+						if ("=".equals(operatorString)) {
+							// Date equals not supported by CQL, so we use the DURING operator instead:
+							operatorString = "DURING";
+							Date date1 = (Date) value;
+							Date date2 = new Date(date1.getTime() + 86400000); // total milliseconds in a day
+							valueString = format.format(date1) + "/" + format.format(date2);
+						} else {
+							// Simply format the date:
+							valueString = format.format((Date) value);
+						}
+					}
+				}
+			}
+
+			// Now create the criterion:
 			SearchCriterion criterion = new SearchCriterion();
 			criterion.setAttributeName(selectedAttribute.getName());
-			criterion.setOperator(getOperatorCodeFromLabel((String) operator));
-			criterion.setValue((String) value);
+			criterion.setOperator(operatorString);
+			criterion.setValue(valueString);
 			return criterion;
 		}
 		return null;
@@ -145,9 +190,7 @@ public class AttributeCriterionPane extends Canvas {
 							I18nProvider.getSearch().operatorBE() };
 				case DATE:
 					return new String[] { I18nProvider.getSearch().operatorEquals(),
-							I18nProvider.getSearch().operatorNotEquals(), I18nProvider.getSearch().operatorST(),
-							I18nProvider.getSearch().operatorSE(), I18nProvider.getSearch().operatorBT(),
-							I18nProvider.getSearch().operatorBE() };
+							I18nProvider.getSearch().operatorBefore(), I18nProvider.getSearch().operatorAfter() };
 				case CURRENCY:
 					return new String[] { I18nProvider.getSearch().operatorEquals(),
 							I18nProvider.getSearch().operatorNotEquals(), I18nProvider.getSearch().operatorST(),
@@ -190,9 +233,13 @@ public class AttributeCriterionPane extends Canvas {
 				return ">=";
 			} else if (I18nProvider.getSearch().operatorContains().equals(label)) {
 				return "contains";
+			} else if (I18nProvider.getSearch().operatorBefore().equals(label)) {
+				return "BEFORE";
+			} else if (I18nProvider.getSearch().operatorAfter().equals(label)) {
+				return "AFTER";
 			}
 		}
-		return null;
+		return label;
 	}
 
 	// -------------------------------------------------------------------------
@@ -213,11 +260,19 @@ public class AttributeCriterionPane extends Canvas {
 		attributeSelect.setHint(I18nProvider.getSearch().gridChooseAttribute());
 		attributeSelect.setShowHintInField(true);
 
+		attributeSelect.setValidateOnChange(true);
+		attributeSelect.setShowErrorStyle(true);
+		attributeSelect.setRequired(true);
+
 		// Operator select:
 		operatorSelect = new SelectItem("operatorItem");
 		operatorSelect.setDisabled(true);
 		operatorSelect.setWidth(140);
 		operatorSelect.setShowTitle(false);
+
+		operatorSelect.setValidateOnChange(true);
+		operatorSelect.setShowErrorStyle(true);
+		operatorSelect.setRequired(true);
 
 		// Value form item:
 		valueItem = new AttributeFormItem("valueItem");
