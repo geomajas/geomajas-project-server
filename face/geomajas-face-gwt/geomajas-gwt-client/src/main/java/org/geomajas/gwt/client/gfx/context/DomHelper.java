@@ -151,9 +151,12 @@ public class DomHelper {
 		} else {
 			return null;
 		}
-		// create if necessary
 		if (element == null) {
+			// Element was not found, so create it:
 			element = createElement(parent, name, type, style, generateId);
+		} else {
+			// Element was found, so update it:
+			DOM.setElementAttribute(element, "style", decode(style));
 		}
 		// no luck !
 		if (element == null) {

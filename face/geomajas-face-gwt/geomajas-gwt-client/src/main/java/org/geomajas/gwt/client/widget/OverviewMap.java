@@ -81,7 +81,7 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 	private boolean drawTargetMaxExtent;
 
 	/**
-	 * Constructor the an overview map. The scalebar, panning buttons and zoomOnScroll are automatically disabled. Also
+	 * Constructor the an overview map. The scale bar, panning buttons and zoomOnScroll are automatically disabled. Also
 	 * a {@link OverviewMapController} is automatically set.
 	 * 
 	 * @param id
@@ -160,12 +160,12 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 	}
 
 	/**
-	 * Move the Point of view (rectangle or reticle) to a new location. This does not update the targetmap!
+	 * Move the Point of view (rectangle or reticle) to a new location. This does not update the target map!
 	 * 
 	 * @param deltaX
-	 *            horizontal amount the pov should be moved from current location: screenview coordinate!
+	 *            horizontal amount the pov should be moved from current location: screen view coordinate!
 	 * @param deltaY
-	 *            vertical amount the pov should be moved from current location: screenview coordinate!
+	 *            vertical amount the pov should be moved from current location: screen view coordinate!
 	 */
 	public void movePov(double deltaX, double deltaY) {
 		if (null != targetRectangle) {
@@ -182,12 +182,12 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 	/**
 	 * Pan the target map to a new location.
 	 * <p>
-	 * You do not need to use movePov(), this will be done through the eventlistener.
+	 * You do not need to use movePov(), this will be done through the event-listener.
 	 * 
 	 * @param deltaX
-	 *            horizontal amount the targetmap should be moved from current location: worldview coordinate!
+	 *            horizontal amount the target map should be moved from current location: world view coordinate!
 	 * @param deltaY
-	 *            vertical amount the targetmap should be moved from current location: worldview coordinate!
+	 *            vertical amount the target map should be moved from current location: world view coordinate!
 	 */
 	public void panTargetMap(double deltaX, double deltaY) {
 		targetMap.getMapModel().getMapView().translate(deltaX, deltaY);
@@ -210,7 +210,7 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 		this.rectangleStyle = rectangleStyle;
 		if (targetRectangle != null) {
 			targetRectangle.setStyle(rectangleStyle);
-			render(targetRectangle, RenderGroup.SCREEN, RenderStatus.UPDATE);
+			render(targetRectangle, RenderGroup.SCREEN, RenderStatus.ALL);
 		}
 	}
 
