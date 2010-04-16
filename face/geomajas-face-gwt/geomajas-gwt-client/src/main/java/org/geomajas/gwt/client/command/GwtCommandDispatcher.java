@@ -50,7 +50,7 @@ import com.smartgwt.client.util.SC;
  * 
  * @author Pieter De Graef
  */
-@Api
+@Api(allMethods = true)
 public final class GwtCommandDispatcher implements HasDispatchHandlers {
 
 	private static GwtCommandDispatcher INSTANCE;

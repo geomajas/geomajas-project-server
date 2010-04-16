@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.global.Api;
 import org.geomajas.gwt.client.gfx.Paintable;
 import org.geomajas.gwt.client.gfx.PainterVisitor;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
@@ -54,6 +55,7 @@ import org.geomajas.layer.feature.attribute.UrlAttribute;
  * 
  * @author Pieter De Graef
  */
+@Api
 public class Feature implements Paintable, Cloneable {
 
 	/** Unique identifier */

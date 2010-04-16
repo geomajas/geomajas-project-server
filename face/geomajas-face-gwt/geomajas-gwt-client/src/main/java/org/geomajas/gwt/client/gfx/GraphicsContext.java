@@ -55,7 +55,7 @@ import org.geomajas.gwt.client.spatial.geometry.Polygon;
  * @author Jan De Moerloose
  * @author Pieter De Graef
  */
-@Api
+@Api(allMethods = true)
 public interface GraphicsContext {
 
 	/**

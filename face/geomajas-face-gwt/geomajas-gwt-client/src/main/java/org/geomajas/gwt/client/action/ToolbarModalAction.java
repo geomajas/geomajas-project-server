@@ -28,8 +28,8 @@ import org.geomajas.global.Api;
 import com.smartgwt.client.widgets.events.ClickEvent;
 
 /**
- * Abstract class which serves as a template for selectable buttons in a toolbar. These selectable buttons can be
- * selected and deselected. With each of these actions a different method is executed. Usually this type of toolbar
+ * Abstract class which serves as a template for selectable buttons in a tool bar. These selectable buttons can be
+ * selected and deselected. With each of these actions a different method is executed. Usually this type of tool bar
  * button is used to set a new controller onto the {@link org.geomajas.gwt.client.widget.MapWidget}. If you are looking
  * for an action that should be executed immediately when clicking on it, have a look at the
  * {@link org.geomajas.gwt.client.action.ToolbarAction} class.
@@ -46,12 +46,12 @@ public abstract class ToolbarModalAction extends ToolbarBaseAction {
 	// Class specific actions:
 
 	/**
-	 * When the toolbar button is selected, this method will be called.
+	 * When the tool bar button is selected, this method will be called.
 	 */
 	public abstract void onSelect(ClickEvent event);
 
 	/**
-	 * When the toolbar button is deselected, this method will be called.
+	 * When the tool bar button is deselected, this method will be called.
 	 */
 	public abstract void onDeselect(ClickEvent event);
 }

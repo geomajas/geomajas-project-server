@@ -27,7 +27,6 @@ package org.geomajas.gwt.client.gfx;
  * Implemented by complex paintable objects that will be represented by a group in the map.
  * 
  * @author Jan De Moerloose
- * 
  */
 public interface PaintableGroup extends Paintable {
 
@@ -37,5 +36,4 @@ public interface PaintableGroup extends Paintable {
 	 * @return name
 	 */
 	String getGroupName();
-
 }

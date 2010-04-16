@@ -32,17 +32,17 @@ import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.event.shared.HandlerRegistration;
 
 /**
- * Base toolbar action, defines the common bits between {@link ToolbarAction} and {@link ToolbarModalAction}.
+ * Base tool bar action, defines the common bits between {@link ToolbarAction} and {@link ToolbarModalAction}.
  * 
  * @author Joachim Van der Auwera
  */
 @Api(allMethods = true)
 public abstract class ToolbarBaseAction {
 
-	/** Link to the image icon that should represent the action's button in the toolbar. */
+	/** Link to the image icon that should represent the action's button in the tool bar. */
 	private String icon;
 
-	/** Text that appears when hovering over the toolbar button. */
+	/** Text that appears when hovering over the tool bar button. */
 	private String tooltip;
 
 	/** Is the button for this action disabled or not? */
@@ -66,13 +66,13 @@ public abstract class ToolbarBaseAction {
 
 	// Getters and setters:
 
-	/** Link to the image icon that should represent the action's button in the toolbar. */
+	/** Link to the image icon that should represent the action's button in the tool bar. */
 	public String getIcon() {
 		return icon;
 	}
 
 	/**
-	 * Link to the image icon that should represent the action's button in the toolbar.
+	 * Link to the image icon that should represent the action's button in the tool bar.
 	 * 
 	 * @param icon
 	 *            The new icon value
@@ -81,13 +81,13 @@ public abstract class ToolbarBaseAction {
 		this.icon = icon;
 	}
 
-	/** Text that appears when hovering over the toolbar button. */
+	/** Text that appears when hovering over the tool bar button. */
 	public String getTooltip() {
 		return tooltip;
 	}
 
 	/**
-	 * Text that appears when hovering over the toolbar button.
+	 * Text that appears when hovering over the tool bar button.
 	 * 
 	 * @param tooltip
 	 *            The new tooltip value

@@ -30,7 +30,7 @@ import org.geomajas.global.Api;
  *
  * @author Pieter De Graef
  */
-@Api
+@Api(allMethods = true)
 public interface CommandCallback {
 
 	/**

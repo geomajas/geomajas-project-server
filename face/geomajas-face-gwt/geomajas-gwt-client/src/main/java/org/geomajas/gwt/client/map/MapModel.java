@@ -30,6 +30,7 @@ import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientRasterLayerInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
+import org.geomajas.global.Api;
 import org.geomajas.gwt.client.gfx.Paintable;
 import org.geomajas.gwt.client.gfx.PainterVisitor;
 import org.geomajas.gwt.client.map.event.FeatureDeselectedEvent;
@@ -63,6 +64,7 @@ import com.google.gwt.event.shared.HandlerRegistration;
  * 
  * @author Pieter De Graef
  */
+@Api
 public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSelectionHandlers {
 
 	/**

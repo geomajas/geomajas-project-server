@@ -35,7 +35,7 @@ import org.geomajas.gwt.client.spatial.Matrix;
  * @author Jan De Moerloose
  *
  */
-@Api
+@Api(allMethods = true)
 public interface ImageContext {
 
 	/**

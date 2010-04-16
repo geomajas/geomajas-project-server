@@ -23,6 +23,7 @@
 package org.geomajas.gwt.client.map.layer;
 
 import org.geomajas.configuration.client.ClientRasterLayerInfo;
+import org.geomajas.global.Api;
 import org.geomajas.gwt.client.gfx.PainterVisitor;
 import org.geomajas.gwt.client.map.MapModel;
 import org.geomajas.gwt.client.map.cache.tile.RasterTile;
@@ -38,6 +39,7 @@ import org.geomajas.gwt.client.spatial.Bbox;
  * 
  * @author Jan De Moerloose
  */
+@Api
 public class RasterLayer extends AbstractLayer<ClientRasterLayerInfo> {
 
 	private RasterLayerStore store;

@@ -30,6 +30,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
+import org.geomajas.global.Api;
 import org.geomajas.gwt.client.gfx.PaintableGroup;
 import org.geomajas.gwt.client.gfx.PainterVisitor;
 import org.geomajas.gwt.client.gfx.paintable.Composite;
@@ -55,6 +56,7 @@ import com.google.gwt.event.shared.HandlerRegistration;
  * 
  * @author Pieter De Graef
  */
+@Api
 public class VectorLayer extends AbstractLayer<ClientVectorLayerInfo> implements HasFeatureSelectionHandlers {
 
 	/** Storage of features in this layer. */

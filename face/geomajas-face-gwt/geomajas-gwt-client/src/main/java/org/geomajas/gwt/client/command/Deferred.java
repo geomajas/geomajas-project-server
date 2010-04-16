@@ -29,10 +29,10 @@ import java.util.List;
 import com.smartgwt.client.core.Function;
 
 /**
- * Callback holder for a command. When a response returns from the server (either successfully or with errors to
- * report), the callbacks within this object will be executed. The idea is that you send out a request with a certain
- * callback, but perhaps while the command is being send, you may want to do some extra calculations with the results.
- * No need to send out an extra command to the server, just add a callback here.
+ * Call-back holder for a command. When a response returns from the server (either successfully or with errors to
+ * report), the call-backs within this object will be executed. The idea is that you send out a request with a certain
+ * call-back, but perhaps while the command is being send, you may want to do some extra calculations with the results.
+ * No need to send out an extra command to the server, just add a call-back here.
  * 
  * @author Pieter De Graef
  */

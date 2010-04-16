@@ -28,8 +28,8 @@ import org.geomajas.global.Api;
 import com.smartgwt.client.widgets.events.ClickHandler;
 
 /**
- * Abstract class that serves as a template for building toolbar actions. A toolbar action is an action that is
- * executed immediately when the toolbar button is clicked. If you want a selectable toolbar button, have a look at
+ * Abstract class that serves as a template for building tool bar actions. A tool bar action is an action that is
+ * executed immediately when the tool bar button is clicked. If you want a selectable tool bar button, have a look at
  * the {@link ToolbarModalAction} class.
  *
  * @author Pieter De Graef

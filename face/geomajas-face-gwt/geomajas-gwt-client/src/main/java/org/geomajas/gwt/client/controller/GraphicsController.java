@@ -39,7 +39,7 @@ import com.google.gwt.event.dom.client.MouseWheelHandler;
  *
  * @author Pieter De Graef
  */
-@Api
+@Api(allMethods = true)
 public interface GraphicsController extends MouseDownHandler, MouseUpHandler, MouseMoveHandler, MouseOutHandler,
 		MouseOverHandler, MouseWheelHandler, DoubleClickHandler {
 
