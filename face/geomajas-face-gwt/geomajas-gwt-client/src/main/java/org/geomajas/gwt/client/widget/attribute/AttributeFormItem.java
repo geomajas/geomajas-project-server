@@ -118,7 +118,7 @@ public class AttributeFormItem extends CanvasItem {
 	}
 
 	/** Return the form for the inner FormItem. On the returned form, validation will work. */
-	public DynamicForm getForm(){
+	public DynamicForm getForm() {
 		return form;
 	}
 }
