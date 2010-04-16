@@ -35,9 +35,9 @@ import org.geomajas.gwt.client.map.layer.Layer;
 public class LayerVisibleModalAction extends LayerTreeModalAction {
 
 	public LayerVisibleModalAction() {
-		super("[ISOMORPHIC]/geomajas/layertree/layer-show.png",
-				"[ISOMORPHIC]/geomajas/layertree/layer-hide.png",
-				"[ISOMORPHIC]/geomajas/layertree/layer-disabled.png",
+		super("[ISOMORPHIC]/geomajas/widget/layertree/layer-show.png",
+				"[ISOMORPHIC]/geomajas/widget/layertree/layer-hide.png",
+				"[ISOMORPHIC]/geomajas/widget/layertree/layer-disabled.png",
 				I18nProvider.getLayerTree().inVisibleAction(), I18nProvider.getLayerTree().visibleAction());
 	}
 

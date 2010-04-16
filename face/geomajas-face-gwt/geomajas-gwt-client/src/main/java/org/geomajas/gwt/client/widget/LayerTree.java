@@ -509,14 +509,14 @@ public class LayerTree extends Canvas implements LeafClickHandler, FolderClickHa
 			if (getLayer().isShowing()) {
 				if (getLayer().isLabeled()) {
 					// show icon labeled and showing
-					setIcon("[ISOMORPHIC]/geomajas/layertree/layer-show-labeled.png");
+					setIcon("[ISOMORPHIC]/geomajas/widget/layertree/layer-show-labeled.png");
 				} else {
 					// show showing icon
-					setIcon("[ISOMORPHIC]/geomajas/layertree/layer-show.png");
+					setIcon("[ISOMORPHIC]/geomajas/widget/layertree/layer-show.png");
 				}
 			} else {
 				// show not showing
-				setIcon("[ISOMORPHIC]/geomajas/layertree/layer-hide.png");
+				setIcon("[ISOMORPHIC]/geomajas/widget/layertree/layer-hide.png");
 			}
 			tree.refreshIcons();
 		}

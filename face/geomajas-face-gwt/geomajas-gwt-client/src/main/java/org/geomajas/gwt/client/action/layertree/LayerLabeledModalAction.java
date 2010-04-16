@@ -36,9 +36,9 @@ import org.geomajas.gwt.client.map.layer.VectorLayer;
 public class LayerLabeledModalAction extends LayerTreeModalAction {
 
 	public LayerLabeledModalAction() {
-		super("[ISOMORPHIC]/geomajas/layertree/labels-show.png",
-				"[ISOMORPHIC]/geomajas/layertree/labels-hide.png",
-				"[ISOMORPHIC]/geomajas/layertree/labels-disabled.png",
+		super("[ISOMORPHIC]/geomajas/widget/layertree/labels-show.png",
+				"[ISOMORPHIC]/geomajas/widget/layertree/labels-hide.png",
+				"[ISOMORPHIC]/geomajas/widget/layertree/labels-disabled.png",
 				I18nProvider.getLayerTree().labelHideAction(), I18nProvider.getLayerTree().labelAction());
 	}
 
@@ -57,5 +57,4 @@ public class LayerLabeledModalAction extends LayerTreeModalAction {
 	public void onSelect(Layer<?> layer) {
 		layer.setLabeled(true);
 	}
-
 }

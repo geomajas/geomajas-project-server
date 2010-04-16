@@ -40,8 +40,8 @@ public class LayerRefreshAction extends LayerTreeAction {
 	private MapWidget map;
 
 	public LayerRefreshAction(MapWidget map) {
-		super("[ISOMORPHIC]/geomajas/layertree/refresh.png", I18nProvider.getLayerTree().layerRefresh(),
-				"[ISOMORPHIC]/geomajas/layertree/refresh-disabled.png");
+		super("[ISOMORPHIC]/geomajas/widget/layertree/refresh.png", I18nProvider.getLayerTree().layerRefresh(),
+				"[ISOMORPHIC]/geomajas/widget/layertree/refresh-disabled.png");
 		this.map = map;
 	}
 
