@@ -102,14 +102,22 @@ public class AttributeCriterionPane extends Canvas {
 		Object operator = operatorSelect.getValue();
 		Object value = valueItem.getValue();
 
-		if (selectedAttribute != null && operator != null && value != null) {
+		if (selectedAttribute != null && operator != null) {
 			String operatorString = getOperatorCodeFromLabel(operator.toString());
-			String valueString = value.toString();
+			String valueString = "";
+			if (value != null) {
+				valueString = value.toString();
+			}
 
 			// CQL does not recognize "contains", so change to "like":
 			if ("contains".equals(operatorString)) {
 				operatorString = "LIKE";
 				valueString = "%" + valueString + "%";
+			}
+
+			// If value was null, and no "contains" operator, return null:
+			if (valueString == null || valueString.length() == 0) {
+				return null;
 			}
 
 			if (selectedAttribute instanceof PrimitiveAttributeInfo) {
@@ -290,6 +298,7 @@ public class AttributeCriterionPane extends Canvas {
 					operatorSelect.setDisabled(false);
 					String[] operators = getOperatorsForAttributeType(selectedAttribute);
 					operatorSelect.setValueMap(operators);
+					operatorSelect.setValue(operators[0]);
 
 					// Adjust value form item and enable:
 					valueItem.setAttributeInfo(selectedAttribute);

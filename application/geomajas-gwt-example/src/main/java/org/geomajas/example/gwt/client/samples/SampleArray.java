@@ -30,6 +30,7 @@ import org.geomajas.example.gwt.client.samples.controller.RectangleControllerSam
 import org.geomajas.example.gwt.client.samples.editing.EditLineLayerSample;
 import org.geomajas.example.gwt.client.samples.editing.EditPointLayerSample;
 import org.geomajas.example.gwt.client.samples.editing.EditPolygonLayerSample;
+import org.geomajas.example.gwt.client.samples.grid.AttributeSearchSample;
 import org.geomajas.example.gwt.client.samples.grid.FeatureListGridSample;
 import org.geomajas.example.gwt.client.samples.grid.SearchSample;
 import org.geomajas.example.gwt.client.samples.i18n.I18nProvider;
@@ -144,6 +145,8 @@ public final class SampleArray {
 						FeatureListGridSample.TITLE, "FeatureListGridGroup", FeatureListGridSample.FACTORY),
 				new SampleTreeNode(I18nProvider.getSampleMessages().searchTitle(), "[ISOMORPHIC]/geomajas/layer.png",
 						SearchSample.TITLE, "FeatureListGridGroup", SearchSample.FACTORY),
+				new SampleTreeNode(I18nProvider.getSampleMessages().search2Title(), "[ISOMORPHIC]/geomajas/layer.png",
+						AttributeSearchSample.TITLE, "FeatureListGridGroup", AttributeSearchSample.FACTORY),
 
 				// Map controller:
 				new SampleTreeNode(I18nProvider.getSampleMessages().treeGroupMapController(),

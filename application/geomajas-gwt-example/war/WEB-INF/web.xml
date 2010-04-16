@@ -22,7 +22,7 @@
 			org/geomajas/example/gwt/samples/mapwidget/mapGeoTools.xml
 			org/geomajas/example/gwt/samples/mapwidget/mapGoogle.xml
 			org/geomajas/example/gwt/samples/mapwidget/mapGoogleSat.xml
-			org/geomajas/example/gwt/samples/overviewmap/overviewMapOsm.xml
+			org/geomajas/example/gwt/samples/mapWidget/overviewMapOsm.xml
 			org/geomajas/example/gwt/samples/security/security.xml
 			org/geomajas/example/gwt/samples/security/mapWmsToolbar.xml
 			org/geomajas/example/gwt/samples/toolbar/mapOsmNavigationToolbar.xml

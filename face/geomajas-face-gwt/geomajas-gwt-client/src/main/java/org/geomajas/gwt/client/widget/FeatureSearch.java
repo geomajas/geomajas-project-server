@@ -352,8 +352,6 @@ public class FeatureSearch extends Canvas {
 						}
 					}
 				});
-//			} else {
-//				SC.warn(I18nProvider.getSearch().warningNoCriteria());
 			}
 		}
 	}

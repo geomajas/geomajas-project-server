@@ -363,4 +363,12 @@ public interface SampleMessages extends Messages {
 	String searchTitle();
 
 	String searchDescription();
+
+	// FeatureSearch - attribute test:
+
+	String search2Title();
+
+	String search2Description();
+
+	String search2InnerTitle();
 }
