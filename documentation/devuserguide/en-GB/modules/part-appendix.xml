@@ -51,6 +51,12 @@
             <code>RenderException</code>. The <code>RenderException</code>
             class has been moved to api-experimental.</para>
           </listitem>
+
+          <listitem>
+            <para><code>LocaleSelect</code> now needs a parameter in the
+            constructor. This parameter is the name of the default
+            language.</para>
+          </listitem>
         </itemizedlist></para>
     </section>
 

@@ -1076,11 +1076,11 @@
     <section>
       <title>API annotation</title>
 
-      <para>As there "backwards compatible" guarantee for versions with the
-      same minor version (the Y in vX.Y.Z) only refers to what is considered
-      API, it is important that it is clear which classes and interfaces and
-      which methods in these classes and interfaces are considered as part of
-      the API.</para>
+      <para>As Geomajas is a framework for building enterprise application, it
+      is important we are very accurate about what exactly is considered part
+      of the API, specifically which classes and interfaces and which methods
+      in these classes and interfaces are considered as part of the
+      API.</para>
 
       <para>For this reason, we have introduced the "@Api" annotation. A class
       of interface is only considered part of the public API when it is
@@ -1183,6 +1183,59 @@
       <para>You can expect to find this annotation on all widgets, though it
       is likely that not all public methods will be considered part of the
       API.</para>
+    </section>
+
+    <section>
+      <title>API compatibility and Geomajas Versions</title>
+
+      <para>Versions have the structure "major.minor.revision". Geomajas uses
+      a even-odd versioning scheme for the "minor" part.</para>
+
+      <para>The major number indicates major changes in the framework and thus
+      gives no guarantee about API compatibilty with previous major
+      versions.</para>
+
+      <para>Versions with an even minor part are considered stable and
+      suitable for production use. Odd minor versions are used for development
+      to work on and test new features to be released in the next stable
+      version. The API for Geomajas needs to be upward compatible for all
+      stable versions with same major number. Specifically this means that
+      <itemizedlist>
+          <listitem>
+            <para>No API classes or interfaces may be removed.</para>
+          </listitem>
+
+          <listitem>
+            <para>No API classes or interfaces may be renamed.</para>
+          </listitem>
+
+          <listitem>
+            <para>No API classes or interfaces may have their package name
+            modified.</para>
+          </listitem>
+
+          <listitem>
+            <para>No API methods may be removed.</para>
+          </listitem>
+
+          <listitem>
+            <para>No API methods may have their signature changed.</para>
+          </listitem>
+
+          <listitem>
+            <para>No methods may be added to classes annotated using
+            "<code>@<code>UserImplemented</code></code>".</para>
+          </listitem>
+
+          <listitem>
+            <para>No commands which have an API request or response object
+            </para>
+          </listitem>
+        </itemizedlist></para>
+
+      <para>Additionally, all methods and classes which are added should
+      include an indication of the version in which the class and/or method
+      was added.</para>
     </section>
   </chapter>
 
@@ -1894,7 +1947,7 @@
                     <listitem>
                       <para><emphasis>queryType</emphasis>: Specify exactly
                       whether to search using INTERSECT, TOUCHES, WITHIN or
-                      CONTAINS. </para>
+                      CONTAINS.</para>
                     </listitem>
 
                     <listitem>

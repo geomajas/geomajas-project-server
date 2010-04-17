@@ -48,7 +48,7 @@ import com.smartgwt.client.widgets.form.fields.events.ChangedHandler;
  * 
  * @author Pieter De Graef
  */
-@Api
+@Api(allMethods = true)
 public class LocaleSelect extends Canvas implements ChangedHandler {
 
 	/** The full mapping of locales and their language counterparts that Geomajas supports. */
