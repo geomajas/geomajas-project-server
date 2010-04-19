@@ -42,9 +42,9 @@ import org.junit.Test;
  */
 public class SourceCodeCreator {
 
-	private static final String SAMPLE_FOLDER = "src/main/java/org/geomajas/gwt/client/samples/";
+	private static final String SAMPLE_FOLDER = "src/main/java/org/geomajas/example/gwt/client/samples/";
 
-	private static final String DESTINATION_FOLDER = "src/main/resources/org/geomajas/gwt/client/samples/";
+	private static final String DESTINATION_FOLDER = "src/main/resources/org/geomajas/example/gwt/client/samples/";
 
 	private static final String SEARCH_STRING = "\tpublic Canvas getViewPanel";
 

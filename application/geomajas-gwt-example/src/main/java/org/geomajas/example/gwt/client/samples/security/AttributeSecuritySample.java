@@ -181,13 +181,13 @@ public class AttributeSecuritySample extends SamplePanel {
 	}
 
 	public String getSourceFileName() {
-		return "classpath:org/geomajas/gwt/client/samples/security/AttributeSecuritySample.txt";
+		return "classpath:org/geomajas/example/gwt/client/samples/security/AttributeSecuritySample.txt";
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "classpath:org/geomajas/gwt/samples/security/security.xml",
-				"classpath:org/geomajas/gwt/samples/mapwidget/layerBeans.xml",
-				"classpath:org/geomajas/gwt/samples/mapwidget/mapBeans.xml" };
+		return new String[] { "classpath:org/geomajas/example/gwt/clientcfg/security/security.xml",
+				"classpath:org/geomajas/example/gwt/servercfg/vector/layerBeans.xml",
+				"classpath:org/geomajas/example/gwt/clientcfg/attribute/mapBeans.xml" };
 	}
 
 	public String ensureUserLoggedIn() {

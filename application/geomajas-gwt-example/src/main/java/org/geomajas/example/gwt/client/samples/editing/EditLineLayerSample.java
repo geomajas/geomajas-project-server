@@ -69,7 +69,7 @@ public class EditLineLayerSample extends SamplePanel {
 
 			// When the map is initialized: select the cities layer - so that new features are created in this layer:
 			public void onMapModelChange(MapModelEvent event) {
-				map.getMapModel().selectLayer(map.getMapModel().getLayer("duisburgRoadsLayer"));
+				map.getMapModel().selectLayer(map.getMapModel().getLayer("editableRoadsLayer"));
 			}
 		});
 
@@ -97,13 +97,13 @@ public class EditLineLayerSample extends SamplePanel {
 	}
 
 	public String getSourceFileName() {
-		return "classpath:org/geomajas/gwt/client/samples/editing/EditLineLayerSample.txt";
+		return "classpath:org/geomajas/example/gwt/client/samples/editing/EditLineLayerSample.txt";
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "classpath:org/geomajas/gwt/samples/mapwidget/layerOsm.xml",
-				"classpath:org/geomajas/gwt/samples/editing/mapEditLineLayer.xml",
-				"classpath:org/geomajas/gwt/samples/shapeinmem/layerRoads.xml" };
+		return new String[] { "classpath:org/geomajas/example/gwt/clientcfg/editing/mapEditLineLayer.xml",
+				"classpath:org/geomajas/example/gwt/servercfg/raster/layerOsm.xml",
+				"classpath:org/geomajas/example/gwt/servercfg/vector/layerRoads.xml" };
 	}
 
 	public String ensureUserLoggedIn() {

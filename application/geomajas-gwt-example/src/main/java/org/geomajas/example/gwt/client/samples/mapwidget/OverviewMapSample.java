@@ -69,7 +69,7 @@ public class OverviewMapSample extends SamplePanel {
 		mapLayout.setShowEdges(true);
 
 		// Map with ID osmNavigationToolbarMap is defined in the XML configuration.
-		final MapWidget map = new MapWidget("osmNavigationToolbarMap", "gwt-samples");
+		final MapWidget map = new MapWidget("osmMap", "gwt-samples");
 		map.setController(new PanController(map));
 		mapLayout.addMember(map);
 
@@ -157,13 +157,13 @@ public class OverviewMapSample extends SamplePanel {
 	}
 
 	public String getSourceFileName() {
-		return "classpath:org/geomajas/gwt/client/samples/mapwidget/OverviewMapSample.txt";
+		return "classpath:org/geomajas/example/gwt/client/samples/mapwidget/OverviewMapSample.txt";
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "classpath:org/geomajas/gwt/samples/mapwidget/layerOsm.xml",
-				"classpath:org/geomajas/gwt/samples/mapWidget/overviewMapOsm.xml",
-				"classpath:org/geomajas/gwt/samples/toolbar/mapOsmNavigationToolbar.xml" };
+		return new String[] { "classpath:org/geomajas/example/gwt/servercfg/raster/layerOsm.xml",
+				"classpath:org/geomajas/example/gwt/clientcfg/mapWidget/overviewMapOsm.xml",
+				"classpath:org/geomajas/example/gwt/clientcfg/layer/mapOsm.xml" };
 	}
 
 	public String ensureUserLoggedIn() {

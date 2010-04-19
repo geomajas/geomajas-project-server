@@ -1,0 +1,150 @@
+<!--
+  ~ This file is part of Geomajas, a component framework for building
+  ~ rich Internet applications (RIA) with sophisticated capabilities for the
+  ~ display, analysis and management of geographic information.
+  ~ It is a building block that allows developers to add maps
+  ~ and other geographic data capabilities to their web applications.
+  ~
+  ~ Copyright 2008-2010 Geosparc, http://www.geosparc.com, Belgium
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU Affero General Public License as
+  ~ published by the Free Software Foundation, either version 3 of the
+  ~ License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU Affero General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU Affero General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<beans
+		xmlns="http://www.springframework.org/schema/beans"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xmlns:context="http://www.springframework.org/schema/context"
+		xsi:schemaLocation="
+http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-2.5.xsd"
+		>
+
+	<bean name="riversInfo" class="org.geomajas.configuration.VectorLayerInfo">
+		<property name="layerType" value="MULTILINESTRING"/>
+		<property name="crs" value="EPSG:4326"/>
+		<property name="maxExtent">
+			<bean class="org.geomajas.geometry.Bbox">
+				<property name="x" value="-85.05112877980659"/>
+				<property name="y" value="-85.05112877980659"/>
+				<property name="width" value="170.102257"/>
+				<property name="height" value="170.102257"/>
+			</bean>
+		</property>
+		<property name="featureInfo" ref="riversFeatureInfo" />
+		<property name="namedStyleInfos">
+			<list>
+				<ref bean="riversStyleInfo" />
+			</list>
+		</property>
+	</bean>
+
+    <bean class="org.geomajas.configuration.FeatureInfo" name="riversFeatureInfo">
+         <property name="dataSourceName" value="Rivers"/>
+         <property name="identifier">
+             <bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+                 <property name="label" value="Id"/>
+                 <property name="name" value="ID"/>
+                 <property name="type" value="LONG"/>
+             </bean>
+         </property>
+         <property name="geometryType">
+             <bean class="org.geomajas.configuration.GeometryAttributeInfo">
+                 <property name="name" value="the_geom"/>
+                 <property name="editable" value="true"/>
+             </bean>
+         </property>
+         <property name="attributes">
+             <list>
+                 <bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+                     <property name="label" value="Name"/>
+                     <property name="name" value="NAME"/>
+                     <property name="editable" value="true"/>
+                     <property name="identifying" value="true"/>
+                     <property name="type" value="STRING"/>
+                     <property name="validator">
+						 <bean class="org.geomajas.configuration.validation.ValidatorInfo">
+							<property name="toolTip" value="The name of the river."/>
+							<property name="constraints">
+								<list>
+									<bean class="org.geomajas.configuration.validation.NotNullConstraintInfo"/>
+								</list>
+							</property>
+						</bean>
+                      </property>
+                 </bean>
+                 <bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
+                     <property name="label" value="System"/>
+                     <property name="name" value="SYSTEM"/>
+                     <property name="editable" value="true"/>
+                     <property name="identifying" value="true"/>
+                     <property name="type" value="STRING"/>
+                     <property name="validator">
+						 <bean class="org.geomajas.configuration.validation.ValidatorInfo">
+							<property name="toolTip" value="River system."/>
+							<property name="constraints">
+								<list>
+									<bean class="org.geomajas.configuration.validation.NotNullConstraintInfo"/>
+								</list>
+							</property>
+						</bean>
+                      </property>
+                 </bean>
+             </list>
+         </property>
+     </bean>
+
+	<bean class="org.geomajas.configuration.NamedStyleInfo" name="riversStyleInfo">
+		<property name="featureStyles">
+			<list>
+                <bean class="org.geomajas.configuration.FeatureStyleInfo">
+                    <property name="name" value="Rivers"/>
+                    <property name="fillColor" value="#333399"/>
+                    <property name="fillOpacity" value="0"/>
+                    <property name="strokeColor" value="#333399"/>
+                    <property name="strokeOpacity" value="0.8"/>
+                    <property name="strokeWidth" value="2"/>
+                </bean>
+			</list>
+		</property>
+		<property name="labelStyle">
+			<bean class="org.geomajas.configuration.LabelStyleInfo">
+                <property name="labelAttributeName" value="NAME"/>
+                <property name="fontStyle">
+                    <bean class="org.geomajas.configuration.FeatureStyleInfo">
+                        <property name="fillColor" value="#FFFFFF"/>
+                        <property name="fillOpacity" value="1"/>
+                    </bean>
+                </property>
+                <property name="backgroundStyle">
+                    <bean class="org.geomajas.configuration.FeatureStyleInfo">
+                        <property name="fillColor" value="#000000"/>
+                        <property name="fillOpacity" value=".7"/>
+                        <property name="strokeColor" value="#0000FF"/>
+                        <property name="strokeOpacity" value="1"/>
+                        <property name="strokeWidth" value="1"/>
+                    </bean>
+                </property>
+			</bean>
+		</property>
+	</bean>
+
+
+	<bean name="rivers" class="org.geomajas.layer.shapeinmem.ShapeInMemLayer">
+		<property name="url" value="classpath:org/geomajas/example/gwt/servercfg/vector/shapefile/Rivers.shp"/>
+		<property name="layerInfo" ref="riversInfo" />
+	</bean>
+
+</beans>

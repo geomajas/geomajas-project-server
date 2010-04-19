@@ -69,7 +69,7 @@ public class EditPolygonLayerSample extends SamplePanel {
 
 			// When the map is initialized: select the cities layer - so that new features are created in this layer:
 			public void onMapModelChange(MapModelEvent event) {
-				map.getMapModel().selectLayer(map.getMapModel().getLayer("structuresLayer"));
+				map.getMapModel().selectLayer(map.getMapModel().getLayer("editableStructuresLayer"));
 			}
 		});
 
@@ -97,13 +97,13 @@ public class EditPolygonLayerSample extends SamplePanel {
 	}
 
 	public String getSourceFileName() {
-		return "classpath:org/geomajas/gwt/client/samples/editing/EditPolygonLayerSample.txt";
+		return "classpath:org/geomajas/example/gwt/client/samples/editing/EditPolygonLayerSample.txt";
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "classpath:org/geomajas/gwt/samples/mapwidget/layerOsm.xml",
-				"classpath:org/geomajas/gwt/samples/editing/mapEditLineLayer.xml",
-				"classpath:org/geomajas/gwt/samples/shapeinmem/layerStructures.xml" };
+		return new String[] { "classpath:org/geomajas/example/gwt/clientcfg/editing/mapEditPolygonLayer.xml",
+				"classpath:org/geomajas/example/gwt/servercfg/raster/layerOsm.xml",
+				"classpath:org/geomajas/example/gwt/servercfg/vector/layerStructures.xml" };
 	}
 
 	public String ensureUserLoggedIn() {

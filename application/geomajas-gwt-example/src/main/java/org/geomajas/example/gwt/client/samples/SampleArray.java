@@ -23,6 +23,9 @@
 
 package org.geomajas.example.gwt.client.samples;
 
+import org.geomajas.example.gwt.client.samples.attribute.AttributeSearchSample;
+import org.geomajas.example.gwt.client.samples.attribute.FeatureListGridSample;
+import org.geomajas.example.gwt.client.samples.attribute.SearchSample;
 import org.geomajas.example.gwt.client.samples.base.SampleTreeNode;
 import org.geomajas.example.gwt.client.samples.controller.ControllerOnElementSample;
 import org.geomajas.example.gwt.client.samples.controller.CustomControllerSample;
@@ -30,23 +33,20 @@ import org.geomajas.example.gwt.client.samples.controller.RectangleControllerSam
 import org.geomajas.example.gwt.client.samples.editing.EditLineLayerSample;
 import org.geomajas.example.gwt.client.samples.editing.EditPointLayerSample;
 import org.geomajas.example.gwt.client.samples.editing.EditPolygonLayerSample;
-import org.geomajas.example.gwt.client.samples.grid.AttributeSearchSample;
-import org.geomajas.example.gwt.client.samples.grid.FeatureListGridSample;
-import org.geomajas.example.gwt.client.samples.grid.SearchSample;
 import org.geomajas.example.gwt.client.samples.i18n.I18nProvider;
+import org.geomajas.example.gwt.client.samples.layer.GeoToolsSample;
+import org.geomajas.example.gwt.client.samples.layer.GoogleSample;
+import org.geomajas.example.gwt.client.samples.layer.OpenStreetMapSample;
+import org.geomajas.example.gwt.client.samples.layer.WmsSample;
 import org.geomajas.example.gwt.client.samples.layertree.LayertreeSample;
 import org.geomajas.example.gwt.client.samples.layertree.LegendSample;
 import org.geomajas.example.gwt.client.samples.mapwidget.CrsSample;
-import org.geomajas.example.gwt.client.samples.mapwidget.GeoToolsSample;
-import org.geomajas.example.gwt.client.samples.mapwidget.GoogleSample;
 import org.geomajas.example.gwt.client.samples.mapwidget.MaxBoundsToggleSample;
 import org.geomajas.example.gwt.client.samples.mapwidget.NavigationSample;
-import org.geomajas.example.gwt.client.samples.mapwidget.OpenStreetMapSample;
 import org.geomajas.example.gwt.client.samples.mapwidget.OverviewMapSample;
 import org.geomajas.example.gwt.client.samples.mapwidget.PanScaleToggleSample;
 import org.geomajas.example.gwt.client.samples.mapwidget.RenderingSample;
 import org.geomajas.example.gwt.client.samples.mapwidget.UnitTypesSample;
-import org.geomajas.example.gwt.client.samples.mapwidget.WmsSample;
 import org.geomajas.example.gwt.client.samples.mapwidget.WorldScreenSample;
 import org.geomajas.example.gwt.client.samples.security.AttributeSecuritySample;
 import org.geomajas.example.gwt.client.samples.security.CommandSecuritySample;

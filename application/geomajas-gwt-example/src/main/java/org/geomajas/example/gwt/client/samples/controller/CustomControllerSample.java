@@ -59,8 +59,13 @@ public class CustomControllerSample extends SamplePanel {
 		layout.setWidth100();
 		layout.setHeight100();
 
+		VLayout mapLayout = new VLayout();
+		mapLayout.setShowEdges(true);
+		mapLayout.setHeight("60%");
+
 		// Map with ID wmsMap is defined in the XML configuration. (mapWms.xml)
 		final MapWidget map = new MapWidget("wmsMap", "gwt-samples");
+		mapLayout.addMember(map);
 
 		VLayout labelLayout = new VLayout();
 		final Label label = new Label();
@@ -81,9 +86,9 @@ public class CustomControllerSample extends SamplePanel {
 
 		// Set the controller on the map:
 		map.setController(customController);
-		layout.addMember(map);
-		layout.addMember(labelLayout);
 
+		layout.addMember(mapLayout);
+		layout.addMember(labelLayout);
 		return layout;
 	}
 
@@ -92,12 +97,12 @@ public class CustomControllerSample extends SamplePanel {
 	}
 
 	public String getSourceFileName() {
-		return "classpath:org/geomajas/gwt/client/samples/controller/CustomControllerSample.txt";
+		return "classpath:org/geomajas/example/gwt/client/samples/controller/CustomControllerSample.txt";
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "classpath:org/geomajas/gwt/samples/mapwidget/layerWmsBlueMarble.xml",
-				"classpath:org/geomajas/gwt/samples/mapwidget/mapWms.xml" };
+		return new String[] { "classpath:org/geomajas/example/gwt/servercfg/raster/layerWmsBluemarble.xml",
+				"classpath:org/geomajas/example/gwt/clientcfg/layer/mapWms.xml" };
 	}
 
 	public String ensureUserLoggedIn() {

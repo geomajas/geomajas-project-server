@@ -75,12 +75,12 @@ public class ToolbarNavigationSample extends SamplePanel {
 	}
 
 	public String getSourceFileName() {
-		return "classpath:org/geomajas/gwt/client/samples/toolbar/ToolbarNavigationSample.txt";
+		return "classpath:org/geomajas/example/gwt/client/samples/toolbar/ToolbarNavigationSample.txt";
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "classpath:org/geomajas/gwt/samples/mapwidget/layerOsm.xml",
-				"classpath:org/geomajas/gwt/samples/toolbar/mapOsmNavigationToolbar.xml" };
+		return new String[] { "classpath:org/geomajas/example/gwt/servercfg/raster/layerOsm.xml",
+				"classpath:org/geomajas/example/gwt/clientcfg/toolbar/mapNavigation.xml" };
 	}
 
 	public String ensureUserLoggedIn() {

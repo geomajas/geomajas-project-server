@@ -149,12 +149,12 @@ public class WorldScreenSample extends SamplePanel {
 	}
 
 	public String getSourceFileName() {
-		return "classpath:org/geomajas/gwt/client/samples/mapwidget/WorldScreenSample.txt";
+		return "classpath:org/geomajas/example/gwt/client/samples/mapwidget/WorldScreenSample.txt";
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "classpath:org/geomajas/gwt/samples/mapwidget/layerOsm.xml",
-				"classpath:org/geomajas/gwt/samples/mapwidget/mapOsm.xml" };
+		return new String[] { "classpath:org/geomajas/example/gwt/servercfg/raster/layerOsm.xml",
+				"classpath:org/geomajas/example/gwt/clientcfg/layer/mapOsm.xml" };
 	}
 
 	public String ensureUserLoggedIn() {

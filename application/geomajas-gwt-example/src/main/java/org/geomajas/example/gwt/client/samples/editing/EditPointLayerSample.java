@@ -69,7 +69,7 @@ public class EditPointLayerSample extends SamplePanel {
 
 			// When the map is initialized: select the cities layer - so that new features are created in this layer:
 			public void onMapModelChange(MapModelEvent event) {
-				map.getMapModel().selectLayer(map.getMapModel().getLayer("citiesLayer"));
+				map.getMapModel().selectLayer(map.getMapModel().getLayer("editableCitiesLayer"));
 			}
 		});
 
@@ -97,13 +97,13 @@ public class EditPointLayerSample extends SamplePanel {
 	}
 
 	public String getSourceFileName() {
-		return "classpath:org/geomajas/gwt/client/samples/editing/EditPointLayerSample.txt";
+		return "classpath:org/geomajas/example/gwt/client/samples/editing/EditPointLayerSample.txt";
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "classpath:org/geomajas/gwt/samples/mapwidget/layerOsm.xml",
-				"classpath:org/geomajas/gwt/samples/editing/mapEditPointLayer.xml",
-				"classpath:org/geomajas/gwt/samples/editing/layerCities.xml" };
+		return new String[] { "classpath:org/geomajas/example/gwt/clientcfg/editing/mapEditPointLayer.xml",
+				"classpath:org/geomajas/example/gwt/servercfg/raster/layerOsm.xml",
+				"classpath:org/geomajas/example/gwt/servercfg/vector/layerCities.xml" };
 	}
 
 	public String ensureUserLoggedIn() {

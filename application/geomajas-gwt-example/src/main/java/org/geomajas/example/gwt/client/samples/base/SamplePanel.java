@@ -95,8 +95,7 @@ public abstract class SamplePanel extends VLayout {
 
 			Window descriptionWindow = new Window();
 			descriptionWindow.setTitle(I18nProvider.getSampleMessages().generalDescription());
-			descriptionWindow.setHeaderIcon("[ISOMORPHIC]/geomajas/geomajas_desktopicon_small.png", 16,
-					16);
+			descriptionWindow.setHeaderIcon("[ISOMORPHIC]/geomajas/geomajas_desktopicon_small.png", 16, 16);
 			descriptionWindow.setShowEdges(true);
 			descriptionWindow.setKeepInParentRect(true);
 			descriptionWindow.setHeaderControls(HeaderControls.HEADER_ICON, HeaderControls.HEADER_LABEL);
@@ -150,10 +149,6 @@ public abstract class SamplePanel extends VLayout {
 	// Private methods:
 	// -------------------------------------------------------------------------
 
-	// private String getSourceFileName() {
-	// return "/" + getClass().getName().replaceAll("\\.", "/") + ".txt";
-	// }
-
 	private void getJavaSource() {
 		String[] resourceFiles = new String[getConfigurationFiles().length + 1];
 		resourceFiles[0] = getSourceFileName();
@@ -162,7 +157,7 @@ public abstract class SamplePanel extends VLayout {
 		}
 
 		GetResourcesRequest request = new GetResourcesRequest(resourceFiles);
-		GwtCommand command = new GwtCommand("gwt.server.samples.GetSourceCommand");
+		GwtCommand command = new GwtCommand("example.gwt.server.samples.GetSourceCommand");
 		command.setCommandRequest(request);
 		GwtCommandDispatcher.getInstance().execute(command, new CommandCallback() {
 

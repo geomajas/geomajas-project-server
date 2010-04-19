@@ -1,0 +1,26 @@
+	public Canvas getViewPanel() {
+		VLayout layout = new VLayout();
+		layout.setWidth100();
+		layout.setHeight100();
+		layout.setMembersMargin(10);
+
+		// Create map with Google layer, and add a PanController to it:
+		VLayout mapLayout1 = new VLayout();
+		mapLayout1.setShowEdges(true);
+		final MapWidget googleMap = new MapWidget("googleMap", "gwt-samples");
+		googleMap.setController(new PanController(googleMap));
+		mapLayout1.addMember(googleMap);
+
+		// Create map with Google layer (satellite), and add a PanController to it:
+		VLayout mapLayout2 = new VLayout();
+		mapLayout2.setShowEdges(true);
+		final MapWidget googleSatMap = new MapWidget("googleSatMap", "gwt-samples");
+		googleSatMap.setController(new PanController(googleSatMap));
+		mapLayout2.addMember(googleSatMap);
+
+		// Place both in the layout:
+		layout.addMember(mapLayout1);
+		layout.addMember(mapLayout2);
+
+		return layout;
+	}

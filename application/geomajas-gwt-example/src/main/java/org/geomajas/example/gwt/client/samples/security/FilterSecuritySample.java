@@ -65,10 +65,10 @@ public class FilterSecuritySample extends SamplePanel {
 		layout.setHeight100();
 
 		// Map with ID duisburgMap is defined in the XML configuration. (mapDuisburg.xml)
-		VLayout mapLayout = new VLayout();
+		final VLayout mapLayout = new VLayout();
 		mapLayout.setShowEdges(true);
 		mapLayout.setHeight("60%");
-		map = new MapWidget("duisburgMap", "gwt-samples");
+		map = new MapWidget("mapDuisburg", "gwt-samples");
 		map.setController(new PanController(map));
 		mapLayout.addMember(map);
 
@@ -82,8 +82,8 @@ public class FilterSecuritySample extends SamplePanel {
 			public void execute(Boolean value) {
 				if (value) {
 					map.destroy();
-					map = new MapWidget("duisburgMap", "gwt-samples");
-					layout.addMember(map);
+					map = new MapWidget("mapDuisburg", "gwt-samples");
+					mapLayout.addMember(map);
 					map.setController(new PanController(map));
 				}
 			}
@@ -121,14 +121,15 @@ public class FilterSecuritySample extends SamplePanel {
 	}
 
 	public String getSourceFileName() {
-		return "classpath:org/geomajas/gwt/client/samples/security/FilterSecuritySample.txt";
+		return "classpath:org/geomajas/example/gwt/client/samples/security/FilterSecuritySample.txt";
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "classpath:org/geomajas/gwt/samples/security/security.xml",
-				"classpath:org/geomajas/gwt/samples/shapeinmem/layerRoads.xml",
-				"classpath:org/geomajas/gwt/samples/shapeinmem/layerStructures.xml",
-				"classpath:org/geomajas/gwt/samples/shapeinmem/mapDuisburg.xml" };
+		return new String[] { "classpath:org/geomajas/example/gwt/clientcfg/security/security.xml",
+				"classpath:org/geomajas/example/gwt/clientcfg/security/mapDuisburg.xml",
+				"classpath:org/geomajas/example/gwt/servercfg/vector/layerRoads.xml",
+				"classpath:org/geomajas/example/gwt/servercfg/vector/layerStructures.xml",
+				"classpath:org/geomajas/example/gwt/servercfg/raster/layerOsm.xml" };
 	}
 
 	public String ensureUserLoggedIn() {

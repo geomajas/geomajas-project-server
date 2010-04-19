@@ -70,13 +70,13 @@ public class CrsSample extends SamplePanel {
 	}
 
 	public String getSourceFileName() {
-		return "classpath:org/geomajas/gwt/client/samples/mapwidget/CrsSample.txt";
+		return "classpath:org/geomajas/example/gwt/client/samples/mapwidget/CrsSample.txt";
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "classpath:org/geomajas/gwt/samples/mapwidget/mapCrs.xml",
-				"classpath:org/geomajas/gwt/samples/mapwidget/layerBeansLonLat.xml",
-				"classpath:org/geomajas/gwt/samples/mapwidget/layerBeansMercator.xml" };
+		return new String[] { "classpath:org/geomajas/example/gwt/clientcfg/mapwidget/mapCrs.xml",
+				"classpath:org/geomajas/example/gwt/servercfg/vector/layerBeansLonLat.xml",
+				"classpath:org/geomajas/example/gwt/servercfg/vector/layerBeansMercator.xml" };
 	}
 
 	public String ensureUserLoggedIn() {

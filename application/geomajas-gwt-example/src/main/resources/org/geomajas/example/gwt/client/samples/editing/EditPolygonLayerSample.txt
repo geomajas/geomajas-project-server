@@ -13,17 +13,22 @@
 
 			// When the map is initialized: select the cities layer - so that new features are created in this layer:
 			public void onMapModelChange(MapModelEvent event) {
-				map.getMapModel().selectLayer(map.getMapModel().getLayer("structuresLayer"));
+				map.getMapModel().selectLayer(map.getMapModel().getLayer("editableStructuresLayer"));
 			}
 		});
-		map.setController(new ParentEditController(map));
+
+		// Create a toolbar for this map:
+		final Toolbar toolbar = new Toolbar(map);
+		toolbar.setButtonSize(Toolbar.BUTTON_SIZE_BIG);
+
+		mapLayout.addMember(toolbar);
 		mapLayout.addMember(map);
 
 		// Add an explanation to the page that explains how editing is done:
 		HLayout infoLayout = new HLayout();
 		infoLayout.setHeight("35%");
 		infoLayout.setShowEdges(true);
-		infoLayout.addMember(new Label("Explanation...."));
+		infoLayout.addMember(new EditingManual());
 
 		layout.addMember(mapLayout);
 		layout.addMember(infoLayout);

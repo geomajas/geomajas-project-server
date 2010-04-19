@@ -130,12 +130,12 @@ public class RectangleControllerSample extends SamplePanel {
 	}
 
 	public String getSourceFileName() {
-		return "classpath:org/geomajas/gwt/client/samples/controller/RectangleControllerSample.txt";
+		return "classpath:org/geomajas/example/gwt/client/samples/controller/RectangleControllerSample.txt";
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "classpath:org/geomajas/gwt/samples/mapwidget/layerWmsBlueMarble.xml",
-				"classpath:org/geomajas/gwt/samples/mapwidget/mapWms.xml" };
+		return new String[] { "classpath:org/geomajas/example/gwt/servercfg/raster/layerWmsBluemarble.xml",
+				"classpath:org/geomajas/example/gwt/clientcfg/layer/mapWms.xml" };
 	}
 
 	public String ensureUserLoggedIn() {

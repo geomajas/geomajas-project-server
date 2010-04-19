@@ -61,7 +61,7 @@ public class LegendSample extends SamplePanel {
 		mainLayout.setWidth100();
 		mainLayout.setHeight100();
 		mainLayout.setMembersMargin(10);
-		
+
 		HLayout topLayout = new HLayout();
 		topLayout.setMembersMargin(10);
 		topLayout.setHeight(170);
@@ -81,7 +81,7 @@ public class LegendSample extends SamplePanel {
 		rasterButton.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				Layer<?> layer = map.getMapModel().getLayer("osmLegendLayer");
+				Layer<?> layer = map.getMapModel().getLayer("osmLayer");
 				layer.setVisible(!layer.isShowing());
 			}
 		});
@@ -92,7 +92,7 @@ public class LegendSample extends SamplePanel {
 		lineButton.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				Layer<?> layer = map.getMapModel().getLayer("riversLegendLayer");
+				Layer<?> layer = map.getMapModel().getLayer("riversLayer");
 				layer.setVisible(!layer.isShowing());
 			}
 		});
@@ -103,7 +103,7 @@ public class LegendSample extends SamplePanel {
 		polygonButton.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				Layer<?> layer = map.getMapModel().getLayer("lakesLegendLayer");
+				Layer<?> layer = map.getMapModel().getLayer("lakesLayer");
 				layer.setVisible(!layer.isShowing());
 			}
 		});
@@ -114,7 +114,7 @@ public class LegendSample extends SamplePanel {
 		pointButton.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				Layer<?> layer = map.getMapModel().getLayer("citiesLegendLayer");
+				Layer<?> layer = map.getMapModel().getLayer("citiesLayer");
 				layer.setVisible(!layer.isShowing());
 			}
 		});
@@ -142,14 +142,15 @@ public class LegendSample extends SamplePanel {
 	}
 
 	public String getSourceFileName() {
-		return "classpath:org/geomajas/gwt/client/samples/layertree/LegendSample.txt";
+		return "classpath:org/geomajas/example/gwt/client/samples/layertree/LegendSample.txt";
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "classpath:org/geomajas/gwt/samples/layertree/mapLegend.xml",
-				"classpath:org/geomajas/gwt/samples/layertree/layerStructures.xml",
-				"classpath:org/geomajas/gwt/samples/layertree/layerRoads.xml",
-				"classpath:org/geomajas/gwt/samples/editing/layerCities.xml" };
+		return new String[] { "classpath:org/geomajas/example/gwt/clientcfg/layertree/mapLegend.xml",
+				"classpath:org/geomajas/example/gwt/servercfg/vector/layerLakes.xml",
+				"classpath:org/geomajas/example/gwt/servercfg/vector/layerRivers.xml",
+				"classpath:org/geomajas/example/gwt/servercfg/vector/layerCities.xml",
+				"classpath:org/geomajas/example/gwt/servercfg/raster/layerOsm.xml" };
 	}
 
 	public String ensureUserLoggedIn() {

@@ -83,14 +83,15 @@ public class LayertreeSample extends SamplePanel {
 	}
 
 	public String getSourceFileName() {
-		return "classpath:org/geomajas/gwt/client/samples/layertree/LayertreeSample.txt";
+		return "classpath:org/geomajas/example/gwt/client/samples/layertree/LayertreeSample.txt";
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "classpath:org/geomajas/gwt/samples/layertree/mapLegend.xml",
-				"classpath:org/geomajas/gwt/samples/layertree/layerStructures.xml",
-				"classpath:org/geomajas/gwt/samples/layertree/layerRoads.xml",
-				"classpath:org/geomajas/gwt/samples/editing/layerCities.xml" };
+		return new String[] { "classpath:org/geomajas/example/gwt/clientcfg/layertree/mapLegend.xml",
+				"classpath:org/geomajas/example/gwt/servercfg/vector/layerLakes.xml",
+				"classpath:org/geomajas/example/gwt/servercfg/vector/layerRivers.xml",
+				"classpath:org/geomajas/example/gwt/servercfg/vector/layerCities.xml",
+				"classpath:org/geomajas/example/gwt/servercfg/raster/layerOsm.xml" };
 	}
 
 	public String ensureUserLoggedIn() {

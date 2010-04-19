@@ -8,7 +8,7 @@
 		map.addDrawHandler(new DrawHandler() {
 
 			public void onDraw(DrawEvent event) {
-				final MenuGraphicsContext graphics = map.getGraphics();
+				final GraphicsContext graphics = map.getVectorContext();
 				// after map initialization we draw an image on the map
 				graphics.drawImage(map.getGroup(RenderGroup.SCREEN), "image", Geomajas.getIsomorphicDir() + IMAGE,
 						new Bbox(300, 300, 48, 48), new PictureStyle(1.0));
@@ -24,7 +24,7 @@
 				// When the user isDragging (mouse is down) we redraw the image at the location of the mousepointer
 				if (isDragging) {
 					Coordinate coordinate = this.getScreenPosition(event);
-					map.getGraphics().drawImage(map.getGroup(RenderGroup.SCREEN), "image",
+					map.getVectorContext().drawImage(map.getGroup(RenderGroup.SCREEN), "image",
 							Geomajas.getIsomorphicDir() + IMAGE,
 							new Bbox(coordinate.getX() - 24, coordinate.getY() - 24, 48, 48), new PictureStyle(1.0));
 				}

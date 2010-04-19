@@ -6,6 +6,7 @@
 
 		HLayout mapLayout = new HLayout();
 		mapLayout.setShowEdges(true);
+		mapLayout.setHeight("60%");
 
 		// Map with ID osmMap is defined in the XML configuration. (mapOsm.xml)
 		final MapWidget map = new MapWidget("osmMap", "gwt-samples");
@@ -15,7 +16,7 @@
 		HLayout buttonLayout = new HLayout();
 		buttonLayout.setMembersMargin(10);
 
-		Button butSwitch = new Button(I18nProvider.getSampleMessages().switchUnitTypes());
+		IButton butSwitch = new IButton(I18nProvider.getSampleMessages().switchUnitTypes());
 		butSwitch.setWidth100();
 		buttonLayout.addMember(butSwitch);
 
