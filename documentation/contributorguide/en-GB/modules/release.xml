@@ -26,6 +26,16 @@
 <chapter id="release" lang="en">
   <title>How to release Geomajas</title>
 
+  <para>Preparation work :</para>
+
+  <para><orderedlist>
+      <listitem>
+        <para>In the
+        <code>build-tools/geomajas-gwt-archetype/src/main/resources/archetype-resources/pom.xml</code>
+        assure the dependency versions are correct. </para>
+      </listitem>
+    </orderedlist></para>
+
   <para>Several steps need to be performed on the gaya server. This procedure
   expects that you have logged in to the gaya server, with the
   <code>geomajas</code> user account. Do not use the root user!</para>
