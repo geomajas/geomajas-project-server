@@ -48,7 +48,8 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
 
 /**
- * Layer for displaying Google Maps images.
+ * Layer for displaying Google Maps images. Caution: you must comply with the Google terms of service to display the
+ * calculated tiles. For the GWT face, a special map add-on (<code>GoogleAddOn</code>) is available.
  * 
  * @author Jan De Moerloose
  * @author Joachim Van der Auwera

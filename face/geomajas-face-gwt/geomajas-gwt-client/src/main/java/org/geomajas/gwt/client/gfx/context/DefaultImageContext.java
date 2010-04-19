@@ -204,6 +204,16 @@ public class DefaultImageContext implements ImageContext {
 	}
 
 	/**
+	 * Return the id of the specified group.
+	 * 
+	 * @param group the group object
+	 * @return the corresponding element id or null if the group has not been drawn.
+	 */
+	public String getId(Object group) {
+		return helper.getId(group);
+	}
+
+	/**
 	 * Hide the specified group. If the group does not exist, nothing will happen.
 	 * 
 	 * @param group

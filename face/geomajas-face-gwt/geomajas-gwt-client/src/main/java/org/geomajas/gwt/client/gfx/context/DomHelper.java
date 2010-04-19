@@ -250,6 +250,16 @@ public class DomHelper {
 	}
 
 	/**
+	 * Return the id of the specified group.
+	 * 
+	 * @param group the group object
+	 * @return the corresponding element id or null if the group has not been drawn.
+	 */
+	public String getId(Object group) {
+		return groupToId.get(group);
+	}
+
+	/**
 	 * Creates a group element in the technology (SVG/VML/...) of this context. A group is meant to group other elements
 	 * together. Also this method gives you the opportunity to specify a specific width and height.
 	 * 
@@ -347,6 +357,9 @@ public class DomHelper {
 		if (group == null) {
 			group = createGroup(DOM.NS_HTML, parent, object, "div");
 		}
+		// Apply width, height default 100%
+		DOM.setStyleAttribute(group, "width", "100%");
+		DOM.setStyleAttribute(group, "height", "100%");
 		// Apply transformation on the element:
 		if (transformation != null) {
 			applyAbsolutePosition(group, new Coordinate(transformation.getDx(), transformation.getDy()));

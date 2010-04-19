@@ -39,6 +39,7 @@ import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.controller.GraphicsController;
 import org.geomajas.gwt.client.gfx.GraphicsContext;
+import org.geomajas.gwt.client.gfx.ImageContext;
 import org.geomajas.gwt.client.gfx.MenuContext;
 import org.geomajas.gwt.client.gfx.Paintable;
 import org.geomajas.gwt.client.gfx.PaintableGroup;
@@ -640,6 +641,14 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	 */
 	public GraphicsContext getVectorContext() {
 		return graphics.getVectorContext();
+	}
+
+	/**
+	 * Return the drawing context for raster layer rendering. If you are not using the render method, this would be an
+	 * alternative - for advanced users only.
+	 */
+	public ImageContext getRasterContext() {
+		return graphics.getRasterContext();
 	}
 
 	public ShapeStyle getLineSelectStyle() {

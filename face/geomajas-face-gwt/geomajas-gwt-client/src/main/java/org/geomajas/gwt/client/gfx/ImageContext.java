@@ -156,6 +156,14 @@ public interface ImageContext {
 	 * @return the group object
 	 */
 	Object getGroupById(String id);
+	
+	/**
+	 * Return the id of the specified group.
+	 * 
+	 * @param group the group object
+	 * @return the corresponding element id or null if the group has not been drawn.
+	 */
+	String getId(Object group);
 
 	/**
 	 * Hide the specified group. If the group does not exist, nothing will happen.

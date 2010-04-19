@@ -24,6 +24,7 @@
 package org.geomajas.gwt.client.map.event;
 
 import org.geomajas.global.Api;
+import org.geomajas.gwt.client.map.MapView.ZoomOption;
 import org.geomajas.gwt.client.spatial.Bbox;
 
 import com.google.gwt.event.shared.GwtEvent;
@@ -61,6 +62,7 @@ public class MapViewChangedEvent extends GwtEvent<MapViewChangedHandler> {
 
 	private boolean mapResized;
 
+	private ZoomOption zoomOption;
 	/**
 	 * 
 	 * @param bounds
@@ -72,12 +74,13 @@ public class MapViewChangedEvent extends GwtEvent<MapViewChangedHandler> {
 	// Constructor:
 	// -------------------------------------------------------------------------
 	public MapViewChangedEvent(Bbox bounds, double scale, boolean sameScaleLevel, boolean panDragging,
-			boolean mapResized) {
+			boolean mapResized, ZoomOption zoomOption) {
 		this.bounds = bounds;
 		this.scale = scale;
 		this.sameScaleLevel = sameScaleLevel;
 		this.panDragging = panDragging;
 		this.mapResized = mapResized;
+		this.zoomOption = zoomOption;
 	}
 
 	// -------------------------------------------------------------------------
@@ -127,4 +130,9 @@ public class MapViewChangedEvent extends GwtEvent<MapViewChangedHandler> {
 	public boolean isMapResized() {
 		return mapResized;
 	}
+	
+	public ZoomOption getZoomOption() {
+		return zoomOption;
+	}
+	
 }

@@ -210,7 +210,7 @@ public class MapView {
 	public void setCenterPosition(Coordinate coordinate) {
 		pushPanData();
 		doSetPosition(coordinate);
-		fireEvent(false);
+		fireEvent(false, null);
 	}
 
 	/**
@@ -234,7 +234,7 @@ public class MapView {
 		// set pan origin equal to camera
 		panOrigin.setX(camera.getX());
 		panOrigin.setY(camera.getY());
-		fireEvent(false);
+		fireEvent(false, option);
 	}
 
 	/**
@@ -258,7 +258,7 @@ public class MapView {
 		// set pan origin equal to camera
 		panOrigin.setX(camera.getX());
 		panOrigin.setY(camera.getY());
-		fireEvent(false);
+		fireEvent(false, option);
 	}
 
 	/**
@@ -279,7 +279,7 @@ public class MapView {
 		// set pan origin equal to camera
 		panOrigin.setX(camera.getX());
 		panOrigin.setY(camera.getY());
-		fireEvent(true);
+		fireEvent(true, ZoomOption.LEVEL_FIT);
 	}
 
 	/**
@@ -294,7 +294,7 @@ public class MapView {
 		pushPanData();
 		Coordinate c = camera.getPosition();
 		doSetPosition(new Coordinate(c.getX() + x, c.getY() + y));
-		fireEvent(false);
+		fireEvent(false, null);
 	}
 
 	/**
@@ -492,9 +492,9 @@ public class MapView {
 	}
 
 	/** Fire an event. */
-	private void fireEvent(boolean resized) {
+	private void fireEvent(boolean resized, ZoomOption option) {
 		handlerManager.fireEvent(new MapViewChangedEvent(getBounds(), getCurrentScale(), isSameScaleLevel(),
-				panDragging, resized));
+				panDragging, resized, option));
 	}
 
 	/**

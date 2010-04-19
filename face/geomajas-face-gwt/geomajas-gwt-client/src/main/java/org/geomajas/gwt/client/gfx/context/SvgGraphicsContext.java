@@ -76,8 +76,6 @@ public class SvgGraphicsContext implements GraphicsContext {
 		this.parent = parent;
 		// the root SVG node 
 		Element rootNode = DOM.createElementNS(DOM.NS_SVG, "svg");
-		id = DOM.createUniqueId();
-		rootNode.setId(id);
 		DOM.setElementAttribute(rootNode, "width", width + "");
 		DOM.setElementAttribute(rootNode, "height", height + "");
 		DOM.setElementAttribute(rootNode, "viewBox", "0 0 " + width + " " + height);
@@ -92,6 +90,8 @@ public class SvgGraphicsContext implements GraphicsContext {
 		DOM.setStyleAttribute(divNode, "position", "absolute");
 		DOM.setStyleAttribute(divNode, "width", "100%");
 		DOM.setStyleAttribute(divNode, "height", "100%");
+		id = DOM.createUniqueId();
+		divNode.setId(id);
 		
 		parent.getElement().appendChild(divNode);
 		divNode.appendChild(rootNode);
@@ -492,6 +492,25 @@ public class SvgGraphicsContext implements GraphicsContext {
 		}
 	}
 
+	/**
+	 * Return the id of the specified group.
+	 * 
+	 * @param group the group object
+	 * @return the corresponding element id or null if the group has not been drawn.
+	 */
+	public String getId(Object group) {
+		return helper.getId(group);
+	}
+
+	/**
+	 * Return the unique id of the container div of this context.
+	 * 
+	 * @return the unique id of the container div.
+	 */
+	public String getId() {
+		return id;
+	}
+	
 	/**
 	 * Return the element name for the specified id.
 	 * 

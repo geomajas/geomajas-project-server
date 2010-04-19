@@ -277,6 +277,21 @@ public interface GraphicsContext {
 	int getHeight();
 
 	/**
+	 * Return the id of the specified group.
+	 * 
+	 * @param group the group object
+	 * @return the corresponding element id or null if the group has not been drawn.
+	 */
+	String getId(Object group);
+
+	/**
+	 * Return the unique id of the container div of this context.
+	 * 
+	 * @return the unique id of the container div.
+	 */
+	String getId();
+
+	/**
 	 * Return the element name for the specified id.
 	 * 
 	 * @param id id

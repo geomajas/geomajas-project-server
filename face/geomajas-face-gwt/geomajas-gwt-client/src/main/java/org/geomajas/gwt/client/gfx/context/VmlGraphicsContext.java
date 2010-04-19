@@ -91,7 +91,7 @@ public class VmlGraphicsContext implements GraphicsContext {
 		DOM.setStyleAttribute(rootNode, "overflow", "hidden");
 		helper = new DomHelper(rootNode, Namespace.VML);
 		
-		// Append to parent: we need a top div or the svg is blocked by any peer div !!!
+		// Append to parent: we need a top div or the vml is blocked by any peer div !!!
 		parent.getElement().appendChild(rootNode);
 	}
 
@@ -471,6 +471,25 @@ public class VmlGraphicsContext implements GraphicsContext {
 		} else {
 			return null;
 		}
+	}
+
+	/**
+	 * Return the id of the specified group.
+	 * 
+	 * @param group the group object
+	 * @return the corresponding element id or null if the group has not been drawn.
+	 */
+	public String getId(Object group) {
+		return helper.getId(group);
+	}
+
+	/**
+	 * Return the unique id of the container div of this context.
+	 * 
+	 * @return the unique id of the container div.
+	 */
+	public String getId() {
+		return id;
 	}
 
 	/**

@@ -23,10 +23,12 @@
 
 package org.geomajas.example.gwt.client.samples.layer;
 
-import org.geomajas.example.gwt.client.samples.base.SamplePanelFactory;
-import org.geomajas.gwt.client.controller.PanController;
 import org.geomajas.example.gwt.client.samples.base.SamplePanel;
+import org.geomajas.example.gwt.client.samples.base.SamplePanelFactory;
 import org.geomajas.example.gwt.client.samples.i18n.I18nProvider;
+import org.geomajas.gwt.client.controller.PanController;
+import org.geomajas.gwt.client.gfx.paintable.mapaddon.GoogleAddon;
+import org.geomajas.gwt.client.gfx.paintable.mapaddon.GoogleAddon.MapType;
 import org.geomajas.gwt.client.widget.MapWidget;
 
 import com.smartgwt.client.widgets.Canvas;
@@ -48,6 +50,10 @@ public class GoogleSample extends SamplePanel {
 		}
 	};
 
+	private MapWidget googleMap;
+
+	private MapWidget googleSatMap;
+
 	public Canvas getViewPanel() {
 		VLayout layout = new VLayout();
 		layout.setWidth100();
@@ -57,14 +63,14 @@ public class GoogleSample extends SamplePanel {
 		// Create map with Google layer, and add a PanController to it:
 		VLayout mapLayout1 = new VLayout();
 		mapLayout1.setShowEdges(true);
-		final MapWidget googleMap = new MapWidget("googleMap", "gwt-samples");
+		googleMap = new MapWidget("googleMap", "gwt-samples");
 		googleMap.setController(new PanController(googleMap));
 		mapLayout1.addMember(googleMap);
 
 		// Create map with Google layer (satellite), and add a PanController to it:
 		VLayout mapLayout2 = new VLayout();
 		mapLayout2.setShowEdges(true);
-		final MapWidget googleSatMap = new MapWidget("googleSatMap", "gwt-samples");
+		googleSatMap = new MapWidget("googleSatMap", "gwt-samples");
 		googleSatMap.setController(new PanController(googleSatMap));
 		mapLayout2.addMember(googleSatMap);
 
@@ -80,17 +86,26 @@ public class GoogleSample extends SamplePanel {
 	}
 
 	public String getSourceFileName() {
-		return "classpath:org/geomajas/example/gwt/client/samples/layer/GoogleSample.txt";
+		return "classpath:org/geomajas/gwt/client/samples/mapwidget/GoogleSample.txt";
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "classpath:org/geomajas/example/gwt/clientcfg/layer/mapGoogle.xml",
-				"classpath:org/geomajas/example/gwt/clientcfg/layer/mapGoogleSat.xml",
-				"classpath:org/geomajas/example/gwt/servercfg/raster/layerGoogle.xml",
-				"classpath:org/geomajas/example/gwt/servercfg/raster/layerGoogleSat.xml" };
+		return new String[] { "classpath:org/geomajas/gwt/samples/mapwidget/mapGoogle.xml",
+				"classpath:org/geomajas/gwt/samples/mapwidget/layerGoogle.xml",
+				"classpath:org/geomajas/gwt/samples/mapwidget/mapGoogleSat.xml",
+				"classpath:org/geomajas/gwt/samples/mapwidget/layerGoogleSat.xml" };
 	}
 
 	public String ensureUserLoggedIn() {
 		return "luc";
 	}
+
+	protected void onDraw() {
+		googleMap.registerMapAddon(new GoogleAddon("google", googleMap, MapType.NORMAL, false));
+		googleSatMap.registerMapAddon(new GoogleAddon("google", googleSatMap, MapType.SATELLITE, false));
+		MapSynchronizer synchronizer = new MapSynchronizer(googleMap.getMapModel().getMapView(), googleSatMap
+				.getMapModel().getMapView());
+		synchronizer.setEnabled(true);
+	}
+
 }
