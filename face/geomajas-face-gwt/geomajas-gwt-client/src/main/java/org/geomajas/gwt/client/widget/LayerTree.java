@@ -160,8 +160,7 @@ public class LayerTree extends Canvas implements LeafClickHandler, FolderClickHa
 				selectedLayerTreeNode = (LayerTreeTreeNode) node;
 				treeGrid.selectRecord(selectedLayerTreeNode);
 				htmlSelectedLayer.setContents(I18nProvider.getLayerTree().activeLayer(
-						selectedLayerTreeNode.getLayer().getLabel().substring(0,
-								selectedLayerTreeNode.getLayer().getLabel().indexOf('('))));
+						selectedLayerTreeNode.getLayer().getLabel()));
 
 				Canvas[] toolStripMembers = toolStrip.getMembers();
 				updateButtonIconsAndStates(toolStripMembers);
