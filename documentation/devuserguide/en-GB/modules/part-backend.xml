@@ -1072,12 +1072,12 @@
       in these classes and interfaces are considered as part of the
       API.</para>
 
-      <para>For this reason, we have introduced the "@Api" annotation. A class
-      of interface is only considered part of the public API when it is
-      annotated using "<code>@Api</code>". When all public methods in the
-      class or interface are considered part of the API, you could use
-      "<code>@Api(allMethods = true)</code>". The alternative is to annotate
-      the individual methods.</para>
+      <para>For this reason, we have introduced the "<code>@Api</code>"
+      annotation. A class of interface is only considered part of the public
+      API when it is annotated using "<code>@Api</code>". When all public
+      methods in the class or interface are considered part of the API, you
+      could use "<code>@Api(allMethods = true)</code>". The alternative is to
+      annotate the individual methods.</para>
 
       <para>The API includes many interfaces. These interfaces should only be
       implemented by client code when they are annotated by
@@ -1085,6 +1085,11 @@
       provided to indicate the methods available on instances which are
       obtained through the API and may have extra methods added in future
       versions.</para>
+
+      <para>All classes and methods which are indicated with
+      "<code>@Api</code>" should also have a "<code>@since</code>" javadoc
+      comment indicating the version in which the class or method was added to
+      the API.</para>
     </section>
 
     <section>
