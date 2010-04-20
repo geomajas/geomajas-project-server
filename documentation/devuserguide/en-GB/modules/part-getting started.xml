@@ -29,11 +29,11 @@
   <chapter>
     <title>Starting a new GWT based Geomajas project</title>
 
-    <para>Geomajas is uses the Apache Maven project management tool for its
-    build and documentation process. Thanks to maven , the easiest way to
-    start using Geomajas is by creating a new project using the maven
-    archetype. This will create a simple working project that you can use as
-    starting point.</para>
+    <para>Geomajas uses the Apache Maven project management tool for its build
+    and documentation process. Thanks to maven , the easiest way to start
+    using Geomajas is by creating a new project using the maven archetype.
+    This will create a simple working project that you can use as starting
+    point.</para>
 
     <section>
       <title>Prerequisites / Command line</title>
@@ -58,22 +58,24 @@
       </example>
 
       <para>You first have to select the archetype you want to build
-      (geomajas-gwt-archetype). Then it will ask your the "groupId",
+      (geomajas-gwt-archetype). Then it will ask you the "groupId",
       "artifactId", version and base package. Once you confirmed the settings,
       the project will be created in a subdirectory with a name equalling the
       "artifactId" you choose.</para>
 
-      <para><figure>
-          <title>Create project using GWT maven archetype</title>
+      <figure>
+        <title>Create project using GWT maven archetype</title>
 
-          <mediaobject>
-            <imageobject>
-              <imagedata fileref="../images/run-archetype.png" width="75%" />
-            </imageobject>
-          </mediaobject>
-        </figure>From the project root, you can immediately compile, test
-      (using jetty as servlet container), or run the application in
-      development mode using the following commands.</para>
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="../images/run-archetype.png" width="75%" />
+          </imageobject>
+        </mediaobject>
+      </figure>
+
+      <para>From the project root, you can immediately compile, test (using
+      jetty as servlet container), or run the application in development mode
+      using the following commands.</para>
 
       <example>
         <title>maven targets</title>
@@ -101,8 +103,7 @@ mvn gwt:run</programlisting>The "install" target will create a war file for
     <section>
       <title>Eclipse</title>
 
-      <para>From the command line you can create eclipse the project
-      files.</para>
+      <para>From the command line you can create eclipse project files.</para>
 
       <example>
         <title>Create eclipse project files</title>
@@ -118,8 +119,7 @@ mvn gwt:run</programlisting>The "install" target will create a war file for
       http://code.google.com/eclipse/docs/download.html</ulink>. The launch
       configuration should already be created by the "gwt:eclipse" target in
       the command above. It will install the dependent libraries in the lib
-      folder of the GWT war layout. Unfortunately, however, GWT does not allow
-      Eclipse to automatically deploy in this folder.</para>
+      folder of the GWT war layout.</para>
 
       <para>After importing and building the GWT projects, make sure you
       convert them to GWT projects in the project properties dialog:</para>
@@ -180,7 +180,7 @@ mvn gwt:run</programlisting>The "install" target will create a war file for
       errors). You can do this from the "maven projects" tab.</para>
 
       <figure>
-        <title>run gwt;i18 target</title>
+        <title>run gwt:i18 target</title>
 
         <mediaobject>
           <imageobject>
@@ -217,8 +217,8 @@ mvn gwt:run</programlisting>The "install" target will create a war file for
 
       <para>You can both create the project from the archetype or open
       directly the maven project in NetBeans. See <ulink
-      url="???">http://wiki.netbeans.org/MavenBestPractices</ulink> for more
-      details.</para>
+      url="http://wiki.netbeans.org/MavenBestPractices">http://wiki.netbeans.org/MavenBestPractices</ulink>
+      for more details.</para>
     </section>
   </chapter>
 </part>

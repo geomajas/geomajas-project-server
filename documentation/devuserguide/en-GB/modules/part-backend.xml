@@ -288,7 +288,7 @@
       </section>
 
       <section>
-        <title>Raster layer Configuration</title>
+        <title>Raster layer configuration</title>
 
         <para>Raster layers are image-based layers which, depending on the
         type, may be configured to retrieve their images from WMS, Google Maps
@@ -321,8 +321,7 @@
           the metadata common to all raster layers. The following properties
           are needed for this object :</para>
 
-          <para>
-            <table>
+          <para><table>
               <title>Raster Layer info</title>
 
               <tgroup cols="2">
@@ -391,8 +390,7 @@
                   </row>
                 </tbody>
               </tgroup>
-            </table>
-          </para>
+            </table></para>
 
           <para>The location of the images or tiles is defined by calculating
           the real width and height (based on the resolution) and "paving" the
@@ -502,8 +500,7 @@
           <xi:include href="../listing/GoogleLayerSample.xml"
                       xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-          <para>
-            <table>
+          <para><table>
               <title>GoogleLayer configuration</title>
 
               <tgroup cols="2">
@@ -523,8 +520,7 @@
                   </row>
                 </tbody>
               </tgroup>
-            </table>
-          </para>
+            </table></para>
 
           <para>The layer info inner bean has the same general content as
           usual. There are some simplifications though. There is no need to
@@ -709,8 +705,7 @@
           <para>The following table describes the properties of the
           <code>VectorLayerInfo</code> object :</para>
 
-          <para>
-            <table>
+          <para><table>
               <title>VectorLayer info</title>
 
               <tgroup cols="2">
@@ -751,8 +746,7 @@
                   </row>
                 </tbody>
               </tgroup>
-            </table>
-          </para>
+            </table></para>
 
           <para>The feature metadata can be found in the
           <code>FeatureInfo</code> object. This objects contains the complete
@@ -867,8 +861,7 @@
           <para>To access a WFS server, the following names can be used as
           parameters.</para>
 
-          <para>
-            <itemizedlist>
+          <para><itemizedlist>
               <listitem>
                 <para><emphasis>WFSDataStoreFactory:GET_CAPABILITIES_URL</emphasis>
                 : Represents a URL to the getCapabilities document or a server
@@ -919,8 +912,7 @@
                 the schema. Errors will be logged but the parsing will
                 continue if this is true. Default is false.</para>
               </listitem>
-            </itemizedlist>
-          </para>
+            </itemizedlist></para>
 
           <para>You also have to assure the GeoTools WFS data store is added
           as dependency in your project. When using maven, you can add the
@@ -943,8 +935,7 @@
           <para>The shape in memory layer has a few settings which should be
           set</para>
 
-          <para>
-            <table>
+          <para><table>
               <title>ShapeInMemLayer configuration</title>
 
               <tgroup cols="2">
@@ -966,8 +957,7 @@
                   </row>
                 </tbody>
               </tgroup>
-            </table>
-          </para>
+            </table></para>
         </section>
 
         <section>
@@ -1186,13 +1176,13 @@
     </section>
 
     <section>
-      <title>API compatibility and Geomajas Versions</title>
+      <title>API compatibility and Geomajas versions</title>
 
       <para>Versions have the structure "major.minor.revision". Geomajas uses
       a even-odd versioning scheme for the "minor" part.</para>
 
       <para>The major number indicates major changes in the framework and thus
-      gives no guarantee about API compatibilty with previous major
+      gives no guarantee about API compatibility with previous major
       versions.</para>
 
       <para>Versions with an even minor part are considered stable and
@@ -1228,14 +1218,19 @@
           </listitem>
 
           <listitem>
-            <para>No commands which have an API request or response object
-            </para>
+            <para>No commands which have an API request or response
+            object</para>
           </listitem>
         </itemizedlist></para>
 
       <para>Additionally, all methods and classes which are added should
       include an indication of the version in which the class and/or method
       was added.</para>
+
+      <para>Because of the guarantees about API, the use of the
+      "<code>@Deprecated</code>" annotation only indicates that a method or
+      class is not recommended to be used. The method or class will not be
+      removed in future versions with the same major number.</para>
     </section>
   </chapter>
 
@@ -1243,7 +1238,7 @@
     <title>Commands</title>
 
     <section>
-      <title>Provided Commands</title>
+      <title>Provided commands</title>
 
       <para>The commands are all registered in the spring context. The
       "registry key" as indicated below is used to retrieve the commands.
@@ -2270,7 +2265,7 @@
     </section>
 
     <section>
-      <title>Writing your own Commands</title>
+      <title>Writing your own commands</title>
 
       <para>A Geomajas command consist of three class, the actual command
       (which implements the <code>Command</code> interface), and two data
@@ -2366,7 +2361,7 @@
     </section>
 
     <section>
-      <title>Springsecurity configuration</title>
+      <title>Springsecurity module configuration</title>
 
       <para>TODO.....</para>
     </section>

@@ -98,11 +98,11 @@
     </figure>
 
     <para>The Geomajas back-end is itself built from several modules which are
-    tied together using the Spring framework
-    (<uri>http://springframework.org/</uri>). The Geomajas-api module is a set
-    of interfaces which shields implementation details between the different
-    modules. The base plumbing and some generic features are provided by the
-    Geomajas-impl module.</para>
+    tied together using the Spring framework (<ulink
+    url="http://springframework.org/">http://springframework.org/</ulink>).
+    The Geomajas-api module is a set of interfaces which shields
+    implementation details between the different modules. The base plumbing
+    and some generic features are provided by the Geomajas-impl module.</para>
 
     <para>There are four possible ways to extend the back-end.</para>
 
@@ -121,11 +121,12 @@
           either raster or vector based. A vector layer can be editable. The
           features describing the objects which are part of the vector layer
           are accessed through the "feature model" which converts generic
-          features into something Geomajas can use (this way, there is no need
-          for the objects to implement a "Feature" interface, allowing the
-          user of pojos as features). A feature can contain geometry objects,
-          attributes, style and labels. Attributes can be complex, including
-          one-to-many and many-to-one relations to other objects.</para>
+          feature objects into something Geomajas can use (this way, there is
+          no need for the generic feature objects to implement a "feature"
+          interface, allowing the use of pojos). A feature contains a geometry
+          and can contain attributes, style and labels. Attributes can be
+          complex, including one-to-many and many-to-one relations to other
+          objects.</para>
         </listitem>
 
         <listitem>
@@ -178,7 +179,7 @@
 
         <listitem>
           <para>This object is transferred to the face server. For web
-          applications, this will typically be done using a AJAX
+          applications, this will typically be done using an AJAX
           request.</para>
         </listitem>
 
@@ -199,9 +200,9 @@
 
         <listitem>
           <para>The <code>Command</code> will now do its job, writing the
-          results in the CommandResponse object. When problems occur during
-          execution of the command, it can either write this into the response
-          object or throw an exception.</para>
+          results in the <code>CommandResponse</code> object. When problems
+          occur during execution of the command, it can either write this into
+          the response object or throw an exception.</para>
         </listitem>
 
         <listitem>
@@ -226,7 +227,7 @@
       </orderedlist>
 
       <para>When the command had something to do with rendering, then the
-      response object is likely to contain a<code>Tile</code>.</para>
+      response object is likely to contain a <code>Tile</code>.</para>
     </sect1>
 
     <sect1>
@@ -277,8 +278,8 @@
         pipeline id and steps. When a pipeline is started (using the
         <code>PipelineService</code>) it executes the pipeline steps until the
         pipeline is finished (a status which can be set by one of the steps),
-        or until no more steps are available in the pipeline. Each step can
-        gets two parameters.</para>
+        or until no more steps are available in the pipeline. Each step gets
+        two parameters.</para>
 
         <para><itemizedlist>
             <listitem>
@@ -344,7 +345,7 @@
 
       <para>A <code>Layer</code> has some metadata (id, coordinate system,
       label, bbox, stored in the <code>LayerInfo</code> object) and allows you
-      get obtain the <code>layer data</code>.</para>
+      get obtain the layer data.</para>
     </sect1>
 
     <!--
@@ -415,11 +416,15 @@
           </listitem>
         </itemizedlist>
 
-        <mediaobject>
-          <imageobject>
-            <imagedata fileref="../images/security.png" width="100%" />
-          </imageobject>
-        </mediaobject>
+        <figure>
+          <title>Security architecture</title>
+
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="../images/security.png" width="100%" />
+            </imageobject>
+          </mediaobject>
+        </figure>
 
         <para>To assure the authentication mechanism is pluggable, an
         <emphasis>authentication token</emphasis> is used. The authentication
@@ -428,11 +433,11 @@
         apply and which can be queried.</para>
 
         <para>A list of <emphasis>security services</emphasis> can be defined
-        (using spring bean <code>security.SecurityInfo</code>) is used for
-        that layer. This list can be overwritten in configuration. By default
-        the list is empty, which prohibits all access to everyone. The
-        back-end does however include a security service which can be used to
-        allow all access to everyone.</para>
+        (using spring bean <code>security.SecurityInfo</code>). This list can
+        be overwritten in configuration. By default the list is empty, which
+        prohibits all access to everyone. The back-end does however include a
+        security service which can be used to allow all access to
+        everyone.</para>
 
         <para>The security service is responsible for converting the
         authentication token into a list of <emphasis>authorization
@@ -513,25 +518,31 @@
           <listitem>
             <para><code>getVisibleArea(String layerId)</code> : only the area
             inside the returned geometry is visible (uses layer coordinate
-            space).</para>
+            space). All features which fall outside the layer's MaxExtent area
+            are also considered not visible.</para>
           </listitem>
 
           <listitem>
             <para><code>getUpdateAuthorizedArea(String layerId)</code> : only
             the area inside the returned geometry may contain updatable
-            features (uses layer coordinate space).</para>
+            features (uses layer coordinate space). All features which fall
+            outside the layer's MaxExtent area are also considered not
+            updatable.</para>
           </listitem>
 
           <listitem>
             <para><code>getCreateAuthorizedArea(String layerId)</code> : only
             the area inside the returned geometry can new features be created
-            (uses layer coordinate space).</para>
+            (uses layer coordinate space). All features which fall outside the
+            layer's MaxExtent area are also considered not creatable.</para>
           </listitem>
 
           <listitem>
             <para><code>getDeleteAuthorizedArea(String layerId)</code> : only
             the area inside the returned geometry may contain deletable
-            features (uses layer coordinate space).</para>
+            features (uses layer coordinate space). All features which fall
+            outside the layer's MaxExtent area are also considered not
+            deletable.</para>
           </listitem>
 
           <listitem>
@@ -594,7 +605,7 @@
         When a security service can authenticate a token, the reply can
         contain details about the allowed caching. Three parameters are
         allowed to be passed, the <code>validUntil</code> and
-        <code>invalidAfter</code> timestamps and a <code>extendValid</code>
+        <code>invalidAfter</code> timestamps and an <code>extendValid</code>
         duration.</para>
 
         <para>The security manager first checks the cache to find (valid)
@@ -1167,52 +1178,4 @@
       </table>
     </sect1>
   </chapter>
-
-  <!--
-  <appendix>
-    <title>Rendering pipeline compared with Geomajas 1.4</title>
-
-    <para>In Geomajas 1.4, when you request data for a layer, you have to use
-    a different method depending on whether it is a raster or vector
-    layer.</para>
-
-    <para>For raster layers, the rendering is almost trivial, the
-    <code>paint</code> method method in the layer does all the work, returning
-    a list of raster images, being the "tiles" which are needed to render the
-    requested bounding box at the requested scale. Each of these raster images
-    contain information about the position relative to the other tiles, the
-    bounding box for the image and the URL of the actual raster data.</para>
-
-    <para>For vector layers, the rendering is organized like almost like an
-    onion.</para>
-
-    <mediaobject>
-      <imageobject>
-        <imagedata fileref="../images/gm14onion.png" width="100%" />
-      </imageobject>
-    </mediaobject>
-
-    <para>This has a couple of disadvantages, including :</para>
-
-    <itemizedlist>
-      <listitem>
-        <para>a lot of coupling between the classes</para>
-      </listitem>
-
-      <listitem>
-        <para>limited configurability (though Spring helps a lot)</para>
-      </listitem>
-
-      <listitem>
-        <para>duplication of code as responsibilities are not separated</para>
-      </listitem>
-    </itemizedlist>
-
-    <para>The rendering pipeline as used now makes it easy to define any
-    behaviour which is wanted (not limited to what is expected at design
-    time), without coupling (though it is expected the expected parameters are
-    available from previous steps in the pipeline). Duplication of code can in
-    most cases be avoided by adding extra steps in the pipeline.</para>
-  </appendix>
--->
 </part>

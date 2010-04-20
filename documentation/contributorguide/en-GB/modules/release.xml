@@ -32,7 +32,12 @@
       <listitem>
         <para>In the
         <code>build-tools/geomajas-gwt-archetype/src/main/resources/archetype-resources/pom.xml</code>
-        assure the dependency versions are correct. </para>
+        assure the dependency versions are correct.</para>
+      </listitem>
+
+      <listitem>
+        <para>In the documentation files (especially the master.xml files),
+        assure the version numbers are correct.</para>
       </listitem>
     </orderedlist></para>
 

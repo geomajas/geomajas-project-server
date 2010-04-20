@@ -57,10 +57,10 @@
 	<xi:include href="modules/part-backend.xml"
 				xmlns:xi="http://www.w3.org/2001/XInclude"/>
 
-	<xi:include href="modules/part-dojo-face.xml"
+	<xi:include href="modules/part-gwt-face.xml"
 				xmlns:xi="http://www.w3.org/2001/XInclude"/>
 
-	<xi:include href="modules/part-gwt-face.xml"
+	<xi:include href="modules/part-dojo-face.xml"
 				xmlns:xi="http://www.w3.org/2001/XInclude"/>
 
 	<xi:include href="modules/part-appendix.xml"

@@ -37,35 +37,50 @@
     </section>
 
     <section id="section-about-this-project">
-      <title>About this Project</title>
+      <title>About this project</title>
 
-      <para>Geomajas is a GIS application framework. See<uri>
-      http://www.geomajas.org/</uri>)</para>
+      <para>Geomajas is a GIS application framework. See<ulink
+      url="http://www.geomajas.org/"> http://www.geomajas.org/</ulink>)</para>
     </section>
 
     <section id="section-license">
-      <title>License Information</title>
+      <title>License information</title>
 
       <para>Copyright © 2009 Geosparc nv.</para>
 
       <para>Licensed under the GNU Affero General Public License. You may
-      obtain a copy of the License at
-      <uri>http://www.gnu.org/licenses/</uri></para>
+      obtain a copy of the License at <ulink
+      url="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</ulink></para>
 
       <para>This program is distributed in the hope that it will be useful,
       but <emphasis>without any warranty</emphasis>; without even the implied
       warranty of <emphasis>merchantability</emphasis> or <emphasis>fitness
       for a particular purpose</emphasis>. See the GNU Affero General Public
       License for more details.</para>
+
+      <para>The project also depends on various other open source projects
+      which have their respective licenses.</para>
+
+      <para>From the Geomajas source (possibly specific module), the
+      dependencies can be displayed using the "<code>mvn
+      dependency:tree</code>" command.</para>
+
+      <para>For the dependencies of the Geomajas back-end, we only allow
+      dependencies which are freely distributable for commercial puposes (this
+      for example excludes GPL and AGPL licensed dependencies).</para>
     </section>
 
     <section id="section-author-information">
-      <title>Author Information</title>
+      <title>Author information</title>
 
       <para>This framework and documentation was written by the Geomajas
       Developers. If you have questions, found a bug or have enhancements,
-      please contact us through the user fora at
-      <uri>http://www.geomajas.org/</uri>.</para>
+      please contact us through the user fora at <ulink
+      url="http://www.geomajas.org/">http://www.geomajas.org/</ulink>.</para>
+
+      <para>List of contributors for this manual :</para>
+
+      <para></para>
     </section>
   </chapter>
 </part>

@@ -27,7 +27,7 @@
   <title>GWT face</title>
 
   <chapter>
-    <title>GWT Client Architecture</title>
+    <title>GWT client architecture</title>
 
     <section>
       <title>Client-server communication</title>
@@ -63,7 +63,7 @@
     </section>
 
     <section>
-      <title>The Map's Model</title>
+      <title>The Map's model</title>
 
       <para>As with any GIS framework or application, the most crucial of all
       entities is the Map. A map is represented by the
@@ -167,8 +167,8 @@
         and the end result can be the persistance of a changes. The package
         is: <code>org.geomajas.gwt.client.map.workflow</code></para>
 
-        <screenshot>
-          <screeninfo>Workflow API</screeninfo>
+        <figure>
+          <title>Workflow API</title>
 
           <mediaobject>
             <imageobject>
@@ -176,7 +176,7 @@
                          fileref="../images/gwtface_workflow.png" width="" />
             </imageobject>
           </mediaobject>
-        </screenshot>
+        </figure>
 
         <para><emphasis role="bold">Activity:</emphasis></para>
 
@@ -250,7 +250,7 @@
       </section>
 
       <section>
-        <title>Selection of Features</title>
+        <title>Selection of features</title>
 
         <para>A feature in a vector layer has the possibility to be selected.
         Selection usually changes the color of the feature on the map or in a
@@ -271,8 +271,8 @@
         knows when a feature is selected or deselected and can redraw it
         accordingly.</para>
 
-        <screenshot>
-          <screeninfo>Selection events and handlers</screeninfo>
+        <figure>
+          <title>Selection events and handlers</title>
 
           <mediaobject>
             <imageobject>
@@ -280,7 +280,7 @@
                          fileref="../images/gwtface_selection.png" width="" />
             </imageobject>
           </mediaobject>
-        </screenshot>
+        </figure>
 
         <para>So, when writing code that needs to react upon the selection of
         features, implement the <code>FeatureSelectionHandler</code>
@@ -297,7 +297,7 @@
     </section>
 
     <section>
-      <title>The Spatial Package</title>
+      <title>The spatial package</title>
 
       <para>The spatial package (<code>org.geomajas.gwt.client.spatial</code>)
       contains a collection of math and geometry related classes and utilities
@@ -315,7 +315,7 @@
       between these 3 spaces.</para>
 
       <section>
-        <title>Geometry Definitions</title>
+        <title>Geometry definitions</title>
 
         <para>All <code>Geometry</code> definitions in the GWT face are based
         upon the geometries from the Java Topology Suite, and can be found in
@@ -370,7 +370,7 @@
       </section>
 
       <section>
-        <title>Editing Geometries</title>
+        <title>Editing geometries</title>
 
         <para>The Geometry implementations themselves do not allow any setters
         methods. Instead the editing of geometries is done through a series of
@@ -484,7 +484,7 @@ public interface GeometryOperation {
     </section>
 
     <section>
-      <title id="graphics">Graphics &amp; Rendering</title>
+      <title id="graphics">Graphics &amp; rendering</title>
 
       <para>In the GWT face, the main <code>render</code>ing method can be
       found in the <code>MapWidget</code>. The render method requires three
@@ -614,7 +614,7 @@ public interface GeometryOperation {
         <para>The GraphicsContext is the main vector drawing context. It has 2
         implementations: one for SVG and one for VML.</para>
 
-        <equation id="graphicscontext">
+        <figure id="graphicscontext">
           <title>GraphicsContext interface</title>
 
           <mediaobject>
@@ -623,7 +623,7 @@ public interface GeometryOperation {
                          fileref="../images/gwtface_graphicscontext.png" />
             </imageobject>
           </mediaobject>
-        </equation>
+        </figure>
 
         <para>Every object that ever appears on a Geomajas map (visually), has
         to implement the <code>Paintable</code> interface. This interface
@@ -634,15 +634,15 @@ public interface GeometryOperation {
         <code>paint</code> method, or delete objects from the map using it's
         <code>deleteShape</code> method.</para>
 
-        <screenshot>
-          <screeninfo>General graphics interfaces</screeninfo>
+        <figure>
+          <title>General graphics interfaces</title>
 
           <mediaobject>
             <imageobject>
               <imagedata align="center" fileref="../images/gwtface_gfx.png" />
             </imageobject>
           </mediaobject>
-        </screenshot>
+        </figure>
 
         <itemizedlist>
           <listitem>
@@ -860,7 +860,7 @@ map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</
     </section>
 
     <section>
-      <title id="interaction">User Interaction</title>
+      <title id="interaction">User interaction</title>
 
       <para>This section covers the many interfaces regarding buttons, menu
       items and such that make up the user interface. The specific Geomajas
@@ -919,7 +919,7 @@ map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</
       </note>
 
       <section>
-        <title>Toolbar: ToolbarAction</title>
+        <title>Toolbar : ToolbarAction</title>
 
         <para>The <code>ToolbarAction</code> is your basic abstract class for
         building toolbar buttons that are executed immediately when clicked.
@@ -1041,7 +1041,7 @@ public abstract class ToolbarBaseAction {
       </section>
 
       <section>
-        <title>Toolbar: ToolbarModalAction</title>
+        <title>Toolbar : ToolbarModalAction</title>
 
         <para>The <code>ToolbarModalAction</code> is the basic template for
         creating selectable toolbar buttons. Usually they enable and disable a
@@ -1094,10 +1094,10 @@ public abstract class ToolbarModalAction extends ToolbarBaseAction {
       </section>
 
       <section>
-        <title>LayerTree: LayerTreeAction</title>
+        <title>LayerTree : LayerTreeAction</title>
 
         <para>The <code>LayerTreeAction</code> is your basic abstract class
-        for building layertree buttons that are executed immediately when
+        for building layer tree buttons that are executed immediately when
         clicked. To this end, it has an onClick method that needs to be
         implemented and it also requires your to specify an icon, a tooltip
         and a disabled-icon on creation. Note that the onClick method gives
@@ -1163,12 +1163,12 @@ public abstract class LayerTreeAction extends ToolbarBaseAction {
       </section>
 
       <section>
-        <title>LayerTree: LayerTreeModalAction</title>
+        <title>LayerTree : LayerTreeModalAction</title>
 
         <para>The <code>LayerTreeModalAction</code> is the basic template for
-        creating selectable layertree buttons. Usually they enable and disable
-        a certain state for the selected layer within the layertree (for
-        example that layer's visibility).</para>
+        creating selectable layer tree buttons. Usually they enable and
+        disable a certain state for the selected layer within the layer tree
+        (for example that layer's visibility).</para>
 
         <para><code>LayerTreeModalAction</code> classes need to be registered
         in the L<code><code>ayerTreeRegistry</code></code> class. The tools
@@ -1258,13 +1258,14 @@ public abstract class LayerTreeModalAction extends ToolbarBaseAction {
       </section>
 
       <section>
-        <title>Menu: MenuAction</title>
+        <title>Menu : MenuAction</title>
 
         <para>When creating menu items or context menu items, Geomajas
         provides a simple base class from which to start. It extends upon the
-        basic SmartGWT MenuItem class, but immediately requires you to fill in
-        a title and an icon. It also implements the <code>ClickHandler</code>
-        interface for defining the onClick execution function.</para>
+        basic SmartGWT <code>MenuItem</code> class, but immediately requires
+        you to fill in a title and an icon. It also implements the
+        <code>ClickHandler</code> interface for defining the
+        <code>onClick</code> execution function.</para>
 
         <programlisting>/**
  * General definition of a &lt;code&gt;MenuAction&lt;/code&gt;. All Geomajas actions in toolbars or
@@ -1375,17 +1376,17 @@ public interface GraphicsController extends MouseDownHandler, MouseUpHandler,
 
           <itemizedlist>
             <listitem>
-              <para><emphasis>AbstractRectangleController</emphasis>: abstract
-              controller that handles drawing a rectangle by dragging the
-              mouse on the map.</para>
+              <para><emphasis><code>AbstractRectangleController</code></emphasis>:
+              abstract controller that handles drawing a rectangle by dragging
+              the mouse on the map.</para>
             </listitem>
 
             <listitem>
-              <para><emphasis>AbstractSnappingController</emphasis>: abstract
-              controller that allows snapping to be enabled and disabled. When
-              enabled, the returned points when asking getPosition(), are
-              snapped points (depending on the configured snapping
-              rules).</para>
+              <para><emphasis><code>AbstractSnappingController</code></emphasis>:
+              abstract controller that allows snapping to be enabled and
+              disabled. When enabled, the returned points when asking
+              <code>getPosition()</code>, are snapped points (depending on the
+              configured snapping rules).</para>
             </listitem>
           </itemizedlist>
         </note>
@@ -1440,7 +1441,7 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
   </chapter>
 
   <chapter id="chapter-gwt-widgets">
-    <title>GWT Widgets</title>
+    <title>GWT widgets</title>
 
     <para>This second chapter of the GWT face describes all the widgets that
     Geomajas has added on top of the SmartGWT widget list. Each widget will be
@@ -1501,7 +1502,7 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
       wait for this moment to initialize themselves, as they often require the
       MapModel's contents.</para>
 
-      <para><emphasis role="bold">View - Rendering</emphasis></para>
+      <para><emphasis role="bold">View - rendering</emphasis></para>
 
       <para>A second responsibility lies in the ability to render shapes. To
       this end a render method has been foreseen, where a
@@ -1565,16 +1566,16 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
         </listitem>
       </itemizedlist>
 
-      <para><screenshot>
-          <screeninfo>MapWidget example</screeninfo>
+      <figure>
+        <title>MapWidget example</title>
 
-          <mediaobject>
-            <imageobject>
-              <imagedata align="center"
-                         fileref="../images/gwtface_widget_mapwidget.png" />
-            </imageobject>
-          </mediaobject>
-        </screenshot></para>
+        <mediaobject>
+          <imageobject>
+            <imagedata align="center"
+                       fileref="../images/gwtface_widget_mapwidget.png" />
+          </imageobject>
+        </mediaobject>
+      </figure>
     </section>
 
     <section>
@@ -1589,8 +1590,8 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
       all the functionality a normal map has. This means that you configure
       layers for an overview map, just as you would for a normal map.</para>
 
-      <screenshot>
-        <screeninfo>OverviewMap example</screeninfo>
+      <figure>
+        <title>OverviewMap example</title>
 
         <mediaobject>
           <imageobject>
@@ -1598,7 +1599,7 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
                        fileref="../images/gwtface_widget_overviewmap.png" />
           </imageobject>
         </mediaobject>
-      </screenshot>
+      </figure>
     </section>
 
     <section>
@@ -1746,8 +1747,8 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
           </listitem>
         </itemizedlist></para>
 
-      <screenshot>
-        <screeninfo>Toolbar example</screeninfo>
+      <figure>
+        <title>Toolbar example</title>
 
         <mediaobject>
           <imageobject>
@@ -1755,7 +1756,7 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
                        fileref="../images/gwtface_widget_toolbar.png" />
           </imageobject>
         </mediaobject>
-      </screenshot>
+      </figure>
     </section>
 
     <section>
@@ -1783,8 +1784,8 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
       where no layer has been selected (and thus all the buttons are
       disabled):</para>
 
-      <screenshot>
-        <screeninfo>LayerTree example</screeninfo>
+      <figure>
+        <title>LayerTree example</title>
 
         <mediaobject>
           <imageobject>
@@ -1792,7 +1793,7 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
                        fileref="../images/gwtface_widget_layertree1.png" />
           </imageobject>
         </mediaobject>
-      </screenshot>
+      </figure>
 
       <para>Once a layer is selected, the <code>LayerTree</code> will go over
       all buttons and present the selected layer. The buttons then decide
@@ -1804,8 +1805,8 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
       remain disabled. To see what the same <code>LayerTree</code> would look
       like if one layer is selected, view here:</para>
 
-      <screenshot>
-        <screeninfo>LayerTree with selected layer</screeninfo>
+      <figure>
+        <title>LayerTree with selected layer</title>
 
         <mediaobject>
           <imageobject>
@@ -1813,7 +1814,7 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
                        fileref="../images/gwtface_widget_layertree2.png" />
           </imageobject>
         </mediaobject>
-      </screenshot>
+      </figure>
 
       <para>The <code>LayerTree</code> may have few public methods, but it
       does quie a lot behind the screen. The tree is in fact a SmartGWT
@@ -1939,8 +1940,8 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
       any rows to the table. Also the setting of the layer will automatically
       create the grid header, using the layer's attribute definitions.</para>
 
-      <screenshot>
-        <screeninfo>FeatureListGrid example</screeninfo>
+      <figure>
+        <title>FeatureListGrid example</title>
 
         <mediaobject>
           <imageobject>
@@ -1948,7 +1949,7 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
                        fileref="../images/gwtface_widget_featurelistgrid.png" />
           </imageobject>
         </mediaobject>
-      </screenshot>
+      </figure>
     </section>
 
     <section>
@@ -1991,9 +1992,8 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
       editingAllowed, there would be now Edit button, and the edit button
       itself triggers the editingEnabled option to true.</para>
 
-      <screenshot>
-        <screeninfo>FeatureAttributeWIndow: edittingAllowed=true,
-        editingEnabled=false</screeninfo>
+      <figure>
+        <title>FeatureAttributeWIndow, editing allowed but not enabled</title>
 
         <mediaobject>
           <imageobject>
@@ -2001,7 +2001,7 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
                        fileref="../images/gwtface_widget_featureattributewindow.png" />
           </imageobject>
         </mediaobject>
-      </screenshot>
+      </figure>
     </section>
 
     <section>
@@ -2017,8 +2017,8 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
       On the screenshot below, you can see the difference between it being
       passive and active:</para>
 
-      <screenshot>
-        <screeninfo>ActivityMonitor example</screeninfo>
+      <figure>
+        <title>ActivityMonitor example</title>
 
         <mediaobject>
           <imageobject>
@@ -2026,7 +2026,7 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
                        fileref="../images/gwtface_widget_activitymonitor.png" />
           </imageobject>
         </mediaobject>
-      </screenshot>
+      </figure>
     </section>
 
     <section>
@@ -2045,15 +2045,15 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
       <para>By using the setScales method, one can always override the list of
       scales in the ScaleSelect to one's own liking.</para>
 
-      <screenshot>
-        <screeninfo>ScaleSelect example</screeninfo>
+      <figure>
+        <title>ScaleSelect example</title>
 
         <mediaobject>
           <imageobject>
             <imagedata fileref="../images/gwtface_widget_scaleselect.png" />
           </imageobject>
         </mediaobject>
-      </screenshot>
+      </figure>
     </section>
 
     <section>
@@ -2084,8 +2084,8 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
       <code>maximumResultSize</code> to change this. Note that this can have a
       serious impact on performance!</para>
 
-      <screenshot>
-        <screeninfo>FeatureSearch example</screeninfo>
+      <figure>
+        <title>FeatureSearch example</title>
 
         <mediaobject>
           <imageobject>
@@ -2093,7 +2093,7 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
                        fileref="../images/gwtface_widget_featuresearch.png" />
           </imageobject>
         </mediaobject>
-      </screenshot>
+      </figure>
     </section>
 
     <section>
