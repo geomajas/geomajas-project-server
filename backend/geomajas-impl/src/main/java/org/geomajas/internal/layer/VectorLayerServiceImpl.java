@@ -29,7 +29,7 @@ import java.util.List;
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
-import org.geomajas.global.GeomajasSecurityException;
+import org.geomajas.security.GeomajasSecurityException;
 import org.geomajas.internal.layer.tile.InternalTileImpl;
 import org.geomajas.internal.layer.vector.GetBoundsContainer;
 import org.geomajas.layer.VectorLayer;

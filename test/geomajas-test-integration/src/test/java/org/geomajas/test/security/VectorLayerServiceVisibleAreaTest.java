@@ -33,7 +33,7 @@ import org.geomajas.command.CommandDispatcher;
 import org.geomajas.command.CommandResponse;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
-import org.geomajas.global.GeomajasSecurityException;
+import org.geomajas.security.GeomajasSecurityException;
 import org.geomajas.layer.VectorLayerService;
 import org.geomajas.layer.bean.BeanLayer;
 import org.geomajas.layer.feature.Feature;

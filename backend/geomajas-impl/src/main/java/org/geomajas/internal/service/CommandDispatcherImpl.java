@@ -28,7 +28,7 @@ import org.geomajas.command.CommandRequest;
 import org.geomajas.command.CommandResponse;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
-import org.geomajas.global.GeomajasSecurityException;
+import org.geomajas.security.GeomajasSecurityException;
 import org.geomajas.security.SecurityContext;
 import org.geomajas.security.SecurityManager;
 import org.slf4j.Logger;
@@ -99,7 +99,15 @@ public final class CommandDispatcherImpl implements CommandDispatcher {
 		try {
 			if (!tokenIdentical) {
 				// need to change security context
-				securityManager.createSecurityContext(userToken);
+				if (!securityManager.createSecurityContext(userToken)) {
+					// not authorized
+					response = new CommandResponse();
+					response.setId(id);
+					response.getErrors().add(
+							new GeomajasSecurityException(ExceptionCode.CREDENTIALS_MISSING_OR_INVALID, userToken));
+					response.setExecutionTime(System.currentTimeMillis() - begin);
+					return response;
+				}
 			}
 
 			// check access rights for the command

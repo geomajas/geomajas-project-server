@@ -30,7 +30,7 @@ import org.geomajas.command.dto.GetRasterTilesResponse;
 import org.geomajas.global.Api;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
-import org.geomajas.global.GeomajasSecurityException;
+import org.geomajas.security.GeomajasSecurityException;
 import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.security.SecurityContext;
 import org.geomajas.service.ConfigurationService;

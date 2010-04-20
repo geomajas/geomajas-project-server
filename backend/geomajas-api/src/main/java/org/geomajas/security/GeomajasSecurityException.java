@@ -21,7 +21,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.global;
+package org.geomajas.security;
+
+import org.geomajas.global.Api;
+import org.geomajas.global.GeomajasException;
 
 /**
  * Geomajas security exception.

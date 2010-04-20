@@ -27,7 +27,7 @@ import org.geomajas.command.Command;
 import org.geomajas.command.CommandResponse;
 import org.geomajas.command.EmptyCommandRequest;
 import org.geomajas.global.ExceptionCode;
-import org.geomajas.global.GeomajasSecurityException;
+import org.geomajas.security.GeomajasSecurityException;
 import org.geomajas.security.SecurityContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

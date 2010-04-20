@@ -96,5 +96,6 @@ public interface ExceptionCode {
 	int PRINT_TEMPLATE_PERSIST_PROBLEM = 60;
 	int MERGE_NO_POLYGON = 61;
 	int PARAMETER_MISSING = 62;
+	int CREDENTIALS_MISSING_OR_INVALID = 63;
 
 }

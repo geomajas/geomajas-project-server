@@ -30,7 +30,7 @@ import org.geomajas.command.dto.UserMaximumExtentResponse;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
-import org.geomajas.global.GeomajasSecurityException;
+import org.geomajas.security.GeomajasSecurityException;
 import org.geomajas.layer.Layer;
 import org.geomajas.layer.LayerType;
 import org.geomajas.security.SecurityContext;

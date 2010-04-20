@@ -27,7 +27,7 @@ import junit.framework.Assert;
 import org.geomajas.command.CommandDispatcher;
 import org.geomajas.command.CommandResponse;
 import org.geomajas.global.ExceptionCode;
-import org.geomajas.global.GeomajasSecurityException;
+import org.geomajas.security.GeomajasSecurityException;
 import org.geomajas.layer.bean.BeanLayer;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.plugin.springsecurity.command.dto.LoginRequest;

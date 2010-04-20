@@ -25,7 +25,7 @@ package org.geomajas.internal.layer.vector;
 
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
-import org.geomajas.global.GeomajasSecurityException;
+import org.geomajas.security.GeomajasSecurityException;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.FeatureModel;
