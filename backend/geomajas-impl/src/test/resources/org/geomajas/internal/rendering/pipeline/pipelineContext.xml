@@ -31,8 +31,17 @@ http://www.springframework.org/schema/context
 http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 		>
 
-	<bean name="pipelineTest" class="org.geomajas.service.pipeline.PipelineInfo">
-		<property name="id" value="pipelineTest"/>
+	<bean class="org.geomajas.service.pipeline.PipelineInfo">
+		<property name="pipelineName" value="pipelineTest"/>
+		<property name="pipeline">
+			<list>
+				<!-- empty, needed to verify that last defined pipeline is always used, allowing implicit overwrite -->
+			</list>
+		</property>
+	</bean>
+
+	<bean class="org.geomajas.service.pipeline.PipelineInfo">
+		<property name="pipelineName" value="pipelineTest"/>
 		<property name="pipeline">
 			<list>
 				<bean class="org.geomajas.internal.service.pipeline.Step1">
@@ -49,7 +58,8 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 	</bean>
 
 	<bean class="org.geomajas.service.pipeline.PipelineInfo">
-		<property name="id" value="pipelineTest.aLayer"/>
+		<property name="pipelineName" value="pipelineTest"/>
+		<property name="layerId" value="aLayer"/>
 		<property name="pipeline">
 			<list>
 				<bean class="org.geomajas.internal.service.pipeline.Step1">
@@ -62,8 +72,9 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 		</property>
 	</bean>
 
-	<bean class="org.geomajas.service.pipeline.PipelineInfo">
-		<property name="id" value="pipelineTest.stop"/>
+	<bean id="stop" class="org.geomajas.service.pipeline.PipelineInfo">
+		<property name="pipelineName" value="pipelineTest"/>
+		<property name="layerId" value="stop"/>
 		<property name="pipeline">
 			<list>
 				<bean class="org.geomajas.internal.service.pipeline.Step1">
@@ -80,6 +91,18 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 				</bean>
 			</list>
 		</property>
+	</bean>
+
+	<bean id="inter" class="org.geomajas.service.pipeline.PipelineInfo">
+		<property name="pipelineName" value="pipelineTest"/>
+		<property name="layerId" value="inter"/>
+		<property name="delegatePipeline" ref="stop" />
+	</bean>
+
+	<bean class="org.geomajas.service.pipeline.PipelineInfo">
+		<property name="pipelineName" value="pipelineTest"/>
+		<property name="layerId" value="delegate"/>
+		<property name="delegatePipeline" ref="inter" />
 	</bean>
 
 </beans>

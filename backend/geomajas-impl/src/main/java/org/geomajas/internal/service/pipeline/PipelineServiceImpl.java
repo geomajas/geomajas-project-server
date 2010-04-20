@@ -70,23 +70,30 @@ public class PipelineServiceImpl<RESPONSE> implements PipelineService<RESPONSE> 
 	}
 
 	/** @inheritDoc */
-	public PipelineInfo<RESPONSE> getPipeline(String key, String layerId) throws GeomajasException {
-		PipelineInfo<RESPONSE> generalPipeline = null;
-		String specificId = key + "." + layerId;
+	public PipelineInfo<RESPONSE> getPipeline(String pipelineName, String layerId) throws GeomajasException {
+		PipelineInfo<RESPONSE> layerPipeline = null;
+		PipelineInfo<RESPONSE> defaultPipeline = null;
 		Collection<PipelineInfo> pipelines = applicationContext.getBeansOfType(PipelineInfo.class).values();
 		for (PipelineInfo<RESPONSE> pipeline : pipelines) {
-			String id = pipeline.getId();
-			if (id.equals(specificId)) {
-				return pipeline;
-			}
-			if (id.equals(key)) {
-				generalPipeline = pipeline;
+			if (pipeline.getPipelineName().equals(pipelineName)) {
+				String lid = pipeline.getLayerId();
+				if (null == lid) {
+					defaultPipeline = pipeline;
+				} else if (lid.equals(layerId)) {
+					layerPipeline = pipeline;
+				}
 			}
 		}
-		if (null == generalPipeline) {
-			throw new GeomajasException(ExceptionCode.PIPELINE_UNKNOWN, key, layerId);
+		if (null == layerPipeline) {
+			layerPipeline = defaultPipeline;
 		}
-		return generalPipeline;
+		if (null == layerPipeline) {
+			throw new GeomajasException(ExceptionCode.PIPELINE_UNKNOWN, pipelineName, layerId);
+		}
+		while (null != layerPipeline.getDelegatePipeline()) {
+			layerPipeline = layerPipeline.getDelegatePipeline();
+		}
+		return layerPipeline;
 	}
 
 	/** @inheritDoc */

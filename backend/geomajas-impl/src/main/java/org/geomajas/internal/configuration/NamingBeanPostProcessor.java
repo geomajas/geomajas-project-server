@@ -34,7 +34,6 @@ import org.springframework.stereotype.Component;
  * Post-processes all beans and sets the id/name property based on the bean name.
  * 
  * @author Jan De Moerloose
- * 
  */
 @Component
 public class NamingBeanPostProcessor implements BeanPostProcessor {

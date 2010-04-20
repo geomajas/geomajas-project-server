@@ -69,7 +69,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	<!-- define default pipelines for RasterLayerService -->
 
 	<bean class="org.geomajas.service.pipeline.PipelineInfo">
-		<property name="id"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_GET_RASTER_TILES"/></property>
+		<property name="pipelineName"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_GET_RASTER_TILES"/></property>
 		<property name="pipeline">
 			<list>
 				<bean class="org.geomajas.internal.layer.raster.GetTilesGetStep">
@@ -83,7 +83,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	<!-- define default pipelines for VectorLayerService -->
 
 	<bean class="org.geomajas.service.pipeline.PipelineInfo">
-		<property name="id"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_SAVE_OR_UPDATE"/></property>
+		<property name="pipelineName"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_SAVE_OR_UPDATE"/></property>
 		<property name="pipeline">
 			<list>
 				<bean class="org.geomajas.internal.layer.vector.FeatureListEqualSizeStep">
@@ -98,7 +98,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	</bean>
 
 	<bean class="org.geomajas.service.pipeline.PipelineInfo">
-		<property name="id"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_SAVE_OR_UPDATE_ONE"/></property>
+		<property name="pipelineName"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_SAVE_OR_UPDATE_ONE"/></property>
 		<property name="pipeline">
 			<list>
 				<bean class="org.geomajas.internal.layer.vector.SaveOrUpdateDeleteStep">
@@ -127,7 +127,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	</bean>
 
 	<bean class="org.geomajas.service.pipeline.PipelineInfo">
-		<property name="id"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_GET_FEATURES"/></property>
+		<property name="pipelineName"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_GET_FEATURES"/></property>
 		<property name="pipeline">
 			<list>
 				<bean class="org.geomajas.internal.layer.vector.LayerFilterStep">
@@ -144,7 +144,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	</bean>
 
 	<bean class="org.geomajas.service.pipeline.PipelineInfo">
-		<property name="id"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_GET_BOUNDS"/></property>
+		<property name="pipelineName"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_GET_BOUNDS"/></property>
 		<property name="pipeline">
 			<list>
 				<bean class="org.geomajas.internal.layer.vector.LayerFilterStep">
@@ -159,7 +159,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 
 
 	<bean class="org.geomajas.service.pipeline.PipelineInfo">
-		<property name="id"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_GET_ATTRIBUTES"/></property>
+		<property name="pipelineName"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_GET_ATTRIBUTES"/></property>
 		<property name="pipeline">
 			<list>
 				<bean class="org.geomajas.internal.layer.vector.LayerFilterStep">
@@ -173,7 +173,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	</bean>
 
 	<bean class="org.geomajas.service.pipeline.PipelineInfo">
-		<property name="id"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_GET_VECTOR_TILE"/></property>
+		<property name="pipelineName"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_GET_VECTOR_TILE"/></property>
 		<property name="pipeline">
 			<list>
 				<bean class="org.geomajas.internal.layer.vector.GetTileFilterStep">

@@ -90,4 +90,13 @@ public class PipelineServiceTest {
 			Assert.assertEquals(ExceptionCode.PIPELINE_UNKNOWN, ge.getExceptionCode());
 		}
 	}
+
+	@Test
+	public void testDelegate() throws Exception {
+		PipelineInfo<StringAttribute> pipelineInfo;
+
+		pipelineInfo = pipelineService.getPipeline("pipelineTest", "delegate");
+		Assert.assertNotNull(pipelineInfo);
+		Assert.assertEquals("stop", pipelineInfo.getLayerId());
+	}
 }

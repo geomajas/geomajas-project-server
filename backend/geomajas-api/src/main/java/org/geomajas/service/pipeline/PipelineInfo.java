@@ -40,26 +40,74 @@ import java.util.List;
 public class PipelineInfo<RESPONSE> {
 
 	@NotNull
-	private String id;
+	private String pipelineName;
+
+	private String layerId;
+
+	private PipelineInfo delegatePipeline;
 
 	private List<PipelineStep<RESPONSE>> pipeline;
-
+	
 	/**
-	 * Get the pipeline id. This is the ide which is used to retrieve a specific pipeline.
+	 * Get the name of the pipeline for which this is an implementation.
 	 *
-	 * @return pipeline id
+	 * @return pipeline name
 	 */
-	public String getId() {
-		return id;
+	public String getPipelineName() {
+		return pipelineName;
 	}
 
 	/**
-	 * Set the pipeline id.
+	 * Set the name of the pipeline for which steps are defined.
 	 *
-	 * @param id pipeline id
+	 * @param pipelineName pipeline name
 	 */
-	public void setId(String id) {
-		this.id = id;
+	public void setPipelineName(String pipelineName) {
+		this.pipelineName = pipelineName;
+	}
+
+	/**
+	 * Set the layer for which this definition should apply.
+	 * <p/>
+	 * When this is not set (or null), it indicates a candidate default implementation.
+	 *
+	 * @return layer for which this pipeline applies
+	 */
+	public String getLayerId() {
+		return layerId;
+	}
+
+	/**
+	 * Get the layer id for which this pipeline applies.
+	 * <p/>
+	 * When this is not set (or null), it indicates a candidate default implementation.
+	 *
+	 * @param layerId layer for which this pipeline applies
+	 */
+	public void setLayerId(String layerId) {
+		this.layerId = layerId;
+	}
+
+	/**
+	 * Get the delegate pipeline.
+	 * <p/>
+	 * When this is set, the pipeline for the delegate should be used instead of the pipeline defined in this bean.
+	 *
+	 * @return delegate pipeline definition
+	 */
+	public PipelineInfo getDelegatePipeline() {
+		return delegatePipeline;
+	}
+
+	/**
+	 * Define a delegate pipeline.
+	 * <p/>
+	 * When this is set, the pipeline for the delegate should be used instead of the pipeline defined in this bean.
+	 *
+	 * @param delegatePipeline delegate pipeline definition
+	 */
+	public void setDelegatePipeline(PipelineInfo delegatePipeline) {
+		this.delegatePipeline = delegatePipeline;
 	}
 
 	/**
