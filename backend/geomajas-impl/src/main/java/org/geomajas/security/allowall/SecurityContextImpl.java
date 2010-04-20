@@ -294,7 +294,7 @@ public class SecurityContextImpl implements SecurityContext {
 	 * @inheritDoc
 	 */
 	public boolean isLayerUpdateAuthorized(String layerId) {
-		if (!isLayerUpdateCapable(layerId)) {
+		if (isLayerUpdateCapable(layerId)) {
 			for (Authentication authentication : authentications) {
 				for (BaseAuthorization authorization : authentication.getAuthorizations()) {
 					if (authorization.isLayerUpdateAuthorized(layerId)) {
@@ -310,7 +310,7 @@ public class SecurityContextImpl implements SecurityContext {
 	 * @inheritDoc
 	 */
 	public boolean isLayerCreateAuthorized(String layerId) {
-		if (!isLayerCreateCapable(layerId)) {
+		if (isLayerCreateCapable(layerId)) {
 			for (Authentication authentication : authentications) {
 				for (BaseAuthorization authorization : authentication.getAuthorizations()) {
 					if (authorization.isLayerCreateAuthorized(layerId)) {
@@ -651,18 +651,27 @@ public class SecurityContextImpl implements SecurityContext {
 	}
 
 	private boolean isLayerUpdateCapable(String layerId) {
+		if (null == configurationService) {
+			return true; // for testing, when there is no spring context
+		}
 		VectorLayer layer = configurationService.getVectorLayer(layerId);
-		return layer.isUpdateCapable();
+		return null != layer && layer.isUpdateCapable();
 	}
 
 	private boolean isLayerCreateCapable(String layerId) {
+		if (null == configurationService) {
+			return true; // for testing, when there is no spring context
+		}
 		VectorLayer layer = configurationService.getVectorLayer(layerId);
-		return layer.isCreateCapable();
+		return null != layer && layer.isCreateCapable();
 	}
 
 	private boolean isLayerDeleteCapable(String layerId) {
+		if (null == configurationService) {
+			return true; // for testing, when there is no spring context
+		}
 		VectorLayer layer = configurationService.getVectorLayer(layerId);
-		return layer.isDeleteCapable();
+		return null != layer && layer.isDeleteCapable();
 	}
 
 

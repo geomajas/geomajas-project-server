@@ -42,7 +42,7 @@ public class SecurityContextBaseAuthorizationTest {
 
 	private static final String TOOL_ID = "Tool";
 	private static final String COMMAND_NAME = "Command";
-	private static final String Layer_ID = "layer";
+	private static final String LAYER_ID = "layer";
 
 	@Test
 	public void testAuthorizedOne() {
@@ -56,10 +56,10 @@ public class SecurityContextBaseAuthorizationTest {
 		securityContext.setAuthentications("token", authentications);
 		Assert.assertTrue(securityContext.isToolAuthorized(TOOL_ID));
 		Assert.assertTrue(securityContext.isCommandAuthorized(COMMAND_NAME));
-		Assert.assertTrue(securityContext.isLayerVisible(Layer_ID));
-		Assert.assertTrue(securityContext.isLayerCreateAuthorized(Layer_ID));
-		Assert.assertTrue(securityContext.isLayerUpdateAuthorized(Layer_ID));
-		Assert.assertTrue(securityContext.isLayerDeleteAuthorized(Layer_ID));
+		Assert.assertTrue(securityContext.isLayerVisible(LAYER_ID));
+		Assert.assertTrue(securityContext.isLayerCreateAuthorized(LAYER_ID));
+		Assert.assertTrue(securityContext.isLayerUpdateAuthorized(LAYER_ID));
+		Assert.assertTrue(securityContext.isLayerDeleteAuthorized(LAYER_ID));
 	}
 
 	@Test
@@ -74,10 +74,10 @@ public class SecurityContextBaseAuthorizationTest {
 		securityContext.setAuthentications("token", authentications);
 		Assert.assertTrue(securityContext.isToolAuthorized(TOOL_ID));
 		Assert.assertTrue(securityContext.isCommandAuthorized(COMMAND_NAME));
-		Assert.assertTrue(securityContext.isLayerVisible(Layer_ID));
-		Assert.assertTrue(securityContext.isLayerCreateAuthorized(Layer_ID));
-		Assert.assertTrue(securityContext.isLayerUpdateAuthorized(Layer_ID));
-		Assert.assertTrue(securityContext.isLayerDeleteAuthorized(Layer_ID));
+		Assert.assertTrue(securityContext.isLayerVisible(LAYER_ID));
+		Assert.assertTrue(securityContext.isLayerCreateAuthorized(LAYER_ID));
+		Assert.assertTrue(securityContext.isLayerUpdateAuthorized(LAYER_ID));
+		Assert.assertTrue(securityContext.isLayerDeleteAuthorized(LAYER_ID));
 	}
 
 	@Test
@@ -94,10 +94,10 @@ public class SecurityContextBaseAuthorizationTest {
 		securityContext.setAuthentications("token", authentications);
 		Assert.assertTrue(securityContext.isToolAuthorized(TOOL_ID));
 		Assert.assertTrue(securityContext.isCommandAuthorized(COMMAND_NAME));
-		Assert.assertTrue(securityContext.isLayerVisible(Layer_ID));
-		Assert.assertTrue(securityContext.isLayerCreateAuthorized(Layer_ID));
-		Assert.assertTrue(securityContext.isLayerUpdateAuthorized(Layer_ID));
-		Assert.assertTrue(securityContext.isLayerDeleteAuthorized(Layer_ID));
+		Assert.assertTrue(securityContext.isLayerVisible(LAYER_ID));
+		Assert.assertTrue(securityContext.isLayerCreateAuthorized(LAYER_ID));
+		Assert.assertTrue(securityContext.isLayerUpdateAuthorized(LAYER_ID));
+		Assert.assertTrue(securityContext.isLayerDeleteAuthorized(LAYER_ID));
 	}
 
 	@Test
@@ -105,10 +105,10 @@ public class SecurityContextBaseAuthorizationTest {
 		SecurityContextImpl securityContext = new SecurityContextImpl();
 		Assert.assertFalse(securityContext.isToolAuthorized(TOOL_ID));
 		Assert.assertFalse(securityContext.isCommandAuthorized(COMMAND_NAME));
-		Assert.assertFalse(securityContext.isLayerVisible(Layer_ID));
-		Assert.assertFalse(securityContext.isLayerCreateAuthorized(Layer_ID));
-		Assert.assertFalse(securityContext.isLayerUpdateAuthorized(Layer_ID));
-		Assert.assertFalse(securityContext.isLayerDeleteAuthorized(Layer_ID));
+		Assert.assertFalse(securityContext.isLayerVisible(LAYER_ID));
+		Assert.assertFalse(securityContext.isLayerCreateAuthorized(LAYER_ID));
+		Assert.assertFalse(securityContext.isLayerUpdateAuthorized(LAYER_ID));
+		Assert.assertFalse(securityContext.isLayerDeleteAuthorized(LAYER_ID));
 	}
 
 	@Test
@@ -116,9 +116,9 @@ public class SecurityContextBaseAuthorizationTest {
 		SecurityContextImpl securityContext = new SecurityContextImpl();
 		Assert.assertFalse(securityContext.isToolAuthorized(TOOL_ID));
 		Assert.assertFalse(securityContext.isCommandAuthorized(COMMAND_NAME));
-		Assert.assertFalse(securityContext.isLayerVisible(Layer_ID));
-		Assert.assertFalse(securityContext.isLayerCreateAuthorized(Layer_ID));
-		Assert.assertFalse(securityContext.isLayerUpdateAuthorized(Layer_ID));
-		Assert.assertFalse(securityContext.isLayerDeleteAuthorized(Layer_ID));
+		Assert.assertFalse(securityContext.isLayerVisible(LAYER_ID));
+		Assert.assertFalse(securityContext.isLayerCreateAuthorized(LAYER_ID));
+		Assert.assertFalse(securityContext.isLayerUpdateAuthorized(LAYER_ID));
+		Assert.assertFalse(securityContext.isLayerDeleteAuthorized(LAYER_ID));
 	}
 }
