@@ -31,12 +31,12 @@ import org.geomajas.layer.tile.TileCode;
 import org.geomajas.layer.tile.TileMetadata;
 
 /**
- * Request object for {@link org.geomajas.command.render.GetRenderedTileCommand}.
+ * Request object for {@link org.geomajas.command.render.GetVectorTileCommand}.
  *
  * @author Joachim Van der Auwera
  */
 @Api(allMethods = true)
-public class GetRenderedTileRequest extends LayerIdCommandRequest implements TileMetadata {
+public class GetVectorTileRequest extends LayerIdCommandRequest implements TileMetadata {
 
 	private static final long serialVersionUID = 151L;
 

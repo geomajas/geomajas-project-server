@@ -32,7 +32,7 @@ import org.geomajas.command.CommandResponse;
  */
 public class RefreshConfigurationResponse extends CommandResponse {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 160L;
 
 	private String[] applicationNames;
 

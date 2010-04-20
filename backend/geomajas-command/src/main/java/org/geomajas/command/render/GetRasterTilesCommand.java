@@ -25,8 +25,9 @@ package org.geomajas.command.render;
 import java.util.List;
 
 import org.geomajas.command.Command;
-import org.geomajas.command.dto.GetRasterDataRequest;
-import org.geomajas.command.dto.GetRasterDataResponse;
+import org.geomajas.command.dto.GetRasterTilesRequest;
+import org.geomajas.command.dto.GetRasterTilesResponse;
+import org.geomajas.global.Api;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.global.GeomajasSecurityException;
@@ -50,10 +51,11 @@ import org.springframework.stereotype.Component;
  * @author Jan De Moerloose
  * @author Joachim Van der Auwera
  */
+@Api
 @Component()
-public class GetRasterDataCommand implements Command<GetRasterDataRequest, GetRasterDataResponse> {
+public class GetRasterTilesCommand implements Command<GetRasterTilesRequest, GetRasterTilesResponse> {
 
-	private final Logger log = LoggerFactory.getLogger(GetRasterDataCommand.class);
+	private final Logger log = LoggerFactory.getLogger(GetRasterTilesCommand.class);
 
 	@Autowired
 	private ConfigurationService configurationService;
@@ -67,11 +69,11 @@ public class GetRasterDataCommand implements Command<GetRasterDataRequest, GetRa
 	@Autowired
 	private RasterLayerService layerService;
 
-	public GetRasterDataResponse getEmptyCommandResponse() {
-		return new GetRasterDataResponse();
+	public GetRasterTilesResponse getEmptyCommandResponse() {
+		return new GetRasterTilesResponse();
 	}
 
-	public void execute(GetRasterDataRequest request, GetRasterDataResponse response) throws Exception {
+	public void execute(GetRasterTilesRequest request, GetRasterTilesResponse response) throws Exception {
 		log.debug("request start layer {}, crs {}", request.getLayerId(), request.getCrs());
 		String layerId = request.getLayerId();
 		if (null == layerId) {

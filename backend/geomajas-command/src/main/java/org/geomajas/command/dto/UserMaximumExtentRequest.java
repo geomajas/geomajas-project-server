@@ -76,5 +76,4 @@ public class UserMaximumExtentRequest implements CommandRequest {
 	public void setCrs(String crs) {
 		this.crs = crs;
 	}
-
 }

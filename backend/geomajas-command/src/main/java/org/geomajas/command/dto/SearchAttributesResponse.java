@@ -25,7 +25,6 @@ package org.geomajas.command.dto;
 import java.util.List;
 
 import org.geomajas.command.CommandResponse;
-import org.geomajas.global.Api;
 import org.geomajas.layer.feature.Attribute;
 
 /**
@@ -33,7 +32,6 @@ import org.geomajas.layer.feature.Attribute;
  * 
  * @author Pieter De Graef
  */
-@Api(allMethods = true)
 public class SearchAttributesResponse extends CommandResponse {
 
 	private static final long serialVersionUID = 151L;

@@ -28,6 +28,7 @@ import java.util.List;
 import org.geomajas.command.Command;
 import org.geomajas.command.dto.PersistTransactionRequest;
 import org.geomajas.command.dto.PersistTransactionResponse;
+import org.geomajas.global.Api;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.feature.FeatureTransaction;
@@ -46,6 +47,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Pieter De Graef
  * @author Joachim Van der Auwera
  */
+@Api
 @Component()
 @Transactional(rollbackFor = { Exception.class })
 public class PersistTransactionCommand implements Command<PersistTransactionRequest, PersistTransactionResponse> {

@@ -31,7 +31,7 @@ import org.geomajas.command.CommandRequest;
  */
 public class RefreshConfigurationRequest implements CommandRequest {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 160L;
 
 	private String[] configLocations;
 
@@ -54,5 +54,4 @@ public class RefreshConfigurationRequest implements CommandRequest {
 	public void setConfigLocations(String[] configLocations) {
 		this.configLocations = configLocations;
 	}
-
 }

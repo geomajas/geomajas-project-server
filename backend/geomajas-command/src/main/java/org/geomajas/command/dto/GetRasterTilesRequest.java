@@ -27,12 +27,12 @@ import org.geomajas.geometry.Bbox;
 import org.geomajas.global.Api;
 
 /**
- * Request object for {@link org.geomajas.command.render.GetRasterDataCommand}.
+ * Request object for {@link org.geomajas.command.render.GetRasterTilesCommand}.
  *
  * @author Joachim Van der Auwera
  */
 @Api(allMethods = true)
-public class GetRasterDataRequest extends LayerIdCommandRequest {
+public class GetRasterTilesRequest extends LayerIdCommandRequest {
 
 	private static final long serialVersionUID = 151L;
 
@@ -42,7 +42,7 @@ public class GetRasterDataRequest extends LayerIdCommandRequest {
 
 	private double scale;
 
-	public GetRasterDataRequest() {
+	public GetRasterTilesRequest() {
 	}
 
 	/**

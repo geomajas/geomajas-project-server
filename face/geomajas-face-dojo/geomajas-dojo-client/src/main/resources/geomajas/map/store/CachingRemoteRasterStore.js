@@ -27,8 +27,8 @@ dojo.require("geomajas.map.store.LayerStore");
 
 dojo.declare("CachingRemoteRasterStore", RasterStore, {
 
-	statics : { cfgCmd: "command.render.GetRasterData",
-        cfgReqClass: "org.geomajas.command.dto.GetRasterDataRequest" },
+	statics : { cfgCmd: "command.render.GetRasterTiles",
+        cfgReqClass: "org.geomajas.command.dto.GetRasterTilesRequest" },
 
 	constructor : function (layer, mapWidget) {
 		this.layer = layer;

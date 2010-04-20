@@ -23,8 +23,9 @@
 package org.geomajas.command.render;
 
 import org.geomajas.command.Command;
-import org.geomajas.command.dto.GetRenderedTileRequest;
-import org.geomajas.command.dto.GetRenderedTileResponse;
+import org.geomajas.command.dto.GetVectorTileRequest;
+import org.geomajas.command.dto.GetVectorTileResponse;
+import org.geomajas.global.Api;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.service.DtoConverterService;
@@ -40,11 +41,12 @@ import org.springframework.transaction.annotation.Transactional;
  * 
  * @author Jan De Moerloose
  */
+@Api
 @Component()
 @Transactional(readOnly = true, rollbackFor = { Exception.class })
-public class GetRenderedTileCommand implements Command<GetRenderedTileRequest, GetRenderedTileResponse> {
+public class GetVectorTileCommand implements Command<GetVectorTileRequest, GetVectorTileResponse> {
 
-	private final Logger log = LoggerFactory.getLogger(GetRenderedTileCommand.class);
+	private final Logger log = LoggerFactory.getLogger(GetVectorTileCommand.class);
 
 	@Autowired
 	private DtoConverterService converter;
@@ -52,11 +54,11 @@ public class GetRenderedTileCommand implements Command<GetRenderedTileRequest, G
 	@Autowired
 	private VectorLayerService layerService;
 
-	public GetRenderedTileResponse getEmptyCommandResponse() {
-		return new GetRenderedTileResponse();
+	public GetVectorTileResponse getEmptyCommandResponse() {
+		return new GetVectorTileResponse();
 	}
 
-	public void execute(GetRenderedTileRequest request, GetRenderedTileResponse response) throws Exception {
+	public void execute(GetVectorTileRequest request, GetVectorTileResponse response) throws Exception {
 		String layerId = request.getLayerId();
 		log.info("request start layer {}, crs {}", layerId, request.getCrs());
 		if (null == layerId) {

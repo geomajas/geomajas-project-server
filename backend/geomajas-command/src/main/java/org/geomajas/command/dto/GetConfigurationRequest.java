@@ -23,15 +23,15 @@
 package org.geomajas.command.dto;
 
 import org.geomajas.command.CommandRequest;
-import org.geomajas.global.Api;
 
 /**
  * Request object for {@link org.geomajas.command.configuration.GetConfigurationCommand}.
  * 
  * @author Jan De Moerloose
  */
-@Api(allMethods = true)
 public class GetConfigurationRequest implements CommandRequest {
+
+	private static final long serialVersionUID = 151L;
 
 	private String applicationId;
 
@@ -42,5 +42,4 @@ public class GetConfigurationRequest implements CommandRequest {
 	public void setApplicationId(String applicationId) {
 		this.applicationId = applicationId;
 	}
-
 }

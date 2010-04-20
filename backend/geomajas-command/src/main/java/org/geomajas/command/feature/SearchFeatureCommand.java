@@ -27,6 +27,7 @@ import java.util.List;
 import org.geomajas.command.Command;
 import org.geomajas.command.dto.SearchFeatureRequest;
 import org.geomajas.command.dto.SearchFeatureResponse;
+import org.geomajas.global.Api;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.VectorLayer;
@@ -47,6 +48,7 @@ import org.springframework.transaction.annotation.Transactional;
  * 
  * @author Pieter De Graef
  */
+@Api
 @Component()
 @Transactional(readOnly = true, rollbackFor = { Exception.class })
 public class SearchFeatureCommand implements Command<SearchFeatureRequest, SearchFeatureResponse> {

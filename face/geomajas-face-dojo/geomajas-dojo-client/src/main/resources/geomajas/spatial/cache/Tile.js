@@ -87,8 +87,8 @@ dojo.declare("Tile", SpatialNode, {
 	fetch : function (filter, callback) {
 		this.cache.onTileFetching();
 		// IE commands executed in sync to avoid the VML jitter !!!!
-		var command = new JsonCommand("command.render.GetRenderedTile",
-                "org.geomajas.command.dto.GetRenderedTileRequest", null, dojo.isIE > 0 ? true : false);
+		var command = new JsonCommand("command.render.GetVectorTile",
+                "org.geomajas.command.dto.GetVectorTileRequest", null, dojo.isIE > 0 ? true : false);
 		command.addParam("layerId", this.cache.layer.layerId);
         command.addParam("crs",this.cache.layer.getMapModel().getCrs());
 		command.addParam("x", this.code.getX());
