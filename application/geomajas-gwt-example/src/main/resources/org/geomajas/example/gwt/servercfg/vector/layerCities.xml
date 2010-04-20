@@ -147,7 +147,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		</property>
 	</bean>
 
-	<bean class="org.geomajas.configuration.NamedStyleInfo" name="citiesStyleInfo">
+	<!--bean class="org.geomajas.configuration.NamedStyleInfo" name="citiesStyleInfo">
 		<property name="featureStyles">
 			<list>
 				<bean class="org.geomajas.configuration.FeatureStyleInfo">
@@ -247,7 +247,119 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 				</property>
 			</bean>
 		</property>
+	</bean-->
+
+
+	<bean class="org.geomajas.configuration.NamedStyleInfo" name="citiesStyleInfo">
+		<property name="featureStyles">
+			<list>
+				<bean class="org.geomajas.configuration.FeatureStyleInfo">
+					<property name="name" value="Cities: population > 1000000" />
+					<property name="formula" value="(POPULATION > 1000000)" />
+					<property name="fillColor" value="#663333" />
+					<property name="fillOpacity" value=".75" />
+					<property name="strokeColor" value="#333333" />
+					<property name="strokeOpacity" value="1" />
+					<property name="strokeWidth" value="1" />
+					<property name="symbol">
+						<bean class="org.geomajas.configuration.SymbolInfo">
+							<property name="image">
+								<bean class="org.geomajas.configuration.ImageInfo">
+									<property name="href" value="http://127.0.0.1:8888/org.geomajas.example.gwt.GeomajasSamples/sc/geomajas/example/images/city1.png" />
+									<property name="selectionHref" value="org.geomajas.example.gwt.GeomajasSamples/sc/geomajas/example/images/city1_selected.png" />
+									<property name="width" value="24" />
+									<property name="height" value="32" />
+								</bean>
+							</property>
+						</bean>
+					</property>
+				</bean>
+				<bean class="org.geomajas.configuration.FeatureStyleInfo">
+					<property name="name" value="Cities: population > 500000" />
+					<property name="formula" value="(POPULATION > 500000)" />
+					<property name="fillColor" value="#993333" />
+					<property name="fillOpacity" value=".7" />
+					<property name="strokeColor" value="#333333" />
+					<property name="strokeOpacity" value="1" />
+					<property name="strokeWidth" value="1" />
+					<property name="symbol">
+						<bean class="org.geomajas.configuration.SymbolInfo">
+							<property name="image">
+								<bean class="org.geomajas.configuration.ImageInfo">
+									<property name="href" value="org.geomajas.example.gwt.GeomajasSamples/sc/geomajas/example/images/city2.png" />
+									<property name="selectionHref" value="org.geomajas.example.gwt.GeomajasSamples/sc/geomajas/example/images/city2_selected.png" />
+									<property name="width" value="18" />
+									<property name="height" value="32" />
+								</bean>
+							</property>
+						</bean>
+					</property>
+				</bean>
+				<bean class="org.geomajas.configuration.FeatureStyleInfo">
+					<property name="name" value="Cities: population > 100000" />
+					<property name="formula" value="(POPULATION > 100000)" />
+					<property name="fillColor" value="#CC3333" />
+					<property name="fillOpacity" value=".7" />
+					<property name="strokeColor" value="#333333" />
+					<property name="strokeOpacity" value="1" />
+					<property name="strokeWidth" value="1" />
+					<property name="symbol">
+						<bean class="org.geomajas.configuration.SymbolInfo">
+							<property name="image">
+								<bean class="org.geomajas.configuration.ImageInfo">
+									<property name="href" value="org.geomajas.example.gwt.GeomajasSamples/sc/geomajas/example/images/city3.png" />
+									<property name="selectionHref" value="org.geomajas.example.gwt.GeomajasSamples/sc/geomajas/example/images/city3_selected.png" />
+									<property name="width" value="13" />
+									<property name="height" value="20" />
+								</bean>
+							</property>
+						</bean>
+					</property>
+				</bean>
+				<bean class="org.geomajas.configuration.FeatureStyleInfo">
+					<property name="name" value="Cities: population &lt;= 100000" />
+					<property name="fillColor" value="#FF3333" />
+					<property name="fillOpacity" value=".7" />
+					<property name="strokeColor" value="#333333" />
+					<property name="strokeOpacity" value="1" />
+					<property name="strokeWidth" value="1" />
+					<property name="symbol">
+						<bean class="org.geomajas.configuration.SymbolInfo">
+							<property name="image">
+								<bean class="org.geomajas.configuration.ImageInfo">
+									<property name="href" value="org.geomajas.example.gwt.GeomajasSamples/sc/geomajas/example/images/city4.png" />
+									<property name="selectionHref" value="org.geomajas.example.gwt.GeomajasSamples/sc/geomajas/example/images/city4_selected.png" />
+									<property name="width" value="15" />
+									<property name="height" value="16" />
+								</bean>
+							</property>
+						</bean>
+					</property>
+				</bean>
+			</list>
+		</property>
+		<property name="labelStyle">
+			<bean class="org.geomajas.configuration.LabelStyleInfo">
+				<property name="labelAttributeName" value="NAME" />
+				<property name="fontStyle">
+					<bean class="org.geomajas.configuration.FeatureStyleInfo">
+						<property name="fillColor" value="#FEFEFE" />
+						<property name="fillOpacity" value="1" />
+					</bean>
+				</property>
+				<property name="backgroundStyle">
+					<bean class="org.geomajas.configuration.FeatureStyleInfo">
+						<property name="fillColor" value="#666666" />
+						<property name="fillOpacity" value=".8" />
+						<property name="strokeColor" value="#CC0000" />
+						<property name="strokeOpacity" value="1" />
+						<property name="strokeWidth" value="1" />
+					</bean>
+				</property>
+			</bean>
+		</property>
 	</bean>
+
 
 	<bean name="cities" class="org.geomajas.layer.shapeinmem.ShapeInMemLayer">
 		<property name="layerInfo" ref="citiesInfo" />

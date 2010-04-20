@@ -26,6 +26,7 @@ package org.geomajas.gwt.client.gfx.context;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.geomajas.configuration.ImageInfo;
 import org.geomajas.configuration.SymbolInfo;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.controller.GraphicsController;
@@ -76,11 +77,11 @@ public class VmlGraphicsContext implements GraphicsContext {
 	 */
 	public VmlGraphicsContext(Widget parent) {
 		this.parent = parent;
-		
+
 		// Initialize the VML namespace:
 		DOM.initVMLNamespace();
-		
-		// the root VML node 
+
+		// the root VML node
 		Element rootNode = DOM.createElementNS(DOM.NS_HTML, "div");
 		id = DOM.createUniqueId();
 		rootNode.setId(id);
@@ -90,7 +91,7 @@ public class VmlGraphicsContext implements GraphicsContext {
 		DOM.setStyleAttribute(rootNode, "clip", "rect(0 " + width + "px " + height + "px 0)");
 		DOM.setStyleAttribute(rootNode, "overflow", "hidden");
 		helper = new DomHelper(rootNode, Namespace.VML);
-		
+
 		// Append to parent: we need a top div or the vml is blocked by any peer div !!!
 		parent.getElement().appendChild(rootNode);
 	}
@@ -372,6 +373,16 @@ public class VmlGraphicsContext implements GraphicsContext {
 				return;
 			}
 			symbolDefs.put(id, new SymbolDefinition(symbol, style));
+			if (symbol.getImage() != null) {
+				// When it's an image symbol, add an extra definition for it's selection:
+				SymbolInfo selected = new SymbolInfo();
+				ImageInfo selectedImage = new ImageInfo();
+				selectedImage.setHref(symbol.getImage().getSelectionHref());
+				selectedImage.setWidth(symbol.getImage().getWidth());
+				selectedImage.setHeight(symbol.getImage().getHeight());
+				selected.setImage(selectedImage);
+				symbolDefs.put(id + "-selection", new SymbolDefinition(selected, null));
+			}
 		}
 	}
 
@@ -385,7 +396,7 @@ public class VmlGraphicsContext implements GraphicsContext {
 	 * @param position
 	 *            The symbol's (X,Y) location on the graphics.
 	 * @param style
-	 *            The style to apply on the symbol.
+	 *            The style to apply on the symbol. When the symbol is an image, the style will be ignored!
 	 * @param shapeTypeId
 	 *            The name of the predefined ShapeType. This symbol will create a reference to this predefined type and
 	 *            take on it's characteristics.
@@ -421,8 +432,16 @@ public class VmlGraphicsContext implements GraphicsContext {
 				// width and height are both radius*2
 				int size = (int) (2 * radius);
 				applyElementSize(circle, size, size, false);
+			} else if (symbol.getImage() != null) {
+				// Creating an image; ignoring style....
+				Element image = helper.createOrUpdateElement(parent, name, "image", null);
+				DOM.setElementAttribute(image, "src", symbol.getImage().getHref());
+				int width = symbol.getImage().getWidth();
+				int height = symbol.getImage().getHeight();
+				applyElementSize(image, width, height, false);
+				applyAbsolutePosition(image, new Coordinate(position.getX() - Math.round(width / 2), position.getY()
+						- Math.round(height / 2)));
 			}
-
 		}
 	}
 
@@ -476,7 +495,8 @@ public class VmlGraphicsContext implements GraphicsContext {
 	/**
 	 * Return the id of the specified group.
 	 * 
-	 * @param group the group object
+	 * @param group
+	 *            the group object
 	 * @return the corresponding element id or null if the group has not been drawn.
 	 */
 	public String getId(Object group) {

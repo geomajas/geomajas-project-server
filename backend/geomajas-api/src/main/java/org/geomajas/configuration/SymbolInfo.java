@@ -27,8 +27,8 @@ import org.geomajas.global.Api;
 import java.io.Serializable;
 
 /**
- * Symbol configuration information.
- *
+ * Symbol configuration information. Choose one the options (either circle, rectangle or image).
+ * 
  * @author Joachim Van der Auwera
  * @since 1.6.0
  */
@@ -36,12 +36,16 @@ import java.io.Serializable;
 public class SymbolInfo implements Serializable {
 
 	private static final long serialVersionUID = 151L;
+
 	private CircleInfo circle;
+
 	private RectInfo rect;
+
+	private ImageInfo image;
 
 	/**
 	 * Get the circle for the symbol.
-	 *
+	 * 
 	 * @return circle
 	 */
 	public CircleInfo getCircle() {
@@ -50,8 +54,9 @@ public class SymbolInfo implements Serializable {
 
 	/**
 	 * Set circle for the symbol.
-	 *
-	 * @param circle circle
+	 * 
+	 * @param circle
+	 *            circle
 	 */
 	public void setCircle(CircleInfo circle) {
 		this.circle = circle;
@@ -59,7 +64,7 @@ public class SymbolInfo implements Serializable {
 
 	/**
 	 * Get the rectangle for this symbol.
-	 *
+	 * 
 	 * @return rectangle
 	 */
 	public RectInfo getRect() {
@@ -68,10 +73,28 @@ public class SymbolInfo implements Serializable {
 
 	/**
 	 * Set the rectangle for this symbol.
-	 *
-	 * @param rect rectangle
+	 * 
+	 * @param rect
+	 *            rectangle
 	 */
 	public void setRect(RectInfo rect) {
 		this.rect = rect;
+	}
+
+	/**
+	 * @return  Get the image for this symbol.
+	 */
+	public ImageInfo getImage() {
+		return image;
+	}
+
+	/**
+	 * Set the image for this symbol.
+	 * 
+	 * @param image
+	 *            the image symbol.
+	 */
+	public void setImage(ImageInfo image) {
+		this.image = image;
 	}
 }

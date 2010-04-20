@@ -74,7 +74,7 @@ public class SvgGraphicsContext implements GraphicsContext {
 	 */
 	public SvgGraphicsContext(Widget parent) {
 		this.parent = parent;
-		// the root SVG node 
+		// the root SVG node
 		Element rootNode = DOM.createElementNS(DOM.NS_SVG, "svg");
 		DOM.setElementAttribute(rootNode, "width", width + "");
 		DOM.setElementAttribute(rootNode, "height", height + "");
@@ -92,7 +92,7 @@ public class SvgGraphicsContext implements GraphicsContext {
 		DOM.setStyleAttribute(divNode, "height", "100%");
 		id = DOM.createUniqueId();
 		divNode.setId(id);
-		
+
 		parent.getElement().appendChild(divNode);
 		divNode.appendChild(rootNode);
 	}
@@ -405,6 +405,36 @@ public class SvgGraphicsContext implements GraphicsContext {
 				DOM.setElementAttribute(node, "cx", "0");
 				DOM.setElementAttribute(node, "cy", "0");
 				DOM.setElementAttribute(node, "r", radius + "");
+			} else if (symbol.getImage() != null) {
+				// Create the image symbol:
+				node = DOM.createElementNS(DOM.NS_SVG, "image");
+				DOM.setElementAttributeNS(DOM.NS_XLINK, node, "xlink:href", symbol.getImage().getHref());
+
+				long width = (long) symbol.getImage().getWidth();
+				long height = (long) symbol.getImage().getHeight();
+				if (transformation != null && transformation.getXx() != 0) {
+					double scale = transformation.getXx();
+					width = Math.round(width / scale);
+					height = Math.round(height / scale);
+				}
+				DOM.setElementAttribute(node, "width", width + "");
+				DOM.setElementAttribute(node, "height", height + "");
+				DOM.setElementAttribute(node, "x", -Math.round(width / 2) + "");
+				DOM.setElementAttribute(node, "y", -Math.round(height / 2) + "");
+
+				if (isNew) {
+					Element node2 = DOM.createElementNS(DOM.NS_SVG, "image");
+					DOM.setElementAttributeNS(DOM.NS_XLINK, node2, "xlink:href", symbol.getImage().getSelectionHref());
+					DOM.setElementAttribute(node2, "width", width + "");
+					DOM.setElementAttribute(node2, "height", height + "");
+					DOM.setElementAttribute(node2, "x", -Math.round(width / 2) + "");
+					DOM.setElementAttribute(node2, "y", -Math.round(height / 2) + "");
+
+					Element def2 = helper.createOrUpdateElement(defsGroup, id + "-selection", "symbol", null, false);
+					DOM.setElementAttribute(def2, "overflow", "visible");
+					def2.appendChild(node2);
+					defs.appendChild(def2);
+				}
 			}
 
 			// Step3: Append the symbol definition:
@@ -495,7 +525,8 @@ public class SvgGraphicsContext implements GraphicsContext {
 	/**
 	 * Return the id of the specified group.
 	 * 
-	 * @param group the group object
+	 * @param group
+	 *            the group object
 	 * @return the corresponding element id or null if the group has not been drawn.
 	 */
 	public String getId(Object group) {
@@ -510,7 +541,7 @@ public class SvgGraphicsContext implements GraphicsContext {
 	public String getId() {
 		return id;
 	}
-	
+
 	/**
 	 * Return the element name for the specified id.
 	 * 

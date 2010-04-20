@@ -24,6 +24,8 @@
 package org.geomajas.internal.rendering.writers.vml;
 
 import org.geomajas.configuration.FeatureStyleInfo;
+import org.geomajas.configuration.ImageInfo;
+import org.geomajas.configuration.RectInfo;
 import org.geomajas.configuration.SymbolInfo;
 import org.geomajas.internal.rendering.writers.GraphicsWriter;
 import org.geomajas.layer.LayerType;
@@ -71,33 +73,16 @@ public class VmlFeatureWriter implements GraphicsWriter {
 			if (isPointLike(feature)) {
 				if (feature.getStyleInfo().getSymbol() != null) {
 					SymbolInfo info = feature.getStyleInfo().getSymbol();
-					if (info.getRect() != null) {
-						for (Coordinate coordinate : geom.getCoordinates()) {
-							document.writeElement("vml:rect", true);
-							document.writeAttribute("id", feature.getId());
-							int width = (int) info.getRect().getW();
-							int height = (int) info.getRect().getH();
-							int left = (int) coordinate.x - width / 2;
-							int top = (int) coordinate.y - height / 2;
-							document.writeAttribute("style", "WIDTH: " + width + "px; HEIGHT: " + height + "px;TOP: "
-									+ top + "px; LEFT: " + left + "px;");
-							FeatureStyleInfo style = feature.getStyleInfo();
-							document.writeAttribute("fillcolor", style.getFillColor());
-							document.writeAttribute("strokecolor", style.getStrokeColor());
-							document.writeAttribute("strokeweight", style.getStrokeWidth());
-
-							// Rect-fill element:
-							document.writeElement("vml:fill", true);
-							document.writeAttribute("opacity", Float.toString(style.getFillOpacity()));
-							document.closeElement();
-
-							// Rect-stroke element:
-							document.writeElement("vml:stroke", true);
-							document.writeAttribute("opacity", Float.toString(style.getStrokeOpacity()));
-							document.closeElement();
-
-							// Rect element
-							document.closeElement();
+					for (Coordinate coordinate : geom.getCoordinates()) {
+						if (info.getRect() != null) {
+							writeRectangle(document, coordinate, feature, info.getRect());
+						} else if (info.getCircle() != null) {
+							RectInfo rectInfo = new RectInfo();
+							rectInfo.setW(info.getCircle().getR() * 2);
+							rectInfo.setH(info.getCircle().getR() * 2);
+							writeRectangle(document, coordinate, feature, rectInfo);
+						} else if (info.getImage() != null) {
+							writeImage(document, coordinate, feature, info.getImage());
 						}
 					}
 				}
@@ -113,6 +98,49 @@ public class VmlFeatureWriter implements GraphicsWriter {
 		}
 	}
 	
+	private void writeImage(GraphicsDocument document, Coordinate coordinate, InternalFeature feature,
+			ImageInfo imageInfo) throws RenderException {
+		document.writeElement("vml:image", true);
+		document.writeAttribute("id", feature.getId());
+		int width = imageInfo.getWidth();
+		int height = imageInfo.getHeight();
+		int left = (int) coordinate.x - width / 2;
+		int top = (int) coordinate.y - height / 2;
+		document.writeAttribute("style", "WIDTH: " + width + "px; HEIGHT: " + height + "px;TOP: " + top + "px; LEFT: "
+				+ left + "px;");
+		document.writeAttribute("src", imageInfo.getHref());
+		document.closeElement();
+	}
+
+	private void writeRectangle(GraphicsDocument document, Coordinate coordinate, InternalFeature feature,
+			RectInfo rectInfo) throws RenderException {
+		document.writeElement("vml:rect", true);
+		document.writeAttribute("id", feature.getId());
+		int width = (int) rectInfo.getW();
+		int height = (int) rectInfo.getH();
+		int left = (int) coordinate.x - width / 2;
+		int top = (int) coordinate.y - height / 2;
+		document.writeAttribute("style", "WIDTH: " + width + "px; HEIGHT: " + height + "px;TOP: " + top + "px; LEFT: "
+				+ left + "px;");
+		FeatureStyleInfo style = feature.getStyleInfo();
+		document.writeAttribute("fillcolor", style.getFillColor());
+		document.writeAttribute("strokecolor", style.getStrokeColor());
+		document.writeAttribute("strokeweight", style.getStrokeWidth());
+
+		// Rect-fill element:
+		document.writeElement("vml:fill", true);
+		document.writeAttribute("opacity", Float.toString(style.getFillOpacity()));
+		document.closeElement();
+
+		// Rect-stroke element:
+		document.writeElement("vml:stroke", true);
+		document.writeAttribute("opacity", Float.toString(style.getStrokeOpacity()));
+		document.closeElement();
+
+		// Rect element
+		document.closeElement();
+	}
+
 	private boolean isPointLike(InternalFeature feature) {
 		return feature.getLayer().getLayerInfo().getLayerType() == LayerType.POINT
 				|| feature.getLayer().getLayerInfo().getLayerType() == LayerType.MULTIPOINT;
