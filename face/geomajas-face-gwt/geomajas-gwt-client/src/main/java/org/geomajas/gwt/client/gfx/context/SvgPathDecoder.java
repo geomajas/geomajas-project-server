@@ -36,7 +36,7 @@ import org.geomajas.gwt.client.spatial.geometry.Polygon;
  * Decoder for geometry objects, that transforms them into strings that can be used as the "d" attribute of SVG path
  * elements.
  * </p>
- *
+ * 
  * @author Pieter De Graef
  */
 public final class SvgPathDecoder {
@@ -46,7 +46,7 @@ public final class SvgPathDecoder {
 
 	/**
 	 * This function decodes a Geometry (line or polygon) to a path's d-attribute.
-	 *
+	 * 
 	 * @param geometry
 	 *            The geometry to be decoded into a single path D attribute.
 	 * @return The D attribute value as a string.
@@ -57,7 +57,7 @@ public final class SvgPathDecoder {
 
 	/**
 	 * This function decodes a Geometry (line or polygon) to a path's d-attribute.
-	 *
+	 * 
 	 * @param geometry
 	 *            The geometry to be decoded into a single path D attribute.
 	 * @param scale
@@ -88,7 +88,7 @@ public final class SvgPathDecoder {
 
 	/**
 	 * Decode LineString.
-	 *
+	 * 
 	 * @param lineString
 	 * @return
 	 */
@@ -99,9 +99,9 @@ public final class SvgPathDecoder {
 		StringBuilder buffer = new StringBuilder();
 		Coordinate[] coordinates = lineString.getCoordinates();
 		for (int i = 0; i < coordinates.length; i++) {
-			buffer.append(coordinates[i].getX());
+			buffer.append(getX(coordinates[i]));
 			buffer.append(" ");
-			buffer.append(coordinates[i].getY());
+			buffer.append(getY(coordinates[i]));
 			if (i < (coordinates.length - 1)) {
 				buffer.append(", ");
 			}
@@ -116,9 +116,9 @@ public final class SvgPathDecoder {
 		StringBuilder buffer = new StringBuilder();
 		Coordinate[] coordinates = linearRing.getCoordinates();
 		for (int i = 0; i < coordinates.length - 1; i++) {
-			buffer.append(coordinates[i].getX());
+			buffer.append(getX(coordinates[i]));
 			buffer.append(" ");
-			buffer.append(coordinates[i].getY());
+			buffer.append(getY(coordinates[i]));
 			if (i < (coordinates.length - 2)) {
 				buffer.append(", ");
 			}
@@ -153,5 +153,27 @@ public final class SvgPathDecoder {
 			pstr.append(decodePolygon((Polygon) multipoly.getGeometryN(i)));
 		}
 		return pstr.toString();
+	}
+
+	/** Values in SVG may not go over 1000000. */
+	private static double getX(Coordinate c) {
+		double value = c.getX();
+		if (value > 1000000) {
+			value = 1000000;
+		} else if (value < -1000000) {
+			value = -1000000;
+		}
+		return value;
+	}
+
+	/** Values in SVG may not go over 1000000. */
+	private static double getY(Coordinate c) {
+		double value = c.getY();
+		if (value > 1000000) {
+			value = 1000000;
+		} else if (value < -1000000) {
+			value = -1000000;
+		}
+		return value;
 	}
 }

@@ -36,7 +36,7 @@ import org.geomajas.gwt.client.spatial.geometry.Polygon;
  * Decoder for geometry objects, that transforms them into strings that can be used as the "d" attribute of VML path
  * elements.
  * </p>
- *
+ * 
  * @author Pieter De Graef
  */
 public final class VmlPathDecoder {
@@ -46,7 +46,7 @@ public final class VmlPathDecoder {
 
 	/**
 	 * This function decodes a Geometry (line or polygon) to a path's d-attribute.
-	 *
+	 * 
 	 * @param geometry
 	 *            The geometry to be decoded into a single path D attribute.
 	 * @return The D attribute value as a string.
@@ -57,7 +57,7 @@ public final class VmlPathDecoder {
 
 	/**
 	 * This function decodes a Geometry (line or polygon) to a path's d-attribute.
-	 *
+	 * 
 	 * @param geometry
 	 *            The geometry to be decoded into a single path D attribute.
 	 * @param scale
@@ -88,9 +88,11 @@ public final class VmlPathDecoder {
 
 	/**
 	 * Convert {@link LineString} to a VML string.
-	 *
-	 * @param line line to convert
-	 * @param scale scale to use
+	 * 
+	 * @param line
+	 *            line to convert
+	 * @param scale
+	 *            scale to use
 	 * @return vml string representation of linestring
 	 */
 	private static String decodeLine(LineString line, float scale) {
@@ -105,15 +107,15 @@ public final class VmlPathDecoder {
 
 	private static void addCoordinates(StringBuilder buffer, Coordinate[] coordinates, float scale) {
 		buffer.append(" m ");
-		buffer.append(Math.round(scale * coordinates[0].getX()));
+		buffer.append(parseValue(scale * coordinates[0].getX()));
 		buffer.append(",");
-		buffer.append(Math.round(scale * coordinates[0].getY()));
+		buffer.append(parseValue(scale * coordinates[0].getY()));
 		buffer.append(" l");
 		for (int i = 1; i < coordinates.length; i++) {
 			buffer.append(" ");
-			buffer.append(Math.round(scale * coordinates[i].getX()));
+			buffer.append(parseValue(scale * coordinates[i].getX()));
 			buffer.append(",");
-			buffer.append(Math.round(scale * coordinates[i].getY()));
+			buffer.append(parseValue(scale * coordinates[i].getY()));
 		}
 	}
 
@@ -154,5 +156,14 @@ public final class VmlPathDecoder {
 			pstr.append(decodePolygon((Polygon) multipoly.getGeometryN(i), scale));
 		}
 		return pstr.toString();
+	}
+
+	private static int parseValue(double value) {
+		if (value > 21600) {
+			return 21600;
+		} else if (value < -21600) {
+			return -21600;
+		}
+		return (int) Math.round(value);
 	}
 }

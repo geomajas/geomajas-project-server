@@ -156,6 +156,11 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	<bean name="EditMode" class="org.geomajas.configuration.client.ClientToolInfo">
 		<property name="parameters">
 			<list>
+				<bean class="org.geomajas.configuration.Parameter">
+					<property name="name" value="maxBoundsDisplayed" />
+					<property name="value" value="true" />
+				</bean>
+			
 				<!--
 					old <bean class="org.geomajas.configuration.Parameter"> <property name="name" value="useMarkings"/> <property
 					name="value" value="false"/> </bean> <bean class="org.geomajas.configuration.Parameter"> <property name="name"

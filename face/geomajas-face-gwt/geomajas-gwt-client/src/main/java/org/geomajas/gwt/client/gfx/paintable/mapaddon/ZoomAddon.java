@@ -77,13 +77,13 @@ public class ZoomAddon extends MapAddon {
 				new Bbox(c.getX(), c.getY() + 20, 20, 20), new PictureStyle(1));
 
 		if (firstTime) {
-			map.getVectorContext().setController(this, "plus", new ZoomController(map, 2), Event.ONMOUSEUP);
+			map.getVectorContext().setController(this, "plus", new ZoomController(map, 2), Event.MOUSEEVENTS);
 			map.getVectorContext().setCursor(this, "plus", Cursor.POINTER.getValue());
 
-			map.getVectorContext().setController(this, "minus", new ZoomController(map, 0.5), Event.ONMOUSEUP);
+			map.getVectorContext().setController(this, "minus", new ZoomController(map, 0.5), Event.MOUSEEVENTS);
 			map.getVectorContext().setCursor(this, "minus", Cursor.POINTER.getValue());
 
-			map.getVectorContext().setController(this, "max", new MaxExtentController(map), Event.ONMOUSEUP);
+			map.getVectorContext().setController(this, "max", new MaxExtentController(map), Event.MOUSEEVENTS);
 			map.getVectorContext().setCursor(this, "max", Cursor.POINTER.getValue());
 		}
 		firstTime = false;
@@ -111,6 +111,7 @@ public class ZoomAddon extends MapAddon {
 
 		public void onMouseUp(MouseUpEvent event) {
 			mapWidget.getMapModel().getMapView().scale(delta, ZoomOption.LEVEL_CHANGE);
+			event.stopPropagation();
 		}
 	}
 
@@ -128,6 +129,7 @@ public class ZoomAddon extends MapAddon {
 		public void onMouseUp(MouseUpEvent event) {
 			Bbox max = mapWidget.getMapModel().getMapView().getMaxBounds();
 			mapWidget.getMapModel().getMapView().applyBounds(max, ZoomOption.LEVEL_FIT);
+			event.stopPropagation();
 		}
 	}
 }

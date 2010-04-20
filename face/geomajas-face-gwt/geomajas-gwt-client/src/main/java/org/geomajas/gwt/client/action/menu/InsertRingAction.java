@@ -26,6 +26,7 @@ package org.geomajas.gwt.client.action.menu;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.geomajas.geometry.Coordinate;
 import org.geomajas.global.GeomajasConstant;
 import org.geomajas.gwt.client.action.MenuAction;
 import org.geomajas.gwt.client.controller.editing.ParentEditController;
@@ -90,6 +91,7 @@ public class InsertRingAction extends MenuAction implements MenuItemIfFunction {
 			List<Feature> features = new ArrayList<Feature>();
 			features.add(ft.getNewFeatures()[index.getFeatureIndex()]);
 			LazyLoader.lazyLoad(features, GeomajasConstant.FEATURE_INCLUDE_GEOMETRY, new LazyLoadCallback() {
+
 				public void execute(List<Feature> response) {
 					controller.setEditMode(EditMode.INSERT_MODE);
 					Geometry geometry = response.get(0).getGeometry();
@@ -129,7 +131,7 @@ public class InsertRingAction extends MenuAction implements MenuItemIfFunction {
 	// -------------------------------------------------------------------------
 
 	private Polygon addRing(Polygon polygon) {
-		LinearRing interiorRing = polygon.getGeometryFactory().createLinearRing(null);
+		LinearRing interiorRing = polygon.getGeometryFactory().createLinearRing(new Coordinate[] {});
 		AddRingOperation op = new AddRingOperation(interiorRing);
 		index.setInteriorRingIndex(polygon.getNumInteriorRing());
 		index.setExteriorRing(false);

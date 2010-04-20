@@ -24,10 +24,17 @@
 package org.geomajas.gwt.client.controller.editing;
 
 import org.geomajas.gwt.client.controller.AbstractSnappingController;
+import org.geomajas.gwt.client.gfx.paintable.GfxGeometry;
+import org.geomajas.gwt.client.gfx.style.ShapeStyle;
 import org.geomajas.gwt.client.map.feature.FeatureTransaction;
 import org.geomajas.gwt.client.map.feature.TransactionGeomIndex;
+import org.geomajas.gwt.client.map.layer.VectorLayer;
+import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.spatial.WorldViewTransformer;
 import org.geomajas.gwt.client.spatial.geometry.Geometry;
+import org.geomajas.gwt.client.spatial.geometry.GeometryFactory;
+import org.geomajas.gwt.client.spatial.geometry.LinearRing;
+import org.geomajas.gwt.client.spatial.geometry.Polygon;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.MapWidget.RenderGroup;
 import org.geomajas.gwt.client.widget.MapWidget.RenderStatus;
@@ -60,20 +67,20 @@ public abstract class EditController extends AbstractSnappingController {
 	 */
 	protected EditController parent;
 
-	/**
-	 * The current active editing modus.
-	 */
+	/** The currently active editing modus. */
 	private EditMode editMode;
 
-	/**
-	 * The current active context menu on the map.
-	 */
+	/** The current active context menu on the map. */
 	protected Menu menu;
 
-	/**
-	 * Definition of the label that displays geometric information of the geometry that's currently being edited.
-	 */
+	/** Definition of the label that displays geometric information of the geometry that's currently being edited. */
 	protected GeometricInfoLabel infoLabel;
+
+	/** Option to show the maximum bounds wherein editing is allowed. */
+	private boolean maxBoundsDisplayed;
+
+	/** Paintable for the maximum bounds wherein editing is allowed. */
+	private GfxGeometry maxExtent;
 
 	// -------------------------------------------------------------------------
 	// Constructor
@@ -159,10 +166,15 @@ public abstract class EditController extends AbstractSnappingController {
 	// Getters and setters:
 	// -------------------------------------------------------------------------
 
+	/**
+	 * Reference to a parent editing controller. Editing controllers support a hierarchical structure where a parent
+	 * delegates to the correct child EditController, depending on the circumstances.
+	 */
 	public EditController getParent() {
 		return parent;
 	}
 
+	/** The currently active editing modus. */
 	public EditMode getEditMode() {
 		return editMode;
 	}
@@ -175,6 +187,21 @@ public abstract class EditController extends AbstractSnappingController {
 		return infoLabel;
 	}
 
+	/** Should the maximum bounds wherein editing is allowed be rendered on the map or not? */
+	public boolean isMaxBoundsDisplayed() {
+		return maxBoundsDisplayed;
+	}
+
+	/**
+	 * Determine whether or not the maximum bounds wherein editing is allowed be rendered on the map.
+	 * 
+	 * @param maxBoundsDisplayed
+	 *            The new value.
+	 */
+	public void setMaxBoundsDisplayed(boolean maxBoundsDisplayed) {
+		this.maxBoundsDisplayed = maxBoundsDisplayed;
+	}
+
 	// -------------------------------------------------------------------------
 	// GraphicsController implementation:
 	// -------------------------------------------------------------------------
@@ -182,9 +209,25 @@ public abstract class EditController extends AbstractSnappingController {
 	public void onActivate() {
 		menu = getContextMenu();
 		mapWidget.setContextMenu(menu);
+
+		if (maxBoundsDisplayed) {
+			VectorLayer layer = getFeatureTransaction().getLayer();
+			GeometryFactory factory = mapWidget.getMapModel().getGeometryFactory();
+			LinearRing hole = factory.createLinearRing(new Bbox(layer.getLayerInfo().getMaxExtent()));
+			LinearRing shell = factory.createLinearRing(mapWidget.getMapModel().getMapView().getMaxBounds());
+			Polygon polygon = factory.createPolygon(shell, new LinearRing[] { hole });
+
+			maxExtent = new GfxGeometry("maxExtent");
+			maxExtent.setGeometry(polygon);
+			maxExtent.setStyle(new ShapeStyle("#000000", .6f, "#990000", 1, 2));
+			mapWidget.registerWorldPaintable(maxExtent);
+		}
 	}
 
 	public void onDeactivate() {
+		if (maxExtent != null) {
+			mapWidget.unregisterWorldPaintable(maxExtent);
+		}
 		if (getFeatureTransaction() != null) {
 			mapWidget.render(getFeatureTransaction(), RenderGroup.SCREEN, RenderStatus.DELETE);
 			mapWidget.getMapModel().getFeatureEditor().stopEditing();

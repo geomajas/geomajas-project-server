@@ -59,9 +59,7 @@ import com.smartgwt.client.widgets.menu.MenuItemSeparator;
  */
 public class ParentEditController extends EditController {
 
-	/**
-	 * The real controller responsible for editing.
-	 */
+	/** The real controller responsible for editing. */
 	private EditController controller;
 
 	private TransactionGeomIndex geometryIndex;
@@ -228,6 +226,7 @@ public class ParentEditController extends EditController {
 		}
 		this.controller = controller;
 		if (controller != null) {
+			controller.setMaxBoundsDisplayed(isMaxBoundsDisplayed());
 			controller.onActivate();
 		} else {
 			onActivate();

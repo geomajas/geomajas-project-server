@@ -23,6 +23,7 @@
 
 package org.geomajas.gwt.client.action.toolbar;
 
+import org.geomajas.gwt.client.action.ConfigurableAction;
 import org.geomajas.gwt.client.action.ToolbarModalAction;
 import org.geomajas.gwt.client.controller.editing.ParentEditController;
 import org.geomajas.gwt.client.i18n.I18nProvider;
@@ -38,9 +39,11 @@ import com.smartgwt.client.widgets.events.ClickEvent;
  *
  * @author Pieter De Graef
  */
-public class EditingModalAction extends ToolbarModalAction {
+public class EditingModalAction extends ToolbarModalAction implements ConfigurableAction {
 
 	private MapWidget mapWidget;
+	
+	private boolean maxBoundsDisplayed;
 
 	public EditingModalAction(MapWidget mapWidget) {
 		super("[ISOMORPHIC]/geomajas/osgeo/edit.png", I18nProvider.getToolbar().editingSelect());
@@ -48,10 +51,18 @@ public class EditingModalAction extends ToolbarModalAction {
 	}
 
 	public void onSelect(ClickEvent event) {
-		mapWidget.setController(new ParentEditController(mapWidget));
+		ParentEditController controller = new ParentEditController(mapWidget);
+		controller.setMaxBoundsDisplayed(maxBoundsDisplayed);
+		mapWidget.setController(controller);
 	}
 
 	public void onDeselect(ClickEvent event) {
 		mapWidget.setController(null);
+	}
+
+	public void configure(String key, String value) {
+		if ("maxBoundsDisplayed".equals(key)) {
+			maxBoundsDisplayed = Boolean.parseBoolean(value);
+		}
 	}
 }

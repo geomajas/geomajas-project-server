@@ -28,7 +28,7 @@ import org.geomajas.gwt.client.spatial.Bbox;
 
 /**
  * The main factory class for creating geometry objects on the GWT client.
- *
+ * 
  * @author Pieter De Graef
  */
 public class GeometryFactory {
@@ -80,7 +80,7 @@ public class GeometryFactory {
 
 	/**
 	 * Create a new {@link Point}, given a coordinate.
-	 *
+	 * 
 	 * @param coordinate
 	 *            The {@link Coordinate} object that positions the point.
 	 * @return Returns a {@link Point} object.
@@ -94,7 +94,7 @@ public class GeometryFactory {
 
 	/**
 	 * Create a new {@link LineString}, given an array of coordinates.
-	 *
+	 * 
 	 * @param coordinates
 	 *            An array of {@link Coordinate} objects.
 	 * @return Returns a {@link LineString} object.
@@ -112,7 +112,7 @@ public class GeometryFactory {
 
 	/**
 	 * Create a new {@link MultiLineString}, given an array of LineStrings.
-	 *
+	 * 
 	 * @param lineStrings
 	 *            An array of {@link LineString} objects.
 	 * @return Returns a {@link MultiLineString} object.
@@ -130,14 +130,14 @@ public class GeometryFactory {
 
 	/**
 	 * Create a new {@link LinearRing}, given an array of coordinates.
-	 *
+	 * 
 	 * @param coordinates
 	 *            An array of {@link Coordinate} objects. This function checks if the array is closed, and does so
 	 *            itself if needed.
 	 * @return Returns a {@link LinearRing} object.
 	 */
 	public LinearRing createLinearRing(Coordinate[] coordinates) {
-		if (coordinates == null) {
+		if (coordinates == null || coordinates.length == 0) {
 			return new LinearRing(srid, precision);
 		}
 		boolean isClosed = true;
@@ -161,8 +161,23 @@ public class GeometryFactory {
 	}
 
 	/**
+	 * Create a new {@link LinearRing} from a {@link Bbox}.
+	 * 
+	 * @param bbox
+	 *            Bounding box to convert into a {@link LinearRing}.
+	 * @return Returns a {@link LinearRing} object.
+	 */
+	public LinearRing createLinearRing(Bbox bbox) {
+		Coordinate tl = new Coordinate(bbox.getX(), bbox.getY());
+		Coordinate tr = new Coordinate(bbox.getX() + bbox.getWidth(), bbox.getY());
+		Coordinate br = new Coordinate(bbox.getX() + bbox.getWidth(), bbox.getY() + bbox.getHeight());
+		Coordinate bl = new Coordinate(bbox.getX(), bbox.getY() + bbox.getHeight());
+		return new LinearRing(srid, precision, new Coordinate[] { tl, tr, br, bl, tl });
+	}
+
+	/**
 	 * Create a new {@link Polygon}, given a shell and and array of holes.
-	 *
+	 * 
 	 * @param exteriorRing
 	 *            A {@link LinearRing} object that represents the outer ring.
 	 * @param interiorRings
@@ -185,8 +200,9 @@ public class GeometryFactory {
 
 	/**
 	 * Create a new {@link Polygon} from a {@link Bbox}.
-	 *
-	 * @param bbox Bounding box to convert into a {@link Polygon}.
+	 * 
+	 * @param bbox
+	 *            Bounding box to convert into a {@link Polygon}.
 	 * @return Returns a {@link Polygon} object.
 	 */
 	public Polygon createPolygon(Bbox bbox) {
@@ -194,13 +210,13 @@ public class GeometryFactory {
 		Coordinate tr = new Coordinate(bbox.getX() + bbox.getWidth(), bbox.getY());
 		Coordinate br = new Coordinate(bbox.getX() + bbox.getWidth(), bbox.getY() + bbox.getHeight());
 		Coordinate bl = new Coordinate(bbox.getX(), bbox.getY() + bbox.getHeight());
-		return new Polygon(srid, precision,
-				new LinearRing(srid, precision, new Coordinate[] {tl, tr, br, bl, tl}), null);
+		return new Polygon(srid, precision, new LinearRing(srid, precision, new Coordinate[] { tl, tr, br, bl, tl }),
+				null);
 	}
 
 	/**
 	 * Create a new {@link MultiPolygon}, given an array of polygons.
-	 *
+	 * 
 	 * @param polygons
 	 *            An array of {@link Polygon} objects .
 	 * @return Returns a {@link MultiPolygon} object.
@@ -218,7 +234,7 @@ public class GeometryFactory {
 
 	/**
 	 * Create a new {@link MultiPoint}, given an array of points.
-	 *
+	 * 
 	 * @param points
 	 *            An array of {@link Point} objects.
 	 * @return Returns a {@link MultiPoint} geometry.
@@ -236,7 +252,7 @@ public class GeometryFactory {
 
 	/**
 	 * Create a new geometry from an existing geometry. This will basically create a clone.
-	 *
+	 * 
 	 * @param geometry
 	 *            The original geometry.
 	 * @return Returns a clone.
