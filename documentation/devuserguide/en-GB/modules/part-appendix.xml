@@ -128,7 +128,7 @@
           </listitem>
 
           <listitem>
-            <para>Configuration changes : <code>maxTileLevel</code> has been
+            <para>Configuration changes: <code>maxTileLevel</code> has been
             removed as this was not used.</para>
           </listitem>
 

@@ -108,7 +108,7 @@
 
     <para><itemizedlist>
         <listitem>
-          <para><emphasis>command</emphasis> : Commands are used as main
+          <para><emphasis>command</emphasis>: commands are used as main
           interaction point between the face (client side) and the Geomajas
           back-end. The retrieval of maps and features, calculations, updates
           on the features and all all other functionalities which are
@@ -116,7 +116,7 @@
         </listitem>
 
         <listitem>
-          <para><emphasis>layer</emphasis> : This groups a set of access
+          <para><emphasis>layer</emphasis>: this groups a set of access
           options for all details of the layers of a map. A layer can be
           either raster or vector based. A vector layer can be editable. The
           features describing the objects which are part of the vector layer
@@ -130,7 +130,7 @@
         </listitem>
 
         <listitem>
-          <para><emphasis>pipeline</emphasis> : All Geomajas back-end services
+          <para><emphasis>pipeline</emphasis>: all Geomajas back-end services
           which deal with layers are implemented using pipelines. A pipeline
           is a list of steps (actions) executed in order. Each pipeline can be
           overwritten for a layer, or you can change the default which is used
@@ -142,7 +142,7 @@
         </listitem>
 
         <listitem>
-          <para><emphasis>security</emphasis> : These modules contain the
+          <para><emphasis>security</emphasis>: these modules contain the
           pluggable security features. You can configure the security services
           which are used to verify the validity of an authentication token and
           return the authorization objects based on it. These authorization
@@ -247,13 +247,13 @@
 
         <para><itemizedlist>
             <listitem>
-              <para><code>RasterLayerService</code> : methods for accessing a
+              <para><code>RasterLayerService</code>: methods for accessing a
               raster layer, especially getting tiles for a raster
               layer.</para>
             </listitem>
 
             <listitem>
-              <para><code>VectorLayerService</code> : methods for accessing a
+              <para><code>VectorLayerService</code>: methods for accessing a
               vector layer, for example for getting the features or obtaining
               vector tiles</para>
             </listitem>
@@ -386,7 +386,7 @@
         authentication mechanism and the way to store policies.</para>
 
         <para>Based on the user who is logged into the system, the following
-        restrictions can apply :</para>
+        restrictions can apply:</para>
 
         <itemizedlist>
           <listitem>
@@ -474,56 +474,56 @@
         needs to be cleared at the end of a request (group). This is normally
         handled by the faces.</para>
 
-        <para>The following general authorization checks exist :</para>
+        <para>The following general authorization checks exist:</para>
 
         <itemizedlist>
           <listitem>
-            <para><code>isToolAuthorized(String toolId)</code> : true when the
+            <para><code>isToolAuthorized(String toolId)</code>: true when the
             tool can be used. The "toolId" matches the "id" parameter which is
             used in the configuration as specified using the
             <code>ToolInfo</code> class.</para>
           </listitem>
 
           <listitem>
-            <para><code>isCommandAuthorized(String commandName)</code> : true
+            <para><code>isCommandAuthorized(String commandName)</code>: true
             when the command is allowed to be called. The "commandName"
             parameter is the same as the command name which is passed to the
             <code>CommandDispatcher</code> service.</para>
           </listitem>
         </itemizedlist>
 
-        <para>And for each layer :</para>
+        <para>And for each layer:</para>
 
         <itemizedlist>
           <listitem>
-            <para><code>isLayerVisible(String layerId)</code> : true when
+            <para><code>isLayerVisible(String layerId)</code>: true when
             (part of) the layer is visible.</para>
           </listitem>
 
           <listitem>
-            <para><code>isLayerUpdateAuthorized(String layerId)</code> : true
+            <para><code>isLayerUpdateAuthorized(String layerId)</code>: true
             when (some of) the visible features may be editable.</para>
           </listitem>
 
           <listitem>
-            <para><code>isLayerCreateAuthorized(String layerId)</code> : true
+            <para><code>isLayerCreateAuthorized(String layerId)</code>: true
             when there is an area in which features can be created.</para>
           </listitem>
 
           <listitem>
-            <para><code>isLayerDeleteAuthorized(String layerId)</code> : true
+            <para><code>isLayerDeleteAuthorized(String layerId)</code>: true
             when (some of) the visible features may be deleted.</para>
           </listitem>
 
           <listitem>
-            <para><code>getVisibleArea(String layerId)</code> : only the area
+            <para><code>getVisibleArea(String layerId)</code>: only the area
             inside the returned geometry is visible (uses layer coordinate
             space). All features which fall outside the layer's MaxExtent area
             are also considered not visible.</para>
           </listitem>
 
           <listitem>
-            <para><code>getUpdateAuthorizedArea(String layerId)</code> : only
+            <para><code>getUpdateAuthorizedArea(String layerId)</code>: only
             the area inside the returned geometry may contain updatable
             features (uses layer coordinate space). All features which fall
             outside the layer's MaxExtent area are also considered not
@@ -531,14 +531,14 @@
           </listitem>
 
           <listitem>
-            <para><code>getCreateAuthorizedArea(String layerId)</code> : only
+            <para><code>getCreateAuthorizedArea(String layerId)</code>: only
             the area inside the returned geometry can new features be created
             (uses layer coordinate space). All features which fall outside the
             layer's MaxExtent area are also considered not creatable.</para>
           </listitem>
 
           <listitem>
-            <para><code>getDeleteAuthorizedArea(String layerId)</code> : only
+            <para><code>getDeleteAuthorizedArea(String layerId)</code>: only
             the area inside the returned geometry may contain deletable
             features (uses layer coordinate space). All features which fall
             outside the layer's MaxExtent area are also considered not
@@ -546,50 +546,50 @@
           </listitem>
 
           <listitem>
-            <para><code>getFeatureFilter(String layerId)</code> : get an
+            <para><code>getFeatureFilter(String layerId)</code>: get an
             additional filter which needs to be applied when querying the
             layer's features.</para>
           </listitem>
 
           <listitem>
             <para><code>isFeatureVisible(String layerId, InternalFeature
-            feature)</code> : check the visibility of a feature.</para>
+            feature)</code>: check the visibility of a feature.</para>
           </listitem>
 
           <listitem>
             <para><code>isFeatureUpdateAuthorized(String layerId,
-            InternalFeature feature)</code> : check whether a feature is
+            InternalFeature feature)</code>: check whether a feature is
             editable.</para>
           </listitem>
 
           <listitem>
             <para><code>isFeatureUpdateAuthorized(String layerId,
-            InternalFeature oldFeature, InternalFeature newFeature)</code> :
+            InternalFeature oldFeature, InternalFeature newFeature)</code>:
             check whether the update contained in the feature is allowed to be
             saved.</para>
           </listitem>
 
           <listitem>
             <para><code>isFeatureCreateAuthorized(String layerId,
-            InternalFeature feature)</code> : check whether a feature is
+            InternalFeature feature)</code>: check whether a feature is
             allowed to be created.</para>
           </listitem>
 
           <listitem>
             <para><code>isFeatureDeleteAuthorized(String layerId,
-            InternalFeature feature)</code> : check whether deleting the
+            InternalFeature feature)</code>: check whether deleting the
             specific feature is allowed.</para>
           </listitem>
 
           <listitem>
             <para><code>isAttributeReadable(String layerId, InternalFeature
-            feature, String attributeName)</code> : check the readability of
+            feature, String attributeName)</code>: check the readability of
             an attribute. The result can be feature specific.</para>
           </listitem>
 
           <listitem>
             <para><code>isAttributeWritable(String layerId, InternalFeature
-            feature, String attributeName)</code> : check whether an attribute
+            feature, String attributeName)</code>: check whether an attribute
             is editable. The result can be feature specific.</para>
           </listitem>
         </itemizedlist>
@@ -642,7 +642,7 @@
         (which is not necessarily complete) and some additional ideas for
         application follow.</para>
 
-        <para>Back-end services :</para>
+        <para>Back-end services:</para>
 
         <itemizedlist>
           <listitem>
@@ -656,7 +656,7 @@
           </listitem>
         </itemizedlist>
 
-        <para>VectorLayerService :</para>
+        <para>VectorLayerService:</para>
 
         <itemizedlist>
           <listitem>
@@ -664,7 +664,7 @@
           </listitem>
 
           <listitem>
-            <para>Handle the "filter" for the layer (if any) .</para>
+            <para>Handle the "filter" for the layer (if any).</para>
           </listitem>
 
           <listitem>
@@ -678,64 +678,64 @@
           </listitem>
         </itemizedlist>
 
-        <para>Commands :</para>
+        <para>Commands:</para>
 
         <itemizedlist>
           <listitem>
-            <para>configuration.Get and configuration.GetMap : layer which are
+            <para>configuration.Get and configuration.GetMap: layer which are
             invisible should be removed, tools which are not authorized should
             be removed, "editable" status on layers, features, attributes
             needs to be set to false when necessary.</para>
           </listitem>
 
           <listitem>
-            <para>configuration.UserMaximumExtent : max extent needs to shrink
+            <para>configuration.UserMaximumExtent: max extent needs to shrink
             the cover the union of the visible areas in the layers.</para>
           </listitem>
 
           <listitem>
-            <para>feature.PersistTransaction : making changes to attributes
+            <para>feature.PersistTransaction: making changes to attributes
             which are not editable should cause a security exception.</para>
           </listitem>
 
           <listitem>
-            <para>feature.SearchByLocation : only return visible features and
+            <para>feature.SearchByLocation: only return visible features and
             readable attributes.</para>
           </listitem>
 
           <listitem>
-            <para>feature.SearchFeature : only return visible features and
+            <para>feature.SearchFeature: only return visible features and
             readable attributes.</para>
           </listitem>
 
           <listitem>
-            <para>geometry.Get : only return the geometry for visible
+            <para>geometry.Get: only return the geometry for visible
             features.</para>
           </listitem>
 
           <listitem>
-            <para>geometry.MergePolygon : no security implications.</para>
+            <para>geometry.MergePolygon: no security implications.</para>
           </listitem>
 
           <listitem>
-            <para>geometry.SplitPolygon : no security implications.</para>
+            <para>geometry.SplitPolygon: no security implications.</para>
           </listitem>
 
           <listitem>
-            <para>render.GetRasterData : should only return data for visible
+            <para>render.GetRasterData: should only return data for visible
             layers, ideally post-processing the image to ensure only visible
             area is included (making the rest transparent).</para>
           </listitem>
 
           <listitem>
-            <para>render.GetRenderedTile : should only return data for visible
+            <para>render.GetRenderedTile: should only return data for visible
             layers, only display visible features, only return visible
             features, only render visible features. When lazy loading is
             false, only readable attributes should be included.</para>
           </listitem>
         </itemizedlist>
 
-        <para>Rendering :</para>
+        <para>Rendering:</para>
 
         <itemizedlist>
           <listitem>
@@ -758,7 +758,7 @@
           </listitem>
         </itemizedlist>
 
-        <para>Cache :</para>
+        <para>Cache:</para>
 
         <itemizedlist>
           <listitem>
@@ -767,7 +767,7 @@
           </listitem>
         </itemizedlist>
 
-        <para>Face :</para>
+        <para>Face:</para>
 
         <itemizedlist>
           <listitem>
@@ -833,46 +833,46 @@
       <para>Different modules have different impacts and different purposes.
       Therefore different categories of modules are required. Geomajas has
       defined the following set of module categories (matching the directories
-      in the source) :</para>
+      in the source):</para>
 
       <para><itemizedlist>
           <listitem>
-            <para><emphasis role="">application</emphasis> : Working examples
+            <para><emphasis role="">application</emphasis>: working examples
             of applications using the Geomajas GIS framework.</para>
           </listitem>
 
           <listitem>
-            <para><emphasis>backend</emphasis> : The are essential Geomajas
+            <para><emphasis>backend</emphasis>: these are essential Geomajas
             modules. Each Geomajas application needs these modules. However,
             you also need some extensions and layer models or you won't be
             able to do much.</para>
           </listitem>
 
           <listitem>
-            <para><emphasis>build-tools</emphasis> : some modules which are
+            <para><emphasis>build-tools</emphasis>: some modules which are
             useful for starting or building Geomajas or a Geomajas
             project.</para>
           </listitem>
 
           <listitem>
-            <para><emphasis>documentation</emphasis> : documentation modules,
+            <para><emphasis>documentation</emphasis>: documentation modules,
             specifically the different Geomajas guides.</para>
           </listitem>
 
           <listitem>
-            <para><emphasis>face</emphasis>: Faces that present a certain
+            <para><emphasis>face</emphasis>: faces that present a certain
             Geomajas client interface to the user.</para>
           </listitem>
 
           <listitem>
-            <para><emphasis>plugin</emphasis> : Modules that extend Geomajas.
+            <para><emphasis>plugin</emphasis>: modules that extend Geomajas.
             This can either add new functionality, add support for a certain
-            type of data source, provide asecurity service or a
+            type of data source, provide a security service or a
             combination.</para>
           </listitem>
 
           <listitem>
-            <para><emphasis>test</emphasis> : modules which are used for
+            <para><emphasis>test</emphasis>: modules which are used for
             (integration) testing of Geomajas.</para>
           </listitem>
         </itemizedlist> Full list of Geomajas modules:</para>

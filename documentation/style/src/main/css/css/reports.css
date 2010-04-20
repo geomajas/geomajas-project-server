@@ -4,8 +4,8 @@
 }
 
 .reports ul {
-	padding: 0em;
-	margin: 0em;
+	padding: 0;
+	margin: 0;
 }
 
 .reports ul.locale li {
@@ -28,9 +28,8 @@
 
 .reports ul.locale strong {
 	display: block;
-	margin: 0em;
-	padding: 0em;
-	margin-bottom: -2.2em;
+	margin: 0 0 -2.2em;
+	padding: 0;
 }
 
 .reports ul.locale span.value {
@@ -46,7 +45,7 @@
 	width: 12em;
 	display: block;
 	float: left;
-	margin: 0em;
+	margin: 0;
 	clear: none;
 }
 
@@ -54,14 +53,14 @@
 	font-size: 1em;
 	width: 13.2em;
 	position: relative;
-	left: 0em;
-	top: 0em;
-	margin-bottom: 0em;
+	left: 0;
+	top: 0;
+	margin-bottom: 0;
 }
 
 .reports h2 {
 	font-size: 1em;
-	margin: 0em;
+	margin: 0;
 }
 
 .reports li {
@@ -80,7 +79,7 @@
 /*uniform*/
 body.results, body.reports {
 	max-width: 57em !important;
-	padding: 0em !important
+	padding: 0 !important
 }
 
 /*Progress Bar*/
@@ -109,20 +108,19 @@ div.progress span.fuzzy {
 
 .results ul.locale {
 	list-style: none;
-	padding: 0em;
-	margin: 0em;
+	padding: 0;
+	margin: 0;
 }
 
 .results .pofile {
-	padding: 0em !important;
-	margin: 0em;
+	padding: 0 !important;
+	margin: 0;
 }
 
 .results ul.locale li {
 	border-top: 1px solid #eee;
-	padding: 0em;
-	margin: 0em;
-	padding-left: 32px;
+	padding: 0 0 0 32px;
+	margin: 0;
 }
 
 .results ul.locale .pofile {
@@ -130,8 +128,8 @@ div.progress span.fuzzy {
 	display: block;
 	width: 100%;
 	color: #444;
-	padding: 0em;
-	margin: 0em;
+	padding: 0;
+	margin: 0;
 }
 
 .results span.value {
@@ -147,8 +145,7 @@ div.progress span.fuzzy {
 	margin: 0 auto;
 	width: 5em;
 	background: url(../images/stock-home.png) top left no-repeat;
-	padding: 5px;
-	padding-left: 28px;
+	padding: 5px 5px 5px 28px;
 	font-size: 1.2em;
 }
 
@@ -192,9 +189,9 @@ ul.locale li a {
 
 ul.locale li.total div.progress {
 	position: relative;
-	left: 0em;
-	top: 0em;
-	margin-bottom: 0em;
+	left: 0;
+	top: 0;
+	margin-bottom: 0;
 }
 
 ul.locale li {
@@ -206,24 +203,21 @@ ul.locale li div.progress {
 	position: relative;
 	left: 30.5em;
 	top: -2em;
-	margin: 0em;
-	margin-bottom: -3em;
+	margin: 0 0 -3em;
 }
 
 li.total {
-	padding: 0em !important;
+	padding: 0 !important;
 }
 
 li.total {
 	float: right;
 	max-width: 16em;
 	padding: .5em;
-	margin: 0 auto;
-	padding-top: .5em;
+	margin: 0 auto 1em;
 	background-color: #f7f2d0;
 	font-size: 1.3em !important;
 	color: #ccc !important;
-	margin-bottom: 1em;
 	min-height: 9.5em;
 }
 

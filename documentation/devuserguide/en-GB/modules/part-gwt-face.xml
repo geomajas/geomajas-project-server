@@ -919,7 +919,7 @@ map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</
       </note>
 
       <section>
-        <title>Toolbar : ToolbarAction</title>
+        <title>Toolbar: ToolbarAction</title>
 
         <para>The <code>ToolbarAction</code> is your basic abstract class for
         building toolbar buttons that are executed immediately when clicked.
@@ -1041,7 +1041,7 @@ public abstract class ToolbarBaseAction {
       </section>
 
       <section>
-        <title>Toolbar : ToolbarModalAction</title>
+        <title>Toolbar: ToolbarModalAction</title>
 
         <para>The <code>ToolbarModalAction</code> is the basic template for
         creating selectable toolbar buttons. Usually they enable and disable a
@@ -1094,7 +1094,7 @@ public abstract class ToolbarModalAction extends ToolbarBaseAction {
       </section>
 
       <section>
-        <title>LayerTree : LayerTreeAction</title>
+        <title>LayerTree: LayerTreeAction</title>
 
         <para>The <code>LayerTreeAction</code> is your basic abstract class
         for building layer tree buttons that are executed immediately when
@@ -1163,7 +1163,7 @@ public abstract class LayerTreeAction extends ToolbarBaseAction {
       </section>
 
       <section>
-        <title>LayerTree : LayerTreeModalAction</title>
+        <title>LayerTree: LayerTreeModalAction</title>
 
         <para>The <code>LayerTreeModalAction</code> is the basic template for
         creating selectable layer tree buttons. Usually they enable and
@@ -1258,7 +1258,7 @@ public abstract class LayerTreeModalAction extends ToolbarBaseAction {
       </section>
 
       <section>
-        <title>Menu : MenuAction</title>
+        <title>Menu: MenuAction</title>
 
         <para>When creating menu items or context menu items, Geomajas
         provides a simple base class from which to start. It extends upon the
@@ -1619,7 +1619,7 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
       itself (for more info; see <link linkend="interaction">User
       Interaction</link>).</para>
 
-      <para>Existing tools which can be defined include :</para>
+      <para>Existing tools which can be defined include:</para>
 
       <para><itemizedlist>
           <listitem>
@@ -1643,7 +1643,7 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
             menu allows clearing the selected features and toggling selection
             of the current position. Keeping shift depressed allows you to add
             the selection to the previously selected features. Possible
-            parameters :</para>
+            parameters:</para>
 
             <para><itemizedlist>
                 <listitem>

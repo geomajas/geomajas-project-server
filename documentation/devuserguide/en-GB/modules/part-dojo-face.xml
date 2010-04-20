@@ -49,18 +49,18 @@
 
     <itemizedlist>
       <listitem>
-        <para><code>PdfServlet</code> : This is used to produce the printable
+        <para><code>PdfServlet</code>: this is used to produce the printable
         maps in PDF format.</para>
       </listitem>
 
       <listitem>
-        <para><code>JsonServlet</code> : The servlet which allows you to
+        <para><code>JsonServlet</code>: the servlet which allows you to
         execute commands by sending the request as JSON and which returns the
         result as JSON as well.</para>
       </listitem>
 
       <listitem>
-        <para><code>ResourceServlet</code> : This allows you to get the
+        <para><code>ResourceServlet</code>: this allows you to get the
         Geomajas and dojo script files assuring that they are properly cached
         and gzip compressed.</para>
       </listitem>
@@ -197,11 +197,10 @@
       <example>
         <title>Custom built script inclusion</title>
 
-        <programlisting>&lt;script type="text/javascript" src="js/dojo/dojo.js" djConfig="parseOnLoad:true,
-					usePlainJson :true"&gt;&lt;/script&gt;
-					&lt;script type="text/javascript" src="js/<emphasis role="bold">example</emphasis>/<emphasis
-            role="bold">example</emphasis>.js" geomajasConfig="showLog :false"&gt;&lt;/script&gt;
-				</programlisting>
+        <programlisting>&lt;script type="text/javascript" src="js/dojo/dojo.js"
+			djConfig="parseOnLoad:true,	usePlainJson :true"&gt;&lt;/script&gt;
+&lt;script type="text/javascript" src="js/<emphasis role="bold">example</emphasis>/<emphasis role="bold">example</emphasis>.js"
+			geomajasConfig="showLog :false"&gt;&lt;/script&gt;</programlisting>
       </example>
 
       <para>As you can see, some configuration parameters can be passed by
@@ -225,12 +224,12 @@
 
       <itemizedlist>
         <listitem>
-          <para>compressed/shrunk build : <code>mvn -P shrink install
+          <para>compressed/shrunk build: <code>mvn -P shrink install
           </code></para>
         </listitem>
 
         <listitem>
-          <para>uncompressed build : <code>mvn install</code></para>
+          <para>uncompressed build: <code>mvn install</code></para>
         </listitem>
       </itemizedlist>
     </sect1>

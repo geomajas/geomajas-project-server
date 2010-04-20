@@ -49,7 +49,7 @@
       url="http://maven.apache.org/download.html">http://maven.apache.org/download.html</ulink>.</para>
 
       <para>When maven is installed you can create a base project using the
-      following command line :</para>
+      following command line:</para>
 
       <example>
         <title>Create project using GWT maven archetype</title>

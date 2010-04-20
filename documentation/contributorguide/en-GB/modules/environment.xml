@@ -81,7 +81,7 @@
 
       <para>The Geomajas repository can be found at<ulink
       url="https://svn.geomajas.org/majas">https://svn.geomajas.org/majas</ulink>.
-      The standard SVN repository layout is followed : trunk, tags and
+      The standard SVN repository layout is followed: trunk, tags and
       branches. For the latest and greatest code (including GWT face) you
       should check out the trunk:<ulink
       url="https://svn.geomajas.org/majas/trunk">https://svn.geomajas.org/majas/trunk</ulink>.</para>

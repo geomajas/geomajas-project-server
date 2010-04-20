@@ -39,21 +39,21 @@
 
     <para><itemizedlist>
         <listitem>
-          <para><emphasis>geomajas-layer-hibernate</emphasis> (vector) : allow
+          <para><emphasis>geomajas-layer-hibernate</emphasis> (vector): allow
           access to any kind of features which are stored in a spatial
           (relational) database. The data is accessed using the hibernate and
           hibernate-spatial open source libraries.</para>
         </listitem>
 
         <listitem>
-          <para><emphasis>geomajas-layer-geotools</emphasis> (vector) : access
+          <para><emphasis>geomajas-layer-geotools</emphasis> (vector): access
           data from any vector data source which has a GeoTools data store
           defined for it (<ulink
           url="http://geotools.org/javadocs/org/geotools/data/DataStore.html">http://geotools.org/javadocs/org/geotools/data/DataStore.html</ulink>).</para>
         </listitem>
 
         <listitem>
-          <para><emphasis>geomajas-layer-google</emphasis> (raster) : include
+          <para><emphasis>geomajas-layer-google</emphasis> (raster): include
           Google rasters. This allows access to the normal and satellite views
           provided by Google. You still need to include the Google API in your
           application to use this (<ulink
@@ -61,20 +61,20 @@
         </listitem>
 
         <listitem>
-          <para><emphasis>geomajas-layer-openstreetmap</emphasis> (raster) :
+          <para><emphasis>geomajas-layer-openstreetmap</emphasis> (raster):
           support for raster data coming from the OpenStreetMap project
           (<ulink
           url="http://www.openstreetmap.org/">http://www.openstreetmap.org/</ulink>).</para>
         </listitem>
 
         <listitem>
-          <para><emphasis>geomajas-layer-wms</emphasis> (raster) : access data
+          <para><emphasis>geomajas-layer-wms</emphasis> (raster): access data
           from a WMS server (<ulink
           url="http://www.opengeospatial.org/standards/wms">http://www.opengeospatial.org/standards/wms</ulink>).</para>
         </listitem>
 
         <listitem>
-          <para><emphasis>geomajas-layer-shapeinmem</emphasis> (vector) :
+          <para><emphasis>geomajas-layer-shapeinmem</emphasis> (vector):
           access data from an ESRI shape file which handled in memory. The
           actual data access if done using GeoTools (<ulink
           url="http://www.esri.com/library/whitepapers/pdfs/shapefile.pdf">http://www.esri.com/library/whitepapers/pdfs/shapefile.pdf</ulink>).</para>
@@ -87,19 +87,19 @@
 
     <para><itemizedlist>
         <listitem>
-          <para><emphasis>geomajas-command</emphasis> : set of commands which
+          <para><emphasis>geomajas-command</emphasis>: set of commands which
           are provided as part of the standard distribution. This is so
           fundamental to using Geomajas that it is provided as a back-end
           module.</para>
         </listitem>
 
         <listitem>
-          <para><emphasis>geomajas-plugin-printing</emphasis> : printing
+          <para><emphasis>geomajas-plugin-printing</emphasis>: printing
           extensions for the framework</para>
         </listitem>
 
         <listitem>
-          <para><emphasis>geomajas-plugin-springsecurity</emphasis> : a basic
+          <para><emphasis>geomajas-plugin-springsecurity</emphasis>: a basic
           security service which can be configured as part of the spring
           security and does not use an external source for users or policies,
           making the security configuration entirely static.</para>
@@ -120,7 +120,7 @@
     each of the layers.</para>
 
     <para>Apart from the servlets (which are specific for each face), your
-    web.xml needs an excerpt similar to the following :</para>
+    web.xml needs an excerpt similar to the following:</para>
 
     <xi:include href="../listing/WebXmlSpringConfiguration.xml"
                 xmlns:xi="http://www.w3.org/2001/XInclude" />
@@ -135,8 +135,7 @@
     <section>
       <title>General principles</title>
 
-      <para>Each of the configuration files needs the following header
-      :</para>
+      <para>Each of the configuration files needs the following header:</para>
 
       <xi:include href="../listing/SpringConfigurationPreamble.xml"
                   xmlns:xi="http://www.w3.org/2001/XInclude" />
@@ -192,7 +191,7 @@
       <para>The back-end configuration consists of security, transaction and
       layer configurations. It can of course be extended with additional
       Spring configuration that is needed by your custom application. There
-      are two basic types of layers : raster and vector layers.</para>
+      are two basic types of layers: raster and vector layers.</para>
 
       <section>
         <title>Security configuration</title>
@@ -220,7 +219,7 @@
 
         <para>Transaction management is typically only needed for editable
         database layers (although we support and encourage it for read-only
-        layers as well), of which we provide two types :
+        layers as well), of which we provide two types:
         <code>HibernateLayer</code> and <code>GeoToolsLayer</code>. There is
         currently no support for having multiple platform transaction
         managers, although configurations with multiple transaction managers
@@ -228,23 +227,22 @@
         investigated further. In practice this means that you currently must
         not mix editable Hibernate and GeoTools layers.</para>
 
-        <para>For Hibernate layers, the following configuration should be used
-        :</para>
+        <para>For Hibernate layers, the following configuration should be used:</para>
 
         <xi:include href="../listing/HibernateTx.xml"
                     xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-        <para>Starting from the top, the following are defined :</para>
+        <para>Starting from the top, the following are defined:</para>
 
         <itemizedlist>
           <listitem>
-            <para>The data source : this specifies the connection pool type
+            <para>The data source: this specifies the connection pool type
             and the connection properties of the database (PostGis in this
             case)</para>
           </listitem>
 
           <listitem>
-            <para>The session factory : this is Hibernate's primary singleton
+            <para>The session factory: this is Hibernate's primary singleton
             and used by the Hibernate layer to access the
             session/connection</para>
           </listitem>
@@ -260,16 +258,16 @@
           </listitem>
         </itemizedlist>
 
-        <para>For GeoTools layers, the configuration is as follows :</para>
+        <para>For GeoTools layers, the configuration is as follows:</para>
 
         <xi:include href="../listing/GeoToolsTx.xml"
                     xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-        <para>Starting from the top, the following are defined :</para>
+        <para>Starting from the top, the following are defined:</para>
 
         <itemizedlist>
           <listitem>
-            <para>The data store : this is GeoTools' primary data object and
+            <para>The data store: this is GeoTools' primary data object and
             will be referenced in the GeoTools layer. The parameters define
             the connection properties of the underlying physical medium
             (PostGis in this case)</para>
@@ -304,22 +302,21 @@
           <title>WMS layer configuration</title>
 
           <para>Make sure your classpath contains the required plug-in. If you
-          are using maven, add the following dependency to your pom :</para>
+          are using maven, add the following dependency to your pom:</para>
 
           <xi:include href="../listing/WmsLayerDependency.xml"
                       xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-          <para>A complete WMS layer configuration looks as follows :</para>
+          <para>A complete WMS layer configuration looks as follows:</para>
 
           <xi:include href="../listing/WmsLayerSample.xml"
                       xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-          <para>As you can see, the bean class refers to the actual layer type
-          : <code>org.geomajas.layer.wms.WmsLayer</code>.</para>
+          <para>As you can see, the bean class refers to the actual layer type: <code>org.geomajas.layer.wms.WmsLayer</code>.</para>
 
           <para>The first property is the layer info object, which describes
           the metadata common to all raster layers. The following properties
-          are needed for this object :</para>
+          are needed for this object:</para>
 
           <para><table>
               <title>Raster Layer info</title>
@@ -345,7 +342,7 @@
                     <entry>crs</entry>
 
                     <entry>The coordinate reference system, expressed as
-                    "EPSG:&lt;srid&gt;". Caveat : make sure this is the same
+                    "EPSG:&lt;srid&gt;". Caveat: make sure this is the same
                     as the maps' CRS as full raster image reprojection is not
                     supported ! If the CRS's differ, an attempt will be done
                     to rescale and align the center coordinates,
@@ -401,7 +398,7 @@
           width/height ration of the tile.</para>
 
           <para>The layer object contains some extra properties which are
-          specifically tied to the WMS server :</para>
+          specifically tied to the WMS server:</para>
 
           <table>
             <title>WMS layer properties</title>
@@ -465,13 +462,12 @@
           <title>OpenStreetMap layer configuration</title>
 
           <para>Make sure your classpath contains the required plug-in. If you
-          are using maven, add the following dependency to your pom :</para>
+          are using maven, add the following dependency to your pom:</para>
 
           <xi:include href="../listing/OsmLayerDependency.xml"
                       xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-          <para>A complete OpenStreetMap layer configuration looks as follows
-          :</para>
+          <para>A complete OpenStreetMap layer configuration looks as follows:</para>
 
           <xi:include href="../listing/OsmLayerSample.xml"
                       xmlns:xi="http://www.w3.org/2001/XInclude" />
@@ -482,20 +478,19 @@
           been carefully chosen to match the tile server's resolutions. The
           tile width and height are implied by the server in this case but
           since they are required metadata for all raster layers, they should
-          be set to the server's values : 256 x 256.</para>
+          be set to the server's values: 256 x 256.</para>
         </section>
 
         <section>
           <title>Google Maps layer configuration</title>
 
           <para>Make sure your classpath contains the required plug-in. If you
-          are using maven, add the following dependency to your pom :</para>
+          are using maven, add the following dependency to your pom:</para>
 
           <xi:include href="../listing/GoogleLayerDependency.xml"
                       xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-          <para>A complete Google layer configuration looks as follows
-          :</para>
+          <para>A complete Google layer configuration looks as follows:</para>
 
           <xi:include href="../listing/GoogleLayerSample.xml"
                       xmlns:xi="http://www.w3.org/2001/XInclude" />
@@ -599,10 +594,10 @@
         <para>Attributes can be either primitive attributes or association
         attributes. Primitive attributes represent primitive Java types as
         well as some common types like Date and String. The following
-        primitive attribute types are defined : BOOLEAN, SHORT, INTEGER, LONG,
+        primitive attribute types are defined: BOOLEAN, SHORT, INTEGER, LONG,
         FLOAT, DOUBLE, CURRENCY, STRING, DATE, URL and IMGURL. Association
         attributes represent non-primitive Java types. There are two types of
-        association attributes defined : MANY-TO-ONE and ONE-TO-MANY. These
+        association attributes defined: MANY_TO_ONE and ONE_TO_MANY. These
         reflect the many-to-one and one-to-many relationships as defined in an
         entity-relationship model and can only be used in conjunction with the
         <code>HibernateLayer</code>.</para>
@@ -612,7 +607,7 @@
 
           <para>Most feature attributes should be validated before they can be
           saved to a file or database. Validation is a concern that stretches
-          across many layers of a typical application : there is usually a
+          across many layers of a typical application: there is usually a
           need for client-side validation (making the app more user friendly)
           , server-side validation (to protect the server from invalid data)
           as well as database validation (to preserve data integrity).
@@ -629,7 +624,7 @@
           <para>This property contains some general validator information and
           a set of constraints that should be applied to the attribute. The
           available constraint types have been based on the new JavaBeans
-          standard : JSR-303.</para>
+          standard: JSR-303.</para>
         </section>
 
         <section>
@@ -673,7 +668,7 @@
 
           <para>Once the Java class mapping is finished, the actual layer
           configuration can be made. An example configuration that matches the
-          <code>Road.java</code> class is shown below :</para>
+          <code>Road.java</code> class is shown below:</para>
 
           <xi:include href="../listing/HibernateRoadsLayer.xml"
                       xmlns:xi="http://www.w3.org/2001/XInclude" />
@@ -697,13 +692,13 @@
 
           <para>As already mentioned, the bulk part of the layer's metadata is
           defined through the <code>VectorLayerInfo</code> object. An example
-          definition of this object is given below :</para>
+          definition of this object is given below:</para>
 
           <xi:include href="../listing/HibernateRoadsInfo.xml"
                       xmlns:xi="http://www.w3.org/2001/XInclude" />
 
           <para>The following table describes the properties of the
-          <code>VectorLayerInfo</code> object :</para>
+          <code>VectorLayerInfo</code> object:</para>
 
           <para><table>
               <title>VectorLayer info</title>
@@ -723,7 +718,7 @@
 
                     <entry>This property determines the type of the default
                     geometry of the features. The following types are
-                    supported : POINT, LINESTRING, POLYGON, MULTIPOINT,
+                    supported: POINT, LINESTRING, POLYGON, MULTIPOINT,
                     MULTILINESTRING and MULTIPOLYGON</entry>
                   </row>
 
@@ -752,13 +747,13 @@
           <code>FeatureInfo</code> object. This objects contains the complete
           feature type description (id, attributes and geometry) as well as
           the validation rules for the attributes. An example definition of
-          this object is given below :</para>
+          this object is given below:</para>
 
           <xi:include href="../listing/HibernateRoadsFeatureInfo.xml"
                       xmlns:xi="http://www.w3.org/2001/XInclude" />
 
           <para>The following table describes the properties of the
-          <code>FeatureInfo</code> object :</para>
+          <code>FeatureInfo</code> object:</para>
 
           <table>
             <title>Feature info configuration</title>
@@ -787,7 +782,7 @@
           <title>GeoTools layer configuration</title>
 
           <para>Apart from a reference to the layer info, you can set the
-          following parameters :</para>
+          following parameters:</para>
 
           <table>
             <title>GeoToolsLayer configuration</title>
@@ -833,7 +828,7 @@
 
           <para>In most cases, you will need to pass data using the parameters
           property to get a functional GeoTools layer. This would look similar
-          to this :</para>
+          to this:</para>
 
           <example>
             <title>GeoTools WFS configuration skeleton</title>
@@ -863,50 +858,49 @@
 
           <para><itemizedlist>
               <listitem>
-                <para><emphasis>WFSDataStoreFactory:GET_CAPABILITIES_URL</emphasis>
-                : Represents a URL to the getCapabilities document or a server
+                <para><emphasis>WFSDataStoreFactory:GET_CAPABILITIES_URL</emphasis>: Represents a URL to the getCapabilities document or a server
                 instance.</para>
               </listitem>
 
               <listitem>
-                <para><emphasis>WFSDataStoreFactory:PROTOCOL</emphasis> : Sets
+                <para><emphasis>WFSDataStoreFactory:PROTOCOL</emphasis>: Sets
                 a preference for the HTTP protocol to use when requesting WFS
                 functionality. Set this value to "true" for POST, "false" for
                 GET or NULL for AUTO.</para>
               </listitem>
 
               <listitem>
-                <para><emphasis>WFSDataStoreFactory:USERNAME</emphasis> : This
+                <para><emphasis>WFSDataStoreFactory:USERNAME</emphasis>: This
                 allows the user to specify a username. This parameter should
                 not be used without the password parameter.</para>
               </listitem>
 
               <listitem>
-                <para><emphasis>WFSDataStoreFactory:PASSWORD</emphasis> : This
+                <para><emphasis>WFSDataStoreFactory:PASSWORD</emphasis>: This
                 allows the user to specify a password. This param should not
                 be used without the username param.</para>
               </listitem>
 
               <listitem>
-                <para><emphasis>WFSDataStoreFactory:TIMEOUT</emphasis> : This
+                <para><emphasis>WFSDataStoreFactory:TIMEOUT</emphasis>: This
                 allows the user to specify a timeout in milliseconds. This
                 param has a default value of 3000ms.</para>
               </listitem>
 
               <listitem>
-                <para><emphasis>WFSDataStoreFactory:BUFFER_SIZE</emphasis> :
+                <para><emphasis>WFSDataStoreFactory:BUFFER_SIZE</emphasis>:
                 This allows the user to specify a buffer size in features.
                 This param has a default value of 10 features.</para>
               </listitem>
 
               <listitem>
-                <para><emphasis>WFSDataStoreFactory:TRY_GZIP</emphasis> :
+                <para><emphasis>WFSDataStoreFactory:TRY_GZIP</emphasis>:
                 Indicates that datastore should use gzip to transfer data if
                 the server supports it. Default is true.</para>
               </listitem>
 
               <listitem>
-                <para><emphasis>WFSDataStoreFactory:LENIENT</emphasis> :
+                <para><emphasis>WFSDataStoreFactory:LENIENT</emphasis>:
                 Indicates that datastore should do its best to create features
                 from the provided data even if it does not accurately match
                 the schema. Errors will be logged but the parsing will
@@ -1104,47 +1098,45 @@
       geomajas-api module. This contains only interfaces, exceptions and data
       transfer objects. The data transfer objects are classes which only
       contain getters and setters. The back-end API is divided in the
-      following packages :</para>
+      following packages:</para>
 
       <itemizedlist>
         <listitem>
-          <para><emphasis>command</emphasis> : interfaces, services and data
+          <para><emphasis>command</emphasis>: interfaces, services and data
           transfer objects related with the command extension points.</para>
         </listitem>
 
         <listitem>
-          <para><emphasis>configuration</emphasis> : data transfer objects
+          <para><emphasis>configuration</emphasis>: data transfer objects
           which are used for defining the configuration in Geomajas.</para>
         </listitem>
 
         <listitem>
-          <para><emphasis>geometry</emphasis> : Geomajas geometry related data
+          <para><emphasis>geometry</emphasis>: Geomajas geometry related data
           transfer objects.</para>
         </listitem>
 
         <listitem>
-          <para><emphasis>global</emphasis> : Some general interfaces,
+          <para><emphasis>global</emphasis>: Some general interfaces,
           annotations and exceptions which are relevant for a combination of
           several extension points or the entire API.</para>
         </listitem>
 
         <listitem>
-          <para><emphasis>layer</emphasis> : interfaces, exceptions, data
+          <para><emphasis>layer</emphasis>: interfaces, exceptions, data
           transfer objects and some internal objects related with the layers
           and objects in a layer. These include the definition of a layer,
           tiles, features and feature models.</para>
         </listitem>
 
         <listitem>
-          <para><emphasis>security</emphasis> : interfaces, services and data
+          <para><emphasis>security</emphasis>: interfaces, services and data
           transfer objects related with the security extension points and
           security handling.</para>
         </listitem>
 
         <listitem>
-          <para><emphasis>service</emphasis> : services provided by Geomajas,
-          some are utilities, others (like raster and vector layer) provide
-          more fundamental functionalities.</para>
+          <para><emphasis>service</emphasis>: utility services provided by Geomajas.</para>
         </listitem>
       </itemizedlist>
 
@@ -1315,12 +1307,12 @@
 
                 <entry><itemizedlist>
                     <listitem>
-                      <para><emphasis>name</emphasis> : name of the
+                      <para><emphasis>name</emphasis>: name of the
                       application.</para>
                     </listitem>
 
                     <listitem>
-                      <para><emphasis>maps</emphasis> : list of configured
+                      <para><emphasis>maps</emphasis>: list of configured
                       maps for the application. Note that the layer
                       information which is contained in the maps has the
                       coordinates transformed according to the crs of the
@@ -1328,7 +1320,7 @@
                     </listitem>
 
                     <listitem>
-                      <para><emphasis>screenDpi</emphasis> : screen resolution
+                      <para><emphasis>screenDpi</emphasis>: screen resolution
                       in dots per inch.</para>
                     </listitem>
                   </itemizedlist></entry>
@@ -1371,7 +1363,7 @@
 
                 <entry><itemizedlist>
                     <listitem>
-                      <para><emphasis>mapId</emphasis> : id of map for which
+                      <para><emphasis>mapId</emphasis>: id of map for which
                       the information should be returned.</para>
                     </listitem>
                   </itemizedlist></entry>
@@ -1395,7 +1387,7 @@
 
                 <entry><itemizedlist>
                     <listitem>
-                      <para><emphasis>mapInfo</emphasis> : information about
+                      <para><emphasis>mapInfo</emphasis>: information about
                       the requested map. Note that the layer information which
                       is contained in the maps has the coordinates.</para>
                     </listitem>
@@ -1645,12 +1637,12 @@
 
                 <entry><itemizedlist>
                     <listitem>
-                      <para><emphasis>level</emphasis> : log level, 0 for
+                      <para><emphasis>level</emphasis>: log level, 0 for
                       debug, 1 for info, 2 for warn, 3 for error.</para>
                     </listitem>
 
                     <listitem>
-                      <para><emphasis>statement</emphasis> : string which
+                      <para><emphasis>statement</emphasis>: string which
                       needs to be logged.</para>
                     </listitem>
                   </itemizedlist></entry>
@@ -1939,52 +1931,52 @@
 
                 <entry><itemizedlist>
                     <listitem>
-                      <para><emphasis>location</emphasis>: A geometry the
+                      <para><emphasis>location</emphasis>: a geometry the
                       specifies the location where to search for
                       features.</para>
                     </listitem>
 
                     <listitem>
-                      <para><emphasis>queryType</emphasis>: Specify exactly
+                      <para><emphasis>queryType</emphasis>: specify exactly
                       whether to search using INTERSECT, TOUCHES, WITHIN or
                       CONTAINS.</para>
                     </listitem>
 
                     <listitem>
-                      <para><emphasis>ratio</emphasis>: If queryType is
+                      <para><emphasis>ratio</emphasis>: if queryType is
                       INTERSECT, you can additionally specify what percentage
                       of overlap is enough to be included in the
                       search.</para>
                     </listitem>
 
                     <listitem>
-                      <para><emphasis>layerIds</emphasis>: Array of layer ID's
+                      <para><emphasis>layerIds</emphasis>: array of layer ID's
                       to search in.</para>
                     </listitem>
 
                     <listitem>
-                      <para><emphasis>searchType</emphasis>: Determines
+                      <para><emphasis>searchType</emphasis>: determines
                       whether to stop searching once something in one of the
                       layers is found (in order of course), or whether to
                       continue searching, and go over all layers.</para>
                     </listitem>
 
                     <listitem>
-                      <para><emphasis>crs</emphasis>: The map's coordinate
+                      <para><emphasis>crs</emphasis>: the map's coordinate
                       reference system. The location geometry will also be
                       expressed in this CRS.</para>
                     </listitem>
 
                     <listitem>
-                      <para><emphasis>buffer</emphasis>: Before any
+                      <para><emphasis>buffer</emphasis>: before any
                       calculation is made, it is possible to have the location
                       be buffered by this value.</para>
                     </listitem>
 
                     <listitem>
-                      <para><emphasis>featureIncludes</emphasis> : indication
+                      <para><emphasis>featureIncludes</emphasis>: indication
                       of which data to include in the feature. Possible values
-                      (add to combine) : 1=attributes, 2=geometry, 4=style,
+                      (add to combine): 1=attributes, 2=geometry, 4=style,
                       8=label. Default value is to include everything.</para>
                     </listitem>
                   </itemizedlist></entry>
@@ -2052,23 +2044,23 @@
 
                 <entry><itemizedlist>
                     <listitem>
-                      <para><emphasis>layerId</emphasis> : id of layer on
+                      <para><emphasis>layerId</emphasis>: id of layer on
                       which features need to be searched.</para>
                     </listitem>
 
                     <listitem>
-                      <para><emphasis>max</emphasis>: Maximum number of
+                      <para><emphasis>max</emphasis>: maximum number of
                       features to allow in the result. 0 means
                       unlimited.</para>
                     </listitem>
 
                     <listitem>
-                      <para><emphasis>crs</emphasis> : crs which needs to be
+                      <para><emphasis>crs</emphasis>: crs which needs to be
                       used for the geometry in the retrieved features.</para>
                     </listitem>
 
                     <listitem>
-                      <para><emphasis>criteria</emphasis> : array of criteria
+                      <para><emphasis>criteria</emphasis>: array of criteria
                       which need to be matched when searching. Each criterion
                       contains the attribute name, the operator (options
                       include "like" and "contains") and the value to compare.
@@ -2077,21 +2069,21 @@
                     </listitem>
 
                     <listitem>
-                      <para><emphasis>booleanOperator</emphasis> : operator
+                      <para><emphasis>booleanOperator</emphasis>: operator
                       which should be used to the different criteria when more
                       than one was specified. Should be either "and" or
                       "or".</para>
                     </listitem>
 
                     <listitem>
-                      <para><emphasis>filter</emphasis> : an additional layer
+                      <para><emphasis>filter</emphasis>: an additional layer
                       filter which needs to be applied when searching.</para>
                     </listitem>
 
                     <listitem>
-                      <para><emphasis>featureIncludes</emphasis> : indication
+                      <para><emphasis>featureIncludes</emphasis>: indication
                       of which data to include in the feature. Possible values
-                      (add to combine) : 1=attributes, 2=geometry, 4=style,
+                      (add to combine): 1=attributes, 2=geometry, 4=style,
                       8=label. Default value is to include everything.</para>
                     </listitem>
                   </itemizedlist></entry>
@@ -2116,13 +2108,13 @@
 
                 <entry><itemizedlist>
                     <listitem>
-                      <para><emphasis>layerId</emphasis> : id of the layer
+                      <para><emphasis>layerId</emphasis>: id of the layer
                       which contains the features. Equals the layerId
                       parameter from the request.</para>
                     </listitem>
 
                     <listitem>
-                      <para><emphasis>features</emphasis> : array of features
+                      <para><emphasis>features</emphasis>: array of features
                       which match the search criteria. Any geometry contained
                       in the features uses the request crs.</para>
                     </listitem>
@@ -2290,7 +2282,7 @@
       contains all the request and response objects, and to put the actual
       commands in sub packages based on some kind of grouping.</para>
 
-      <para>The basic command implementation looks like this :</para>
+      <para>The basic command implementation looks like this:</para>
 
       <xi:include href="../listing/ExampleCommand.xml"
                   xmlns:xi="http://www.w3.org/2001/XInclude" />

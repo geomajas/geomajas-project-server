@@ -2,34 +2,31 @@
 ol li, ul li {
 	padding-left: .2em;
 	padding-bottom: .5em;
-	margin: 0em;
+	margin: 0;
 }
 
 ul {
 	padding-left: 1.6em;
-	list-style-image: url(../images/dot.png);
-	list-style-type: circle;
+	list-style: circle url(../images/dot.png);
 }
 
 ul ul {
-	list-style-image: url(../images/dot2.png);
-	list-style-type: circle;
+	list-style: circle url(../images/dot2.png);
 }
 
 dt {
 	font-weight: bold;
-	margin-bottom: 0em;
-	padding-bottom: 0em;
+	margin-bottom: 0;
+	padding-bottom: 0;
 }
 
 dd {
-	margin: 0em;
-	margin-left: 2em;
-	padding-top: 0em;
+	margin: 0 0 0 2em;
+	padding-top: 0;
 }
 
 li p:first-child, dd p:first-child {
-	padding: 0em;
+	padding: 0;
 	margin-top: .3em;
 }
 
@@ -38,7 +35,7 @@ li p:first-child, dd p:first-child {
 }
 
 ul li p:first-child {
-	margin: 0em;
+	margin: 0;
 }
 
 /*images*/
@@ -49,7 +46,7 @@ img {
 
 .inlinemediaobject, .inlinemediaobject img {
 	display: inline !important;
-	margin: 0em;
+	margin: 0;
 }
 
 /*document modes*/
@@ -72,7 +69,7 @@ dt a {
 
 .prompt {
 	background-color: #ede7c8;
-	padding: 0em .3em;
+	padding: 0 .3em;
 }
 
 /*user interface styles*/
@@ -84,7 +81,7 @@ dt a {
 	background-color: #ede7c8;
 	color: #333;
 	padding: .5em 1em;
-	margin: 0em;
+	margin: 0;
 }
 
 pre, code, .guibutton, .keycap, .guilabel {
@@ -140,14 +137,11 @@ code {
 
 /*Notifications*/
 div.note, div.tip, div.important, div.caution, div.warning {
-	background: #849092;
+	background: #849092 no-repeat 10px 10px;
 	color: white;
-	padding: 1em;
-	padding-bottom: 20px;
+	padding: 1em 1em 20px;
 	border: 1px solid #8a9195;
 	margin-bottom: 1.5em;
-	background-repeat: no-repeat;
-	background-position: 10px 10px;
 }
 
 div.note pre, div.tip pre, div.important pre, div.caution pre, div.warning pre {
@@ -206,12 +200,12 @@ div.note h2,div.tip h2,div.important h2,div.caution h2,div.warning h2{
 
 div.note li, div.tip li, div.caution li, div.warning li, div.important li {
 	padding-left: 10px;
-	margin: 0em;
+	margin: 0;
 }
 
 div.note ul, div.tip ul, div.caution ul, div.warning ul, div.important ul {
 	padding-left: 40px;
-	margin: 0em;
+	margin: 0;
 }
 
 div.note pre pre a:visited, div.tip pre pre a:visited, div.important pre pre a:visited,
@@ -227,9 +221,8 @@ div.warning a:visited, div.note a:link, div.tip a:link, div.important a:link, di
 
 /*notification icons*/
 div.note h2, div.note p, div.tip h2, div.tip p, div.caution h2, div.caution p, div.warning h2, div.warning p, div.important h2, .important p {
-	padding: 0em;
-	margin: 0em;
-	padding-left: 56px;
+	padding: 0 0 0 56px;
+	margin: 0;
 }
 
 /*div.note h2{background-image:url(../images/note.png)}
@@ -240,8 +233,8 @@ div.important h2{background-image:url(../images/important.png)}
 */
 /*Page Title*/
 #title {
-	padding: 0px;
-	margin: 0px;
+	padding: 0;
+	margin: 0;
 }
 
 #title strong {
@@ -285,8 +278,8 @@ table tr.even td {
 }
 
 table th p:first-child, table td p:first-child, table  li p:first-child {
-	margin-top: 0em;
-	padding-top: 0em;
+	margin-top: 0;
+	padding-top: 0;
 	display: inline;
 }
 
@@ -297,7 +290,7 @@ th, td {
 table table td {
 	border-bottom: 1px dotted #aaa !important;
 	background-color: white;
-	padding: .6em 0em;
+	padding: .6em 0;
 }
 
 table table {
@@ -443,7 +436,7 @@ span.chapter {
 .index h3 {
 	font-size: 2em;
 	color: #aaa;
-	margin: 0em;
+	margin: 0;
 }
 
 .indexdiv {
@@ -462,7 +455,7 @@ span.chapter {
 	color: #777;
 	line-height: 1.2em;
 	font-weight: normal;
-	padding-top: 0em;
+	padding-top: 0;
 }
 
 .index dl dl dt:before {
@@ -478,8 +471,8 @@ span.chapter {
 	padding: .2em 1em;
 	background-color: #c8c5ac;
 	font-size: .9em;
-	margin: 0em;
-	margin-bottom: .5em;
+	margin: 0 0 .5em;
+
 	color: #222;
 }
 
@@ -488,8 +481,7 @@ table .footnote {
 }
 
 sup {
-	padding: 0em .3em;
-	padding-left: 0em;
+	padding: 0 .3em 0 0;
 }
 
 .footnote {
@@ -528,8 +520,8 @@ sup {
 }
 
 li p:first-child {
-	margin: 0em !important;
-	padding: 0em !important;
+	margin: 0 !important;
+	padding: 0 !important;
 }
 
 /**/
@@ -538,7 +530,7 @@ div.chapter, div.section {
 }
 
 .revhistory {
-	font-size:
+	/*font-size:*/
 }
 
 pre .replaceable,
@@ -547,7 +539,7 @@ pre .keycap {
 }
 
 pre {
-	font-family: "liberation mono", "bitstream vera mono", "dejavu mono" monospace;
+	font-family: "liberation mono", "bitstream vera mono", "dejavu mono", monospace;
 }
 
 div.note .replaceable,
@@ -572,9 +564,8 @@ div.abstract {
 }
 
 .authorgroup h4 {
-	padding: 0em;
-	margin: 0em;
-	margin-top: 1em;
+	padding: 0;
+	margin: 1em 0 0;
 }
 
 .author, .editor, .translator, .othercredit {
@@ -582,6 +573,6 @@ div.abstract {
 }
 
 ul li p:last-child {
-	margin-bottom: 0em;
-	padding-bottom: 0em;
+	margin-bottom: 0;
+	padding-bottom: 0;
 }

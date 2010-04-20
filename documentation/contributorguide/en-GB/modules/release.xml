@@ -26,7 +26,7 @@
 <chapter id="release" lang="en">
   <title>How to release Geomajas</title>
 
-  <para>Preparation work :</para>
+  <para>Preparation work:</para>
 
   <para><orderedlist>
       <listitem>
@@ -149,29 +149,28 @@ sudo chmod -R 775 /var/www/maven.geomajas.org/htdocs/repository/org/geomajas/</p
     </listitem>
 
     <listitem>
-      <para>JIRA : Assure the next version exists, mark the current version as
+      <para>JIRA: Assure the next version exists, mark the current version as
       released agreeing to move open issue to the next version.</para>
     </listitem>
 
     <listitem>
-      <para>For unstable release : install gwt-example for online trial</para>
+      <para>For unstable release: install gwt-example for online trial</para>
     </listitem>
 
     <listitem>
-      <para>For stable release : install all demo application for online
+      <para>For stable release: install all demo application for online
       trial</para>
     </listitem>
 
     <listitem>
-      <para>Announce :</para>
+      <para>Announce:</para>
 
       <para><itemizedlist>
           <listitem>
-            <para>Build announcement message using the following template
-            :</para>
+            <para>Build announcement message using the following template:</para>
 
             <blockquote>
-              <para>title : Geomajas <emphasis>1.5.0</emphasis>
+              <para>title: Geomajas <emphasis>1.5.0</emphasis>
               <emphasis>technology preview/release candidate/stable
               </emphasis> released</para>
 

@@ -1,11 +1,10 @@
 @import url(documentation.css);
 @import url(docnav.css);
-@import url(html/css/reports.css);
-@import url(html/css/dirty.css);
+@import url(reports.css);
+@import url(dirty.css);
 
 body {
-	background-image: url(../images/bkg_gradient.gif);
-	background-repeat: repeat-x;
+	background: url(../images/bkg_gradient.gif) repeat-x;
 	margin: 0 auto;
 	font-family: 'Lucida Grande', Geneva, Verdana, Arial, sans-serif;
 	font-size: 12px;
@@ -40,8 +39,7 @@ h1, h2, h3, h4, h5, h6 {
 
 h1 {
 /*	background: #3B4E64 none repeat scroll 0% 50%; */
-	background-image: url(../images/title_hdr.png);
-	background-repeat: no-repeat;
+	background: url(../images/title_hdr.png) no-repeat;
 	border-top: 1px dotted #CCCCCC;
 	line-height: 1.2em;
 	color: #182737;

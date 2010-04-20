@@ -29,7 +29,7 @@
 	<toc></toc>
 <para>
 <note>
-<para><emphasis>warning</emphasis> : this documentation is still somewhat incomplete. We are working hard to improve both the feature set and the documentation. So do have a browse around, but definitely come back later to see how things evolve.</para>
+<para><emphasis>warning</emphasis>: this documentation is still somewhat incomplete. We are working hard to improve both the feature set and the documentation. So do have a browse around, but definitely come back later to see how things evolve.</para>
 </note>
 	</para>
 
@@ -37,7 +37,7 @@
 <para>
 Geomajas is an Open source Web mapping software framework enabling 'real integrated GIS via the browser'.
 </para><para>
-Geomajas includes :
+Geomajas includes:
 	</para>
 	<itemizedlist>
 		<listitem><para>Geometry and attribute editing with snapping support.</para></listitem>

@@ -90,22 +90,22 @@
     url="http://jira.geomajas.org/">JIRA issue tracker</ulink>.</para>
 
     <para>When creating a new issue, the first thing you will be asked, is to
-    select the project and issue type :</para>
+    select the project and issue type:</para>
 
     <itemizedlist>
       <listitem>
-        <para>Project : the project you wish to report an issue for. (usually
+        <para>Project: the project you wish to report an issue for. (usually
         Geomajas)</para>
       </listitem>
 
       <listitem>
-        <para>Issue Type : the type of issue you want to report. Is it a bug,
+        <para>Issue Type: the type of issue you want to report. Is it a bug,
         task or simply a question? Please be correct in this.</para>
       </listitem>
     </itemizedlist>
 
     <para>Then a new form appears with new fields to fill in. The summary and
-    description have been discussed earlier. As for the other fields :</para>
+    description have been discussed earlier. As for the other fields:</para>
 
     <itemizedlist>
       <listitem>
@@ -115,7 +115,7 @@
       </listitem>
 
       <listitem>
-        <para>Due date : not used</para>
+        <para>Due date: not used</para>
       </listitem>
 
       <listitem>
