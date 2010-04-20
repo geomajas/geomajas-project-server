@@ -21,7 +21,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.internal.service.vector;
+package org.geomajas.internal.layer.vector;
 
 import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.NamedStyleInfo;
@@ -34,13 +34,13 @@ import org.geomajas.rendering.StyleFilter;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
 import org.geomajas.service.pipeline.PipelineStep;
-import org.geomajas.service.VectorLayerService;
+import org.geomajas.layer.VectorLayerService;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Prepare the style filters for the {@link org.geomajas.service.VectorLayerService} getFeatures.
+ * Prepare the style filters for the {@link org.geomajas.layer.VectorLayerService} getFeatures.
  *
  * @author Joachim Van der Auwera
  */

@@ -72,7 +72,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<property name="id"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_GET_RASTER_TILES"/></property>
 		<property name="pipeline">
 			<list>
-				<bean class="org.geomajas.internal.service.raster.GetTilesGetStep">
+				<bean class="org.geomajas.internal.layer.raster.GetTilesGetStep">
 					<property name="id" value="GetTilesGetStep"/>
 				</bean>
 			</list>
@@ -86,10 +86,10 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<property name="id"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_SAVE_OR_UPDATE"/></property>
 		<property name="pipeline">
 			<list>
-				<bean class="org.geomajas.internal.service.vector.FeatureListEqualSizeStep">
+				<bean class="org.geomajas.internal.layer.vector.FeatureListEqualSizeStep">
 					<property name="id" value="FeatureListEqualSizeStep"/>
 				</bean>
-				<bean class="org.geomajas.internal.service.vector.SaveOrUpdateEachStep">
+				<bean class="org.geomajas.internal.layer.vector.SaveOrUpdateEachStep">
 					<property name="id" value="SaveOrUpdateEachStep"/>
 					<property name="pipelineName"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_SAVE_OR_UPDATE_ONE"/></property>
 				</bean>
@@ -101,25 +101,25 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<property name="id"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_SAVE_OR_UPDATE_ONE"/></property>
 		<property name="pipeline">
 			<list>
-				<bean class="org.geomajas.internal.service.vector.SaveOrUpdateDeleteStep">
+				<bean class="org.geomajas.internal.layer.vector.SaveOrUpdateDeleteStep">
 					<property name="id" value="SaveOrUpdateDeleteStep"/>
 				</bean>
-				<bean class="org.geomajas.internal.service.vector.SaveOrUpdateCheckIdStep">
+				<bean class="org.geomajas.internal.layer.vector.SaveOrUpdateCheckIdStep">
 					<property name="id" value="SaveOrUpdateCheckIdStep"/>
 				</bean>
-				<bean class="org.geomajas.internal.service.vector.FeatureTransformGeometryStep">
+				<bean class="org.geomajas.internal.layer.vector.FeatureTransformGeometryStep">
 					<property name="id" value="FeatureTransformGeometryStep"/>
 				</bean>
-				<bean class="org.geomajas.internal.service.vector.SaveOrUpdateCreateStep">
+				<bean class="org.geomajas.internal.layer.vector.SaveOrUpdateCreateStep">
 					<property name="id" value="SaveOrUpdateCreateStep"/>
 				</bean>
-				<bean class="org.geomajas.internal.service.vector.SaveOrUpdateUpdateStep">
+				<bean class="org.geomajas.internal.layer.vector.SaveOrUpdateUpdateStep">
 					<property name="id" value="SaveOrUpdateUpdateStep"/>
 				</bean>
-				<bean class="org.geomajas.internal.service.vector.SaveOrUpdateSaveStep">
+				<bean class="org.geomajas.internal.layer.vector.SaveOrUpdateSaveStep">
 					<property name="id" value="SaveOrUpdateUpdateStep"/>
 				</bean>
-				<bean class="org.geomajas.internal.service.vector.UpdateFeatureStep">
+				<bean class="org.geomajas.internal.layer.vector.UpdateFeatureStep">
 					<property name="id" value="UpdateFeatureStep"/>
 				</bean>
 			</list>
@@ -130,13 +130,13 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<property name="id"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_GET_FEATURES"/></property>
 		<property name="pipeline">
 			<list>
-				<bean class="org.geomajas.internal.service.vector.LayerFilterStep">
+				<bean class="org.geomajas.internal.layer.vector.LayerFilterStep">
 					<property name="id" value="LayerFilterStep"/>
 				</bean>
-				<bean class="org.geomajas.internal.service.vector.GetFeaturesStyleStep">
+				<bean class="org.geomajas.internal.layer.vector.GetFeaturesStyleStep">
 					<property name="id" value="GetFeaturesStyleStep"/>
 				</bean>
-				<bean class="org.geomajas.internal.service.vector.GetFeaturesEachStep">
+				<bean class="org.geomajas.internal.layer.vector.GetFeaturesEachStep">
 					<property name="id" value="GetFeaturesEachStep"/>
 				</bean>
 			</list>
@@ -147,10 +147,10 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<property name="id"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_GET_BOUNDS"/></property>
 		<property name="pipeline">
 			<list>
-				<bean class="org.geomajas.internal.service.vector.LayerFilterStep">
+				<bean class="org.geomajas.internal.layer.vector.LayerFilterStep">
 					<property name="id" value="LayerFilterStep"/>
 				</bean>
-				<bean class="org.geomajas.internal.service.vector.GetBoundsStep">
+				<bean class="org.geomajas.internal.layer.vector.GetBoundsStep">
 					<property name="id" value="GetBoundsStep"/>
 				</bean>
 			</list>
@@ -162,10 +162,10 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<property name="id"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_GET_ATTRIBUTES"/></property>
 		<property name="pipeline">
 			<list>
-				<bean class="org.geomajas.internal.service.vector.LayerFilterStep">
+				<bean class="org.geomajas.internal.layer.vector.LayerFilterStep">
 					<property name="id" value="LayerFilterStep"/>
 				</bean>
-				<bean class="org.geomajas.internal.service.vector.GetAttributesStep">
+				<bean class="org.geomajas.internal.layer.vector.GetAttributesStep">
 					<property name="id" value="GetAttributesStep"/>
 				</bean>
 			</list>
@@ -176,16 +176,16 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<property name="id"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_GET_VECTOR_TILE"/></property>
 		<property name="pipeline">
 			<list>
-				<bean class="org.geomajas.internal.service.vector.GetTileFilterStep">
+				<bean class="org.geomajas.internal.layer.vector.GetTileFilterStep">
 					<property name="id" value="GetTileFilterStep"/>
 				</bean>
-				<bean class="org.geomajas.internal.service.vector.GetTileGetFeaturesStep">
+				<bean class="org.geomajas.internal.layer.vector.GetTileGetFeaturesStep">
 					<property name="id" value="GetTileGetFeaturesStep"/>
 				</bean>
-				<bean class="org.geomajas.internal.service.vector.GetTileTransformStep">
+				<bean class="org.geomajas.internal.layer.vector.GetTileTransformStep">
 					<property name="id" value="GetTileTransformStep"/>
 				</bean>
-				<bean class="org.geomajas.internal.service.vector.GetTileStringContentStep">
+				<bean class="org.geomajas.internal.layer.vector.GetTileStringContentStep">
 					<property name="id" value="GetTileStringContentStep"/>
 				</bean>
 			</list>

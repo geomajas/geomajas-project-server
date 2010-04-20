@@ -33,7 +33,7 @@ import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.plugin.springsecurity.command.dto.LoginRequest;
 import org.geomajas.plugin.springsecurity.command.dto.LoginResponse;
 import org.geomajas.security.SecurityManager;
-import org.geomajas.service.VectorLayerService;
+import org.geomajas.layer.VectorLayerService;
 import org.geotools.referencing.CRS;
 import org.junit.Test;
 import org.junit.runner.RunWith;

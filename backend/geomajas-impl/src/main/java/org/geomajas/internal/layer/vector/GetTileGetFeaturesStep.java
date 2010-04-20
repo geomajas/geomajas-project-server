@@ -21,29 +21,42 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.internal.service.vector;
+package org.geomajas.internal.layer.vector;
 
-import com.vividsolutions.jts.geom.Envelope;
-import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
+import org.geomajas.internal.rendering.strategy.TiledFeatureService;
 import org.geomajas.layer.VectorLayer;
+import org.geomajas.layer.VectorLayerService;
+import org.geomajas.layer.feature.InternalFeature;
+import org.geomajas.layer.tile.InternalTile;
+import org.geomajas.layer.tile.TileMetadata;
+import org.geomajas.service.GeoService;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
 import org.geomajas.service.pipeline.PipelineStep;
-import org.geotools.geometry.jts.JTS;
 import org.opengis.filter.Filter;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.TransformException;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
 
 /**
- * Step for getBounds in {@link org.geomajas.service.VectorLayerService}.
+ * Get the features for the tile.
  *
  * @author Joachim Van der Auwera
  */
-public class GetBoundsStep implements PipelineStep<GetBoundsContainer> {
+public class GetTileGetFeaturesStep implements PipelineStep<InternalTile> {
 
 	private String id;
 
+	@Autowired
+	private VectorLayerService layerService;
+
+	@Autowired
+	private GeoService geoService;
+
+	@Autowired
+	private TiledFeatureService tiledFeatureService;
+	
 	public String getId() {
 		return id;
 	}
@@ -52,17 +65,16 @@ public class GetBoundsStep implements PipelineStep<GetBoundsContainer> {
 		this.id = id;
 	}
 
-	public void execute(PipelineContext context, GetBoundsContainer response)
-			throws GeomajasException {
+	public void execute(PipelineContext context, InternalTile response) throws GeomajasException {
 		VectorLayer layer = context.get(PipelineCode.LAYER_KEY, VectorLayer.class);
-		MathTransform crsTransform = context.get(PipelineCode.CRS_TRANSFORM_KEY, MathTransform.class);
+		TileMetadata metadata = context.get(PipelineCode.TILE_METADATA_KEY, TileMetadata.class);
 		Filter filter = context.get(PipelineCode.FILTER_KEY, Filter.class);
-		Envelope bounds = layer.getBounds(filter);
-		try {
-			bounds = JTS.transform(bounds, crsTransform);
-		} catch (TransformException te) {
-			throw new GeomajasException(te, ExceptionCode.GEOMETRY_TRANSFORMATION_FAILED);
-		}
-		response.setEnvelope(bounds);
+
+		// Get the features:
+		List<InternalFeature> features = layerService.getFeatures(metadata.getLayerId(), layer.getCrs(), filter,
+				metadata .getStyleInfo(), metadata.getFeatureIncludes() | VectorLayerService.FEATURE_INCLUDE_GEOMETRY  |
+				VectorLayerService.FEATURE_INCLUDE_STYLE | VectorLayerService.FEATURE_INCLUDE_LABEL );
+
+		tiledFeatureService.fillTile(response, features, layer);
 	}
 }

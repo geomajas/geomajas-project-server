@@ -21,28 +21,35 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.internal.service.vector;
+package org.geomajas.internal.layer.vector;
 
-import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
+import org.geomajas.service.pipeline.PipelineInfo;
+import org.geomajas.service.pipeline.PipelineService;
 import org.geomajas.service.pipeline.PipelineStep;
 import org.geomajas.security.SecurityContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
+
 /**
- * Sanity check to assure that the id of old and new feature value are th same before we start to update.
+ * Execute the vectorLayer.saveOrUpdateOne" pipeline for each of the features to saveOrUpdate.
  *
  * @author Joachim Van der Auwera
  */
-public class SaveOrUpdateCheckIdStep implements PipelineStep {
+public class SaveOrUpdateEachStep implements PipelineStep {
+
+	private String id;
+	private String pipelineName;
 
 	@Autowired
 	private SecurityContext securityContext;
 
-	private String id;
+	@Autowired
+	private PipelineService pipelineService;
 
 	public String getId() {
 		return id;
@@ -52,14 +59,25 @@ public class SaveOrUpdateCheckIdStep implements PipelineStep {
 		this.id = id;
 	}
 
+	public void setPipelineName(String pipelineName) {
+		this.pipelineName = pipelineName;
+	}
+
 	public void execute(PipelineContext context, Object response) throws GeomajasException {
-		InternalFeature oldFeature = context.getOptional(PipelineCode.OLD_FEATURE_KEY, InternalFeature.class);
-		if (null != oldFeature) {
-			InternalFeature newFeature = context.get(PipelineCode.FEATURE_KEY, InternalFeature.class);
-			if (null == oldFeature.getId() || !oldFeature.getId().equals(newFeature.getId())) {
-				int index = context.get(PipelineCode.INDEX_KEY, Integer.class);
-				throw new GeomajasException(ExceptionCode.FEATURE_ID_MISMATCH, index);
-			}
+		String layerId = context.get(PipelineCode.LAYER_ID_KEY, String.class);
+		PipelineInfo pipelineInfo = pipelineService.getPipeline(pipelineName, layerId);
+		List<InternalFeature> oldFeatures = context.get(PipelineCode.OLD_FEATURES_KEY, List.class);
+		List<InternalFeature> newFeatures = context.get(PipelineCode.NEW_FEATURES_KEY, List.class);
+
+		int count = oldFeatures.size();
+		for (int i = 0; i < count; i++) {
+			context.put(PipelineCode.INDEX_KEY, i);
+			context.put(PipelineCode.OLD_FEATURE_KEY, oldFeatures.get(i));
+			InternalFeature newFeature = newFeatures.get(i);
+			context.put(PipelineCode.FEATURE_KEY, newFeature);
+
+			pipelineService.execute(pipelineInfo, context, newFeature);
 		}
 	}
+	
 }

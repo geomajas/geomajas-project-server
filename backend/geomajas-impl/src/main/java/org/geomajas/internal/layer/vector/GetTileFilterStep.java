@@ -21,45 +21,35 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.internal.service.vector;
+package org.geomajas.internal.layer.vector;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
-import org.geomajas.internal.rendering.strategy.TileService;
-import org.geomajas.internal.rendering.strategy.TiledFeatureService;
 import org.geomajas.layer.VectorLayer;
-import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.layer.tile.TileMetadata;
+import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
-import org.geomajas.service.VectorLayerService;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
 import org.geomajas.service.pipeline.PipelineStep;
-import org.geotools.geometry.jts.JTS;
+import org.opengis.filter.Filter;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.TransformException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * Transform the features in a tile to map coordinates.
+ * Determine the filter which needs to be applied to get the features.
  *
  * @author Joachim Van der Auwera
  */
-public class GetTileTransformStep implements PipelineStep<InternalTile> {
+public class GetTileFilterStep implements PipelineStep<InternalTile> {
 
 	private String id;
 
 	@Autowired
-	private VectorLayerService layerService;
+	private FilterService filterService;
 
 	@Autowired
 	private GeoService geoService;
-
-	@Autowired
-	private TiledFeatureService tiledFeatureService;
 
 	public String getId() {
 		return id;
@@ -73,26 +63,14 @@ public class GetTileTransformStep implements PipelineStep<InternalTile> {
 		VectorLayer layer = context.get(PipelineCode.LAYER_KEY, VectorLayer.class);
 		TileMetadata metadata = context.get(PipelineCode.TILE_METADATA_KEY, TileMetadata.class);
 		CoordinateReferenceSystem crs = context.get(PipelineCode.CRS_KEY, CoordinateReferenceSystem.class);
-
-		// Determine transformation to apply
-		MathTransform transform = context.get(PipelineCode.CRS_TRANSFORM_KEY, MathTransform.class);
-
-		// convert tile data to layer
-		TileService.transformTileSizes(response, transform, metadata.getScale());
-
-		// convert feature geometries to layer
-		for (InternalFeature feature : response.getFeatures()) {
-			if (null != feature.getGeometry()) {
-				try {
-					feature.setGeometry(JTS.transform(feature.getGeometry(), transform));
-				} catch (TransformException te) {
-					throw new GeomajasException(te, ExceptionCode.GEOMETRY_TRANSFORMATION_FAILED);
-				}
-			}
+		
+		String geomName = layer.getLayerInfo().getFeatureInfo().getGeometryType().getName();
+		Filter filter = filterService.createBboxFilter(Integer.toString(geoService.getSridFromCrs(crs)),
+				response.getBounds(), geomName);
+		if (null != metadata.getFilter()) {
+			filter = filterService.createAndFilter(filterService.parseFilter(metadata.getFilter()), filter);
 		}
 
-		// clipping of features in tile
-		Coordinate panOrigin = new Coordinate(metadata.getPanOrigin().getX(), metadata.getPanOrigin().getY());
-		tiledFeatureService.clipTile(response, layer, metadata.getCode(), metadata.getScale(), panOrigin);
+		context.put(PipelineCode.FILTER_KEY, filter);
 	}
 }

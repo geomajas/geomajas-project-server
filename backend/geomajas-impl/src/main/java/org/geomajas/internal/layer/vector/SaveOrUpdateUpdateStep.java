@@ -21,7 +21,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.internal.service.vector;
+package org.geomajas.internal.layer.vector;
 
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
@@ -30,42 +30,27 @@ import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
-import org.opengis.filter.Filter;
 
 /**
- * Handle possible delete of an individual feature in saveOrUpdate.
- * <p/>
- * If the feature is deleted, the pipeline is finished.
+ * Prepare saving the feature in case of update (assure "featureDataObject" is available).
  *
  * @author Joachim Van der Auwera
  */
-public class SaveOrUpdateDeleteStep extends AbstractSaveOrUpdateStep {
+public class SaveOrUpdateUpdateStep extends AbstractSaveOrUpdateStep {
 
 	public void execute(PipelineContext context, Object response) throws GeomajasException {
-		InternalFeature newFeature = context.getOptional(PipelineCode.FEATURE_KEY, InternalFeature.class);
-		if (null == newFeature) {
-			// delete ?
-			InternalFeature oldFeature = context.getOptional(PipelineCode.OLD_FEATURE_KEY, InternalFeature.class);
-			if (null != oldFeature) {
-				String layerId = context.get(PipelineCode.LAYER_ID_KEY, String.class);
-				if (securityContext.isFeatureDeleteAuthorized(layerId, oldFeature)) {
-					VectorLayer layer = context.get(PipelineCode.LAYER_KEY, VectorLayer.class);
-					Filter securityFilter = getSecurityFilter(layer, securityContext.getDeleteAuthorizedArea(layerId));
-					Object featureObj = layer.read(oldFeature.getId());
-					if (null != featureObj) {
-						if (securityFilter.evaluate(featureObj)) {
-							layer.delete(oldFeature.getId());
-						} else {
-							throw new GeomajasSecurityException(ExceptionCode.FEATURE_DELETE_PROHIBITED,
-									oldFeature.getId(), securityContext.getUserId());
-						}
-					}
-				} else {
-					throw new GeomajasSecurityException(ExceptionCode.FEATURE_DELETE_PROHIBITED,
-							oldFeature.getId(), securityContext.getUserId());
-				}
+		InternalFeature oldFeature = context.getOptional(PipelineCode.OLD_FEATURE_KEY, InternalFeature.class);
+		InternalFeature newFeature = context.get(PipelineCode.FEATURE_KEY, InternalFeature.class);
+		if (null != oldFeature) {
+			String layerId = context.get(PipelineCode.LAYER_ID_KEY, String.class);
+			VectorLayer layer = context.get(PipelineCode.LAYER_KEY, VectorLayer.class);
+			if (securityContext.isFeatureUpdateAuthorized(layerId, oldFeature, newFeature)) {
+				context.put(PipelineCode.FEATURE_DATA_OBJECT_KEY, layer.read(newFeature.getId()));
+			} else {
+				throw new GeomajasSecurityException(ExceptionCode.FEATURE_UPDATE_PROHIBITED,
+						oldFeature.getId(), securityContext.getUserId());
 			}
-			context.setFinished(true); // stop pipeline execution
 		}
 	}
 }
+

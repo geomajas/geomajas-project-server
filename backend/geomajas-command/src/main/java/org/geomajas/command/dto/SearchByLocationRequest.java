@@ -271,7 +271,7 @@ public class SearchByLocationRequest implements CommandRequest {
 
 	/**
 	 * Get which data should be included in the features. For possible values, see
-	 * {@link org.geomajas.service.VectorLayerService}.
+	 * {@link org.geomajas.layer.VectorLayerService}.
 	 * 
 	 * @return what to include
 	 */
@@ -281,7 +281,7 @@ public class SearchByLocationRequest implements CommandRequest {
 
 	/**
 	 * Set the data to include in the features which are returned. For possible values, see
-	 * {@link org.geomajas.service.VectorLayerService}.
+	 * {@link org.geomajas.layer.VectorLayerService}.
 	 * 
 	 * @param featureIncludes
 	 *            what the include

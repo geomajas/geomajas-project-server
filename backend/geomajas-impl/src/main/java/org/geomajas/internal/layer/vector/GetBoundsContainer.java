@@ -21,12 +21,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.internal.service.vector;
+package org.geomajas.internal.layer.vector;
 
 import com.vividsolutions.jts.geom.Envelope;
 
 /**
- * Container for result of getBounds in {@link org.geomajas.service.VectorLayerService}.
+ * Container for result of getBounds in {@link org.geomajas.layer.VectorLayerService}.
  *
  * @author Joachim Van der Auwera
  */

@@ -25,6 +25,7 @@ package org.geomajas.internal.service;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import junit.framework.Assert;
+import org.geomajas.layer.VectorLayerService;
 import org.geomajas.layer.bean.BeanLayer;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.security.SecurityManager;
@@ -32,7 +33,6 @@ import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
-import org.geomajas.service.VectorLayerService;
 import org.geotools.geometry.jts.JTS;
 import org.junit.Before;
 import org.junit.Test;

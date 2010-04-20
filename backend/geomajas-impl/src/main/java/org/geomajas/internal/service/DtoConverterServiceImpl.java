@@ -43,6 +43,7 @@ import org.geomajas.geometry.Geometry;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.internal.layer.feature.InternalFeatureImpl;
+import org.geomajas.layer.VectorLayerService;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.Feature;
 import org.geomajas.layer.feature.InternalFeature;
@@ -66,7 +67,6 @@ import org.geomajas.layer.feature.attribute.UrlAttribute;
 import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.layer.tile.VectorTile;
 import org.geomajas.service.DtoConverterService;
-import org.geomajas.service.VectorLayerService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Component;
 
@@ -542,7 +542,7 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 	 * @param crs
 	 *            crs to include in features (if any)
 	 * @param featureIncludes
-	 *            Indicate which aspects of the should be included @see {@link VectorLayerService}
+	 *            Indicate which aspects of the should be included @see {@link org.geomajas.layer.VectorLayerService}
 	 * @return Returns the DTO version that can be sent to the client.
 	 */
 	public VectorTile toDto(InternalTile tile, String crs, int featureIncludes) throws GeomajasException {

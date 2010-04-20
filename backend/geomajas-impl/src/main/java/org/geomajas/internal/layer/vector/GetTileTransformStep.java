@@ -21,30 +21,34 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.internal.service.vector;
+package org.geomajas.internal.layer.vector;
 
+import com.vividsolutions.jts.geom.Coordinate;
+import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
+import org.geomajas.internal.rendering.strategy.TileService;
 import org.geomajas.internal.rendering.strategy.TiledFeatureService;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.layer.tile.TileMetadata;
 import org.geomajas.service.GeoService;
-import org.geomajas.service.VectorLayerService;
+import org.geomajas.layer.VectorLayerService;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
 import org.geomajas.service.pipeline.PipelineStep;
-import org.opengis.filter.Filter;
+import org.geotools.geometry.jts.JTS;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.opengis.referencing.operation.MathTransform;
+import org.opengis.referencing.operation.TransformException;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.List;
-
 /**
- * Get the features for the tile.
+ * Transform the features in a tile to map coordinates.
  *
  * @author Joachim Van der Auwera
  */
-public class GetTileGetFeaturesStep implements PipelineStep<InternalTile> {
+public class GetTileTransformStep implements PipelineStep<InternalTile> {
 
 	private String id;
 
@@ -56,7 +60,7 @@ public class GetTileGetFeaturesStep implements PipelineStep<InternalTile> {
 
 	@Autowired
 	private TiledFeatureService tiledFeatureService;
-	
+
 	public String getId() {
 		return id;
 	}
@@ -68,13 +72,27 @@ public class GetTileGetFeaturesStep implements PipelineStep<InternalTile> {
 	public void execute(PipelineContext context, InternalTile response) throws GeomajasException {
 		VectorLayer layer = context.get(PipelineCode.LAYER_KEY, VectorLayer.class);
 		TileMetadata metadata = context.get(PipelineCode.TILE_METADATA_KEY, TileMetadata.class);
-		Filter filter = context.get(PipelineCode.FILTER_KEY, Filter.class);
+		CoordinateReferenceSystem crs = context.get(PipelineCode.CRS_KEY, CoordinateReferenceSystem.class);
 
-		// Get the features:
-		List<InternalFeature> features = layerService.getFeatures(metadata.getLayerId(), layer.getCrs(), filter,
-				metadata .getStyleInfo(), metadata.getFeatureIncludes() | VectorLayerService.FEATURE_INCLUDE_GEOMETRY  |
-				VectorLayerService.FEATURE_INCLUDE_STYLE | VectorLayerService.FEATURE_INCLUDE_LABEL );
+		// Determine transformation to apply
+		MathTransform transform = context.get(PipelineCode.CRS_TRANSFORM_KEY, MathTransform.class);
 
-		tiledFeatureService.fillTile(response, features, layer);
+		// convert tile data to layer
+		TileService.transformTileSizes(response, transform, metadata.getScale());
+
+		// convert feature geometries to layer
+		for (InternalFeature feature : response.getFeatures()) {
+			if (null != feature.getGeometry()) {
+				try {
+					feature.setGeometry(JTS.transform(feature.getGeometry(), transform));
+				} catch (TransformException te) {
+					throw new GeomajasException(te, ExceptionCode.GEOMETRY_TRANSFORMATION_FAILED);
+				}
+			}
+		}
+
+		// clipping of features in tile
+		Coordinate panOrigin = new Coordinate(metadata.getPanOrigin().getX(), metadata.getPanOrigin().getY());
+		tiledFeatureService.clipTile(response, layer, metadata.getCode(), metadata.getScale(), panOrigin);
 	}
 }

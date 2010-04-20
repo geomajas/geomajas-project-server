@@ -13,13 +13,13 @@
     <logger name="org.geomajas.internal.service">
         <level value="DEBUG"/>
     </logger>
-    <logger name="org.geomajas.internal.service.vector">
+    <logger name="org.geomajas.internal.layer.vector">
         <level value="INFO"/>
     </logger>
     <logger name="org.geomajas.internal.rendering.strategy">
         <level value="DEBUG"/>
     </logger>
-	<logger name="org.geomajas.internal.service.vector.GetFeaturesEachStep">
+	<logger name="org.geomajas.internal.layer.vector.GetFeaturesEachStep">
 		<level value="DEBUG"/>
 	</logger>
 	-->

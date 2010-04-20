@@ -32,10 +32,10 @@ import javax.xml.bind.Unmarshaller;
 
 import org.geomajas.extension.printing.component.PageComponent;
 import org.geomajas.extension.printing.configuration.DefaultConfigurationVisitor;
+import org.geomajas.layer.VectorLayerService;
 import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
-import org.geomajas.service.VectorLayerService;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.ApplicationContext;

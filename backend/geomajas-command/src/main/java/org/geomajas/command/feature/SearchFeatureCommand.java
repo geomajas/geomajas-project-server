@@ -37,7 +37,7 @@ import org.geomajas.layer.feature.SearchCriterion;
 import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.FilterService;
-import org.geomajas.service.VectorLayerService;
+import org.geomajas.layer.VectorLayerService;
 import org.opengis.filter.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

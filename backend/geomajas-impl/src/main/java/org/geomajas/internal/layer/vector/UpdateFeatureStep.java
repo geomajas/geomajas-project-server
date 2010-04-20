@@ -21,7 +21,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.internal.service.vector;
+package org.geomajas.internal.layer.vector;
 
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.VectorLayer;

@@ -38,7 +38,7 @@ import org.geomajas.extension.printing.component.VectorLayerComponent;
 import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
-import org.geomajas.service.VectorLayerService;
+import org.geomajas.layer.VectorLayerService;
 
 /**
  * Visitor that configures the default layers of all the maps and legends in the print component. Maps and legends

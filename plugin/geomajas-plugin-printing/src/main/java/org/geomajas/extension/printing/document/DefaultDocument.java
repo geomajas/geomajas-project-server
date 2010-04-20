@@ -27,10 +27,10 @@ import java.util.Map;
 import org.geomajas.extension.printing.configuration.DefaultConfigurationVisitor;
 import org.geomajas.extension.printing.configuration.MapConfigurationVisitor;
 import org.geomajas.extension.printing.configuration.PrintTemplate;
+import org.geomajas.layer.VectorLayerService;
 import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
-import org.geomajas.service.VectorLayerService;
 
 /**
  * Default document for printing.

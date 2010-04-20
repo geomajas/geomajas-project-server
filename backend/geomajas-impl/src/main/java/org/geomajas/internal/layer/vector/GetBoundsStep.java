@@ -21,27 +21,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.internal.service.raster;
+package org.geomajas.internal.layer.vector;
 
 import com.vividsolutions.jts.geom.Envelope;
+import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
-import org.geomajas.layer.RasterLayer;
-import org.geomajas.layer.tile.RasterTile;
+import org.geomajas.layer.VectorLayer;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
 import org.geomajas.service.pipeline.PipelineStep;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-
-import java.util.List;
+import org.geotools.geometry.jts.JTS;
+import org.opengis.filter.Filter;
+import org.opengis.referencing.operation.MathTransform;
+import org.opengis.referencing.operation.TransformException;
 
 /**
- * Main step for the {@link org.geomajas.service.RasterLayerService} getTiles method.
- * <p/>
- * Actually gets the data from the layer.
+ * Step for getBounds in {@link org.geomajas.layer.VectorLayerService}.
  *
  * @author Joachim Van der Auwera
  */
-public class GetTilesGetStep implements PipelineStep<List<RasterTile>> {
+public class GetBoundsStep implements PipelineStep<GetBoundsContainer> {
 
 	private String id;
 
@@ -53,13 +52,17 @@ public class GetTilesGetStep implements PipelineStep<List<RasterTile>> {
 		this.id = id;
 	}
 
-	public void execute(PipelineContext context, List<RasterTile> response) throws GeomajasException {
-		RasterLayer layer = context.get(PipelineCode.LAYER_KEY, RasterLayer.class);
-		Envelope bounds = context.get(PipelineCode.BOUNDS_KEY, Envelope.class);
-		double scale = context.get(PipelineCode.SCALE_KEY, Double.class);
-		CoordinateReferenceSystem crs = context.get(PipelineCode.CRS_KEY, CoordinateReferenceSystem.class);
-		List<RasterTile> images = layer.paint(crs, bounds, scale);
-		response.addAll(images);
+	public void execute(PipelineContext context, GetBoundsContainer response)
+			throws GeomajasException {
+		VectorLayer layer = context.get(PipelineCode.LAYER_KEY, VectorLayer.class);
+		MathTransform crsTransform = context.get(PipelineCode.CRS_TRANSFORM_KEY, MathTransform.class);
+		Filter filter = context.get(PipelineCode.FILTER_KEY, Filter.class);
+		Envelope bounds = layer.getBounds(filter);
+		try {
+			bounds = JTS.transform(bounds, crsTransform);
+		} catch (TransformException te) {
+			throw new GeomajasException(te, ExceptionCode.GEOMETRY_TRANSFORMATION_FAILED);
+		}
+		response.setEnvelope(bounds);
 	}
-
 }

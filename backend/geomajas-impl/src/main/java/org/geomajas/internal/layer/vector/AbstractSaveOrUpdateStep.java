@@ -21,44 +21,50 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.internal.service.vector;
+package org.geomajas.internal.layer.vector;
 
+import com.vividsolutions.jts.geom.Geometry;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.VectorLayer;
+import org.geomajas.security.SecurityContext;
 import org.geomajas.service.FilterService;
-import org.geomajas.service.pipeline.PipelineCode;
-import org.geomajas.service.pipeline.PipelineContext;
+import org.geomajas.service.pipeline.PipelineStep;
 import org.opengis.filter.Filter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.vividsolutions.jts.geom.Geometry;
-
 /**
- * Extend the existing layer filter (in the context, if any) to include layer security.
- * <p/>
- * This combines the visible area, the security filter for the layer, the default filter for the layer,
+ * Base step for saveOrUpdate pipeline. Has  helper method for building a filter to check compliance with the
+ * layer security filter, layer default filter and area.
  *
  * @author Joachim Van der Auwera
  */
-public class LayerFilterStep extends AbstractSaveOrUpdateStep {
+public abstract class AbstractSaveOrUpdateStep implements PipelineStep {
 
-	private final Logger log = LoggerFactory.getLogger(LayerFilterStep.class);
+	private final Logger log = LoggerFactory.getLogger(AbstractSaveOrUpdateStep.class);
+
+	@Autowired
+	protected SecurityContext securityContext;
 
 	@Autowired
 	private FilterService filterService;
 
-	public void execute(PipelineContext context, Object response) throws GeomajasException {
-		VectorLayer layer = context.get(PipelineCode.LAYER_KEY, VectorLayer.class);
-		Filter filter = context.getOptional(PipelineCode.FILTER_KEY, Filter.class);
+	private String id;
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	protected Filter getSecurityFilter(VectorLayer layer, Geometry geometry) throws GeomajasException {
 		String layerId = layer.getId();
 
 		// apply generic security filter
-		Filter layerFeatureFilter = securityContext.getFeatureFilter(layerId);
-		if (null != layerFeatureFilter) {
-			filter = and(filter, layerFeatureFilter);
-		}
+		Filter filter = securityContext.getFeatureFilter(layerId);
 
 		// apply default filter
 		String defaultFilter = layer.getLayerInfo().getFilter();
@@ -67,20 +73,29 @@ public class LayerFilterStep extends AbstractSaveOrUpdateStep {
 		}
 
 		// apply visible area filter
-		Geometry visibleArea = securityContext.getVisibleArea(layerId);
-		if (null != visibleArea) {
+		if (null != geometry) {
 			String geometryName = layer.getLayerInfo().getFeatureInfo().getGeometryType().getName();
 			if (securityContext.isPartlyVisibleSufficient(layerId)) {
-				filter = and(filter, filterService.createIntersectsFilter(visibleArea, geometryName));
+				filter = and(filter, filterService.createIntersectsFilter(geometry, geometryName));
 			} else {
-				filter = and(filter, filterService.createWithinFilter(visibleArea, geometryName));
+				filter = and(filter, filterService.createWithinFilter(geometry, geometryName));
 			}
 		} else {
-			log.warn("Visible area is null for layer " + layerId + "removing all content!");
+			log.warn("Usable area is null for layer " + layerId + "removing all content!");
 			filter = filterService.createFalseFilter();
 		}
 
-		context.put(PipelineCode.FILTER_KEY, filter);
+		return filter;
+	}
+
+	protected Filter and(Filter f1, Filter f2) {
+		if (null == f1) {
+			return f2;
+		} else if (null == f2) {
+			return f1;
+		} else {
+			return filterService.createAndFilter(f1, f2);
+		}
 	}
 
 }

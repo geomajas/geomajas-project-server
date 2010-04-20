@@ -21,29 +21,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.internal.service.vector;
+package org.geomajas.internal.layer.vector;
 
-import org.geomajas.global.ExceptionCode;
+import java.util.List;
+
 import org.geomajas.global.GeomajasException;
-import org.geomajas.layer.feature.InternalFeature;
+import org.geomajas.layer.VectorLayer;
+import org.geomajas.layer.VectorLayerAssociationSupport;
+import org.geomajas.layer.feature.Attribute;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
 import org.geomajas.service.pipeline.PipelineStep;
-import org.geomajas.security.SecurityContext;
-import org.geotools.geometry.jts.JTS;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.TransformException;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.opengis.filter.Filter;
 
 /**
- * Convert the geometry (if any) in the feature (in the context) using a transformation (also in the context).
+ * Step for the getAttributes pipeline in {@link org.geomajas.internal.layer.VectorLayerServiceImpl}.
  *
  * @author Joachim Van der Auwera
  */
-public class FeatureTransformGeometryStep implements PipelineStep {
-
-	@Autowired
-	private SecurityContext securityContext;
+public class GetAttributesStep implements PipelineStep<List<Attribute<?>>> {
 
 	private String id;
 
@@ -55,16 +51,13 @@ public class FeatureTransformGeometryStep implements PipelineStep {
 		this.id = id;
 	}
 
-	public void execute(PipelineContext context, Object response) throws GeomajasException {
-		InternalFeature feature = context.get(PipelineCode.FEATURE_KEY, InternalFeature.class);
-		if (null != feature.getGeometry()) {
-			try {
-				MathTransform mapToLayer = context.get(PipelineCode.CRS_TRANSFORM_KEY, MathTransform.class);
-				feature.setGeometry(JTS.transform(feature.getGeometry(), mapToLayer));
-			} catch (TransformException te) {
-				throw new GeomajasException(te, ExceptionCode.GEOMETRY_TRANSFORMATION_FAILED);
-			}
+	public void execute(PipelineContext context, List<Attribute<?>> response) throws GeomajasException {
+		VectorLayer layer = context.get(PipelineCode.LAYER_KEY, VectorLayer.class);
+		Filter filter = context.get(PipelineCode.FILTER_KEY, Filter.class);
+		String attributeName = context.get(PipelineCode.ATTRIBUTE_NAME_KEY, String.class);
+		if (layer instanceof VectorLayerAssociationSupport) {
+			List<Attribute<?>> list = ((VectorLayerAssociationSupport) layer).getAttributes(attributeName, filter);
+			response.addAll(list);
 		}
 	}
 }
-

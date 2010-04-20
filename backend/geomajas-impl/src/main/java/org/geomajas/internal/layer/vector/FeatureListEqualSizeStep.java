@@ -21,34 +21,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.internal.service.vector;
+package org.geomajas.internal.layer.vector;
 
-import com.vividsolutions.jts.geom.Coordinate;
 import org.geomajas.global.GeomajasException;
-import org.geomajas.internal.rendering.painter.tile.StringContentTilePainter;
-import org.geomajas.layer.VectorLayer;
-import org.geomajas.layer.tile.InternalTile;
-import org.geomajas.layer.tile.TileMetadata;
-import org.geomajas.layer.tile.VectorTile;
-import org.geomajas.rendering.painter.tile.TilePainter;
-import org.geomajas.service.GeoService;
+import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
 import org.geomajas.service.pipeline.PipelineStep;
-import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
 
 /**
- * Set the string content in the tile.
+ * Assure the lists of old and new features are the same size.
  *
  * @author Joachim Van der Auwera
  */
-public class GetTileStringContentStep implements PipelineStep<InternalTile> {
+public class FeatureListEqualSizeStep implements PipelineStep {
 
 	private String id;
 
-	@Autowired
-	private GeoService geoService;
-	
 	public String getId() {
 		return id;
 	}
@@ -57,17 +48,17 @@ public class GetTileStringContentStep implements PipelineStep<InternalTile> {
 		this.id = id;
 	}
 
-	public void execute(PipelineContext context, InternalTile response) throws GeomajasException {
-		VectorLayer layer = context.get(PipelineCode.LAYER_KEY, VectorLayer.class);
-		TileMetadata metadata = context.get(PipelineCode.TILE_METADATA_KEY, TileMetadata.class);
-
-		response.setContentType(VectorTile.VectorTileContentType.STRING_CONTENT);
-		Coordinate panOrigin = new Coordinate(metadata.getPanOrigin().getX(), metadata.getPanOrigin().getY());
-		TilePainter tilePainter = new StringContentTilePainter(layer, metadata.getStyleInfo(), metadata
-				.getRenderer(), metadata.getScale(), panOrigin, geoService);
-		tilePainter.setPaintGeometries(metadata.isPaintGeometries());
-		tilePainter.setPaintLabels(metadata.isPaintLabels());
-		tilePainter.paint(response);
-
+	public void execute(PipelineContext context, Object response) throws GeomajasException {
+		List<InternalFeature> oldFeatures = context.get(PipelineCode.OLD_FEATURES_KEY, List.class);
+		List<InternalFeature> newFeatures = context.get(PipelineCode.NEW_FEATURES_KEY, List.class);
+		int count = Math.max(oldFeatures.size(), newFeatures.size());
+		while (oldFeatures.size() < count) {
+			oldFeatures.add(null);
+		}
+		while (newFeatures.size() < count) {
+			newFeatures.add(null);
+		}
+		context.put(PipelineCode.OLD_FEATURES_KEY, oldFeatures);
+		context.put(PipelineCode.NEW_FEATURES_KEY, newFeatures);
 	}
 }

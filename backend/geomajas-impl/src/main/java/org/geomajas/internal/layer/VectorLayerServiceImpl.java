@@ -21,7 +21,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.internal.service;
+package org.geomajas.internal.layer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,8 +31,9 @@ import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.global.GeomajasSecurityException;
 import org.geomajas.internal.layer.tile.InternalTileImpl;
-import org.geomajas.internal.service.vector.GetBoundsContainer;
+import org.geomajas.internal.layer.vector.GetBoundsContainer;
 import org.geomajas.layer.VectorLayer;
+import org.geomajas.layer.VectorLayerService;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.layer.tile.InternalTile;
@@ -40,7 +41,6 @@ import org.geomajas.layer.tile.TileMetadata;
 import org.geomajas.security.SecurityContext;
 import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.GeoService;
-import org.geomajas.service.VectorLayerService;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
 import org.geomajas.service.pipeline.PipelineService;
@@ -56,7 +56,7 @@ import com.vividsolutions.jts.geom.Envelope;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
- * Implementation of {@link org.geomajas.service.VectorLayerService}, a service which allows accessing data from a
+ * Implementation of {@link org.geomajas.layer.VectorLayerService}, a service which allows accessing data from a
  * vector layer.
  * <p/>
  * All access to vector layers should be done through this service, not by accessing the layer directly as this

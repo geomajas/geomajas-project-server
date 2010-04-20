@@ -21,7 +21,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.internal.service;
+package org.geomajas.internal.layer;
 
 import com.vividsolutions.jts.geom.Envelope;
 import org.geomajas.global.ExceptionCode;
@@ -35,7 +35,7 @@ import org.geomajas.service.pipeline.PipelineService;
 import org.geomajas.security.SecurityContext;
 import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.GeoService;
-import org.geomajas.service.RasterLayerService;
+import org.geomajas.layer.RasterLayerService;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -44,7 +44,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Implementation of {@link org.geomajas.service.RasterLayerService}, a service which allows accessing data from a
+ * Implementation of {@link org.geomajas.layer.RasterLayerService}, a service which allows accessing data from a
  * raster layer.
  * <p/>
  * All access to vector layers should be done through this service, not by accessing the layer directly as this

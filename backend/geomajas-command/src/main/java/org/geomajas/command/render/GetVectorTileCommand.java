@@ -29,7 +29,7 @@ import org.geomajas.global.Api;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.service.DtoConverterService;
-import org.geomajas.service.VectorLayerService;
+import org.geomajas.layer.VectorLayerService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

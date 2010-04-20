@@ -21,44 +21,39 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.internal.service.vector;
+package org.geomajas.layer;
 
+import com.vividsolutions.jts.geom.Envelope;
+import org.geomajas.global.Api;
 import org.geomajas.global.GeomajasException;
-import org.geomajas.layer.feature.InternalFeature;
-import org.geomajas.service.pipeline.PipelineCode;
-import org.geomajas.service.pipeline.PipelineContext;
-import org.geomajas.service.pipeline.PipelineStep;
+import org.geomajas.layer.tile.RasterTile;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import java.util.List;
 
 /**
- * Assure the lists of old and new features are the same size.
+ * Service which allows accessing data from a raster layer.
+ * <p/>
+ * All access to raster layers should be done through this service, not by accessing the layer directly as this
+ * adds possible modifications in the data. These services are implemented using pipelines
+ * (see {@link org.geomajas.service.pipeline.PipelineService}) to make them configurable.
  *
  * @author Joachim Van der Auwera
  */
-public class FeatureListEqualSizeStep implements PipelineStep {
+@Api(allMethods = true)
+public interface RasterLayerService {
 
-	private String id;
+	/**
+	 * Get the raster tiles for the specified bounds, optimized for the scale in pixels/unit.
+	 *
+	 * @param layerId layer id
+	 * @param crs Coordinate reference system used for bounds
+	 * @param bounds bounds to request images for
+	 * @param scale scale or zoom level (unit?)
+	 * @return a list of raster images that covers the bounds
+	 * @throws GeomajasException oops
+	 */
+	List<RasterTile> getTiles(String layerId, CoordinateReferenceSystem crs, Envelope bounds, double scale)
+			throws GeomajasException;
 
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	public void execute(PipelineContext context, Object response) throws GeomajasException {
-		List<InternalFeature> oldFeatures = context.get(PipelineCode.OLD_FEATURES_KEY, List.class);
-		List<InternalFeature> newFeatures = context.get(PipelineCode.NEW_FEATURES_KEY, List.class);
-		int count = Math.max(oldFeatures.size(), newFeatures.size());
-		while (oldFeatures.size() < count) {
-			oldFeatures.add(null);
-		}
-		while (newFeatures.size() < count) {
-			newFeatures.add(null);
-		}
-		context.put(PipelineCode.OLD_FEATURES_KEY, oldFeatures);
-		context.put(PipelineCode.NEW_FEATURES_KEY, newFeatures);
-	}
 }

@@ -31,6 +31,7 @@ import com.vividsolutions.jts.geom.LineString;
 
 import com.vividsolutions.jts.geom.PrecisionModel;
 import junit.framework.Assert;
+import org.geomajas.layer.VectorLayerService;
 import org.geomajas.layer.bean.BeanLayer;
 import org.geomajas.layer.bean.FeatureBean;
 import org.geomajas.layer.feature.Feature;
@@ -40,7 +41,6 @@ import org.geomajas.security.SecurityManager;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
-import org.geomajas.service.VectorLayerService;
 import org.geotools.referencing.CRS;
 import org.junit.Before;
 import org.junit.Test;

@@ -21,35 +21,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.internal.service.vector;
+package org.geomajas.internal.layer.vector;
 
+import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
-import org.geomajas.layer.VectorLayer;
-import org.geomajas.layer.tile.InternalTile;
-import org.geomajas.layer.tile.TileMetadata;
-import org.geomajas.service.FilterService;
-import org.geomajas.service.GeoService;
+import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
 import org.geomajas.service.pipeline.PipelineStep;
-import org.opengis.filter.Filter;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.geomajas.security.SecurityContext;
+import org.geotools.geometry.jts.JTS;
+import org.opengis.referencing.operation.MathTransform;
+import org.opengis.referencing.operation.TransformException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * Determine the filter which needs to be applied to get the features.
+ * Convert the geometry (if any) in the feature (in the context) using a transformation (also in the context).
  *
  * @author Joachim Van der Auwera
  */
-public class GetTileFilterStep implements PipelineStep<InternalTile> {
+public class FeatureTransformGeometryStep implements PipelineStep {
+
+	@Autowired
+	private SecurityContext securityContext;
 
 	private String id;
-
-	@Autowired
-	private FilterService filterService;
-
-	@Autowired
-	private GeoService geoService;
 
 	public String getId() {
 		return id;
@@ -59,18 +55,16 @@ public class GetTileFilterStep implements PipelineStep<InternalTile> {
 		this.id = id;
 	}
 
-	public void execute(PipelineContext context, InternalTile response) throws GeomajasException {
-		VectorLayer layer = context.get(PipelineCode.LAYER_KEY, VectorLayer.class);
-		TileMetadata metadata = context.get(PipelineCode.TILE_METADATA_KEY, TileMetadata.class);
-		CoordinateReferenceSystem crs = context.get(PipelineCode.CRS_KEY, CoordinateReferenceSystem.class);
-		
-		String geomName = layer.getLayerInfo().getFeatureInfo().getGeometryType().getName();
-		Filter filter = filterService.createBboxFilter(Integer.toString(geoService.getSridFromCrs(crs)),
-				response.getBounds(), geomName);
-		if (null != metadata.getFilter()) {
-			filter = filterService.createAndFilter(filterService.parseFilter(metadata.getFilter()), filter);
+	public void execute(PipelineContext context, Object response) throws GeomajasException {
+		InternalFeature feature = context.get(PipelineCode.FEATURE_KEY, InternalFeature.class);
+		if (null != feature.getGeometry()) {
+			try {
+				MathTransform mapToLayer = context.get(PipelineCode.CRS_TRANSFORM_KEY, MathTransform.class);
+				feature.setGeometry(JTS.transform(feature.getGeometry(), mapToLayer));
+			} catch (TransformException te) {
+				throw new GeomajasException(te, ExceptionCode.GEOMETRY_TRANSFORMATION_FAILED);
+			}
 		}
-
-		context.put(PipelineCode.FILTER_KEY, filter);
 	}
 }
+
