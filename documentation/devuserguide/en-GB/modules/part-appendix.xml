@@ -57,6 +57,31 @@
             constructor. This parameter is the name of the default
             language.</para>
           </listitem>
+
+          <listitem>
+            <para>The OpenStreetMap layer changes changed groupId from
+            "geomajas-layer-opentreetmaps" to
+            "geomajas-layer-opentreetmap".</para>
+          </listitem>
+
+          <listitem>
+            <para><code>GeomajasSecurityException</code> has moved from
+            "<code>org.geomajas.global</code>" to
+            "<code>org.geomajas.security</code>".</para>
+          </listitem>
+
+          <listitem>
+            <para><code>AllowAllSecurityService</code> has moved from
+            "<code>org.geomajas.internal.security</code>" to
+            "<code>org.geomajas.security.allowall</code>".</para>
+          </listitem>
+
+          <listitem>
+            <para><code>VectorLayerService</code> and
+            <code>RasterLayerService</code> have moved from
+            "<code>org.geomajas.service</code>" to
+            "<code>org.geomajas.layer</code>".</para>
+          </listitem>
         </itemizedlist></para>
     </section>
 
