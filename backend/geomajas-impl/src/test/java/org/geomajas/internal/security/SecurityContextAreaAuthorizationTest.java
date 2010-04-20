@@ -88,7 +88,7 @@ public class SecurityContextAreaAuthorizationTest {
 		coordinate.x = coordinate.y = 86;
 		Assert.assertFalse(geometry.contains(geometryFactory.createPoint(coordinate)));
 
-		Assert.assertTrue(securityContext.isPartlyVisibleSufficient(LAYER_ID));
+		Assert.assertFalse(securityContext.isPartlyVisibleSufficient(LAYER_ID));
 	}
 
 	@Test

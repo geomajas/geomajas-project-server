@@ -411,16 +411,18 @@ public class SecurityContextImpl implements SecurityContext {
 	}
 
 	private boolean areaPartlySufficientCombine(AuthorizationGetter<AreaAuthorization> partlySufficientGetter) {
+		boolean res = false;
 		for (Authentication authentication : authentications) {
 			for (BaseAuthorization authorization : authentication.getAuthorizations()) {
 				if (authorization instanceof AreaAuthorization) {
 					if (!partlySufficientGetter.get((AreaAuthorization) authorization)) {
 						return false;
 					}
+					res = true;
 				}
 			}
 		}
-		return true;
+		return res;
 	}
 
 	/**
