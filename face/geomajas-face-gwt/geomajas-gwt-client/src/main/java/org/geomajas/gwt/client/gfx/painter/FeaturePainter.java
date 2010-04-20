@@ -95,6 +95,7 @@ public class FeaturePainter implements Painter {
 			PaintableGroup selectionGroup = feature.getLayer().getSelectionGroup();
 			context.getVectorContext().drawGroup(selectionGroup, feature);
 			String name = feature.getLayer().getId() + "-" + feature.getId();
+
 			if (geometry instanceof LineString) {
 				context.getVectorContext().drawLine(feature, name, (LineString) geometry, style);
 			} else if (geometry instanceof MultiLineString) {
@@ -106,15 +107,20 @@ public class FeaturePainter implements Painter {
 				MultiPolygon m = (MultiPolygon) geometry;
 				context.getVectorContext().drawPolygon(feature, name, (Polygon) m.getGeometryN(0), style);
 			} else if (geometry instanceof Point) {
-				context.getVectorContext().drawSymbol(feature, name, geometry.getCoordinate(), style,
-						feature.getStyleId());
+				if (hasImageSymbol(feature)) {
+					context.getVectorContext().drawSymbol(feature, name, geometry.getCoordinate(), null,
+							feature.getStyleId() + "-selection");
+				} else {
+					context.getVectorContext().drawSymbol(feature, name, geometry.getCoordinate(), style,
+							feature.getStyleId());
+				}
 			}
 		}
 	}
 
 	/**
-	 * Delete a {@link Paintable} object from the given {@link MapContext}. It the object does not exist,
-	 * nothing will be done.
+	 * Delete a {@link Paintable} object from the given {@link MapContext}. It the object does not exist, nothing will
+	 * be done.
 	 * 
 	 * @param paintable
 	 *            The object to be painted.
@@ -175,5 +181,15 @@ public class FeaturePainter implements Painter {
 			style.merge(pointSelectStyle);
 		}
 		return style;
+	}
+
+	private boolean hasImageSymbol(Feature feature) {
+		String styleId = feature.getStyleId();
+		for (FeatureStyleInfo style : feature.getLayer().getLayerInfo().getNamedStyleInfo().getFeatureStyles()) {
+			if (style.getStyleId().equals(styleId)) {
+				return style.getSymbol() != null && style.getSymbol().getImage() != null;
+			}
+		}
+		return false;
 	}
 }
