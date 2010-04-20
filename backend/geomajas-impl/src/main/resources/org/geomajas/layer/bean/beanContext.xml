@@ -33,7 +33,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		<property name="loopAllServices" value="false"/>
 		<property name="securityServices">
 			<list>
-				<bean class="org.geomajas.internal.security.AllowAllSecurityService"/>
+				<bean class="org.geomajas.security.allowall.AllowAllSecurityService"/>
 			</list>
 		</property>
 	</bean>

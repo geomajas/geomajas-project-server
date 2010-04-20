@@ -25,7 +25,7 @@ package org.geomajas.plugin.springsecurity.command;
 
 import org.geomajas.command.EmptyCommandRequest;
 import org.geomajas.command.SuccessCommandResponse;
-import org.geomajas.internal.security.SecurityContextImpl;
+import org.geomajas.security.allowall.SecurityContextImpl;
 import org.geomajas.plugin.springsecurity.security.AuthenticationTokenService;
 import org.geomajas.plugin.springsecurity.security.SpringSecurityService;
 import org.geomajas.security.Authentication;

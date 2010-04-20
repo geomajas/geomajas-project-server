@@ -21,31 +21,42 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.internal.security;
+package org.geomajas.security.allowall;
 
-import org.geomajas.global.Api;
-import org.geomajas.security.Authentication;
 import org.geomajas.security.BaseAuthorization;
-import org.geomajas.security.SecurityService;
 
 /**
- * Security Service which allows all access to everybody.
- * 
+ * Simple authorization class, allows everything.
+ *
  * @author Joachim Van der Auwera
  */
-@Api
-public class AllowAllSecurityService implements SecurityService {
-
-	private static final BaseAuthorization[] AUTHORIZATIONS = new BaseAuthorization[] { new AllowAllAuthorization() };
+public class AllowAllAuthorization implements BaseAuthorization {
 
 	public String getId() {
 		return "AllowAll";
 	}
 
-	public Authentication getAuthentication(String authenticationToken) {
-		Authentication authentication = new Authentication();
-		authentication.setUserId("anonymous");
-		authentication.setAuthorizations(AUTHORIZATIONS);
-		return authentication;
+	public boolean isToolAuthorized(String toolId) {
+		return true;
+	}
+
+	public boolean isCommandAuthorized(String commandName) {
+		return true;
+	}
+
+	public boolean isLayerVisible(String layerId) {
+		return true;
+	}
+
+	public boolean isLayerUpdateAuthorized(String layerId) {
+		return true;
+	}
+
+	public boolean isLayerCreateAuthorized(String layerId) {
+		return true;
+	}
+
+	public boolean isLayerDeleteAuthorized(String layerId) {
+		return true;
 	}
 }

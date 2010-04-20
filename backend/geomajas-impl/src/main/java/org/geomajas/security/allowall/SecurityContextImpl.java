@@ -21,7 +21,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.internal.security;
+package org.geomajas.security.allowall;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -26,6 +26,8 @@ package org.geomajas.internal.security;
 import junit.framework.Assert;
 import org.geomajas.security.Authentication;
 import org.geomajas.security.BaseAuthorization;
+import org.geomajas.security.allowall.AllowAllAuthorization;
+import org.geomajas.security.allowall.SecurityContextImpl;
 import org.junit.Test;
 
 import java.util.ArrayList;

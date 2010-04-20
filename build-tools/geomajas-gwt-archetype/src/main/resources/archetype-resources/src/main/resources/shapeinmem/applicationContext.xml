@@ -16,7 +16,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		<property name="loopAllServices" value="false"/>
 		<property name="securityServices">
 			<list>
-				<bean class="org.geomajas.internal.security.AllowAllSecurityService"/>
+				<bean class="org.geomajas.security.allowall.AllowAllSecurityService"/>
 			</list>
 		</property>
 	</bean>

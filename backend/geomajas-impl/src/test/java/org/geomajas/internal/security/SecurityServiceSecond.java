@@ -26,6 +26,7 @@ package org.geomajas.internal.security;
 import org.geomajas.security.Authentication;
 import org.geomajas.security.BaseAuthorization;
 import org.geomajas.security.SecurityService;
+import org.geomajas.security.allowall.AllowAllAuthorization;
 
 /**
  * Security service which accepts "TEST" and "SECOND" as token, used for testing the security manager service.

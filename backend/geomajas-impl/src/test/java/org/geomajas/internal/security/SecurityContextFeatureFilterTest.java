@@ -28,6 +28,8 @@ import org.geomajas.security.Authentication;
 import org.geomajas.security.BaseAuthorization;
 import org.geomajas.security.SecurityContext;
 import org.geomajas.security.VectorLayerSelectFilterAuthorization;
+import org.geomajas.security.allowall.AllowAllAuthorization;
+import org.geomajas.security.allowall.SecurityContextImpl;
 import org.geomajas.service.FilterService;
 import org.junit.Test;
 import org.junit.runner.RunWith;

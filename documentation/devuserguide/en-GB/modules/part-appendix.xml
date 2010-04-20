@@ -245,7 +245,7 @@
     &lt;property name="loopAllServices" value="false"/&gt;
     &lt;property name="securityServices"&gt;
         &lt;list&gt;
-            &lt;bean class="org.geomajas.internal.security.AllowAllSecurityService"/&gt;
+            &lt;bean class="org.geomajas.security.allowall.AllowAllSecurityService"/&gt;
         &lt;/list&gt;
     &lt;/property&gt;
 &lt;/bean&gt;</programlisting>
