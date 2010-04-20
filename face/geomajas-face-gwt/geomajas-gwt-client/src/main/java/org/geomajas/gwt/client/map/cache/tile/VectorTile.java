@@ -27,8 +27,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.command.CommandResponse;
-import org.geomajas.command.dto.GetRenderedTileRequest;
-import org.geomajas.command.dto.GetRenderedTileResponse;
+import org.geomajas.command.dto.GetVectorTileRequest;
+import org.geomajas.command.dto.GetVectorTileResponse;
 import org.geomajas.gwt.client.command.CommandCallback;
 import org.geomajas.gwt.client.command.Deferred;
 import org.geomajas.gwt.client.command.GwtCommand;
@@ -142,8 +142,8 @@ public class VectorTile extends AbstractVectorTile {
 		deferred = GwtCommandDispatcher.getInstance().execute(command, new CommandCallback() {
 
 			public void execute(CommandResponse response) {
-				if (!(deferred != null && deferred.isCancelled()) && response instanceof GetRenderedTileResponse) {
-					GetRenderedTileResponse tileResponse = (GetRenderedTileResponse) response;
+				if (!(deferred != null && deferred.isCancelled()) && response instanceof GetVectorTileResponse) {
+					GetVectorTileResponse tileResponse = (GetVectorTileResponse) response;
 					org.geomajas.layer.tile.VectorTile tile = tileResponse.getTile();
 					if (tile.getFeatures() != null) {
 						for (org.geomajas.layer.feature.Feature dto : tileResponse.getTile().getFeatures()) {
@@ -216,7 +216,7 @@ public class VectorTile extends AbstractVectorTile {
 				deferred.addSuccessCallback(new CommandCallback() {
 
 					public void execute(CommandResponse response) {
-						if (response instanceof GetRenderedTileResponse) {
+						if (response instanceof GetVectorTileResponse) {
 							callback.execute(self);
 						}
 					}
@@ -328,7 +328,7 @@ public class VectorTile extends AbstractVectorTile {
 	// -------------------------------------------------------------------------
 
 	private GwtCommand createCommand(String filter) {
-		GetRenderedTileRequest request = new GetRenderedTileRequest();
+		GetVectorTileRequest request = new GetVectorTileRequest();
 		request.setCode(code);
 		request.setCrs(cache.getLayer().getMapModel().getCrs());
 		request.setFilter(filter);
@@ -341,7 +341,7 @@ public class VectorTile extends AbstractVectorTile {
 		request.setScale(cache.getLayer().getMapModel().getMapView().getCurrentScale());
 		request.setStyleInfo(cache.getLayer().getLayerInfo().getNamedStyleInfo());
 		request.setFeatureIncludes(GwtCommandDispatcher.getInstance().getLazyFeatureIncludesDefault());
-		GwtCommand command = new GwtCommand("command.render.GetRenderedTile");
+		GwtCommand command = new GwtCommand("command.render.GetVectorTile");
 		command.setCommandRequest(request);
 		return command;
 	}

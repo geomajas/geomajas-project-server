@@ -28,8 +28,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.geomajas.command.CommandResponse;
-import org.geomajas.command.dto.GetRasterDataRequest;
-import org.geomajas.command.dto.GetRasterDataResponse;
+import org.geomajas.command.dto.GetRasterTilesRequest;
+import org.geomajas.command.dto.GetRasterTilesResponse;
 import org.geomajas.gwt.client.command.CommandCallback;
 import org.geomajas.gwt.client.command.Deferred;
 import org.geomajas.gwt.client.command.GwtCommand;
@@ -113,13 +113,13 @@ public class DefaultRasterLayerStore implements RasterLayerStore {
 	private void fetchAndUpdateTiles(Bbox bounds, final TileFunction<RasterTile> onUpdate) {
 		// fetch a bigger area to avoid server requests while panning 
 		tileBounds = bounds.scale(3);
-		GetRasterDataRequest request = new GetRasterDataRequest();
+		GetRasterTilesRequest request = new GetRasterTilesRequest();
 		request.setBbox(new org.geomajas.geometry.Bbox(tileBounds.getX(), tileBounds.getY(), tileBounds.getWidth(),
 				tileBounds.getHeight()));
 		request.setCrs(getLayer().getMapModel().getCrs());
 		request.setLayerId(getLayer().getServerLayerId());
 		request.setScale(getLayer().getMapModel().getMapView().getCurrentScale());
-		GwtCommand command = new GwtCommand("command.render.GetRasterData");
+		GwtCommand command = new GwtCommand("command.render.GetRasterTiles");
 		command.setCommandRequest(request);
 		callBack = new RasterCallBack(worldToPan(bounds), onUpdate);
 		deferred = GwtCommandDispatcher.getInstance().execute(command, callBack);
@@ -178,7 +178,7 @@ public class DefaultRasterLayerStore implements RasterLayerStore {
 
 		public void execute(CommandResponse response) {
 			if (!cancelled) {
-				GetRasterDataResponse r = (GetRasterDataResponse) response;
+				GetRasterTilesResponse r = (GetRasterTilesResponse) response;
 				addTiles(r.getRasterData());
 				for (RasterTile tile : tiles.values()) {
 					if (bounds.intersects(tile.getBounds())) {
