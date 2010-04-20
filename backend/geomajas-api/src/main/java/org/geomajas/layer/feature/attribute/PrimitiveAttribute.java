@@ -34,6 +34,7 @@ import org.geomajas.layer.feature.Attribute;
  * 
  * @author Jan De Moerloose
  * @author Pieter De Graef
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public abstract class PrimitiveAttribute<VALUE_TYPE> implements Attribute<VALUE_TYPE> {

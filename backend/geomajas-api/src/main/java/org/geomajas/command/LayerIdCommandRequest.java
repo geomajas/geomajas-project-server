@@ -33,6 +33,7 @@ import org.geomajas.global.Api;
  * only.
  *
  * @author Joachim Van der Auwera
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public class LayerIdCommandRequest implements CommandRequest {

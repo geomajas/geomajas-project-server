@@ -34,6 +34,7 @@ import org.geomajas.layer.tile.TileMetadata;
  * Request object for {@link org.geomajas.command.render.GetVectorTileCommand}.
  *
  * @author Joachim Van der Auwera
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public class GetVectorTileRequest extends LayerIdCommandRequest implements TileMetadata {

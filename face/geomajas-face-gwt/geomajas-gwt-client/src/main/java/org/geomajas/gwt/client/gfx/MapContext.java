@@ -28,7 +28,7 @@ import org.geomajas.global.Api;
  * Abstraction of the map for painting rasters and vectors.
  * 
  * @author Jan De Moerloose
- *
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public interface MapContext {

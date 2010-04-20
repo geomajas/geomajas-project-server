@@ -28,6 +28,7 @@ import org.geomajas.global.Api;
  * The value of the constrained attribute must be null.
  *
  * @author Jan De Moerloose
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public class NullConstraintInfo implements ConstraintInfo {

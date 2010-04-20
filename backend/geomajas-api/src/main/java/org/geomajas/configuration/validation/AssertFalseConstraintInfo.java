@@ -28,6 +28,7 @@ import org.geomajas.global.Api;
  * The constrained attribute must be false.
  *
  * @author Jan De Moerloose
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public class AssertFalseConstraintInfo implements ConstraintInfo {

@@ -47,6 +47,7 @@ import org.springframework.transaction.annotation.Transactional;
  * Search features based on a seat of search criteria.
  * 
  * @author Pieter De Graef
+ * @since 1.6.0
  */
 @Api
 @Component()

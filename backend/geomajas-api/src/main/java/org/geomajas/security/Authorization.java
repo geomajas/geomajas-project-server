@@ -29,6 +29,7 @@ import org.geomajas.global.Api;
  * Allows you to access the policies which are active.
  *
  * @author Joachim Van der Auwera
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public interface Authorization extends BaseAuthorization, VectorLayerSelectFilterAuthorization, AreaAuthorization,

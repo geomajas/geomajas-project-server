@@ -37,6 +37,7 @@ import java.util.List;
  * id (converted to a string, using a regex again).
  *
  * @author Joachim Van der Auwera
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public class LayerAttributeAuthorizationInfo {

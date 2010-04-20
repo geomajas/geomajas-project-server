@@ -30,6 +30,7 @@ import org.geomajas.global.Api;
  * timezone and the current locale.
  *
  * @author Jan De Moerloose
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public class PastConstraintInfo implements ConstraintInfo {

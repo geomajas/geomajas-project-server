@@ -42,6 +42,7 @@ import com.vividsolutions.jts.geom.Envelope;
  * @author Jan De Moerloose
  * @author Joachim Van der Auwera
  * @author Pieter De Graef
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public interface DtoConverterService {

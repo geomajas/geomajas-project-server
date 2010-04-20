@@ -33,6 +33,7 @@ import java.io.Serializable;
  * </p>
  *
  * @author Pieter De Graef
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public enum LayerType implements Serializable {

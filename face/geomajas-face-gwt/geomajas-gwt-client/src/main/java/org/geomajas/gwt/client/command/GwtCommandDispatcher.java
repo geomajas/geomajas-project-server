@@ -49,6 +49,7 @@ import com.smartgwt.client.util.SC;
  * function to execute an asynchronous command on the server.
  * 
  * @author Pieter De Graef
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public final class GwtCommandDispatcher implements HasDispatchHandlers {

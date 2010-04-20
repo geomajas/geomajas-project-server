@@ -49,6 +49,7 @@ import com.google.gwt.user.server.rpc.RemoteServiceServlet;
  * @author Pieter De Graef
  * @author Joachim Van der Auwera
  * @author Jan De Moerloose
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public class GeomajasServiceImpl extends RemoteServiceServlet implements GeomajasService,

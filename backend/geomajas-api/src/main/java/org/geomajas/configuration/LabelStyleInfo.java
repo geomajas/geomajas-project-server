@@ -32,6 +32,7 @@ import javax.validation.constraints.NotNull;
  * Information about how to access and how to render the label attribute.
 
  * @author Joachim Van der Auwera
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public class LabelStyleInfo implements Serializable {

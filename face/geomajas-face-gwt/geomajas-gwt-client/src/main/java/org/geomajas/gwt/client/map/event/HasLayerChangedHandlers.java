@@ -26,14 +26,17 @@ package org.geomajas.gwt.client.map.event;
 import org.geomajas.global.Api;
 
 import com.google.gwt.event.shared.HandlerRegistration;
+import org.geomajas.global.UserImplemented;
 
 /**
  * Classes triggering the {@link LayerLabeledEvent} or the {@link LayerShownEvent} should implement this
  * interface, thereby allowing handlers to be registered to catch these events.
  *
  * @author Frank Wynants
+ * @since 1.6.0
  */
-@Api
+@Api(allMethods = true)
+@UserImplemented
 public interface HasLayerChangedHandlers {
 
 	/**

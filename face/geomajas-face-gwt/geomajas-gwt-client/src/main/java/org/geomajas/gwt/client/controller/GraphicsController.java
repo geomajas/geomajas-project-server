@@ -38,6 +38,7 @@ import com.google.gwt.event.dom.client.MouseWheelHandler;
  * all of the available mouse handling events.
  *
  * @author Pieter De Graef
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public interface GraphicsController extends MouseDownHandler, MouseUpHandler, MouseMoveHandler, MouseOutHandler,

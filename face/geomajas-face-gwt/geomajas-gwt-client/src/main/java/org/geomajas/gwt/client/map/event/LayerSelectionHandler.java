@@ -26,13 +26,16 @@ import org.geomajas.global.Api;
 
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent.Type;
+import org.geomajas.global.UserImplemented;
 
 /**
  * Interface for handling select layer events.
  *
  * @author Pieter De Graef
+ * @since 1.6.0
  */
-@Api
+@Api(allMethods = true)
+@UserImplemented
 public interface LayerSelectionHandler extends EventHandler {
 
 	Type<LayerSelectionHandler> TYPE = new Type<LayerSelectionHandler>();

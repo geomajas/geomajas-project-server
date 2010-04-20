@@ -35,6 +35,7 @@ import org.opengis.filter.Filter;
  * should also implement {@link org.geomajas.security.FeatureAuthorization} and do the checks there.
  *
  * @author Joachim Van der Auwera
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 @UserImplemented

@@ -28,6 +28,7 @@ import org.geomajas.global.Api;
  * List of possible primitive types.
  *
  * @author Joachim Van der Auwera
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public enum PrimitiveType {

@@ -37,6 +37,7 @@ import java.util.List;
  * Regex expressions can be used for the strings.
  *
  * @author Joachim Van der Auwera
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public class LayerAuthorizationInfo implements AuthorizationInfo {

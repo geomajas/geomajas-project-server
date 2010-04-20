@@ -30,6 +30,7 @@ import com.google.gwt.event.shared.EventHandler;
  * Interface for event handlers that catch {@link org.geomajas.gwt.client.command.event.DispatchStoppedEvent}s.
  *
  * @author Jan De Moerloose
+ * @since 1.6.0
  */
 @Api
 public interface DispatchStoppedHandler extends EventHandler {

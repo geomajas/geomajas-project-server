@@ -30,6 +30,7 @@ import java.io.Serializable;
  * Base class for validation constraints.
  *
  * @author Jan De Moerloose
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public interface ConstraintInfo extends Serializable {

@@ -33,6 +33,7 @@ import org.geomajas.global.Api;
  * This only stores the date, any time component may be removed.
  * 
  * @author Jan De Moerloose
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public class DateAttribute extends PrimitiveAttribute<Date> {

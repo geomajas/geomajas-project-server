@@ -23,6 +23,7 @@
 package org.geomajas.gwt.client.map.event;
 
 import org.geomajas.global.Api;
+import org.geomajas.global.UserImplemented;
 import org.geomajas.gwt.client.map.layer.Layer;
 
 import com.google.gwt.event.shared.GwtEvent;
@@ -31,8 +32,9 @@ import com.google.gwt.event.shared.GwtEvent;
  * Event that reports <code>Layer</code> changes.
  *
  * @author Frank Wynants
+ * @since 1.6.0
  */
-@Api
+@Api(allMethods = true)
 public class LayerLabeledEvent extends GwtEvent<LayerChangedHandler> {
 
 	private Layer<?> layer;

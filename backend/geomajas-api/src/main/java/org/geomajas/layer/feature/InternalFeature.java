@@ -39,6 +39,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * </p>
  * 
  * @author Pieter De Graef
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public interface InternalFeature extends Cloneable, Comparable<InternalFeature> {

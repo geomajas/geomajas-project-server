@@ -36,6 +36,7 @@ import org.opengis.referencing.operation.MathTransform;
  * Collection of utility functions concerning geometries.
  *
  * @author Joachim Van der Auwera
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public interface GeoService {

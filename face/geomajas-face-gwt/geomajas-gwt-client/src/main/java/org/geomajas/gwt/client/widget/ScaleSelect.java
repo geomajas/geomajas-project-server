@@ -57,6 +57,7 @@ import com.smartgwt.client.widgets.form.validator.CustomValidator;
  * </p>
  * 
  * @author Jan De Moerloose
+ * @since 1.6.0
  */
 @Api
 public class ScaleSelect extends Canvas implements KeyPressHandler, ChangedHandler, MapViewChangedHandler {

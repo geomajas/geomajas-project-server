@@ -30,6 +30,7 @@ import org.geomajas.global.UserImplemented;
  * Handle the mapping between an individual authentication store and policy store.
  *
  * @author Joachim Van der Auwera
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 @UserImplemented

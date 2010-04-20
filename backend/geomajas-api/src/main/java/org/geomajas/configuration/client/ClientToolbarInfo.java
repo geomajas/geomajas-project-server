@@ -34,6 +34,7 @@ import javax.validation.constraints.NotNull;
  * Representation of a configured toolbar.
  * 
  * @author Joachim Van der Auwera
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public class ClientToolbarInfo implements Serializable {

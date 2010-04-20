@@ -30,6 +30,7 @@ import java.io.Serializable;
  * General coordinate class. It is based upon the Coordinate class from JTS4GWT (LGPL).
  *
  * @author Pieter De Graef
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public class Coordinate implements Comparable<Coordinate>, Cloneable, Serializable {

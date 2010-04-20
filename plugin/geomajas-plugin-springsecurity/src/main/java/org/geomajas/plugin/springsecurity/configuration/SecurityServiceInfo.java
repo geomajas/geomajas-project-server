@@ -31,6 +31,7 @@ import java.util.List;
  * Base configuration data for the springsecurity security service.
  *
  * @author Joachim Van der Auwera
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public class SecurityServiceInfo {

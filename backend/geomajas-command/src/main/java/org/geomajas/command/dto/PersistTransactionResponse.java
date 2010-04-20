@@ -32,6 +32,7 @@ import org.geomajas.layer.feature.FeatureTransaction;
  * @author Jan De Moerloose
  * @author Pieter De Graef
  * @author Joachim Van der Auwera
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public class PersistTransactionResponse extends CommandResponse {

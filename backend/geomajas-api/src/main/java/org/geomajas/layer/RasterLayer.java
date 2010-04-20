@@ -37,6 +37,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
  * A layer of raster data (could be based on local files, WMS or some non-standard image server).
  *
  * @author Jan De Moerloose
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 @UserImplemented

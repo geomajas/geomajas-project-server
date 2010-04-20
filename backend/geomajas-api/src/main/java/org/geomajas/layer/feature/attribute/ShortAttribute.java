@@ -29,6 +29,7 @@ import org.geomajas.global.Api;
  * Attribute with value of type <code>PrimitiveType.SHORT</code>.
  * 
  * @author Jan De Moerloose
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public class ShortAttribute extends PrimitiveAttribute<Short> {

@@ -37,6 +37,7 @@ import org.geomajas.layer.LayerType;
  * server layer is established via the <code>layerInfo</code> field.
  * 
  * @author Jan De Moerloose
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public abstract class ClientLayerInfo implements Serializable {

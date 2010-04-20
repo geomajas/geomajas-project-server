@@ -32,6 +32,7 @@ import javax.validation.constraints.Null;
  * Style configuration information.
  * 
  * @author Joachim Van der Auwera
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public class FeatureStyleInfo implements Serializable {

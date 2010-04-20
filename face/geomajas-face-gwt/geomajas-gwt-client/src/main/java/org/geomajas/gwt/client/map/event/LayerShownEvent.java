@@ -31,6 +31,7 @@ import com.google.gwt.event.shared.GwtEvent;
  * Event that reports <code>Layer</code> changes.
  * 
  * @author Frank Wynants
+ * @since 1.6.0
  */
 @Api
 public class LayerShownEvent extends GwtEvent<LayerChangedHandler> {

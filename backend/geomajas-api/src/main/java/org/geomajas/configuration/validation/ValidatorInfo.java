@@ -33,6 +33,7 @@ import java.util.List;
  * 
  * @author Joachim Van der Auwera
  * @author Jan De Moerloose
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public class ValidatorInfo implements Serializable {

@@ -33,6 +33,7 @@ import java.util.Arrays;
  * Request object for {@link org.geomajas.command.feature.SearchFeatureCommand}.
  *
  * @author Joachim Van der Auwera
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public class SearchFeatureRequest extends LayerIdCommandRequest {

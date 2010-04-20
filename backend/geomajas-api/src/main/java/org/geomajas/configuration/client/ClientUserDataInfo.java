@@ -33,6 +33,7 @@ import java.io.Serializable;
  * @see {@link ClientApplicationInfo}, {@link ClientMapInfo}, {@link ClientLayerInfo}
  * 
  * @author Kristof Heirwegh
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 @UserImplemented

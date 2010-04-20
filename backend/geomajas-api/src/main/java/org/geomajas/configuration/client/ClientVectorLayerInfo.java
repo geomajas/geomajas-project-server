@@ -36,6 +36,7 @@ import org.geomajas.global.Api;
  * Client side vector layer metadata.
  * 
  * @author Jan De Moerloose
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public class ClientVectorLayerInfo extends ClientLayerInfo {

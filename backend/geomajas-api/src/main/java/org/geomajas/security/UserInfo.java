@@ -32,6 +32,7 @@ import java.util.Locale;
  * Information about the logged in user (all data is optional).
  *
  * @author Joachim Van der Auwera
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 @UserImplemented

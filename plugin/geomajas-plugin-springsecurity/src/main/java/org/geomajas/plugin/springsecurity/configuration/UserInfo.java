@@ -32,6 +32,7 @@ import java.util.Locale;
  * User security configuration information.
  *
  * @author Joachim Van der Auwera
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public class UserInfo implements org.geomajas.security.UserInfo {

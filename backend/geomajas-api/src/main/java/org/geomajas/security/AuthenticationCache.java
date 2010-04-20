@@ -31,6 +31,7 @@ import org.geomajas.global.Api;
  * Used to cache authentication results.
  *
  * @author Joachim Van der Auwera
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public interface AuthenticationCache {

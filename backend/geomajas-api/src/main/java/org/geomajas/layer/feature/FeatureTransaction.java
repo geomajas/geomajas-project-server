@@ -31,6 +31,7 @@ import java.io.Serializable;
  * DTO version of a {@link InternalFeature}. This object can be sent to the client.
  * 
  * @author Pieter De Graef
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public class FeatureTransaction implements Serializable {

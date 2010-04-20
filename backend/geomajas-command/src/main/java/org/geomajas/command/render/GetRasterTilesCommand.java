@@ -20,6 +20,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package org.geomajas.command.render;
 
 import java.util.List;
@@ -50,6 +51,7 @@ import org.springframework.stereotype.Component;
  * @author Pieter De Graef
  * @author Jan De Moerloose
  * @author Joachim Van der Auwera
+ * @since 1.6.0
  */
 @Api
 @Component()

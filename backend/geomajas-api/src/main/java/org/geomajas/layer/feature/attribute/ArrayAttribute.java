@@ -35,6 +35,7 @@ import org.geomajas.layer.feature.Attribute;
  *            type for the attribute value
  * 
  * @author Pieter De Graef
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public class ArrayAttribute<VALUE_TYPE> implements Attribute<VALUE_TYPE[]> {

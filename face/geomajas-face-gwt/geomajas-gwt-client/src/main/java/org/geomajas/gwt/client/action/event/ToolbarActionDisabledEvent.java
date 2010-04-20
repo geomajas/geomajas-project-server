@@ -34,6 +34,7 @@ import com.google.gwt.event.shared.GwtEvent;
  * </p>
  * 
  * @author Pieter De Graef
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public class ToolbarActionDisabledEvent extends GwtEvent<ToolbarActionHandler> {

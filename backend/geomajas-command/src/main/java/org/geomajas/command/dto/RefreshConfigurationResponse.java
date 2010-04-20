@@ -28,7 +28,6 @@ import org.geomajas.command.CommandResponse;
  * Response object for {@link org.geomajas.command.configuration.RefreshConfigurationCommand}.
  * 
  * @author Jan De Moerloose
- * 
  */
 public class RefreshConfigurationResponse extends CommandResponse {
 

@@ -35,6 +35,7 @@ import org.geomajas.gwt.client.widget.MapWidget;
  * Registry for mapping between tool id's and LayerTree actions.
  * 
  * @author Pieter De Graef
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public final class LayerTreeRegistry {

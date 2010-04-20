@@ -39,6 +39,7 @@ import java.util.List;
  * (see {@link org.geomajas.service.pipeline.PipelineService}) to make them configurable.
  *
  * @author Joachim Van der Auwera
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public interface RasterLayerService {

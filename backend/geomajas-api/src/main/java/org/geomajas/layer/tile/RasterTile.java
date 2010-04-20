@@ -35,6 +35,7 @@ import java.io.Serializable;
  * </p>
  * 
  * @author Jan De Moerloose
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public class RasterTile implements Serializable {

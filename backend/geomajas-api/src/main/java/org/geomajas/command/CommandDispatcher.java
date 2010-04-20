@@ -31,6 +31,7 @@ import java.io.Serializable;
  * executes them on the server.
  *
  * @author Joachim Van der Auwera
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public interface CommandDispatcher extends Serializable {

@@ -27,14 +27,17 @@ import org.geomajas.global.Api;
 
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.event.shared.HasHandlers;
+import org.geomajas.global.UserImplemented;
 
 /**
  * Classes triggering the {@link MapViewChangedEvent} should implement this interface, thereby allowing handlers to be
  * registered to catch these events.
  *
  * @author Pieter De Graef
+ * @since 1.6.0
  */
-@Api
+@Api(allMethods = true)
+@UserImplemented
 public interface HasMapViewChangedHandlers extends HasHandlers {
 
 	/**

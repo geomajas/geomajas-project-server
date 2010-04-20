@@ -30,8 +30,9 @@ import com.google.gwt.event.shared.GwtEvent;
  * Event that reports <code>MapModel</code> changes.
  *
  * @author Jan De Moerloose
+ * @since 1.6.0
  */
-@Api
+@Api(allMethods = true)
 public class MapModelEvent extends GwtEvent<MapModelHandler> {
 
 	public static final Type<MapModelHandler> TYPE = new Type<MapModelHandler>();

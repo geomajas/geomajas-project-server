@@ -35,6 +35,7 @@ import java.util.Map;
  * Allow configuring authorizations, with attribute level authorizations.
  *
  * @author Joachim Van der Auwera
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public class AttributeAuthorizationInfo extends LayerAuthorizationInfo {

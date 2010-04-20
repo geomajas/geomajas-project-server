@@ -33,6 +33,7 @@ import javax.validation.constraints.NotNull;
  * 
  * @author Joachim Van der Auwera
  * @author Pieter De Graef
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public class SnappingRuleInfo implements Serializable {

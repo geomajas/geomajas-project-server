@@ -40,6 +40,7 @@ import com.google.gwt.event.shared.HandlerRegistration;
  * @param <T> layer info type, {@link ClientLayerInfo}
  *
  * @author Pieter De Graef
+ * @since 1.6.0
  */
 @Api
 public interface Layer<T extends ClientLayerInfo> extends PaintableGroup {

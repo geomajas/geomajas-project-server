@@ -31,6 +31,7 @@ import java.io.Serializable;
  * Base information which is shared between all attributes.
  *
  * @author Joachim Van der Auwera
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public class AttributeBaseInfo implements Serializable {

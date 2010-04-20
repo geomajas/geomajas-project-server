@@ -30,6 +30,7 @@ import com.google.gwt.event.shared.EventHandler;
  * Interface for event handlers that catch {@link DispatchStartedEvent}s.
  *
  * @author Jan De Moerloose
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public interface DispatchStartedHandler extends EventHandler {

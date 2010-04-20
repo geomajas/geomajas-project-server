@@ -29,6 +29,7 @@ import java.lang.annotation.RetentionPolicy;
  * Indicates that the property should be serialized by JSON.
  *
  * @author Jan De Moerloose
+ * @since 1.6.0
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Api(allMethods = true)

@@ -33,6 +33,7 @@ import com.smartgwt.client.widgets.events.ClickHandler;
  * the {@link ToolbarModalAction} class.
  *
  * @author Pieter De Graef
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public abstract class ToolbarAction extends ToolbarBaseAction implements ClickHandler {

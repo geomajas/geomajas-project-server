@@ -35,6 +35,7 @@ import javax.validation.constraints.NotNull;
  * 
  * @author Pieter De Graef
  * @author Joachim Van der Auwera
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public class ClientLayerTreeNodeInfo implements Serializable {

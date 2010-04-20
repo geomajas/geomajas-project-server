@@ -33,6 +33,7 @@ import java.util.regex.Pattern;
  * Layer authorization matching LayerAuthorizationInfo.
  *
  * @author Joachim Van der Auwera
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public class LayerAuthorization implements BaseAuthorization {

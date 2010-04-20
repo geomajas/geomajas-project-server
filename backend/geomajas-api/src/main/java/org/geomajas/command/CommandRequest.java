@@ -28,9 +28,10 @@ import org.geomajas.global.UserImplemented;
 import java.io.Serializable;
 
 /**
- * Marker interface for command request dto's.
+ * Marker interface for command request dtos.
  *
  * @author Joachim Van der Auwera
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 @UserImplemented

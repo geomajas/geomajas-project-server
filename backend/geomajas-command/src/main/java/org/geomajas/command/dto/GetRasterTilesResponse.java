@@ -20,6 +20,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package org.geomajas.command.dto;
 
 import java.util.List;
@@ -32,6 +33,7 @@ import org.geomajas.layer.tile.RasterTile;
  * Response object for {@link org.geomajas.command.render.GetRasterTilesCommand}.
  *
  * @author Jan De Moerloose
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public class GetRasterTilesResponse extends CommandResponse {

@@ -29,6 +29,7 @@ import org.geomajas.global.Api;
  * Constants for the pipelines. These include pipeline names and keys for data put in the context.
  *
  * @author Joachim Van der Auwera
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public interface PipelineCode {

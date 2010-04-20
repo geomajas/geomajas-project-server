@@ -106,6 +106,7 @@ import com.smartgwt.client.widgets.menu.Menu;
  * </p>
  * 
  * @author Pieter De Graef
+ * @since 1.6.0
  */
 @Api
 public class MapWidget extends Canvas implements MapViewChangedHandler, MapModelHandler {

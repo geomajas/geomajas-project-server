@@ -31,6 +31,7 @@ import com.google.gwt.event.shared.HandlerRegistration;
  * registered to catch these events.
  *
  * @author Jan De Moerloose
+ * @since 1.6.0
  */
 @Api
 public interface HasDispatchHandlers {

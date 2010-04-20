@@ -28,6 +28,7 @@ import org.geomajas.global.Api;
  * The value of the constrained number attribute must have a maximum number of integer and/or fractional digits.
  * 
  * @author Jan De Moerloose
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public class DigitsConstraintInfo implements ConstraintInfo {

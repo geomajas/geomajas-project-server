@@ -35,6 +35,7 @@ import org.geomajas.gwt.client.widget.MapWidget;
  * Registry for mapping between tool id's and toolbar actions.
  * 
  * @author Joachim Van der Auwera
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public final class ToolbarRegistry {

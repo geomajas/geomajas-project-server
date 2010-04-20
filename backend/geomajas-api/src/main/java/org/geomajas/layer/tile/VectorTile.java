@@ -36,6 +36,7 @@ import org.geomajas.layer.feature.Feature;
  * </p>
  * 
  * @author Pieter De Graef
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public class VectorTile implements Serializable {

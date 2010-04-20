@@ -31,6 +31,7 @@ import org.geomajas.global.GeomajasConstant;
  * Request object for {@link org.geomajas.command.feature.SearchByLocationCommand}.
  * 
  * @author Joachim Van der Auwera
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public class SearchByLocationRequest implements CommandRequest {

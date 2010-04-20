@@ -48,7 +48,9 @@ import com.smartgwt.client.widgets.events.ResizedHandler;
 /**
  * MapWidget that listens to another MapWidget and shows an overview of it.
  * 
- * @author Kristof Heirwegh, Pieter De Graef
+ * @author Kristof Heirwegh
+ * @author Pieter De Graef
+ * @since 1.6.0
  */
 @Api
 public class OverviewMap extends MapWidget implements MapViewChangedHandler {

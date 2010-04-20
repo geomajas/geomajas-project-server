@@ -34,6 +34,7 @@ import javax.validation.constraints.NotNull;
  * Information about a vector layer.
  * 
  * @author Joachim Van der Auwera
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public class VectorLayerInfo extends LayerInfo implements Serializable {

@@ -60,6 +60,7 @@ import com.smartgwt.client.widgets.toolbar.ToolStripSeparator;
  * 
  * @author Pieter De Graef
  * @author Joachim Van der Auwera
+ * @since 1.6.0
  */
 @Api
 public class Toolbar extends ToolStrip {

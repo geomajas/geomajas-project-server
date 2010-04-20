@@ -26,13 +26,16 @@ import org.geomajas.global.Api;
 
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent.Type;
+import org.geomajas.global.UserImplemented;
 
 /**
- *   Interface for handling layer events.
+ * Interface for handling layer events.
  *
- *   @author Frank Wynants
+ * @author Frank Wynants
+ * @since 1.6.0
  */
-@Api
+@Api(allMethods = true)
+@UserImplemented
 public interface LayerChangedHandler extends EventHandler {
 
 	Type<LayerChangedHandler> TYPE = new Type<LayerChangedHandler>();

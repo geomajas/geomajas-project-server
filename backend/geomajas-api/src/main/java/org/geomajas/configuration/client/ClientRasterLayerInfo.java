@@ -28,7 +28,7 @@ import org.geomajas.global.Api;
  * Client side raster layer metadata.
  * 
  * @author Jan De Moerloose
- * 
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public class ClientRasterLayerInfo extends ClientLayerInfo {

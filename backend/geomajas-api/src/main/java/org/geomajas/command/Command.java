@@ -31,7 +31,8 @@ import org.geomajas.global.UserImplemented;
  * @param <REQUEST> type of request object, see {@link CommandRequest}
  * @param <RESPONSE> type of response object, see {@link CommandResponse}
  *
- * @author Joachim Van der Auwera  
+ * @author Joachim Van der Auwera
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 @UserImplemented

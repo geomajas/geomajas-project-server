@@ -74,6 +74,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * </p>
  * 
  * @author Pieter De Graef
+ * @since 1.6.0
  */
 @Api
 @Component

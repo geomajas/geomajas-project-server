@@ -32,6 +32,7 @@ import org.geomajas.global.GeomajasException;
  * @param <RESPONSE> type of response object for the pipeline
  *
  * @author Joachim Van der Auwera
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public interface PipelineService<RESPONSE> {

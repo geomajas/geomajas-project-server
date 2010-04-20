@@ -30,6 +30,7 @@ import org.geomajas.security.BaseAuthorization;
  * Authorization info, which needs to be convertable to a {@link org.geomajas.security.BaseAuthorization} class.
  *
  * @author Joachim Van der Auwera
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public interface AuthorizationInfo {

@@ -32,8 +32,9 @@ import com.google.gwt.event.shared.GwtEvent;
  * Event which is passed when a feature is selected.
  *
  * @author Joachim Van der Auwera
+ * @since 1.6.0
  */
-@Api
+@Api(allMethods = true)
 public class FeatureSelectedEvent extends GwtEvent<FeatureSelectionHandler> {
 
 	private Feature feature;

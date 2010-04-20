@@ -30,6 +30,7 @@ import org.geomajas.global.GeomajasException;
  * Exception indicating problems during the processing of a layer.
  *
  * @author Joachim Van der Auwera
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public class LayerException extends GeomajasException {

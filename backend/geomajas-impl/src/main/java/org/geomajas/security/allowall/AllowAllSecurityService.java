@@ -32,6 +32,7 @@ import org.geomajas.security.SecurityService;
  * Security Service which allows all access to everybody.
  * 
  * @author Joachim Van der Auwera
+ * @since 1.6.0
  */
 @Api
 public class AllowAllSecurityService implements SecurityService {

@@ -28,6 +28,7 @@ package org.geomajas.global;
  * The actual messages are maintained in the GeomajasException resource bundle
  *
  * @author Joachim Van der Auwera
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public interface ExceptionCode {

@@ -34,8 +34,9 @@ import com.google.gwt.event.shared.GwtEvent;
  * panning. This event contains the new bounding box and scale.
  * 
  * @author Pieter De Graef
+ * @since 1.6.0
  */
-@Api
+@Api(allMethods = true)
 public class MapViewChangedEvent extends GwtEvent<MapViewChangedHandler> {
 
 	/**

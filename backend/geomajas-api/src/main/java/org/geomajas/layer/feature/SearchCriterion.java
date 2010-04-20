@@ -31,6 +31,7 @@ import org.geomajas.global.Api;
  * attributes.
  * 
  * @author Pieter De Graef
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public class SearchCriterion implements Serializable {

@@ -46,6 +46,7 @@ import org.springframework.transaction.annotation.Transactional;
  * @author Jan De Moerloose
  * @author Pieter De Graef
  * @author Joachim Van der Auwera
+ * @since 1.6.0
  */
 @Api
 @Component()

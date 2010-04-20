@@ -28,6 +28,7 @@ import org.geomajas.global.Api;
  * The value of the constrained number attribute (integer type) must be higher or equal to the specified minimum.
  *
  * @author Jan De Moerloose
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public class MinConstraintInfo implements ConstraintInfo {

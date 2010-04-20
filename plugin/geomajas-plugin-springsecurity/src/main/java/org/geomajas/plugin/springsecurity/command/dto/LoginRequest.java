@@ -30,6 +30,7 @@ import org.geomajas.global.Api;
  * Request object for the login command.
  *
  * @author Joachim Van der Auwera
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public class LoginRequest implements CommandRequest {

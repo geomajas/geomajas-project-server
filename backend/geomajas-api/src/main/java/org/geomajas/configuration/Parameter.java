@@ -32,6 +32,7 @@ import javax.validation.constraints.NotNull;
  * Representation of a generic parameter for the configuration.
  *
  * @author Joachim Van der Auwera
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public class Parameter implements Serializable {

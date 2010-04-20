@@ -33,6 +33,7 @@ import com.smartgwt.client.widgets.menu.events.ClickHandler;
  * this class.
  *
  * @author Pieter De Graef
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public abstract class MenuAction extends MenuItem implements ClickHandler {

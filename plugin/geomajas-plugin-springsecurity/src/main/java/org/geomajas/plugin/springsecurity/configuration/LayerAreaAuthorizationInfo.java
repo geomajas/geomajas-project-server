@@ -29,6 +29,7 @@ import org.geomajas.global.Api;
  * Area authorization info for a specific layer.
  *
  * @author Joachim Van der Auwera
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public class LayerAreaAuthorizationInfo {

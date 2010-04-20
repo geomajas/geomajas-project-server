@@ -30,6 +30,7 @@ import org.geomajas.global.Api;
  * work with the String representation and validate correctly where necessary.
  * 
  * @author Jan De Moerloose
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public class CurrencyAttribute extends PrimitiveAttribute<String> {

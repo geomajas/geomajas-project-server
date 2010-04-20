@@ -39,6 +39,7 @@ import java.util.Iterator;
  *
  * @author Pieter De Graef
  * @author Jan De Moerloose
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 @UserImplemented

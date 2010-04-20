@@ -30,6 +30,7 @@ import org.geomajas.global.UserImplemented;
  * Base authorization, determines authorization of tools and commands and entire layers.
  *
  * @author Joachim Van der Auwera
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 @UserImplemented

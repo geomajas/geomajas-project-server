@@ -32,6 +32,7 @@ import java.util.List;
  * logged in user.
  *
  * @author Joachim Van der Auwera
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public interface SecurityContext extends Authorization, UserInfo {

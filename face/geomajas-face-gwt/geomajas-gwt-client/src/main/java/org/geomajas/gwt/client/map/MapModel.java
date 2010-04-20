@@ -63,6 +63,7 @@ import com.google.gwt.event.shared.HandlerRegistration;
  * </p>
  * 
  * @author Pieter De Graef
+ * @since 1.6.0
  */
 @Api
 public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSelectionHandlers {

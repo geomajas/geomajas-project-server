@@ -30,6 +30,7 @@ import org.geomajas.global.Api;
  * It can be used to create or clear the security context for the current thread.
  *
  * @author Joachim Van der Auwera
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public interface SecurityManager {

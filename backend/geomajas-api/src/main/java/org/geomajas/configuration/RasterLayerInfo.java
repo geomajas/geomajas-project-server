@@ -34,6 +34,7 @@ import org.geomajas.layer.LayerType;
  * Information about a raster layer.
  *
  * @author Joachim Van der Auwera
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public class RasterLayerInfo extends LayerInfo implements Serializable {

@@ -33,6 +33,7 @@ import org.geomajas.layer.feature.Attribute;
  *            type for the attribute value
  * 
  * @author Jan De Moerloose
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public abstract class AssociationAttribute<VALUE_TYPE> implements Attribute<VALUE_TYPE> {

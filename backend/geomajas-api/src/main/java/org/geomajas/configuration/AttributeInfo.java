@@ -31,6 +31,7 @@ import org.geomajas.global.Api;
  * Attribute information class.
  *
  * @author Jan De Moerloose
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public class AttributeInfo extends AttributeBaseInfo {

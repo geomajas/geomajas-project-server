@@ -29,6 +29,7 @@ import org.geomajas.global.Api;
  * Attribute with value of type <code>PrimitiveType.LONG</code>.
  * 
  * @author Jan De Moerloose
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public class LongAttribute extends PrimitiveAttribute<Long> {

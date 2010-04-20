@@ -28,6 +28,7 @@ import org.geomajas.global.Api;
  * The constrained attribute must have a size between the specified boundaries (included).
  *
  * @author Jan De Moerloose
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public class SizeConstraintInfo implements ConstraintInfo {

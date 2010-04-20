@@ -34,6 +34,7 @@ import javax.validation.constraints.NotNull;
  * Configuration of a layer tree.
  * 
  * @author Joachim Van der Auwera
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public class ClientLayerTreeInfo implements Serializable {

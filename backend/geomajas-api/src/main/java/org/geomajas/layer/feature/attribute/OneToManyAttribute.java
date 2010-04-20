@@ -36,6 +36,7 @@ import org.geomajas.global.Api;
  * </p>
  * 
  * @author Pieter De Graef
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public class OneToManyAttribute extends AssociationAttribute<List<AssociationValue>> {

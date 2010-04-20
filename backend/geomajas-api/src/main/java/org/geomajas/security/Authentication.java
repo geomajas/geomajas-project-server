@@ -33,6 +33,7 @@ import java.util.Locale;
  * It contains some information about the authenticated user (all optional), and the authorization objects.
  *
  * @author Joachim Van der Auwera
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public class Authentication implements UserInfo {

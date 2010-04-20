@@ -34,6 +34,7 @@ import org.opengis.filter.Filter;
  * Extension for vector layers which support associations.
  * 
  * @author Joachim Van der Auwera
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 @UserImplemented

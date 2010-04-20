@@ -20,6 +20,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package org.geomajas.command.dto;
 
 import org.geomajas.command.LayerIdCommandRequest;
@@ -30,6 +31,7 @@ import org.geomajas.global.Api;
  * Request object for {@link org.geomajas.command.render.GetRasterTilesCommand}.
  *
  * @author Joachim Van der Auwera
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public class GetRasterTilesRequest extends LayerIdCommandRequest {

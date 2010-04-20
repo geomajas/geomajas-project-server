@@ -38,6 +38,7 @@ import org.geomajas.gwt.client.spatial.Bbox;
  * </p>
  * 
  * @author Jan De Moerloose
+ * @since 1.6.0
  */
 @Api
 public class RasterLayer extends AbstractLayer<ClientRasterLayerInfo> {

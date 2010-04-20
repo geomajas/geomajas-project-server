@@ -29,6 +29,7 @@ import org.geomajas.global.Api;
  * regular expression conventions see java.util.regex.Pattern. Accepts String. null elements are considered valid.
  *
  * @author Jan De Moerloose
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public class PatternConstraintInfo implements ConstraintInfo {

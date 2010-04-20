@@ -35,6 +35,7 @@ import com.google.gwt.event.shared.HandlerRegistration;
  * Base tool bar action, defines the common bits between {@link ToolbarAction} and {@link ToolbarModalAction}.
  * 
  * @author Joachim Van der Auwera
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public abstract class ToolbarBaseAction {

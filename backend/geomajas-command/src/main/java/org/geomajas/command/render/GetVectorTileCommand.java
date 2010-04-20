@@ -20,6 +20,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package org.geomajas.command.render;
 
 import org.geomajas.command.Command;
@@ -40,6 +41,7 @@ import org.springframework.transaction.annotation.Transactional;
  * Command to retrieve a feature tile.
  * 
  * @author Jan De Moerloose
+ * @since 1.6.0
  */
 @Api
 @Component()

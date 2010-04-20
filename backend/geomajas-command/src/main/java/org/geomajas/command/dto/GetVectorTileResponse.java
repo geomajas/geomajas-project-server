@@ -20,6 +20,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package org.geomajas.command.dto;
 
 import org.geomajas.command.CommandResponse;
@@ -32,6 +33,7 @@ import org.geomajas.layer.tile.VectorTile;
  * @author Jan De Moerloose
  * @author Pieter De Graef
  * @author Joachim Van der Auwera
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public class GetVectorTileResponse extends CommandResponse {

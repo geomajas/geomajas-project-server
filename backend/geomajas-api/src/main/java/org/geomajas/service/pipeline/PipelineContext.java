@@ -30,6 +30,7 @@ import org.geomajas.global.GeomajasException;
  * Context which is provided to a pipeline context to help execute.
  *
  * @author Joachim Van der Auwera
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public interface PipelineContext {

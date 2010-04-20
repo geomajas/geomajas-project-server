@@ -29,6 +29,7 @@ import org.geomajas.global.Api;
  * Simplifier to change fully qualified class names into Geomajas bean names.
  *
  * @author Joachim Van der Auwera
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public interface BeanNameSimplifier {

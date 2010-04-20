@@ -30,6 +30,7 @@ import javax.validation.constraints.NotNull;
  * The value of the constrained number attribute must be lower or equal to the specified maximum.
  *
  * @author Jan De Moerloose
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public class DecimalMaxConstraintInfo implements ConstraintInfo {

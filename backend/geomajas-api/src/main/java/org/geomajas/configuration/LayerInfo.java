@@ -34,6 +34,7 @@ import org.geomajas.layer.LayerType;
  * Layer configuration info.
  *
  * @author Joachim Van der Auwera
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public class LayerInfo implements Serializable {

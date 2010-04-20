@@ -28,6 +28,7 @@ import org.geomajas.global.Api;
  * Geometric attribute configuration information.
  *
  * @author Joachim Van der Auwera 
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public class GeometryAttributeInfo extends AttributeBaseInfo {

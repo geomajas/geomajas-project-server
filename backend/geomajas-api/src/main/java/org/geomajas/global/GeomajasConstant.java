@@ -29,6 +29,7 @@ package org.geomajas.global;
  * This is specified as normal class (instead of an interface), to enable GWT use.
  *
  * @author Joachim Van der Auwera
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public interface GeomajasConstant {

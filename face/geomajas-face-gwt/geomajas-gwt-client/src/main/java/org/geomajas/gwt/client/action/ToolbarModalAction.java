@@ -35,6 +35,7 @@ import com.smartgwt.client.widgets.events.ClickEvent;
  * {@link org.geomajas.gwt.client.action.ToolbarAction} class.
  *
  * @author Pieter De Graef
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public abstract class ToolbarModalAction extends ToolbarBaseAction {

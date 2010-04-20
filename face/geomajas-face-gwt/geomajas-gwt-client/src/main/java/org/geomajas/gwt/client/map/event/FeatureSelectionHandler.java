@@ -27,13 +27,16 @@ import org.geomajas.global.Api;
 
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
+import org.geomajas.global.UserImplemented;
 
 /**
  * Interface for event handlers that catch {@link FeatureSelectedEvent}s.
  *
  * @author Joachim Van der Auwera
+ * @since 1.6.0
  */
-@Api
+@Api(allMethods = true)
+@UserImplemented
 public interface FeatureSelectionHandler extends EventHandler {
 
 	GwtEvent.Type<FeatureSelectionHandler> TYPE = new GwtEvent.Type<FeatureSelectionHandler>();

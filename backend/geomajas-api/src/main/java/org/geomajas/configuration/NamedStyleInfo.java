@@ -35,7 +35,7 @@ import javax.validation.constraints.NotNull;
  * name. Should be equivalent to SLD.
  * 
  * @author Jan De Moerloose
- * 
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public class NamedStyleInfo implements Serializable {
