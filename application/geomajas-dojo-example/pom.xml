@@ -51,8 +51,8 @@
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-layer-openstreetmaps</artifactId>
-				<version>${geomajas-layer-openstreetmaps-version}</version>
+				<artifactId>geomajas-layer-openstreetmap</artifactId>
+				<version>${geomajas-layer-openstreetmap-version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
@@ -94,7 +94,7 @@
 	<properties>
 		<geomajas-face-dojo-version>1.5.5-SNAPSHOT</geomajas-face-dojo-version>
 		<geomajas-layer-geotools-version>1.6.0-SNAPSHOT</geomajas-layer-geotools-version>
-		<geomajas-layer-openstreetmaps-version>1.6.0-SNAPSHOT</geomajas-layer-openstreetmaps-version>
+		<geomajas-layer-openstreetmap-version>1.6.0-SNAPSHOT</geomajas-layer-openstreetmap-version>
 		<geomajas-layer-wms-version>1.6.0-SNAPSHOT</geomajas-layer-wms-version>
 		<geomajas-plugin-printing-version>1.5.5-SNAPSHOT</geomajas-plugin-printing-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

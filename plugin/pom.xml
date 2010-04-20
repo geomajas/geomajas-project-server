@@ -14,7 +14,7 @@
 		<module>geomajas-layer-geotools</module>
 		<module>geomajas-layer-google</module>
 		<module>geomajas-layer-hibernate</module>
-		<module>geomajas-layer-openstreetmaps</module>
+		<module>geomajas-layer-openstreetmap</module>
 		<module>geomajas-layer-wms</module>
 		<module>geomajas-plugin-printing</module>
 		<module>geomajas-plugin-springsecurity</module>

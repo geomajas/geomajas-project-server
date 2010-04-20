@@ -50,7 +50,7 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
 
 /**
- * Layer for displaying OpenStreetMaps images.
+ * Layer for displaying OpenStreetMap images.
  * 
  * @author Jan De Moerloose
  */

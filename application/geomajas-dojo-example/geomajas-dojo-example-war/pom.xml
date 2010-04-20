@@ -30,7 +30,7 @@
         </dependency>
         <dependency>
             <groupId>org.geomajas.plugin</groupId>
-            <artifactId>geomajas-layer-openstreetmaps</artifactId>
+            <artifactId>geomajas-layer-openstreetmap</artifactId>
             <version>${project.version}</version>
         </dependency>
         <dependency>

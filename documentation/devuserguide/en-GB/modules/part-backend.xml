@@ -61,7 +61,7 @@
         </listitem>
 
         <listitem>
-          <para><emphasis>geomajas-layer-openstreetmaps</emphasis> (raster) :
+          <para><emphasis>geomajas-layer-openstreetmap</emphasis> (raster) :
           support for raster data coming from the OpenStreetMap project
           (<ulink
           url="http://www.openstreetmap.org/">http://www.openstreetmap.org/</ulink>).</para>

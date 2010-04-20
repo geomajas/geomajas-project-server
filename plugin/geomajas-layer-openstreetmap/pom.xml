@@ -6,10 +6,10 @@
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.plugin</groupId>
-	<artifactId>geomajas-layer-openstreetmaps</artifactId>
+	<artifactId>geomajas-layer-openstreetmap</artifactId>
 	<version>1.6.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
-	<name>Geomajas layer model using Openstreetmaps</name>
+	<name>Geomajas layer model using OpenStreetMap</name>
 	
 	<dependencies>
 		<dependency>

@@ -35,8 +35,8 @@
 		<!-- @extract-start OsmLayerDependency, OpenStreetMap layer dependency -->
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-layer-openstreetmaps</artifactId>
-			<version>${geomajas-layer-openstreetmaps-version}</version>
+			<artifactId>geomajas-layer-openstreetmap</artifactId>
+			<version>${geomajas-layer-openstreetmap-version}</version>
 		</dependency>
 		<!-- @extract-end -->
 		<!-- @extract-start WmsLayerDependency, WMS layer dependency -->
@@ -295,7 +295,7 @@
 		<geomajas-layer-geotools-version>1.6.0-SNAPSHOT</geomajas-layer-geotools-version>
 		<geomajas-layer-hibernate-version>1.6.0-SNAPSHOT</geomajas-layer-hibernate-version>
 		<geomajas-layer-google-version>1.6.0-SNAPSHOT</geomajas-layer-google-version>
-		<geomajas-layer-openstreetmaps-version>1.6.0-SNAPSHOT</geomajas-layer-openstreetmaps-version>
+		<geomajas-layer-openstreetmap-version>1.6.0-SNAPSHOT</geomajas-layer-openstreetmap-version>
 		<geomajas-layer-wms-version>1.6.0-SNAPSHOT</geomajas-layer-wms-version>
 		<geomajas-plugin-springsecurity-version>1.6.0-SNAPSHOT</geomajas-plugin-springsecurity-version>
 		<gwt-version>2.0.3</gwt-version>

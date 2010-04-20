@@ -1134,7 +1134,7 @@
             <row>
               <entry> </entry>
 
-              <entry>geomajas-layer-openstreetmaps</entry>
+              <entry>geomajas-layer-openstreetmap</entry>
 
               <entry>Support for OpenStreetMap raster format.</entry>
             </row>
