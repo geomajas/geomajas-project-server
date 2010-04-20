@@ -30,7 +30,7 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 		>
 
-
+	<!-- @extract-start SpringSecurityStart, Partial springsecurity configuration -->
 	<bean name="SecurityService" class="org.geomajas.plugin.springsecurity.security.SpringSecurityService"/>
 	
 	<bean name="security.securityInfo" class="org.geomajas.security.SecurityInfo">
@@ -46,7 +46,65 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 	<bean class="org.geomajas.plugin.springsecurity.configuration.SecurityServiceInfo">
 		<property name="users">
 			<list>
-			
+
+				<!-- User elvis has restricted attribute editing permissions on roads layer -->
+				<bean class="org.geomajas.plugin.springsecurity.configuration.UserInfo">
+					<property name="userId" value="elvis"/>
+					<property name="password" value="BUOMyQ95onvc7gMrMjFtDQ"/> <!-- "elvis" -->
+					<property name="userName" value="Elvis Presley"/>
+					<property name="authorizations">
+						<list>
+							<bean class="org.geomajas.plugin.springsecurity.configuration.AttributeAuthorizationInfo">
+								<property name="commandsInclude">
+									<list>
+										<value>.*</value>
+									</list>
+								</property>
+								<property name="visibleLayersInclude">
+									<list>
+										<value>.*</value>
+									</list>
+								</property>
+								<property name="updateAuthorizedLayersInclude">
+									<list>
+										<value>beans</value>
+									</list>
+								</property>
+								<!-- @extract-end -->
+								<property name="layers">
+									<map>
+										<entry key="beans">
+											<bean class="org.geomajas.plugin.springsecurity.configuration.LayerAttributeAuthorizationInfo">
+												<property name="readableIncludes">
+													<list>
+														<value>.*</value>
+													</list>
+												</property>
+												<property name="readableExcludes">
+													<list>
+														<value>longAttr</value>
+														<value>doubleAttr</value>
+													</list>
+												</property>
+												<property name="writableIncludes">
+													<list>
+														<value>.*</value>
+													</list>
+												</property>
+												<property name="writableExcludes">
+													<list>
+														<value>shortAttr</value>
+													</list>
+												</property>
+											</bean>
+										</entry>
+									</map>
+								</property>
+							</bean>
+						</list>
+					</property>
+				</bean>
+
 				<!-- User luc has full access. Lucky luc :-) -->
 				<bean class="org.geomajas.plugin.springsecurity.configuration.UserInfo">
 					<property name="userId" value="luc"/>
@@ -125,7 +183,7 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 								<property name="commandsInclude">
 									<list>
 										<value>command.configuration.GetMap</value>
-										<value>command.render.GetRasterData</value>
+										<value>command.render.GetRasterTiles</value>
 									</list>
 								</property>
 								<property name="toolsInclude">
@@ -167,63 +225,6 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 								<property name="filters">
 									<map>
 										<entry key="roads" value="LENGTH > 110"/>
-									</map>
-								</property>
-							</bean>
-						</list>
-					</property>
-				</bean>
-
-				<!-- User elvis has restricted attribute editing permissions on roads layer -->
-				<bean class="org.geomajas.plugin.springsecurity.configuration.UserInfo">
-					<property name="userId" value="elvis"/>
-					<property name="password" value="BUOMyQ95onvc7gMrMjFtDQ"/> <!-- "elvis" -->
-					<property name="userName" value="Elvis Presley"/>
-					<property name="authorizations">
-						<list>
-							<bean class="org.geomajas.plugin.springsecurity.configuration.AttributeAuthorizationInfo">
-								<property name="commandsInclude">
-									<list>
-										<value>.*</value>
-									</list>
-								</property>
-								<property name="visibleLayersInclude">
-									<list>
-										<value>.*</value>
-									</list>
-								</property>
-								<property name="updateAuthorizedLayersInclude">
-									<list>
-										<value>beans</value>
-									</list>
-								</property>
-								<property name="layers">
-									<map>
-										<entry key="beans">
-											<bean class="org.geomajas.plugin.springsecurity.configuration.LayerAttributeAuthorizationInfo">
-												<property name="readableIncludes">
-													<list>
-														<value>.*</value>
-													</list>
-												</property>
-												<property name="readableExcludes">
-													<list>
-														<value>longAttr</value>
-														<value>doubleAttr</value>
-													</list>
-												</property>
-												<property name="writableIncludes">
-													<list>
-														<value>.*</value>
-													</list>
-												</property>
-												<property name="writableExcludes">
-													<list>
-														<value>shortAttr</value>
-													</list>
-												</property>
-											</bean>
-										</entry>
 									</map>
 								</property>
 							</bean>

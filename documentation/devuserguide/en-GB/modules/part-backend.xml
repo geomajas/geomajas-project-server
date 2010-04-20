@@ -55,8 +55,8 @@
         <listitem>
           <para><emphasis>geomajas-layer-google</emphasis> (raster): include
           Google rasters. This allows access to the normal and satellite views
-          provided by Google. You still need to include the Google API in your
-          application to use this (<ulink
+          provided by Google. You still have to make sure you comply with
+          Google terms of use (<ulink
           url="http://code.google.com/apis/maps/">http://code.google.com/apis/maps/</ulink>).</para>
         </listitem>
 
@@ -115,9 +115,10 @@
     <para>In your <code>web.xml</code> file, you need to assure the
     configuration is made available to the application, and you can indicate
     which files are used to contain the configuration. Though it is possible
-    to put all configuration information in one file, we recommend using one
-    file for defining the application (and the maps in it), and one file for
-    each of the layers.</para>
+    to put all configuration information in one file, we recommend splitting
+    your configuration in several files. At least one file per application,
+    possibly split further per client layer configuration, and one file for
+    server-side configuration of each of the layers.</para>
 
     <para>Apart from the servlets (which are specific for each face), your
     web.xml needs an excerpt similar to the following:</para>
@@ -135,18 +136,18 @@
     <section>
       <title>General principles</title>
 
-      <para>Each of the configuration files needs the following header:</para>
+      <para>Each configuration file needs the following header:</para>
 
       <xi:include href="../listing/SpringConfigurationPreamble.xml"
                   xmlns:xi="http://www.w3.org/2001/XInclude" />
 
       <para>This defines the most common schemas which are needed. The
       configuration is built by populating the configuration classes. The
-      configuration classes are split up between client and server side or
-      back-end classes. Only the back-end classes are necessary to configure
-      the back-end, which behaves as a catalog of layers. The client side
-      classes are used to define applications and maps, which are purely
-      client-side concepts in the Geomajas architecture.</para>
+      configuration classes are split up between client-side and back-end.
+      Only the back-end classes are necessary to configure the back-end, which
+      behaves as a catalog of layers. The client side classes are used to
+      define applications and maps, which are purely client-side concepts in
+      the Geomajas architecture.</para>
 
       <para>The back-end classes exist in the
       <code>org.geomajas.configuration</code> package and have a class name
@@ -154,21 +155,23 @@
       part of the back-end layers, thereby allowing to transfer information or
       metadata of these layers to the client.</para>
 
-      <para>Before we explain the back-end configuration, we will shortly
-      memorize some basics of the Spring configuration files. For a full
-      introduction to Spring, please read the reference documentation <ulink
-      url="http://static.springsource.org/spring/docs/3.0.x/spring-framework-reference/html/">http://static.springsource.org/spring/docs/3.0.x/spring-framework-reference/html/</ulink>.</para>
+      <para>Configuration is done using the Spring Framework. We will give
+      some notions here, but for a full introduction to Spring, please read
+      the reference documentation <ulink
+      url="http://static.springsource.org/spring/docs/3.0.x/spring-framework-reference/">http://static.springsource.org/spring/docs/3.0.x/spring-framework-reference/</ulink>.</para>
 
       <para>Each configuration file can contain one or more bean definitions,
       which correspond to actual Java bean instances. You can set all the
       properties of the objects using this configuration file. Primitive types
       can be set directly using a string representation of the value. When the
-      value is another bean, then it can either be defined inline, or you can
-      define the value using a reference. You can choose whether the
-      referenced bean is defined in the same file or a different one. As long
-      as the bean name is unique, and the location is added in the
-      <code>contextConfigLocation</code> context parameter in the web.xml
-      file, the reference is resolved.</para>
+      value is another bean, then it can either be defined in-line, or you can
+      use a reference. You can choose whether the referenced bean is defined
+      in the same file or a different one. As long as the bean name is unique,
+      and the location is added in the <code>contextConfigLocation</code>
+      context parameter in the web.xml file, the reference is resolved.</para>
+
+      <para>It is possible to define a bean with the same name (or id) more
+      than once. In that case, the last occurrence will be used.</para>
 
       <para>The initial bean which needs to be defined is a bean indicating
       the <emphasis>client application info</emphasis>.</para>
@@ -189,9 +192,8 @@
       <title>Back-end configuration</title>
 
       <para>The back-end configuration consists of security, transaction and
-      layer configurations. It can of course be extended with additional
-      Spring configuration that is needed by your custom application. There
-      are two basic types of layers: raster and vector layers.</para>
+      layer configurations, plus any additional configuration that is needed
+      for plug-ins and your application.</para>
 
       <section>
         <title>Security configuration</title>
@@ -202,6 +204,19 @@
 
         <xi:include href="../listing/AllowAllSecurity.xml"
                     xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+        <para>Any other configuration would depend on the available security
+        services. For example, when using the springsecurity plugin, the
+        following could be defined.</para>
+
+        <xi:include href="../listing/SpringSecurityStart.xml"
+                    xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+        <para>Most notable in this example is the inclusion of two security
+        services. The first is provided to allow login and logout
+        (<emphasis>only</emphasis>) for everybody. The second defines users
+        and authorizations (only the beginning of the configuration is
+        displayed here).</para>
       </section>
 
       <section>
@@ -212,10 +227,10 @@
         and exception handling code. Of course, spring transaction management
         has to be hooked up with the transaction definition and life cycle of
         the underlying data platform (hibernate, JTA, JDBC) . Each data access
-        technology should therefore provide its own implementation of the
-        Spring class <code>PlatformTransactionManager</code>. For most generic
-        platforms this is already part of the Spring libraries, but for
-        GeoTools we had to make our own implementation.</para>
+        technology should provide its own implementation of the Spring class
+        <code>PlatformTransactionManager</code>. For many platforms this is
+        already part of the Spring libraries, and for GeoTools we have
+        provided a transaction manager.</para>
 
         <para>Transaction management is typically only needed for editable
         database layers (although we support and encourage it for read-only
@@ -227,7 +242,8 @@
         investigated further. In practice this means that you currently must
         not mix editable Hibernate and GeoTools layers.</para>
 
-        <para>For Hibernate layers, the following configuration should be used:</para>
+        <para>For Hibernate layers, the following configuration should be
+        used:</para>
 
         <xi:include href="../listing/HibernateTx.xml"
                     xmlns:xi="http://www.w3.org/2001/XInclude" />
@@ -236,8 +252,8 @@
 
         <itemizedlist>
           <listitem>
-            <para>The data source: this specifies the connection pool type
-            and the connection properties of the database (PostGis in this
+            <para>The data source: this specifies the connection pool type and
+            the connection properties of the database (PostGis in this
             case)</para>
           </listitem>
 
@@ -290,7 +306,7 @@
 
         <para>Raster layers are image-based layers which, depending on the
         type, may be configured to retrieve their images from WMS, Google Maps
-        or OpenStreetMap (tile)servers. All raster layer implementations
+        or OpenStreetMap (tile) servers. All raster layer implementations
         implement the <code>org.geomajas.layer.RasterLayer</code> interface,
         which means they provide an accessor for a
         <code>RasterLayerInfo</code> metadata object. The info object
@@ -299,29 +315,22 @@
         extra properties are needed to provide a full configuration.</para>
 
         <section>
-          <title>WMS layer configuration</title>
+          <title>Raster layer info</title>
 
-          <para>Make sure your classpath contains the required plug-in. If you
-          are using maven, add the following dependency to your pom:</para>
+          <para>For all raster layers, you will need to define a raster layer
+          info object to define the back-end configuration for the layer. The
+          exact meaning for some of the fields depend on the actual layer, but
+          most important features include:</para>
 
-          <xi:include href="../listing/WmsLayerDependency.xml"
-                      xmlns:xi="http://www.w3.org/2001/XInclude" />
-
-          <para>A complete WMS layer configuration looks as follows:</para>
-
-          <xi:include href="../listing/WmsLayerSample.xml"
-                      xmlns:xi="http://www.w3.org/2001/XInclude" />
-
-          <para>As you can see, the bean class refers to the actual layer type: <code>org.geomajas.layer.wms.WmsLayer</code>.</para>
-
-          <para>The first property is the layer info object, which describes
-          the metadata common to all raster layers. The following properties
-          are needed for this object:</para>
-
-          <para><table>
+          <para>
+            <table>
               <title>Raster Layer info</title>
 
               <tgroup cols="2">
+                <colspec colnum="1" colwidth="1*" />
+
+                <colspec colnum="2" colwidth="2*" />
+
                 <thead>
                   <row>
                     <entry>Name</entry>
@@ -334,18 +343,18 @@
                   <row>
                     <entry>dataSourceName</entry>
 
-                    <entry>The name of the WMS layer. This may be a
-                    comma-separated list of names as well.</entry>
+                    <entry>The name of the data source as used by the
+                    layer.</entry>
                   </row>
 
                   <row>
                     <entry>crs</entry>
 
                     <entry>The coordinate reference system, expressed as
-                    "EPSG:&lt;srid&gt;". Caveat: make sure this is the same
-                    as the maps' CRS as full raster image reprojection is not
-                    supported ! If the CRS's differ, an attempt will be done
-                    to rescale and align the center coordinates,
+                    "EPSG:&lt;srid&gt;". Caveat: make sure this is the same as
+                    the maps' crs as full raster image reprojection is not
+                    supported! If the crs is not the same, an attempt will be
+                    done to rescale and align the center coordinates,
                     though.</entry>
                   </row>
 
@@ -369,25 +378,27 @@
                     (set of) resolution(s), so it is important to specify
                     these here if they are known. On top of that, some servers
                     provide specific tile caching for these predefined
-                    resolutions (WMS-T). Care has to be taken, the same
-                    resolutions should be defined in the map as well if one
-                    wants to avoid linear distortion of the images.</entry>
+                    resolutions (for example WMS-T). Care has to be taken, the
+                    same resolutions should be defined in the map as well if
+                    one wants to avoid linear distortion of the
+                    images.</entry>
                   </row>
 
                   <row>
                     <entry>tileWidth</entry>
 
-                    <entry>Width in pixels of the requested images</entry>
+                    <entry>Width in pixels of the requested images.</entry>
                   </row>
 
                   <row>
                     <entry>tileHeight</entry>
 
-                    <entry>Height in pixels of the requested images</entry>
+                    <entry>Height in pixels of the requested images.</entry>
                   </row>
                 </tbody>
               </tgroup>
-            </table></para>
+            </table>
+          </para>
 
           <para>The location of the images or tiles is defined by calculating
           the real width and height (based on the resolution) and "paving" the
@@ -395,7 +406,29 @@
           extent. If no resolutions are predefined, the tiles are calculated
           by dividing the maximum extent by successive powers of 2. Make sure
           the width/height ratio of the maximum extent corresponds to the
-          width/height ration of the tile.</para>
+          width/height ratio of the tile.</para>
+        </section>
+
+        <section>
+          <title>WMS layer configuration</title>
+
+          <para>Make sure your classpath contains the required plug-in. If you
+          are using maven, add the following dependency to your pom:</para>
+
+          <xi:include href="../listing/WmsLayerDependency.xml"
+                      xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+          <para>A complete WMS layer configuration looks as follows:</para>
+
+          <xi:include href="../listing/WmsLayerSample.xml"
+                      xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+          <para>As you can see, the bean class refers to the actual layer
+          type: <code>org.geomajas.layer.wms.WmsLayer</code>.</para>
+
+          <para>The first property is the layer info object, which describes
+          the metadata common to all raster layers. The following properties
+          are needed for this object:</para>
 
           <para>The layer object contains some extra properties which are
           specifically tied to the WMS server:</para>
@@ -404,6 +437,10 @@
             <title>WMS layer properties</title>
 
             <tgroup cols="2">
+              <colspec colnum="1" colwidth="1*" />
+
+              <colspec colnum="2" colwidth="2*" />
+
               <thead>
                 <row>
                   <entry>Name</entry>
@@ -467,7 +504,8 @@
           <xi:include href="../listing/OsmLayerDependency.xml"
                       xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-          <para>A complete OpenStreetMap layer configuration looks as follows:</para>
+          <para>A complete OpenStreetMap layer configuration looks as
+          follows:</para>
 
           <xi:include href="../listing/OsmLayerSample.xml"
                       xmlns:xi="http://www.w3.org/2001/XInclude" />
@@ -495,10 +533,15 @@
           <xi:include href="../listing/GoogleLayerSample.xml"
                       xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-          <para><table>
+          <para>
+            <table>
               <title>GoogleLayer configuration</title>
 
               <tgroup cols="2">
+                <colspec colnum="1" colwidth="1*" />
+
+                <colspec colnum="2" colwidth="2*" />
+
                 <thead>
                   <row>
                     <entry>GoogleLayer configuration</entry>
@@ -515,7 +558,8 @@
                   </row>
                 </tbody>
               </tgroup>
-            </table></para>
+            </table>
+          </para>
 
           <para>The layer info inner bean has the same general content as
           usual. There are some simplifications though. There is no need to
@@ -553,78 +597,85 @@
         <para>The definition of the actual layer is similar to the definition
         of a raster layer.</para>
 
-        <xi:include href="../listing/ShapeInMemCountries.xml"
-                    xmlns:xi="http://www.w3.org/2001/XInclude" />
-
-        <para>The "layerInfo" property always needs to be set. Other
-        properties depend on the layer class (options are detailed
-        below).</para>
-
-        <para>For the layer configuration, you have to create the layer info
-        object.</para>
-
-        <xi:include href="../listing/ShapeInMemCountriesInfo.xml"
-                    xmlns:xi="http://www.w3.org/2001/XInclude" />
-
-        <para>This defines the details common to both raster and vector
-        layers, like layer id, crs, layer type, max extent (bounding box)
-        etc.</para>
-
-        <para>There is also the definition of the features (featureInfo), and
-        the style which needs to be used for the label. Note that the
-        <emphasis>labelAttributeName</emphasis> refers to the name of an
-        attribute as defined in the feature info.</para>
-
-        <xi:include href="../listing/ShapeInMemCountriesStyleInfo.xml"
-                    xmlns:xi="http://www.w3.org/2001/XInclude" />
-
-        <para>Last but not least, you can define one or more style definitions
-        which should be used for rendering of the layer. You can define
-        formulas to determine which style should be used. The first style
-        which passes the formula will be applied for the feature.</para>
-
-        <para>We also have to define the features.</para>
-
-        <xi:include href="../listing/ShapeInMemCountriesFeatureInfo.xml"
-                    xmlns:xi="http://www.w3.org/2001/XInclude" />
-
-        <para>This defines the identifier, geometry object and attributes for
-        the feature.</para>
-
-        <para>Attributes can be either primitive attributes or association
-        attributes. Primitive attributes represent primitive Java types as
-        well as some common types like Date and String. The following
-        primitive attribute types are defined: BOOLEAN, SHORT, INTEGER, LONG,
-        FLOAT, DOUBLE, CURRENCY, STRING, DATE, URL and IMGURL. Association
-        attributes represent non-primitive Java types. There are two types of
-        association attributes defined: MANY_TO_ONE and ONE_TO_MANY. These
-        reflect the many-to-one and one-to-many relationships as defined in an
-        entity-relationship model and can only be used in conjunction with the
-        <code>HibernateLayer</code>.</para>
-
         <section>
-          <title>Validation</title>
+          <title>Vector layer info</title>
 
-          <para>Most feature attributes should be validated before they can be
-          saved to a file or database. Validation is a concern that stretches
-          across many layers of a typical application: there is usually a
-          need for client-side validation (making the app more user friendly)
-          , server-side validation (to protect the server from invalid data)
-          as well as database validation (to preserve data integrity).
-          Preferably validation rules should be defined as much as possible in
-          a single place to avoid conflicts and duplication.</para>
-
-          <para>Our attribute configuration supports several types of
-          validation by defining a <code>"validator"</code> property inside
-          the attribute:</para>
-
-          <xi:include href="../listing/AttributeValidator.xml"
+          <xi:include href="../listing/ShapeInMemCountries.xml"
                       xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-          <para>This property contains some general validator information and
-          a set of constraints that should be applied to the attribute. The
-          available constraint types have been based on the new JavaBeans
-          standard: JSR-303.</para>
+          <para>The "layerInfo" property always needs to be set. Other
+          properties depend on the layer class (options are detailed
+          below).</para>
+
+          <para>For the layer configuration, you have to create the layer info
+          object.</para>
+
+          <xi:include href="../listing/ShapeInMemCountriesInfo.xml"
+                      xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+          <para>This defines the details common to both raster and vector
+          layers, like layer id, crs, layer type, max extent (bounding box)
+          etc.</para>
+
+          <para>There is also the definition of the features (featureInfo),
+          and the style which needs to be used for the label. Note that the
+          <emphasis>labelAttributeName</emphasis> refers to the name of an
+          attribute as defined in the feature info.</para>
+
+          <xi:include href="../listing/ShapeInMemCountriesStyleInfo.xml"
+                      xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+          <para>Last but not least, you can define one or more style
+          definitions which should be used for rendering of the layer. You can
+          define formulas to determine which style should be used. The first
+          style which passes the formula will be applied for the
+          feature.</para>
+
+          <para>We also have to define the features.</para>
+
+          <xi:include href="../listing/ShapeInMemCountriesFeatureInfo.xml"
+                      xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+          <para>This defines the identifier, geometry object and attributes
+          for the feature.</para>
+
+          <para>Attributes can be either primitive attributes or association
+          attributes. Primitive attributes represent primitive Java types as
+          well as some common types like Date and String. The following
+          primitive attribute types are defined: BOOLEAN, SHORT, INTEGER,
+          LONG, FLOAT, DOUBLE, CURRENCY, STRING, DATE, URL and IMGURL.
+          Association attributes represent non-primitive Java types. There are
+          two types of association attributes defined: MANY_TO_ONE and
+          ONE_TO_MANY. These reflect the many-to-one and one-to-many
+          relationships as defined in an entity-relationship model and can
+          only be used in conjunction with the
+          <code>HibernateLayer</code>.</para>
+
+          <section>
+            <title>Validation</title>
+
+            <para>Most feature attributes should be validated before they can
+            be saved to a file or database. Validation is a concern that
+            stretches across many layers of a typical application: there is
+            usually a need for client-side validation (making the app more
+            user friendly) , server-side validation (to protect the server
+            from invalid data) as well as database validation (to preserve
+            data integrity). Preferably validation rules should be defined as
+            much as possible in a single place to avoid conflicts and
+            duplication.</para>
+
+            <para>Our attribute configuration supports several types of
+            validation by defining a <code>"validator"</code> property inside
+            the attribute:</para>
+
+            <xi:include href="../listing/AttributeValidator.xml"
+                        xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+            <para>This property contains some general validator information
+            and a set of constraints that should be applied to the attribute.
+            The available constraint types have been based on the new
+            JavaBeans standard: JSR-303.</para>
+          </section>
         </section>
 
         <section>
@@ -700,10 +751,15 @@
           <para>The following table describes the properties of the
           <code>VectorLayerInfo</code> object:</para>
 
-          <para><table>
+          <para>
+            <table>
               <title>VectorLayer info</title>
 
               <tgroup cols="2">
+                <colspec colnum="1" colwidth="1*" />
+
+                <colspec colnum="2" colwidth="2*" />
+
                 <thead>
                   <row>
                     <entry>Property</entry>
@@ -741,7 +797,8 @@
                   </row>
                 </tbody>
               </tgroup>
-            </table></para>
+            </table>
+          </para>
 
           <para>The feature metadata can be found in the
           <code>FeatureInfo</code> object. This objects contains the complete
@@ -759,6 +816,10 @@
             <title>Feature info configuration</title>
 
             <tgroup cols="2">
+              <colspec colnum="1" colwidth="1*" />
+
+              <colspec colnum="2" colwidth="2*" />
+
               <thead>
                 <row>
                   <entry>Name</entry>
@@ -788,6 +849,10 @@
             <title>GeoToolsLayer configuration</title>
 
             <tgroup cols="2">
+              <colspec colnum="1" colwidth="1*" />
+
+              <colspec colnum="2" colwidth="2*" />
+
               <thead>
                 <row>
                   <entry>Name</entry>
@@ -856,9 +921,11 @@
           <para>To access a WFS server, the following names can be used as
           parameters.</para>
 
-          <para><itemizedlist>
+          <para>
+            <itemizedlist>
               <listitem>
-                <para><emphasis>WFSDataStoreFactory:GET_CAPABILITIES_URL</emphasis>: Represents a URL to the getCapabilities document or a server
+                <para><emphasis>WFSDataStoreFactory:GET_CAPABILITIES_URL</emphasis>:
+                Represents a URL to the getCapabilities document or a server
                 instance.</para>
               </listitem>
 
@@ -906,7 +973,8 @@
                 the schema. Errors will be logged but the parsing will
                 continue if this is true. Default is false.</para>
               </listitem>
-            </itemizedlist></para>
+            </itemizedlist>
+          </para>
 
           <para>You also have to assure the GeoTools WFS data store is added
           as dependency in your project. When using maven, you can add the
@@ -929,10 +997,15 @@
           <para>The shape in memory layer has a few settings which should be
           set</para>
 
-          <para><table>
+          <para>
+            <table>
               <title>ShapeInMemLayer configuration</title>
 
               <tgroup cols="2">
+                <colspec colnum="1" colwidth="1*" />
+
+                <colspec colnum="2" colwidth="2*" />
+
                 <thead>
                   <row>
                     <entry>ShapeInMemLayer configuration</entry>
@@ -951,7 +1024,8 @@
                   </row>
                 </tbody>
               </tgroup>
-            </table></para>
+            </table>
+          </para>
         </section>
 
         <section>
@@ -1136,7 +1210,8 @@
         </listitem>
 
         <listitem>
-          <para><emphasis>service</emphasis>: utility services provided by Geomajas.</para>
+          <para><emphasis>service</emphasis>: utility services provided by
+          Geomajas.</para>
         </listitem>
       </itemizedlist>
 
@@ -1257,6 +1332,10 @@
           <title>GetConfigurationCommand</title>
 
           <tgroup cols="2">
+            <colspec colnum="1" colwidth="1*" />
+
+            <colspec colnum="2" colwidth="2*" />
+
             <thead>
               <row>
                 <entry>GetConfigurationCommand</entry>
@@ -1312,11 +1391,10 @@
                     </listitem>
 
                     <listitem>
-                      <para><emphasis>maps</emphasis>: list of configured
-                      maps for the application. Note that the layer
-                      information which is contained in the maps has the
-                      coordinates transformed according to the crs of the
-                      map.</para>
+                      <para><emphasis>maps</emphasis>: list of configured maps
+                      for the application. Note that the layer information
+                      which is contained in the maps has the coordinates
+                      transformed according to the crs of the map.</para>
                     </listitem>
 
                     <listitem>
@@ -1333,6 +1411,10 @@
           <title>GetMapConfigurationCommand</title>
 
           <tgroup cols="2">
+            <colspec colnum="1" colwidth="1*" />
+
+            <colspec colnum="2" colwidth="2*" />
+
             <thead>
               <row>
                 <entry>GetMapConfigurationCommand</entry>
@@ -1398,12 +1480,16 @@
         </table></para>
 
       <para><table>
-          <title>GetRasterDataCommand</title>
+          <title>GetRasterTilesCommand</title>
 
           <tgroup cols="2">
+            <colspec colnum="1" colwidth="1*" />
+
+            <colspec colnum="2" colwidth="2*" />
+
             <thead>
               <row>
-                <entry>GetRasterDataCommand</entry>
+                <entry>GetRasterTilesCommand</entry>
               </row>
             </thead>
 
@@ -1411,7 +1497,7 @@
               <row>
                 <entry>Registry key</entry>
 
-                <entry>command.render.GetRasterData</entry>
+                <entry>command.render.GetRasterTiles</entry>
               </row>
 
               <row>
@@ -1423,7 +1509,7 @@
               <row>
                 <entry>Request object class</entry>
 
-                <entry>org.geomajas.command.dto.?????</entry>
+                <entry>org.geomajas.command.dto.GetRasterTilesRequest</entry>
               </row>
 
               <row>
@@ -1431,22 +1517,22 @@
 
                 <entry><itemizedlist>
                     <listitem>
-                      <para><emphasis>crs</emphasis>: Coordinate reference
+                      <para><emphasis>crs</emphasis>: coordinate reference
                       system that the map uses.</para>
                     </listitem>
 
                     <listitem>
-                      <para><emphasis>bbox</emphasis>: Total bounding box
+                      <para><emphasis>bbox</emphasis>: total bounding box
                       wherein to fetch raster tiles.</para>
                     </listitem>
 
                     <listitem>
-                      <para><emphasis>scale</emphasis>: Current scale in the
+                      <para><emphasis>scale</emphasis>: current scale in the
                       client side map.</para>
                     </listitem>
 
                     <listitem>
-                      <para><emphasis>layerId</emphasis>: The ID of the raster
+                      <para><emphasis>layerId</emphasis>: the id of the raster
                       layer to fetch tiles for.</para>
                     </listitem>
                   </itemizedlist></entry>
@@ -1463,7 +1549,7 @@
               <row>
                 <entry>Response object class</entry>
 
-                <entry>org.geomajas.command.dto.GetRasterDataRequest</entry>
+                <entry>org.geomajas.command.dto.GetRasterTilesResponse</entry>
               </row>
 
               <row>
@@ -1486,12 +1572,16 @@
         </table></para>
 
       <para><table>
-          <title>GetRenderedTileCommand</title>
+          <title>GetVectorTileCommand</title>
 
           <tgroup cols="2">
+            <colspec colnum="1" colwidth="1*" />
+
+            <colspec colnum="2" colwidth="2*" />
+
             <thead>
               <row>
-                <entry>GetRenderedTileCommand</entry>
+                <entry>GetVectorTileCommand</entry>
               </row>
             </thead>
 
@@ -1499,7 +1589,7 @@
               <row>
                 <entry>Registry key</entry>
 
-                <entry>command.render.GetRenderedTile</entry>
+                <entry>command.render.GetVectorTile</entry>
               </row>
 
               <row>
@@ -1511,7 +1601,7 @@
               <row>
                 <entry>Request object class</entry>
 
-                <entry>org.geomajas.command.dto.GetRenderedTileRequest</entry>
+                <entry>org.geomajas.command.dto.GetVectorTileRequest</entry>
               </row>
 
               <row>
@@ -1519,17 +1609,17 @@
 
                 <entry><itemizedlist>
                     <listitem>
-                      <para><emphasis>layerId</emphasis>: The ID of the vector
+                      <para><emphasis>layerId</emphasis>: the id of the vector
                       layer to fetch a tile in.</para>
                     </listitem>
 
                     <listitem>
-                      <para><emphasis>code</emphasis>: The unique code of the
+                      <para><emphasis>code</emphasis>: the unique code of the
                       tile to retrieve.</para>
                     </listitem>
 
                     <listitem>
-                      <para><emphasis>scale</emphasis>: The current scale on
+                      <para><emphasis>scale</emphasis>: the current scale on
                       the map, client side.</para>
                     </listitem>
 
@@ -1539,38 +1629,38 @@
                     </listitem>
 
                     <listitem>
-                      <para><emphasis>filter</emphasis>: Extra filter that can
+                      <para><emphasis>filter</emphasis>: extra filter that can
                       be used to filter out data.</para>
                     </listitem>
 
                     <listitem>
-                      <para><emphasis>crs</emphasis>: The map's coordinate
+                      <para><emphasis>crs</emphasis>: the map's coordinate
                       reference system.</para>
                     </listitem>
 
                     <listitem>
-                      <para><emphasis>renderer</emphasis>: Should the server
+                      <para><emphasis>renderer</emphasis>: should the server
                       render to SVG or VML?</para>
                     </listitem>
 
                     <listitem>
-                      <para><emphasis>styleInfo</emphasis>: Extra styles that
+                      <para><emphasis>styleInfo</emphasis>: extra styles that
                       can override the originally configured styles.</para>
                     </listitem>
 
                     <listitem>
-                      <para><emphasis>paintGeometries</emphasis>: Should the
+                      <para><emphasis>paintGeometries</emphasis>: should the
                       geometries be painted in the tile? (default true)</para>
                     </listitem>
 
                     <listitem>
-                      <para><emphasis>paintLabels</emphasis>: Should labels be
+                      <para><emphasis>paintLabels</emphasis>: should labels be
                       painted in the tile?</para>
                     </listitem>
 
                     <listitem>
-                      <para><emphasis>featureIncludes</emphasis>: Lazy loading
-                      parameter</para>
+                      <para><emphasis>featureIncludes</emphasis>: lazy loading
+                      parameter.</para>
                     </listitem>
                   </itemizedlist></entry>
               </row>
@@ -1586,7 +1676,7 @@
               <row>
                 <entry>Response object class</entry>
 
-                <entry>org.geomajas.command.dto.GetRenderedTileResponse</entry>
+                <entry>org.geomajas.command.dto.GetVectorTileResponse</entry>
               </row>
 
               <row>
@@ -1608,6 +1698,10 @@
 
           <tgroup cols="2">
             <thead>
+              <colspec colnum="1" colwidth="1*" />
+
+              <colspec colnum="2" colwidth="2*" />
+
               <row>
                 <entry>LogCommand</entry>
               </row>
@@ -1642,8 +1736,8 @@
                     </listitem>
 
                     <listitem>
-                      <para><emphasis>statement</emphasis>: string which
-                      needs to be logged.</para>
+                      <para><emphasis>statement</emphasis>: string which needs
+                      to be logged.</para>
                     </listitem>
                   </itemizedlist></entry>
               </row>
@@ -1674,6 +1768,10 @@
           <title>MergePolygonCommand</title>
 
           <tgroup cols="2">
+            <colspec colnum="1" colwidth="1*" />
+
+            <colspec colnum="2" colwidth="2*" />
+
             <thead>
               <row>
                 <entry>MergePolygonCommand</entry>
@@ -1747,6 +1845,10 @@
           <title>PersistTransactionCommand</title>
 
           <tgroup cols="2">
+            <colspec colnum="1" colwidth="1*" />
+
+            <colspec colnum="2" colwidth="2*" />
+
             <thead>
               <row>
                 <entry>PersistFeatureTransactionCommand</entry>
@@ -1823,6 +1925,10 @@
           <title>SearchAttributesCommand</title>
 
           <tgroup cols="2">
+            <colspec colnum="1" colwidth="1*" />
+
+            <colspec colnum="2" colwidth="2*" />
+
             <thead>
               <row>
                 <entry>SearchAttributesCommand</entry>
@@ -1901,6 +2007,10 @@
           <title>SearchByLocationCommand</title>
 
           <tgroup cols="2">
+            <colspec colnum="1" colwidth="1*" />
+
+            <colspec colnum="2" colwidth="2*" />
+
             <thead>
               <row>
                 <entry>SearchByLocationCommand</entry>
@@ -1950,7 +2060,7 @@
                     </listitem>
 
                     <listitem>
-                      <para><emphasis>layerIds</emphasis>: array of layer ID's
+                      <para><emphasis>layerIds</emphasis>: array of layer ids
                       to search in.</para>
                     </listitem>
 
@@ -1964,7 +2074,7 @@
                     <listitem>
                       <para><emphasis>crs</emphasis>: the map's coordinate
                       reference system. The location geometry will also be
-                      expressed in this CRS.</para>
+                      expressed in this crs.</para>
                     </listitem>
 
                     <listitem>
@@ -2014,6 +2124,10 @@
           <title>SearchFeatureCommand</title>
 
           <tgroup cols="2">
+            <colspec colnum="1" colwidth="1*" />
+
+            <colspec colnum="2" colwidth="2*" />
+
             <thead>
               <row>
                 <entry>SearchFeaturesCommand</entry>
@@ -2044,8 +2158,8 @@
 
                 <entry><itemizedlist>
                     <listitem>
-                      <para><emphasis>layerId</emphasis>: id of layer on
-                      which features need to be searched.</para>
+                      <para><emphasis>layerId</emphasis>: id of layer on which
+                      features need to be searched.</para>
                     </listitem>
 
                     <listitem>
@@ -2128,6 +2242,10 @@
           <title>SplitPolygonCommand</title>
 
           <tgroup cols="2">
+            <colspec colnum="1" colwidth="1*" />
+
+            <colspec colnum="2" colwidth="2*" />
+
             <thead>
               <row>
                 <entry>SplitPolygonCommand</entry>
@@ -2200,6 +2318,10 @@
           <title>UserMaximumExtentCommand</title>
 
           <tgroup cols="2">
+            <colspec colnum="1" colwidth="1*" />
+
+            <colspec colnum="2" colwidth="2*" />
+
             <thead>
               <row>
                 <entry>UserMaximumExtentCommand</entry>

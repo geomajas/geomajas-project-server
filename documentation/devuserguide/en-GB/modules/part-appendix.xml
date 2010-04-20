@@ -356,7 +356,7 @@
             </listitem>
 
             <listitem>
-              <para>Client configuration should not impact the bac-kend state.
+              <para>Client configuration should not impact the back-end state.
               In the near future, this will make it possible to reconfigure
               clients without restarting the server.</para>
             </listitem>

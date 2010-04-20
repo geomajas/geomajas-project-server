@@ -652,11 +652,11 @@ public interface GeometryOperation {
             <code>VmlGraphicsContext</code>). The whole idea of this
             <code>GraphicsContext</code> and the painters, has been copied
             from the Java AWT library. This context will draw basic shapes,
-            according to their ID. Since we are using web technologies, all
-            implementations (be they Svg or Vml) will use DOM elements to
+            according to their id. Since we are using web technologies, all
+            implementations (be they SVG or VML) will use DOM elements to
             create their drawings. Each DOM element in the
-            <code>GraphicsContext</code> DOM tree should have an ID and a
-            parent. This combination of ID and parent can later be used to
+            <code>GraphicsContext</code> DOM tree should have an id and a
+            parent. This combination of id and parent can later be used to
             update or delete the object.</para>
 
             <para>In essence, the drawing methods will result in changes in
@@ -671,7 +671,7 @@ public interface GeometryOperation {
             class must be defined. The <code>Paintable</code> interface has
             only two methods. One to get it's unique identifier within a
             parent group and used by the <code>PainterVisitor</code>. The
-            getId method returns the <code>Paintable</code> objects ID, which
+            getId method returns the <code>Paintable</code> objects id, which
             is it's key in the DOM tree within the parent group. While the
             accept method will be traversed by the
             <code>PainterVisitor</code>, and used to have the object passed to
@@ -1473,7 +1473,7 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
       drawing context menus. But sometimes it is necessary to have the DOM
       element onto which the context menu was clicked, to influence this menu.
       That is why this widget always stores this latest event (or at least
-      it's DOM element ID, and screen location).</para>
+      it's DOM element id, and screen location).</para>
 
       <para>This widget is the bridge between the internal Svg or Vml
       rendering in GWT and the SmartGWT widget library. It is used internally
@@ -1924,7 +1924,7 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
         </listitem>
 
         <listitem>
-          <para><emphasis>idInTable</emphasis>: show the feature's ID in the
+          <para><emphasis>idInTable</emphasis>: show the feature's id in the
           table. This is false by default, and should not really be
           necessary.</para>
         </listitem>

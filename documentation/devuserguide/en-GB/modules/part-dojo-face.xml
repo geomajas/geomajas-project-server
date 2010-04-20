@@ -199,7 +199,8 @@
 
         <programlisting>&lt;script type="text/javascript" src="js/dojo/dojo.js"
 			djConfig="parseOnLoad:true,	usePlainJson :true"&gt;&lt;/script&gt;
-&lt;script type="text/javascript" src="js/<emphasis role="bold">example</emphasis>/<emphasis role="bold">example</emphasis>.js"
+&lt;script type="text/javascript" src="js/<emphasis role="bold">example</emphasis>/<emphasis
+            role="bold">example</emphasis>.js"
 			geomajasConfig="showLog :false"&gt;&lt;/script&gt;</programlisting>
       </example>
 

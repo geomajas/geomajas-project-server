@@ -270,8 +270,10 @@
         pipeline. This way, layer specific configurations (like optimizations
         or specific rendering) can be applied. When a layer does not overwrite
         a pipeline, the default is used. Pipelines are always selected on
-        pipeline id. You can create the layer specific pipeline by using the
-        id of the default pipeline followed by a dot and the layer id.</para>
+        pipeline name. You can create the layer specific pipeline by setting
+        the layer id for which it applied. When several pipelines have the
+        same steps, you can define the pipeline once, and refer to it later by
+        using a pipeline delegate instead of a list of steps.</para>
 
         <para>A pipeline consists of a number of steps. A pipeline is
         configured using a <code>PipelineInfo</code> object which details the
@@ -496,8 +498,8 @@
 
         <itemizedlist>
           <listitem>
-            <para><code>isLayerVisible(String layerId)</code>: true when
-            (part of) the layer is visible.</para>
+            <para><code>isLayerVisible(String layerId)</code>: true when (part
+            of) the layer is visible.</para>
           </listitem>
 
           <listitem>
@@ -583,8 +585,8 @@
 
           <listitem>
             <para><code>isAttributeReadable(String layerId, InternalFeature
-            feature, String attributeName)</code>: check the readability of
-            an attribute. The result can be feature specific.</para>
+            feature, String attributeName)</code>: check the readability of an
+            attribute. The result can be feature specific.</para>
           </listitem>
 
           <listitem>
@@ -682,15 +684,15 @@
 
         <itemizedlist>
           <listitem>
-            <para>configuration.Get and configuration.GetMap: layer which are
+            <para>configuration.Get and configuration.GetMap: layers which are
             invisible should be removed, tools which are not authorized should
-            be removed, "editable" status on layers, features, attributes
-            needs to be set to false when necessary.</para>
+            be removed, "editable" and "deletable" statusses on layers,
+            features, attributes need to be set.</para>
           </listitem>
 
           <listitem>
-            <para>configuration.UserMaximumExtent: max extent needs to shrink
-            the cover the union of the visible areas in the layers.</para>
+            <para>configuration.UserMaximumExtent: max extent should only
+            consider visible features.</para>
           </listitem>
 
           <listitem>
@@ -722,16 +724,17 @@
           </listitem>
 
           <listitem>
-            <para>render.GetRasterData: should only return data for visible
+            <para>render.GetRasterTiles: should only return data for visible
             layers, ideally post-processing the image to ensure only visible
             area is included (making the rest transparent).</para>
           </listitem>
 
           <listitem>
-            <para>render.GetRenderedTile: should only return data for visible
+            <para>render.GetVectorTile: should only return data for visible
             layers, only display visible features, only return visible
-            features, only render visible features. When lazy loading is
-            false, only readable attributes should be included.</para>
+            features, only render visible features. When attributes need to be
+            included, only readable attributes should be included and the
+            "editable" flag needs to be set.</para>
           </listitem>
         </itemizedlist>
 
@@ -784,7 +787,14 @@
           <listitem>
             <para>Specific tests on editability of individual features and
             attributes would be useful to assure the user does try to enter or
-            modify data which cannot be saved</para>
+            modify data which cannot be saved.</para>
+          </listitem>
+
+          <listitem>
+            <para>The face should ask for credentials again when the token was
+            not available or is no longer valid. Specifically when a
+            <code>GeomajasSecurityException</code> is received which code
+            <code>ExceptionCode.CREDENTIALS_MISSING_OR_INVALID</code>.</para>
           </listitem>
         </itemizedlist>
       </sect2>
@@ -878,23 +888,23 @@
         </itemizedlist> Full list of Geomajas modules:</para>
 
       <table cellpadding="" cellspacing="10" class="">
-        <title>List of Geomajas modules</title>
+        <title>List of Geomajas application modules</title>
 
-        <tgroup align="left" cols="3">
+        <tgroup align="left" cols="2">
+          <colspec colnum="1" colwidth="1*" />
+
+          <colspec colnum="2" colwidth="2*" />
+
           <thead>
             <row>
-              <entry style="width:20%;">Category</entry>
+              <entry>Name</entry>
 
-              <entry style="width:30%;">Name</entry>
-
-              <entry style="width:50%;">Purpose</entry>
+              <entry>Purpose</entry>
             </row>
           </thead>
 
           <tbody>
             <row>
-              <entry>application</entry>
-
               <entry>geomajas-dojo-example</entry>
 
               <entry>Example application using the dojo face. Is more advanced
@@ -904,8 +914,6 @@
             </row>
 
             <row>
-              <entry> </entry>
-
               <entry>geomajas-dojo-simple</entry>
 
               <entry>Simple example project using the dojo face. Can be a
@@ -914,8 +922,6 @@
             </row>
 
             <row>
-              <entry> </entry>
-
               <entry>geomajas-gwt-example</entry>
 
               <entry>Example application using the GWT face which serves both
@@ -923,18 +929,34 @@
             </row>
 
             <row>
-              <entry> </entry>
-
               <entry>geomajas-gwt-simple</entry>
 
               <entry>Simple example project using the GWT face. Very similar
               to the GWT archetype which can be used to start a new GWT based
               Geomajas project.</entry>
             </row>
+          </tbody>
+        </tgroup>
+      </table>
 
+      <table cellpadding="" cellspacing="10" class="">
+        <title>List of Geomajas back-end modules</title>
+
+        <tgroup align="left" cols="2">
+          <colspec colnum="1" colwidth="1*" />
+
+          <colspec colnum="2" colwidth="2*" />
+
+          <thead>
             <row>
-              <entry>backend</entry>
+              <entry>Name</entry>
 
+              <entry>Purpose</entry>
+            </row>
+          </thead>
+
+          <tbody>
+            <row>
               <entry>geomajas-api</entry>
 
               <entry>Stable interfaces. Reference guide for other
@@ -942,8 +964,6 @@
             </row>
 
             <row>
-              <entry> </entry>
-
               <entry>geomajas-api-experimental</entry>
 
               <entry>Experimental interfaces. This contains some experimental
@@ -953,16 +973,12 @@
             </row>
 
             <row>
-              <entry> </entry>
-
               <entry>geomajas-command</entry>
 
               <entry>Lists all basic commands.</entry>
             </row>
 
             <row>
-              <entry> </entry>
-
               <entry>geomajas-common-servlet</entry>
 
               <entry>Code which is shared by the different faces which are
@@ -970,25 +986,39 @@
             </row>
 
             <row>
-              <entry> </entry>
-
               <entry>geomajas-impl</entry>
 
               <entry>Main library with default implementations.</entry>
             </row>
 
             <row>
-              <entry> </entry>
-
               <entry>geomajas-testdata</entry>
 
               <entry>Module which contains data which is used for testing
               Geomajas.</entry>
             </row>
+          </tbody>
+        </tgroup>
+      </table>
 
+      <table cellpadding="" cellspacing="10" class="">
+        <title>List of Geomajas build-tools modules</title>
+
+        <tgroup align="left" cols="2">
+          <colspec colnum="1" colwidth="1*" />
+
+          <colspec colnum="2" colwidth="2*" />
+
+          <thead>
             <row>
-              <entry>build-tools</entry>
+              <entry>Name</entry>
 
+              <entry>Purpose</entry>
+            </row>
+          </thead>
+
+          <tbody>
+            <row>
               <entry>geomajas-checkstyle</entry>
 
               <entry>Module which contains the checkstyle definitions which
@@ -997,8 +1027,6 @@
             </row>
 
             <row>
-              <entry> </entry>
-
               <entry>geomajas-gwt-archetype</entry>
 
               <entry>Archetype which builds a simple application which can be
@@ -1006,8 +1034,6 @@
             </row>
 
             <row>
-              <entry> </entry>
-
               <entry>geomajas-maven-dojo</entry>
 
               <entry>Maven plugin which helps to combine all the javascript
@@ -1016,18 +1042,34 @@
             </row>
 
             <row>
-              <entry> </entry>
-
               <entry>geomajas-maven-plugin</entry>
 
               <entry>Maven plugin which is used for generating the
               documentation. It extracts excerpts from the code to allow
               inclusion in the docbook guides.</entry>
             </row>
+          </tbody>
+        </tgroup>
+      </table>
 
+      <table cellpadding="" cellspacing="10" class="">
+        <title>List of Geomajas documentation modules</title>
+
+        <tgroup align="left" cols="2">
+          <colspec colnum="1" colwidth="1*" />
+
+          <colspec colnum="2" colwidth="2*" />
+
+          <thead>
             <row>
-              <entry>documentation</entry>
+              <entry>Name</entry>
 
+              <entry>Purpose</entry>
+            </row>
+          </thead>
+
+          <tbody>
+            <row>
               <entry>contributorguide</entry>
 
               <entry>Guide for contributors to the project. Includes
@@ -1036,8 +1078,6 @@
             </row>
 
             <row>
-              <entry> </entry>
-
               <entry>devuserguide</entry>
 
               <entry>Guide for developers who want to use Geomajas in their
@@ -1045,8 +1085,6 @@
             </row>
 
             <row>
-              <entry> </entry>
-
               <entry>enduserguide</entry>
 
               <entry>Guide for end-users who use the Geomajas widgets. This
@@ -1055,8 +1093,6 @@
             </row>
 
             <row>
-              <entry> </entry>
-
               <entry>style</entry>
 
               <entry>Style module for conversion of the docbook files to
@@ -1064,25 +1100,39 @@
             </row>
 
             <row>
-              <entry> </entry>
-
               <entry>xslt</entry>
 
               <entry>Transformation module for conversion of the docbook files
               to usable output.</entry>
             </row>
+          </tbody>
+        </tgroup>
+      </table>
 
+      <table cellpadding="" cellspacing="10" class="">
+        <title>List of Geomajas face modules</title>
+
+        <tgroup align="left" cols="2">
+          <colspec colnum="1" colwidth="1*" />
+
+          <colspec colnum="2" colwidth="2*" />
+
+          <thead>
             <row>
-              <entry>face</entry>
+              <entry>Name</entry>
 
+              <entry>Purpose</entry>
+            </row>
+          </thead>
+
+          <tbody>
+            <row>
               <entry>geomajas-dojo-client</entry>
 
               <entry>Client side module for the dojo AJAX interface.</entry>
             </row>
 
             <row>
-              <entry> </entry>
-
               <entry>geomajas-dojo-client-shrinksafe</entry>
 
               <entry>Server side module for the dojo AJAX interface, after
@@ -1090,84 +1140,104 @@
             </row>
 
             <row>
-              <entry> </entry>
-
               <entry>geomajas-dojo-server</entry>
 
               <entry>Server side module for the dojo AJAX interface.</entry>
             </row>
 
             <row>
-              <entry> </entry>
-
               <entry>geomajas-gwt-client</entry>
 
               <entry>Module which contains the GWT face. This contains both
               client and server side code for the face, the split is handled
               by GWT (using GWT conventions).</entry>
             </row>
+          </tbody>
+        </tgroup>
+      </table>
 
+      <table cellpadding="" cellspacing="10" class="">
+        <title>List of Geomajas plug-in modules</title>
+
+        <tgroup align="left" cols="2">
+          <colspec colnum="1" colwidth="1*" />
+
+          <colspec colnum="2" colwidth="2*" />
+
+          <thead>
             <row>
-              <entry>plugin</entry>
+              <entry>Name</entry>
 
+              <entry>Purpose</entry>
+            </row>
+          </thead>
+
+          <tbody>
+            <row>
               <entry>geomajas-layer-geotools</entry>
 
               <entry>Support for any data format GeoTools supports.</entry>
             </row>
 
             <row>
-              <entry> </entry>
-
               <entry>geomajas-layer-google</entry>
 
               <entry>Support for GoogleMaps raster format.</entry>
             </row>
 
             <row>
-              <entry> </entry>
-
               <entry>geomajas-layer-hibernate</entry>
 
               <entry>Support for database formats through Hibernate.</entry>
             </row>
 
             <row>
-              <entry> </entry>
-
               <entry>geomajas-layer-openstreetmap</entry>
 
               <entry>Support for OpenStreetMap raster format.</entry>
             </row>
 
             <row>
-              <entry> </entry>
-
               <entry>geomajas-layer-wms</entry>
 
               <entry>Support for the WMS raster format.</entry>
             </row>
 
             <row>
-              <entry> </entry>
-
               <entry>geomajas-plugin-printing</entry>
 
               <entry>Adds advanced printing capabilities.</entry>
             </row>
 
             <row>
-              <entry> </entry>
-
               <entry>geomajas-plugin-springsecurity</entry>
 
               <entry>Simple security service which allows including the entire
               security configuration in the spring configuration files, making
               the configuration static.</entry>
             </row>
+          </tbody>
+        </tgroup>
+      </table>
 
+      <table cellpadding="" cellspacing="10" class="">
+        <title>List of Geomajas test modules</title>
+
+        <tgroup align="left" cols="2">
+          <colspec colnum="1" colwidth="1*" />
+
+          <colspec colnum="2" colwidth="2*" />
+
+          <thead>
             <row>
-              <entry>test</entry>
+              <entry>Name</entry>
 
+              <entry>Purpose</entry>
+            </row>
+          </thead>
+
+          <tbody>
+            <row>
               <entry>geomajas-test-integration</entry>
 
               <entry>Integrations tests, currently mostly testing the security

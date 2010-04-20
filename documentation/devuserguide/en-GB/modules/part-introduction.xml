@@ -81,11 +81,22 @@
       <para>List of contributors for this manual:</para>
 
       <para><itemizedlist>
-		  <listitem><para>Pieter De Graef</para></listitem>
-		  <listitem><para>Jan De Moerloose</para></listitem>
-		  <listitem><para>Joachim Van der Auwera</para></listitem>
-		  <listitem><para>Frank Wynants</para></listitem>
-	  </itemizedlist></para>
+          <listitem>
+            <para>Pieter De Graef</para>
+          </listitem>
+
+          <listitem>
+            <para>Jan De Moerloose</para>
+          </listitem>
+
+          <listitem>
+            <para>Joachim Van der Auwera</para>
+          </listitem>
+
+          <listitem>
+            <para>Frank Wynants</para>
+          </listitem>
+        </itemizedlist></para>
     </section>
   </chapter>
 </part>
