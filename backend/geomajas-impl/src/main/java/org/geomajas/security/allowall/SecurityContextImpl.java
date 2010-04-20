@@ -32,6 +32,7 @@ import java.util.Map;
 
 import org.geomajas.configuration.LayerInfo;
 import org.geomajas.layer.Layer;
+import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.security.AreaAuthorization;
 import org.geomajas.security.AttributeAuthorization;
@@ -293,10 +294,12 @@ public class SecurityContextImpl implements SecurityContext {
 	 * @inheritDoc
 	 */
 	public boolean isLayerUpdateAuthorized(String layerId) {
-		for (Authentication authentication : authentications) {
-			for (BaseAuthorization authorization : authentication.getAuthorizations()) {
-				if (authorization.isLayerUpdateAuthorized(layerId)) {
-					return true;
+		if (!isLayerUpdateCapable(layerId)) {
+			for (Authentication authentication : authentications) {
+				for (BaseAuthorization authorization : authentication.getAuthorizations()) {
+					if (authorization.isLayerUpdateAuthorized(layerId)) {
+						return true;
+					}
 				}
 			}
 		}
@@ -307,10 +310,12 @@ public class SecurityContextImpl implements SecurityContext {
 	 * @inheritDoc
 	 */
 	public boolean isLayerCreateAuthorized(String layerId) {
-		for (Authentication authentication : authentications) {
-			for (BaseAuthorization authorization : authentication.getAuthorizations()) {
-				if (authorization.isLayerCreateAuthorized(layerId)) {
-					return true;
+		if (!isLayerCreateCapable(layerId)) {
+			for (Authentication authentication : authentications) {
+				for (BaseAuthorization authorization : authentication.getAuthorizations()) {
+					if (authorization.isLayerCreateAuthorized(layerId)) {
+						return true;
+					}
 				}
 			}
 		}
@@ -321,10 +326,12 @@ public class SecurityContextImpl implements SecurityContext {
 	 * @inheritDoc
 	 */
 	public boolean isLayerDeleteAuthorized(String layerId) {
-		for (Authentication authentication : authentications) {
-			for (BaseAuthorization authorization : authentication.getAuthorizations()) {
-				if (authorization.isLayerDeleteAuthorized(layerId)) {
-					return true;
+		if (isLayerUpdateCapable(layerId)) {
+			for (Authentication authentication : authentications) {
+				for (BaseAuthorization authorization : authentication.getAuthorizations()) {
+					if (authorization.isLayerDeleteAuthorized(layerId)) {
+						return true;
+					}
 				}
 			}
 		}
@@ -429,6 +436,9 @@ public class SecurityContextImpl implements SecurityContext {
 	 * @inheritDoc
 	 */
 	public Geometry getUpdateAuthorizedArea(final String layerId) {
+		if (!isLayerUpdateCapable(layerId)) {
+			return null;
+		}
 		return areaCombine(layerId, new AreaCombineGetter() {
 
 			public Geometry get(AreaAuthorization auth) {
@@ -453,6 +463,9 @@ public class SecurityContextImpl implements SecurityContext {
 	 * @inheritDoc
 	 */
 	public Geometry getCreateAuthorizedArea(final String layerId) {
+		if (!isLayerCreateCapable(layerId)) {
+			return null;
+		}
 		return areaCombine(layerId, new AreaCombineGetter() {
 
 			public Geometry get(AreaAuthorization auth) {
@@ -477,6 +490,9 @@ public class SecurityContextImpl implements SecurityContext {
 	 * @inheritDoc
 	 */
 	public Geometry getDeleteAuthorizedArea(final String layerId) {
+		if (!isLayerDeleteCapable(layerId)) {
+			return null;
+		}
 		return areaCombine(layerId, new AreaCombineGetter() {
 
 			public Geometry get(AreaAuthorization auth) {
@@ -526,6 +542,9 @@ public class SecurityContextImpl implements SecurityContext {
 
 	/** @inheritDoc */
 	public boolean isFeatureUpdateAuthorized(final String layerId, final InternalFeature feature) {
+		if (!isLayerUpdateCapable(layerId)) {
+			return false;
+		}
 		return policyCombine(new AuthorizationGetter<BaseAuthorization>() {
 
 			public boolean get(BaseAuthorization auth) {
@@ -541,6 +560,9 @@ public class SecurityContextImpl implements SecurityContext {
 	/** @inheritDoc */
 	public boolean isFeatureUpdateAuthorized(final String layerId, final InternalFeature orgFeature,
 			final InternalFeature newFeature) {
+		if (!isLayerUpdateCapable(layerId)) {
+			return false;
+		}
 		return policyCombine(new AuthorizationGetter<BaseAuthorization>() {
 
 			public boolean get(BaseAuthorization auth) {
@@ -555,6 +577,9 @@ public class SecurityContextImpl implements SecurityContext {
 
 	/** @inheritDoc */
 	public boolean isFeatureDeleteAuthorized(final String layerId, final InternalFeature feature) {
+		if (!isLayerDeleteCapable(layerId)) {
+			return false;
+		}
 		return policyCombine(new AuthorizationGetter<BaseAuthorization>() {
 
 			public boolean get(BaseAuthorization auth) {
@@ -569,6 +594,9 @@ public class SecurityContextImpl implements SecurityContext {
 
 	/** @inheritDoc */
 	public boolean isFeatureCreateAuthorized(final String layerId, final InternalFeature feature) {
+		if (!isLayerCreateCapable(layerId)) {
+			return false;
+		}
 		return policyCombine(new AuthorizationGetter<BaseAuthorization>() {
 
 			public boolean get(BaseAuthorization auth) {
@@ -605,6 +633,9 @@ public class SecurityContextImpl implements SecurityContext {
 	 */
 	public boolean isAttributeWritable(final String layerId, final InternalFeature feature,
 			final String attributeName) {
+		if (!isLayerUpdateCapable(layerId)) {
+			return false;
+		}
 		return policyCombine(new AuthorizationGetter<BaseAuthorization>() {
 
 			public boolean get(BaseAuthorization auth) {
@@ -618,6 +649,22 @@ public class SecurityContextImpl implements SecurityContext {
 			}
 		});
 	}
+
+	private boolean isLayerUpdateCapable(String layerId) {
+		VectorLayer layer = configurationService.getVectorLayer(layerId);
+		return layer.isUpdateCapable();
+	}
+
+	private boolean isLayerCreateCapable(String layerId) {
+		VectorLayer layer = configurationService.getVectorLayer(layerId);
+		return layer.isCreateCapable();
+	}
+
+	private boolean isLayerDeleteCapable(String layerId) {
+		VectorLayer layer = configurationService.getVectorLayer(layerId);
+		return layer.isDeleteCapable();
+	}
+
 
 	/**
 	 * Interface to unify/generalise the different areas.
