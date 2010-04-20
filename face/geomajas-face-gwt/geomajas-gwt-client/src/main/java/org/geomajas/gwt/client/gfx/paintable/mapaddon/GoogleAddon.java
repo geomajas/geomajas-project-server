@@ -38,7 +38,7 @@ import com.google.gwt.core.client.JavaScriptObject;
  * Google map as opposed to the tiles that are calculated on the server. For normal Geomajas use this map should be
  * hidden as it does not automatically scale to continuous zoom levels. This add-on requires the Google maps library !
  * </p>
- * 
+ *
  * @author Jan De Moerloose
  */
 public class GoogleAddon extends MapAddon implements MapViewChangedHandler {
