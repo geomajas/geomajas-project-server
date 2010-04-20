@@ -23,7 +23,6 @@
 package org.geomajas.gwt.client.map.event;
 
 import org.geomajas.global.Api;
-import org.geomajas.global.UserImplemented;
 import org.geomajas.gwt.client.map.layer.Layer;
 
 import com.google.gwt.event.shared.GwtEvent;
