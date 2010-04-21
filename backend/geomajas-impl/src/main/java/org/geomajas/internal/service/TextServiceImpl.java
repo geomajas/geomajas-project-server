@@ -20,6 +20,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package org.geomajas.internal.service;
 
 import java.awt.Font;
@@ -35,7 +36,6 @@ import org.springframework.stereotype.Component;
  * AWT-based text service implementation. This should work in a headless server environment.
  * 
  * @author Jan De Moerloose
- * 
  */
 @Component
 public class TextServiceImpl implements TextService {

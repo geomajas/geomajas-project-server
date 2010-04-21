@@ -49,13 +49,17 @@ public class FontStyleInfo implements Serializable {
 
 	private float opacity = -1;
 
-	/** @return Return the font size. */
+	/**
+	 * Get the font size.
+	 *
+	 * @return font size
+	 */
 	public int getSize() {
 		return size;
 	}
 
 	/**
-	 * Set the font's size.
+	 * Set the font size.
 	 * 
 	 * @param size
 	 *            The new font size.
@@ -64,13 +68,17 @@ public class FontStyleInfo implements Serializable {
 		this.size = size;
 	}
 
-	/** @return Get the font family (Verderna, Arial, ...). */
+	/**
+	 * Get the font family.
+	 *
+	 * @return font family
+	 */
 	public String getFamily() {
 		return family;
 	}
 
 	/**
-	 * Set the font family (Verdana, Arial, ...).
+	 * Set the font family ("Verdana", "Arial", ...).
 	 * 
 	 * @param family
 	 *            The new font family.
@@ -79,13 +87,17 @@ public class FontStyleInfo implements Serializable {
 		this.family = family;
 	}
 
-	/** @return Return the font weight (normal, bold) */
+	/**
+	 * Get the font weight.
+	 *
+	 * @return font weight ("normal", "bold")
+	 */
 	public String getWeight() {
 		return weight;
 	}
 
 	/**
-	 * Set the font weight (normal, bold).
+	 * Set the font weight ("normal", "bold").
 	 * 
 	 * @param weight
 	 *            The new font weight.
@@ -94,13 +106,17 @@ public class FontStyleInfo implements Serializable {
 		this.weight = weight;
 	}
 
-	/** @return Return the font style (normal, italic, ...) */
+	/**
+	 * Get the font style.
+	 *
+	 * @return font style ("normal", "italic", ...)
+	 */
 	public String getStyle() {
 		return style;
 	}
 
 	/**
-	 * Set the font style (normal, italic, ...).
+	 * Set the font style ("normal", "italic", ...).
 	 * 
 	 * @param style
 	 *            The new font style.
@@ -109,7 +125,11 @@ public class FontStyleInfo implements Serializable {
 		this.style = style;
 	}
 
-	/** @return Return the font color (as HTML color). */
+	/**
+	 * Get the font color.
+	 *
+	 * @return font color (as HTML color)
+	 */
 	public String getColor() {
 		return color;
 	}
@@ -124,7 +144,11 @@ public class FontStyleInfo implements Serializable {
 		this.color = color;
 	}
 
-	/** @return Return the font opacity (between 0 and 1) */
+	/**
+	 * Get the font opacity.
+	 *
+	 * @return font opacity (between 0 and 1)
+	 */
 	public float getOpacity() {
 		return opacity;
 	}

@@ -20,6 +20,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package org.geomajas.service;
 
 import java.awt.geom.Rectangle2D;
@@ -32,7 +33,6 @@ import org.geomajas.configuration.FontStyleInfo;
  * environments.
  * 
  * @author Jan De Moerloose
- * 
  */
 public interface TextService {
 

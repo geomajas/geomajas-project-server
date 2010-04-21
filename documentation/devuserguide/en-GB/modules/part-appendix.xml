@@ -82,6 +82,11 @@
             "<code>org.geomajas.service</code>" to
             "<code>org.geomajas.layer</code>".</para>
           </listitem>
+
+          <listitem>
+            <para>In <code>LabelStyleInfo</code> the style for the font is now
+            of type <code>FontStyleInfo</code>.</para>
+          </listitem>
         </itemizedlist></para>
     </section>
 
