@@ -32,6 +32,7 @@ import org.geomajas.gwt.client.map.MapView.ZoomOption;
 import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.widget.MapWidget;
 
+import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.google.gwt.user.client.Event;
 import com.smartgwt.client.types.Cursor;
@@ -113,6 +114,11 @@ public class ZoomAddon extends MapAddon {
 			mapWidget.getMapModel().getMapView().scale(delta, ZoomOption.LEVEL_CHANGE);
 			event.stopPropagation();
 		}
+
+		public void onMouseDown(MouseDownEvent event) {
+			// Don't propagate to the active controller on the map:
+			event.stopPropagation();
+		}
 	}
 
 	/**
@@ -129,6 +135,11 @@ public class ZoomAddon extends MapAddon {
 		public void onMouseUp(MouseUpEvent event) {
 			Bbox max = mapWidget.getMapModel().getMapView().getMaxBounds();
 			mapWidget.getMapModel().getMapView().applyBounds(max, ZoomOption.LEVEL_FIT);
+			event.stopPropagation();
+		}
+
+		public void onMouseDown(MouseDownEvent event) {
+			// Don't propagate to the active controller on the map:
 			event.stopPropagation();
 		}
 	}
