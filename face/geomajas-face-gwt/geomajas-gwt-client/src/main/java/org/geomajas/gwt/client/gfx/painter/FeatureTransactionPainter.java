@@ -144,22 +144,20 @@ public class FeatureTransactionPainter implements Painter {
 	}
 	
 	private void paint(Object parent, String name, LineString lineString, GraphicsContext graphics) {
-		// Draw the group
-		graphics.drawGroup(parent, lineString);
 		// Draw LineString fill area:
-		graphics.drawLine(lineString, name + ".area", lineString, lineStringStyle);
+		graphics.drawLine(parent, name + ".area", lineString, lineStringStyle);
 
 		// Draw individual edges:
 		Coordinate[] coordinates = lineString.getCoordinates();
 		for (int i = 1; i < coordinates.length; i++) {
 			LineString edge = lineString.getGeometryFactory().createLineString(
 					new Coordinate[] { coordinates[i - 1], coordinates[i] });
-			graphics.drawLine(lineString, name + ".edge" + i, edge, edgeStyle);
+			graphics.drawLine(parent, name + ".edge" + i, edge, edgeStyle);
 		}
 
 		// Draw individual vertices:
 		for (int i = 0; i < coordinates.length; i++) {
-			graphics.drawCircle(lineString, name + ".coordinate" + i, coordinates[i], 5.0f, pointStyle);
+			graphics.drawCircle(parent, name + ".coordinate" + i, coordinates[i], 5.0f, pointStyle);
 		}
 	}
 

@@ -160,9 +160,6 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 			for (Layer<?> layer : layers) {
 				if (layer.isShowing()) {
 					layer.accept(visitor, group, bounds, recursive);
-					if (layer instanceof VectorLayer) {
-						// nrDeferred++;
-					}
 				} else {
 					// JDM: paint the top part of the layer, if not we loose the map order
 					layer.accept(visitor, group, bounds, false);
