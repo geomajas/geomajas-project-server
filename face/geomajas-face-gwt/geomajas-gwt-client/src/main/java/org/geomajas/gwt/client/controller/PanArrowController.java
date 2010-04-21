@@ -61,8 +61,8 @@ public class PanArrowController extends AbstractGraphicsController {
 
 		if (NativeEvent.BUTTON_LEFT == event.getNativeButton()) {
 			Bbox currView = mapWidget.getMapModel().getMapView().getBounds();
-			double w = currView.getWidth() / 2;
-			double h = currView.getHeight() / 2;
+			double w = currView.getWidth() / 3;
+			double h = currView.getHeight() / 3;
 
 			mapWidget.getMapModel().getMapView().translate(direction.getX() * w, direction.getY() * h);
 			event.stopPropagation();
