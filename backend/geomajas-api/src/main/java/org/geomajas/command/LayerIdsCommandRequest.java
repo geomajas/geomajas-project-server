@@ -55,8 +55,7 @@ public class LayerIdsCommandRequest implements CommandRequest {
 	 *
 	 * @param layerIds layer ids
 	 */
-	public void setLayerId(String[] layerIds) {
+	public void setLayerIds(String[] layerIds) {
 		this.layerIds = layerIds;
 	}
-
 }
