@@ -86,14 +86,14 @@ public class GoogleSample extends SamplePanel {
 	}
 
 	public String getSourceFileName() {
-		return "classpath:org/geomajas/gwt/client/samples/mapwidget/GoogleSample.txt";
+		return "classpath:org/geomajas/example/gwt/client/samples/layer/GoogleSample.txt";
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "classpath:org/geomajas/gwt/samples/mapwidget/mapGoogle.xml",
-				"classpath:org/geomajas/gwt/samples/mapwidget/layerGoogle.xml",
-				"classpath:org/geomajas/gwt/samples/mapwidget/mapGoogleSat.xml",
-				"classpath:org/geomajas/gwt/samples/mapwidget/layerGoogleSat.xml" };
+		return new String[] { "classpath:org/geomajas/example/gwt/clientcfg/layer/mapGoogle.xml",
+				"classpath:org/geomajas/example/gwt/clientcfg/layer/mapGoogleSat.xml",
+				"classpath:org/geomajas/example/gwt/servercfg/raster/layerGoogle.xml",
+				"classpath:org/geomajas/example/gwt/servercfg/raster/layerGoogleSat.xml" };
 	}
 
 	public String ensureUserLoggedIn() {
