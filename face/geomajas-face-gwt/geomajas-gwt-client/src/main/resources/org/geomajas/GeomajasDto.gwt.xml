@@ -13,6 +13,7 @@
 		<include name="CommandResponse.java"/>
 		<include name="EmptyCommandRequest.java"/>
 		<include name="LayerIdCommandRequest.java"/>
+		<include name="LayerIdsCommandRequest.java"/>
 		<include name="SuccessCommandResponse.java"/>
 	</source>
 	<source path="layer">
