@@ -82,11 +82,10 @@ public class UserMaximumExtentCommand implements Command<UserMaximumExtentReques
 	public void execute(UserMaximumExtentRequest request, UserMaximumExtentResponse response) throws Exception {
 		String[] layers;
 		ArrayList<String> tempLayers = new ArrayList<String>();
-		String includeLayers = request.getIncludeLayers();
+		String[] includeLayers = request.getLayerIds();
 		boolean excludeRasterLayers = request.isExcludeRasterLayers();
-		if (includeLayers != null && includeLayers.length() > 0) {
-			for (String layer : includeLayers.split(",")) {
-				String layerId = layer.trim();
+		if (includeLayers != null && includeLayers.length > 0) {
+			for (String layerId : includeLayers) {
 				if (!securityContext.isLayerVisible(layerId)) {
 					throw new GeomajasSecurityException(ExceptionCode.LAYER_NOT_VISIBLE, layerId);
 				}

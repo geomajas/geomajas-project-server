@@ -20,51 +20,43 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.geomajas.command.dto;
 
-import org.geomajas.command.CommandRequest;
-import org.geomajas.command.LayerIdsCommandRequest;
+package org.geomajas.command;
+
+import org.geomajas.global.Api;
 
 /**
- * Request object for {@link org.geomajas.command.configuration.UserMaximumExtentCommand}.
- * 
+ * Command request object which contains a list of layer ids. Should be extended when you need multiple layer ids as
+ * request parameter.
+ * <p/>
+ * It is intended that this may be used for transaction support to assure transactions are started for relevant layers
+ * only.
+ *
  * @author Joachim Van der Auwera
+ * @since 1.6.0
  */
-public class UserMaximumExtentRequest extends LayerIdsCommandRequest {
+@Api(allMethods = true)
+public class LayerIdsCommandRequest implements CommandRequest {
 
-	private static final long serialVersionUID = 151L;
+	private static final long serialVersionUID = 160L;
+	private String[] layerIds;
 
-	private boolean excludeRasterLayers;
-
-	private String crs;
-
-	public UserMaximumExtentRequest() {
-	}
-
-	public boolean isExcludeRasterLayers() {
-		return excludeRasterLayers;
-	}
-
-	public void setExcludeRasterLayers(boolean excludeRasterLayers) {
-		this.excludeRasterLayers = excludeRasterLayers;
+	/**
+	 * Get the layer ids.
+	 *
+	 * @return layer ids
+	 */
+	public String[] getLayerIds() {
+		return layerIds;
 	}
 
 	/**
-	 * Get the coordinate reference space which should be used for the returned bounding box.
-	 * 
-	 * @return crs
+	 * Set the layer ids.
+	 *
+	 * @param layerIds layer ids
 	 */
-	public String getCrs() {
-		return crs;
+	public void setLayerId(String[] layerIds) {
+		this.layerIds = layerIds;
 	}
 
-	/**
-	 * Set the coordinate reference space which should be used for the returned bounding box.
-	 * 
-	 * @param crs
-	 *            crs
-	 */
-	public void setCrs(String crs) {
-		this.crs = crs;
-	}
 }

@@ -23,6 +23,7 @@
 package org.geomajas.command.dto;
 
 import org.geomajas.command.CommandRequest;
+import org.geomajas.command.LayerIdsCommandRequest;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.global.Api;
 import org.geomajas.global.GeomajasConstant;
@@ -34,7 +35,7 @@ import org.geomajas.global.GeomajasConstant;
  * @since 1.6.0
  */
 @Api(allMethods = true)
-public class SearchByLocationRequest implements CommandRequest {
+public class SearchByLocationRequest extends LayerIdsCommandRequest {
 
 	private static final long serialVersionUID = 151L;
 
@@ -92,11 +93,6 @@ public class SearchByLocationRequest implements CommandRequest {
 	 * the given geometry for at least the given ratio. This number must always be a value between 0 and 1.
 	 */
 	private float ratio = -1;
-
-	/**
-	 * A list of layers we want to retrieve features from.
-	 */
-	private String[] layerIds;
 
 	/**
 	 * The type of search. Can be either 1 (=SEARCH_FIRST_LAYER), or 2 (=SEARCH_ALL_LAYERS).
@@ -193,24 +189,6 @@ public class SearchByLocationRequest implements CommandRequest {
 	 */
 	public void setRatio(float ratio) {
 		this.ratio = ratio;
-	}
-
-	/**
-	 * Get the list of layers we want to retrieve features from.
-	 * 
-	 * @return list of layer ID's
-	 */
-	public String[] getLayerIds() {
-		return layerIds;
-	}
-
-	/**
-	 * Set a new list of layer ID's to search in.
-	 * 
-	 * @param layerIds
-	 */
-	public void setLayerIds(String[] layerIds) {
-		this.layerIds = layerIds;
 	}
 
 	/**

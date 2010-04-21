@@ -2395,8 +2395,8 @@
 
                 <entry><itemizedlist>
                     <listitem>
-                      <para><emphasis>includeLayers</emphasis>: comma
-                      separated list of layers to include.</para>
+                      <para><emphasis>layerIds</emphasis>: list of layers to
+                      include.</para>
                     </listitem>
 
                     <listitem>
