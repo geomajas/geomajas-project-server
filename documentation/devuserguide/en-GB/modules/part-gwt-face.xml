@@ -54,8 +54,7 @@
 
       <para>The execution will immediately return a <code>Deferred</code>
       object, that can be used to add more callback methods, both for
-      successful as for an erroneous result of the command's execution.
-      </para>
+      successful as for an erroneous result of the command's execution.</para>
 
       <xi:include href="../listing/GwtCommandExecution.xml"
                   xmlns:xi="http://www.w3.org/2001/XInclude" />
@@ -262,23 +261,22 @@
         <title>Selection of features</title>
 
         <para>A feature in a vector layer has the possibility to be selected.
-        Selection usually changes the color of the feature on the map or in a
-        table to make it stand out. The actual process of selection is handled
-        by the <code>MapModel</code>. In the map model, clones of the selected
-        features are stored. After all, it is possible that by moving away
-        from a certain area, the selected features are no longer in sight, and
-        perhaps no longer in the client layer-cache. Still their contents may
-        be needed for specific tasks.</para>
+        Selection usually changes the colour of the feature on the map or in a
+        table to make it stand out. The actual selecting handled by the
+        <code>MapModel</code>. In the map model, the selected features are
+        stored. After all, it is possible that by moving away from a certain
+        area, the selected features are no longer in sight, and perhaps no
+        longer in the client layer-cache. Still their contents may be needed
+        for specific tasks.</para>
 
         <para>The <code>MapModel</code> fires events when changes in selection
-        occur. It will fire either <code>FeatureSelectedEvent or
-        <code>FeatureDeselectedEvent</code></code>. The <code>MapModel</code>
+        occur. It will fire either <code>FeatureSelectedEvent</code> or
+        <code>FeatureDeselectedEvent</code>. The <code>MapModel</code>
         implements the <code>HasFeatureSelectionHandler</code> interface so
         other components can register with the <code>MapModel</code> as
         <code>FeatureSelectionHandler</code>. For example the
-        <code>MapWidget</code> will register itself as a handler so that it
-        knows when a feature is selected or deselected and can redraw it
-        accordingly.</para>
+        <code>MapWidget</code> will register itself as a handler to know when
+        a feature is selected or deselected and redraw it accordingly.</para>
 
         <figure>
           <title>Selection events and handlers</title>
@@ -291,16 +289,16 @@
           </mediaobject>
         </figure>
 
-        <para>So, when writing code that needs to react upon the selection of
+        <para>When writing code that needs to react upon the selection of
         features, implement the <code>FeatureSelectionHandler</code>
         interface, and register yourself with the
         <code>MapModel</code>.</para>
 
         <para><note>
-            <para>Individual vector layers too can fire selection events.
-            Actually the MapModel propagates the events from the individual
-            vector layers, so that the user need only install his handlers in
-            one place.</para>
+            <para>Individual vector layers can also fire selection events.
+            Actually the <code>MapModel</code> propagates the events from the
+            individual vector layers, so that the user need only install his
+            handlers in one place.</para>
           </note></para>
       </section>
     </section>
@@ -310,28 +308,26 @@
 
       <para>The spatial package (<code>org.geomajas.gwt.client.spatial</code>)
       contains a collection of math and geometry related classes and utilities
-      to provide all the calculating power one should need. If really complex
-      calculations need to be performed, it's best to let the server (JTS)
-      handle it anyway. The root of the package contains the general
-      mathematical definitions of a Vector, Matrix, LineSegment, and so on. It
-      also provides a general math library and the
+      to provide all the client-side calculations one should need. If really
+      complex calculations need to be performed, it's best to let the server
+      (probably using JTS) handle it anyway. The root of the package contains
+      the general mathematical definitions of a Vector, Matrix, LineSegment,
+      and so on. It also provides a general math library and the
       <code>org.geomajas.gwt.client.spatial.WorldViewTransformer</code>.</para>
 
       <para>The <code>WorldViewTransformer</code> in particular can be a very
-      valuable tool. It allows for the transforming of coordinates, bounding
-      boxes and geometries between the 3 pre-defined spaces (world, view,
-      pan). See the rendering manual for more information on the differences
-      between these 3 spaces.</para>
+      valuable tool. It allows you to transform coordinates, bounding boxes
+      and geometries between the 3 pre-defined spaces (world, view,
+      pan).</para>
 
       <section>
         <title>Geometry definitions</title>
 
         <para>All <code>Geometry</code> definitions in the GWT face are based
-        upon the geometries from the Java Topology Suite, and can be found in
-        the following package:
-        <code>org.geomajas.gwt.client.spatial.geometry</code>. These
-        geometries in turn have been based upon the OGC simple feature
-        specification. Supported geometries are:</para>
+        on geometries from JTS, the Java Topology Suite, and the OGC simple
+        feature specification. The classes can be found in the
+        <code>org.geomajas.gwt.client.spatial.geometry</code> package.
+        Supported geometries are:</para>
 
         <itemizedlist>
           <listitem>
@@ -340,17 +336,17 @@
           </listitem>
 
           <listitem>
-            <para><code>MultiPoint</code>: A geometry containing multiple
+            <para><code>MultiPoint</code>: a geometry containing multiple
             <code>Point</code> geometries.</para>
           </listitem>
 
           <listitem>
-            <para><code>LineString</code>: A list of connected coordinates.
+            <para><code>LineString</code>: a list of connected coordinates.
             Sometimes also called a polyline.</para>
           </listitem>
 
           <listitem>
-            <para><code>LinearRing</code>: An extension of the
+            <para><code>LinearRing</code>: an extension of the
             <code>LineString</code> geometry that expects the last coordinate
             to be equal to the first coordinate. In other words, a
             <code>LinearRing</code> is a closed
@@ -358,12 +354,12 @@
           </listitem>
 
           <listitem>
-            <para><code>MultiLineString</code>: A geometry containing multiple
+            <para><code>MultiLineString</code>: a geometry containing multiple
             <code>LineString</code> geometries.</para>
           </listitem>
 
           <listitem>
-            <para><code>Polygon</code>: A <code>Polygon</code> is a two-part
+            <para><code>Polygon</code>: a <code>Polygon</code> is a two-part
             geometry, consisting of an exterior <code>LinearRing</code> and a
             list of interior <code>LinearRings</code>. The exterior
             <code>LinearRing</code>, also called the shell, is the outer hull
@@ -372,7 +368,7 @@
           </listitem>
 
           <listitem>
-            <para><code>MultiPolygon</code>: A Geometry containing multiple
+            <para><code>MultiPolygon</code>: a geometry containing multiple
             <code>Polygon</code> geometries.</para>
           </listitem>
         </itemizedlist>
@@ -381,39 +377,26 @@
       <section>
         <title>Editing geometries</title>
 
-        <para>The Geometry implementations themselves do not allow any setters
-        methods. Instead the editing of geometries is done through a series of
-        operations, all implementing the
-        <code><code>org.geomajas.gwt.client.spatial.geometry.operation.GeometryOperation</code></code>
-        interface. This interface consists of only one method, that takes in a
-        geometry, and returns the result in the form of a newly created
+        <para>The <code>Geometry</code> implementations themselves do not have
+        any setters methods. Instead the editing of geometries is done through
+        a series of operations, all implementing the <code>
+            <code>org.geomajas.gwt.client.spatial.geometry.operation.GeometryOperation</code>
+          </code> interface. This interface consists of only one method,
+        accepting a geometry, and returning the result as a new
         geometry.</para>
 
         <para>Geometries have no public constructors, so the creation of new
-        geometries has to happen trough some factory instance. This is where
-        the
-        <code>org.geomajas.gwt.client.spatial.geometry.GeometryFactory</code>
-        comes into play. A <code>GeometryFactory</code> can be created using a
-        spatial reference id and a certain precision, but it can also be
-        retrieved from any geometry instance (where srid and precision are
-        automatically correct).</para>
+        geometries is done using a factory,
+        <code>org.geomajas.gwt.client.spatial.geometry.GeometryFactory</code>.
+        A <code>GeometryFactory</code> can be created using a spatial
+        reference id and a certain precision, but it can also be retrieved
+        from any geometry instance (where srid and precision are automatically
+        correct).</para>
 
-        <para><code>GeometryOperation</code> interface:<programlisting>/**
- * General interface for operations on Geometry objects. All operations should return a
- * new Geometry instead of changing the original.
- */
-public interface GeometryOperation {
+        <para><code>GeometryOperation</code> interface:</para>
 
-    /**
-     * The main edit function. It is passed a geometry object. If other values are needed,
-     * pass them through the constructor, or via setters.
-     * 
-     * @param geometry
-     *            The {@link Geometry} object to be adjusted.
-     * @return Returns the resulting geometry, leaving the original unharmed.
-     */
-    Geometry execute(Geometry geometry);
-}</programlisting></para>
+        <xi:include href="../listing/GeometryOperation.xml"
+                    xmlns:xi="http://www.w3.org/2001/XInclude" />
       </section>
 
       <section>
@@ -423,7 +406,7 @@ public interface GeometryOperation {
         called the
         <code>org.geomajas.gwt.client.spatial.snapping.Snapper</code>. It is
         the main handler for snapping to coordinates. It supports different
-        modes of operating and different algorithms for the actual snapping.
+        modes of operation and different algorithms for the actual snapping.
         The different algorithms to use are defined in the vector layer
         configuration files, while the modes are defined by the different
         implementations of the <code>SnappingMode</code> class. Let us first
@@ -431,7 +414,7 @@ public interface GeometryOperation {
 
         <itemizedlist>
           <listitem>
-            <para><emphasis>ALL_GEOMETRIES_EQUAL</emphasis>: This snapping
+            <para><emphasis>ALL_GEOMETRIES_EQUAL</emphasis>: this snapping
             mode considers all geometries equal when it comes to determining
             where to snap to. Depending on the snapping algorithm used, it
             will simply consider all nearby geometries.</para>
@@ -439,67 +422,65 @@ public interface GeometryOperation {
 
           <listitem>
             <para><emphasis>PRIORITY_TO_INTERSECTING_GEOMETRIES</emphasis>:
-            This snapping mode tries to snap to intersecting geometries before
-            trying the general approach. When search for a snapping point for
-            a given point, this mode will first search for intersecting
-            geometries and try to get a snapping point there. If no snapping
-            point can be found, it will consider all nearby geometries (just
-            like the ALL_GEOMETRIES_EQUAL).</para>
+            this snapping mode tries to snap to intersecting geometries before
+            trying the general approach. When searching a snapping coordinate
+            for a given point, this mode will first search for intersecting
+            geometries and try to get a snap to that. If no snapping point can
+            be found, it will consider all nearby geometries (like
+            ALL_GEOMETRIES_EQUAL).</para>
           </listitem>
         </itemizedlist>
 
-        <para>The snapping rules themselves are defined in the XML
-        configurations server-side. Each vector layer can have one or many of
-        those snapping rules. For each of those rules, 3 fields must be filled
-        in:</para>
+        <para>The snapping rules themselves are defined in the server-side
+        configuration. Each vector layer can have many snapping rules. For
+        each rule, 3 fields must be filled:</para>
 
         <itemizedlist>
           <listitem>
-            <para><emphasis>layer</emphasis>: The target layer to snap
+            <para><emphasis>layer</emphasis>: the target layer to snap
             to.</para>
           </listitem>
 
           <listitem>
-            <para><emphasis>distance</emphasis>: The distance over which to
+            <para><emphasis>distance</emphasis>: the distance over which to
             snap. This distance must be expressed in the map's coordinate
             system.</para>
           </listitem>
 
           <listitem>
-            <para><emphasis>type</emphasis>: The actual snapping algorithm to
-            use. At the moment 2 types of snapping algorithms are supported:
-            to the closest end point (type=1), and to the nearest point
-            (type=2). The closest end-point is any point that is actually
-            stored in one of the geometries, while the neareest means any
-            point on any of the geometries' edges can also be a snapping
-            point. Needless to say, the nearest algorithm is heavier then the
-            closest point.</para>
+            <para><emphasis>type</emphasis>: the snapping algorithm to use. At
+            the moment 2 types of snapping algorithms are supported: to the
+            nearest point (type=1), and to the nearest edge (type=2). For
+            nearest point snapping can only occur to any coordinate which is a
+            end-point for a geometry, for nearest edge that can be any
+            coordinate on the edge of the geometry. Needless to say, the
+            nearest edge requires more calculating power than the nearest
+            point.</para>
           </listitem>
         </itemizedlist>
 
         <para><emphasis role="bold">Snapping on the map</emphasis></para>
 
-        <para>When a <code>GraphicsController</code> for the map needs to make
-        use of snapping (i.e. the editing controllers), then they should
-        extend the
+        <para>When a <code>GraphicsController</code> for the map needs to use
+        snapping (i.e. editing controllers), they should extend the
         <code>org.geomajas.gwt.client.controller.AbstractSnappingController</code>
         class. This class extends the <code>GraphicsController</code> class
         (the base class for all Geomajas map controllers), and overwrites the
         <code>getScreenPosition</code> and <code>getWorldPosition</code>
-        methods so that they can return snapped points instead of actual
-        points. The <code>AbstractSnappingController</code> also supports the
-        on-the-fly activation and deactivation of snapping.</para>
+        methods to assure the points are snapped. The
+        <code>AbstractSnappingController</code> also supports the on-the-fly
+        activation and deactivation of snapping.</para>
       </section>
     </section>
 
     <section>
       <title id="graphics">Graphics &amp; rendering</title>
 
-      <para>In the GWT face, the main <code>render</code>ing method can be
-      found in the <code>MapWidget</code>. The render method requires three
-      parameters, a paintable object, and target group to paint in and a
-      status. The paintable object is the actual object that needs to be
-      painted. The target group
+      <para>In the GWT face, the main <code>render</code> method can be found
+      in <code>MapWidget</code>. The render method requires three parameters,
+      a paintable object, a target group to paint in and a status. The
+      paintable object is the actual object that needs to be painted. The
+      target group
       (<code>org.geomajas.gwt.client.widget.MapWidget.RenderGroup</code>)
       specifies where in the DOM to draw. The usual choices here are the
       SCREEN or the WORLD groups. The rendering status
@@ -514,12 +495,12 @@ public interface GeometryOperation {
         <listitem>
           <para><emphasis>ALL</emphasis>: completely render or re-render the
           paintable object. If the paintable object contains other paintable
-          object, go through them recursively. (a map will paint layers, who
-          in turn will paint tiles, ...)</para>
+          object, go through them recursively (a map will paint layers, who in
+          turn will paint tiles, ...)</para>
         </listitem>
 
         <listitem>
-          <para><emphasis>UPDATE</emphasis>: update the paintable obect in
+          <para><emphasis>UPDATE</emphasis>: update the paintable object in
           question, but do not update recursively.</para>
         </listitem>
 
@@ -545,7 +526,7 @@ public interface GeometryOperation {
 
       <itemizedlist>
         <listitem>
-          <para><emphasis>WORLD</emphasis>: Drawing should be done in world
+          <para><emphasis>WORLD</emphasis>: drawing should be done in world
           coordinates. World coordinates means that the map coordinate system
           should be used. The advantage of rendering objects in the world
           group, is that when the user moves the map around, the objects will
@@ -553,7 +534,7 @@ public interface GeometryOperation {
         </listitem>
 
         <listitem>
-          <para><emphasis>SCREEN</emphasis>: Drawing should be done in screen
+          <para><emphasis>SCREEN</emphasis>: drawing should be done in screen
           coordinates. Screen coordinates are expressed in pixels, starting
           from the top left corner of the map. When rendering objects in the
           screen group they will always appear at a fixed position, even when
@@ -561,20 +542,20 @@ public interface GeometryOperation {
         </listitem>
 
         <listitem>
-          <para><emphasis>RASTER</emphasis>: Drawing should be done in pan
-          coordinates. All raster layers are drawn in pan coordinates. In
-          essence this means that the coordinates are expected to have been
-          scaled for the current scale before drawing, and that only the
-          translation still needs to occur. For advanced use only.</para>
+          <para><emphasis>RASTER</emphasis>: drawing should be done in pan
+          coordinates. All raster layers are drawn in this group. In essence
+          this means that the coordinates are expected to have been scaled for
+          the current scale before drawing, and that only the translation
+          still needs to occur. For advanced use only.</para>
         </listitem>
 
         <listitem>
-          <para><emphasis>VECTOR</emphasis>: Drawing should be done in pan
+          <para><emphasis>VECTOR</emphasis>: drawing should be done in pan
           coordinates. All vector layers, their selection and their labels are
-          drawn in pan coordinates. In essence this means that the coordinates
-          are expected to have been scaled for the current scale before
-          drawing, and that only the translation still needs to occur. For
-          advanced use only.</para>
+          drawn in this group. In essence this means that the coordinates are
+          expected to have been scaled for the current scale before drawing,
+          and that only the translation still needs to occur. For advanced use
+          only.</para>
         </listitem>
       </itemizedlist>
 
@@ -587,18 +568,19 @@ public interface GeometryOperation {
         <code>Painter</code>s and the <code>MapWidget</code>'s
         <code>render</code> method (as explained above). When using the direct
         approach, one has to call the methods of one of the different
-        rendering contexts. A MapWidget contains a MapContext implementation,
-        that in turn contains 3 different contexts:</para>
+        rendering contexts. A <code>MapWidget</code> contains a
+        <code>MapContext</code> implementation, which in turn contains 3
+        different contexts:</para>
 
         <itemizedlist>
           <listitem>
             <para><emphasis>MenuContext</emphasis>: used for keeping details
-            about right mouse clicks....not used for rendering itself.</para>
+            about right mouse clicks. Not used for rendering.</para>
           </listitem>
 
           <listitem>
             <para><emphasis>ImageContext</emphasis>: used for rendering images
-            in HTML. All rasterlayers use this context.</para>
+            in HTML. All raster layers use this context.</para>
           </listitem>
 
           <listitem>
@@ -620,8 +602,9 @@ public interface GeometryOperation {
           </mediaobject>
         </figure>
 
-        <para>The GraphicsContext is the main vector drawing context. It has 2
-        implementations: one for SVG and one for VML.</para>
+        <para>The <code>GraphicsContext</code> is the main vector drawing
+        context. It has two implementations: one for SVG and one for
+        VML.</para>
 
         <figure id="graphicscontext">
           <title>GraphicsContext interface</title>
@@ -634,12 +617,12 @@ public interface GeometryOperation {
           </mediaobject>
         </figure>
 
-        <para>Every object that ever appears on a Geomajas map (visually), has
-        to implement the <code>Paintable</code> interface. This interface
-        marks types of objects that can be painted. For each type/class of
-        paintable object, an accompanying <code>Painter</code> must be defined
-        as well. The painter will ultimately decide exactly how a paintable
-        object should be rendered. The Painter will render objects using it's
+        <para>Every object that appears on a Geomajas map, has to implement
+        the <code>Paintable</code> interface. This interface marks types of
+        objects that can be painted. For each type/class of paintable object,
+        an accompanying <code>Painter</code> must be defined as well. The
+        painter will ultimately decide exactly how a paintable object should
+        be rendered. The painter will render objects using it's
         <code>paint</code> method, or delete objects from the map using it's
         <code>deleteShape</code> method.</para>
 
@@ -655,7 +638,7 @@ public interface GeometryOperation {
 
         <itemizedlist>
           <listitem>
-            <para><emphasis>GraphicsContext</emphasis>: This is the basic
+            <para><emphasis>GraphicsContext</emphasis>: this is the basic
             drawing interface. Different implementations will draw in
             different technologies (i.e. <code>SvgGraphicsContext</code> and
             <code>VmlGraphicsContext</code>). The whole idea of this
@@ -674,7 +657,7 @@ public interface GeometryOperation {
           </listitem>
 
           <listitem>
-            <para><emphasis>Paintable</emphasis>: The basic definition of an
+            <para><emphasis>Paintable</emphasis>: the basic definition of an
             object that can be painted onto the map. For each
             <code>Paintable</code> class, an accompanying <code>Painter</code>
             class must be defined. The <code>Paintable</code> interface has
@@ -689,7 +672,7 @@ public interface GeometryOperation {
           </listitem>
 
           <listitem>
-            <para><emphasis>WorldPaintable</emphasis>: Extension of the
+            <para><emphasis>WorldPaintable</emphasis>: extension of the
             <code>Paintable</code> interface for objects that support being
             rendered in world space. This means that it should be possible to
             transform the object's geometry/location/coordinate/bbox.</para>
@@ -759,8 +742,8 @@ public interface GeometryOperation {
           <section>
             <title>Drawing in screen space</title>
 
-            <para>This approach uses the MapWidget's render method, which
-            requires 3 parameters: a <code>Paintable</code> object, a target
+            <para>This approach uses MapWidget's render method, which requires
+            3 parameters: a <code>Paintable</code> object, a target
             <code>RenderGroup</code>, and a <code>RenderStatus</code>. If you
             are unfamiliar with these, visit the <link
             linkend="graphics">beginning of this chapter</link> for a detailed
@@ -879,7 +862,7 @@ map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</
 
       <itemizedlist>
         <listitem>
-          <para><emphasis>Toolbar</emphasis>: The toolbar has 2 types of
+          <para><emphasis>Toolbar</emphasis>: the toolbar has 2 types of
           default actions one can add to it (there is always the
           <code>addChild</code> method, which can add any widget, but we are
           now talking about Geomajas specific possibilities): the
@@ -891,7 +874,7 @@ map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</
         </listitem>
 
         <listitem>
-          <para><emphasis>LayerTree</emphasis>: The <code>LayerTree</code> has
+          <para><emphasis>LayerTree</emphasis>: the <code>LayerTree</code> has
           the possibility to add buttons to it's toolbar that usually act upon
           the selected layer within the <code>LayerTree</code>. Again 2 types
           of actions can be added: the <code>LayerTreeAction</code> and the
@@ -903,14 +886,14 @@ map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</
         </listitem>
 
         <listitem>
-          <para><emphasis>Menu</emphasis>: Each item in a context menu can
+          <para><emphasis>Menu</emphasis>: each item in a context menu can
           (should) extend the MenuAction base class. This is your basic
           starting point for easily creating new menu items or context menu
           items.</para>
         </listitem>
 
         <listitem>
-          <para><emphasis>Controllers on the map</emphasis>: For controllers
+          <para><emphasis>Controllers on the map</emphasis>: for controllers
           listening to mouse events on a map, there is the
           <code>GraphicsController</code> interface, or an abstraction under
           the name of <code>AbstractGraphicsController</code>.</para>
@@ -1418,14 +1401,14 @@ public interface GraphicsController extends MouseDownHandler, MouseUpHandler,
 
       <itemizedlist>
         <listitem>
-          <para><emphasis>MenuMessages</emphasis>: The
+          <para><emphasis>MenuMessages</emphasis>: the
           <code>MenuMessages</code> defines parametrized string values that
           are used in the titles of <action>MenuAction</action> classes.
           Examples are the editing context menus.</para>
         </listitem>
 
         <listitem>
-          <para><emphasis>ToolbarConstants</emphasis>: The
+          <para><emphasis>ToolbarConstants</emphasis>: the
           <code>ToolbarConstants</code> defines constant string values that
           are used as tooltips when hovering over the buttons in the Toolbar.
           This list of values is used by the <code>ToolbarAction</code> and
@@ -1551,7 +1534,7 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
 
       <itemizedlist>
         <listitem>
-          <para><emphasis>navigationAddonEnabled</emphasis>: This option can
+          <para><emphasis>navigationAddonEnabled</emphasis>: this option can
           be configured from within the XML configuration, and determines
           whether or not the navigation <code>MapAddon</code> is visible. This
           <code>MapAddon</code> is placed in the upper left corner of the map
@@ -1560,7 +1543,7 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
         </listitem>
 
         <listitem>
-          <para><emphasis>scaleBarEnabled</emphasis>: This option can be
+          <para><emphasis>scaleBarEnabled</emphasis>: this option can be
           configured from within the XML configuration, and determines whether
           or not the scalebar <code>MapAddon</code> is visible. The scalebar
           shows you the scale of the map by means of a bar of certain length,
@@ -1568,7 +1551,7 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
         </listitem>
 
         <listitem>
-          <para><emphasis>zoomOnScrollEnabled</emphasis>: This option
+          <para><emphasis>zoomOnScrollEnabled</emphasis>: this option
           determines whether or not the <code>ZoomOnScrollController</code> is
           active by default. The <code>ZoomOnScrollController</code> zoom in
           and out on the map by using the mousewheel.</para>
@@ -1632,14 +1615,14 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
 
       <para><itemizedlist>
           <listitem>
-            <para><emphasis>EditMode</emphasis>: Adds a ToolbarModalAction
+            <para><emphasis>EditMode</emphasis>: adds a ToolbarModalAction
             meant for editing on the map. Allows for the creation of new
             object within the selected layer, and allows for updating and
             deleting of selected objects.</para>
           </listitem>
 
           <listitem>
-            <para><emphasis>MeasureDistanceMode</emphasis>: Adds a
+            <para><emphasis>MeasureDistanceMode</emphasis>: adds a
             ToolbarModalAction that allows the user to measure distances on
             the map.</para>
           </listitem>
@@ -1664,7 +1647,7 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
                 </listitem>
 
                 <listitem>
-                  <para><emphasis>coverageRatio</emphasis>: ration of the
+                  <para><emphasis>coverageRatio</emphasis>: ratio of the
                   feature which needs to be inside the selected are for the
                   feature to be selected. When this is "1.0" then the entire
                   feature needs to be inside the selection rectangle. Default
@@ -1672,7 +1655,7 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
                 </listitem>
 
                 <listitem>
-                  <para><emphasis>priorityToSelectedLayer</emphasis>: Activate
+                  <para><emphasis>priorityToSelectedLayer</emphasis>: activate
                   or disable priority to the selected layer. This works only
                   if there is a selected layer, and that selected layer is a
                   <code>VectorLayer</code>. If all these checks are okay, but
@@ -1684,7 +1667,7 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
                 </listitem>
 
                 <listitem>
-                  <para><emphasis>pixelTolerance</emphasis>: Number of pixels
+                  <para><emphasis>pixelTolerance</emphasis>: number of pixels
                   that describes the tolerance allowed when trying to select
                   features.</para>
                 </listitem>
@@ -1718,7 +1701,7 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
           </listitem>
 
           <listitem>
-            <para><emphasis>PanMode</emphasis>: This action allows you to pan
+            <para><emphasis>PanMode</emphasis>: this action allows you to pan
             the screen by dragging. When keeping either the shift or control
             key pressed, it is also possible to indicate an area to zoom into
             (like <emphasis>ZoomToRectangleMode</emphasis>).</para>
@@ -1732,14 +1715,14 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
           </listitem>
 
           <listitem>
-            <para><emphasis>ZoomToSelection</emphasis>: First select some
+            <para><emphasis>ZoomToSelection</emphasis>: first select some
             items on the map. After clicking on the the zoomToSelection button
             the map will be zoomed so that all selected items will fit nicely
             on the screen.</para>
           </listitem>
 
           <listitem>
-            <para><emphasis>panToSelection</emphasis>: irst select some items
+            <para><emphasis>panToSelection</emphasis>: first select some items
             on the map. After clicking on the panToSelection button the map
             will be panned in such a way that the center of the selected items
             is in the center of the screen.</para>
@@ -1849,19 +1832,20 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
       <itemizedlist>
         <listitem>
           <para><emphasis>org.geomajas.gwt.client.action.layertree.VisibleAction</emphasis>:
-          A LayerTreeModalAction that switches the visible flag on the
-          selected layer.</para>
+          a <code>LayerTreeModalAction</code> that switches the visible flag
+          on the selected layer.</para>
         </listitem>
 
         <listitem>
           <para><emphasis>org.geomajas.gwt.client.action.layertree.LabelAction</emphasis>:
-          A LayerTreeModalAction that switches the labeled flag on the
-          selected layer.</para>
+          a <code>LayerTreeModalAction</code> that switches the labeled flag
+          on the selected layer.</para>
         </listitem>
 
         <listitem>
           <para><emphasis>org.geomajas.gwt.client.action.layertree.LayerRefreshAction</emphasis>:
-          A LayerTreeAction that refreshes the selected layer on click.</para>
+          a <code>LayerTreeAction</code> that refreshes the selected layer on
+          click.</para>
         </listitem>
       </itemizedlist>
     </section>
@@ -1903,7 +1887,7 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
 
       <itemizedlist>
         <listitem>
-          <para><emphasis>selectionEnabled</emphasis>: Enables or disables
+          <para><emphasis>selectionEnabled</emphasis>: enables or disables
           selection of features when selecting a row in the table. When this
           is enabled, the table will keep feature selection consistent with
           the <code>MapModel</code>. If the user then selects a row, the
@@ -1925,7 +1909,7 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
         </listitem>
 
         <listitem>
-          <para><emphasis>editingEnabled</emphasis>: Determines whether or not
+          <para><emphasis>editingEnabled</emphasis>: determines whether or not
           editing the attributes is allowed. When double clicking a row in the
           table, a FeatureAttributeWindow will appear, containing the feature
           of the row upon which was double clicked. This setting determines if
@@ -1980,13 +1964,13 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
 
       <itemizedlist>
         <listitem>
-          <para>editingAllowed: Is editing überhaupt allowed? This must be set
+          <para>editingAllowed: is editing überhaupt allowed? This must be set
           BEFORE the widget is actually drawn, because afterwards it won't
           have any effect anymore. This</para>
         </listitem>
 
         <listitem>
-          <para>editingEnabled: Is editing currently enabled or not? This
+          <para>editingEnabled: is editing currently enabled or not? This
           widget can toggle this value on the fly. When editing is enabled, it
           will display an editable attribute form with save, cancel and reset
           buttons. When editing is not enabled, these buttons will disappear,

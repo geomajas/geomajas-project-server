@@ -23,6 +23,7 @@
 
 package org.geomajas.gwt.client.gfx;
 
+import org.geomajas.global.Api;
 import org.geomajas.gwt.client.spatial.Bbox;
 
 /**
@@ -35,6 +36,7 @@ import org.geomajas.gwt.client.spatial.Bbox;
  * @author Pieter De Graef
  * @author Jan De Moerloose
  */
+@Api
 public interface Paintable {
 
 	/**

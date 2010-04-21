@@ -23,6 +23,7 @@
 
 package org.geomajas.gwt.client.spatial.geometry.operation;
 
+import org.geomajas.global.Api;
 import org.geomajas.gwt.client.spatial.geometry.Geometry;
 
 /**
@@ -32,7 +33,10 @@ import org.geomajas.gwt.client.spatial.geometry.Geometry;
  * </p>
  *
  * @author Pieter De Graef
+ * @since 1.6.0
  */
+// @extract-start GeometryOperation, GeometryOperation interface
+@Api(allMethods = true)
 public interface GeometryOperation {
 
 	/**
@@ -45,3 +49,4 @@ public interface GeometryOperation {
 	 */
 	Geometry execute(Geometry geometry);
 }
+// @extract-end

@@ -23,15 +23,18 @@
 
 package org.geomajas.gwt.client.gfx;
 
+import org.geomajas.global.Api;
+
 
 /**
  * <p>
- * General interface for painter. Implementations of this class can paint <code>Paintable</code> objects in a
- * <code>GraphicsContext</code>, or delete them.
+ * General interface for painter. Implementations of this class can paint {@link org.geomajas.gwt.client.gfx.Paintable}
+ * objects in a <code>GraphicsContext</code>, or delete them.
  * </p>
  * 
  * @author Pieter De Graef
  */
+@Api
 public interface Painter {
 
 	/**
@@ -47,7 +50,7 @@ public interface Painter {
 	 * 
 	 * @param paintable
 	 *            The object to be painted.
-	 * @param Object
+	 * @param group
 	 *            The group to paint in.
 	 * @param context
 	 *            The context to paint on.
@@ -60,7 +63,7 @@ public interface Painter {
 	 * 
 	 * @param paintable
 	 *            The object to be deleted.
-	 * @param Object
+	 * @param group
 	 *            The group where the object resides in (optional).
 	 * @param context
 	 *            The context to paint on.
