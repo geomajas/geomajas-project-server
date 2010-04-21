@@ -34,17 +34,17 @@
 
       <para>Client-server communication in Geomajas is executed through a
       series of commands instantiated on the client and executed by the
-      server. In the GWT face, all such commands are executed by the
+      server. In the GWT face, all such commands are executed by
       <code>org.geomajas.gwt.client.command.GwtCommandDispatcher</code>. This
-      <code>GwtCommandDispatcher</code> has one single method for
-      instantiating such commands and handling the result: the
-      <code>execute</code> method.</para>
+      class has one single method for instantiating such commands and handling
+      the result: the <code>execute</code> method.</para>
 
       <para>The command, required by the execute method
       (<code>GwtCommand</code>), is in fact a wrapper around a
-      <code>CommandRequest</code> (see architecture) object, wherein the name
-      of the requested command Spring bean is found. Each command expects a
-      certain implementation of the <code>CommandRequest</code> and
+      <code>CommandRequest</code> object (see <link
+      linkend="architecture-command">architecture</link>), wherein the name of
+      the requested command is found. Each command expects a certain
+      implementation of the <code>CommandRequest</code> and
       <code>CommandResponse</code> objects. Note that these request and
       response objects must also be known server-side, and thus will not be
       packaged within the GWT client packages. As a second parameter for the
@@ -53,17 +53,16 @@
       command.</para>
 
       <para>The execution will immediately return a <code>Deferred</code>
-      object, that can be used to add more callback methods, so that when the
-      command successfully returns, more than one action can be attached to
-      it. Without that <code>Deferred</code> object, the client would have to
-      send the same command again to add a new callback method to it.</para>
+      object, that can be used to add more callback methods, both for
+      successful as for an erroneous result of the command's execution.
+      </para>
 
       <xi:include href="../listing/GwtCommandExecution.xml"
                   xmlns:xi="http://www.w3.org/2001/XInclude" />
     </section>
 
     <section>
-      <title>The Map's model</title>
+      <title>The map's model</title>
 
       <para>As with any GIS framework or application, the most crucial of all
       entities is the Map. A map is represented by the
@@ -81,28 +80,28 @@
         <para>The definition of the model behind a map
         (<code>org.geomajas.gwt.client.map.<code>MapModel</code></code>). This
         object stores all map metadata and layers, and has an extensive
-        arsenal of methods to operate on the layers, or even features.</para>
+        arsenal of methods to operate on the layers and the features.</para>
 
-        <para>Another aspect of the <code>MapModel</code>, is the list of
-        events that it fires. Handlers for the following events should be
-        added to the <code>MapModel</code>:</para>
+        <para>Another aspect of the <code>MapModel</code> is the list of
+        events that it fires. Handlers for the following events can be added
+        to the <code>MapModel</code>:</para>
 
         <itemizedlist>
           <listitem>
-            <para><emphasis>MapModelEvent</emphasis>: This event is fired only
-            once; when the <code>MapModel</code> has been properly
-            initialized. When a <code>MapWidget</code> is added to the HTML
-            page, it automatically triggers an initialization method. This
-            will ask the server to supply it with the correct metadata, so
-            that the <code>MapModel</code> can actually build it's layers,
-            etc. Once this initialization process is done, a
-            <code>MapModelEvent</code> will be fired. Add a
+            <para><emphasis>MapModelEvent</emphasis>: this event is fired when
+            the <code>MapModel</code> has been properly initialized. When a
+            <code>MapWidget</code> is added to the HTML page, it automatically
+            triggers an initialization method. This will ask the server to
+            supply it with the correct metadata, so that the
+            <code>MapModel</code> can actually build it's layers, etc. Once
+            this initialization process is done, a <code>MapModelEvent</code>
+            will be fired. Add a
             <code>org.geomajas.gwt.client.map.event.MapModelHandler</code> to
             use this.</para>
           </listitem>
 
           <listitem>
-            <para><emphasis>FeatureSelectedEvent</emphasis>: This event is
+            <para><emphasis>FeatureSelectedEvent</emphasis>: this event is
             fired every time a feature within one of this model's vector
             layers is selected. Add a
             <code>org.geomajas.gwt.client.map.event.FeatureSelectionHandler</code>
@@ -110,7 +109,7 @@
           </listitem>
 
           <listitem>
-            <para><emphasis>FeatureDeselectedEvent</emphasis>: This event is
+            <para><emphasis>FeatureDeselectedEvent</emphasis>: this event is
             fired every time a feature within one of this model's vector
             layers is deselected. Add a
             <code>org.geomajas.gwt.client.map.event.FeatureSelectionHandler</code>
@@ -118,14 +117,14 @@
           </listitem>
 
           <listitem>
-            <para><emphasis>LayerSelectedEvent</emphasis>: This event is fired
+            <para><emphasis>LayerSelectedEvent</emphasis>: this event is fired
             every time a layer within this model is selected. Add a
             <code>org.geomajas.gwt.client.map.event.LayerSelectionHandler</code>
             to use this.</para>
           </listitem>
 
           <listitem>
-            <para><emphasis>LayerDeselectedEvent</emphasis>: This event is
+            <para><emphasis>LayerDeselectedEvent</emphasis>: this event is
             fired every time a layer within this model is deselected. Add a
             <code>org.geomajas.gwt.client.map.event.LayerSelectionHandler</code>
             to use this.</para>
@@ -144,27 +143,36 @@
         <code>Camera</code> floats at a certain height, on a certain position,
         and this will determine what part of the map is shown.</para>
 
-        <para>But that is not all. The <code>MapView</code> is also aware of
-        all matrix transformations that can occur to get objects in world
-        coordinates (the coordinate system of the map), onto the correct
-        position on the screen, and the other way around. Inside the MapView
-        is a transformer
+        <para>The map contains several coordinate spaces.</para>
+
+        <para><itemizedlist>
+            <listitem>
+              <para>world space : coordinates use the crs of the map.</para>
+            </listitem>
+
+            <listitem>
+              <para>screen space : pixel coordinates.</para>
+            </listitem>
+
+            <listitem>
+              <para>pan space : objects have already been scaled to the map's
+              current scale, but the translation transformation still needs to
+              occur. This is space is used for rendering the layers and should
+              normally not be used for other purposes.</para>
+            </listitem>
+          </itemizedlist>The <code>MapView</code> provides conversions of
+        coordinates between these spaces. Inside the MapView is a transformer
         (<code>org.geomajas.gwt.client.spatial.WorldViewTransformer</code>)
         that is able to transform coordinates, geometries and bounding boxes
-        from screen space to world space and back. Also a "pan-space" is
-        added. This is a space where it is expected that all ojects have
-        already been scaled to the map's current scale, but where the
-        translation transformation still needs to occur. This space is used to
-        render the layers in, and should normally not be used for other
-        purposes.</para>
+        from screen space to world space and back.</para>
       </section>
 
       <section>
         <title>Workflow</title>
 
-        <para>Simply put, workflow in Geomajas determines how editing should
-        be handled. A workflow consists of several steps, called activities,
-        and the end result can be the persistance of a changes. The package
+        <para>A work flow in the GWT face determines how editing should be
+        handled. It can consist of several steps, called activities. When a
+        work flow finishes, changes will typically be persisted. The package
         is: <code>org.geomajas.gwt.client.map.workflow</code></para>
 
         <figure>
@@ -182,12 +190,12 @@
 
         <itemizedlist>
           <listitem>
-            <para><emphasis>execute</emphasis>: This method is called by the
-            encompassing processor to execute the Activity.</para>
+            <para><emphasis>execute</emphasis>: this method is called by the
+            encompassing processor to execute the activity.</para>
           </listitem>
 
           <listitem>
-            <para><emphasis>getErrorHandler</emphasis>: Get the error handler
+            <para><emphasis>getErrorHandler</emphasis>: get the error handler
             that is specifically tuned for the activity.</para>
           </listitem>
         </itemizedlist>
@@ -197,8 +205,9 @@
         <itemizedlist>
           <listitem>
             <para><emphasis>handleError</emphasis>: Executed when an activity
-            throws an exception during execution. The WorkflowProcessor must
-            make such this method is executed.</para>
+            throws an exception during execution. The
+            <code>WorkflowProcessor</code> must make sure this method is
+            executed.</para>
           </listitem>
         </itemizedlist>
 
@@ -206,16 +215,17 @@
 
         <itemizedlist>
           <listitem>
-            <para><emphasis>stopProcess</emphasis>: Informs the
-            WorkflowProcessor to stop the processing of activities. It is the
-            WorkflowProcessors responsibility to ask for this, and execute no
-            more activities when "true" is returned.</para>
+            <para><emphasis>stopProcess</emphasis>: informs the
+            <code>WorkflowProcessor</code> to stop the processing of
+            activities. It is the <code>WorkflowProcessors</code>
+            responsibility to ask for this, and execute no more activities
+            when "<code>true</code>" is returned.</para>
           </listitem>
 
           <listitem>
-            <para><emphasis>setSeedData</emphasis>: Provide some seed
+            <para><emphasis>setSeedData</emphasis>: provide some seed
             information to the context. This is usually provided at the time
-            of workflow kickoff.</para>
+            of work flow kickoff.</para>
           </listitem>
         </itemizedlist>
 
@@ -223,28 +233,27 @@
 
         <itemizedlist>
           <listitem>
-            <para><emphasis>supports</emphasis>: Ensures that each activity
+            <para><emphasis>supports</emphasis>: ensure that each activity
             configured in this process is supported. This method should be
-            called by implemented subclasses for each Activity that is part of
+            called by implemented subclasses for each activity that is part of
             the process.</para>
           </listitem>
 
           <listitem>
-            <para><emphasis>doActivities</emphasis>: This method kicks off the
-            processing of workflow activities.</para>
+            <para><emphasis>doActivities</emphasis>: this method kicks off the
+            processing of work flow activities.</para>
           </listitem>
 
           <listitem>
-            <para><emphasis>setActivities</emphasis>: Set a list of Activities
+            <para><emphasis>setActivities</emphasis>: set a list of activities
             to be executed in the process. This would also be a good time to
             check if activities are supported.</para>
           </listitem>
 
           <listitem>
             <para><emphasis>setDefaultErrorHandler</emphasis>: set a default
-            error handler, in case an Activity throws an exception without it
-            having it's own error handler. In that case, the process' default
-            error handler handles the exception.</para>
+            error handler, which is invoked when the activity throws an
+            uncaught exception.</para>
           </listitem>
         </itemizedlist>
       </section>

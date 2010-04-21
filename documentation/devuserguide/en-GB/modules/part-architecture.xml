@@ -151,7 +151,7 @@
         </listitem>
       </itemizedlist></para>
 
-    <sect1>
+    <sect1 id="architecture-command">
       <title>Command</title>
 
       <figure>

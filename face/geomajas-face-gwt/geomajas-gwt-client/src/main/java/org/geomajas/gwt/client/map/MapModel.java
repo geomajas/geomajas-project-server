@@ -107,7 +107,9 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 	 * 
 	 * @param id
 	 *            map id
+	 * @since 1.6.0
 	 */
+	@Api
 	public MapModel(String id) {
 		this.id = id;
 		featureEditor = new FeatureEditor(this);
@@ -126,19 +128,41 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 	 * @param handler
 	 *            the handler
 	 * @return {@link com.google.gwt.event.shared.HandlerRegistration} used to remove the handler
+	 * @since 1.6.0
 	 */
+	@Api
 	public final HandlerRegistration addMapModelHandler(final MapModelHandler handler) {
 		return handlerManager.addHandler(MapModelEvent.TYPE, handler);
 	}
 
+	/**
+	 *
+	 * @param handler The handler to be registered.
+	 * @return
+	 * @since 1.6.0
+	 */
+	@Api
 	public final HandlerRegistration addFeatureSelectionHandler(final FeatureSelectionHandler handler) {
 		return handlerManager.addHandler(FeatureSelectionHandler.TYPE, handler);
 	}
 
+	/**
+	 *
+	 * @param handler the handler to be registered
+	 * @return
+	 * @since 1.6.0
+	 */
+	@Api
 	public HandlerRegistration addLayerSelectionHandler(final LayerSelectionHandler handler) {
 		return handlerManager.addHandler(LayerSelectionHandler.TYPE, handler);
 	}
 
+	/**
+	 *
+	 * @param handler
+	 * @since 1.6.0
+	 */
+	@Api
 	public void removeMapModelHandler(final MapModelHandler handler) {
 		handlerManager.removeHandler(MapModelEvent.TYPE, handler);
 	}
@@ -249,7 +273,9 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 	 * Is this map model initialized yet ?
 	 * 
 	 * @return true if initialized
+	 * @since 1.6.0
 	 */
+	@Api
 	public boolean isInitialized() {
 		return initialized;
 	}
@@ -260,7 +286,9 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 	 * @param layerId
 	 *            The layer's client ID.
 	 * @return Returns either a Layer, or null.
+	 * @since 1.6.0
 	 */
+	@Api
 	public Layer<?> getLayer(String layerId) {
 		if (layers != null) {
 			for (Layer<?> layer : layers) {
@@ -316,7 +344,9 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 	 * @param layerId
 	 *            The layer's client ID.
 	 * @return Returns either a Layer, or null.
+	 * @since 1.6.0
 	 */
+	@Api
 	public VectorLayer getVectorLayer(String layerId) {
 		if (layers != null) {
 			for (VectorLayer layer : getVectorLayers()) {
