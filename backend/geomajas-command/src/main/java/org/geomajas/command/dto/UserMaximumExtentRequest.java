@@ -22,7 +22,6 @@
  */
 package org.geomajas.command.dto;
 
-import org.geomajas.command.CommandRequest;
 import org.geomajas.command.LayerIdsCommandRequest;
 
 /**
