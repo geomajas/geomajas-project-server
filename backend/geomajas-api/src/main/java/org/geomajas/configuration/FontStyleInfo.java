@@ -24,13 +24,18 @@ package org.geomajas.configuration;
 
 import java.io.Serializable;
 
+import org.geomajas.global.Api;
+
 /**
  * Information about how to access and how to render the label attribute.
-
+ * 
  * @author Jan De Moerloose
  * @since 1.6.0
  */
+@Api(allMethods = true)
 public class FontStyleInfo implements Serializable {
+
+	private static final long serialVersionUID = 160L;
 
 	private int size = -1;
 
@@ -39,62 +44,98 @@ public class FontStyleInfo implements Serializable {
 	private String weight;
 
 	private String style;
-	
+
 	private String color;
-	
+
 	private float opacity = -1;
 
+	/** @return Return the font size. */
 	public int getSize() {
 		return size;
 	}
 
+	/**
+	 * Set the font's size.
+	 * 
+	 * @param size
+	 *            The new font size.
+	 */
 	public void setSize(int size) {
 		this.size = size;
 	}
 
+	/** @return Get the font family (Verderna, Arial, ...). */
 	public String getFamily() {
 		return family;
 	}
 
+	/**
+	 * Set the font family (Verdana, Arial, ...).
+	 * 
+	 * @param family
+	 *            The new font family.
+	 */
 	public void setFamily(String family) {
 		this.family = family;
 	}
 
+	/** @return Return the font weight (normal, bold) */
 	public String getWeight() {
 		return weight;
 	}
 
+	/**
+	 * Set the font weight (normal, bold).
+	 * 
+	 * @param weight
+	 *            The new font weight.
+	 */
 	public void setWeight(String weight) {
 		this.weight = weight;
 	}
 
+	/** @return Return the font style (normal, italic, ...) */
 	public String getStyle() {
 		return style;
 	}
 
+	/**
+	 * Set the font style (normal, italic, ...).
+	 * 
+	 * @param style
+	 *            The new font style.
+	 */
 	public void setStyle(String style) {
 		this.style = style;
 	}
 
-	
+	/** @return Return the font color (as HTML color). */
 	public String getColor() {
 		return color;
 	}
 
-	
+	/**
+	 * Set the font color (as HTML color).
+	 * 
+	 * @param color
+	 *            The new color.
+	 */
 	public void setColor(String color) {
 		this.color = color;
 	}
 
-	
+	/** @return Return the font opacity (between 0 and 1) */
 	public float getOpacity() {
 		return opacity;
 	}
 
-	
+	/**
+	 * Set the font opacity (between 0 and 1).
+	 * 
+	 * @param opacity
+	 *            The new opacity.
+	 */
 	public void setOpacity(float opacity) {
 		this.opacity = opacity;
 	}
-	
-
 }
