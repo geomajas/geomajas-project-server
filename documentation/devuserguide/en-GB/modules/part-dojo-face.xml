@@ -49,8 +49,8 @@
 
     <itemizedlist>
       <listitem>
-        <para><code>PdfServlet</code>: this is used to produce the printable
-        maps in PDF format.</para>
+        <para><code>PdfServlet</code>: this is used to produce printable maps
+        in PDF format.</para>
       </listitem>
 
       <listitem>
@@ -70,7 +70,7 @@
                 xmlns:xi="http://www.w3.org/2001/XInclude" />
 
     <para>To finish, the servlet mappings need to be defined. You don't really
-    have a lot of choice here, as the client side javascript expects these
+    have a lot of choice here, as the client side JavaScript expects these
     values.</para>
 
     <para>In many cases you also want to do some client side configurations.
@@ -99,7 +99,8 @@
         <title>Google API inclusion</title>
 
         <programlisting>&lt;script type="text/javascript"
-				src="http://maps.google.com/maps?file=api&amp;amp;v=2&amp;amp;sensor=false&amp;amp;key=ABCDEF"&gt;&lt;/script&gt;</programlisting>
+    src="http://maps.google.com/maps?file=api&amp;amp;v=2&amp;amp;sensor=false&amp;amp;key=ABCDEF"&gt;
+&lt;/script&gt;</programlisting>
       </example>
 
       <para>or</para>
@@ -107,10 +108,11 @@
       <example>
         <title>Google API inclusion using Google loader</title>
 
-        <programlisting>&lt;script type="text/javascript" src="http://www.google.com/jsapi?key=ABCDEFG"&gt;&lt;/script&gt;
-				&lt;script type="text/javascript"&gt;
-				google.load("maps", "2.95");
-				&lt;/script&gt;</programlisting>
+        <programlisting>&lt;script type="text/javascript" src="http://www.google.com/jsapi?key=ABCDEFG"&gt;
+&lt;/script&gt;
+&lt;script type="text/javascript"&gt;
+    google.load("maps", "2.95");
+&lt;/script&gt;</programlisting>
       </example>
 
       <para>Note that you do need to have a Google maps key ("ABCDEF" is used
@@ -130,6 +132,8 @@
     <para>Each widget needs a list of parameters, use case, information about
     the commands it uses, how to customize, list of topics it consumes and
     provides.</para>
+
+    <para>TODO.....</para>
   </chapter>
 
   <chapter>
@@ -138,9 +142,15 @@
     <sect1>
       <title>Project layout</title>
 
-      <para>The geomajas-dojo-example project shows an example of a full
-      application using the dojo face. This project is a multi-module project
-      with the following list of sub-projects:</para>
+      <para>For simple applications which don't have any custom JavaScript
+      code, the dojo-simple project layout with only one module is
+      recommended. Anything more advanced is better of using the project
+      layout of the dojo-example project. This allows using dojo's shrinked
+      builds which combine all JavaScript in one large cachable file, thus
+      optimizing load time. As this shrinking processes has a massive impact
+      on project build time (and makes the code difficult to debug), you want
+      to be able to test without this skrinking step. This is tackled using
+      the multi-module project. It has the following sub-projects :</para>
 
       <table>
         <title>List of dojo-example projects</title>
@@ -150,7 +160,7 @@
             <row>
               <entry>geomajas-dojo-example-client</entry>
 
-              <entry>javascript module code</entry>
+              <entry>JavaScript module code</entry>
             </row>
 
             <row>
@@ -176,32 +186,36 @@
         </tgroup>
       </table>
 
-      <para>As opposed to the conventional practice of putting javascipt
+      <para>As opposed to the conventional practice of putting JavaScript
       directly in the war project, our module concept requires you to put this
       code in a separate jar project. This jar will be added to the web
-      application as a normal java library and the javascript files in it will
+      application as a normal java library and the JavaScript files in it will
       be served from the class path by the ResourceServlet. The appropriate
-      mapping should of course be added to the web.xml:</para>
+      mapping should be added to the web.xml:</para>
 
-      <programlisting>&lt;servlet-mapping&gt;
-				&lt;servlet-name&gt;ResourceServlet&lt;/servlet-name&gt;
-				&lt;url-pattern&gt;/js/*&lt;/url-pattern&gt;
-				&lt;/servlet-mapping&gt;</programlisting>
+      <example>
+        <title>ResourceServlet mapping</title>
 
-      <para>By structuring javascript code as jar artifacts, our Maven dojo
+        <para><programlisting>&lt;servlet-mapping&gt;
+    &lt;servlet-name&gt;ResourceServlet&lt;/servlet-name&gt;
+    &lt;url-pattern&gt;/js/*&lt;/url-pattern&gt;
+&lt;/servlet-mapping&gt;</programlisting></para>
+      </example>
+
+      <para>By structuring JavaScript code as jar artifacts, our Maven dojo
       plug-in is capable of making this code accessible to the browser by
       importing a single dojo layer script in the web page. If the name of the
       layer is<emphasis role="bold">example</emphasis>, the import statements
       will be:</para>
 
       <example>
-        <title>Custom built script inclusion</title>
+        <title>Custom build script inclusion</title>
 
         <programlisting>&lt;script type="text/javascript" src="js/dojo/dojo.js"
-			djConfig="parseOnLoad:true,	usePlainJson :true"&gt;&lt;/script&gt;
+    djConfig="parseOnLoad:true, usePlainJson :true"&gt;&lt;/script&gt;
 &lt;script type="text/javascript" src="js/<emphasis role="bold">example</emphasis>/<emphasis
             role="bold">example</emphasis>.js"
-			geomajasConfig="showLog :false"&gt;&lt;/script&gt;</programlisting>
+    geomajasConfig="showLog :false"&gt;&lt;/script&gt;</programlisting>
       </example>
 
       <para>As you can see, some configuration parameters can be passed by
@@ -218,19 +232,18 @@
       geomajas-dojo-example-modules-shrinksafe and
       geomajas-dojo-example-modules projects, respectively. By defining a
       Maven dependency in geomajas-dojo-example-modules-war on one or the
-      other, the compressed or uncompressed version of the javascript
+      other, the compressed or uncompressed version of the JavaScript
       libraries is used. The switch between the two options is managed by a
       Maven profile in the parent project (geomajas-dojo-example). This should
       be passed in the Maven build command:</para>
 
       <itemizedlist>
         <listitem>
-          <para>compressed/shrunk build: <code>mvn -P shrink install
-          </code></para>
+          <para>compressed/shrinked build: <code>mvn install </code></para>
         </listitem>
 
         <listitem>
-          <para>uncompressed build: <code>mvn install</code></para>
+          <para>uncompressed build: <code>mvn -Pnoshrink install</code></para>
         </listitem>
       </itemizedlist>
     </sect1>
@@ -240,7 +253,7 @@
 
       <para>The Maven dojo plug-in is capable of executing a custom dojo build
       from within Maven. This essentially collects and/or compresses (using
-      shrinksafe) javascript modules that have been bundled as jar
+      shrinksafe) JavaScript modules that have been bundled as jar
       artifacts.</para>
 
       <para>A typical configuration looks as follows:</para>
@@ -253,7 +266,7 @@
       <itemizedlist>
         <listitem>
           <para><code>collect:</code> generates a dojo layer script with the
-          necessary dojo.require(...) statements to import all the
+          necessary <code>dojo.require()</code> statements to import all the
           modules</para>
         </listitem>
 
@@ -281,10 +294,9 @@
             <row>
               <entry>layerName</entry>
 
-              <entry>The name of the target layer file (without the .js
+              <entry>The name of the target layer file (without the ".js"
               extension). The file is put in its own module directory and has
-              to be imported as follows: <programlisting>&lt;script
-									src="js/&lt;layerName&gt;/&lt;layerName&gt;.js"/&gt;</programlisting></entry>
+              to be imported as follows: <programlisting>&lt;script src="js/<emphasis>layerName</emphasis>/<emphasis>layerName</emphasis>.js"/&gt;</programlisting></entry>
 
               <entry>modules</entry>
             </row>
@@ -292,8 +304,8 @@
             <row>
               <entry>localeList</entry>
 
-              <entry>List of locales to be baked in the build file (see dojo
-              custom build parameters)</entry>
+              <entry>List of locales to be included in the build file (see
+              dojo custom build parameters)</entry>
 
               <entry>en</entry>
             </row>
@@ -302,7 +314,8 @@
               <entry>layerOptimize</entry>
 
               <entry>Compression type to be used (see dojo custom build
-              parameters)</entry>
+              parameters). Options include "shrinksafe",
+              "shrinksafe.keepLines", "packer".</entry>
 
               <entry>shrinksafe</entry>
             </row>
@@ -310,22 +323,22 @@
             <row>
               <entry>modules</entry>
 
-              <entry>A list of module tags, one for each javascript module.
+              <entry>A list of module tags, one for each JavaScript module.
               Beware: <itemizedlist>
                   <listitem>
                     <para>the modules should be added as jar dependencies
-                    first</para>
+                    first.</para>
                   </listitem>
 
                   <listitem>
                     <para>The scope for the dependency can be
                     <code>provided</code> for a shrink build (this reduces the
-                    size of the war)</para>
+                    size of the war).</para>
                   </listitem>
-                </itemizedlist> <para>Each module tag should provide a
-              requires parameter. This parameter is the argument of the
-              dojo.require(...) statement needed to import the module from
-              dojo. </para></entry>
+                </itemizedlist><para>Each module tag should provide a requires
+              parameter. This parameter is the argument of the
+              <code>dojo.require()</code> statement needed to import the
+              module from dojo. </para></entry>
 
               <entry>empty list</entry>
             </row>
@@ -333,13 +346,13 @@
         </tgroup>
       </table>
 
-      <para>The output of the plug-in consists of generated javascript files.
-      The precise output is dependent on the goal. If the goal is
-      <code>collect</code>, it is just a single layer file. If the goal is
-      <code>build</code>, it is the complete contents of the release directory
-      of the dojo build. In all cases, the javascript output is generated in
-      the folder
-      <code>&lt;projectdir&gt;/target/generated-resources/doj</code>o, which
+      <para>The output of the plug-in consists of generated JavaScript files.
+      The precise output dependens on the goal. If the goal is
+      <code>"collect</code>", it is a single file. If the goal is
+      "<code>build</code>", it contains the complete contents of the release
+      directory of the dojo build. In all cases, the JavaScript output is
+      generated in the folder
+      <code>&lt;projectdir&gt;/target/generated-resources/dojo</code>, which
       is added as a resource folder to the Maven project.</para>
     </sect1>
   </chapter>

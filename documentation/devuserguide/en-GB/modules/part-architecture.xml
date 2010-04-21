@@ -74,11 +74,11 @@
 
     <para>Geomajas contains two faces out-of-the-box.</para>
 
-    <para>The a dojo face, which uses the dojo toolkit javascript widget
+    <para>The a dojo face, which uses the dojo toolkit JavaScript widget
     library in the browser, is mainly provided for backward compatibility. Up
     until Geomajas 1.4 this was the only face which existed. It integrates
     well with dojo but has the disadvantage that you need to develop in both
-    java (for the server side) and javascript (for the client side) and that
+    java (for the server side) and JavaScript (for the client side) and that
     debugging can be a challenge.</para>
 
     <para>Since 1.5 we also provide a GWT face. This allows all development to
@@ -910,7 +910,7 @@
               <entry>Example application using the dojo face. Is more advanced
               than the dojo-simple demo. Can be useful as template project
               when starting a new dojo based Geomajas application which uses
-              project specific javascript code.</entry>
+              project specific JavaScript code.</entry>
             </row>
 
             <row>
@@ -1036,7 +1036,7 @@
             <row>
               <entry>geomajas-maven-dojo</entry>
 
-              <entry>Maven plugin which helps to combine all the javascript
+              <entry>Maven plugin which helps to combine all the JavaScript
               code for dojo, Geomajas and the project itself. This is usually
               referred to as the "shrink" or "shrinksafe" step.</entry>
             </row>
@@ -1136,7 +1136,7 @@
               <entry>geomajas-dojo-client-shrinksafe</entry>
 
               <entry>Server side module for the dojo AJAX interface, after
-              shrinking to combine everything in one javascript file.</entry>
+              shrinking to combine everything in one JavaScript file.</entry>
             </row>
 
             <row>
