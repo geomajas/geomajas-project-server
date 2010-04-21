@@ -58,7 +58,7 @@ public class SearchSample extends SamplePanel {
 		layout.setWidth100();
 		layout.setHeight100();
 
-		// switch off lazy loading, we want to get everything
+		// Switch off lazy loading, we want to get everything at once
 		GwtCommandDispatcher.getInstance().setUseLazyLoading(false);
 
 		// Create a map with the African countries and make it invisible:
@@ -78,6 +78,10 @@ public class SearchSample extends SamplePanel {
 			public void afterSearch() {
 			}
 		});
+
+		// Set the maximum number of features to retrieve.
+		search.setMaximumResultSize(50);
+
 		VLayout searchLayout = new VLayout();
 		searchLayout.setHeight("30%");
 		searchLayout.setShowEdges(true);

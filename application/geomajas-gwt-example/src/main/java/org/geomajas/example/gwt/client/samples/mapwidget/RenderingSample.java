@@ -196,7 +196,7 @@ public class RenderingSample extends SamplePanel {
 		button7.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				map.getVectorContext().setCursor(group1, "circle", "wait");
+				map.getVectorContext().setCursor(group2, "rectangle", "wait");
 			}
 		});
 		button7.setWidth100();

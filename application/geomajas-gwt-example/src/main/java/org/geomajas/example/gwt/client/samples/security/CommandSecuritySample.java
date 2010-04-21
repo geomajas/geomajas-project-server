@@ -123,8 +123,8 @@ public class CommandSecuritySample extends SamplePanel {
 
 			public void onClick(ClickEvent event) {
 				GetResourcesRequest request = new GetResourcesRequest(
-						new String[] { "classpath:org/geomajas/gwt/samples/security/security.xml" });
-				GwtCommand command = new GwtCommand("gwt.server.samples.GetSourceCommand");
+						new String[] { "classpath:org/geomajas/example/gwt/clientcfg/security/security.xml" });
+				GwtCommand command = new GwtCommand("example.gwt.server.samples.GetSourceCommand");
 				command.setCommandRequest(request);
 				GwtCommandDispatcher.getInstance().execute(command, new CommandCallback() {
 

@@ -67,7 +67,7 @@ public class LoginWindow extends Window implements LoginHandler {
 
 	private int logoWidth = 300;
 
-	private String logo = "[ISOMORPHIC]/geomajas/temp/geomajas_logo.png";
+	private String logo = "[ISOMORPHIC]/geomajas/geomajas_logo.png";
 
 	private String background = "[ISOMORPHIC]/geomajas/springsecurity/login_background_grey.jpg";
 
@@ -229,7 +229,7 @@ public class LoginWindow extends Window implements LoginHandler {
 	private void buildWidget() {
 		i18n = GWT.create(SpringSecurityMessages.class);
 
-		setHeaderIcon("[ISOMORPHIC]/geomajas/temp/geomajas_desktopicoon_small.png", 16, 16);
+		setHeaderIcon("[ISOMORPHIC]/geomajas/geomajas_desktopicon_small.png", 16, 16);
 		setTitle(i18n.loginWindowTitle());
 		setWidth(500);
 		setHeight(300);

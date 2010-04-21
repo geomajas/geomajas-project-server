@@ -63,11 +63,10 @@ public class NavigationSample extends SamplePanel {
 		layout.setHeight100();
 		layout.setMembersMargin(10);
 
+		// Create a 3-column layout for buttons:
 		HLayout hLayout = new HLayout();
 		hLayout.setMembersMargin(15);
-		// hLayout.setHeight(75);
 		hLayout.setPadding(5);
-		// hLayout.setShowEdges(true);
 		VLayout firstColumn = new VLayout();
 		firstColumn.setMembersMargin(5);
 		VLayout secondColumn = new VLayout();
@@ -112,7 +111,7 @@ public class NavigationSample extends SamplePanel {
 		bboxBTN.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				map.getMapModel().getMapView().applyBounds(new Bbox(0, 0, 5000000, 5000000), ZoomOption.EXACT);
+				map.getMapModel().getMapView().applyBounds(new Bbox(1200000, 4600000, 1400000, 1400000), ZoomOption.EXACT);
 			}
 		});
 
