@@ -156,7 +156,7 @@ public class DomHelper {
 			element = createElement(parent, name, type, style, generateId);
 		} else {
 			// Element was found, so update it:
-			DOM.setElementAttribute(element, "style", decode(style));
+			applyStyle(element, style);
 		}
 		// no luck !
 		if (element == null) {
@@ -252,7 +252,8 @@ public class DomHelper {
 	/**
 	 * Return the id of the specified group.
 	 * 
-	 * @param group the group object
+	 * @param group
+	 *            the group object
 	 * @return the corresponding element id or null if the group has not been drawn.
 	 */
 	public String getId(Object group) {
@@ -458,8 +459,7 @@ public class DomHelper {
 	 */
 	public void setController(Object parent, String name, GraphicsController controller) {
 		// set them all
-		doSetController(getElement(parent, name), controller,
-				Event.MOUSEEVENTS | Event.ONDBLCLICK | Event.ONMOUSEWHEEL);
+		doSetController(getElement(parent, name), controller, Event.MOUSEEVENTS | Event.ONDBLCLICK | Event.ONMOUSEWHEEL);
 	}
 
 	/**
@@ -822,6 +822,19 @@ public class DomHelper {
 				} catch (Exception e) {
 					// do something...
 				}
+			}
+		}
+	}
+
+	public void applyStyle(Element element, Style style) {
+		if (element != null && style != null) {
+			switch (namespace) {
+				case VML:
+					VmlStyleUtil.applyStyle(element, style);
+					break;
+				case SVG:
+				case HTML:
+					DOM.setElementAttribute(element, "style", decode(style));
 			}
 		}
 	}
