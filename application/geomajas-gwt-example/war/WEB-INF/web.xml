@@ -34,7 +34,7 @@
 			org/geomajas/example/gwt/clientcfg/layer/mapGoogleSat.xml
 
 			org/geomajas/example/gwt/clientcfg/mapwidget/mapCrs.xml
-			org/geomajas/example/gwt/clientcfg/mapWidget/overviewMapOsm.xml
+			org/geomajas/example/gwt/clientcfg/mapwidget/overviewMapOsm.xml
 
 			org/geomajas/example/gwt/clientcfg/editing/mapEditPointLayer.xml
 			org/geomajas/example/gwt/clientcfg/editing/mapEditLineLayer.xml
