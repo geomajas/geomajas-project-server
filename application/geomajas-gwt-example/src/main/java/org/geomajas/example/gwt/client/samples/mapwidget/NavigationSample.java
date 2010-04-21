@@ -111,7 +111,8 @@ public class NavigationSample extends SamplePanel {
 		bboxBTN.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				map.getMapModel().getMapView().applyBounds(new Bbox(1200000, 4600000, 1400000, 1400000), ZoomOption.EXACT);
+				map.getMapModel().getMapView().applyBounds(new Bbox(1200000, 4600000, 1400000, 1400000),
+						ZoomOption.EXACT);
 			}
 		});
 
