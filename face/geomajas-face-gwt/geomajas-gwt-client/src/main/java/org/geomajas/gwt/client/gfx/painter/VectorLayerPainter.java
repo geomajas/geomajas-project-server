@@ -24,6 +24,7 @@
 package org.geomajas.gwt.client.gfx.painter;
 
 import org.geomajas.configuration.FeatureStyleInfo;
+import org.geomajas.configuration.FontStyleInfo;
 import org.geomajas.gwt.client.gfx.MapContext;
 import org.geomajas.gwt.client.gfx.Paintable;
 import org.geomajas.gwt.client.gfx.Painter;
@@ -42,18 +43,11 @@ import org.geomajas.layer.LayerType;
  * @author Pieter De Graef
  */
 public class VectorLayerPainter implements Painter {
-
-	private FontStyle labelStyle;
 	
 	private MapWidget mapWidget;
 
 	public VectorLayerPainter(MapWidget mapWidget) {
-		this(mapWidget, new FontStyle("#FF0000", 10, "Courier New, Arial", "normal", "normal"));
-	}
-
-	public VectorLayerPainter(MapWidget mapWidget, FontStyle labelStyle) {
 		this.mapWidget = mapWidget;
-		this.labelStyle = labelStyle;
 	}
 
 	public String getPaintableClassName() {
@@ -77,6 +71,7 @@ public class VectorLayerPainter implements Painter {
 		context.getVectorContext().drawGroup(mapWidget.getGroup(RenderGroup.VECTOR), layer); // layer.getDefaultStyle???
 		context.getVectorContext().drawGroup(layer, layer.getFeatureGroup());
 		context.getVectorContext().drawGroup(layer, layer.getSelectionGroup());
+		FontStyle labelStyle = getLabelFontstyle(layer);
 		context.getVectorContext().drawGroup(layer, layer.getLabelGroup(), labelStyle);
 
 		// Draw symbol types, as these can change any time:
@@ -103,6 +98,11 @@ public class VectorLayerPainter implements Painter {
 		}
 	}
 
+	private FontStyle getLabelFontstyle(VectorLayer layer) {
+		FontStyleInfo info = layer.getLayerInfo().getNamedStyleInfo().getLabelStyle().getFontStyle();
+		return new FontStyle(info);
+	}
+
 	/**
 	 * Delete a {@link Paintable} object from the given {@link MapContext}. It the object does not exist, nothing
 	 * will be done.
@@ -120,22 +120,4 @@ public class VectorLayerPainter implements Painter {
 
 	// Getters and setters:
 
-	/**
-	 * Get the default font style used to draw labels.
-	 * 
-	 * @return font style
-	 */
-	public FontStyle getLabelStyle() {
-		return labelStyle;
-	}
-
-	/**
-	 * Set a new default font style used for drawing labels.
-	 * 
-	 * @param labelStyle
-	 *            The new style
-	 */
-	public void setLabelStyle(FontStyle labelStyle) {
-		this.labelStyle = labelStyle;
-	}
 }

@@ -46,6 +46,7 @@ import org.geomajas.rendering.GraphicsDocument;
 import org.geomajas.rendering.RenderException;
 import org.geomajas.rendering.painter.tile.TilePainter;
 import org.geomajas.service.GeoService;
+import org.geomajas.service.TextService;
 import org.geotools.geometry.jts.GeometryCoordinateSequenceTransformer;
 import org.geotools.referencing.operation.transform.ProjectiveTransform;
 import org.slf4j.Logger;
@@ -126,6 +127,7 @@ public class StringContentTilePainter implements TilePainter {
 
 	private GeoService geoService;
 
+	private TextService textService;
 	// -------------------------------------------------------------------------
 	// Constructors:
 	// -------------------------------------------------------------------------
@@ -148,7 +150,7 @@ public class StringContentTilePainter implements TilePainter {
 	 *            geo service for geometry conversions
 	 */
 	public StringContentTilePainter(VectorLayer layer, NamedStyleInfo style, String renderer, double scale,
-			Coordinate panOrigin, GeoService geoService) {
+			Coordinate panOrigin, GeoService geoService, TextService textService) {
 		this.layer = layer;
 		// @todo: duplicate code, can we just depend on the VectorLayerService ?
 		if (style == null) {
@@ -164,6 +166,7 @@ public class StringContentTilePainter implements TilePainter {
 		this.scale = scale;
 		this.panOrigin = panOrigin;
 		this.geoService = geoService;
+		this.textService = textService;
 	}
 
 	// -------------------------------------------------------------------------
@@ -291,7 +294,7 @@ public class StringContentTilePainter implements TilePainter {
 			DefaultSvgDocument document = new DefaultSvgDocument(writer, false);
 			document.setMaximumFractionDigits(MAXIMUM_FRACTION_DIGITS);
 			document.registerWriter(InternalTileImpl.class, new SvgLabelTileWriter(getTransformer(), labelStyleInfo,
-					geoService));
+					geoService, textService));
 			return document;
 		} else if (TileMetadata.PARAM_VML_RENDERER.equalsIgnoreCase(renderer)) {
 			DefaultVmlDocument document = new DefaultVmlDocument(writer);
@@ -300,7 +303,7 @@ public class StringContentTilePainter implements TilePainter {
 			document.registerWriter(InternalFeatureImpl.class, new VmlFeatureWriter(getTransformer(), coordWidth,
 					coordHeight));
 			document.registerWriter(InternalTileImpl.class, new VmlLabelTileWriter(coordWidth, coordHeight,
-					getTransformer(), labelStyleInfo, geoService));
+					getTransformer(), labelStyleInfo, geoService, textService));
 			document.setMaximumFractionDigits(MAXIMUM_FRACTION_DIGITS);
 			return document;
 		} else {

@@ -32,6 +32,7 @@ import org.geomajas.layer.tile.TileMetadata;
 import org.geomajas.layer.tile.VectorTile;
 import org.geomajas.rendering.painter.tile.TilePainter;
 import org.geomajas.service.GeoService;
+import org.geomajas.service.TextService;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
 import org.geomajas.service.pipeline.PipelineStep;
@@ -49,6 +50,9 @@ public class GetTileStringContentStep implements PipelineStep<InternalTile> {
 	@Autowired
 	private GeoService geoService;
 	
+	@Autowired
+	private TextService textService;
+
 	public String getId() {
 		return id;
 	}
@@ -64,7 +68,7 @@ public class GetTileStringContentStep implements PipelineStep<InternalTile> {
 		response.setContentType(VectorTile.VectorTileContentType.STRING_CONTENT);
 		Coordinate panOrigin = new Coordinate(metadata.getPanOrigin().getX(), metadata.getPanOrigin().getY());
 		TilePainter tilePainter = new StringContentTilePainter(layer, metadata.getStyleInfo(), metadata
-				.getRenderer(), metadata.getScale(), panOrigin, geoService);
+				.getRenderer(), metadata.getScale(), panOrigin, geoService, textService);
 		tilePainter.setPaintGeometries(metadata.isPaintGeometries());
 		tilePainter.setPaintLabels(metadata.isPaintLabels());
 		tilePainter.paint(response);

@@ -123,10 +123,12 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 			<bean class="org.geomajas.configuration.LabelStyleInfo">
                 <property name="labelAttributeName" value="NAME"/>
                 <property name="fontStyle">
-                    <bean class="org.geomajas.configuration.FeatureStyleInfo">
-                        <property name="fillColor" value="#FFFFFF"/>
-                        <property name="fillOpacity" value="1"/>
-                    </bean>
+					<bean class="org.geomajas.configuration.FontStyleInfo">
+						<property name="color" value="#FFFFFF" />
+						<property name="family" value="Verdana" />
+						<property name="size" value="12" />
+						<property name="opacity" value="1" />
+					</bean>
                 </property>
                 <property name="backgroundStyle">
                     <bean class="org.geomajas.configuration.FeatureStyleInfo">

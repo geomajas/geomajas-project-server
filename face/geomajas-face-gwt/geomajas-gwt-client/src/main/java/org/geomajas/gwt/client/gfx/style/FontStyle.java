@@ -23,6 +23,8 @@
 
 package org.geomajas.gwt.client.gfx.style;
 
+import org.geomajas.configuration.FontStyleInfo;
+
 /**
  * <p>
  * Style object used for fonts on the map.
@@ -97,6 +99,14 @@ public class FontStyle implements Style {
 	}
 
 	// Other functions:
+
+	public FontStyle(FontStyleInfo info) {
+		this.fillColor = info.getColor();
+		this.fontSize = info.getSize();
+		this.fontFamily = info.getFamily();
+		this.fontWeight = info.getWeight();
+		this.fontStyle = info.getStyle();
+	}
 
 	/**
 	 * Scale only the font-size.

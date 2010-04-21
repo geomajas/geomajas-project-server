@@ -40,7 +40,7 @@ public class LabelStyleInfo implements Serializable {
 	private static final long serialVersionUID = 151L;
 	@NotNull
 	private String labelAttributeName;
-	private FeatureStyleInfo fontStyle;
+	private FontStyleInfo fontStyle;
 	private FeatureStyleInfo backgroundStyle;
 
 	/**
@@ -66,7 +66,7 @@ public class LabelStyleInfo implements Serializable {
 	 *
 	 * @return font style
 	 */
-	public FeatureStyleInfo getFontStyle() {
+	public FontStyleInfo getFontStyle() {
 		return fontStyle;
 	}
 
@@ -75,7 +75,7 @@ public class LabelStyleInfo implements Serializable {
 	 *
 	 * @param fontStyle font style
 	 */
-	public void setFontStyle(FeatureStyleInfo fontStyle) {
+	public void setFontStyle(FontStyleInfo fontStyle) {
 		this.fontStyle = fontStyle;
 	}
 

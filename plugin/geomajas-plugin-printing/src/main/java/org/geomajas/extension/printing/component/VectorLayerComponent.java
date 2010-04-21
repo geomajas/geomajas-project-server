@@ -173,8 +173,8 @@ public class VectorLayerComponent extends BaseLayerComponent {
 		Font font = new Font("Helvetica", Font.ITALIC, 10);
 		Color fontColor = Color.black;
 		if (labelType.getFontStyle() != null) {
-			fontColor = context.getColor(labelType.getFontStyle().getFillColor(), labelType.getFontStyle()
-					.getFillOpacity());
+			fontColor = context.getColor(labelType.getFontStyle().getColor(), labelType.getFontStyle()
+					.getOpacity());
 		}
 		Rectangle rect = calculateLabelRect(context, f, label, font);
 		Color bgColor = Color.white;

@@ -23,7 +23,10 @@
 
 package org.geomajas.internal.rendering.writers.vml;
 
+import java.awt.geom.Rectangle2D;
+
 import org.geomajas.configuration.FeatureStyleInfo;
+import org.geomajas.configuration.FontStyleInfo;
 import org.geomajas.configuration.LabelStyleInfo;
 import org.geomajas.internal.layer.feature.InternalFeatureImpl;
 import org.geomajas.internal.layer.tile.InternalTileImpl;
@@ -32,6 +35,7 @@ import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.rendering.GraphicsDocument;
 import org.geomajas.rendering.RenderException;
 import org.geomajas.service.GeoService;
+import org.geomajas.service.TextService;
 import org.geotools.geometry.jts.GeometryCoordinateSequenceTransformer;
 import org.opengis.referencing.operation.TransformException;
 import org.slf4j.Logger;
@@ -50,10 +54,6 @@ public class VmlLabelTileWriter implements GraphicsWriter {
 
 	private final Logger log = LoggerFactory.getLogger(VmlLabelTileWriter.class);
 
-	private static final float FONT_WIDTH = 7.2f;
-
-	private static final int FONT_HEIGHT = 10;
-
 	private GeometryFactory factory;
 
 	private GeometryCoordinateSequenceTransformer transformer;
@@ -66,13 +66,16 @@ public class VmlLabelTileWriter implements GraphicsWriter {
 
 	private GeoService geoService;
 
+	private TextService textService;
+	
 	public VmlLabelTileWriter(int coordWidth, int coordHeight, GeometryCoordinateSequenceTransformer transformer,
-			LabelStyleInfo labelStyle, GeoService geoService) {
+			LabelStyleInfo labelStyle, GeoService geoService, TextService textService) {
 		this.coordWidth = coordWidth;
 		this.coordHeight = coordHeight;
 		this.labelStyle = labelStyle;
 		this.transformer = transformer;
 		this.geoService = geoService;
+		this.textService = textService;
 		factory = new GeometryFactory();
 	}
 
@@ -106,19 +109,20 @@ public class VmlLabelTileWriter implements GraphicsWriter {
 			com.vividsolutions.jts.geom.Point labelPos;
 			try {
 				labelPos = (com.vividsolutions.jts.geom.Point) transformer.transform(p);
-				String label = feature.getLabel();
+				String labelString = feature.getLabel();
 
 				// If the attribute has no value, continue with the next:
-				if (label == null || label.length() == 0) {
+				if (labelString == null || labelString.length() == 0) {
 					document.closeElement();
 					continue;
 				}
 
 				// Calculate label width, left and top:
-				int boxWidth = (int) ((label.length()) * FONT_WIDTH) + 2;
-				int boxHeight = FONT_HEIGHT + 4;
+				Rectangle2D textBox = textService.getStringBounds(labelString, labelStyle.getFontStyle());
+				int boxWidth = (int) textBox.getWidth() + 8; // TODO: check why not wide enough !!!
+				int boxHeight = (int) textBox.getHeight();
 				int left = ((int) labelPos.getX()) - boxWidth / 2;
-				int top = ((int) labelPos.getY()) - FONT_HEIGHT / 2;
+				int top = ((int) labelPos.getY()) - boxHeight / 2;
 
 				// Group for an individual label (vml:group):
 				document.writeElement("vml:group", true);
@@ -127,39 +131,36 @@ public class VmlLabelTileWriter implements GraphicsWriter {
 				document.writeAttribute("coordsize", boxWidth + " " + boxHeight);
 
 				// First we draw the rectangle:
-				if (bgStyle != null) {
-					document.writeElement("vml:rect", true);
-					document.writeAttribute("id", feature.getId() + ".label");
-					document.writeAttribute("style", "WIDTH: " + boxWidth + "px; HEIGHT: " + boxHeight + "px;");
-					document.writeAttribute("fillcolor", bgStyle.getFillColor());
-					document.writeAttribute("strokecolor", bgStyle.getStrokeColor());
-					document.writeAttribute("strokeweight", bgStyle.getStrokeWidth());
+				document.writeElement("vml:rect", true);
+				document.writeAttribute("id", feature.getId() + ".label");
+				document.writeAttribute("style", "WIDTH: " + (boxWidth) + "px; HEIGHT: " + (boxHeight) + "px;");
+				document.writeAttribute("fillcolor", bgStyle.getFillColor());
+				document.writeAttribute("strokecolor", bgStyle.getStrokeColor());
+				document.writeAttribute("strokeweight", bgStyle.getStrokeWidth());
 
-					// Rect-fill element:
-					document.writeElement("vml:fill", true);
-					document.writeAttribute("opacity", Float.toString(bgStyle.getFillOpacity()));
-					document.closeElement();
+				// Rect-fill element:
+				document.writeElement("vml:fill", true);
+				document.writeAttribute("opacity", Float.toString(bgStyle.getFillOpacity()));
+				document.closeElement();
 
-					// Rect-stroke element:
-					document.writeElement("vml:stroke", true);
-					document.writeAttribute("opacity", Float.toString(bgStyle.getStrokeOpacity()));
-					document.closeElement();
-				}
+				// Rect-stroke element:
+				document.writeElement("vml:stroke", true);
+				document.writeAttribute("opacity", Float.toString(bgStyle.getStrokeOpacity()));
+				document.closeElement();
 
 				// Then the label-text:
 				document.writeElement("vml:textbox", true);
 				document.writeAttribute("id", feature.getId() + ".text");
-				document.writeAttribute("style", "font-family: monospace;font-size: 8pt; color: "
-						+ labelStyle.getFontStyle().getFillColor() + ";");
-				document.writeAttribute("fillcolor", labelStyle.getFontStyle().getFillColor());
+				document.writeAttribute("style", getCssStyle(labelStyle.getFontStyle()));
+				document.writeAttribute("fillcolor", labelStyle.getFontStyle().getColor());
 				document.writeAttribute("inset", "0px, 0px, 0px, 0px");
-				if (labelStyle.getFontStyle().getFillOpacity() > 0) {
+				if (labelStyle.getFontStyle().getOpacity() > 0) {
 					document.writeElement("vml:fill", true);
-					document.writeAttribute("opacity", Float.toString(labelStyle.getFontStyle().getFillOpacity()));
+					document.writeAttribute("opacity", Float.toString(labelStyle.getFontStyle().getOpacity()));
 					document.closeElement();
 				}
-				// document.writeTextNode(label.replaceAll(" ", "&nbsp;"));
-				document.writeTextNode(label);
+				//document.writeTextNode(labelString.replaceAll(" ", "&nbsp;"));
+				document.writeTextNode(labelString);
 				document.closeElement();
 
 				// Close the vml:rect
@@ -173,4 +174,26 @@ public class VmlLabelTileWriter implements GraphicsWriter {
 		}
 		document.closeElement();
 	}
+		
+	private String getCssStyle(FontStyleInfo style) {
+		String css = "";
+		if (style.getColor() != null && !"".equals(style.getColor())) {
+			css += "color:" + style.getColor() + ";";
+		}
+		if (style.getFamily() != null && !"".equals(style.getFamily())) {
+			css += "font-family:" + style.getFamily() + ";";
+		}
+		if (style.getStyle() != null && !"".equals(style.getStyle())) {
+			css += "font-style:" + style.getStyle() + ";";
+		}
+		if (style.getWeight() != null && !"".equals(style.getWeight())) {
+			css += "font-weight:" + style.getWeight() + ";";
+		}
+		if (style.getSize() >= 0) {
+			css += "font-size:" + style.getSize() + "px;";
+		}
+		return css;
+	}
+
+
 }

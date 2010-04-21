@@ -23,7 +23,10 @@
 
 package org.geomajas.internal.rendering.writers.svg;
 
+import java.awt.geom.Rectangle2D;
+
 import org.geomajas.configuration.FeatureStyleInfo;
+import org.geomajas.configuration.FontStyleInfo;
 import org.geomajas.configuration.LabelStyleInfo;
 import org.geomajas.internal.rendering.writers.GraphicsWriter;
 import org.geomajas.layer.feature.InternalFeature;
@@ -31,6 +34,7 @@ import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.rendering.GraphicsDocument;
 import org.geomajas.rendering.RenderException;
 import org.geomajas.service.GeoService;
+import org.geomajas.service.TextService;
 import org.geotools.geometry.jts.GeometryCoordinateSequenceTransformer;
 import org.opengis.referencing.operation.TransformException;
 import org.slf4j.Logger;
@@ -57,11 +61,14 @@ public class SvgLabelTileWriter implements GraphicsWriter {
 
 	private GeoService geoService;
 
+	private TextService textService;
+
 	public SvgLabelTileWriter(GeometryCoordinateSequenceTransformer transformer, LabelStyleInfo labelStyle,
-			GeoService geoService) {
+			GeoService geoService, TextService textService) {
 		this.transformer = transformer;
 		this.labelStyle = labelStyle;
 		this.geoService = geoService;
+		this.textService = textService;
 		this.factory = new GeometryFactory();
 	}
 
@@ -82,32 +89,25 @@ public class SvgLabelTileWriter implements GraphicsWriter {
 				labelPos = (com.vividsolutions.jts.geom.Point) transformer.transform(p);
 				boolean createChild = true;
 
-				// Background:
-				if (labelStyle != null && labelString != null && labelString.length() > 0) {
-					// We assume font-size = 12 !!!!
-					int width = labelString.length() * 8 + 10;
-					int height = 12;
-					document.writeElement("rect", createChild);
-					document.writeAttribute("id", feature.getId() + ".lblBG");
-					document.writeAttribute("x", labelPos.getX() - (width / 2));
-					document.writeAttribute("y", labelPos.getY() - (height - 2));
-					document.writeAttribute("width", width);
-					document.writeAttribute("height", height);
-					document.writeAttribute("style", "fill: " + bgStyle.getFillColor() + "; fill-opacity: "
-							+ bgStyle.getFillOpacity() + "; stroke: " + bgStyle.getStrokeColor() + "; stroke-opacity: "
-							+ bgStyle.getStrokeOpacity() + "; stroke-width: " + bgStyle.getStrokeWidth() + ";");
-					createChild = false;
-				}
+				Rectangle2D textBox = textService.getStringBounds(labelString, labelStyle.getFontStyle());
+				document.writeElement("rect", createChild);
+				document.writeAttribute("id", feature.getId() + ".lblBG");
+				document.writeAttribute("x", labelPos.getX() - ((int) textBox.getWidth() / 2));
+				document.writeAttribute("y", labelPos.getY() - ((int) textBox.getHeight()));
+				document.writeAttribute("width", (int) textBox.getWidth());
+				document.writeAttribute("height", (int) textBox.getHeight());
+				document.writeAttribute("style", getCssStyle(bgStyle));
+				createChild = false;
 
 				// Text:
 				document.writeElement("text", createChild);
 				document.writeAttribute("id", feature.getId() + ".lblTXT");
 				document.writeAttribute("x", labelPos.getX());
-				document.writeAttribute("y", labelPos.getY());
+				// pull up baseline position to accommodate for descent
+				document.writeAttribute("y", labelPos.getY() - (int) textBox.getMaxY());
 				// TODO: config option, center label
 				document.writeAttribute("text-anchor", "middle");
-				document.writeAttribute("style", "fill: " + labelStyle.getFontStyle().getFillColor()
-						+ "; fill-opacity: " + labelStyle.getFontStyle().getFillOpacity());
+				document.writeAttribute("style", getCssStyle(labelStyle.getFontStyle()));
 
 				if (labelString == null) {
 					document.closeElement();
@@ -121,4 +121,46 @@ public class SvgLabelTileWriter implements GraphicsWriter {
 		}
 		document.closeElement();
 	}
+	
+	private String getCssStyle(FontStyleInfo style) {
+		String css = "";
+		if (style.getColor() != null && !"".equals(style.getColor())) {
+			css += "fill:" + style.getColor() + ";";
+		}
+		if (style.getFamily() != null && !"".equals(style.getFamily())) {
+			css += "font-family:" + style.getFamily() + ";";
+		}
+		if (style.getStyle() != null && !"".equals(style.getStyle())) {
+			css += "font-style:" + style.getStyle() + ";";
+		}
+		if (style.getWeight() != null && !"".equals(style.getWeight())) {
+			css += "font-weight:" + style.getWeight() + ";";
+		}
+		if (style.getSize() >= 0) {
+			css += "font-size:" + style.getSize() + "px;";
+		}
+		return css;
+	}
+
+
+	private String getCssStyle(FeatureStyleInfo style) {
+		String css = "";
+		if (style.getFillColor() != null && !"".equals(style.getFillColor())) {
+			css += "fill:" + style.getFillColor() + ";";
+		}
+		if (style.getFillOpacity() != -1) {
+			css += "fill-opacity:" + style.getFillOpacity() + ";";
+		}
+		if (style.getStrokeColor() != null && !"".equals(style.getStrokeColor())) {
+			css += "stroke:" + style.getStrokeColor() + ";";
+		}
+		if (style.getStrokeOpacity() != -1) {
+			css += "stroke-opacity:" + style.getStrokeOpacity() + ";";
+		}
+		if (style.getStrokeWidth() >= 0) {
+			css += "stroke-width:" + style.getStrokeWidth() + ";";
+		}
+		return css;
+	}
+	
 }

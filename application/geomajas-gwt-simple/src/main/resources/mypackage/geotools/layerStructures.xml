@@ -64,9 +64,9 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 						<bean class="org.geomajas.configuration.LabelStyleInfo">
 							<property name="labelAttributeName" value="id" />
 							<property name="fontStyle">
-								<bean class="org.geomajas.configuration.FeatureStyleInfo">
-									<property name="fillColor" value="#66AA22" />
-									<property name="fillOpacity" value="1" />
+								<bean class="org.geomajas.configuration.FontStyleInfo">
+									<property name="color" value="#66AA22" />
+									<property name="opacity" value="1" />
 								</bean>
 							</property>
 							<property name="backgroundStyle">
