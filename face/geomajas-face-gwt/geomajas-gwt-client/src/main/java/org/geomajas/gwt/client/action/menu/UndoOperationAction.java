@@ -27,6 +27,8 @@ import org.geomajas.gwt.client.action.MenuAction;
 import org.geomajas.gwt.client.controller.editing.EditController;
 import org.geomajas.gwt.client.i18n.I18nProvider;
 import org.geomajas.gwt.client.map.feature.FeatureTransaction;
+import org.geomajas.gwt.client.map.feature.operation.AddCoordinateOp;
+import org.geomajas.gwt.client.map.feature.operation.FeatureOperation;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.MapWidget.RenderGroup;
 import org.geomajas.gwt.client.widget.MapWidget.RenderStatus;
@@ -39,7 +41,7 @@ import com.smartgwt.client.widgets.menu.events.MenuItemClickEvent;
 
 /**
  * Undo the last operation performed on the {@link FeatureTransaction}.
- *
+ * 
  * @author Pieter De Graef
  */
 public class UndoOperationAction extends MenuAction implements MenuItemIfFunction {
@@ -63,7 +65,7 @@ public class UndoOperationAction extends MenuAction implements MenuItemIfFunctio
 
 	/**
 	 * Undo the last operation performed on the {@link FeatureTransaction}.
-	 *
+	 * 
 	 * @param event
 	 *            The {@link MenuItemClickEvent} from clicking the action.
 	 */
@@ -84,7 +86,18 @@ public class UndoOperationAction extends MenuAction implements MenuItemIfFunctio
 	public boolean execute(Canvas target, Menu menu, MenuItem item) {
 		FeatureTransaction featureTransaction = mapWidget.getMapModel().getFeatureEditor().getFeatureTransaction();
 		if (featureTransaction != null) {
-			return featureTransaction.getOperationQueue().size() > 1; // the first addCoordinateOp may not be undone.
+			boolean operationCount = featureTransaction.getOperationQueue().size() > 0;
+			if (operationCount) {
+				// The first addCoordinateOp may not be undone!
+				FeatureOperation firstOperation = featureTransaction.getOperationQueue().get(0);
+				if (firstOperation instanceof AddCoordinateOp) {
+					if (featureTransaction.getNewFeatures()[0].getGeometry().getNumPoints() == 1) {
+						return false;
+					}
+				}
+
+				return true;
+			}
 		}
 		return false;
 	}
