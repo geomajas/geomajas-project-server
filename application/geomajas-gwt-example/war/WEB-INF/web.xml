@@ -57,6 +57,7 @@
         </param-value>
     </context-param>
 
+	<!-- @extract-start PreloadToPrepareScanning, Preload class to prevent scanning problems -->
     <context-param>
         <param-name>preloadClasses</param-name>
         <param-value>
@@ -71,7 +72,8 @@
 	<listener>
  		<listener-class>org.geomajas.servlet.PrepareScanningContextListener</listener-class>
 	</listener>
-
+	<!-- @extract-end -->
+	
 	<listener>
  		<listener-class>org.geomajas.servlet.GeomajasContextListener</listener-class>
 	</listener>

@@ -55,7 +55,7 @@ public class GetVectorTileRequest extends LayerIdCommandRequest implements TileM
 
 	private NamedStyleInfo styleInfo;
 
-	private boolean paintGeometries;
+	private boolean paintGeometries = true;
 
 	private boolean paintLabels;
 

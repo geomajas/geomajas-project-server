@@ -52,7 +52,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 	</bean>
 	<!-- @extract-end -->
 
-	<!-- @extract-start ShapeInMemCountriesFeatureInfo, ShapeInMem layer info example -->
+	<!-- @extract-start ShapeInMemCountriesFeatureInfo, ShapeInMem layer feature info example -->
     <bean class="org.geomajas.configuration.FeatureInfo" name="countriesFeatureInfo">
         <property name="dataSourceName" value="country"/>
         <property name="identifier">
@@ -77,6 +77,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
                     <property name="identifying" value="true"/>
                     <property name="type" value="STRING"/>
                 </bean>
+				<!-- @extract-skip-start -->
                 <bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
                     <property name="label" value="Label"/>
                     <property name="name" value="COUNTRY"/>
@@ -115,6 +116,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 					   </bean>
                     </property>
                 </bean>
+				<!-- @extract-skip-end -->
                 <bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
                     <property name="label" value="UNESCO"/>
                     <property name="name" value="UNESCO"/>
@@ -144,10 +146,11 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
     </bean>
 	<!-- @extract-end -->
 
-	<!-- @extract-start ShapeInMemCountriesStyleInfo, ShapeInMem layer info example -->
+	<!-- @extract-start ShapeInMemCountriesStyleInfo, ShapeInMem layer style info example -->
  	<bean class="org.geomajas.configuration.NamedStyleInfo" name="countriesStyleInfo">
 		<property name="featureStyles">
             <list>
+				<!-- @extract-skip-start -->
                 <bean class="org.geomajas.configuration.FeatureStyleInfo">
                      <property name="name" value="OPEC and UNESCO Member"/>
                     <property name="formula" value="((OPEC == 1) AND (UNESCO == 1))"/>
@@ -166,6 +169,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
                     <property name="strokeOpacity" value=".3"/>
                     <property name="strokeWidth" value="1"/>
                 </bean>
+				<!-- @extract-skip-end -->
                 <bean class="org.geomajas.configuration.FeatureStyleInfo">
                     <property name="name" value="UNESCO Member"/>
                     <property name="formula" value="(UNESCO == 1)"/>

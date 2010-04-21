@@ -100,9 +100,9 @@
 
         <listitem>
           <para><emphasis>geomajas-plugin-springsecurity</emphasis>: a basic
-          security service which can be configured as part of the spring
-          security and does not use an external source for users or policies,
-          making the security configuration entirely static.</para>
+          security service which can be configured as part of the Spring
+          configuration and does not use an external source for users or
+          policies, making the security configuration entirely static.</para>
         </listitem>
       </itemizedlist></para>
   </chapter>
@@ -110,7 +110,7 @@
   <chapter>
     <title>Configuration</title>
 
-    <para>Geomajas leverages the spring framework for configuration.</para>
+    <para>Geomajas leverages the Spring framework for configuration.</para>
 
     <para>In your <code>web.xml</code> file, you need to assure the
     configuration is made available to the application, and you can indicate
@@ -224,7 +224,7 @@
 
         <para>Spring has support declarative transaction management, which
         relieves us from the burden of writing our own transaction demarcation
-        and exception handling code. Of course, spring transaction management
+        and exception handling code. Of course, Spring transaction management
         has to be hooked up with the transaction definition and life cycle of
         the underlying data platform (hibernate, JTA, JDBC) . Each data access
         technology should provide its own implementation of the Spring class
@@ -413,7 +413,7 @@
           <title>WMS layer configuration</title>
 
           <para>Make sure your classpath contains the required plug-in. If you
-          are using maven, add the following dependency to your pom:</para>
+          are using Maven, add the following dependency to your pom:</para>
 
           <xi:include href="../listing/WmsLayerDependency.xml"
                       xmlns:xi="http://www.w3.org/2001/XInclude" />
@@ -499,7 +499,7 @@
           <title>OpenStreetMap layer configuration</title>
 
           <para>Make sure your classpath contains the required plug-in. If you
-          are using maven, add the following dependency to your pom:</para>
+          are using Maven, add the following dependency to your pom:</para>
 
           <xi:include href="../listing/OsmLayerDependency.xml"
                       xmlns:xi="http://www.w3.org/2001/XInclude" />
@@ -522,8 +522,9 @@
         <section>
           <title>Google Maps layer configuration</title>
 
-          <para>Make sure your classpath contains the required plug-in. If you
-          are using maven, add the following dependency to your pom:</para>
+          <para>Make sure your class path contains the required plug-in. If
+          you are using Maven, add the following dependency to your
+          pom:</para>
 
           <xi:include href="../listing/GoogleLayerDependency.xml"
                       xmlns:xi="http://www.w3.org/2001/XInclude" />
@@ -571,12 +572,14 @@
           setting this to "true").</para>
 
           <note>
-            <para>You need to include the Google API code in your application
-            to be allowed to use this module (otherwise you will violate
-            Google's terms of use, see <ulink
+            <para>You need to assure that you comply with Google's terms of
+            use (see <ulink
             url="http://code.google.com/apis/maps/">http://code.google.com/apis/maps/</ulink>).
-            See the documentation for the face you are using for more
-            info.</para>
+            Some of the things you need to do include adding the Google API
+            code in your application (using a Google API key when not running
+            on localhost), and (from the GWT face, using the
+            <code>GoogleAddon</code> class to assure the copyright notes are
+            displayed on the map.</para>
           </note>
         </section>
       </section>
@@ -584,9 +587,8 @@
       <section>
         <title>Vector layer configuration</title>
 
-        <para>Vector are layers of homogeneous vectorial features that are
-        backed by shapefiles or database tables. All vector layer
-        implementations implement the
+        <para>Vector layers contain homogeneous vectorial features. All vector
+        layer implementations implement the
         <code>org.geomajas.layer.VectorLayer</code> interface, which means
         they provide an accessor for a <code>VectorLayerInfo</code> metadata
         object. The info object configuration is normally defined in the
@@ -600,13 +602,6 @@
         <section>
           <title>Vector layer info</title>
 
-          <xi:include href="../listing/ShapeInMemCountries.xml"
-                      xmlns:xi="http://www.w3.org/2001/XInclude" />
-
-          <para>The "layerInfo" property always needs to be set. Other
-          properties depend on the layer class (options are detailed
-          below).</para>
-
           <para>For the layer configuration, you have to create the layer info
           object.</para>
 
@@ -616,137 +611,6 @@
           <para>This defines the details common to both raster and vector
           layers, like layer id, crs, layer type, max extent (bounding box)
           etc.</para>
-
-          <para>There is also the definition of the features (featureInfo),
-          and the style which needs to be used for the label. Note that the
-          <emphasis>labelAttributeName</emphasis> refers to the name of an
-          attribute as defined in the feature info.</para>
-
-          <xi:include href="../listing/ShapeInMemCountriesStyleInfo.xml"
-                      xmlns:xi="http://www.w3.org/2001/XInclude" />
-
-          <para>Last but not least, you can define one or more style
-          definitions which should be used for rendering of the layer. You can
-          define formulas to determine which style should be used. The first
-          style which passes the formula will be applied for the
-          feature.</para>
-
-          <para>We also have to define the features.</para>
-
-          <xi:include href="../listing/ShapeInMemCountriesFeatureInfo.xml"
-                      xmlns:xi="http://www.w3.org/2001/XInclude" />
-
-          <para>This defines the identifier, geometry object and attributes
-          for the feature.</para>
-
-          <para>Attributes can be either primitive attributes or association
-          attributes. Primitive attributes represent primitive Java types as
-          well as some common types like Date and String. The following
-          primitive attribute types are defined: BOOLEAN, SHORT, INTEGER,
-          LONG, FLOAT, DOUBLE, CURRENCY, STRING, DATE, URL and IMGURL.
-          Association attributes represent non-primitive Java types. There are
-          two types of association attributes defined: MANY_TO_ONE and
-          ONE_TO_MANY. These reflect the many-to-one and one-to-many
-          relationships as defined in an entity-relationship model and can
-          only be used in conjunction with the
-          <code>HibernateLayer</code>.</para>
-
-          <section>
-            <title>Validation</title>
-
-            <para>Most feature attributes should be validated before they can
-            be saved to a file or database. Validation is a concern that
-            stretches across many layers of a typical application: there is
-            usually a need for client-side validation (making the app more
-            user friendly) , server-side validation (to protect the server
-            from invalid data) as well as database validation (to preserve
-            data integrity). Preferably validation rules should be defined as
-            much as possible in a single place to avoid conflicts and
-            duplication.</para>
-
-            <para>Our attribute configuration supports several types of
-            validation by defining a <code>"validator"</code> property inside
-            the attribute:</para>
-
-            <xi:include href="../listing/AttributeValidator.xml"
-                        xmlns:xi="http://www.w3.org/2001/XInclude" />
-
-            <para>This property contains some general validator information
-            and a set of constraints that should be applied to the attribute.
-            The available constraint types have been based on the new
-            JavaBeans standard: JSR-303.</para>
-          </section>
-        </section>
-
-        <section>
-          <title>Hibernate layer configuration</title>
-
-          <para>The Hibernate layer is based on the popular Hibernate ORM
-          framework. It uses a special spatial extension of Hibernate,
-          unsurprisingly called Hibernate Spatial. The Hibernate Spatial
-          project has its project website at <ulink
-          url="http://www.hibernatespatial.org/">http://www.hibernatespatial.org</ulink>.
-          The spatial extensions or dialects (in Hibernate language) allow the
-          definition of spatial types and the execution of spatial queries in
-          a database independent way.</para>
-
-          <para>You need to include the following dependencies to make this
-          work. This needs to include the hibernate spatial provider, in this
-          example, postgis.</para>
-
-          <xi:include href="../listing/HibernateLayerDependency.xml"
-                      xmlns:xi="http://www.w3.org/2001/XInclude" />
-
-          <para>A Hibernate layer cannot be defined by configuration only. As
-          in every OR model, there has to be a mapping between Java classes
-          and tables in the database. In the most simple case there is a
-          one-to-one mapping between a single class and a single spatial
-          table.</para>
-
-          <para>The following listing shows the (partial) definition of a
-          Hibernate annotated Java class <code>Road.java</code> that is mapped
-          to a table <code>roads</code> in the database.</para>
-
-          <xi:include href="../listing/HibernateRoadsSample.xml"
-                      xmlns:xi="http://www.w3.org/2001/XInclude" />
-
-          <para>The field annotations describe the relation between the fields
-          of the class and the columns in the table. A special annotation
-          <code>@Type</code> with type
-          <code>org.hibernatespatial.GeometryUserType</code> is used to map
-          the <code>geometry</code> field to the <code>the_geom</code> spatial
-          column.</para>
-
-          <para>Once the Java class mapping is finished, the actual layer
-          configuration can be made. An example configuration that matches the
-          <code>Road.java</code> class is shown below:</para>
-
-          <xi:include href="../listing/HibernateRoadsLayer.xml"
-                      xmlns:xi="http://www.w3.org/2001/XInclude" />
-
-          <para>The first property <code>layerInfo</code> is the reference to
-          the <code>VectorLayerInfo</code> object. While it can be defined
-          inline, it has been defined as an outer bean for clarity here. We
-          will come back to it soon.</para>
-
-          <para>The <code>featureModel</code> property refers to the internal
-          feature accessor face of the layer. This property will probably be
-          removed as it has no additional configuration parameters for the
-          moment.</para>
-
-          <para>The <code>sessionFactory</code> property refers to the
-          Hibernate session factory. This is the same factory that has to be
-          defined by the transaction configuration.</para>
-
-          <para>The <code>dateFormat</code> property determines how the layer
-          will convert date values to strings and vice versa.</para>
-
-          <para>As already mentioned, the bulk part of the layer's metadata is
-          defined through the <code>VectorLayerInfo</code> object. An example
-          definition of this object is given below:</para>
-
-          <xi:include href="../listing/HibernateRoadsInfo.xml"
-                      xmlns:xi="http://www.w3.org/2001/XInclude" />
 
           <para>The following table describes the properties of the
           <code>VectorLayerInfo</code> object:</para>
@@ -806,7 +670,12 @@
           the validation rules for the attributes. An example definition of
           this object is given below:</para>
 
-          <xi:include href="../listing/HibernateRoadsFeatureInfo.xml"
+          <para>There is also the definition of the features (featureInfo),
+          and the style which needs to be used for the label. Note that the
+          <emphasis>labelAttributeName</emphasis> refers to the name of an
+          attribute as defined in the feature info.</para>
+
+          <xi:include href="../listing/ShapeInMemCountriesFeatureInfo.xml"
                       xmlns:xi="http://www.w3.org/2001/XInclude" />
 
           <para>The following table describes the properties of the
@@ -837,6 +706,138 @@
               </tbody>
             </tgroup>
           </table>
+
+          <para>Last but not least, you can define one or more style
+          definitions which should be used for rendering of the layer. You can
+          define formulas to determine which style should be used. The first
+          style which passes the formula will be applied for the
+          feature.</para>
+
+          <para>We also have to define the features.</para>
+
+          <xi:include href="../listing/ShapeInMemCountriesStyleInfo.xml"
+                      xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+          <para>This defines the identifier, geometry object and attributes
+          for the feature.</para>
+
+          <para>Attributes can be either primitive attributes or association
+          attributes. Primitive attributes represent primitive Java types as
+          well as some common types like Date and String. The following
+          primitive attribute types are defined: BOOLEAN, SHORT, INTEGER,
+          LONG, FLOAT, DOUBLE, CURRENCY, STRING, DATE, URL and IMGURL.
+          Association attributes represent non-primitive Java types. There are
+          two types of association attributes defined: MANY_TO_ONE and
+          ONE_TO_MANY. These reflect the many-to-one and one-to-many
+          relationships as defined in an entity-relationship model and can
+          only be used in conjunction with the
+          <code>HibernateLayer</code>.</para>
+
+          <section>
+            <title>Validation</title>
+
+            <para>Most feature attributes should be validated before they can
+            be saved to a file or database. Validation is a concern that
+            stretches across many layers of a typical application: there is
+            usually a need for client-side validation (making the application
+            more user friendly) , server-side validation (to protect the
+            server from invalid data) as well as database validation (to
+            preserve data integrity). Preferably validation rules should be
+            defined as much as possible in a single place to avoid conflicts
+            and duplication.</para>
+
+            <para>Our attribute configuration supports several types of
+            validation by defining a <code>"validator"</code> property inside
+            the attribute:</para>
+
+            <xi:include href="../listing/AttributeValidator.xml"
+                        xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+            <para>This property contains some general validator information
+            and a set of constraints that should be applied to the attribute.
+            The available constraint types have been based on the new
+            JavaBeans standard: JSR-303.</para>
+          </section>
+        </section>
+
+        <section>
+          <title>Hibernate layer configuration</title>
+
+          <para>The Hibernate layer is based on the popular Hibernate O/R
+          mapping framework. It uses a special spatial extension of Hibernate,
+          unsurprisingly called Hibernate Spatial. The Hibernate Spatial
+          project has its project website at <ulink
+          url="http://www.hibernatespatial.org/">http://www.hibernatespatial.org</ulink>.
+          The spatial extensions or dialects (in Hibernate language) allow the
+          definition of spatial types and the execution of spatial queries in
+          a database independent way.</para>
+
+          <para>You need to include the following dependencies to make this
+          work. This needs to include the hibernate spatial provider, in this
+          example, PostGis.</para>
+
+          <xi:include href="../listing/HibernateLayerDependency.xml"
+                      xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+          <para>A Hibernate layer cannot be defined by configuration only. As
+          in every O/R model, there has to be a mapping between Java classes
+          and tables in the database. In the most simple case there is a
+          one-to-one mapping between a single class and a single spatial
+          table.</para>
+
+          <para>The following listing shows the (partial) definition of a
+          Hibernate annotated Java class <code>Road.java</code> that is mapped
+          to a table <code>roads</code> in the database.</para>
+
+          <xi:include href="../listing/HibernateRoadsSample.xml"
+                      xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+          <para>The field annotations describe the relation between the fields
+          of the class and the columns in the table. A special annotation
+          <code>@Type</code> with type
+          <code>org.hibernatespatial.GeometryUserType</code> is used to map
+          the <code>geometry</code> field to the <code>the_geom</code> spatial
+          column.</para>
+
+          <para>Once the Java class mapping is finished, the actual layer
+          configuration can be made. An example configuration that matches the
+          <code>Road.java</code> class is shown below:</para>
+
+          <xi:include href="../listing/HibernateRoadsLayer.xml"
+                      xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+          <para>The first property <code>layerInfo</code> is the reference to
+          the <code>VectorLayerInfo</code> object. While it can be defined
+          inline, it has been defined as an outer bean for clarity
+          here.</para>
+
+          <para>The <code>featureModel</code> property refers to the internal
+          feature accessor face of the layer. This property will probably be
+          removed as it has no additional configuration parameters for the
+          moment.</para>
+
+          <para>The <code>sessionFactory</code> property refers to the
+          Hibernate session factory. This is the same factory that has to be
+          defined by the transaction configuration.</para>
+
+          <para>The <code>dateFormat</code> property determines how the layer
+          will convert date values to strings and vice versa.</para>
+
+          <para>As already mentioned, the bulk part of the layer's metadata is
+          defined through the <code>VectorLayerInfo</code> object. An example
+          definition of this object is given below:</para>
+
+          <xi:include href="../listing/HibernateRoadsInfo.xml"
+                      xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+          <para>The feature metadata can be found in the
+          <code>FeatureInfo</code> object. This objects contains the complete
+          feature type description (id, attributes and geometry) as well as
+          the validation rules for the attributes. An example definition of
+          this object is given below:</para>
+
+          <xi:include href="../listing/HibernateRoadsFeatureInfo.xml"
+                      xmlns:xi="http://www.w3.org/2001/XInclude" />
         </section>
 
         <section>
@@ -925,59 +926,62 @@
             <itemizedlist>
               <listitem>
                 <para><emphasis>WFSDataStoreFactory:GET_CAPABILITIES_URL</emphasis>:
-                Represents a URL to the getCapabilities document or a server
+                URL for the getCapabilities document on the server
                 instance.</para>
               </listitem>
 
               <listitem>
-                <para><emphasis>WFSDataStoreFactory:PROTOCOL</emphasis>: Sets
-                a preference for the HTTP protocol to use when requesting WFS
+                <para><emphasis>WFSDataStoreFactory:PROTOCOL</emphasis>:
+                determine which HTTP command use when requesting WFS
                 functionality. Set this value to "true" for POST, "false" for
                 GET or NULL for AUTO.</para>
               </listitem>
 
               <listitem>
-                <para><emphasis>WFSDataStoreFactory:USERNAME</emphasis>: This
-                allows the user to specify a username. This parameter should
-                not be used without the password parameter.</para>
+                <para><emphasis>WFSDataStoreFactory:USERNAME</emphasis>: set
+                the user name which should be used to authenticate the
+                connection. This parameter should not be used without the
+                password parameter.</para>
               </listitem>
 
               <listitem>
-                <para><emphasis>WFSDataStoreFactory:PASSWORD</emphasis>: This
-                allows the user to specify a password. This param should not
-                be used without the username param.</para>
+                <para><emphasis>WFSDataStoreFactory:PASSWORD</emphasis>: set
+                the password which should be used to authenticate the
+                connection. This parameter should not be used without the user
+                name parameter.</para>
               </listitem>
 
               <listitem>
-                <para><emphasis>WFSDataStoreFactory:TIMEOUT</emphasis>: This
-                allows the user to specify a timeout in milliseconds. This
-                param has a default value of 3000ms.</para>
+                <para><emphasis>WFSDataStoreFactory:TIMEOUT</emphasis>:
+                specify the connection timeout in milliseconds. This parameter
+                has a default value of 3000ms.</para>
               </listitem>
 
               <listitem>
                 <para><emphasis>WFSDataStoreFactory:BUFFER_SIZE</emphasis>:
-                This allows the user to specify a buffer size in features.
-                This param has a default value of 10 features.</para>
+                set the buffer size for the features. This parameter has a
+                default value of 10 features.</para>
               </listitem>
 
               <listitem>
                 <para><emphasis>WFSDataStoreFactory:TRY_GZIP</emphasis>:
-                Indicates that datastore should use gzip to transfer data if
-                the server supports it. Default is true.</para>
+                indicate whether the data store should use gzip compression to
+                transfer data if the server supports it. Default is
+                true.</para>
               </listitem>
 
               <listitem>
                 <para><emphasis>WFSDataStoreFactory:LENIENT</emphasis>:
-                Indicates that datastore should do its best to create features
-                from the provided data even if it does not accurately match
-                the schema. Errors will be logged but the parsing will
+                indicate whether the data store should do its best to create
+                features from the provided data even if it does not accurately
+                match the schema. Errors will be logged but the parsing will
                 continue if this is true. Default is false.</para>
               </listitem>
             </itemizedlist>
           </para>
 
           <para>You also have to assure the GeoTools WFS data store is added
-          as dependency in your project. When using maven, you can add the
+          as dependency in your project. When using Maven, you can add the
           following dependency.</para>
 
           <example>
@@ -994,8 +998,9 @@
         <section>
           <title>Shape in memory layer</title>
 
-          <para>The shape in memory layer has a few settings which should be
-          set</para>
+          <para>This layer is backed by a shape file that is loaded in memory
+          at startup. All layer updates are performed in memory, so this layer
+          is not really useful except for examples.</para>
 
           <para>
             <table>
@@ -1031,15 +1036,42 @@
         <section>
           <title>Bean layer configuration</title>
 
+          <para>Bean layer provides an in-memory layer which is not persisted
+          in any way. The features can be defined in the configuration file
+          using some specialised beans. It is particularly useful for
+          testing.</para>
+
           <para>TODO.....</para>
-        </section>
 
-        <section>
-          <title>In memory shape layer configuration</title>
+          <para>
+            <table>
+              <title>BeanLayer configuration</title>
 
-          <para>This layer is backed by a shape file that is loaded in memory
-          at startup. All layer updates are performed in memory, so this layer
-          is not really useful except for examples.</para>
+              <tgroup cols="2">
+                <colspec colnum="1" colwidth="1*" />
+
+                <colspec colnum="2" colwidth="2*" />
+
+                <thead>
+                  <row>
+                    <entry>Name</entry>
+
+                    <entry>Description</entry>
+                  </row>
+                </thead>
+
+                <tbody>
+                  <row>
+                    <entry>features</entry>
+
+                    <entry>List of features, which should be
+                    <code>org.geomajas.layer.bean.FeatureBean</code>
+                    instances.</entry>
+                  </row>
+                </tbody>
+              </tgroup>
+            </table>
+          </para>
         </section>
       </section>
     </section>
@@ -1063,18 +1095,20 @@
         <xi:include href="../listing/ClientMapInfoPart1.xml"
                     xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-        <para>The layers refers to the layer configuration, not the actual
-        layers (as were referred in the application bean).</para>
+        <para>The layers refers to the client layer info objects, not the
+        server layer info or layer instances.</para>
 
         <para>For the client side, a lot of additional information can be
-        included in the map configuration. This includes information about the
-        styles used for displaying the map.</para>
+        included in the map configuration. This includes information like
+        background colour, styles which should be used for selected points,
+        lines and polygons and whether scale bare or pan buttons should be
+        enabled.</para>
 
         <xi:include href="../listing/ClientMapInfoPart2.xml"
                     xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-        <para>A map typically also contains a tool bar. This can also be
-        defined.</para>
+        <para>A map typically also contains a tool bar. If you want one, you
+        have to specify the tools it should include.</para>
 
         <xi:include href="../listing/ClientMapInfoPart3.xml"
                     xmlns:xi="http://www.w3.org/2001/XInclude" />
@@ -1100,8 +1134,8 @@
         widget, and the tree of layers (as a node, which can contain a list of
         nodes etc).</para>
 
-        <para>Note that the layers are referred here by id, as defined in the
-        layer configuration info.</para>
+        <para>Note that the layers are indicated by referring to the client
+        configuration object.</para>
       </section>
 
       <section>
@@ -1116,13 +1150,13 @@
         <section>
           <title>Raster layer</title>
 
-          <para>...</para>
+          <para>TODO.....</para>
         </section>
 
         <section>
           <title>Vector layer</title>
 
-          <para>...</para>
+          <para>TODO.....</para>
         </section>
       </section>
     </section>
@@ -1135,13 +1169,13 @@
       <title>API annotation</title>
 
       <para>As Geomajas is a framework for building enterprise application, it
-      is important we are very accurate about what exactly is considered part
+      is important to be very accurate about what exactly is considered part
       of the API, specifically which classes and interfaces and which methods
       in these classes and interfaces are considered as part of the
       API.</para>
 
       <para>For this reason, we have introduced the "<code>@Api</code>"
-      annotation. A class of interface is only considered part of the public
+      annotation. A class or interface is only considered part of the public
       API when it is annotated using "<code>@Api</code>". When all public
       methods in the class or interface are considered part of the API, you
       could use "<code>@Api(allMethods = true)</code>". The alternative is to
@@ -1151,8 +1185,8 @@
       implemented by client code when they are annotated by
       "<code>@<code>UserImplemented</code></code>". All other interfaces are
       provided to indicate the methods available on instances which are
-      obtained through the API and may have extra methods added in future
-      versions.</para>
+      obtained through the API or Spring wiring and may have extra methods
+      added in future versions.</para>
 
       <para>All classes and methods which are indicated with
       "<code>@Api</code>" should also have a "<code>@since</code>" javadoc
@@ -1168,11 +1202,11 @@
       url="http://www.geomajas.org/gis-documentation">http://www.geomajas.org/gis-documentation</ulink>.
       There you can find the links for the different versions.</para>
 
-      <para>There API for the Geomajas back-end is contained in the
-      geomajas-api module. This contains only interfaces, exceptions and data
-      transfer objects. The data transfer objects are classes which only
-      contain getters and setters. The back-end API is divided in the
-      following packages:</para>
+      <para>The API for the Geomajas back-end is contained in the geomajas-api
+      module. This contains only interfaces, exceptions and data transfer
+      objects. The data transfer objects are classes which only contain
+      getters and setters. The back-end API is divided in the following
+      packages:</para>
 
       <itemizedlist>
         <listitem>
@@ -1191,16 +1225,16 @@
         </listitem>
 
         <listitem>
-          <para><emphasis>global</emphasis>: Some general interfaces,
+          <para><emphasis>global</emphasis>: some general interfaces,
           annotations and exceptions which are relevant for a combination of
           several extension points or the entire API.</para>
         </listitem>
 
         <listitem>
-          <para><emphasis>layer</emphasis>: interfaces, exceptions, data
-          transfer objects and some internal objects related with the layers
-          and objects in a layer. These include the definition of a layer,
-          tiles, features and feature models.</para>
+          <para><emphasis>layer</emphasis>: interfaces, services, exceptions,
+          data transfer objects and some internal objects related with the
+          layers and objects in a layer. These include the definition of a
+          layer, tiles, features and feature models.</para>
         </listitem>
 
         <listitem>
@@ -1232,7 +1266,11 @@
       <para>These classes can typically be found in packages containing
       "command.dto" for command request and response objects or packages
       containing "configuration" for objects which are expected to be defined
-      from the spring configuration files.</para>
+      from the Spring configuration files.</para>
+
+      <para>The command name is also considered part of the API when the
+      implementing class in annotated using the "<code>@Api</code>"
+      annotation.</para>
     </section>
 
     <section>
@@ -1288,16 +1326,12 @@
             <para>No methods may be added to classes annotated using
             "<code>@<code>UserImplemented</code></code>".</para>
           </listitem>
-
-          <listitem>
-            <para>No commands which have an API request or response
-            object</para>
-          </listitem>
         </itemizedlist></para>
 
       <para>Additionally, all methods and classes which are added should
       include an indication of the version in which the class and/or method
-      was added.</para>
+      was added. This is done using the "<code>@since</code>" javadoc comment
+      for the methods, class or interface.</para>
 
       <para>Because of the guarantees about API, the use of the
       "<code>@Deprecated</code>" annotation only indicates that a method or
@@ -1312,7 +1346,7 @@
     <section>
       <title>Provided commands</title>
 
-      <para>The commands are all registered in the spring context. The
+      <para>The commands are all registered in the Spring context. The
       "registry key" as indicated below is used to retrieve the commands.
       These are services, so a singleton should be sufficient for this.</para>
 
@@ -1471,7 +1505,8 @@
                     <listitem>
                       <para><emphasis>mapInfo</emphasis>: information about
                       the requested map. Note that the layer information which
-                      is contained in the maps has the coordinates.</para>
+                      is contained in the maps has the coordinates transformed
+                      according to the crs of the map.</para>
                     </listitem>
                   </itemizedlist></entry>
               </row>
@@ -1541,9 +1576,9 @@
               <row>
                 <entry>Description</entry>
 
-                <entry>Retrieve a set of raster tiles as images for a given
-                layer within a certain bounding box expressed in a certain
-                coordinate reference system.</entry>
+                <entry>Retrieve a set of raster tiles as image links for a
+                given layer within a certain bounding box expressed in a
+                certain coordinate reference system.</entry>
               </row>
 
               <row>
@@ -1557,12 +1592,12 @@
 
                 <entry><itemizedlist>
                     <listitem>
-                      <para><emphasis>rasterData</emphasis>: List of
-                      RasterTile objects</para>
+                      <para><emphasis>rasterData</emphasis>: list of
+                      <code>RasterTile</code> objects.</para>
                     </listitem>
 
                     <listitem>
-                      <para><emphasis>nodeId</emphasis>: Identifier to be used
+                      <para><emphasis>nodeId</emphasis>: identifier to be used
                       in the DOM tree.</para>
                     </listitem>
                   </itemizedlist></entry>
@@ -1625,7 +1660,7 @@
 
                     <listitem>
                       <para><emphasis>panOrigin</emphasis>: translation for
-                      the tile on the client-side</para>
+                      the tile on the client-side.</para>
                     </listitem>
 
                     <listitem>
@@ -1650,7 +1685,8 @@
 
                     <listitem>
                       <para><emphasis>paintGeometries</emphasis>: should the
-                      geometries be painted in the tile? (default true)</para>
+                      geometries be painted in the tile? This is true by
+                      default.</para>
                     </listitem>
 
                     <listitem>
@@ -1659,8 +1695,10 @@
                     </listitem>
 
                     <listitem>
-                      <para><emphasis>featureIncludes</emphasis>: lazy loading
-                      parameter.</para>
+                      <para><emphasis>featureIncludes</emphasis>: indication
+                      of which data to include in the feature. Possible values
+                      (add to combine): 1=attributes, 2=geometry, 4=style,
+                      8=label. Default value is to include everything.</para>
                     </listitem>
                   </itemizedlist></entry>
               </row>
@@ -1684,7 +1722,7 @@
 
                 <entry><itemizedlist>
                     <listitem>
-                      <para><emphasis>tile</emphasis>: The actual resulting
+                      <para><emphasis>tile</emphasis>: the actual resulting
                       tile.</para>
                     </listitem>
                   </itemizedlist></entry>
@@ -1697,11 +1735,11 @@
           <title>LogCommand</title>
 
           <tgroup cols="2">
+            <colspec colnum="1" colwidth="1*" />
+
+            <colspec colnum="2" colwidth="2*" />
+
             <thead>
-              <colspec colnum="1" colwidth="1*" />
-
-              <colspec colnum="2" colwidth="2*" />
-
               <row>
                 <entry>LogCommand</entry>
               </row>
@@ -1802,13 +1840,13 @@
 
                 <entry><itemizedlist>
                     <listitem>
-                      <para><emphasis>polygons</emphasis>: Array of polygons
+                      <para><emphasis>polygons</emphasis>: array of polygons
                       that need to be merged</para>
                     </listitem>
 
                     <listitem>
-                      <para><emphasis>allowMultiPolygon</emphasis>: Is a
-                      MultiPolygon allowed when merging ultiple
+                      <para><emphasis>allowMultiPolygon</emphasis>: is a
+                      MultiPolygon allowed when merging multiple
                       polygons?</para>
                     </listitem>
                   </itemizedlist></entry>
@@ -1832,7 +1870,7 @@
 
                 <entry><itemizedlist>
                     <listitem>
-                      <para><emphasis>geometry</emphasis>: The resulting
+                      <para><emphasis>geometry</emphasis>: the resulting
                       geometry after the merge.</para>
                     </listitem>
                   </itemizedlist></entry>
@@ -1879,14 +1917,14 @@
 
                 <entry><itemizedlist>
                     <listitem>
-                      <para><emphasis>featureTransaction</emphasis>: The
+                      <para><emphasis>featureTransaction</emphasis>: the
                       actual transaction object. Contains a list of features
                       as they where, and a list of features as they should
                       be.</para>
                     </listitem>
 
                     <listitem>
-                      <para><emphasis>crs</emphasis>: The map's coordinate
+                      <para><emphasis>crs</emphasis>: the map's coordinate
                       reference system.</para>
                     </listitem>
                   </itemizedlist></entry>
@@ -1895,8 +1933,8 @@
               <row>
                 <entry>Description</entry>
 
-                <entry>Persist a single transaction on the backend. (create,
-                update, delete of features)</entry>
+                <entry>Persist a single transaction on the backend (create,
+                update, delete of features).</entry>
               </row>
 
               <row>
@@ -1910,8 +1948,8 @@
 
                 <entry><itemizedlist>
                     <listitem>
-                      <para><emphasis>featureTransaction</emphasis>: The same
-                      transaction that was send to the server. Unless
+                      <para><emphasis>featureTransaction</emphasis>: the same
+                      transaction that was sent to the server. Unless
                       something went wrong, in which case this could be
                       null.</para>
                     </listitem>
@@ -1959,18 +1997,18 @@
 
                 <entry><itemizedlist>
                     <listitem>
-                      <para><emphasis>layerId</emphasis>: The layer to search
+                      <para><emphasis>layerId</emphasis>: the layer to search
                       in.</para>
                     </listitem>
 
                     <listitem>
-                      <para><emphasis>attributeName</emphasis>: The name of
-                      the attribute as configured in the XML's</para>
+                      <para><emphasis>attributeName</emphasis>: the name of
+                      the attribute as configured in the feature info.</para>
                     </listitem>
 
                     <listitem>
-                      <para><emphasis>filter</emphasis>: Add a possible
-                      filter, to limit the returned list.</para>
+                      <para><emphasis>filter</emphasis>: a filter, to limit
+                      the list of returned features.</para>
                     </listitem>
                   </itemizedlist></entry>
               </row>
@@ -1978,9 +2016,10 @@
               <row>
                 <entry>Description</entry>
 
-                <entry>Search for attribute values for a certain attribute
-                type. This command is only used for ManyToOne and OneToMany
-                relationships, to search for possible values.</entry>
+                <entry>Search for attribute possible values for a certain
+                attribute. This command is only used for many-to-one and
+                one-to-many relationships, to search for possible
+                values.</entry>
               </row>
 
               <row>
@@ -1994,8 +2033,8 @@
 
                 <entry><itemizedlist>
                     <listitem>
-                      <para><emphasis>attributes</emphasis>: A list of
-                      attribute values.</para>
+                      <para><emphasis>attributes</emphasis>: list of attribute
+                      values.</para>
                     </listitem>
                   </itemizedlist></entry>
               </row>
@@ -2041,22 +2080,23 @@
 
                 <entry><itemizedlist>
                     <listitem>
-                      <para><emphasis>location</emphasis>: a geometry the
-                      specifies the location where to search for
-                      features.</para>
+                      <para><emphasis>location</emphasis>: geometry which
+                      should be used for the searching.</para>
                     </listitem>
 
                     <listitem>
                       <para><emphasis>queryType</emphasis>: specify exactly
-                      whether to search using INTERSECT, TOUCHES, WITHIN or
-                      CONTAINS.</para>
+                      whether to search, possible values are
+                      <code>QUERY_INTERSECTS</code>,
+                      <code>QUERY_TOUCHES</code>, <code>QUERY_WITHIN</code> or
+                      <code>QUERY_CONTAINS</code>.</para>
                     </listitem>
 
                     <listitem>
                       <para><emphasis>ratio</emphasis>: if queryType is
-                      INTERSECT, you can additionally specify what percentage
-                      of overlap is enough to be included in the
-                      search.</para>
+                      <code>QUERY_INTERSECTS</code>, you can additionally
+                      specify what percentage of overlap is enough to be
+                      included in the search.</para>
                     </listitem>
 
                     <listitem>
@@ -2066,21 +2106,23 @@
 
                     <listitem>
                       <para><emphasis>searchType</emphasis>: determines
-                      whether to stop searching once something in one of the
-                      layers is found (in order of course), or whether to
-                      continue searching, and go over all layers.</para>
+                      whether to stop searching once something in found in one
+                      of the layers (in order of course), or whether to
+                      continue searching, and include matching features from
+                      all layers.</para>
                     </listitem>
 
                     <listitem>
                       <para><emphasis>crs</emphasis>: the map's coordinate
-                      reference system. The location geometry will also be
-                      expressed in this crs.</para>
+                      reference system. The <emphasis>location</emphasis>
+                      geometry will also be expressed in this crs.</para>
                     </listitem>
 
                     <listitem>
                       <para><emphasis>buffer</emphasis>: before any
                       calculation is made, it is possible to have the location
-                      be buffered by this value.</para>
+                      geometry expanded by a buffer of this width (in crs
+                      space).</para>
                     </listitem>
 
                     <listitem>
@@ -2110,9 +2152,10 @@
 
                 <entry><itemizedlist>
                     <listitem>
-                      <para><emphasis>featureMap</emphasis>: A dictionary
-                      where for each layer wherein features where found, you
-                      can find a list of these features.</para>
+                      <para><emphasis>featureMap</emphasis>: map with layer
+                      ids as key and a list of features as value. Only layers
+                      in which features were found are included in the
+                      map.</para>
                     </listitem>
                   </itemizedlist></entry>
               </row>
@@ -2158,7 +2201,7 @@
 
                 <entry><itemizedlist>
                     <listitem>
-                      <para><emphasis>layerId</emphasis>: id of layer on which
+                      <para><emphasis>layerId</emphasis>: id of layer in which
                       features need to be searched.</para>
                     </listitem>
 
@@ -2184,9 +2227,9 @@
 
                     <listitem>
                       <para><emphasis>booleanOperator</emphasis>: operator
-                      which should be used to the different criteria when more
-                      than one was specified. Should be either "and" or
-                      "or".</para>
+                      which should be used to combine the different criteria
+                      when more than one was specified. Should be either "AND"
+                      or "OR". Default value is "AND".</para>
                     </listitem>
 
                     <listitem>
@@ -2207,8 +2250,8 @@
                 <entry>Description</entry>
 
                 <entry>This command allows you to search for features, based
-                on alphanumerical attributes. You can specify multiple search
-                criteria and a filter.</entry>
+                criteria which allow matching on feature attributes. You can
+                specify multiple search criteria and a filter.</entry>
               </row>
 
               <row>
@@ -2276,13 +2319,13 @@
 
                 <entry><itemizedlist>
                     <listitem>
-                      <para><emphasis>geometry</emphasis>: The geometry that
-                      needs splitting</para>
+                      <para><emphasis>geometry</emphasis>: the geometry that
+                      needs splitting.</para>
                     </listitem>
 
                     <listitem>
-                      <para><emphasis>splitter</emphasis>: The splitting
-                      geometry (usually a LineString)</para>
+                      <para><emphasis>splitter</emphasis>: the splitting
+                      geometry (usually a LineString).</para>
                     </listitem>
                   </itemizedlist></entry>
               </row>
@@ -2305,7 +2348,7 @@
 
                 <entry><itemizedlist>
                     <listitem>
-                      <para><emphasis>geometries</emphasis>: The list of
+                      <para><emphasis>geometries</emphasis>: the list of
                       resulting geometries after the split.</para>
                     </listitem>
                   </itemizedlist></entry>
@@ -2352,7 +2395,19 @@
 
                 <entry><itemizedlist>
                     <listitem>
-                      <para>?????</para>
+                      <para><emphasis>includeLayers</emphasis>: comma
+                      separated list of layers to include.</para>
+                    </listitem>
+
+                    <listitem>
+                      <para><emphasis>includeRasterLayers</emphasis>: true
+                      when raster layers should be included. Defaults to
+                      false.</para>
+                    </listitem>
+
+                    <listitem>
+                      <para><emphasis>crs</emphasis> : crs which should be
+                      used for the response.</para>
                     </listitem>
                   </itemizedlist></entry>
               </row>
@@ -2360,7 +2415,8 @@
               <row>
                 <entry>Description</entry>
 
-                <entry>?????</entry>
+                <entry>Get the bounding box of the visible features across the
+                requested layers (visible area for the raster layers).</entry>
               </row>
 
               <row>
@@ -2374,7 +2430,7 @@
 
                 <entry><itemizedlist>
                     <listitem>
-                      <para>?????</para>
+                      <para><emphasis>bounds</emphasis> : bounding box.</para>
                     </listitem>
                   </itemizedlist></entry>
               </row>
@@ -2386,55 +2442,99 @@
     <section>
       <title>Writing your own commands</title>
 
-      <para>A Geomajas command consist of three class, the actual command
-      (which implements the <code>Command</code> interface), and two data
-      transfer objects, one to pass the request parameters (extending
-      <code>CommandRequest</code> or <code>LayerIdCommandRequest</code>), and
-      one which carries the response (extending
-      <code>CommandResponse</code>).</para>
+      <para>A Geomajas command usually consist of three classes, the actual
+      command (which implements the <code>Command</code> interface), and two
+      data transfer objects, one to pass the request parameters (extending
+      <code>CommandRequest</code>, <code>LayerIdCommandRequest</code> or
+      <code>LayerIdsCommandRequest</code>), and one which carries the response
+      (extending <code>CommandResponse</code>).</para>
 
       <para>It is important to assure your request object extends from
-      LayerIdCommandRequest when one of the parameters is the layer id. This
-      is used by the command dispatcher to assure the layer specific
-      interceptors are called when needed.</para>
+      LayerIdCommandRequest or LayerIdsRequest when one of the parameters is
+      the layer id (or a list thereof). This can be used by the command
+      dispatcher to assure the layer specific (transaction) interceptors are
+      called.</para>
 
       <para>To create a new command we recommend you use a similar package
       structure as we used in the geomajas-extension-command module. That is
       to create a "command" package with under that a "dto" package which
       contains all the request and response objects, and to put the actual
-      commands in sub packages based on some kind of grouping.</para>
+      commands in sub packages based on some kind of grouping. This helps to
+      automatically determine a sensible command name.</para>
 
       <para>The basic command implementation looks like this:</para>
 
       <xi:include href="../listing/ExampleCommand.xml"
                   xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-      <para>Note the presence of the "@Component" annotation which assure the
+      <para>Note the presence of the "@Component" annotation which assures the
       command is registered. You could add the name under which the command
       needs to be registered in the annotation, but when that is omitted, the
       default command name is derived from the fully qualified class name. In
       the example given here this results in command name
       "command.mysuper.DoIt".</para>
 
-      <para>You have to include a line in your spring configuration to scan
+      <para>You have to include a line in your Spring configuration to scan
       class files for annotation to make the components available. For the
       case above, this could be done by including the following XML fragment
-      in one of your spring configuration files.</para>
+      in one of your Spring configuration files.</para>
 
       <xi:include href="../listing/ExampleCommandScan.xml"
                   xmlns:xi="http://www.w3.org/2001/XInclude" />
 
       <para>The command will be executed using a singleton. The use of object
       variables is not recommended. Any object variables will be shared
-      amongst all command invocation, which can be coming from multiple thread
-      at the same time.</para>
+      amongst all command invocation, which can be coming from multiple
+      threads at the same time.</para>
 
       <para>Note that it is not mandatory to create your own request and
-      response object classes. If you don't require any parameters then you
-      can use <code>EmptyCommandRequest</code> as request class. If you only
-      require a layer id, then use <code>LayerIdCommandRequest</code>. If you
-      only return a success code, you could use the
+      response object classes. If you don't require any parameters you can use
+      <code>EmptyCommandRequest</code> as request class. If you only require a
+      layer id, then use <code>LayerIdCommandRequest</code>. If you only
+      return a success code, you could use the
       <code>SuccessCommandResponse</code> class.</para>
+
+      <para>You have to take care that all objects which are referenced by
+      your request and response objects are actually serializable for the
+      faces in which the commands need to be used. For the dojo face this may
+      require the use of the "<code>@Json</code>" annotation to exclude
+      fields. For GWT you have to assure the no-arguments constructor exists
+      and that the class can be compiled by GWT (no Hibernate enhanced
+      classes, no use of "<code>super.clone()</code>",...).</para>
+
+      <para>When the commands are included in a separate module, you should
+      assure the sources are available as these are needed for GWT
+      compilation. This can easily be done using the Maven source
+      plugin.</para>
+
+      <xi:include href="../listing/MavenSourcePlugin.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+      <para>Actually including the sources can then be done using a dependency
+      like the following (this includes the springsecurity module, both the
+      actual code and the sources). You could set "provided" scope on the
+      source dependency to exclude it from the war file. However, this may
+      prevent use of GWT development mode.</para>
+
+      <xi:include href="../listing/SpringSecurityDependency.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+      <para>
+        <note>
+          <para>When using a separate module for your commands and trying to
+          run your project from eclipse, it is quite likely to have problems
+          with your commands not being found. When checking the output
+          generated at startup, the commands are sometimes not registered even
+          though the classes exist and the correct package is being scanned.
+          This can be caused by a class path problem and can be fixed using a
+          context listener which assures the relevant jars are loaded. In the
+          following excerpt, which should be part of your web.xml, make sure
+          to add one of the class in your jar file.</para>
+
+          <xi:include href="../listing/PreloadToPrepareScanning.xml"
+                      xmlns:xi="http://www.w3.org/2001/XInclude" />
+        </note>
+      </para>
     </section>
   </chapter>
 

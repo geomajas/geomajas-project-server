@@ -56,6 +56,8 @@ public class ExtractSourcePlugin extends AbstractMojo {
 	private static final String END_JAVA_ANNOTATION = "// @extract-end";
 	private static final String START_XML_ANNOTATION = "<!-- @extract-start";
 	private static final String END_XML_ANNOTATION = "<!-- @extract-end";
+	private static final String SKIP_START_ANNOTATION = "@extract-skip-start";
+	private static final String SKIP_END_ANNOTATION = "@extract-skip-end";
 
 	/**
 	 * @parameter expression="${basedir}/src/main"
@@ -126,6 +128,7 @@ public class ExtractSourcePlugin extends AbstractMojo {
 		String line;
 		List<String> lines = new ArrayList<String>();
 		String declaration = null;
+		boolean skipping = false;
 
 		while ((line = reader.readLine()) != null) {
 			if (null != declaration) {
@@ -135,7 +138,15 @@ public class ExtractSourcePlugin extends AbstractMojo {
 					declaration = null;
 					lines.clear();
 				} else {
-					lines.add(line);
+					if (line.contains(SKIP_START_ANNOTATION)) {
+						skipping = true;
+					}
+					if (!skipping) {
+						lines.add(line);
+					}
+					if (line.contains(SKIP_END_ANNOTATION)) {
+						skipping = false;
+					}
 				}
 			} else {
 				if (line.contains(startAnnotation)) {

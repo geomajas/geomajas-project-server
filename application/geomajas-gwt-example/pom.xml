@@ -60,6 +60,7 @@
 		<!-- @extract-end -->
 
 		<!-- Extra Geomajas plugins -->
+		<!-- @extract-start SpringSecurityDependency, sprngsecurity source plugin - including source -->
         <dependency>
             <groupId>org.geomajas.plugin</groupId>
             <artifactId>geomajas-plugin-springsecurity</artifactId>
@@ -71,6 +72,7 @@
             <version>${geomajas-plugin-springsecurity-version}</version>
 			<classifier>sources</classifier>
 		</dependency>
+		<!-- @extract-end -->
 
 		<!-- Google dependencies -->
 		<dependency>
@@ -133,6 +135,19 @@
 			</extension>
 		</extensions>
 		<plugins>
+			<!-- @extract-start MavenSourcePlugin, Maven source plugin -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<!-- @extract-end -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-checkstyle-plugin</artifactId>

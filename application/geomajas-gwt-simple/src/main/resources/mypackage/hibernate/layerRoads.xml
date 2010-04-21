@@ -106,6 +106,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 					<property name="identifying" value="true" />
 					<property name="type" value="FLOAT" />
 				</bean>
+				<!-- @extract-skip-start -->
 				<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
 					<property name="label" value="Type" />
 					<property name="name" value="type" />
@@ -146,6 +147,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 					<property name="identifying" value="true" />
 					<property name="type" value="URL" />
 				</bean>
+				<!-- @extract-skip-end -->
 			</list>
 		</property>
 	</bean>

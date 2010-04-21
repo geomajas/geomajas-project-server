@@ -740,7 +740,7 @@
 
         <itemizedlist>
           <listitem>
-            <para>The spring bean name (or id) is used to set the id property
+            <para>The Spring bean name (or id) is used to set the id property
             of the class if there is one. This makes it unnecessary to define
             the id separately. The way this is done is by using a Spring
             <code>BeanPostProcessor</code>. (see
@@ -782,7 +782,7 @@
       <itemizedlist>
         <listitem>
           <para>Configuration has changed from the proprietary format to using
-          spring configuration.</para>
+          Spring configuration.</para>
         </listitem>
 
         <listitem>

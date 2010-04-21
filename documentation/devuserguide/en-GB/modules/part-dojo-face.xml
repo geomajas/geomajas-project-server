@@ -188,7 +188,7 @@
 				&lt;url-pattern&gt;/js/*&lt;/url-pattern&gt;
 				&lt;/servlet-mapping&gt;</programlisting>
 
-      <para>By structuring javascript code as jar artifacts, our maven dojo
+      <para>By structuring javascript code as jar artifacts, our Maven dojo
       plug-in is capable of making this code accessible to the browser by
       importing a single dojo layer script in the web page. If the name of the
       layer is<emphasis role="bold">example</emphasis>, the import statements
@@ -212,16 +212,16 @@
       the dojo custom build facility), the uncompressed version is just a set
       of dojo.require(...) statements, one for each module.</para>
 
-      <para>Our maven dojo plug-in has two different configurations, depending
+      <para>Our Maven dojo plug-in has two different configurations, depending
       on whether the custom build should be applied or not. The two different
       configurations have been applied in the
       geomajas-dojo-example-modules-shrinksafe and
       geomajas-dojo-example-modules projects, respectively. By defining a
-      maven dependency in geomajas-dojo-example-modules-war on one or the
+      Maven dependency in geomajas-dojo-example-modules-war on one or the
       other, the compressed or uncompressed version of the javascript
       libraries is used. The switch between the two options is managed by a
-      maven profile in the parent project (geomajas-dojo-example). This should
-      be passed in the maven build command:</para>
+      Maven profile in the parent project (geomajas-dojo-example). This should
+      be passed in the Maven build command:</para>
 
       <itemizedlist>
         <listitem>
@@ -238,8 +238,8 @@
     <sect1>
       <title>Maven dojo plug-in</title>
 
-      <para>The maven dojo plug-in is capable of executing a custom dojo build
-      from within maven. This essentially collects and/or compresses (using
+      <para>The Maven dojo plug-in is capable of executing a custom dojo build
+      from within Maven. This essentially collects and/or compresses (using
       shrinksafe) javascript modules that have been bundled as jar
       artifacts.</para>
 
@@ -340,7 +340,7 @@
       of the dojo build. In all cases, the javascript output is generated in
       the folder
       <code>&lt;projectdir&gt;/target/generated-resources/doj</code>o, which
-      is added as a resource folder to the maven project.</para>
+      is added as a resource folder to the Maven project.</para>
     </sect1>
   </chapter>
 </part>

@@ -21,6 +21,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+// @extract-start ExampleCommand, Example command template
 package com.my.program.command.mysuper;
 
 import com.my.program.command.dto.MySuperDoItRequest;
@@ -35,7 +36,6 @@ import org.springframework.stereotype.Component;
  *
  * @author Joachim Van der Auwera
  */
-// @extract-start ExampleCommand, Example command template
 @Component()
 public class MySuperDoItCommand implements Command<MySuperDoItRequest, MySuperDoItResponse> {
 

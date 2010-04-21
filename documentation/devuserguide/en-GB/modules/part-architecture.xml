@@ -186,14 +186,14 @@
         <listitem>
           <para>The face server will use this <code>CommandRequest</code> to
           invoke the <code>CommandDispatcher</code> service, which can be
-          obtained using the spring context.</para>
+          obtained using the Spring context.</para>
         </listitem>
 
         <listitem>
           <para>The <code>CommandDispatcher</code> will start by invoking the
           <code>SecurityManager</code> to check whether the execution of the
           requested command is allowed. If it is allowed, the actual Command
-          is obtained using the spring context. The
+          is obtained using the Spring context. The
           <code>CommandResponse</code> object is created and the command is
           executed.</para>
         </listitem>
@@ -435,7 +435,7 @@
         apply and which can be queried.</para>
 
         <para>A list of <emphasis>security services</emphasis> can be defined
-        (using spring bean <code>security.SecurityInfo</code>). This list can
+        (using Spring bean <code>security.SecurityInfo</code>). This list can
         be overwritten in configuration. By default the list is empty, which
         prohibits all access to everyone. The back-end does however include a
         security service which can be used to allow all access to
@@ -444,7 +444,7 @@
         <para>The security service is responsible for converting the
         authentication token into a list of <emphasis>authorization
         objects</emphasis>. The security manager will loop all configured
-        security services (using spring bean
+        security services (using Spring bean
         <code>security.SecurityInfo</code>) to find all the authorization
         objects which apply for the token. By default the security manager
         will stop looping once one of the security services gave a result. You
@@ -1213,7 +1213,7 @@
               <entry>geomajas-plugin-springsecurity</entry>
 
               <entry>Simple security service which allows including the entire
-              security configuration in the spring configuration files, making
+              security configuration in the Spring configuration files, making
               the configuration static.</entry>
             </row>
           </tbody>

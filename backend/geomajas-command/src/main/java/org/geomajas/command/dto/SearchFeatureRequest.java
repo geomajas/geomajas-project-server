@@ -46,7 +46,7 @@ public class SearchFeatureRequest extends LayerIdCommandRequest {
 	
 	private int max = MAX_UNLIMITED;
 
-	private String booleanOperator;
+	private String booleanOperator = "AND";
 
 	private SearchCriterion[] criteria;
 

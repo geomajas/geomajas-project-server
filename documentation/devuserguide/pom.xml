@@ -31,7 +31,7 @@
 			<plugin>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-maven-plugin</artifactId>
-				<version>1.0.2</version>
+				<version>1.0.3</version>
 				<inherited>false</inherited>
 				<executions>
 					<execution>

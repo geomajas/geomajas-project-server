@@ -30,16 +30,16 @@
     <title>Starting a new GWT based Geomajas project</title>
 
     <para>Geomajas uses the Apache Maven project management tool for its build
-    and documentation process. Thanks to maven , the easiest way to start
-    using Geomajas is by creating a new project using the maven archetype.
+    and documentation process. Thanks to Maven , the easiest way to start
+    using Geomajas is by creating a new project using the Maven archetype.
     This will create a simple working project that you can use as starting
     point.</para>
 
     <section>
       <title>Prerequisites / Command line</title>
 
-      <para>As the simple project is created using the maven archetype, you
-      will need to install maven on your system, which can be downloaded from
+      <para>As the simple project is created using the Maven archetype, you
+      will need to install Maven on your system, which can be downloaded from
       <ulink url="http://maven.apache.org/">http://maven.apache.org/</ulink>.
       We recommend using the latest stable version (2.2.1 at the time of
       writing). Installing Maven is quite simple: just unzip the distribution
@@ -48,11 +48,11 @@
       can be found at the bottom of <ulink
       url="http://maven.apache.org/download.html">http://maven.apache.org/download.html</ulink>.</para>
 
-      <para>When maven is installed you can create a base project using the
+      <para>When Maven is installed you can create a base project using the
       following command line:</para>
 
       <example>
-        <title>Create project using GWT maven archetype</title>
+        <title>Create project using GWT Maven archetype</title>
 
         <para><programlisting>mvn archetype:generate -DarchetypeCatalog=http://maven.geomajas.org/</programlisting></para>
       </example>
@@ -64,7 +64,7 @@
       "artifactId" you choose.</para>
 
       <figure>
-        <title>Create project using GWT maven archetype</title>
+        <title>Create project using GWT Maven archetype</title>
 
         <mediaobject>
           <imageobject>
@@ -78,7 +78,7 @@
       using the following commands.</para>
 
       <example>
-        <title>maven targets</title>
+        <title>Maven targets</title>
 
         <para><programlisting>mvn install
 
@@ -145,7 +145,7 @@ mvn gwt:run</programlisting>The "install" target will create a war file for
       <title>IntelliJ IDEA</title>
 
       <para>The setup in IntelliJ IDEA is quite straightforward and does not
-      require running a separate maven command. Just open the project from
+      require running a separate Maven command. Just open the project from
       IDEA by selecting the pom in the root directory.</para>
 
       <figure>
@@ -175,9 +175,9 @@ mvn gwt:run</programlisting>The "install" target will create a war file for
       </figure>
 
       <para>Before being able to use this configuration, you need to invoke
-      the gwt:i18n maven target to assure the files which are used for
+      the gwt:i18n Maven target to assure the files which are used for
       internationalisation are available (otherwise, you will get compilation
-      errors). You can do this from the "maven projects" tab.</para>
+      errors). You can do this from the "Maven projects" tab.</para>
 
       <figure>
         <title>run gwt:i18 target</title>
@@ -216,7 +216,7 @@ mvn gwt:run</programlisting>The "install" target will create a war file for
       <title>NetBeans</title>
 
       <para>You can both create the project from the archetype or open
-      directly the maven project in NetBeans. See <ulink
+      directly the Maven project in NetBeans. See <ulink
       url="http://wiki.netbeans.org/MavenBestPractices">http://wiki.netbeans.org/MavenBestPractices</ulink>
       for more details.</para>
     </section>

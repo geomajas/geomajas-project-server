@@ -2102,7 +2102,7 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
       <para>A GWT unit test should inherit from the <code>GWTTestcase</code>
       base class and should be named <code>GwtTestXxx.java</code>. GWT unit
       tests are run inside a development mode environment and can refer to
-      most of the GWT API. To run a GWT test case, run the maven command
+      most of the GWT API. To run a GWT test case, run the Maven command
       <command>gwt:test </command>or execute the integration test
       phase.</para>
     </section>
