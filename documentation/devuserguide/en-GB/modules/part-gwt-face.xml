@@ -927,10 +927,6 @@ map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</
         <xi:include href="../listing/ToolbarAction.xml"
                     xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-        <xi:include href="../listing/ToolbarBaseAction.xml"
-                    xmlns:xi="http://www.w3.org/2001/XInclude" />
-      </section>
-
       <section>
         <title>Toolbar: ToolbarModalAction</title>
 
@@ -995,8 +991,6 @@ map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</
         tools can be added (or overwritten) at runtime before the map is
         initialised.</para>
 
-        <xi:include href="../listing/LayerTreeModalAction.xml"
-                    xmlns:xi="http://www.w3.org/2001/XInclude" />
       </section>
 
       <section>

@@ -27,7 +27,6 @@ import org.geomajas.global.Api;
 import org.geomajas.gwt.client.action.ToolbarBaseAction;
 import org.geomajas.gwt.client.map.layer.Layer;
 
-// @extract-start LayerTreeAction, LayerTreeAction
 /**
  * Base definition of an action for the LayerTree toolbar.
  *
@@ -35,6 +34,7 @@ import org.geomajas.gwt.client.map.layer.Layer;
  * @since 1.6.0
  */
 @Api(allMethods = true)
+// @extract-start LayerTreeAction, LayerTreeAction
 public abstract class LayerTreeAction extends ToolbarBaseAction {
 
 	private String disabledIcon;
@@ -42,12 +42,9 @@ public abstract class LayerTreeAction extends ToolbarBaseAction {
 	/**
 	 * Constructor setting all values.
 	 *
-	 * @param icon
-	 *            The default icon for the button.
-	 * @param tooltip
-	 *            The default tooltip for the button.
-	 * @param disabledIcon
-	 *            The icon used when the button is disabled.
+	 * @param icon The default icon for the button.
+	 * @param tooltip The default tooltip for the button.
+	 * @param disabledIcon The icon used when the button is disabled.
 	 */
 	public LayerTreeAction(String icon, String tooltip, String disabledIcon) {
 		super(icon, tooltip);
@@ -57,8 +54,7 @@ public abstract class LayerTreeAction extends ToolbarBaseAction {
 	/**
 	 * This method will be called when the user clicks on the button.
 	 *
-	 * @param layer
-	 *            The currently selected layer.
+	 * @param layer The currently selected layer.
 	 */
 	public abstract void onClick(Layer<?> layer);
 

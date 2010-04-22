@@ -41,18 +41,14 @@ import com.google.gwt.event.shared.HandlerRegistration;
 // @extract-start ToolbarBaseAction, ToolbarBaseAction
 public abstract class ToolbarBaseAction {
 
-	/** Link to the image icon that should represent the action's button in the tool bar. */
-	private String icon;
+	private String icon; // Link to the image icon that should represent the action's button in the tool bar.
 
-	/** Text that appears when hovering over the tool bar button. */
-	private String tooltip;
+	private String tooltip; // Text that appears when hovering over the tool bar button.
 
 	/** Is the button for this action disabled or not? */
 	private boolean disabled;
 
 	private HandlerManager handlerManager;
-
-	// Constructors:
 
 	public ToolbarBaseAction(String icon, String tooltip) {
 		this.icon = icon;
@@ -60,15 +56,16 @@ public abstract class ToolbarBaseAction {
 		handlerManager = new HandlerManager(this);
 	}
 
-	// Public methods:
-
 	public HandlerRegistration addToolbarActionHandler(ToolbarActionHandler handler) {
 		return handlerManager.addHandler(ToolbarActionHandler.TYPE, handler);
 	}
 
-	// Getters and setters:
 
-	/** Link to the image icon that should represent the action's button in the tool bar. */
+	/**
+	 * Link to the image icon that should represent the action's button in the tool bar.
+	 *
+	 * @return icon link
+	 */
 	public String getIcon() {
 		return icon;
 	}
@@ -83,7 +80,11 @@ public abstract class ToolbarBaseAction {
 		this.icon = icon;
 	}
 
-	/** Text that appears when hovering over the tool bar button. */
+	/**
+	 * Text that appears when hovering over the tool bar button.
+	 *
+	 * @return tool tip
+	 */
 	public String getTooltip() {
 		return tooltip;
 	}
@@ -98,7 +99,11 @@ public abstract class ToolbarBaseAction {
 		this.tooltip = tooltip;
 	}
 
-	/** Is the button for this action disabled or not? */
+	/**
+	 * Is the button for this action disabled or not?
+	 *
+	 * @return true when disabled 
+	 */
 	public boolean isDisabled() {
 		return disabled;
 	}
@@ -108,7 +113,7 @@ public abstract class ToolbarBaseAction {
 	 * 
 	 * @param disabled
 	 *            The new value
-	 * */
+	 */
 	public void setDisabled(boolean disabled) {
 		this.disabled = disabled;
 		if (disabled) {

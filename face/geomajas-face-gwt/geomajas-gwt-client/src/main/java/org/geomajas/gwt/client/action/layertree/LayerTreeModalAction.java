@@ -65,8 +65,6 @@ public abstract class LayerTreeModalAction extends ToolbarBaseAction {
 
 	public abstract void onSelect(Layer<?> layer);
 
-	// Getters and setters:
-
 	public String getSelectedIcon() {
 		return selectedIcon;
 	}
