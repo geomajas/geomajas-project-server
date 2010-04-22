@@ -102,7 +102,7 @@ public class EditPointLayerSample extends SamplePanel {
 
 	public String[] getConfigurationFiles() {
 		return new String[] { "classpath:org/geomajas/example/gwt/clientcfg/editing/mapEditPointLayer.xml",
-				"classpath:org/geomajas/example/gwt/servercfg/raster/layerWmsBlueMarble.xml",
+				"classpath:org/geomajas/example/gwt/servercfg/raster/layerWmsBluemarble.xml",
 				"classpath:org/geomajas/example/gwt/servercfg/vector/layerCities.xml" };
 	}
 
