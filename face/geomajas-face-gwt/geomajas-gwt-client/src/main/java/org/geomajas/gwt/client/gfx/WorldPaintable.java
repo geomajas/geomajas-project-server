@@ -23,6 +23,7 @@
 
 package org.geomajas.gwt.client.gfx;
 
+import org.geomajas.global.Api;
 import org.geomajas.gwt.client.spatial.WorldViewTransformer;
 
 /**
@@ -39,6 +40,7 @@ import org.geomajas.gwt.client.spatial.WorldViewTransformer;
  * 
  * @author Pieter De Graef
  */
+@Api
 public interface WorldPaintable extends Paintable {
 
 	/**

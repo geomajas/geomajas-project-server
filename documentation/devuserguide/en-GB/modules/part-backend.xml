@@ -322,8 +322,7 @@
           exact meaning for some of the fields depend on the actual layer, but
           most important features include:</para>
 
-          <para>
-            <table>
+          <para><table>
               <title>Raster Layer info</title>
 
               <tgroup cols="2">
@@ -397,8 +396,7 @@
                   </row>
                 </tbody>
               </tgroup>
-            </table>
-          </para>
+            </table></para>
 
           <para>The location of the images or tiles is defined by calculating
           the real width and height (based on the resolution) and "paving" the
@@ -534,8 +532,7 @@
           <xi:include href="../listing/GoogleLayerSample.xml"
                       xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-          <para>
-            <table>
+          <para><table>
               <title>GoogleLayer configuration</title>
 
               <tgroup cols="2">
@@ -559,8 +556,7 @@
                   </row>
                 </tbody>
               </tgroup>
-            </table>
-          </para>
+            </table></para>
 
           <para>The layer info inner bean has the same general content as
           usual. There are some simplifications though. There is no need to
@@ -615,8 +611,7 @@
           <para>The following table describes the properties of the
           <code>VectorLayerInfo</code> object:</para>
 
-          <para>
-            <table>
+          <para><table>
               <title>VectorLayer info</title>
 
               <tgroup cols="2">
@@ -661,8 +656,7 @@
                   </row>
                 </tbody>
               </tgroup>
-            </table>
-          </para>
+            </table></para>
 
           <para>The feature metadata can be found in the
           <code>FeatureInfo</code> object. This objects contains the complete
@@ -922,8 +916,7 @@
           <para>To access a WFS server, the following names can be used as
           parameters.</para>
 
-          <para>
-            <itemizedlist>
+          <para><itemizedlist>
               <listitem>
                 <para><emphasis>WFSDataStoreFactory:GET_CAPABILITIES_URL</emphasis>:
                 URL for the getCapabilities document on the server
@@ -977,8 +970,7 @@
                 match the schema. Errors will be logged but the parsing will
                 continue if this is true. Default is false.</para>
               </listitem>
-            </itemizedlist>
-          </para>
+            </itemizedlist></para>
 
           <para>You also have to assure the GeoTools WFS data store is added
           as dependency in your project. When using Maven, you can add the
@@ -1002,8 +994,7 @@
           at startup. All layer updates are performed in memory, so this layer
           is not really useful except for examples.</para>
 
-          <para>
-            <table>
+          <para><table>
               <title>ShapeInMemLayer configuration</title>
 
               <tgroup cols="2">
@@ -1029,8 +1020,7 @@
                   </row>
                 </tbody>
               </tgroup>
-            </table>
-          </para>
+            </table></para>
         </section>
 
         <section>
@@ -1043,8 +1033,7 @@
 
           <para>TODO.....</para>
 
-          <para>
-            <table>
+          <para><table>
               <title>BeanLayer configuration</title>
 
               <tgroup cols="2">
@@ -1070,8 +1059,7 @@
                   </row>
                 </tbody>
               </tgroup>
-            </table>
-          </para>
+            </table></para>
         </section>
       </section>
     </section>
@@ -1192,6 +1180,13 @@
       "<code>@Api</code>" should also have a "<code>@since</code>" javadoc
       comment indicating the version in which the class or method was added to
       the API.</para>
+
+      <para><note>
+          <para>Please beware that only the annotations determine whether
+          something is part of the API or not. The manual may discuss things
+          which are not considered API, probably because they are
+          experimental.</para>
+        </note></para>
     </section>
 
     <section>
@@ -2473,6 +2468,77 @@
       default command name is derived from the fully qualified class name. In
       the example given here this results in command name
       "command.mysuper.DoIt".</para>
+
+      <para>The default way to determine the command name assumes there is a
+      package named "command" in the fully qualified name of the implementing
+      class. It will remove everything before that. It will then remove a
+      "Command" suffix if any. Lastly, it will remove duplication between the
+      intermediate package (between "command" and the class name) and the
+      class name itself. Some examples:</para>
+
+      <para>
+        <table>
+          <title>Samples of command name resolution</title>
+
+          <tgroup cols="2">
+            <thead>
+              <row>
+                <entry>Fully qualified class name</entry>
+
+                <entry>Command name</entry>
+              </row>
+            </thead>
+
+            <tbody>
+              <row>
+                <entry>my.app.command.DoIt</entry>
+
+                <entry>command.DoIt</entry>
+              </row>
+
+              <row>
+                <entry>my.app.command.super.DoIt</entry>
+
+                <entry>command.super.DoIt</entry>
+              </row>
+
+              <row>
+                <entry>my.app.command.super.DoItCommand</entry>
+
+                <entry>command.super.DoIt</entry>
+              </row>
+
+              <row>
+                <entry>my.app.command.super.SuperDoItCommand</entry>
+
+                <entry>command.super.DoIt</entry>
+              </row>
+
+              <row>
+                <entry>my.app.command.super.DoItSuperCommand</entry>
+
+                <entry>command.super.DoIt</entry>
+              </row>
+
+              <row>
+                <entry>my.app.command.super.CommandDoIt</entry>
+
+                <entry>command.super.CommandDoIt</entry>
+              </row>
+              <row>
+                <entry>my.app.command.super.CommandSuperDoIt</entry>
+
+                <entry>command.super.CommandSuperDoIt</entry>
+              </row>
+              <row>
+                <entry>my.app.command.super.CommandDoItSuper</entry>
+
+                <entry>command.super.CommandDoIt</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+      </para>
 
       <para>You have to include a line in your Spring configuration to scan
       class files for annotation to make the components available. For the

@@ -38,6 +38,7 @@ import com.google.gwt.event.shared.HandlerRegistration;
  * @since 1.6.0
  */
 @Api(allMethods = true)
+// @extract-start ToolbarBaseAction, ToolbarBaseAction
 public abstract class ToolbarBaseAction {
 
 	/** Link to the image icon that should represent the action's button in the tool bar. */
@@ -117,3 +118,4 @@ public abstract class ToolbarBaseAction {
 		}
 	}
 }
+// @extract-end

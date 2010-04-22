@@ -27,6 +27,7 @@ import org.geomajas.global.Api;
 
 import com.smartgwt.client.widgets.events.ClickEvent;
 
+// @extract-start ToolbarModalAction, ToolbarModalAction
 /**
  * Abstract class which serves as a template for selectable buttons in a tool bar. These selectable buttons can be
  * selected and deselected. With each of these actions a different method is executed. Usually this type of tool bar
@@ -56,3 +57,4 @@ public abstract class ToolbarModalAction extends ToolbarBaseAction {
 	 */
 	public abstract void onDeselect(ClickEvent event);
 }
+// @extract-end

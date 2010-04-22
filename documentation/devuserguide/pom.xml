@@ -48,6 +48,25 @@
 				</executions>
 			</plugin>
 			<plugin>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-maven-plugin</artifactId>
+				<version>1.0.3</version>
+				<inherited>false</inherited>
+				<executions>
+					<execution>
+						<id>extract-listings</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>extract</goal>
+						</goals>
+						<configuration>
+							<sourceDirectory>${basedir}/../../face/geomajas-face-gwt</sourceDirectory>
+							<destinationDirectory>${basedir}/en-GB/listing</destinationDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
 				<artifactId>maven-dependency-plugin</artifactId>
 				<executions>
 					<execution>

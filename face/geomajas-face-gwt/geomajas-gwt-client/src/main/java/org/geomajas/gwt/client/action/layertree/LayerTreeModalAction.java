@@ -23,14 +23,18 @@
 
 package org.geomajas.gwt.client.action.layertree;
 
+import org.geomajas.global.Api;
 import org.geomajas.gwt.client.action.ToolbarBaseAction;
 import org.geomajas.gwt.client.map.layer.Layer;
 
+// @extract-start LayerTreeModalAction, LayerTreeModalAction
 /**
- * Base template for modal action in the layer tree toolbar.
+ * Base template for modal actions in the layer tree toolbar.
  *
  * @author Pieter De Graef
+ * @since 1.6.0
  */
+@Api(allMethods = true)
 public abstract class LayerTreeModalAction extends ToolbarBaseAction {
 
 	private String selectedIcon;
@@ -39,8 +43,6 @@ public abstract class LayerTreeModalAction extends ToolbarBaseAction {
 
 	private String selectedTooltip;
 
-	// Constructors:
-
 	public LayerTreeModalAction(String selectedIcon, String deselectedIcon, String disabledIcon,
 			String selectedTooltip, String deselectedTooltip) {
 		super(deselectedIcon, deselectedTooltip);
@@ -48,8 +50,6 @@ public abstract class LayerTreeModalAction extends ToolbarBaseAction {
 		this.disabledIcon = disabledIcon;
 		this.selectedTooltip = selectedTooltip;
 	}
-
-	// Class specific methods:
 
 	/**
 	 * When the toolbar button is selected, this method will be called.
@@ -107,3 +107,4 @@ public abstract class LayerTreeModalAction extends ToolbarBaseAction {
 		this.disabledIcon = disabledIcon;
 	}
 }
+// @extract-end

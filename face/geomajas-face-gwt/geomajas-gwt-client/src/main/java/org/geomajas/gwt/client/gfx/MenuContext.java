@@ -24,12 +24,15 @@
 package org.geomajas.gwt.client.gfx;
 
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.global.Api;
 
 /**
  * Adds support for right-mouse context menu.
  * 
  * @author Jan De Moerloose
+ * @since 1.6.0
  */
+@Api
 public interface MenuContext {
 
 	/**
@@ -50,6 +53,8 @@ public interface MenuContext {
 	 * Retrieve the coordinate of the last right mouse event.
 	 * 
 	 * @return Returns the event's position.
+	 * @since 1.6.0
 	 */
+	@Api
 	Coordinate getRightButtonCoordinate();
 }

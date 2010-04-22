@@ -23,19 +23,20 @@
 
 package org.geomajas.gwt.client.action.layertree;
 
+import org.geomajas.global.Api;
 import org.geomajas.gwt.client.action.ToolbarBaseAction;
 import org.geomajas.gwt.client.map.layer.Layer;
 
+// @extract-start LayerTreeAction, LayerTreeAction
 /**
  * Base definition of an action for the LayerTree toolbar.
  *
  * @author Pieter De Graef
+ * @since 1.6.0
  */
+@Api(allMethods = true)
 public abstract class LayerTreeAction extends ToolbarBaseAction {
 
-	/**
-	 * Icon shown when the button is disabled.
-	 */
 	private String disabledIcon;
 
 	/**
@@ -53,8 +54,6 @@ public abstract class LayerTreeAction extends ToolbarBaseAction {
 		this.disabledIcon = disabledIcon;
 	}
 
-	// Public methods:
-
 	/**
 	 * This method will be called when the user clicks on the button.
 	 *
@@ -64,17 +63,29 @@ public abstract class LayerTreeAction extends ToolbarBaseAction {
 	public abstract void onClick(Layer<?> layer);
 
 	/**
-	 * When the toolbar button is selected, this method will be called.
+	 * Is the this action enabled for the layer?
+	 *
+	 * @param layer layer to test
+	 * @return enabled status of action for layer
 	 */
 	public abstract boolean isEnabled(Layer<?> layer);
 
-	// Getters and setters:
-
+	/**
+	 * Set icon to display when button is disabled.
+	 *
+	 * @return icon shown when the button is disabled
+	 */
 	public String getDisabledIcon() {
 		return disabledIcon;
 	}
 
+	/**
+	 * Set icon for disabled state.
+	 *
+	 * @param disabledIcon icon for disabled state
+	 */
 	public void setDisabledIcon(String disabledIcon) {
 		this.disabledIcon = disabledIcon;
 	}
 }
+// @extract-end

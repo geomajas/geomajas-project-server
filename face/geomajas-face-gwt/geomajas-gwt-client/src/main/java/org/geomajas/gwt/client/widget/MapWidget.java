@@ -96,8 +96,8 @@ import com.smartgwt.client.widgets.menu.Menu;
  * <p>
  * The most important widget in this framework. This is the central map. It is built using a model-view-controller
  * paradigm, where this widget basically holds the 3 components in one. The model is represented by the {@link MapModel}
- * class, the view is represented by the graphics contexts (check the {@link MapContext} class), and the controller by a
- * {@link GraphicsController}.
+ * class, the view is represented by the graphics contexts (check the {@link org.geomajas.gwt.client.gfx.MapContext}
+ * class), and the controller by a {@link GraphicsController}.
  * </p>
  * <p>
  * This widget will initialize itself automatically on the onDraw event. The initialization means that it will fetch the
@@ -227,7 +227,9 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	 *            The map's unique identifier, retrievable in the XML configuration.
 	 * @param applicationId
 	 *            The identifier of the application to which this map belongs.
+	 * @since 1.6.0
 	 */
+	@Api
 	public MapWidget(String id, String applicationId) {
 		super(id);
 		this.applicationId = applicationId;
@@ -278,7 +280,9 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	 * Know that without this method, the map would be an empty shell. This method will ask the server for the correct
 	 * configuration, so that it is possible to build a model (MapModel).
 	 * </p>
+	 * @since 1.6.0
 	 */
+	@Api
 	public void init() {
 		GwtCommand commandRequest = new GwtCommand("command.configuration.GetMap");
 		commandRequest.setCommandRequest(new GetMapConfigurationRequest(id, applicationId));
@@ -303,6 +307,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	 * 
 	 * @param group
 	 *            The general group definition (RenderGroup.SCREEN, RenderGroup.WORLD, ...)
+	 * @return paintable group
 	 */
 	public PaintableGroup getGroup(RenderGroup group) {
 		switch (group) {
@@ -325,8 +330,10 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	 *            The actual object to be rendered. Should always contain location and styling information.
 	 * @param renderGroup
 	 *            In what group to render the paintable object?
-	 * @param status
+	 * @param status how to render
+	 * @since 1.6.0
 	 */
+	@Api
 	public void render(Paintable paintable, RenderGroup renderGroup, RenderStatus status) {
 		PaintableGroup group = null;
 		if (renderGroup != null) {
@@ -405,7 +412,9 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	 * 
 	 * @param painter
 	 *            The new painter to be registered. If that painter is already in the list, nothing will happen.
+	 * @since 1.6.0
 	 */
+	@Api
 	public void registerPainter(Painter painter) {
 		painterVisitor.registerPainter(painter);
 	}
@@ -415,7 +424,9 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	 * 
 	 * @param painter
 	 *            The registered painter to be removed. If it can't be found in the list, nothing will happen.
+	 * @since 1.6.0
 	 */
+	@Api
 	public void unregisterPainter(Painter painter) {
 		painterVisitor.unregisterPainter(painter);
 	}
@@ -463,7 +474,9 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	 * 
 	 * @param worldPaintable
 	 *            The new WorldPaintable object to be rendered on the map.
+	 * @since 1.6.0
 	 */
+	@Api
 	public void registerWorldPaintable(WorldPaintable worldPaintable) {
 		if (worldPaintable != null && !worldPaintables.containsKey(worldPaintable.getId())) {
 			worldPaintables.put(worldPaintable.getId(), worldPaintable);
@@ -477,7 +490,9 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	 * 
 	 * @param worldPaintable
 	 *            The registered WorldPaintable object to be removed again from the map.
+	 * @since 1.6.0
 	 */
+	@Api
 	public void unregisterWorldPaintable(WorldPaintable worldPaintable) {
 		if (worldPaintable != null && worldPaintables.containsKey(worldPaintable.getId())) {
 			render(worldPaintable, RenderGroup.WORLD, RenderStatus.DELETE);
@@ -506,7 +521,11 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 		}
 	}
 
-	/** Is the zooming using the mouse wheel currently enabled or not? */
+	/**
+	 * Is the zooming using the mouse wheel currently enabled or not?
+	 *
+	 * @return true when zoom on scroll is enabled
+	 */
 	public boolean isZoomOnScrollEnabled() {
 		return zoomOnScrollEnabled;
 	}
@@ -535,7 +554,11 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 		}
 	}
 
-	/** Is the scale bar (MapAddon) currently enabled/visible or not? */
+	/**
+	 * Is the scale bar (MapAddon) currently enabled/visible or not?
+	 *
+	 * @return true when scale bar is enabled
+	 */
 	public boolean isScaleBarEnabled() {
 		return scaleBarEnabled;
 	}
@@ -567,12 +590,20 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 		}
 	}
 
-	/** Is the navigation (MapAddon) currently enabled/visible or not? */
+	/**
+	 * Is the navigation (MapAddon) currently enabled/visible or not?
+	 *
+	 * @return true when navigation addon is enabled
+	 */
 	public boolean isNavigationAddonEnabled() {
 		return navigationAddonEnabled;
 	}
 
-	/** Will the map automatically react on resize events or not? This option is turned on be default. */
+	/**
+	 * Will the map automatically react on resize events or not? This option is turned on be default.
+	 *
+	 * @return true when the resize handler is disabled
+	 */
 	public boolean isResizedHandlerDisabled() {
 		return resizedHandlerDisabled;
 	}
@@ -597,7 +628,9 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	 * 
 	 * @param controller
 	 *            The new <code>MapController</code> object.
+	 * @since 1.6.0
 	 */
+	@Api
 	public void setController(GraphicsController controller) {
 		graphics.setController(controller);
 	}
@@ -608,7 +641,9 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	 * 
 	 * @param controller
 	 *            The new mouse wheel controller to be applied on the map.
+	 * @since 1.6.0
 	 */
+	@Api
 	public void setMouseWheelController(MouseWheelHandler controller) {
 		setZoomOnScrollEnabled(false);
 		mouseWheelRegistration = graphics.addMouseWheelHandler(controller);
@@ -623,31 +658,47 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	}
 
 	/**
-	 * Return the map's inner model. This model contains all the layers, handles selection, etc.
+	 * Get the map's inner model. This model contains all the layers, handles selection, etc.
+	 *
+	 * @return map model
+	 * @since 1.6.0
 	 */
+	@Api
 	public MapModel getMapModel() {
 		return mapModel;
 	}
 
 	/**
-	 * Return the context that handles right mouse clicks.
+	 * Get the context that handles right mouse clicks.
+	 *
+	 * @return menu context
+	 * @since 1.6.0
 	 */
+	@Api
 	public MenuContext getMenuContext() {
 		return graphics.getMenuContext();
 	}
 
 	/**
-	 * Return the drawing context for rendering in general. If you are not using the render method, this would be an
+	 * Get the drawing context for rendering in general. If you are not using the render method, this would be an
 	 * alternative - for advanced users only.
+	 *
+	 * @return vector context
+	 * @since 1.6.0
 	 */
+	@Api
 	public GraphicsContext getVectorContext() {
 		return graphics.getVectorContext();
 	}
 
 	/**
-	 * Return the drawing context for raster layer rendering. If you are not using the render method, this would be an
+	 * Get the drawing context for raster layer rendering. If you are not using the render method, this would be an
 	 * alternative - for advanced users only.
+	 *
+	 * @return raster context
+	 * @since 1.6.0
 	 */
+	@Api
 	public ImageContext getRasterContext() {
 		return graphics.getRasterContext();
 	}

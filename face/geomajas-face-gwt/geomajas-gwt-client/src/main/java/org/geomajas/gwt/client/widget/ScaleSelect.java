@@ -94,7 +94,9 @@ public class ScaleSelect extends Canvas implements KeyPressHandler, ChangedHandl
 	 *            the map view
 	 * @param pixelLength
 	 *            the pixel length in map units
+	 * @since 1.6.0
 	 */
+	@Api
 	public ScaleSelect(MapView mapView, double pixelLength) {
 		this.mapView = mapView;
 		this.pixelLength = pixelLength;
@@ -112,7 +114,9 @@ public class ScaleSelect extends Canvas implements KeyPressHandler, ChangedHandl
 	 * 
 	 * @param scales
 	 *            array of relative scales (should be multiplied by pixelLength if in pixels/m)
+	 * @since 1.6.0
 	 */
+	@Api
 	public void setScales(Double... scales) {
 		// sort decreasing
 		Arrays.sort(scales, Collections.reverseOrder());

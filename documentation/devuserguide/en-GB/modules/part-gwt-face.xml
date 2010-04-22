@@ -27,7 +27,7 @@
   <title>GWT face</title>
 
   <chapter>
-    <title>GWT client architecture</title>
+    <title>GWT face architecture</title>
 
     <section>
       <title>Client-server communication</title>
@@ -642,9 +642,9 @@
             drawing interface. Different implementations will draw in
             different technologies (i.e. <code>SvgGraphicsContext</code> and
             <code>VmlGraphicsContext</code>). The whole idea of this
-            <code>GraphicsContext</code> and the painters, has been copied
-            from the Java AWT library. This context will draw basic shapes,
-            according to their id. Since we are using web technologies, all
+            <code>GraphicsContext</code> and the painters, was inspired by the
+            Java AWT library. This context will draw basic shapes, according
+            to their id. Since we are using web technologies, all
             implementations (be they SVG or VML) will use DOM elements to
             create their drawings. Each DOM element in the
             <code>GraphicsContext</code> DOM tree should have an id and a
@@ -652,7 +652,7 @@
             update or delete the object.</para>
 
             <para>In essence, the drawing methods will result in changes in
-            the visuals of the map, and it's the painters that will call these
+            the visuals of the map, and the painters that will call these
             methods.</para>
           </listitem>
 
@@ -661,14 +661,12 @@
             object that can be painted onto the map. For each
             <code>Paintable</code> class, an accompanying <code>Painter</code>
             class must be defined. The <code>Paintable</code> interface has
-            only two methods. One to get it's unique identifier within a
-            parent group and used by the <code>PainterVisitor</code>. The
-            getId method returns the <code>Paintable</code> objects id, which
-            is it's key in the DOM tree within the parent group. While the
-            accept method will be traversed by the
-            <code>PainterVisitor</code>, and used to have the object passed to
-            the correct <code>Painter</code>, who will then draw the
-            object.</para>
+            only two methods. The <code>getId</code> method returns the
+            <code>Paintable</code> objects id, which is it's key in the DOM
+            tree within the parent group. While the accept method will be
+            traversed by the <code>PainterVisitor</code>, and is used to have
+            the object passed to the correct <code>Painter</code>, which will
+            draw the object.</para>
           </listitem>
 
           <listitem>
@@ -707,9 +705,8 @@
 
             <para>An example of the recursive painting, can be found in the
             <code>MapModel</code>, which calls the <code>accept</code> methods
-            of it's <code>layers</code>, which call the <code>accept</code>
-            methods of the visible <code>tiles</code>, which contain
-            <code>features</code>...</para>
+            of it's layers, which call the <code>accept</code> methods of the
+            visible tiles, which contain features.</para>
           </listitem>
         </itemizedlist>
       </section>
@@ -717,24 +714,23 @@
       <section>
         <title>Rendering manual</title>
 
-        <para>As said before, there are 2 ways of rendering object onto the
-        map. One uses <code>Paintable</code> objects and
-        <code>Painter</code>s, the other is by using the
-        <code>GraphicsContext</code> directly. There are still some general
-        notions that one must know before attempting to draw on the map. Since
-        Html, Svg and Vml are all markup languages who use a DOM tree as basic
-        model, rendering basically is the adding and removing of nodes within
-        this tree. As parent nodes have styling information or other
-        attributes that reflect their child nodes, it is very important to add
-        nodes to the correct parent when drawing.</para>
+        <para>There are two ways to render objects onto the map. One uses
+        <code>Paintable</code> objects and <code>Painter</code>s, the other is
+        by using the <code>GraphicsContext</code> directly. There are still
+        some general notions that one must know before attempting to draw on
+        the map. Since HTML, SVG and VML are all markup languages which use a
+        DOM tree as basic model, rendering basically is the adding and
+        removing of nodes within this tree. As parent nodes have styling
+        information or other attributes that reflect their child nodes, it is
+        very important to add nodes to the correct parent when drawing.</para>
 
         <para>The <link linkend="graphicscontext">GraphicsContext</link>
-        reflects this problem, as all drawing methods requires a parent Object
-        as first parameters. Associated with every node is an Object that
-        represents it. Given this object, the GraphicsContext can find the
-        correct node. When using the GraphicsContext directly, it is important
-        to be aware of the necessity of using the correct parent group when
-        drawing.</para>
+        reflects this, by requiring a parent object as first parameters in all
+        drawing methods. Associated with every node is an object that
+        represents it. Given this object, the <code>GraphicsContext</code> can
+        find the correct node. When using the <code>GraphicsContext</code>
+        directly, it is important to be aware of the necessity of using the
+        correct parent group when drawing.</para>
 
         <section>
           <title>The simple approach - indirect drawing</title>
@@ -742,12 +738,12 @@
           <section>
             <title>Drawing in screen space</title>
 
-            <para>This approach uses MapWidget's render method, which requires
-            3 parameters: a <code>Paintable</code> object, a target
-            <code>RenderGroup</code>, and a <code>RenderStatus</code>. If you
-            are unfamiliar with these, visit the <link
-            linkend="graphics">beginning of this chapter</link> for a detailed
-            description.</para>
+            <para>This approach uses <code>MapWidget</code>'s render method,
+            which requires three parameters: a <code>Paintable</code> object,
+            a target <code>RenderGroup</code>, and a
+            <code>RenderStatus</code>. If you are unfamiliar with these, visit
+            the <link linkend="graphics">beginning of this chapter</link> for
+            a detailed description.</para>
 
             <para>Let us start with an example, where we draw a rectangle in
             screen space (=pixel coordinates). The code would look something
@@ -759,12 +755,12 @@ rectangle.setStyle(new ShapeStyle("#FF0000", .8f, "#0000FF", .6f, 2));
 
 map.render(rectangle, RenderGroup.SCREEN, RenderStatus.ALL);</programlisting>
 
-            <para>This code snippet would draw a rectangle (= Paintable),
-            called "myRectangle" in screen space (10 pixels from the top, 10
-            pixels from the left, and with a width and height of both 200),
-            using the defined style (red interior with a blue border). To
-            delete the rectangle again, you would have to do something like
-            this:</para>
+            <para>This code snippet would draw a rectangle (which implements
+            <code>Paintable</code>), called "myRectangle" in screen space (10
+            pixels from the top, 10 pixels from the left, and with a width and
+            height of both 200), using the defined style (red interior with a
+            blue border). To delete the rectangle again, you would have to do
+            something like this:</para>
 
             <programlisting>map.render(rectangle, RenderGroup.SCREEN, RenderStatus.DELETE);</programlisting>
           </section>
@@ -773,16 +769,16 @@ map.render(rectangle, RenderGroup.SCREEN, RenderStatus.ALL);</programlisting>
             <title>Drawing in world space</title>
 
             <para>Remember that there was also an extension of the
-            <code>Paintable</code> interface, designed for rendering objects
-            in world space. Rendering in world space means that objects are
-            drawn in the coordinate system of the map (EPSG:????). This also
-            means that when the user moves about on the map, the object will
-            move with it (keeping the same location in map coordinates). Only
-            objects that implement the <code>WorldPaintable</code> interface
-            can be drawn in world space.</para>
+            <code><code>Paintable</code></code> interface, designed for
+            rendering objects in world space. Rendering in world space means
+            that objects are drawn in the coordinate system of the map. This
+            also means that when the user moves about on the map, the object
+            will move with it (keeping the same location in map coordinates).
+            Only objects that implement the <code>WorldPaintable</code>
+            interface can be drawn in world space.</para>
 
             <para>Let us, for the next example, assume that the map has been
-            defined using EPSG:4326 (latlon) as coordinate system, and we
+            defined using EPSG:4326 (lonlat) as coordinate system, and we
             would apply the following code snippet:</para>
 
             <programlisting>Rectangle rectangle = new Rectangle("myRectangle");
@@ -791,21 +787,15 @@ rectangle.setStyle(new ShapeStyle("#FF0000", .8f, "#0000FF", .6f, 2));
 
 // Register the rectangle to the map, so that it gets redrawn
 // automatically when the user navigates on the map.
-map.getWorldSpacePaintables().add(rectangle);
-
-// Just update the map, so that the new rectangle is drawn:
-map.render(null, RenderGroup.WORLD, RenderStatus.UPDATE);</programlisting>
+map.registerWorldPaintable(rectangle);</programlisting>
 
             <para>Starting from -60, -60 and using a width and height of 120,
             we would have a rectangle that encompasses a huge part of the
             world. Note that drawing objects in world space requires you to
             register them with the map. This is necessary to have the map
             automatically update the object's position when the user
-            navigates. After the registration of the
-            <code>WorldPaintable</code> rectangle, the map is redrawn to have
-            the rectangle become visible. By giving a null as first parameter,
-            the map will assume that it's <code>MapModel</code> needs
-            re-rendering.</para>
+            navigates. When registering the <code>WorldPaintable</code>
+            rectangle, it is automatically drawn on the map.</para>
           </section>
         </section>
 
@@ -841,11 +831,12 @@ Matrix m = new Matrix(1, 0, 0, 1, 100, 0);
 map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</programlisting>
 
           <warning>
-            <para>Do not try to render objects in world space when using the
-            <code>GraphicsContext</code> directly. Behind the screens of the
-            <code>MapWidget</code>, the world space objects are actually
-            transformed and rendered in VECTOR space. This is done to avoid
-            scaling in the DOM tree (Vml has problems with it...).</para>
+            <para>Do not try to render objects in world space by directly
+            accessing the <code>GraphicsContext</code>. Behind the screens of
+            the <code>MapWidget</code>, the world space objects are actually
+            transformed and rendered in <emphasis>vector</emphasis> space.
+            This is done to avoid scaling in the DOM tree (as this is not
+            possible cross browsers).</para>
           </warning>
         </section>
       </section>
@@ -856,13 +847,13 @@ map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</
 
       <para>This section covers the many interfaces regarding buttons, menu
       items and such that make up the user interface. The specific Geomajas
-      widgets (i.e. LayerTree) require a specific way of doing things. In the
-      next sections, we will cover the interfaces for the Toolbar, LayerTree,
-      map controllers and context menus.</para>
+      widgets (i.e. <code>LayerTree</code>) require a specific way of doing
+      things. We will cover the interfaces for the <code>Toolbar</code>,
+      <code>LayerTree</code>, map controllers and context menus.</para>
 
       <itemizedlist>
         <listitem>
-          <para><emphasis>Toolbar</emphasis>: the toolbar has 2 types of
+          <para><emphasis>Toolbar</emphasis>: the tool bar has two types of
           default actions one can add to it (there is always the
           <code>addChild</code> method, which can add any widget, but we are
           now talking about Geomajas specific possibilities): the
@@ -875,19 +866,20 @@ map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</
 
         <listitem>
           <para><emphasis>LayerTree</emphasis>: the <code>LayerTree</code> has
-          the possibility to add buttons to it's toolbar that usually act upon
-          the selected layer within the <code>LayerTree</code>. Again 2 types
-          of actions can be added: the <code>LayerTreeAction</code> and the
-          <code>LayerTreeModalAction</code>. The same difference as with the
-          toolbar applies: the <code>LayerTreeAction</code> is a base abstract
-          class for actions that execute immediately upon clicking, while the
-          <code>LayerTreeModalAction</code> is used for enabling or disabling
-          a certain state (for example: toggle the layer's visibility).</para>
+          the possibility to add buttons to it's tool bar that usually act
+          upon the selected layer within the <code>LayerTree</code>. Again two
+          types of actions can be added: the <code>LayerTreeAction</code> and
+          the <code>LayerTreeModalAction</code>. The same difference as with
+          the tool bar applies: the <code>LayerTreeAction</code> is a base
+          abstract class for actions that execute immediately upon clicking,
+          while the <code>LayerTreeModalAction</code> is used for enabling or
+          disabling a certain state (for example: toggle the layer's
+          visibility).</para>
         </listitem>
 
         <listitem>
-          <para><emphasis>Menu</emphasis>: each item in a context menu can
-          (should) extend the MenuAction base class. This is your basic
+          <para><emphasis>Menu</emphasis>: each item in a context menu should
+          extend the <code>MenuAction</code> base class. This is your basic
           starting point for easily creating new menu items or context menu
           items.</para>
         </listitem>
@@ -905,26 +897,26 @@ map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</
         <code>LayerTree</code> it is possible to add them to the
         <code>org.geomajas.gwt.client.action.toolbar.ToolbarRegistry</code> or
         <code>org.geomajas.gwt.client.action.layertree.LayerTreeRegistry</code>
-        upon application startup (before the MapWidget initialization!). This
-        will allow you to use these new buttons in the server side XML
-        configuration.</para>
+        upon application startup (before <code>MapWidget</code>
+        initialisation!). This allows you to add new buttons which can be
+        included in the map configuration.</para>
       </note>
 
       <section>
         <title>Toolbar: ToolbarAction</title>
 
         <para>The <code>ToolbarAction</code> is your basic abstract class for
-        building toolbar buttons that are executed immediately when clicked.
-        That is why this class implements the <code>ClickHandler</code>
-        interface. It also requires your to specify an icon and a tooltip on
-        creation.</para>
+        building tool bar buttons that are executed immediately when clicked.
+        The class implements the <code>ClickHandler</code> interface and
+        requires your to specify an icon and a tool tip on creation.</para>
 
         <para><code>ToolbarAction</code> classes need to be registered in the
-        <code><code>ToolbarRegistry</code></code> class. This allows you to
-        get an instance of the widget to put in the toolbar. The tools which
-        are always part of the GWT face are statically defined in the class.
-        Other tools can be added (or overwritten) at runtime before the map is
-        initialised.</para>
+        <code>
+            <code>ToolbarRegistry</code>
+          </code> class. This allows you to get an instance of the widget to
+        put in the tool bar. The tools which are part of the GWT face are
+        statically defined in the class. Other tools can be added (or
+        overwritten) at runtime before the map is initialised.</para>
 
         <para>When a <code>ToolbarAction</code> is configurable (XML
         configuration), it should implement the
@@ -932,157 +924,41 @@ map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</
         "<code>configure()</code>" method which will be called for each of the
         parameters which are defined in the tool configuration.</para>
 
-        <programlisting>/**
- * Abstract class that serves as a template for building toolbar actions. A toolbar 
- * action is an action that is executed immediately when the toolbar button is clicked.
- * If you want a selectable toolbar button, have a look at the {@link ToolbarModalAction}
- * class.
- */
-public abstract class ToolbarAction extends ToolbarBaseAction implements ClickHandler {
+        <xi:include href="../listing/ToolbarAction.xml"
+                    xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-    public ToolbarAction(String icon, String tooltip) {
-        super(icon, tooltip);
-    }
-}
-
-
-
-/**
- * Base toolbar action, defines the common bits between {@link ToolbarAction} and
- * {@link ToolbarModalAction}.
- */
-public abstract class ToolbarBaseAction {
-
-    /** Link to the image icon that should represent the action's button in the toolbar. */
-    private String icon;
-
-    /** Text that appears when hovering over the toolbar button. */
-    private String tooltip;
-
-    /** Is the button for this action disabled or not? */
-    private boolean disabled;
-
-    private HandlerManager handlerManager;
-
-    // Constructors:
-
-    public ToolbarBaseAction(String icon, String tooltip) {
-        this.icon = icon;
-        this.tooltip = tooltip;
-        handlerManager = new HandlerManager(this);
-    }
-
-    // Public methods:
-
-    public HandlerRegistration addToolbarActionHandler(ToolbarActionHandler handler) {
-        return handlerManager.addHandler(ToolbarActionHandler.TYPE, handler);
-    }
-
-    // Getters and setters:
-
-    /** Link to the image icon that should represent the action's button in the toolbar. */
-    public String getIcon() {
-        return icon;
-    }
-
-    /**
-     * Link to the image icon that should represent the action's button in the toolbar.
-     * 
-     * @param icon
-     *            The new icon value
-     */
-    public void setIcon(String icon) {
-        this.icon = icon;
-    }
-
-    /** Text that appears when hovering over the toolbar button. */
-    public String getTooltip() {
-        return tooltip;
-    }
-
-    /**
-     * Text that appears when hovering over the toolbar button.
-     * 
-     * @param tooltip
-     *            The new tooltip value
-     */
-    public void setTooltip(String tooltip) {
-        this.tooltip = tooltip;
-    }
-
-    /** Is the button for this action disabled or not? */
-    public boolean isDisabled() {
-        return disabled;
-    }
-
-    /**
-     * Is the button for this action disabled or not?
-     * 
-     * @param disabled
-     *            The new value
-     * */
-    public void setDisabled(boolean disabled) {
-        this.disabled = disabled;
-        if (disabled) {
-            handlerManager.fireEvent(new ToolbarActionDisabledEvent());
-        } else {
-            handlerManager.fireEvent(new ToolbarActionEnabledEvent());
-        }
-    }
-}</programlisting>
+        <xi:include href="../listing/ToolbarBaseAction.xml"
+                    xmlns:xi="http://www.w3.org/2001/XInclude" />
       </section>
 
       <section>
         <title>Toolbar: ToolbarModalAction</title>
 
         <para>The <code>ToolbarModalAction</code> is the basic template for
-        creating selectable toolbar buttons. Usually they enable and disable a
-        certain state on the map when selected or deselected. Many of the
-        implementations that come with Geomajas simple set a new controller on
-        the map when they are selected.</para>
+        creating selectable tool bar buttons. Usually they enable and disable
+        a certain state on the map when selected or deselected. Many of the
+        implementations that come with Geomajas set a new controller on the
+        map when they are selected.</para>
 
-        <para>Also notice that only one of these
-        <code>ToolbarModalActions</code> can be selected at any given time. In
-        that sense they act as a radio button.</para>
+        <para>Note that only one of these <code>ToolbarModalActions</code> can
+        be selected at any given time. In that sense they act as radio
+        buttons.</para>
 
         <para><code>ToolbarModalAction</code> classes need to be registered in
-        the <code><code>ToolbarRegistry</code></code> class. This allows you
-        to get an instance of the widget to put in the toolbar. The tools
-        which are always part of the GWT face are statically defined in the
-        class. Other tools can be added (or overwritten) at runtime before the
-        map is initialised.</para>
+        the <code>
+            <code>ToolbarRegistry</code>
+          </code> class. This allows you to get an instance of the widget to
+        put in the tool bar. The tools which are always part of the GWT face
+        are statically defined in the class. Other tools can be added (or
+        overwritten) at runtime before the map is initialised.</para>
 
         <para>When a <code>ToolbarAction</code> is configurable, it should
         implement the <code>ConfigurableAction</code> interface. This contains
-        a "<code>configure()</code>" method which will be called for each of
-        the parameters which are defined in the tool configuration.</para>
+        a <code>configure()</code> method which will be called for each of the
+        parameters which are defined in the tool configuration.</para>
 
-        <programlisting>/**
- * Abstract class which serves as a template for selectable buttons in a toolbar. These
- * selectable buttons can be selected and deselected. With each of these actions a 
- * different method is executed. Usually this type of toolbar button is used to set a new
- * controller onto the {@link org.geomajas.gwt.client.widget.MapWidget}. If you are looking
- * for an action that should be executed immediately when clicking on it, have a look at
- * the {@link org.geomajas.gwt.client.action.ToolbarAction} class.
- */
-public abstract class ToolbarModalAction extends ToolbarBaseAction {
-
-    public ToolbarModalAction(String icon, String tooltip) {
-        super(icon, tooltip);
-    }
-
-    // Class specific actions:
-
-    /**
-     * When the toolbar button is selected, this method will be called.
-     */
-    public abstract void onSelect(ClickEvent event);
-
-    /**
-     * When the toolbar button is deselected, this method will be called.
-     */
-    public abstract void onDeselect(ClickEvent event);
-}</programlisting>
+        <xi:include href="../listing/ToolbarModalAction.xml"
+                    xmlns:xi="http://www.w3.org/2001/XInclude" />
       </section>
 
       <section>
@@ -1090,68 +966,19 @@ public abstract class ToolbarModalAction extends ToolbarBaseAction {
 
         <para>The <code>LayerTreeAction</code> is your basic abstract class
         for building layer tree buttons that are executed immediately when
-        clicked. To this end, it has an onClick method that needs to be
-        implemented and it also requires your to specify an icon, a tooltip
-        and a disabled-icon on creation. Note that the onClick method gives
-        the selected layer within the <code>LayerTree</code> as a
-        parameter.</para>
+        clicked. The <code>onClick()</code> method needs to be implemented and
+        it also requires you to specify an icon, a tool tip and a disabled
+        icon. Note that the <code>onClick()</code> has the selected layer
+        within the <code>LayerTree</code> as a parameter.</para>
 
         <para><code>LayerTreeAction</code> classes need to be registered in
-        the <code><code>LayerTreeRegistry</code></code> class. The tools which
-        are always part of the GWT face are statically defined in the class.
-        Other tools can be added (or overwritten) at runtime before the map is
+        the <code>LayerTreeRegistry</code> class. The tools which are always
+        part of the GWT face are statically defined in the class. Other tools
+        can be added (or overwritten) at runtime before the map is
         initialised.</para>
 
-        <programlisting>/**
- * Base definition of an action for the LayerTree toolbar.
- */
-public abstract class LayerTreeAction extends ToolbarBaseAction {
-
-    /**
-     * Icon shown when the button is disabled.
-     */
-    private String disabledIcon;
-
-    /**
-     * Constructor setting all values.
-     *
-     * @param icon
-     *            The default icon for the button.
-     * @param tooltip
-     *            The default tooltip for the button.
-     * @param disabledIcon
-     *            The icon used when the button is disabled.
-     */
-    public LayerTreeAction(String icon, String tooltip, String disabledIcon) {
-        super(icon, tooltip);
-        this.disabledIcon = disabledIcon;
-    }
-
-    // Public methods:
-
-    /**
-     * This method will be called when the user clicks on the button.
-     *
-     * @param layer
-     *            The currently selected layer.
-     */
-    public abstract void onClick(Layer&lt;?&gt; layer);
-
-    /**
-     * When the toolbar button is selected, this method will be called.
-     */
-    public abstract boolean isEnabled(Layer&lt;?&gt; layer);
-
-    // Getters and setters:
-
-    public String getDisabledIcon() {
-        return disabledIcon;
-    }
-
-    public void setDisabledIcon(String disabledIcon) {
-        this.disabledIcon = disabledIcon;
-    }
-}</programlisting>
+        <xi:include href="../listing/LayerTreeAction.xml"
+                    xmlns:xi="http://www.w3.org/2001/XInclude" />
       </section>
 
       <section>
@@ -1163,221 +990,98 @@ public abstract class LayerTreeAction extends ToolbarBaseAction {
         (for example that layer's visibility).</para>
 
         <para><code>LayerTreeModalAction</code> classes need to be registered
-        in the L<code><code>ayerTreeRegistry</code></code> class. The tools
-        which are always part of the GWT face are statically defined in the
-        class. Other tools can be added (or overwritten) at runtime before the
-        map is initialised.</para>
+        in the <code>LayerTreeRegistry</code> class. The tools which are
+        always part of the GWT face are statically defined in the class. Other
+        tools can be added (or overwritten) at runtime before the map is
+        initialised.</para>
 
-        <programlisting>/**
- * Base template for modal action in the layer tree toolbar.
- */
-public abstract class LayerTreeModalAction extends ToolbarBaseAction {
-
-    private String selectedIcon;
-
-    private String disabledIcon;
-
-    private String selectedTooltip;
-
-    // Constructors:
-
-    public LayerTreeModalAction(String selectedIcon, String deselectedIcon, String disabledIcon,
-            String selectedTooltip, String deselectedTooltip) {
-        super(deselectedIcon, deselectedTooltip);
-        this.selectedIcon = selectedIcon;
-        this.disabledIcon = disabledIcon;
-        this.selectedTooltip = selectedTooltip;
-    }
-
-    // Class specific methods:
-
-    /**
-     * When the toolbar button is selected, this method will be called.
-     */
-    public abstract boolean isEnabled(Layer&lt;?&gt; layer);
-
-    /**
-     * When the toolbar button is deselected, this method will be called.
-     */
-    public abstract boolean isSelected(Layer&lt;?&gt; layer);
-
-    public abstract void onDeselect(Layer&lt;?&gt; layer);
-
-    public abstract void onSelect(Layer&lt;?&gt; layer);
-
-    // Getters and setters:
-
-    public String getSelectedIcon() {
-        return selectedIcon;
-    }
-
-    public void setSelectedIcon(String selectedIcon) {
-        this.selectedIcon = selectedIcon;
-    }
-
-    public String getDeselectedIcon() {
-        return getIcon();
-    }
-
-    public void setDeselectedIcon(String deselectedIcon) {
-        setIcon(deselectedIcon);
-    }
-
-    public String getSelectedTooltip() {
-        return selectedTooltip;
-    }
-
-    public void setSelectedTooltip(String selectedTooltip) {
-        this.selectedTooltip = selectedTooltip;
-    }
-
-    public String getDeselectedTooltip() {
-        return getTooltip();
-    }
-
-    public void setDeselectedTooltip(String deselectedTooltip) {
-        setTooltip(deselectedTooltip);
-    }
-
-    public String getDisabledIcon() {
-        return disabledIcon;
-    }
-
-    public void setDisabledIcon(String disabledIcon) {
-        this.disabledIcon = disabledIcon;
-    }
-}</programlisting>
+        <xi:include href="../listing/LayerTreeModalAction.xml"
+                    xmlns:xi="http://www.w3.org/2001/XInclude" />
       </section>
 
       <section>
         <title>Menu: MenuAction</title>
 
-        <para>When creating menu items or context menu items, Geomajas
-        provides a simple base class from which to start. It extends upon the
-        basic SmartGWT <code>MenuItem</code> class, but immediately requires
-        you to fill in a title and an icon. It also implements the
+        <para>To create menu items or context menu items, Geomajas provides a
+        base which extends from SmartGWT's <code>MenuItem</code> class. It
+        requires you to set a title and icon. It also implements the
         <code>ClickHandler</code> interface for defining the
-        <code>onClick</code> execution function.</para>
+        <code>onClick()</code> execution function.</para>
 
-        <programlisting>/**
- * General definition of a &lt;code&gt;MenuAction&lt;/code&gt;. All Geomajas actions in toolbars or
- * context menus should build upon this class.
- */
-public abstract class MenuAction extends MenuItem implements ClickHandler {
-
-    /**
-     * Constructor that expects you to immediately fill in the title and the icon.
-     * 
-     * @param title
-     *            The textual title of the menu item.
-     * @param icon
-     *            A picture to be used as icon for the menu item.
-     */
-    protected MenuAction(String title, String icon) {
-        super(title, icon);
-        addClickHandler(this);
-    }
-}</programlisting>
+        <xi:include href="../listing/MenuAction.xml"
+                    xmlns:xi="http://www.w3.org/2001/XInclude" />
       </section>
 
       <section>
         <title>Controllers on the map</title>
 
         <para>For interactive mouse listeners on the map there is a general
-        interface, called <code>GraphicsController</code>. This interface
-        defines the list of methods one needs to implements when writing a
-        custom controller.</para>
+        interface, <code>GraphicsController</code>. To write a custom
+        controller, you should always extend
+        <code>AbstractGraphicsController</code>.</para>
 
         <caution>
           <para>The <code>GraphicsController</code> interface does NOT use
-          SmartGWT events! The reason for this is that they provide no way of
-          getting the target DOM element from the mouse events. So the list of
-          handlers that the <code>GraphicsController</code> extends, are all
-          basic GWT event handlers. For this reason, a separate widget
-          (<code>GraphicsWidget</code>) has been created to catch the events,
-          while the normal <code>MapWidget</code> (which encapsulates the
-          <code>GraphicsWidget</code>) can still handle SmartGWT
-          events.</para>
+          SmartGWT events as they provide no way of getting the target DOM
+          element from the mouse events. So the list of handlers that the
+          <code>GraphicsController</code> extends, are all basic GWT event
+          handlers. A separate widget (<code>GraphicsWidget</code>) has been
+          created to catch the events, while the normal <code>MapWidget</code>
+          (which encapsulates the <code>GraphicsWidget</code>) can still
+          handle SmartGWT events.</para>
         </caution>
 
         <para>On top of all the event handling methods that come from the
-        different handlers, the interface also has an <code>onActivate</code>
-        and an <code>onDeactivate</code> method. The <code>onActivate</code>
-        method is called before the controller is actually applied on the
-        <code>GraphicsWidget</code>. This is usually used to apply a new
-        context menu on the map and such. The <code>onDeactivate</code> method
-        is called when the controller is removed from the
-        <code>GraphicsWidget</code>. This is usually used for cleaning up it's
-        own mess.</para>
+        different handlers, the interface also has <code>onActivate()</code>
+        and an <code>onDeactivate()</code> methods. The
+        <code>onActivate()</code> is called before the controller is actually
+        applied on the <code>GraphicsWidget</code>. This is usually used to
+        apply a new context menu on the map and such. The
+        <code>onDeactivate()</code> method is called when the controller is
+        removed from the <code>GraphicsWidget</code>. This is usually used for
+        cleaning up.</para>
 
-        <programlisting>/**
- * General interface for a controller set on a {@link MapWidget}. It should implement all
- * of the available mouse handling events.
- */
-public interface GraphicsController extends MouseDownHandler, MouseUpHandler,
-        MouseMoveHandler, MouseOutHandler, MouseOverHandler, MouseWheelHandler,
-        DoubleClickHandler {
+        <xi:include href="../listing/GraphicsController.xml"
+                    xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-    /**
-     * Function executed when the controller instance is applied on the map.
-     */
-    void onActivate();
-
-    /**
-     * Function executed when the controller instance is removed from the map.
-     */
-    void onDeactivate();
-}</programlisting>
-
-        <para>An interface being what it is, it may be handy to have a
-        starting point with some added shortcut methods. This is where the
-        <code>AbstractGraphicsController</code> comes in. This abstract class
+        <para>You should never directly implement
+        <code>GraphicsController</code> (not that it does not have the
+        "<code>@UserImplemented</code>" annotation), you should always extend
+        <code>AbstractGraphicsController</code>. This abstract class
         implements all methods as empty methods so you don't have to clutter
-        your code with empty methods yourself (often only a few of the mouse
-        event methods are actually used). On top of that, this class has some
-        extra methods for return useful information for the mouse events, such
-        as the position (expressed in screen coordinates) or the target DOM
-        element.</para>
+        your code with empty methods (often only a few of the mouse event
+        methods are actually used). It also has some extra methods for return
+        useful information for the mouse events, such as the position
+        (expressed in screen coordinates) or the target DOM element.</para>
 
         <para>Small extract from the <code>AbstractGraphicsController</code>
         class:</para>
 
-        <programlisting>    // -------------------------------------------------------------------------
-    // Helper functions on mouse events:
-    // -------------------------------------------------------------------------
-
-    protected Coordinate getPosition(MouseEvent&lt;?&gt; event) {
-        return GwtEventUtil.getPosition(event);
-    }
-
-    protected Element getTarget(MouseEvent&lt;?&gt; event) {
-        return GwtEventUtil.getTarget(event);
-    }
-
-    protected String getTargetId(MouseEvent&lt;?&gt; event) {
-        return GwtEventUtil.getTargetId(event);
-    }</programlisting>
+        <xi:include href="../listing/AbstractGraphicsController.xml"
+                    xmlns:xi="http://www.w3.org/2001/XInclude" />
 
         <para>Now that you have your controller you can set it;</para>
 
-        <programlisting>    mapWidget.setController(new MeasureDistanceController(mapWidget));</programlisting>
+        <programlisting>mapWidget.setController(new MeasureDistanceController(mapWidget));</programlisting>
 
         <note>
           <para>There are more abstractions than just the
-          AbstractGraphicsController:</para>
+          <code>AbstractGraphicsController</code>:</para>
 
           <itemizedlist>
             <listitem>
-              <para><emphasis><code>AbstractRectangleController</code></emphasis>:
-              abstract controller that handles drawing a rectangle by dragging
-              the mouse on the map.</para>
+              <para><emphasis>
+                  <code>AbstractRectangleController</code>
+                </emphasis>: abstract controller that handles drawing a
+              rectangle by dragging the mouse on the map.</para>
             </listitem>
 
             <listitem>
-              <para><emphasis><code>AbstractSnappingController</code></emphasis>:
-              abstract controller that allows snapping to be enabled and
-              disabled. When enabled, the returned points when asking
-              <code>getPosition()</code>, are snapped points (depending on the
+              <para><emphasis>
+                  <code>AbstractSnappingController</code>
+                </emphasis>: abstract controller that allows snapping to be
+              enabled and disabled. When enabled, the returned points when
+              asking <code>getPosition()</code>, are snapped (depending on the
               configured snapping rules).</para>
             </listitem>
           </itemizedlist>
@@ -1388,10 +1092,8 @@ public interface GraphicsController extends MouseDownHandler, MouseUpHandler,
     <section>
       <title>Internationalization in Geomajas</title>
 
-      <para>For the concept of internationalization, Geomajas uses the default
-      GWT i18n implementation. No need to reinvent the wheel. For more
-      information on how to use GWT i18n in general, please consult the GWT
-      documentation. For Geomajas specifically, the i18n is used in several
+      <para>For internationalization, Geomajas uses the default GWT i18n
+      implementation. For Geomajas specifically, the i18n is used in several
       places, each having it's own list of messages. Basically all i18n
       message definitions are located in the package
       <code>org.geomajas.gwt.client.i18n</code>, as are the properties files
@@ -1402,33 +1104,56 @@ public interface GraphicsController extends MouseDownHandler, MouseUpHandler,
       <itemizedlist>
         <listitem>
           <para><emphasis>MenuMessages</emphasis>: the
-          <code>MenuMessages</code> defines parametrized string values that
-          are used in the titles of <action>MenuAction</action> classes.
-          Examples are the editing context menus.</para>
+          <code>MenuMessages</code> defines parameterized string values that
+          are used in the titles of <code>MenuAction</code> classes. Examples
+          are the editing context menus.</para>
         </listitem>
 
         <listitem>
-          <para><emphasis>ToolbarConstants</emphasis>: the
-          <code>ToolbarConstants</code> defines constant string values that
-          are used as tooltips when hovering over the buttons in the Toolbar.
-          This list of values is used by the <code>ToolbarAction</code> and
-          <code>ToolbarSelectAction</code> classes. Note that for tooltips the
-          "&amp;nbsp;" character is used instead of the default space.</para>
+          <para><emphasis>ToolbarConstants</emphasis>: this defines strings
+          that are used as tool tips when hovering over the buttons in the
+          tool bar. This list of values is used by the
+          <code>ToolbarAction</code> and <code>ToolbarSelectAction</code>
+          classes. Note that for tool tips the "&amp;nbsp;" character is used
+          instead of the default space.</para>
         </listitem>
 
         <listitem>
-          <para>..........</para>
+          <para><emphasis>AttributeMessages</emphasis>: .....</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>GlobalMessages</emphasis>: .....</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>LayerTreeMessages</emphasis>: .....</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>SearchMessages</emphasis>: .....</para>
         </listitem>
       </itemizedlist>
 
       <para>To avoid multiple instantiations of the constants and messages
       classes and have a central access point for all internationalization
-      concerns, the I18nProvider class has been created. This class has static
-      methods for accessing the constants and messages classes. Usage is as
-      follows:</para>
+      concerns, the <code>I18nProvider</code> class has been created. This
+      class has static methods for accessing the constants and messages
+      classes. Usage is as follows:</para>
 
       <programlisting>String dist = I18nProvider.getMenu().getMeasureDistanceString(totalDistance, radius); 
 setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/b&gt;:&lt;/div&gt;&lt;div style='margin-top:5px;'&gt;" + dist + "&lt;/div&gt;"); </programlisting>
+    </section>
+
+    <section>
+      <title>Unit testing GWT widgets</title>
+
+      <para>A GWT unit test should inherit from the <code>GWTTestcase</code>
+      base class and should be named <code>GwtTestXxx.java</code>. GWT unit
+      tests are run inside a development mode environment and can refer to
+      most of the GWT API. To run a GWT test case, run the Maven command
+      <command>gwt:test </command>or execute the integration test
+      phase.</para>
     </section>
   </chapter>
 
@@ -1485,76 +1210,72 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
       <para><emphasis role="bold">Map - initialization</emphasis></para>
 
       <para>A first responsibility of the map is the correct initialization of
-      it's model and all layers from the server-side XML configuration. When
-      the MapWidget is added to the HTML (onDraw), it will automatically try
-      and find a configuration from the server, and than initialize itself (or
-      more importantly, build it's MapModel). When this is done, the MapModel
-      will fire a <code>MapModelEvent</code>. This event let's everyone know
-      that the initialization has been done successfully. Many other widgets
-      wait for this moment to initialize themselves, as they often require the
-      MapModel's contents.</para>
+      it's model and all layers from the configuration. When the MapWidget is
+      added to the HTML (onDraw), it will automatically fetch the
+      configuration from the server, and than initialize itself (more
+      precisely, build the <code>MapModel</code>). When this is done, the
+      <code>MapModel</code> will fire a <code>MapModelEvent</code>. Many other
+      widgets wait for this moment to initialize themselves, as they often
+      require the <code>MapModel</code>'s contents.</para>
 
       <para><emphasis role="bold">View - rendering</emphasis></para>
 
-      <para>A second responsibility lies in the ability to render shapes. To
-      this end a render method has been foreseen, where a
-      <code>PainterVisitor</code> will recursively go through
-      <code>Paintable</code> objects and look for the correct
-      <code>Painter</code>. All Painter definitions must be registered in the
-      <code>MapWidget</code>, by means of the "<code>registerPainter</code>"
-      and "<code>unregisterPainter</code>" methods. Also the full list of
-      <code>WorldPaintables</code> is stored within the
-      <code>MapWidget</code>. For more information regarding the rendering,
-      using the render method, visit the <link
+      <para>A second responsibility lies in the ability to render shapes. The
+      <code>render()</code> method uses a <code>PainterVisitor</code> to
+      recursively go through <code>Paintable</code> objects and look for the
+      correct <code>Painter</code>. All <code>Painter</code> definitions must
+      be registered in the <code>MapWidget</code>, by means of the
+      <code>registerPainter()</code> and <code>unregisterPainter()</code>
+      methods. Also the full list of <code>WorldPaintables</code> is stored
+      within the <code>MapWidget</code>. For more information regarding the
+      rendering, using the render method, visit the <link
       linkend="graphics"><corpauthor>rendering
       manual</corpauthor></link>.</para>
 
       <para>As an addition of the <code>Paintable</code> objects in
       screen-space, the definition of a <code>MapAddon</code> has been created
-      as well. <code>MapAddons</code> are selfregulating pieces of software
+      as well. <code>MapAddons</code> are self regulating pieces of software
       that are visible at a certain location on the map (in screen space!),
       and optionally have attached behaviour. Examples are the Navigation
-      buttons and the scalebar.</para>
+      buttons and the scale bar.</para>
 
       <para><emphasis role="bold">Controller</emphasis></para>
 
-      <para>A map without interactivity is quite meaningless, and so in order
-      to attach behaviour to the map, it is possible to apply a controller.
-      Two types of controllers are supported by the map: the
-      <code>GraphicsController</code> and the GWT
+      <para>To add interactivity to a map, you can add two types of
+      controllers: the <code>GraphicsController</code> and the GWT
       <code>MouseWheelHandler</code>. For both it is possible to apply a
-      single instance using the <code>setController</code> and
-      <code>setMouseWheelController</code> methods.</para>
+      single instance using the <code>setController()</code> and
+      <code>setMouseWheelController()</code> methods.</para>
 
       <para><emphasis role="bold">Options</emphasis></para>
 
       <para>On top of the previous list of responsibilities, the map also has
       a few options that allow certain functionality to be present or not. The
-      following options come out of the box:</para>
+      following options are standard:</para>
 
       <itemizedlist>
         <listitem>
           <para><emphasis>navigationAddonEnabled</emphasis>: this option can
-          be configured from within the XML configuration, and determines
-          whether or not the navigation <code>MapAddon</code> is visible. This
-          <code>MapAddon</code> is placed in the upper left corner of the map
-          andallows the user to pan, zoom in and out, and zoom to maximum
-          extent.</para>
+          be configured from within the configuration, and determines whether
+          or not the navigation <code>MapAddon</code> is visible. This
+          <code><code>MapAddon</code></code> is placed in the upper left
+          corner of the map and allows the user to pan, zoom in and out, and
+          zoom to maximum extent.</para>
         </listitem>
 
         <listitem>
           <para><emphasis>scaleBarEnabled</emphasis>: this option can be
-          configured from within the XML configuration, and determines whether
-          or not the scalebar <code>MapAddon</code> is visible. The scalebar
-          shows you the scale of the map by means of a bar of certain length,
-          expressed in the preferred unit type (metric versus English).</para>
+          configured from within the configuration, and determines whether or
+          not the scale bar is visible. This shows you the scale of the map by
+          means of a bar of certain length, expressed in the preferred unit
+          type (metric versus English).</para>
         </listitem>
 
         <listitem>
           <para><emphasis>zoomOnScrollEnabled</emphasis>: this option
           determines whether or not the <code>ZoomOnScrollController</code> is
-          active by default. The <code>ZoomOnScrollController</code> zoom in
-          and out on the map by using the mousewheel.</para>
+          active by default. This allows zooming in and out on the map using
+          the mouse wheel.</para>
         </listitem>
       </itemizedlist>
 
@@ -1574,13 +1295,14 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
       <title>OverviewMap</title>
 
       <para>The overview map is an extension of the <code>MapWidget</code>,
-      that keeps the overview of a target <code>MapWidget</code>. It keeps
-      track of the target map's view, and reacts whenever that target map
-      changes it's view. The <classname>OverViewMap</classname> implements the
+      which keeps the overview of a target
+      <code><code>MapWidget</code></code>. It keeps track of the target map's
+      view, and reacts whenever that target map changes it's view. The
+      <classname>OverViewMap</classname> implements the
       <code>MapViewChangedHandler</code> to track the changes of it's target
-      map. Since it's an extension of a normal <code>MapWidget</code>, it has
-      all the functionality a normal map has. This means that you configure
-      layers for an overview map, just as you would for a normal map.</para>
+      map. As it is an extension of a normal <code>MapWidget</code>, it has
+      all the functionality of a normal map. So you can configure layers for
+      an overview map, just as you would for a normal map.</para>
 
       <figure>
         <title>OverviewMap example</title>
@@ -1597,17 +1319,18 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
     <section>
       <title>Toolbar</title>
 
-      <para>The Geomajas toolbar is an extension of the SmartGWT ToolStrip
-      widget, and thus allows for many different widgets to be added to it. A
-      toolbar must also be initialized with a pointer to the MapWidget it is
-      related to. When the MapWidget has successfullu initialized itself, it's
-      MapModel will fire the MapModelEvent saying so. The toolbar reacts on
-      this event, by searching in the map's configuration for the correct list
-      of toolbar-buttons. After all, the map configuration can contain tool
-      ids to indicate the tools which need to be added, together with optional
-      parameters. Using the ToolbarRegistry, which contains the mappings
-      between these id's and the relevant <code>ToolbarAction</code> or
-      <code>ToolbarModalAction</code> classes, the toolbar will initialize
+      <para>The Geomajas tool bar is an extension of the SmartGWT
+      <code>ToolStrip</code> widget, and allows for many different widgets to
+      be added to it. A tool bar must be initialized with an instance of the
+      <code>MapWidget</code> it is related to. When the <code>MapWidget</code>
+      has successfully initialized itself, it's <code>MapModel</code> will
+      fire the <code>MapModelEvent</code> saying so. The tool bar reacts on
+      this event by searching in the map configuration for the correct list of
+      tool bar buttons. The map configuration can contain tool ids to indicate
+      the tools which need to be added, together with optional parameters.
+      Using the <code>ToolbarRegistry</code>, which contains the mappings
+      between these ids and the relevant <code>ToolbarAction</code> or
+      <code>ToolbarModalAction</code> classes, the tool bar will initialize
       itself (for more info; see <link linkend="interaction">User
       Interaction</link>).</para>
 
@@ -1615,15 +1338,15 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
 
       <para><itemizedlist>
           <listitem>
-            <para><emphasis>EditMode</emphasis>: adds a ToolbarModalAction
-            meant for editing on the map. Allows for the creation of new
-            object within the selected layer, and allows for updating and
-            deleting of selected objects.</para>
+            <para><emphasis>EditMode</emphasis>: a ToolbarModalAction for
+            editing on the map. Allows the user to create new objects in the
+            selected layer, and allows updating and deleting of selected
+            objects.</para>
           </listitem>
 
           <listitem>
-            <para><emphasis>MeasureDistanceMode</emphasis>: adds a
-            ToolbarModalAction that allows the user to measure distances on
+            <para><emphasis>MeasureDistanceMode</emphasis>: a
+            ToolbarModalAction which allows the user to measure distances on
             the map.</para>
           </listitem>
 
@@ -1633,8 +1356,8 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
             selecting the features which are inside the rectangle. You need an
             active (vector) layer for the selection to work. The right click
             menu allows clearing the selected features and toggling selection
-            of the current position. Keeping shift depressed allows you to add
-            the selection to the previously selected features. Possible
+            at the current position. Press shift or control while selecting to
+            add the selection to the previously selected features. Possible
             parameters:</para>
 
             <para><itemizedlist>
@@ -1648,28 +1371,23 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
 
                 <listitem>
                   <para><emphasis>coverageRatio</emphasis>: ratio of the
-                  feature which needs to be inside the selected are for the
+                  feature which needs to be inside the selected area for the
                   feature to be selected. When this is "1.0" then the entire
                   feature needs to be inside the selection rectangle. Default
                   is "0.7".</para>
                 </listitem>
 
                 <listitem>
-                  <para><emphasis>priorityToSelectedLayer</emphasis>: activate
-                  or disable priority to the selected layer. This works only
-                  if there is a selected layer, and that selected layer is a
-                  <code>VectorLayer</code>. If all these checks are okay, but
-                  that particular layer is not visible, then nothing will
-                  happen. When one of the previous checks is not okay, the
-                  selection toggle will occur on the first object that is
-                  encountered. In other words it will depend on the layer
-                  drawing order, starting at the top.</para>
+                  <para><emphasis>priorityToSelectedLayer</emphasis>: when
+                  this is "true" selection will first check the selected
+                  layer, and use default behaviour only if nothing is found in
+                  that layer. Default behaviour is to try all visible layers,
+                  from front to back.</para>
                 </listitem>
 
                 <listitem>
                   <para><emphasis>pixelTolerance</emphasis>: number of pixels
-                  that describes the tolerance allowed when trying to select
-                  features.</para>
+                  of tolerance allowed when trying to select features.</para>
                 </listitem>
               </itemizedlist></para>
           </listitem>
@@ -1703,7 +1421,7 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
           <listitem>
             <para><emphasis>PanMode</emphasis>: this action allows you to pan
             the screen by dragging. When keeping either the shift or control
-            key pressed, it is also possible to indicate an area to zoom into
+            key down, it is also possible to indicate an area to zoom into
             (like <emphasis>ZoomToRectangleMode</emphasis>).</para>
           </listitem>
 
@@ -1735,12 +1453,12 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
 
           <listitem>
             <para><emphasis>ZoomNext</emphasis>: go forward again, cancelling
-            clicking on <emphasis>ZoomPrevious</emphasis>.</para>
+            a click on <emphasis>ZoomPrevious</emphasis>.</para>
           </listitem>
         </itemizedlist></para>
 
       <figure>
-        <title>Toolbar example</title>
+        <title>Tool bar example</title>
 
         <mediaobject>
           <imageobject>
@@ -1754,25 +1472,23 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
     <section>
       <title>LayerTree</title>
 
-      <para>This widget represents a certain view on the MapModel class, just
-      like the MapWidget does, but this time focused on layers. Represented
-      here are the map's layers in a tree, just as they are configured.
+      <para>This widget represents a view on the map model which is focused on
+      layers. You see the map layers in a tree, just as they are configured.
       Accompanied with this view, there are buttons that define certain
       actions on these layers. Originally there are no buttons in this widget,
       so they have to be added manually or through configuration. These
-      buttons can be either single actions, or selectable buttons (similar to
-      the Toolbar widget - see <link linkend="interaction">User
+      buttons can either be single actions or selectable buttons (similar to
+      the <code>Toolbar</code> widget - see <link linkend="interaction">User
       Interaction</link>).</para>
 
-      <para>Lust like the toolbar, the <code>LayerTree</code> waits for the
-      <code>MapModel</code> to be initialized, and also reacts on the
-      <code>MapModelEvent</code>. If configured so the map configuration also
-      contains a layer tree configuration. When the <code>MapModelEvent</code>
-      is fired, the <code>LayerTree</code> will try to recover this
-      configuration, so it knows how to present itself (what layers in what
-      nodes, which buttons to use, ...).</para>
+      <para>Just like the tool bar, the <code>LayerTree</code> waits for the
+      <code>MapModel</code> to be initialized, and also reacts to the
+      <code>MapModelEvent</code>. The layer tree configuration is contained in
+      the map configuration. When the <code>MapModelEvent</code> is fired, the
+      <code>LayerTree</code> will read configuration to know the layer tree
+      structure, which buttons to include,...</para>
 
-      <para>Below you see a screenshot of a simple <code>LayerTree</code>
+      <para>Below you see a screen shot of a simple <code>LayerTree</code>
       where no layer has been selected (and thus all the buttons are
       disabled):</para>
 
@@ -1787,15 +1503,13 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
         </mediaobject>
       </figure>
 
-      <para>Once a layer is selected, the <code>LayerTree</code> will go over
-      all buttons and present the selected layer. The buttons then decide
-      individually whether or not to change their disabled status to enabled.
-      For example, the
+      <para>Once a layer is selected, the <code>LayerTree</code> will ask all
+      buttons whether they should be enabled for that layer. For example, the
       <code>org.geomajas.gwt.client.action.layertree.LabelAction</code>, which
       toggles a layer's labels, is only applicable on vector layers, so if the
-      selected layer is a raster layer, that button will still decide to
-      remain disabled. To see what the same <code>LayerTree</code> would look
-      like if one layer is selected, view here:</para>
+      selected layer is a raster layer, that button will remain disabled. The
+      same <code>LayerTree</code> with a selected layer looks like
+      this:</para>
 
       <figure>
         <title>LayerTree with selected layer</title>
@@ -1808,15 +1522,15 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
         </mediaobject>
       </figure>
 
-      <para>The <code>LayerTree</code> may have few public methods, but it
-      does quie a lot behind the screen. The tree is in fact a SmartGWT
+      <para>The <code>LayerTree</code> has few public methods, but it does
+      quite a lot behind the screen. The tree is a SmartGWT
       <code>TreeGrid</code>, where the <code>LayerTree</code> adds handlers to
-      the nodes and leafs(a <code>LeafClickHandler</code> and a
-      <code>FolderClickHandler</code>), that trigger layer selection within
-      the <code>MapModel</code>. At the same time the <code>LayerTree</code>
-      listens to layer selection events, to adjust it's own appearance. For
-      example, if a layer is selected, the proper noode should be selected as
-      well. But more than that, all the buttons need updating as well.</para>
+      the nodes and leaves (using <code>LeafClickHandler</code> and
+      <code>FolderClickHandler</code>), which trigger layer selection in the
+      <code>MapModel</code>. The <code>LayerTree</code> also listens to layer
+      selection events, to adjust it's own appearance. For example, when a
+      layer is selected, the proper node has to be selected and all the
+      buttons updated.</para>
 
       <para>The <code>LayerTreeAction</code> and
       <code>LayerTreeModalAction</code> are also specifically designed to cope
@@ -1838,8 +1552,8 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
 
         <listitem>
           <para><emphasis>org.geomajas.gwt.client.action.layertree.LabelAction</emphasis>:
-          a <code>LayerTreeModalAction</code> that switches the labeled flag
-          on the selected layer.</para>
+          a <code>LayerTreeModalAction</code> that switches the display of
+          labels for the selected layer.</para>
         </listitem>
 
         <listitem>
@@ -1853,12 +1567,12 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
     <section>
       <title>Legend</title>
 
-      <para>The Legend is a graphical widget that shows all currently visible
-      styles of all currently visible vector layers. In that sense it is
-      another view on the MapModel that only shows the style definitions that
-      are currently relevant. Just like the MapWidget, the legend is build
-      upon the GraphicsWidget. It reads in the layers available in the
-      mapModel and draws a legend to match the style of these layers.</para>
+      <para>The <code>Legend</code> is a graphical widget that shows all
+      styles for the currently visible vector layers. In that sense it is
+      another view on the map model that only shows the style definitions that
+      are currently relevant. Just like the map widget, the legend is built on
+      <code>GraphicsWidget</code>. It reads the available layers from the map
+      model and draws a legend to match the style of these layers.</para>
 
       <figure>
         <title>Legend</title>
@@ -1874,13 +1588,11 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
     <section>
       <title>FeatureListGrid</title>
 
-      <para>The FeatureListGrid is a table listing of alphanumerical
-      attributes of features within a single vector layer. Each feature is
-      represented by a row in the grid, with at the top a header that shows
-      the attribute label definition, as configured in the XML configuration.
-      It speaks for itself that only vector layers can contains features, and
-      so this grid can only display the feature attributes of vector
-      layers.</para>
+      <para>The <code>FeatureListGrid</code> is a table listing the attributes
+      of features within a single vector layer. Each feature is represented by
+      a row in the grid, with at the top a header that shows the attribute
+      label, as configured in the configuration. As only vector layers can
+      contain features, the grid will be empty for raster layers.</para>
 
       <para>The <code>FeatureListGrid</code> has a few options that determine
       it's behaviour and appearance:</para>
@@ -1890,30 +1602,25 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
           <para><emphasis>selectionEnabled</emphasis>: enables or disables
           selection of features when selecting a row in the table. When this
           is enabled, the table will keep feature selection consistent with
-          the <code>MapModel</code>. If the user then selects a row, the
-          feature behind it will also be selected, which will trigger the
-          MapModel to fire a <code>FeatureSelectedEvent</code> and as a
-          result, on the <code>MapWidget</code> it will also become
-          selected.</para>
+          the map model. If the user selects a row, the feature will also be
+          selected on the map.</para>
         </listitem>
 
         <listitem>
           <para><emphasis>allAttributesDisplayed</emphasis>: show all
           attributes (true) or only the 'identifying' attributes (false)?
-          Attribute can be configured as "identifying" in their XML
-          configuration. This difference allows for a select list of
-          attributes to be visible in the grid, keeping overview. Once can
-          always ask more details through the
-          <code>FeatureAttributeWindow</code> (doubleclicking in the
-          grid).</para>
+          Attributes can be configured as "identifying" in the configuration.
+          This difference allows for a select list of attributes to be visible
+          in the grid, keeping overview. The user can always ask more details
+          by double clicking the line.</para>
         </listitem>
 
         <listitem>
           <para><emphasis>editingEnabled</emphasis>: determines whether or not
           editing the attributes is allowed. When double clicking a row in the
-          table, a FeatureAttributeWindow will appear, containing the feature
-          of the row upon which was double clicked. This setting determines if
-          that window allows editing or not.</para>
+          table, a <code>FeatureAttributeWindow</code> will appear, containing
+          the feature of the selected row. This setting determines if that
+          window allows editing or not.</para>
         </listitem>
 
         <listitem>
@@ -1923,15 +1630,14 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
         </listitem>
       </itemizedlist>
 
-      <para>Basically this table is an extension of the SmartGWT
-      <code>ListGrid</code> widget. It therefore automatically has grouping,
-      filtering and sorting abilities (and much more...). What the
-      <code>FeatureListGrid</code> makes possible is to have it display
-      features in an easy way. First you have to set the layer from whom to
-      display features, and then add features one by one to the grid. If no
-      layer is set, then then "<code>addFeature</code>" method will not add
-      any rows to the table. Also the setting of the layer will automatically
-      create the grid header, using the layer's attribute definitions.</para>
+      <para>This table is an extension of the SmartGWT <code>ListGrid</code>
+      widget. It automatically has grouping, filtering and sorting abilities
+      (and much more...). The <code>FeatureListGrid</code> makes it possible
+      to easily display features. You have to set the layer from which to
+      display features. Then you can add features one by one. If no layer is
+      set, then then "<code>addFeature</code>" method will not add any rows to
+      the table. Setting the layer will automatically create the grid header,
+      using the layer's attribute definitions.</para>
 
       <figure>
         <title>FeatureListGrid example</title>
@@ -1948,25 +1654,22 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
     <section>
       <title>FeatureAttributeWindow</title>
 
-      <para>The <code>FeatureAttributeWindow</code> is a floating window that
-      uses a <code>FeatureAttributeEditor</code> to change the alphanumerical
-      attributes of a single feature and persist these changes. In essence,
-      this widget is a <code>FeatureAttributeEditor</code> with some extra
-      buttons. One of these extra buttons is a "save" button to actually save
-      the feature. When setting a feature, it first makes a clone that it then
-      applies on the underlying <code>FeatureAttributeEditor</code>. That way
-      you're not editing the feature directly, and changes are only applied
-      when the save is clicked. This widget will also check whether or not all
-      fields are valid, and will not allow saving when at least one of the
+      <para>The <code>FeatureAttributeWindow</code> is a floating window to
+      display and enable editing of a feature's attributes and persist these
+      changes. This widget is a <code>FeatureAttributeEditor</code> with some
+      extra buttons like "save". When setting a feature, it first makes a
+      clone so you are not editing the feature directly and changes are only
+      applied when the save is clicked. This widget also checks whether or not
+      all fields are valid, and will not allow saving when at least one of the
       fields is not valid.</para>
 
-      <para>The FeatureAttributeWindow has the following options:</para>
+      <para>The <code>FeatureAttributeWindow</code> has the following
+      options:</para>
 
       <itemizedlist>
         <listitem>
-          <para>editingAllowed: is editing überhaupt allowed? This must be set
-          BEFORE the widget is actually drawn, because afterwards it won't
-          have any effect anymore. This</para>
+          <para>editingAllowed: is editing allowed? This must be set
+          <emphasis>before</emphasis> the widget is actually drawn.</para>
         </listitem>
 
         <listitem>
@@ -1975,15 +1678,15 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
           will display an editable attribute form with save, cancel and reset
           buttons. When editing is not enabled, these buttons will disappear,
           and a simple attribute form is shown that displays the attribute
-          values, but does not allow for editing. This effect only has effect
-          if editingAllowed has been set to true.</para>
+          values, but does not allow editing. This effect only works when
+          <emphasis>editingAllowed</emphasis> is true.</para>
         </listitem>
       </itemizedlist>
 
-      <para>Below is a screenshot of a FeatureAttributeWindow with
-      editingAllowed=true and editingEnabled=false. Without the
-      editingAllowed, there would be now Edit button, and the edit button
-      itself triggers the editingEnabled option to true.</para>
+      <para>Below is a screen shot of a <code>FeatureAttributeWindow</code>
+      with editing allowed but not enabled. Without the editing allowed, there
+      would be now "edit" button. The button itself triggers setting editing
+      enabled.</para>
 
       <figure>
         <title>FeatureAttributeWIndow, editing allowed but not enabled</title>
@@ -1991,7 +1694,8 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
         <mediaobject>
           <imageobject>
             <imagedata align="center"
-                       fileref="../images/gwtface_widget_featureattributewindow.png" />
+                       fileref="../images/gwtface_widget_featureattributewindow.png"
+                       width="60%" />
           </imageobject>
         </mediaobject>
       </figure>
@@ -2001,14 +1705,12 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
       <title>ActivityMonitor</title>
 
       <para>This widget monitors client-server communication traffic, and
-      displays that activity to the end-user. It's main purpose is to let the
-      user know when to expect some slowdown or when to wait for reaction. For
-      example, when the user zooms in on a map, it can sometimes take a few
-      seconds before everything is redrawn. This widget displays that traffic
-      by listening to the events in the
-      <code>org.geomajas.command.CommandResponse.GwtCommandDispatcher</code>.
-      On the screenshot below, you can see the difference between it being
-      passive and active:</para>
+      displays that activity to the end-user. It's purpose is inform the user
+      that a server request is in progress. For example, when the user zooms
+      in, it can sometimes take a few seconds before everything is redrawn.
+      This widget displays that traffic by listening to the
+      <code>GwtCommandDispatcher</code> events. On the screen shot below, you
+      can see the difference between it being passive and active:</para>
 
       <figure>
         <title>ActivityMonitor example</title>
@@ -2025,18 +1727,17 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
     <section>
       <title>ScaleSelect</title>
 
-      <para>Combobox for changing the scale on the map. Can be added to a
-      toolbar. It displays a list of possible scales to choose from, but also
-      allows for the user to type in a specific scale. The ScaleSelect is
-      constructred with a MapView as parameter. If this MapView contains
-      pre-configured resolutions (zoom-steps - these can be configured in the
-      XML configuration), than the ScaleSelect will display a list of these
-      scales. If no pre-configured resolutions are present in the MapView, the
-      ScaleSelect will automatically choose relevant scales to choose
-      from.</para>
+      <para>Combo box for changing the scale on the map which can be added to
+      a tool bar. It displays a list of possible scales to choose from, but
+      also allows the user to type a specific scale. The scale select is
+      constructed with a <code>MapView</code> as parameter. If this
+      <code>MapView</code> contains pre-configured resolutions (zoom-steps -
+      these can be set in the configuration), than the scale select will allow
+      selection from these scales. If no resolutions are present, the scale
+      select will automatically choose relevant scales to choose from.</para>
 
-      <para>By using the setScales method, one can always override the list of
-      scales in the ScaleSelect to one's own liking.</para>
+      <para>Using the <code>setScales()</code> method, one can always override
+      the list of scales in the widget.</para>
 
       <figure>
         <title>ScaleSelect example</title>
@@ -2052,30 +1753,27 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
     <section>
       <title>FeatureSearch</title>
 
-      <para>Widget that supports searching for features by means of their
-      alpha numerical attributes. Requires a value for
-      <code>manualLayerSelection</code> at construction time. If true, a
-      select box will be shown so the user can select what layer to search in.
-      The possible list of layers consists of all the vector layers that are
-      present in the given <code>MapModel</code>. If false, this widget will
-      react to the layer select events that come from the
-      <code>MapModel</code>. In that case searching happens in the selected
-      layer (if it's a vector layer).</para>
+      <para>Widget that supports searching for features on the attributes.
+      Requires a value for <code>manualLayerSelection</code> at construction
+      time. If true, a select box will be shown so the user can select what
+      layer to search in. The possible list of layers consists of all the
+      vector layers that are present in the map model. If false, this widget
+      will search in the currently selected layer.</para>
 
-      <para>By executing a search, this widget will ask the server to actually
-      perform the search. When the result returns, a <code>SearchEvent</code>
-      is fired. This event will hold the reference to the
-      <code>VectorLayer</code> wherein the search took place, and a list of
-      all the features that were found. In order to to something with the
+      <para>When the "search" button is indicated, the search will be
+      performed server-side. When the result returns, a
+      <code>SearchEvent</code> is fired. This event holds a reference to the
+      <code>VectorLayer</code> in which the search took place, and a list of
+      all the features that were found. In order to do something with the
       results (such as displaying in a <code>FeatureListGrid</code>), add a
       <code>SearchHandler</code>. For the specific case of displaying the
       feature in a <code>FeatureListGrid</code>, there is a
       <code>DefaultSearchHandler</code> that already does this.</para>
 
-      <para>Note that there is a limit to the amount of features that are
-      searched. By default this limit is set to 100. Change the value of
-      <code>maximumResultSize</code> to change this. Note that this can have a
-      serious impact on performance!</para>
+      <para>Note that there is a limit to the number of features that are
+      returned. By default this limit is set to 100. Modify
+      <code>maximumResultSize</code> to change this. Note that a high limit
+      can have a serious impact on performance and memory consumption!</para>
 
       <figure>
         <title>FeatureSearch example</title>
@@ -2087,17 +1785,6 @@ setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/
           </imageobject>
         </mediaobject>
       </figure>
-    </section>
-
-    <section>
-      <title>Unit testing of GWT widgets</title>
-
-      <para>A GWT unit test should inherit from the <code>GWTTestcase</code>
-      base class and should be named <code>GwtTestXxx.java</code>. GWT unit
-      tests are run inside a development mode environment and can refer to
-      most of the GWT API. To run a GWT test case, run the Maven command
-      <command>gwt:test </command>or execute the integration test
-      phase.</para>
     </section>
   </chapter>
 </part>

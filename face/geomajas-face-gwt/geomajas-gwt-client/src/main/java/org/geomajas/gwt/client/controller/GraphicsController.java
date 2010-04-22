@@ -33,6 +33,7 @@ import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.event.dom.client.MouseUpHandler;
 import com.google.gwt.event.dom.client.MouseWheelHandler;
 
+// @extract-start GraphicsController, GraphicsController
 /**
  * General interface for a controller set on a {@link org.geomajas.gwt.client.widget.MapWidget}. It should implement
  * all of the available mouse handling events.
@@ -54,3 +55,4 @@ public interface GraphicsController extends MouseDownHandler, MouseUpHandler, Mo
 	 */
 	void onDeactivate();
 }
+// @extract-end

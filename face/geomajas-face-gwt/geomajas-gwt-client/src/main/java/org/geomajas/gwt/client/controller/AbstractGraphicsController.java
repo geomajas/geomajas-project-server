@@ -24,6 +24,7 @@
 package org.geomajas.gwt.client.controller;
 
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.global.Api;
 import org.geomajas.gwt.client.spatial.WorldViewTransformer;
 import org.geomajas.gwt.client.util.GwtEventUtil;
 import org.geomajas.gwt.client.widget.MapWidget;
@@ -50,7 +51,9 @@ import com.google.gwt.event.dom.client.MouseWheelEvent;
  * </p>
  *
  * @author Pieter De Graef
+ * @since 1.6.0
  */
+@Api(allMethods = true)
 public abstract class AbstractGraphicsController implements GraphicsController {
 
 	protected MapWidget mapWidget;
@@ -102,6 +105,7 @@ public abstract class AbstractGraphicsController implements GraphicsController {
 		return mapWidget.getMapModel().getMapView().getWorldViewTransformer();
 	}
 
+	// @extract-start AbstractGraphicsController, Extract from AbstractGraphicsController
 	protected Coordinate getScreenPosition(MouseEvent<?> event) {
 		return GwtEventUtil.getPosition(event);
 	}
@@ -117,4 +121,5 @@ public abstract class AbstractGraphicsController implements GraphicsController {
 	protected String getTargetId(MouseEvent<?> event) {
 		return GwtEventUtil.getTargetId(event);
 	}
+	// @extract-end
 }

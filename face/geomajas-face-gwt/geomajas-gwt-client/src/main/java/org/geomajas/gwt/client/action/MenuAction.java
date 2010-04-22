@@ -28,6 +28,7 @@ import org.geomajas.global.Api;
 import com.smartgwt.client.widgets.menu.MenuItem;
 import com.smartgwt.client.widgets.menu.events.ClickHandler;
 
+// @extract-start MenuAction, MenuAction
 /**
  * General definition of a <code>MenuAction</code>. All Geomajas actions in toolbars or context menus should build upon
  * this class.
@@ -51,3 +52,4 @@ public abstract class MenuAction extends MenuItem implements ClickHandler {
 		addClickHandler(this);
 	}
 }
+// @extract-end

@@ -98,7 +98,11 @@ public class LayerTree extends Canvas implements LeafClickHandler, FolderClickHa
 	/**
 	 * Initialize the LayerTree, using a MapWidget as base reference. It will display the map's layers, as configured in
 	 * the XML configuration, and select/deselect the layer as the user clicks on them in the tree.
+	 *
+	 * @param mapWidget map widget this layer tree is connected to
+	 * @since 1.6.0
 	 */
+	@Api
 	public LayerTree(final MapWidget mapWidget) {
 		super();
 		setHeight100();
@@ -138,7 +142,10 @@ public class LayerTree extends Canvas implements LeafClickHandler, FolderClickHa
 	/**
 	 * When a layer deselection event comes in, the LayerTree must also deselect the correct node in the tree, update
 	 * the selected layer text, and update all buttons icons.
+	 *
+	 * @since 1.6.0
 	 */
+	@Api
 	public void onDeselectLayer(LayerDeselectedEvent event) {
 		ListGridRecord selected = treeGrid.getSelectedRecord();
 		if (selected != null) {
@@ -154,7 +161,10 @@ public class LayerTree extends Canvas implements LeafClickHandler, FolderClickHa
 	/**
 	 * When a layer selection event comes in, the LayerTree must also select the correct node in the tree, update the
 	 * selected layer text, and update all buttons icons.
+	 *
+	 * @since 1.6.0
 	 */
+	@Api
 	public void onSelectLayer(LayerSelectedEvent event) {
 		for (TreeNode node : tree.getAllNodes()) {
 			if (node.getName().equals(event.getLayer().getLabel())) {

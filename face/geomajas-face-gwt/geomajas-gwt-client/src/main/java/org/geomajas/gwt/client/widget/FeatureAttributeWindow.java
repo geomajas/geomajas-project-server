@@ -26,6 +26,7 @@ package org.geomajas.gwt.client.widget;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.geomajas.global.Api;
 import org.geomajas.global.GeomajasConstant;
 import org.geomajas.gwt.client.action.menu.SaveEditingAction;
 import org.geomajas.gwt.client.i18n.I18nProvider;
@@ -74,7 +75,9 @@ import com.smartgwt.client.widgets.toolbar.ToolStrip;
  * </p>
  * 
  * @author Pieter De Graef
+ * @since 1.6.0
  */
+@Api
 public class FeatureAttributeWindow extends Window {
 
 	/**
@@ -119,7 +122,9 @@ public class FeatureAttributeWindow extends Window {
 	 * @param editingAllowed
 	 *            This must be set before the widget is actually drawn, so it makes sense to set it at construction
 	 *            time.
+	 * @since 1.6.0
 	 */
+	@Api
 	public FeatureAttributeWindow(Feature feature, boolean editingAllowed) {
 		super();
 		setEditingAllowed(editingAllowed);
