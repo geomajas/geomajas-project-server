@@ -39,6 +39,7 @@ import org.geomajas.gwt.client.spatial.geometry.LineString;
 import org.geomajas.gwt.client.spatial.geometry.Polygon;
 import org.geomajas.gwt.client.util.DOM;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.ui.Widget;
 
@@ -79,6 +80,7 @@ public class SvgGraphicsContext implements GraphicsContext {
 		DOM.setElementAttribute(rootNode, "width", width + "");
 		DOM.setElementAttribute(rootNode, "height", height + "");
 		DOM.setElementAttribute(rootNode, "viewBox", "0 0 " + width + " " + height);
+		DOM.setElementAttribute(rootNode, "xml:base", GWT.getHostPageBaseURL());
 		helper = new DomHelper(rootNode, Namespace.SVG);
 
 		// Point style definitions:
@@ -408,7 +410,14 @@ public class SvgGraphicsContext implements GraphicsContext {
 			} else if (symbol.getImage() != null) {
 				// Create the image symbol:
 				node = DOM.createElementNS(DOM.NS_SVG, "image");
-				DOM.setElementAttributeNS(DOM.NS_XLINK, node, "xlink:href", symbol.getImage().getHref());
+
+				String href = symbol.getImage().getHref();
+				if (href.indexOf(':') <= 0) {
+					// SVG in Chrome can't handle relative paths (the xml:base attribute has not yet been tested):
+					href = GWT.getHostPageBaseURL() + href;
+				}
+
+				DOM.setElementAttributeNS(DOM.NS_XLINK, node, "xlink:href", href);
 
 				long width = (long) symbol.getImage().getWidth();
 				long height = (long) symbol.getImage().getHeight();
@@ -424,7 +433,12 @@ public class SvgGraphicsContext implements GraphicsContext {
 
 				if (isNew) {
 					Element node2 = DOM.createElementNS(DOM.NS_SVG, "image");
-					DOM.setElementAttributeNS(DOM.NS_XLINK, node2, "xlink:href", symbol.getImage().getSelectionHref());
+					href = symbol.getImage().getSelectionHref();
+					if (href.indexOf(':') <= 0) {
+						// SVG in Chrome can't handle relative paths (the xml:base attribute has not yet been tested):
+						href = GWT.getHostPageBaseURL() + href;
+					}
+					DOM.setElementAttributeNS(DOM.NS_XLINK, node2, "xlink:href", href);
 					DOM.setElementAttribute(node2, "width", width + "");
 					DOM.setElementAttribute(node2, "height", height + "");
 					DOM.setElementAttribute(node2, "x", -Math.round(width / 2) + "");
