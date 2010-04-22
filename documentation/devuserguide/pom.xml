@@ -35,7 +35,7 @@
 				<inherited>false</inherited>
 				<executions>
 					<execution>
-						<id>extract-listings</id>
+						<id>extract-listings-app</id>
 						<phase>process-resources</phase>
 						<goals>
 							<goal>extract</goal>
@@ -45,16 +45,8 @@
 							<destinationDirectory>${basedir}/en-GB/listing</destinationDirectory>
 						</configuration>
 					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-maven-plugin</artifactId>
-				<version>1.0.3</version>
-				<inherited>false</inherited>
-				<executions>
 					<execution>
-						<id>extract-listings</id>
+						<id>extract-listings-gwt</id>
 						<phase>process-resources</phase>
 						<goals>
 							<goal>extract</goal>
