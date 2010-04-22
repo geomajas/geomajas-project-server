@@ -66,7 +66,7 @@ public interface MenuMessages extends Messages {
 
 	String toggleMeasureSnapping();
 
-	String getMeasureDistanceString(float distance, float radius);
+	String getMeasureDistanceString(String distance, String radius);
 
 	String distance();
 

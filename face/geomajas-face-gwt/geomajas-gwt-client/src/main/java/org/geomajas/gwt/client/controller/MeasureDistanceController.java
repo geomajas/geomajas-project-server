@@ -33,6 +33,7 @@ import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.spatial.geometry.Geometry;
 import org.geomajas.gwt.client.spatial.geometry.GeometryFactory;
 import org.geomajas.gwt.client.spatial.geometry.operation.InsertCoordinateOperation;
+import org.geomajas.gwt.client.util.DistanceFormat;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.MapWidget.RenderGroup;
 import org.geomajas.gwt.client.widget.MapWidget.RenderStatus;
@@ -106,8 +107,6 @@ public class MeasureDistanceController extends AbstractSnappingController {
 		menu.destroy();
 		menu = null;
 		mapWidget.setContextMenu(null);
-		//mapWidget.getWorldSpacePaintables().remove(distanceLine);
-		//mapWidget.getWorldSpacePaintables().remove(lineSegment);
 		mapWidget.unregisterWorldPaintable(distanceLine);
 		mapWidget.unregisterWorldPaintable(lineSegment);
 	}
@@ -118,8 +117,6 @@ public class MeasureDistanceController extends AbstractSnappingController {
 			Coordinate coordinate = getWorldPosition(event);
 			if (distanceLine.getOriginalLocation() == null) {
 				distanceLine.setGeometry(factory.createLineString(new Coordinate[] { coordinate }));
-				//mapWidget.getWorldSpacePaintables().add(distanceLine);
-				//mapWidget.getWorldSpacePaintables().add(lineSegment);
 				mapWidget.registerWorldPaintable(distanceLine);
 				mapWidget.registerWorldPaintable(lineSegment);
 				label = new DistanceLabel();
@@ -128,7 +125,8 @@ public class MeasureDistanceController extends AbstractSnappingController {
 			} else {
 				Geometry geometry = (Geometry) distanceLine.getOriginalLocation();
 				InsertCoordinateOperation op = new InsertCoordinateOperation(geometry.getNumPoints(), coordinate);
-				distanceLine.setGeometry(op.execute(geometry));
+				geometry = op.execute(geometry);
+				distanceLine.setGeometry(geometry);
 				tempLength = (float) geometry.getLength();
 				label.setDistance(tempLength, 0);
 			}
@@ -144,7 +142,7 @@ public class MeasureDistanceController extends AbstractSnappingController {
 			Coordinate coordinate2 = getWorldPosition(event);
 			lineSegment.setGeometry(factory.createLineString(new Coordinate[] { coordinate1, coordinate2 }));
 			mapWidget.render(mapWidget.getMapModel(), RenderGroup.VECTOR, RenderStatus.UPDATE);
-			label.setDistance(tempLength, (float) lineSegment.getGeometry().getLength());
+			label.setDistance(tempLength, (float) ((Geometry) lineSegment.getOriginalLocation()).getLength());
 		}
 	}
 
@@ -152,8 +150,6 @@ public class MeasureDistanceController extends AbstractSnappingController {
 	public void onDoubleClick(DoubleClickEvent event) {
 		mapWidget.unregisterWorldPaintable(distanceLine);
 		mapWidget.unregisterWorldPaintable(lineSegment);
-		//mapWidget.render(distanceLine, RenderGroup.WORLD, RenderStatus.DELETE);
-		//mapWidget.render(lineSegment, RenderGroup.WORLD, RenderStatus.DELETE);
 		distanceLine.setGeometry(null);
 		lineSegment.setGeometry(null);
 		if (label != null) {
@@ -193,7 +189,9 @@ public class MeasureDistanceController extends AbstractSnappingController {
 		}
 
 		public void setDistance(float totalDistance, float radius) {
-			String dist = I18nProvider.getMenu().getMeasureDistanceString(totalDistance, radius);
+			String total = DistanceFormat.asMapLength(mapWidget, totalDistance);
+			String r = DistanceFormat.asMapLength(mapWidget, radius);
+			String dist = I18nProvider.getMenu().getMeasureDistanceString(total, r);
 			setContents("<div><b>" + I18nProvider.getMenu().distance() + "</b>:</div><div style='margin-top:5px;'>"
 					+ dist + "</div>");
 		}

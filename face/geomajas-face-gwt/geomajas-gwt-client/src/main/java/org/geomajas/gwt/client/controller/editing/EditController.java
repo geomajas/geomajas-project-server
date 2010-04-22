@@ -35,6 +35,7 @@ import org.geomajas.gwt.client.spatial.geometry.Geometry;
 import org.geomajas.gwt.client.spatial.geometry.GeometryFactory;
 import org.geomajas.gwt.client.spatial.geometry.LinearRing;
 import org.geomajas.gwt.client.spatial.geometry.Polygon;
+import org.geomajas.gwt.client.util.DistanceFormat;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.MapWidget.RenderGroup;
 import org.geomajas.gwt.client.widget.MapWidget.RenderStatus;
@@ -298,8 +299,10 @@ public abstract class EditController extends AbstractSnappingController {
 			if (geometry == null) {
 				setContents(contents + "No geometry to display");
 			} else {
-				contents += "Area: " + (float) geometry.getArea() + "<br/>";
-				contents += "Length: " + (float) geometry.getLength() + "<br/>";
+				String area = DistanceFormat.asMapLength(mapWidget, geometry.getArea());
+				String length = DistanceFormat.asMapLength(mapWidget, geometry.getLength());
+				contents += "Area: " + area + "&sup2;<br/>";
+				contents += "Length: " + length + "<br/>";
 				contents += "Nr points: " + geometry.getNumPoints();
 				setContents(contents);
 			}
