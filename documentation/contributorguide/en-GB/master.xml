@@ -33,7 +33,7 @@
 			<holder>Geosparc nv</holder>
 		</copyright>
 
-		<releaseinfo>v1.6.0-SNAPSHOT</releaseinfo>
+		<releaseinfo>v1.6.0</releaseinfo>
 
 		<productname>Geomajas</productname>
 
@@ -42,7 +42,8 @@
 		</authorgroup>
 	</bookinfo>
 
-	<toc></toc>
+	<toc/>
+	<lot/>
 
 	<xi:include href="modules/developers.xml"
 				xmlns:xi="http://www.w3.org/2001/XInclude"/>
