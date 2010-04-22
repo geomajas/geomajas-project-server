@@ -39,8 +39,50 @@
     <section id="section-about-this-project">
       <title>About this project</title>
 
-      <para>Geomajas is a GIS application framework. See<ulink
-      url="http://www.geomajas.org/"> http://www.geomajas.org/</ulink>)</para>
+      <para>Geomajas is a free and open source GIS application framework for
+      building rich internet applications. It has sophisticated capabilities
+      for displaying and managing geospatial information. The modular design
+      makes it easily extendable. The stateless client-server architecture
+      guarantees endless scalability. The focus of Geomajas is to provide a
+      platform for server-side integration of geospatial data, allowing
+      multiple users to control and manage the data from within their own
+      browsers. In essence, Geomajas provides a set of powerful building
+      blocks, from which the most complex GIS applications can easily be
+      built. Key features include:</para>
+
+      <para><itemizedlist>
+          <listitem>
+            <para>Modular architecture</para>
+          </listitem>
+
+          <listitem>
+            <para>Clearly defined API</para>
+          </listitem>
+
+          <listitem>
+            <para>Integrated client-server architecture</para>
+          </listitem>
+
+          <listitem>
+            <para>Built-in security</para>
+          </listitem>
+
+          <listitem>
+            <para>Advanced geometry and attribute editing with
+            validation</para>
+          </listitem>
+
+          <listitem>
+            <para>Custom attribute definitions including object
+            relations</para>
+          </listitem>
+
+          <listitem>
+            <para>Advanced querying capabilities (searching, filters, style,
+            ...)</para>
+          </listitem>
+        </itemizedlist>See <ulink
+      url="http://www.geomajas.org/">http://www.geomajas.org/</ulink>.</para>
     </section>
 
     <section id="section-license">
