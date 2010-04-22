@@ -2,12 +2,12 @@
 	<parent>
 		<groupId>org.geomajas</groupId>
 		<artifactId>geomajas</artifactId>
-		<version>1.6.0-SNAPSHOT</version>
+		<version>1.6.0</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas</groupId>
 	<artifactId>geomajas-impl</artifactId>
-	<version>1.6.0-SNAPSHOT</version>
+	<version>1.6.0</version>
 	<packaging>jar</packaging>
 	<name>Geomajas core implementation</name>
 

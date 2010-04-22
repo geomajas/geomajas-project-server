@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas</groupId>
 	<artifactId>geomajas-dojo-example</artifactId>
-	<version>1.6.0-SNAPSHOT</version>
+	<version>1.6.0</version>
 	<packaging>pom</packaging>
 	<name>Geomajas dojo application example</name>
 	<url>http://files.geomajas.org/maven/trunk/dojo-example</url>
@@ -92,11 +92,11 @@
 	</profiles>
 
 	<properties>
-		<geomajas-face-dojo-version>1.5.5-SNAPSHOT</geomajas-face-dojo-version>
-		<geomajas-layer-geotools-version>1.6.0-SNAPSHOT</geomajas-layer-geotools-version>
-		<geomajas-layer-openstreetmap-version>1.6.0-SNAPSHOT</geomajas-layer-openstreetmap-version>
-		<geomajas-layer-wms-version>1.6.0-SNAPSHOT</geomajas-layer-wms-version>
-		<geomajas-plugin-printing-version>1.5.5-SNAPSHOT</geomajas-plugin-printing-version>
+		<geomajas-face-dojo-version>1.5.5</geomajas-face-dojo-version>
+		<geomajas-layer-geotools-version>1.6.0</geomajas-layer-geotools-version>
+		<geomajas-layer-openstreetmap-version>1.6.0</geomajas-layer-openstreetmap-version>
+		<geomajas-layer-wms-version>1.6.0</geomajas-layer-wms-version>
+		<geomajas-plugin-printing-version>1.5.5</geomajas-plugin-printing-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
