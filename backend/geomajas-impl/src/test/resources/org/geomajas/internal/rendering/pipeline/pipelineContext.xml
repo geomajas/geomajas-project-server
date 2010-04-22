@@ -102,7 +102,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 	<bean class="org.geomajas.service.pipeline.PipelineInfo">
 		<property name="pipelineName" value="pipelineTest"/>
 		<property name="layerId" value="delegate"/>
-		<property name="delegatePipeline" ref="interW" />
+		<property name="delegatePipeline" ref="inter" />
 	</bean>
 
 </beans>
