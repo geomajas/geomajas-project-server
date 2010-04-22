@@ -59,9 +59,9 @@ public class IntroductionTab extends SamplePanel {
 		HTMLPane pane = new HTMLPane();
 		String currentLocale = LocaleInfo.getCurrentLocale().getLocaleName();
 		if ("default".equals(currentLocale)) {
-			pane.setContentsURL("[ISOMORPHIC]/geomajas/example/pages/list.html");
+			pane.setContentsURL("[ISOMORPHIC]/geomajas/example/pages/intro.html");
 		} else if ("nl".equals(currentLocale)) {
-			pane.setContentsURL("[ISOMORPHIC]/geomajas/example/pages/list_nl.html");
+			pane.setContentsURL("[ISOMORPHIC]/geomajas/example/pages/intro_nl.html");
 		}
 
 		layout.addMember(logo);
