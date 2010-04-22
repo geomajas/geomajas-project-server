@@ -23,17 +23,13 @@
 
 package org.geomajas.internal.layer.vector;
 
-import com.vividsolutions.jts.geom.Coordinate;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
-import org.geomajas.internal.rendering.strategy.TileService;
 import org.geomajas.internal.rendering.strategy.TiledFeatureService;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.layer.tile.TileMetadata;
-import org.geomajas.service.GeoService;
-import org.geomajas.layer.VectorLayerService;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
 import org.geomajas.service.pipeline.PipelineStep;
@@ -43,20 +39,19 @@ import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Envelope;
+
 /**
- * Transform the features in a tile to map coordinates.
- *
+ * Transform the features in a tile to map coordinates and determines if they are part of the tile or should be fetched
+ * through other tile codes.
+ * 
  * @author Joachim Van der Auwera
+ * @author Jan De Moerloose
  */
 public class GetTileTransformStep implements PipelineStep<InternalTile> {
 
 	private String id;
-
-	@Autowired
-	private VectorLayerService layerService;
-
-	@Autowired
-	private GeoService geoService;
 
 	@Autowired
 	private TiledFeatureService tiledFeatureService;
@@ -77,9 +72,6 @@ public class GetTileTransformStep implements PipelineStep<InternalTile> {
 		// Determine transformation to apply
 		MathTransform transform = context.get(PipelineCode.CRS_TRANSFORM_KEY, MathTransform.class);
 
-		// convert tile data to layer
-		TileService.transformTileSizes(response, transform, metadata.getScale());
-
 		// convert feature geometries to layer
 		for (InternalFeature feature : response.getFeatures()) {
 			if (null != feature.getGeometry()) {
@@ -90,6 +82,11 @@ public class GetTileTransformStep implements PipelineStep<InternalTile> {
 				}
 			}
 		}
+		
+		// Determine the maximum tile extent
+		Envelope maxTileExtent = context.get(PipelineCode.TILE_MAX_EXTENT_KEY, Envelope.class);
+		// fill the tiles
+		tiledFeatureService.fillTile(response, maxTileExtent);
 
 		// clipping of features in tile
 		Coordinate panOrigin = new Coordinate(metadata.getPanOrigin().getX(), metadata.getPanOrigin().getY());

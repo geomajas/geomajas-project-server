@@ -33,34 +33,34 @@ import org.geomajas.global.Api;
  */
 @Api(allMethods = true)
 public interface PipelineCode {
-
+	String PIPELINE_GET_ATTRIBUTES = "vectorLayer.getAttributes";
+	String PIPELINE_GET_BOUNDS = "vectorLayer.getBounds";
+	String PIPELINE_GET_FEATURES = "vectorLayer.getFeatures";
 	String PIPELINE_GET_RASTER_TILES = "rasterLayer.getTiles";
+	String PIPELINE_GET_VECTOR_TILE = "vectorLayer.getTile";
 	String PIPELINE_SAVE_OR_UPDATE = "vectorLayer.saveOrUpdate";
 	String PIPELINE_SAVE_OR_UPDATE_ONE = "vectorLayer.saveOrUpdateOne";
-	String PIPELINE_GET_FEATURES = "vectorLayer.getFeatures";
-	String PIPELINE_GET_BOUNDS = "vectorLayer.getBounds";
-	String PIPELINE_GET_ATTRIBUTES = "vectorLayer.getAttributes";
-	String PIPELINE_GET_VECTOR_TILE = "vectorLayer.getTile";
 
+	String ATTRIBUTE_NAME_KEY = "attributeName"; // String
+	String BOUNDS_KEY = "bounds"; // Envelope
+	String CRS_KEY = "crs"; // CoordinateReferenceSystem
+	String CRS_TRANSFORM_KEY = "crsTransform"; // MathTransform
+	String FEATURE_DATA_OBJECT_KEY = "featureDataObject"; // Object
+	String FEATURE_INCLUDES_KEY = "featureIncludes"; // Integer
+	String FEATURE_KEY = "feature"; // InternalFeature
+	String FILTER_KEY = "filter"; // Filter
+	String INDEX_KEY = "index"; // Integer
+	String IS_CREATE_KEY = "isCreate"; // Boolean (or not set)
 	String LAYER_ID_KEY = "layerId"; // String
 	String LAYER_KEY = "layer"; // Layer
-	String FILTER_KEY = "filter"; // Filter
-	String CRS_TRANSFORM_KEY = "crsTransform"; // MathTransform
-	String OLD_FEATURE_KEY = "oldFeature"; // InternalFeature
-	String FEATURE_KEY = "feature"; // InternalFeature
-	String OLD_FEATURES_KEY = "oldFeatures"; // List<InternalFeature>
-	String NEW_FEATURES_KEY = "newFeatures"; // List<InternalFeature>
-	String BOUNDS_KEY = "bounds"; // Envelope
-	String SCALE_KEY = "scale"; // Double
-	String CRS_KEY = "crs"; // CoordinateReferenceSystem
-	String STYLE_KEY = "style"; // NamedStyleInfo
-	String FEATURE_INCLUDES_KEY = "featureIncludes"; // Integer
-	String OFFSET_KEY = "offset"; // Integer
 	String MAX_RESULT_SIZE_KEY = "maxResultSize"; // Integer
-	String ATTRIBUTE_NAME_KEY = "attributeName"; // String
-	String INDEX_KEY = "index"; // Integer
-	String FEATURE_DATA_OBJECT_KEY = "featureDataObject"; // Object
+	String NEW_FEATURES_KEY = "newFeatures"; // List<InternalFeature>
+	String OFFSET_KEY = "offset"; // Integer
+	String OLD_FEATURE_KEY = "oldFeature"; // InternalFeature
+	String OLD_FEATURES_KEY = "oldFeatures"; // List<InternalFeature>
+	String SCALE_KEY = "scale"; // Double
+	String STYLE_KEY = "style"; // NamedStyleInfo
+	String TILE_MAX_EXTENT_KEY = "tileMaxExtent"; // Envelope
 	String TILE_METADATA_KEY = "tileMetadata"; // TileMetadata
-	String IS_CREATE_KEY = "isCreate"; // Boolean (or not set)
 
 }

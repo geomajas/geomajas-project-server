@@ -74,7 +74,7 @@ public class GetTileGetFeaturesStep implements PipelineStep<InternalTile> {
 		List<InternalFeature> features = layerService.getFeatures(metadata.getLayerId(), layer.getCrs(), filter,
 				metadata .getStyleInfo(), metadata.getFeatureIncludes() | VectorLayerService.FEATURE_INCLUDE_GEOMETRY  |
 				VectorLayerService.FEATURE_INCLUDE_STYLE | VectorLayerService.FEATURE_INCLUDE_LABEL );
-
-		tiledFeatureService.fillTile(response, features, layer);
+		// Put them all in the tile to make them available to the next step
+		response.setFeatures(features);
 	}
 }

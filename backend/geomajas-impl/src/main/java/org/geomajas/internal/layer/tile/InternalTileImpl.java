@@ -26,8 +26,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.geomajas.internal.rendering.strategy.TileService;
-import org.geomajas.layer.VectorLayer;
+import org.geomajas.internal.rendering.strategy.TileUtil;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.layer.tile.TileCode;
@@ -52,9 +51,9 @@ public class InternalTileImpl implements InternalTile {
 
 	private double tileHeight;
 
-	private double screenWidth;
+	private int screenWidth;
 
-	private double screenHeight;
+	private int screenHeight;
 
 	private boolean clipped;
 
@@ -70,28 +69,28 @@ public class InternalTileImpl implements InternalTile {
 	// Constructors:
 	// -------------------------------------------------------------------------
 
-	public InternalTileImpl(TileCode code, VectorLayer layer, double scale) {
+	public InternalTileImpl(TileCode code, Envelope maxExtent, double scale) {
 		super();
 		this.code = code;
-		init(layer, scale);
+		init(maxExtent, scale);
 	}
 
-	public InternalTileImpl(int x, int y, int tileLevel, VectorLayer layer, double scale) {
-		this(new TileCode(tileLevel, x, y), layer, scale);
+	public InternalTileImpl(int x, int y, int tileLevel, Envelope maxExtent, double scale) {
+		this(new TileCode(tileLevel, x, y), maxExtent, scale);
 	}
 
 	// -------------------------------------------------------------------------
 	// General functions:
 	// -------------------------------------------------------------------------
 
-	public void init(VectorLayer layer, double scale) {
-		double[] layerSize = TileService.getTileLayerSize(code, layer);
+	public void init(Envelope maxExtent, double scale) {
+		double[] layerSize = TileUtil.getTileLayerSize(code, maxExtent, scale);
 		tileWidth = layerSize[0];
 		tileHeight = layerSize[1];
-		double[] screenSize = TileService.getTileScreenSize(layerSize, scale);
+		int[] screenSize = TileUtil.getTileScreenSize(layerSize, scale);
 		screenWidth = screenSize[0];
 		screenHeight = screenSize[1];
-		bounds = TileService.getTileBounds(code, layer);
+		bounds = TileUtil.getTileBounds(code, maxExtent, scale);
 	}
 
 	public Envelope getBounds() {
@@ -259,7 +258,7 @@ public class InternalTileImpl implements InternalTile {
 	 *
 	 * @return tile width in client side pixels
 	 */
-	public double getScreenWidth() {
+	public int getScreenWidth() {
 		return screenWidth;
 	}
 
@@ -269,7 +268,7 @@ public class InternalTileImpl implements InternalTile {
 	 * @param screenWidth
 	 *            The new value.
 	 */
-	public void setScreenWidth(double screenWidth) {
+	public void setScreenWidth(int screenWidth) {
 		this.screenWidth = screenWidth;
 	}
 
@@ -278,7 +277,7 @@ public class InternalTileImpl implements InternalTile {
 	 *
 	 * @return tile height in client side pixels
 	 */
-	public double getScreenHeight() {
+	public int getScreenHeight() {
 		return screenHeight;
 	}
 
@@ -288,7 +287,7 @@ public class InternalTileImpl implements InternalTile {
 	 * @param screenHeight
 	 *            The new value.
 	 */
-	public void setScreenHeight(double screenHeight) {
+	public void setScreenHeight(int screenHeight) {
 		this.screenHeight = screenHeight;
 	}
 

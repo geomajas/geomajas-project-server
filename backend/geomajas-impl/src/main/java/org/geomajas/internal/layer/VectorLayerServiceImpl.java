@@ -29,7 +29,6 @@ import java.util.List;
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
-import org.geomajas.security.GeomajasSecurityException;
 import org.geomajas.internal.layer.tile.InternalTileImpl;
 import org.geomajas.internal.layer.vector.GetBoundsContainer;
 import org.geomajas.layer.VectorLayer;
@@ -38,22 +37,26 @@ import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.layer.tile.TileMetadata;
+import org.geomajas.security.GeomajasSecurityException;
 import org.geomajas.security.SecurityContext;
 import org.geomajas.service.ConfigurationService;
+import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
 import org.geomajas.service.pipeline.PipelineService;
+import org.geotools.geometry.jts.JTS;
 import org.opengis.filter.Filter;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
+import org.opengis.referencing.operation.TransformException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.vividsolutions.jts.geom.Envelope;
-import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Implementation of {@link org.geomajas.layer.VectorLayerService}, a service which allows accessing data from a
@@ -76,6 +79,9 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 
 	@Autowired
 	private GeoService geoService;
+
+	@Autowired
+	private DtoConverterService dtoConverterService;
 
 	@Autowired
 	private SecurityContext securityContext;
@@ -150,21 +156,30 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 	}
 
 	public InternalTile getTile(TileMetadata tileMetadata) throws GeomajasException {
-		String layerId = tileMetadata.getLayerId();
-		VectorLayer layer = getVectorLayer(layerId);
-		log.debug("getTile request TileMetadata {}", tileMetadata);
-		PipelineContext context = pipelineService.createContext();
-		context.put(PipelineCode.LAYER_ID_KEY, layerId);
-		context.put(PipelineCode.LAYER_KEY, layer);
-		context.put(PipelineCode.TILE_METADATA_KEY, tileMetadata);
-		CoordinateReferenceSystem crs = configurationService.getCrs(tileMetadata.getCrs());
-		context.put(PipelineCode.CRS_KEY, crs);
-		context.put(PipelineCode.CRS_TRANSFORM_KEY, geoService.findMathTransform(layer.getCrs(), crs));
-		context.put(PipelineCode.FEATURE_INCLUDES_KEY, tileMetadata.getFeatureIncludes());
-		InternalTile response = new InternalTileImpl(tileMetadata.getCode(), layer, tileMetadata.getScale());
-		pipelineService.execute(PipelineCode.PIPELINE_GET_VECTOR_TILE, layerId, context, response);
-		log.debug("getTile response InternalTile {}", response);
-		return response;
+		try {
+			String layerId = tileMetadata.getLayerId();
+			VectorLayer layer = getVectorLayer(layerId);
+			log.debug("getTile request TileMetadata {}", tileMetadata);
+			PipelineContext context = pipelineService.createContext();
+			context.put(PipelineCode.LAYER_ID_KEY, layerId);
+			context.put(PipelineCode.LAYER_KEY, layer);
+			context.put(PipelineCode.TILE_METADATA_KEY, tileMetadata);
+			CoordinateReferenceSystem crs = configurationService.getCrs(tileMetadata.getCrs());
+			context.put(PipelineCode.CRS_KEY, crs);
+			MathTransform layerToMap = geoService.findMathTransform(layer.getCrs(), crs);
+			context.put(PipelineCode.CRS_TRANSFORM_KEY, layerToMap);
+			context.put(PipelineCode.FEATURE_INCLUDES_KEY, tileMetadata.getFeatureIncludes());
+			Envelope layerExtent = dtoConverterService.toInternal(layer.getLayerInfo().getMaxExtent());
+			Envelope tileExtent = JTS.transform(layerExtent, layerToMap);
+			context.put(PipelineCode.TILE_MAX_EXTENT_KEY, tileExtent);
+			InternalTile response;
+			response = new InternalTileImpl(tileMetadata.getCode(), tileExtent, tileMetadata.getScale());
+			pipelineService.execute(PipelineCode.PIPELINE_GET_VECTOR_TILE, layerId, context, response);
+			log.debug("getTile response InternalTile {}", response);
+			return response;
+		} catch (TransformException e) {
+			throw new GeomajasException(ExceptionCode.CRS_TRANSFORMATION_NOT_POSSIBLE, e);
+		}
 	}
 
 	public List<Attribute<?>> getAttributes(String layerId, String attributeName, Filter filter)

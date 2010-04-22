@@ -38,6 +38,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import com.vividsolutions.jts.geom.Envelope;
+
 /**
  * Tests for conversion of tiles.
  * 
@@ -51,13 +53,9 @@ public class TileConverterTest {
 	@Autowired
 	private DtoConverterService converterService;
 
-	@Autowired
-	@Qualifier("beans")
-	private VectorLayer beansLayer;
-
 	@Test
 	public void testToDto() throws GeomajasException {
-		InternalTileImpl internalTile = new InternalTileImpl(0, 0, 0, beansLayer, 0);
+		InternalTileImpl internalTile = new InternalTileImpl(0, 0, 0, new Envelope(0, 0, 10, 10), 0);
 		internalTile.setContentType(VectorTileContentType.STRING_CONTENT);
 		VectorTile tile = converterService.toDto(internalTile);
 		Assert.assertNotNull(tile);

@@ -23,14 +23,7 @@
 
 package org.geomajas.internal.rendering.strategy;
 
-import org.geomajas.geometry.Bbox;
-import org.geomajas.global.GeomajasException;
-import org.geomajas.layer.VectorLayer;
-import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.layer.tile.TileCode;
-import org.geotools.geometry.jts.JTS;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.TransformException;
 
 import com.vividsolutions.jts.geom.Envelope;
 
@@ -41,26 +34,27 @@ import com.vividsolutions.jts.geom.Envelope;
  * 
  * @author Pieter De Graef
  */
-public final class TileService {
+public final class TileUtil {
 
-	private TileService() {
+	private TileUtil() {
 	}
 
 	/**
-	 * Calculates the tiles width and height in the given layers coordinates system.
+	 * Calculates the tiles width and height.
 	 * 
 	 * @param code
 	 *            The unique tile code. Determines what tile we're talking about.
-	 * @param layer
-	 *            The layer for which we're calculating. The width and height are dependent on the layer's max extent.
+	 * @param maxExtent
+	 *            The maximum extent of the grid to which this tile belongs.
+	 * @param scale
+	 *            The current client side scale.
 	 * @return Returns an array of double values where the first value is the tile width and the second value is the
 	 *         tile height.
 	 */
-	public static double[] getTileLayerSize(TileCode code, VectorLayer layer) {
-		Bbox max = layer.getLayerInfo().getMaxExtent();
+	public static double[] getTileLayerSize(TileCode code, Envelope maxExtent, double scale) {
 		double div = Math.pow(2, code.getTileLevel());
-		double tileWidth = max.getWidth() / div;
-		double tileHeight = max.getHeight() / div;
+		double tileWidth = Math.ceil((scale * maxExtent.getWidth()) / div) / scale;
+		double tileHeight = Math.ceil((scale * maxExtent.getHeight()) / div) / scale;
 		return new double[] { tileWidth, tileHeight };
 	}
 
@@ -75,59 +69,31 @@ public final class TileService {
 	 * @return Returns an array of double values where the first value is the tile screen width and the second value is
 	 *         the tile screen height.
 	 */
-	public static double[] getTileScreenSize(double[] worldSize, double scale) {
-		double screenWidth = scale * worldSize[0];
-		double screenHeight = scale * worldSize[1];
-		return new double[] { screenWidth, screenHeight };
+	public static int[] getTileScreenSize(double[] worldSize, double scale) {
+		int screenWidth = (int) Math.round(scale * worldSize[0]);
+		int screenHeight = (int) Math.round(scale * worldSize[1]);
+		return new int[] { screenWidth, screenHeight };
 	}
 
 	/**
-	 * Get the bounding box for a certain tile, expressed in the layer's own coordinate system.
+	 * Get the bounding box for a certain tile.
 	 * 
 	 * @param code
 	 *            The unique tile code. Determines what tile we're talking about.
-	 * @param layer
-	 *            The layer for which we're calculating. The width and height are dependent on the layer's max extent,
-	 *            and also the starting point in the coordinate system is dependent on the bottom left coordinate of the
-	 *            max extent.
+	 * @param maxExtent
+	 *            The maximum extent of the grid to which this tile belongs.
+	 * @param scale
+	 *            The current client side scale.
 	 * @return Returns the bounding box for the tile, expressed in the layer's coordinate system.
 	 */
-	public static Envelope getTileBounds(TileCode code, VectorLayer layer) {
-		double[] layerSize = getTileLayerSize(code, layer);
+	public static Envelope getTileBounds(TileCode code, Envelope maxExtent, double scale) {
+		double[] layerSize = getTileLayerSize(code, maxExtent, scale);
 		if (layerSize[0] == 0) {
 			return null;
 		}
-		Bbox max = layer.getLayerInfo().getMaxExtent();
-		double cX = max.getX() + code.getX() * layerSize[0];
-		double cY = max.getY() + code.getY() * layerSize[1];
+		double cX = maxExtent.getMinX() + code.getX() * layerSize[0];
+		double cY = maxExtent.getMinY() + code.getY() * layerSize[1];
 		return new Envelope(cX, cX + layerSize[0], cY, cY + layerSize[1]);
 	}
 
-
-	/**
-	 * When the layer and map's coordinate systems differ, the tile and screen width and height should be transformed to
-	 * accommodate for this.
-	 * 
-	 * @param tile
-	 *            The actual tile.
-	 * @param transform
-	 *            The transformation object.
-	 * @param scale
-	 *            Number of pixels per unitS
-	 * @throws GeomajasException
-	 *             oops
-	 */
-	public static void transformTileSizes(InternalTile tile, MathTransform transform, double scale)
-			throws GeomajasException {
-		try {
-			Envelope size = JTS.transform(tile.getBounds(), transform);
-			tile.setTileWidth(Math.ceil(size.getWidth()));
-			tile.setTileHeight(Math.ceil(size.getHeight()));
-			tile.setBounds(size);
-			tile.setScreenWidth(Math.ceil(size.getWidth() * scale));
-			tile.setScreenHeight(Math.ceil(size.getHeight() * scale));
-		} catch (TransformException e) {
-			throw new GeomajasException(e);
-		}
-	}
 }

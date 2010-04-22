@@ -25,7 +25,6 @@ package org.geomajas.layer.tile;
 import java.util.List;
 
 import org.geomajas.global.Api;
-import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.layer.tile.VectorTile.VectorTileContentType;
 
@@ -34,10 +33,13 @@ import com.vividsolutions.jts.geom.Envelope;
 /**
  * <p>
  * General definition for a tile that is used internally on the server-side. When a tile needs to be send to the client,
- * it must first be converted to a DTO tile.
+ * it must first be converted to a DTO tile. A tile is defined by creating a rectangular grid in map coordinates based
+ * on the maximum extent of the layer. This requires a transformation of this maximum extent from layer coordinates to
+ * map coordinates.
  * </p>
  * 
  * @author Pieter De Graef
+ * @author Jan De Moerloose
  * @since 1.6.0
  */
 @Api(allMethods = true)
@@ -74,22 +76,14 @@ public interface InternalTile {
 	String getLabelContent();
 
 	/**
-	 * Initialise tile, set layer and scale.
-	 *
-	 * @param layer layer for tile
-	 * @param scale scale
-	 */
-	void init(VectorLayer layer, double scale);
-
-	/**
-	 * Get bounding box for the tile (in layer coordinates).
+	 * Get bounding box for the tile (in map coordinates).
 	 *
 	 * @return bounding box
 	 */
 	Envelope getBounds();
 
 	/**
-	 * Set bounding box for the tile.
+	 * Set bounding box for the tile (in map coordinates).
 	 *
 	 * @param bounds bounding box
 	 */
@@ -118,14 +112,14 @@ public interface InternalTile {
 	void addFeature(InternalFeature feature);
 
 	/**
-	 * Return the tile's width. Initially these are layer coordinates, but they may be converted to map coordinates.
+	 * Return the tile's width (in map coordinates).
 	 *
 	 * @return tile width
 	 */
 	double getTileWidth();
 
 	/**
-	 * Set the tile's width. Initially these are layer coordinates, but they may be converted to map coordinates.
+	 * Set the tile's width (in map coordinates).
 	 *
 	 * @param tileWidth
 	 *            The tile's width.
@@ -133,14 +127,14 @@ public interface InternalTile {
 	void setTileWidth(double tileWidth);
 
 	/**
-	 * Return the tile's height. Initially these are layer coordinates, but they may be converted to map coordinates.
+	 * Return the tile's height (in map coordinates).
 	 *
 	 * @return tile height
 	 */
 	double getTileHeight();
 
 	/**
-	 * Set the tile's height. Initially these are layer coordinates, but they may be converted to map coordinates.
+	 * Set the tile's height (in map coordinates).
 	 *
 	 * @param tileHeight
 	 *            The tile's height.
@@ -152,7 +146,7 @@ public interface InternalTile {
 	 *
 	 * @return tile width in client side pixels
 	 */
-	double getScreenWidth();
+	int getScreenWidth();
 
 	/**
 	 * Set the tile's width, expressed in client side pixels.
@@ -160,14 +154,14 @@ public interface InternalTile {
 	 * @param screenWidth
 	 *            The new value.
 	 */
-	void setScreenWidth(double screenWidth);
+	void setScreenWidth(int screenWidth);
 
 	/**
 	 * Return the tile's height, expressed in client side pixels.
 	 *
 	 * @return tile height in client side pixels
 	 */
-	double getScreenHeight();
+	int getScreenHeight();
 
 	/**
 	 * Set the tile's height, expressed in client side pixels.
@@ -175,12 +169,12 @@ public interface InternalTile {
 	 * @param screenHeight
 	 *            The new value.
 	 */
-	void setScreenHeight(double screenHeight);
+	void setScreenHeight(int screenHeight);
 
 	/**
 	 * Add another details (code) for another tile which should be added to the list of dependent tiles.
 	 * <p/>
-	 * Tile levels indicate zooming. Level 0 containd the entire extent for the layer. Level 1 contains 4 tiles ((0,0)
+	 * Tile levels indicate zooming. Level 0 contains the entire extent for the layer. Level 1 contains 4 tiles ((0,0)
 	 * till (1,1)), level 2 contains 16 tiles ((0,0) till (3,3)),...
 	 *
 	 * @param level tile level for dependent tile

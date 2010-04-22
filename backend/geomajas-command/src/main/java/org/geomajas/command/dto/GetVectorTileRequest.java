@@ -166,7 +166,7 @@ public class GetVectorTileRequest extends LayerIdCommandRequest implements TileM
 
 	@Override
 	public String toString() {
-		return "GetRenderedTileRequest{" +
+		return "GetVectorTileRequest{" +
 				"code=" + code +
 				", layerId=" + getLayerId() +
 				", crs=" + getCrs() +
