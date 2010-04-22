@@ -26,6 +26,7 @@ package org.geomajas.gwt.client.gfx.paintable.mapaddon;
 import org.geomajas.gwt.client.Geomajas;
 import org.geomajas.gwt.client.gfx.PainterVisitor;
 import org.geomajas.gwt.client.gfx.paintable.Image;
+import org.geomajas.gwt.client.gfx.paintable.Rectangle;
 import org.geomajas.gwt.client.gfx.style.PictureStyle;
 import org.geomajas.gwt.client.gfx.style.ShapeStyle;
 import org.geomajas.gwt.client.spatial.Bbox;
@@ -44,6 +45,8 @@ public class Watermark extends MapAddon {
 
 	private Image image;
 
+	private Rectangle dummy;
+
 	// Constructor:
 
 	public Watermark(String id, MapWidget map) {
@@ -53,12 +56,21 @@ public class Watermark extends MapAddon {
 		image.setBounds(new Bbox(0, 0, 125, 12));
 		image.setHref(Geomajas.getIsomorphicDir() + "geomajas/mapaddon/powered_by_geomajas.gif");
 		image.setStyle(new PictureStyle(1));
+
+		dummy = new Rectangle(getId() + "-dummy");
+		dummy.setStyle(new ShapeStyle("#FFFFFF", 0, "#FFFFFF", 0, 0));
+		dummy.setBounds(new Bbox(0, 0, 1, 1));
 	}
 
 	// MapAddon implementation:
 
 	public void accept(PainterVisitor visitor, Object group, Bbox bounds, boolean recursive) {
 		map.getVectorContext().drawGroup(group, this);
+
+		// Draw a dummy at 0,0 so that Internet Explorer knows where coordinate 0,0 is. If this is not drawn, the text
+		// will disappear, because the parent group will have coordinate 0,0 at the upper left corner of the union of
+		// all the rectangles that are drawn here.
+		map.getVectorContext().drawRectangle(this, dummy.getId(), dummy.getBounds(), (ShapeStyle) dummy.getStyle());
 
 		image.getBounds().setX(getUpperLeftCorner().getX());
 		image.getBounds().setY(getUpperLeftCorner().getY());
