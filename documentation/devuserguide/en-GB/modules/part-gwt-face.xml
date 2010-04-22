@@ -926,6 +926,7 @@ map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</
 
         <xi:include href="../listing/ToolbarAction.xml"
                     xmlns:xi="http://www.w3.org/2001/XInclude" />
+      </section>
 
       <section>
         <title>Toolbar: ToolbarModalAction</title>
