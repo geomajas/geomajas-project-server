@@ -146,13 +146,15 @@ public final class CommandDispatcherImpl implements CommandDispatcher {
 			List<Throwable> errors = response.getErrors();
 			Locale localeObject = null;
 			if (null != errors && !errors.isEmpty()) {
-				StringBuilder logMessage = new StringBuilder("Command caused exceptions, passed on to caller:\n");
+				log.warn("Command caused exceptions, to be passed on to caller:");
 				for (Throwable t : errors) {
 					String msg;
 					if (!(t instanceof GeomajasException)) {
 						msg = t.getMessage();
 						if (null == msg) {
 							msg = t.getClass().getName();
+						} else {
+							log.warn(msg, t);
 						}
 					} else {
 						if (log.isDebugEnabled()) {
@@ -162,14 +164,10 @@ public final class CommandDispatcherImpl implements CommandDispatcher {
 							localeObject = new Locale(locale);
 						}
 						msg = ((GeomajasException) t).getMessage(localeObject);
+						log.warn(msg);
 					}
 					response.getErrorMessages().add(msg);
-					logMessage.append(t.getMessage());
-					logMessage.append('\n');
-					logMessage.append(t.getStackTrace());
-					logMessage.append('\n');
 				}
-				log.warn(logMessage.toString());
 			}
 			response.setExecutionTime(System.currentTimeMillis() - begin);
 			return response;
