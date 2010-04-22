@@ -78,7 +78,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 
 	<!-- @extract-start HibernateRoadsFeatureInfo, Hibernate roads layer feature info -->
 	<bean class="org.geomajas.configuration.FeatureInfo" name="roadsFeatureInfo">
-		<property name="dataSourceName" value="org.geomajas.gwt.server.Road" />
+		<property name="dataSourceName" value="mypackage.server.Road" />
 		<property name="identifier">
 			<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
 				<property name="label" value="gid" />

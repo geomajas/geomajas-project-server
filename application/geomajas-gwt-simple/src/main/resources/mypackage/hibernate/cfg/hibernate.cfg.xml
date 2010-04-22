@@ -10,7 +10,7 @@
 
 		<!-- Echo all executed SQL to stdout -->
 		<property name="show_sql">false</property>
-		<mapping class="org.geomajas.gwt.server.Road" />
-		<mapping class="org.geomajas.gwt.server.Structure" />
+		<mapping class="mypackage.server.Road" />
+		<mapping class="mypackage.server.Structure" />
 	</session-factory>
 </hibernate-configuration>
