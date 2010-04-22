@@ -423,7 +423,7 @@ public class MapView {
 	}
 
 	private void doApplyBounds(Bbox bounds, ZoomOption option) {
-		if (!bounds.isEmpty()) {
+		if (bounds != null && !bounds.isEmpty()) {
 			// find best scale
 			double scale = getBestScale(bounds);
 			// snap and limit
