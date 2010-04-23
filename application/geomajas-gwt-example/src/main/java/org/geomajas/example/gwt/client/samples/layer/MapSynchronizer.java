@@ -20,6 +20,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package org.geomajas.example.gwt.client.samples.layer;
 
 import org.geomajas.gwt.client.map.MapView;
@@ -30,7 +31,6 @@ import org.geomajas.gwt.client.map.event.MapViewChangedHandler;
  * Synchronizes the navigation of two maps.
  * 
  * @author Jan De Moerloose
- * 
  */
 public class MapSynchronizer implements MapViewChangedHandler {
 

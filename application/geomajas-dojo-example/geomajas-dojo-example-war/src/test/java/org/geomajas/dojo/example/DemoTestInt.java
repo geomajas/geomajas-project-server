@@ -26,6 +26,8 @@ import com.thoughtworks.selenium.SeleneseTestCase;
 
 /**
  * Verifications for the demo application
+ *
+ * @author Joachim Van der Auwera
  */
 public class DemoTestInt extends SeleneseTestCase {
 
