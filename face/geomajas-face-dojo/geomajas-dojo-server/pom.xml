@@ -2,7 +2,7 @@
 	<parent>
 		<groupId>org.geomajas</groupId>
 		<artifactId>geomajas-face-dojo</artifactId>
-		<version>1.5.5</version>
+		<version>1.7.0-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas</groupId>
@@ -92,7 +92,7 @@
 	</pluginRepositories>
 
 	<properties>
-		<geomajas-backend-version>1.6.0</geomajas-backend-version>
+		<geomajas-backend-version>1.7.0-SNAPSHOT</geomajas-backend-version>
 	</properties>	
 
 </project>

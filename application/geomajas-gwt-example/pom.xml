@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas</groupId>
 	<artifactId>geomajas-gwt-example</artifactId>
-	<version>1.6.0</version>
+	<version>1.7.0-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>Geomajas gwt application example</name>
 	<url>http://files.geomajas.org/maven/trunk/gwt-example</url>
@@ -306,7 +306,7 @@
 	</profiles>
 
 	<properties>
-		<geomajas-face-gwt-version>1.6.0</geomajas-face-gwt-version>
+		<geomajas-face-gwt-version>1.7.0-SNAPSHOT</geomajas-face-gwt-version>
 		<geomajas-layer-geotools-version>1.6.0</geomajas-layer-geotools-version>
 		<geomajas-layer-hibernate-version>1.6.0</geomajas-layer-hibernate-version>
 		<geomajas-layer-google-version>1.6.0</geomajas-layer-google-version>
