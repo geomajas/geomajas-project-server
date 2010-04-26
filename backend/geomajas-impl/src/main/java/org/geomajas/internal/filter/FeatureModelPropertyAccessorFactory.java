@@ -27,7 +27,6 @@ import org.geomajas.internal.layer.feature.FeatureModelRegistry;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.feature.FeatureModel;
 import org.geotools.factory.Hints;
-import org.geotools.feature.IllegalAttributeException;
 import org.geotools.filter.expression.PropertyAccessor;
 import org.geotools.filter.expression.PropertyAccessorFactory;
 
@@ -35,10 +34,10 @@ import java.util.regex.Pattern;
 
 /**
  * <p>
- * Implementation of the normal geotools PropertyAccessorFactory factory. Geotools can only handle the retrieval of
+ * Implementation of the normal GeoTools PropertyAccessorFactory factory. GeoTools can only handle the retrieval of
  * simple attributes, and is therefore not strong enough for the possibilities that Hibernate Spatial gives us. That is
  * where this class comes in. It uses the FeatureModel's of the features to retrieve the correct attributes. This way,
- * we can search for complex attributes in complex objects, still using the default geotools Filter.evaluate(Object)
+ * we can search for complex attributes in complex objects, still using GeoTools' default Filter.evaluate(Object)
  * function calls.
  * </p>
  * 
@@ -87,9 +86,8 @@ public class FeatureModelPropertyAccessorFactory implements PropertyAccessorFact
 			}
 		}
 
-		public void set(Object object, String xpath, Object value, Class target) throws IllegalAttributeException,
-				IllegalArgumentException {
-			throw new IllegalAttributeException("feature is immutable, only use property access for filtering");
+		public void set(Object object, String xpath, Object value, Class target) throws IllegalArgumentException {
+			throw new IllegalArgumentException("feature is immutable, only use property access for filtering");
 		}
 	}
 
