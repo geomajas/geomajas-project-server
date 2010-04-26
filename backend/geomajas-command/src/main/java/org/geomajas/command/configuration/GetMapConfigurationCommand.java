@@ -51,6 +51,8 @@ import org.springframework.stereotype.Component;
  * This command fetches, and returns the initial application configuration for a specific MapWidget.
  * 
  * @author Pieter De Graef
+ * @author Jan De Moerloose
+ * @author Joachim Van der Auwera
  * @since 1.6.0
  */
 @Api

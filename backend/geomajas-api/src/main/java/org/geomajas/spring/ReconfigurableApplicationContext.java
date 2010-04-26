@@ -29,7 +29,6 @@ import org.geomajas.global.GeomajasException;
  * Interface for Spring application context that supports rollback.
  * 
  * @author Jan De Moerloose
- * 
  */
 public interface ReconfigurableApplicationContext {
 

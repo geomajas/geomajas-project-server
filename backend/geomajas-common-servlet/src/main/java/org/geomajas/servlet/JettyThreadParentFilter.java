@@ -40,7 +40,6 @@ import javax.servlet.ServletResponse;
  * Geotools depend on the parent to prune the classloader tree.
  * 
  * @author Jan De Moerloose
- * 
  */
 public class JettyThreadParentFilter implements Filter {
 

@@ -32,7 +32,8 @@ import org.geomajas.rendering.RenderException;
  * SVG writer for <code>Point</code> objects.
  * </p>
  *
- * @author Pieter De Graef, Jan De Moerloose
+ * @author Pieter De Graef
+ * @author Jan De Moerloose
  */
 public class PointWriter implements GraphicsWriter {
 

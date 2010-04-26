@@ -38,7 +38,6 @@ import org.slf4j.LoggerFactory;
  * Listener to prepare the class loader for Spring component scanning and circumvent GeoTools problem.
  * 
  * @author Jan De Moerloose
- * 
  */
 public class PrepareScanningContextListener implements ServletContextListener {
 
@@ -71,7 +70,6 @@ public class PrepareScanningContextListener implements ServletContextListener {
 	 * A class loader with a parent for Geotools.
 	 * 
 	 * @author Jan De Moerloose
-	 * 
 	 */
 	public class ClassLoaderWrapper extends URLClassLoader {
 
@@ -79,7 +77,7 @@ public class PrepareScanningContextListener implements ServletContextListener {
 
 		public ClassLoaderWrapper(URLClassLoader delegate, ClassLoader parent) {
 			super(delegate.getURLs(), parent);
-			this.delegate = (URLClassLoader) delegate;
+			this.delegate = delegate;
 		}
 
 		public void clearAssertionStatus() {

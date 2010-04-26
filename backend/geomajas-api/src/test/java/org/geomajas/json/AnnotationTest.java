@@ -28,6 +28,8 @@ import org.geomajas.global.Json;
 
 /**
  * Verify usability of the @Json annotation
+ *
+ * @author Jan De Moerloose
  */
 public class AnnotationTest extends TestCase {
 

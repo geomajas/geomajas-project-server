@@ -32,7 +32,6 @@ import java.net.URL;
  * Pulls in Google Mercator CRS.
  *
  * @author Jan De Moerloose
- *
  */
 public class GeomajasAuthorityFactory extends EPSGCRSAuthorityFactory {
 

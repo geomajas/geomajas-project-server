@@ -35,7 +35,6 @@ import org.hibernate.annotations.Type;
 
 import com.vividsolutions.jts.geom.Geometry;
 
-
 /**
  * Roads object for hibernate layer model.
  * 

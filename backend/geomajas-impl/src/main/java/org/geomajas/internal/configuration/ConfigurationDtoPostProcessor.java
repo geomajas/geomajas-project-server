@@ -56,12 +56,11 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
 
 /**
- * Post-processes configuration DTOs. Generally responsible for any behavior that would violate the DTO contract
+ * Post-processes configuration DTOs. Generally responsible for any behaviour that would violate the DTO contract
  * (especially for GWT) if it would be added to the configuration objects themselves , such as hooking up client
  * configurations to their server layers.
  * 
  * @author Jan De Moerloose
- * 
  */
 @Component
 public class ConfigurationDtoPostProcessor {

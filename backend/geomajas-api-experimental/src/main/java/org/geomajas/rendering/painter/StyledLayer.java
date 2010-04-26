@@ -30,7 +30,6 @@ import org.geomajas.layer.VectorLayer;
  * A layer with a specific style, ready for rendering.
  * 
  * @author Jan De Moerloose
- * 
  */
 public class StyledLayer {
 
@@ -43,7 +42,7 @@ public class StyledLayer {
 	/**
 	 * Constructs a styled layer.
 	 * 
-	 * @param layerInfo the layer metadata
+	 * @param layer layer
 	 * @param styleInfo the style metadata
 	 */
 	public StyledLayer(VectorLayer layer, NamedStyleInfo styleInfo) {

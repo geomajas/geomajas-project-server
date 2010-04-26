@@ -33,7 +33,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  * A classpath application context that supports rollback after a refresh.
  * 
  * @author Jan De Moerloose
- * 
  */
 public class ReconfigurableClassPathApplicationContext extends ClassPathXmlApplicationContext implements
 		ReconfigurableApplicationContext {
