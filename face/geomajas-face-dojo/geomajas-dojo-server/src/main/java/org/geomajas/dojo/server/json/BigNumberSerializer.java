@@ -35,7 +35,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 
 /**
- * Json serializer vor BigDecimal and BigInteger objects.
+ * Json serializer for BigDecimal and BigInteger objects.
  * 
  * @author Pieter De Graef
  */

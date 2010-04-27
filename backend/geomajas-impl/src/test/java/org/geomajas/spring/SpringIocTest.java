@@ -30,7 +30,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 /**
  * SImple test/demonstration of spring dependency injection and the usages needed for Geomajas.
  *
- * @author <a href="mailto:joachim@geosparc.com">Joachim Van der Auwera</a>
+ * @author Joachim Van der Auwera
  */
 public class SpringIocTest extends TestCase {
 

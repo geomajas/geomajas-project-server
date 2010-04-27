@@ -51,7 +51,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * ???
+ * Json serializer which considers the @Json annotations.
  *
  * @author Jan De Moerloose
  */

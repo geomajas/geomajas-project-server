@@ -26,7 +26,6 @@ package org.geomajas.testdata;
  * Country bean for bean layer.
  * 
  * @author Jan De Moerloose
- *
  */
 public class Country {
 

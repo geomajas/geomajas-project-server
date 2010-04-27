@@ -28,7 +28,6 @@ import java.util.Date;
  * Java bean for one to many attribute.
  * 
  * @author Jan De Moerloose
- * 
  */
 public class OneToManyAttributeBean {
 

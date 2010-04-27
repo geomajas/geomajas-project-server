@@ -44,6 +44,11 @@ import com.vividsolutions.jts.geom.PrecisionModel;
 import com.vividsolutions.jts.geom.impl.CoordinateArraySequence;
 import com.vividsolutions.jts.util.Assert;
 
+/**
+ * Serializer test for the DTO geometry objects.
+ *
+ * @author Pieter De Graef
+ */
 public class DtoGeometrySerializerTest extends TestCase {
 
 	private DtoGeometrySerializer dtoSerializer;

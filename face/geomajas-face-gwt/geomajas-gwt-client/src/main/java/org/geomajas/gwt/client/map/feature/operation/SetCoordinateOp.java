@@ -37,7 +37,7 @@ import org.geomajas.gwt.client.spatial.geometry.Polygon;
 import org.geomajas.gwt.client.spatial.geometry.operation.SetCoordinateOperation;
 
 /**
- * ???
+ * Set coordinate operation.
  *
  * @author Pieter De Graef
  */

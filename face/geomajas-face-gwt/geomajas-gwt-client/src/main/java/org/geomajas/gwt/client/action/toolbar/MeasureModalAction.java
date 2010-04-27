@@ -31,7 +31,7 @@ import org.geomajas.gwt.client.widget.MapWidget;
 import com.smartgwt.client.widgets.events.ClickEvent;
 
 /**
- * ???
+ * Measure distance action.
  *
  * @author Pieter De Graef
  */

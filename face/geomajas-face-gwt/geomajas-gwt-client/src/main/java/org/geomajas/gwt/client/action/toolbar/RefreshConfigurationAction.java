@@ -44,7 +44,6 @@ import com.smartgwt.client.widgets.events.ClickEvent;
  * Reloads the server Spring configuration.
  * 
  * @author Jan De Moerloose
- * 
  */
 public class RefreshConfigurationAction extends ToolbarAction {
 

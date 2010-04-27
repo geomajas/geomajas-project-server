@@ -30,7 +30,6 @@ import java.util.List;
  * Java bean for many-to-one attribute.
  * 
  * @author Jan De Moerloose
- * 
  */
 public class ManyToOneAttributeBean {
 

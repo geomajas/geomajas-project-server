@@ -34,7 +34,7 @@ import org.geomajas.gwt.client.spatial.geometry.operation.InsertRingOperation;
 import org.geomajas.gwt.client.spatial.geometry.operation.RemoveRingOperation;
 
 /**
- * ???
+ * Remove ring operation.
  *
  * @author Pieter De Graef
  */

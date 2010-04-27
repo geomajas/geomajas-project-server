@@ -29,6 +29,11 @@ import junit.framework.TestCase;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 
+/**
+ * Test for BigNumberSerializer.
+ *
+ * @author Pieter De Graef
+ */
 public class BigNumberSerializerTest extends TestCase {
 
 	public void testBigInteger() throws MarshallException {

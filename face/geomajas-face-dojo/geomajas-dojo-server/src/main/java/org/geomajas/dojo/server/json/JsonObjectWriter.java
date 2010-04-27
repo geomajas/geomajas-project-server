@@ -38,7 +38,6 @@ import java.util.Iterator;
  * package.
  *
  * @author Jan De Moerloose
- *
  */
 public class JsonObjectWriter
 		extends FilterWriter {

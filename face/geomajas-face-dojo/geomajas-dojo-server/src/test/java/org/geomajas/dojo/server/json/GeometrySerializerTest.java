@@ -37,6 +37,12 @@ import junit.framework.TestCase;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+/**
+ * Serialization test for Geometry dtos to/from JSON.
+ *
+ * @author Jan De Moerloose
+ * @author Pieter De Graef
+ */
 public class GeometrySerializerTest extends TestCase {
 
 	public void testPoint() throws MarshallException {

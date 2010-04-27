@@ -33,7 +33,11 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-/** @author Jan De Moerloose */
+/**
+ * Dojo builder.
+ *
+ * @author Jan De Moerloose
+ */
 public class DojoBuilder {
 
 	private String javaExec = "java";

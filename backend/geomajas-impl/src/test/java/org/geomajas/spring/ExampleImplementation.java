@@ -26,7 +26,7 @@ package org.geomajas.spring;
 import org.springframework.stereotype.Component;
 
 /**
- * Example interface which shows spring (with autodiscovery) in action.
+ * Example interface which shows spring (with auto discovery) in action.
  *
  * @author Joachim Van der Auwera
  */

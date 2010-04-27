@@ -29,6 +29,11 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;
 
+/**
+ * Centroid test.
+ *
+ * @author Pieter De Graef
+ */
 public class CentroidTest {
 
 	@Test

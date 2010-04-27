@@ -60,7 +60,7 @@ public class GeomajasBeanNameGenerator extends AnnotationBeanNameGenerator imple
 	 * before the command, and try to reduce duplication of the sub package. This will reduce
 	 * "org.geomajas.command.get.GetConfigurationCommand" to "command.get.configuration"
 	 * 
-	 * @param name
+	 * @param orgName
 	 *            original name which may contain the prefix
 	 * @return bean name, guaranteed without prefix
 	 */

@@ -44,7 +44,6 @@ MULTIPOLYGON EMPTY
  * 
  * 
  * @author Jan De Moerloose
- * 
  */
 public class FeatureBean {
 

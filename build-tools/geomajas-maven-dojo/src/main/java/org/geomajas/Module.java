@@ -28,7 +28,6 @@ import org.apache.maven.artifact.Artifact;
  * Dojo module metadata.
  * 
  * @author Jan De Moerloose
- *
  */
 public class Module {
 

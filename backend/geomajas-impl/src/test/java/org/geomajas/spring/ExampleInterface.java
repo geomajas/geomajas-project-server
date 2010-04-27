@@ -26,7 +26,7 @@ package org.geomajas.spring;
 /**
  * Example interface for which an implementation can be injected.
  *
- * @author <a href="mailto:joachim@geosparc.com">Joachim Van der Auwera</a>
+ * @author Joachim Van der Auwera
  */
 public interface ExampleInterface {
 

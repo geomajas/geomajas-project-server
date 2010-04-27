@@ -47,7 +47,6 @@ import java.util.List;
  * Base mojo for this plugin.
  * 
  * @author Jan De Moerloose
- *
  */
 public abstract class DojoMojo extends AbstractMojo implements Contextualizable {
 

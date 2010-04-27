@@ -38,7 +38,6 @@ import com.google.gwt.user.client.ui.Widget;
  * An HTML based image context.
  * 
  * @author Jan De Moerloose
- *
  */
 public class DefaultImageContext implements ImageContext {
 

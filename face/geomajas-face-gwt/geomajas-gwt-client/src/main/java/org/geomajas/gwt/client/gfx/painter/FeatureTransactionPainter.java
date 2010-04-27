@@ -42,7 +42,7 @@ import org.geomajas.gwt.client.spatial.geometry.Polygon;
 import org.geomajas.gwt.client.widget.MapWidget;
 
 /**
- * ???
+ * Paint a feature transaction.
  *
  * @author Pieter De Graef
  */

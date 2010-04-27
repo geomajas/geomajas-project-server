@@ -45,7 +45,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * Serialize Geomtry dtos to/from JSON.
+ * Serialize Geometry dtos to/from JSON.
  *
  * @author Jan De Moerloose
  * @author Pieter De Graef

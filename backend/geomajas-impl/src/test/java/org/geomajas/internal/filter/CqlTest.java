@@ -6,6 +6,11 @@ import org.junit.Test;
 import org.opengis.filter.Filter;
 import org.springframework.util.Assert;
 
+/**
+ * Verify CQL parser working.
+ *
+ * @author Pieter De Graef 
+ */
 public class CqlTest {
 
 	@Test

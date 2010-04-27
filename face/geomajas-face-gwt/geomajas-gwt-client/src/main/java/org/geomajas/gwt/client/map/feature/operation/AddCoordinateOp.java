@@ -38,7 +38,7 @@ import org.geomajas.gwt.client.spatial.geometry.operation.InsertCoordinateOperat
 import org.geomajas.gwt.client.spatial.geometry.operation.RemoveCoordinateOperation;
 
 /**
- * ???
+ * Add coordinate operation.
  *
  * @author Pieter De Graef
  */
