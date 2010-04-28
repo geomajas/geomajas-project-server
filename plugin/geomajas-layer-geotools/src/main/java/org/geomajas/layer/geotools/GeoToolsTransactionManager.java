@@ -30,6 +30,7 @@ import org.geotools.feature.FeatureCollection;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionException;
 import org.springframework.transaction.support.AbstractPlatformTransactionManager;
 import org.springframework.transaction.support.DefaultTransactionStatus;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
@@ -79,7 +80,7 @@ public class GeoToolsTransactionManager extends AbstractPlatformTransactionManag
 
 	@Override
 	protected Object doGetTransaction() {
-		GeotoolsTransactionObject txObject = new GeotoolsTransactionObject();
+		GeoToolsTransactionObject txObject = new GeoToolsTransactionObject();
 		GeoToolsTransactionHolder txHolder = (GeoToolsTransactionHolder) TransactionSynchronizationManager
 				.getResource(this);
 		txObject.setTransactionHolder(txHolder, false);
@@ -88,7 +89,7 @@ public class GeoToolsTransactionManager extends AbstractPlatformTransactionManag
 
 	@Override
 	protected boolean isExistingTransaction(Object transaction) {
-		GeotoolsTransactionObject txObject = (GeotoolsTransactionObject) transaction;
+		GeoToolsTransactionObject txObject = (GeoToolsTransactionObject) transaction;
 		return (txObject.getTransactionHolder() != null && txObject.getTransactionHolder().isTransactionActive());
 	}
 
@@ -97,7 +98,7 @@ public class GeoToolsTransactionManager extends AbstractPlatformTransactionManag
 	 */
 	@Override
 	protected void doBegin(Object transaction, TransactionDefinition definition) {
-		GeotoolsTransactionObject txObject = (GeotoolsTransactionObject) transaction;
+		GeoToolsTransactionObject txObject = (GeoToolsTransactionObject) transaction;
 		if (txObject.getTransactionHolder() == null || 
 				txObject.getTransactionHolder().isSynchronizedWithTransaction()) {
 			txObject.setTransactionHolder(new GeoToolsTransactionHolder(), true);
@@ -117,8 +118,14 @@ public class GeoToolsTransactionManager extends AbstractPlatformTransactionManag
 	}
 
 	@Override
+	protected void doSetRollbackOnly(DefaultTransactionStatus status) throws TransactionException {
+		GeoToolsTransactionObject txObject = (GeoToolsTransactionObject) status.getTransaction();
+		txObject.setRollbackOnly();
+	}
+
+	@Override
 	protected Object doSuspend(Object transaction) {
-		GeotoolsTransactionObject txObject = (GeotoolsTransactionObject) transaction;
+		GeoToolsTransactionObject txObject = (GeoToolsTransactionObject) transaction;
 		txObject.setTransactionHolder(null, false);
 		GeoToolsTransactionHolder txHolder = (GeoToolsTransactionHolder) TransactionSynchronizationManager
 				.unbindResource(this);
@@ -133,7 +140,7 @@ public class GeoToolsTransactionManager extends AbstractPlatformTransactionManag
 
 	@Override
 	protected void doCommit(DefaultTransactionStatus status) {
-		GeotoolsTransactionObject txObject = (GeotoolsTransactionObject) status.getTransaction();
+		GeoToolsTransactionObject txObject = (GeoToolsTransactionObject) status.getTransaction();
 		Transaction tx = txObject.getTransactionHolder().getTransaction();
 		try {
 			tx.commit();
@@ -144,7 +151,7 @@ public class GeoToolsTransactionManager extends AbstractPlatformTransactionManag
 
 	@Override
 	protected void doRollback(DefaultTransactionStatus status) {
-		GeotoolsTransactionObject txObject = (GeotoolsTransactionObject) status.getTransaction();
+		GeoToolsTransactionObject txObject = (GeoToolsTransactionObject) status.getTransaction();
 		Transaction tx = txObject.getTransactionHolder().getTransaction();
 		try {
 			tx.rollback();
@@ -155,7 +162,7 @@ public class GeoToolsTransactionManager extends AbstractPlatformTransactionManag
 
 	@Override
 	protected void doCleanupAfterCompletion(Object transaction) {
-		GeotoolsTransactionObject txObject = (GeotoolsTransactionObject) transaction;
+		GeoToolsTransactionObject txObject = (GeoToolsTransactionObject) transaction;
 
 		// Remove the connection holder from the thread, if exposed.
 		if (txObject.isNewTransactionHolder()) {
@@ -166,13 +173,15 @@ public class GeoToolsTransactionManager extends AbstractPlatformTransactionManag
 	}
 
 	/**
-	 * Geotools transaction object.
+	 * GeoTools transaction object.
 	 */
-	public class GeotoolsTransactionObject {
+	private class GeoToolsTransactionObject {
 
 		private GeoToolsTransactionHolder holder;
 
 		private boolean newTransactionHolder;
+
+		private boolean rollbackOnly;
 
 		public GeoToolsTransactionHolder getTransactionHolder() {
 			return holder;
@@ -185,6 +194,14 @@ public class GeoToolsTransactionManager extends AbstractPlatformTransactionManag
 
 		public boolean isNewTransactionHolder() {
 			return newTransactionHolder;
+		}
+
+		public boolean isRollbackOnly() {
+			return rollbackOnly;
+		}
+
+		public void setRollbackOnly() {
+			this.rollbackOnly = true;
 		}
 	}
 
