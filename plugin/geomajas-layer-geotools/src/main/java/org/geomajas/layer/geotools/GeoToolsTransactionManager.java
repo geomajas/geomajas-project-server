@@ -35,10 +35,9 @@ import org.springframework.transaction.support.DefaultTransactionStatus;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
 /**
- * Transaction manager for Geotools layers.
+ * Transaction manager for GeoTools layers.
  * 
  * @author Jan De Moerloose
- * 
  */
 public class GeoToolsTransactionManager extends AbstractPlatformTransactionManager {
 
@@ -50,9 +49,9 @@ public class GeoToolsTransactionManager extends AbstractPlatformTransactionManag
 	}
 
 	/**
-	 * Returns the current Geotools transaction.
+	 * Returns the current GeoTools transaction.
 	 * 
-	 * @return the current Geotools transaction or null if no ative transaction.
+	 * @return the current GeoTools transaction or null if no active transaction.
 	 */
 	public Transaction getTransaction() {
 		GeoToolsTransactionHolder txHolder = (GeoToolsTransactionHolder) TransactionSynchronizationManager
@@ -68,8 +67,8 @@ public class GeoToolsTransactionManager extends AbstractPlatformTransactionManag
 	 * Adds the specified collection and iterator. This method should be called when opening a feature collection to
 	 * allow proper connection/transaction/lock cleanup in the case of exceptions.
 	 * 
-	 * @param featureCollection
-	 * @param iterator
+	 * @param featureCollection feature collection
+	 * @param iterator SimpleFeature iterator
 	 */
 	public void addIterator(FeatureCollection<SimpleFeatureType, SimpleFeature> featureCollection,
 			Iterator<SimpleFeature> iterator) {
