@@ -46,6 +46,11 @@ import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.io.WKTReader;
 
+/**
+ * Test for GeoTools layer.
+ *
+ * @author Pieter De Graef
+ */
 public class GeoToolsLayerTest extends AbstractGeoToolsTest {
 
 	private static final String SHAPE_FILE = "classpath:org/geomajas/testdata/shapes/cities_world/cities.shp";

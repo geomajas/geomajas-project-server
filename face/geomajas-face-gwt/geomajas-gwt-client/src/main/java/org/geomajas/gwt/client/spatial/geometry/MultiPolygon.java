@@ -27,7 +27,7 @@ import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.spatial.Bbox;
 
 /**
- * ???
+ * MultiPolygon client-side GWT object.
  *
  * @author Pieter De Graef
  */

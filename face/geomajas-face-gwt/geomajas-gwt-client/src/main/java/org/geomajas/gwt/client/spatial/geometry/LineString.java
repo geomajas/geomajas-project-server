@@ -28,7 +28,7 @@ import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.spatial.Mathlib;
 
 /**
- * ???
+ * LineString client-side GWT object.
  *
  * @author Pieter De Graef
  */

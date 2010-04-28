@@ -27,7 +27,7 @@ import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.spatial.Mathlib;
 
 /**
- * ???
+ * Abstract GWT client-side geometry.
  *
  * @author Pieter De Graef
  */

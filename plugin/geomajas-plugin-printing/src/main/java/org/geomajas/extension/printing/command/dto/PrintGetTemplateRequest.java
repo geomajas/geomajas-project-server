@@ -26,7 +26,7 @@ package org.geomajas.extension.printing.command.dto;
 import org.geomajas.command.CommandRequest;
 
 /**
- * ...
+ * Request object for {@link org.geomajas.extension.printing.command.print.PrintGetTemplateCommand}.
  *
  * @author Joachim Van der Auwera
  */

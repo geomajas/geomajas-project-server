@@ -43,6 +43,11 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 
+/**
+ * Test for GeoTools layer.
+ *
+ * @author Pieter De Graef
+ */
 public class GeoToolsFilterTest extends AbstractGeoToolsTest {
 
 	private static final String SHAPE_FILE = "org/geomajas/testdata/shapes/filtertest/filtertest.shp";

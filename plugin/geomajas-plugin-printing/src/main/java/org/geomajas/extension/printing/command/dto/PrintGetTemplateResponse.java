@@ -27,7 +27,7 @@ import org.geomajas.command.CommandResponse;
 /**
  * Response object for PrintGetTemplateCommand.
  *
- * @author Jan De Moerlose
+ * @author Jan De Moerloose
  */
 public class PrintGetTemplateResponse extends CommandResponse {
 

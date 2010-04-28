@@ -23,6 +23,12 @@ import org.hibernate.annotations.Type;
 
 import com.vividsolutions.jts.geom.Geometry;
 
+/**
+ * Hibernate test feature.
+ *
+ * @author Pieter De Graef
+ * @author Jan De Moerloose
+ */
 @Entity
 @Table(name = "pojo")
 public class HibernateTestFeature {

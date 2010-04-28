@@ -57,7 +57,8 @@ import com.smartgwt.client.widgets.Canvas;
  * this widget will react automatically to the visibility status of the layers.
  * </p>
  * 
- * @author Frank Wynants, Pieter De Graef
+ * @author Frank Wynants
+ * @author Pieter De Graef
  */
 public class Legend extends Canvas {
 

@@ -26,7 +26,6 @@ package org.geomajas.gwt.client.util;
  * SmartClient-based logger functionality.
  * 
  * @author Jan De Moerloose
- *
  */
 public final class Log {
 

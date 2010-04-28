@@ -29,7 +29,6 @@ import org.hibernatespatial.spi.SpatialDialectProvider;
  * Spatial dialect provider for HSQL.
  * 
  * @author Jan De Moerloose
- *
  */
 public class HSQLSpatialDialectProvider implements SpatialDialectProvider {
 

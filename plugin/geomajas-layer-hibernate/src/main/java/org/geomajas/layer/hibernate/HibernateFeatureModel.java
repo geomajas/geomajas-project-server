@@ -65,7 +65,8 @@ import com.vividsolutions.jts.geom.Geometry;
  * FeatureModel implementation for the HibernateLayer.
  * </p>
  * 
- * @author Jan De Moerloose, Pieter De Graef
+ * @author Jan De Moerloose
+ * @author Pieter De Graef
  */
 public class HibernateFeatureModel extends HibernateLayerUtil implements FeatureModel {
 

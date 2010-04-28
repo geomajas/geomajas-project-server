@@ -43,7 +43,7 @@ import java.util.List;
 /**
  * List print templates command.
  *
- * @author Jan De Moerlose
+ * @author Jan De Moerloose
  */
 @Component()
 public class PrintListTemplatesCommand implements Command<EmptyCommandRequest, PrintListTemplatesResponse> {

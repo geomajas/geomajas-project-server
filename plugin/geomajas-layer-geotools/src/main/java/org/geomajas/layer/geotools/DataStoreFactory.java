@@ -37,7 +37,6 @@ import org.springframework.util.ResourceUtils;
  * A simple utility factory for injecting a {@link DataStore} via Spring.
  * 
  * @author Jan De Moerloose
- * 
  */
 public final class DataStoreFactory {
 
@@ -51,9 +50,9 @@ public final class DataStoreFactory {
 	 * Creates a suitable {@link DataStore} for the specified parameters.
 	 * 
 	 * @param parameters
-	 *            list of Geotools parameters.
-	 * @return
-	 * @throws IOException
+	 *            list of GeoTools parameters.
+	 * @return data store
+	 * @throws IOException oops
 	 */
 	public static DataStore create(Map<String, String> parameters) throws IOException {
 		String url = parameters.get("url");

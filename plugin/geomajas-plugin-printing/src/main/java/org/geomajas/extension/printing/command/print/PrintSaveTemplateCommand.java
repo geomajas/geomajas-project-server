@@ -38,7 +38,7 @@ import java.io.IOException;
 /**
  * Save print template command.
  *
- * @author Jan De Moerlose
+ * @author Jan De Moerloose
  */
 @Component()
 public class PrintSaveTemplateCommand implements Command<PrintSaveTemplateRequest, CommandResponse> {

@@ -35,7 +35,6 @@ import com.vividsolutions.jts.io.WKTWriter;
  * WKT based geometry type for HSQL.
  *  
  * @author Jan De Moerloose
- *
  */
 public class HSQLGeometryUserType extends AbstractDBGeometryType {
 

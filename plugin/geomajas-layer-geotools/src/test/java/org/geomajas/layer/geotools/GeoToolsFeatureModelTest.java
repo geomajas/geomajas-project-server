@@ -47,7 +47,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 
 /**
  * <p>
- * Testcase testing all methods of the Geotools FeatureModel.
+ * Test case testing all methods of the GeoTools FeatureModel.
  * </p>
  *
  * @author Mathias Versichele

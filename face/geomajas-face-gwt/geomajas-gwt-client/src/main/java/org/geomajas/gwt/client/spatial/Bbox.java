@@ -27,7 +27,7 @@ import org.geomajas.geometry.Coordinate;
 
 /**
  * <p>
- * Definition of an Axis Aligned Bounding Box. Determined by an x-ordinate an y-ordinate, it's width and it's height.
+ * Definition of an (axis aligned) Bounding Box. Determined by an x-ordinate an y-ordinate, it's width and it's height.
  * Notice the the name says "Axis Aligned"! This implies that this type of bounding box cannot rotate!
  * </p>
  * 

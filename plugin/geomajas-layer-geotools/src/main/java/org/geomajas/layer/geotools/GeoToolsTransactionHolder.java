@@ -37,7 +37,6 @@ import org.springframework.transaction.support.ResourceHolderSupport;
  * Holder for GeoTools transactions.
  * 
  * @author Jan De Moerloose
- * 
  */
 public class GeoToolsTransactionHolder extends ResourceHolderSupport {
 

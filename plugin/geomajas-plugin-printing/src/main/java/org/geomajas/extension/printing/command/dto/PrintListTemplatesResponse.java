@@ -30,7 +30,7 @@ import java.util.List;
 /**
  * Response object for PrintListTemplatesCommand.
  *
- * @author Jan De Moerlose
+ * @author Jan De Moerloose
  */
 public class PrintListTemplatesResponse extends CommandResponse {
 

@@ -25,6 +25,12 @@ import org.geomajas.layer.feature.attribute.ManyToOneAttribute;
 import org.geomajas.layer.feature.attribute.PrimitiveAttribute;
 import org.geomajas.layer.feature.attribute.StringAttribute;
 
+/**
+ * Hibernate test object for associations.
+ *
+ * @author Pieter De Graef
+ * @author Jan De Moerloose
+ */
 @Entity
 @Table(name = "manyToOne")
 public class HibernateTestManyToOne {

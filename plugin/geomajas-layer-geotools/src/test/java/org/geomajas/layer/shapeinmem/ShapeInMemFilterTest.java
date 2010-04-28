@@ -36,6 +36,11 @@ import org.opengis.filter.Filter;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 
+/**
+ * Test for shape-in-mem layer.
+ *
+ * @author Pieter De Graef
+ */
 public class ShapeInMemFilterTest extends AbstractFilterTest {
 
 	@Test

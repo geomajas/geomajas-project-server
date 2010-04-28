@@ -26,7 +26,6 @@ package org.geomajas.extension.printing.component;
  * Constraints for the default layout.
  *
  * @author Jan De Moerloose
- *
  */
 public class LayoutConstraint {
 

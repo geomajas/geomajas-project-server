@@ -79,7 +79,8 @@ import com.vividsolutions.jts.geom.Geometry;
  * criteria object. This is how the HibernateLayer is able to use OpenGis filters.
  * </p>
  * 
- * @author Jan De Moerloose, Pieter De Graef
+ * @author Jan De Moerloose
+ * @author Pieter De Graef
  */
 public class CriteriaVisitor implements FilterVisitor {
 

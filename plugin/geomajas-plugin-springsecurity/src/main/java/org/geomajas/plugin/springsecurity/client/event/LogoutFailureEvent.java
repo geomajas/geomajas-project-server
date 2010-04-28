@@ -25,7 +25,7 @@ package org.geomajas.plugin.springsecurity.client.event;
 import com.google.gwt.event.shared.GwtEvent;
 
 /**
- * Event that reports when a users's logout attempt has failed.
+ * Event that reports when a user's logout attempt has failed.
  * 
  * @author Pieter De Graef
  */

@@ -36,7 +36,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
- * Verify the functioning of the LoginCommand class.
+ * Verify the functioning of the {@link LoginCommand} class.
  *
  * @author Joachim Van der Auwera
  */

@@ -59,7 +59,7 @@ import com.lowagie.text.Rectangle;
 import com.vividsolutions.jts.geom.Envelope;
 
 /**
- * Subcomponent of a map responsible for rendering raster layer.
+ * Sub component of a map responsible for rendering raster layer.
  * 
  * @author Jan De Moerloose
  */

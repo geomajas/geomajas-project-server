@@ -15,6 +15,12 @@ import javax.persistence.Table;
 
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 
+/**
+ * Hibernate test object for associations.
+ *
+ * @author Pieter De Graef
+ * @author Jan De Moerloose
+ */
 @Entity
 @Table(name = "oneToMany")
 public class HibernateTestOneToMany {

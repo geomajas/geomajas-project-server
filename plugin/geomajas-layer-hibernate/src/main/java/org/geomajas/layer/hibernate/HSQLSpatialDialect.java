@@ -31,7 +31,6 @@ import org.hibernatespatial.SpatialDialect;
  * user type.
  * 
  * @author Jan De Moerloose
- * 
  */
 public class HSQLSpatialDialect extends HSQLDialect implements SpatialDialect {
 
