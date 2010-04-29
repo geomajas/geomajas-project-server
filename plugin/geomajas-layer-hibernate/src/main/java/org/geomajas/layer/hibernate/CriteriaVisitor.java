@@ -270,25 +270,25 @@ public class CriteriaVisitor implements FilterVisitor {
 	public Object visit(Intersects filter, Object userData) {
 		LiteralExpressionImpl exp = (LiteralExpressionImpl) filter.getExpression2();
 		String finalName = parsePropertyName(geomName, userData);
-		return SpatialRestrictions.intersects(finalName, null, (Geometry) exp.getLiteral());
+		return SpatialRestrictions.intersects(finalName, (Geometry) exp.getLiteral());
 	}
 
 	public Object visit(Overlaps filter, Object userData) {
 		LiteralExpressionImpl exp = (LiteralExpressionImpl) filter.getExpression2();
 		String finalName = parsePropertyName(geomName, userData);
-		return SpatialRestrictions.overlaps(finalName, null, (Geometry) exp.getLiteral());
+		return SpatialRestrictions.overlaps(finalName, (Geometry) exp.getLiteral());
 	}
 
 	public Object visit(Touches filter, Object userData) {
 		LiteralExpressionImpl exp = (LiteralExpressionImpl) filter.getExpression2();
 		String finalName = parsePropertyName(geomName, userData);
-		return SpatialRestrictions.touches(finalName, null, (Geometry) exp.getLiteral());
+		return SpatialRestrictions.touches(finalName, (Geometry) exp.getLiteral());
 	}
 
 	public Object visit(Within filter, Object userData) {
 		LiteralExpressionImpl exp = (LiteralExpressionImpl) filter.getExpression2();
 		String finalName = parsePropertyName(geomName, userData);
-		return SpatialRestrictions.within(finalName, null, (Geometry) exp.getLiteral());
+		return SpatialRestrictions.within(finalName, (Geometry) exp.getLiteral());
 	}
 
 	public Object visit(ExcludeFilter filter, Object userData) {

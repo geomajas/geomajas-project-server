@@ -341,7 +341,7 @@
 			<dependency>
 				<groupId>org.hibernatespatial</groupId>
 				<artifactId>hibernate-spatial</artifactId>
-				<version>1.0-M2</version>
+				<version>1.0</version>
 				<exclusions>
 					<exclusion>
 						<groupId>org.hibernate</groupId>

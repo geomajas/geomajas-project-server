@@ -52,7 +52,7 @@
 		<dependency>
 			<groupId>org.hibernatespatial</groupId>
 			<artifactId>hibernate-spatial-postgis</artifactId>
-			<version>1.0-M2</version>
+			<version>1.0</version>
 		</dependency>
 		<!-- @extract-end -->
 		
