@@ -233,7 +233,9 @@ public class ExtractSourcePlugin extends AbstractMojo {
 		File targetFile = new File(destinationDir, filename + ".xml");
 		BufferedWriter writer = new BufferedWriter(new FileWriter(targetFile));
 		writer.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
-		writer.write("<example>\n");
+		writer.write("<example id=\"");
+		writer.write(filename);
+		writer.write("\">\n");
 		writer.write("<title>");
 		writer.write(caption);
 		writer.write("</title>\n");
