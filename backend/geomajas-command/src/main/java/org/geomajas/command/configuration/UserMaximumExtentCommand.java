@@ -39,7 +39,6 @@ import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
 import org.geomajas.layer.VectorLayerService;
 import org.geotools.geometry.jts.JTS;
-import org.geotools.referencing.CRS;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 import org.slf4j.Logger;
@@ -101,7 +100,7 @@ public class UserMaximumExtentCommand implements Command<UserMaximumExtentReques
 		layers = tempLayers.toArray(new String[tempLayers.size()]);
 
 		Layer<?> layer;
-		CoordinateReferenceSystem targetCrs = CRS.decode(request.getCrs());
+		CoordinateReferenceSystem targetCrs = geoService.getCrs(request.getCrs());
 
 		if (layers.length == 0) {
 			// return empty bbox

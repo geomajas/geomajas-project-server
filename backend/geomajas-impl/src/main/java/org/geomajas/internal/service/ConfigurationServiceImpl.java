@@ -28,15 +28,12 @@ import java.util.Map;
 
 import org.geomajas.configuration.client.ClientApplicationInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
-import org.geomajas.global.ExceptionCode;
 import org.geomajas.layer.Layer;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.RasterLayer;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.service.ConfigurationService;
-import org.geotools.referencing.CRS;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
+import org.geomajas.service.GeoService;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -61,6 +58,9 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 
 	@Autowired(required = false)
 	protected Map<String, ClientApplicationInfo> applicationMap = new LinkedHashMap<String, ClientApplicationInfo>();
+
+	@Autowired
+	private GeoService geoService;
 
 	public VectorLayer getVectorLayer(String id) {
 		return id == null ? null : vectorLayerMap.get(id);
@@ -90,13 +90,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 	}
 
 	public CoordinateReferenceSystem getCrs(String crs) throws LayerException {
-		try {
-			return CRS.decode(crs);
-		} catch (NoSuchAuthorityCodeException e) {
-			throw new LayerException(e, ExceptionCode.CRS_DECODE_FAILURE_FOR_MAP, crs);
-		} catch (FactoryException e) {
-			throw new LayerException(e, ExceptionCode.LAYER_CRS_PROBLEMATIC, crs);
-		}
+		return geoService.getCrs(crs);
 	}
 
 }

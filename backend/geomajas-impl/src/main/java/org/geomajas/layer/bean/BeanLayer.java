@@ -47,10 +47,7 @@ import org.geomajas.layer.feature.FeatureModel;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
-import org.geotools.referencing.CRS;
 import org.opengis.filter.Filter;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -104,16 +101,6 @@ public class BeanLayer implements VectorLayer, VectorLayerAssociationSupport {
 
 	public CoordinateReferenceSystem getCrs() {
 		return crs;
-	}
-
-	private void initCrs() throws LayerException {
-		try {
-			crs = CRS.decode(layerInfo.getCrs());
-		} catch (NoSuchAuthorityCodeException e) {
-			throw new LayerException(e, ExceptionCode.LAYER_CRS_UNKNOWN_AUTHORITY, getId(), getLayerInfo().getCrs());
-		} catch (FactoryException exception) {
-			throw new LayerException(exception, ExceptionCode.LAYER_CRS_PROBLEMATIC, getId(), getLayerInfo().getCrs());
-		}
 	}
 
 	public boolean isCreateCapable() {
@@ -172,7 +159,7 @@ public class BeanLayer implements VectorLayer, VectorLayerAssociationSupport {
 
 	public void setLayerInfo(VectorLayerInfo layerInfo) throws LayerException {
 		this.layerInfo = layerInfo;
-		initCrs();
+		crs = geoService.getCrs(layerInfo.getCrs());
 		initFeatureModel();
 		initComparator();
 	}

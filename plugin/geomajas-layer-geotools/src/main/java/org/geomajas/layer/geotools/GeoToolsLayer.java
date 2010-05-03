@@ -39,6 +39,7 @@ import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.FeatureModel;
 import org.geomajas.layer.shapeinmem.FeatureSourceRetriever;
+import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
@@ -49,7 +50,6 @@ import org.geotools.data.FeatureStore;
 import org.geotools.factory.CommonFactoryFinder;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.filter.identity.FeatureIdImpl;
-import org.geotools.referencing.CRS;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.feature.type.AttributeDescriptor;
@@ -57,8 +57,6 @@ import org.opengis.filter.Filter;
 import org.opengis.filter.FilterFactory;
 import org.opengis.filter.Id;
 import org.opengis.filter.identity.Identifier;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -96,6 +94,9 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 
 	@Autowired
 	private GeoService geoService;
+
+	@Autowired
+	private ConfigurationService configurationService;
 
 	@Autowired(required = false)
 	private GeoToolsTransactionManager transactionManager;
@@ -143,21 +144,9 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 		return crs;
 	}
 
-	private void initCrs() throws LayerException {
-		try {
-			crs = CRS.decode(layerInfo.getCrs());
-		} catch (NoSuchAuthorityCodeException e) {
-			throw new LayerException(e, ExceptionCode.LAYER_CRS_UNKNOWN_AUTHORITY, e, getId(),
-					getLayerInfo().getCrs());
-		} catch (FactoryException e) {
-			throw new LayerException(e, ExceptionCode.LAYER_CRS_PROBLEMATIC, getId(),
-					getLayerInfo().getCrs());
-		}
-	}
-
 	public void setLayerInfo(VectorLayerInfo layerInfo) throws LayerException {
 		this.layerInfo = layerInfo;
-		initCrs();
+		crs = configurationService.getCrs(layerInfo.getCrs());
 		setFeatureSourceName(layerInfo.getFeatureInfo().getDataSourceName());
 	}
 

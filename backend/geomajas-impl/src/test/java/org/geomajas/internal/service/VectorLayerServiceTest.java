@@ -105,7 +105,8 @@ public class VectorLayerServiceTest {
 	@Test
 	public void testGetFeaturesLazy() throws Exception {
 		List<InternalFeature> features = layerService.getFeatures(LAYER_ID,
-				CRS.decode(beanLayer.getLayerInfo().getCrs()), null, null, VectorLayerService.FEATURE_INCLUDE_NONE);
+				geoService.getCrs(beanLayer.getLayerInfo().getCrs()), null, null,
+				VectorLayerService.FEATURE_INCLUDE_NONE);
 		Assert.assertEquals(3, features.size());
 		InternalFeature feature = features.get(0);
 		Assert.assertNotNull(feature.getId());
@@ -119,7 +120,7 @@ public class VectorLayerServiceTest {
 	@DirtiesContext
 	public void testUpdate() throws Exception {
 		Filter filter = filterService.createFidFilter(new String[]{"3"});
-		CoordinateReferenceSystem crs = CRS.decode(beanLayer.getLayerInfo().getCrs());
+		CoordinateReferenceSystem crs = geoService.getCrs(beanLayer.getLayerInfo().getCrs());
 		List<InternalFeature> oldFeatures = layerService.getFeatures(LAYER_ID,
 				crs, filter, null, VectorLayerService.FEATURE_INCLUDE_ATTRIBUTES);
 		Assert.assertEquals(1, oldFeatures.size());
@@ -153,7 +154,7 @@ public class VectorLayerServiceTest {
 		// the spring context is not rebuilt between test methods
 		
 		// Create first
-		CoordinateReferenceSystem crs = CRS.decode(beanLayer.getLayerInfo().getCrs());
+		CoordinateReferenceSystem crs = geoService.getCrs(beanLayer.getLayerInfo().getCrs());
 		List<InternalFeature> oldFeatures = new ArrayList<InternalFeature>();
 		List<InternalFeature> newFeatures = new ArrayList<InternalFeature>();
 		InternalFeature feature = converterService.toInternal(new Feature());
@@ -203,7 +204,8 @@ public class VectorLayerServiceTest {
 	public void testGetFeaturesAllFiltered() throws Exception {
 		Filter filter = filterService.createFidFilter(new String[]{"3"});
 		List<InternalFeature> features = layerService.getFeatures(LAYER_ID,
-				CRS.decode(beanLayer.getLayerInfo().getCrs()), filter, null, VectorLayerService.FEATURE_INCLUDE_ALL);
+				geoService.getCrs(beanLayer.getLayerInfo().getCrs()), filter, null,
+				VectorLayerService.FEATURE_INCLUDE_ALL);
 		Assert.assertEquals(1, features.size());
 		InternalFeature feature = features.get(0);
 		Assert.assertEquals("3", feature.getId());
@@ -213,7 +215,7 @@ public class VectorLayerServiceTest {
 
 	@Test
 	public void testGetBoundsAll() throws Exception {
-		Envelope bounds = layerService.getBounds(LAYER_ID, CRS.decode(beanLayer.getLayerInfo().getCrs()), null);
+		Envelope bounds = layerService.getBounds(LAYER_ID, geoService.getCrs(beanLayer.getLayerInfo().getCrs()), null);
 		Assert.assertEquals(0, bounds.getMinX(), ALLOWANCE);
 		Assert.assertEquals(0, bounds.getMinY(), ALLOWANCE);
 		Assert.assertEquals(7, bounds.getMaxX(), ALLOWANCE);
@@ -223,7 +225,8 @@ public class VectorLayerServiceTest {
 	@Test
 	public void testGetBoundsFidFiltered() throws Exception {
 		Filter filter = filterService.createFidFilter(new String[]{"2", "3"});
-		Envelope bounds = layerService.getBounds(LAYER_ID, CRS.decode(beanLayer.getLayerInfo().getCrs()), filter);
+		Envelope bounds = layerService.getBounds(LAYER_ID,
+				geoService.getCrs(beanLayer.getLayerInfo().getCrs()), filter);
 		Assert.assertEquals(2, bounds.getMinX(), ALLOWANCE);
 		Assert.assertEquals(0, bounds.getMinY(), ALLOWANCE);
 		Assert.assertEquals(7, bounds.getMaxX(), ALLOWANCE);
@@ -236,7 +239,8 @@ public class VectorLayerServiceTest {
 		LineString equator = factory.createLineString(new Coordinate[] { new Coordinate(0, 0),
 				new Coordinate(-180, 180) });
 		Filter filter = filterService.createIntersectsFilter(equator,beanLayer.getLayerInfo().getFeatureInfo().getGeometryType().getName());
-		Envelope bounds = layerService.getBounds(LAYER_ID, CRS.decode(beanLayer.getLayerInfo().getCrs()), filter);
+		Envelope bounds = layerService.getBounds(LAYER_ID,
+				geoService.getCrs(beanLayer.getLayerInfo().getCrs()), filter);
 		Assert.assertEquals(0, bounds.getMinX(), ALLOWANCE);
 		Assert.assertEquals(0, bounds.getMinY(), ALLOWANCE);
 		Assert.assertEquals(1, bounds.getMaxX(), ALLOWANCE);

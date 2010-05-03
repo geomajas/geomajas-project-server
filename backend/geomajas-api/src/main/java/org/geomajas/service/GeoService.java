@@ -28,6 +28,7 @@ import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.Point;
 import org.geomajas.global.Api;
 import org.geomajas.global.GeomajasException;
+import org.geomajas.layer.LayerException;
 import org.geomajas.layer.feature.InternalFeature;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
@@ -40,6 +41,16 @@ import org.opengis.referencing.operation.MathTransform;
  */
 @Api(allMethods = true)
 public interface GeoService {
+
+	/**
+	 * Get the {@link org.opengis.referencing.crs.CoordinateReferenceSystem} with given code.
+	 *
+	 * @param crs Coordinate reference system code. (EPSG:xxxx)
+	 * @return {@link org.opengis.referencing.crs.CoordinateReferenceSystem}
+	 * @throws org.geomajas.layer.LayerException CRS code not found
+	 * @since 1.6.1
+	 */
+	CoordinateReferenceSystem getCrs(String crs) throws LayerException;
 
 	/**
 	 * Isn't there a method for this in geotools?

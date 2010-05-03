@@ -42,8 +42,6 @@ import org.geomajas.layer.LayerException;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
 import org.geotools.geometry.jts.JTS;
-import org.geotools.referencing.CRS;
-import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
@@ -146,7 +144,7 @@ public class ConfigurationDtoPostProcessor {
 			if (null == mapBounds) {
 				throw new LayerException(ExceptionCode.MAP_MAX_EXTENT_MISSING);
 			}
-			CoordinateReferenceSystem crs = CRS.decode(mapCrsKey);
+			CoordinateReferenceSystem crs = geoService.getCrs(mapCrsKey);
 			// GeodeticCalculator calculator = new GeodeticCalculator(crs);
 			// calculator.setStartingPosition(new DirectPosition2D(crs, mapBounds.getX(), mapBounds.getY()));
 			// calculator.setDestinationPosition(new DirectPosition2D(crs, mapBounds.getMaxX(), mapBounds.getY()));
@@ -154,10 +152,7 @@ public class ConfigurationDtoPostProcessor {
 			// return distance / mapBounds.getWidth();
 			Coordinate c1 = new Coordinate(0, 0);
 			Coordinate c2 = new Coordinate(1, 0);
-			double distance = JTS.orthodromicDistance(c1, c2, crs);
-			return distance;
-		} catch (FactoryException e) {
-			throw new LayerException(e, ExceptionCode.TRANSFORMER_CREATE_LAYER_TO_MAP_FAILED);
+			return JTS.orthodromicDistance(c1, c2, crs);
 		} catch (TransformException e) {
 			throw new LayerException(e, ExceptionCode.TRANSFORMER_CREATE_LAYER_TO_MAP_FAILED);
 		}
@@ -168,13 +163,11 @@ public class ConfigurationDtoPostProcessor {
 			return serverBbox;
 		}
 		try {
-			CoordinateReferenceSystem mapCrs = CRS.decode(mapCrsKey);
-			CoordinateReferenceSystem layerCrs = CRS.decode(layerCrsKey);
+			CoordinateReferenceSystem mapCrs = geoService.getCrs(mapCrsKey);
+			CoordinateReferenceSystem layerCrs = geoService.getCrs(layerCrsKey);
 			Envelope serverEnvelope = converterService.toInternal(serverBbox);
 			MathTransform transformer = geoService.findMathTransform(layerCrs, mapCrs);
 			return converterService.toDto(JTS.transform(serverEnvelope, transformer));
-		} catch (FactoryException e) {
-			throw new LayerException(e, ExceptionCode.TRANSFORMER_CREATE_LAYER_TO_MAP_FAILED);
 		} catch (TransformException e) {
 			throw new LayerException(e, ExceptionCode.TRANSFORMER_CREATE_LAYER_TO_MAP_FAILED);
 		} catch (GeomajasException e) {

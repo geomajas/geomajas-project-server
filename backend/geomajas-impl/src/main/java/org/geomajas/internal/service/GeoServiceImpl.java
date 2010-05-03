@@ -34,10 +34,12 @@ import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
+import org.geomajas.layer.LayerException;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.service.GeoService;
 import org.geotools.referencing.CRS;
 import org.opengis.referencing.FactoryException;
+import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 import org.springframework.stereotype.Component;
@@ -52,8 +54,49 @@ import org.springframework.stereotype.Component;
 @Component()
 public final class GeoServiceImpl implements GeoService {
 
+	//private CoordinateReferenceSystem mercatorCrs;
+
+	public CoordinateReferenceSystem getCrs(String crs) throws LayerException {
+		try {
+			/* example how support for extra CRSs could be added without forcing gt-epsg-wkt module
+			if ("EPSG:900913".equals(crs)) {
+				if (null == mercatorCrs) {
+					mercatorCrs = CRS.parseWKT("PROJCS[\"Google Mercator\", "
+							+ "GEOGCS[\"WGS 84\", "
+							+ "DATUM[\"World Geodetic System 1984\", "
+							+ "SPHEROID[\"WGS 84\", 6378137.0, 298.257223563, AUTHORITY[\"EPSG\",\"7030\"]], "
+							+ "AUTHORITY[\"EPSG\",\"6326\"]], "
+							+ "PRIMEM[\"Greenwich\", 0.0, AUTHORITY[\"EPSG\",\"8901\"]], "
+							+ "UNIT[\"degree\", 0.017453292519943295], "
+							+ "AXIS[\"Geodetic latitude\", NORTH], "
+							+ "AXIS[\"Geodetic longitude\", EAST], "
+							+ "AUTHORITY[\"EPSG\",\"4326\"]],  "
+							+ "PROJECTION[\"Mercator (1SP)\", AUTHORITY[\"EPSG\",\"9804\"]], "
+							+ "PARAMETER[\"semi_major\", 6378137.0], "
+							+ "PARAMETER[\"semi_minor\", 6378137.0], "
+							+ "PARAMETER[\"latitude_of_origin\", 0.0], "
+							+ "PARAMETER[\"central_meridian\", 0.0], "
+							+ "PARAMETER[\"scale_factor\", 1.0],  "
+							+ "PARAMETER[\"false_easting\", 0.0],  "
+							+ "PARAMETER[\"false_northing\", 0.0],  "
+							+ "UNIT[\"m\", 1.0],  "
+							+ "AXIS[\"Easting\", EAST],  "
+							+ "AXIS[\"Northing\", NORTH], "
+							+ "AUTHORITY[\"EPSG\",\"900913\"]]");
+				}
+				return mercatorCrs;
+			}
+			*/
+			return CRS.decode(crs);
+		} catch (NoSuchAuthorityCodeException e) {
+			throw new LayerException(e, ExceptionCode.CRS_DECODE_FAILURE_FOR_MAP, crs);
+		} catch (FactoryException e) {
+			throw new LayerException(e, ExceptionCode.LAYER_CRS_PROBLEMATIC, crs);
+		}
+	}
+
 	/**
-	 * Isn't there a method for this in geotools?
+	 * Isn't there a method for this in GeoTools?
 	 *
 	 * @param crs
 	 *            CRS string in the form of 'EPSG:<srid>'.

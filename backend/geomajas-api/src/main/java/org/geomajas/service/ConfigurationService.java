@@ -78,6 +78,8 @@ public interface ConfigurationService {
 	 * @param crs Coordinate reference system code. (EPSG:xxxx)
 	 * @return {@link org.opengis.referencing.crs.CoordinateReferenceSystem}
 	 * @throws LayerException CRS code not found
+	 * @deprecated Use {@link GeoService#getCrs(String crs)}
 	 */
+	@Deprecated
 	CoordinateReferenceSystem getCrs(String crs) throws LayerException;
 }
