@@ -32,7 +32,6 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 		>
 
 	<bean name="osmInfo" class="org.geomajas.configuration.RasterLayerInfo">
-	  	<property name="id" value="osm"/>
 		<property name="layerType" value="RASTER"/>
 		<property name="crs" value="EPSG:900913"/>
 		<property name="maxExtent">

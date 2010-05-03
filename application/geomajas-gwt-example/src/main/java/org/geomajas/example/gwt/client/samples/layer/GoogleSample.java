@@ -100,6 +100,7 @@ public class GoogleSample extends SamplePanel {
 		return "luc";
 	}
 
+	// @extract-start GoogleSample, GoogleSample
 	protected void onDraw() {
 		googleMap.registerMapAddon(new GoogleAddon("google", googleMap, MapType.NORMAL, false));
 		googleSatMap.registerMapAddon(new GoogleAddon("google", googleSatMap, MapType.SATELLITE, false));
@@ -107,5 +108,6 @@ public class GoogleSample extends SamplePanel {
 				.getMapModel().getMapView());
 		synchronizer.setEnabled(true);
 	}
+	// @extract-end
 
 }

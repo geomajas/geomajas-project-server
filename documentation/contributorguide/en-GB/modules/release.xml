@@ -167,7 +167,8 @@ sudo chmod -R 775 /var/www/maven.geomajas.org/htdocs/repository/org/geomajas/</p
 
       <para><itemizedlist>
           <listitem>
-            <para>Build announcement message using the following template:</para>
+            <para>Build announcement message using the following
+            template:</para>
 
             <blockquote>
               <para>title: Geomajas <emphasis>1.5.0</emphasis>
@@ -274,6 +275,10 @@ sudo chmod -R 775 /var/www/maven.geomajas.org/htdocs/repository/org/geomajas/</p
             informed of the release.</para>
           </listitem>
         </itemizedlist></para>
+    </listitem>
+
+    <listitem>
+      <para>Need to compile and deploy the archetype.</para>
     </listitem>
   </orderedlist>
 </chapter>

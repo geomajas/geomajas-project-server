@@ -646,10 +646,31 @@
             Java AWT library. This context will draw basic shapes, according
             to their id. Since we are using web technologies, all
             implementations (be they SVG or VML) will use DOM elements to
-            create their drawings. Each DOM element in the
-            <code>GraphicsContext</code> DOM tree should have an id and a
-            parent. This combination of id and parent can later be used to
-            update or delete the object.</para>
+            create their drawings. </para>
+
+            <para>There are two different kinds of DOM elements we like to
+            distinguish: group elements and non-group elements. </para>
+
+            <para><emphasis>Group elements</emphasis> are container elements
+            that have no particular representation of themselves but are used
+            to group other elements and create hierarchical dependency. In
+            SVG, they are represented by <code>&lt;g&gt;</code> tags, in VML
+            these are <code>&lt;group&gt;</code> tags. <emphasis>Group
+            elements or groups </emphasis>can be drawn by passing an arbitrary
+            Java object to the <code>drawGroup()</code>method. This object can
+            be used for later reference to the group. To position the group in
+            the hierachy, a parent group object can be passed as a second
+            parameter to the <code>drawGroup()</code> method. </para>
+
+            <para><emphasis>Non-group elements</emphasis> (all other elements
+            like circle, rectangle, symbol, etc.) can be drawn by passing a
+            group element - the parent - and a name to the element-specific
+            drawing method (<code>drawCircle()</code>,
+            <code>drawRectangle()</code>, etc.). These elements will be
+            attached to their parent group in the DOM. Each non-group element
+            in the <code>GraphicsContext</code> DOM tree will therefore have a
+            name and a parent group object. This combination of name and
+            parent can later be used to update or delete the object.</para>
 
             <para>In essence, the drawing methods will result in changes in
             the visuals of the map, and the painters that will call these

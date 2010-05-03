@@ -29,8 +29,10 @@
   <chapter id="chapter-configuration">
     <title>Plug-ins</title>
 
-    <para>Then there are two main sets of plug-ins which provide extra
-    features.</para>
+    <para>The primary function of the back-end is to act as a plug-in
+    container. Plug-ins are optional libraries that extend the core
+    functionality by taking advantage of the public API. There are two sets
+    of plug-ins which provide extra features.</para>
 
     <para>The layer plug-ins provide access to the actual data which needs to
     be displayed as part of a maps. There are basically two types of layers,
@@ -654,6 +656,19 @@
                     determines the locations and absolute size of the
                     tiles.</entry>
                   </row>
+
+                  <row>
+                    <entry>featureInfo</entry>
+
+                    <entry>The feature metadata</entry>
+                  </row>
+
+                  <row>
+                    <entry>namedStyleInfos</entry>
+
+                    <entry>The list of predefined style metadata objects which
+                    define the named styles for this layer </entry>
+                  </row>
                 </tbody>
               </tgroup>
             </table></para>
@@ -663,11 +678,6 @@
           feature type description (id, attributes and geometry) as well as
           the validation rules for the attributes. An example definition of
           this object is given below:</para>
-
-          <para>There is also the definition of the features (featureInfo),
-          and the style which needs to be used for the label. Note that the
-          <emphasis>labelAttributeName</emphasis> refers to the name of an
-          attribute as defined in the feature info.</para>
 
           <xi:include href="../listing/ShapeInMemCountriesFeatureInfo.xml"
                       xmlns:xi="http://www.w3.org/2001/XInclude" />
@@ -693,24 +703,39 @@
 
               <tbody>
                 <row>
-                  <entry>TODO.....</entry>
+                  <entry>dataSourceName</entry>
 
-                  <entry>TODO.....</entry>
+                  <entry>This name is used by the layer to internally
+                  reference the source that provides the data. Depending on
+                  the type of layer, this could be a table name
+                  (geotools-postgis), a shape file name (geotools-shapeinmem,
+                  in this case there is a 1-to-1 correspondence withe the
+                  geotools datastore), a WFS layer name (geotools-wfs) or a
+                  java class name (hibernate).</entry>
+                </row>
+
+                <row>
+                  <entry>identifier</entry>
+
+                  <entry>Metadata of the primitive attribute that provides a
+                  unique identification of the feature. </entry>
+                </row>
+
+                <row>
+                  <entry>geometryType</entry>
+
+                  <entry>Metadata of the geometrical attribute that provides
+                  the default geometry of the feature.</entry>
+                </row>
+
+                <row>
+                  <entry>attributes</entry>
+
+                  <entry>Metadata of all other attributes</entry>
                 </row>
               </tbody>
             </tgroup>
           </table>
-
-          <para>Last but not least, you can define one or more style
-          definitions which should be used for rendering of the layer. You can
-          define formulas to determine which style should be used. The first
-          style which passes the formula will be applied for the
-          feature.</para>
-
-          <para>We also have to define the features.</para>
-
-          <xi:include href="../listing/ShapeInMemCountriesStyleInfo.xml"
-                      xmlns:xi="http://www.w3.org/2001/XInclude" />
 
           <para>This defines the identifier, geometry object and attributes
           for the feature.</para>
@@ -726,6 +751,22 @@
           relationships as defined in an entity-relationship model and can
           only be used in conjunction with the
           <code>HibernateLayer</code>.</para>
+
+          <para>Last but not least, you can define one or more named style
+          definitions which should be used for rendering of the layer. The
+          actual style that is being used by the client is determined in the
+          client configuration, but you predefine a number of styles (of type
+          <code>NamedStyleInfo</code>) here for later reference in the client
+          configuration. </para>
+
+          <para>Each style object is itself composed of a number of feature
+          styles (<code>FeatureStyleinfo</code>) and a label style
+          (<code>LabelStyleInfo</code>). You can define formulas to determine
+          which feature style should be used. The first style whose formula
+          passes will be applied for the feature.</para>
+
+          <xi:include href="../listing/ShapeInMemCountriesStyleInfo.xml"
+                      xmlns:xi="http://www.w3.org/2001/XInclude" />
 
           <section>
             <title>Validation</title>
@@ -2476,8 +2517,7 @@
       intermediate package (between "command" and the class name) and the
       class name itself. Some examples:</para>
 
-      <para>
-        <table>
+      <para><table>
           <title>Samples of command name resolution</title>
 
           <tgroup cols="2">
@@ -2525,11 +2565,13 @@
 
                 <entry>command.super.CommandDoIt</entry>
               </row>
+
               <row>
                 <entry>my.app.command.super.CommandSuperDoIt</entry>
 
                 <entry>command.super.CommandSuperDoIt</entry>
               </row>
+
               <row>
                 <entry>my.app.command.super.CommandDoItSuper</entry>
 
@@ -2537,8 +2579,7 @@
               </row>
             </tbody>
           </tgroup>
-        </table>
-      </para>
+        </table></para>
 
       <para>You have to include a line in your Spring configuration to scan
       class files for annotation to make the components available. For the
@@ -2585,8 +2626,7 @@
       <xi:include href="../listing/SpringSecurityDependency.xml"
                   xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-      <para>
-        <note>
+      <para><note>
           <para>When using a separate module for your commands and trying to
           run your project from eclipse, it is quite likely to have problems
           with your commands not being found. When checking the output
@@ -2599,8 +2639,7 @@
 
           <xi:include href="../listing/PreloadToPrepareScanning.xml"
                       xmlns:xi="http://www.w3.org/2001/XInclude" />
-        </note>
-      </para>
+        </note></para>
     </section>
   </chapter>
 

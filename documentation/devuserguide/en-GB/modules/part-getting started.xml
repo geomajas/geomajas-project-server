@@ -108,18 +108,15 @@ mvn gwt:run</programlisting>The "install" target will create a war file for
       <example>
         <title>Create eclipse project files</title>
 
-        <para><programlisting>mvn eclipse:eclipse gwt:eclipse</programlisting></para>
+        <para><programlisting>mvn eclipse:eclipse</programlisting></para>
       </example>
 
       <para>You can now open the project in eclipse.</para>
 
-      <para>For working with the GWT face, you may want to make use Google's
-      GWT Eclipse plug-in. Detailed instructions can be found at <ulink
-      url="http://code.google.com/eclipse/docs/download.html">
-      http://code.google.com/eclipse/docs/download.html</ulink>. The launch
-      configuration should already be created by the "gwt:eclipse" target in
-      the command above. It will install the dependent libraries in the lib
-      folder of the GWT war layout.</para>
+      <para>For working with the GWT face, you may want to make use of
+      Google's GWT Eclipse plug-in. Detailed instructions can be found at
+      <ulink url="http://code.google.com/eclipse/docs/download.html">
+      http://code.google.com/eclipse/docs/download.html</ulink>.</para>
 
       <para>After importing and building the GWT projects, make sure you
       convert them to GWT projects in the project properties dialog:</para>
@@ -138,7 +135,8 @@ mvn gwt:run</programlisting>The "install" target will create a war file for
       <para>Check the "Use Google Web Toolkit" checkbox. The GWT SDK can be
       configured by clicking on the " <code>Configure SDKs..."</code> link.
       After configuration, you should now be able to run the project as a GWT
-      Web application.</para>
+      Web application by right-clicking on the project and selecting <code>Run
+      as -&gt; Web Application</code>.</para>
     </section>
 
     <section>

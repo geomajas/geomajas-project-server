@@ -16,7 +16,14 @@
             mypackage/hibernate/layerRoads.xml
 			mypackage/hibernate/layerStructures.xml
 			mypackage/hibernate/layerOsm.xml
-        -->
+         -->
+
+        <!--
+            mypackage/geotools/applicationContext.xml
+            mypackage/geotools/layerRoads.xml
+			mypackage/geotools/layerStructures.xml
+			mypackage/geotools/layerOsm.xml
+         -->
         </param-value>
     </context-param>
 
@@ -30,7 +37,10 @@
 			org.opengis.filter.FilterFactory
 			org.geomajas.layer.hibernate.filter.ExtendedFilterFactory
 			org.springframework.transaction.config.TxNamespaceHandler
-			<!--  org.hibernatespatial.postgis.PostgisDialect -->			
+       <!--
+			org.hibernatespatial.postgis.PostgisDialect			
+			org.geotools.data.postgis.PostgisDataStoreFactory
+         -->
         </param-value>
     </context-param>
 

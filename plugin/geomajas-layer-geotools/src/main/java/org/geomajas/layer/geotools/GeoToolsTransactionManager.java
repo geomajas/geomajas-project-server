@@ -29,6 +29,8 @@ import org.geotools.data.Transaction;
 import org.geotools.feature.FeatureCollection;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionException;
 import org.springframework.transaction.support.AbstractPlatformTransactionManager;
@@ -41,6 +43,8 @@ import org.springframework.transaction.support.TransactionSynchronizationManager
  * @author Jan De Moerloose
  */
 public class GeoToolsTransactionManager extends AbstractPlatformTransactionManager {
+
+	private final Logger log = LoggerFactory.getLogger(AbstractPlatformTransactionManager.class);
 
 	/**
 	 * Constructs a new GeoToolsTransactionManager.
@@ -145,7 +149,7 @@ public class GeoToolsTransactionManager extends AbstractPlatformTransactionManag
 		try {
 			tx.commit();
 		} catch (IOException e) {
-
+	   		log.warn(e.getMessage(), e);
 		}
 	}
 
@@ -156,7 +160,7 @@ public class GeoToolsTransactionManager extends AbstractPlatformTransactionManag
 		try {
 			tx.rollback();
 		} catch (IOException e) {
-
+			log.warn(e.getMessage(), e);
 		}
 	}
 
@@ -180,7 +184,7 @@ public class GeoToolsTransactionManager extends AbstractPlatformTransactionManag
 		private GeoToolsTransactionHolder holder;
 
 		private boolean newTransactionHolder;
-
+		
 		private boolean rollbackOnly;
 
 		public GeoToolsTransactionHolder getTransactionHolder() {

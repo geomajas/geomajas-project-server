@@ -32,7 +32,6 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 
 
 	<bean name="roadsInfo" class="org.geomajas.configuration.VectorLayerInfo">
-		<property name="id" value="roads" />
 		<property name="layerType" value="MULTILINESTRING" />
 		<property name="crs" value="EPSG:900913" />
 		<property name="maxExtent">
@@ -46,41 +45,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		<property name="featureInfo" ref="roadsFeatureInfo" />
 		<property name="namedStyleInfos">
 			<list>
-				<bean class="org.geomajas.configuration.NamedStyleInfo" name="roadsStyleInfo">
-					<property name="featureStyles">
-						<list>
-							<bean class="org.geomajas.configuration.FeatureStyleInfo">
-								<property name="id" value="1" />
-								<property name="name" value="Roads" />
-								<property name="fillColor" value="#FFFFFF" />
-								<property name="fillOpacity" value="0" />
-								<property name="strokeColor" value="#998811" />
-								<property name="strokeOpacity" value="1" />
-								<property name="strokeWidth" value="4" />
-							</bean>
-						</list>
-					</property>
-					<property name="labelStyle">
-						<bean class="org.geomajas.configuration.LabelStyleInfo">
-							<property name="labelAttributeName" value="id" />
-							<property name="fontStyle">
-								<bean class="org.geomajas.configuration.FontStyleInfo">
-									<property name="color" value="#998811" />
-									<property name="opacity" value="1" />
-								</bean>
-							</property>
-							<property name="backgroundStyle">
-								<bean class="org.geomajas.configuration.FeatureStyleInfo">
-									<property name="fillColor" value="#000000" />
-									<property name="fillOpacity" value=".7" />
-									<property name="strokeColor" value="#998811" />
-									<property name="strokeOpacity" value="1" />
-									<property name="strokeWidth" value="1" />
-								</bean>
-							</property>
-						</bean>
-					</property>
-				</bean>
+				<ref bean="roadsStyleInfo" />
 			</list>
 		</property>
 	</bean>
@@ -96,7 +61,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		</property>
 		<property name="geometryType">
 			<bean class="org.geomajas.configuration.GeometryAttributeInfo">
-				<property name="name" value="geometry" />
+				<property name="name" value="the_geom" />
 				<property name="editable" value="true" />
 			</bean>
 		</property>
@@ -155,6 +120,41 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 					<property name="type" value="URL" />
 				</bean>
 			</list>
+		</property>
+	</bean>
+
+	<bean class="org.geomajas.configuration.NamedStyleInfo" name="roadsStyleInfo">
+		<property name="featureStyles">
+			<list>
+				<bean class="org.geomajas.configuration.FeatureStyleInfo">
+					<property name="name" value="Roads" />
+					<property name="fillColor" value="#FFFFFF" />
+					<property name="fillOpacity" value="0" />
+					<property name="strokeColor" value="#998811" />
+					<property name="strokeOpacity" value="1" />
+					<property name="strokeWidth" value="4" />
+				</bean>
+			</list>
+		</property>
+		<property name="labelStyle">
+			<bean class="org.geomajas.configuration.LabelStyleInfo">
+				<property name="labelAttributeName" value="id" />
+				<property name="fontStyle">
+					<bean class="org.geomajas.configuration.FontStyleInfo">
+						<property name="color" value="#998811" />
+						<property name="opacity" value="1" />
+					</bean>
+				</property>
+				<property name="backgroundStyle">
+					<bean class="org.geomajas.configuration.FeatureStyleInfo">
+						<property name="fillColor" value="#000000" />
+						<property name="fillOpacity" value=".7" />
+						<property name="strokeColor" value="#998811" />
+						<property name="strokeOpacity" value="1" />
+						<property name="strokeWidth" value="1" />
+					</bean>
+				</property>
+			</bean>
 		</property>
 	</bean>
 
