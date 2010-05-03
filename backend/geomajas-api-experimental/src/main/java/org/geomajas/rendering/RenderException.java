@@ -31,7 +31,9 @@ import org.geomajas.global.GeomajasException;
  *
  * @author Joachim Van der Auwera
  * @since 1.6.0
+ * @deprecated should not be used as this is "experimental-api" was mistakingly marked as @Api
  */
+@Deprecated
 @Api(allMethods = true)
 public class RenderException extends GeomajasException {
 
