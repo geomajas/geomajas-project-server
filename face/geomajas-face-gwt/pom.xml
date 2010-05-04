@@ -1,8 +1,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
 		<groupId>org.geomajas</groupId>
-		<artifactId>geomajas</artifactId>
-		<version>1.7.0-SNAPSHOT</version>
+		<artifactId>geomajas-parent</artifactId>
+		<version>1.0.0</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas</groupId>
@@ -11,8 +11,51 @@
 	<packaging>pom</packaging>
 	<name>Geomajas gwt face</name>
 
+	<developers>
+		<developer>
+			<id>pieterdg</id>
+			<name>Pieter De Graef</name>
+			<email>pieter.degraef@geosparc.com</email>
+			<roles>
+				<role>Module maintainer</role>
+				<role>Architect</role>
+				<role>Lead Developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>jandm</id>
+			<name>Jan De Moerloose</name>
+			<email>jan.demoerloose@geosparc.com</email>
+			<roles>
+				<role>Architect</role>
+				<role>Lead Developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>joachimvda</id>
+			<name>Joachim Van der Auwera</name>
+			<email>joachim@geosparc.com</email>
+			<roles>
+				<role>Architect</role>
+				<role>Lead Developer</role>
+			</roles>
+		</developer>
+	</developers>
+	
 	<modules>
 		<module>geomajas-gwt-client</module>
 	</modules>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-dep</artifactId>
+				<version>1.10.18</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 
 </project>

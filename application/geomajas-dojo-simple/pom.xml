@@ -5,8 +5,38 @@
 	<version>1.7.0-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>Geomajas simple dojo application demo</name>
-	<url>http://files.geomajas.org/maven/trunk/dojo-simple</url>	
+	<url>http://files.geomajas.org/maven/trunk/application/dojo-simple</url>	
 
+	<scm>
+		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/application/geomajas-dojo-simple</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/application/geomajas-dojo-simple</developerConnection>
+		<url>https://svn.geomajas.org/majas/trunk/application/geomajas-dojo-simple</url>
+	</scm>
+
+	<organization>
+		<name>Geosparc</name>
+		<url>http://www.geosparc.com</url>
+	</organization>
+	<mailingLists>
+		<mailingList>
+			<name>DEV</name>
+			<post>mailto:majas-dev@geomajas.org</post>
+			<subscribe>http://lists.geomajas.org/mailman/listinfo/majas-dev</subscribe>
+			<unsubscribe>http://lists.geomajas.org/mailman/listinfo/majas-dev</unsubscribe>
+			<archive>http://lists.geomajas.org/pipermail/majas-dev/</archive>
+		</mailingList>
+	</mailingLists>
+	<licenses>
+		<license>
+			<name>GNU Affero General Public License, Version 3</name>
+			<url>http://www.gnu.org/licenses/agpl-3.0.html</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+	<issueManagement>
+		<system>JIRA</system>
+		<url>http://jira.geomajas.org</url>
+	</issueManagement>
     <distributionManagement>
         <repository>
             <id>Geomajas repository</id>
@@ -20,6 +50,36 @@
         </site>
     </distributionManagement>
 
+	<developers>
+		<developer>
+			<id>pieterdg</id>
+			<name>Pieter De Graef</name>
+			<email>pieter.degraef@geosparc.com</email>
+			<roles>
+				<role>Module maintainer</role>
+				<role>Architect</role>
+				<role>Lead Developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>jandm</id>
+			<name>Jan De Moerloose</name>
+			<email>jan.demoerloose@geosparc.com</email>
+			<roles>
+				<role>Architect</role>
+				<role>Lead Developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>joachimvda</id>
+			<name>Joachim Van der Auwera</name>
+			<email>joachim@geosparc.com</email>
+			<roles>
+				<role>Architect</role>
+				<role>Lead Developer</role>
+			</roles>
+		</developer>
+	</developers>
 
 	<dependencies> 		
 		<!-- Geomajas dependencies -->
@@ -79,7 +139,6 @@
             <url>http://maven.geomajas.org/</url>
         </repository>
     </repositories>
-
     <pluginRepositories>
         <pluginRepository>
             <id>Geomajas</id>
@@ -152,11 +211,11 @@
 	</profiles>
 
 	<properties>
-		<geomajas-face-dojo-version>1.7.0-SNAPSHOT</geomajas-face-dojo-version>
+		<geomajas-face-dojo-version>1.5.6-SNAPSHOT</geomajas-face-dojo-version>
 		<geomajas-layer-geotools-version>1.6.0</geomajas-layer-geotools-version>
 		<geomajas-layer-openstreetmap-version>1.6.0</geomajas-layer-openstreetmap-version>
 		<geomajas-layer-wms-version>1.6.0</geomajas-layer-wms-version>
-		<geomajas-plugin-printing-version>1.7.0-SNAPSHOT</geomajas-plugin-printing-version>
+		<geomajas-plugin-printing-version>1.5.6-SNAPSHOT</geomajas-plugin-printing-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 

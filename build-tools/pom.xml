@@ -2,7 +2,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas</groupId>
 	<artifactId>geomajas-build-tools</artifactId>
-	<version>1.0.0</version>
+	<version>dummy</version>
 	<packaging>pom</packaging>
 	<name>Geomajas build tools</name>
 
@@ -11,6 +11,8 @@
 		<module>geomajas-maven-dojo</module>
 		<module>geomajas-maven-plugin</module>
 		<module>geomajas-gwt-archetype</module>
+		<module>geomajas-parent</module>
+		<module>geomajas-dep</module>
 	</modules>
 
 </project>

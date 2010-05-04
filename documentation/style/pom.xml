@@ -2,17 +2,32 @@
 		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-	<parent>
-		<groupId>org.geomajas.documentation</groupId>
-		<artifactId>docbook</artifactId>
-		<version>1.7.0-SNAPSHOT</version>
-	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.documentation</groupId>
 	<artifactId>geomajas-jdocbook-style</artifactId>
+	<version>1.0.0</version>
 	<packaging>jdocbook-style</packaging>
 	<name>JDocBook styles for User Guide for Developers</name>
 
+	<scm>
+		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/documentation</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/documentation</developerConnection>
+		<url>https://svn.geomajas.org/majas/trunk/documentation</url>
+	</scm>
+
+	<organization>
+		<name>Geosparc</name>
+		<url>http://www.geosparc.com</url>
+	</organization>
+	<mailingLists>
+		<mailingList>
+			<name>DEV</name>
+			<post>mailto:majas-dev@geomajas.org</post>
+			<subscribe>http://lists.geomajas.org/mailman/listinfo/majas-dev</subscribe>
+			<unsubscribe>http://lists.geomajas.org/mailman/listinfo/majas-dev</unsubscribe>
+			<archive>http://lists.geomajas.org/pipermail/majas-dev/</archive>
+		</mailingList>
+	</mailingLists>
 	<licenses>
 		<license>
 			<name>GNU General Public License, Version 3</name>
@@ -20,6 +35,44 @@
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
+	<issueManagement>
+		<system>JIRA</system>
+		<url>http://jira.geomajas.org</url>
+	</issueManagement>
+	<distributionManagement>
+		<repository>
+			<id>Geomajas repository</id>
+			<name>Mapping with Asynchronous Java and SVG</name>
+			<url>file:/var/www/maven.geomajas.org/htdocs/repository</url>
+		</repository>
+		<site>
+			<id>Geomajas project site</id>
+			<name>Mapping with Asynchronous Java and SVG</name>
+			<url>file:/var/www/files.geomajas.org/htdocs/maven/trunk/geomajas</url>
+		</site>
+	</distributionManagement>
+
+	<repositories>
+		<repository>
+			<id>Geomajas</id>
+			<name>Geomajas repository</name>
+			<url>http://maven.geomajas.org/</url>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>Geomajas</id>
+			<name>Geomajas repository</name>
+			<url>http://maven.geomajas.org/</url>
+		</pluginRepository>
+		<pluginRepository>
+			<id>repository.jboss.org</id>
+			<url>http://repository.jboss.org/maven2</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
 	
 	<build>
 		<plugins>
@@ -31,22 +84,5 @@
 			</plugin>
 		</plugins>
 	</build>
-
-	<pluginRepositories>
-		<pluginRepository>
-			<id>repository.jboss.org</id>
-			<url>http://repository.jboss.org/maven2</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</pluginRepository>
-		<pluginRepository>
-			<id>snapshots.jboss.org</id>
-			<url>http://snapshots.jboss.org/maven2</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</pluginRepository>
-	</pluginRepositories>
 
 </project>

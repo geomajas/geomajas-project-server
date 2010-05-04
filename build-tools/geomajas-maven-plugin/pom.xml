@@ -20,6 +20,17 @@
 		</site>
 	</distributionManagement>
 
+	<developers>
+		<developer>
+			<id>joachimvda</id>
+			<name>Joachim Van der Auwera</name>
+			<email>joachim@geosparc.com</email>
+			<roles>
+				<role>Module maintainer</role>
+			</roles>
+		</developer>
+	</developers>
+	
 	<dependencies>
 		<dependency>
 			<groupId>org.apache.maven</groupId>

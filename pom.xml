@@ -2,9 +2,18 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas</groupId>
 	<artifactId>geomajas-all</artifactId>
-	<version>1.7.0-SNAPSHOT</version>
+	<version>dummy</version>
 	<packaging>pom</packaging>
 	<url>http://files.geomajas.org/maven/trunk</url>
+	<name>Grouping of all Geomajas modules</name>
+
+	<modules>
+		<module>backend</module>
+		<module>face</module>
+		<module>plugin</module>
+		<module>application</module>
+		<module>test</module>
+	</modules>
 
 	<build>
 		<finalName>geomajas</finalName>
@@ -19,15 +28,6 @@
 			</plugin>
 		</plugins>
 	</build>
-
-	<name>Grouping of all Geomajas modules</name>
-	<modules>
-		<module>backend</module>
-		<module>face</module>
-		<module>plugin</module>
-		<module>application</module>
-		<module>test</module>
-	</modules>
 
 	<profiles>
 		<profile>
@@ -82,7 +82,7 @@
 	<licenses>
 		<license>
 			<name>GNU Affero General Public License, Version 3</name>
-			<url>http://www.fsf.org/licensing/licenses/agpl-3.0.html</url>
+			<url>http://www.gnu.org/licenses/agpl-3.0.html</url>
 			<distribution>repo</distribution>
 		</license>
 	</licenses>

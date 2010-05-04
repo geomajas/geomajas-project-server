@@ -185,7 +185,7 @@
 		<pluginRepository>
 			<id>Geomajas</id>
 			<name>Geomajas repository</name>
-			<url>http://apps.geomajas.org/nexus/content/groups/public</url>
+			<url>http://maven.geomajas.org/</url>
 		</pluginRepository>
 	</pluginRepositories>
 

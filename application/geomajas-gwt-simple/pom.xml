@@ -5,8 +5,38 @@
 	<version>1.7.0-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>Geomajas simple gwt application demo</name>
-	<url>http://files.geomajas.org/maven/trunk/gwt-simple</url>
+	<url>http://files.geomajas.org/maven/trunk/application/gwt-simple</url>
 
+	<scm>
+		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/application/geomajas-gwt-simple</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/application/geomajas-gwt-simple</developerConnection>
+		<url>https://svn.geomajas.org/majas/trunk/application/geomajas-gwt-simple</url>
+	</scm>
+
+	<organization>
+		<name>Geosparc</name>
+		<url>http://www.geosparc.com</url>
+	</organization>
+	<mailingLists>
+		<mailingList>
+			<name>DEV</name>
+			<post>mailto:majas-dev@geomajas.org</post>
+			<subscribe>http://lists.geomajas.org/mailman/listinfo/majas-dev</subscribe>
+			<unsubscribe>http://lists.geomajas.org/mailman/listinfo/majas-dev</unsubscribe>
+			<archive>http://lists.geomajas.org/pipermail/majas-dev/</archive>
+		</mailingList>
+	</mailingLists>
+	<licenses>
+		<license>
+			<name>GNU Affero General Public License, Version 3</name>
+			<url>http://www.gnu.org/licenses/agpl-3.0.html</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+	<issueManagement>
+		<system>JIRA</system>
+		<url>http://jira.geomajas.org</url>
+	</issueManagement>
 	<distributionManagement>
 		<repository>
 			<id>Geomajas repository</id>
@@ -19,6 +49,37 @@
 			<url>file:/var/www/files.geomajas.org/htdocs/maven/trunk/geomajas-gwt-simple</url>
 		</site>
 	</distributionManagement>
+
+	<developers>
+		<developer>
+			<id>pieterdg</id>
+			<name>Pieter De Graef</name>
+			<email>pieter.degraef@geosparc.com</email>
+			<roles>
+				<role>Module maintainer</role>
+				<role>Architect</role>
+				<role>Lead Developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>jandm</id>
+			<name>Jan De Moerloose</name>
+			<email>jan.demoerloose@geosparc.com</email>
+			<roles>
+				<role>Architect</role>
+				<role>Lead Developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>joachimvda</id>
+			<name>Joachim Van der Auwera</name>
+			<email>joachim@geosparc.com</email>
+			<roles>
+				<role>Architect</role>
+				<role>Lead Developer</role>
+			</roles>
+		</developer>
+	</developers>
 
 	<dependencies>
 		<!-- Geomajas dependencies -->
@@ -223,7 +284,7 @@
 		<pluginRepository>
 			<id>Geomajas</id>
 			<name>Geomajas repository</name>
-			<url>http://apps.geomajas.org/nexus/content/groups/public</url>
+			<url>http://maven.geomajas.org/</url>
 		</pluginRepository>
 	</pluginRepositories>
 
