@@ -10,7 +10,6 @@
 		<module>geomajas-checkstyle</module>
 		<module>geomajas-maven-dojo</module>
 		<module>geomajas-maven-plugin</module>
-		<module>geomajas-gwt-archetype</module>
 		<module>geomajas-parent</module>
 		<module>geomajas-dep</module>
 	</modules>

@@ -44,6 +44,8 @@
 	
 	<modules>
 		<module>geomajas-gwt-client</module>
+		<module>geomajas-gwt-archetype</module>
+		<module>documentation</module>
 	</modules>
 
 	<dependencyManagement>
