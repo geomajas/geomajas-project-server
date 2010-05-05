@@ -27,6 +27,7 @@ import org.geomajas.global.Api;
 
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
+import org.geomajas.global.UserImplemented;
 
 /**
  * <p>
@@ -37,6 +38,7 @@ import com.google.gwt.event.shared.GwtEvent;
  * @since 1.6.0
  */
 @Api(allMethods = true)
+@UserImplemented
 public interface ToolbarActionHandler extends EventHandler {
 
 	GwtEvent.Type<ToolbarActionHandler> TYPE = new GwtEvent.Type<ToolbarActionHandler>();
