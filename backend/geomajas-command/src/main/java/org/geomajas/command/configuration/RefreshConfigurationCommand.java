@@ -23,8 +23,10 @@
 
 package org.geomajas.command.configuration;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Enumeration;
 
 import org.geomajas.command.Command;
 import org.geomajas.command.dto.RefreshConfigurationRequest;
@@ -58,6 +60,17 @@ public class RefreshConfigurationCommand implements Command<RefreshConfiguration
 			if (request.getConfigLocations() != null) {
 				ArrayList<String> configLocations = new ArrayList<String>();
 				configLocations.add("org/geomajas/spring/geomajasContext.xml");
+
+				ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+				if (null == classLoader) {
+					classLoader = this.getClass().getClassLoader();
+				}
+				Enumeration<URL> urls = classLoader.getResources("META-INF/geomajasContext.xml");
+				while (urls.hasMoreElements()) {
+					URL url = urls.nextElement();
+					configLocations.add(url.toExternalForm());
+				}
+				
 				configLocations.addAll(Arrays.asList(request.getConfigLocations()));
 				try {
 					rollback.refresh(configLocations.toArray(new String[0]));

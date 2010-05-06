@@ -28,6 +28,10 @@ import javax.servlet.ServletContextListener;
 
 import org.geomajas.spring.ReconfigurableClassPathApplicationContext;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.Enumeration;
+
 /**
  * Initialise the servlet context. This assures the Spring application context is created and stored in the servlet
  * context. The Geomajas configuration is also read and also stored in the servlet context.
@@ -54,9 +58,24 @@ public class GeomajasContextListener implements ServletContextListener {
 
 		// create Spring context
 		String configLocation = "org/geomajas/spring/geomajasContext.xml";
+
+		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+		if (null == classLoader) {
+			classLoader = this.getClass().getClassLoader();
+		}
+		try {
+			Enumeration<URL> urls = classLoader.getResources("META-INF/geomajasContext.xml");
+			while (urls.hasMoreElements()) {
+				URL url = urls.nextElement();
+				configLocation += ',' + url.toExternalForm();
+		}
+		} catch (IOException ioe) {
+			throw new RuntimeException(ioe);
+		}
+
 		String additionalLocations = servletContext.getInitParameter(CONFIG_LOCATION_PARAMETER);
 		if (additionalLocations != null) {
-			configLocation += "," + additionalLocations;
+			configLocation += ',' + additionalLocations;
 		}
 		ReconfigurableClassPathApplicationContext applicationContext = new ReconfigurableClassPathApplicationContext(
 				configLocation);

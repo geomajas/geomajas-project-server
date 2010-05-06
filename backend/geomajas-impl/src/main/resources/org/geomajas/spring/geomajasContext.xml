@@ -31,6 +31,34 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd"		
 		>
 
+	<bean class="org.geomajas.global.PluginInfo">
+		<property name="version">
+			<bean class="org.geomajas.global.PluginVersionInfo">
+				<property name="name" value="Geomajas" />
+				<property name="version" value="${project.version}" />
+			</bean>
+		</property>
+		<property name="backendVersion" value="${project.version}" />
+		<property name="copyrightInfo">
+			<list>
+				<bean class="org.geomajas.global.CopyrightInfo">
+					<property name="key" value="Geomajas"/>
+					<property name="copyright" value="(c) 2008-2010 Geosparc nv"/>
+					<property name="licenseName" value="GNU Affero General Public License, Version 3"/>
+					<property name="licenseUrl" value="http://www.gnu.org/licenses/agpl-3.0.html"/>
+				</bean>
+				<!--
+				<bean class="org.geomajas.global.CopyrightInfo">
+					<property name="key" value=""/>
+					<property name="copyright" value=""/>
+					<property name="licenseName" value=""/>
+					<property name="licenseUrl" value=""/>
+				</bean>
+				-->
+			</list>
+		</property>
+	</bean>
+
 	<!-- default security configuration - should be overwritten to make something accessible -->
 	<bean name="security.securityInfo" class="org.geomajas.security.SecurityInfo">
 		<property name="loopAllServices" value="false"/>
