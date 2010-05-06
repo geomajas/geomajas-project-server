@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE part PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
 "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
 <!--
   ~ This file is part of Geomajas, a component framework for building
@@ -23,123 +23,10 @@
   ~ You should have received a copy of the GNU Affero General Public License
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
-<part id="part-dojo-face">
-  <title>dojo face</title>
-
-  <chapter id="chapter-dojo-configuration">
-    <title>dojo Configuration</title>
-
-    <para>For the dojo face to function properly, it is important that your
-    web.xml contains the references to the necessary information and servlets.
-    Let's dissect an example web.xml file.</para>
-
-    <xi:include href="../../../../../documentation/devuserguide/en-GB/listing/WebXmlDojoPart1.xml"
-                xmlns:xi="http://www.w3.org/2001/XInclude" />
-
-    <para>The file starts with the reference and configuration of the Geomajas
-    context listener. This assures the application configuration is available
-    for Geomajas and indicates the location of the additional configuration
-    files.</para>
-
-    <xi:include href="../../../../../documentation/devuserguide/en-GB/listing/WebXmlDojoPart2.xml"
-                xmlns:xi="http://www.w3.org/2001/XInclude" />
-
-    <para>Next up is the definition of the actual servlets which are needed.
-    The order in which they need to be initialised is also specified.</para>
-
-    <itemizedlist>
-      <listitem>
-        <para><code>PdfServlet</code>: this is used to produce printable maps
-        in PDF format.</para>
-      </listitem>
-
-      <listitem>
-        <para><code>JsonServlet</code>: the servlet which allows you to
-        execute commands by sending the request as JSON and which returns the
-        result as JSON as well.</para>
-      </listitem>
-
-      <listitem>
-        <para><code>ResourceServlet</code>: this allows you to get the
-        Geomajas and dojo script files assuring that they are properly cached
-        and gzip compressed.</para>
-      </listitem>
-    </itemizedlist>
-
-    <xi:include href="../../../../../documentation/devuserguide/en-GB/listing/WebXmlDojoPart3.xml"
-                xmlns:xi="http://www.w3.org/2001/XInclude" />
-
-    <para>To finish, the servlet mappings need to be defined. You don't really
-    have a lot of choice here, as the client side JavaScript expects these
-    values.</para>
-
-    <para>In many cases you also want to do some client side configurations.
-    This can be done in one of two ways.</para>
-
-    <para>You can include a "geomajas-constants.js" file in your code (the
-    name of the file can differ).</para>
-
-    <xi:include href="../../../../../documentation/devuserguide/en-GB/listing/GeomajasConstantsJs.xml"
-                xmlns:xi="http://www.w3.org/2001/XInclude" />
-
-    <para>You can override some configurations in your html file, on the
-    script tags in head..</para>
-
-    <xi:include href="../../../../../documentation/devuserguide/en-GB/listing/HtmlIncludeConfig.xml"
-                xmlns:xi="http://www.w3.org/2001/XInclude" />
-
-    <section>
-      <title>Using Google maps raster layer</title>
-
-      <para>To use the Google maps raster layer in the dojo face, you have to
-      include the Google maps API files in your application to allow Geomajas
-      to use those. This can be done using code like the following</para>
-
-      <example>
-        <title>Google API inclusion</title>
-
-        <programlisting>&lt;script type="text/javascript"
-    src="http://maps.google.com/maps?file=api&amp;amp;v=2&amp;amp;sensor=false&amp;amp;key=ABCDEF"&gt;
-&lt;/script&gt;</programlisting>
-      </example>
-
-      <para>or</para>
-
-      <example>
-        <title>Google API inclusion using Google loader</title>
-
-        <programlisting>&lt;script type="text/javascript" src="http://www.google.com/jsapi?key=ABCDEFG"&gt;
-&lt;/script&gt;
-&lt;script type="text/javascript"&gt;
-    google.load("maps", "2.95");
-&lt;/script&gt;</programlisting>
-      </example>
-
-      <para>Note that you do need to have a Google maps key ("ABCDEF" is used
-      in the example above) if you want to deploy your site (it should work
-      without when running your tests on "localhost").</para>
-
-      <para>In your layer, you can determine the kind of layer by setting the
-      "satellite" property. When this is true, satellite images will be
-      displayed. When this is false, the normal Google maps images are used
-      (street map).</para>
-    </section>
-  </chapter>
-
-  <chapter id="chapter-dojo-widgets">
-    <title>dojo Widgets</title>
-
-    <para>Each widget needs a list of parameters, use case, information about
-    the commands it uses, how to customize, list of topics it consumes and
-    provides.</para>
-
-    <para>TODO.....</para>
-  </chapter>
-
-  <chapter>
+<chapter>
     <title>dojo example application</title>
 
-    <sect1>
+    <section>
       <title>Project layout</title>
 
       <para>For simple applications which don't have any custom JavaScript
@@ -246,9 +133,9 @@
           <para>uncompressed build: <code>mvn -Pnoshrink install</code></para>
         </listitem>
       </itemizedlist>
-    </sect1>
+    </section>
 
-    <sect1>
+    <section>
       <title>Maven dojo plug-in</title>
 
       <para>The Maven dojo plug-in is capable of executing a custom dojo build
@@ -354,6 +241,5 @@
       generated in the folder
       <code>&lt;projectdir&gt;/target/generated-resources/dojo</code>, which
       is added as a resource folder to the Maven project.</para>
-    </sect1>
-  </chapter>
-</part>
+    </section>
+</chapter>

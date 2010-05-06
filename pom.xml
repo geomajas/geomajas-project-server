@@ -13,6 +13,8 @@
 		<module>plugin</module>
 		<module>application</module>
 		<module>test</module>
+		<module>build-tools</module>
+		<module>documentation</module>
 	</modules>
 
 	<build>

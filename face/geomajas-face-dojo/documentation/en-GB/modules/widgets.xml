@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE part PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
 "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
 <!--
   ~ This file is part of Geomajas, a component framework for building
@@ -23,13 +23,12 @@
   ~ You should have received a copy of the GNU Affero General Public License
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
-<part id="part-introduction">
-  <title>Introduction</title>
+<chapter id="chapter-dojo-widgets">
+    <title>dojo Widgets</title>
 
-  <chapter>
-    <title>Using Geomajas</title>
+    <para>Each widget needs a list of parameters, use case, information about
+    the commands it uses, how to customize, list of topics it consumes and
+    provides.</para>
 
-    <para></para>
-  </chapter>
-
-</part>
+    <para>TODO.....</para>
+</chapter>
