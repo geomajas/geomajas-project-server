@@ -205,56 +205,56 @@
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-api</artifactId>
-				<version>1.7.0-SNAPSHOT</version>
+				<version>${back-end-version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-api</artifactId>
 				<classifier>sources</classifier>
-				<version>1.7.0-SNAPSHOT</version>
+				<version>${back-end-version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-api-experimental</artifactId>
-				<version>1.7.0-SNAPSHOT</version>
+				<version>${back-end-version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-api-experimental</artifactId>
 				<classifier>sources</classifier>
-				<version>1.7.0-SNAPSHOT</version>
+				<version>${back-end-version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-impl</artifactId>
-				<version>1.7.0-SNAPSHOT</version>
+				<version>${back-end-version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-impl</artifactId>
 				<classifier>sources</classifier>
-				<version>1.7.0-SNAPSHOT</version>
+				<version>${back-end-version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-common-servlet</artifactId>
-				<version>1.7.0-SNAPSHOT</version>
+				<version>${back-end-version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-testdata</artifactId>
-				<version>1.7.0-SNAPSHOT</version>
+				<version>${back-end-version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-command</artifactId>
-				<version>1.7.0-SNAPSHOT</version>
+				<version>${back-end-version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-command</artifactId>
 				<classifier>sources</classifier>
-				<version>1.7.0-SNAPSHOT</version>
+				<version>${back-end-version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.dojo</groupId>
@@ -533,6 +533,7 @@
 	</dependencyManagement>
 
 	<properties>
+		<back-end-version>1.7.0-SNAPSHOT</back-end-version>
 		<geotools-version>2.5.8</geotools-version>
 		<gwt-version>2.0.3</gwt-version>
 		<smartgwt-version>2.1</smartgwt-version>
