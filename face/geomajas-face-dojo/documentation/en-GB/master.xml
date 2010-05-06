@@ -47,4 +47,7 @@
 	<xi:include href="modules/part-introduction.xml"
 				xmlns:xi="http://www.w3.org/2001/XInclude"/>
 	
+	<xi:include href="modules/part-face-dojo.xml"
+				xmlns:xi="http://www.w3.org/2001/XInclude"/>
+
 </book>
