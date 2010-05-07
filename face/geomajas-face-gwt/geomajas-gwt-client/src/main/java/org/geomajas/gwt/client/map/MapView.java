@@ -62,7 +62,7 @@ public class MapView {
 		/** Zoom exactly to the new scale. */
 		EXACT,
 		/**
-		 * Zoom to a scale level that is different from the current (lower or heigher according to the new scale, only
+		 * Zoom to a scale level that is different from the current (lower or higher according to the new scale, only
 		 * if allowed of course).
 		 */
 		LEVEL_CHANGE,
@@ -506,7 +506,7 @@ public class MapView {
 	 * @return snapped scale
 	 */
 	private double snapToResolution(double scale, ZoomOption option) {
-		// clip upperbounds
+		// clip upper bounds
 		double allowedScale = limitScale(scale);
 		if (resolutions != null) {
 			IndexRange indexes = getResolutionRange();
