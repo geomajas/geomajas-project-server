@@ -106,7 +106,7 @@ public abstract class AbstractLayer<T extends ClientLayerInfo> implements Layer<
 	public void updateShowing() {
 		double scale = mapModel.getMapView().getCurrentScale();
 		if (visible) {
-			if (scale >= layerInfo.getViewScaleMin() && scale < layerInfo.getViewScaleMax()) {
+			if (scale >= layerInfo.getViewScaleMin() && scale <= layerInfo.getViewScaleMax()) {
 				showing = true;
 			} else {
 				showing = false;
