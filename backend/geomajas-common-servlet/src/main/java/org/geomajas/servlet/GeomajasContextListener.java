@@ -68,7 +68,7 @@ public class GeomajasContextListener implements ServletContextListener {
 			while (urls.hasMoreElements()) {
 				URL url = urls.nextElement();
 				configLocation += ',' + url.toExternalForm();
-		}
+			}
 		} catch (IOException ioe) {
 			throw new RuntimeException(ioe);
 		}
