@@ -49,6 +49,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
 
+import javax.annotation.PostConstruct;
+
 /**
  * Layer for displaying OpenStreetMap images.
  * 
@@ -109,12 +111,18 @@ public class OsmLayer implements RasterLayer {
 
 	public void setLayerInfo(RasterLayerInfo layerInfo) throws LayerException {
 		this.layerInfo = layerInfo;
-		crs = configurationService.getCrs("EPSG:900913"); // we overrule the declared crs, always use mercator/google
-		tileWidth = layerInfo.getTileWidth();
-		tileHeight = layerInfo.getTileHeight();
-		maxWidth = layerInfo.getMaxExtent().getWidth();
-		maxHeight = layerInfo.getMaxExtent().getHeight();
-		this.calculatePredefinedResolutions();
+	}
+
+	@PostConstruct
+	private void postConstruct() throws Exception {
+		if (null != layerInfo) {
+			crs = geoService.getCrs("EPSG:900913"); // we overrule the declared crs, always use mercator/google
+			tileWidth = layerInfo.getTileWidth();
+			tileHeight = layerInfo.getTileHeight();
+			maxWidth = layerInfo.getMaxExtent().getWidth();
+			maxHeight = layerInfo.getMaxExtent().getHeight();
+			this.calculatePredefinedResolutions();
+		}
 	}
 
 	public List<RasterTile> paint(CoordinateReferenceSystem boundsCrs, Envelope bounds, double scale)
