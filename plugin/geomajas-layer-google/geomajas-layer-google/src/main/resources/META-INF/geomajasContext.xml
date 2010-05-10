@@ -40,12 +40,14 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		</property>
 		<property name="backendVersion" value="1.6.0" />
 		<property name="copyrightInfo">
-			<bean class="org.geomajas.global.CopyrightInfo">
-				<property name="key" value="Geomajas"/>
-				<property name="copyright" value="(c) 2008-2010 Geosparc nv"/>
-				<property name="licenseName" value="GNU Affero General Public License, Version 3"/>
-				<property name="licenseUrl" value="http://www.gnu.org/licenses/agpl-3.0.html"/>
-			</bean>
+			<list>
+				<bean class="org.geomajas.global.CopyrightInfo">
+					<property name="key" value="Geomajas"/>
+					<property name="copyright" value="(c) 2008-2010 Geosparc nv"/>
+					<property name="licenseName" value="GNU Affero General Public License, Version 3"/>
+					<property name="licenseUrl" value="http://www.gnu.org/licenses/agpl-3.0.html"/>
+				</bean>
+			</list>
 		</property>
 	</bean>
 
