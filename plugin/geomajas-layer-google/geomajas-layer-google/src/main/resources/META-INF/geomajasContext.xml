@@ -46,14 +46,6 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 				<property name="licenseName" value="GNU Affero General Public License, Version 3"/>
 				<property name="licenseUrl" value="http://www.gnu.org/licenses/agpl-3.0.html"/>
 			</bean>
-			<!--
-			<bean class="org.geomajas.global.CopyrightInfo">
-				<property name="key" value=""/>
-				<property name="copyright" value=""/>
-				<property name="licenseName" value=""/>
-				<property name="licenseUrl" value=""/>
-			</bean>
-			-->
 		</property>
 	</bean>
 
