@@ -116,6 +116,25 @@
 
 	</dependencies>
 
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>META-INF/geomajasContext.xml</include>
+				</includes>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>false</filtering>
+				<excludes>
+					<exclude>META-INF/geomajasContext.xml</exclude>
+				</excludes>
+			</resource>
+		</resources>
+	</build>
+	
 	<properties>
 		<geomajas-backend-version>1.7.0-SNAPSHOT</geomajas-backend-version>
 		<geomajas-layer-hibernate-version>1.6.0</geomajas-layer-hibernate-version>
