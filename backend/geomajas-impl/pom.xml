@@ -132,6 +132,25 @@
 		</dependency>
 	</dependencies>
 
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>**/geomajasContext.xml</include>
+				</includes>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>false</filtering>
+				<excludes>
+					<exclude>**/geomajasContext.xml</exclude>
+				</excludes>
+			</resource>
+		</resources>
+	</build>
+
 	<profiles>
 		<profile>
 			<id>skip-tests-on-hudson</id>
