@@ -256,10 +256,53 @@
 				<classifier>sources</classifier>
 				<version>${back-end-version}</version>
 			</dependency>
+
 			<dependency>
-				<groupId>org.geomajas.dojo</groupId>
-				<artifactId>dojo</artifactId>
-				<version>${dojo-version}</version>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-face-gwt</artifactId>
+				<version>1.6.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-face-dojo</artifactId>
+				<version>1.5.5</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-layer-geotools</artifactId>
+				<version>1.6.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-layer-google</artifactId>
+				<version>1.6.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-layer-hibernate</artifactId>
+				<version>1.6.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-layer-openstreetmap</artifactId>
+				<version>1.6.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-layer-wms</artifactId>
+				<version>1.6.0</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-printing</artifactId>
+				<version>1.5.5</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-springsecurity</artifactId>
+				<version>1.6.0</version>
 			</dependency>
 
 			<dependency>
@@ -458,17 +501,17 @@
 			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>slf4j-api</artifactId>
-				<version>1.5.8</version>
+				<version>${slf4j-version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>jcl-over-slf4j</artifactId>
-				<version>1.5.8</version>
+				<version>${slf4j-version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.slf4j</groupId>
 				<artifactId>log4j-over-slf4j</artifactId>
-				<version>1.5.8</version>
+				<version>${slf4j-version}</version>
 			</dependency>
 			<dependency>
 				<groupId>ch.qos.logback</groupId>
@@ -533,6 +576,7 @@
 		<smartgwt-version>2.1</smartgwt-version>
 		<spring-version>3.0.1.RELEASE</spring-version>
 		<dojo-version>1.1.0</dojo-version>
+		<slf4j-version>1.6.0</slf4j-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
