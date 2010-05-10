@@ -145,7 +145,7 @@
 
       <para>A typical configuration looks as follows:</para>
 
-      <xi:include href="../../../../../documentation/devuserguide/en-GB/listing/MavenDojoPluginConfiguration.xml"
+      <xi:include href="../listing/MavenDojoPluginConfiguration.xml"
                   xmlns:xi="http://www.w3.org/2001/XInclude" />
 
       <para>The plug-in has the following goals:</para>
