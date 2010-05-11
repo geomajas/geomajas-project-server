@@ -44,7 +44,7 @@ import org.geomajas.dojo.server.json.FontSerializer;
 import org.geomajas.dojo.server.json.GeometrySerializer;
 import org.geomajas.dojo.server.json.JsonObjectWriter;
 import org.geomajas.dojo.server.json.RectangleSerializer;
-import org.geomajas.servlet.ApplicationContextUtils;
+import org.geomajas.servlet.ApplicationContextUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -109,7 +109,7 @@ public class JsonServlet extends HttpServlet implements ErrorInvocationCallback,
 		log.info("JSON servlet init");
 		log.debug("current working directory = {}", System.getProperty("user.dir"));
 
-		ApplicationContext applicationContext = ApplicationContextUtils.getApplicationContext(config);
+		ApplicationContext applicationContext = ApplicationContextUtil.getApplicationContext(config);
 		if (applicationContext instanceof ConfigurableApplicationContext) {
 			((ConfigurableApplicationContext) applicationContext).addApplicationListener(this);
 		}

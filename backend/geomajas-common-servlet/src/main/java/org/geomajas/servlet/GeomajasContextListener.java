@@ -79,7 +79,7 @@ public class GeomajasContextListener implements ServletContextListener {
 		}
 		ReconfigurableClassPathApplicationContext applicationContext = new ReconfigurableClassPathApplicationContext(
 				configLocation);
-		ApplicationContextUtils.setApplicationContext(servletContext, applicationContext);
+		ApplicationContextUtil.setApplicationContext(servletContext, applicationContext);
 	}
 
 	/**

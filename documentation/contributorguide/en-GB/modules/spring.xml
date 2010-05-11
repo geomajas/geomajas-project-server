@@ -108,7 +108,7 @@ public class MyClass {
       can be obtained in the servlet using</para>
 
       <programlisting>public void init(ServletConfig config) throws ServletException {
-    ApplicationContext applicationContext = ApplicationContextUtils.getApplicationContext(config);
+    ApplicationContext applicationContext = ApplicationContextUtil.getApplicationContext(config);
     .....</programlisting>
 
       <para>When using another way to define the application context, you have

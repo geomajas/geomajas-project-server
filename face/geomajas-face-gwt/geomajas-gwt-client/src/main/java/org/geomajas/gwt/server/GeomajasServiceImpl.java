@@ -35,7 +35,7 @@ import org.geomajas.command.CommandResponse;
 import org.geomajas.global.Api;
 import org.geomajas.gwt.client.GeomajasService;
 import org.geomajas.gwt.client.command.GwtCommand;
-import org.geomajas.servlet.ApplicationContextUtils;
+import org.geomajas.servlet.ApplicationContextUtil;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.ConfigurableApplicationContext;
@@ -65,7 +65,7 @@ public class GeomajasServiceImpl extends RemoteServiceServlet implements Geomaja
 		super.init(config);
 
 		// register the controller object
-		applicationContext = ApplicationContextUtils.getApplicationContext(config);
+		applicationContext = ApplicationContextUtil.getApplicationContext(config);
 		if (applicationContext instanceof ConfigurableApplicationContext) {
 			((ConfigurableApplicationContext) applicationContext).addApplicationListener(this);
 		}
