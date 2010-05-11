@@ -22,6 +22,7 @@
  */
 package org.geomajas.servlet;
 
+import org.geomajas.global.Api;
 import org.springframework.context.ApplicationContext;
 
 import javax.servlet.ServletConfig;
@@ -32,11 +33,12 @@ import javax.servlet.ServletContext;
  *
  * @author Joachim Van der Auwera
  */
-public final class ApplicationContextUtils {
+@Api(allMethods = true)
+public final class ApplicationContextUtil {
 
 	private static final String GEOMAJAS_SPRING_CONTEXT = "Geomajas-Spring-context";
 
-	private ApplicationContextUtils() {
+	private ApplicationContextUtil() {
 	}
 
 	public static ApplicationContext getApplicationContext(ServletConfig servletConfig) {
