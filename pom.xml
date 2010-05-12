@@ -13,8 +13,6 @@
 		<module>plugin</module>
 		<module>application</module>
 		<module>test</module>
-		<module>build-tools</module>
-		<module>documentation</module>
 	</modules>
 
 	<build>
@@ -34,6 +32,9 @@
 	<profiles>
 		<profile>
 			<id>full-build</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
 			<modules>
 				<module>build-tools</module>
 				<module>documentation</module>
