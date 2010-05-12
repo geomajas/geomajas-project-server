@@ -122,7 +122,7 @@ public class RasterLayerInfo extends LayerInfo implements Serializable {
 	}
 
 	/**
-	 * Get the list of supported resolutions for the layer.
+	 * Get the list of supported resolutions for the layer. Each resolution is specified in map units per pixel.
 	 *
 	 * @return list of supported resolutions
 	 */
@@ -131,7 +131,7 @@ public class RasterLayerInfo extends LayerInfo implements Serializable {
 	}
 
 	/**
-	 * Set the list of supported resolutions.
+	 * Set the list of supported resolutions. Each resolution is specified in map units per pixel.
 	 *
 	 * @param resolutions resolutions 
 	 */
