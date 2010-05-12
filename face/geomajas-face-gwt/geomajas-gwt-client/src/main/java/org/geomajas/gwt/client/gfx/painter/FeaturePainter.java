@@ -24,6 +24,7 @@
 package org.geomajas.gwt.client.gfx.painter;
 
 import org.geomajas.configuration.FeatureStyleInfo;
+import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.gfx.MapContext;
 import org.geomajas.gwt.client.gfx.Paintable;
 import org.geomajas.gwt.client.gfx.PaintableGroup;
@@ -114,6 +115,19 @@ public class FeaturePainter implements Painter {
 					context.getVectorContext().drawSymbol(feature, name, geometry.getCoordinate(), style,
 							feature.getStyleId());
 				}
+			} else if (geometry instanceof MultiPoint) {
+				Coordinate[] coordinates = geometry.getCoordinates();
+				if (hasImageSymbol(feature)) {
+					for (Coordinate coordinate : coordinates) {
+					context.getVectorContext().drawSymbol(feature, name, coordinate, null,
+							feature.getStyleId() + "-selection");
+					}
+				} else {
+					for (Coordinate coordinate : coordinates) {
+						context.getVectorContext().drawSymbol(feature, name, coordinate, style,
+							feature.getStyleId());
+					}
+				}
 			}
 		}
 	}
@@ -126,7 +140,7 @@ public class FeaturePainter implements Painter {
 	 *            The object to be painted.
 	 * @param group
 	 *            The group where the object resides in (optional).
-	 * @param graphics
+	 * @param context
 	 *            The context to paint on.
 	 */
 	public void deleteShape(Paintable paintable, Object group, MapContext context) {

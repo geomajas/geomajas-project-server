@@ -57,8 +57,6 @@ public abstract class AbstractWorldPaintable implements WorldPaintable {
 	/**
 	 * Package visible constructor that requires you to immediately set the ID.
 	 * 
-	 * @param parent
-	 *            parent group's object
 	 * @param id
 	 *            A preferably unique ID that identifies the object even after it is painted. This can later be used to
 	 *            update or delete it from the <code>GraphicsContext</code>.

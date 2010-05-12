@@ -23,6 +23,7 @@
 
 package org.geomajas.gwt.client.gfx.painter;
 
+import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.gfx.MapContext;
 import org.geomajas.gwt.client.gfx.Paintable;
 import org.geomajas.gwt.client.gfx.Painter;
@@ -31,6 +32,7 @@ import org.geomajas.gwt.client.gfx.style.ShapeStyle;
 import org.geomajas.gwt.client.spatial.geometry.Geometry;
 import org.geomajas.gwt.client.spatial.geometry.LineString;
 import org.geomajas.gwt.client.spatial.geometry.MultiLineString;
+import org.geomajas.gwt.client.spatial.geometry.MultiPoint;
 import org.geomajas.gwt.client.spatial.geometry.MultiPolygon;
 import org.geomajas.gwt.client.spatial.geometry.Point;
 import org.geomajas.gwt.client.spatial.geometry.Polygon;
@@ -68,23 +70,27 @@ public class GeometryPainter implements Painter {
 		if (paintable != null) {
 			GfxGeometry gfxGeometry = (GfxGeometry) paintable;
 			Geometry geometry = gfxGeometry.getGeometry();
+			ShapeStyle shapeStyle = gfxGeometry.getStyle();
 			if (geometry instanceof LineString) {
-				context.getVectorContext().drawLine(group, gfxGeometry.getId(), (LineString) geometry,
-						(ShapeStyle) gfxGeometry.getStyle());
+				context.getVectorContext().drawLine(group, gfxGeometry.getId(), (LineString) geometry, shapeStyle);
 			} else if (geometry instanceof MultiLineString) {
 				MultiLineString m = (MultiLineString) geometry;
 				context.getVectorContext().drawLine(group, gfxGeometry.getId(), (LineString) m.getGeometryN(0),
-						(ShapeStyle) gfxGeometry.getStyle());
+						shapeStyle);
 			} else if (geometry instanceof Polygon) {
-				context.getVectorContext().drawPolygon(group, gfxGeometry.getId(), (Polygon) geometry,
-						(ShapeStyle) gfxGeometry.getStyle());
+				context.getVectorContext().drawPolygon(group, gfxGeometry.getId(), (Polygon) geometry, shapeStyle);
 			} else if (geometry instanceof MultiPolygon) {
 				MultiPolygon m = (MultiPolygon) geometry;
 				context.getVectorContext().drawPolygon(group, gfxGeometry.getId(), (Polygon) m.getGeometryN(0),
-						(ShapeStyle) gfxGeometry.getStyle());
+						shapeStyle);
 			} else if (geometry instanceof Point) {
 				context.getVectorContext().drawSymbol(group, gfxGeometry.getId(), geometry.getCoordinate(),
-						(ShapeStyle) gfxGeometry.getStyle(), null);
+						shapeStyle, null);
+			} else if (geometry instanceof MultiPoint) {
+				Coordinate[] coordinates = geometry.getCoordinates();
+				for (Coordinate coordinate : coordinates) {
+					context.getVectorContext().drawSymbol(group, gfxGeometry.getId(), coordinate, shapeStyle, null);
+				}
 			}
 		}
 	}
@@ -97,7 +103,7 @@ public class GeometryPainter implements Painter {
 	 *            The object to be painted.
 	 * @param group
 	 *            The group where the object resides in (optional).
-	 * @param graphics
+	 * @param context
 	 *            The context to paint on.
 	 */
 	public void deleteShape(Paintable paintable, Object group, MapContext context) {
