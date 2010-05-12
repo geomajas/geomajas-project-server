@@ -4,7 +4,7 @@
 	<artifactId>geomajas-parent</artifactId>
 	<version>1.0.0</version>
 	<packaging>pom</packaging>
-	<name>Geomajas parent module, contains some simple maven settings</name>
+	<name>Geomajas parent module, contains some maven settings</name>
 	<description>
 		Geomajas is a component framework for building rich Internet applications (RIA) with sophisticated capabilities
 		for the display, analysis and management of geographic information. It is a building block that allows
