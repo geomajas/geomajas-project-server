@@ -1,15 +1,15 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas</groupId>
-	<artifactId>geomajas-plugin-springsecurity-all</artifactId>
+	<artifactId>geomajas-plugin-staticsecurity-all</artifactId>
 	<version>dummy</version>
 	<packaging>pom</packaging>
-	<name>Geomajas springsecurity plug-in</name>
+	<name>Geomajas staticsecurity plug-in</name>
 
 	<scm>
-		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-plugin-springsecurity</connection>
-		<developerConnection>scm:svn:https://svn.geomajas.org/majas/plugin/face/geomajas-plugin-springsecurity</developerConnection>
-		<url>https://svn.geomajas.org/majas/trunk/plugin/geomajas-plugin-springsecurity</url>
+		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-plugin-staticsecurity</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/plugin/face/geomajas-plugin-staticsecurity</developerConnection>
+		<url>https://svn.geomajas.org/majas/trunk/plugin/geomajas-plugin-staticsecurity</url>
 	</scm>
 
 	<organization>
@@ -102,7 +102,8 @@
 	</pluginRepositories>
 
 	<modules>
-		<module>geomajas-plugin-springsecurity</module>
+		<module>staticsecurity</module>
+		<module>staticsecurity-gwt</module>
 		<module>documentation</module>
 	</modules>
 
