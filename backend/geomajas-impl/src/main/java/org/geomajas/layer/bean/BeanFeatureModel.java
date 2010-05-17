@@ -94,7 +94,7 @@ public class BeanFeatureModel implements FeatureModel {
 		this.srid = srid;
 		PropertyDescriptor d = BeanUtils.getPropertyDescriptor(beanClass, getGeometryAttributeName());
 		Class geometryClass = d.getPropertyType();
-		if (Geometry.class.isAssignableFrom(geometryClass.getClass())) {
+		if (Geometry.class.isAssignableFrom(geometryClass)) {
 			wkt = false;
 		} else if (geometryClass == String.class) {
 			wkt = true;
