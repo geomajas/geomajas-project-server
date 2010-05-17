@@ -146,8 +146,6 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 
 	public void setLayerInfo(VectorLayerInfo layerInfo) throws LayerException {
 		this.layerInfo = layerInfo;
-		crs = configurationService.getCrs(layerInfo.getCrs());
-		setFeatureSourceName(layerInfo.getFeatureInfo().getDataSourceName());
 	}
 
 	public VectorLayerInfo getLayerInfo() {
@@ -175,6 +173,8 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 		if (null == layerInfo) {
 			return;
 		}
+		crs = geoService.getCrs(layerInfo.getCrs());
+		setFeatureSourceName(layerInfo.getFeatureInfo().getDataSourceName());
 		try {
 			if (null == getDataStore()) {
 				Map<String, String> params = new HashMap<String, String>();

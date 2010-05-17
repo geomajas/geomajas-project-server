@@ -46,12 +46,9 @@ import org.geomajas.service.GeoService;
 import org.geotools.data.DataStore;
 import org.geotools.feature.FeatureCollection;
 import org.geotools.feature.FeatureIterator;
-import org.geotools.referencing.CRS;
 import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.opengis.filter.Filter;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -97,7 +94,6 @@ public class ShapeInMemLayer extends FeatureSourceRetriever implements VectorLay
 
 	public void setLayerInfo(VectorLayerInfo layerInfo) throws LayerException {
 		this.layerInfo = layerInfo;
-		initCrs();
 	}
 
 	public VectorLayerInfo getLayerInfo() {
@@ -203,20 +199,9 @@ public class ShapeInMemLayer extends FeatureSourceRetriever implements VectorLay
 	// Private functions:
 	// -------------------------------------------------------------------------
 
-	private void initCrs() throws LayerException {
-		try {
-			crs = CRS.decode(layerInfo.getCrs());
-		} catch (NoSuchAuthorityCodeException e) {
-			throw new LayerException(e, ExceptionCode.LAYER_CRS_UNKNOWN_AUTHORITY, getId(), getLayerInfo()
-					.getCrs());
-		} catch (FactoryException exception) {
-			throw new LayerException(exception, ExceptionCode.LAYER_CRS_PROBLEMATIC, getId(), getLayerInfo()
-					.getCrs());
-		}
-	}
-
 	@PostConstruct
 	protected void initFeatures() throws LayerException {
+		crs = geoService.getCrs(layerInfo.getCrs());
 		try {
 			setFeatureSourceName(layerInfo.getFeatureInfo().getDataSourceName());
 			featureModel = new ShapeInMemFeatureModel(getDataStore(), layerInfo.getFeatureInfo().getDataSourceName(),
