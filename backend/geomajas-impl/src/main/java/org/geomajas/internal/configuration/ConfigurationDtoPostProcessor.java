@@ -55,7 +55,7 @@ import com.vividsolutions.jts.geom.Envelope;
 
 /**
  * Post-processes configuration DTOs. Generally responsible for any behaviour that would violate the DTO contract
- * (especially for GWT) if it would be added to the configuration objects themselves , such as hooking up client
+ * (especially for GWT) if it would be added to the configuration objects themselves, such as hooking up client
  * configurations to their server layers.
  * 
  * @author Jan De Moerloose
