@@ -54,12 +54,13 @@ public class DependencyCheckPostProcessor {
 		Map<String, String> versions = new HashMap<String, String>();
 		for (PluginInfo plugin : declaredPlugins.values()) {
 			String name = plugin.getVersion().getName();
-			if (versions.containsKey(name)) {
+			String version = plugin.getVersion().getVersion();
+			if (versions.containsKey(name) && !versions.get(name).equals(version)) {
 				throw new RuntimeException("Invalid configuration, the plug-in with name " + name +
 						" has been declared twice. This is either used by more than one plug-in or " +
 						"a plug-in is on the classpath more than once.");
 			}
-			versions.put(name, plugin.getVersion().getVersion());
+			versions.put(name, version);
 		}
 
 		// Check dependencies
