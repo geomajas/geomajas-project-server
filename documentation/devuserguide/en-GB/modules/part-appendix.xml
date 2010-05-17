@@ -30,6 +30,28 @@
     <title>Migrating between Geomajas versions</title>
 
     <section>
+      <title>Migrating between Geomajas 1.6.0 and Geomajas (back-end)
+      1.8.0</title>
+
+      <para><itemizedlist>
+          <listitem>
+            <para><code>ApplicationContextUtils</code> has been renamed to
+            <code>ApplicationContextUtil</code> and is now included in the api
+            (this was done to adhere to the coding style).</para>
+          </listitem>
+
+          <listitem>
+            <para>the "springsecurity" module has be renamed "staticsecurity"
+            to more correctly address the nature of the plug-in and and to
+            avoid possible confusion with Spring's security stuff.
+            Additionally the old module has been split in two, one part being
+            the back-end/configuration module, and another the gwt module.
+            </para>
+          </listitem>
+        </itemizedlist></para>
+    </section>
+
+    <section>
       <title>Migrating from Geomajas 1.5.4 to Geomajas 1.6.0</title>
 
       <para><itemizedlist>
