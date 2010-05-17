@@ -127,6 +127,12 @@
             <artifactId>geomajas-plugin-staticsecurity</artifactId>
             <version>${geomajas-plugin-staticsecurity-version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.geomajas.plugin</groupId>
+            <artifactId>geomajas-plugin-staticsecurity</artifactId>
+            <version>${geomajas-plugin-staticsecurity-version}</version>
+			<classifier>sources</classifier>
+        </dependency>
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-plugin-staticsecurity-gwt</artifactId>
