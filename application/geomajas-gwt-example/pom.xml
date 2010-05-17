@@ -121,16 +121,21 @@
 		<!-- @extract-end -->
 
 		<!-- Extra Geomajas plugins -->
-		<!-- @extract-start SpringSecurityDependency, sprngsecurity source plugin - including source -->
+		<!-- @extract-start StaticSecurityDependency, staticsecurity source plugin - including source -->
         <dependency>
             <groupId>org.geomajas.plugin</groupId>
-            <artifactId>geomajas-plugin-springsecurity</artifactId>
-            <version>${geomajas-plugin-springsecurity-version}</version>
+            <artifactId>geomajas-plugin-staticsecurity</artifactId>
+            <version>${geomajas-plugin-staticsecurity-version}</version>
         </dependency>
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-plugin-springsecurity</artifactId>
-            <version>${geomajas-plugin-springsecurity-version}</version>
+			<artifactId>geomajas-plugin-staticsecurity-gwt</artifactId>
+            <version>${geomajas-plugin-staticsecurity-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-plugin-staticsecurity-gwt</artifactId>
+            <version>${geomajas-plugin-staticsecurity-version}</version>
 			<classifier>sources</classifier>
 		</dependency>
 		<!-- @extract-end -->
@@ -373,7 +378,7 @@
 		<geomajas-layer-google-version>1.7.0-SNAPSHOT</geomajas-layer-google-version>
 		<geomajas-layer-openstreetmap-version>1.7.0-SNAPSHOT</geomajas-layer-openstreetmap-version>
 		<geomajas-layer-wms-version>1.7.0-SNAPSHOT</geomajas-layer-wms-version>
-		<geomajas-plugin-springsecurity-version>1.7.0-SNAPSHOT</geomajas-plugin-springsecurity-version>
+		<geomajas-plugin-staticsecurity-version>1.7.0-SNAPSHOT</geomajas-plugin-staticsecurity-version>
 		<gwt-version>2.0.3</gwt-version>
 		<slf4j-version>1.6.0</slf4j-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

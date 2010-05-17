@@ -37,7 +37,7 @@ import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.widget.FeatureAttributeWindow;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.layer.feature.SearchCriterion;
-import org.geomajas.plugin.springsecurity.client.Authentication;
+import org.geomajas.plugin.staticsecurity.client.Authentication;
 
 import com.smartgwt.client.util.BooleanCallback;
 import com.smartgwt.client.widgets.Canvas;

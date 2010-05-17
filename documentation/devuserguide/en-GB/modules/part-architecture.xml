@@ -1210,7 +1210,7 @@
             </row>
 
             <row>
-              <entry>geomajas-plugin-springsecurity</entry>
+              <entry>geomajas-plugin-staticsecurity</entry>
 
               <entry>Simple security service which allows including the entire
               security configuration in the Spring configuration files, making

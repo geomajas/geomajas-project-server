@@ -28,7 +28,7 @@ import org.geomajas.example.gwt.client.samples.base.SamplePanelFactory;
 import org.geomajas.example.gwt.client.samples.i18n.I18nProvider;
 import org.geomajas.gwt.client.controller.PanController;
 import org.geomajas.gwt.client.widget.MapWidget;
-import org.geomajas.plugin.springsecurity.client.Authentication;
+import org.geomajas.plugin.staticsecurity.client.Authentication;
 
 import com.smartgwt.client.util.BooleanCallback;
 import com.smartgwt.client.widgets.Canvas;

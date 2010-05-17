@@ -34,22 +34,22 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 		<property name="loopAllServices" value="false"/>
 		<property name="securityServices">
 			<list>
-				<bean name="springsecurity" class="org.geomajas.plugin.springsecurity.security.SpringSecurityService"/>
-				<bean class="org.geomajas.plugin.springsecurity.security.LoginAllowedSecurityService"/>
+				<bean name="staticsecurity" class="org.geomajas.plugin.staticsecurity.security.StaticSecurityService"/>
+				<bean class="org.geomajas.plugin.staticsecurity.security.LoginAllowedSecurityService"/>
 			</list>
 		</property>
 	</bean>
 
-	<bean class="org.geomajas.plugin.springsecurity.configuration.SecurityServiceInfo">
+	<bean class="org.geomajas.plugin.staticsecurity.configuration.SecurityServiceInfo">
 		<property name="users">
 			<list>
-				<bean class="org.geomajas.plugin.springsecurity.configuration.UserInfo">
+				<bean class="org.geomajas.plugin.staticsecurity.configuration.UserInfo">
 					<property name="userId" value="luc"/>
 					<property name="password" value="b7NMSP1pZN3Hi6nJGVe9JA"/> <!-- "luc" -->
 					<property name="userName" value="Luc Van Lierde"/>
 					<property name="authorizations">
 						<list>
-							<bean class="org.geomajas.plugin.springsecurity.configuration.LayerAuthorizationInfo">
+							<bean class="org.geomajas.plugin.staticsecurity.configuration.LayerAuthorizationInfo">
 								<property name="visibleLayersInclude">
 									<list>
 										<value>.*</value>
@@ -74,13 +74,13 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 						</list>
 					</property>
 				</bean>
-				<bean class="org.geomajas.plugin.springsecurity.configuration.UserInfo">
+				<bean class="org.geomajas.plugin.staticsecurity.configuration.UserInfo">
 					<property name="userId" value="marino"/>
 					<property name="password" value="kMSqVf2EMWilIKhZyV3dKA"/> <!-- "marino" -->
 					<property name="userName" value="Marino Van Hoenacker"/>
 					<property name="authorizations">
 						<list>
-							<bean class="org.geomajas.plugin.springsecurity.configuration.FeatureAuthorizationInfo">
+							<bean class="org.geomajas.plugin.staticsecurity.configuration.FeatureAuthorizationInfo">
 								<property name="visibleLayersInclude">
 									<list>
 										<value>.*</value>
@@ -89,7 +89,7 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 								<property name="layers">
 									<map>
 										<entry key="beans">
-											<bean class="org.geomajas.plugin.springsecurity.configuration.LayerFeatureAuthorizationInfo">
+											<bean class="org.geomajas.plugin.staticsecurity.configuration.LayerFeatureAuthorizationInfo">
 												<property name="createAuthorized" value="false"/>
 												<property name="visibleIncludes">
 													<list>

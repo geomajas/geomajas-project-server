@@ -32,7 +32,7 @@ import org.geomajas.example.gwt.client.samples.i18n.I18nProvider;
 import org.geomajas.gwt.client.command.CommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
-import org.geomajas.plugin.springsecurity.client.Authentication;
+import org.geomajas.plugin.staticsecurity.client.Authentication;
 
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Canvas;

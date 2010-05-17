@@ -28,8 +28,8 @@ import org.geomajas.command.CommandResponse;
 import org.geomajas.command.dto.LogRequest;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
-import org.geomajas.plugin.springsecurity.command.dto.LoginRequest;
-import org.geomajas.plugin.springsecurity.command.dto.LoginResponse;
+import org.geomajas.plugin.staticsecurity.command.dto.LoginRequest;
+import org.geomajas.plugin.staticsecurity.command.dto.LoginResponse;
 import org.geomajas.security.SecurityContext;
 import org.junit.Assert;
 import org.junit.Test;
@@ -59,7 +59,7 @@ public class CommandDispatcherTest {
 		LoginRequest request = new LoginRequest();
 		request.setLogin("luc");
 		request.setPassword("luc");
-		CommandResponse response = commandDispatcher.execute("command.Login", request, null, null);
+		CommandResponse response = commandDispatcher.execute("command.staticsecurity.Login", request, null, null);
 		Assert.assertTrue(response instanceof LoginResponse);
 		Assert.assertFalse(response.isError());
 		String token = ((LoginResponse)response).getToken();
@@ -85,7 +85,7 @@ public class CommandDispatcherTest {
 		LoginRequest request = new LoginRequest();
 		request.setLogin("marino");
 		request.setPassword("marino");
-		CommandResponse response = commandDispatcher.execute("command.Login", request, null, null);
+		CommandResponse response = commandDispatcher.execute("command.staticsecurity.Login", request, null, null);
 		Assert.assertTrue(response instanceof LoginResponse);
 		Assert.assertFalse(response.isError());
 		String token = ((LoginResponse)response).getToken();

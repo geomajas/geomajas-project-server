@@ -33,7 +33,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-plugin-springsecurity</artifactId>
+			<artifactId>geomajas-plugin-staticsecurity</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 

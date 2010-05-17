@@ -101,7 +101,7 @@
         </listitem>
 
         <listitem>
-          <para><emphasis>geomajas-plugin-springsecurity</emphasis>: a basic
+          <para><emphasis>geomajas-plugin-staticsecurity</emphasis>: a basic
           security service which can be configured as part of the Spring
           configuration and does not use an external source for users or
           policies, making the security configuration entirely static.</para>
@@ -208,10 +208,10 @@
                     xmlns:xi="http://www.w3.org/2001/XInclude" />
 
         <para>Any other configuration would depend on the available security
-        services. For example, when using the springsecurity plugin, the
+        services. For example, when using the staticsecurity plugin, the
         following could be defined.</para>
 
-        <xi:include href="../listing/SpringSecurityStart.xml"
+        <xi:include href="../listing/StaticSecurityStart.xml"
                     xmlns:xi="http://www.w3.org/2001/XInclude" />
 
         <para>Most notable in this example is the inclusion of two security
@@ -2618,12 +2618,12 @@
                   xmlns:xi="http://www.w3.org/2001/XInclude" />
 
       <para>Actually including the sources can then be done using a dependency
-      like the following (this includes the springsecurity module, both the
+      like the following (this includes the staticsecurity module, both the
       actual code and the sources). You could set "provided" scope on the
       source dependency to exclude it from the war file. However, this may
       prevent use of GWT development mode.</para>
 
-      <xi:include href="../listing/SpringSecurityDependency.xml"
+      <xi:include href="../listing/StaticSecurityDependency.xml"
                   xmlns:xi="http://www.w3.org/2001/XInclude" />
 
       <para><note>
@@ -2685,7 +2685,7 @@
     </section>
 
     <section>
-      <title>Springsecurity module configuration</title>
+      <title>Staticsecurity module configuration</title>
 
       <para>TODO.....</para>
     </section>
