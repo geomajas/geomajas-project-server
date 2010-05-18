@@ -118,13 +118,14 @@ public class FeaturePainter implements Painter {
 			} else if (geometry instanceof MultiPoint) {
 				Coordinate[] coordinates = geometry.getCoordinates();
 				if (hasImageSymbol(feature)) {
-					for (Coordinate coordinate : coordinates) {
-						context.getVectorContext().drawSymbol(feature, name, coordinate, null,
+					for (int i = 0; i < coordinates.length; i++) {
+						context.getVectorContext().drawSymbol(feature, name + "." + i, coordinates[i], null,
 								feature.getStyleId() + "-selection");
 					}
 				} else {
-					for (Coordinate coordinate : coordinates) {
-						context.getVectorContext().drawSymbol(feature, name, coordinate, style, feature.getStyleId());
+					for (int i = 0; i < coordinates.length; i++) {
+						context.getVectorContext().drawSymbol(feature, name + "." + i, coordinates[i], style,
+								feature.getStyleId());
 					}
 				}
 			}
