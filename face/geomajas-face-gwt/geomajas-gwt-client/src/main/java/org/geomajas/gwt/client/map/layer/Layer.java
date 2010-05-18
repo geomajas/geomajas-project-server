@@ -141,7 +141,7 @@ public interface Layer<T extends ClientLayerInfo> extends PaintableGroup {
 	void setVisible(boolean visible);
 
 	/**
-	 * Add handlers for {@link LayerChangedEvent}s. These events occur when the layer changes it's visible or labeled
+	 * Add handlers for {@link LayerChangedHandler}s. These events occur when the layer changes it's visible or labeled
 	 * values.
 	 *
 	 * @param handler
