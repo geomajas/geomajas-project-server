@@ -31,6 +31,7 @@ import org.geomajas.gwt.client.spatial.geometry.GeometryEditor;
 import org.geomajas.gwt.client.spatial.geometry.LineString;
 import org.geomajas.gwt.client.spatial.geometry.LinearRing;
 import org.geomajas.gwt.client.spatial.geometry.MultiLineString;
+import org.geomajas.gwt.client.spatial.geometry.MultiPoint;
 import org.geomajas.gwt.client.spatial.geometry.MultiPolygon;
 import org.geomajas.gwt.client.spatial.geometry.Point;
 import org.geomajas.gwt.client.spatial.geometry.Polygon;
@@ -39,7 +40,7 @@ import org.geomajas.gwt.client.spatial.geometry.operation.RemoveCoordinateOperat
 
 /**
  * Add coordinate operation.
- *
+ * 
  * @author Pieter De Graef
  */
 public class AddCoordinateOp extends GeometryEditor implements FeatureOperation {
@@ -59,6 +60,8 @@ public class AddCoordinateOp extends GeometryEditor implements FeatureOperation 
 			execute((MultiPolygon) geometry);
 		} else if (geometry instanceof MultiLineString) {
 			execute((MultiLineString) geometry);
+		} else if (geometry instanceof MultiPoint) {
+			execute((MultiPoint) geometry);
 		} else if (geometry instanceof Polygon) {
 			execute((Polygon) geometry);
 		} else if (geometry instanceof LineString) {
@@ -74,6 +77,8 @@ public class AddCoordinateOp extends GeometryEditor implements FeatureOperation 
 			undo((MultiPolygon) geometry);
 		} else if (geometry instanceof MultiLineString) {
 			undo((MultiLineString) geometry);
+		} else if (geometry instanceof MultiPoint) {
+			undo((MultiPoint) geometry);
 		} else if (geometry instanceof Polygon) {
 			undo((Polygon) geometry);
 		} else if (geometry instanceof LineString) {
@@ -94,7 +99,7 @@ public class AddCoordinateOp extends GeometryEditor implements FeatureOperation 
 				polygons[i] = (Polygon) multiPolygon.getGeometryN(i);
 			}
 			LinearRing exteriorRing = multiPolygon.getGeometryFactory().createLinearRing(
-					new Coordinate[] {coordinate});
+					new Coordinate[] { coordinate });
 			polygons[multiPolygon.getNumGeometries()] = multiPolygon.getGeometryFactory().createPolygon(exteriorRing,
 					null);
 			setPolygons(multiPolygon, polygons);
@@ -110,7 +115,7 @@ public class AddCoordinateOp extends GeometryEditor implements FeatureOperation 
 				lineStrings[i] = (LineString) multiLineString.getGeometryN(i);
 			}
 			lineStrings[multiLineString.getNumGeometries()] = multiLineString.getGeometryFactory().createLineString(
-					new Coordinate[] {coordinate});
+					new Coordinate[] { coordinate });
 			setLineStrings(multiLineString, lineStrings);
 		} else {
 			LineString lineString = execute((LineString) multiLineString.getGeometryN(index.getGeometryIndex()));
@@ -123,7 +128,7 @@ public class AddCoordinateOp extends GeometryEditor implements FeatureOperation 
 		if (index.isExteriorRing()) {
 			ring = polygon.getExteriorRing();
 			if (ring == null) {
-				ring = polygon.getGeometryFactory().createLinearRing(new Coordinate[] {coordinate});
+				ring = polygon.getGeometryFactory().createLinearRing(new Coordinate[] { coordinate });
 				setExteriorRing(polygon, ring);
 			} else {
 				setExteriorRing(polygon, (LinearRing) execute(ring));
@@ -135,7 +140,7 @@ public class AddCoordinateOp extends GeometryEditor implements FeatureOperation 
 					interiorRings[i] = polygon.getInteriorRingN(i);
 				}
 				interiorRings[polygon.getNumInteriorRing()] = polygon.getGeometryFactory().createLinearRing(
-						new Coordinate[] {coordinate});
+						new Coordinate[] { coordinate });
 				setInteriorRings(polygon, interiorRings);
 			} else {
 				ring = polygon.getInteriorRingN(index.getInteriorRingIndex());
@@ -154,6 +159,10 @@ public class AddCoordinateOp extends GeometryEditor implements FeatureOperation 
 		if (point.isEmpty()) {
 			setCoordinate(point, coordinate);
 		}
+	}
+
+	private void execute(MultiPoint multiPoint) {
+		addPoint(multiPoint, multiPoint.getGeometryFactory().createPoint(coordinate));
 	}
 
 	// -------------------------------------------------------------------------
@@ -189,5 +198,13 @@ public class AddCoordinateOp extends GeometryEditor implements FeatureOperation 
 
 	private void undo(Point point) {
 		setCoordinate(point, null);
+	}
+
+	private void undo(MultiPoint multiPoint) {
+		Point[] points = new Point[multiPoint.getNumGeometries() - 1];
+		for (int n = 0; n < multiPoint.getNumGeometries() - 1; n++) {
+			points[n] = (Point) multiPoint.getGeometryN(n);
+		}
+		setPoints(multiPoint, points);
 	}
 }

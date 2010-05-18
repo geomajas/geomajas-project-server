@@ -119,13 +119,12 @@ public class FeaturePainter implements Painter {
 				Coordinate[] coordinates = geometry.getCoordinates();
 				if (hasImageSymbol(feature)) {
 					for (Coordinate coordinate : coordinates) {
-					context.getVectorContext().drawSymbol(feature, name, coordinate, null,
-							feature.getStyleId() + "-selection");
+						context.getVectorContext().drawSymbol(feature, name, coordinate, null,
+								feature.getStyleId() + "-selection");
 					}
 				} else {
 					for (Coordinate coordinate : coordinates) {
-						context.getVectorContext().drawSymbol(feature, name, coordinate, style,
-							feature.getStyleId());
+						context.getVectorContext().drawSymbol(feature, name, coordinate, style, feature.getStyleId());
 					}
 				}
 			}
@@ -179,10 +178,12 @@ public class FeaturePainter implements Painter {
 
 	private ShapeStyle createStyleForFeature(Feature feature) {
 		FeatureStyleInfo styleInfo = null;
-		for (FeatureStyleInfo style : feature.getLayer().getLayerInfo().getNamedStyleInfo().getFeatureStyles()) {
-			if (feature.getStyleId().equals(style.getStyleId())) {
-				styleInfo = style;
-				break;
+		if (feature != null && feature.getStyleId() != null) {
+			for (FeatureStyleInfo style : feature.getLayer().getLayerInfo().getNamedStyleInfo().getFeatureStyles()) {
+				if (feature.getStyleId().equals(style.getStyleId())) {
+					styleInfo = style;
+					break;
+				}
 			}
 		}
 		ShapeStyle style = new ShapeStyle(styleInfo);

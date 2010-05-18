@@ -102,6 +102,9 @@ public class GraphicsWidget extends FocusWidget implements MapContext, HasDouble
 	/** The current controller on the map. Can be only one at a time! */
 	private GraphicsController controller;
 
+	/** An optional fallbackController to return to, when no controller is explicitly set, or when null is set. */
+	private GraphicsController fallbackController;
+
 	/** A list of handler registrations that are needed to correctly clean up after a controller is deactivated. */
 	private List<HandlerRegistration> handlers;
 
@@ -199,6 +202,22 @@ public class GraphicsWidget extends FocusWidget implements MapContext, HasDouble
 			handlers.add(addDoubleClickHandler(graphicsController));
 			controller = graphicsController;
 			controller.onActivate();
+		} else if (fallbackController != null) {
+			setController(fallbackController);
+		}
+	}
+
+	/**
+	 * An optional fallbackController to return to, when no controller is explicitly set, or when null is set. If no
+	 * current controller is active when this setter is called, it is applied immediately.
+	 * 
+	 * @param fallbackController
+	 *            The new fall-back controller.
+	 */
+	public void setFallbackController(GraphicsController fallbackController) {
+		this.fallbackController = fallbackController;
+		if (controller == null) {
+			setController(fallbackController);
 		}
 	}
 
@@ -279,5 +298,4 @@ public class GraphicsWidget extends FocusWidget implements MapContext, HasDouble
 			parent.redraw();
 		}
 	}
-
 }

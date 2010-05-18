@@ -23,12 +23,15 @@
 
 package org.geomajas.gwt.client.spatial.geometry;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 import org.geomajas.geometry.Coordinate;
 
 /**
  * The only class that is able to edit geometries. We needed this to copy the Javascript functionality. TODO:
  * Re-evaluate this mechanism. Perhaps we should never change existing geometries?
- *
+ * 
  * @author Pieter De Graef
  */
 public class GeometryEditor {
@@ -82,6 +85,16 @@ public class GeometryEditor {
 			return true;
 		}
 		return false;
+	}
+
+	protected void addPoint(MultiPoint multiPoint, Point point) {
+		if (point != null) {
+			Point[] points = multiPoint.getPoints();
+			ArrayList<Point> list = new ArrayList<Point>(points.length + 1);
+			Collections.addAll(list, points);
+			list.add(point);
+			multiPoint.setPoints(list.toArray(new Point[] {}));
+		}
 	}
 
 	protected void setExteriorRing(Polygon polygon, LinearRing exteriorRing) {

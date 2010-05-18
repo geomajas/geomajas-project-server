@@ -29,7 +29,7 @@ import org.geomajas.gwt.client.spatial.LineSegment;
 
 /**
  * MultiPoint client-side GWT object.
- *
+ * 
  * @author Pieter De Graef
  */
 public class MultiPoint extends AbstractGeometry {
@@ -126,7 +126,7 @@ public class MultiPoint extends AbstractGeometry {
 	/**
 	 * Return null if the MultiPoint is empty, returns one of the points if the requested index exists, throws an
 	 * exception otherwise.
-	 *
+	 * 
 	 * @param n
 	 *            The index in the point array to retrieve. Better make sure it is a valid index. (0 < n < getNumPoints)
 	 */

@@ -38,6 +38,7 @@ import org.geomajas.gwt.client.command.CommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.controller.GraphicsController;
+import org.geomajas.gwt.client.controller.PanController;
 import org.geomajas.gwt.client.gfx.GraphicsContext;
 import org.geomajas.gwt.client.gfx.ImageContext;
 import org.geomajas.gwt.client.gfx.MenuContext;
@@ -239,6 +240,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 		graphics = new GraphicsWidget(this, getID() + "Graphics");
 		painterVisitor = new PainterVisitor(graphics);
 		mapModel.addFeatureSelectionHandler(new MapWidgetFeatureSelectionHandler(this));
+		graphics.setFallbackController(new PanController(this));
 
 		// Painter registration:
 		painterVisitor.registerPainter(new CirclePainter());
@@ -295,7 +297,6 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 				}
 			}
 		});
-
 	}
 
 	// -------------------------------------------------------------------------
