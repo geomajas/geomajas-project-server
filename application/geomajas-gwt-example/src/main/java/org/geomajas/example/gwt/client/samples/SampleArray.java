@@ -31,6 +31,7 @@ import org.geomajas.example.gwt.client.samples.controller.ControllerOnElementSam
 import org.geomajas.example.gwt.client.samples.controller.CustomControllerSample;
 import org.geomajas.example.gwt.client.samples.controller.RectangleControllerSample;
 import org.geomajas.example.gwt.client.samples.editing.EditLineLayerSample;
+import org.geomajas.example.gwt.client.samples.editing.EditMultiPointLayerSample;
 import org.geomajas.example.gwt.client.samples.editing.EditPointLayerSample;
 import org.geomajas.example.gwt.client.samples.editing.EditPolygonLayerSample;
 import org.geomajas.example.gwt.client.samples.i18n.I18nProvider;
@@ -131,6 +132,9 @@ public final class SampleArray {
 				new SampleTreeNode(I18nProvider.getSampleMessages().editPolygonLayerTitle(),
 						"[ISOMORPHIC]/geomajas/osgeo/edit.png", EditPolygonLayerSample.TITLE, "GeoGraphicEditing",
 						EditPolygonLayerSample.FACTORY),
+				new SampleTreeNode(I18nProvider.getSampleMessages().editMultiPointLayerTitle(),
+						"[ISOMORPHIC]/geomajas/osgeo/edit.png", EditMultiPointLayerSample.TITLE, "GeoGraphicEditing",
+						EditMultiPointLayerSample.FACTORY),
 
 				// LayerTree & Legend samples:
 				new SampleTreeNode(I18nProvider.getSampleMessages().treeGroupLayerTree(),

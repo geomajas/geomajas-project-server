@@ -188,6 +188,11 @@ public interface SampleMessages extends Messages {
 
 	String editPointLayerDescription();
 
+	// Editing a multi-point layer:
+
+	String editMultiPointLayerTitle();
+
+	String editMultiPointLayerDescription();
 	// Editing a line layer:
 
 	String editLineLayerTitle();

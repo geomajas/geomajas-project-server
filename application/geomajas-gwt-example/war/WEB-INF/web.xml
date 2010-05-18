@@ -6,55 +6,13 @@
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
-            org/geomajas/example/gwt/clientcfg/applicationContext.xml
-
             <!-- Server side raster layers -->
-			org/geomajas/example/gwt/servercfg/raster/layerOsm.xml
-			org/geomajas/example/gwt/servercfg/raster/layerWmsBluemarble.xml
-			org/geomajas/example/gwt/servercfg/raster/layerGoogle.xml
-			org/geomajas/example/gwt/servercfg/raster/layerGoogleSat.xml
-
-            <!-- Server side vector layers -->
-			org/geomajas/example/gwt/servercfg/vector/layerBeans.xml
-			org/geomajas/example/gwt/servercfg/vector/layerBeansLonLat.xml
-			org/geomajas/example/gwt/servercfg/vector/layerBeansMercator.xml
-			org/geomajas/example/gwt/servercfg/vector/layerCities.xml
-			org/geomajas/example/gwt/servercfg/vector/layerRoads.xml
-			org/geomajas/example/gwt/servercfg/vector/layerStructures.xml
-			org/geomajas/example/gwt/servercfg/vector/layerRivers.xml
-			org/geomajas/example/gwt/servercfg/vector/layerLakes.xml
-			org/geomajas/example/gwt/servercfg/vector/layerCountries.xml
-			org/geomajas/example/gwt/servercfg/vector/layerProvinces.xml
+			org/geomajas/example/gwt/servercfg/**/*.xml
 
             <!-- Map Configurations -->
-			org/geomajas/example/gwt/clientcfg/layer/mapOsm.xml
-			org/geomajas/example/gwt/clientcfg/layer/mapWms.xml
-			org/geomajas/example/gwt/clientcfg/layer/mapGeoTools.xml
-			org/geomajas/example/gwt/clientcfg/layer/mapGoogle.xml
-			org/geomajas/example/gwt/clientcfg/layer/mapGoogleSat.xml
+			org/geomajas/example/gwt/clientcfg/**/*.xml
 
-			org/geomajas/example/gwt/clientcfg/mapwidget/mapCrs.xml
-			org/geomajas/example/gwt/clientcfg/mapwidget/overviewMapOsm.xml
-
-			org/geomajas/example/gwt/clientcfg/editing/mapEditPointLayer.xml
-			org/geomajas/example/gwt/clientcfg/editing/mapEditLineLayer.xml
-			org/geomajas/example/gwt/clientcfg/editing/mapEditPolygonLayer.xml
-
-			org/geomajas/example/gwt/clientcfg/layertree/mapLegend.xml
-
-			org/geomajas/example/gwt/clientcfg/attribute/mapBeans.xml
-			org/geomajas/example/gwt/clientcfg/attribute/mapFeatureListGrid.xml
-
-			org/geomajas/example/gwt/clientcfg/toolbar/mapNavigation.xml
-			org/geomajas/example/gwt/clientcfg/toolbar/mapSelection.xml
-			org/geomajas/example/gwt/clientcfg/toolbar/mapMeasure.xml
-			org/geomajas/example/gwt/clientcfg/toolbar/mapFeatureInfo.xml
-			org/geomajas/example/gwt/clientcfg/toolbar/mapResolutions.xml
-
-			org/geomajas/example/gwt/clientcfg/security/security.xml
-			org/geomajas/example/gwt/clientcfg/security/mapDuisburg.xml
-			org/geomajas/example/gwt/clientcfg/security/mapToolbarSecurity.xml
-        </param-value>
+       </param-value>
     </context-param>
 
 	<!-- @extract-start PreloadToPrepareScanning, Preload class to prevent scanning problems -->
