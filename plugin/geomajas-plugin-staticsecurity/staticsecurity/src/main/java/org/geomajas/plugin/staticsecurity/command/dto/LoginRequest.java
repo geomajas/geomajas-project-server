@@ -35,6 +35,8 @@ import org.geomajas.global.Api;
 @Api(allMethods = true)
 public class LoginRequest implements CommandRequest {
 
+	private static final long serialVersionUID = 160L;
+
 	private String login;
 	private String password;
 

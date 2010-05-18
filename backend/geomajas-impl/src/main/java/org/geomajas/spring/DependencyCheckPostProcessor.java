@@ -82,13 +82,13 @@ public class DependencyCheckPostProcessor {
 	String checkVersion(String pluginName, String dependency, String requestedVersion, String availableVersion) {
 		if (null == availableVersion) {
 			return "Dependency " + dependency + " not found for " + pluginName + ", version " + requestedVersion +
-					"or higher needed.\n";
+					" or higher needed.\n";
 		}
 		Version requested = new Version(requestedVersion);
 		Version available = new Version(availableVersion);
 		if (requested.after(available)) {
 			return "Dependency " + dependency + " too old for " + pluginName + ", version " + requestedVersion +
-					"or higher needed, but version " + availableVersion + "supplied.\n";
+					" or higher needed, but version " + availableVersion + "supplied.\n";
 		}
 		return "";
 	}
