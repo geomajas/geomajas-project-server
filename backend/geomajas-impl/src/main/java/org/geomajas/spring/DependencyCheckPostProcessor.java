@@ -49,6 +49,13 @@ public class DependencyCheckPostProcessor {
 		if (null == declaredPlugins) {
 			return;
 		}
+		// remove unfiltered plugin metadata (needed for eclipse !)
+		for (Map.Entry<String, PluginInfo> entry : declaredPlugins.entrySet()) {
+			if ("${project.version}".equals(entry.getValue().getVersion())) {
+				declaredPlugins.remove(entry.getKey());
+			}
+		}
+		
 		// start by going through all plug-ins to build a map of versions for plug-in keys
 		// includes verification that each key is only used once
 		Map<String, String> versions = new HashMap<String, String>();
