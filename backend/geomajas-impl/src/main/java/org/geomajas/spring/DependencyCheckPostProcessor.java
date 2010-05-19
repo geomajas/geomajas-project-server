@@ -49,25 +49,23 @@ public class DependencyCheckPostProcessor {
 		if (null == declaredPlugins) {
 			return;
 		}
-		// remove unfiltered plugin metadata (needed for eclipse !)
-		for (Map.Entry<String, PluginInfo> entry : declaredPlugins.entrySet()) {
-			if ("${project.version}".equals(entry.getValue().getVersion())) {
-				declaredPlugins.remove(entry.getKey());
-			}
-		}
-		
+
 		// start by going through all plug-ins to build a map of versions for plug-in keys
 		// includes verification that each key is only used once
 		Map<String, String> versions = new HashMap<String, String>();
 		for (PluginInfo plugin : declaredPlugins.values()) {
 			String name = plugin.getVersion().getName();
 			String version = plugin.getVersion().getVersion();
-			if (versions.containsKey(name) && !versions.get(name).equals(version)) {
-				throw new RuntimeException("Invalid configuration, the plug-in with name " + name +
-						" has been declared twice. This is either used by more than one plug-in or " +
-						"a plug-in is on the classpath more than once.");
+			// ignore plug-ins without version of unfiltered version (needed for eclipse !)
+			if (null != version && !version.startsWith("$")) {
+				if (versions.containsKey(name) && !versions.get(name).equals(version)) {
+					throw new RuntimeException("Invalid configuration, the plug-in with name " + name +
+							" has been declared twice. It is know both as version " + version + " and " +
+							versions.get(name) + ". The plug-in name is either used by more than one plug-in or " +
+							"the plug-in is on the classpath more than once.");
+				}
+				versions.put(name, version);
 			}
-			versions.put(name, version);
 		}
 
 		// Check dependencies
@@ -93,16 +91,19 @@ public class DependencyCheckPostProcessor {
 		}
 		Version requested = new Version(requestedVersion);
 		Version available = new Version(availableVersion);
+		if (requested.getMajor() != available.getMajor()) {
+			return "Dependency " + dependency + " is provided in a incompatible API version for plug-in " +
+					pluginName + ", which requests version " + requestedVersion +
+					", but version " + availableVersion + " supplied.\n";
+		}
 		if (requested.after(available)) {
 			return "Dependency " + dependency + " too old for " + pluginName + ", version " + requestedVersion +
-					" or higher needed, but version " + availableVersion + "supplied.\n";
+					" or higher needed, but version " + availableVersion + " supplied.\n";
 		}
 		return "";
 	}
 
-	/**
-	 * Parsed version representation.
-	 */
+	/** Parsed version representation. */
 	public static class Version {
 
 		private int major, minor, revision;
