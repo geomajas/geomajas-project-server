@@ -48,7 +48,7 @@ import java.util.Map;
 @Component()
 public class CopyrightCommand implements Command<EmptyCommandRequest, CopyrightResponse> {
 
-	private final Logger log = LoggerFactory.getLogger(LogCommand.class);
+	private final Logger log = LoggerFactory.getLogger(CopyrightCommand.class);
 
 	private Map<String, CopyrightInfo> copyrightMap = new HashMap<String, CopyrightInfo>();
 
