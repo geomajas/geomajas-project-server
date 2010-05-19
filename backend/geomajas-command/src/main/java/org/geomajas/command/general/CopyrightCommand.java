@@ -24,6 +24,7 @@ package org.geomajas.command.general;
 
 import org.geomajas.command.Command;
 import org.geomajas.command.EmptyCommandRequest;
+import org.geomajas.command.dto.CopyrightResponse;
 import org.geomajas.global.Api;
 import org.geomajas.global.CopyrightInfo;
 import org.geomajas.global.PluginInfo;

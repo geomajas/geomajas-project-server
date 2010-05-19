@@ -20,7 +20,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.geomajas.command.general;
+package org.geomajas.command.dto;
 
 import org.geomajas.command.CommandResponse;
 import org.geomajas.global.CopyrightInfo;
@@ -28,7 +28,7 @@ import org.geomajas.global.CopyrightInfo;
 import java.util.Collection;
 
 /**
- * Response class for {@link CopyrightCommand}.
+ * Response class for {@link org.geomajas.command.general.CopyrightCommand}.
  *
  * @author Joachim Van der Auwera
  */
