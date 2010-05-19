@@ -31,8 +31,8 @@
 
     <para>The primary function of the back-end is to act as a plug-in
     container. Plug-ins are optional libraries that extend the core
-    functionality by taking advantage of the public API. There are two sets
-    of plug-ins which provide extra features.</para>
+    functionality by taking advantage of the public API. There are two sets of
+    plug-ins which provide extra features.</para>
 
     <para>The layer plug-ins provide access to the actual data which needs to
     be displayed as part of a maps. There are basically two types of layers,
@@ -324,7 +324,8 @@
           exact meaning for some of the fields depend on the actual layer, but
           most important features include:</para>
 
-          <para><table>
+          <para>
+            <table>
               <title>Raster Layer info</title>
 
               <tgroup cols="2">
@@ -398,7 +399,8 @@
                   </row>
                 </tbody>
               </tgroup>
-            </table></para>
+            </table>
+          </para>
 
           <para>The location of the images or tiles is defined by calculating
           the real width and height (based on the resolution) and "paving" the
@@ -534,7 +536,8 @@
           <xi:include href="../listing/GoogleLayerSample.xml"
                       xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-          <para><table>
+          <para>
+            <table>
               <title>GoogleLayer configuration</title>
 
               <tgroup cols="2">
@@ -558,7 +561,8 @@
                   </row>
                 </tbody>
               </tgroup>
-            </table></para>
+            </table>
+          </para>
 
           <para>The layer info inner bean has the same general content as
           usual. There are some simplifications though. There is no need to
@@ -613,7 +617,8 @@
           <para>The following table describes the properties of the
           <code>VectorLayerInfo</code> object:</para>
 
-          <para><table>
+          <para>
+            <table>
               <title>VectorLayer info</title>
 
               <tgroup cols="2">
@@ -667,11 +672,12 @@
                     <entry>namedStyleInfos</entry>
 
                     <entry>The list of predefined style metadata objects which
-                    define the named styles for this layer </entry>
+                    define the named styles for this layer</entry>
                   </row>
                 </tbody>
               </tgroup>
-            </table></para>
+            </table>
+          </para>
 
           <para>The feature metadata can be found in the
           <code>FeatureInfo</code> object. This objects contains the complete
@@ -718,7 +724,7 @@
                   <entry>identifier</entry>
 
                   <entry>Metadata of the primitive attribute that provides a
-                  unique identification of the feature. </entry>
+                  unique identification of the feature.</entry>
                 </row>
 
                 <row>
@@ -757,7 +763,7 @@
           actual style that is being used by the client is determined in the
           client configuration, but you predefine a number of styles (of type
           <code>NamedStyleInfo</code>) here for later reference in the client
-          configuration. </para>
+          configuration.</para>
 
           <para>Each style object is itself composed of a number of feature
           styles (<code>FeatureStyleinfo</code>) and a label style
@@ -957,7 +963,8 @@
           <para>To access a WFS server, the following names can be used as
           parameters.</para>
 
-          <para><itemizedlist>
+          <para>
+            <itemizedlist>
               <listitem>
                 <para><emphasis>WFSDataStoreFactory:GET_CAPABILITIES_URL</emphasis>:
                 URL for the getCapabilities document on the server
@@ -1011,7 +1018,8 @@
                 match the schema. Errors will be logged but the parsing will
                 continue if this is true. Default is false.</para>
               </listitem>
-            </itemizedlist></para>
+            </itemizedlist>
+          </para>
 
           <para>You also have to assure the GeoTools WFS data store is added
           as dependency in your project. When using Maven, you can add the
@@ -1035,7 +1043,8 @@
           at startup. All layer updates are performed in memory, so this layer
           is not really useful except for examples.</para>
 
-          <para><table>
+          <para>
+            <table>
               <title>ShapeInMemLayer configuration</title>
 
               <tgroup cols="2">
@@ -1061,7 +1070,8 @@
                   </row>
                 </tbody>
               </tgroup>
-            </table></para>
+            </table>
+          </para>
         </section>
 
         <section>
@@ -1074,7 +1084,8 @@
 
           <para>TODO.....</para>
 
-          <para><table>
+          <para>
+            <table>
               <title>BeanLayer configuration</title>
 
               <tgroup cols="2">
@@ -1100,7 +1111,8 @@
                   </row>
                 </tbody>
               </tgroup>
-            </table></para>
+            </table>
+          </para>
         </section>
       </section>
     </section>
@@ -1397,6 +1409,72 @@
       then that is removed as well. For example the
       "org.geomajas.command.configuration.GetConfigurationCommand" class will
       get "command.configuration.Get" as registry key.</para>
+
+      <para><table>
+          <title>CopyrightCommand</title>
+
+          <tgroup cols="2">
+            <colspec colnum="1" colwidth="1*" />
+
+            <colspec colnum="2" colwidth="2*" />
+
+            <thead>
+              <row>
+                <entry>CopyrightCommand</entry>
+              </row>
+            </thead>
+
+            <tbody>
+              <row>
+                <entry>Registry key</entry>
+
+                <entry>command.general.Copyright</entry>
+              </row>
+
+              <row>
+                <entry>Module which provides this command</entry>
+
+                <entry>geomajas-command</entry>
+              </row>
+
+              <row>
+                <entry>Request object class</entry>
+
+                <entry>org.geomajas.command.EmptyCommandRequest</entry>
+              </row>
+
+              <row>
+                <entry>Parameters</entry>
+
+                <entry>none</entry>
+              </row>
+
+              <row>
+                <entry>Description</entry>
+
+                <entry>This allows you to obtain copyright and license
+                information for Geomajas, it's dependencies, the plg-ins and
+                the dependencies of the plug-ins. This can be used to display
+                that information in a "about" box to assure the copyright and
+                license conditions are adhered.</entry>
+              </row>
+
+              <row>
+                <entry>Response object class</entry>
+
+                <entry>org.geomajas.command.dto.CopyrightResponse</entry>
+              </row>
+
+              <row>
+                <entry>Response values</entry>
+
+                <entry>List of <code>CopyrightInfo</code> objects for the
+                dependencies. Any duplicates are removed based on the
+                copyright info key.</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table></para>
 
       <para><table>
           <title>GetConfigurationCommand</title>
@@ -2517,7 +2595,8 @@
       intermediate package (between "command" and the class name) and the
       class name itself. Some examples:</para>
 
-      <para><table>
+      <para>
+        <table>
           <title>Samples of command name resolution</title>
 
           <tgroup cols="2">
@@ -2579,7 +2658,8 @@
               </row>
             </tbody>
           </tgroup>
-        </table></para>
+        </table>
+      </para>
 
       <para>You have to include a line in your Spring configuration to scan
       class files for annotation to make the components available. For the
@@ -2626,7 +2706,8 @@
       <xi:include href="../listing/StaticSecurityDependency.xml"
                   xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-      <para><note>
+      <para>
+        <note>
           <para>When using a separate module for your commands and trying to
           run your project from eclipse, it is quite likely to have problems
           with your commands not being found. When checking the output
@@ -2639,7 +2720,8 @@
 
           <xi:include href="../listing/PreloadToPrepareScanning.xml"
                       xmlns:xi="http://www.w3.org/2001/XInclude" />
-        </note></para>
+        </note>
+      </para>
     </section>
   </chapter>
 
