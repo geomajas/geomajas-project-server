@@ -34,6 +34,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -79,7 +80,7 @@ public class CopyrightCommand implements Command<EmptyCommandRequest, CopyrightR
 	}
 
 	public void execute(EmptyCommandRequest request, CopyrightResponse response) throws Exception {
-		response.setCopyrights(copyrightMap.values());
+		response.setCopyrights(new ArrayList<CopyrightInfo>(copyrightMap.values()));
 	}
 
 }

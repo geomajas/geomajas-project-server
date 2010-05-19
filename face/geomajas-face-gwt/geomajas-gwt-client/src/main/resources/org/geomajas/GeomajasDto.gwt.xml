@@ -37,6 +37,7 @@
 	<source path="extension/printing/command/dto"/>
 	<source path="global">
 		<include name="GeomajasConstant.java"/>
+		<include name="CopyrightInfo.java"/>
 	</source>
 
 </module>

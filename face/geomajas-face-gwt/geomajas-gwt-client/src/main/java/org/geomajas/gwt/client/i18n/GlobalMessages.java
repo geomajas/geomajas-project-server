@@ -55,7 +55,7 @@ public interface GlobalMessages extends Messages {
 
 	String loadScreenReadyText();
 
-	// MapWidget:
+	// MapWidget, aboutAction:
 
 	String aboutMenuTitle();
 
@@ -63,9 +63,14 @@ public interface GlobalMessages extends Messages {
 
 	String aboutVisit();
 
+	String licensedAs();
+
+	String copyrightListTitle();
+
 	// LocaleSelect:
 
 	String localeTitle();
 
 	String localeReload();
+
 }

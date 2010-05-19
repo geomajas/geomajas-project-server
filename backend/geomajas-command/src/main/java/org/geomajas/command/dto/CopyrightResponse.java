@@ -25,7 +25,7 @@ package org.geomajas.command.dto;
 import org.geomajas.command.CommandResponse;
 import org.geomajas.global.CopyrightInfo;
 
-import java.util.Collection;
+import java.util.List;
 
 /**
  * Response class for {@link org.geomajas.command.general.CopyrightCommand}.
@@ -36,13 +36,13 @@ public class CopyrightResponse extends CommandResponse {
 
 	private static final long serialVersionUID = 170L;
 
-	private Collection<CopyrightInfo> copyrights;
+	private List<CopyrightInfo> copyrights;
 
-	public Collection<CopyrightInfo> getCopyrights() {
+	public List<CopyrightInfo> getCopyrights() {
 		return copyrights;
 	}
 
-	public void setCopyrights(Collection<CopyrightInfo> copyrights) {
+	public void setCopyrights(List<CopyrightInfo> copyrights) {
 		this.copyrights = copyrights;
 	}
 }

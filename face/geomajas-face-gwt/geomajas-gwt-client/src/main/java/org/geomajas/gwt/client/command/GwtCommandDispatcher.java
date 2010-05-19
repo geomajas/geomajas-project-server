@@ -133,6 +133,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 					for (Function callback : deferred.getOnErrorCallbacks()) {
 						callback.execute();
 					}
+					GWT.log(I18nProvider.getGlobal().commandError() + ":\n" + error.getMessage(), null);
 					SC.warn(I18nProvider.getGlobal().commandError() + ":\n" + error.getMessage(), null);
 				} catch (Throwable t) {
 					GWT.log("Command failed on error callback", t);
@@ -148,6 +149,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 						for (String error : response.getErrorMessages()) {
 							message += "\n" + error;
 						}
+						GWT.log(message, null);
 						SC.warn(message, null);
 					} else {
 						if (!deferred.isCancelled()) {

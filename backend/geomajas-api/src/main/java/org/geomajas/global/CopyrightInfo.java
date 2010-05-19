@@ -23,13 +23,17 @@
 
 package org.geomajas.global;
 
+import java.io.Serializable;
+
 /**
  * Copyright information for a plug-in and the dependencies.
  *
  * @author Joachim Van der Auwera
  */
-public class CopyrightInfo {
+public class CopyrightInfo implements Serializable {
 
+	private static final long serialVersionUID = 170L;
+	
 	private String key;
 
 	private String copyright;
