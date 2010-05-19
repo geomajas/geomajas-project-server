@@ -2091,7 +2091,7 @@
               <row>
                 <entry>Registry key</entry>
 
-                <entry>command.SearchAttributes</entry>
+                <entry>command.feature.SearchAttributes</entry>
               </row>
 
               <row>
@@ -2174,7 +2174,7 @@
               <row>
                 <entry>Registry key</entry>
 
-                <entry>command.SearchByLocation</entry>
+                <entry>command.feature.SearchByLocation</entry>
               </row>
 
               <row>
