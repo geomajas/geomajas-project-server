@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<archetype-descriptor
+	xsi:schemaLocation="http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.0.0 http://maven.apache.org/xsd/archetype-descriptor-1.0.0.xsd"
+	name="geomajas-plugin-archetype"
+	xmlns="http://maven.apache.org/plugins/maven-archetype-plugin/archetype-descriptor/1.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<requiredProperties>
+		<requiredProperty key="package">
+			<defaultValue>${groupId}</defaultValue>
+		</requiredProperty>
+		<requiredProperty key="name">
+			<defaultValue>${artifactId}</defaultValue>
+		</requiredProperty>
+		<requiredProperty key="parentVersion">
+			<defaultValue>1.0.0</defaultValue>
+		</requiredProperty>
+		<requiredProperty key="dependenciesVersion" />
+	</requiredProperties>
+	<fileSets>
+		<fileSet filtered="true" encoding="UTF-8">
+			<directory></directory>
+			<includes>
+				<include>LICENSE.txt</include>
+			</includes>
+		</fileSet>
+	</fileSets>
+	<modules>
+		<module id="${rootArtifactId}" dir="__rootArtifactId__" name="${rootArtifactId}">
+			<fileSets>
+				<fileSet filtered="true" packaged="true" encoding="UTF-8">
+					<directory>src/main/java</directory>
+					<includes>
+						<include>**/*.java</include>
+					</includes>
+				</fileSet>
+				<fileSet filtered="true" encoding="UTF-8">
+					<directory>src/main/resources</directory>
+					<includes>
+						<include>**/*.xml</include>
+					</includes>
+				</fileSet>
+				<fileSet filtered="true" packaged="true" encoding="UTF-8">
+					<directory>src/test/java</directory>
+					<includes>
+						<include>**/*.java</include>
+					</includes>
+				</fileSet>
+				<fileSet filtered="true" encoding="UTF-8">
+					<directory>src/test/resources</directory>
+					<includes>
+						<include>**/*.xml</include>
+					</includes>
+				</fileSet>
+			</fileSets>
+		</module>
+		<module id="${rootArtifactId}-gwt" dir="__rootArtifactId__-gwt"
+			name="${rootArtifactId}-gwt">
+			<fileSets>
+				<fileSet filtered="true" packaged="true" encoding="UTF-8">
+					<directory>src/main/java</directory>
+					<includes>
+						<include>**/*.java</include>
+					</includes>
+				</fileSet>
+				<fileSet filtered="true" encoding="UTF-8">
+					<directory>src/main/resources</directory>
+					<includes>
+						<include>**/*.xml</include>
+						<include>**/*.properties</include>
+					</includes>
+				</fileSet>
+				<fileSet encoding="UTF-8">
+					<directory>src/main/resources</directory>
+					<includes>
+						<include>**/*.jpg</include>
+						<include>**/*.png</include>
+					</includes>
+				</fileSet>
+				<fileSet filtered="true" encoding="UTF-8">
+					<directory>.settings</directory>
+					<includes>
+						<include>**/*.xml</include>
+					</includes>
+				</fileSet>
+			</fileSets>
+		</module>
+		<module id="${rootArtifactId}-documentation" dir="documentation"
+			name="${rootArtifactId}-documentation">
+			<fileSets>
+				<fileSet filtered="true" encoding="UTF-8">
+					<directory>en-GB/modules</directory>
+					<includes>
+						<include>**/*.xml</include>
+					</includes>
+				</fileSet>
+				<fileSet filtered="true" encoding="UTF-8">
+					<directory>en-GB</directory>
+					<includes>
+						<include>**/*.xml</include>
+					</includes>
+				</fileSet>
+				<fileSet encoding="UTF-8">
+					<directory>en-GB/images</directory>
+					<includes>
+						<include>**/*.png</include>
+					</includes>
+				</fileSet>
+			</fileSets>
+		</module>
+	</modules>
+</archetype-descriptor>

@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>${groupId}</groupId>
+	<artifactId>${rootArtifactId}-all</artifactId>
+	<version>${version}</version>
+	<packaging>pom</packaging>
+	<name>${name}</name>
+
+	<scm>
+		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/${rootArtifactId}</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/plugin/${rootArtifactId}</developerConnection>
+		<url>https://svn.geomajas.org/majas/trunk/plugin/${rootArtifactId}</url>
+	</scm>
+
+	<organization>
+		<name>Geosparc</name>
+		<url>http://www.geosparc.com</url>
+	</organization>
+	<mailingLists>
+		<mailingList>
+			<name>DEV</name>
+			<post>mailto:majas-dev@geomajas.org</post>
+			<subscribe>http://lists.geomajas.org/mailman/listinfo/majas-dev</subscribe>
+			<unsubscribe>http://lists.geomajas.org/mailman/listinfo/majas-dev</unsubscribe>
+			<archive>http://lists.geomajas.org/pipermail/majas-dev/</archive>
+		</mailingList>
+	</mailingLists>
+	<licenses>
+		<license>
+			<name>GNU Affero General Public License, Version 3</name>
+			<url>http://www.gnu.org/licenses/agpl-3.0.html</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+	<issueManagement>
+		<system>JIRA</system>
+		<url>http://jira.geomajas.org</url>
+	</issueManagement>
+	<distributionManagement>
+		<repository>
+			<id>Geomajas repository</id>
+			<name>Mapping with Asynchronous Java and SVG</name>
+			<url>file:/var/www/maven.geomajas.org/htdocs/repository</url>
+		</repository>
+		<site>
+			<id>Geomajas project site</id>
+			<name>Mapping with Asynchronous Java and SVG</name>
+			<url>file:/var/www/files.geomajas.org/htdocs/maven/trunk/geomajas</url>
+		</site>
+	</distributionManagement>
+	<ciManagement>
+		<system>hudson</system>
+		<url>http://apps.geomajas.org/hudson/</url>
+		<notifiers>
+			<notifier>
+				<type>mail</type>
+				<sendOnSuccess>false</sendOnSuccess>
+				<configuration>
+					<address>geomajas-commit@lists.sourceforge.net</address>
+				</configuration>
+			</notifier>
+		</notifiers>
+	</ciManagement>
+
+	<developers>
+		<developer>
+			<id>${developer.id}</id>
+			<name>${developer.name}</name>
+			<email>${developer.email}</email>
+			<roles>
+				<role>Module maintainer</role>
+			</roles>
+		</developer>
+	</developers>
+
+	<repositories>
+		<repository>
+			<id>Geomajas</id>
+			<name>Geomajas repository</name>
+			<url>http://maven.geomajas.org/</url>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>Geomajas</id>
+			<name>Geomajas repository</name>
+			<url>http://maven.geomajas.org/</url>
+		</pluginRepository>
+	</pluginRepositories>
+
+	<modules>
+		<module>${rootArtifactId}</module>
+		<module>${rootArtifactId}-gwt</module>
+		<module>documentation</module>
+	</modules>
+
+</project>
