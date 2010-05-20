@@ -73,8 +73,7 @@ public class FallbackControllerSample extends SamplePanel {
 
 		VLayout labelLayout = new VLayout();
 		Label help = new Label();
-		help
-				.setContents("When no tool is selected in the toolbar, by default, the measure distance controller should be active.");
+		help.setContents(I18nProvider.getSampleMessages().fallbackControllerExplanation());
 		labelLayout.addMember(help);
 
 		layout.addMember(mapLayout);

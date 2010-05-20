@@ -246,6 +246,8 @@ public interface SampleMessages extends Messages {
 
 	String fallbackControllerDescription();
 
+	String fallbackControllerExplanation();
+
 	// Login sample:
 
 	String loginTitle();
