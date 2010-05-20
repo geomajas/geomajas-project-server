@@ -215,8 +215,9 @@ public class GraphicsWidget extends FocusWidget implements MapContext, HasDouble
 	 *            The new fall-back controller.
 	 */
 	public void setFallbackController(GraphicsController fallbackController) {
+		boolean fallbackActive = (controller == this.fallbackController);
 		this.fallbackController = fallbackController;
-		if (controller == null) {
+		if (controller == null || fallbackActive) {
 			setController(fallbackController);
 		}
 	}

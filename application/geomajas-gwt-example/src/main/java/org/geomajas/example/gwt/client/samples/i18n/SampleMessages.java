@@ -193,6 +193,7 @@ public interface SampleMessages extends Messages {
 	String editMultiPointLayerTitle();
 
 	String editMultiPointLayerDescription();
+
 	// Editing a line layer:
 
 	String editLineLayerTitle();
@@ -238,6 +239,12 @@ public interface SampleMessages extends Messages {
 	String rectangleControllerDescription();
 
 	String rectangeControllerOutput(double roundedKmWidth, double roundedKmHeight, double roundedArea);
+
+	// Fallback controller sample:
+
+	String fallbackControllerTitle();
+
+	String fallbackControllerDescription();
 
 	// Login sample:
 

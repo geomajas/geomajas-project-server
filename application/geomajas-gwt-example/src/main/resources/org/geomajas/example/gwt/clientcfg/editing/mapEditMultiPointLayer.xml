@@ -77,6 +77,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 						<ref bean="PanMode" />
 						<ref bean="ToolbarSeparator" />
 						<ref bean="EditMode" />
+						<ref bean="ZoomToSelection" />
 					</list>
 				</property>
 			</bean>

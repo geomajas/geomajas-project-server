@@ -29,6 +29,7 @@ import org.geomajas.example.gwt.client.samples.attribute.SearchSample;
 import org.geomajas.example.gwt.client.samples.base.SampleTreeNode;
 import org.geomajas.example.gwt.client.samples.controller.ControllerOnElementSample;
 import org.geomajas.example.gwt.client.samples.controller.CustomControllerSample;
+import org.geomajas.example.gwt.client.samples.controller.FallbackControllerSample;
 import org.geomajas.example.gwt.client.samples.controller.RectangleControllerSample;
 import org.geomajas.example.gwt.client.samples.editing.EditLineLayerSample;
 import org.geomajas.example.gwt.client.samples.editing.EditMultiPointLayerSample;
@@ -172,6 +173,9 @@ public final class SampleArray {
 				new SampleTreeNode(I18nProvider.getSampleMessages().rectangleControllerTitle(),
 						"[ISOMORPHIC]/geomajas/osgeo/tools.png", RectangleControllerSample.TITLE, "MapController",
 						RectangleControllerSample.FACTORY),
+				new SampleTreeNode(I18nProvider.getSampleMessages().fallbackControllerTitle(),
+						"[ISOMORPHIC]/geomajas/osgeo/tools.png", FallbackControllerSample.TITLE, "MapController",
+						FallbackControllerSample.FACTORY),
 
 				// Toolbar and controllers:
 				new SampleTreeNode(I18nProvider.getSampleMessages().treeGroupToolbarAndControllers(),

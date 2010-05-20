@@ -86,7 +86,6 @@ public class MeasureDistanceController extends AbstractSnappingController {
 		distanceLine.setStyle(lineStyle1);
 		lineSegment = new GfxGeometry("measureDistanceLineSegment");
 		lineSegment.setStyle(lineStyle2);
-		factory = mapWidget.getMapModel().getGeometryFactory();
 	}
 
 	// -------------------------------------------------------------------------
@@ -116,7 +115,7 @@ public class MeasureDistanceController extends AbstractSnappingController {
 		if (event.getNativeButton() != NativeEvent.BUTTON_RIGHT) {
 			Coordinate coordinate = getWorldPosition(event);
 			if (distanceLine.getOriginalLocation() == null) {
-				distanceLine.setGeometry(factory.createLineString(new Coordinate[] { coordinate }));
+				distanceLine.setGeometry(getFactory().createLineString(new Coordinate[] { coordinate }));
 				mapWidget.registerWorldPaintable(distanceLine);
 				mapWidget.registerWorldPaintable(lineSegment);
 				label = new DistanceLabel();
@@ -140,7 +139,7 @@ public class MeasureDistanceController extends AbstractSnappingController {
 			Geometry geometry = (Geometry) distanceLine.getOriginalLocation();
 			Coordinate coordinate1 = geometry.getCoordinates()[distanceLine.getGeometry().getNumPoints() - 1];
 			Coordinate coordinate2 = getWorldPosition(event);
-			lineSegment.setGeometry(factory.createLineString(new Coordinate[] { coordinate1, coordinate2 }));
+			lineSegment.setGeometry(getFactory().createLineString(new Coordinate[] { coordinate1, coordinate2 }));
 			mapWidget.render(mapWidget.getMapModel(), RenderGroup.VECTOR, RenderStatus.UPDATE);
 			label.setDistance(tempLength, (float) ((Geometry) lineSegment.getOriginalLocation()).getLength());
 		}
@@ -163,6 +162,14 @@ public class MeasureDistanceController extends AbstractSnappingController {
 
 	private boolean isMeasuring() {
 		return distanceLine.getGeometry() != null;
+	}
+
+	/** The factory can only be used after the MapModel has initialized, that is why this getter exists... */
+	private GeometryFactory getFactory() {
+		if (factory == null) {
+			factory = mapWidget.getMapModel().getGeometryFactory();
+		}
+		return factory;
 	}
 
 	// -------------------------------------------------------------------------

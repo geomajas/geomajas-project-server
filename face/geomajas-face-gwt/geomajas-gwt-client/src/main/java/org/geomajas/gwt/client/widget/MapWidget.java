@@ -282,6 +282,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	 * Know that without this method, the map would be an empty shell. This method will ask the server for the correct
 	 * configuration, so that it is possible to build a model (MapModel).
 	 * </p>
+	 * 
 	 * @since 1.6.0
 	 */
 	@Api
@@ -331,7 +332,8 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	 *            The actual object to be rendered. Should always contain location and styling information.
 	 * @param renderGroup
 	 *            In what group to render the paintable object?
-	 * @param status how to render
+	 * @param status
+	 *            how to render
 	 * @since 1.6.0
 	 */
 	@Api
@@ -524,7 +526,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 
 	/**
 	 * Is the zooming using the mouse wheel currently enabled or not?
-	 *
+	 * 
 	 * @return true when zoom on scroll is enabled
 	 */
 	public boolean isZoomOnScrollEnabled() {
@@ -557,7 +559,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 
 	/**
 	 * Is the scale bar (MapAddon) currently enabled/visible or not?
-	 *
+	 * 
 	 * @return true when scale bar is enabled
 	 */
 	public boolean isScaleBarEnabled() {
@@ -593,7 +595,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 
 	/**
 	 * Is the navigation (MapAddon) currently enabled/visible or not?
-	 *
+	 * 
 	 * @return true when navigation addon is enabled
 	 */
 	public boolean isNavigationAddonEnabled() {
@@ -602,7 +604,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 
 	/**
 	 * Will the map automatically react on resize events or not? This option is turned on be default.
-	 *
+	 * 
 	 * @return true when the resize handler is disabled
 	 */
 	public boolean isResizedHandlerDisabled() {
@@ -650,6 +652,20 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 		mouseWheelRegistration = graphics.addMouseWheelHandler(controller);
 	}
 
+	/**
+	 * An optional fallbackController to return to, when no controller is explicitly set (controller=null). If no
+	 * current controller is active when this setter is called, it is applied immediately. The default fall-back
+	 * controller when a map is initialized, is the {@link PanController}, which allows you to navigate.
+	 * 
+	 * @param fallbackController
+	 *            The new fall-back controller to use.
+	 * @since 1.7.0
+	 */
+	@Api
+	public void setFallbackController(GraphicsController fallbackController) {
+		graphics.setFallbackController(fallbackController);
+	}
+
 	public double getUnitLength() {
 		return unitLength;
 	}
@@ -660,7 +676,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 
 	/**
 	 * Get the map's inner model. This model contains all the layers, handles selection, etc.
-	 *
+	 * 
 	 * @return map model
 	 * @since 1.6.0
 	 */
@@ -671,7 +687,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 
 	/**
 	 * Get the context that handles right mouse clicks.
-	 *
+	 * 
 	 * @return menu context
 	 * @since 1.6.0
 	 */
@@ -683,7 +699,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	/**
 	 * Get the drawing context for rendering in general. If you are not using the render method, this would be an
 	 * alternative - for advanced users only.
-	 *
+	 * 
 	 * @return vector context
 	 * @since 1.6.0
 	 */
@@ -695,7 +711,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	/**
 	 * Get the drawing context for raster layer rendering. If you are not using the render method, this would be an
 	 * alternative - for advanced users only.
-	 *
+	 * 
 	 * @return raster context
 	 * @since 1.6.0
 	 */
@@ -911,5 +927,4 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 			mapWidget.render(event.getFeature(), RenderGroup.SCREEN, RenderStatus.DELETE);
 		}
 	}
-
 }
