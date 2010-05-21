@@ -42,6 +42,8 @@ import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
 import org.opengis.filter.Filter;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -81,6 +83,8 @@ import com.vividsolutions.jts.geom.Geometry;
 @Component
 @Transactional(readOnly = true, rollbackFor = { Exception.class })
 public class SearchByLocationCommand implements Command<SearchByLocationRequest, SearchByLocationResponse> {
+
+	private final Logger log = LoggerFactory.getLogger(SearchByLocationCommand.class);
 
 	@Autowired
 	private ConfigurationService configurationService;
@@ -130,6 +134,7 @@ public class SearchByLocationCommand implements Command<SearchByLocationRequest,
 		if (request.getBuffer() > 0) {
 			geometry = location.buffer(request.getBuffer());
 		}
+		log.debug("search by location " + geometry);
 
 		if (layerIds != null && layerIds.length > 0) {
 			for (String layerId : layerIds) {
@@ -138,7 +143,8 @@ public class SearchByLocationCommand implements Command<SearchByLocationRequest,
 					if (vectorLayer != null) {
 						String geomName = vectorLayer.getLayerInfo().getFeatureInfo().getGeometryType().getName();
 
-						Geometry layerGeometry = geoService.transform(geometry, vectorLayer.getCrs(), crs);
+						Geometry layerGeometry = geoService.transform(geometry, crs, vectorLayer.getCrs());
+						log.trace("on layer " + layerId + " use " + layerGeometry);
 
 						// Create the correct Filter object:
 						Filter f = null;
@@ -175,6 +181,7 @@ public class SearchByLocationCommand implements Command<SearchByLocationRequest,
 								}
 							} else {
 								for (InternalFeature feature : temp) {
+									log.trace("found " + feature);
 									Feature dto = converter.toDto(feature);
 									dto.setCrs(crsCode);
 									features.add(dto);
