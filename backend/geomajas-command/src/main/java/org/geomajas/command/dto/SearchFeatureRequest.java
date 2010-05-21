@@ -115,6 +115,8 @@ public class SearchFeatureRequest extends LayerIdCommandRequest {
 
 	/**
 	 * Get the filter expression which should be applied on the layer.
+	 * <p/>
+	 * If the filter contains a geometry, then this needs to be in layer CRS, it is not converted!
 	 *
 	 * @return filter expression
 	 */
@@ -124,6 +126,8 @@ public class SearchFeatureRequest extends LayerIdCommandRequest {
 
 	/**
 	 * Set the filter expression which should be applied on the layer.
+	 * <p/>
+	 * If the filter contains a geometry, then this needs to be in layer CRS, it is not converted!
 	 *
 	 * @param filter filter expression
 	 */

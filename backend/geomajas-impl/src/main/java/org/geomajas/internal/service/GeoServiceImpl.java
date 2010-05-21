@@ -37,11 +37,13 @@ import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.service.GeoService;
+import org.geotools.geometry.jts.JTS;
 import org.geotools.referencing.CRS;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
+import org.opengis.referencing.operation.TransformException;
 import org.springframework.stereotype.Component;
 
 /**
@@ -129,18 +131,36 @@ public final class GeoServiceImpl implements GeoService {
 	/**
 	 * @inheritDoc
 	 */
-	public MathTransform findMathTransform(CoordinateReferenceSystem sourceCRS,
-			CoordinateReferenceSystem targetCRS) throws GeomajasException {
+	public MathTransform findMathTransform(CoordinateReferenceSystem sourceCrs,
+			CoordinateReferenceSystem targetCrs) throws GeomajasException {
 		try {
 			MathTransform transform;
 			try {
-				transform = CRS.findMathTransform(sourceCRS, targetCRS);
+				transform = CRS.findMathTransform(sourceCrs, targetCrs);
 			} catch (Exception e) {
-				transform = CRS.findMathTransform(sourceCRS, targetCRS, true);
+				transform = CRS.findMathTransform(sourceCrs, targetCrs, true);
 			}
 			return transform;
 		} catch (FactoryException fe) {
-			throw new GeomajasException(fe, ExceptionCode.CRS_TRANSFORMATION_NOT_POSSIBLE, sourceCRS, targetCRS);
+			throw new GeomajasException(fe, ExceptionCode.CRS_TRANSFORMATION_NOT_POSSIBLE, sourceCrs, targetCrs);
+		}
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public Geometry transform(Geometry source, CoordinateReferenceSystem sourceCrs, CoordinateReferenceSystem targetCrs)
+			throws GeomajasException {
+		if (sourceCrs == targetCrs) {
+			// only works when the caching of the CRSs works
+			return source;
+		}
+		
+		MathTransform mathTransform = findMathTransform(sourceCrs, targetCrs);
+		try {
+			return JTS.transform(source, mathTransform);
+		} catch (TransformException te) {
+			throw new GeomajasException(te, ExceptionCode.CRS_TRANSFORMATION_NOT_POSSIBLE, sourceCrs, targetCrs);
 		}
 	}
 

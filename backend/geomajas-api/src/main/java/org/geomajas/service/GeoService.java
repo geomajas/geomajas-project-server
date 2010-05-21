@@ -81,6 +81,19 @@ public interface GeoService {
 			CoordinateReferenceSystem targetCrs) throws GeomajasException;
 
 	/**
+	 * Transform a {@link Geometry} from the source to the target CRS.
+	 *
+	 * @param source source geometry
+	 * @param sourceCrs source CRS
+	 * @param targetCrs target CRS
+	 * @return transformed source, now in target CRS
+	 * @throws GeomajasException building the transformation or doing the transformation is not possible
+	 * @since 1.7.0 
+	 */
+	Geometry transform(Geometry source, CoordinateReferenceSystem sourceCrs, CoordinateReferenceSystem targetCrs)
+			throws GeomajasException;;
+
+	/**
 	 * Determine a default position for positioning the label for a feature.
 	 *
 	 * @param feature feature which needs the label

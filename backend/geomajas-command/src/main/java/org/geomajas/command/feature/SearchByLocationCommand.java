@@ -39,6 +39,7 @@ import org.geomajas.security.SecurityContext;
 import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.FilterService;
+import org.geomajas.service.GeoService;
 import org.opengis.filter.Filter;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -85,6 +86,9 @@ public class SearchByLocationCommand implements Command<SearchByLocationRequest,
 	private ConfigurationService configurationService;
 
 	@Autowired
+	private GeoService geoService;
+
+	@Autowired
 	private DtoConverterService converter;
 
 	@Autowired
@@ -119,7 +123,13 @@ public class SearchByLocationCommand implements Command<SearchByLocationRequest,
 		int queryType = request.getQueryType();
 		double ratio = request.getRatio();
 		int searchType = request.getSearchType();
-		CoordinateReferenceSystem crs = configurationService.getCrs(request.getCrs());
+		CoordinateReferenceSystem crs = geoService.getCrs(request.getCrs());
+
+		// Check if a buffer should be added around the location:
+		Geometry geometry = location;
+		if (request.getBuffer() > 0) {
+			geometry = location.buffer(request.getBuffer());
+		}
 
 		if (layerIds != null && layerIds.length > 0) {
 			for (String layerId : layerIds) {
@@ -128,26 +138,22 @@ public class SearchByLocationCommand implements Command<SearchByLocationRequest,
 					if (vectorLayer != null) {
 						String geomName = vectorLayer.getLayerInfo().getFeatureInfo().getGeometryType().getName();
 
-						// Check if a buffer should be added around the location:
-						Geometry geometry = location;
-						if (request.getBuffer() > 0) {
-							geometry = location.buffer(request.getBuffer());
-						}
+						Geometry layerGeometry = geoService.transform(geometry, vectorLayer.getCrs(), crs);
 
 						// Create the correct Filter object:
 						Filter f = null;
 						switch (queryType) {
 							case SearchByLocationRequest.QUERY_INTERSECTS:
-								f = filterCreator.createIntersectsFilter(geometry, geomName);
+								f = filterCreator.createIntersectsFilter(layerGeometry, geomName);
 								break;
 							case SearchByLocationRequest.QUERY_CONTAINS:
-								f = filterCreator.createContainsFilter(geometry, geomName);
+								f = filterCreator.createContainsFilter(layerGeometry, geomName);
 								break;
 							case SearchByLocationRequest.QUERY_TOUCHES:
-								f = filterCreator.createTouchesFilter(geometry, geomName);
+								f = filterCreator.createTouchesFilter(layerGeometry, geomName);
 								break;
 							case SearchByLocationRequest.QUERY_WITHIN:
-								f = filterCreator.createWithinFilter(geometry, geomName);
+								f = filterCreator.createWithinFilter(layerGeometry, geomName);
 								break;
 						}
 

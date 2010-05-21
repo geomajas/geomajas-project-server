@@ -38,6 +38,7 @@ import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.FilterService;
 import org.geomajas.layer.VectorLayerService;
+import org.geomajas.service.GeoService;
 import org.opengis.filter.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -56,6 +57,9 @@ public class SearchFeatureCommand implements Command<SearchFeatureRequest, Searc
 
 	@Autowired
 	private ConfigurationService configurationService;
+
+	@Autowired
+	private GeoService geoService;
 
 	@Autowired
 	private DtoConverterService converter;
@@ -82,8 +86,8 @@ public class SearchFeatureCommand implements Command<SearchFeatureRequest, Searc
 
 		Filter filter = createFilter(request, layerId);
 
-		List<InternalFeature> features = layerService.getFeatures(layerId, configurationService
-				.getCrs(request.getCrs()), filter, null, request.getFeatureIncludes(), 0, request.getMax());
+		List<InternalFeature> features = layerService.getFeatures(layerId, geoService.getCrs(request.getCrs()), filter,
+				null, request.getFeatureIncludes(), 0, request.getMax());
 		response.setLayerId(layerId);
 		int max = request.getMax();
 		if (max == SearchFeatureRequest.MAX_UNLIMITED) {
