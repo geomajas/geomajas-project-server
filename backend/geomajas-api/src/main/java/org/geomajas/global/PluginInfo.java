@@ -31,6 +31,7 @@ import java.util.List;
  * back-end.
  *
  * @author Joachim Van der Auwera
+ * @since 1.7.0
  */
 @Api(allMethods = true)
 public class PluginInfo {

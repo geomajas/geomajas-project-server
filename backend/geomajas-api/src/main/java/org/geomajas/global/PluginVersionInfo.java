@@ -27,6 +27,7 @@ package org.geomajas.global;
  * Version information for a plug-in. Used both to define the plug-in itself and for dependencies.
  *
  * @author Joachim Van der Auwera
+ * @since 1.7.0
  */
 @Api(allMethods = true)
 public class PluginVersionInfo {

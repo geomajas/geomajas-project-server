@@ -29,6 +29,7 @@ import java.io.Serializable;
  * Copyright information for a plug-in and the dependencies.
  *
  * @author Joachim Van der Auwera
+ * @since 1.7.0
  */
 public class CopyrightInfo implements Serializable {
 
