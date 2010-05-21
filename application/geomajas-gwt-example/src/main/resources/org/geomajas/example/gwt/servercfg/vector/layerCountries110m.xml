@@ -31,38 +31,38 @@ http://www.springframework.org/schema/context
 http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 		>
 
-	<bean name="provincesInfo" class="org.geomajas.configuration.VectorLayerInfo">
+	<bean name="countries110mInfo" class="org.geomajas.configuration.VectorLayerInfo">
 		<property name="layerType" value="MULTIPOLYGON"/>
-		<property name="crs" value="EPSG:900913"/>
+		<property name="crs" value="EPSG:4326"/>
 		<property name="maxExtent">
 			<bean class="org.geomajas.geometry.Bbox">
-				<property name="x" value="272075"/>
-				<property name="y" value="6325193"/>
-				<property name="width" value="454935"/>
-				<property name="height" value="392154"/>
+                <property name="x" value="-181"/>
+                <property name="y" value="-91"/>
+                <property name="width" value="362"/>
+                <property name="height" value="181"/>
 			</bean>
 		</property>
-		<property name="featureInfo" ref="provincesFeatureInfo" />
+		<property name="featureInfo" ref="countries110mFeatureInfo" />
 		<property name="namedStyleInfos">
 			<list>
-				<ref bean="provincesStyleInfo" />
+				<ref bean="countries110mStyleInfo" />
 			</list>
 		</property>
 	</bean>
 
-    <bean class="org.geomajas.configuration.FeatureInfo" name="provincesFeatureInfo">
-        <property name="dataSourceName" value="provincies"/>
+    <bean class="org.geomajas.configuration.FeatureInfo" name="countries110mFeatureInfo">
+        <property name="dataSourceName" value="110m_admin_0_countries"/>
         <property name="identifier">
             <bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
                 <property name="label" value="Name"/>
-                <property name="name" value="NAAM"/>
+                <property name="name" value="NAME"/>
                 <property name="type" value="STRING"/>
             </bean>
         </property>
         <property name="geometryType">
             <bean class="org.geomajas.configuration.GeometryAttributeInfo">
                 <property name="name" value="the_geom"/>
-                <property name="editable" value="true"/>
+                <property name="editable" value="false"/>
             </bean>
         </property>
 
@@ -70,51 +70,35 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
             <list>
                 <bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
                     <property name="label" value="Name"/>
-                    <property name="name" value="NAAM"/>
-                    <property name="editable" value="true"/>
+                    <property name="name" value="NAME"/>
+                    <property name="editable" value="false"/>
                     <property name="identifying" value="true"/>
                     <property name="type" value="STRING"/>
                 </bean>
                 <bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
                     <property name="label" value="Population"/>
-                    <property name="name" value="POPULATION"/>
-                    <property name="editable" value="true"/>
-                    <property name="identifying" value="true"/>
+                    <property name="name" value="PEOPLE"/>
+                    <property name="editable" value="false"/>
+                    <property name="identifying" value="false"/>
                     <property name="type" value="INTEGER"/>
                 </bean>
                 <bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
-                    <property name="label" value="Area (km²)"/>
-                    <property name="name" value="AREA"/>
-                    <property name="editable" value="true"/>
-                    <property name="identifying" value="true"/>
+                    <property name="label" value="Size Index"/>
+                    <property name="name" value="MAP_COLOR"/>
+                    <property name="editable" value="false"/>
+                    <property name="identifying" value="false"/>
                     <property name="type" value="INTEGER"/>
-                </bean>
-                <bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
-                    <property name="label" value="Capital"/>
-                    <property name="name" value="CAPITAL"/>
-                    <property name="editable" value="true"/>
-                    <property name="identifying" value="true"/>
-                    <property name="type" value="STRING"/>
                 </bean>
             </list>
         </property>
     </bean>
 
-	<bean class="org.geomajas.configuration.NamedStyleInfo" name="provincesStyleInfo">
+	<bean class="org.geomajas.configuration.NamedStyleInfo" name="countries110mStyleInfo">
 		<property name="featureStyles">
             <list>
                 <bean class="org.geomajas.configuration.FeatureStyleInfo">
-                    <property name="name" value="Population>1500000"/>
-                    <property name="formula" value="(POPULATION > 1500000)"/>
-                    <property name="fillColor" value="#0000FF"/>
-                    <property name="fillOpacity" value=".6"/>
-                    <property name="strokeColor" value="#000033"/>
-                    <property name="strokeOpacity" value=".8"/>
-                    <property name="strokeWidth" value="1"/>
-                </bean>
-                <bean class="org.geomajas.configuration.FeatureStyleInfo">
-                    <property name="name" value="Population>1250000"/>
-                    <property name="formula" value="(POPULATION > 1250000)"/>
+                    <property name="name" value="Large Countries"/>
+                    <property name="formula" value="(PEOPLE > 100000000)"/>
                     <property name="fillColor" value="#3333FF"/>
                     <property name="fillOpacity" value=".6"/>
                     <property name="strokeColor" value="#000033"/>
@@ -122,8 +106,8 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
                     <property name="strokeWidth" value="1"/>
                 </bean>
                 <bean class="org.geomajas.configuration.FeatureStyleInfo">
-                    <property name="name" value="Population>1000000"/>
-                    <property name="formula" value="(POPULATION > 1000000)"/>
+                    <property name="name" value="Medium Sized Countries"/>
+                    <property name="formula" value="(PEOPLE > 50000000)"/>
                     <property name="fillColor" value="#6666FF"/>
                     <property name="fillOpacity" value=".6"/>
                     <property name="strokeColor" value="#000033"/>
@@ -131,8 +115,8 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
                     <property name="strokeWidth" value="1"/>
                 </bean>
                 <bean class="org.geomajas.configuration.FeatureStyleInfo">
-                    <property name="name" value="Population>750000"/>
-                    <property name="formula" value="(POPULATION > 750000)"/>
+                    <property name="name" value="Small to medium Sized Countries"/>
+                    <property name="formula" value="(PEOPLE > 10000000)"/>
                     <property name="fillColor" value="#9999FF"/>
                     <property name="fillOpacity" value=".6"/>
                     <property name="strokeColor" value="#000033"/>
@@ -140,7 +124,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
                     <property name="strokeWidth" value="1"/>
                 </bean>
                 <bean class="org.geomajas.configuration.FeatureStyleInfo">
-                    <property name="name" value="Population&lt;=750000"/>
+                    <property name="name" value="Small Countries"/>
                     <property name="fillColor" value="#CCCCFF"/>
                     <property name="fillOpacity" value=".6"/>
                     <property name="strokeColor" value="#000033"/>
@@ -151,7 +135,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 		</property>
 		<property name="labelStyle">
 			<bean class="org.geomajas.configuration.LabelStyleInfo">
-               <property name="labelAttributeName" value="NAAM"/>
+               <property name="labelAttributeName" value="NAME"/>
                 <property name="fontStyle">
 					<bean class="org.geomajas.configuration.FontStyleInfo">
 						<property name="color" value="#000000" />
@@ -171,9 +155,9 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 		</property>
 	</bean>
 
-	<bean name="provinces" class="org.geomajas.layer.shapeinmem.ShapeInMemLayer">
-		<property name="layerInfo" ref="provincesInfo" />
-        <property name="url" value="classpath:org/geomajas/example/gwt/servercfg/vector/shapefile/provincies.shp"/>
+	<bean name="countries110m" class="org.geomajas.layer.shapeinmem.ShapeInMemLayer">
+		<property name="layerInfo" ref="countries110mInfo" />
+        <property name="url" value="classpath:org/geomajas/example/gwt/servercfg/vector/shapefile/nat_earth/110m_admin_0_countries.shp"/>
 	</bean>
 
 </beans>
