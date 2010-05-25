@@ -327,8 +327,10 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, V
 	 */
 	private void enforceSrid(Object feature) throws LayerException {
 		Geometry geom = getFeatureModel().getGeometry(feature);
-		geom.setSRID(geoService.getSridFromCrs(crs));
-		getFeatureModel().setGeometry(feature, geom);
+		if (geom != null) {
+			geom.setSRID(geoService.getSridFromCrs(crs));
+			getFeatureModel().setGeometry(feature, geom);
+		}
 	}
 
 	/**
