@@ -46,6 +46,7 @@ import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.FeatureModel;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.FilterService;
+import org.geomajas.service.GeoService;
 import org.geotools.referencing.CRS;
 import org.hibernate.Criteria;
 import org.hibernate.EntityMode;
@@ -66,6 +67,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * Hibernate layer model.
@@ -94,6 +96,9 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, V
 
 	@Autowired
 	private DtoConverterService converterService;
+
+	@Autowired
+	private GeoService geoService;
 
 	private CoordinateReferenceSystem crs;
 
@@ -195,11 +200,13 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, V
 	}
 
 	public Object create(Object feature) throws LayerException {
-		Session session = getSessionFactory().getCurrentSession();
-
+		// force the srid value
+		enforceSrid(feature);
+		
 		// Replace associations with persistent versions:
 		// Map<String, Object> attributes = featureModel.getAttributes(feature);
 		setPersistentAssociations(feature);
+		Session session = getSessionFactory().getCurrentSession();
 		session.save(feature); // do not replace feature by managed object !
 
 		// Set the original detached associations back where they belong:
@@ -209,6 +216,9 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, V
 	}
 
 	public Object saveOrUpdate(Object feature) throws LayerException {
+		// force the srid value
+		enforceSrid(feature);
+
 		String id = getFeatureModel().getId(feature);
 		Object result = null;
 		if (read(id) == null) {
@@ -311,6 +321,15 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, V
 	// -------------------------------------------------------------------------
 	// Private functions:
 	// -------------------------------------------------------------------------
+
+	/**
+	 * Enforces the correct srid on incoming features.
+	 */
+	private void enforceSrid(Object feature) throws LayerException {
+		Geometry geom = getFeatureModel().getGeometry(feature);
+		geom.setSRID(geoService.getSridFromCrs(crs));
+		getFeatureModel().setGeometry(feature, geom);
+	}
 
 	/**
 	 * Bounds are calculated locally, can use any filter, but slower than native.
