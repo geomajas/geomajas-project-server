@@ -163,8 +163,8 @@ public class MultiPoint extends AbstractGeometry {
 		}
 		double minX = Double.MAX_VALUE;
 		double minY = Double.MAX_VALUE;
-		double maxX = Double.NEGATIVE_INFINITY;
-		double maxY = Double.NEGATIVE_INFINITY;
+		double maxX = -Double.MAX_VALUE;
+		double maxY = -Double.MAX_VALUE;
 
 		for (Point point : points) {
 			if (point.getX() < minX) {

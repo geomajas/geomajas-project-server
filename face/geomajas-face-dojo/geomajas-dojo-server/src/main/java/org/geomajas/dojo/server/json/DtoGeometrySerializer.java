@@ -41,20 +41,6 @@ public class DtoGeometrySerializer extends AbstractSerializer {
 
 	private static final long serialVersionUID = -1265127912351766084L;
 
-	private static String TYPE_POINT = "Point";
-
-	private static String TYPE_MULTIPOINT = "MultiPoint";
-
-	private static String TYPE_LINESTRING = "LineString";
-
-	private static String TYPE_LINEARRING = "LinearRing";
-
-	private static String TYPE_POLYGON = "Polygon";
-
-	private static String TYPE_MULTILINESTRING = "MultiLineString";
-
-	private static String TYPE_MULTIPOLYGON = "MultiPolygon";
-
 	private static String ATTRIBUTE_TYPE = "type";
 
 	private static String ATTRIBUTE_SRID = "srid";
@@ -94,9 +80,9 @@ public class DtoGeometrySerializer extends AbstractSerializer {
 		if (precision <= 0) {
 			throw new UnmarshallException("no precision");
 		}
-		if (!(type.equals(TYPE_POINT) || type.equals(TYPE_LINESTRING) || type.equals(TYPE_POLYGON)
-				|| type.equals(TYPE_LINEARRING) || type.equals(TYPE_MULTILINESTRING) ||
-				type.equals(TYPE_MULTIPOLYGON))) {
+		if (!(type.equals(Geometry.POINT) || type.equals(Geometry.LINE_STRING) || type.equals(Geometry.POLYGON)
+				|| type.equals(Geometry.LINEAR_RING) || type.equals(Geometry.MULTI_LINE_STRING) ||
+				type.equals(Geometry.MULTI_POLYGON))) {
 			throw new UnmarshallException(type + " is not a supported geometry");
 		}
 		JSONArray coordinates = jso.getJSONArray(ATTRIBUTE_COORDINATES);
@@ -122,19 +108,19 @@ public class DtoGeometrySerializer extends AbstractSerializer {
 		int precision = json.getInt(ATTRIBUTE_PRECISION);
 		Geometry geometry = new Geometry(type, srid, precision);
 
-		if (type.equals(TYPE_POINT)) {
+		if (type.equals(Geometry.POINT)) {
 			geometry = createPoint(geometry, json);
-		} else if (type.equals(TYPE_LINESTRING)) {
+		} else if (type.equals(Geometry.LINE_STRING)) {
 			geometry = createLineString(geometry, json);
-		} else if (type.equals(TYPE_LINEARRING)) {
+		} else if (type.equals(Geometry.LINEAR_RING)) {
 			geometry = createLinearRing(geometry, json);
-		} else if (type.equals(TYPE_POLYGON)) {
+		} else if (type.equals(Geometry.POLYGON)) {
 			geometry = createPolygon(geometry, json);
-		} else if (type.equals(TYPE_MULTIPOINT)) {
+		} else if (type.equals(Geometry.MULTI_POINT)) {
 			geometry = createMultiPoint(geometry, json);
-		} else if (type.equals(TYPE_MULTILINESTRING)) {
+		} else if (type.equals(Geometry.MULTI_LINE_STRING)) {
 			geometry = createMultiLineString(geometry, json);
-		} else if (type.equals(TYPE_MULTIPOLYGON)) {
+		} else if (type.equals(Geometry.MULTI_POLYGON)) {
 			geometry = createMultiPolygon(geometry, json);
 		}
 		return geometry;
@@ -223,7 +209,7 @@ public class DtoGeometrySerializer extends AbstractSerializer {
 		}
 		Geometry[] geometries = new Geometry[points.length()];
 		for (int i = 0; i < points.length(); i++) {
-			Geometry point = new Geometry("Point", geometry.getSrid(), geometry.getPrecision());
+			Geometry point = new Geometry(Geometry.POINT, geometry.getSrid(), geometry.getPrecision());
 			geometries[i] = createPoint(point, points.getJSONObject(i));
 		}
 		geometry.setGeometries(geometries);
@@ -278,19 +264,19 @@ public class DtoGeometrySerializer extends AbstractSerializer {
 	public Object marshall(SerializerState state, Object o) throws MarshallException {
 		Geometry geometry = (Geometry) o;
 		JSONObject json = null;
-		if (geometry.getGeometryType().equals(TYPE_POINT)) {
+		if (geometry.getGeometryType().equals(Geometry.POINT)) {
 			json = serializePoint(geometry);
-		} else if (geometry.getGeometryType().equals(TYPE_LINESTRING)) {
+		} else if (geometry.getGeometryType().equals(Geometry.LINE_STRING)) {
 			json = serializeLineString(geometry);
-		} else if (geometry.getGeometryType().equals(TYPE_LINEARRING)) {
+		} else if (geometry.getGeometryType().equals(Geometry.LINEAR_RING)) {
 			json = serializeLinearRing(geometry);
-		} else if (geometry.getGeometryType().equals(TYPE_POLYGON)) {
+		} else if (geometry.getGeometryType().equals(Geometry.POLYGON)) {
 			json = serializePolygon(geometry);
-		} else if (geometry.getGeometryType().equals(TYPE_MULTIPOINT)) {
+		} else if (geometry.getGeometryType().equals(Geometry.MULTI_POINT)) {
 			json = serializeMultiPoint(geometry);
-		} else if (geometry.getGeometryType().equals(TYPE_MULTILINESTRING)) {
+		} else if (geometry.getGeometryType().equals(Geometry.MULTI_LINE_STRING)) {
 			json = serializeMultiLineString(geometry);
-		} else if (geometry.getGeometryType().equals(TYPE_MULTIPOLYGON)) {
+		} else if (geometry.getGeometryType().equals(Geometry.MULTI_POLYGON)) {
 			json = serializeMultiPolygon(geometry);
 		}
 		return json;
@@ -324,7 +310,7 @@ public class DtoGeometrySerializer extends AbstractSerializer {
 		JSONObject shell = null;
 		if (geometry.getGeometries() != null && geometry.getGeometries().length > 0) {
 			Geometry exteriorRing = geometry.getGeometries()[0];
-			exteriorRing.setGeometryType(TYPE_LINESTRING);
+			exteriorRing.setGeometryType(Geometry.LINE_STRING);
 			shell = serializeLinearRing(exteriorRing);
 		}
 		json.put("shell", shell);
@@ -333,7 +319,7 @@ public class DtoGeometrySerializer extends AbstractSerializer {
 		if (geometry.getGeometries() != null && geometry.getGeometries().length > 1) {
 			for (int i = 1; i < geometry.getGeometries().length; i++) {
 				Geometry interiorRing = geometry.getGeometries()[i];
-				interiorRing.setGeometryType(TYPE_LINESTRING);
+				interiorRing.setGeometryType(Geometry.LINE_STRING);
 				holes.put(serializeLinearRing(interiorRing));
 			}
 		}

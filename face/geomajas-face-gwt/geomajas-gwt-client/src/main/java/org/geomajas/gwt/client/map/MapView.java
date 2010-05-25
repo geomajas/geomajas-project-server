@@ -259,7 +259,7 @@ public class MapView {
 		// set pan origin equal to camera
 		panOrigin.setX(camera.getX());
 		panOrigin.setY(camera.getY());
-		fireEvent(false, option);
+		fireEvent(true, option);
 	}
 
 	/**
@@ -423,16 +423,16 @@ public class MapView {
 	}
 
 	private void doApplyBounds(Bbox bounds, ZoomOption option) {
-		if (bounds != null && !bounds.isEmpty()) {
-			// find best scale
-			double scale = getBestScale(bounds);
-			// snap and limit
-			scale = snapToResolution(scale, option);
-			// set scale
-			doSetScale(scale, option);
-			// set center
-			Coordinate center = bounds.getCenterPoint();
-			doSetPosition(center);
+		if (bounds != null) {
+			if (!bounds.isEmpty()) {
+				// find best scale
+				double scale = getBestScale(bounds);
+				// snap and limit
+				scale = snapToResolution(scale, option);
+				// set scale
+				doSetScale(scale, option);
+			}
+			doSetPosition(bounds.getCenterPoint());
 		}
 	}
 
@@ -448,8 +448,20 @@ public class MapView {
 	}
 
 	private double getBestScale(Bbox bounds) {
-		double wRatio = width / bounds.getWidth();
-		double hRatio = height / bounds.getHeight();
+		double wRatio;
+		double boundsWidth = bounds.getWidth();
+		if (boundsWidth <= 0) {
+			wRatio = getMinimumScale();
+		} else {
+			wRatio = width / boundsWidth;
+		}
+		double hRatio;
+		double boundsHeight = bounds.getHeight();
+		if (boundsHeight <= 0) {
+			hRatio = getMinimumScale();
+		} else {
+			hRatio = height / boundsHeight;
+		}
 		// return the minimum to fit inside
 		return wRatio < hRatio ? wRatio : hRatio;
 	}
@@ -564,36 +576,37 @@ public class MapView {
 	 * @param worldCenter
 	 * @return
 	 */
-	private Coordinate calcCenterFromPoint(Coordinate worldCenter) {
-		if (maxBounds == null) {
-			return worldCenter;
-		}
-		double w = getViewSpaceWidth() / 2;
-		double h = getViewSpaceHeight() / 2;
-		Coordinate minCoordinate = maxBounds.getOrigin();
-		Coordinate maxCoordinate = maxBounds.getEndPoint();
+	private Coordinate calcCenterFromPoint(final Coordinate worldCenter) {
+		double xCenter = worldCenter.getX();
+		double yCenter = worldCenter.getY();
+		if (maxBounds != null) {
+			double w = getViewSpaceWidth() / 2;
+			double h = getViewSpaceHeight() / 2;
+			Coordinate minCoordinate = maxBounds.getOrigin();
+			Coordinate maxCoordinate = maxBounds.getEndPoint();
 
-		if ((w * 2) > maxBounds.getWidth()) {
-			worldCenter.setX(maxBounds.getCenterPoint().getX());
-		} else {
-			if ((worldCenter.getX() - w) < minCoordinate.getX()) {
-				worldCenter.setX(minCoordinate.getX() + w);
+			if ((w * 2) > maxBounds.getWidth()) {
+				xCenter = maxBounds.getCenterPoint().getX();
+			} else {
+				if ((xCenter - w) < minCoordinate.getX()) {
+					xCenter = minCoordinate.getX() + w;
+				}
+				if ((xCenter + w) > maxCoordinate.getX()) {
+					xCenter = maxCoordinate.getX() - w;
+				}
 			}
-			if ((worldCenter.getX() + w) > maxCoordinate.getX()) {
-				worldCenter.setX(maxCoordinate.getX() - w);
+			if ((h * 2) > maxBounds.getHeight()) {
+				yCenter = maxBounds.getCenterPoint().getY();
+			} else {
+				if ((yCenter - h) < minCoordinate.getY()) {
+					yCenter = minCoordinate.getY() + h;
+				}
+				if ((yCenter + h) > maxCoordinate.getY()) {
+					yCenter = maxCoordinate.getY() - h;
+				}
 			}
 		}
-		if ((h * 2) > maxBounds.getHeight()) {
-			worldCenter.setY(maxBounds.getCenterPoint().getY());
-		} else {
-			if ((worldCenter.getY() - h) < minCoordinate.getY()) {
-				worldCenter.setY(minCoordinate.getY() + h);
-			}
-			if ((worldCenter.getY() + h) > maxCoordinate.getY()) {
-				worldCenter.setY(maxCoordinate.getY() - h);
-			}
-		}
-		return worldCenter;
+		return new Coordinate(xCenter, yCenter);
 	}
 
 	/**

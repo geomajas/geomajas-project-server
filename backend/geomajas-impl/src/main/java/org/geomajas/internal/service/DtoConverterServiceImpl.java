@@ -404,16 +404,16 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 
 		Geometry dto = null;
 		if (geometry instanceof Point) {
-			dto = new Geometry("Point", srid, precision);
+			dto = new Geometry(Geometry.POINT, srid, precision);
 			dto.setCoordinates(convertCoordinates(geometry));
 		} else if (geometry instanceof LinearRing) {
-			dto = new Geometry("LinearRing", srid, precision);
+			dto = new Geometry(Geometry.LINEAR_RING, srid, precision);
 			dto.setCoordinates(convertCoordinates(geometry));
 		} else if (geometry instanceof LineString) {
-			dto = new Geometry("LineString", srid, precision);
+			dto = new Geometry(Geometry.LINE_STRING, srid, precision);
 			dto.setCoordinates(convertCoordinates(geometry));
 		} else if (geometry instanceof Polygon) {
-			dto = new Geometry("Polygon", srid, precision);
+			dto = new Geometry(Geometry.POLYGON, srid, precision);
 			Polygon polygon = (Polygon) geometry;
 			Geometry[] geometries = new Geometry[polygon.getNumInteriorRing() + 1];
 			for (int i = 0; i < geometries.length; i++) {
@@ -425,14 +425,16 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 			}
 			dto.setGeometries(geometries);
 		} else if (geometry instanceof MultiPoint) {
-			dto = new Geometry("MultiPoint", srid, precision);
+			dto = new Geometry(Geometry.MULTI_POINT, srid, precision);
 			dto.setGeometries(convertGeometries(geometry));
 		} else if (geometry instanceof MultiLineString) {
-			dto = new Geometry("MultiLineString", srid, precision);
+			dto = new Geometry(Geometry.MULTI_LINE_STRING, srid, precision);
 			dto.setGeometries(convertGeometries(geometry));
 		} else if (geometry instanceof MultiPolygon) {
-			dto = new Geometry("MultiPolygon", srid, precision);
+			dto = new Geometry(Geometry.MULTI_POLYGON, srid, precision);
 			dto.setGeometries(convertGeometries(geometry));
+		} else {
+			throw new GeomajasException(ExceptionCode.CANNOT_CONVERT_GEOMETRY, geometry.getClass().getName());
 		}
 
 		return dto;
@@ -461,28 +463,30 @@ public class DtoConverterServiceImpl implements DtoConverterService {
 		com.vividsolutions.jts.geom.Geometry jts = null;
 
 		String geometryType = geometry.getGeometryType();
-		if ("Point".equals(geometryType)) {
+		if (Geometry.POINT.equals(geometryType)) {
 			jts = factory.createPoint(convertCoordinates(geometry)[0]);
-		} else if ("LinearRing".equals(geometryType)) {
+		} else if (Geometry.LINEAR_RING.equals(geometryType)) {
 			jts = factory.createLinearRing(convertCoordinates(geometry));
-		} else if ("LineString".equals(geometryType)) {
+		} else if (Geometry.LINE_STRING.equals(geometryType)) {
 			jts = factory.createLineString(convertCoordinates(geometry));
-		} else if ("Polygon".equals(geometryType)) {
+		} else if (Geometry.POLYGON.equals(geometryType)) {
 			LinearRing exteriorRing = (LinearRing) toInternal(geometry.getGeometries()[0]);
 			LinearRing[] interiorRings = new LinearRing[geometry.getGeometries().length - 1];
 			for (int i = 0; i < interiorRings.length; i++) {
 				interiorRings[i] = (LinearRing) toInternal(geometry.getGeometries()[i + 1]);
 			}
 			jts = factory.createPolygon(exteriorRing, interiorRings);
-		} else if ("MultiPoint".equals(geometryType)) {
+		} else if (Geometry.MULTI_POINT.equals(geometryType)) {
 			Point[] points = new Point[geometry.getGeometries().length];
 			jts = factory.createMultiPoint((Point[]) convertGeometries(geometry, points));
-		} else if ("MultiLineString".equals(geometryType)) {
+		} else if (Geometry.MULTI_LINE_STRING.equals(geometryType)) {
 			LineString[] lineStrings = new LineString[geometry.getGeometries().length];
 			jts = factory.createMultiLineString((LineString[]) convertGeometries(geometry, lineStrings));
-		} else if ("MultiPolygon".equals(geometryType)) {
+		} else if (Geometry.MULTI_POLYGON.equals(geometryType)) {
 			Polygon[] polygons = new Polygon[geometry.getGeometries().length];
 			jts = factory.createMultiPolygon((Polygon[]) convertGeometries(geometry, polygons));
+		} else {
+			throw new GeomajasException(ExceptionCode.CANNOT_CONVERT_GEOMETRY, geometryType);
 		}
 
 		return jts;

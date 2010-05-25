@@ -54,20 +54,6 @@ public class GeometrySerializer extends AbstractSerializer {
 
 	private final Logger log = LoggerFactory.getLogger(GeometrySerializer.class);
 
-	private static String TYPE_POINT = "Point";
-
-	private static String TYPE_MULTIPOINT = "MultiPoint";
-
-	private static String TYPE_LINESTRING = "LineString";
-
-	private static String TYPE_LINEARRING = "LinearRing";
-
-	private static String TYPE_POLYGON = "Polygon";
-
-	private static String TYPE_MULTILINESTRING = "MultiLineString";
-
-	private static String TYPE_MULTIPOLYGON = "MultiPolygon";
-
 	private static String ATTRIBUTE_TYPE = "type";
 
 	private static String ATTRIBUTE_SRID = "srid";
@@ -115,9 +101,12 @@ public class GeometrySerializer extends AbstractSerializer {
 		if (precision <= 0) {
 			throw new UnmarshallException("no precision");
 		}
-		if (!(type.equals(TYPE_POINT) || type.equals(TYPE_LINESTRING) || type.equals(TYPE_POLYGON)
-				|| type.equals(TYPE_LINEARRING) || type.equals(TYPE_MULTILINESTRING) || type
-				.equals(TYPE_MULTIPOLYGON))) {
+		if (!(type.equals(org.geomajas.geometry.Geometry.POINT) ||
+				type.equals(org.geomajas.geometry.Geometry.LINE_STRING) ||
+				type.equals(org.geomajas.geometry.Geometry.POLYGON) ||
+				type.equals(org.geomajas.geometry.Geometry.LINEAR_RING) ||
+				type.equals(org.geomajas.geometry.Geometry.MULTI_LINE_STRING) ||
+				type.equals(org.geomajas.geometry.Geometry.MULTI_POLYGON))) {
 			throw new UnmarshallException(type + " is not a supported geometry");
 		}
 		JSONArray coordinates = jso.getJSONArray(ATTRIBUTE_COORDINATES);
@@ -138,15 +127,15 @@ public class GeometrySerializer extends AbstractSerializer {
 		GeometryFactory factory = new GeometryFactory(new PrecisionModel(Math.pow(10, precision)), srid);
 
 		Geometry geometry = null;
-		if (type.equals(TYPE_POINT)) {
+		if (type.equals(org.geomajas.geometry.Geometry.POINT)) {
 			geometry = createPoint(factory, jso);
-		} else if (type.equals(TYPE_LINESTRING)) {
+		} else if (type.equals(org.geomajas.geometry.Geometry.LINE_STRING)) {
 			geometry = createLineString(factory, jso);
-		} else if (type.equals(TYPE_POLYGON)) {
+		} else if (type.equals(org.geomajas.geometry.Geometry.POLYGON)) {
 			geometry = createPolygon(factory, jso);
-		} else if (type.equals(TYPE_MULTILINESTRING)) {
+		} else if (type.equals(org.geomajas.geometry.Geometry.MULTI_LINE_STRING)) {
 			geometry = createMultiLineString(factory, jso);
-		} else if (type.equals(TYPE_MULTIPOLYGON)) {
+		} else if (type.equals(org.geomajas.geometry.Geometry.MULTI_POLYGON)) {
 			geometry = createMultiPolygon(factory, jso);
 		}
 		return geometry;
@@ -352,17 +341,17 @@ public class GeometrySerializer extends AbstractSerializer {
 
 	private String getType(Geometry geom) {
 		if (geom instanceof Point) {
-			return TYPE_POINT;
+			return org.geomajas.geometry.Geometry.POINT;
 		} else if (geom instanceof LineString) {
-			return TYPE_LINESTRING;
+			return org.geomajas.geometry.Geometry.LINE_STRING;
 		} else if (geom instanceof Polygon) {
-			return TYPE_POLYGON;
+			return org.geomajas.geometry.Geometry.POLYGON;
 		} else if (geom instanceof MultiPolygon) {
-			return TYPE_MULTIPOLYGON;
+			return org.geomajas.geometry.Geometry.MULTI_POLYGON;
 		} else if (geom instanceof MultiLineString) {
-			return TYPE_MULTILINESTRING;
+			return org.geomajas.geometry.Geometry.MULTI_LINE_STRING;
 		} else if (geom instanceof MultiPoint) {
-			return TYPE_MULTIPOINT;
+			return org.geomajas.geometry.Geometry.MULTI_POINT;
 		} else {
 			log.error("getType() : type " + geom.getClass().getName() + " unknown");
 			return "unknown";

@@ -258,28 +258,28 @@ public class GeometryConverterTest {
 	// -------------------------------------------------------------------------
 
 	private Geometry createDtoPoint() {
-		Geometry geometry = new Geometry("Point", SRID, -1);
+		Geometry geometry = new Geometry(Geometry.POINT, SRID, -1);
 		geometry.setCoordinates(new Coordinate[] { dtoC1 });
 		return geometry;
 	}
 
 	private Geometry createDtoLineString() {
-		Geometry geometry = new Geometry("LineString", SRID, -1);
+		Geometry geometry = new Geometry(Geometry.LINE_STRING, SRID, -1);
 		geometry.setCoordinates(new Coordinate[] { dtoC1, dtoC2, dtoC3, dtoC4 });
 		return geometry;
 	}
 
 	private Geometry createDtoLinearRing() {
-		Geometry geometry = new Geometry("LinearRing", SRID, -1);
+		Geometry geometry = new Geometry(Geometry.LINEAR_RING, SRID, -1);
 		geometry.setCoordinates(new Coordinate[] { dtoC1, dtoC2, dtoC3, dtoC4, dtoC1 });
 		return geometry;
 	}
 
 	private Geometry createDtoPolygon() {
-		Geometry shell = new Geometry("LinearRing", SRID, -1);
+		Geometry shell = new Geometry(Geometry.LINEAR_RING, SRID, -1);
 		shell.setCoordinates(new Coordinate[] { dtoC1, dtoC2, dtoC3, dtoC4, dtoC1 });
 
-		Geometry hole = new Geometry("LinearRing", SRID, -1);
+		Geometry hole = new Geometry(Geometry.LINEAR_RING, SRID, -1);
 		hole.setCoordinates(new Coordinate[] { dtoC5, dtoC6, dtoC7, dtoC8, dtoC5 });
 
 		Geometry geometry = new Geometry("Polygon", SRID, -1);
@@ -288,31 +288,31 @@ public class GeometryConverterTest {
 	}
 
 	private Geometry createDtoMultiPoint() {
-		Geometry point1 = new Geometry("Point", SRID, -1);
+		Geometry point1 = new Geometry(Geometry.POINT, SRID, -1);
 		point1.setCoordinates(new Coordinate[] { dtoC1 });
 
-		Geometry point2 = new Geometry("Point", SRID, -1);
+		Geometry point2 = new Geometry(Geometry.POINT, SRID, -1);
 		point2.setCoordinates(new Coordinate[] { dtoC2 });
 
-		Geometry geometry = new Geometry("MultiPoint", SRID, -1);
+		Geometry geometry = new Geometry(Geometry.MULTI_POINT, SRID, -1);
 		geometry.setGeometries(new Geometry[] { point1, point2 });
 		return geometry;
 	}
 
 	private Geometry createDtoMultiLineString() {
-		Geometry lineString1 = new Geometry("LineString", SRID, -1);
+		Geometry lineString1 = new Geometry(Geometry.LINE_STRING, SRID, -1);
 		lineString1.setCoordinates(new Coordinate[] { dtoC1, dtoC2, dtoC3, dtoC4 });
 
-		Geometry lineString2 = new Geometry("LineString", SRID, -1);
+		Geometry lineString2 = new Geometry(Geometry.LINE_STRING, SRID, -1);
 		lineString2.setCoordinates(new Coordinate[] { dtoC5, dtoC6, dtoC7, dtoC8 });
 
-		Geometry geometry = new Geometry("MultiLineString", SRID, -1);
+		Geometry geometry = new Geometry(Geometry.MULTI_LINE_STRING, SRID, -1);
 		geometry.setGeometries(new Geometry[] { lineString1, lineString2 });
 		return geometry;
 	}
 
 	private Geometry createDtoMultiPolygon() {
-		Geometry geometry = new Geometry("MultiPolygon", SRID, -1);
+		Geometry geometry = new Geometry(Geometry.MULTI_POLYGON, SRID, -1);
 		geometry.setGeometries(new Geometry[] { createDtoPolygon(), createDtoPolygon() });
 		return geometry;
 	}

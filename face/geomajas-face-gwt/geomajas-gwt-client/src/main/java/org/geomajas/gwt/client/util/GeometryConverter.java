@@ -60,16 +60,16 @@ public final class GeometryConverter {
 
 		Geometry dto = null;
 		if (geometry instanceof Point) {
-			dto = new Geometry("Point", srid, precision);
+			dto = new Geometry(Geometry.POINT, srid, precision);
 			dto.setCoordinates(geometry.getCoordinates());
 		} else if (geometry instanceof LinearRing) {
-			dto = new Geometry("LinearRing", srid, precision);
+			dto = new Geometry(Geometry.LINEAR_RING, srid, precision);
 			dto.setCoordinates(geometry.getCoordinates());
 		} else if (geometry instanceof LineString) {
-			dto = new Geometry("LineString", srid, precision);
+			dto = new Geometry(Geometry.LINE_STRING, srid, precision);
 			dto.setCoordinates(geometry.getCoordinates());
 		} else if (geometry instanceof Polygon) {
-			dto = new Geometry("Polygon", srid, precision);
+			dto = new Geometry(Geometry.POLYGON, srid, precision);
 			Polygon polygon = (Polygon) geometry;
 			Geometry[] geometries = new Geometry[polygon.getNumInteriorRing() + 1];
 			for (int i = 0; i < geometries.length; i++) {
@@ -81,13 +81,13 @@ public final class GeometryConverter {
 			}
 			dto.setGeometries(geometries);
 		} else if (geometry instanceof MultiPoint) {
-			dto = new Geometry("MultiPoint", srid, precision);
+			dto = new Geometry(Geometry.MULTI_POINT, srid, precision);
 			dto.setGeometries(convertGeometries(geometry));
 		} else if (geometry instanceof MultiLineString) {
-			dto = new Geometry("MultiLineString", srid, precision);
+			dto = new Geometry(Geometry.MULTI_LINE_STRING, srid, precision);
 			dto.setGeometries(convertGeometries(geometry));
 		} else if (geometry instanceof MultiPolygon) {
-			dto = new Geometry("MultiPolygon", srid, precision);
+			dto = new Geometry(Geometry.MULTI_POLYGON, srid, precision);
 			dto.setGeometries(convertGeometries(geometry));
 		}
 
@@ -109,26 +109,26 @@ public final class GeometryConverter {
 		org.geomajas.gwt.client.spatial.geometry.Geometry gwt = null;
 
 		String geometryType = geometry.getGeometryType();
-		if ("Point".equals(geometryType)) {
+		if (Geometry.POINT.equals(geometryType)) {
 			gwt = factory.createPoint(geometry.getCoordinates()[0]);
-		} else if ("LinearRing".equals(geometryType)) {
+		} else if (Geometry.LINEAR_RING.equals(geometryType)) {
 			gwt = factory.createLinearRing(geometry.getCoordinates());
-		} else if ("LineString".equals(geometryType)) {
+		} else if (Geometry.LINE_STRING.equals(geometryType)) {
 			gwt = factory.createLineString(geometry.getCoordinates());
-		} else if ("Polygon".equals(geometryType)) {
+		} else if (Geometry.POLYGON.equals(geometryType)) {
 			LinearRing exteriorRing = (LinearRing) toGwt(geometry.getGeometries()[0]);
 			LinearRing[] interiorRings = new LinearRing[geometry.getGeometries().length - 1];
 			for (int i = 0; i < interiorRings.length; i++) {
 				interiorRings[i] = (LinearRing) toGwt(geometry.getGeometries()[i + 1]);
 			}
 			gwt = factory.createPolygon(exteriorRing, interiorRings);
-		} else if ("MultiPoint".equals(geometryType)) {
+		} else if (Geometry.MULTI_POINT.equals(geometryType)) {
 			Point[] points = new Point[geometry.getGeometries().length];
 			gwt = factory.createMultiPoint((Point[]) convertGeometries(geometry, points));
-		} else if ("MultiLineString".equals(geometryType)) {
+		} else if (Geometry.MULTI_LINE_STRING.equals(geometryType)) {
 			LineString[] lineStrings = new LineString[geometry.getGeometries().length];
 			gwt = factory.createMultiLineString((LineString[]) convertGeometries(geometry, lineStrings));
-		} else if ("MultiPolygon".equals(geometryType)) {
+		} else if (Geometry.MULTI_POLYGON.equals(geometryType)) {
 			Polygon[] polygons = new Polygon[geometry.getGeometries().length];
 			gwt = factory.createMultiPolygon((Polygon[]) convertGeometries(geometry, polygons));
 		}
