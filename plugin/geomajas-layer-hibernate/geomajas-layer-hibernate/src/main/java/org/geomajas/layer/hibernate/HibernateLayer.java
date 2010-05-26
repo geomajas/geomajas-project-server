@@ -69,6 +69,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 
+import javax.annotation.PostConstruct;
+
 /**
  * Hibernate layer model.
  * 
@@ -102,6 +104,8 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, V
 
 	private CoordinateReferenceSystem crs;
 
+	private int srid;
+
 	private String id;
 
 	public String getId() {
@@ -116,16 +120,6 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, V
 		return crs;
 	}
 
-	private void initCrs() throws LayerException {
-		try {
-			crs = CRS.decode(getLayerInfo().getCrs());
-		} catch (NoSuchAuthorityCodeException e) {
-			throw new LayerException(e, ExceptionCode.LAYER_CRS_UNKNOWN_AUTHORITY, getId(), getLayerInfo().getCrs());
-		} catch (FactoryException exception) {
-			throw new LayerException(exception, ExceptionCode.LAYER_CRS_PROBLEMATIC, getId(), getLayerInfo().getCrs());
-		}
-	}
-
 	public FeatureModel getFeatureModel() {
 		return this.featureModel;
 	}
@@ -133,10 +127,15 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, V
 	@Override
 	public void setLayerInfo(VectorLayerInfo layerInfo) throws LayerException {
 		super.setLayerInfo(layerInfo);
-		initCrs();
 		if (null != featureModel) {
 			featureModel.setLayerInfo(getLayerInfo());
 		}
+	}
+
+	@PostConstruct
+	private void postConstruct() throws GeomajasException {
+		crs = geoService.getCrs(getLayerInfo().getCrs());
+		srid = geoService.getSridFromCrs(crs);
 	}
 
 	public VectorLayerInfo getLayerInfo() {
@@ -327,8 +326,8 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, V
 	 */
 	private void enforceSrid(Object feature) throws LayerException {
 		Geometry geom = getFeatureModel().getGeometry(feature);
-		if (geom != null) {
-			geom.setSRID(geoService.getSridFromCrs(crs));
+		if (null != geom) {
+			geom.setSRID(srid);
 			getFeatureModel().setGeometry(feature, geom);
 		}
 	}
