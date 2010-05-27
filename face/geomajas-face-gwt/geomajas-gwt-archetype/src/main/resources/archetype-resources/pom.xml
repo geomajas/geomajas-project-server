@@ -10,61 +10,95 @@
 	<packaging>war</packaging>
 	<name>Geomajas GWT application</name>
 
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-dep</artifactId>
+				<version>1.10.20</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 	<dependencies>
 		<!-- Geomajas dependencies -->
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-gwt-client</artifactId>
-			<version>${symbol_dollar}{geomajas-face-gwt-version}</version>
+			<version>1.7.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<!-- only mentioned to assure 1.7.0-SNAPSHOT back-end is used , should be removed -->
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-command</artifactId>
+			<version>1.7.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<!-- only mentioned to assure 1.7.0-SNAPSHOT back-end is used , should be removed -->
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-api</artifactId>
+			<version>1.7.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<!-- only mentioned to assure 1.7.0-SNAPSHOT back-end is used , should be removed -->
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-impl</artifactId>
+			<version>1.7.0-SNAPSHOT</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<!-- only mentioned to assure 1.7.0-SNAPSHOT back-end is used , should be removed -->
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-common-servlet</artifactId>
+			<version>1.7.0-SNAPSHOT</version>
+			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-layer-geotools</artifactId>
-			<version>${symbol_dollar}{geomajas-layer-geotools-version}</version>
+			<version>1.7.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-layer-openstreetmap</artifactId>
-			<version>${symbol_dollar}{geomajas-layer-openstreetmap-version}</version>
+			<version>1.7.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-testdata</artifactId>
-			<version>${symbol_dollar}{geomajas-backend-version}</version>
 		</dependency>
 
+		<!-- Hibernate layer can be removed if not needed, but the "Road" class needs the Hibernate stuff -->
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-layer-hibernate</artifactId>
-			<version>${symbol_dollar}{geomajas-layer-hibernate-version}</version>
 		</dependency>
+		<!-- uncomment if you want to use Hibernate with postgis, for another db you will need similar dependencies -->
+		<!--
 		<dependency>
 			<groupId>org.hibernatespatial</groupId>
 			<artifactId>hibernate-spatial-postgis</artifactId>
-			<version>1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.postgis</groupId>
 			<artifactId>postgis-jdbc</artifactId>
-			<version>1.1.6</version>
 		</dependency>
 		<dependency>
 			<groupId>postgresql</groupId>
 			<artifactId>postgresql</artifactId>
-			<version>8.1-407.jdbc3</version>
 		</dependency>
+		-->
 		
 		<!-- Google dependencies -->
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-user</artifactId>
-			<version>${symbol_dollar}{gwt-version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-servlet</artifactId>
-			<version>${symbol_dollar}{gwt-version}</version>
 			<scope>runtime</scope>
 		</dependency>
 
@@ -72,22 +106,18 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>${slf4j-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>jcl-over-slf4j</artifactId>
-			<version>${slf4j-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>log4j-over-slf4j</artifactId>
-			<version>${slf4j-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
-			<version>0.9.21</version>
 		</dependency>
 	</dependencies>
 
@@ -190,6 +220,16 @@
 			<name>Geomajas repository</name>
 			<url>http://maven.geomajas.org/</url>
 		</repository>
+		
+		<!-- uncomment if you want to use Geomajas snapshots, comment for faster builds  -->
+		<repository>
+			<id>Geomajas snapshots</id>
+			<name>Geomajas repository</name>
+			<url>http://maven.geomajas.org/</url>
+			<snapshots>
+				<enabled>true</enabled>				
+			</snapshots>
+		</repository>
 	</repositories>
 	<pluginRepositories>
 		<pluginRepository>
@@ -200,14 +240,6 @@
 	</pluginRepositories>
 
 	<properties>
-		<geomajas-face-gwt-version>1.7.0-SNAPSHOT</geomajas-face-gwt-version>
-		<geomajas-backend-version>1.7.0-SNAPSHOT</geomajas-backend-version>
-		<geomajas-layer-geotools-version>1.6.0</geomajas-layer-geotools-version>
-		<geomajas-layer-hibernate-version>1.6.0</geomajas-layer-hibernate-version>
-		<geomajas-layer-google-version>1.6.0</geomajas-layer-google-version>
-		<geomajas-layer-openstreetmap-version>1.6.0</geomajas-layer-openstreetmap-version>
-		<gwt-version>2.0.3</gwt-version>
-		<slf4j-version>1.6.0</slf4j-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
