@@ -8,7 +8,7 @@
 		<version>1.7.0-SNAPSHOT</version>
 	</parent>
 	<groupId>org.geomajas.documentation</groupId>
-	<artifactId>geomajas-face-gwt-documention</artifactId>
+	<artifactId>geomajas-face-gwt-documentation</artifactId>
 	<packaging>jdocbook</packaging>
 	<name>Geomajas GWT face documentation (${translation})</name>
 
