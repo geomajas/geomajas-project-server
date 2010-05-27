@@ -33,12 +33,12 @@ import org.geomajas.internal.layer.feature.InternalFeatureImpl;
 import org.geomajas.internal.layer.tile.InternalTileImpl;
 import org.geomajas.internal.rendering.DefaultSvgDocument;
 import org.geomajas.internal.rendering.DefaultVmlDocument;
-import org.geomajas.internal.rendering.writers.svg.SvgFeatureWriter;
-import org.geomajas.internal.rendering.writers.svg.SvgLabelTileWriter;
-import org.geomajas.internal.rendering.writers.svg.SvgTileWriter;
-import org.geomajas.internal.rendering.writers.vml.VmlFeatureWriter;
-import org.geomajas.internal.rendering.writers.vml.VmlLabelTileWriter;
-import org.geomajas.internal.rendering.writers.vml.VmlTileWriter;
+import org.geomajas.internal.rendering.writer.svg.SvgFeatureWriter;
+import org.geomajas.internal.rendering.writer.svg.SvgTileWriter;
+import org.geomajas.internal.rendering.writer.vml.VmlFeatureWriter;
+import org.geomajas.internal.rendering.writer.svg.SvgLabelTileWriter;
+import org.geomajas.internal.rendering.writer.vml.VmlLabelTileWriter;
+import org.geomajas.internal.rendering.writer.vml.VmlTileWriter;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.layer.tile.TileMetadata;
@@ -178,7 +178,7 @@ public class StringContentTilePainter implements TilePainter {
 	 * for geometries and labels. In case the renderer says "SVG" these documents will be of the type
 	 * {@link org.geomajas.internal.rendering.DefaultSvgDocument}, otherwise
 	 * {@link org.geomajas.internal.rendering.DefaultVmlDocument}. These documents in turn are built using
-	 * {@link org.geomajas.internal.rendering.writers.GraphicsWriter} classes.
+	 * {@link org.geomajas.internal.rendering.writer.GraphicsWriter} classes.
 	 * 
 	 * @param tileToPaint
 	 *            The instance of {@link InternalTile}. Using the DOM documents, the tile's "featureFragment" and

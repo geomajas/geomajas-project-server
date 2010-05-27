@@ -20,35 +20,33 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.geomajas.internal.rendering.writers.svg.geometry;
+package org.geomajas.internal.rendering.writer.svg.geometry;
 
 import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.Polygon;
-import org.geomajas.internal.rendering.writers.GraphicsWriter;
+import org.geomajas.internal.rendering.writer.GraphicsWriter;
 import org.geomajas.rendering.GraphicsDocument;
 import org.geomajas.rendering.RenderException;
 
 /**
  * <p>
- * SVG writer for <code>Polygon</code> objects.
+ * SVG writer for <code>LineString</code> objects.
  * </p>
  *
  * @author Pieter De Graef
  * @author Jan De Moerloose
  */
-public class PolygonWriter implements GraphicsWriter {
+public class LineStringWriter implements GraphicsWriter {
 
+	/**
+	 * Writes a {@link LineString} object. LineStrings are encoded into SVG
+	 * path elements. This function writes: "&lt;path d=".
+	 *
+	 * @param o The {@link LineString} to be encoded.
+	 */
 	public void writeObject(Object o, GraphicsDocument document, boolean asChild) throws RenderException {
 		document.writeElement("path", asChild);
-		document.writeAttribute("fill-rule", "evenodd");
 		document.writeAttributeStart("d");
-		Polygon poly = (Polygon) o;
-		LineString shell = poly.getExteriorRing();
-		int nHoles = poly.getNumInteriorRing();
-		document.writeClosedPathContent(shell.getCoordinates());
-		for (int j = 0; j < nHoles; j++) {
-			document.writeClosedPathContent(poly.getInteriorRingN(j).getCoordinates());
-		}
+		document.writePathContent(((LineString) o).getCoordinates());
 		document.writeAttributeEnd();
 	}
 }

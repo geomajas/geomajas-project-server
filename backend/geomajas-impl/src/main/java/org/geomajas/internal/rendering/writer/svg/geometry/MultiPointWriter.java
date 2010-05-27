@@ -20,33 +20,34 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.geomajas.internal.rendering.writers.svg.geometry;
+package org.geomajas.internal.rendering.writer.svg.geometry;
 
-import com.vividsolutions.jts.geom.LineString;
-import org.geomajas.internal.rendering.writers.GraphicsWriter;
+import com.vividsolutions.jts.geom.MultiPoint;
+import com.vividsolutions.jts.geom.Point;
+import org.geomajas.internal.rendering.writer.GraphicsWriter;
 import org.geomajas.rendering.GraphicsDocument;
 import org.geomajas.rendering.RenderException;
 
 /**
  * <p>
- * SVG writer for <code>LineString</code> objects.
+ * Writer for <code>MultiPoint</code> objects. Extends the
+ * <code>PointWriter</code>.
  * </p>
+ *
+ * TODO: check what happens with style definition in the enclosing group !!!!
  *
  * @author Pieter De Graef
  * @author Jan De Moerloose
  */
-public class LineStringWriter implements GraphicsWriter {
+public class MultiPointWriter implements GraphicsWriter {
 
-	/**
-	 * Writes a {@link LineString} object. LineStrings are encoded into SVG
-	 * path elements. This function writes: "&lt;path d=".
-	 *
-	 * @param o The {@link LineString} to be encoded.
-	 */
 	public void writeObject(Object o, GraphicsDocument document, boolean asChild) throws RenderException {
-		document.writeElement("path", asChild);
-		document.writeAttributeStart("d");
-		document.writePathContent(((LineString) o).getCoordinates());
-		document.writeAttributeEnd();
+		MultiPoint mp = (MultiPoint) o;
+		for (int i = 0; i < mp.getNumGeometries(); i++) {
+			document.writeElement("use", i == 0 && asChild);
+			Point p = (Point) mp.getGeometryN(i);
+			document.writeAttribute("x", p.getX());
+			document.writeAttribute("y", p.getY());
+		}
 	}
 }

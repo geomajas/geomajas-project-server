@@ -21,16 +21,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.internal.rendering.writers.svg.geometry;
+package org.geomajas.internal.rendering.writer.vml.geometry;
 
 import com.vividsolutions.jts.geom.GeometryCollection;
-import org.geomajas.internal.rendering.writers.GraphicsWriter;
+import org.geomajas.internal.rendering.writer.GraphicsWriter;
 import org.geomajas.rendering.GraphicsDocument;
 import org.geomajas.rendering.RenderException;
 
 /**
  * <p>
- * SVG writer for <code>GeometryCollection</code> objects.
+ * VML writer for <code>GeometryCollection</code> objects.
  * </p>
  *
  * @author Jan De Moerloose
@@ -44,11 +44,10 @@ public class GeometryCollectionWriter implements GraphicsWriter {
 	 */
 	public void writeObject(Object o, GraphicsDocument document, boolean asChild) throws RenderException {
 		GeometryCollection coll = (GeometryCollection) o;
-		document.writeElement("path", asChild);
+		document.writeElement("vml:shape", asChild);
 		document.writeAttribute("fill-rule", "evenodd");
-		document.writeAttributeStart("d");
+		document.writeAttributeStart("path");
 		for (int i = 0; i < coll.getNumGeometries(); i++) {
-			// TODO delegate to appropriate writers
 		}
 		document.writeAttributeEnd();
 	}

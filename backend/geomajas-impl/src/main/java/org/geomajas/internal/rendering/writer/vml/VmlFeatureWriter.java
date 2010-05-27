@@ -21,13 +21,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.internal.rendering.writers.vml;
+package org.geomajas.internal.rendering.writer.vml;
 
 import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.ImageInfo;
 import org.geomajas.configuration.RectInfo;
 import org.geomajas.configuration.SymbolInfo;
-import org.geomajas.internal.rendering.writers.GraphicsWriter;
+import org.geomajas.internal.rendering.writer.GraphicsWriter;
 import org.geomajas.layer.LayerType;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.rendering.GraphicsDocument;

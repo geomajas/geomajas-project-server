@@ -20,48 +20,34 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.geomajas.internal.rendering.writers.vml.geometry;
+package org.geomajas.internal.rendering.writer.svg.geometry;
 
 import com.vividsolutions.jts.geom.LineString;
-import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Polygon;
-import org.geomajas.internal.rendering.writers.GraphicsWriter;
+import org.geomajas.internal.rendering.writer.GraphicsWriter;
 import org.geomajas.rendering.GraphicsDocument;
 import org.geomajas.rendering.RenderException;
 
 /**
  * <p>
- * VML writer for <code>MultiPolygon</code> objects.
+ * SVG writer for <code>Polygon</code> objects.
  * </p>
  *
  * @author Pieter De Graef
  * @author Jan De Moerloose
  */
-public class MultiPolygonWriter implements GraphicsWriter {
+public class PolygonWriter implements GraphicsWriter {
 
-	/**
-	 * Writes the body for a <code>MultiPolygon</code> object. MultiPolygons are
-	 * encoded into SVG path elements. This function writes the different
-	 * polygons in one d-attribute of an SVG path element, separated by an 'M'
-	 * character. (in other words, it calls the super.writeBody for each
-	 * polygon).
-	 *
-	 * @param o The <code>MultiPolygon</code> to be encoded.
-	 */
 	public void writeObject(Object o, GraphicsDocument document, boolean asChild) throws RenderException {
-		document.writeElement("vml:shape", asChild);
+		document.writeElement("path", asChild);
 		document.writeAttribute("fill-rule", "evenodd");
-		document.writeAttributeStart("path");
-		MultiPolygon mpoly = (MultiPolygon) o;
-		for (int i = 0; i < mpoly.getNumGeometries(); i++) {
-			Polygon poly = (Polygon) mpoly.getGeometryN(i);
-			LineString shell = poly.getExteriorRing();
-			int nHoles = poly.getNumInteriorRing();
-			document.writeClosedPathContent(shell.getCoordinates());
-
-			for (int j = 0; j < nHoles; j++) {
-				document.writeClosedPathContent(poly.getInteriorRingN(j).getCoordinates());
-			}
+		document.writeAttributeStart("d");
+		Polygon poly = (Polygon) o;
+		LineString shell = poly.getExteriorRing();
+		int nHoles = poly.getNumInteriorRing();
+		document.writeClosedPathContent(shell.getCoordinates());
+		for (int j = 0; j < nHoles; j++) {
+			document.writeClosedPathContent(poly.getInteriorRingN(j).getCoordinates());
 		}
 		document.writeAttributeEnd();
 	}

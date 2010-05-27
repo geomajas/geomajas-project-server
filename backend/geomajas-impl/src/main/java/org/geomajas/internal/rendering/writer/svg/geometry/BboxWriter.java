@@ -20,34 +20,29 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.geomajas.internal.rendering.writers.svg.geometry;
+package org.geomajas.internal.rendering.writer.svg.geometry;
 
-import com.vividsolutions.jts.geom.MultiPoint;
-import com.vividsolutions.jts.geom.Point;
-import org.geomajas.internal.rendering.writers.GraphicsWriter;
+import org.geomajas.geometry.Bbox;
+import org.geomajas.internal.rendering.writer.GraphicsWriter;
 import org.geomajas.rendering.GraphicsDocument;
 import org.geomajas.rendering.RenderException;
 
 /**
  * <p>
- * Writer for <code>MultiPoint</code> objects. Extends the
- * <code>PointWriter</code>.
+ * SVG writer for <code>bbox</code> objects.
  * </p>
  *
- * TODO: check what happens with style definition in the enclosing group !!!!
- *
  * @author Pieter De Graef
- * @author Jan De Moerloose
  */
-public class MultiPointWriter implements GraphicsWriter {
+public class BboxWriter implements GraphicsWriter {
 
 	public void writeObject(Object o, GraphicsDocument document, boolean asChild) throws RenderException {
-		MultiPoint mp = (MultiPoint) o;
-		for (int i = 0; i < mp.getNumGeometries(); i++) {
-			document.writeElement("use", i == 0 && asChild);
-			Point p = (Point) mp.getGeometryN(i);
-			document.writeAttribute("x", p.getX());
-			document.writeAttribute("y", p.getY());
-		}
+		document.writeElement("rect", asChild);
+		Bbox env = (Bbox) o;
+		document.writeAttribute("x", env.getX());
+		document.writeAttribute("y", env.getY());
+		document.writeAttribute("width", env.getWidth());
+		document.writeAttribute("height", env.getHeight());
+		document.writeAttribute("style", "fill-opacity:0;stroke:#FF0000;stroke-width:5;stroke-opacity:1;");
 	}
 }

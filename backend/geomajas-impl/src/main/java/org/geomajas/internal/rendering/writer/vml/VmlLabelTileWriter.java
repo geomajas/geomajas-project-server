@@ -21,7 +21,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.internal.rendering.writers.vml;
+package org.geomajas.internal.rendering.writer.vml;
 
 import java.awt.geom.Rectangle2D;
 
@@ -30,7 +30,7 @@ import org.geomajas.configuration.FontStyleInfo;
 import org.geomajas.configuration.LabelStyleInfo;
 import org.geomajas.internal.layer.feature.InternalFeatureImpl;
 import org.geomajas.internal.layer.tile.InternalTileImpl;
-import org.geomajas.internal.rendering.writers.GraphicsWriter;
+import org.geomajas.internal.rendering.writer.GraphicsWriter;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.rendering.GraphicsDocument;
 import org.geomajas.rendering.RenderException;

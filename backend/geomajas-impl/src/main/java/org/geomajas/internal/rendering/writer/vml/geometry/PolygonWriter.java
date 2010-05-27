@@ -20,37 +20,44 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.geomajas.internal.rendering.writers.vml.geometry;
+package org.geomajas.internal.rendering.writer.vml.geometry;
 
-import com.vividsolutions.jts.geom.Point;
-import org.geomajas.internal.rendering.writers.GraphicsWriter;
+import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.Polygon;
+import org.geomajas.internal.rendering.writer.GraphicsWriter;
 import org.geomajas.rendering.GraphicsDocument;
 import org.geomajas.rendering.RenderException;
 
 /**
  * <p>
- * VML writer for <code>Point</code> objects.
+ * VML writer for <code>Polygon</code> objects.
  * </p>
  *
  * @author Pieter De Graef
  * @author Jan De Moerloose
  */
-public class PointWriter implements GraphicsWriter {
+public class PolygonWriter implements GraphicsWriter {
 
 	/**
 	 * Writes the object to the specified document, optionally creating a child
-	 * element. The object in this case should be a point.
+	 * element. The object in this case should be a polygon.
 	 *
-	 * @param o the object (of type Point).
+	 * @param o the object (of type Polygon).
 	 * @param document the document to write to.
 	 * @param asChild create child element if true.
 	 * @throws RenderException
 	 */
 	public void writeObject(Object o, GraphicsDocument document, boolean asChild) throws RenderException {
 		document.writeElement("vml:shape", asChild);
-		Point p = (Point) o;
-		String adj = document.getFormatter().format(p.getX()) + ","
-				+ document.getFormatter().format(p.getY());
-		document.writeAttribute("adj", adj);
+		document.writeAttribute("fill-rule", "evenodd");
+		document.writeAttributeStart("path");
+		Polygon poly = (Polygon) o;
+		LineString shell = poly.getExteriorRing();
+		int nHoles = poly.getNumInteriorRing();
+		document.writeClosedPathContent(shell.getCoordinates());
+		for (int j = 0; j < nHoles; j++) {
+			document.writeClosedPathContent(poly.getInteriorRingN(j).getCoordinates());
+		}
+		document.writeAttributeEnd();
 	}
 }

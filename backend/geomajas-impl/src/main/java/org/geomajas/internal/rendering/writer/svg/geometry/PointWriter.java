@@ -20,29 +20,27 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.geomajas.internal.rendering.writers.svg.geometry;
+package org.geomajas.internal.rendering.writer.svg.geometry;
 
-import org.geomajas.geometry.Bbox;
-import org.geomajas.internal.rendering.writers.GraphicsWriter;
+import com.vividsolutions.jts.geom.Point;
+import org.geomajas.internal.rendering.writer.GraphicsWriter;
 import org.geomajas.rendering.GraphicsDocument;
 import org.geomajas.rendering.RenderException;
 
 /**
  * <p>
- * SVG writer for <code>bbox</code> objects.
+ * SVG writer for <code>Point</code> objects.
  * </p>
  *
  * @author Pieter De Graef
+ * @author Jan De Moerloose
  */
-public class BboxWriter implements GraphicsWriter {
+public class PointWriter implements GraphicsWriter {
 
 	public void writeObject(Object o, GraphicsDocument document, boolean asChild) throws RenderException {
-		document.writeElement("rect", asChild);
-		Bbox env = (Bbox) o;
-		document.writeAttribute("x", env.getX());
-		document.writeAttribute("y", env.getY());
-		document.writeAttribute("width", env.getWidth());
-		document.writeAttribute("height", env.getHeight());
-		document.writeAttribute("style", "fill-opacity:0;stroke:#FF0000;stroke-width:5;stroke-opacity:1;");
+		document.writeElement("use", asChild);
+		Point p = (Point) o;
+		document.writeAttribute("x", p.getX());
+		document.writeAttribute("y", p.getY());
 	}
 }

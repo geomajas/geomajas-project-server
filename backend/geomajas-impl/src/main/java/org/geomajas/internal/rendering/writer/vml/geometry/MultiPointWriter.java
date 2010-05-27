@@ -20,38 +20,38 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.geomajas.internal.rendering.writers.svg.geometry;
+package org.geomajas.internal.rendering.writer.vml.geometry;
 
-import com.vividsolutions.jts.geom.MultiLineString;
-import org.geomajas.internal.rendering.writers.GraphicsWriter;
+import org.geomajas.internal.rendering.writer.GraphicsWriter;
 import org.geomajas.rendering.GraphicsDocument;
 import org.geomajas.rendering.RenderException;
 
 /**
+ * MultiPointWriter
+ *
  * <p>
- * SVG writer for <code>MultiLineString</code> objects.
+ * Writer for <code>MultiPoint</code> objects. Extends the
+ * <code>PointWriter</code>.
  * </p>
+ *
+ * TODO: check what happens with style definition in the enclosing group !!!!
  *
  * @author Pieter De Graef
  * @author Jan De Moerloose
  */
-public class MultiLineStringWriter implements GraphicsWriter {
+public class MultiPointWriter implements GraphicsWriter {
 
 	/**
-	 * Writes the body for a <code>MultiLineString</code> object.
-	 * MultiLineStrings are encoded into SVG path elements. This function writes
-	 * the different lines in one d-attribute of an SVG path element, separated
-	 * by an 'M' character.
-	 *
-	 * @param o The <code>MultiLineString</code> to be encoded.
+	 * Does nothing at the moment, since geomajas does not support MultiPoint.
 	 */
 	public void writeObject(Object o, GraphicsDocument document, boolean asChild) throws RenderException {
-		document.writeElement("path", asChild);
-		document.writeAttributeStart("d");
-		MultiLineString ml = (MultiLineString) o;
-		for (int i = 0; i < ml.getNumGeometries(); i++) {
-			document.writePathContent(ml.getGeometryN(i).getCoordinates());
-		}
-		document.writeAttributeEnd();
+		// MultiPoint mp = (MultiPoint) o;
+		// for (int i = 0; i < mp.getNumGeometries(); i++) {
+		// document.writeElement("use", i == 0 ? asChild : false);
+		// Point p = (Point) mp.getGeometryN(i);
+		// document.writeAttribute("x", p.getX());
+		// document.writeAttribute("y", p.getY());
+		// }
 	}
+
 }
