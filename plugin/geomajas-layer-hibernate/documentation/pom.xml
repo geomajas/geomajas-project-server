@@ -8,6 +8,24 @@
 	<version>1.7.0-SNAPSHOT</version>
 	<name>Geomajas Hibernate layer documentation (${translation})</name>
 
+	<distributionManagement>
+		<repository>
+			<id>geomajas</id>
+			<name>Geomajas repository (thirdparty)</name>
+			<url>http://apps.geomajas.org/nexus/content/repositories/thirdparty</url>
+		</repository>
+		<snapshotRepository>
+			<id>geomajas-snapshots</id>
+			<name>Geomajas repository (snapshots)</name>
+			<url>http://apps.geomajas.org/nexus/content/repositories/snapshots</url>
+		</snapshotRepository>
+		<site>
+			<id>Geomajas project site</id>
+			<name>Mapping with Asynchronous Java and SVG</name>
+			<url>file:/var/www/files.geomajas.org/htdocs/maven/trunk/geomajas</url>
+		</site>
+	</distributionManagement>
+	
 	<dependencies>
 		<dependency>
 			<groupId>org.geomajas.documentation</groupId>
