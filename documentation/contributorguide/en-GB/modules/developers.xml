@@ -30,10 +30,13 @@
     <title>maven compilation, targets, profiles, variables</title>
 
     <para>When doing an initial compilation of Geomajas, you may need to start
-    compilation from the "backend" directory. Only when that is compiled,
-    compilation from the project root will succeed.</para>
+    compilation from the "build-tools" and then the "backend" directories.
+    Only when these are compiled, compilation from the project root will
+    succeed.</para>
 
-    <programlisting>cd backend
+    <programlisting>cd build-tools
+mvn install
+cd backend
 mvn install
 cd ..
 mvn install</programlisting>
@@ -43,7 +46,8 @@ mvn install</programlisting>
 
     <para>You can also choose to build them individually.</para>
 
-    <para>There are a couple of profiles define should help during development:</para>
+    <para>There are a couple of profiles defined which should help during
+    development:</para>
 
     <itemizedlist>
       <listitem>
@@ -54,11 +58,10 @@ mvn install</programlisting>
       </listitem>
 
       <listitem>
-        <para><code>-Dbc</code>: when building everything (framework and
-        examples), the "bc" enables the build-checkstyle profile which assures
-        the project's checkstyle configuration is also built. This is normally
-        not needed as the checkstyle dependencies are available from our maven
-        repository.</para>
+        <para><code>-Dfull-build</code>: from the root project, this enables
+        inclusion of the build tools and documentation in the build. This is
+        actually enabled by default (to desable use <code>-Dhudson</code>"),
+        </para>
       </listitem>
 
       <listitem>
@@ -69,15 +72,35 @@ mvn install</programlisting>
       </listitem>
     </itemizedlist>
 
-    <para>For development using the dojo face, apart from using the
-    "-Pnoshrink" profile mentioned about, you may also want to configure the
-    ResourceServlet to try to directly read the javascript files from disk
-    before looking at the classpath (it also changes the cache headers). This
-    allows a simple refresh in the browser to load the changed versions. The
-    configuration in your web.xml needs an extra init-parameter like in this
-    example..</para>
+    <para></para>
 
-    <programlisting>&lt;servlet&gt;
+    <section>
+      <title>GWT build</title>
+
+      <para>For faster compilation during testing (when not using development
+      mode), it can be useful to compile only for the browser used for
+      testing. This will reduce the number of compilation steps by a factor 6.
+      Removing supported languages can further remove compilation steps.
+      Include the following excerpt in your <code>Xxx.gwt.xml</code> file to
+      set your target browser.</para>
+
+      <para><programlisting>&lt;!-- set target browser to compile for, use this to limit to the browser used for testing --&gt;
+&lt;!-- where value = "ie6/opera/gecko1_8/safari/gecko" , "gecko1_8" is FireFox 3 --&gt;
+&lt;set-property name="user.agent" value="gecko1_8" /&gt;</programlisting></para>
+    </section>
+
+    <section>
+      <title>dojo build</title>
+
+      <para>For development using the dojo face, apart from using the
+      "-Pnoshrink" profile mentioned about, you may also want to configure the
+      ResourceServlet to try to directly read the javascript files from disk
+      before looking at the classpath (it also changes the cache headers).
+      This allows a simple refresh in the browser to load the changed
+      versions. The configuration in your web.xml needs an extra
+      init-parameter like in this example.</para>
+
+      <para><programlisting>&lt;servlet&gt;
     &lt;servlet-name&gt;ResourceServlet&lt;/servlet-name&gt;
     &lt;servlet-class&gt;org.geomajas.servlet.ResourceServlet&lt;/servlet-class&gt;
     &lt;init-param&gt;
@@ -90,7 +113,8 @@ mvn install</programlisting>
     &lt;/init-param&gt;
     &lt;load-on-startup&gt;3&lt;/load-on-startup&gt;
 &lt;/servlet&gt;
-</programlisting>
+</programlisting></para>
+    </section>
 
     <section>
       <title>Running the example applications</title>
@@ -123,18 +147,18 @@ mvn install</programlisting>
   <section>
     <title>Documentation</title>
 
-    <para>The documentation is split in three books.</para>
+    <para>The general documentation is split in three books.</para>
 
     <para><itemizedlist>
         <listitem>
-          <para>developers guide: guide for developer who want to use
-          Geomajas in their application.</para>
+          <para>developers guide: guide for developer who want to use Geomajas
+          in their application.</para>
         </listitem>
 
         <listitem>
-          <para>contributors guide: guide for people who want to contribute
-          to the project or want to know more about the functioning of the
-          project.</para>
+          <para>contributors guide: guide for people who want to contribute to
+          the project or want to know more about the functioning of the
+          project (this one).</para>
         </listitem>
 
         <listitem>
@@ -143,8 +167,11 @@ mvn install</programlisting>
         </listitem>
       </itemizedlist></para>
 
-    <para>These documents are all written in docbook format to allow both PDF
-    and HTML output formats. The sources can be found in the "documentation"
+    <para>Apart from that, each face and each plug-in has their own
+    documentation.</para>
+
+    <para>All documentation is written in docbook format to allow both PDF and
+    HTML output formats. The sources can be found in the "documentation"
     directory of the project.</para>
 
     <!--
@@ -169,11 +196,14 @@ mvn site</programlisting>
     another tool for editing, please keep the current formatting to assure
     diffs remain usable.</para>
 
-    <para>The devuserguide includes a lot of examples which are excerpts from
+    <para>The documentation includes a lot of examples which are excerpts from
     the source of the example applications. This prevents copy-paste mistakes.
     The build process for the documentation automatically updates these
-    excepts. It scans all files in the "application" directory. Excepts can be
-    annotated using annotations like</para>
+    excepts. The directories which have to be scanned for excepts are
+    specified in the pom. When this includes code which is not in the current
+    versioned entity (the root directory for the face or plug-in), then the
+    source needs to be obtained from a dependency and unpacked. Excerpts can
+    be annotated using annotations like</para>
 
     <para><programlisting>&lt;!-- @extract-start AllowAllSecurity, Allow full access to everybody --&gt;
 &lt;bean name="security.securityInfo" class="org.geomajas.security.SecurityInfo"&gt;
@@ -195,21 +225,73 @@ for (String line : lines) {
   </section>
 
   <section>
+    <title>API contract</title>
+
+    <para>The Geomajas project has a very strong API contract. To assure the
+    project adheres to this contract, we have the following
+    requirements;</para>
+
+    <para><itemizedlist>
+        <listitem>
+          <para>No API classes or interfaces may be removed.</para>
+        </listitem>
+
+        <listitem>
+          <para>No API classes or interfaces may be renamed.</para>
+        </listitem>
+
+        <listitem>
+          <para>No API classes or interfaces may have their package name
+          modified.</para>
+        </listitem>
+
+        <listitem>
+          <para>No API methods may be removed.</para>
+        </listitem>
+
+        <listitem>
+          <para>No API methods may have their signature changed.</para>
+        </listitem>
+
+        <listitem>
+          <para>No methods may be added to classes annotated using
+          "<code>@<code>UserImplemented</code></code>".</para>
+        </listitem>
+
+        <listitem>
+          <para>Each class on which a "@Api" annotation is added should have a
+          "@since" javadoc comment.</para>
+        </listitem>
+
+        <listitem>
+          <para>Each method on which a "@Api" annotation is added should have
+          a "@since" javadoc comment.</para>
+        </listitem>
+
+        <listitem>
+          <para>Each public method which is added in a class which is
+          annotated with "@Api(allMethods = true)", should have a "@since"
+          javadoc comment.</para>
+        </listitem>
+      </itemizedlist></para>
+  </section>
+
+  <section>
     <title>Versioning</title>
 
     <para>Version have a major.minor.patch structure.</para>
 
     <itemizedlist>
       <listitem>
-         major: indicates that this release has major advances over previous releases. New major versions do not need to be backwards compatible.
+         major: indicates that this release has major advances over previous releases. New major versions do not need to be backwards compatible. 
       </listitem>
 
       <listitem>
-         minor: indicates that there are important new features that do not break compatibility with previous versions with the same major number. Even minor versions are used for "stable" versions which will be supported by Geosparc. Odd minor versions are used for work-in-progress and stabilisation efforts.
+         minor: indicates that there are important new features that do not break compatibility with previous versions with the same major number. Even minor versions are used for "stable" versions which will be supported by Geosparc. Odd minor versions are used for work-in-progress and stabilisation efforts. 
       </listitem>
 
       <listitem>
-         patch: bugfixes and smaller improvements.
+         patch: bugfixes and smaller improvements. 
       </listitem>
     </itemizedlist>
   </section>
@@ -442,67 +524,5 @@ for (String line : lines) {
       maven conventions (see
       http://maven.apache.org/guides/introduction/introduction-to-the-standard-directory-layout.html).</para>
     </section>
-  </section>
-
-  <section>
-    <title>Maven repository</title>
-
-    <para>The Geomajas build has quite a few dependencies which are gathered
-    from several repositories.</para>
-
-    <para>To make this all easier to manage, we are using a repository proxy
-    (<ulink url="http://nexus.sonatype.org/">nexus</ulink>).</para>
-
-    <para>This combines the artifacts from the following repositories:</para>
-
-    <itemizedlist>
-      <listitem>
-         maven central: http://repo1.maven.org/maven2/
-      </listitem>
-
-      <listitem>
-         java.net repo: http://download.java.net/maven/2/
-      </listitem>
-
-      <listitem>
-         jts4gwt: http://jts4gwt.sourceforge.net/maven/repository/
-      </listitem>
-
-      <listitem>
-         OSGeo: http://download.osgeo.org/webdav/geotools/
-      </listitem>
-
-      <listitem>
-         refractions: http://lists.refractions.net/m2
-      </listitem>
-
-      <listitem>
-         smartgwt: http://www.smartclient.com/maven2
-      </listitem>
-
-      <listitem>
-         spring milestones: http://repository.springsource.com/maven/bundles/milestone
-      </listitem>
-
-      <listitem>
-         spring releases: http://repository.springsource.com/maven/bundles/release
-      </listitem>
-
-      <listitem>
-         selenium: http://nexus.openqa.org/content/repositories/releases
-      </listitem>
-
-      <listitem>
-         selenium snapshots: http://nexus.openqa.org/content/repositories/snapshots 
-      </listitem>
-
-      <listitem>
-         hibernate-spatial: http://www.hibernatespatial.org/repository
-      </listitem>
-
-      <listitem>
-         JBoss (a.o hibernate): https://repository.jboss.org/nexus/content/groups/public/
-      </listitem>
-    </itemizedlist>
   </section>
 </chapter>

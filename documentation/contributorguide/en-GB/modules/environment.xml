@@ -21,7 +21,6 @@
   ~ You should have received a copy of the GNU Affero General Public License
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
-
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
 "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
 <chapter id="part-installation">
@@ -75,11 +74,12 @@
         </listitem>
 
         <listitem>
-          <para>IDEA SVN plug-in (part of the default IDEA installation)</para>
+          <para>IDEA SVN plug-in (part of the default IDEA
+          installation)</para>
         </listitem>
       </itemizedlist>
 
-      <para>The Geomajas repository can be found at<ulink
+      <para>The Geomajas repository can be found at <ulink
       url="https://svn.geomajas.org/majas">https://svn.geomajas.org/majas</ulink>.
       The standard SVN repository layout is followed: trunk, tags and
       branches. For the latest and greatest code (including GWT face) you
@@ -151,8 +151,8 @@
     projects can now be imported into Eclipse.</para>
 
     <para>If you will be working with the GWT face, you may want to make use
-    of the GWT Eclipse plug-in of Google. Detailed instructions can be found on
-    the following site:<ulink
+    of the GWT Eclipse plug-in of Google. Detailed instructions can be found
+    on the following site:<ulink
     url="http://code.google.com/eclipse/docs/download.html">
     http://code.google.com/eclipse/docs/download.html</ulink>. We have
     experienced a problem with the project dependencies in Eclipse, which can
@@ -192,20 +192,18 @@
 
     <para>The setup in IntelliJ IDEA is quite straightforward and does not
     require running a separate maven command. Make sure you use the maven
-    import wizard to open your project, it can be activated from the File
-    menu:<code>File-&gt;New Project</code>and select<code>"Import project from
-    external model"</code>. The recommended settings for the import dialog are
-    shown below:</para>
+    import wizard to open your project, it can be activated from the File menu
+    "Open project" and selectthe root pom.xml file.</para>
 
     <para></para>
 
     <figure>
-      <title>Import settings for Geomajas project (replace root directory with
-      your own)</title>
+      <title>Open Geomajas project (replace root directory with your
+      own)</title>
 
       <mediaobject>
         <imageobject>
-          <imagedata fileref="../images/idea-import.png" width="80%" />
+          <imagedata fileref="../images/IDEA - open project.png" width="50%" />
         </imageobject>
       </mediaobject>
     </figure>
@@ -216,23 +214,27 @@
     facet but as always you will have to make your own run configuration
     (which is fortunately trivial).</para>
 
-    <para>Some additional settings have to be done in the porject structure
-    dialog. Apart from specifying the GWT installation directory, there is a
-    specific project setting which has to be done manually, which is setting
-    the target Web facet to "Web". The project structure for the simple GWT
-    project should look as follows:</para>
+    <para>Depending on the actual IDEA version, some additional settings have
+    to be done in the project structure dialog. Apart from specifying the GWT
+    installation directory, there is a specific project setting which has to
+    be done manually, which is setting the target Web facet to "Web". The
+    project structure for the simple GWT project should look as
+    follows:</para>
 
     <figure>
       <title>Project structure for simple GWT project</title>
 
       <mediaobject>
         <imageobject>
-          <imagedata fileref="../images/idea-gwt.png" width="80%" />
+          <imagedata fileref="../images/IDEA - project structure.png"
+                     width="80%" />
         </imageobject>
       </mediaobject>
     </figure>
 
-    <para>After this, you should be able to run the project.</para>
+    <para>After this, you should be able to run and debug the project. Note
+    that this setting is needed for each of the GWT modules you want to be
+    able to run.</para>
   </section>
 
   <section>

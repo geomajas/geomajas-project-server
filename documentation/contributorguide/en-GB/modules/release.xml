@@ -110,23 +110,6 @@ cd geomajas-$VERSION</programlisting>
       <para>Next step is to deploy the newly created tag.</para>
 
       <programlisting>mvn deploy -Dhudson</programlisting>
-
-      <para>The files are now deployed in our maven repository, but the index
-      needs to be rebuilt. So log into <ulink
-      url="http://apps.geomajas.org/nexus/">nexus</ulink> go to repositories,
-      right click on the "3rd party" repository and indicate both "Re-index"
-      and "Rebuild metadata":</para>
-
-      <screenshot>
-        <screeninfo>Nexus re-index and rebuild metadata</screeninfo>
-
-        <mediaobject>
-          <imageobject>
-            <imagedata align="center"
-                       fileref="../resources/nexus_re_index.png" />
-          </imageobject>
-        </mediaobject>
-      </screenshot>
     </listitem>
 
     <listitem>

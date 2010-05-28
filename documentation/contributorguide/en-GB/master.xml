@@ -49,15 +49,19 @@
 				xmlns:xi="http://www.w3.org/2001/XInclude"/>
 	<xi:include href="modules/codingstyle.xml"
 				xmlns:xi="http://www.w3.org/2001/XInclude"/>
+	<xi:include href="modules/spring.xml"
+				xmlns:xi="http://www.w3.org/2001/XInclude"/>
+	<xi:include href="modules/plugin.xml"
+				xmlns:xi="http://www.w3.org/2001/XInclude"/>
 	<xi:include href="modules/jira.xml"
 				xmlns:xi="http://www.w3.org/2001/XInclude"/>
 	<xi:include href="modules/environment.xml"
-				xmlns:xi="http://www.w3.org/2001/XInclude"/>
-	<xi:include href="modules/spring.xml"
 				xmlns:xi="http://www.w3.org/2001/XInclude"/>
 	<xi:include href="modules/release.xml"
 				xmlns:xi="http://www.w3.org/2001/XInclude"/>
 	<xi:include href="modules/CLA.xml"
 				xmlns:xi="http://www.w3.org/2001/XInclude"/>
-	
+	<xi:include href="modules/repository.xml"
+				xmlns:xi="http://www.w3.org/2001/XInclude"/>
+
 </book>

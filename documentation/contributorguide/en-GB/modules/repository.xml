@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE appendix PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+<!--
+  ~ This file is part of Geomajas, a component framework for building
+  ~ rich Internet applications (RIA) with sophisticated capabilities for the
+  ~ display, analysis and management of geographic information.
+  ~ It is a building block that allows developers to add maps
+  ~ and other geographic data capabilities to their web applications.
+  ~
+  ~ Copyright 2008-2010 Geosparc, http://www.geosparc.com, Belgium
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU Affero General Public License as
+  ~ published by the Free Software Foundation, either version 3 of the
+  ~ License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU Affero General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU Affero General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<appendix id="repository" lang="en">
+  <title>Maven repository</title>
+
+  <para>The project use the <ulink url="http://nexus.sonatype.org/">nexus
+  repository manager</ulink> to store all Geomajas jars and all
+  dependencies.</para>
+
+  <para>The following configuration can be used in your maven profile :</para>
+
+  <para><programlisting>&lt;repositories&gt;
+    &lt;repository&gt;
+        &lt;id&gt;Geomajas&lt;/id&gt;
+        &lt;name&gt;Geomajas repository&lt;/name&gt;
+        &lt;url&gt;http://maven.geomajas.org/&lt;/url&gt;
+    &lt;/repository&gt;
+
+    &lt;!-- uncomment if you want to use Geomajas snapshots, comment for faster builds  --&gt;
+    &lt;repository&gt;
+        &lt;id&gt;Geomajas snapshots&lt;/id&gt;
+        &lt;name&gt;Geomajas repository&lt;/name&gt;
+        &lt;url&gt;http://maven.geomajas.org/&lt;/url&gt;
+        &lt;snapshots&gt;
+            &lt;enabled&gt;true&lt;/enabled&gt;
+        &lt;/snapshots&gt;
+    &lt;/repository&gt;
+&lt;/repositories&gt;</programlisting>If you do not need access to the
+  snapshot releases, then it is recommended to remove that repository from
+  your pom (it will make your compilation a little faster).</para>
+
+  <para>The Geomajas build has quite a few dependencies which are gathered
+  from several repositories.</para>
+
+  <para>Our nexus instance functions as a proxy for the following repositories
+  ;</para>
+
+  <itemizedlist>
+    <listitem>
+       maven central: http://repo1.maven.org/maven2/ 
+    </listitem>
+
+    <listitem>
+       java.net repo: http://download.java.net/maven/2/ 
+    </listitem>
+
+    <listitem>
+       jts4gwt: http://jts4gwt.sourceforge.net/maven/repository/ 
+    </listitem>
+
+    <listitem>
+       OSGeo: http://download.osgeo.org/webdav/geotools/ 
+    </listitem>
+
+    <listitem>
+       refractions: http://lists.refractions.net/m2 
+    </listitem>
+
+    <listitem>
+       smartgwt: http://www.smartclient.com/maven2 
+    </listitem>
+
+    <listitem>
+       spring milestones: http://repository.springsource.com/maven/bundles/milestone 
+    </listitem>
+
+    <listitem>
+       spring releases: http://repository.springsource.com/maven/bundles/release 
+    </listitem>
+
+    <listitem>
+       selenium: http://nexus.openqa.org/content/repositories/releases 
+    </listitem>
+
+    <listitem>
+       selenium snapshots: http://nexus.openqa.org/content/repositories/snapshots 
+    </listitem>
+
+    <listitem>
+       hibernate-spatial: http://www.hibernatespatial.org/repository 
+    </listitem>
+
+    <listitem>
+       JBoss (a.o hibernate): https://repository.jboss.org/nexus/content/groups/public/ 
+    </listitem>
+  </itemizedlist>
+</appendix>
