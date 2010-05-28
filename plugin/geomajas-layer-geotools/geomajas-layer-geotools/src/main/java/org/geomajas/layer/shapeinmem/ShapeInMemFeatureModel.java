@@ -22,28 +22,31 @@
  */
 package org.geomajas.layer.shapeinmem;
 
-import com.vividsolutions.jts.geom.Geometry;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.geomajas.configuration.AttributeInfo;
 import org.geomajas.configuration.FeatureInfo;
 import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.LayerException;
+import org.geomajas.layer.LayerType;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.FeatureModel;
 import org.geomajas.service.DtoConverterService;
-import org.geomajas.service.GeoService;
 import org.geotools.data.DataStore;
 import org.geotools.factory.CommonFactoryFinder;
 import org.opengis.feature.simple.SimpleFeature;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.MultiLineString;
+import com.vividsolutions.jts.geom.MultiPoint;
+import com.vividsolutions.jts.geom.MultiPolygon;
 
 /**
  * Feature model for handle shape files in memory.
- *
+ * 
  * @author Jan De Moerloose
  * @author Pieter De Graef
  */
@@ -51,8 +54,7 @@ public class ShapeInMemFeatureModel extends FeatureSourceRetriever implements Fe
 
 	private int srid;
 
-	@Autowired
-	private GeoService geoService;
+	private VectorLayerInfo vectorLayerInfo;
 
 	private DtoConverterService converterService;
 
@@ -69,6 +71,7 @@ public class ShapeInMemFeatureModel extends FeatureSourceRetriever implements Fe
 	}
 
 	public void setLayerInfo(VectorLayerInfo vectorLayerInfo) throws LayerException {
+		this.vectorLayerInfo = vectorLayerInfo;
 		FeatureInfo featureInfo = vectorLayerInfo.getFeatureInfo();
 		for (AttributeInfo info : featureInfo.getAttributes()) {
 			attributeInfoMap.put(info.getName(), info);
@@ -109,6 +112,13 @@ public class ShapeInMemFeatureModel extends FeatureSourceRetriever implements Fe
 
 	public Geometry getGeometry(Object feature) throws LayerException {
 		Geometry geom = (Geometry) asFeature(feature).getDefaultGeometry();
+		if (geom instanceof MultiLineString && vectorLayerInfo.getLayerType() == LayerType.LINESTRING) {
+			return (Geometry) geom.getGeometryN(0).clone();
+		} else if (geom instanceof MultiPolygon && vectorLayerInfo.getLayerType() == LayerType.POLYGON) {
+			return (Geometry) geom.getGeometryN(0).clone();
+		} else if (geom instanceof MultiPoint && vectorLayerInfo.getLayerType() == LayerType.POINT) {
+			return (Geometry) geom.getGeometryN(0).clone();
+		}
 		return (Geometry) geom.clone();
 	}
 
