@@ -47,6 +47,17 @@ public class MyClass {
 
     <para>We recommend using the annotations when possible.</para>
 
+    <para>You cannot assume that (auto) wired services are initialized while
+    the application context is being built. If you need to do some
+    initialization of the bean state, this should be removed from the setters
+    which are called while building the context, and moved to a post construct
+    method.</para>
+
+    <para><programlisting>@PostConstruct
+private postConstruct() {
+    // dome some stuff here
+}</programlisting></para>
+
     <section>
       <title>Bean naming convention</title>
 
@@ -100,7 +111,8 @@ public class MyClass {
 
       <para>The "contextConfigLocation" context-param allows you to specify
       additional application context definition files. These will be included
-      after the builtin Geomajas file. You can include several files by
+      after the builtin Geomajas file and the configuration which is
+      contributed by the available plug-ins. You can include several files by
       separating the location by a space, newline, comma or semicolon. The
       files are always searched on the classpath.</para>
 
@@ -113,8 +125,9 @@ public class MyClass {
 
       <para>When using another way to define the application context, you have
       to make sure to include "org/geomajas/spring/geomajasContext.xml"
-      (classpath resource). This resource can be found in the geomajas-impl
-      module.</para>
+      (classpath resource, from the geomajas-impl module), and all the
+      "META-INF/geomajasContext.xml" (classpath resource, configuration for
+      the plug-ins).</para>
     </section>
   </section>
 </chapter>

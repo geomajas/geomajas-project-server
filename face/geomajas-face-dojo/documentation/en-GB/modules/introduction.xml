@@ -24,7 +24,52 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <chapter>
-    <title>Introduction</title>
+  <title>Introduction</title>
 
-    <para></para>
+  <para></para>
+
+  <para><table cellpadding="" cellspacing="10" class="">
+      <title>List of dojo face modules</title>
+
+      <tgroup align="left" cols="2">
+        <colspec colnum="1" colwidth="1*" />
+
+        <colspec colnum="2" colwidth="2*" />
+
+        <thead>
+          <row>
+            <entry>Name</entry>
+
+            <entry>Purpose</entry>
+          </row>
+        </thead>
+
+        <tbody>
+          <row>
+            <entry>geomajas-dojo-client</entry>
+
+            <entry>Client side module for the dojo AJAX interface.</entry>
+          </row>
+
+          <row>
+            <entry>geomajas-dojo-client-shrinksafe</entry>
+
+            <entry>Server side module for the dojo AJAX interface, after
+            shrinking to combine everything in one JavaScript file.</entry>
+          </row>
+
+          <row>
+            <entry>geomajas-dojo-server</entry>
+
+            <entry>Server side module for the dojo AJAX interface.</entry>
+          </row>
+
+          <row>
+            <entry>documentation</entry>
+
+            <entry>Module containing this documentation.</entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table></para>
 </chapter>

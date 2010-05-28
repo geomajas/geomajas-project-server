@@ -1120,6 +1120,16 @@
     <section>
       <title>Client configuration</title>
 
+		<figure>
+		  <title>Geomajas client configuration</title>
+
+		  <mediaobject>
+			<imageobject>
+			  <imagedata fileref="../images/clientConfiguration.png" width="100%" />
+			</imageobject>
+		  </mediaobject>
+		</figure>
+
       <section>
         <title>Map configuration</title>
 

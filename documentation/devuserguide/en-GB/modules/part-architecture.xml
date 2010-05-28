@@ -88,6 +88,69 @@
     well.</para>
 
     <figure>
+      <title>Geomajas services</title>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="../images/services.png" width="100%" />
+        </imageobject>
+      </mediaobject>
+    </figure>
+
+    <para>The Geomajas back-end is built from many services which are wired
+    together using dependency injection (DI). This wiring is partly done
+    automatically, and partly through the configuration files. Thanks to the
+    inversion of control (IoC) the back-end is very flexible and can be
+    customized at will.</para>
+
+    <para>The client-server communication is done through the command
+    dispatcher. This delegates to one of the action based services which
+    handle the command. These typically interact with one or more of the topic
+    based services (though the command could also handle everything directly).
+    The most important built-in topic based services are the raster and vector
+    layer service. They are used to access the GIS data which is stored as
+    either raster or vector layer.</para>
+
+    <para>All the services are running in a secured zone and will typically
+    interact with the security context to verify access rights (or
+    policies).</para>
+
+    <para>The layers access the actual GIS data, either directly or using some
+    kind of transformation service (for example a GeoServer or MapServer
+    instance).</para>
+
+    <figure>
+      <title>Geomajas for mashups</title>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="../images/mashup.png" width="100%" />
+        </imageobject>
+      </mediaobject>
+    </figure>
+
+    <para>With this advanced configuration, many integration options exist.
+    One example is displayed above, the inclusion of Geomajas in an existing
+    application. On the client side, you just have to include the map widget
+    in your web application. On the server side, there are many options, but
+    you could for example assure that the transactions are shared between your
+    existing application and Geomajas.</para>
+
+    <figure>
+      <title>Geomajas dependencies</title>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="../images/dependencies.png" width="100%" />
+        </imageobject>
+      </mediaobject>
+    </figure>
+
+    <para>As is the case for most powerful frameworks, Geomajas stands on the
+    shoulder of giants. We use some of the major open source libraries in our
+    framework (and we integrate with a lot more).</para>
+
+    <figure>
       <title>Geomajas back-end modules</title>
 
       <mediaobject>
@@ -151,7 +214,7 @@
         </listitem>
       </itemizedlist></para>
 
-    <sect1 id="architecture-command">
+    <section id="architecture-command">
       <title>Command</title>
 
       <figure>
@@ -228,12 +291,22 @@
 
       <para>When the command had something to do with rendering, then the
       response object is likely to contain a <code>Tile</code>.</para>
-    </sect1>
+    </section>
 
-    <sect1>
+    <section>
       <title>Pipelines</title>
 
-      <sect2>
+      <figure>
+        <title>Geomajas pipeline architecture</title>
+
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="../images/pipeline.png" width="100%" />
+          </imageobject>
+        </mediaobject>
+      </figure>
+
+      <section>
         <title>Pipeline architecture</title>
 
         <para>All the layer access services provided by the Geomajas back-end
@@ -295,17 +368,17 @@
               during the pipeline's execution.</para>
             </listitem>
           </itemizedlist></para>
-      </sect2>
+      </section>
 
-      <sect2>
+      <section>
         <title>Application in the back-end</title>
 
         <para>All the methods in both RasterLayerService and
         VectorLayerService are implemented using pipelines.</para>
-      </sect2>
+      </section>
 
       <!--
-      <sect2>
+      <section>
         <title>Rendering strategies</title>
 
         <para>By configuring the rendering pipeline, you can change the
@@ -334,11 +407,11 @@
             on-the-fly, it requests them from an external WMS server.</para>
           </listitem>
         </itemizedlist>
-      </sect2>
+      </section>
       -->
-    </sect1>
+    </section>
 
-    <sect1>
+    <section>
       <title>Layer</title>
 
       <para>The layer extensions allow determining how a layer is built, which
@@ -348,10 +421,10 @@
       <para>A <code>Layer</code> has some metadata (id, coordinate system,
       label, bbox, stored in the <code>LayerInfo</code> object) and allows you
       get obtain the layer data.</para>
-    </sect1>
+    </section>
 
     <!--
-    <sect1>
+    <section>
       <title>Caching</title>
 
       <para>This allows configuration for caching of layer data. Geomajas uses
@@ -372,16 +445,16 @@
       </itemizedlist>
 
       <para></para>
-    </sect1>
+    </section>
     -->
 
-    <sect1>
+    <section>
       <title>Security</title>
 
       <para>The data which is accessed using Geomajas can be security
       sensitive.</para>
 
-      <sect2>
+      <section>
         <title>Security architecture</title>
 
         <para>Geomajas is built to be entirely independent of the
@@ -635,9 +708,9 @@
         <para>The security uses the approach that all access is forbidden
         unless is is allowed. Hence, you will always need to configure at
         least one security service to assure the system is usable.</para>
-      </sect2>
+      </section>
 
-      <sect2>
+      <section>
         <title>How is this applied ?</title>
 
         <para>The security is applied throughout Geomajas. A list of places
@@ -797,9 +870,9 @@
             <code>ExceptionCode.CREDENTIALS_MISSING_OR_INVALID</code>.</para>
           </listitem>
         </itemizedlist>
-      </sect2>
+      </section>
 
-      <sect2>
+      <section>
         <title>Server configuration</title>
 
         <para>While this is not really touched by description above, the
@@ -828,8 +901,8 @@
             security token).</para>
           </listitem>
         </itemizedlist>
-      </sect2>
-    </sect1>
+      </section>
+    </section>
   </chapter>
 
   <chapter>
@@ -837,7 +910,7 @@
 
     <para></para>
 
-    <sect1>
+    <section>
       <title>Module Overview</title>
 
       <para>Different modules have different impacts and different purposes.
@@ -854,8 +927,8 @@
           <listitem>
             <para><emphasis>backend</emphasis>: these are essential Geomajas
             modules. Each Geomajas application needs these modules. However,
-            you also need some extensions and layer models or you won't be
-            able to do much.</para>
+            you also need some a face and some plug-ins (like layers) or you
+            won't be able to do much.</para>
           </listitem>
 
           <listitem>
@@ -866,7 +939,9 @@
 
           <listitem>
             <para><emphasis>documentation</emphasis>: documentation modules,
-            specifically the different Geomajas guides.</para>
+            specifically the different Geomajas guides. These are the general
+            guides, each of the plug-ins also has a documentation
+            module.</para>
           </listitem>
 
           <listitem>
@@ -1027,10 +1102,16 @@
             </row>
 
             <row>
-              <entry>geomajas-gwt-archetype</entry>
+              <entry>geomajas-dep</entry>
 
-              <entry>Archetype which builds a simple application which can be
-              used to start a new GWT based Geomajas application.</entry>
+              <entry>This module can be included in your
+              "dependencyManagement" section to set default versions for many
+              possible dependencies. This includes the current release
+              versions of all Geomajas project modules and their major
+              dependencies. The versions can always be overwritten in your
+              pom. It does not indicate that module versions play well
+              together (though they should if the API contract is adhered).
+              This module should never contain snapshot builds.</entry>
             </row>
 
             <row>
@@ -1047,6 +1128,19 @@
               <entry>Maven plugin which is used for generating the
               documentation. It extracts excerpts from the code to allow
               inclusion in the docbook guides.</entry>
+            </row>
+
+            <row>
+              <entry>geomajas-parent</entry>
+
+              <entry>parent project which includes some Geomajas specific
+              settings like copyright, java version, checkstyle etc.</entry>
+            </row>
+
+            <row>
+              <entry>geomajas-plugin-archetype</entry>
+
+              <entry>Archetype for starting a new plugin.</entry>
             </row>
           </tbody>
         </tgroup>
@@ -1127,30 +1221,17 @@
 
           <tbody>
             <row>
-              <entry>geomajas-dojo-client</entry>
+              <entry>geomajas-face-dojo</entry>
 
-              <entry>Client side module for the dojo AJAX interface.</entry>
+              <entry>Modules for the dojo face, including
+              documentation.</entry>
             </row>
 
             <row>
-              <entry>geomajas-dojo-client-shrinksafe</entry>
+              <entry>geomajas-face-gwt</entry>
 
-              <entry>Server side module for the dojo AJAX interface, after
-              shrinking to combine everything in one JavaScript file.</entry>
-            </row>
-
-            <row>
-              <entry>geomajas-dojo-server</entry>
-
-              <entry>Server side module for the dojo AJAX interface.</entry>
-            </row>
-
-            <row>
-              <entry>geomajas-gwt-client</entry>
-
-              <entry>Module which contains the GWT face. This contains both
-              client and server side code for the face, the split is handled
-              by GWT (using GWT conventions).</entry>
+              <entry>Modules for the GWT face, including the
+              documentation.</entry>
             </row>
           </tbody>
         </tgroup>
@@ -1246,6 +1327,6 @@
           </tbody>
         </tgroup>
       </table>
-    </sect1>
+    </section>
   </chapter>
 </part>

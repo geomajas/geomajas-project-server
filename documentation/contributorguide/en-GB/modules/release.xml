@@ -26,6 +26,17 @@
 <chapter id="release" lang="en">
   <title>How to release Geomajas</title>
 
+  <para>The Geomajas project consists of many pieces which each have their own
+  release cycle. The most important parts are the back-end, faces and
+  plug-ins. The example programs, documentation and and build tools also have
+  individual release cycles.</para>
+
+  <para>This chapter tries to explain how to release any of these modules. The
+  procedure is similar for all moduies, but there are some specific checks to
+  be done which only apply for certain parts..</para>
+
+  <para></para>
+
   <para>Preparation work:</para>
 
   <para><orderedlist>
