@@ -26,15 +26,17 @@
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-api</artifactId>
+			<version>1.7.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-command</artifactId>
+			<version>1.7.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-plugin-staticsecurity</artifactId>
-			<version>${project.version}</version>
+			<version>1.7.0-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>
@@ -50,6 +52,7 @@
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-impl</artifactId>
+			<version>1.7.0-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
