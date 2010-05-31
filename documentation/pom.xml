@@ -83,6 +83,7 @@
 			<id>Geomajas</id>
 			<name>Geomajas repository</name>
 			<url>http://maven.geomajas.org/</url>
+			<snapshots><enabled>false</enabled></snapshots>
 		</repository>
 	</repositories>
 	<pluginRepositories>
@@ -90,6 +91,7 @@
 			<id>Geomajas</id>
 			<name>Geomajas repository</name>
 			<url>http://maven.geomajas.org/</url>
+			<snapshots><enabled>false</enabled></snapshots>
 		</pluginRepository>
 	</pluginRepositories>
 
