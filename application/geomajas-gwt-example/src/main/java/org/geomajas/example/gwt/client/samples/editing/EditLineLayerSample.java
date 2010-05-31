@@ -23,12 +23,14 @@
 
 package org.geomajas.example.gwt.client.samples.editing;
 
+import org.geomajas.example.gwt.client.samples.base.EditingManual;
 import org.geomajas.example.gwt.client.samples.base.SamplePanel;
 import org.geomajas.example.gwt.client.samples.base.SamplePanelFactory;
 import org.geomajas.example.gwt.client.samples.i18n.I18nProvider;
+import org.geomajas.gwt.client.gfx.paintable.mapaddon.GoogleAddon;
+import org.geomajas.gwt.client.gfx.paintable.mapaddon.GoogleAddon.MapType;
 import org.geomajas.gwt.client.map.event.MapModelEvent;
 import org.geomajas.gwt.client.map.event.MapModelHandler;
-import org.geomajas.example.gwt.client.samples.base.EditingManual;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.Toolbar;
 
@@ -69,7 +71,8 @@ public class EditLineLayerSample extends SamplePanel {
 
 			// When the map is initialized: select the cities layer - so that new features are created in this layer:
 			public void onMapModelChange(MapModelEvent event) {
-				map.getMapModel().selectLayer(map.getMapModel().getLayer("editableRoadsLayer"));
+				map.getMapModel().selectLayer(map.getMapModel().getLayer("editableRoadtrl020Layer"));
+				map.registerMapAddon(new GoogleAddon("google", map, MapType.SATELLITE, false));
 			}
 		});
 
@@ -102,8 +105,8 @@ public class EditLineLayerSample extends SamplePanel {
 
 	public String[] getConfigurationFiles() {
 		return new String[] { "classpath:org/geomajas/example/gwt/clientcfg/editing/mapEditLineLayer.xml",
-				"classpath:org/geomajas/example/gwt/servercfg/raster/layerOsm.xml",
-				"classpath:org/geomajas/example/gwt/servercfg/vector/layerRoads.xml" };
+				"classpath:org/geomajas/example/gwt/servercfg/raster/layerGoogleSat.xml",
+				"classpath:org/geomajas/example/gwt/servercfg/vector/layerRoadsTrl020.xml" };
 	}
 
 	public String ensureUserLoggedIn() {

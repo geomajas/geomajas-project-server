@@ -6,7 +6,7 @@
 
 		HLayout topLayout = new HLayout();
 		topLayout.setMembersMargin(10);
-		topLayout.setHeight(170);
+		topLayout.setHeight(190);
 
 		VLayout buttonLayout = new VLayout();
 		buttonLayout.setMembersMargin(10);
@@ -23,7 +23,7 @@
 		rasterButton.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				Layer<?> layer = map.getMapModel().getLayer("osmLayer");
+				Layer<?> layer = map.getMapModel().getLayer("wmsLayer");
 				layer.setVisible(!layer.isShowing());
 			}
 		});
@@ -34,7 +34,7 @@
 		lineButton.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				Layer<?> layer = map.getMapModel().getLayer("riversLayer");
+				Layer<?> layer = map.getMapModel().getLayer("rivers50mLayer");
 				layer.setVisible(!layer.isShowing());
 			}
 		});
@@ -45,7 +45,7 @@
 		polygonButton.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				Layer<?> layer = map.getMapModel().getLayer("lakesLayer");
+				Layer<?> layer = map.getMapModel().getLayer("countries110mLayer");
 				layer.setVisible(!layer.isShowing());
 			}
 		});
@@ -56,7 +56,7 @@
 		pointButton.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				Layer<?> layer = map.getMapModel().getLayer("citiesLayer");
+				Layer<?> layer = map.getMapModel().getLayer("populatedPlaces110mLayer");
 				layer.setVisible(!layer.isShowing());
 			}
 		});

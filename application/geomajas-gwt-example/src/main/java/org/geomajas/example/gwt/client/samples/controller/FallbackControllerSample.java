@@ -60,10 +60,12 @@ public class FallbackControllerSample extends SamplePanel {
 
 		VLayout mapLayout = new VLayout();
 		mapLayout.setShowEdges(true);
+		mapLayout.setHeight("60%");
 
 		// Map with ID wmsMap is defined in the XML configuration. (mapWms.xml)
 		final MapWidget map = new MapWidget("mapToolbarSecurity", "gwt-samples");
 		final Toolbar toolbar = new Toolbar(map);
+		toolbar.setButtonSize(Toolbar.BUTTON_SIZE_BIG);
 
 		// Set a different fall-back controller:
 		map.setFallbackController(new MeasureDistanceController(map));

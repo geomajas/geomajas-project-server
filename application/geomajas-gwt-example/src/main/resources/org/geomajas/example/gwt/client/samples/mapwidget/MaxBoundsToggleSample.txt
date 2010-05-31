@@ -31,17 +31,19 @@
 					map.getMapModel().getMapView().setMaxBounds(maxBounds);
 					butToggleMaxBounds.setTitle(I18nProvider.getSampleMessages().toggleMaxBoundsBelgium());
 				} else { // switch to Belgium bounds
-					// first set the maxBounds
+					if (maxBounds == null) {
+						// First we save the World bounds:
+						maxBounds = map.getMapModel().getMapView().getMaxBounds();
+					}
+					
 					map.getMapModel().getMapView().setMaxBounds(belgiumBounds);
-					// force a new scalelevel so we go inside the bounding box of Belgium
+					// force a new scale level so we go inside the bounding box of Belgium
 					map.getMapModel().getMapView().applyBounds(belgiumBounds, ZoomOption.LEVEL_FIT);
 					isBelgiumBoundsEnabled = true;
 					butToggleMaxBounds.setTitle(I18nProvider.getSampleMessages().toggleMaxBoundsWorld());
 				}
 			}
 		});
-		// default bounds is whole world, set this as maxBounds value
-		maxBounds = map.getMapModel().getMapView().getMaxBounds();
 
 		layout.addMember(mapLayout);
 		layout.addMember(buttonLayout);

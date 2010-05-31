@@ -41,6 +41,7 @@ import org.geomajas.gwt.client.widget.MapWidget.RenderStatus;
 import org.geomajas.layer.LayerType;
 
 import com.google.gwt.core.client.GWT;
+import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.menu.Menu;
 import com.smartgwt.client.widgets.menu.MenuItem;
@@ -87,6 +88,10 @@ public class EditFeatureAction extends MenuAction implements MenuItemIfFunction 
 			VectorLayer vLayer = feature.getLayer();
 			if (vLayer.getLayerInfo().getLayerType() == LayerType.POINT) {
 				controller.setController(new PointEditController(mapWidget, controller));
+			} else if (vLayer.getLayerInfo().getLayerType() == LayerType.MULTIPOINT) {
+				mapWidget.getMapModel().getFeatureEditor().stopEditing();
+				mapWidget.render(ft, RenderGroup.SCREEN, RenderStatus.DELETE);
+				SC.warn("Editing of MultiPoint layers is not supported yet....");
 			} else if (vLayer.getLayerInfo().getLayerType() == LayerType.LINESTRING) {
 				controller.setController(new LineStringEditController(mapWidget, controller));
 			} else if (vLayer.getLayerInfo().getLayerType() == LayerType.MULTILINESTRING) {

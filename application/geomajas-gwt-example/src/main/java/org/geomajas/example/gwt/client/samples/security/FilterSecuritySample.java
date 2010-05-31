@@ -68,7 +68,7 @@ public class FilterSecuritySample extends SamplePanel {
 		final VLayout mapLayout = new VLayout();
 		mapLayout.setShowEdges(true);
 		mapLayout.setHeight("60%");
-		map = new MapWidget("mapDuisburg", "gwt-samples");
+		map = new MapWidget("mapVectorSecurity", "gwt-samples");
 		map.setController(new PanController(map));
 		mapLayout.addMember(map);
 
@@ -82,7 +82,7 @@ public class FilterSecuritySample extends SamplePanel {
 			public void execute(Boolean value) {
 				if (value) {
 					map.destroy();
-					map = new MapWidget("mapDuisburg", "gwt-samples");
+					map = new MapWidget("mapVectorSecurity", "gwt-samples");
 					mapLayout.addMember(map);
 					map.setController(new PanController(map));
 				}
@@ -126,10 +126,9 @@ public class FilterSecuritySample extends SamplePanel {
 
 	public String[] getConfigurationFiles() {
 		return new String[] { "classpath:org/geomajas/example/gwt/clientcfg/security/security.xml",
-				"classpath:org/geomajas/example/gwt/clientcfg/security/mapDuisburg.xml",
-				"classpath:org/geomajas/example/gwt/servercfg/vector/layerRoads.xml",
-				"classpath:org/geomajas/example/gwt/servercfg/vector/layerStructures.xml",
-				"classpath:org/geomajas/example/gwt/servercfg/raster/layerOsm.xml" };
+				"classpath:org/geomajas/example/gwt/clientcfg/security/mapVectorSecurity.xml",
+				"classpath:org/geomajas/example/gwt/servercfg/vector/layerCountries110m2.xml",
+				"classpath:org/geomajas/example/gwt/servercfg/raster/layerWmsBluemarble.xml" };
 	}
 
 	public String ensureUserLoggedIn() {

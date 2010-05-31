@@ -8,7 +8,7 @@
 		final VLayout mapLayout = new VLayout();
 		mapLayout.setShowEdges(true);
 		mapLayout.setHeight("60%");
-		map = new MapWidget("mapDuisburg", "gwt-samples");
+		map = new MapWidget("mapVectorSecurity", "gwt-samples");
 		map.setController(new PanController(map));
 		mapLayout.addMember(map);
 
@@ -22,7 +22,7 @@
 			public void execute(Boolean value) {
 				if (value) {
 					map.destroy();
-					map = new MapWidget("mapDuisburg", "gwt-samples");
+					map = new MapWidget("mapVectorSecurity", "gwt-samples");
 					mapLayout.addMember(map);
 					map.setController(new PanController(map));
 				}

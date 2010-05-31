@@ -3,8 +3,13 @@
 		layout.setWidth100();
 		layout.setHeight100();
 
+		VLayout mapLayout = new VLayout();
+		mapLayout.setShowEdges(true);
+		mapLayout.setHeight("60%");
+
 		// Map with ID wmsMap is defined in the XML configuration. (mapWms.xml)
 		final MapWidget map = new MapWidget("wmsMap", "gwt-samples");
+		mapLayout.addMember(map);
 
 		VLayout labelLayout = new VLayout();
 		final Label label = new Label();
@@ -25,8 +30,8 @@
 
 		// Set the controller on the map:
 		map.setController(customController);
-		layout.addMember(map);
-		layout.addMember(labelLayout);
 
+		layout.addMember(mapLayout);
+		layout.addMember(labelLayout);
 		return layout;
 	}

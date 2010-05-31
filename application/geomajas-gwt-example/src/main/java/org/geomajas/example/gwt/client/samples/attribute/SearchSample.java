@@ -62,7 +62,7 @@ public class SearchSample extends SamplePanel {
 		GwtCommandDispatcher.getInstance().setUseLazyLoading(false);
 
 		// Create a map with the African countries and make it invisible:
-		final MapWidget map = new MapWidget("africanCountriesMap", "gwt-samples");
+		final MapWidget map = new MapWidget("featureListGridMap", "gwt-samples");
 		map.setVisible(false);
 		layout.addMember(map);
 		map.init();
@@ -105,7 +105,7 @@ public class SearchSample extends SamplePanel {
 
 	public String[] getConfigurationFiles() {
 		return new String[] { "classpath:org/geomajas/example/gwt/clientcfg/attribute/mapFeatureListGrid.xml",
-				"classpath:org/geomajas/example/gwt/servercfg/vector/layerCountries.xml",
+				"classpath:org/geomajas/example/gwt/servercfg/vector/layerCountries110m.xml",
 				"classpath:org/geomajas/example/gwt/servercfg/raster/layerWmsBluemarble.xml", };
 	}
 

@@ -58,59 +58,18 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		</property>
 		<property name="layers">
 			<list>
-				<!--ref bean="osmLayer" /-->
-				<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="countries110mGTLayer">
-					<property name="serverLayerId" value="countries110m" />
-				  	<property name="label" value="Countries"/>
-					<property name="visible" value="true"/>
-					<property name="viewScaleMin" value="0"/>
-					<property name="viewScaleMax" value="100000"/>
-					<property name="namedStyleInfo" ref="countries110mStyleInfo" />
-				</bean>
+				<ref bean="countries110mGTLayer" />
 			</list>
 		</property>
 	</bean>
 
-	<!--
-	<bean name="geotoolsMap" class="org.geomajas.configuration.client.ClientMapInfo">
-		<property name="backgroundColor" value="#FFFFFF" />
-		<property name="lineSelectStyle">
-			<bean class="org.geomajas.configuration.FeatureStyleInfo">
-			</bean>
-		</property>
-		<property name="pointSelectStyle">
-			<bean class="org.geomajas.configuration.FeatureStyleInfo">
-			</bean>
-		</property>
-		<property name="polygonSelectStyle">
-			<bean class="org.geomajas.configuration.FeatureStyleInfo">
-			</bean>
-		</property>
-		<property name="crs" value="EPSG:900913" />
-		<property name="scaleBarEnabled" value="true" />
-		<property name="panButtonsEnabled" value="true" />
-		<property name="maximumScale" value="9.5" />
-		<property name="initialBounds">
-			<bean class="org.geomajas.geometry.Bbox">
-				<property name="x" value="272075"/>
-				<property name="y" value="6325193"/>
-				<property name="width" value="454935"/>
-				<property name="height" value="392154"/>
-			</bean>
-		</property>
-		<property name="layers">
-			<list>
-				<ref bean="osmLayer" />
-				<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="provincesGTLayer">
-					<property name="serverLayerId" value="provinces" />
-				  	<property name="label" value="Provinces"/>
-					<property name="visible" value="true"/>
-					<property name="viewScaleMin" value="0"/>
-					<property name="viewScaleMax" value="1000"/>
-					<property name="namedStyleInfo" ref="provincesStyleInfo" />
-				</bean>
-			</list>
-		</property>
+	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="countries110mGTLayer">
+		<property name="serverLayerId" value="countries110m" />
+	  	<property name="label" value="Countries"/>
+		<property name="visible" value="true"/>
+		<property name="viewScaleMin" value="0"/>
+		<property name="viewScaleMax" value="100000"/>
+		<property name="namedStyleInfo" ref="countries110mStyleInfo" />
 	</bean>
-	-->
+
 </beans>

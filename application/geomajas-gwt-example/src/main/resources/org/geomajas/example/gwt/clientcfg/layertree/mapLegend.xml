@@ -43,24 +43,24 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 			<bean class="org.geomajas.configuration.FeatureStyleInfo">
 			</bean>
 		</property>
-		<property name="crs" value="EPSG:900913" />
+		<property name="crs" value="EPSG:4326" />
 		<property name="scaleBarEnabled" value="true" />
 		<property name="panButtonsEnabled" value="true" />
 		<property name="maximumScale" value="50000" />
 		<property name="initialBounds">
 			<bean class="org.geomajas.geometry.Bbox">
-				<property name="x" value="-5000000" />
-				<property name="y" value="-6000000" />
-				<property name="width" value="12000000" />
-				<property name="height" value="12000000" />
+				<property name="x" value="-128.5"/>
+				<property name="y" value="16"/>
+				<property name="width" value="64.5"/>
+				<property name="height" value="35"/>
 			</bean>
 		</property>
 		<property name="layers">
 			<list>
-				<ref bean="osmLayer" />
-				<ref bean="riversLayer" />
-				<ref bean="lakesLayer" />
-				<ref bean="citiesLayer" />
+				<ref bean="wmsLayer" />
+				<ref bean="countries110mLayer" />
+				<ref bean="rivers50mLayer" />
+				<ref bean="populatedPlaces110mLayer" />
 			</list>
 		</property>
 		<property name="layerTree">
@@ -79,10 +79,10 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 						<property name="label" value="Layers" />
 						<property name="layers">
 							<list>
-								<ref bean="osmLayer" />
-								<ref bean="riversLayer" />
-								<ref bean="lakesLayer" />
-								<ref bean="citiesLayer" />
+								<ref bean="wmsLayer" />
+								<ref bean="countries110mLayer" />
+								<ref bean="rivers50mLayer" />
+								<ref bean="populatedPlaces110mLayer" />
 							</list>
 						</property>
 						<property name="expanded" value="true" />
@@ -92,31 +92,31 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		</property>
 	</bean>
 
-	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="riversLayer">
-		<property name="serverLayerId" value="rivers" />
+	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="rivers50mLayer">
+		<property name="serverLayerId" value="rivers50m" />
 		<property name="label" value="Rivers (linestring)" />
 		<property name="visible" value="true" />
 		<property name="viewScaleMin" value="0" />
 		<property name="viewScaleMax" value="100000" />
-		<property name="namedStyleInfo" ref="riversStyleInfo" />
+		<property name="namedStyleInfo" ref="rivers50mStyleInfo" />
 	</bean>
 
-	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="lakesLayer">
-		<property name="serverLayerId" value="lakes" />
-		<property name="label" value="Lakes (polygon)" />
+	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="countries110mLayer">
+		<property name="serverLayerId" value="countries110m2" />
+		<property name="label" value="Countries (polygon)" />
 		<property name="visible" value="true" />
 		<property name="viewScaleMin" value="0" />
 		<property name="viewScaleMax" value="100000" />
-		<property name="namedStyleInfo" ref="lakesStyleInfo" />
+		<property name="namedStyleInfo" ref="countries110mStyleInfo2" />
 	</bean>
 
-	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="citiesLayer">
-		<property name="serverLayerId" value="cities" />
-		<property name="label" value="Cities (point)" />
+	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="populatedPlaces110mLayer">
+		<property name="serverLayerId" value="populatedPlaces110m" />
+		<property name="label" value="Populated places (point)" />
 		<property name="visible" value="true" />
 		<property name="viewScaleMin" value="0" />
 		<property name="viewScaleMax" value="100000" />
-		<property name="namedStyleInfo" ref="citiesStyleInfo" />
+		<property name="namedStyleInfo" ref="populatedPlaces110mStyleInfo" />
 	</bean>
 
 </beans>

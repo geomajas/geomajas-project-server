@@ -200,11 +200,23 @@ public interface SampleMessages extends Messages {
 
 	String editLineLayerDescription();
 
+	// Editing a MultiLineString layer:
+
+	String editMultiLineLayerTitle();
+
+	String editMultiLineLayerDescription();
+
 	// Editing a polygon layer:
 
 	String editPolygonLayerTitle();
 
 	String editPolygonLayerDescription();
+
+	// Editing a MultiPolygon layer:
+
+	String editMultiPolygonLayerTitle();
+
+	String editMultiPolygonLayerDescription();
 
 	// OverviewMap sample:
 

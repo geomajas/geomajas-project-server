@@ -69,11 +69,11 @@ public class EditPolygonLayerSample extends SamplePanel {
 
 			// When the map is initialized: select the cities layer - so that new features are created in this layer:
 			public void onMapModelChange(MapModelEvent event) {
-				map.getMapModel().selectLayer(map.getMapModel().getLayer("editableStructuresLayer"));
+				map.getMapModel().selectLayer(map.getMapModel().getLayer("editablePolygonLayer"));
 			}
 		});
 
-		// Create a toolbar for this map:
+		// Create a tool-bar for this map:
 		final Toolbar toolbar = new Toolbar(map);
 		toolbar.setButtonSize(Toolbar.BUTTON_SIZE_BIG);
 
@@ -102,8 +102,8 @@ public class EditPolygonLayerSample extends SamplePanel {
 
 	public String[] getConfigurationFiles() {
 		return new String[] { "classpath:org/geomajas/example/gwt/clientcfg/editing/mapEditPolygonLayer.xml",
-				"classpath:org/geomajas/example/gwt/servercfg/raster/layerOsm.xml",
-				"classpath:org/geomajas/example/gwt/servercfg/vector/layerStructures.xml" };
+				"classpath:org/geomajas/example/gwt/servercfg/raster/layerWmsBluemarble.xml",
+				"classpath:org/geomajas/example/gwt/servercfg/vector/layerLakes110m.xml" };
 	}
 
 	public String ensureUserLoggedIn() {

@@ -64,7 +64,7 @@ public class LegendSample extends SamplePanel {
 
 		HLayout topLayout = new HLayout();
 		topLayout.setMembersMargin(10);
-		topLayout.setHeight(170);
+		topLayout.setHeight(190);
 
 		VLayout buttonLayout = new VLayout();
 		buttonLayout.setMembersMargin(10);
@@ -81,7 +81,7 @@ public class LegendSample extends SamplePanel {
 		rasterButton.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				Layer<?> layer = map.getMapModel().getLayer("osmLayer");
+				Layer<?> layer = map.getMapModel().getLayer("wmsLayer");
 				layer.setVisible(!layer.isShowing());
 			}
 		});
@@ -92,7 +92,7 @@ public class LegendSample extends SamplePanel {
 		lineButton.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				Layer<?> layer = map.getMapModel().getLayer("riversLayer");
+				Layer<?> layer = map.getMapModel().getLayer("rivers50mLayer");
 				layer.setVisible(!layer.isShowing());
 			}
 		});
@@ -103,7 +103,7 @@ public class LegendSample extends SamplePanel {
 		polygonButton.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				Layer<?> layer = map.getMapModel().getLayer("lakesLayer");
+				Layer<?> layer = map.getMapModel().getLayer("countries110mLayer");
 				layer.setVisible(!layer.isShowing());
 			}
 		});
@@ -114,7 +114,7 @@ public class LegendSample extends SamplePanel {
 		pointButton.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				Layer<?> layer = map.getMapModel().getLayer("citiesLayer");
+				Layer<?> layer = map.getMapModel().getLayer("populatedPlaces110mLayer");
 				layer.setVisible(!layer.isShowing());
 			}
 		});
@@ -147,10 +147,10 @@ public class LegendSample extends SamplePanel {
 
 	public String[] getConfigurationFiles() {
 		return new String[] { "classpath:org/geomajas/example/gwt/clientcfg/layertree/mapLegend.xml",
-				"classpath:org/geomajas/example/gwt/servercfg/vector/layerLakes.xml",
-				"classpath:org/geomajas/example/gwt/servercfg/vector/layerRivers.xml",
-				"classpath:org/geomajas/example/gwt/servercfg/vector/layerCities.xml",
-				"classpath:org/geomajas/example/gwt/servercfg/raster/layerOsm.xml" };
+				"classpath:org/geomajas/example/gwt/servercfg/vector/layerLakes110m.xml",
+				"classpath:org/geomajas/example/gwt/servercfg/vector/layerRivers50m.xml",
+				"classpath:org/geomajas/example/gwt/servercfg/vector/layerPopulatedPlaces110m.xml",
+				"classpath:org/geomajas/example/gwt/servercfg/raster/layerWmsBluemarble.xml" };
 	}
 
 	public String ensureUserLoggedIn() {

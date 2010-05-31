@@ -143,6 +143,7 @@ public class SearchByLocationCommand implements Command<SearchByLocationRequest,
 					if (vectorLayer != null) {
 						String geomName = vectorLayer.getLayerInfo().getFeatureInfo().getGeometryType().getName();
 
+						// Transform geometry to layer CRS:
 						Geometry layerGeometry = geoService.transform(geometry, crs, vectorLayer.getCrs());
 						log.trace("on layer " + layerId + " use " + layerGeometry);
 
@@ -163,7 +164,7 @@ public class SearchByLocationCommand implements Command<SearchByLocationRequest,
 								break;
 						}
 
-						// Get the features
+						// Get the features:
 						List<InternalFeature> temp = layerService.getFeatures(layerId, crs, f, null, request
 								.getFeatureIncludes());
 						if (temp.size() > 0) {
@@ -176,7 +177,10 @@ public class SearchByLocationCommand implements Command<SearchByLocationRequest,
 									Geometry overlap = location.intersection(feature.getGeometry());
 									double effectiveOverlap = overlap.getArea();
 									if (minimalOverlap <= effectiveOverlap) {
-										features.add(converter.toDto(feature));
+										log.trace("found " + feature);
+										Feature dto = converter.toDto(feature);
+										dto.setCrs(crsCode);
+										features.add(dto);
 									}
 								}
 							} else {

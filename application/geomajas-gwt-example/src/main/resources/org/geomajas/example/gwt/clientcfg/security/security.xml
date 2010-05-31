@@ -163,8 +163,7 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 								</property>
 								<property name="visibleLayersInclude">
 									<list>
-										<value>osm</value>
-										<value>roads</value>
+										<value>countries110m2</value>
 									</list>
 								</property>
 							</bean>
@@ -224,7 +223,7 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 								</property>
 								<property name="filters">
 									<map>
-										<entry key="roads" value="LENGTH > 110"/>
+										<entry key="countries110m2" value="(PEOPLE > 50000000)"/>
 									</map>
 								</property>
 							</bean>

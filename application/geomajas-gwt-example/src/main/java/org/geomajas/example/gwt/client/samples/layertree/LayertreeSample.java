@@ -88,10 +88,10 @@ public class LayertreeSample extends SamplePanel {
 
 	public String[] getConfigurationFiles() {
 		return new String[] { "classpath:org/geomajas/example/gwt/clientcfg/layertree/mapLegend.xml",
-				"classpath:org/geomajas/example/gwt/servercfg/vector/layerLakes.xml",
-				"classpath:org/geomajas/example/gwt/servercfg/vector/layerRivers.xml",
-				"classpath:org/geomajas/example/gwt/servercfg/vector/layerCities.xml",
-				"classpath:org/geomajas/example/gwt/servercfg/raster/layerOsm.xml" };
+				"classpath:org/geomajas/example/gwt/servercfg/vector/layerLakes110m.xml",
+				"classpath:org/geomajas/example/gwt/servercfg/vector/layerRivers50m.xml",
+				"classpath:org/geomajas/example/gwt/servercfg/vector/layerPopulatedPlaces110m.xml",
+				"classpath:org/geomajas/example/gwt/servercfg/raster/layerWmsBluemarble.xml" };
 	}
 
 	public String ensureUserLoggedIn() {

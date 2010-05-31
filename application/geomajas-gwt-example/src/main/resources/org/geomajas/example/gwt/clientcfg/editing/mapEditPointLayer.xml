@@ -39,6 +39,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 			<bean class="org.geomajas.configuration.FeatureStyleInfo">
 				<property name="fillColor" value="#E0E000" />
 				<property name="fillOpacity" value=".75" />
+				<property name="strokeColor" value="#FFFFFF" />
 			</bean>
 		</property>
 		<property name="polygonSelectStyle">
@@ -51,22 +52,29 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		<property name="maximumScale" value="10000" />
 		<property name="initialBounds">
 			<bean class="org.geomajas.geometry.Bbox">
-                <property name="x" value="-180"/>
-                <property name="y" value="-90"/>
-                <property name="width" value="360"/>
-                <property name="height" value="180"/>
+				<property name="x" value="-87.4" />
+				<property name="y" value="24.3" />
+				<property name="width" value="8.8" />
+				<property name="height" value="6.4" />
 			</bean>
 		</property>
 		<property name="layers">
 			<list>
-				<ref bean="wmsLayer" />
-				<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="editableCitiesLayer">
-					<property name="serverLayerId" value="cities" />
-			        <property name="label" value="Cities (editable - point)"/>
+				<bean class="org.geomajas.configuration.client.ClientRasterLayerInfo" id="wmsEditPointLayer">
+					<property name="serverLayerId" value="bluemarble" />
+					<property name="label" value="Blue marble WMS (raster)" />
+					<property name="visible" value="true" />
+					<property name="viewScaleMin" value="0" />
+					<property name="viewScaleMax" value="100000" />
+					<property name="style" value="0.8" />
+				</bean>
+				<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="editableAirportssLayer">
+					<property name="serverLayerId" value="airports" />
+			        <property name="label" value="Airports (editable - point)"/>
 			        <property name="visible" value="true"/>
 			        <property name="viewScaleMin" value="0"/>
 			        <property name="viewScaleMax" value="100000"/>
-					<property name="namedStyleInfo" ref="citiesStyleInfo" />
+					<property name="namedStyleInfo" ref="airportsStyleInfo" />
 				</bean>
 			</list>
 		</property>
@@ -74,8 +82,6 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 			<bean name="editPointLayerMapToolbar" class="org.geomajas.configuration.client.ClientToolbarInfo">
 				<property name="tools">
 					<list>
-						<ref bean="PanMode" />
-						<ref bean="ToolbarSeparator" />
 						<ref bean="EditMode" />
 					</list>
 				</property>

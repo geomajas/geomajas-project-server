@@ -39,7 +39,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 				<ref bean="wmsMap" />
 				<ref bean="beansMap" />
 				<ref bean="crsMap" />
-				<ref bean="mapDuisburg" />
+				<ref bean="mapVectorSecurity" />
 				<ref bean="mapToolbarSecurity" />
 				<ref bean="geotoolsMap" />
 				<ref bean="googleMap" />
@@ -47,15 +47,16 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 				<ref bean="osmNavigationToolbarMap" />
 				<ref bean="selectionMap" />
 				<ref bean="osmMeasureMap" />
-				<ref bean="osmFeatureInfoMap" />
 				<ref bean="overviewOsmMap" />
 				<ref bean="osmMapResolutions" />
 				<ref bean="editPointLayerMap" />
 				<ref bean="editLineLayerMap" />
 				<ref bean="editPolygonLayerMap" />
 				<ref bean="editMultiPointLayerMap" />
+				<ref bean="editMultiLineLayerMap" />
+				<ref bean="editMultiPolygonLayerMap" />
 				<ref bean="legendMap" />
-				<ref bean="africanCountriesMap" />
+				<ref bean="featureListGridMap" />
 			</list>
 		</property>
 	</bean>

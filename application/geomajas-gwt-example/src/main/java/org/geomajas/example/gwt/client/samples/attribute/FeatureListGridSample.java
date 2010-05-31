@@ -76,21 +76,22 @@ public class FeatureListGridSample extends SamplePanel {
 		VLayout mapLayout = new VLayout();
 		mapLayout.setShowEdges(true);
 
-		// Map with ID osmFeatureInfoMap is defined in the XML configuration.
-		final MapWidget map = new MapWidget("africanCountriesMap", "gwt-samples");
+		// Map with ID featureListGridMap is defined in the XML configuration.
+		final MapWidget map = new MapWidget("featureListGridMap", "gwt-samples");
 		map.setController(new PanController(map));
 		mapLayout.addMember(map);
 
 		// Create a layout with a FeatureListGrid in it:
 		final FeatureListGrid grid = new FeatureListGrid(map.getMapModel());
 		grid.setShowEdges(true);
+		grid.setShowResizeBar(true);
 
 		// Add a trigger to fill the grid when the map has finished loading:
 		map.getMapModel().addMapModelHandler(new MapModelHandler() {
 
 			public void onMapModelChange(MapModelEvent event) {
 				MapModel mapModel = map.getMapModel();
-				VectorLayer layer = (VectorLayer) mapModel.getLayer("africanCountriesLayer");
+				VectorLayer layer = (VectorLayer) mapModel.getLayer("countries110mGridLayer");
 				grid.setLayer(layer);
 				Bbox bounds = mapModel.getMapView().getBounds();
 				layer.getFeatureStore().queryAndSync(bounds, null, null, new TileFunction<VectorTile>() {
@@ -125,7 +126,7 @@ public class FeatureListGridSample extends SamplePanel {
 
 	public String[] getConfigurationFiles() {
 		return new String[] { "classpath:org/geomajas/example/gwt/clientcfg/attribute/mapFeatureListGrid.xml",
-				"classpath:org/geomajas/example/gwt/servercfg/vector/layerCountries.xml",
+				"classpath:org/geomajas/example/gwt/servercfg/vector/layerCountries110m.xml",
 				"classpath:org/geomajas/example/gwt/servercfg/raster/layerWmsBluemarble.xml", };
 	}
 

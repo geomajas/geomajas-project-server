@@ -32,7 +32,9 @@ import org.geomajas.example.gwt.client.samples.controller.CustomControllerSample
 import org.geomajas.example.gwt.client.samples.controller.FallbackControllerSample;
 import org.geomajas.example.gwt.client.samples.controller.RectangleControllerSample;
 import org.geomajas.example.gwt.client.samples.editing.EditLineLayerSample;
+import org.geomajas.example.gwt.client.samples.editing.EditMultiLineLayerSample;
 import org.geomajas.example.gwt.client.samples.editing.EditMultiPointLayerSample;
+import org.geomajas.example.gwt.client.samples.editing.EditMultiPolygonLayerSample;
 import org.geomajas.example.gwt.client.samples.editing.EditPointLayerSample;
 import org.geomajas.example.gwt.client.samples.editing.EditPolygonLayerSample;
 import org.geomajas.example.gwt.client.samples.i18n.I18nProvider;
@@ -136,6 +138,12 @@ public final class SampleArray {
 				new SampleTreeNode(I18nProvider.getSampleMessages().editMultiPointLayerTitle(),
 						"[ISOMORPHIC]/geomajas/osgeo/edit.png", EditMultiPointLayerSample.TITLE, "GeoGraphicEditing",
 						EditMultiPointLayerSample.FACTORY),
+				new SampleTreeNode(I18nProvider.getSampleMessages().editMultiLineLayerTitle(),
+						"[ISOMORPHIC]/geomajas/osgeo/edit.png", EditMultiLineLayerSample.TITLE, "GeoGraphicEditing",
+						EditMultiLineLayerSample.FACTORY),
+				new SampleTreeNode(I18nProvider.getSampleMessages().editMultiPolygonLayerTitle(),
+						"[ISOMORPHIC]/geomajas/osgeo/edit.png", EditMultiPolygonLayerSample.TITLE, "GeoGraphicEditing",
+						EditMultiPolygonLayerSample.FACTORY),
 
 				// LayerTree & Legend samples:
 				new SampleTreeNode(I18nProvider.getSampleMessages().treeGroupLayerTree(),
