@@ -36,8 +36,8 @@ import com.smartgwt.client.util.SC;
 public class LayerTreeHelpAction extends LayerTreeAction {
 
 	public LayerTreeHelpAction() {
-		super("[ISOMORPHIC]/geomajas/widget/layertree/help.png", I18nProvider.getLayerTree().layerTreeHelp(),
-				"[ISOMORPHIC]/geomajas/widget/layertree/help.png");
+		super("[ISOMORPHIC]/geomajas/osgeo/help-contents.png", I18nProvider.getLayerTree().layerTreeHelp(),
+				"[ISOMORPHIC]/geomajas/osgeo/help-contents.png");
 	}
 
 	public void onClick(Layer<?> layer) {
