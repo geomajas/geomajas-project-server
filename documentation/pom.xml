@@ -94,7 +94,7 @@
 			<snapshots><enabled>false</enabled></snapshots>
 		</pluginRepository>
 	</pluginRepositories>
-
+	
 	<build>
 		<plugins>
 			<plugin>

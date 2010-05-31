@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="geomajas">
+	<skin>
+		<groupId>org.apache.maven.skins</groupId>
+		<artifactId>maven-stylus-skin</artifactId>
+		<version>1.2</version>
+	</skin>	
+
 	<publishDate format="yyyy-MM-dd"/>
 	<bannerLeft>
 		<name>geomajas</name>
