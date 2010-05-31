@@ -119,18 +119,9 @@
 
 	<pluginRepositories>
 		<pluginRepository>
-			<id>repository.jboss.org</id>
-			<url>http://repository.jboss.org/maven2</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</pluginRepository>
-		<pluginRepository>
-			<id>snapshots.jboss.org</id>
-			<url>http://snapshots.jboss.org/maven2</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
+			<id>Geomajas</id>
+			<name>Geomajas repository</name>
+			<url>http://maven.geomajas.org/</url>
 		</pluginRepository>
 	</pluginRepositories>
 

@@ -70,13 +70,6 @@
 			<name>Geomajas repository</name>
 			<url>http://maven.geomajas.org/</url>
 		</pluginRepository>
-		<pluginRepository>
-			<id>repository.jboss.org</id>
-			<url>http://repository.jboss.org/maven2</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</pluginRepository>
 	</pluginRepositories>
 	
 	<dependencies>
