@@ -1,1 +1,1 @@
-org.geomajas.internal.global.GeomajasAuthorityFactory
+org.geotools.referencing.crs.EPSGCRSAuthorityFactory
