@@ -99,14 +99,14 @@
 			<version>${geomajas-layer-geotools-version}</version>
 		</dependency>
 		<dependency>
-			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-layer-openstreetmap</artifactId>
-			<version>${geomajas-layer-openstreetmap-version}</version>
-		</dependency>
-		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-testdata</artifactId>
 			<version>${geomajas-backend-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-layer-wms</artifactId>
+			<version>${geomajas-layer-wms-version}</version>
 		</dependency>
 
 		<!-- @extract-start HibernateLayerDependency, Hibernate layer dependency -->
@@ -344,7 +344,7 @@
 		<geomajas-layer-geotools-version>1.7.0-SNAPSHOT</geomajas-layer-geotools-version>
 		<geomajas-layer-hibernate-version>1.7.0-SNAPSHOT</geomajas-layer-hibernate-version>
 		<geomajas-layer-google-version>1.7.0-SNAPSHOT</geomajas-layer-google-version>
-		<geomajas-layer-openstreetmap-version>1.7.0-SNAPSHOT</geomajas-layer-openstreetmap-version>
+		<geomajas-layer-wms-version>1.7.0-SNAPSHOT</geomajas-layer-wms-version>
 		<gwt-version>2.0.3</gwt-version>
 		<slf4j-version>1.6.0</slf4j-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

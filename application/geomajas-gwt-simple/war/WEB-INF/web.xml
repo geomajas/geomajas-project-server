@@ -6,10 +6,7 @@
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
-            mypackage/shapeinmem/applicationContext.xml
-            mypackage/shapeinmem/layerRoads.xml
-			mypackage/shapeinmem/layerStructures.xml
-			mypackage/shapeinmem/layerOsm.xml
+            mypackage/shapeinmem/*.xml
   
         <!--
             mypackage/hibernate/applicationContext.xml
