@@ -35,7 +35,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 
 	<bean name="test" class="org.geomajas.layer.shapeinmem.ShapeInMemLayer">
 		<property name="layerInfo" ref="layerInfo" />
-		<property name="url" value="classpath:org/geomajas/testdata/shapes/cities_world/cities.shp" />
+		<property name="url" value="classpath:org/geomajas/testdata/shapes/natural_earth/110m_populated_places_simple.shp" />
 	</bean>
 
 	<bean name="layerInfo" class="org.geomajas.configuration.VectorLayerInfo">
@@ -51,7 +51,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 	</bean>
 
 	<bean name="featureInfo" class="org.geomajas.configuration.FeatureInfo">
-		<property name="dataSourceName" value="cities" />
+		<property name="dataSourceName" value="110m_populated_places_simple" />
 		<property name="identifier">
 			<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
 				<property name="label" value="Id" />
@@ -70,13 +70,13 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 			<list>
 				<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
 					<property name="label" value="Name" />
-					<property name="name" value="Name" />
+					<property name="name" value="NAME" />
 					<property name="type" value="STRING" />
 				</bean>
 				<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
 					<property name="label" value="Population" />
-					<property name="name" value="Population" />
-					<property name="type" value="INTEGER" />
+					<property name="name" value="POP_OTHER" />
+					<property name="type" value="DOUBLE" />
 				</bean>
 			</list>
 		</property>

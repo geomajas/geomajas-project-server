@@ -36,8 +36,6 @@ import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.filter.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -53,9 +51,11 @@ import com.vividsolutions.jts.io.WKTReader;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
-		"/org/geomajas/testdata/layerCountries.xml", "/org/geomajas/testdata/simplevectorsContext.xml",
-		"/org/geomajas/layer/shapeinmem/test.xml" })
+		"/org/geomajas/testdata/layerCountries.xml", "/org/geomajas/testdata/layerPopulatedPlaces110m.xml",
+		"/org/geomajas/testdata/simplevectorsContext.xml", "/org/geomajas/layer/shapeinmem/test.xml" })
 public class ShapeInMemLayerTest {
+
+	protected static final String LAYER_NAME = "110m_populated_places_simple";
 
 	@Autowired
 	private FilterService filterService;
@@ -68,19 +68,14 @@ public class ShapeInMemLayerTest {
 
 	@Before
 	public void setUp() throws Exception {
-		filter = filterService.createCompareFilter("Population", ">", "49900");
+		filter = filterService.createCompareFilter("POP_OTHER", ">", "1000000");
 	}
 
 	@Test
-	public void read() {
-		SimpleFeature f = null;
-		try {
-			f = (SimpleFeature) layer.read("cities.9703");
-		} catch (Exception e) {
-		}
-
+	public void read() throws Exception {
+		SimpleFeature f = (SimpleFeature) layer.read(LAYER_NAME + ".2"); // id always starts with layer id
 		Assert.assertNotNull(f);
-		Assert.assertEquals("Elmhurst", f.getAttribute("City"));
+		Assert.assertEquals("Vatican City", f.getAttribute("NAME"));
 	}
 
 	@Test
@@ -106,9 +101,9 @@ public class ShapeInMemLayerTest {
 	@Test
 	public void delete() {
 		try {
-			SimpleFeature f = (SimpleFeature) layer.read("cities.10580");
+			SimpleFeature f = (SimpleFeature) layer.read(LAYER_NAME + ".3");
 			Assert.assertNotNull(f);
-			layer.delete("cities.10580");
+			layer.delete(LAYER_NAME + ".3");
 			Assert.assertTrue(true);
 		} catch (Exception e) {
 			Assert.assertTrue(false);
@@ -117,22 +112,20 @@ public class ShapeInMemLayerTest {
 
 	@Test
 	public void getBounds() throws Exception {
-		// Checked in QGis!
 		Envelope bbox = layer.getBounds();
-		Assert.assertEquals(-175.22, bbox.getMinX(), .0001);
-		Assert.assertEquals(179.38, bbox.getMaxX(), .0001);
-		Assert.assertEquals(-46.41, bbox.getMinY(), .0001);
-		Assert.assertEquals(69.41, bbox.getMaxY(), .0001);
+		Assert.assertEquals(-175.22, bbox.getMinX(), .01);
+		Assert.assertEquals(179.21, bbox.getMaxX(), .01);
+		Assert.assertEquals(-41.29, bbox.getMinY(), .01);
+		Assert.assertEquals(64.15, bbox.getMaxY(), .01);
 	}
 
 	@Test
 	public void getBoundsFilter() throws Exception {
-		// Checked in QGis!
 		Envelope bbox = layer.getBounds(filter);
-		Assert.assertEquals(-118.01, bbox.getMinX(), .0001);
-		Assert.assertEquals(120.86, bbox.getMaxX(), .0001);
-		Assert.assertEquals(-19.99, bbox.getMinY(), .0001);
-		Assert.assertEquals(53.09, bbox.getMaxY(), .0001);
+		Assert.assertEquals(-122.34, bbox.getMinX(), .01);
+		Assert.assertEquals(151.18, bbox.getMaxX(), .01);
+		Assert.assertEquals(-37.81, bbox.getMinY(), .01);
+		Assert.assertEquals(55.75, bbox.getMaxY(), .01);
 	}
 
 	@Test

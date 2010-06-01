@@ -33,18 +33,28 @@ import org.springframework.transaction.annotation.Transactional;
 
 /**
  * Base for GeoTools tests.
- *
+ * 
  * @author Jan De Moerloose
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
-		"/org/geomajas/testdata/layerCountries.xml", "/org/geomajas/testdata/layerCities.xml",
+		"/org/geomajas/testdata/layerCountries.xml", "/org/geomajas/testdata/layerPopulatedPlaces110m.xml",
 		"/org/geomajas/testdata/simplevectorsContext.xml", "/org/geomajas/layer/geotools/test.xml" })
-@Transactional(rollbackFor = {org.geomajas.global.GeomajasException.class})
+@Transactional(rollbackFor = { org.geomajas.global.GeomajasException.class })
 public abstract class AbstractGeoToolsTest {
-	@Autowired 
-	protected ApplicationContext applicationContext;
+
+	protected static final String SHAPE_FILE = 
+		"org/geomajas/testdata/shapes/natural_earth/110m_populated_places_simple.shp";
+
+	protected static final String LAYER_NAME = "110m_populated_places_simple";
 	
+	protected static final String ATTRIBUTE_NAME = "NAME";
+
+	protected static final String ATTRIBUTE_POPULATION = "POP_OTHER";
+
+	@Autowired
+	protected ApplicationContext applicationContext;
+
 	@Autowired
 	protected FilterService filterCreator;
 

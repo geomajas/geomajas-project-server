@@ -23,7 +23,7 @@
 package org.geomajas.testdata;
 
 /**
- * Country bean for bean layer.
+ * Country bean for bean layer. (see org/geomajas/testdata/layerCountries.xml)
  * 
  * @author Jan De Moerloose
  */

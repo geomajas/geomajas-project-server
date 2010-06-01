@@ -57,7 +57,7 @@ public class DefaultDocumentTest {
 	public void setUp() throws Exception {
 		ApplicationContext applicationContext = new ClassPathXmlApplicationContext(new String[] {
 				"org/geomajas/spring/geomajasContext.xml", "org/geomajas/testdata/layerBluemarble.xml",
-				"org/geomajas/testdata/layerCountries.xml", "org/geomajas/testdata/simplemixedContext.xml" });
+				"org/geomajas/testdata/layerCountries110m.xml", "org/geomajas/testdata/simplemixedContext.xml" });
 		// load the configuration (context-wide object);
 		runtime = applicationContext.getBean("service.ConfigurationService", ConfigurationService.class);
 		geoService = applicationContext.getBean("service.GeoService", GeoService.class);

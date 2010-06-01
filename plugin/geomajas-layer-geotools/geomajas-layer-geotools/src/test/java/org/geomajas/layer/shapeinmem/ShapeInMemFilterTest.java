@@ -37,7 +37,7 @@ import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 
 /**
- * Test for shape-in-mem layer.
+ * Test for filters in the shape-in-memory layer.
  *
  * @author Pieter De Graef
  */

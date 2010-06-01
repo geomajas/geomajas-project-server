@@ -22,10 +22,8 @@
  */
 package org.geomajas.internal.service;
 
-import static junit.framework.Assert.assertTrue;
-
 import junit.framework.Assert;
-import org.geomajas.configuration.AttributeInfo;
+
 import org.geomajas.configuration.PrimitiveAttributeInfo;
 import org.geomajas.configuration.PrimitiveType;
 import org.geomajas.layer.feature.attribute.BooleanAttribute;

@@ -22,9 +22,7 @@
  */
 package org.geomajas.layer.geotools;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
 
@@ -48,12 +46,10 @@ import com.vividsolutions.jts.io.WKTReader;
 
 /**
  * Test for GeoTools layer.
- *
+ * 
  * @author Pieter De Graef
  */
 public class GeoToolsLayerTest extends AbstractGeoToolsTest {
-
-	private static final String SHAPE_FILE = "classpath:org/geomajas/testdata/shapes/cities_world/cities.shp";
 
 	private GeoToolsLayer layer;
 
@@ -65,7 +61,7 @@ public class GeoToolsLayerTest extends AbstractGeoToolsTest {
 		layer.setUrl(SHAPE_FILE);
 
 		FeatureInfo ft = new FeatureInfo();
-		ft.setDataSourceName("cities");
+		ft.setDataSourceName(LAYER_NAME);
 
 		PrimitiveAttributeInfo ia = new PrimitiveAttributeInfo();
 		ia.setLabel("id");
@@ -95,24 +91,22 @@ public class GeoToolsLayerTest extends AbstractGeoToolsTest {
 
 		layer.setLayerInfo(layerInfo);
 		layer.initFeatures();
-		filter = filterCreator.createCompareFilter("Population", ">", "49900");
+		filter = filterCreator.createCompareFilter(ATTRIBUTE_POPULATION, ">", "1000000");
 	}
 
 	@Test
 	public void testRead() throws Exception {
-		SimpleFeature f = (SimpleFeature) layer.read("cities.9703"); // id always starts with layer id
-		Assert.assertEquals("Elmhurst", f.getAttribute("City"));
-		Assert.assertEquals(45060, f.getAttribute("Population"));
+		SimpleFeature f = (SimpleFeature) layer.read(LAYER_NAME + ".2"); // id always starts with layer id
+		Assert.assertEquals("Vatican City", f.getAttribute(ATTRIBUTE_NAME));
+		Assert.assertEquals(562430, f.getAttribute(ATTRIBUTE_POPULATION));
 	}
 
 	@Test
 	public void testUpdate() throws Exception {
-		Calendar cal = Calendar.getInstance();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-		SimpleFeature f = (SimpleFeature) layer.read("cities.10"); // id always starts with layer id
-		f.setAttribute("City", sdf.format(cal.getTime()));
+		SimpleFeature f = (SimpleFeature) layer.read(LAYER_NAME + ".3"); // id always starts with layer id
+		f.setAttribute("NAME", "Luxembourg2");
 		layer.update(f);
-		Assert.assertEquals(sdf.format(cal.getTime()), f.getAttribute("City"));
+		Assert.assertEquals("Luxembourg2", f.getAttribute(ATTRIBUTE_NAME));
 	}
 
 	@Test
@@ -129,41 +123,38 @@ public class GeoToolsLayerTest extends AbstractGeoToolsTest {
 
 	@Test
 	public void testDelete() throws Exception {
-		SimpleFeature f = (SimpleFeature) layer.read("cities.10580"); // id always starts with layer id
+		SimpleFeature f = (SimpleFeature) layer.read(LAYER_NAME + ".4"); // id always starts with layer id
 		Assert.assertNotNull(f);
-		layer.delete("cities.10580"); // id always starts with layer id
+		layer.delete(LAYER_NAME + ".4"); // id always starts with layer id
 		Assert.assertTrue(true);
 	}
 
 	@Test
 	public void testGetBounds() throws Exception {
-		// Checked in QGis!
 		Envelope bbox = layer.getBounds();
-		Assert.assertEquals(-175.22, bbox.getMinX(), .0001);
-		Assert.assertEquals(179.38, bbox.getMaxX(), .0001);
-		Assert.assertEquals(-46.41, bbox.getMinY(), .0001);
-		Assert.assertEquals(69.41, bbox.getMaxY(), .0001);
+		Assert.assertEquals(-175.22, bbox.getMinX(), .01);
+		Assert.assertEquals(179.21, bbox.getMaxX(), .01);
+		Assert.assertEquals(-41.29, bbox.getMinY(), .01);
+		Assert.assertEquals(64.15, bbox.getMaxY(), .01);
 	}
 
 	@Test
 	public void testGetBoundsFilter() throws Exception {
-		// Checked in QGis!
 		Envelope bbox = layer.getBounds(filter);
-		Assert.assertEquals(-118.01, bbox.getMinX(), .0001);
-		Assert.assertEquals(120.86, bbox.getMaxX(), .0001);
-		Assert.assertEquals(-19.99, bbox.getMinY(), .0001);
-		Assert.assertEquals(53.09, bbox.getMaxY(), .0001);
+		Assert.assertEquals(-122.34, bbox.getMinX(), .01);
+		Assert.assertEquals(151.18, bbox.getMaxX(), .01);
+		Assert.assertEquals(-37.81, bbox.getMinY(), .01);
+		Assert.assertEquals(55.75, bbox.getMaxY(), .01);
 	}
 
 	@Test
 	public void testGetElements() throws Exception {
-		// Checked in QGis!
 		Iterator<?> it = layer.getElements(filter, 0, 0);
 		int counter = 0;
 		while (it.hasNext()) {
 			it.next();
 			counter++;
 		}
-		Assert.assertEquals(16, counter);
+		Assert.assertEquals(198, counter);
 	}
 }

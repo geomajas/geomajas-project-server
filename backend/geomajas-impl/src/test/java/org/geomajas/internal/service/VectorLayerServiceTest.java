@@ -23,14 +23,12 @@
 
 package org.geomajas.internal.service;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.LineString;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
-import com.vividsolutions.jts.geom.PrecisionModel;
 import junit.framework.Assert;
+
 import org.geomajas.layer.VectorLayerService;
 import org.geomajas.layer.bean.BeanLayer;
 import org.geomajas.layer.bean.FeatureBean;
@@ -41,7 +39,6 @@ import org.geomajas.security.SecurityManager;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
-import org.geotools.referencing.CRS;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -53,9 +50,12 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.LineString;
+import com.vividsolutions.jts.geom.PrecisionModel;
 
 /**
  * Tests for VectorLayerService.
@@ -118,6 +118,7 @@ public class VectorLayerServiceTest {
 	
 	@Test
 	@DirtiesContext
+	@SuppressWarnings("unchecked")
 	public void testUpdate() throws Exception {
 		Filter filter = filterService.createFidFilter(new String[]{"3"});
 		CoordinateReferenceSystem crs = geoService.getCrs(beanLayer.getLayerInfo().getCrs());
@@ -149,6 +150,7 @@ public class VectorLayerServiceTest {
 
 	@Test
 	@DirtiesContext
+	@SuppressWarnings("unchecked")
 	public void testCreateDelete() throws Exception {
 		// done in one test to assure the state is back to what is expected,
 		// the spring context is not rebuilt between test methods

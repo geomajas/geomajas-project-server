@@ -46,7 +46,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 	<bean name="citiesDatastore" class="org.geomajas.layer.geotools.DataStoreFactory" factory-method="create">
 		<constructor-arg>
 			<map>
-				<entry key="url" value="classpath:org/geomajas/testdata/shapes/cities_world/cities.shp" />
+				<entry key="url" value="classpath:org/geomajas/testdata/shapes/natural_earth/110m_populated_places_simple.shp" />
 			</map>
 		</constructor-arg>
 	</bean>

@@ -23,14 +23,13 @@
 
 package org.geomajas.internal.service;
 
-import com.vividsolutions.jts.geom.Coordinate;
+import java.util.List;
+
 import junit.framework.Assert;
+
 import org.geomajas.layer.VectorLayerService;
-import org.geomajas.layer.bean.BeanLayer;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.security.SecurityManager;
-import org.geomajas.service.ConfigurationService;
-import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
 import org.geotools.geometry.jts.JTS;
@@ -41,12 +40,11 @@ import org.opengis.filter.Filter;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import java.util.List;
+import com.vividsolutions.jts.geom.Coordinate;
 
 /**
  * Tests for CRS conversions in VectorLayerService, using data which is also used in the CRS showcase for reference.
@@ -83,23 +81,13 @@ public class VectorCrsConversionTest {
 	private VectorLayerService layerService;
 
 	@Autowired
-	@Qualifier("beans")
-	private BeanLayer beanLayer;
-
-	@Autowired
 	private FilterService filterService;
-
-	@Autowired
-	private DtoConverterService converterService;
 
 	@Autowired
 	private SecurityManager securityManager;
 
 	@Autowired
 	private GeoService geoService;
-
-	@Autowired
-	private ConfigurationService configurationService;
 
 	private MathTransform layerToMap;
 	private MathTransform mapToLayer;
@@ -118,8 +106,8 @@ public class VectorCrsConversionTest {
 
 	@Test
 	public void testVerifyConversion() throws Exception {
-		CoordinateReferenceSystem mercator = configurationService.getCrs("EPSG:900913");
-		CoordinateReferenceSystem lonlat = configurationService.getCrs("EPSG:4326");
+		CoordinateReferenceSystem mercator = geoService.getCrs("EPSG:900913");
+		CoordinateReferenceSystem lonlat = geoService.getCrs("EPSG:4326");
 
 		layerToMap = geoService.findMathTransform(mercator, lonlat);
 		mapToLayer = geoService.findMathTransform(lonlat, mercator);

@@ -33,7 +33,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
- * Test for shape-in-mem layer.
+ * Test for shape-in-memory layer.
  *
  * @author Pieter De Graef
  */

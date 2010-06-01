@@ -55,7 +55,7 @@ public class PipelineContextTest {
 		}
 		Assert.assertEquals("SomeText", context.get("text"));
 		Assert.assertEquals(17, context.get("int"));
-		Assert.assertEquals(0, ((List)context.get("list")).size());
+		Assert.assertEquals(0, ((List<?>)context.get("list")).size());
 
 		Assert.assertEquals("SomeText", context.get("text", String.class));
 		Assert.assertEquals(17, (int)context.get("int", Integer.class));
