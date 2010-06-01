@@ -23,6 +23,8 @@
 
 package org.geomajas.global;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * Version information for a plug-in. Used both to define the plug-in itself and for dependencies.
  *
@@ -32,7 +34,10 @@ package org.geomajas.global;
 @Api(allMethods = true)
 public class PluginVersionInfo {
 
+	@NotNull
 	private String name;
+
+	@NotNull
 	private String version;
 
 	/**

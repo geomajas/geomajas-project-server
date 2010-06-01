@@ -23,6 +23,7 @@
 
 package org.geomajas.global;
 
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,8 +37,10 @@ import java.util.List;
 @Api(allMethods = true)
 public class PluginInfo {
 
+	@NotNull
 	private PluginVersionInfo version;
-	
+
+	@NotNull
 	private String backendVersion;
 
 	private List<PluginVersionInfo> dependencies;
