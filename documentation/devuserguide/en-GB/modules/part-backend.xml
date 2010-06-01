@@ -324,8 +324,7 @@
           exact meaning for some of the fields depend on the actual layer, but
           most important features include:</para>
 
-          <para>
-            <table>
+          <para><table>
               <title>Raster Layer info</title>
 
               <tgroup cols="2">
@@ -399,8 +398,7 @@
                   </row>
                 </tbody>
               </tgroup>
-            </table>
-          </para>
+            </table></para>
 
           <para>The location of the images or tiles is defined by calculating
           the real width and height (based on the resolution) and "paving" the
@@ -536,8 +534,7 @@
           <xi:include href="../listing/GoogleLayerSample.xml"
                       xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-          <para>
-            <table>
+          <para><table>
               <title>GoogleLayer configuration</title>
 
               <tgroup cols="2">
@@ -561,8 +558,7 @@
                   </row>
                 </tbody>
               </tgroup>
-            </table>
-          </para>
+            </table></para>
 
           <para>The layer info inner bean has the same general content as
           usual. There are some simplifications though. There is no need to
@@ -617,8 +613,7 @@
           <para>The following table describes the properties of the
           <code>VectorLayerInfo</code> object:</para>
 
-          <para>
-            <table>
+          <para><table>
               <title>VectorLayer info</title>
 
               <tgroup cols="2">
@@ -676,8 +671,7 @@
                   </row>
                 </tbody>
               </tgroup>
-            </table>
-          </para>
+            </table></para>
 
           <para>The feature metadata can be found in the
           <code>FeatureInfo</code> object. This objects contains the complete
@@ -963,8 +957,7 @@
           <para>To access a WFS server, the following names can be used as
           parameters.</para>
 
-          <para>
-            <itemizedlist>
+          <para><itemizedlist>
               <listitem>
                 <para><emphasis>WFSDataStoreFactory:GET_CAPABILITIES_URL</emphasis>:
                 URL for the getCapabilities document on the server
@@ -1018,8 +1011,7 @@
                 match the schema. Errors will be logged but the parsing will
                 continue if this is true. Default is false.</para>
               </listitem>
-            </itemizedlist>
-          </para>
+            </itemizedlist></para>
 
           <para>You also have to assure the GeoTools WFS data store is added
           as dependency in your project. When using Maven, you can add the
@@ -1043,8 +1035,7 @@
           at startup. All layer updates are performed in memory, so this layer
           is not really useful except for examples.</para>
 
-          <para>
-            <table>
+          <para><table>
               <title>ShapeInMemLayer configuration</title>
 
               <tgroup cols="2">
@@ -1070,8 +1061,7 @@
                   </row>
                 </tbody>
               </tgroup>
-            </table>
-          </para>
+            </table></para>
         </section>
 
         <section>
@@ -1084,8 +1074,7 @@
 
           <para>TODO.....</para>
 
-          <para>
-            <table>
+          <para><table>
               <title>BeanLayer configuration</title>
 
               <tgroup cols="2">
@@ -1111,8 +1100,7 @@
                   </row>
                 </tbody>
               </tgroup>
-            </table>
-          </para>
+            </table></para>
         </section>
       </section>
     </section>
@@ -1120,15 +1108,16 @@
     <section>
       <title>Client configuration</title>
 
-		<figure>
-		  <title>Geomajas client configuration</title>
+      <figure>
+        <title>Geomajas client configuration</title>
 
-		  <mediaobject>
-			<imageobject>
-			  <imagedata fileref="../images/clientConfiguration.png" width="100%" />
-			</imageobject>
-		  </mediaobject>
-		</figure>
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="../images/clientConfiguration.png"
+                       width="100%" />
+          </imageobject>
+        </mediaobject>
+      </figure>
 
       <section>
         <title>Map configuration</title>
@@ -1210,6 +1199,60 @@
           <para>TODO.....</para>
         </section>
       </section>
+    </section>
+
+    <section>
+      <title>Coordinate Reference Systems</title>
+
+      <para>Geomajas uses GeoTools' gt-epsg-wkt module to define the
+      coordinate reference systems which are available.</para>
+
+      <para>If you want to add extra coordinate reference systems, this can be
+      done by defining them in the configuration. For example, Geomajas itself
+      already defines the "EPSG:900913" CRS (which one of the many codes for
+      the Mercator projection used by Google Maps and OpenStreetMap).</para>
+
+      <example>
+        <title>Custom CRS addition</title>
+
+        <para><programlisting>&lt;bean class="org.geomajas.global.CrsInfo"&gt;
+    &lt;property name="key" value="EPSG:900913"/&gt;
+    &lt;property name="crsWkt"&gt;
+        &lt;value&gt;
+PROJCS["Google Mercator",
+    GEOGCS["WGS 84",
+    DATUM["World Geodetic System 1984",
+        SPHEROID["WGS 84", 6378137.0, 298.257223563, AUTHORITY["EPSG","7030"]],
+        AUTHORITY["EPSG","6326"]],
+    PRIMEM["Greenwich", 0.0, AUTHORITY["EPSG","8901"]],
+    UNIT["degree", 0.017453292519943295],
+    AXIS["Geodetic latitude", NORTH],
+    AXIS["Geodetic longitude", EAST],
+    AUTHORITY["EPSG","4326"]],
+    PROJECTION["Mercator (1SP)", AUTHORITY["EPSG","9804"]],
+    PARAMETER["semi_major", 6378137.0],
+    PARAMETER["semi_minor", 6378137.0],
+    PARAMETER["latitude_of_origin", 0.0],
+    PARAMETER["central_meridian", 0.0],
+    PARAMETER["scale_factor", 1.0],
+    PARAMETER["false_easting", 0.0],
+    PARAMETER["false_northing", 0.0],
+    UNIT["m", 1.0],
+    AXIS["Easting", EAST],
+    AXIS["Northing", NORTH],
+    AUTHORITY["EPSG","900913"]]
+        &lt;/value&gt;
+    &lt;/property&gt;
+&lt;/bean&gt;</programlisting></para>
+      </example>
+
+      <para>You can add as many of these beans as needed. The keys
+      transformation which are added this way are tested before the GeoTools
+      library, so you can overwrite definitions if needed.</para>
+
+      <para>If you don't like the dependency on the gt-epsg-wkt library, then
+      you could exclude this dependency in your maven pom and use a different
+      dependency if needed.</para>
     </section>
   </chapter>
 
@@ -2605,8 +2648,7 @@
       intermediate package (between "command" and the class name) and the
       class name itself. Some examples:</para>
 
-      <para>
-        <table>
+      <para><table>
           <title>Samples of command name resolution</title>
 
           <tgroup cols="2">
@@ -2668,8 +2710,7 @@
               </row>
             </tbody>
           </tgroup>
-        </table>
-      </para>
+        </table></para>
 
       <para>You have to include a line in your Spring configuration to scan
       class files for annotation to make the components available. For the
@@ -2716,8 +2757,7 @@
       <xi:include href="../listing/StaticSecurityDependency.xml"
                   xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-      <para>
-        <note>
+      <para><note>
           <para>When using a separate module for your commands and trying to
           run your project from eclipse, it is quite likely to have problems
           with your commands not being found. When checking the output
@@ -2730,8 +2770,7 @@
 
           <xi:include href="../listing/PreloadToPrepareScanning.xml"
                       xmlns:xi="http://www.w3.org/2001/XInclude" />
-        </note>
-      </para>
+        </note></para>
     </section>
   </chapter>
 
@@ -2777,6 +2816,18 @@
     </section>
 
     <section>
+      <title>SecurityManager</title>
+
+      <para></para>
+    </section>
+
+    <section>
+      <title>SecurityContext</title>
+
+      <para></para>
+    </section>
+
+    <section>
       <title>Staticsecurity module configuration</title>
 
       <para>TODO.....</para>
@@ -2786,6 +2837,60 @@
       <title>Writing your own security service</title>
 
       <para>TODO.....</para>
+    </section>
+  </chapter>
+
+  <chapter>
+    <title>Services</title>
+
+    <para></para>
+
+    <section>
+      <title>ConfigurationService</title>
+
+      <para></para>
+    </section>
+
+    <section>
+      <title>GeoService</title>
+
+      <para></para>
+    </section>
+
+    <section>
+      <title>DtoConverterService</title>
+
+      <para></para>
+    </section>
+
+    <section>
+      <title>FilterService</title>
+
+      <para></para>
+    </section>
+
+    <section>
+      <title>TextService</title>
+
+      <para></para>
+    </section>
+
+    <section>
+      <title>CommandDispatcher</title>
+
+      <para></para>
+    </section>
+
+    <section>
+      <title>RasterLayerService</title>
+
+      <para></para>
+    </section>
+
+    <section>
+      <title>VectorLayerService</title>
+
+      <para></para>
     </section>
   </chapter>
 </part>
