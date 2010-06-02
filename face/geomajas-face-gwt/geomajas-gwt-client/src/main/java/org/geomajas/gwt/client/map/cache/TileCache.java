@@ -281,6 +281,9 @@ public class TileCache implements SpatialCache {
 		double baseY = layerBounds.getHeight();
 		double tileFactor = Math.min(baseX / bounds.getWidth(), baseY / bounds.getHeight());
 		int tileLevel = (int) Math.ceil(Math.log(tileFactor) / Math.log(2.0));
+		if (tileLevel < 0 ) {
+			tileLevel = 0;
+		}
 		return tileLevel;
 	}
 
