@@ -113,7 +113,7 @@ public class LegendIconComponent extends BaseComponent {
 		// draw symbol
 		switch (layerType) {
 			case RASTER:
-				Image img = context.getImage("/images/world.png");
+				Image img = context.getImage("/images/layer-raster.png");
 				context.drawImage(img, iconRect, null);
 				break;
 			case POINT:
