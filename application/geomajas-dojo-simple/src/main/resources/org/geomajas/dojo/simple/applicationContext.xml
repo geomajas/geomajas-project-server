@@ -42,85 +42,58 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		<property name="maps">
 			<list>
 				<bean name="sampleFeaturesMap" class="org.geomajas.configuration.client.ClientMapInfo">
-					<property name="backgroundColor" value="#F0F0F0"/>
+					<property name="backgroundColor" value="#FFFFFF" />
 					<property name="lineSelectStyle">
 						<bean class="org.geomajas.configuration.FeatureStyleInfo">
-							<property name="fillOpacity" value="0"/>
-							<property name="strokeColor" value="#FF6600"/>
-							<property name="strokeOpacity" value="1"/>
+							<property name="fillOpacity" value="0" />
+							<property name="strokeColor" value="#FF6600" />
+							<property name="strokeOpacity" value="1" />
 						</bean>
 					</property>
 					<property name="pointSelectStyle">
 						<bean class="org.geomajas.configuration.FeatureStyleInfo">
-							<property name="fillColor" value="#FFFF00"/>
+							<property name="fillColor" value="#FFFF00" />
 						</bean>
 					</property>
 					<property name="polygonSelectStyle">
 						<bean class="org.geomajas.configuration.FeatureStyleInfo">
-							<property name="fillColor" value="#FFFF00"/>
-							<property name="fillOpacity" value=".5"/>
+							<property name="fillColor" value="#FFFF00" />
+							<property name="fillOpacity" value=".5" />
 						</bean>
 					</property>
-					<property name="crs" value="EPSG:900913"/>
-					<property name="scaleBarEnabled" value="true"/>
-					<property name="panButtonsEnabled" value="true"/>
-					<property name="maximumScale" value="9.5"/>
+					<property name="crs" value="EPSG:4326" />
+					<property name="scaleBarEnabled" value="true" />
+					<property name="panButtonsEnabled" value="true" />
+					<property name="maximumScale" value="50000" />
 					<property name="initialBounds">
 						<bean class="org.geomajas.geometry.Bbox">
-							<property name="x" value="506356"/>
-							<property name="y" value="6588779"/>
-							<property name="width" value="330"/>
-							<property name="height" value="260"/>
+							<property name="x" value="-128.5"/>
+							<property name="y" value="16"/>
+							<property name="width" value="64.5"/>
+							<property name="height" value="35"/>
 						</bean>
 					</property>
 					<property name="layers">
 						<list>
-							<ref bean="osmLayer"/>
-							<ref bean="roadsLayer"/>
-							<ref bean="structuresLayer"/>
+							<ref bean="bluemarbleLayer" />
+							<ref bean="countries110mLayer" />
 						</list>
 					</property>
 					<property name="toolbar">
 						<bean name="sampleFeaturesMapToolbar" class="org.geomajas.configuration.client.ClientToolbarInfo">
 							<property name="tools">
 								<list>
-									<ref bean="ZoomIn"/>
-									<ref bean="ZoomOut"/>
-									<ref bean="ZoomToRectangleMode"/>
-									<ref bean="PanMode"/>
-									<ref bean="ToolbarSeparator"/>
-									<ref bean="ZoomPrevious"/>
-									<ref bean="ZoomNext"/>
-									<ref bean="ToolbarSeparator"/>
-									<ref bean="EditMode"/>
-									<ref bean="MeasureDistanceMode"/>
-									<ref bean="SelectionMode"/>
+									<ref bean="ZoomIn" />
+									<ref bean="ZoomOut" />
+									<ref bean="ZoomToRectangleMode" />
+									<ref bean="PanMode" />
+									<ref bean="ToolbarSeparator" />
+									<ref bean="ZoomPrevious" />
+									<ref bean="ZoomNext" />
+									<ref bean="ToolbarSeparator" />
+									<ref bean="SelectionMode" />
+									<ref bean="DeselectAll" />
 								</list>
-							</property>
-						</bean>
-					</property>
-					<property name="layerTree">
-						<bean name="sampleFeaturesTree" class="org.geomajas.configuration.client.ClientLayerTreeInfo">
-							<property name="tools">
-								<list>
-									<ref bean="LayerVisibleTool"/>
-									<ref bean="LayerLabeledTool"/>
-									<ref bean="ShowTableAction"/>
-									<ref bean="LayerRefreshAction"/>
-								</list>
-							</property>
-							<property name="treeNode">
-								<bean class="org.geomajas.configuration.client.ClientLayerTreeNodeInfo">
-									<property name="label" value="Layers"/>
-									<property name="layers">
-										<list>
-											<ref bean="osmLayer" />
-											<ref bean="roadsLayer" />
-											<ref bean="structuresLayer" />
-										</list>
-									</property>
-									<property name="expanded" value="true"/>
-								</bean>
 							</property>
 						</bean>
 					</property>
@@ -128,40 +101,41 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 
 
 				<bean name="sampleOverviewMap" class="org.geomajas.configuration.client.ClientMapInfo">
-					<property name="backgroundColor" value="#F0F0F0"/>
+					<property name="backgroundColor" value="#FFFFFF" />
 					<property name="lineSelectStyle">
 						<bean class="org.geomajas.configuration.FeatureStyleInfo">
-							<property name="fillOpacity" value="0"/>
-							<property name="strokeColor" value="#FF6600"/>
-							<property name="strokeOpacity" value="1"/>
+							<property name="fillOpacity" value="0" />
+							<property name="strokeColor" value="#FFC000" />
+							<property name="strokeOpacity" value="1" />
 						</bean>
 					</property>
 					<property name="pointSelectStyle">
 						<bean class="org.geomajas.configuration.FeatureStyleInfo">
-							<property name="fillColor" value="#FFFF00"/>
+							<property name="fillColor" value="#FFC000" />
 						</bean>
 					</property>
 					<property name="polygonSelectStyle">
 						<bean class="org.geomajas.configuration.FeatureStyleInfo">
-							<property name="fillColor" value="#FFFF00"/>
-							<property name="fillOpacity" value=".5"/>
+							<property name="fillColor" value="#FFC000" />
+							<property name="fillOpacity" value=".8" />
 						</bean>
 					</property>
-					<property name="crs" value="EPSG:900913"/>
-					<property name="scaleBarEnabled" value="false"/>
-					<property name="panButtonsEnabled" value="false"/>
-					<property name="maximumScale" value="9.5"/>
+					<property name="crs" value="EPSG:4326" />
+					<property name="scaleBarEnabled" value="false" />
+					<property name="panButtonsEnabled" value="false" />
+					<property name="displayUnitType" value="ENGLISH" />
+					<property name="maximumScale" value="99999999" />
 					<property name="initialBounds">
 						<bean class="org.geomajas.geometry.Bbox">
-							<property name="x" value="505800"/>
-							<property name="y" value="6588300"/>
-							<property name="width" value="1500"/>
-							<property name="height" value="1000"/>
+			                <property name="x" value="-180"/>
+			                <property name="y" value="-60"/>
+			                <property name="width" value="160"/>
+			                <property name="height" value="150"/>
 						</bean>
 					</property>
 					<property name="layers">
 						<list>
-							<ref bean="osmLayer"/>
+							<ref bean="bluemarbleLayer" />
 						</list>
 					</property>
 				</bean>
@@ -169,50 +143,22 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		</property>
 	</bean>
 
-	<bean class="org.geomajas.configuration.client.ClientRasterLayerInfo" id="osmLayer">
-		<property name="layerInfo" ref="osmInfo" />
-		<property name="label" value="OpenStreetMap (raster)" />
-		<property name="visible" value="true" />
-		<property name="viewScaleMin" value="0" />
-		<property name="viewScaleMax" value="50" />
-		<property name="style" value="1" />
+	<bean class="org.geomajas.configuration.client.ClientRasterLayerInfo" id="bluemarbleLayer">
+		<property name="serverLayerId" value="bluemarble" />
+	  	<property name="label" value="NASA Blue Marble - WMS"/>
+		<property name="visible" value="true"/>
+		<property name="viewScaleMin" value="0"/>
+		<property name="viewScaleMax" value="100000"/>
+        <property name="style" value="opacity:0.8;"/>
 	</bean>
 
-	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="roadsLayer">
-		<property name="layerInfo" ref="roadsInfo" />
-		<property name="label" value="Roads (editable - linestring)" />
+	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="countries110mLayer">
+		<property name="serverLayerId" value="countries110m" />
+		<property name="label" value="Countries" />
 		<property name="visible" value="true" />
 		<property name="viewScaleMin" value="0" />
-		<property name="viewScaleMax" value="10" />
-		<property name="namedStyleInfo" ref="roadsStyleInfo" />
-		<property name="snappingRules">
-			<list>
-				<bean class="org.geomajas.configuration.SnappingRuleInfo">
-					<property name="distance" value="10" />
-					<property name="type" value="NEAREST_POINT" />
-					<property name="layerId" value="roadsLayer" />
-				</bean>
-			</list>
-		</property>
-	</bean>
-
-	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="structuresLayer">
-		<property name="layerInfo" ref="structuresInfo" />
-		<property name="label" value="Structures (editable - polygon)" />
-		<property name="visible" value="true" />
-		<property name="viewScaleMin" value="0" />
-		<property name="viewScaleMax" value="10" />
-		<property name="namedStyleInfo" ref="structuresStyleInfo" />
-		<property name="snappingRules">
-			<list>
-				<bean class="org.geomajas.configuration.SnappingRuleInfo">
-					<property name="distance" value="10" />
-					<property name="type" value="NEAREST_POINT" />
-					<property name="layerId" value="structuresLayer" />
-				</bean>
-			</list>
-		</property>
-
+		<property name="viewScaleMax" value="100000" />
+		<property name="namedStyleInfo" ref="countries110mStyleInfo" />
 	</bean>
 
 	<bean name="ToolbarSeparator" class="org.geomajas.configuration.client.ClientToolInfo"/>

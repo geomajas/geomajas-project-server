@@ -8,10 +8,7 @@
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
-            org/geomajas/dojo/simple/applicationContext.xml
-            org/geomajas/dojo/simple/layerRoads.xml
-			org/geomajas/dojo/simple/layerStructures.xml
-			org/geomajas/dojo/simple/layerOsm.xml
+            org/geomajas/dojo/simple/*.xml
         </param-value>
     </context-param>
 
@@ -20,11 +17,11 @@
     </listener>
 	<!-- @extract-end -->
 
-    <servlet>
+    <!--servlet>
         <servlet-name>PdfServlet</servlet-name>
         <servlet-class>org.geomajas.extension.printing.PdfServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
-    </servlet>
+    </servlet-->
     <servlet>
         <servlet-name>JsonServlet</servlet-name>
         <servlet-class>org.geomajas.dojo.server.servlet.JsonServlet</servlet-class>
@@ -46,10 +43,10 @@
         <load-on-startup>3</load-on-startup>
     </servlet>
 
-    <servlet-mapping>
+    <!--servlet-mapping>
         <servlet-name>PdfServlet</servlet-name>
         <url-pattern>*.pdf</url-pattern>
-    </servlet-mapping>
+    </servlet-mapping-->
     <servlet-mapping>
         <servlet-name>JsonServlet</servlet-name>
         <url-pattern>*.do</url-pattern>
