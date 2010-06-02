@@ -232,10 +232,6 @@ public class MapView {
 		newBbox.setCenterPoint(center);
 		// and apply...
 		doApplyBounds(newBbox, option);
-		// set pan origin equal to camera
-		panOrigin.setX(camera.getX());
-		panOrigin.setY(camera.getY());
-		fireEvent(false, option);
 	}
 
 	/**
@@ -256,10 +252,6 @@ public class MapView {
 	public void applyBounds(final Bbox bounds, final ZoomOption option) {
 		pushPanData();
 		doApplyBounds(bounds, option);
-		// set pan origin equal to camera
-		panOrigin.setX(camera.getX());
-		panOrigin.setY(camera.getY());
-		fireEvent(true, option);
 	}
 
 	/**
@@ -277,10 +269,6 @@ public class MapView {
 		this.height = newHeight;
 		// reapply the old bounds
 		doApplyBounds(oldbbox, ZoomOption.LEVEL_FIT);
-		// set pan origin equal to camera
-		panOrigin.setX(camera.getX());
-		panOrigin.setY(camera.getY());
-		fireEvent(true, ZoomOption.LEVEL_FIT);
 	}
 
 	/**
@@ -413,8 +401,10 @@ public class MapView {
 	// Private functions:
 	// -------------------------------------------------------------------------
 
-	private void doSetScale(double scale, ZoomOption option) {
+	private boolean doSetScale(double scale, ZoomOption option) {
+		boolean res = Math.abs(currentScale - scale) > .0000001;
 		currentScale = scale;
+		return res;
 	}
 
 	private void doSetPosition(Coordinate coordinate) {
@@ -424,15 +414,24 @@ public class MapView {
 
 	private void doApplyBounds(Bbox bounds, ZoomOption option) {
 		if (bounds != null) {
+			boolean scaleChanged = false;
 			if (!bounds.isEmpty()) {
 				// find best scale
 				double scale = getBestScale(bounds);
 				// snap and limit
 				scale = snapToResolution(scale, option);
 				// set scale
-				doSetScale(scale, option);
+				scaleChanged = doSetScale(scale, option);
 			}
 			doSetPosition(bounds.getCenterPoint());
+			if (bounds.isEmpty()) {
+				fireEvent(false, null);
+			} else {
+				// set pan origin equal to camera
+				panOrigin.setX(camera.getX());
+				panOrigin.setY(camera.getY());
+				fireEvent(scaleChanged, option);
+			}
 		}
 	}
 
