@@ -50,7 +50,7 @@ dojo.declare("EditingManager", ConfigManager, {
 		var mapWidget = dijit.byId("sampleEditingMap");
 		var legend = dijit.byId("legend");
 		legend.setMapModel(mapWidget.getMapModel());
-		var layer = mapWidget.getMapModel().getLayerById ("sampleEditingMap.structures");
+		var layer = mapWidget.getMapModel().getLayerById ("sampleEditingMap.lakes110m");
 		dijit.byId("loader").init(layer);
 	},
 

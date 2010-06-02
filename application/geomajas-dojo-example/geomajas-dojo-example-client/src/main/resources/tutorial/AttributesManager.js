@@ -51,8 +51,8 @@ dojo.declare("AttributesManager", ConfigManager, {
 		var legend = dijit.byId("sampleFeaturesLegend");
 		var mapWidget = dijit.byId("sampleFeaturesMap");
 		legend.setMapModel(mapWidget.getMapModel());
-		mapWidget.getMapModel().setSelectedLayer("sampleFeaturesMap.provinces");
-		var layer = mapWidget.getMapModel().getLayerById("sampleFeaturesMap.provinces");
+		mapWidget.getMapModel().setSelectedLayer("sampleFeaturesMap.countries110m");
+		var layer = mapWidget.getMapModel().getLayerById("sampleFeaturesMap.countries110m");
 		layer.setLabeled(true);
 		dojo.connect(layer.featureStore.cache, "onFetchDone", this, "initTable");
 		dijit.byId("loader").init(layer);
@@ -82,7 +82,7 @@ dojo.declare("AttributesManager", ConfigManager, {
 
 			// Add the features, and render the table:
 			flt.setMapWidget(map);
-			var layer = map.getMapModel().getLayerById("sampleFeaturesMap.provinces");
+			var layer = map.getMapModel().getLayerById("sampleFeaturesMap.countries110m");
 			if (layer) {
 				var updateAction = new ShowTableAction(null, map, null, null);
 				updateAction.refreshTable(flt, layer);
@@ -94,6 +94,4 @@ dojo.declare("AttributesManager", ConfigManager, {
 			for (var i in e) log.error(e[i]);
 		}
 	}
-
 });
-

@@ -61,7 +61,7 @@ dojo.declare("SearchManager", ConfigManager, {
 		toolbar.addChild(scaleSelect);
 		scaleSelect.setMapWidget(mapWidget);
 
-		var layer = mapWidget.getMapModel().getLayerById ("sampleSearchMap.countries");
+		var layer = mapWidget.getMapModel().getLayerById ("sampleSearchMap.countries110mAfrica");
 		dijit.byId("loader").init(layer);
 		dojo.connect(layer.featureStore.cache, "onFetchDone", this, "initTable");
 		dojo.publish(mapWidget.getRenderTopic(), [layer, "all"]);
@@ -86,7 +86,7 @@ dojo.declare("SearchManager", ConfigManager, {
 		// Make the table listen to selection events:
 		flt.enableSelection(map.getMapModel().getSelectionTopic()); // Listens to the selection-topic!
 
-		var layer = dijit.byId("sampleSearchMap").getMapModel().getLayerById("sampleSearchMap.countries");
+		var layer = dijit.byId("sampleSearchMap").getMapModel().getLayerById("sampleSearchMap.countries110mAfrica");
 		if (layer) {
 			var updateAction = new ShowTableAction(null, map, null, null);
 			updateAction.refreshTable(flt, layer);
@@ -95,7 +95,7 @@ dojo.declare("SearchManager", ConfigManager, {
 	
 	onZoom : function(scale) {
 		var mapWidget = dijit.byId("sampleSearchMap");
-		var countries = mapWidget.getMapModel().getLayerById("sampleSearchMap.countries");
+		var countries = mapWidget.getMapModel().getLayerById("sampleSearchMap.countries110mAfrica");
 		if (scale > 15) {
 			countries.setLabeled(true);
 		} else {

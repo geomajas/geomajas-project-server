@@ -8,19 +8,9 @@
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
+			clientcfg/*.xml
+			servercfg/*.xml
             applicationContext.xml
-            layerBelt.xml
-            layerBluemarble.xml
-            layerCities.xml
-            layerCountries.xml
-            layerLakes.xml
-            layerOsm.xml
-            layerProvinces.xml
-            layerRivers.xml
-            layerRoads.xml
-            layerStructures.xml
-            layerBeans.xml
-            mapBeans.xml
         </param-value>
 	</context-param>
 
@@ -30,11 +20,11 @@
 <!-- @extract-end -->
 
 <!-- @extract-start WebXmlDojoPart2, Servlet definitions -->
-	<servlet>
+	<!--servlet>
 		<servlet-name>PdfServlet</servlet-name>
 		<servlet-class>org.geomajas.extension.printing.PdfServlet</servlet-class>
 		<load-on-startup>1</load-on-startup>
-	</servlet>
+	</servlet-->
 	<servlet>
 		<servlet-name>JsonServlet</servlet-name>
 		<servlet-class>org.geomajas.dojo.server.servlet.JsonServlet</servlet-class>
@@ -60,10 +50,10 @@
 <!-- @extract-end -->
 
 <!-- @extract-start WebXmlDojoPart3, Servlet mappings -->
-	<servlet-mapping>
+	<!--servlet-mapping>
 		<servlet-name>PdfServlet</servlet-name>
 		<url-pattern>*.pdf</url-pattern>
-	</servlet-mapping>
+	</servlet-mapping-->
 	<servlet-mapping>
 		<servlet-name>JsonServlet</servlet-name>
 		<url-pattern>*.do</url-pattern>

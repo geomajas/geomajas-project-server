@@ -1,0 +1,154 @@
+<!--
+  ~ This file is part of Geomajas, a component framework for building
+  ~ rich Internet applications (RIA) with sophisticated capabilities for the
+  ~ display, analysis and management of geographic information.
+  ~ It is a building block that allows developers to add maps
+  ~ and other geographic data capabilities to their web applications.
+  ~
+  ~ Copyright 2008-2010 Geosparc, http://www.geosparc.com, Belgium
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU Affero General Public License as
+  ~ published by the Free Software Foundation, either version 3 of the
+  ~ License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU Affero General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU Affero General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+
+	<bean name="sampleTechMap" class="org.geomajas.configuration.client.ClientMapInfo">
+		<property name="backgroundColor" value="#FFFFFF" />
+		<property name="lineSelectStyle">
+			<bean class="org.geomajas.configuration.FeatureStyleInfo">
+				<property name="fillOpacity" value="0" />
+				<property name="strokeColor" value="#FFC000" />
+				<property name="strokeOpacity" value="1" />
+			</bean>
+		</property>
+		<property name="pointSelectStyle">
+			<bean class="org.geomajas.configuration.FeatureStyleInfo">
+				<property name="fillColor" value="#FFC000" />
+			</bean>
+		</property>
+		<property name="polygonSelectStyle">
+			<bean class="org.geomajas.configuration.FeatureStyleInfo">
+				<property name="fillColor" value="#FFC000" />
+				<property name="fillOpacity" value=".8" />
+			</bean>
+		</property>
+		<property name="crs" value="EPSG:4326" />
+		<property name="scaleBarEnabled" value="true" />
+		<property name="panButtonsEnabled" value="true" />
+		<property name="displayUnitType" value="ENGLISH" />
+		<property name="maximumScale" value="99999999" />
+		<property name="initialBounds">
+			<bean class="org.geomajas.geometry.Bbox">
+				<property name="x" value="-128.5"/>
+				<property name="y" value="16"/>
+				<property name="width" value="64.5"/>
+				<property name="height" value="35"/>
+			</bean>
+		</property>
+		<property name="layers">
+			<list>
+				<ref bean="bluemarbleLayer" />
+				<ref bean="countries110mLayer" />
+			</list>
+		</property>
+		<property name="toolbar">
+			<bean name="sampleTechToolbar" class="org.geomajas.configuration.client.ClientToolbarInfo">
+				<property name="tools">
+					<list>
+						<ref bean="ZoomIn" />
+						<ref bean="ZoomOut" />
+						<ref bean="ZoomToRectangleMode" />
+						<ref bean="PanMode" />
+						<ref bean="ToolbarSeparator" />
+						<ref bean="ZoomPrevious" />
+						<ref bean="ZoomNext" />
+						<ref bean="ToolbarSeparator" />
+						<ref bean="MouseInfoMode" />
+					</list>
+				</property>
+			</bean>
+		</property>
+		<property name="layerTree">
+			<bean name="sampleTechTree" class="org.geomajas.configuration.client.ClientLayerTreeInfo">
+				<property name="treeNode">
+					<bean class="org.geomajas.configuration.client.ClientLayerTreeNodeInfo">
+						<property name="label" value="Layers" />
+						<property name="layers">
+							<list>
+								<ref bean="bluemarbleLayer" />
+								<ref bean="countries110mLayer" />
+							</list>
+						</property>
+						<property name="expanded" value="true" />
+					</bean>
+				</property>
+				<property name="tools">
+					<list>
+						<ref bean="LayerVisibleTool" />
+						<ref bean="LayerLabeledTool" />
+						<ref bean="LayerSnappingTool" />
+					</list>
+				</property>
+			</bean>
+		</property>
+	</bean>
+	
+	
+	<bean name="sampleTechOverviewMap" class="org.geomajas.configuration.client.ClientMapInfo">
+		<property name="backgroundColor" value="#FFFFFF" />
+		<property name="lineSelectStyle">
+			<bean class="org.geomajas.configuration.FeatureStyleInfo">
+				<property name="fillOpacity" value="0" />
+				<property name="strokeColor" value="#FFC000" />
+				<property name="strokeOpacity" value="1" />
+			</bean>
+		</property>
+		<property name="pointSelectStyle">
+			<bean class="org.geomajas.configuration.FeatureStyleInfo">
+				<property name="fillColor" value="#FFC000" />
+			</bean>
+		</property>
+		<property name="polygonSelectStyle">
+			<bean class="org.geomajas.configuration.FeatureStyleInfo">
+				<property name="fillColor" value="#FFC000" />
+				<property name="fillOpacity" value=".8" />
+			</bean>
+		</property>
+		<property name="crs" value="EPSG:4326" />
+		<property name="scaleBarEnabled" value="false" />
+		<property name="panButtonsEnabled" value="false" />
+		<property name="displayUnitType" value="ENGLISH" />
+		<property name="maximumScale" value="99999999" />
+		<property name="initialBounds">
+			<bean class="org.geomajas.geometry.Bbox">
+                <property name="x" value="-180"/>
+                <property name="y" value="-60"/>
+                <property name="width" value="160"/>
+                <property name="height" value="150"/>
+			</bean>
+		</property>
+		<property name="layers">
+			<list>
+				<ref bean="bluemarbleLayer" />
+			</list>
+		</property>
+	</bean>
+
+</beans>
