@@ -29,6 +29,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -50,7 +51,8 @@ public class DependencyCheckPostProcessor {
 			return;
 		}
 		// remove unfiltered plugin metadata (needed for eclipse !)
-		for (Map.Entry<String, PluginInfo> entry : declaredPlugins.entrySet()) {
+		for (Map.Entry<String, PluginInfo> entry :
+				new ArrayList<Map.Entry<String, PluginInfo>>(declaredPlugins.entrySet())) {
 			String version = entry.getValue().getVersion().getVersion();
 			if (null != version && version.startsWith("$")) {
 				declaredPlugins.remove(entry.getKey());
