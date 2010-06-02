@@ -49,6 +49,13 @@ public class DependencyCheckPostProcessor {
 		if (null == declaredPlugins) {
 			return;
 		}
+		// remove unfiltered plugin metadata (needed for eclipse !)
+		for (Map.Entry<String, PluginInfo> entry : declaredPlugins.entrySet()) {
+			String version = entry.getValue().getVersion().getVersion();
+			if (null != version && version.startsWith("$")) {
+				declaredPlugins.remove(entry.getKey());
+			}
+		}
 
 		// start by going through all plug-ins to build a map of versions for plug-in keys
 		// includes verification that each key is only used once
@@ -56,8 +63,8 @@ public class DependencyCheckPostProcessor {
 		for (PluginInfo plugin : declaredPlugins.values()) {
 			String name = plugin.getVersion().getName();
 			String version = plugin.getVersion().getVersion();
-			// ignore plug-ins without version of unfiltered version (needed for eclipse !)
-			if (null != version && !version.startsWith("$")) {
+			// check for multiple plugin with same name but different versions (duplicates allowed for jar+source dep)
+			if (null != version) {
 				if (versions.containsKey(name) && !versions.get(name).equals(version)) {
 					throw new RuntimeException("Invalid configuration, the plug-in with name " + name +
 							" has been declared twice. It is know both as version " + version + " and " +
