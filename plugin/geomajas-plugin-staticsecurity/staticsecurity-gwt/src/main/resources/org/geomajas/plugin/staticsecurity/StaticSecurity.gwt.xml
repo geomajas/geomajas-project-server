@@ -1,7 +1,6 @@
 <module>
 
 	<inherits name="org.geomajas.gwt.GeomajasClient" />
-	<extend-property name="locale" values="nl" />
 
 	<source path="client" />
 	<source path="command/dto" />
