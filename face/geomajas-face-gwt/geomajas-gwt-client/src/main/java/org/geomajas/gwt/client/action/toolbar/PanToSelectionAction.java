@@ -72,7 +72,7 @@ public class PanToSelectionAction extends ToolbarAction {
 					}
 
 					// only pan when their where really some items selected
-					if ((selectionBounds.getWidth() != 0) && (selectionBounds.getHeight() != 0)) {
+					if ((selectionBounds.getX() != 0) && (selectionBounds.getY() != 0)) {
 						mapWidget.getMapModel().getMapView().setCenterPosition(selectionBounds.getCenterPoint());
 					}
 				}

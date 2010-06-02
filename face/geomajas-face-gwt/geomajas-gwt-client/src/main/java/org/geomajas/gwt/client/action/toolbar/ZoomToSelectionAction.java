@@ -73,7 +73,7 @@ public class ZoomToSelectionAction extends ToolbarAction {
 					}
 
 					// only zoom when their where really some items selected
-					if ((selectionBounds.getWidth() != 0) && (selectionBounds.getHeight() != 0)) {
+					if ((selectionBounds.getX() != 0) && (selectionBounds.getY() != 0)) {
 						mapWidget.getMapModel().getMapView().applyBounds(selectionBounds,
 								MapView.ZoomOption.LEVEL_CHANGE);
 					}

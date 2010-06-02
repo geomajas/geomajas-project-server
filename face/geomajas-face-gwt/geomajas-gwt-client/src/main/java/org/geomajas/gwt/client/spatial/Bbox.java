@@ -133,11 +133,13 @@ public class Bbox {
 	 * Get the center of the bounding box as a Coordinate.
 	 */
 	public Coordinate getCenterPoint() {
-		return new Coordinate(x + width / 2, y + height / 2);
+		double centerX = (width == 0 ? x : x + width / 2);
+		double centerY = (height == 0 ? y : y + height / 2);
+		return new Coordinate(centerX, centerY);
 	}
 
 	/**
-	 * Get the endpoint of the bounding box as a Coordinate.
+	 * Get the end-point of the bounding box as a Coordinate.
 	 */
 	public Coordinate getEndPoint() {
 		return new Coordinate(x + width, y + height);
@@ -234,12 +236,13 @@ public class Bbox {
 	 *            The other Bbox. Can be a bounding box with width and height equal to 0.
 	 */
 	public Bbox union(Bbox other) {
-		if (other.getWidth() == 0 || other.getHeight() == 0) {
-			return (Bbox) this.clone();
+		if (other.getWidth() == 0 && other.getHeight() == 0 && other.getX() == 0 && other.getY() == 0) {
+			return (Bbox) clone();
 		}
-		if (this.width == 0 || this.height == 0) {
+		if (width == 0 && height == 0 && x == 0 && y == 0) {
 			return (Bbox) other.clone();
 		}
+
 		double minx = other.getX() < this.getX() ? other.getX() : this.getX();
 		double maxx = other.getEndPoint().getX() > this.getEndPoint().getX() ? other.getEndPoint().getX() : this
 				.getEndPoint().getX();

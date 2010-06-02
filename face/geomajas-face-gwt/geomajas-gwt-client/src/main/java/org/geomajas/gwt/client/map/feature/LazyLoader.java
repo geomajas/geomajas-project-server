@@ -78,7 +78,7 @@ public final class LazyLoader {
 			SearchFeatureRequest request = new SearchFeatureRequest();
 			request.setBooleanOperator("OR");
 			request.setCriteria(criteria.toArray(new SearchCriterion[criteria.size()]));
-			request.setCrs(first.getCrs());
+			request.setCrs(first.getLayer().getMapModel().getCrs());
 			request.setLayerId(first.getLayer().getServerLayerId());
 			request.setMax(0);
 			request.setFilter(first.getLayer().getFilter());
@@ -118,5 +118,4 @@ public final class LazyLoader {
 			callback.execute(features);
 		}
 	}
-
 }
