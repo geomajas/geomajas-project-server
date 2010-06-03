@@ -57,23 +57,26 @@ public class ZoomToSelectionAction extends ToolbarAction {
 	 * Zoom to the selected features.
 	 */
 	public void onClick(ClickEvent clickEvent) {
-		//get the selected VectorLayer
+		// get the selected VectorLayer
 		Layer<?> selectedLayer = mapWidget.getMapModel().getSelectedLayer();
 		if (selectedLayer instanceof VectorLayer) {
-			//iterate all features of the selected layer
+			// iterate all features of the selected layer
 			VectorLayerStore featureStore = ((VectorLayer) selectedLayer).getFeatureStore();
 			featureStore.getFeatures(GeomajasConstant.FEATURE_INCLUDE_GEOMETRY, new LazyLoadCallback() {
+
 				public void execute(List<Feature> features) {
+					boolean success = false;
 					Bbox selectionBounds = new Bbox(0, 0, 0, 0);
 					for (Feature feature : features) {
-						//if the feature is selected union the bounding box
+						// if the feature is selected union the bounding box
 						if (feature.isSelected()) {
 							selectionBounds = selectionBounds.union(feature.getGeometry().getBounds());
+							success = true;
 						}
 					}
 
 					// only zoom when their where really some items selected
-					if ((selectionBounds.getX() != 0) && (selectionBounds.getY() != 0)) {
+					if (success) {
 						mapWidget.getMapModel().getMapView().applyBounds(selectionBounds,
 								MapView.ZoomOption.LEVEL_CHANGE);
 					}

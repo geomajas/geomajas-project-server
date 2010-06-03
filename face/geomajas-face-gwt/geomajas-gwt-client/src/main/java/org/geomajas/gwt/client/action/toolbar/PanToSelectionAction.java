@@ -62,17 +62,20 @@ public class PanToSelectionAction extends ToolbarAction {
 			// iterate all features of the selected layer
 			VectorLayerStore featureStore = ((VectorLayer) selectedLayer).getFeatureStore();
 			featureStore.getFeatures(GeomajasConstant.FEATURE_INCLUDE_GEOMETRY, new LazyLoadCallback() {
+
 				public void execute(List<Feature> response) {
+					boolean success = false;
 					Bbox selectionBounds = new Bbox(0, 0, 0, 0);
 					for (Feature feature : response) {
 						// if the feature is selected union the bounding box
 						if (feature.isSelected()) {
 							selectionBounds = selectionBounds.union(feature.getGeometry().getBounds());
+							success = true;
 						}
 					}
 
 					// only pan when their where really some items selected
-					if ((selectionBounds.getX() != 0) && (selectionBounds.getY() != 0)) {
+					if (success) {
 						mapWidget.getMapModel().getMapView().setCenterPosition(selectionBounds.getCenterPoint());
 					}
 				}
