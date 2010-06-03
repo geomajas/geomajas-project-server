@@ -15,7 +15,7 @@
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-dep</artifactId>
-				<version>1.10.20</version>
+				<version>1.10.22</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -36,7 +36,7 @@
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-gwt-client</artifactId>
-			<scope>sources</scope>
+			<classifier>sources</classifier>
 			<version>1.7.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
@@ -48,6 +48,13 @@
 		<dependency>
 			<!-- only mentioned to assure 1.7.0-SNAPSHOT back-end is used , should be removed -->
 			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-command</artifactId>
+			<classifier>sources</classifier>
+			<version>1.7.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<!-- only mentioned to assure 1.7.0-SNAPSHOT back-end is used , should be removed -->
+			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-api</artifactId>
 			<version>1.7.0-SNAPSHOT</version>
 		</dependency>
@@ -55,7 +62,7 @@
 			<!-- only mentioned to assure 1.7.0-SNAPSHOT back-end is used , should be removed -->
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-api</artifactId>
-			<scope>sources</scope>
+			<classifier>sources</classifier>
 			<version>1.7.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>

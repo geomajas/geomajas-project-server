@@ -10,8 +10,8 @@
         <param-name>contextConfigLocation</param-name>
         <param-value>
             ${packageInPathFormat}/shapeinmem/applicationContext.xml
-            ${packageInPathFormat}/shapeinmem/layerRoads.xml
-			${packageInPathFormat}/shapeinmem/layerOsm.xml
+            ${packageInPathFormat}/shapeinmem/layerCountries110m.xml
+			${packageInPathFormat}/shapeinmem/layerWmsBluemarble.xml
   
         <!--
             ${packageInPathFormat}/hibernate/applicationContext.xml
