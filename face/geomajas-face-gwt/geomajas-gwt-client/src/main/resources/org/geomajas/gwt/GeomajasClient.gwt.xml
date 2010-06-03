@@ -27,6 +27,9 @@
 	<source path="client/map/workflow">
 		<exclude name="*Test*.java"/>
 	</source>
+	<source path="client/spatial">
+		<exclude name="*Test*.java"/>
+	</source>
 	<source path="client/spatial/geometry">
 		<exclude name="*Test*.java"/>
 	</source>

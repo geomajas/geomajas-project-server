@@ -115,6 +115,11 @@ public class Bbox {
 	// Class specific functions:
 	// -------------------------------------------------------------------------
 
+	/** Returns true if x, y, width and height are equals. */
+	public boolean equals(Bbox other) {
+		return x == other.x && y == other.y && width == other.width && height == other.height;
+	}
+
 	/**
 	 * Create a clone of the object.
 	 */
@@ -266,7 +271,7 @@ public class Bbox {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Return a new bounding box which has the same center position but has been scaled with the specified factor.
 	 * 
@@ -285,7 +290,6 @@ public class Bbox {
 			return new Bbox(this);
 		}
 	}
-	
 
 	/**
 	 * Translates this bounds with displacement dx and dy.
@@ -299,10 +303,12 @@ public class Bbox {
 		this.x = this.x + dx;
 		this.y = this.y + dy;
 	}
-	
+
 	/**
 	 * Create a new bounds by transforming this bounds with the specified tranformation matrix.
-	 * @param t the transformation matrix
+	 * 
+	 * @param t
+	 *            the transformation matrix
 	 * @return the transformed bounds
 	 */
 	public Bbox transform(Matrix t) {
@@ -391,7 +397,7 @@ public class Bbox {
 	protected boolean equals(double d1, double d2, double delta) {
 		return Math.abs(d1 - d2) <= delta;
 	}
-	
+
 	private Coordinate transform(Matrix t, Coordinate coordinate) {
 		double x = t.getXx() * coordinate.getX() + t.getXy() * coordinate.getY() + t.getDx();
 		double y = t.getYx() * coordinate.getY() + t.getYy() * coordinate.getY() + t.getDy();
