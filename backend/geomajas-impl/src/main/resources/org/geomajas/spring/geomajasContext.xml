@@ -147,6 +147,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		</property>
 	</bean>
 
+	<!-- @extract-start CrsInfo, Custom CRS addition -->
 	<bean class="org.geomajas.global.CrsInfo">
 		<property name="key" value="EPSG:900913"/>
 		<property name="crsWkt">
@@ -176,6 +177,7 @@ PROJCS["Google Mercator",
 			</value>
 		</property>
 	</bean>
+	<!-- @extract-end -->
 
 	<!-- default security configuration - should be overwritten to make something accessible -->
 	<bean name="security.securityInfo" class="org.geomajas.security.SecurityInfo">
@@ -320,13 +322,13 @@ PROJCS["Google Mercator",
 					<property name="id" value="postUpdateSave"/>
 				</bean>
 				<bean class="org.geomajas.service.pipeline.PipelineHook">
-					<property name="id" value="preUpdateFeatures"/>
+					<property name="id" value="preUpdateFeature"/>
 				</bean>
 				<bean class="org.geomajas.internal.layer.vector.UpdateFeatureStep">
 					<property name="id" value="UpdateFeatureStep"/>
 				</bean>
 				<bean class="org.geomajas.service.pipeline.PipelineHook">
-					<property name="id" value="postUpdateFeatures"/>
+					<property name="id" value="postUpdateFeature"/>
 				</bean>
 			</list>
 		</property>

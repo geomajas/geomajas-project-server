@@ -152,6 +152,17 @@
 							<destinationDirectory>${basedir}/en-GB/listing</destinationDirectory>
 						</configuration>
 					</execution>
+					<execution>
+						<id>extract-listings-backend</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>extract</goal>
+						</goals>
+						<configuration>
+							<sourceDirectory>${basedir}/../../backend</sourceDirectory>
+							<destinationDirectory>${basedir}/en-GB/listing</destinationDirectory>
+						</configuration>
+					</execution>
 				</executions>
 			</plugin>
 			<plugin>

@@ -1212,39 +1212,8 @@
       already defines the "EPSG:900913" CRS (which one of the many codes for
       the Mercator projection used by Google Maps and OpenStreetMap).</para>
 
-      <example>
-        <title>Custom CRS addition</title>
-
-        <para><programlisting>&lt;bean class="org.geomajas.global.CrsInfo"&gt;
-    &lt;property name="key" value="EPSG:900913"/&gt;
-    &lt;property name="crsWkt"&gt;
-        &lt;value&gt;
-PROJCS["Google Mercator",
-    GEOGCS["WGS 84",
-    DATUM["World Geodetic System 1984",
-        SPHEROID["WGS 84", 6378137.0, 298.257223563, AUTHORITY["EPSG","7030"]],
-        AUTHORITY["EPSG","6326"]],
-    PRIMEM["Greenwich", 0.0, AUTHORITY["EPSG","8901"]],
-    UNIT["degree", 0.017453292519943295],
-    AXIS["Geodetic latitude", NORTH],
-    AXIS["Geodetic longitude", EAST],
-    AUTHORITY["EPSG","4326"]],
-    PROJECTION["Mercator (1SP)", AUTHORITY["EPSG","9804"]],
-    PARAMETER["semi_major", 6378137.0],
-    PARAMETER["semi_minor", 6378137.0],
-    PARAMETER["latitude_of_origin", 0.0],
-    PARAMETER["central_meridian", 0.0],
-    PARAMETER["scale_factor", 1.0],
-    PARAMETER["false_easting", 0.0],
-    PARAMETER["false_northing", 0.0],
-    UNIT["m", 1.0],
-    AXIS["Easting", EAST],
-    AXIS["Northing", NORTH],
-    AUTHORITY["EPSG","900913"]]
-        &lt;/value&gt;
-    &lt;/property&gt;
-&lt;/bean&gt;</programlisting></para>
-      </example>
+      <xi:include href="../listing/CrsInfo.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
 
       <para>You can add as many of these beans as needed. The keys
       transformation which are added this way are tested before the GeoTools
@@ -2818,13 +2787,13 @@ PROJCS["Google Mercator",
     <section>
       <title>SecurityManager</title>
 
-      <para></para>
+      <para>TODO.....</para>
     </section>
 
     <section>
       <title>SecurityContext</title>
 
-      <para></para>
+      <para>TODO.....</para>
     </section>
 
     <section>
@@ -2843,54 +2812,208 @@ PROJCS["Google Mercator",
   <chapter>
     <title>Services</title>
 
-    <para></para>
+    <para>TODO.....</para>
 
     <section>
       <title>ConfigurationService</title>
 
-      <para></para>
+      <para>TODO.....</para>
     </section>
 
     <section>
       <title>GeoService</title>
 
-      <para></para>
+      <para>TODO.....</para>
     </section>
 
     <section>
       <title>DtoConverterService</title>
 
-      <para></para>
+      <para>TODO.....</para>
     </section>
 
     <section>
       <title>FilterService</title>
 
-      <para></para>
+      <para>TODO.....</para>
     </section>
 
     <section>
       <title>TextService</title>
 
-      <para></para>
+      <para>TODO.....</para>
     </section>
 
     <section>
       <title>CommandDispatcher</title>
 
-      <para></para>
+      <para>TODO.....</para>
     </section>
 
     <section>
       <title>RasterLayerService</title>
 
-      <para></para>
+      <para>TODO.....</para>
     </section>
 
     <section>
       <title>VectorLayerService</title>
 
-      <para></para>
+      <para>TODO.....</para>
+    </section>
+
+    <section>
+      <title>PipelineService</title>
+
+      <para>The pipeline service helps you to execute a pipeline. It allows
+      you to fetch a named pipeline which applies for a specific layer (either
+      the layer specific pipeline or the default pipeline). It also has
+      methods to create an empty pipeline context and execute a
+      pipeline.</para>
+    </section>
+  </chapter>
+
+  <chapter>
+    <title>Pipelines</title>
+
+    <para>The default pipelines are detailed here. All the steps mentioned
+    here have a hook before and after the step to allow customization of the
+    pipeline. These hooks have the name of the step as mentioned here, with
+    either "pre" or "post" as prefix (note that these keys are case
+    dependent).</para>
+
+    <section>
+      <title>RasterLayerService</title>
+
+      <section>
+        <title>getTiles()</title>
+
+        <para><itemizedlist>
+            <listitem>
+              "Get" : get the raster tile.
+            </listitem>
+          </itemizedlist></para>
+      </section>
+    </section>
+
+    <section>
+      <title>VectorLayerService</title>
+
+      <section>
+        <title>saveOrUpdate()</title>
+
+        <para><itemizedlist>
+            <listitem>
+              "EqualSize" : verify that the list of old and new features match.
+            </listitem>
+
+            <listitem>
+              "SaveOrUpdate" : this handles the save or update for the individual features using the pipeline below.
+            </listitem>
+          </itemizedlist></para>
+      </section>
+
+      <section>
+        <title>saveOrUpdate each feature</title>
+
+        <para><itemizedlist>
+            <listitem>
+              "Delete" : delete the feature if it has been removed.
+            </listitem>
+
+            <listitem>
+              "CheckId" : check that the id for the old and new feature match.
+            </listitem>
+
+            <listitem>
+              "TransformGeometry" : assure the geometry is transformed to layer coordinate space.
+            </listitem>
+
+            <listitem>
+              "Create" : handle the creation of a new feature.
+            </listitem>
+
+            <listitem>
+              "Update" : update the feature.
+            </listitem>
+
+            <listitem>
+              "UpdateSave" : save it back to the data store.
+            </listitem>
+
+            <listitem>
+              "UpdateFeature" : and assure the feature itself reflects the state from the database.
+            </listitem>
+          </itemizedlist></para>
+      </section>
+
+      <section>
+        <title>getFeatures()</title>
+
+        <para><itemizedlist>
+            <listitem>
+              "LayerFilter" : calculate the correct filter based on security and layer extent.
+            </listitem>
+
+            <listitem>
+              "GetFeaturesStyle" : get the styles which are relevant for the features.
+            </listitem>
+
+            <listitem>
+              "GetFeatures" : fetch and fill the features.
+            </listitem>
+          </itemizedlist></para>
+      </section>
+
+      <section>
+        <title>getBounds()</title>
+
+        <para><itemizedlist>
+            <listitem>
+              "LayerFilter" : calculate the correct filter based on security and layer extent.
+            </listitem>
+
+            <listitem>
+              "GetBounds" : calculate the bounds for the features which comply with the filter.
+            </listitem>
+          </itemizedlist></para>
+      </section>
+
+      <section>
+        <title>getAttributes()</title>
+
+        <para><itemizedlist>
+            <listitem>
+              "LayerFilter" : calculate the correct filter based on security and layer extent.
+            </listitem>
+
+            <listitem>
+              "GetAttributes" : get the attributes for the filtered features.
+            </listitem>
+          </itemizedlist></para>
+      </section>
+
+      <section>
+        <title>getTile()</title>
+
+        <para><itemizedlist>
+            <listitem>
+              "TileFilter" : calculate the correct filter based on security and tile extent.
+            </listitem>
+
+            <listitem>
+              "GetFeatures" : fetch and fill the features.
+            </listitem>
+
+            <listitem>
+              "TileTransform" : transform the tile to the requested coordinate reference system.
+            </listitem>
+
+            <listitem>
+              "GetStringContent" : render the features to the requested string content.
+            </listitem>
+          </itemizedlist></para>
+      </section>
     </section>
   </chapter>
 </part>
