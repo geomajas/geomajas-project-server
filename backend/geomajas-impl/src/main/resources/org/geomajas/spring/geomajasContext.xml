@@ -238,12 +238,24 @@ PROJCS["Google Mercator",
 		<property name="pipelineName"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_SAVE_OR_UPDATE"/></property>
 		<property name="pipeline">
 			<list>
+				<bean class="org.geomajas.service.pipeline.PipelineHook">
+					<property name="id" value="preEqualSize"/>
+				</bean>
 				<bean class="org.geomajas.internal.layer.vector.FeatureListEqualSizeStep">
 					<property name="id" value="FeatureListEqualSizeStep"/>
+				</bean>
+				<bean class="org.geomajas.service.pipeline.PipelineHook">
+					<property name="id" value="postEqualSize"/>
+				</bean>
+				<bean class="org.geomajas.service.pipeline.PipelineHook">
+					<property name="id" value="preSaveOrUpdate"/>
 				</bean>
 				<bean class="org.geomajas.internal.layer.vector.SaveOrUpdateEachStep">
 					<property name="id" value="SaveOrUpdateEachStep"/>
 					<property name="pipelineName"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_SAVE_OR_UPDATE_ONE"/></property>
+				</bean>
+				<bean class="org.geomajas.service.pipeline.PipelineHook">
+					<property name="id" value="postSaveOrUpdate"/>
 				</bean>
 			</list>
 		</property>
@@ -253,26 +265,68 @@ PROJCS["Google Mercator",
 		<property name="pipelineName"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_SAVE_OR_UPDATE_ONE"/></property>
 		<property name="pipeline">
 			<list>
+				<bean class="org.geomajas.service.pipeline.PipelineHook">
+					<property name="id" value="preDelete"/>
+				</bean>
 				<bean class="org.geomajas.internal.layer.vector.SaveOrUpdateDeleteStep">
 					<property name="id" value="SaveOrUpdateDeleteStep"/>
+				</bean>
+				<bean class="org.geomajas.service.pipeline.PipelineHook">
+					<property name="id" value="postDelete"/>
+				</bean>
+				<bean class="org.geomajas.service.pipeline.PipelineHook">
+					<property name="id" value="preCheckId"/>
 				</bean>
 				<bean class="org.geomajas.internal.layer.vector.SaveOrUpdateCheckIdStep">
 					<property name="id" value="SaveOrUpdateCheckIdStep"/>
 				</bean>
+				<bean class="org.geomajas.service.pipeline.PipelineHook">
+					<property name="id" value="postCheckId"/>
+				</bean>
+				<bean class="org.geomajas.service.pipeline.PipelineHook">
+					<property name="id" value="preTransformGeometry"/>
+				</bean>
 				<bean class="org.geomajas.internal.layer.vector.FeatureTransformGeometryStep">
 					<property name="id" value="FeatureTransformGeometryStep"/>
+				</bean>
+				<bean class="org.geomajas.service.pipeline.PipelineHook">
+					<property name="id" value="postTransformGeometry"/>
+				</bean>
+				<bean class="org.geomajas.service.pipeline.PipelineHook">
+					<property name="id" value="preCreate"/>
 				</bean>
 				<bean class="org.geomajas.internal.layer.vector.SaveOrUpdateCreateStep">
 					<property name="id" value="SaveOrUpdateCreateStep"/>
 				</bean>
+				<bean class="org.geomajas.service.pipeline.PipelineHook">
+					<property name="id" value="postCreate"/>
+				</bean>
+				<bean class="org.geomajas.service.pipeline.PipelineHook">
+					<property name="id" value="preUpdate"/>
+				</bean>
 				<bean class="org.geomajas.internal.layer.vector.SaveOrUpdateUpdateStep">
 					<property name="id" value="SaveOrUpdateUpdateStep"/>
 				</bean>
+				<bean class="org.geomajas.service.pipeline.PipelineHook">
+					<property name="id" value="postUpdate"/>
+				</bean>
+				<bean class="org.geomajas.service.pipeline.PipelineHook">
+					<property name="id" value="preUpdateSave"/>
+				</bean>
 				<bean class="org.geomajas.internal.layer.vector.SaveOrUpdateSaveStep">
-					<property name="id" value="SaveOrUpdateUpdateStep"/>
+					<property name="id" value="SaveOrUpdateUpdateSaveStep"/>
+				</bean>
+				<bean class="org.geomajas.service.pipeline.PipelineHook">
+					<property name="id" value="postUpdateSave"/>
+				</bean>
+				<bean class="org.geomajas.service.pipeline.PipelineHook">
+					<property name="id" value="preUpdateFeatures"/>
 				</bean>
 				<bean class="org.geomajas.internal.layer.vector.UpdateFeatureStep">
 					<property name="id" value="UpdateFeatureStep"/>
+				</bean>
+				<bean class="org.geomajas.service.pipeline.PipelineHook">
+					<property name="id" value="postUpdateFeatures"/>
 				</bean>
 			</list>
 		</property>
@@ -282,14 +336,32 @@ PROJCS["Google Mercator",
 		<property name="pipelineName"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_GET_FEATURES"/></property>
 		<property name="pipeline">
 			<list>
+				<bean class="org.geomajas.service.pipeline.PipelineHook">
+					<property name="id" value="preLayerFilter"/>
+				</bean>
 				<bean class="org.geomajas.internal.layer.vector.LayerFilterStep">
 					<property name="id" value="LayerFilterStep"/>
+				</bean>
+				<bean class="org.geomajas.service.pipeline.PipelineHook">
+					<property name="id" value="postLayerFilter"/>
+				</bean>
+				<bean class="org.geomajas.service.pipeline.PipelineHook">
+					<property name="id" value="preGetFeaturesStyle"/>
 				</bean>
 				<bean class="org.geomajas.internal.layer.vector.GetFeaturesStyleStep">
 					<property name="id" value="GetFeaturesStyleStep"/>
 				</bean>
+				<bean class="org.geomajas.service.pipeline.PipelineHook">
+					<property name="id" value="postGetFeaturesStyle"/>
+				</bean>
+				<bean class="org.geomajas.service.pipeline.PipelineHook">
+					<property name="id" value="preGetFeatures"/>
+				</bean>
 				<bean class="org.geomajas.internal.layer.vector.GetFeaturesEachStep">
 					<property name="id" value="GetFeaturesEachStep"/>
+				</bean>
+				<bean class="org.geomajas.service.pipeline.PipelineHook">
+					<property name="id" value="postGetFeatures"/>
 				</bean>
 			</list>
 		</property>
@@ -299,11 +371,23 @@ PROJCS["Google Mercator",
 		<property name="pipelineName"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_GET_BOUNDS"/></property>
 		<property name="pipeline">
 			<list>
+				<bean class="org.geomajas.service.pipeline.PipelineHook">
+					<property name="id" value="preLayerFilter"/>
+				</bean>
 				<bean class="org.geomajas.internal.layer.vector.LayerFilterStep">
 					<property name="id" value="LayerFilterStep"/>
 				</bean>
+				<bean class="org.geomajas.service.pipeline.PipelineHook">
+					<property name="id" value="postLayerFilter"/>
+				</bean>
+				<bean class="org.geomajas.service.pipeline.PipelineHook">
+					<property name="id" value="preGetBounds"/>
+				</bean>
 				<bean class="org.geomajas.internal.layer.vector.GetBoundsStep">
 					<property name="id" value="GetBoundsStep"/>
+				</bean>
+				<bean class="org.geomajas.service.pipeline.PipelineHook">
+					<property name="id" value="postGetBounds"/>
 				</bean>
 			</list>
 		</property>
@@ -314,11 +398,23 @@ PROJCS["Google Mercator",
 		<property name="pipelineName"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_GET_ATTRIBUTES"/></property>
 		<property name="pipeline">
 			<list>
+				<bean class="org.geomajas.service.pipeline.PipelineHook">
+					<property name="id" value="preLayerFilter"/>
+				</bean>
 				<bean class="org.geomajas.internal.layer.vector.LayerFilterStep">
 					<property name="id" value="LayerFilterStep"/>
 				</bean>
+				<bean class="org.geomajas.service.pipeline.PipelineHook">
+					<property name="id" value="postLayerFilter"/>
+				</bean>
+				<bean class="org.geomajas.service.pipeline.PipelineHook">
+					<property name="id" value="preGetAttributes"/>
+				</bean>
 				<bean class="org.geomajas.internal.layer.vector.GetAttributesStep">
 					<property name="id" value="GetAttributesStep"/>
+				</bean>
+				<bean class="org.geomajas.service.pipeline.PipelineHook">
+					<property name="id" value="postGetAttributes"/>
 				</bean>
 			</list>
 		</property>
@@ -328,17 +424,41 @@ PROJCS["Google Mercator",
 		<property name="pipelineName"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_GET_VECTOR_TILE"/></property>
 		<property name="pipeline">
 			<list>
+				<bean class="org.geomajas.service.pipeline.PipelineHook">
+					<property name="id" value="preTileFilter"/>
+				</bean>
 				<bean class="org.geomajas.internal.layer.vector.GetTileFilterStep">
 					<property name="id" value="GetTileFilterStep"/>
+				</bean>
+				<bean class="org.geomajas.service.pipeline.PipelineHook">
+					<property name="id" value="postTileFilter"/>
+				</bean>
+				<bean class="org.geomajas.service.pipeline.PipelineHook">
+					<property name="id" value="preGetFeatures"/>
 				</bean>
 				<bean class="org.geomajas.internal.layer.vector.GetTileGetFeaturesStep">
 					<property name="id" value="GetTileGetFeaturesStep"/>
 				</bean>
+				<bean class="org.geomajas.service.pipeline.PipelineHook">
+					<property name="id" value="postGetFeatures"/>
+				</bean>
+				<bean class="org.geomajas.service.pipeline.PipelineHook">
+					<property name="id" value="preTileTransform"/>
+				</bean>
 				<bean class="org.geomajas.internal.layer.vector.GetTileTransformStep">
 					<property name="id" value="GetTileTransformStep"/>
 				</bean>
+				<bean class="org.geomajas.service.pipeline.PipelineHook">
+					<property name="id" value="postTileTransform"/>
+				</bean>
+				<bean class="org.geomajas.service.pipeline.PipelineHook">
+					<property name="id" value="preGetStringContent"/>
+				</bean>
 				<bean class="org.geomajas.internal.layer.vector.GetTileStringContentStep">
 					<property name="id" value="GetTileStringContentStep"/>
+				</bean>
+				<bean class="org.geomajas.service.pipeline.PipelineHook">
+					<property name="id" value="postGetStringContent"/>
 				</bean>
 			</list>
 		</property>
