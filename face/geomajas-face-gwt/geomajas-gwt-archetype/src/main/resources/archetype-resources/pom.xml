@@ -22,10 +22,21 @@
 		</dependencies>
 	</dependencyManagement>
 	<dependencies>
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+		</dependency>
+
 		<!-- Geomajas dependencies -->
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-gwt-client</artifactId>
+			<version>1.7.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-gwt-client</artifactId>
+			<scope>sources</scope>
 			<version>1.7.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
@@ -38,6 +49,13 @@
 			<!-- only mentioned to assure 1.7.0-SNAPSHOT back-end is used , should be removed -->
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-api</artifactId>
+			<version>1.7.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<!-- only mentioned to assure 1.7.0-SNAPSHOT back-end is used , should be removed -->
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-api</artifactId>
+			<scope>sources</scope>
 			<version>1.7.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>
@@ -61,7 +79,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-layer-openstreetmap</artifactId>
+			<artifactId>geomajas-layer-wms</artifactId>
 			<version>1.7.0-SNAPSHOT</version>
 		</dependency>
 		<dependency>

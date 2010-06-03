@@ -54,16 +54,16 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 				<property name="fillOpacity" value=".5" />
 			</bean>
 		</property>
-		<property name="crs" value="EPSG:900913" />
+		<property name="crs" value="EPSG:4326" />
 		<property name="scaleBarEnabled" value="true" />
 		<property name="panButtonsEnabled" value="true" />
-		<property name="maximumScale" value="9.5" />
+		<property name="maximumScale" value="100000" />
 		<property name="initialBounds">
 			<bean class="org.geomajas.geometry.Bbox">
-				<property name="x" value="506356" />
-				<property name="y" value="6588779" />
-				<property name="width" value="330" />
-				<property name="height" value="260" />
+				<property name="x" value="-180" />
+				<property name="y" value="-90" />
+				<property name="width" value="360" />
+				<property name="height" value="180" />
 			</bean>
 		</property>
 		<property name="layers">
@@ -104,8 +104,8 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 						<property name="label" value="Layers" />
 						<property name="layers">
 							<list>
-								<ref bean="osmLayer" />
-								<ref bean="roadsLayer" />
+								<ref bean="wmsLayer" />
+								<ref bean="countries110mLayer" />
 							</list>
 						</property>
 						<property name="expanded" value="true" />
@@ -136,47 +136,47 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 				<property name="fillOpacity" value=".5" />
 			</bean>
 		</property>
-		<property name="crs" value="EPSG:900913" />
-		<property name="scaleBarEnabled" value="false" />
-		<property name="panButtonsEnabled" value="false" />
-		<property name="maximumScale" value="9.5" />
+		<property name="crs" value="EPSG:4326" />
+		<property name="scaleBarEnabled" value="true" />
+		<property name="panButtonsEnabled" value="true" />
+		<property name="maximumScale" value="100000" />
 		<property name="initialBounds">
 			<bean class="org.geomajas.geometry.Bbox">
-				<property name="x" value="505800" />
-				<property name="y" value="6588300" />
-				<property name="width" value="1500" />
-				<property name="height" value="1000" />
+				<property name="x" value="-180" />
+				<property name="y" value="-90" />
+				<property name="width" value="360" />
+				<property name="height" value="180" />
 			</bean>
 		</property>
 		<property name="layers">
 			<list>
-				<ref bean="osmLayer" />
+				<ref bean="wmsLayer" />
 			</list>
 		</property>
 	</bean>
 
-	<bean class="org.geomajas.configuration.client.ClientRasterLayerInfo" id="osmLayer">
-		<property name="serverLayerId" value="osm" />
-		<property name="label" value="OpenStreetMap (raster)" />
+	<bean class="org.geomajas.configuration.client.ClientRasterLayerInfo" id="wmsLayer">
+		<property name="serverLayerId" value="bluemarble" />
+		<property name="label" value="Blue marble WMS (raster)" />
 		<property name="visible" value="true" />
 		<property name="viewScaleMin" value="0" />
-		<property name="viewScaleMax" value="50" />
-		<property name="style" value="1" />
+		<property name="viewScaleMax" value="100000" />
+		<property name="style" value="0.8" />
 	</bean>
 
-	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="roadsLayer">
-		<property name="serverLayerId" value="roads" />
-		<property name="label" value="Roads (editable - linestring)" />
-		<property name="visible" value="true" />
-		<property name="viewScaleMin" value="0" />
-		<property name="viewScaleMax" value="10" />
-		<property name="namedStyleInfo" ref="roadsStyleInfo" />
+	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="countries110mLayer">
+		<property name="serverLayerId" value="countries110m" />
+	  	<property name="label" value="Countries"/>
+		<property name="visible" value="true"/>
+		<property name="viewScaleMin" value="0"/>
+		<property name="viewScaleMax" value="100000"/>
+		<property name="namedStyleInfo" ref="countries110mStyleInfo" />
 		<property name="snappingRules">
 			<list>
 				<bean class="org.geomajas.configuration.SnappingRuleInfo">
-					<property name="distance" value="10" />
+					<property name="distance" value="10000" />
 					<property name="type" value="NEAREST_POINT" />
-					<property name="layerId" value="roadsLayer" />
+					<property name="layerId" value="countries110mLayer" />
 				</bean>
 			</list>
 		</property>
