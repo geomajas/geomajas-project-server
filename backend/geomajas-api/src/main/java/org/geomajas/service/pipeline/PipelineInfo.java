@@ -27,6 +27,7 @@ import org.geomajas.global.Api;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Configuration info for a pipeline service.
@@ -47,6 +48,8 @@ public class PipelineInfo<RESPONSE> {
 	private PipelineInfo delegatePipeline;
 
 	private List<PipelineStep<RESPONSE>> pipeline;
+
+	private Map<String, PipelineStep<RESPONSE>> extensions;
 	
 	/**
 	 * Get the name of the pipeline for which this is an implementation.
@@ -126,5 +129,23 @@ public class PipelineInfo<RESPONSE> {
 	 */
 	public void setPipeline(List<PipelineStep<RESPONSE>> pipeline) {
 		this.pipeline = pipeline;
+	}
+
+	/**
+	 * Get set of steps which need to be weaved at the extension hooks.
+	 *
+	 * @return map of hook name and pipeline step
+	 */
+	public Map<String, PipelineStep<RESPONSE>> getExtensions() {
+		return extensions;
+	}
+
+	/**
+	 * Set the set of steps which need to be weaved at the extension hooks.
+	 *
+	 * @param extensions map of hook name and pipeline step
+	 */
+	public void setExtensions(Map<String, PipelineStep<RESPONSE>> extensions) {
+		this.extensions = extensions;
 	}
 }

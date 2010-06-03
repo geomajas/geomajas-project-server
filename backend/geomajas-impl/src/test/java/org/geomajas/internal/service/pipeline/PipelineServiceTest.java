@@ -97,6 +97,35 @@ public class PipelineServiceTest {
 
 		pipelineInfo = pipelineService.getPipeline("pipelineTest", "delegate");
 		Assert.assertNotNull(pipelineInfo);
-		Assert.assertEquals("stop", pipelineInfo.getLayerId());
+
+		StringAttribute response = new StringAttribute("bla");
+		PipelineContext context = pipelineService.createContext();
+		context.put("start", "stop-");
+		pipelineService.execute(pipelineInfo, context, response);
+		Assert.assertEquals("stop-s1-STOP", response.getValue());
+	}
+
+	@Test
+	public void extensionTest() throws Exception {
+		StringAttribute response = new StringAttribute("bla");
+
+		PipelineContext context = pipelineService.createContext();
+		context.put("start", "start");
+		pipelineService.execute("hookedTest", "base", context, response);
+		Assert.assertEquals("starts1s2", response.getValue());
+
+		context.put("start", "start");
+		pipelineService.execute("hookedTest", "delegate2", context, response);
+		Assert.assertEquals("starts1pps2ps2s2", response.getValue());
+
+		context.put("start", "start");
+		pipelineService.execute("hookedTest", "delegate", context, response);
+		Assert.assertEquals("starts1ps2s2", response.getValue());
+
+		try {
+			pipelineService.getPipeline("hookedTest", "failed");
+		} catch (GeomajasException ge) {
+			Assert.assertEquals(ExceptionCode.PIPELINE_UNSATISFIED_EXTENSION, ge.getExceptionCode());
+		}
 	}
 }

@@ -105,4 +105,74 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 		<property name="delegatePipeline" ref="inter" />
 	</bean>
 
+	<bean id="hooked" class="org.geomajas.service.pipeline.PipelineInfo">
+		<property name="pipelineName" value="hookedTest"/>
+		<property name="layerId" value="base"/>
+		<property name="pipeline">
+			<list>
+				<bean class="org.geomajas.service.pipeline.PipelineHook">
+					<property name="id" value="PreStep1"/>
+				</bean>
+				<bean class="org.geomajas.internal.service.pipeline.Step1">
+					<property name="id" value="s1"/>
+				</bean>
+				<bean class="org.geomajas.service.pipeline.PipelineHook">
+					<property name="id" value="PostStep1"/>
+				</bean>
+				<bean class="org.geomajas.service.pipeline.PipelineHook">
+					<property name="id" value="PreStep2"/>
+				</bean>
+				<bean class="org.geomajas.internal.service.pipeline.Step2">
+					<property name="id" value="s2"/>
+				</bean>
+				<bean class="org.geomajas.service.pipeline.PipelineHook">
+					<property name="id" value="PostStep2"/>
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="hooked2" class="org.geomajas.service.pipeline.PipelineInfo">
+		<property name="pipelineName" value="hookedTest"/>
+		<property name="layerId" value="delegate"/>
+		<property name="delegatePipeline" ref="hooked" />
+		<property name="extensions">
+			<map>
+				<entry key="PreStep2">
+					<bean class="org.geomajas.internal.service.pipeline.Step2">
+						<property name="id" value="ps2"/>
+					</bean>
+				</entry>
+			</map>
+		</property>
+	</bean>
+	<bean class="org.geomajas.service.pipeline.PipelineInfo">
+		<property name="pipelineName" value="hookedTest"/>
+		<property name="layerId" value="delegate2"/>
+		<property name="delegatePipeline" ref="hooked2" />
+		<property name="extensions">
+			<map>
+				<entry key="PreStep2">
+					<bean class="org.geomajas.internal.service.pipeline.Step2">
+						<property name="id" value="pps2"/>
+					</bean>
+				</entry>
+			</map>
+		</property>
+	</bean>
+	<bean class="org.geomajas.service.pipeline.PipelineInfo">
+		<property name="pipelineName" value="hookedTest"/>
+		<property name="layerId" value="failed"/>
+		<property name="delegatePipeline" ref="hooked" />
+		<property name="extensions">
+			<map>
+				<entry key="Oops">
+					<bean class="org.geomajas.internal.service.pipeline.Step2">
+						<property name="id" value="os2"/>
+					</bean>
+				</entry>
+			</map>
+		</property>
+	</bean>
+
 </beans>
