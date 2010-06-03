@@ -179,6 +179,15 @@
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>2.5</version>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-release-plugin</artifactId>
+				<version>2.0</version>
+				<configuration>
+					<tagBase>https://svn.geomajas.org/majas/tags/build-tools/geomajas-dep</tagBase>
+					<branchBase>https://svn.geomajas.org/majas/branches/build-tools/geomajas-dep</branchBase>
+				</configuration>
+			</plugin>
 		</plugins>
 		<pluginManagement>
 			<plugins>
@@ -367,6 +376,11 @@
 				<version>1.0</version>
 			</dependency>
 			<dependency>
+				<groupId>org.hibernatespatial</groupId>
+				<artifactId>hibernate-spatial-postgis</artifactId>
+				<version>1.0</version>
+			</dependency>
+			<dependency>
 				<groupId>org.hibernate</groupId>
 				<artifactId>hibernate-core</artifactId>
 				<version>3.5.2-Final</version>
@@ -386,6 +400,17 @@
 				<artifactId>hibernate-validator</artifactId>
 				<version>4.0.2.GA</version>
 			</dependency>
+			<dependency>
+				<groupId>org.postgis</groupId>
+				<artifactId>postgis-jdbc</artifactId>
+				<version>1.1.6</version>
+			</dependency>
+			<dependency>
+				<groupId>postgresql</groupId>
+				<artifactId>postgresql</artifactId>
+				<version>8.1-407.jdbc3</version>
+			</dependency>
+			
 
 			<dependency>
 				<groupId>xml-apis</groupId>
@@ -452,7 +477,7 @@
 						<artifactId>postgresql</artifactId>
 					</exclusion>
 				</exclusions>
-			</dependency>
+			</dependency>			
 			<dependency>
 				<groupId>org.geotools</groupId>
 				<artifactId>gt-shapefile</artifactId>
