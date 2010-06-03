@@ -115,9 +115,39 @@ public class Bbox {
 	// Class specific functions:
 	// -------------------------------------------------------------------------
 
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		long temp;
+		temp = Double.doubleToLongBits(height);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(width);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(x);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		temp = Double.doubleToLongBits(y);
+		result = prime * result + (int) (temp ^ (temp >>> 32));
+		return result;
+	}
+
 	/** Returns true if x, y, width and height are equals. */
-	public boolean equals(Bbox other) {
-		return x == other.x && y == other.y && width == other.width && height == other.height;
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Bbox other = (Bbox) obj;
+		if (Double.doubleToLongBits(height) != Double.doubleToLongBits(other.height))
+			return false;
+		if (Double.doubleToLongBits(width) != Double.doubleToLongBits(other.width))
+			return false;
+		if (Double.doubleToLongBits(x) != Double.doubleToLongBits(other.x))
+			return false;
+		if (Double.doubleToLongBits(y) != Double.doubleToLongBits(other.y))
+			return false;
+		return true;
 	}
 
 	/**
@@ -403,5 +433,4 @@ public class Bbox {
 		double y = t.getYx() * coordinate.getY() + t.getYy() * coordinate.getY() + t.getDy();
 		return new Coordinate(x, y);
 	}
-
 }
