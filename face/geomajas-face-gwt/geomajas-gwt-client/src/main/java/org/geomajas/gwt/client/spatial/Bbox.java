@@ -132,21 +132,28 @@ public class Bbox {
 
 	/** Returns true if x, y, width and height are equals. */
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		Bbox other = (Bbox) obj;
-		if (Double.doubleToLongBits(height) != Double.doubleToLongBits(other.height))
+		if (Double.doubleToLongBits(height) != Double.doubleToLongBits(other.height)) {
 			return false;
-		if (Double.doubleToLongBits(width) != Double.doubleToLongBits(other.width))
+		}
+		if (Double.doubleToLongBits(width) != Double.doubleToLongBits(other.width)) {
 			return false;
-		if (Double.doubleToLongBits(x) != Double.doubleToLongBits(other.x))
+		}
+		if (Double.doubleToLongBits(x) != Double.doubleToLongBits(other.x)) {
 			return false;
-		if (Double.doubleToLongBits(y) != Double.doubleToLongBits(other.y))
+		}
+		if (Double.doubleToLongBits(y) != Double.doubleToLongBits(other.y)) {
 			return false;
+		}
 		return true;
 	}
 
