@@ -101,12 +101,16 @@ public class FeaturePainter implements Painter {
 				context.getVectorContext().drawLine(feature, name, (LineString) geometry, style);
 			} else if (geometry instanceof MultiLineString) {
 				MultiLineString m = (MultiLineString) geometry;
-				context.getVectorContext().drawLine(feature, name, (LineString) m.getGeometryN(0), style);
+				for (int i = 0; i < m.getNumGeometries(); i++) {
+					context.getVectorContext().drawLine(feature, name + "." + i, (LineString) m.getGeometryN(i), style);
+				}
 			} else if (geometry instanceof Polygon) {
 				context.getVectorContext().drawPolygon(feature, name, (Polygon) geometry, style);
 			} else if (geometry instanceof MultiPolygon) {
 				MultiPolygon m = (MultiPolygon) geometry;
-				context.getVectorContext().drawPolygon(feature, name, (Polygon) m.getGeometryN(0), style);
+				for (int i = 0; i < m.getNumGeometries(); i++) {
+					context.getVectorContext().drawPolygon(feature, name + "." + i, (Polygon) m.getGeometryN(i), style);
+				}
 			} else if (geometry instanceof Point) {
 				if (hasImageSymbol(feature)) {
 					context.getVectorContext().drawSymbol(feature, name, geometry.getCoordinate(), null,
