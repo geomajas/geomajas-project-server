@@ -316,7 +316,7 @@
         <emphasis>pipeline step</emphasis>s.</para>
 
         <para>Some of the services which are implemented as
-        <code>PipelineService</code> include</para>
+        <code>PipelineService</code> include:</para>
 
         <para><itemizedlist>
             <listitem>
@@ -328,7 +328,7 @@
             <listitem>
               <para><code>VectorLayerService</code>: methods for accessing a
               vector layer, for example for getting the features or obtaining
-              vector tiles</para>
+              vector tiles.</para>
             </listitem>
           </itemizedlist>Pipelines can nest. One of the steps in the default
         "vectorLayer.saveOrUpdate" pipeline will loop over all features to be
@@ -368,6 +368,14 @@
               during the pipeline's execution.</para>
             </listitem>
           </itemizedlist></para>
+
+        <para>Pipelines can be extended. When a pipeline is defined, it is
+        possible to include hooks for extensions. These are special no-op
+        steps. When a pipeline is defined, your can either define all the
+        pipeline steps, or refer to a delegate pipeline combined with a map of
+        extension steps. The pipeline will then be based on the delegate
+        pipeline with the extensions steps added after the hooks with matching
+        names.</para>
       </section>
 
       <section>
