@@ -45,23 +45,23 @@ public class BboxTest {
 	public void testUnion() {
 		// Result should equal empty:
 		Bbox union = empty.union(empty);
-		Assert.assertTrue(union.equals(empty));
+		Assert.assertTrue(union.equals(empty, 0.00001));
 
 		// Result should equal origin:
 		union = empty.union(origin);
-		Assert.assertTrue(union.equals(origin));
+		Assert.assertTrue(union.equals(origin, 0.00001));
 
 		// Result should equal origin:
 		union = origin.union(empty);
-		Assert.assertTrue(union.equals(origin));
+		Assert.assertTrue(union.equals(origin, 0.00001));
 
 		// Result should equal movedEmpty:
 		union = movedEmpty.union(empty);
-		Assert.assertTrue(union.equals(movedEmpty));
+		Assert.assertTrue(union.equals(movedEmpty, 0.00001));
 
 		// Result should equal movedEmpty:
 		union = empty.union(movedEmpty);
-		Assert.assertTrue(union.equals(movedEmpty));
+		Assert.assertTrue(union.equals(movedEmpty, 0.00001));
 
 		union = movedEmpty.union(origin);
 		Assert.assertEquals(union.getX(), -10.0);
@@ -100,13 +100,13 @@ public class BboxTest {
 	@Test
 	public void testIntersection() {
 		Bbox intersection = empty.intersection(empty);
-		Assert.assertTrue(intersection.equals(empty));
+		Assert.assertTrue(intersection.equals(empty, 0.00001));
 
 		intersection = empty.intersection(origin);
-		Assert.assertTrue(intersection.equals(empty));
+		Assert.assertTrue(intersection.equals(empty, 0.00001));
 
 		intersection = origin.intersection(empty);
-		Assert.assertTrue(intersection.equals(empty));
+		Assert.assertTrue(intersection.equals(empty, 0.00001));
 
 		intersection = empty.intersection(movedEmpty);
 		Assert.assertNull(intersection);

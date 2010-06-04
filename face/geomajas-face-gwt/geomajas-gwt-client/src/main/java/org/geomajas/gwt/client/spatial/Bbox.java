@@ -115,44 +115,6 @@ public class Bbox {
 	// Class specific functions:
 	// -------------------------------------------------------------------------
 
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-
-		result = prime * result + (int) ((long) height ^ ((long) height >>> 32));
-		result = prime * result + (int) ((long) width ^ ((long) width >>> 32));
-		result = prime * result + (int) ((long) x ^ ((long) x >>> 32));
-		result = prime * result + (int) ((long) y ^ ((long) y >>> 32));
-		return result;
-	}
-
-	/** Returns true if x, y, width and height are equals. */
-	public boolean equals(Object obj) {
-		if (this == obj) {
-			return true;
-		}
-		if (obj == null) {
-			return false;
-		}
-		if (getClass() != obj.getClass()) {
-			return false;
-		}
-		Bbox other = (Bbox) obj;
-		if (Math.abs(height - other.height) > 0.00000001) {
-			return false;
-		}
-		if (Math.abs(width - other.width) > 0.00000001) {
-			return false;
-		}
-		if (Math.abs(x - other.x) > 0.00000001) {
-			return false;
-		}
-		if (Math.abs(y - other.y) > 0.00000001) {
-			return false;
-		}
-		return true;
-	}
-
 	/**
 	 * Create a clone of the object.
 	 */
