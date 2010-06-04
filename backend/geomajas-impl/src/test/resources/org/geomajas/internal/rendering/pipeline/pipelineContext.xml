@@ -40,6 +40,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 		</property>
 	</bean>
 
+	<!-- @extract-start SimplePipeline, Simple pipeline definition -->
 	<bean class="org.geomajas.service.pipeline.PipelineInfo">
 		<property name="pipelineName" value="pipelineTest"/>
 		<property name="pipeline">
@@ -56,6 +57,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 			</list>
 		</property>
 	</bean>
+	<!-- @extract-end -->
 
 	<bean class="org.geomajas.service.pipeline.PipelineInfo">
 		<property name="pipelineName" value="pipelineTest"/>
@@ -93,11 +95,13 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 		</property>
 	</bean>
 
+	<!-- @extract-start PipelineDelegate, Layer specific pipeline which refers to a delegate -->
 	<bean id="inter" class="org.geomajas.service.pipeline.PipelineInfo">
 		<property name="pipelineName" value="pipelineTest"/>
 		<property name="layerId" value="inter"/>
 		<property name="delegatePipeline" ref="stop" />
 	</bean>
+	<!-- @extract-end -->
 
 	<bean class="org.geomajas.service.pipeline.PipelineInfo">
 		<property name="pipelineName" value="pipelineTest"/>
@@ -132,6 +136,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 		</property>
 	</bean>
 
+	<!-- @extract-start PipelineExtension, Extending a delegate pipeline -->
 	<bean id="hooked2" class="org.geomajas.service.pipeline.PipelineInfo">
 		<property name="pipelineName" value="hookedTest"/>
 		<property name="layerId" value="delegate"/>
@@ -146,6 +151,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 			</map>
 		</property>
 	</bean>
+	<!-- @extract-end -->
 	<bean class="org.geomajas.service.pipeline.PipelineInfo">
 		<property name="pipelineName" value="hookedTest"/>
 		<property name="layerId" value="delegate2"/>

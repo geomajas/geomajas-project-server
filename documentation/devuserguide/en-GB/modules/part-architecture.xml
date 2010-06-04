@@ -293,7 +293,7 @@
       response object is likely to contain a <code>Tile</code>.</para>
     </section>
 
-    <section>
+    <section id="arch-pipeline">
       <title>Pipelines</title>
 
       <figure>

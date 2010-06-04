@@ -26,7 +26,7 @@
 <part id="part-back-end">
   <title>back-end</title>
 
-  <chapter id="chapter-configuration">
+  <chapter id="backend-ch-plugins">
     <title>Plug-ins</title>
 
     <para>The primary function of the back-end is to act as a plug-in
@@ -109,7 +109,7 @@
       </itemizedlist></para>
   </chapter>
 
-  <chapter>
+  <chapter id="backend-ch-configuration">
     <title>Configuration</title>
 
     <para>Geomajas leverages the Spring framework for configuration.</para>
@@ -151,11 +151,12 @@
       define applications and maps, which are purely client-side concepts in
       the Geomajas architecture.</para>
 
-      <para>The back-end classes exist in the
-      <code>org.geomajas.configuration</code> package and have a class name
-      ending in "Info". These classes are actually used to represent the DTO
-      part of the back-end layers, thereby allowing to transfer information or
-      metadata of these layers to the client.</para>
+      <para>The back-end classes exist in the have a class name ending in
+      "Info" and are mostly found in the
+      <code>org.geomajas.configuration</code> package. These classes are
+      actually used to represent the DTO part of the back-end layers, thereby
+      allowing to transfer information or metadata of these layers to the
+      client.</para>
 
       <para>Configuration is done using the Spring Framework. We will give
       some notions here, but for a full introduction to Spring, please read
@@ -1209,7 +1210,7 @@
 
       <para>If you want to add extra coordinate reference systems, this can be
       done by defining them in the configuration. For example, Geomajas itself
-      already defines the "EPSG:900913" CRS (which one of the many codes for
+      already defines the "EPSG:900913" crs (which one of the many codes for
       the Mercator projection used by Google Maps and OpenStreetMap).</para>
 
       <xi:include href="../listing/CrsInfo.xml"
@@ -2751,7 +2752,8 @@
 
     <para>For the existing layers, the details about configuring you map to
     include that layer are included in the <link
-    linkend="chapter-configuration">configuration</link> section above.</para>
+    linkend="backend-ch-configuration">configuration</link> section
+    above.</para>
 
     <section>
       <title>Writing your own layer</title>
@@ -2809,7 +2811,7 @@
     </section>
   </chapter>
 
-  <chapter>
+  <chapter id="backend-ch-services">
     <title>Services</title>
 
     <para>TODO.....</para>
@@ -2873,146 +2875,180 @@
     </section>
   </chapter>
 
-  <chapter>
+  <chapter id="backend-ch-pipelines">
     <title>Pipelines</title>
 
-    <para>The default pipelines are detailed here. All the steps mentioned
-    here have a hook before and after the step to allow customization of the
-    pipeline. These hooks have the name of the step as mentioned here, with
-    either "pre" or "post" as prefix (note that these keys are case
-    dependent).</para>
+    <para>Pipelines are building blocks which are used in Geomajas to make
+    certain aspects highly extend- and customizable. For more details, see the
+    architecture <xref linkend="arch-pipeline" />.</para>
 
     <section>
-      <title>RasterLayerService</title>
+      <title>Configuration</title>
 
-      <section>
-        <title>getTiles()</title>
+      <para>A pipeline can be defined by specifying the pipeline name and the
+      pipeline steps.</para>
 
-        <para><itemizedlist>
-            <listitem>
-              "Get" : get the raster tile.
-            </listitem>
-          </itemizedlist></para>
-      </section>
+      <xi:include href="../listing/SimplePipeline.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+      <para>A pipeline can be layer specific and can refer to a delegate (bean
+      reference). The use of the delegate means that the pipeline definition
+      (list of steps) is copied from the delegate.</para>
+
+      <xi:include href="../listing/PipelineDelegate.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+      <para>When referring to the pipeline definition using a delegate, the
+      pipeline can also be extended by inserting additional steps at the
+      extension hooks. You can pass a map of "extensions" which are named
+      steps. When a extension hook of the name is found, that step will be
+      included in the pipeline just after the hook definition.</para>
+
+      <xi:include href="../listing/PipelineExtension.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
     </section>
 
     <section>
-      <title>VectorLayerService</title>
+      <title>Default pipelines</title>
+
+      <para>The default pipelines are detailed here. All the steps mentioned
+      here have a hook before and after the step to allow customization of the
+      pipeline. These hooks have the name of the step as mentioned here, with
+      either "pre" or "post" as prefix (note that these keys are case
+      dependent).</para>
 
       <section>
-        <title>saveOrUpdate()</title>
+        <title>RasterLayerService</title>
 
-        <para><itemizedlist>
-            <listitem>
-              "EqualSize" : verify that the list of old and new features match.
-            </listitem>
+        <section>
+          <title>getTiles()</title>
 
-            <listitem>
-              "SaveOrUpdate" : this handles the save or update for the individual features using the pipeline below.
-            </listitem>
-          </itemizedlist></para>
+          <para><itemizedlist>
+              <listitem>
+                "Get" : get the raster tile.
+              </listitem>
+            </itemizedlist></para>
+        </section>
       </section>
 
       <section>
-        <title>saveOrUpdate each feature</title>
+        <title>VectorLayerService</title>
 
-        <para><itemizedlist>
-            <listitem>
-              "Delete" : delete the feature if it has been removed.
-            </listitem>
+        <section>
+          <title>saveOrUpdate()</title>
 
-            <listitem>
-              "CheckId" : check that the id for the old and new feature match.
-            </listitem>
+          <para><itemizedlist>
+              <listitem>
+                "EqualSize" : verify that the list of old and new features match.
+              </listitem>
 
-            <listitem>
-              "TransformGeometry" : assure the geometry is transformed to layer coordinate space.
-            </listitem>
+              <listitem>
+                "SaveOrUpdate" : this handles the save or update for the individual features using the pipeline below.
+              </listitem>
+            </itemizedlist></para>
+        </section>
 
-            <listitem>
-              "Create" : handle the creation of a new feature.
-            </listitem>
+        <section>
+          <title>saveOrUpdate each feature</title>
 
-            <listitem>
-              "Update" : update the feature.
-            </listitem>
+          <para><itemizedlist>
+              <listitem>
+                "Delete" : delete the feature if it has been removed.
+              </listitem>
 
-            <listitem>
-              "UpdateSave" : save it back to the data store.
-            </listitem>
+              <listitem>
+                "CheckId" : check that the id for the old and new feature match.
+              </listitem>
 
-            <listitem>
-              "UpdateFeature" : and assure the feature itself reflects the state from the database.
-            </listitem>
-          </itemizedlist></para>
-      </section>
+              <listitem>
+                "TransformGeometry" : assure the geometry is transformed to layer coordinate space.
+              </listitem>
 
-      <section>
-        <title>getFeatures()</title>
+              <listitem>
+                "Create" : handle the creation of a new feature.
+              </listitem>
 
-        <para><itemizedlist>
-            <listitem>
-              "LayerFilter" : calculate the correct filter based on security and layer extent.
-            </listitem>
+              <listitem>
+                "Update" : update the feature.
+              </listitem>
 
-            <listitem>
-              "GetFeaturesStyle" : get the styles which are relevant for the features.
-            </listitem>
+              <listitem>
+                "UpdateSave" : save it back to the data store.
+              </listitem>
 
-            <listitem>
-              "GetFeatures" : fetch and fill the features.
-            </listitem>
-          </itemizedlist></para>
-      </section>
+              <listitem>
+                "UpdateFeature" : and assure the feature itself reflects the state from the database.
+              </listitem>
+            </itemizedlist></para>
+        </section>
 
-      <section>
-        <title>getBounds()</title>
+        <section>
+          <title>getFeatures()</title>
 
-        <para><itemizedlist>
-            <listitem>
-              "LayerFilter" : calculate the correct filter based on security and layer extent.
-            </listitem>
+          <para><itemizedlist>
+              <listitem>
+                "LayerFilter" : calculate the correct filter based on security and layer extent.
+              </listitem>
 
-            <listitem>
-              "GetBounds" : calculate the bounds for the features which comply with the filter.
-            </listitem>
-          </itemizedlist></para>
-      </section>
+              <listitem>
+                "GetFeaturesStyle" : get the styles which are relevant for the features.
+              </listitem>
 
-      <section>
-        <title>getAttributes()</title>
+              <listitem>
+                "GetFeatures" : fetch and fill the features.
+              </listitem>
+            </itemizedlist></para>
+        </section>
 
-        <para><itemizedlist>
-            <listitem>
-              "LayerFilter" : calculate the correct filter based on security and layer extent.
-            </listitem>
+        <section>
+          <title>getBounds()</title>
 
-            <listitem>
-              "GetAttributes" : get the attributes for the filtered features.
-            </listitem>
-          </itemizedlist></para>
-      </section>
+          <para><itemizedlist>
+              <listitem>
+                "LayerFilter" : calculate the correct filter based on security and layer extent.
+              </listitem>
 
-      <section>
-        <title>getTile()</title>
+              <listitem>
+                "GetBounds" : calculate the bounds for the features which comply with the filter.
+              </listitem>
+            </itemizedlist></para>
+        </section>
 
-        <para><itemizedlist>
-            <listitem>
-              "TileFilter" : calculate the correct filter based on security and tile extent.
-            </listitem>
+        <section>
+          <title>getAttributes()</title>
 
-            <listitem>
-              "GetFeatures" : fetch and fill the features.
-            </listitem>
+          <para><itemizedlist>
+              <listitem>
+                "LayerFilter" : calculate the correct filter based on security and layer extent.
+              </listitem>
 
-            <listitem>
-              "TileTransform" : transform the tile to the requested coordinate reference system.
-            </listitem>
+              <listitem>
+                "GetAttributes" : get the attributes for the filtered features.
+              </listitem>
+            </itemizedlist></para>
+        </section>
 
-            <listitem>
-              "GetStringContent" : render the features to the requested string content.
-            </listitem>
-          </itemizedlist></para>
+        <section>
+          <title>getTile()</title>
+
+          <para><itemizedlist>
+              <listitem>
+                "TileFilter" : calculate the correct filter based on security and tile extent.
+              </listitem>
+
+              <listitem>
+                "GetFeatures" : fetch and fill the features.
+              </listitem>
+
+              <listitem>
+                "TileTransform" : transform the tile to the requested coordinate reference system.
+              </listitem>
+
+              <listitem>
+                "GetStringContent" : render the features to the requested string content.
+              </listitem>
+            </itemizedlist></para>
+        </section>
       </section>
     </section>
   </chapter>

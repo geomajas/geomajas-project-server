@@ -31,7 +31,7 @@
 
     <section>
       <title>Migrating between Geomajas 1.6.0 and Geomajas (back-end)
-      1.8.0</title>
+      1.7.0</title>
 
       <para><itemizedlist>
           <listitem>
@@ -45,8 +45,17 @@
             to more correctly address the nature of the plug-in and and to
             avoid possible confusion with Spring's security stuff.
             Additionally the old module has been split in two, one part being
-            the back-end/configuration module, and another the gwt module.
-            </para>
+            the back-end/configuration module, and another the gwt
+            module.</para>
+          </listitem>
+
+          <listitem>
+            <para>Many of the layers contain a bug in the 1.6.0 version
+            assuming that injected services are fully initialised (and thus
+            usable) while building the application context. Because of changes
+            in the implementation of some services, these bugs become visible
+            when using the 1.7 backe-end. You have to update your layers as
+            well to 1.7+ to avoid these problems.</para>
           </listitem>
         </itemizedlist></para>
     </section>
