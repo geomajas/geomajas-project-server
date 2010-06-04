@@ -118,15 +118,11 @@ public class Bbox {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		long temp;
-		temp = Double.doubleToLongBits(height);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		temp = Double.doubleToLongBits(width);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		temp = Double.doubleToLongBits(x);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
-		temp = Double.doubleToLongBits(y);
-		result = prime * result + (int) (temp ^ (temp >>> 32));
+
+		result = prime * result + (int) ((long) height ^ ((long) height >>> 32));
+		result = prime * result + (int) ((long) width ^ ((long) width >>> 32));
+		result = prime * result + (int) ((long) x ^ ((long) x >>> 32));
+		result = prime * result + (int) ((long) y ^ ((long) y >>> 32));
 		return result;
 	}
 
@@ -142,16 +138,16 @@ public class Bbox {
 			return false;
 		}
 		Bbox other = (Bbox) obj;
-		if (Double.doubleToLongBits(height) != Double.doubleToLongBits(other.height)) {
+		if (Math.abs(height - other.height) > 0.00000001) {
 			return false;
 		}
-		if (Double.doubleToLongBits(width) != Double.doubleToLongBits(other.width)) {
+		if (Math.abs(width - other.width) > 0.00000001) {
 			return false;
 		}
-		if (Double.doubleToLongBits(x) != Double.doubleToLongBits(other.x)) {
+		if (Math.abs(x - other.x) > 0.00000001) {
 			return false;
 		}
-		if (Double.doubleToLongBits(y) != Double.doubleToLongBits(other.y)) {
+		if (Math.abs(y - other.y) > 0.00000001) {
 			return false;
 		}
 		return true;
