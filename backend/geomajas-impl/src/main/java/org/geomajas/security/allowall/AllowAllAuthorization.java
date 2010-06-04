@@ -23,6 +23,11 @@
 
 package org.geomajas.security.allowall;
 
+import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.PrecisionModel;
+import org.geomajas.security.AreaAuthorization;
 import org.geomajas.security.BaseAuthorization;
 
 /**
@@ -30,7 +35,9 @@ import org.geomajas.security.BaseAuthorization;
  *
  * @author Joachim Van der Auwera
  */
-public class AllowAllAuthorization implements BaseAuthorization {
+public class AllowAllAuthorization implements BaseAuthorization, AreaAuthorization {
+
+	private Geometry biggestGeometry;
 
 	public String getId() {
 		return "AllowAll";
@@ -58,5 +65,53 @@ public class AllowAllAuthorization implements BaseAuthorization {
 
 	public boolean isLayerDeleteAuthorized(String layerId) {
 		return true;
+	}
+
+	protected Geometry getAuthorizedArea(String layerId) {
+		if (null == biggestGeometry) {
+			// build Geometry which covers biggest possible area
+			Envelope maxBounds = new Envelope(-Double.MAX_VALUE, Double.MAX_VALUE,
+					-Double.MAX_VALUE, Double.MAX_VALUE);
+			PrecisionModel precisionModel = new PrecisionModel(PrecisionModel.FLOATING);
+			GeometryFactory geometryFactory = new GeometryFactory(precisionModel, 0);
+			biggestGeometry = geometryFactory.toGeometry(maxBounds);
+		}
+		return biggestGeometry;
+	}
+
+	protected boolean isPartlyAuthorizedSufficient(String layerId) {
+		return true;
+	}
+
+	public Geometry getVisibleArea(String layerId) {
+		return getAuthorizedArea(layerId);
+	}
+
+	public boolean isPartlyVisibleSufficient(String layerId) {
+		return isPartlyAuthorizedSufficient(layerId);
+	}
+
+	public Geometry getUpdateAuthorizedArea(String layerId) {
+		return getAuthorizedArea(layerId);
+	}
+
+	public boolean isPartlyUpdateAuthorizedSufficient(String layerId) {
+		return isPartlyAuthorizedSufficient(layerId);
+	}
+
+	public Geometry getCreateAuthorizedArea(String layerId) {
+		return getAuthorizedArea(layerId);
+	}
+
+	public boolean isPartlyCreateAuthorizedSufficient(String layerId) {
+		return isPartlyAuthorizedSufficient(layerId);
+	}
+
+	public Geometry getDeleteAuthorizedArea(String layerId) {
+		return getAuthorizedArea(layerId);
+	}
+
+	public boolean isPartlyDeleteAuthorizedSufficient(String layerId) {
+		return isPartlyAuthorizedSufficient(layerId);
 	}
 }
