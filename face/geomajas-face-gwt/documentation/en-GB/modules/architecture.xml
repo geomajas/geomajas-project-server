@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
-"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd" [
-<!ENTITY __GraphicsController__g9y364fq SYSTEM "../listing/GraphicsController.xml">
-<!ENTITY __AbstractGraphicsController__g9y364fq SYSTEM "../listing/AbstractGraphicsController.xml">
-]>
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
 <!--
   ~ This file is part of Geomajas, a component framework for building
   ~ rich Internet applications (RIA) with sophisticated capabilities for the
@@ -510,7 +507,7 @@
 
     <para><emphasis role="bold">RenderGroup</emphasis></para>
 
-    <para>The rendergroup that needs to be specified when calling the map's
+    <para>The render group that needs to be specified when calling the map's
     render method, represents the logical place on the map to draw the
     paintable object. There are four choices, each having a huge
     impact.</para>
@@ -647,9 +644,9 @@
           are <code>&lt;group&gt;</code> tags. <emphasis>Group elements or
           groups </emphasis>can be drawn by passing an arbitrary Java object
           to the <code>drawGroup()</code>method. This object can be used for
-          later reference to the group. To position the group in the hierachy,
-          a parent group object can be passed as a second parameter to the
-          <code>drawGroup()</code> method.</para>
+          later reference to the group. To position the group in the
+          hierarchy, a parent group object can be passed as a second parameter
+          to the <code>drawGroup()</code> method.</para>
 
           <para><emphasis>Non-group elements</emphasis> (all other elements
           like circle, rectangle, symbol, etc.) can be drawn by passing a
@@ -1041,7 +1038,8 @@ map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</
         removed from the <code>GraphicsWidget</code>. This is usually used for
         cleaning up.</para>
 
-        &__GraphicsController__g9y364fq;
+        <xi:include href="../listing/GraphicsController.xml"
+                    xmlns:xi="http://www.w3.org/2001/XInclude" />
 
         <para>You should never directly implement
         <code>GraphicsController</code> (not that it does not have the
@@ -1056,7 +1054,8 @@ map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</
         <para>Small extract from the <code>AbstractGraphicsController</code>
         class:</para>
 
-        &__AbstractGraphicsController__g9y364fq;
+        <xi:include href="../listing/AbstractGraphicsController.xml"
+                    xmlns:xi="http://www.w3.org/2001/XInclude" />
 
         <para>Now that you have your controller you can set it;</para>
 
