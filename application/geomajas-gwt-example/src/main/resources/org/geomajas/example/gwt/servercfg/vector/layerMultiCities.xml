@@ -49,7 +49,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 	</bean>
 
 	<bean class="org.geomajas.configuration.FeatureInfo" name="multiCitiesFeatureInfo">
-		<property name="dataSourceName" value="MultiCities" />
+		<property name="dataSourceName" value="multiCities" />
 		<property name="identifier">
 			<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
 				<property name="label" value="Id" />
@@ -242,7 +242,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
 	<bean name="multiCities" class="org.geomajas.layer.shapeinmem.ShapeInMemLayer">
 		<property name="layerInfo" ref="multiCitiesInfo" />
-		<property name="url" value="classpath:org/geomajas/example/gwt/servercfg/vector/shapefile/geosparc/MultiCities.shp" />
+		<property name="url" value="classpath:org/geomajas/example/gwt/servercfg/vector/shapefile/geosparc/multiCities.shp" />
 	</bean>
 
 </beans>
