@@ -24,7 +24,7 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <part id="part-gettingstarted">
-  <title>tGetting started</title>
+  <title>Getting started</title>
 
   <chapter>
     <title>Starting a new GWT based Geomajas project</title>
@@ -112,23 +112,113 @@ mvn gwt:run</programlisting>The "install" target will create a war file for
     <section>
       <title>Eclipse</title>
 
-      <para>From the command line you can create eclipse project files.</para>
+      <para>The combination of Eclipse, maven and GWT is not quite trivial,
+      especially for complex multimodule projects like Geomajas. There are 2
+      approaches possible for integrating eclipse with maven:</para>
 
-      <example>
-        <title>Create eclipse project files</title>
+      <itemizedlist>
+        <listitem>
+          <para>Eclipse plugin for maven, avoiding the use of the maven
+          command-line interface: m2eclipse (<ulink
+          url="http://m2eclipse.sonatype.org/">http://m2eclipse.sonatype.org/</ulink>)
+          is the most mature project here</para>
+        </listitem>
 
-        <para><programlisting>mvn eclipse:eclipse</programlisting></para>
-      </example>
+        <listitem>
+          <para>Maven plugin to generate eclipse project configurations:
+          maven-eclipse-plugin (<ulink
+          url="http://maven.apache.org/plugins/maven-eclipse-plugin/">http://maven.apache.org/plugins/maven-eclipse-plugin/</ulink>)</para>
+        </listitem>
+      </itemizedlist>
 
-      <para>You can now open the project in eclipse.</para>
+      <para>It is clear that an IDE integrated solution like m2eclipse offers
+      considerable advantages over manually generating Eclipse project
+      configurations:</para>
 
-      <para>For working with the GWT face, you may want to make use of
-      Google's GWT Eclipse plug-in. Detailed instructions can be found at
-      <ulink url="http://code.google.com/eclipse/docs/download.html">
-      http://code.google.com/eclipse/docs/download.html</ulink>.</para>
+      <itemizedlist>
+        <listitem>
+          <para>direct import of maven projects</para>
+        </listitem>
 
-      <para>After importing and building the GWT projects, make sure you
-      convert them to GWT projects in the project properties dialog:</para>
+        <listitem>
+          <para>support for maven properties and filtering</para>
+        </listitem>
+
+        <listitem>
+          <para>In-place editing of poms</para>
+        </listitem>
+
+        <listitem>
+          <para>full dependency support</para>
+        </listitem>
+      </itemizedlist>
+
+      <para>For a functional Geomajas setup, the following Eclipse plugins
+      should be installed on a fresh Galileo download (<ulink
+      url="http://www.eclipse.org/downloads/">http://www.eclipse.org/downloads/</ulink>):</para>
+
+      <itemizedlist>
+        <listitem>
+          <para>m2eclipse: update site
+          http://m2eclipse.sonatype.org/sites/m2e</para>
+        </listitem>
+
+        <listitem>
+          <para>checkstyle: update site
+          http://eclipse-cs.sf.net/update/</para>
+        </listitem>
+
+        <listitem>
+          <para>SVN team provider: update site
+          http://download.eclipse.org/releases/galileo, choose Collaboration
+          -&gt;Subversive SVN Team Provider (Incubation)</para>
+        </listitem>
+
+        <listitem>
+          <para>Google's GWT Eclipse plug-in:
+          http://dl.google.com/eclipse/plugin/3.5 (Plugin and SDK)</para>
+        </listitem>
+      </itemizedlist>
+
+      <para>Make sure you add the process-resources as a goal to run on
+      project import in the general Maven preferences
+      (Window-&gt;Preferences)</para>
+
+      <figure>
+        <title>Maven preferences</title>
+
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="../images/eclipse-maven-settings.png"
+                       width="50%" />
+          </imageobject>
+        </mediaobject>
+      </figure>
+
+      <para>You can now use the project wizard to import the project as a
+      Maven project. The embedded maven instance will automatically run the
+      process-resources goal and generate and import the Eclipse project
+      configuration. Because the m2eclipse plugin hides all resources from the
+      eclipse source path, a conflict with the GWT plugin arises. The GWT
+      plugin will look for module files in the source path and therefore
+      cannot find them. To solve this, you have to manually remove the
+      exclusion filters for the src/main/resources path and include a filter
+      for the gwt module extension (**/*gwt.xml). In the end, the source path
+      should look as follows:</para>
+
+      <figure>
+        <title>Including GWT modules in src/main/resources</title>
+
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="../images/eclipse-gwt-module-inclusion.png"
+                       width="50%" />
+          </imageobject>
+        </mediaobject>
+      </figure>
+
+      <para>You can now manually mark the project as a GWT project in the
+      project properties dialog:</para>
 
       <figure>
         <title>Eclipse project properties dialog</title>
@@ -141,11 +231,10 @@ mvn gwt:run</programlisting>The "install" target will create a war file for
         </mediaobject>
       </figure>
 
-      <para>Check the "Use Google Web Toolkit" checkbox. The GWT SDK can be
-      configured by clicking on the " <code>Configure SDKs..."</code> link.
-      After configuration, you should now be able to run the project as a GWT
-      Web application by right-clicking on the project and selecting <code>Run
-      as -&gt; Web Application</code>.</para>
+      <para>Check the "Use Google Web Toolkit" checkbox. After configuration,
+      you should now be able to run the project as a GWT Web application by
+      right-clicking on the project and selecting <code>Run as -&gt; Web
+      Application</code>.</para>
     </section>
 
     <section>
@@ -236,7 +325,7 @@ mvn gwt:run</programlisting>The "install" target will create a war file for
 
       <para><itemizedlist>
           <listitem>
-            <para> main configuration :
+            <para>main configuration :
             <code>src/main/resources/shapeinmem/applicationContext.xml</code></para>
           </listitem>
 
