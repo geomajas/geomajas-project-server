@@ -24,7 +24,7 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <part id="part-gettingstarted">
-  <title>Getting started</title>
+  <title>tGetting started</title>
 
   <chapter>
     <title>Starting a new GWT based Geomajas project</title>
@@ -49,7 +49,16 @@
       url="http://maven.apache.org/download.html">http://maven.apache.org/download.html</ulink>.</para>
 
       <para>When Maven is installed you can create a base project using the
-      following command line:</para>
+      following command line (to use the latest release):</para>
+
+      <example>
+        <title>Create project using GWT Maven archetype</title>
+
+        <para><programlisting>mvn archetype:generate -DarchetypeCatalog=http://apps.geomajas.org/nexus/content/repositories/thirdparty/</programlisting></para>
+      </example>
+
+      <para>Alternatively, you can use the very latest (snapshot) archetype
+      using the following command.</para>
 
       <example>
         <title>Create project using GWT Maven archetype</title>
@@ -217,6 +226,93 @@ mvn gwt:run</programlisting>The "install" target will create a war file for
       directly the Maven project in NetBeans. See <ulink
       url="http://wiki.netbeans.org/MavenBestPractices">http://wiki.netbeans.org/MavenBestPractices</ulink>
       for more details.</para>
+    </section>
+
+    <section>
+      <title>How to continue</title>
+
+      <para>The most important configuration files in the project are the
+      following:</para>
+
+      <para><itemizedlist>
+          <listitem>
+            <para> main configuration :
+            <code>src/main/resources/shapeinmem/applicationContext.xml</code></para>
+          </listitem>
+
+          <listitem>
+            <para>countries layer configuration :
+            <code>src/main/resources/shapeinmem/layerCountries110m.xml</code></para>
+          </listitem>
+
+          <listitem>
+            <para>bluemarble WMS layer configuration :
+            <code>src/main/resources/shapeinmem/layerWmsBluemarble.xml</code></para>
+          </listitem>
+
+          <listitem>
+            <para>GWT configuration file :
+            <code>src/main/resources/GeomajasEntryPoint.gwt.xml</code></para>
+          </listitem>
+
+          <listitem>
+            <para>web.xml: <code>war/WEB-INF/web.xml</code></para>
+          </listitem>
+        </itemizedlist>More details about the Geomajas configuration are found
+      in <xref linkend="backend-ch-configuration" />.</para>
+
+      <para>Reference which may be interesting to read:</para>
+
+      <para><itemizedlist>
+          <listitem>
+            <para>GWT project page: <ulink
+            url="http://code.google.com/webtoolkit/">http://code.google.com/webtoolkit/</ulink>.</para>
+          </listitem>
+
+          <listitem>
+            <para>SmartGWT showcase: <ulink
+            url="http://www.smartclient.com/smartgwt/showcase/">http://www.smartclient.com/smartgwt/showcase/</ulink>.</para>
+          </listitem>
+
+          <listitem>
+            <para>dzone's GWT refcardz: <ulink
+            url="http://refcardz.dzone.com/refcardz/gwt-style-configuration-and-js">http://refcardz.dzone.com/refcardz/gwt-style-configuration-and-js</ulink>.</para>
+
+            <para></para>
+          </listitem>
+
+          <listitem>
+            <para>spring documentation: <ulink
+            url="http://www.springsource.org/documentation">http://www.springsource.org/documentation</ulink>.</para>
+          </listitem>
+
+          <listitem>
+            <para>dzone's spring configuration refcardz: <ulink
+            url="http://refcardz.dzone.com/refcardz/spring-configuration">http://refcardz.dzone.com/refcardz/spring-configuration</ulink>.</para>
+
+            <para></para>
+          </listitem>
+
+          <listitem>
+            <para>maven project: <ulink
+            url="http://maven.apache.org/">http://maven.apache.org/</ulink>.</para>
+          </listitem>
+
+          <listitem>
+            <para>Maven by example book: <ulink
+            url="http://www.sonatype.com/books/mvnex-book/reference/public-book.html">http://www.sonatype.com/books/mvnex-book/reference/public-book.html</ulink>.</para>
+          </listitem>
+
+          <listitem>
+            <para>maven reference book: <ulink
+            url="http://www.sonatype.com/books/mvnref-book/reference/public-book.html">http://www.sonatype.com/books/mvnref-book/reference/public-book.html</ulink>.</para>
+          </listitem>
+
+          <listitem>
+            <para>dzone's maven 2 refcardz: <ulink
+            url="http://refcardz.dzone.com/refcardz/apache-maven-2">http://refcardz.dzone.com/refcardz/apache-maven-2</ulink>.</para>
+          </listitem>
+        </itemizedlist></para>
     </section>
   </chapter>
 </part>
