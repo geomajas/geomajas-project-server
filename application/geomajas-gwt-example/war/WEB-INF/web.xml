@@ -29,6 +29,7 @@
  			org.geomajas.layer.hibernate.HibernateLayer
  			org.geomajas.layer.osm.OsmLayer
  			org.geomajas.layer.wms.WmsLayer
+ 			org.geotools.referencing.crs.EPSGCRSAuthorityFactory
        </param-value>
     </context-param>
 
