@@ -26,10 +26,195 @@
 <part id="part-back-end">
   <title>back-end</title>
 
+  <chapter id="chapter-api">
+    <title>API</title>
+
+    <section>
+      <title>API annotation</title>
+
+      <para>As Geomajas is a framework for building enterprise application, it
+      is important to be very accurate about what exactly is considered part
+      of the API, specifically which classes and interfaces and which methods
+      in these classes and interfaces are considered as part of the
+      API.</para>
+
+      <para>For this reason, we have introduced the "<code>@Api</code>"
+      annotation. A class or interface is only considered part of the public
+      API when it is annotated using "<code>@Api</code>". When all public
+      methods in the class or interface are considered part of the API, you
+      could use "<code>@Api(allMethods = true)</code>". The alternative is to
+      annotate the individual methods.</para>
+
+      <para>The API includes many interfaces. These interfaces should only be
+      implemented by client code when they are annotated by
+      "<code>@<code>UserImplemented</code></code>". All other interfaces are
+      provided to indicate the methods available on instances which are
+      obtained through the API or Spring wiring and may have extra methods
+      added in future versions.</para>
+
+      <para>All classes and methods which are indicated with
+      "<code>@Api</code>" should also have a "<code>@since</code>" javadoc
+      comment indicating the version in which the class or method was added to
+      the API.</para>
+
+      <para><note>
+          <para>Please beware that only the annotations determine whether
+          something is part of the API or not. The manual may discuss things
+          which are not considered API, probably because they are
+          experimental.</para>
+        </note></para>
+    </section>
+
+    <section>
+      <title>Back-end API</title>
+
+      <para>The full details about the API can be found in the published
+      javadoc, available on the Geomajas site at <ulink
+      url="http://www.geomajas.org/gis-documentation">http://www.geomajas.org/gis-documentation</ulink>.
+      There you can find the links for the different versions.</para>
+
+      <para>The API for the Geomajas back-end is contained in the geomajas-api
+      module. This contains only interfaces, exceptions and data transfer
+      objects. The data transfer objects are classes which only contain
+      getters and setters. The back-end API is divided in the following
+      packages:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para><emphasis>command</emphasis>: interfaces, services and data
+          transfer objects related with the command extension points.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>configuration</emphasis>: data transfer objects
+          which are used for defining the configuration in Geomajas.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>geometry</emphasis>: Geomajas geometry related data
+          transfer objects.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>global</emphasis>: some general interfaces,
+          annotations and exceptions which are relevant for a combination of
+          several extension points or the entire API.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>layer</emphasis>: interfaces, services, exceptions,
+          data transfer objects and some internal objects related with the
+          layers and objects in a layer. These include the definition of a
+          layer, tiles, features and feature models.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>security</emphasis>: interfaces, services and data
+          transfer objects related with the security extension points and
+          security handling.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>service</emphasis>: utility services provided by
+          Geomajas.</para>
+        </listitem>
+      </itemizedlist>
+
+      <para>The back-end also contains a module geomajas-api-experimental.
+      This contains some experimental stuff which may be promoted to the
+      supported API when useful, or may be changed or dumped. As this is
+      <emphasis>not</emphasis> part of the API, it may change between
+      revisions.</para>
+    </section>
+
+    <section>
+      <title>Command and plug-in API</title>
+
+      <para>For commands and plug-ins, the same rule applies as for the
+      back-end API. That means that the "<code>@Api</code>" annotation
+      indicates the stability of the interfaces, classes and methods.</para>
+
+      <para>These classes can typically be found in packages containing
+      "command.dto" for command request and response objects or packages
+      containing "configuration" for objects which are expected to be defined
+      from the Spring configuration files.</para>
+
+      <para>The command name is also considered part of the API when the
+      implementing class in annotated using the "<code>@Api</code>"
+      annotation.</para>
+    </section>
+
+    <section>
+      <title>GWT face API</title>
+
+      <para>The GWT plug-in also uses the "<code>@Api</code>" annotation to
+      indicate classes and methods which are supported to remain stable
+      between minor versions of the face.</para>
+
+      <para>You can expect to find this annotation on all widgets, though it
+      is likely that not all public methods will be considered part of the
+      API.</para>
+    </section>
+
+    <section>
+      <title>API compatibility and Geomajas versions</title>
+
+      <para>Versions have the structure "major.minor.revision". Geomajas uses
+      a even-odd versioning scheme for the "minor" part.</para>
+
+      <para>The major number indicates major changes in the framework and thus
+      gives no guarantee about API compatibility with previous major
+      versions.</para>
+
+      <para>Versions with an even minor part are considered stable and
+      suitable for production use. Odd minor versions are used for development
+      to work on and test new features to be released in the next stable
+      version. The API for Geomajas needs to be upward compatible for all
+      stable versions with same major number. Specifically this means that
+      <itemizedlist>
+          <listitem>
+            <para>No API classes or interfaces may be removed.</para>
+          </listitem>
+
+          <listitem>
+            <para>No API classes or interfaces may be renamed.</para>
+          </listitem>
+
+          <listitem>
+            <para>No API classes or interfaces may have their package name
+            modified.</para>
+          </listitem>
+
+          <listitem>
+            <para>No API methods may be removed.</para>
+          </listitem>
+
+          <listitem>
+            <para>No API methods may have their signature changed.</para>
+          </listitem>
+
+          <listitem>
+            <para>No methods may be added to classes annotated using
+            "<code>@<code>UserImplemented</code></code>".</para>
+          </listitem>
+        </itemizedlist></para>
+
+      <para>Additionally, all methods and classes which are added should
+      include an indication of the version in which the class and/or method
+      was added. This is done using the "<code>@since</code>" javadoc comment
+      for the methods, class or interface.</para>
+
+      <para>Because of the guarantees about API, the use of the
+      "<code>@Deprecated</code>" annotation only indicates that a method or
+      class is not recommended to be used. The method or class will not be
+      removed in future versions with the same major number.</para>
+    </section>
+  </chapter>
+
   <chapter id="backend-ch-plugins">
     <title>Plug-ins</title>
 
-    <para>The primary function of the back-end is to act as a plug-in
+    <para>One of the functions of the back-end is to act as a plug-in
     container. Plug-ins are optional libraries that extend the core
     functionality by taking advantage of the public API. There are two sets of
     plug-ins which provide extra features.</para>
@@ -85,7 +270,7 @@
 
     <para>Other plug-ins allow extensions in functionality, either by
     providing additional commands or extending the rendering pipelines, or
-    provide additional security services.</para>
+    they provide additional security services.</para>
 
     <para><itemizedlist>
         <listitem>
@@ -107,10 +292,14 @@
           policies, making the security configuration entirely static.</para>
         </listitem>
       </itemizedlist></para>
+
+    <para>The back-end also contains a set of spatial services. These include
+    services for accessing raster and vector services and a set of utility
+    services.</para>
   </chapter>
 
   <chapter id="backend-ch-configuration">
-    <title>Configuration</title>
+    <title>Configuration basics</title>
 
     <para>Geomajas leverages the Spring framework for configuration.</para>
 
@@ -197,112 +386,6 @@
       <para>The back-end configuration consists of security, transaction and
       layer configurations, plus any additional configuration that is needed
       for plug-ins and your application.</para>
-
-      <section>
-        <title>Security configuration</title>
-
-        <para>To make sure the system can be used, you have to configure the
-        security to allow access. The easiest configuration is to allow access
-        to everybody.</para>
-
-        <xi:include href="../listing/AllowAllSecurity.xml"
-                    xmlns:xi="http://www.w3.org/2001/XInclude" />
-
-        <para>Any other configuration would depend on the available security
-        services. For example, when using the staticsecurity plugin, the
-        following could be defined.</para>
-
-        <xi:include href="../listing/StaticSecurityStart.xml"
-                    xmlns:xi="http://www.w3.org/2001/XInclude" />
-
-        <para>Most notable in this example is the inclusion of two security
-        services. The first is provided to allow login and logout
-        (<emphasis>only</emphasis>) for everybody. The second defines users
-        and authorizations (only the beginning of the configuration is
-        displayed here).</para>
-      </section>
-
-      <section>
-        <title>Transaction configuration</title>
-
-        <para>Spring has support declarative transaction management, which
-        relieves us from the burden of writing our own transaction demarcation
-        and exception handling code. Of course, Spring transaction management
-        has to be hooked up with the transaction definition and life cycle of
-        the underlying data platform (hibernate, JTA, JDBC) . Each data access
-        technology should provide its own implementation of the Spring class
-        <code>PlatformTransactionManager</code>. For many platforms this is
-        already part of the Spring libraries, and for GeoTools we have
-        provided a transaction manager.</para>
-
-        <para>Transaction management is typically only needed for editable
-        database layers (although we support and encourage it for read-only
-        layers as well), of which we provide two types:
-        <code>HibernateLayer</code> and <code>GeoToolsLayer</code>. There is
-        currently no support for having multiple platform transaction
-        managers, although configurations with multiple transaction managers
-        should at least theoretically be possible and the subject will be
-        investigated further. In practice this means that you currently must
-        not mix editable Hibernate and GeoTools layers.</para>
-
-        <para>For Hibernate layers, the following configuration should be
-        used:</para>
-
-        <xi:include href="../listing/HibernateTx.xml"
-                    xmlns:xi="http://www.w3.org/2001/XInclude" />
-
-        <para>Starting from the top, the following are defined:</para>
-
-        <itemizedlist>
-          <listitem>
-            <para>The data source: this specifies the connection pool type and
-            the connection properties of the database (PostGis in this
-            case)</para>
-          </listitem>
-
-          <listitem>
-            <para>The session factory: this is Hibernate's primary singleton
-            and used by the Hibernate layer to access the
-            session/connection</para>
-          </listitem>
-
-          <listitem>
-            <para>A tag to enable annotation-based transactional behavior,
-            internally used by Geomajas to decide which commands need
-            transaction support</para>
-          </listitem>
-
-          <listitem>
-            <para>The platform transaction manager for Hibernate</para>
-          </listitem>
-        </itemizedlist>
-
-        <para>For GeoTools layers, the configuration is as follows:</para>
-
-        <xi:include href="../listing/GeoToolsTx.xml"
-                    xmlns:xi="http://www.w3.org/2001/XInclude" />
-
-        <para>Starting from the top, the following are defined:</para>
-
-        <itemizedlist>
-          <listitem>
-            <para>The data store: this is GeoTools' primary data object and
-            will be referenced in the GeoTools layer. The parameters define
-            the connection properties of the underlying physical medium
-            (PostGis in this case)</para>
-          </listitem>
-
-          <listitem>
-            <para>A tag to enable annotation-based transactional behavior,
-            internally used by Geomajas to decide which commands need
-            transaction support</para>
-          </listitem>
-
-          <listitem>
-            <para>The platform transaction manager for GeoTools</para>
-          </listitem>
-        </itemizedlist>
-      </section>
 
       <section>
         <title>Raster layer configuration</title>
@@ -408,178 +491,6 @@
           by dividing the maximum extent by successive powers of 2. Make sure
           the width/height ratio of the maximum extent corresponds to the
           width/height ratio of the tile.</para>
-        </section>
-
-        <section>
-          <title>WMS layer configuration</title>
-
-          <para>Make sure your classpath contains the required plug-in. If you
-          are using Maven, add the following dependency to your pom:</para>
-
-          <xi:include href="../listing/WmsLayerDependency.xml"
-                      xmlns:xi="http://www.w3.org/2001/XInclude" />
-
-          <para>A complete WMS layer configuration looks as follows:</para>
-
-          <xi:include href="../listing/WmsLayerSample.xml"
-                      xmlns:xi="http://www.w3.org/2001/XInclude" />
-
-          <para>As you can see, the bean class refers to the actual layer
-          type: <code>org.geomajas.layer.wms.WmsLayer</code>.</para>
-
-          <para>The first property is the layer info object, which describes
-          the metadata common to all raster layers. The following properties
-          are needed for this object:</para>
-
-          <para>The layer object contains some extra properties which are
-          specifically tied to the WMS server:</para>
-
-          <table>
-            <title>WMS layer properties</title>
-
-            <tgroup cols="2">
-              <colspec colnum="1" colwidth="1*" />
-
-              <colspec colnum="2" colwidth="2*" />
-
-              <thead>
-                <row>
-                  <entry>Name</entry>
-
-                  <entry>Description</entry>
-                </row>
-              </thead>
-
-              <tbody>
-                <row>
-                  <entry>baseWmsUrl</entry>
-
-                  <entry>The base url of the WMS server. This is the base part
-                  (excluding the request parameters) of the url that would be
-                  called to execute a WMS request.</entry>
-                </row>
-
-                <row>
-                  <entry>version</entry>
-
-                  <entry>Version of the WMS protocol which should be used.
-                  Check your server configuration for possible values.</entry>
-                </row>
-
-                <row>
-                  <entry>format</entry>
-
-                  <entry>The mime type in which the images should be returned,
-                  for example "image/gif". Check your server configuration for
-                  possible values.</entry>
-                </row>
-
-                <row>
-                  <entry>styles</entry>
-
-                  <entry>Some WMS servers support multiple styles for their
-                  layers. Check your server configuration for possible
-                  values.</entry>
-                </row>
-
-                <row>
-                  <entry>parameters</entry>
-
-                  <entry>You can define additional parameters which can be
-                  passed to the WMS server. These are name/value pairs which
-                  are passed in
-                  <code>org.geomajas.configuration.Parameter</code>
-                  objects.</entry>
-                </row>
-              </tbody>
-            </tgroup>
-          </table>
-        </section>
-
-        <section>
-          <title>OpenStreetMap layer configuration</title>
-
-          <para>Make sure your classpath contains the required plug-in. If you
-          are using Maven, add the following dependency to your pom:</para>
-
-          <xi:include href="../listing/OsmLayerDependency.xml"
-                      xmlns:xi="http://www.w3.org/2001/XInclude" />
-
-          <para>A complete OpenStreetMap layer configuration looks as
-          follows:</para>
-
-          <xi:include href="../listing/OsmLayerSample.xml"
-                      xmlns:xi="http://www.w3.org/2001/XInclude" />
-
-          <para>The layer info inner bean has the same general content as
-          usual, with one exception : the dataSourceName property is not
-          necessary in this case. As with the WMS layer, the resolutions have
-          been carefully chosen to match the tile server's resolutions. The
-          tile width and height are implied by the server in this case but
-          since they are required metadata for all raster layers, they should
-          be set to the server's values: 256 x 256.</para>
-        </section>
-
-        <section>
-          <title>Google Maps layer configuration</title>
-
-          <para>Make sure your class path contains the required plug-in. If
-          you are using Maven, add the following dependency to your
-          pom:</para>
-
-          <xi:include href="../listing/GoogleLayerDependency.xml"
-                      xmlns:xi="http://www.w3.org/2001/XInclude" />
-
-          <para>A complete Google layer configuration looks as follows:</para>
-
-          <xi:include href="../listing/GoogleLayerSample.xml"
-                      xmlns:xi="http://www.w3.org/2001/XInclude" />
-
-          <para><table>
-              <title>GoogleLayer configuration</title>
-
-              <tgroup cols="2">
-                <colspec colnum="1" colwidth="1*" />
-
-                <colspec colnum="2" colwidth="2*" />
-
-                <thead>
-                  <row>
-                    <entry>GoogleLayer configuration</entry>
-                  </row>
-                </thead>
-
-                <tbody>
-                  <row>
-                    <entry>satellite</entry>
-
-                    <entry>Set to true to use satellite view from Google. When
-                    false (the default), the normal view (showing streets)
-                    will be used.</entry>
-                  </row>
-                </tbody>
-              </tgroup>
-            </table></para>
-
-          <para>The layer info inner bean has the same general content as
-          usual. There are some simplifications though. There is no need to
-          provide resolutions or tile size (256x256 is always used). The crs
-          should always be set to Mercator ("EPSG:900913").</para>
-
-          <para>On the layer, you can set the "satellite" property to choose
-          between using normal display (showing streets) or satellite view (by
-          setting this to "true").</para>
-
-          <note>
-            <para>You need to assure that you comply with Google's terms of
-            use (see <ulink
-            url="http://code.google.com/apis/maps/">http://code.google.com/apis/maps/</ulink>).
-            Some of the things you need to do include adding the Google API
-            code in your application (using a Google API key when not running
-            on localhost), and (from the GWT face, using the
-            <code>GoogleAddon</code> class to assure the copyright notes are
-            displayed on the map.</para>
-          </note>
         </section>
       </section>
 
@@ -797,275 +708,6 @@
         </section>
 
         <section>
-          <title>Hibernate layer configuration</title>
-
-          <para>The Hibernate layer is based on the popular Hibernate O/R
-          mapping framework. It uses a special spatial extension of Hibernate,
-          unsurprisingly called Hibernate Spatial. The Hibernate Spatial
-          project has its project website at <ulink
-          url="http://www.hibernatespatial.org/">http://www.hibernatespatial.org</ulink>.
-          The spatial extensions or dialects (in Hibernate language) allow the
-          definition of spatial types and the execution of spatial queries in
-          a database independent way.</para>
-
-          <para>You need to include the following dependencies to make this
-          work. This needs to include the hibernate spatial provider, in this
-          example, PostGis.</para>
-
-          <xi:include href="../listing/HibernateLayerDependency.xml"
-                      xmlns:xi="http://www.w3.org/2001/XInclude" />
-
-          <para>A Hibernate layer cannot be defined by configuration only. As
-          in every O/R model, there has to be a mapping between Java classes
-          and tables in the database. In the most simple case there is a
-          one-to-one mapping between a single class and a single spatial
-          table.</para>
-
-          <para>The following listing shows the (partial) definition of a
-          Hibernate annotated Java class <code>Road.java</code> that is mapped
-          to a table <code>roads</code> in the database.</para>
-
-          <xi:include href="../listing/HibernateRoadsSample.xml"
-                      xmlns:xi="http://www.w3.org/2001/XInclude" />
-
-          <para>The field annotations describe the relation between the fields
-          of the class and the columns in the table. A special annotation
-          <code>@Type</code> with type
-          <code>org.hibernatespatial.GeometryUserType</code> is used to map
-          the <code>geometry</code> field to the <code>the_geom</code> spatial
-          column.</para>
-
-          <para>Once the Java class mapping is finished, the actual layer
-          configuration can be made. An example configuration that matches the
-          <code>Road.java</code> class is shown below:</para>
-
-          <xi:include href="../listing/HibernateRoadsLayer.xml"
-                      xmlns:xi="http://www.w3.org/2001/XInclude" />
-
-          <para>The first property <code>layerInfo</code> is the reference to
-          the <code>VectorLayerInfo</code> object. While it can be defined
-          inline, it has been defined as an outer bean for clarity
-          here.</para>
-
-          <para>The <code>featureModel</code> property refers to the internal
-          feature accessor face of the layer. This property will probably be
-          removed as it has no additional configuration parameters for the
-          moment.</para>
-
-          <para>The <code>sessionFactory</code> property refers to the
-          Hibernate session factory. This is the same factory that has to be
-          defined by the transaction configuration.</para>
-
-          <para>The <code>dateFormat</code> property determines how the layer
-          will convert date values to strings and vice versa.</para>
-
-          <para>As already mentioned, the bulk part of the layer's metadata is
-          defined through the <code>VectorLayerInfo</code> object. An example
-          definition of this object is given below:</para>
-
-          <xi:include href="../listing/HibernateRoadsInfo.xml"
-                      xmlns:xi="http://www.w3.org/2001/XInclude" />
-
-          <para>The feature metadata can be found in the
-          <code>FeatureInfo</code> object. This objects contains the complete
-          feature type description (id, attributes and geometry) as well as
-          the validation rules for the attributes. An example definition of
-          this object is given below:</para>
-
-          <xi:include href="../listing/HibernateRoadsFeatureInfo.xml"
-                      xmlns:xi="http://www.w3.org/2001/XInclude" />
-        </section>
-
-        <section>
-          <title>GeoTools layer configuration</title>
-
-          <para>Apart from a reference to the layer info, you can set the
-          following parameters:</para>
-
-          <table>
-            <title>GeoToolsLayer configuration</title>
-
-            <tgroup cols="2">
-              <colspec colnum="1" colwidth="1*" />
-
-              <colspec colnum="2" colwidth="2*" />
-
-              <thead>
-                <row>
-                  <entry>Name</entry>
-
-                  <entry>Description</entry>
-                </row>
-              </thead>
-
-              <tbody>
-                <row>
-                  <entry>url</entry>
-
-                  <entry>Url for the shape file. Apart from standard protocols
-                  supported by java, you can also use the "classpath:"
-                  protocol (the resource location should not start with a
-                  slash) to refer to shape files on the classpath.</entry>
-                </row>
-
-                <row>
-                  <entry>dbtype</entry>
-
-                  <entry>Database type, useful when the data store is a
-                  database.</entry>
-                </row>
-
-                <row>
-                  <entry>parameters</entry>
-
-                  <entry>You can define additional parameters which can be
-                  passed to the GeoTools data store. These are name/value
-                  pairs which are passed in
-                  <code>org.geomajas.configuration.Parameter</code>
-                  objects.</entry>
-                </row>
-              </tbody>
-            </tgroup>
-          </table>
-
-          <para>In most cases, you will need to pass data using the parameters
-          property to get a functional GeoTools layer. This would look similar
-          to this:</para>
-
-          <example>
-            <title>GeoTools WFS configuration skeleton</title>
-
-            <programlisting>&lt;bean name="blabla" class="org.geomajas.layer.geotools.GeoToolsLayer"&gt;
-    &lt;property name="parameters"&gt;
-        &lt;list&gt;
-            &lt;bean class="org.geomajas.configuration.Parameter"&gt;
-                &lt;property name="name" value="WFSDataStoreFactory:GET_CAPABILITIES_URL" /&gt;
-                &lt;property name="value" value="aaaaaaa" /&gt;
-            &lt;/bean&gt;
-            &lt;bean class="org.geomajas.configuration.Parameter"&gt;
-                &lt;property name="name" value="WFSDataStoreFactory:TIMEOUT" /&gt;
-                &lt;property name="value" value="bbbbbbb" /&gt;
-            &lt;/bean&gt;
-        &lt;/list&gt;
-    &lt;/property&gt;
-    &lt;property name="layerInfo" ref="blablaInfo" /&gt;
-&lt;/bean&gt; </programlisting>
-          </example>
-
-          <para>The names which are valid depend on the GeoTools data
-          store.</para>
-
-          <para>To access a WFS server, the following names can be used as
-          parameters.</para>
-
-          <para><itemizedlist>
-              <listitem>
-                <para><emphasis>WFSDataStoreFactory:GET_CAPABILITIES_URL</emphasis>:
-                URL for the getCapabilities document on the server
-                instance.</para>
-              </listitem>
-
-              <listitem>
-                <para><emphasis>WFSDataStoreFactory:PROTOCOL</emphasis>:
-                determine which HTTP command use when requesting WFS
-                functionality. Set this value to "true" for POST, "false" for
-                GET or NULL for AUTO.</para>
-              </listitem>
-
-              <listitem>
-                <para><emphasis>WFSDataStoreFactory:USERNAME</emphasis>: set
-                the user name which should be used to authenticate the
-                connection. This parameter should not be used without the
-                password parameter.</para>
-              </listitem>
-
-              <listitem>
-                <para><emphasis>WFSDataStoreFactory:PASSWORD</emphasis>: set
-                the password which should be used to authenticate the
-                connection. This parameter should not be used without the user
-                name parameter.</para>
-              </listitem>
-
-              <listitem>
-                <para><emphasis>WFSDataStoreFactory:TIMEOUT</emphasis>:
-                specify the connection timeout in milliseconds. This parameter
-                has a default value of 3000ms.</para>
-              </listitem>
-
-              <listitem>
-                <para><emphasis>WFSDataStoreFactory:BUFFER_SIZE</emphasis>:
-                set the buffer size for the features. This parameter has a
-                default value of 10 features.</para>
-              </listitem>
-
-              <listitem>
-                <para><emphasis>WFSDataStoreFactory:TRY_GZIP</emphasis>:
-                indicate whether the data store should use gzip compression to
-                transfer data if the server supports it. Default is
-                true.</para>
-              </listitem>
-
-              <listitem>
-                <para><emphasis>WFSDataStoreFactory:LENIENT</emphasis>:
-                indicate whether the data store should do its best to create
-                features from the provided data even if it does not accurately
-                match the schema. Errors will be logged but the parsing will
-                continue if this is true. Default is false.</para>
-              </listitem>
-            </itemizedlist></para>
-
-          <para>You also have to assure the GeoTools WFS data store is added
-          as dependency in your project. When using Maven, you can add the
-          following dependency.</para>
-
-          <example>
-            <title>GeoTools WFS dependency</title>
-
-            <programlisting>&lt;dependency&gt;
-      &lt;groupId&gt;org.geotools&lt;/groupId&gt;
-      &lt;artifactId&gt;gt-wfs&lt;/artifactId&gt;
-      &lt;version&gt;${geotools-version}&lt;/version&gt;
-&lt;/dependency&gt;</programlisting>
-          </example>
-        </section>
-
-        <section>
-          <title>Shape in memory layer</title>
-
-          <para>This layer is backed by a shape file that is loaded in memory
-          at startup. All layer updates are performed in memory, so this layer
-          is not really useful except for examples.</para>
-
-          <para><table>
-              <title>ShapeInMemLayer configuration</title>
-
-              <tgroup cols="2">
-                <colspec colnum="1" colwidth="1*" />
-
-                <colspec colnum="2" colwidth="2*" />
-
-                <thead>
-                  <row>
-                    <entry>ShapeInMemLayer configuration</entry>
-                  </row>
-                </thead>
-
-                <tbody>
-                  <row>
-                    <entry>url</entry>
-
-                    <entry>Url for the shape file. Apart from standard
-                    protocols supported by java, you can also use the
-                    "classpath:" protocol (the resource location should not
-                    start with a slash) to refer to shape files on the
-                    classpath.</entry>
-                  </row>
-                </tbody>
-              </tgroup>
-            </table></para>
-        </section>
-
-        <section>
           <title>Bean layer configuration</title>
 
           <para>Bean layer provides an in-memory layer which is not persisted
@@ -1201,214 +843,75 @@
         </section>
       </section>
     </section>
-
-    <section>
-      <title>Coordinate Reference Systems</title>
-
-      <para>Geomajas uses GeoTools' gt-epsg-wkt module to define the
-      coordinate reference systems which are available.</para>
-
-      <para>If you want to add extra coordinate reference systems, this can be
-      done by defining them in the configuration. For example, Geomajas itself
-      already defines the "EPSG:900913" crs (which one of the many codes for
-      the Mercator projection used by Google Maps and OpenStreetMap).</para>
-
-      <xi:include href="../listing/CrsInfo.xml"
-                  xmlns:xi="http://www.w3.org/2001/XInclude" />
-
-      <para>You can add as many of these beans as needed. The keys
-      transformation which are added this way are tested before the GeoTools
-      library, so you can overwrite definitions if needed.</para>
-
-      <para>If you don't like the dependency on the gt-epsg-wkt library, then
-      you could exclude this dependency in your maven pom and use a different
-      dependency if needed.</para>
-    </section>
   </chapter>
 
-  <chapter id="chapter-api">
-    <title>API</title>
+  <chapter>
+    <title>Security configuration</title>
 
-    <section>
-      <title>API annotation</title>
+    <para>To make sure the system can be used, you have to configure the
+    security to allow access. The easiest configuration is to allow access to
+    everybody.</para>
 
-      <para>As Geomajas is a framework for building enterprise application, it
-      is important to be very accurate about what exactly is considered part
-      of the API, specifically which classes and interfaces and which methods
-      in these classes and interfaces are considered as part of the
-      API.</para>
+    <xi:include href="../listing/AllowAllSecurity.xml"
+                xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-      <para>For this reason, we have introduced the "<code>@Api</code>"
-      annotation. A class or interface is only considered part of the public
-      API when it is annotated using "<code>@Api</code>". When all public
-      methods in the class or interface are considered part of the API, you
-      could use "<code>@Api(allMethods = true)</code>". The alternative is to
-      annotate the individual methods.</para>
+    <para>Any other configuration would depend on the available security
+    services. For example, when using the staticsecurity plugin, the following
+    could be defined.</para>
 
-      <para>The API includes many interfaces. These interfaces should only be
-      implemented by client code when they are annotated by
-      "<code>@<code>UserImplemented</code></code>". All other interfaces are
-      provided to indicate the methods available on instances which are
-      obtained through the API or Spring wiring and may have extra methods
-      added in future versions.</para>
+    <xi:include href="../listing/StaticSecurityStart.xml"
+                xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-      <para>All classes and methods which are indicated with
-      "<code>@Api</code>" should also have a "<code>@since</code>" javadoc
-      comment indicating the version in which the class or method was added to
-      the API.</para>
+    <para>Most notable in this example is the inclusion of two security
+    services. The first is provided to allow login and logout
+    (<emphasis>only</emphasis>) for everybody. The second defines users and
+    authorizations (only the beginning of the configuration is displayed
+    here).</para>
+  </chapter>
 
-      <para><note>
-          <para>Please beware that only the annotations determine whether
-          something is part of the API or not. The manual may discuss things
-          which are not considered API, probably because they are
-          experimental.</para>
-        </note></para>
-    </section>
+  <chapter>
+    <title>Transaction configuration</title>
 
-    <section>
-      <title>Back-end API</title>
+    <para>Spring has support declarative transaction management, which
+    relieves us from the burden of writing our own transaction demarcation and
+    exception handling code. Of course, Spring transaction management has to
+    be hooked up with the transaction definition and life cycle of the
+    underlying data platform (hibernate, JTA, JDBC) . Each data access
+    technology should provide its own implementation of the Spring class
+    <code>PlatformTransactionManager</code>. You should check your plug-in
+    documentation for details about configuring the transaction
+    manager.</para>
 
-      <para>The full details about the API can be found in the published
-      javadoc, available on the Geomajas site at <ulink
-      url="http://www.geomajas.org/gis-documentation">http://www.geomajas.org/gis-documentation</ulink>.
-      There you can find the links for the different versions.</para>
+    <para>Transaction management is typically only needed for editable
+    database layers (although we support and encourage it for read-only layers
+    as well). There is currently no support for having multiple platform
+    transaction managers, although configurations with multiple transaction
+    managers should be possible. This will be investigated and fixed in the
+    future. In practice this means that you currently must not mix editable
+    layers which require a different transaction manager..</para>
+  </chapter>
 
-      <para>The API for the Geomajas back-end is contained in the geomajas-api
-      module. This contains only interfaces, exceptions and data transfer
-      objects. The data transfer objects are classes which only contain
-      getters and setters. The back-end API is divided in the following
-      packages:</para>
+  <chapter>
+    <title>Coordinate Reference Systems</title>
 
-      <itemizedlist>
-        <listitem>
-          <para><emphasis>command</emphasis>: interfaces, services and data
-          transfer objects related with the command extension points.</para>
-        </listitem>
+    <para>Geomajas uses GeoTools' gt-epsg-wkt module to define the coordinate
+    reference systems which are available.</para>
 
-        <listitem>
-          <para><emphasis>configuration</emphasis>: data transfer objects
-          which are used for defining the configuration in Geomajas.</para>
-        </listitem>
+    <para>If you want to add extra coordinate reference systems, this can be
+    done by defining them in the configuration. For example, Geomajas itself
+    already defines the "EPSG:900913" crs (which one of the many codes for the
+    Mercator projection used by Google Maps and OpenStreetMap).</para>
 
-        <listitem>
-          <para><emphasis>geometry</emphasis>: Geomajas geometry related data
-          transfer objects.</para>
-        </listitem>
+    <xi:include href="../listing/CrsInfo.xml"
+                xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-        <listitem>
-          <para><emphasis>global</emphasis>: some general interfaces,
-          annotations and exceptions which are relevant for a combination of
-          several extension points or the entire API.</para>
-        </listitem>
+    <para>You can add as many of these beans as needed. The keys
+    transformation which are added this way are tested before the GeoTools
+    library, so you can overwrite definitions if needed.</para>
 
-        <listitem>
-          <para><emphasis>layer</emphasis>: interfaces, services, exceptions,
-          data transfer objects and some internal objects related with the
-          layers and objects in a layer. These include the definition of a
-          layer, tiles, features and feature models.</para>
-        </listitem>
-
-        <listitem>
-          <para><emphasis>security</emphasis>: interfaces, services and data
-          transfer objects related with the security extension points and
-          security handling.</para>
-        </listitem>
-
-        <listitem>
-          <para><emphasis>service</emphasis>: utility services provided by
-          Geomajas.</para>
-        </listitem>
-      </itemizedlist>
-
-      <para>The back-end also contains a module geomajas-api-experimental.
-      This contains some experimental stuff which may be promoted to the
-      supported API when useful, or may be changed or dumped. As this is
-      <emphasis>not</emphasis> part of the API, it may change between
-      revisions.</para>
-    </section>
-
-    <section>
-      <title>Command and plug-in API</title>
-
-      <para>For commands and plug-ins, the same rule applies as for the
-      back-end API. That means that the "<code>@Api</code>" annotation
-      indicates the stability of the interfaces, classes and methods.</para>
-
-      <para>These classes can typically be found in packages containing
-      "command.dto" for command request and response objects or packages
-      containing "configuration" for objects which are expected to be defined
-      from the Spring configuration files.</para>
-
-      <para>The command name is also considered part of the API when the
-      implementing class in annotated using the "<code>@Api</code>"
-      annotation.</para>
-    </section>
-
-    <section>
-      <title>GWT face API</title>
-
-      <para>The GWT plug-in also uses the "<code>@Api</code>" annotation to
-      indicate classes and methods which are supported to remain stable
-      between minor versions of the face.</para>
-
-      <para>You can expect to find this annotation on all widgets, though it
-      is likely that not all public methods will be considered part of the
-      API.</para>
-    </section>
-
-    <section>
-      <title>API compatibility and Geomajas versions</title>
-
-      <para>Versions have the structure "major.minor.revision". Geomajas uses
-      a even-odd versioning scheme for the "minor" part.</para>
-
-      <para>The major number indicates major changes in the framework and thus
-      gives no guarantee about API compatibility with previous major
-      versions.</para>
-
-      <para>Versions with an even minor part are considered stable and
-      suitable for production use. Odd minor versions are used for development
-      to work on and test new features to be released in the next stable
-      version. The API for Geomajas needs to be upward compatible for all
-      stable versions with same major number. Specifically this means that
-      <itemizedlist>
-          <listitem>
-            <para>No API classes or interfaces may be removed.</para>
-          </listitem>
-
-          <listitem>
-            <para>No API classes or interfaces may be renamed.</para>
-          </listitem>
-
-          <listitem>
-            <para>No API classes or interfaces may have their package name
-            modified.</para>
-          </listitem>
-
-          <listitem>
-            <para>No API methods may be removed.</para>
-          </listitem>
-
-          <listitem>
-            <para>No API methods may have their signature changed.</para>
-          </listitem>
-
-          <listitem>
-            <para>No methods may be added to classes annotated using
-            "<code>@<code>UserImplemented</code></code>".</para>
-          </listitem>
-        </itemizedlist></para>
-
-      <para>Additionally, all methods and classes which are added should
-      include an indication of the version in which the class and/or method
-      was added. This is done using the "<code>@since</code>" javadoc comment
-      for the methods, class or interface.</para>
-
-      <para>Because of the guarantees about API, the use of the
-      "<code>@Deprecated</code>" annotation only indicates that a method or
-      class is not recommended to be used. The method or class will not be
-      removed in future versions with the same major number.</para>
-    </section>
+    <para>If you don't like the dependency on the gt-epsg-wkt library, then
+    you could exclude this dependency in your maven pom and use a different
+    dependency if needed.</para>
   </chapter>
 
   <chapter id="chapter-commands">
@@ -2925,7 +2428,7 @@
 
           <para><itemizedlist>
               <listitem>
-                "Get" : get the raster tile.
+                 "Get" : get the raster tile. 
               </listitem>
             </itemizedlist></para>
         </section>
@@ -2939,11 +2442,11 @@
 
           <para><itemizedlist>
               <listitem>
-                "EqualSize" : verify that the list of old and new features match.
+                 "EqualSize" : verify that the list of old and new features match. 
               </listitem>
 
               <listitem>
-                "SaveOrUpdate" : this handles the save or update for the individual features using the pipeline below.
+                 "SaveOrUpdate" : this handles the save or update for the individual features using the pipeline below. 
               </listitem>
             </itemizedlist></para>
         </section>
@@ -2953,31 +2456,31 @@
 
           <para><itemizedlist>
               <listitem>
-                "Delete" : delete the feature if it has been removed.
+                 "Delete" : delete the feature if it has been removed. 
               </listitem>
 
               <listitem>
-                "CheckId" : check that the id for the old and new feature match.
+                 "CheckId" : check that the id for the old and new feature match. 
               </listitem>
 
               <listitem>
-                "TransformGeometry" : assure the geometry is transformed to layer coordinate space.
+                 "TransformGeometry" : assure the geometry is transformed to layer coordinate space. 
               </listitem>
 
               <listitem>
-                "Create" : handle the creation of a new feature.
+                 "Create" : handle the creation of a new feature. 
               </listitem>
 
               <listitem>
-                "Update" : update the feature.
+                 "Update" : update the feature. 
               </listitem>
 
               <listitem>
-                "UpdateSave" : save it back to the data store.
+                 "UpdateSave" : save it back to the data store. 
               </listitem>
 
               <listitem>
-                "UpdateFeature" : and assure the feature itself reflects the state from the database.
+                 "UpdateFeature" : and assure the feature itself reflects the state from the database. 
               </listitem>
             </itemizedlist></para>
         </section>
@@ -2987,15 +2490,15 @@
 
           <para><itemizedlist>
               <listitem>
-                "LayerFilter" : calculate the correct filter based on security and layer extent.
+                 "LayerFilter" : calculate the correct filter based on security and layer extent. 
               </listitem>
 
               <listitem>
-                "GetFeaturesStyle" : get the styles which are relevant for the features.
+                 "GetFeaturesStyle" : get the styles which are relevant for the features. 
               </listitem>
 
               <listitem>
-                "GetFeatures" : fetch and fill the features.
+                 "GetFeatures" : fetch and fill the features. 
               </listitem>
             </itemizedlist></para>
         </section>
@@ -3005,11 +2508,11 @@
 
           <para><itemizedlist>
               <listitem>
-                "LayerFilter" : calculate the correct filter based on security and layer extent.
+                 "LayerFilter" : calculate the correct filter based on security and layer extent. 
               </listitem>
 
               <listitem>
-                "GetBounds" : calculate the bounds for the features which comply with the filter.
+                 "GetBounds" : calculate the bounds for the features which comply with the filter. 
               </listitem>
             </itemizedlist></para>
         </section>
@@ -3019,11 +2522,11 @@
 
           <para><itemizedlist>
               <listitem>
-                "LayerFilter" : calculate the correct filter based on security and layer extent.
+                 "LayerFilter" : calculate the correct filter based on security and layer extent. 
               </listitem>
 
               <listitem>
-                "GetAttributes" : get the attributes for the filtered features.
+                 "GetAttributes" : get the attributes for the filtered features. 
               </listitem>
             </itemizedlist></para>
         </section>
@@ -3033,19 +2536,19 @@
 
           <para><itemizedlist>
               <listitem>
-                "TileFilter" : calculate the correct filter based on security and tile extent.
+                 "TileFilter" : calculate the correct filter based on security and tile extent. 
               </listitem>
 
               <listitem>
-                "GetFeatures" : fetch and fill the features.
+                 "GetFeatures" : fetch and fill the features. 
               </listitem>
 
               <listitem>
-                "TileTransform" : transform the tile to the requested coordinate reference system.
+                 "TileTransform" : transform the tile to the requested coordinate reference system. 
               </listitem>
 
               <listitem>
-                "GetStringContent" : render the features to the requested string content.
+                 "GetStringContent" : render the features to the requested string content. 
               </listitem>
             </itemizedlist></para>
         </section>

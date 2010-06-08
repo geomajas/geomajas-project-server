@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ This file is part of Geomajas, a component framework for building
+  ~ rich Internet applications (RIA) with sophisticated capabilities for the
+  ~ display, analysis and management of geographic information.
+  ~ It is a building block that allows developers to add maps
+  ~ and other geographic data capabilities to their web applications.
+  ~
+  ~ Copyright 2008-2010 Geosparc, http://www.geosparc.com, Belgium
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU Affero General Public License as
+  ~ published by the Free Software Foundation, either version 3 of the
+  ~ License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU Affero General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU Affero General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+<chapter id="chapter-configuration">
+  <title>Configuration</title>
+
+  <para></para>
+
+  <section>
+    <title>GeoTools layer configuration</title>
+
+    <para>Apart from a reference to the layer info, you can set the following
+    parameters:</para>
+
+    <table>
+      <title>GeoToolsLayer configuration</title>
+
+      <tgroup cols="2">
+        <colspec colnum="1" colwidth="1*" />
+
+        <colspec colnum="2" colwidth="2*" />
+
+        <thead>
+          <row>
+            <entry>Name</entry>
+
+            <entry>Description</entry>
+          </row>
+        </thead>
+
+        <tbody>
+          <row>
+            <entry>url</entry>
+
+            <entry>Url for the shape file. Apart from standard protocols
+            supported by java, you can also use the "classpath:" protocol (the
+            resource location should not start with a slash) to refer to shape
+            files on the classpath.</entry>
+          </row>
+
+          <row>
+            <entry>dbtype</entry>
+
+            <entry>Database type, useful when the data store is a
+            database.</entry>
+          </row>
+
+          <row>
+            <entry>parameters</entry>
+
+            <entry>You can define additional parameters which can be passed to
+            the GeoTools data store. These are name/value pairs which are
+            passed in <code>org.geomajas.configuration.Parameter</code>
+            objects.</entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+
+    <para>In most cases, you will need to pass data using the parameters
+    property to get a functional GeoTools layer. This would look similar to
+    this:</para>
+
+    <example>
+      <title>GeoTools WFS configuration skeleton</title>
+
+      <programlisting>&lt;bean name="blabla" class="org.geomajas.layer.geotools.GeoToolsLayer"&gt;
+&lt;property name="parameters"&gt;
+    &lt;list&gt;
+        &lt;bean class="org.geomajas.configuration.Parameter"&gt;
+            &lt;property name="name" value="WFSDataStoreFactory:GET_CAPABILITIES_URL" /&gt;
+            &lt;property name="value" value="aaaaaaa" /&gt;
+        &lt;/bean&gt;
+        &lt;bean class="org.geomajas.configuration.Parameter"&gt;
+            &lt;property name="name" value="WFSDataStoreFactory:TIMEOUT" /&gt;
+            &lt;property name="value" value="bbbbbbb" /&gt;
+        &lt;/bean&gt;
+    &lt;/list&gt;
+&lt;/property&gt;
+&lt;property name="layerInfo" ref="blablaInfo" /&gt;
+&lt;/bean&gt; </programlisting>
+    </example>
+
+    <para>The names which are valid depend on the GeoTools data store.</para>
+
+    <para>To access a WFS server, the following names can be used as
+    parameters.</para>
+
+    <para><itemizedlist>
+        <listitem>
+          <para><emphasis>WFSDataStoreFactory:GET_CAPABILITIES_URL</emphasis>:
+          URL for the getCapabilities document on the server instance.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>WFSDataStoreFactory:PROTOCOL</emphasis>: determine
+          which HTTP command use when requesting WFS functionality. Set this
+          value to "true" for POST, "false" for GET or NULL for AUTO.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>WFSDataStoreFactory:USERNAME</emphasis>: set the
+          user name which should be used to authenticate the connection. This
+          parameter should not be used without the password parameter.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>WFSDataStoreFactory:PASSWORD</emphasis>: set the
+          password which should be used to authenticate the connection. This
+          parameter should not be used without the user name parameter.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>WFSDataStoreFactory:TIMEOUT</emphasis>: specify the
+          connection timeout in milliseconds. This parameter has a default
+          value of 3000ms.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>WFSDataStoreFactory:BUFFER_SIZE</emphasis>: set the
+          buffer size for the features. This parameter has a default value of
+          10 features.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>WFSDataStoreFactory:TRY_GZIP</emphasis>: indicate
+          whether the data store should use gzip compression to transfer data
+          if the server supports it. Default is true.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>WFSDataStoreFactory:LENIENT</emphasis>: indicate
+          whether the data store should do its best to create features from
+          the provided data even if it does not accurately match the schema.
+          Errors will be logged but the parsing will continue if this is true.
+          Default is false.</para>
+        </listitem>
+      </itemizedlist></para>
+
+    <para>You also have to assure the GeoTools WFS data store is added as
+    dependency in your project. When using Maven, you can add the following
+    dependency.</para>
+
+    <example>
+      <title>GeoTools WFS dependency</title>
+
+      <programlisting>&lt;dependency&gt;
+  &lt;groupId&gt;org.geotools&lt;/groupId&gt;
+  &lt;artifactId&gt;gt-wfs&lt;/artifactId&gt;
+  &lt;version&gt;${geotools-version}&lt;/version&gt;
+&lt;/dependency&gt;</programlisting>
+    </example>
+  </section>
+
+  <section>
+    <title>Shape in memory layer</title>
+
+    <para>This layer is backed by a shape file that is loaded in memory at
+    startup. All layer updates are performed in memory, so this layer is not
+    really useful except for examples.</para>
+
+    <para><table>
+        <title>ShapeInMemLayer configuration</title>
+
+        <tgroup cols="2">
+          <colspec colnum="1" colwidth="1*" />
+
+          <colspec colnum="2" colwidth="2*" />
+
+          <thead>
+            <row>
+              <entry>ShapeInMemLayer configuration</entry>
+            </row>
+          </thead>
+
+          <tbody>
+            <row>
+              <entry>url</entry>
+
+              <entry>Url for the shape file. Apart from standard protocols
+              supported by java, you can also use the "classpath:" protocol
+              (the resource location should not start with a slash) to refer
+              to shape files on the classpath.</entry>
+            </row>
+          </tbody>
+        </tgroup>
+      </table></para>
+  </section>
+
+  <section>
+    <title>Transaction configuration</title>
+
+    <para>For GeoTools layers, the following transaction configuration can be
+    used:</para>
+
+    <xi:include href="../listing/GeoToolsTx.xml"
+                xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+    <para>Starting from the top, the following are defined:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para>The data store: this is GeoTools' primary data object and will
+        be referenced in the GeoTools layer. The parameters define the
+        connection properties of the underlying physical medium (PostGis in
+        this case)</para>
+      </listitem>
+
+      <listitem>
+        <para>A tag to enable annotation-based transactional behavior,
+        internally used by Geomajas to decide which commands need transaction
+        support</para>
+      </listitem>
+
+      <listitem>
+        <para>The platform transaction manager for GeoTools</para>
+      </listitem>
+    </itemizedlist>
+  </section>
+</chapter>

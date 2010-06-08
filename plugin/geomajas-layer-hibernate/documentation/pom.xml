@@ -46,6 +46,7 @@
 				<artifactId>maven-dependency-plugin</artifactId>
 				<executions>
 					<execution>
+						<id>explode-jdocbook-xslt</id>
 						<phase>process-resources</phase>
 						<goals>
 							<goal>unpack-dependencies</goal>
@@ -53,6 +54,59 @@
 						<configuration>
 							<outputDirectory>${project.build.directory}/resources</outputDirectory>
 							<includeArtifactIds>geomajas-jdocbook-xslt</includeArtifactIds>
+						</configuration>
+					</execution>
+					<execution>
+						<id>explode-gwt-simple</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>unpack-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/extract/simple</outputDirectory>
+							<includeArtifactIds>geomajas-gwt-simple</includeArtifactIds>
+						</configuration>
+					</execution>
+					<execution>
+						<id>explode-gwt-example</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>unpack-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/extract/example</outputDirectory>
+							<includeArtifactIds>geomajas-gwt-example</includeArtifactIds>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-maven-plugin</artifactId>
+				<version>1.0.3</version>
+				<inherited>false</inherited>
+				<executions>
+					<execution>
+						<id>extract-listings-app</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>extract</goal>
+						</goals>
+						<configuration>
+							<sourceDirectory>${project.build.directory}/extract</sourceDirectory>
+							<destinationDirectory>${basedir}/en-GB/listing</destinationDirectory>
+						</configuration>
+					</execution>
+					<execution>
+						<id>extract-listings-src</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>extract</goal>
+						</goals>
+						<configuration>
+							<sourceDirectory>${project.build.directory}/..</sourceDirectory>
+							<destinationDirectory>${basedir}/en-GB/listing</destinationDirectory>
 						</configuration>
 					</execution>
 				</executions>

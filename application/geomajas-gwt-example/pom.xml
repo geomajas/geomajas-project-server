@@ -334,7 +334,7 @@
 	</build>
 
 	<repositories>
-		<repository>
+		<repository>            
 			<id>Geomajas</id>
 			<name>Geomajas repository</name>
 			<url>http://maven.geomajas.org/</url>

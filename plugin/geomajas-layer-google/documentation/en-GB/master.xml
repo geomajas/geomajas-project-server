@@ -46,5 +46,7 @@
 
 	<xi:include href="modules/introduction.xml"
 				xmlns:xi="http://www.w3.org/2001/XInclude"/>
-	
+	<xi:include href="modules/configuration.xml"
+				xmlns:xi="http://www.w3.org/2001/XInclude"/>
+
 </book>
