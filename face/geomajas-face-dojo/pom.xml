@@ -114,10 +114,20 @@
 	<modules>
 		<module>geomajas-dojo-server</module>
 		<module>geomajas-dojo-client</module>
-		<module>documentation</module>
 	</modules>
 
 	<profiles>
+		<profile>
+			<id>documentation</id>
+			<activation>
+				<property>
+					<name>!skipDocs</name>
+				</property>
+			</activation>
+			<modules>
+				<module>documentation</module>
+			</modules>
+		</profile>
 		<profile>
 			<!-- development profile, no shrinking -->
 			<id>noshrink</id>

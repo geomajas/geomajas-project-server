@@ -109,7 +109,20 @@
 	<modules>
 		<module>staticsecurity</module>
 		<module>staticsecurity-gwt</module>
-		<module>documentation</module>
 	</modules>
 
+	<profiles>
+		<profile>
+			<id>documentation</id>
+			<activation>
+				<property>
+					<name>!skipDocs</name>
+				</property>
+			</activation>
+			<modules>
+				<module>documentation</module>
+			</modules>
+		</profile>
+	</profiles>
+	
 </project>

@@ -58,10 +58,15 @@ mvn install</programlisting>
       </listitem>
 
       <listitem>
+        <para>-DskipDocs: do not build the documentation module. Can speed up
+        the build a little.</para>
+      </listitem>
+
+      <listitem>
         <para><code>-Dfull-build</code>: from the root project, this enables
         inclusion of the build tools and documentation in the build. This is
-        actually enabled by default (to desable use <code>-Dhudson</code>"),
-        </para>
+        actually enabled by default (to desable use
+        <code>-Dhudson</code>"),</para>
       </listitem>
 
       <listitem>

@@ -108,7 +108,20 @@
 	
 	<modules>
 		<module>geomajas-plugin-printing</module>
-		<module>documentation</module>
 	</modules>
 
+	<profiles>
+		<profile>
+			<id>documentation</id>
+			<activation>
+				<property>
+					<name>!skipDocs</name>
+				</property>
+			</activation>
+			<modules>
+				<module>documentation</module>
+			</modules>
+		</profile>
+	</profiles>
+	
 </project>
