@@ -37,6 +37,7 @@
 			org.opengis.filter.FilterFactory
 			org.geomajas.layer.hibernate.filter.ExtendedFilterFactory
 			org.springframework.transaction.config.TxNamespaceHandler
+			org.geotools.referencing.crs.EPSGCRSAuthorityFactory
        <!--
 			org.hibernatespatial.postgis.PostgisDialect			
 			org.geotools.data.postgis.PostgisDataStoreFactory
