@@ -45,7 +45,7 @@ public class DemoTestInt extends SeleneseTestCase {
 		selenium.waitForPageToLoad("30000");
 		// when this is available, the page is loaded and dojo did it's job...
 		selenium.waitForCondition(
-   			"selenium.browserbot.getCurrentWindow().document.getElementById('sampleFutureToolbar.ZoomIn')",
+   			"selenium.browserbot.getCurrentWindow().document.getElementById('sampleTechToolbar.ZoomIn')",
    			"30000"
 			);
 	}

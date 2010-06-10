@@ -124,11 +124,6 @@
 				<artifactId>geomajas-layer-wms</artifactId>
 				<version>${geomajas-layer-wms-version}</version>
 			</dependency>
-			<dependency>
-				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-printing</artifactId>
-				<version>${geomajas-plugin-printing-version}</version>
-			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
@@ -161,7 +156,6 @@
 		<geomajas-layer-geotools-version>1.6.0</geomajas-layer-geotools-version>
 		<geomajas-layer-openstreetmap-version>1.6.0</geomajas-layer-openstreetmap-version>
 		<geomajas-layer-wms-version>1.6.0</geomajas-layer-wms-version>
-		<geomajas-plugin-printing-version>1.5.6-SNAPSHOT</geomajas-plugin-printing-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 

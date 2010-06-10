@@ -38,11 +38,6 @@
             <artifactId>geomajas-layer-wms</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <!--dependency>
-            <groupId>org.geomajas.plugin</groupId>
-            <artifactId>geomajas-plugin-printing</artifactId>
-            <version>${geomajas-plugin-printing-version}</version>
-        </dependency-->
 
 		<!-- logging dependencies, delegate all to slf4j and use logback -->
         <dependency>
@@ -218,7 +213,7 @@
 					<plugin>
 						<groupId>org.codehaus.mojo</groupId>
 						<artifactId>selenium-maven-plugin</artifactId>
-						<version>1.0</version>
+						<version>1.0.1</version>
 						<executions>
 							<execution>
 								<phase>pre-integration-test</phase>

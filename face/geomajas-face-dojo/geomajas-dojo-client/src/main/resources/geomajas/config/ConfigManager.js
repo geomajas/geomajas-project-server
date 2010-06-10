@@ -368,7 +368,7 @@ dojo.declare("ConfigManager", null, {
 				log.info("initFrames");
 				initFrames();
 			}
-			geomajasConfig.printManager = new PrintTemplateManager();
+			//geomajasConfig.printManager = new PrintTemplateManager();
 			dojo.forEach(this.toolbars, function(bar){ bar.onConfigDone(); });
 			log.info("onConfigDone");
 		} catch (e) {
