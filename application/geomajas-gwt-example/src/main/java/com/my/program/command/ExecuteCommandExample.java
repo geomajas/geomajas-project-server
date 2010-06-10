@@ -21,7 +21,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.gwt.samples;
+package com.my.program.command;
 
 import org.geomajas.command.CommandResponse;
 import org.geomajas.gwt.client.command.CommandCallback;
