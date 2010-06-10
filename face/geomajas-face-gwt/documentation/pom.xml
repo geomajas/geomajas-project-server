@@ -103,7 +103,7 @@
 							<goal>extract</goal>
 						</goals>
 						<configuration>
-							<sourceDirectory>${project.build.directory}/..</sourceDirectory>
+							<sourceDirectory>${project.build.directory}/../..</sourceDirectory>
 							<destinationDirectory>${basedir}/en-GB/listing</destinationDirectory>
 						</configuration>
 					</execution>
