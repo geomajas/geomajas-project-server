@@ -94,7 +94,11 @@
 			</resource>
 			<resource>
 				<directory>src/main/webapp</directory>
-				<includes>WEB-INF/web.xml</includes>
+				<includes>
+					<include>WEB-INF/web.xml</include>
+					<include>*.html</include>
+					<include>**/*.js</include>
+				</includes>
 			</resource>
 		</resources>
 		<plugins>
