@@ -31,7 +31,7 @@ import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import com.my.program.command.dto.MySuperDoItRequest;
 
 /**
- * Execute command example, for inclusion in documentation
+ * Execute command example, for inclusion in documentation.
  *
  * @author Pieter De Graef
  */
