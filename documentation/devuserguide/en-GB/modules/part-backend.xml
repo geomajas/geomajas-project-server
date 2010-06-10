@@ -515,7 +515,7 @@
           <para>For the layer configuration, you have to create the layer info
           object.</para>
 
-          <xi:include href="../listing/ShapeInMemCountriesInfo.xml"
+          <xi:include href="../listing/ShapeInMemAirportInfo.xml"
                       xmlns:xi="http://www.w3.org/2001/XInclude" />
 
           <para>This defines the details common to both raster and vector
@@ -591,7 +591,7 @@
           the validation rules for the attributes. An example definition of
           this object is given below:</para>
 
-          <xi:include href="../listing/ShapeInMemCountriesFeatureInfo.xml"
+          <xi:include href="../listing/ShapeInMemAirportFeatureInfo.xml"
                       xmlns:xi="http://www.w3.org/2001/XInclude" />
 
           <para>The following table describes the properties of the
@@ -677,7 +677,7 @@
           which feature style should be used. The first style whose formula
           passes will be applied for the feature.</para>
 
-          <xi:include href="../listing/ShapeInMemCountriesStyleInfo.xml"
+          <xi:include href="../listing/ShapeInMemAirportStyleInfo.xml"
                       xmlns:xi="http://www.w3.org/2001/XInclude" />
 
           <section>

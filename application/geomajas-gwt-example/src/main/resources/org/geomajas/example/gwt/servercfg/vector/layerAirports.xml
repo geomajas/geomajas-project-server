@@ -29,6 +29,7 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 http://www.springframework.org/schema/context
 http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
+	<!-- @extract-start ShapeInMemAirportInfo, Style info -->
 	<bean name="airportsInfo" class="org.geomajas.configuration.VectorLayerInfo">
 		<property name="layerType" value="POINT" />
 		<property name="crs" value="EPSG:4326" />
@@ -47,7 +48,9 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 			</list>
 		</property>
 	</bean>
+	<!-- @extract-end -->
 
+	<!-- @extract-start ShapeInMemAirportFeatureInfo, Feature info -->
 	<bean class="org.geomajas.configuration.FeatureInfo" name="airportsFeatureInfo">
 		<property name="dataSourceName" value="airprtx020" />
 		<property name="identifier">
@@ -82,7 +85,9 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 			</list>
 		</property>
 	</bean>
+	<!-- @extract-end -->
 
+	<!-- @extract-start ShapeInMemAirportStyleInfo, Style info -->
 	<bean class="org.geomajas.configuration.NamedStyleInfo" name="airportsStyleInfo">
 		<property name="featureStyles">
 			<list>
@@ -127,6 +132,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 			</bean>
 		</property>
 	</bean>
+	<!-- @extract-end -->
 
 
 	<bean name="airports" class="org.geomajas.layer.shapeinmem.ShapeInMemLayer">
