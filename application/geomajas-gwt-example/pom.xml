@@ -203,6 +203,16 @@
 	</dependencies>
 
 	<build>
+		<resources>
+			<!-- needed for sources plugin wo include web.xml, though this duplicates it all under WEB-INF/classes -->
+			<resource>
+				<directory>src/main/resources</directory>
+			</resource>
+			<resource>
+				<directory>src/main/webapp</directory>
+				<includes>WEB-INF/web.xml</includes>
+			</resource>
+		</resources>		
 		<outputDirectory>war/WEB-INF/classes</outputDirectory>
 		<extensions>
 			<extension>
@@ -216,6 +226,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-source-plugin</artifactId>
+				<version>2.1.2</version>
 				<executions>
 					<execution>
 						<goals>
