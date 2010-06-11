@@ -120,10 +120,93 @@
 			<version>1.0.0</version>
 			<type>jdocbook-style</type>
 		</dependency>
+		<dependency>
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-api</artifactId>
+			<version>1.7.0-SNAPSHOT</version>
+			<classifier>sources</classifier>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-gwt-simple</artifactId>
+			<version>1.7.0-SNAPSHOT</version>
+			<classifier>sources</classifier>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-gwt-example</artifactId>
+			<version>1.7.0-SNAPSHOT</version>
+			<classifier>sources</classifier>
+		</dependency>		
+		<dependency>
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-dojo-simple</artifactId>
+			<version>1.7.0-SNAPSHOT</version>
+			<classifier>sources</classifier>
+		</dependency>
 	</dependencies>
 
 	<build>
 		<plugins>
+			<plugin>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>unpack-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/resources</outputDirectory>
+							<includeArtifactIds>geomajas-jdocbook-xslt</includeArtifactIds>
+						</configuration>
+					</execution>
+					<execution>
+						<id>explode-dojo-simple</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>unpack-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/extract/dojo-simple</outputDirectory>
+							<includeArtifactIds>geomajas-dojo-simple</includeArtifactIds>
+						</configuration>
+					</execution>
+					<execution>
+						<id>explode-api</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>unpack-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/extract/api</outputDirectory>
+							<includeArtifactIds>geomajas-dojo-simple</includeArtifactIds>
+						</configuration>
+					</execution>
+					<execution>
+						<id>explode-gwt-simple</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>unpack-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/extract/simple</outputDirectory>
+							<includeArtifactIds>geomajas-gwt-simple</includeArtifactIds>
+						</configuration>
+					</execution>
+					<execution>
+						<id>explode-gwt-example</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>unpack-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/extract/example</outputDirectory>
+							<includeArtifactIds>geomajas-gwt-example</includeArtifactIds>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 			<plugin>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-maven-plugin</artifactId>
@@ -137,29 +220,7 @@
 							<goal>extract</goal>
 						</goals>
 						<configuration>
-							<sourceDirectory>${basedir}/../../application</sourceDirectory>
-							<destinationDirectory>${basedir}/en-GB/listing</destinationDirectory>
-						</configuration>
-					</execution>
-					<execution>
-						<id>extract-listings-gwt</id>
-						<phase>process-resources</phase>
-						<goals>
-							<goal>extract</goal>
-						</goals>
-						<configuration>
-							<sourceDirectory>${basedir}/../../face/geomajas-face-gwt</sourceDirectory>
-							<destinationDirectory>${basedir}/en-GB/listing</destinationDirectory>
-						</configuration>
-					</execution>
-					<execution>
-						<id>extract-listings-backend</id>
-						<phase>process-resources</phase>
-						<goals>
-							<goal>extract</goal>
-						</goals>
-						<configuration>
-							<sourceDirectory>${basedir}/../../backend</sourceDirectory>
+							<sourceDirectory>${project.build.directory}/extract</sourceDirectory>
 							<destinationDirectory>${basedir}/en-GB/listing</destinationDirectory>
 						</configuration>
 					</execution>
@@ -183,22 +244,6 @@
 					</execution>
 				</executions>
 			</plugin>			
-
-			<plugin>
-				<artifactId>maven-dependency-plugin</artifactId>
-				<executions>
-					<execution>
-						<phase>process-resources</phase>
-						<goals>
-							<goal>unpack-dependencies</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${project.build.directory}/resources</outputDirectory>
-							<includeArtifactIds>geomajas-jdocbook-xslt</includeArtifactIds>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
 
 			<plugin>
 				<groupId>org.jboss.maven.plugins</groupId>

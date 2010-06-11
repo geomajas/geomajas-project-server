@@ -153,6 +153,19 @@
     </pluginRepositories>
 
 	<build>
+		<resources>
+			<!-- needed for sources plugin wo include web.xml, though this duplicates it all under WEB-INF/classes -->
+			<resource>
+				<directory>src/main/resources</directory>
+			</resource>
+			<resource>
+				<directory>src/main/webapp</directory>
+				<includes>
+					<include>WEB-INF/web.xml</include>
+					<include>*.html</include>
+				</includes>
+			</resource>
+		</resources>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

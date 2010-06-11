@@ -110,6 +110,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 					<property name="editable" value="true" />
 					<property name="identifying" value="true" />
 					<property name="type" value="STRING" />
+					<!-- @extract-start AttributeValidator, Attribute validator configuration -->
 					<property name="validator">
 						<bean class="org.geomajas.configuration.validation.ValidatorInfo">
 							<property name="toolTip" value="Is this city a capital city or not? (Y or N)" />
@@ -124,6 +125,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 							</property>
 						</bean>
 					</property>
+					<!-- @extract-end -->
 				</bean>
 			</list>
 		</property>
