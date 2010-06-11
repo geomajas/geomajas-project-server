@@ -122,7 +122,7 @@
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-api</artifactId>
+			<artifactId>geomajas-impl</artifactId>
 			<version>1.7.0-SNAPSHOT</version>
 			<classifier>sources</classifier>
 		</dependency>
@@ -173,14 +173,14 @@
 						</configuration>
 					</execution>
 					<execution>
-						<id>explode-api</id>
+						<id>explode-impl</id>
 						<phase>process-resources</phase>
 						<goals>
 							<goal>unpack-dependencies</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>${project.build.directory}/extract/api</outputDirectory>
-							<includeArtifactIds>geomajas-dojo-simple</includeArtifactIds>
+							<outputDirectory>${project.build.directory}/extract/impl</outputDirectory>
+							<includeArtifactIds>geomajas-impl</includeArtifactIds>
 						</configuration>
 					</execution>
 					<execution>

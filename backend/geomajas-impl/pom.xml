@@ -155,6 +155,13 @@
 					<exclude>**/geomajasContext.xml</exclude>
 				</excludes>
 			</resource>
+			<resource>
+				<directory>src/test/resources</directory>
+				<filtering>false</filtering>
+				<excludes>
+					<exclude>**/pipelineContext.xml</exclude>
+				</excludes>
+			</resource>
 		</resources>
 	</build>
 
