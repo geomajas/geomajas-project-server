@@ -158,9 +158,9 @@
 			<resource>
 				<directory>src/test/resources</directory>
 				<filtering>false</filtering>
-				<excludes>
-					<exclude>**/pipelineContext.xml</exclude>
-				</excludes>
+				<includes>
+					<include>**/pipelineContext.xml</include>
+				</includes>
 			</resource>
 		</resources>
 	</build>
