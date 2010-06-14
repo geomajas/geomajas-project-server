@@ -48,7 +48,7 @@ public interface GeoService {
 	 * @param crs Coordinate reference system code. (EPSG:xxxx)
 	 * @return {@link org.opengis.referencing.crs.CoordinateReferenceSystem}
 	 * @throws org.geomajas.layer.LayerException CRS code not found
-	 * @since 1.6.1
+	 * @since 1.7.0
 	 */
 	CoordinateReferenceSystem getCrs(String crs) throws LayerException;
 
