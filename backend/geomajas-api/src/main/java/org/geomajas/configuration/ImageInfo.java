@@ -33,6 +33,7 @@ import org.geomajas.global.Api;
  * width and height.
  * 
  * @author Pieter De Graef
+ * @since 1.6.0
  */
 @Api(allMethods = true)
 public class ImageInfo implements Serializable {

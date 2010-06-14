@@ -32,6 +32,7 @@ import javax.validation.constraints.NotNull;
  * Special pipeline step which is used fo weaving a base pipeline and extensions steps.
  *
  * @author Joachim Van der Auwera
+ * @since 1.7.0
  */
 @Api(allMethods = true)
 public class PipelineHook implements PipelineStep {
