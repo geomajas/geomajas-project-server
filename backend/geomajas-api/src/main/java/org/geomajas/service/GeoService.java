@@ -91,7 +91,7 @@ public interface GeoService {
 	 * @since 1.7.0 
 	 */
 	Geometry transform(Geometry source, CoordinateReferenceSystem sourceCrs, CoordinateReferenceSystem targetCrs)
-			throws GeomajasException;;
+			throws GeomajasException;
 
 	/**
 	 * Determine a default position for positioning the label for a feature.
