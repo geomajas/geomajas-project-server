@@ -1,4 +1,5 @@
 <?xml version="1.0"?>
+
 <!--
   ~ This file is part of Geomajas, a component framework for building
   ~ rich Internet applications (RIA) with sophisticated capabilities for the
@@ -30,7 +31,7 @@
 
 	<module name="TreeWalker">
 
-		<property name="cacheFile" value="${checkstyle.cache.file}"/>
+		<!--<property name="cacheFile" value="${checkstyle.cache.file}"/>-->
 		<property name="tabWidth" value="4"/>
 
 		<module name="org.geomajas.checkstyle.ApiCompatibilityCheck"/>

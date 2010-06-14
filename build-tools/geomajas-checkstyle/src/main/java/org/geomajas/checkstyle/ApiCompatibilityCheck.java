@@ -29,8 +29,13 @@ import com.puppycrawl.tools.checkstyle.api.FileContents;
 import com.puppycrawl.tools.checkstyle.api.TextBlock;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Checkstyle check which verifies Geomajas' API compatibility rules.
@@ -41,9 +46,11 @@ public class ApiCompatibilityCheck extends Check {
 
 	private String packageName;
 	private String fullyQualifiedClassName;
-	private Map<String, String> api = new LinkedHashMap<String, String>();
+	private List<String> api = new ArrayList<String>();
 	private boolean isAnnotated;
 	private boolean isAllMethods;
+	private boolean isInterface;
+	private String classSince;
 
 	@Override
 	public int[] getDefaultTokens() {
@@ -55,7 +62,7 @@ public class ApiCompatibilityCheck extends Check {
 		return new int[]{
 				TokenTypes.PACKAGE_DEF,
 				TokenTypes.CLASS_DEF,
-				TokenTypes.INTERFACE_DEF, 
+				TokenTypes.INTERFACE_DEF,
 				TokenTypes.METHOD_DEF,
 				TokenTypes.CTOR_DEF,
 				TokenTypes.VARIABLE_DEF,
@@ -74,6 +81,8 @@ public class ApiCompatibilityCheck extends Check {
 		fullyQualifiedClassName = "";
 		isAnnotated = false;
 		isAllMethods = false;
+		classSince = "0.0.0";
+		isInterface = false;
 		System.out.println("------------- Start scanning tree " + rootAst.toString());
 	}
 
@@ -95,17 +104,89 @@ public class ApiCompatibilityCheck extends Check {
 				fullyQualifiedClassName = packageName + "." + getName(ast);
 				System.out.println("-----------++ class/interface " + fullyQualifiedClassName);
 				checkClassAnnotation(ast);
-				System.out.println("isAnnotated = " +isAnnotated + " allmethods = " + isAllMethods);
+				System.out.println("isAnnotated = " + isAnnotated + " allmethods = " + isAllMethods);
+				if (isAnnotated) {
+					api.add(fullyQualifiedClassName + "::" + getSince(ast));
+				}
+				if (TokenTypes.INTERFACE_DEF == ast.getType()) {
+					isInterface = true;
+				}				
 				break;
 			case TokenTypes.METHOD_DEF:
 			case TokenTypes.CTOR_DEF:
 			case TokenTypes.VARIABLE_DEF:
-				System.out.println("-----------++ " + getName(ast) + " since " + getSince(ast));
+				System.out.println("------------- " + getName(ast) + " isApi " + isApi(ast));
+				System.out.println("-----------++ " + getSignature(ast) + " since " + getSince(ast));
+				if (isApi(ast)) {
+					api.add(fullyQualifiedClassName + ":" + getSignature(ast) + ":" + getSince(ast));
+				}
 				break;
 			default:
 				log(ast, "oops, unexpected node");
-			    break;
+				break;
 		}
+	}
+
+	private boolean isApi(DetailAST ast) {
+		if ("serialVersionUID".equals(getName(ast))) {
+			// this should not be considered API
+			return false;
+		}
+		DetailAST modifiers = ast.findFirstToken(TokenTypes.MODIFIERS);
+		if (null != modifiers) {
+			if (isAllMethods) {
+				// if public then it is API
+				if (isInterface || null != modifiers.findFirstToken(TokenTypes.LITERAL_PUBLIC)) {
+					return true;
+				}
+			}
+			DetailAST check = modifiers.getFirstChild();
+			while (null != check) {
+				if (TokenTypes.ANNOTATION == check.getType() && "Api".equals(getName(check))) {
+					return true;
+				}
+				check = check.getNextSibling();
+			}
+		}
+		return false;
+	}
+
+	private String getSignature(DetailAST ast) {
+		String returnType = "";
+		String name = getName(ast);
+		String parameters = "";
+		if (TokenTypes.METHOD_DEF == ast.getType() || TokenTypes.VARIABLE_DEF == ast.getType()) {
+			DetailAST modifiersAst = ast.findFirstToken(TokenTypes.MODIFIERS);
+			if (null != modifiersAst) {
+				if (null != modifiersAst.findFirstToken(TokenTypes.LITERAL_STATIC)) {
+					returnType += "static ";
+				}
+				if (null != modifiersAst.findFirstToken(TokenTypes.FINAL)) {
+					returnType += "final ";
+				}
+			}
+			DetailAST returnAst = ast.findFirstToken(TokenTypes.TYPE);
+			if (null != returnAst) {
+				returnType += returnAst.getFirstChild().getText() + " ";
+			}
+		}
+		if (TokenTypes.METHOD_DEF == ast.getType() || TokenTypes.CTOR_DEF == ast.getType()) {
+			DetailAST parametersAst = ast.findFirstToken(TokenTypes.PARAMETERS);
+			if (null != parametersAst) {
+				DetailAST check = parametersAst.getFirstChild();
+				while (null != check) {
+					if (TokenTypes.PARAMETER_DEF == check.getType()) {
+						DetailAST typeAst = ast.findFirstToken(TokenTypes.TYPE);
+						if (null != typeAst) {
+							parameters += typeAst.getFirstChild().getText() + ", ";
+						}
+					}
+					check = check.getNextSibling();
+				}
+				parameters = "(" + parameters + ")";
+			}
+		}
+		return returnType + name + parameters;
 	}
 
 	private void checkClassAnnotation(DetailAST ast) {
@@ -115,6 +196,7 @@ public class ApiCompatibilityCheck extends Check {
 			while (null != check) {
 				if (TokenTypes.ANNOTATION == check.getType() && "Api".equals(getName(check))) {
 					isAnnotated = true;
+					classSince = getSince(ast);
 					DetailAST param = getToken(TokenTypes.ANNOTATION_MEMBER_VALUE_PAIR, check);
 					if (null != param) {
 						DetailAST expr = param.getLastChild();
@@ -169,7 +251,7 @@ public class ApiCompatibilityCheck extends Check {
 	}
 
 	private String getSince(DetailAST ast) {
-		String since = "0.0.0";
+		String since = classSince;
 		final FileContents contents = getFileContents();
 		final TextBlock javadoc = contents.getJavadocBefore(ast.getLineNo());
 		if (null != javadoc) {
@@ -190,6 +272,18 @@ public class ApiCompatibilityCheck extends Check {
 
 	@Override
 	public void destroy() {
+		Collections.sort(api);
+		try {
+			File file = new File("target/api.txt");
+			OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(file), "UTF-8");
+			for (String line : api) {
+				writer.write(line);
+				writer.write('\n');
+			}
+			writer.close();
+		} catch (IOException ioe) {
+			log(0, "Cannot write api.txt, " + ioe.getMessage());
+		}
 		System.out.println("-----------!! Stop parsing, output \n" + api);
 	}
 }
