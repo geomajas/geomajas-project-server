@@ -65,6 +65,12 @@
               (the default), the normal view (showing streets) will be
               used.</entry>
             </row>
+            <row>
+              <entry>maxTileLevel</entry>
+
+              <entry>Set to a number for which maps are available in the region
+              of interest, defaults to 19.</entry>
+            </row>
           </tbody>
         </tgroup>
       </table>
@@ -77,7 +83,11 @@
 
     <para>On the layer, you can set the "satellite" property to choose between
     using normal display (showing streets) or satellite view (by setting this
-    to "true").</para>
+    to "true"). You can also set the maximum tile level on the layer, this defaults 
+    to 19 which is supported by Google in most places.</para>
+
+	<para>If you want to use the google physical map you can set the dataSourceName 
+	parameter of layerInfo to G_PHYSICAL_MAP@GoogleLayer.</para>
 
     <note>
       <para>You need to assure that you comply with Google's terms of use (see

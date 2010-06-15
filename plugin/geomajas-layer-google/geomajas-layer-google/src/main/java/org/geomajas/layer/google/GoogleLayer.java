@@ -56,6 +56,7 @@ import javax.annotation.PostConstruct;
  * @author Jan De Moerloose
  * @author Joachim Van der Auwera
  * @author Frank Wijnants
+ * @author Oliver May
  */
 public class GoogleLayer implements RasterLayer {
 
@@ -64,11 +65,13 @@ public class GoogleLayer implements RasterLayer {
 	public static final String LAYER_NAME_NORMAL = "G_NORMAL_MAP";
 	public static final String LAYER_NAME_SATELLITE = "G_SATELLITE_MAP";
 	//public static final String LAYER_NAME_HYBRID = "G_HYBID_MAP"; // doesn't seem to work
-	//public static final String LAYER_NAME_PHYSICAL = "G_PHYSICAL_MAP"; doesn' seem to work
-
+	public static final String LAYER_NAME_PHYSICAL = "G_PHYSICAL_MAP";
+	
 	public static final double EQUATOR_IN_METERS = 40075016.686;
 
-	public static final int MAX_ZOOM_LEVEL = 17;
+	public static final int DEFAULT_MAX_ZOOM_LEVEL = 19;
+	
+	public static final int MAX_ZOOM_LEVEL = 31;
 
 	public static final int TILE_SIZE = 256; // tile size in pixels
 
@@ -78,6 +81,8 @@ public class GoogleLayer implements RasterLayer {
 
 	protected double maxHeight;
 
+	protected int maxZoomLevel = DEFAULT_MAX_ZOOM_LEVEL; 
+	
 	private boolean satellite;
 
 	@Autowired
@@ -95,21 +100,18 @@ public class GoogleLayer implements RasterLayer {
 
 	private String id;
 
-	protected static final double[] RESOLUTIONS = new double[MAX_ZOOM_LEVEL + 1];
+	protected double[] resolutions;
 
 	protected static final int[] POWERS_OF_TWO;
 
 	static {
-		POWERS_OF_TWO = new int[31];
+		POWERS_OF_TWO = new int[MAX_ZOOM_LEVEL];
 		int b = 1;
 		for (int c = 0; c < POWERS_OF_TWO.length; c++) {
 			POWERS_OF_TWO[c] = b;
 			b *= 2;
 		}
-		for (int zoomLevel = 0; zoomLevel <= MAX_ZOOM_LEVEL; zoomLevel++) {
-			double resolution = (EQUATOR_IN_METERS) / (TILE_SIZE * POWERS_OF_TWO[zoomLevel]);
-			RESOLUTIONS[zoomLevel] = resolution;
-		}
+		
 	}
 
 	public String getId() {
@@ -131,7 +133,23 @@ public class GoogleLayer implements RasterLayer {
 	public void setLayerInfo(RasterLayerInfo layerInfo) throws LayerException {
 		this.layerInfo = layerInfo;
 	}
+	
+	public void setMaxZoomLevel(int maxZoomLevel) {
+		this.maxZoomLevel = maxZoomLevel < MAX_ZOOM_LEVEL ? maxZoomLevel : MAX_ZOOM_LEVEL;
+	}
 
+	public int getMaxZoomLevel() {
+		return this.maxZoomLevel;
+	}
+	
+	private void calculateZoomLevels() {
+		resolutions = new double[maxZoomLevel + 1];
+		for (int zoomLevel = 0; zoomLevel <= maxZoomLevel; zoomLevel++) {
+			double resolution = (EQUATOR_IN_METERS) / (TILE_SIZE * POWERS_OF_TWO[zoomLevel]);
+			resolutions[zoomLevel] = resolution;
+		}
+	}
+	
 	@PostConstruct
 	private void postConstruct() throws Exception {
 		if (null != layerInfo) {
@@ -151,6 +169,7 @@ public class GoogleLayer implements RasterLayer {
 			}
 			maxWidth = layerInfo.getMaxExtent().getWidth();
 			maxHeight = layerInfo.getMaxExtent().getHeight();
+			calculateZoomLevels();
 		}
 	}
 
@@ -266,11 +285,9 @@ public class GoogleLayer implements RasterLayer {
 					RasterTile image = new RasterTile(new Bbox(x, -y, screenWidth, screenHeight), getId()
 							+ "." + tileLevel + "." + i + "," + j);
 					image.setCode(new TileCode(tileLevel, i, j));
-					if (isSatellite()) {
-						image.setUrl(getSatelliteTileUrl(i, j, tileLevel));
-					} else {
-						image.setUrl(getTileUrl(i, j, tileLevel));
-					}
+					
+					image.setUrl(getTileUrl(i, j, tileLevel, layerInfo.getDataSourceName()));
+
 					result.add(image);
 				}
 			}
@@ -297,14 +314,14 @@ public class GoogleLayer implements RasterLayer {
 		}
 		double scaleInPixPerMeter = scale * scaleRatio;
 		double screenResolution = 1.0 / scaleInPixPerMeter;
-		if (screenResolution >= RESOLUTIONS[0]) {
+		if (screenResolution >= resolutions[0]) {
 			return 0;
-		} else if (screenResolution <= RESOLUTIONS[MAX_ZOOM_LEVEL]) {
-			return MAX_ZOOM_LEVEL;
+		} else if (screenResolution <= resolutions[maxZoomLevel]) {
+			return maxZoomLevel;
 		} else {
-			for (int i = 0; i < MAX_ZOOM_LEVEL; i++) {
-				double upper = RESOLUTIONS[i];
-				double lower = RESOLUTIONS[i + 1];
+			for (int i = 0; i < maxZoomLevel; i++) {
+				double upper = resolutions[i];
+				double lower = resolutions[i + 1];
 				if (screenResolution <= upper && screenResolution >= lower) {
 					if ((upper - screenResolution) > 2 * (screenResolution - lower)) {
 						return i + 1;
@@ -337,8 +354,8 @@ public class GoogleLayer implements RasterLayer {
 		return layerInfo;
 	}
 
-	public String getTileUrl(int x, int y, int zoom) {
-		if ((zoom < 0) || (zoom > MAX_ZOOM_LEVEL)) {
+	public String getTileUrl(int x, int y, int zoom, String dataSourceName) {
+		if ((zoom < 0) || (zoom > maxZoomLevel)) {
 			return null;
 		}
 		int d = getPowerOfTwo(zoom);
@@ -349,24 +366,18 @@ public class GoogleLayer implements RasterLayer {
 		if (x < 0) {
 			x += d;
 		}
+		
+		if (null != dataSourceName && dataSourceName.startsWith(LAYER_NAME_PHYSICAL)) {
+			String e = "mt" + ((x + y) % 4) + ".google.com";
+			return "http://" + e + "/vt?lyrs=t@125,r@128&x=" + x + "&y=" + y + "&z=" + zoom;
+		} else if (null != dataSourceName && dataSourceName.startsWith(LAYER_NAME_SATELLITE)) {
+			String e = "khm" + ((x + y) % 4) + ".google.com";
+			return "http://" + e + "/kh?v=57&x=" + x + "&y=" + y + "&z=" + zoom;
+		}
+		
+		//Default to normal map
 		String e = "mt" + ((x + y) % 4) + ".google.com";
 		return "http://" + e + "/vt?v=w2.95&x=" + x + "&y=" + y + "&z=" + zoom;
-	}
-
-	public String getSatelliteTileUrl(int x, int y, int zoom) {
-		if ((zoom < 0) || (zoom > MAX_ZOOM_LEVEL)) {
-			return null;
-		}
-		int d = getPowerOfTwo(zoom);
-		if ((y < 0) || (y >= d)) {
-			return null;
-		}
-		x = x % d;
-		if (x < 0) {
-			x += d;
-		}
-		String e = "khm" + ((x + y) % 4) + ".google.com";
-		return "http://" + e + "/kh?v=57&x=" + x + "&y=" + y + "&z=" + zoom;
 	}
 
 	/**

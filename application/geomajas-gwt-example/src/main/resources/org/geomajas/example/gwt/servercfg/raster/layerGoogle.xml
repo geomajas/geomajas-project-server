@@ -53,6 +53,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 	<bean name="google" class="org.geomajas.layer.google.GoogleLayer" >
 		<property name="layerInfo" ref="googleInfo" />
 		<property name="satellite" value="false" />
+		<property name="maxZoomLevel" value="21" />
 	</bean>
 	<!-- @extract-end -->
 

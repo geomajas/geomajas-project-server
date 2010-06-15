@@ -30,7 +30,7 @@ http://www.springframework.org/schema/context
 http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
 	<!-- Beans sample -->
-	<bean name="googleSatMap" class="org.geomajas.configuration.client.ClientMapInfo">
+	<bean name="googleTerrainMap" class="org.geomajas.configuration.client.ClientMapInfo">
 		<property name="backgroundColor" value="#FFFFFF" />
 		<property name="lineSelectStyle">
 			<bean class="org.geomajas.configuration.FeatureStyleInfo">
@@ -85,14 +85,14 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
         </property>
 		<property name="layers">
 			<list>
-				<ref bean="googleSatLayer" />
+				<ref bean="googleTerrainLayer" />
 			</list>
 		</property>
 	</bean>
 
-	<bean class="org.geomajas.configuration.client.ClientRasterLayerInfo" id="googleSatLayer">
-		<property name="serverLayerId" value="googleSat" />
-		<property name="label" value="Google satellite layer" />
+	<bean class="org.geomajas.configuration.client.ClientRasterLayerInfo" id="googleTerrainLayer">
+		<property name="serverLayerId" value="googleTerrain" />
+		<property name="label" value="Google terrain layer" />
 		<property name="visible" value="true" />
 		<property name="viewScaleMin" value="0" />
 		<property name="viewScaleMax" value="17" />

@@ -76,6 +76,11 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
                 <value>4.77731427</value>
                 <value>2.38865713</value>
                 <value>1.19432857</value>
+                <value>0.597164285</value>
+                <value>0.2985821425</value>
+				<value>0.14929107125</value>                
+				<value>0.074645535625</value>                
+				<value>0.0373227678125</value>                
             </list>
         </property>
 		<property name="layers">

@@ -31,7 +31,8 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 http://www.springframework.org/schema/context
 http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-	<bean name="googleSatInfo" class="org.geomajas.configuration.RasterLayerInfo">
+	<bean name="googleTerrainInfo" class="org.geomajas.configuration.RasterLayerInfo">
+		<property name="dataSourceName" value="G_PHYSICAL_MAP@GoogleLayer"/>
 		<property name="crs" value="EPSG:900913"/>
 		<property name="maxExtent">
 			<bean class="org.geomajas.geometry.Bbox">
@@ -45,10 +46,9 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
         <property name="tileHeight" value="256"/>
  	</bean>
 
-	<bean name="googleSat" class="org.geomajas.layer.google.GoogleLayer" >
-		<property name="layerInfo" ref="googleSatInfo" />
-		<property name="satellite" value="true" />
-		<property name="maxZoomLevel" value="19" />
+	<bean name="googleTerrain" class="org.geomajas.layer.google.GoogleLayer" >
+		<property name="layerInfo" ref="googleTerrainInfo" />
+		<property name="maxZoomLevel" value="15" />
 	</bean>
 
 </beans>

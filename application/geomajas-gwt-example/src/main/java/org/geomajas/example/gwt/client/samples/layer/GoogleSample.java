@@ -35,9 +35,10 @@ import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
- * Sample that shows two Google maps, one with normal, one satellite.
+ * Sample that shows two Google maps, one with normal, one satellite, one with terrain.
  * 
  * @author Joachim Van der Auwera
+ * @author Oliver May
  */
 public class GoogleSample extends SamplePanel {
 
@@ -53,6 +54,8 @@ public class GoogleSample extends SamplePanel {
 	private MapWidget googleMap;
 
 	private MapWidget googleSatMap;
+
+	private MapWidget googleTerrainMap;
 
 	public Canvas getViewPanel() {
 		VLayout layout = new VLayout();
@@ -74,9 +77,17 @@ public class GoogleSample extends SamplePanel {
 		googleSatMap.setController(new PanController(googleSatMap));
 		mapLayout2.addMember(googleSatMap);
 
-		// Place both in the layout:
+		// Create map with Google layer (terrain), and add a PanController to it:
+		VLayout mapLayout3 = new VLayout();
+		mapLayout3.setShowEdges(true);
+		googleTerrainMap = new MapWidget("googleTerrainMap", "gwt-samples");
+		googleTerrainMap.setController(new PanController(googleTerrainMap));
+		mapLayout3.addMember(googleTerrainMap);
+
+		// Place all three in the layout:
 		layout.addMember(mapLayout1);
 		layout.addMember(mapLayout2);
+		layout.addMember(mapLayout3);
 
 		return layout;
 	}
@@ -92,8 +103,10 @@ public class GoogleSample extends SamplePanel {
 	public String[] getConfigurationFiles() {
 		return new String[] { "classpath:org/geomajas/example/gwt/clientcfg/layer/mapGoogle.xml",
 				"classpath:org/geomajas/example/gwt/clientcfg/layer/mapGoogleSat.xml",
+				"classpath:org/geomajas/example/gwt/clientcfg/layer/mapGoogleTerrain.xml",
 				"classpath:org/geomajas/example/gwt/servercfg/raster/layerGoogle.xml",
-				"classpath:org/geomajas/example/gwt/servercfg/raster/layerGoogleSat.xml" };
+				"classpath:org/geomajas/example/gwt/servercfg/raster/layerGoogleSat.xml",
+				"classpath:org/geomajas/example/gwt/servercfg/raster/layerGoogleTerrain.xml" };
 	}
 
 	public String ensureUserLoggedIn() {
@@ -104,9 +117,13 @@ public class GoogleSample extends SamplePanel {
 	protected void onDraw() {
 		googleMap.registerMapAddon(new GoogleAddon("google", googleMap, MapType.NORMAL, false));
 		googleSatMap.registerMapAddon(new GoogleAddon("google", googleSatMap, MapType.SATELLITE, false));
+		googleTerrainMap.registerMapAddon(new GoogleAddon("google", googleTerrainMap, MapType.PHYSICAL, false));
 		MapSynchronizer synchronizer = new MapSynchronizer(googleMap.getMapModel().getMapView(), googleSatMap
 				.getMapModel().getMapView());
+		MapSynchronizer synchronizer2 = new MapSynchronizer(googleMap.getMapModel().getMapView(), googleTerrainMap
+				.getMapModel().getMapView());
 		synchronizer.setEnabled(true);
+		synchronizer2.setEnabled(true);
 	}
 	// @extract-end
 
