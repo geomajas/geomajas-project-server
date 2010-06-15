@@ -108,6 +108,7 @@
 
 	<modules>
 		<module>geomajas-test-integration</module>
+		<module>geomajas-test-api-compatible-check</module>
 	</modules>
 
 </project>

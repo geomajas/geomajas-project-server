@@ -60,9 +60,10 @@
 		<property name="message" value="Line has trailing spaces."/>
 	</module>
 
-	<module name="TreeWalker">
+	<module name="org.geomajas.checkstyle.TreeWalker">
 
-		<property name="cacheFile" value="${checkstyle.cache.file}"/>
+		<!-- cacheFile should not be used as this breaks the ApiCompatibilityCheck
+		<property name="cacheFile" value="${checkstyle.cache.file}"/> -->
 		<property name="tabWidth" value="4"/>
 
 		<module name="MissingDeprecated"/>
@@ -285,6 +286,11 @@
 		<!--<module name="TrailingComment"/>-->
 		<!--<module name="RequiredRegexp"/>-->
 		<!--<module name="Regexp"/>-->
+
+		<!-- Verify Geomajas API contract -->
+		<module name="org.geomajas.checkstyle.ApiCompatibilityCheck">
+			<property name="severity" value="error"/>
+		</module>
 
 	</module>
 

@@ -29,13 +29,19 @@ import com.puppycrawl.tools.checkstyle.api.FileContents;
 import com.puppycrawl.tools.checkstyle.api.TextBlock;
 import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Checkstyle check which verifies Geomajas' API compatibility rules.
@@ -46,6 +52,7 @@ public class ApiCompatibilityCheck extends Check {
 
 	private String packageName;
 	private String fullyQualifiedClassName;
+	private Map<String, VersionAndCheck> checkApi = new LinkedHashMap<String, VersionAndCheck>();
 	private List<String> api = new ArrayList<String>();
 	private boolean isAnnotated;
 	private boolean isAllMethods;
@@ -59,7 +66,7 @@ public class ApiCompatibilityCheck extends Check {
 
 	@Override
 	public int[] getAcceptableTokens() {
-		return new int[]{
+		return new int[] {
 				TokenTypes.PACKAGE_DEF,
 				TokenTypes.CLASS_DEF,
 				TokenTypes.INTERFACE_DEF,
@@ -81,15 +88,13 @@ public class ApiCompatibilityCheck extends Check {
 		fullyQualifiedClassName = "";
 		isAnnotated = false;
 		isAllMethods = false;
-		classSince = "0.0.0";
+		classSince = "?";
 		isInterface = false;
-		System.out.println("------------- Start scanning tree " + rootAst.toString());
 	}
 
 	@Override
 	public void finishTree(DetailAST rootAst) {
 		super.finishTree(rootAst);
-		System.out.println("------------- Finish scanning tree " + rootAst.toString());
 	}
 
 	@Override
@@ -97,28 +102,55 @@ public class ApiCompatibilityCheck extends Check {
 		switch (ast.getType()) {
 			case TokenTypes.PACKAGE_DEF:
 				packageName = getPackage(ast);
-				System.out.println("-----------++ package " + packageName);
 				break;
 			case TokenTypes.CLASS_DEF:
 			case TokenTypes.INTERFACE_DEF:
 				fullyQualifiedClassName = packageName + "." + getName(ast);
-				System.out.println("-----------++ class/interface " + fullyQualifiedClassName);
 				checkClassAnnotation(ast);
-				System.out.println("isAnnotated = " + isAnnotated + " allmethods = " + isAllMethods);
-				if (isAnnotated) {
-					api.add(fullyQualifiedClassName + "::" + getSince(ast));
-				}
 				if (TokenTypes.INTERFACE_DEF == ast.getType()) {
 					isInterface = true;
-				}				
+				}
+				if (isAnnotated) {
+					String since = getSince(ast);
+					api.add(fullyQualifiedClassName + "::" + since);
+
+					// @since needs to be specified
+					if ("?".equals(since)) {
+						log(ast, "classMissingSince", fullyQualifiedClassName);
+					}
+					// check that class/interface @since has not changed and mark as encountered
+					VersionAndCheck vac = checkApi.get(fullyQualifiedClassName + ":");
+					if (null != vac) {
+						if (!"?".equals(since) && !since.equals(vac.getVersion())) {
+							log(ast, "wrongClassSince", vac.getVersion(), since, fullyQualifiedClassName);
+						}
+						vac.setEncountered(true);
+					}
+				}
 				break;
 			case TokenTypes.METHOD_DEF:
 			case TokenTypes.CTOR_DEF:
 			case TokenTypes.VARIABLE_DEF:
-				System.out.println("------------- " + getName(ast) + " isApi " + isApi(ast));
-				System.out.println("-----------++ " + getSignature(ast) + " since " + getSince(ast));
+				String signature = getSignature(ast);
 				if (isApi(ast)) {
-					api.add(fullyQualifiedClassName + ":" + getSignature(ast) + ":" + getSince(ast));
+					String since = getSince(ast);
+					api.add(fullyQualifiedClassName + ":" + signature + ":" + since);
+
+					// check that class/interface @since has not changed and mark as encountered
+					VersionAndCheck vac = checkApi.get(fullyQualifiedClassName + ":" + signature);
+					if (null != vac) {
+						if (!since.equals(vac.getVersion())) {
+							log(ast, "wrongMethodSince", vac.getVersion(), since, fullyQualifiedClassName,
+									signature);
+						}
+						vac.setEncountered(true);
+					} else {
+						// check that version is different from class version (indicates added without @since)
+						vac = checkApi.get(fullyQualifiedClassName + ":");
+						if (null != vac && since.equals(vac.getVersion())) {
+							log(ast, "missingMethodSince", fullyQualifiedClassName, signature);
+						}
+					}
 				}
 				break;
 			default:
@@ -267,23 +299,70 @@ public class ApiCompatibilityCheck extends Check {
 
 	@Override
 	public void init() {
-		System.out.println("-----------!! init check");
+		try {
+			File file = new File("src/main/resources/api.txt");
+			if (file.exists()) {
+				BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
+				String line;
+				while (null != (line = reader.readLine())) {
+					if (!line.startsWith("//")) {
+						int pos = line.lastIndexOf(':');
+						checkApi.put(line.substring(0, pos), new VersionAndCheck(line.substring(pos + 1)));
+					}
+				}
+			}
+		} catch (IOException ioe) {
+			log(0, "Cannot read src/main/resources/api.txt, " + ioe.getMessage());
+		}
 	}
 
 	@Override
 	public void destroy() {
+		// output api.txt for comparisons
 		Collections.sort(api);
 		try {
 			File file = new File("target/api.txt");
-			OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(file), "UTF-8");
+			Writer writer = new OutputStreamWriter(new FileOutputStream(file), "UTF-8");
 			for (String line : api) {
 				writer.write(line);
 				writer.write('\n');
 			}
 			writer.close();
 		} catch (IOException ioe) {
-			log(0, "Cannot write api.txt, " + ioe.getMessage());
+			log(0, "Cannot write target/api.txt, " + ioe.getMessage());
 		}
-		System.out.println("-----------!! Stop parsing, output \n" + api);
+
+		String problems = "";
+		// check that all previous API parts have been encountered
+		for (Map.Entry<String, VersionAndCheck> entry : checkApi.entrySet()) {
+			if (!entry.getValue().isEncountered()) {
+				problems += entry.getKey() + '\n';
+			}
+		}
+		if (problems.length() > 0) {
+			throw new RuntimeException("Missing in the API:\n" + problems);
+		}
+	}
+
+	private class VersionAndCheck {
+
+		private String version;
+		private boolean encountered;
+
+		public VersionAndCheck(String version) {
+			this.version = version;
+		}
+
+		public String getVersion() {
+			return version;
+		}
+
+		public boolean isEncountered() {
+			return encountered;
+		}
+
+		public void setEncountered(boolean encountered) {
+			this.encountered = encountered;
+		}
 	}
 }
