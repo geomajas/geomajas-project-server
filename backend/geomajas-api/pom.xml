@@ -59,8 +59,7 @@
 				<artifactId>maven-checkstyle-plugin</artifactId>
 				<version>2.4</version>
 				<configuration>
-					<!--<configLocation>config/geomajas-api-checkstyle.xml</configLocation>-->
-					<configLocation>config/geomajas-api-compatible.xml</configLocation>
+					<configLocation>config/geomajas-api-checkstyle.xml</configLocation>
 				</configuration>
 				<executions>
 					<execution>
@@ -74,8 +73,7 @@
 					<dependency>
 						<groupId>org.geomajas</groupId>
 						<artifactId>geomajas-checkstyle</artifactId>
-						<!-- <version>1.0.3</version>-->
-						<version>1.0.4-SNAPSHOT</version>
+						<version>1.0.3</version>
 					</dependency>
 				</dependencies>
 			</plugin>
