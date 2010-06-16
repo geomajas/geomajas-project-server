@@ -27,6 +27,7 @@ import org.geomajas.example.gwt.client.samples.attribute.AttributeSearchSample;
 import org.geomajas.example.gwt.client.samples.attribute.FeatureListGridSample;
 import org.geomajas.example.gwt.client.samples.attribute.SearchSample;
 import org.geomajas.example.gwt.client.samples.base.SampleTreeNode;
+import org.geomajas.example.gwt.client.samples.controller.CircleControllerSample;
 import org.geomajas.example.gwt.client.samples.controller.ControllerOnElementSample;
 import org.geomajas.example.gwt.client.samples.controller.CustomControllerSample;
 import org.geomajas.example.gwt.client.samples.controller.FallbackControllerSample;
@@ -108,8 +109,8 @@ public final class SampleArray {
 						"[ISOMORPHIC]/geomajas/example/images/silk/world.png", UnitTypesSample.TITLE, "MapWidget",
 						UnitTypesSample.FACTORY),
 				new SampleTreeNode(I18nProvider.getSampleMessages().maxBoundsToggleTitle(),
-						"[ISOMORPHIC]/geomajas/example/images/silk/world.png", MaxBoundsToggleSample.TITLE, "MapWidget",
-						MaxBoundsToggleSample.FACTORY),
+						"[ISOMORPHIC]/geomajas/example/images/silk/world.png", MaxBoundsToggleSample.TITLE,
+						"MapWidget", MaxBoundsToggleSample.FACTORY),
 				new SampleTreeNode(I18nProvider.getSampleMessages().panScaleToggleTitle(),
 						"[ISOMORPHIC]/geomajas/example/images/silk/world.png", PanScaleToggleSample.TITLE, "MapWidget",
 						PanScaleToggleSample.FACTORY),
@@ -181,6 +182,9 @@ public final class SampleArray {
 				new SampleTreeNode(I18nProvider.getSampleMessages().rectangleControllerTitle(),
 						"[ISOMORPHIC]/geomajas/osgeo/tools.png", RectangleControllerSample.TITLE, "MapController",
 						RectangleControllerSample.FACTORY),
+				new SampleTreeNode(I18nProvider.getSampleMessages().circleControllerTitle(),
+						"[ISOMORPHIC]/geomajas/osgeo/tools.png", CircleControllerSample.TITLE, "MapController",
+						CircleControllerSample.FACTORY),
 				new SampleTreeNode(I18nProvider.getSampleMessages().fallbackControllerTitle(),
 						"[ISOMORPHIC]/geomajas/osgeo/tools.png", FallbackControllerSample.TITLE, "MapController",
 						FallbackControllerSample.FACTORY),

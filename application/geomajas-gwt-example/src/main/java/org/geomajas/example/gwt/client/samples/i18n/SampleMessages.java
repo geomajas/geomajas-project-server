@@ -252,6 +252,14 @@ public interface SampleMessages extends Messages {
 
 	String rectangeControllerOutput(double roundedKmWidth, double roundedKmHeight, double roundedArea);
 
+	// Circle controller sample:
+
+	String circleControllerTitle();
+
+	String circleControllerDescription();
+
+	String circleControllerOutput(String area);
+
 	// Fallback controller sample:
 
 	String fallbackControllerTitle();
