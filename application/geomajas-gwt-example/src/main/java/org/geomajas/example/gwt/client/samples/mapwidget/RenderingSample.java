@@ -130,7 +130,7 @@ public class RenderingSample extends SamplePanel {
 		button3.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), group1);
+				map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), group2);
 				GeometryFactory factory = map.getMapModel().getGeometryFactory();
 				LinearRing shell = factory.createLinearRing(new Coordinate[] { new Coordinate(110, 10),
 						new Coordinate(210, 10), new Coordinate(210, 110), new Coordinate(110, 110),
