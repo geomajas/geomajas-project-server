@@ -287,6 +287,7 @@
 		<!-- Verify Geomajas API contract -->
 		<module name="org.geomajas.checkstyle.ApiCompatibilityCheck">
 			<property name="severity" value="error"/>
+			<property name="basedir" value="${basedir}" />
 		</module>
 
 	</module>

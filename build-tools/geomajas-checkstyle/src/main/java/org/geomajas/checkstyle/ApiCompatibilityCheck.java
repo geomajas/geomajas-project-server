@@ -59,6 +59,22 @@ public class ApiCompatibilityCheck extends Check {
 	private boolean isInterface;
 	private String classSince;
 
+	private String basedir;
+	private String checkInputFile = "src/main/resources/api.txt";
+	private String checkOutputFile = "target/api.txt";
+
+	public void setBasedir(String basedir) {
+		this.basedir = basedir;
+	}
+
+	public void setCheckInputFile(String checkInputFile) {
+		this.checkInputFile = checkInputFile;
+	}
+
+	public void setCheckOutputFile(String checkOutputFile) {
+		this.checkOutputFile = checkOutputFile;
+	}
+
 	@Override
 	public int[] getDefaultTokens() {
 		return getAcceptableTokens();
@@ -66,7 +82,7 @@ public class ApiCompatibilityCheck extends Check {
 
 	@Override
 	public int[] getAcceptableTokens() {
-		return new int[] {
+		return new int[]{
 				TokenTypes.PACKAGE_DEF,
 				TokenTypes.CLASS_DEF,
 				TokenTypes.INTERFACE_DEF,
@@ -197,10 +213,7 @@ public class ApiCompatibilityCheck extends Check {
 					returnType += "final ";
 				}
 			}
-			DetailAST returnAst = ast.findFirstToken(TokenTypes.TYPE);
-			if (null != returnAst) {
-				returnType += returnAst.getFirstChild().getText() + " ";
-			}
+			returnType += getTypeAsString(ast.findFirstToken(TokenTypes.TYPE)) + " ";
 		}
 		if (TokenTypes.METHOD_DEF == ast.getType() || TokenTypes.CTOR_DEF == ast.getType()) {
 			DetailAST parametersAst = ast.findFirstToken(TokenTypes.PARAMETERS);
@@ -208,10 +221,7 @@ public class ApiCompatibilityCheck extends Check {
 				DetailAST check = parametersAst.getFirstChild();
 				while (null != check) {
 					if (TokenTypes.PARAMETER_DEF == check.getType()) {
-						DetailAST typeAst = ast.findFirstToken(TokenTypes.TYPE);
-						if (null != typeAst) {
-							parameters += typeAst.getFirstChild().getText() + ", ";
-						}
+						parameters += getTypeAsString(check.findFirstToken(TokenTypes.TYPE)) + ", ";
 					}
 					check = check.getNextSibling();
 				}
@@ -219,6 +229,34 @@ public class ApiCompatibilityCheck extends Check {
 			}
 		}
 		return returnType + name + parameters;
+	}
+
+	private String getTypeAsString(DetailAST typeAst) {
+		String type = "";
+		if (null != typeAst) {
+			DetailAST ast = typeAst.getFirstChild();
+			if (TokenTypes.ARRAY_DECLARATOR == ast.getType()) {
+				type += getTypeAsString(ast);
+				type += "[]";
+			} else {
+				type += ast.getText();
+				if (TokenTypes.IDENT == ast.getType()) {
+					ast = ast.getNextSibling();
+					if (null != ast && TokenTypes.TYPE_ARGUMENTS == ast.getType()) {
+						DetailAST genAst = ast.getFirstChild();
+						while (null != genAst) {
+							if (TokenTypes.TYPE_ARGUMENT == genAst.getType()) {
+								type += getTypeAsString(genAst);
+							} else {
+								type += genAst.getText();
+							}
+							genAst = genAst.getNextSibling();
+						}
+					}
+				}
+			}
+		}
+		return type;
 	}
 
 	private void checkClassAnnotation(DetailAST ast) {
@@ -300,12 +338,12 @@ public class ApiCompatibilityCheck extends Check {
 	@Override
 	public void init() {
 		try {
-			File file = new File("src/main/resources/api.txt");
+			File file = new File(basedir, checkInputFile);
 			if (file.exists()) {
 				BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), "UTF-8"));
 				String line;
 				while (null != (line = reader.readLine())) {
-					if (!line.startsWith("//")) {
+					if (line.length() > 0 && !line.startsWith("//")) {
 						int pos = line.lastIndexOf(':');
 						checkApi.put(line.substring(0, pos), new VersionAndCheck(line.substring(pos + 1)));
 					}
@@ -321,7 +359,7 @@ public class ApiCompatibilityCheck extends Check {
 		// output api.txt for comparisons
 		Collections.sort(api);
 		try {
-			File file = new File("target/api.txt");
+			File file = new File(basedir, checkOutputFile);
 			Writer writer = new OutputStreamWriter(new FileOutputStream(file), "UTF-8");
 			for (String line : api) {
 				writer.write(line);
