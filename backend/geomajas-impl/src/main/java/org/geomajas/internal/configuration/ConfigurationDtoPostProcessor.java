@@ -22,7 +22,10 @@
  */
 package org.geomajas.internal.configuration;
 
+import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
@@ -42,6 +45,7 @@ import org.geomajas.layer.Layer;
 import org.geomajas.layer.LayerException;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
+import org.geomajas.spring.ResolutionFormatterFactory;
 import org.geotools.geometry.jts.JTS;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
@@ -117,6 +121,23 @@ public class ConfigurationDtoPostProcessor {
 					postProcess((ClientVectorLayerInfo) layer);
 				}
 			}
+			if (map.getMaximumResolution() != 0) {
+				map.setMaximumResolution(map.getMaximumResolution() / map.getPixelLength());
+			} else if (map.getMaximumScale() != 0) {
+				map.setMaximumResolution(map.getMaximumScale());
+			}
+			if (map.getAllowedResolutions() != null && map.getAllowedResolutions().size() > 0) {
+				try {
+					List<Double> resolutions = new ArrayList<Double>();
+					for (String text : map.getAllowedResolutions()) {
+						Double resolution = ResolutionFormatterFactory.parseResolution(text);
+						resolutions.add(map.getPixelLength() / resolution);
+					}
+					map.setResolutions(resolutions);
+				} catch (ParseException e) {
+					throw new LayerException(e);
+				}
+			}
 		}
 		return client;
 	}
@@ -170,8 +191,8 @@ public class ConfigurationDtoPostProcessor {
 			Envelope serverEnvelope = converterService.toInternal(serverBbox);
 			MathTransform transformer = geoService.findMathTransform(layerCrs, mapCrs);
 			Bbox res = converterService.toDto(JTS.transform(serverEnvelope, transformer));
-			if (Double.isNaN(res.getX()) || Double.isNaN(res.getY()) ||
-					Double.isNaN(res.getWidth()) || Double.isNaN(res.getHeight())) {
+			if (Double.isNaN(res.getX()) || Double.isNaN(res.getY()) || Double.isNaN(res.getWidth())
+					|| Double.isNaN(res.getHeight())) {
 				throw new LayerException(ExceptionCode.LAYER_EXTENT_CANNOT_CONVERT, layer, mapCrsKey);
 			}
 			return res;

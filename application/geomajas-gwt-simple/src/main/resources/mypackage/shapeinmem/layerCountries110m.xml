@@ -36,10 +36,14 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 		<property name="crs" value="EPSG:4326"/>
 		<property name="maxExtent">
 			<bean class="org.geomajas.geometry.Bbox">
-                <property name="x" value="-181"/>
-                <property name="y" value="-91"/>
-                <property name="width" value="362"/>
-                <property name="height" value="181"/>
+                <property name="x" value="-170"/>
+                <property name="y" value="-85.05112877980659"/>
+                <property name="width" value="340"/>
+                <property name="height" value="170.10225755961318"/>
+                <!--property name="x" value="-180"/>
+                <property name="y" value="-90"/>
+                <property name="width" value="360"/>
+                <property name="height" value="180"/-->
 			</bean>
 		</property>
 		<property name="featureInfo" ref="countries110mFeatureInfo" />

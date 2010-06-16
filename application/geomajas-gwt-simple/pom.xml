@@ -108,6 +108,11 @@
 			<artifactId>geomajas-layer-wms</artifactId>
 			<version>${geomajas-layer-wms-version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-layer-openstreetmap</artifactId>
+			<version>${geomajas-layer-openstreetmap-version}</version>
+		</dependency>
 
 		<!-- @extract-start HibernateLayerDependency, Hibernate layer dependency -->
 		<dependency>
@@ -374,6 +379,7 @@
 		<geomajas-layer-hibernate-version>1.7.0-SNAPSHOT</geomajas-layer-hibernate-version>
 		<geomajas-layer-google-version>1.7.0-SNAPSHOT</geomajas-layer-google-version>
 		<geomajas-layer-wms-version>1.7.0-SNAPSHOT</geomajas-layer-wms-version>
+		<geomajas-layer-openstreetmap-version>1.7.0-SNAPSHOT</geomajas-layer-openstreetmap-version>
 		<gwt-version>2.0.3</gwt-version>
 		<slf4j-version>1.6.0</slf4j-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

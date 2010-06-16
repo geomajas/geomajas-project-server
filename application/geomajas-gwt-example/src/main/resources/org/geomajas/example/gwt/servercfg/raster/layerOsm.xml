@@ -42,7 +42,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 				<property name="height" value="40052752.787419834"/>
 			</bean>
 		</property>
-        <property name="resolutions">
+        <!--property name="resolutions">
             <list>
                 <value>156543.03</value>
                 <value>78271.52</value>
@@ -63,7 +63,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
                 <value>2.38865713</value>
                 <value>1.19432857</value>
             </list>
-        </property>
+        </property-->
         <property name="tileWidth" value="256"/>
         <property name="tileHeight" value="256"/>
  	</bean>

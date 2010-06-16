@@ -47,7 +47,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		<property name="crs" value="EPSG:900913" />
 		<property name="scaleBarEnabled" value="true" />
 		<property name="panButtonsEnabled" value="true" />
-		<property name="maximumScale" value="9.5" />
+		<property name="maximumResolution" value="1:100" />
 		<property name="initialBounds">
 			<bean class="org.geomajas.geometry.Bbox">
 				<property name="x" value="-20026376.393709917" />
@@ -56,26 +56,26 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 				<property name="height" value="40052752.787419834" />
 			</bean>
 		</property>
-        <property name="resolutions">
+        <property name="allowedResolutions">
             <list>
-                <value>156543.03</value>
-                <value>78271.52</value>
-                <value>39135.76</value>
-                <value>19567.88</value>
-                <value>9783.94</value>
-                <value>4891.97</value>
-                <value>2445.98</value>
-                <value>1222.99</value>
-                <value>611.49</value>
-                <value>305.75</value>
-                <value>152.874057</value>
-                <value>76.4370283</value>
-                <value>38.2185141</value>
-                <value>19.1092571</value>
-                <value>9.55462853</value>
-                <value>4.77731427</value>
-                <value>2.38865713</value>
-                <value>1.19432857</value>
+                <value>1:222000000</value>
+                <value>1:111000000</value>
+                <value>1:55000000</value>
+                <value>1:28000000</value>
+                <value>1:14000000</value>
+                <value>1:7000000</value>
+                <value>1:3000000</value>
+                <value>1:2000000</value>
+                <value>1:867000</value>
+                <value>1:433000</value>
+                <value>1:217000</value>
+                <value>1:108000</value>
+                <value>1:54000</value>
+                <value>1:27000</value>
+                <value>1:14000</value>
+                <value>1:6771</value>
+                <value>1:3385</value>
+                <value>1:1693</value>
             </list>
         </property>
 		<property name="layers">

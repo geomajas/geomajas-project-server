@@ -104,7 +104,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 		<property name="featureStyles">
             <list>
                 <bean class="org.geomajas.configuration.FeatureStyleInfo">
-                    <property name="name" value="Large Countries"/>
+                    <property name="name" value="Countries: population > 100mil"/>
                     <property name="formula" value="(PEOPLE > 100000000)"/>
                     <property name="fillColor" value="#3333FF"/>
                     <property name="fillOpacity" value=".6"/>
@@ -113,7 +113,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
                     <property name="strokeWidth" value="1"/>
                 </bean>
                 <bean class="org.geomajas.configuration.FeatureStyleInfo">
-                    <property name="name" value="Medium Sized Countries"/>
+                    <property name="name" value="Countries: population > 50mil"/>
                     <property name="formula" value="(PEOPLE > 50000000)"/>
                     <property name="fillColor" value="#6666FF"/>
                     <property name="fillOpacity" value=".6"/>
@@ -122,7 +122,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
                     <property name="strokeWidth" value="1"/>
                 </bean>
                 <bean class="org.geomajas.configuration.FeatureStyleInfo">
-                    <property name="name" value="Small to medium Sized Countries"/>
+                    <property name="name" value="Countries: population > 10mil"/>
                     <property name="formula" value="(PEOPLE > 10000000)"/>
                     <property name="fillColor" value="#9999FF"/>
                     <property name="fillOpacity" value=".6"/>
@@ -131,7 +131,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
                     <property name="strokeWidth" value="1"/>
                 </bean>
                 <bean class="org.geomajas.configuration.FeatureStyleInfo">
-                    <property name="name" value="Small Countries"/>
+                    <property name="name" value="Countries: population &lt; 10mil"/>
                     <property name="fillColor" value="#CCCCFF"/>
                     <property name="fillOpacity" value=".6"/>
                     <property name="strokeColor" value="#000033"/>

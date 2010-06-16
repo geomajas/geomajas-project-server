@@ -30,6 +30,8 @@
  			org.geomajas.layer.osm.OsmLayer
  			org.geomajas.layer.wms.WmsLayer
  			org.geotools.referencing.crs.EPSGCRSAuthorityFactory
+			org.springframework.web.servlet.config.MvcNamespaceHandler
+			org.springframework.transaction.config.TxNamespaceHandler
        </param-value>
     </context-param>
 

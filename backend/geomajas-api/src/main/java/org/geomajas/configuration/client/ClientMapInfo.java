@@ -31,6 +31,7 @@ import javax.validation.constraints.NotNull;
 import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.global.Api;
+import org.geomajas.global.ResolutionFormat;
 
 /**
  * Map configuration.
@@ -64,13 +65,18 @@ public class ClientMapInfo implements Serializable {
 
 	private UnitType displayUnitType = UnitType.METRIC;
 
-	@NotNull
 	private float maximumScale;
+
+	// @NotNull
+	@ResolutionFormat
+	private double maximumResolution;
 
 	@NotNull
 	private Bbox initialBounds;
 
 	private List<Double> resolutions;
+
+	private List<String> allowedResolutions;
 
 	private boolean resolutionsRelative;
 
@@ -101,7 +107,8 @@ public class ClientMapInfo implements Serializable {
 	 * Set the id of this map (auto-set by spring). The id must not be globally unique, but must be unique within the
 	 * application.
 	 * 
-	 * @param id id
+	 * @param id
+	 *            id
 	 */
 	public void setId(String id) {
 		this.id = id;
@@ -282,8 +289,10 @@ public class ClientMapInfo implements Serializable {
 	 * Returns the maximum scale (maximum zoom in) of this map. The minimum scale is indirectly determined from the
 	 * maximum bounds.
 	 * 
+	 * @deprecated Use maximumZoomScale instead. This value has been deprecated since 1.7.0.
 	 * @return the maximum scale (pixels/unit)
 	 */
+	@Deprecated
 	public float getMaximumScale() {
 		return maximumScale;
 	}
@@ -291,9 +300,11 @@ public class ClientMapInfo implements Serializable {
 	/**
 	 * Set maximum scale (maximum zoom in) of this map.
 	 * 
+	 * @deprecated Use maximumZoomScale instead. This value has been deprecated since 1.7.0.
 	 * @param maximumScale
 	 *            the maximum scale (pixels/unit)
 	 */
+	@Deprecated
 	public void setMaximumScale(float maximumScale) {
 		this.maximumScale = maximumScale;
 	}
@@ -312,7 +323,8 @@ public class ClientMapInfo implements Serializable {
 	 * Set the startup bounds/extent of this map. Warning: the map's view will be fitted to the initial bounds, but the
 	 * view's aspect ratio will not be affected !
 	 * 
-	 * @param initialBounds initial bounds
+	 * @param initialBounds
+	 *            initial bounds
 	 */
 	public void setInitialBounds(Bbox initialBounds) {
 		this.initialBounds = initialBounds;
@@ -322,6 +334,9 @@ public class ClientMapInfo implements Serializable {
 	 * Returns the list of resolutions (inverse scale values) allowed by this map. This determines the predefined scale
 	 * levels at which this map will be shown. If this list is non-empty, the map will not adjust to arbitrary scale
 	 * levels but will instead snap to one of the scale levels defined in this list when zooming.
+	 * <p>
+	 * Note that there is an alternative (allowedResolutions) wherein one can use the 1:x format. The
+	 * <code>allowedResolutions</code> is usually the way to go.
 	 * 
 	 * @return a list of resolutions (unit/pixel or pure number if relative)
 	 */
@@ -336,6 +351,9 @@ public class ClientMapInfo implements Serializable {
 	 * Sets the list of resolutions (inverse scale values) allowed by this map. This determines the predefined scale
 	 * levels at which this map will be shown. If this list is non-empty, the map will not adjust to arbitrary scale
 	 * levels but will instead snap to one of the scale levels defined in this list when zooming.
+	 * <p>
+	 * Note that there is an alternative (allowedResolutions) wherein one can use the 1:x format. The
+	 * <code>allowedResolutions</code> is usually the way to go.
 	 * 
 	 * @param resolutions
 	 *            a list of resolutions (unit/pixel or pure number if relative)
@@ -481,7 +499,8 @@ public class ClientMapInfo implements Serializable {
 	}
 
 	/**
-	 * Get the custom configuration data.
+	 * Get the custom configuration data. The idea is that you extend this object, so that you can store any information
+	 * you want.
 	 * 
 	 * @return custom configuration data
 	 */
@@ -490,12 +509,59 @@ public class ClientMapInfo implements Serializable {
 	}
 
 	/**
-	 * Set the custom configuration data you wish to pass to the client.
+	 * Set the custom configuration data you wish to pass to the client. The idea is that you extend this object, so
+	 * that you can store any information you want.
 	 * 
 	 * @param userData
 	 *            Custom configuration data
 	 */
 	public void setUserData(ClientUserDataInfo userData) {
 		this.userData = userData;
+	}
+
+	/**
+	 * @since 1.7.0 Added to replace the maximumScale.
+	 * @return Returns the maximum resolution (maximum zoom in) of this map. The minimum resolution is indirectly
+	 *         determined from the maximum bounds. It uses the standard 1:x format.
+	 */
+	public double getMaximumResolution() {
+		return maximumResolution;
+	}
+
+	/**
+	 * Sets the maximum scale (maximum zoom in) of this map. The minimum resolution is indirectly determined from the
+	 * maximum bounds. It uses the standard 1:x format.
+	 * 
+	 * @since 1.7.0 Added to replace the maximumScale.
+	 * @param maximumResolution
+	 *            The new maximum resolution.
+	 */
+	public void setMaximumResolution(double maximumResolution) {
+		this.maximumResolution = maximumResolution;
+	}
+
+	/**
+	 * Returns the list of predefined scale levels allowed by this map. If this list is non-empty, the map will not
+	 * adjust to arbitrary scale levels but will instead snap to one of the scale levels defined in this list when
+	 * zooming.
+	 * 
+	 * @since 1.7.0 Added as a better alternative than <code>resolutions</code>.
+	 * @return a list of scale levels (1:x format)
+	 */
+	public List<String> getAllowedResolutions() {
+		return allowedResolutions;
+	}
+
+	/**
+	 * Returns the list of predefined scale levels allowed by this map. If this list is non-empty, the map will not
+	 * adjust to arbitrary scale levels but will instead snap to one of the scale levels defined in this list when
+	 * zooming.
+	 * 
+	 * @since 1.7.0 Added as a better alternative than <code>resolutions</code>.
+	 * @param allowedResolutions
+	 *            The list of allowed resolutions (1:x format)
+	 */
+	public void setAllowedResolutions(List<String> allowedResolutions) {
+		this.allowedResolutions = allowedResolutions;
 	}
 }

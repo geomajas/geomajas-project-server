@@ -57,11 +57,11 @@ public class FeatureListGridPage extends AbstractTab {
 		buttonLayout.setHeight(25);
 
 		// Create a button to show the "structures" objects into a FeatureGrid:
-		IButton button1 = new IButton("Show structures");
+		IButton button1 = new IButton("Show countries");
 		button1.addClickHandler(new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				VectorLayer layer = (VectorLayer) getMap().getMapModel().getLayer("structuresLayer");
+				VectorLayer layer = (VectorLayer) getMap().getMapModel().getLayer("countries110mLayer");
 				table.setLayer(layer);
 				layer.getFeatureStore().getFeatures(GeomajasConstant.FEATURE_INCLUDE_ALL, new LazyLoadCallback() {
 
@@ -76,27 +76,6 @@ public class FeatureListGridPage extends AbstractTab {
 		});
 		button1.setWidth(120);
 		buttonLayout.addMember(button1);
-
-		// Create a button to show the "roads" objects into a FeatureGrid:
-		IButton button1a = new IButton("Show roads");
-		button1a.addClickHandler(new ClickHandler() {
-
-			public void onClick(ClickEvent event) {
-				VectorLayer layer = (VectorLayer) getMap().getMapModel().getLayer("roadsLayer");
-				table.setLayer(layer);
-				layer.getFeatureStore().getFeatures(GeomajasConstant.FEATURE_INCLUDE_ALL, new LazyLoadCallback() {
-
-					// Add all the features currently in the layer's FeatureStore to the grid:
-					public void execute(List<Feature> response) {
-						for (Feature feature : response) {
-							table.addFeature(feature);
-						}
-					}
-				});
-			}
-		});
-		button1a.setWidth(110);
-		buttonLayout.addMember(button1a);
 		mainLayout.addMember(buttonLayout);
 
 		// Create the FeatureGrid that shows alpha-numerical attributes of features:

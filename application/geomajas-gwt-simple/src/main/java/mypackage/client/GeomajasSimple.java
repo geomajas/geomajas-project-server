@@ -125,7 +125,6 @@ public class GeomajasSimple implements EntryPoint {
 			public void onMapModelChange(MapModelEvent event) {
 				toolbar.addToolbarSeparator();
 				ScaleSelect scale = new ScaleSelect(map.getMapModel().getMapView(), map.getPixelLength());
-				scale.setScales(0.01, 0.001, 0.0001);
 				toolbar.addMember(scale);
 			}
 		});
@@ -152,7 +151,7 @@ public class GeomajasSimple implements EntryPoint {
 		// Create the right-side (overview map, layer-tree, legend):
 		// ---------------------------------------------------------------------
 		VLayout rightLayout = new VLayout();
-		rightLayout.setSize("250px", "100%");
+		rightLayout.setSize("240px", "100%");
 		rightLayout.setMembersMargin(5);
 
 		// Overview map layout:
