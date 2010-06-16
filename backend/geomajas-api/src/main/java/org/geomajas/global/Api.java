@@ -44,7 +44,8 @@ import java.lang.annotation.Target;
  * @author Joachim Van der Auwera
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ ElementType.TYPE, ElementType.METHOD, ElementType.CONSTRUCTOR, ElementType.ANNOTATION_TYPE })
+@Target({ ElementType.TYPE, ElementType.METHOD, ElementType.CONSTRUCTOR, ElementType.LOCAL_VARIABLE,
+		ElementType.ANNOTATION_TYPE })
 @Documented
 @Inherited
 public @interface Api {

@@ -32,6 +32,7 @@ import javax.servlet.ServletContext;
  * Utility class to obtain the (Spring) applicationContext from the servlet.
  *
  * @author Joachim Van der Auwera
+ * @since 1.7.0
  */
 @Api(allMethods = true)
 public final class ApplicationContextUtil {

@@ -1,0 +1,11 @@
+// geomajas-api-experimental module API, 1.6.0
+org.geomajas.rendering.RenderException::1.6.0
+org.geomajas.rendering.RenderException:RenderException():1.6.0
+org.geomajas.rendering.RenderException:RenderException(Exception, ):1.6.0
+org.geomajas.rendering.RenderException:RenderException(Throwable, int, ):1.6.0
+org.geomajas.rendering.RenderException:RenderException(Throwable, int, Object, ):1.6.0
+org.geomajas.rendering.RenderException:RenderException(int, ):1.6.0
+org.geomajas.rendering.RenderException:RenderException(int, Object, ):1.6.0
+org.geomajas.rendering.StyleFilter::1.6.0
+org.geomajas.rendering.StyleFilter:FeatureStyleInfo getStyleDefinition():1.6.0
+org.geomajas.rendering.StyleFilter:Filter getFilter():1.6.0

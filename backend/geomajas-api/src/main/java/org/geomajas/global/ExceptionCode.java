@@ -98,8 +98,20 @@ public interface ExceptionCode {
 	int MERGE_NO_POLYGON = 61;
 	int PARAMETER_MISSING = 62;
 	int CREDENTIALS_MISSING_OR_INVALID = 63;
+
+	/**
+	 * @since 1.7.0
+	 */
 	int CANNOT_CONVERT_GEOMETRY = 64;
+
+	/**
+	 * @since 1.7.0
+	 */
 	int LAYER_EXTENT_CANNOT_CONVERT = 65;
+
+	/**
+	 * @since 1.7.0
+	 */
 	int PIPELINE_UNSATISFIED_EXTENSION = 66;
 
 }

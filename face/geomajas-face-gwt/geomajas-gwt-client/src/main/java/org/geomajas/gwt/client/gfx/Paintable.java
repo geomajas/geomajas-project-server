@@ -35,6 +35,7 @@ import org.geomajas.gwt.client.spatial.Bbox;
  * 
  * @author Pieter De Graef
  * @author Jan De Moerloose
+ * @since 1.6.0
  */
 @Api
 public interface Paintable {

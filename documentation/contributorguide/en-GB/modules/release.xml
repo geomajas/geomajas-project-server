@@ -32,8 +32,26 @@
   individual release cycles.</para>
 
   <para>This chapter tries to explain how to release any of these modules. The
-  procedure is similar for all moduies, but there are some specific checks to
-  be done which only apply for certain parts..</para>
+  procedure is similar for all modules, but there are some specific checks to
+  be done which only apply for certain parts.</para>
+
+  <para>As the releases are done to the Sonatype's nexus repository for open
+  source projects (which is synced to Maven Central), the following references
+  are a required read:</para>
+
+  <para><itemizedlist>
+      <listitem>
+        <para><ulink
+        url="https://docs.sonatype.org/display/Repository/Sonatype+OSS+Maven+Repository+Usage+Guide">Sonatype
+        OSS Maven Repository Usage Guide</ulink></para>
+      </listitem>
+
+      <listitem>
+        <para><ulink
+        url="http://www.sonatype.com/people/2010/01/how-to-generate-pgp-signatures-with-maven/">How
+        to Generate PGP Signatures with Maven</ulink></para>
+      </listitem>
+    </itemizedlist></para>
 
   <para></para>
 

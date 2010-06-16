@@ -33,6 +33,7 @@ import org.geomajas.global.Api;
  * </p>
  * 
  * @author Pieter De Graef
+ * @since 1.6.0
  */
 @Api
 public interface Painter {

@@ -41,12 +41,39 @@ public class Geometry implements Serializable {
 
 	private static final long serialVersionUID = -6330507241114727324L;
 
+	/**
+	 * @since 1.7.0
+	 */
 	public static final String POINT = "Point";
+
+	/**
+	 * @since 1.7.0
+	 */
 	public static final String MULTI_POINT = "MultiPoint";
+
+	/**
+	 * @since 1.7.0
+	 */
 	public static final String LINE_STRING = "LineString";
+
+	/**
+	 * @since 1.7.0
+	 */
 	public static final String MULTI_LINE_STRING = "MultiLineString";
+
+	/**
+	 * @since 1.7.0
+	 */
 	public static final String LINEAR_RING = "LinearRing";
+
+	/**
+	 * @since 1.7.0
+	 */
 	public static final String POLYGON = "Polygon";
+
+	/**
+	 * @since 1.7.0
+	 */
 	public static final String MULTI_POLYGON = "MultiPolygon";
 
 	private String geometryType;

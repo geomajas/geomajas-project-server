@@ -30,6 +30,7 @@ import org.geomajas.global.Api;
  * Sample command response class.
  *
  * @author Joachim Van der Auwera
+ * @since 1.6.0
  */
 @Api
 public class MySuperDoItResponse extends CommandResponse {

@@ -30,6 +30,7 @@ import org.geomajas.global.Api;
  * Sample command request class.
  *
  * @author Joachim Van der Auwera
+ * @since 1.6.0
  */
 @Api
 public class MySuperDoItRequest implements CommandRequest {

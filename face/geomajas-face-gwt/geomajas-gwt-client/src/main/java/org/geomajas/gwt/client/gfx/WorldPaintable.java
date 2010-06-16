@@ -39,6 +39,7 @@ import org.geomajas.gwt.client.spatial.WorldViewTransformer;
  * </p>
  * 
  * @author Pieter De Graef
+ * @since 1.6.0
  */
 @Api
 public interface WorldPaintable extends Paintable {

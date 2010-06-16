@@ -135,6 +135,7 @@ public class PipelineInfo<RESPONSE> {
 	 * Get set of steps which need to be weaved at the extension hooks.
 	 *
 	 * @return map of hook name and pipeline step
+	 * @since 1.7.0
 	 */
 	public Map<String, PipelineStep<RESPONSE>> getExtensions() {
 		return extensions;
@@ -144,6 +145,7 @@ public class PipelineInfo<RESPONSE> {
 	 * Set the set of steps which need to be weaved at the extension hooks.
 	 *
 	 * @param extensions map of hook name and pipeline step
+	 * @since 1.7.0
 	 */
 	public void setExtensions(Map<String, PipelineStep<RESPONSE>> extensions) {
 		this.extensions = extensions;
