@@ -51,6 +51,7 @@ import com.google.gwt.event.shared.HandlerRegistration;
  * </p>
  * 
  * @author Pieter De Graef
+ * @author Oliver May
  * @since 1.6.0
  */
 @Api
@@ -225,11 +226,35 @@ public class MapView {
 	 *            zoom option, {@link org.geomajas.gwt.client.map.MapView.ZoomOption}
 	 */
 	public void setCurrentScale(final double newScale, final ZoomOption option) {
+		setCurrentScale(newScale, option, camera.getPosition());
+	}
+	
+	/**
+	 * Apply a new scale level on the map. In case the are fixed resolutions defined on this MapView, it will
+	 * automatically snap to the nearest resolution. In case the maximum extents are exceeded, it will pan to avoid
+	 * this. 
+	 * 
+	 * @param newScale
+	 *            The preferred new scale.
+	 * @param option
+	 *            zoom option, {@link org.geomajas.gwt.client.map.MapView.ZoomOption}
+	 * @param rescalePoint
+	 *            After zooming, this point will still be on the same position in the view as before.
+	 */
+	public void setCurrentScale(final double newScale, final ZoomOption option, final Coordinate rescalePoint) {
 		pushPanData();
 		// calculate theoretical new bounds
 		Coordinate center = camera.getPosition();
 		Bbox newBbox = new Bbox(0, 0, getWidth() / newScale, getHeight() / newScale);
+
+		double factor = newScale / getCurrentScale();
+
+		//Calculate translate vector to assure rescalePoint is on the same position as before.
+		double dX = (rescalePoint.getX() - center.getX()) * (1 - 1 / factor);
+		double dY = (rescalePoint.getY() - center.getY()) * (1 - 1 / factor);
+
 		newBbox.setCenterPoint(center);
+		newBbox.translate(dX, dY);
 		// and apply...
 		doApplyBounds(newBbox, option);
 	}
@@ -294,6 +319,19 @@ public class MapView {
 	 */
 	public void scale(double delta, ZoomOption option) {
 		setCurrentScale(currentScale * delta, option);
+	}
+
+	/**
+	 * Adjust the current scale on the map by a new factor, keeping a coordinate in place.
+	 * 
+	 * @param delta
+	 *            Adjust the scale by factor "delta".
+	 * @param center
+	 * 		      Keep this coordinate on the same position as before.
+	 *     
+	 */
+	public void scale(double delta, ZoomOption option, Coordinate center) {
+		setCurrentScale(currentScale * delta, option, center);
 	}
 
 	//-------------------------------------------------------------------------

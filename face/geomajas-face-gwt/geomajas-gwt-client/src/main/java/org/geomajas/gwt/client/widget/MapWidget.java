@@ -107,6 +107,7 @@ import com.smartgwt.client.widgets.menu.Menu;
  * </p>
  * 
  * @author Pieter De Graef
+ * @author Oliver May
  * @since 1.6.0
  */
 @Api
@@ -208,6 +209,21 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 		 */
 		DELETE
 	}
+	
+	/**
+	 * Types of scroll on zoom. 
+	 */
+	public static enum ScrollZoomType {
+		/**
+		 * When scroll zooming, retain the center of the map position.
+		 */
+		ZOOM_CENTER,
+		/**
+		 * When scroll zooming, retain the mouse position.
+		 */
+		ZOOM_POSITION
+	}
+	
 
 	// -------------------------------------------------------------------------
 	// Constructor:
@@ -895,16 +911,41 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	/**
 	 * Controller that allows for zooming when scrolling the mouse wheel.
 	 * 
+	 * Default the controller will scroll retaining mouse position.
+	 * 
 	 * @author Pieter De Graef
+	 * @author Oliver May
 	 */
 	private class ZoomOnScrollController implements MouseWheelHandler {
 
+		private ScrollZoomType zoomType = ScrollZoomType.ZOOM_POSITION;
+		
 		public void onMouseWheel(MouseWheelEvent event) {
 			if (event.isNorth()) {
-				mapModel.getMapView().scale(2.0f, MapView.ZoomOption.LEVEL_CHANGE);
+				if (zoomType == ScrollZoomType.ZOOM_POSITION) {
+					mapModel.getMapView().scale(2.0f, MapView.ZoomOption.LEVEL_CHANGE, 
+							mapModel.getMapView().getWorldViewTransformer().viewToWorld(
+									new Coordinate(event.getX(), event.getY())));
+				} else {
+					mapModel.getMapView().scale(2.0f, MapView.ZoomOption.LEVEL_CHANGE);
+				}
 			} else {
-				mapModel.getMapView().scale(0.5f, MapView.ZoomOption.LEVEL_CHANGE);
+				if (zoomType == ScrollZoomType.ZOOM_POSITION) {
+					mapModel.getMapView().scale(0.5f, MapView.ZoomOption.LEVEL_CHANGE, 
+							mapModel.getMapView().getWorldViewTransformer().viewToWorld(
+									new Coordinate(event.getX(), event.getY())));
+				} else {
+					mapModel.getMapView().scale(0.5f, MapView.ZoomOption.LEVEL_CHANGE);
+				}
 			}
+		}
+
+		public void setZoomType(ScrollZoomType zoomType) {
+			this.zoomType = zoomType;
+		}
+
+		public ScrollZoomType getZoomType() {
+			return zoomType;
 		}
 	}
 
