@@ -525,7 +525,8 @@
           <para>The following table describes the properties of the
           <code>VectorLayerInfo</code> object:</para>
 
-          <para><table>
+          <para>
+            <table>
               <title>VectorLayer info</title>
 
               <tgroup cols="2">
@@ -583,7 +584,8 @@
                   </row>
                 </tbody>
               </tgroup>
-            </table></para>
+            </table>
+          </para>
 
           <para>The feature metadata can be found in the
           <code>FeatureInfo</code> object. This objects contains the complete
@@ -788,6 +790,17 @@
         enabled.</para>
 
         <xi:include href="../listing/ClientMapInfoPart2.xml"
+                    xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+        <para>Optionally, you can include a fixed set of resolutions (scale
+        levels) that you want the map to force onto the user. By doing so, no
+        other scales will be available, but the allowed ones. Typically this
+        is done to make sure that the scales that are being used in an
+        application, are the same of those of the raster layer(s) that lies
+        beneath. Otherwise the raster images may get distorted when they need
+        to be resized.</para>
+
+        <xi:include href="../listing/ClientMapInfoPart5.xml"
                     xmlns:xi="http://www.w3.org/2001/XInclude" />
 
         <para>A map typically also contains a tool bar. If you want one, you
@@ -2121,7 +2134,8 @@
       intermediate package (between "command" and the class name) and the
       class name itself. Some examples:</para>
 
-      <para><table>
+      <para>
+        <table>
           <title>Samples of command name resolution</title>
 
           <tgroup cols="2">
@@ -2183,7 +2197,8 @@
               </row>
             </tbody>
           </tgroup>
-        </table></para>
+        </table>
+      </para>
 
       <para>You have to include a line in your Spring configuration to scan
       class files for annotation to make the components available. For the
@@ -2230,7 +2245,8 @@
       <xi:include href="../listing/StaticSecurityDependency.xml"
                   xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-      <para><note>
+      <para>
+        <note>
           <para>When using a separate module for your commands and trying to
           run your project from eclipse, it is quite likely to have problems
           with your commands not being found. When checking the output
@@ -2243,7 +2259,8 @@
 
           <xi:include href="../listing/PreloadToPrepareScanning.xml"
                       xmlns:xi="http://www.w3.org/2001/XInclude" />
-        </note></para>
+        </note>
+      </para>
     </section>
   </chapter>
 
