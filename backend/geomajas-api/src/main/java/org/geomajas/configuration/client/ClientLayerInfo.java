@@ -307,7 +307,7 @@ public abstract class ClientLayerInfo implements Serializable {
 	 * Set the maximum resolution for which this layer should be visible (maximum zoom in). This value uses the (1:x)
 	 * format.
 	 * 
-	 * @param viewScaleMax
+	 * @param minimumResolution
 	 *            maximum resolution in (1:x) format.
 	 * @since 1.7.0 Replaces the <code>viewScaleMin</code> value.
 	 */
