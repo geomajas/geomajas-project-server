@@ -23,6 +23,7 @@
 
 package org.geomajas.example.gwt.client.samples.controller;
 
+import com.google.gwt.i18n.client.NumberFormat;
 import org.geomajas.example.gwt.client.samples.base.SamplePanel;
 import org.geomajas.example.gwt.client.samples.base.SamplePanelFactory;
 import org.geomajas.example.gwt.client.samples.i18n.I18nProvider;
@@ -77,9 +78,12 @@ public class CustomControllerSample extends SamplePanel {
 			public void onMouseMove(MouseMoveEvent event) {
 				Coordinate screenPosition = getScreenPosition(event);
 				Coordinate worldPosition = getWorldPosition(event);
+				String x = NumberFormat.getFormat("0.000").format(worldPosition.getX());
+				String y = NumberFormat.getFormat("0.000").format(worldPosition.getY());
 				label.setContents(I18nProvider.getSampleMessages().customControllerScreenCoordinates() + " = "
 						+ screenPosition + "<br/>"
-						+ I18nProvider.getSampleMessages().customControllerWorldCoordinates() + " = " + worldPosition);
+						+ I18nProvider.getSampleMessages().customControllerWorldCoordinates()
+						+ " = (" + x + ", " + y + ")");
 			}
 
 		};
