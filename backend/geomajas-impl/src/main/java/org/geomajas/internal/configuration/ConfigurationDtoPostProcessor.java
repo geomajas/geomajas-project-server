@@ -118,9 +118,11 @@ public class ConfigurationDtoPostProcessor {
 				layer.setLayerInfo(layerInfo);
 				layer.setMaxExtent(getClientMaxExtent(map.getCrs(), layer.getCrs(), layerInfo.getMaxExtent(), layerId));
 				if (layer instanceof ClientVectorLayerInfo) {
-					postProcess((ClientVectorLayerInfo) layer);
+					postProcess((ClientVectorLayerInfo) layer, map.getPixelLength());
 				}
 			}
+			
+			// Since 1.7.0, conversions between resolutions (1:x) and scales:
 			if (map.getMaximumResolution() != 0) {
 				map.setMaximumResolution(map.getMaximumResolution() / map.getPixelLength());
 			} else if (map.getMaximumScale() != 0) {
@@ -142,12 +144,25 @@ public class ConfigurationDtoPostProcessor {
 		return client;
 	}
 
-	private ClientVectorLayerInfo postProcess(ClientVectorLayerInfo layer) throws LayerException {
+	private ClientVectorLayerInfo postProcess(ClientVectorLayerInfo layer, double pixelLength) throws LayerException {
 		// copy feature info from server if not explicitly defined
 		if (layer.getFeatureInfo() == null) {
 			VectorLayerInfo serverInfo = (VectorLayerInfo) layer.getLayerInfo();
 			layer.setFeatureInfo(serverInfo.getFeatureInfo());
 		}
+
+		// Since 1.7.0, conversions between resolutions (1:x) and scales:
+		if (layer.getMinimumResolution() != 0) {
+			layer.setMinimumResolution(layer.getMinimumResolution() / pixelLength);
+		} else if (layer.getViewScaleMin() != 0) {
+			layer.setMinimumResolution(layer.getViewScaleMin());
+		}
+		if (layer.getMaximumResolution() != 0) {
+			layer.setMaximumResolution(layer.getMaximumResolution() / pixelLength);
+		} else if (layer.getViewScaleMax() != 0) {
+			layer.setMaximumResolution(layer.getViewScaleMax());
+		}
+		
 		return layer;
 	}
 

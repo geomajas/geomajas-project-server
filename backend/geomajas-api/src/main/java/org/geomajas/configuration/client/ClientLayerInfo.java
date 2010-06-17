@@ -30,6 +30,7 @@ import javax.validation.constraints.Null;
 import org.geomajas.configuration.LayerInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.global.Api;
+import org.geomajas.global.ResolutionFormat;
 import org.geomajas.layer.LayerType;
 
 /**
@@ -52,6 +53,12 @@ public abstract class ClientLayerInfo implements Serializable {
 	private double viewScaleMin;
 
 	private double viewScaleMax = Double.MAX_VALUE;
+
+	@ResolutionFormat
+	private double maximumResolution;
+
+	@ResolutionFormat
+	private double minimumResolution;
 
 	@Null
 	private LayerInfo layerInfo;
@@ -77,7 +84,8 @@ public abstract class ClientLayerInfo implements Serializable {
 	/**
 	 * Set the unique id of this layer (auto-copied from Spring context).
 	 * 
-	 * @param id id
+	 * @param id
+	 *            id
 	 */
 	public void setId(String id) {
 		this.id = id;
@@ -95,7 +103,8 @@ public abstract class ClientLayerInfo implements Serializable {
 	/**
 	 * Set the server layer id. This should be the name of an existing {@link org.geomajas.layer.Layer} bean.
 	 * 
-	 * @param serverLayerId server layer id
+	 * @param serverLayerId
+	 *            server layer id
 	 */
 	public void setServerLayerId(String serverLayerId) {
 		this.serverLayerId = serverLayerId;
@@ -113,7 +122,8 @@ public abstract class ClientLayerInfo implements Serializable {
 	/**
 	 * Set the user label of this layer.
 	 * 
-	 * @param label label
+	 * @param label
+	 *            label
 	 */
 	public void setLabel(String label) {
 		this.label = label;
@@ -131,7 +141,8 @@ public abstract class ClientLayerInfo implements Serializable {
 	/**
 	 * Set this layer visible at startup.
 	 * 
-	 * @param visible visible status
+	 * @param visible
+	 *            visible status
 	 */
 	public void setVisible(boolean visible) {
 		this.visible = visible;
@@ -140,8 +151,10 @@ public abstract class ClientLayerInfo implements Serializable {
 	/**
 	 * Get the minimum scale for which this layer should be visible (maximum zoom out).
 	 * 
+	 * @deprecated Deprecated since 1.7.0. Use <code>minimumResolution</code> instead.
 	 * @return minimum scale (pix/map unit)
 	 */
+	@Deprecated
 	public double getViewScaleMin() {
 		return viewScaleMin;
 	}
@@ -149,9 +162,11 @@ public abstract class ClientLayerInfo implements Serializable {
 	/**
 	 * Set the minimum scale for which this layer should be visible (maximum zoom out).
 	 * 
+	 * @deprecated Deprecated since 1.7.0. Use <code>minimumResolution</code> instead.
 	 * @param viewScaleMin
 	 *            scale (pix/map unit)
 	 */
+	@Deprecated
 	public void setViewScaleMin(double viewScaleMin) {
 		this.viewScaleMin = viewScaleMin;
 	}
@@ -159,8 +174,10 @@ public abstract class ClientLayerInfo implements Serializable {
 	/**
 	 * Get the maximum scale for which this layer should be visible (maximum zoom in).
 	 * 
+	 * @deprecated Deprecated since 1.7.0. Use <code>maximumResolution</code> instead.
 	 * @return maximum scale (pix/map unit)
 	 */
+	@Deprecated
 	public double getViewScaleMax() {
 		return viewScaleMax;
 	}
@@ -168,9 +185,11 @@ public abstract class ClientLayerInfo implements Serializable {
 	/**
 	 * Set the maximum scale for which this layer should be visible (maximum zoom in).
 	 * 
+	 * @deprecated Deprecated since 1.7.0. Use <code>maximumResolution</code> instead.
 	 * @param viewScaleMax
 	 *            scale (pix/map unit)
 	 */
+	@Deprecated
 	public void setViewScaleMax(double viewScaleMax) {
 		this.viewScaleMax = viewScaleMax;
 	}
@@ -248,5 +267,51 @@ public abstract class ClientLayerInfo implements Serializable {
 	 */
 	public void setUserData(ClientUserDataInfo userData) {
 		this.userData = userData;
+	}
+
+	/**
+	 * Get the minimum resolution for which this layer should be visible (maximum zoom out). This value uses the (1:x)
+	 * format.
+	 * 
+	 * @return minimum resolution in (1:x) format.
+	 * @since 1.7.0 Replaces the <code>viewScaleMax</code> value.
+	 */
+	public double getMaximumResolution() {
+		return maximumResolution;
+	}
+
+	/**
+	 * Set the minimum resolution for which this layer should be visible (maximum zoom out). This value uses the (1:x)
+	 * format.
+	 * 
+	 * @param maximumResolution
+	 *            minimum resolution in (1:x) format.
+	 * @since 1.7.0 Replaces the <code>viewScaleMax</code> value.
+	 */
+	public void setMaximumResolution(double maximumResolution) {
+		this.maximumResolution = maximumResolution;
+	}
+
+	/**
+	 * Get the maximum resolution for which this layer should be visible (maximum zoom in). This value uses the (1:x)
+	 * format.
+	 * 
+	 * @return maximum resolution in (1:x) format.
+	 * @since 1.7.0 Replaces the <code>viewScaleMin</code> value.
+	 */
+	public double getMinimumResolution() {
+		return minimumResolution;
+	}
+
+	/**
+	 * Set the maximum resolution for which this layer should be visible (maximum zoom in). This value uses the (1:x)
+	 * format.
+	 * 
+	 * @param viewScaleMax
+	 *            maximum resolution in (1:x) format.
+	 * @since 1.7.0 Replaces the <code>viewScaleMin</code> value.
+	 */
+	public void setMinimumResolution(double minimumResolution) {
+		this.minimumResolution = minimumResolution;
 	}
 }

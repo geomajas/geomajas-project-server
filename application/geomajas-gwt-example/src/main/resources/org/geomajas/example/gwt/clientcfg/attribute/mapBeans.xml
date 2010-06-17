@@ -62,8 +62,8 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 					<property name="serverLayerId" value="beans" />
 					<property name="label" value="Test beans" />
 					<property name="visible" value="true" />
-					<property name="viewScaleMin" value="0" />
-					<property name="viewScaleMax" value="100000" />
+			 		<property name="minimumResolution" value="1:100" />
+					<property name="maximumResolution" value="1:500000000" />
 					<property name="namedStyleInfo" ref="beansStyleInfo" />
 				</bean>
 			</list>
