@@ -53,6 +53,9 @@ public final class XmlParser {
 		}
 
 		// base replacements for proper html
+		temp = temp.replaceAll("<!--.*@extract-start.*-->", "");
+		temp = temp.replaceAll("<!--.*@extract-skip.*-->", "");
+		temp = temp.replaceAll("<!--.*@extract-end.*-->", "");
 		temp = temp.replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 		temp = temp.replaceAll("\\t", "&nbsp;&nbsp;&nbsp;&nbsp;");
 
