@@ -62,16 +62,16 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 					<property name="serverLayerId" value="beansLonLat" />
 					<property name="label" value="Beans Lon Lat" />
 					<property name="visible" value="true" />
-			 		<property name="minimumResolution" value="1:100" />
-					<property name="maximumResolution" value="1:500000000" />
+			 		<property name="maximumResolution" value="1:100" />
+					<property name="minimumResolution" value="1:500000000" />
 					<property name="namedStyleInfo" ref="beansLonLatStyleInfo" />
 				</bean>
 				<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="beansMercatorLayer">
 					<property name="serverLayerId" value="beansMercator" />
 					<property name="label" value="Beans Mercator" />
 					<property name="visible" value="true" />
-			 		<property name="minimumResolution" value="1:100" />
-					<property name="maximumResolution" value="1:500000000" />
+			 		<property name="maximumResolution" value="1:100" />
+					<property name="minimumResolution" value="1:500000000" />
 					<property name="namedStyleInfo" ref="beansMercatorStyleInfo" />
 				</bean>
 			</list>

@@ -67,8 +67,8 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		<property name="serverLayerId" value="countries110m" />
 	  	<property name="label" value="Countries"/>
 		<property name="visible" value="true"/>
- 		<property name="minimumResolution" value="1:100" />
-		<property name="maximumResolution" value="1:500000000" />
+ 		<property name="maximumResolution" value="1:100" />
+		<property name="minimumResolution" value="1:500000000" />
 		<property name="namedStyleInfo" ref="countries110mStyleInfo" />
 	</bean>
 

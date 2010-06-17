@@ -106,6 +106,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 						<ref bean="EditMode" />
 						<ref bean="MeasureDistanceMode" />
 						<ref bean="SelectionMode" />
+						<ref bean="FeatureInfoMode" />
 					</list>
 				</property>
 			</bean>
@@ -179,8 +180,8 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		<property name="serverLayerId" value="bluemarble" />
 		<property name="label" value="Blue marble WMS (raster)" />
 		<property name="visible" value="true" />
- 		<property name="minimumResolution" value="1:1000" />
-		<property name="maximumResolution" value="1:500000000" />
+ 		<property name="maximumResolution" value="1:1000" />
+		<property name="minimumResolution" value="1:500000000" />
 		<property name="style" value="0.8" />
 	</bean>
 
@@ -188,8 +189,8 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		<property name="serverLayerId" value="countries110m" />
 	  	<property name="label" value="Countries"/>
 		<property name="visible" value="true"/>
- 		<property name="minimumResolution" value="1:1000" />
-		<property name="maximumResolution" value="1:500000000" />
+ 		<property name="maximumResolution" value="1:1000" />
+		<property name="minimumResolution" value="1:500000000" />
 		<property name="namedStyleInfo" ref="countries110mStyleInfo" />
 		<property name="snappingRules">
 			<list>
