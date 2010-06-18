@@ -11,6 +11,7 @@
 	<version>${version}</version>
 	<packaging>pom</packaging>
 	<name>${name}</name>
+	<description>${name}</description>
 
 	<scm>
 		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/${rootArtifactId}</connection>

@@ -10,6 +10,7 @@
 	<version>dummy</version>
 	<packaging>pom</packaging>
 	<name>Geomajas applications</name>
+	<description>Geomajas example/showcase applications</description>
 
 	<modules>
 		<module>geomajas-dojo-example</module>

@@ -10,6 +10,7 @@
 	<version>1.7.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>Geomajas integration tests</name>
+	<description>Geomajas integration tests</description>
 
 	<dependencyManagement>
 		<dependencies>

@@ -10,6 +10,7 @@
 	<version>1.7.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>Geomajas layer model using Geotools</name>
+	<description>Geomajas layer model using Geotools</description>
 
 	<dependencyManagement>
 		<dependencies>

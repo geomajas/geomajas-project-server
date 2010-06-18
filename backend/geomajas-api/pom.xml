@@ -9,6 +9,7 @@
 	<artifactId>geomajas-api</artifactId>
 	<packaging>jar</packaging>
 	<name>Geomajas core api</name>
+	<description>Geomajas core api</description>
 
 	<dependencies>
 		<dependency>

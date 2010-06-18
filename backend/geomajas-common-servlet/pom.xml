@@ -9,6 +9,7 @@
 	<artifactId>geomajas-common-servlet</artifactId>
 	<packaging>jar</packaging>
 	<name>Geomajas servlet code common to all faces</name>
+	<description>Geomajas servlet code common to all servlet-based faces</description>
 
 	<dependencies>
 		<dependency>

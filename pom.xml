@@ -1,4 +1,9 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<parent>
+		<groupId>org.sonatype.oss</groupId>
+		<artifactId>oss-parent</artifactId>
+		<version>2</version>
+	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas</groupId>
 	<artifactId>geomajas-all</artifactId>
@@ -6,6 +11,7 @@
 	<packaging>pom</packaging>
 	<url>http://files.geomajas.org/maven/trunk</url>
 	<name>Grouping of all Geomajas modules</name>
+	<description>Grouping of all Geomajas modules</description>
 
 	<modules>
 		<module>backend</module>

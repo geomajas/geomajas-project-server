@@ -9,6 +9,7 @@
 	<artifactId>geomajas-dojo-client-shrinksafe</artifactId>
 	<packaging>jar</packaging>
 	<name>Geomajas dojo face, client side (custom build)</name>
+	<description>Geomajas dojo face, client side (custom build)</description>
 
 	<dependencies>
 		<dependency>

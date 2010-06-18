@@ -9,6 +9,7 @@
 	<artifactId>geomajas-gwt-client</artifactId>
 	<packaging>jar</packaging>
 	<name>Geomajas gwt face, client side</name>
+	<description>Geomajas gwt face, client side</description>
 
 	<dependencies>
 		<!-- Geomajas dependencies -->

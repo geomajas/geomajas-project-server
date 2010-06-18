@@ -10,6 +10,7 @@
 	<version>dummy</version>
 	<packaging>pom</packaging>
 	<name>Geomajas faces</name>
+	<description>Geomajas faces</description>
 
 	<modules>
 		<module>geomajas-face-dojo</module>

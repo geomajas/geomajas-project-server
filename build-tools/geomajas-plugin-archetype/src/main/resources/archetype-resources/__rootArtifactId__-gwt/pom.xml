@@ -32,6 +32,7 @@
 	<version>${version}</version>
 	<packaging>jar</packaging>
 	<name>${name} (GWT face)</name>
+	<description>${name} (GWT face)</description>
 
 	<dependencyManagement>
 		<dependencies>

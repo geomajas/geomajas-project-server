@@ -9,6 +9,7 @@
 	<artifactId>geomajas-dojo-example-modules-shrinksafe</artifactId>
 	<packaging>jar</packaging>
 	<name>Geomajas dojo application example modules (shrinksafe)</name>
+	<description>Geomajas dojo application example modules (shrinksafe)</description>
 	<url>http://files.geomajas.org/maven/trunk/dojo-example</url>
 
 	<dependencies>

@@ -10,7 +10,7 @@
 	<version>dummy</version>
 	<packaging>pom</packaging>
 	<name>Geomajas staticsecurity plug-in</name>
-	<name>Geomajas static security plug-in</name>
+	<description>Geomajas static security plug-in</description>
 
 	<scm>
 		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-plugin-staticsecurity</connection>

@@ -12,6 +12,7 @@
 	<packaging>jdocbook</packaging>
 	<version>1.7.0-SNAPSHOT</version>
 	<name>Geomajas simple printing plugin documentation (${translation})</name>
+	<description>Geomajas simple printing plugin documentation (${translation})</description>
 
 	<dependencies>
 		<dependency>

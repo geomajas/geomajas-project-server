@@ -14,6 +14,7 @@
 	<packaging>maven-archetype</packaging>
 
 	<name>Geomajas plugin archetype</name>
+	<description>Geomajas plugin archetype</description>
 
 	<scm>
 		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/build-tools/geomajas-plugin-archetype</connection>

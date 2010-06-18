@@ -9,6 +9,7 @@
 	<artifactId>geomajas-api-experimental</artifactId>
 	<packaging>jar</packaging>
 	<name>Geomajas experimental api</name>
+	<description>Geomajas experimental api</description>
 
 	<dependencies>
 		<dependency>

@@ -9,6 +9,7 @@
 	<artifactId>geomajas-dojo-client</artifactId>
 	<packaging>jar</packaging>
 	<name>Geomajas dojo face, client side</name>
+	<description>Geomajas dojo face, client side</description>
 
 	<dependencies>
 		<dependency>

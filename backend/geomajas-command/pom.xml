@@ -9,6 +9,7 @@
 	<artifactId>geomajas-command</artifactId>
 	<packaging>jar</packaging>
 	<name>Geomajas commands</name>
+	<description>Geomajas back-end commands</description>
 
 	<dependencies>
 		<dependency>

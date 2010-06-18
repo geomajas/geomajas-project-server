@@ -11,6 +11,7 @@
 	<artifactId>geomajas-face-dojo-documentation</artifactId>
 	<packaging>jdocbook</packaging>
 	<name>Geomajas dojo face documentation (${translation})</name>
+	<description>Geomajas dojo face documentation (${translation})</description>
 
 	<dependencies>
 		<dependency>

@@ -9,6 +9,7 @@
 	<artifactId>geomajas-testdata</artifactId>
 	<packaging>jar</packaging>
 	<name>Geomajas test data</name>
+	<description>Geomajas test data</description>
 
 	<dependencies>
 		<dependency>

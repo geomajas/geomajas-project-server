@@ -9,6 +9,7 @@
 	<artifactId>geomajas-dojo-example-client</artifactId>
 	<packaging>jar</packaging>
 	<name>Geomajas dojo application example client code</name>
+	<description>Geomajas dojo application example client code</description>
 	<url>http://files.geomajas.org/maven/trunk/dojo-example</url>
 
 </project>

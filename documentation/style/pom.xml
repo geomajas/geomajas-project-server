@@ -12,6 +12,7 @@
 	<version>1.0.0</version>
 	<packaging>jdocbook-style</packaging>
 	<name>JDocBook styles for User Guide for Developers</name>
+	<description>JDocBook styles for User Guide for Developers</description>
 
 	<scm>
 		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/documentation</connection>

@@ -9,6 +9,7 @@
 	<artifactId>geomajas-dojo-example-war</artifactId>
 	<packaging>war</packaging>
 	<name>Geomajas dojo application example war</name>
+	<description>Geomajas dojo application example war</description>
 	<url>http://files.geomajas.org/maven/trunk/dojo-example</url>
     
 	<dependencies>
