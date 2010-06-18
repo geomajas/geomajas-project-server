@@ -28,7 +28,7 @@ import org.geomajas.global.Api;
 import java.util.List;
 
 /**
- * Base configuration data for the springsecurity security service.
+ * Base configuration data for the staticsecurity security service.
  *
  * @author Joachim Van der Auwera
  * @since 1.6.0
@@ -48,7 +48,7 @@ public class SecurityServiceInfo {
 	}
 
 	/**
-	 * Set the list of users which can be used by springsecurity.
+	 * Set the list of users which can be used by staticsecurity.
 	 *
 	 * @param users list of {@link UserInfo} objects
 	 */

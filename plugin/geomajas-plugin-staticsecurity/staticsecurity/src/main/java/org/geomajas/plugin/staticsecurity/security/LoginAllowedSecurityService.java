@@ -35,7 +35,7 @@ import org.geomajas.security.SecurityService;
 public class LoginAllowedSecurityService implements SecurityService {
 
 	public String getId() {
-		return "springsecurity.LoginAllowed";  
+		return "staticsecurity.LoginAllowed";
 	}
 
 	public Authentication getAuthentication(String authenticationToken) {
@@ -51,7 +51,7 @@ public class LoginAllowedSecurityService implements SecurityService {
 	private class LoginAuthorization implements BaseAuthorization {
 
 		public String getId() {
-			return "springsecurity.LoginAuthorization";
+			return "staticsecurity.LoginAuthorization";
 		}
 
 		public boolean isToolAuthorized(String toolId) {
