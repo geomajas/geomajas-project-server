@@ -65,7 +65,6 @@ public class MapModelPainter implements Painter {
 	 *            A MapContext object, responsible for actual drawing.
 	 */
 	public void paint(Paintable paintable, Object group, MapContext context) {
-		GWT.log("Map: " + mapWidget.getMapModel().getMapView().getPanToViewTranslation().toString(), null);
 		// Group for objects in raster space
 		context.getRasterContext().drawGroup(null, mapWidget.getGroup(RenderGroup.RASTER),
 				mapWidget.getMapModel().getMapView()

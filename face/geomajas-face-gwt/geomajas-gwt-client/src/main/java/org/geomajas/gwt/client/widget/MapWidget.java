@@ -893,7 +893,6 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 				try {
 					final int width = map.getWidth();
 					final int height = map.getHeight();
-					GWT.log("Map " + getID() + "resized: " + width + ", " + height, null);
 					mapModel.getMapView().setSize(width, height);
 
 					for (String addonId : addons.keySet()) {
@@ -902,7 +901,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 						render(addon, RenderGroup.SCREEN, RenderStatus.UPDATE);
 					}
 				} catch (Exception e) {
-					GWT.log("OnResized", e);
+					GWT.log("OnResized exception", e);
 				}
 			}
 		}

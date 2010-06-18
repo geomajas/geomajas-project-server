@@ -375,7 +375,7 @@ public class LayerTree extends Canvas implements LeafClickHandler, FolderClickHa
 						action.onClick(tree.getSelectedLayerTreeNode().getLayer());
 						update();
 					} catch (Throwable t) {
-						GWT.log("LayerTreeButton", t);
+						GWT.log("LayerTreeButton onClick error", t);
 					}
 				}
 			});
