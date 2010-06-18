@@ -100,7 +100,7 @@ public class GoogleLayer implements RasterLayer {
 
 	private String id;
 
-	protected double[] resolutions;
+	protected static final double[] RESOLUTIONS = new double[MAX_ZOOM_LEVEL + 1];
 
 	protected static final int[] POWERS_OF_TWO;
 
@@ -111,7 +111,10 @@ public class GoogleLayer implements RasterLayer {
 			POWERS_OF_TWO[c] = b;
 			b *= 2;
 		}
-		
+		for (int zoomLevel = 0; zoomLevel <= MAX_ZOOM_LEVEL; zoomLevel++) {
+			double resolution = (EQUATOR_IN_METERS) / (TILE_SIZE * POWERS_OF_TWO[zoomLevel]);
+			RESOLUTIONS[zoomLevel] = resolution;
+		}
 	}
 
 	public String getId() {
@@ -141,15 +144,7 @@ public class GoogleLayer implements RasterLayer {
 	public int getMaxZoomLevel() {
 		return this.maxZoomLevel;
 	}
-	
-	private void calculateZoomLevels() {
-		resolutions = new double[maxZoomLevel + 1];
-		for (int zoomLevel = 0; zoomLevel <= maxZoomLevel; zoomLevel++) {
-			double resolution = (EQUATOR_IN_METERS) / (TILE_SIZE * POWERS_OF_TWO[zoomLevel]);
-			resolutions[zoomLevel] = resolution;
-		}
-	}
-	
+
 	@PostConstruct
 	private void postConstruct() throws Exception {
 		if (null != layerInfo) {
@@ -169,7 +164,6 @@ public class GoogleLayer implements RasterLayer {
 			}
 			maxWidth = layerInfo.getMaxExtent().getWidth();
 			maxHeight = layerInfo.getMaxExtent().getHeight();
-			calculateZoomLevels();
 		}
 	}
 
@@ -314,14 +308,14 @@ public class GoogleLayer implements RasterLayer {
 		}
 		double scaleInPixPerMeter = scale * scaleRatio;
 		double screenResolution = 1.0 / scaleInPixPerMeter;
-		if (screenResolution >= resolutions[0]) {
+		if (screenResolution >= RESOLUTIONS[0]) {
 			return 0;
-		} else if (screenResolution <= resolutions[maxZoomLevel]) {
+		} else if (screenResolution <= RESOLUTIONS[maxZoomLevel]) {
 			return maxZoomLevel;
 		} else {
 			for (int i = 0; i < maxZoomLevel; i++) {
-				double upper = resolutions[i];
-				double lower = resolutions[i + 1];
+				double upper = RESOLUTIONS[i];
+				double lower = RESOLUTIONS[i + 1];
 				if (screenResolution <= upper && screenResolution >= lower) {
 					if ((upper - screenResolution) > 2 * (screenResolution - lower)) {
 						return i + 1;
