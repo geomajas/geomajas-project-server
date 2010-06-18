@@ -39,23 +39,6 @@
 		<system>JIRA</system>
 		<url>http://jira.geomajas.org</url>
 	</issueManagement>
-	<distributionManagement>
-		<repository>
-			<id>geomajas</id>
-			<name>Geomajas repository (thirdparty)</name>
-			<url>http://apps.geomajas.org/nexus/content/repositories/thirdparty</url>
-		</repository>
-		<snapshotRepository>
-			<id>geomajas-snapshots</id>
-			<name>Geomajas repository (snapshots)</name>
-			<url>http://apps.geomajas.org/nexus/content/repositories/snapshots</url>
-		</snapshotRepository>
-		<site>
-			<id>Geomajas project site</id>
-			<name>Mapping with Asynchronous Java and SVG</name>
-			<url>file:/var/www/files.geomajas.org/htdocs/maven/trunk/geomajas</url>
-		</site>
-	</distributionManagement>
 
 	<repositories>
 		<repository>

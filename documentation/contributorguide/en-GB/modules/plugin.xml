@@ -162,10 +162,6 @@
           </listitem>
 
           <listitem>
-            <para>distributionManagement</para>
-          </listitem>
-
-          <listitem>
             <para>ciManagement</para>
           </listitem>
 

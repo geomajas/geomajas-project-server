@@ -1,7 +1,11 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
 		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-
+	<parent>
+		<groupId>org.sonatype.oss</groupId>
+		<artifactId>oss-parent</artifactId>
+		<version>2</version>
+	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.documentation</groupId>
 	<artifactId>geomajas-jdocbook-style</artifactId>
@@ -39,23 +43,6 @@
 		<system>JIRA</system>
 		<url>http://jira.geomajas.org</url>
 	</issueManagement>
-	<distributionManagement>
-		<repository>
-			<id>geomajas</id>
-			<name>Geomajas repository (thirdparty)</name>
-			<url>http://apps.geomajas.org/nexus/content/repositories/thirdparty</url>
-		</repository>
-		<snapshotRepository>
-			<id>geomajas-snapshots</id>
-			<name>Geomajas repository (snapshots)</name>
-			<url>http://apps.geomajas.org/nexus/content/repositories/snapshots</url>
-		</snapshotRepository>
-		<site>
-			<id>Geomajas project site</id>
-			<name>Mapping with Asynchronous Java and SVG</name>
-			<url>file:/var/www/files.geomajas.org/htdocs/maven/trunk/geomajas</url>
-		</site>
-	</distributionManagement>
 
 	<repositories>
 		<repository>

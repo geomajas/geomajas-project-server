@@ -7,24 +7,6 @@
 	<name>Geomajas maven plugin</name>
 	<url>http://files.geomajas.org/maven/trunk/geomajas-maven-plugin</url>
 
-	<distributionManagement>
-		<repository>
-			<id>geomajas</id>
-			<name>Geomajas repository (thirdparty)</name>
-			<url>http://apps.geomajas.org/nexus/content/repositories/thirdparty</url>
-		</repository>
-		<snapshotRepository>
-			<id>geomajas-snapshots</id>
-			<name>Geomajas repository (snapshots)</name>
-			<url>http://apps.geomajas.org/nexus/content/repositories/snapshots</url>
-		</snapshotRepository>
-		<site>
-			<id>Geomajas project site</id>
-			<name>Mapping with Asynchronous Java and SVG</name>
-			<url>file:/var/www/files.geomajas.org/htdocs/maven/trunk/geomajas-maven-plugin</url>
-		</site>
-	</distributionManagement>
-
 	<developers>
 		<developer>
 			<id>joachimvda</id>
