@@ -80,7 +80,7 @@
       license information for all other dependencies. It also has to indicate
       the API version which is used. This is also version which is used for
       the back-end (which includes the API) which is used in the pom. Assuming
-      this compiles and that you only used </para>
+      this compiles and that you only used</para>
 
       <para>The dependencies are used to check compatibility of the plug-in
       with the back-end and required plug-ins. If you only access them using
@@ -121,7 +121,7 @@
             &lt;/bean&gt;
         &lt;/list&gt;
     &lt;/property&gt;
-&lt;/bean&gt;</programlisting> </para>
+&lt;/bean&gt;</programlisting></para>
       </example>
 
       <para>You can add any other configuration which is necessary in this
@@ -367,18 +367,97 @@
 
     <para><itemizedlist>
         <listitem>
-          <para><emphasis>incubating</emphasis>: </para>
+          <para><emphasis>incubating</emphasis>: work-in-progress plug-in
+          which has not reached graduation criteria yet.</para>
         </listitem>
 
         <listitem>
-          <para><emphasis>graduated</emphasis>: </para>
+          <para><emphasis>graduated</emphasis>: the plug-in is considered
+          stable, development is active and there is sufficient documentation
+          to be usable and testing to prove it works. </para>
         </listitem>
 
         <listitem>
-          <para><emphasis>retired</emphasis>: </para>
+          <para><emphasis>retired</emphasis>: t he plug-in is no longer
+          maintained. It can be deprecated or development just stopped for
+          some reason. Both graduated and incubation plug-ins can become
+          retired, so this does not give an indication of quality.</para>
         </listitem>
       </itemizedlist>All plug-ins start at in the incubating state.</para>
 
     <para></para>
+
+    <section>
+      <title>Plug-in graduation</title>
+
+      <para>The process for a plug-in to move state from incubation to
+      graduated, is called graduation. In order for a plug-in to graduate,
+      several criteria need to be met.</para>
+
+      <para>The following is a list of plug-in graduation criteria:</para>
+
+      <para><itemizedlist>
+          <listitem>
+            <para> A plug-in requires a maintainer. This is the contact-person
+            for the plug-in. He should watch the mailing lists and be
+            available for user questions.</para>
+          </listitem>
+
+          <listitem>
+            <para>All code should oblige to the programming rules as laid out
+            in the Geomajas contributor guide (code style, javadoc,
+            check-style, author tags, ...).</para>
+          </listitem>
+
+          <listitem>
+            <para>A check must be made to assure all dependencies of the
+            plug-in have their licenses respected. Examples of issues to
+            consider are compatibility of the license (with the AGPL license
+            for the module) and possible copyright/license display
+            requirements. All the relevant information needs to be supplied in
+            the META-INF/geomajasContext.xml file for the plug-in.</para>
+          </listitem>
+
+          <listitem>
+            <para>If the plug-in is a face, the copyright information for all
+            plug-ins needs to be included in the user interface (for example
+            in an "about" box).</para>
+          </listitem>
+
+          <listitem>
+            <para>There must be enough documentation for users to easily start
+            using the plug-in without having to ask the basic questions and
+            the documentation needs to be in the expected location and format
+            (to allow inclusion in project documentation).</para>
+          </listitem>
+
+          <listitem>
+            <para>There must be enough tests available to prove code
+            stability.</para>
+          </listitem>
+        </itemizedlist>Graduation is an all-or-nothing process. A plug-in
+      either meets all criteria, or it does not. The plug-in maintainer can
+      propose to graduate a plug-in on the majas-dev mailing list. When there
+      is community agreement on the proposal, he or she can initiate a PSC
+      vote. A request for graduation can only be vetoed by including the steps
+      which need to be taken to graduate. Once these steps are taken, the
+      plug-in maintainer can again propose to graduate.</para>
+    </section>
+
+    <section>
+      <title>Plug-in retirement</title>
+
+      <para>Plug-in retirement is also handled by a PSC vote. This will
+      typically happen when a plug-in is deprecated (focus moves to a
+      different plug-in which supersedes the retired one), or when a plug- in
+      maintainer wants to quit without having someone to follow up. However,
+      anyone can propose to retire a module. This will normally be denied if
+      the plug-in maintainer is still actively maintaining the module.</para>
+
+      <para>Both incubation and graduated plug-in can become retired.
+      Reactivation of a retired plug-in, is of course possible when a new
+      maintainer can be found. In this case the plug-in becomes an incubation
+      plug-in again (and the maintainer must have signed a CLA). </para>
+    </section>
   </section>
 </chapter>
