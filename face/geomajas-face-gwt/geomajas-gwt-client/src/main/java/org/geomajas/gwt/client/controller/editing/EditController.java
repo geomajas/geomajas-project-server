@@ -30,7 +30,6 @@ import org.geomajas.gwt.client.map.feature.FeatureTransaction;
 import org.geomajas.gwt.client.map.feature.TransactionGeomIndex;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.spatial.Bbox;
-import org.geomajas.gwt.client.spatial.WorldViewTransformer;
 import org.geomajas.gwt.client.spatial.geometry.Geometry;
 import org.geomajas.gwt.client.spatial.geometry.GeometryFactory;
 import org.geomajas.gwt.client.spatial.geometry.LinearRing;
@@ -136,7 +135,7 @@ public abstract class EditController extends AbstractSnappingController {
 	public void showGeometricInfo() {
 		FeatureTransaction ft = getFeatureTransaction();
 		if (infoLabel == null && ft != null && ft.getNewFeatures() != null && ft.getNewFeatures().length > 0) {
-			infoLabel = new GeometricInfoLabel(getTransformer());
+			infoLabel = new GeometricInfoLabel();
 			infoLabel.addClickHandler(new DestroyLabelInfoOnClick());
 			infoLabel.setGeometry(ft.getNewFeatures()[0].getGeometry());
 			infoLabel.animateMove(mapWidget.getWidth() - 155, 10);
@@ -264,15 +263,12 @@ public abstract class EditController extends AbstractSnappingController {
 	 */
 	private class GeometricInfoLabel extends Label {
 
-		private WorldViewTransformer transformer;
-
 		private Geometry geometry;
 
 		// Constructors:
 
-		protected GeometricInfoLabel(WorldViewTransformer transformer) {
+		protected GeometricInfoLabel() {
 			setParentElement(mapWidget);
-			this.transformer = transformer;
 			setValign(VerticalAlignment.TOP);
 			setShowEdges(true);
 			setWidth(145);
@@ -286,9 +282,7 @@ public abstract class EditController extends AbstractSnappingController {
 		// Getters and setters:
 
 		public void setGeometry(Geometry geometry) {
-			if (geometry != null) {
-				this.geometry = transformer.viewToWorld(geometry);
-			}
+			this.geometry = geometry;
 			updateContents();
 		}
 
@@ -299,9 +293,9 @@ public abstract class EditController extends AbstractSnappingController {
 			if (geometry == null) {
 				setContents(contents + "No geometry to display");
 			} else {
-				String area = DistanceFormat.asMapLength(mapWidget, geometry.getArea());
+				String area = DistanceFormat.asMapArea(mapWidget, geometry.getArea());
 				String length = DistanceFormat.asMapLength(mapWidget, geometry.getLength());
-				contents += "Area: " + area + "&sup2;<br/>";
+				contents += "Area: " + area + "<br/>";
 				contents += "Length: " + length + "<br/>";
 				contents += "Nr points: " + geometry.getNumPoints();
 				setContents(contents);
@@ -310,7 +304,7 @@ public abstract class EditController extends AbstractSnappingController {
 	}
 
 	/**
-	 * ???
+	 * @author Pieter De Graef
 	 */
 	private class DestroyLabelInfoOnClick implements ClickHandler {
 

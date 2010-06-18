@@ -939,14 +939,6 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 				}
 			}
 		}
-
-		public void setZoomType(ScrollZoomType zoomType) {
-			this.zoomType = zoomType;
-		}
-
-		public ScrollZoomType getZoomType() {
-			return zoomType;
-		}
 	}
 
 	/**
