@@ -49,6 +49,13 @@
 		<system>JIRA</system>
 		<url>http://jira.geomajas.org</url>
 	</issueManagement>
+	<distributionManagement>
+		<site>
+			<id>Geomajas project site</id>
+			<name>Mapping with Asynchronous Java and SVG</name>
+			<url>file:/var/www/files.geomajas.org/htdocs/maven/trunk/geomajas</url>
+		</site>
+	</distributionManagement>
 	<ciManagement>
 		<system>hudson</system>
 		<url>http://apps.geomajas.org/hudson/</url>
