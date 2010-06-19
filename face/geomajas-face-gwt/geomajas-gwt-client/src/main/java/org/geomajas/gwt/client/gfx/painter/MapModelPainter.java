@@ -30,8 +30,6 @@ import org.geomajas.gwt.client.map.MapModel;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.MapWidget.RenderGroup;
 
-import com.google.gwt.core.client.GWT;
-
 /**
  * Actual painter for the {@link MapModel} object. Prepares some groups, and sets the correct transformations. Also
  * prepares a group for objects that are to be painted in world space. (the MapModel's WorldSpacePaintables)
