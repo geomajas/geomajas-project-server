@@ -22,15 +22,16 @@
  */
 package org.geomajas.servlet;
 
+import java.io.IOException;
+import java.net.URL;
+import java.util.Enumeration;
+
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 import org.geomajas.spring.ReconfigurableClassPathApplicationContext;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.Enumeration;
 
 /**
  * Initialise the servlet context. This assures the Spring application context is created and stored in the servlet

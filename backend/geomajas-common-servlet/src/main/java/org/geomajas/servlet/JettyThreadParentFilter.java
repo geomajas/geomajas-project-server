@@ -23,14 +23,12 @@
 package org.geomajas.servlet;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.Enumeration;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -43,6 +41,8 @@ import javax.servlet.ServletResponse;
  */
 public class JettyThreadParentFilter implements Filter {
 
+	private boolean includeSystemclasses;
+
 	public void destroy() {
 	}
 
@@ -51,73 +51,16 @@ public class JettyThreadParentFilter implements Filter {
 		ClassLoader cl = Thread.currentThread().getContextClassLoader();
 		if (cl instanceof URLClassLoader) {
 			Thread.currentThread().setContextClassLoader(
-					new ClassLoaderWrapper((URLClassLoader) cl, ClassLoader.getSystemClassLoader()));
+					new ExtendedJettyClassLoader((URLClassLoader) cl, ClassLoader.getSystemClassLoader(),
+							includeSystemclasses));
 		}
 		chain.doFilter(request, response);
 	}
 
 	public void init(FilterConfig filterConfig) throws ServletException {
-	}
-
-	/**
-	 * A class loader with a parent for Geotools.
-	 * 
-	 * @author Jan De Moerloose
-	 * 
-	 */
-	public class ClassLoaderWrapper extends URLClassLoader {
-
-		private URLClassLoader delegate;
-
-		public ClassLoaderWrapper(URLClassLoader delegate, ClassLoader parent) {
-			super(delegate.getURLs(), parent);
-			this.delegate = (URLClassLoader) delegate;
-		}
-
-		public void clearAssertionStatus() {
-			delegate.clearAssertionStatus();
-		}
-
-		public URL getResource(String name) {
-			return delegate.getResource(name);
-		}
-
-		public InputStream getResourceAsStream(String name) {
-			return delegate.getResourceAsStream(name);
-		}
-
-		public Enumeration<URL> getResources(String name) throws IOException {
-			return delegate.getResources(name);
-		}
-
-		public Class<?> loadClass(String name) throws ClassNotFoundException {
-			return delegate.loadClass(name);
-		}
-
-		public void setClassAssertionStatus(String className, boolean enabled) {
-			delegate.setClassAssertionStatus(className, enabled);
-		}
-
-		public void setDefaultAssertionStatus(boolean enabled) {
-			delegate.setDefaultAssertionStatus(enabled);
-		}
-
-		public void setPackageAssertionStatus(String packageName, boolean enabled) {
-			delegate.setPackageAssertionStatus(packageName, enabled);
-		}
-
-		public URL findResource(String name) {
-			return delegate.findResource(name);
-		}
-
-		public Enumeration<URL> findResources(String name) throws IOException {
-			return delegate.findResources(name);
-		}
-
-		public URL[] getURLs() {
-			return delegate.getURLs();
-		}
-
+		ServletContext servletContext = filterConfig.getServletContext();
+		String param = servletContext.getInitParameter(PrepareScanningContextListener.PRELOAD_CLASSES_PARAMETER);
+		includeSystemclasses = (param == null);
 	}
 
 }

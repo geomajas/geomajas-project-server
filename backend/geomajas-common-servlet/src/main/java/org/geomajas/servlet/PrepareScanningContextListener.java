@@ -22,11 +22,7 @@
  */
 package org.geomajas.servlet;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.Enumeration;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -47,83 +43,27 @@ public class PrepareScanningContextListener implements ServletContextListener {
 	public void contextInitialized(ServletContextEvent servletContextEvent) {
 		ServletContext servletContext = servletContextEvent.getServletContext();
 		String param = servletContext.getInitParameter(PRELOAD_CLASSES_PARAMETER);
-		String[] preloadClasses = param.split("[\\s,;]+");
 		ClassLoader cl = Thread.currentThread().getContextClassLoader();
 		if (cl instanceof URLClassLoader) {
-			Thread.currentThread().setContextClassLoader(
-					new ClassLoaderWrapper((URLClassLoader) cl, ClassLoader.getSystemClassLoader()));
+			Thread.currentThread()
+					.setContextClassLoader(
+							new ExtendedJettyClassLoader((URLClassLoader) cl, ClassLoader.getSystemClassLoader(),
+									param == null));
 		}
-		for (String className : preloadClasses) {
-			try {
-				Class<?> c = Class.forName(className);
-			} catch (ClassNotFoundException e) {
-				LoggerFactory.getLogger(PrepareScanningContextListener.class).warn("could not preload class", e);
-				// ignore
+		if (param != null) {
+			String[] preloadClasses = param.split("[\\s,;]+");
+			for (String className : preloadClasses) {
+				try {
+					Class<?> c = Class.forName(className);
+				} catch (ClassNotFoundException e) {
+					LoggerFactory.getLogger(PrepareScanningContextListener.class).warn("could not preload class", e);
+					// ignore
+				}
 			}
 		}
 	}
 
 	public void contextDestroyed(ServletContextEvent sce) {
-	}
-
-	/**
-	 * A class loader with a parent for Geotools.
-	 * 
-	 * @author Jan De Moerloose
-	 */
-	public class ClassLoaderWrapper extends URLClassLoader {
-
-		private URLClassLoader delegate;
-
-		public ClassLoaderWrapper(URLClassLoader delegate, ClassLoader parent) {
-			super(delegate.getURLs(), parent);
-			this.delegate = delegate;
-		}
-
-		public void clearAssertionStatus() {
-			delegate.clearAssertionStatus();
-		}
-
-		public URL getResource(String name) {
-			return delegate.getResource(name);
-		}
-
-		public InputStream getResourceAsStream(String name) {
-			return delegate.getResourceAsStream(name);
-		}
-
-		public Enumeration<URL> getResources(String name) throws IOException {
-			return delegate.getResources(name);
-		}
-
-		public Class<?> loadClass(String name) throws ClassNotFoundException {
-			return delegate.loadClass(name);
-		}
-
-		public void setClassAssertionStatus(String className, boolean enabled) {
-			delegate.setClassAssertionStatus(className, enabled);
-		}
-
-		public void setDefaultAssertionStatus(boolean enabled) {
-			delegate.setDefaultAssertionStatus(enabled);
-		}
-
-		public void setPackageAssertionStatus(String packageName, boolean enabled) {
-			delegate.setPackageAssertionStatus(packageName, enabled);
-		}
-
-		public URL findResource(String name) {
-			return delegate.findResource(name);
-		}
-
-		public Enumeration<URL> findResources(String name) throws IOException {
-			return delegate.findResources(name);
-		}
-
-		public URL[] getURLs() {
-			return delegate.getURLs();
-		}
-
 	}
 
 }
