@@ -125,6 +125,7 @@ public final class CommandDispatcherImpl implements CommandDispatcher {
 					try {
 						command.execute(request, response);
 					} catch (Throwable throwable) {
+						log.error("Error executing command", throwable);
 						response.getErrors().add(throwable);
 					}
 				} else {

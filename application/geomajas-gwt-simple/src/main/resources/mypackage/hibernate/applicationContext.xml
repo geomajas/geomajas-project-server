@@ -1,38 +1,20 @@
-<!--
-  ~ This file is part of Geomajas, a component framework for building
-  ~ rich Internet applications (RIA) with sophisticated capabilities for the
-  ~ display, analysis and management of geographic information.
-  ~ It is a building block that allows developers to add maps
-  ~ and other geographic data capabilities to their web applications.
-  ~
-  ~ Copyright 2008-2010 Geosparc, http://www.geosparc.com, Belgium
-  ~
-  ~ This program is free software: you can redistribute it and/or modify
-  ~ it under the terms of the GNU Affero General Public License as
-  ~ published by the Free Software Foundation, either version 3 of the
-  ~ License, or (at your option) any later version.
-  ~
-  ~ This program is distributed in the hope that it will be useful,
-  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~ GNU Affero General Public License for more details.
-  ~
-  ~ You should have received a copy of the GNU Affero General Public License
-  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
-  -->
-
-<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:util="http://www.springframework.org/schema/util" xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
-
-	xsi:schemaLocation="
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xmlns:util="http://www.springframework.org/schema/util"
+	   xmlns:aop="http://www.springframework.org/schema/aop"
+	   xmlns:tx="http://www.springframework.org/schema/tx"
+	   xsi:schemaLocation="
 http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
 http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd
 http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
 http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 
-	<!-- @extract-start HibernateTx, Hibernate transaction configuration -->
+	<context:component-scan base-package="mypackage" name-generator="org.geomajas.spring.GeomajasBeanNameGenerator"/>
+
 	<!-- DataSource Property -->
-	<bean id="simpleDataSource" class="org.apache.commons.dbcp.BasicDataSource">
+	<bean id="appDataSource" class="org.apache.commons.dbcp.BasicDataSource">
 		<property name="driverClassName" value="org.postgresql.Driver" />
 		<property name="url" value="jdbc:postgresql://127.0.0.1:5432/simple" />
 		<property name="username" value="simple" />
@@ -41,8 +23,8 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 
 
 	<!-- Hibernate SessionFactory -->
-	<bean id="simpleSessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
-		<property name="dataSource" ref="simpleDataSource" />
+	<bean id="appSessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
+		<property name="dataSource" ref="appDataSource" />
 		<property name="configLocation">
 			<value>classpath:/mypackage/hibernate/cfg/hibernate.cfg.xml
 			</value>
@@ -56,9 +38,8 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 	<tx:annotation-driven transaction-manager="transactionManager" />
 
 	<bean id="transactionManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
-		<property name="sessionFactory" ref="simpleSessionFactory" />
+		<property name="sessionFactory" ref="appSessionFactory" />
 	</bean>
-	<!-- @extract-end -->
 
 	<bean name="security.securityInfo" class="org.geomajas.security.SecurityInfo">
 		<property name="loopAllServices" value="false"/>
@@ -69,10 +50,9 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		</property>
 	</bean>
 
-	<bean id="gwt-simple" class="org.geomajas.configuration.client.ClientApplicationInfo">
+	<bean id="gwt-app" class="org.geomajas.configuration.client.ClientApplicationInfo">
 		<property name="maps">
 			<list>
-				<!-- @extract-start ClientMapInfoPart1, Client map configuration -->
 				<bean name="sampleFeaturesMap" class="org.geomajas.configuration.client.ClientMapInfo">
 					<property name="crs" value="EPSG:900913" />
 					<property name="displayUnitType" value="METRIC" />
@@ -88,12 +68,9 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 					<property name="layers">
 						<list>
 							<ref bean="osmLayer" />
-							<ref bean="roadsLayer" />
-							<ref bean="structuresLayer" />
+							<ref bean="roads4326Layer" />
 						</list>
 					</property>
-				<!-- @extract-end -->
-				<!-- @extract-start ClientMapInfoPart2, Client map configuration -->
 					<property name="backgroundColor" value="#F0F0F0" />
 					<property name="lineSelectStyle">
 						<bean class="org.geomajas.configuration.FeatureStyleInfo">
@@ -115,8 +92,6 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 					</property>
 					<property name="scaleBarEnabled" value="true" />
 					<property name="panButtonsEnabled" value="true" />
-				<!-- @extract-end -->
-				<!-- @extract-start ClientMapInfoPart3, Client map configuration -->
 					<property name="toolbar">
 						<bean name="sampleFeaturesMapToolbar" class="org.geomajas.configuration.client.ClientToolbarInfo">
 							<property name="tools">
@@ -136,8 +111,6 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 							</property>
 						</bean>
 					</property>
-				<!-- @extract-end -->
-				<!-- @extract-start ClientMapInfoPart4, Client map configuration -->
 					<property name="layerTree">
 						<bean name="sampleFeaturesTree" class="org.geomajas.configuration.client.ClientLayerTreeInfo">
 							<property name="tools">
@@ -154,8 +127,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 									<property name="layers">
 										<list>
 											<ref bean="osmLayer" />
-											<ref bean="roadsLayer" />
-											<ref bean="structuresLayer" />
+											<ref bean="roads4326Layer" />
 										</list>
 									</property>
 									<property name="expanded" value="true" />
@@ -164,7 +136,6 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 						</bean>
 					</property>
 				</bean>
-				<!-- @extract-end -->
 
 
 				<bean name="sampleOverviewMap" class="org.geomajas.configuration.client.ClientMapInfo">
@@ -216,7 +187,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		<property name="viewScaleMin" value="0" />
 		<property name="viewScaleMax" value="50" />
 		<property name="style" value="1" />
-	</bean>
+	</bean><!--
 
 	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="roadsLayer">
 		<property name="serverLayerId" value="roads" />
@@ -236,19 +207,19 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		</property>
 	</bean>
 
-	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="structuresLayer">
-		<property name="serverLayerId" value="structures" />
-		<property name="label" value="Structures (editable - polygon)" />
+	--><bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="roads4326Layer">
+		<property name="serverLayerId" value="roads4326" />
+		<property name="label" value="Roads 4326 (editable - linestring)" />
 		<property name="visible" value="true" />
 		<property name="viewScaleMin" value="0" />
 		<property name="viewScaleMax" value="10" />
-		<property name="namedStyleInfo" ref="structuresStyleInfo" />
+		<property name="namedStyleInfo" ref="roads4326StyleInfo" />
 		<property name="snappingRules">
 			<list>
 				<bean class="org.geomajas.configuration.SnappingRuleInfo">
 					<property name="distance" value="10" />
 					<property name="type" value="NEAREST_POINT" />
-					<property name="layerId" value="structuresLayer" />
+					<property name="layerId" value="roads4326Layer" />
 				</bean>
 			</list>
 		</property>
@@ -256,7 +227,6 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 
 	<bean name="ToolbarSeparator" class="org.geomajas.configuration.client.ClientToolInfo"/>
 
-	<!-- @extract-start ZoomInToolInfo, Tool configuration -->
 	<bean name="ZoomIn" class="org.geomajas.configuration.client.ClientToolInfo">
 		<property name="parameters">
 			<list>
@@ -267,7 +237,6 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 			</list>
 		</property>
 	</bean>
-	<!-- @extract-end -->
 	<bean name="ZoomOut" class="org.geomajas.configuration.client.ClientToolInfo">
 		<property name="parameters">
 			<list>

@@ -266,7 +266,7 @@
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-gwt-client</artifactId>
-				<version>1.6.0</version>
+				<version>1.7.0-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
@@ -277,27 +277,27 @@
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-layer-geotools</artifactId>
-				<version>1.6.0</version>
+				<version>1.7.0-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-layer-google</artifactId>
-				<version>1.6.0</version>
+				<version>1.7.0-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-layer-hibernate</artifactId>
-				<version>1.6.0</version>
+				<version>1.7.0-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-layer-openstreetmap</artifactId>
-				<version>1.6.0</version>
+				<version>1.7.0-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-layer-wms</artifactId>
-				<version>1.6.0</version>
+				<version>1.7.0-SNAPSHOT</version>
 			</dependency>
 
 			<dependency>
@@ -308,7 +308,7 @@
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-springsecurity</artifactId>
-				<version>1.6.0</version>
+				<version>1.7.0-SNAPSHOT</version>
 			</dependency>
 
 			<dependency>
@@ -324,6 +324,11 @@
 			<dependency>
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-orm</artifactId>
+				<version>${spring-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-oxm</artifactId>
 				<version>${spring-version}</version>
 			</dependency>
 			<dependency>
@@ -423,6 +428,11 @@
 				<groupId>com.sun.xml.bind</groupId>
 				<artifactId>jaxb-impl</artifactId>
 				<version>2.1.3</version>
+			</dependency>
+			<dependency>
+				<groupId>com.thoughtworks.xstream</groupId>
+				<artifactId>xstream</artifactId>
+				<version>1.3.1</version>
 			</dependency>
 
 			<dependency>
@@ -602,7 +612,7 @@
 	</dependencyManagement>
 
 	<properties>
-		<back-end-version>1.6.0</back-end-version>
+		<back-end-version>1.7.0-SNAPSHOT</back-end-version>
 		<geotools-version>2.6.3</geotools-version>
 		<gwt-version>2.0.3</gwt-version>
 		<smartgwt-version>2.1</smartgwt-version>

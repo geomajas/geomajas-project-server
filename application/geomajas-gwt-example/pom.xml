@@ -138,6 +138,30 @@
             <version>${geomajas-plugin-staticsecurity-version}</version>
 			<classifier>sources</classifier>
 		</dependency>
+
+        <dependency>
+            <groupId>org.geomajas.plugin</groupId>
+            <artifactId>geomajas-plugin-printing</artifactId>
+            <version>${geomajas-plugin-printing-version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.geomajas.plugin</groupId>
+            <artifactId>geomajas-plugin-printing</artifactId>
+            <version>${geomajas-plugin-printing-version}</version>
+			<classifier>sources</classifier>
+        </dependency>
+		<dependency>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-plugin-printing-gwt</artifactId>
+            <version>${geomajas-plugin-printing-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-plugin-printing-gwt</artifactId>
+            <version>${geomajas-plugin-printing-version}</version>
+			<classifier>sources</classifier>
+		</dependency>
+		
 		<!-- @extract-end -->
 
 		<!-- Google dependencies -->
@@ -406,6 +430,7 @@
 		<geomajas-layer-openstreetmap-version>1.7.0-SNAPSHOT</geomajas-layer-openstreetmap-version>
 		<geomajas-layer-wms-version>1.7.0-SNAPSHOT</geomajas-layer-wms-version>
 		<geomajas-plugin-staticsecurity-version>1.7.0-SNAPSHOT</geomajas-plugin-staticsecurity-version>
+		<geomajas-plugin-printing-version>2.0.0-SNAPSHOT</geomajas-plugin-printing-version>
 		<gwt-version>2.0.3</gwt-version>
 		<slf4j-version>1.6.0</slf4j-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

@@ -788,6 +788,10 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	public void setDefaultMenu(Menu defaultMenu) {
 		this.defaultMenu = defaultMenu;
 	}
+	
+	public String getApplicationId() {
+		return applicationId;
+	}
 
 	// -------------------------------------------------------------------------
 	// MapViewChangedHandler implementation:

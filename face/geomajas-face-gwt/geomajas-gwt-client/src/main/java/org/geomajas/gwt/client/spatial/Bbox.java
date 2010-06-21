@@ -285,6 +285,25 @@ public class Bbox {
 			return new Bbox(this);
 		}
 	}
+	
+	public Bbox createFittingBox(double ratioWidth, double ratioHeight) {
+		if (ratioWidth > 0 && ratioHeight > 0) {
+			double newRatio = ratioWidth / ratioHeight;
+			double oldRatio = width / height;
+			double newWidth = width;
+			double newHeight = height;
+			if (newRatio > oldRatio) {
+				newHeight = width / newRatio;
+			} else {
+				newWidth = height * newRatio;
+			}
+			Bbox result = new Bbox(0, 0, newWidth, newHeight);
+			result.setCenterPoint(getCenterPoint());
+			return result;
+		} else {
+			return new Bbox(this);
+		}
+	}
 
 	/**
 	 * Translates this bounds with displacement dx and dy.
