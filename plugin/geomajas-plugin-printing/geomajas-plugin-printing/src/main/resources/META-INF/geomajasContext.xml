@@ -77,5 +77,15 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		</property>
 	</bean>
 
+	<bean id="printMarshaller" class="org.springframework.oxm.xstream.XStreamMarshaller">
+		<property name="mode">
+			<util:constant static-field="com.thoughtworks.xstream.XStream.NO_REFERENCES" />
+		</property>
+		<property name="streamDriver">
+			<bean class="org.geomajas.plugin.printing.parser.PrettyPrintDriver" />
+		</property>
+		<property name="autodetectAnnotations" value="true" />
+	</bean>
+
 </beans>
 
