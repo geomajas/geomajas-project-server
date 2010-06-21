@@ -22,6 +22,10 @@
  */
 package org.geomajas.gwt.client.map;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.map.event.MapViewChangedEvent;
 import org.geomajas.gwt.client.map.event.MapViewChangedHandler;
@@ -30,13 +34,9 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
 /**
  * Tests map view behaviour (zoom options, resolutions)
- *
+ * 
  * @author Jan De Moerloose
  */
 public class MapViewTest {
@@ -49,8 +49,8 @@ public class MapViewTest {
 		mapView.setSize(200, 100);
 		mapView.setMaxBounds(new Bbox(0, 0, 1000, 400));
 		mapView.setMaximumScale(2);
-		mapView.setCurrentScale(1.0,MapView.ZoomOption.LEVEL_CLOSEST);
-		mapView.setCenterPosition(new Coordinate(500,200));
+		mapView.setCurrentScale(1.0, MapView.ZoomOption.LEVEL_CLOSEST);
+		mapView.setCenterPosition(new Coordinate(500, 200));
 	}
 
 	@Test
@@ -109,7 +109,7 @@ public class MapViewTest {
 		handler.expect(new Bbox(250, 75, 500, 250), 0.4, false);
 		// force next level
 		mapView.scale(1.001, MapView.ZoomOption.LEVEL_CHANGE);
-		// zooms in to 1.0 
+		// zooms in to 1.0
 		handler.expect(new Bbox(400, 150, 200, 100), 1.0, false);
 		handler.validate();
 	}
@@ -117,7 +117,9 @@ public class MapViewTest {
 	private class CaptureHandler implements MapViewChangedHandler {
 
 		private List<MapViewChangedEvent> actualEvents = new LinkedList<MapViewChangedEvent>();
+
 		private List<MapViewChangedEvent> expectedEvents = new LinkedList<MapViewChangedEvent>();
+
 		private double delta = 0.0000001;
 
 		public void onMapViewChanged(MapViewChangedEvent event) {
@@ -134,9 +136,8 @@ public class MapViewTest {
 				Assert.assertFalse("Expected event " + expected + " but got nothing", actualEvents.isEmpty());
 				MapViewChangedEvent actual = actualEvents.remove(0);
 				Assert.assertEquals(expected.getScale(), actual.getScale(), delta);
-				Assert.assertTrue(
-						"Expected " + expected.getBounds() + " but was " + actual.getBounds() + " for precision " +
-								(delta), expected.getBounds().equals(actual.getBounds(), delta));
+				Assert.assertTrue("Expected " + expected.getBounds() + " but was " + actual.getBounds()
+						+ " for precision " + (delta), expected.getBounds().equals(actual.getBounds(), delta));
 				Assert.assertEquals(expected.isSameScaleLevel(), actual.isSameScaleLevel());
 			}
 			Assert.assertTrue(actualEvents.size() + " unexpected events", actualEvents.isEmpty());
