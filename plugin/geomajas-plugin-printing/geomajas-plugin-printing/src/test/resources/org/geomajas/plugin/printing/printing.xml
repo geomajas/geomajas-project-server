@@ -39,7 +39,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
 		<property name="dataSource" ref="testDataSource" />
 		<property name="packagesToScan"
-			value="org.geomajas.extension.printing.configuration" />
+			value="org.geomajas.plugin.printing.configuration" />
 		<property name="hibernateProperties">
 			<value>
 				hibernate.dialect=org.hibernate.dialect.HSQLDialect
