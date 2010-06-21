@@ -20,37 +20,31 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-package org.geomajas.example.gwt.client.samples.toolbar;
+package org.geomajas.example.gwt.client.samples.printing;
 
 import org.geomajas.example.gwt.client.samples.base.SamplePanel;
 import org.geomajas.example.gwt.client.samples.base.SamplePanelFactory;
 import org.geomajas.example.gwt.client.samples.i18n.I18nProvider;
-import org.geomajas.gwt.client.action.toolbar.ZoomToRectangleModalAction;
-import org.geomajas.gwt.client.map.event.MapModelEvent;
-import org.geomajas.gwt.client.map.event.MapModelHandler;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.Toolbar;
-import org.geomajas.plugin.printing.client.action.toolbar.PrintAction;
 
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
- * <p>
- * Sample that shows how a custom toolbar can created without using configuration.
- * </p>
+ * Sample to demonstrate default printing action.
  * 
- * @author Frank Wynants
+ * @author Jan De Moerloose
+ * 
  */
-public class CustomToolbarSample extends SamplePanel {
+public class DefaultPrintingSample extends SamplePanel {
 
-	public static final String TITLE = "CustomToolbar";
+	public static final String TITLE = "DefaultPrinting";
 
 	public static final SamplePanelFactory FACTORY = new SamplePanelFactory() {
 
 		public SamplePanel createPanel() {
-			return new CustomToolbarSample();
+			return new DefaultPrintingSample();
 		}
 	};
 
@@ -62,28 +56,13 @@ public class CustomToolbarSample extends SamplePanel {
 		layout.setWidth100();
 		layout.setHeight100();
 
-		final MapWidget map = new MapWidget("osmMap", "gwt-samples");
+		final MapWidget map = new MapWidget("printingMap", "gwt-samples");
 
 		final Toolbar toolbar = new Toolbar(map);
 		toolbar.setButtonSize(Toolbar.BUTTON_SIZE_BIG);
 
-		// add a button in GWT code
-		toolbar.addModalButton(new ZoomToRectangleModalAction(map));
-		toolbar.addActionButton(new PrintAction(map));
-
 		layout.addMember(toolbar);
 		layout.addMember(map);
-
-		// wait for the map to be loaded and select the 1st layer
-		// the map only has one layer so selecting the 1st one is correct
-		// We need to select a layer cause the FeatureInfo works on selected layers only
-		map.getMapModel().addMapModelHandler(new MapModelHandler() {
-
-			public void onMapModelChange(MapModelEvent event) {
-				map.getMapModel().selectLayer(map.getMapModel().getLayers().get(0));
-			}
-		});
-
 		return layout;
 	}
 
@@ -92,12 +71,13 @@ public class CustomToolbarSample extends SamplePanel {
 	}
 
 	public String getSourceFileName() {
-		return "classpath:org/geomajas/example/gwt/client/samples/toolbar/CustomToolbarSample.txt";
+		return "classpath:org/geomajas/example/gwt/client/samples/printing/DefaultPrintingSample.txt";
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "classpath:org/geomajas/example/gwt/servercfg/raster/layerOsm.xml",
-				"classpath:org/geomajas/example/gwt/clientcfg/layer/mapOsm.xml" };
+		return new String[] { "classpath:org/geomajas/example/gwt/servercfg/raster/layerWmsBluemarble.xml",
+				"classpath:org/geomajas/example/gwt/servercfg/vector/layerCountries110m.xml",
+				"classpath:org/geomajas/example/gwt/clientcfg/layer/mapPrinting.xml" };
 	}
 
 	public String ensureUserLoggedIn() {

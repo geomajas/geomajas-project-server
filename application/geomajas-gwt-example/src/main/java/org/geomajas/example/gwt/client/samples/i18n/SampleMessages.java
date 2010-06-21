@@ -64,6 +64,8 @@ public interface SampleMessages extends Messages {
 
 	String treeGroupAttributes();
 
+	String treeGroupPrinting();
+
 	String introductionTitle();
 
 	// OpenStreetMap sample:
@@ -105,6 +107,9 @@ public interface SampleMessages extends Messages {
 	String navigationBtnTranslate();
 
 	String navigationBtnBbox();
+	
+	// Printing sample
+	String defaultPrintControllerTitle();
 
 	// CRS sample:
 

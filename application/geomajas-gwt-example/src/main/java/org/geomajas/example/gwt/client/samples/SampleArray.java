@@ -34,7 +34,6 @@ import org.geomajas.example.gwt.client.samples.controller.FallbackControllerSamp
 import org.geomajas.example.gwt.client.samples.controller.RectangleControllerSample;
 import org.geomajas.example.gwt.client.samples.editing.EditLineLayerSample;
 import org.geomajas.example.gwt.client.samples.editing.EditMultiLineLayerSample;
-import org.geomajas.example.gwt.client.samples.editing.EditMultiPointLayerSample;
 import org.geomajas.example.gwt.client.samples.editing.EditMultiPolygonLayerSample;
 import org.geomajas.example.gwt.client.samples.editing.EditPointLayerSample;
 import org.geomajas.example.gwt.client.samples.editing.EditPolygonLayerSample;
@@ -53,6 +52,7 @@ import org.geomajas.example.gwt.client.samples.mapwidget.PanScaleToggleSample;
 import org.geomajas.example.gwt.client.samples.mapwidget.RenderingSample;
 import org.geomajas.example.gwt.client.samples.mapwidget.UnitTypesSample;
 import org.geomajas.example.gwt.client.samples.mapwidget.WorldScreenSample;
+import org.geomajas.example.gwt.client.samples.printing.DefaultPrintingSample;
 import org.geomajas.example.gwt.client.samples.security.AttributeSecuritySample;
 import org.geomajas.example.gwt.client.samples.security.CommandSecuritySample;
 import org.geomajas.example.gwt.client.samples.security.FilterSecuritySample;
@@ -189,6 +189,13 @@ public final class SampleArray {
 						"[ISOMORPHIC]/geomajas/osgeo/tools.png", FallbackControllerSample.TITLE, "MapController",
 						FallbackControllerSample.FACTORY),
 
+				// Printing
+				new SampleTreeNode(I18nProvider.getSampleMessages().treeGroupPrinting(),
+						"[ISOMORPHIC]/geomajas/osgeo/print.png", "Printing", "topLevel"),
+				new SampleTreeNode(I18nProvider.getSampleMessages().defaultPrintControllerTitle(),
+						"[ISOMORPHIC]/geomajas/osgeo/print.png", DefaultPrintingSample.TITLE, "Printing",
+						DefaultPrintingSample.FACTORY),
+						
 				// Toolbar and controllers:
 				new SampleTreeNode(I18nProvider.getSampleMessages().treeGroupToolbarAndControllers(),
 						"[ISOMORPHIC]/geomajas/osgeo/zoom-in.png", "ToolbarAndControllers", "topLevel"),
