@@ -133,7 +133,7 @@ public class ConfigurationDtoPostProcessor {
 
 			// Since 1.7.0, conversions between resolutions (1:x) and scales:
 			if (map.getMaximumResolution() != 0) {
-				map.setMaximumScale((float)(map.getMaximumResolution() / map.getPixelLength()));
+				map.setMaximumScale((float) (map.getMaximumResolution() / map.getPixelLength()));
 			}
 			if (map.getAllowedResolutions() != null && map.getAllowedResolutions().size() > 0) {
 				try {
