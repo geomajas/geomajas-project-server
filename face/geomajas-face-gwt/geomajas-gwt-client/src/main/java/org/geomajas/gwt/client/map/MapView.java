@@ -474,14 +474,15 @@ public class MapView {
 	}
 
 	private double getMinimumScale() {
-		if (maxBounds != null) {
-			double wRatio = width / maxBounds.getWidth();
-			double hRatio = height / maxBounds.getHeight();
-			// return the maximum to fit outside
-			return wRatio > hRatio ? wRatio : hRatio;
-		} else {
-			return Double.MIN_VALUE;
-		}
+		return Double.MIN_VALUE;
+//		if (maxBounds != null) {
+//			double wRatio = width / (maxBounds.getWidth() * 2);
+//			double hRatio = height / (maxBounds.getHeight() * 2);
+//			// return the maximum to fit outside
+//			return wRatio > hRatio ? wRatio : hRatio;
+//		} else {
+//			return Double.MIN_VALUE;
+//		}
 	}
 
 	private double getBestScale(Bbox bounds) {

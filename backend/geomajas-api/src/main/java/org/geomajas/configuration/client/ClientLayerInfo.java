@@ -149,47 +149,43 @@ public abstract class ClientLayerInfo implements Serializable {
 	}
 
 	/**
-	 * Get the minimum scale for which this layer should be visible (maximum zoom out).
+	 * Get the minimum scale for which this layer should be visible (maximum zoom out). As an alternative for this
+	 * value, you can also use <code>minimumResolution</code>.
 	 * 
-	 * @deprecated Deprecated since 1.7.0. Use <code>minimumResolution</code> instead.
 	 * @return minimum scale (pix/map unit)
 	 */
-	@Deprecated
 	public double getViewScaleMin() {
 		return viewScaleMin;
 	}
 
 	/**
-	 * Set the minimum scale for which this layer should be visible (maximum zoom out).
+	 * Set the minimum scale for which this layer should be visible (maximum zoom out). As an alternative for this
+	 * value, you can also use <code>minimumResolution</code>.
 	 * 
-	 * @deprecated Deprecated since 1.7.0. Use <code>minimumResolution</code> instead.
 	 * @param viewScaleMin
 	 *            scale (pix/map unit)
 	 */
-	@Deprecated
 	public void setViewScaleMin(double viewScaleMin) {
 		this.viewScaleMin = viewScaleMin;
 	}
 
 	/**
-	 * Get the maximum scale for which this layer should be visible (maximum zoom in).
+	 * Get the maximum scale for which this layer should be visible (maximum zoom in). As an alternative for this value,
+	 * you can also use <code>maximumResolution</code>.
 	 * 
-	 * @deprecated Deprecated since 1.7.0. Use <code>maximumResolution</code> instead.
 	 * @return maximum scale (pix/map unit)
 	 */
-	@Deprecated
 	public double getViewScaleMax() {
 		return viewScaleMax;
 	}
 
 	/**
-	 * Set the maximum scale for which this layer should be visible (maximum zoom in).
+	 * Set the maximum scale for which this layer should be visible (maximum zoom in). As an alternative for this value,
+	 * you can also use <code>maximumResolution</code>.
 	 * 
-	 * @deprecated Deprecated since 1.7.0. Use <code>maximumResolution</code> instead.
 	 * @param viewScaleMax
 	 *            scale (pix/map unit)
 	 */
-	@Deprecated
 	public void setViewScaleMax(double viewScaleMax) {
 		this.viewScaleMax = viewScaleMax;
 	}

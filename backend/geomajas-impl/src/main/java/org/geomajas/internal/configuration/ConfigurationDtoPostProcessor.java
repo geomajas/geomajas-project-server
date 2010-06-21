@@ -124,22 +124,16 @@ public class ConfigurationDtoPostProcessor {
 
 				// Since 1.7.0, conversions between resolutions (1:x) and scales:
 				if (layer.getMinimumResolution() != 0) {
-					layer.setMinimumResolution(layer.getMinimumResolution() / map.getPixelLength());
-				} else if (layer.getViewScaleMin() != 0) {
-					layer.setMinimumResolution(layer.getViewScaleMin());
+					layer.setViewScaleMin(layer.getMinimumResolution() / map.getPixelLength());
 				}
 				if (layer.getMaximumResolution() != 0) {
-					layer.setMaximumResolution(layer.getMaximumResolution() / map.getPixelLength());
-				} else if (layer.getViewScaleMax() != 0) {
-					layer.setMaximumResolution(layer.getViewScaleMax());
+					layer.setViewScaleMax(layer.getMaximumResolution() / map.getPixelLength());
 				}
 			}
 
 			// Since 1.7.0, conversions between resolutions (1:x) and scales:
 			if (map.getMaximumResolution() != 0) {
-				map.setMaximumResolution(map.getMaximumResolution() / map.getPixelLength());
-			} else if (map.getMaximumScale() != 0) {
-				map.setMaximumResolution(map.getMaximumScale());
+				map.setMaximumScale((float)(map.getMaximumResolution() / map.getPixelLength()));
 			}
 			if (map.getAllowedResolutions() != null && map.getAllowedResolutions().size() > 0) {
 				try {

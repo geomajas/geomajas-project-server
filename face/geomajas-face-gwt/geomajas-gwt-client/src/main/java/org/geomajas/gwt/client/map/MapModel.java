@@ -253,7 +253,7 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 			} else {
 				mapView.setResolutions(mapInfo.getResolutions());
 			}
-			mapView.setMaximumScale(mapInfo.getMaximumResolution());
+			mapView.setMaximumScale(mapInfo.getMaximumScale());
 			Bbox initialBounds = new Bbox(mapInfo.getInitialBounds().getX(), mapInfo.getInitialBounds().getY(), mapInfo
 					.getInitialBounds().getWidth(), mapInfo.getInitialBounds().getHeight());
 			removeAllLayers();

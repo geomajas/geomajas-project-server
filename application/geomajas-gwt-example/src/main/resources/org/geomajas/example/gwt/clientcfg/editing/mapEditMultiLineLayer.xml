@@ -60,6 +60,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		</property>
         <property name="allowedResolutions">
             <list>
+                <value>1:444000000</value>
                 <value>1:222000000</value>
                 <value>1:111000000</value>
                 <value>1:55000000</value>

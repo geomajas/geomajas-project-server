@@ -287,24 +287,21 @@ public class ClientMapInfo implements Serializable {
 
 	/**
 	 * Returns the maximum scale (maximum zoom in) of this map. The minimum scale is indirectly determined from the
-	 * maximum bounds.
+	 * maximum bounds. As a better alternative for this value, you can also use <code>maximumZoomScale</code>.
 	 * 
-	 * @deprecated Use maximumZoomScale instead. This value has been deprecated since 1.7.0.
 	 * @return the maximum scale (pixels/unit)
 	 */
-	@Deprecated
 	public float getMaximumScale() {
 		return maximumScale;
 	}
 
 	/**
-	 * Set maximum scale (maximum zoom in) of this map.
+	 * Set maximum scale (maximum zoom in) of this map. As a better alternative for this value, you can also use
+	 * <code>maximumZoomScale</code>.
 	 * 
-	 * @deprecated Use maximumZoomScale instead. This value has been deprecated since 1.7.0.
 	 * @param maximumScale
 	 *            the maximum scale (pixels/unit)
 	 */
-	@Deprecated
 	public void setMaximumScale(float maximumScale) {
 		this.maximumScale = maximumScale;
 	}
@@ -364,7 +361,7 @@ public class ClientMapInfo implements Serializable {
 
 	/**
 	 * Are the resolutions relative ? If true, the resolutions are expressed as pure numbers and denote the ratio of the
-	 * map unit and 1 m on the screen (as computed from the screen dpi).
+	 * map unit and 1 m on the screen (as computed from the screen DPI).
 	 * 
 	 * @return true if relative
 	 */
