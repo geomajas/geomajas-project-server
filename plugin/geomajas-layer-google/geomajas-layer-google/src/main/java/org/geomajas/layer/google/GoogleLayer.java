@@ -105,7 +105,7 @@ public class GoogleLayer implements RasterLayer {
 	protected static final int[] POWERS_OF_TWO;
 
 	static {
-		POWERS_OF_TWO = new int[MAX_ZOOM_LEVEL];
+		POWERS_OF_TWO = new int[MAX_ZOOM_LEVEL + 1];
 		int b = 1;
 		for (int c = 0; c < POWERS_OF_TWO.length; c++) {
 			POWERS_OF_TWO[c] = b;
