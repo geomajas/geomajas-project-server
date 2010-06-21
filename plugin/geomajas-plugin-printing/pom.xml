@@ -97,6 +97,7 @@
 	
 	<modules>
 		<module>geomajas-plugin-printing</module>
+		<module>geomajas-plugin-printing-gwt</module>
 	</modules>
 
 	<profiles>

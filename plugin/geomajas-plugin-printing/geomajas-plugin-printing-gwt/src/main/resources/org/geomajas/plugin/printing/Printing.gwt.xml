@@ -1,0 +1,10 @@
+<module>
+
+	<inherits name="org.geomajas.gwt.GeomajasClient" />
+
+	<source path="client" />
+	<source path="component/dto" />
+	<source path="command/dto" />
+  	<entry-point class='org.geomajas.plugin.printing.client.Printing'/>
+
+</module>
