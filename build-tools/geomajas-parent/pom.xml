@@ -15,6 +15,7 @@
 		for the display, analysis and management of geographic information. It is a building block that allows
 		developers to add maps and other geographic data capabilities to their web applications.
 	</description>
+	<url>http://www.geomajas.org/</url>
 
 	<scm>
 		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/build-tools/geomajas-parent</connection>
@@ -95,7 +96,6 @@
 			<email>joachim@geosparc.com</email>
 		</developer>
 	</developers>
-	
 
 	<build>
 		<plugins>
