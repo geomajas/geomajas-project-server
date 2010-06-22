@@ -57,7 +57,10 @@
 	<xi:include href="modules/part-backend.xml"
 				xmlns:xi="http://www.w3.org/2001/XInclude"/>
 
-	<xi:include href="modules/part_realworld example.xml"
+	<xi:include href="modules/part-howto.xml"
+				xmlns:xi="http://www.w3.org/2001/XInclude"/>
+
+	<xi:include href="modules/part-realworld.xml"
 				xmlns:xi="http://www.w3.org/2001/XInclude"/>
 
 	<xi:include href="modules/part-appendix.xml"
