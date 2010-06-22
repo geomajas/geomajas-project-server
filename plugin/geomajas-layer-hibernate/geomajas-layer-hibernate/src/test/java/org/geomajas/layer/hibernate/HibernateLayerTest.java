@@ -87,7 +87,7 @@ public class HibernateLayerTest extends AbstractHibernateLayerModelTest {
 
 		layer.getFeatureModel().setAttributes(detached, attributes);
 		layer.saveOrUpdate(detached);
-		
+
 		feature = layer.read(f1.getId().toString());
 		Assert.assertEquals("new name", layer.getFeatureModel().getAttribute(feature, PARAM_TEXT_ATTR).getValue());
 		Assert.assertEquals(5f, layer.getFeatureModel().getAttribute(feature, PARAM_FLOAT_ATTR).getValue());

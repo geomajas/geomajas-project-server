@@ -226,7 +226,7 @@ public class HibernateFeatureModelTest extends AbstractHibernateLayerModelTest {
 		attr.getValue().getAttributes().put(PARAM_TEXT_ATTR, new StringAttribute(newValue));
 		attributes.put(PARAM_MANY_TO_ONE, attr);
 		featureModel.setAttributes(feature1, attributes);
-		Assert.assertEquals(newValue, featureModel.getAttribute(feature1, ATTR__MANY_TO_ONE__DOT__TEXT).getValue());
+		Assert.assertEquals(null, featureModel.getAttribute(feature1, ATTR__MANY_TO_ONE__DOT__TEXT).getValue());
 	}
 
 	@SuppressWarnings("unchecked")
@@ -292,11 +292,11 @@ public class HibernateFeatureModelTest extends AbstractHibernateLayerModelTest {
 		String[] strings = (String[]) featureModel.getAttribute(feature1, ATTR__ONE_TO_MANY__DOT__TEXT).getValue();
 		Assert.assertEquals(strings[0], "new name");
 		Integer[] ints = (Integer[]) featureModel.getAttribute(feature1, ATTR__ONE_TO_MANY__DOT__INT).getValue();
-		Assert.assertEquals((Object)ints[0], 5);
+		Assert.assertEquals((Object) ints[0], 5);
 		Float[] floats = (Float[]) featureModel.getAttribute(feature1, ATTR__ONE_TO_MANY__DOT__FLOAT).getValue();
-		Assert.assertEquals((Object)floats[0], 5.0f);
+		Assert.assertEquals((Object) floats[0], 5.0f);
 		Double[] doubles = (Double[]) featureModel.getAttribute(feature1, ATTR__ONE_TO_MANY__DOT__DOUBLE).getValue();
-		Assert.assertEquals((Object)doubles[0], 5.0);
+		Assert.assertEquals((Object) doubles[0], 5.0);
 		Boolean[] bools = (Boolean[]) featureModel.getAttribute(feature1, ATTR__ONE_TO_MANY__DOT__BOOLEAN).getValue();
 		Assert.assertEquals(bools[0], false);
 		Date[] dates = (Date[]) featureModel.getAttribute(feature1, ATTR__ONE_TO_MANY__DOT__DATE).getValue();

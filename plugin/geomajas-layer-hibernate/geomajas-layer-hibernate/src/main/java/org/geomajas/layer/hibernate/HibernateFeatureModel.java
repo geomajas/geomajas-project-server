@@ -50,8 +50,11 @@ import org.geomajas.layer.feature.attribute.AssociationValue;
 import org.geomajas.layer.feature.attribute.PrimitiveAttribute;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
+import org.hibernate.Criteria;
 import org.hibernate.EntityMode;
 import org.hibernate.HibernateException;
+import org.hibernate.criterion.Restrictions;
+import org.hibernate.engine.SessionImplementor;
 import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.type.Type;
 import org.slf4j.Logger;
@@ -349,7 +352,8 @@ public class HibernateFeatureModel extends HibernateLayerUtil implements Feature
 	 * @param parentAttribute
 	 * @param propertyName
 	 * @param baseValue
-	 * @throws LayerException oops
+	 * @throws LayerException
+	 *             oops
 	 */
 	@SuppressWarnings("unchecked")
 	private void setAttributeRecursively(Object parent, AttributeInfo parentAttribute, String propertyName,
@@ -447,22 +451,43 @@ public class HibernateFeatureModel extends HibernateLayerUtil implements Feature
 		}
 	}
 
+	/**
+	 * Setting a single AssociationValue, i.e. a ManyToOne. This method foresees the following scenario's:
+	 * <ul>
+	 * <li>If the value is null, than null is applied onto the parent.</li>
+	 * <li>If the value contains an ID, than look into the target table for the correct value and apply it.</li>
+	 * <li>If the value does not contain an ID: we assume we should cascade a persist. In other words, we will try to
+	 * create a new value into the target table.</li>
+	 * </ul>
+	 */
 	private void setAssociationValue(Object parent, String property, AssociationValue value) {
 		// Find the correct child bean:
 		ClassMetadata meta = getSessionFactory().getClassMetadata(parent.getClass());
-		Object bean = meta.getPropertyValue(parent, property, EntityMode.POJO);
 
-		// If no bean yet, create it and add it to the parent:
-		if (bean == null) {
-			ClassMetadata beanMeta = getSessionFactory().getClassMetadata(meta.getPropertyType(property).getName());
-			bean = beanMeta.instantiate(null, EntityMode.POJO);
-			meta.setPropertyValue(parent, property, bean, EntityMode.POJO);
+		// Value is null; apply null:
+		if (value == null) {
+			meta.setPropertyValue(parent, property, null, EntityMode.POJO);
+			return;
 		}
 
-		// Copy the individual bean properties to the bean:
-		ClassMetadata propertyMeta = getSessionFactory().getClassMetadata(bean.getClass());
-		for (Entry<String, PrimitiveAttribute<?>> entry : value.getAttributes().entrySet()) {
-			propertyMeta.setPropertyValue(bean, entry.getKey(), entry.getValue().getValue(), EntityMode.POJO);
+		// We have an ID, so we know which object to fetch and add to the parent:
+		if (value.getId() != null && value.getId().getValue() != null) {
+			Criteria criteria = getSessionFactory().getCurrentSession().createCriteria(
+					meta.getPropertyType(property).getName());
+			criteria.add(Restrictions.idEq(value.getId().getValue()));
+			meta.setPropertyValue(parent, property, criteria.uniqueResult(), EntityMode.POJO);
+		} else {
+			// If we have no ID, then we must create a new value and cascade in the referencing table.
+			// Even if the parent should already have a current value, overwrite it. (or we could set it's ID to null)
+			ClassMetadata beanMeta = getSessionFactory().getClassMetadata(meta.getPropertyType(property).getName());
+			Object bean = beanMeta.instantiate(null, (SessionImplementor) getSessionFactory().getCurrentSession());
+			meta.setPropertyValue(parent, property, bean, EntityMode.POJO);
+
+			// Copy the individual bean properties to the bean: (this may overwrite existing values)
+			ClassMetadata propertyMeta = getSessionFactory().getClassMetadata(bean.getClass());
+			for (Entry<String, PrimitiveAttribute<?>> entry : value.getAttributes().entrySet()) {
+				propertyMeta.setPropertyValue(bean, entry.getKey(), entry.getValue().getValue(), EntityMode.POJO);
+			}
 		}
 	}
 
@@ -627,7 +652,7 @@ public class HibernateFeatureModel extends HibernateLayerUtil implements Feature
 	 */
 	private AttributeInfo getRecursiveAttributeInfo(String name, AttributeInfo attributeInfo) {
 		// try to assure the correct separator is used
-		name = name.replace(HibernateLayerUtil.XPATH_SEPARATOR, HibernateLayerUtil.SEPARATOR);				
+		name = name.replace(HibernateLayerUtil.XPATH_SEPARATOR, HibernateLayerUtil.SEPARATOR);
 
 		int position = name.indexOf(SEPARATOR);
 		String first = name;
