@@ -336,7 +336,7 @@
     <example>
       <title>Create project using GWT Maven archetype</title>
 
-      <para><programlisting>mvn archetype:generate -DarchetypeCatalog=http://apps.geomajas.org/nexus/content/repositories/thirdparty/</programlisting></para>
+      <para><programlisting>mvn archetype:generate -DarchetypeCatalog=http://apps.geomajas.org/nexus/content/groups/released/</programlisting></para>
     </example>
 
     <para>Alternatively, you can use the very latest (snapshot) archetype
@@ -345,13 +345,13 @@
     <example>
       <title>Create project using GWT Maven archetype</title>
 
-      <para><programlisting>mvn archetype:generate -DarchetypeCatalog=http://maven.geomajas.org/</programlisting></para>
+      <para><programlisting>mvn archetype:generate -DarchetypeCatalog=http://apps.geomajas.org/nexus/content/groups/latest/</programlisting></para>
     </example>
 
     <para>You first have to select the archetype you want to build
     (geomajas-plugin-archetype). Then it will ask you the "groupId",
     "artifactId", version and base package. Once you confirmed the settings,
-    the project will be created in a subdirectory with a name equalling the
+    the project will be created in a sub-directory with a name equalling the
     "artifactId" you choose.</para>
   </section>
 

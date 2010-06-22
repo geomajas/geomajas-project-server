@@ -129,7 +129,7 @@
       <example>
         <title>Create project using GWT Maven archetype</title>
 
-        <para><programlisting>mvn archetype:generate -DarchetypeCatalog=http://maven.geomajas.org/</programlisting></para>
+        <para><programlisting>mvn archetype:generate -DarchetypeCatalog=http://apps.geomajas.org/nexus/content/groups/released/</programlisting></para>
       </example>
 
       <para>Once this is executed you can , among others, use the following
