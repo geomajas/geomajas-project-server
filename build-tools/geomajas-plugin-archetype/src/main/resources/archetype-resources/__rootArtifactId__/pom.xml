@@ -2,34 +2,22 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
 		<groupId>${groupId}</groupId>
-		<artifactId>geomajas-parent</artifactId>
-		<version>${parentVersion}</version>
+		<artifactId>${rootArtifactId}-all</artifactId>
+		<version>${version}</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>${groupId}</groupId>
 	<artifactId>${rootArtifactId}</artifactId>
-	<version>${version}</version>
 	<packaging>jar</packaging>
-	<name>${name}</name>
-	<description>${name}</description>
-
-	<developers>
-		<developer>
-			<id>${developer.id}</id>
-			<name>${developer.name}</name>
-			<email>${developer.email}</email>
-			<roles>
-				<role>Module maintainer</role>
-			</roles>
-		</developer>
-	</developers>	
+	<name>${pluginName}</name>
+	<description>${pluginName}</description>
 
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-dep</artifactId>
-				<version>${geomajasDepVersion}</version>
+				<version>1.10.24</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>

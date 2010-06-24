@@ -11,25 +11,29 @@
 	<artifactId>${rootArtifactId}-all</artifactId>
 	<version>${version}</version>
 	<packaging>pom</packaging>
-	<name>${name}</name>
-	<description>${name}</description>
+	<name>${pluginName} plug-in</name>
+	<description>${pluginName} plug-in grouping module</description>
 
+	<!-- @todo uncomment and fix when this module is part of the Geomajas project
 	<scm>
 		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/${rootArtifactId}</connection>
 		<developerConnection>scm:svn:https://svn.geomajas.org/majas/plugin/${rootArtifactId}</developerConnection>
 		<url>https://svn.geomajas.org/majas/trunk/plugin/${rootArtifactId}</url>
 	</scm>
+	-->
 
+	<!-- @todo you probably want to set the developers, otherwise it inherits from the parent if any
 	<developers>
 		<developer>
-			<id>${developer.id}</id>
-			<name>${developer.name}</name>
-			<email>${developer.email}</email>
+			<id>jd</id>
+			<name>John Doe</name>
+			<email>john.doe@acmee.com</email>
 			<roles>
 				<role>Module maintainer</role>
 			</roles>
 		</developer>
 	</developers>
+	-->
 
 	<repositories>
 		<repository>

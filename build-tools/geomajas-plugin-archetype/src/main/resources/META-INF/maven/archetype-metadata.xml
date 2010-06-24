@@ -11,21 +11,6 @@
 		<requiredProperty key="pluginName">
 			<defaultValue>${artifactId}</defaultValue>
 		</requiredProperty>
-		<requiredProperty key="parentVersion">
-			<defaultValue>1.0.0</defaultValue>
-		</requiredProperty>
-		<requiredProperty key="geomajasDepVersion">
-			<defaultValue>1.10.22</defaultValue>
-		</requiredProperty>
-		<requiredProperty key="developer.id">
-			<defaultValue>devid</defaultValue>
-		</requiredProperty>
-		<requiredProperty key="developer.name">
-			<defaultValue>Full Name</defaultValue>
-		</requiredProperty>
-		<requiredProperty key="developer.email">
-			<defaultValue>devid@domain</defaultValue>
-		</requiredProperty>
 	</requiredProperties>
 	<fileSets>
 		<fileSet filtered="true" encoding="UTF-8">

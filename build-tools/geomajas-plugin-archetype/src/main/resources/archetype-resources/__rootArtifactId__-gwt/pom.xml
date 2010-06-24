@@ -1,56 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!--
-  ~ This file is part of Geomajas, a component framework for building
-  ~ rich Internet applications (RIA) with sophisticated capabilities for the
-  ~ display, analysis and management of geographic information.
-  ~ It is a building block that allows developers to add maps
-  ~ and other geographic data capabilities to their web applications.
-  ~
-  ~ Copyright 2008-2010 Geosparc, http://www.geosparc.com, Belgium
-  ~
-  ~ This program is free software: you can redistribute it and/or modify
-  ~ it under the terms of the GNU Affero General Public License as
-  ~ published by the Free Software Foundation, either version 3 of the
-  ~ License, or (at your option) any later version.
-  ~
-  ~ This program is distributed in the hope that it will be useful,
-  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~ GNU Affero General Public License for more details.
-  ~
-  ~ You should have received a copy of the GNU Affero General Public License
-  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
-  --><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
 		<groupId>${groupId}</groupId>
-		<artifactId>geomajas-parent</artifactId>
-		<version>${parentVersion}</version>
+		<artifactId>${rootArtifactId}-all</artifactId>
+		<version>${version}</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>${groupId}</groupId>
 	<artifactId>${rootArtifactId}-gwt</artifactId>
-	<version>${version}</version>
 	<packaging>jar</packaging>
-	<name>${name} (GWT face)</name>
-	<description>${name} (GWT face)</description>
-
-	<developers>
-		<developer>
-			<id>${developer.id}</id>
-			<name>${developer.name}</name>
-			<email>${developer.email}</email>
-			<roles>
-				<role>Module maintainer</role>
-			</roles>
-		</developer>
-	</developers>	
+	<name>${pluginName} (GWT face)</name>
+	<description>${pluginName} (GWT face)</description>
 
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-dep</artifactId>
-				<version>${geomajasDepVersion}</version>
+				<version>1.10.24</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>

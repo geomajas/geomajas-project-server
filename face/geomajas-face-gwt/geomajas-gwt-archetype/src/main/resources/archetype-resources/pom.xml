@@ -27,6 +27,19 @@
 			<distribution>repo</distribution>
 		</license>
 	</licenses>
+
+	<!-- @todo you probably want to set the developers, otherwise it inherits from the parent if any
+	<developers>
+		<developer>
+			<id>jd</id>
+			<name>John Doe</name>
+			<email>john.doe@acmee.com</email>
+			<roles>
+				<role>Module maintainer</role>
+			</roles>
+		</developer>
+	</developers>
+	-->	
 	
 	<dependencyManagement>
 		<dependencies>
