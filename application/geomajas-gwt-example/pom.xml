@@ -348,7 +348,7 @@
 		<repository>
 			<id>Geomajas snapshots</id>
 			<name>Geomajas snapshot repository</name>
-			<url>http://apps.geomajas.org/nexus/content/repositories/snapshots</url>
+			<url>http://apps.geomajas.org/nexus/content/groups/latest/</url>
 			<snapshots>
 				<enabled>true</enabled>
 			</snapshots>

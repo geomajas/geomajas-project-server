@@ -156,6 +156,18 @@
 			</resource>
 		</resources>
 	</build>
+
+	<!-- enable snapshot repo  -->	
+	<repositories>
+		<repository>
+			<id>Geomajas snapshots</id>
+			<name>Geomajas snapshot repository</name>
+			<url>http://apps.geomajas.org/nexus/content/groups/latest/</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
 	
 	<properties>
 		<geomajas-backend-version>1.7.0-SNAPSHOT</geomajas-backend-version>
