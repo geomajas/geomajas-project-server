@@ -27,7 +27,7 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <book id="enduser" lang="en">
-	<title>Geomajas end user guide</title>
+	<title>Geomajas ${pluginName} plug-in guide</title>
 
 	<bookinfo>
 		<copyright>

@@ -11,6 +11,7 @@
 	<packaging>pom</packaging>
 	<name>Geomajas build tools</name>
 	<description>Geomajas build tools</description>
+	<url>http://www.geomajas.org/build-tools</url>
 
 	<modules>
 		<module>geomajas-checkstyle</module>

@@ -3,9 +3,9 @@
 		 xmlns="http://maven.apache.org/POM/4.0.0"
 		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<parent>
-		<groupId>org.sonatype.oss</groupId>
-		<artifactId>oss-parent</artifactId>
-		<version>2</version>
+		<groupId>org.geomajas</groupId>
+		<artifactId>geomajas-parent</artifactId>
+		<version>1.0.1</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas</groupId>
@@ -14,7 +14,6 @@
 	<packaging>maven-archetype</packaging>
 	<name>Geomajas GWT application archetype</name>
 	<description>Geomajas GWT application archetype</description>
-	<url>http://files.geomajas.org/maven/trunk/build-tools/geomajas-gwt-archetype</url>
 
 	<developers>
 		<developer>

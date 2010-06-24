@@ -2,9 +2,9 @@
 		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<parent>
-		<groupId>org.sonatype.oss</groupId>
-		<artifactId>oss-parent</artifactId>
-		<version>2</version>
+		<groupId>org.geomajas</groupId>
+		<artifactId>geomajas-parent</artifactId>
+		<version>1.0.1</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.documentation</groupId>
@@ -17,7 +17,6 @@
 		for the display, analysis and management of geographic information. It is a building block that allows
 		developers to add maps and other geographic data capabilities to their web applications.
 	</description>
-	<url>http://files.geomajas.org/maven/trunk/geomajas</url>
 
 	<scm>
 		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/documentation</connection>
@@ -25,30 +24,6 @@
 		<url>https://svn.geomajas.org/majas/trunk/documentation</url>
 	</scm>
 
-	<organization>
-		<name>Geosparc</name>
-		<url>http://www.geosparc.com</url>
-	</organization>
-	<mailingLists>
-		<mailingList>
-			<name>DEV</name>
-			<post>mailto:majas-dev@geomajas.org</post>
-			<subscribe>http://lists.geomajas.org/mailman/listinfo/majas-dev</subscribe>
-			<unsubscribe>http://lists.geomajas.org/mailman/listinfo/majas-dev</unsubscribe>
-			<archive>http://lists.geomajas.org/pipermail/majas-dev/</archive>
-		</mailingList>
-	</mailingLists>
-	<licenses>
-		<license>
-			<name>GNU Affero General Public License, Version 3</name>
-			<url>http://www.gnu.org/licenses/agpl-3.0.html</url>
-			<distribution>repo</distribution>
-		</license>
-	</licenses>
-	<issueManagement>
-		<system>JIRA</system>
-		<url>http://jira.geomajas.org</url>
-	</issueManagement>
 	<distributionManagement>
 		<site>
 			<id>Geomajas project site</id>
@@ -56,22 +31,6 @@
 			<url>file:/var/www/files.geomajas.org/htdocs/maven/trunk/geomajas</url>
 		</site>
 	</distributionManagement>
-	<ciManagement>
-		<system>hudson</system>
-		<url>http://apps.geomajas.org/hudson/</url>
-		<notifiers>
-			<notifier>
-				<type>mail</type>
-				<sendOnError>true</sendOnError>
-				<sendOnFailure>true</sendOnFailure>
-				<sendOnSuccess>false</sendOnSuccess>
-				<sendOnWarning>true</sendOnWarning>
-				<configuration>
-					<address>geomajas-commit@lists.sourceforge.net</address>
-				</configuration>
-			</notifier>
-		</notifiers>
-	</ciManagement>
 
 	<repositories>
 		<repository>

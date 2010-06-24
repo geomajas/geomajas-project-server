@@ -1,8 +1,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
-		<groupId>org.sonatype.oss</groupId>
-		<artifactId>oss-parent</artifactId>
-		<version>2</version>
+		<groupId>org.geomajas</groupId>
+		<artifactId>geomajas-parent</artifactId>
+		<version>1.0.1</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas</groupId>
@@ -22,68 +22,6 @@
 		<url>https://svn.geomajas.org/majas/tags/build-tools/geomajas-dep/1.10.22</url>
 	</scm>
 
-	<organization>
-		<name>Geosparc</name>
-		<url>http://www.geosparc.com</url>
-	</organization>
-	<mailingLists>
-		<mailingList>
-			<name>DEV</name>
-			<post>mailto:majas-dev@geomajas.org</post>
-			<subscribe>http://lists.geomajas.org/mailman/listinfo/majas-dev</subscribe>
-			<unsubscribe>http://lists.geomajas.org/mailman/listinfo/majas-dev</unsubscribe>
-			<archive>http://lists.geomajas.org/pipermail/majas-dev/</archive>
-		</mailingList>
-	</mailingLists>
-	<licenses>
-		<license>
-			<name>GNU Affero General Public License, Version 3</name>
-			<url>http://www.gnu.org/licenses/agpl-3.0.html</url>
-			<distribution>repo</distribution>
-		</license>
-	</licenses>
-	<issueManagement>
-		<system>JIRA</system>
-		<url>http://jira.geomajas.org</url>
-	</issueManagement>
-	<ciManagement>
-		<system>hudson</system>
-		<url>http://apps.geomajas.org/hudson/</url>
-		<notifiers>
-			<notifier>
-				<type>mail</type>
-				<sendOnError>true</sendOnError>
-				<sendOnFailure>true</sendOnFailure>
-				<sendOnSuccess>false</sendOnSuccess>
-				<sendOnWarning>true</sendOnWarning>
-				<configuration>
-					<address>geomajas-commit@lists.sourceforge.net</address>
-				</configuration>
-			</notifier>
-		</notifiers>
-	</ciManagement>
-
-	<developers>
-		<developer>
-			<id>pieterdg</id>
-			<name>Pieter De Graef</name>
-			<email>pieter.degraef@geosparc.com</email>
-			<roles>
-				<role>Module maintainer</role>
-			</roles>
-		</developer>
-		<developer>
-			<id>jandm</id>
-			<name>Jan De Moerloose</name>
-			<email>jan.demoerloose@geosparc.com</email>
-		</developer>
-		<developer>
-			<id>joachimvda</id>
-			<name>Joachim Van der Auwera</name>
-			<email>joachim@geosparc.com</email>
-		</developer>
-	</developers>
-	
 	<repositories>
 		<repository>
 			<id>Geomajas</id>
@@ -170,15 +108,6 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>2.5</version>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-release-plugin</artifactId>
-				<version>2.0</version>
-				<configuration>
-					<tagBase>https://svn.geomajas.org/majas/tags/build-tools/geomajas-dep</tagBase>
-					<branchBase>https://svn.geomajas.org/majas/branches/build-tools/geomajas-dep</branchBase>
-				</configuration>
 			</plugin>
 		</plugins>
 		<pluginManagement>

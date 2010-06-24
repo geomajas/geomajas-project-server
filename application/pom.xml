@@ -1,8 +1,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
-		<groupId>org.sonatype.oss</groupId>
-		<artifactId>oss-parent</artifactId>
-		<version>2</version>
+		<groupId>org.geomajas</groupId>
+		<artifactId>geomajas-parent</artifactId>
+		<version>1.0.1</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas</groupId>
@@ -12,6 +12,12 @@
 	<name>Geomajas applications</name>
 	<description>Geomajas example/showcase applications</description>
 
+	<scm>
+		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/application</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/application</developerConnection>
+		<url>https://svn.geomajas.org/majas/trunk/application</url>
+	</scm>
+	
 	<modules>
 		<module>geomajas-dojo-example</module>
 		<module>geomajas-dojo-simple</module>

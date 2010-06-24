@@ -10,7 +10,38 @@
 	<packaging>jar</packaging>
 	<name>Geomajas dojo application example modules</name>
 	<description>Geomajas dojo application example modules</description>
-	<url>http://files.geomajas.org/maven/trunk/dojo-example</url>
+	<url>http://www.geomajas.org/</url>
+
+	<scm>
+		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/application/geomajas-dojo-example/geomajas-dojo-example-modules</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/application/geomajas-dojo-example/geomajas-dojo-example-modules</developerConnection>
+		<url>https://svn.geomajas.org/majas/trunk/application/geomajas-dojo-example/geomajas-dojo-example-modules</url>
+	</scm>
+	
+	<organization>
+		<name>Geosparc</name>
+		<url>http://www.geosparc.com</url>
+	</organization>
+	<mailingLists>
+		<mailingList>
+			<name>DEV</name>
+			<post>mailto:majas-dev@geomajas.org</post>
+			<subscribe>http://lists.geomajas.org/mailman/listinfo/majas-dev</subscribe>
+			<unsubscribe>http://lists.geomajas.org/mailman/listinfo/majas-dev</unsubscribe>
+			<archive>http://lists.geomajas.org/pipermail/majas-dev/</archive>
+		</mailingList>
+	</mailingLists>
+	<licenses>
+		<license>
+			<name>GNU Affero General Public License, Version 3</name>
+			<url>http://www.gnu.org/licenses/agpl-3.0.html</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+	<issueManagement>
+		<system>JIRA</system>
+		<url>http://jira.geomajas.org</url>
+	</issueManagement>
 
 	<dependencies>
 		<dependency>

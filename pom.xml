@@ -9,7 +9,7 @@
 	<artifactId>geomajas-all</artifactId>
 	<version>dummy</version>
 	<packaging>pom</packaging>
-	<url>http://files.geomajas.org/maven/trunk</url>
+	<url>http://www.geomajas.org/</url>
 	<name>Grouping of all Geomajas modules</name>
 	<description>Grouping of all Geomajas modules</description>
 
@@ -102,4 +102,15 @@
 			</notifier>
 		</notifiers>
 	</ciManagement>
+
+	<developers>
+		<developer>
+			<id>dirkf</id>
+			<name>Dirk Frigne</name>
+			<email>dirk.frigne@geosparc.com</email>
+			<roles>
+				<role>product owner</role>
+			</roles>
+		</developer>
+	</developers>
 </project>

@@ -11,7 +11,7 @@
 	<version>1.0.4</version>
 	<name>Geomajas maven plugin</name>
 	<description>Geomajas maven plugin, used for extracting documentation extracts.</description>
-	<url>http://files.geomajas.org/maven/trunk/geomajas-maven-plugin</url>
+	<url>http://www.geomajas.org/geomajas-maven-plugin</url>
 
 	<developers>
 		<developer>

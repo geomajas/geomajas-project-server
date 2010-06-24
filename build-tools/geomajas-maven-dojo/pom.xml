@@ -12,7 +12,7 @@
 	<version>1.1</version>
 	<name>Geomajas dojo build plugin</name>
 	<description>Geomajas dojo build plugin</description>
-	<url>http://files.geomajas.org/maven/trunk/build-tools/geomajas-maven-dojo</url>
+	<url>http://www.geomajas.org/geomajas-maven-dojo</url>
 
 	<developers>
 		<developer>

@@ -34,12 +34,23 @@
 	<name>${name} (GWT face)</name>
 	<description>${name} (GWT face)</description>
 
+	<developers>
+		<developer>
+			<id>${developer.id}</id>
+			<name>${developer.name}</name>
+			<email>${developer.email}</email>
+			<roles>
+				<role>Module maintainer</role>
+			</roles>
+		</developer>
+	</developers>	
+
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-dep</artifactId>
-				<version>${dependenciesVersion}</version>
+				<version>${geomajasDepVersion}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>

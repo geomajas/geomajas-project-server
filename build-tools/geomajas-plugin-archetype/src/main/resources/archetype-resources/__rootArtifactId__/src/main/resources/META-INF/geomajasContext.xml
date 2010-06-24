@@ -37,7 +37,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	<bean class="org.geomajas.global.PluginInfo">
 		<property name="version">
 			<bean class="org.geomajas.global.PluginVersionInfo">
-				<property name="name" value="${name}" />
+				<property name="name" value="${pluginName}" />
 				<property name="version" value="${symbol_dollar}{project.version}" />
 			</bean>
 		</property>

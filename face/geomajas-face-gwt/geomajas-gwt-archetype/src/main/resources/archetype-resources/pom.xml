@@ -9,7 +9,25 @@
 	<version>${version}</version>
 	<packaging>war</packaging>
 	<name>Geomajas GWT application</name>
+	<description>Geomajas GWT application</description>
+	<url>http://www.geomajas.org/</url>
 
+	<!-- @todo required for sample applications which are included in the Geomajas project, fix or delete 
+	<scm>
+		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/application/geomajas-dojo-example</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/application/geomajas-dojo-example</developerConnection>
+		<url>https://svn.geomajas.org/majas/trunk/application/geomajas-dojo-example</url>
+	</scm>
+	-->
+
+	<licenses>
+		<license>
+			<name>GNU Affero General Public License, Version 3</name>
+			<url>http://www.gnu.org/licenses/agpl-3.0.html</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+	
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
