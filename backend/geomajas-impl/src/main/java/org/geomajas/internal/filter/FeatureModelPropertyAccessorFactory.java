@@ -58,7 +58,7 @@ public class FeatureModelPropertyAccessorFactory implements PropertyAccessorFact
 
 		private static Pattern ID_PATTERN = Pattern.compile("@(\\w+:)?id");
 
-		protected static Pattern PROPERTY_PATTERN = Pattern.compile("((\\w+)(\\.|/))+(\\w+)");
+		protected static Pattern PROPERTY_PATTERN = Pattern.compile("((\\w+)(\\.|/))*(\\w+)");
 
 		public boolean canHandle(Object object, String xpath, Class target) {
 			FeatureModel fm = FeatureModelRegistry.getRegistry().lookup(object);

@@ -36,6 +36,8 @@ public class PropertyAccessorTest {
 
 	@Test
 	public void testPattern() {
+		Assert.assertTrue(FeatureModelPropertyAccessor.PROPERTY_PATTERN.matcher("aa").matches());
+
 		Assert.assertTrue(FeatureModelPropertyAccessor.PROPERTY_PATTERN.matcher("aa/bb").matches());
 		Assert.assertTrue(FeatureModelPropertyAccessor.PROPERTY_PATTERN.matcher("aa.bb").matches());
 
