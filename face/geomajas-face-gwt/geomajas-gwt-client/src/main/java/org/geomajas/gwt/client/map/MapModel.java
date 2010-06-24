@@ -36,6 +36,8 @@ import org.geomajas.gwt.client.gfx.PainterVisitor;
 import org.geomajas.gwt.client.map.event.FeatureDeselectedEvent;
 import org.geomajas.gwt.client.map.event.FeatureSelectedEvent;
 import org.geomajas.gwt.client.map.event.FeatureSelectionHandler;
+import org.geomajas.gwt.client.map.event.FeatureTransactionEvent;
+import org.geomajas.gwt.client.map.event.FeatureTransactionHandler;
 import org.geomajas.gwt.client.map.event.HasFeatureSelectionHandlers;
 import org.geomajas.gwt.client.map.event.LayerDeselectedEvent;
 import org.geomajas.gwt.client.map.event.LayerSelectedEvent;
@@ -136,8 +138,9 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 	}
 
 	/**
-	 *
-	 * @param handler The handler to be registered.
+	 * 
+	 * @param handler
+	 *            The handler to be registered.
 	 * @return
 	 * @since 1.6.0
 	 */
@@ -147,8 +150,9 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 	}
 
 	/**
-	 *
-	 * @param handler the handler to be registered
+	 * 
+	 * @param handler
+	 *            the handler to be registered
 	 * @return
 	 * @since 1.6.0
 	 */
@@ -158,13 +162,26 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 	}
 
 	/**
-	 *
+	 * 
 	 * @param handler
 	 * @since 1.6.0
 	 */
 	@Api
 	public void removeMapModelHandler(final MapModelHandler handler) {
 		handlerManager.removeHandler(MapModelEvent.TYPE, handler);
+	}
+
+	/**
+	 * Add a new handler for {@link FeatureTransactionEvent}s.
+	 * 
+	 * @param handler
+	 *            the handler to be registered
+	 * @return
+	 * @since 1.7.0
+	 */
+	@Api
+	public HandlerRegistration addFeatureTransactionHandler(final FeatureTransactionHandler handler) {
+		return handlerManager.addHandler(FeatureTransactionHandler.TYPE, handler);
 	}
 
 	// -------------------------------------------------------------------------
@@ -443,6 +460,7 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 			}
 			// make it fetch the tiles
 			mapView.translate(0, 0);
+			handlerManager.fireEvent(new FeatureTransactionEvent(ft));
 		}
 	}
 
