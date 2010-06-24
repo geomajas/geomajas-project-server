@@ -1,3 +1,25 @@
+<!--
+  ~ This file is part of Geomajas, a component framework for building
+  ~ rich Internet applications (RIA) with sophisticated capabilities for the
+  ~ display, analysis and management of geographic information.
+  ~ It is a building block that allows developers to add maps
+  ~ and other geographic data capabilities to their web applications.
+  ~
+  ~ Copyright 2008-2010 Geosparc, http://www.geosparc.com, Belgium
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU Affero General Public License as
+  ~ published by the Free Software Foundation, either version 3 of the
+  ~ License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU Affero General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU Affero General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
 	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
@@ -8,6 +30,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
 http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 
+	<!-- @extract-start HibernateRoadsInfo, Hibernate roads layer info -->
 	<bean name="roadsInfo" class="org.geomajas.configuration.VectorLayerInfo">
 		<property name="layerType" value="MULTILINESTRING" />
 		<property name="crs" value="EPSG:900913" />
@@ -26,6 +49,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 			</list>
 		</property>
 	</bean>
+	<!-- @extract-end -->
 
 	<bean class="org.geomajas.configuration.NamedStyleInfo" name="roadsStyleInfo">
 		<property name="featureStyles">
@@ -62,6 +86,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		</property>
 	</bean>
 
+	<!-- @extract-start HibernateRoadsFeatureInfo, Hibernate roads layer feature info -->
 	<bean class="org.geomajas.configuration.FeatureInfo" name="roadsFeatureInfo">
 		<property name="dataSourceName" value="mypackage.server.Road" />
 		<property name="identifier">
@@ -91,6 +116,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 					<property name="identifying" value="true" />
 					<property name="type" value="FLOAT" />
 				</bean>
+				<!-- @extract-skip-start -->
 				<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
 					<property name="label" value="Type" />
 					<property name="name" value="type" />
@@ -131,14 +157,17 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 					<property name="identifying" value="true" />
 					<property name="type" value="URL" />
 				</bean>
+			<!-- @extract-skip-end -->
 			</list>
 		</property>
 	</bean>
+	<!-- @extract-end -->
 
 	<bean name="appDateFormat" class="java.text.SimpleDateFormat">
 		<constructor-arg type="java.lang.String" value="dd/MM/yyyy" />
 	</bean>
 
+	<!-- @extract-start HibernateRoadsLayer, Hibernate roads layer definition -->
 	<bean name="roads" class="org.geomajas.layer.hibernate.HibernateLayer">
 		<property name="layerInfo" ref="roadsInfo" />
 		<property name="featureModel">
@@ -149,5 +178,6 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		<property name="sessionFactory" ref="appSessionFactory" />
 		<property name="dateFormat" ref="appDateFormat" />
 	</bean>
+	<!-- @extract-end -->
 
 </beans>
