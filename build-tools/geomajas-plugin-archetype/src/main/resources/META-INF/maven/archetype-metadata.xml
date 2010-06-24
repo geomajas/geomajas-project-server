@@ -21,7 +21,7 @@
 		</fileSet>
 	</fileSets>
 	<modules>
-		<module id="${rootArtifactId}" dir="__rootArtifactId__" name="${rootArtifactId}">
+		<module id="core" dir="__rootArtifactId__" name="core">
 			<fileSets>
 				<fileSet filtered="true" packaged="true" encoding="UTF-8">
 					<directory>src/main/java</directory>
@@ -49,8 +49,7 @@
 				</fileSet>
 			</fileSets>
 		</module>
-		<module id="${rootArtifactId}-gwt" dir="__rootArtifactId__-gwt"
-			name="${rootArtifactId}-gwt">
+		<module id="gwt" dir="__rootArtifactId__-gwt" name="gwt">
 			<fileSets>
 				<fileSet filtered="true" packaged="true" encoding="UTF-8">
 					<directory>src/main/java</directory>
@@ -80,15 +79,8 @@
 				</fileSet>
 			</fileSets>
 		</module>
-		<module id="${rootArtifactId}-documentation" dir="documentation"
-			name="${rootArtifactId}-documentation">
+		<module id="documentation" dir="documentation" name="documentation">
 			<fileSets>
-				<fileSet filtered="true" encoding="UTF-8">
-					<directory>en-GB/modules</directory>
-					<includes>
-						<include>**/*.xml</include>
-					</includes>
-				</fileSet>
 				<fileSet filtered="true" encoding="UTF-8">
 					<directory>en-GB</directory>
 					<includes>
