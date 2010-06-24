@@ -21,7 +21,7 @@
 		</fileSet>
 	</fileSets>
 	<modules>
-		<module id="${rootArtifactId}" dir="__rootArtifactId__" name="${rootArtifactId}">
+		<module id="${pluginName}" dir="__pluginName__" name="${pluginName}">
 			<fileSets>
 				<fileSet filtered="true" packaged="true" encoding="UTF-8">
 					<directory>src/main/java</directory>
@@ -49,8 +49,7 @@
 				</fileSet>
 			</fileSets>
 		</module>
-		<module id="${rootArtifactId}-gwt" dir="__rootArtifactId__-gwt"
-			name="${rootArtifactId}-gwt">
+		<module id="${pluginName}-gwt" dir="__pluginName__-gwt" name="${pluginName}-gwt">
 			<fileSets>
 				<fileSet filtered="true" packaged="true" encoding="UTF-8">
 					<directory>src/main/java</directory>
@@ -80,8 +79,7 @@
 				</fileSet>
 			</fileSets>
 		</module>
-		<module id="${rootArtifactId}-documentation" dir="documentation"
-			name="${rootArtifactId}-documentation">
+		<module id="${pluginName}-documentation" dir="documentation" name="${pluginName}-documentation">
 			<fileSets>
 				<fileSet filtered="true" encoding="UTF-8">
 					<directory>en-GB/modules</directory>
