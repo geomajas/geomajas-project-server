@@ -32,10 +32,11 @@ import org.geomajas.global.Api;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.VectorLayerService;
+import org.geomajas.layer.feature.Feature;
 import org.geomajas.layer.feature.FeatureTransaction;
 import org.geomajas.layer.feature.InternalFeature;
-import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.DtoConverterService;
+import org.geomajas.service.GeoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,7 +55,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class PersistTransactionCommand implements Command<PersistTransactionRequest, PersistTransactionResponse> {
 
 	@Autowired
-	private ConfigurationService configurationService;
+	private GeoService geoService;
 
 	@Autowired
 	private DtoConverterService converter;
@@ -94,9 +95,16 @@ public class PersistTransactionCommand implements Command<PersistTransactionRequ
 			}
 		}
 
-		layerService.saveOrUpdate(featureTransaction.getLayerId(), configurationService.getCrs(request.getCrs()),
-				oldFeatures, newFeatures);
+		layerService.saveOrUpdate(featureTransaction.getLayerId(), geoService.getCrs(request.getCrs()), oldFeatures,
+				newFeatures);
 
+		// Apply the new set of InternalFeatures onto the transaction: (ID may be filled in now)
+		Feature[] resultFeatures = new Feature[newFeatures.size()];
+		for (int i = 0; i < newFeatures.size(); i++) {
+			InternalFeature internalFeature = newFeatures.get(i);
+			resultFeatures[i] = converter.toDto(internalFeature);
+		}
+		featureTransaction.setNewFeatures(resultFeatures);
 		response.setFeatureTransaction(featureTransaction);
 	}
 }

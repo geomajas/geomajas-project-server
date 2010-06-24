@@ -80,6 +80,9 @@ public class SaveOrUpdateSaveStep extends AbstractSaveOrUpdateStep {
 		}
 		if (securityFilter.evaluate(feature)) {
 			context.put(PipelineCode.FEATURE_DATA_OBJECT_KEY, layer.saveOrUpdate(feature));
+			if (isCreate) {
+				newFeature.setId(featureModel.getId(feature));
+			}
 		} else {
 			if (isCreate) {
 				throw new GeomajasSecurityException(ExceptionCode.FEATURE_CREATE_PROHIBITED,
