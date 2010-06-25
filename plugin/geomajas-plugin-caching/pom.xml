@@ -46,7 +46,7 @@
 	</pluginRepositories>
 
 	<modules>
-		<module>geomajas-plugin-caching</module>
+		<module>caching</module>
 		<module>documentation</module>
   </modules>
 
