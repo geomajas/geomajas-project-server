@@ -194,7 +194,6 @@ public class DefaultImageContext implements ImageContext {
 		if (isAttached()) {
 			// initially set display to none to avoid broken image
 			if (helper.getElement(parent, name) == null) {
-				GWT.log("hiding " + name);
 				style = (PictureStyle) style.clone();
 				style.setDisplay("none");
 			}
@@ -219,11 +218,9 @@ public class DefaultImageContext implements ImageContext {
 					public void onBrowserEvent(Event event) {
 						switch (DOM.eventGetType(event)) {
 							case Event.ONLOAD:
-								GWT.log("displaying " + name);
 								DOM.setStyleAttribute(image, "display", "");
 								break;
 							case Event.ONERROR:
-								GWT.log("retrying " + name);
 								retries--;
 								if (retries > 0) {
 									DOM.setElementAttribute(image, "src", href);
