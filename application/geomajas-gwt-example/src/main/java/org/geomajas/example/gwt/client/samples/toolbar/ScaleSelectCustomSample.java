@@ -76,7 +76,8 @@ public class ScaleSelectCustomSample extends SamplePanel {
 		map.getMapModel().addMapModelHandler(new MapModelHandler() {
 
 			public void onMapModelChange(MapModelEvent event) {
-				ScaleSelect scaleSelect = new ScaleSelect(map.getMapModel().getMapView(), map.getPixelLength());
+				ScaleSelect scaleSelect = new ScaleSelect(map.getMapModel().getMapView(), map.getPixelLength()
+						/ map.getUnitLength());
 				Double[] customScales = new Double[] { 1.0 / 100000000.0, 1.0 / 50000000.0, 1.0 / 2500000.0 };
 				scaleSelect.setScales(customScales);
 				toolbar.addChild(scaleSelect);

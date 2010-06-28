@@ -214,6 +214,13 @@ PROJCS["Google Mercator",
 
 	<context:component-scan base-package="org.geomajas" name-generator="org.geomajas.spring.GeomajasBeanNameGenerator"/>
 
+	<bean class="org.springframework.beans.factory.config.CustomEditorConfigurer">
+		<property name="customEditors">
+			<map>
+				<entry key="org.geomajas.configuration.client.ScaleInfo" value="org.geomajas.internal.configuration.ScaleInfoEditor" />
+			</map>
+		</property>
+	</bean>
 
 	<!-- define default pipelines for RasterLayerService -->
 

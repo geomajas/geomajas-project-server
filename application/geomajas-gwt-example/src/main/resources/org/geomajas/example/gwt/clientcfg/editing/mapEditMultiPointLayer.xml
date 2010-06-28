@@ -48,7 +48,11 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		<property name="crs" value="EPSG:4326" />
 		<property name="scaleBarEnabled" value="true" />
 		<property name="panButtonsEnabled" value="true" />
-		<property name="maximumResolution" value="1:100000" />
+		<property name="scaleConfiguration">
+			<bean class="org.geomajas.configuration.client.ScaleConfigurationInfo">
+				<property name="maximumScale" value="1:100000" />
+			</bean>
+		</property>
 		<property name="initialBounds">
 			<bean class="org.geomajas.geometry.Bbox">
 				<property name="x" value="-31.44" />
@@ -64,8 +68,8 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 					<property name="serverLayerId" value="multiCities" />
 			        <property name="label" value="Multi-Cities (editable - multipoint)"/>
 			        <property name="visible" value="true"/>
-			 		<property name="maximumResolution" value="1:100000" />
-					<property name="minimumResolution" value="1:500000000" />
+					<property name="maximumScale" value="1:27000" />
+					<property name="minimumScale" value="1:500000000" />
 					<property name="namedStyleInfo" ref="multiCitiesStyleInfo" />
 				</bean>
 			</list>

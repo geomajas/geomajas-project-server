@@ -76,7 +76,8 @@ public class ScaleSelectDefaultSample extends SamplePanel {
 		map.getMapModel().addMapModelHandler(new MapModelHandler() {
 
 			public void onMapModelChange(MapModelEvent event) {
-				ScaleSelect scaleSelect = new ScaleSelect(map.getMapModel().getMapView(), map.getPixelLength());
+				ScaleSelect scaleSelect = new ScaleSelect(map.getMapModel().getMapView(), map.getPixelLength()
+						/ map.getUnitLength());
 				toolbar.addChild(scaleSelect);
 			}
 		});

@@ -30,7 +30,6 @@ import javax.validation.constraints.Null;
 import org.geomajas.configuration.LayerInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.global.Api;
-import org.geomajas.global.ResolutionFormat;
 import org.geomajas.layer.LayerType;
 
 /**
@@ -50,15 +49,11 @@ public abstract class ClientLayerInfo implements Serializable {
 
 	private boolean visible;
 
-	private double viewScaleMin;
+	private ScaleInfo minimumScale = ScaleInfo.MIN_VALUE;
 
-	private double viewScaleMax = Double.MAX_VALUE;
+	private ScaleInfo maximumScale = ScaleInfo.MAX_VALUE;
 
-	@ResolutionFormat
-	private double maximumResolution;
-
-	@ResolutionFormat
-	private double minimumResolution;
+	private ScaleUnit scaleUnit = ScaleUnit.NORMAL;
 
 	@Null
 	private LayerInfo layerInfo;
@@ -71,7 +66,7 @@ public abstract class ClientLayerInfo implements Serializable {
 	private String serverLayerId;
 
 	private ClientUserDataInfo userData;
-
+	
 	/**
 	 * Get the unique id of this layer.
 	 * 
@@ -149,45 +144,114 @@ public abstract class ClientLayerInfo implements Serializable {
 	}
 
 	/**
-	 * Get the minimum scale for which this layer should be visible (maximum zoom out). As an alternative for this
-	 * value, you can also use <code>minimumResolution</code>.
+	 * Get the minimum scale for which this layer should be visible (maximum zoom out).
 	 * 
 	 * @return minimum scale (pix/map unit)
+	 * @deprecated use {@link #getMinScale()}
 	 */
+	@Deprecated
 	public double getViewScaleMin() {
-		return viewScaleMin;
+		return minimumScale.getValue();
 	}
 
 	/**
-	 * Set the minimum scale for which this layer should be visible (maximum zoom out). As an alternative for this
-	 * value, you can also use <code>minimumResolution</code>.
+	 * Set the minimum scale for which this layer should be visible (maximum zoom out).
 	 * 
 	 * @param viewScaleMin
 	 *            scale (pix/map unit)
+	 * @deprecated use {@link #setMinimumScale()}
 	 */
+	@Deprecated
 	public void setViewScaleMin(double viewScaleMin) {
-		this.viewScaleMin = viewScaleMin;
+		setScaleUnit(ScaleUnit.PIXEL_PER_UNIT);
+		setMinimumScale(new ScaleInfo(viewScaleMin));
 	}
 
 	/**
-	 * Get the maximum scale for which this layer should be visible (maximum zoom in). As an alternative for this value,
-	 * you can also use <code>maximumResolution</code>.
+	 * Get the maximum scale for which this layer should be visible (maximum zoom in).
 	 * 
 	 * @return maximum scale (pix/map unit)
+	 * @deprecated use {@link #getMaximumScale()}
 	 */
+	@Deprecated
 	public double getViewScaleMax() {
-		return viewScaleMax;
+		return maximumScale.getValue();
 	}
 
 	/**
-	 * Set the maximum scale for which this layer should be visible (maximum zoom in). As an alternative for this value,
-	 * you can also use <code>maximumResolution</code>.
+	 * Set the maximum scale for which this layer should be visible (maximum zoom in).
 	 * 
 	 * @param viewScaleMax
 	 *            scale (pix/map unit)
+	 * @deprecated use {@link #setMaximumScale()}
 	 */
+	@Deprecated
 	public void setViewScaleMax(double viewScaleMax) {
-		this.viewScaleMax = viewScaleMax;
+		setScaleUnit(ScaleUnit.PIXEL_PER_UNIT);
+		setMinimumScale(new ScaleInfo(viewScaleMax));
+	}
+
+	/**
+	 * Get the minimum scale for which this layer should be visible (maximum zoom out).
+	 * 
+	 * @return the minimum scale (unit type is defined in )
+	 * @since 1.7.0
+	 */
+	public ScaleInfo getMinimumScale() {
+		return minimumScale;
+	}
+
+	/**
+	 * Set the minimum scale for which this layer should be visible (maximum zoom out).
+	 * 
+	 * @param minimumScale
+	 *            the minimum scale
+	 * @since 1.7.0
+	 */
+	public void setMinimumScale(ScaleInfo minimumScale) {
+		this.minimumScale = minimumScale;
+	}
+
+	/**
+	 * Get the maximum scale for which this layer should be visible (maximum zoom in).
+	 * 
+	 * @return the maximum scale
+	 * @since 1.7.0
+	 */
+	public ScaleInfo getMaximumScale() {
+		return maximumScale;
+	}
+
+	/**
+	 * Set the maximum scale for which this layer should be visible (maximum zoom in).
+	 * 
+	 * @param maximumScale
+	 *            the maximum scale
+	 * @since 1.7.0
+	 */
+	public void setMaximumScale(ScaleInfo maximumScale) {
+		this.maximumScale = maximumScale;
+	}
+	
+	/**
+	 * Returns the unit used by the minimum and maximum scale.
+	 * 
+	 * @return a scale unit
+	 * @since 1.7.0
+	 */
+	public ScaleUnit getScaleUnit() {
+		return scaleUnit;
+	}
+
+	/**
+	 * Sets the unit used by the minimum and maximum scale.
+	 * 
+	 * @param scaleUnit
+	 *            a scale unit
+	 * @since 1.7.0
+	 */
+	public void setScaleUnit(ScaleUnit scaleUnit) {
+		this.scaleUnit = scaleUnit;
 	}
 
 	/**
@@ -265,49 +329,4 @@ public abstract class ClientLayerInfo implements Serializable {
 		this.userData = userData;
 	}
 
-	/**
-	 * Get the minimum resolution for which this layer should be visible (maximum zoom out). This value uses the (1:x)
-	 * format.
-	 * 
-	 * @return minimum resolution in (1:x) format.
-	 * @since 1.7.0 Replaces the <code>viewScaleMax</code> value.
-	 */
-	public double getMaximumResolution() {
-		return maximumResolution;
-	}
-
-	/**
-	 * Set the minimum resolution for which this layer should be visible (maximum zoom out). This value uses the (1:x)
-	 * format.
-	 * 
-	 * @param maximumResolution
-	 *            minimum resolution in (1:x) format.
-	 * @since 1.7.0 Replaces the <code>viewScaleMax</code> value.
-	 */
-	public void setMaximumResolution(double maximumResolution) {
-		this.maximumResolution = maximumResolution;
-	}
-
-	/**
-	 * Get the maximum resolution for which this layer should be visible (maximum zoom in). This value uses the (1:x)
-	 * format.
-	 * 
-	 * @return maximum resolution in (1:x) format.
-	 * @since 1.7.0 Replaces the <code>viewScaleMin</code> value.
-	 */
-	public double getMinimumResolution() {
-		return minimumResolution;
-	}
-
-	/**
-	 * Set the maximum resolution for which this layer should be visible (maximum zoom in). This value uses the (1:x)
-	 * format.
-	 * 
-	 * @param minimumResolution
-	 *            maximum resolution in (1:x) format.
-	 * @since 1.7.0 Replaces the <code>viewScaleMin</code> value.
-	 */
-	public void setMinimumResolution(double minimumResolution) {
-		this.minimumResolution = minimumResolution;
-	}
 }

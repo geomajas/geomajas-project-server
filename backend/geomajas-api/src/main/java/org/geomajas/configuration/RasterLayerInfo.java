@@ -46,6 +46,7 @@ public class RasterLayerInfo extends LayerInfo implements Serializable {
 	private int tileWidth;
 	@NotNull
 	private int tileHeight;
+	
 	private List<Double> resolutions;
 
 	/**

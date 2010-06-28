@@ -106,7 +106,7 @@ public abstract class AbstractLayer<T extends ClientLayerInfo> implements Layer<
 	public void updateShowing() {
 		double scale = mapModel.getMapView().getCurrentScale();
 		if (visible) {
-			if (scale >= layerInfo.getViewScaleMin() && scale <= layerInfo.getViewScaleMax()) {
+			if (scale >= layerInfo.getMinimumScale().getValue() && scale <= layerInfo.getMaximumScale().getValue()) {
 				showing = true;
 			} else {
 				showing = false;
@@ -159,12 +159,12 @@ public abstract class AbstractLayer<T extends ClientLayerInfo> implements Layer<
 		return showing && labeled;
 	}
 
-	public double getMinimumResolution() {
-		return layerInfo.getMinimumResolution();
+	public double getMinimumScale() {
+		return layerInfo.getMinimumScale().getValue();
 	}
 
-	public double getMaximumResolution() {
-		return layerInfo.getMaximumResolution();
+	public double getMaximumScale() {
+		return layerInfo.getMaximumScale().getValue();
 	}
 
 	public void setLabeled(boolean labeled) {

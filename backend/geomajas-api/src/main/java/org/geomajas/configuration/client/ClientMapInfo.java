@@ -31,7 +31,6 @@ import javax.validation.constraints.NotNull;
 import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.global.Api;
-import org.geomajas.global.ResolutionFormat;
 
 /**
  * Map configuration.
@@ -65,20 +64,10 @@ public class ClientMapInfo implements Serializable {
 
 	private UnitType displayUnitType = UnitType.METRIC;
 
-	private float maximumScale;
-
-	// @NotNull
-	@ResolutionFormat
-	private double maximumResolution;
+	private ScaleConfigurationInfo scaleConfiguration = new ScaleConfigurationInfo();
 
 	@NotNull
 	private Bbox initialBounds;
-
-	private List<Double> resolutions;
-
-	private List<String> allowedResolutions;
-
-	private boolean resolutionsRelative;
 
 	private List<ClientLayerInfo> layers = new ArrayList<ClientLayerInfo>();
 
@@ -286,13 +275,36 @@ public class ClientMapInfo implements Serializable {
 	}
 
 	/**
+	 * Retruns the scale configuration of this map.
+	 * 
+	 * @return scale configuration.
+	 * @since 1.7.0
+	 */
+	public ScaleConfigurationInfo getScaleConfiguration() {
+		return scaleConfiguration;
+	}
+
+	/**
+	 * Sets the scale configuration of this map.
+	 * 
+	 * @param scaleConfiguration
+	 *            the scale configuration
+	 * @since 1.7.0
+	 */
+	public void setScaleConfiguration(ScaleConfigurationInfo scaleConfiguration) {
+		this.scaleConfiguration = scaleConfiguration;
+	}
+
+	/**
 	 * Returns the maximum scale (maximum zoom in) of this map. The minimum scale is indirectly determined from the
 	 * maximum bounds. As a better alternative for this value, you can also use <code>maximumZoomScale</code>.
 	 * 
 	 * @return the maximum scale (pixels/unit)
+	 * @deprecated use {@link #getScaleConfiguration()}
 	 */
+	@Deprecated
 	public float getMaximumScale() {
-		return maximumScale;
+		return (float) getScaleConfiguration().getMaximumScale().getValue();
 	}
 
 	/**
@@ -301,9 +313,11 @@ public class ClientMapInfo implements Serializable {
 	 * 
 	 * @param maximumScale
 	 *            the maximum scale (pixels/unit)
+	 * @deprecated use {@link #setScaleConfiguration()}
 	 */
+	@Deprecated
 	public void setMaximumScale(float maximumScale) {
-		this.maximumScale = maximumScale;
+		getScaleConfiguration().setMaximumScale(new ScaleInfo(maximumScale));
 	}
 
 	/**
@@ -331,15 +345,15 @@ public class ClientMapInfo implements Serializable {
 	 * Returns the list of resolutions (inverse scale values) allowed by this map. This determines the predefined scale
 	 * levels at which this map will be shown. If this list is non-empty, the map will not adjust to arbitrary scale
 	 * levels but will instead snap to one of the scale levels defined in this list when zooming.
-	 * <p>
-	 * Note that there is an alternative (allowedResolutions) wherein one can use the 1:x format. The
-	 * <code>allowedResolutions</code> is usually the way to go.
 	 * 
+	 * @deprecated use {@link #getScaleConfiguration()}
 	 * @return a list of resolutions (unit/pixel or pure number if relative)
 	 */
+	@Deprecated
 	public List<Double> getResolutions() {
-		if (null == resolutions) {
-			resolutions = new ArrayList<Double>();
+		List<Double> resolutions = new ArrayList<Double>();
+		for (ScaleInfo scale : getScaleConfiguration().getZoomLevels()) {
+			resolutions.add(1. / scale.getValue());
 		}
 		return resolutions;
 	}
@@ -348,25 +362,29 @@ public class ClientMapInfo implements Serializable {
 	 * Sets the list of resolutions (inverse scale values) allowed by this map. This determines the predefined scale
 	 * levels at which this map will be shown. If this list is non-empty, the map will not adjust to arbitrary scale
 	 * levels but will instead snap to one of the scale levels defined in this list when zooming.
-	 * <p>
-	 * Note that there is an alternative (allowedResolutions) wherein one can use the 1:x format. The
-	 * <code>allowedResolutions</code> is usually the way to go.
-	 * 
+	 *  
 	 * @param resolutions
 	 *            a list of resolutions (unit/pixel or pure number if relative)
+	 * @deprecated use {@link #setScaleConfiguration()}
 	 */
+	@Deprecated
 	public void setResolutions(List<Double> resolutions) {
-		this.resolutions = resolutions;
+		getScaleConfiguration().getZoomLevels().clear();
+		for (Double resolution : resolutions) {
+			getScaleConfiguration().getZoomLevels().add(new ScaleInfo(1. / resolution));
+		}
 	}
 
 	/**
 	 * Are the resolutions relative ? If true, the resolutions are expressed as pure numbers and denote the ratio of the
 	 * map unit and 1 m on the screen (as computed from the screen DPI).
 	 * 
+	 * @deprecated use {@link #getScaleConfiguration()}
 	 * @return true if relative
 	 */
+	@Deprecated
 	public boolean isResolutionsRelative() {
-		return resolutionsRelative;
+		return getScaleConfiguration().getScaleUnit().equals(ScaleUnit.NORMAL);
 	}
 
 	/**
@@ -375,9 +393,11 @@ public class ClientMapInfo implements Serializable {
 	 * 
 	 * @param resolutionsRelative
 	 *            true if relative
+	 * @deprecated use {@link #setScaleConfiguration()}
 	 */
+	@Deprecated
 	public void setResolutionsRelative(boolean resolutionsRelative) {
-		this.resolutionsRelative = resolutionsRelative;
+		getScaleConfiguration().setScaleUnit(resolutionsRelative ? ScaleUnit.NORMAL : ScaleUnit.PIXEL_PER_UNIT);
 	}
 
 	/**
@@ -516,49 +536,4 @@ public class ClientMapInfo implements Serializable {
 		this.userData = userData;
 	}
 
-	/**
-	 * @since 1.7.0 Added to replace the maximumScale.
-	 * @return Returns the maximum resolution (maximum zoom in) of this map. The minimum resolution is indirectly
-	 *         determined from the maximum bounds. It uses the standard 1:x format.
-	 */
-	public double getMaximumResolution() {
-		return maximumResolution;
-	}
-
-	/**
-	 * Sets the maximum scale (maximum zoom in) of this map. The minimum resolution is indirectly determined from the
-	 * maximum bounds. It uses the standard 1:x format.
-	 * 
-	 * @since 1.7.0 Added to replace the maximumScale.
-	 * @param maximumResolution
-	 *            The new maximum resolution.
-	 */
-	public void setMaximumResolution(double maximumResolution) {
-		this.maximumResolution = maximumResolution;
-	}
-
-	/**
-	 * Returns the list of predefined scale levels allowed by this map. If this list is non-empty, the map will not
-	 * adjust to arbitrary scale levels but will instead snap to one of the scale levels defined in this list when
-	 * zooming.
-	 * 
-	 * @since 1.7.0 Added as a better alternative than <code>resolutions</code>.
-	 * @return a list of scale levels (1:x format)
-	 */
-	public List<String> getAllowedResolutions() {
-		return allowedResolutions;
-	}
-
-	/**
-	 * Returns the list of predefined scale levels allowed by this map. If this list is non-empty, the map will not
-	 * adjust to arbitrary scale levels but will instead snap to one of the scale levels defined in this list when
-	 * zooming.
-	 * 
-	 * @since 1.7.0 Added as a better alternative than <code>resolutions</code>.
-	 * @param allowedResolutions
-	 *            The list of allowed resolutions (1:x format)
-	 */
-	public void setAllowedResolutions(List<String> allowedResolutions) {
-		this.allowedResolutions = allowedResolutions;
-	}
 }

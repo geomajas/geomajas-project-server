@@ -111,15 +111,12 @@ public class GetMapConfigurationCommand implements Command<GetMapConfigurationRe
 		client.setLayerTree(securityClone(original.getLayerTree()));
 		client.setLineSelectStyle(original.getLineSelectStyle());
 		client.setMaxBounds(original.getMaxBounds());
-		client.setMaximumScale(original.getMaximumScale());
-		client.setMaximumResolution(original.getMaximumResolution());
+		client.setScaleConfiguration(original.getScaleConfiguration());
 		client.setPanButtonsEnabled(original.isPanButtonsEnabled());
 		client.setPixelLength(original.getPixelLength());
 		client.setPointSelectStyle(original.getPointSelectStyle());
 		client.setPolygonSelectStyle(original.getPolygonSelectStyle());
 		client.setPrecision(original.getPrecision());
-		client.setResolutions(original.getResolutions());
-		client.setResolutionsRelative(original.isResolutionsRelative());
 		client.setScaleBarEnabled(original.isScaleBarEnabled());
 		client.setToolbar(securityClone(original.getToolbar()));
 		client.setUnitLength(original.getUnitLength());

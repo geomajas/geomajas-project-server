@@ -47,7 +47,11 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		<property name="crs" value="EPSG:900913" />
 		<property name="scaleBarEnabled" value="true" />
 		<property name="panButtonsEnabled" value="true" />
-		<property name="maximumResolution" value="1:100" />
+		<property name="scaleConfiguration">
+			<bean class="org.geomajas.configuration.client.ScaleConfigurationInfo">
+				<property name="maximumScale" value="1:100" />
+			</bean>
+		</property>
 		<property name="initialBounds">
 			<bean class="org.geomajas.geometry.Bbox">
 				<property name="x" value="-20026376.393709917" />
@@ -62,8 +66,8 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 					<property name="serverLayerId" value="beans" />
 					<property name="label" value="Test beans" />
 					<property name="visible" value="true" />
-			 		<property name="maximumResolution" value="1:100" />
-					<property name="minimumResolution" value="1:500000000" />
+					<property name="minimumScale" value="1:500000000" />
+			 		<property name="maximumScale" value="1:100" />
 					<property name="namedStyleInfo" ref="beansStyleInfo" />
 				</bean>
 			</list>

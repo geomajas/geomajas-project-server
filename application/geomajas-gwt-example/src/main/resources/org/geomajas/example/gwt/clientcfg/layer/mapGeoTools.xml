@@ -1,25 +1,16 @@
-<!--
-  ~ This file is part of Geomajas, a component framework for building
-  ~ rich Internet applications (RIA) with sophisticated capabilities for the
-  ~ display, analysis and management of geographic information.
-  ~ It is a building block that allows developers to add maps
-  ~ and other geographic data capabilities to their web applications.
-  ~
-  ~ Copyright 2008-2010 Geosparc, http://www.geosparc.com, Belgium
-  ~
-  ~ This program is free software: you can redistribute it and/or modify
-  ~ it under the terms of the GNU Affero General Public License as
-  ~ published by the Free Software Foundation, either version 3 of the
-  ~ License, or (at your option) any later version.
-  ~
-  ~ This program is distributed in the hope that it will be useful,
-  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~ GNU Affero General Public License for more details.
-  ~
-  ~ You should have received a copy of the GNU Affero General Public License
-  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
-  -->
+
+	<!--
+		~ This file is part of Geomajas, a component framework for building ~ rich Internet applications (RIA) with
+		sophisticated capabilities for the ~ display, analysis and management of geographic information. ~ It is a building
+		block that allows developers to add maps ~ and other geographic data capabilities to their web applications. ~ ~
+		Copyright 2008-2010 Geosparc, http://www.geosparc.com, Belgium ~ ~ This program is free software: you can redistribute
+		it and/or modify ~ it under the terms of the GNU Affero General Public License as ~ published by the Free Software
+		Foundation, either version 3 of the ~ License, or (at your option) any later version. ~ ~ This program is distributed
+		in the hope that it will be useful, ~ but WITHOUT ANY WARRANTY; without even the implied warranty of ~ MERCHANTABILITY
+		or FITNESS FOR A PARTICULAR PURPOSE. See the ~ GNU Affero General Public License for more details. ~ ~ You should have
+		received a copy of the GNU Affero General Public License ~ along with this program. If not, see
+		<http://www.gnu.org/licenses/>.
+	-->
 
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:context="http://www.springframework.org/schema/context"
@@ -47,13 +38,17 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		<property name="crs" value="EPSG:4326" />
 		<property name="scaleBarEnabled" value="true" />
 		<property name="panButtonsEnabled" value="true" />
-		<property name="maximumResolution" value="1:100" />
+		<property name="scaleConfiguration">
+			<bean class="org.geomajas.configuration.client.ScaleConfigurationInfo">
+				<property name="maximumScale" value="1:100" />
+			</bean>
+		</property>
 		<property name="initialBounds">
 			<bean class="org.geomajas.geometry.Bbox">
-                <property name="x" value="-180"/>
-                <property name="y" value="-90"/>
-                <property name="width" value="360"/>
-                <property name="height" value="180"/>
+				<property name="x" value="-180" />
+				<property name="y" value="-90" />
+				<property name="width" value="360" />
+				<property name="height" value="180" />
 			</bean>
 		</property>
 		<property name="layers">
@@ -65,10 +60,10 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
 	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="countries110mGTLayer">
 		<property name="serverLayerId" value="countries110m" />
-	  	<property name="label" value="Countries"/>
-		<property name="visible" value="true"/>
- 		<property name="maximumResolution" value="1:100" />
-		<property name="minimumResolution" value="1:500000000" />
+		<property name="label" value="Countries" />
+		<property name="visible" value="true" />
+		<property name="maximumScale" value="1:100" />
+		<property name="minimumScale" value="1:500000000" />
 		<property name="namedStyleInfo" ref="countries110mStyleInfo" />
 	</bean>
 

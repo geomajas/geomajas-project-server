@@ -1,25 +1,16 @@
-<!--
-  ~ This file is part of Geomajas, a component framework for building
-  ~ rich Internet applications (RIA) with sophisticated capabilities for the
-  ~ display, analysis and management of geographic information.
-  ~ It is a building block that allows developers to add maps
-  ~ and other geographic data capabilities to their web applications.
-  ~
-  ~ Copyright 2008-2010 Geosparc, http://www.geosparc.com, Belgium
-  ~
-  ~ This program is free software: you can redistribute it and/or modify
-  ~ it under the terms of the GNU Affero General Public License as
-  ~ published by the Free Software Foundation, either version 3 of the
-  ~ License, or (at your option) any later version.
-  ~
-  ~ This program is distributed in the hope that it will be useful,
-  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~ GNU Affero General Public License for more details.
-  ~
-  ~ You should have received a copy of the GNU Affero General Public License
-  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
-  -->
+
+	<!--
+		~ This file is part of Geomajas, a component framework for building ~ rich Internet applications (RIA) with
+		sophisticated capabilities for the ~ display, analysis and management of geographic information. ~ It is a building
+		block that allows developers to add maps ~ and other geographic data capabilities to their web applications. ~ ~
+		Copyright 2008-2010 Geosparc, http://www.geosparc.com, Belgium ~ ~ This program is free software: you can redistribute
+		it and/or modify ~ it under the terms of the GNU Affero General Public License as ~ published by the Free Software
+		Foundation, either version 3 of the ~ License, or (at your option) any later version. ~ ~ This program is distributed
+		in the hope that it will be useful, ~ but WITHOUT ANY WARRANTY; without even the implied warranty of ~ MERCHANTABILITY
+		or FITNESS FOR A PARTICULAR PURPOSE. See the ~ GNU Affero General Public License for more details. ~ ~ You should have
+		received a copy of the GNU Affero General Public License ~ along with this program. If not, see
+		<http://www.gnu.org/licenses/>.
+	-->
 
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:context="http://www.springframework.org/schema/context"
@@ -47,7 +38,6 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		<property name="crs" value="EPSG:900913" />
 		<property name="scaleBarEnabled" value="true" />
 		<property name="panButtonsEnabled" value="true" />
-		<property name="maximumResolution" value="1:100" />
 		<property name="initialBounds">
 			<bean class="org.geomajas.geometry.Bbox">
 				<property name="x" value="-20026376.393709917" />
@@ -61,29 +51,33 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 				<ref bean="osmLayer" />
 			</list>
 		</property>
-        <property name="allowedResolutions">
-            <list>
-                <value>1:444000000</value>
-                <value>1:222000000</value>
-                <value>1:111000000</value>
-                <value>1:55000000</value>
-                <value>1:28000000</value>
-                <value>1:14000000</value>
-                <value>1:7000000</value>
-                <value>1:3000000</value>
-                <value>1:2000000</value>
-                <value>1:867000</value>
-                <value>1:433000</value>
-                <value>1:217000</value>
-                <value>1:108000</value>
-                <value>1:54000</value>
-                <value>1:27000</value>
-                <value>1:14000</value>
-                <value>1:6771</value>
-                <value>1:3385</value>
-                <value>1:1693</value>
-            </list>
-        </property>
+		<property name="scaleConfiguration">
+			<bean class="org.geomajas.configuration.client.ScaleConfigurationInfo">
+				<property name="zoomLevels">
+					<list>
+						<value>1:444000000</value>
+						<value>1:222000000</value>
+						<value>1:111000000</value>
+						<value>1:55000000</value>
+						<value>1:28000000</value>
+						<value>1:14000000</value>
+						<value>1:7000000</value>
+						<value>1:3000000</value>
+						<value>1:2000000</value>
+						<value>1:867000</value>
+						<value>1:433000</value>
+						<value>1:217000</value>
+						<value>1:108000</value>
+						<value>1:54000</value>
+						<value>1:27000</value>
+						<value>1:14000</value>
+						<value>1:6771</value>
+						<value>1:3385</value>
+						<value>1:1693</value>
+					</list>
+				</property>
+			</bean>
+		</property>
 	</bean>
 
 </beans>

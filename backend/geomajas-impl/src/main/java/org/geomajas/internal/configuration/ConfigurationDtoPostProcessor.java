@@ -22,10 +22,7 @@
  */
 package org.geomajas.internal.configuration;
 
-import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.annotation.PostConstruct;
@@ -38,24 +35,29 @@ import org.geomajas.configuration.client.ClientApplicationInfo;
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
+import org.geomajas.configuration.client.ScaleInfo;
+import org.geomajas.configuration.client.ScaleUnit;
 import org.geomajas.geometry.Bbox;
+import org.geomajas.geometry.Coordinate;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.Layer;
 import org.geomajas.layer.LayerException;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
-import org.geomajas.spring.ResolutionFormatterFactory;
+import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.jts.JTS;
+import org.geotools.referencing.GeodeticCalculator;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanInitializationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
 
 /**
@@ -69,6 +71,8 @@ import com.vividsolutions.jts.geom.Envelope;
 public class ConfigurationDtoPostProcessor {
 
 	private static final double METER_PER_INCH = 0.0254;
+
+	private final Logger log = LoggerFactory.getLogger(ConfigurationDtoPostProcessor.class);
 
 	@Autowired
 	private DtoConverterService converterService;
@@ -107,7 +111,8 @@ public class ConfigurationDtoPostProcessor {
 		// initialize maps
 		for (ClientMapInfo map : client.getMaps()) {
 			map.setUnitLength(getUnitLength(map.getCrs(), map.getInitialBounds()));
-			map.setPixelLength(METER_PER_INCH / map.getUnitLength() / client.getScreenDpi());
+			// result should be m = (m/inch) / (number/inch)
+			map.setPixelLength(METER_PER_INCH / client.getScreenDpi());
 			for (ClientLayerInfo layer : map.getLayers()) {
 				String layerId = layer.getServerLayerId();
 				Layer<?> serverLayer = layerMap.get(layerId);
@@ -117,34 +122,19 @@ public class ConfigurationDtoPostProcessor {
 				LayerInfo layerInfo = serverLayer.getLayerInfo();
 				layer.setLayerInfo(layerInfo);
 				layer.setMaxExtent(getClientMaxExtent(map.getCrs(), layer.getCrs(), layerInfo.getMaxExtent(), layerId));
-
+				if (layer.getScaleUnit() == ScaleUnit.NORMAL) {
+					// force pixel per unit (expected by client)
+					layer.setScaleUnit(ScaleUnit.PIXEL_PER_UNIT);
+					// result should be pix/map unit = number * (m/map unit) / (m/pix)
+					layer.setMaximumScale(new ScaleInfo(layer.getMaximumScale().getValue() * map.getUnitLength()
+							/ map.getPixelLength()));
+					layer.setMinimumScale(new ScaleInfo(layer.getMinimumScale().getValue() * map.getUnitLength()
+							/ map.getPixelLength()));
+				}
+				log.debug("Layer " + layer.getId() + " has scale range : " + layer.getMinimumScale().getValue() + ","
+						+ layer.getMaximumScale().getValue());
 				if (layer instanceof ClientVectorLayerInfo) {
 					postProcess((ClientVectorLayerInfo) layer);
-				}
-
-				// Since 1.7.0, conversions between resolutions (1:x) and scales:
-				if (layer.getMinimumResolution() != 0) {
-					layer.setViewScaleMin(layer.getMinimumResolution() / map.getPixelLength());
-				}
-				if (layer.getMaximumResolution() != 0) {
-					layer.setViewScaleMax(layer.getMaximumResolution() / map.getPixelLength());
-				}
-			}
-
-			// Since 1.7.0, conversions between resolutions (1:x) and scales:
-			if (map.getMaximumResolution() != 0) {
-				map.setMaximumScale((float) (map.getMaximumResolution() / map.getPixelLength()));
-			}
-			if (map.getAllowedResolutions() != null && map.getAllowedResolutions().size() > 0) {
-				try {
-					List<Double> resolutions = new ArrayList<Double>();
-					for (String text : map.getAllowedResolutions()) {
-						Double resolution = ResolutionFormatterFactory.parseResolution(text);
-						resolutions.add(map.getPixelLength() / resolution);
-					}
-					map.setResolutions(resolutions);
-				} catch (ParseException e) {
-					throw new LayerException(e);
 				}
 			}
 		}
@@ -177,14 +167,12 @@ public class ConfigurationDtoPostProcessor {
 				throw new LayerException(ExceptionCode.MAP_MAX_EXTENT_MISSING);
 			}
 			CoordinateReferenceSystem crs = geoService.getCrs(mapCrsKey);
-			// GeodeticCalculator calculator = new GeodeticCalculator(crs);
-			// calculator.setStartingPosition(new DirectPosition2D(crs, mapBounds.getX(), mapBounds.getY()));
-			// calculator.setDestinationPosition(new DirectPosition2D(crs, mapBounds.getMaxX(), mapBounds.getY()));
-			// double distance = calculator.getOrthodromicDistance();
-			// return distance / mapBounds.getWidth();
-			Coordinate c1 = new Coordinate(0, 0);
-			Coordinate c2 = new Coordinate(1, 0);
-			return JTS.orthodromicDistance(c1, c2, crs);
+			GeodeticCalculator calculator = new GeodeticCalculator(crs);
+			Coordinate center = new Coordinate(0.5 * (mapBounds.getX() + mapBounds.getMaxX()),
+					0.5 * (mapBounds.getY() + mapBounds.getMaxY()));
+			calculator.setStartingPosition(new DirectPosition2D(crs, center.getX(), center.getY()));
+			calculator.setDestinationPosition(new DirectPosition2D(crs, center.getX() + 1, center.getY()));
+			return calculator.getOrthodromicDistance();
 		} catch (TransformException e) {
 			throw new LayerException(e, ExceptionCode.TRANSFORMER_CREATE_LAYER_TO_MAP_FAILED);
 		}
