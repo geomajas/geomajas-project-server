@@ -38,7 +38,11 @@ public class PictureStyle implements Style {
 	 * this style is applied.
 	 */
 	private double opacity;
-
+	
+	/**
+	 * display property
+	 */
+	private String display;
 	// Constructors:
 
 	/**
@@ -60,6 +64,7 @@ public class PictureStyle implements Style {
 	 */
 	public PictureStyle(PictureStyle other) {
 		this.opacity = other.opacity;
+		this.display = other.display;
 	}
 
 	// Other functions:
@@ -86,4 +91,16 @@ public class PictureStyle implements Style {
 	public void setOpacity(double opacity) {
 		this.opacity = opacity;
 	}
+
+	
+	public String getDisplay() {
+		return display;
+	}
+
+	
+	public void setDisplay(String display) {
+		this.display = display;
+	}
+	
+	
 }

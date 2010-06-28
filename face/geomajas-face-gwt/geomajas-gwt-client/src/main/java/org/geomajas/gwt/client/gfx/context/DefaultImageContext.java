@@ -31,7 +31,10 @@ import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.spatial.Matrix;
 import org.geomajas.gwt.client.util.DOM;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Element;
+import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.EventListener;
 import com.google.gwt.user.client.ui.Widget;
 
 /**
@@ -46,6 +49,7 @@ public class DefaultImageContext implements ImageContext {
 	private Widget parent;
 
 	private String id;
+
 	/**
 	 * Constructs an image context. The context will be appended to the specified parent widget.
 	 * 
@@ -186,9 +190,15 @@ public class DefaultImageContext implements ImageContext {
 		}
 	}
 
-	public void drawImage(Object parent, String name, String href, Bbox bounds, PictureStyle style) {
+	public void drawImage(Object parent, final String name, final String href, Bbox bounds, PictureStyle style) {
 		if (isAttached()) {
-			Element image = helper.createOrUpdateElement(parent, name, "img", style);
+			// initially set display to none to avoid broken image
+			if (helper.getElement(parent, name) == null) {
+				GWT.log("hiding " + name);
+				style = (PictureStyle) style.clone();
+				style.setDisplay("none");
+			}
+			final Element image = helper.createOrUpdateElement(parent, name, "img", style);
 			DOM.setStyleAttribute(image, "position", "absolute");
 			DOM.setStyleAttribute(image, "border", "0px");
 			DOM.setStyleAttribute(image, "padding", "0px");
@@ -198,14 +208,40 @@ public class DefaultImageContext implements ImageContext {
 			DOM.setStyleAttribute(image, "top", (int) bounds.getY() + "px");
 			DOM.setStyleAttribute(image, "width", (int) bounds.getWidth() + "px");
 			DOM.setStyleAttribute(image, "height", (int) bounds.getHeight() + "px");
-			DOM.setElementAttribute(image, "src", href);
+			String oldHref = DOM.getElementAttribute(image, "src");
+			// if href has changed, attach a listener to show the image on load
+			if (!href.equals(oldHref)) {
+				DOM.sinkEvents(image, Event.ONLOAD | Event.ONERROR);
+				DOM.setEventListener(image, new EventListener() {
+
+					private int retries = 5;
+
+					public void onBrowserEvent(Event event) {
+						switch (DOM.eventGetType(event)) {
+							case Event.ONLOAD:
+								GWT.log("displaying " + name);
+								DOM.setStyleAttribute(image, "display", "");
+								break;
+							case Event.ONERROR:
+								GWT.log("retrying " + name);
+								retries--;
+								if (retries > 0) {
+									DOM.setElementAttribute(image, "src", href);
+								}
+								break;
+						}
+					}
+				});
+				DOM.setElementAttribute(image, "src", href);
+			}
 		}
 	}
 
 	/**
 	 * Return the id of the specified group.
 	 * 
-	 * @param group the group object
+	 * @param group
+	 *            the group object
 	 * @return the corresponding element id or null if the group has not been drawn.
 	 */
 	public String getId(Object group) {
@@ -241,10 +277,9 @@ public class DefaultImageContext implements ImageContext {
 			}
 		}
 	}
-	
+
 	private boolean isAttached() {
 		return parent != null && parent.isAttached();
 	}
-
 
 }

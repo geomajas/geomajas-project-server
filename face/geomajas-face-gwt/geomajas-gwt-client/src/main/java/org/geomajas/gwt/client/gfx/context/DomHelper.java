@@ -303,7 +303,7 @@ public class DomHelper {
 		}
 		// SVG style is just CSS, so ok for both
 		if (style != null) {
-			DOM.setElementAttribute(group, "style", decode(style));
+			applyStyle(group, style);
 		}
 		return group;
 	}
@@ -369,7 +369,7 @@ public class DomHelper {
 		}
 		// SVG style is just CSS, so ok for both
 		if (style != null) {
-			DOM.setElementAttribute(group, "style", decode(style));
+			applyStyle(group, style);
 		}
 		return group;
 	}
@@ -459,7 +459,7 @@ public class DomHelper {
 	 */
 	public void setController(Object parent, String name, GraphicsController controller) {
 		// set them all
-		doSetController(getElement(parent, name), controller,
+		doSetController(getElement(parent, name), controller, 
 				Event.MOUSEEVENTS | Event.ONDBLCLICK | Event.ONMOUSEWHEEL);
 	}
 
@@ -747,7 +747,7 @@ public class DomHelper {
 				case SVG:
 					element = DOM.createElementNS(DOM.NS_SVG, type);
 					if (style != null) {
-						DOM.setElementAttribute(element, "style", decode(style));
+						applyStyle(element, style);
 					}
 					break;
 				case VML:
@@ -770,7 +770,7 @@ public class DomHelper {
 				default:
 					element = DOM.createElementNS(DOM.NS_HTML, type);
 					if (style != null) {
-						DOM.setElementAttribute(element, "style", decode(style));
+						applyStyle(element, style);
 					}
 			}
 			parentElement.appendChild(element);
@@ -827,6 +827,12 @@ public class DomHelper {
 		}
 	}
 
+	/**
+	 * Apply the style.
+	 * 
+	 * @param element
+	 * @param style
+	 */
 	public void applyStyle(Element element, Style style) {
 		if (element != null && style != null) {
 			switch (namespace) {
@@ -834,36 +840,71 @@ public class DomHelper {
 					VmlStyleUtil.applyStyle(element, style);
 					break;
 				case SVG:
+					if (style != null) {
+						if (style instanceof ShapeStyle) {
+							applySvgStyle(element, (ShapeStyle) style);
+						} else if (style instanceof FontStyle) {
+							applySvgStyle(element, (FontStyle) style);
+						} else if (style instanceof PictureStyle) {
+							applySvgStyle(element, (PictureStyle) style);
+						}
+					}
+					break;
 				case HTML:
-					DOM.setElementAttribute(element, "style", decode(style));
+					if (style != null) {
+						if (style instanceof ShapeStyle) {
+							applyHtmlStyle(element, (ShapeStyle) style);
+						} else if (style instanceof FontStyle) {
+							applyHtmlStyle(element, (FontStyle) style);
+						} else if (style instanceof PictureStyle) {
+							applyHtmlStyle(element, (PictureStyle) style);
+						}
+					}
 			}
 		}
-	}
-
-	/**
-	 * Return the CSS equivalent of the Style object.
-	 * 
-	 * @param style
-	 * @return
-	 */
-	public String decode(Style style) {
-		if (style != null) {
-			if (style instanceof ShapeStyle) {
-				return decode((ShapeStyle) style);
-			} else if (style instanceof FontStyle) {
-				return decode((FontStyle) style);
-			} else if (style instanceof PictureStyle) {
-				return decode((PictureStyle) style);
-			}
-		}
-		return "";
 	}
 
 	// -------------------------------------------------------------------------
 	// Private decode methods for each Style class:
 	// -------------------------------------------------------------------------
 
-	private String decode(ShapeStyle style) {
+	private void applyHtmlStyle(Element element, ShapeStyle style) {
+		if (style.getFillColor() != null && !"".equals(style.getFillColor())) {
+			DOM.setStyleAttribute(element, "fillColor", style.getFillColor());
+		}
+		DOM.setStyleAttribute(element, "fillOpacity", style.getFillOpacity() + "");
+		if (style.getStrokeColor() != null && !"".equals(style.getStrokeColor())) {
+			DOM.setStyleAttribute(element, "stroke", style.getStrokeColor());
+		}
+		DOM.setStyleAttribute(element, "strokeOpacity", style.getStrokeOpacity() + "");
+		if (style.getStrokeWidth() >= 0) {
+			DOM.setStyleAttribute(element, "strokeWidth", style.getStrokeWidth() + "");
+		}
+	}
+
+	private void applyHtmlStyle(Element element, FontStyle style) {
+		if (style.getFillColor() != null && !"".equals(style.getFillColor())) {
+			DOM.setStyleAttribute(element, "color", style.getFillColor());
+		}
+		if (style.getFontFamily() != null && !"".equals(style.getFontFamily())) {
+			DOM.setStyleAttribute(element, "fontFamily", style.getFontFamily());
+		}
+		if (style.getFontStyle() != null && !"".equals(style.getFontStyle())) {
+			DOM.setStyleAttribute(element, "fontStyle", style.getFontStyle());
+		}
+		if (style.getFontWeight() != null && !"".equals(style.getFontWeight())) {
+			DOM.setStyleAttribute(element, "fontWeight", style.getFontWeight());
+		}
+	}
+
+	private void applyHtmlStyle(Element element, PictureStyle style) {
+		DOM.setStyleAttribute(element, "opacity", style.getOpacity() + "");
+		if (style.getDisplay() != null) {
+			DOM.setStyleAttribute(element, "display", style.getDisplay());
+		}
+	}
+
+	private void applySvgStyle(Element element, ShapeStyle style) {
 		String css = "";
 		if (style.getFillColor() != null && !"".equals(style.getFillColor())) {
 			css += "fill:" + style.getFillColor() + ";";
@@ -876,10 +917,10 @@ public class DomHelper {
 		if (style.getStrokeWidth() >= 0) {
 			css += "stroke-width:" + style.getStrokeWidth() + ";";
 		}
-		return css;
+		DOM.setElementAttribute(element, "style", css);
 	}
 
-	private String decode(FontStyle style) {
+	private void applySvgStyle(Element element, FontStyle style) {
 		String css = "";
 		if (style.getFillColor() != null && !"".equals(style.getFillColor())) {
 			css += "fill:" + style.getFillColor() + ";";
@@ -896,11 +937,15 @@ public class DomHelper {
 		if (style.getFontSize() >= 0) {
 			css += "stroke-width:" + style.getFontSize() + ";";
 		}
-		return css;
+		DOM.setElementAttribute(element, "style", css);
 	}
 
-	private String decode(PictureStyle style) {
-		return "opacity:" + style.getOpacity() + ";";
+	private void applySvgStyle(Element element, PictureStyle style) {
+		String css = "opacity:" + style.getOpacity() + ";";
+		if (style.getDisplay() != null) {
+			css += "display:" + style.getDisplay();
+		}
+		DOM.setElementAttribute(element, "style", css);
 	}
 
 }
