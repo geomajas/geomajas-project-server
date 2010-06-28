@@ -28,7 +28,7 @@ import org.geomajas.global.Api;
 import javax.servlet.http.HttpServlet;
 
 /**
- * Dispatcher servlet
+ * Dispatcher servlet.
  *
  * @author Joachim Van der Auwera
  * @since 1.7.0
