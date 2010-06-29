@@ -25,13 +25,14 @@ package org.geomajas.servlet;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.PathMatcher;
 import org.springframework.util.StringUtils;
-import org.springframework.web.util.UrlPathHelper;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.context.ServletContextAware;
+import org.springframework.web.servlet.mvc.LastModified;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -53,12 +54,17 @@ import java.util.Set;
 import java.util.zip.GZIPOutputStream;
 
 /**
- * Controller for accessing for efficiently resolving and rendering static resources from within a JAR file.
+ * Resource controller for efficiently resolving and rendering static resources from within a JAR file. The cache
+ * header is set to a date in the far future to improve caching. For development, you can specify a "files-location"
+ * servlet init parameter. Any resources are searched at that location first. When found, the cache header is not set.
+ * This assures the jar does not need building for testing.
  *
+ * @author Jan De Moerloose
  * @author Joachim Van der Auwera
  */
 @Controller
-public class ResourceController {
+@RequestMapping(value = "/resource")
+public class ResourceController implements LastModified, ServletContextAware {
 
 	private static final String RESOURCE_PREFIX = "resource/";
 	private static final String HTTP_CONTENT_LENGTH_HEADER = "Content-Length";
@@ -66,14 +72,11 @@ public class ResourceController {
 	private static final String HTTP_EXPIRES_HEADER = "Expires";
 	private static final String HTTP_CACHE_CONTROL_HEADER = "Cache-Control";
 	private static final String INIT_PARAM_LOCATION = "files-location";
-	private UrlPathHelper urlPathHelper = new UrlPathHelper();
 
-	@Autowired
 	private ServletContext servletContext;
 
 	private final Logger log = LoggerFactory.getLogger(ResourceController.class);
 	private final String protectedPath = "/?WEB-INF/.*";
-	private final boolean gzipEnabled = true;
 	private final String[] allowedResourcePaths = new String[]{
 			"/**/*.css", "/**/*.gif", "/**/*.ico", "/**/*.jpeg",
 			"/**/*.jpg", "/**/*.js", "/**/*.html", "/**/*.png",
@@ -104,18 +107,9 @@ public class ResourceController {
 		compressedMimeTypes.add("application/x-javascript");
 	}
 
-	/*
-	@Override
-	public void init(ServletConfig config) throws ServletException {
-		super.init(config);
-		String fileLocationString = getInitParameter(INIT_PARAM_LOCATION);
-		if (log.isDebugEnabled()) {
-			log.debug("init-param {}=|{}|", INIT_PARAM_LOCATION, fileLocationString);
-			Enumeration en = getInitParameterNames();
-			while (en.hasMoreElements()) {
-				log.debug("init-params |{}|", en.nextElement());
-			}
-		}
+	public void setServletContext(ServletContext servletContext) {
+		this.servletContext = servletContext;
+		String fileLocationString = servletContext.getInitParameter(INIT_PARAM_LOCATION);
 		if (null != fileLocationString) {
 			File location = new File(fileLocationString);
 			if (location.exists() && location.isDirectory()) {
@@ -123,8 +117,6 @@ public class ResourceController {
 			}
 		}
 	}
-	*/
-
 
 	//@RequestMapping(value = "/{resourceName}", method = RequestMethod.GET)
 	public void getResource(HttpServletRequest request, HttpServletResponse response)
@@ -179,15 +171,14 @@ public class ResourceController {
 		String acceptEncoding = request.getHeader("Accept-Encoding");
 		String mimeType = response.getContentType();
 
-		if (gzipEnabled && StringUtils.hasText(acceptEncoding) && acceptEncoding.contains("gzip")
+		if (StringUtils.hasText(acceptEncoding) && acceptEncoding.contains("gzip")
 				&& compressedMimeTypes.contains(mimeType)) {
 			log.debug("Enabling GZIP compression for the current response.");
 			return new GzipResponseStream(response);
 		} else {
 			log.debug("No compression for the current response.");
 
-			log.debug(gzipEnabled + "&&" + StringUtils.hasText(acceptEncoding) + "&&" + acceptEncoding.contains("gzip")
-					+ "&&" + mimeType);
+			log.debug(StringUtils.hasText(acceptEncoding) + "&&" + acceptEncoding.contains("gzip") + "&&" + mimeType);
 
 			return response.getOutputStream();
 		}
@@ -238,7 +229,7 @@ public class ResourceController {
 		configureCaching(response, isFile ? 0 : 31556926);
 	}
 
-	protected long getLastModified(HttpServletRequest request) {
+	public long getLastModified(HttpServletRequest request) {
 		log.debug("Checking last modified of resource: {}", request.getPathInfo());
 		URL[] resources;
 		try {

@@ -57,7 +57,10 @@ import java.util.zip.GZIPOutputStream;
  * This assures the jar does not need building for testing.
  *
  * @author Jan De Moerloose
+ * @deprecated use DispatcherServlet which use the ResourceController (but changes base URL, 
+ * probably from js to data/resource).
  */
+@Deprecated
 public class ResourceServlet extends HttpServlet {
 
 	private static final String HTTP_CONTENT_LENGTH_HEADER = "Content-Length";
