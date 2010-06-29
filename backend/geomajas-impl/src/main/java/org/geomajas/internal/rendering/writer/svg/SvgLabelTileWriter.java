@@ -86,6 +86,11 @@ public class SvgLabelTileWriter implements GraphicsWriter {
 			com.vividsolutions.jts.geom.Point labelPos;
 			try {
 				String labelString = feature.getLabel();
+				if (labelString == null || labelString.length() == 0) {
+					document.closeElement();
+					continue;
+				}
+
 				labelPos = (com.vividsolutions.jts.geom.Point) transformer.transform(p);
 				boolean createChild = true;
 
@@ -108,11 +113,6 @@ public class SvgLabelTileWriter implements GraphicsWriter {
 				// TODO: config option, center label
 				document.writeAttribute("text-anchor", "middle");
 				document.writeAttribute("style", getCssStyle(labelStyle.getFontStyle()));
-
-				if (labelString == null) {
-					document.closeElement();
-					continue;
-				}
 				document.writeTextNode(labelString);
 				document.closeElement();
 			} catch (TransformException e) {
