@@ -99,12 +99,14 @@ public class PersistTransactionCommand implements Command<PersistTransactionRequ
 				newFeatures);
 
 		// Apply the new set of InternalFeatures onto the transaction: (ID may be filled in now)
-		Feature[] resultFeatures = new Feature[newFeatures.size()];
-		for (int i = 0; i < newFeatures.size(); i++) {
-			InternalFeature internalFeature = newFeatures.get(i);
-			resultFeatures[i] = converter.toDto(internalFeature);
+		if (featureTransaction.getNewFeatures() != null) {
+			Feature[] resultFeatures = new Feature[newFeatures.size()];
+			for (int i = 0; i < newFeatures.size(); i++) {
+				InternalFeature internalFeature = newFeatures.get(i);
+				resultFeatures[i] = converter.toDto(internalFeature);
+			}
+			featureTransaction.setNewFeatures(resultFeatures);
 		}
-		featureTransaction.setNewFeatures(resultFeatures);
 		response.setFeatureTransaction(featureTransaction);
 	}
 }
