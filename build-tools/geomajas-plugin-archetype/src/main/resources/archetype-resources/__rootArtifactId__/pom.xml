@@ -17,7 +17,7 @@
 		<dependencies>
 			<dependency>
 				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-backend-dep</artifactId>
+				<artifactId>geomajas-backend</artifactId>
 				<version>${symbol_dollar}{${pluginName}-backend-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
