@@ -59,12 +59,15 @@ public class GeomajasContextListener implements ServletContextListener {
 		configLocation += ",classpath*:META-INF/geomajasContext.xml";
 		String additionalLocations = servletContext.getInitParameter(CONFIG_LOCATION_PARAMETER);
 		if (null != additionalLocations) {
-			for (String part : additionalLocations.split("\\s")) {
-				configLocation += ',';
-				if (!part.startsWith("classpath")) {
-					configLocation += "classpath:";
+			for (String onePart : additionalLocations.split("\\s")) {
+				String part = onePart.trim();
+				if (part.length() > 0) {
+					configLocation += ',';
+					if (!part.startsWith("classpath")) {
+						configLocation += "classpath:";
+					}
+					configLocation += part;
 				}
-				configLocation += part;
 			}
 
 		}
