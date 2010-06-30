@@ -22,6 +22,8 @@
  */
 package org.geomajas.configuration.client;
 
+import org.geomajas.global.Api;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,11 +34,11 @@ import java.util.List;
  * 
  * @author Jan De Moerloose
  * @since 1.7.0
- * 
  */
+@Api(allMethods = true)
 public class ScaleConfigurationInfo implements Serializable {
 
-	private static final long serialVersionUID = 151L;
+	private static final long serialVersionUID = 170L;
 
 	private ScaleInfo maximumScale = ScaleInfo.MAX_VALUE;
 
