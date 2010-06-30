@@ -14,6 +14,11 @@
 		Geomajas is a component framework for building rich Internet applications (RIA) with sophisticated capabilities
 		for the display, analysis and management of geographic information. It is a building block that allows
 		developers to add maps and other geographic data capabilities to their web applications.
+
+		Dependencies for the back-end, specifying back-end version and it's most important dependencies.
+		
+		When this is combined with geomajas-dep to use the snapshot back-end, then this dependency needs to be
+		mentioned first in the pom.
 	</description>
 
 	<scm>
@@ -23,7 +28,6 @@
 	</scm>
 
 	<modules>
-		<module>geomajas-backend-dep</module>
 		<module>geomajas-api</module>
 		<module>geomajas-api-experimental</module>
 		<module>geomajas-impl</module>
@@ -187,11 +191,6 @@
 				<artifactId>junit</artifactId>
 				<version>4.8.1</version>
 				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>xalan</groupId>
-				<artifactId>xalan</artifactId>
-				<version>2.7.0</version>
 			</dependency>
 			<dependency>
 				<groupId>javax.servlet</groupId>

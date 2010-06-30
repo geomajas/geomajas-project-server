@@ -12,17 +12,6 @@
 	<name>caching</name>
 	<description>caching</description>
 
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-dep</artifactId>
-				<version>1.10.24</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
 	<dependencies>
 		<dependency>
 			<groupId>org.geomajas</groupId>

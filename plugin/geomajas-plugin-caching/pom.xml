@@ -50,6 +50,18 @@
 		<module>documentation</module>
   </modules>
 
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-backend</artifactId>
+				<version>${caching-backend-version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>			
+		</dependencies>
+	</dependencyManagement>
+
 	<profiles>
 		<profile>
 			<id>documentation</id>
@@ -63,5 +75,8 @@
 			</modules>
 		</profile>
 	</profiles>
-	
+
+	<properties>
+		<caching-backend-version>1.7.0-SNAPSHOT</caching-backend-version>
+	</properties>
 </project>

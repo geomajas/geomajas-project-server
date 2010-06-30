@@ -16,8 +16,8 @@
 		<dependencies>
 			<dependency>
 				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-dep</artifactId>
-				<version>1.10.24</version>
+				<artifactId>geomajas-backend</artifactId>
+				<version>${geotools-layer-backend-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -90,6 +90,7 @@
 		<dependency>
 			<groupId>org.geotools</groupId>
 			<artifactId>gt-postgis</artifactId>
+			<version>${geotools-version}</version>
 			<exclusions>
 				<exclusion>
 					<groupId>org.postgis</groupId>
@@ -104,6 +105,7 @@
 		<dependency>
 			<groupId>org.geotools</groupId>
 			<artifactId>gt-shapefile</artifactId>
+			<version>${geotools-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.geotools</groupId>
@@ -154,4 +156,9 @@
 			</resource>
 		</resources>		
 	</build>
+
+	<properties>
+		<geotools-layer-backend-version>1.7.0-SNAPSHOT</geotools-layer-backend-version>
+		<geotools-version>2.6.3</geotools-version>
+	</properties>
 </project>

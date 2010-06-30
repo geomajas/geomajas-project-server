@@ -16,8 +16,8 @@
 		<dependencies>
 			<dependency>
 				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-dep</artifactId>
-				<version>1.10.24</version>
+				<artifactId>geomajas-backend</artifactId>
+				<version>${openstreetmap-layer-backend-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -100,5 +100,9 @@
 				</excludes>
 			</resource>
 		</resources>
-	</build>	
+	</build>
+
+	<properties>
+		<openstreetmap-layer-backend-version>1.7.0-SNAPSHOT</openstreetmap-layer-backend-version>
+	</properties>
 </project>

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+#set( $symbol_dollar = '$' )
 	<parent>
 		<groupId>${groupId}</groupId>
 		<artifactId>${rootArtifactId}-all</artifactId>
@@ -16,8 +17,8 @@
 		<dependencies>
 			<dependency>
 				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-dep</artifactId>
-				<version>1.10.24</version>
+				<artifactId>geomajas-backend-dep</artifactId>
+				<version>${symbol_dollar}{${pluginName}-backend-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -80,5 +81,9 @@
 				</excludes>
 			</resource>
 		</resources>
-	</build>	
+	</build>
+
+	<properties>
+		<${pluginName}-backend-version>1.7.0-SNAPSHOT</${pluginName}-backend-version>
+	</properties>
 </project>

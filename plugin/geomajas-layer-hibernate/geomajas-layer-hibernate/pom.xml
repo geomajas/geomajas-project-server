@@ -16,6 +16,13 @@
 		<dependencies>
 			<dependency>
 				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-backend</artifactId>
+				<version>${hibernate-layer-backend-version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-dep</artifactId>
 				<version>1.10.24</version>
 				<type>pom</type>
@@ -147,4 +154,9 @@
 			</resource>
 		</resources>		
 	</build>
+
+	<properties>
+		<hibernate-layer-backend-version>1.7.0-SNAPSHOT</hibernate-layer-backend-version>
+		<spring-version>3.0.2.RELEASE</spring-version>
+	</properties>
 </project>

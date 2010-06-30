@@ -1,8 +1,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
-		<groupId>org.geomajas</groupId>
-		<artifactId>geomajas-parent</artifactId>
-		<version>1.0.0</version>
+		<groupId>org.geomajas.plugin</groupId>
+		<artifactId>geomajas-plugin-staticsecurity-all</artifactId>
+		<version>1.7.0-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.plugin</groupId>
@@ -18,6 +18,13 @@
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-dep</artifactId>
 				<version>1.10.24</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-face-gwt</artifactId>
+				<version>1.7.0-SNAPSHOT</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>

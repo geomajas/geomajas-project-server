@@ -38,7 +38,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 				<property name="version" value="${project.version}" />
 			</bean>
 		</property>
-		<property name="backendVersion" value="1.7.0-SNAPSHOT" />
+		<property name="backendVersion" value="${google-layer-backend-version}" />
 		<property name="copyrightInfo">
 			<list>
 				<bean class="org.geomajas.global.CopyrightInfo">

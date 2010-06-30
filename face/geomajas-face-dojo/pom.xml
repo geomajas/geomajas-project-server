@@ -132,12 +132,15 @@
 		<dependencies>
 			<dependency>
 				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-dep</artifactId>
-				<version>1.10.24</version>
+				<artifactId>geomajas-backend</artifactId>
+				<version>${dojo-face-backend-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
+	<properties>
+		<dojo-face-backend-version>1.7.0-SNAPSHOT</dojo-face-backend-version>
+	</properties>
 </project>
