@@ -50,8 +50,14 @@
 	</servlet>
 
 	<servlet>
-		<servlet-name>PdfServlet</servlet-name>
-		<servlet-class>org.geomajas.plugin.printing.PdfServlet</servlet-class>
+		<servlet-name>dispatcher</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>classpath*:META-INF/geomajasWebContext.xml</param-value>
+			<description>Spring Web-MVC specific (additional) context files.</description>
+		</init-param>
+		<load-on-startup>3</load-on-startup>
 	</servlet>
 
 	<servlet-mapping>
@@ -60,9 +66,10 @@
 	</servlet-mapping>
 
 	<servlet-mapping>
-		<servlet-name>PdfServlet</servlet-name>
-		<url-pattern>/org.geomajas.example.gwt.GeomajasSamples/printing/*</url-pattern>
+		<servlet-name>dispatcher</servlet-name>
+		<url-pattern>/d/*</url-pattern>
 	</servlet-mapping>
+
 	<welcome-file-list>
 		<welcome-file>samples.html</welcome-file>
 		<welcome-file>index.jsp</welcome-file>
