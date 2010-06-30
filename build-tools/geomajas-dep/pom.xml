@@ -236,9 +236,16 @@
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-staticsecurity</artifactId>
+				<artifactId>geomajas-plugin-springsecurity</artifactId>
 				<version>1.6.0</version>
 			</dependency>
+			<!-- @todo uncomment when staticsecurity is released
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-staticsecurity</artifactId>
+				<version>1.7.0</version>
+			</dependency>
+			-->
 
 			<dependency>
 				<groupId>org.springframework</groupId>
