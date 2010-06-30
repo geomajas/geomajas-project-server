@@ -22,16 +22,14 @@
  */
 package org.geomajas.servlet;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.Enumeration;
+import org.springframework.util.ObjectUtils;
+import org.springframework.web.context.ConfigurableWebApplicationContext;
+import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.support.XmlWebApplicationContext;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
-
-import org.geomajas.spring.ReconfigurableClassPathApplicationContext;
-
 
 /**
  * Initialise the servlet context. This assures the Spring application context is created and stored in the servlet
@@ -43,7 +41,7 @@ import org.geomajas.spring.ReconfigurableClassPathApplicationContext;
  * <p/>
  * Note: In case of multiple config locations, later bean definitions will override ones defined in earlier loaded
  * files. This can be leveraged to deliberately override certain bean definitions via an extra XML file.
- * 
+ *
  * @author Joachim Van der Auwera
  */
 public class GeomajasContextListener implements ServletContextListener {
@@ -57,37 +55,50 @@ public class GeomajasContextListener implements ServletContextListener {
 
 		ServletContext servletContext = servletContextEvent.getServletContext();
 
-		// create Spring context
-		String configLocation = "org/geomajas/spring/geomajasContext.xml";
-
-		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-		if (null == classLoader) {
-			classLoader = this.getClass().getClassLoader();
-		}
-		try {
-			Enumeration<URL> urls = classLoader.getResources("META-INF/geomajasContext.xml");
-			while (urls.hasMoreElements()) {
-				URL url = urls.nextElement();
-				configLocation += ',' + url.toExternalForm();
-			}
-		} catch (IOException ioe) {
-			throw new RuntimeException(ioe);
-		}
-
+		String configLocation = "classpath:org/geomajas/spring/geomajasContext.xml";
+		configLocation += ",classpath*:META-INF/geomajasContext.xml";
 		String additionalLocations = servletContext.getInitParameter(CONFIG_LOCATION_PARAMETER);
-		if (additionalLocations != null) {
-			configLocation += ',' + additionalLocations;
+		if (null != additionalLocations) {
+			for (String part : additionalLocations.split("\\s")) {
+				configLocation += ',';
+				if (!part.startsWith("classpath")) {
+					configLocation += "classpath:";
+				}
+				configLocation += part;
+			}
+
 		}
-		ReconfigurableClassPathApplicationContext applicationContext = new ReconfigurableClassPathApplicationContext(
-				configLocation);
+		ConfigurableWebApplicationContext applicationContext = new XmlWebApplicationContext();
+
+		// Assign the best possible id value.
+		String id;
+		if (servletContext.getMajorVersion() == 2 && servletContext.getMinorVersion() < 5) {
+			// Servlet <= 2.4: resort to name specified in web.xml, if any.
+			String servletContextName = servletContext.getServletContextName();
+			id = "Geomajas:" + ObjectUtils.getDisplayString(servletContextName);
+		} else {
+			// Servlet 2.5's getContextPath available!
+			try {
+				String contextPath = (String) ServletContext.class.getMethod("getContextPath").invoke(servletContext);
+				id = "Geomajas:" + ObjectUtils.getDisplayString(contextPath);
+			} catch (Exception ex) {
+				throw new IllegalStateException("Failed to invoke Servlet 2.5 getContextPath method", ex);
+			}
+		}
+
+		applicationContext.setId(id);
+		applicationContext.setServletContext(servletContext);
+		applicationContext.setConfigLocation(configLocation);
+		applicationContext.refresh();
+
 		ApplicationContextUtil.setApplicationContext(servletContext, applicationContext);
+		servletContext.setAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE, applicationContext);
 	}
 
 	/**
 	 * Close the root web application context.
-	 * 
-	 * @param servletContextEvent
-	 *            servlet context event
+	 *
+	 * @param servletContextEvent servlet context event
 	 */
 	public void contextDestroyed(ServletContextEvent servletContextEvent) {
 		// nothing to do
