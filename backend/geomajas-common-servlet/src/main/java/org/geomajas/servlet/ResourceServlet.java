@@ -58,7 +58,7 @@ import java.util.zip.GZIPOutputStream;
  *
  * @author Jan De Moerloose
  * @deprecated use DispatcherServlet which use the ResourceController (but changes base URL, 
- * probably from js to data/resource).
+ * probably from js to data/resource). Not deleted to allow 1.6.0 configurations to work.
  */
 @Deprecated
 public class ResourceServlet extends HttpServlet {

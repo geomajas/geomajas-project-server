@@ -31,6 +31,7 @@ import org.springframework.util.ClassUtils;
 import org.springframework.util.PathMatcher;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.context.ServletContextAware;
 import org.springframework.web.servlet.mvc.LastModified;
 
@@ -63,10 +64,9 @@ import java.util.zip.GZIPOutputStream;
  * @author Joachim Van der Auwera
  */
 @Controller
-@RequestMapping(value = "/resource")
 public class ResourceController implements LastModified, ServletContextAware {
 
-	private static final String RESOURCE_PREFIX = "resource/";
+	private static final String RESOURCE_PREFIX = "/resource";
 	private static final String HTTP_CONTENT_LENGTH_HEADER = "Content-Length";
 	private static final String HTTP_LAST_MODIFIED_HEADER = "Last-Modified";
 	private static final String HTTP_EXPIRES_HEADER = "Expires";
@@ -118,18 +118,22 @@ public class ResourceController implements LastModified, ServletContextAware {
 		}
 	}
 
-	//@RequestMapping(value = "/{resourceName}", method = RequestMethod.GET)
-	public void getResource(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-
+	private String getRawResourcePath(HttpServletRequest request) {
 		String rawResourcePath = request.getPathInfo();
 		if (rawResourcePath.startsWith(RESOURCE_PREFIX)) {
 			rawResourcePath = rawResourcePath.substring(RESOURCE_PREFIX.length());
 		}
+		return rawResourcePath;
+	}
+	
+	@RequestMapping(value = "/resource/**/*", method = RequestMethod.GET)
+	public void getResource(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 
+		String rawResourcePath = getRawResourcePath(request);
 		log.debug("Attempting to GET resource: {}", rawResourcePath);
 
-		URL[] resources = getRequestResourceUrls(request);
+		URL[] resources = getRequestResourceUrls(rawResourcePath, request);
 
 		if (resources == null || resources.length == 0) {
 			log.debug("Resource not found: {}", rawResourcePath);
@@ -233,7 +237,7 @@ public class ResourceController implements LastModified, ServletContextAware {
 		log.debug("Checking last modified of resource: {}", request.getPathInfo());
 		URL[] resources;
 		try {
-			resources = getRequestResourceUrls(request);
+			resources = getRequestResourceUrls(getRawResourcePath(request), request);
 		} catch (MalformedURLException e) {
 			return -1;
 		}
@@ -268,9 +272,8 @@ public class ResourceController implements LastModified, ServletContextAware {
 		return lastModified;
 	}
 
-	private URL[] getRequestResourceUrls(HttpServletRequest request) throws MalformedURLException {
-
-		String rawResourcePath = request.getPathInfo();
+	private URL[] getRequestResourceUrls(String rawResourcePath, HttpServletRequest request)
+			throws MalformedURLException {
 		String appendedPaths = request.getParameter("appended");
 		if (StringUtils.hasText(appendedPaths)) {
 			rawResourcePath = rawResourcePath + "," + appendedPaths;
