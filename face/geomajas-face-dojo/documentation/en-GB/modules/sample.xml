@@ -81,11 +81,11 @@
       mapping should be added to the web.xml:</para>
 
       <example>
-        <title>ResourceServlet mapping</title>
+        <title>Dispatcher servlet mapping</title>
 
         <para><programlisting>&lt;servlet-mapping&gt;
-    &lt;servlet-name&gt;ResourceServlet&lt;/servlet-name&gt;
-    &lt;url-pattern&gt;/js/*&lt;/url-pattern&gt;
+    &lt;servlet-name&gt;dispatcher&lt;/servlet-name&gt;
+    &lt;url-pattern&gt;/d/*&lt;/url-pattern&gt;
 &lt;/servlet-mapping&gt;</programlisting></para>
       </example>
 
@@ -98,9 +98,9 @@
       <example>
         <title>Custom build script inclusion</title>
 
-        <programlisting>&lt;script type="text/javascript" src="js/dojo/dojo.js"
+        <programlisting>&lt;script type="text/javascript" src="d/resource/dojo/dojo.js"
     djConfig="parseOnLoad:true, usePlainJson :true"&gt;&lt;/script&gt;
-&lt;script type="text/javascript" src="js/<emphasis role="bold">example</emphasis>/<emphasis
+&lt;script type="text/javascript" src="d/resource/<emphasis role="bold">example</emphasis>/<emphasis
             role="bold">example</emphasis>.js"
     geomajasConfig="showLog :false"&gt;&lt;/script&gt;</programlisting>
       </example>
@@ -183,7 +183,7 @@
 
               <entry>The name of the target layer file (without the ".js"
               extension). The file is put in its own module directory and has
-              to be imported as follows: <programlisting>&lt;script src="js/<emphasis>layerName</emphasis>/<emphasis>layerName</emphasis>.js"/&gt;</programlisting></entry>
+              to be imported as follows: <programlisting>&lt;script src="d/resource/<emphasis>layerName</emphasis>/<emphasis>layerName</emphasis>.js"/&gt;</programlisting></entry>
 
               <entry>modules</entry>
             </row>

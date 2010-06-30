@@ -26,20 +26,23 @@
 		<load-on-startup>2</load-on-startup>
 	</servlet>
 	<servlet>
-		<servlet-name>ResourceServlet</servlet-name>
-		<servlet-class>org.geomajas.servlet.ResourceServlet</servlet-class>
-        <!--
-        <init-param>
-            <description>
-                When this is specified, files are searched here first.
-                Files which are found at this locations are not cached.
-            </description>
-            <param-name>files-location</param-name>
-            <param-value>/home/joachim/apps/java/geomajas/geomajas/face/geomajas-face-dojo/geomajas-dojo-client/src/main/resources</param-value>
-            *** OR - only one path can be set ***
-            <param-value>/home/joachim/apps/java/geomajas/application/geomajas-dojo-example/geomajas-dojo-example-client/src/main/resources</param-value>
-        </init-param>
-        -->
+		<servlet-name>dispatcher</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>classpath*:META-INF/geomajasWebContext.xml</param-value>
+			<description>Spring Web-MVC specific (additional) context files.</description>
+		</init-param>
+		<!--
+		<init-param>
+			<param-name>files-location</param-name>
+			<param-value>/home/joachim/apps/java/geomajas/geomajas/geomajas-dojo-client/src/main/resources</param-value>
+			<description>
+				When this is specified, files are searched here first.
+				Files which are found at this locations are not cached.
+			</description>
+		</init-param>
+		-->
 		<load-on-startup>3</load-on-startup>
 	</servlet>
 <!-- @extract-end -->
@@ -50,8 +53,8 @@
 		<url-pattern>*.do</url-pattern>
 	</servlet-mapping>
 	<servlet-mapping>
-		<servlet-name>ResourceServlet</servlet-name>
-		<url-pattern>/js/*</url-pattern>
+		<servlet-name>dispatcher</servlet-name>
+		<url-pattern>/d/*</url-pattern>
 	</servlet-mapping>
 </web-app>
 <!-- @extract-end -->
