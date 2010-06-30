@@ -49,6 +49,17 @@
 		</developer>
 	</developers>
 
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-dep</artifactId>
+				<version>1.10.24</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 	<dependencies> 		
 		<!-- Geomajas dependencies -->
 		<dependency>
@@ -56,6 +67,33 @@
 			<artifactId>${geomajas.modules.name}</artifactId>
 			<version>${geomajas-face-dojo-version}</version>
 		</dependency>
+		<!-- @todo next five are temp dependencies to fix maven inclusions, should be removed when upd -->
+		<dependency>
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-dojo-server</artifactId>
+			<version>${geomajas-face-dojo-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-api</artifactId>
+			<version>1.7.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-impl</artifactId>
+			<version>1.7.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-command</artifactId>
+			<version>1.7.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-common-servlet</artifactId>
+			<version>1.7.0-SNAPSHOT</version>
+		</dependency>
+		<!-- end of temp dependencies -->
         <dependency>
             <groupId>org.geomajas.plugin</groupId>
             <artifactId>geomajas-layer-geotools</artifactId>
@@ -81,22 +119,18 @@
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>${slf4j-version}</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>jcl-over-slf4j</artifactId>
-            <version>${slf4j-version}</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>log4j-over-slf4j</artifactId>
-            <version>${slf4j-version}</version>
         </dependency>
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>0.9.21</version>
         </dependency>
 	</dependencies>
 
@@ -209,10 +243,9 @@
 
 	<properties>
 		<geomajas-face-dojo-version>1.5.6-SNAPSHOT</geomajas-face-dojo-version>
-		<geomajas-layer-geotools-version>1.6.0</geomajas-layer-geotools-version>
-		<geomajas-layer-wms-version>1.6.0</geomajas-layer-wms-version>
-		<geomajas-plugin-printing-version>1.5.6-SNAPSHOT</geomajas-plugin-printing-version>
-		<slf4j-version>1.6.0</slf4j-version>
+		<geomajas-layer-geotools-version>1.7.0-SNAPSHOT</geomajas-layer-geotools-version>
+		<geomajas-layer-wms-version>1.7.0-SNAPSHOT</geomajas-layer-wms-version>
+		<geomajas-plugin-printing-version>2.0.0-SNAPSHOT</geomajas-plugin-printing-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 

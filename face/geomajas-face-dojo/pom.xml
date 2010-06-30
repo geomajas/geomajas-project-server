@@ -133,15 +133,11 @@
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-dep</artifactId>
-				<version>1.10.20</version>
+				<version>1.10.24</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
-	<properties>
-		<geomajas-backend-version>1.6.0</geomajas-backend-version>
-	</properties>
-	
 </project>
