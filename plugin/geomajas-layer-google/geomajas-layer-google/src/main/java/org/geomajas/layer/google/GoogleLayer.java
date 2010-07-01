@@ -27,6 +27,7 @@ import java.util.List;
 
 import org.geomajas.configuration.RasterLayerInfo;
 import org.geomajas.geometry.Bbox;
+import org.geomajas.global.Api;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.LayerException;
@@ -57,7 +58,9 @@ import javax.annotation.PostConstruct;
  * @author Joachim Van der Auwera
  * @author Frank Wijnants
  * @author Oliver May
+ * @since 1.6.0
  */
+@Api
 public class GoogleLayer implements RasterLayer {
 
 	public static final String DATA_SOURCE_GOOGLE_INDICATOR = "@GoogleLayer";
@@ -84,6 +87,8 @@ public class GoogleLayer implements RasterLayer {
 	protected int maxZoomLevel = DEFAULT_MAX_ZOOM_LEVEL; 
 	
 	private boolean satellite;
+
+	private boolean physical;
 
 	@Autowired
 	private ConfigurationService configurationService;
@@ -136,7 +141,15 @@ public class GoogleLayer implements RasterLayer {
 	public void setLayerInfo(RasterLayerInfo layerInfo) throws LayerException {
 		this.layerInfo = layerInfo;
 	}
-	
+
+	/**
+	 * Set the maximum zoom level which is supported by this layer. The levels are specific for this layer. The first level has one tile for
+	 *  the world, the second four etc.
+	 *
+	 * @param maxZoomLevel max zoom level
+	 * @since 1.6.0
+	 */
+	@Api
 	public void setMaxZoomLevel(int maxZoomLevel) {
 		this.maxZoomLevel = maxZoomLevel < MAX_ZOOM_LEVEL ? maxZoomLevel : MAX_ZOOM_LEVEL;
 	}
@@ -153,6 +166,8 @@ public class GoogleLayer implements RasterLayer {
 			if (null == layerName) {
 				if (isSatellite()) {
 					layerInfo.setDataSourceName(LAYER_NAME_SATELLITE + DATA_SOURCE_GOOGLE_INDICATOR);
+				} else if (isPhysical()) {
+					layerInfo.setDataSourceName(LAYER_NAME_PHYSICAL + DATA_SOURCE_GOOGLE_INDICATOR);
 				} else {
 					layerInfo.setDataSourceName(LAYER_NAME_NORMAL + DATA_SOURCE_GOOGLE_INDICATOR);
 				}
@@ -160,6 +175,9 @@ public class GoogleLayer implements RasterLayer {
 				layerInfo.setDataSourceName(layerName + DATA_SOURCE_GOOGLE_INDICATOR);
 				if (layerName.equals(LAYER_NAME_SATELLITE)) {
 					setSatellite(true);
+				}
+				if (layerName.equals(LAYER_NAME_PHYSICAL)) {
+					setPhysical(true);
 				}
 			}
 			maxWidth = layerInfo.getMaxExtent().getWidth();
@@ -180,9 +198,37 @@ public class GoogleLayer implements RasterLayer {
 	 * Set whether to use satellite images.
 	 *
 	 * @param satellite use satellite ?
+	 * @since 1.6.0
 	 */
+	@Api
 	public void setSatellite(boolean satellite) {
+		if (satellite) {
+			physical = false;
+		}
 		this.satellite = satellite;
+	}
+
+	/**
+	 * Check whether this should be physical pictures.
+	 *
+	 * @return true when physical images are requested
+	 */
+	public boolean isPhysical() {
+		return physical;
+	}
+
+	/**
+	 * Set whether to use physical images.
+	 *
+	 * @param physical use physical ?
+	 * @since 1.7.0
+	 */
+	@Api
+	public void setPhysical(boolean physical) {
+		if (physical) {
+			satellite = false;
+		}
+		this.physical = physical;
 	}
 
 	public List<RasterTile> paint(CoordinateReferenceSystem boundsCrs, Envelope bounds, double scale)
@@ -280,7 +326,7 @@ public class GoogleLayer implements RasterLayer {
 							+ "." + tileLevel + "." + i + "," + j);
 					image.setCode(new TileCode(tileLevel, i, j));
 					
-					image.setUrl(getTileUrl(i, j, tileLevel, layerInfo.getDataSourceName()));
+					image.setUrl(getTileUrl(i, j, tileLevel));
 
 					result.add(image);
 				}
@@ -348,7 +394,7 @@ public class GoogleLayer implements RasterLayer {
 		return layerInfo;
 	}
 
-	public String getTileUrl(int x, int y, int zoom, String dataSourceName) {
+	public String getTileUrl(int x, int y, int zoom) {
 		if ((zoom < 0) || (zoom > maxZoomLevel)) {
 			return null;
 		}
@@ -361,15 +407,15 @@ public class GoogleLayer implements RasterLayer {
 			x += d;
 		}
 		
-		if (null != dataSourceName && dataSourceName.startsWith(LAYER_NAME_PHYSICAL)) {
+		if (isPhysical()) {
 			String e = "mt" + ((x + y) % 4) + ".google.com";
 			return "http://" + e + "/vt?lyrs=t@125,r@128&x=" + x + "&y=" + y + "&z=" + zoom;
-		} else if (null != dataSourceName && dataSourceName.startsWith(LAYER_NAME_SATELLITE)) {
+		} else if (isSatellite()) {
 			String e = "khm" + ((x + y) % 4) + ".google.com";
 			return "http://" + e + "/kh?v=57&x=" + x + "&y=" + y + "&z=" + zoom;
 		}
 		
-		//Default to normal map
+		// default to normal map
 		String e = "mt" + ((x + y) % 4) + ".google.com";
 		return "http://" + e + "/vt?v=w2.95&x=" + x + "&y=" + y + "&z=" + zoom;
 	}

@@ -42,8 +42,7 @@
     <xi:include href="../listing/GoogleLayerSample.xml"
                 xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-    <para>
-      <table>
+    <para><table>
         <title>GoogleLayer configuration</title>
 
         <tgroup cols="2">
@@ -61,33 +60,46 @@
             <row>
               <entry>satellite</entry>
 
-              <entry>Set to true to use satellite view from Google. When false
-              (the default), the normal view (showing streets) will be
-              used.</entry>
+              <entry>Set to true to use satellite view from Google. When this
+              and physical are false (the default), the normal view (showing
+              streets) will be used. Setting to true will reset physical to
+              false.</entry>
             </row>
-            <row>
-              <entry>maxTileLevel</entry>
 
-              <entry>Set to a number for which maps are available in the region
-              of interest, defaults to 19.</entry>
+            <row>
+              <entry>physical</entry>
+
+              <entry>Set to true to use physical view from Google. When this
+              and satellite are false, the normal view (showing streets) will
+              be used. Setting to true will reset satellite to false.</entry>
+            </row>
+
+            <row>
+              <entry>maxZoomLevel</entry>
+
+              <entry>Set to a number for which maps are available in the
+              region of interest, defaults to 19. The first zoom level has one
+              tile for the entire world, the second has four tiles
+              etc.</entry>
             </row>
           </tbody>
         </tgroup>
-      </table>
-    </para>
+      </table></para>
 
     <para>The layer info inner bean has the same general content as usual.
     There are some simplifications though. There is no need to provide
     resolutions or tile size (256x256 is always used). The crs should always
     be set to Mercator ("EPSG:900913").</para>
 
-    <para>On the layer, you can set the "satellite" property to choose between
-    using normal display (showing streets) or satellite view (by setting this
-    to "true"). You can also set the maximum tile level on the layer, this defaults 
-    to 19 which is supported by Google in most places.</para>
+    <para>On the layer, you can set the "satellite" or "physical" property to
+    choose between using normal display (showing streets), satellite view (by
+    setting this to "true"), or physical view (the modes are exclusive, last
+    set will be valid). You can also set the maximum tile level on the layer,
+    this defaults to 19 which is supported by Google in most places.</para>
 
-	<para>If you want to use the google physical map you can set the dataSourceName 
-	parameter of layerInfo to G_PHYSICAL_MAP@GoogleLayer.</para>
+    <para>You can also set the display type using the dataSourceName parameter
+    of layerInfo, for example for physical use
+    G_PHYSICAL_MAP@GoogleLayer.</para>
 
     <note>
       <para>You need to assure that you comply with Google's terms of use (see
