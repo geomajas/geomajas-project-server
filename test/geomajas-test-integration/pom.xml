@@ -2,7 +2,7 @@
 	<parent>
 		<groupId>org.geomajas</groupId>
 		<artifactId>geomajas-parent</artifactId>
-		<version>1.0.0</version>
+		<version>1.0.1</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.test</groupId>
@@ -16,7 +16,7 @@
 		<dependencies>
 			<dependency>
 				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-backend-dep</artifactId>
+				<artifactId>geomajas-backend</artifactId>
 				<version>${test-integration-backend-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
@@ -51,6 +51,11 @@
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-impl</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
@@ -110,6 +115,14 @@
 			</build>
 		</profile>
 	</profiles>
+
+	<repositories>
+		<repository>
+			<id>Geomajas</id>
+			<name>Geomajas repository</name>
+			<url>http://maven.geomajas.org/</url>
+		</repository>
+	</repositories>	
 
 	<properties>
 		<test-integration-backend-version>1.7.0-SNAPSHOT</test-integration-backend-version>

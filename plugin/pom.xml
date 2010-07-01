@@ -22,6 +22,14 @@
 		<module>geomajas-plugin-printing</module>
 		<module>geomajas-plugin-staticsecurity</module>
 		<module>geomajas-plugin-caching</module>
-  </modules>
+	</modules>
 
+	<repositories>
+		<repository>
+			<id>Geomajas</id>
+			<name>Geomajas repository</name>
+			<url>http://maven.geomajas.org/</url>
+		</repository>
+	</repositories>
+	
 </project>
