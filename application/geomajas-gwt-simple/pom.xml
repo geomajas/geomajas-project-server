@@ -53,8 +53,8 @@
 		<dependencies>
 			<dependency>
 				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-backend-dep</artifactId>
-				<version>1.7.0-SNAPSHOT</version>
+				<artifactId>geomajas-face-gwt</artifactId>
+				<version>${geomajas-face-gwt-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -76,7 +76,6 @@
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-gwt-client</artifactId>
-			<version>${geomajas-face-gwt-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
@@ -141,22 +140,18 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
-			<version>${slf4j-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>jcl-over-slf4j</artifactId>
-			<version>${slf4j-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>log4j-over-slf4j</artifactId>
-			<version>${slf4j-version}</version>
 		</dependency>
 		<dependency>
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-classic</artifactId>
-			<version>0.9.21</version>
 		</dependency>
 	</dependencies>
 
@@ -314,6 +309,16 @@
 			<name>Geomajas repository</name>
 			<url>http://maven.geomajas.org/</url>
 		</repository>
+
+		<!-- uncomment if you want to use Geomajas snapshots, comment for faster builds  -->
+		<repository>
+			<id>Geomajas-latest</id>
+			<name>Geomajas snapshot repository</name>
+			<url>http://apps.geomajas.org/nexus/content/groups/latest</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>		
 	</repositories>
 	<pluginRepositories>
 		<pluginRepository>
@@ -366,7 +371,6 @@
 		<geomajas-layer-wms-version>1.7.0-SNAPSHOT</geomajas-layer-wms-version>
 		<geomajas-layer-openstreetmap-version>1.7.0-SNAPSHOT</geomajas-layer-openstreetmap-version>
 		<gwt-version>2.0.3</gwt-version>
-		<slf4j-version>1.6.0</slf4j-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
