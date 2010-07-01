@@ -35,7 +35,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	<bean class="org.geomajas.global.PluginInfo">
 		<property name="version">
 			<bean class="org.geomajas.global.PluginVersionInfo">
-				<property name="name" value="Printing GWT" />
+				<property name="name" value="Simple printing GWT" />
 				<property name="version" value="${project.version}" />
 			</bean>
 		</property>
@@ -43,7 +43,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<property name="dependencies">
 			<list>
 				<bean class="org.geomajas.global.PluginVersionInfo">
-					<property name="name" value="Printing" />
+					<property name="name" value="Simple printing" />
 					<property name="version" value="${project.version}" />
 				</bean>
 				<bean class="org.geomajas.global.PluginVersionInfo">
