@@ -61,7 +61,7 @@ public class BooleanAttribute extends PrimitiveAttribute<Boolean> {
 	 * @return A copy of this boolean attribute.
 	 */
 	public Object clone() {
-		BooleanAttribute clone = new BooleanAttribute(new Boolean(getValue()));
+		BooleanAttribute clone = new BooleanAttribute(getValue().booleanValue());
 		clone.setEditable(isEditable());
 		return clone;
 	}

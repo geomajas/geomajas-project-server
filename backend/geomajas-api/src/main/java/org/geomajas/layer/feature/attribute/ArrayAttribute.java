@@ -97,6 +97,12 @@ public class ArrayAttribute<VALUE_TYPE> implements Attribute<VALUE_TYPE[]> {
 		this.editable = editable;
 	}
 
+	/**
+	 * Create a clone of this attribute object.
+	 * 
+	 * @since 1.7.0
+	 * @return A copy of this array attribute.
+	 */
 	@SuppressWarnings("unchecked")
 	public Object clone() {
 		Object[] clones = new Object[value.length];
