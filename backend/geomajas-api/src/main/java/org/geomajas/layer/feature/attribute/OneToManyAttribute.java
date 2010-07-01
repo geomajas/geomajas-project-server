@@ -23,6 +23,7 @@
 
 package org.geomajas.layer.feature.attribute;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.configuration.AssociationType;
@@ -55,8 +56,9 @@ public class OneToManyAttribute extends AssociationAttribute<List<AssociationVal
 
 	/**
 	 * Create attribute with specified value.
-	 *
-	 * @param value value for attribute
+	 * 
+	 * @param value
+	 *            value for attribute
 	 */
 	public OneToManyAttribute(List<AssociationValue> value) {
 		this.value = value;
@@ -88,5 +90,21 @@ public class OneToManyAttribute extends AssociationAttribute<List<AssociationVal
 	 */
 	public void setValue(List<AssociationValue> value) {
 		this.value = value;
+	}
+
+	/**
+	 * Create a clone of this attribute object.
+	 * 
+	 * @since 1.7.0
+	 * @return A copy of this ManyToOne attribute.
+	 */
+	public Object clone() {
+		List<AssociationValue> clones = new ArrayList<AssociationValue>();
+		for (AssociationValue v : value) {
+			clones.add((AssociationValue) v.clone());
+		}
+		OneToManyAttribute clone = new OneToManyAttribute(clones);
+		clone.setEditable(isEditable());
+		return clone;
 	}
 }

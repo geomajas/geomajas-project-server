@@ -25,6 +25,7 @@ package org.geomajas.gwt.client.map.feature;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.global.Api;
@@ -135,7 +136,10 @@ public class Feature implements Paintable, Cloneable {
 	public Feature clone() {
 		Feature feature = new Feature(this.layer);
 		if (null != attributes) {
-			feature.attributes = new HashMap<String, Attribute>(attributes);
+			feature.attributes = new HashMap<String, Attribute>();
+			for (Entry<String, Attribute> entry : attributes.entrySet()) {
+				feature.attributes.put(entry.getKey(), (Attribute<?>) entry.getValue().clone());
+			}
 		}
 		feature.clipped = clipped;
 		feature.labelPosition = labelPosition;

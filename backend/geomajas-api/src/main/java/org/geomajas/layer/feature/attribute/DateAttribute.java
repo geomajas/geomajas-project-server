@@ -49,11 +49,24 @@ public class DateAttribute extends PrimitiveAttribute<Date> {
 
 	/**
 	 * Create using specific date value.
-	 *
-	 * @param value value for attribute
+	 * 
+	 * @param value
+	 *            value for attribute
 	 */
 	public DateAttribute(Date value) {
 		super(PrimitiveType.DATE);
 		setValue(value);
+	}
+
+	/**
+	 * Create a clone of this attribute object.
+	 * 
+	 * @since 1.7.0
+	 * @return A copy of this date attribute.
+	 */
+	public Object clone() {
+		DateAttribute clone = new DateAttribute((Date) getValue().clone());
+		clone.setEditable(isEditable());
+		return clone;
 	}
 }

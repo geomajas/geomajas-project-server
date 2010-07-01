@@ -22,10 +22,12 @@
  */
 package org.geomajas.layer.feature.attribute;
 
-import org.geomajas.global.Api;
-
 import java.io.Serializable;
+import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
+
+import org.geomajas.global.Api;
 
 /**
  * <p>
@@ -57,9 +59,11 @@ public class AssociationValue implements Serializable {
 
 	/**
 	 * Create attribute with specified value.
-	 *
-	 * @param id id attribute for association
-	 * @param attributes values for the attributes
+	 * 
+	 * @param id
+	 *            id attribute for association
+	 * @param attributes
+	 *            values for the attributes
 	 */
 	public AssociationValue(PrimitiveAttribute<?> id, Map<String, PrimitiveAttribute<?>> attributes) {
 		this.id = id;
@@ -67,8 +71,23 @@ public class AssociationValue implements Serializable {
 	}
 
 	/**
+	 * Create a clone of this object.
+	 * 
+	 * @since 1.7.0
+	 * @return A new AssociationValue with the same contents.
+	 */
+	public Object clone() {
+		PrimitiveAttribute<?> idClone = (PrimitiveAttribute<?>) id.clone();
+		Map<String, PrimitiveAttribute<?>> attrClone = new HashMap<String, PrimitiveAttribute<?>>();
+		for (Entry<String, PrimitiveAttribute<?>> entry : attributes.entrySet()) {
+			attrClone.put(entry.getKey(), (PrimitiveAttribute<?>) entry.getValue().clone());
+		}
+		return new AssociationValue(idClone, attrClone);
+	}
+
+	/**
 	 * Get the id for the associated object.
-	 *
+	 * 
 	 * @return id for associated object
 	 */
 	public PrimitiveAttribute<?> getId() {
@@ -77,8 +96,9 @@ public class AssociationValue implements Serializable {
 
 	/**
 	 * Set the id for the associated object.
-	 *
-	 * @param id id for associated object
+	 * 
+	 * @param id
+	 *            id for associated object
 	 */
 	public void setId(PrimitiveAttribute<?> id) {
 		this.id = id;
@@ -86,7 +106,7 @@ public class AssociationValue implements Serializable {
 
 	/**
 	 * Get the attributes for the associated object.
-	 *
+	 * 
 	 * @return attributes for associated objects
 	 */
 	public Map<String, PrimitiveAttribute<?>> getAttributes() {
@@ -95,8 +115,9 @@ public class AssociationValue implements Serializable {
 
 	/**
 	 * Set the attributes for the associated object.
-	 *
-	 * @param attributes attributes for associated objects
+	 * 
+	 * @param attributes
+	 *            attributes for associated objects
 	 */
 	public void setAttributes(Map<String, PrimitiveAttribute<?>> attributes) {
 		this.attributes = attributes;

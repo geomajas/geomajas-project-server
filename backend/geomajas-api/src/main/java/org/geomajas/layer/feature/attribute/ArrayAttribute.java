@@ -54,8 +54,9 @@ public class ArrayAttribute<VALUE_TYPE> implements Attribute<VALUE_TYPE[]> {
 
 	/**
 	 * Create array attribute with given array as value.
-	 *
-	 * @param value value for array
+	 * 
+	 * @param value
+	 *            value for array
 	 */
 	public ArrayAttribute(VALUE_TYPE[] value) {
 		this.value = value;
@@ -94,5 +95,16 @@ public class ArrayAttribute<VALUE_TYPE> implements Attribute<VALUE_TYPE[]> {
 	 */
 	public void setEditable(boolean editable) {
 		this.editable = editable;
+	}
+
+	@SuppressWarnings("unchecked")
+	public Object clone() {
+		Object[] clones = new Object[value.length];
+		for (int i = 0; i < value.length; i++) {
+			clones[i] = value[i];
+		}
+		ArrayAttribute clone = new ArrayAttribute(clones);
+		clone.setEditable(isEditable());
+		return clone;
 	}
 }

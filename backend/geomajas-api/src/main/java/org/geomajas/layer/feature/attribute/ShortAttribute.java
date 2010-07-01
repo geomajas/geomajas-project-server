@@ -45,11 +45,24 @@ public class ShortAttribute extends PrimitiveAttribute<Short> {
 
 	/**
 	 * Create attribute with specified value.
-	 *
-	 * @param value value for attribute
+	 * 
+	 * @param value
+	 *            value for attribute
 	 */
 	public ShortAttribute(Short value) {
 		super(PrimitiveType.SHORT);
 		setValue(value);
+	}
+
+	/**
+	 * Create a clone of this attribute object.
+	 * 
+	 * @since 1.7.0
+	 * @return A copy of this short attribute.
+	 */
+	public Object clone() {
+		ShortAttribute clone = new ShortAttribute(new Short(getValue()));
+		clone.setEditable(isEditable());
+		return clone;
 	}
 }

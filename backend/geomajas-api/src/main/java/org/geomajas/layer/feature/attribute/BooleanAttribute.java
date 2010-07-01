@@ -27,7 +27,7 @@ import org.geomajas.global.Api;
 
 /**
  * Attribute with value of type <code>PrimitiveType.BOOLEAN</code>.
- *
+ * 
  * @author Jan De Moerloose
  * @since 1.6.0
  */
@@ -45,11 +45,24 @@ public class BooleanAttribute extends PrimitiveAttribute<Boolean> {
 
 	/**
 	 * Create attribute with given boolean value.
-	 *
-	 * @param value value for attribute
+	 * 
+	 * @param value
+	 *            value for attribute
 	 */
 	public BooleanAttribute(Boolean value) {
 		super(PrimitiveType.BOOLEAN);
 		setValue(value);
+	}
+
+	/**
+	 * Create a clone of this attribute object.
+	 * 
+	 * @since 1.7.0
+	 * @return A copy of this boolean attribute.
+	 */
+	public Object clone() {
+		BooleanAttribute clone = new BooleanAttribute(new Boolean(getValue()));
+		clone.setEditable(isEditable());
+		return clone;
 	}
 }

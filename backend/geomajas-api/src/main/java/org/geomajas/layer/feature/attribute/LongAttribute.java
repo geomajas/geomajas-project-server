@@ -45,11 +45,24 @@ public class LongAttribute extends PrimitiveAttribute<Long> {
 
 	/**
 	 * Create attribute with specified value.
-	 *
-	 * @param value value for attribute
+	 * 
+	 * @param value
+	 *            value for attribute
 	 */
 	public LongAttribute(Long value) {
 		super(PrimitiveType.LONG);
 		setValue(value);
+	}
+
+	/**
+	 * Create a clone of this attribute object.
+	 * 
+	 * @since 1.7.0
+	 * @return A copy of this long attribute.
+	 */
+	public Object clone() {
+		LongAttribute clone = new LongAttribute(new Long(getValue()));
+		clone.setEditable(isEditable());
+		return clone;
 	}
 }

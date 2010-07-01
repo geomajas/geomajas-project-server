@@ -45,11 +45,24 @@ public class FloatAttribute extends PrimitiveAttribute<Float> {
 
 	/**
 	 * Create attribute with specified value.
-	 *
-	 * @param value value for attribute
+	 * 
+	 * @param value
+	 *            value for attribute
 	 */
 	public FloatAttribute(Float value) {
 		super(PrimitiveType.FLOAT);
 		setValue(value);
+	}
+
+	/**
+	 * Create a clone of this attribute object.
+	 * 
+	 * @since 1.7.0
+	 * @return A copy of this float attribute.
+	 */
+	public Object clone() {
+		FloatAttribute clone = new FloatAttribute(new Float(getValue()));
+		clone.setEditable(isEditable());
+		return clone;
 	}
 }

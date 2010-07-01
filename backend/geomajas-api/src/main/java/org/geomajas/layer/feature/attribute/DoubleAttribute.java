@@ -45,11 +45,24 @@ public class DoubleAttribute extends PrimitiveAttribute<Double> {
 
 	/**
 	 * Create attribute with specified double value.
-	 *
-	 * @param value value for attribute
+	 * 
+	 * @param value
+	 *            value for attribute
 	 */
 	public DoubleAttribute(Double value) {
 		super(PrimitiveType.DOUBLE);
 		setValue(value);
+	}
+
+	/**
+	 * Create a clone of this attribute object.
+	 * 
+	 * @since 1.7.0
+	 * @return A copy of this double attribute.
+	 */
+	public Object clone() {
+		DoubleAttribute clone = new DoubleAttribute(new Double(getValue()));
+		clone.setEditable(isEditable());
+		return clone;
 	}
 }

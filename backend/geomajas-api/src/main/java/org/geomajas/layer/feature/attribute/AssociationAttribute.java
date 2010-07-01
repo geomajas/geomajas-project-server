@@ -43,6 +43,14 @@ public abstract class AssociationAttribute<VALUE_TYPE> implements Attribute<VALU
 	private boolean editable;
 
 	/**
+	 * Create a clone of this association object.
+	 * 
+	 * @since 1.7.0
+	 * @return Return an exact copy of this association.
+	 */
+	public abstract Object clone();
+
+	/**
 	 * {@inheritDoc}
 	 */
 	public abstract AssociationType getType();

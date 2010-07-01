@@ -45,11 +45,24 @@ public class UrlAttribute extends PrimitiveAttribute<String> {
 
 	/**
 	 * Create attribute with specified value.
-	 *
-	 * @param value value for attribute
+	 * 
+	 * @param value
+	 *            value for attribute
 	 */
 	public UrlAttribute(String value) {
 		super(PrimitiveType.URL);
 		setValue(value);
+	}
+
+	/**
+	 * Create a clone of this attribute object.
+	 * 
+	 * @since 1.7.0
+	 * @return A copy of this URL attribute.
+	 */
+	public Object clone() {
+		UrlAttribute clone = new UrlAttribute(new String(getValue()));
+		clone.setEditable(isEditable());
+		return clone;
 	}
 }

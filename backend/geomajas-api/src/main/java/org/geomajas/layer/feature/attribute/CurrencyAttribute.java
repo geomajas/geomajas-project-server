@@ -53,4 +53,16 @@ public class CurrencyAttribute extends PrimitiveAttribute<String> {
 		super(PrimitiveType.CURRENCY);
 		setValue(value);
 	}
+
+	/**
+	 * Create a clone of this attribute object.
+	 * 
+	 * @since 1.7.0
+	 * @return A copy of this currency attribute.
+	 */
+	public Object clone() {
+		CurrencyAttribute clone = new CurrencyAttribute(new String(getValue()));
+		clone.setEditable(isEditable());
+		return clone;
+	}
 }

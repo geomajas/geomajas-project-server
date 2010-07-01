@@ -45,11 +45,24 @@ public class IntegerAttribute extends PrimitiveAttribute<Integer> {
 
 	/**
 	 * Create attribute with specified value.
-	 *
-	 * @param value value for attribute
+	 * 
+	 * @param value
+	 *            value for attribute
 	 */
 	public IntegerAttribute(Integer value) {
 		super(PrimitiveType.INTEGER);
 		setValue(value);
+	}
+
+	/**
+	 * Create a clone of this attribute object.
+	 * 
+	 * @since 1.7.0
+	 * @return A copy of this integer attribute.
+	 */
+	public Object clone() {
+		IntegerAttribute clone = new IntegerAttribute(new Integer(getValue()));
+		clone.setEditable(isEditable());
+		return clone;
 	}
 }

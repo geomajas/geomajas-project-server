@@ -43,7 +43,6 @@ public class ManyToOneAttribute extends AssociationAttribute<AssociationValue> {
 
 	private AssociationValue value;
 
-
 	/**
 	 * Create attribute without value (needed for GWT).
 	 */
@@ -52,8 +51,9 @@ public class ManyToOneAttribute extends AssociationAttribute<AssociationValue> {
 
 	/**
 	 * Create attribute with specified value.
-	 *
-	 * @param value value for attribute
+	 * 
+	 * @param value
+	 *            value for attribute
 	 */
 	public ManyToOneAttribute(AssociationValue value) {
 		this.value = value;
@@ -85,5 +85,17 @@ public class ManyToOneAttribute extends AssociationAttribute<AssociationValue> {
 	 */
 	public void setValue(AssociationValue value) {
 		this.value = value;
+	}
+
+	/**
+	 * Create a clone of this attribute object.
+	 * 
+	 * @since 1.7.0
+	 * @return A copy of this ManyToOne attribute.
+	 */
+	public Object clone() {
+		ManyToOneAttribute clone = new ManyToOneAttribute((AssociationValue) getValue().clone());
+		clone.setEditable(isEditable());
+		return clone;
 	}
 }

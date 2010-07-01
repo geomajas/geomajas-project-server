@@ -28,19 +28,28 @@ import java.io.Serializable;
 
 /**
  * Attribute definition.
- *
- * @param <VALUE_TYPE> type for the attribute value
- *
+ * 
+ * @param <VALUE_TYPE>
+ *            type for the attribute value
+ * 
  * @author Jan De Moerloose
  * @author Joachim Van der Auwera
  * @since 1.6.0
  */
 @Api(allMethods = true)
-public interface Attribute<VALUE_TYPE> extends Serializable {
+public interface Attribute<VALUE_TYPE> extends Serializable, Cloneable {
+
+	/**
+	 * Create a clone from this attribute object.
+	 * 
+	 * @since 1.7.0
+	 * @return Returns an exact copy.
+	 */
+	Object clone();
 
 	/**
 	 * Get the value for this attribute.
-	 *
+	 * 
 	 * @return attribute value
 	 */
 	VALUE_TYPE getValue();
@@ -49,14 +58,14 @@ public interface Attribute<VALUE_TYPE> extends Serializable {
 	 * Is this a primitive attribute?
 	 * <p/>
 	 * An attribute is not primitive when is is an association attribute.
-	 *
+	 * 
 	 * @return true when attribute is primitive
 	 */
 	boolean isPrimitive();
 
 	/**
 	 * Does the attribute have a value?
-	 *
+	 * 
 	 * @return true when the attribute has no value
 	 */
 	boolean isEmpty();
@@ -66,17 +75,19 @@ public interface Attribute<VALUE_TYPE> extends Serializable {
 	 * <p/>
 	 * The value can only be true when the layer/feature model has the capability to edit the attribute and the logged
 	 * in user is authorized.
-	 *
+	 * 
 	 * @return true when attribute is editable
 	 */
 	boolean isEditable();
 
-	/** set whether the feature is editable or not.
+	/**
+	 * set whether the feature is editable or not.
 	 * <p/>
 	 * The value can only be true when the layer/feature model has the capability to edit the attribute and the logged
 	 * in user is authorized.
-	 *
-	 * @param editable editable status
+	 * 
+	 * @param editable
+	 *            editable status
 	 */
 	void setEditable(boolean editable);
 }

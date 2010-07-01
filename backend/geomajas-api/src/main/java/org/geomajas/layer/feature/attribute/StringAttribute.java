@@ -45,11 +45,24 @@ public class StringAttribute extends PrimitiveAttribute<String> {
 
 	/**
 	 * Create attribute with specified value.
-	 *
-	 * @param value value for attribute
+	 * 
+	 * @param value
+	 *            value for attribute
 	 */
 	public StringAttribute(String value) {
 		super(PrimitiveType.STRING);
 		setValue(value);
+	}
+
+	/**
+	 * Create a clone of this attribute object.
+	 * 
+	 * @since 1.7.0
+	 * @return A copy of this string attribute.
+	 */
+	public Object clone() {
+		StringAttribute clone = new StringAttribute(new String(getValue()));
+		clone.setEditable(isEditable());
+		return clone;
 	}
 }

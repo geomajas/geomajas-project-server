@@ -29,8 +29,9 @@ import org.geomajas.layer.feature.Attribute;
 
 /**
  * Primitive value attribute. This is the base class for simple attribute types such as integer, float, string,...
- *
- * @param <VALUE_TYPE> type which is represented by the primitive attribute
+ * 
+ * @param <VALUE_TYPE>
+ *            type which is represented by the primitive attribute
  * 
  * @author Jan De Moerloose
  * @author Pieter De Graef
@@ -63,15 +64,24 @@ public abstract class PrimitiveAttribute<VALUE_TYPE> implements Attribute<VALUE_
 	/**
 	 * This is the preferred constructor. It immediately sets the attribute's type.
 	 * 
-	 * @param type type of primitive attribute
+	 * @param type
+	 *            type of primitive attribute
 	 */
 	protected PrimitiveAttribute(PrimitiveType type) {
 		this.type = type;
 	}
 
 	/**
+	 * Create a clone of this attribute object.
+	 * 
+	 * @since 1.7.0
+	 * @return Return an exact copy of this attribute.
+	 */
+	public abstract Object clone();
+
+	/**
 	 * Get type of primitive attribute.
-	 *
+	 * 
 	 * @return {@link org.geomajas.configuration.PrimitiveType}
 	 */
 	@Json(serialize = false)
@@ -81,8 +91,9 @@ public abstract class PrimitiveAttribute<VALUE_TYPE> implements Attribute<VALUE_
 
 	/**
 	 * Set type of primitive attribute.
-	 *
-	 * @param type type of primitive attribute
+	 * 
+	 * @param type
+	 *            type of primitive attribute
 	 */
 	public void setType(PrimitiveType type) {
 		this.type = type;
@@ -90,7 +101,7 @@ public abstract class PrimitiveAttribute<VALUE_TYPE> implements Attribute<VALUE_
 
 	/**
 	 * Return true, as this type is the very definition of a primitive attribute.
-	 *
+	 * 
 	 * @return true as this is a primitive attribute
 	 */
 	@Json(serialize = false)
@@ -115,8 +126,9 @@ public abstract class PrimitiveAttribute<VALUE_TYPE> implements Attribute<VALUE_
 
 	/**
 	 * Set the actual value for the attribute.
-	 *
-	 * @param value value for the attribute
+	 * 
+	 * @param value
+	 *            value for the attribute
 	 */
 	public void setValue(VALUE_TYPE value) {
 		this.value = value;
