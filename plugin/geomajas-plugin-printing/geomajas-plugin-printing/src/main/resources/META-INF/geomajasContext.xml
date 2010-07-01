@@ -84,7 +84,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 					<property name="key" value="XPP3"/>
 					<property name="copyright" value="Copyright © 2002 Extreme! Lab, Indiana University. All rights reserved."/>
 					<property name="licenseName" value="BSD-like"/>
-					<property name="licenseUrl" value="http://www.extreme.indiana.edu/viewcvs/XPP3/java/LICENSE.txt?rev=HEAD&content-type=text/vnd.viewcvs-markup"/>
+					<property name="licenseUrl" value="http://www.extreme.indiana.edu/viewcvs/XPP3/java/LICENSE.txt?rev=HEAD"/>
 				</bean>
 			</list>
 		</property>
