@@ -143,8 +143,8 @@ public class GoogleLayer implements RasterLayer {
 	}
 
 	/**
-	 * Set the maximum zoom level which is supported by this layer. The levels are specific for this layer. The first level has one tile for
-	 *  the world, the second four etc.
+	 * Set the maximum zoom level which is supported by this layer. The levels are specific for this layer. The first
+	 * level has one tile for the world, the second four etc.
 	 *
 	 * @param maxZoomLevel max zoom level
 	 * @since 1.6.0
