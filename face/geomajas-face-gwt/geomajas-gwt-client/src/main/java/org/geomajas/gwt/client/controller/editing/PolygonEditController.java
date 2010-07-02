@@ -24,6 +24,7 @@
 package org.geomajas.gwt.client.controller.editing;
 
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.gwt.client.action.menu.AttributesAction;
 import org.geomajas.gwt.client.action.menu.CancelEditingAction;
 import org.geomajas.gwt.client.action.menu.InsertPointAction;
 import org.geomajas.gwt.client.action.menu.InsertRingAction;
@@ -91,6 +92,8 @@ public class PolygonEditController extends EditController {
 	public Menu getContextMenu() {
 		if (menu == null) {
 			menu = new Menu();
+			menu.addItem(new AttributesAction(mapWidget));
+			menu.addItem(new MenuItemSeparator());
 			menu.addItem(new UndoOperationAction(mapWidget, this));
 			menu.addItem(new CancelEditingAction(mapWidget, (ParentEditController) parent));
 			menu.addItem(new SaveEditingAction(mapWidget, (ParentEditController) parent));

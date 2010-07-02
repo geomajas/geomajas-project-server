@@ -29,7 +29,7 @@ import com.google.gwt.i18n.client.Messages;
  * <p>
  * Localization constants for all menu actions.
  * </p>
- *
+ * 
  * @author Pieter De Graef
  */
 public interface MenuMessages extends Messages {
@@ -75,4 +75,6 @@ public interface MenuMessages extends Messages {
 	String deselectAll();
 
 	String toggleSelection();
+
+	String editAttributes();
 }

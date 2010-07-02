@@ -36,7 +36,7 @@ import org.geomajas.global.ResolutionFormat;
  */
 public class ScaleInfo implements Serializable {
 
-	private static final long serialVersionUID = 151L;
+	private static final long serialVersionUID = 170L;
 
 	@ResolutionFormat
 	private double value;
