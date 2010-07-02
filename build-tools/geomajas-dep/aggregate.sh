@@ -2,7 +2,7 @@
 
 #TARGETDIR="/home/joachim/tmp/"
 TARGETDIR="/var/www/files.geomajas.org/htdocs/maven/trunk/geomajas"
-TARGET="$TARGET/documentation.html"
+TARGET="$TARGETDIR/documentation.html"
 
 template_start() {
 	rm $TARGET
@@ -26,7 +26,7 @@ needs groupId, artifactId, version, title, description, state, pdf-filename
 	LOCATION="https://oss.sonatype.org/service/local/artifact/maven/redirect?r=snapshots&g=$1&a=$2&v=$3&e=jdocbook"
 	PWD=`pwd`
 	cd $TARGETDIR
-	wget $LOCATION -O docs.zip
+	wget --no-check-certificate $LOCATION -O docs.zip
 	mkdir $2
 	unzip -o docs.zip -d $2
 	#rm docs.zip
