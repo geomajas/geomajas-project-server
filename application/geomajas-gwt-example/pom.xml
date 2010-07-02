@@ -295,11 +295,30 @@
 				</configuration>
 				<executions>
 					<execution>
-						<id>test</id>
+						<id>clean</id>
+						<phase>clean</phase>
 						<goals>
 							<goal>clean</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>compile</id>
+						<phase>prepare-package</phase>
+						<goals>
 							<goal>compile</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>generateAsync</id>
+						<phase>generate-sources</phase>
+						<goals>
 							<goal>generateAsync</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>test</id>
+						<phase>integration-test</phase>
+						<goals>
 							<goal>test</goal>
 						</goals>
 					</execution>
