@@ -24,14 +24,6 @@
 		<url>https://svn.geomajas.org/majas/trunk/documentation</url>
 	</scm>
 
-	<distributionManagement>
-		<site>
-			<id>Geomajas project site</id>
-			<name>Mapping with Asynchronous Java and SVG</name>
-			<url>file:/var/www/files.geomajas.org/htdocs/maven/trunk/geomajas</url>
-		</site>
-	</distributionManagement>
-
 	<repositories>
 		<repository>
 			<id>Geomajas</id>
@@ -53,18 +45,6 @@
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-site-plugin</artifactId>
-				<version>2.0.1</version>
-				<dependencies>
-					<dependency>
-						<groupId>org.apache.maven.doxia</groupId>
-						<artifactId>doxia-module-docbook-simple</artifactId>
-						<version>1.0</version>
-					</dependency>
-				</dependencies>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-antrun-plugin</artifactId>
 				<executions>
 					<execution>
@@ -79,107 +59,19 @@
 							<goal>run</goal>
 						</goals>
 					</execution>
-					<execution>
-						<id>copy-docbook</id>
-						<phase>post-site</phase>
-						<configuration>
-							<tasks>
-								<copy todir="${basedir}/target/site/devuserguide">
-									<fileset dir="${basedir}/devuserguide/target/docbook"/>
-								</copy>
-								<copy todir="${basedir}/target/site/enduserguide">
-									<fileset dir="${basedir}/enduserguide/target/docbook"/>
-								</copy>
-								<copy todir="${basedir}/target/site/contributorguide">
-									<fileset dir="${basedir}/contributorguide/target/docbook"/>
-								</copy>
-							</tasks>
-						</configuration>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>
 				</executions>
 			</plugin>			
 		</plugins>
 	</build>
-	<reporting>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-javadoc-plugin</artifactId>
-				<version>2.6.1</version>
-				<configuration>
-					<links>
-						<link>http://java.sun.com/j2se/1.5.0/docs/api/</link>
-					</links>
-				</configuration>
-			</plugin>
-		</plugins>
-	</reporting>
 
-	<profiles>
-		<profile>
-			<id>site</id>
-		</profile>
-		<profile>
-			<id>build</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
-			<modules>
-				<module>style</module>
-				<module>xslt</module>
-				<module>gettingstarted</module>
-				<module>devuserguide</module>
-				<module>enduserguide</module>
-				<module>contributorguide</module>
-			</modules>
-		</profile>
-		<profile>
-			<id>hudson</id>
-			<activation>
-				<property>
-					<name>hudson</name>
-				</property>
-			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-antrun-plugin</artifactId>
-						<executions>
-							<execution>
-								<id>gen-docbook</id>
-								<phase>install</phase>
-								<configuration>
-									<tasks>
-										<condition property="maven.exec" value="mvn">
-											<os family="unix"/>
-										</condition>
-										<condition property="maven.exec" value="mvn.bat">
-											<os family="windows"/>
-										</condition>
-										<exec dir="${basedir}" executable="${maven.exec}"
-											  failonerror="true">
-											<arg line="clean install"/>
-										</exec>
-										<exec dir="${basedir}" executable="${maven.exec}"
-											  failonerror="true">
-											<arg line="-Psite site-deploy"/>
-										</exec>
-									</tasks>
-								</configuration>
-								<goals>
-									<goal>run</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-	</profiles>
+	<modules>
+		<module>style</module>
+		<module>xslt</module>
+		<module>gettingstarted</module>
+		<module>devuserguide</module>
+		<module>enduserguide</module>
+		<module>contributorguide</module>
+	</modules>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
