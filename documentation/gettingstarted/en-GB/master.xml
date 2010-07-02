@@ -45,19 +45,14 @@
 	<toc/>
 	<lot/>
 
-	<xi:include href="modules/part-introduction.xml"
+	<xi:include href="modules/introduction.xml"
 				xmlns:xi="http://www.w3.org/2001/XInclude"/>
 
-	<xi:include href="modules/part-architecture.xml"
+	<part></part>
+	<xi:include href="modules/getting-started.xml"
 				xmlns:xi="http://www.w3.org/2001/XInclude"/>
 
-	<xi:include href="modules/part-backend.xml"
+	<xi:include href="modules/realworld-marine.xml"
 				xmlns:xi="http://www.w3.org/2001/XInclude"/>
 
-	<xi:include href="modules/part-howto.xml"
-				xmlns:xi="http://www.w3.org/2001/XInclude"/>
-
-	<xi:include href="modules/part-appendix.xml"
-				xmlns:xi="http://www.w3.org/2001/XInclude"/>
-	
 </book>

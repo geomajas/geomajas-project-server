@@ -1,0 +1,260 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<parent>
+		<groupId>org.geomajas</groupId>
+		<artifactId>geomajas-parent</artifactId>
+		<version>1.0.1</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.geomajas.documentation</groupId>
+	<artifactId>docbook-gettingstarted</artifactId>
+	<version>1.7.0-SNAPSHOT</version>
+	<packaging>jdocbook</packaging>
+	<name>Getting started (${translation})</name>
+	<description>Getting started with Geomajas (${translation})</description>
+
+	<scm>
+		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/documentation/gettingstarted</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/documentation/gettingstarted</developerConnection>
+		<url>https://svn.geomajas.org/majas/trunk/documentation/gettingstarted</url>
+	</scm>
+
+	<repositories>
+		<repository>
+			<id>Geomajas</id>
+			<name>Geomajas repository</name>
+			<url>http://maven.geomajas.org/</url>
+		</repository>
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>Geomajas</id>
+			<name>Geomajas repository</name>
+			<url>http://maven.geomajas.org/</url>
+		</pluginRepository>
+	</pluginRepositories>
+
+	<developers>
+		<developer>
+			<id>joachimvda</id>
+			<name>Joachim Van der Auwera</name>
+			<email>joachim@geosparc.com</email>
+			<roles>
+				<role>Module maintainer</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>pieterdg</id>
+			<name>Pieter De Graef</name>
+			<email>pieter.degraef@geosparc.com</email>
+		</developer>
+		<developer>
+			<id>jandm</id>
+			<name>Jan De Moerloose</name>
+			<email>jan.demoerloose@geosparc.com</email>
+		</developer>
+	</developers>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.geomajas.documentation</groupId>
+			<artifactId>geomajas-jdocbook-xslt</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas.documentation</groupId>
+			<artifactId>geomajas-jdocbook-style</artifactId>
+			<version>1.0.0</version>
+			<type>jdocbook-style</type>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-impl</artifactId>
+			<version>1.7.0-SNAPSHOT</version>
+			<classifier>sources</classifier>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-gwt-simple</artifactId>
+			<version>1.7.0-SNAPSHOT</version>
+			<classifier>sources</classifier>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-gwt-example</artifactId>
+			<version>1.7.0-SNAPSHOT</version>
+			<classifier>sources</classifier>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-dojo-simple</artifactId>
+			<version>1.7.0-SNAPSHOT</version>
+			<classifier>sources</classifier>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>unpack-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/resources</outputDirectory>
+							<includeArtifactIds>geomajas-jdocbook-xslt</includeArtifactIds>
+						</configuration>
+					</execution>
+					<execution>
+						<id>explode-dojo-simple</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>unpack-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/extract/dojo-simple</outputDirectory>
+							<includeArtifactIds>geomajas-dojo-simple</includeArtifactIds>
+						</configuration>
+					</execution>
+					<execution>
+						<id>explode-impl</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>unpack-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/extract/impl</outputDirectory>
+							<includeArtifactIds>geomajas-impl</includeArtifactIds>
+						</configuration>
+					</execution>
+					<execution>
+						<id>explode-gwt-simple</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>unpack-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/extract/simple</outputDirectory>
+							<includeArtifactIds>geomajas-gwt-simple</includeArtifactIds>
+						</configuration>
+					</execution>
+					<execution>
+						<id>explode-gwt-example</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>unpack-dependencies</goal>
+						</goals>
+						<configuration>
+							<outputDirectory>${project.build.directory}/extract/example</outputDirectory>
+							<includeArtifactIds>geomajas-gwt-example</includeArtifactIds>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-maven-plugin</artifactId>
+				<version>1.0.3</version>
+				<inherited>false</inherited>
+				<executions>
+					<execution>
+						<id>extract-listings-app</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>extract</goal>
+						</goals>
+						<configuration>
+							<sourceDirectory>${project.build.directory}/extract</sourceDirectory>
+							<destinationDirectory>${basedir}/en-GB/listing</destinationDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>remove-listing</id>
+						<phase>clean</phase>
+						<configuration>
+							<tasks>
+								<delete dir="en-GB/listing" />
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.jboss.maven.plugins</groupId>
+				<artifactId>maven-jdocbook-plugin</artifactId>
+				<version>2.0.0</version>
+				<extensions>true</extensions>
+				<configuration>
+					<sourceDocumentName>master.xml</sourceDocumentName>
+					<imageResource>
+						<directory>${basedir}/${translation}</directory>
+						<excludes>
+							<exclude>*.xml</exclude>
+						</excludes>
+					</imageResource>
+					<cssResource>
+						<directory>${basedir}/${translation}</directory>
+						<excludes>
+							<exclude>*.xml</exclude>
+						</excludes>
+					</cssResource>
+					<formats>
+
+						<format>
+							<formatName>pdf</formatName>
+
+							<!--stylesheetResource>classpath:/standard/fopdf.xsl</stylesheetResource-->
+
+							<finalName>Getting_Started.pdf</finalName>
+						</format>
+
+						<format>
+							<formatName>html</formatName>
+							<stylesheetResource>file:${project.build.directory}/resources/xslt/org/geomajas/main-html.xsl
+							</stylesheetResource>
+							<finalName>index.html</finalName>
+						</format>
+
+						<format>
+							<formatName>html_single</formatName>
+							<stylesheetResource>
+								file:${project.build.directory}/resources/xslt/org/geomajas/nochunk-html.xsl
+							</stylesheetResource>
+							<finalName>index.html</finalName>
+						</format>
+
+					</formats>
+					<options>
+						<xincludeSupported>true</xincludeSupported>
+						<xmlTransformerType>saxon</xmlTransformerType>
+						<!-- needed for uri-resolvers; can be omitted if using 'current' uri scheme -->
+						<!--     could also locate the docbook dependency and inspect its version... -->
+						<docbookVersion>1.72.0</docbookVersion>
+					</options>
+
+					<sourceDirectory>${basedir}/${translation}</sourceDirectory>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+	<properties>
+		<translation>en-GB</translation>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+</project>

@@ -130,6 +130,7 @@
 			<modules>
 				<module>style</module>
 				<module>xslt</module>
+				<module>gettingstarted</module>
 				<module>devuserguide</module>
 				<module>enduserguide</module>
 				<module>contributorguide</module>
