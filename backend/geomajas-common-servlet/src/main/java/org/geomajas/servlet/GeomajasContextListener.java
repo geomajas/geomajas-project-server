@@ -75,21 +75,16 @@ public class GeomajasContextListener implements ServletContextListener {
 
 		// Assign the best possible id value.
 		String id;
-		if (servletContext.getMajorVersion() == 2 && servletContext.getMinorVersion() < 5) {
+		try {
+			String contextPath = (String) ServletContext.class.getMethod("getContextPath").invoke(servletContext);
+			id = ObjectUtils.getDisplayString(contextPath);
+		} catch (Exception ex) {
 			// Servlet <= 2.4: resort to name specified in web.xml, if any.
 			String servletContextName = servletContext.getServletContextName();
-			id = "Geomajas:" + ObjectUtils.getDisplayString(servletContextName);
-		} else {
-			// Servlet 2.5's getContextPath available!
-			try {
-				String contextPath = (String) ServletContext.class.getMethod("getContextPath").invoke(servletContext);
-				id = "Geomajas:" + ObjectUtils.getDisplayString(contextPath);
-			} catch (Exception ex) {
-				throw new IllegalStateException("Failed to invoke Servlet 2.5 getContextPath method", ex);
-			}
+			id = ObjectUtils.getDisplayString(servletContextName);			
 		}
 
-		applicationContext.setId(id);
+		applicationContext.setId("Geomajas:" + id);
 		applicationContext.setServletContext(servletContext);
 		applicationContext.setConfigLocation(configLocation);
 		applicationContext.refresh();
