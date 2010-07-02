@@ -2,7 +2,9 @@
 
 #TARGETDIR="/home/joachim/tmp/"
 TARGETDIR="/var/www/files.geomajas.org/htdocs/maven/trunk/geomajas"
-TARGET="$TARGETDIR/documentation.html"
+TARGET="$TARGETDIR/temp.html"
+FINAL="$TARGETDIR/documentation.html"
+LINKPREFIX="http://files.geomajas.org/maven/trunk/geomajas/"
 
 template_start() {
 	rm $TARGET
@@ -16,6 +18,7 @@ template_end() {
 	echo "" >> $TARGET
 	echo "</body>" >> $TARGET
 	echo "</html>" >> $TARGET
+	mv $TARGET $FINAL
 }
 
 # sample link https://oss.sonatype.org/service/local/artifact/maven/redirect?r=snapshots&g=org.geomajas.documentation&a=geomajas-layer-geotools-documentation&v=1.7.0-SNAPSHOT&e=jdocbook
@@ -34,7 +37,7 @@ needs groupId, artifactId, version, title, description, state, pdf-filename
 	echo "<h2>$4</h2>" >> $TARGET
 	echo "<p class="state">state: $6</p>" >> $TARGET
 	echo "<p class="desc">$5</p>" >> $TARGET
-	echo "<p class="links"><a href="$2/pdf/$7">PDF</a> | <a href="$2/html/index.html">html</a> | <a href="$2/html/index.html">one page html</a></p>" >> $TARGET
+	echo "<p class="links"><a href="$LINKPREFIX$2/pdf/$7">PDF</a> | <a href="$LINKPREFIX$2/html/index.html">html</a> | <a href="$LINKPREFIX$2/html/index.html">one page html</a></p>" >> $TARGET
 }
 
 template_start
