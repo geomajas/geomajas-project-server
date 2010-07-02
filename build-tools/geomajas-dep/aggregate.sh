@@ -22,8 +22,8 @@ template_end() {
 }
 
 # sample link https://oss.sonatype.org/service/local/artifact/maven/redirect?r=snapshots&g=org.geomajas.documentation&a=geomajas-layer-geotools-documentation&v=1.7.0-SNAPSHOT&e=jdocbook
+# parameters: groupId, artifactId, version, title, description, state, pdf-filename
 include() {
-needs groupId, artifactId, version, title, description, state, pdf-filename
 	echo "" >> $TARGET
 	FILE="docs.zip"
 	LOCATION="https://oss.sonatype.org/service/local/artifact/maven/redirect?r=snapshots&g=$1&a=$2&v=$3&e=jdocbook"
