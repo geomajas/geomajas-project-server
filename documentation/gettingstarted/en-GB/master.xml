@@ -48,7 +48,6 @@
 	<xi:include href="modules/introduction.xml"
 				xmlns:xi="http://www.w3.org/2001/XInclude"/>
 
-	<part></part>
 	<xi:include href="modules/getting-started.xml"
 				xmlns:xi="http://www.w3.org/2001/XInclude"/>
 
