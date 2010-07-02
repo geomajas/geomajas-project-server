@@ -301,28 +301,59 @@
   <chapter id="backend-ch-configuration">
     <title>Configuration basics</title>
 
-    <para>Geomajas leverages the Spring framework for configuration.</para>
+    <para>Geomajas leverages the Spring framework for configuration. The
+    initial configuration needs to be done using web.xml. There you need to
+    indicate the files which contain the configuration information.</para>
 
-    <para>In your <code>web.xml</code> file, you need to assure the
-    configuration is made available to the application, and you can indicate
-    which files are used to contain the configuration. Though it is possible
-    to put all configuration information in one file, we recommend splitting
-    your configuration in several files. At least one file per application,
-    possibly split further per client layer configuration, and one file for
-    server-side configuration of each of the layers.</para>
+    <section>
+      <title>web.xml</title>
 
-    <para>Apart from the servlets (which are specific for each face), your
-    web.xml needs an excerpt similar to the following:</para>
+      <para>In your <code>web.xml</code> file, you need to assure the
+      configuration is made available to the application, and you can indicate
+      which files are used to contain the configuration. Though it is possible
+      to put all configuration information in one file, we recommend splitting
+      your configuration in several files. At least one file per application,
+      possibly split further per client layer configuration, and one file for
+      server-side configuration of each of the layers.</para>
 
-    <xi:include href="../listing/WebXmlSpringConfiguration.xml"
-                xmlns:xi="http://www.w3.org/2001/XInclude" />
+      <para>The listener class initialises the application context as needed
+      for Geomajas. It appends the context configuration locations which are
+      specified in the <code>contextConfigLocation</code> context parameter to
+      the list of internal configuration locations and uses these to build the
+      application context. All locations which are specified are read from the
+      class path.</para>
 
-    <para>The listener class initialises the application context as needed for
-    Geomajas. It appends the context configuration locations which are
-    specified in the <code>contextConfigLocation</code> context parameter to
-    the list of internal configuration locations and uses these to build the
-    application context. All locations which are specified are read from the
-    class path.</para>
+      <para>These are defined using an excepts like the following:</para>
+
+      <xi:include href="../listing/WebXmlSpringConfiguration.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+      <para>You also need to define at least the dispatcher servlet and
+      possible an additional servlet for your faces. The dispatcher servlet
+      can be defined as follows.</para>
+
+      <example>
+        <title>Dispatcher servlet declaration in web.xml</title>
+
+        <para><programlisting>&lt;servlet&gt;
+    &lt;servlet-name&gt;dispatcher&lt;/servlet-name&gt;
+    &lt;servlet-class&gt;org.springframework.web.servlet.DispatcherServlet&lt;/servlet-class&gt;
+    &lt;init-param&gt;
+        &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;
+        &lt;param-value&gt;classpath*:META-INF/geomajasWebContext.xml&lt;/param-value&gt;
+        &lt;description&gt;Spring Web-MVC specific (additional) context files.&lt;/description&gt;
+    &lt;/init-param&gt;
+    &lt;load-on-startup&gt;3&lt;/load-on-startup&gt;
+&lt;/servlet&gt;
+
+&lt;servlet-mapping&gt;
+    &lt;servlet-name&gt;dispatcher&lt;/servlet-name&gt;
+    &lt;url-pattern&gt;/d/*&lt;/url-pattern&gt;
+&lt;/servlet-mapping&gt;</programlisting></para>
+      </example>
+
+      <para></para>
+    </section>
 
     <section>
       <title>General principles</title>
@@ -364,6 +395,10 @@
 
       <para>It is possible to define a bean with the same name (or id) more
       than once. In that case, the last occurrence will be used.</para>
+    </section>
+
+    <section>
+      <title></title>
 
       <para>The initial bean which needs to be defined is a bean indicating
       the <emphasis>client application info</emphasis>.</para>
@@ -378,6 +413,8 @@
 
       <para>There needs to be at least one <code>ClientApplicationInfo</code>
       bean. The bean name is used when requesting the application info.</para>
+
+      <para></para>
     </section>
 
     <section>
@@ -525,8 +562,7 @@
           <para>The following table describes the properties of the
           <code>VectorLayerInfo</code> object:</para>
 
-          <para>
-            <table>
+          <para><table>
               <title>VectorLayer info</title>
 
               <tgroup cols="2">
@@ -584,8 +620,7 @@
                   </row>
                 </tbody>
               </tgroup>
-            </table>
-          </para>
+            </table></para>
 
           <para>The feature metadata can be found in the
           <code>FeatureInfo</code> object. This objects contains the complete
@@ -2091,7 +2126,6 @@
           </tgroup>
         </table></para>
     </section>
-
   </chapter>
 
   <chapter id="chapter-layers">
@@ -2104,7 +2138,6 @@
     include that layer are included in the <link
     linkend="backend-ch-configuration">configuration</link> section
     above.</para>
-
   </chapter>
 
   <chapter id="chapter-security">
@@ -2148,7 +2181,6 @@
 
       <para>TODO.....</para>
     </section>
-
   </chapter>
 
   <chapter id="backend-ch-services">

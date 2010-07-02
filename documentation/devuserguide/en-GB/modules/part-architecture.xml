@@ -916,7 +916,32 @@
   <chapter>
     <title>Project structure</title>
 
+    <para>The project is built from a large set of modules. A specific
+    application can choose which modules are used or not. In principle, the
+    back-end module are always required and at least one face and at least one
+    layer plug-in. More plug-ins or faces can be added as needed.</para>
+
     <para></para>
+
+    <section>
+      <title>Face and plug-in registration</title>
+
+      <para>Plug-ins (which include faces) are automatically discovered when
+      available on the classpath. This is done using two files:
+      META-INF/geomajasContext.xml and META-INF/geomajasWebContext.xml.</para>
+
+      <para>The geomajasContext.xml file contains information about the
+      plug-in, the dependencies for the plug-in (which are checked when the
+      application context is built, assuring that the set of plug-ins is
+      complete and can be combined) and contains copyright and license
+      information for the plug-in and its dependencies. Additional beans and
+      services can also be defined.</para>
+
+      <para>The geomajasWebContext.xml file is provided to allow additional
+      endpoints to be added in the web tier. Geomajas normally installs a
+      <code>DispatcherServlet</code> in the web.xml file to allow additional
+      web endpoints to be added using Spring MVC.</para>
+    </section>
 
     <section>
       <title>Module Overview</title>
@@ -1295,7 +1320,8 @@
             <row>
               <entry>geomajas-plugin-printing</entry>
 
-              <entry>Adds advanced printing capabilities.</entry>
+              <entry>Adds printing capabilities beyond printing in the
+              browser, by delivering the map as PDF.</entry>
             </row>
 
             <row>
@@ -1304,6 +1330,13 @@
               <entry>Simple security service which allows including the entire
               security configuration in the Spring configuration files, making
               the configuration static.</entry>
+            </row>
+
+            <row>
+              <entry>geomajas-plugin-caching</entry>
+
+              <entry>Caching plug-in which allows improved speed by
+              calculating data only once.</entry>
             </row>
           </tbody>
         </tgroup>

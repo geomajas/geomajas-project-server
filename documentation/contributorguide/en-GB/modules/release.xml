@@ -55,6 +55,22 @@
 
   <para></para>
 
+  <para>At the end of the build, the src/main/resources/api.txt needs to be
+  updated with the file which is put in target during the build (though the
+  header at the top should remain, with the version updated.</para>
+
+  <para>The geomajas-dep pom and aggregate.sh need to be updated for the
+  released and new snapshot versions respectively.</para>
+
+  <para></para>
+
+  <para>Release really should be possible using release:prepare and
+  release:perform.</para>
+
+  <para></para>
+
+  <para>Old steps (pre 1.7.0) follow :</para>
+
   <para>Preparation work:</para>
 
   <para><orderedlist>

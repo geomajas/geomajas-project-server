@@ -99,22 +99,27 @@ mvn install</programlisting>
 
       <para>For development using the dojo face, apart from using the
       "-Pnoshrink" profile mentioned about, you may also want to configure the
-      ResourceServlet to try to directly read the javascript files from disk
-      before looking at the classpath (it also changes the cache headers).
-      This allows a simple refresh in the browser to load the changed
-      versions. The configuration in your web.xml needs an extra
-      init-parameter like in this example.</para>
+      ResourceController to try to directly read the javascript files from
+      disk before looking at the classpath (it also changes the cache
+      headers). This allows a simple refresh in the browser to load the
+      changed versions. You can configure this using a init-param for the
+      dispatcher servlet, like in this example.</para>
 
       <para><programlisting>&lt;servlet&gt;
-    &lt;servlet-name&gt;ResourceServlet&lt;/servlet-name&gt;
-    &lt;servlet-class&gt;org.geomajas.servlet.ResourceServlet&lt;/servlet-class&gt;
+    &lt;servlet-name&gt;dispatcher&lt;/servlet-name&gt;
+    &lt;servlet-class&gt;org.springframework.web.servlet.DispatcherServlet&lt;/servlet-class&gt;
     &lt;init-param&gt;
+        &lt;param-name&gt;files-location&lt;/param-name&gt;
+        &lt;param-value&gt;/home/me/apps/java/geomajas/geomajas/geomajas-dojo-client/src/main/resources&lt;/param-value&gt;
         &lt;description&gt;
             When this is specified, files are searched here first.
             Files which are found at this locations are not cached.
         &lt;/description&gt;
-        &lt;param-name&gt;files-location&lt;/param-name&gt;
-        &lt;param-value&gt;/home/me/apps/java/geomajas/geomajas/geomajas-dojo-client/src/main/resources&lt;/param-value&gt;
+    &lt;/init-param&gt;
+    &lt;init-param&gt;
+        &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;
+        &lt;param-value&gt;classpath*:META-INF/geomajasWebContext.xml&lt;/param-value&gt;
+        &lt;description&gt;Spring Web-MVC specific (additional) context files.&lt;/description&gt;
     &lt;/init-param&gt;
     &lt;load-on-startup&gt;3&lt;/load-on-startup&gt;
 &lt;/servlet&gt;
@@ -178,19 +183,6 @@ mvn install</programlisting>
     <para>All documentation is written in docbook format to allow both PDF and
     HTML output formats. The sources can be found in the "documentation"
     directory of the project.</para>
-
-    <!--
-    <para>To generate the commands, from the Geomajas source tree, do the
-    following to build the docbook output.</para>
-
-    <programlisting>cd geomajas/src/docbook
-mvn install</programlisting>
-
-     To generate the project site, do (from the Geomajas source tree again) 
-
-    <programlisting>cd geomajas
-mvn site</programlisting>
--->
 
     <para>For editing the docbook files, we recommend using <ulink
     url="http://www.xmlmind.com/xmleditor/">XMLMind</ulink>. The personal
@@ -279,6 +271,17 @@ for (String line : lines) {
           javadoc comment.</para>
         </listitem>
       </itemizedlist></para>
+
+    <para>The checkstyle configuration which is used for the project (which is
+    defined in the geomajas-parent parent) tries to check the API contract.
+    This required a api.txt file in src/main/resources which contains the API
+    for the previous release version. The API for the compiled version is put
+    in target/api.txt.</para>
+
+    <para>Note that apart from the class and method signatures, the behaviour
+    should also remain constant (especially when documented or tested). Just
+    keep a method and throwing <code>NotImplementedException</code> cannot be
+    considered "maintaining a stable API". </para>
   </section>
 
   <section>
