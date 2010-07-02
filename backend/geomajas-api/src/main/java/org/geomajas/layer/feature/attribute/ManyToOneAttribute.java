@@ -94,7 +94,10 @@ public class ManyToOneAttribute extends AssociationAttribute<AssociationValue> {
 	 * @return A copy of this ManyToOne attribute.
 	 */
 	public Object clone() {
-		ManyToOneAttribute clone = new ManyToOneAttribute((AssociationValue) getValue().clone());
+		ManyToOneAttribute clone = new ManyToOneAttribute();
+		if (value != null) {
+			clone.setValue((AssociationValue) value.clone());
+		}
 		clone.setEditable(isEditable());
 		return clone;
 	}

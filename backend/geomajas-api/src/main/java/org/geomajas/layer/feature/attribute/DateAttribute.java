@@ -65,7 +65,10 @@ public class DateAttribute extends PrimitiveAttribute<Date> {
 	 * @return A copy of this date attribute.
 	 */
 	public Object clone() {
-		DateAttribute clone = new DateAttribute((Date) getValue().clone());
+		DateAttribute clone = new DateAttribute();
+		if (getValue() != null) {
+			clone.setValue((Date) getValue().clone());
+		}
 		clone.setEditable(isEditable());
 		return clone;
 	}

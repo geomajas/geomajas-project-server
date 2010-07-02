@@ -61,7 +61,10 @@ public class DoubleAttribute extends PrimitiveAttribute<Double> {
 	 * @return A copy of this double attribute.
 	 */
 	public Object clone() {
-		DoubleAttribute clone = new DoubleAttribute(new Double(getValue()));
+		DoubleAttribute clone = new DoubleAttribute();
+		if (getValue() != null) {
+			clone.setValue(new Double(getValue()));
+		}
 		clone.setEditable(isEditable());
 		return clone;
 	}

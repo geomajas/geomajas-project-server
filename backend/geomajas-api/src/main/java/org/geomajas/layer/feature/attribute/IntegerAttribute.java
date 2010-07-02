@@ -61,7 +61,10 @@ public class IntegerAttribute extends PrimitiveAttribute<Integer> {
 	 * @return A copy of this integer attribute.
 	 */
 	public Object clone() {
-		IntegerAttribute clone = new IntegerAttribute(new Integer(getValue()));
+		IntegerAttribute clone = new IntegerAttribute();
+		if (getValue() != null) {
+			clone.setValue(new Integer(getValue()));
+		}
 		clone.setEditable(isEditable());
 		return clone;
 	}

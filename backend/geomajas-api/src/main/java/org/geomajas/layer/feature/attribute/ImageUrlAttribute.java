@@ -61,7 +61,10 @@ public class ImageUrlAttribute extends PrimitiveAttribute<String> {
 	 * @return A copy of this image URL attribute.
 	 */
 	public Object clone() {
-		ImageUrlAttribute clone = new ImageUrlAttribute(new String(getValue()));
+		ImageUrlAttribute clone = new ImageUrlAttribute();
+		if (getValue() != null) {
+			clone.setValue(new String(getValue()));
+		}
 		clone.setEditable(isEditable());
 		return clone;
 	}

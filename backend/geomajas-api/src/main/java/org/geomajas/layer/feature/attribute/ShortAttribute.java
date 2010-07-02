@@ -61,7 +61,10 @@ public class ShortAttribute extends PrimitiveAttribute<Short> {
 	 * @return A copy of this short attribute.
 	 */
 	public Object clone() {
-		ShortAttribute clone = new ShortAttribute(new Short(getValue()));
+		ShortAttribute clone = new ShortAttribute();
+		if (getValue() != null) {
+			clone.setValue(new Short(getValue()));
+		}
 		clone.setEditable(isEditable());
 		return clone;
 	}

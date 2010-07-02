@@ -79,8 +79,10 @@ public class AssociationValue implements Serializable {
 	public Object clone() {
 		PrimitiveAttribute<?> idClone = (PrimitiveAttribute<?>) id.clone();
 		Map<String, PrimitiveAttribute<?>> attrClone = new HashMap<String, PrimitiveAttribute<?>>();
-		for (Entry<String, PrimitiveAttribute<?>> entry : attributes.entrySet()) {
-			attrClone.put(entry.getKey(), (PrimitiveAttribute<?>) entry.getValue().clone());
+		if (attributes != null) {
+			for (Entry<String, PrimitiveAttribute<?>> entry : attributes.entrySet()) {
+				attrClone.put(entry.getKey(), (PrimitiveAttribute<?>) entry.getValue().clone());
+			}
 		}
 		return new AssociationValue(idClone, attrClone);
 	}

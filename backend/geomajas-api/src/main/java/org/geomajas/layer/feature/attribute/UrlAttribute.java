@@ -61,7 +61,10 @@ public class UrlAttribute extends PrimitiveAttribute<String> {
 	 * @return A copy of this URL attribute.
 	 */
 	public Object clone() {
-		UrlAttribute clone = new UrlAttribute(new String(getValue()));
+		UrlAttribute clone = new UrlAttribute();
+		if (getValue() != null) {
+			clone.setValue(new String(getValue()));
+		}
 		clone.setEditable(isEditable());
 		return clone;
 	}

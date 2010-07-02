@@ -61,7 +61,10 @@ public class StringAttribute extends PrimitiveAttribute<String> {
 	 * @return A copy of this string attribute.
 	 */
 	public Object clone() {
-		StringAttribute clone = new StringAttribute(new String(getValue()));
+		StringAttribute clone = new StringAttribute();
+		if (getValue() != null) {
+			clone.setValue(new String(getValue()));
+		}
 		clone.setEditable(isEditable());
 		return clone;
 	}

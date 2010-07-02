@@ -70,6 +70,16 @@ public class ArrayAttribute<VALUE_TYPE> implements Attribute<VALUE_TYPE[]> {
 	}
 
 	/**
+	 * Apply a new array of values for this attribute.
+	 * 
+	 * @param value
+	 *            The new array of values.
+	 */
+	public void setValue(VALUE_TYPE[] value) {
+		this.value = value;
+	}
+
+	/**
 	 * {@inheritDoc}
 	 */
 	public boolean isEditable() {
@@ -105,11 +115,14 @@ public class ArrayAttribute<VALUE_TYPE> implements Attribute<VALUE_TYPE[]> {
 	 */
 	@SuppressWarnings("unchecked")
 	public Object clone() {
-		Object[] clones = new Object[value.length];
-		for (int i = 0; i < value.length; i++) {
-			clones[i] = value[i];
+		ArrayAttribute clone = new ArrayAttribute();
+		if (value != null) {
+			Object[] clones = new Object[value.length];
+			for (int i = 0; i < value.length; i++) {
+				clones[i] = value[i];
+			}
+			clone.setValue(clones);
 		}
-		ArrayAttribute clone = new ArrayAttribute(clones);
 		clone.setEditable(isEditable());
 		return clone;
 	}

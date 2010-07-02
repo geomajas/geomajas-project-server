@@ -47,7 +47,8 @@ public class CurrencyAttribute extends PrimitiveAttribute<String> {
 	/**
 	 * Constructor which accepts the value.
 	 * 
-	 * @param value value
+	 * @param value
+	 *            value
 	 */
 	public CurrencyAttribute(String value) {
 		super(PrimitiveType.CURRENCY);
@@ -61,7 +62,10 @@ public class CurrencyAttribute extends PrimitiveAttribute<String> {
 	 * @return A copy of this currency attribute.
 	 */
 	public Object clone() {
-		CurrencyAttribute clone = new CurrencyAttribute(new String(getValue()));
+		CurrencyAttribute clone = new CurrencyAttribute();
+		if (getValue() != null) {
+			clone.setValue(new String(getValue()));
+		}
 		clone.setEditable(isEditable());
 		return clone;
 	}

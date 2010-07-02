@@ -99,11 +99,14 @@ public class OneToManyAttribute extends AssociationAttribute<List<AssociationVal
 	 * @return A copy of this ManyToOne attribute.
 	 */
 	public Object clone() {
-		List<AssociationValue> clones = new ArrayList<AssociationValue>();
-		for (AssociationValue v : value) {
-			clones.add((AssociationValue) v.clone());
+		OneToManyAttribute clone = new OneToManyAttribute();
+		if (value != null) {
+			List<AssociationValue> clones = new ArrayList<AssociationValue>();
+			for (AssociationValue v : value) {
+				clones.add((AssociationValue) v.clone());
+			}
+			clone.setValue(clones);
 		}
-		OneToManyAttribute clone = new OneToManyAttribute(clones);
 		clone.setEditable(isEditable());
 		return clone;
 	}

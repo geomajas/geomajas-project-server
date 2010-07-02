@@ -61,7 +61,10 @@ public class LongAttribute extends PrimitiveAttribute<Long> {
 	 * @return A copy of this long attribute.
 	 */
 	public Object clone() {
-		LongAttribute clone = new LongAttribute(new Long(getValue()));
+		LongAttribute clone = new LongAttribute();
+		if (getValue() != null) {
+			clone.setValue(new Long(getValue()));
+		}
 		clone.setEditable(isEditable());
 		return clone;
 	}
