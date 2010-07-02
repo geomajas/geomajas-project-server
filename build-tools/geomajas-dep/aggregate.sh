@@ -9,7 +9,7 @@ LINKPREFIX="http://files.geomajas.org/maven/trunk/geomajas/"
 template_start() {
 	rm $TARGET
 	echo "<html>" > $TARGET
-	echo "<head><title>Geomajas documentation</title></head>" >> $TARGET
+	echo "<head><title>Geomajas documents</title></head>" >> $TARGET
 	echo "<body>" >> $TARGET
 	echo "<h1>Geomajas documentation</h1>" >> $TARGET
 }
