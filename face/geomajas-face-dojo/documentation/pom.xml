@@ -172,7 +172,7 @@
 
 							<!--stylesheetResource>classpath:/standard/fopdf.xsl</stylesheetResource-->
 
-							<finalName>End_User_Guide.pdf</finalName>
+							<finalName>dojo_face.pdf</finalName>
 						</format>
 
 						<format>

@@ -6,11 +6,11 @@
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.geomajas.plugin</groupId>
+	<groupId>org.geomajas.documentation</groupId>
 	<artifactId>caching-documentation</artifactId>
 	<packaging>jdocbook</packaging>
-	<name>caching documentation (${translation})</name>
-	<description>caching documentation (${translation})</description>
+	<name>Caching documentation (${translation})</name>
+	<description>Caching documentation (${translation})</description>
 	
 	<dependencies>
 		<dependency>
@@ -70,7 +70,7 @@
 
 							<!--stylesheetResource>classpath:/standard/fopdf.xsl</stylesheetResource-->
 
-							<finalName>End_User_Guide.pdf</finalName>
+							<finalName>caching.pdf</finalName>
 						</format>
 
 						<format>

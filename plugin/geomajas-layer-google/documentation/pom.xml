@@ -156,7 +156,7 @@
 
 							<!--stylesheetResource>classpath:/standard/fopdf.xsl</stylesheetResource-->
 
-							<finalName>End_User_Guide.pdf</finalName>
+							<finalName>Google_layer.pdf</finalName>
 						</format>
 
 						<format>
