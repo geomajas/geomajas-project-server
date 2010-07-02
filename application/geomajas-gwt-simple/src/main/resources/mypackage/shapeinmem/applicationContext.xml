@@ -78,7 +78,11 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		<property name="crs" value="EPSG:4326" />
 		<property name="scaleBarEnabled" value="true" />
 		<property name="panButtonsEnabled" value="true" />
-		<property name="maximumScale" value="1:10000" />
+		<property name="scaleConfiguration">
+			<bean class="org.geomajas.configuration.client.ScaleConfigurationInfo">
+				<property name="maximumScale" value="1:10000" />
+			</bean>
+		</property>
 		<property name="initialBounds">
 			<bean class="org.geomajas.geometry.Bbox">
                 <property name="x" value="-180"/>
@@ -200,6 +204,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 				</bean>
 			</list>
 		</property>
+		<property name="namedStyleInfo" ref="countries110mStyleInfo" />
 	</bean>
 
 

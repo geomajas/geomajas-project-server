@@ -113,7 +113,7 @@ public class GeomajasSimple implements EntryPoint {
 		// ---------------------------------------------------------------------
 		// Create the left-side (map and tabs):
 		// ---------------------------------------------------------------------
-		map = new MapWidget("sampleFeaturesMap", "gwt-app");
+		map = new MapWidget("sampleFeaturesMap", "gwt-simple");
 		final Toolbar toolbar = new Toolbar(map);
 		toolbar.setButtonSize(Toolbar.BUTTON_SIZE_BIG);
 
@@ -156,7 +156,7 @@ public class GeomajasSimple implements EntryPoint {
 		overviewWindow.setTitle("Overview map");
 		overviewWindow.setHeight(230);
 		overviewWindow.setHeaderControls(HeaderControls.HEADER_LABEL, HeaderControls.MINIMIZE_BUTTON);
-		overviewMap = new OverviewMap("sampleOverviewMap", "gwt-app", map, true, true);
+		overviewMap = new OverviewMap("sampleOverviewMap", "gwt-simple", map, true, true);
 		overviewWindow.addItem(overviewMap);
 
 		// LayerTree layout:
