@@ -79,7 +79,6 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 					<property name="licenseName" value="BSD"/>
 					<property name="licenseUrl" value="http://xstream.codehaus.org/license.html"/>
 				</bean>
-				Copyright (c) 2002 Extreme! Lab, Indiana University. All rights reserved.
 				<bean class="org.geomajas.global.CopyrightInfo">
 					<property name="key" value="XPP3"/>
 					<property name="copyright" value="Copyright © 2002 Extreme! Lab, Indiana University. All rights reserved."/>
