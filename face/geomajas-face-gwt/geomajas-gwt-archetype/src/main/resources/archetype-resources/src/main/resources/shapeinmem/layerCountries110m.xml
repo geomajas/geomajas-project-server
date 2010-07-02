@@ -20,7 +20,6 @@
   ~ You should have received a copy of the GNU Affero General Public License
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
-
 <beans
 		xmlns="http://www.springframework.org/schema/beans"
 		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -37,10 +36,10 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 		<property name="crs" value="EPSG:4326"/>
 		<property name="maxExtent">
 			<bean class="org.geomajas.geometry.Bbox">
-                <property name="x" value="-181"/>
-                <property name="y" value="-91"/>
-                <property name="width" value="362"/>
-                <property name="height" value="181"/>
+                <property name="x" value="-170"/>
+                <property name="y" value="-85.05112877980659"/>
+                <property name="width" value="340"/>
+                <property name="height" value="170.10225755961318"/>
 			</bean>
 		</property>
 		<property name="featureInfo" ref="countries110mFeatureInfo" />
@@ -72,7 +71,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
                 <bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
                     <property name="label" value="Name"/>
                     <property name="name" value="NAME"/>
-                    <property name="editable" value="false"/>
+                    <property name="editable" value="true"/>
                     <property name="identifying" value="true"/>
                     <property name="type" value="STRING"/>
                 </bean>
@@ -165,7 +164,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 
 	<bean name="countries110m" class="org.geomajas.layer.shapeinmem.ShapeInMemLayer">
 		<property name="layerInfo" ref="countries110mInfo" />
-        <property name="url" value="classpath:${package}/shapeinmem/shapes/110m_admin_0_countries.shp"/>
+        <property name="url" value="classpath:mypackage/shapeinmem/shapes/110m_admin_0_countries.shp"/>
 	</bean>
 
 </beans>

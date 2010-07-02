@@ -34,6 +34,11 @@ import ${package}.client.pages.AbstractTab;
 import ${package}.client.pages.FeatureListGridPage;
 import ${package}.client.pages.SearchPage;
 
+import mypackage.client.i18n.Simple;
+import mypackage.client.pages.AbstractTab;
+import mypackage.client.pages.FeatureListGridPage;
+import mypackage.client.pages.SearchPage;
+
 import org.geomajas.gwt.client.Geomajas;
 import org.geomajas.gwt.client.i18n.I18nProvider;
 import org.geomajas.gwt.client.map.event.MapModelEvent;
@@ -52,10 +57,13 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.ConstantsWithLookup;
 import com.smartgwt.client.types.HeaderControls;
 import com.smartgwt.client.types.Side;
+import com.smartgwt.client.types.VisibilityMode;
 import com.smartgwt.client.widgets.Img;
 import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.layout.HLayout;
+import com.smartgwt.client.widgets.layout.SectionStack;
+import com.smartgwt.client.widgets.layout.SectionStackSection;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.tab.TabSet;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
@@ -78,11 +86,11 @@ public class GeomajasEntryPoint implements EntryPoint {
 
 	private List<AbstractTab> tabs = new ArrayList<AbstractTab>();
 
-	public GeomajasEntryPoint() {
+	public GeomajasSimple() {
 	}
 
 	public void onModuleLoad() {
-		I18nProvider.setLookUp(GWT.<ConstantsWithLookup>create(Translation.class));
+		I18nProvider.setLookUp(GWT.<ConstantsWithLookup> create(Simple.class));
 
 		VLayout mainLayout = new VLayout();
 		mainLayout.setWidth100();
@@ -101,7 +109,7 @@ public class GeomajasEntryPoint implements EntryPoint {
 		topBar.addMember(icon);
 		topBar.addSpacer(6);
 
-		Label title = new Label("Geomajas application");
+		Label title = new Label("Geomajas, hello world application");
 		title.setStyleName("sgwtTitle");
 		title.setWidth(300);
 		topBar.addMember(title);
@@ -119,19 +127,9 @@ public class GeomajasEntryPoint implements EntryPoint {
 		// ---------------------------------------------------------------------
 		// Create the left-side (map and tabs):
 		// ---------------------------------------------------------------------
-		map = new MapWidget("sampleFeaturesMap", "gwt-app");
+		map = new MapWidget("sampleFeaturesMap", "gwt-simple");
 		final Toolbar toolbar = new Toolbar(map);
 		toolbar.setButtonSize(Toolbar.BUTTON_SIZE_BIG);
-
-		map.getMapModel().addMapModelHandler(new MapModelHandler() {
-
-			public void onMapModelChange(MapModelEvent event) {
-				toolbar.addToolbarSeparator();
-				ScaleSelect scale = new ScaleSelect(map.getMapModel().getMapView(), map.getPixelLength());
-				scale.setScales(0.01, 0.001, 0.0001);
-				toolbar.addMember(scale);
-			}
-		});
 
 		VLayout mapLayout = new VLayout();
 		mapLayout.setShowResizeBar(true);
@@ -154,40 +152,36 @@ public class GeomajasEntryPoint implements EntryPoint {
 		// ---------------------------------------------------------------------
 		// Create the right-side (overview map, layer-tree, legend):
 		// ---------------------------------------------------------------------
-		VLayout rightLayout = new VLayout();
-		rightLayout.setSize("250px", "100%");
-		rightLayout.setMembersMargin(5);
+		final SectionStack sectionStack = new SectionStack();
+		sectionStack.setShowEdges(true);
+		sectionStack.setVisibilityMode(VisibilityMode.MULTIPLE);
+		sectionStack.setCanReorderSections(true);
+		sectionStack.setCanResizeSections(false);
+		sectionStack.setSize("250px", "100%");
 
 		// Overview map layout:
-		Window overviewWindow = new Window();
-		overviewWindow.setTitle("Overview map");
-		overviewWindow.setHeight(230);
-		overviewWindow.setHeaderControls(HeaderControls.HEADER_LABEL, HeaderControls.MINIMIZE_BUTTON);
-		overviewMap = new OverviewMap("sampleOverviewMap", "gwt-app", map, true, true);
-		overviewWindow.addItem(overviewMap);
+		SectionStackSection section1 = new SectionStackSection("Overview map");
+		section1.setExpanded(true);
+		overviewMap = new OverviewMap("sampleOverviewMap", "gwt-simple", map, true, true);
+		section1.addItem(overviewMap);
+		sectionStack.addSection(section1);
 
 		// LayerTree layout:
-		Window layerTreeWindow = new Window();
-		layerTreeWindow.setTitle("Layer tree");
-		layerTreeWindow.setHeight100();
-		layerTreeWindow.setHeaderControls(HeaderControls.HEADER_LABEL, HeaderControls.MINIMIZE_BUTTON);
+		SectionStackSection section2 = new SectionStackSection("Layer tree");
+		section2.setExpanded(true);
 		LayerTree layerTree = new LayerTree(map);
-		layerTreeWindow.addItem(layerTree);
+		section2.addItem(layerTree);
+		sectionStack.addSection(section2);
 
 		// Legend layout:
-		Window legendWindow = new Window();
-		legendWindow.setTitle("Legend");
-		legendWindow.setHeight(200);
-		legendWindow.setHeaderControls(HeaderControls.HEADER_LABEL, HeaderControls.MINIMIZE_BUTTON);
+		SectionStackSection section3 = new SectionStackSection("Legend");
+		section3.setExpanded(true);
 		legend = new Legend(map.getMapModel());
-		legendWindow.addItem(legend);
+		section3.addItem(legend);
+		sectionStack.addSection(section3);
 
 		// Putting the right side layouts together:
-		rightLayout.addMember(overviewWindow);
-		rightLayout.addMember(layerTreeWindow);
-		rightLayout.addMember(legendWindow);
-
-		layout.addMember(rightLayout);
+		layout.addMember(sectionStack);
 
 		// ---------------------------------------------------------------------
 		// Bottom left: Add tabs here:
@@ -204,7 +198,7 @@ public class GeomajasEntryPoint implements EntryPoint {
 
 		// Install a loading screen
 		// This only works if the application initially shows a map with at least 1 vector layer:
-		LoadingScreen loadScreen = new LoadingScreen(map, "GWT application using Geomajas "
+		LoadingScreen loadScreen = new LoadingScreen(map, "Simple GWT application using Geomajas "
 				+ Geomajas.getVersion());
 		loadScreen.draw();
 

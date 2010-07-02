@@ -44,12 +44,13 @@ import org.geomajas.gwt.client.widget.Toolbar;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.ConstantsWithLookup;
-import com.smartgwt.client.types.HeaderControls;
 import com.smartgwt.client.types.Side;
+import com.smartgwt.client.types.VisibilityMode;
 import com.smartgwt.client.widgets.Img;
 import com.smartgwt.client.widgets.Label;
-import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.layout.HLayout;
+import com.smartgwt.client.widgets.layout.SectionStack;
+import com.smartgwt.client.widgets.layout.SectionStackSection;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.tab.TabSet;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
@@ -76,7 +77,7 @@ public class GeomajasSimple implements EntryPoint {
 	}
 
 	public void onModuleLoad() {
-		I18nProvider.setLookUp(GWT.<ConstantsWithLookup>create(Simple.class));
+		I18nProvider.setLookUp(GWT.<ConstantsWithLookup> create(Simple.class));
 
 		VLayout mainLayout = new VLayout();
 		mainLayout.setWidth100();
@@ -95,7 +96,7 @@ public class GeomajasSimple implements EntryPoint {
 		topBar.addMember(icon);
 		topBar.addSpacer(6);
 
-		Label title = new Label("Geomajas Simple application");
+		Label title = new Label("Geomajas, hello world application");
 		title.setStyleName("sgwtTitle");
 		title.setWidth(300);
 		topBar.addMember(title);
@@ -116,15 +117,6 @@ public class GeomajasSimple implements EntryPoint {
 		map = new MapWidget("sampleFeaturesMap", "gwt-simple");
 		final Toolbar toolbar = new Toolbar(map);
 		toolbar.setButtonSize(Toolbar.BUTTON_SIZE_BIG);
-
-//		map.getMapModel().addMapModelHandler(new MapModelHandler() {
-//
-//			public void onMapModelChange(MapModelEvent event) {
-//				toolbar.addToolbarSeparator();
-//				ScaleSelect scale = new ScaleSelect(map.getMapModel().getMapView(), map.getPixelLength());
-//				toolbar.addMember(scale);
-//			}
-//		});
 
 		VLayout mapLayout = new VLayout();
 		mapLayout.setShowResizeBar(true);
@@ -147,40 +139,36 @@ public class GeomajasSimple implements EntryPoint {
 		// ---------------------------------------------------------------------
 		// Create the right-side (overview map, layer-tree, legend):
 		// ---------------------------------------------------------------------
-		VLayout rightLayout = new VLayout();
-		rightLayout.setSize("240px", "100%");
-		rightLayout.setMembersMargin(5);
+		final SectionStack sectionStack = new SectionStack();
+		sectionStack.setShowEdges(true);
+		sectionStack.setVisibilityMode(VisibilityMode.MULTIPLE);
+		sectionStack.setCanReorderSections(true);
+		sectionStack.setCanResizeSections(false);
+		sectionStack.setSize("250px", "100%");
 
 		// Overview map layout:
-		Window overviewWindow = new Window();
-		overviewWindow.setTitle("Overview map");
-		overviewWindow.setHeight(230);
-		overviewWindow.setHeaderControls(HeaderControls.HEADER_LABEL, HeaderControls.MINIMIZE_BUTTON);
+		SectionStackSection section1 = new SectionStackSection("Overview map");
+		section1.setExpanded(true);
 		overviewMap = new OverviewMap("sampleOverviewMap", "gwt-simple", map, true, true);
-		overviewWindow.addItem(overviewMap);
+		section1.addItem(overviewMap);
+		sectionStack.addSection(section1);
 
 		// LayerTree layout:
-		Window layerTreeWindow = new Window();
-		layerTreeWindow.setTitle("Layer tree");
-		layerTreeWindow.setHeight100();
-		layerTreeWindow.setHeaderControls(HeaderControls.HEADER_LABEL, HeaderControls.MINIMIZE_BUTTON);
+		SectionStackSection section2 = new SectionStackSection("Layer tree");
+		section2.setExpanded(true);
 		LayerTree layerTree = new LayerTree(map);
-		layerTreeWindow.addItem(layerTree);
+		section2.addItem(layerTree);
+		sectionStack.addSection(section2);
 
 		// Legend layout:
-		Window legendWindow = new Window();
-		legendWindow.setTitle("Legend");
-		legendWindow.setHeight(200);
-		legendWindow.setHeaderControls(HeaderControls.HEADER_LABEL, HeaderControls.MINIMIZE_BUTTON);
+		SectionStackSection section3 = new SectionStackSection("Legend");
+		section3.setExpanded(true);
 		legend = new Legend(map.getMapModel());
-		legendWindow.addItem(legend);
+		section3.addItem(legend);
+		sectionStack.addSection(section3);
 
 		// Putting the right side layouts together:
-		rightLayout.addMember(overviewWindow);
-		rightLayout.addMember(layerTreeWindow);
-		rightLayout.addMember(legendWindow);
-
-		layout.addMember(rightLayout);
+		layout.addMember(sectionStack);
 
 		// ---------------------------------------------------------------------
 		// Bottom left: Add tabs here:

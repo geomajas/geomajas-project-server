@@ -56,7 +56,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 	<!-- @extract-end -->
 
 	<bean name="sampleFeaturesMap" class="org.geomajas.configuration.client.ClientMapInfo">
-		<property name="backgroundColor" value="#F0F0F0" />
+		<property name="backgroundColor" value="#FFFFFF" />
 		<property name="lineSelectStyle">
 			<bean class="org.geomajas.configuration.FeatureStyleInfo">
 				<property name="fillOpacity" value="0" />
@@ -142,7 +142,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 	</bean>
 
 	<bean name="sampleOverviewMap" class="org.geomajas.configuration.client.ClientMapInfo">
-		<property name="backgroundColor" value="#F0F0F0" />
+		<property name="backgroundColor" value="#FFFFFF" />
 		<property name="lineSelectStyle">
 			<bean class="org.geomajas.configuration.FeatureStyleInfo">
 				<property name="fillOpacity" value="0" />

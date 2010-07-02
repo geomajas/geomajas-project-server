@@ -25,7 +25,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		</property>
 	</bean>
 
-	<bean name="gwt-app" class="org.geomajas.configuration.client.ClientApplicationInfo">
+	<bean name="gwt-simple" class="org.geomajas.configuration.client.ClientApplicationInfo">
 		<property name="maps">
 			<list>
 				<ref bean="sampleFeaturesMap" />
@@ -35,35 +35,39 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 	</bean>
 
 	<bean name="sampleFeaturesMap" class="org.geomajas.configuration.client.ClientMapInfo">
-		<property name="backgroundColor" value="${symbol_pound}F0F0F0" />
+		<property name="backgroundColor" value="#FFFFFF" />
 		<property name="lineSelectStyle">
 			<bean class="org.geomajas.configuration.FeatureStyleInfo">
 				<property name="fillOpacity" value="0" />
-				<property name="strokeColor" value="${symbol_pound}FF6600" />
+				<property name="strokeColor" value="#FF6600" />
 				<property name="strokeOpacity" value="1" />
 			</bean>
 		</property>
 		<property name="pointSelectStyle">
 			<bean class="org.geomajas.configuration.FeatureStyleInfo">
-				<property name="fillColor" value="${symbol_pound}FFFF00" />
+				<property name="fillColor" value="#FFFF00" />
 			</bean>
 		</property>
 		<property name="polygonSelectStyle">
 			<bean class="org.geomajas.configuration.FeatureStyleInfo">
-				<property name="fillColor" value="${symbol_pound}FFFF00" />
+				<property name="fillColor" value="#FFFF00" />
 				<property name="fillOpacity" value=".5" />
 			</bean>
 		</property>
 		<property name="crs" value="EPSG:4326" />
 		<property name="scaleBarEnabled" value="true" />
 		<property name="panButtonsEnabled" value="true" />
-		<property name="maximumScale" value="100000" />
+		<property name="scaleConfiguration">
+			<bean class="org.geomajas.configuration.client.ScaleConfigurationInfo">
+				<property name="maximumScale" value="1:10000" />
+			</bean>
+		</property>
 		<property name="initialBounds">
 			<bean class="org.geomajas.geometry.Bbox">
-				<property name="x" value="-180" />
-				<property name="y" value="-90" />
-				<property name="width" value="360" />
-				<property name="height" value="180" />
+                <property name="x" value="-180"/>
+                <property name="y" value="-90"/>
+                <property name="width" value="360"/>
+                <property name="height" value="180"/>
 			</bean>
 		</property>
 		<property name="layers">
@@ -85,6 +89,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 						<ref bean="EditMode" />
 						<ref bean="MeasureDistanceMode" />
 						<ref bean="SelectionMode" />
+						<ref bean="FeatureInfoMode" />
 					</list>
 				</property>
 			</bean>
@@ -115,24 +120,23 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		</property>
 	</bean>
 
-
 	<bean name="sampleOverviewMap" class="org.geomajas.configuration.client.ClientMapInfo">
-		<property name="backgroundColor" value="${symbol_pound}F0F0F0" />
+		<property name="backgroundColor" value="#FFFFFF" />
 		<property name="lineSelectStyle">
 			<bean class="org.geomajas.configuration.FeatureStyleInfo">
 				<property name="fillOpacity" value="0" />
-				<property name="strokeColor" value="${symbol_pound}FF6600" />
+				<property name="strokeColor" value="#FF6600" />
 				<property name="strokeOpacity" value="1" />
 			</bean>
 		</property>
 		<property name="pointSelectStyle">
 			<bean class="org.geomajas.configuration.FeatureStyleInfo">
-				<property name="fillColor" value="${symbol_pound}FFFF00" />
+				<property name="fillColor" value="#FFFF00" />
 			</bean>
 		</property>
 		<property name="polygonSelectStyle">
 			<bean class="org.geomajas.configuration.FeatureStyleInfo">
-				<property name="fillColor" value="${symbol_pound}FFFF00" />
+				<property name="fillColor" value="#FFFF00" />
 				<property name="fillOpacity" value=".5" />
 			</bean>
 		</property>
@@ -142,10 +146,10 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		<property name="maximumScale" value="100000" />
 		<property name="initialBounds">
 			<bean class="org.geomajas.geometry.Bbox">
-				<property name="x" value="-180" />
-				<property name="y" value="-90" />
-				<property name="width" value="360" />
-				<property name="height" value="180" />
+                <property name="x" value="-180"/>
+                <property name="y" value="-90"/>
+                <property name="width" value="360"/>
+                <property name="height" value="180"/>
 			</bean>
 		</property>
 		<property name="layers">
@@ -159,8 +163,8 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		<property name="serverLayerId" value="bluemarble" />
 		<property name="label" value="Blue marble WMS (raster)" />
 		<property name="visible" value="true" />
-		<property name="viewScaleMin" value="0" />
-		<property name="viewScaleMax" value="100000" />
+ 		<property name="maximumScale" value="1:1000" />
+		<property name="minimumScale" value="1:500000000" />
 		<property name="style" value="0.8" />
 	</bean>
 
@@ -168,9 +172,8 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		<property name="serverLayerId" value="countries110m" />
 	  	<property name="label" value="Countries"/>
 		<property name="visible" value="true"/>
-		<property name="viewScaleMin" value="0"/>
-		<property name="viewScaleMax" value="100000"/>
-		<property name="namedStyleInfo" ref="countries110mStyleInfo" />
+  		<property name="maximumScale" value="1:1000" />
+		<property name="minimumScale" value="1:500000000" />
 		<property name="snappingRules">
 			<list>
 				<bean class="org.geomajas.configuration.SnappingRuleInfo">
@@ -180,6 +183,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 				</bean>
 			</list>
 		</property>
+		<property name="namedStyleInfo" ref="countries110mStyleInfo" />
 	</bean>
 
 	<bean name="ToolbarSeparator" class="org.geomajas.configuration.client.ClientToolInfo"/>
