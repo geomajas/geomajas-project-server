@@ -83,8 +83,8 @@ public class ScaleInfo implements Serializable {
 	public ScaleInfo(double numerator, double denominator) {
 		this.numerator = numerator;
 		this.denominator = denominator;
-		if(denominator <= 0) {
-			throw new IllegalArgumentException("Scale denominator must be positive"); 
+		if (denominator <= 0) {
+			throw new IllegalArgumentException("Scale denominator must be positive");
 		}
 	}
 

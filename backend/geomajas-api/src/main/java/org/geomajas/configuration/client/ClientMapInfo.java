@@ -67,7 +67,7 @@ public class ClientMapInfo implements Serializable {
 	private ScaleConfigurationInfo scaleConfiguration = new ScaleConfigurationInfo();
 
 	private boolean resolutionsRelative;
-	
+
 	private List<Double> resolutions = new ArrayList<Double>();
 
 	@NotNull
@@ -308,7 +308,7 @@ public class ClientMapInfo implements Serializable {
 	 */
 	@Deprecated
 	public float getMaximumScale() {
-		return (float)getScaleConfiguration().getMaximumScale().getPixelPerUnit();
+		return (float) getScaleConfiguration().getMaximumScale().getPixelPerUnit();
 	}
 
 	/**
