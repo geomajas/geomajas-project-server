@@ -86,7 +86,7 @@ public class GeomajasEntryPoint implements EntryPoint {
 
 	private List<AbstractTab> tabs = new ArrayList<AbstractTab>();
 
-	public GeomajasSimple() {
+	public GeomajasEntryPoint() {
 	}
 
 	public void onModuleLoad() {
