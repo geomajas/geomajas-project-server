@@ -18,9 +18,17 @@
 		googleSatMap.setController(new PanController(googleSatMap));
 		mapLayout2.addMember(googleSatMap);
 
-		// Place both in the layout:
+		// Create map with Google layer (terrain), and add a PanController to it:
+		VLayout mapLayout3 = new VLayout();
+		mapLayout3.setShowEdges(true);
+		googleTerrainMap = new MapWidget("googleTerrainMap", "gwt-samples");
+		googleTerrainMap.setController(new PanController(googleTerrainMap));
+		mapLayout3.addMember(googleTerrainMap);
+
+		// Place all three in the layout:
 		layout.addMember(mapLayout1);
 		layout.addMember(mapLayout2);
+		layout.addMember(mapLayout3);
 
 		return layout;
 	}

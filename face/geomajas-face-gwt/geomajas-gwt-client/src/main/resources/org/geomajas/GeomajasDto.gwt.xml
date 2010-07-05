@@ -26,6 +26,7 @@
 		<include name="SearchCriterion.java"/>
 	</source>
 	<source path="layer/feature/attribute">
+		<exclude name="*Test.java" />
 	</source>
 	<source path="layer/tile">
 		<exclude name="InternalTile.java"/>
