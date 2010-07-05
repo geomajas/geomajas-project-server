@@ -22,6 +22,8 @@
  */
 package org.geomajas.configuration.client;
 
+import org.geomajas.global.Api;
+
 import java.io.Serializable;
 
 /**
@@ -31,8 +33,8 @@ import java.io.Serializable;
  * @author Jan De Moerloose
  * @since 1.7.0
  * @see org.geomajas.internal.configuration.ScaleInfoEditor
- * 
  */
+@Api(allMethods = true)
 public class ScaleInfo implements Serializable {
 
 	private static final long serialVersionUID = 170L;
