@@ -74,6 +74,7 @@ public class ArrayAttribute<VALUE_TYPE> implements Attribute<VALUE_TYPE[]> {
 	 * 
 	 * @param value
 	 *            The new array of values.
+	 * @since 1.7.0
 	 */
 	public void setValue(VALUE_TYPE[] value) {
 		this.value = value;
