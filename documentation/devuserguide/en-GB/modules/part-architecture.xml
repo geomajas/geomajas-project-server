@@ -913,6 +913,113 @@
     </section>
   </chapter>
 
+  <chapter id="backend-ch-plugins">
+    <title>Plug-ins</title>
+
+    <para>Geomajas provides a basic set of functionality as part of the
+    back-end core. This can be extended and made available using plug-ins. One
+    of the functions of the back-end core is to act as a plug-in container.
+    Plug-ins are optional libraries that extend the core functionality by
+    taking advantage of the public API. There are three special types of
+    plug-ins, faces, layers and security plug-ins. which provide extra
+    features, faces, layers and other plu</para>
+
+    <para>Faces provide external interfaces for Geomajas. These give access to
+    users or external systems to the configured data. The faces which are
+    included in the Geomajas project are</para>
+
+    <para><itemizedlist>
+        <listitem>
+          <para>GWT face : our recommended face for displaying and editing GIS
+          data in the browser. This allows you to build your web user
+          interface in Java.</para>
+        </listitem>
+
+        <listitem>
+          <para>dojo face : a face which allows web display and editing using
+          dojo toolkit. The user interface needs to be developed using
+          JavaScript.</para>
+        </listitem>
+      </itemizedlist>The layer plug-ins provide access to the actual data
+    which needs to be displayed as part of a maps. There are basically two
+    types of layers, providing either raster data (bitmaps) or vector data.
+    The layers which are provided as part of the normal distribution
+    include</para>
+
+    <para><itemizedlist>
+        <listitem>
+          <para><emphasis>geomajas-layer-hibernate</emphasis> (vector): allow
+          access to any kind of features which are stored in a spatial
+          (relational) database. The data is accessed using the hibernate and
+          hibernate-spatial open source libraries.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>geomajas-layer-geotools</emphasis> (vector): access
+          data from any vector data source which has a GeoTools data store
+          defined for it (<ulink
+          url="http://geotools.org/javadocs/org/geotools/data/DataStore.html">http://geotools.org/javadocs/org/geotools/data/DataStore.html</ulink>).</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>geomajas-layer-google</emphasis> (raster): include
+          Google rasters. This allows access to the normal and satellite views
+          provided by Google. You still have to make sure you comply with
+          Google terms of use (<ulink
+          url="http://code.google.com/apis/maps/">http://code.google.com/apis/maps/</ulink>).</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>geomajas-layer-openstreetmap</emphasis> (raster):
+          support for raster data coming from the OpenStreetMap project
+          (<ulink
+          url="http://www.openstreetmap.org/">http://www.openstreetmap.org/</ulink>).</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>geomajas-layer-wms</emphasis> (raster): access data
+          from a WMS server (<ulink
+          url="http://www.opengeospatial.org/standards/wms">http://www.opengeospatial.org/standards/wms</ulink>).</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>geomajas-layer-shapeinmem</emphasis> (vector):
+          access data from an ESRI shape file which handled in memory. The
+          actual data access if done using GeoTools (<ulink
+          url="http://www.esri.com/library/whitepapers/pdfs/shapefile.pdf">http://www.esri.com/library/whitepapers/pdfs/shapefile.pdf</ulink>).</para>
+        </listitem>
+      </itemizedlist></para>
+
+    <para>Other plug-ins allow extensions in functionality, either by
+    providing additional commands or extending the rendering pipelines, or
+    they provide additional security services.</para>
+
+    <para><itemizedlist>
+        <listitem>
+          <para><emphasis>geomajas-command</emphasis>: set of commands which
+          are provided as part of the standard distribution. This is so
+          fundamental to using Geomajas that it is provided as a back-end
+          module.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>geomajas-plugin-printing</emphasis>: printing
+          extensions for the framework</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>geomajas-plugin-staticsecurity</emphasis>: a basic
+          security service which can be configured as part of the Spring
+          configuration and does not use an external source for users or
+          policies, making the security configuration entirely static.</para>
+        </listitem>
+      </itemizedlist></para>
+
+    <para>The back-end also contains a set of spatial services. These include
+    services for accessing raster and vector services and a set of utility
+    services.</para>
+  </chapter>
+
   <chapter>
     <title>Project structure</title>
 

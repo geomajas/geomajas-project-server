@@ -1,0 +1,2149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ This file is part of Geomajas, a component framework for building
+  ~ rich Internet applications (RIA) with sophisticated capabilities for the
+  ~ display, analysis and management of geographic information.
+  ~ It is a building block that allows developers to add maps
+  ~ and other geographic data capabilities to their web applications.
+  ~
+  ~ Copyright 2008-2010 Geosparc, http://www.geosparc.com, Belgium
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU Affero General Public License as
+  ~ published by the Free Software Foundation, either version 3 of the
+  ~ License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU Affero General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU Affero General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<!DOCTYPE part PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+<part id="part-configuration">
+  <title>Configuration</title>
+
+  <chapter id="ch-configuration-basics">
+    <title>Configuration basics</title>
+
+    <para>Geomajas leverages the Spring framework for configuration. The
+    initial configuration needs to be done using web.xml. There you need to
+    indicate the files which contain the configuration information.</para>
+
+    <section>
+      <title>web.xml</title>
+
+      <para>In your <code>web.xml</code> file, you need to assure the
+      configuration is made available to the application, and you can indicate
+      which files are used to contain the configuration. Though it is possible
+      to put all configuration information in one file, we recommend splitting
+      your configuration in several files. At least one file per application,
+      possibly split further per client layer configuration, and one file for
+      server-side configuration of each of the layers.</para>
+
+      <para>The listener class initialises the application context as needed
+      for Geomajas. It appends the context configuration locations which are
+      specified in the <code>contextConfigLocation</code> context parameter to
+      the list of internal configuration locations and uses these to build the
+      application context. All locations which are specified are read from the
+      class path.</para>
+
+      <para>These are defined using an excepts like the following:</para>
+
+      <xi:include href="../listing/WebXmlSpringConfiguration.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+      <para>You also need to define at least the dispatcher servlet and
+      possible an additional servlet for your faces. The dispatcher servlet
+      can be defined as follows.</para>
+
+      <example>
+        <title>Dispatcher servlet declaration in web.xml</title>
+
+        <para><programlisting>&lt;servlet&gt;
+    &lt;servlet-name&gt;dispatcher&lt;/servlet-name&gt;
+    &lt;servlet-class&gt;org.springframework.web.servlet.DispatcherServlet&lt;/servlet-class&gt;
+    &lt;init-param&gt;
+        &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;
+        &lt;param-value&gt;classpath*:META-INF/geomajasWebContext.xml&lt;/param-value&gt;
+        &lt;description&gt;Spring Web-MVC specific (additional) context files.&lt;/description&gt;
+    &lt;/init-param&gt;
+    &lt;load-on-startup&gt;3&lt;/load-on-startup&gt;
+&lt;/servlet&gt;
+
+&lt;servlet-mapping&gt;
+    &lt;servlet-name&gt;dispatcher&lt;/servlet-name&gt;
+    &lt;url-pattern&gt;/d/*&lt;/url-pattern&gt;
+&lt;/servlet-mapping&gt;</programlisting></para>
+      </example>
+
+      <para></para>
+    </section>
+
+    <section>
+      <title>General principles</title>
+
+      <para>Each configuration file needs the following header:</para>
+
+      <xi:include href="../listing/SpringConfigurationPreamble.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+      <para>This defines the most common schemas which are needed. The
+      configuration is built by populating the configuration classes. The
+      configuration classes are split up between client-side and back-end.
+      Only the back-end classes are necessary to configure the back-end, which
+      behaves as a catalog of layers. The client side classes are used to
+      define applications and maps, which are purely client-side concepts in
+      the Geomajas architecture.</para>
+
+      <para>The back-end classes exist in the have a class name ending in
+      "Info" and are mostly found in the
+      <code>org.geomajas.configuration</code> package. These classes are
+      actually used to represent the DTO part of the back-end layers, thereby
+      allowing to transfer information or metadata of these layers to the
+      client.</para>
+
+      <para>Configuration is done using the Spring Framework. We will give
+      some notions here, but for a full introduction to Spring, please read
+      the reference documentation <ulink
+      url="http://static.springsource.org/spring/docs/3.0.x/spring-framework-reference/">http://static.springsource.org/spring/docs/3.0.x/spring-framework-reference/</ulink>.</para>
+
+      <para>Each configuration file can contain one or more bean definitions,
+      which correspond to actual Java bean instances. You can set all the
+      properties of the objects using this configuration file. Primitive types
+      can be set directly using a string representation of the value. When the
+      value is another bean, then it can either be defined in-line, or you can
+      use a reference. You can choose whether the referenced bean is defined
+      in the same file or a different one. As long as the bean name is unique,
+      and the location is added in the <code>contextConfigLocation</code>
+      context parameter in the web.xml file, the reference is resolved.</para>
+
+      <para>It is possible to define a bean with the same name (or id) more
+      than once. In that case, the last occurrence will be used.</para>
+    </section>
+
+    <section>
+      <title></title>
+
+      <para>The initial bean which needs to be defined is a bean indicating
+      the <emphasis>client application info</emphasis>.</para>
+
+      <xi:include href="../listing/ClientApplicationInfo.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+      <para>As you can see, this defines the list of maps for the application.
+      It may (optionally) also define some additional user info and a screen
+      DPI parameter. The DPI refers to the resolution in pixels per inch of
+      your monitor, for a PC its usually 96 (the default) or 72.</para>
+
+      <para>There needs to be at least one <code>ClientApplicationInfo</code>
+      bean. The bean name is used when requesting the application info.</para>
+
+      <para></para>
+    </section>
+  </chapter>
+
+  <chapter id="ch-map-configuration">
+    <title>Map configuration</title>
+
+    <para>The central configuration which needs to be done is the map and the
+    collection of layers which are part of that map.</para>
+
+    <section>
+      <title>Raster layer configuration</title>
+
+      <para>Raster layers are image-based layers which, depending on the type,
+      may be configured to retrieve their images from WMS, Google Maps or
+      OpenStreetMap (tile) servers. All raster layer implementations implement
+      the <code>org.geomajas.layer.RasterLayer</code> interface, which means
+      they provide an accessor for a <code>RasterLayerInfo</code> metadata
+      object. The info object configuration is normally defined in the Spring
+      configuration as part of the entire layer configuration. Depending on
+      the type of layer, extra properties are needed to provide a full
+      configuration.</para>
+
+      <section>
+        <title>Raster layer info</title>
+
+        <para>For all raster layers, you will need to define a raster layer
+        info object to define the back-end configuration for the layer. The
+        exact meaning for some of the fields depend on the actual layer, but
+        most important features include:</para>
+
+        <para><table>
+            <title>Raster Layer info</title>
+
+            <tgroup cols="2">
+              <colspec colnum="1" colwidth="1*" />
+
+              <colspec colnum="2" colwidth="2*" />
+
+              <thead>
+                <row>
+                  <entry>Name</entry>
+
+                  <entry>Description</entry>
+                </row>
+              </thead>
+
+              <tbody>
+                <row>
+                  <entry>dataSourceName</entry>
+
+                  <entry>The name of the data source as used by the
+                  layer.</entry>
+                </row>
+
+                <row>
+                  <entry>crs</entry>
+
+                  <entry>The coordinate reference system, expressed as
+                  "EPSG:&lt;srid&gt;". Caveat: make sure this is the same as
+                  the maps' crs as full raster image reprojection is not
+                  supported! If the crs is not the same, an attempt will be
+                  done to rescale and align the center coordinates,
+                  though.</entry>
+                </row>
+
+                <row>
+                  <entry>maxExtent</entry>
+
+                  <entry>The bounds of the layer, specified in layer
+                  coordinates. After transformation to map coordinates, this
+                  determines the locations and absolute size of the
+                  tiles.</entry>
+                </row>
+
+                <row>
+                  <entry>resolutions</entry>
+
+                  <entry>A list of resolution values. An image or tile
+                  resolution is defined as the ratio between map units and
+                  pixels for a tile. If a resolution is 5 and the map unit is
+                  meter, this means that 1 pixel represents a square area of 5
+                  by 5 m. Images are usually optimized for a specific (set of)
+                  resolution(s), so it is important to specify these here if
+                  they are known. On top of that, some servers provide
+                  specific tile caching for these predefined resolutions (for
+                  example WMS-T). Care has to be taken, the same resolutions
+                  should be defined in the map as well if one wants to avoid
+                  linear distortion of the images.</entry>
+                </row>
+
+                <row>
+                  <entry>tileWidth</entry>
+
+                  <entry>Width in pixels of the requested images.</entry>
+                </row>
+
+                <row>
+                  <entry>tileHeight</entry>
+
+                  <entry>Height in pixels of the requested images.</entry>
+                </row>
+              </tbody>
+            </tgroup>
+          </table></para>
+
+        <para>The location of the images or tiles is defined by calculating
+        the real width and height (based on the resolution) and "paving" the
+        maximum extent with tiles starting at the origin (x,y) of the extent.
+        If no resolutions are predefined, the tiles are calculated by dividing
+        the maximum extent by successive powers of 2. Make sure the
+        width/height ratio of the maximum extent corresponds to the
+        width/height ratio of the tile.</para>
+      </section>
+    </section>
+
+    <section>
+      <title>Vector layer configuration</title>
+
+      <para>Vector layers contain homogeneous vectorial features. All vector
+      layer implementations implement the
+      <code>org.geomajas.layer.VectorLayer</code> interface, which means they
+      provide an accessor for a <code>VectorLayerInfo</code> metadata object.
+      The info object configuration is normally defined in the Spring
+      configuration as part of the entire layer configuration. Depending on
+      the type of layer, extra properties are needed to provide a full
+      configuration.</para>
+
+      <para>The definition of the actual layer is similar to the definition of
+      a raster layer.</para>
+
+      <section>
+        <title>Vector layer info</title>
+
+        <para>For the layer configuration, you have to create the layer info
+        object.</para>
+
+        <xi:include href="../listing/ShapeInMemAirportInfo.xml"
+                    xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+        <para>This defines the details common to both raster and vector
+        layers, like layer id, crs, layer type, max extent (bounding box)
+        etc.</para>
+
+        <para>The following table describes the properties of the
+        <code>VectorLayerInfo</code> object:</para>
+
+        <para><table>
+            <title>VectorLayer info</title>
+
+            <tgroup cols="2">
+              <colspec colnum="1" colwidth="1*" />
+
+              <colspec colnum="2" colwidth="2*" />
+
+              <thead>
+                <row>
+                  <entry>Property</entry>
+
+                  <entry>Description</entry>
+                </row>
+              </thead>
+
+              <tbody>
+                <row>
+                  <entry>layerType</entry>
+
+                  <entry>This property determines the type of the default
+                  geometry of the features. The following types are supported:
+                  POINT, LINESTRING, POLYGON, MULTIPOINT, MULTILINESTRING and
+                  MULTIPOLYGON</entry>
+                </row>
+
+                <row>
+                  <entry>crs</entry>
+
+                  <entry>The coordinate reference system, expressed as
+                  "EPSG:&lt;srid&gt;". This is probably determined by the
+                  layer, but has to be specified anyhow as we have no
+                  autodetection in place yet..</entry>
+                </row>
+
+                <row>
+                  <entry>maxExtent</entry>
+
+                  <entry>The bounds of the layer, specified in layer
+                  coordinates. After transformation to map coordinates, this
+                  determines the locations and absolute size of the
+                  tiles.</entry>
+                </row>
+
+                <row>
+                  <entry>featureInfo</entry>
+
+                  <entry>The feature metadata</entry>
+                </row>
+
+                <row>
+                  <entry>namedStyleInfos</entry>
+
+                  <entry>The list of predefined style metadata objects which
+                  define the named styles for this layer</entry>
+                </row>
+              </tbody>
+            </tgroup>
+          </table></para>
+
+        <para>The feature metadata can be found in the
+        <code>FeatureInfo</code> object. This objects contains the complete
+        feature type description (id, attributes and geometry) as well as the
+        validation rules for the attributes. An example definition of this
+        object is given below:</para>
+
+        <xi:include href="../listing/ShapeInMemAirportFeatureInfo.xml"
+                    xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+        <para>The following table describes the properties of the
+        <code>FeatureInfo</code> object:</para>
+
+        <table>
+          <title>Feature info configuration</title>
+
+          <tgroup cols="2">
+            <colspec colnum="1" colwidth="1*" />
+
+            <colspec colnum="2" colwidth="2*" />
+
+            <thead>
+              <row>
+                <entry>Name</entry>
+
+                <entry>Description</entry>
+              </row>
+            </thead>
+
+            <tbody>
+              <row>
+                <entry>dataSourceName</entry>
+
+                <entry>This name is used by the layer to internally reference
+                the source that provides the data. Depending on the type of
+                layer, this could be a table name (geotools-postgis), a shape
+                file name (geotools-shapeinmem, in this case there is a 1-to-1
+                correspondence withe the geotools datastore), a WFS layer name
+                (geotools-wfs) or a java class name (hibernate).</entry>
+              </row>
+
+              <row>
+                <entry>identifier</entry>
+
+                <entry>Metadata of the primitive attribute that provides a
+                unique identification of the feature.</entry>
+              </row>
+
+              <row>
+                <entry>geometryType</entry>
+
+                <entry>Metadata of the geometrical attribute that provides the
+                default geometry of the feature.</entry>
+              </row>
+
+              <row>
+                <entry>attributes</entry>
+
+                <entry>Metadata of all other attributes</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table>
+
+        <para>This defines the identifier, geometry object and attributes for
+        the feature.</para>
+
+        <para>Attributes can be either primitive attributes or association
+        attributes. Primitive attributes represent primitive Java types as
+        well as some common types like Date and String. The following
+        primitive attribute types are defined: BOOLEAN, SHORT, INTEGER, LONG,
+        FLOAT, DOUBLE, CURRENCY, STRING, DATE, URL and IMGURL. Association
+        attributes represent non-primitive Java types. There are two types of
+        association attributes defined: MANY_TO_ONE and ONE_TO_MANY. These
+        reflect the many-to-one and one-to-many relationships as defined in an
+        entity-relationship model and can only be used in conjunction with the
+        <code>HibernateLayer</code>.</para>
+
+        <para>Last but not least, you can define one or more named style
+        definitions which should be used for rendering of the layer. The
+        actual style that is being used by the client is determined in the
+        client configuration, but you predefine a number of styles (of type
+        <code>NamedStyleInfo</code>) here for later reference in the client
+        configuration.</para>
+
+        <para>Each style object is itself composed of a number of feature
+        styles (<code>FeatureStyleinfo</code>) and a label style
+        (<code>LabelStyleInfo</code>). You can define formulas to determine
+        which feature style should be used. The first style whose formula
+        passes will be applied for the feature.</para>
+
+        <xi:include href="../listing/ShapeInMemAirportStyleInfo.xml"
+                    xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+        <section>
+          <title>Validation</title>
+
+          <para>Most feature attributes should be validated before they can be
+          saved to a file or database. Validation is a concern that stretches
+          across many layers of a typical application: there is usually a need
+          for client-side validation (making the application more user
+          friendly) , server-side validation (to protect the server from
+          invalid data) as well as database validation (to preserve data
+          integrity). Preferably validation rules should be defined as much as
+          possible in a single place to avoid conflicts and
+          duplication.</para>
+
+          <para>Our attribute configuration supports several types of
+          validation by defining a <code>"validator"</code> property inside
+          the attribute:</para>
+
+          <xi:include href="../listing/AttributeValidator.xml"
+                      xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+          <para>This property contains some general validator information and
+          a set of constraints that should be applied to the attribute. The
+          available constraint types have been based on the new JavaBeans
+          standard: JSR-303.</para>
+        </section>
+      </section>
+
+      <section>
+        <title>Bean layer configuration</title>
+
+        <para>Bean layer provides an in-memory layer which is not persisted in
+        any way. The features can be defined in the configuration file using
+        some specialised beans. It is particularly useful for testing.</para>
+
+        <para>TODO.....</para>
+
+        <para><table>
+            <title>BeanLayer configuration</title>
+
+            <tgroup cols="2">
+              <colspec colnum="1" colwidth="1*" />
+
+              <colspec colnum="2" colwidth="2*" />
+
+              <thead>
+                <row>
+                  <entry>Name</entry>
+
+                  <entry>Description</entry>
+                </row>
+              </thead>
+
+              <tbody>
+                <row>
+                  <entry>features</entry>
+
+                  <entry>List of features, which should be
+                  <code>org.geomajas.layer.bean.FeatureBean</code>
+                  instances.</entry>
+                </row>
+              </tbody>
+            </tgroup>
+          </table></para>
+      </section>
+    </section>
+
+    <section>
+      <title>Client configuration</title>
+
+      <figure>
+        <title>Geomajas client configuration</title>
+
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="../images/clientConfiguration.png"
+                       width="100%" />
+          </imageobject>
+        </mediaobject>
+      </figure>
+
+      <section>
+        <title>Map configuration</title>
+
+        <para>A map is a client side object. The Geomajas back-end works
+        almost exclusively on layers.<footnote>
+            <para>The only current exception is the printing command which
+            converts maps to PDF document. Clearly this also uses the map
+            configuration.</para>
+          </footnote>On the client side however, these layers are combined
+        into maps. In general, the back-end never needs to know which map the
+        layer is displayed in when doing its work. However the back-end does
+        need to know the coordinate reference system which is used.</para>
+
+        <xi:include href="../listing/ClientMapInfoPart1.xml"
+                    xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+        <para>The layers refers to the client layer info objects, not the
+        server layer info or layer instances.</para>
+
+        <para>For the client side, a lot of additional information can be
+        included in the map configuration. This includes information like
+        background colour, styles which should be used for selected points,
+        lines and polygons and whether scale bare or pan buttons should be
+        enabled.</para>
+
+        <xi:include href="../listing/ClientMapInfoPart2.xml"
+                    xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+        <para>Optionally, you can include a fixed set of resolutions (scale
+        levels) that you want the map to force onto the user. By doing so, no
+        other scales will be available, but the allowed ones. Typically this
+        is done to make sure that the scales that are being used in an
+        application, are the same of those of the raster layer(s) that lies
+        beneath. Otherwise the raster images may get distorted when they need
+        to be resized.</para>
+
+        <xi:include href="../listing/ClientMapInfoPart5.xml"
+                    xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+        <para>A map typically also contains a tool bar. If you want one, you
+        have to specify the tools it should include.</para>
+
+        <xi:include href="../listing/ClientMapInfoPart3.xml"
+                    xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+        <para>Obviously the tools themselves need to be defined as well. You
+        can pass some parameters to the tools. An example tool definition look
+        like this.</para>
+
+        <xi:include href="../listing/ZoomInToolInfo.xml"
+                    xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+        <para>Note that the tool id and the names of the parameters are
+        interpreted by the client, so it is the client face which defines the
+        possible values.</para>
+
+        <para>Last but not least, you can also configure the layer tree
+        component which may be connected to the map.</para>
+
+        <xi:include href="../listing/ClientMapInfoPart4.xml"
+                    xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+        <para>This defines the tools which are available in the layer tree
+        widget, and the tree of layers (as a node, which can contain a list of
+        nodes etc).</para>
+
+        <para>Note that the layers are indicated by referring to the client
+        configuration object.</para>
+      </section>
+
+      <section>
+        <title>Client layer configuration</title>
+
+        <para>Layer configuration is split in two (linked) parts. You have to
+        create the actual layer which is used in the back-end, and this layer
+        needs to know the configuration information which is also used on the
+        client side. Secondly, there is a distinction between raster and
+        vector layers as they each needs a lot of specific information.</para>
+
+        <section>
+          <title>Raster layer</title>
+
+          <para>TODO.....</para>
+        </section>
+
+        <section>
+          <title>Vector layer</title>
+
+          <para>TODO.....</para>
+        </section>
+      </section>
+    </section>
+  </chapter>
+
+  <chapter>
+    <title>Security configuration</title>
+
+    <para>To make sure the system can be used, you have to configure the
+    security to allow access. The easiest configuration is to allow access to
+    everybody.</para>
+
+    <xi:include href="../listing/AllowAllSecurity.xml"
+                xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+    <para>Any other configuration would depend on the available security
+    services. For example, when using the staticsecurity plugin, the following
+    could be defined.</para>
+
+    <xi:include href="../listing/StaticSecurityStart.xml"
+                xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+    <para>Most notable in this example is the inclusion of two security
+    services. The first is provided to allow login and logout
+    (<emphasis>only</emphasis>) for everybody. The second defines users and
+    authorizations (only the beginning of the configuration is displayed
+    here).</para>
+  </chapter>
+
+  <chapter>
+    <title>Transaction configuration</title>
+
+    <para>Spring has support declarative transaction management, which
+    relieves us from the burden of writing our own transaction demarcation and
+    exception handling code. Of course, Spring transaction management has to
+    be hooked up with the transaction definition and life cycle of the
+    underlying data platform (hibernate, JTA, JDBC) . Each data access
+    technology should provide its own implementation of the Spring class
+    <code>PlatformTransactionManager</code>. You should check your plug-in
+    documentation for details about configuring the transaction
+    manager.</para>
+
+    <para>Transaction management is typically only needed for editable
+    database layers (although we support and encourage it for read-only layers
+    as well). There is currently no support for having multiple platform
+    transaction managers, although configurations with multiple transaction
+    managers should be possible. This will be investigated and fixed in the
+    future. In practice this means that you currently must not mix editable
+    layers which require a different transaction manager..</para>
+  </chapter>
+
+  <chapter>
+    <title>Coordinate Reference Systems</title>
+
+    <para>Geomajas uses GeoTools' gt-epsg-wkt module to define the coordinate
+    reference systems which are available.</para>
+
+    <para>If you want to add extra coordinate reference systems, this can be
+    done by defining them in the configuration. For example, Geomajas itself
+    already defines the "EPSG:900913" crs (which one of the many codes for the
+    Mercator projection used by Google Maps and OpenStreetMap).</para>
+
+    <xi:include href="../listing/CrsInfo.xml"
+                xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+    <para>You can add as many of these beans as needed. The keys
+    transformation which are added this way are tested before the GeoTools
+    library, so you can overwrite definitions if needed.</para>
+
+    <para>If you don't like the dependency on the gt-epsg-wkt library, then
+    you could exclude this dependency in your maven pom and use a different
+    dependency if needed.</para>
+  </chapter>
+
+  <chapter id="chapter-commands">
+    <title>Commands</title>
+
+    <section>
+      <title>Provided commands</title>
+
+      <para>The commands are all registered in the Spring context. The
+      "registry key" as indicated below is used to retrieve the commands.
+      These are services, so a singleton should be sufficient for this.</para>
+
+      <para>The default naming for the keys is derived from the fully
+      qualified class name. This is automatically assigned when the command is
+      in a (sub package of) the "command" package. To determine the bean name,
+      all parent packages of the "command" package are removed. Then the name
+      is simplified. It will end up having "command." as prefix, optionally
+      followed by a package, followed by the name. As there already is a
+      "command" prefix, the "Command" suffix is removed from the name if
+      present. When the resulting name starts or end with the sub package,
+      then that is removed as well. For example the
+      "org.geomajas.command.configuration.GetConfigurationCommand" class will
+      get "command.configuration.Get" as registry key.</para>
+
+      <para><table>
+          <title>CopyrightCommand</title>
+
+          <tgroup cols="2">
+            <colspec colnum="1" colwidth="1*" />
+
+            <colspec colnum="2" colwidth="2*" />
+
+            <thead>
+              <row>
+                <entry>CopyrightCommand</entry>
+              </row>
+            </thead>
+
+            <tbody>
+              <row>
+                <entry>Registry key</entry>
+
+                <entry>command.general.Copyright</entry>
+              </row>
+
+              <row>
+                <entry>Module which provides this command</entry>
+
+                <entry>geomajas-command</entry>
+              </row>
+
+              <row>
+                <entry>Request object class</entry>
+
+                <entry>org.geomajas.command.EmptyCommandRequest</entry>
+              </row>
+
+              <row>
+                <entry>Parameters</entry>
+
+                <entry>none</entry>
+              </row>
+
+              <row>
+                <entry>Description</entry>
+
+                <entry>This allows you to obtain copyright and license
+                information for Geomajas, it's dependencies, the plg-ins and
+                the dependencies of the plug-ins. This can be used to display
+                that information in a "about" box to assure the copyright and
+                license conditions are adhered.</entry>
+              </row>
+
+              <row>
+                <entry>Response object class</entry>
+
+                <entry>org.geomajas.command.dto.CopyrightResponse</entry>
+              </row>
+
+              <row>
+                <entry>Response values</entry>
+
+                <entry>List of <code>CopyrightInfo</code> objects for the
+                dependencies. Any duplicates are removed based on the
+                copyright info key.</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table></para>
+
+      <para><table>
+          <title>GetConfigurationCommand</title>
+
+          <tgroup cols="2">
+            <colspec colnum="1" colwidth="1*" />
+
+            <colspec colnum="2" colwidth="2*" />
+
+            <thead>
+              <row>
+                <entry>GetConfigurationCommand</entry>
+              </row>
+            </thead>
+
+            <tbody>
+              <row>
+                <entry>Registry key</entry>
+
+                <entry>command.configuration.Get</entry>
+              </row>
+
+              <row>
+                <entry>Module which provides this command</entry>
+
+                <entry>geomajas-command</entry>
+              </row>
+
+              <row>
+                <entry>Request object class</entry>
+
+                <entry>org.geomajas.command.EmptyCommandRequest</entry>
+              </row>
+
+              <row>
+                <entry>Parameters</entry>
+
+                <entry>none</entry>
+              </row>
+
+              <row>
+                <entry>Description</entry>
+
+                <entry>Get the client side configuration information. This
+                returns information about all maps which have been
+                configured.</entry>
+              </row>
+
+              <row>
+                <entry>Response object class</entry>
+
+                <entry>org.geomajas.command.dto.GetConfigurationResponse</entry>
+              </row>
+
+              <row>
+                <entry>Response values</entry>
+
+                <entry><itemizedlist>
+                    <listitem>
+                      <para><emphasis>name</emphasis>: name of the
+                      application.</para>
+                    </listitem>
+
+                    <listitem>
+                      <para><emphasis>maps</emphasis>: list of configured maps
+                      for the application. Note that the layer information
+                      which is contained in the maps has the coordinates
+                      transformed according to the crs of the map.</para>
+                    </listitem>
+
+                    <listitem>
+                      <para><emphasis>screenDpi</emphasis>: screen resolution
+                      in dots per inch.</para>
+                    </listitem>
+                  </itemizedlist></entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table></para>
+
+      <para><table>
+          <title>GetMapConfigurationCommand</title>
+
+          <tgroup cols="2">
+            <colspec colnum="1" colwidth="1*" />
+
+            <colspec colnum="2" colwidth="2*" />
+
+            <thead>
+              <row>
+                <entry>GetMapConfigurationCommand</entry>
+              </row>
+            </thead>
+
+            <tbody>
+              <row>
+                <entry>Registry key</entry>
+
+                <entry>command.configuration.GetMap</entry>
+              </row>
+
+              <row>
+                <entry>Module which provides this command</entry>
+
+                <entry>geomajas-command</entry>
+              </row>
+
+              <row>
+                <entry>Request object class</entry>
+
+                <entry>org.geomajas.command.dto.GetMapConfigurationRequest</entry>
+              </row>
+
+              <row>
+                <entry>Parameters</entry>
+
+                <entry><itemizedlist>
+                    <listitem>
+                      <para><emphasis>mapId</emphasis>: id of map for which
+                      the information should be returned.</para>
+                    </listitem>
+                  </itemizedlist></entry>
+              </row>
+
+              <row>
+                <entry>Description</entry>
+
+                <entry>Get the client side configuration information for the
+                specified map.</entry>
+              </row>
+
+              <row>
+                <entry>Response object class</entry>
+
+                <entry>org.geomajas.command.dto.GetMapConfigurationResponse</entry>
+              </row>
+
+              <row>
+                <entry>Response values</entry>
+
+                <entry><itemizedlist>
+                    <listitem>
+                      <para><emphasis>mapInfo</emphasis>: information about
+                      the requested map. Note that the layer information which
+                      is contained in the maps has the coordinates transformed
+                      according to the crs of the map.</para>
+                    </listitem>
+                  </itemizedlist></entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table></para>
+
+      <para><table>
+          <title>GetRasterTilesCommand</title>
+
+          <tgroup cols="2">
+            <colspec colnum="1" colwidth="1*" />
+
+            <colspec colnum="2" colwidth="2*" />
+
+            <thead>
+              <row>
+                <entry>GetRasterTilesCommand</entry>
+              </row>
+            </thead>
+
+            <tbody>
+              <row>
+                <entry>Registry key</entry>
+
+                <entry>command.render.GetRasterTiles</entry>
+              </row>
+
+              <row>
+                <entry>Module which provides this command</entry>
+
+                <entry>geomajas-command</entry>
+              </row>
+
+              <row>
+                <entry>Request object class</entry>
+
+                <entry>org.geomajas.command.dto.GetRasterTilesRequest</entry>
+              </row>
+
+              <row>
+                <entry>Parameters</entry>
+
+                <entry><itemizedlist>
+                    <listitem>
+                      <para><emphasis>crs</emphasis>: coordinate reference
+                      system that the map uses.</para>
+                    </listitem>
+
+                    <listitem>
+                      <para><emphasis>bbox</emphasis>: total bounding box
+                      wherein to fetch raster tiles.</para>
+                    </listitem>
+
+                    <listitem>
+                      <para><emphasis>scale</emphasis>: current scale in the
+                      client side map.</para>
+                    </listitem>
+
+                    <listitem>
+                      <para><emphasis>layerId</emphasis>: the id of the raster
+                      layer to fetch tiles for.</para>
+                    </listitem>
+                  </itemizedlist></entry>
+              </row>
+
+              <row>
+                <entry>Description</entry>
+
+                <entry>Retrieve a set of raster tiles as image links for a
+                given layer within a certain bounding box expressed in a
+                certain coordinate reference system.</entry>
+              </row>
+
+              <row>
+                <entry>Response object class</entry>
+
+                <entry>org.geomajas.command.dto.GetRasterTilesResponse</entry>
+              </row>
+
+              <row>
+                <entry>Response values</entry>
+
+                <entry><itemizedlist>
+                    <listitem>
+                      <para><emphasis>rasterData</emphasis>: list of
+                      <code>RasterTile</code> objects.</para>
+                    </listitem>
+
+                    <listitem>
+                      <para><emphasis>nodeId</emphasis>: identifier to be used
+                      in the DOM tree.</para>
+                    </listitem>
+                  </itemizedlist></entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table></para>
+
+      <para><table>
+          <title>GetVectorTileCommand</title>
+
+          <tgroup cols="2">
+            <colspec colnum="1" colwidth="1*" />
+
+            <colspec colnum="2" colwidth="2*" />
+
+            <thead>
+              <row>
+                <entry>GetVectorTileCommand</entry>
+              </row>
+            </thead>
+
+            <tbody>
+              <row>
+                <entry>Registry key</entry>
+
+                <entry>command.render.GetVectorTile</entry>
+              </row>
+
+              <row>
+                <entry>Module which provides this command</entry>
+
+                <entry>geomajas-command</entry>
+              </row>
+
+              <row>
+                <entry>Request object class</entry>
+
+                <entry>org.geomajas.command.dto.GetVectorTileRequest</entry>
+              </row>
+
+              <row>
+                <entry>Parameters</entry>
+
+                <entry><itemizedlist>
+                    <listitem>
+                      <para><emphasis>layerId</emphasis>: the id of the vector
+                      layer to fetch a tile in.</para>
+                    </listitem>
+
+                    <listitem>
+                      <para><emphasis>code</emphasis>: the unique code of the
+                      tile to retrieve.</para>
+                    </listitem>
+
+                    <listitem>
+                      <para><emphasis>scale</emphasis>: the current scale on
+                      the map, client side.</para>
+                    </listitem>
+
+                    <listitem>
+                      <para><emphasis>panOrigin</emphasis>: translation for
+                      the tile on the client-side.</para>
+                    </listitem>
+
+                    <listitem>
+                      <para><emphasis>filter</emphasis>: extra filter that can
+                      be used to filter out data.</para>
+                    </listitem>
+
+                    <listitem>
+                      <para><emphasis>crs</emphasis>: the map's coordinate
+                      reference system.</para>
+                    </listitem>
+
+                    <listitem>
+                      <para><emphasis>renderer</emphasis>: should the server
+                      render to SVG or VML?</para>
+                    </listitem>
+
+                    <listitem>
+                      <para><emphasis>styleInfo</emphasis>: extra styles that
+                      can override the originally configured styles.</para>
+                    </listitem>
+
+                    <listitem>
+                      <para><emphasis>paintGeometries</emphasis>: should the
+                      geometries be painted in the tile? This is true by
+                      default.</para>
+                    </listitem>
+
+                    <listitem>
+                      <para><emphasis>paintLabels</emphasis>: should labels be
+                      painted in the tile?</para>
+                    </listitem>
+
+                    <listitem>
+                      <para><emphasis>featureIncludes</emphasis>: indication
+                      of which data to include in the feature. Possible values
+                      (add to combine): 1=attributes, 2=geometry, 4=style,
+                      8=label. Default value is to include everything.</para>
+                    </listitem>
+                  </itemizedlist></entry>
+              </row>
+
+              <row>
+                <entry>Description</entry>
+
+                <entry>Fetches a single tile for a vector layer. The tile can
+                contain both vectors and labels. This command is used to paint
+                vector layers in the map.</entry>
+              </row>
+
+              <row>
+                <entry>Response object class</entry>
+
+                <entry>org.geomajas.command.dto.GetVectorTileResponse</entry>
+              </row>
+
+              <row>
+                <entry>Response values</entry>
+
+                <entry><itemizedlist>
+                    <listitem>
+                      <para><emphasis>tile</emphasis>: the actual resulting
+                      tile.</para>
+                    </listitem>
+                  </itemizedlist></entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table></para>
+
+      <para><table>
+          <title>LogCommand</title>
+
+          <tgroup cols="2">
+            <colspec colnum="1" colwidth="1*" />
+
+            <colspec colnum="2" colwidth="2*" />
+
+            <thead>
+              <row>
+                <entry>LogCommand</entry>
+              </row>
+            </thead>
+
+            <tbody>
+              <row>
+                <entry>Registry key</entry>
+
+                <entry>command.general.Log</entry>
+              </row>
+
+              <row>
+                <entry>Module which provides this command</entry>
+
+                <entry>geomajas-command</entry>
+              </row>
+
+              <row>
+                <entry>Request object class</entry>
+
+                <entry>org.geomajas.command.dto.LogRequest</entry>
+              </row>
+
+              <row>
+                <entry>Parameters</entry>
+
+                <entry><itemizedlist>
+                    <listitem>
+                      <para><emphasis>level</emphasis>: log level, 0 for
+                      debug, 1 for info, 2 for warn, 3 for error.</para>
+                    </listitem>
+
+                    <listitem>
+                      <para><emphasis>statement</emphasis>: string which needs
+                      to be logged.</para>
+                    </listitem>
+                  </itemizedlist></entry>
+              </row>
+
+              <row>
+                <entry>Description</entry>
+
+                <entry>This allows you to send a statement to the server side
+                which will be logged there.</entry>
+              </row>
+
+              <row>
+                <entry>Response object class</entry>
+
+                <entry>org.geomajas.command.CommandResponse</entry>
+              </row>
+
+              <row>
+                <entry>Response values</entry>
+
+                <entry>none</entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table></para>
+
+      <para><table>
+          <title>MergePolygonCommand</title>
+
+          <tgroup cols="2">
+            <colspec colnum="1" colwidth="1*" />
+
+            <colspec colnum="2" colwidth="2*" />
+
+            <thead>
+              <row>
+                <entry>MergePolygonCommand</entry>
+              </row>
+            </thead>
+
+            <tbody>
+              <row>
+                <entry>Registry key</entry>
+
+                <entry>command.geometry.MergePolygon</entry>
+              </row>
+
+              <row>
+                <entry>Module which provides this command</entry>
+
+                <entry>geomajas-command</entry>
+              </row>
+
+              <row>
+                <entry>Request object class</entry>
+
+                <entry>org.geomajas.command.dto.MergePolygonRequest</entry>
+              </row>
+
+              <row>
+                <entry>Parameters</entry>
+
+                <entry><itemizedlist>
+                    <listitem>
+                      <para><emphasis>polygons</emphasis>: array of polygons
+                      that need to be merged</para>
+                    </listitem>
+
+                    <listitem>
+                      <para><emphasis>allowMultiPolygon</emphasis>: is a
+                      MultiPolygon allowed when merging multiple
+                      polygons?</para>
+                    </listitem>
+                  </itemizedlist></entry>
+              </row>
+
+              <row>
+                <entry>Description</entry>
+
+                <entry>This command allows the user to merge multiple polygons
+                into a single polygon or multipolygon.</entry>
+              </row>
+
+              <row>
+                <entry>Response object class</entry>
+
+                <entry>org.geomajas.command.dto.MergePolygonResponse</entry>
+              </row>
+
+              <row>
+                <entry>Response values</entry>
+
+                <entry><itemizedlist>
+                    <listitem>
+                      <para><emphasis>geometry</emphasis>: the resulting
+                      geometry after the merge.</para>
+                    </listitem>
+                  </itemizedlist></entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table></para>
+
+      <para><table>
+          <title>PersistTransactionCommand</title>
+
+          <tgroup cols="2">
+            <colspec colnum="1" colwidth="1*" />
+
+            <colspec colnum="2" colwidth="2*" />
+
+            <thead>
+              <row>
+                <entry>PersistFeatureTransactionCommand</entry>
+              </row>
+            </thead>
+
+            <tbody>
+              <row>
+                <entry>Registry key</entry>
+
+                <entry>command.feature.PersistTransaction</entry>
+              </row>
+
+              <row>
+                <entry>Module which provides this command</entry>
+
+                <entry>geomajas-command</entry>
+              </row>
+
+              <row>
+                <entry>Request object class</entry>
+
+                <entry>org.geomajas.command.dto.PersistTransactionRequest</entry>
+              </row>
+
+              <row>
+                <entry>Parameters</entry>
+
+                <entry><itemizedlist>
+                    <listitem>
+                      <para><emphasis>featureTransaction</emphasis>: the
+                      actual transaction object. Contains a list of features
+                      as they where, and a list of features as they should
+                      be.</para>
+                    </listitem>
+
+                    <listitem>
+                      <para><emphasis>crs</emphasis>: the map's coordinate
+                      reference system.</para>
+                    </listitem>
+                  </itemizedlist></entry>
+              </row>
+
+              <row>
+                <entry>Description</entry>
+
+                <entry>Persist a single transaction on the backend (create,
+                update, delete of features).</entry>
+              </row>
+
+              <row>
+                <entry>Response object class</entry>
+
+                <entry>org.geomajas.command.dto.PersistTransactionResponse</entry>
+              </row>
+
+              <row>
+                <entry>Response values</entry>
+
+                <entry><itemizedlist>
+                    <listitem>
+                      <para><emphasis>featureTransaction</emphasis>: the same
+                      transaction that was sent to the server. Unless
+                      something went wrong, in which case this could be
+                      null.</para>
+                    </listitem>
+                  </itemizedlist></entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table></para>
+
+      <para><table>
+          <title>SearchAttributesCommand</title>
+
+          <tgroup cols="2">
+            <colspec colnum="1" colwidth="1*" />
+
+            <colspec colnum="2" colwidth="2*" />
+
+            <thead>
+              <row>
+                <entry>SearchAttributesCommand</entry>
+              </row>
+            </thead>
+
+            <tbody>
+              <row>
+                <entry>Registry key</entry>
+
+                <entry>command.feature.SearchAttributes</entry>
+              </row>
+
+              <row>
+                <entry>Module which provides this command</entry>
+
+                <entry>geomajas-command</entry>
+              </row>
+
+              <row>
+                <entry>Request object class</entry>
+
+                <entry>org.geomajas.command.dto.SearchAttributesRequest</entry>
+              </row>
+
+              <row>
+                <entry>Parameters</entry>
+
+                <entry><itemizedlist>
+                    <listitem>
+                      <para><emphasis>layerId</emphasis>: the layer to search
+                      in.</para>
+                    </listitem>
+
+                    <listitem>
+                      <para><emphasis>attributeName</emphasis>: the name of
+                      the attribute as configured in the feature info.</para>
+                    </listitem>
+
+                    <listitem>
+                      <para><emphasis>filter</emphasis>: a filter, to limit
+                      the list of returned features.</para>
+                    </listitem>
+                  </itemizedlist></entry>
+              </row>
+
+              <row>
+                <entry>Description</entry>
+
+                <entry>Search for attribute possible values for a certain
+                attribute. This command is only used for many-to-one and
+                one-to-many relationships, to search for possible
+                values.</entry>
+              </row>
+
+              <row>
+                <entry>Response object class</entry>
+
+                <entry>org.geomajas.command.dto.SearchAttributesResponse</entry>
+              </row>
+
+              <row>
+                <entry>Response values</entry>
+
+                <entry><itemizedlist>
+                    <listitem>
+                      <para><emphasis>attributes</emphasis>: list of attribute
+                      values.</para>
+                    </listitem>
+                  </itemizedlist></entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table></para>
+
+      <para><table>
+          <title>SearchByLocationCommand</title>
+
+          <tgroup cols="2">
+            <colspec colnum="1" colwidth="1*" />
+
+            <colspec colnum="2" colwidth="2*" />
+
+            <thead>
+              <row>
+                <entry>SearchByLocationCommand</entry>
+              </row>
+            </thead>
+
+            <tbody>
+              <row>
+                <entry>Registry key</entry>
+
+                <entry>command.feature.SearchByLocation</entry>
+              </row>
+
+              <row>
+                <entry>Module which provides this command</entry>
+
+                <entry>geomajas-command</entry>
+              </row>
+
+              <row>
+                <entry>Request object class</entry>
+
+                <entry>org.geomajas.command.dto.SearchByLocationRequest</entry>
+              </row>
+
+              <row>
+                <entry>Parameters</entry>
+
+                <entry><itemizedlist>
+                    <listitem>
+                      <para><emphasis>location</emphasis>: geometry which
+                      should be used for the searching.</para>
+                    </listitem>
+
+                    <listitem>
+                      <para><emphasis>queryType</emphasis>: specify exactly
+                      whether to search, possible values are
+                      <code>QUERY_INTERSECTS</code>,
+                      <code>QUERY_TOUCHES</code>, <code>QUERY_WITHIN</code> or
+                      <code>QUERY_CONTAINS</code>.</para>
+                    </listitem>
+
+                    <listitem>
+                      <para><emphasis>ratio</emphasis>: if queryType is
+                      <code>QUERY_INTERSECTS</code>, you can additionally
+                      specify what percentage of overlap is enough to be
+                      included in the search.</para>
+                    </listitem>
+
+                    <listitem>
+                      <para><emphasis>layerIds</emphasis>: array of layer ids
+                      to search in.</para>
+                    </listitem>
+
+                    <listitem>
+                      <para><emphasis>searchType</emphasis>: determines
+                      whether to stop searching once something in found in one
+                      of the layers (in order of course), or whether to
+                      continue searching, and include matching features from
+                      all layers.</para>
+                    </listitem>
+
+                    <listitem>
+                      <para><emphasis>crs</emphasis>: the map's coordinate
+                      reference system. The <emphasis>location</emphasis>
+                      geometry will also be expressed in this crs.</para>
+                    </listitem>
+
+                    <listitem>
+                      <para><emphasis>buffer</emphasis>: before any
+                      calculation is made, it is possible to have the location
+                      geometry expanded by a buffer of this width (in crs
+                      space).</para>
+                    </listitem>
+
+                    <listitem>
+                      <para><emphasis>featureIncludes</emphasis>: indication
+                      of which data to include in the feature. Possible values
+                      (add to combine): 1=attributes, 2=geometry, 4=style,
+                      8=label. Default value is to include everything.</para>
+                    </listitem>
+                  </itemizedlist></entry>
+              </row>
+
+              <row>
+                <entry>Description</entry>
+
+                <entry>This command allows you to search for features, based
+                on geographic location.</entry>
+              </row>
+
+              <row>
+                <entry>Response object class</entry>
+
+                <entry>org.geomajas.command.dto.SearchByLocationResponse</entry>
+              </row>
+
+              <row>
+                <entry>Response values</entry>
+
+                <entry><itemizedlist>
+                    <listitem>
+                      <para><emphasis>featureMap</emphasis>: map with layer
+                      ids as key and a list of features as value. Only layers
+                      in which features were found are included in the
+                      map.</para>
+                    </listitem>
+                  </itemizedlist></entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table></para>
+
+      <para><table>
+          <title>SearchFeatureCommand</title>
+
+          <tgroup cols="2">
+            <colspec colnum="1" colwidth="1*" />
+
+            <colspec colnum="2" colwidth="2*" />
+
+            <thead>
+              <row>
+                <entry>SearchFeaturesCommand</entry>
+              </row>
+            </thead>
+
+            <tbody>
+              <row>
+                <entry>Registry key</entry>
+
+                <entry>command.feature.Search</entry>
+              </row>
+
+              <row>
+                <entry>Module which provides this command</entry>
+
+                <entry>geomajas-command</entry>
+              </row>
+
+              <row>
+                <entry>Request object class</entry>
+
+                <entry>org.geomajas.command.dto.SearchFeatureRequest</entry>
+              </row>
+
+              <row>
+                <entry>Parameters</entry>
+
+                <entry><itemizedlist>
+                    <listitem>
+                      <para><emphasis>layerId</emphasis>: id of layer in which
+                      features need to be searched.</para>
+                    </listitem>
+
+                    <listitem>
+                      <para><emphasis>max</emphasis>: maximum number of
+                      features to allow in the result. 0 means
+                      unlimited.</para>
+                    </listitem>
+
+                    <listitem>
+                      <para><emphasis>crs</emphasis>: crs which needs to be
+                      used for the geometry in the retrieved features.</para>
+                    </listitem>
+
+                    <listitem>
+                      <para><emphasis>criteria</emphasis>: array of criteria
+                      which need to be matched when searching. Each criterion
+                      contains the attribute name, the operator (options
+                      include "like" and "contains") and the value to compare.
+                      Note that the value usually needs to be contained in
+                      single quotes.</para>
+                    </listitem>
+
+                    <listitem>
+                      <para><emphasis>booleanOperator</emphasis>: operator
+                      which should be used to combine the different criteria
+                      when more than one was specified. Should be either "AND"
+                      or "OR". Default value is "AND".</para>
+                    </listitem>
+
+                    <listitem>
+                      <para><emphasis>filter</emphasis>: an additional layer
+                      filter which needs to be applied when searching.</para>
+                    </listitem>
+
+                    <listitem>
+                      <para><emphasis>featureIncludes</emphasis>: indication
+                      of which data to include in the feature. Possible values
+                      (add to combine): 1=attributes, 2=geometry, 4=style,
+                      8=label. Default value is to include everything.</para>
+                    </listitem>
+                  </itemizedlist></entry>
+              </row>
+
+              <row>
+                <entry>Description</entry>
+
+                <entry>This command allows you to search for features, based
+                criteria which allow matching on feature attributes. You can
+                specify multiple search criteria and a filter.</entry>
+              </row>
+
+              <row>
+                <entry>Response object class</entry>
+
+                <entry>org.geomajas.command.dto.SearchFeatureResponse</entry>
+              </row>
+
+              <row>
+                <entry>Response values</entry>
+
+                <entry><itemizedlist>
+                    <listitem>
+                      <para><emphasis>layerId</emphasis>: id of the layer
+                      which contains the features. Equals the layerId
+                      parameter from the request.</para>
+                    </listitem>
+
+                    <listitem>
+                      <para><emphasis>features</emphasis>: array of features
+                      which match the search criteria. Any geometry contained
+                      in the features uses the request crs.</para>
+                    </listitem>
+                  </itemizedlist></entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table></para>
+
+      <para><table>
+          <title>SplitPolygonCommand</title>
+
+          <tgroup cols="2">
+            <colspec colnum="1" colwidth="1*" />
+
+            <colspec colnum="2" colwidth="2*" />
+
+            <thead>
+              <row>
+                <entry>SplitPolygonCommand</entry>
+              </row>
+            </thead>
+
+            <tbody>
+              <row>
+                <entry>Registry key</entry>
+
+                <entry>command.geometry.SplitPolygon</entry>
+              </row>
+
+              <row>
+                <entry>Module which provides this command</entry>
+
+                <entry>geomajas-command</entry>
+              </row>
+
+              <row>
+                <entry>Request object class</entry>
+
+                <entry>org.geomajas.command.dto.SplitPolygonRequest</entry>
+              </row>
+
+              <row>
+                <entry>Parameters</entry>
+
+                <entry><itemizedlist>
+                    <listitem>
+                      <para><emphasis>geometry</emphasis>: the geometry that
+                      needs splitting.</para>
+                    </listitem>
+
+                    <listitem>
+                      <para><emphasis>splitter</emphasis>: the splitting
+                      geometry (usually a LineString).</para>
+                    </listitem>
+                  </itemizedlist></entry>
+              </row>
+
+              <row>
+                <entry>Description</entry>
+
+                <entry>Split up a geometry into many pieces by means of a
+                splitting geometry.</entry>
+              </row>
+
+              <row>
+                <entry>Response object class</entry>
+
+                <entry>org.geomajas.command.dto.SplitPolygonResponse</entry>
+              </row>
+
+              <row>
+                <entry>Response values</entry>
+
+                <entry><itemizedlist>
+                    <listitem>
+                      <para><emphasis>geometries</emphasis>: the list of
+                      resulting geometries after the split.</para>
+                    </listitem>
+                  </itemizedlist></entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table></para>
+
+      <para><table>
+          <title>UserMaximumExtentCommand</title>
+
+          <tgroup cols="2">
+            <colspec colnum="1" colwidth="1*" />
+
+            <colspec colnum="2" colwidth="2*" />
+
+            <thead>
+              <row>
+                <entry>UserMaximumExtentCommand</entry>
+              </row>
+            </thead>
+
+            <tbody>
+              <row>
+                <entry>Registry key</entry>
+
+                <entry>command.configuration.UserMaximumExtent</entry>
+              </row>
+
+              <row>
+                <entry>Module which provides this command</entry>
+
+                <entry>geomajas-command</entry>
+              </row>
+
+              <row>
+                <entry>Request object class</entry>
+
+                <entry>org.geomajas.command.dto.UserMaximumExtentRequest</entry>
+              </row>
+
+              <row>
+                <entry>Parameters</entry>
+
+                <entry><itemizedlist>
+                    <listitem>
+                      <para><emphasis>layerIds</emphasis>: list of layers to
+                      include.</para>
+                    </listitem>
+
+                    <listitem>
+                      <para><emphasis>includeRasterLayers</emphasis>: true
+                      when raster layers should be included. Defaults to
+                      false.</para>
+                    </listitem>
+
+                    <listitem>
+                      <para><emphasis>crs</emphasis> : crs which should be
+                      used for the response.</para>
+                    </listitem>
+                  </itemizedlist></entry>
+              </row>
+
+              <row>
+                <entry>Description</entry>
+
+                <entry>Get the bounding box of the visible features across the
+                requested layers (visible area for the raster layers).</entry>
+              </row>
+
+              <row>
+                <entry>Response object class</entry>
+
+                <entry>org.geomajas.command.dto.UserMaximumExtentResponse</entry>
+              </row>
+
+              <row>
+                <entry>Response values</entry>
+
+                <entry><itemizedlist>
+                    <listitem>
+                      <para><emphasis>bounds</emphasis> : bounding box.</para>
+                    </listitem>
+                  </itemizedlist></entry>
+              </row>
+            </tbody>
+          </tgroup>
+        </table></para>
+    </section>
+  </chapter>
+
+  <chapter id="chapter-layers">
+    <title>Layers</title>
+
+    <para>Layers allow access to data which needs to be displayed in a
+    map.</para>
+
+    <para>For the existing layers, the details about configuring your map to
+    include that layer are included in the <link
+    linkend="ch-map-configuration">configuration</link> section above.</para>
+  </chapter>
+
+  <chapter id="chapter-security">
+    <title>Security</title>
+
+    <para>Geomajas has security built-in. If you don't provide a security
+    configuration, nothing will be authorized. For unsecured access, you can
+    add</para>
+
+    <xi:include href="../listing/AllowAllSecurity.xml"
+                xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+    <para>TODO.....</para>
+
+    <section>
+      <title>Authentication versus authorization</title>
+
+      <para>TODO.....</para>
+    </section>
+
+    <section>
+      <title>What can be authorized</title>
+
+      <para>TODO.....</para>
+    </section>
+
+    <section>
+      <title>SecurityManager</title>
+
+      <para>TODO.....</para>
+    </section>
+
+    <section>
+      <title>SecurityContext</title>
+
+      <para>TODO.....</para>
+    </section>
+
+    <section>
+      <title>Staticsecurity module configuration</title>
+
+      <para>TODO.....</para>
+    </section>
+  </chapter>
+
+  <chapter id="backend-ch-services">
+    <title>Services</title>
+
+    <para>TODO.....</para>
+
+    <section>
+      <title>ConfigurationService</title>
+
+      <para>TODO.....</para>
+    </section>
+
+    <section>
+      <title>GeoService</title>
+
+      <para>TODO.....</para>
+    </section>
+
+    <section>
+      <title>DtoConverterService</title>
+
+      <para>TODO.....</para>
+    </section>
+
+    <section>
+      <title>FilterService</title>
+
+      <para>TODO.....</para>
+    </section>
+
+    <section>
+      <title>TextService</title>
+
+      <para>TODO.....</para>
+    </section>
+
+    <section>
+      <title>CommandDispatcher</title>
+
+      <para>TODO.....</para>
+    </section>
+
+    <section>
+      <title>RasterLayerService</title>
+
+      <para>TODO.....</para>
+    </section>
+
+    <section>
+      <title>VectorLayerService</title>
+
+      <para>TODO.....</para>
+    </section>
+
+    <section>
+      <title>PipelineService</title>
+
+      <para>The pipeline service helps you to execute a pipeline. It allows
+      you to fetch a named pipeline which applies for a specific layer (either
+      the layer specific pipeline or the default pipeline). It also has
+      methods to create an empty pipeline context and execute a
+      pipeline.</para>
+    </section>
+  </chapter>
+
+  <chapter id="backend-ch-pipelines">
+    <title>Pipelines</title>
+
+    <para>Pipelines are building blocks which are used in Geomajas to make
+    certain aspects highly extend- and customizable. For more details, see the
+    architecture <xref linkend="arch-pipeline" />.</para>
+
+    <section>
+      <title>Configuration</title>
+
+      <para>A pipeline can be defined by specifying the pipeline name and the
+      pipeline steps.</para>
+
+      <xi:include href="../listing/SimplePipeline.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+      <para>A pipeline can be layer specific and can refer to a delegate (bean
+      reference). The use of the delegate means that the pipeline definition
+      (list of steps) is copied from the delegate.</para>
+
+      <xi:include href="../listing/PipelineDelegate.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+      <para>When referring to the pipeline definition using a delegate, the
+      pipeline can also be extended by inserting additional steps at the
+      extension hooks. You can pass a map of "extensions" which are named
+      steps. When a extension hook of the name is found, that step will be
+      included in the pipeline just after the hook definition.</para>
+
+      <xi:include href="../listing/PipelineExtension.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
+    </section>
+
+    <section>
+      <title>Default pipelines</title>
+
+      <para>The default pipelines are detailed here. All the steps mentioned
+      here have a hook before and after the step to allow customization of the
+      pipeline. These hooks have the name of the step as mentioned here, with
+      either "pre" or "post" as prefix (note that these keys are case
+      dependent).</para>
+
+      <section>
+        <title>RasterLayerService</title>
+
+        <section>
+          <title>getTiles()</title>
+
+          <para><itemizedlist>
+              <listitem>
+                 "Get" : get the raster tile. 
+              </listitem>
+            </itemizedlist></para>
+        </section>
+      </section>
+
+      <section>
+        <title>VectorLayerService</title>
+
+        <section>
+          <title>saveOrUpdate()</title>
+
+          <para><itemizedlist>
+              <listitem>
+                 "EqualSize" : verify that the list of old and new features match. 
+              </listitem>
+
+              <listitem>
+                 "SaveOrUpdate" : this handles the save or update for the individual features using the pipeline below. 
+              </listitem>
+            </itemizedlist></para>
+        </section>
+
+        <section>
+          <title>saveOrUpdate each feature</title>
+
+          <para><itemizedlist>
+              <listitem>
+                 "Delete" : delete the feature if it has been removed. 
+              </listitem>
+
+              <listitem>
+                 "CheckId" : check that the id for the old and new feature match. 
+              </listitem>
+
+              <listitem>
+                 "TransformGeometry" : assure the geometry is transformed to layer coordinate space. 
+              </listitem>
+
+              <listitem>
+                 "Create" : handle the creation of a new feature. 
+              </listitem>
+
+              <listitem>
+                 "Update" : update the feature. 
+              </listitem>
+
+              <listitem>
+                 "UpdateSave" : save it back to the data store. 
+              </listitem>
+
+              <listitem>
+                 "UpdateFeature" : and assure the feature itself reflects the state from the database. 
+              </listitem>
+            </itemizedlist></para>
+        </section>
+
+        <section>
+          <title>getFeatures()</title>
+
+          <para><itemizedlist>
+              <listitem>
+                 "LayerFilter" : calculate the correct filter based on security and layer extent. 
+              </listitem>
+
+              <listitem>
+                 "GetFeaturesStyle" : get the styles which are relevant for the features. 
+              </listitem>
+
+              <listitem>
+                 "GetFeatures" : fetch and fill the features. 
+              </listitem>
+            </itemizedlist></para>
+        </section>
+
+        <section>
+          <title>getBounds()</title>
+
+          <para><itemizedlist>
+              <listitem>
+                 "LayerFilter" : calculate the correct filter based on security and layer extent. 
+              </listitem>
+
+              <listitem>
+                 "GetBounds" : calculate the bounds for the features which comply with the filter. 
+              </listitem>
+            </itemizedlist></para>
+        </section>
+
+        <section>
+          <title>getAttributes()</title>
+
+          <para><itemizedlist>
+              <listitem>
+                 "LayerFilter" : calculate the correct filter based on security and layer extent. 
+              </listitem>
+
+              <listitem>
+                 "GetAttributes" : get the attributes for the filtered features. 
+              </listitem>
+            </itemizedlist></para>
+        </section>
+
+        <section>
+          <title>getTile()</title>
+
+          <para><itemizedlist>
+              <listitem>
+                 "TileFilter" : calculate the correct filter based on security and tile extent. 
+              </listitem>
+
+              <listitem>
+                 "GetFeatures" : fetch and fill the features. 
+              </listitem>
+
+              <listitem>
+                 "TileTransform" : transform the tile to the requested coordinate reference system. 
+              </listitem>
+
+              <listitem>
+                 "GetStringContent" : render the features to the requested string content. 
+              </listitem>
+            </itemizedlist></para>
+        </section>
+      </section>
+    </section>
+  </chapter>
+</part>

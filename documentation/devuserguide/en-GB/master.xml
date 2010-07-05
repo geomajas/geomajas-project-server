@@ -51,7 +51,10 @@
 	<xi:include href="modules/part-architecture.xml"
 				xmlns:xi="http://www.w3.org/2001/XInclude"/>
 
-	<xi:include href="modules/part-backend.xml"
+	<xi:include href="modules/part-api.xml"
+				xmlns:xi="http://www.w3.org/2001/XInclude"/>
+
+	<xi:include href="modules/part-configuration.xml"
 				xmlns:xi="http://www.w3.org/2001/XInclude"/>
 
 	<xi:include href="modules/part-howto.xml"
