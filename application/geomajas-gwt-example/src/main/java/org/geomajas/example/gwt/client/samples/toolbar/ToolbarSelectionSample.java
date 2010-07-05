@@ -76,7 +76,7 @@ public class ToolbarSelectionSample extends SamplePanel {
 		map.getMapModel().addMapModelHandler(new MapModelHandler() {
 
 			public void onMapModelChange(MapModelEvent event) {
-				map.getMapModel().selectLayer(map.getMapModel().getLayer("structuresLayer"));
+				map.getMapModel().selectLayer(map.getMapModel().getLayer("countries110mGTLayer"));
 			}
 		});
 
@@ -93,7 +93,7 @@ public class ToolbarSelectionSample extends SamplePanel {
 
 	public String[] getConfigurationFiles() {
 		return new String[] { "classpath:org/geomajas/example/gwt/clientcfg/toolbar/mapSelection.xml",
-				"classpath:org/geomajas/example/gwt/servercfg/vector/layerStructures.xml",
+				"classpath:org/geomajas/example/gwt/servercfg/vector/layerCountries110m.xml",
 				"classpath:org/geomajas/example/gwt/servercfg/raster/layerOsm.xml"};
 	}
 
