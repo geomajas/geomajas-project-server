@@ -1,6 +1,9 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
-		"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
 <!--
   ~ This file is part of Geomajas, a component framework for building
   ~ rich Internet applications (RIA) with sophisticated capabilities for the
@@ -23,34 +26,8 @@
   ~ You should have received a copy of the GNU Affero General Public License
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
-<book id="enduser" lang="en">
-	<title>Geomajas end user guide</title>
+<chapter id="chapter-configuration">
+  <title>Configuration</title>
 
-	<bookinfo>
-		<copyright>
-			<year>2010</year>
-
-			<holder>Geosparc nv</holder>
-		</copyright>
-
-		<releaseinfo>v1.7.0-SNAPSHOT</releaseinfo>
-
-		<productname>Geomajas</productname>
-
-		<authorgroup>
-			<corpauthor>Geomajas Developers and Geosparc</corpauthor>
-		</authorgroup>
-	</bookinfo>
-
-	<toc></toc>
-
-	<xi:include href="modules/introduction.xml"
-				xmlns:xi="http://www.w3.org/2001/XInclude"/>
-
-	<xi:include href="modules/configuration.xml"
-				xmlns:xi="http://www.w3.org/2001/XInclude"/>
-
-	<xi:include href="modules/howto.xml"
-				xmlns:xi="http://www.w3.org/2001/XInclude"/>
-
-</book>
+  <para></para>
+</chapter>
