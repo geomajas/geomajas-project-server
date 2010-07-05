@@ -46,13 +46,9 @@ public class ScaleInfoEditor extends PropertyEditorSupport {
 			try {
 				double numerator = Double.parseDouble(text.substring(0, pos));
 				double denominator = Double.parseDouble(text.substring(pos + 1));
-				double scale = 0;
-				if (denominator != 0) {
-					scale = numerator / denominator;
-				}
-				setValue(new ScaleInfo(scale));
+				setValue(new ScaleInfo(numerator, denominator));
 			} catch (Exception e) {
-				throw new IllegalArgumentException("Resolution " + text
+				throw new IllegalArgumentException("Scale " + text
 						+ " could not be parsed. The following format was expected:" + " (x : y).");
 			}
 		} else {
@@ -60,7 +56,7 @@ public class ScaleInfoEditor extends PropertyEditorSupport {
 				// Not recommended....
 				setValue(new ScaleInfo(Double.parseDouble(text)));
 			} catch (Exception e) {
-				throw new IllegalArgumentException("Resolution " + text
+				throw new IllegalArgumentException("Scale " + text
 						+ " could not be parsed. The following format was expected:" + " (x : y).");
 			}
 		}

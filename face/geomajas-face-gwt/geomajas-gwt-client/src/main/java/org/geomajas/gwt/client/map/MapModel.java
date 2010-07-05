@@ -32,7 +32,6 @@ import org.geomajas.configuration.client.ClientRasterLayerInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.configuration.client.ScaleConfigurationInfo;
 import org.geomajas.configuration.client.ScaleInfo;
-import org.geomajas.configuration.client.ScaleUnit;
 import org.geomajas.global.Api;
 import org.geomajas.gwt.client.gfx.Paintable;
 import org.geomajas.gwt.client.gfx.PainterVisitor;
@@ -265,27 +264,12 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 			this.mapInfo = mapInfo;
 			srid = Integer.parseInt(mapInfo.getCrs().substring(mapInfo.getCrs().indexOf(":") + 1));
 			ScaleConfigurationInfo scaleConfigurationInfo = mapInfo.getScaleConfiguration();
-			if (scaleConfigurationInfo.getScaleUnit() == ScaleUnit.NORMAL) {
-				List<Double> realResolutions = new ArrayList<Double>();
-				for (ScaleInfo scale : scaleConfigurationInfo.getZoomLevels()) {
-					// result should be map unit/pix  = number * (m/pix) / (m/map unit)
-					realResolutions.add(1. / scale.getValue() * mapInfo.getPixelLength() / mapInfo.getUnitLength());
-				}
-				mapView.setResolutions(realResolutions);
-			} else {
-				List<Double> realResolutions = new ArrayList<Double>();
-				for (ScaleInfo scale : scaleConfigurationInfo.getZoomLevels()) {
-					realResolutions.add(1. / scale.getValue());
-				}
-				mapView.setResolutions(realResolutions);
+			List<Double> realResolutions = new ArrayList<Double>();
+			for (ScaleInfo scale : scaleConfigurationInfo.getZoomLevels()) {
+				realResolutions.add(1. / scale.getPixelPerUnit());
 			}
-			if (scaleConfigurationInfo.getScaleUnit() == ScaleUnit.NORMAL) {
-				// result should be pix/map unit = number * (m/map unit) / (m/pix)
-				mapView.setMaximumScale(scaleConfigurationInfo.getMaximumScale().getValue() * mapInfo.getUnitLength()
-						/ mapInfo.getPixelLength());
-			} else {
-				mapView.setMaximumScale(scaleConfigurationInfo.getMaximumScale().getValue());
-			}
+			mapView.setResolutions(realResolutions);
+			mapView.setMaximumScale(scaleConfigurationInfo.getMaximumScale().getPixelPerUnit() );
 			Bbox initialBounds = new Bbox(mapInfo.getInitialBounds().getX(), mapInfo.getInitialBounds().getY(), mapInfo
 					.getInitialBounds().getWidth(), mapInfo.getInitialBounds().getHeight());
 			removeAllLayers();

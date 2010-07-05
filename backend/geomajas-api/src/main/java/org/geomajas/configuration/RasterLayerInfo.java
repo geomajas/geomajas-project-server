@@ -23,16 +23,18 @@
 package org.geomajas.configuration;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
 
+import org.geomajas.configuration.client.ScaleInfo;
 import org.geomajas.global.Api;
 import org.geomajas.layer.LayerType;
 
 /**
  * Information about a raster layer.
- *
+ * 
  * @author Joachim Van der Auwera
  * @since 1.6.0
  */
@@ -42,12 +44,14 @@ public class RasterLayerInfo extends LayerInfo implements Serializable {
 	private static final long serialVersionUID = 151L;
 
 	private String dataSourceName;
+
 	@NotNull
 	private int tileWidth;
+
 	@NotNull
 	private int tileHeight;
-	
-	private List<Double> resolutions;
+
+	private List<ScaleInfo> zoomLevels = new ArrayList<ScaleInfo>();
 
 	/**
 	 * Create raster layer.
@@ -58,7 +62,7 @@ public class RasterLayerInfo extends LayerInfo implements Serializable {
 
 	/**
 	 * Get the data source name. This is used by the layer to know which data source to contact.
-	 *
+	 * 
 	 * @return data source name
 	 */
 	public String getDataSourceName() {
@@ -67,8 +71,9 @@ public class RasterLayerInfo extends LayerInfo implements Serializable {
 
 	/**
 	 * Set the data source name. This is used by the layer to know which data source to contact.
-	 *
-	 * @param dataSourceName data source name
+	 * 
+	 * @param dataSourceName
+	 *            data source name
 	 */
 	public void setDataSourceName(String dataSourceName) {
 		this.dataSourceName = dataSourceName;
@@ -77,9 +82,9 @@ public class RasterLayerInfo extends LayerInfo implements Serializable {
 	/**
 	 * Get tile width in pixels.
 	 * <p/>
-	 * Raster layers often use fixed tile sizes which need to be combined to get the full picture.
-	 * This allows you to get the width of these tiles (when applicable).
-	 *
+	 * Raster layers often use fixed tile sizes which need to be combined to get the full picture. This allows you to
+	 * get the width of these tiles (when applicable).
+	 * 
 	 * @return tile width in pixels
 	 */
 	public int getTileWidth() {
@@ -89,10 +94,11 @@ public class RasterLayerInfo extends LayerInfo implements Serializable {
 	/**
 	 * Set tile width in pixels.
 	 * <p/>
-	 * Raster layers often use fixed tile sizes which need to be combined to get the full picture.
-	 * This allows you to get the width of these tiles (when applicable).
-	 *
-	 * @param tileWidth tile width
+	 * Raster layers often use fixed tile sizes which need to be combined to get the full picture. This allows you to
+	 * get the width of these tiles (when applicable).
+	 * 
+	 * @param tileWidth
+	 *            tile width
 	 */
 	public void setTileWidth(int tileWidth) {
 		this.tileWidth = tileWidth;
@@ -101,9 +107,9 @@ public class RasterLayerInfo extends LayerInfo implements Serializable {
 	/**
 	 * Get tile height in pixels.
 	 * <p/>
-	 * Raster layers often use fixed tile sizes which need to be combined to get the full picture.
-	 * This allows you to get the height of these tiles (when applicable).
-	 *
+	 * Raster layers often use fixed tile sizes which need to be combined to get the full picture. This allows you to
+	 * get the height of these tiles (when applicable).
+	 * 
 	 * @return tile height
 	 */
 	public int getTileHeight() {
@@ -113,10 +119,11 @@ public class RasterLayerInfo extends LayerInfo implements Serializable {
 	/**
 	 * Set tile height in pixels.
 	 * <p/>
-	 * Raster layers often use fixed tile sizes which need to be combined to get the full picture.
-	 * This allows you to get the height of these tiles (when applicable).
-	 *
-	 * @param tileHeight tile height
+	 * Raster layers often use fixed tile sizes which need to be combined to get the full picture. This allows you to
+	 * get the height of these tiles (when applicable).
+	 * 
+	 * @param tileHeight
+	 *            tile height
 	 */
 	public void setTileHeight(int tileHeight) {
 		this.tileHeight = tileHeight;
@@ -124,20 +131,53 @@ public class RasterLayerInfo extends LayerInfo implements Serializable {
 
 	/**
 	 * Get the list of supported resolutions for the layer. Each resolution is specified in map units per pixel.
-	 *
+	 * 
 	 * @return list of supported resolutions
+	 * @deprecated use {@link #getZoomLevels()}
 	 */
+	@Deprecated
 	public List<Double> getResolutions() {
+		List<Double> resolutions = new ArrayList<Double>();
+		for (ScaleInfo scale : getZoomLevels()) {
+			resolutions.add(1. / scale.getPixelPerUnit());
+		}
 		return resolutions;
 	}
 
 	/**
 	 * Set the list of supported resolutions. Each resolution is specified in map units per pixel.
-	 *
-	 * @param resolutions resolutions 
+	 * 
+	 * @param resolutions
+	 *            resolutions
+	 * @deprecated use {@link #setZoomLevels()}
 	 */
+	@Deprecated
 	public void setResolutions(List<Double> resolutions) {
-		this.resolutions = resolutions;
+		getZoomLevels().clear();
+		for (Double resolution : resolutions) {
+			getZoomLevels().add(new ScaleInfo(1. / resolution));
+		}
+	}
+
+	/**
+	 * Returns the list of zoom levels for the layer.
+	 * 
+	 * @return the list of zoom levels
+	 * @since 1.7.0
+	 */
+	public List<ScaleInfo> getZoomLevels() {
+		return zoomLevels;
+	}
+
+	/**
+	 * Sets the list of zoom levels for this layer.
+	 * 
+	 * @param zoomLevels
+	 *            the list of zoom levels
+	 * @since 1.7.0
+	 */
+	public void setZoomLevels(List<ScaleInfo> zoomLevels) {
+		this.zoomLevels = zoomLevels;
 	}
 
 }

@@ -66,6 +66,10 @@ public class ClientMapInfo implements Serializable {
 
 	private ScaleConfigurationInfo scaleConfiguration = new ScaleConfigurationInfo();
 
+	private boolean resolutionsRelative;
+	
+	private List<Double> resolutions = new ArrayList<Double>();
+
 	@NotNull
 	private Bbox initialBounds;
 
@@ -304,7 +308,7 @@ public class ClientMapInfo implements Serializable {
 	 */
 	@Deprecated
 	public float getMaximumScale() {
-		return (float) getScaleConfiguration().getMaximumScale().getValue();
+		return (float)getScaleConfiguration().getMaximumScale().getPixelPerUnit();
 	}
 
 	/**
@@ -317,7 +321,7 @@ public class ClientMapInfo implements Serializable {
 	 */
 	@Deprecated
 	public void setMaximumScale(float maximumScale) {
-		getScaleConfiguration().setMaximumScale(new ScaleInfo(maximumScale));
+		getScaleConfiguration().setMaximumScale(new ScaleInfo((double) maximumScale));
 	}
 
 	/**
@@ -351,10 +355,6 @@ public class ClientMapInfo implements Serializable {
 	 */
 	@Deprecated
 	public List<Double> getResolutions() {
-		List<Double> resolutions = new ArrayList<Double>();
-		for (ScaleInfo scale : getScaleConfiguration().getZoomLevels()) {
-			resolutions.add(1. / scale.getValue());
-		}
 		return resolutions;
 	}
 
@@ -362,17 +362,14 @@ public class ClientMapInfo implements Serializable {
 	 * Sets the list of resolutions (inverse scale values) allowed by this map. This determines the predefined scale
 	 * levels at which this map will be shown. If this list is non-empty, the map will not adjust to arbitrary scale
 	 * levels but will instead snap to one of the scale levels defined in this list when zooming.
-	 *  
+	 * 
 	 * @param resolutions
 	 *            a list of resolutions (unit/pixel or pure number if relative)
 	 * @deprecated use {@link #setScaleConfiguration()}
 	 */
 	@Deprecated
 	public void setResolutions(List<Double> resolutions) {
-		getScaleConfiguration().getZoomLevels().clear();
-		for (Double resolution : resolutions) {
-			getScaleConfiguration().getZoomLevels().add(new ScaleInfo(1. / resolution));
-		}
+		this.resolutions = resolutions;
 	}
 
 	/**
@@ -384,7 +381,7 @@ public class ClientMapInfo implements Serializable {
 	 */
 	@Deprecated
 	public boolean isResolutionsRelative() {
-		return getScaleConfiguration().getScaleUnit().equals(ScaleUnit.NORMAL);
+		return resolutionsRelative;
 	}
 
 	/**
@@ -397,7 +394,7 @@ public class ClientMapInfo implements Serializable {
 	 */
 	@Deprecated
 	public void setResolutionsRelative(boolean resolutionsRelative) {
-		getScaleConfiguration().setScaleUnit(resolutionsRelative ? ScaleUnit.NORMAL : ScaleUnit.PIXEL_PER_UNIT);
+		this.resolutionsRelative = resolutionsRelative;
 	}
 
 	/**

@@ -61,32 +61,29 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 			<bean class="org.geomajas.configuration.client.ScaleConfigurationInfo">
 				<property name="zoomLevels">
 					<list>
-						<value>1:156543.03</value>
-						<value>1:78271.52</value>
-						<value>1:39135.76</value>
-						<value>1:19567.88</value>
-						<value>1:9783.94</value>
-						<value>1:4891.97</value>
-						<value>1:2445.98</value>
-						<value>1:1222.99</value>
-						<value>1:611.49</value>
-						<value>1:305.75</value>
-						<value>1:152.874057</value>
-						<value>1:76.4370283</value>
-						<value>1:38.2185141</value>
-						<value>1:19.1092571</value>
-						<value>1:9.55462853</value>
-						<value>1:4.77731427</value>
-						<value>1:2.38865713</value>
-						<value>1:1.19432857</value>
-						<value>1:0.597164285</value>
-						<value>1:0.2985821425</value>
-						<value>1:0.14929107125</value>
-						<value>1:0.074645535625</value>
-						<value>1:0.0373227678125</value>
+						<value>6.388019798183263E-6</value>
+						<value>1.2776039596366526E-5</value>
+						<value>2.555207919273305E-5</value>
+						<value>5.11041583854661E-5</value>
+						<value>1.022083167709322E-4</value>
+						<value>2.044166335418644E-4</value>
+						<value>4.088332670837288E-4</value>
+						<value>8.176665341674576E-4</value>
+						<value>0.0016353330683349153</value>
+						<value>0.0032706661366698306</value>
+						<value>0.006541332273339661</value>
+						<value>0.013082664546679322</value>
+						<value>0.026165329093358645</value>
+						<value>0.05233065818671729</value>
+						<value>0.10466131637343458</value>
+						<value>0.20932263274686916</value>
+						<value>0.4186452654937383</value>
+						<value>0.8372905309874766</value>
+						<value>1.6745810619749533</value>
+						<value>3.3491621239499065</value>
+						<value>6.698324247899813</value>
 					</list>
 				</property>
-				<property name="scaleUnit" value="PIXEL_PER_UNIT" />
 			</bean>
 		</property>
 		<property name="layers">

@@ -44,8 +44,7 @@ public class ScaleConfigurationInfo implements Serializable {
 
 	private List<ScaleInfo> zoomLevels = new ArrayList<ScaleInfo>();
 
-	private ScaleUnit scaleUnit = ScaleUnit.NORMAL;
-
+	
 	/**
 	 * Returns the maximum scale of the map.
 	 * 
@@ -82,25 +81,6 @@ public class ScaleConfigurationInfo implements Serializable {
 	 */
 	public void setZoomLevels(List<ScaleInfo> zoomLevels) {
 		this.zoomLevels = zoomLevels;
-	}
-
-	/**
-	 * Returns the unit used by the zoom levels and maximum scale.
-	 * 
-	 * @return a scale unit
-	 */
-	public ScaleUnit getScaleUnit() {
-		return scaleUnit;
-	}
-
-	/**
-	 * Sets the unit used by the zoom levels and maximum scale.
-	 * 
-	 * @param scaleUnit
-	 *            a scale unit
-	 */
-	public void setScaleUnit(ScaleUnit scaleUnit) {
-		this.scaleUnit = scaleUnit;
 	}
 
 }

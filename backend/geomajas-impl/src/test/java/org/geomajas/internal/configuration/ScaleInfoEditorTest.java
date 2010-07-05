@@ -1,0 +1,48 @@
+package org.geomajas.internal.configuration;
+
+import org.geomajas.configuration.client.ScaleInfo;
+import org.geomajas.spring.ScaleInfoHolder;
+import org.junit.Assert;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+/**
+ * Tests for ScaleInfoEditor.
+ * 
+ * @author Jan De Moerloose
+ * 
+ */
+@RunWith(SpringJUnit4ClassRunner.class)
+@ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml", "/org/geomajas/spring/editorContext.xml" })
+public class ScaleInfoEditorTest {
+
+	@Autowired
+	private ScaleInfoHolder holder;
+
+	@Test
+	public void testSetAsText() {
+		ScaleInfoEditor editor = new ScaleInfoEditor();
+		editor.setAsText("1:2000");
+		Object o = editor.getValue();
+		Assert.assertTrue(o instanceof ScaleInfo);
+		ScaleInfo info = (ScaleInfo)o;
+		Assert.assertEquals(1, info.getNumerator(), 0.001);
+		Assert.assertEquals(2000, info.getDenominator(), 0.001);
+		Assert.assertEquals(0, info.getPixelPerUnit(), 0);
+		info.convertScale(10);
+		Assert.assertEquals(0.005, info.getPixelPerUnit(), 0.00001);
+	}
+
+	@Test
+	public void testIncontext() {
+		ScaleInfo info = holder.getScaleInfo();
+		Assert.assertEquals(1, info.getNumerator(), 0.001);
+		Assert.assertEquals(2500, info.getDenominator(), 0.001);
+		Assert.assertEquals(0, info.getPixelPerUnit(), 0);
+		info.convertScale(100);
+		Assert.assertEquals(0.04, info.getPixelPerUnit(), 0.00001);
+	}
+}

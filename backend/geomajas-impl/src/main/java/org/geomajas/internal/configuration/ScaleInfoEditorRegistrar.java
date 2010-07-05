@@ -20,29 +20,24 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+package org.geomajas.internal.configuration;
 
-package org.geomajas.spring;
-
-import org.springframework.format.FormatterRegistry;
-import org.springframework.format.support.FormattingConversionServiceFactoryBean;
+import org.geomajas.configuration.client.ScaleInfo;
+import org.springframework.beans.PropertyEditorRegistrar;
+import org.springframework.beans.PropertyEditorRegistry;
 
 /**
- * This extension of the Spring {@link FormattingConversionServiceFactoryBean} adds a special formatter that parses
- * resolutions (1:x) into double values. See {@link ResolutionFormatterFactory}.
+ * Custom {@link PropertyEditorRegistrar} implementation that registers {@link ScaleInfoEditor} any desired editors on a
+ * given {@link PropertyEditorRegistry registry}.
  * 
- * @author Pieter De Graef
- * @since 1.7.0
+ * @author Jan De Moerloose
+ * 
  */
-public class GeomajasFormattingFactoryBean extends FormattingConversionServiceFactoryBean {
+public class ScaleInfoEditorRegistrar implements PropertyEditorRegistrar {
 
-	/**
-	 * Overrides the parent method to also add the {@link ResolutionFormatterFactory}.
-	 * 
-	 * @param registry
-	 *            The formatter registry.
-	 */
-	protected void installFormatters(FormatterRegistry registry) {
-		super.installFormatters(registry);
-		registry.addFormatterForFieldAnnotation(new ResolutionFormatterFactory());
+	public void registerCustomEditors(PropertyEditorRegistry registry) {
+		ScaleInfoEditor editor = new ScaleInfoEditor();
+		registry.registerCustomEditor(ScaleInfo.class, editor);
 	}
+
 }

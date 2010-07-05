@@ -53,8 +53,6 @@ public abstract class ClientLayerInfo implements Serializable {
 
 	private ScaleInfo maximumScale = ScaleInfo.MAX_VALUE;
 
-	private ScaleUnit scaleUnit = ScaleUnit.NORMAL;
-
 	@Null
 	private LayerInfo layerInfo;
 
@@ -151,7 +149,7 @@ public abstract class ClientLayerInfo implements Serializable {
 	 */
 	@Deprecated
 	public double getViewScaleMin() {
-		return minimumScale.getValue();
+		return minimumScale.getPixelPerUnit();
 	}
 
 	/**
@@ -163,7 +161,6 @@ public abstract class ClientLayerInfo implements Serializable {
 	 */
 	@Deprecated
 	public void setViewScaleMin(double viewScaleMin) {
-		setScaleUnit(ScaleUnit.PIXEL_PER_UNIT);
 		setMinimumScale(new ScaleInfo(viewScaleMin));
 	}
 
@@ -175,7 +172,7 @@ public abstract class ClientLayerInfo implements Serializable {
 	 */
 	@Deprecated
 	public double getViewScaleMax() {
-		return maximumScale.getValue();
+		return maximumScale.getPixelPerUnit();
 	}
 
 	/**
@@ -187,8 +184,7 @@ public abstract class ClientLayerInfo implements Serializable {
 	 */
 	@Deprecated
 	public void setViewScaleMax(double viewScaleMax) {
-		setScaleUnit(ScaleUnit.PIXEL_PER_UNIT);
-		setMinimumScale(new ScaleInfo(viewScaleMax));
+		setMaximumScale(new ScaleInfo(viewScaleMax));
 	}
 
 	/**
@@ -233,27 +229,6 @@ public abstract class ClientLayerInfo implements Serializable {
 		this.maximumScale = maximumScale;
 	}
 	
-	/**
-	 * Returns the unit used by the minimum and maximum scale.
-	 * 
-	 * @return a scale unit
-	 * @since 1.7.0
-	 */
-	public ScaleUnit getScaleUnit() {
-		return scaleUnit;
-	}
-
-	/**
-	 * Sets the unit used by the minimum and maximum scale.
-	 * 
-	 * @param scaleUnit
-	 *            a scale unit
-	 * @since 1.7.0
-	 */
-	public void setScaleUnit(ScaleUnit scaleUnit) {
-		this.scaleUnit = scaleUnit;
-	}
-
 	/**
 	 * Get the maximum visible extent of this layer (in map space).
 	 * 

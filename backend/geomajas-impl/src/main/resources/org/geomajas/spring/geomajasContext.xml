@@ -30,8 +30,6 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
 http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd">
  
-    <bean id="conversionService" class="org.geomajas.spring.GeomajasFormattingFactoryBean" />
-
 	<bean class="org.geomajas.global.PluginInfo">
 		<property name="version">
 			<bean class="org.geomajas.global.PluginVersionInfo">
@@ -215,10 +213,10 @@ PROJCS["Google Mercator",
 	<context:component-scan base-package="org.geomajas" name-generator="org.geomajas.spring.GeomajasBeanNameGenerator"/>
 
 	<bean class="org.springframework.beans.factory.config.CustomEditorConfigurer">
-		<property name="customEditors">
-			<map>
-				<entry key="org.geomajas.configuration.client.ScaleInfo" value="org.geomajas.internal.configuration.ScaleInfoEditor" />
-			</map>
+		<property name="propertyEditorRegistrars">
+			<list>
+				<bean class="org.geomajas.internal.configuration.ScaleInfoEditorRegistrar" />
+			</list>
 		</property>
 	</bean>
 

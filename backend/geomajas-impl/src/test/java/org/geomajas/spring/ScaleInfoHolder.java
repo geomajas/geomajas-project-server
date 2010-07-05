@@ -22,35 +22,25 @@
  */
 package org.geomajas.spring;
 
-import java.text.ParseException;
-
-import org.junit.Assert;
-import org.junit.Test;
+import org.geomajas.configuration.client.ScaleInfo;
 
 /**
- * Test to see if the parsing of resolutions, using the (1:x) format works.
+ * Bean to test ScaleInfo configuration.
  * 
- * @author Pieter De Graef
+ * @author Jan De Moerloose
+ * 
  */
-public class ResolutionFormatterTest {
+public class ScaleInfoHolder {
+	
+	private ScaleInfo scaleInfo;
 
-	@Test
-	public void testParse() {
-		try {
-			double resolution = ResolutionFormatterFactory.parseResolution("1:2000");
-			Assert.assertEquals(5.0E-4, resolution, 0.001);
-			resolution = ResolutionFormatterFactory.parseResolution(" 1:2000 ");
-			Assert.assertEquals(5.0E-4, resolution, 0.001);
-			resolution = ResolutionFormatterFactory.parseResolution("1 : 2000");
-			Assert.assertEquals(5.0E-4, resolution, 0.001);
-			resolution = ResolutionFormatterFactory.parseResolution("1:2,000");
-			Assert.assertEquals(5.0E-4, resolution, 0.001);
-			resolution = ResolutionFormatterFactory.parseResolution("1:2 000");
-			Assert.assertEquals(5.0E-4, resolution, 0.001);
-			resolution = ResolutionFormatterFactory.parseResolution(" 1 : 2,000 ");
-			Assert.assertEquals(5.0E-4, resolution, 0.001);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
+	public ScaleInfo getScaleInfo() {
+		return scaleInfo;
 	}
+	
+	public void setScaleInfo(ScaleInfo scaleInfo) {
+		this.scaleInfo = scaleInfo;
+	}
+		
+
 }

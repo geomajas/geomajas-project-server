@@ -30,19 +30,20 @@ import javax.annotation.PostConstruct;
 import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.LayerInfo;
 import org.geomajas.configuration.NamedStyleInfo;
+import org.geomajas.configuration.RasterLayerInfo;
 import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.configuration.client.ClientApplicationInfo;
 import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.configuration.client.ScaleInfo;
-import org.geomajas.configuration.client.ScaleUnit;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.Layer;
 import org.geomajas.layer.LayerException;
+import org.geomajas.layer.RasterLayer;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
 import org.geotools.geometry.DirectPosition2D;
@@ -89,21 +90,41 @@ public class ConfigurationDtoPostProcessor {
 	@Autowired(required = false)
 	protected Map<String, Layer<?>> layerMap = new LinkedHashMap<String, Layer<?>>();
 
+	@Autowired(required = false)
+	protected Map<String, RasterLayer> rasterLayerMap = new LinkedHashMap<String, RasterLayer>();
+
 	public ConfigurationDtoPostProcessor() {
 
 	}
 
 	@PostConstruct
 	public void processConfiguration() throws BeansException {
-		for (ClientApplicationInfo application : applicationMap.values()) {
-			try {
-				postProcess(application);
-			} catch (LayerException e) {
-				throw new BeanInitializationException("Could not post process configuration", e);
+		try {
+			for (RasterLayer layer : rasterLayerMap.values()) {
+				postProcess(layer);
 			}
+			for (ClientApplicationInfo application : applicationMap.values()) {
+				postProcess(application);
+			}
+			for (NamedStyleInfo style : namedStyleMap.values()) {
+				postProcess(style);
+			}
+		} catch (LayerException e) {
+			throw new BeanInitializationException("Could not post process configuration", e);
 		}
-		for (NamedStyleInfo style : namedStyleMap.values()) {
-			postProcess(style);
+	}
+
+	private void postProcess(RasterLayer layer) throws LayerException {
+		RasterLayerInfo info = layer.getLayerInfo();
+		for (ScaleInfo scale : info.getZoomLevels()) {
+			// for raster layers we don't accept 1 : x notation !
+			if (scale.getDenominator() != 0) {
+				throw new LayerException(ExceptionCode.CONVERSION_PROBLEM, "Raster layer " + layer.getId()
+						+ " has zoom level " + scale.getNumerator() + " : " + scale.getDenominator()
+						+ " in disallowed 1 : x notation");
+			}
+			// add the resolution for deprecated api support
+			info.getResolutions().add(1. / scale.getPixelPerUnit());
 		}
 	}
 
@@ -113,6 +134,39 @@ public class ConfigurationDtoPostProcessor {
 			map.setUnitLength(getUnitLength(map.getCrs(), map.getInitialBounds()));
 			// result should be m = (m/inch) / (number/inch)
 			map.setPixelLength(METER_PER_INCH / client.getScreenDpi());
+			log.debug("Map " + map.getId() + " has unit length : " + map.getUnitLength() + "m, pixel length "
+					+ map.getPixelLength() + "m");
+			// calculate scales
+			double pixPerUnit = map.getUnitLength() / map.getPixelLength();
+			// if resolutions have been defined the old way, calculate the scale configuration
+			if (map.getResolutions().size() > 0) {
+				for (Double resolution : map.getResolutions()) {
+					if (map.isResolutionsRelative()) {
+						map.getScaleConfiguration().getZoomLevels().add(new ScaleInfo(1., resolution));
+					} else {
+						map.getScaleConfiguration().getZoomLevels().add(new ScaleInfo(1. / resolution));
+					}
+				}
+				map.getResolutions().clear();
+			}
+			// convert the scales so we have both relative and pix/unit
+			boolean relativeScales = true;
+			for (ScaleInfo scale : map.getScaleConfiguration().getZoomLevels()) {
+				if (scale.getDenominator() == 0) {
+					relativeScales = false;
+				} else if (!relativeScales) {
+					throw new LayerException(ExceptionCode.CONVERSION_PROBLEM, "Map " + map.getId()
+							+ " has a disallowed mix of scale notations 1 : x and x (use 1 : 1 for scale 1 ?)");
+				}
+				scale.convertScale(pixPerUnit);
+				// add the resolution for deprecated api support
+				if (map.isResolutionsRelative()) {
+					map.getResolutions().add(1. / scale.getPixelPerUnit());
+				} else {
+					map.getResolutions().add(scale.getDenominator() / scale.getNumerator());
+				}
+			}
+			map.getScaleConfiguration().getMaximumScale().convertScale(pixPerUnit);
 			for (ClientLayerInfo layer : map.getLayers()) {
 				String layerId = layer.getServerLayerId();
 				Layer<?> serverLayer = layerMap.get(layerId);
@@ -122,17 +176,10 @@ public class ConfigurationDtoPostProcessor {
 				LayerInfo layerInfo = serverLayer.getLayerInfo();
 				layer.setLayerInfo(layerInfo);
 				layer.setMaxExtent(getClientMaxExtent(map.getCrs(), layer.getCrs(), layerInfo.getMaxExtent(), layerId));
-				if (layer.getScaleUnit() == ScaleUnit.NORMAL) {
-					// force pixel per unit (expected by client)
-					layer.setScaleUnit(ScaleUnit.PIXEL_PER_UNIT);
-					// result should be pix/map unit = number * (m/map unit) / (m/pix)
-					layer.setMaximumScale(new ScaleInfo(layer.getMaximumScale().getValue() * map.getUnitLength()
-							/ map.getPixelLength()));
-					layer.setMinimumScale(new ScaleInfo(layer.getMinimumScale().getValue() * map.getUnitLength()
-							/ map.getPixelLength()));
-				}
-				log.debug("Layer " + layer.getId() + " has scale range : " + layer.getMinimumScale().getValue() + ","
-						+ layer.getMaximumScale().getValue());
+				layer.getMaximumScale().convertScale(pixPerUnit);
+				layer.getMinimumScale().convertScale(pixPerUnit);
+				log.debug("Layer " + layer.getId() + " has scale range : " + layer.getMinimumScale().getPixelPerUnit()
+						+ "," + layer.getMaximumScale().getPixelPerUnit());
 				if (layer instanceof ClientVectorLayerInfo) {
 					postProcess((ClientVectorLayerInfo) layer);
 				}

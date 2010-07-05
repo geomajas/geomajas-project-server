@@ -37,11 +37,13 @@ import org.geomajas.gwt.client.map.event.MapModelEvent;
 import org.geomajas.gwt.client.map.event.MapModelHandler;
 import org.geomajas.gwt.client.map.event.MapViewChangedEvent;
 import org.geomajas.gwt.client.map.event.MapViewChangedHandler;
+import org.geomajas.gwt.client.map.layer.Layer;
 import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.spatial.WorldViewTransformer;
 import org.geomajas.gwt.client.spatial.geometry.LinearRing;
 import org.geomajas.gwt.client.spatial.geometry.Polygon;
 
+import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.widgets.events.ResizedEvent;
 import com.smartgwt.client.widgets.events.ResizedHandler;
 
@@ -54,7 +56,7 @@ import com.smartgwt.client.widgets.events.ResizedHandler;
  */
 @Api
 public class OverviewMap extends MapWidget implements MapViewChangedHandler {
-	
+
 	private static final String TARGET_RETICLE_IMAGE = "geomajas/widget/target.gif";
 
 	/** Reference to the main map, that this overview map is to follow. */
@@ -308,6 +310,14 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 			// Then apply the map extent:
 			mapView.applyBounds(targetMaxBounds, MapView.ZoomOption.LEVEL_FIT);
 			super.onMapViewChanged(null);
+
+			// Warn for layers that aren't showing
+			for (Layer layer : getMapModel().getLayers()) {
+				if (!layer.isShowing()) {
+					GWT.log("The overview map " + getMapModel().getId() + " is probably misconfigured. Layer "
+							+ layer.getId() + " not showing");
+				}
+			}
 
 			// Immediately draw or remove the max extent rectangle:
 			setDrawTargetMaxExtent(drawTargetMaxExtent);
