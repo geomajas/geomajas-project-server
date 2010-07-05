@@ -37,7 +37,7 @@ include() {
 	echo "<h2>$4</h2>" >> $TARGET
 	echo "<p class="state">state: $6</p>" >> $TARGET
 	echo "<p class="desc">$5</p>" >> $TARGET
-	echo "<p class="links">View: <a href="$LINKPREFIX$2/pdf/$7">PDF</a> | <a href="$LINKPREFIX$2/html/index.html">html</a> | <a href="$LINKPREFIX$2/html/index.html">one page html</a></p>" >> $TARGET
+	echo "<p class="links">View: <a href="$LINKPREFIX$2/pdf/$7">PDF</a> | <a href="$LINKPREFIX$2/html/index.html">html</a> | <a href="$LINKPREFIX$2/html_single/index.html">one page html</a></p>" >> $TARGET
 }
 
 template_start
