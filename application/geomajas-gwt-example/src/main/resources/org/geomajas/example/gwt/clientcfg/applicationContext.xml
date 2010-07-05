@@ -47,6 +47,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 				<ref bean="googleTerrainMap" />
 				<ref bean="osmNavigationToolbarMap" />
 				<ref bean="selectionMap" />
+				<ref bean="featureInfoMap" />
 				<ref bean="osmMeasureMap" />
 				<ref bean="overviewOsmMap" />
 				<ref bean="osmMapResolutions" />

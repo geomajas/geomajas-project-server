@@ -61,7 +61,7 @@ public class ToolbarFeatureInfoSample extends SamplePanel {
 		layout.setWidth100();
 		layout.setHeight100();
 
-		// Map with ID osmFeatureInfoMap is defined in the XML configuration. (mapOsmFeatureInfo.xml)
+		// Map with ID featureInfoMap is defined in the XML configuration.
 		final MapWidget map = new MapWidget("featureInfoMap", "gwt-samples");
 
 		final Toolbar toolbar = new Toolbar(map);
@@ -92,8 +92,8 @@ public class ToolbarFeatureInfoSample extends SamplePanel {
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "classpath:org/geomajas/example/gwt/servercfg/vector/layerStructures.xml",
-				"classpath:org/geomajas/example/gwt/servercfg/raster/layerOsm.xml",
+		return new String[] { "classpath:org/geomajas/example/gwt/servercfg/vector/layerCountries110m.xml",
+				"classpath:org/geomajas/example/gwt/servercfg/raster/layerWmsBluemarble.xml",
 				"classpath:org/geomajas/example/gwt/clientcfg/toolbar/mapFeatureInfo.xml" };
 	}
 
