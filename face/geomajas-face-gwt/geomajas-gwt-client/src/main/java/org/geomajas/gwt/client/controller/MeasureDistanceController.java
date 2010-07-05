@@ -147,6 +147,7 @@ public class MeasureDistanceController extends AbstractSnappingController {
 
 	/** Stop the measuring, and remove all graphics from the map. */
 	public void onDoubleClick(DoubleClickEvent event) {
+		tempLength = 0;
 		mapWidget.unregisterWorldPaintable(distanceLine);
 		mapWidget.unregisterWorldPaintable(lineSegment);
 		distanceLine.setGeometry(null);
