@@ -126,9 +126,11 @@ public class Feature implements Paintable, Cloneable {
 			setUpdatable(dto.isUpdatable());
 			setDeletable(dto.isDeletable());
 		} else {
-			// Create empty attributes:
-			for (AttributeInfo attrInfo : layer.getLayerInfo().getFeatureInfo().getAttributes()) {
-				attributes.put(attrInfo.getName(), createEmptyAttribute(attrInfo));
+			if (layer != null) {
+				// Create empty attributes:
+				for (AttributeInfo attrInfo : layer.getLayerInfo().getFeatureInfo().getAttributes()) {
+					attributes.put(attrInfo.getName(), createEmptyAttribute(attrInfo));
+				}
 			}
 			setUpdatable(true);
 			setDeletable(true);
