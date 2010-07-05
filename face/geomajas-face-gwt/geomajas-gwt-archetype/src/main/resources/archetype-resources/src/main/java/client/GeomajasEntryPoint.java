@@ -34,11 +34,6 @@ import ${package}.client.pages.AbstractTab;
 import ${package}.client.pages.FeatureListGridPage;
 import ${package}.client.pages.SearchPage;
 
-import mypackage.client.i18n.Simple;
-import mypackage.client.pages.AbstractTab;
-import mypackage.client.pages.FeatureListGridPage;
-import mypackage.client.pages.SearchPage;
-
 import org.geomajas.gwt.client.Geomajas;
 import org.geomajas.gwt.client.i18n.I18nProvider;
 import org.geomajas.gwt.client.map.event.MapModelEvent;
@@ -90,6 +85,7 @@ public class GeomajasEntryPoint implements EntryPoint {
 	}
 
 	public void onModuleLoad() {
+		// Used for i18n in configuration files:
 		I18nProvider.setLookUp(GWT.<ConstantsWithLookup>create(Translation.class));
 
 		VLayout mainLayout = new VLayout();
