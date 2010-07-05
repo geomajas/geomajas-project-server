@@ -31,7 +31,6 @@ import org.geomajas.gwt.client.map.event.MapModelEvent;
 import org.geomajas.gwt.client.map.event.MapModelHandler;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.Toolbar;
-import org.geomajas.plugin.printing.client.action.toolbar.PrintAction;
 
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.layout.VLayout;
@@ -69,7 +68,6 @@ public class CustomToolbarSample extends SamplePanel {
 
 		// add a button in GWT code
 		toolbar.addModalButton(new ZoomToRectangleModalAction(map));
-		toolbar.addActionButton(new PrintAction(map));
 
 		layout.addMember(toolbar);
 		layout.addMember(map);
