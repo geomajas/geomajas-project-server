@@ -94,8 +94,8 @@ public final class DistanceFormat {
 	 * @param area
 	 *            The original area, expressed in the coordinate reference system of the given map.
 	 * @return Returns a string that is the formatted area of the given area. Preference goes to meters or yards
-	 *         (depending on the configured unit type), but when the number is larger than meters² (or yard²), it will
-	 *         switch automatically to kilometer²/mile².
+	 *            (depending on the configured unit type), but when the number is larger than meters (or yards), it will
+	 *            switch automatically to kilometers/miles.
 	 */
 	public static String asMapArea(MapWidget map, double area) {
 		double unitLength = map.getUnitLength();
