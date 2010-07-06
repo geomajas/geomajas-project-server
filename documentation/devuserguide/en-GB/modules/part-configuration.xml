@@ -218,19 +218,29 @@
                 </row>
 
                 <row>
-                  <entry>resolutions</entry>
+                  <entry>zoomLevels</entry>
 
-                  <entry>A list of resolution values. An image or tile
-                  resolution is defined as the ratio between map units and
-                  pixels for a tile. If a resolution is 5 and the map unit is
-                  meter, this means that 1 pixel represents a square area of 5
-                  by 5 m. Images are usually optimized for a specific (set of)
-                  resolution(s), so it is important to specify these here if
-                  they are known. On top of that, some servers provide
+                  <entry><para>A list of scale values corresponding to the
+                  zoom levels at which the raster data should be
+                  fetched.</para><para>An image or tile scale is obtained by
+                  dividing the size of the tile in pixels by the size of the
+                  tile in map units. For example, if the tile is 256 x 256
+                  pixels and this corresponds to an area of 100 m x 100 m, the
+                  scale can be calculated as 256/100 = 2,56 pixels per
+                  meter.The inverse value of the scale is more often used and
+                  is sometimes called the<emphasis>resolution</emphasis>.
+                  Images are usually optimized or prerendered for a specific
+                  (set of) resolution(s), so it is important to specify these
+                  here if they are known. On top of that, some servers provide
                   specific tile caching for these predefined resolutions (for
-                  example WMS-T). Care has to be taken, the same resolutions
-                  should be defined in the map as well if one wants to avoid
-                  linear distortion of the images.</entry>
+                  example WMS-T). </para><para>A word of caution concerning
+                  zoom levels : setting the zoom levels here will only make
+                  sure that tiles will be fetched at predefined levels but
+                  does not impose any restrictions on the zoom levels of the
+                  map itself. If the zoom levels of the map have different
+                  values or are not specified at all (arbitrary zooming),
+                  raster images will be stretched on the client side to
+                  accomodate for these differences. </para></entry>
                 </row>
 
                 <row>
@@ -538,28 +548,62 @@
         <xi:include href="../listing/ClientMapInfoPart1.xml"
                     xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-        <para>The layers refers to the client layer info objects, not the
-        server layer info or layer instances.</para>
+        <para>The crs evidently refers to the map's coordinate reference
+        system. The display unit type determines the unit type of the scale
+        bar (METRIC, ENGLISH or CRS). The initial bounds determine the visible
+        area of the map at startup time. The layers refers to the client layer
+        info objects, not the server layer info or layer instances.</para>
 
-        <para>For the client side, a lot of additional information can be
-        included in the map configuration. This includes information like
-        background colour, styles which should be used for selected points,
-        lines and polygons and whether scale bare or pan buttons should be
-        enabled.</para>
+        <para>Additionally, a lot of style information can be included in the
+        map configuration. This includes information like background colour,
+        styles which should be used for selected points, lines and polygons
+        and whether scale bare or pan buttons should be enabled.</para>
 
         <xi:include href="../listing/ClientMapInfoPart2.xml"
                     xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-        <para>Optionally, you can include a fixed set of resolutions (scale
-        levels) that you want the map to force onto the user. By doing so, no
-        other scales will be available, but the allowed ones. Typically this
-        is done to make sure that the scales that are being used in an
-        application, are the same of those of the raster layer(s) that lies
-        beneath. Otherwise the raster images may get distorted when they need
-        to be resized.</para>
+        <para>An other important aspect of the map is the scale configuration.
+        The scale configuration allows to define a maximum scale beyond which
+        the user is not allowed to zoom in. This is not needed for zooming out
+        as there is always a maximum bounds defined for the map (either
+        explicitly or calculated as the union of the layer bounds). Next to
+        that you can define a list of zoom levels. By default, the map will
+        allow zooming to arbitrary scale levels but you may wish to enforce
+        certain scale or zoom levels upon the user (like Google Maps does). By
+        doing so, continuous zooming will no longer be possible and any
+        zooming action will "snap" to the predefined scale levels. </para>
 
         <xi:include href="../listing/ClientMapInfoPart5.xml"
                     xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+        <para>Scales can be defined in 2 possible notations:</para>
+
+        <para><itemizedlist>
+            <listitem>
+              <para>the 1 : x notation (see the above listing) is most
+              commonly used in geographics and expresses the ratio between 1
+              meter on the screen and 1 meter on the earth's sphere</para>
+            </listitem>
+
+            <listitem>
+              <para>the floating point notation (e.g. 0.0001) is used by us to
+              express the number of pixels on the screen that correspond to 1
+              unit on the map (1 pixel per 10000 map units in our
+              example)</para>
+            </listitem>
+          </itemizedlist></para>
+
+        <para>Both scale definitions serve a different purpose. The 1 : x
+        scale should give you an idea of what the true scale is at which the
+        map is shown, although in practice this may depend on the DPI
+        (actually PPI) and pixel size of your device. The floating point scale
+        (which has units of pixel/m or pixel/deegree) is used to precisely
+        define the resolution of raster images on the screen. If you use
+        floating point notation, you can make sure that the scales that are
+        being used in an application are the same as those of the raster
+        layer(s) that lies beneath (see raster layer configuration). Otherwise
+        the raster images may get blurry or unreadable when they need to be
+        resized.</para>
 
         <para>A map typically also contains a tool bar. If you want one, you
         have to specify the tools it should include.</para>
@@ -684,5 +728,4 @@
     you could exclude this dependency in your maven pom and use a different
     dependency if needed.</para>
   </chapter>
-
 </part>
