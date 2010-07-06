@@ -32,7 +32,6 @@ http://www.springframework.org/schema/context
 http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
 	<bean name="googleTerrainInfo" class="org.geomajas.configuration.RasterLayerInfo">
-		<property name="dataSourceName" value="G_PHYSICAL_MAP@GoogleLayer"/>
 		<property name="crs" value="EPSG:900913"/>
 		<property name="maxExtent">
 			<bean class="org.geomajas.geometry.Bbox">
@@ -48,6 +47,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
 	<bean name="googleTerrain" class="org.geomajas.layer.google.GoogleLayer" >
 		<property name="layerInfo" ref="googleTerrainInfo" />
+		<property name="physical" value="true"/>
 		<property name="maxZoomLevel" value="15" />
 	</bean>
 
