@@ -182,7 +182,6 @@ public class SearchFeatureRequest extends LayerIdCommandRequest {
 				", booleanOperator='" + booleanOperator + '\'' +
 				", criteria=" + (criteria == null ? null : Arrays.asList(criteria)) +
 				", filter='" + filter + '\'' +
-				", crs='" + crs + '\'' +
 				", featureIncludes=" + featureIncludes +
 				'}';
 	}
