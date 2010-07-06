@@ -79,44 +79,40 @@ public class SvgLabelTileWriter implements GraphicsWriter {
 		document.writeId("labels." + tile.getCode().toString());
 		for (InternalFeature feature : tile.getFeatures()) {
 			Coordinate pos = geoService.calcDefaultLabelPosition(feature);
-			if (pos == null) {
-				continue;
-			}
-			com.vividsolutions.jts.geom.Point p = factory.createPoint(pos);
-			com.vividsolutions.jts.geom.Point labelPos;
-			try {
-				String labelString = feature.getLabel();
-				if (labelString == null || labelString.length() == 0) {
+			if (null != pos) {
+				com.vividsolutions.jts.geom.Point p = factory.createPoint(pos);
+				com.vividsolutions.jts.geom.Point labelPos;
+				try {
+					String labelString = feature.getLabel();
+					if (null != labelString && labelString.length() > 0) {
+						labelPos = (com.vividsolutions.jts.geom.Point) transformer.transform(p);
+						boolean createChild = true;
+
+						Rectangle2D textBox = textService.getStringBounds(labelString, labelStyle.getFontStyle());
+						document.writeElement("rect", createChild);
+						document.writeAttribute("id", feature.getId() + ".lblBG");
+						document.writeAttribute("x", labelPos.getX() - ((int) textBox.getWidth() / 2));
+						document.writeAttribute("y", labelPos.getY() - ((int) textBox.getHeight()));
+						document.writeAttribute("width", (int) textBox.getWidth());
+						document.writeAttribute("height", (int) textBox.getHeight());
+						document.writeAttribute("style", getCssStyle(bgStyle));
+						createChild = false;
+
+						// Text:
+						document.writeElement("text", createChild);
+						document.writeAttribute("id", feature.getId() + ".lblTXT");
+						document.writeAttribute("x", labelPos.getX());
+						// pull up baseline position to accommodate for descent
+						document.writeAttribute("y", labelPos.getY() - (int) textBox.getMaxY());
+						// TODO: config option, center label
+						document.writeAttribute("text-anchor", "middle");
+						document.writeAttribute("style", getCssStyle(labelStyle.getFontStyle()));
+						document.writeTextNode(labelString);
+					}
 					document.closeElement();
-					continue;
+				} catch (TransformException e) {
+					log.warn("Label for " + feature.getId() + " could not be written!");
 				}
-
-				labelPos = (com.vividsolutions.jts.geom.Point) transformer.transform(p);
-				boolean createChild = true;
-
-				Rectangle2D textBox = textService.getStringBounds(labelString, labelStyle.getFontStyle());
-				document.writeElement("rect", createChild);
-				document.writeAttribute("id", feature.getId() + ".lblBG");
-				document.writeAttribute("x", labelPos.getX() - ((int) textBox.getWidth() / 2));
-				document.writeAttribute("y", labelPos.getY() - ((int) textBox.getHeight()));
-				document.writeAttribute("width", (int) textBox.getWidth());
-				document.writeAttribute("height", (int) textBox.getHeight());
-				document.writeAttribute("style", getCssStyle(bgStyle));
-				createChild = false;
-
-				// Text:
-				document.writeElement("text", createChild);
-				document.writeAttribute("id", feature.getId() + ".lblTXT");
-				document.writeAttribute("x", labelPos.getX());
-				// pull up baseline position to accommodate for descent
-				document.writeAttribute("y", labelPos.getY() - (int) textBox.getMaxY());
-				// TODO: config option, center label
-				document.writeAttribute("text-anchor", "middle");
-				document.writeAttribute("style", getCssStyle(labelStyle.getFontStyle()));
-				document.writeTextNode(labelString);
-				document.closeElement();
-			} catch (TransformException e) {
-				log.warn("Label for " + feature.getId() + " could not be written!");
 			}
 		}
 		document.closeElement();
