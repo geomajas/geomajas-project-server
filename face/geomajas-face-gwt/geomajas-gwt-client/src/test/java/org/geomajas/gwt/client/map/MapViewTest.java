@@ -114,6 +114,40 @@ public class MapViewTest {
 		handler.validate();
 	}
 
+	/**
+	 * Tests the lower and upper boundaries of the resolution list
+	 */
+	@Test
+	public void testGWT36() {
+		List<Double> resolutions = new ArrayList<Double>();
+		resolutions.add(1 / 0.01);
+		resolutions.add(1 / 0.1);
+		resolutions.add(1 / 0.4);
+		resolutions.add(1 / 1.0);
+		resolutions.add(1 / 2.0);
+		mapView.setResolutions(resolutions);
+		
+		// no scale limitations
+		mapView.setMaximumScale(Double.MAX_VALUE);
+		mapView.setMaxBounds(new Bbox(-1E20, -1E20, 2E20, 2E20));
+		
+		CaptureHandler handler = new CaptureHandler();
+		mapView.addMapViewChangedHandler(handler);
+		// force 1.0
+		mapView.setCurrentScale(1.0, MapView.ZoomOption.LEVEL_CLOSEST);
+		// zooms in to 1.0
+		handler.expect(new Bbox(400, 150, 200, 100), 1.0, false);
+		// force 2.0
+		mapView.setCurrentScale(2.0, MapView.ZoomOption.LEVEL_CLOSEST);
+		// zooms in to 2.0
+		handler.expect(new Bbox(450, 175, 100, 50), 2.0, false);
+		// force 0.01
+		mapView.setCurrentScale(0.01, MapView.ZoomOption.LEVEL_CLOSEST);
+		// zooms in to 0.01
+		handler.expect(new Bbox(-9500, -4800, 20000, 10000), 0.01, false);
+		handler.validate();
+	}
+
 	private class CaptureHandler implements MapViewChangedHandler {
 
 		private List<MapViewChangedEvent> actualEvents = new LinkedList<MapViewChangedEvent>();
