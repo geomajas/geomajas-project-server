@@ -223,7 +223,7 @@
 					</execution>
 					<execution>
 						<id>compile</id>
-						<phase>prepare-package</phase>
+						<phase>process-classes</phase>
 						<goals>
 							<goal>compile</goal>
 						</goals>
