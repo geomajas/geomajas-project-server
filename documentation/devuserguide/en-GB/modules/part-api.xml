@@ -27,7 +27,7 @@
   <title>API</title>
 
   <chapter id="chapter-api">
-    <title>API</title>
+    <title>API contract</title>
 
     <section>
       <title>API annotation</title>
@@ -213,6 +213,26 @@
 
   <chapter id="chapter-commands">
     <title>Commands</title>
+
+    <section>
+      <title>CommandDispatcher service</title>
+
+      <para>The command dispatcher is the main command execution service. It
+      accepts commands serializable data for executing a command and returns a
+      response which can again be serialized. It is the main entry point into
+      the back-end for use by the faces.</para>
+
+      <para>The following methods are provided:<itemizedlist>
+          <listitem>
+            <para><code>CommandResponse execute(String commandName,
+            CommandRequest commandRequest, String userToken, String
+            locale)</code> : given the command name, request object, user
+            token and locale, try to execute the requested command. The
+            result, including any exception which may have been thrown are
+            included in the returned response object.</para>
+          </listitem>
+        </itemizedlist></para>
+    </section>
 
     <section>
       <title>Provided commands</title>
@@ -1385,8 +1405,68 @@
 
     <para>For the existing layers, the details about configuring you map to
     include that layer are included in the <link
-    linkend="backend-ch-configuration">configuration</link> section
-    above.</para>
+    linkend="ch-map-configuration">map configuration</link> chapter.</para>
+
+    <section>
+      <title>RasterLayerService</title>
+
+      <para>All access to raster layers should be done using the raster layer
+      service. The following methods exist<itemizedlist>
+          <listitem>
+            <para><code>List&lt;RasterTile&gt; getTiles(String layerId,
+            CoordinateReferenceSystem crs, Envelope bounds, double scale)
+            throws GeomajasException</code> : this method allows you to obtain
+            the list of raster tiles which need to be displayed for the given
+            bounds at the requested scale.</para>
+          </listitem>
+        </itemizedlist></para>
+    </section>
+
+    <section>
+      <title>VectorLayerService</title>
+
+      <para>Vector layers and the data contained within are accessible using
+      the vector layer service. You should not try to access the layers
+      directly. Following access methods are available<itemizedlist>
+          <listitem>
+            <para><code>void saveOrUpdate(String layerId,
+            CoordinateReferenceSystem crs, List&lt;InternalFeature&gt;
+            oldFeatures, List&lt;InternalFeature&gt; newFeatures) throws
+            GeomajasException</code> : TODO.....</para>
+          </listitem>
+
+          <listitem>
+            <para><code>List&lt;InternalFeature&gt; getFeatures(String
+            layerId, CoordinateReferenceSystem crs, Filter filter,
+            NamedStyleInfo style, int featureIncludes) throws
+            GeomajasException</code> : TODO.....</para>
+          </listitem>
+
+          <listitem>
+            <para><code>List&lt;InternalFeature&gt; getFeatures(String
+            layerId, CoordinateReferenceSystem crs, Filter filter,
+            NamedStyleInfo style, int featureIncludes, int offset, int
+            maxResultSize) throws GeomajasException</code> : TODO.....</para>
+          </listitem>
+
+          <listitem>
+            <para><code>Envelope getBounds(String layerId,
+            CoordinateReferenceSystem crs, Filter filter) throws
+            GeomajasException</code> : TODO.....</para>
+          </listitem>
+
+          <listitem>
+            <para><code>List&lt;Attribute&lt;?&gt;&gt; getAttributes(String
+            layerId, String attributeName, Filter filter) throws
+            GeomajasException</code> : TODO.....</para>
+          </listitem>
+
+          <listitem>
+            <para><code>InternalTile getTile(TileMetadata tileMetadata) throws
+            GeomajasException</code> : TODO.....</para>
+          </listitem>
+        </itemizedlist></para>
+    </section>
   </chapter>
 
   <chapter id="chapter-security">
@@ -1399,12 +1479,43 @@
     <xi:include href="../listing/AllowAllSecurity.xml"
                 xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-    <para>TODO.....</para>
+    <para>which will allow all access to everybody, including full access to
+    features which are only partly within configured bounds.</para>
+
+    <para>It is also possible to configure other security services, to allow
+    authentication and authorization to be done by the services which are
+    configured.</para>
+
+    <note>
+      <para>When configuring security services, it is important to assure that
+      login is possible. Anything which is not explicitly allowed in
+      <emphasis>not</emphasis> allowed, which likely includes the command
+      which is used to login. You have to make sure that everybody can access
+      the login command.</para>
+    </note>
+
+    <para>Specific configuration depends on the configured security services,
+    details of which can be found in the specific plugin's
+    documentation.</para>
 
     <section>
       <title>Authentication versus authorization</title>
 
-      <para>TODO.....</para>
+      <para>The security infrastructure makes a clear distinction between
+      authentication and authorization. </para>
+
+      <para>Authentication is the act of identifying the user and user the
+      user is how he/she says he is (whether that person is "authentic"). In
+      Geomajas the authentication will result in a authentication token which
+      encapsulated that a user has provided valid credentials. The token in
+      itself does not contain either information about the user or information
+      about what is allowed or authorized (no policies). These can however be
+      accessed using the token.</para>
+
+      <para>Authorization on the other hand reads the policies which are in
+      effect to determine what an authenticated user if allowed or disallowed
+      to do and/or access. Geomajas only uses policies which allow access,
+      Everything which is not explicitly allowed is disallowed.</para>
     </section>
 
     <section>
@@ -1414,76 +1525,31 @@
     </section>
 
     <section>
-      <title>SecurityManager</title>
+      <title>SecurityManager service</title>
 
       <para>TODO.....</para>
     </section>
 
     <section>
-      <title>SecurityContext</title>
+      <title>SecurityContext service</title>
 
-      <para>TODO.....</para>
-    </section>
-
-    <section>
-      <title>Staticsecurity module configuration</title>
+      <para>The security context allows access to the currently valid user's
+      policies and some limited information (user id, name and organization).
+      In your code, you just have to inject the security context. The face is
+      responsible for assuring the current thread has the correct security
+      context based on the credentials used when accessing the
+      back-end.</para>
 
       <para>TODO.....</para>
     </section>
   </chapter>
 
-  <chapter id="ch-core-services">
-    <title>Services</title>
+  <chapter id="ch-core-pipelines">
+    <title>Pipelines</title>
 
-    <para>TODO.....</para>
-
-    <section>
-      <title>ConfigurationService</title>
-
-      <para>TODO.....</para>
-    </section>
-
-    <section>
-      <title>GeoService</title>
-
-      <para>TODO.....</para>
-    </section>
-
-    <section>
-      <title>DtoConverterService</title>
-
-      <para>TODO.....</para>
-    </section>
-
-    <section>
-      <title>FilterService</title>
-
-      <para>TODO.....</para>
-    </section>
-
-    <section>
-      <title>TextService</title>
-
-      <para>TODO.....</para>
-    </section>
-
-    <section>
-      <title>CommandDispatcher</title>
-
-      <para>TODO.....</para>
-    </section>
-
-    <section>
-      <title>RasterLayerService</title>
-
-      <para>TODO.....</para>
-    </section>
-
-    <section>
-      <title>VectorLayerService</title>
-
-      <para>TODO.....</para>
-    </section>
+    <para>Pipelines are building blocks which are used in Geomajas to make
+    certain aspects highly extend- and customizable. For more details, see the
+    architecture <xref linkend="arch-pipeline" />.</para>
 
     <section>
       <title>PipelineService</title>
@@ -1494,14 +1560,6 @@
       methods to create an empty pipeline context and execute a
       pipeline.</para>
     </section>
-  </chapter>
-
-  <chapter id="ch-core-pipelines">
-    <title>Pipelines</title>
-
-    <para>Pipelines are building blocks which are used in Geomajas to make
-    certain aspects highly extend- and customizable. For more details, see the
-    architecture <xref linkend="arch-pipeline" />.</para>
 
     <section>
       <title>Configuration</title>
@@ -1671,6 +1729,43 @@
             </itemizedlist></para>
         </section>
       </section>
+    </section>
+  </chapter>
+
+  <chapter id="ch-core-services">
+    <title>Utility Services</title>
+
+    <para>The Geomajas back-end core also contains a set of utility
+    services.</para>
+
+    <section>
+      <title>ConfigurationService</title>
+
+      <para>TODO.....</para>
+    </section>
+
+    <section>
+      <title>GeoService</title>
+
+      <para>TODO.....</para>
+    </section>
+
+    <section>
+      <title>DtoConverterService</title>
+
+      <para>TODO.....</para>
+    </section>
+
+    <section>
+      <title>FilterService</title>
+
+      <para>TODO.....</para>
+    </section>
+
+    <section>
+      <title>TextService</title>
+
+      <para>TODO.....</para>
     </section>
   </chapter>
 </part>

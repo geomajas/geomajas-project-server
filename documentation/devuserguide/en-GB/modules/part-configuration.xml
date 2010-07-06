@@ -126,7 +126,7 @@
     </section>
 
     <section>
-      <title></title>
+      <title>Geomajas configuration</title>
 
       <para>The initial bean which needs to be defined is a bean indicating
       the <emphasis>client application info</emphasis>.</para>
