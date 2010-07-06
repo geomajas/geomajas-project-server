@@ -1,3 +1,6 @@
+#set( $symbol_pound = '#' )
+#set( $symbol_dollar = '$' )
+#set( $symbol_escape = '\' )
 <!--
   ~ This file is part of Geomajas, a component framework for building
   ~ rich Internet applications (RIA) with sophisticated capabilities for the
@@ -106,35 +109,35 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
                 <bean class="org.geomajas.configuration.FeatureStyleInfo">
                     <property name="name" value="Countries: population > 100mil"/>
                     <property name="formula" value="(PEOPLE > 100000000)"/>
-                    <property name="fillColor" value="#3333FF"/>
+                    <property name="fillColor" value="${symbol_pound}3333FF"/>
                     <property name="fillOpacity" value=".6"/>
-                    <property name="strokeColor" value="#000033"/>
+                    <property name="strokeColor" value="${symbol_pound}000033"/>
                     <property name="strokeOpacity" value=".8"/>
                     <property name="strokeWidth" value="1"/>
                 </bean>
                 <bean class="org.geomajas.configuration.FeatureStyleInfo">
                     <property name="name" value="Countries: population > 50mil"/>
                     <property name="formula" value="(PEOPLE > 50000000)"/>
-                    <property name="fillColor" value="#6666FF"/>
+                    <property name="fillColor" value="${symbol_pound}6666FF"/>
                     <property name="fillOpacity" value=".6"/>
-                    <property name="strokeColor" value="#000033"/>
+                    <property name="strokeColor" value="${symbol_pound}000033"/>
                     <property name="strokeOpacity" value=".8"/>
                     <property name="strokeWidth" value="1"/>
                 </bean>
                 <bean class="org.geomajas.configuration.FeatureStyleInfo">
                     <property name="name" value="Countries: population > 10mil"/>
                     <property name="formula" value="(PEOPLE > 10000000)"/>
-                    <property name="fillColor" value="#9999FF"/>
+                    <property name="fillColor" value="${symbol_pound}9999FF"/>
                     <property name="fillOpacity" value=".6"/>
-                    <property name="strokeColor" value="#000033"/>
+                    <property name="strokeColor" value="${symbol_pound}000033"/>
                     <property name="strokeOpacity" value=".8"/>
                     <property name="strokeWidth" value="1"/>
                 </bean>
                 <bean class="org.geomajas.configuration.FeatureStyleInfo">
                     <property name="name" value="Countries: population &lt; 10mil"/>
-                    <property name="fillColor" value="#CCCCFF"/>
+                    <property name="fillColor" value="${symbol_pound}CCCCFF"/>
                     <property name="fillOpacity" value=".6"/>
-                    <property name="strokeColor" value="#000033"/>
+                    <property name="strokeColor" value="${symbol_pound}000033"/>
                     <property name="strokeOpacity" value=".8"/>
                     <property name="strokeWidth" value="1"/>
                 </bean>
@@ -145,15 +148,15 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
                <property name="labelAttributeName" value="NAME"/>
                 <property name="fontStyle">
 					<bean class="org.geomajas.configuration.FontStyleInfo">
-						<property name="color" value="#000000" />
+						<property name="color" value="${symbol_pound}000000" />
 						<property name="opacity" value="1" />
 					</bean>
                 </property>
                 <property name="backgroundStyle">
                     <bean class="org.geomajas.configuration.FeatureStyleInfo">
-                        <property name="fillColor" value="#FFFFFF"/>
+                        <property name="fillColor" value="${symbol_pound}FFFFFF"/>
                         <property name="fillOpacity" value=".7"/>
-                        <property name="strokeColor" value="#000099"/>
+                        <property name="strokeColor" value="${symbol_pound}000099"/>
                         <property name="strokeOpacity" value="1"/>
                         <property name="strokeWidth" value="1"/>
                     </bean>
@@ -164,7 +167,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 
 	<bean name="countries110m" class="org.geomajas.layer.shapeinmem.ShapeInMemLayer">
 		<property name="layerInfo" ref="countries110mInfo" />
-        <property name="url" value="classpath:${package}/shapeinmem/shapes/110m_admin_0_countries.shp"/>
+        <property name="url" value="classpath:/${packageInPathFormat}/shapeinmem/shapes/110m_admin_0_countries.shp"/>
 	</bean>
 
 </beans>
