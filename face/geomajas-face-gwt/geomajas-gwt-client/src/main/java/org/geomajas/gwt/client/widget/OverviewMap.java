@@ -315,7 +315,7 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 			for (Layer layer : getMapModel().getLayers()) {
 				if (!layer.isShowing()) {
 					GWT.log("The overview map " + getMapModel().getId() + " is probably misconfigured. Layer "
-							+ layer.getId() + " not showing");
+							+ layer.getId() + " not showing", null);
 				}
 			}
 
