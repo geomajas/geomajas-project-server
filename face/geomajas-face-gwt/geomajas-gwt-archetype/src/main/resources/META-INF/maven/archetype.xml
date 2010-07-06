@@ -30,7 +30,6 @@
     <resource>src/main/resources/client/i18n/Translation_nl.properties</resource>
     <resource>war/geomajas.css</resource>
     <resource>war/index.html</resource>
-    <resource>war/WEB-INF/jetty-web.xml</resource>
     <resource>war/WEB-INF/web.xml</resource>
   </resources>
   <testResources>

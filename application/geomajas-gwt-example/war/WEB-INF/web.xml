@@ -44,6 +44,11 @@
  		<listener-class>org.geomajas.servlet.GeomajasContextListener</listener-class>
 	</listener>
 
+	<filter>
+		<filter-name>JettyFilter</filter-name>
+		<filter-class>org.geomajas.servlet.JettyThreadParentFilter</filter-class>
+	</filter>
+
 	<servlet>
 		<servlet-name>GeomajasServiceServlet</servlet-name>
 		<servlet-class>org.geomajas.gwt.server.GeomajasServiceImpl</servlet-class>
