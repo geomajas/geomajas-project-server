@@ -33,9 +33,11 @@ import org.geomajas.geometry.Coordinate;
 import org.geomajas.geometry.Geometry;
 import org.geomajas.layer.feature.Feature;
 import org.geomajas.layer.feature.SearchCriterion;
+import org.geotools.filter.FidFilter;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.opengis.filter.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -54,9 +56,13 @@ public class SearchFeatureCommandTest {
 	private static final String LAYER_ID = "countries";
 	private static final String REGION_ATTRIBUTE = "region";
 	private static final String NAME_ATTRIBUTE = "name";
+	private static final String ID_ATTRIBUTE = "id";
 
 	@Autowired
 	private CommandDispatcher dispatcher;
+
+	@Autowired
+	private SearchFeatureCommand searchFeatureCommand;
 
 	@Test
 	public void testSearchOneCriterionNoLimit() throws Exception {
@@ -212,5 +218,30 @@ public class SearchFeatureCommandTest {
 		// remark, this value is obtained using a test run, not externally verified
 		Assert.assertEquals(-111319.49079327357, coor.getX(), DOUBLE_TOLERANCE);
 		Assert.assertEquals(0, coor.getY(), DOUBLE_TOLERANCE);
+	}
+
+	@Test
+	public void createFilterTest() throws Exception {
+		SearchFeatureRequest request = new SearchFeatureRequest();
+		request.setLayerId(LAYER_ID);
+		request.setCrs("EPSG:4326");
+		SearchCriterion searchCriterion = new SearchCriterion();
+		Filter filter;
+
+		// needs to be FidFilter when equals test on id
+		searchCriterion.setAttributeName(ID_ATTRIBUTE);
+		searchCriterion.setOperator("=");
+		searchCriterion.setValue("'1'");
+		request.setCriteria(new SearchCriterion[] {searchCriterion});
+		filter = searchFeatureCommand.createFilter(request, LAYER_ID);
+		Assert.assertTrue(filter instanceof FidFilter);
+
+		// but *not* when other test
+		searchCriterion.setAttributeName(ID_ATTRIBUTE);
+		searchCriterion.setOperator("like");
+		searchCriterion.setValue("'%a%'");
+		request.setCriteria(new SearchCriterion[] {searchCriterion});
+		filter = searchFeatureCommand.createFilter(request, LAYER_ID);
+		Assert.assertFalse(filter instanceof FidFilter);
 	}
 }

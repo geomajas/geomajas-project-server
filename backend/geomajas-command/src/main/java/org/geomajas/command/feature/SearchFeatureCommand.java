@@ -40,6 +40,8 @@ import org.geomajas.service.FilterService;
 import org.geomajas.layer.VectorLayerService;
 import org.geomajas.service.GeoService;
 import org.opengis.filter.Filter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -54,6 +56,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Component()
 @Transactional(readOnly = true, rollbackFor = { Exception.class })
 public class SearchFeatureCommand implements Command<SearchFeatureRequest, SearchFeatureResponse> {
+
+	private final Logger log  = LoggerFactory.getLogger(SearchFeatureCommand.class);
 
 	@Autowired
 	private ConfigurationService configurationService;
@@ -85,6 +89,7 @@ public class SearchFeatureCommand implements Command<SearchFeatureRequest, Searc
 		}
 
 		Filter filter = createFilter(request, layerId);
+		log.debug("filter to apply : {}", filter);
 
 		List<InternalFeature> features = layerService.getFeatures(layerId, geoService.getCrs(request.getCrs()), filter,
 				null, request.getFeatureIncludes(), 0, request.getMax());
@@ -105,15 +110,17 @@ public class SearchFeatureCommand implements Command<SearchFeatureRequest, Searc
 		response.setFeatures(maxList);
 	}
 
-	private Filter createFilter(SearchFeatureRequest request, String layerId) throws GeomajasException {
+	Filter createFilter(SearchFeatureRequest request, String layerId) throws GeomajasException {
 		Filter f = null;
 		VectorLayer layer = configurationService.getVectorLayer(layerId);
 		String idName = layer.getLayerInfo().getFeatureInfo().getIdentifier().getName();
 		for (SearchCriterion criterion : request.getCriteria()) {
 			Filter temp;
 			String attributeName = criterion.getAttributeName();
-			if (SearchFeatureRequest.ID_ATTRIBUTE.equals(attributeName) || attributeName.equals(idName)) {
-				temp = filterService.createFidFilter(new String[] { criterion.getValue() });
+			String operator = criterion.getOperator();
+			if ((SearchFeatureRequest.ID_ATTRIBUTE.equals(attributeName) || attributeName.equals(idName)) &&
+					(null == operator || "=".equals(operator))) {
+				temp = filterService.createFidFilter(new String[]{criterion.getValue()});
 			} else {
 				String c = criterion.toString().replace('*', '%').replace('?', '_');
 				temp = filterService.parseFilter(c);
