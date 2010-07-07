@@ -216,7 +216,7 @@
 	</profiles>
 
 	<properties>
-		<geomajas-face-dojo-version>1.5.6-SNAPSHOT</geomajas-face-dojo-version>
+		<geomajas-face-dojo-version>1.5.6</geomajas-face-dojo-version>
 		<geomajas-layer-geotools-version>1.7.0</geomajas-layer-geotools-version>
 		<geomajas-layer-wms-version>1.7.0</geomajas-layer-wms-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
