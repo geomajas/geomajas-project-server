@@ -2,7 +2,7 @@
 	<parent>
 		<groupId>org.geomajas</groupId>
 		<artifactId>geomajas-dojo-example</artifactId>
-		<version>1.7.0</version>
+		<version>1.8.0-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas</groupId>
@@ -13,9 +13,9 @@
 	<url>http://www.geomajas.org/</url>
 
 	<scm>
-		<connection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-dojo-example-1.7.0/geomajas-dojo-example-modules-shrinksafe</connection>
-		<developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-dojo-example-1.7.0/geomajas-dojo-example-modules-shrinksafe</developerConnection>
-		<url>https://svn.geomajas.org/majas/tags/geomajas-dojo-example-1.7.0/geomajas-dojo-example-modules-shrinksafe</url>
+		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/application/geomajas-dojo-example/geomajas-dojo-example-modules-shrinksafe</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/application/geomajas-dojo-example/geomajas-dojo-example-modules-shrinksafe</developerConnection>
+		<url>https://svn.geomajas.org/majas/trunk/application/geomajas-dojo-example/geomajas-dojo-example-modules-shrinksafe</url>
 	</scm>
 
 	<organization>

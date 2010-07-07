@@ -7,15 +7,15 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas</groupId>
 	<artifactId>geomajas-dojo-example</artifactId>
-	<version>1.7.0</version>
+	<version>1.8.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Geomajas dojo application example</name>
 	<description>Geomajas dojo application example</description>
 
 	<scm>
-		<connection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-dojo-example-1.7.0</connection>
-		<developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-dojo-example-1.7.0</developerConnection>
-		<url>https://svn.geomajas.org/majas/tags/geomajas-dojo-example-1.7.0</url>
+		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/application/geomajas-dojo-example</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/application/geomajas-dojo-example</developerConnection>
+		<url>https://svn.geomajas.org/majas/trunk/application/geomajas-dojo-example</url>
 	</scm>
 
 	<developers>
