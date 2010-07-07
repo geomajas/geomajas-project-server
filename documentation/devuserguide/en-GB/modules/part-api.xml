@@ -222,6 +222,16 @@
       response which can again be serialized. It is the main entry point into
       the back-end for use by the faces.</para>
 
+      <figure>
+        <title>Geomajas face and commands</title>
+
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="../images/face-command.png" width="100%" />
+          </imageobject>
+        </mediaobject>
+      </figure>
+
       <para>The following methods are provided:<itemizedlist>
           <listitem>
             <para><code>CommandResponse execute(String commandName,
@@ -1427,43 +1437,55 @@
 
       <para>Vector layers and the data contained within are accessible using
       the vector layer service. You should not try to access the layers
-      directly. Following access methods are available<itemizedlist>
+      directly. This service assures that the security constraints are
+      adhered. Following access methods are available<itemizedlist>
           <listitem>
             <para><code>void saveOrUpdate(String layerId,
             CoordinateReferenceSystem crs, List&lt;InternalFeature&gt;
             oldFeatures, List&lt;InternalFeature&gt; newFeatures) throws
-            GeomajasException</code> : TODO.....</para>
+            GeomajasException</code> : allows creating or updating several
+            features. You have to pass both the old features (null or the
+            feature before it was modified) and the new value of the feature.
+            The two are at compared to determine whether to create, update or
+            delete.</para>
           </listitem>
 
           <listitem>
             <para><code>List&lt;InternalFeature&gt; getFeatures(String
             layerId, CoordinateReferenceSystem crs, Filter filter,
             NamedStyleInfo style, int featureIncludes) throws
-            GeomajasException</code> : TODO.....</para>
+            GeomajasException</code> : read all features from the layer which
+            match the filter. You can specify which aspects of the feature
+            need to be set.</para>
           </listitem>
 
           <listitem>
             <para><code>List&lt;InternalFeature&gt; getFeatures(String
             layerId, CoordinateReferenceSystem crs, Filter filter,
             NamedStyleInfo style, int featureIncludes, int offset, int
-            maxResultSize) throws GeomajasException</code> : TODO.....</para>
+            maxResultSize) throws GeomajasException</code> : read a batch of
+            features from the layer which match the filter. You can specify
+            which aspects of the feature need to be set..</para>
           </listitem>
 
           <listitem>
             <para><code>Envelope getBounds(String layerId,
             CoordinateReferenceSystem crs, Filter filter) throws
-            GeomajasException</code> : TODO.....</para>
+            GeomajasException</code> : get the bounds of the visible features
+            which match the filter. This can be useful for fit-to-page like
+            functionality.</para>
           </listitem>
 
           <listitem>
             <para><code>List&lt;Attribute&lt;?&gt;&gt; getAttributes(String
             layerId, String attributeName, Filter filter) throws
-            GeomajasException</code> : TODO.....</para>
+            GeomajasException</code> : get the list of possible attribute
+            values.</para>
           </listitem>
 
           <listitem>
             <para><code>InternalTile getTile(TileMetadata tileMetadata) throws
-            GeomajasException</code> : TODO.....</para>
+            GeomajasException</code> : get a vector tile.</para>
           </listitem>
         </itemizedlist></para>
     </section>
@@ -1502,7 +1524,7 @@
       <title>Authentication versus authorization</title>
 
       <para>The security infrastructure makes a clear distinction between
-      authentication and authorization. </para>
+      authentication and authorization.</para>
 
       <para>Authentication is the act of identifying the user and user the
       user is how he/she says he is (whether that person is "authentic"). In
@@ -1511,6 +1533,12 @@
       itself does not contain either information about the user or information
       about what is allowed or authorized (no policies). These can however be
       accessed using the token.</para>
+
+      <para>The Geomajas back-end core does not do authentication, though it
+      is likely that your security plug-in either provide commands to allow
+      creation of a token (by supplying user credentials) and invalidating the
+      token (logout), or the plug-in will stipulate where this can be done
+      (possibly supplying a redirect to an SSO service or similar).</para>
 
       <para>Authorization on the other hand reads the policies which are in
       effect to determine what an authenticated user if allowed or disallowed
@@ -1521,13 +1549,78 @@
     <section>
       <title>What can be authorized</title>
 
-      <para>TODO.....</para>
+      <para>Based on the user who is logged into the system, the following
+      restrictions can apply:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para>access rights to a command</para>
+        </listitem>
+
+        <listitem>
+          <para>access rights for a layer</para>
+        </listitem>
+
+        <listitem>
+          <para>a filter which needs to be applied for a layer</para>
+        </listitem>
+
+        <listitem>
+          <para>a region which limits the data which may be accessed for a
+          layer</para>
+        </listitem>
+
+        <listitem>
+          <para>access rights on the features</para>
+        </listitem>
+
+        <listitem>
+          <para>access rights on the individual attributes of the
+          features</para>
+        </listitem>
+      </itemizedlist>
+
+      <para>You can extend this by providing additional authentication
+      interfaces which are also implemented by the authentication object
+      returned by your security service. Details can be found in <xref
+      linkend="ch-howto-security-plugin" />.</para>
     </section>
 
     <section>
       <title>SecurityManager service</title>
 
-      <para>TODO.....</para>
+      <para>The security manager manages the (thread-local) security context.
+      It delegates to the available security services to build the
+      authentication objects and get the user information which is then stored
+      in the in the security context. The security services themselves will
+      check with the authentication server or service whether the token is
+      still valid, and will get the policies from a policy server or service
+      to populate the authentication objects with the credentials.</para>
+
+      <figure>
+        <title>Security architecture</title>
+
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="../images/security.png" width="100%" />
+          </imageobject>
+        </mediaobject>
+      </figure>
+
+      <para>The SecurityManager service has the following methods:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para><code>boolean createSecurityContext(String
+          authenticationToken)</code> : create the security context for this
+          thread, based on the authentication token.</para>
+        </listitem>
+
+        <listitem>
+          <para><code>void clearSecurityContext()</code> : clear the security
+          context for this thread.</para>
+        </listitem>
+      </itemizedlist>
     </section>
 
     <section>
@@ -1537,10 +1630,12 @@
       policies and some limited information (user id, name and organization).
       In your code, you just have to inject the security context. The face is
       responsible for assuring the current thread has the correct security
-      context based on the credentials used when accessing the
-      back-end.</para>
+      context based on the credentials used when accessing the back-end (it
+      will use the SecurityManager service to do that).</para>
 
-      <para>TODO.....</para>
+      <para>The security context contains all methods from the UserInfo and
+      Authorization interfaces, plus some methods to get the current token and
+      get the list of authentication objects which have been combined.</para>
     </section>
   </chapter>
 
@@ -1550,6 +1645,16 @@
     <para>Pipelines are building blocks which are used in Geomajas to make
     certain aspects highly extend- and customizable. For more details, see the
     architecture <xref linkend="arch-pipeline" />.</para>
+
+    <figure>
+      <title>Geomajas pipeline architecture</title>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="../images/pipeline.png" width="100%" />
+        </imageobject>
+      </mediaobject>
+    </figure>
 
     <section>
       <title>PipelineService</title>
@@ -1741,31 +1846,121 @@
     <section>
       <title>ConfigurationService</title>
 
-      <para>TODO.....</para>
+      <para>This service allows you to easily access some of the configuration
+      information.</para>
+
+      <para>Provided methods are:</para>
+
+      <itemizedlist>
+        <listitem>
+          <para><code>VectorLayer getVectorLayer(String id)</code> : get a
+          vector layer based on the layer id.</para>
+        </listitem>
+
+        <listitem>
+          <para><code>RasterLayer getRasterLayer(String id)</code> : get a
+          raster layer based on the layer id.</para>
+        </listitem>
+
+        <listitem>
+          <para><code>Layer&lt;?&gt; getLayer(String id)</code> : get a layer
+          (can be either vector or raster), based on the layer id.</para>
+        </listitem>
+
+        <listitem>
+          <para><code>ClientMapInfo getMap(String mapId, String
+          applicationId)</code> : get the map with given id for a specific
+          application.</para>
+        </listitem>
+      </itemizedlist>
     </section>
 
     <section>
       <title>GeoService</title>
 
-      <para>TODO.....</para>
+      <para>GeoServices provides a set of methods which ease the working with
+      geometries and related objects.</para>
+
+      <itemizedlist>
+        <listitem>
+          <para><code>CoordinateReferenceSystem getCrs(String crs) throws
+          LayerException</code> : get the CRS object based on the CRS
+          id.</para>
+        </listitem>
+
+        <listitem>
+          <para><code>int getSridFromCrs(String crs)</code> : attempts to
+          extract the SRID (Spatial Reference Id) from the CRS.</para>
+        </listitem>
+
+        <listitem>
+          <para><code>int getSridFromCrs(CoordinateReferenceSystem crs)</code>
+          : attempts to extract the SRID (Spatial Reference Id) from the
+          CRS.</para>
+        </listitem>
+
+        <listitem>
+          <para><code>MathTransform
+          findMathTransform(CoordinateReferenceSystem sourceCrs,
+          CoordinateReferenceSystem targetCrs) throws GeomajasException</code>
+          : get the transformation which converts between two coordinate
+          systems.</para>
+        </listitem>
+
+        <listitem>
+          <para><code>Geometry transform(Geometry source,
+          CoordinateReferenceSystem sourceCrs, CoordinateReferenceSystem
+          targetCrs) throws GeomajasException</code> : transform a geometry
+          from source to target CRS.</para>
+        </listitem>
+
+        <listitem>
+          <para><code>Coordinate calcDefaultLabelPosition(InternalFeature
+          feature)</code> : determine a default position for positioning the
+          label for a feature.</para>
+        </listitem>
+
+        <listitem>
+          <para><code>Geometry createCircle(Point center, double radius, int
+          nrPoints)</code> : get a geometry which approximates a circle (if
+          only a geometry could contain curves).</para>
+        </listitem>
+      </itemizedlist>
     </section>
 
     <section>
       <title>DtoConverterService</title>
 
-      <para>TODO.....</para>
+      <para>This service allows conversion between objects which are used
+      internally (which may contain JTS or Geotools objects) and data transfer
+      objects which can be used for communication with the outside world
+      (including the faces).</para>
+
+      <para>There are two methods which are provided, toInternal() and toDto()
+      and these are overloaded for many different types of objects.</para>
     </section>
 
     <section>
       <title>FilterService</title>
 
-      <para>TODO.....</para>
+      <para>FilterService allows you to build filters which can be applied
+      when requesting vector features.</para>
     </section>
 
     <section>
       <title>TextService</title>
 
-      <para>TODO.....</para>
+      <para>Utility functions for calculating text and font related parameters
+      server-side. These parameters could in principle be calculated more
+      accurately on the displaying device itself, but unfortunately there is
+      no support for this in browser environments.</para>
+
+      <itemizedlist>
+        <listitem>
+          <para><code>Rectangle2D getStringBounds(String text, FontStyleInfo
+          fontStyle)</code> : get the bounds for the given string.</para>
+        </listitem>
+      </itemizedlist>
     </section>
   </chapter>
 </part>

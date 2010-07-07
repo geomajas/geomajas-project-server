@@ -222,7 +222,7 @@
     </section>
   </chapter>
 
-  <chapter id="ch-howto-security">
+  <chapter id="ch-howto-security-plugin">
     <title>Create a security plug-in</title>
 
     <section>
