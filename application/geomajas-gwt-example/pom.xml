@@ -61,7 +61,7 @@
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-dep</artifactId>
-				<version>1.10.26</version>
+				<version>1.10.26-SNAPSHOT</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -336,8 +336,6 @@
 			<plugin>
 				<groupId>org.mortbay.jetty</groupId>
 				<artifactId>jetty-maven-plugin</artifactId>
-				<!--<artifactId>maven-jetty-plugin</artifactId>
-				<version>6.1.20</version>-->
 				<configuration>
         			<webAppSourceDirectory>${basedir}/war</webAppSourceDirectory>
 					<webAppConfig>
@@ -378,7 +376,6 @@
 		</repository>
 
 		<!-- uncomment if you want to use Geomajas snapshots, comment for faster builds  -->
-		<!--
 		<repository>
 			<id>Geomajas-latest</id>
 			<name>Geomajas snapshot repository</name>
@@ -387,7 +384,6 @@
 				<enabled>true</enabled>
 			</snapshots>
 		</repository>
-		-->
 	</repositories>
 	<pluginRepositories>
 		<pluginRepository>
@@ -398,13 +394,13 @@
 	</pluginRepositories>
 
 	<properties>
-		<geomajas-face-gwt-version>1.7.0</geomajas-face-gwt-version>
-		<geomajas-layer-geotools-version>1.7.0</geomajas-layer-geotools-version>
-		<geomajas-layer-hibernate-version>1.7.0</geomajas-layer-hibernate-version>
-		<geomajas-layer-google-version>1.7.0</geomajas-layer-google-version>
-		<geomajas-layer-openstreetmap-version>1.7.0</geomajas-layer-openstreetmap-version>
-		<geomajas-layer-wms-version>1.7.0</geomajas-layer-wms-version>
-		<geomajas-plugin-staticsecurity-version>1.7.0</geomajas-plugin-staticsecurity-version>
+		<geomajas-face-gwt-version>1.7.0-SNAPSHOT</geomajas-face-gwt-version>
+		<geomajas-layer-geotools-version>1.7.0-SNAPSHOT</geomajas-layer-geotools-version>
+		<geomajas-layer-hibernate-version>1.7.0-SNAPSHOT</geomajas-layer-hibernate-version>
+		<geomajas-layer-google-version>1.7.0-SNAPSHOT</geomajas-layer-google-version>
+		<geomajas-layer-openstreetmap-version>1.7.0-SNAPSHOT</geomajas-layer-openstreetmap-version>
+		<geomajas-layer-wms-version>1.7.0-SNAPSHOT</geomajas-layer-wms-version>
+		<geomajas-plugin-staticsecurity-version>1.7.0-SNAPSHOT</geomajas-plugin-staticsecurity-version>
 		<geomajas-plugin-printing-version>2.0.0-SNAPSHOT</geomajas-plugin-printing-version>
 		<gwt-version>2.0.3</gwt-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
