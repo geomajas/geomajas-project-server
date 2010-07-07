@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
-		 xmlns="http://maven.apache.org/POM/4.0.0"
-		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<parent>
 		<groupId>org.geomajas</groupId>
 		<artifactId>geomajas-parent</artifactId>
@@ -10,7 +8,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas</groupId>
 	<artifactId>geomajas-gwt-archetype</artifactId>
-	<version>1.7.0-SNAPSHOT</version>
+	<version>1.7.0</version>
 	<packaging>maven-archetype</packaging>
 	<name>Geomajas GWT application archetype</name>
 	<description>Geomajas GWT application archetype</description>
@@ -67,4 +65,10 @@
 			</plugin>
 		</plugins>
 	</build>
+
+  <scm>
+    <connection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-face-gwt-1.7.0/geomajas-gwt-archetype</connection>
+    <developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-face-gwt-1.7.0/geomajas-gwt-archetype</developerConnection>
+    <url>https://svn.geomajas.org/majas/tags/geomajas-face-gwt-1.7.0/geomajas-gwt-archetype</url>
+  </scm>
 </project> 
