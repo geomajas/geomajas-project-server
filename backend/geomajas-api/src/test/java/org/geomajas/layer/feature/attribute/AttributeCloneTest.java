@@ -45,7 +45,7 @@ public class AttributeCloneTest {
 		Attribute<?> clone = (Attribute<?>) attribute.clone();
 		Assert.assertEquals(attribute.getValue(), clone.getValue());
 
-		attribute = new ArrayAttribute<String>(new String[] { new String("test") });
+		attribute = new ArrayAttribute<String>(new String[] {"test"});
 		attribute.setEditable(true);
 		clone = (Attribute<?>) attribute.clone();
 		Assert.assertEquals(((Object[]) attribute.getValue())[0], ((Object[]) clone.getValue())[0]);
@@ -71,7 +71,7 @@ public class AttributeCloneTest {
 		Attribute<?> clone = (Attribute<?>) attribute.clone();
 		Assert.assertEquals(attribute.getValue(), clone.getValue());
 
-		attribute = new CurrencyAttribute("342€");
+		attribute = new CurrencyAttribute("342â‚¬");
 		attribute.setEditable(true);
 		clone = (Attribute<?>) attribute.clone();
 		Assert.assertEquals(attribute.getValue(), clone.getValue());
@@ -97,7 +97,7 @@ public class AttributeCloneTest {
 		Attribute<?> clone = (Attribute<?>) attribute.clone();
 		Assert.assertEquals(attribute.getValue(), clone.getValue());
 
-		attribute = new DoubleAttribute(new Double(342));
+		attribute = new DoubleAttribute(342.0);
 		attribute.setEditable(true);
 		clone = (Attribute<?>) attribute.clone();
 		Assert.assertEquals(attribute.getValue(), clone.getValue());
@@ -110,7 +110,7 @@ public class AttributeCloneTest {
 		Attribute<?> clone = (Attribute<?>) attribute.clone();
 		Assert.assertEquals(attribute.getValue(), clone.getValue());
 
-		attribute = new FloatAttribute(new Float(342));
+		attribute = new FloatAttribute(342.0F);
 		attribute.setEditable(true);
 		clone = (Attribute<?>) attribute.clone();
 		Assert.assertEquals(attribute.getValue(), clone.getValue());
@@ -123,7 +123,7 @@ public class AttributeCloneTest {
 		Attribute<?> clone = (Attribute<?>) attribute.clone();
 		Assert.assertEquals(attribute.getValue(), clone.getValue());
 
-		attribute = new ImageUrlAttribute(new String("the_image_url"));
+		attribute = new ImageUrlAttribute("the_image_url");
 		attribute.setEditable(true);
 		clone = (Attribute<?>) attribute.clone();
 		Assert.assertEquals(attribute.getValue(), clone.getValue());
@@ -136,7 +136,7 @@ public class AttributeCloneTest {
 		Attribute<?> clone = (Attribute<?>) attribute.clone();
 		Assert.assertEquals(attribute.getValue(), clone.getValue());
 
-		attribute = new IntegerAttribute(new Integer(342));
+		attribute = new IntegerAttribute(342);
 		attribute.setEditable(true);
 		clone = (Attribute<?>) attribute.clone();
 		Assert.assertEquals(attribute.getValue(), clone.getValue());
@@ -149,7 +149,7 @@ public class AttributeCloneTest {
 		Attribute<?> clone = (Attribute<?>) attribute.clone();
 		Assert.assertEquals(attribute.getValue(), clone.getValue());
 
-		attribute = new LongAttribute(new Long(342));
+		attribute = new LongAttribute(342L);
 		attribute.setEditable(true);
 		clone = (Attribute<?>) attribute.clone();
 		Assert.assertEquals(attribute.getValue(), clone.getValue());
@@ -162,9 +162,9 @@ public class AttributeCloneTest {
 		Attribute<?> clone = (Attribute<?>) attribute.clone();
 		Assert.assertEquals(attribute.getValue(), clone.getValue());
 
-		Long idValue = new Long(1);
+		Long idValue = 1L;
 		Map<String, PrimitiveAttribute<?>> attributes = new HashMap<String, PrimitiveAttribute<?>>();
-		attributes.put("stringAttribute", new StringAttribute(new String("value1")));
+		attributes.put("stringAttribute", new StringAttribute("value1"));
 		AssociationValue value = new AssociationValue(new LongAttribute(idValue), attributes);
 		attribute = new ManyToOneAttribute(value);
 		attribute.setEditable(true);
@@ -172,7 +172,7 @@ public class AttributeCloneTest {
 		Assert.assertEquals(attribute.isEditable(), clone.isEditable());
 
 		AssociationValue clonedValue = (AssociationValue) clone.getValue();
-		Assert.assertEquals((Long) clonedValue.getId().getValue(), idValue);
+		Assert.assertEquals(clonedValue.getId().getValue(), idValue);
 		Assert.assertEquals(clonedValue.getAttributes().get("stringAttribute").getValue(), "value1");
 		// Assert.assertEquals(attribute.getValue(), clone.getValue()); // AssociationValue has no equals method...
 	}
@@ -184,9 +184,9 @@ public class AttributeCloneTest {
 		Attribute<?> clone = (Attribute<?>) attribute.clone();
 		Assert.assertEquals(attribute.getValue(), clone.getValue());
 
-		Long idValue = new Long(1);
+		Long idValue = 1L;
 		Map<String, PrimitiveAttribute<?>> attributes = new HashMap<String, PrimitiveAttribute<?>>();
-		attributes.put("stringAttribute", new StringAttribute(new String("value1")));
+		attributes.put("stringAttribute", new StringAttribute("value1"));
 		AssociationValue value = new AssociationValue(new LongAttribute(idValue), attributes);
 		attribute = new OneToManyAttribute(Collections.singletonList(value));
 		attribute.setEditable(true);
@@ -194,7 +194,7 @@ public class AttributeCloneTest {
 		Assert.assertEquals(attribute.isEditable(), clone.isEditable());
 
 		List<AssociationValue> clonedValue = (List<AssociationValue>) clone.getValue();
-		Assert.assertEquals((Long) clonedValue.get(0).getId().getValue(), idValue);
+		Assert.assertEquals(clonedValue.get(0).getId().getValue(), idValue);
 		Assert.assertEquals(clonedValue.get(0).getAttributes().get("stringAttribute").getValue(), "value1");
 	}
 
@@ -217,7 +217,7 @@ public class AttributeCloneTest {
 		Attribute<?> clone = (Attribute<?>) attribute.clone();
 		Assert.assertEquals(attribute.getValue(), clone.getValue());
 
-		attribute = new StringAttribute(new String("some value"));
+		attribute = new StringAttribute("some value");
 		attribute.setEditable(true);
 		clone = (Attribute<?>) attribute.clone();
 		Assert.assertEquals(attribute.getValue(), clone.getValue());
@@ -230,7 +230,7 @@ public class AttributeCloneTest {
 		Attribute<?> clone = (Attribute<?>) attribute.clone();
 		Assert.assertEquals(attribute.getValue(), clone.getValue());
 
-		attribute = new UrlAttribute(new String("some URL"));
+		attribute = new UrlAttribute("some URL");
 		attribute.setEditable(true);
 		clone = (Attribute<?>) attribute.clone();
 		Assert.assertEquals(attribute.getValue(), clone.getValue());
