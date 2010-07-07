@@ -13,9 +13,9 @@
 	<description>Geomajas GeoTools layer plug-in</description>
 
 	<scm>
-		<connection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-plugin-geotools-all-1.7.0/geomajas-layer-geotools</connection>
-		<developerConnection>scm:svn:https://svn.geomajas.org/majas/plugin/face/geomajas-layer-geotools/tags/geomajas-plugin-geotools-all-1.7.0/geomajas-layer-geotools</developerConnection>
-		<url>https://svn.geomajas.org/majas/tags/geomajas-plugin-geotools-all-1.7.0/geomajas-layer-geotools</url>
+		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-layer-geotools</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/plugin/face/geomajas-layer-geotools</developerConnection>
+		<url>https://svn.geomajas.org/majas/trunk/plugin/geomajas-layer-geotools</url>
 	</scm>
 
 	<developers>
