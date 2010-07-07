@@ -1,6 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<parent>
 		<groupId>org.geomajas</groupId>
 		<artifactId>geomajas-parent</artifactId>
@@ -10,7 +8,7 @@
 	<groupId>org.geomajas.documentation</groupId>
 	<artifactId>geomajas-layer-google-documentation</artifactId>
 	<packaging>jdocbook</packaging>
-	<version>1.7.0-SNAPSHOT</version>
+	<version>1.7.0</version>
 	<name>Geomajas Google layer documentation (${translation})</name>
 	<description>Geomajas Google layer documentation (${translation})</description>
 
@@ -201,4 +199,10 @@
 		<translation>en-GB</translation>
 	</properties>
 
+
+  <scm>
+    <connection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-plugin-google-all-1.7.0/geomajas-parent-1.0.1/geomajas-layer-google-documentation</connection>
+    <developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-plugin-google-all-1.7.0/geomajas-parent-1.0.1/geomajas-layer-google-documentation</developerConnection>
+    <url>https://svn.geomajas.org/majas/tags/geomajas-plugin-google-all-1.7.0/geomajas-parent-1.0.1/geomajas-layer-google-documentation</url>
+  </scm>
 </project>
