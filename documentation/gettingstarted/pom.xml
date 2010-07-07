@@ -1,6 +1,4 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-		 xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<parent>
 		<groupId>org.geomajas</groupId>
 		<artifactId>geomajas-parent</artifactId>
@@ -9,15 +7,15 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.documentation</groupId>
 	<artifactId>docbook-gettingstarted</artifactId>
-	<version>1.7.0-SNAPSHOT</version>
+	<version>1.7.0</version>
 	<packaging>jdocbook</packaging>
 	<name>Getting started (${translation})</name>
 	<description>Getting started with Geomajas (${translation})</description>
 
 	<scm>
-		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/documentation/gettingstarted</connection>
-		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/documentation/gettingstarted</developerConnection>
-		<url>https://svn.geomajas.org/majas/trunk/documentation/gettingstarted</url>
+		<connection>scm:svn:https://svn.geomajas.org/majas/tags/docbook-1.7.0/documentation/gettingstarted</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/docbook-1.7.0/documentation/gettingstarted</developerConnection>
+		<url>https://svn.geomajas.org/majas/tags/docbook-1.7.0/documentation/gettingstarted</url>
 	</scm>
 
 	<repositories>
