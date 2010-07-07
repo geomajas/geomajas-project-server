@@ -34,7 +34,6 @@
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-api</artifactId>
-			<version>1.7.0-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>
@@ -131,7 +130,6 @@
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-impl</artifactId>
-			<version>1.7.0-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -156,7 +154,7 @@
 	</build>
 
 	<properties>
-		<hibernate-layer-backend-version>1.7.0-SNAPSHOT</hibernate-layer-backend-version>
+		<hibernate-layer-backend-version>1.7.0</hibernate-layer-backend-version>
 		<spring-version>3.0.2.RELEASE</spring-version>
 	</properties>
 </project>

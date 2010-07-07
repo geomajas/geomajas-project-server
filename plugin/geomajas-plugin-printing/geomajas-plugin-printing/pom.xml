@@ -144,7 +144,8 @@
 		</resources>
 	</build>
 
-	<!-- enable snapshot repo  -->	
+	<!-- uncomment if you want to use Geomajas snapshots, comment for faster builds  -->
+	<!--
 	<repositories>
 		<repository>
 			<id>Geomajas snapshots</id>
@@ -155,11 +156,12 @@
 			</snapshots>
 		</repository>
 	</repositories>
+	-->
 	
 	<properties>
-		<printing-layer-hibernate-version>1.7.0-SNAPSHOT</printing-layer-hibernate-version>
-		<printing-layer-geotools-version>1.7.0-SNAPSHOT</printing-layer-geotools-version>
-		<printing-layer-wms-version>1.7.0-SNAPSHOT</printing-layer-wms-version>
+		<printing-layer-hibernate-version>1.7.0</printing-layer-hibernate-version>
+		<printing-layer-geotools-version>1.7.0</printing-layer-geotools-version>
+		<printing-layer-wms-version>1.7.0</printing-layer-wms-version>
 		<spring-version>3.0.2.RELEASE</spring-version>
 	</properties>
 

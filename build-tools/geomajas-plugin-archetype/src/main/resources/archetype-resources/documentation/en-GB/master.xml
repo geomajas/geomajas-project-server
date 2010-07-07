@@ -36,7 +36,7 @@
 			<holder>Geosparc nv</holder>
 		</copyright>
 
-		<releaseinfo>v1.7.0-SNAPSHOT</releaseinfo>
+		<releaseinfo>${version}</releaseinfo>
 
 		<productname>Geomajas</productname>
 

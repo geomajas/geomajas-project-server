@@ -61,7 +61,7 @@
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-dep</artifactId>
-				<version>1.10.26-SNAPSHOT</version>
+				<version>1.10.26</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -328,6 +328,7 @@
 		</repository>
 
 		<!-- uncomment if you want to use Geomajas snapshots, comment for faster builds  -->
+		<!--
 		<repository>
 			<id>Geomajas-latest</id>
 			<name>Geomajas snapshot repository</name>
@@ -335,7 +336,8 @@
 			<snapshots>
 				<enabled>true</enabled>
 			</snapshots>
-		</repository>		
+		</repository>
+		-->
 	</repositories>
 	<pluginRepositories>
 		<pluginRepository>
@@ -380,13 +382,13 @@
 	</profiles>
 
 	<properties>
-		<geomajas-face-gwt-version>1.7.0-SNAPSHOT</geomajas-face-gwt-version>
-		<geomajas-backend-version>1.7.0-SNAPSHOT</geomajas-backend-version>
-		<geomajas-layer-geotools-version>1.7.0-SNAPSHOT</geomajas-layer-geotools-version>
-		<geomajas-layer-hibernate-version>1.7.0-SNAPSHOT</geomajas-layer-hibernate-version>
-		<geomajas-layer-google-version>1.7.0-SNAPSHOT</geomajas-layer-google-version>
-		<geomajas-layer-wms-version>1.7.0-SNAPSHOT</geomajas-layer-wms-version>
-		<geomajas-layer-openstreetmap-version>1.7.0-SNAPSHOT</geomajas-layer-openstreetmap-version>
+		<geomajas-face-gwt-version>1.7.0</geomajas-face-gwt-version>
+		<geomajas-backend-version>1.7.0</geomajas-backend-version>
+		<geomajas-layer-geotools-version>1.7.0</geomajas-layer-geotools-version>
+		<geomajas-layer-hibernate-version>1.7.0</geomajas-layer-hibernate-version>
+		<geomajas-layer-google-version>1.7.0</geomajas-layer-google-version>
+		<geomajas-layer-wms-version>1.7.0</geomajas-layer-wms-version>
+		<geomajas-layer-openstreetmap-version>1.7.0</geomajas-layer-openstreetmap-version>
 		<gwt-version>2.0.3</gwt-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>

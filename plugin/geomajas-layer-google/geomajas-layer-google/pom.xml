@@ -27,7 +27,7 @@
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-api</artifactId>
-			<version>1.7.0-SNAPSHOT</version>
+			<version>1.7.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.slf4j</groupId>
@@ -79,7 +79,6 @@
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-impl</artifactId>
-			<version>1.7.0-SNAPSHOT</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
@@ -104,6 +103,6 @@
 	</build>
 
 	<properties>
-		<google-layer-backend-version>1.7.0-SNAPSHOT</google-layer-backend-version>
+		<google-layer-backend-version>1.7.0</google-layer-backend-version>
 	</properties>
 </project>

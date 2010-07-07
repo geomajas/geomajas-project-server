@@ -84,6 +84,6 @@
 	</build>
 
 	<properties>
-		<${pluginName}-backend-version>1.7.0-SNAPSHOT</${pluginName}-backend-version>
+		<${pluginName}-backend-version>1.7.0</${pluginName}-backend-version>
 	</properties>
 </project>
