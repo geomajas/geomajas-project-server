@@ -15,7 +15,7 @@
 
 	<scm>
 		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-plugin-caching</connection>
-		<developerConnection>scm:svn:https://svn.geomajas.org/majas/plugin/geomajas-plugin-caching</developerConnection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-plugin-caching</developerConnection>
 		<url>https://svn.geomajas.org/majas/trunk/plugin/geomajas-plugin-caching</url>
 	</scm>
 

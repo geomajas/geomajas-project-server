@@ -17,7 +17,7 @@
 	<!-- @todo uncomment and fix when this module is part of the Geomajas project
 	<scm>
 		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/${rootArtifactId}</connection>
-		<developerConnection>scm:svn:https://svn.geomajas.org/majas/plugin/${rootArtifactId}</developerConnection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/${rootArtifactId}</developerConnection>
 		<url>https://svn.geomajas.org/majas/trunk/plugin/${rootArtifactId}</url>
 	</scm>
 	-->

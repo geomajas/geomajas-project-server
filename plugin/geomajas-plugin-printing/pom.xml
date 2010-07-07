@@ -14,7 +14,7 @@
 
 	<scm>
 		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-plugin-printing</connection>
-		<developerConnection>scm:svn:https://svn.geomajas.org/majas/plugin/face/geomajas-plugin-printing</developerConnection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-plugin-printing</developerConnection>
 		<url>https://svn.geomajas.org/majas/trunk/plugin/geomajas-plugin-printing</url>
 	</scm>
 
