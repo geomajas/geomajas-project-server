@@ -7,15 +7,15 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-plugin-google-all</artifactId>
-	<version>1.7.0</version>
+	<version>1.8.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
 	<name>Geomajas Google layer plug-in</name>
 	<description>Geomajas Google layer plug-in</description>
 
 	<scm>
-		<connection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-plugin-google-all-1.7.0/geomajas-layer-google</connection>
-		<developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-plugin-google-all-1.7.0/geomajas-layer-google</developerConnection>
-		<url>https://svn.geomajas.org/majas/tags/geomajas-plugin-google-all-1.7.0/geomajas-layer-google</url>
+		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-layer-google</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-layer-google</developerConnection>
+		<url>https://svn.geomajas.org/majas/trunk/plugin/geomajas-layer-google</url>
 	</scm>
 
 	<developers>
