@@ -53,22 +53,22 @@
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-command</artifactId>
-			<version>${project.version}</version>
+			<version>${geomajas-face-dojo-version}</version>
 		</dependency>
         <dependency>
             <groupId>org.geomajas.plugin</groupId>
             <artifactId>geomajas-layer-geotools</artifactId>
-            <version>${project.version}</version>
+            <version>${geomajas-layer-geotools-version}</version>
         </dependency>
         <dependency>
             <groupId>org.geomajas.plugin</groupId>
             <artifactId>geomajas-layer-openstreetmap</artifactId>
-            <version>${project.version}</version>
+            <version>${geomajas-layer-openstreetmap-version}</version>
         </dependency>
         <dependency>
             <groupId>org.geomajas.plugin</groupId>
             <artifactId>geomajas-layer-wms</artifactId>
-            <version>${project.version}</version>
+            <version>${geomajas-layer-wms-version}</version>
         </dependency>
 
 		<!-- logging dependencies, delegate all to slf4j and use logback -->
