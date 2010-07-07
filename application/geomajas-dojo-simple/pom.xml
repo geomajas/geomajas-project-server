@@ -88,11 +88,6 @@
             <artifactId>geomajas-layer-wms</artifactId>
             <version>${geomajas-layer-wms-version}</version>
         </dependency>
-        <!--dependency>
-            <groupId>org.geomajas.plugin</groupId>
-            <artifactId>geomajas-plugin-printing</artifactId>
-            <version>${geomajas-plugin-printing-version}</version>
-        </dependency-->
 
 		<!-- logging dependencies, delegate all to slf4j and use logback -->
         <dependency>
@@ -224,7 +219,6 @@
 		<geomajas-face-dojo-version>1.5.6-SNAPSHOT</geomajas-face-dojo-version>
 		<geomajas-layer-geotools-version>1.7.0</geomajas-layer-geotools-version>
 		<geomajas-layer-wms-version>1.7.0</geomajas-layer-wms-version>
-		<geomajas-plugin-printing-version>2.0.0-SNAPSHOT</geomajas-plugin-printing-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
