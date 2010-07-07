@@ -69,6 +69,16 @@
 
   <para></para>
 
+  <para>For docs, remember to set the version in the master.xml files to the
+  correct version before releasing, and set it to the next snapshot after the
+  release.</para>
+
+  <para></para>
+
+  <para>Remember to comment the snapshot repository in all poms.</para>
+
+  <para></para>
+
   <para>Old steps (pre 1.7.0) follow :</para>
 
   <para>Preparation work:</para>
