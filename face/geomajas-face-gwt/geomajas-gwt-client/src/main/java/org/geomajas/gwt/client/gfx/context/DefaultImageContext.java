@@ -208,7 +208,7 @@ public class DefaultImageContext implements ImageContext {
 			DOM.setStyleAttribute(image, "height", (int) bounds.getHeight() + "px");
 			String oldHref = DOM.getElementAttribute(image, "src");
 			// if href has changed, attach a listener to show the image on load
-			if (href!=null && !href.equals(oldHref)) {
+			if (href != null && !href.equals(oldHref)) {
 				DOM.sinkEvents(image, Event.ONLOAD | Event.ONERROR);
 				DOM.setEventListener(image, new EventListener() {
 
