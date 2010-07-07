@@ -53,7 +53,8 @@ public interface GeoService {
 	CoordinateReferenceSystem getCrs(String crs) throws LayerException;
 
 	/**
-	 * Isn't there a method for this in geotools?
+	 * Try to extract the SRID (Spatial Reference Id) from the CRS.
+	 * Unreliable but works if SRIDs are same as EPSG numbers.
 	 *
 	 * @param crs
 	 *            CRS string in the form of 'EPSG:<srid>'.
@@ -62,7 +63,8 @@ public interface GeoService {
 	int getSridFromCrs(String crs);
 
 	/**
-	 * Unreliable but works if srids are same as EPSG numbers.
+	 * Try to extract the SRID (Spatial Reference Id) from the CRS.
+	 * Unreliable but works if SRIDs are same as EPSG numbers.
 	 *
 	 * @param crs reference system of EPSG type.
 	 * @return SRID as integer.
