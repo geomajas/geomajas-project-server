@@ -303,7 +303,7 @@
 					</execution>
 					<execution>
 						<id>compile</id>
-						<phase>process-classes</phase>
+						<phase>compile</phase>
 						<goals>
 							<goal>compile</goal>
 						</goals>
