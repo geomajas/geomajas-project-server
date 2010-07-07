@@ -575,7 +575,7 @@ public class MapView {
 					for (int i = indexes.getMin(); i < indexes.getMax(); i++) {
 						double upper = resolutions.get(i);
 						double lower = resolutions.get(i + 1);
-						if (screenResolution <= upper && screenResolution >= lower) {
+						if (screenResolution <= upper && screenResolution > lower) {
 							if (option == ZoomOption.LEVEL_FIT) {
 								newResolutionIndex = i;
 								break;
