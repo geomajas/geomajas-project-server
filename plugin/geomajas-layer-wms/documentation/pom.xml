@@ -8,7 +8,7 @@
 	<groupId>org.geomajas.documentation</groupId>
 	<artifactId>geomajas-layer-wms-documentation</artifactId>
 	<packaging>jdocbook</packaging>
-	<version>1.7.0</version>
+	<version>1.8.0-SNAPSHOT</version>
 	<name>Geomajas WMS layer documentation (${translation})</name>
 	<description>Geomajas WMS layer documentation (${translation})</description>
 
@@ -198,11 +198,4 @@
 	<properties>
 		<translation>en-GB</translation>
 	</properties>
-
-
-  <scm>
-    <connection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-plugin-wms-all-1.7.0/geomajas-parent-1.0.1/geomajas-layer-wms-documentation</connection>
-    <developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-plugin-wms-all-1.7.0/geomajas-parent-1.0.1/geomajas-layer-wms-documentation</developerConnection>
-    <url>https://svn.geomajas.org/majas/tags/geomajas-plugin-wms-all-1.7.0/geomajas-parent-1.0.1/geomajas-layer-wms-documentation</url>
-  </scm>
 </project>
