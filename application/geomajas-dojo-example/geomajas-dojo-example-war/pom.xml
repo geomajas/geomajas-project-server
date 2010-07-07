@@ -53,7 +53,7 @@
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-command</artifactId>
-			<version>${geomajas-face-dojo-version}</version>
+			<version>1.7.0</version>
 		</dependency>
         <dependency>
             <groupId>org.geomajas.plugin</groupId>
