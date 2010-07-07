@@ -7,7 +7,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-layer-geotools</artifactId>
-	<version>1.7.0</version>
+	<version>1.8.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>Geomajas layer model using Geotools</name>
 	<description>Geomajas layer model using Geotools</description>
@@ -158,10 +158,4 @@
 		<geotools-layer-backend-version>1.7.0</geotools-layer-backend-version>
 		<geotools-version>2.6.3</geotools-version>
 	</properties>
-
-  <scm>
-    <connection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-plugin-geotools-all-1.7.0/geomajas-parent-1.0.1/geomajas-layer-geotools</connection>
-    <developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-plugin-geotools-all-1.7.0/geomajas-parent-1.0.1/geomajas-layer-geotools</developerConnection>
-    <url>https://svn.geomajas.org/majas/tags/geomajas-plugin-geotools-all-1.7.0/geomajas-parent-1.0.1/geomajas-layer-geotools</url>
-  </scm>
 </project>
