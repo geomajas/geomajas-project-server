@@ -14,7 +14,7 @@
 
 	<scm>
 		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-layer-geotools</connection>
-		<developerConnection>scm:svn:https://svn.geomajas.org/majas/plugin/geomajas-layer-geotools</developerConnection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-layer-geotools</developerConnection>
 		<url>https://svn.geomajas.org/majas/trunk/plugin/geomajas-layer-geotools</url>
 	</scm>
 
