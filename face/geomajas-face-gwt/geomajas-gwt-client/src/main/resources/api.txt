@@ -1,4 +1,4 @@
-// geomajas-face-gwt module API, 1.6.0
+// geomajas-face-gwt module API, 1.7.0
 org.geomajas.gwt.client.Geomajas::1.6.0
 org.geomajas.gwt.client.Geomajas:static Map<String,String> getSupportedLocales():1.6.0
 org.geomajas.gwt.client.Geomajas:static String getIsomorphicDir():1.6.0
@@ -198,6 +198,7 @@ org.geomajas.gwt.client.gfx.WorldPaintable::1.6.0
 org.geomajas.gwt.client.map.IndexRange::1.6.0
 org.geomajas.gwt.client.map.LayerSelectionPropagator::1.6.0
 org.geomajas.gwt.client.map.MapModel::1.6.0
+org.geomajas.gwt.client.map.MapModel:HandlerRegistration addFeatureTransactionHandler(FeatureTransactionHandler, ):1.7.0
 org.geomajas.gwt.client.map.MapModel:HandlerRegistration addLayerSelectionHandler(LayerSelectionHandler, ):1.6.0
 org.geomajas.gwt.client.map.MapModel:Layer<?> getLayer(String, ):1.6.0
 org.geomajas.gwt.client.map.MapModel:MapModel(String, ):1.6.0
@@ -219,6 +220,13 @@ org.geomajas.gwt.client.map.event.FeatureSelectionHandler:. TYPE:1.6.0
 org.geomajas.gwt.client.map.event.FeatureSelectionHandler::1.6.0
 org.geomajas.gwt.client.map.event.FeatureSelectionHandler:void onFeatureDeselected(FeatureDeselectedEvent, ):1.6.0
 org.geomajas.gwt.client.map.event.FeatureSelectionHandler:void onFeatureSelected(FeatureSelectedEvent, ):1.6.0
+org.geomajas.gwt.client.map.event.FeatureTransactionEvent::1.7.0
+org.geomajas.gwt.client.map.event.FeatureTransactionEvent:FeatureTransaction getFeatureTransaction():1.7.0
+org.geomajas.gwt.client.map.event.FeatureTransactionEvent:FeatureTransactionEvent(FeatureTransaction, ):1.7.0
+org.geomajas.gwt.client.map.event.FeatureTransactionEvent:Type<FeatureTransactionHandler> getAssociatedType():1.7.0
+org.geomajas.gwt.client.map.event.FeatureTransactionHandler:. TYPE:1.7.0
+org.geomajas.gwt.client.map.event.FeatureTransactionHandler::1.7.0
+org.geomajas.gwt.client.map.event.FeatureTransactionHandler:void onTransactionSuccess(FeatureTransactionEvent, ):1.7.0
 org.geomajas.gwt.client.map.event.HasFeatureSelectionHandlers::1.6.0
 org.geomajas.gwt.client.map.event.HasFeatureSelectionHandlers:HandlerRegistration addFeatureSelectionHandler(FeatureSelectionHandler, ):1.6.0
 org.geomajas.gwt.client.map.event.HasLayerChangedHandlers::1.6.0
@@ -295,6 +303,7 @@ org.geomajas.gwt.client.widget.MapWidget:void registerPainter(Painter, ):1.6.0
 org.geomajas.gwt.client.widget.MapWidget:void registerWorldPaintable(WorldPaintable, ):1.6.0
 org.geomajas.gwt.client.widget.MapWidget:void render(Paintable, RenderGroup, RenderStatus, ):1.6.0
 org.geomajas.gwt.client.widget.MapWidget:void setController(GraphicsController, ):1.6.0
+org.geomajas.gwt.client.widget.MapWidget:void setFallbackController(GraphicsController, ):1.7.0
 org.geomajas.gwt.client.widget.MapWidget:void setMouseWheelController(MouseWheelHandler, ):1.6.0
 org.geomajas.gwt.client.widget.MapWidget:void unregisterPainter(Painter, ):1.6.0
 org.geomajas.gwt.client.widget.MapWidget:void unregisterWorldPaintable(WorldPaintable, ):1.6.0

@@ -1,4 +1,4 @@
-// geomajas-command module API, 1.6.0
+// geomajas-command module API, 1.7.0
 org.geomajas.command.configuration.GetMapConfigurationCommand::1.6.0
 org.geomajas.command.dto.GetMapConfigurationRequest::1.6.0
 org.geomajas.command.dto.GetMapConfigurationRequest:GetMapConfigurationRequest():1.6.0
@@ -115,5 +115,6 @@ org.geomajas.command.dto.SearchFeatureResponse:void setLayerId(String, ):1.6.0
 org.geomajas.command.feature.PersistTransactionCommand::1.6.0
 org.geomajas.command.feature.SearchByLocationCommand::1.6.0
 org.geomajas.command.feature.SearchFeatureCommand::1.6.0
+org.geomajas.command.general.CopyrightCommand::1.7.0
 org.geomajas.command.render.GetRasterTilesCommand::1.6.0
 org.geomajas.command.render.GetVectorTileCommand::1.6.0

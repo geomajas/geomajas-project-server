@@ -1,4 +1,4 @@
-// geomajas-api module API for 1.6.0
+// geomajas-api module API for 1.7.0
 org.geomajas.command.Command::1.6.0
 org.geomajas.command.Command:RESPONSE getEmptyCommandResponse():1.6.0
 org.geomajas.command.Command:void execute(REQUEST, RESPONSE, ):1.6.0
@@ -142,6 +142,7 @@ org.geomajas.configuration.PrimitiveAttributeInfo:PrimitiveType getType():1.6.0
 org.geomajas.configuration.PrimitiveAttributeInfo:void setType(PrimitiveType, ):1.6.0
 org.geomajas.configuration.RasterLayerInfo::1.6.0
 org.geomajas.configuration.RasterLayerInfo:List<Double> getResolutions():1.6.0
+org.geomajas.configuration.RasterLayerInfo:List<ScaleInfo> getZoomLevels():1.7.0
 org.geomajas.configuration.RasterLayerInfo:RasterLayerInfo():1.6.0
 org.geomajas.configuration.RasterLayerInfo:String getDataSourceName():1.6.0
 org.geomajas.configuration.RasterLayerInfo:int getTileHeight():1.6.0
@@ -150,6 +151,7 @@ org.geomajas.configuration.RasterLayerInfo:void setDataSourceName(String, ):1.6.
 org.geomajas.configuration.RasterLayerInfo:void setResolutions(List<Double>, ):1.6.0
 org.geomajas.configuration.RasterLayerInfo:void setTileHeight(int, ):1.6.0
 org.geomajas.configuration.RasterLayerInfo:void setTileWidth(int, ):1.6.0
+org.geomajas.configuration.RasterLayerInfo:void setZoomLevels(List<ScaleInfo>, ):1.7.0
 org.geomajas.configuration.RectInfo::1.6.0
 org.geomajas.configuration.RectInfo:float getH():1.6.0
 org.geomajas.configuration.RectInfo:float getW():1.6.0
@@ -192,6 +194,8 @@ org.geomajas.configuration.client.ClientLayerInfo:Bbox getMaxExtent():1.6.0
 org.geomajas.configuration.client.ClientLayerInfo:ClientUserDataInfo getUserData():1.6.0
 org.geomajas.configuration.client.ClientLayerInfo:LayerInfo getLayerInfo():1.6.0
 org.geomajas.configuration.client.ClientLayerInfo:LayerType getLayerType():1.6.0
+org.geomajas.configuration.client.ClientLayerInfo:ScaleInfo getMaximumScale():1.7.0
+org.geomajas.configuration.client.ClientLayerInfo:ScaleInfo getMinimumScale():1.7.0
 org.geomajas.configuration.client.ClientLayerInfo:String getCrs():1.6.0
 org.geomajas.configuration.client.ClientLayerInfo:String getId():1.6.0
 org.geomajas.configuration.client.ClientLayerInfo:String getLabel():1.6.0
@@ -203,6 +207,8 @@ org.geomajas.configuration.client.ClientLayerInfo:void setId(String, ):1.6.0
 org.geomajas.configuration.client.ClientLayerInfo:void setLabel(String, ):1.6.0
 org.geomajas.configuration.client.ClientLayerInfo:void setLayerInfo(LayerInfo, ):1.6.0
 org.geomajas.configuration.client.ClientLayerInfo:void setMaxExtent(Bbox, ):1.6.0
+org.geomajas.configuration.client.ClientLayerInfo:void setMaximumScale(ScaleInfo, ):1.7.0
+org.geomajas.configuration.client.ClientLayerInfo:void setMinimumScale(ScaleInfo, ):1.7.0
 org.geomajas.configuration.client.ClientLayerInfo:void setServerLayerId(String, ):1.6.0
 org.geomajas.configuration.client.ClientLayerInfo:void setUserData(ClientUserDataInfo, ):1.6.0
 org.geomajas.configuration.client.ClientLayerInfo:void setViewScaleMax(double, ):1.6.0
@@ -236,6 +242,7 @@ org.geomajas.configuration.client.ClientMapInfo:FeatureStyleInfo getPointSelectS
 org.geomajas.configuration.client.ClientMapInfo:FeatureStyleInfo getPolygonSelectStyle():1.6.0
 org.geomajas.configuration.client.ClientMapInfo:List<ClientLayerInfo> getLayers():1.6.0
 org.geomajas.configuration.client.ClientMapInfo:List<Double> getResolutions():1.6.0
+org.geomajas.configuration.client.ClientMapInfo:ScaleConfigurationInfo getScaleConfiguration():1.7.0
 org.geomajas.configuration.client.ClientMapInfo:String getBackgroundColor():1.6.0
 org.geomajas.configuration.client.ClientMapInfo:String getCrs():1.6.0
 org.geomajas.configuration.client.ClientMapInfo:String getId():1.6.0
@@ -265,6 +272,7 @@ org.geomajas.configuration.client.ClientMapInfo:void setPrecision(int, ):1.6.0
 org.geomajas.configuration.client.ClientMapInfo:void setResolutions(List<Double>, ):1.6.0
 org.geomajas.configuration.client.ClientMapInfo:void setResolutionsRelative(boolean, ):1.6.0
 org.geomajas.configuration.client.ClientMapInfo:void setScaleBarEnabled(boolean, ):1.6.0
+org.geomajas.configuration.client.ClientMapInfo:void setScaleConfiguration(ScaleConfigurationInfo, ):1.7.0
 org.geomajas.configuration.client.ClientMapInfo:void setToolbar(ClientToolbarInfo, ):1.6.0
 org.geomajas.configuration.client.ClientMapInfo:void setUnitLength(double, ):1.6.0
 org.geomajas.configuration.client.ClientMapInfo:void setUserData(ClientUserDataInfo, ):1.6.0
@@ -298,6 +306,24 @@ org.geomajas.configuration.client.ClientVectorLayerInfo:void setUpdatable(boolea
 org.geomajas.configuration.client.DummyClientUserDataInfo::1.6.0
 org.geomajas.configuration.client.DummyClientUserDataInfo:String getDummy():1.6.0
 org.geomajas.configuration.client.DummyClientUserDataInfo:void setDummy(String, ):1.6.0
+org.geomajas.configuration.client.ScaleConfigurationInfo::1.7.0
+org.geomajas.configuration.client.ScaleConfigurationInfo:List<ScaleInfo> getZoomLevels():1.7.0
+org.geomajas.configuration.client.ScaleConfigurationInfo:ScaleInfo getMaximumScale():1.7.0
+org.geomajas.configuration.client.ScaleConfigurationInfo:void setMaximumScale(ScaleInfo, ):1.7.0
+org.geomajas.configuration.client.ScaleConfigurationInfo:void setZoomLevels(List<ScaleInfo>, ):1.7.0
+org.geomajas.configuration.client.ScaleInfo::1.7.0
+org.geomajas.configuration.client.ScaleInfo:ScaleInfo():1.7.0
+org.geomajas.configuration.client.ScaleInfo:ScaleInfo(double, ):1.7.0
+org.geomajas.configuration.client.ScaleInfo:ScaleInfo(double, double, ):1.7.0
+org.geomajas.configuration.client.ScaleInfo:double getDenominator():1.7.0
+org.geomajas.configuration.client.ScaleInfo:double getNumerator():1.7.0
+org.geomajas.configuration.client.ScaleInfo:double getPixelPerUnit():1.7.0
+org.geomajas.configuration.client.ScaleInfo:static final ScaleInfo MAX_VALUE:1.7.0
+org.geomajas.configuration.client.ScaleInfo:static final ScaleInfo MIN_VALUE:1.7.0
+org.geomajas.configuration.client.ScaleInfo:void convertScale(double, ):1.7.0
+org.geomajas.configuration.client.ScaleInfo:void setDenominator(double, ):1.7.0
+org.geomajas.configuration.client.ScaleInfo:void setNumerator(double, ):1.7.0
+org.geomajas.configuration.client.ScaleInfo:void setPixelPerUnit(double, ):1.7.0
 org.geomajas.configuration.validation.AssertFalseConstraintInfo::1.6.0
 org.geomajas.configuration.validation.AssertTrueConstraintInfo::1.6.0
 org.geomajas.configuration.validation.ConstraintInfo::1.6.0
@@ -376,14 +402,36 @@ org.geomajas.geometry.Geometry:Geometry[] getGeometries():1.6.0
 org.geomajas.geometry.Geometry:String getGeometryType():1.6.0
 org.geomajas.geometry.Geometry:int getPrecision():1.6.0
 org.geomajas.geometry.Geometry:int getSrid():1.6.0
+org.geomajas.geometry.Geometry:static final String LINEAR_RING:1.7.0
+org.geomajas.geometry.Geometry:static final String LINE_STRING:1.7.0
+org.geomajas.geometry.Geometry:static final String MULTI_LINE_STRING:1.7.0
+org.geomajas.geometry.Geometry:static final String MULTI_POINT:1.7.0
+org.geomajas.geometry.Geometry:static final String MULTI_POLYGON:1.7.0
+org.geomajas.geometry.Geometry:static final String POINT:1.7.0
+org.geomajas.geometry.Geometry:static final String POLYGON:1.7.0
 org.geomajas.geometry.Geometry:void setCoordinates(Coordinate[], ):1.6.0
 org.geomajas.geometry.Geometry:void setGeometries(Geometry[], ):1.6.0
 org.geomajas.geometry.Geometry:void setGeometryType(String, ):1.6.0
 org.geomajas.geometry.Geometry:void setPrecision(int, ):1.6.0
 org.geomajas.geometry.Geometry:void setSrid(int, ):1.6.0
+org.geomajas.global.CopyrightInfo::1.7.0
+org.geomajas.global.CopyrightInfo:String getCopyright():1.7.0
+org.geomajas.global.CopyrightInfo:String getKey():1.7.0
+org.geomajas.global.CopyrightInfo:String getLicenseName():1.7.0
+org.geomajas.global.CopyrightInfo:String getLicenseUrl():1.7.0
+org.geomajas.global.CopyrightInfo:void setCopyright(String, ):1.7.0
+org.geomajas.global.CopyrightInfo:void setKey(String, ):1.7.0
+org.geomajas.global.CopyrightInfo:void setLicenseName(String, ):1.7.0
+org.geomajas.global.CopyrightInfo:void setLicenseUrl(String, ):1.7.0
+org.geomajas.global.CrsInfo::1.7.0
+org.geomajas.global.CrsInfo:String getCrsWkt():1.7.0
+org.geomajas.global.CrsInfo:String getKey():1.7.0
+org.geomajas.global.CrsInfo:void setCrsWkt(String, ):1.7.0
+org.geomajas.global.CrsInfo:void setKey(String, ):1.7.0
 org.geomajas.global.ExceptionCode::1.6.0
 org.geomajas.global.ExceptionCode:int APPLICATION_NOT_FOUND:1.6.0
 org.geomajas.global.ExceptionCode:int ATTRIBUTE_UNKNOWN:1.6.0
+org.geomajas.global.ExceptionCode:int CANNOT_CONVERT_GEOMETRY:1.7.0
 org.geomajas.global.ExceptionCode:int CANNOT_CREATE_LAYER_MODEL:1.6.0
 org.geomajas.global.ExceptionCode:int CANNOT_DETERMINE_CLASS_FOR_FEATURE:1.6.0
 org.geomajas.global.ExceptionCode:int COMMAND_ACCESS_DENIED:1.6.0
@@ -416,6 +464,7 @@ org.geomajas.global.ExceptionCode:int INVALID_FEATURE_OBJECT:1.6.0
 org.geomajas.global.ExceptionCode:int INVALID_SHAPE_FILE_URL:1.6.0
 org.geomajas.global.ExceptionCode:int LAYER_CRS_PROBLEMATIC:1.6.0
 org.geomajas.global.ExceptionCode:int LAYER_CRS_UNKNOWN_AUTHORITY:1.6.0
+org.geomajas.global.ExceptionCode:int LAYER_EXTENT_CANNOT_CONVERT:1.7.0
 org.geomajas.global.ExceptionCode:int LAYER_MODEL_FEATURE_NOT_FOUND:1.6.0
 org.geomajas.global.ExceptionCode:int LAYER_MODEL_IO_EXCEPTION:1.6.0
 org.geomajas.global.ExceptionCode:int LAYER_NOT_FOUND:1.6.0
@@ -428,6 +477,7 @@ org.geomajas.global.ExceptionCode:int NOT_IMPLEMENTED:1.6.0
 org.geomajas.global.ExceptionCode:int PARAMETER_MISSING:1.6.0
 org.geomajas.global.ExceptionCode:int PIPELINE_CONTEXT_MISSING:1.6.0
 org.geomajas.global.ExceptionCode:int PIPELINE_UNKNOWN:1.6.0
+org.geomajas.global.ExceptionCode:int PIPELINE_UNSATISFIED_EXTENSION:1.7.0
 org.geomajas.global.ExceptionCode:int PRINT_TEMPLATE_PERSIST_PROBLEM:1.6.0
 org.geomajas.global.ExceptionCode:int PRINT_TEMPLATE_XML_PROBLEM:1.6.0
 org.geomajas.global.ExceptionCode:int PROPERTY_IS_NOT_GEOMETRY:1.6.0
@@ -467,6 +517,20 @@ org.geomajas.global.GeomajasException:String getMessage(Locale, ):1.6.0
 org.geomajas.global.GeomajasException:String getResourceBundleName():1.6.0
 org.geomajas.global.GeomajasException:String getShortMessage(Locale, ):1.6.0
 org.geomajas.global.GeomajasException:int getExceptionCode():1.6.0
+org.geomajas.global.PluginInfo::1.7.0
+org.geomajas.global.PluginInfo:List<CopyrightInfo> getCopyrightInfo():1.7.0
+org.geomajas.global.PluginInfo:List<PluginVersionInfo> getDependencies():1.7.0
+org.geomajas.global.PluginInfo:PluginVersionInfo getVersion():1.7.0
+org.geomajas.global.PluginInfo:String getBackendVersion():1.7.0
+org.geomajas.global.PluginInfo:void setBackendVersion(String, ):1.7.0
+org.geomajas.global.PluginInfo:void setCopyrightInfo(List<CopyrightInfo>, ):1.7.0
+org.geomajas.global.PluginInfo:void setDependencies(List<PluginVersionInfo>, ):1.7.0
+org.geomajas.global.PluginInfo:void setVersion(PluginVersionInfo, ):1.7.0
+org.geomajas.global.PluginVersionInfo::1.7.0
+org.geomajas.global.PluginVersionInfo:String getName():1.7.0
+org.geomajas.global.PluginVersionInfo:String getVersion():1.7.0
+org.geomajas.global.PluginVersionInfo:void setName(String, ):1.7.0
+org.geomajas.global.PluginVersionInfo:void setVersion(String, ):1.7.0
 org.geomajas.layer.Layer::1.6.0
 org.geomajas.layer.Layer:CoordinateReferenceSystem getCrs():1.6.0
 org.geomajas.layer.Layer:String getId():1.6.0
@@ -504,6 +568,7 @@ org.geomajas.layer.VectorLayerService:List<InternalFeature> getFeatures(String, 
 org.geomajas.layer.VectorLayerService:List<InternalFeature> getFeatures(String, CoordinateReferenceSystem, Filter, NamedStyleInfo, int, int, int, ):1.6.0
 org.geomajas.layer.VectorLayerService:void saveOrUpdate(String, CoordinateReferenceSystem, List<InternalFeature>, List<InternalFeature>, ):1.6.0
 org.geomajas.layer.feature.Attribute::1.6.0
+org.geomajas.layer.feature.Attribute:Object clone():1.7.0
 org.geomajas.layer.feature.Attribute:VALUE_TYPE getValue():1.6.0
 org.geomajas.layer.feature.Attribute:boolean isEditable():1.6.0
 org.geomajas.layer.feature.Attribute:boolean isEmpty():1.6.0
@@ -589,13 +654,16 @@ org.geomajas.layer.feature.SearchCriterion:void setValue(String, ):1.6.0
 org.geomajas.layer.feature.attribute.ArrayAttribute::1.6.0
 org.geomajas.layer.feature.attribute.ArrayAttribute:ArrayAttribute():1.6.0
 org.geomajas.layer.feature.attribute.ArrayAttribute:ArrayAttribute(VALUE_TYPE[], ):1.6.0
+org.geomajas.layer.feature.attribute.ArrayAttribute:Object clone():1.7.0
 org.geomajas.layer.feature.attribute.ArrayAttribute:VALUE_TYPE[] getValue():1.6.0
 org.geomajas.layer.feature.attribute.ArrayAttribute:boolean isEditable():1.6.0
 org.geomajas.layer.feature.attribute.ArrayAttribute:boolean isEmpty():1.6.0
 org.geomajas.layer.feature.attribute.ArrayAttribute:boolean isPrimitive():1.6.0
 org.geomajas.layer.feature.attribute.ArrayAttribute:void setEditable(boolean, ):1.6.0
+org.geomajas.layer.feature.attribute.ArrayAttribute:void setValue(VALUE_TYPE[], ):1.7.0
 org.geomajas.layer.feature.attribute.AssociationAttribute::1.6.0
 org.geomajas.layer.feature.attribute.AssociationAttribute:AssociationType getType():1.6.0
+org.geomajas.layer.feature.attribute.AssociationAttribute:Object clone():1.7.0
 org.geomajas.layer.feature.attribute.AssociationAttribute:boolean isEditable():1.6.0
 org.geomajas.layer.feature.attribute.AssociationAttribute:boolean isPrimitive():1.6.0
 org.geomajas.layer.feature.attribute.AssociationAttribute:void setEditable(boolean, ):1.6.0
@@ -604,48 +672,60 @@ org.geomajas.layer.feature.attribute.AssociationValue::1.6.0
 org.geomajas.layer.feature.attribute.AssociationValue:AssociationValue():1.6.0
 org.geomajas.layer.feature.attribute.AssociationValue:AssociationValue(PrimitiveAttribute<?>, Map<String,PrimitiveAttribute<?>>, ):1.6.0
 org.geomajas.layer.feature.attribute.AssociationValue:Map<String,PrimitiveAttribute<?>> getAttributes():1.6.0
+org.geomajas.layer.feature.attribute.AssociationValue:Object clone():1.7.0
 org.geomajas.layer.feature.attribute.AssociationValue:PrimitiveAttribute<?> getId():1.6.0
 org.geomajas.layer.feature.attribute.AssociationValue:void setAttributes(Map<String,PrimitiveAttribute<?>>, ):1.6.0
 org.geomajas.layer.feature.attribute.AssociationValue:void setId(PrimitiveAttribute<?>, ):1.6.0
 org.geomajas.layer.feature.attribute.BooleanAttribute::1.6.0
 org.geomajas.layer.feature.attribute.BooleanAttribute:BooleanAttribute():1.6.0
 org.geomajas.layer.feature.attribute.BooleanAttribute:BooleanAttribute(Boolean, ):1.6.0
+org.geomajas.layer.feature.attribute.BooleanAttribute:Object clone():1.7.0
 org.geomajas.layer.feature.attribute.CurrencyAttribute::1.6.0
 org.geomajas.layer.feature.attribute.CurrencyAttribute:CurrencyAttribute():1.6.0
 org.geomajas.layer.feature.attribute.CurrencyAttribute:CurrencyAttribute(String, ):1.6.0
+org.geomajas.layer.feature.attribute.CurrencyAttribute:Object clone():1.7.0
 org.geomajas.layer.feature.attribute.DateAttribute::1.6.0
 org.geomajas.layer.feature.attribute.DateAttribute:DateAttribute():1.6.0
 org.geomajas.layer.feature.attribute.DateAttribute:DateAttribute(Date, ):1.6.0
+org.geomajas.layer.feature.attribute.DateAttribute:Object clone():1.7.0
 org.geomajas.layer.feature.attribute.DoubleAttribute::1.6.0
 org.geomajas.layer.feature.attribute.DoubleAttribute:DoubleAttribute():1.6.0
 org.geomajas.layer.feature.attribute.DoubleAttribute:DoubleAttribute(Double, ):1.6.0
+org.geomajas.layer.feature.attribute.DoubleAttribute:Object clone():1.7.0
 org.geomajas.layer.feature.attribute.FloatAttribute::1.6.0
 org.geomajas.layer.feature.attribute.FloatAttribute:FloatAttribute():1.6.0
 org.geomajas.layer.feature.attribute.FloatAttribute:FloatAttribute(Float, ):1.6.0
+org.geomajas.layer.feature.attribute.FloatAttribute:Object clone():1.7.0
 org.geomajas.layer.feature.attribute.ImageUrlAttribute::1.6.0
 org.geomajas.layer.feature.attribute.ImageUrlAttribute:ImageUrlAttribute():1.6.0
 org.geomajas.layer.feature.attribute.ImageUrlAttribute:ImageUrlAttribute(String, ):1.6.0
+org.geomajas.layer.feature.attribute.ImageUrlAttribute:Object clone():1.7.0
 org.geomajas.layer.feature.attribute.IntegerAttribute::1.6.0
 org.geomajas.layer.feature.attribute.IntegerAttribute:IntegerAttribute():1.6.0
 org.geomajas.layer.feature.attribute.IntegerAttribute:IntegerAttribute(Integer, ):1.6.0
+org.geomajas.layer.feature.attribute.IntegerAttribute:Object clone():1.7.0
 org.geomajas.layer.feature.attribute.LongAttribute::1.6.0
 org.geomajas.layer.feature.attribute.LongAttribute:LongAttribute():1.6.0
 org.geomajas.layer.feature.attribute.LongAttribute:LongAttribute(Long, ):1.6.0
+org.geomajas.layer.feature.attribute.LongAttribute:Object clone():1.7.0
 org.geomajas.layer.feature.attribute.ManyToOneAttribute::1.6.0
 org.geomajas.layer.feature.attribute.ManyToOneAttribute:AssociationType getType():1.6.0
 org.geomajas.layer.feature.attribute.ManyToOneAttribute:AssociationValue getValue():1.6.0
 org.geomajas.layer.feature.attribute.ManyToOneAttribute:ManyToOneAttribute():1.6.0
 org.geomajas.layer.feature.attribute.ManyToOneAttribute:ManyToOneAttribute(AssociationValue, ):1.6.0
+org.geomajas.layer.feature.attribute.ManyToOneAttribute:Object clone():1.7.0
 org.geomajas.layer.feature.attribute.ManyToOneAttribute:boolean isEmpty():1.6.0
 org.geomajas.layer.feature.attribute.ManyToOneAttribute:void setValue(AssociationValue, ):1.6.0
 org.geomajas.layer.feature.attribute.OneToManyAttribute::1.6.0
 org.geomajas.layer.feature.attribute.OneToManyAttribute:AssociationType getType():1.6.0
 org.geomajas.layer.feature.attribute.OneToManyAttribute:List<AssociationValue> getValue():1.6.0
+org.geomajas.layer.feature.attribute.OneToManyAttribute:Object clone():1.7.0
 org.geomajas.layer.feature.attribute.OneToManyAttribute:OneToManyAttribute():1.6.0
 org.geomajas.layer.feature.attribute.OneToManyAttribute:OneToManyAttribute(List<AssociationValue>, ):1.6.0
 org.geomajas.layer.feature.attribute.OneToManyAttribute:boolean isEmpty():1.6.0
 org.geomajas.layer.feature.attribute.OneToManyAttribute:void setValue(List<AssociationValue>, ):1.6.0
 org.geomajas.layer.feature.attribute.PrimitiveAttribute::1.6.0
+org.geomajas.layer.feature.attribute.PrimitiveAttribute:Object clone():1.7.0
 org.geomajas.layer.feature.attribute.PrimitiveAttribute:PrimitiveType getType():1.6.0
 org.geomajas.layer.feature.attribute.PrimitiveAttribute:VALUE_TYPE getValue():1.6.0
 org.geomajas.layer.feature.attribute.PrimitiveAttribute:boolean isEditable():1.6.0
@@ -655,12 +735,15 @@ org.geomajas.layer.feature.attribute.PrimitiveAttribute:void setEditable(boolean
 org.geomajas.layer.feature.attribute.PrimitiveAttribute:void setType(PrimitiveType, ):1.6.0
 org.geomajas.layer.feature.attribute.PrimitiveAttribute:void setValue(VALUE_TYPE, ):1.6.0
 org.geomajas.layer.feature.attribute.ShortAttribute::1.6.0
+org.geomajas.layer.feature.attribute.ShortAttribute:Object clone():1.7.0
 org.geomajas.layer.feature.attribute.ShortAttribute:ShortAttribute():1.6.0
 org.geomajas.layer.feature.attribute.ShortAttribute:ShortAttribute(Short, ):1.6.0
 org.geomajas.layer.feature.attribute.StringAttribute::1.6.0
+org.geomajas.layer.feature.attribute.StringAttribute:Object clone():1.7.0
 org.geomajas.layer.feature.attribute.StringAttribute:StringAttribute():1.6.0
 org.geomajas.layer.feature.attribute.StringAttribute:StringAttribute(String, ):1.6.0
 org.geomajas.layer.feature.attribute.UrlAttribute::1.6.0
+org.geomajas.layer.feature.attribute.UrlAttribute:Object clone():1.7.0
 org.geomajas.layer.feature.attribute.UrlAttribute:UrlAttribute():1.6.0
 org.geomajas.layer.feature.attribute.UrlAttribute:UrlAttribute(String, ):1.6.0
 org.geomajas.layer.tile.InternalTile::1.6.0
@@ -878,7 +961,9 @@ org.geomajas.service.FilterService:Filter parseFilter(String, ):1.6.0
 org.geomajas.service.FilterService:void registerFeatureModel(FeatureModel, ):1.6.0
 org.geomajas.service.GeoService::1.6.0
 org.geomajas.service.GeoService:Coordinate calcDefaultLabelPosition(InternalFeature, ):1.6.0
+org.geomajas.service.GeoService:CoordinateReferenceSystem getCrs(String, ):1.7.0
 org.geomajas.service.GeoService:Geometry createCircle(Point, double, int, ):1.6.0
+org.geomajas.service.GeoService:Geometry transform(Geometry, CoordinateReferenceSystem, CoordinateReferenceSystem, ):1.7.0
 org.geomajas.service.GeoService:MathTransform findMathTransform(CoordinateReferenceSystem, CoordinateReferenceSystem, ):1.6.0
 org.geomajas.service.GeoService:int getSridFromCrs(CoordinateReferenceSystem, ):1.6.0
 org.geomajas.service.GeoService:int getSridFromCrs(String, ):1.6.0
@@ -919,12 +1004,18 @@ org.geomajas.service.pipeline.PipelineContext:TYPE get(String, Class<TYPE>, ):1.
 org.geomajas.service.pipeline.PipelineContext:TYPE getOptional(String, Class<TYPE>, ):1.6.0
 org.geomajas.service.pipeline.PipelineContext:boolean isFinished():1.6.0
 org.geomajas.service.pipeline.PipelineContext:void setFinished(boolean, ):1.6.0
+org.geomajas.service.pipeline.PipelineHook::1.7.0
+org.geomajas.service.pipeline.PipelineHook:String getId():1.7.0
+org.geomajas.service.pipeline.PipelineHook:final void execute(PipelineContext, Object, ):1.7.0
+org.geomajas.service.pipeline.PipelineHook:void setId(String, ):1.7.0
 org.geomajas.service.pipeline.PipelineInfo::1.6.0
 org.geomajas.service.pipeline.PipelineInfo:List<PipelineStep<RESPONSE>> getPipeline():1.6.0
+org.geomajas.service.pipeline.PipelineInfo:Map<String,PipelineStep<RESPONSE>> getExtensions():1.7.0
 org.geomajas.service.pipeline.PipelineInfo:PipelineInfo getDelegatePipeline():1.6.0
 org.geomajas.service.pipeline.PipelineInfo:String getLayerId():1.6.0
 org.geomajas.service.pipeline.PipelineInfo:String getPipelineName():1.6.0
 org.geomajas.service.pipeline.PipelineInfo:void setDelegatePipeline(PipelineInfo, ):1.6.0
+org.geomajas.service.pipeline.PipelineInfo:void setExtensions(Map<String,PipelineStep<RESPONSE>>, ):1.7.0
 org.geomajas.service.pipeline.PipelineInfo:void setLayerId(String, ):1.6.0
 org.geomajas.service.pipeline.PipelineInfo:void setPipeline(List<PipelineStep<RESPONSE>>, ):1.6.0
 org.geomajas.service.pipeline.PipelineInfo:void setPipelineName(String, ):1.6.0
