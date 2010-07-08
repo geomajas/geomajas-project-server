@@ -29,7 +29,7 @@
   <para></para>
 
   <section>
-    <title>Hibernate layer configuration</title>
+    <title>Dependencies</title>
 
     <para>The Hibernate layer is based on the popular Hibernate O/R mapping
     framework. It uses a special spatial extension of Hibernate,
@@ -45,7 +45,12 @@
     PostGis.</para>
 
     <xi:include href="../listing/HibernateLayerDependency.xml"
-                xmlns:xi="http://www.w3.org/2001/XInclude" />
+					xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+  </section>
+
+  <section>
+    <title>Hibernate layer configuration</title>
 
     <para>A Hibernate layer cannot be defined by configuration only. As in
     every O/R model, there has to be a mapping between Java classes and tables
