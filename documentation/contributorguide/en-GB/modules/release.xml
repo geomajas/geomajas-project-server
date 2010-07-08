@@ -53,7 +53,25 @@
       </listitem>
     </itemizedlist></para>
 
-  <para></para>
+  <para>The basic procedure is very easy, for the part you want to release,
+  execute the following two commands (using the next version as parameter,
+  this will make you type less). These steps should be done in a clean
+  location, it is best to do a fresh checkout.</para>
+
+  <itemizedlist>
+    <listitem>
+      <para>mvn -DdevelopmentVersion=1.8.0-SNAPSHOT release:prepare</para>
+    </listitem>
+
+    <listitem>
+      <para>mvn release:perform</para>
+    </listitem>
+  </itemizedlist>
+
+  <para>Before doing the release, you should update the version which is
+  mentioned in the master.xml file (this version is displayed on the front
+  page of the manual and is not automatically updated). After the release,
+  this should be updated to the new development version.</para>
 
   <para>At the end of the build, the src/main/resources/api.txt needs to be
   updated with the file which is put in target during the build (though the
@@ -62,126 +80,40 @@
   <para>The geomajas-dep pom and aggregate.sh need to be updated for the
   released and new snapshot versions respectively.</para>
 
-  <para></para>
-
-  <para>Release really should be possible using release:prepare and
-  release:perform.</para>
-
-  <para></para>
-
-  <para>For docs, remember to set the version in the master.xml files to the
-  correct version before releasing, and set it to the next snapshot after the
-  release.</para>
-
-  <para></para>
-
   <para>Remember to comment the snapshot repository in all poms.</para>
 
-  <para></para>
+  <para>The documentation uses the example applications for extracting code
+  which is included in the manual. This is a circular dependency when it
+  includes the part to be released. It may be useful to do a local build using
+  the next release version locally, to allow the release the work for the
+  documentation part. You can do the actual release of the example application
+  at the end.</para>
 
-  <para>Old steps (pre 1.7.0) follow :</para>
+  <para>When releasing the backend core, there may be a problem building the
+  javadocs. The solution can be to do a local build of the backend using the
+  next release version before doing the actual release.</para>
 
-  <para>Preparation work:</para>
+  <para>When releasing the GWT face, make sure the dependency versions are
+  correct in
+  <code>geomajas-gwt-archetype/src/main/resources/archetype-resources/pom.xml</code>.</para>
 
-  <para><orderedlist>
-      <listitem>
-        <para>In the
-        <code>build-tools/geomajas-gwt-archetype/src/main/resources/archetype-resources/pom.xml</code>
-        assure the dependency versions are correct.</para>
-      </listitem>
+  <para>Close the staging repository (which makes the artifacts available for
+  testing). When staging several parts, it is recommended to close each
+  separately. This allows more fine-grained promotion and/or dropping of
+  artifacts.</para>
 
-      <listitem>
-        <para>In the documentation files (especially the master.xml files),
-        assure the version numbers are correct.</para>
-      </listitem>
-    </orderedlist></para>
+  <para>When staging is done and the repository closed, start a vote to allow
+  users to test the new artifact.</para>
 
-  <para>Several steps need to be performed on the gaya server. This procedure
-  expects that you have logged in to the gaya server, with the
-  <code>geomajas</code> user account. Do not use the root user!</para>
+  <para>When the vote failed, drop the repository. Development just continue
+  and the version number is skipped. The release data in JIRA is actually the
+  staging date.</para>
+
+  <para>When the vote was successful, promote the staged artifacts and
+  announce the release, for the back-end, this requires the following
+  steps:</para>
 
   <orderedlist numeration="arabic">
-    <listitem>
-      <para>Make sure your subversion password and settings are defined in
-      your home directory: <code>~/.m2/settings.xml</code>. Check if this file
-      exists. If it does not, create it, and give it the following
-      content:<programlisting>&lt;settings&gt;
-    &lt;servers&gt;
-        &lt;server&gt;
-            &lt;id&gt;svn.geomajas.org&lt;/id&gt;
-            &lt;username&gt;your-login&lt;/username&gt;
-            &lt;password&gt;your-password&lt;/password&gt;
-        &lt;/server&gt;
-    &lt;/servers&gt;
-&lt;/settings&gt;</programlisting></para>
-    </listitem>
-
-    <listitem>
-      <para>Set release version, make sure this is correct!</para>
-
-      <programlisting>export VERSION=<replaceable>1.5.0</replaceable></programlisting>
-    </listitem>
-
-    <listitem>
-      <para>Checkout Geomajas trunk:</para>
-
-      <programlisting>svn checkout https://svn.geomajas.org/majas/trunk tmpgeomajas
-cd tmpgeomajas</programlisting>
-    </listitem>
-
-    <listitem>
-      <para>Let maven do the release, this will ask for the release version,
-      subversion tag name and next version for each of the modules. The
-      "release:prepare" asks the release version, tag name for the release and
-      next version. Change the tag name to just be the version number (without
-      "geomajas-all" in prefix). <programlisting>mvn clean install -Dhudson
-mvn release:prepare -DautoVersionSubmodules=true -DreleaseVersion=$VERSION -Dtag=$VERSION
-sudo chmod -R 775 /var/www/maven.geomajas.org/htdocs/repository/org/geomajas/
-sudo chmod -R 777 /var/www/files.geomajas.org/htdocs/maven/trunk/
-cd ..
-rm -rf tmpgeomajas</programlisting></para>
-    </listitem>
-
-    <listitem>
-      <para>Now that the preparation is over, the actual tag has been created.
-      We will now check out that tag:</para>
-
-      <programlisting>svn checkout https://svn.geomajas.org/majas/tags/$VERSION geomajas-$VERSION
-cd geomajas-$VERSION</programlisting>
-    </listitem>
-
-    <listitem>
-      <para>Next step is to deploy the newly created tag.</para>
-
-      <programlisting>mvn deploy -Dhudson</programlisting>
-    </listitem>
-
-    <listitem>
-      <para>Build the maven site:<programlisting>mvn -Pnoshrink -DskipTests site-deploy</programlisting></para>
-    </listitem>
-
-    <listitem>
-      <para>copy maven site to correct location for the version (replace
-      "x.x.x" with correct version number), <programlisting>cp -R /var/www/files.geomajas.org/htdocs/maven/trunk /var/www/files.geomajas.org/htdocs/maven/$VERSION</programlisting>This
-      will make the documentation available at
-      <code>http://files.geomajas.org/maven/x.x.x/geomajas/index.html</code>.</para>
-    </listitem>
-
-    <listitem>
-      <para>Create zip files for source and documentation.</para>
-
-      <programlisting>cd ..
-rm -Rf geomajas-$VERSION
-svn checkout https://svn.geomajas.org/majas/tags/$VERSION geomajas-$VERSION
-zip -r geomajas-$VERSION.zip . -x .svn 
-rm -R geomajas-$VERSION
-cp -R /var/www/files.geomajas.org/htdocs/maven/$VERSION geomajas-$VERSION
-zip -r geomajas-doc-$VERSION.zip .  
-rm -Rf geomajas-$VERSION
-sudo chmod -R 775 /var/www/files.geomajas.org/htdocs/maven/trunk/
-sudo chmod -R 775 /var/www/maven.geomajas.org/htdocs/repository/org/geomajas/</programlisting>
-    </listitem>
-
     <listitem>
       <para>Upload zip files to sourceforge download area</para>
     </listitem>
@@ -316,7 +248,7 @@ sudo chmod -R 775 /var/www/maven.geomajas.org/htdocs/repository/org/geomajas/</p
     </listitem>
 
     <listitem>
-      <para>Need to compile and deploy the archetype.</para>
+      <para></para>
     </listitem>
   </orderedlist>
 </chapter>
