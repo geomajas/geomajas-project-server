@@ -30,4 +30,22 @@
   <title>Configuration</title>
 
   <para></para>
+
+	<section>
+	  <title>Dependencies</title>
+
+	  <para>Make sure your include the plug-in in your project. If you are using
+	  Maven, add the following dependency to your pom:</para>
+
+	  <example>
+		<title>Plug-in dependency</title>
+
+		<programlisting>&lt;dependency&gt;
+	  &lt;groupId&gt;${groupId}&lt;/groupId&gt;
+	  &lt;artifactId&gt;${artifactId}&lt;/artifactId&gt;
+	  &lt;version&gt;${version}&lt;/version&gt;
+  &lt;/dependency&gt;</programlisting>
+	  </example>
+	</section>
+
 </chapter>

@@ -29,13 +29,24 @@
   <para></para>
 
   <section>
+    <title>Dependencies</title>
+
+    <para>Make sure your include the plug-in in your project. If you are using
+    Maven, add the following dependency to your pom:</para>
+
+    <example>
+      <title>Google layer dependency</title>
+
+      <programlisting>&lt;dependency&gt;
+    &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
+    &lt;artifactId&gt;geomajas-layer-google&lt;/artifactId&gt;
+    &lt;version&gt;${geomajas-layer-google-version}&lt;/version&gt;
+&lt;/dependency&gt;</programlisting>
+    </example>
+  </section>
+
+  <section>
     <title>Google Maps layer configuration</title>
-
-    <para>Make sure your class path contains the required plug-in. If you are
-    using Maven, add the following dependency to your pom:</para>
-
-    <xi:include href="../listing/GoogleLayerDependency.xml"
-                xmlns:xi="http://www.w3.org/2001/XInclude" />
 
     <para>A complete Google layer configuration looks as follows:</para>
 
