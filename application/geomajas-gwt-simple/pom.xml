@@ -240,47 +240,8 @@
 					<disableCastChecking>true</disableCastChecking>
 					<disableClassMetadata>true</disableClassMetadata>
 					<extraJvmArgs>-Xmx512M -Xss1024k</extraJvmArgs>
-					<i18nConstantsWithLookupBundle>
-						mypackage.client.i18n.Simple
-					</i18nConstantsWithLookupBundle>
+					<i18nConstantsWithLookupBundle>mypackage.client.i18n.Simple</i18nConstantsWithLookupBundle>
 				</configuration>
-				<executions>
-					<execution>
-						<id>clean</id>
-						<phase>clean</phase>
-						<goals>
-							<goal>clean</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>compile</id>
-						<phase>compile</phase>
-						<goals>
-							<goal>compile</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>generateAsync</id>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>generateAsync</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>test</id>
-						<phase>integration-test</phase>
-						<goals>
-							<goal>test</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>i18n</id>
-						<phase>generate-resources</phase>
-						<goals>
-							<goal>i18n</goal>
-						</goals>
-					</execution>
-				</executions>
 			</plugin>
 
 			<!-- Run the application using "mvn jetty:run" -->
@@ -349,36 +310,80 @@
 
 	<profiles>
 		<profile>
-			<id>jrebel</id>
+			<id>defaultGWT</id>
+			<activation>
+     			<activeByDefault>true</activeByDefault>
+			</activation>
 			<build>
 				<plugins>
 					<plugin>
 						<groupId>org.codehaus.mojo</groupId>
 						<artifactId>gwt-maven-plugin</artifactId>
-						<version>1.2</version>
-						<configuration>
-							<inplace>true</inplace>
-							<module>mypackage.GeomajasSimple</module>
-							<runTarget>index.html</runTarget>
-							<warSourceDirectory>war</warSourceDirectory>
-							<disableCastChecking>true</disableCastChecking>
-							<disableClassMetadata>true</disableClassMetadata>
-							<extraJvmArgs>-Xmx512M -Xss1024k</extraJvmArgs>
-						</configuration>
 						<executions>
 							<execution>
 								<goals>
 									<goal>clean</goal>
-									<goal>compile</goal>
 									<goal>generateAsync</goal>
+									<goal>i18n</goal>
+									<goal>compile</goal>
 									<goal>test</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>					
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>skipGwt</id>
+			<activation>
+				<property>
+					<name>skipGwt</name>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>gwt-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<goals>
+									<goal>clean</goal>
+									<goal>generateAsync</goal>
+									<goal>i18n</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>					
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>m2e</id>
+			<activation>
+				<property>
+					<name>m2e.version</name>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>gwt-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<goals>
+									<goal>clean</goal>
+									<goal>generateAsync</goal>
+									<goal>i18n</goal>
 								</goals>
 							</execution>
 						</executions>
 					</plugin>
 				</plugins>
 			</build>
-		</profile>
+		</profile>	
 	</profiles>
 
 	<properties>
