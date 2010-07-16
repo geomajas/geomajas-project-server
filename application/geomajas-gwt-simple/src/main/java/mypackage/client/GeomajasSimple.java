@@ -33,12 +33,15 @@ import mypackage.client.pages.SearchPage;
 
 import org.geomajas.gwt.client.Geomajas;
 import org.geomajas.gwt.client.i18n.I18nProvider;
+import org.geomajas.gwt.client.map.event.MapModelEvent;
+import org.geomajas.gwt.client.map.event.MapModelHandler;
 import org.geomajas.gwt.client.widget.LayerTree;
 import org.geomajas.gwt.client.widget.Legend;
 import org.geomajas.gwt.client.widget.LoadingScreen;
 import org.geomajas.gwt.client.widget.LocaleSelect;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.OverviewMap;
+import org.geomajas.gwt.client.widget.ScaleSelect;
 import org.geomajas.gwt.client.widget.Toolbar;
 
 import com.google.gwt.core.client.EntryPoint;
@@ -117,6 +120,14 @@ public class GeomajasSimple implements EntryPoint {
 		map = new MapWidget("sampleFeaturesMap", "gwt-simple");
 		final Toolbar toolbar = new Toolbar(map);
 		toolbar.setButtonSize(Toolbar.BUTTON_SIZE_BIG);
+		// wait for the map to be loaded cause we need a correct map.getPixelPerUnit
+		map.getMapModel().addMapModelHandler(new MapModelHandler() {
+
+			public void onMapModelChange(MapModelEvent event) {
+				ScaleSelect scaleSelect = new ScaleSelect(map.getMapModel().getMapView(), map.getPixelPerUnit());
+				toolbar.addMember(scaleSelect);
+			}
+		});
 
 		VLayout mapLayout = new VLayout();
 		mapLayout.setShowResizeBar(true);

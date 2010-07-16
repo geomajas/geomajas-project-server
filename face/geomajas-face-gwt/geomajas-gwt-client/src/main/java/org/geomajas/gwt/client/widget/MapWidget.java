@@ -689,6 +689,17 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	public double getPixelLength() {
 		return pixelLength;
 	}
+	
+	/**
+	 * Returns the number of pixels per map unit.
+	 * 
+	 * @return length of a pixel expressed in map units
+	 * @since 1.7.0
+	 */
+	@Api
+	public double getPixelPerUnit() {
+		return pixelLength / unitLength;
+	}
 
 	/**
 	 * Get the map's inner model. This model contains all the layers, handles selection, etc.
