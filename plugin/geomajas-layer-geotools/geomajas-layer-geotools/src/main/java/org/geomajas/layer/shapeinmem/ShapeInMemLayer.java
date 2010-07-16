@@ -179,11 +179,15 @@ public class ShapeInMemLayer extends FeatureSourceRetriever implements VectorLay
 	}
 
 	public Object read(String featureId) throws LayerException {
-		return features.get(featureId);
+		if (!features.containsKey(featureId)) {
+			throw new LayerException(ExceptionCode.LAYER_MODEL_FEATURE_NOT_FOUND, featureId);
+		} else {
+			return features.get(featureId);
+		}
 	}
 
 	public Object saveOrUpdate(Object feature) throws LayerException {
-		if (read(getFeatureModel().getId(feature)) == null) {
+		if (!features.containsKey(getFeatureModel().getId(feature))) {
 			return create(feature);
 		} else {
 			// Nothing to do
@@ -230,4 +234,5 @@ public class ShapeInMemLayer extends FeatureSourceRetriever implements VectorLay
 			throw new LayerException(ge, ExceptionCode.CANNOT_CREATE_LAYER_MODEL, url);
 		}
 	}
+	
 }

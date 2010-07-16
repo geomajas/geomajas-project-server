@@ -58,7 +58,6 @@ public class GeoToolsLayerTest extends AbstractGeoToolsTest {
 	@Before
 	public void init() throws Exception {
 		layer = (GeoToolsLayer) applicationContext.getBean("test", VectorLayer.class);
-		layer.setUrl(SHAPE_FILE);
 
 		FeatureInfo ft = new FeatureInfo();
 		ft.setDataSourceName(LAYER_NAME);
@@ -76,8 +75,8 @@ public class GeoToolsLayerTest extends AbstractGeoToolsTest {
 
 		List<AttributeInfo> attr = new ArrayList<AttributeInfo>();
 		PrimitiveAttributeInfo pa = new PrimitiveAttributeInfo();
-		pa.setLabel("City");
-		pa.setName("City");
+		pa.setLabel("Name");
+		pa.setName("NAME");
 		pa.setEditable(false);
 		pa.setIdentifying(true);
 		pa.setType(PrimitiveType.STRING);

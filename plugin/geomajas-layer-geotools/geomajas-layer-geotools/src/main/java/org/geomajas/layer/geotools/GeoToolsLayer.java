@@ -29,7 +29,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.NoSuchElementException;
+
+import javax.annotation.PostConstruct;
 
 import org.geomajas.configuration.Parameter;
 import org.geomajas.configuration.VectorLayerInfo;
@@ -65,8 +66,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.vividsolutions.jts.geom.Envelope;
 
-import javax.annotation.PostConstruct;
-
 /**
  * Geotools layer model.
  * 
@@ -86,7 +85,9 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 	private VectorLayerInfo layerInfo;
 
 	private String url;
+
 	private String dbtype;
+
 	private List<Parameter> parameters;
 
 	@Autowired
@@ -107,11 +108,11 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 	private CoordinateReferenceSystem crs;
 
 	private String id;
-	
+
 	public String getId() {
 		return id;
 	}
-	
+
 	public void setId(String id) {
 		this.id = id;
 	}
@@ -196,8 +197,9 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 				return;
 			}
 			this.filterFactory = CommonFactoryFinder.getFilterFactory(null);
-			this.featureModel = new GeoToolsFeatureModel(getDataStore(), layerInfo.getFeatureInfo().getDataSourceName(),
-					geoService.getSridFromCrs(layerInfo.getCrs()), converterService);
+			this.featureModel = new GeoToolsFeatureModel(getDataStore(),
+					layerInfo.getFeatureInfo().getDataSourceName(), geoService.getSridFromCrs(layerInfo.getCrs()),
+					converterService);
 			featureModel.setLayerInfo(layerInfo);
 		} catch (IOException ioe) {
 			throw new LayerException(ExceptionCode.INVALID_SHAPE_FILE_URL, url);
@@ -238,17 +240,17 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 			if (transactionManager != null) {
 				store.setTransaction(transactionManager.getTransaction());
 			}
-			List<AttributeDescriptor> descriptors = store.getSchema().getAttributeDescriptors();
+			List<AttributeDescriptor> descriptors = new ArrayList<AttributeDescriptor>();
 			Map<String, Attribute> attrMap = getFeatureModel().getAttributes(feature);
-			List<Attribute> attrList = new ArrayList<Attribute>();
-			for (int i = 0; i < descriptors.size(); i++) {
-				Attribute value = attrMap.get(descriptors.get(i).getName().toString());
-				attrList.add(value);
+			List<Object> values = new ArrayList<Object>();
+			for (String name : attrMap.keySet()) {
+				descriptors.add(store.getSchema().getDescriptor(name));
+				values.add(attrMap.get(name).getValue());
 			}
 
 			try {
-				store.modifyFeatures(descriptors.toArray(new AttributeDescriptor[descriptors.size()]), attrList
-						.toArray(), filter);
+				store.modifyFeatures(descriptors.toArray(new AttributeDescriptor[descriptors.size()]),
+						values.toArray(), filter);
 				store.modifyFeatures(store.getSchema().getGeometryDescriptor(), getFeatureModel().getGeometry(feature),
 						filter);
 				log.debug("Updated feature {} in {}", filter.getIDs().iterator().next(), getFeatureSourceName());
@@ -290,16 +292,12 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 	}
 
 	public Object saveOrUpdate(Object feature) throws LayerException {
-		try {
-			if (read(getFeatureModel().getId(feature)) == null) {
-				return create(feature);
-			} else {
-				update(feature);
-				return feature;
-			}
-		} catch (NoSuchElementException e) {
-			return create(feature);
+		if (exists(getFeatureModel().getId(feature))) {
+			update(feature);
+		} else {
+			feature = create(feature);
 		}
+		return feature;
 	}
 
 	public Object read(String featureId) throws LayerException {
@@ -308,8 +306,9 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 		Iterator<?> iterator = getElements(filter, 0, 0);
 		if (iterator.hasNext()) {
 			return iterator.next();
+		} else {
+			throw new LayerException(ExceptionCode.LAYER_MODEL_FEATURE_NOT_FOUND, featureId);
 		}
-		throw new LayerException(ExceptionCode.LAYER_MODEL_FEATURE_NOT_FOUND, featureId);
 	}
 
 	public Envelope getBounds() throws LayerException {
@@ -386,4 +385,12 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 	public FeatureModel getFeatureModel() {
 		return this.featureModel;
 	}
+
+	private boolean exists(String featureId) throws LayerException {
+		Identifier identifier = new FeatureIdImpl(featureId);
+		Id filter = filterFactory.id(Collections.singleton(identifier));
+		Iterator<?> iterator = getElements(filter, 0, 0);
+		return iterator.hasNext();
+	}
+
 }
