@@ -29,6 +29,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import org.geomajas.layer.LayerException;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.attribute.BooleanAttribute;
 import org.geomajas.layer.feature.attribute.DateAttribute;
@@ -126,7 +127,11 @@ public class HibernateLayerTest extends AbstractHibernateLayerModelTest {
 		Assert.assertNotNull(f1.getId());
 		Assert.assertNotNull(layer.read(f1.getId().toString()));
 		layer.delete(f1.getId().toString());
-		Assert.assertNull(layer.read(f1.getId().toString()));
+		try {
+			layer.read(f1.getId().toString());
+			Assert.fail("No exception thrown for non-exisiting feature");
+		} catch (LayerException e) {
+		}
 	}
 
 	@Test

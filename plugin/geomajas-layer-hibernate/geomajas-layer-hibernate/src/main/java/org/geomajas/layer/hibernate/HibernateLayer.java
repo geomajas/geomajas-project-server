@@ -198,7 +198,7 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, V
 	public Object create(Object feature) throws LayerException {
 		// force the srid value
 		enforceSrid(feature);
-		
+
 		// Replace associations with persistent versions:
 		// Map<String, Object> attributes = featureModel.getAttributes(feature);
 		setPersistentAssociations(feature);
@@ -237,8 +237,12 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, V
 
 	public Object read(String featureId) throws LayerException {
 		Session session = getSessionFactory().getCurrentSession();
-		return session.get(getFeatureInfo().getDataSourceName(), (Serializable) ConvertUtils.convert(featureId,
-				getEntityMetadata().getIdentifierType().getReturnedClass()));
+		Object object = session.get(getFeatureInfo().getDataSourceName(), (Serializable) ConvertUtils.convert(
+				featureId, getEntityMetadata().getIdentifierType().getReturnedClass()));
+		if (object == null) {
+			throw new LayerException(ExceptionCode.LAYER_MODEL_FEATURE_NOT_FOUND, featureId);
+		}
+		return object;
 	}
 
 	public void update(Object feature) throws LayerException {
