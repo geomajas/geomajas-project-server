@@ -9,17 +9,11 @@
             mypackage/shapeinmem/*.xml
   
         <!--
-            mypackage/hibernate/applicationContext.xml
-            mypackage/hibernate/layerRoads.xml
-			mypackage/hibernate/layerStructures.xml
-			mypackage/hibernate/layerOsm.xml
-         -->
+            mypackage/hibernate/*.xml
+        -->
 
         <!--
-            mypackage/geotools/applicationContext.xml
-            mypackage/geotools/layerRoads.xml
-			mypackage/geotools/layerStructures.xml
-			mypackage/geotools/layerOsm.xml
+            mypackage/geotools/*.xml
          -->
         </param-value>
     </context-param>
@@ -36,10 +30,8 @@
 			org.springframework.transaction.config.TxNamespaceHandler
 			org.springframework.web.servlet.config.MvcNamespaceHandler
 			org.geotools.referencing.crs.EPSGCRSAuthorityFactory
-       <!--
-			org.hibernatespatial.postgis.PostgisDialect			
 			org.geotools.data.postgis.PostgisDataStoreFactory
-         -->
+ 			org.hibernatespatial.postgis.PostgisDialect			
         </param-value>
     </context-param>
 
