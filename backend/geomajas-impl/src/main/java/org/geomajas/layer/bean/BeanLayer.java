@@ -180,11 +180,15 @@ public class BeanLayer implements VectorLayer, VectorLayerAssociationSupport {
 	}
 
 	public Object read(String featureId) throws LayerException {
-		return featuresById.get(featureId);
+		if (!featuresById.containsKey(featureId)) {
+			throw new LayerException(ExceptionCode.LAYER_MODEL_FEATURE_NOT_FOUND, featureId);
+		} else {
+			return featuresById.get(featureId);
+		}
 	}
 
 	public Object saveOrUpdate(Object feature) throws LayerException {
-		if (read(getFeatureModel().getId(feature)) == null) {
+		if (!featuresById.containsKey(getFeatureModel().getId(feature))) {
 			return create(feature);
 		} else {
 			// Nothing to do
@@ -262,7 +266,7 @@ public class BeanLayer implements VectorLayer, VectorLayerAssociationSupport {
 			comparator = new FeatureComparator(name, sortType);
 		}
 	}
-
+	
 	/**
 	 * Compares features by a single attribute.
 	 * 
