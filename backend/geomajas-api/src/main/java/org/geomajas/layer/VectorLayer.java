@@ -93,10 +93,13 @@ public interface VectorLayer extends Layer<VectorLayerInfo> {
 
 	/**
 	 * Reads an existing feature of the model.
+	 * <p/>
+	 * When no feature with the requested id is found,
+	 * {@link org.geomajas.global.ExceptionCode#LAYER_MODEL_FEATURE_NOT_FOUND} is thrown.
 	 *
 	 * @param featureId unique id of the feature
 	 * @return feature value object
-	 * @throws LayerException oops
+	 * @throws LayerException when reading failed, for example ExceptionCode.LAYER_MODEL_FEATURE_NOT_FOUND
 	 */
 	Object read(String featureId) throws LayerException;
 
