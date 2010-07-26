@@ -56,20 +56,10 @@ public class GeomajasContextListener implements ServletContextListener {
 		ServletContext servletContext = servletContextEvent.getServletContext();
 
 		String configLocation = "classpath:org/geomajas/spring/geomajasContext.xml";
-		configLocation += ",classpath*:META-INF/geomajasContext.xml";
+		configLocation += "," + "classpath*:META-INF/geomajasContext.xml";
 		String additionalLocations = servletContext.getInitParameter(CONFIG_LOCATION_PARAMETER);
 		if (null != additionalLocations) {
-			for (String onePart : additionalLocations.split("\\s")) {
-				String part = onePart.trim();
-				if (part.length() > 0) {
-					configLocation += ',';
-					if (!part.startsWith("classpath")) {
-						configLocation += "classpath:";
-					}
-					configLocation += part;
-				}
-			}
-
+			configLocation += "," + additionalLocations;
 		}
 		ConfigurableWebApplicationContext applicationContext = new XmlWebApplicationContext();
 

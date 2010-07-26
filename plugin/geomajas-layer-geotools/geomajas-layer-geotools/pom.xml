@@ -7,7 +7,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-layer-geotools</artifactId>
-	<version>1.8.0-SNAPSHOT</version>
+	<version>1.7.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>Geomajas layer model using Geotools</name>
 	<description>Geomajas layer model using Geotools</description>
@@ -155,7 +155,7 @@
 	</build>
 
 	<properties>
-		<geotools-layer-backend-version>1.7.0</geotools-layer-backend-version>
+		<geotools-layer-backend-version>1.7.1-SNAPSHOT</geotools-layer-backend-version>
 		<geotools-version>2.6.3</geotools-version>
 	</properties>
 </project>

@@ -7,7 +7,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-layer-hibernate</artifactId>
-	<version>1.8.0-SNAPSHOT</version>
+	<version>1.7.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>Geomajas layer model using hibernate</name>
 	<description>Geomajas layer model using hibernate</description>
@@ -154,7 +154,7 @@
 	</build>
 
 	<properties>
-		<hibernate-layer-backend-version>1.7.0</hibernate-layer-backend-version>
+		<hibernate-layer-backend-version>1.7.1-SNAPSHOT</hibernate-layer-backend-version>
 		<spring-version>3.0.2.RELEASE</spring-version>
 	</properties>
 </project>

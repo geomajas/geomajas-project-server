@@ -6,14 +6,14 @@
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
-            mypackage/shapeinmem/*.xml
+            classpath:mypackage/shapeinmem/*.xml
   
         <!--
-            mypackage/hibernate/*.xml
+            classpath:mypackage/hibernate/*.xml
         -->
 
         <!--
-            mypackage/geotools/*.xml
+            classpath:mypackage/geotools/*.xml
          -->
         </param-value>
     </context-param>

@@ -9,20 +9,20 @@
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
-            ${packageInPathFormat}/shapeinmem/applicationContext.xml
-            ${packageInPathFormat}/shapeinmem/layerCountries110m.xml
-			${packageInPathFormat}/shapeinmem/layerWmsBluemarble.xml
+            classpath:${packageInPathFormat}/shapeinmem/applicationContext.xml
+            classpath:${packageInPathFormat}/shapeinmem/layerCountries110m.xml
+			classpath:${packageInPathFormat}/shapeinmem/layerWmsBluemarble.xml
   
         <!--
-            ${packageInPathFormat}/hibernate/applicationContext.xml
-            ${packageInPathFormat}/hibernate/layerRoads.xml
-			${packageInPathFormat}/hibernate/layerOsm.xml
+            classpath:${packageInPathFormat}/hibernate/applicationContext.xml
+            classpath:${packageInPathFormat}/hibernate/layerRoads.xml
+			classpath:${packageInPathFormat}/hibernate/layerOsm.xml
         -->
         
         <!--
-            ${packageInPathFormat}/geotools/applicationContext.xml
-            ${packageInPathFormat}/geotools/layerRoads.xml
-			${packageInPathFormat}/geotools/layerOsm.xml
+            classpath:${packageInPathFormat}/geotools/applicationContext.xml
+            classpath:${packageInPathFormat}/geotools/layerRoads.xml
+			classpath:${packageInPathFormat}/geotools/layerOsm.xml
         -->
         </param-value>
     </context-param>

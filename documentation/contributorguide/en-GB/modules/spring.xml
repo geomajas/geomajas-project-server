@@ -101,7 +101,7 @@ private postConstruct() {
     &lt;display-name&gt;Geomajas application&lt;/display-name&gt;
     &lt;context-param&gt;
         &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;
-        &lt;param-value&gt;/myapp/applicationContext.xml&lt;/param-value&gt;
+        &lt;param-value&gt;classpath:/mypackage/shapeinmem/*.xml&lt;/param-value&gt;
     &lt;/context-param&gt;
 
     &lt;listener&gt;
@@ -113,8 +113,17 @@ private postConstruct() {
       additional application context definition files. These will be included
       after the builtin Geomajas file and the configuration which is
       contributed by the available plug-ins. You can include several files by
-      separating the location by a space, newline, comma or semicolon. The
-      files are always searched on the classpath.</para>
+      separating the location by a space, newline, comma or semicolon or you
+      can even use Ant-style wild cards. The following are examples of allowed
+      patterns:</para>
+
+      <para><programlisting>/WEB-INF/*-context.xml
+com/mycompany/**/applicationContext.xml
+file:C:/some/path/*-context.xml
+classpath:com/mycompany/**/applicationContext.xml
+classpath*:conf/appContext.xml</programlisting>The classpath* pattern is
+      specific in that it will combine all the resources that match this exact
+      pattern in the classpath, not just the first one.</para>
 
       <para>When the GeomajasContextListener is used, the application context
       can be obtained in the servlet using</para>

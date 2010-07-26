@@ -49,7 +49,7 @@
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-gwt-client</artifactId>
-			<version>1.7.0</version>
+			<version>1.7.1-SNAPSHOT</version>
 		</dependency>
 
 		<!-- Google dependencies -->

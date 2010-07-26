@@ -2,7 +2,7 @@
 	<parent>
 		<groupId>org.geomajas.plugin</groupId>
 		<artifactId>geomajas-plugin-hibernate-all</artifactId>
-		<version>1.8.0-SNAPSHOT</version>
+		<version>1.7.1-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.documentation</groupId>
@@ -52,14 +52,14 @@
 								<artifactItem>
 									<groupId>org.geomajas</groupId>
 									<artifactId>geomajas-gwt-simple</artifactId>
-									<version>1.8.0-SNAPSHOT</version>
+									<version>1.7.1-SNAPSHOT</version>
 									<classifier>sources</classifier>
 									<outputDirectory>${project.build.directory}/extract/simple</outputDirectory>
 								</artifactItem>
 								<artifactItem>
 									<groupId>org.geomajas</groupId>
 									<artifactId>geomajas-gwt-example</artifactId>
-									<version>1.8.0-SNAPSHOT</version>
+									<version>1.7.1-SNAPSHOT</version>
 									<classifier>sources</classifier>
 									<outputDirectory>${project.build.directory}/extract/example</outputDirectory>
 								</artifactItem>

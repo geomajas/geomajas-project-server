@@ -77,6 +77,6 @@
 	</profiles>
 
 	<properties>
-		<caching-backend-version>1.7.0</caching-backend-version>
+		<caching-backend-version>1.7.1-SNAPSHOT</caching-backend-version>
 	</properties>
 </project>

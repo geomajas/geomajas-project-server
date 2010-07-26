@@ -41,6 +41,13 @@
           </listitem>
 
           <listitem>
+            <para>The <code>contextConfigLocation</code> parameter in
+            <code>web.xml</code> now follows the Spring documentation, so you
+            have to use <code>classpath:some/resource.xml</code> instead of
+            <code>some/resource.xml</code></para>
+          </listitem>
+
+          <listitem>
             <para>The use of the dispatcher servlet was introduced in 1.7.0.
             It is strongly recommended that you include it in your web.xml
             file to assure all plug-ins which expect this can function.</para>

@@ -7,7 +7,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.documentation</groupId>
 	<artifactId>docbook-gettingstarted</artifactId>
-	<version>1.8.0-SNAPSHOT</version>
+	<version>1.7.1-SNAPSHOT</version>
 	<packaging>jdocbook</packaging>
 	<name>Getting started (${translation})</name>
 	<description>Getting started with Geomajas (${translation})</description>
@@ -69,25 +69,25 @@
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-impl</artifactId>
-			<version>1.7.0</version>
+			<version>1.7.1-SNAPSHOT</version>
 			<classifier>sources</classifier>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-gwt-simple</artifactId>
-			<version>1.7.0</version>
+			<version>1.7.1-SNAPSHOT</version>
 			<classifier>sources</classifier>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-gwt-example</artifactId>
-			<version>1.7.0</version>
+			<version>1.7.1-SNAPSHOT</version>
 			<classifier>sources</classifier>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-dojo-simple</artifactId>
-			<version>1.7.0</version>
+			<version>1.7.1-SNAPSHOT</version>
 			<classifier>sources</classifier>
 		</dependency>
 	</dependencies>

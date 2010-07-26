@@ -123,7 +123,9 @@
 				<module>geomajas-dojo-client-shrinksafe</module>
 			</modules>
 			<activation>
-				<activeByDefault>true</activeByDefault>
+				<property>
+					<name>!noshrink</name>
+				</property>
 			</activation>
 		</profile>
 	</profiles>
@@ -141,6 +143,6 @@
 	</dependencyManagement>
 
 	<properties>
-		<dojo-face-backend-version>1.7.0</dojo-face-backend-version>
+		<dojo-face-backend-version>1.7.1-SNAPSHOT</dojo-face-backend-version>
 	</properties>
 </project>

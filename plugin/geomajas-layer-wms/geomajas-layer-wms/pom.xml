@@ -7,7 +7,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-layer-wms</artifactId>
-	<version>1.8.0-SNAPSHOT</version>
+	<version>1.7.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>Geomajas layer model using WMS</name>
 	<description>Geomajas layer model using WMS</description>
@@ -102,6 +102,6 @@
 	</build>
 
 	<properties>
-		<wms-layer-backend-version>1.7.0</wms-layer-backend-version>
+		<wms-layer-backend-version>1.7.1-SNAPSHOT</wms-layer-backend-version>
 	</properties>
 </project>

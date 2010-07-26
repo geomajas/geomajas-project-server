@@ -7,10 +7,10 @@
         <param-name>contextConfigLocation</param-name>
         <param-value>
             <!-- Server side raster layers -->
-			org/geomajas/example/gwt/servercfg/**/*.xml
+			classpath:org/geomajas/example/gwt/servercfg/**/*.xml
 
             <!-- Map Configurations -->
-			org/geomajas/example/gwt/clientcfg/**/*.xml
+			classpath:org/geomajas/example/gwt/clientcfg/**/*.xml
 
        </param-value>
     </context-param>

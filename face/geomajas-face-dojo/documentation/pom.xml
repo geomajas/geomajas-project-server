@@ -26,19 +26,19 @@
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-dojo-simple</artifactId>
-			<version>1.7.0</version>
+			<version>1.7.1-SNAPSHOT</version>
 			<classifier>sources</classifier>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-dojo-example-war</artifactId>
-			<version>1.7.0</version>
+			<version>1.7.1-SNAPSHOT</version>
 			<classifier>sources</classifier>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-dojo-example-modules-shrinksafe</artifactId>
-			<version>1.7.0</version>
+			<version>1.7.1-SNAPSHOT</version>
 			<classifier>sources</classifier>
 		</dependency>
 	</dependencies>

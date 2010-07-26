@@ -23,10 +23,13 @@
 
 package org.geomajas.plugin.staticsecurity.command;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.geomajas.command.EmptyCommandRequest;
 import org.geomajas.command.SuccessCommandResponse;
+import org.geomajas.internal.security.SecurityContextImpl;
 import org.geomajas.plugin.staticsecurity.command.staticsecurity.LogoutCommand;
-import org.geomajas.security.allowall.SecurityContextImpl;
 import org.geomajas.plugin.staticsecurity.security.AuthenticationTokenService;
 import org.geomajas.plugin.staticsecurity.security.StaticSecurityService;
 import org.geomajas.security.Authentication;
@@ -38,9 +41,6 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Verify the functioning of the LogoutCommand class.

@@ -195,7 +195,7 @@
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-gwt-client</artifactId>
-				<version>1.7.0</version>
+				<version>1.7.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
@@ -206,27 +206,27 @@
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-layer-geotools</artifactId>
-				<version>1.7.0</version>
+				<version>1.7.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-layer-google</artifactId>
-				<version>1.7.0</version>
+				<version>1.7.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-layer-hibernate</artifactId>
-				<version>1.7.0</version>
+				<version>1.7.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-layer-openstreetmap</artifactId>
-				<version>1.7.0</version>
+				<version>1.7.1-SNAPSHOT</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-layer-wms</artifactId>
-				<version>1.7.0</version>
+				<version>1.7.1-SNAPSHOT</version>
 			</dependency>
 
 			<dependency>
@@ -242,7 +242,7 @@
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-staticsecurity</artifactId>
-				<version>1.7.0</version>
+				<version>1.7.1-SNAPSHOT</version>
 			</dependency>
 
 			<dependency>
@@ -496,7 +496,7 @@
 	</dependencyManagement>
 
 	<properties>
-		<back-end-version>1.7.0</back-end-version>
+		<back-end-version>1.7.1-SNAPSHOT</back-end-version>
 		<geotools-version>2.6.3</geotools-version>
 		<gwt-version>2.0.3</gwt-version>
 		<smartgwt-version>2.1</smartgwt-version>

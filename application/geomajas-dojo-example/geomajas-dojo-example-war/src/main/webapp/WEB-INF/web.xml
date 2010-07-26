@@ -8,9 +8,9 @@
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
-			clientcfg/*.xml
-			servercfg/*.xml
-            applicationContext.xml
+			classpath:clientcfg/*.xml
+			classpath:servercfg/*.xml
+            classpath:applicationContext.xml
         </param-value>
 	</context-param>
 
