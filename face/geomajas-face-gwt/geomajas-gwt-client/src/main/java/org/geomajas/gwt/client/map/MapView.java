@@ -57,6 +57,8 @@ import com.google.gwt.event.shared.HandlerRegistration;
 @Api
 public class MapView {
 
+	private static final double MAX_RESOLUTION = Float.MAX_VALUE;
+
 	/** Zoom options. */
 	public enum ZoomOption {
 
@@ -517,7 +519,11 @@ public class MapView {
 
 	private IndexRange getResolutionRange() {
 		IndexRange range = new IndexRange();
-		double max = 1.0 / getMinimumScale();
+		double max = MAX_RESOLUTION;
+		double minimumScale = getMinimumScale();
+		if (minimumScale > 0) {
+			max = 1.0 / getMinimumScale();
+		}
 		double min = 1.0 / maximumScale;
 		for (int i = 0; i < resolutions.size(); i++) {
 			Double resolution = resolutions.get(i);
