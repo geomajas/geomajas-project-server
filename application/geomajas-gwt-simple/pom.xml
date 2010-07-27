@@ -312,7 +312,9 @@
 		<profile>
 			<id>defaultGWT</id>
 			<activation>
-     			<activeByDefault>true</activeByDefault>
+				<property>
+					<name>!skipGwt</name>
+				</property>
 			</activation>
 			<build>
 				<plugins>
@@ -363,7 +365,7 @@
 			<id>m2e</id>
 			<activation>
 				<property>
-					<name>m2e.version</name>
+					<name>m2eGwt</name>
 				</property>
 			</activation>
 			<build>
