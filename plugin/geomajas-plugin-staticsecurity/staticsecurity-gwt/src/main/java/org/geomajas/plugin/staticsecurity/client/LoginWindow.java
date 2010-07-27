@@ -36,7 +36,11 @@ import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
+import com.smartgwt.client.widgets.events.KeyPressEvent;
+import com.smartgwt.client.widgets.events.KeyPressHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
+import com.smartgwt.client.widgets.form.events.ItemKeyPressEvent;
+import com.smartgwt.client.widgets.form.events.ItemKeyPressHandler;
 import com.smartgwt.client.widgets.form.fields.PasswordItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.layout.HLayout;
@@ -279,6 +283,15 @@ public class LoginWindow extends Window implements LoginHandler {
 		loginForm.setWidth(logoWidth);
 		loginForm.setLayoutAlign(Alignment.CENTER);
 		loginForm.setFields(userNameItem, passwordItem);
+		loginForm.setCanFocus(true);
+		loginForm.addItemKeyPressHandler(new ItemKeyPressHandler() {
+
+			public void onItemKeyPress(ItemKeyPressEvent event) {
+				if ("Enter".equals(event.getKeyName())) {
+					login();
+				}
+			}
+		});
 		layout.addMember(loginForm);
 
 		// Login button:
@@ -323,6 +336,20 @@ public class LoginWindow extends Window implements LoginHandler {
 		addItem(layout);
 	}
 
+	private void login() {
+		String userId = loginForm.getValueAsString(FIELD_USER_NAME);
+		String password = loginForm.getValueAsString(FIELD_PASSWORD);
+		if (userId == null || userId.length() == 0) {
+			reportError(i18n.loginNoUserName());
+			return;
+		}
+		if (password == null || password.length() == 0) {
+			reportError(i18n.loginNoPassword());
+			return;
+		}
+		Authentication.getInstance().login(userId, password, null);
+	}
+
 	/**
 	 * ClickHandler for the login button.
 	 * 
@@ -331,17 +358,7 @@ public class LoginWindow extends Window implements LoginHandler {
 	private class LoginClickHandler implements ClickHandler {
 
 		public void onClick(ClickEvent event) {
-			String userId = loginForm.getValueAsString(FIELD_USER_NAME);
-			String password = loginForm.getValueAsString(FIELD_PASSWORD);
-			if (userId == null || userId.length() == 0) {
-				reportError(i18n.loginNoUserName());
-				return;
-			}
-			if (password == null || password.length() == 0) {
-				reportError(i18n.loginNoPassword());
-				return;
-			}
-			Authentication.getInstance().login(userId, password, null);
+			login();
 		}
 	}
 
