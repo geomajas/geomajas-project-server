@@ -31,7 +31,7 @@
 
     <section>
       <title>Migrating between Geomajas 1.6.0 and Geomajas (back-end core)
-      1.7.0</title>
+      1.7.1</title>
 
       <para><itemizedlist>
           <listitem>
@@ -48,7 +48,7 @@
           </listitem>
 
           <listitem>
-            <para>The use of the dispatcher servlet was introduced in 1.7.0.
+            <para>The use of the dispatcher servlet was introduced in 1.7.1.
             It is strongly recommended that you include it in your web.xml
             file to assure all plug-ins which expect this can function.</para>
 

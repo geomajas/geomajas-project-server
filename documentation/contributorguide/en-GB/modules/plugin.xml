@@ -97,12 +97,12 @@
             &lt;property name="version" value="${project.version}" /&gt;
         &lt;/bean&gt;
     &lt;/property&gt;
-    &lt;property name="backendVersion" value="1.7.0" /&gt;
+    &lt;property name="backendVersion" value="1.7.1" /&gt;
     &lt;property name="dependencies"&gt;
         &lt;list&gt;
             &lt;bean class="org.geomajas.global.PluginVersionInfo"&gt;
                 &lt;property name="name" value="Static security" /&gt;
-                &lt;property name="version" value="1.7.0" /&gt;
+                &lt;property name="version" value="1.7.1" /&gt;
             &lt;/bean&gt;
         &lt;/list&gt;
     &lt;/property&gt;
