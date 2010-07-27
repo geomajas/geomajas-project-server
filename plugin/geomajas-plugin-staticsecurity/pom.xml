@@ -9,7 +9,7 @@
 	<artifactId>geomajas-plugin-staticsecurity-all</artifactId>
 	<version>1.7.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<name>Geomajas staticsecurity plug-in</name>
+	<name>Geomajas staticsecurity plug-in parent</name>
 	<description>Geomajas static security plug-in</description>
 
 	<scm>
@@ -68,13 +68,6 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>			
-			<dependency>
-				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-face-gwt</artifactId>
-				<version>1.7.1-SNAPSHOT</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
 		</dependencies>
 	</dependencyManagement>
 

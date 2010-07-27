@@ -9,7 +9,7 @@
 	<artifactId>geomajas-plugin-staticsecurity</artifactId>
 	<version>1.7.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
-	<name>Geomajas staticsecurity plug-in</name>
+	<name>Geomajas staticsecurity plug-in core</name>
 	<description>Geomajas security plug-in which allows all users and policies to be defined as part of spring configuration</description>
 
 	<dependencies>

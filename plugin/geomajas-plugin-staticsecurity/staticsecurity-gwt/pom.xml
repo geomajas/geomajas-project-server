@@ -31,9 +31,21 @@
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-plugin-staticsecurity-gwt</artifactId>
 	<packaging>jar</packaging>
-	<name>Geomajas staticsecurity plug-in</name>
+	<name>Geomajas staticsecurity plug-in GWT</name>
 	<description>Geomajas security plugin which allows all users and policies to be defined as part of spring configuration</description>
 
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-face-gwt</artifactId>
+				<version>${staticsecurity-gwt-version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+	
 	<dependencies>
 		<dependency>
 			<groupId>org.geomajas</groupId>
@@ -129,5 +141,9 @@
 				</excludes>
 			</resource>
 		</resources>
-	</build>	
+	</build>
+
+	<properties>
+		<staticsecurity-gwt-version>1.7.1-SNAPSHOT</staticsecurity-gwt-version>
+	</properties>	
 </project>
