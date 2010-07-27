@@ -145,7 +145,7 @@ public abstract class ClientLayerInfo implements Serializable {
 	 * Get the minimum scale for which this layer should be visible (maximum zoom out).
 	 * 
 	 * @return minimum scale (pix/map unit)
-	 * @deprecated use {@link #getMinScale()}
+	 * @deprecated use {@link #getMinimumScale()}
 	 */
 	@Deprecated
 	public double getViewScaleMin() {
@@ -157,7 +157,7 @@ public abstract class ClientLayerInfo implements Serializable {
 	 * 
 	 * @param viewScaleMin
 	 *            scale (pix/map unit)
-	 * @deprecated use {@link #setMinimumScale()}
+	 * @deprecated use {@link #setMinimumScale(ScaleInfo)}}
 	 */
 	@Deprecated
 	public void setViewScaleMin(double viewScaleMin) {
@@ -180,7 +180,7 @@ public abstract class ClientLayerInfo implements Serializable {
 	 * 
 	 * @param viewScaleMax
 	 *            scale (pix/map unit)
-	 * @deprecated use {@link #setMaximumScale()}
+	 * @deprecated use {@link #setMaximumScale(ScaleInfo)}
 	 */
 	@Deprecated
 	public void setViewScaleMax(double viewScaleMax) {
