@@ -51,10 +51,10 @@ mvn install</programlisting>
 
     <itemizedlist>
       <listitem>
-        <para><code>-Pnoshrink</code>: shrink profile (defined in the
-        geomajas-dojo-client module) builds a shrinked version of the
-        javascript files. The files are compressed and combined for faster
-        loading and better caching.</para>
+        <para><code>-DskipShrink</code>: do not use shrinking when building or
+        using the dojo face. When not specified, a shrinked version of the
+        javascript files is used. The files are compressed and combined for
+        faster loading and better caching.</para>
       </listitem>
 
       <listitem>
@@ -98,8 +98,8 @@ mvn install</programlisting>
       <title>dojo build</title>
 
       <para>For development using the dojo face, apart from using the
-      "-Pnoshrink" profile mentioned about, you may also want to configure the
-      ResourceController to try to directly read the javascript files from
+      "-DskipShrink" setting mentioned higher, you may also want to configure
+      the ResourceController to try to directly read the javascript files from
       disk before looking at the classpath (it also changes the cache
       headers). This allows a simple refresh in the browser to load the
       changed versions. You can configure this using a init-param for the
@@ -281,7 +281,7 @@ for (String line : lines) {
     <para>Note that apart from the class and method signatures, the behaviour
     should also remain constant (especially when documented or tested). Just
     keep a method and throwing <code>NotImplementedException</code> cannot be
-    considered "maintaining a stable API". </para>
+    considered "maintaining a stable API".</para>
   </section>
 
   <section>

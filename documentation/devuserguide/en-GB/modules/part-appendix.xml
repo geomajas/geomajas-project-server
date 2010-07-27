@@ -41,6 +41,12 @@
           </listitem>
 
           <listitem>
+            <para>When building the dojo face and the dojo-example
+            application, the maven "-Pnoshrink" has been replaced by
+            "-DskipSkhrink".</para>
+          </listitem>
+
+          <listitem>
             <para>The <code>contextConfigLocation</code> parameter in
             <code>web.xml</code> now follows the Spring documentation, so you
             have to use <code>classpath:some/resource.xml</code> instead of

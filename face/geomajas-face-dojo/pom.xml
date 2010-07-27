@@ -115,18 +115,25 @@
 		<profile>
 			<!-- development profile, no shrinking -->
 			<id>noshrink</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+				<property>
+					<name>skipShrink</name>
+				</property>
+			</activation>
 		</profile>
 		<profile>
 			<!-- shrinking -->
 			<id>shrink</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+				<property>
+					<name>!skipShrink</name>
+				</property>
+			</activation>
 			<modules>
 				<module>geomajas-dojo-client-shrinksafe</module>
 			</modules>
-			<activation>
-				<property>
-					<name>!noshrink</name>
-				</property>
-			</activation>
 		</profile>
 	</profiles>
 

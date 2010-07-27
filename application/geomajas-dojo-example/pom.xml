@@ -94,6 +94,12 @@
 		<profile>
 			<!-- development profile, no shrinking -->
 			<id>noshrink</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+				<property>
+					<name>skipShrink</name>
+				</property>
+			</activation>
 			<properties>
 				<geomajas.modules.name>geomajas-dojo-example-modules</geomajas.modules.name>
 			</properties>
@@ -101,6 +107,12 @@
 		<profile>
 			<!-- shrinking -->
 			<id>shrink</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+				<property>
+					<name>!skipShrink</name>
+				</property>
+			</activation>
 			<properties>
 				<geomajas.modules.name>geomajas-dojo-example-modules-shrinksafe</geomajas.modules.name>
 			</properties>
@@ -108,9 +120,6 @@
 				<!-- include other module to assure version increased on release, doesn't really change anything -->
 				<module>geomajas-dojo-example-modules</module>
 			</modules>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-			</activation>
 		</profile>
 	</profiles>
 

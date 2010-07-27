@@ -36,7 +36,7 @@
     combine all JavaScript in one large cachable file, thus optimizing load
     time. As this shrinking processes has a massive impact on project build
     time (and makes the code difficult to debug), you want to be able to test
-    without this skrinking step. This is tackled using the multi-module
+    without this shrinking step. This is tackled using the multi-module
     project. It has the following sub-projects :</para>
 
     <table>
@@ -141,7 +141,7 @@
       </listitem>
 
       <listitem>
-        <para>uncompressed build: <code>mvn -Pnoshrink install</code></para>
+        <para>uncompressed build: <code>mvn -DskipShrink install</code></para>
       </listitem>
     </itemizedlist>
   </section>
