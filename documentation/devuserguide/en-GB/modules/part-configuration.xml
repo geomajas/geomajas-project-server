@@ -48,8 +48,12 @@
       for Geomajas. It appends the context configuration locations which are
       specified in the <code>contextConfigLocation</code> context parameter to
       the list of internal configuration locations and uses these to build the
-      application context. The contextConfigLocation syntax follows the Spring
-      documentation..</para>
+      application context. When no location is specified, the files is
+      searched on the class path. You can also use location prefixes as
+      defined by Spring. To allow use of configuration file on the web
+      context, use an empty location (just a colon as prefix, eg
+      ":/WEB-INF/config.xml"). Note that whitespace is used as separator which
+      means that the path itself should not contain spaces.</para>
 
       <para>These are defined using an excepts like the following:</para>
 
@@ -63,8 +67,7 @@
       <example>
         <title>Dispatcher servlet declaration in web.xml</title>
 
-        <para>
-          <programlisting>&lt;servlet&gt;
+        <para><programlisting>&lt;servlet&gt;
     &lt;servlet-name&gt;dispatcher&lt;/servlet-name&gt;
     &lt;servlet-class&gt;org.springframework.web.servlet.DispatcherServlet&lt;/servlet-class&gt;
     &lt;init-param&gt;
@@ -78,11 +81,10 @@
 &lt;servlet-mapping&gt;
     &lt;servlet-name&gt;dispatcher&lt;/servlet-name&gt;
     &lt;url-pattern&gt;/d/*&lt;/url-pattern&gt;
-&lt;/servlet-mapping&gt;</programlisting>
-        </para>
+&lt;/servlet-mapping&gt;</programlisting></para>
       </example>
 
-      <para />
+      <para></para>
     </section>
 
     <section>
@@ -144,7 +146,7 @@
       <para>There needs to be at least one <code>ClientApplicationInfo</code>
       bean. The bean name is used when requesting the application info.</para>
 
-      <para />
+      <para></para>
     </section>
   </chapter>
 
@@ -301,8 +303,7 @@
         <para>The following table describes the properties of the
         <code>VectorLayerInfo</code> object:</para>
 
-        <para>
-          <table>
+        <para><table>
             <title>VectorLayer info</title>
 
             <tgroup cols="2">
@@ -360,8 +361,7 @@
                 </row>
               </tbody>
             </tgroup>
-          </table>
-        </para>
+          </table></para>
 
         <para>The feature metadata can be found in the
         <code>FeatureInfo</code> object. This objects contains the complete
@@ -582,8 +582,7 @@
 
         <para>Scales can be defined in 2 possible notations:</para>
 
-        <para>
-          <itemizedlist>
+        <para><itemizedlist>
             <listitem>
               <para>the 1 : x notation (see the above listing) is most
               commonly used in geographics and expresses the ratio between 1
@@ -596,8 +595,7 @@
               unit on the map (1 pixel per 10000 map units in our
               example)</para>
             </listitem>
-          </itemizedlist>
-        </para>
+          </itemizedlist></para>
 
         <para>Both scale definitions serve a different purpose. The 1 : x
         scale should give you an idea of what the true scale is at which the

@@ -111,19 +111,20 @@ private postConstruct() {
 
       <para>The "contextConfigLocation" context-param allows you to specify
       additional application context definition files. These will be included
-      after the builtin Geomajas file and the configuration which is
+      after the built-in Geomajas file and the configuration which is
       contributed by the available plug-ins. You can include several files by
-      separating the location by a space, newline, comma or semicolon or you
-      can even use Ant-style wild cards. The following are examples of allowed
-      patterns:</para>
+      separating them using whitespace. Each location can include the
+      protocol/location used to find the file. When no protocol is specified,
+      the file is searched on the class path. Ant-style wild cards can be
+      used. The following are examples of allowed patterns:</para>
 
-      <para><programlisting>/WEB-INF/*-context.xml
-com/mycompany/**/applicationContext.xml
+      <para><programlisting>com/mycompany/**/applicationContext.xml
 file:C:/some/path/*-context.xml
 classpath:com/mycompany/**/applicationContext.xml
-classpath*:conf/appContext.xml</programlisting>The classpath* pattern is
-      specific in that it will combine all the resources that match this exact
-      pattern in the classpath, not just the first one.</para>
+classpath*:conf/appContext.xml
+:/WEB-INF/*-context.xml</programlisting>The classpath* pattern is specific in
+      that it will combine all the resources that match this exact pattern in
+      the classpath, not just the first one.</para>
 
       <para>When the GeomajasContextListener is used, the application context
       can be obtained in the servlet using</para>
