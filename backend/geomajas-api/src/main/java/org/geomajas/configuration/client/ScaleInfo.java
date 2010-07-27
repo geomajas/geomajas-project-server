@@ -154,6 +154,9 @@ public class ScaleInfo implements Serializable {
 	 *            the number of pixels in a map unit
 	 */
 	public void convertScale(double mapUnitInPixels) {
+		if (0 == mapUnitInPixels) {
+			throw new RuntimeException("ScaleInfo.convertScale mapUnitInPixels should never be zero");
+		}
 		if (denominator != 0) {
 			pixelPerUnit = numerator / denominator * mapUnitInPixels;
 		} else {
@@ -165,7 +168,6 @@ public class ScaleInfo implements Serializable {
 				denominator = mapUnitInPixels / pixelPerUnit;
 			}
 		}
-
 	}
 
 }
