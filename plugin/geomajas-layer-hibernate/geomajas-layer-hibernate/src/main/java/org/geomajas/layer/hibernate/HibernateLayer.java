@@ -37,6 +37,7 @@ import org.geomajas.configuration.AssociationType;
 import org.geomajas.configuration.AttributeInfo;
 import org.geomajas.configuration.SortType;
 import org.geomajas.configuration.VectorLayerInfo;
+import org.geomajas.global.Api;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.LayerException;
@@ -73,7 +74,9 @@ import javax.annotation.PostConstruct;
  * 
  * @author Pieter De Graef
  * @author Jan De Moerloose
+ * @since 1.7.1
  */
+@Api
 @Transactional(rollbackFor = { Exception.class })
 public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, VectorLayerAssociationSupport {
 
@@ -121,6 +124,14 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, V
 		return this.featureModel;
 	}
 
+	/**
+	 * Set the layer configuration.
+	 *
+	 * @param layerInfo layer information
+	 * @throws LayerException oops
+	 * @since 1.7.1
+	 */
+	@Api
 	@Override
 	public void setLayerInfo(VectorLayerInfo layerInfo) throws LayerException {
 		super.setLayerInfo(layerInfo);

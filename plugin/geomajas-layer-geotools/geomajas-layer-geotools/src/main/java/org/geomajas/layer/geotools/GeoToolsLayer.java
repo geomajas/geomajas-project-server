@@ -34,6 +34,7 @@ import javax.annotation.PostConstruct;
 
 import org.geomajas.configuration.Parameter;
 import org.geomajas.configuration.VectorLayerInfo;
+import org.geomajas.global.Api;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.VectorLayer;
@@ -72,7 +73,9 @@ import com.vividsolutions.jts.geom.Envelope;
  * @author Jan De Moerloose
  * @author Pieter De Graef
  * @author Joachim Van der Auwera
+ * @since 1.7.1
  */
+@Api
 @Transactional(rollbackFor = { Exception.class })
 public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer {
 
@@ -145,6 +148,14 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 		return crs;
 	}
 
+	/**
+	 * Set the layer configuration.
+	 *
+	 * @param layerInfo layer information
+	 * @throws LayerException oops
+	 * @since 1.7.1
+	 */
+	@Api
 	public void setLayerInfo(VectorLayerInfo layerInfo) throws LayerException {
 		this.layerInfo = layerInfo;
 	}

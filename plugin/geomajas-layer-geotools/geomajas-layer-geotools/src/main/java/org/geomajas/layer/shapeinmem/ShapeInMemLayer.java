@@ -35,6 +35,7 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 
 import org.geomajas.configuration.VectorLayerInfo;
+import org.geomajas.global.Api;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.LayerException;
@@ -59,7 +60,9 @@ import com.vividsolutions.jts.geom.Envelope;
  * 
  * @author Jan De Moerloose
  * @author Pieter De Graef
+ * @since 1.7.1
  */
+@Api
 public class ShapeInMemLayer extends FeatureSourceRetriever implements VectorLayer {
 
 	private Map<String, SimpleFeature> features = new HashMap<String, SimpleFeature>();
@@ -92,6 +95,14 @@ public class ShapeInMemLayer extends FeatureSourceRetriever implements VectorLay
 		return crs;
 	}
 
+	/**
+	 * Set the layer configuration.
+	 *
+	 * @param layerInfo layer information
+	 * @throws LayerException oops
+	 * @since 1.7.1
+	 */
+	@Api
 	public void setLayerInfo(VectorLayerInfo layerInfo) throws LayerException {
 		this.layerInfo = layerInfo;
 	}
@@ -112,6 +123,14 @@ public class ShapeInMemLayer extends FeatureSourceRetriever implements VectorLay
 		return true;
 	}
 
+	/**
+	 * Set the url for the shape file.
+	 *
+	 * @param url shape file url
+	 * @throws LayerException file cannot be accessed
+	 * @since 1.7.1
+	 */
+	@Api
 	public void setUrl(String url) throws LayerException {
 		try {
 			Map<String, String> params = new HashMap<String, String>();

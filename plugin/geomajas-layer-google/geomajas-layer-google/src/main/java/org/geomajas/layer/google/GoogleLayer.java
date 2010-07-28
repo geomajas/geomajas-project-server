@@ -138,6 +138,14 @@ public class GoogleLayer implements RasterLayer {
 		return converterService.toInternal(layerInfo.getMaxExtent());
 	}
 
+	/**
+	 * Set the layer configuration.
+	 *
+	 * @param layerInfo layer information
+	 * @throws LayerException oops
+	 * @since 1.7.1
+	 */
+	@Api
 	public void setLayerInfo(RasterLayerInfo layerInfo) throws LayerException {
 		this.layerInfo = layerInfo;
 	}

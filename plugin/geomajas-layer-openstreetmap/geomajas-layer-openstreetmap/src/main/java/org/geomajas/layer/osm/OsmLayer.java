@@ -27,6 +27,7 @@ import java.util.List;
 
 import org.geomajas.configuration.RasterLayerInfo;
 import org.geomajas.geometry.Bbox;
+import org.geomajas.global.Api;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.LayerException;
@@ -55,7 +56,9 @@ import javax.annotation.PostConstruct;
  * Layer for displaying OpenStreetMap images.
  * 
  * @author Jan De Moerloose
+ * @since 1.7.1
  */
+@Api
 public class OsmLayer implements RasterLayer {
 
 	protected List<OSMResolution> resolutions = new ArrayList<OSMResolution>();
@@ -109,6 +112,14 @@ public class OsmLayer implements RasterLayer {
 		return converterService.toInternal(layerInfo.getMaxExtent());
 	}
 
+	/**
+	 * Set the layer configuration.
+	 *
+	 * @param layerInfo layer information
+	 * @throws LayerException oops
+	 * @since 1.7.1
+	 */
+	@Api
 	public void setLayerInfo(RasterLayerInfo layerInfo) throws LayerException {
 		this.layerInfo = layerInfo;
 	}

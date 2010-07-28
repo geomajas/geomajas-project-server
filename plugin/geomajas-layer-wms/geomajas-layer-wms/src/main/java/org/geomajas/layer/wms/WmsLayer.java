@@ -31,6 +31,7 @@ import java.util.List;
 import org.geomajas.configuration.Parameter;
 import org.geomajas.configuration.RasterLayerInfo;
 import org.geomajas.geometry.Bbox;
+import org.geomajas.global.Api;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.LayerException;
@@ -60,7 +61,9 @@ import com.vividsolutions.jts.geom.Envelope;
  * 
  * @author Jan De Moerloose
  * @author Pieter De Graef
+ * @since 1.7.1
  */
+@Api
 public class WmsLayer implements RasterLayer {
 
 	protected List<Resolution> resolutions = new ArrayList<Resolution>();
@@ -117,6 +120,14 @@ public class WmsLayer implements RasterLayer {
 		return converterService.toInternal(layerInfo.getMaxExtent());
 	}
 
+	/**
+	 * Set the layer configuration.
+	 *
+	 * @param layerInfo layer information
+	 * @throws LayerException oops
+	 * @since 1.7.1
+	 */
+	@Api
 	public void setLayerInfo(RasterLayerInfo layerInfo) throws LayerException {
 		this.layerInfo = layerInfo;
 		initCrs();
@@ -387,6 +398,12 @@ public class WmsLayer implements RasterLayer {
 		return baseWmsUrl;
 	}
 
+	/**
+	 *
+	 * @param baseWmsUrl
+	 * @since 1.7.1
+	 */
+	@Api
 	public void setBaseWmsUrl(String baseWmsUrl) {
 		this.baseWmsUrl = baseWmsUrl;
 	}
@@ -395,6 +412,13 @@ public class WmsLayer implements RasterLayer {
 		return format;
 	}
 
+	/**
+	 * Set file format to request.
+	 *
+	 * @param format file format. For allowed values, check your WMS server.
+	 * @since 1.7.1
+	 */
+	@Api
 	public void setFormat(String format) {
 		this.format = format;
 	}
@@ -403,6 +427,13 @@ public class WmsLayer implements RasterLayer {
 		return version;
 	}
 
+	/**
+	 * Set WMS version to use.
+	 *
+	 * @param version wms version. For allowed values, check your WMS server.
+	 * @since 1.7.1
+	 */
+	@Api
 	public void setVersion(String version) {
 		this.version = version;
 	}
@@ -411,10 +442,24 @@ public class WmsLayer implements RasterLayer {
 		return styles;
 	}
 
+	/**
+	 * Set the styles.
+	 *
+	 * @param styles styles. For allowed values, check your WMS server.
+	 * @since 1.7.1
+	 */
+	@Api
 	public void setStyles(String styles) {
 		this.styles = styles;
 	}
 
+	/**
+	 * Set additional parameters to include in getCapabilities request.
+	 *
+	 * @param parameters parameters. For possible keys and values, check your WMS server.
+	 * @since 1.7.1
+	 */
+	@Api
 	public void setParameters(List<Parameter> parameters) {
 		this.parameters = parameters;
 	}
