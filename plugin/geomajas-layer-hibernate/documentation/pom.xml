@@ -42,7 +42,7 @@
 						</configuration>
 					</execution>
 					<execution>
-						<id>explode-gwt-simple</id>
+						<id>explode-gwt-apps</id>
 						<phase>process-resources</phase>
 						<goals>
 							<goal>unpack</goal>
@@ -64,7 +64,6 @@
 									<outputDirectory>${project.build.directory}/extract/example</outputDirectory>
 								</artifactItem>
 							</artifactItems>
-							<outputDirectory>${project.build.directory}/extract/simple</outputDirectory>
 						</configuration>
 					</execution>
 				</executions>

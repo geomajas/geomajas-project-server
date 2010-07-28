@@ -1,14 +1,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<parent>
-		<groupId>org.geomajas</groupId>
-		<artifactId>geomajas-parent</artifactId>
-		<version>1.0.3</version>
+		<groupId>org.geomajas.plugin</groupId>
+		<artifactId>geomajas-plugin-staticsecurity-all</artifactId>
+		<version>1.7.1-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.documentation</groupId>
 	<artifactId>geomajas-plugin-staticsecurity-documentation</artifactId>
 	<packaging>jdocbook</packaging>
-	<version>1.7.1-SNAPSHOT</version>
 	<name>Geomajas staticsecurity plugin documentation (${translation})</name>
 	<description>Geomajas static security plugin documentation (${translation})</description>
 

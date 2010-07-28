@@ -1,14 +1,13 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<parent>
-		<groupId>org.geomajas</groupId>
-		<artifactId>geomajas-parent</artifactId>
-		<version>1.0.3</version>
+		<groupId>org.geomajas.plugin</groupId>
+		<artifactId>geomajas-plugin-geotools-all</artifactId>
+		<version>1.7.1-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.documentation</groupId>
 	<artifactId>geomajas-layer-geotools-documentation</artifactId>
 	<packaging>jdocbook</packaging>
-	<version>1.7.1-SNAPSHOT</version>
 	<name>Geomajas GeoTools layer documentation (${translation})</name>
 	<description>Geomajas GeoTools layer documentation (${translation})</description>
 
@@ -23,18 +22,6 @@
 			<artifactId>geomajas-jdocbook-style</artifactId>
 			<version>1.0.0</version>
 			<type>jdocbook-style</type>
-		</dependency>
-		<dependency>
-			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-gwt-simple</artifactId>
-			<version>1.7.1-SNAPSHOT</version>
-			<classifier>sources</classifier>
-		</dependency>
-		<dependency>
-			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-gwt-example</artifactId>
-			<version>1.7.1-SNAPSHOT</version>
-			<classifier>sources</classifier>
 		</dependency>
 	</dependencies>
 
@@ -55,25 +42,28 @@
 						</configuration>
 					</execution>
 					<execution>
-						<id>explode-gwt-simple</id>
+						<id>explode-gwt-apps</id>
 						<phase>process-resources</phase>
 						<goals>
-							<goal>unpack-dependencies</goal>
+							<goal>unpack</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>${project.build.directory}/extract/simple</outputDirectory>
-							<includeArtifactIds>geomajas-gwt-simple</includeArtifactIds>
-						</configuration>
-					</execution>
-					<execution>
-						<id>explode-gwt-example</id>
-						<phase>process-resources</phase>
-						<goals>
-							<goal>unpack-dependencies</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${project.build.directory}/extract/example</outputDirectory>
-							<includeArtifactIds>geomajas-gwt-example</includeArtifactIds>
+							<artifactItems>
+								<artifactItem>
+									<groupId>org.geomajas</groupId>
+									<artifactId>geomajas-gwt-simple</artifactId>
+									<version>1.7.1-SNAPSHOT</version>
+									<classifier>sources</classifier>
+									<outputDirectory>${project.build.directory}/extract/simple</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>org.geomajas</groupId>
+									<artifactId>geomajas-gwt-example</artifactId>
+									<version>1.7.1-SNAPSHOT</version>
+									<classifier>sources</classifier>
+									<outputDirectory>${project.build.directory}/extract/example</outputDirectory>
+								</artifactItem>
+							</artifactItems>
 						</configuration>
 					</execution>
 				</executions>
