@@ -25,12 +25,15 @@ package org.geomajas.plugin.staticsecurity.client.event;
 import java.util.List;
 
 import com.google.gwt.event.shared.GwtEvent;
+import org.geomajas.global.Api;
 
 /**
  * Event that reports when logging in has failed.
  * 
  * @author Pieter De Graef
+ * @since 1.7.1
  */
+@Api
 public class LoginFailureEvent extends GwtEvent<LoginHandler> {
 
 	private List<String> messages;
@@ -50,7 +53,9 @@ public class LoginFailureEvent extends GwtEvent<LoginHandler> {
 
 	/**
 	 * @return Get the error message
+	 * @since 1.7.1
 	 */
+	@Api
 	public List<String> getMessages() {
 		return messages;
 	}

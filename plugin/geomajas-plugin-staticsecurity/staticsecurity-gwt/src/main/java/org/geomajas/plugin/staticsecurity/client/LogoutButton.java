@@ -23,6 +23,7 @@
 
 package org.geomajas.plugin.staticsecurity.client;
 
+import org.geomajas.global.Api;
 import org.geomajas.plugin.staticsecurity.client.event.LoginFailureEvent;
 import org.geomajas.plugin.staticsecurity.client.event.LoginHandler;
 import org.geomajas.plugin.staticsecurity.client.event.LoginSuccessEvent;
@@ -42,7 +43,9 @@ import com.smartgwt.client.widgets.events.ClickHandler;
  * </p>
  * 
  * @author Pieter De Graef
+ * @since 1.7.1
  */
+@Api
 public class LogoutButton extends IButton implements ClickHandler, LoginHandler, LogoutHandler {
 
 	private StaticSecurityMessages i18n;
@@ -54,7 +57,10 @@ public class LogoutButton extends IButton implements ClickHandler, LoginHandler,
 	/**
 	 * Default constructor. Adds handlers to the login and logout events that set the disabled status of this button. It
 	 * makes sure that this logout button is only enabled when the user has been successfully logged in.
+	 *
+	 * @since 1.7.1
 	 */
+	@Api
 	public LogoutButton() {
 		super();
 		i18n = GWT.create(StaticSecurityMessages.class);
@@ -71,7 +77,9 @@ public class LogoutButton extends IButton implements ClickHandler, LoginHandler,
 	 * 
 	 * @param logoutHandler
 	 *            Add this logout handler to the logout events.
+	 * @since 1.7.1
 	 */
+	@Api
 	public LogoutButton(LogoutHandler logoutHandler) {
 		this();
 		Authentication.getInstance().addLogoutHandler(logoutHandler);

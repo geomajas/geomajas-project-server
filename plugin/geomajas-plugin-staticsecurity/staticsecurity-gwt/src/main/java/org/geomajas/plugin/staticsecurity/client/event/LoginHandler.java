@@ -25,6 +25,7 @@ package org.geomajas.plugin.staticsecurity.client.event;
 
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
+import org.geomajas.global.Api;
 
 /**
  * <p>
@@ -32,7 +33,9 @@ import com.google.gwt.event.shared.GwtEvent;
  * </p>
  * 
  * @author Pieter De Graef
+ * @since 1.7.1
  */
+@Api(allMethods = true)
 public interface LoginHandler extends EventHandler {
 
 	GwtEvent.Type<LoginHandler> TYPE = new GwtEvent.Type<LoginHandler>();

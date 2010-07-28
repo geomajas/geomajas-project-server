@@ -23,6 +23,7 @@
 
 package org.geomajas.plugin.staticsecurity.client;
 
+import org.geomajas.global.Api;
 import org.geomajas.plugin.staticsecurity.client.event.LoginFailureEvent;
 import org.geomajas.plugin.staticsecurity.client.event.LoginHandler;
 import org.geomajas.plugin.staticsecurity.client.event.LoginSuccessEvent;
@@ -60,7 +61,9 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * </p>
  * 
  * @author Pieter De Graef
+ * @since 1.7.1
  */
+@Api
 public class LoginWindow extends Window implements LoginHandler {
 
 	private static final String FIELD_USER_NAME = "userName";
@@ -87,7 +90,10 @@ public class LoginWindow extends Window implements LoginHandler {
 
 	/**
 	 * Create the default login window. Shows the login window with a default layout.
+	 *
+	 * @since 1.7.1
 	 */
+	@Api
 	public LoginWindow() {
 		super();
 		Authentication.getInstance().addLoginHandler(this);
@@ -100,7 +106,9 @@ public class LoginWindow extends Window implements LoginHandler {
 	 * 
 	 * @param loginHandler
 	 *            A <code>LoginHandler</code> that should be immediately added to catch login events.
+	 * @since 1.7.1
 	 */
+	@Api
 	public LoginWindow(LoginHandler loginHandler) {
 		super();
 		Authentication.getInstance().addLoginHandler(this);
@@ -119,7 +127,9 @@ public class LoginWindow extends Window implements LoginHandler {
 	 *            Change the default logo into this one.
 	 * @param logoWidth
 	 *            When setting a new logo, it is imperative to also give it's width in pixels.
+	 * @since 1.7.1
 	 */
+	@Api
 	public LoginWindow(LoginHandler loginHandler, String slogan, String logo, int logoWidth) {
 		super();
 		this.slogan = slogan;

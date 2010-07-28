@@ -23,12 +23,15 @@
 package org.geomajas.plugin.staticsecurity.client.event;
 
 import com.google.gwt.event.shared.GwtEvent;
+import org.geomajas.global.Api;
 
 /**
  * Event that reports when the user has successfully logged out.
  * 
  * @author Pieter De Graef
+ * @since 1.7.1
  */
+@Api
 public class LogoutSuccessEvent extends GwtEvent<LogoutHandler> {
 
 	public LogoutSuccessEvent() {

@@ -23,12 +23,15 @@
 package org.geomajas.plugin.staticsecurity.client.event;
 
 import com.google.gwt.event.shared.GwtEvent;
+import org.geomajas.global.Api;
 
 /**
  * Event that reports when logging in was successful.
  * 
  * @author Pieter De Graef
+ * @since 1.7.1
  */
+@Api
 public class LoginSuccessEvent extends GwtEvent<LoginHandler> {
 
 	private String token;
@@ -48,7 +51,9 @@ public class LoginSuccessEvent extends GwtEvent<LoginHandler> {
 
 	/**
 	 * @return Get the user token that came back from the server.
+	 * @since 1.7.1
 	 */
+	@Api
 	public String getToken() {
 		return token;
 	}
