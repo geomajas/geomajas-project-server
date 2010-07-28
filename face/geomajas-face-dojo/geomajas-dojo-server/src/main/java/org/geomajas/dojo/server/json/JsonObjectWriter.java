@@ -25,6 +25,8 @@ package org.geomajas.dojo.server.json;
 import com.metaparadigm.jsonrpc.JSONRPCResult;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.CharArrayWriter;
 import java.io.FilterWriter;
@@ -103,9 +105,15 @@ public class JsonObjectWriter
 			s = (String) keys.next();
 			o = object.get(s);
 			if (o != null) {
-				write(JSONObject.quote(s));
-				write(':');
-				writeObject(o);
+				try {
+					write(JSONObject.quote(s));
+					write(':');
+					writeObject(o);
+				} catch (IOException ioe) {
+					Logger log = LoggerFactory.getLogger(JsonObjectWriter.class);
+					log.error("Problem writing " + s + " from " + object + " for value " + o + ", " + ioe.getMessage());
+					throw ioe;
+				}
 			}
 		}
 		write('}');
