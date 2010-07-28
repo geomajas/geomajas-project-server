@@ -23,9 +23,12 @@
 package org.geomajas.gwt.client.controller;
 
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.gwt.client.map.MapView.ZoomOption;
+import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.widget.MapWidget;
 
 import com.google.gwt.dom.client.NativeEvent;
+import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseEvent;
 import com.google.gwt.event.dom.client.MouseMoveEvent;
@@ -35,8 +38,10 @@ import com.smartgwt.client.types.Cursor;
 
 /**
  * Handle panning by dragging the map. Also allows zoom to rectangle when using shift or ctrl when you start to drag.
+ * Double clicking allows the user to zoom in on the clicked location.
  * 
  * @author Joachim Van der Auwera
+ * @author Pieter De Graef
  */
 public class PanController extends AbstractGraphicsController {
 
@@ -47,6 +52,8 @@ public class PanController extends AbstractGraphicsController {
 	private Coordinate begin;
 
 	private ZoomToRectangleController zoomToRectangleController;
+
+	private Coordinate lastClickPosition;
 
 	// Constructors:
 
@@ -66,6 +73,7 @@ public class PanController extends AbstractGraphicsController {
 			begin = getScreenPosition(event);
 			mapWidget.setCursor(Cursor.MOVE);
 		}
+		lastClickPosition = getWorldPosition(event);
 	}
 
 	@Override
@@ -96,6 +104,18 @@ public class PanController extends AbstractGraphicsController {
 		}
 	}
 
+	/**
+	 * Zoom in to the double-clicked position.
+	 */
+	public void onDoubleClick(DoubleClickEvent event) {
+		// Zoom in on the event location.
+		Bbox bounds = mapWidget.getMapModel().getMapView().getBounds();
+		double x = lastClickPosition.getX() - (bounds.getWidth() / 4);
+		double y = lastClickPosition.getY() - (bounds.getHeight() / 4);
+		Bbox newBounds = new Bbox(x, y, bounds.getWidth() / 2, bounds.getHeight() / 2);
+		mapWidget.getMapModel().getMapView().applyBounds(newBounds, ZoomOption.LEVEL_CHANGE);
+	}
+
 	// Private methods:
 
 	private void stopPanning(MouseUpEvent event) {
@@ -111,8 +131,8 @@ public class PanController extends AbstractGraphicsController {
 		Coordinate end = getScreenPosition(event);
 		Coordinate beginWorld = getTransformer().viewToWorld(begin);
 		Coordinate endWorld = getTransformer().viewToWorld(end);
-		mapWidget.getMapModel().getMapView().translate(beginWorld.getX() - endWorld.getX(),
-				beginWorld.getY() - endWorld.getY());
+		mapWidget.getMapModel().getMapView()
+				.translate(beginWorld.getX() - endWorld.getX(), beginWorld.getY() - endWorld.getY());
 		begin = end;
 	}
 }
