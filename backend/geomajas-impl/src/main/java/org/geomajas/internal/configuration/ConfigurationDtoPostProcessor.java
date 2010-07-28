@@ -155,8 +155,7 @@ public class ConfigurationDtoPostProcessor {
 				if (scale.getDenominator() == 0) {
 					relativeScales = false;
 				} else if (!relativeScales) {
-					throw new LayerException(ExceptionCode.CONVERSION_PROBLEM, "Map " + map.getId()
-							+ " has a disallowed mix of scale notations 1 : x and x (use 1 : 1 for scale 1 ?)");
+					throw new LayerException(ExceptionCode.SCALE_CONVERSION_PROBLEM, map.getId());
 				}
 				completeScale(scale, pixPerUnit);
 				// add the resolution for deprecated api support

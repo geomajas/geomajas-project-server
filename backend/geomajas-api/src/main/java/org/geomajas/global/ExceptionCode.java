@@ -114,4 +114,9 @@ public interface ExceptionCode {
 	 */
 	int PIPELINE_UNSATISFIED_EXTENSION = 66;
 
+	/**
+	 * @since 1.7.1
+	 */
+	int SCALE_CONVERSION_PROBLEM = 67;
+
 }
