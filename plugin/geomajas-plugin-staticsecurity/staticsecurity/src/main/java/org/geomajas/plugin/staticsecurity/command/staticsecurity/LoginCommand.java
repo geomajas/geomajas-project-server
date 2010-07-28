@@ -50,6 +50,7 @@ import java.util.List;
  * When comparing passwords, it assures that the base64 encoding padding is not required to be used.
  *
  * @author Joachim Van der Auwera
+ * @since 1.7.1
  */
 @Api
 @Component
