@@ -53,6 +53,7 @@ import org.geomajas.gwt.client.gfx.paintable.mapaddon.PanButtonCollection;
 import org.geomajas.gwt.client.gfx.paintable.mapaddon.ScaleBar;
 import org.geomajas.gwt.client.gfx.paintable.mapaddon.Watermark;
 import org.geomajas.gwt.client.gfx.paintable.mapaddon.ZoomAddon;
+import org.geomajas.gwt.client.gfx.paintable.mapaddon.ZoomToRectangleAddon;
 import org.geomajas.gwt.client.gfx.painter.CirclePainter;
 import org.geomajas.gwt.client.gfx.painter.FeaturePainter;
 import org.geomajas.gwt.client.gfx.painter.FeatureTransactionPainter;
@@ -592,6 +593,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 		navigationAddonEnabled = enabled;
 		final String panId = "panBTNCollection";
 		final String zoomId = "zoomAddon";
+		final String zoomRectId = "zoomRectAddon";
 
 		if (enabled) {
 			PanButtonCollection panButtons = new PanButtonCollection(panId, this);
@@ -603,9 +605,15 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 			zoomAddon.setHorizontalMargin(20);
 			zoomAddon.setVerticalMargin(65);
 			registerMapAddon(zoomAddon);
+
+			ZoomToRectangleAddon zoomToRectangleAddon = new ZoomToRectangleAddon(zoomRectId, this);
+			zoomToRectangleAddon.setHorizontalMargin(20);
+			zoomToRectangleAddon.setVerticalMargin(135);
+			registerMapAddon(zoomToRectangleAddon);
 		} else {
 			unregisterMapAddon(addons.get(panId));
 			unregisterMapAddon(addons.get(zoomId));
+			unregisterMapAddon(addons.get(zoomRectId));
 		}
 	}
 
