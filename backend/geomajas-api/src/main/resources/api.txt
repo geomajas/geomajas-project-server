@@ -318,9 +318,8 @@ org.geomajas.configuration.client.ScaleInfo:ScaleInfo(double, double, ):1.7.0
 org.geomajas.configuration.client.ScaleInfo:double getDenominator():1.7.0
 org.geomajas.configuration.client.ScaleInfo:double getNumerator():1.7.0
 org.geomajas.configuration.client.ScaleInfo:double getPixelPerUnit():1.7.0
-org.geomajas.configuration.client.ScaleInfo:static final ScaleInfo MAX_VALUE:1.7.0
-org.geomajas.configuration.client.ScaleInfo:static final ScaleInfo MIN_VALUE:1.7.0
-org.geomajas.configuration.client.ScaleInfo:void convertScale(double, ):1.7.0
+org.geomajas.configuration.client.ScaleInfo:static final double MAXIMUM_PIXEL_PER_UNIT:1.7.0
+org.geomajas.configuration.client.ScaleInfo:static final double MINIMUM_PIXEL_PER_UNIT:1.7.0
 org.geomajas.configuration.client.ScaleInfo:void setDenominator(double, ):1.7.0
 org.geomajas.configuration.client.ScaleInfo:void setNumerator(double, ):1.7.0
 org.geomajas.configuration.client.ScaleInfo:void setPixelPerUnit(double, ):1.7.0

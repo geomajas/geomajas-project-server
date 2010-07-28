@@ -49,9 +49,9 @@ public abstract class ClientLayerInfo implements Serializable {
 
 	private boolean visible;
 
-	private ScaleInfo minimumScale = ScaleInfo.MIN_VALUE;
+	private ScaleInfo minimumScale = new ScaleInfo(ScaleInfo.MINIMUM_PIXEL_PER_UNIT);
 
-	private ScaleInfo maximumScale = ScaleInfo.MAX_VALUE;
+	private ScaleInfo maximumScale = new ScaleInfo(ScaleInfo.MAXIMUM_PIXEL_PER_UNIT);
 
 	@Null
 	private LayerInfo layerInfo;

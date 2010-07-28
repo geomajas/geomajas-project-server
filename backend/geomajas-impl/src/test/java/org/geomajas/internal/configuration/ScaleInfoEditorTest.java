@@ -22,6 +22,8 @@ public class ScaleInfoEditorTest {
 	@Autowired
 	private ScaleInfoHolder holder;
 
+	ConfigurationDtoPostProcessor cdpp = new ConfigurationDtoPostProcessor();
+
 	@Test
 	public void testSetAsText() {
 		ScaleInfoEditor editor = new ScaleInfoEditor();
@@ -32,7 +34,7 @@ public class ScaleInfoEditorTest {
 		Assert.assertEquals(1, info.getNumerator(), 0.001);
 		Assert.assertEquals(2000, info.getDenominator(), 0.001);
 		Assert.assertEquals(0, info.getPixelPerUnit(), 0);
-		info.convertScale(10);
+		cdpp.completeScale(info, 10);
 		Assert.assertEquals(0.005, info.getPixelPerUnit(), 0.00001);
 	}
 
@@ -42,7 +44,7 @@ public class ScaleInfoEditorTest {
 		Assert.assertEquals(1, info.getNumerator(), 0.001);
 		Assert.assertEquals(2500, info.getDenominator(), 0.001);
 		Assert.assertEquals(0, info.getPixelPerUnit(), 0);
-		info.convertScale(100);
+		cdpp.completeScale(info, 100);
 		Assert.assertEquals(0.04, info.getPixelPerUnit(), 0.00001);
 	}
 }

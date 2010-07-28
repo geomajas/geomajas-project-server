@@ -40,7 +40,7 @@ public class ScaleConfigurationInfo implements Serializable {
 
 	private static final long serialVersionUID = 170L;
 
-	private ScaleInfo maximumScale = ScaleInfo.MAX_VALUE;
+	private ScaleInfo maximumScale = new ScaleInfo(ScaleInfo.MAXIMUM_PIXEL_PER_UNIT);
 
 	private List<ScaleInfo> zoomLevels = new ArrayList<ScaleInfo>();
 

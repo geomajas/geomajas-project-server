@@ -32,7 +32,6 @@ import java.io.Serializable;
  * 
  * @author Jan De Moerloose
  * @since 1.7.0
- * @see org.geomajas.internal.configuration.ScaleInfoEditor
  */
 @Api(allMethods = true)
 public class ScaleInfo implements Serializable {
@@ -46,19 +45,20 @@ public class ScaleInfo implements Serializable {
 	private double denominator;
 
 	/**
-	 * A maximum scale which is suitable for all purposes but avoids infinity.
+	 * A minimum pixelPerUnit value which is suitable for all purposes but avoids zero and is in float range.
 	 */
-	public static final ScaleInfo MAX_VALUE = new ScaleInfo(10E50);
+	public static final double MINIMUM_PIXEL_PER_UNIT = 1e-25;
 
 	/**
-	 * The minimum scale which is suitable for all purposes but avoids 0 in calculations.
+	 * A maximum pixelPerUnit value which is suitable for all purposes but avoids infinity and is in float range.
 	 */
-	public static final ScaleInfo MIN_VALUE = new ScaleInfo(10E-50);
+	public static final double MAXIMUM_PIXEL_PER_UNIT = 1e25;
 
 	/**
 	 * Default constructor for GWT serialization.
 	 */
 	public ScaleInfo() {
+		pixelPerUnit = MINIMUM_PIXEL_PER_UNIT;
 	}
 
 	/**
@@ -70,6 +70,12 @@ public class ScaleInfo implements Serializable {
 	 *            the scale value in pixel per map unit)
 	 */
 	public ScaleInfo(double pixelPerUnit) {
+		if (pixelPerUnit < MINIMUM_PIXEL_PER_UNIT) {
+			pixelPerUnit = MINIMUM_PIXEL_PER_UNIT;
+		}
+		if (pixelPerUnit > MAXIMUM_PIXEL_PER_UNIT) {
+			pixelPerUnit = MAXIMUM_PIXEL_PER_UNIT;
+		}
 		this.pixelPerUnit = pixelPerUnit;
 	}
 
@@ -106,6 +112,12 @@ public class ScaleInfo implements Serializable {
 	 *            the scale value (pix/map unit)
 	 */
 	public void setPixelPerUnit(double pixelPerUnit) {
+		if (pixelPerUnit < MINIMUM_PIXEL_PER_UNIT) {
+			pixelPerUnit = MINIMUM_PIXEL_PER_UNIT;
+		}
+		if (pixelPerUnit > MAXIMUM_PIXEL_PER_UNIT) {
+			pixelPerUnit = MAXIMUM_PIXEL_PER_UNIT;
+		}
 		this.pixelPerUnit = pixelPerUnit;
 	}
 
@@ -146,28 +158,4 @@ public class ScaleInfo implements Serializable {
 	public void setDenominator(double denominator) {
 		this.denominator = denominator;
 	}
-
-	/**
-	 * Convert the scale in pixels per unit or relative values, which ever is missing.
-	 * 
-	 * @param mapUnitInPixels
-	 *            the number of pixels in a map unit
-	 */
-	public void convertScale(double mapUnitInPixels) {
-		if (0 == mapUnitInPixels) {
-			throw new RuntimeException("ScaleInfo.convertScale mapUnitInPixels should never be zero");
-		}
-		if (denominator != 0) {
-			pixelPerUnit = numerator / denominator * mapUnitInPixels;
-		} else {
-			if (pixelPerUnit / mapUnitInPixels > 1) {
-				numerator = pixelPerUnit / mapUnitInPixels;
-				denominator = 1.;
-			} else {
-				numerator = 1.;
-				denominator = mapUnitInPixels / pixelPerUnit;
-			}
-		}
-	}
-
 }
