@@ -9,7 +9,7 @@
 	<artifactId>geomajas-plugin-hibernate-all</artifactId>
 	<version>1.7.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<name>Geomajas Hibernate layer plug-in</name>
+	<name>Geomajas Hibernate layer plug-in parent</name>
 	<description>Geomajas Hibernate layer plug-in</description>
 
 	<scm>
@@ -68,6 +68,67 @@
 		<module>geomajas-layer-hibernate</module>
 	</modules>
 
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-backend</artifactId>
+				<version>${hibernate-layer-backend-version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-orm</artifactId>
+				<version>${spring-version}</version>
+			</dependency>
+			
+			<dependency>
+				<groupId>org.hibernatespatial</groupId>
+				<artifactId>hibernate-spatial</artifactId>
+				<version>1.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.hibernatespatial</groupId>
+				<artifactId>hibernate-spatial-postgis</artifactId>
+				<version>1.0</version>
+			</dependency>
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-core</artifactId>
+				<version>3.5.2-Final</version>
+			</dependency>
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-annotations</artifactId>
+				<version>3.5.2-Final</version>
+			</dependency>
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-cglib-repack</artifactId>
+				<version>2.1_3</version>
+			</dependency>
+			<dependency>
+				<groupId>org.hibernate</groupId>
+				<artifactId>hibernate-validator</artifactId>
+				<version>4.0.2.GA</version>
+			</dependency>
+			<dependency>
+				<groupId>org.postgis</groupId>
+				<artifactId>postgis-jdbc</artifactId>
+				<version>1.1.6</version>
+			</dependency>
+			<dependency>
+				<groupId>postgresql</groupId>
+				<artifactId>postgresql</artifactId>
+				<version>8.1-407.jdbc3</version>
+			</dependency>
+
+		</dependencies>
+	</dependencyManagement>
+	
+
 	<profiles>
 		<profile>
 			<id>documentation</id>
@@ -81,5 +142,10 @@
 			</modules>
 		</profile>
 	</profiles>
+
+	<properties>
+		<hibernate-layer-backend-version>1.7.1-SNAPSHOT</hibernate-layer-backend-version>
+		<spring-version>3.0.2.RELEASE</spring-version>
+	</properties>
 	
 </project>

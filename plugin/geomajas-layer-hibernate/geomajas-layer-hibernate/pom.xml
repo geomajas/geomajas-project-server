@@ -1,35 +1,16 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
-		<groupId>org.geomajas</groupId>
-		<artifactId>geomajas-parent</artifactId>
-		<version>1.0.1</version>
+		<groupId>org.geomajas.plugin</groupId>
+		<artifactId>geomajas-plugin-hibernate-all</artifactId>
+		<version>1.7.1-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-layer-hibernate</artifactId>
-	<version>1.7.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>Geomajas layer model using hibernate</name>
 	<description>Geomajas layer model using hibernate</description>
 
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-backend</artifactId>
-				<version>${hibernate-layer-backend-version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-dep</artifactId>
-				<version>1.10.26</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
 	<dependencies>
 		<dependency>
 			<groupId>org.geomajas</groupId>
@@ -53,10 +34,10 @@
 			<artifactId>hibernate-cglib-repack</artifactId>
 		</dependency>
 
-    <dependency>
-        <groupId>org.springframework</groupId>
-        <artifactId>spring-orm</artifactId>
-    </dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+		</dependency>
 		<dependency>
 			<groupId>javax.annotation</groupId>
 			<artifactId>jsr250-api</artifactId>
@@ -153,8 +134,4 @@
 		</resources>		
 	</build>
 
-	<properties>
-		<hibernate-layer-backend-version>1.7.1-SNAPSHOT</hibernate-layer-backend-version>
-		<spring-version>3.0.2.RELEASE</spring-version>
-	</properties>
 </project>
