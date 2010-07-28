@@ -113,6 +113,10 @@ public class JsonObjectWriter
 					Logger log = LoggerFactory.getLogger(JsonObjectWriter.class);
 					log.error("Problem writing " + s + " from " + object + " for value " + o + ", " + ioe.getMessage());
 					throw ioe;
+				} catch (ArithmeticException ae) {
+					Logger log = LoggerFactory.getLogger(JsonObjectWriter.class);
+					log.error("Problem writing " + s + ", " + ae.getMessage());
+					throw ae;
 				}
 			}
 		}
