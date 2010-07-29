@@ -73,6 +73,16 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-dojo-client</artifactId>
+				<version>${geomajas-face-dojo-version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-dojo-server</artifactId>
+				<version>${geomajas-face-dojo-version}</version>
+			</dependency>
+			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-layer-geotools</artifactId>
 				<version>${geomajas-layer-geotools-version}</version>
