@@ -7,15 +7,15 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.documentation</groupId>
 	<artifactId>docbook-devuserguide</artifactId>
-	<version>1.7.1</version>
+	<version>1.8.0-SNAPSHOT</version>
 	<packaging>jdocbook</packaging>
 	<name>User Guide for Developers (${translation})</name>
 	<description>User Guide for Developers (${translation})</description>
 
 	<scm>
-		<connection>scm:svn:https://svn.geomajas.org/majas/tags/docbook-1.7.1/documentation/devuserguide</connection>
-		<developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/docbook-1.7.1/documentation/devuserguide</developerConnection>
-		<url>https://svn.geomajas.org/majas/tags/docbook-1.7.1/documentation/devuserguide</url>
+		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/documentation/devuserguide</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/documentation/devuserguide</developerConnection>
+		<url>https://svn.geomajas.org/majas/trunk/documentation/devuserguide</url>
 	</scm>
 
 	<repositories>
