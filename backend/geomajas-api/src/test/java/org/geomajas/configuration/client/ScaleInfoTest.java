@@ -27,7 +27,7 @@ import junit.framework.Assert;
 import org.junit.Test;
 
 /**
- * Tests for ScaleInfo
+ * Tests for ScaleInfo.
  *
  * @author Joachim Van der Auwera
  */
