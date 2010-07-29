@@ -121,13 +121,13 @@
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-gwt-client</artifactId>
-				<version>${project.version}</version>
+				<version>1.7.1</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-gwt-client</artifactId>
 				<classifier>sources</classifier>
-				<version>${project.version}</version>
+				<version>1.7.1</version>
 			</dependency>
 
 			<dependency>

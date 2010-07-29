@@ -15,12 +15,12 @@
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-dojo-server</artifactId>
-			<version>${project.version}</version>
+			<version>1.5.7</version>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-dojo-client</artifactId>
-			<version>${project.version}</version>
+			<version>1.5.7</version>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
