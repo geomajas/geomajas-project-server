@@ -2,7 +2,7 @@
 	<parent>
 		<groupId>org.geomajas</groupId>
 		<artifactId>geomajas-face-dojo</artifactId>
-		<version>1.5.7</version>
+		<version>1.5.8-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas</groupId>
@@ -15,12 +15,12 @@
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-dojo-server</artifactId>
-			<version>1.5.7</version>
+			<version>1.5.8-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-dojo-client</artifactId>
-			<version>1.5.7</version>
+			<version>1.5.8-SNAPSHOT</version>
 			<scope>provided</scope>
 		</dependency>
 	</dependencies>
