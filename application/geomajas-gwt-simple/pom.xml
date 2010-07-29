@@ -7,15 +7,15 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas</groupId>
 	<artifactId>geomajas-gwt-simple</artifactId>
-	<version>1.7.1-SNAPSHOT</version>
+	<version>1.7.1</version>
 	<packaging>war</packaging>
 	<name>Geomajas simple gwt application demo</name>
 	<description>Geomajas simple gwt application demo</description>
 
 	<scm>
-		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/application/geomajas-gwt-simple</connection>
-		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/application/geomajas-gwt-simple</developerConnection>
-		<url>https://svn.geomajas.org/majas/trunk/application/geomajas-gwt-simple</url>
+		<connection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-gwt-simple-1.7.1</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-gwt-simple-1.7.1</developerConnection>
+		<url>https://svn.geomajas.org/majas/tags/geomajas-gwt-simple-1.7.1</url>
 	</scm>
 
 	<developers>
