@@ -7,15 +7,15 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.documentation</groupId>
 	<artifactId>docbook-gettingstarted</artifactId>
-	<version>1.7.1-SNAPSHOT</version>
+	<version>1.7.1</version>
 	<packaging>jdocbook</packaging>
 	<name>Getting started (${translation})</name>
 	<description>Getting started with Geomajas (${translation})</description>
 
 	<scm>
-		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/documentation/gettingstarted</connection>
-		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/documentation/gettingstarted</developerConnection>
-		<url>https://svn.geomajas.org/majas/trunk/documentation/gettingstarted</url>
+		<connection>scm:svn:https://svn.geomajas.org/majas/tags/docbook-1.7.1/documentation/gettingstarted</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/docbook-1.7.1/documentation/gettingstarted</developerConnection>
+		<url>https://svn.geomajas.org/majas/tags/docbook-1.7.1/documentation/gettingstarted</url>
 	</scm>
 
 	<repositories>
