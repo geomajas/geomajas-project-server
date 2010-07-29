@@ -102,6 +102,6 @@
 	</build>
 
 	<properties>
-		<wms-layer-backend-version>1.7.1-SNAPSHOT</wms-layer-backend-version>
+		<wms-layer-backend-version>1.7.1</wms-layer-backend-version>
 	</properties>
 </project>

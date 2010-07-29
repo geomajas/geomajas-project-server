@@ -7,7 +7,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.test</groupId>
 	<artifactId>geomajas-test-integration</artifactId>
-	<version>1.7.1-SNAPSHOT-SNAPSHOT</version>
+	<version>1.7.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>Geomajas integration tests</name>
 	<description>Geomajas integration tests</description>
@@ -35,7 +35,7 @@
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-plugin-staticsecurity</artifactId>
-			<version>1.7.1-SNAPSHOT</version>
+			<version>1.7.1</version>
 		</dependency>
 
 		<dependency>
@@ -125,6 +125,6 @@
 	</repositories>	
 
 	<properties>
-		<test-integration-backend-version>1.7.1-SNAPSHOT</test-integration-backend-version>
+		<test-integration-backend-version>1.7.1</test-integration-backend-version>
 	</properties>
 </project>

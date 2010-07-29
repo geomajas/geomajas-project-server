@@ -9,7 +9,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas</groupId>
 	<artifactId>geomajas-test-apicheck</artifactId>
-	<version>1.7.1-SNAPSHOT-SNAPSHOT</version>
+	<version>1.7.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>Geomajas test api compatibility check</name>
 	<url>http://files.geomajas.org/maven/trunk/application/gwt-simple</url>

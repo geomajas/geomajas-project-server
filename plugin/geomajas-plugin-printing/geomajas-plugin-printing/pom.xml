@@ -159,9 +159,9 @@
 	-->
 	
 	<properties>
-		<printing-layer-hibernate-version>1.7.1-SNAPSHOT</printing-layer-hibernate-version>
-		<printing-layer-geotools-version>1.7.1-SNAPSHOT</printing-layer-geotools-version>
-		<printing-layer-wms-version>1.7.1-SNAPSHOT</printing-layer-wms-version>
+		<printing-layer-hibernate-version>1.7.1</printing-layer-hibernate-version>
+		<printing-layer-geotools-version>1.7.1</printing-layer-geotools-version>
+		<printing-layer-wms-version>1.7.1</printing-layer-wms-version>
 		<spring-version>3.0.2.RELEASE</spring-version>
 	</properties>
 

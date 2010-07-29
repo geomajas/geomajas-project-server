@@ -71,7 +71,7 @@
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-face-gwt</artifactId>
-				<version>1.7.1-SNAPSHOT</version>
+				<version>${printing-gwt-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -93,6 +93,7 @@
 	</profiles>
 
 	<properties>
-		<printing-backend-version>1.7.1-SNAPSHOT</printing-backend-version>
+		<printing-backend-version>1.7.1</printing-backend-version>
+		<printing-gwt-version>1.7.1</printing-gwt-version>
 	</properties>
 </project>

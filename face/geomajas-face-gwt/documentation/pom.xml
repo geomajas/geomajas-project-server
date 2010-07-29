@@ -23,18 +23,6 @@
 			<version>1.0.0</version>
 			<type>jdocbook-style</type>
 		</dependency>
-		<dependency>
-			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-gwt-simple</artifactId>
-			<version>1.7.1-SNAPSHOT</version>
-			<classifier>sources</classifier>
-		</dependency>
-		<dependency>
-			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-gwt-example</artifactId>
-			<version>1.7.1-SNAPSHOT</version>
-			<classifier>sources</classifier>
-		</dependency>
 	</dependencies>
 
 	<build>
@@ -54,25 +42,28 @@
 						</configuration>
 					</execution>
 					<execution>
-						<id>explode-gwt-simple</id>
+						<id>explode-gwt-apps</id>
 						<phase>process-resources</phase>
 						<goals>
-							<goal>unpack-dependencies</goal>
+							<goal>unpack</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>${project.build.directory}/extract/simple</outputDirectory>
-							<includeArtifactIds>geomajas-gwt-simple</includeArtifactIds>
-						</configuration>
-					</execution>
-					<execution>
-						<id>explode-gwt-example</id>
-						<phase>process-resources</phase>
-						<goals>
-							<goal>unpack-dependencies</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>${project.build.directory}/extract/example</outputDirectory>
-							<includeArtifactIds>geomajas-gwt-example</includeArtifactIds>
+							<artifactItems>
+								<artifactItem>
+									<groupId>org.geomajas</groupId>
+									<artifactId>geomajas-gwt-simple</artifactId>
+									<version>1.7.1-SNAPSHOT</version>
+									<classifier>sources</classifier>
+									<outputDirectory>${project.build.directory}/extract/simple</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>org.geomajas</groupId>
+									<artifactId>geomajas-gwt-example</artifactId>
+									<version>1.7.1-SNAPSHOT</version>
+									<classifier>sources</classifier>
+									<outputDirectory>${project.build.directory}/extract/example</outputDirectory>
+								</artifactItem>
+							</artifactItems>
 						</configuration>
 					</execution>
 				</executions>

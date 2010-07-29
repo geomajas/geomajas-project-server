@@ -144,7 +144,7 @@
 	</profiles>
 
 	<properties>
-		<hibernate-layer-backend-version>1.7.1-SNAPSHOT</hibernate-layer-backend-version>
+		<hibernate-layer-backend-version>1.7.1</hibernate-layer-backend-version>
 		<spring-version>3.0.2.RELEASE</spring-version>
 	</properties>
 	

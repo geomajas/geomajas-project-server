@@ -86,6 +86,6 @@
 	</profiles>
 
 	<properties>
-		<staticsecurity-backend-version>1.7.1-SNAPSHOT</staticsecurity-backend-version>
+		<staticsecurity-backend-version>1.7.1</staticsecurity-backend-version>
 	</properties>
 </project>

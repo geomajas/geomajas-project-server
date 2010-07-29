@@ -389,13 +389,13 @@
 	</profiles>
 
 	<properties>
-		<geomajas-face-gwt-version>1.7.1-SNAPSHOT</geomajas-face-gwt-version>
-		<geomajas-backend-version>1.7.1-SNAPSHOT</geomajas-backend-version>
-		<geomajas-layer-geotools-version>1.7.1-SNAPSHOT</geomajas-layer-geotools-version>
-		<geomajas-layer-hibernate-version>1.7.1-SNAPSHOT</geomajas-layer-hibernate-version>
-		<geomajas-layer-google-version>1.7.1-SNAPSHOT</geomajas-layer-google-version>
-		<geomajas-layer-wms-version>1.7.1-SNAPSHOT</geomajas-layer-wms-version>
-		<geomajas-layer-openstreetmap-version>1.7.1-SNAPSHOT</geomajas-layer-openstreetmap-version>
+		<geomajas-face-gwt-version>1.7.1</geomajas-face-gwt-version>
+		<geomajas-backend-version>1.7.1</geomajas-backend-version>
+		<geomajas-layer-geotools-version>1.7.1</geomajas-layer-geotools-version>
+		<geomajas-layer-hibernate-version>1.7.1</geomajas-layer-hibernate-version>
+		<geomajas-layer-google-version>1.7.1</geomajas-layer-google-version>
+		<geomajas-layer-wms-version>1.7.1</geomajas-layer-wms-version>
+		<geomajas-layer-openstreetmap-version>1.7.1</geomajas-layer-openstreetmap-version>
 		<gwt-version>2.0.3</gwt-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>

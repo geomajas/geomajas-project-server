@@ -150,6 +150,6 @@
 	</dependencyManagement>
 
 	<properties>
-		<dojo-face-backend-version>1.7.1-SNAPSHOT</dojo-face-backend-version>
+		<dojo-face-backend-version>1.7.1</dojo-face-backend-version>
 	</properties>
 </project>

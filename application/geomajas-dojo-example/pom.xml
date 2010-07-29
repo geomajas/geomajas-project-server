@@ -87,6 +87,13 @@
 				<artifactId>geomajas-layer-wms</artifactId>
 				<version>${geomajas-layer-wms-version}</version>
 			</dependency>
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-dep</artifactId>
+				<version>1.10.30</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
@@ -124,10 +131,10 @@
 	</profiles>
 
 	<properties>
-		<geomajas-face-dojo-version>1.5.7-SNAPSHOT</geomajas-face-dojo-version>
-		<geomajas-layer-geotools-version>1.7.1-SNAPSHOT</geomajas-layer-geotools-version>
-		<geomajas-layer-openstreetmap-version>1.7.1-SNAPSHOT</geomajas-layer-openstreetmap-version>
-		<geomajas-layer-wms-version>1.7.1-SNAPSHOT</geomajas-layer-wms-version>
+		<geomajas-face-dojo-version>1.5.7</geomajas-face-dojo-version>
+		<geomajas-layer-geotools-version>1.7.1</geomajas-layer-geotools-version>
+		<geomajas-layer-openstreetmap-version>1.7.1</geomajas-layer-openstreetmap-version>
+		<geomajas-layer-wms-version>1.7.1</geomajas-layer-wms-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
