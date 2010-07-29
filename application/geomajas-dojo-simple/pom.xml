@@ -7,15 +7,15 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas</groupId>
 	<artifactId>geomajas-dojo-simple</artifactId>
-	<version>1.7.1-SNAPSHOT</version>
+	<version>1.7.1</version>
 	<packaging>war</packaging>
 	<name>Geomajas simple dojo application demo</name>
 	<description>Geomajas simple dojo application demo</description>
 
 	<scm>
-		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/application/geomajas-dojo-simple</connection>
-		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/application/geomajas-dojo-simple</developerConnection>
-		<url>https://svn.geomajas.org/majas/trunk/application/geomajas-dojo-simple</url>
+		<connection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-dojo-simple-1.7.1</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-dojo-simple-1.7.1</developerConnection>
+		<url>https://svn.geomajas.org/majas/tags/geomajas-dojo-simple-1.7.1</url>
 	</scm>
 
 	<developers>
