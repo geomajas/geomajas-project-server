@@ -104,4 +104,10 @@
 	<properties>
 		<openstreetmap-layer-backend-version>1.7.1</openstreetmap-layer-backend-version>
 	</properties>
+
+  <scm>
+    <connection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-plugin-openstreetmap-all-1.7.1/geomajas-parent-1.0.3/geomajas-layer-openstreetmap</connection>
+    <developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-plugin-openstreetmap-all-1.7.1/geomajas-parent-1.0.3/geomajas-layer-openstreetmap</developerConnection>
+    <url>https://svn.geomajas.org/majas/tags/geomajas-plugin-openstreetmap-all-1.7.1/geomajas-parent-1.0.3/geomajas-layer-openstreetmap</url>
+  </scm>
 </project>
