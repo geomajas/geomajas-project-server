@@ -106,7 +106,7 @@
   users to test the new artifact.</para>
 
   <para>When the vote failed, drop the repository. Development just continue
-  and the version number is skipped. The release data in JIRA is actually the
+  and the version number is skipped. The release date in JIRA is actually the
   staging date.</para>
 
   <para>When the vote was successful, promote the staged artifacts and
