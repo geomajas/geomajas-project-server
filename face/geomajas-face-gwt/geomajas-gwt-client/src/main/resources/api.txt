@@ -1,4 +1,4 @@
-// geomajas-face-gwt module API, 1.7.0
+// geomajas-face-gwt module API, 1.7.1
 org.geomajas.gwt.client.Geomajas::1.6.0
 org.geomajas.gwt.client.Geomajas:static Map<String,String> getSupportedLocales():1.6.0
 org.geomajas.gwt.client.Geomajas:static String getIsomorphicDir():1.6.0
@@ -298,6 +298,7 @@ org.geomajas.gwt.client.widget.MapWidget:ImageContext getRasterContext():1.6.0
 org.geomajas.gwt.client.widget.MapWidget:MapModel getMapModel():1.6.0
 org.geomajas.gwt.client.widget.MapWidget:MapWidget(String, String, ):1.6.0
 org.geomajas.gwt.client.widget.MapWidget:MenuContext getMenuContext():1.6.0
+org.geomajas.gwt.client.widget.MapWidget:double getPixelPerUnit():1.7.0
 org.geomajas.gwt.client.widget.MapWidget:void init():1.6.0
 org.geomajas.gwt.client.widget.MapWidget:void registerPainter(Painter, ):1.6.0
 org.geomajas.gwt.client.widget.MapWidget:void registerWorldPaintable(WorldPaintable, ):1.6.0
@@ -323,3 +324,4 @@ org.geomajas.gwt.server.GeomajasServiceImpl::1.6.0
 org.geomajas.gwt.server.GeomajasServiceImpl:CommandResponse execute(GwtCommand, ):1.6.0
 org.geomajas.gwt.server.GeomajasServiceImpl:void init(ServletConfig, ):1.6.0
 org.geomajas.gwt.server.GeomajasServiceImpl:void onApplicationEvent(ContextRefreshedEvent, ):1.6.0
+

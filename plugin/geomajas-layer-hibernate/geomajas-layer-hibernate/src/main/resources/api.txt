@@ -1,0 +1,3 @@
+// geomajas-layer-hibernate module API, 1.7.1
+org.geomajas.layer.hibernate.HibernateLayer::1.7.1
+org.geomajas.layer.hibernate.HibernateLayer:void setLayerInfo(VectorLayerInfo, ):1.7.1

@@ -1,4 +1,4 @@
-// geomajas-api module API for 1.7.0
+// geomajas-api module API for 1.7.1
 org.geomajas.command.Command::1.6.0
 org.geomajas.command.Command:RESPONSE getEmptyCommandResponse():1.6.0
 org.geomajas.command.Command:void execute(REQUEST, RESPONSE, ):1.6.0
@@ -490,6 +490,7 @@ org.geomajas.global.ExceptionCode:int RENDER_DOCUMENT_NO_REGISTERED_WRITER:1.6.0
 org.geomajas.global.ExceptionCode:int RENDER_DOCUMENT_UNEXPECTED_ATTRIBUTE_END:1.6.0
 org.geomajas.global.ExceptionCode:int RENDER_FEATURE_MODEL_PROBLEM:1.6.0
 org.geomajas.global.ExceptionCode:int RENDER_TRANSFORMATION_FAILED:1.6.0
+org.geomajas.global.ExceptionCode:int SCALE_CONVERSION_PROBLEM:1.7.1
 org.geomajas.global.ExceptionCode:int TEST:1.6.0
 org.geomajas.global.ExceptionCode:int TRANSFORMER_CREATE_LAYER_TO_MAP_FAILED:1.6.0
 org.geomajas.global.ExceptionCode:int UNEXPECTED_PROBLEM:1.6.0

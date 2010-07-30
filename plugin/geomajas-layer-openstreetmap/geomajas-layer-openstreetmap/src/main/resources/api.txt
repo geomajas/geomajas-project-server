@@ -1,0 +1,4 @@
+// geomajas-layer-openstreetmap module API, 1.7.1
+org.geomajas.layer.osm.OSMResolution::1.7.1
+org.geomajas.layer.osm.OsmLayer::1.7.1
+org.geomajas.layer.osm.OsmLayer:void setLayerInfo(RasterLayerInfo, ):1.7.1

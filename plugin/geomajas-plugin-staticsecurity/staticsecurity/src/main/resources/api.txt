@@ -7,6 +7,7 @@ org.geomajas.plugin.staticsecurity.command.dto.LoginRequest:void setPassword(Str
 org.geomajas.plugin.staticsecurity.command.dto.LoginResponse::1.6.0
 org.geomajas.plugin.staticsecurity.command.dto.LoginResponse:String getToken():1.6.0
 org.geomajas.plugin.staticsecurity.command.dto.LoginResponse:void setToken(String, ):1.6.0
+org.geomajas.plugin.staticsecurity.command.staticsecurity.LoginCommand::1.7.1
 org.geomajas.plugin.staticsecurity.configuration.AreaAuthorizationInfo::1.6.0
 org.geomajas.plugin.staticsecurity.configuration.AreaAuthorizationInfo:BaseAuthorization getAuthorization():1.6.0
 org.geomajas.plugin.staticsecurity.configuration.AreaAuthorizationInfo:Map<String,LayerAreaAuthorizationInfo> getLayers():1.6.0

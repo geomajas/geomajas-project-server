@@ -1,0 +1,6 @@
+// geomajas-layer-geotools module API, 1.7.1
+org.geomajas.layer.geotools.GeoToolsLayer::1.7.1
+org.geomajas.layer.geotools.GeoToolsLayer:void setLayerInfo(VectorLayerInfo, ):1.7.1
+org.geomajas.layer.shapeinmem.ShapeInMemLayer::1.7.1
+org.geomajas.layer.shapeinmem.ShapeInMemLayer:void setLayerInfo(VectorLayerInfo, ):1.7.1
+org.geomajas.layer.shapeinmem.ShapeInMemLayer:void setUrl(String, ):1.7.1

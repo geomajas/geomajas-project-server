@@ -1,0 +1,10 @@
+// geomajas-layer-wms module API, 1.7.1
+org.geomajas.layer.wms.RasterGrid::1.7.1
+org.geomajas.layer.wms.Resolution::1.7.1
+org.geomajas.layer.wms.WmsLayer::1.7.1
+org.geomajas.layer.wms.WmsLayer:void setBaseWmsUrl(String, ):1.7.1
+org.geomajas.layer.wms.WmsLayer:void setFormat(String, ):1.7.1
+org.geomajas.layer.wms.WmsLayer:void setLayerInfo(RasterLayerInfo, ):1.7.1
+org.geomajas.layer.wms.WmsLayer:void setParameters(List<Parameter>, ):1.7.1
+org.geomajas.layer.wms.WmsLayer:void setStyles(String, ):1.7.1
+org.geomajas.layer.wms.WmsLayer:void setVersion(String, ):1.7.1

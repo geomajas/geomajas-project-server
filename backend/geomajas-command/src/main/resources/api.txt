@@ -1,5 +1,8 @@
 // geomajas-command module API, 1.7.0
 org.geomajas.command.configuration.GetMapConfigurationCommand::1.6.0
+org.geomajas.command.dto.CopyrightResponse::1.7.1
+org.geomajas.command.dto.CopyrightResponse:List<CopyrightInfo> getCopyrights():1.7.1
+org.geomajas.command.dto.CopyrightResponse:void setCopyrights(List<CopyrightInfo>, ):1.7.1
 org.geomajas.command.dto.GetMapConfigurationRequest::1.6.0
 org.geomajas.command.dto.GetMapConfigurationRequest:GetMapConfigurationRequest():1.6.0
 org.geomajas.command.dto.GetMapConfigurationRequest:GetMapConfigurationRequest(String, String, ):1.6.0

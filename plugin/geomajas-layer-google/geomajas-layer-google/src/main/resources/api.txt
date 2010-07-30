@@ -1,5 +1,6 @@
-// geomajas-layer-google module API, 1.7.0
+// geomajas-layer-google module API, 1.7.1
 org.geomajas.layer.google.GoogleLayer::1.6.0
+org.geomajas.layer.google.GoogleLayer:void setLayerInfo(RasterLayerInfo, ):1.7.1
 org.geomajas.layer.google.GoogleLayer:void setMaxZoomLevel(int, ):1.6.0
 org.geomajas.layer.google.GoogleLayer:void setPhysical(boolean, ):1.7.0
 org.geomajas.layer.google.GoogleLayer:void setSatellite(boolean, ):1.6.0
