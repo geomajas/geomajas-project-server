@@ -267,9 +267,9 @@ dojo.declare("ConfigManager", null, {
 		layer.setEditPermissions(permissions);
 
 		// Filters:
-		if (lc.filter) {
+		if (lc.layerInfo.filter) {
 			layer.setFilterEnabled(true);
-			layer.setFilterString(lc.filter);
+			layer.setFilterString(lc.layerInfo.filter);
 		}
 
 		// attributes:
