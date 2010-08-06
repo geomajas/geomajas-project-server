@@ -22,6 +22,7 @@
 		<module>geomajas-plugin-printing</module>
 		<module>geomajas-plugin-staticsecurity</module>
 		<module>geomajas-plugin-caching</module>
+		<module>geomajas-plugin-geocoder</module>
 	</modules>
 
 	<repositories>
