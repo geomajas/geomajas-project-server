@@ -11,7 +11,7 @@
 	<artifactId>${rootArtifactId}-all</artifactId>
 	<version>${version}</version>
 	<packaging>pom</packaging>
-	<name>${pluginName} plug-in</name>
+	<name>${pluginName} plug-in parent</name>
 	<description>${pluginName} plug-in grouping module</description>
 
 	<!-- @todo uncomment and fix when this module is part of the Geomajas project
@@ -50,6 +50,18 @@
 		</pluginRepository>
 	</pluginRepositories>
 
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-backend</artifactId>
+				<version>${symbol_dollar}{${pluginName}-backend-version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+	
 	<modules>
 		<module>${rootArtifactId}</module>
 		<module>${rootArtifactId}-gwt</module>
@@ -68,5 +80,8 @@
 			</modules>
 		</profile>
 	</profiles>
-	
+
+	<properties>
+		<${pluginName}-backend-version>1.7.1</${pluginName}-backend-version>
+	</properties>	
 </project>

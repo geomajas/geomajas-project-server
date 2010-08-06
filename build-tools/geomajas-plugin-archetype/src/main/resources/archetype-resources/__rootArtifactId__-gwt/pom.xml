@@ -12,6 +12,17 @@
 	<name>${pluginName} (GWT face)</name>
 	<description>${pluginName} (GWT face)</description>
 
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-face-gwt</artifactId>
+				<version>${symbol_dollar}{${pluginName}-backend-version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 	<dependencies>
 		<dependency>
 			<groupId>org.geomajas</groupId>

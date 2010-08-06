@@ -13,17 +13,6 @@
 	<name>${pluginName}</name>
 	<description>${pluginName}</description>
 
-	<dependencyManagement>
-		<dependencies>
-			<dependency>
-				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-backend</artifactId>
-				<version>${symbol_dollar}{${pluginName}-backend-version}</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-		</dependencies>
-	</dependencyManagement>
 	<dependencies>
 		<dependency>
 			<groupId>org.geomajas</groupId>
@@ -82,8 +71,4 @@
 			</resource>
 		</resources>
 	</build>
-
-	<properties>
-		<${pluginName}-backend-version>1.7.1</${pluginName}-backend-version>
-	</properties>
 </project>
