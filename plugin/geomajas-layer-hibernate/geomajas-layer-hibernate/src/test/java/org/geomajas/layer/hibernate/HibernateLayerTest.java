@@ -99,6 +99,16 @@ public class HibernateLayerTest extends AbstractHibernateLayerModelTest {
 		Assert.assertNotNull(manytoOne.getValue());
 		Assert.assertNotNull(manytoOne.getValue().getId()); // Test for ID
 	}
+	
+	@Test
+	public void testSave() throws Exception {
+		HibernateTestFeature feature = HibernateTestFeature.getDefaultInstance1(null);
+		Object created = layer.saveOrUpdate(feature);
+		Assert.assertNotNull(created);
+		Assert.assertTrue(created instanceof HibernateTestFeature);
+		HibernateTestFeature createdFeature = (HibernateTestFeature) created;
+		Assert.assertNotNull(createdFeature.getId());
+	}
 
 	@Test
 	public void testGetBounds() {
