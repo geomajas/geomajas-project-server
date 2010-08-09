@@ -75,7 +75,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		</property>
 	</bean>
 
-	<bean id="gwt-app" class="org.geomajas.configuration.client.ClientApplicationInfo">
+	<bean id="gwt-simple" class="org.geomajas.configuration.client.ClientApplicationInfo">
 		<property name="maps">
 			<list>
 				<bean name="sampleFeaturesMap" class="org.geomajas.configuration.client.ClientMapInfo">
@@ -93,7 +93,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 					<property name="layers">
 						<list>
 							<ref bean="osmLayer" />
-							<ref bean="roads4326Layer" />
+							<ref bean="roadsLayer" />
 						</list>
 					</property>
 					<property name="backgroundColor" value="#F0F0F0" />
@@ -152,7 +152,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 									<property name="layers">
 										<list>
 											<ref bean="osmLayer" />
-											<ref bean="roads4326Layer" />
+											<ref bean="roadsLayer" />
 										</list>
 									</property>
 									<property name="expanded" value="true" />
@@ -232,19 +232,19 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		</property>
 	</bean>
 
-	--><bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="roads4326Layer">
-		<property name="serverLayerId" value="roads4326" />
-		<property name="label" value="Roads 4326 (editable - linestring)" />
+	--><bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="roadsLayer">
+		<property name="serverLayerId" value="roads" />
+		<property name="label" value="Roads (editable - linestring)" />
 		<property name="visible" value="true" />
 		<property name="viewScaleMin" value="0" />
 		<property name="viewScaleMax" value="10" />
-		<property name="namedStyleInfo" ref="roads4326StyleInfo" />
+		<property name="namedStyleInfo" ref="roadsStyleInfo" />
 		<property name="snappingRules">
 			<list>
 				<bean class="org.geomajas.configuration.SnappingRuleInfo">
 					<property name="distance" value="10" />
 					<property name="type" value="NEAREST_POINT" />
-					<property name="layerId" value="roads4326Layer" />
+					<property name="layerId" value="roadsLayer" />
 				</bean>
 			</list>
 		</property>

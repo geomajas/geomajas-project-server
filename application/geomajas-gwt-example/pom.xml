@@ -442,7 +442,7 @@
 	<properties>
 		<geomajas-face-gwt-version>1.7.1</geomajas-face-gwt-version>
 		<geomajas-layer-geotools-version>1.7.1</geomajas-layer-geotools-version>
-		<geomajas-layer-hibernate-version>1.7.1</geomajas-layer-hibernate-version>
+		<geomajas-layer-hibernate-version>1.7.2-SNAPSHOT</geomajas-layer-hibernate-version>
 		<geomajas-layer-google-version>1.7.1</geomajas-layer-google-version>
 		<geomajas-layer-openstreetmap-version>1.7.1</geomajas-layer-openstreetmap-version>
 		<geomajas-layer-wms-version>1.7.1</geomajas-layer-wms-version>
