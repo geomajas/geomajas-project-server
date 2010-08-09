@@ -749,7 +749,7 @@
   body, blank, left, chapter
   -->
 		<!-- sequence can be odd, even, first, blank -->
-		<!-- position can be left, center, right -->
+		<!-- position can be left, point, right -->
 		<xsl:choose>
 			<!--xsl:when test="($sequence='blank' and $position='left' and $gentext-key='chapter')">
 						<xsl:variable name="text">
@@ -796,7 +796,7 @@
 					<xsl:value-of select="$text1"/>
 				</fo:inline>
 			</xsl:when>
-			<!--xsl:when test="($sequence='odd' or $sequence='even') and $position='center'"-->
+			<!--xsl:when test="($sequence='odd' or $sequence='even') and $position='point'"-->
 			<xsl:when test="($sequence='even' and $position='left')">
 				<!--xsl:if test="$pageclass != 'titlepage'"-->
 				<xsl:variable name="text">

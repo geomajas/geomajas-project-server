@@ -1,0 +1,1 @@
+// geomajas-plugin-geocoder module API, 0.0.0
