@@ -27,10 +27,11 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+
+import javax.annotation.PostConstruct;
 
 import org.apache.commons.beanutils.ConvertUtils;
 import org.geomajas.configuration.AssociationAttributeInfo;
@@ -49,7 +50,6 @@ import org.geomajas.layer.feature.FeatureModel;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
-import org.geotools.filter.identity.FeatureIdImpl;
 import org.hibernate.Criteria;
 import org.hibernate.EntityMode;
 import org.hibernate.HibernateException;
@@ -60,8 +60,6 @@ import org.hibernate.metadata.ClassMetadata;
 import org.hibernate.type.CollectionType;
 import org.hibernate.type.Type;
 import org.opengis.filter.Filter;
-import org.opengis.filter.Id;
-import org.opengis.filter.identity.Identifier;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -70,8 +68,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
-
-import javax.annotation.PostConstruct;
 
 /**
  * Hibernate layer model.
