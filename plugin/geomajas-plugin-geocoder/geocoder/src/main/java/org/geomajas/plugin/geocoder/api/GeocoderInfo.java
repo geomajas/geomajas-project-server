@@ -48,6 +48,10 @@ public class GeocoderInfo {
 
 	private boolean loopAllServices;
 
+	private double pointDisplayWidth = 200.0;
+
+	private double pointDisplayHeight = 100.0;
+
 	/**
 	 * Get the service which is used to split the geocoder request string.
 	 *
@@ -120,5 +124,41 @@ public class GeocoderInfo {
 	 */
 	public void setLoopAllServices(boolean loopAllServices) {
 		this.loopAllServices = loopAllServices;
+	}
+
+	/**
+	 * Get width in meters of area which needs to be displayed around a point.
+	 *
+	 * @return area width
+	 */
+	public double getPointDisplayWidth() {
+		return pointDisplayWidth;
+	}
+
+	/**
+	 * Set width in meters of area which needs to be displayed around a point.
+	 *
+	 * @param pointDisplayWidth area width
+	 */
+	public void setPointDisplayWidth(double pointDisplayWidth) {
+		this.pointDisplayWidth = pointDisplayWidth;
+	}
+
+	/**
+	 * Get height in meters of area which needs to be displayed around a point.
+	 *
+	 * @return area height
+	 */
+	public double getPointDisplayHeight() {
+		return pointDisplayHeight;
+	}
+
+	/**
+	 * Set width in meters of area which needs to be displayed around a point.
+	 *
+	 * @param pointDisplayHeight area height
+	 */
+	public void setPointDisplayHeight(double pointDisplayHeight) {
+		this.pointDisplayHeight = pointDisplayHeight;
 	}
 }

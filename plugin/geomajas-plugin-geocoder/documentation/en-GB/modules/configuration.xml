@@ -39,7 +39,7 @@
 
 		<programlisting>&lt;dependency&gt;
 	  &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
-	  &lt;artifactId&gt;documentation&lt;/artifactId&gt;
+	  &lt;artifactId&gt;geomajas-plugin-geocoder&lt;/artifactId&gt;
 	  &lt;version&gt;1.0.0-SNAPSHOT&lt;/version&gt;
   &lt;/dependency&gt;</programlisting>
 	  </example>

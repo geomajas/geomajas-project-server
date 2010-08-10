@@ -54,6 +54,21 @@ public class SplitCommaReverseServiceTest {
 	}
 
 	@Test
+	public void testSplit2() throws Exception {
+		SplitCommaReverseService service = new SplitCommaReverseService();
+		List<String> res = service.split("");
+		Assert.assertNotNull(res);
+		Assert.assertEquals(0, res.size());
+		res = service.split("x, , y");
+		Assert.assertEquals(2, res.size());
+		Assert.assertEquals("y", res.get(0));
+		Assert.assertEquals("x", res.get(1));
+		res = service.split(" , ");
+		Assert.assertNotNull(res);
+		Assert.assertEquals(0, res.size());
+	}
+
+	@Test
 	public void testCombine() throws Exception {
 		SplitCommaReverseService service = new SplitCommaReverseService();
 		List<String> list = new ArrayList<String>();
@@ -61,5 +76,12 @@ public class SplitCommaReverseServiceTest {
 		list.add(PART1);
 		list.add(PART2);
 		Assert.assertEquals(FULL, service.combine(list));
+	}
+
+	@Test
+	public void testCombine2() throws Exception {
+		SplitCommaReverseService service = new SplitCommaReverseService();
+		List<String> list = new ArrayList<String>();
+		Assert.assertEquals("", service.combine(list));
 	}
 }

@@ -45,10 +45,16 @@ public class SplitCommaReverseService implements SplitGeocoderStringService {
 		List<String> res = new ArrayList<String>();
 		String remaining = location;
 		for (int pos = remaining.indexOf(","); pos >= 0; pos = remaining.indexOf(",")) {
-			res.add(0, remaining.substring(0, pos).trim());
+			String part = remaining.substring(0, pos).trim();
+			if (part.length() > 0) {
+				res.add(0, part);
+			}
 			remaining = remaining.substring(pos + 1);
 		}
-		res.add(0, remaining.trim());
+		remaining = remaining.trim();
+		if (remaining.length() > 0) {
+			res.add(0, remaining.trim());
+		}
 		return res;
 	}
 
@@ -58,6 +64,10 @@ public class SplitCommaReverseService implements SplitGeocoderStringService {
 			sb.append(matchedStrings.get(i));
 			sb.append(", ");
 		}
-		return sb.substring(0, sb.length() - 2);
+		if (sb.length() == 0) {
+			return "";
+		} else {
+			return sb.substring(0, sb.length() - 2); // remove trailing ", "
+		}
 	}
 }

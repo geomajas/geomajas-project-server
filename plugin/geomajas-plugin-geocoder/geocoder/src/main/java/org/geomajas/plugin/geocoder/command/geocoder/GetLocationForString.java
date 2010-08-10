@@ -38,8 +38,11 @@ import org.geomajas.plugin.geocoder.api.SplitGeocoderStringService;
 import org.geomajas.plugin.geocoder.command.dto.GetLocationForStringRequest;
 import org.geomajas.plugin.geocoder.command.dto.GetLocationForStringResponse;
 import org.geomajas.plugin.geocoder.service.CombineUnionService;
+import org.geomajas.plugin.geocoder.service.GeocoderUtilService;
 import org.geomajas.plugin.geocoder.service.SplitCommaReverseService;
 import org.geomajas.service.DtoConverterService;
+import org.geomajas.service.GeoService;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -68,6 +71,12 @@ public class GetLocationForString implements Command<GetLocationForStringRequest
 	@Autowired
 	private DtoConverterService dtoConverterService;
 
+	@Autowired
+	private GeocoderUtilService geocoderUtilService;
+
+	@Autowired
+	private GeoService geoService;
+
 	public GetLocationForStringResponse getEmptyCommandResponse() {
 		return new GetLocationForStringResponse();
 	}
@@ -77,10 +86,12 @@ public class GetLocationForString implements Command<GetLocationForStringRequest
 		if (null == location) {
 			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "location");
 		}
-		String crs = request.getCrs();
-		if (null == crs) {
+		String crsString = request.getCrs();
+		if (null == crsString) {
 			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "location");
 		}
+
+		CoordinateReferenceSystem crs = geoService.getCrs(crsString);
 
 		SplitGeocoderStringService splitGeocoderStringService = geocoderInfo.getSplitGeocoderStringService();
 		if (null == splitGeocoderStringService) {
@@ -97,11 +108,17 @@ public class GetLocationForString implements Command<GetLocationForStringRequest
 		for (GeocoderService geocoderService : geocoderInfo.getGeocoderServices()) {
 			GetLocationResult result = geocoderService.getLocation(locationList);
 			if (null != result) {
-				// result needs to be CRS transformed to request CRS
-				// @todo .....
+				CoordinateReferenceSystem sourceCrs = geocoderService.getCrs();
+				Envelope envelope = result.getEnvelope();
 
 				// point locations needs to converted to an area based on configuration settings
-				// @todo .....
+				if (null == envelope) {
+					envelope = geocoderUtilService.extendPoint(result.getCoordinate(), sourceCrs,
+							geocoderInfo.getPointDisplayWidth(), geocoderInfo.getPointDisplayHeight());
+				}
+
+				// result needs to be CRS transformed to request CRS
+				result.setEnvelope(geocoderUtilService.transform(envelope, sourceCrs, crs));
 
 				results.add(result);
 				if (!geocoderInfo.isLoopAllServices()) {
