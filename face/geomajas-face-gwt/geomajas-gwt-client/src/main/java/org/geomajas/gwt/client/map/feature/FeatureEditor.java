@@ -24,16 +24,22 @@
 package org.geomajas.gwt.client.map.feature;
 
 import org.geomajas.gwt.client.map.MapModel;
+import org.geomajas.gwt.client.map.event.EditingEvent;
+import org.geomajas.gwt.client.map.event.EditingEvent.EditingEventType;
+import org.geomajas.gwt.client.map.event.EditingHandler;
 import org.geomajas.gwt.client.map.layer.Layer;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.spatial.geometry.GeometryFactory;
 import org.geomajas.layer.LayerType;
 
+import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.event.shared.HandlerRegistration;
+
 /**
  * ???
- *
+ * 
  * TODO: redesign!
- *
+ * 
  * @author Pieter De Graef
  */
 public class FeatureEditor {
@@ -44,9 +50,16 @@ public class FeatureEditor {
 
 	private FeatureTransaction featureTransaction;
 
+	private HandlerManager handlerManager;
+
 	public FeatureEditor(MapModel mapModel) {
 		this.mapModel = mapModel;
 		factory = new GeometryFactory(mapModel.getSrid(), mapModel.getPrecision());
+		handlerManager = new HandlerManager(this);
+	}
+
+	public final HandlerRegistration addEditingHandler(final EditingHandler handler) {
+		return handlerManager.addHandler(EditingHandler.TYPE, handler);
 	}
 
 	public FeatureTransaction startEditing(Feature[] oldFeatures, Feature[] targetFeatures) {
@@ -72,7 +85,7 @@ public class FeatureEditor {
 				} else if (vectorLayer.getLayerInfo().getLayerType() == LayerType.MULTIPOLYGON) {
 					feature.setGeometry(factory.createMultiPolygon(null));
 				}
-				newFeatures = new Feature[] {feature};
+				newFeatures = new Feature[] { feature };
 				featureTransaction = new FeatureTransaction(vectorLayer, null, newFeatures);
 			} else if (newFeatures == null || newFeatures.length == 0) {
 				// DELETE EXISTING
@@ -81,12 +94,14 @@ public class FeatureEditor {
 				// EDIT EXISTING
 				featureTransaction = new FeatureTransaction(oldFeatures[0].getLayer(), oldFeatures, newFeatures);
 			}
+			handlerManager.fireEvent(new EditingEvent(EditingEventType.START_EDITING));
 			return featureTransaction;
 		}
 		return featureTransaction;
 	}
 
 	public void stopEditing() {
+		handlerManager.fireEvent(new EditingEvent(EditingEventType.STOP_EDITING));
 		featureTransaction = null;
 	}
 
