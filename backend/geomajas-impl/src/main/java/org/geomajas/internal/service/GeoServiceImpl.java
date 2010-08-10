@@ -25,6 +25,7 @@ package org.geomajas.internal.service;
 import com.vividsolutions.jts.algorithm.InteriorPointArea;
 import com.vividsolutions.jts.algorithm.InteriorPointLine;
 import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.LineString;
 import com.vividsolutions.jts.geom.LinearRing;
@@ -155,6 +156,24 @@ public final class GeoServiceImpl implements GeoService {
 			return source;
 		}
 		
+		MathTransform mathTransform = findMathTransform(sourceCrs, targetCrs);
+		try {
+			return JTS.transform(source, mathTransform);
+		} catch (TransformException te) {
+			throw new GeomajasException(te, ExceptionCode.CRS_TRANSFORMATION_NOT_POSSIBLE, sourceCrs, targetCrs);
+		}
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public Envelope transform(Envelope source, CoordinateReferenceSystem sourceCrs, CoordinateReferenceSystem targetCrs)
+			throws GeomajasException {
+		if (sourceCrs == targetCrs) {
+			// only works when the caching of the CRSs works
+			return source;
+		}
+
 		MathTransform mathTransform = findMathTransform(sourceCrs, targetCrs);
 		try {
 			return JTS.transform(source, mathTransform);

@@ -24,6 +24,7 @@
 package org.geomajas.service;
 
 import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.Point;
 import org.geomajas.global.Api;
@@ -93,6 +94,19 @@ public interface GeoService {
 	 * @since 1.7.0 
 	 */
 	Geometry transform(Geometry source, CoordinateReferenceSystem sourceCrs, CoordinateReferenceSystem targetCrs)
+			throws GeomajasException;
+
+	/**
+	 * Transform a {@link Envelope} from the source to the target CRS.
+	 *
+	 * @param source source geometry
+	 * @param sourceCrs source CRS
+	 * @param targetCrs target CRS
+	 * @return transformed source, now in target CRS
+	 * @throws GeomajasException building the transformation or doing the transformation is not possible
+	 * @since 1.8.0
+	 */
+	Envelope transform(Envelope source, CoordinateReferenceSystem sourceCrs, CoordinateReferenceSystem targetCrs)
 			throws GeomajasException;
 
 	/**
