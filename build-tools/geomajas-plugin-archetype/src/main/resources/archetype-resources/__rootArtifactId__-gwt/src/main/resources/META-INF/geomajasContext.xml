@@ -1,6 +1,7 @@
 #set( $symbol_pound = '#' )
 #set( $symbol_dollar = '$' )
 #set( $symbol_escape = '\' )
+
 <!--
   ~ This file is part of Geomajas, a component framework for building
   ~ rich Internet applications (RIA) with sophisticated capabilities for the
@@ -37,19 +38,21 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	<bean class="org.geomajas.global.PluginInfo">
 		<property name="version">
 			<bean class="org.geomajas.global.PluginVersionInfo">
-				<property name="name" value="${pluginName}" />
+				<property name="name" value="${pluginName}-gwt" />
 				<property name="version" value="${symbol_dollar}{project.version}" />
 			</bean>
 		</property>
 		<property name="backendVersion" value="${symbol_dollar}{${pluginName}-backend-version}" />
 		<property name="dependencies">
 			<list>
-				<!--
 				<bean class="org.geomajas.global.PluginVersionInfo">
-					<property name="name" value="???" />
-					<property name="version" value="???" />
+					<property name="name" value="GWT face" />
+					<property name="version" value="${symbol_dollar}{${pluginName}-backend-version}" />
 				</bean>
-				-->
+				<bean class="org.geomajas.global.PluginVersionInfo">
+					<property name="name" value="${pluginName}" />
+					<property name="version" value="${symbol_dollar}{project.version}" />
+				</bean>
 			</list>
 		</property>
 		<property name="copyrightInfo">
