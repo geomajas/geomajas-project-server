@@ -69,6 +69,9 @@ import org.geomajas.gwt.client.gfx.painter.VectorTilePainter;
 import org.geomajas.gwt.client.gfx.style.ShapeStyle;
 import org.geomajas.gwt.client.map.MapModel;
 import org.geomajas.gwt.client.map.MapView;
+import org.geomajas.gwt.client.map.event.EditingEvent;
+import org.geomajas.gwt.client.map.event.EditingEvent.EditingEventType;
+import org.geomajas.gwt.client.map.event.EditingHandler;
 import org.geomajas.gwt.client.map.event.FeatureDeselectedEvent;
 import org.geomajas.gwt.client.map.event.FeatureSelectedEvent;
 import org.geomajas.gwt.client.map.event.FeatureSelectionHandler;
@@ -80,6 +83,7 @@ import org.geomajas.gwt.client.map.event.MapModelHandler;
 import org.geomajas.gwt.client.map.event.MapViewChangedEvent;
 import org.geomajas.gwt.client.map.event.MapViewChangedHandler;
 import org.geomajas.gwt.client.map.feature.Feature;
+import org.geomajas.gwt.client.map.feature.FeatureTransaction;
 import org.geomajas.gwt.client.map.layer.Layer;
 
 import com.google.gwt.core.client.GWT;
@@ -210,9 +214,9 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 		 */
 		DELETE
 	}
-	
+
 	/**
-	 * Types of scroll on zoom. 
+	 * Types of scroll on zoom.
 	 */
 	public static enum ScrollZoomType {
 		/**
@@ -224,7 +228,6 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 		 */
 		ZOOM_POSITION
 	}
-	
 
 	// -------------------------------------------------------------------------
 	// Constructor:
@@ -283,6 +286,18 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 		setDynamicContents(true);
 		addResizedHandler(new MapResizedHandler(this));
 		setZoomOnScrollEnabled(true);
+
+		mapModel.getFeatureEditor().addEditingHandler(new EditingHandler() {
+
+			public void onEditingChange(EditingEvent event) {
+				if (event.getEditingEventType().equals(EditingEventType.STOP_EDITING)) {
+					FeatureTransaction ft = mapModel.getFeatureEditor().getFeatureTransaction();
+					if (ft != null) {
+						render(ft, RenderGroup.VECTOR, RenderStatus.DELETE);
+					}
+				}
+			}
+		});
 	}
 
 	// -------------------------------------------------------------------------
@@ -697,7 +712,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	public double getPixelLength() {
 		return pixelLength;
 	}
-	
+
 	/**
 	 * Returns the number of pixels per map unit.
 	 * 
@@ -807,7 +822,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	public void setDefaultMenu(Menu defaultMenu) {
 		this.defaultMenu = defaultMenu;
 	}
-	
+
 	public String getApplicationId() {
 		return applicationId;
 	}
@@ -941,21 +956,25 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	private class ZoomOnScrollController implements MouseWheelHandler {
 
 		private ScrollZoomType zoomType = ScrollZoomType.ZOOM_POSITION;
-		
+
 		public void onMouseWheel(MouseWheelEvent event) {
 			if (event.isNorth()) {
 				if (zoomType == ScrollZoomType.ZOOM_POSITION) {
-					mapModel.getMapView().scale(2.0f, MapView.ZoomOption.LEVEL_CHANGE, 
-							mapModel.getMapView().getWorldViewTransformer().viewToWorld(
-									new Coordinate(event.getX(), event.getY())));
+					mapModel.getMapView().scale(
+							2.0f,
+							MapView.ZoomOption.LEVEL_CHANGE,
+							mapModel.getMapView().getWorldViewTransformer()
+									.viewToWorld(new Coordinate(event.getX(), event.getY())));
 				} else {
 					mapModel.getMapView().scale(2.0f, MapView.ZoomOption.LEVEL_CHANGE);
 				}
 			} else {
 				if (zoomType == ScrollZoomType.ZOOM_POSITION) {
-					mapModel.getMapView().scale(0.5f, MapView.ZoomOption.LEVEL_CHANGE, 
-							mapModel.getMapView().getWorldViewTransformer().viewToWorld(
-									new Coordinate(event.getX(), event.getY())));
+					mapModel.getMapView().scale(
+							0.5f,
+							MapView.ZoomOption.LEVEL_CHANGE,
+							mapModel.getMapView().getWorldViewTransformer()
+									.viewToWorld(new Coordinate(event.getX(), event.getY())));
 				} else {
 					mapModel.getMapView().scale(0.5f, MapView.ZoomOption.LEVEL_CHANGE);
 				}
