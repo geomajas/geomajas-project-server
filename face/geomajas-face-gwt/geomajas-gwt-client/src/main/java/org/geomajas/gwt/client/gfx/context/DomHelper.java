@@ -459,8 +459,8 @@ public class DomHelper {
 	 */
 	public void setController(Object parent, String name, GraphicsController controller) {
 		// set them all
-		doSetController(getElement(parent, name), controller, 
-				Event.MOUSEEVENTS | Event.ONDBLCLICK | Event.ONMOUSEWHEEL);
+		doSetController(getElement(parent, name), controller, Event.MOUSEEVENTS | Event.ONDBLCLICK | 
+				Event.ONMOUSEWHEEL);
 	}
 
 	/**
@@ -505,6 +505,10 @@ public class DomHelper {
 	 */
 	protected void doSetController(Element element, GraphicsController controller, int eventMask) {
 		if (element != null) {
+			int offsetX = element.getAbsoluteLeft() - rootElement.getParentElement().getAbsoluteLeft();
+			int offsetY = element.getAbsoluteTop() - rootElement.getParentElement().getAbsoluteTop();
+			controller.setOffsetX(offsetX);
+			controller.setOffsetY(offsetY);
 			DOM.setEventListener(element, new EventListenerHelper(element, controller, eventMask));
 			DOM.sinkEvents(element, eventMask);
 		}

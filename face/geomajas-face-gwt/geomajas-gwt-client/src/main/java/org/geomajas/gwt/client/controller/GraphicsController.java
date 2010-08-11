@@ -35,9 +35,9 @@ import com.google.gwt.event.dom.client.MouseWheelHandler;
 
 // @extract-start GraphicsController, GraphicsController
 /**
- * General interface for a controller set on a {@link org.geomajas.gwt.client.widget.MapWidget}. It should implement
- * all of the available mouse handling events.
- *
+ * General interface for a controller set on a {@link org.geomajas.gwt.client.widget.MapWidget}. It should implement all
+ * of the available mouse handling events.
+ * 
  * @author Pieter De Graef
  * @since 1.6.0
  */
@@ -54,5 +54,50 @@ public interface GraphicsController extends MouseDownHandler, MouseUpHandler, Mo
 	 * Function executed when the controller instance is removed from the map.
 	 */
 	void onDeactivate();
+
+	/**
+	 * An offset along the X-axis expressed in pixels for event coordinates. Used when controllers are placed on
+	 * specific elements that have such an offset as compared to the origin of the map. Event from such elements have
+	 * X,Y coordinates relative from their own position, but need this extra offset so that we can still calculate the
+	 * correct screen and world position.
+	 * 
+	 * @since 1.8.0
+	 */
+	int getOffsetX();
+
+	/**
+	 * An offset along the X-axis expressed in pixels for event coordinates. Used when controllers are placed on
+	 * specific elements that have such an offset as compared to the origin of the map. Event from such elements have
+	 * X,Y coordinates relative from their own position, but need this extra offset so that we can still calculate the
+	 * correct screen and world position.
+	 * 
+	 * @param offsetX
+	 *            Set the actual offset value in pixels.
+	 * 
+	 * @since 1.8.0
+	 */
+	void setOffsetX(int offsetX);
+
+	/**
+	 * An offset along the Y-axis expressed in pixels for event coordinates. Used when controllers are placed on
+	 * specific elements that have such an offset as compared to the origin of the map. Event from such elements have
+	 * X,Y coordinates relative from their own position, but need this extra offset so that we can still calculate the
+	 * correct screen and world position.
+	 * 
+	 * @since 1.8.0
+	 */
+	int getOffsetY();
+
+	/**
+	 * An offset along the Y-axis expressed in pixels for event coordinates. Used when controllers are placed on
+	 * specific elements that have such an offset as compared to the origin of the map. Event from such elements have
+	 * X,Y coordinates relative from their own position, but need this extra offset so that we can still calculate the
+	 * correct screen and world position.
+	 * 
+	 * @param offsetY
+	 *            Set the actual offset value in pixels.
+	 * @since 1.8.0
+	 */
+	void setOffsetY(int offsetY);
 }
 // @extract-end

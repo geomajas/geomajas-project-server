@@ -61,6 +61,23 @@ public final class GwtEventUtil {
 	}
 
 	/**
+	 * Get the position of a mouse event.
+	 * 
+	 * @param event
+	 *            The mouse event itself.
+	 * @param offsetX
+	 *            An extra value to be added to the X axis.
+	 * @param offsetY
+	 *            An extra value to be added to the Y axis.
+	 * @return Returns a coordinate holding the event's X and Y ordinate, where the origin is the upper left corner of
+	 *         the DOM element catching the event. If used in a {@link GraphicsController}, these are screen
+	 *         coordinates.
+	 */
+	public static Coordinate getPosition(MouseEvent<?> event, int offsetX, int offsetY) {
+		return new Coordinate(event.getX() + offsetX, event.getY() + offsetY);
+	}
+
+	/**
 	 * Get the target DOM element of the mouse event.
 	 * 
 	 * @param event

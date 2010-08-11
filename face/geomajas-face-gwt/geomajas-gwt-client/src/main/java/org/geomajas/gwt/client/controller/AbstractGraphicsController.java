@@ -49,12 +49,16 @@ import com.google.gwt.event.dom.client.MouseWheelEvent;
  * What makes this class special is that it provides a few protected methods for easily acquiring information from the
  * mouse events. You can for example get the event's position, or target DOM element.
  * </p>
- *
+ * 
  * @author Pieter De Graef
  * @since 1.6.0
  */
 @Api(allMethods = true)
 public abstract class AbstractGraphicsController implements GraphicsController {
+
+	private int offsetX;
+
+	private int offsetY;
 
 	protected MapWidget mapWidget;
 
@@ -97,6 +101,63 @@ public abstract class AbstractGraphicsController implements GraphicsController {
 	public void onDeactivate() {
 	}
 
+	// ------------------------------------------------------------------------
+	// Getters and setters:
+	// ------------------------------------------------------------------------
+
+	/**
+	 * An offset along the X-axis expressed in pixels for event coordinates. Used when controllers are placed on
+	 * specific elements that have such an offset as compared to the origin of the map. Event from such elements have
+	 * X,Y coordinates relative from their own position, but need this extra offset so that we can still calculate the
+	 * correct screen and world position.
+	 * 
+	 * @since 1.8.0
+	 */
+	public int getOffsetX() {
+		return offsetX;
+	}
+
+	/**
+	 * An offset along the X-axis expressed in pixels for event coordinates. Used when controllers are placed on
+	 * specific elements that have such an offset as compared to the origin of the map. Event from such elements have
+	 * X,Y coordinates relative from their own position, but need this extra offset so that we can still calculate the
+	 * correct screen and world position.
+	 * 
+	 * @param offsetX
+	 *            Set the actual offset value in pixels.
+	 * 
+	 * @since 1.8.0
+	 */
+	public void setOffsetX(int offsetX) {
+		this.offsetX = offsetX;
+	}
+
+	/**
+	 * An offset along the Y-axis expressed in pixels for event coordinates. Used when controllers are placed on
+	 * specific elements that have such an offset as compared to the origin of the map. Event from such elements have
+	 * X,Y coordinates relative from their own position, but need this extra offset so that we can still calculate the
+	 * correct screen and world position.
+	 * 
+	 * @since 1.8.0
+	 */
+	public int getOffsetY() {
+		return offsetY;
+	}
+
+	/**
+	 * An offset along the Y-axis expressed in pixels for event coordinates. Used when controllers are placed on
+	 * specific elements that have such an offset as compared to the origin of the map. Event from such elements have
+	 * X,Y coordinates relative from their own position, but need this extra offset so that we can still calculate the
+	 * correct screen and world position.
+	 * 
+	 * @param offsetY
+	 *            Set the actual offset value in pixels.
+	 * @since 1.8.0
+	 */
+	public void setOffsetY(int offsetY) {
+		this.offsetY = offsetY;
+	}
+
 	// -------------------------------------------------------------------------
 	// Helper functions on mouse events:
 	// -------------------------------------------------------------------------
@@ -107,11 +168,11 @@ public abstract class AbstractGraphicsController implements GraphicsController {
 
 	// @extract-start AbstractGraphicsController, Extract from AbstractGraphicsController
 	protected Coordinate getScreenPosition(MouseEvent<?> event) {
-		return GwtEventUtil.getPosition(event);
+		return GwtEventUtil.getPosition(event, offsetX, offsetY);
 	}
 
 	protected Coordinate getWorldPosition(MouseEvent<?> event) {
-		return getTransformer().viewToWorld(GwtEventUtil.getPosition(event));
+		return getTransformer().viewToWorld(GwtEventUtil.getPosition(event, offsetX, offsetY));
 	}
 
 	protected Element getTarget(MouseEvent<?> event) {
@@ -122,4 +183,5 @@ public abstract class AbstractGraphicsController implements GraphicsController {
 		return GwtEventUtil.getTargetId(event);
 	}
 	// @extract-end
+
 }
