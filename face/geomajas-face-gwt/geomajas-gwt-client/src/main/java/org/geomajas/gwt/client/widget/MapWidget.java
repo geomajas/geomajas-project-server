@@ -290,9 +290,11 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 		mapModel.getFeatureEditor().addEditingHandler(new EditingHandler() {
 
 			public void onEditingChange(EditingEvent event) {
-				if (event.getEditingEventType().equals(EditingEventType.STOP_EDITING)) {
-					FeatureTransaction ft = mapModel.getFeatureEditor().getFeatureTransaction();
-					if (ft != null) {
+				FeatureTransaction ft = mapModel.getFeatureEditor().getFeatureTransaction();
+				if (ft != null) {
+					if (event.getEditingEventType().equals(EditingEventType.START_EDITING)) {
+						render(ft, RenderGroup.VECTOR, RenderStatus.ALL);
+					} else if (event.getEditingEventType().equals(EditingEventType.STOP_EDITING)) {
 						render(ft, RenderGroup.VECTOR, RenderStatus.DELETE);
 					}
 				}
