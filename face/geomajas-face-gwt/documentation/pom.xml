@@ -52,14 +52,14 @@
 								<artifactItem>
 									<groupId>org.geomajas</groupId>
 									<artifactId>geomajas-gwt-simple</artifactId>
-									<version>1.7.1-SNAPSHOT</version>
+									<version>1.7.1</version>
 									<classifier>sources</classifier>
 									<outputDirectory>${project.build.directory}/extract/simple</outputDirectory>
 								</artifactItem>
 								<artifactItem>
 									<groupId>org.geomajas</groupId>
 									<artifactId>geomajas-gwt-example</artifactId>
-									<version>1.7.1-SNAPSHOT</version>
+									<version>1.7.1</version>
 									<classifier>sources</classifier>
 									<outputDirectory>${project.build.directory}/extract/example</outputDirectory>
 								</artifactItem>
