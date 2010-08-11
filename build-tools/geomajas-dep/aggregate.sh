@@ -139,7 +139,7 @@ include "org.geomajas.documentation" "geomajas-plugin-staticsecurity-documentati
     "Staticsecurity plug-in" \
     "Geomajas security plug-in which allows all users and policies to be defined as part of spring configuration." \
     "incubating" "staticsecurity.pdf" \
-    "org.geomajas.plugin" "geomajas-layer-staticsecurity" "1.7.1"
+    "org.geomajas.plugin" "geomajas-plugin-staticsecurity" "1.7.1"
 
 include "org.geomajas.documentation" "geomajas-plugin-printing-documentation" "2.0.0-SNAPSHOT" \
     "Printing plug-in" \
