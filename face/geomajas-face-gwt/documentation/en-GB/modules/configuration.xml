@@ -77,7 +77,7 @@
         &lt;dependency&gt;
             &lt;groupId&gt;org.geomajas&lt;/groupId&gt;
             &lt;artifactId&gt;geomajas-dep&lt;/artifactId&gt;
-            &lt;version&gt;1.10.30&lt;/version&gt;
+            &lt;version&gt;1.10.32&lt;/version&gt;
             &lt;type&gt;pom&lt;/type&gt;
             &lt;scope&gt;import&lt;/scope&gt;
         &lt;/dependency&gt;
@@ -106,7 +106,7 @@
         &lt;dependency&gt;
             &lt;groupId&gt;org.geomajas&lt;/groupId&gt;
             &lt;artifactId&gt;geomajas-dep&lt;/artifactId&gt;
-            &lt;version&gt;1.10.30&lt;/version&gt;
+            &lt;version&gt;1.10.32&lt;/version&gt;
             &lt;type&gt;pom&lt;/type&gt;
             &lt;scope&gt;import&lt;/scope&gt;
         &lt;/dependency&gt;
