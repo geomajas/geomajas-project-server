@@ -21,7 +21,7 @@ template_end() {
 	echo "</html>" >> $TARGET
 	mv $TARGET $FINAL
 
-	# now assure google analytics is used in HTML pages
+	# assure google analytics is used in HTML pages
 	perl -e "s/<\/body>/ \
 <script type=\"text\/javascript\"> \
 var _gaq = _gaq \|\| \[\]; \
@@ -34,6 +34,7 @@ _gaq.push(\[\'_trackPageview\'\]); \
 })(); \
 <\/script> \
 	<\/body>/g;" -pi $(find /home/joachim/tmp/ -name *.html)
+
 }
 
 # sample link https://oss.sonatype.org/service/local/artifact/maven/redirect?r=snapshots&g=org.geomajas.documentation&a=geomajas-layer-geotools-documentation&v=1.7.0-SNAPSHOT&e=jdocbook
@@ -52,7 +53,7 @@ include() {
 
 	if [ -n "$8" ]
 	then
-		JDLOCATION="https://oss.sonatype.org/service/local/artifact/maven/redirect?r=releases&g=$8&a=$9&v=$10&e=jar&c=javadoc"
+		JDLOCATION="https://oss.sonatype.org/service/local/artifact/maven/redirect?r=releases&g=$8&a=$9&v=${10}&e=jar&c=javadoc"
 		echo $JDLOCATION
 		wget --no-check-certificate $JDLOCATION -O javadocs.zip
 		mkdir $2/javadoc
