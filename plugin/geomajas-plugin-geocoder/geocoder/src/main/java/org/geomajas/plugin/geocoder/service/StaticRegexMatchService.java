@@ -36,6 +36,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -48,7 +49,7 @@ import java.util.regex.Pattern;
 @Api
 public class StaticRegexMatchService implements GeocoderService {
 
-	@Autowired
+	@NotNull
 	private StaticRegexMatchInfo matchInfo;
 
 	@Autowired
@@ -58,6 +59,16 @@ public class StaticRegexMatchService implements GeocoderService {
 	private DtoConverterService dtoConverterService;
 
 	private CoordinateReferenceSystem crs;
+
+	/**
+	 * Set configuration for service.
+	 *
+	 * @param matchInfo configuration
+	 */
+	@Api
+	public void setMatchInfo(StaticRegexMatchInfo matchInfo) {
+		this.matchInfo = matchInfo;
+	}
 
 	@PostConstruct
 	private void initCrs() throws GeomajasException {

@@ -33,7 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * .Test for CombineIntersectionService.
+ * Test for CombineIntersectionService.
  *
  * @author Joachim Van der Auwera
  */

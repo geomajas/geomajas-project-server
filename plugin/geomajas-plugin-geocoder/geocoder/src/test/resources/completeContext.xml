@@ -32,21 +32,119 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		class="org.geomajas.configuration.client.ClientApplicationInfo">
 	</bean>
 
-	<bean name="geocoderInfo" class="org.geomajas.plugin.geocoder.api.GeocoderInfo">
-		<property name="geocoderServices">
+	<bean name="security.securityInfo" class="org.geomajas.security.SecurityInfo">
+		<property name="loopAllServices" value="false"/>
+		<property name="securityServices">
 			<list>
-				<ref bean="staticRegexMatchService"/>
+				<bean class="org.geomajas.security.allowall.AllowAllSecurityService"/>
 			</list>
 		</property>
 	</bean>
 
-	<bean name="staticRegexMatchService" class="org.geomajas.plugin.geocoder.service.StaticRegexMatchService" />
-
-	<bean name="staticRegexMatchInfo" class="org.geomajas.plugin.geocoder.api.StaticRegexMatchInfo">
-		<property name="crs" value="EPSG:900913"/>
-		<property name="locations">
+	<bean name="geocoderInfo" class="org.geomajas.plugin.geocoder.api.GeocoderInfo">
+		<property name="loopAllServices" value="true"/>
+		<property name="geocoderServices">
 			<list>
+				<ref bean="staticRegexMatchService"/>
+				<ref bean="secondGeocoderService"/>
+				<ref bean="thirdGeocoderService"/>
 			</list>
+		</property>
+	</bean>
+
+	<bean name="staticRegexMatchService" class="org.geomajas.plugin.geocoder.service.StaticRegexMatchService">
+		<property name="matchInfo">
+			<bean class="org.geomajas.plugin.geocoder.api.StaticRegexMatchInfo">
+				<property name="crs" value="EPSG:900913"/>
+				<property name="locations">
+					<list>
+						<ref bean="BooischotShort"/>
+					</list>
+				</property>
+			</bean>
+		</property>
+	</bean>
+
+	<bean name="secondGeocoderService" class="org.geomajas.plugin.geocoder.service.StaticRegexMatchService">
+		<property name="matchInfo">
+			<bean class="org.geomajas.plugin.geocoder.api.StaticRegexMatchInfo">
+				<property name="crs" value="EPSG:900913"/>
+				<property name="locations">
+					<list>
+						<bean class="org.geomajas.plugin.geocoder.api.StaticRegexMatchLocationInfo">
+							<property name="toMatch">
+								<list>
+									<value>second.*</value>
+								</list>
+							</property>
+							<property name="preferred">
+								<list>
+									<value>secondService</value>
+								</list>
+							</property>
+							<property name="x" value="10000"/>
+							<property name="y" value="10000"/>
+						</bean>
+						<bean class="org.geomajas.plugin.geocoder.api.StaticRegexMatchLocationInfo">
+							<property name="toMatch">
+								<list>
+									<value>bbox</value>
+								</list>
+							</property>
+							<property name="bbox">
+								<bean class="org.geomajas.geometry.Bbox">
+									<property name="x" value="0"/>
+									<property name="y" value="50000"/>
+									<property name="width" value="100000"/>
+									<property name="height" value="80000"/>
+								</bean>
+							</property>
+						</bean>
+						<bean class="org.geomajas.plugin.geocoder.api.StaticRegexMatchLocationInfo">
+							<property name="toMatch">
+								<list>
+									<value>bla</value>
+								</list>
+							</property>
+							<property name="bbox">
+								<bean class="org.geomajas.geometry.Bbox">
+									<property name="x" value="30000"/>
+									<property name="y" value="50000"/>
+									<property name="width" value="10000"/>
+									<property name="height" value="10000"/>
+								</bean>
+							</property>
+						</bean>
+					</list>
+				</property>
+			</bean>
+		</property>
+	</bean>
+
+	<bean name="thirdGeocoderService" class="org.geomajas.plugin.geocoder.service.StaticRegexMatchService">
+		<property name="matchInfo">
+			<bean class="org.geomajas.plugin.geocoder.api.StaticRegexMatchInfo">
+				<property name="crs" value="EPSG:900913"/>
+				<property name="locations">
+					<list>
+						<bean class="org.geomajas.plugin.geocoder.api.StaticRegexMatchLocationInfo">
+							<property name="toMatch">
+								<list>
+									<value>bla</value>
+								</list>
+							</property>
+							<property name="bbox">
+								<bean class="org.geomajas.geometry.Bbox">
+									<property name="x" value="75000"/>
+									<property name="y" value="85000"/>
+									<property name="width" value="10000"/>
+									<property name="height" value="10000"/>
+								</bean>
+							</property>
+						</bean>
+					</list>
+				</property>
+			</bean>
 		</property>
 	</bean>
 
@@ -56,6 +154,8 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 				<value>Booischot</value>
 			</list>
 		</property>
+		<property name="x" value="621468.063486916"/>
+		<property name="y" value="5706881.117852388"/>
 	</bean>
 
 	<bean name="Booischot" class="org.geomajas.plugin.geocoder.api.StaticRegexMatchLocationInfo">

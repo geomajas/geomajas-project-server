@@ -49,6 +49,7 @@ import java.util.List;
 public class StaticRegexMatchServiceTest {
 
 	@Autowired
+	@Qualifier("staticRegexMatchService")
 	private StaticRegexMatchService service;
 
 	@Autowired
