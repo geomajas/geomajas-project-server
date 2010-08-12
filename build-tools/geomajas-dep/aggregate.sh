@@ -33,7 +33,7 @@ _gaq.push(\[\'_trackPageview\'\]); \
    var s = document.getElementsByTagName(\'script\')\[0\]; s.parentNode.insertBefore(ga, s); \
 })(); \
 <\/script> \
-	<\/body>/g;" -pi $(find /home/joachim/tmp/ -name *.html)
+	<\/body>/g;" -pi $(find $TARGETDIR -name *.html)
 
 }
 
