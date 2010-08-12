@@ -22,36 +22,36 @@
  */
 package org.geomajas.plugin.printing.document;
 
-import com.lowagie.text.Document;
-import com.lowagie.text.DocumentException;
-import com.lowagie.text.pdf.PdfWriter;
+import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.geomajas.plugin.printing.PdfContext;
 import org.geomajas.plugin.printing.component.MapComponent;
 import org.geomajas.plugin.printing.component.PageComponent;
 import org.geomajas.plugin.printing.component.PrintComponent;
-import org.geomajas.service.ConfigurationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.lowagie.text.Document;
+import com.lowagie.text.DocumentException;
+import com.lowagie.text.pdf.PdfWriter;
 
 /**
  * Single page document for printing.
- *
+ * 
  * @author Jan De Moerloose
  */
 public class SinglePageDocument extends AbstractDocument {
 
-	private final Logger log = LoggerFactory.getLogger(SinglePageDocument.class);
+	private final Logger log = LoggerFactory
+			.getLogger(SinglePageDocument.class);
 
 	/**
 	 * the page to render
 	 */
 	protected PageComponent page;
-
-	protected ConfigurationService runtime;
 
 	/**
 	 * filters to apply to layers
@@ -59,22 +59,15 @@ public class SinglePageDocument extends AbstractDocument {
 	protected Map<String, String> filters;
 
 	/**
-	 * If true, only layout, no rendering
-	 */
-	private boolean layoutOnly;
-
-	/**
 	 * Constructs a document with the specified dimensions.
-	 *
+	 * 
 	 * @param page
 	 * @param application
 	 * @param runtime
 	 * @param filters
 	 */
-	public SinglePageDocument(PageComponent page, ConfigurationService runtime,
-			Map<String, String> filters) {
+	public SinglePageDocument(PageComponent page, Map<String, String> filters) {
 		this.page = page;
-		this.runtime = runtime;
 		this.filters = (filters == null ? new HashMap<String, String>() : filters);
 
 		// set filters
@@ -85,43 +78,54 @@ public class SinglePageDocument extends AbstractDocument {
 		}
 	}
 
-	public void render() throws DocumentException {
-			// Create a document in the requested ISO scale.
-			Document document = new Document(page.getBounds(), 0, 0, 0, 0);
-			PdfWriter writer = PdfWriter.getInstance(document, documentStream);
-			// Render in correct colors for transparent rasters 
-			writer.setRgbTransparencyBlending(true);
-
-			// The mapView is not scaled to the document, we assume the mapView
-			// has the right ratio.
-
-			// Write document title and metadata
-			document.open();
-			document.addTitle("Geomajas");
-
-			// Actual drawing
-			PdfContext context = new PdfContext(writer, runtime);
-			context.initSize(page.getBounds());
-			// first pass of all children to calculate size
-			page.calculateSize(context);
-			// second pass to layout
-			page.layout(context);
-			// render
-			if (!isLayoutOnly()) {
-				page.render(context);
-				document.add(context.getImage());
-				// Now close the document
-				document.close();
-			}
-
+	public void render(OutputStream outputStream) throws DocumentException {
+		doRender(outputStream);
 	}
-
-	public boolean isLayoutOnly() {
-		return layoutOnly;
+	
+	public void layout() throws DocumentException {
+		doRender(null);
 	}
+	
 
-	public void setLayoutOnly(boolean layoutOnly) {
-		this.layoutOnly = layoutOnly;
+	/**
+	 * Prepare the document before rendering.
+	 * 
+	 * @param outputStream outputstream to render to, null if only for layout
+	 * @throws DocumentException
+	 */
+	private void doRender(OutputStream outputStream)
+			throws DocumentException {
+		// use dummy baos for layout only
+		OutputStream os = (outputStream == null ?  new ByteArrayOutputStream() : outputStream);
+		
+		// Create a document in the requested ISO scale.
+		Document document = new Document(page.getBounds(), 0, 0, 0, 0);
+		PdfWriter writer = PdfWriter.getInstance(document, os);
+		
+		// Render in correct colors for transparent rasters
+		writer.setRgbTransparencyBlending(true);
+
+		// The mapView is not scaled to the document, we assume the mapView
+		// has the right ratio.
+
+		// Write document title and metadata
+		document.open();
+		document.addTitle("Geomajas");
+
+		// Actual drawing
+		PdfContext context = new PdfContext(writer);
+		context.initSize(page.getBounds());
+		// first pass of all children to calculate size
+		page.calculateSize(context);
+		// second pass to layout
+		page.layout(context);
+		// finally render
+		if (outputStream != null) {
+			page.render(context);
+			document.add(context.getImage());
+			// Now close the document
+			document.close();
+		}
 	}
 
 	public PageComponent getPage() {

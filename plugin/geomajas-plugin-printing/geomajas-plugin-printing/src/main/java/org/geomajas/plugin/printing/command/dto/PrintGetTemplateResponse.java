@@ -33,20 +33,20 @@ public class PrintGetTemplateResponse extends CommandResponse {
 
 	private static final long serialVersionUID = 151L;
 
-	private int documentId;
+	private String documentId;
 
 	public PrintGetTemplateResponse() {
 	}
 
-	public PrintGetTemplateResponse(int documentId) {
+	public PrintGetTemplateResponse(String documentId) {
 		this.documentId = documentId;
 	}
 
-	public int getDocumentId() {
+	public String getDocumentId() {
 		return documentId;
 	}
 
-	public void setDocumentId(int documentId) {
+	public void setDocumentId(String documentId) {
 		this.documentId = documentId;
 	}
 }

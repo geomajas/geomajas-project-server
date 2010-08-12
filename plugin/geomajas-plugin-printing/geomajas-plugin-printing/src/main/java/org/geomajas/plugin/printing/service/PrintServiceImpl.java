@@ -28,18 +28,21 @@ import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
-import org.geomajas.global.ExceptionCode;
-import org.geomajas.global.GeomajasException;
+import org.geomajas.plugin.printing.PrintingException;
 import org.geomajas.plugin.printing.component.impl.PageComponentImpl;
+import org.geomajas.plugin.printing.component.service.PrintConfigurationService;
 import org.geomajas.plugin.printing.configuration.PrintTemplate;
 import org.geomajas.plugin.printing.configuration.PrintTemplateDao;
+import org.geomajas.plugin.printing.document.Document;
 import org.geomajas.plugin.printing.document.SinglePageDocument;
-import org.geomajas.service.ConfigurationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,9 +56,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.lowagie.text.DocumentException;
 
 /**
- * Print service implementation based on iText. Persistence is configured through a DAO implementation of choice. 
+ * Print service implementation based on iText. Persistence is configured through a DAO implementation of choice.
+ * 
  * @author Jan De Moerloose
- *
+ * 
  */
 @Component
 @Transactional
@@ -67,7 +71,7 @@ public class PrintServiceImpl implements PrintService {
 	private PrintTemplateDao printTemplateDao;
 
 	@Autowired
-	private ConfigurationService configurationService;
+	private PrintConfigurationService configurationService;
 
 	@Autowired
 	@Qualifier("printMarshaller")
@@ -77,7 +81,9 @@ public class PrintServiceImpl implements PrintService {
 	@Qualifier("printMarshaller")
 	private Unmarshaller unMarshaller;
 
-	public List<PrintTemplate> getAllTemplates() throws GeomajasException {
+	private Map<String, Document> documentMap = Collections.synchronizedMap(new HashMap<String, Document>());
+
+	public List<PrintTemplate> getAllTemplates() throws PrintingException {
 		List<PrintTemplate> allTemplates = new ArrayList<PrintTemplate>();
 		if (printTemplateDao != null) {
 			try {
@@ -91,8 +97,7 @@ public class PrintServiceImpl implements PrintService {
 		for (PrintTemplate printTemplate : allTemplates) {
 			if (printTemplate.getPage() == null) {
 				try {
-					Object o = unMarshaller.unmarshal(new StreamSource(new StringReader(printTemplate
-							.getPageXml())));
+					Object o = unMarshaller.unmarshal(new StreamSource(new StringReader(printTemplate.getPageXml())));
 					printTemplate.setPage((PageComponentImpl) o);
 				} catch (Exception e) {
 					badTemplates.add(printTemplate);
@@ -109,20 +114,44 @@ public class PrintServiceImpl implements PrintService {
 		return allTemplates;
 	}
 
-	public void printTemplate(PrintTemplate template) throws GeomajasException {
+	public void saveOrUpdateTemplate(PrintTemplate template) throws PrintingException {
+		StringWriter sw = new StringWriter();
+		try {
+			marshaller.marshal(template.getPage(), new StreamResult(sw));
+			template.setPageXml(sw.toString());
+			printTemplateDao.merge(template);
+		} catch (XmlMappingException e) {
+			throw new PrintingException(PrintingException.PRINT_TEMPLATE_XML_PROBLEM);
+		} catch (IOException e) {
+			throw new PrintingException(PrintingException.PRINT_TEMPLATE_PERSIST_PROBLEM);
+		}
 	}
 
-	public void saveOrUpdateTemplate(PrintTemplate template) throws GeomajasException {
-			StringWriter sw = new StringWriter();
-			try {
-				marshaller.marshal(template.getPage(), new StreamResult(sw));
-				template.setPageXml(sw.toString());
-				printTemplateDao.merge(template);
-			} catch (XmlMappingException e) {
-				throw new GeomajasException(ExceptionCode.PRINT_TEMPLATE_XML_PROBLEM);
-			} catch (IOException e) {
-				throw new GeomajasException(ExceptionCode.PRINT_TEMPLATE_PERSIST_PROBLEM);
-			}
+	/**
+	 * Puts a new document in the service. The generate key is globally unique.
+	 * 
+	 * @param document
+	 * @return key unique key to reference the document
+	 */
+	public String putDocument(Document document) {
+		String key = UUID.randomUUID().toString();
+		documentMap.put(key, document);
+		return key;
+	}
+
+	/**
+	 * Gets a document from the service.
+	 * 
+	 * @param key
+	 *            unique key to reference the document
+	 * @return the document or null if no such document
+	 */
+	public Document getDocument(String key) throws PrintingException {
+		if (documentMap.containsKey(key)) {
+			return documentMap.get(key);
+		} else {
+			throw new PrintingException(PrintingException.DOCUMENT_NOT_FOUND, key);
+		}
 	}
 
 	private List<PrintTemplate> getDefaults() {
@@ -141,15 +170,14 @@ public class PrintServiceImpl implements PrintService {
 	}
 
 	private PrintTemplate createDefault(String pagesize, boolean landscape) {
-		PrintTemplate template = PrintTemplate.createDefaultTemplate(pagesize, landscape);
+		PrintTemplate template = PrintTemplate.createDefaultTemplate(pagesize, landscape, configurationService);
 		// calculate the sizes (if not already calculated !)
-		SinglePageDocument document = new SinglePageDocument(template.getPage(), configurationService, null);
-		document.setLayoutOnly(true);
+		SinglePageDocument document = new SinglePageDocument(template.getPage(), null);
 		try {
-			document.render();
+			document.layout();
 		} catch (DocumentException e) {
 			// should not happen !
-			log.warn("Unexpected problem while pre-rendering default print template", e);
+			log.warn("Unexpected problem while laying out default print template", e);
 		}
 		return template;
 	}

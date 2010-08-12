@@ -34,6 +34,7 @@ import org.geomajas.plugin.printing.component.PrintComponentVisitor;
 import org.geomajas.plugin.printing.component.ScaleBarComponent;
 import org.geomajas.plugin.printing.component.dto.PrintComponentInfo;
 import org.geomajas.plugin.printing.component.dto.ScaleBarComponentInfo;
+import org.geomajas.plugin.printing.component.service.PrintConfigurationService;
 import org.geomajas.plugin.printing.component.service.PrintDtoConverterService;
 import org.geomajas.plugin.printing.parser.FontConverter;
 import org.geotools.referencing.CRS;
@@ -91,11 +92,15 @@ public class ScaleBarComponentImpl extends PrintComponentImpl implements ScaleBa
 	 */
 	private float ticHeight;
 
+
+	private PrintConfigurationService configurationService;
+	
 	private static final float[] ALLOW_TICK_NUMBERS = new float[] { 1, 2, 5, 10, 25, 50, 100, 200, 250, 500, 750 };
 
 	private static final String[] UNIT_PREFIXES = new String[] { "n", "m", "", "k", "M" };
 
-	public ScaleBarComponentImpl() {
+	public ScaleBarComponentImpl(PrintConfigurationService configurationService) {
+		this.configurationService = configurationService;
 		getConstraint().setAlignmentX(LayoutConstraint.LEFT);
 		getConstraint().setAlignmentY(LayoutConstraint.BOTTOM);
 		getConstraint().setMarginX(20);
@@ -158,7 +163,7 @@ public class ScaleBarComponentImpl extends PrintComponentImpl implements ScaleBa
 		int ticCount = getTicNumber();
 
 		// Calculate the labels
-		ClientMapInfo map = context.getMap(getMap().getMapId(), getMap().getApplicationId());
+		ClientMapInfo map = configurationService.getMapInfo(getMap().getMapId(), getMap().getApplicationId());
 		if (map != null) {
 			log.debug("calculateSize getMap.getId({}), res {}", getMap().getId(), map);
 			CoordinateReferenceSystem crs;

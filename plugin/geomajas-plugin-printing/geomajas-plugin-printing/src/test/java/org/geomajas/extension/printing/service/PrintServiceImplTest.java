@@ -2,6 +2,7 @@ package org.geomajas.extension.printing.service;
 
 import java.util.List;
 
+import org.geomajas.plugin.printing.component.service.PrintConfigurationService;
 import org.geomajas.plugin.printing.configuration.PrintTemplate;
 import org.geomajas.plugin.printing.service.PrintService;
 import org.junit.Before;
@@ -25,11 +26,14 @@ public class PrintServiceImplTest {
 	@Autowired
 	private PrintService printService;
 		
+	@Autowired
+	private PrintConfigurationService configurationService;
+
 	private final Logger log = LoggerFactory.getLogger(PrintServiceImplTest.class);
 
 	@Before
 	public void loadTemplates() throws Exception{
-		PrintTemplate template = PrintTemplate.createDefaultTemplate("A4", true);
+		PrintTemplate template = PrintTemplate.createDefaultTemplate("A4", true, configurationService);
 		template.setName("test");
 		printService.saveOrUpdateTemplate(template);
 		log.info(template.getPageXml());

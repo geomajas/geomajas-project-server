@@ -20,61 +20,42 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.geomajas.plugin.printing.component.dto;
+package org.geomajas.plugin.printing.mvc;
 
-import java.io.Serializable;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.geomajas.security.SecurityManager;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 /**
- * DTO object for BaseLayerComponent.
+ * This interceptor establishes a Geomajas security context based on the user token parameter.
  * 
  * @author Jan De Moerloose
- * @see org.geomajas.plugin.printing.component.BaseLayerComponent
- *
+ * 
  */
-public class BaseLayerComponentInfo extends PrintComponentInfo implements Serializable {
+public class SecurityInterceptor extends HandlerInterceptorAdapter {
 
-	/**
-	 * True if layer is visible.
-	 */
-	private boolean visible = true;
+	private static final String USER_TOKEN_NAME = "userToken";
 
-	/**
-	 * True if layer is selected.
-	 */
-	private boolean selected;
+	@Autowired
+	private SecurityManager securityManager;
 
-	/**
-	 * ID of this layer (client ID).
-	 */
-	private String layerId;
-
-	public BaseLayerComponentInfo() {
-		getLayoutConstraint().setAlignmentX(LayoutConstraintInfo.JUSTIFIED);
-		getLayoutConstraint().setAlignmentY(LayoutConstraintInfo.JUSTIFIED);
+	@Override
+	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) 
+			throws Exception {
+		String userToken = request.getParameter(USER_TOKEN_NAME);
+		// stop if invalid token
+		return !securityManager.createSecurityContext(userToken);
 	}
 
-	public boolean isVisible() {
-		return visible;
+	@Override
+	public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex)
+			throws Exception {
+		securityManager.clearSecurityContext();
 	}
-
-	public void setVisible(boolean visible) {
-		this.visible = visible;
-	}
-
-	public boolean isSelected() {
-		return selected;
-	}
-
-	public void setSelected(boolean selected) {
-		this.selected = selected;
-	}
-
-	public String getLayerId() {
-		return layerId;
-	}
-
-	public void setLayerId(String layerId) {
-		this.layerId = layerId;
-	}
+	
+	
 
 }

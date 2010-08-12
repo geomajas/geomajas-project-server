@@ -7,7 +7,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas</groupId>
 	<artifactId>geomajas-gwt-example</artifactId>
-	<version>1.8.0-SNAPSHOT</version>
+	<version>1.7.2-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>Geomajas gwt application example</name>
 	<description>Geomajas gwt application example</description>
@@ -131,8 +131,7 @@
 		</dependency>
 		<!-- @extract-end -->
 
-		<!--
-        <dependency>
+       <dependency>
             <groupId>org.geomajas.plugin</groupId>
             <artifactId>geomajas-plugin-printing</artifactId>
             <version>${geomajas-plugin-printing-version}</version>
@@ -154,7 +153,6 @@
             <version>${geomajas-plugin-printing-version}</version>
 			<classifier>sources</classifier>
 		</dependency>
-		-->		
 
 		<!-- Google dependencies -->
 		<dependency>
@@ -442,7 +440,7 @@
 	<properties>
 		<geomajas-face-gwt-version>1.7.1</geomajas-face-gwt-version>
 		<geomajas-layer-geotools-version>1.7.1</geomajas-layer-geotools-version>
-		<geomajas-layer-hibernate-version>1.7.2-SNAPSHOT</geomajas-layer-hibernate-version>
+		<geomajas-layer-hibernate-version>1.7.2</geomajas-layer-hibernate-version>
 		<geomajas-layer-google-version>1.7.1</geomajas-layer-google-version>
 		<geomajas-layer-openstreetmap-version>1.7.1</geomajas-layer-openstreetmap-version>
 		<geomajas-layer-wms-version>1.7.1</geomajas-layer-wms-version>

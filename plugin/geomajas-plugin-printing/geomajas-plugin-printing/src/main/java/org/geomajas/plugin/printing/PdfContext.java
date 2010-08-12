@@ -22,6 +22,15 @@
  */
 package org.geomajas.plugin.printing;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.net.URL;
+import java.util.Stack;
+
+import org.geomajas.configuration.SymbolInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.lowagie.text.BadElementException;
 import com.lowagie.text.DocumentException;
 import com.lowagie.text.Image;
@@ -41,19 +50,6 @@ import com.vividsolutions.jts.geom.MultiPoint;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
-import org.geomajas.configuration.client.ClientMapInfo;
-import org.geomajas.configuration.SymbolInfo;
-import org.geomajas.layer.Layer;
-import org.geomajas.layer.LayerException;
-import org.geomajas.service.ConfigurationService;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.awt.Color;
-import java.awt.Font;
-import java.net.URL;
-import java.util.Stack;
 
 /**
  * Context for PDF printing. This is a wrapper on a PdfWriter on which components of a print template can render
@@ -78,8 +74,6 @@ public class PdfContext {
 
 	private Stack<Float> prevOrigY = new Stack<Float>();
 
-	private ConfigurationService configurationService;
-
 	private final Logger log = LoggerFactory.getLogger(PdfContext.class);
 
 	/**
@@ -88,9 +82,8 @@ public class PdfContext {
 	 * @param writer writer
 	 * @param configurationService configuration service
 	 */
-	public PdfContext(PdfWriter writer, ConfigurationService configurationService) {
+	public PdfContext(PdfWriter writer) {
 		this.writer = writer;
-		this.configurationService = configurationService;
 	}
 
 	/**
@@ -105,21 +98,6 @@ public class PdfContext {
 	public void setOrigin(float x, float y) {
 		this.origX = x;
 		this.origY = y;
-	}
-
-	public Layer getLayer(String layerId) {
-		return configurationService.getLayer(layerId);
-	}
-
-	/**
-	 * Return the map with this id.
-	 * 
-	 * @param mapId map id
-	 * @param applicationId applidation id
-	 * @return map info
-	 */
-	public ClientMapInfo getMap(String mapId, String applicationId) {
-		return configurationService.getMap(mapId, applicationId);
 	}
 
 	/**
@@ -565,10 +543,6 @@ public class PdfContext {
 	public Rectangle toRelative(Rectangle rect) {
 		return new Rectangle(rect.getLeft() - origX, rect.getBottom() - origY, rect.getRight() - origX, rect.getTop()
 				- origY);
-	}
-
-	public CoordinateReferenceSystem getCrs(String code) throws LayerException {
-		return configurationService.getCrs(code);
 	}
 
 }

@@ -43,12 +43,14 @@ import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.geometry.Bbox;
-import org.geomajas.layer.RasterLayer;
+import org.geomajas.layer.RasterLayerService;
 import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.plugin.printing.PdfContext;
 import org.geomajas.plugin.printing.component.LayoutConstraint;
 import org.geomajas.plugin.printing.component.PrintComponentVisitor;
 import org.geomajas.plugin.printing.component.RasterLayerComponent;
+import org.geomajas.plugin.printing.component.service.PrintConfigurationService;
+import org.geotools.referencing.CRS;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -99,7 +101,14 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl implements 
 	@XStreamOmitField
 	private final Logger log = LoggerFactory.getLogger(RasterLayerComponentImpl.class);
 
-	public RasterLayerComponentImpl() {
+	private RasterLayerService rasterLayerService;
+
+	private PrintConfigurationService configurationService;
+
+	public RasterLayerComponentImpl(RasterLayerService rasterLayerService,
+			PrintConfigurationService configurationService) {
+		this.rasterLayerService = rasterLayerService;
+		this.configurationService = configurationService;
 		getConstraint().setAlignmentX(LayoutConstraint.JUSTIFIED);
 		getConstraint().setAlignmentY(LayoutConstraint.JUSTIFIED);
 		MultiThreadedHttpConnectionManager manager = new MultiThreadedHttpConnectionManager();
@@ -121,16 +130,15 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl implements 
 		if (isVisible()) {
 			rasterScale = getMap().getPpUnit() * getMap().getRasterResolution() / 72;
 			bbox = createBbox();
-			RasterLayer rasterlayer = ((RasterLayer) context.getLayer(getLayerId()));
 			try {
 				if (log.isDebugEnabled()) {
-					log.debug("rendering" + rasterlayer.getId() + " to [" + bbox.getMinX() + " " + bbox.getMinY() + " "
+					log.debug("rendering" + getLayerId() + " to [" + bbox.getMinX() + " " + bbox.getMinY() + " "
 							+ bbox.getWidth() + " " + bbox.getHeight() + "]");
 				}
-				ClientMapInfo map = context.getMap(getMap().getMapId(), getMap().getApplicationId());
-				this.images = rasterlayer.paint(context.getCrs(map.getCrs()), bbox, rasterScale);
+				ClientMapInfo map = configurationService.getMapInfo(getMap().getMapId(), getMap().getApplicationId());
+				this.images = rasterLayerService.getTiles(getLayerId(), CRS.decode(map.getCrs()), bbox, rasterScale);
 			} catch (Throwable e) {
-				log.error("could not paint raster layer " + rasterlayer.getId(), e);
+				log.error("could not paint raster layer " + getLayerId(), e);
 				this.images = new ArrayList<RasterTile>();
 			}
 

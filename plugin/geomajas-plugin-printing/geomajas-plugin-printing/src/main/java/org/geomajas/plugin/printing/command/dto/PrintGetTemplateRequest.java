@@ -34,15 +34,7 @@ public class PrintGetTemplateRequest implements CommandRequest {
 
 	private static final long serialVersionUID = 151L;
 
-	public static final int DOWNLOAD_METHOD_BROWSER = 0;
-
-	public static final int DOWNLOAD_METHOD_SAVE = 1;
-
 	private PrintTemplateInfo template;
-
-	private int downloadMethod = DOWNLOAD_METHOD_SAVE;
-
-	private String fileName;
 
 	private String pageSize;
 
@@ -62,31 +54,6 @@ public class PrintGetTemplateRequest implements CommandRequest {
 		this.template = template;
 	}
 
-	/**
-	 * Get method to use for downloading the generated document.
-	 *
-	 * @return
-	 */
-	public int getDownloadMethod() {
-		return downloadMethod;
-	}
-
-	public void setDownloadMethod(int downloadMethod) {
-		this.downloadMethod = downloadMethod;
-	}
-
-	/**
-	 * Get desired filename for the generated document.
-	 *
-	 * @return
-	 */
-	public String getFileName() {
-		return fileName;
-	}
-
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
-	}
 
 	/**
 	 * Get size for the generated document (ISO).

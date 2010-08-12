@@ -22,6 +22,13 @@
  */
 package org.geomajas.plugin.printing.client.action.toolbar;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 import org.geomajas.command.CommandResponse;
 import org.geomajas.configuration.FontStyleInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
@@ -52,6 +59,7 @@ import org.geomajas.plugin.printing.component.dto.ScaleBarComponentInfo;
 import org.geomajas.plugin.printing.component.dto.VectorLayerComponentInfo;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 
@@ -75,8 +83,6 @@ public class PrintAction extends ToolbarAction implements ConfigurableAction {
 
 	public void onClick(ClickEvent event) {
 		PrintGetTemplateRequest request = new PrintGetTemplateRequest();
-		request.setDownloadMethod(PrintGetTemplateRequest.DOWNLOAD_METHOD_BROWSER);
-		request.setFileName("test.pdf");
 		request.setPageSize("A4");
 		PrintTemplateInfo template = new PrintTemplateInfo();
 		template.setTemplate(false);
@@ -84,7 +90,7 @@ public class PrintAction extends ToolbarAction implements ConfigurableAction {
 		template.setName("default");
 		template.setPage(createDefaultPage());
 		request.setTemplate(template);
-		GwtCommand command = new GwtCommand("command.print.GetTemplate");
+		final GwtCommand command = new GwtCommand("command.print.GetTemplate");
 		command.setCommandRequest(request);
 		GwtCommandDispatcher.getInstance().execute(command, new CommandCallback() {
 
@@ -92,7 +98,11 @@ public class PrintAction extends ToolbarAction implements ConfigurableAction {
 				if (r instanceof PrintGetTemplateResponse) {
 					PrintGetTemplateResponse response = (PrintGetTemplateResponse) r;
 					GWT.log("" + response.getDocumentId());
-					Window.open("printing/geomajas.pdf?documentId=" + response.getDocumentId(), "_blank", null);
+					UrlExtender url = new UrlExtender(GWT.getHostPageBaseURL());
+					url.addPath("d/printing").addParameter("documentId", response.getDocumentId());
+					url.addParameter("download", "0").addParameter("name", "test.pdf");
+					url.addParameter("userToken", command.getUserToken());
+					Window.open(url.toString(), "_blank", null);
 				}
 			}
 		});
@@ -141,7 +151,8 @@ public class PrintAction extends ToolbarAction implements ConfigurableAction {
 		map.setTag("map");
 		map.setMapId(mapWidget.getMapModel().getMapInfo().getId());
 		map.setApplicationId(mapWidget.getApplicationId());
-		for (Layer layer : mapWidget.getMapModel().getLayers()) {
+		List<Layer> layers = getLayersInPrintOrder();
+		for (Layer layer : layers) {
 			if (layer instanceof VectorLayer && layer.isShowing()) {
 				VectorLayerComponentInfo info = new VectorLayerComponentInfo();
 				VectorLayer vectorLayer = (VectorLayer) layer;
@@ -161,6 +172,13 @@ public class PrintAction extends ToolbarAction implements ConfigurableAction {
 			}
 		}
 		return map;
+	}
+
+	private List<Layer> getLayersInPrintOrder() {
+		List<Layer> layers = new ArrayList<Layer>(mapWidget.getMapModel().getLayers());
+		Collections.reverse(layers);
+		return layers;
+
 	}
 
 	private static ImageComponentInfo createArrow() {
@@ -199,6 +217,77 @@ public class PrintAction extends ToolbarAction implements ConfigurableAction {
 		bar.setUnit("m");
 		bar.setTag("scalebar");
 		return bar;
+	}
+
+	/**
+	 * Builds parametrized URL based on an existing URL.
+	 * 
+	 * @author Jan De Moerloose
+	 * 
+	 */
+	class UrlExtender {
+
+		private Map<String, String> params = new HashMap<String, String>();
+
+		private String baseUrl;
+
+		public UrlExtender(String baseUrl) {
+			this.baseUrl = baseUrl;
+		}
+
+		/**
+		 * Add a parameter.
+		 * 
+		 * @param name
+		 *            name of param
+		 * @param value
+		 *            value of param
+		 * @return this to allow concatenation
+		 */
+		public UrlExtender addParameter(String name, String value) {
+			if (value == null) {
+				value = "";
+			}
+			params.put(name, value);
+			return this;
+		}
+
+		/**
+		 * Add a path extension.
+		 * 
+		 * @param path
+		 *            path
+		 * @return this to allow concatenation
+		 */
+		public UrlExtender addPath(String path) {
+			if (path.startsWith("/") && baseUrl.endsWith("/")) {
+				baseUrl = baseUrl + path.substring(1);
+			} else {
+				baseUrl = baseUrl + path;
+			}
+			return this;
+		}
+
+		/**
+		 * Build the URL and return it as an encoded string.
+		 * 
+		 * @return the encoded URL string
+		 */
+		public String toString() {
+			StringBuilder url = new StringBuilder(baseUrl);
+			if (params.size() > 0) {
+				url.append("?");
+				for (Iterator<String> iterator = params.keySet().iterator(); iterator.hasNext();) {
+					String name = iterator.next();
+					url.append(name).append("=").append(params.get(name));
+					if (iterator.hasNext()) {
+						url.append("&");
+					}
+				}
+			}
+			return URL.encode(url.toString());
+		}
+
 	}
 
 }

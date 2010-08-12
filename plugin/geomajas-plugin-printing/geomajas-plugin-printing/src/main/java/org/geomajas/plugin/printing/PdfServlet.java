@@ -23,16 +23,10 @@
 package org.geomajas.plugin.printing;
 
 import java.io.IOException;
-import java.io.OutputStream;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import org.geomajas.plugin.printing.command.dto.PrintGetTemplateRequest;
-import org.geomajas.plugin.printing.document.AbstractDocument;
-
-import com.lowagie.text.DocumentException;
 
 /**
  * Servlet for serving PDf documents.
@@ -45,34 +39,38 @@ public class PdfServlet extends HttpServlet {
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-		try {
-
-			int documentId = Integer.parseInt(request.getParameter("documentId"));
-
-			AbstractDocument pdfDocument = PdfContainer.getInstance().getDocument(documentId);
-			pdfDocument.render();
-			OutputStream responseOutputStream = response.getOutputStream();
-
-			if (pdfDocument.getDownloadMethod() == PrintGetTemplateRequest.DOWNLOAD_METHOD_SAVE) {
-				response
-						.setHeader("Content-Disposition",
-								" attachment; filename=\"" + pdfDocument.getFilename() + "\"");
-			} else {
-				response.setHeader("Content-Disposition", " inline; filename=\"" + pdfDocument.getFilename() + "\"");
-			}
-
-			response.setContentType("application/pdf");
-			response.setContentLength(pdfDocument.getOutputStream().size());
-
-			pdfDocument.getOutputStream().writeTo(responseOutputStream);
-			pdfDocument.getOutputStream().flush();
-
-		} catch (NumberFormatException e) {
-			response.setContentType("text/html");
-			response.getWriter().println("Invalid document id!");
-		} catch (DocumentException e) {
-			response.setContentType("text/html");
-			response.getWriter().println("Document unavailable!");
-		}
+//		try {
+//
+//			int documentId = Integer.parseInt(request.getParameter("documentId"));
+//
+//			AbstractDocument pdfDocument = PdfContainer.getInstance().getDocument(documentId);
+//			pdfDocument.render();
+//			OutputStream responseOutputStream = response.getOutputStream();
+//
+//			if (pdfDocument.getDownloadMethod() == PrintGetTemplateRequest.DOWNLOAD_METHOD_SAVE) {
+//				response
+//						.setHeader("Content-Disposition",
+//								" attachment; filename=\"" + pdfDocument.getFilename() + "\"");
+//			} else {
+//				response.setHeader("Content-Disposition", " inline; filename=\"" + pdfDocument.getFilename() + "\"");
+//			}
+//
+//			// Write content type and also length (determined via byte array).
+//			response.setContentType(getContentType());
+//			response.setContentLength(baos.size());
+//
+//			response.setContentType("application/pdf");
+//			response.setContentLength(pdfDocument.getOutputStream().size());
+//
+//			pdfDocument.getOutputStream().writeTo(responseOutputStream);
+//			pdfDocument.getOutputStream().flush();
+//
+//		} catch (NumberFormatException e) {
+//			response.setContentType("text/html");
+//			response.getWriter().println("Invalid document id!");
+//		} catch (DocumentException e) {
+//			response.setContentType("text/html");
+//			response.getWriter().println("Document unavailable!");
+//		}
 	}
 }

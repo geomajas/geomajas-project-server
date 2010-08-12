@@ -22,11 +22,9 @@
  */
 package org.geomajas.plugin.printing.document;
 
-import java.io.ByteArrayOutputStream;
+import java.io.OutputStream;
 import java.text.DateFormat;
 import java.util.Date;
-
-import org.geomajas.plugin.printing.command.dto.PrintGetTemplateRequest;
 
 import com.lowagie.text.DocumentException;
 
@@ -39,31 +37,9 @@ import com.lowagie.text.DocumentException;
  *
  * @author Oliver May
  */
-public abstract class AbstractDocument {
-
-	protected ByteArrayOutputStream documentStream = new ByteArrayOutputStream();
-
-	protected int downloadMethod = PrintGetTemplateRequest.DOWNLOAD_METHOD_BROWSER;
+public abstract class AbstractDocument implements Document {
 
 	protected String fileName;
-
-	public abstract void render() throws DocumentException;
-
-	/**
-	 * Set the way the file is downloaded, in the browser or save as.
-	 *
-	 * @param downloadMethod BROWSER or SAVE statics.
-	 */
-	public void setDownloadMethod(int downloadMethod) {
-		this.downloadMethod = downloadMethod;
-	}
-
-	/**
-	 * @return how the file is downloaded, BROWSER or SAVE.
-	 */
-	public int getDownloadMethod() {
-		return downloadMethod;
-	}
 
 	/**
 	 * @return the filename we want to give this document, this is generated
@@ -81,14 +57,7 @@ public abstract class AbstractDocument {
 		this.fileName = fileName;
 	}
 
-	/**
-	 * @return the memory stream of the document.
-	 */
-	public ByteArrayOutputStream getOutputStream() {
-		return documentStream;
-	}
 
-	public int hashCode() {
-		return documentStream.hashCode();
-	}
+	public abstract void render(OutputStream os) throws DocumentException;
+
 }

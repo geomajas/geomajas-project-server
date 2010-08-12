@@ -20,61 +20,27 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.geomajas.plugin.printing.component.dto;
+package org.geomajas.plugin.printing.document;
 
-import java.io.Serializable;
+import java.io.OutputStream;
+
+import com.lowagie.text.DocumentException;
 
 /**
- * DTO object for BaseLayerComponent.
+ * 
+ * A renderable document.
  * 
  * @author Jan De Moerloose
- * @see org.geomajas.plugin.printing.component.BaseLayerComponent
- *
  */
-public class BaseLayerComponentInfo extends PrintComponentInfo implements Serializable {
 
+public interface Document {
 	/**
-	 * True if layer is visible.
+	 * Renders the document to an output stream.
+	 * 
+	 * @param os
+	 *            output stream
+	 * @throws DocumentException
 	 */
-	private boolean visible = true;
-
-	/**
-	 * True if layer is selected.
-	 */
-	private boolean selected;
-
-	/**
-	 * ID of this layer (client ID).
-	 */
-	private String layerId;
-
-	public BaseLayerComponentInfo() {
-		getLayoutConstraint().setAlignmentX(LayoutConstraintInfo.JUSTIFIED);
-		getLayoutConstraint().setAlignmentY(LayoutConstraintInfo.JUSTIFIED);
-	}
-
-	public boolean isVisible() {
-		return visible;
-	}
-
-	public void setVisible(boolean visible) {
-		this.visible = visible;
-	}
-
-	public boolean isSelected() {
-		return selected;
-	}
-
-	public void setSelected(boolean selected) {
-		this.selected = selected;
-	}
-
-	public String getLayerId() {
-		return layerId;
-	}
-
-	public void setLayerId(String layerId) {
-		this.layerId = layerId;
-	}
+	void render(OutputStream os) throws DocumentException;
 
 }

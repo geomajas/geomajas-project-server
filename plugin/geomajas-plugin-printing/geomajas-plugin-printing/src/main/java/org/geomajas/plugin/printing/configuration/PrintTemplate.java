@@ -39,6 +39,7 @@ import org.geomajas.plugin.printing.component.impl.LegendComponentImpl;
 import org.geomajas.plugin.printing.component.impl.MapComponentImpl;
 import org.geomajas.plugin.printing.component.impl.PageComponentImpl;
 import org.geomajas.plugin.printing.component.impl.ScaleBarComponentImpl;
+import org.geomajas.plugin.printing.component.service.PrintConfigurationService;
 
 import com.vividsolutions.jts.geom.Coordinate;
 
@@ -132,12 +133,13 @@ public class PrintTemplate {
 		this.template = isTemplate;
 	}
 
-	public static PrintTemplate createDefaultTemplate(String pageSize, boolean landscape) {
+	public static PrintTemplate createDefaultTemplate(String pageSize, boolean landscape,
+			PrintConfigurationService configurationService) {
 		PageComponentImpl page = new PageComponentImpl(pageSize, landscape);
 		page.setTag(PAGE);
 		MapComponentImpl map = createMap();
 		ImageComponentImpl northarrow = createArrow();
-		ScaleBarComponentImpl bar = createBar();
+		ScaleBarComponentImpl bar = createBar(configurationService);
 		LabelComponentImpl title = createTitle();
 
 		LegendComponentImpl legend = new LegendComponentImpl();
@@ -189,8 +191,8 @@ public class PrintTemplate {
 		return title;
 	}
 
-	private static ScaleBarComponentImpl createBar() {
-		ScaleBarComponentImpl bar = new ScaleBarComponentImpl();
+	private static ScaleBarComponentImpl createBar( PrintConfigurationService configurationService) {
+		ScaleBarComponentImpl bar = new ScaleBarComponentImpl(configurationService);
 		bar.setTicNumber(3);
 		bar.setUnit("m");
 		bar.setTag(SCALEBAR);

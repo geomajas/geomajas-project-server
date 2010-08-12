@@ -26,6 +26,8 @@ import java.awt.Color;
 import java.awt.Font;
 
 import org.geomajas.configuration.FontStyleInfo;
+import org.geomajas.layer.RasterLayerService;
+import org.geomajas.layer.VectorLayerService;
 import org.geomajas.plugin.printing.component.PrintComponent;
 import org.geomajas.plugin.printing.component.dto.ImageComponentInfo;
 import org.geomajas.plugin.printing.component.dto.LabelComponentInfo;
@@ -46,6 +48,9 @@ import org.geomajas.plugin.printing.component.impl.RasterLayerComponentImpl;
 import org.geomajas.plugin.printing.component.impl.ScaleBarComponentImpl;
 import org.geomajas.plugin.printing.component.impl.VectorLayerComponentImpl;
 import org.geomajas.plugin.printing.component.impl.ViewPortComponentImpl;
+import org.geomajas.service.FilterService;
+import org.geomajas.service.GeoService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -56,6 +61,21 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class PrintDtoConverterServiceImpl implements PrintDtoConverterService {
+
+	@Autowired
+	private GeoService geoService;
+
+	@Autowired
+	private FilterService filterService;
+
+	@Autowired
+	private VectorLayerService vectorLayerService;
+
+	@Autowired
+	private RasterLayerService rasterLayerService;
+
+	@Autowired
+	private PrintConfigurationService configurationService;
 
 	public PrintComponent toInternal(PrintComponentInfo info) {
 		PrintComponent component = null;
@@ -70,11 +90,12 @@ public class PrintDtoConverterServiceImpl implements PrintDtoConverterService {
 		} else if (info instanceof PageComponentInfo) {
 			component = new PageComponentImpl();
 		} else if (info instanceof RasterLayerComponentInfo) {
-			component = new RasterLayerComponentImpl();
+			component = new RasterLayerComponentImpl(rasterLayerService, configurationService);
 		} else if (info instanceof ScaleBarComponentInfo) {
-			component = new ScaleBarComponentImpl();
+			component = new ScaleBarComponentImpl(configurationService);
 		} else if (info instanceof VectorLayerComponentInfo) {
-			component = new VectorLayerComponentImpl();
+			component = new VectorLayerComponentImpl(geoService, filterService, vectorLayerService,
+					configurationService);
 		} else if (info instanceof ViewPortComponentInfo) {
 			component = new ViewPortComponentImpl();
 		}

@@ -26,7 +26,9 @@ import java.awt.Color;
 import java.awt.Font;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -34,9 +36,8 @@ import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.LabelStyleInfo;
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.configuration.SymbolInfo;
-import org.geomajas.configuration.VectorLayerInfo;
+import org.geomajas.configuration.client.ClientApplicationInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
-import org.geomajas.layer.Layer;
 import org.geomajas.layer.VectorLayerService;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.plugin.printing.PdfContext;
@@ -45,6 +46,7 @@ import org.geomajas.plugin.printing.component.PrintComponentVisitor;
 import org.geomajas.plugin.printing.component.VectorLayerComponent;
 import org.geomajas.plugin.printing.component.dto.PrintComponentInfo;
 import org.geomajas.plugin.printing.component.dto.VectorLayerComponentInfo;
+import org.geomajas.plugin.printing.component.service.PrintConfigurationService;
 import org.geomajas.plugin.printing.component.service.PrintDtoConverterService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
@@ -52,6 +54,7 @@ import org.geotools.referencing.CRS;
 import org.opengis.filter.Filter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import com.lowagie.text.Rectangle;
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
@@ -110,15 +113,17 @@ public class VectorLayerComponentImpl extends BaseLayerComponentImpl implements 
 
 	private VectorLayerService layerService;
 
-	public VectorLayerComponentImpl() {
-		// todo needed for JAXB but looses the services, causing NPE later on
-	}
+	private PrintConfigurationService configurationService;
 
-	public VectorLayerComponentImpl(GeoService geoService, FilterService filterService, 
-			VectorLayerService layerService) {
+	@Autowired(required = false)
+	protected Map<String, ClientApplicationInfo> applicationMap = new LinkedHashMap<String, ClientApplicationInfo>();
+
+	public VectorLayerComponentImpl(GeoService geoService, FilterService filterService,
+			VectorLayerService layerService, PrintConfigurationService configurationService) {
 		this.geoService = geoService;
 		this.filterService = filterService;
 		this.layerService = layerService;
+		this.configurationService = configurationService;
 
 		// stretch to map
 		getConstraint().setAlignmentX(LayoutConstraint.JUSTIFIED);
@@ -141,8 +146,8 @@ public class VectorLayerComponentImpl extends BaseLayerComponentImpl implements 
 			Collections.addAll(selectedFeatures, getSelectedFeatureIds());
 			// Fetch features
 			try {
-				ClientMapInfo map = context.getMap(getMap().getMapId(), getMap().getApplicationId());
-				String geomName = ((VectorLayerInfo) context.getLayer(getLayerId()).getLayerInfo()).getFeatureInfo()
+				ClientMapInfo map = configurationService.getMapInfo(getMap().getMapId(), getMap().getApplicationId());
+				String geomName = configurationService.getVectorLayerInfo(getLayerId()).getFeatureInfo()
 						.getGeometryType().getName();
 				GeometryFactory factory = new GeometryFactory(new PrecisionModel(Math.pow(10, map.getPrecision())),
 						geoService.getSridFromCrs(map.getCrs()));
@@ -170,15 +175,13 @@ public class VectorLayerComponentImpl extends BaseLayerComponentImpl implements 
 	}
 
 	private void drawLabel(PdfContext context, InternalFeature f) {
-		Layer<?> layer = context.getLayer(getLayerId());
 		LabelStyleInfo labelType = styleInfo.getLabelStyle();
 		String label = f.getLabel();
 
 		Font font = new Font("Helvetica", Font.ITALIC, 10);
 		Color fontColor = Color.black;
 		if (labelType.getFontStyle() != null) {
-			fontColor = context.getColor(labelType.getFontStyle().getColor(), labelType.getFontStyle()
-					.getOpacity());
+			fontColor = context.getColor(labelType.getFontStyle().getColor(), labelType.getFontStyle().getOpacity());
 		}
 		Rectangle rect = calculateLabelRect(context, f, label, font);
 		Color bgColor = Color.white;
@@ -249,7 +252,7 @@ public class VectorLayerComponentImpl extends BaseLayerComponentImpl implements 
 		float[] dashArray = context.getDashArray(style.getDashArray());
 
 		// check if the feature is selected
-		ClientMapInfo map = context.getMap(getMap().getMapId(), null);
+		ClientMapInfo map = configurationService.getMapInfo(getMap().getMapId(), getMap().getApplicationId());
 		if (selectedFeatures.contains(f.getId())) {
 			if (f.getGeometry() instanceof MultiPolygon || f.getGeometry() instanceof Polygon) {
 				fillColor = context.getColor(map.getPolygonSelectStyle().getFillColor(), style.getFillOpacity());
@@ -287,7 +290,9 @@ public class VectorLayerComponentImpl extends BaseLayerComponentImpl implements 
 		this.styleInfo = styleInfo;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.geomajas.plugin.printing.component.impl.VectorLayerComponent#getSelectedFeatureIds()
 	 */
 	public String[] getSelectedFeatureIds() {
@@ -298,7 +303,9 @@ public class VectorLayerComponentImpl extends BaseLayerComponentImpl implements 
 		this.selectedFeatureIds = selectedFeatureIds;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.geomajas.plugin.printing.component.impl.VectorLayerComponent#getFilter()
 	 */
 	public String getFilter() {
@@ -309,7 +316,9 @@ public class VectorLayerComponentImpl extends BaseLayerComponentImpl implements 
 		this.filter = filter;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.geomajas.plugin.printing.component.impl.VectorLayerComponent#isLabelsVisible()
 	 */
 	public boolean isLabelsVisible() {
@@ -323,7 +332,7 @@ public class VectorLayerComponentImpl extends BaseLayerComponentImpl implements 
 	public List<InternalFeature> getFeatures() {
 		return features;
 	}
-	
+
 	public void fromDto(PrintComponentInfo info, PrintDtoConverterService service) {
 		super.fromDto(info, service);
 		VectorLayerComponentInfo vectorLayerInfo = (VectorLayerComponentInfo) info;

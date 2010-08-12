@@ -30,13 +30,14 @@ import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientRasterLayerInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
+import org.geomajas.layer.RasterLayerService;
 import org.geomajas.layer.VectorLayerService;
 import org.geomajas.plugin.printing.component.LegendComponent;
 import org.geomajas.plugin.printing.component.MapComponent;
 import org.geomajas.plugin.printing.component.TopDownVisitor;
 import org.geomajas.plugin.printing.component.impl.RasterLayerComponentImpl;
 import org.geomajas.plugin.printing.component.impl.VectorLayerComponentImpl;
-import org.geomajas.service.ConfigurationService;
+import org.geomajas.plugin.printing.component.service.PrintConfigurationService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
 
@@ -48,26 +49,29 @@ import org.geomajas.service.GeoService;
  */
 public class MapConfigurationVisitor extends TopDownVisitor {
 
-	private ConfigurationService runtime;
+	private PrintConfigurationService configurationService;
 
 	private GeoService geoService;
 
 	private FilterService filterCreator;
 
-	private VectorLayerService layerService;
+	private VectorLayerService vectorLayerService;
 
-	public MapConfigurationVisitor(ConfigurationService configurationService, GeoService geoService,
-			FilterService filterCreator, VectorLayerService layerService) {
-		this.runtime = configurationService;
+	private RasterLayerService rasterLayerService;
+
+	public MapConfigurationVisitor(PrintConfigurationService configurationService, GeoService geoService,
+			FilterService filterCreator, VectorLayerService vectorLayerService, RasterLayerService rasterLayerService) {
+		this.configurationService = configurationService;
 		this.geoService = geoService;
 		this.filterCreator = filterCreator;
-		this.layerService = layerService;
+		this.vectorLayerService = vectorLayerService;
+		this.rasterLayerService = rasterLayerService;
 	}
 
 	@Override
 	public void visit(LegendComponent legend) {
 		legend.clearItems();
-		ClientMapInfo map = runtime.getMap(legend.getMapId(), legend.getApplicationId());
+		ClientMapInfo map = configurationService.getMapInfo(legend.getMapId(), legend.getApplicationId());
 		for (ClientLayerInfo info : map.getLayers()) {
 			if (info instanceof ClientVectorLayerInfo) {
 				legend.addVectorLayer((ClientVectorLayerInfo) info);
@@ -80,19 +84,20 @@ public class MapConfigurationVisitor extends TopDownVisitor {
 	@Override
 	public void visit(MapComponent mapComponent) {
 		mapComponent.clearLayers();
-		ClientMapInfo map = runtime.getMap(mapComponent.getMapId(), mapComponent.getApplicationId());
+		ClientMapInfo map = configurationService.getMapInfo(mapComponent.getMapId(), mapComponent.getApplicationId());
 		List<ClientLayerInfo> layers = new ArrayList<ClientLayerInfo>(map.getLayers());
 		Collections.reverse(layers);
 		for (ClientLayerInfo info : layers) {
 			if (info instanceof ClientVectorLayerInfo) {
-				VectorLayerComponentImpl comp = new VectorLayerComponentImpl(geoService, filterCreator, layerService);
+				VectorLayerComponentImpl comp = new VectorLayerComponentImpl(geoService, filterCreator,
+						vectorLayerService, configurationService);
 				comp.setLabelsVisible(false);
 				comp.setLayerId(info.getServerLayerId());
 				comp.setStyleInfo(((ClientVectorLayerInfo) info).getNamedStyleInfo());
 				comp.setVisible(true);
 				mapComponent.addComponent(0, comp);
 			} else if (info instanceof ClientRasterLayerInfo) {
-				RasterLayerComponentImpl comp = new RasterLayerComponentImpl();
+				RasterLayerComponentImpl comp = new RasterLayerComponentImpl(rasterLayerService, configurationService);
 				comp.setLayerId(info.getServerLayerId());
 				comp.setVisible(true);
 				mapComponent.addComponent(0, comp);

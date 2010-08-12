@@ -24,7 +24,9 @@ package org.geomajas.extension.printing.document;
 
 import java.io.FileOutputStream;
 
+import org.geomajas.layer.RasterLayerService;
 import org.geomajas.layer.VectorLayerService;
+import org.geomajas.plugin.printing.component.service.PrintConfigurationService;
 import org.geomajas.plugin.printing.configuration.DefaultConfigurationVisitor;
 import org.geomajas.plugin.printing.document.DefaultDocument;
 import org.geomajas.security.SecurityManager;
@@ -42,17 +44,11 @@ import org.springframework.transaction.annotation.Transactional;
 import com.vividsolutions.jts.geom.Coordinate;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { 
-		"/org/geomajas/spring/geomajasContext.xml",
-		"/org/geomajas/plugin/printing/printing.xml",
-		"/org/geomajas/testdata/layerBluemarble.xml",
-		"/org/geomajas/testdata/layerCountries.xml",
-		"/org/geomajas/testdata/simplemixedContext.xml"})
-@Transactional(rollbackFor = {org.geomajas.global.GeomajasException.class})
+@ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
+		"/org/geomajas/plugin/printing/printing.xml", "/org/geomajas/testdata/layerBluemarble.xml",
+		"/org/geomajas/testdata/layerCountries.xml", "/org/geomajas/testdata/simplemixedContext.xml" })
+@Transactional(rollbackFor = { org.geomajas.global.GeomajasException.class })
 public class DefaultDocumentTest {
-
-	@Autowired
-	private ConfigurationService runtime;
 
 	@Autowired
 	private GeoService geoService;
@@ -61,7 +57,13 @@ public class DefaultDocumentTest {
 	private FilterService filterCreator;
 
 	@Autowired
-	private VectorLayerService layerService;
+	private PrintConfigurationService configurationService;
+
+	@Autowired
+	private VectorLayerService vectorLayerService;
+
+	@Autowired
+	private RasterLayerService rasterLayerService;
 
 	@Autowired
 	private SecurityManager securityManager;
@@ -74,15 +76,13 @@ public class DefaultDocumentTest {
 
 	@Test
 	public void testRender() throws Exception {
-		DefaultDocument document = new DefaultDocument("A4", runtime, null, getDefaultVisitor(-31.44, -37.43, 80.83f),
-				geoService, filterCreator, layerService);
-		document.render();
+		DefaultDocument document = new DefaultDocument("A4", configurationService, null, getDefaultVisitor(-31.44,
+				-37.43, 80.83f), geoService, filterCreator, vectorLayerService, rasterLayerService);
 		FileOutputStream fo = new FileOutputStream("target/test.pdf");
-		document.getOutputStream().writeTo(fo);
+		document.render(fo);
 		fo.flush();
 		fo.close();
 	}
-
 
 	private DefaultConfigurationVisitor getDefaultVisitor(double x, double y, float widthInUnits) {
 		// 842, 595

@@ -24,8 +24,9 @@ package org.geomajas.plugin.printing.service;
 
 import java.util.List;
 
-import org.geomajas.global.GeomajasException;
+import org.geomajas.plugin.printing.PrintingException;
 import org.geomajas.plugin.printing.configuration.PrintTemplate;
+import org.geomajas.plugin.printing.document.Document;
 
 /**
  * Service for printing and template handling.
@@ -39,22 +40,38 @@ public interface PrintService {
 	 * Retrieves all available templates.
 	 * 
 	 * @return a list of templates ordered by name
-	 * @throws GeomajasException if the templates could not be fetched from db
+	 * @throws PrintingException
+	 *             if the templates could not be fetched from db
 	 */
-	List<PrintTemplate> getAllTemplates() throws GeomajasException;
+	List<PrintTemplate> getAllTemplates() throws PrintingException;
 
 	/**
 	 * Saves a new template or updates an existing one.
-	 * @param template the template
-	 * @throws GeomajasException if persistence failed
+	 * 
+	 * @param template
+	 *            the template
+	 * @throws PrintingException
+	 *             if persistence failed
 	 */
-	void saveOrUpdateTemplate(PrintTemplate template) throws GeomajasException;
+	void saveOrUpdateTemplate(PrintTemplate template) throws PrintingException;
 
 	/**
-	 * Schedule a print of the specified template.
-	 * @param template the template
-	 * @throws GeomajasException if the print could not be scheduled
+	 * Puts a new document in the service.
+	 * 
+	 * @param document
+	 * @return key unique key to reference the document
 	 */
-	void printTemplate(PrintTemplate template) throws GeomajasException;
+	String putDocument(Document document);
 
+	/**
+	 * Gets a document from the service.
+	 * 
+	 * @param key
+	 *            unique key to reference the document
+	 * @return the document or null if no such document
+	 * 
+	 * @throws GeomajasException
+	 *             if document does not exist
+	 */
+	Document getDocument(String key) throws PrintingException;
 }

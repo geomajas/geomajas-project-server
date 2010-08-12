@@ -23,7 +23,6 @@
 package org.geomajas.plugin.printing.command.print;
 
 import org.geomajas.command.Command;
-import org.geomajas.plugin.printing.PdfContainer;
 import org.geomajas.plugin.printing.command.dto.PrintGetTemplateRequest;
 import org.geomajas.plugin.printing.command.dto.PrintGetTemplateResponse;
 import org.geomajas.plugin.printing.command.dto.PrintTemplateInfo;
@@ -35,6 +34,7 @@ import org.geomajas.plugin.printing.component.impl.LegendItemComponentImpl;
 import org.geomajas.plugin.printing.component.service.PrintDtoConverterService;
 import org.geomajas.plugin.printing.configuration.PrintTemplate;
 import org.geomajas.plugin.printing.document.SinglePageDocument;
+import org.geomajas.plugin.printing.service.PrintService;
 import org.geomajas.service.ConfigurationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -62,6 +62,9 @@ public class PrintGetTemplateCommand implements Command<PrintGetTemplateRequest,
 	@Autowired
 	private PrintDtoConverterService converterService;
 
+	@Autowired
+	private PrintService printService;
+
 	public PrintGetTemplateResponse getEmptyCommandResponse() {
 		return new PrintGetTemplateResponse();
 	}
@@ -84,13 +87,9 @@ public class PrintGetTemplateCommand implements Command<PrintGetTemplateRequest,
 		if (request.getPageSize() != null) {
 			page.setSize(request.getPageSize(), true);
 		}
-		SinglePageDocument pdfDoc = new SinglePageDocument(page, runtime, null);
-		// Set file meta options
-		pdfDoc.setFileName(request.getFileName());
-		pdfDoc.setDownloadMethod(request.getDownloadMethod());
-
+		SinglePageDocument pdfDoc = new SinglePageDocument(page, null);
 		// Add document to container
-		int documentId = PdfContainer.getInstance().addDocument(pdfDoc);
+		String documentId = printService.putDocument(pdfDoc);
 		response.setDocumentId(documentId);
 	}
 

@@ -20,61 +20,43 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.geomajas.plugin.printing.component.dto;
+package org.geomajas.plugin.printing;
 
-import java.io.Serializable;
+import org.geomajas.global.GeomajasException;
 
 /**
- * DTO object for BaseLayerComponent.
+ * Common exception class for the printing plugin.
  * 
  * @author Jan De Moerloose
- * @see org.geomajas.plugin.printing.component.BaseLayerComponent
- *
+ * 
  */
-public class BaseLayerComponentInfo extends PrintComponentInfo implements Serializable {
+public class PrintingException extends GeomajasException {
+
+	private static final long serialVersionUID = -7531673605025800128L;
+
+	public static final int DOCUMENT_NOT_FOUND = 0;
+
+	public static final int PRINT_TEMPLATE_XML_PROBLEM = 1;
+
+	public static final int PRINT_TEMPLATE_PERSIST_PROBLEM = 2;
 
 	/**
-	 * True if layer is visible.
+	 * Create new PrintingException.
+	 * 
+	 * @param ex
+	 *            cause exception
+	 * @param exceptionCode
+	 *            code which points to the message
+	 * @param parameters
+	 *            possible extra parameters
 	 */
-	private boolean visible = true;
-
-	/**
-	 * True if layer is selected.
-	 */
-	private boolean selected;
-
-	/**
-	 * ID of this layer (client ID).
-	 */
-	private String layerId;
-
-	public BaseLayerComponentInfo() {
-		getLayoutConstraint().setAlignmentX(LayoutConstraintInfo.JUSTIFIED);
-		getLayoutConstraint().setAlignmentY(LayoutConstraintInfo.JUSTIFIED);
+	public PrintingException(int exceptionCode, Object... parameters) {
+		super(exceptionCode, parameters);
 	}
 
-	public boolean isVisible() {
-		return visible;
-	}
-
-	public void setVisible(boolean visible) {
-		this.visible = visible;
-	}
-
-	public boolean isSelected() {
-		return selected;
-	}
-
-	public void setSelected(boolean selected) {
-		this.selected = selected;
-	}
-
-	public String getLayerId() {
-		return layerId;
-	}
-
-	public void setLayerId(String layerId) {
-		this.layerId = layerId;
+	@Override
+	public String getResourceBundleName() {
+		return "org.geomajas.plugin.printing.PrintingException";
 	}
 
 }

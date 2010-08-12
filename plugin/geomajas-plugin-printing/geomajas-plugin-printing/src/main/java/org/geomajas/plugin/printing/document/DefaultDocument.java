@@ -22,13 +22,15 @@
  */
 package org.geomajas.plugin.printing.document;
 
+import java.io.OutputStream;
 import java.util.Map;
 
+import org.geomajas.layer.RasterLayerService;
 import org.geomajas.layer.VectorLayerService;
+import org.geomajas.plugin.printing.component.service.PrintConfigurationService;
 import org.geomajas.plugin.printing.configuration.DefaultConfigurationVisitor;
 import org.geomajas.plugin.printing.configuration.MapConfigurationVisitor;
 import org.geomajas.plugin.printing.configuration.PrintTemplate;
-import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
 
@@ -43,31 +45,35 @@ public class DefaultDocument extends SinglePageDocument {
 
 	private DefaultConfigurationVisitor defaultVisitor;
 
-	private ConfigurationService runtime;
+	private PrintConfigurationService configurationService;
 
 	private GeoService geoService;
 
 	private FilterService filterCreator;
 
-	private VectorLayerService layerService;
+	private VectorLayerService vectorLayerService;
 
-	public DefaultDocument(String pageSize, ConfigurationService runtime, Map<String, String> filters,
-			DefaultConfigurationVisitor defaultVisitor, GeoService geoService, FilterService filterCreator,
-			VectorLayerService layerService) {
-		super(PrintTemplate.createDefaultTemplate(pageSize, true).getPage(), runtime, filters);
-		this.runtime = runtime;
+	private RasterLayerService rasterLayerService;
+
+	public DefaultDocument(String pageSize, PrintConfigurationService configurationService,
+			Map<String, String> filters, DefaultConfigurationVisitor defaultVisitor, GeoService geoService,
+			FilterService filterCreator, VectorLayerService vectorLayerService, RasterLayerService rasterLayerService) {
+		super(PrintTemplate.createDefaultTemplate(pageSize, true, configurationService).getPage(), filters);
+		this.configurationService = configurationService;
 		this.defaultVisitor = defaultVisitor;
 		this.geoService = geoService;
 		this.filterCreator = filterCreator;
-		this.layerService = layerService;
+		this.vectorLayerService = vectorLayerService;
+		this.rasterLayerService = rasterLayerService;
 	}
 
 	@Override
-	public void render() throws DocumentException {
+	public void render(OutputStream outputStream) throws DocumentException {
 		defaultVisitor.visitTree(getPage());
-		MapConfigurationVisitor visitor = new MapConfigurationVisitor(runtime, geoService, filterCreator, layerService);
+		MapConfigurationVisitor visitor = new MapConfigurationVisitor(configurationService, geoService, filterCreator,
+				vectorLayerService, rasterLayerService);
 		visitor.visitTree(getPage());
-		super.render();
+		super.render(outputStream);
 	}
 
 }
