@@ -60,6 +60,7 @@
 	<modules>
 		<module>geocoder</module>
 		<module>geocoder-gwt</module>
+		<module>geocoder-gwt-example</module>
   	</modules>
 
 	<profiles>
