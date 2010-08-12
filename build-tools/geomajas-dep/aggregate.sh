@@ -33,7 +33,7 @@ _gaq.push(\[\'_trackPageview\'\]); \
    var s = document.getElementsByTagName(\'script\')\[0\]; s.parentNode.insertBefore(ga, s); \
 })(); \
 <\/script> \
-	<\/body>/g;" -pi $(find $TARGETDIR -name \*.html)
+	<\/body>/gi;" -pi $(find $TARGETDIR -name \*.html)
 
 }
 
@@ -148,13 +148,13 @@ include "org.geomajas.documentation" "geomajas-plugin-printing-documentation" "2
     "incubating" "printing.pdf" \
     "" "" ""
 
-include "org.geomajas.documentation" "geomajas-plugin-caching-documentation" "1.0.0-SNAPSHOT" \
+include "org.geomajas.documentation" "caching-documentation" "1.0.0-SNAPSHOT" \
     "Caching plug-in" \
     "Caching to allow data to be calculated only once and cached for later use." \
     "incubating" "caching.pdf" \
     "" "" ""
 
-include "org.geomajas.documentation" "geomajas-plugin-geocoder-documentation" "1.0.0-SNAPSHOT" \
+include "org.geomajas.documentation" "geocoder-documentation" "1.0.0-SNAPSHOT" \
     "Geocoder plug-in" \
     "Convert a location description to map coordinates." \
     "incubating" "geocoder.pdf" \
