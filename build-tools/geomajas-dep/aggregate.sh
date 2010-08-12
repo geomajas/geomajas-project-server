@@ -1,11 +1,11 @@
 #! /bin/sh
 
-TARGETDIR="/home/joachim/tmp/"
-#TARGETDIR="/var/www/files.geomajas.org/htdocs/maven/trunk/geomajas"
+#TARGETDIR="/home/joachim/tmp/"
+TARGETDIR="/var/www/files.geomajas.org/htdocs/maven/trunk/geomajas"
 TARGET="$TARGETDIR/temp.html"
 FINAL="$TARGETDIR/documentation.html"
-LINKPREFIX="file:/home/joachim/tmp/"
-#LINKPREFIX="http://files.geomajas.org/maven/trunk/geomajas/"
+#LINKPREFIX="file:/home/joachim/tmp/"
+LINKPREFIX="http://files.geomajas.org/maven/trunk/geomajas/"
 
 template_start() {
 	rm $TARGET
