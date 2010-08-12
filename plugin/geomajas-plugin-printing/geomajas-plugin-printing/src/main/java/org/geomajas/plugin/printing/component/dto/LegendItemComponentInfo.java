@@ -20,40 +20,25 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.geomajas.plugin.printing.client;
+package org.geomajas.plugin.printing.component.dto;
 
-import com.google.gwt.i18n.client.Messages;
+import java.io.Serializable;
 
 /**
- * Message bundle for printing plugin.
+ * DTO object for LegendItemComponent.
  * 
  * @author Jan De Moerloose
- * 
+ * @see org.geomajas.plugin.printing.component.LegendItemComponent
+ *
  */
-public interface PrintingMessages extends Messages {
+public class LegendItemComponentInfo  extends PrintComponentInfo implements Serializable {
+	
+	public LegendItemComponentInfo() {
+		getLayoutConstraint().setAlignmentX(LayoutConstraintInfo.LEFT);
+		getLayoutConstraint().setAlignmentY(LayoutConstraintInfo.BOTTOM);
+		getLayoutConstraint().setFlowDirection(LayoutConstraintInfo.FLOW_X);
+		getLayoutConstraint().setMarginX(5);
+		getLayoutConstraint().setMarginY(5);
+	}
 
-	String printBtnTitle();
-	
-	String printPrefsTitle();
-	
-	String printPrefsTitleText();
-
-	String printPrefsChoose();
-	
-	String printPrefsPrint();
-	
-	String printPrefsSize();
-	
-	String printPrefsOrientation();
-	
-	String printPrefsPortrait();
-	
-	String printPrefsLandscape();
-
-	String printPrefsWithArrow();
-	
-	String printPrefsWithScaleBar();
-	
-	String printPrefsRasterDPI();
-	
 }

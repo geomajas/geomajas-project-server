@@ -31,6 +31,7 @@ import org.geomajas.plugin.printing.component.PrintComponent;
 import org.geomajas.plugin.printing.component.impl.LabelComponentImpl;
 import org.geomajas.plugin.printing.component.impl.LegendComponentImpl;
 import org.geomajas.plugin.printing.component.impl.LegendItemComponentImpl;
+import org.geomajas.plugin.printing.component.impl.MapComponentImpl;
 import org.geomajas.plugin.printing.component.service.PrintDtoConverterService;
 import org.geomajas.plugin.printing.configuration.PrintTemplate;
 import org.geomajas.plugin.printing.document.SinglePageDocument;
@@ -73,15 +74,17 @@ public class PrintGetTemplateCommand implements Command<PrintGetTemplateRequest,
 		// you dirty hack you...
 		PrintTemplateInfo template = request.getTemplate();
 		PageComponent page = (PageComponent) converterService.toInternal(template.getPage());
-		LegendComponentImpl legendComponent = (LegendComponentImpl) page.getChild(PrintTemplate.MAP).getChild(
-				PrintTemplate.LEGEND);
-		if (legendComponent != null) {
-			LabelComponentImpl lab = (LabelComponentImpl) legendComponent.getChild(PrintTemplate.TITLE);
-			if (lab != null) {
-				lab.setText(legendComponent.getTitle());
+		MapComponentImpl mapComponent = (MapComponentImpl) page.getChild(PrintTemplate.MAP);
+		if (mapComponent != null) {
+			LegendComponentImpl legendComponent = (LegendComponentImpl) mapComponent.getChild(PrintTemplate.LEGEND);
+			if (legendComponent != null) {
+				LabelComponentImpl lab = (LabelComponentImpl) legendComponent.getChild(PrintTemplate.TITLE);
+				if (lab != null) {
+					lab.setText(legendComponent.getTitle());
+				}
+				// need to do this before setSizeAndFit
+				adjustLegendFontSizeForSmallPageSizes(request, legendComponent);
 			}
-			// need to do this before setSizeAndFit
-			adjustLegendFontSizeForSmallPageSizes(request, legendComponent);
 		}
 
 		if (request.getPageSize() != null) {
@@ -115,7 +118,14 @@ public class PrintGetTemplateCommand implements Command<PrintGetTemplateRequest,
 	}
 
 	private float getPageSizeRelativeToA3(PrintGetTemplateRequest request) {
-		Rectangle r = PageSize.getRectangle(request.getPageSize());
+		Rectangle r = null;
+		if (request.getPageSize() != null) {
+			PageSize.getRectangle(request.getPageSize());
+		} else {
+			float width = request.getTemplate().getPage().getLayoutConstraint().getWidth();
+			float height = request.getTemplate().getPage().getLayoutConstraint().getHeight();
+			r = new Rectangle(0, 0, width, height);
+		}
 		return (r.getWidth() / PageSize.A3.getWidth() + r.getHeight() / PageSize.A3.getHeight()) / 2;
 	}
 

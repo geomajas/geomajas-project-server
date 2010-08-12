@@ -31,6 +31,9 @@ import org.geomajas.plugin.printing.PdfContext;
 import org.geomajas.plugin.printing.component.LegendComponent;
 import org.geomajas.plugin.printing.component.LegendIconComponent;
 import org.geomajas.plugin.printing.component.PrintComponentVisitor;
+import org.geomajas.plugin.printing.component.dto.LegendIconComponentInfo;
+import org.geomajas.plugin.printing.component.dto.PrintComponentInfo;
+import org.geomajas.plugin.printing.component.service.PrintDtoConverterService;
 
 import com.lowagie.text.Image;
 import com.lowagie.text.Rectangle;
@@ -138,6 +141,15 @@ public class LegendIconComponentImpl extends PrintComponentImpl implements Legen
 				context.fillRectangle(iconRect, fillColor);
 				context.strokeRectangle(iconRect, strokeColor, baseWidth, dashArray);
 		}
+	}
+
+	@Override
+	public void fromDto(PrintComponentInfo info, PrintDtoConverterService service) {
+		super.fromDto(info, service);
+		LegendIconComponentInfo iconInfo = (LegendIconComponentInfo) info;
+		setLabel(iconInfo.getLabel());
+		setLayerType(iconInfo.getLayerType());
+		setStyleInfo(iconInfo.getStyleInfo());
 	}
 
 }

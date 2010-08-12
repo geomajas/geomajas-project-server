@@ -47,7 +47,7 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
 			throws Exception {
 		String userToken = request.getParameter(USER_TOKEN_NAME);
 		// stop if invalid token
-		return !securityManager.createSecurityContext(userToken);
+		return securityManager.createSecurityContext(userToken);
 	}
 
 	@Override

@@ -72,7 +72,9 @@ public abstract class PrintComponentInfo implements Serializable {
 	}
 
 	public void addChild(PrintComponentInfo child) {
-		children.add(child);
+		if (child != null) {
+			children.add(child);
+		}
 	}
 
 	public Bbox getBounds() {

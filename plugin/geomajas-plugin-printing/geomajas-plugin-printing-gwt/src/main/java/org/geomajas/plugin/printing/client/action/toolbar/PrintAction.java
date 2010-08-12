@@ -22,45 +22,13 @@
  */
 package org.geomajas.plugin.printing.client.action.toolbar;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
-import org.geomajas.command.CommandResponse;
-import org.geomajas.configuration.FontStyleInfo;
-import org.geomajas.configuration.client.ClientVectorLayerInfo;
-import org.geomajas.geometry.Bbox;
-import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.action.ConfigurableAction;
 import org.geomajas.gwt.client.action.ToolbarAction;
-import org.geomajas.gwt.client.command.CommandCallback;
-import org.geomajas.gwt.client.command.GwtCommand;
-import org.geomajas.gwt.client.command.GwtCommandDispatcher;
-import org.geomajas.gwt.client.map.MapView;
-import org.geomajas.gwt.client.map.layer.Layer;
-import org.geomajas.gwt.client.map.layer.RasterLayer;
-import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.plugin.printing.client.PrintingMessages;
-import org.geomajas.plugin.printing.command.dto.PrintGetTemplateRequest;
-import org.geomajas.plugin.printing.command.dto.PrintGetTemplateResponse;
-import org.geomajas.plugin.printing.command.dto.PrintTemplateInfo;
-import org.geomajas.plugin.printing.component.dto.ImageComponentInfo;
-import org.geomajas.plugin.printing.component.dto.LabelComponentInfo;
-import org.geomajas.plugin.printing.component.dto.LayoutConstraintInfo;
-import org.geomajas.plugin.printing.component.dto.LegendComponentInfo;
-import org.geomajas.plugin.printing.component.dto.MapComponentInfo;
-import org.geomajas.plugin.printing.component.dto.PageComponentInfo;
-import org.geomajas.plugin.printing.component.dto.RasterLayerComponentInfo;
-import org.geomajas.plugin.printing.component.dto.ScaleBarComponentInfo;
-import org.geomajas.plugin.printing.component.dto.VectorLayerComponentInfo;
+import org.geomajas.plugin.printing.client.action.widget.PrintPreferencesWindow;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.http.client.URL;
-import com.google.gwt.user.client.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 
 /**
@@ -80,214 +48,50 @@ public class PrintAction extends ToolbarAction implements ConfigurableAction {
 		this.mapWidget = mapWidget;
 		setTooltip(messages.printBtnTitle());
 	}
-
+	
 	public void onClick(ClickEvent event) {
-		PrintGetTemplateRequest request = new PrintGetTemplateRequest();
-		request.setPageSize("A4");
-		PrintTemplateInfo template = new PrintTemplateInfo();
-		template.setTemplate(false);
-		template.setId(1L);
-		template.setName("default");
-		template.setPage(createDefaultPage());
-		request.setTemplate(template);
-		final GwtCommand command = new GwtCommand("command.print.GetTemplate");
-		command.setCommandRequest(request);
-		GwtCommandDispatcher.getInstance().execute(command, new CommandCallback() {
-
-			public void execute(CommandResponse r) {
-				if (r instanceof PrintGetTemplateResponse) {
-					PrintGetTemplateResponse response = (PrintGetTemplateResponse) r;
-					GWT.log("" + response.getDocumentId());
-					UrlExtender url = new UrlExtender(GWT.getHostPageBaseURL());
-					url.addPath("d/printing").addParameter("documentId", response.getDocumentId());
-					url.addParameter("download", "0").addParameter("name", "test.pdf");
-					url.addParameter("userToken", command.getUserToken());
-					Window.open(url.toString(), "_blank", null);
-				}
-			}
-		});
+		PrintPreferencesWindow window = new PrintPreferencesWindow(mapWidget);
+		window.centerInPage();
+		window.show();
 	}
 
-	private PageComponentInfo createDefaultPage() {
-		PageComponentInfo page = new PageComponentInfo();
-		page.setBounds(new Bbox(0, 0, 842, 595));
-		page.setTag("page");
-		MapComponentInfo map = createMap();
-		ImageComponentInfo northarrow = createArrow();
-		ScaleBarComponentInfo bar = createBar();
-		LabelComponentInfo title = createTitle();
-		LegendComponentInfo legend = createLegend();
-		map.addChild(bar);
-		map.addChild(legend);
-		map.addChild(northarrow);
-		page.addChild(map);
-		page.addChild(title);
-		return page;
-	}
 
-	private LegendComponentInfo createLegend() {
-		LegendComponentInfo legend = new LegendComponentInfo();
-		FontStyleInfo style = new FontStyleInfo();
-		style.setFamily("Dialog");
-		style.setStyle("Italic");
-		style.setSize(14);
-		legend.setFont(style);
-		legend.setMapId(mapWidget.getMapModel().getMapInfo().getId());
-		legend.setTag("legend");
-		return legend;
-	}
+//	public void onClick(ClickEvent event) {
+//		PrintGetTemplateRequest request = new PrintGetTemplateRequest();
+//		DefaultTemplateBuilder builder = new DefaultTemplateBuilder();
+//		builder.setApplicationId(mapWidget.getApplicationId());
+//		builder.setMapModel(mapWidget.getMapModel());
+//		builder.setMarginX(20);
+//		builder.setMarginY(20);
+//		builder.setPageHeight(595);
+//		builder.setPageWidth(842);
+//		builder.setTitleText(mapWidget.getMapModel().getMapInfo().getId());
+//		builder.setWithArrow(true);
+//		builder.setWithDate(true);
+//		builder.setRasterDpi(150);
+//		PrintTemplateInfo template = builder.buildTemplate();
+//		request.setTemplate(template);
+//		final GwtCommand command = new GwtCommand("command.print.GetTemplate");
+//		command.setCommandRequest(request);
+//		GwtCommandDispatcher.getInstance().execute(command, new CommandCallback() {
+//
+//			public void execute(CommandResponse r) {
+//				if (r instanceof PrintGetTemplateResponse) {
+//					PrintGetTemplateResponse response = (PrintGetTemplateResponse) r;
+//					GWT.log("" + response.getDocumentId());
+//					UrlExtender url = new UrlExtender(GWT.getHostPageBaseURL());
+//					url.addPath("d/printing").addParameter("documentId", response.getDocumentId());
+//					url.addParameter("download", "0").addParameter("name", "test.pdf");
+//					url.addParameter("userToken", command.getUserToken());
+//					Window.open(url.toString(), "_blank", null);
+//				}
+//			}
+//		});
+//	}
+
 
 	public void configure(String key, String value) {
 	}
 
-	private MapComponentInfo createMap() {
-		MapComponentInfo map = new MapComponentInfo();
-		map.getLayoutConstraint().setMarginX(20);
-		map.getLayoutConstraint().setMarginY(20);
-		MapView view = mapWidget.getMapModel().getMapView();
-		Coordinate origin = view.getBounds().createFittingBox(802, 555).getOrigin();
-		map.setLocation(new org.geomajas.geometry.Coordinate(origin.getX(), origin.getY()));
-		map.setPpUnit((float) (802f / view.getBounds().createFittingBox(802, 555).getWidth()));
-		map.setTag("map");
-		map.setMapId(mapWidget.getMapModel().getMapInfo().getId());
-		map.setApplicationId(mapWidget.getApplicationId());
-		List<Layer> layers = getLayersInPrintOrder();
-		for (Layer layer : layers) {
-			if (layer instanceof VectorLayer && layer.isShowing()) {
-				VectorLayerComponentInfo info = new VectorLayerComponentInfo();
-				VectorLayer vectorLayer = (VectorLayer) layer;
-				info.setLayerId(vectorLayer.getServerLayerId());
-				ClientVectorLayerInfo layerInfo = vectorLayer.getLayerInfo();
-				info.setStyleInfo(layerInfo.getNamedStyleInfo());
-				info.setFilter(vectorLayer.getFilter());
-				info.setLabelsVisible(vectorLayer.isLabeled());
-				info.setSelected(vectorLayer.isSelected());
-				info.setSelectedFeatureIds(vectorLayer.getSelectedFeatures().toArray(new String[0]));
-				map.addChild(info);
-			} else if (layer instanceof RasterLayer && layer.isShowing()) {
-				RasterLayerComponentInfo info = new RasterLayerComponentInfo();
-				RasterLayer rasterLayer = (RasterLayer) layer;
-				info.setLayerId(rasterLayer.getServerLayerId());
-				map.addChild(info);
-			}
-		}
-		return map;
-	}
-
-	private List<Layer> getLayersInPrintOrder() {
-		List<Layer> layers = new ArrayList<Layer>(mapWidget.getMapModel().getLayers());
-		Collections.reverse(layers);
-		return layers;
-
-	}
-
-	private static ImageComponentInfo createArrow() {
-		ImageComponentInfo northarrow = new ImageComponentInfo();
-		northarrow.setImagePath("/images/northarrow.gif");
-		northarrow.getLayoutConstraint().setAlignmentX(LayoutConstraintInfo.RIGHT);
-		northarrow.getLayoutConstraint().setAlignmentY(LayoutConstraintInfo.TOP);
-		northarrow.getLayoutConstraint().setMarginX(20);
-		northarrow.getLayoutConstraint().setMarginY(20);
-		northarrow.getLayoutConstraint().setWidth(10);
-		northarrow.setTag("arrow");
-		return northarrow;
-	}
-
-	private static LabelComponentInfo createTitle() {
-		LabelComponentInfo title = new LabelComponentInfo();
-		FontStyleInfo style = new FontStyleInfo();
-		style.setFamily("Dialog");
-		style.setStyle("Italic");
-		style.setSize(14);
-		title.setFont(style);
-		title.setBackgroundColor("0xFFFFFF");
-		title.setBorderColor("0x000000");
-		title.setFontColor("0x000000");
-		title.setText("Map of the world");
-		title.getLayoutConstraint().setAlignmentY(LayoutConstraintInfo.TOP);
-		title.getLayoutConstraint().setAlignmentX(LayoutConstraintInfo.CENTER);
-		title.getLayoutConstraint().setMarginY(40);
-		title.setTag("title");
-		return title;
-	}
-
-	private static ScaleBarComponentInfo createBar() {
-		ScaleBarComponentInfo bar = new ScaleBarComponentInfo();
-		bar.setTicNumber(3);
-		bar.setUnit("m");
-		bar.setTag("scalebar");
-		return bar;
-	}
-
-	/**
-	 * Builds parametrized URL based on an existing URL.
-	 * 
-	 * @author Jan De Moerloose
-	 * 
-	 */
-	class UrlExtender {
-
-		private Map<String, String> params = new HashMap<String, String>();
-
-		private String baseUrl;
-
-		public UrlExtender(String baseUrl) {
-			this.baseUrl = baseUrl;
-		}
-
-		/**
-		 * Add a parameter.
-		 * 
-		 * @param name
-		 *            name of param
-		 * @param value
-		 *            value of param
-		 * @return this to allow concatenation
-		 */
-		public UrlExtender addParameter(String name, String value) {
-			if (value == null) {
-				value = "";
-			}
-			params.put(name, value);
-			return this;
-		}
-
-		/**
-		 * Add a path extension.
-		 * 
-		 * @param path
-		 *            path
-		 * @return this to allow concatenation
-		 */
-		public UrlExtender addPath(String path) {
-			if (path.startsWith("/") && baseUrl.endsWith("/")) {
-				baseUrl = baseUrl + path.substring(1);
-			} else {
-				baseUrl = baseUrl + path;
-			}
-			return this;
-		}
-
-		/**
-		 * Build the URL and return it as an encoded string.
-		 * 
-		 * @return the encoded URL string
-		 */
-		public String toString() {
-			StringBuilder url = new StringBuilder(baseUrl);
-			if (params.size() > 0) {
-				url.append("?");
-				for (Iterator<String> iterator = params.keySet().iterator(); iterator.hasNext();) {
-					String name = iterator.next();
-					url.append(name).append("=").append(params.get(name));
-					if (iterator.hasNext()) {
-						url.append("&");
-					}
-				}
-			}
-			return URL.encode(url.toString());
-		}
-
-	}
 
 }

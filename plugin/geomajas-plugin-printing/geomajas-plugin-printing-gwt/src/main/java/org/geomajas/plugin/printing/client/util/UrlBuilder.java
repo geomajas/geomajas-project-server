@@ -1,0 +1,100 @@
+/*
+ * This file is part of Geomajas, a component framework for building
+ * rich Internet applications (RIA) with sophisticated capabilities for the
+ * display, analysis and management of geographic information.
+ * It is a building block that allows developers to add maps
+ * and other geographic data capabilities to their web applications.
+ *
+ * Copyright 2008-2010 Geosparc, http://www.geosparc.com, Belgium
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package org.geomajas.plugin.printing.client.util;
+
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
+import com.google.gwt.http.client.URL;
+
+/**
+ * Builds parametrized URL from a base URL.
+ * 
+ * @author Jan De Moerloose
+ * 
+ */
+public class UrlBuilder {
+
+	private Map<String, String> params = new HashMap<String, String>();
+
+	private String baseUrl;
+
+	public UrlBuilder(String baseUrl) {
+		this.baseUrl = baseUrl;
+	}
+
+	/**
+	 * Add a parameter.
+	 * 
+	 * @param name
+	 *            name of param
+	 * @param value
+	 *            value of param
+	 * @return this to allow concatenation
+	 */
+	public UrlBuilder addParameter(String name, String value) {
+		if (value == null) {
+			value = "";
+		}
+		params.put(name, value);
+		return this;
+	}
+
+	/**
+	 * Add a path extension.
+	 * 
+	 * @param path
+	 *            path
+	 * @return this to allow concatenation
+	 */
+	public UrlBuilder addPath(String path) {
+		if (path.startsWith("/") && baseUrl.endsWith("/")) {
+			baseUrl = baseUrl + path.substring(1);
+		} else {
+			baseUrl = baseUrl + path;
+		}
+		return this;
+	}
+
+	/**
+	 * Build the URL and return it as an encoded string.
+	 * 
+	 * @return the encoded URL string
+	 */
+	public String toString() {
+		StringBuilder url = new StringBuilder(baseUrl);
+		if (params.size() > 0) {
+			url.append("?");
+			for (Iterator<String> iterator = params.keySet().iterator(); iterator.hasNext();) {
+				String name = iterator.next();
+				url.append(name).append("=").append(params.get(name));
+				if (iterator.hasNext()) {
+					url.append("&");
+				}
+			}
+		}
+		return URL.encode(url.toString());
+	}
+
+}

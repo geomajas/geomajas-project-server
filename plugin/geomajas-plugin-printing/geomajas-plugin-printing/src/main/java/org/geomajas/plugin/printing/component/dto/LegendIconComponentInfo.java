@@ -20,40 +20,56 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.geomajas.plugin.printing.client;
+package org.geomajas.plugin.printing.component.dto;
 
-import com.google.gwt.i18n.client.Messages;
+import java.io.Serializable;
+
+import org.geomajas.configuration.FeatureStyleInfo;
+import org.geomajas.layer.LayerType;
 
 /**
- * Message bundle for printing plugin.
+ * DTO object for LegendIconComponent.
  * 
  * @author Jan De Moerloose
+ * @see org.geomajas.plugin.printing.component.LegendIconComponent
  * 
  */
-public interface PrintingMessages extends Messages {
+public class LegendIconComponentInfo extends PrintComponentInfo implements Serializable {
 
-	String printBtnTitle();
-	
-	String printPrefsTitle();
-	
-	String printPrefsTitleText();
+	private String label;
 
-	String printPrefsChoose();
-	
-	String printPrefsPrint();
-	
-	String printPrefsSize();
-	
-	String printPrefsOrientation();
-	
-	String printPrefsPortrait();
-	
-	String printPrefsLandscape();
+	private LayerType layerType;
 
-	String printPrefsWithArrow();
+	private FeatureStyleInfo styleInfo;
+
 	
-	String printPrefsWithScaleBar();
+	public String getLabel() {
+		return label;
+	}
+
 	
-	String printPrefsRasterDPI();
+	public void setLabel(String label) {
+		this.label = label;
+	}
+
 	
+	public LayerType getLayerType() {
+		return layerType;
+	}
+
+	
+	public void setLayerType(LayerType layerType) {
+		this.layerType = layerType;
+	}
+
+	
+	public FeatureStyleInfo getStyleInfo() {
+		return styleInfo;
+	}
+
+	
+	public void setStyleInfo(FeatureStyleInfo styleInfo) {
+		this.styleInfo = styleInfo;
+	}
+
 }

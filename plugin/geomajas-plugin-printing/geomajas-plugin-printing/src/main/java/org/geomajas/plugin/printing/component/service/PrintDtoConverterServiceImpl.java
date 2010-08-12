@@ -32,6 +32,8 @@ import org.geomajas.plugin.printing.component.PrintComponent;
 import org.geomajas.plugin.printing.component.dto.ImageComponentInfo;
 import org.geomajas.plugin.printing.component.dto.LabelComponentInfo;
 import org.geomajas.plugin.printing.component.dto.LegendComponentInfo;
+import org.geomajas.plugin.printing.component.dto.LegendIconComponentInfo;
+import org.geomajas.plugin.printing.component.dto.LegendItemComponentInfo;
 import org.geomajas.plugin.printing.component.dto.MapComponentInfo;
 import org.geomajas.plugin.printing.component.dto.PageComponentInfo;
 import org.geomajas.plugin.printing.component.dto.PrintComponentInfo;
@@ -42,6 +44,8 @@ import org.geomajas.plugin.printing.component.dto.ViewPortComponentInfo;
 import org.geomajas.plugin.printing.component.impl.ImageComponentImpl;
 import org.geomajas.plugin.printing.component.impl.LabelComponentImpl;
 import org.geomajas.plugin.printing.component.impl.LegendComponentImpl;
+import org.geomajas.plugin.printing.component.impl.LegendIconComponentImpl;
+import org.geomajas.plugin.printing.component.impl.LegendItemComponentImpl;
 import org.geomajas.plugin.printing.component.impl.MapComponentImpl;
 import org.geomajas.plugin.printing.component.impl.PageComponentImpl;
 import org.geomajas.plugin.printing.component.impl.RasterLayerComponentImpl;
@@ -85,6 +89,10 @@ public class PrintDtoConverterServiceImpl implements PrintDtoConverterService {
 			component = new LabelComponentImpl();
 		} else if (info instanceof LegendComponentInfo) {
 			component = new LegendComponentImpl();
+		} else if (info instanceof LegendItemComponentInfo) {
+			component = new LegendItemComponentImpl();
+		} else if (info instanceof LegendIconComponentInfo) {
+			component = new LegendIconComponentImpl();
 		} else if (info instanceof MapComponentInfo) {
 			component = new MapComponentImpl();
 		} else if (info instanceof PageComponentInfo) {

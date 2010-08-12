@@ -33,8 +33,6 @@ import org.geomajas.plugin.printing.component.LegendComponent;
 import org.geomajas.plugin.printing.component.LegendItemComponent;
 import org.geomajas.plugin.printing.component.PrintComponentVisitor;
 
-import com.lowagie.text.Rectangle;
-
 /**
  * Legend item component for printed document.
  *
@@ -70,9 +68,6 @@ public class LegendItemComponentImpl extends PrintComponentImpl implements Legen
 	@Override
 	public void calculateSize(PdfContext context) {
 		super.calculateSize(context);
-		float height = context.getTextSize("A", getLegend().getFont()).getHeight();
-		height *= 1.2;
-		setBounds(new Rectangle(getBounds().getWidth(), height));
 	}
 
 	protected LegendComponent getLegend() {

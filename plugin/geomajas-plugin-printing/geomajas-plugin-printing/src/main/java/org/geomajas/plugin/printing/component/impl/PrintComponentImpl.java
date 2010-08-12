@@ -121,7 +121,7 @@ public abstract class PrintComponentImpl implements PrintComponent {
 			switch (getConstraint().getFlowDirection()) {
 				case LayoutConstraint.FLOW_NONE:
 					width = Math.max(width, cw);
-					height = Math.max(width, ch);
+					height = Math.max(height, ch);
 					break;
 				case LayoutConstraint.FLOW_X:
 					width += cw;
