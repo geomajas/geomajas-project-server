@@ -74,5 +74,9 @@ public class PickerIcon extends FormItemIcon {
 		public Picker(String url) {
 			this.url = url;
 		}
+
+		public String getUrl() {
+			return url;
+		}
 	}
 }
