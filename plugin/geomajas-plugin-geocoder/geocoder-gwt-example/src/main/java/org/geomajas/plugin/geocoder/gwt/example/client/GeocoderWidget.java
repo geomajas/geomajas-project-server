@@ -32,24 +32,17 @@ import com.smartgwt.client.widgets.form.fields.events.IconClickHandler;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
 import org.geomajas.command.CommandResponse;
-import org.geomajas.command.EmptyCommandRequest;
-import org.geomajas.command.dto.CopyrightResponse;
-import org.geomajas.global.Api;
-import org.geomajas.global.CopyrightInfo;
 import org.geomajas.gwt.client.command.CommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
-import org.geomajas.gwt.client.i18n.I18nProvider;
 import org.geomajas.gwt.client.map.MapView;
 import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.plugin.geocoder.command.dto.GetLocationForStringRequest;
 import org.geomajas.plugin.geocoder.command.dto.GetLocationForStringResponse;
 
-import java.util.Collection;
-
 /**
- * ...
+ * Widget for starting a geocoder location search.
  *
  * @author Joachim Van der Auwera
  * @since 1.0.0

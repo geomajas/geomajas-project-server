@@ -23,11 +23,6 @@
 
 package org.geomajas.plugin.geocoder.gwt.example.client;
 
-import com.google.gwt.event.dom.client.MouseMoveEvent;
-import com.google.gwt.i18n.client.NumberFormat;
-import org.geomajas.geometry.Coordinate;
-import org.geomajas.gwt.client.controller.AbstractGraphicsController;
-import org.geomajas.gwt.client.controller.GraphicsController;
 import org.geomajas.plugin.geocoder.gwt.example.client.i18n.Translation;
 
 import org.geomajas.gwt.client.i18n.I18nProvider;
