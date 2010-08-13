@@ -8,7 +8,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas</groupId>
 	<artifactId>geomajas-gwt-archetype</artifactId>
-	<version>1.8.0-SNAPSHOT</version>
+	<version>1.7.1-R1</version>
 	<packaging>maven-archetype</packaging>
 	<name>Geomajas GWT application archetype</name>
 	<description>Geomajas GWT application archetype</description>
@@ -65,4 +65,10 @@
 			</plugin>
 		</plugins>
 	</build>
+
+  <scm>
+    <connection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-gwt-archetype-1.7.1-R1</connection>
+    <developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-gwt-archetype-1.7.1-R1</developerConnection>
+    <url>https://svn.geomajas.org/majas/tags/geomajas-gwt-archetype-1.7.1-R1</url>
+  </scm>
 </project> 
