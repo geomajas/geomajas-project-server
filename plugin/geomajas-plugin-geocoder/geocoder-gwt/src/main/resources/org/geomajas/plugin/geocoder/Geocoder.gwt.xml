@@ -1,0 +1,8 @@
+<module>
+
+	<inherits name="org.geomajas.gwt.GeomajasClient" />
+
+	<source path="client" />
+	<source path="command/dto" />
+
+</module>

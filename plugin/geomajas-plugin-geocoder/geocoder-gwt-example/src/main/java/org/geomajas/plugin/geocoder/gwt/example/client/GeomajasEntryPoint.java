@@ -23,47 +23,33 @@
 
 package org.geomajas.plugin.geocoder.gwt.example.client;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import com.google.gwt.event.dom.client.MouseMoveEvent;
+import com.google.gwt.i18n.client.NumberFormat;
+import org.geomajas.geometry.Coordinate;
+import org.geomajas.gwt.client.controller.AbstractGraphicsController;
+import org.geomajas.gwt.client.controller.GraphicsController;
 import org.geomajas.plugin.geocoder.gwt.example.client.i18n.Translation;
-import org.geomajas.plugin.geocoder.gwt.example.client.pages.AbstractTab;
 
 import org.geomajas.gwt.client.i18n.I18nProvider;
-import org.geomajas.gwt.client.widget.LayerTree;
-import org.geomajas.gwt.client.widget.Legend;
 import org.geomajas.gwt.client.widget.LoadingScreen;
-import org.geomajas.gwt.client.widget.LocaleSelect;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.Toolbar;
 
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.ConstantsWithLookup;
-import com.smartgwt.client.types.Side;
-import com.smartgwt.client.types.VisibilityMode;
 import com.smartgwt.client.widgets.Img;
 import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.layout.HLayout;
-import com.smartgwt.client.widgets.layout.SectionStack;
-import com.smartgwt.client.widgets.layout.SectionStackSection;
 import com.smartgwt.client.widgets.layout.VLayout;
-import com.smartgwt.client.widgets.tab.TabSet;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
 
 /**
- * Entry point and main class for GWT application. This class defines the layout and functionality of this
- * application.
- * 
+ * Entry point and main class for GWT application. This class defines the layout and functionality of this application.
+ *
  * @author Pieter De Graef
  */
 public class GeomajasEntryPoint implements EntryPoint {
-
-	private Legend legend;
-
-	private TabSet tabSet = new TabSet();
-
-	private List<AbstractTab> tabs = new ArrayList<AbstractTab>();
 
 	public GeomajasEntryPoint() {
 	}
@@ -91,10 +77,8 @@ public class GeomajasEntryPoint implements EntryPoint {
 
 		Label title = new Label("Geomajas, geocoder GWT widget example");
 		title.setStyleName("sgwtTitle");
-		title.setWidth(300);
+		title.setWidth(400);
 		topBar.addMember(title);
-		topBar.addFill();
-		topBar.addMember(new LocaleSelect("English"));
 
 		mainLayout.addMember(topBar);
 
@@ -112,56 +96,11 @@ public class GeomajasEntryPoint implements EntryPoint {
 		toolbar.setButtonSize(Toolbar.BUTTON_SIZE_BIG);
 
 		VLayout mapLayout = new VLayout();
-		mapLayout.setShowResizeBar(true);
-		mapLayout.setResizeBarTarget("mytabs");
 		mapLayout.addMember(toolbar);
 		mapLayout.addMember(map);
-		mapLayout.setHeight("65%");
-		tabSet.setTabBarPosition(Side.TOP);
-		tabSet.setWidth100();
-		tabSet.setHeight("35%");
-		tabSet.setID("mytabs");
+		mapLayout.setHeight("100%");
 
-		VLayout leftLayout = new VLayout();
-		leftLayout.setShowEdges(true);
-		leftLayout.addMember(mapLayout);
-		leftLayout.addMember(tabSet);
-
-		layout.addMember(leftLayout);
-
-		// ---------------------------------------------------------------------
-		// Create the right-side (overview map, layer-tree, legend):
-		// ---------------------------------------------------------------------
-		final SectionStack sectionStack = new SectionStack();
-		sectionStack.setShowEdges(true);
-		sectionStack.setVisibilityMode(VisibilityMode.MULTIPLE);
-		sectionStack.setCanReorderSections(true);
-		sectionStack.setCanResizeSections(false);
-		sectionStack.setSize("250px", "100%");
-
-		// LayerTree layout:
-		SectionStackSection section2 = new SectionStackSection("Layer tree");
-		section2.setExpanded(true);
-		LayerTree layerTree = new LayerTree(map);
-		section2.addItem(layerTree);
-		sectionStack.addSection(section2);
-
-		// Legend layout:
-		SectionStackSection section3 = new SectionStackSection("Legend");
-		section3.setExpanded(true);
-		legend = new Legend(map.getMapModel());
-		section3.addItem(legend);
-		sectionStack.addSection(section3);
-
-		// Putting the right side layouts together:
-		layout.addMember(sectionStack);
-
-		// ---------------------------------------------------------------------
-		// Bottom left: Add tabs here:
-		// ---------------------------------------------------------------------
-		//FeatureListGridPage page1 = new FeatureListGridPage(map);
-		//addTab(new SearchPage(map, tabSet, page1.getTable()));
-		//addTab(page1);
+		layout.addMember(mapLayout);
 
 		// ---------------------------------------------------------------------
 		// Finally draw everything:
@@ -174,20 +113,7 @@ public class GeomajasEntryPoint implements EntryPoint {
 		LoadingScreen loadScreen = new LoadingScreen(map, "Geomajas, geocoder GWT widget example");
 		loadScreen.draw();
 
-		// Then initialize:
-		initialize();
-	}
-
-	private void addTab(AbstractTab tab) {
-		tabSet.addTab(tab);
-		tabs.add(tab);
-	}
-
-	private void initialize() {
-		legend.setHeight(200);
-
-		for (AbstractTab tab : tabs) {
-			tab.initialize();
-		}
+		toolbar.addMember(new GeocoderWidget(map, "description", "Geocoder"));
+		toolbar.addMember(new Label("Try searching bla, london or booischot."));
 	}
 }
