@@ -25,7 +25,7 @@ package org.geomajas.plugin.geocoder.service;
 
 import junit.framework.Assert;
 import org.geomajas.plugin.geocoder.api.GetLocationResult;
-import org.geomajas.plugin.geocoder.api.StaticRegexMatchLocationInfo;
+import org.geomajas.plugin.geocoder.api.StaticRegexGeocoderLocationInfo;
 import org.geomajas.service.GeoService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -39,33 +39,33 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Test for {@link StaticRegexMatchService}.
+ * Test for {@link StaticRegexGeocoderService}.
  *
  * @author Joachim Van der Auwera
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
 		"/completeContext.xml"})
-public class StaticRegexMatchServiceTest {
+public class StaticRegexGeocoderServiceTest {
 
 	@Autowired
-	@Qualifier("staticRegexMatchService")
-	private StaticRegexMatchService service;
+	@Qualifier("staticRegexGeocoderService")
+	private StaticRegexGeocoderService service;
 
 	@Autowired
 	private GeoService geoService;
 
 	@Autowired
 	@Qualifier("BooischotShort")
-	private StaticRegexMatchLocationInfo booischotShort;
+	private StaticRegexGeocoderLocationInfo booischotShort;
 	
 	@Autowired
 	@Qualifier("Booischot")
-	private StaticRegexMatchLocationInfo booischot;
+	private StaticRegexGeocoderLocationInfo booischot;
 
 	@Autowired
 	@Qualifier("BooischotStrict")
-	private StaticRegexMatchLocationInfo booischotStrict;
+	private StaticRegexGeocoderLocationInfo booischotStrict;
 
 	@Test
 	public void testGetCrs() throws Exception {

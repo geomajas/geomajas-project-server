@@ -28,8 +28,8 @@ import org.geomajas.global.Api;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.plugin.geocoder.api.GeocoderService;
 import org.geomajas.plugin.geocoder.api.GetLocationResult;
-import org.geomajas.plugin.geocoder.api.StaticRegexMatchInfo;
-import org.geomajas.plugin.geocoder.api.StaticRegexMatchLocationInfo;
+import org.geomajas.plugin.geocoder.api.StaticRegexGeocoderInfo;
+import org.geomajas.plugin.geocoder.api.StaticRegexGeocoderLocationInfo;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -47,10 +47,10 @@ import java.util.regex.Pattern;
  * @since 1.0.0
  */
 @Api
-public class StaticRegexMatchService implements GeocoderService {
+public class StaticRegexGeocoderService implements GeocoderService {
 
 	@NotNull
-	private StaticRegexMatchInfo matchInfo;
+	private StaticRegexGeocoderInfo geocoderInfo;
 
 	@Autowired
 	private GeoService geoService;
@@ -63,16 +63,16 @@ public class StaticRegexMatchService implements GeocoderService {
 	/**
 	 * Set configuration for service.
 	 *
-	 * @param matchInfo configuration
+	 * @param geocoderInfo configuration
 	 */
 	@Api
-	public void setMatchInfo(StaticRegexMatchInfo matchInfo) {
-		this.matchInfo = matchInfo;
+	public void setGeocoderInfo(StaticRegexGeocoderInfo geocoderInfo) {
+		this.geocoderInfo = geocoderInfo;
 	}
 
 	@PostConstruct
 	private void initCrs() throws GeomajasException {
-		crs = geoService.getCrs(matchInfo.getCrs());
+		crs = geoService.getCrs(geocoderInfo.getCrs());
 	}
 
 	public CoordinateReferenceSystem getCrs() {
@@ -81,7 +81,7 @@ public class StaticRegexMatchService implements GeocoderService {
 
 	public GetLocationResult getLocation(List<String> location) {
 		GetLocationResult result = null;
-		for (StaticRegexMatchLocationInfo test : matchInfo.getLocations()) {
+		for (StaticRegexGeocoderLocationInfo test : geocoderInfo.getLocations()) {
 			result = getLocation(test, location);
 			if (null != result) {
 				break;
@@ -90,7 +90,7 @@ public class StaticRegexMatchService implements GeocoderService {
 		return result;
 	}
 
-	GetLocationResult getLocation(StaticRegexMatchLocationInfo test, List<String> location) {
+	GetLocationResult getLocation(StaticRegexGeocoderLocationInfo test, List<String> location) {
 		int index = 0;
 		boolean skipMoreDetailed = false;
 		for (String toMatch : test.getToMatch()) {

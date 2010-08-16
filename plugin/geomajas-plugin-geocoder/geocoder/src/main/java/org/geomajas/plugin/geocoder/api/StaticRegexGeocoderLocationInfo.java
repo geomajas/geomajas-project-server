@@ -30,13 +30,13 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
- * Configure one location for {@link org.geomajas.plugin.geocoder.service.StaticRegexMatchService}.
+ * Configure one location for {@link org.geomajas.plugin.geocoder.service.StaticRegexGeocoderService}.
  *
  * @author Joachim Van der Auwera
  * @since 1.0.0
  */
 @Api(allMethods = true)
-public class StaticRegexMatchLocationInfo {
+public class StaticRegexGeocoderLocationInfo {
 
 	@NotNull
   	private List<String> toMatch;

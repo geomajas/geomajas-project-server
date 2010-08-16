@@ -58,13 +58,13 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		</property>
 	</bean>
 
-	<bean name="geocoderService1" class="org.geomajas.plugin.geocoder.service.StaticRegexMatchService">
-		<property name="matchInfo">
-			<bean class="org.geomajas.plugin.geocoder.api.StaticRegexMatchInfo">
+	<bean name="geocoderService1" class="org.geomajas.plugin.geocoder.service.StaticRegexGeocoderService">
+		<property name="geocoderInfo">
+			<bean class="org.geomajas.plugin.geocoder.api.StaticRegexGeocoderInfo">
 				<property name="crs" value="EPSG:900913"/>
 				<property name="locations">
 					<list>
-						<bean class="org.geomajas.plugin.geocoder.api.StaticRegexMatchLocationInfo">
+						<bean class="org.geomajas.plugin.geocoder.api.StaticRegexGeocoderLocationInfo">
 							<property name="toMatch">
 								<list>
 									<value>one</value>
@@ -79,7 +79,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 								</bean>
 							</property>
 						</bean>
-						<bean class="org.geomajas.plugin.geocoder.api.StaticRegexMatchLocationInfo">
+						<bean class="org.geomajas.plugin.geocoder.api.StaticRegexGeocoderLocationInfo">
 							<property name="toMatch">
 								<list>
 									<value>bla</value>
@@ -100,13 +100,13 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		</property>
 	</bean>
 
-	<bean name="geocoderService2" class="org.geomajas.plugin.geocoder.service.StaticRegexMatchService">
-		<property name="matchInfo">
-			<bean class="org.geomajas.plugin.geocoder.api.StaticRegexMatchInfo">
+	<bean name="geocoderService2" class="org.geomajas.plugin.geocoder.service.StaticRegexGeocoderService">
+		<property name="geocoderInfo">
+			<bean class="org.geomajas.plugin.geocoder.api.StaticRegexGeocoderInfo">
 				<property name="crs" value="EPSG:900913"/>
 				<property name="locations">
 					<list>
-						<bean class="org.geomajas.plugin.geocoder.api.StaticRegexMatchLocationInfo">
+						<bean class="org.geomajas.plugin.geocoder.api.StaticRegexGeocoderLocationInfo">
 							<property name="toMatch">
 								<list>
 									<value>bla</value>

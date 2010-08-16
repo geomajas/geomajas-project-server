@@ -29,13 +29,13 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		<property name="pointDisplayHeight" value="1000" />
 		<property name="geocoderServices">
 			<list>
-				<bean class="org.geomajas.plugin.geocoder.service.StaticRegexMatchService">
-					<property name="matchInfo">
-						<bean class="org.geomajas.plugin.geocoder.api.StaticRegexMatchInfo">
+				<bean class="org.geomajas.plugin.geocoder.service.StaticRegexGeocoderService">
+					<property name="geocoderInfo">
+						<bean class="org.geomajas.plugin.geocoder.api.StaticRegexGeocoderInfo">
 							<property name="crs" value="EPSG:900913"/>
 							<property name="locations">
 								<list>
-									<bean class="org.geomajas.plugin.geocoder.api.StaticRegexMatchLocationInfo">
+									<bean class="org.geomajas.plugin.geocoder.api.StaticRegexGeocoderLocationInfo">
 										<property name="toMatch">
 											<list>
 												<value>Booischot</value>
@@ -44,7 +44,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 										<property name="x" value="531242.12390"/>
 										<property name="y" value="6630310.26214"/>
 									</bean>
-									<bean class="org.geomajas.plugin.geocoder.api.StaticRegexMatchLocationInfo">
+									<bean class="org.geomajas.plugin.geocoder.api.StaticRegexGeocoderLocationInfo">
 										<property name="toMatch">
 											<list>
 												<value>london</value>
@@ -58,7 +58,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 										<property name="x" value="-11618"/>
 										<property name="y" value="6710559"/>
 									</bean>
-									<bean class="org.geomajas.plugin.geocoder.api.StaticRegexMatchLocationInfo">
+									<bean class="org.geomajas.plugin.geocoder.api.StaticRegexGeocoderLocationInfo">
 										<property name="toMatch">
 											<list>
 												<value>bla</value>

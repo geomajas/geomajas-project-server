@@ -29,18 +29,18 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
- * Configuration for {@link org.geomajas.plugin.geocoder.service.StaticRegexMatchService}.
+ * Configuration for {@link org.geomajas.plugin.geocoder.service.StaticRegexGeocoderService}.
  *
  * @author Joachim Van der Auwera
  * @since 1.0.0
  */
 @Api(allMethods = true)
-public class StaticRegexMatchInfo {
+public class StaticRegexGeocoderInfo {
 
 	@NotNull
 	private String crs;
 
-	private List<StaticRegexMatchLocationInfo> locations;
+	private List<StaticRegexGeocoderLocationInfo> locations;
 
 	/**
 	 * CRS for locations.
@@ -65,7 +65,7 @@ public class StaticRegexMatchInfo {
 	 *
 	 * @return locations
 	 */
-	public List<StaticRegexMatchLocationInfo> getLocations() {
+	public List<StaticRegexGeocoderLocationInfo> getLocations() {
 		return locations;
 	}
 
@@ -74,7 +74,7 @@ public class StaticRegexMatchInfo {
 	 *
 	 * @param locations locations
 	 */
-	public void setLocations(List<StaticRegexMatchLocationInfo> locations) {
+	public void setLocations(List<StaticRegexGeocoderLocationInfo> locations) {
 		this.locations = locations;
 	}
 }
