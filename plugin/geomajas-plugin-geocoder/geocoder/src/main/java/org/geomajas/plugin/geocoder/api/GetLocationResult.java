@@ -25,6 +25,7 @@ package org.geomajas.plugin.geocoder.api;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
+import org.geomajas.configuration.client.ClientUserDataInfo;
 import org.geomajas.global.Api;
 
 import java.util.List;
@@ -41,6 +42,7 @@ public class GetLocationResult {
 	private List<String> matchingStrings;
 	private Coordinate coordinate;
 	private Envelope envelope;
+	private ClientUserDataInfo userData;
 
 	/**
 	 * Get the strings which were matched (may be the same as the original request, or different when matching is a bit
@@ -98,5 +100,23 @@ public class GetLocationResult {
 	 */
 	public void setEnvelope(Envelope envelope) {
 		this.envelope = envelope;
+	}
+
+	/**
+	 * Get extra user data for the geocoder search result.
+	 *
+	 * @return user data
+	 */
+	public ClientUserDataInfo getUserData() {
+		return userData;
+	}
+
+	/**
+	 * Set extra user data for the geocoder search result.
+	 *
+	 * @param userData user data
+	 */
+	public void setUserData(ClientUserDataInfo userData) {
+		this.userData = userData;
 	}
 }

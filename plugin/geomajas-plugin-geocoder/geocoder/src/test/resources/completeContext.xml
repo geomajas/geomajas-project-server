@@ -115,6 +115,11 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 									<property name="height" value="10000"/>
 								</bean>
 							</property>
+							<property name="userData">
+								<bean class="org.geomajas.plugin.geocoder.service.UserDataTestInfo">
+									<property name="value" value="xobb"/>
+								</bean>
+							</property>
 						</bean>
 					</list>
 				</property>
@@ -142,6 +147,11 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 									<property name="height" value="10000"/>
 								</bean>
 							</property>
+							<property name="userData">
+								<bean class="org.geomajas.plugin.geocoder.service.UserDataTestInfo">
+									<property name="value" value="xobb"/>
+								</bean>
+							</property>
 						</bean>
 					</list>
 				</property>
@@ -157,6 +167,11 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		</property>
 		<property name="x" value="621468.063486916"/>
 		<property name="y" value="5706881.117852388"/>
+		<property name="userData">
+			<bean class="org.geomajas.plugin.geocoder.service.UserDataTestInfo">
+				<property name="value" value="schotbooi"/>
+			</bean>
+		</property>
 	</bean>
 
 	<bean name="Booischot" class="org.geomajas.plugin.geocoder.api.StaticRegexGeocoderLocationInfo">

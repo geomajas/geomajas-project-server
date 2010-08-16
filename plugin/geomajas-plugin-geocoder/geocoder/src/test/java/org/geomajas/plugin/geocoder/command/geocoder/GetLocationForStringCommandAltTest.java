@@ -35,14 +35,14 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
- * Test for GetLocationForString command, with explicit combiner.
+ * Test for GetLocationForStringCommand command, with explicit combiner.
  *
  * @author Joachim Van der Auwera
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
 		"/completeAltContext.xml"})
-public class GetLocationForStringAltTest {
+public class GetLocationForStringCommandAltTest {
 
 	private static final double DELTA = 1e-20;
 	private static final String COMMAND = "command.geocoder.GetLocationForString";

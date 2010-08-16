@@ -24,6 +24,7 @@
 package org.geomajas.plugin.geocoder.command.dto;
 
 import org.geomajas.command.CommandResponse;
+import org.geomajas.configuration.client.ClientUserDataInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.global.Api;
@@ -43,36 +44,97 @@ public class GetLocationForStringResponse extends CommandResponse {
 	private String matchedLocation;
 	private Coordinate center;
 	private Bbox bbox;
+	private ClientUserDataInfo userData;
 
+	/**
+	 * Indicator whether a result was found.
+	 *
+	 * @return true when there is a result
+	 */
 	public boolean isLocationFound() {
 		return locationFound;
 	}
 
+	/**
+	 * Set whether a result was found.
+	 *
+	 * @param locationFound true when a result was found
+	 */
 	public void setLocationFound(boolean locationFound) {
 		this.locationFound = locationFound;
 	}
 
+	/**
+	 * Get string preferred description of matched location.
+	 *
+	 * @return preferred string for searching this location
+	 */
 	public String getMatchedLocation() {
 		return matchedLocation;
 	}
 
+	/**
+	 * Set the preferred string for matching this location.
+	 *
+	 * @param matchedLocation location as string
+	 */
 	public void setMatchedLocation(String matchedLocation) {
 		this.matchedLocation = matchedLocation;
 	}
 
+	/**
+	 * Get center of the located area.
+	 *
+	 * @return center of area
+	 */
 	public Coordinate getCenter() {
 		return center;
 	}
 
+	/**
+	 * Set center of the located area.
+	 *
+	 * @param center center
+	 */
 	public void setCenter(Coordinate center) {
 		this.center = center;
 	}
 
+	/**
+	 * Get bounding box for the located area.
+	 *
+	 * @return located area
+	 */
 	public Bbox getBbox() {
 		return bbox;
 	}
 
+	/**
+	 * Set bounding box for the located area.
+	 *
+	 * @param bbox located area
+	 */
 	public void setBbox(Bbox bbox) {
 		this.bbox = bbox;
 	}
+
+	/**
+	 * Get extra user data for the geocoder search result.    Only set when there was only one results from the list
+	 * of geocoder services.
+	 *
+	 * @return user data
+	 */
+	public ClientUserDataInfo getUserData() {
+		return userData;
+	}
+
+	/**
+	 * Set extra user data for the geocoder search result.
+	 *
+	 * @param userData user data
+	 */
+	public void setUserData(ClientUserDataInfo userData) {
+		this.userData = userData;
+	}
+
 }

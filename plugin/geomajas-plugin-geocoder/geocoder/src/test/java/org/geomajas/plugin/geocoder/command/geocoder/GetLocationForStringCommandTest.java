@@ -28,6 +28,7 @@ import org.geomajas.command.CommandDispatcher;
 import org.geomajas.command.CommandResponse;
 import org.geomajas.plugin.geocoder.command.dto.GetLocationForStringRequest;
 import org.geomajas.plugin.geocoder.command.dto.GetLocationForStringResponse;
+import org.geomajas.plugin.geocoder.service.UserDataTestInfo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,14 +36,14 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
- * Test for GetLocationForString command.
+ * Test for GetLocationForStringCommand command.
  *
  * @author Joachim Van der Auwera
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
 		"/completeContext.xml"})
-public class GetLocationForStringTest {
+public class GetLocationForStringCommandTest {
 
 	private static final double DELTA = 1e-20;
 	private static final String COMMAND = "command.geocoder.GetLocationForString";
@@ -71,6 +72,8 @@ public class GetLocationForStringTest {
 		Assert.assertEquals(5706809.617868648, response.getBbox().getY(), DELTA);
 		Assert.assertEquals(285.05822670296766, response.getBbox().getWidth(), DELTA);
 		Assert.assertEquals(142.99996748007834, response.getBbox().getHeight(), DELTA);
+		Assert.assertNotNull(response.getUserData());
+		Assert.assertEquals("schotbooi", ((UserDataTestInfo)response.getUserData()).getValue());
 	}
 
 	@Test
@@ -87,7 +90,6 @@ public class GetLocationForStringTest {
 		Assert.assertEquals("Booischot", response.getMatchedLocation());
 		Assert.assertNotNull(response.getCenter());
 		Assert.assertNotNull(response.getBbox());
-		System.out.println("latlon point " + response.getCenter());
 		Assert.assertEquals(5.582742600224577, response.getCenter().getX(), DELTA);
 		Assert.assertEquals(45.53964302945367, response.getCenter().getY(), DELTA);
 	}
@@ -108,6 +110,7 @@ public class GetLocationForStringTest {
 		Assert.assertNotNull(response.getBbox());
 		Assert.assertEquals(10000, response.getCenter().getX(), DELTA);
 		Assert.assertEquals(10000, response.getCenter().getY(), DELTA);
+		Assert.assertNull(response.getUserData());
 	}
 
 	@Test
@@ -130,6 +133,7 @@ public class GetLocationForStringTest {
 		Assert.assertEquals(50000, response.getBbox().getY(), DELTA);
 		Assert.assertEquals(100000, response.getBbox().getWidth(), DELTA);
 		Assert.assertEquals(80000, response.getBbox().getHeight(), DELTA);
+		Assert.assertNull(response.getUserData());
 	}
 
 	@Test

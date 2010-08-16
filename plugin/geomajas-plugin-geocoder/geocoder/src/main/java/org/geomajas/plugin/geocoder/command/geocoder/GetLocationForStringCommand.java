@@ -57,7 +57,7 @@ import java.util.List;
  */
 @Api
 @Component
-public class GetLocationForString implements Command<GetLocationForStringRequest, GetLocationForStringResponse> {
+public class GetLocationForStringCommand implements Command<GetLocationForStringRequest, GetLocationForStringResponse> {
 
 	@Autowired
 	private GeocoderInfo geocoderInfo;
@@ -140,6 +140,11 @@ public class GetLocationForString implements Command<GetLocationForStringRequest
 				}
 			}
 			response.setMatchedLocation(matchedLocation);
+
+			// combine the user data, only when there is just one result
+			if (results.size() == 1) {
+				response.setUserData(results.get(0).getUserData());
+			}
 
 			// combine location envelopes
 			Envelope resultEnvelope = combineResultService.combine(results);
