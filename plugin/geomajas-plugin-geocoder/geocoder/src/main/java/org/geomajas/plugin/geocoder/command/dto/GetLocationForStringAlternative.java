@@ -29,43 +29,21 @@ import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.global.Api;
 
-import java.util.List;
-
 /**
- * Response object for getting location information for a string.
+ * Alternative location for a string when search was ambiguous.
  *
  * @author Joachim Van der Auwera
  * @since 1.0.0
  */
 @Api(allMethods = true)
-public class GetLocationForStringResponse extends CommandResponse {
+public class GetLocationForStringAlternative extends CommandResponse {
 
 	private static final long serialVersionUID = 100L;
 
-	private boolean locationFound;
 	private String matchedLocation;
 	private Coordinate center;
 	private Bbox bbox;
 	private ClientUserDataInfo userData;
-	private List<GetLocationForStringAlternative> alternatives;
-
-	/**
-	 * Indicator whether a result was found.
-	 *
-	 * @return true when there is a result
-	 */
-	public boolean isLocationFound() {
-		return locationFound;
-	}
-
-	/**
-	 * Set whether a result was found.
-	 *
-	 * @param locationFound true when a result was found
-	 */
-	public void setLocationFound(boolean locationFound) {
-		this.locationFound = locationFound;
-	}
 
 	/**
 	 * Get string preferred description of matched location.
@@ -122,7 +100,7 @@ public class GetLocationForStringResponse extends CommandResponse {
 	}
 
 	/**
-	 * Get extra user data for the geocoder search result.    Only set when there was only one results from the list of
+	 * Get extra user data for the geocoder search result. Only set when there was only one results from the list of
 	 * geocoder services.
 	 *
 	 * @return user data
@@ -140,21 +118,4 @@ public class GetLocationForStringResponse extends CommandResponse {
 		this.userData = userData;
 	}
 
-	/**
-	 * Get alternative locations when search was ambiguous. This should only be set when there is no result.
-	 *
-	 * @return alternative locations for search
-	 */
-	public List<GetLocationForStringAlternative> getAlternatives() {
-		return alternatives;
-	}
-
-	/**
-	 * Set alternatives when the search was ambiguous. Only set when there was no result.
-	 *
-	 * @param alternatives alternative locations for search
-	 */
-	public void setAlternatives(List<GetLocationForStringAlternative> alternatives) {
-		this.alternatives = alternatives;
-	}
 }

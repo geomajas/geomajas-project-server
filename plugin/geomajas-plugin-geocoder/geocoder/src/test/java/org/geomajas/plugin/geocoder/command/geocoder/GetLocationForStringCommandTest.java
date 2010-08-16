@@ -65,7 +65,6 @@ public class GetLocationForStringCommandTest {
 		Assert.assertEquals("booischot", response.getMatchedLocation());
 		Assert.assertNotNull(response.getCenter());
 		Assert.assertNotNull(response.getBbox());
-		System.out.println("expanded bbox " + response.getBbox());
 		Assert.assertEquals(621468.063486916, response.getCenter().getX(), DELTA);
 		Assert.assertEquals(5706881.117852388, response.getCenter().getY(), DELTA);
 		Assert.assertEquals(621325.5343735645, response.getBbox().getX(), DELTA);

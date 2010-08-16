@@ -85,8 +85,8 @@ public class GeonamesGeocoderService implements GeocoderService {
 		return crs;
 	}
 
-	public GetLocationResult getLocation(List<String> location) {
-		GetLocationResult result = null;
+	public GetLocationResult[] getLocation(List<String> location) {
+		GetLocationResult[] result;
 		try {
 			/* code f	or u	sing	 geonam	es library, does not support fuzzy or isNameRequired
 			ToponymSearchCriteria criteria = new ToponymSearchCriteria();
@@ -112,28 +112,25 @@ public class GeonamesGeocoderService implements GeocoderService {
 			if (0 == resCount) {
 				// try fuzzy search when no results
 				toponyms = search(splitCommaReverseService.combine(location), MAX_ROWS, true);
-				resCount = toponyms.size();
 			}
 
 			// remove duplicates from the results (eg because featureClass is different)
 			removeDuplicates(toponyms);
+			resCount = toponyms.size();
 
-			if (resCount > 1) {
-				// multiple results
-				// @TODO..., needs GC-2
-			}
-			// @todo should be ==1
-			if (resCount != 0) {
-				Toponym toponym = toponyms.get(0);
-				result = new GetLocationResult();
+			result = new GetLocationResult[resCount];
+			for (int i = 0; i < resCount; i++) {
+				Toponym toponym = toponyms.get(i);
+				GetLocationResult one = new GetLocationResult();
 				List<String> prefResult = new ArrayList<String>();
 				prefResult.add(toponym.getCountryCode());
 				prefResult.add(toponym.getName());
-				result.setMatchingStrings(prefResult);
+				one.setMatchingStrings(prefResult);
 				Coordinate coordinate = new Coordinate();
 				coordinate.x = toponym.getLongitude();
 				coordinate.y = toponym.getLatitude();
-				result.setCoordinate(coordinate);
+				one.setCoordinate(coordinate);
+				result[i] = one;
 			}
 			return result;
 		} catch (Exception ex) {
@@ -168,7 +165,7 @@ public class GeonamesGeocoderService implements GeocoderService {
 	}
 
 	/**
-	 * Full text search on the GeoNames database. Modified version from the geonames library to allow using
+	 * Full text search on the GeoNames database. Modified version from the geonames library to allow using 
 	 * isNameRequired and fuzzy.
 	 * <p/>
 	 * This service gets the number of toponyms defined by the 'maxRows' parameter. The parameter 'style' determines

@@ -26,7 +26,6 @@ package org.geomajas.plugin.geocoder.command.geocoder;
 import junit.framework.Assert;
 import org.geomajas.command.CommandDispatcher;
 import org.geomajas.command.CommandResponse;
-import org.geomajas.plugin.geocoder.command.dto.GetLocationForStringAlternative;
 import org.geomajas.plugin.geocoder.command.dto.GetLocationForStringRequest;
 import org.geomajas.plugin.geocoder.command.dto.GetLocationForStringResponse;
 import org.junit.Test;
@@ -42,8 +41,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
-		"/completeAltContext.xml"})
-public class GetLocationForStringCommandAltTest {
+		"/completeCombineContext.xml"})
+public class GetLocationForStringCommandCombineTest {
 
 	private static final double DELTA = 1e-20;
 	private static final String COMMAND = "command.geocoder.GetLocationForString";
@@ -52,77 +51,47 @@ public class GetLocationForStringCommandAltTest {
 	private CommandDispatcher commandDispatcher;
 
 	@Test
-	public void oneResultTest() throws Exception {
-		GetLocationForStringRequest request = new GetLocationForStringRequest();
-		request.setCrs("EPSG:4326");
-		request.setLocation("booischot");
-
-		CommandResponse commandResponse = commandDispatcher.execute(COMMAND, request, null, "en");
-		Assert.assertNotNull(commandResponse);
-		Assert.assertTrue(commandResponse instanceof GetLocationForStringResponse);
-		GetLocationForStringResponse response = (GetLocationForStringResponse) commandResponse;
-		Assert.assertTrue(response.isLocationFound());
-		Assert.assertEquals("Booischot, BE", response.getMatchedLocation());
-		Assert.assertNotNull(response.getCenter());
-		Assert.assertNotNull(response.getBbox());
-		Assert.assertEquals(4.76667, response.getCenter().getX(), DELTA);
-		Assert.assertEquals(51.05, response.getCenter().getY(), DELTA);
-		Assert.assertNull(response.getAlternatives());
-	}
-
-	@Test
-	public void oneResultCrsTest() throws Exception {
+	public void oneBboxTest() throws Exception {
 		GetLocationForStringRequest request = new GetLocationForStringRequest();
 		request.setCrs("EPSG:900913");
-		request.setLocation("booischot");
+		request.setLocation("one");
 
 		CommandResponse commandResponse = commandDispatcher.execute(COMMAND, request, null, "en");
 		Assert.assertNotNull(commandResponse);
 		Assert.assertTrue(commandResponse instanceof GetLocationForStringResponse);
-		GetLocationForStringResponse response = (GetLocationForStringResponse) commandResponse;
+		GetLocationForStringResponse response = (GetLocationForStringResponse)commandResponse;
 		Assert.assertTrue(response.isLocationFound());
-		Assert.assertEquals("Booischot, BE", response.getMatchedLocation());
+		Assert.assertEquals("one", response.getMatchedLocation());
 		Assert.assertNotNull(response.getCenter());
 		Assert.assertNotNull(response.getBbox());
-		Assert.assertEquals(530623.2771795733, response.getCenter().getX(), DELTA);
-		Assert.assertEquals(6630142.914367953, response.getCenter().getY(), DELTA);
-		Assert.assertNull(response.getAlternatives());
+		Assert.assertEquals(50000, response.getCenter().getX(), DELTA);
+		Assert.assertEquals(50000, response.getCenter().getY(), DELTA);
+		Assert.assertEquals(0, response.getBbox().getX(), DELTA);
+		Assert.assertEquals(0, response.getBbox().getY(), DELTA);
+		Assert.assertEquals(100000, response.getBbox().getWidth(), DELTA);
+		Assert.assertEquals(100000, response.getBbox().getHeight(), DELTA);
 	}
 
 	@Test
-	public void alternativesTest() throws Exception {
-		GetLocationForStringRequest request = new GetLocationForStringRequest();
-		request.setCrs("EPSG:4326");
-		request.setLocation("London, GB");
-
-		CommandResponse commandResponse = commandDispatcher.execute(COMMAND, request, null, "en");
-		Assert.assertNotNull(commandResponse);
-		Assert.assertTrue(commandResponse instanceof GetLocationForStringResponse);
-		GetLocationForStringResponse response = (GetLocationForStringResponse) commandResponse;
-		Assert.assertFalse(response.isLocationFound());
-		Assert.assertNotNull(response.getAlternatives());
-		Assert.assertTrue(response.getAlternatives().size() > 0);
-		GetLocationForStringAlternative alt = response.getAlternatives().get(0);
-		Assert.assertEquals(-0.12883, alt.getCenter().getX(), DELTA);
-		Assert.assertEquals(51.50051, alt.getCenter().getY(), DELTA);
-	}
-
-	@Test
-	public void alternativesCrsTest() throws Exception {
+	public void combineBboxTest() throws Exception {
 		GetLocationForStringRequest request = new GetLocationForStringRequest();
 		request.setCrs("EPSG:900913");
-		request.setLocation("London, GB");
+		request.setLocation("bla");
 
 		CommandResponse commandResponse = commandDispatcher.execute(COMMAND, request, null, "en");
 		Assert.assertNotNull(commandResponse);
 		Assert.assertTrue(commandResponse instanceof GetLocationForStringResponse);
-		GetLocationForStringResponse response = (GetLocationForStringResponse) commandResponse;
-		Assert.assertFalse(response.isLocationFound());
-		Assert.assertNotNull(response.getAlternatives());
-		Assert.assertTrue(response.getAlternatives().size() > 0);
-		GetLocationForStringAlternative alt = response.getAlternatives().get(0);
-		Assert.assertEquals(-14341.289998897433, alt.getCenter().getX(), DELTA);
-		Assert.assertEquals(6710310.283493439, alt.getCenter().getY(), DELTA);
+		GetLocationForStringResponse response = (GetLocationForStringResponse)commandResponse;
+		Assert.assertTrue(response.isLocationFound());
+		Assert.assertEquals("bla", response.getMatchedLocation());
+		Assert.assertNotNull(response.getCenter());
+		Assert.assertNotNull(response.getBbox());
+		Assert.assertEquals(87500, response.getCenter().getX(), DELTA);
+		Assert.assertEquals(90000, response.getCenter().getY(), DELTA);
+		Assert.assertEquals(75000, response.getBbox().getX(), DELTA);
+		Assert.assertEquals(85000, response.getBbox().getY(), DELTA);
+		Assert.assertEquals(25000, response.getBbox().getWidth(), DELTA);
+		Assert.assertEquals(10000, response.getBbox().getHeight(), DELTA);
 	}
 
 }

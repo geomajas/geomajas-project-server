@@ -73,7 +73,7 @@ public class GeocoderInfo {
 	/**
 	 * Get the service which is used to combine the results of the geocoder request.
 	 *
-	 * @returngeocoder combine result service instance
+	 * @return geocoder combine result service instance
 	 */
 	public CombineResultService getCombineResultService() {
 		return combineResultService;

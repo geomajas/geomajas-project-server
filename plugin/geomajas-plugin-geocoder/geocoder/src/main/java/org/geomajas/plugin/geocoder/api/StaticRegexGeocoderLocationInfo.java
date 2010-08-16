@@ -40,7 +40,7 @@ import java.util.List;
 public class StaticRegexGeocoderLocationInfo {
 
 	@NotNull
-  	private List<String> toMatch;
+	private List<String> toMatch;
 
 	private List<String> preferred;
 	private double x, y;
@@ -48,9 +48,9 @@ public class StaticRegexGeocoderLocationInfo {
 	private ClientUserDataInfo userData;
 
 	/**
-	 * Get list of locations to match. Each string is a regex expression.
-	 * When the string starts with a "?" is is considered optional whether this level is matched.
-	 * When the last string equals "**" the remaining levels are discarded is any.
+	 * Get list of locations to match. Each string is a regex expression. When the string starts with a "?" is is
+	 * considered optional whether this level is matched. When the last string equals "**" the remaining levels are
+	 * discarded is any.
 	 *
 	 * @return strings to match, least specific (biggest area) first.
 	 */
@@ -59,9 +59,9 @@ public class StaticRegexGeocoderLocationInfo {
 	}
 
 	/**
-	 * Set list of locations to match. Each string is a regex expression.
-	 * When the string starts with a "?" is is considered optional whether this level is matched.
-	 * When the last string equals "**" the remaining levels are discarded is any.
+	 * Set list of locations to match. Each string is a regex expression. When the string starts with a "?" is is
+	 * considered optional whether this level is matched. When the last string equals "**" the remaining levels are
+	 * discarded is any.
 	 *
 	 * @param toMatch strings to match, least specific (biggest area) first.
 	 */

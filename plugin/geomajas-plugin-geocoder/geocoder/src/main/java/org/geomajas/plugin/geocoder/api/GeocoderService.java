@@ -51,7 +51,8 @@ public interface GeocoderService {
 	 * result object.
 	 *
 	 * @param location location strings, from general to more specific
-	 * @return result object or null when no match
+	 * @return results objects, when only one this is a definite result, when several the request was ambiguous and the
+	 *         result are the alternatives. When no results an empty array or null may be returned
 	 */
-	GetLocationResult getLocation(List<String> location);
+	GetLocationResult[] getLocation(List<String> location);
 }

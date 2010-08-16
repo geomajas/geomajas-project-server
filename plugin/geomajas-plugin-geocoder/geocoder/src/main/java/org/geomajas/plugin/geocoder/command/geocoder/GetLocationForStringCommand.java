@@ -35,6 +35,7 @@ import org.geomajas.plugin.geocoder.api.GeocoderInfo;
 import org.geomajas.plugin.geocoder.api.GeocoderService;
 import org.geomajas.plugin.geocoder.api.GetLocationResult;
 import org.geomajas.plugin.geocoder.api.SplitGeocoderStringService;
+import org.geomajas.plugin.geocoder.command.dto.GetLocationForStringAlternative;
 import org.geomajas.plugin.geocoder.command.dto.GetLocationForStringRequest;
 import org.geomajas.plugin.geocoder.command.dto.GetLocationForStringResponse;
 import org.geomajas.plugin.geocoder.service.CombineUnionService;
@@ -105,22 +106,28 @@ public class GetLocationForStringCommand implements Command<GetLocationForString
 		List<String> locationList = splitGeocoderStringService.split(location);
 
 		List<GetLocationResult> results = new ArrayList<GetLocationResult>();
+		List<GetLocationResult[]> alternatives = new ArrayList<GetLocationResult[]>();
 		for (GeocoderService geocoderService : geocoderInfo.getGeocoderServices()) {
-			GetLocationResult result = geocoderService.getLocation(locationList);
-			if (null != result) {
-				CoordinateReferenceSystem sourceCrs = geocoderService.getCrs();
-				Envelope envelope = result.getEnvelope();
+			GetLocationResult[] result = geocoderService.getLocation(locationList);
+			if (null != result && result.length > 0) {
+				for (GetLocationResult aResult : result) {
+					CoordinateReferenceSystem sourceCrs = geocoderService.getCrs();
+					Envelope envelope = aResult.getEnvelope();
 
-				// point locations needs to converted to an area based on configuration settings
-				if (null == envelope) {
-					envelope = geocoderUtilService.extendPoint(result.getCoordinate(), sourceCrs,
-							geocoderInfo.getPointDisplayWidth(), geocoderInfo.getPointDisplayHeight());
+					// point locations needs to converted to an area based on configuration settings
+					if (null == envelope) {
+						envelope = geocoderUtilService.extendPoint(aResult.getCoordinate(), sourceCrs,
+								geocoderInfo.getPointDisplayWidth(), geocoderInfo.getPointDisplayHeight());
+					}
+
+					// result needs to be CRS transformed to request CRS
+					aResult.setEnvelope(geocoderUtilService.transform(envelope, sourceCrs, crs));
 				}
-
-				// result needs to be CRS transformed to request CRS
-				result.setEnvelope(geocoderUtilService.transform(envelope, sourceCrs, crs));
-
-				results.add(result);
+				if (result.length > 1) {
+					alternatives.add(result);
+				} else {
+					results.add(result[0]);
+				}
 				if (!geocoderInfo.isLoopAllServices()) {
 					break;
 				}
@@ -151,7 +158,33 @@ public class GetLocationForStringCommand implements Command<GetLocationForString
 			Bbox bbox = dtoConverterService.toDto(resultEnvelope);
 			response.setBbox(bbox);
 			response.setCenter(new Coordinate(bbox.getX() + bbox.getWidth() / 2, bbox.getY() + bbox.getHeight() / 2));
+		} else {
+			List<GetLocationForStringAlternative> altList = new ArrayList<GetLocationForStringAlternative>();
+			response.setAlternatives(altList);
+			for (GetLocationResult[] altArr : alternatives) {
+				for (GetLocationResult alt : altArr) {
+					GetLocationForStringAlternative one = new GetLocationForStringAlternative();
 
+					String matchedLocation = location;
+					List<String> matchedStrings = alt.getMatchingStrings();
+					if (null != matchedStrings) {
+						matchedLocation = splitGeocoderStringService.combine(matchedStrings);
+					}
+					one.setMatchedLocation(matchedLocation);
+
+					// set the user data
+					one.setUserData(alt.getUserData());
+
+					// combine location envelopes
+					Bbox bbox = dtoConverterService.toDto(alt.getEnvelope());
+					one.setBbox(bbox);
+					one.setCenter(
+							new Coordinate(bbox.getX() + bbox.getWidth() / 2, bbox.getY() + bbox.getHeight() / 2));
+
+					altList.add(one);
+				}
+			}
 		}
+
 	}
 }

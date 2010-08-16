@@ -88,7 +88,7 @@ public class GeocoderUtilService {
 	 * @throws GeomajasException transformation problems
 	 */
 	public Envelope extendPoint(Coordinate coordinate, CoordinateReferenceSystem crs,
-			double width, double height) throws GeomajasException {
+								double width, double height) throws GeomajasException {
 		double halfCrsWidth = EXTEND_MAPUNIT_TEST_LENGTH;
 		double halfCrsHeight = EXTEND_MAPUNIT_TEST_LENGTH;
 		double x = coordinate.x;

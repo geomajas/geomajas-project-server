@@ -62,30 +62,35 @@ public class GeonamesGeocoderServiceTest {
 	@Test
 	public void testGeocoder() {
 		List<String> list = new ArrayList<String>();
-		GetLocationResult result;
+		GetLocationResult[] result;
 
 		list.clear();
 		list.add("booischot");
 		result = geocoder.getLocation(list);
 		Assert.assertNotNull(result);
-		Assert.assertNotNull(result.getCoordinate());
-		Assert.assertEquals(4.76667, result.getCoordinate().x, .00001);
-		Assert.assertEquals(51.05, result.getCoordinate().y, .00001);
+		Assert.assertEquals(1,result.length);
+		Assert.assertNotNull(result[0].getCoordinate());
+		Assert.assertEquals(4.76667, result[0].getCoordinate().x, .00001);
+		Assert.assertEquals(51.05, result[0].getCoordinate().y, .00001);
 
 		list.clear();
 		list.add("london");
 		result = geocoder.getLocation(list);
 		Assert.assertNotNull(result);
+		int londonWorldCount = result.length;
+		Assert.assertTrue(londonWorldCount > 1);
 
 		list.clear();
 		list.add("london");
 		list.add("UK");
 		result = geocoder.getLocation(list);
 		Assert.assertNotNull(result);
+		Assert.assertTrue(result.length > 1);
+		Assert.assertTrue(result.length < londonWorldCount);
 
 		list.clear();
 		list.add("blablabla");
 		result = geocoder.getLocation(list);
-		Assert.assertNull(result);
+		Assert.assertTrue(null == result || 0 == result.length);
 	}
 }

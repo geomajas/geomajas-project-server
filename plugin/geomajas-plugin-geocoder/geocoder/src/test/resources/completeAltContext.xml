@@ -43,87 +43,10 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 	</bean>
 
 	<bean name="geocoderInfo" class="org.geomajas.plugin.geocoder.api.GeocoderInfo">
-		<property name="loopAllServices" value="true"/>
-		<property name="combineResultService">
-			<bean class="org.geomajas.plugin.geocoder.service.CombineIntersectionService"/>
-		</property>
-		<property name="splitGeocoderStringService">
-			<bean class="org.geomajas.plugin.geocoder.service.SplitCommaReverseService"/>
-		</property>
 		<property name="geocoderServices">
 			<list>
-				<ref bean="geocoderService1"/>
-				<ref bean="geocoderService2"/>
+				<bean class="org.geomajas.plugin.geocoder.service.GeonamesGeocoderService" />
 			</list>
-		</property>
-	</bean>
-
-	<bean name="geocoderService1" class="org.geomajas.plugin.geocoder.service.StaticRegexGeocoderService">
-		<property name="geocoderInfo">
-			<bean class="org.geomajas.plugin.geocoder.api.StaticRegexGeocoderInfo">
-				<property name="crs" value="EPSG:900913"/>
-				<property name="locations">
-					<list>
-						<bean class="org.geomajas.plugin.geocoder.api.StaticRegexGeocoderLocationInfo">
-							<property name="toMatch">
-								<list>
-									<value>one</value>
-								</list>
-							</property>
-							<property name="bbox">
-								<bean class="org.geomajas.geometry.Bbox">
-									<property name="x" value="0"/>
-									<property name="y" value="0"/>
-									<property name="width" value="100000"/>
-									<property name="height" value="100000"/>
-								</bean>
-							</property>
-						</bean>
-						<bean class="org.geomajas.plugin.geocoder.api.StaticRegexGeocoderLocationInfo">
-							<property name="toMatch">
-								<list>
-									<value>bla</value>
-								</list>
-							</property>
-							<property name="bbox">
-								<bean class="org.geomajas.geometry.Bbox">
-									<property name="x" value="0"/>
-									<property name="y" value="0"/>
-									<property name="width" value="100000"/>
-									<property name="height" value="100000"/>
-								</bean>
-							</property>
-						</bean>
-					</list>
-				</property>
-			</bean>
-		</property>
-	</bean>
-
-	<bean name="geocoderService2" class="org.geomajas.plugin.geocoder.service.StaticRegexGeocoderService">
-		<property name="geocoderInfo">
-			<bean class="org.geomajas.plugin.geocoder.api.StaticRegexGeocoderInfo">
-				<property name="crs" value="EPSG:900913"/>
-				<property name="locations">
-					<list>
-						<bean class="org.geomajas.plugin.geocoder.api.StaticRegexGeocoderLocationInfo">
-							<property name="toMatch">
-								<list>
-									<value>bla</value>
-								</list>
-							</property>
-							<property name="bbox">
-								<bean class="org.geomajas.geometry.Bbox">
-									<property name="x" value="75000"/>
-									<property name="y" value="85000"/>
-									<property name="width" value="40000"/>
-									<property name="height" value="10000"/>
-								</bean>
-							</property>
-						</bean>
-					</list>
-				</property>
-			</bean>
 		</property>
 	</bean>
 

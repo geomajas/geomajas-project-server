@@ -79,7 +79,7 @@ public class StaticRegexGeocoderService implements GeocoderService {
 		return crs;
 	}
 
-	public GetLocationResult getLocation(List<String> location) {
+	public GetLocationResult[] getLocation(List<String> location) {
 		GetLocationResult result = null;
 		for (StaticRegexGeocoderLocationInfo test : geocoderInfo.getLocations()) {
 			result = getLocation(test, location);
@@ -87,7 +87,10 @@ public class StaticRegexGeocoderService implements GeocoderService {
 				break;
 			}
 		}
-		return result;
+		if (null != result) {
+			return new GetLocationResult[]{result};
+		}
+		return null;
 	}
 
 	GetLocationResult getLocation(StaticRegexGeocoderLocationInfo test, List<String> location) {
