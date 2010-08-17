@@ -21,9 +21,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.plugin.geocoder.gwt.example.client;
+package org.geomajas.plugin.geocoder.client;
 
 import com.smartgwt.client.util.SC;
+import com.smartgwt.client.widgets.Window;
+import com.smartgwt.client.widgets.events.CloseClickHandler;
+import com.smartgwt.client.widgets.events.CloseClientEvent;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.FormItemIcon;
 import com.smartgwt.client.widgets.form.fields.TextItem;
@@ -31,6 +34,11 @@ import com.smartgwt.client.widgets.form.fields.events.IconClickEvent;
 import com.smartgwt.client.widgets.form.fields.events.IconClickHandler;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
+import com.smartgwt.client.widgets.grid.ListGrid;
+import com.smartgwt.client.widgets.grid.ListGridField;
+import com.smartgwt.client.widgets.grid.ListGridRecord;
+import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
+import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
 import org.geomajas.command.CommandResponse;
 import org.geomajas.global.Api;
 import org.geomajas.gwt.client.command.CommandCallback;
@@ -39,8 +47,11 @@ import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.map.MapView;
 import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.widget.MapWidget;
+import org.geomajas.plugin.geocoder.command.dto.GetLocationForStringAlternative;
 import org.geomajas.plugin.geocoder.command.dto.GetLocationForStringRequest;
 import org.geomajas.plugin.geocoder.command.dto.GetLocationForStringResponse;
+
+import java.util.List;
 
 /**
  * Widget for starting a geocoder location search.
@@ -51,8 +62,12 @@ import org.geomajas.plugin.geocoder.command.dto.GetLocationForStringResponse;
 @Api
 public class GeocoderWidget extends DynamicForm {
 
+	private static final String LOCATION_FIELD = "Location";
+	private static final String LOCATION_OBJECT = "Object";
 	private MapWidget map;
 	private TextItem textItem;
+	private Window altWindow;
+	private ListGrid altGrid;
 
 	/**
 	 * Create geocoder widget with default name and title.
@@ -120,13 +135,86 @@ public class GeocoderWidget extends DynamicForm {
 				if (commandResponse instanceof GetLocationForStringResponse) {
 					GetLocationForStringResponse response = (GetLocationForStringResponse) commandResponse;
 					if (response.isLocationFound()) {
+						removeAltWindow();
 						org.geomajas.geometry.Bbox bbox = response.getBbox();
 						map.getMapModel().getMapView().applyBounds(new Bbox(bbox), MapView.ZoomOption.LEVEL_FIT);
+						textItem.setValue(response.getMatchedLocation());
 					} else {
-						SC.say("Location " + location + " not found");
+						List<GetLocationForStringAlternative> alternatives = response.getAlternatives();
+						if (null != alternatives && alternatives.size() > 0) {
+							chooseAlternative(alternatives);
+						} else {
+							SC.say("Location " + location + " not found");
+						}
 					}
 				}
 			}
 		});
+	}
+
+	private void removeAltWindow() {
+		if (null != altWindow) {
+			altWindow.destroy();
+			altWindow = null;
+		}
+	}
+
+	private void chooseAlternative(List<GetLocationForStringAlternative> alternatives) {
+		if (null == altWindow) {
+			altGrid = new ListGrid();
+			altGrid.setWidth(300);
+			altGrid.setHeight(200);
+			altGrid.setCanEdit(false);
+			altGrid.setPadding(5);
+
+			ListGridField locationField = new ListGridField(LOCATION_FIELD);
+			locationField.setCanEdit(false);
+			locationField.setCanSort(false);
+			locationField.setCanGroupBy(false);
+			altGrid.setFields(locationField);
+			altGrid.addRecordClickHandler(new RecordClickHandler() {
+				public void onRecordClick(RecordClickEvent recordClickEvent) {
+					GetLocationForStringAlternative alternative;
+					alternative = (GetLocationForStringAlternative) recordClickEvent.getRecord()
+							.getAttributeAsObject(LOCATION_OBJECT);
+					org.geomajas.geometry.Bbox bbox = alternative.getBbox();
+					map.getMapModel().getMapView().applyBounds(new Bbox(bbox), MapView.ZoomOption.LEVEL_FIT);
+					textItem.setValue(alternative.getMatchedLocation());
+				}
+			});
+
+			altWindow = new Window();
+			altWindow.setAutoSize(true);
+			altWindow.setTitle("Location to jump to");
+			altWindow.setAutoSize(true);
+			altWindow.setLeft(20);
+			altWindow.setTop(20);
+			altWindow.setCanDragReposition(true);
+			altWindow.setCanDragResize(true);
+			altWindow.addItem(altGrid);
+			altWindow.addCloseClickHandler(new CloseClickHandler() {
+				public void onCloseClick(CloseClientEvent closeClientEvent) {
+					removeAltWindow();
+				}
+			});
+
+			map.addChild(altWindow);
+		}
+		altGrid.setData(toRecords(alternatives));
+		altGrid.scrollTo(0, 0);
+	}
+
+	private ListGridRecord[] toRecords(List<GetLocationForStringAlternative> alternatives) {
+		ListGridRecord[] records = new ListGridRecord[alternatives.size()];
+		for (int i = 0; i < records.length; i++) {
+			GetLocationForStringAlternative alt = alternatives.get(i);
+			ListGridRecord record = new ListGridRecord();
+
+			record.setAttribute(LOCATION_FIELD, alt.getMatchedLocation());
+			record.setAttribute(LOCATION_OBJECT, alt);
+
+			records[i] = record;
+		}
+		return records;
 	}
 }

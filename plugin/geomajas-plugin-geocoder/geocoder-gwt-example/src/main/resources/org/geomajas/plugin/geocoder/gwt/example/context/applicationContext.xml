@@ -29,6 +29,8 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		<property name="pointDisplayHeight" value="1000" />
 		<property name="geocoderServices">
 			<list>
+				<bean class="org.geomajas.plugin.geocoder.service.GeonamesGeocoderService" />
+				<!--
 				<bean class="org.geomajas.plugin.geocoder.service.StaticRegexGeocoderService">
 					<property name="geocoderInfo">
 						<bean class="org.geomajas.plugin.geocoder.api.StaticRegexGeocoderInfo">
@@ -78,6 +80,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 						</bean>
 					</property>
 				</bean>
+				-->
 			</list>
 		</property>
 	</bean>

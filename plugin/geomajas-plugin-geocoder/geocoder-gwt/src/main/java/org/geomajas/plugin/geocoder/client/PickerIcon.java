@@ -21,7 +21,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.plugin.geocoder.gwt.example.client;
+package org.geomajas.plugin.geocoder.client;
 
 import com.smartgwt.client.widgets.form.fields.FormItemIcon;
 import com.smartgwt.client.widgets.form.fields.events.FormItemClickHandler;

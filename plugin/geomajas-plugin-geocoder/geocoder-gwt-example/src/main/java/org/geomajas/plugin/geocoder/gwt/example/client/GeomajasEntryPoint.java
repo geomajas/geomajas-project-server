@@ -23,6 +23,7 @@
 
 package org.geomajas.plugin.geocoder.gwt.example.client;
 
+import org.geomajas.plugin.geocoder.client.GeocoderWidget;
 import org.geomajas.plugin.geocoder.gwt.example.client.i18n.Translation;
 
 import org.geomajas.gwt.client.i18n.I18nProvider;
@@ -109,6 +110,5 @@ public class GeomajasEntryPoint implements EntryPoint {
 		loadScreen.draw();
 
 		toolbar.addMember(new GeocoderWidget(map, "description", "Geocoder"));
-		toolbar.addMember(new Label("Try searching bla, london or booischot."));
 	}
 }
