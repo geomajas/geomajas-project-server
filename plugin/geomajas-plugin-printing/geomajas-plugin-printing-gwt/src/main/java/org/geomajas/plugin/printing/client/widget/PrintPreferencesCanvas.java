@@ -20,7 +20,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.geomajas.plugin.printing.client.action.widget;
+package org.geomajas.plugin.printing.client.widget;
 
 import java.util.LinkedHashMap;
 
@@ -38,10 +38,12 @@ import org.geomajas.plugin.printing.command.dto.PrintGetTemplateResponse;
 import org.geomajas.plugin.printing.command.dto.PrintTemplateInfo;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Document;
+import com.google.gwt.dom.client.Element;
+import com.google.gwt.user.client.ui.HTMLPanel;
+import com.google.gwt.user.client.ui.RootPanel;
+import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.IButton;
-import com.smartgwt.client.widgets.Img;
-import com.smartgwt.client.widgets.Progressbar;
-import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
@@ -52,19 +54,17 @@ import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.SliderItem;
 import com.smartgwt.client.widgets.form.fields.StaticTextItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
-import com.smartgwt.client.widgets.layout.HLayout;
-import com.smartgwt.client.widgets.layout.HStack;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.tab.Tab;
 import com.smartgwt.client.widgets.tab.TabSet;
 
 /**
- * Window for choosing print preferences and printing.
+ * Canvas for choosing print preferences and printing.
  * 
  * @author Jan De Moerloose
  * 
  */
-public class PrintPreferencesWindow extends Window {
+public class PrintPreferencesCanvas extends Canvas {
 
 	private PrintingMessages messages = GWT.create(PrintingMessages.class);
 
@@ -88,11 +88,8 @@ public class PrintPreferencesWindow extends Window {
 
 	private MapWidget mapWidget;
 
-	public PrintPreferencesWindow(MapWidget mapWidget) {
+	public PrintPreferencesCanvas(MapWidget mapWidget) {
 		this.mapWidget = mapWidget;
-		setTitle(messages.printPrefsTitle());
-		setAutoSize(true);
-
 		// tab set
 		TabSet tabs = new TabSet();
 		tabs.setWidth(400);
@@ -177,7 +174,7 @@ public class PrintPreferencesWindow extends Window {
 		vLayout.addMember(tabs);
 		vLayout.addMember(printButton);
 		vLayout.setMargin(10);
-		addItem(vLayout);
+		addChild(vLayout);
 	}
 
 	private void stopProgress() {
@@ -227,13 +224,19 @@ public class PrintPreferencesWindow extends Window {
 					url.addParameter("userToken", command.getUserToken());
 					if ("save".equals(downloadTypeGroup.getValue())) {
 						url.addParameter("download", "1");
+						String encodedUrl = url.toString();
+						// create a hidden iframe to avoid popups ???
+						HTMLPanel hiddenFrame = new HTMLPanel("<iframe src='"+encodedUrl+"'+style='position:absolute;width:0;height:0;border:0'>");
+						hiddenFrame.setVisible(false);
+						addChild(hiddenFrame);
 					} else {
 						url.addParameter("download", "0");
+						String encodedUrl = url.toString();
+						com.google.gwt.user.client.Window.open(encodedUrl, "_blank", null);
 					}
-					com.google.gwt.user.client.Window.open(url.toString(), "_blank", null);
 				}
 			}
 		});
 	}
-
+	
 }
