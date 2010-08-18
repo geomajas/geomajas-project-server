@@ -24,7 +24,6 @@ package org.geomajas.plugin.printing.component;
 
 import java.util.List;
 
-import org.geomajas.plugin.printing.PdfContext;
 import org.geomajas.plugin.printing.component.dto.PrintComponentInfo;
 import org.geomajas.plugin.printing.component.service.PrintDtoConverterService;
 

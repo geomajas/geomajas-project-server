@@ -91,6 +91,8 @@ public class PrintGetTemplateCommand implements Command<PrintGetTemplateRequest,
 			page.setSize(request.getPageSize(), true);
 		}
 		SinglePageDocument pdfDoc = new SinglePageDocument(page, null);
+		// layout the document
+		pdfDoc.layout();
 		// Add document to container
 		String documentId = printService.putDocument(pdfDoc);
 		response.setDocumentId(documentId);

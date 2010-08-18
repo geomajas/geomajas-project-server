@@ -39,16 +39,21 @@ import org.geomajas.plugin.printing.command.dto.PrintTemplateInfo;
 
 import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.widgets.IButton;
+import com.smartgwt.client.widgets.Img;
+import com.smartgwt.client.widgets.Progressbar;
 import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.ClickEvent;
 import com.smartgwt.client.widgets.events.ClickHandler;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.CheckboxItem;
+import com.smartgwt.client.widgets.form.fields.FormItemIcon;
 import com.smartgwt.client.widgets.form.fields.RadioGroupItem;
 import com.smartgwt.client.widgets.form.fields.SelectItem;
 import com.smartgwt.client.widgets.form.fields.SliderItem;
+import com.smartgwt.client.widgets.form.fields.StaticTextItem;
 import com.smartgwt.client.widgets.form.fields.TextItem;
 import com.smartgwt.client.widgets.layout.HLayout;
+import com.smartgwt.client.widgets.layout.HStack;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.tab.Tab;
 import com.smartgwt.client.widgets.tab.TabSet;
@@ -74,6 +79,12 @@ public class PrintPreferencesWindow extends Window {
 	private CheckboxItem arrowCheckbox;
 
 	private CheckboxItem scaleBarCheckbox;
+
+	private RadioGroupItem downloadTypeGroup;
+
+	private StaticTextItem statusText;
+
+	private FormItemIcon barIcon;
 
 	private MapWidget mapWidget;
 
@@ -117,6 +128,7 @@ public class PrintPreferencesWindow extends Window {
 		rasterDpiSlider = new SliderItem();
 		rasterDpiSlider.setTitle(messages.printPrefsRasterDPI());
 		rasterDpiSlider.setWidth(250);
+		rasterDpiSlider.setHeight(30);
 		rasterDpiSlider.setMinValue(72);
 		rasterDpiSlider.setMaxValue(500);
 		rasterDpiSlider.setNumValues(5);
@@ -128,10 +140,26 @@ public class PrintPreferencesWindow extends Window {
 		scaleBarCheckbox = new CheckboxItem();
 		scaleBarCheckbox.setValue(true);
 		scaleBarCheckbox.setTitle(messages.printPrefsWithScaleBar());
+		// progress indicator
+		barIcon = new FormItemIcon();
+		barIcon.setHeight(15);
+		barIcon.setWidth(214);
+		statusText = new StaticTextItem(messages.printPrefsStatus());
+		statusText.setIcons(barIcon);
+		barIcon.setSrc("[ISOMORPHIC]/geomajas/plugin/printing/pleasewait-blank.gif");
+		// download type
+		downloadTypeGroup = new RadioGroupItem();
+		downloadTypeGroup.setName("downloadType");
+		downloadTypeGroup.setTitle(messages.printPrefsDownloadType());
+		LinkedHashMap<String, String> types = new LinkedHashMap<String, String>();
+		types.put("save", messages.printPrefsSaveAsFile());
+		types.put("open", messages.printPrefsOpenInBrowserWindow());
+		downloadTypeGroup.setValueMap(types);
+		downloadTypeGroup.setVertical(false);
+		downloadTypeGroup.setValue("save");
 
-		form.setFields(titleItem, sizeItem, orientationGroup, arrowCheckbox, scaleBarCheckbox, rasterDpiSlider);
-
-		// add form to tab
+		form.setFields(titleItem, sizeItem, orientationGroup, arrowCheckbox, scaleBarCheckbox, rasterDpiSlider,
+				downloadTypeGroup, statusText);
 		mainPrefs.setPane(form);
 		tabs.setTabs(mainPrefs);
 
@@ -147,14 +175,23 @@ public class PrintPreferencesWindow extends Window {
 		VLayout vLayout = new VLayout();
 		vLayout.setMembersMargin(10);
 		vLayout.addMember(tabs);
-		HLayout hLayout = new HLayout();
-		hLayout.addMember(printButton);
-		vLayout.addMember(hLayout);
+		vLayout.addMember(printButton);
 		vLayout.setMargin(10);
 		addItem(vLayout);
 	}
 
+	private void stopProgress() {
+		barIcon.setSrc("[ISOMORPHIC]/geomajas/plugin/printing/pleasewait-blank.gif");
+		redraw();
+	}
+
+	private void startProgress() {
+		barIcon.setSrc("[ISOMORPHIC]/geomajas/plugin/printing/pleasewait.gif");
+		redraw();
+	}
+
 	protected void print() {
+		startProgress();
 		PrintGetTemplateRequest request = new PrintGetTemplateRequest();
 		DefaultTemplateBuilder builder = new DefaultTemplateBuilder();
 		builder.setApplicationId(mapWidget.getApplicationId());
@@ -169,7 +206,6 @@ public class PrintPreferencesWindow extends Window {
 			builder.setPageHeight(size.getHeight());
 			builder.setPageWidth(size.getWidth());
 		}
-
 		builder.setTitleText((String) titleItem.getValue());
 		builder.setWithArrow((Boolean) arrowCheckbox.getValue());
 		builder.setWithScaleBar((Boolean) scaleBarCheckbox.getValue());
@@ -181,13 +217,19 @@ public class PrintPreferencesWindow extends Window {
 		GwtCommandDispatcher.getInstance().execute(command, new CommandCallback() {
 
 			public void execute(CommandResponse r) {
+				stopProgress();
 				if (r instanceof PrintGetTemplateResponse) {
 					PrintGetTemplateResponse response = (PrintGetTemplateResponse) r;
-					GWT.log("" + response.getDocumentId());
+					GWT.log("Downloading " + response.getDocumentId());
 					UrlBuilder url = new UrlBuilder(GWT.getHostPageBaseURL());
 					url.addPath("d/printing").addParameter("documentId", response.getDocumentId());
-					url.addParameter("download", "0").addParameter("name", "test.pdf");
+					url.addParameter("name", "test.pdf");
 					url.addParameter("userToken", command.getUserToken());
+					if ("save".equals(downloadTypeGroup.getValue())) {
+						url.addParameter("download", "1");
+					} else {
+						url.addParameter("download", "0");
+					}
 					com.google.gwt.user.client.Window.open(url.toString(), "_blank", null);
 				}
 			}

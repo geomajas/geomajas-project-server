@@ -56,4 +56,12 @@ public interface PrintingMessages extends Messages {
 	
 	String printPrefsRasterDPI();
 	
+	String printPrefsStatus();
+	
+	String printPrefsDownloadType();
+	
+	String printPrefsSaveAsFile();
+
+	String printPrefsOpenInBrowserWindow();
+
 }

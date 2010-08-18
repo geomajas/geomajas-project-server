@@ -61,13 +61,6 @@ public class PdfController {
 
 	@Autowired
 	protected PrintService printService;
-	
-	@Autowired
-	private SecurityContext securityContext;
-
-	@Autowired
-	private SecurityManager securityManager;
-
 
 	@RequestMapping(value = "/printing", method = RequestMethod.GET)
 	public ModelAndView printDocument(@RequestParam("documentId") String documentId,
@@ -76,7 +69,7 @@ public class PdfController {
 			throws PrintingException {
 		ModelAndView mav = new ModelAndView();
 		mav.setViewName(PDF_VIEW_NAME);
-		mav.addObject(DOCUMENT_KEY, printService.getDocument(documentId));
+		mav.addObject(DOCUMENT_KEY, printService.removeDocument(documentId));
 		mav.addObject(DOWNLOAD_KEY, download);
 		mav.addObject(FILENAME_KEY, fileName);
 		return mav;

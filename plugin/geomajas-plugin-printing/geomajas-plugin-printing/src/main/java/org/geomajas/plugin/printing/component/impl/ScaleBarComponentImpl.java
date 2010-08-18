@@ -28,8 +28,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.configuration.client.ClientMapInfo;
-import org.geomajas.plugin.printing.PdfContext;
 import org.geomajas.plugin.printing.component.LayoutConstraint;
+import org.geomajas.plugin.printing.component.PdfContext;
 import org.geomajas.plugin.printing.component.PrintComponentVisitor;
 import org.geomajas.plugin.printing.component.ScaleBarComponent;
 import org.geomajas.plugin.printing.component.dto.PrintComponentInfo;

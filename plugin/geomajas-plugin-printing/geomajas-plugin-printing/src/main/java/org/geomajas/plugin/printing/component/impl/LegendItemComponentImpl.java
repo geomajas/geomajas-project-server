@@ -27,10 +27,10 @@ import java.awt.Font;
 
 import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.layer.LayerType;
-import org.geomajas.plugin.printing.PdfContext;
 import org.geomajas.plugin.printing.component.LayoutConstraint;
 import org.geomajas.plugin.printing.component.LegendComponent;
 import org.geomajas.plugin.printing.component.LegendItemComponent;
+import org.geomajas.plugin.printing.component.PdfContext;
 import org.geomajas.plugin.printing.component.PrintComponentVisitor;
 
 /**

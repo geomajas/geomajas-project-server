@@ -27,8 +27,8 @@ import java.util.List;
 
 import org.geomajas.geometry.Bbox;
 import org.geomajas.global.Json;
-import org.geomajas.plugin.printing.PdfContext;
 import org.geomajas.plugin.printing.component.LayoutConstraint;
+import org.geomajas.plugin.printing.component.PdfContext;
 import org.geomajas.plugin.printing.component.PrintComponent;
 import org.geomajas.plugin.printing.component.dto.PrintComponentInfo;
 import org.geomajas.plugin.printing.component.service.PrintDtoConverterService;

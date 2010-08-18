@@ -24,9 +24,9 @@ package org.geomajas.plugin.printing.component.impl;
 
 import java.awt.Color;
 
-import org.geomajas.plugin.printing.PdfContext;
 import org.geomajas.plugin.printing.component.LayoutConstraint;
 import org.geomajas.plugin.printing.component.MapComponent;
+import org.geomajas.plugin.printing.component.PdfContext;
 import org.geomajas.plugin.printing.component.PrintComponentVisitor;
 import org.geomajas.plugin.printing.component.ViewPortComponent;
 import org.geomajas.plugin.printing.component.dto.PrintComponentInfo;

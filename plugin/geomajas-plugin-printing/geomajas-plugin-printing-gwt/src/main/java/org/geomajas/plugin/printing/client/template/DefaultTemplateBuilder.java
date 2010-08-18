@@ -228,10 +228,14 @@ public class DefaultTemplateBuilder extends TemplateBuilder {
 
 	@Override
 	protected LabelComponentInfo buildTitle() {
-		LabelComponentInfo title = super.buildTitle();
-		title.setText(titleText);
-		title.getLayoutConstraint().setMarginY(2 * marginY);
-		return title;
+		if(titleText != null){
+			LabelComponentInfo title = super.buildTitle();
+			title.setText(titleText);
+			title.getLayoutConstraint().setMarginY(2 * marginY);
+			return title;
+		} else {
+			return null;
+		}
 	}
 
 	public double getPageWidth() {

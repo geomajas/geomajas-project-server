@@ -64,7 +64,7 @@ public interface PrintService {
 	String putDocument(Document document);
 
 	/**
-	 * Gets a document from the service.
+	 * Removes a document from the service.
 	 * 
 	 * @param key
 	 *            unique key to reference the document
@@ -73,5 +73,5 @@ public interface PrintService {
 	 * @throws GeomajasException
 	 *             if document does not exist
 	 */
-	Document getDocument(String key) throws PrintingException;
+	Document removeDocument(String key) throws PrintingException;
 }

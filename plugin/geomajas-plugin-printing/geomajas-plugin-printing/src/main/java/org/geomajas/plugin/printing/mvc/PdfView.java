@@ -51,14 +51,10 @@ public class PdfView extends AbstractView {
 		Document doc = (Document) model.get(PdfController.DOCUMENT_KEY);
 		String download = (String) model.get(PdfController.DOWNLOAD_KEY);
 		String fileName = (String) model.get(PdfController.FILENAME_KEY);
-		
-		// Generate in-memory first to find content length (TODO: better solution for large pdfs ?)
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		doc.render(baos);
-		
+				
 		// Write content type and also length (determined via byte array).
 		response.setContentType(getContentType());
-		response.setContentLength(baos.size());
+		response.setContentLength(doc.getContentLength());
 		
 		// check download method
 		if (download.equals(PdfController.DOWNLOAD_METHOD_SAVE)) {
@@ -69,7 +65,7 @@ public class PdfView extends AbstractView {
 
 		// Write the pdf
 		ServletOutputStream out = response.getOutputStream();
-		baos.writeTo(out);
+		doc.render(out);
 		out.flush();
 	}
 

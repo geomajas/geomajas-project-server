@@ -146,9 +146,9 @@ public class PrintServiceImpl implements PrintService {
 	 *            unique key to reference the document
 	 * @return the document or null if no such document
 	 */
-	public Document getDocument(String key) throws PrintingException {
+	public Document removeDocument(String key) throws PrintingException {
 		if (documentMap.containsKey(key)) {
-			return documentMap.get(key);
+			return documentMap.remove(key);
 		} else {
 			throw new PrintingException(PrintingException.DOCUMENT_NOT_FOUND, key);
 		}
@@ -175,7 +175,7 @@ public class PrintServiceImpl implements PrintService {
 		SinglePageDocument document = new SinglePageDocument(template.getPage(), null);
 		try {
 			document.layout();
-		} catch (DocumentException e) {
+		} catch (IOException e) {
 			// should not happen !
 			log.warn("Unexpected problem while laying out default print template", e);
 		}

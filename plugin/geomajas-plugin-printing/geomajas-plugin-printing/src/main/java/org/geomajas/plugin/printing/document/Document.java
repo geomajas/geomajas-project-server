@@ -22,9 +22,8 @@
  */
 package org.geomajas.plugin.printing.document;
 
+import java.io.IOException;
 import java.io.OutputStream;
-
-import com.lowagie.text.DocumentException;
 
 /**
  * 
@@ -39,8 +38,15 @@ public interface Document {
 	 * 
 	 * @param os
 	 *            output stream
-	 * @throws DocumentException
+	 * @throws IOException
 	 */
-	void render(OutputStream os) throws DocumentException;
+	void render(OutputStream os) throws IOException;
+	
+	/**
+	 * Gets the content length of the document.
+	 * 
+	 * @return the content length in bytes of the document.
+	 */
+	int getContentLength();
 
 }

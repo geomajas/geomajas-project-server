@@ -22,6 +22,7 @@
  */
 package org.geomajas.plugin.printing.document;
 
+import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Map;
 
@@ -33,8 +34,6 @@ import org.geomajas.plugin.printing.configuration.MapConfigurationVisitor;
 import org.geomajas.plugin.printing.configuration.PrintTemplate;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
-
-import com.lowagie.text.DocumentException;
 
 /**
  * Default document for printing.
@@ -68,7 +67,7 @@ public class DefaultDocument extends SinglePageDocument {
 	}
 
 	@Override
-	public void render(OutputStream outputStream) throws DocumentException {
+	public void render(OutputStream outputStream) throws IOException {
 		defaultVisitor.visitTree(getPage());
 		MapConfigurationVisitor visitor = new MapConfigurationVisitor(configurationService, geoService, filterCreator,
 				vectorLayerService, rasterLayerService);

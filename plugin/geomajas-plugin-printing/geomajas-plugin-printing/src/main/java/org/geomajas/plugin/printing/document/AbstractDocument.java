@@ -22,11 +22,10 @@
  */
 package org.geomajas.plugin.printing.document;
 
+import java.io.IOException;
 import java.io.OutputStream;
 import java.text.DateFormat;
 import java.util.Date;
-
-import com.lowagie.text.DocumentException;
 
 /**
  * <p>
@@ -58,6 +57,6 @@ public abstract class AbstractDocument implements Document {
 	}
 
 
-	public abstract void render(OutputStream os) throws DocumentException;
+	public abstract void render(OutputStream os) throws IOException;
 
 }
