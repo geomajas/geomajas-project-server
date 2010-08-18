@@ -853,7 +853,12 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 
 	/** When the initialization of the map's model is done: render it. */
 	public void onMapModelChange(MapModelEvent event) {
-		render(mapModel, null, RenderStatus.ALL);
+		if (event.isLayerOrderChanged()) {
+			render(mapModel, null, RenderStatus.DELETE);
+			render(mapModel, null, RenderStatus.ALL);
+		} else {
+			render(mapModel, null, RenderStatus.ALL);
+		}
 	}
 
 	// -------------------------------------------------------------------------

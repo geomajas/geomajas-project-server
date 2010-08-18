@@ -24,13 +24,15 @@
 package org.geomajas.gwt.client.map.feature;
 
 import org.geomajas.gwt.client.spatial.geometry.Geometry;
+import org.geomajas.gwt.client.spatial.geometry.LineString;
 import org.geomajas.gwt.client.spatial.geometry.LinearRing;
+import org.geomajas.gwt.client.spatial.geometry.MultiLineString;
 import org.geomajas.gwt.client.spatial.geometry.MultiPolygon;
 import org.geomajas.gwt.client.spatial.geometry.Polygon;
 
 /**
  * ???
- *
+ * 
  * @author Pieter De Graef
  */
 public class TransactionGeomIndex {
@@ -45,12 +47,18 @@ public class TransactionGeomIndex {
 
 	private int coordinateIndex = -1;
 
+	private int edgeIndex = -1;
+
+	// ------------------------------------------------------------------------
 	// Constructors:
+	// ------------------------------------------------------------------------
 
 	public TransactionGeomIndex() {
 	}
 
+	// ------------------------------------------------------------------------
 	// Class specific methods:
+	// ------------------------------------------------------------------------
 
 	public Geometry getGeometry(FeatureTransaction featureTransaction) {
 		if (featureIndex >= 0 && featureTransaction.getNewFeatures() != null
@@ -76,7 +84,27 @@ public class TransactionGeomIndex {
 		return null;
 	}
 
+	/**
+	 * Returns a LineString or LinearRing that is described by this index.
+	 * 
+	 * @param geometry
+	 *            The original geometry.
+	 * @return A LineString or LinearRing.
+	 */
+	public LineString getLineString(Geometry geometry) {
+		if (geometry instanceof MultiLineString) {
+			if (geometryIndex >= 0 && geometryIndex < geometry.getNumGeometries()) {
+				return getLinearRing(geometry.getGeometryN(geometryIndex));
+			}
+		} else if (geometry instanceof LineString) {
+			return (LineString) geometry;
+		}
+		return getLinearRing(geometry);
+	}
+
+	// ------------------------------------------------------------------------
 	// Getters and setters:
+	// ------------------------------------------------------------------------
 
 	public int getFeatureIndex() {
 		return featureIndex;
@@ -101,12 +129,11 @@ public class TransactionGeomIndex {
 	public void setCoordinateIndex(int coordinateIndex) {
 		this.coordinateIndex = coordinateIndex;
 	}
-	
+
 	public boolean isExteriorRing() {
 		return exteriorRing;
 	}
 
-	
 	public void setExteriorRing(boolean exteriorRing) {
 		this.exteriorRing = exteriorRing;
 	}
@@ -117,5 +144,13 @@ public class TransactionGeomIndex {
 
 	public void setInteriorRingIndex(int interiorRingIndex) {
 		this.interiorRingIndex = interiorRingIndex;
+	}
+
+	public int getEdgeIndex() {
+		return edgeIndex;
+	}
+
+	public void setEdgeIndex(int edgeIndex) {
+		this.edgeIndex = edgeIndex;
 	}
 }

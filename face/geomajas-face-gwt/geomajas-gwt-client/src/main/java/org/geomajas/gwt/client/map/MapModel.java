@@ -269,7 +269,7 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 				realResolutions.add(1. / scale.getPixelPerUnit());
 			}
 			mapView.setResolutions(realResolutions);
-			mapView.setMaximumScale(scaleConfigurationInfo.getMaximumScale().getPixelPerUnit() );
+			mapView.setMaximumScale(scaleConfigurationInfo.getMaximumScale().getPixelPerUnit());
 			Bbox initialBounds = new Bbox(mapInfo.getInitialBounds().getX(), mapInfo.getInitialBounds().getY(), mapInfo
 					.getInitialBounds().getWidth(), mapInfo.getInitialBounds().getHeight());
 			removeAllLayers();
@@ -463,6 +463,231 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 		}
 	}
 
+	/**
+	 * Set a new position for the given layer. This will automatically redraw the map to apply this new order. Note that
+	 * at any time, all raster layers will always lie behind all vector layers. This means that position 0 for a vector
+	 * layer is the first(=back) vector layer to be drawn AFTER all raster layers have already been drawn.
+	 * 
+	 * @param layer
+	 *            The vector layer to place at a new position.
+	 * @param position
+	 *            The new layer order position in the layer array:
+	 *            <ul>
+	 *            <li>Back = 0 (but still in front of all raster layers)</li>
+	 *            <li>Front = (vector layer count - 1)</li>
+	 *            </ul>
+	 * @return Returns if the re-ordering was successful or not.
+	 * @since 1.8.0
+	 */
+	public boolean moveVectorLayer(VectorLayer layer, int position) {
+		if (layer == null) {
+			return false;
+		}
+
+		// Find attached ClientLayerInfo object:
+		ClientLayerInfo layerInfo = null;
+		String layerId = layer.getId();
+		for (ClientLayerInfo info : mapInfo.getLayers()) {
+			if (info.getId().equals(layerId)) {
+				layerInfo = info;
+				break;
+			}
+		}
+		if (layerInfo == null) {
+			return false;
+		}
+
+		// First remove the layer from the list:
+		if (!layers.remove(layer)) {
+			return false;
+		}
+		if (!mapInfo.getLayers().remove(layerInfo)) {
+			return false;
+		}
+
+		int rasterCount = rasterLayerCount();
+		position += rasterCount;
+		if (position < rasterCount) {
+			position = rasterCount;
+		} else if (position > layers.size()) {
+			position = layers.size();
+		}
+		try {
+			layers.add(position, layer);
+			mapInfo.getLayers().add(position, layerInfo);
+		} catch (Exception e) {
+			return false;
+		}
+		handlerManager.fireEvent(new MapModelEvent(true));
+		return true;
+	}
+
+	/**
+	 * Set a new position for the given layer. This will automatically redraw the map to apply this new order. Note that
+	 * at any time, all raster layers will always lie behind all vector layers. This means that position 0 for a vector
+	 * layer is the first(=back) vector layer to be drawn AFTER all raster layers have already been drawn.
+	 * 
+	 * @param layer
+	 *            The raster layer to place at a new position.
+	 * @param position
+	 *            The new layer order position in the layer array:
+	 *            <ul>
+	 *            <li>Back = 0</li>
+	 *            <li>Front = (raster layer count - 1); Larger numbers won't make a difference. Rasters stay behind
+	 *            vectors...</li>
+	 *            </ul>
+	 * @return Returns if the re-ordering was successful or not.
+	 * @since 1.8.0
+	 */
+	public boolean moveRasterLayer(RasterLayer layer, int position) {
+		if (layer == null) {
+			return false;
+		}
+
+		// Find attached ClientLayerInfo object:
+		ClientLayerInfo layerInfo = null;
+		String layerId = layer.getId();
+		for (ClientLayerInfo info : mapInfo.getLayers()) {
+			if (info.getId().equals(layerId)) {
+				layerInfo = info;
+				break;
+			}
+		}
+		if (layerInfo == null) {
+			return false;
+		}
+
+		int rasterCount = rasterLayerCount();
+
+		// First remove the layer from the list:
+		if (!layers.remove(layer)) {
+			return false;
+		}
+		if (!mapInfo.getLayers().remove(layerInfo)) {
+			return false;
+		}
+
+		if (position < 0) {
+			position = 0;
+		} else if (position > rasterCount - 1) {
+			position = rasterCount - 1;
+		}
+		try {
+			layers.add(position, layer);
+			mapInfo.getLayers().add(position, layerInfo);
+		} catch (Exception e) {
+			return false;
+		}
+		handlerManager.fireEvent(new MapModelEvent(true));
+		return true;
+	}
+
+	/**
+	 * Move a vector layer up (=front) one place. Note that at any time, all raster layers will always lie behind all
+	 * vector layers. This means that position 0 for a vector layer is the first(=back) vector layer to be drawn AFTER
+	 * all raster layers have already been drawn.
+	 * 
+	 * @param layer
+	 *            The vector layer to move more to the front.
+	 * @return Returns if the re-ordering was successful or not.
+	 * @since 1.8.0
+	 */
+	public boolean moveVectorLayerUp(VectorLayer layer) {
+		int position = getLayerPosition(layer);
+		if (position < 0) {
+			return false;
+		}
+		return moveVectorLayer(layer, position + 1);
+	}
+
+	/**
+	 * Move a vector layer down (=back) one place. Note that at any time, all raster layers will always lie behind all
+	 * vector layers. This means that position 0 for a vector layer is the first(=back) vector layer to be drawn AFTER
+	 * all raster layers have already been drawn.
+	 * 
+	 * @param layer
+	 *            The vector layer to move more to the back.
+	 * @return Returns if the re-ordering was successful or not.
+	 * @since 1.8.0
+	 */
+	public boolean moveVectorLayerDown(VectorLayer layer) {
+		int position = getLayerPosition(layer);
+		if (position < 0) {
+			return false;
+		}
+		return moveVectorLayer(layer, position - 1);
+	}
+
+	/**
+	 * Move a raster layer up (=front) one place. Note that at any time, all raster layers will always lie behind all
+	 * vector layers. This means that position 0 for a vector layer is the first(=back) vector layer to be drawn AFTER
+	 * all raster layers have already been drawn.
+	 * 
+	 * @param layer
+	 *            The raster layer to move more to the front.
+	 * @return Returns if the re-ordering was successful or not.
+	 * @since 1.8.0
+	 */
+	public boolean moveRasterLayerUp(RasterLayer layer) {
+		int position = getLayerPosition(layer);
+		if (position < 0) {
+			return false;
+		}
+		return moveRasterLayer(layer, position + 1);
+	}
+
+	/**
+	 * Move a raster layer down (=back) one place. Note that at any time, all raster layers will always lie behind all
+	 * vector layers. This means that position 0 for a vector layer is the first(=back) vector layer to be drawn AFTER
+	 * all raster layers have already been drawn.
+	 * 
+	 * @param layer
+	 *            The raster layer to move more to the back.
+	 * @return Returns if the re-ordering was successful or not.
+	 * @since 1.8.0
+	 */
+	public boolean moveRasterLayerDown(RasterLayer layer) {
+		int position = getLayerPosition(layer);
+		if (position < 0) {
+			return false;
+		}
+		return moveRasterLayer(layer, position - 1);
+	}
+
+	/**
+	 * Get the position of a certain layer in this map model. Note that for both raster layers and vector layer, the
+	 * count starts at 0! On the map, all raster layers always lie behind all vector layers.
+	 * 
+	 * @param layer
+	 *            The layer to return the position for.
+	 * @return Returns the position of the layer in the map. This position determines layer order.
+	 * @since 1.8.0
+	 */
+	public int getLayerPosition(Layer<?> layer) {
+		if (layer == null) {
+			return -1;
+		}
+		String layerId = layer.getId();
+		if (layer instanceof RasterLayer) {
+			for (int index = 0; index < mapInfo.getLayers().size(); index++) {
+				if (mapInfo.getLayers().get(index).getId().equals(layerId)) {
+					return index;
+				}
+			}
+		} else if (layer instanceof VectorLayer) {
+			int rasterCount = 0;
+			for (int index = 0; index < mapInfo.getLayers().size(); index++) {
+				if (layers.get(index) instanceof RasterLayer) {
+					rasterCount++;
+				}
+				if (mapInfo.getLayers().get(index).getId().equals(layerId)) {
+					return index - rasterCount;
+				}
+			}
+		}
+		return 0;
+	}
+
 	// -------------------------------------------------------------------------
 	// Getters:
 	// -------------------------------------------------------------------------
@@ -545,6 +770,17 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 			layer.setSelected(false);
 			handlerManager.fireEvent(new LayerDeselectedEvent(layer));
 		}
+	}
+
+	/** Count the total number of raster layers in this model. */
+	private int rasterLayerCount() {
+		int rasterLayerCount = 0;
+		for (int index = 0; index < mapInfo.getLayers().size(); index++) {
+			if (layers.get(index) instanceof RasterLayer) {
+				rasterLayerCount++;
+			}
+		}
+		return rasterLayerCount;
 	}
 
 	// -------------------------------------------------------------------------
