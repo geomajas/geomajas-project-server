@@ -62,7 +62,7 @@ public class GetLocationForStringCommandTest {
 		Assert.assertTrue(commandResponse instanceof GetLocationForStringResponse);
 		GetLocationForStringResponse response = (GetLocationForStringResponse)commandResponse;
 		Assert.assertTrue(response.isLocationFound());
-		Assert.assertEquals("booischot", response.getMatchedLocation());
+		Assert.assertEquals("booischot", response.getCanonicalLocation());
 		Assert.assertNotNull(response.getCenter());
 		Assert.assertNotNull(response.getBbox());
 		Assert.assertEquals(621468.063486916, response.getCenter().getX(), DELTA);
@@ -86,7 +86,7 @@ public class GetLocationForStringCommandTest {
 		Assert.assertTrue(commandResponse instanceof GetLocationForStringResponse);
 		GetLocationForStringResponse response = (GetLocationForStringResponse)commandResponse;
 		Assert.assertTrue(response.isLocationFound());
-		Assert.assertEquals("Booischot", response.getMatchedLocation());
+		Assert.assertEquals("Booischot", response.getCanonicalLocation());
 		Assert.assertNotNull(response.getCenter());
 		Assert.assertNotNull(response.getBbox());
 		Assert.assertEquals(5.582742600224577, response.getCenter().getX(), DELTA);
@@ -104,7 +104,7 @@ public class GetLocationForStringCommandTest {
 		Assert.assertTrue(commandResponse instanceof GetLocationForStringResponse);
 		GetLocationForStringResponse response = (GetLocationForStringResponse)commandResponse;
 		Assert.assertTrue(response.isLocationFound());
-		Assert.assertEquals("secondService", response.getMatchedLocation());
+		Assert.assertEquals("secondService", response.getCanonicalLocation());
 		Assert.assertNotNull(response.getCenter());
 		Assert.assertNotNull(response.getBbox());
 		Assert.assertEquals(10000, response.getCenter().getX(), DELTA);
@@ -123,7 +123,7 @@ public class GetLocationForStringCommandTest {
 		Assert.assertTrue(commandResponse instanceof GetLocationForStringResponse);
 		GetLocationForStringResponse response = (GetLocationForStringResponse)commandResponse;
 		Assert.assertTrue(response.isLocationFound());
-		Assert.assertEquals("bbox", response.getMatchedLocation());
+		Assert.assertEquals("bbox", response.getCanonicalLocation());
 		Assert.assertNotNull(response.getCenter());
 		Assert.assertNotNull(response.getBbox());
 		Assert.assertEquals(50000, response.getCenter().getX(), DELTA);
@@ -146,7 +146,7 @@ public class GetLocationForStringCommandTest {
 		Assert.assertTrue(commandResponse instanceof GetLocationForStringResponse);
 		GetLocationForStringResponse response = (GetLocationForStringResponse)commandResponse;
 		Assert.assertTrue(response.isLocationFound());
-		Assert.assertEquals("bla", response.getMatchedLocation());
+		Assert.assertEquals("bla", response.getCanonicalLocation());
 		Assert.assertNotNull(response.getCenter());
 		Assert.assertNotNull(response.getBbox());
 		Assert.assertEquals(57500, response.getCenter().getX(), DELTA);
@@ -168,7 +168,7 @@ public class GetLocationForStringCommandTest {
 		Assert.assertTrue(commandResponse instanceof GetLocationForStringResponse);
 		GetLocationForStringResponse response = (GetLocationForStringResponse)commandResponse;
 		Assert.assertFalse(response.isLocationFound());
-		Assert.assertNull(response.getMatchedLocation());
+		Assert.assertNull(response.getCanonicalLocation());
 	}
 
 }

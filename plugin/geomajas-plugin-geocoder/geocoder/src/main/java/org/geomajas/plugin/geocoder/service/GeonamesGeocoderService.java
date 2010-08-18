@@ -125,7 +125,7 @@ public class GeonamesGeocoderService implements GeocoderService {
 				List<String> prefResult = new ArrayList<String>();
 				prefResult.add(toponym.getCountryCode());
 				prefResult.add(toponym.getName());
-				one.setMatchingStrings(prefResult);
+				one.setCanonicalStrings(prefResult);
 				Coordinate coordinate = new Coordinate();
 				coordinate.x = toponym.getLongitude();
 				coordinate.y = toponym.getLatitude();

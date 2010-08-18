@@ -61,7 +61,7 @@ public class GetLocationForStringCommandCombineTest {
 		Assert.assertTrue(commandResponse instanceof GetLocationForStringResponse);
 		GetLocationForStringResponse response = (GetLocationForStringResponse)commandResponse;
 		Assert.assertTrue(response.isLocationFound());
-		Assert.assertEquals("one", response.getMatchedLocation());
+		Assert.assertEquals("one", response.getCanonicalLocation());
 		Assert.assertNotNull(response.getCenter());
 		Assert.assertNotNull(response.getBbox());
 		Assert.assertEquals(50000, response.getCenter().getX(), DELTA);
@@ -83,7 +83,7 @@ public class GetLocationForStringCommandCombineTest {
 		Assert.assertTrue(commandResponse instanceof GetLocationForStringResponse);
 		GetLocationForStringResponse response = (GetLocationForStringResponse)commandResponse;
 		Assert.assertTrue(response.isLocationFound());
-		Assert.assertEquals("bla", response.getMatchedLocation());
+		Assert.assertEquals("bla", response.getCanonicalLocation());
 		Assert.assertNotNull(response.getCenter());
 		Assert.assertNotNull(response.getBbox());
 		Assert.assertEquals(87500, response.getCenter().getX(), DELTA);

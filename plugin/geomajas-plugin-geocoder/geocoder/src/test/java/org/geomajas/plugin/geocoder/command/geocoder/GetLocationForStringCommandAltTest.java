@@ -65,7 +65,7 @@ public class GetLocationForStringCommandAltTest {
 		Assert.assertTrue(commandResponse instanceof GetLocationForStringResponse);
 		GetLocationForStringResponse response = (GetLocationForStringResponse) commandResponse;
 		Assert.assertTrue(response.isLocationFound());
-		Assert.assertEquals("Booischot, BE", response.getMatchedLocation());
+		Assert.assertEquals("Booischot, BE", response.getCanonicalLocation());
 		Assert.assertNotNull(response.getCenter());
 		Assert.assertNotNull(response.getBbox());
 		Assert.assertEquals(4.76667, response.getCenter().getX(), DELTA);
@@ -86,7 +86,7 @@ public class GetLocationForStringCommandAltTest {
 		Assert.assertTrue(commandResponse instanceof GetLocationForStringResponse);
 		GetLocationForStringResponse response = (GetLocationForStringResponse) commandResponse;
 		Assert.assertTrue(response.isLocationFound());
-		Assert.assertEquals("Booischot, BE", response.getMatchedLocation());
+		Assert.assertEquals("Booischot, BE", response.getCanonicalLocation());
 		Assert.assertNotNull(response.getCenter());
 		Assert.assertNotNull(response.getBbox());
 		Assert.assertEquals(530623.2771795733, response.getCenter().getX(), DELTA);

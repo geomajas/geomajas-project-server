@@ -39,29 +39,29 @@ import java.util.List;
 @Api(allMethods = true)
 public class GetLocationResult {
 
-	private List<String> matchingStrings;
+	private List<String> canonicalStrings;
 	private Coordinate coordinate;
 	private Envelope envelope;
 	private ClientUserDataInfo userData;
 
 	/**
-	 * Get the strings which were matched (may be the same as the original request, or different when matching is a bit
-	 * fuzzy). This should return the preferred strings for this location.
+	 * Get the canonical strings which were matched (may be the same as the original request, or different when
+	 * matching is a bit fuzzy). This should return the preferred strings for this location.
 	 *
 	 * @return matched strings or null when nothing better can be given
 	 */
-	public List<String> getMatchingStrings() {
-		return matchingStrings;
+	public List<String> getCanonicalStrings() {
+		return canonicalStrings;
 	}
 
 	/**
-	 * Set the preferred strings for searching/describing the returned location. Should not be set when identical to the
-	 * search strings.
+	 * Set the preferred or canonical strings for searching/describing the returned location. Should not be set when
+	 * identical to the search strings.
 	 *
-	 * @param matchingStrings matched strings
+	 * @param canonicalStrings matched strings
 	 */
-	public void setMatchingStrings(List<String> matchingStrings) {
-		this.matchingStrings = matchingStrings;
+	public void setCanonicalStrings(List<String> canonicalStrings) {
+		this.canonicalStrings = canonicalStrings;
 	}
 
 	/**

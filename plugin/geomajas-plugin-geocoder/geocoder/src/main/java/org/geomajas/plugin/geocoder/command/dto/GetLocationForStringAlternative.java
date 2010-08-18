@@ -40,7 +40,7 @@ public class GetLocationForStringAlternative extends CommandResponse {
 
 	private static final long serialVersionUID = 100L;
 
-	private String matchedLocation;
+	private String canonicalLocation;
 	private Coordinate center;
 	private Bbox bbox;
 	private ClientUserDataInfo userData;
@@ -50,17 +50,17 @@ public class GetLocationForStringAlternative extends CommandResponse {
 	 *
 	 * @return preferred string for searching this location
 	 */
-	public String getMatchedLocation() {
-		return matchedLocation;
+	public String getCanonicalLocation() {
+		return canonicalLocation;
 	}
 
 	/**
 	 * Set the preferred string for matching this location.
 	 *
-	 * @param matchedLocation location as string
+	 * @param canonicalLocation location as string
 	 */
-	public void setMatchedLocation(String matchedLocation) {
-		this.matchedLocation = matchedLocation;
+	public void setCanonicalLocation(String canonicalLocation) {
+		this.canonicalLocation = canonicalLocation;
 	}
 
 	/**

@@ -138,7 +138,7 @@ public class GeocoderWidget extends DynamicForm {
 						removeAltWindow();
 						org.geomajas.geometry.Bbox bbox = response.getBbox();
 						map.getMapModel().getMapView().applyBounds(new Bbox(bbox), MapView.ZoomOption.LEVEL_FIT);
-						textItem.setValue(response.getMatchedLocation());
+						textItem.setValue(response.getCanonicalLocation());
 					} else {
 						List<GetLocationForStringAlternative> alternatives = response.getAlternatives();
 						if (null != alternatives && alternatives.size() > 0) {
@@ -179,7 +179,7 @@ public class GeocoderWidget extends DynamicForm {
 							.getAttributeAsObject(LOCATION_OBJECT);
 					org.geomajas.geometry.Bbox bbox = alternative.getBbox();
 					map.getMapModel().getMapView().applyBounds(new Bbox(bbox), MapView.ZoomOption.LEVEL_FIT);
-					textItem.setValue(alternative.getMatchedLocation());
+					textItem.setValue(alternative.getCanonicalLocation());
 				}
 			});
 
@@ -210,7 +210,7 @@ public class GeocoderWidget extends DynamicForm {
 			GetLocationForStringAlternative alt = alternatives.get(i);
 			ListGridRecord record = new ListGridRecord();
 
-			record.setAttribute(LOCATION_FIELD, alt.getMatchedLocation());
+			record.setAttribute(LOCATION_FIELD, alt.getCanonicalLocation());
 			record.setAttribute(LOCATION_OBJECT, alt);
 
 			records[i] = record;

@@ -141,12 +141,12 @@ public class GetLocationForStringCommand implements Command<GetLocationForString
 			// combine match strings, default to search string unless we know we can do better
 			String matchedLocation = location;
 			if (results.size() == 1) {
-				List<String> matchedStrings = results.get(0).getMatchingStrings();
+				List<String> matchedStrings = results.get(0).getCanonicalStrings();
 				if (null != matchedStrings) {
 					matchedLocation = splitGeocoderStringService.combine(matchedStrings);
 				}
 			}
-			response.setMatchedLocation(matchedLocation);
+			response.setCanonicalLocation(matchedLocation);
 
 			// combine the user data, only when there is just one result
 			if (results.size() == 1) {
@@ -166,11 +166,11 @@ public class GetLocationForStringCommand implements Command<GetLocationForString
 					GetLocationForStringAlternative one = new GetLocationForStringAlternative();
 
 					String matchedLocation = location;
-					List<String> matchedStrings = alt.getMatchingStrings();
+					List<String> matchedStrings = alt.getCanonicalStrings();
 					if (null != matchedStrings) {
 						matchedLocation = splitGeocoderStringService.combine(matchedStrings);
 					}
-					one.setMatchedLocation(matchedLocation);
+					one.setCanonicalLocation(matchedLocation);
 
 					// set the user data
 					one.setUserData(alt.getUserData());
