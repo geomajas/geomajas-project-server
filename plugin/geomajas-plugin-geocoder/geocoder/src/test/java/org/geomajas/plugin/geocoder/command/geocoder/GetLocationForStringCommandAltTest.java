@@ -46,6 +46,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class GetLocationForStringCommandAltTest {
 
 	private static final double DELTA = 1e-20;
+	// @extract-start UseCommandTest, Usage of the geocoder command
 	private static final String COMMAND = "command.geocoder.GetLocationForString";
 
 	@Autowired
@@ -58,6 +59,8 @@ public class GetLocationForStringCommandAltTest {
 		request.setLocation("booischot");
 
 		CommandResponse commandResponse = commandDispatcher.execute(COMMAND, request, null, "en");
+		// @extract-skip-start
+		// @extract-end
 		Assert.assertNotNull(commandResponse);
 		Assert.assertTrue(commandResponse instanceof GetLocationForStringResponse);
 		GetLocationForStringResponse response = (GetLocationForStringResponse) commandResponse;
@@ -68,7 +71,9 @@ public class GetLocationForStringCommandAltTest {
 		Assert.assertEquals(4.76667, response.getCenter().getX(), DELTA);
 		Assert.assertEquals(51.05, response.getCenter().getY(), DELTA);
 		Assert.assertNull(response.getAlternatives());
+		// @extract-skip-end
 	}
+	// @extract-end
 
 	@Test
 	public void oneResultCrsTest() throws Exception {

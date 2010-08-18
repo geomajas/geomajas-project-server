@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
-"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
 <!--
   ~ This file is part of Geomajas, a component framework for building
   ~ rich Internet applications (RIA) with sophisticated capabilities for the
@@ -23,39 +21,29 @@
   ~ You should have received a copy of the GNU Affero General Public License
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
-<chapter id="chapter-howto">
-  <title>How-to</title>
 
-	<para>This chapter details the extension possibilities of the geocoder plug-in.</para>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+<chapter id="chapter-use">
+  <title>Use</title>
 
-	<section>
-	  <title>How to write a geocoder service</title>
+  <para>How to use the geocoder plug-in.</para>
 
+  <section>
+    <title>Command</title>
+
+    <para>...</para>
+	  <xi:include href="../listing/UseCommandTest.xml"
+				  xmlns:xi="http://www.w3.org/2001/XInclude" />
 	  <para>...</para>
-		<xi:include href="../listing/GeocoderService.xml"
-					xmlns:xi="http://www.w3.org/2001/XInclude" />
-		<para>...</para>
 
 
-	</section>
+  </section>
 
-	<section>
-	  <title>How to write a service to split the input string</title>
+  <section>
+    <title>GWT widget</title>
 
-	  <para>...</para>
-		<xi:include href="../listing/SplitGeocoderStringService.xml"
-					xmlns:xi="http://www.w3.org/2001/XInclude" />
-		<para>...</para>
+    <para>...</para>
 
-	</section>
-	<section>
-	  <title>How to write a service to combine results</title>
-
-	  <para>...</para>
-		<xi:include href="../listing/CombineResultService.xml"
-					xmlns:xi="http://www.w3.org/2001/XInclude" />
-		<para>...</para>
-
-	</section>
-
+  </section>
 </chapter>

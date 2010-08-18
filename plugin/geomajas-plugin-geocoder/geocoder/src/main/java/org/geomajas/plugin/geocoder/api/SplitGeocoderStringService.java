@@ -36,6 +36,7 @@ import java.util.List;
  */
 @Api(allMethods = true)
 @UserImplemented
+// @extract-start SplitGeocoderStringService, Service interface for splitting the search string
 public interface SplitGeocoderStringService {
 
 	/**
@@ -56,3 +57,4 @@ public interface SplitGeocoderStringService {
 	 */
 	String combine(List<String> matchedStrings);
 }
+// @extract-end

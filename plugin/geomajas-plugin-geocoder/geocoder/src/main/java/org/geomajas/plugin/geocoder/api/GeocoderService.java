@@ -37,6 +37,7 @@ import java.util.List;
  */
 @Api(allMethods = true)
 @UserImplemented
+// @extract-start GeocoderService, Geocoder service interface definition
 public interface GeocoderService {
 
 	/**
@@ -56,3 +57,4 @@ public interface GeocoderService {
 	 */
 	GetLocationResult[] getLocation(List<String> location);
 }
+// @extract-end

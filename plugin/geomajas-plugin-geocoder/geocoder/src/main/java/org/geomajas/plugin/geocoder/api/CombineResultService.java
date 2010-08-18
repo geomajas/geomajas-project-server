@@ -37,6 +37,7 @@ import java.util.List;
  */
 @Api(allMethods = true)
 @UserImplemented
+// @extract-start CombineResultService, Service to combine search results
 public interface CombineResultService {
 
 	/**
@@ -46,5 +47,5 @@ public interface CombineResultService {
 	 * @return result envelope
 	 */
 	Envelope combine(List<GetLocationResult> results);
-
 }
+// @extract-end

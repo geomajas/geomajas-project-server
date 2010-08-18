@@ -23,6 +23,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 	</bean>
 
 	<!-- geocoder configuration -->
+	<!-- @extract-start exampleConfiguration, example configuration -->
 	<bean name="geocoderInfo" class="org.geomajas.plugin.geocoder.api.GeocoderInfo">
 		<property name="loopAllServices" value="true"/>
 		<property name="pointDisplayWidth" value="2000" />
@@ -30,6 +31,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		<property name="geocoderServices">
 			<list>
 				<bean class="org.geomajas.plugin.geocoder.service.GeonamesGeocoderService" />
+				<!-- @extract-skip-start -->
 				<!--
 				<bean class="org.geomajas.plugin.geocoder.service.StaticRegexGeocoderService">
 					<property name="geocoderInfo">
@@ -81,9 +83,11 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 					</property>
 				</bean>
 				-->
+				<!-- @extract-skip-end -->
 			</list>
 		</property>
 	</bean>
+	<!-- @extract-end -->
 	<!-- end of geocoder configuration -->
 
 	<bean name="app"

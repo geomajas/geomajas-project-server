@@ -26,23 +26,99 @@
 <chapter id="chapter-configuration">
   <title>Configuration</title>
 
-  <para></para>
+  <para>Configuration for the geocoder plug-in.</para>
 
+  <section>
+    <title>Dependencies</title>
+
+    <para>Make sure your include the plug-in in your project. If you are using
+    Maven, add the following dependency to your pom:</para>
+
+    <example>
+      <title>Plug-in dependency</title>
+
+      <programlisting>&lt;dependency&gt;
+    &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
+    &lt;artifactId&gt;geomajas-plugin-geocoder&lt;/artifactId&gt;
+    &lt;version&gt;1.0.0-SNAPSHOT&lt;/version&gt;
+&lt;/dependency&gt;</programlisting>
+    </example>
+
+    <para>If you want to use the geocoder widget for the GWT face, then you
+    need the following two dependencies:</para>
+
+    <example>
+      <title>Plug-in GWT dependency</title>
+
+      <programlisting>&lt;dependency&gt;
+    &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
+    &lt;artifactId&gt;geomajas-plugin-geocoder-gwt&lt;/artifactId&gt;
+    &lt;version&gt;1.0.0-SNAPSHOT&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
+    &lt;artifactId&gt;geomajas-plugin-geocoder-gwt&lt;/artifactId&gt;
+    &lt;version&gt;1.0.0-SNAPSHOT&lt;/version&gt;
+    &lt;classifier&gt;sources&lt;/classifier&gt;
+&lt;/dependency&gt;</programlisting>
+    </example>
+
+    <para></para>
+  </section>
+
+  <section>
+    <title>Geocoder command configuration</title>
+
+    <para>When you include the geocoder dependency, you also have to configure
+    the geocoder command or you will get an exception when the application
+    context is built.</para>
+
+    <para>An example configuration looks like this:</para>
+
+    <xi:include href="../listing/exampleConfiguration.xml"
+                xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+    <para>To configure the geocoder plugin, you have to create a bean
+    instantiating the GeocoderInfo class. </para>
+
+    <para>In the bean, you have to set the geocoderServices property to select
+    which geocoder services you want to be used to attempt to convert the
+    string to a location.</para>
+
+    <para>Other properties you may want to set:</para>
+
+    <para><itemizedlist>
+        <listitem>
+          <para><emphasis>splitGeocoderStringService</emphasis> :</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>combineResultService</emphasis> :</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>loopAllServices</emphasis> : </para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>pointDisplayWidth</emphasis> :200</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>pointDisplayHeight</emphasis> :100</para>
+        </listitem>
+      </itemizedlist></para>
+  </section>
 	<section>
-	  <title>Dependencies</title>
-
-	  <para>Make sure your include the plug-in in your project. If you are using
-	  Maven, add the following dependency to your pom:</para>
-
-	  <example>
-		<title>Plug-in dependency</title>
-
-		<programlisting>&lt;dependency&gt;
-	  &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
-	  &lt;artifactId&gt;geomajas-plugin-geocoder&lt;/artifactId&gt;
-	  &lt;version&gt;1.0.0-SNAPSHOT&lt;/version&gt;
-  &lt;/dependency&gt;</programlisting>
-	  </example>
-	</section>
-
+    <title>Static regex geocoder service configuration</title>
+		<para>...</para>
+  </section>
+	<section>
+    <title>GeoNames service configuration</title>
+		<para>...</para>
+  </section>
+	<section>
+    <title>Yahoo! PlaceFinder geocoder service configuration</title>
+		<para>...</para>
+  </section>
 </chapter>
