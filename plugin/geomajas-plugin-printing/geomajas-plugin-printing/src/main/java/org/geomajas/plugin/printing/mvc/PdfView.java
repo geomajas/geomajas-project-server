@@ -22,7 +22,6 @@
  */
 package org.geomajas.plugin.printing.mvc;
 
-import java.io.ByteArrayOutputStream;
 import java.util.Map;
 
 import javax.servlet.ServletOutputStream;

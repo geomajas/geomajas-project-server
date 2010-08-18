@@ -38,10 +38,7 @@ import org.geomajas.plugin.printing.command.dto.PrintGetTemplateResponse;
 import org.geomajas.plugin.printing.command.dto.PrintTemplateInfo;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Document;
-import com.google.gwt.dom.client.Element;
 import com.google.gwt.user.client.ui.HTMLPanel;
-import com.google.gwt.user.client.ui.RootPanel;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.IButton;
 import com.smartgwt.client.widgets.events.ClickEvent;
@@ -226,7 +223,8 @@ public class PrintPreferencesCanvas extends Canvas {
 						url.addParameter("download", "1");
 						String encodedUrl = url.toString();
 						// create a hidden iframe to avoid popups ???
-						HTMLPanel hiddenFrame = new HTMLPanel("<iframe src='"+encodedUrl+"'+style='position:absolute;width:0;height:0;border:0'>");
+						HTMLPanel hiddenFrame = new HTMLPanel("<iframe src='" + encodedUrl
+								+ "'+style='position:absolute;width:0;height:0;border:0'>");
 						hiddenFrame.setVisible(false);
 						addChild(hiddenFrame);
 					} else {

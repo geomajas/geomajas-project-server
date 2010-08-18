@@ -228,7 +228,7 @@ public class DefaultTemplateBuilder extends TemplateBuilder {
 
 	@Override
 	protected LabelComponentInfo buildTitle() {
-		if(titleText != null){
+		if (titleText != null) {
 			LabelComponentInfo title = super.buildTitle();
 			title.setText(titleText);
 			title.getLayoutConstraint().setMarginY(2 * marginY);

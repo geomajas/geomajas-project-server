@@ -53,8 +53,6 @@ import org.springframework.oxm.XmlMappingException;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.lowagie.text.DocumentException;
-
 /**
  * Print service implementation based on iText. Persistence is configured through a DAO implementation of choice.
  * 

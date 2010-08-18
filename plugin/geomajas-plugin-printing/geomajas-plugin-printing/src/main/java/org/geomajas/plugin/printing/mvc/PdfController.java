@@ -27,8 +27,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.geomajas.plugin.printing.PrintingException;
 import org.geomajas.plugin.printing.service.PrintService;
-import org.geomajas.security.SecurityContext;
-import org.geomajas.security.SecurityManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ExceptionHandler;

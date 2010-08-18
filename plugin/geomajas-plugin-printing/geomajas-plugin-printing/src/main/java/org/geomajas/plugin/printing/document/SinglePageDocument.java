@@ -146,7 +146,8 @@ public class SinglePageDocument extends AbstractDocument {
 				baos.writeTo(outputStream);
 			}
 		} catch (DocumentException e) {
-			throw new IOException("Could not render document", e);
+			log.error("Could not render document", e);
+			throw new IOException("Could not render document");
 		}
 	}
 
