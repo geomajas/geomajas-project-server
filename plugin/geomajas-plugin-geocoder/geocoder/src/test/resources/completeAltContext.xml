@@ -48,6 +48,8 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 				<bean class="org.geomajas.plugin.geocoder.service.GeonamesGeocoderService" />
 			</list>
 		</property>
+		<property name="pointDisplayWidth" value="200" />
+		<property name="pointDisplayHeight" value="100" />
 	</bean>
 
 </beans>

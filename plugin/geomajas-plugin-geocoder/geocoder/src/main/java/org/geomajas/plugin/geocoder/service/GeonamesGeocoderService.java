@@ -55,6 +55,7 @@ import java.util.List;
  * See <a href="http://www.geonames.org/export/geonames-search.html">geonames API</a>.
  *
  * @author Joachim Van der Auwera
+ * @since 1.0.0
  */
 @Api
 public class GeonamesGeocoderService implements GeocoderService {
