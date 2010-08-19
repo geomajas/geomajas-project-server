@@ -24,6 +24,7 @@
 package org.geomajas.plugin.geocoder.service;
 
 import com.vividsolutions.jts.geom.Coordinate;
+import org.geomajas.global.Api;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.plugin.geocoder.api.GeocoderService;
 import org.geomajas.plugin.geocoder.api.GetLocationResult;
@@ -55,6 +56,7 @@ import java.util.List;
  *
  * @author Joachim Van der Auwera
  */
+@Api
 public class GeonamesGeocoderService implements GeocoderService {
 
 	private final Logger log = LoggerFactory.getLogger(GeonamesGeocoderService.class);
@@ -65,7 +67,6 @@ public class GeonamesGeocoderService implements GeocoderService {
 	private static final double FUZZY_VALUE = 0.8; // value for fuzzy searches
 	private static final int READ_TIMEOUT = 120000;
 	private static final int CONNECT_TIMEOUT = 10000;
-
 
 	@Autowired
 	private GeoService geoService;
@@ -80,7 +81,6 @@ public class GeonamesGeocoderService implements GeocoderService {
 		crs = geoService.getCrs("EPSG:4326"); // WGS-84 latlong
 	}
 
-
 	public CoordinateReferenceSystem getCrs() {
 		return crs;
 	}
@@ -88,7 +88,7 @@ public class GeonamesGeocoderService implements GeocoderService {
 	public GetLocationResult[] getLocation(List<String> location) {
 		GetLocationResult[] result;
 		try {
-			/* code f	or u	sing	 geonam	es library, does not support fuzzy or isNameRequired
+			/* code for using the geonames library, does not support fuzzy or isNameRequired
 			ToponymSearchCriteria criteria = new ToponymSearchCriteria();
 			criteria.setQ(splitCommaReverseService.combine(location));
 			criteria.setMaxRows(MAX_ROWS + 1);

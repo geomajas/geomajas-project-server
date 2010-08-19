@@ -137,7 +137,7 @@ public class StaticRegexGeocoderService implements GeocoderService {
 		} else {
 			result.setCoordinate(new Coordinate(test.getX(), test.getY()));
 		}
-		result.setCanonicalStrings(test.getPreferred());
+		result.setCanonicalStrings(test.getCanonical());
 		result.setUserData(test.getUserData());
 		return result;
 	}

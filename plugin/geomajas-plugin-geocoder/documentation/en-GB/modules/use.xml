@@ -165,7 +165,7 @@
 
         <mediaobject>
           <imageobject>
-            <imagedata fileref="../images/geocoderWidget.png" />
+            <imagedata fileref="../images/geocoderWidget.png" width="50%" />
           </imageobject>
         </mediaobject>
       </figure></para>

@@ -48,9 +48,9 @@ public class GeocoderInfo {
 
 	private boolean loopAllServices;
 
-	private double pointDisplayWidth = 200.0;
+	private double pointDisplayWidth = 2000.0;
 
-	private double pointDisplayHeight = 100.0;
+	private double pointDisplayHeight = 1000.0;
 
 	/**
 	 * Get the service which is used to split the geocoder request string.

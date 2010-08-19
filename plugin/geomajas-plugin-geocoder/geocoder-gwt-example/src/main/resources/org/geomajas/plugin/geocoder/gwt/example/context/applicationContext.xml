@@ -54,7 +54,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 												<value>london</value>
 											</list>
 										</property>
-										<property name="preferred">
+										<property name="canonical">
 											<list>
 												<value>London</value>
 											</list>

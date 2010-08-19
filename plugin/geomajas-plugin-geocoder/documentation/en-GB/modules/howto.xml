@@ -58,19 +58,29 @@
 
     <para><itemizedlist>
         <listitem>
-          <para><emphasis>canonicalStrings</emphasis>: </para>
+          <para><emphasis>canonicalStrings</emphasis>: the preferred strings
+          to use for the location. Can be null if no preferred string exists
+          or it is not knows. In that case, the client will get the search
+          strings as result.</para>
         </listitem>
 
         <listitem>
-          <para><emphasis>coordinate</emphasis>: </para>
+          <para><emphasis>coordinate</emphasis>: the coordinate for the
+          location. This field is only used when no envelope was given. The
+          coordinate will be converted to the requested CRS and an area with
+          will be built around this point (according to command
+          configuration).</para>
         </listitem>
 
         <listitem>
-          <para><emphasis>envelope</emphasis>: </para>
+          <para><emphasis>envelope</emphasis>: the bounding box for the
+          location. This is the preferred result and has precedence over the
+          coordinate field.</para>
         </listitem>
 
         <listitem>
-          <para><emphasis>userData</emphasis>: </para>
+          <para><emphasis>userData</emphasis>: any additional user data the
+          geocoder may wish to return to the client.</para>
         </listitem>
       </itemizedlist></para>
   </section>
@@ -78,22 +88,40 @@
   <section>
     <title>How to write a service to split the input string</title>
 
-    <para>...</para>
+    <para>The geocoder command uses an instance of SplitGeocoderStringService
+    to split and sort the initial search string. This should help to make the
+    searching easier and assure the separator for location indicators can be
+    configured and is geocoder service independent.</para>
+
+    <para>This way you can configure whether you prefer your users to type
+    "London, UK", "UK, London", "London - UK" or something else.</para>
+
+    <para>You basically have to implement the service in listing <xref
+    linkend="SplitGeocoderStringService" /> and set that in the GeocoderInfo
+    instance in your application context.</para>
 
     <xi:include href="../listing/SplitGeocoderStringService.xml"
                 xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-    <para>...</para>
+    <para>You have to provide two methods, one for splitting and one for
+    combining.</para>
   </section>
 
   <section>
     <title>How to write a service to combine results</title>
 
-    <para>...</para>
+    <para>When multiple geocoder services found a match for the search string,
+    an instance of CombineResultService is used to combine these results to
+    one area. Two obvious options would be either to use the union or the
+    intersection of the areas (these are already provided as
+    CombineUnionService and CombineIntersectionService), but you can also
+    define your own combination strategy.</para>
 
     <xi:include href="../listing/CombineResultService.xml"
                 xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-    <para>...</para>
+    <para>All you have to do is implement the combine() method. The strategy
+    can be configured in the GeocoderInfo instance in your application
+    context.</para>
   </section>
 </chapter>

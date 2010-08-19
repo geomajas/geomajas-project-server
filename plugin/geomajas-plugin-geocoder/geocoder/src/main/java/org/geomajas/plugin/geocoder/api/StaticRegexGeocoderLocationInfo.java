@@ -42,7 +42,7 @@ public class StaticRegexGeocoderLocationInfo {
 	@NotNull
 	private List<String> toMatch;
 
-	private List<String> preferred;
+	private List<String> canonical;
 	private double x, y;
 	private Bbox bbox;
 	private ClientUserDataInfo userData;
@@ -70,21 +70,21 @@ public class StaticRegexGeocoderLocationInfo {
 	}
 
 	/**
-	 * Get preferred list of strings to indicate this location.
+	 * Get canonical list of strings to indicate this location.
 	 *
 	 * @return preferred list of strings
 	 */
-	public List<String> getPreferred() {
-		return preferred;
+	public List<String> getCanonical() {
+		return canonical;
 	}
 
 	/**
-	 * Set preferred list of strings to indicate this location.
+	 * Set canonical list of strings to indicate this location.
 	 *
-	 * @param preferred preferred list of strings for this location
+	 * @param canonical canonical list of strings for this location
 	 */
-	public void setPreferred(List<String> preferred) {
-		this.preferred = preferred;
+	public void setCanonical(List<String> canonical) {
+		this.canonical = canonical;
 	}
 
 	/**

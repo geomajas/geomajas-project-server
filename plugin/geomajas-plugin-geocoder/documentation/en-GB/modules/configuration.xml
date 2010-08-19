@@ -79,7 +79,7 @@
                 xmlns:xi="http://www.w3.org/2001/XInclude" />
 
     <para>To configure the geocoder plugin, you have to create a bean
-    instantiating the GeocoderInfo class. </para>
+    instantiating the GeocoderInfo class.</para>
 
     <para>In the bean, you have to set the geocoderServices property to select
     which geocoder services you want to be used to attempt to convert the
@@ -89,36 +89,164 @@
 
     <para><itemizedlist>
         <listitem>
-          <para><emphasis>splitGeocoderStringService</emphasis>:</para>
+          <para><emphasis>splitGeocoderStringService</emphasis>: the service
+          which should be used to split the location string into parts and to
+          determine the order in which parts are given. Depending on this
+          service, you may tell your users to search for "Antwerpen, BE", "BE,
+          Antwerpen" or "Antwerpen; BE",...</para>
         </listitem>
 
         <listitem>
-          <para><emphasis>combineResultService</emphasis>: </para>
+          <para><emphasis>combineResultService</emphasis>: service which
+          combines the result when several geocoder services found a match for
+          the location string.</para>
         </listitem>
 
         <listitem>
-          <para><emphasis>loopAllServices</emphasis>: </para>
+          <para><emphasis>loopAllServices</emphasis>: the command will loop
+          all geocoder services which have been specified. Should this loop
+          stop when one geocoder found either a match or some
+          alternatives?</para>
         </listitem>
 
         <listitem>
-          <para><emphasis>pointDisplayWidth</emphasis>:200</para>
+          <para><emphasis>pointDisplayWidth</emphasis>: width in meters for
+          the area which needs to be displayed on the map when the geocoder
+          service returned a point. Defaults to 2000 (2km).</para>
         </listitem>
 
         <listitem>
-          <para><emphasis>pointDisplayHeight</emphasis>:100</para>
+          <para><emphasis>pointDisplayHeight</emphasis>: width in meters for
+          the area which needs to be displayed on the map when the geocoder
+          service returned a point. Defaults to 1000 (1km).</para>
         </listitem>
       </itemizedlist></para>
   </section>
-	<section>
+
+  <section>
     <title>Static regex geocoder service configuration</title>
-		<para>...</para>
+
+    <para>The StaticRegexGeocoderService allows you to define the combinations
+    of string to match and the locations directly in the configuration
+    file.</para>
+
+    <para>The strings to match are specified using regular
+    expressions<footnote>
+        <para>see <ulink
+        url="http://download.oracle.com/javase/1.4.2/docs/api/java/util/regex/Pattern.html">http://download.oracle.com/javase/1.4.2/docs/api/java/util/regex/Pattern.html</ulink></para>
+      </footnote>to allow more flexibility. Listing <xref
+    linkend="RegexGeocoderInfo" /> shows a base configuration. You have to use
+    the geocoderInfo property to configure the geolocator. This is done using
+    a StaticRegexGeocoderInfo object which contains the coordinate space name
+    (EPSG:900913 in this case, which is Mercator) and define the location
+    mappings.</para>
+
+    <xi:include href="../listing/RegexGeocoderInfo.xml"
+                xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+    <para>The location mappings themselves are contained in
+    StaticRegexGeocoderLocationInfo instances. You have to specify the strings
+    toMatch, and a location as either point of bounding box. You can specify
+    the canonical form for the search.</para>
+
+    <para>In listing <xref linkend="RegexPoint" /> you see a definition which
+    will match a single location string starting with second. As this is done
+    case independently, some examples of matching strings are "second" and
+    SECondary". It indicates a point with coordinates (10000,10000).</para>
+
+    <xi:include href="../listing/RegexPoint.xml"
+                xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+    <para>The location info object can also be used to match an area. In
+    listing <xref linkend="RegexBbox" /> you see the location bounding box
+    defined using the bbox property. If you would accidentally define both a
+    bounding box and point coordinates, then the bounding box will be used for
+    the result.</para>
+
+    <xi:include href="../listing/RegexBbox.xml"
+                xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+    <para>A location can also include extra data in the result. You need to
+    wrap this data in a subclass of ClientUserDataInfo. The object to be
+    returned can be defined using the userData property.</para>
+
+    <xi:include href="../listing/RegexBboxUserData.xml"
+                xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+    <para>The toMatch property contains a list of strings which need to be
+    matched in order. The matching checks every string in the location strings
+    for a matching string in the toMatch list, in order. The matching is case
+    independent and always matches the entire string. A level can be marked as
+    optional in the location strings by using a question marks as prefix for
+    the regular expression. The question mark is removed before the actual
+    evaluation of the regular expression.</para>
+
+    <para>As an example we will apply the example in listing <xref
+    linkend="RegexMulti" /> to a couple of data sets.</para>
+
+    <para><itemizedlist>
+        <listitem>
+          <para>["Belgium", "Antwerpen", "Booischot"]: matches, all three
+          parts match the specific regular expressions.</para>
+        </listitem>
+
+        <listitem>
+          <para>["Booischot", "Antwerpen", "Belgium"]: no match as the "BE.*"
+          regular expression does not match "Booischot".</para>
+        </listitem>
+
+        <listitem>
+          <para>["BE", "Booischot"]: matches, the "Antwerp.*" regular
+          expression is marked as option using the "?" prefix.</para>
+        </listitem>
+
+        <listitem>
+          <para>["Belgium","Antwerpen"]: does not match as the "Booischot"
+          regular expression is not matched for lack of input strings.</para>
+        </listitem>
+
+        <listitem>
+          <para>["Belgium", "Antwerpen", "Booischot", "Broekmansstraat"]: not
+          matches as the last string "Broekmansstraat" does not have a
+          matching regular expression.</para>
+        </listitem>
+      </itemizedlist></para>
+
+    <xi:include href="../listing/RegexMulti.xml"
+                xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+    <para>For this last case, where smaller divisions are not know (in this
+    case the street name), you can end the list of regular expressions with
+    "**" (see listing <xref linkend="RegexMultiOpenEnd" />). This will assure
+    that any remaining strings from the input are discarded if any are
+    remaining. This would assure that the last case in the previous list
+    matches. The other cases would still have the same result.</para>
+
+    <xi:include href="../listing/RegexMultiOpenEnd.xml"
+                xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+    <para></para>
   </section>
-	<section>
+
+  <section>
     <title>GeoNames service configuration</title>
-		<para>...</para>
+
+    <para>The GeonamesGeocoderService uses the search web service at
+    geonames.org to handle the geocoder requests. The service does not allow
+    any configuration, so its inclusion is pretty straightforward.</para>
+
+    <xi:include href="../listing/GeonamesConfiguration.xml"
+                xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+    <para>The GeoNames service never returns more than 50 results.</para>
+
+    <para>When the initial query returned no results, it will retry the search
+    using fuzzy matching.</para>
   </section>
-	<section>
+
+  <section>
     <title>Yahoo! PlaceFinder geocoder service configuration</title>
-		<para>...</para>
+
+    <para>...</para>
   </section>
 </chapter>
