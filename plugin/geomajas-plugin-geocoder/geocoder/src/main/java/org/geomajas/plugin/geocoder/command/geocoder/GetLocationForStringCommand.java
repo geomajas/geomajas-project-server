@@ -49,6 +49,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 /**
  * Geocoder command which allows getting the location and/or area for a string location description.
@@ -107,29 +108,32 @@ public class GetLocationForStringCommand implements Command<GetLocationForString
 
 		List<GetLocationResult> results = new ArrayList<GetLocationResult>();
 		List<GetLocationResult[]> alternatives = new ArrayList<GetLocationResult[]>();
+		Pattern namePattern = getShouldUsePattern(request.getServicePattern());
 		for (GeocoderService geocoderService : geocoderInfo.getGeocoderServices()) {
-			GetLocationResult[] result = geocoderService.getLocation(locationList);
-			if (null != result && result.length > 0) {
-				for (GetLocationResult aResult : result) {
-					CoordinateReferenceSystem sourceCrs = geocoderService.getCrs();
-					Envelope envelope = aResult.getEnvelope();
+			if (shouldUse(namePattern, geocoderService.getName())) {
+				GetLocationResult[] result = geocoderService.getLocation(locationList);
+				if (null != result && result.length > 0) {
+					for (GetLocationResult aResult : result) {
+						CoordinateReferenceSystem sourceCrs = geocoderService.getCrs();
+						Envelope envelope = aResult.getEnvelope();
 
-					// point locations needs to converted to an area based on configuration settings
-					if (null == envelope) {
-						envelope = geocoderUtilService.extendPoint(aResult.getCoordinate(), sourceCrs,
-								geocoderInfo.getPointDisplayWidth(), geocoderInfo.getPointDisplayHeight());
+						// point locations needs to converted to an area based on configuration settings
+						if (null == envelope) {
+							envelope = geocoderUtilService.extendPoint(aResult.getCoordinate(), sourceCrs,
+									geocoderInfo.getPointDisplayWidth(), geocoderInfo.getPointDisplayHeight());
+						}
+
+						// result needs to be CRS transformed to request CRS
+						aResult.setEnvelope(geocoderUtilService.transform(envelope, sourceCrs, crs));
 					}
-
-					// result needs to be CRS transformed to request CRS
-					aResult.setEnvelope(geocoderUtilService.transform(envelope, sourceCrs, crs));
-				}
-				if (result.length > 1) {
-					alternatives.add(result);
-				} else {
-					results.add(result[0]);
-				}
-				if (!geocoderInfo.isLoopAllServices()) {
-					break;
+					if (result.length > 1) {
+						alternatives.add(result);
+					} else {
+						results.add(result[0]);
+					}
+					if (!geocoderInfo.isLoopAllServices()) {
+						break;
+					}
 				}
 			}
 		}
@@ -186,5 +190,25 @@ public class GetLocationForStringCommand implements Command<GetLocationForString
 			}
 		}
 
+	}
+
+	private Pattern getShouldUsePattern(String namePattern) {
+		if (null == namePattern) {
+			return null;
+		}
+		if (!namePattern.startsWith("^")) {
+			namePattern = "^" + namePattern;
+		}
+		if (!namePattern.endsWith("$")) {
+			namePattern = namePattern + "$";
+		}
+		if ("^.*$".equals(namePattern)) {
+			return null;
+		}
+		return Pattern.compile(namePattern, Pattern.CASE_INSENSITIVE);
+	}
+
+	private boolean shouldUse(Pattern namePattern, String serviceName) {
+		return null == namePattern || namePattern.matcher(serviceName).matches();
 	}
 }

@@ -77,11 +77,27 @@ public class GeonamesGeocoderService implements GeocoderService {
 
 	private CoordinateReferenceSystem crs;
 
+	private String name = "GeoNames";
+
 	@PostConstruct
 	private void initCrs() throws GeomajasException {
 		crs = geoService.getCrs("EPSG:4326"); // WGS-84 latlong
 	}
 
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * Set the name for this geocoder service.
+	 *
+	 * @param name name
+	 */
+	@Api
+	public void setName(String name) {
+		this.name = name;
+	}
+	
 	public CoordinateReferenceSystem getCrs() {
 		return crs;
 	}

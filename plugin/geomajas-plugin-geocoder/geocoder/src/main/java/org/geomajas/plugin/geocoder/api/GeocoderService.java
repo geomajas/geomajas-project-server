@@ -41,6 +41,14 @@ import java.util.List;
 public interface GeocoderService {
 
 	/**
+	 * Name for the geocoder service. This name can be used to select which geocoder services are considered during the
+	 * search.
+	 * .
+	 * @return name for this geocoder
+	 */
+	String getName();
+
+	/**
 	 * CRS which is used for the results of this geocoder.
 	 *
 	 * @return CRS

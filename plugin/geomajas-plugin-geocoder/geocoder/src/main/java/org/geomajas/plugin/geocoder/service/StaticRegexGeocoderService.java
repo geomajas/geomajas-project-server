@@ -60,6 +60,22 @@ public class StaticRegexGeocoderService implements GeocoderService {
 
 	private CoordinateReferenceSystem crs;
 
+	private String name = "static-regex";
+
+	public String getName() {
+		return name;
+	}
+
+	/**
+	 * Set the name for this geocoder service.
+	 *
+	 * @param name name
+	 */
+	@Api
+	public void setName(String name) {
+		this.name = name;
+	}	
+
 	/**
 	 * Set configuration for service.
 	 *

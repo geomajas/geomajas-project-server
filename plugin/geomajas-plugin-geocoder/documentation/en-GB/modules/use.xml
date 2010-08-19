@@ -80,6 +80,13 @@
                     <para><emphasis>crs</emphasis>: the coordinate reference
                     system which should be used for the response.</para>
                   </listitem>
+
+                  <listitem>
+                    <para><emphasis>servicePattern</emphasis>: regular
+                    expression which allows you to select which geocoder
+                    service are used to search for the result. By default all
+                    configured services are used.</para>
+                  </listitem>
                 </itemizedlist></entry>
             </row>
 

@@ -39,6 +39,7 @@ public class GetLocationForStringRequest implements CommandRequest {
 
 	private String location;
 	private String crs;
+	private String servicePattern = ".*";
 
 	/**
 	 * Get the location string to search for.
@@ -76,4 +77,22 @@ public class GetLocationForStringRequest implements CommandRequest {
 		this.crs = crs;
 	}
 
+	/**
+	 * Get the regular expression for the geocoder names which should be used for the search.
+	 *
+	 * @return regular expression for selecting the geocoders to use
+	 */
+	public String getServicePattern() {
+		return servicePattern;
+	}
+
+	/**
+	 * Set the regular expression for the geocoder names which should be used for the search.
+	 *
+	 * @param servicePattern regular expression for selecting the geocoders to use
+	 */
+	public void setServicePattern(String servicePattern) {
+		this.servicePattern = servicePattern;
+	}
+	
 }

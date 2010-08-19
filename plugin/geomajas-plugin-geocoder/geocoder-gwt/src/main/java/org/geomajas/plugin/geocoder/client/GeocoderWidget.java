@@ -23,6 +23,7 @@
 
 package org.geomajas.plugin.geocoder.client;
 
+import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.CloseClickHandler;
@@ -62,22 +63,15 @@ import java.util.List;
 @Api
 public class GeocoderWidget extends DynamicForm {
 
+	private static final String COMMAND = "command.geocoder.GetLocationForString";
 	private static final String LOCATION_FIELD = "Location";
 	private static final String LOCATION_OBJECT = "Object";
 	private MapWidget map;
 	private TextItem textItem;
 	private Window altWindow;
 	private ListGrid altGrid;
-
-	/**
-	 * Create geocoder widget with default name and title.
-	 *
-	 * @param map map to apply search results
-	 */
-	@Api
-	public GeocoderWidget(MapWidget map) {
-		this(map, "description", "Search");
-	}
+	private String servicePattern = ".*";
+	private GeocoderMessages messages = GWT.create(GeocoderMessages.class);
 
 	/**
 	 * Create geocoder widget which allows searching a location from a string.
@@ -124,10 +118,11 @@ public class GeocoderWidget extends DynamicForm {
 	private void goToLocation() {
 		final String location = (String) textItem.getValue();
 
-		GwtCommand command = new GwtCommand("command.geocoder.GetLocationForString");
+		GwtCommand command = new GwtCommand(COMMAND);
 		GetLocationForStringRequest request = new GetLocationForStringRequest();
 		request.setCrs(map.getMapModel().getCrs());
 		request.setLocation(location);
+		request.setServicePattern(servicePattern);
 		command.setCommandRequest(request);
 		GwtCommandDispatcher.getInstance().execute(command, new CommandCallback() {
 
@@ -144,7 +139,7 @@ public class GeocoderWidget extends DynamicForm {
 						if (null != alternatives && alternatives.size() > 0) {
 							chooseAlternative(alternatives);
 						} else {
-							SC.say("Location " + location + " not found");
+							SC.say(messages.locationNotFound(location));
 						}
 					}
 				}
@@ -185,7 +180,7 @@ public class GeocoderWidget extends DynamicForm {
 
 			altWindow = new Window();
 			altWindow.setAutoSize(true);
-			altWindow.setTitle("Location to jump to");
+			altWindow.setTitle(messages.alternativeSelectTitle());
 			altWindow.setAutoSize(true);
 			altWindow.setLeft(20);
 			altWindow.setTop(20);
@@ -216,5 +211,25 @@ public class GeocoderWidget extends DynamicForm {
 			records[i] = record;
 		}
 		return records;
+	}
+
+	/**
+	 * Get the regular expression which is used to select which geocoder services to use.
+	 *
+	 * @return geocoder selection regular expression
+	 */
+	@Api
+	public String getServicePattern() {
+		return servicePattern;
+	}
+
+	/**
+	 * Set the regular expression which is used to select which geocoder services to use.
+	 *
+	 * @param servicePattern geocoder selection regular expression
+	 */
+	@Api
+	public void setServicePattern(String servicePattern) {
+		this.servicePattern = servicePattern;
 	}
 }
