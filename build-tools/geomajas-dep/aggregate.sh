@@ -154,7 +154,7 @@ include "org.geomajas.documentation" "caching-documentation" "1.0.0-SNAPSHOT" \
     "incubating" "caching.pdf" \
     "" "" ""
 
-include "org.geomajas.documentation" "geocoder-documentation" "1.0.0-SNAPSHOT" \
+include "org.geomajas.plugin" "geocoder-documentation" "1.0.0-SNAPSHOT" \
     "Geocoder plug-in" \
     "Convert a location description to map coordinates." \
     "incubating" "geocoder.pdf" \
