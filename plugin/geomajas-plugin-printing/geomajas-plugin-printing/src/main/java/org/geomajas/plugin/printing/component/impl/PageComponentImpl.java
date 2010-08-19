@@ -24,6 +24,8 @@ package org.geomajas.plugin.printing.component.impl;
 
 import org.geomajas.plugin.printing.component.PageComponent;
 import org.geomajas.plugin.printing.component.PrintComponentVisitor;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import com.lowagie.text.PageSize;
 import com.lowagie.text.Rectangle;
@@ -34,6 +36,8 @@ import com.lowagie.text.Rectangle;
  *
  * @author Jan De Moerloose
  */
+@Component("PageComponentPrototype")
+@Scope(value = "prototype")
 public class PageComponentImpl extends PrintComponentImpl implements PageComponent {
 
 	public PageComponentImpl() {

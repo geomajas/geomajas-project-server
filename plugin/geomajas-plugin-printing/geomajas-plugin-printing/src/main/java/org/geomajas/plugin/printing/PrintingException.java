@@ -40,11 +40,29 @@ public class PrintingException extends GeomajasException {
 
 	public static final int PRINT_TEMPLATE_PERSIST_PROBLEM = 2;
 
+	public static final int DOCUMENT_LAYOUT_PROBLEM = 3;
+
+	public static final int DOCUMENT_RENDER_PROBLEM = 4;
+
+	public static final int DTO_IMPLEMENTATION_NOT_FOUND = 5;
+
 	/**
 	 * Create new PrintingException.
 	 * 
 	 * @param ex
 	 *            cause exception
+	 * @param exceptionCode
+	 *            code which points to the message
+	 * @param parameters
+	 *            possible extra parameters
+	 */
+	public PrintingException(Throwable ex, int exceptionCode, Object... parameters) {
+		super(ex, exceptionCode, parameters);
+	}
+
+	/**
+	 * Create new PrintingException.
+	 * 
 	 * @param exceptionCode
 	 *            code which points to the message
 	 * @param parameters

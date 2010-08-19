@@ -26,35 +26,11 @@ import java.awt.Color;
 import java.awt.Font;
 
 import org.geomajas.configuration.FontStyleInfo;
-import org.geomajas.layer.RasterLayerService;
-import org.geomajas.layer.VectorLayerService;
+import org.geomajas.plugin.printing.PrintingException;
 import org.geomajas.plugin.printing.component.PrintComponent;
-import org.geomajas.plugin.printing.component.dto.ImageComponentInfo;
-import org.geomajas.plugin.printing.component.dto.LabelComponentInfo;
-import org.geomajas.plugin.printing.component.dto.LegendComponentInfo;
-import org.geomajas.plugin.printing.component.dto.LegendIconComponentInfo;
-import org.geomajas.plugin.printing.component.dto.LegendItemComponentInfo;
-import org.geomajas.plugin.printing.component.dto.MapComponentInfo;
-import org.geomajas.plugin.printing.component.dto.PageComponentInfo;
 import org.geomajas.plugin.printing.component.dto.PrintComponentInfo;
-import org.geomajas.plugin.printing.component.dto.RasterLayerComponentInfo;
-import org.geomajas.plugin.printing.component.dto.ScaleBarComponentInfo;
-import org.geomajas.plugin.printing.component.dto.VectorLayerComponentInfo;
-import org.geomajas.plugin.printing.component.dto.ViewPortComponentInfo;
-import org.geomajas.plugin.printing.component.impl.ImageComponentImpl;
-import org.geomajas.plugin.printing.component.impl.LabelComponentImpl;
-import org.geomajas.plugin.printing.component.impl.LegendComponentImpl;
-import org.geomajas.plugin.printing.component.impl.LegendIconComponentImpl;
-import org.geomajas.plugin.printing.component.impl.LegendItemComponentImpl;
-import org.geomajas.plugin.printing.component.impl.MapComponentImpl;
-import org.geomajas.plugin.printing.component.impl.PageComponentImpl;
-import org.geomajas.plugin.printing.component.impl.RasterLayerComponentImpl;
-import org.geomajas.plugin.printing.component.impl.ScaleBarComponentImpl;
-import org.geomajas.plugin.printing.component.impl.VectorLayerComponentImpl;
-import org.geomajas.plugin.printing.component.impl.ViewPortComponentImpl;
-import org.geomajas.service.FilterService;
-import org.geomajas.service.GeoService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
 /**
@@ -67,46 +43,17 @@ import org.springframework.stereotype.Component;
 public class PrintDtoConverterServiceImpl implements PrintDtoConverterService {
 
 	@Autowired
-	private GeoService geoService;
+	private ApplicationContext applicationContext;
 
-	@Autowired
-	private FilterService filterService;
-
-	@Autowired
-	private VectorLayerService vectorLayerService;
-
-	@Autowired
-	private RasterLayerService rasterLayerService;
-
-	@Autowired
-	private PrintConfigurationService configurationService;
-
-	public PrintComponent toInternal(PrintComponentInfo info) {
-		PrintComponent component = null;
-		if (info instanceof ImageComponentInfo) {
-			component = new ImageComponentImpl();
-		} else if (info instanceof LabelComponentInfo) {
-			component = new LabelComponentImpl();
-		} else if (info instanceof LegendComponentInfo) {
-			component = new LegendComponentImpl();
-		} else if (info instanceof LegendItemComponentInfo) {
-			component = new LegendItemComponentImpl();
-		} else if (info instanceof LegendIconComponentInfo) {
-			component = new LegendIconComponentImpl();
-		} else if (info instanceof MapComponentInfo) {
-			component = new MapComponentImpl();
-		} else if (info instanceof PageComponentInfo) {
-			component = new PageComponentImpl();
-		} else if (info instanceof RasterLayerComponentInfo) {
-			component = new RasterLayerComponentImpl(rasterLayerService, configurationService);
-		} else if (info instanceof ScaleBarComponentInfo) {
-			component = new ScaleBarComponentImpl(configurationService);
-		} else if (info instanceof VectorLayerComponentInfo) {
-			component = new VectorLayerComponentImpl(geoService, filterService, vectorLayerService,
-					configurationService);
-		} else if (info instanceof ViewPortComponentInfo) {
-			component = new ViewPortComponentImpl();
+	public PrintComponent toInternal(PrintComponentInfo info) throws PrintingException {
+		Object bean = null;
+		// creates a new component, this is a prototype !!!
+		bean = applicationContext.getBean(info.getPrototypeName());
+		if (bean == null || !(bean instanceof PrintComponent)) {
+			throw new PrintingException(PrintingException.DTO_IMPLEMENTATION_NOT_FOUND,
+					info.getClass().getSimpleName(), info.getPrototypeName());
 		}
+		PrintComponent component = (PrintComponent) bean;
 		component.fromDto(info, this);
 		for (PrintComponentInfo child : info.getChildren()) {
 			PrintComponent childComponent = toInternal(child);

@@ -41,7 +41,7 @@ public interface PrintConfigurationService {
 	 *            map Id
 	 * @param applicationId
 	 *            application id
-	 * @return {@link org.geomajas.configuration.client.ClientMapInfo}
+	 * @return {@link ClientMapInfo}
 	 */
 	ClientMapInfo getMapInfo(String mapId, String applicationId);
 
@@ -50,7 +50,7 @@ public interface PrintConfigurationService {
 	 * 
 	 * @param layerId
 	 *            layer id
-	 * @return {@link org.geomajas.configuration.client.ClientRasterLayerInfo}
+	 * @return {@link RasterLayerInfo}
 	 */
 	RasterLayerInfo getRasterLayerInfo(String layerId);
 
@@ -59,7 +59,7 @@ public interface PrintConfigurationService {
 	 * 
 	 * @param layerId
 	 *            layer id
-	 * @return {@link org.geomajas.configuration.client.ClientVectorLayerInfo}
+	 * @return {@link VectorLayerInfo}
 	 */
 	VectorLayerInfo getVectorLayerInfo(String layerId);
 

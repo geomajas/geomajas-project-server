@@ -2,7 +2,7 @@
 
 
 	<root>
-		<level value="OFF"/>
+		<level value="DEBUG"/>
 	</root>
 
 </configuration>

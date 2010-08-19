@@ -76,5 +76,6 @@ public class BaseLayerComponentInfo extends PrintComponentInfo implements Serial
 	public void setLayerId(String layerId) {
 		this.layerId = layerId;
 	}
+ 
 
 }

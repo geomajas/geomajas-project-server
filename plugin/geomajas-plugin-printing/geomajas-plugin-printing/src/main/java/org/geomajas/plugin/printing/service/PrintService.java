@@ -56,6 +56,18 @@ public interface PrintService {
 	void saveOrUpdateTemplate(PrintTemplate template) throws PrintingException;
 
 	/**
+	 * Creates a new default template.
+	 * 
+	 * @param pagesize
+	 *            the size of the page (A1,A2,A3,A4,..)
+	 * @param landscape
+	 *            true for landscape orientation
+	 * @return the template
+	 * @throws PrintingException
+	 */
+	PrintTemplate createDefaultTemplate(String pagesize, boolean landscape) throws PrintingException;
+
+	/**
 	 * Puts a new document in the service.
 	 * 
 	 * @param document

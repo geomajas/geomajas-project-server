@@ -34,6 +34,8 @@ import org.geomajas.plugin.printing.component.PrintComponentVisitor;
 import org.geomajas.plugin.printing.component.dto.LegendIconComponentInfo;
 import org.geomajas.plugin.printing.component.dto.PrintComponentInfo;
 import org.geomajas.plugin.printing.component.service.PrintDtoConverterService;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import com.lowagie.text.Image;
 import com.lowagie.text.Rectangle;
@@ -43,6 +45,8 @@ import com.lowagie.text.Rectangle;
  *
  * @author Jan De Moerloose
  */
+@Component("LegendIconComponentPrototype")
+@Scope(value = "prototype")
 public class LegendIconComponentImpl extends PrintComponentImpl implements LegendIconComponent {
 
 	private String label;

@@ -28,6 +28,7 @@ import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.geomajas.plugin.printing.PrintingException;
 import org.geomajas.plugin.printing.component.MapComponent;
 import org.geomajas.plugin.printing.component.PageComponent;
 import org.geomajas.plugin.printing.component.PdfContext;
@@ -86,18 +87,26 @@ public class SinglePageDocument extends AbstractDocument {
 	/**
 	 * Renders the document to the specified output stream.
 	 */
-	public void render(OutputStream outputStream) throws IOException {
-		doRender(outputStream);
+	public void render(OutputStream outputStream) throws PrintingException {
+		try {
+			doRender(outputStream);
+		} catch (Exception e) {
+			throw new PrintingException(e, PrintingException.DOCUMENT_RENDER_PROBLEM);
+		}
 	}
 
 	/**
 	 * Re-calculates the layout and renders to internal memory stream. Always call this method before calling render()
 	 * to make sure that the latest document changes have been taken into account for rendering.
 	 * 
-	 * @throws IOException
+	 * @throws PrintingException
 	 */
-	public void layout() throws IOException {
-		doRender(null);
+	public void layout() throws PrintingException {
+		try {
+			doRender(null);
+		} catch (Exception e) {
+			throw new PrintingException(e, PrintingException.DOCUMENT_LAYOUT_PROBLEM);
+		}
 	}
 
 	/**
@@ -105,49 +114,48 @@ public class SinglePageDocument extends AbstractDocument {
 	 * 
 	 * @param outputStream
 	 *            outputstream to render to, null if only for layout
+	 * @throws DocumentException
 	 * @throws IOException
 	 */
-	private void doRender(OutputStream outputStream) throws IOException {
-		try {
-			// first render or re-render for different layout
-			if (outputStream == null || baos == null) {
-				if (baos == null) {
-					baos = new ByteArrayOutputStream();
-				}
-				baos.reset();
-				// Create a document in the requested ISO scale.
-				Document document = new Document(page.getBounds(), 0, 0, 0, 0);
-				PdfWriter writer;
-				writer = PdfWriter.getInstance(document, baos);
+	private void doRender(OutputStream outputStream) throws IOException, DocumentException {
+		// first render or re-render for different layout
+		if (outputStream == null || baos == null) {
+			if (baos == null) {
+				baos = new ByteArrayOutputStream();
+			}
+			baos.reset();
+			// Create a document in the requested ISO scale.
+			Document document = new Document(page.getBounds(), 0, 0, 0, 0);
+			PdfWriter writer;
+			writer = PdfWriter.getInstance(document, baos);
 
-				// Render in correct colors for transparent rasters
-				writer.setRgbTransparencyBlending(true);
+			// Render in correct colors for transparent rasters
+			writer.setRgbTransparencyBlending(true);
 
-				// The mapView is not scaled to the document, we assume the mapView
-				// has the right ratio.
+			// The mapView is not scaled to the document, we assume the mapView
+			// has the right ratio.
 
-				// Write document title and metadata
-				document.open();
-				document.addTitle("Geomajas");
+			// Write document title and metadata
+			document.open();
+			document.addTitle("Geomajas");
 
-				// Actual drawing
-				PdfContext context = new PdfContext(writer);
-				context.initSize(page.getBounds());
-				// first pass of all children to calculate size
-				page.calculateSize(context);
-				// second pass to layout
-				page.layout(context);
-				// finally render
-				page.render(context);
-				document.add(context.getImage());
-				// Now close the document
-				document.close();
-			} else {
+			// Actual drawing
+			PdfContext context = new PdfContext(writer);
+			context.initSize(page.getBounds());
+			// first pass of all children to calculate size
+			page.calculateSize(context);
+			// second pass to layout
+			page.layout(context);
+			// finally render
+			page.render(context);
+			document.add(context.getImage());
+			// Now close the document
+			document.close();
+			if (outputStream != null) {
 				baos.writeTo(outputStream);
 			}
-		} catch (DocumentException e) {
-			log.error("Could not render document", e);
-			throw new IOException("Could not render document");
+		} else {
+			baos.writeTo(outputStream);
 		}
 	}
 

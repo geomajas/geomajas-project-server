@@ -32,6 +32,8 @@ import org.geomajas.plugin.printing.component.ViewPortComponent;
 import org.geomajas.plugin.printing.component.dto.PrintComponentInfo;
 import org.geomajas.plugin.printing.component.dto.ViewPortComponentInfo;
 import org.geomajas.plugin.printing.component.service.PrintDtoConverterService;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import com.vividsolutions.jts.geom.Coordinate;
 
@@ -44,6 +46,8 @@ import com.vividsolutions.jts.geom.Coordinate;
  *
  * @author Jan De Moerloose
  */
+@Component("ViewPortComponentPrototype")
+@Scope(value = "prototype")
 public class ViewPortComponentImpl extends MapComponentImpl implements ViewPortComponent {
 
 	/**

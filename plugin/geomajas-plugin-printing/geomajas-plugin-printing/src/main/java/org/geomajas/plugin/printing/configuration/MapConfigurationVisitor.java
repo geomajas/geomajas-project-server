@@ -30,16 +30,18 @@ import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientRasterLayerInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
-import org.geomajas.layer.RasterLayerService;
-import org.geomajas.layer.VectorLayerService;
+import org.geomajas.plugin.printing.PrintingException;
 import org.geomajas.plugin.printing.component.LegendComponent;
 import org.geomajas.plugin.printing.component.MapComponent;
 import org.geomajas.plugin.printing.component.TopDownVisitor;
+import org.geomajas.plugin.printing.component.dto.RasterLayerComponentInfo;
+import org.geomajas.plugin.printing.component.dto.VectorLayerComponentInfo;
 import org.geomajas.plugin.printing.component.impl.RasterLayerComponentImpl;
 import org.geomajas.plugin.printing.component.impl.VectorLayerComponentImpl;
 import org.geomajas.plugin.printing.component.service.PrintConfigurationService;
-import org.geomajas.service.FilterService;
-import org.geomajas.service.GeoService;
+import org.geomajas.plugin.printing.component.service.PrintDtoConverterService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Visitor that configures the default layers of all the maps and legends in the print component. Maps and legends
@@ -51,21 +53,14 @@ public class MapConfigurationVisitor extends TopDownVisitor {
 
 	private PrintConfigurationService configurationService;
 
-	private GeoService geoService;
+	private PrintDtoConverterService printDtoConverterService;
 
-	private FilterService filterCreator;
+	private final Logger log = LoggerFactory.getLogger(MapConfigurationVisitor.class);
 
-	private VectorLayerService vectorLayerService;
-
-	private RasterLayerService rasterLayerService;
-
-	public MapConfigurationVisitor(PrintConfigurationService configurationService, GeoService geoService,
-			FilterService filterCreator, VectorLayerService vectorLayerService, RasterLayerService rasterLayerService) {
+	public MapConfigurationVisitor(PrintConfigurationService configurationService,
+			PrintDtoConverterService printDtoConverterService) {
 		this.configurationService = configurationService;
-		this.geoService = geoService;
-		this.filterCreator = filterCreator;
-		this.vectorLayerService = vectorLayerService;
-		this.rasterLayerService = rasterLayerService;
+		this.printDtoConverterService = printDtoConverterService;
 	}
 
 	@Override
@@ -89,18 +84,31 @@ public class MapConfigurationVisitor extends TopDownVisitor {
 		Collections.reverse(layers);
 		for (ClientLayerInfo info : layers) {
 			if (info instanceof ClientVectorLayerInfo) {
-				VectorLayerComponentImpl comp = new VectorLayerComponentImpl(geoService, filterCreator,
-						vectorLayerService, configurationService);
-				comp.setLabelsVisible(false);
-				comp.setLayerId(info.getServerLayerId());
-				comp.setStyleInfo(((ClientVectorLayerInfo) info).getNamedStyleInfo());
-				comp.setVisible(true);
-				mapComponent.addComponent(0, comp);
+				VectorLayerComponentImpl comp;
+				try {
+					comp = (VectorLayerComponentImpl) printDtoConverterService
+							.toInternal(new VectorLayerComponentInfo());
+					comp.setLabelsVisible(false);
+					comp.setLayerId(info.getServerLayerId());
+					comp.setStyleInfo(((ClientVectorLayerInfo) info).getNamedStyleInfo());
+					comp.setVisible(true);
+					mapComponent.addComponent(0, comp);
+				} catch (PrintingException e) {
+					// should never fail
+					log.error("unexpected exception while adding layers to map" , e);
+				}
 			} else if (info instanceof ClientRasterLayerInfo) {
-				RasterLayerComponentImpl comp = new RasterLayerComponentImpl(rasterLayerService, configurationService);
-				comp.setLayerId(info.getServerLayerId());
-				comp.setVisible(true);
-				mapComponent.addComponent(0, comp);
+				RasterLayerComponentImpl comp;
+				try {
+					comp = (RasterLayerComponentImpl) printDtoConverterService
+							.toInternal(new RasterLayerComponentInfo());
+					comp.setLayerId(info.getServerLayerId());
+					comp.setVisible(true);
+					mapComponent.addComponent(0, comp);
+				} catch (PrintingException e) {
+					// should never fail
+					log.error("unexpected exception while adding layers to map" , e);
+				}
 			}
 		}
 	}

@@ -26,9 +26,7 @@ import java.awt.Color;
 import java.awt.Font;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -36,7 +34,6 @@ import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.LabelStyleInfo;
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.configuration.SymbolInfo;
-import org.geomajas.configuration.client.ClientApplicationInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.layer.VectorLayerService;
 import org.geomajas.layer.feature.InternalFeature;
@@ -50,11 +47,12 @@ import org.geomajas.plugin.printing.component.service.PrintConfigurationService;
 import org.geomajas.plugin.printing.component.service.PrintDtoConverterService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
-import org.geotools.referencing.CRS;
 import org.opengis.filter.Filter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import com.lowagie.text.Rectangle;
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
@@ -71,10 +69,12 @@ import com.vividsolutions.jts.geom.Polygon;
 import com.vividsolutions.jts.geom.PrecisionModel;
 
 /**
- * ???
+ * Internal implementation of {@link VectorLayerComponent}.
  * 
- * @author Pieter De Graef
+ * @author Jan De Moerloose
  */
+@Component("VectorLayerComponentPrototype")
+@Scope(value = "prototype")
 public class VectorLayerComponentImpl extends BaseLayerComponentImpl implements VectorLayerComponent {
 
 	/** Style for this layer. */
@@ -107,23 +107,23 @@ public class VectorLayerComponentImpl extends BaseLayerComponentImpl implements 
 	// length of the connector line for symbols
 	private static final float SYMBOL_CONNECT_LENGTH = 15;
 
+	@Autowired
+	@XStreamOmitField
 	private GeoService geoService;
 
+	@Autowired
+	@XStreamOmitField
 	private FilterService filterService;
 
+	@Autowired
+	@XStreamOmitField
 	private VectorLayerService layerService;
 
+	@Autowired
+	@XStreamOmitField
 	private PrintConfigurationService configurationService;
 
-	@Autowired(required = false)
-	protected Map<String, ClientApplicationInfo> applicationMap = new LinkedHashMap<String, ClientApplicationInfo>();
-
-	public VectorLayerComponentImpl(GeoService geoService, FilterService filterService,
-			VectorLayerService layerService, PrintConfigurationService configurationService) {
-		this.geoService = geoService;
-		this.filterService = filterService;
-		this.layerService = layerService;
-		this.configurationService = configurationService;
+	public VectorLayerComponentImpl() {
 
 		// stretch to map
 		getConstraint().setAlignmentX(LayoutConstraint.JUSTIFIED);
@@ -157,7 +157,7 @@ public class VectorLayerComponentImpl extends BaseLayerComponentImpl implements 
 					filter = filterService.createAndFilter(filterService.parseFilter(getFilter()), filter);
 				}
 
-				features = layerService.getFeatures(getLayerId(), CRS.decode(map.getCrs()), filter, styleInfo,
+				features = layerService.getFeatures(getLayerId(), geoService.getCrs(map.getCrs()), filter, styleInfo,
 						VectorLayerService.FEATURE_INCLUDE_ALL);
 			} catch (Exception e) {
 				log.error("Error rendering vectorlayerRenderer", e);

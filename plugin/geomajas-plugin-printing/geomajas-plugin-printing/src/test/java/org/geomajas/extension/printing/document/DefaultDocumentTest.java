@@ -24,15 +24,13 @@ package org.geomajas.extension.printing.document;
 
 import java.io.FileOutputStream;
 
-import org.geomajas.layer.RasterLayerService;
-import org.geomajas.layer.VectorLayerService;
 import org.geomajas.plugin.printing.component.service.PrintConfigurationService;
+import org.geomajas.plugin.printing.component.service.PrintDtoConverterService;
 import org.geomajas.plugin.printing.configuration.DefaultConfigurationVisitor;
+import org.geomajas.plugin.printing.configuration.MapConfigurationVisitor;
 import org.geomajas.plugin.printing.document.DefaultDocument;
+import org.geomajas.plugin.printing.service.PrintService;
 import org.geomajas.security.SecurityManager;
-import org.geomajas.service.ConfigurationService;
-import org.geomajas.service.FilterService;
-import org.geomajas.service.GeoService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -51,19 +49,13 @@ import com.vividsolutions.jts.geom.Coordinate;
 public class DefaultDocumentTest {
 
 	@Autowired
-	private GeoService geoService;
-
-	@Autowired
-	private FilterService filterCreator;
-
-	@Autowired
 	private PrintConfigurationService configurationService;
 
 	@Autowired
-	private VectorLayerService vectorLayerService;
+	private PrintDtoConverterService printDtoService;
 
 	@Autowired
-	private RasterLayerService rasterLayerService;
+	private PrintService printService;
 
 	@Autowired
 	private SecurityManager securityManager;
@@ -76,8 +68,9 @@ public class DefaultDocumentTest {
 
 	@Test
 	public void testRender() throws Exception {
-		DefaultDocument document = new DefaultDocument("A4", configurationService, null, getDefaultVisitor(-31.44,
-				-37.43, 80.83f), geoService, filterCreator, vectorLayerService, rasterLayerService);
+		DefaultDocument document = new DefaultDocument(printService.createDefaultTemplate("A4", true), null,
+				getDefaultVisitor(-31.44, -37.43, 80.83f), new MapConfigurationVisitor(configurationService,
+						printDtoService));
 		FileOutputStream fo = new FileOutputStream("target/test.pdf");
 		document.render(fo);
 		fo.flush();

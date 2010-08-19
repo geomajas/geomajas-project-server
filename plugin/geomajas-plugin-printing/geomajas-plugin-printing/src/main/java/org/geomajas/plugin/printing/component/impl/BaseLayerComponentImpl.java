@@ -31,7 +31,7 @@ import org.geomajas.plugin.printing.component.service.PrintDtoConverterService;
 import com.vividsolutions.jts.geom.Envelope;
 
 /**
- * ???
+ * Base class for layer components.
  *
  * @author Jan De Moerloose
  */

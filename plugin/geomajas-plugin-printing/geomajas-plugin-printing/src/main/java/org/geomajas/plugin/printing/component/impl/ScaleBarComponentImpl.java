@@ -37,10 +37,13 @@ import org.geomajas.plugin.printing.component.dto.ScaleBarComponentInfo;
 import org.geomajas.plugin.printing.component.service.PrintConfigurationService;
 import org.geomajas.plugin.printing.component.service.PrintDtoConverterService;
 import org.geomajas.plugin.printing.parser.FontConverter;
-import org.geotools.referencing.CRS;
+import org.geomajas.service.GeoService;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import com.lowagie.text.Rectangle;
 import com.thoughtworks.xstream.annotations.XStreamConverter;
@@ -51,6 +54,8 @@ import com.thoughtworks.xstream.annotations.XStreamOmitField;
  * 
  * @author Jan De Moerloose
  */
+@Component("ScaleBarComponentPrototype")
+@Scope(value = "prototype")
 public class ScaleBarComponentImpl extends PrintComponentImpl implements ScaleBarComponent {
 
 	@XStreamOmitField
@@ -92,24 +97,25 @@ public class ScaleBarComponentImpl extends PrintComponentImpl implements ScaleBa
 	 */
 	private float ticHeight;
 
-
+	@Autowired
+	@XStreamOmitField
 	private PrintConfigurationService configurationService;
 	
+	@Autowired
+	@XStreamOmitField
+	private GeoService geoService;
+
 	private static final float[] ALLOW_TICK_NUMBERS = new float[] { 1, 2, 5, 10, 25, 50, 100, 200, 250, 500, 750 };
 
 	private static final String[] UNIT_PREFIXES = new String[] { "n", "m", "", "k", "M" };
 
-	public ScaleBarComponentImpl(PrintConfigurationService configurationService) {
-		this.configurationService = configurationService;
+	public ScaleBarComponentImpl() {
 		getConstraint().setAlignmentX(LayoutConstraint.LEFT);
 		getConstraint().setAlignmentY(LayoutConstraint.BOTTOM);
 		getConstraint().setMarginX(20);
 		getConstraint().setMarginY(20);
 		getConstraint().setWidth(200);
-	}
-	
-	
-
+	}	
 	
 	public Font getFont() {
 		return font;
@@ -168,7 +174,7 @@ public class ScaleBarComponentImpl extends PrintComponentImpl implements ScaleBa
 			log.debug("calculateSize getMap.getId({}), res {}", getMap().getId(), map);
 			CoordinateReferenceSystem crs;
 			try {
-				crs = CRS.decode(map.getCrs());
+				crs = geoService.getCrs(map.getCrs());
 				unit = crs.getCoordinateSystem().getAxis(0).getUnit().toString();
 			} catch (Exception e) {
 				log.error("could not calculate map unit", e);

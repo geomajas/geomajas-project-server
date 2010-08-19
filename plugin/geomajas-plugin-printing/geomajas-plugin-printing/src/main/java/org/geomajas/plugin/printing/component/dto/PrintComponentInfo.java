@@ -92,5 +92,16 @@ public abstract class PrintComponentInfo implements Serializable {
 	public void setLayoutConstraint(LayoutConstraintInfo layoutConstraint) {
 		this.layoutConstraint = layoutConstraint;
 	}
+	
+	public String getPrototypeName() {
+		return getSimpleClassName().replace("Info", "Prototype");
+	}
+
+	private String getSimpleClassName() {
+		// should be in GWT but is not !
+		String fullName = getClass().getName();
+		String[] parts = fullName.split("\\.");
+		return parts[parts.length - 1];
+	}	
 
 }

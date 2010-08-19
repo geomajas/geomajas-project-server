@@ -36,6 +36,8 @@ import org.geomajas.plugin.printing.component.PrintComponentVisitor;
 import org.geomajas.plugin.printing.component.dto.MapComponentInfo;
 import org.geomajas.plugin.printing.component.dto.PrintComponentInfo;
 import org.geomajas.plugin.printing.component.service.PrintDtoConverterService;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import com.lowagie.text.Rectangle;
 import com.vividsolutions.jts.geom.Coordinate;
@@ -45,6 +47,8 @@ import com.vividsolutions.jts.geom.Coordinate;
  *
  * @author Jan De Moerloose
  */
+@Component("MapComponentPrototype")
+@Scope(value = "prototype")
 public class MapComponentImpl extends PrintComponentImpl implements MapComponent {
 
 	/**
@@ -73,7 +77,7 @@ public class MapComponentImpl extends PrintComponentImpl implements MapComponent
 	 */
 	private float ppUnit = 1.0f;
 
-	public MapComponentImpl() {
+	protected MapComponentImpl() {
 		getConstraint().setAlignmentX(LayoutConstraint.JUSTIFIED);
 		getConstraint().setAlignmentY(LayoutConstraint.JUSTIFIED);
 	}

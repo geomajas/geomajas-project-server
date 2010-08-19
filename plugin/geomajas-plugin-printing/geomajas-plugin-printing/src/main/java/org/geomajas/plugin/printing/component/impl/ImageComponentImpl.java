@@ -29,6 +29,8 @@ import org.geomajas.plugin.printing.component.PrintComponentVisitor;
 import org.geomajas.plugin.printing.component.dto.ImageComponentInfo;
 import org.geomajas.plugin.printing.component.dto.PrintComponentInfo;
 import org.geomajas.plugin.printing.component.service.PrintDtoConverterService;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import com.lowagie.text.Image;
 import com.lowagie.text.Rectangle;
@@ -38,6 +40,8 @@ import com.lowagie.text.Rectangle;
  * 
  * @author Jan De Moerloose
  */
+@Component("ImageComponentPrototype")
+@Scope(value = "prototype")
 public class ImageComponentImpl extends PrintComponentImpl implements ImageComponent {
 
 	/**

@@ -33,6 +33,8 @@ import org.geomajas.plugin.printing.component.dto.PrintComponentInfo;
 import org.geomajas.plugin.printing.component.service.PrintDtoConverterService;
 import org.geomajas.plugin.printing.parser.ColorConverter;
 import org.geomajas.plugin.printing.parser.FontConverter;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import com.lowagie.text.Rectangle;
 import com.thoughtworks.xstream.annotations.XStreamConverter;
@@ -42,6 +44,8 @@ import com.thoughtworks.xstream.annotations.XStreamConverter;
  * 
  * @author Jan De Moerloose
  */
+@Component("LabelComponentPrototype")
+@Scope(value = "prototype")
 public class LabelComponentImpl extends PrintComponentImpl implements LabelComponent {
 
 	/**

@@ -20,24 +20,21 @@ import com.vividsolutions.jts.util.Assert;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
 		"/org/geomajas/plugin/printing/printing.xml" })
-@Transactional(rollbackFor = {org.geomajas.global.GeomajasException.class})
+@Transactional(rollbackFor = { org.geomajas.global.GeomajasException.class })
 public class PrintServiceImplTest {
 
 	@Autowired
 	private PrintService printService;
-		
-	@Autowired
-	private PrintConfigurationService configurationService;
 
 	private final Logger log = LoggerFactory.getLogger(PrintServiceImplTest.class);
 
 	@Before
-	public void loadTemplates() throws Exception{
-		PrintTemplate template = PrintTemplate.createDefaultTemplate("A4", true, configurationService);
+	public void loadTemplates() throws Exception {
+		PrintTemplate template = printService.createDefaultTemplate("A4", true);
 		template.setName("test");
 		printService.saveOrUpdateTemplate(template);
 		log.info(template.getPageXml());
-		
+
 	}
 
 	@Test

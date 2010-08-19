@@ -22,18 +22,13 @@
  */
 package org.geomajas.plugin.printing.document;
 
-import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Map;
 
-import org.geomajas.layer.RasterLayerService;
-import org.geomajas.layer.VectorLayerService;
-import org.geomajas.plugin.printing.component.service.PrintConfigurationService;
+import org.geomajas.plugin.printing.PrintingException;
 import org.geomajas.plugin.printing.configuration.DefaultConfigurationVisitor;
 import org.geomajas.plugin.printing.configuration.MapConfigurationVisitor;
 import org.geomajas.plugin.printing.configuration.PrintTemplate;
-import org.geomajas.service.FilterService;
-import org.geomajas.service.GeoService;
 
 /**
  * Default document for printing.
@@ -44,33 +39,18 @@ public class DefaultDocument extends SinglePageDocument {
 
 	private DefaultConfigurationVisitor defaultVisitor;
 
-	private PrintConfigurationService configurationService;
+	private MapConfigurationVisitor visitor;
 
-	private GeoService geoService;
-
-	private FilterService filterCreator;
-
-	private VectorLayerService vectorLayerService;
-
-	private RasterLayerService rasterLayerService;
-
-	public DefaultDocument(String pageSize, PrintConfigurationService configurationService,
-			Map<String, String> filters, DefaultConfigurationVisitor defaultVisitor, GeoService geoService,
-			FilterService filterCreator, VectorLayerService vectorLayerService, RasterLayerService rasterLayerService) {
-		super(PrintTemplate.createDefaultTemplate(pageSize, true, configurationService).getPage(), filters);
-		this.configurationService = configurationService;
+	public DefaultDocument(PrintTemplate template, Map<String, String> filters,
+			DefaultConfigurationVisitor defaultVisitor, MapConfigurationVisitor visitor) {
+		super(template.getPage(), filters);
 		this.defaultVisitor = defaultVisitor;
-		this.geoService = geoService;
-		this.filterCreator = filterCreator;
-		this.vectorLayerService = vectorLayerService;
-		this.rasterLayerService = rasterLayerService;
+		this.visitor = visitor;
 	}
 
 	@Override
-	public void render(OutputStream outputStream) throws IOException {
+	public void render(OutputStream outputStream) throws PrintingException {
 		defaultVisitor.visitTree(getPage());
-		MapConfigurationVisitor visitor = new MapConfigurationVisitor(configurationService, geoService, filterCreator,
-				vectorLayerService, rasterLayerService);
 		visitor.visitTree(getPage());
 		super.render(outputStream);
 	}

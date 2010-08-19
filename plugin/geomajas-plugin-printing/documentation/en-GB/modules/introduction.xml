@@ -26,5 +26,18 @@
 <chapter id="chapter-introduction">
   <title>Introduction</title>
 
-  <para></para>
+  <para>This printing plugin provides a simple yet compelling example of how
+  platform independent web map printing might be implemented. Our
+  implementation bypasses the browsers native printing functionality by
+  rendering server side to a PDF document, which is then automatically
+  downloaded to the browser. The PDF document can either be saved to the file
+  system or opened in a new browser window from which native PDF printing is
+  possible. As different browsers are allowed to - and will - render identical
+  HTML pages in a slightly different manner, an absolute format like PDF is a
+  necessity for creating reproducible prints.</para>
+
+  <para>Our implementation makes extensive use of the excellent iText library,
+  which allows direct drawing operations on a graphics context. This has the
+  advantage of preserving the vectorial nature of the features in a layer,
+  allowing crisp vector rendering at any zoom level.</para>
 </chapter>

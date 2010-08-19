@@ -25,7 +25,9 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 <chapter id="chapter-configuration">
-  <title>Configuration</title>
+	<title>Configuration</title>
 
-  <para></para>
+	<para></para>
+	<xi:include href="../listing/PrintingDependency.xml" xmlns:xi="http://www.w3.org/2001/XInclude" />
+
 </chapter>

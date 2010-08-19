@@ -32,12 +32,16 @@ import org.geomajas.plugin.printing.component.LegendComponent;
 import org.geomajas.plugin.printing.component.LegendItemComponent;
 import org.geomajas.plugin.printing.component.PdfContext;
 import org.geomajas.plugin.printing.component.PrintComponentVisitor;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 /**
  * Legend item component for printed document.
  *
  * @author Jan De Moerloose
  */
+@Component("LegendItemComponentPrototype")
+@Scope(value = "prototype")
 public class LegendItemComponentImpl extends PrintComponentImpl implements LegendItemComponent {
 
 	public LegendItemComponentImpl() {

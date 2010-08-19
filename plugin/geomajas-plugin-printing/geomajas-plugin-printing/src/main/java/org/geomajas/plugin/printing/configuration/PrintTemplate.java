@@ -22,9 +22,6 @@
  */
 package org.geomajas.plugin.printing.configuration;
 
-import java.awt.Color;
-import java.awt.Font;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -32,16 +29,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 import org.geomajas.global.Json;
-import org.geomajas.plugin.printing.component.dto.LayoutConstraintInfo;
-import org.geomajas.plugin.printing.component.impl.ImageComponentImpl;
-import org.geomajas.plugin.printing.component.impl.LabelComponentImpl;
-import org.geomajas.plugin.printing.component.impl.LegendComponentImpl;
-import org.geomajas.plugin.printing.component.impl.MapComponentImpl;
 import org.geomajas.plugin.printing.component.impl.PageComponentImpl;
-import org.geomajas.plugin.printing.component.impl.ScaleBarComponentImpl;
-import org.geomajas.plugin.printing.component.service.PrintConfigurationService;
-
-import com.vividsolutions.jts.geom.Coordinate;
 
 /**
  * ???
@@ -133,69 +121,4 @@ public class PrintTemplate {
 		this.template = isTemplate;
 	}
 
-	public static PrintTemplate createDefaultTemplate(String pageSize, boolean landscape,
-			PrintConfigurationService configurationService) {
-		PageComponentImpl page = new PageComponentImpl(pageSize, landscape);
-		page.setTag(PAGE);
-		MapComponentImpl map = createMap();
-		ImageComponentImpl northarrow = createArrow();
-		ScaleBarComponentImpl bar = createBar(configurationService);
-		LabelComponentImpl title = createTitle();
-
-		LegendComponentImpl legend = new LegendComponentImpl();
-		legend.setTag(LEGEND);
-		map.addComponent(bar);
-		map.addComponent(legend);
-		map.addComponent(northarrow);
-		page.addComponent(map);
-		page.addComponent(title);
-		PrintTemplate template = new PrintTemplate(true);
-		template.setName("Default" + "-" + pageSize + "-" + (landscape ? "landscape" : "portrait"));
-		template.setPage(page);
-		return template;
-	}
-
-	private static MapComponentImpl createMap() {
-		MapComponentImpl map = new MapComponentImpl();
-		map.getConstraint().setMarginX(20);
-		map.getConstraint().setMarginY(20);
-		map.setLocation(new Coordinate());
-		map.setPpUnit(1.0f);
-		map.setTag(MAP);
-		return map;
-	}
-
-	private static ImageComponentImpl createArrow() {
-		ImageComponentImpl northarrow = new ImageComponentImpl();
-		northarrow.setImagePath("/images/northarrow.gif");
-		northarrow.getConstraint().setAlignmentX(LayoutConstraintInfo.RIGHT);
-		northarrow.getConstraint().setAlignmentY(LayoutConstraintInfo.TOP);
-		northarrow.getConstraint().setMarginX(20);
-		northarrow.getConstraint().setMarginY(20);
-		northarrow.getConstraint().setWidth(10);
-		northarrow.setTag(ARROW);
-		return northarrow;
-	}
-
-	private static LabelComponentImpl createTitle() {
-		LabelComponentImpl title = new LabelComponentImpl();
-		title.setFont(new Font("Dialog", Font.ITALIC, 14));
-		title.setBackgroundColor(Color.white);
-		title.setBorderColor(Color.BLACK);
-		title.setFontColor(Color.BLACK);
-		title.setText("<Title>");
-		title.getConstraint().setAlignmentY(LayoutConstraintInfo.TOP);
-		title.getConstraint().setAlignmentX(LayoutConstraintInfo.CENTER);
-		title.getConstraint().setMarginY(40);
-		title.setTag(TITLE);
-		return title;
-	}
-
-	private static ScaleBarComponentImpl createBar( PrintConfigurationService configurationService) {
-		ScaleBarComponentImpl bar = new ScaleBarComponentImpl(configurationService);
-		bar.setTicNumber(3);
-		bar.setUnit("m");
-		bar.setTag(SCALEBAR);
-		return bar;
-	}
 }

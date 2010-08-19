@@ -50,9 +50,12 @@ import org.geomajas.plugin.printing.component.PdfContext;
 import org.geomajas.plugin.printing.component.PrintComponentVisitor;
 import org.geomajas.plugin.printing.component.RasterLayerComponent;
 import org.geomajas.plugin.printing.component.service.PrintConfigurationService;
-import org.geotools.referencing.CRS;
+import org.geomajas.service.GeoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
+import org.springframework.stereotype.Component;
 
 import com.lowagie.text.Image;
 import com.lowagie.text.Rectangle;
@@ -64,6 +67,8 @@ import com.vividsolutions.jts.geom.Envelope;
  * 
  * @author Jan De Moerloose
  */
+@Component("RasterLayerComponentPrototype")
+@Scope(value = "prototype")
 public class RasterLayerComponentImpl extends BaseLayerComponentImpl implements RasterLayerComponent {
 
 	protected static final int DOWNLOAD_MAX_ATTEMPTS = 2;
@@ -101,14 +106,19 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl implements 
 	@XStreamOmitField
 	private final Logger log = LoggerFactory.getLogger(RasterLayerComponentImpl.class);
 
+	@Autowired
+	@XStreamOmitField
 	private RasterLayerService rasterLayerService;
 
+	@Autowired
+	@XStreamOmitField
 	private PrintConfigurationService configurationService;
+	
+	@Autowired
+	@XStreamOmitField
+	private GeoService geoService;
 
-	public RasterLayerComponentImpl(RasterLayerService rasterLayerService,
-			PrintConfigurationService configurationService) {
-		this.rasterLayerService = rasterLayerService;
-		this.configurationService = configurationService;
+	public RasterLayerComponentImpl() {
 		getConstraint().setAlignmentX(LayoutConstraint.JUSTIFIED);
 		getConstraint().setAlignmentY(LayoutConstraint.JUSTIFIED);
 		MultiThreadedHttpConnectionManager manager = new MultiThreadedHttpConnectionManager();
@@ -136,7 +146,8 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl implements 
 							+ bbox.getWidth() + " " + bbox.getHeight() + "]");
 				}
 				ClientMapInfo map = configurationService.getMapInfo(getMap().getMapId(), getMap().getApplicationId());
-				this.images = rasterLayerService.getTiles(getLayerId(), CRS.decode(map.getCrs()), bbox, rasterScale);
+				this.images = rasterLayerService.getTiles(getLayerId(), geoService.getCrs(map.getCrs()), bbox,
+						rasterScale);
 			} catch (Throwable e) {
 				log.error("could not paint raster layer " + getLayerId(), e);
 				this.images = new ArrayList<RasterTile>();

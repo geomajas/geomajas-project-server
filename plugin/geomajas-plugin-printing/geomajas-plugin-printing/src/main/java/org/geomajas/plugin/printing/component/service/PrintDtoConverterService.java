@@ -26,6 +26,7 @@ import java.awt.Color;
 import java.awt.Font;
 
 import org.geomajas.configuration.FontStyleInfo;
+import org.geomajas.plugin.printing.PrintingException;
 import org.geomajas.plugin.printing.component.PrintComponent;
 import org.geomajas.plugin.printing.component.dto.PrintComponentInfo;
 
@@ -43,20 +44,24 @@ public interface PrintDtoConverterService {
 	 * @param info
 	 *            the DTO component
 	 * @return the intenral representative
+	 * @throws PrintingException the internal bean definition is missing
 	 */
-	PrintComponent toInternal(PrintComponentInfo info);
+	PrintComponent toInternal(PrintComponentInfo info) throws PrintingException;
 
 	/**
 	 * Converts a hexadecimal color string to an AWT color.
 	 * 
-	 * @param color the color string
+	 * @param color
+	 *            the color string
 	 * @return the AWT color
 	 */
 	Color toInternal(String color);
 
 	/**
 	 * Converts a font style DTO to an AWT font.
-	 * @param info the font style DTO
+	 * 
+	 * @param info
+	 *            the font style DTO
 	 * @return the AWT font
 	 */
 	Font toInternal(FontStyleInfo info);
