@@ -83,7 +83,6 @@
     default implementation uses the union of the area. When there were no
     matches, then all alternatives are returned.</para>
 
-    <para>The location also contains the canonical search string is also
-    returned.</para>
+    <para>The location also contains the canonical search string.</para>
   </section>
 </chapter>

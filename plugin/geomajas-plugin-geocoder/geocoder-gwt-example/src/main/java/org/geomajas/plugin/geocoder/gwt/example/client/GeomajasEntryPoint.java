@@ -58,9 +58,8 @@ public class GeomajasEntryPoint implements EntryPoint {
 		mainLayout.setWidth100();
 		mainLayout.setHeight100();
 
-		// ---------------------------------------------------------------------
-		// Top bar:
-		// ---------------------------------------------------------------------
+		// top bar
+
 		ToolStrip topBar = new ToolStrip();
 		topBar.setHeight(33);
 		topBar.setWidth100();
@@ -84,23 +83,25 @@ public class GeomajasEntryPoint implements EntryPoint {
 		layout.setMembersMargin(5);
 		layout.setMargin(5);
 
-		// ---------------------------------------------------------------------
-		// Create the left-side (map and tabs):
-		// ---------------------------------------------------------------------
+		// create the map and toolbar
+
+		// @extract-start createGwtWidget, Create GWT widget in toolbar
 		MapWidget map = new MapWidget("osmMap", "app");
-		final Toolbar toolbar = new Toolbar(map);
+		Toolbar toolbar = new Toolbar(map);
+		// @extract-skip-start
 		toolbar.setButtonSize(Toolbar.BUTTON_SIZE_BIG);
+		// @extract-skip-end
+
+		toolbar.addMember(new GeocoderWidget(map, "description", "Geocoder"));
 
 		VLayout mapLayout = new VLayout();
 		mapLayout.addMember(toolbar);
 		mapLayout.addMember(map);
 		mapLayout.setHeight("100%");
-
 		layout.addMember(mapLayout);
+		// @extract-end
 
-		// ---------------------------------------------------------------------
-		// Finally draw everything:
-		// ---------------------------------------------------------------------
+		// finally draw everything:
 		mainLayout.addMember(layout);
 		mainLayout.draw();
 
@@ -108,7 +109,5 @@ public class GeomajasEntryPoint implements EntryPoint {
 		// This only works if the application initially shows a map with at least 1 vector layer:
 		LoadingScreen loadScreen = new LoadingScreen(map, "Geomajas, geocoder GWT widget example");
 		loadScreen.draw();
-
-		toolbar.addMember(new GeocoderWidget(map, "description", "Geocoder"));
 	}
 }

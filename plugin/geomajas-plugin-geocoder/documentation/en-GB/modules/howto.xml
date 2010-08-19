@@ -26,36 +26,74 @@
 <chapter id="chapter-howto">
   <title>How-to</title>
 
-	<para>This chapter details the extension possibilities of the geocoder plug-in.</para>
+  <para>This chapter details the extension possibilities of the geocoder
+  plug-in.</para>
 
-	<section>
-	  <title>How to write a geocoder service</title>
+  <section>
+    <title>How to write a geocoder service</title>
 
-	  <para>...</para>
-		<xi:include href="../listing/GeocoderService.xml"
-					xmlns:xi="http://www.w3.org/2001/XInclude" />
-		<para>...</para>
+    <para>Writing a geocoder service is reasonable easy. All you have to do is
+    create an implementation of the GeocoderService interface (listing <xref
+    linkend="GeocoderService" />). The getCrs() method is used by Geomajas to
+    know the coordinate system which is used for the results of your service.
+    This is used to convert to the coordinate system of the client.</para>
 
+    <xi:include href="../listing/GeocoderService.xml"
+                xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-	</section>
+    <para>The getLocation() method does the actual work of converting the
+    location strings (ordered from most general, biggest area, to more
+    specific) to a location. The method is expected to return null or an empty
+    list if no results where found for the location string, or one object if
+    the strings were matched, or multiple results when the matching was
+    ambiguous and resulted in several alternatives.</para>
 
-	<section>
-	  <title>How to write a service to split the input string</title>
+    <para>The result itself contains the information from listing <xref
+    linkend="GetLocationResult" />.</para>
 
-	  <para>...</para>
-		<xi:include href="../listing/SplitGeocoderStringService.xml"
-					xmlns:xi="http://www.w3.org/2001/XInclude" />
-		<para>...</para>
+    <xi:include href="../listing/GetLocationResult.xml"
+                xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-	</section>
-	<section>
-	  <title>How to write a service to combine results</title>
+    <para>The fields include:</para>
 
-	  <para>...</para>
-		<xi:include href="../listing/CombineResultService.xml"
-					xmlns:xi="http://www.w3.org/2001/XInclude" />
-		<para>...</para>
+    <para><itemizedlist>
+        <listitem>
+          <para><emphasis>canonicalStrings</emphasis>: </para>
+        </listitem>
 
-	</section>
+        <listitem>
+          <para><emphasis>coordinate</emphasis>: </para>
+        </listitem>
 
+        <listitem>
+          <para><emphasis>envelope</emphasis>: </para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>userData</emphasis>: </para>
+        </listitem>
+      </itemizedlist></para>
+  </section>
+
+  <section>
+    <title>How to write a service to split the input string</title>
+
+    <para>...</para>
+
+    <xi:include href="../listing/SplitGeocoderStringService.xml"
+                xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+    <para>...</para>
+  </section>
+
+  <section>
+    <title>How to write a service to combine results</title>
+
+    <para>...</para>
+
+    <xi:include href="../listing/CombineResultService.xml"
+                xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+    <para>...</para>
+  </section>
 </chapter>

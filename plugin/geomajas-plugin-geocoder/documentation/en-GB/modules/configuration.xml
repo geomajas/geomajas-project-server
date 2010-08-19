@@ -89,23 +89,23 @@
 
     <para><itemizedlist>
         <listitem>
-          <para><emphasis>splitGeocoderStringService</emphasis> :</para>
+          <para><emphasis>splitGeocoderStringService</emphasis>:</para>
         </listitem>
 
         <listitem>
-          <para><emphasis>combineResultService</emphasis> :</para>
+          <para><emphasis>combineResultService</emphasis>: </para>
         </listitem>
 
         <listitem>
-          <para><emphasis>loopAllServices</emphasis> : </para>
+          <para><emphasis>loopAllServices</emphasis>: </para>
         </listitem>
 
         <listitem>
-          <para><emphasis>pointDisplayWidth</emphasis> :200</para>
+          <para><emphasis>pointDisplayWidth</emphasis>:200</para>
         </listitem>
 
         <listitem>
-          <para><emphasis>pointDisplayHeight</emphasis> :100</para>
+          <para><emphasis>pointDisplayHeight</emphasis>:100</para>
         </listitem>
       </itemizedlist></para>
   </section>

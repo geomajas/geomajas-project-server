@@ -37,12 +37,14 @@ import java.util.List;
  * @since 1.0.0
  */
 @Api(allMethods = true)
+// @extract-start GetLocationResult, Fields which are defined in GetLocationResult
 public class GetLocationResult {
 
 	private List<String> canonicalStrings;
 	private Coordinate coordinate;
 	private Envelope envelope;
 	private ClientUserDataInfo userData;
+	// @extract-end
 
 	/**
 	 * Get the canonical strings which were matched (may be the same as the original request, or different when
