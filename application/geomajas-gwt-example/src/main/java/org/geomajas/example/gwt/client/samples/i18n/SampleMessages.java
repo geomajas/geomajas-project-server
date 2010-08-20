@@ -187,6 +187,12 @@ public interface SampleMessages extends Messages {
 
 	String screenWorldBTNWorldDelete();
 
+	// Change Layer opacity:
+
+	String layerOpacityTitle();
+
+	String layerOpacityDescription();
+
 	// Editing a point layer:
 
 	String editPointLayerTitle();

@@ -46,6 +46,7 @@ import org.geomajas.example.gwt.client.samples.layertree.LayerOrderSample;
 import org.geomajas.example.gwt.client.samples.layertree.LayertreeSample;
 import org.geomajas.example.gwt.client.samples.layertree.LegendSample;
 import org.geomajas.example.gwt.client.samples.mapwidget.CrsSample;
+import org.geomajas.example.gwt.client.samples.mapwidget.LayerOpacitySample;
 import org.geomajas.example.gwt.client.samples.mapwidget.MaxBoundsToggleSample;
 import org.geomajas.example.gwt.client.samples.mapwidget.NavigationSample;
 import org.geomajas.example.gwt.client.samples.mapwidget.OverviewMapSample;
@@ -124,6 +125,9 @@ public final class SampleArray {
 				new SampleTreeNode(I18nProvider.getSampleMessages().overviewMapTitle(),
 						"[ISOMORPHIC]/geomajas/osgeo/region.png", OverviewMapSample.TITLE, "MapWidget",
 						OverviewMapSample.FACTORY),
+				new SampleTreeNode(I18nProvider.getSampleMessages().layerOpacityTitle(),
+						"[ISOMORPHIC]/geomajas/osgeo/layer-raster.png", LayerOpacitySample.TITLE, "MapWidget",
+						LayerOpacitySample.FACTORY),
 
 				// Editing:
 				new SampleTreeNode(I18nProvider.getSampleMessages().treeGroupEditing(),
