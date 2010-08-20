@@ -25,9 +25,11 @@ package org.geomajas.gwt.client.map.layer;
 import org.geomajas.configuration.client.ClientRasterLayerInfo;
 import org.geomajas.global.Api;
 import org.geomajas.gwt.client.gfx.PainterVisitor;
+import org.geomajas.gwt.client.gfx.style.PictureStyle;
 import org.geomajas.gwt.client.map.MapModel;
 import org.geomajas.gwt.client.map.cache.tile.RasterTile;
 import org.geomajas.gwt.client.map.cache.tile.TileFunction;
+import org.geomajas.gwt.client.map.event.LayerShownEvent;
 import org.geomajas.gwt.client.map.store.DefaultRasterLayerStore;
 import org.geomajas.gwt.client.map.store.RasterLayerStore;
 import org.geomajas.gwt.client.spatial.Bbox;
@@ -81,5 +83,13 @@ public class RasterLayer extends AbstractLayer<ClientRasterLayerInfo> {
 
 	public RasterLayerStore getStore() {
 		return store;
+	}
+
+	public void setOpacity(double opacity) {
+		getLayerInfo().setStyle(opacity + "");
+		for (RasterTile tile : store.getTiles()) {
+			tile.setStyle(new PictureStyle(opacity));
+		}
+		handlerManager.fireEvent(new LayerShownEvent(this));
 	}
 }

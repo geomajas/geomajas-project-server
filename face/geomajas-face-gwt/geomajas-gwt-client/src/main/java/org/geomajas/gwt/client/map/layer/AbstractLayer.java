@@ -62,11 +62,11 @@ public abstract class AbstractLayer<T extends ClientLayerInfo> implements Layer<
 
 	private boolean visible;
 
-	private HandlerManager handlerManager;
-	
-	//-------------------------------------------------------------------------
+	protected HandlerManager handlerManager;
+
+	// -------------------------------------------------------------------------
 	// Constructor:
-	//-------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
 
 	protected AbstractLayer(MapModel mapModel, T layerInfo) {
 		this.mapModel = mapModel;
@@ -75,10 +75,20 @@ public abstract class AbstractLayer<T extends ClientLayerInfo> implements Layer<
 		this.updateShowing();
 		handlerManager = new HandlerManager(this);
 	}
-	
-	//-------------------------------------------------------------------------
+
+	// -------------------------------------------------------------------------
 	// Public methods:
-	//-------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
+
+	/**
+	 * Add a handler that registers changes in layer status.
+	 * 
+	 * @param handler
+	 *            The new handler to be added.
+	 */
+	public HandlerRegistration addLayerChangedHandler(LayerChangedHandler handler) {
+		return handlerManager.addHandler(LayerChangedHandler.TYPE, handler);
+	}
 
 	/**
 	 * Return the layer information.
@@ -117,22 +127,22 @@ public abstract class AbstractLayer<T extends ClientLayerInfo> implements Layer<
 		}
 	}
 
-	//-------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
 	// Getters and setters:
-	//-------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
 
 	/**
 	 * Return this layer's client ID as defined in the configuration.
-	 *
+	 * 
 	 * @return id of the client layer
 	 */
 	public String getId() {
 		return layerInfo.getId();
 	}
-	
+
 	/**
 	 * Return this layer's server ID as defined in the configuration.
-	 *
+	 * 
 	 * @return id of the server layer
 	 */
 	public String getServerLayerId() {
@@ -196,9 +206,5 @@ public abstract class AbstractLayer<T extends ClientLayerInfo> implements Layer<
 		this.visible = visible;
 		updateShowing();
 		handlerManager.fireEvent(new LayerShownEvent(this));
-	}
-
-	public HandlerRegistration addLayerChangedHandler(LayerChangedHandler handler) {
-		return handlerManager.addHandler(LayerChangedHandler.TYPE, handler);
 	}
 }

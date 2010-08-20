@@ -23,45 +23,36 @@
 package org.geomajas.gwt.client.map.event;
 
 import org.geomajas.global.Api;
-import org.geomajas.global.UserImplemented;
+import org.geomajas.gwt.client.map.layer.Layer;
 
-import com.google.gwt.event.shared.EventHandler;
-import com.google.gwt.event.shared.GwtEvent.Type;
+import com.google.gwt.event.shared.GwtEvent;
 
 /**
- * Interface for handling layer events.
- * 
- * @author Frank Wynants
- * @since 1.6.0
+ * Event that reports changes in layer style.
+ *
+ * @author Pieter De Graef
+ * @since 1.8.0
  */
 @Api(allMethods = true)
-@UserImplemented
-public interface LayerChangedHandler extends EventHandler {
+public class LayerStyleChangeEvent extends GwtEvent<LayerChangedHandler> {
 
-	Type<LayerChangedHandler> TYPE = new Type<LayerChangedHandler>();
+	private Layer<?> layer;
 
-	/**
-	 * Called when the layer is made visible or invisible.
-	 * 
-	 * @param event
-	 *            event
-	 */
-	void onVisibleChange(LayerShownEvent event);
+	public LayerStyleChangeEvent(Layer<?> layer) {
+		this.layer = layer;
+	}
 
-	/**
-	 * Called when labels are enabled or disabled on the layer.
-	 * 
-	 * @param event
-	 *            event
-	 */
-	void onLabelChange(LayerLabeledEvent event);
+	public Layer<?> getLayer() {
+		return layer;
+	}
 
-	/**
-	 * Called when the style of a layer has changed.
-	 * 
-	 * @param event
-	 *            event
-	 * @since 1.8.0
-	 */
-	void onStyleChange(LayerStyleChangeEvent event);
+	@Override
+	public Type<LayerChangedHandler> getAssociatedType() {
+		return LayerChangedHandler.TYPE;
+	}
+
+	@Override
+	protected void dispatch(LayerChangedHandler layerChangedHandler) {
+		layerChangedHandler.onStyleChange(this);
+	}
 }

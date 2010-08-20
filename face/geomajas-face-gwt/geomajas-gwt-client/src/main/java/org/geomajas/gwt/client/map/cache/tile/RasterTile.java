@@ -99,5 +99,8 @@ public class RasterTile implements Tile, Paintable {
 	public RasterLayerStore getStore() {
 		return store;
 	}
-	
+
+	public void setStyle(PictureStyle style) {
+		this.style = style;
+	}	
 }

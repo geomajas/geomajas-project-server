@@ -38,6 +38,7 @@ import org.geomajas.gwt.client.map.MapModel;
 import org.geomajas.gwt.client.map.event.LayerChangedHandler;
 import org.geomajas.gwt.client.map.event.LayerLabeledEvent;
 import org.geomajas.gwt.client.map.event.LayerShownEvent;
+import org.geomajas.gwt.client.map.event.LayerStyleChangeEvent;
 import org.geomajas.gwt.client.map.event.MapModelEvent;
 import org.geomajas.gwt.client.map.event.MapModelHandler;
 import org.geomajas.gwt.client.map.layer.Layer;
@@ -207,6 +208,10 @@ public class Legend extends Canvas {
 				}
 
 				public void onVisibleChange(LayerShownEvent event) {
+					render();
+				}
+
+				public void onStyleChange(LayerStyleChangeEvent event) {
 					render();
 				}
 			}));
