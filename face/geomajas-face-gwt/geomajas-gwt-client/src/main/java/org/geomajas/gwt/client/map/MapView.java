@@ -65,8 +65,8 @@ public class MapView {
 		/** Zoom exactly to the new scale. */
 		EXACT,
 		/**
-		 * Zoom to a scale level that is different from the current (lower or higher according to the new scale, only
-		 * if allowed of course).
+		 * Zoom to a scale level that is different from the current (lower or higher according to the new scale, only if
+		 * allowed of course).
 		 */
 		LEVEL_CHANGE,
 		/** Zoom to a scale level that is as close as possible to the new scale. */
@@ -230,11 +230,11 @@ public class MapView {
 	public void setCurrentScale(final double newScale, final ZoomOption option) {
 		setCurrentScale(newScale, option, camera.getPosition());
 	}
-	
+
 	/**
 	 * Apply a new scale level on the map. In case the are fixed resolutions defined on this MapView, it will
 	 * automatically snap to the nearest resolution. In case the maximum extents are exceeded, it will pan to avoid
-	 * this. 
+	 * this.
 	 * 
 	 * @param newScale
 	 *            The preferred new scale.
@@ -251,7 +251,7 @@ public class MapView {
 
 		double factor = newScale / getCurrentScale();
 
-		//Calculate translate vector to assure rescalePoint is on the same position as before.
+		// Calculate translate vector to assure rescalePoint is on the same position as before.
 		double dX = (rescalePoint.getX() - center.getX()) * (1 - 1 / factor);
 		double dY = (rescalePoint.getY() - center.getY()) * (1 - 1 / factor);
 
@@ -331,17 +331,17 @@ public class MapView {
 	 * @param delta
 	 *            Adjust the scale by factor "delta".
 	 * @param center
-	 * 		      Keep this coordinate on the same position as before.
-	 *     
+	 *            Keep this coordinate on the same position as before.
+	 * 
 	 */
 	public void scale(double delta, ZoomOption option, Coordinate center) {
 		setCurrentScale(currentScale * delta, option, center);
 	}
 
-	//-------------------------------------------------------------------------
+	// -------------------------------------------------------------------------
 	// Getters:
-	//-------------------------------------------------------------------------
-	
+	// -------------------------------------------------------------------------
+
 	/** Return the current scale. */
 	public double getCurrentScale() {
 		return currentScale;
@@ -479,14 +479,14 @@ public class MapView {
 
 	private double getMinimumScale() {
 		return Double.MIN_VALUE;
-//		if (maxBounds != null) {
-//			double wRatio = width / (maxBounds.getWidth() * 2);
-//			double hRatio = height / (maxBounds.getHeight() * 2);
-//			// return the maximum to fit outside
-//			return wRatio > hRatio ? wRatio : hRatio;
-//		} else {
-//			return Double.MIN_VALUE;
-//		}
+		// if (maxBounds != null) {
+		// double wRatio = width / (maxBounds.getWidth() * 2);
+		// double hRatio = height / (maxBounds.getHeight() * 2);
+		// // return the maximum to fit outside
+		// return wRatio > hRatio ? wRatio : hRatio;
+		// } else {
+		// return Double.MIN_VALUE;
+		// }
 	}
 
 	private double getBestScale(Bbox bounds) {
@@ -559,8 +559,10 @@ public class MapView {
 	/**
 	 * Finds an optimal scale by snapping to resolutions.
 	 * 
-	 * @param scale scale which needs to be snapped
-	 * @param option snapping option
+	 * @param scale
+	 *            scale which needs to be snapped
+	 * @param option
+	 *            snapping option
 	 * @return snapped scale
 	 */
 	private double snapToResolution(double scale, ZoomOption option) {

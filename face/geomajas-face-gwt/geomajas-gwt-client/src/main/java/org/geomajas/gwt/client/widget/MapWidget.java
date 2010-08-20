@@ -85,6 +85,7 @@ import org.geomajas.gwt.client.map.event.MapViewChangedHandler;
 import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.feature.FeatureTransaction;
 import org.geomajas.gwt.client.map.layer.Layer;
+import org.geomajas.gwt.client.map.layer.RasterLayer;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 
 import com.google.gwt.core.client.GWT;
@@ -856,8 +857,13 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	/** When the initialization of the map's model is done: render it. */
 	public void onMapModelChange(MapModelEvent event) {
 		if (event.isLayerOrderChanged()) {
-			getRasterContext().deleteGroup(rasterGroup);
-			getVectorContext().deleteGroup(vectorGroup);
+			for (Layer<?> layer : mapModel.getLayers()) {
+				if (layer instanceof VectorLayer) {
+					render(layer, RenderGroup.VECTOR, RenderStatus.DELETE);
+				} else if (layer instanceof RasterLayer) {
+					render(layer, RenderGroup.RASTER, RenderStatus.DELETE);
+				}
+			}
 		}
 		render(mapModel, null, RenderStatus.ALL);
 	}

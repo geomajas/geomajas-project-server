@@ -53,45 +53,38 @@ import com.smartgwt.client.widgets.events.ResizedHandler;
 
 /**
  * <p>
- * GWT widget implementation meant for actual drawing. To this end it implements
- * the <code>GraphicsContext</code> interface. Actually it delegates the real
- * work to either a
+ * GWT widget implementation meant for actual drawing. To this end it implements the <code>GraphicsContext</code>
+ * interface. Actually it delegates the real work to either a
  * {@link org.geomajas.gwt.client.gfx.context.VmlGraphicsContext} or a
  * {@link org.geomajas.gwt.client.gfx.context.SvgGraphicsContext} object.
  * </p>
  * <p>
- * By default this widget will draw in screen space. It will check the given
- * ID's and add the screen space group in front of it if the ID is not
- * compatible (meaning if an ID does not start with the graphicsId...).
+ * By default this widget will draw in screen space. It will check the given ID's and add the screen space group in
+ * front of it if the ID is not compatible (meaning if an ID does not start with the graphicsId...).
  * </p>
  * <p>
- * It is also responsible for handling
- * {@link org.geomajas.gwt.client.controller.GraphicsController}s (only one at a
- * time). The reason to place the controller handling here, is because we needed
- * a default GWT widget to handle the events, not a SmartGWT widget. The
- * SmartGWT events do not contain the actual DOM elements for MouseEvents, while
- * the default GWT events do.
+ * It is also responsible for handling {@link org.geomajas.gwt.client.controller.GraphicsController}s (only one at a
+ * time). The reason to place the controller handling here, is because we needed a default GWT widget to handle the
+ * events, not a SmartGWT widget. The SmartGWT events do not contain the actual DOM elements for MouseEvents, while the
+ * default GWT events do.
  * </p>
  * <p>
- * One extra function this widget has, is to store the latest right mouse click.
- * Usually the right mouse button is used for drawing context menus. But
- * sometimes it is necessary to have the DOM element onto which the context menu
- * was clicked, to influence this menu. That is why this widget always stores
- * this latest event (or at least it's DOM element ID, and screen location).
+ * One extra function this widget has, is to store the latest right mouse click. Usually the right mouse button is used
+ * for drawing context menus. But sometimes it is necessary to have the DOM element onto which the context menu was
+ * clicked, to influence this menu. That is why this widget always stores this latest event (or at least it's DOM
+ * element ID, and screen location).
  * </p>
  * 
  * @author Pieter De Graef
  */
-public class GraphicsWidget extends FocusWidget implements MapContext,
-		HasDoubleClickHandlers {
+public class GraphicsWidget extends FocusWidget implements MapContext, HasDoubleClickHandlers {
 
 	/** The ID from which to start building the rendering DOM tree. */
 	private String graphicsId;
 
 	/**
-	 * The actual GraphicsContext implementation that does the drawing.
-	 * Depending on the browser the user uses, this will be the
-	 * {@link org.geomajas.gwt.client.gfx.context.VmlGraphicsContext} or the
+	 * The actual GraphicsContext implementation that does the drawing. Depending on the browser the user uses, this
+	 * will be the {@link org.geomajas.gwt.client.gfx.context.VmlGraphicsContext} or the
 	 * {@link org.geomajas.gwt.client.gfx.context.SvgGraphicsContext}.
 	 */
 	private GraphicsContext vectorContext;
@@ -110,26 +103,22 @@ public class GraphicsWidget extends FocusWidget implements MapContext,
 	private GraphicsController controller;
 
 	/**
-	 * An optional fallbackController to return to, when no controller is
-	 * explicitly set, or when null is set.
+	 * An optional fallbackController to return to, when no controller is explicitly set, or when null is set.
 	 */
 	private GraphicsController fallbackController;
 
 	/**
-	 * A list of handler registrations that are needed to correctly clean up
-	 * after a controller is deactivated.
+	 * A list of handler registrations that are needed to correctly clean up after a controller is deactivated.
 	 */
 	private List<HandlerRegistration> handlers;
 
 	/**
-	 * Every time a right mouse button has been clicked, this widget will store
-	 * the event's coordinates.
+	 * Every time a right mouse button has been clicked, this widget will store the event's coordinates.
 	 */
 	private Coordinate rightButtonCoordinate;
 
 	/**
-	 * Every time a right mouse button has been clicked, this widget will store
-	 * the event's target DOM element.
+	 * Every time a right mouse button has been clicked, this widget will store the event's target DOM element.
 	 */
 	private String rightButtonTarget;
 
@@ -148,8 +137,8 @@ public class GraphicsWidget extends FocusWidget implements MapContext,
 	// -------------------------------------------------------------------------
 
 	/**
-	 * Create and initialise a graphics widget. It will instantiate the correct
-	 * delegate <code>GraphicsContext</code> and build the initial DOM elements.
+	 * Create and initialise a graphics widget. It will instantiate the correct delegate <code>GraphicsContext</code>
+	 * and build the initial DOM elements.
 	 * 
 	 * @param parent
 	 *            The canvas to which this widget will be added as a child.
@@ -199,14 +188,12 @@ public class GraphicsWidget extends FocusWidget implements MapContext,
 	}
 
 	/**
-	 * Apply a new <code>GraphicsController</code> on the graphics. When an old
-	 * controller is to be removed for this new controller, its
-	 * <code>onDeactivate</code> method will be called. For the new controller,
-	 * its <code>onActivate</code> method will be called.
+	 * Apply a new <code>GraphicsController</code> on the graphics. When an old controller is to be removed for this new
+	 * controller, its <code>onDeactivate</code> method will be called. For the new controller, its
+	 * <code>onActivate</code> method will be called.
 	 * 
 	 * @param graphicsController
-	 *            The new <code>GraphicsController</code> to be applied on the
-	 *            graphics.
+	 *            The new <code>GraphicsController</code> to be applied on the graphics.
 	 */
 	public void setController(GraphicsController graphicsController) {
 		for (HandlerRegistration registration : handlers) {
@@ -233,9 +220,8 @@ public class GraphicsWidget extends FocusWidget implements MapContext,
 	}
 
 	/**
-	 * An optional fallbackController to return to, when no controller is
-	 * explicitly set, or when null is set. If no current controller is active
-	 * when this setter is called, it is applied immediately.
+	 * An optional fallbackController to return to, when no controller is explicitly set, or when null is set. If no
+	 * current controller is active when this setter is called, it is applied immediately.
 	 * 
 	 * @param fallbackController
 	 *            The new fall-back controller.
