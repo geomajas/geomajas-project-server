@@ -107,7 +107,7 @@ public interface SampleMessages extends Messages {
 	String navigationBtnTranslate();
 
 	String navigationBtnBbox();
-	
+
 	// Printing sample
 	String defaultPrintControllerTitle();
 
@@ -390,6 +390,18 @@ public interface SampleMessages extends Messages {
 	String legendTitle();
 
 	String legendDescription();
+
+	// Layer order sample:
+
+	String layerOrderTitle();
+
+	String layerOrderDescription();
+
+	String layerOrderUpBtn();
+
+	String layerOrderDownBtn();
+
+	String layerOrderTxt();
 
 	// FeatureListGrid sample:
 

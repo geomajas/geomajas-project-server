@@ -42,6 +42,7 @@ import org.geomajas.example.gwt.client.samples.layer.GeoToolsSample;
 import org.geomajas.example.gwt.client.samples.layer.GoogleSample;
 import org.geomajas.example.gwt.client.samples.layer.OpenStreetMapSample;
 import org.geomajas.example.gwt.client.samples.layer.WmsSample;
+import org.geomajas.example.gwt.client.samples.layertree.LayerOrderSample;
 import org.geomajas.example.gwt.client.samples.layertree.LayertreeSample;
 import org.geomajas.example.gwt.client.samples.layertree.LegendSample;
 import org.geomajas.example.gwt.client.samples.mapwidget.CrsSample;
@@ -136,9 +137,9 @@ public final class SampleArray {
 				new SampleTreeNode(I18nProvider.getSampleMessages().editPolygonLayerTitle(),
 						"[ISOMORPHIC]/geomajas/osgeo/edit.png", EditPolygonLayerSample.TITLE, "GeoGraphicEditing",
 						EditPolygonLayerSample.FACTORY),
-//				new SampleTreeNode(I18nProvider.getSampleMessages().editMultiPointLayerTitle(),
-//						"[ISOMORPHIC]/geomajas/osgeo/edit.png", EditMultiPointLayerSample.TITLE, "GeoGraphicEditing",
-//						EditMultiPointLayerSample.FACTORY),
+				// new SampleTreeNode(I18nProvider.getSampleMessages().editMultiPointLayerTitle(),
+				// "[ISOMORPHIC]/geomajas/osgeo/edit.png", EditMultiPointLayerSample.TITLE, "GeoGraphicEditing",
+				// EditMultiPointLayerSample.FACTORY),
 				new SampleTreeNode(I18nProvider.getSampleMessages().editMultiLineLayerTitle(),
 						"[ISOMORPHIC]/geomajas/osgeo/edit.png", EditMultiLineLayerSample.TITLE, "GeoGraphicEditing",
 						EditMultiLineLayerSample.FACTORY),
@@ -155,6 +156,9 @@ public final class SampleArray {
 				new SampleTreeNode(I18nProvider.getSampleMessages().legendTitle(),
 						"[ISOMORPHIC]/geomajas/osgeo/legend-add.png", LegendSample.TITLE, "Layertree",
 						LegendSample.FACTORY),
+				new SampleTreeNode(I18nProvider.getSampleMessages().layerOrderTitle(),
+						"[ISOMORPHIC]/geomajas/osgeo/mapset.png", LayerOrderSample.TITLE, "Layertree",
+						LayerOrderSample.FACTORY),
 
 				// Attribute samples:
 				new SampleTreeNode(I18nProvider.getSampleMessages().treeGroupAttributes(),
@@ -195,7 +199,7 @@ public final class SampleArray {
 				new SampleTreeNode(I18nProvider.getSampleMessages().defaultPrintControllerTitle(),
 						"[ISOMORPHIC]/geomajas/osgeo/print.png", DefaultPrintingSample.TITLE, "Printing",
 						DefaultPrintingSample.FACTORY),
-						
+
 				// Toolbar and controllers:
 				new SampleTreeNode(I18nProvider.getSampleMessages().treeGroupToolbarAndControllers(),
 						"[ISOMORPHIC]/geomajas/osgeo/zoom-in.png", "ToolbarAndControllers", "topLevel"),

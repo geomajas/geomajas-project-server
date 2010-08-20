@@ -438,7 +438,7 @@
 	</pluginRepositories>
 
 	<properties>
-		<geomajas-face-gwt-version>1.7.1</geomajas-face-gwt-version>
+		<geomajas-face-gwt-version>1.8.0-SNAPSHOT</geomajas-face-gwt-version>
 		<geomajas-layer-geotools-version>1.7.1</geomajas-layer-geotools-version>
 		<geomajas-layer-hibernate-version>1.7.2</geomajas-layer-hibernate-version>
 		<geomajas-layer-google-version>1.7.1</geomajas-layer-google-version>
