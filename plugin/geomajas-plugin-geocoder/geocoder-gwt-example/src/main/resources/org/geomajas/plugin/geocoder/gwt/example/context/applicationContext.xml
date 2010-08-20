@@ -25,11 +25,17 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 	<!-- geocoder configuration -->
 	<!-- @extract-start exampleConfiguration, example configuration -->
 	<bean name="geocoderInfo" class="org.geomajas.plugin.geocoder.api.GeocoderInfo">
-		<property name="loopAllServices" value="true"/>
+		<property name="loopAllServices" value="false"/>
 		<property name="pointDisplayWidth" value="2000" />
 		<property name="pointDisplayHeight" value="1000" />
 		<property name="geocoderServices">
 			<list>
+				<!-- @extract-skip-start -->
+				<bean name="ypf" class="org.geomajas.plugin.geocoder.service.YahooPlaceFinderGeocoderService">
+					<property name="appIdProperty" value="YahooAppId" />
+					<property name="skipAppIdCheck" value="true" />
+				</bean>
+				<!-- @extract-skip-end -->
 				<bean class="org.geomajas.plugin.geocoder.service.GeonamesGeocoderService" />
 				<!-- @extract-skip-start -->
 				<!--

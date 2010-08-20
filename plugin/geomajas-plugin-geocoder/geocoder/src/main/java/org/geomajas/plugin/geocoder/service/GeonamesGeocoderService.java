@@ -68,6 +68,7 @@ public class GeonamesGeocoderService implements GeocoderService {
 	private static final double FUZZY_VALUE = 0.8; // value for fuzzy searches
 	private static final int READ_TIMEOUT = 120000;
 	private static final int CONNECT_TIMEOUT = 10000;
+	private static final String URL_BASE = "http://ws.geonames.org/search?";
 
 	@Autowired
 	private GeoService geoService;
@@ -198,9 +199,7 @@ public class GeonamesGeocoderService implements GeocoderService {
 	public List<Toponym> search(String q, int maxRows, boolean fuzzy) throws Exception {
 		List<Toponym> searchResult = new ArrayList<Toponym>();
 
-		String url = "/search?";
-
-		url = url + "q=" + URLEncoder.encode(q, "UTF8");
+		String url = "q=" + URLEncoder.encode(q, "UTF8");
 		url = url + "&isNameRequired=true";
 		if (fuzzy) {
 			url = url + "&fuzzy=" + FUZZY_VALUE;
@@ -231,16 +230,14 @@ public class GeonamesGeocoderService implements GeocoderService {
 	}
 
 	/**
-	 * opens the connection to the url and sets the user agent. In case of an IOException it checks whether a failover
-	 * server is set and connects to the failover server if it has been defined and if it is different from the normal
-	 * server.
+	 * Open the connection to the server.
 	 *
 	 * @param url the url to connect to
-	 * @return returns the inputstream for the connection
+	 * @return returns the input stream for the connection
 	 * @throws IOException cannot get result
 	 */
 	private InputStream connect(String url) throws IOException {
-		URLConnection conn = new URL("http://ws.geonames.org" + url).openConnection();
+		URLConnection conn = new URL(URL_BASE + url).openConnection();
 		conn.setConnectTimeout(CONNECT_TIMEOUT);
 		conn.setReadTimeout(READ_TIMEOUT);
 		conn.setRequestProperty("User-Agent", USER_AGENT);

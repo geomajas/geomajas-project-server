@@ -247,6 +247,39 @@
   <section>
     <title>Yahoo! PlaceFinder geocoder service configuration</title>
 
-    <para>...</para>
+    <para>This uses the Yahoo! PlaceFinder service (<ulink
+    url="???">http://developer.yahoo.com/geo/placefinder/</ulink>). When using
+    this geocoder, you need a appid from Yahoo! and you have to make sure you
+    comply with their terms of use.</para>
+
+    <para>To use the geocoder, just create the bean and set the appId.</para>
+
+    <xi:include href="../listing/PlaceFinderConfig.xml"
+                xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+    <para>There are a couple of properties which influence how the appId can
+    be passed:</para>
+
+    <para><itemizedlist>
+        <listitem>
+          <para><emphasis>appId</emphasis>: you just define the appId in the
+          configuration file.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>appIdProperty</emphasis>: the appId is read from the
+          property which is specified. This can be helpful if you don't want
+          to hardcode the property in your configuration files for some
+          reason.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>skipAppIdCheck</emphasis>: normally an exception is
+          thrown when the Yahoo! PlaceFinder geocoder is created without a
+          appId. By setting this property to true, you can avoid this
+          exception, making sure your application will run without the appId
+          (though obviously no results can be found).</para>
+        </listitem>
+      </itemizedlist></para>
   </section>
 </chapter>
