@@ -85,6 +85,14 @@ public class RasterLayer extends AbstractLayer<ClientRasterLayerInfo> {
 		return store;
 	}
 
+	/**
+	 * Apply a new opacity on the entire raster layer.
+	 * 
+	 * @param opacity
+	 *            The new opacity value. Must be a value between 0 and 1, where 0 means invisible and 1 is totally
+	 *            visible.
+	 * @since 1.8.0
+	 */
 	public void setOpacity(double opacity) {
 		getLayerInfo().setStyle(opacity + "");
 		for (RasterTile tile : store.getTiles()) {
