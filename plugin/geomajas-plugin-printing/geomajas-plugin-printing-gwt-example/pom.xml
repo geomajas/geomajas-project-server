@@ -40,7 +40,7 @@
 			<artifactId>geomajas-layer-openstreetmap</artifactId>
 		</dependency>
 		
-		<!-- @extract-start PrintingDependency, printing source plugin - including source -->
+		<!-- @extract-start PrintingDependency, printing plugin dependencies - including source -->
 		
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
@@ -64,12 +64,13 @@
 			<version>2.0.0-SNAPSHOT</version>
 			<classifier>sources</classifier>
 		</dependency>
+		<!-- @extract-end -->
+
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-testdata</artifactId>
 		</dependency>
 		
-		<!-- @extract-end -->
 		
 		<!-- Google dependencies -->
 		<dependency>
