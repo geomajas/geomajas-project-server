@@ -294,8 +294,10 @@ public class MapView {
 		Bbox oldbbox = getBounds();
 		this.width = newWidth;
 		this.height = newHeight;
-		// reapply the old bounds
-		doApplyBounds(oldbbox, ZoomOption.LEVEL_FIT);
+
+		// Use the same center point for the new bounds, but don't zoom in or out.
+		doSetPosition(oldbbox.getCenterPoint());
+		fireEvent(false, null);
 	}
 
 	/**
