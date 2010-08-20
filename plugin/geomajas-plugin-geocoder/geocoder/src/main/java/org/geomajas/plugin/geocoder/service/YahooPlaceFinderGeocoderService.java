@@ -238,7 +238,7 @@ public class YahooPlaceFinderGeocoderService implements GeocoderService {
 			double west = Double.parseDouble(area.getChildText("west"));
 			if (Math.abs(north - south) > DELTA || Math.abs(east - west) > DELTA) {
 				// return point when bbox is a point
-				Bbox bbox = new Bbox(south, west, north - south, east - west);
+				Bbox bbox = new Bbox(west, south, east - west, north - south);
 				location.setEnvelope(dtoConverterService.toInternal(bbox));
 			}
 		}

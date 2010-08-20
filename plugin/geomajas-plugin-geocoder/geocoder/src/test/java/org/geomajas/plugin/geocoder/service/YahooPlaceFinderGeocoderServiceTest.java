@@ -75,6 +75,10 @@ public class YahooPlaceFinderGeocoderServiceTest {
 		Assert.assertEquals(2, result[0].getCanonicalStrings().size());
 		Assert.assertEquals("Belgium", result[0].getCanonicalStrings().get(0));
 		Assert.assertEquals("2221 Boisschot", result[0].getCanonicalStrings().get(1));
+		Assert.assertEquals(4.75513, result[0].getEnvelope().getMinX(), .00001);
+		Assert.assertEquals(4.79043, result[0].getEnvelope().getMaxX(), .00001);
+		Assert.assertEquals(51.031898, result[0].getEnvelope().getMinY(), .00001);
+		Assert.assertEquals(51.060329, result[0].getEnvelope().getMaxY(), .00001);
 
 		list.clear();
 		list.add("london");
