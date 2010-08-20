@@ -85,6 +85,7 @@ import org.geomajas.gwt.client.map.event.MapViewChangedHandler;
 import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.feature.FeatureTransaction;
 import org.geomajas.gwt.client.map.layer.Layer;
+import org.geomajas.gwt.client.map.layer.VectorLayer;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.MouseWheelEvent;
@@ -93,6 +94,7 @@ import com.google.gwt.event.shared.HandlerRegistration;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.Cursor;
 import com.smartgwt.client.types.VerticalAlignment;
+import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.events.ResizedEvent;
 import com.smartgwt.client.widgets.events.ResizedHandler;
@@ -854,11 +856,10 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	/** When the initialization of the map's model is done: render it. */
 	public void onMapModelChange(MapModelEvent event) {
 		if (event.isLayerOrderChanged()) {
-			render(mapModel, null, RenderStatus.DELETE);
-			render(mapModel, null, RenderStatus.ALL);
-		} else {
-			render(mapModel, null, RenderStatus.ALL);
+			getRasterContext().deleteGroup(rasterGroup);
+			getVectorContext().deleteGroup(vectorGroup);
 		}
+		render(mapModel, null, RenderStatus.ALL);
 	}
 
 	// -------------------------------------------------------------------------
@@ -938,6 +939,15 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 				try {
 					final int width = map.getWidth();
 					final int height = map.getHeight();
+					if (SC.isIE()) {
+						// Vector layers in IE loose their style (because the removeChild, addChild)
+						for (Layer<?> layer : mapModel.getLayers()) {
+							if (layer instanceof VectorLayer) {
+								render(layer, RenderGroup.VECTOR, RenderStatus.DELETE);
+							}
+						}
+					}
+
 					mapModel.getMapView().setSize(width, height);
 
 					for (String addonId : addons.keySet()) {
