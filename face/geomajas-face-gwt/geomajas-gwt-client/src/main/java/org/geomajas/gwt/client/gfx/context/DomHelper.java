@@ -51,6 +51,7 @@ import com.google.gwt.event.shared.HasHandlers;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.EventListener;
+import com.smartgwt.client.util.SC;
 
 /**
  * Helper class that provides a mapping between a DOM tree - consisting of groups (DIV, SVG or VML group) and elements
@@ -459,8 +460,7 @@ public class DomHelper {
 	 */
 	public void setController(Object parent, String name, GraphicsController controller) {
 		// set them all
-		doSetController(getElement(parent, name), controller, Event.MOUSEEVENTS | Event.ONDBLCLICK | 
-				Event.ONMOUSEWHEEL);
+		doSetController(getElement(parent, name), controller, Event.MOUSEEVENTS | Event.ONDBLCLICK | Event.ONMOUSEWHEEL);
 	}
 
 	/**
@@ -902,7 +902,11 @@ public class DomHelper {
 	}
 
 	private void applyHtmlStyle(Element element, PictureStyle style) {
-		DOM.setStyleAttribute(element, "opacity", style.getOpacity() + "");
+		if (SC.isIE()) {
+			DOM.setStyleAttribute(element, "filter", "alpha(opacity = " + (style.getOpacity() * 100) + ")");
+		} else {
+			DOM.setStyleAttribute(element, "opacity", style.getOpacity() + "");
+		}
 		if (style.getDisplay() != null) {
 			DOM.setStyleAttribute(element, "display", style.getDisplay());
 		}
