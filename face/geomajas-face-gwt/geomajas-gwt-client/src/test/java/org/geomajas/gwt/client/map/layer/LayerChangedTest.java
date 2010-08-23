@@ -30,6 +30,7 @@ import org.geomajas.gwt.client.map.MapModel;
 import org.geomajas.gwt.client.map.event.LayerChangedHandler;
 import org.geomajas.gwt.client.map.event.LayerLabeledEvent;
 import org.geomajas.gwt.client.map.event.LayerShownEvent;
+import org.geomajas.gwt.client.map.event.LayerStyleChangeEvent;
 import org.geomajas.layer.LayerType;
 import org.junit.Assert;
 import org.junit.Before;
@@ -70,6 +71,9 @@ public class LayerChangedTest {
 
 			public void onLabelChange(LayerLabeledEvent event) {
 				labelCount++;
+			}
+
+			public void onStyleChange(LayerStyleChangeEvent event) {
 			}
 		});
 	}
