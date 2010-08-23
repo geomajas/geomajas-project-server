@@ -36,8 +36,119 @@
   HTML pages in a slightly different manner, an absolute format like PDF is a
   necessity for creating reproducible prints.</para>
 
-  <para>Our implementation makes extensive use of the excellent iText library,
-  which allows direct drawing operations on a graphics context. This has the
-  advantage of preserving the vectorial nature of the features in a layer,
-  allowing crisp vector rendering at any zoom level.</para>
+  <para>Our implementation makes extensive use of the excellent iText
+  library<footnoteref linkend="itext" />, which allows direct drawing
+  operations on a graphics context. This has the advantage of preserving the
+  vectorial nature of the features in a layer, allowing crisp vector rendering
+  at any zoom level.</para>
+
+  <section>
+    <title>Backend</title>
+
+    <para>The printing plugin consists of a client part (the GWT face) that is
+    responsible for the user interaction and a backend part that is
+    responsible for the generation of the PDF document. To achieve sufficient
+    flexibility in the layout and composition of the PDF document, the
+    document is conceptually a tree of nested components, each of which is
+    responsible for its own rendering. </para>
+
+    <para>The following set of components have been implemented:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para>PageComponent: a container component for the complete PDF
+        page</para>
+      </listitem>
+
+      <listitem>
+        <para>MapComponent: this represents the main map. The layers,
+        scalebar, legend and other components are child members of the
+        map.</para>
+      </listitem>
+
+      <listitem>
+        <para>LabelComponent: can be used for an arbitrary text label, e.g.
+        for a title</para>
+      </listitem>
+
+      <listitem>
+        <para>ImageComponent: represents an arbitrary static image, e.g. for a
+        north arrow on a map</para>
+      </listitem>
+
+      <listitem>
+        <para>V ectorlayerComponent: draws a vector layer on the map</para>
+      </listitem>
+
+      <listitem>
+        <para>RasterLayerComponent: draws a raster layer on the map</para>
+      </listitem>
+
+      <listitem>
+        <para>ScaleBarComponent: draws a scalebar on the map</para>
+      </listitem>
+
+      <listitem>
+        <para>LegendComponent: draws a legend on the map</para>
+      </listitem>
+
+      <listitem>
+        <para>ViewPortComponent: a viewport is a smaller map that is an inset
+        of the main map and is used to highlight details of the main
+        map</para>
+      </listitem>
+    </itemizedlist>
+
+    <figure>
+      <title>Print components</title>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="../images/components.png" />
+        </imageobject>
+      </mediaobject>
+    </figure>
+
+    <para>The layout is determined by recursively calculating the preferred
+    size of each component first (which can vary according to font sizes,
+    margins, etc...) followed by a second pass in which the layout constraints
+    of each component are used to align the component with respect to its
+    parent. This approach is top-down, starting with the root PageComponent.
+    The following layout constraints are possible:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para>width: the preferred width of the component </para>
+      </listitem>
+
+      <listitem>
+        <para>height: the preferred height of the component</para>
+      </listitem>
+
+      <listitem>
+        <para>marginX: the margin in the x-direction or the x-position in case
+        of absolute alignment in the x-direction</para>
+      </listitem>
+
+      <listitem>
+        <para>marginY: the margin in the y-direction or the y-position in case
+        of absolute alignment in the y-direction</para>
+      </listitem>
+
+      <listitem>
+        <para>alignmentX: the alignment type in the x-direction (left, right,
+        justified or absolute)</para>
+      </listitem>
+
+      <listitem>
+        <para>alignmentY: the alignment type in the y-direction (left, right,
+        justified or absolute)</para>
+      </listitem>
+    </itemizedlist>
+
+    <para><footnote label="itext">
+        <para id="itext">"iText is a library that allows you to generate PDF
+        files on the fly", see http://itextpdf.com/</para>
+      </footnote></para>
+  </section>
 </chapter>
