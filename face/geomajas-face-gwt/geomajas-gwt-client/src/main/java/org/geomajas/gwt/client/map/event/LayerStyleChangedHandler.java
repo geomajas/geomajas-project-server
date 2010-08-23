@@ -20,39 +20,28 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
+
 package org.geomajas.gwt.client.map.event;
 
-import org.geomajas.global.Api;
-import org.geomajas.gwt.client.map.layer.Layer;
-
-import com.google.gwt.event.shared.GwtEvent;
+import com.google.gwt.event.shared.EventHandler;
+import com.google.gwt.event.shared.GwtEvent.Type;
 
 /**
- * Event that reports changes in layer style.
+ * Handler that catches changes in layer style.
  * 
  * @author Pieter De Graef
- * @since 1.8.0
+ * @sinc 1.8.0
  */
-@Api(allMethods = true)
-public class LayerStyleChangeEvent extends GwtEvent<LayerStyleChangedHandler> {
+public interface LayerStyleChangedHandler extends EventHandler {
 
-	private Layer<?> layer;
+	Type<LayerStyleChangedHandler> TYPE = new Type<LayerStyleChangedHandler>();
 
-	public LayerStyleChangeEvent(Layer<?> layer) {
-		this.layer = layer;
-	}
-
-	public Layer<?> getLayer() {
-		return layer;
-	}
-
-	@Override
-	public Type<LayerStyleChangedHandler> getAssociatedType() {
-		return LayerStyleChangedHandler.TYPE;
-	}
-
-	@Override
-	protected void dispatch(LayerStyleChangedHandler layerStyleChangedHandler) {
-		layerStyleChangedHandler.onLayerStyleChange(this);
-	}
+	/**
+	 * Called when the style of a layer has changed.
+	 * 
+	 * @param event
+	 *            event
+	 * @since 1.8.0
+	 */
+	void onLayerStyleChange(LayerStyleChangeEvent event);
 }

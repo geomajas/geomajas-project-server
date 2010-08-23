@@ -39,6 +39,7 @@ import org.geomajas.gwt.client.map.event.LayerChangedHandler;
 import org.geomajas.gwt.client.map.event.LayerLabeledEvent;
 import org.geomajas.gwt.client.map.event.LayerShownEvent;
 import org.geomajas.gwt.client.map.event.LayerStyleChangeEvent;
+import org.geomajas.gwt.client.map.event.LayerStyleChangedHandler;
 import org.geomajas.gwt.client.map.event.MapModelEvent;
 import org.geomajas.gwt.client.map.event.MapModelHandler;
 import org.geomajas.gwt.client.map.layer.Layer;
@@ -94,7 +95,7 @@ public class Legend extends Canvas {
 		widget = new GraphicsWidget(this, SC.generateID());
 		widget.setBackgroundColor("#FFFFFF");
 		addChild(widget);
-		
+
 		graphics = widget.getVectorContext();
 
 		mapModel.addMapModelHandler(new MapModelHandler() {
@@ -158,8 +159,7 @@ public class Legend extends Canvas {
 
 						// After the style, draw the style's name:
 						Coordinate textPosition = new Coordinate(30, y - 2);
-						graphics.drawText(parentGroup, "text" + lineCount, styleInfo.getName(), textPosition,
-								fontStyle);
+						graphics.drawText(parentGroup, "text" + lineCount, styleInfo.getName(), textPosition, fontStyle);
 						y += 21;
 					}
 				} else if (layer instanceof RasterLayer) {
@@ -210,8 +210,10 @@ public class Legend extends Canvas {
 				public void onVisibleChange(LayerShownEvent event) {
 					render();
 				}
+			}));
+			registrations.add(layer.addLayerStyleChangedHandler(new LayerStyleChangedHandler() {
 
-				public void onStyleChange(LayerStyleChangeEvent event) {
+				public void onLayerStyleChange(LayerStyleChangeEvent event) {
 					render();
 				}
 			}));

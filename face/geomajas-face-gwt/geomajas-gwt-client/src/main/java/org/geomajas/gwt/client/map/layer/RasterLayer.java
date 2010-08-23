@@ -29,7 +29,7 @@ import org.geomajas.gwt.client.gfx.style.PictureStyle;
 import org.geomajas.gwt.client.map.MapModel;
 import org.geomajas.gwt.client.map.cache.tile.RasterTile;
 import org.geomajas.gwt.client.map.cache.tile.TileFunction;
-import org.geomajas.gwt.client.map.event.LayerShownEvent;
+import org.geomajas.gwt.client.map.event.LayerStyleChangeEvent;
 import org.geomajas.gwt.client.map.store.DefaultRasterLayerStore;
 import org.geomajas.gwt.client.map.store.RasterLayerStore;
 import org.geomajas.gwt.client.spatial.Bbox;
@@ -98,6 +98,6 @@ public class RasterLayer extends AbstractLayer<ClientRasterLayerInfo> {
 		for (RasterTile tile : store.getTiles()) {
 			tile.setStyle(new PictureStyle(opacity));
 		}
-		handlerManager.fireEvent(new LayerShownEvent(this));
+		handlerManager.fireEvent(new LayerStyleChangeEvent(this));
 	}
 }

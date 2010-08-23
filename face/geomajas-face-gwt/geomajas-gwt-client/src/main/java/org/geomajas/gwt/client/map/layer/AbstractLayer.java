@@ -29,6 +29,7 @@ import org.geomajas.gwt.client.map.event.HasLayerChangedHandlers;
 import org.geomajas.gwt.client.map.event.LayerChangedHandler;
 import org.geomajas.gwt.client.map.event.LayerLabeledEvent;
 import org.geomajas.gwt.client.map.event.LayerShownEvent;
+import org.geomajas.gwt.client.map.event.LayerStyleChangedHandler;
 import org.geomajas.gwt.client.spatial.Bbox;
 
 import com.google.gwt.event.shared.HandlerManager;
@@ -88,6 +89,16 @@ public abstract class AbstractLayer<T extends ClientLayerInfo> implements Layer<
 	 */
 	public HandlerRegistration addLayerChangedHandler(LayerChangedHandler handler) {
 		return handlerManager.addHandler(LayerChangedHandler.TYPE, handler);
+	}
+
+	/**
+	 * Add a handler that registers changes in layer style.
+	 * 
+	 * @param handler
+	 *            The new handler to be added.
+	 */
+	public HandlerRegistration addLayerStyleChangedHandler(LayerStyleChangedHandler handler) {
+		return handlerManager.addHandler(LayerStyleChangedHandler.TYPE, handler);
 	}
 
 	/**

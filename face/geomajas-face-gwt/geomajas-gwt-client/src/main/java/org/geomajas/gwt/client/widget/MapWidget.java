@@ -79,6 +79,7 @@ import org.geomajas.gwt.client.map.event.LayerChangedHandler;
 import org.geomajas.gwt.client.map.event.LayerLabeledEvent;
 import org.geomajas.gwt.client.map.event.LayerShownEvent;
 import org.geomajas.gwt.client.map.event.LayerStyleChangeEvent;
+import org.geomajas.gwt.client.map.event.LayerStyleChangedHandler;
 import org.geomajas.gwt.client.map.event.MapModelEvent;
 import org.geomajas.gwt.client.map.event.MapModelHandler;
 import org.geomajas.gwt.client.map.event.MapViewChangedEvent;
@@ -915,8 +916,10 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 					public void onVisibleChange(LayerShownEvent event) {
 						render(layer, null, RenderStatus.ALL);
 					}
+				});
+				layer.addLayerStyleChangedHandler(new LayerStyleChangedHandler() {
 
-					public void onStyleChange(LayerStyleChangeEvent event) {
+					public void onLayerStyleChange(LayerStyleChangeEvent event) {
 						render(layer, null, RenderStatus.ALL);
 					}
 				});

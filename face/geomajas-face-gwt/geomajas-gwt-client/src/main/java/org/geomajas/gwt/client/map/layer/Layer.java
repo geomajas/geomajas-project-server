@@ -28,6 +28,7 @@ import org.geomajas.global.Api;
 import org.geomajas.gwt.client.gfx.PaintableGroup;
 import org.geomajas.gwt.client.map.MapModel;
 import org.geomajas.gwt.client.map.event.LayerChangedHandler;
+import org.geomajas.gwt.client.map.event.LayerStyleChangedHandler;
 
 import com.google.gwt.event.shared.HandlerRegistration;
 
@@ -36,9 +37,10 @@ import com.google.gwt.event.shared.HandlerRegistration;
  * The most basic interface for a layer on the client. Since we will want to paint layers on the map, it implements the
  * <code>Paintable</code> interface.
  * </p>
- *
- * @param <T> layer info type, {@link ClientLayerInfo}
- *
+ * 
+ * @param <T>
+ *            layer info type, {@link ClientLayerInfo}
+ * 
  * @author Pieter De Graef
  * @since 1.6.0
  */
@@ -51,18 +53,18 @@ public interface Layer<T extends ClientLayerInfo> extends PaintableGroup {
 
 	/**
 	 * Return this layer's client ID.
-	 *
+	 * 
 	 * @return id of the client layer
 	 */
 	String getId();
 
 	/**
 	 * Return this layer's server ID.
-	 *
+	 * 
 	 * @return id of the server layer
 	 */
 	String getServerLayerId();
-	
+
 	// -------------------------------------------------------------------------
 	// Layer status functions:
 	// -------------------------------------------------------------------------
@@ -70,7 +72,7 @@ public interface Layer<T extends ClientLayerInfo> extends PaintableGroup {
 	/**
 	 * Return the layer's label. The difference between the ID and the label, is that the ID is used behind the screens,
 	 * while the label is the visible name to the user.
-	 *
+	 * 
 	 * @return
 	 */
 	String getLabel();
@@ -82,35 +84,35 @@ public interface Layer<T extends ClientLayerInfo> extends PaintableGroup {
 
 	/**
 	 * Is this layer currently selected or not?
-	 *
+	 * 
 	 * @return true if selected, false otherwise
 	 */
 	boolean isSelected();
 
 	/**
 	 * Return the map model for this layer.
-	 *
+	 * 
 	 * @return the map model
 	 */
 	MapModel getMapModel();
 
 	/**
 	 * Return the info for this layer.
-	 *
+	 * 
 	 * @return the info
 	 */
 	T getLayerInfo();
 
 	/**
 	 * Set the selected status of the layer.
-	 *
+	 * 
 	 * @param selected
 	 */
 	void setSelected(boolean selected);
 
 	/**
 	 * Set the labeled status for this layer.
-	 *
+	 * 
 	 * @param labeled
 	 *            true if labels should be shown
 	 */
@@ -118,7 +120,7 @@ public interface Layer<T extends ClientLayerInfo> extends PaintableGroup {
 
 	/**
 	 * Get the labeled status for this layer.
-	 *
+	 * 
 	 * @return True if labels are visible, false otherwise ; note that if the layer is visible the labels are automicly
 	 *         invisible
 	 */
@@ -126,7 +128,7 @@ public interface Layer<T extends ClientLayerInfo> extends PaintableGroup {
 
 	/**
 	 * Get the showing status of this layer.
-	 *
+	 * 
 	 * @return The showing status of this layer
 	 */
 	boolean isShowing();
@@ -134,7 +136,7 @@ public interface Layer<T extends ClientLayerInfo> extends PaintableGroup {
 	/**
 	 * Updates the visible status for this layer, this doesn't automicly means that the showing status is updated as
 	 * well.
-	 *
+	 * 
 	 * @param visible
 	 *            The wished visible status
 	 */
@@ -143,9 +145,18 @@ public interface Layer<T extends ClientLayerInfo> extends PaintableGroup {
 	/**
 	 * Add handlers for {@link LayerChangedHandler}s. These events occur when the layer changes it's visible or labeled
 	 * values.
-	 *
+	 * 
 	 * @param handler
-	 * @return
+	 * @return Returns the handler registration object.
 	 */
 	HandlerRegistration addLayerChangedHandler(LayerChangedHandler handler);
+
+	/**
+	 * Add handlers for {@link LayerStyleChangedHandler}s. These events occur when the layer style changes.
+	 * 
+	 * @param handler
+	 * @return Returns the handler registration object.
+	 * @since 1.8.0
+	 */
+	HandlerRegistration addLayerStyleChangedHandler(LayerStyleChangedHandler handler);
 }

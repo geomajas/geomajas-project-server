@@ -55,13 +55,4 @@ public interface LayerChangedHandler extends EventHandler {
 	 *            event
 	 */
 	void onLabelChange(LayerLabeledEvent event);
-
-	/**
-	 * Called when the style of a layer has changed.
-	 * 
-	 * @param event
-	 *            event
-	 * @since 1.8.0
-	 */
-	void onStyleChange(LayerStyleChangeEvent event);
 }

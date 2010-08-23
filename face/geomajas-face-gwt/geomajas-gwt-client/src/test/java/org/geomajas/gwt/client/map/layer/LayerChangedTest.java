@@ -72,9 +72,6 @@ public class LayerChangedTest {
 			public void onLabelChange(LayerLabeledEvent event) {
 				labelCount++;
 			}
-
-			public void onStyleChange(LayerStyleChangeEvent event) {
-			}
 		});
 	}
 
