@@ -65,6 +65,19 @@
                 xmlns:xi="http://www.w3.org/2001/XInclude" />
 
     <para>The name of the <code>ClientToolInfo</code> bean should be exactly
-    as spelled in the above program listing.</para>
+    as spelled in the above program listing. </para>
+
+    <para>If configured correctly, the following tool icon will show up in the
+    toolbar:</para>
+
+    <figure>
+      <title>Toolbar icon for printing</title>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="../images/print.png" />
+        </imageobject>
+      </mediaobject>
+    </figure>
   </section>
 </chapter>
