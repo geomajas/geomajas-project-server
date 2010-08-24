@@ -138,6 +138,7 @@ dojo.extend(GraphicsContext, {
 		this._updateAttribute(imageElement, "y", image.getPosition().getY());
 		this._updateAttribute(imageElement, "width", image.getWidth());
 		this._updateAttribute(imageElement, "height", image.getHeight());
+		this._updateAttribute(imageElement, "preserveAspectRatio", "none");
 		this._updateAttributeNS(geomajas.gfx.svg.xmlns.xlink, imageElement, "xlink:href", image.getHref());
 	},
 	
