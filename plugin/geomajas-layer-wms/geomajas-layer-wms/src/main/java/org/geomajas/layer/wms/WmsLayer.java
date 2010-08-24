@@ -61,6 +61,7 @@ import com.vividsolutions.jts.geom.Envelope;
  * 
  * @author Jan De Moerloose
  * @author Pieter De Graef
+ * @author Oliver May
  * @since 1.7.1
  */
 @Api
@@ -365,21 +366,17 @@ public class WmsLayer implements RasterLayer {
 	}
 
 	protected RasterGrid getRasterGrid(Envelope bounds, double width, double height, double scale) {
-		// slightly adjust the width and height so it becomes integer for the
-		// current scale
-		double realWidth = ((int) (width * scale)) / scale;
-		double realHeight = ((int) (height * scale)) / scale;
 
 		Envelope bbox = converterService.toInternal(getLayerInfo().getMaxExtent());
-		int ymin = (int) Math.floor((bounds.getMinY() - bbox.getMinY()) / realHeight);
-		int ymax = (int) Math.floor((bounds.getMaxY() - bbox.getMinY()) / realHeight) + 1;
-		int xmin = (int) Math.floor((bounds.getMinX() - bbox.getMinX()) / realWidth);
-		int xmax = (int) Math.floor((bounds.getMaxX() - bbox.getMinX()) / realWidth) + 1;
+		int ymin = (int) Math.floor((bounds.getMinY() - bbox.getMinY()) / height);
+		int ymax = (int) Math.floor((bounds.getMaxY() - bbox.getMinY()) / height) + 1;
+		int xmin = (int) Math.floor((bounds.getMinX() - bbox.getMinX()) / width);
+		int xmax = (int) Math.floor((bounds.getMaxX() - bbox.getMinX()) / width) + 1;
 		// same adjustment for corner
-		double realXmin = ((int) (bbox.getMinX() * scale)) / scale;
-		double realYmin = ((int) (bbox.getMinY() * scale)) / scale;
-		Coordinate lowerLeft = new Coordinate(realXmin + xmin * realWidth, realYmin + ymin * realHeight);
-		return new RasterGrid(lowerLeft, xmin, ymin, xmax, ymax, realWidth, realHeight);
+		double realXmin = bbox.getMinX();
+		double realYmin = bbox.getMinY();
+		Coordinate lowerLeft = new Coordinate(realXmin + xmin * width, realYmin + ymin * height);
+		return new RasterGrid(lowerLeft, xmin, ymin, xmax, ymax, width, height);
 	}
 
 	protected int getTileWidth() {
