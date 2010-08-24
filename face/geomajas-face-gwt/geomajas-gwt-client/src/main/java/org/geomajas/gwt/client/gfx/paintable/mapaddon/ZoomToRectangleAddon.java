@@ -26,7 +26,6 @@ package org.geomajas.gwt.client.gfx.paintable.mapaddon;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.Geomajas;
 import org.geomajas.gwt.client.controller.AbstractGraphicsController;
-import org.geomajas.gwt.client.controller.PanController;
 import org.geomajas.gwt.client.controller.ZoomToRectangleController;
 import org.geomajas.gwt.client.gfx.PainterVisitor;
 import org.geomajas.gwt.client.gfx.style.PictureStyle;
