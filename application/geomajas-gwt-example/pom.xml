@@ -54,7 +54,7 @@
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-face-gwt</artifactId>
-				<version>${geomajas-face-gwt-version}</version>
+				<version>1.8.0-SNAPSHOT</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -76,81 +76,88 @@
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-layer-geotools</artifactId>
-			<version>${geomajas-layer-geotools-version}</version>
 		</dependency>
 		<!-- @extract-start OsmLayerDependency, OpenStreetMap layer dependency -->
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-layer-openstreetmap</artifactId>
-			<version>${geomajas-layer-openstreetmap-version}</version>
 		</dependency>
 		<!-- @extract-end -->
 		<!-- @extract-start WmsLayerDependency, WMS layer dependency -->
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-layer-wms</artifactId>
-			<version>${geomajas-layer-wms-version}</version>
 		</dependency>
 		<!-- @extract-end -->
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-layer-hibernate</artifactId>
-			<version>${geomajas-layer-hibernate-version}</version>
 		</dependency>
 		<!-- @extract-start GoogleLayerDependency, Google layer dependency -->
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-layer-google</artifactId>
-			<version>${geomajas-layer-google-version}</version>
 		</dependency>
 		<!-- @extract-end -->
 
 		<!-- Extra Geomajas plugins -->
 		<!-- @extract-start StaticSecurityDependency, staticsecurity source plugin - including source -->
-        <dependency>
-            <groupId>org.geomajas.plugin</groupId>
+		<dependency>
+			<groupId>org.geomajas.plugin</groupId>
             <artifactId>geomajas-plugin-staticsecurity</artifactId>
-            <version>${geomajas-plugin-staticsecurity-version}</version>
+            <version>1.7.1</version>
         </dependency>
         <dependency>
             <groupId>org.geomajas.plugin</groupId>
             <artifactId>geomajas-plugin-staticsecurity</artifactId>
-            <version>${geomajas-plugin-staticsecurity-version}</version>
+            <version>1.7.1</version>
 			<classifier>sources</classifier>
         </dependency>
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-plugin-staticsecurity-gwt</artifactId>
-            <version>${geomajas-plugin-staticsecurity-version}</version>
+			<version>1.7.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-plugin-staticsecurity-gwt</artifactId>
-            <version>${geomajas-plugin-staticsecurity-version}</version>
+			<version>1.7.1</version>
 			<classifier>sources</classifier>
 		</dependency>
 		<!-- @extract-end -->
 
-       <dependency>
-            <groupId>org.geomajas.plugin</groupId>
-            <artifactId>geomajas-plugin-printing</artifactId>
-            <version>${geomajas-plugin-printing-version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.geomajas.plugin</groupId>
-            <artifactId>geomajas-plugin-printing</artifactId>
-            <version>${geomajas-plugin-printing-version}</version>
-			<classifier>sources</classifier>
-        </dependency>
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-plugin-printing-gwt</artifactId>
-            <version>${geomajas-plugin-printing-version}</version>
+			<artifactId>geomajas-plugin-printing</artifactId>
+			<version>2.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-plugin-printing</artifactId>
+			<version>2.0.0-SNAPSHOT</version>
+			<classifier>sources</classifier>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-plugin-printing-gwt</artifactId>
-            <version>${geomajas-plugin-printing-version}</version>
+			<version>2.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-plugin-printing-gwt</artifactId>
+			<version>2.0.0-SNAPSHOT</version>
+			<classifier>sources</classifier>
+		</dependency>
+
+		<dependency>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-plugin-geocoder-gwt</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-plugin-geocoder-gwt</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
 			<classifier>sources</classifier>
 		</dependency>
 
@@ -438,14 +445,6 @@
 	</pluginRepositories>
 
 	<properties>
-		<geomajas-face-gwt-version>1.8.0-SNAPSHOT</geomajas-face-gwt-version>
-		<geomajas-layer-geotools-version>1.7.1</geomajas-layer-geotools-version>
-		<geomajas-layer-hibernate-version>1.7.2</geomajas-layer-hibernate-version>
-		<geomajas-layer-google-version>1.7.1</geomajas-layer-google-version>
-		<geomajas-layer-openstreetmap-version>1.7.1</geomajas-layer-openstreetmap-version>
-		<geomajas-layer-wms-version>1.7.1</geomajas-layer-wms-version>
-		<geomajas-plugin-staticsecurity-version>1.7.1</geomajas-plugin-staticsecurity-version>
-		<geomajas-plugin-printing-version>2.0.0-SNAPSHOT</geomajas-plugin-printing-version>
 		<gwt-version>2.0.3</gwt-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>

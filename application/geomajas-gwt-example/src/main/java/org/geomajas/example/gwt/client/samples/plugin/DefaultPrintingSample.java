@@ -20,7 +20,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.geomajas.example.gwt.client.samples.printing;
+package org.geomajas.example.gwt.client.samples.plugin;
 
 import org.geomajas.example.gwt.client.samples.base.SamplePanel;
 import org.geomajas.example.gwt.client.samples.base.SamplePanelFactory;
@@ -67,17 +67,17 @@ public class DefaultPrintingSample extends SamplePanel {
 	}
 
 	public String getDescription() {
-		return I18nProvider.getSampleMessages().customToolbarDescription();
+		return I18nProvider.getSampleMessages().printingDescription();
 	}
 
 	public String getSourceFileName() {
-		return "classpath:org/geomajas/example/gwt/client/samples/printing/DefaultPrintingSample.txt";
+		return "classpath:org/geomajas/example/gwt/client/samples/plugin/DefaultPrintingSample.txt";
 	}
 
 	public String[] getConfigurationFiles() {
 		return new String[] { "classpath:org/geomajas/example/gwt/servercfg/raster/layerWmsBluemarble.xml",
 				"classpath:org/geomajas/example/gwt/servercfg/vector/layerCountries110m.xml",
-				"classpath:org/geomajas/example/gwt/clientcfg/layer/mapPrinting.xml" };
+				"classpath:org/geomajas/example/gwt/clientcfg/plugin/mapPrinting.xml" };
 	}
 
 	public String ensureUserLoggedIn() {

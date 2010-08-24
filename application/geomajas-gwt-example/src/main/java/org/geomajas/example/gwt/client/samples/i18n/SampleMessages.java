@@ -64,7 +64,7 @@ public interface SampleMessages extends Messages {
 
 	String treeGroupAttributes();
 
-	String treeGroupPrinting();
+	String treeGroupPlugins();
 
 	String introductionTitle();
 
@@ -110,6 +110,14 @@ public interface SampleMessages extends Messages {
 
 	// Printing sample
 	String defaultPrintControllerTitle();
+	
+	String printingDescription();
+
+	// Geocoder sample
+
+	String geocoderTitle();
+
+	String geocoderDescription();
 
 	// CRS sample:
 
