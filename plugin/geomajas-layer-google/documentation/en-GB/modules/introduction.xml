@@ -26,5 +26,21 @@
 <chapter id="chapter-introduction">
   <title>Introduction</title>
 
+  <para>The Google layer allows you to use Google maps imagery as a raster
+  layer in Geomajas. There are three possible types of images which can be
+  displayed, </para>
+
+  <figure>
+    <title>Google layer formats, normal, satellite and hybrid</title>
+
+    <mediaobject>
+      <imageobject>
+        <imagedata fileref="../images/GoogleMap.png" />
+      </imageobject>
+    </mediaobject>
+  </figure>
+
+  <para></para>
+
   <para></para>
 </chapter>
