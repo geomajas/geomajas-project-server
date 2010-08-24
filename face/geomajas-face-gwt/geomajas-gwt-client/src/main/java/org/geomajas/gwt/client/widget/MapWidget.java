@@ -858,7 +858,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 
 	/** When the initialization of the map's model is done: render it. */
 	public void onMapModelChange(MapModelEvent event) {
-		if (event.isLayerOrderChanged()) {
+		if (mapModel.isInitialized()) {
 			for (Layer<?> layer : mapModel.getLayers()) {
 				if (layer instanceof VectorLayer) {
 					render(layer, RenderGroup.VECTOR, RenderStatus.DELETE);

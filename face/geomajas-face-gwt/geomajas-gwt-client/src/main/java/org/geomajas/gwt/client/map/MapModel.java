@@ -518,7 +518,7 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 		} catch (Exception e) {
 			return false;
 		}
-		handlerManager.fireEvent(new MapModelEvent(true));
+		handlerManager.fireEvent(new MapModelEvent());
 		return true;
 	}
 
@@ -578,7 +578,7 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 		} catch (Exception e) {
 			return false;
 		}
-		handlerManager.fireEvent(new MapModelEvent(true));
+		handlerManager.fireEvent(new MapModelEvent());
 		return true;
 	}
 

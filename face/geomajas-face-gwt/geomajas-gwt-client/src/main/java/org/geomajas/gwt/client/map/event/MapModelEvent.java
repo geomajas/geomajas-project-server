@@ -37,27 +37,6 @@ public class MapModelEvent extends GwtEvent<MapModelHandler> {
 
 	public static final Type<MapModelHandler> TYPE = new Type<MapModelHandler>();
 
-	private boolean layerOrderChanged;
-
-	/**
-	 * Default constructor. Used on map model initialization. All booleans will return false.
-	 * 
-	 * @since 1.8.0
-	 */
-	public MapModelEvent() {
-	}
-
-	/**
-	 * Determine whether or not the layer order has changed.
-	 * 
-	 * @param layerOrderChanged
-	 *            Has the layer order changed?
-	 * @since 1.8.0
-	 */
-	public MapModelEvent(boolean layerOrderChanged) {
-		this.layerOrderChanged = layerOrderChanged;
-	}
-
 	@Override
 	public Type<MapModelHandler> getAssociatedType() {
 		return TYPE;
@@ -66,15 +45,5 @@ public class MapModelEvent extends GwtEvent<MapModelHandler> {
 	@Override
 	protected void dispatch(MapModelHandler mapViewHandler) {
 		mapViewHandler.onMapModelChange(this);
-	}
-
-	/**
-	 * Ask whether the layer order has changed.
-	 * 
-	 * @return Returns true if the layer order has changed.
-	 * @since 1.8.0
-	 */
-	public boolean isLayerOrderChanged() {
-		return layerOrderChanged;
 	}
 }
