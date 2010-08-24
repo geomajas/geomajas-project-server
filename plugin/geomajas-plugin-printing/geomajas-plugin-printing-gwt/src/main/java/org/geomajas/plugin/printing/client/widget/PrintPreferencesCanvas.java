@@ -214,7 +214,7 @@ public class PrintPreferencesCanvas extends Canvas {
 				stopProgress();
 				if (r instanceof PrintGetTemplateResponse) {
 					PrintGetTemplateResponse response = (PrintGetTemplateResponse) r;
-					GWT.log("Downloading " + response.getDocumentId());
+					GWT.log("Downloading " + response.getDocumentId(), null);
 					UrlBuilder url = new UrlBuilder(GWT.getHostPageBaseURL());
 					url.addPath("d/printing").addParameter("documentId", response.getDocumentId());
 					url.addParameter("name", "test.pdf");
