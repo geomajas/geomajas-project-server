@@ -221,6 +221,15 @@ public class GraphicsWidget extends FocusWidget implements MapContext, HasDouble
 	}
 
 	/**
+	 * Get the currently active GraphicsController.
+	 *
+	 * @return current GraphicsController
+	 */
+	public GraphicsController getController() {
+		return controller;
+	}
+
+	/**
 	 * An optional fallbackController to return to, when no controller is explicitly set, or when null is set. If no
 	 * current controller is active when this setter is called, it is applied immediately.
 	 * 

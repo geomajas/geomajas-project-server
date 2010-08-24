@@ -672,16 +672,27 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	// -------------------------------------------------------------------------
 
 	/**
-	 * Apply a new <code>GraphicsController</code> on the map. This controller will handle all mouse-events that are
+	 * Apply a new {@link GraphicsController} on the map. This controller will handle all mouse-events that are
 	 * global for the map. Only one controller can be set at any given time.
 	 * 
 	 * @param controller
-	 *            The new <code>MapController</code> object.
+	 *            The new {@link GraphicsController} object.
 	 * @since 1.6.0
 	 */
 	@Api
 	public void setController(GraphicsController controller) {
 		graphics.setController(controller);
+	}
+
+	/**
+	 * Get the currently active {@link GraphicsController}.
+	 *
+	 * @return currently active {@link GraphicsController}.
+	 * @since 1.8.0
+	 */
+	@Api
+	public GraphicsController getController() {
+		return graphics.getController();
 	}
 
 	/**

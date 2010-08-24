@@ -26,6 +26,7 @@ package org.geomajas.gwt.client.gfx.paintable.mapaddon;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.Geomajas;
 import org.geomajas.gwt.client.controller.AbstractGraphicsController;
+import org.geomajas.gwt.client.controller.GraphicsController;
 import org.geomajas.gwt.client.controller.ZoomToRectangleController;
 import org.geomajas.gwt.client.gfx.PainterVisitor;
 import org.geomajas.gwt.client.gfx.style.PictureStyle;
@@ -111,13 +112,16 @@ public class ZoomToRectangleAddon extends MapAddon {
 	 */
 	private class ZoomToRectangleOnceController extends ZoomToRectangleController {
 
+		private GraphicsController keepController;
+
 		public ZoomToRectangleOnceController(MapWidget mapWidget) {
 			super(mapWidget);
+			keepController = mapWidget.getController();
 		}
 
 		protected void selectRectangle(Bbox worldBounds) {
 			super.selectRectangle(worldBounds);
-			map.setController(null);
+			map.setController(keepController);
 		}
 	}
 }
