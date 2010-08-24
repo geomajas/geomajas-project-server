@@ -274,8 +274,26 @@ public class DefaultImageContext implements ImageContext {
 		}
 	}
 
+	/**
+	 * Move an element from on group to another. The elements name will remain the same.
+	 * 
+	 * @param name
+	 *            The name of the element within the sourceParent group.
+	 * @param sourceParent
+	 *            The original parent object associated with the element.
+	 * @param targetParent
+	 *            The target parent object to be associated with the element.
+	 * @since 1.8.0
+	 */
+	public void moveElement(String name, Object sourceParent, Object targetParent) {
+		helper.moveElement(name, sourceParent, targetParent);
+	}
+
+	// ------------------------------------------------------------------------
+	// Private methods:
+	// ------------------------------------------------------------------------
+	
 	private boolean isAttached() {
 		return parent != null && parent.isAttached();
 	}
-
 }

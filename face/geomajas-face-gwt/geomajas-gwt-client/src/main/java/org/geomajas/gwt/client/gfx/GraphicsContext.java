@@ -272,7 +272,7 @@ public interface GraphicsContext {
 
 	/**
 	 * Return the current graphics height.
-	 *
+	 * 
 	 * @return graphics height
 	 */
 	int getHeight();
@@ -280,7 +280,8 @@ public interface GraphicsContext {
 	/**
 	 * Return the id of the specified group.
 	 * 
-	 * @param group the group object
+	 * @param group
+	 *            the group object
 	 * @return the corresponding element id or null if the group has not been drawn.
 	 */
 	String getId(Object group);
@@ -295,7 +296,8 @@ public interface GraphicsContext {
 	/**
 	 * Return the element name for the specified id.
 	 * 
-	 * @param id id
+	 * @param id
+	 *            id
 	 * @return the name of the element
 	 */
 	String getNameById(String id);
@@ -303,14 +305,15 @@ public interface GraphicsContext {
 	/**
 	 * Return the (enclosing) group for the specified element id.
 	 * 
-	 * @param id id
+	 * @param id
+	 *            id
 	 * @return the group object
 	 */
 	Object getGroupById(String id);
 
 	/**
 	 * Return the current graphics width.
-	 *
+	 * 
 	 * @return graphics width
 	 */
 	int getWidth();
@@ -411,4 +414,17 @@ public interface GraphicsContext {
 	 *            The group object.
 	 */
 	void unhide(Object object);
+
+	/**
+	 * Move an element from on group to another. The elements name will remain the same.
+	 * 
+	 * @param name
+	 *            The name of the element within the sourceParent group.
+	 * @param sourceParent
+	 *            The original parent object associated with the element.
+	 * @param targetParent
+	 *            The target parent object to be associated with the element.
+	 * @since 1.8.0
+	 */
+	void moveElement(String name, Object sourceParent, Object targetParent);
 }

@@ -251,6 +251,42 @@ public class DomHelper {
 	}
 
 	/**
+	 * Move an element from on group to another. The elements name will remain the same.
+	 * 
+	 * @param name
+	 *            The name of the element within the sourceParent group.
+	 * @param sourceParent
+	 *            The original parent group of the element.
+	 * @param targetParent
+	 *            The target parent group for the element.
+	 */
+	public boolean moveElement(String name, Object sourceParent, Object targetParent) {
+		Element sourceGroup = null;
+		Element targetGroup = null;
+		Element element = null;
+		if (sourceParent != null) {
+			sourceGroup = getGroup(sourceParent);
+			element = getElement(sourceParent, name);
+		}
+		if (targetParent != null) {
+			targetGroup = getGroup(targetParent);
+		}
+		if (sourceGroup == null || targetGroup == null) {
+			return false;
+		}
+		if (DOM.isOrHasChild(sourceGroup, element)) {
+			DOM.removeChild(sourceGroup, element);
+			String newId = DOM.assembleId(targetGroup.getId(), name);
+			elementToName.remove(element.getId());
+			elementToName.put(newId, name);
+			DOM.setElementAttribute(element, "id", newId);
+			DOM.appendChild(targetGroup, element);
+			return true;
+		}
+		return false;
+	}
+
+	/**
 	 * Return the id of the specified group.
 	 * 
 	 * @param group
