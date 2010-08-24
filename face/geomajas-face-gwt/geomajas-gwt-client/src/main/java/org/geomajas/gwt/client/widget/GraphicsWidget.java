@@ -204,6 +204,9 @@ public class GraphicsWidget extends FocusWidget implements MapContext, HasDouble
 			controller = null;
 		}
 		handlers = new ArrayList<HandlerRegistration>();
+		if (null == graphicsController) {
+			graphicsController = fallbackController;
+		}
 		if (graphicsController != null) {
 			handlers.add(addMouseDownHandler(graphicsController));
 			handlers.add(addMouseMoveHandler(graphicsController));
@@ -214,9 +217,7 @@ public class GraphicsWidget extends FocusWidget implements MapContext, HasDouble
 			handlers.add(addDoubleClickHandler(graphicsController));
 			controller = graphicsController;
 			controller.onActivate();
-		} else if (fallbackController != null) {
-			setController(fallbackController);
-		}
+		} 
 	}
 
 	/**

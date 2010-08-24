@@ -118,7 +118,7 @@ public class ZoomToRectangleAddon extends MapAddon {
 
 		protected void selectRectangle(Bbox worldBounds) {
 			super.selectRectangle(worldBounds);
-			map.setController(new PanController(map));
+			map.setController(null);
 		}
 	}
 }
