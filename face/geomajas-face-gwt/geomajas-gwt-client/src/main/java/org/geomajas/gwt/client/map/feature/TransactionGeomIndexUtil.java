@@ -141,7 +141,7 @@ public final class TransactionGeomIndexUtil {
 			// Coordinate index (coordinate or edge):
 			index.setCoordinateIndex(getIndex(identifier, "coordinate"));
 			if (index.getCoordinateIndex() < 0) {
-				index.setCoordinateIndex(getIndex(identifier, "edge"));
+				index.setEdgeIndex(getIndex(identifier, "edge"));
 			}
 			return index;
 		}
@@ -157,11 +157,11 @@ public final class TransactionGeomIndexUtil {
 		return null;
 	}
 
-	public static String getCoordinateGroupName(String coordinateName) {
+	public static String getVertexGroupName(String coordinateName) {
 		return coordinateName.substring(0, coordinateName.lastIndexOf('.')) + ".vertices";
 	}
 
-	public static String getCoordinateGroupName(Geometry geometry, TransactionGeomIndex index) {
+	public static String getVertexGroupName(Geometry geometry, TransactionGeomIndex index) {
 		String id = "featureTransaction.feature0";
 		if (geometry instanceof Point) {
 		} else if (geometry instanceof MultiPoint) {
@@ -218,7 +218,7 @@ public final class TransactionGeomIndexUtil {
 		return coordinateName.substring(0, coordinateName.lastIndexOf('.')) + ".selection";
 	}
 
-	public static String getCoordinateName(Geometry geometry, TransactionGeomIndex index) {
+	public static String getVertexName(Geometry geometry, TransactionGeomIndex index) {
 		String id = "featureTransaction.feature0";
 		if (geometry instanceof Point) {
 			id += ".coordinate0";
