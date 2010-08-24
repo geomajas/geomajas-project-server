@@ -129,6 +129,12 @@
                   </listitem>
 
                   <listitem>
+                    <para><emphasis>geocoderName</emphasis>: name of the
+                    geocoder which produces the result. Only available when
+                    there was only one matched result.</para>
+                  </listitem>
+
+                  <listitem>
                     <para><emphasis>userData</emphasis>: any additional object
                     which was included in the match result. Only available
                     when there was only one matched result.</para>

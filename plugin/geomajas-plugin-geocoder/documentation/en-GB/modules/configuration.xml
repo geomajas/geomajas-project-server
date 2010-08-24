@@ -63,7 +63,11 @@
 &lt;/dependency&gt;</programlisting>
     </example>
 
-    <para></para>
+    <para>To use the widget, you have to include the geocoder GWT module
+    description as in listing <xref linkend="GwtModule" />.</para>
+
+    <xi:include href="../listing/GwtModule.xml"
+                xmlns:xi="http://www.w3.org/2001/XInclude" />
   </section>
 
   <section>

@@ -101,6 +101,12 @@
         </listitem>
 
         <listitem>
+          <para><emphasis>geocoderName</emphasis>: name of te geocoder which
+          produced the result. You don't have to set this, it will be set by
+          the command.</para>
+        </listitem>
+
+        <listitem>
           <para><emphasis>userData</emphasis>: any additional user data the
           geocoder may wish to return to the client.</para>
         </listitem>
