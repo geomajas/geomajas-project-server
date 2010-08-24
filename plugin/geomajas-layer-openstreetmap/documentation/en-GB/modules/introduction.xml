@@ -26,5 +26,16 @@
 <chapter id="chapter-introduction">
   <title>Introduction</title>
 
-  <para></para>
+  <para>The OpenStreetMap layer allows you to display OpenStreetMap imagery as
+  raster layer in Geomajas.</para>
+
+  <figure>
+    <title>OpenStreetMap example</title>
+
+    <mediaobject>
+      <imageobject>
+        <imagedata fileref="../images/OpenStreetMap.png" />
+      </imageobject>
+    </mediaobject>
+  </figure>
 </chapter>
