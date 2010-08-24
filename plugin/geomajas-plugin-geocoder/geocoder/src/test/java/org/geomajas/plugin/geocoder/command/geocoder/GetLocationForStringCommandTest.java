@@ -71,6 +71,7 @@ public class GetLocationForStringCommandTest {
 		Assert.assertEquals(5706809.617868648, response.getBbox().getY(), DELTA);
 		Assert.assertEquals(285.05822670296766, response.getBbox().getWidth(), DELTA);
 		Assert.assertEquals(142.99996748007834, response.getBbox().getHeight(), DELTA);
+		Assert.assertEquals("static-regex", response.getGeocoderName());
 		Assert.assertNotNull(response.getUserData());
 		Assert.assertEquals("schotbooi", ((UserDataTestInfo)response.getUserData()).getValue());
 	}
@@ -109,6 +110,7 @@ public class GetLocationForStringCommandTest {
 		Assert.assertNotNull(response.getBbox());
 		Assert.assertEquals(10000, response.getCenter().getX(), DELTA);
 		Assert.assertEquals(10000, response.getCenter().getY(), DELTA);
+		Assert.assertEquals("static-regex", response.getGeocoderName());
 		Assert.assertNull(response.getUserData());
 	}
 
@@ -132,6 +134,7 @@ public class GetLocationForStringCommandTest {
 		Assert.assertEquals(50000, response.getBbox().getY(), DELTA);
 		Assert.assertEquals(100000, response.getBbox().getWidth(), DELTA);
 		Assert.assertEquals(80000, response.getBbox().getHeight(), DELTA);
+		Assert.assertEquals("static-regex", response.getGeocoderName());
 		Assert.assertNull(response.getUserData());
 	}
 
@@ -155,6 +158,7 @@ public class GetLocationForStringCommandTest {
 		Assert.assertEquals(50000, response.getBbox().getY(), DELTA);
 		Assert.assertEquals(55000, response.getBbox().getWidth(), DELTA);
 		Assert.assertEquals(45000, response.getBbox().getHeight(), DELTA);
+		Assert.assertNull(response.getGeocoderName());
 	}
 
 	@Test
@@ -169,6 +173,7 @@ public class GetLocationForStringCommandTest {
 		GetLocationForStringResponse response = (GetLocationForStringResponse)commandResponse;
 		Assert.assertFalse(response.isLocationFound());
 		Assert.assertNull(response.getCanonicalLocation());
+		Assert.assertNull(response.getGeocoderName());
 	}
 
 }

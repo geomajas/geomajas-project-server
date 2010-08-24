@@ -43,6 +43,7 @@ public class GetLocationResult {
 	private List<String> canonicalStrings;
 	private Coordinate coordinate;
 	private Envelope envelope;
+	private String geocoderName;
 	private ClientUserDataInfo userData;
 	// @extract-end
 
@@ -102,6 +103,28 @@ public class GetLocationResult {
 	 */
 	public void setEnvelope(Envelope envelope) {
 		this.envelope = envelope;
+	}
+
+	/**
+	 * Name of the geocoder service which produced this result.
+	 * <p/>
+	 * This is filled in automatically by the command.
+	 *
+	 * @return name of the geocoder service which produced this result
+	 */
+	public String getGeocoderName() {
+		return geocoderName;
+	}
+
+	/**
+	 * Name of the geocoder service which produced this result.
+	 * <p/>
+	 * This is filled in automatically by the command.
+	 *
+	 * @param geocoderName name of the geocoder service which produced this result
+	 */
+	public void setGeocoderName(String geocoderName) {
+		this.geocoderName = geocoderName;
 	}
 
 	/**

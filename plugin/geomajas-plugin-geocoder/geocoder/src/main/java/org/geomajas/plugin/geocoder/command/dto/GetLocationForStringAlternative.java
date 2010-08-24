@@ -43,6 +43,7 @@ public class GetLocationForStringAlternative extends CommandResponse {
 	private String canonicalLocation;
 	private Coordinate center;
 	private Bbox bbox;
+	private String geocoderName;
 	private ClientUserDataInfo userData;
 
 	/**
@@ -99,6 +100,28 @@ public class GetLocationForStringAlternative extends CommandResponse {
 		this.bbox = bbox;
 	}
 
+	/**
+	 * Name of the geocoder service which produced this result.
+	 * <p/>
+	 * This is filled in automatically by the command.
+	 *
+	 * @return name of the geocoder service which produced this result
+	 */
+	public String getGeocoderName() {
+		return geocoderName;
+	}
+
+	/**
+	 * Name of the geocoder service which produced this result.
+	 * <p/>
+	 * This is filled in automatically by the command.
+	 *
+	 * @param geocoderName name of the geocoder service which produced this result
+	 */
+	public void setGeocoderName(String geocoderName) {
+		this.geocoderName = geocoderName;
+	}
+	
 	/**
 	 * Get extra user data for the geocoder search result. Only set when there was only one results from the list of
 	 * geocoder services.

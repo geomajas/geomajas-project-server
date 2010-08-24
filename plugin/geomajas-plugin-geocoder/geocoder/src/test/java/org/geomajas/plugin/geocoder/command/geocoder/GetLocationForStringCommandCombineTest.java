@@ -70,6 +70,7 @@ public class GetLocationForStringCommandCombineTest {
 		Assert.assertEquals(0, response.getBbox().getY(), DELTA);
 		Assert.assertEquals(100000, response.getBbox().getWidth(), DELTA);
 		Assert.assertEquals(100000, response.getBbox().getHeight(), DELTA);
+		Assert.assertEquals("static-regex", response.getGeocoderName());
 	}
 
 	@Test
@@ -92,6 +93,7 @@ public class GetLocationForStringCommandCombineTest {
 		Assert.assertEquals(85000, response.getBbox().getY(), DELTA);
 		Assert.assertEquals(25000, response.getBbox().getWidth(), DELTA);
 		Assert.assertEquals(10000, response.getBbox().getHeight(), DELTA);
+		Assert.assertNull(response.getGeocoderName());
 	}
 
 }

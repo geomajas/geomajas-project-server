@@ -67,6 +67,7 @@ public class GetLocationForStringNameSelectTest {
 		Assert.assertNotNull(response.getBbox());
 		Assert.assertEquals(30, response.getCenter().getX(), DELTA);
 		Assert.assertEquals(50, response.getCenter().getY(), DELTA);
+		Assert.assertNull(response.getGeocoderName()); // null when two results
 		Assert.assertNull(response.getUserData()); // null when two results
 	}
 
@@ -88,6 +89,7 @@ public class GetLocationForStringNameSelectTest {
 		Assert.assertEquals(30, response.getCenter().getX(), DELTA);
 		Assert.assertEquals(50, response.getCenter().getY(), DELTA);
 		Assert.assertNotNull(response.getUserData());
+		Assert.assertEquals("alt1", response.getGeocoderName());
 		Assert.assertEquals("alt1", ((UserDataTestInfo)response.getUserData()).getValue());
 	}
 
@@ -108,6 +110,7 @@ public class GetLocationForStringNameSelectTest {
 		Assert.assertNotNull(response.getBbox());
 		Assert.assertEquals(30, response.getCenter().getX(), DELTA);
 		Assert.assertEquals(50, response.getCenter().getY(), DELTA);
+		Assert.assertEquals("alt2", response.getGeocoderName());
 		Assert.assertNotNull(response.getUserData());
 		Assert.assertEquals("alt2", ((UserDataTestInfo)response.getUserData()).getValue());
 	}
@@ -129,6 +132,7 @@ public class GetLocationForStringNameSelectTest {
 		Assert.assertNotNull(response.getBbox());
 		Assert.assertEquals(30, response.getCenter().getX(), DELTA);
 		Assert.assertEquals(50, response.getCenter().getY(), DELTA);
+		Assert.assertNull(response.getGeocoderName());
 		Assert.assertNull(response.getUserData());
 	}
 
@@ -144,6 +148,8 @@ public class GetLocationForStringNameSelectTest {
 		Assert.assertTrue(commandResponse instanceof GetLocationForStringResponse);
 		GetLocationForStringResponse response = (GetLocationForStringResponse)commandResponse;
 		Assert.assertFalse(response.isLocationFound());
+		Assert.assertNull(response.getGeocoderName());
+		Assert.assertNull(response.getUserData());
 	}
 
 }

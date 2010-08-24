@@ -114,6 +114,8 @@ public class GetLocationForStringCommand implements Command<GetLocationForString
 				GetLocationResult[] result = geocoderService.getLocation(locationList);
 				if (null != result && result.length > 0) {
 					for (GetLocationResult aResult : result) {
+						aResult.setGeocoderName(geocoderService.getName());
+
 						CoordinateReferenceSystem sourceCrs = geocoderService.getCrs();
 						Envelope envelope = aResult.getEnvelope();
 
@@ -144,13 +146,16 @@ public class GetLocationForStringCommand implements Command<GetLocationForString
 
 			// combine match strings, default to search string unless we know we can do better
 			String matchedLocation = location;
+			String geocoderName = null;
 			if (results.size() == 1) {
 				List<String> matchedStrings = results.get(0).getCanonicalStrings();
 				if (null != matchedStrings) {
 					matchedLocation = splitGeocoderStringService.combine(matchedStrings);
 				}
+				geocoderName = results.get(0).getGeocoderName();
 			}
 			response.setCanonicalLocation(matchedLocation);
+			response.setGeocoderName(geocoderName);
 
 			// combine the user data, only when there is just one result
 			if (results.size() == 1) {
@@ -176,7 +181,8 @@ public class GetLocationForStringCommand implements Command<GetLocationForString
 					}
 					one.setCanonicalLocation(matchedLocation);
 
-					// set the user data
+					// set additional info data
+					one.setGeocoderName(alt.getGeocoderName());
 					one.setUserData(alt.getUserData());
 
 					// combine location envelopes
