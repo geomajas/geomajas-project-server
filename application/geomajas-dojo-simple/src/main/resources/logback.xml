@@ -13,9 +13,6 @@
     <logger name="org.geomajas.dojo.server.servlet.JsonServlet">
         <level value="DEBUG"/> 
     </logger>
-    <logger name="org.geomajas.extension.printing.component.ScaleBarComponent">
-        <level value="DEBUG"/>
-    </logger>
     <logger name="org.geomajas.command.render.GetRasterTilesCommand">
         <level value="DEBUG"/>
     </logger>
