@@ -24,6 +24,7 @@
 package org.geomajas.plugin.geocoder.client;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.i18n.client.LocaleInfo;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.CloseClickHandler;
@@ -123,6 +124,10 @@ public class GeocoderWidget extends DynamicForm {
 		request.setCrs(map.getMapModel().getCrs());
 		request.setLocation(location);
 		request.setServicePattern(servicePattern);
+		String locale = LocaleInfo.getCurrentLocale().getLocaleName();
+		if (!"default".equals(locale)) {
+			request.setLocale(locale);
+		}
 		command.setCommandRequest(request);
 		GwtCommandDispatcher.getInstance().execute(command, new CommandCallback() {
 

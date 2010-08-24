@@ -38,6 +38,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import javax.annotation.PostConstruct;
 import javax.validation.constraints.NotNull;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 /**
@@ -95,7 +96,7 @@ public class StaticRegexGeocoderService implements GeocoderService {
 		return crs;
 	}
 
-	public GetLocationResult[] getLocation(List<String> location) {
+	public GetLocationResult[] getLocation(List<String> location, Locale ignore) {
 		GetLocationResult result = null;
 		for (StaticRegexGeocoderLocationInfo test : geocoderInfo.getLocations()) {
 			result = getLocation(test, location);

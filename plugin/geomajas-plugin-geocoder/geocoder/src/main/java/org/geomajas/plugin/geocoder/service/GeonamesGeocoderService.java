@@ -48,6 +48,7 @@ import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Geocoder services which uses the geonames.org search web service.
@@ -103,7 +104,7 @@ public class GeonamesGeocoderService implements GeocoderService {
 		return crs;
 	}
 
-	public GetLocationResult[] getLocation(List<String> location) {
+	public GetLocationResult[] getLocation(List<String> location, Locale ignore) {
 		GetLocationResult[] result;
 		try {
 			/* code for using the geonames library, does not support fuzzy or isNameRequired

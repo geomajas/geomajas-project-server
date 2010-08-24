@@ -40,6 +40,7 @@ public class GetLocationForStringRequest implements CommandRequest {
 	private String location;
 	private String crs;
 	private String servicePattern = ".*";
+	private String locale;
 
 	/**
 	 * Get the location string to search for.
@@ -94,5 +95,22 @@ public class GetLocationForStringRequest implements CommandRequest {
 	public void setServicePattern(String servicePattern) {
 		this.servicePattern = servicePattern;
 	}
-	
+
+	/**
+	 * Get the locale which should be used for the search, if known.
+	 *
+	 * @return locale string if known, null if not known
+	 */
+	public String getLocale() {
+		return locale;
+	}
+
+	/**
+	 * Set the locale which should be used for the search if known.
+	 *
+	 * @param locale locale string if known, null if not known
+	 */
+	public void setLocale(String locale) {
+		this.locale = locale;
+	}
 }

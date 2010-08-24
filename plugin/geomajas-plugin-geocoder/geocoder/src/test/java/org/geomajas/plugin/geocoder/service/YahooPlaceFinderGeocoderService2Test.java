@@ -28,7 +28,6 @@ import org.geomajas.plugin.geocoder.api.GetLocationResult;
 import org.geomajas.service.GeoService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -61,7 +60,7 @@ public class YahooPlaceFinderGeocoderService2Test {
 
 		list.clear();
 		list.add("booischot");
-		result = geocoder.getLocation(list);
+		result = geocoder.getLocation(list, null);
 		Assert.assertNotNull(result);
 		Assert.assertEquals(1,result.length);
 		Assert.assertNotNull(result[0].getCoordinate());

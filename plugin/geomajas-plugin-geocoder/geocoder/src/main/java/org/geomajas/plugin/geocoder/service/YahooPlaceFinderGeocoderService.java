@@ -46,6 +46,7 @@ import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Geocoder service using the Yahoo! PlaceFinder.
@@ -145,12 +146,12 @@ public class YahooPlaceFinderGeocoderService implements GeocoderService {
 		return crs;
 	}
 
-	public GetLocationResult[] getLocation(List<String> location) {
+	public GetLocationResult[] getLocation(List<String> location, Locale locale) {
 		if (null == appId) {
 			return null;
 		}
 		try {
-			List<GetLocationResult> locations = search(splitCommaReverseService.combine(location), MAX_ROWS);
+			List<GetLocationResult> locations = search(splitCommaReverseService.combine(location), MAX_ROWS, locale);
 			return locations.toArray(new GetLocationResult[locations.size()]);
 		} catch (Exception ex) {
 			log.error("Search failed", ex);
@@ -167,7 +168,7 @@ public class YahooPlaceFinderGeocoderService implements GeocoderService {
 	 * @throws Exception oops
 	 * @see <a href="http://www.geonames.org/export/geonames-search.html">search web service documentation</a>
 	 */
-	public List<GetLocationResult> search(String q, int maxRows) throws Exception {
+	public List<GetLocationResult> search(String q, int maxRows, Locale locale) throws Exception {
 		List<GetLocationResult> searchResult = new ArrayList<GetLocationResult>();
 
 		String url = "q=" + URLEncoder.encode(q, "UTF8");
@@ -175,6 +176,9 @@ public class YahooPlaceFinderGeocoderService implements GeocoderService {
 			url = url + "&count=" + maxRows;
 		}
 		url = url + "&flags=GX";
+		if (null != locale) {
+			url = url + "&locale=" + locale;
+		}
 		url = url + "&appid=" + appId;
 
 		SAXBuilder parser = new SAXBuilder();

@@ -28,6 +28,7 @@ import org.geomajas.global.UserImplemented;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Geocoder service which allows location lookup based on a list of strings (eg "BE", "Gent", "Gaston Crommenlaan").
@@ -60,9 +61,10 @@ public interface GeocoderService {
 	 * result object.
 	 *
 	 * @param location location strings, from general to more specific
+	 * @param locale locale use for the location if known (can be null if not known)
 	 * @return results objects, when only one this is a definite result, when several the request was ambiguous and the
 	 *         result are the alternatives. When no results an empty array or null may be returned
 	 */
-	GetLocationResult[] getLocation(List<String> location);
+	GetLocationResult[] getLocation(List<String> location, Locale locale);
 }
 // @extract-end

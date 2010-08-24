@@ -87,6 +87,11 @@
                     service are used to search for the result. By default all
                     configured services are used.</para>
                   </listitem>
+
+                  <listitem>
+                    <para><emphasis>locale</emphasis>: locale used for the
+                    search if known.</para>
+                  </listitem>
                 </itemizedlist></entry>
             </row>
 
@@ -188,7 +193,8 @@
     it. THis requires a couple of parameters, the map the widget is connected
     with, the description and label for the widget. In listing <xref
     linkend="createGwtWidget" /> you see an excerpt where the widget in placed
-    inside the map's toolbar.</para>
+    inside the map's toolbar. The widget tries to adapt itself to the
+    currently active locale.</para>
 
     <xi:include href="../listing/createGwtWidget.xml"
                 xmlns:xi="http://www.w3.org/2001/XInclude" />

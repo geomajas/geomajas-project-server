@@ -49,6 +49,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.regex.Pattern;
 
 /**
@@ -92,6 +93,10 @@ public class GetLocationForStringCommand implements Command<GetLocationForString
 		if (null == crsString) {
 			throw new GeomajasException(ExceptionCode.PARAMETER_MISSING, "location");
 		}
+		Locale locale = null;
+		if (null != request.getLocale()) {
+			locale = new Locale(request.getLocale());
+		}
 
 		CoordinateReferenceSystem crs = geoService.getCrs(crsString);
 
@@ -111,7 +116,7 @@ public class GetLocationForStringCommand implements Command<GetLocationForString
 		Pattern namePattern = getShouldUsePattern(request.getServicePattern());
 		for (GeocoderService geocoderService : geocoderInfo.getGeocoderServices()) {
 			if (shouldUse(namePattern, geocoderService.getName())) {
-				GetLocationResult[] result = geocoderService.getLocation(locationList);
+				GetLocationResult[] result = geocoderService.getLocation(locationList, locale);
 				if (null != result && result.length > 0) {
 					for (GetLocationResult aResult : result) {
 						aResult.setGeocoderName(geocoderService.getName());
