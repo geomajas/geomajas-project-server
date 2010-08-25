@@ -41,10 +41,9 @@ import org.geomajas.gwt.client.widget.Toolbar;
 import org.geomajas.plugin.geocoder.client.GeocoderWidget;
 
 /**
- * Sample to demonstrate default printing action.
+ * Sample to demonstrate use of the geocoder plug-in.
  *
- * @author Jan De Moerloose
- *
+ * @author Joachim Van der Auwera
  */
 public class GeocoderSample extends SamplePanel {
 
@@ -75,7 +74,8 @@ public class GeocoderSample extends SamplePanel {
 		final GeocoderWidget geocoderWidget = new GeocoderWidget(map, "description", "Geocoder");
 		toolbar.addMember(geocoderWidget);
 
-		SelectItem geocoderSource = new SelectItem();
+		SelectItem geocoderSource = new SelectItem("geocoderSource", "");
+		geocoderSource.setDefaultToFirstOption(true);
 		geocoderSource.setOptionDataSource(getGeocoderSelectDataSource());
 		geocoderSource.setDisplayField(FIELD_LABEL);
 		geocoderSource.setValueField(FIELD_REGEX);
@@ -95,24 +95,28 @@ public class GeocoderSample extends SamplePanel {
 
 	private DataSource getGeocoderSelectDataSource() {
 		DataSource dataSource = new DataSource();
-
+		dataSource.setClientOnly(true);
 		DataSourceField label = new DataSourceTextField(FIELD_LABEL);
 		DataSourceField regex = new DataSourceTextField(FIELD_REGEX);
 		dataSource.setFields(label, regex);
 
 		Record record;
 		record = new Record();
+		record.setAttribute(FIELD_LABEL, "all");
+		record.setAttribute(FIELD_REGEX, ".*");
+		dataSource.addData(record);
+		record = new Record();
 		record.setAttribute(FIELD_LABEL, "Yahoo! PlaceFinder");
 		record.setAttribute(FIELD_REGEX, "yahoo");
-		dataSource.addData(new Record());
+		dataSource.addData(record);
 		record = new Record();
 		record.setAttribute(FIELD_LABEL, "GeoNames");
 		record.setAttribute(FIELD_REGEX, "geonames");
-		dataSource.addData(new Record());
+		dataSource.addData(record);
 		record = new Record();
 		record.setAttribute(FIELD_LABEL, "offline");
 		record.setAttribute(FIELD_REGEX, "offline");
-		dataSource.addData(new Record());
+		dataSource.addData(record);
 
 		return dataSource;
 	}
