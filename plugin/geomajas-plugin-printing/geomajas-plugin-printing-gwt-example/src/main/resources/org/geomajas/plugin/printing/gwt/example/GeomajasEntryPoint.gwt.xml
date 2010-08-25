@@ -2,7 +2,13 @@
 <module>
 	<inherits name="com.smartgwt.tools.SmartGwtTools"/>
 	<inherits name="org.geomajas.gwt.GeomajasClient"/>
+
+	<!-- @extract-start PrintingGwtModule, Inherit the GWT module for the printing plug-in. -->
+	
 	<inherits name="org.geomajas.plugin.printing.Printing"/>
+
+	<!-- @extract-end -->
+
 
 	<!-- add required languages
 	<extend-property name="locale" values="nl"/>
