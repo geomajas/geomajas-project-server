@@ -56,7 +56,7 @@ import java.util.Locale;
  */
 public class YahooPlaceFinderGeocoderService implements GeocoderService {
 
-	private final Logger log = LoggerFactory.getLogger(GeonamesGeocoderService.class);
+	private final Logger log = LoggerFactory.getLogger(YahooPlaceFinderGeocoderService.class);
 
 	private static final int MAX_ROWS = 50; // max number of rows in result
 	private static final double DELTA = 1e-20; // max coordinate variation for equal locations
@@ -164,6 +164,7 @@ public class YahooPlaceFinderGeocoderService implements GeocoderService {
 	 *
 	 * @param q search string
 	 * @param maxRows max number of rows in result, or 0 for all
+	 * @param locale locale for strings
 	 * @return list of found results
 	 * @throws Exception oops
 	 * @see <a href="http://www.geonames.org/export/geonames-search.html">search web service documentation</a>
