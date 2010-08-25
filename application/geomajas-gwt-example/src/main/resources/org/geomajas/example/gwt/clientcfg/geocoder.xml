@@ -20,6 +20,7 @@
   ~ You should have received a copy of the GNU Affero General Public License
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
+
 <beans xmlns="http://www.springframework.org/schema/beans"
 	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	   xmlns:context="http://www.springframework.org/schema/context"
@@ -45,11 +46,114 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 				<bean name="ypf" class="org.geomajas.plugin.geocoder.service.YahooPlaceFinderGeocoderService">
 					<property name="appIdProperty" value="YahooAppId" />
 					<property name="skipAppIdCheck" value="true" />
+					<property name="name" value="yahoo" />
 				</bean>
-				<bean class="org.geomajas.plugin.geocoder.service.GeonamesGeocoderService" />
+				<bean class="org.geomajas.plugin.geocoder.service.GeonamesGeocoderService">
+					<property name="name" value="geonames" />
+				</bean>
+				<bean class="org.geomajas.plugin.geocoder.service.StaticRegexGeocoderService">
+					<property name="geocoderInfo" ref="offlineInfo"/>
+					<property name="name" value="offline" />
+				</bean>
 			</list>
 		</property>
 	</bean>
 
+	<bean name="offlineInfo" class="org.geomajas.plugin.geocoder.api.StaticRegexGeocoderInfo">
+		<property name="crs" value="EPSG:4326" />
+		<property name="locations">
+			<list>
+				<bean class="org.geomajas.plugin.geocoder.api.StaticRegexGeocoderLocationInfo">
+					<property name="toMatch">
+						<list>
+							<value>Barcel.*</value>
+							<value>**</value>
+						</list>
+					</property>
+					<property name="canonical">
+						<list>
+							<value>Barcelona</value>
+						</list>
+					</property>
+					<property name="bbox">
+						<bean class="org.geomajas.geometry.Bbox">
+							<property name="x" value="0"/>
+							<property name="y" value="0"/>
+							<property name="width" value="0"/>
+							<property name="height" value="0"/>
+						</bean>
+					</property>
+				</bean>
+				<bean class="org.geomajas.plugin.geocoder.api.StaticRegexGeocoderLocationInfo">
+					<property name="toMatch">
+						<list>
+							<value>Sp.*</value>
+							<value>**</value>
+						</list>
+					</property>
+					<property name="canonical">
+						<list>
+							<value>Spain</value>
+						</list>
+					</property>
+					<property name="bbox">
+						<bean class="org.geomajas.geometry.Bbox">
+							<property name="x" value="0"/>
+							<property name="y" value="0"/>
+							<property name="width" value="0"/>
+							<property name="height" value="0"/>
+						</bean>
+					</property>
+				</bean>
+				<bean class="org.geomajas.plugin.geocoder.api.StaticRegexGeocoderLocationInfo">
+					<property name="toMatch">
+						<list>
+							<value>Gent</value>
+							<value>**</value>
+						</list>
+					</property>
+					<property name="bbox">
+						<bean class="org.geomajas.geometry.Bbox">
+							<property name="x" value="0"/>
+							<property name="y" value="0"/>
+							<property name="width" value="0"/>
+							<property name="height" value="0"/>
+						</bean>
+					</property>
+				</bean>
+				<bean class="org.geomajas.plugin.geocoder.api.StaticRegexGeocoderLocationInfo">
+					<property name="toMatch">
+						<list>
+							<value>Booischot</value>
+							<value>**</value>
+						</list>
+					</property>
+					<property name="bbox">
+						<bean class="org.geomajas.geometry.Bbox">
+							<property name="x" value="0"/>
+							<property name="y" value="0"/>
+							<property name="width" value="0"/>
+							<property name="height" value="0"/>
+						</bean>
+					</property>
+				</bean>
+				<bean class="org.geomajas.plugin.geocoder.api.StaticRegexGeocoderLocationInfo">
+					<property name="toMatch">
+						<list>
+							<value>geo.*</value>
+							<value>**</value>
+						</list>
+					</property>
+					<property name="canonical">
+						<list>
+							<value>Geosparc</value>
+						</list>
+					</property>
+					<property name="x" value="0"/>
+					<property name="y" value="0"/>
+				</bean>
+			</list>
+		</property>
+	</bean>
 </beans>
 
