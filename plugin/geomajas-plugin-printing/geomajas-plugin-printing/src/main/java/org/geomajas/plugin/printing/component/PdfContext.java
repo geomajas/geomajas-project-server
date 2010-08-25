@@ -292,7 +292,16 @@ public class PdfContext {
 	}
 
 	public Color getColor(String css, float opacity) {
-		Color color = Color.decode(css);
+		return getColor(css, opacity, Color.white);
+	}
+
+	public Color getColor(String css, float opacity, Color defaultColor) {
+		Color color;
+		if (null == css) {
+			color = defaultColor;
+		} else {
+			color = Color.decode(css);
+		}
 		Color opaque = new Color(color.getRed(), color.getGreen(), color.getBlue(), (int) (opacity * 255));
 		return opaque;
 	}
@@ -310,7 +319,7 @@ public class PdfContext {
 			}
 			return dasharr;
 		} catch (Exception e) {
-			log.warn("Error in dasharraystring: " + dashArrayString);
+			log.warn("Error in dashArrayString: " + dashArrayString);
 			return null;
 		}
 	}

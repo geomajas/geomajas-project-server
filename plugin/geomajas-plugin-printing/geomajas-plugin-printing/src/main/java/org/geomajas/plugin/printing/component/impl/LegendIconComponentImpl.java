@@ -113,8 +113,9 @@ public class LegendIconComponentImpl extends PrintComponentImpl implements Legen
 		Color strokeColor = Color.black;
 		float[] dashArray = null;
 		if (styleInfo != null) {
-			fillColor = context.getColor(styleInfo.getFillColor(), new Float(styleInfo.getFillOpacity()));
-			strokeColor = context.getColor(styleInfo.getStrokeColor(), new Float(styleInfo.getStrokeOpacity()));
+			fillColor = context.getColor(styleInfo.getFillColor(), styleInfo.getFillOpacity(), Color.white);
+			strokeColor = context.getColor(styleInfo.getStrokeColor(), styleInfo.getStrokeOpacity(),
+					Color.black);
 			dashArray = context.getDashArray(styleInfo.getDashArray());
 		}
 		float baseWidth = iconRect.getWidth() / 10;
