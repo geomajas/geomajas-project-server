@@ -52,10 +52,35 @@
 
     <xi:include href="../listing/PrintingDependency.xml"
                 xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+    <para>If you want to use the use the printing plug-in within a GWT
+    application, you only need to include the 2 printing-gwt jars (normal and
+    sources) on the classpath. These will then automatically pull in the first
+    2 jars.</para>
   </section>
 
   <section>
     <title>GWT face configuration</title>
+
+    <section>
+      <title>GWT module definition</title>
+    </section>
+
+    <para>In order to be able to use the printing plug-in in a GWT
+    application, you will need to include the GWT module for the printing
+    plug-in in your applications GWT module definition. In order to do this,
+    add the following configuration line to your applications .gwt.xml
+    file:</para>
+
+    <xi:include href="../listing/PrintingGwtModule.xml"
+                xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+    <para>This will make the GWT widgets and their source (assuming you have
+    the jars on the classpath) available for the GWT compiler. </para>
+
+    <section>
+      <title>Example toolbar configuration</title>
+    </section>
 
     <para>To use the printing functionality in a map, the following
     <code>ClientToolInfo</code> bean should be added to the map's
@@ -65,7 +90,7 @@
                 xmlns:xi="http://www.w3.org/2001/XInclude" />
 
     <para>The name of the <code>ClientToolInfo</code> bean should be exactly
-    as spelled in the above program listing. </para>
+    as spelled in the above program listing.</para>
 
     <para>If configured correctly, the following tool icon will show up in the
     toolbar:</para>
