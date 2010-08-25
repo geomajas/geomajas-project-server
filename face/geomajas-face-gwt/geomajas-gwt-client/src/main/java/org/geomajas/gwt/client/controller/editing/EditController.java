@@ -26,6 +26,7 @@ package org.geomajas.gwt.client.controller.editing;
 import org.geomajas.gwt.client.controller.AbstractSnappingController;
 import org.geomajas.gwt.client.gfx.paintable.GfxGeometry;
 import org.geomajas.gwt.client.gfx.style.ShapeStyle;
+import org.geomajas.gwt.client.i18n.I18nProvider;
 import org.geomajas.gwt.client.map.feature.FeatureTransaction;
 import org.geomajas.gwt.client.map.feature.TransactionGeomIndex;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
@@ -289,16 +290,14 @@ public abstract class EditController extends AbstractSnappingController {
 		// Private methods:
 
 		private void updateContents() {
-			String contents = "<b>Geometric info:</b><br/><br/>";
+			String contents = I18nProvider.getMenu().editGeometricInfoLabelTitle();
 			if (geometry == null) {
-				setContents(contents + "No geometry to display");
+				setContents(contents + I18nProvider.getMenu().editGeometricInfoLabelNoGeometry());
 			} else {
 				String area = DistanceFormat.asMapArea(mapWidget, geometry.getArea());
 				String length = DistanceFormat.asMapLength(mapWidget, geometry.getLength());
-				contents += "Area: " + area + "<br/>";
-				contents += "Length: " + length + "<br/>";
-				contents += "Nr points: " + geometry.getNumPoints();
-				setContents(contents);
+				setContents(contents
+						+ I18nProvider.getMenu().editGeometricInfoLabelInfo(area, length, geometry.getNumPoints()));
 			}
 		}
 	}

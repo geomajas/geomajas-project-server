@@ -77,4 +77,12 @@ public interface MenuMessages extends Messages {
 	String toggleSelection();
 
 	String editAttributes();
+	
+	// Constants for menu actions regarding editing
+	
+	String editGeometricInfoLabelTitle();
+	
+	String editGeometricInfoLabelNoGeometry();
+	
+	String editGeometricInfoLabelInfo(String area, String length, int points);
 }
