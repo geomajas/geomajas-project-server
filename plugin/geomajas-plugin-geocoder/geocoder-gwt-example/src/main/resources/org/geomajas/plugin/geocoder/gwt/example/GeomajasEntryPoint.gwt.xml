@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<<!-- @extract-start GwtModule, GWT module include geocoder -->
+<!-- @extract-start GwtModule, GWT module include geocoder -->
 <module>
 	<inherits name="com.smartgwt.tools.SmartGwtTools"/>
 	<inherits name="org.geomajas.gwt.GeomajasClient"/>

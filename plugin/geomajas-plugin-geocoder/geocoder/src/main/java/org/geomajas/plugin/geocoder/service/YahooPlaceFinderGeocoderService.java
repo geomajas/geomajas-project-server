@@ -181,23 +181,25 @@ public class YahooPlaceFinderGeocoderService implements GeocoderService {
 		}
 		url = url + "&appid=" + appId;
 
-		SAXBuilder parser = new SAXBuilder();
-		Document doc = parser.build(connect(url));
+		InputStream inputStream = connect(url);
+		if (null != inputStream) {
+			SAXBuilder parser = new SAXBuilder();
+			Document doc = parser.build(inputStream);
 
-		Element root = doc.getRootElement();
+			Element root = doc.getRootElement();
 
-		// check for exception
-		String message = root.getChildText("ErrorMessage");
-		if (message != null && message.trim().length() > 0 && !"No error".equals(message)) {
-			throw new Exception(message);
+			// check for exception
+			String message = root.getChildText("ErrorMessage");
+			if (message != null && message.trim().length() > 0 && !"No error".equals(message)) {
+				throw new Exception(message);
+			}
+
+			for (Object obj : root.getChildren("Result")) {
+				Element toponymElement = (Element) obj;
+				GetLocationResult location = getLocationFromElement(toponymElement);
+				searchResult.add(location);
+			}
 		}
-
-		for (Object obj : root.getChildren("Result")) {
-			Element toponymElement = (Element) obj;
-			GetLocationResult location = getLocationFromElement(toponymElement);
-			searchResult.add(location);
-		}
-
 		return searchResult;
 	}
 

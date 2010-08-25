@@ -210,23 +210,25 @@ public class GeonamesGeocoderService implements GeocoderService {
 		}
 		url = url + "&style=" + Style.SHORT;
 
-		SAXBuilder parser = new SAXBuilder();
-		Document doc = parser.build(connect(url));
+		InputStream inputStream = connect(url);
+		if (null != inputStream) {
+			SAXBuilder parser = new SAXBuilder();
+			Document doc = parser.build(connect(url));
 
-		Element root = doc.getRootElement();
+			Element root = doc.getRootElement();
 
-		// check for exception
-		Element message = root.getChild("status");
-		if (message != null) {
-			throw new Exception(message.getAttributeValue("message"));
+			// check for exception
+			Element message = root.getChild("status");
+			if (message != null) {
+				throw new Exception(message.getAttributeValue("message"));
+			}
+
+			for (Object obj : root.getChildren("geoname")) {
+				Element toponymElement = (Element) obj;
+				Toponym toponym = getToponymFromElement(toponymElement);
+				searchResult.add(toponym);
+			}
 		}
-
-		for (Object obj : root.getChildren("geoname")) {
-			Element toponymElement = (Element) obj;
-			Toponym toponym = getToponymFromElement(toponymElement);
-			searchResult.add(toponym);
-		}
-
 		return searchResult;
 	}
 
