@@ -134,31 +134,6 @@ public class GeocoderPresenter implements SelectLocationHandler, SelectAlternati
 		}
 	}
 
-	private void chooseAlternative(List<GetLocationForStringAlternative> alternatives) {
-		if (null == altWindow) {
-			altGrid = new GeocoderAlternativesGrid(geocoderWidget, alternatives);
-
-			altWindow = new Window();
-			altWindow.setAutoSize(true);
-			altWindow.setTitle(messages.alternativeSelectTitle());
-			altWindow.setAutoSize(true);
-			altWindow.setLeft(20);
-			altWindow.setTop(20);
-			altWindow.setCanDragReposition(true);
-			altWindow.setCanDragResize(true);
-			altWindow.addItem(altGrid);
-			altWindow.addCloseClickHandler(new CloseClickHandler() {
-				public void onCloseClick(CloseClientEvent closeClientEvent) {
-					removeAltWindow();
-				}
-			});
-
-			map.addChild(altWindow);
-		} else {
-			altGrid.update(alternatives);
-		}
-	}
-
 	/**
 	 * Get the regular expression which is used to select which geocoder services to use.
 	 *
@@ -209,15 +184,40 @@ public class GeocoderPresenter implements SelectLocationHandler, SelectAlternati
 		return handlerManager.addHandler(SelectLocationHandler.TYPE, handler);
 	}
 
+	// @extract-start DefaultSelectAlternative, Default implementation for SelectAlternativeHandler
 	public void onSelectAlternative(SelectAlternativeEvent event) {
-		chooseAlternative(event.getAlternatives());
-	}
+		if (null == altWindow) {
+			altGrid = new GeocoderAlternativesGrid(geocoderWidget, event.getAlternatives());
 
+			altWindow = new Window();
+			altWindow.setAutoSize(true);
+			altWindow.setTitle(messages.alternativeSelectTitle());
+			altWindow.setAutoSize(true);
+			altWindow.setLeft(20);
+			altWindow.setTop(20);
+			altWindow.setCanDragReposition(true);
+			altWindow.setCanDragResize(true);
+			altWindow.addItem(altGrid);
+			altWindow.addCloseClickHandler(new CloseClickHandler() {
+				public void onCloseClick(CloseClientEvent closeClientEvent) {
+					removeAltWindow();
+				}
+			});
+
+			map.addChild(altWindow);
+		} else {
+			altGrid.update(event.getAlternatives());
+		}
+	}
+	// @extract-end
+
+	// @extract-start DefaultSelectLocation, Default implementation for SelectLocationHandler
 	public void onSelectLocation(SelectLocationEvent event) {
 		org.geomajas.geometry.Bbox bbox = event.getBbox();
 		map.getMapModel().getMapView().applyBounds(new Bbox(bbox), MapView.ZoomOption.LEVEL_FIT);
 		geocoderWidget.setValue(event.getCanonicalLocation());
 	}
+	// @extract-end
 
 	/**
 	 * Fire an event.

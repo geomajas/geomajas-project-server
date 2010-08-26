@@ -157,6 +157,26 @@
     <title>How to change behaviour of the GeocoderWidget</title>
 
     <para>The widgets behaviour is controlled using two handler classes,
-    SelectLocationHandler and SelectAlterativeHandler.</para>
+    SelectLocationHandler and SelectAlterativeHandler. For both only one
+    handler can be configured for the widget.</para>
+
+    <para>The SelectLocationHandler has a default implementation which zooms
+    to the location which was found or selected. The default implementation is
+    displayed in listing <xref linkend="DefaultSelectLocation" />.</para>
+
+	  <xi:include href="../listing/DefaultSelectLocation.xml"
+				  xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+    <para>The SelectAlternativeHandler is used when the location was
+    considered ambiguous and several alternatives are returned. The default
+    implementation (listing <xref linkend="???" />) puts a window on the map
+    in which the correct location can be selected by the user. This uses the
+    GeocoderAlternativesGrid which lists the options and invokes the
+    SelectLocationHandler on the geocoder when the user selects a line.</para>
+
+	  <xi:include href="../listing/DefaultSelectAlternative.xml"
+				  xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+
   </section>
 </chapter>
