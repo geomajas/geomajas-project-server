@@ -1,6 +1,7 @@
 package org.geomajas.layer.osm;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -32,7 +33,7 @@ public class RoundRobinTileUrlBuilderTest {
 		urls.add("c");
 		builder.setBaseUrls(urls);
 		ExecutorService service = Executors.newFixedThreadPool(10);
-		ArrayList<TestTask> tasks = new ArrayList<TestTask>();
+		List<Callable<List<String>>> tasks = new ArrayList<Callable<List<String>>>();
 		for (int i = 0; i < 10; i++) {
 			tasks.add(new TestTask(builder));
 		}
