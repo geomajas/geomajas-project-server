@@ -170,7 +170,6 @@ public class PrintPreferencesCanvas extends Canvas {
 		vLayout.setMembersMargin(10);
 		vLayout.addMember(tabs);
 		vLayout.addMember(printButton);
-		vLayout.setMargin(10);
 		addChild(vLayout);
 	}
 
