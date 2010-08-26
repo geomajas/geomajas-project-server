@@ -63,7 +63,7 @@
 		<dependency>
 			<groupId>org.geomajas.documentation</groupId>
 			<artifactId>geomajas-jdocbook-style</artifactId>
-			<version>1.0.0</version>
+			<version>1.0.1</version>
 			<type>jdocbook-style</type>
 		</dependency>
 	</dependencies>
