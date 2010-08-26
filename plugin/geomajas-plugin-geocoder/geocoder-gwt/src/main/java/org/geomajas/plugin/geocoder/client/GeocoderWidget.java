@@ -23,6 +23,7 @@
 
 package org.geomajas.plugin.geocoder.client;
 
+import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.smartgwt.client.widgets.form.DynamicForm;
 import com.smartgwt.client.widgets.form.fields.FormItemIcon;
@@ -33,7 +34,9 @@ import com.smartgwt.client.widgets.form.fields.events.KeyPressEvent;
 import com.smartgwt.client.widgets.form.fields.events.KeyPressHandler;
 import org.geomajas.global.Api;
 import org.geomajas.gwt.client.widget.MapWidget;
+import org.geomajas.plugin.geocoder.client.event.SelectAlternativeEvent;
 import org.geomajas.plugin.geocoder.client.event.SelectAlternativeHandler;
+import org.geomajas.plugin.geocoder.client.event.SelectLocationEvent;
 import org.geomajas.plugin.geocoder.client.event.SelectLocationHandler;
 
 /**
@@ -47,6 +50,7 @@ public class GeocoderWidget extends DynamicForm {
 
 	private TextItem textItem;
 	private GeocoderPresenter presenter;
+	private MapWidget map;
 
 	/**
 	 * Create geocoder widget which allows searching a location from a string.
@@ -58,6 +62,7 @@ public class GeocoderWidget extends DynamicForm {
 	@Api
 	public GeocoderWidget(MapWidget map, String name, String title) {
 		presenter = new GeocoderPresenter(map, this, map.getMapModel().getCrs());
+		this.map = map;
 
 		textItem = new TextItem(name, title);
 
@@ -133,5 +138,24 @@ public class GeocoderWidget extends DynamicForm {
 	 */
 	public HandlerRegistration setSelectLocationHandler(SelectLocationHandler handler) {
 		return presenter.setSelectLocationHandler(handler);
+	}
+
+	@Override
+	public void fireEvent(GwtEvent<?> event) {
+		if (event instanceof SelectLocationEvent || event instanceof SelectAlternativeEvent) {
+			presenter.fireEvent(event);
+		} else {
+			super.fireEvent(event);
+		}
+	}
+
+	/**
+	 * Get the map on which this geocoder widget applies.
+	 *
+	 * @return
+	 */
+	@Api
+	public MapWidget getMap() {
+		return map;
 	}
 }

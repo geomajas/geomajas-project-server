@@ -152,4 +152,11 @@
     can be configured in the GeocoderInfo instance in your application
     context.</para>
   </section>
+
+  <section>
+    <title>How to change behaviour of the GeocoderWidget</title>
+
+    <para>The widgets behaviour is controlled using two handler classes,
+    SelectLocationHandler and SelectAlterativeHandler.</para>
+  </section>
 </chapter>

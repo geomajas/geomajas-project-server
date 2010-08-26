@@ -24,6 +24,7 @@
 package org.geomajas.plugin.geocoder.client;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.HandlerManager;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.i18n.client.LocaleInfo;
@@ -31,11 +32,6 @@ import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.events.CloseClickHandler;
 import com.smartgwt.client.widgets.events.CloseClientEvent;
-import com.smartgwt.client.widgets.grid.ListGrid;
-import com.smartgwt.client.widgets.grid.ListGridField;
-import com.smartgwt.client.widgets.grid.ListGridRecord;
-import com.smartgwt.client.widgets.grid.events.RecordClickEvent;
-import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
 import org.geomajas.command.CommandResponse;
 import org.geomajas.gwt.client.command.CommandCallback;
 import org.geomajas.gwt.client.command.GwtCommand;
@@ -61,13 +57,11 @@ import java.util.List;
 public class GeocoderPresenter implements SelectLocationHandler, SelectAlternativeHandler {
 
 	private static final String COMMAND = "command.geocoder.GetLocationForString";
-	private static final String LOCATION_FIELD = "Location";
-	private static final String LOCATION_OBJECT = "Object";
 	private MapWidget map;
 	private GeocoderWidget geocoderWidget;
 	private String crs;
 	private Window altWindow;
-	private ListGrid altGrid;
+	private GeocoderAlternativesGrid altGrid;
 	private String servicePattern = ".*";
 	private GeocoderMessages messages = GWT.create(GeocoderMessages.class);
 	private HandlerManager handlerManager;
@@ -77,6 +71,7 @@ public class GeocoderPresenter implements SelectLocationHandler, SelectAlternati
 	 *
 	 * @param map map to apply search results
 	 * @param geocoderWidget geocoder widget
+	 * @param crs crs for request
 	 */
 	GeocoderPresenter(MapWidget map, GeocoderWidget geocoderWidget, String crs) {
 
@@ -141,25 +136,7 @@ public class GeocoderPresenter implements SelectLocationHandler, SelectAlternati
 
 	private void chooseAlternative(List<GetLocationForStringAlternative> alternatives) {
 		if (null == altWindow) {
-			altGrid = new ListGrid();
-			altGrid.setWidth(300);
-			altGrid.setHeight(200);
-			altGrid.setCanEdit(false);
-			altGrid.setPadding(5);
-
-			ListGridField locationField = new ListGridField(LOCATION_FIELD);
-			locationField.setCanEdit(false);
-			locationField.setCanSort(false);
-			locationField.setCanGroupBy(false);
-			altGrid.setFields(locationField);
-			altGrid.addRecordClickHandler(new RecordClickHandler() {
-				public void onRecordClick(RecordClickEvent recordClickEvent) {
-					GetLocationForStringAlternative alternative;
-					alternative = (GetLocationForStringAlternative) recordClickEvent.getRecord()
-							.getAttributeAsObject(LOCATION_OBJECT);
-					handlerManager.fireEvent(new SelectLocationEvent(map, alternative));
-				}
-			});
+			altGrid = new GeocoderAlternativesGrid(geocoderWidget, alternatives);
 
 			altWindow = new Window();
 			altWindow.setAutoSize(true);
@@ -177,23 +154,9 @@ public class GeocoderPresenter implements SelectLocationHandler, SelectAlternati
 			});
 
 			map.addChild(altWindow);
+		} else {
+			altGrid.update(alternatives);
 		}
-		altGrid.setData(toRecords(alternatives));
-		altGrid.scrollTo(0, 0);
-	}
-
-	private ListGridRecord[] toRecords(List<GetLocationForStringAlternative> alternatives) {
-		ListGridRecord[] records = new ListGridRecord[alternatives.size()];
-		for (int i = 0; i < records.length; i++) {
-			GetLocationForStringAlternative alt = alternatives.get(i);
-			ListGridRecord record = new ListGridRecord();
-
-			record.setAttribute(LOCATION_FIELD, alt.getCanonicalLocation());
-			record.setAttribute(LOCATION_OBJECT, alt);
-
-			records[i] = record;
-		}
-		return records;
 	}
 
 	/**
@@ -254,5 +217,14 @@ public class GeocoderPresenter implements SelectLocationHandler, SelectAlternati
 		org.geomajas.geometry.Bbox bbox = event.getBbox();
 		map.getMapModel().getMapView().applyBounds(new Bbox(bbox), MapView.ZoomOption.LEVEL_FIT);
 		geocoderWidget.setValue(event.getCanonicalLocation());
+	}
+
+	/**
+	 * Fire an event.
+	 *
+	 * @param event event to fire
+	 */
+	public void fireEvent(GwtEvent<?> event) {
+		handlerManager.fireEvent(event);
 	}
 }
