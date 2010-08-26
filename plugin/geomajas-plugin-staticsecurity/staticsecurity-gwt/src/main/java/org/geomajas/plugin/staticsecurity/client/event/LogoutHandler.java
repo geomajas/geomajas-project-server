@@ -26,6 +26,7 @@ package org.geomajas.plugin.staticsecurity.client.event;
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import org.geomajas.global.Api;
+import org.geomajas.global.UserImplemented;
 
 /**
  * <p>
@@ -36,6 +37,7 @@ import org.geomajas.global.Api;
  * @since 1.7.1
  */
 @Api(allMethods = true)
+@UserImplemented
 public interface LogoutHandler extends EventHandler {
 
 	GwtEvent.Type<LogoutHandler> TYPE = new GwtEvent.Type<LogoutHandler>();
