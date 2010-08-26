@@ -23,6 +23,14 @@
 
 package org.geomajas.gwt.client.command;
 
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.i18n.client.LocaleInfo;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.rpc.ServiceDefTarget;
+import com.smartgwt.client.core.Function;
+import com.smartgwt.client.util.SC;
 import org.geomajas.command.CommandResponse;
 import org.geomajas.global.Api;
 import org.geomajas.global.GeomajasConstant;
@@ -35,19 +43,10 @@ import org.geomajas.gwt.client.command.event.DispatchStoppedHandler;
 import org.geomajas.gwt.client.command.event.HasDispatchHandlers;
 import org.geomajas.gwt.client.i18n.I18nProvider;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.shared.HandlerManager;
-import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.i18n.client.LocaleInfo;
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.rpc.ServiceDefTarget;
-import com.smartgwt.client.core.Function;
-import com.smartgwt.client.util.SC;
-
 /**
  * The central client side dispatcher for all commands. Use the {@link #execute(GwtCommand, CommandCallback...)}
  * function to execute an asynchronous command on the server.
- * 
+ *
  * @author Pieter De Graef
  * @since 1.6.0
  */
@@ -76,6 +75,9 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 
 	private GwtCommandDispatcher() {
 		locale = LocaleInfo.getCurrentLocale().getLocaleName();
+		if ("default".equals(locale)) {
+			locale = null;
+		}		
 		service = (GeomajasServiceAsync) GWT.create(GeomajasService.class);
 		ServiceDefTarget endpoint = (ServiceDefTarget) service;
 		String moduleRelativeURL = GWT.getModuleBaseURL() + "geomajasService";
@@ -89,7 +91,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 
 	/**
 	 * Get the only static instance of this class. This should be the object you work with.
-	 * 
+	 *
 	 * @return singleton instance
 	 */
 	public static GwtCommandDispatcher getInstance() {
@@ -170,7 +172,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 
 	/**
 	 * Is the dispatcher busy ?
-	 * 
+	 *
 	 * @return true if there are outstanding commands
 	 */
 	public boolean isBusy() {
@@ -179,7 +181,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 
 	/**
 	 * Set the user token, so it can be sent in very command.
-	 * 
+	 *
 	 * @param userToken
 	 *            user token
 	 */
@@ -189,7 +191,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 
 	/**
 	 * Is lazy feature loading enabled ?
-	 * 
+	 *
 	 * @return true when lazy feature loading is enabled
 	 */
 	public boolean isUseLazyLoading() {
@@ -198,7 +200,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 
 	/**
 	 * Set lazy feature loading status.
-	 * 
+	 *
 	 * @param useLazyLoading
 	 *            lazy feature loading status
 	 */
@@ -220,7 +222,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 
 	/**
 	 * Get default value for "featureIncludes" when getting features.
-	 * 
+	 *
 	 * @return default "featureIncludes" value
 	 */
 	public int getLazyFeatureIncludesDefault() {
@@ -229,7 +231,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 
 	/**
 	 * Set default value for "featureIncludes" when getting features.
-	 * 
+	 *
 	 * @param lazyFeatureIncludesDefault
 	 *            default for "featureIncludes"
 	 */
@@ -240,7 +242,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 
 	/**
 	 * Get "featureIncludes" to use when selecting features.
-	 * 
+	 *
 	 * @return default "featureIncludes" for select commands
 	 */
 	public int getLazyFeatureIncludesSelect() {
@@ -249,7 +251,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 
 	/**
 	 * Set default "featureIncludes" for select commands.
-	 * 
+	 *
 	 * @param lazyFeatureIncludesSelect
 	 *            default "featureIncludes" for select commands
 	 */
@@ -260,7 +262,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 
 	/**
 	 * Value to use for "featureIncludes" when all should be included.
-	 * 
+	 *
 	 * @return value for "featureIncludes" when all should be included
 	 */
 	public int getLazyFeatureIncludesAll() {
@@ -269,7 +271,7 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 
 	/**
 	 * Set "featureIncludes" value when all should be included.
-	 * 
+	 *
 	 * @param lazyFeatureIncludesAll
 	 *            "featureIncludes" value when all should be included
 	 */
