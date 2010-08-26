@@ -24,6 +24,8 @@
 package org.geomajas.plugin.geocoder.client;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.i18n.client.LocaleInfo;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Window;
@@ -49,6 +51,10 @@ import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.map.MapView;
 import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.widget.MapWidget;
+import org.geomajas.plugin.geocoder.client.event.SelectAlternativeEvent;
+import org.geomajas.plugin.geocoder.client.event.SelectAlternativeHandler;
+import org.geomajas.plugin.geocoder.client.event.SelectLocationEvent;
+import org.geomajas.plugin.geocoder.client.event.SelectLocationHandler;
 import org.geomajas.plugin.geocoder.command.dto.GetLocationForStringAlternative;
 import org.geomajas.plugin.geocoder.command.dto.GetLocationForStringRequest;
 import org.geomajas.plugin.geocoder.command.dto.GetLocationForStringResponse;
@@ -62,7 +68,7 @@ import java.util.List;
  * @since 1.0.0
  */
 @Api
-public class GeocoderWidget extends DynamicForm {
+public class GeocoderWidget extends DynamicForm implements SelectLocationHandler, SelectAlternativeHandler {
 
 	private static final String COMMAND = "command.geocoder.GetLocationForString";
 	private static final String LOCATION_FIELD = "Location";
@@ -72,7 +78,8 @@ public class GeocoderWidget extends DynamicForm {
 	private Window altWindow;
 	private ListGrid altGrid;
 	private String servicePattern = ".*";
-	private GeocoderMessages messages = GWT.create(GeocoderMessages.class);
+	private GeocoderMessages messages;
+	private HandlerManager handlerManager;
 
 	/**
 	 * Create geocoder widget which allows searching a location from a string.
@@ -83,13 +90,15 @@ public class GeocoderWidget extends DynamicForm {
 	 */
 	@Api
 	public GeocoderWidget(MapWidget map, String name, String title) {
+		messages = GWT.create(GeocoderMessages.class);
+
 		textItem = new TextItem(name, title);
 		this.map = map;
 
 		textItem.addKeyPressHandler(new KeyPressHandler() {
 			public void onKeyPress(KeyPressEvent keyPressEvent) {
 				if ("enter".equalsIgnoreCase(keyPressEvent.getKeyName())) {
-					goToLocation();
+					goToLocation((String) textItem.getValue());
 				}
 			}
 		});
@@ -104,21 +113,23 @@ public class GeocoderWidget extends DynamicForm {
 				if (clearIcon.getSrc().equals(icon.getSrc())) {
 					clearLocation();
 				} else {
-					goToLocation();
+					goToLocation((String) textItem.getValue());
 				}
 			}
 		});
 
 		this.setFields(textItem);
+
+		handlerManager = new HandlerManager(this);
+		setSelectAlternativeHandler(this);
+		setSelectLocationHandler(this);
 	}
 
 	private void clearLocation() {
 		textItem.setValue("");
 	}
 
-	private void goToLocation() {
-		final String location = (String) textItem.getValue();
-
+	void goToLocation(final String location) {
 		GwtCommand command = new GwtCommand(COMMAND);
 		GetLocationForStringRequest request = new GetLocationForStringRequest();
 		request.setCrs(map.getMapModel().getCrs());
@@ -136,13 +147,11 @@ public class GeocoderWidget extends DynamicForm {
 					GetLocationForStringResponse response = (GetLocationForStringResponse) commandResponse;
 					if (response.isLocationFound()) {
 						removeAltWindow();
-						org.geomajas.geometry.Bbox bbox = response.getBbox();
-						map.getMapModel().getMapView().applyBounds(new Bbox(bbox), MapView.ZoomOption.LEVEL_FIT);
-						textItem.setValue(response.getCanonicalLocation());
+						handlerManager.fireEvent(new SelectLocationEvent(map, response));
 					} else {
 						List<GetLocationForStringAlternative> alternatives = response.getAlternatives();
 						if (null != alternatives && alternatives.size() > 0) {
-							chooseAlternative(alternatives);
+							handlerManager.fireEvent(new SelectAlternativeEvent(map, alternatives));
 						} else {
 							SC.say(messages.locationNotFound(location));
 						}
@@ -177,9 +186,7 @@ public class GeocoderWidget extends DynamicForm {
 					GetLocationForStringAlternative alternative;
 					alternative = (GetLocationForStringAlternative) recordClickEvent.getRecord()
 							.getAttributeAsObject(LOCATION_OBJECT);
-					org.geomajas.geometry.Bbox bbox = alternative.getBbox();
-					map.getMapModel().getMapView().applyBounds(new Bbox(bbox), MapView.ZoomOption.LEVEL_FIT);
-					textItem.setValue(alternative.getCanonicalLocation());
+					handlerManager.fireEvent(new SelectLocationEvent(map, alternative));
 				}
 			});
 
@@ -236,5 +243,47 @@ public class GeocoderWidget extends DynamicForm {
 	@Api
 	public void setServicePattern(String servicePattern) {
 		this.servicePattern = servicePattern;
+	}
+
+	/**
+	 * Set the select alternative handler.
+	 * <p/>
+	 * There can only be one handler, the default displays the alternatives in a window on the map widget.
+	 *
+	 * @param handler select alternative handler
+	 * @return handler registration.
+	 */
+	public HandlerRegistration setSelectAlternativeHandler(SelectAlternativeHandler handler) {
+		if (handlerManager.getHandlerCount(SelectAlternativeHandler.TYPE) > 0) {
+			SelectAlternativeHandler previous = handlerManager.getHandler(SelectAlternativeHandler.TYPE, 0);
+			handlerManager.removeHandler(SelectAlternativeHandler.TYPE, previous);
+		}
+		return handlerManager.addHandler(SelectAlternativeHandler.TYPE, handler);
+	}
+
+	/**
+	 * Set the select location handler.
+	 * <p/>
+	 * There can only be one handler, the default zooms the map widget to the selected location.
+	 *
+	 * @param handler select location handler
+	 * @return handler registration.
+	 */
+	public HandlerRegistration setSelectLocationHandler(SelectLocationHandler handler) {
+		if (handlerManager.getHandlerCount(SelectLocationHandler.TYPE) > 0) {
+			SelectLocationHandler previous = handlerManager.getHandler(SelectLocationHandler.TYPE, 0);
+			handlerManager.removeHandler(SelectLocationHandler.TYPE, previous);
+		}
+		return handlerManager.addHandler(SelectLocationHandler.TYPE, handler);
+	}
+
+	public void onSelectAlternative(SelectAlternativeEvent event) {
+		chooseAlternative(event.getAlternatives());
+	}
+
+	public void onSelectLocation(SelectLocationEvent event) {
+		org.geomajas.geometry.Bbox bbox = event.getBbox();
+		map.getMapModel().getMapView().applyBounds(new Bbox(bbox), MapView.ZoomOption.LEVEL_FIT);
+		textItem.setValue(event.getCanonicalLocation());
 	}
 }
