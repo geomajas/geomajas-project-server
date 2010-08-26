@@ -8,7 +8,7 @@
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.documentation</groupId>
-	<version>1.0.0</version>
+	<version>1.0.1-SNAPSHOT</version>
 	<artifactId>geomajas-jdocbook-xslt</artifactId>
 	<packaging>jar</packaging>
 	<name>XSLT for User Guide for Developers</name>

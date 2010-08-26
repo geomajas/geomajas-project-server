@@ -104,9 +104,11 @@ pre, code, .guibutton, .keycap, .guilabel {
 }
 
 .example {
-	background-color: #c8c5ac;
+	background-color: #ffffff;
+	border: 1px solid #cccccc;
 	padding: 5px;
 	margin-bottom: 10px;
+	-moz-border-radius: 11px;
 }
 
 /*terminal/console text*/
@@ -406,30 +408,6 @@ span.chapter {
 	color: #333;
 }
 
-/*status*/
-.alpha1 {
-	background: white url(../images/watermark-alpha1.png) top left repeat;
-}
-
-.alpha2 {
-	background: white url(../images/watermark-alpha2.png) top left repeat;
-}
-
-.beta1 {
-	background: white url(../images/watermark-beta1.png) top left repeat;
-}
-
-.beta2 {
-	background: white url(../images/watermark-beta2.png) top left repeat;
-}
-
-.pre-release-candidate {
-	background: white url(../images/watermark-pre-release-candidate.png) top left repeat;
-}
-
-.release-candidate {
-	background: white url(../images/watermark-release-candidate.png) top left repeat;
-}
 
 /*index*/
 .glossary h3,
@@ -469,7 +447,7 @@ span.chapter {
 
 .footnote {
 	padding: .2em 1em;
-	background-color: #c8c5ac;
+	background-color: #D8D5BC;
 	font-size: .9em;
 	margin: 0 0 .5em;
 
@@ -490,7 +468,7 @@ sup {
 
 .footnote sup {
 	color: #e3dcc0;
-	font-size: 1.8em;
+	font-size: .8em;
 	position: absolute;
 	left: .4em;
 }
