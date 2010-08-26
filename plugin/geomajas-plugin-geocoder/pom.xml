@@ -79,5 +79,5 @@
 
 	<properties>
 		<geocoder-backend-version>1.7.1</geocoder-backend-version>
-	</properties>	
+	</properties>
 </project>
