@@ -25,6 +25,8 @@ package org.geomajas.layer.osm;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.PostConstruct;
+
 import org.geomajas.configuration.RasterLayerInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.global.Api;
@@ -34,7 +36,6 @@ import org.geomajas.layer.LayerException;
 import org.geomajas.layer.RasterLayer;
 import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.layer.tile.TileCode;
-import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
 import org.geotools.geometry.DirectPosition2D;
@@ -49,8 +50,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
-
-import javax.annotation.PostConstruct;
 
 /**
  * Layer for displaying OpenStreetMap images.
@@ -78,9 +77,6 @@ public class OsmLayer implements RasterLayer {
 	private final Logger log = LoggerFactory.getLogger(OsmLayer.class);
 
 	@Autowired
-	private ConfigurationService configurationService;
-
-	@Autowired
 	private DtoConverterService converterService;
 
 	@Autowired
@@ -91,11 +87,15 @@ public class OsmLayer implements RasterLayer {
 	private CoordinateReferenceSystem crs;
 
 	private String id;
-	
+
+	private TileUrlBuilder urlBuilder = new RoundRobinTileUrlBuilder();
+
+	private List<String> baseUrls;
+
 	public String getId() {
 		return id;
 	}
-	
+
 	public void setId(String id) {
 		this.id = id;
 	}
@@ -114,14 +114,64 @@ public class OsmLayer implements RasterLayer {
 
 	/**
 	 * Set the layer configuration.
-	 *
-	 * @param layerInfo layer information
-	 * @throws LayerException oops
+	 * 
+	 * @param layerInfo
+	 *            layer information
+	 * @throws LayerException
+	 *             oops
 	 * @since 1.7.1
 	 */
 	@Api
 	public void setLayerInfo(RasterLayerInfo layerInfo) throws LayerException {
 		this.layerInfo = layerInfo;
+	}
+
+	/**
+	 * Returns the list of base URLs.
+	 * 
+	 * @return the list of base URLs or null if no base URLs have been set.
+	 * @since 1.7.2
+	 */
+	@Api
+	public List<String> getBaseUrls() {
+		return baseUrls;
+	}
+
+	/**
+	 * Set a list of base URLs. Use this as a shortcut for setting a RoundRobinTileUrlBuilder with the specified base
+	 * URLs.
+	 * 
+	 * @param urls
+	 *            list of base URLs (e.g.
+	 *            "a.tile.openstreetmap.org","b.tile.openstreetmap.org","c.tile.openstreetmap.org")
+	 * @since 1.7.2
+	 */
+	@Api
+	public void setBaseUrls(List<String> baseUrls) {
+		this.baseUrls = baseUrls;
+	}
+
+	/**
+	 * Returns the builder that should be used to build a tile URL.
+	 * 
+	 * @return the tile URL builder
+	 * @since 1.7.2
+	 */
+	@Api
+	public TileUrlBuilder getUrlBuilder() {
+		return urlBuilder;
+	}
+
+	/**
+	 * Set the builder that should be used to build a tile URL.
+	 * 
+	 * @param urlBuilder
+	 *            a tile URL builder
+	 * @since 1.7.2
+	 */
+	@Api
+	public void setUrlBuilder(TileUrlBuilder urlBuilder) {
+		this.urlBuilder = urlBuilder;
 	}
 
 	@PostConstruct
@@ -133,6 +183,11 @@ public class OsmLayer implements RasterLayer {
 			maxWidth = layerInfo.getMaxExtent().getWidth();
 			maxHeight = layerInfo.getMaxExtent().getHeight();
 			this.calculatePredefinedResolutions();
+		}
+		if (null != baseUrls) {
+			RoundRobinTileUrlBuilder rr = new RoundRobinTileUrlBuilder();
+			rr.setBaseUrls(baseUrls);
+			setUrlBuilder(rr);
 		}
 	}
 
@@ -225,10 +280,10 @@ public class OsmLayer implements RasterLayer {
 					int x = xScreenUpperLeft + (i - iMin) * screenWidth;
 					int y = yScreenUpperLeft - (j - jMin) * screenWidth;
 
-					RasterTile image = new RasterTile(new Bbox(x, -y, screenWidth, screenWidth), getId()
-							+ "." + tileLevel + "." + i + "," + j);
+					RasterTile image = new RasterTile(new Bbox(x, -y, screenWidth, screenWidth), getId() + "."
+							+ tileLevel + "." + i + "," + j);
 					image.setCode(new TileCode(tileLevel, i, j));
-					image.setUrl("http://tile.openstreetmap.org/" + tileLevel + "/" + i + "/" + j + ".png");
+					image.setUrl(urlBuilder.buildUrl(tileLevel, i, j));
 					log.debug("adding OSM image {}", image);
 					result.add(image);
 				}
