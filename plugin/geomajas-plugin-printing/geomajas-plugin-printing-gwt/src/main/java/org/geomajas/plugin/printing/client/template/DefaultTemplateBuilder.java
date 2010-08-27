@@ -23,7 +23,6 @@
 package org.geomajas.plugin.printing.client.template;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.geomajas.configuration.FeatureStyleInfo;
@@ -110,9 +109,8 @@ public class DefaultTemplateBuilder extends TemplateBuilder {
 		map.setMapId(mapModel.getMapInfo().getId());
 		map.setApplicationId(applicationId);
 		map.setRasterResolution(rasterDpi);
-		List<Layer> layers = getLayersInPrintOrder();
 		List<PrintComponentInfo> layerChildren = new ArrayList<PrintComponentInfo>();
-		for (Layer layer : layers) {
+		for (Layer layer : mapModel.getLayers()) {
 			if (layer instanceof VectorLayer && layer.isShowing()) {
 				VectorLayerComponentInfo info = new VectorLayerComponentInfo();
 				VectorLayer vectorLayer = (VectorLayer) layer;
@@ -128,6 +126,7 @@ public class DefaultTemplateBuilder extends TemplateBuilder {
 				RasterLayerComponentInfo info = new RasterLayerComponentInfo();
 				RasterLayer rasterLayer = (RasterLayer) layer;
 				info.setLayerId(rasterLayer.getServerLayerId());
+				info.setStyle(rasterLayer.getLayerInfo().getStyle());
 				layerChildren.add(info);
 			}
 		}
@@ -162,8 +161,7 @@ public class DefaultTemplateBuilder extends TemplateBuilder {
 		legend.setFont(style);
 		legend.setMapId(mapModel.getMapInfo().getId());
 		legend.setTag("legend");
-		List<Layer> layers = getLayersInPrintOrder();
-		for (Layer layer : layers) {
+		for (Layer layer : mapModel.getLayers()) {
 			if (layer instanceof VectorLayer && layer.isShowing()) {
 				VectorLayer vectorLayer = (VectorLayer) layer;
 				ClientVectorLayerInfo layerInfo = vectorLayer.getLayerInfo();
@@ -316,13 +314,6 @@ public class DefaultTemplateBuilder extends TemplateBuilder {
 
 	public void setApplicationId(String applicationId) {
 		this.applicationId = applicationId;
-	}
-
-	private List<Layer> getLayersInPrintOrder() {
-		List<Layer> layers = new ArrayList<Layer>(mapModel.getLayers());
-		Collections.reverse(layers);
-		return layers;
-
 	}
 
 }

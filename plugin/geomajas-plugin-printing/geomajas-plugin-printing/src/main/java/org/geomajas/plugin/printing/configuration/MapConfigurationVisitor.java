@@ -23,7 +23,6 @@
 package org.geomajas.plugin.printing.configuration;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.geomajas.configuration.client.ClientLayerInfo;
@@ -31,6 +30,7 @@ import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientRasterLayerInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.plugin.printing.PrintingException;
+import org.geomajas.plugin.printing.component.BaseLayerComponent;
 import org.geomajas.plugin.printing.component.LegendComponent;
 import org.geomajas.plugin.printing.component.MapComponent;
 import org.geomajas.plugin.printing.component.TopDownVisitor;
@@ -80,37 +80,40 @@ public class MapConfigurationVisitor extends TopDownVisitor {
 	public void visit(MapComponent mapComponent) {
 		mapComponent.clearLayers();
 		ClientMapInfo map = configurationService.getMapInfo(mapComponent.getMapId(), mapComponent.getApplicationId());
-		List<ClientLayerInfo> layers = new ArrayList<ClientLayerInfo>(map.getLayers());
-		Collections.reverse(layers);
-		for (ClientLayerInfo info : layers) {
+		List<BaseLayerComponent> layers = new ArrayList<BaseLayerComponent>();
+		for (ClientLayerInfo info : map.getLayers()) {
 			if (info instanceof ClientVectorLayerInfo) {
-				VectorLayerComponentImpl comp;
+				VectorLayerComponentInfo vectorInfo = new VectorLayerComponentInfo();
+				vectorInfo.setLabelsVisible(false);
+				vectorInfo.setLayerId(info.getServerLayerId());
+				vectorInfo.setStyleInfo(((ClientVectorLayerInfo) info).getNamedStyleInfo());
+				vectorInfo.setVisible(true);
 				try {
-					comp = (VectorLayerComponentImpl) printDtoConverterService
-							.toInternal(new VectorLayerComponentInfo());
-					comp.setLabelsVisible(false);
-					comp.setLayerId(info.getServerLayerId());
-					comp.setStyleInfo(((ClientVectorLayerInfo) info).getNamedStyleInfo());
-					comp.setVisible(true);
-					mapComponent.addComponent(0, comp);
+					VectorLayerComponentImpl comp = (VectorLayerComponentImpl) printDtoConverterService
+							.toInternal(vectorInfo);
+					layers.add(comp);
 				} catch (PrintingException e) {
 					// should never fail
 					log.error("unexpected exception while adding layers to map" , e);
 				}
 			} else if (info instanceof ClientRasterLayerInfo) {
-				RasterLayerComponentImpl comp;
+				RasterLayerComponentInfo rasterInfo = new RasterLayerComponentInfo();
+				rasterInfo.setLayerId(info.getServerLayerId());
+				rasterInfo.setVisible(true);
+				rasterInfo.setStyle(((ClientRasterLayerInfo) info).getStyle());
 				try {
-					comp = (RasterLayerComponentImpl) printDtoConverterService
-							.toInternal(new RasterLayerComponentInfo());
+					RasterLayerComponentImpl comp = (RasterLayerComponentImpl) printDtoConverterService
+							.toInternal(rasterInfo);
 					comp.setLayerId(info.getServerLayerId());
 					comp.setVisible(true);
-					mapComponent.addComponent(0, comp);
+					layers.add(comp);
 				} catch (PrintingException e) {
 					// should never fail
 					log.error("unexpected exception while adding layers to map" , e);
 				}
 			}
 		}
+		mapComponent.addComponents(0, layers);
 	}
 
 }

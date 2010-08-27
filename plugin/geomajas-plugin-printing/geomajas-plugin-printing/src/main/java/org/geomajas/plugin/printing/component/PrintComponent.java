@@ -22,6 +22,7 @@
  */
 package org.geomajas.plugin.printing.component;
 
+import java.util.Collection;
 import java.util.List;
 
 import org.geomajas.plugin.printing.component.dto.PrintComponentInfo;
@@ -30,58 +31,53 @@ import org.geomajas.plugin.printing.component.service.PrintDtoConverterService;
 import com.lowagie.text.Rectangle;
 
 /**
- * A print component is a UI component that can be rendered in a PDF context.
- * Examples are maps, images, labels, text boxes, etc.. A print component can be
- * composed of child components.
- *
+ * A print component is a UI component that can be rendered in a PDF context. Examples are maps, images, labels, text
+ * boxes, etc.. A print component can be composed of child components.
+ * 
  * @author Jan De Moerloose
  */
 public interface PrintComponent {
 
 	/**
-	 * Return the id of this component. Id's should be hierarchically
-	 * constructed with "." as delimiter.
-	 *
+	 * Return the id of this component. Id's should be hierarchically constructed with "." as delimiter.
+	 * 
 	 * @return id
 	 */
 	String getId();
 
 	/**
 	 * Return the tag of this component.
-	 *
+	 * 
 	 * @return id
 	 */
 	String getTag();
 
 	/**
-	 * Render the component using the specified context. This operation assumes
-	 * that layout() has been called.
-	 *
+	 * Render the component using the specified context. This operation assumes that layout() has been called.
+	 * 
 	 * @param context
 	 */
 	void render(PdfContext context);
 
 	/**
-	 * Layout this component and its children. After this operation, the
-	 * position and size of each component (both included in the bounds
-	 * property) in the component hierarchy have been determined. This operation
-	 * assumes that calculateSize() has been called.
-	 *
+	 * Layout this component and its children. After this operation, the position and size of each component (both
+	 * included in the bounds property) in the component hierarchy have been determined. This operation assumes that
+	 * calculateSize() has been called.
+	 * 
 	 * @param context
 	 */
 	void layout(PdfContext context);
 
 	/**
-	 * Calculate the expected width/height of this component for the specified
-	 * context.
-	 *
+	 * Calculate the expected width/height of this component for the specified context.
+	 * 
 	 * @param context
 	 */
 	void calculateSize(PdfContext context);
 
 	/**
 	 * Return the rectangle in user space occupied by this component.
-	 *
+	 * 
 	 * @return rectangle
 	 */
 	Rectangle getBounds();
@@ -89,9 +85,8 @@ public interface PrintComponent {
 	void setBounds(Rectangle bounds);
 
 	/**
-	 * Return the layout constraint that should be applied when laying out this
-	 * component.
-	 *
+	 * Return the layout constraint that should be applied when laying out this component.
+	 * 
 	 * @return constraint
 	 */
 	LayoutConstraint getConstraint();
@@ -100,7 +95,7 @@ public interface PrintComponent {
 
 	/**
 	 * Return the parent component of this component.
-	 *
+	 * 
 	 * @return
 	 */
 	PrintComponent getParent();
@@ -112,15 +107,19 @@ public interface PrintComponent {
 	void addComponent(PrintComponent child);
 
 	void addComponent(int index, PrintComponent child);
+
+	void addComponents(Collection<? extends PrintComponent> children);
 	
+	void addComponents(int index, Collection<? extends PrintComponent> children);
+
 	void removeComponent(PrintComponent child);
 
 	/**
 	 * Call back visitor.
-	 *
+	 * 
 	 * @param visitor
 	 */
 	void accept(PrintComponentVisitor visitor);
-	
+
 	void fromDto(PrintComponentInfo info, PrintDtoConverterService service);
 }

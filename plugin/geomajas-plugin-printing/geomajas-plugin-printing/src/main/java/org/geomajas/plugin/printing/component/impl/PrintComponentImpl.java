@@ -23,6 +23,8 @@
 package org.geomajas.plugin.printing.component.impl;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import org.geomajas.geometry.Bbox;
@@ -168,6 +170,21 @@ public abstract class PrintComponentImpl implements PrintComponent {
 	public void addComponent(int index, PrintComponent child) {
 		child.setParent(this);
 		children.add(index, child);
+	}
+
+	public void addComponents(Collection<? extends PrintComponent> children) {
+		for (PrintComponent child : children) {
+			addComponent(child);
+		}
+	}
+
+	public void addComponents(int index, Collection<? extends PrintComponent> children) {
+		// reverse add to index to keep the order
+		List<PrintComponent> reverse = new ArrayList<PrintComponent>(children);
+		Collections.reverse(reverse);
+		for (PrintComponent child : reverse) {
+			addComponent(index, child);
+		}
 	}
 
 	@Json(serialize = false)

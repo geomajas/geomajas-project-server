@@ -243,7 +243,7 @@ public class MapComponentImpl extends PrintComponentImpl implements MapComponent
 			removeComponent(layer);
 		}
 	}
-
+	
 	public void fromDto(PrintComponentInfo info, PrintDtoConverterService service) {
 		super.fromDto(info, service);
 		MapComponentInfo mapInfo = (MapComponentInfo) info;
@@ -257,5 +257,6 @@ public class MapComponentImpl extends PrintComponentImpl implements MapComponent
 	private Coordinate createCoordinate(org.geomajas.geometry.Coordinate coordinate) {
 		return new Coordinate(coordinate.getX(), coordinate.getY());
 	}
+
 
 }

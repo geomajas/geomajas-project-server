@@ -49,7 +49,10 @@ import org.geomajas.plugin.printing.component.LayoutConstraint;
 import org.geomajas.plugin.printing.component.PdfContext;
 import org.geomajas.plugin.printing.component.PrintComponentVisitor;
 import org.geomajas.plugin.printing.component.RasterLayerComponent;
+import org.geomajas.plugin.printing.component.dto.PrintComponentInfo;
+import org.geomajas.plugin.printing.component.dto.RasterLayerComponentInfo;
 import org.geomajas.plugin.printing.component.service.PrintConfigurationService;
+import org.geomajas.plugin.printing.component.service.PrintDtoConverterService;
 import org.geomajas.service.GeoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -113,10 +116,12 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl implements 
 	@Autowired
 	@XStreamOmitField
 	private PrintConfigurationService configurationService;
-	
+
 	@Autowired
 	@XStreamOmitField
 	private GeoService geoService;
+
+	private float opacity = 1.0f;
 
 	public RasterLayerComponentImpl() {
 		getConstraint().setAlignmentX(LayoutConstraint.JUSTIFIED);
@@ -186,7 +191,37 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl implements 
 		}
 	}
 
-	public void addImage(PdfContext context, ImageResult imageResult) {
+	public float getOpacity() {
+		return opacity;
+	}
+
+	public void setOpacity(float opacity) {
+		this.opacity = opacity;
+	}
+
+	@Override
+	public void fromDto(PrintComponentInfo info, PrintDtoConverterService service) {
+		super.fromDto(info, service);
+		RasterLayerComponentInfo rasterInfo = (RasterLayerComponentInfo) info;
+		String style = rasterInfo.getStyle();
+		if (rasterInfo.getStyle() != null) {
+			String match = style;
+			// could be 'opacity:0.5;' or simply '0.5'
+			if (style.contains("opacity:")) {
+				match = style.substring(style.indexOf("opacity:") + 8);
+			}
+			if (match.contains(";")) {
+				match = match.substring(0, match.indexOf(";"));
+			}
+			try {
+				setOpacity(Float.valueOf(match));
+			} catch (NumberFormatException nfe) {
+				log.warn("Could not parse opacity " + style + "of raster layer " + getLayerId());
+			}
+		}
+	}
+
+	protected void addImage(PdfContext context, ImageResult imageResult) {
 		Bbox imageBounds = imageResult.getRasterImage().getBounds();
 		float scaleFactor = (float) (72 / getMap().getRasterResolution());
 		float width = (float) imageBounds.getWidth() * scaleFactor;
@@ -200,10 +235,11 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl implements 
 		if (log.isDebugEnabled()) {
 			log.debug("adding image, width=" + width + ",height=" + height + ",x=" + x + ",y=" + y);
 		}
-		context.drawImage(imageResult.getImage(), new Rectangle(x, y, x + width, y + height), getSize());
+		// opacity
+		context.drawImage(imageResult.getImage(), new Rectangle(x, y, x + width, y + height), getSize(), getOpacity());
 	}
 
-	public void addLoadError(PdfContext context, ImageException e) {
+	protected void addLoadError(PdfContext context, ImageException e) {
 		Bbox imageBounds = e.getRasterImage().getBounds();
 		float scaleFactor = (float) (72 / getMap().getRasterResolution());
 		float width = (float) imageBounds.getWidth() * scaleFactor;

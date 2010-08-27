@@ -339,15 +339,32 @@ public class PdfContext {
 	}
 
 	/**
-	 * Draws the specified image with the first rect's bounds, clipping with the second one.
+	 * Draws the specified image with the first rect's bounds, clipping with the second one and adding transparency.
 	 * 
 	 * @param img image
 	 * @param rect rectangle
 	 * @param clipRect clipping bounds
 	 */
 	public void drawImage(Image img, Rectangle rect, Rectangle clipRect) {
+		drawImage(img, rect, clipRect, 1);
+	}
+	
+	/**
+	 * Draws the specified image with the first rect's bounds, clipping with the second one.
+	 * 
+	 * @param img image
+	 * @param rect rectangle
+	 * @param clipRect clipping bounds
+	 * @param opacity opacity of the image (1 = opaque, 0= transparent)
+	 */
+	public void drawImage(Image img, Rectangle rect, Rectangle clipRect, float opacity) {
 		try {
 			template.saveState();
+			// opacity
+			PdfGState state = new PdfGState();
+			state.setFillOpacity(opacity);
+			state.setBlendMode(PdfGState.BM_NORMAL);
+			template.setGState(state);
 			// clipping code
 			if (clipRect != null) {
 				template.rectangle(clipRect.getLeft() + origX, clipRect.getBottom() + origY, clipRect.getWidth(),
