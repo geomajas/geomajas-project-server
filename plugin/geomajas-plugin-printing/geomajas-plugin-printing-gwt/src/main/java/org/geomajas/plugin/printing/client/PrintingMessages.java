@@ -64,4 +64,6 @@ public interface PrintingMessages extends Messages {
 
 	String printPrefsOpenInBrowserWindow();
 
+	String printPrefsFileName();
+
 }

@@ -67,6 +67,8 @@ public class PrintPreferencesCanvas extends Canvas {
 
 	private TextItem titleItem;
 
+	private TextItem fileNameItem;
+
 	private SelectItem sizeItem;
 
 	private RadioGroupItem orientationGroup;
@@ -90,7 +92,7 @@ public class PrintPreferencesCanvas extends Canvas {
 		// tab set
 		TabSet tabs = new TabSet();
 		tabs.setWidth(400);
-		tabs.setHeight(300);
+		tabs.setHeight(330);
 
 		// create the one and only tab pane
 		Tab mainPrefs = new Tab();
@@ -134,6 +136,12 @@ public class PrintPreferencesCanvas extends Canvas {
 		scaleBarCheckbox = new CheckboxItem();
 		scaleBarCheckbox.setValue(true);
 		scaleBarCheckbox.setTitle(messages.printPrefsWithScaleBar());
+		// filename
+		fileNameItem = new TextItem();
+		fileNameItem.setName("title");
+		fileNameItem.setTitle(messages.printPrefsFileName());
+		fileNameItem.setValue(mapWidget.getMapModel().getMapInfo().getId() + ".pdf");
+
 		// progress indicator
 		barIcon = new FormItemIcon();
 		barIcon.setHeight(15);
@@ -153,7 +161,7 @@ public class PrintPreferencesCanvas extends Canvas {
 		downloadTypeGroup.setValue("save");
 
 		form.setFields(titleItem, sizeItem, orientationGroup, arrowCheckbox, scaleBarCheckbox, rasterDpiSlider,
-				downloadTypeGroup, statusText);
+				fileNameItem, downloadTypeGroup, statusText);
 		mainPrefs.setPane(form);
 		tabs.setTabs(mainPrefs);
 
@@ -216,7 +224,7 @@ public class PrintPreferencesCanvas extends Canvas {
 					GWT.log("Downloading " + response.getDocumentId(), null);
 					UrlBuilder url = new UrlBuilder(GWT.getHostPageBaseURL());
 					url.addPath("d/printing").addParameter("documentId", response.getDocumentId());
-					url.addParameter("name", "test.pdf");
+					url.addParameter("name", (String) fileNameItem.getValue());
 					url.addParameter("userToken", command.getUserToken());
 					if ("save".equals(downloadTypeGroup.getValue())) {
 						url.addParameter("download", "1");
@@ -235,5 +243,5 @@ public class PrintPreferencesCanvas extends Canvas {
 			}
 		});
 	}
-	
+
 }
