@@ -1,6 +1,6 @@
-package org.geomajas.extension.printing.component.impl;
+package org.geomajas.plugin.printing.component.impl;
 
-import org.geomajas.extension.printing.component.DummyComponent;
+import org.geomajas.plugin.printing.component.DummyComponent;
 import org.geomajas.layer.VectorLayerService;
 import org.geomajas.plugin.printing.component.PrintComponentVisitor;
 import org.geomajas.plugin.printing.component.impl.PrintComponentImpl;

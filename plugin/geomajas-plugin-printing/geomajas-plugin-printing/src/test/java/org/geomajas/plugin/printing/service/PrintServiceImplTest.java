@@ -1,4 +1,4 @@
-package org.geomajas.extension.printing.service;
+package org.geomajas.plugin.printing.service;
 
 import java.util.List;
 

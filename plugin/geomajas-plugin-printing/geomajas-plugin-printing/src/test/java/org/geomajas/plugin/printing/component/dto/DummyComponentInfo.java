@@ -1,8 +1,6 @@
-package org.geomajas.extension.printing.component.dto;
+package org.geomajas.plugin.printing.component.dto;
 
 import java.io.Serializable;
-
-import org.geomajas.plugin.printing.component.dto.PrintComponentInfo;
 
 
 public  class DummyComponentInfo extends PrintComponentInfo implements Serializable{

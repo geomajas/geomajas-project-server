@@ -20,7 +20,7 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.geomajas.extension.printing.document;
+package org.geomajas.plugin.printing.document;
 
 import java.io.FileOutputStream;
 

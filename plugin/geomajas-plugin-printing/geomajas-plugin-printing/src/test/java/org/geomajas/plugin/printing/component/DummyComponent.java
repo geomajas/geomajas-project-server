@@ -1,4 +1,4 @@
-package org.geomajas.extension.printing.component;
+package org.geomajas.plugin.printing.component;
 
 import org.geomajas.plugin.printing.component.PrintComponent;
 

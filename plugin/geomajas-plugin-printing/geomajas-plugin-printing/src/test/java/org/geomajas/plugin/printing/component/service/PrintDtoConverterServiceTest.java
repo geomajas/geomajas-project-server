@@ -1,11 +1,10 @@
-package org.geomajas.extension.printing.component.service;
+package org.geomajas.plugin.printing.component.service;
 
 import junit.framework.Assert;
 
-import org.geomajas.extension.printing.component.DummyComponent;
-import org.geomajas.extension.printing.component.dto.DummyComponentInfo;
 import org.geomajas.plugin.printing.PrintingException;
-import org.geomajas.plugin.printing.component.service.PrintDtoConverterService;
+import org.geomajas.plugin.printing.component.DummyComponent;
+import org.geomajas.plugin.printing.component.dto.DummyComponentInfo;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

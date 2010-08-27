@@ -1,4 +1,4 @@
-package org.geomajas.extension.printing.component.impl;
+package org.geomajas.plugin.printing.component.impl;
 
 import junit.framework.Assert;
 
