@@ -96,13 +96,13 @@ include "org.geomajas.documentation" "geomajas-face-gwt-documentation" "1.8.0-SN
     "GWT face" \
     "GWT face for building powerful AJAX web user interfaces in Java using SmartGWT." \
     "incubating" "gwt_face.pdf" \
-    "org.geomajas" "geomajas-face-gwt" "1.7.1"
+    "org.geomajas" "geomajas-gwt-client" "1.7.1"
 
 include "org.geomajas.documentation" "geomajas-face-dojo-documentation" "1.5.8-SNAPSHOT" \
     "dojo face" \
     "dojo face for building a web user interface in JavaScript using dojo toolkit." \
     "incubating, deprecated" "dojo_face.pdf" \
-    "org.geomajas" "geomajas-face-dojo" "1.5.7"
+    "org.geomajas" "geomajas-dojo-server" "1.5.7"
 
 # plug-ins
 
