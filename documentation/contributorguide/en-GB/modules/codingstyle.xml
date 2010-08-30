@@ -59,55 +59,55 @@ References
 
     <itemizedlist>
       <listitem>
-        Use meaningful names. Especially class and method names should explain their purpose.
+         Use meaningful names. Especially class and method names should explain their purpose. 
       </listitem>
 
       <listitem>
-        For class, method and (non-static) variable names, use camelCase to separate the words, not underscores. For abbreviations, capitalize he first letter, lower case for the others.
+         For class, method and (non-static) variable names, use camelCase to separate the words, not underscores. For abbreviations, capitalize he first letter, lower case for the others. 
       </listitem>
 
       <listitem>
-        Class names start with a capital, for example "CommandDispatcher".
+         Class names start with a capital, for example "CommandDispatcher". 
       </listitem>
 
       <listitem>
-        Method and (non-static) variable names start lower case, for example "getEmptyCommandResponse".
+         Method and (non-static) variable names start lower case, for example "getEmptyCommandResponse". 
       </listitem>
 
       <listitem>
-        All static variables should have capitalized names with words separated by underscores.
+         All static variables should have capitalized names with words separated by underscores. 
       </listitem>
 
       <listitem>
-        Package names are all lower case and should be singular.
+         Package names are all lower case and should be singular. 
       </listitem>
 
       <listitem>
-        Use get/set/isXxx.
+         Use get/set/isXxx. 
       </listitem>
 
       <listitem>
-        Abbreviations and acronyms should not be uppercase when used as name (for example, use "exportHtml()").
+         Abbreviations and acronyms should not be uppercase when used as name (for example, use "exportHtml()"). 
       </listitem>
 
       <listitem>
-        All names should be written in English.
+         All names should be written in English. 
       </listitem>
 
       <listitem>
-        The terms get/set must be used where an attribute is accessed directly.
+         The terms get/set must be used where an attribute is accessed directly. 
       </listitem>
 
       <listitem>
-        "is" prefix should be used for boolean variables and methods. In some cases, when this is more readable, "has", "can" or "should" can also be used as prefix.
+         "is" prefix should be used for boolean variables and methods. In some cases, when this is more readable, "has", "can" or "should" can also be used as prefix. 
       </listitem>
 
       <listitem>
-        Complement names must be used for complement entities. These include get/set, add/remove, create/destroy, start/stop, insert/delete, increment/decrement, old/new, begin/end, first/last, up/down, min/max, next/previous, old/new, open/close, show/hide, suspend/resume, etc.
+         Complement names must be used for complement entities. These include get/set, add/remove, create/destroy, start/stop, insert/delete, increment/decrement, old/new, begin/end, first/last, up/down, min/max, next/previous, old/new, open/close, show/hide, suspend/resume, etc. 
       </listitem>
 
       <listitem>
-        Exception classes should be suffixed with Exception.
+         Exception classes should be suffixed with Exception. 
       </listitem>
     </itemizedlist>
 
@@ -115,62 +115,64 @@ References
 
     <itemizedlist>
       <listitem>
-        Usually class names are nouns and method names are verbs.
+         Usually class names are nouns and method names are verbs. 
       </listitem>
 
       <listitem>
-        Generic variables should have the same name as their type.
+         Generic variables should have the same name as their type. 
       </listitem>
 
       <listitem>
-        Variables with a large scope should have long names, variables with a small scope can have short names. Scratch variables used for temporary storage or indices are best kept short. A programmer reading such variables should be able to assume that its value is not used outside a few lines of code. Common scratch variables for integers are i, j, k, m, n and for characters c and d.
+         Variables with a large scope should have long names, variables with a small scope can have short names. Scratch variables used for temporary storage or indices are best kept short. A programmer reading such variables should be able to assume that its value is not used outside a few lines of code. Common scratch variables for integers are i, j, k, m, n and for characters c and d. 
       </listitem>
 
       <listitem>
-        The name of the object is implicit, and should be avoided in a method name. For example, use "line.getLength()" instead of "line.getLineLength()". The latter might seem natural in the class declaration, but proves superfluous in use, as shown in the example.
+         The name of the object is implicit, and should be avoided in a method name. For example, use "line.getLength()" instead of "line.getLineLength()". The latter might seem natural in the class declaration, but proves superfluous in use, as shown in the example. 
       </listitem>
 
       <listitem>
-        The term compute can be used in methods where something is computed.
+         The term compute can be used in methods where something is computed. 
       </listitem>
 
       <listitem>
-        The term find can be used in methods where something is looked up.
+         The term find can be used in methods where something is looked up. 
       </listitem>
 
       <listitem>
-        The term initialize can be used where an object or a concept is established.
+         The term initialize can be used where an object or a concept is established. 
       </listitem>
 
       <listitem>
-        Plural form should be used on names representing a collection of objects.
+         Plural form should be used on names representing a collection of objects. 
       </listitem>
 
       <listitem>
-        Negated boolean variable names must be avoided.
+         Negated boolean variable names must be avoided. 
       </listitem>
 
       <listitem>
-        Default interface implementations can be prefixed by Default. However, if it is not expected that there will even be another implementation, it can be a lot more natural to suffix with "Impl" instead.
+         Default interface implementations can be prefixed by Default. However, if it is not expected that there will even be another implementation, it can be a lot more natural to suffix with "Impl" instead. 
       </listitem>
 
       <listitem>
-        Singleton classes should return their sole instance through method getInstance, should have a private constructor and be declared final.
+         Singleton classes should return their sole instance through method getInstance, should have a private constructor and be declared final. 
       </listitem>
 
       <listitem>
-        Functions (methods returning an object) should be named after what they return and procedures (void methods) after what they do.
+         Functions (methods returning an object) should be named after what they return and procedures (void methods) after what they do. 
       </listitem>
 
       <listitem>
-        Data transfer objects sometimes exist in two flavors, one which contains the Geomajas geometry dto's and one which contains JTS geometry objects. In that case, the variant with the geometry dto's should use the natural name, and the variant with JTS geometry objects should have a class name which has the "JG" suffix (JG stands for Jts Geometry).
+         Data transfer objects sometimes exist in two flavors, one which contains the Geomajas geometry dto's and one which contains JTS geometry objects. In that case, the variant with the geometry dto's should use the natural name, and the variant with JTS geometry objects should have a class name which has the "JG" suffix (JG stands for Jts Geometry). 
       </listitem>
     </itemizedlist>
 
     <section>
+       
+
       <title>Comment</title>
 
-      Each file should have the correct copyright notice at the start of the file. 
+       Each file should have the correct copyright notice at the start of the file. 
 
       <programlisting>/*
  * This file is part of Geomajas, a component framework for building
@@ -200,6 +202,8 @@ References
       <para>Note that the end year (shown here is 2010) should always be the
       current year. All headers will be updated at the beginning of each
       year.</para>
+
+       
 
       <itemizedlist>
         <listitem>The copyright message should be at the top of the file.
@@ -250,6 +254,8 @@ References
           with "<code>@Api(allMethods = true)</code>" annotation.</para>
         </listitem>
       </itemizedlist>
+
+       
     </section>
 
     <section>
@@ -338,59 +344,60 @@ public class Foo implements Serializable {
 
       <itemizedlist>
         <listitem>
-          The code is written with the right margin at 120 characters and lines should not be longer than that if possible.
+           The code is written with the right margin at 120 characters and lines should not be longer than that if possible. 
         </listitem>
 
         <listitem>
-          Tabs should be used for all indents. We assume a tab is four spaces for determining line length.
+           Tabs should be used for all indents. We assume a tab is four spaces for determining line length. 
         </listitem>
 
         <listitem>
-          When lines are split because they are too long, a double indentation should be used.
+           When lines are split because they are too long, a double indentation should be used. 
         </listitem>
 
         <listitem>
-          Opening braces on the same line as the declaration/for/if..., so not aligned with the closing brace.
+           Opening braces on the same line as the declaration/for/if..., so not aligned with the closing brace. 
         </listitem>
 
         <listitem>
-          No spaces inside brackets.
+           No spaces inside brackets. 
         </listitem>
 
         <listitem>
-          Spaces around operators.
+           Spaces around operators. 
         </listitem>
 
         <listitem>
-          No wildcards allowed on import statements.
+           No wildcards allowed on import statements. 
         </listitem>
 
         <listitem>
-          Always a space before braces.
+           Always a space before braces. 
         </listitem>
 
         <listitem>
-          Always use braces (and thus multiple lines) for if, while, do-while.
+           Always use braces (and thus multiple lines) for if, while, do-while. 
         </listitem>
 
         <listitem>
-          Array specifiers must be attached to the type not the variable.
+           Array specifiers must be attached to the type not the variable. 
         </listitem>
 
         <listitem>
-          Class variables should never be declared public.
+           Class variables should never be declared public. 
         </listitem>
 
         <listitem>
-          Logical units within a block should be separated by one blank line.
+           Logical units within a block should be separated by one blank line. 
         </listitem>
       </itemizedlist>
 
       <para>We have both an <ulink
-      url="geomajas_formatter.xml">eclipse</ulink> and <ulink
-      url="geomajas.xml">IntelliJ IDEA</ulink> formatter which can be used.
-      However, be careful not to change the entire formatting of a
-      class.</para>
+      url="http://files.geomajas.org/geomajas_formatter_eclipse.xml">eclipse</ulink>
+      and <ulink
+      url="http://files.geomajas.org/geomajas_formatter_intellij.xml">IntelliJ
+      IDEA</ulink> formatter which can be used. However, be careful not to
+      change the entire formatting of a class.</para>
     </section>
   </section>
 </chapter>
