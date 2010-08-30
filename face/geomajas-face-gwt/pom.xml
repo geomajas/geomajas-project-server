@@ -176,7 +176,7 @@
 	<properties>
 		<gwt-face-backend-version>1.7.1</gwt-face-backend-version>
 		<gwt-version>2.0.3</gwt-version>
-		<smartgwt-version>2.1</smartgwt-version>
+		<smartgwt-version>2.3-20100827</smartgwt-version>
 	</properties>
 	
 </project>

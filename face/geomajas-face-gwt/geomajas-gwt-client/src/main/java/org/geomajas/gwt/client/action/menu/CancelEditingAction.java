@@ -60,7 +60,7 @@ public class CancelEditingAction extends MenuAction {
 	}
 
 	/**
-	 * Cancel's editing, and also removes the FeatureTransaction object from the map.
+	 * Cancels editing, and also removes the FeatureTransaction object from the map.
 	 *
 	 * @param event
 	 *            The {@link MenuItemClickEvent} from clicking the action.

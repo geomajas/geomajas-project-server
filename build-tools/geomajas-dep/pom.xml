@@ -528,7 +528,7 @@
 		<back-end-version>1.7.1</back-end-version>
 		<geotools-version>2.6.3</geotools-version>
 		<gwt-version>2.0.3</gwt-version>
-		<smartgwt-version>2.1</smartgwt-version>
+		<smartgwt-version>2.3-20100827</smartgwt-version>
 		<spring-version>3.0.2.RELEASE</spring-version>
 		<dojo-version>1.1.0</dojo-version>
 		<slf4j-version>1.6.0</slf4j-version>
