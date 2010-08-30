@@ -67,7 +67,7 @@ public class YahooPlaceFinderGeocoderServiceTest {
 
 		list.clear();
 		list.add("booischot");
-		result = geocoder.getLocation(list, null);
+		result = geocoder.getLocation(list, 50, null);
 		Assert.assertNotNull(result);
 		Assert.assertEquals(1,result.length);
 		Assert.assertNotNull(result[0].getCoordinate());
@@ -83,7 +83,7 @@ public class YahooPlaceFinderGeocoderServiceTest {
 
 		list.clear();
 		list.add("booischot");
-		result = geocoder.getLocation(list, new Locale("nl_BE"));
+		result = geocoder.getLocation(list, 50, new Locale("nl_BE"));
 		Assert.assertNotNull(result);
 		Assert.assertEquals(1,result.length);
 		Assert.assertNotNull(result[0].getCoordinate());
@@ -99,7 +99,7 @@ public class YahooPlaceFinderGeocoderServiceTest {
 
 		list.clear();
 		list.add("london");
-		result = geocoder.getLocation(list, null);
+		result = geocoder.getLocation(list, 50, null);
 		Assert.assertNotNull(result);
 		Assert.assertEquals(1,result.length);
 		Assert.assertNotNull(result[0].getCoordinate());
@@ -112,7 +112,7 @@ public class YahooPlaceFinderGeocoderServiceTest {
 		list.clear();
 		list.add("london");
 		list.add("CA");
-		result = geocoder.getLocation(list, null);
+		result = geocoder.getLocation(list, 50, null);
 		Assert.assertNotNull(result);
 		Assert.assertEquals(1,result.length);
 		Assert.assertEquals("United States", result[0].getCanonicalStrings().get(0));
@@ -120,7 +120,7 @@ public class YahooPlaceFinderGeocoderServiceTest {
 
 		list.clear();
 		list.add("blablabla");
-		result = geocoder.getLocation(list, null);
+		result = geocoder.getLocation(list, 50, null);
 		Assert.assertTrue(null == result || 0 == result.length);
 	}
 }

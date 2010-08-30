@@ -92,6 +92,12 @@
                     <para><emphasis>locale</emphasis>: locale used for the
                     search if known.</para>
                   </listitem>
+
+                  <listitem>
+                    <para><emphasis>maxAlternatives</emphasis>: maximum number
+                    of alternatives to return in the reply. This defaults to
+                    50.</para>
+                  </listitem>
                 </itemizedlist></entry>
             </row>
 

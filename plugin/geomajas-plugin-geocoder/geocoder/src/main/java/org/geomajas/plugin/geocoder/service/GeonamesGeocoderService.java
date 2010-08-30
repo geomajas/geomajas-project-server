@@ -63,7 +63,6 @@ public class GeonamesGeocoderService implements GeocoderService {
 
 	private final Logger log = LoggerFactory.getLogger(GeonamesGeocoderService.class);
 
-	private static final int MAX_ROWS = 50; // max number of rows in result
 	private static final double DELTA = 1e-20; // max coordinate variation for equal locations
 	private static final String USER_AGENT = "Geomajas GeoNames geocoder service";
 	private static final double FUZZY_VALUE = 0.8; // value for fuzzy searches
@@ -104,7 +103,7 @@ public class GeonamesGeocoderService implements GeocoderService {
 		return crs;
 	}
 
-	public GetLocationResult[] getLocation(List<String> location, Locale ignore) {
+	public GetLocationResult[] getLocation(List<String> location, int maxAlternatives, Locale ignore) {
 		GetLocationResult[] result;
 		try {
 			/* code for using the geonames library, does not support fuzzy or isNameRequired
@@ -117,7 +116,7 @@ public class GeonamesGeocoderService implements GeocoderService {
 			List<Toponym> toponyms = search(splitCommaReverseService.combine(location), MAX_ROWS + 1, false);
 			List<Toponym> toponyms = tsr.getToponyms();
 			*/
-			List<Toponym> toponyms = search(splitCommaReverseService.combine(location), MAX_ROWS, false);
+			List<Toponym> toponyms = search(splitCommaReverseService.combine(location), maxAlternatives, false);
 			int resCount = toponyms.size();
 			/*
 			- original plan was to search one more than maximum and don't return results is too many as too ambiguous
@@ -130,7 +129,7 @@ public class GeonamesGeocoderService implements GeocoderService {
 
 			if (0 == resCount) {
 				// try fuzzy search when no results
-				toponyms = search(splitCommaReverseService.combine(location), MAX_ROWS, true);
+				toponyms = search(splitCommaReverseService.combine(location), maxAlternatives, true);
 			}
 
 			// remove duplicates from the results (eg because featureClass is different)

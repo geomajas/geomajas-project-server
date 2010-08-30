@@ -37,10 +37,14 @@ public class GetLocationForStringRequest implements CommandRequest {
 
 	private static final long serialVersionUID = 100L;
 
+	public static final int MAX_ALTERNATIVES_UNLIMITED = 0;
+	public static final int MAX_ALTERNATIVES_DEFAULT = 50;
+
 	private String location;
 	private String crs;
 	private String servicePattern = ".*";
 	private String locale;
+	private int maxAlternatives = MAX_ALTERNATIVES_DEFAULT;
 
 	/**
 	 * Get the location string to search for.
@@ -113,4 +117,26 @@ public class GetLocationForStringRequest implements CommandRequest {
 	public void setLocale(String locale) {
 		this.locale = locale;
 	}
+
+	/**
+	 * Get the maximum number of alternatives which may be returned.
+	 * <p/>
+	 * The default value is to have 50 alternatives returned.
+	 *
+	 * @return max number of features to return of {@link #MAX_ALTERNATIVES_UNLIMITED} (0) for unlimited.
+	 */
+	public int getMaxAlternatives() {
+		return maxAlternatives;
+	}
+
+	/**
+	 * Set the maximum number of alternatives which may be returned.
+	 *
+	 * @param maxAlternatives max number of alternatives to return, or {@link #MAX_ALTERNATIVES_UNLIMITED} (0) for
+	 * unlimited (which is not recommended to use).
+	 */
+	public void setMaxAlternatives(int maxAlternatives) {
+		this.maxAlternatives = maxAlternatives;
+	}
+
 }

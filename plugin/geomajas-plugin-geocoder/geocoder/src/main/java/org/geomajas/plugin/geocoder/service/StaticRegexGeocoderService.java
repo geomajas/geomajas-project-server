@@ -96,7 +96,7 @@ public class StaticRegexGeocoderService implements GeocoderService {
 		return crs;
 	}
 
-	public GetLocationResult[] getLocation(List<String> location, Locale ignore) {
+	public GetLocationResult[] getLocation(List<String> location, int maxAlternatives, Locale ignore) {
 		GetLocationResult result = null;
 		for (StaticRegexGeocoderLocationInfo test : geocoderInfo.getLocations()) {
 			result = getLocation(test, location);

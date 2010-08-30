@@ -58,7 +58,6 @@ public class YahooPlaceFinderGeocoderService implements GeocoderService {
 
 	private final Logger log = LoggerFactory.getLogger(YahooPlaceFinderGeocoderService.class);
 
-	private static final int MAX_ROWS = 50; // max number of rows in result
 	private static final double DELTA = 1e-20; // max coordinate variation for equal locations
 	private static final String USER_AGENT = "Geomajas Yahoo! PlaceFinder geocoder service";
 	private static final int READ_TIMEOUT = 120000;
@@ -146,12 +145,13 @@ public class YahooPlaceFinderGeocoderService implements GeocoderService {
 		return crs;
 	}
 
-	public GetLocationResult[] getLocation(List<String> location, Locale locale) {
+	public GetLocationResult[] getLocation(List<String> location, int maxAlternatives, Locale locale) {
 		if (null == appId) {
 			return null;
 		}
 		try {
-			List<GetLocationResult> locations = search(splitCommaReverseService.combine(location), MAX_ROWS, locale);
+			String query = splitCommaReverseService.combine(location);
+			List<GetLocationResult> locations = search(query, maxAlternatives, locale);
 			return locations.toArray(new GetLocationResult[locations.size()]);
 		} catch (Exception ex) {
 			log.error("Search failed", ex);

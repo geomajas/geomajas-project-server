@@ -97,6 +97,7 @@ public class GetLocationForStringCommand implements Command<GetLocationForString
 		if (null != request.getLocale()) {
 			locale = new Locale(request.getLocale());
 		}
+		int maxAlternatives = request.getMaxAlternatives();
 
 		CoordinateReferenceSystem crs = geoService.getCrs(crsString);
 
@@ -116,7 +117,7 @@ public class GetLocationForStringCommand implements Command<GetLocationForString
 		Pattern namePattern = getShouldUsePattern(request.getServicePattern());
 		for (GeocoderService geocoderService : geocoderInfo.getGeocoderServices()) {
 			if (shouldUse(namePattern, geocoderService.getName())) {
-				GetLocationResult[] result = geocoderService.getLocation(locationList, locale);
+				GetLocationResult[] result = geocoderService.getLocation(locationList, maxAlternatives, locale);
 				if (null != result && result.length > 0) {
 					for (GetLocationResult aResult : result) {
 						aResult.setGeocoderName(geocoderService.getName());
@@ -177,6 +178,9 @@ public class GetLocationForStringCommand implements Command<GetLocationForString
 			response.setAlternatives(altList);
 			for (GetLocationResult[] altArr : alternatives) {
 				for (GetLocationResult alt : altArr) {
+					if (maxAlternatives > 0 && maxAlternatives <= altList.size()) {
+						break;
+					}
 					GetLocationForStringAlternative one = new GetLocationForStringAlternative();
 
 					String matchedLocation = location;

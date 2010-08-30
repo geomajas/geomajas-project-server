@@ -60,9 +60,11 @@ public class SearchFeatureRequest extends LayerIdCommandRequest {
 	}
 
 	/**
-	 * Get the maximum number of feature which may be returned.
+	 * Get the maximum number of features which may be returned.
+	 * <p/>
+	 * The default value is to have unlimited of features returned.
 	 *
-	 * @return max number of features to return o 0 for unlimited.
+	 * @return max number of features to return of {@link #MAX_UNLIMITED} (0) for unlimited.
 	 */
 	public int getMax() {
 		return max;
@@ -71,7 +73,7 @@ public class SearchFeatureRequest extends LayerIdCommandRequest {
 	/**
 	 * Set the maximum number of features which may be returned.
 	 *
-	 * @param max max number of feature to return, or 0 for unlimited.
+	 * @param max max number of features to return, or {@link #MAX_UNLIMITED} (0) for unlimited.
 	 */
 	public void setMax(int max) {
 		this.max = max;

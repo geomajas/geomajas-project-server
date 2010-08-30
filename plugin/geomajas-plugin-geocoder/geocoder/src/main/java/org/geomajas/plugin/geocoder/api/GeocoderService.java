@@ -61,10 +61,12 @@ public interface GeocoderService {
 	 * result object.
 	 *
 	 * @param location location strings, from general to more specific
+	 * @param maxAlternatives maximum number of alternatives which can be replied to the user, use as a hint, you can
+	 *        return more, but they will be discarded.
 	 * @param locale locale use for the location if known (can be null if not known)
 	 * @return results objects, when only one this is a definite result, when several the request was ambiguous and the
 	 *         result are the alternatives. When no results an empty array or null may be returned
 	 */
-	GetLocationResult[] getLocation(List<String> location, Locale locale);
+	GetLocationResult[] getLocation(List<String> location, int maxAlternatives, Locale locale);
 }
 // @extract-end
