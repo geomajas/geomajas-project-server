@@ -138,7 +138,7 @@ public class PrintPreferencesCanvas extends Canvas {
 		scaleBarCheckbox.setTitle(messages.printPrefsWithScaleBar());
 		// filename
 		fileNameItem = new TextItem();
-		fileNameItem.setName("title");
+		fileNameItem.setName("filename");
 		fileNameItem.setTitle(messages.printPrefsFileName());
 		fileNameItem.setValue(mapWidget.getMapModel().getMapInfo().getId() + ".pdf");
 
