@@ -59,7 +59,6 @@ public class GeocoderPresenter implements SelectLocationHandler, SelectAlternati
 	private static final String COMMAND = "command.geocoder.GetLocationForString";
 	private MapWidget map;
 	private GeocoderWidget geocoderWidget;
-	private String crs;
 	private Window altWindow;
 	private GeocoderAlternativesGrid altGrid;
 	private String servicePattern = ".*";
@@ -71,13 +70,11 @@ public class GeocoderPresenter implements SelectLocationHandler, SelectAlternati
 	 *
 	 * @param map map to apply search results
 	 * @param geocoderWidget geocoder widget
-	 * @param crs crs for request
 	 */
-	GeocoderPresenter(MapWidget map, GeocoderWidget geocoderWidget, String crs) {
+	GeocoderPresenter(MapWidget map, GeocoderWidget geocoderWidget) {
 
 		this.map = map;
 		this.geocoderWidget = geocoderWidget;
-		this.crs = crs;
 
 		handlerManager = new HandlerManager(this);
 		setSelectAlternativeHandler(this);
@@ -91,7 +88,7 @@ public class GeocoderPresenter implements SelectLocationHandler, SelectAlternati
 	public void goToLocation(final String location) {
 		GwtCommand command = new GwtCommand(COMMAND);
 		GetLocationForStringRequest request = new GetLocationForStringRequest();
-		request.setCrs(crs);
+		request.setCrs(map.getMapModel().getCrs());
 		request.setLocation(location);
 		request.setServicePattern(servicePattern);
 		if (GWT.isClient()) {

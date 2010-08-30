@@ -61,7 +61,7 @@ public class GeocoderWidget extends DynamicForm {
 	 */
 	@Api
 	public GeocoderWidget(MapWidget map, String name, String title) {
-		presenter = new GeocoderPresenter(map, this, map.getMapModel().getCrs());
+		presenter = new GeocoderPresenter(map, this);
 		this.map = map;
 
 		textItem = new TextItem(name, title);
@@ -152,7 +152,7 @@ public class GeocoderWidget extends DynamicForm {
 	/**
 	 * Get the map on which this geocoder widget applies.
 	 *
-	 * @return
+	 * @return map widget
 	 */
 	@Api
 	public MapWidget getMap() {

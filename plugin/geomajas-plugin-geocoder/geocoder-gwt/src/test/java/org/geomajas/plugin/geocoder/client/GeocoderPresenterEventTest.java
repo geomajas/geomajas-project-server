@@ -51,8 +51,6 @@ import java.util.List;
 		"/eventTestContext.xml"})
 public class GeocoderPresenterEventTest {
 
-	private static final String CRS = "EPSG:900913";
-
 	private GetLocationForStringResponse matchedResponse;
 	private GetLocationForStringResponse alternativesResponse;
 
@@ -78,7 +76,7 @@ public class GeocoderPresenterEventTest {
 	@Test
 	public void testSelectLocationEvent() throws Exception {
 		final ObjectContainer container = new ObjectContainer();
-		GeocoderPresenter presenter = new GeocoderPresenter(null, null, CRS);
+		GeocoderPresenter presenter = new GeocoderPresenter(null, null);
 		presenter.setSelectLocationHandler(new SelectLocationHandler() {
 			public void onSelectLocation(SelectLocationEvent event) {
 				container.object = "ok";
@@ -91,7 +89,7 @@ public class GeocoderPresenterEventTest {
 	@Test
 	public void testSelectLocationOnlyOneEvent() throws Exception {
 		final ObjectContainer container = new ObjectContainer();
-		GeocoderPresenter presenter = new GeocoderPresenter(null, null, CRS);
+		GeocoderPresenter presenter = new GeocoderPresenter(null, null);
 		presenter.setSelectLocationHandler(new SelectLocationHandler() {
 			public void onSelectLocation(SelectLocationEvent event) {
 				Assert.fail("This handler should be overwritten");
@@ -109,7 +107,7 @@ public class GeocoderPresenterEventTest {
 	@Test
 	public void testSelectAlternativeEvent() throws Exception {
 		final ObjectContainer container = new ObjectContainer();
-		GeocoderPresenter presenter = new GeocoderPresenter(null, null, CRS);
+		GeocoderPresenter presenter = new GeocoderPresenter(null, null);
 		presenter.setSelectAlternativeHandler(new SelectAlternativeHandler() {
 			public void onSelectAlternative(SelectAlternativeEvent event) {
 				container.object = "ok";
@@ -122,7 +120,7 @@ public class GeocoderPresenterEventTest {
 	@Test
 	public void testSelectAlternativeOnlyOneEvent() throws Exception {
 		final ObjectContainer container = new ObjectContainer();
-		GeocoderPresenter presenter = new GeocoderPresenter(null, null, CRS);
+		GeocoderPresenter presenter = new GeocoderPresenter(null, null);
 		presenter.setSelectAlternativeHandler(new SelectAlternativeHandler() {
 			public void onSelectAlternative(SelectAlternativeEvent event) {
 				Assert.fail("This handler should be overwritten");
