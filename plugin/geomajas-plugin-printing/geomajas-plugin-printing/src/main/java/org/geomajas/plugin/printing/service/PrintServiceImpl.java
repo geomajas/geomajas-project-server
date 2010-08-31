@@ -35,6 +35,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import javax.annotation.PostConstruct;
+import javax.media.jai.JAI;
+import javax.media.jai.TileCache;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
@@ -46,7 +49,6 @@ import org.geomajas.plugin.printing.component.impl.LegendComponentImpl;
 import org.geomajas.plugin.printing.component.impl.MapComponentImpl;
 import org.geomajas.plugin.printing.component.impl.PageComponentImpl;
 import org.geomajas.plugin.printing.component.impl.ScaleBarComponentImpl;
-import org.geomajas.plugin.printing.component.service.PrintConfigurationService;
 import org.geomajas.plugin.printing.configuration.PrintTemplate;
 import org.geomajas.plugin.printing.configuration.PrintTemplateDao;
 import org.geomajas.plugin.printing.document.Document;
@@ -80,9 +82,6 @@ public class PrintServiceImpl implements PrintService {
 	private PrintTemplateDao printTemplateDao;
 
 	@Autowired
-	private PrintConfigurationService configurationService;
-
-	@Autowired
 	private ApplicationContext applicationContext;
 
 	@Autowired
@@ -92,6 +91,8 @@ public class PrintServiceImpl implements PrintService {
 	@Autowired
 	@Qualifier("printMarshaller")
 	private Unmarshaller unMarshaller;
+	
+	private int jaiTileCacheInMB = 64;
 
 	private Map<String, Document> documentMap = Collections.synchronizedMap(new HashMap<String, Document>());
 
@@ -215,6 +216,30 @@ public class PrintServiceImpl implements PrintService {
 		template.setName("Default" + "-" + pageSize + "-" + (landscape ? "landscape" : "portrait"));
 		template.setPage(page);
 		return template;
+	}
+	
+	/**
+	 * returns the JAI (Java Advanced Imaging) tile cache size in MB.
+	 * @return size in MB of tile cache
+	 */
+	public int getJaiTileCacheInMB() {
+		return jaiTileCacheInMB;
+	}
+	
+	/**
+	 * Sets the JAI (Java Advanced Imaging) tile cache size to the specified value.
+	 * @param jaiTileCacheInMB size in MB of tile cache
+	 */
+	public void setJaiTileCacheInMB(int jaiTileCacheInMB) {
+		this.jaiTileCacheInMB = jaiTileCacheInMB;
+	}
+
+
+	@PostConstruct
+	public void initJAI() {
+		TileCache cache = JAI.getDefaultInstance().getTileCache();
+		cache.setMemoryCapacity(getJaiTileCacheInMB() * 1024 * 1024L);
+		log.info("JAI cache size set to " + cache.getMemoryCapacity() / (1024L * 1024L) + " MB");
 	}
 
 	private MapComponentImpl createMap() {

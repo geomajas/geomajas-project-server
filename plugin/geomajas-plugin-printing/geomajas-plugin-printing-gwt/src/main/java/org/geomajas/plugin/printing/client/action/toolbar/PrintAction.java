@@ -52,6 +52,7 @@ public class PrintAction extends ToolbarAction implements ConfigurableAction {
 	
 	public void onClick(ClickEvent event) {
 		PrintPreferencesCanvas canvas = new PrintPreferencesCanvas(mapWidget);
+		canvas.setMargin(10);
 		Window window = new Window();
 		window.setTitle(messages.printPrefsTitle());
 		window.addItem(canvas);

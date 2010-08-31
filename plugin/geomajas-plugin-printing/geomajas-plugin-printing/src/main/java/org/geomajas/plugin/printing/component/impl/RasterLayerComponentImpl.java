@@ -24,8 +24,16 @@ package org.geomajas.plugin.printing.component.impl;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.RenderingHints;
+import java.awt.image.BufferedImage;
+import java.awt.image.ColorConvertOp;
+import java.awt.image.RenderedImage;
+import java.awt.image.WritableRaster;
+import java.awt.image.renderable.ParameterBlock;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -38,11 +46,21 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
+import javax.imageio.ImageIO;
+import javax.media.jai.ImageLayout;
+import javax.media.jai.InterpolationNearest;
+import javax.media.jai.JAI;
+import javax.media.jai.PlanarImage;
+import javax.media.jai.RenderedOp;
+import javax.media.jai.operator.MosaicDescriptor;
+import javax.media.jai.operator.TranslateDescriptor;
+
 import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.geometry.Bbox;
+import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.RasterLayerService;
 import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.plugin.printing.component.LayoutConstraint;
@@ -60,8 +78,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
+import com.lowagie.text.BadElementException;
 import com.lowagie.text.Image;
 import com.lowagie.text.Rectangle;
+import com.sun.media.jai.codec.ByteArraySeekableStream;
 import com.thoughtworks.xstream.annotations.XStreamOmitField;
 import com.vividsolutions.jts.geom.Envelope;
 
@@ -96,7 +116,7 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl implements 
 
 	/** List of the tile images */
 	@XStreamOmitField
-	protected List<RasterTile> images;
+	protected List<RasterTile> tiles;
 
 	/** The raster scale, may be different from map ppunit */
 	@XStreamOmitField
@@ -145,50 +165,166 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl implements 
 		if (isVisible()) {
 			rasterScale = getMap().getPpUnit() * getMap().getRasterResolution() / 72;
 			bbox = createBbox();
-			try {
-				if (log.isDebugEnabled()) {
-					log.debug("rendering" + getLayerId() + " to [" + bbox.getMinX() + " " + bbox.getMinY() + " "
-							+ bbox.getWidth() + " " + bbox.getHeight() + "]");
-				}
-				ClientMapInfo map = configurationService.getMapInfo(getMap().getMapId(), getMap().getApplicationId());
-				this.images = rasterLayerService.getTiles(getLayerId(), geoService.getCrs(map.getCrs()), bbox,
-						rasterScale);
-			} catch (Throwable e) {
-				log.error("could not paint raster layer " + getLayerId(), e);
-				this.images = new ArrayList<RasterTile>();
+			if (log.isDebugEnabled()) {
+				log.debug("rendering" + getLayerId() + " to [" + bbox.getMinX() + " " + bbox.getMinY() + " "
+						+ bbox.getWidth() + " " + bbox.getHeight() + "]");
 			}
-
-			Collection<Callable<ImageResult>> callables = new ArrayList<Callable<ImageResult>>(images.size());
-
-			// Build the image downloading threads
-			for (RasterTile image : images) {
-				RasterImageDownloadCallable downloadThread = new RasterImageDownloadCallable(DOWNLOAD_MAX_ATTEMPTS,
-						image);
-				callables.add(downloadThread);
-			}
-
-			// Loop until all images are downloaded or timeout is reached
-			long totalTimeout = DOWNLOAD_TIMEOUT + DOWNLOAD_TIMEOUT_ONE_TILE * images.size();
-			log.debug("=== total timeout (millis): {}", totalTimeout);
-			ExecutorService service = Executors.newFixedThreadPool(DOWNLOAD_MAX_THREADS);
+			ClientMapInfo map = configurationService.getMapInfo(getMap().getMapId(), getMap().getApplicationId());
 			try {
-				List<Future<ImageResult>> futures = service.invokeAll(callables, totalTimeout, TimeUnit.MILLISECONDS);
-				// Add downloaded images to the pdf
-				for (Future<ImageResult> future : futures) {
-					if (future.isDone()) {
+				tiles = rasterLayerService.getTiles(getLayerId(), geoService.getCrs(map.getCrs()), bbox, rasterScale);
+				if (tiles.size() > 0) {
+					Collection<Callable<ImageResult>> callables = new ArrayList<Callable<ImageResult>>(tiles.size());
+					// Build the image downloading threads
+					for (RasterTile tile : tiles) {
+						RasterImageDownloadCallable downloadThread = new RasterImageDownloadCallable(
+								DOWNLOAD_MAX_ATTEMPTS, tile);
+						callables.add(downloadThread);
+					}
+					// Loop until all images are downloaded or timeout is reached
+					long totalTimeout = DOWNLOAD_TIMEOUT + DOWNLOAD_TIMEOUT_ONE_TILE * tiles.size();
+					log.debug("=== total timeout (millis): {}", totalTimeout);
+					ExecutorService service = Executors.newFixedThreadPool(DOWNLOAD_MAX_THREADS);
+					List<Future<ImageResult>> futures = service.invokeAll(callables, totalTimeout,
+							TimeUnit.MILLISECONDS);
+					// determine the pixel bounds of the mosaic
+					Bbox pixelBounds = getPixelBounds(tiles);
+					int imageWidth = configurationService.getRasterLayerInfo(getLayerId()).getTileWidth();
+					int imageHeight = configurationService.getRasterLayerInfo(getLayerId()).getTileHeight();
+					// create the images for the mosaic
+					List<RenderedImage> images = new ArrayList<RenderedImage>();
+					for (Future<ImageResult> future : futures) {
+						if (future.isDone()) {
+							try {
+								ImageResult result;
+								result = future.get();
+								// create a rendered image
+								RenderedImage image = JAI.create("stream", new ByteArraySeekableStream(result
+										.getImage()));
+								// convert to common direct colormodel (some images have their own indexed color model)
+								RenderedImage colored = toDirectColorModel(image);
+
+								// translate to the correct position in the tile grid
+								double xOffset = result.getRasterImage().getCode().getX() * imageWidth
+										- pixelBounds.getX();
+								double yOffset = 0;
+								// TODO: in some cases, the y-index is up (e.g. WMS), should be down for
+								// all layers !!!!
+								if (isYIndexUp(tiles)) {
+									yOffset = result.getRasterImage().getCode().getY() * imageHeight
+											- pixelBounds.getY();
+								} else {
+									yOffset = (float) (pixelBounds.getMaxY() - (result.getRasterImage().getCode()
+											.getY() + 1)
+											* imageHeight);
+								}
+								log.debug("adding to(" + xOffset + "," + yOffset + "), url = "
+										+ result.getRasterImage().getUrl());
+								RenderedImage translated = TranslateDescriptor.create(colored, (float) xOffset,
+										(float) yOffset, new InterpolationNearest(), null);
+								images.add(translated);
+							} catch (ExecutionException e) {
+								addLoadError(context, (ImageException) (e.getCause()));
+							} catch (InterruptedException e) {
+								log.warn("missing tile in mosaic " + e.getMessage());
+							} catch (MalformedURLException e) {
+								log.warn("missing tile in mosaic " + e.getMessage());
+							} catch (IOException e) {
+								log.warn("missing tile in mosaic " + e.getMessage());
+							}
+						}
+					}
+
+					if (images.size() > 0) {
+						ImageLayout imageLayout = new ImageLayout(0, 0, (int) pixelBounds.getWidth(), (int) pixelBounds
+								.getHeight());
+						imageLayout.setTileWidth(imageWidth);
+						imageLayout.setTileHeight(imageHeight);
+
+						// create the mosaic image
+						ParameterBlock pbMosaic = new ParameterBlock();
+						pbMosaic.add(MosaicDescriptor.MOSAIC_TYPE_OVERLAY);
+						for (RenderedImage renderedImage : images) {
+							pbMosaic.addSource(renderedImage);
+						}
+						RenderedOp mosaic = JAI.create("mosaic", pbMosaic, new RenderingHints(JAI.KEY_IMAGE_LAYOUT,
+								imageLayout));
 						try {
-							ImageResult result = future.get();
-							addImage(context, result);
-						} catch (ExecutionException e) {
-							addLoadError(context, (ImageException) (e.getCause()));
+							ByteArrayOutputStream baos = new ByteArrayOutputStream();
+							log.debug("rendering to buffer...");
+							ImageIO.write(mosaic, "png", baos);
+							log.debug("rendering done, size = " + baos.toByteArray().length);
+							RasterTile mosaicTile = new RasterTile();
+							mosaicTile.setBounds(getWorldBounds(tiles));
+							ImageResult mosaicResult = new ImageResult(mosaicTile);
+							mosaicResult.setImage(baos.toByteArray());
+							addImage(context, mosaicResult);
+						} catch (IOException e) {
+							log.warn("could not write mosaic image " + e.getMessage());
+						} catch (BadElementException e) {
+							log.warn("could not write mosaic image " + e.getMessage());
 						}
 					}
 				}
+			} catch (GeomajasException e) {
+				log.warn("rendering" + getLayerId() + " to [" + bbox.getMinX() + " " + bbox.getMinY() + " "
+						+ bbox.getWidth() + " " + bbox.getHeight() + "] failed : " + e.getMessage());
 			} catch (InterruptedException e) {
-				// interrupted, should not happen
-				log.error("raster loading interrupted", e);
+				log.warn("rendering" + getLayerId() + " to [" + bbox.getMinX() + " " + bbox.getMinY() + " "
+						+ bbox.getWidth() + " " + bbox.getHeight() + "] failed : " + e.getMessage());
 			}
 		}
+	}
+
+	private boolean isYIndexUp(List<RasterTile> tiles) {
+		RasterTile first = tiles.iterator().next();
+		for (RasterTile tile : tiles) {
+			if (tile.getCode().getY() > first.getCode().getY()) {
+				return tile.getBounds().getY() > first.getBounds().getY();
+			} else if (tile.getCode().getY() < first.getCode().getY()) {
+				return tile.getBounds().getY() < first.getBounds().getY();
+			}
+		}
+		return false;
+	}
+
+	private Bbox getPixelBounds(List<RasterTile> tiles) {
+		Bbox bounds = null;
+		int imageWidth = configurationService.getRasterLayerInfo(getLayerId()).getTileWidth();
+		int imageHeight = configurationService.getRasterLayerInfo(getLayerId()).getTileHeight();
+		for (RasterTile tile : tiles) {
+			Bbox tileBounds = new Bbox(tile.getCode().getX() * imageWidth, tile.getCode().getY() * imageHeight,
+					imageWidth, imageHeight);
+			if (bounds == null) {
+				bounds = new Bbox(tileBounds.getX(), tileBounds.getY(), tileBounds.getWidth(), tileBounds.getHeight());
+
+			} else {
+				double minx = Math.min(tileBounds.getX(), bounds.getX());
+				double maxx = Math.max(tileBounds.getMaxX(), bounds.getMaxX());
+				double miny = Math.min(tileBounds.getY(), bounds.getY());
+				double maxy = Math.max(tileBounds.getMaxY(), bounds.getMaxY());
+				bounds = new Bbox(minx, miny, maxx - minx, maxy - miny);
+			}
+		}
+		return bounds;
+	}
+
+	private Bbox getWorldBounds(List<RasterTile> tiles) {
+		Bbox bounds = null;
+		for (RasterTile tile : tiles) {
+			Bbox tileBounds = new Bbox(tile.getBounds().getX(), tile.getBounds().getY(), tile.getBounds().getWidth(),
+					tile.getBounds().getHeight());
+			if (bounds == null) {
+				bounds = new Bbox(tileBounds.getX(), tileBounds.getY(), tileBounds.getWidth(), tileBounds.getHeight());
+
+			} else {
+				double minx = Math.min(tileBounds.getX(), bounds.getX());
+				double maxx = Math.max(tileBounds.getMaxX(), bounds.getMaxX());
+				double miny = Math.min(tileBounds.getY(), bounds.getY());
+				double maxy = Math.max(tileBounds.getMaxY(), bounds.getMaxY());
+				bounds = new Bbox(minx, miny, maxx - minx, maxy - miny);
+			}
+		}
+		return bounds;
 	}
 
 	public float getOpacity() {
@@ -221,7 +357,8 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl implements 
 		}
 	}
 
-	protected void addImage(PdfContext context, ImageResult imageResult) {
+	protected void addImage(PdfContext context, ImageResult imageResult) throws BadElementException,
+			MalformedURLException, IOException {
 		Bbox imageBounds = imageResult.getRasterImage().getBounds();
 		float scaleFactor = (float) (72 / getMap().getRasterResolution());
 		float width = (float) imageBounds.getWidth() * scaleFactor;
@@ -236,7 +373,10 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl implements 
 			log.debug("adding image, width=" + width + ",height=" + height + ",x=" + x + ",y=" + y);
 		}
 		// opacity
-		context.drawImage(imageResult.getImage(), new Rectangle(x, y, x + width, y + height), getSize(), getOpacity());
+		log.debug("before drawImage");
+		context.drawImage(Image.getInstance(imageResult.getImage()), new Rectangle(x, y, x + width, y + height),
+				getSize(), getOpacity());
+		log.debug("after drawImage");
 	}
 
 	protected void addLoadError(PdfContext context, ImageException e) {
@@ -268,7 +408,7 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl implements 
 	 */
 	private class ImageResult {
 
-		private Image image;
+		private byte[] image;
 
 		private RasterTile rasterImage;
 
@@ -276,11 +416,11 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl implements 
 			this.rasterImage = rasterImage;
 		}
 
-		public Image getImage() {
+		public byte[] getImage() {
 			return image;
 		}
 
-		public void setImage(Image image) {
+		public void setImage(byte[] image) {
 			this.image = image;
 		}
 
@@ -338,7 +478,7 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl implements 
 					inputStream.close();
 					outputStream.flush();
 					outputStream.close();
-					result.setImage(Image.getInstance(outputStream.toByteArray()));
+					result.setImage(outputStream.toByteArray());
 					return result;
 				} catch (Exception e) {
 					triesLeft--;
@@ -351,6 +491,17 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl implements 
 			}
 		}
 
+	}
+
+	// converts an image to a RGBA direct color model using a workaround via buffered image
+	// directly calling the ColorConvert operation fails for unknown reasons ?!
+	public PlanarImage toDirectColorModel(RenderedImage img) {
+		BufferedImage dest = new BufferedImage(img.getWidth(), img.getHeight(), BufferedImage.TYPE_4BYTE_ABGR);
+		BufferedImage source = new BufferedImage(img.getColorModel(), (WritableRaster) img.getData(), img
+				.getColorModel().isAlphaPremultiplied(), null);
+		ColorConvertOp op = new ColorConvertOp(null);
+		op.filter(source, dest);
+		return PlanarImage.wrapRenderedImage(dest);
 	}
 
 	public String getNlsString(String key) {
