@@ -290,27 +290,28 @@ public class GoogleLayer implements RasterLayer {
 			// that just falls off the screen
 			double xMin = xCenter;
 			int iMin = iCenter;
-			while (xMin > bounds.getMinX()) {
+			while (xMin > bounds.getMinX() && iMin > 0) {
 				xMin -= width;
 				iMin--;
 			}
 			double yMax = yCenter;
 			int jMin = jCenter;
-			while (yMax < bounds.getMaxY()) {
+			while (yMax < bounds.getMaxY() && jMin > 0) {
 				yMax += height;
 				jMin--;
 			}
 			// Calculate the indices of the lower right corner
 			// that just falls off the screen
+			int levelMax = (int) Math.pow(2, tileLevel) - 1;
 			double xMax = xCenter;
 			int iMax = iCenter;
-			while (xMax < bounds.getMaxX()) {
+			while (xMax < bounds.getMaxX() && iMax < levelMax) {
 				xMax += width;
 				iMax++;
 			}
 			double yMin = yCenter;
 			int jMax = jCenter;
-			while (yMin > bounds.getMinY()) {
+			while (yMin > bounds.getMinY() && jMax < levelMax) {
 				yMin -= height;
 				jMax++;
 			}
