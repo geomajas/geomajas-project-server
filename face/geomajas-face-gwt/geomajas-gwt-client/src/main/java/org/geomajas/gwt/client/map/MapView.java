@@ -377,15 +377,29 @@ public class MapView {
 	public List<Double> getResolutions() {
 		return resolutions;
 	}
+	
+	
+	/**
+	 * are we panning (same scale and pan origin) ?
+	 * 
+	 * @return true if panning
+	 * @since 1.8.0
+	 */
+	public boolean isPanning() {
+		return Math.abs(currentScale - previousScale) < 1.0E-10
+				&& previousPanOrigin.equalsDelta(this.panOrigin, 1.0E-10);
+	}
 
 	/**
 	 * are we panning ?
 	 * 
 	 * @return true if panning
+	 * @deprecated use {@link #isPanning()}
+	 * @since 1.8.0
 	 */
+	@Deprecated
 	public boolean isSameScaleLevel() {
-		return Math.abs(currentScale - previousScale) < 1.0E-10
-				&& previousPanOrigin.equalsDelta(this.panOrigin, 1.0E-10);
+		return isPanning();
 	}
 
 	/** Return the internal camera that is used to represent the map's point of view. */
@@ -545,6 +559,10 @@ public class MapView {
 		return height / currentScale;
 	}
 
+	/**
+	 * keeps a copy of the previous pan data so we can detect if we are panning.
+	 * @see isSameScaleLevel()
+	 */
 	private void pushPanData() {
 		previousScale = currentScale;
 		previousPanOrigin = (Coordinate) panOrigin.clone();
@@ -552,8 +570,8 @@ public class MapView {
 
 	/** Fire an event. */
 	private void fireEvent(boolean resized, ZoomOption option) {
-		handlerManager.fireEvent(new MapViewChangedEvent(getBounds(), getCurrentScale(), isSameScaleLevel(),
-				panDragging, resized, option));
+		handlerManager.fireEvent(new MapViewChangedEvent(getBounds(), getCurrentScale(), isPanning(), panDragging,
+				resized, option));
 	}
 
 	/**
