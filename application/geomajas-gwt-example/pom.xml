@@ -445,7 +445,7 @@
 	</pluginRepositories>
 
 	<properties>
-		<gwt-version>2.0.3</gwt-version>
+		<gwt-version>2.0.4</gwt-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
