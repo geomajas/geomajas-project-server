@@ -31,6 +31,8 @@ import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.widget.MapWidget;
 
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.gwt.dom.client.Element;
+import com.google.gwt.user.client.DOM;
 import com.smartgwt.client.types.VerticalAlignment;
 
 /**
@@ -97,6 +99,23 @@ public class GoogleAddon extends MapAddon implements MapViewChangedHandler {
 	}
 
 	public void onRemove() {
+		String id = map.getRasterContext().getId(this);
+
+		// Remove the terms of use:
+		Element element = DOM.getElementById(id + "-googleAddon");
+		if (element != null) {
+			Element parent = element.getParentElement();
+			parent.removeChild(element);
+		}
+
+		// Remove the Google map too:
+		element = DOM.getElementById(id);
+		if (element != null) {
+			Element parent = element.getParentElement();
+			parent.removeChild(element);
+		}
+
+		googleMap = null;
 	}
 
 	public void onMapViewChanged(MapViewChangedEvent event) {
@@ -128,27 +147,30 @@ public class GoogleAddon extends MapAddon implements MapViewChangedHandler {
 		if(!showMap) {
 			mapDiv.style.visibility = "hidden";
 		}
-
 		var graphics = $doc.getElementById(graphicsId);
-		var poweredBy = mapDiv.lastChild;
-		mapDiv.removeChild(poweredBy);
-		graphics.appendChild(poweredBy);
-		if ("top" == verticalAlignment) {
-			poweredBy.style.top = verticalMargin + "px";
-		} else {
-			poweredBy.style.bottom = verticalMargin + "px";
-		}
-		poweredBy.style.marginLeft = horizontalMargin + "px";
+		var group = $doc.createElement("div");
+		group.setAttribute("id", mapId + "-googleAddon");
+		graphics.appendChild(group);
 
 		var termsOfUse = mapDiv.lastChild;
 		mapDiv.removeChild(termsOfUse);
-		graphics.appendChild(termsOfUse);
+		group.appendChild(termsOfUse);
 		if ("top" == verticalAlignment) {
 			termsOfUse.style.top = verticalMargin + "px";
 		} else {
 			termsOfUse.style.bottom = verticalMargin + "px";
 		}
 		termsOfUse.style.marginRight = horizontalMargin + "px";
+
+		var poweredBy = mapDiv.lastChild;
+		mapDiv.removeChild(poweredBy);
+		group.appendChild(poweredBy);
+		if ("top" == verticalAlignment) {
+			poweredBy.style.top = verticalMargin + "px";
+		} else {
+			poweredBy.style.bottom = verticalMargin + "px";
+		}
+		poweredBy.style.marginLeft = horizontalMargin + "px";
 
 		return map;
 	}-*/;
