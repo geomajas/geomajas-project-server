@@ -31,6 +31,7 @@ import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.widget.MapWidget;
 
 import com.google.gwt.core.client.JavaScriptObject;
+import com.smartgwt.client.types.VerticalAlignment;
 
 /**
  * <p>
@@ -38,7 +39,11 @@ import com.google.gwt.core.client.JavaScriptObject;
  * Google map as opposed to the tiles that are calculated on the server. For normal Geomajas use this map should be
  * hidden as it does not automatically scale to continuous zoom levels. This add-on requires the Google maps library !
  * </p>
- *
+ * <p>
+ * This MapAddon does not allow center positioning. Also it takes in the whole width of the map, so setting the
+ * horizontal alignment is of little use. By default, this MapAddon will be placed 20 pixels from the bottom of the map.
+ * </p>
+ * 
  * @author Jan De Moerloose
  */
 public class GoogleAddon extends MapAddon implements MapViewChangedHandler {
@@ -46,22 +51,20 @@ public class GoogleAddon extends MapAddon implements MapViewChangedHandler {
 	private MapWidget map;
 
 	private JavaScriptObject googleMap;
-	
+
 	private MapType type;
 
 	private boolean showMap;
-	
+
 	private static final double MERCATOR_WIDTH = Math.PI * 6378137.0;
 
 	/**
 	 * Google map types as defined by the API.
 	 */
 	public enum MapType {
-		NORMAL,
-		SATELLITE,
-		HYBRID,
-		PHYSICAL
+		NORMAL, SATELLITE, HYBRID, PHYSICAL
 	}
+
 	// Constructor:
 
 	public GoogleAddon(String id, MapWidget map, MapType type, boolean showMap) {
@@ -70,6 +73,10 @@ public class GoogleAddon extends MapAddon implements MapViewChangedHandler {
 		this.type = type;
 		this.showMap = showMap;
 		this.map.getMapModel().getMapView().addMapViewChangedHandler(this);
+
+		// Default placement:
+		setVerticalAlignment(VerticalAlignment.BOTTOM);
+		setVerticalMargin(20);
 	}
 
 	// MapAddon implementation:
@@ -80,9 +87,12 @@ public class GoogleAddon extends MapAddon implements MapViewChangedHandler {
 			map.getRasterContext().drawGroup(null, this);
 			String id = map.getRasterContext().getId(this);
 			String graphicsId = map.getVectorContext().getId();
-			googleMap = createGoogleMap(id, graphicsId, type.name(), showMap);
+
+			googleMap = createGoogleMap(id, graphicsId, type.name(), showMap, getVerticalMargin(),
+					getHorizontalMargin(), getVerticalAlignmentString());
 		}
 	}
+
 	public void onDraw() {
 	}
 
@@ -96,8 +106,13 @@ public class GoogleAddon extends MapAddon implements MapViewChangedHandler {
 			fitGoogleMapBounds(googleMap, latLon.getX(), latLon.getY(), latLon.getMaxX(), latLon.getMaxY());
 		}
 	}
-	
-	private native JavaScriptObject createGoogleMap(String mapId, String graphicsId, String mapType, boolean showMap)
+
+	// ------------------------------------------------------------------------
+	// Private methods:
+	// ------------------------------------------------------------------------
+
+	private native JavaScriptObject createGoogleMap(String mapId, String graphicsId, String mapType, boolean showMap,
+			int verticalMargin, int horizontalMargin, String verticalAlignment)
 	/*-{
 	 	var mapDiv = $doc.getElementById(mapId);
 		var map = new $wnd.GMap2(mapDiv);		
@@ -113,19 +128,28 @@ public class GoogleAddon extends MapAddon implements MapViewChangedHandler {
 		if(!showMap) {
 			mapDiv.style.visibility = "hidden";
 		}
-		
+
 		var graphics = $doc.getElementById(graphicsId);
-		
 		var poweredBy = mapDiv.lastChild;
 		mapDiv.removeChild(poweredBy);
 		graphics.appendChild(poweredBy);
-		poweredBy.style.bottom = "20px";
+		if ("top" == verticalAlignment) {
+			poweredBy.style.top = verticalMargin + "px";
+		} else {
+			poweredBy.style.bottom = verticalMargin + "px";
+		}
+		poweredBy.style.marginLeft = horizontalMargin + "px";
 
 		var termsOfUse = mapDiv.lastChild;
 		mapDiv.removeChild(termsOfUse);
 		graphics.appendChild(termsOfUse);
-		termsOfUse.style.bottom = "20px";
-		
+		if ("top" == verticalAlignment) {
+			termsOfUse.style.top = verticalMargin + "px";
+		} else {
+			termsOfUse.style.bottom = verticalMargin + "px";
+		}
+		termsOfUse.style.marginRight = horizontalMargin + "px";
+
 		return map;
 	}-*/;
 
@@ -136,7 +160,6 @@ public class GoogleAddon extends MapAddon implements MapViewChangedHandler {
 		var bounds = new $wnd.GLatLngBounds(sw,ne);
 		map.setCenter(bounds.getCenter(), map.getBoundsZoomLevel(bounds)); 
 	}-*/;
-
 
 	private Bbox convertToLatLon(Bbox bounds) {
 		// convert corners
@@ -152,5 +175,12 @@ public class GoogleAddon extends MapAddon implements MapViewChangedHandler {
 		return new Coordinate(lat, lon);
 	}
 
-
+	private String getVerticalAlignmentString() {
+		// No center position, just top and bottom:
+		VerticalAlignment align = getVerticalAlignment();
+		if (align != null && align.equals(VerticalAlignment.TOP)) {
+			return "top";
+		}
+		return "bottom";
+	}
 }
