@@ -1496,10 +1496,7 @@
 
     <para>Geomajas has security built-in. If you don't provide a security
     configuration, nothing will be authorized. For unsecured access, you can
-    add</para>
-
-    <xi:include href="../listing/AllowAllSecurity.xml"
-                xmlns:xi="http://www.w3.org/2001/XInclude" />
+    use the AllowAllSecurityService security service.</para>
 
     <para>which will allow all access to everybody, including full access to
     features which are only partly within configured bounds.</para>
@@ -1510,7 +1507,7 @@
 
     <note>
       <para>When configuring security services, it is important to assure that
-      login is possible. Anything which is not explicitly allowed in
+      login is possible. Anything which is not explicitly allowed is
       <emphasis>not</emphasis> allowed, which likely includes the command
       which is used to login. You have to make sure that everybody can access
       the login command.</para>
