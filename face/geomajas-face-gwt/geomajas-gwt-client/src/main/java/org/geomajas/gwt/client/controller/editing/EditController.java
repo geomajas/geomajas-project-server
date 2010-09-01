@@ -230,7 +230,7 @@ public abstract class EditController extends AbstractSnappingController {
 			mapWidget.unregisterWorldPaintable(maxExtent);
 		}
 		if (getFeatureTransaction() != null) {
-			mapWidget.render(getFeatureTransaction(), RenderGroup.SCREEN, RenderStatus.DELETE);
+			mapWidget.render(getFeatureTransaction(), RenderGroup.VECTOR, RenderStatus.DELETE);
 			mapWidget.getMapModel().getFeatureEditor().stopEditing();
 		}
 		if (menu != null) {

@@ -70,10 +70,10 @@ public class RemoveRingAction extends MenuAction implements MenuItemIfFunction {
 	public void onClick(MenuItemClickEvent event) {
 		FeatureTransaction ft = mapWidget.getMapModel().getFeatureEditor().getFeatureTransaction();
 		if (ft != null && index != null) {
-			mapWidget.render(ft, RenderGroup.SCREEN, RenderStatus.DELETE);
+			mapWidget.render(ft, RenderGroup.VECTOR, RenderStatus.DELETE);
 			RemoveRingOp op = new RemoveRingOp(index);
 			ft.execute(op);
-			mapWidget.render(ft, RenderGroup.SCREEN, RenderStatus.ALL);
+			mapWidget.render(ft, RenderGroup.VECTOR, RenderStatus.ALL);
 		}
 	}
 

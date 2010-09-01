@@ -84,13 +84,13 @@ public class EditFeatureAction extends MenuAction implements MenuItemIfFunction 
 		if (feature != null && feature.isSelected()) {
 			FeatureTransaction ft = mapWidget.getMapModel().getFeatureEditor().startEditing(
 					new Feature[] { feature.clone() }, new Feature[] { feature.clone() });
-			mapWidget.render(ft, RenderGroup.SCREEN, RenderStatus.ALL);
+			mapWidget.render(ft, RenderGroup.VECTOR, RenderStatus.ALL);
 			VectorLayer vLayer = feature.getLayer();
 			if (vLayer.getLayerInfo().getLayerType() == LayerType.POINT) {
 				controller.setController(new PointEditController(mapWidget, controller));
 			} else if (vLayer.getLayerInfo().getLayerType() == LayerType.MULTIPOINT) {
 				mapWidget.getMapModel().getFeatureEditor().stopEditing();
-				mapWidget.render(ft, RenderGroup.SCREEN, RenderStatus.DELETE);
+				mapWidget.render(ft, RenderGroup.VECTOR, RenderStatus.DELETE);
 				SC.warn("Editing of MultiPoint layers is not supported yet....");
 			} else if (vLayer.getLayerInfo().getLayerType() == LayerType.LINESTRING) {
 				controller.setController(new LineStringEditController(mapWidget, controller));

@@ -78,10 +78,10 @@ public class InsertPointAction extends MenuAction implements MenuItemIfFunction 
 	public void onClick(MenuItemClickEvent event) {
 		FeatureTransaction ft = mapWidget.getMapModel().getFeatureEditor().getFeatureTransaction();
 		if (ft != null && index != null && coordinate != null) {
-			mapWidget.render(ft, RenderGroup.SCREEN, RenderStatus.DELETE);
+			mapWidget.render(ft, RenderGroup.VECTOR, RenderStatus.DELETE);
 			InsertCoordinateOp op = new InsertCoordinateOp(index, coordinate);
 			ft.execute(op);
-			mapWidget.render(ft, RenderGroup.SCREEN, RenderStatus.ALL);
+			mapWidget.render(ft, RenderGroup.VECTOR, RenderStatus.ALL);
 		}
 	}
 

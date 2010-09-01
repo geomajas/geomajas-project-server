@@ -71,9 +71,9 @@ public class UndoOperationAction extends MenuAction implements MenuItemIfFunctio
 	 */
 	public void onClick(MenuItemClickEvent event) {
 		FeatureTransaction featureTransaction = mapWidget.getMapModel().getFeatureEditor().getFeatureTransaction();
-		mapWidget.render(featureTransaction, RenderGroup.SCREEN, RenderStatus.DELETE);
+		mapWidget.render(featureTransaction, RenderGroup.VECTOR, RenderStatus.DELETE);
 		featureTransaction.undoLastOperation();
-		mapWidget.render(featureTransaction, RenderGroup.SCREEN, RenderStatus.ALL);
+		mapWidget.render(featureTransaction, RenderGroup.VECTOR, RenderStatus.ALL);
 		controller.cleanup();
 	}
 

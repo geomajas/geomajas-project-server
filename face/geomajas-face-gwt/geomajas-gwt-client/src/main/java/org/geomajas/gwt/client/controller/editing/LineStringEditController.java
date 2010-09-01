@@ -131,8 +131,8 @@ public class LineStringEditController extends EditController {
 				if (dragTransaction == null) {
 					dragTransaction = (FeatureTransaction) featureTransaction.clone();
 				}
-				mapWidget.render(featureTransaction, RenderGroup.SCREEN, RenderStatus.DELETE);
-				mapWidget.render(dragTransaction, RenderGroup.SCREEN, RenderStatus.ALL);
+				mapWidget.render(featureTransaction, RenderGroup.VECTOR, RenderStatus.DELETE);
+				mapWidget.render(dragTransaction, RenderGroup.VECTOR, RenderStatus.ALL);
 				createTempLine(featureTransaction, event);
 			}
 		}
@@ -147,8 +147,8 @@ public class LineStringEditController extends EditController {
 			FeatureOperation op = new SetCoordinateOp(index, getWorldPosition(event));
 			op.execute(feature);
 
-			mapWidget.render(dragTransaction, RenderGroup.SCREEN, RenderStatus.DELETE);
-			mapWidget.render(dragTransaction, RenderGroup.SCREEN, RenderStatus.ALL);
+			mapWidget.render(dragTransaction, RenderGroup.VECTOR, RenderStatus.DELETE);
+			mapWidget.render(dragTransaction, RenderGroup.VECTOR, RenderStatus.ALL);
 		} else if (featureTransaction != null && parent.getEditMode() == EditMode.INSERT_MODE) {
 			updateTempLine(featureTransaction, event);
 		}
@@ -161,8 +161,8 @@ public class LineStringEditController extends EditController {
 				// The creation of a new point:
 				FeatureOperation op = new AddCoordinateOp(getGeometryIndex(), getWorldPosition(event));
 				featureTransaction.execute(op);
-				mapWidget.render(featureTransaction, RenderGroup.SCREEN, RenderStatus.DELETE);
-				mapWidget.render(featureTransaction, RenderGroup.SCREEN, RenderStatus.ALL);
+				mapWidget.render(featureTransaction, RenderGroup.VECTOR, RenderStatus.DELETE);
+				mapWidget.render(featureTransaction, RenderGroup.VECTOR, RenderStatus.ALL);
 				updateGeometricInfo();
 			} else if (featureTransaction != null && parent.getEditMode() == EditMode.DRAG_MODE &&
 					dragTargetId != null) {
@@ -172,10 +172,10 @@ public class LineStringEditController extends EditController {
 				FeatureOperation op = new SetCoordinateOp(index, getWorldPosition(event));
 				featureTransaction.execute(op);
 				if (dragTransaction != null) {
-					mapWidget.render(dragTransaction, RenderGroup.SCREEN, RenderStatus.DELETE);
+					mapWidget.render(dragTransaction, RenderGroup.VECTOR, RenderStatus.DELETE);
 					dragTransaction = null;
 				}
-				mapWidget.render(featureTransaction, RenderGroup.SCREEN, RenderStatus.ALL);
+				mapWidget.render(featureTransaction, RenderGroup.VECTOR, RenderStatus.ALL);
 				dragTargetId = null;
 				removeTempLine();
 				updateGeometricInfo();
@@ -203,7 +203,7 @@ public class LineStringEditController extends EditController {
 			tempLine = new GfxGeometry("LineStringEditController.updateLine");
 			tempLine.setGeometry(lineString);
 			tempLine.setStyle(new ShapeStyle("#FFFFFF", 0, "#FF3322", 1, 1));
-			mapWidget.render(tempLine, RenderGroup.SCREEN, RenderStatus.ALL);
+			mapWidget.render(tempLine, RenderGroup.VECTOR, RenderStatus.ALL);
 		}
 	}
 
@@ -218,14 +218,14 @@ public class LineStringEditController extends EditController {
 				LineString lineString = featureTransaction.getNewFeatures()[0].getGeometry().getGeometryFactory()
 						.createLineString(new Coordinate[] { lastCoordinate, getScreenPosition(event) });
 				tempLine.setGeometry(lineString);
-				mapWidget.render(tempLine, RenderGroup.SCREEN, RenderStatus.ALL);
+				mapWidget.render(tempLine, RenderGroup.VECTOR, RenderStatus.ALL);
 			}
 		}
 	}
 
 	private void removeTempLine() {
 		if (tempLine != null) {
-			mapWidget.render(tempLine, RenderGroup.SCREEN, RenderStatus.DELETE);
+			mapWidget.render(tempLine, RenderGroup.VECTOR, RenderStatus.DELETE);
 			tempLine = null;
 		}
 	}

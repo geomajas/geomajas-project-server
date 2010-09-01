@@ -143,8 +143,8 @@ public class PolygonEditController extends EditController {
 				if (dragTransaction == null) {
 					dragTransaction = (FeatureTransaction) featureTransaction.clone();
 				}
-				mapWidget.render(featureTransaction, RenderGroup.SCREEN, RenderStatus.DELETE);
-				mapWidget.render(dragTransaction, RenderGroup.SCREEN, RenderStatus.ALL);
+				mapWidget.render(featureTransaction, RenderGroup.VECTOR, RenderStatus.DELETE);
+				mapWidget.render(dragTransaction, RenderGroup.VECTOR, RenderStatus.ALL);
 				createTempLines(featureTransaction, event);
 			}
 		}
@@ -159,8 +159,8 @@ public class PolygonEditController extends EditController {
 			FeatureOperation op = new SetCoordinateOp(index, getWorldPosition(event));
 			op.execute(feature);
 
-			mapWidget.render(dragTransaction, RenderGroup.SCREEN, RenderStatus.DELETE);
-			mapWidget.render(dragTransaction, RenderGroup.SCREEN, RenderStatus.ALL);
+			mapWidget.render(dragTransaction, RenderGroup.VECTOR, RenderStatus.DELETE);
+			mapWidget.render(dragTransaction, RenderGroup.VECTOR, RenderStatus.ALL);
 		} else if (featureTransaction != null && parent.getEditMode() == EditMode.INSERT_MODE) {
 			updateTempLines(featureTransaction, event);
 		}
@@ -173,8 +173,8 @@ public class PolygonEditController extends EditController {
 				// The creation of a new point:
 				FeatureOperation op = new AddCoordinateOp(getGeometryIndex(), getWorldPosition(event));
 				featureTransaction.execute(op);
-				mapWidget.render(featureTransaction, RenderGroup.SCREEN, RenderStatus.DELETE);
-				mapWidget.render(featureTransaction, RenderGroup.SCREEN, RenderStatus.ALL);
+				mapWidget.render(featureTransaction, RenderGroup.VECTOR, RenderStatus.DELETE);
+				mapWidget.render(featureTransaction, RenderGroup.VECTOR, RenderStatus.ALL);
 				updateGeometricInfo();
 			} else if (featureTransaction != null && parent.getEditMode() == EditMode.DRAG_MODE
 					&& dragTargetId != null) {
@@ -184,10 +184,10 @@ public class PolygonEditController extends EditController {
 				FeatureOperation op = new SetCoordinateOp(index, getWorldPosition(event));
 				featureTransaction.execute(op);
 				if (dragTransaction != null) {
-					mapWidget.render(dragTransaction, RenderGroup.SCREEN, RenderStatus.DELETE);
+					mapWidget.render(dragTransaction, RenderGroup.VECTOR, RenderStatus.DELETE);
 					dragTransaction = null;
 				}
-				mapWidget.render(featureTransaction, RenderGroup.SCREEN, RenderStatus.ALL);
+				mapWidget.render(featureTransaction, RenderGroup.VECTOR, RenderStatus.ALL);
 				dragTargetId = null;
 				removeTempLines();
 				updateGeometricInfo();
@@ -215,11 +215,11 @@ public class PolygonEditController extends EditController {
 			tempLine1 = new GfxGeometry("LineStringEditController.updateLine1");
 			tempLine1.setGeometry(lineString);
 			tempLine1.setStyle(new ShapeStyle("#FFFFFF", 0, "#FF3322", 1, 1));
-			mapWidget.render(tempLine1, RenderGroup.SCREEN, RenderStatus.ALL);
+			mapWidget.render(tempLine1, RenderGroup.VECTOR, RenderStatus.ALL);
 			tempLine2 = new GfxGeometry("LineStringEditController.updateLine2");
 			tempLine2.setGeometry(lineString);
 			tempLine2.setStyle(new ShapeStyle("#FFFFFF", 0, "#FF3322", 1, 1));
-			mapWidget.render(tempLine2, RenderGroup.SCREEN, RenderStatus.ALL);
+			mapWidget.render(tempLine2, RenderGroup.VECTOR, RenderStatus.ALL);
 		}
 	}
 
@@ -239,14 +239,14 @@ public class PolygonEditController extends EditController {
 									new Coordinate[] {getTransformer().worldToView(lastCoordinate),
 											getScreenPosition(event)});
 					tempLine1.setGeometry(lineString1);
-					mapWidget.render(tempLine1, RenderGroup.SCREEN, RenderStatus.ALL);
+					mapWidget.render(tempLine1, RenderGroup.VECTOR, RenderStatus.ALL);
 
 					LineString lineString2 = featureTransaction.getNewFeatures()[index.getFeatureIndex()].getGeometry()
 							.getGeometryFactory().createLineString(
 									new Coordinate[] {getTransformer().worldToView(coordinates[0]),
 											getScreenPosition(event)});
 					tempLine2.setGeometry(lineString2);
-					mapWidget.render(tempLine2, RenderGroup.SCREEN, RenderStatus.ALL);
+					mapWidget.render(tempLine2, RenderGroup.VECTOR, RenderStatus.ALL);
 				}
 			}
 		}
@@ -254,11 +254,11 @@ public class PolygonEditController extends EditController {
 
 	protected void removeTempLines() {
 		if (tempLine1 != null) {
-			mapWidget.render(tempLine1, RenderGroup.SCREEN, RenderStatus.DELETE);
+			mapWidget.render(tempLine1, RenderGroup.VECTOR, RenderStatus.DELETE);
 			tempLine1 = null;
 		}
 		if (tempLine2 != null) {
-			mapWidget.render(tempLine2, RenderGroup.SCREEN, RenderStatus.DELETE);
+			mapWidget.render(tempLine2, RenderGroup.VECTOR, RenderStatus.DELETE);
 			tempLine2 = null;
 		}
 	}

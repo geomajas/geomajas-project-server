@@ -69,7 +69,7 @@ public class CancelEditingAction extends MenuAction {
 		FeatureTransaction featureTransaction = mapWidget.getMapModel().getFeatureEditor().getFeatureTransaction();
 		if (featureTransaction != null) {
 			controller.cleanup();
-			mapWidget.render(featureTransaction,  RenderGroup.SCREEN, RenderStatus.DELETE);
+			mapWidget.render(featureTransaction,  RenderGroup.VECTOR, RenderStatus.DELETE);
 			mapWidget.getMapModel().getFeatureEditor().stopEditing();
 		}
 	}

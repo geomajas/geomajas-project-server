@@ -40,6 +40,7 @@ import org.geomajas.gwt.client.spatial.geometry.MultiPolygon;
 import org.geomajas.gwt.client.spatial.geometry.Point;
 import org.geomajas.gwt.client.spatial.geometry.Polygon;
 import org.geomajas.gwt.client.widget.MapWidget;
+import org.geomajas.gwt.client.widget.MapWidget.RenderGroup;
 
 /**
  * Paint a feature transaction.
@@ -95,9 +96,9 @@ public class FeatureTransactionPainter implements Painter {
 		if (features == null) {
 			return;
 		}
-		context.getVectorContext().drawGroup(group, featureTransaction);
+		context.getVectorContext().drawGroup(mapWidget.getGroup(RenderGroup.VECTOR), featureTransaction);
 		for (int i = 0; i < features.length; i++) {
-			Geometry geometry = mapWidget.getMapModel().getMapView().getWorldViewTransformer().worldToView(
+			Geometry geometry = mapWidget.getMapModel().getMapView().getWorldViewTransformer().worldToPan(
 					features[i].getGeometry());
 			context.getVectorContext().drawGroup(featureTransaction, features[i]);
 			if (geometry instanceof Point) {

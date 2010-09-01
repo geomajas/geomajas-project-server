@@ -114,7 +114,7 @@ public class SaveEditingAction extends MenuAction {
 				controller.cleanup();
 			}
 			if (mapWidget != null) {
-				mapWidget.render(featureTransaction, RenderGroup.SCREEN, RenderStatus.DELETE);
+				mapWidget.render(featureTransaction, RenderGroup.VECTOR, RenderStatus.DELETE);
 			}
 			mapModel.getFeatureEditor().stopEditing();
 		}

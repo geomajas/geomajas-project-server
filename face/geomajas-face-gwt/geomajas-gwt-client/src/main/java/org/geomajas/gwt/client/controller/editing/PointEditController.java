@@ -114,8 +114,8 @@ public class PointEditController extends EditController {
 				if (dragTransaction == null) {
 					dragTransaction = (FeatureTransaction) featureTransaction.clone();
 				}
-				mapWidget.render(featureTransaction, RenderGroup.SCREEN, RenderStatus.DELETE);
-				mapWidget.render(dragTransaction, RenderGroup.SCREEN, RenderStatus.ALL);
+				mapWidget.render(featureTransaction, RenderGroup.VECTOR, RenderStatus.DELETE);
+				mapWidget.render(dragTransaction, RenderGroup.VECTOR, RenderStatus.ALL);
 			}
 		}
 	}
@@ -128,8 +128,8 @@ public class PointEditController extends EditController {
 			FeatureOperation op = new SetCoordinateOp(index, getWorldPosition(event));
 			op.execute(feature);
 
-			mapWidget.render(dragTransaction, RenderGroup.SCREEN, RenderStatus.DELETE);
-			mapWidget.render(dragTransaction, RenderGroup.SCREEN, RenderStatus.ALL);
+			mapWidget.render(dragTransaction, RenderGroup.VECTOR, RenderStatus.DELETE);
+			mapWidget.render(dragTransaction, RenderGroup.VECTOR, RenderStatus.ALL);
 		}
 	}
 
@@ -142,8 +142,8 @@ public class PointEditController extends EditController {
 				featureTransaction.execute(op);
 				parent.setEditMode(EditMode.DRAG_MODE);
 
-				mapWidget.render(featureTransaction, RenderGroup.SCREEN, RenderStatus.DELETE);
-				mapWidget.render(featureTransaction, RenderGroup.SCREEN, RenderStatus.ALL);
+				mapWidget.render(featureTransaction, RenderGroup.VECTOR, RenderStatus.DELETE);
+				mapWidget.render(featureTransaction, RenderGroup.VECTOR, RenderStatus.ALL);
 				updateGeometricInfo();
 			} else if (featureTransaction != null && parent.getEditMode() == EditMode.DRAG_MODE
 					&& dragTargetId != null) {
@@ -153,10 +153,10 @@ public class PointEditController extends EditController {
 				FeatureOperation op = new SetCoordinateOp(index, getWorldPosition(event));
 				featureTransaction.execute(op);
 				if (dragTransaction != null) {
-					mapWidget.render(dragTransaction, RenderGroup.SCREEN, RenderStatus.DELETE);
+					mapWidget.render(dragTransaction, RenderGroup.VECTOR, RenderStatus.DELETE);
 					dragTransaction = null;
 				}
-				mapWidget.render(featureTransaction, RenderGroup.SCREEN, RenderStatus.ALL);
+				mapWidget.render(featureTransaction, RenderGroup.VECTOR, RenderStatus.ALL);
 				dragTargetId = null;
 				updateGeometricInfo();
 			}
