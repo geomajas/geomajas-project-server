@@ -127,7 +127,7 @@
 			<plugin>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-maven-plugin</artifactId>
-				<version>1.0.3</version>
+				<version>1.0.4</version>
 				<inherited>false</inherited>
 				<executions>
 					<execution>
