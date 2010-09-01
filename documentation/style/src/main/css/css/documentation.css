@@ -108,7 +108,6 @@ pre, code, .guibutton, .keycap, .guilabel {
 	border: 1px solid #cccccc;
 	padding: 5px;
 	margin-bottom: 10px;
-	-moz-border-radius: 11px;
 }
 
 /*terminal/console text*/
