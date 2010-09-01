@@ -43,6 +43,9 @@ import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.event.dom.client.HasDoubleClickHandlers;
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseDownHandler;
+import com.google.gwt.event.dom.client.MouseEvent;
+import com.google.gwt.event.dom.client.MouseUpEvent;
+import com.google.gwt.event.dom.client.MouseUpHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.FocusWidget;
@@ -160,15 +163,11 @@ public class GraphicsWidget extends FocusWidget implements MapContext, HasDouble
 		menuContext = new MapMenuContext();
 		handlers = new ArrayList<HandlerRegistration>();
 
-		addMouseDownHandler(new MouseDownHandler() {
-
-			public void onMouseDown(MouseDownEvent event) {
-				if (event.getNativeButton() == Event.BUTTON_RIGHT) {
-					rightButtonCoordinate = GwtEventUtil.getPosition(event);
-					rightButtonTarget = GwtEventUtil.getTargetId(event);
-				}
-			}
-		});
+		// capture right mouse info (target id and coordinate) 
+		RightMouseHandler rmh = new RightMouseHandler();
+		// we connect to both mouse events just to be sure (ubuntu/ff3.6 does not fire mouse up)
+		addMouseDownHandler(rmh);
+		addMouseUpHandler(rmh);
 		// workaround for an unsupported mix of SmartGWT and pure DOM
 		base = new Canvas();
 		base.setWidth100();
@@ -326,6 +325,24 @@ public class GraphicsWidget extends FocusWidget implements MapContext, HasDouble
 			parent.removeChild(base);
 			parent.addChild(base);
 			parent.redraw();
+		}
+	}
+	
+	/** sets the right mouse coordinate and target */
+	private class RightMouseHandler implements MouseUpHandler, MouseDownHandler {
+		public void onMouseDown(MouseDownEvent event) {
+			process(event);
+		}
+
+		public void onMouseUp(MouseUpEvent event) {
+			process(event);
+		}
+
+		private void process(MouseEvent<?> event) {
+			if (event.getNativeButton() == Event.BUTTON_RIGHT) {
+				rightButtonCoordinate = GwtEventUtil.getPosition(event);
+				rightButtonTarget = GwtEventUtil.getTargetId(event);
+			}
 		}
 	}
 }
