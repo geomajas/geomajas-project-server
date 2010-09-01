@@ -41,8 +41,8 @@ import com.google.gwt.dom.client.Document;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.event.dom.client.HasDoubleClickHandlers;
-import com.google.gwt.event.dom.client.MouseUpEvent;
-import com.google.gwt.event.dom.client.MouseUpHandler;
+import com.google.gwt.event.dom.client.MouseDownEvent;
+import com.google.gwt.event.dom.client.MouseDownHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.FocusWidget;
@@ -160,9 +160,9 @@ public class GraphicsWidget extends FocusWidget implements MapContext, HasDouble
 		menuContext = new MapMenuContext();
 		handlers = new ArrayList<HandlerRegistration>();
 
-		addMouseUpHandler(new MouseUpHandler() {
+		addMouseDownHandler(new MouseDownHandler() {
 
-			public void onMouseUp(MouseUpEvent event) {
+			public void onMouseDown(MouseDownEvent event) {
 				if (event.getNativeButton() == Event.BUTTON_RIGHT) {
 					rightButtonCoordinate = GwtEventUtil.getPosition(event);
 					rightButtonTarget = GwtEventUtil.getTargetId(event);
