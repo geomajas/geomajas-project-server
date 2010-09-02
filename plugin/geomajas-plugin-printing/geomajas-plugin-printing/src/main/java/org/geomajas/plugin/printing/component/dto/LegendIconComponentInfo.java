@@ -33,6 +33,7 @@ import org.geomajas.layer.LayerType;
  * 
  * @author Jan De Moerloose
  * @see org.geomajas.plugin.printing.component.LegendIconComponent
+ * @since 2.0.0
  * 
  */
 @Api(allMethods = true)

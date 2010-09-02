@@ -35,6 +35,7 @@ import com.lowagie.text.Rectangle;
  * boxes, etc.. A print component can be composed of child components.
  * 
  * @author Jan De Moerloose
+ * @since 2.0.0
  * 
  * @param <T> DTO object class
  */

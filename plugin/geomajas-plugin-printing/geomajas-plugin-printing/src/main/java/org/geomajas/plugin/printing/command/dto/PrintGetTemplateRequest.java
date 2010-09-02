@@ -31,6 +31,7 @@ import org.geomajas.global.Api;
  *
  * @author Joachim Van der Auwera
  * @author Jan De Moerloose
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public class PrintGetTemplateRequest implements CommandRequest {

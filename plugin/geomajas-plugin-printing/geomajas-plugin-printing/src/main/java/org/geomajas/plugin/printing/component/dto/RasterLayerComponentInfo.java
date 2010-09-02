@@ -31,6 +31,7 @@ import org.geomajas.global.Api;
  * 
  * @author Jan De Moerloose
  * @see org.geomajas.plugin.printing.component.RasterLayerComponent
+ * @since 2.0.0
  *
  */
 @Api(allMethods = true)

@@ -47,6 +47,7 @@ import com.thoughtworks.xstream.annotations.XStreamOmitField;
  * Basic container component for printing. Handles the size calculation, layout and rendering of its children.
  * 
  * @author Jan De Moerloose
+ * @since 2.0.0
  * 
  * @param <T> DTO object class
  */

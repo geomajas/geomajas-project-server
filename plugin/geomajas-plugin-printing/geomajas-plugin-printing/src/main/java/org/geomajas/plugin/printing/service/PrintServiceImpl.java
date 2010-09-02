@@ -41,6 +41,7 @@ import javax.media.jai.TileCache;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+import org.geomajas.global.Api;
 import org.geomajas.plugin.printing.PrintingException;
 import org.geomajas.plugin.printing.component.dto.LayoutConstraintInfo;
 import org.geomajas.plugin.printing.component.impl.ImageComponentImpl;
@@ -70,10 +71,12 @@ import com.vividsolutions.jts.geom.Coordinate;
  * Print service implementation based on iText. Persistence is configured through a DAO implementation of choice.
  * 
  * @author Jan De Moerloose
+ * @since 2.0.0
  * 
  */
 @Component
 @Transactional
+@Api
 public class PrintServiceImpl implements PrintService {
 
 	private Logger log = LoggerFactory.getLogger(PrintServiceImpl.class);
@@ -91,7 +94,7 @@ public class PrintServiceImpl implements PrintService {
 	@Autowired
 	@Qualifier("printMarshaller")
 	private Unmarshaller unMarshaller;
-	
+
 	private int jaiTileCacheInMB = 64;
 
 	private Map<String, Document> documentMap = Collections.synchronizedMap(new HashMap<String, Document>());
@@ -127,7 +130,6 @@ public class PrintServiceImpl implements PrintService {
 		return allTemplates;
 	}
 
-	
 	public PrintTemplate createDefaultTemplate(String pagesize, boolean landscape) throws PrintingException {
 		PrintTemplate template = createTemplate(pagesize, landscape);
 		// calculate the sizes (if not already calculated !)
@@ -217,23 +219,26 @@ public class PrintServiceImpl implements PrintService {
 		template.setPage(page);
 		return template;
 	}
-	
+
 	/**
 	 * returns the JAI (Java Advanced Imaging) tile cache size in MB.
+	 * 
 	 * @return size in MB of tile cache
 	 */
 	public int getJaiTileCacheInMB() {
 		return jaiTileCacheInMB;
 	}
-	
+
 	/**
 	 * Sets the JAI (Java Advanced Imaging) tile cache size to the specified value.
-	 * @param jaiTileCacheInMB size in MB of tile cache
+	 * 
+	 * @param jaiTileCacheInMB
+	 *            size in MB of tile cache
 	 */
+	@Api
 	public void setJaiTileCacheInMB(int jaiTileCacheInMB) {
 		this.jaiTileCacheInMB = jaiTileCacheInMB;
 	}
-
 
 	@PostConstruct
 	public void initJAI() {

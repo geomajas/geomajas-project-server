@@ -31,6 +31,7 @@ import org.geomajas.global.Api;
  * Constraints for the default layout.
  *
  * @author Jan De Moerloose
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public class LayoutConstraintInfo implements Serializable {

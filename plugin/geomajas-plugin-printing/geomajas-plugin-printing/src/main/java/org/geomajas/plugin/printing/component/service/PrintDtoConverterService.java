@@ -26,6 +26,7 @@ import java.awt.Color;
 import java.awt.Font;
 
 import org.geomajas.configuration.FontStyleInfo;
+import org.geomajas.global.Api;
 import org.geomajas.plugin.printing.PrintingException;
 import org.geomajas.plugin.printing.component.PrintComponent;
 import org.geomajas.plugin.printing.component.dto.PrintComponentInfo;
@@ -34,8 +35,10 @@ import org.geomajas.plugin.printing.component.dto.PrintComponentInfo;
  * Service to convert print DTO components to internal representation and back.
  * 
  * @author Jan De Moerloose
+ * @since 2.0.0
  * 
  */
+@Api(allMethods = true)
 public interface PrintDtoConverterService {
 
 	/**

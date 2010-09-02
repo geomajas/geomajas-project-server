@@ -33,6 +33,7 @@ import org.geomajas.plugin.printing.component.dto.PageComponentInfo;
  * DTO version of the PrintTemplate class.
  *
  * @author Pieter De Graef
+ * @since 2.0.0
  */
 @Api(allMethods = true)
 public class PrintTemplateInfo implements Serializable {
