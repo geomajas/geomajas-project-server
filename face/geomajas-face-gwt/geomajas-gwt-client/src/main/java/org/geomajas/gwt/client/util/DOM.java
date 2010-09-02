@@ -73,7 +73,7 @@ public class DOM extends com.google.gwt.user.client.DOM {
 			initVMLNamespaceForIE();
 		}
 	}
-	
+
 	/**
 	 * Assemble an DOM id.
 	 * 
@@ -177,7 +177,7 @@ public class DOM extends com.google.gwt.user.client.DOM {
 	/**
 	 * Is the user currently running Internet Explorer?
 	 * 
-	 * @return
+	 * @return true or false - yes or no.
 	 */
 	public static boolean isIE() {
 		return SC.isIE();
@@ -186,7 +186,7 @@ public class DOM extends com.google.gwt.user.client.DOM {
 	/**
 	 * Is the user currently using FireFox?
 	 * 
-	 * @return
+	 * @return true or false - yes or no.
 	 */
 	public static boolean isFireFox() {
 		return getUserAgent().contains("firefox");
@@ -195,10 +195,28 @@ public class DOM extends com.google.gwt.user.client.DOM {
 	/**
 	 * Is the user currently using Chrome?
 	 * 
-	 * @return
+	 * @return true or false - yes or no.
 	 */
 	public static boolean isChrome() {
 		return getUserAgent().contains("chrome");
+	}
+
+	/**
+	 * Is the user currently using Safari?
+	 * 
+	 * @return true or false - yes or no.
+	 */
+	public static boolean isSafari() {
+		return getUserAgent().contains("safari");
+	}
+
+	/**
+	 * Is the user currently using a Webkit based browser (such as Chrome or Safari)?
+	 * 
+	 * @return true or false - yes or no.
+	 */
+	public static boolean isWebkit() {
+		return getUserAgent().contains("webkit");
 	}
 
 	private static native String getUserAgent()
@@ -217,12 +235,11 @@ public class DOM extends com.google.gwt.user.client.DOM {
 	 *            The string of SVG to set on the element.
 	 */
 	public static void setInnerSvg(Element element, String svg) {
-		svg = "<g xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">"
-				+ svg + "</g>";
+		svg = "<g xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\">" + svg + "</g>";
 		if (isFireFox()) {
 			setFireFoxInnerHTML(element, svg);
-		} else if (isChrome()) {
-			setChromeInnerHTML(element, svg);
+		} else if (isWebkit()) {
+			setWebkitInnerHTML(element, svg);
 		}
 	}
 
@@ -237,7 +254,7 @@ public class DOM extends com.google.gwt.user.client.DOM {
 		 }
 	 }-*/;
 
-	private static native void setChromeInnerHTML(Element element, String svg)
+	private static native void setWebkitInnerHTML(Element element, String svg)
 	/*-{
 		 var fragment = new DOMParser().parseFromString(svg,"text/xml");	
 		 if(fragment) {
