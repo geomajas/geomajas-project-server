@@ -72,10 +72,10 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 					<property name="licenseUrl" value="http://www.extreme.indiana.edu/viewcvs/XPP3/java/LICENSE.txt?rev=HEAD"/>
 				</bean>
 				<bean class="org.geomajas.global.CopyrightInfo">
-					<property name="key" value="JAI (Java Advanced imaging)"/>
-					<property name="copyright" value="Copyright © 2005 Sun Microsystems, Inc. All  Rights Reserved"/>
-					<property name="licenseName" value="Sun Binary Code License Agreement"/>
-					<property name="licenseUrl" value="https://jai-imageio-core.dev.java.net/source/browse/jai-imageio-core/LICENSE-codecLibJIIO.txt?only_with_tag=MAIN&view=markup"/>
+					<property name="key" value="JAI"/>
+					<property name="copyright" value="Copyright © 2006 Sun Microsystems, Inc. All  Rights Reserved"/>
+					<property name="licenseName" value="Java Distribution License (JDL)"/>
+					<property name="licenseUrl" value="https://jai.dev.java.net/#Licenses"/>
 				</bean>
 			</list>
 		</property>

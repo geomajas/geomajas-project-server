@@ -137,6 +137,12 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 					<property name="licenseUrl" value="http://openjdk.java.net/legal/gplv2+ce.html"/>
 				</bean>
 				<bean class="org.geomajas.global.CopyrightInfo">
+					<property name="key" value="JAI"/>
+					<property name="copyright" value="Copyright © 2006 Sun Microsystems, Inc. All  Rights Reserved"/>
+					<property name="licenseName" value="Java Distribution License (JDL)"/>
+					<property name="licenseUrl" value="https://jai.dev.java.net/#Licenses"/>
+				</bean>
+				<bean class="org.geomajas.global.CopyrightInfo">
 					<property name="key" value="javax.servlet"/>
 					<property name="copyright" value=""/>
 					<property name="licenseName" value="CDDL 1.0 or GPL 2 (dual license)"/>
