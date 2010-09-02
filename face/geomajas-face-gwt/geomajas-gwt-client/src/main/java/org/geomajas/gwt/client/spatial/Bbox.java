@@ -286,6 +286,12 @@ public class Bbox {
 		}
 	}
 	
+	/**
+	 * Creates a bbox that fits exactly in this box but has a different width/height ratio.
+	 * @param ratioWidth
+	 * @param ratioHeight
+	 * @return
+	 */
 	public Bbox createFittingBox(double ratioWidth, double ratioHeight) {
 		if (ratioWidth > 0 && ratioHeight > 0) {
 			double newRatio = ratioWidth / ratioHeight;

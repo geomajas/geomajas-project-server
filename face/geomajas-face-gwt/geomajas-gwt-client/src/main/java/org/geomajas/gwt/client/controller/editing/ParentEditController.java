@@ -61,7 +61,7 @@ public class ParentEditController extends EditController {
 
 	/** The real controller responsible for editing. */
 	private EditController controller;
-
+	
 	private TransactionGeomIndex geometryIndex;
 
 	private int pixelTolerance = -1;

@@ -171,6 +171,10 @@ public abstract class AbstractGraphicsController implements GraphicsController {
 		return GwtEventUtil.getPosition(event, offsetX, offsetY);
 	}
 
+	protected Coordinate getPanPosition(MouseEvent<?> event) {
+		return getTransformer().viewToPan(GwtEventUtil.getPosition(event, offsetX, offsetY));
+	}
+
 	protected Coordinate getWorldPosition(MouseEvent<?> event) {
 		return getTransformer().viewToWorld(GwtEventUtil.getPosition(event, offsetX, offsetY));
 	}

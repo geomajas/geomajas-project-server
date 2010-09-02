@@ -209,7 +209,7 @@ public class PolygonEditController extends EditController {
 	protected void createTempLines(FeatureTransaction featureTransaction, MouseEvent<?> event) {
 		if (featureTransaction.getNewFeatures() != null && featureTransaction.getNewFeatures().length > 0
 				&& tempLine1 == null) {
-			Coordinate position = getScreenPosition(event);
+			Coordinate position = getPanPosition(event);
 			Geometry geom = getGeometryIndex().getGeometry(featureTransaction);
 			LineString lineString = geom.getGeometryFactory().createLineString(new Coordinate[] { position, position });
 			tempLine1 = new GfxGeometry("LineStringEditController.updateLine1");
@@ -236,15 +236,15 @@ public class PolygonEditController extends EditController {
 					Coordinate lastCoordinate = coordinates[coordinates.length - 2];
 					LineString lineString1 = featureTransaction.getNewFeatures()[index.getFeatureIndex()].getGeometry()
 							.getGeometryFactory().createLineString(
-									new Coordinate[] {getTransformer().worldToView(lastCoordinate),
-											getScreenPosition(event)});
+									new Coordinate[] {getTransformer().worldToPan(lastCoordinate),
+											getPanPosition(event)});
 					tempLine1.setGeometry(lineString1);
 					mapWidget.render(tempLine1, RenderGroup.VECTOR, RenderStatus.ALL);
 
 					LineString lineString2 = featureTransaction.getNewFeatures()[index.getFeatureIndex()].getGeometry()
 							.getGeometryFactory().createLineString(
-									new Coordinate[] {getTransformer().worldToView(coordinates[0]),
-											getScreenPosition(event)});
+									new Coordinate[] {getTransformer().worldToPan(coordinates[0]),
+											getPanPosition(event)});
 					tempLine2.setGeometry(lineString2);
 					mapWidget.render(tempLine2, RenderGroup.VECTOR, RenderStatus.ALL);
 				}

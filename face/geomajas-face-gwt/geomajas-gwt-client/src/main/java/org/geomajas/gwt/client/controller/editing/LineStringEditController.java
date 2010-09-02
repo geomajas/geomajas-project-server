@@ -116,6 +116,8 @@ public class LineStringEditController extends EditController {
 	public void cleanup() {
 		removeTempLine();
 	}
+	
+	
 
 	// -------------------------------------------------------------------------
 	// MapController implementation:
@@ -197,7 +199,7 @@ public class LineStringEditController extends EditController {
 	private void createTempLine(FeatureTransaction featureTransaction, MouseEvent<?> event) {
 		if (featureTransaction.getNewFeatures() != null && featureTransaction.getNewFeatures().length > 0
 				&& tempLine == null) {
-			Coordinate position = getScreenPosition(event);
+			Coordinate position = getPanPosition(event);
 			LineString lineString = getGeometryIndex().getGeometry(featureTransaction).getGeometryFactory()
 					.createLineString(new Coordinate[] { position, position });
 			tempLine = new GfxGeometry("LineStringEditController.updateLine");
@@ -214,9 +216,9 @@ public class LineStringEditController extends EditController {
 			}
 			Coordinate[] coordinates = getGeometryIndex().getGeometry(featureTransaction).getCoordinates();
 			if (coordinates != null && coordinates.length > 0) {
-				Coordinate lastCoordinate = getTransformer().worldToView(coordinates[coordinates.length - 1]);
+				Coordinate lastCoordinate = getTransformer().worldToPan(coordinates[coordinates.length - 1]);
 				LineString lineString = featureTransaction.getNewFeatures()[0].getGeometry().getGeometryFactory()
-						.createLineString(new Coordinate[] { lastCoordinate, getScreenPosition(event) });
+						.createLineString(new Coordinate[] { lastCoordinate, getPanPosition(event) });
 				tempLine.setGeometry(lineString);
 				mapWidget.render(tempLine, RenderGroup.VECTOR, RenderStatus.ALL);
 			}

@@ -252,6 +252,90 @@ public class WorldViewTransformer {
 	}
 
 	/**
+	 * Transform a coordinate from view space to pan space.
+	 * 
+	 * @param coordinate
+	 *            The views pace coordinate.
+	 * @return Returns the pan space equivalent of the given coordinate.
+	 */
+	public Coordinate viewToPan(Coordinate coordinate) {
+		if (coordinate != null) {
+			Vector2D position = new Vector2D(coordinate);
+			double scale = mapView.getCurrentScale();
+			Coordinate panOrigin = mapView.getPanOrigin();
+			
+			double translateX = (camera.getX() - panOrigin.getX()) * scale - (mapView.getWidth() / 2);
+			double translateY = -(camera.getY() - panOrigin.getY()) * scale - (mapView.getHeight() / 2);
+			position.translate(translateX , translateY);
+
+			if (camera.getAlpha() != 0) {
+				// TODO: implement rotation support.
+			}
+			return new Coordinate(position.getX(), position.getY());
+		}
+		return null;
+	}
+
+	public Bbox viewToPan(Bbox bbox) {
+		if (bbox != null) {
+			Coordinate c1 = viewToPan(bbox.getOrigin());
+			Coordinate c2 = viewToPan(bbox.getEndPoint());
+			double x = (c1.getX() < c2.getX()) ? c1.getX() : c2.getX();
+			double y = (c1.getY() < c2.getY()) ? c1.getY() : c2.getY();
+			return new Bbox(x, y, Math.abs(c1.getX() - c2.getX()), Math.abs(c1.getY() - c2.getY()));
+		}
+		return null;
+	}
+
+	public Geometry viewToPan(Geometry geometry) {
+		if (geometry != null) {
+			if (geometry instanceof Point) {
+				Coordinate transformed = viewToPan(geometry.getCoordinate());
+				return geometry.getGeometryFactory().createPoint(transformed);
+			} else if (geometry instanceof LinearRing) {
+				Coordinate[] coordinates = new Coordinate[geometry.getNumPoints()];
+				for (int i = 0; i < coordinates.length; i++) {
+					coordinates[i] = viewToPan(geometry.getCoordinates()[i]);
+				}
+				return geometry.getGeometryFactory().createLinearRing(coordinates);
+			} else if (geometry instanceof LineString) {
+				Coordinate[] coordinates = new Coordinate[geometry.getNumPoints()];
+				for (int i = 0; i < coordinates.length; i++) {
+					coordinates[i] = viewToPan(geometry.getCoordinates()[i]);
+				}
+				return geometry.getGeometryFactory().createLineString(coordinates);
+			} else if (geometry instanceof Polygon) {
+				Polygon polygon = (Polygon) geometry;
+				LinearRing shell = (LinearRing) worldToPan(polygon.getExteriorRing());
+				LinearRing[] holes = new LinearRing[polygon.getNumInteriorRing()];
+				for (int n = 0; n < polygon.getNumInteriorRing(); n++) {
+					holes[n] = (LinearRing) viewToPan(polygon.getInteriorRingN(n));
+				}
+				return polygon.getGeometryFactory().createPolygon(shell, holes);
+			} else if (geometry instanceof MultiPoint) {
+				Point[] points = new Point[geometry.getNumGeometries()];
+				for (int n = 0; n < geometry.getNumGeometries(); n++) {
+					points[n] = (Point) viewToPan(geometry.getGeometryN(n));
+				}
+				return geometry.getGeometryFactory().createMultiPoint(points);
+			} else if (geometry instanceof MultiLineString) {
+				LineString[] lineStrings = new LineString[geometry.getNumGeometries()];
+				for (int n = 0; n < geometry.getNumGeometries(); n++) {
+					lineStrings[n] = (LineString) viewToPan(geometry.getGeometryN(n));
+				}
+				return geometry.getGeometryFactory().createMultiLineString(lineStrings);
+			} else if (geometry instanceof MultiPolygon) {
+				Polygon[] polygons = new Polygon[geometry.getNumGeometries()];
+				for (int n = 0; n < geometry.getNumGeometries(); n++) {
+					polygons[n] = (Polygon) viewToPan(geometry.getGeometryN(n));
+				}
+				return geometry.getGeometryFactory().createMultiPolygon(polygons);
+			}
+		}
+		return null;
+	}
+
+	/**
 	 * Transform a coordinate from view space to world space.
 	 * 
 	 * @param coordinate

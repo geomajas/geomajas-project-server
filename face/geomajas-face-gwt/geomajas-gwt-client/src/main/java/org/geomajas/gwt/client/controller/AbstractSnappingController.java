@@ -112,6 +112,17 @@ public abstract class AbstractSnappingController extends AbstractGraphicsControl
 	}
 
 	/**
+	 * Return the screen position of the mouse event, unless snapping is activated. If that is the case, a snapped
+	 * point will be returned (still in pan space).
+	 */
+	protected Coordinate getPanPosition(MouseEvent<?> event) {
+		if (snappingActive) {
+			return getTransformer().worldToPan(getWorldPosition(event));
+		}
+		return super.getPanPosition(event);
+	}
+
+	/**
 	 * Return the world position of the mouse event, unless snapping is activated. If that is the case, a snapped point
 	 * will be returned (still in world space).
 	 */

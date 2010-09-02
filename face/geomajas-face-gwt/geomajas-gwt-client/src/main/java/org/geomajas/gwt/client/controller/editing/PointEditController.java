@@ -104,6 +104,7 @@ public class PointEditController extends EditController {
 	// MapController implementation:
 	// -------------------------------------------------------------------------
 
+
 	public void onMouseDown(MouseDownEvent event) {
 		FeatureTransaction featureTransaction = getFeatureTransaction();
 		if (featureTransaction != null && parent.getEditMode() == EditMode.DRAG_MODE

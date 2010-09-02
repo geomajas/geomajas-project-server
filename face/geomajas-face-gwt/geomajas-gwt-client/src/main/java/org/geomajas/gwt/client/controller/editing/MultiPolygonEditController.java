@@ -82,15 +82,15 @@ public class MultiPolygonEditController extends PolygonEditController {
 					Coordinate lastCoordinate = coordinates[coordinates.length - 2];
 					LineString lineString1 = featureTransaction.getNewFeatures()[index.getFeatureIndex()].getGeometry()
 							.getGeometryFactory().createLineString(
-									new Coordinate[] {getTransformer().worldToView(lastCoordinate),
-											getScreenPosition(event)});
+									new Coordinate[] {getTransformer().worldToPan(lastCoordinate),
+											getPanPosition(event)});
 					tempLine1.setGeometry(lineString1);
 					mapWidget.render(tempLine1, RenderGroup.VECTOR, RenderStatus.ALL);
 
 					LineString lineString2 = featureTransaction.getNewFeatures()[index.getFeatureIndex()].getGeometry()
 							.getGeometryFactory().createLineString(
-									new Coordinate[] {getTransformer().worldToView(coordinates[0]),
-											getScreenPosition(event)});
+									new Coordinate[] {getTransformer().worldToPan(coordinates[0]),
+											getPanPosition(event)});
 					tempLine2.setGeometry(lineString2);
 					mapWidget.render(tempLine2, RenderGroup.VECTOR, RenderStatus.ALL);
 				}
