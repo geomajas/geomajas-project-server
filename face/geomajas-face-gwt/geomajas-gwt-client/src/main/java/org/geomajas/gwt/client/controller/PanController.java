@@ -49,6 +49,10 @@ public class PanController extends AbstractGraphicsController {
 
 	private boolean dragging;
 
+	private boolean moving;
+
+	private boolean showCursorOnMove;
+
 	private Coordinate begin;
 
 	private ZoomToRectangleController zoomToRectangleController;
@@ -62,6 +66,25 @@ public class PanController extends AbstractGraphicsController {
 		zoomToRectangleController = new ZoomToRectangleController(mapWidget);
 	}
 
+	/**
+	 * Should the cursor only be shown when mouse is dragged (defaults to false) ?
+	 * 
+	 * @return true if to be shown on drag
+	 */
+	public boolean isShowCursorOnMove() {
+		return showCursorOnMove;
+	}
+
+	/**
+	 * If set to true, the move cursor is only shown when the mouse is dragged.
+	 * 
+	 * @param showCursorOnMove
+	 *            true if cursor should be shown on move (defaults to false)
+	 */
+	public void setShowCursorOnMove(boolean showCursorOnMove) {
+		this.showCursorOnMove = showCursorOnMove;
+	}
+
 	@Override
 	public void onMouseDown(MouseDownEvent event) {
 		if (event.isControlKeyDown() || event.isShiftKeyDown()) {
@@ -71,7 +94,9 @@ public class PanController extends AbstractGraphicsController {
 			dragging = true;
 			mapWidget.getMapModel().getMapView().setPanDragging(true);
 			begin = getScreenPosition(event);
-			mapWidget.setCursor(Cursor.MOVE);
+			if (!isShowCursorOnMove()) {
+				mapWidget.setCursor(Cursor.MOVE);
+			}
 		}
 		lastClickPosition = getWorldPosition(event);
 	}
@@ -91,6 +116,10 @@ public class PanController extends AbstractGraphicsController {
 		if (zooming) {
 			zoomToRectangleController.onMouseMove(event);
 		} else if (dragging) {
+			if (!moving && isShowCursorOnMove()) {
+				mapWidget.setCursor(Cursor.MOVE);
+			}
+			moving = true;
 			updateView(event);
 		}
 	}
@@ -116,11 +145,16 @@ public class PanController extends AbstractGraphicsController {
 		mapWidget.getMapModel().getMapView().applyBounds(newBounds, ZoomOption.LEVEL_CHANGE);
 	}
 
+	public boolean isMoving() {
+		return moving;
+	}
+
 	// Private methods:
 
 	private void stopPanning(MouseUpEvent event) {
 		mapWidget.getMapModel().getMapView().setPanDragging(false);
 		dragging = false;
+		moving = false;
 		mapWidget.setCursor(Cursor.DEFAULT);
 		if (null != event) {
 			updateView(event);
@@ -131,8 +165,8 @@ public class PanController extends AbstractGraphicsController {
 		Coordinate end = getScreenPosition(event);
 		Coordinate beginWorld = getTransformer().viewToWorld(begin);
 		Coordinate endWorld = getTransformer().viewToWorld(end);
-		mapWidget.getMapModel().getMapView()
-				.translate(beginWorld.getX() - endWorld.getX(), beginWorld.getY() - endWorld.getY());
+		mapWidget.getMapModel().getMapView().translate(beginWorld.getX() - endWorld.getX(),
+				beginWorld.getY() - endWorld.getY());
 		begin = end;
 	}
 }

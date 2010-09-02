@@ -131,6 +131,14 @@ public abstract class EditController extends AbstractSnappingController {
 	public abstract void cleanup();
 
 	/**
+	 * True if this controller is busy. A busy controller should receive all subsequent mouse events until this method
+	 * returns false.
+	 * 
+	 * @return true if busy
+	 */
+	public abstract boolean isBusy();
+	
+	/**
 	 * Show an overview of geometric attributes of the geometry that's being edited.
 	 */
 	public void showGeometricInfo() {

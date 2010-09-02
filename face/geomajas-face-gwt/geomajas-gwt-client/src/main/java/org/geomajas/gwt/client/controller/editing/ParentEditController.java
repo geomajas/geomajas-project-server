@@ -35,6 +35,7 @@ import org.geomajas.gwt.client.action.menu.NewFeatureAction;
 import org.geomajas.gwt.client.action.menu.ToggleSelectionAction;
 import org.geomajas.gwt.client.action.toolbar.SelectionModalAction;
 import org.geomajas.gwt.client.action.toolbar.ToolbarRegistry;
+import org.geomajas.gwt.client.controller.PanController;
 import org.geomajas.gwt.client.map.feature.TransactionGeomIndex;
 import org.geomajas.gwt.client.widget.MapWidget;
 
@@ -62,6 +63,8 @@ public class ParentEditController extends EditController {
 	/** The real controller responsible for editing. */
 	private EditController controller;
 	
+	private PanController panner;
+	
 	private TransactionGeomIndex geometryIndex;
 
 	private int pixelTolerance = -1;
@@ -72,6 +75,8 @@ public class ParentEditController extends EditController {
 
 	public ParentEditController(MapWidget mapWidget) {
 		super(mapWidget, null);
+		panner = new PanController(mapWidget);
+		panner.setShowCursorOnMove(true);
 	}
 
 	// -------------------------------------------------------------------------
@@ -145,6 +150,12 @@ public class ParentEditController extends EditController {
 			controller.hideGeometricInfo();
 		}
 	}
+	
+	public boolean isBusy() {
+		// busy when inserting or dragging has started
+		return controller != null && controller.isBusy();
+	}
+
 
 	// -------------------------------------------------------------------------
 	// Event handler functions delegating to child controller:
@@ -153,28 +164,52 @@ public class ParentEditController extends EditController {
 	public void onMouseDown(MouseDownEvent event) {
 		if (controller != null) {
 			controller.onMouseDown(event);
+			if (!controller.isBusy()) {
+				panner.onMouseDown(event);
+			}
+		} else {
+			panner.onMouseDown(event);
 		}
 	}
 
 	public void onMouseUp(MouseUpEvent event) {
 		if (controller != null) {
 			controller.onMouseUp(event);
-		} else if (event.getNativeButton() != Event.BUTTON_RIGHT) {
-			// Check if we can toggle selection on a feature:
-			ToggleSelectionAction action = new ToggleSelectionAction(mapWidget, getPixelTolerance());
-			action.toggle(getScreenPosition(event), true);
+			if (!controller.isBusy()) {
+				panner.onMouseUp(event);
+			}
+		} else {
+			if (event.getNativeButton() != Event.BUTTON_RIGHT) {
+				boolean moving = panner.isMoving();
+				panner.onMouseUp(event);
+				if (!moving) {
+					// Check if we can toggle selection on a feature:
+					ToggleSelectionAction action = new ToggleSelectionAction(mapWidget, getPixelTolerance());
+					action.toggle(getScreenPosition(event), true);
+				}
+			}
 		}
 	}
 
 	public void onMouseMove(MouseMoveEvent event) {
 		if (controller != null) {
 			controller.onMouseMove(event);
+			if (!controller.isBusy()) {
+				panner.onMouseMove(event);
+			}
+		} else {
+			panner.onMouseMove(event);
 		}
 	}
 
 	public void onMouseOut(MouseOutEvent event) {
 		if (controller != null) {
 			controller.onMouseOut(event);
+			if (!controller.isBusy()) {
+				panner.onMouseOut(event);
+			}
+		} else {
+			panner.onMouseOut(event);
 		}
 	}
 
@@ -193,6 +228,11 @@ public class ParentEditController extends EditController {
 	public void onDoubleClick(DoubleClickEvent event) {
 		if (controller != null) {
 			controller.onDoubleClick(event);
+			if (!controller.isBusy()) {
+				panner.onDoubleClick(event);
+			}
+		} else {
+			panner.onDoubleClick(event);
 		}
 	}
 

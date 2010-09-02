@@ -35,6 +35,7 @@ import org.geomajas.gwt.client.action.menu.ToggleEditModeAction;
 import org.geomajas.gwt.client.action.menu.ToggleGeometricInfoAction;
 import org.geomajas.gwt.client.action.menu.ToggleSnappingAction;
 import org.geomajas.gwt.client.action.menu.UndoOperationAction;
+import org.geomajas.gwt.client.controller.editing.EditController.EditMode;
 import org.geomajas.gwt.client.gfx.paintable.GfxGeometry;
 import org.geomajas.gwt.client.gfx.style.ShapeStyle;
 import org.geomajas.gwt.client.map.feature.Feature;
@@ -127,6 +128,11 @@ public class PolygonEditController extends EditController {
 
 	public void cleanup() {
 		removeTempLines();
+	}
+
+	public boolean isBusy() {
+		// busy when inserting or dragging has started
+		return getEditMode() == EditMode.INSERT_MODE || (getEditMode() == EditMode.DRAG_MODE && dragTargetId != null);
 	}
 
 	// -------------------------------------------------------------------------

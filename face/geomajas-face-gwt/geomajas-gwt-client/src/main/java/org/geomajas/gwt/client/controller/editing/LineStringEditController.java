@@ -117,11 +117,15 @@ public class LineStringEditController extends EditController {
 		removeTempLine();
 	}
 	
-	
+	public boolean isBusy() {
+		// busy when inserting or dragging has started
+		return getEditMode() == EditMode.INSERT_MODE || (getEditMode() == EditMode.DRAG_MODE && dragTargetId != null);
+	}
 
 	// -------------------------------------------------------------------------
 	// MapController implementation:
 	// -------------------------------------------------------------------------
+
 
 	public void onMouseDown(MouseDownEvent event) {
 		FeatureTransaction featureTransaction = getFeatureTransaction();

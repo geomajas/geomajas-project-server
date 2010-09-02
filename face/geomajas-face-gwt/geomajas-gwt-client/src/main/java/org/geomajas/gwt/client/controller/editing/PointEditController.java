@@ -28,6 +28,7 @@ import org.geomajas.gwt.client.action.menu.CancelEditingAction;
 import org.geomajas.gwt.client.action.menu.SaveEditingAction;
 import org.geomajas.gwt.client.action.menu.ToggleGeometricInfoAction;
 import org.geomajas.gwt.client.action.menu.UndoOperationAction;
+import org.geomajas.gwt.client.controller.editing.EditController.EditMode;
 import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.feature.FeatureTransaction;
 import org.geomajas.gwt.client.map.feature.TransactionGeomIndex;
@@ -98,6 +99,11 @@ public class PointEditController extends EditController {
 	}
 
 	public void cleanup() {
+	}
+
+	public boolean isBusy() {
+		// busy when inserting or dragging has started
+		return getEditMode() == EditMode.INSERT_MODE || (getEditMode() == EditMode.DRAG_MODE && dragTargetId != null);
 	}
 
 	// -------------------------------------------------------------------------
