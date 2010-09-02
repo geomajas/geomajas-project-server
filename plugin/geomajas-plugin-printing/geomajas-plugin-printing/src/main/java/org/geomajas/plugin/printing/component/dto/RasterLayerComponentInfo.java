@@ -24,6 +24,8 @@ package org.geomajas.plugin.printing.component.dto;
 
 import java.io.Serializable;
 
+import org.geomajas.global.Api;
+
 /**
  * DTO object for RasterLayerComponent.
  * 
@@ -31,9 +33,10 @@ import java.io.Serializable;
  * @see org.geomajas.plugin.printing.component.RasterLayerComponent
  *
  */
+@Api(allMethods = true)
 public class RasterLayerComponentInfo extends BaseLayerComponentInfo implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 200L;
 
 	private String style = "";
 

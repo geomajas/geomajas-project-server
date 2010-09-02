@@ -24,6 +24,8 @@ package org.geomajas.plugin.printing.component.dto;
 
 import java.io.Serializable;
 
+import org.geomajas.global.Api;
+
 /**
  * DTO object for LegendItemComponent.
  * 
@@ -31,7 +33,10 @@ import java.io.Serializable;
  * @see org.geomajas.plugin.printing.component.LegendItemComponent
  *
  */
+@Api(allMethods = true)
 public class LegendItemComponentInfo  extends PrintComponentInfo implements Serializable {
+
+	private static final long serialVersionUID = 200L;
 	
 	public LegendItemComponentInfo() {
 		getLayoutConstraint().setAlignmentX(LayoutConstraintInfo.LEFT);

@@ -22,13 +22,15 @@
  */
 package org.geomajas.plugin.printing.component;
 
+import org.geomajas.plugin.printing.component.dto.ScaleBarComponentInfo;
+
 /**
  * Component representing a scale bar.
  * 
  * @author Jan De Moerloose
  *
  */
-public interface ScaleBarComponent extends PrintComponent {
+public interface ScaleBarComponent extends PrintComponent<ScaleBarComponentInfo> {
 
 	int getTicNumber();
 

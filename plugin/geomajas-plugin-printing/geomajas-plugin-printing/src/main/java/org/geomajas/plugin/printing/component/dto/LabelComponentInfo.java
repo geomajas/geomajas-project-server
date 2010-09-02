@@ -25,6 +25,7 @@ package org.geomajas.plugin.printing.component.dto;
 import java.io.Serializable;
 
 import org.geomajas.configuration.FontStyleInfo;
+import org.geomajas.global.Api;
 
 /**
  * DTO object for LabelComponent.
@@ -33,7 +34,10 @@ import org.geomajas.configuration.FontStyleInfo;
  * @see org.geomajas.plugin.printing.component.LabelComponent
  *
  */
+@Api(allMethods = true)
 public class LabelComponentInfo extends PrintComponentInfo implements Serializable {
+
+	private static final long serialVersionUID = 200L;
 
 	private FontStyleInfo font;
 

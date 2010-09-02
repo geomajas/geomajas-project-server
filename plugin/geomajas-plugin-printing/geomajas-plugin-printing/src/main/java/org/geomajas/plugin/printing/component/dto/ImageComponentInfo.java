@@ -24,6 +24,8 @@ package org.geomajas.plugin.printing.component.dto;
 
 import java.io.Serializable;
 
+import org.geomajas.global.Api;
+
 /**
  * DTO object for ImageComponent.
  * 
@@ -31,7 +33,10 @@ import java.io.Serializable;
  * @see org.geomajas.plugin.printing.component.ImageComponent
  *
  */
+@Api(allMethods = true)
 public class ImageComponentInfo extends PrintComponentInfo implements Serializable {
+
+	private static final long serialVersionUID = 200L;
 
 	private String imagePath;
 

@@ -34,8 +34,6 @@ import org.geomajas.plugin.printing.component.PdfContext;
 import org.geomajas.plugin.printing.component.PrintComponent;
 import org.geomajas.plugin.printing.component.PrintComponentVisitor;
 import org.geomajas.plugin.printing.component.dto.MapComponentInfo;
-import org.geomajas.plugin.printing.component.dto.PrintComponentInfo;
-import org.geomajas.plugin.printing.component.service.PrintDtoConverterService;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -46,10 +44,12 @@ import com.vividsolutions.jts.geom.Coordinate;
  * Map component for inclusion in printed documents.
  *
  * @author Jan De Moerloose
+ * 
+ * @param <T> DTO object class
  */
 @Component("MapComponentPrototype")
 @Scope(value = "prototype")
-public class MapComponentImpl extends PrintComponentImpl implements MapComponent {
+public class MapComponentImpl<T extends MapComponentInfo> extends PrintComponentImpl<T> implements MapComponent<T> {
 
 	/**
 	 * Map id
@@ -165,9 +165,9 @@ public class MapComponentImpl extends PrintComponentImpl implements MapComponent
 		if (null == filters) {
 			return;
 		}
-		List<PrintComponent> toDelete = new LinkedList<PrintComponent>();
+		List<PrintComponent<?>> toDelete = new LinkedList<PrintComponent<?>>();
 
-		for (PrintComponent pr : children) {
+		for (PrintComponent<?> pr : children) {
 			if (pr instanceof VectorLayerComponentImpl) {
 				VectorLayerComponentImpl comp = (VectorLayerComponentImpl) pr;
 				String filter = filters.get(comp.getLayerId());
@@ -190,7 +190,7 @@ public class MapComponentImpl extends PrintComponentImpl implements MapComponent
 	// ------------------------------------------------------------------------
 
 	private void renderViewPorts(PdfContext context) {
-		for (PrintComponent child : getChildren()) {
+		for (PrintComponent<?> child : getChildren()) {
 			if (child instanceof ViewPortComponentImpl) {
 				renderViewPort((ViewPortComponentImpl) child, context);
 			}
@@ -233,20 +233,19 @@ public class MapComponentImpl extends PrintComponentImpl implements MapComponent
 
 
 	public void clearLayers() {
-		List<PrintComponent> layers = new ArrayList<PrintComponent>();
-		for (PrintComponent child : children) {
+		List<PrintComponent<?>> layers = new ArrayList<PrintComponent<?>>();
+		for (PrintComponent<?> child : children) {
 			if (child instanceof VectorLayerComponentImpl || child instanceof RasterLayerComponentImpl) {
 				layers.add(child);
 			}
 		}
-		for (PrintComponent layer : layers) {
+		for (PrintComponent<?> layer : layers) {
 			removeComponent(layer);
 		}
 	}
 	
-	public void fromDto(PrintComponentInfo info, PrintDtoConverterService service) {
-		super.fromDto(info, service);
-		MapComponentInfo mapInfo = (MapComponentInfo) info;
+	public void fromDto(T mapInfo) {
+		super.fromDto(mapInfo);
 		setApplicationId(mapInfo.getApplicationId());
 		setMapId(mapInfo.getMapId());
 		setLocation(createCoordinate(mapInfo.getLocation()));
@@ -257,6 +256,5 @@ public class MapComponentImpl extends PrintComponentImpl implements MapComponent
 	private Coordinate createCoordinate(org.geomajas.geometry.Coordinate coordinate) {
 		return new Coordinate(coordinate.getX(), coordinate.getY());
 	}
-
 
 }

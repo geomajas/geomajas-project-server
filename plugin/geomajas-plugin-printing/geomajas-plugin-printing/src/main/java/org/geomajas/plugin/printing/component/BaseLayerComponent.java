@@ -22,13 +22,16 @@
  */
 package org.geomajas.plugin.printing.component;
 
+import org.geomajas.plugin.printing.component.dto.PrintComponentInfo;
+
 /**
  * Base layer component for printing.
  * 
  * @author Jan De Moerloose
  *
+ * @param <T> DTO object class
  */
-public interface BaseLayerComponent extends PrintComponent {
+public interface BaseLayerComponent<T extends PrintComponentInfo> extends PrintComponent<T> {
 
 	/*
 	 * (non-Javadoc)

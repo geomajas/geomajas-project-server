@@ -29,9 +29,9 @@ import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.layer.LayerType;
 import org.geomajas.plugin.printing.component.LayoutConstraint;
 import org.geomajas.plugin.printing.component.LegendComponent;
-import org.geomajas.plugin.printing.component.LegendItemComponent;
 import org.geomajas.plugin.printing.component.PdfContext;
 import org.geomajas.plugin.printing.component.PrintComponentVisitor;
+import org.geomajas.plugin.printing.component.dto.LegendItemComponentInfo;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -42,7 +42,7 @@ import org.springframework.stereotype.Component;
  */
 @Component("LegendItemComponentPrototype")
 @Scope(value = "prototype")
-public class LegendItemComponentImpl extends PrintComponentImpl implements LegendItemComponent {
+public class LegendItemComponentImpl extends PrintComponentImpl<LegendItemComponentInfo> {
 
 	public LegendItemComponentImpl() {
 		setConstraint(new LayoutConstraint(LayoutConstraint.LEFT, LayoutConstraint.BOTTOM,
@@ -66,7 +66,6 @@ public class LegendItemComponentImpl extends PrintComponentImpl implements Legen
 	 * @param visitor
 	 */
 	public void accept(PrintComponentVisitor visitor) {
-		visitor.visit(this);
 	}
 	
 	@Override

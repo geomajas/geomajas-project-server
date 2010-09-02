@@ -30,14 +30,11 @@ package org.geomajas.plugin.printing.component;
  */
 public abstract class TopDownVisitor implements PrintComponentVisitor {
 
-	public void visitTree(PrintComponent component) {
+	public void visitTree(PrintComponent<?> component) {
 		component.accept(this);
-		for (PrintComponent child : component.getChildren()) {
+		for (PrintComponent<?> child : component.getChildren()) {
 			visitTree(child);
 		}
-	}
-
-	public void visit(ImageComponent image) {
 	}
 
 	public void visit(LabelComponent label) {
@@ -46,25 +43,13 @@ public abstract class TopDownVisitor implements PrintComponentVisitor {
 	public void visit(LegendComponent legend) {
 	}
 
-	public void visit(LegendIconComponent legendIcon) {
-	}
-
-	public void visit(LegendItemComponent legendItem) {
-	}
-
 	public void visit(MapComponent map) {
 	}
 
 	public void visit(PageComponent page) {
 	}
 
-	public void visit(RasterLayerComponent rasterLayer) {
-	}
-
 	public void visit(ScaleBarComponent scaleBar) {
-	}
-
-	public void visit(VectorLayerComponent vectorLayer) {
 	}
 
 	public void visit(ViewPortComponent viewPort) {

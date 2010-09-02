@@ -32,7 +32,6 @@ import org.geomajas.plugin.printing.component.LayoutConstraint;
 import org.geomajas.plugin.printing.component.PdfContext;
 import org.geomajas.plugin.printing.component.PrintComponentVisitor;
 import org.geomajas.plugin.printing.component.ScaleBarComponent;
-import org.geomajas.plugin.printing.component.dto.PrintComponentInfo;
 import org.geomajas.plugin.printing.component.dto.ScaleBarComponentInfo;
 import org.geomajas.plugin.printing.component.service.PrintConfigurationService;
 import org.geomajas.plugin.printing.component.service.PrintDtoConverterService;
@@ -56,7 +55,7 @@ import com.thoughtworks.xstream.annotations.XStreamOmitField;
  */
 @Component("ScaleBarComponentPrototype")
 @Scope(value = "prototype")
-public class ScaleBarComponentImpl extends PrintComponentImpl implements ScaleBarComponent {
+public class ScaleBarComponentImpl extends PrintComponentImpl<ScaleBarComponentInfo> implements ScaleBarComponent {
 
 	@XStreamOmitField
 	private final Logger log = LoggerFactory.getLogger(ScaleBarComponentImpl.class);
@@ -104,6 +103,10 @@ public class ScaleBarComponentImpl extends PrintComponentImpl implements ScaleBa
 	@Autowired
 	@XStreamOmitField
 	private GeoService geoService;
+
+	@Autowired
+	@XStreamOmitField
+	private PrintDtoConverterService converterService;
 
 	private static final float[] ALLOW_TICK_NUMBERS = new float[] { 1, 2, 5, 10, 25, 50, 100, 200, 250, 500, 750 };
 
@@ -279,12 +282,11 @@ public class ScaleBarComponentImpl extends PrintComponentImpl implements ScaleBa
 		this.unit = unit;
 	}
 	
-	public void fromDto(PrintComponentInfo info, PrintDtoConverterService service) {
-		super.fromDto(info, service);
-		ScaleBarComponentInfo scaleBarInfo = (ScaleBarComponentInfo) info;
+	public void fromDto(ScaleBarComponentInfo scaleBarInfo) {
+		super.fromDto(scaleBarInfo);
 		setTicNumber(scaleBarInfo.getTicNumber());
 		setUnit(scaleBarInfo.getUnit());
-		setFont(service.toInternal(scaleBarInfo.getFont()));
+		setFont(converterService.toInternal(scaleBarInfo.getFont()));
 	}
 
 	

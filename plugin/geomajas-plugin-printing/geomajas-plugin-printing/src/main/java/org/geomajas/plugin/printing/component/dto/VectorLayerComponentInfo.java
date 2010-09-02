@@ -25,6 +25,7 @@ package org.geomajas.plugin.printing.component.dto;
 import java.io.Serializable;
 
 import org.geomajas.configuration.NamedStyleInfo;
+import org.geomajas.global.Api;
 
 /**
  * DTO object for VectorLayerComponent.
@@ -33,7 +34,10 @@ import org.geomajas.configuration.NamedStyleInfo;
  * @see org.geomajas.plugin.printing.component.VectorLayerComponent
  *
  */
+@Api(allMethods = true)
 public class VectorLayerComponentInfo extends BaseLayerComponentInfo implements Serializable {
+
+	private static final long serialVersionUID = 200L;
 
 	/** Style for this layer. */
 	private NamedStyleInfo styleInfo;

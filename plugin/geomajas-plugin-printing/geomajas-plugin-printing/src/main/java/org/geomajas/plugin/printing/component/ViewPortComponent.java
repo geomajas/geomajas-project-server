@@ -22,13 +22,15 @@
  */
 package org.geomajas.plugin.printing.component;
 
+import org.geomajas.plugin.printing.component.dto.ViewPortComponentInfo;
+
 /**
  * Component representing a view port (small embedded map).
  * 
  * @author Jan De Moerloose
  *
  */
-public interface ViewPortComponent extends MapComponent {
+public interface ViewPortComponent extends MapComponent<ViewPortComponentInfo> {
 
 	float getZoomScale();
 

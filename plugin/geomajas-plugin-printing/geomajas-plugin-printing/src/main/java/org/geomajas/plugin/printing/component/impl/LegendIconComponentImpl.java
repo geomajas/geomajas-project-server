@@ -28,12 +28,9 @@ import org.geomajas.configuration.FeatureStyleInfo;
 import org.geomajas.configuration.SymbolInfo;
 import org.geomajas.layer.LayerType;
 import org.geomajas.plugin.printing.component.LegendComponent;
-import org.geomajas.plugin.printing.component.LegendIconComponent;
 import org.geomajas.plugin.printing.component.PdfContext;
 import org.geomajas.plugin.printing.component.PrintComponentVisitor;
 import org.geomajas.plugin.printing.component.dto.LegendIconComponentInfo;
-import org.geomajas.plugin.printing.component.dto.PrintComponentInfo;
-import org.geomajas.plugin.printing.component.service.PrintDtoConverterService;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -47,7 +44,7 @@ import com.lowagie.text.Rectangle;
  */
 @Component("LegendIconComponentPrototype")
 @Scope(value = "prototype")
-public class LegendIconComponentImpl extends PrintComponentImpl implements LegendIconComponent {
+public class LegendIconComponentImpl extends PrintComponentImpl<LegendIconComponentInfo> {
 
 	private String label;
 
@@ -88,7 +85,6 @@ public class LegendIconComponentImpl extends PrintComponentImpl implements Legen
 	 * @param visitor
 	 */
 	public void accept(PrintComponentVisitor visitor) {
-		visitor.visit(this);
 	}
 	
 	@Override
@@ -149,9 +145,8 @@ public class LegendIconComponentImpl extends PrintComponentImpl implements Legen
 	}
 
 	@Override
-	public void fromDto(PrintComponentInfo info, PrintDtoConverterService service) {
-		super.fromDto(info, service);
-		LegendIconComponentInfo iconInfo = (LegendIconComponentInfo) info;
+	public void fromDto(LegendIconComponentInfo iconInfo) {
+		super.fromDto(iconInfo);
 		setLabel(iconInfo.getLabel());
 		setLayerType(iconInfo.getLayerType());
 		setStyleInfo(iconInfo.getStyleInfo());

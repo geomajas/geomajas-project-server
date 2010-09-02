@@ -36,14 +36,15 @@ import org.geomajas.plugin.printing.component.PdfContext;
 import org.geomajas.plugin.printing.component.PrintComponent;
 import org.geomajas.plugin.printing.component.PrintComponentVisitor;
 import org.geomajas.plugin.printing.component.dto.LegendComponentInfo;
-import org.geomajas.plugin.printing.component.dto.PrintComponentInfo;
 import org.geomajas.plugin.printing.component.service.PrintDtoConverterService;
 import org.geomajas.plugin.printing.configuration.PrintTemplate;
 import org.geomajas.plugin.printing.parser.FontConverter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.thoughtworks.xstream.annotations.XStreamConverter;
+import com.thoughtworks.xstream.annotations.XStreamOmitField;
 
 /**
  * Inclusion of legend in printed document.
@@ -52,7 +53,7 @@ import com.thoughtworks.xstream.annotations.XStreamConverter;
  */
 @Component("LegendComponentPrototype")
 @Scope(value = "prototype")
-public class LegendComponentImpl extends PrintComponentImpl implements LegendComponent {
+public class LegendComponentImpl extends PrintComponentImpl<LegendComponentInfo> implements LegendComponent {
 
 	/**
 	 * Application id
@@ -74,6 +75,10 @@ public class LegendComponentImpl extends PrintComponentImpl implements LegendCom
 	 * Heading text
 	 */
 	private String title = "Legend";
+
+	@Autowired
+	@XStreamOmitField
+	private PrintDtoConverterService converterService;
 
 	public LegendComponentImpl() {
 		this("Legend");
@@ -207,12 +212,11 @@ public class LegendComponentImpl extends PrintComponentImpl implements LegendCom
 		addComponent(item);
 	}
 	
-	public void fromDto(PrintComponentInfo info, PrintDtoConverterService service) {
-		super.fromDto(info, service);
-		LegendComponentInfo legendInfo = (LegendComponentInfo) info;
+	public void fromDto(LegendComponentInfo legendInfo) {
+		super.fromDto(legendInfo);
 		setApplicationId(legendInfo.getApplicationId());
 		setMapId(legendInfo.getMapId());
-		setFont(service.toInternal(legendInfo.getFont()));
+		setFont(converterService.toInternal(legendInfo.getFont()));
 		setTitle(legendInfo.getTitle());
 	}
 

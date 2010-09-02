@@ -29,6 +29,7 @@ import org.geomajas.configuration.FontStyleInfo;
 import org.geomajas.plugin.printing.PrintingException;
 import org.geomajas.plugin.printing.component.PrintComponent;
 import org.geomajas.plugin.printing.component.dto.PrintComponentInfo;
+import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -45,18 +46,19 @@ public class PrintDtoConverterServiceImpl implements PrintDtoConverterService {
 	@Autowired
 	private ApplicationContext applicationContext;
 
-	public PrintComponent toInternal(PrintComponentInfo info) throws PrintingException {
-		Object bean = null;
+	public <T extends PrintComponentInfo> PrintComponent<T> toInternal(T info) throws PrintingException {
 		// creates a new component, this is a prototype !!!
-		bean = applicationContext.getBean(info.getPrototypeName());
-		if (bean == null || !(bean instanceof PrintComponent)) {
+		Object bean;
+		try {
+			bean = applicationContext.getBean(info.getPrototypeName(), PrintComponent.class);
+		} catch (BeansException be) {
 			throw new PrintingException(PrintingException.DTO_IMPLEMENTATION_NOT_FOUND,
 					info.getClass().getSimpleName(), info.getPrototypeName());
 		}
-		PrintComponent component = (PrintComponent) bean;
-		component.fromDto(info, this);
+		PrintComponent<T> component = (PrintComponent<T>) bean;
+		component.fromDto(info);
 		for (PrintComponentInfo child : info.getChildren()) {
-			PrintComponent childComponent = toInternal(child);
+			PrintComponent<?> childComponent = toInternal(child);
 			component.addComponent(childComponent);
 		}
 		return component;

@@ -25,6 +25,7 @@ package org.geomajas.plugin.printing.command.dto;
 
 import java.io.Serializable;
 
+import org.geomajas.global.Api;
 import org.geomajas.plugin.printing.component.dto.PageComponentInfo;
 
 
@@ -33,7 +34,10 @@ import org.geomajas.plugin.printing.component.dto.PageComponentInfo;
  *
  * @author Pieter De Graef
  */
+@Api(allMethods = true)
 public class PrintTemplateInfo implements Serializable {
+
+	private static final long serialVersionUID = 200L;
 
 	private Long id;
 

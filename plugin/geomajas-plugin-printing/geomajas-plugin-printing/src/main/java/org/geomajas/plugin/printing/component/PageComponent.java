@@ -22,13 +22,15 @@
  */
 package org.geomajas.plugin.printing.component;
 
+import org.geomajas.plugin.printing.component.dto.PageComponentInfo;
+
 /**
  * Component representing a page.
  * 
  * @author Jan De Moerloose
  *
  */
-public interface PageComponent extends PrintComponent {
+public interface PageComponent extends PrintComponent<PageComponentInfo> {
 
 	void setSize(String pageSize, boolean b);
 }

@@ -26,6 +26,7 @@ import java.awt.Font;
 
 import org.geomajas.configuration.client.ClientRasterLayerInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
+import org.geomajas.plugin.printing.component.dto.LegendComponentInfo;
 
 /**
  * Component representing a legend.
@@ -33,7 +34,7 @@ import org.geomajas.configuration.client.ClientVectorLayerInfo;
  * @author Jan De Moerloose
  *
  */
-public interface LegendComponent extends PrintComponent {
+public interface LegendComponent extends PrintComponent<LegendComponentInfo> {
 
 	Font getFont();
 

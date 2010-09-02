@@ -66,11 +66,8 @@ import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.plugin.printing.component.LayoutConstraint;
 import org.geomajas.plugin.printing.component.PdfContext;
 import org.geomajas.plugin.printing.component.PrintComponentVisitor;
-import org.geomajas.plugin.printing.component.RasterLayerComponent;
-import org.geomajas.plugin.printing.component.dto.PrintComponentInfo;
 import org.geomajas.plugin.printing.component.dto.RasterLayerComponentInfo;
 import org.geomajas.plugin.printing.component.service.PrintConfigurationService;
-import org.geomajas.plugin.printing.component.service.PrintDtoConverterService;
 import org.geomajas.service.GeoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -92,7 +89,7 @@ import com.vividsolutions.jts.geom.Envelope;
  */
 @Component("RasterLayerComponentPrototype")
 @Scope(value = "prototype")
-public class RasterLayerComponentImpl extends BaseLayerComponentImpl implements RasterLayerComponent {
+public class RasterLayerComponentImpl extends BaseLayerComponentImpl<RasterLayerComponentInfo> {
 
 	protected static final int DOWNLOAD_MAX_ATTEMPTS = 2;
 
@@ -157,7 +154,6 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl implements 
 	 * @param visitor
 	 */
 	public void accept(PrintComponentVisitor visitor) {
-		visitor.visit(this);
 	}
 
 	@Override
@@ -336,9 +332,8 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl implements 
 	}
 
 	@Override
-	public void fromDto(PrintComponentInfo info, PrintDtoConverterService service) {
-		super.fromDto(info, service);
-		RasterLayerComponentInfo rasterInfo = (RasterLayerComponentInfo) info;
+	public void fromDto(RasterLayerComponentInfo rasterInfo) {
+		super.fromDto(rasterInfo);
 		String style = rasterInfo.getStyle();
 		if (rasterInfo.getStyle() != null) {
 			String match = style;

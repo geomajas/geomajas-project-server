@@ -22,13 +22,10 @@
  */
 package org.geomajas.plugin.printing.component.impl;
 
-import org.geomajas.plugin.printing.component.ImageComponent;
 import org.geomajas.plugin.printing.component.LayoutConstraint;
 import org.geomajas.plugin.printing.component.PdfContext;
 import org.geomajas.plugin.printing.component.PrintComponentVisitor;
 import org.geomajas.plugin.printing.component.dto.ImageComponentInfo;
-import org.geomajas.plugin.printing.component.dto.PrintComponentInfo;
-import org.geomajas.plugin.printing.component.service.PrintDtoConverterService;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -42,7 +39,7 @@ import com.lowagie.text.Rectangle;
  */
 @Component("ImageComponentPrototype")
 @Scope(value = "prototype")
-public class ImageComponentImpl extends PrintComponentImpl implements ImageComponent {
+public class ImageComponentImpl extends PrintComponentImpl<ImageComponentInfo> {
 
 	/**
 	 * The (relative) path of the image
@@ -60,15 +57,6 @@ public class ImageComponentImpl extends PrintComponentImpl implements ImageCompo
 
 	public ImageComponentImpl(String id, LayoutConstraint constraint) {
 		super(id, constraint);
-	}
-
-	/**
-	 * Call back visitor.
-	 * 
-	 * @param visitor
-	 */
-	public void accept(PrintComponentVisitor visitor) {
-		visitor.visit(this);
 	}
 
 	/*
@@ -104,10 +92,12 @@ public class ImageComponentImpl extends PrintComponentImpl implements ImageCompo
 		setBounds(new Rectangle(width, height));
 	}
 
-	public void fromDto(PrintComponentInfo info, PrintDtoConverterService service) {
-		super.fromDto(info, service);
-		ImageComponentInfo imageInfo = (ImageComponentInfo) info;
+	public void fromDto(ImageComponentInfo imageInfo) {
+		super.fromDto(imageInfo);
 		setImagePath(imageInfo.getImagePath());
+	}
+
+	public void accept(PrintComponentVisitor visitor) {
 	}
 
 }

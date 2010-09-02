@@ -25,6 +25,7 @@ package org.geomajas.plugin.printing.component.dto;
 import java.io.Serializable;
 
 import org.geomajas.configuration.FontStyleInfo;
+import org.geomajas.global.Api;
 
 /**
  * DTO object for ScaleBarComponent.
@@ -33,7 +34,10 @@ import org.geomajas.configuration.FontStyleInfo;
  * @see org.geomajas.plugin.printing.component.ScaleBarComponent
  *
  */
+@Api(allMethods = true)
 public class ScaleBarComponentInfo extends PrintComponentInfo implements Serializable {
+
+	private static final long serialVersionUID = 200L;
 
 	/**
 	 * The unit (meter, mile, degree)

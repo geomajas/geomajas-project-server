@@ -29,15 +29,16 @@ import org.geomajas.plugin.printing.component.LabelComponent;
 import org.geomajas.plugin.printing.component.PdfContext;
 import org.geomajas.plugin.printing.component.PrintComponentVisitor;
 import org.geomajas.plugin.printing.component.dto.LabelComponentInfo;
-import org.geomajas.plugin.printing.component.dto.PrintComponentInfo;
 import org.geomajas.plugin.printing.component.service.PrintDtoConverterService;
 import org.geomajas.plugin.printing.parser.ColorConverter;
 import org.geomajas.plugin.printing.parser.FontConverter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 import com.lowagie.text.Rectangle;
 import com.thoughtworks.xstream.annotations.XStreamConverter;
+import com.thoughtworks.xstream.annotations.XStreamOmitField;
 
 /**
  * Inclusion of label in printed document.
@@ -46,7 +47,7 @@ import com.thoughtworks.xstream.annotations.XStreamConverter;
  */
 @Component("LabelComponentPrototype")
 @Scope(value = "prototype")
-public class LabelComponentImpl extends PrintComponentImpl implements LabelComponent {
+public class LabelComponentImpl extends PrintComponentImpl<LabelComponentInfo> implements LabelComponent {
 
 	/**
 	 * The font for the text
@@ -91,6 +92,11 @@ public class LabelComponentImpl extends PrintComponentImpl implements LabelCompo
 	 * Margin around text
 	 */
 	private float margin;
+	
+	@Autowired
+	@XStreamOmitField
+	private PrintDtoConverterService converterService;
+
 
 	public LabelComponentImpl() {
 		this(Color.white, Color.BLACK, new Font("Dialog", Font.PLAIN, 12), Color.black, "<missing text>", false, 1f);
@@ -228,13 +234,12 @@ public class LabelComponentImpl extends PrintComponentImpl implements LabelCompo
 		setBounds(new Rectangle(textSize.getWidth() + 2 * margin, textSize.getHeight() + 2 * margin));
 	}
 
-	public void fromDto(PrintComponentInfo info, PrintDtoConverterService service) {
-		super.fromDto(info, service);
-		LabelComponentInfo labelInfo = (LabelComponentInfo) info;
-		setBackgroundColor(service.toInternal(labelInfo.getBackgroundColor()));
-		setBorderColor(service.toInternal(labelInfo.getBorderColor()));
-		setFont(service.toInternal(labelInfo.getFont()));
-		setFontColor(service.toInternal(labelInfo.getFontColor()));
+	public void fromDto(LabelComponentInfo labelInfo) {
+		super.fromDto(labelInfo);
+		setBackgroundColor(converterService.toInternal(labelInfo.getBackgroundColor()));
+		setBorderColor(converterService.toInternal(labelInfo.getBorderColor()));
+		setFont(converterService.toInternal(labelInfo.getFont()));
+		setFontColor(converterService.toInternal(labelInfo.getFontColor()));
 		setLineWidth(labelInfo.getLineWidth());
 		setTextOnly(labelInfo.isTextOnly());
 		setText(labelInfo.getText());

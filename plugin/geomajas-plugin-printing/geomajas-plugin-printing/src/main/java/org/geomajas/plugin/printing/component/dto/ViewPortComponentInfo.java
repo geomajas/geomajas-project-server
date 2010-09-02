@@ -24,6 +24,8 @@ package org.geomajas.plugin.printing.component.dto;
 
 import java.io.Serializable;
 
+import org.geomajas.global.Api;
+
 /**
  * DTO object for ViewPortComponent.
  * 
@@ -31,7 +33,10 @@ import java.io.Serializable;
  * @see org.geomajas.plugin.printing.component.ViewPortComponent
  *
  */
+@Api(allMethods = true)
 public class ViewPortComponentInfo extends MapComponentInfo implements Serializable {
+
+	private static final long serialVersionUID = 200L;
 
 	/**
 	 * Ratio of the view port scale and the map scale

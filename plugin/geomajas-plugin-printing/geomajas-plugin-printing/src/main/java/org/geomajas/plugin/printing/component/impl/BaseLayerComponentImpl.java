@@ -25,17 +25,18 @@ package org.geomajas.plugin.printing.component.impl;
 import org.geomajas.plugin.printing.component.BaseLayerComponent;
 import org.geomajas.plugin.printing.component.MapComponent;
 import org.geomajas.plugin.printing.component.dto.BaseLayerComponentInfo;
-import org.geomajas.plugin.printing.component.dto.PrintComponentInfo;
-import org.geomajas.plugin.printing.component.service.PrintDtoConverterService;
 
 import com.vividsolutions.jts.geom.Envelope;
 
 /**
  * Base class for layer components.
- *
+ * 
  * @author Jan De Moerloose
+ * @param <T>
+ *            DTO object class
  */
-public abstract class BaseLayerComponentImpl extends PrintComponentImpl implements BaseLayerComponent  {
+public abstract class BaseLayerComponentImpl<T extends BaseLayerComponentInfo> extends PrintComponentImpl<T> implements
+		BaseLayerComponent<T> {
 
 	/**
 	 * True if layer is visible.
@@ -52,10 +53,14 @@ public abstract class BaseLayerComponentImpl extends PrintComponentImpl implemen
 	 */
 	private String layerId;
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.geomajas.plugin.printing.component.IBaseLayerComponent#isVisible()
 	 */
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.geomajas.plugin.printing.component.impl.BaseLayerComponent#isVisible()
 	 */
 	public boolean isVisible() {
@@ -66,10 +71,14 @@ public abstract class BaseLayerComponentImpl extends PrintComponentImpl implemen
 		this.visible = visible;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.geomajas.plugin.printing.component.IBaseLayerComponent#isSelected()
 	 */
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.geomajas.plugin.printing.component.impl.BaseLayerComponent#isSelected()
 	 */
 	public boolean isSelected() {
@@ -80,10 +89,14 @@ public abstract class BaseLayerComponentImpl extends PrintComponentImpl implemen
 		this.selected = selected;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.geomajas.plugin.printing.component.IBaseLayerComponent#getLayerId()
 	 */
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.geomajas.plugin.printing.component.impl.BaseLayerComponent#getLayerId()
 	 */
 	public String getLayerId() {
@@ -105,16 +118,12 @@ public abstract class BaseLayerComponentImpl extends PrintComponentImpl implemen
 		double y2 = y1 + (getBounds().getHeight() / getMap().getPpUnit());
 		return new Envelope(x1, x2, y1, y2);
 	}
-	
-	public void fromDto(PrintComponentInfo info, PrintDtoConverterService service) {
-		super.fromDto(info, service);
-		BaseLayerComponentInfo baseLayerInfo = (BaseLayerComponentInfo) info;
+
+	public void fromDto(T baseLayerInfo) {
+		super.fromDto(baseLayerInfo);
 		setLayerId(baseLayerInfo.getLayerId());
 		setSelected(baseLayerInfo.isSelected());
 		setVisible(baseLayerInfo.isVisible());
 	}
-
-
-	
 
 }

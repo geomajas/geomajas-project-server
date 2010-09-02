@@ -40,11 +40,8 @@ import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.plugin.printing.component.LayoutConstraint;
 import org.geomajas.plugin.printing.component.PdfContext;
 import org.geomajas.plugin.printing.component.PrintComponentVisitor;
-import org.geomajas.plugin.printing.component.VectorLayerComponent;
-import org.geomajas.plugin.printing.component.dto.PrintComponentInfo;
 import org.geomajas.plugin.printing.component.dto.VectorLayerComponentInfo;
 import org.geomajas.plugin.printing.component.service.PrintConfigurationService;
-import org.geomajas.plugin.printing.component.service.PrintDtoConverterService;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
 import org.opengis.filter.Filter;
@@ -75,7 +72,7 @@ import com.vividsolutions.jts.geom.PrecisionModel;
  */
 @Component("VectorLayerComponentPrototype")
 @Scope(value = "prototype")
-public class VectorLayerComponentImpl extends BaseLayerComponentImpl implements VectorLayerComponent {
+public class VectorLayerComponentImpl extends BaseLayerComponentImpl<VectorLayerComponentInfo> {
 
 	/** Style for this layer. */
 	private NamedStyleInfo styleInfo;
@@ -136,7 +133,6 @@ public class VectorLayerComponentImpl extends BaseLayerComponentImpl implements 
 	 * @param visitor
 	 */
 	public void accept(PrintComponentVisitor visitor) {
-		visitor.visit(this);
 	}
 
 	@Override
@@ -333,9 +329,8 @@ public class VectorLayerComponentImpl extends BaseLayerComponentImpl implements 
 		return features;
 	}
 
-	public void fromDto(PrintComponentInfo info, PrintDtoConverterService service) {
-		super.fromDto(info, service);
-		VectorLayerComponentInfo vectorLayerInfo = (VectorLayerComponentInfo) info;
+	public void fromDto(VectorLayerComponentInfo vectorLayerInfo) {
+		super.fromDto(vectorLayerInfo);
 		setLabelsVisible(vectorLayerInfo.isLabelsVisible());
 		setSelectedFeatureIds(vectorLayerInfo.getSelectedFeatureIds());
 		setStyleInfo(vectorLayerInfo.getStyleInfo());

@@ -24,6 +24,8 @@ package org.geomajas.plugin.printing.component;
 
 import java.util.Map;
 
+import org.geomajas.plugin.printing.component.dto.MapComponentInfo;
+
 import com.vividsolutions.jts.geom.Coordinate;
 
 /**
@@ -31,8 +33,9 @@ import com.vividsolutions.jts.geom.Coordinate;
  * 
  * @author Jan De Moerloose
  *
+ * @param <T> DTO object class
  */
-public interface MapComponent extends PrintComponent {
+public interface MapComponent<T extends MapComponentInfo> extends PrintComponent<T> {
 
 	Coordinate getLocation();
 

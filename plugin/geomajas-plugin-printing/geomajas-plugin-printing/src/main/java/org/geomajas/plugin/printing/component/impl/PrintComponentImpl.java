@@ -28,12 +28,14 @@ import java.util.Collections;
 import java.util.List;
 
 import org.geomajas.geometry.Bbox;
+import org.geomajas.global.Api;
 import org.geomajas.global.Json;
+import org.geomajas.global.UserImplemented;
 import org.geomajas.plugin.printing.component.LayoutConstraint;
 import org.geomajas.plugin.printing.component.PdfContext;
 import org.geomajas.plugin.printing.component.PrintComponent;
+import org.geomajas.plugin.printing.component.PrintComponentVisitor;
 import org.geomajas.plugin.printing.component.dto.PrintComponentInfo;
-import org.geomajas.plugin.printing.component.service.PrintDtoConverterService;
 import org.geomajas.plugin.printing.parser.RectangleConverter;
 
 import com.lowagie.text.Rectangle;
@@ -45,21 +47,25 @@ import com.thoughtworks.xstream.annotations.XStreamOmitField;
  * Basic container component for printing. Handles the size calculation, layout and rendering of its children.
  * 
  * @author Jan De Moerloose
+ * 
+ * @param <T> DTO object class
  */
-public abstract class PrintComponentImpl implements PrintComponent {
+@Api(allMethods = true)
+@UserImplemented
+public abstract class PrintComponentImpl<T extends PrintComponentInfo> implements PrintComponent<T> {
 
 	@XStreamConverter(RectangleConverter.class)
 	private Rectangle bounds = new Rectangle(0, 0);
 
 	@XStreamOmitField
-	private PrintComponent parent;
+	private PrintComponent<?> parent;
 
 	private LayoutConstraint constraint;
 
 	protected String id;
 
 	@XStreamImplicit(itemFieldName = "component")
-	protected List<PrintComponent> children = new ArrayList<PrintComponent>();
+	protected List<PrintComponent<?>> children = new ArrayList<PrintComponent<?>>();
 
 	protected String tag;
 
@@ -76,6 +82,12 @@ public abstract class PrintComponentImpl implements PrintComponent {
 		this.constraint = constraint;
 	}
 
+	/**
+	 * Default implementation.
+	 */
+	public void accept(PrintComponentVisitor visitor) {
+	}
+
 	public void layout(PdfContext context) {
 		// top down layout
 		float x = getBounds().getLeft();
@@ -85,7 +97,7 @@ public abstract class PrintComponentImpl implements PrintComponent {
 		if (getConstraint().getFlowDirection() == LayoutConstraint.FLOW_Y) {
 			y = getBounds().getTop();
 		}
-		for (PrintComponent child : children) {
+		for (PrintComponent<?> child : children) {
 			float cw = child.getBounds().getWidth();
 			float ch = child.getBounds().getHeight();
 			float marginX = child.getConstraint().getMarginX();
@@ -105,7 +117,7 @@ public abstract class PrintComponentImpl implements PrintComponent {
 					break;
 			}
 		}
-		for (PrintComponent child : children) {
+		for (PrintComponent<?> child : children) {
 			child.layout(context);
 		}
 	}
@@ -116,7 +128,7 @@ public abstract class PrintComponentImpl implements PrintComponent {
 	public void calculateSize(PdfContext context) {
 		float width = 0;
 		float height = 0;
-		for (PrintComponent child : children) {
+		for (PrintComponent<?> child : children) {
 			child.calculateSize(context);
 			float cw = child.getBounds().getWidth() + 2 * child.getConstraint().getMarginX();
 			float ch = child.getBounds().getHeight() + 2 * child.getConstraint().getMarginY();
@@ -145,7 +157,7 @@ public abstract class PrintComponentImpl implements PrintComponent {
 	}
 
 	public void render(PdfContext context) {
-		for (PrintComponent child : children) {
+		for (PrintComponent<?> child : children) {
 			context.saveOrigin();
 			context.setOrigin(child.getBounds().getLeft(), child.getBounds().getBottom());
 			child.render(context);
@@ -153,46 +165,46 @@ public abstract class PrintComponentImpl implements PrintComponent {
 		}
 	}
 
-	public void addComponent(PrintComponent child) {
+	public void addComponent(PrintComponent<?> child) {
 		if (!children.contains(child)) {
 			child.setParent(this);
 			children.add(child);
 		}
 	}
 
-	public void removeComponent(PrintComponent child) {
+	public void removeComponent(PrintComponent<?> child) {
 		if (children.contains(child)) {
 			child.setParent(null);
 			children.remove(child);
 		}
 	}
 
-	public void addComponent(int index, PrintComponent child) {
+	public void addComponent(int index, PrintComponent<?> child) {
 		child.setParent(this);
 		children.add(index, child);
 	}
 
-	public void addComponents(Collection<? extends PrintComponent> children) {
-		for (PrintComponent child : children) {
+	public void addComponents(Collection<? extends PrintComponent<?>> children) {
+		for (PrintComponent<?> child : children) {
 			addComponent(child);
 		}
 	}
 
-	public void addComponents(int index, Collection<? extends PrintComponent> children) {
+	public void addComponents(int index, Collection<? extends PrintComponent<?>> children) {
 		// reverse add to index to keep the order
-		List<PrintComponent> reverse = new ArrayList<PrintComponent>(children);
+		List<PrintComponent<?>> reverse = new ArrayList<PrintComponent<?>>(children);
 		Collections.reverse(reverse);
-		for (PrintComponent child : reverse) {
+		for (PrintComponent<?> child : reverse) {
 			addComponent(index, child);
 		}
 	}
 
 	@Json(serialize = false)
-	public PrintComponent getParent() {
+	public PrintComponent<?> getParent() {
 		return parent;
 	}
 
-	public void setParent(PrintComponent parent) {
+	public void setParent(PrintComponent<?> parent) {
 		this.parent = parent;
 	}
 
@@ -241,7 +253,7 @@ public abstract class PrintComponentImpl implements PrintComponent {
 		this.constraint = constraint;
 	}
 
-	private void layoutChild(PrintComponent child, Rectangle box) {
+	private void layoutChild(PrintComponent<?> child, Rectangle box) {
 		LayoutConstraint layoutConstraint = child.getConstraint();
 		float bx = box.getLeft();
 		float by = box.getBottom();
@@ -314,12 +326,12 @@ public abstract class PrintComponentImpl implements PrintComponent {
 	 * 
 	 * @see org.geomajas.plugin.printing.component.impl.BaseComponent#getChildren()
 	 */
-	public List<PrintComponent> getChildren() {
+	public List<PrintComponent<?>> getChildren() {
 		return children;
 	}
 
-	public PrintComponent getChild(String childTag) {
-		for (PrintComponent child : children) {
+	public PrintComponent<?> getChild(String childTag) {
+		for (PrintComponent<?> child : children) {
 			if (child.getTag() != null && child.getTag().equals(childTag)) {
 				return child;
 			}
@@ -327,10 +339,10 @@ public abstract class PrintComponentImpl implements PrintComponent {
 		return null;
 	}
 
-	public void setChildren(List<PrintComponent> children) {
+	public void setChildren(List<PrintComponent<?>> children) {
 		this.children = children;
 		// needed for Json unmarshall !!!!
-		for (PrintComponent child : children) {
+		for (PrintComponent<?> child : children) {
 			child.setParent(this);
 		}
 	}
@@ -371,7 +383,7 @@ public abstract class PrintComponentImpl implements PrintComponent {
 		return tag;
 	}
 
-	public void fromDto(PrintComponentInfo info, PrintDtoConverterService service) {
+	public void fromDto(T info) {
 		if (info.getBounds() != null) {
 			setBounds(createRectangle(info.getBounds()));
 		}

@@ -25,6 +25,7 @@ package org.geomajas.plugin.printing.component.dto;
 import java.io.Serializable;
 
 import org.geomajas.configuration.FeatureStyleInfo;
+import org.geomajas.global.Api;
 import org.geomajas.layer.LayerType;
 
 /**
@@ -34,7 +35,10 @@ import org.geomajas.layer.LayerType;
  * @see org.geomajas.plugin.printing.component.LegendIconComponent
  * 
  */
+@Api(allMethods = true)
 public class LegendIconComponentInfo extends PrintComponentInfo implements Serializable {
+
+	private static final long serialVersionUID = 200L;
 
 	private String label;
 

@@ -30,25 +30,15 @@ package org.geomajas.plugin.printing.component;
  */
 public interface PrintComponentVisitor {
 
-	void visit(ImageComponent image);
-
 	void visit(LabelComponent label);
 
 	void visit(LegendComponent legend);
 
-	void visit(LegendIconComponent legendIcon);
-
-	void visit(LegendItemComponent legendItem);
-
-	void visit(MapComponent map);
+	void visit(MapComponent<?> map);
 
 	void visit(PageComponent page);
 
-	void visit(RasterLayerComponent rasterLayer);
-
 	void visit(ScaleBarComponent scaleBar);
-
-	void visit(VectorLayerComponent vectorLayer);
 
 	void visit(ViewPortComponent viewPort);
 

@@ -25,6 +25,7 @@ package org.geomajas.plugin.printing.component.dto;
 import java.io.Serializable;
 
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.global.Api;
 
 /**
  * DTO object for MapComponent.
@@ -33,7 +34,10 @@ import org.geomajas.geometry.Coordinate;
  * @see org.geomajas.plugin.printing.component.MapComponent
  *
  */
+@Api(allMethods = true)
 public class MapComponentInfo extends PrintComponentInfo implements Serializable {
+
+	private static final long serialVersionUID = 200L;
 
 	/**
 	 * Map id

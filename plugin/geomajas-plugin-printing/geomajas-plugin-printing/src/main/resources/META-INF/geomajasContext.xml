@@ -60,12 +60,6 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 					<property name="licenseUrl" value="http://www.bouncycastle.org/licence.html"/>
 				</bean>
 				<bean class="org.geomajas.global.CopyrightInfo">
-					<property name="key" value="JAXB RI"/>
-					<property name="copyright" value=""/>
-					<property name="licenseName" value="CDDL 1.0 or GPL 2 (dual license)"/>
-					<property name="licenseUrl" value="https://glassfish.dev.java.net/public/CDDL+GPL.html"/>
-				</bean>
-				<bean class="org.geomajas.global.CopyrightInfo">
 					<property name="key" value="xstream"/>
 					<property name="copyright" value="Copyright © 2003-2006, Joe Walnes; Copyright © 2006-now, XStream Committers"/>
 					<property name="licenseName" value="BSD"/>
@@ -76,6 +70,12 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 					<property name="copyright" value="Copyright © 2002 Extreme! Lab, Indiana University. All rights reserved."/>
 					<property name="licenseName" value="BSD-like"/>
 					<property name="licenseUrl" value="http://www.extreme.indiana.edu/viewcvs/XPP3/java/LICENSE.txt?rev=HEAD"/>
+				</bean>
+				<bean class="org.geomajas.global.CopyrightInfo">
+					<property name="key" value="JAI (Java Advanced imaging)"/>
+					<property name="copyright" value="Copyright © 2005 Sun Microsystems, Inc. All  Rights Reserved"/>
+					<property name="licenseName" value="Sun Binary Code License Agreement"/>
+					<property name="licenseUrl" value="https://jai-imageio-core.dev.java.net/source/browse/jai-imageio-core/LICENSE-codecLibJIIO.txt?only_with_tag=MAIN&view=markup"/>
 				</bean>
 			</list>
 		</property>

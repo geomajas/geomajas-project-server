@@ -24,12 +24,15 @@
 package org.geomajas.plugin.printing.command.dto;
 
 import org.geomajas.command.CommandRequest;
+import org.geomajas.global.Api;
 
 /**
  * Request object for {@link org.geomajas.plugin.printing.command.print.PrintGetTemplateCommand}.
  *
  * @author Joachim Van der Auwera
+ * @author Jan De Moerloose
  */
+@Api(allMethods = true)
 public class PrintGetTemplateRequest implements CommandRequest {
 
 	private static final long serialVersionUID = 151L;
@@ -64,6 +67,11 @@ public class PrintGetTemplateRequest implements CommandRequest {
 		return pageSize;
 	}
 
+	/**
+	 * Set the size of the generated document.
+	 * 
+	 * @param pageSize
+	 */
 	public void setPageSize(String pageSize) {
 		this.pageSize = pageSize;
 	}

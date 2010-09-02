@@ -25,8 +25,8 @@ package org.geomajas.plugin.printing.component;
 import java.util.Collection;
 import java.util.List;
 
+import org.geomajas.global.Api;
 import org.geomajas.plugin.printing.component.dto.PrintComponentInfo;
-import org.geomajas.plugin.printing.component.service.PrintDtoConverterService;
 
 import com.lowagie.text.Rectangle;
 
@@ -35,8 +35,11 @@ import com.lowagie.text.Rectangle;
  * boxes, etc.. A print component can be composed of child components.
  * 
  * @author Jan De Moerloose
+ * 
+ * @param <T> DTO object class
  */
-public interface PrintComponent {
+@Api(allMethods = true)
+public interface PrintComponent<T extends PrintComponentInfo> {
 
 	/**
 	 * Return the id of this component. Id's should be hierarchically constructed with "." as delimiter.
@@ -91,28 +94,28 @@ public interface PrintComponent {
 	 */
 	LayoutConstraint getConstraint();
 
-	void setParent(PrintComponent parent);
+	void setParent(PrintComponent<?> parent);
 
 	/**
 	 * Return the parent component of this component.
 	 * 
 	 * @return
 	 */
-	PrintComponent getParent();
+	PrintComponent<?> getParent();
 
-	List<PrintComponent> getChildren();
+	List<PrintComponent<?>> getChildren();
 
-	PrintComponent getChild(String id);
+	PrintComponent<?> getChild(String id);
 
-	void addComponent(PrintComponent child);
+	void addComponent(PrintComponent<?> child);
 
-	void addComponent(int index, PrintComponent child);
+	void addComponent(int index, PrintComponent<?> child);
 
-	void addComponents(Collection<? extends PrintComponent> children);
+	void addComponents(Collection<? extends PrintComponent<?>> children);
 	
-	void addComponents(int index, Collection<? extends PrintComponent> children);
+	void addComponents(int index, Collection<? extends PrintComponent<?>> children);
 
-	void removeComponent(PrintComponent child);
+	void removeComponent(PrintComponent<?> child);
 
 	/**
 	 * Call back visitor.
@@ -121,5 +124,5 @@ public interface PrintComponent {
 	 */
 	void accept(PrintComponentVisitor visitor);
 
-	void fromDto(PrintComponentInfo info, PrintDtoConverterService service);
+	void fromDto(T info);
 }

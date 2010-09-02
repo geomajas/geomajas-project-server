@@ -22,8 +22,7 @@
  */
 package org.geomajas.plugin.printing.component;
 
-import java.awt.Color;
-import java.awt.Font;
+import org.geomajas.plugin.printing.component.dto.LabelComponentInfo;
 
 /**
  * Component representing a label.
@@ -31,21 +30,7 @@ import java.awt.Font;
  * @author Jan De Moerloose
  *
  */
-public interface LabelComponent extends PrintComponent {
-
-	Color getBackgroundColor();
-
-	Color getBorderColor();
-
-	Color getFontColor();
-
-	String getText();
-
-	Font getFont();
-
-	boolean isTextOnly();
-
-	float getLineWidth();
+public interface LabelComponent extends PrintComponent<LabelComponentInfo> {
 
 	void setText(String text);
 

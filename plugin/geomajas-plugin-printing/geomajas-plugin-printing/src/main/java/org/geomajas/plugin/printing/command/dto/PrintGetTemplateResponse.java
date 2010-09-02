@@ -23,12 +23,14 @@
 package org.geomajas.plugin.printing.command.dto;
 
 import org.geomajas.command.CommandResponse;
+import org.geomajas.global.Api;
 
 /**
  * Response object for PrintGetTemplateCommand.
  *
  * @author Jan De Moerloose
  */
+@Api(allMethods = true)
 public class PrintGetTemplateResponse extends CommandResponse {
 
 	private static final long serialVersionUID = 151L;

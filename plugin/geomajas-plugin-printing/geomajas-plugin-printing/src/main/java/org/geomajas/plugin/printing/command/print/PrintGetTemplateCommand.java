@@ -105,11 +105,11 @@ public class PrintGetTemplateCommand implements Command<PrintGetTemplateRequest,
 			java.awt.Font newFont = lc.getFont().deriveFont(lc.getFont().getSize() * 0.8f);
 			lc.setFont(newFont);
 			log.debug("PDF: changed fontsize to: {}", lc.getFont().getSize());
-			for (PrintComponent pc : lc.getChildren()) {
+			for (PrintComponent<?> pc : lc.getChildren()) {
 				if (pc instanceof LabelComponentImpl) {
 					((LabelComponentImpl) pc).setFont(newFont.deriveFont(newFont.getSize() * 1.25f));
 				} else if (pc instanceof LegendItemComponentImpl) {
-					for (PrintComponent pc2 : pc.getChildren()) {
+					for (PrintComponent<?> pc2 : pc.getChildren()) {
 						if (pc2 instanceof LabelComponentImpl) {
 							((LabelComponentImpl) pc2).setFont(newFont);
 						}

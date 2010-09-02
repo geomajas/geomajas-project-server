@@ -29,9 +29,7 @@ import org.geomajas.plugin.printing.component.MapComponent;
 import org.geomajas.plugin.printing.component.PdfContext;
 import org.geomajas.plugin.printing.component.PrintComponentVisitor;
 import org.geomajas.plugin.printing.component.ViewPortComponent;
-import org.geomajas.plugin.printing.component.dto.PrintComponentInfo;
 import org.geomajas.plugin.printing.component.dto.ViewPortComponentInfo;
-import org.geomajas.plugin.printing.component.service.PrintDtoConverterService;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -48,7 +46,7 @@ import com.vividsolutions.jts.geom.Coordinate;
  */
 @Component("ViewPortComponentPrototype")
 @Scope(value = "prototype")
-public class ViewPortComponentImpl extends MapComponentImpl implements ViewPortComponent {
+public class ViewPortComponentImpl extends MapComponentImpl<ViewPortComponentInfo> implements ViewPortComponent {
 
 	/**
 	 * Ratio of the view port scale and the map scale
@@ -153,9 +151,8 @@ public class ViewPortComponentImpl extends MapComponentImpl implements ViewPortC
 		this.userY = userY;
 	}
 	
-	public void fromDto(PrintComponentInfo info, PrintDtoConverterService service) {
-		super.fromDto(info, service);
-		ViewPortComponentInfo viewPortInfo = (ViewPortComponentInfo) info;
+	public void fromDto(ViewPortComponentInfo viewPortInfo) {
+		super.fromDto(viewPortInfo);
 		setUserX(viewPortInfo.getUserX());
 		setUserY(viewPortInfo.getUserY());
 		setZoomScale(viewPortInfo.getZoomScale());

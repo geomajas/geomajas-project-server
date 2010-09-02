@@ -43,10 +43,11 @@ public interface PrintDtoConverterService {
 	 * 
 	 * @param info
 	 *            the DTO component
-	 * @return the intenral representative
-	 * @throws PrintingException the internal bean definition is missing
+	 * @return the internal representative
+	 * @throws PrintingException
+	 *             the internal bean definition is missing
 	 */
-	PrintComponent toInternal(PrintComponentInfo info) throws PrintingException;
+	<T extends PrintComponentInfo> PrintComponent<T> toInternal(T info) throws PrintingException;
 
 	/**
 	 * Converts a hexadecimal color string to an AWT color.

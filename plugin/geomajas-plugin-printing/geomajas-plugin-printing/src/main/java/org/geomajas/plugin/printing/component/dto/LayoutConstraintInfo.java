@@ -24,13 +24,18 @@ package org.geomajas.plugin.printing.component.dto;
 
 import java.io.Serializable;
 
+import org.geomajas.global.Api;
+
 
 /**
  * Constraints for the default layout.
  *
  * @author Jan De Moerloose
  */
+@Api(allMethods = true)
 public class LayoutConstraintInfo implements Serializable {
+
+	private static final long serialVersionUID = 200L;
 
 	/**
 	 * width (0 means auto-size)

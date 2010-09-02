@@ -24,6 +24,8 @@ package org.geomajas.plugin.printing.component.dto;
 
 import java.io.Serializable;
 
+import org.geomajas.global.Api;
+
 /**
  * DTO object for BaseLayerComponent.
  * 
@@ -31,8 +33,10 @@ import java.io.Serializable;
  * @see org.geomajas.plugin.printing.component.BaseLayerComponent
  *
  */
+@Api(allMethods = true)
 public class BaseLayerComponentInfo extends PrintComponentInfo implements Serializable {
 
+	private static final long serialVersionUID = 200L;
 	/**
 	 * True if layer is visible.
 	 */

@@ -27,6 +27,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.geometry.Bbox;
+import org.geomajas.global.Api;
+import org.geomajas.global.UserImplemented;
 
 /**
  * DTO object for PrintComponent.
@@ -35,7 +37,11 @@ import org.geomajas.geometry.Bbox;
  * @see org.geomajas.plugin.printing.component.PrintComponent
  *
  */
+@Api(allMethods = true)
+@UserImplemented
 public abstract class PrintComponentInfo implements Serializable {
+
+	private static final long serialVersionUID = 200L;
 
 	private String id;
 
