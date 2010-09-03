@@ -162,10 +162,6 @@ public class GoogleLayer implements RasterLayer {
 		this.maxZoomLevel = maxZoomLevel < MAX_ZOOM_LEVEL ? maxZoomLevel : MAX_ZOOM_LEVEL;
 	}
 
-	public int getMaxZoomLevel() {
-		return this.maxZoomLevel;
-	}
-
 	@PostConstruct
 	private void postConstruct() throws Exception {
 		if (null != layerInfo) {
@@ -254,12 +250,11 @@ public class GoogleLayer implements RasterLayer {
 			// scale in pix/m should just above the given scale so we have at least one
 			// screen pixel per google pixel ! (otherwise text unreadable)
 			int tileLevel = getBestGoogleZoomLevelForScaleInPixPerMeter(mapToLayer, center, scale);
-			log.info("zoomLevel=" + tileLevel);
+			log.debug("zoomLevel={}", tileLevel);
 
 			// find the google indices for the center
 			// google indices determine the row and column of the 256x256 image
-			// in
-			// the big google square for the given zoom zoomLevel
+			// in the big google square for the given zoom zoomLevel
 			// the resulting indices are floating point values as the center
 			// is not coincident with an image corner !!!!
 			Coordinate indicesCenter = getGoogleIndicesFromMap(mapToLayer, center, tileLevel);
