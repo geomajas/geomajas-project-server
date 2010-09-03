@@ -380,7 +380,7 @@ public class MapView {
 	
 	
 	/**
-	 * are we panning (same scale and pan origin) ?
+	 * Are we panning (same scale and pan origin) ?
 	 * 
 	 * @return true if panning
 	 * @since 1.8.0
@@ -549,7 +549,7 @@ public class MapView {
 
 	/**
 	 * keeps a copy of the previous pan data so we can detect if we are panning.
-	 * @see isSameScaleLevel()
+	 * @see #isPanning()
 	 */
 	private void pushPanData() {
 		previousScale = currentScale;
