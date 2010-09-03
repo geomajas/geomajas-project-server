@@ -255,7 +255,6 @@
 				<version>1.7.1</version>
 				<classifier>sources</classifier>
 			</dependency>
-			<!--
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-plugin-geocoder</artifactId>
@@ -272,7 +271,6 @@
 				<version>1.0.0</version>
 				<classifier>sources</classifier>
 			</dependency>
-			-->
 			
 			<dependency>
 				<groupId>org.springframework</groupId>
