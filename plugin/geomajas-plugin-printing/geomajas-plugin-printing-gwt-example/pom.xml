@@ -3,7 +3,7 @@
 	<parent>
 		<groupId>org.geomajas.plugin</groupId>
 		<artifactId>geomajas-plugin-printing-all</artifactId>
-		<version>2.0.0-SNAPSHOT</version>
+		<version>2.0.0</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.plugin</groupId>
@@ -45,23 +45,23 @@
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-plugin-printing</artifactId>
-			<version>2.0.0-SNAPSHOT</version>
+			<version>2.0.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-plugin-printing</artifactId>
-			<version>2.0.0-SNAPSHOT</version>
+			<version>2.0.0</version>
 			<classifier>sources</classifier>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-plugin-printing-gwt</artifactId>
-			<version>2.0.0-SNAPSHOT</version>
+			<version>2.0.0</version>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-plugin-printing-gwt</artifactId>
-			<version>2.0.0-SNAPSHOT</version>
+			<version>2.0.0</version>
 			<classifier>sources</classifier>
 		</dependency>
 		<!-- @extract-end -->
