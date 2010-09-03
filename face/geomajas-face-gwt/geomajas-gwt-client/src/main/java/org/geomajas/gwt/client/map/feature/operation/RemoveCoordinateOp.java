@@ -49,6 +49,9 @@ public class RemoveCoordinateOp extends GeometryEditor implements FeatureOperati
 
 	public RemoveCoordinateOp(TransactionGeomIndex index) {
 		this.index = index;
+		if (index.getCoordinateIndex() < 0) {
+			index.setCoordinateIndex(index.getEdgeIndex());
+		}
 	}
 
 	public void execute(Feature feature) {

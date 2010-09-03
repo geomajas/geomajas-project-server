@@ -50,6 +50,9 @@ public class InsertCoordinateOp extends GeometryEditor implements FeatureOperati
 	public InsertCoordinateOp(TransactionGeomIndex index, Coordinate coordinate) {
 		this.index = index;
 		this.coordinate = coordinate;
+		if (index.getCoordinateIndex() < 0) {
+			index.setCoordinateIndex(index.getEdgeIndex());
+		}
 	}
 
 	public void execute(Feature feature) {
