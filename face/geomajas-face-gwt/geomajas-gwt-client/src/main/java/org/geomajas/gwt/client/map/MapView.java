@@ -57,6 +57,7 @@ import com.google.gwt.event.shared.HandlerRegistration;
 @Api
 public class MapView {
 
+	private static final double EQUAL_CHECK_DELTA = 1e-10;
 	private static final double MAX_RESOLUTION = Float.MAX_VALUE;
 
 	/** Zoom options. */
@@ -386,8 +387,8 @@ public class MapView {
 	 * @since 1.8.0
 	 */
 	public boolean isPanning() {
-		return Math.abs(currentScale - previousScale) < 1.0E-10
-				&& previousPanOrigin.equalsDelta(this.panOrigin, 1.0E-10);
+		return Math.abs(currentScale - previousScale) < EQUAL_CHECK_DELTA
+				&& previousPanOrigin.equalsDelta(this.panOrigin, EQUAL_CHECK_DELTA);
 	}
 
 	/** Return the internal camera that is used to represent the map's point of view. */
