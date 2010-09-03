@@ -158,7 +158,7 @@ include "org.geomajas.plugin" "geocoder-documentation" "1.1.0-SNAPSHOT" \
     "Geocoder plug-in" \
     "Convert a location description to map coordinates." \
     "incubating" "geocoder.pdf" \
-    "org.geomajas.plugin" "geocoder-documentation" "1.0.0"
+    "org.geomajas.plugin" "geomajas-plugin-geocoder" "1.0.0"
 
 
 # contributors guide
