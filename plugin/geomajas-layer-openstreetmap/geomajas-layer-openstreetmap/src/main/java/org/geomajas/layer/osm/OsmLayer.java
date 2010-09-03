@@ -38,9 +38,7 @@ import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.layer.tile.TileCode;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
-import org.geotools.geometry.DirectPosition2D;
-import org.opengis.geometry.DirectPosition;
-import org.opengis.geometry.MismatchedDimensionException;
+import org.geotools.geometry.jts.JTS;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
@@ -60,8 +58,6 @@ import com.vividsolutions.jts.geom.Envelope;
 @Api
 public class OsmLayer implements RasterLayer {
 
-	protected List<OSMResolution> resolutions = new ArrayList<OSMResolution>();
-
 	protected int tileWidth;
 
 	protected int tileHeight;
@@ -70,9 +66,13 @@ public class OsmLayer implements RasterLayer {
 
 	protected double maxHeight;
 
-	public static final double EARTH_RADIUS_IN_METERS = 6378137.0;
+	public static final double EQUATOR_IN_METERS = 40075016.686;
 
-	public static final double EQUATOR_IN_METERS = 2 * Math.PI * EARTH_RADIUS_IN_METERS;
+	public static final int DEFAULT_MAX_ZOOM_LEVEL = 19;
+
+	public static final int MAX_ZOOM_LEVEL = 31;
+
+	public static final int TILE_SIZE = 256; // tile size in pixels
 
 	private final Logger log = LoggerFactory.getLogger(OsmLayer.class);
 
@@ -91,6 +91,25 @@ public class OsmLayer implements RasterLayer {
 	private TileUrlBuilder urlBuilder = new RoundRobinTileUrlBuilder();
 
 	private List<String> baseUrls;
+
+	protected int maxZoomLevel = DEFAULT_MAX_ZOOM_LEVEL;
+
+	protected static final double[] RESOLUTIONS = new double[MAX_ZOOM_LEVEL + 1];
+
+	protected static final int[] POWERS_OF_TWO;
+
+	static {
+		POWERS_OF_TWO = new int[MAX_ZOOM_LEVEL + 1];
+		int b = 1;
+		for (int c = 0; c < POWERS_OF_TWO.length; c++) {
+			POWERS_OF_TWO[c] = b;
+			b *= 2;
+		}
+		for (int zoomLevel = 0; zoomLevel <= MAX_ZOOM_LEVEL; zoomLevel++) {
+			double resolution = (EQUATOR_IN_METERS) / (TILE_SIZE * POWERS_OF_TWO[zoomLevel]);
+			RESOLUTIONS[zoomLevel] = resolution;
+		}
+	}
 
 	public String getId() {
 		return id;
@@ -113,6 +132,18 @@ public class OsmLayer implements RasterLayer {
 	}
 
 	/**
+	 * Set the maximum zoom level which is supported by this layer. The levels are specific for this layer. The first
+	 * level has one tile for the world, the second four etc.
+	 *
+	 * @param maxZoomLevel max zoom level
+	 * @since 1.8.0
+	 */
+	@Api
+	public void setMaxZoomLevel(int maxZoomLevel) {
+		this.maxZoomLevel = maxZoomLevel < MAX_ZOOM_LEVEL ? maxZoomLevel : MAX_ZOOM_LEVEL;
+	}
+
+	/**
 	 * Set the layer configuration.
 	 * 
 	 * @param layerInfo
@@ -127,24 +158,13 @@ public class OsmLayer implements RasterLayer {
 	}
 
 	/**
-	 * Returns the list of base URLs.
-	 * 
-	 * @return the list of base URLs or null if no base URLs have been set.
-	 * @since 1.7.2
-	 */
-	@Api
-	public List<String> getBaseUrls() {
-		return baseUrls;
-	}
-
-	/**
 	 * Set a list of base URLs. Use this as a shortcut for setting a RoundRobinTileUrlBuilder with the specified base
 	 * URLs.
 	 * 
-	 * @param urls
+	 * @param baseUrls
 	 *            list of base URLs (e.g.
 	 *            "a.tile.openstreetmap.org","b.tile.openstreetmap.org","c.tile.openstreetmap.org")
-	 * @since 1.7.2
+	 * @since 1.8.0
 	 */
 	@Api
 	public void setBaseUrls(List<String> baseUrls) {
@@ -152,22 +172,11 @@ public class OsmLayer implements RasterLayer {
 	}
 
 	/**
-	 * Returns the builder that should be used to build a tile URL.
-	 * 
-	 * @return the tile URL builder
-	 * @since 1.7.2
-	 */
-	@Api
-	public TileUrlBuilder getUrlBuilder() {
-		return urlBuilder;
-	}
-
-	/**
 	 * Set the builder that should be used to build a tile URL.
 	 * 
 	 * @param urlBuilder
 	 *            a tile URL builder
-	 * @since 1.7.2
+	 * @since 1.8.0
 	 */
 	@Api
 	public void setUrlBuilder(TileUrlBuilder urlBuilder) {
@@ -182,7 +191,6 @@ public class OsmLayer implements RasterLayer {
 			tileHeight = layerInfo.getTileHeight();
 			maxWidth = layerInfo.getMaxExtent().getWidth();
 			maxHeight = layerInfo.getMaxExtent().getHeight();
-			this.calculatePredefinedResolutions();
 		}
 		if (null != baseUrls) {
 			RoundRobinTileUrlBuilder rr = new RoundRobinTileUrlBuilder();
@@ -201,24 +209,19 @@ public class OsmLayer implements RasterLayer {
 			if (bounds.isNull()) {
 				return new ArrayList<RasterTile>();
 			}
-			// find the center of the map in map coordinates (positive
-			// y-axis)
-			DirectPosition2D center = new DirectPosition2D(0.5 * (bounds.getMinX() + bounds.getMaxX()), 0.5 * (bounds
+			// find the center of the map in map coordinates (positive y-axis)
+			Coordinate center = new Coordinate(0.5 * (bounds.getMinX() + bounds.getMaxX()), 0.5 * (bounds
 					.getMinY() + bounds.getMaxY()));
 
-			double scaleRatio = calculateMapUnitPerGoogleMeter(mapToLayer, center);
-
 			// find zoomlevel
-			// scale in pix/m should just above the given scale so we have at
-			// least
-			// 1
+			// scale in pix/m should just above the given scale so we have at least one
 			// screen pixel per google pixel ! (otherwise text unreadable)
-			int tileLevel = getBestOSMLevelForScaleInPixPerMeter(scale * scaleRatio);
+			int tileLevel = getBestOsmZoomLevelForScaleInPixPerMeter(mapToLayer, center, scale);
+			log.debug("zoomLevel={}", tileLevel);
 
 			// find the google indices for the center
 			// google indices determine the row and column of the 256x256 image
-			// in
-			// the big google square for the given zoom zoomLevel
+			// in the big google square for the given zoom zoomLevel
 			// the resulting indices are floating point values as the center
 			// is not coincident with an image corner !!!!
 			Coordinate indicesCenter;
@@ -228,9 +231,16 @@ public class OsmLayer implements RasterLayer {
 			// center
 			Coordinate indicesUpperLeft = new Coordinate(Math.floor(indicesCenter.x), Math.floor(indicesCenter.y));
 			Coordinate indicesLowerRight = new Coordinate(indicesUpperLeft.x + 1, indicesUpperLeft.y + 1);
-			DirectPosition mapUpperLeft = getMapFromOsmIndices(layerToMap, indicesUpperLeft, tileLevel);
-			DirectPosition mapLowerRight = getMapFromOsmIndices(layerToMap, indicesLowerRight, tileLevel);
-			double width = mapLowerRight.getOrdinate(0) - mapUpperLeft.getOrdinate(0);
+			Coordinate mapUpperLeft = getMapFromOsmIndices(layerToMap, indicesUpperLeft, tileLevel);
+			Coordinate mapLowerRight = getMapFromOsmIndices(layerToMap, indicesLowerRight, tileLevel);
+			double width = Math.abs(mapLowerRight.x - mapUpperLeft.x);
+			if (0 == width) {
+				width = 1.0;
+			}
+			double height = Math.abs(mapLowerRight.y - mapUpperLeft.y);
+			if (0 == height) {
+				height = 1.0;
+			}
 
 			// Calculate the position and indexes of the center image corner
 			// in map space
@@ -243,14 +253,14 @@ public class OsmLayer implements RasterLayer {
 			// that just falls off the screen
 			double xMin = xCenter;
 			int iMin = iCenter;
-			while (xMin > bounds.getMinX()) {
+			while (xMin > bounds.getMinX() && iMin > 0) {
 				xMin -= width;
 				iMin--;
 			}
 			double yMax = yCenter;
 			int jMin = jCenter;
-			while (yMax < bounds.getMaxY()) {
-				yMax += width;
+			while (yMax < bounds.getMaxY() && jMin > 0) {
+				yMax += height;
 				jMin--;
 			}
 			// Calculate the indexes of the lower right corner
@@ -264,7 +274,7 @@ public class OsmLayer implements RasterLayer {
 			double yMin = yCenter;
 			int jMax = jCenter;
 			while (yMin > bounds.getMinY()) {
-				yMin -= width;
+				yMin -= height;
 				jMax++;
 			}
 			Coordinate upperLeft = new Coordinate(xMin, yMax);
@@ -274,13 +284,14 @@ public class OsmLayer implements RasterLayer {
 			int xScreenUpperLeft = (int) Math.round(upperLeft.x * scale);
 			int yScreenUpperLeft = (int) Math.round(upperLeft.y * scale);
 			int screenWidth = (int) Math.round(scale * width);
+			int screenHeight = (int) Math.round(scale * height);
 			for (int i = iMin; i < iMax; i++) {
 				for (int j = jMin; j < jMax; j++) {
 					// Using screen coordinates:
 					int x = xScreenUpperLeft + (i - iMin) * screenWidth;
 					int y = yScreenUpperLeft - (j - jMin) * screenWidth;
 
-					RasterTile image = new RasterTile(new Bbox(x, -y, screenWidth, screenWidth), getId() + "."
+					RasterTile image = new RasterTile(new Bbox(x, -y, screenWidth, screenHeight), getId() + "."
 							+ tileLevel + "." + i + "," + j);
 					image.setCode(new TileCode(tileLevel, i, j));
 					image.setUrl(urlBuilder.buildUrl(tileLevel, i, j));
@@ -294,93 +305,57 @@ public class OsmLayer implements RasterLayer {
 		}
 	}
 
-	private double calculateMapUnitPerGoogleMeter(MathTransform layerToGoogle, DirectPosition2D mapPosition) {
-		try {
-			DirectPosition p1 = layerToGoogle.transform(mapPosition, null);
-			DirectPosition mapdx = new DirectPosition2D(mapPosition.x + 1, mapPosition.y);
-			DirectPosition p2 = layerToGoogle.transform(mapdx, null);
-			return 1. / (p2.getOrdinate(0) - p1.getOrdinate(0));
-		} catch (MismatchedDimensionException e) {
-			log.warn("calculateMapUnitPerGoogleMeter() : transformation failed", e);
-			return 0.653;
-		} catch (TransformException e) {
-			log.warn("calculateMapUnitPerGoogleMeter() : transformation failed", e);
-			return 0.653;
-		}
-	}
-
 	private Envelope clipBounds(Envelope bounds) {
 		return bounds.intersection(getMaxBounds());
 	}
 
-	private void calculatePredefinedResolutions() {
-		for (int zoomLevel = 0; zoomLevel <= 17; zoomLevel++) {
-			double resolution = (EQUATOR_IN_METERS) / (256 * Math.pow(2.0, zoomLevel));
-			resolutions.add(new OSMResolution(resolution, zoomLevel));
+	private int getBestOsmZoomLevelForScaleInPixPerMeter(MathTransform layerToGoogle, Coordinate mapPosition,
+			double scale) {
+		double scaleRatio = 0.653;
+		try {
+			Coordinate mercatorCenter = JTS.transform(mapPosition, new Coordinate(), layerToGoogle);
+			Coordinate dx = JTS.transform(new Coordinate(mapPosition.x + 1, mapPosition.y), new Coordinate(),
+					layerToGoogle);
+			scaleRatio = 1.0 / (dx.x - mercatorCenter.x);
+		} catch (TransformException e) {
+			log.warn("calculateMapUnitPerGoogleMeter() : transformation failed", e);
 		}
-	}
-
-	private int getBestOSMLevelForScaleInPixPerMeter(double scaleInPixPerMeter) {
+		double scaleInPixPerMeter = scale * scaleRatio;
 		double screenResolution = 1.0 / scaleInPixPerMeter;
-		if (screenResolution >= resolutions.get(0).getResolution()) {
-			return resolutions.get(0).getZoomLevel();
-		} else if (screenResolution <= resolutions.get(resolutions.size() - 1).getResolution()) {
-			return resolutions.get(resolutions.size() - 1).getZoomLevel();
+		if (screenResolution >= RESOLUTIONS[0]) {
+			return 0;
+		} else if (screenResolution <= RESOLUTIONS[maxZoomLevel]) {
+			return maxZoomLevel;
 		} else {
-			for (int i = 0; i < resolutions.size() - 1; i++) {
-				OSMResolution upper = resolutions.get(i);
-				OSMResolution lower = resolutions.get(i + 1);
-				if (screenResolution <= upper.getResolution() && screenResolution >= lower.getResolution()) {
-					if ((upper.getResolution() - screenResolution) > 2 * (screenResolution - lower.getResolution())) {
-						return lower.getZoomLevel();
+			for (int i = 0; i < maxZoomLevel; i++) {
+				double upper = RESOLUTIONS[i];
+				double lower = RESOLUTIONS[i + 1];
+				if (screenResolution <= upper && screenResolution >= lower) {
+					if ((upper - screenResolution) > 2 * (screenResolution - lower)) {
+						return i + 1;
 					} else {
-						return upper.getZoomLevel();
+						return i;
 					}
 				}
 			}
 		}
 		// should not occur !!!!
-		return resolutions.get(resolutions.size() - 1).getZoomLevel();
+		return MAX_ZOOM_LEVEL;
 	}
 
-	private DirectPosition getMapFromOsmIndices(MathTransform googleToLayer, Coordinate indices, int zoomLevel)
+	private Coordinate getMapFromOsmIndices(MathTransform mapToLayer, Coordinate indices, int zoomLevel)
 			throws TransformException {
-		double xMeter = EQUATOR_IN_METERS * indices.x / Math.pow(2.0, zoomLevel) - 0.5 * EQUATOR_IN_METERS;
-		double yMeter = -EQUATOR_IN_METERS * indices.y / Math.pow(2.0, zoomLevel) + 0.5 * EQUATOR_IN_METERS;
-		return googleToLayer.transform(new DirectPosition2D(xMeter, yMeter), null);
+		double xMeter = EQUATOR_IN_METERS * indices.x / POWERS_OF_TWO[zoomLevel] - 0.5 * EQUATOR_IN_METERS;
+		double yMeter = -EQUATOR_IN_METERS * indices.y / POWERS_OF_TWO[zoomLevel] + 0.5 * EQUATOR_IN_METERS;
+		return JTS.transform(new Coordinate(xMeter, yMeter), new Coordinate(), mapToLayer);
 	}
 
-	private Coordinate getOsmIndicesFromMap(MathTransform layerToGoogle, DirectPosition2D map, int zoomLevel)
+	private Coordinate getOsmIndicesFromMap(MathTransform mapToLayer, Coordinate center, int zoomLevel)
 			throws TransformException {
-		DirectPosition google = layerToGoogle.transform(map, null);
-		double xIndex = (google.getOrdinate(0) + 0.5 * EQUATOR_IN_METERS) * Math.pow(2.0, zoomLevel)
-				/ (EQUATOR_IN_METERS);
-		double yIndex = (-google.getOrdinate(1) + 0.5 * EQUATOR_IN_METERS) * Math.pow(2.0, zoomLevel)
-				/ (EQUATOR_IN_METERS);
+		Coordinate googleCenter = JTS.transform(center, new Coordinate(), mapToLayer);
+		double xIndex = (googleCenter.x + 0.5 * EQUATOR_IN_METERS) * POWERS_OF_TWO[zoomLevel] / (EQUATOR_IN_METERS);
+		double yIndex = (-googleCenter.y + 0.5 * EQUATOR_IN_METERS) * POWERS_OF_TWO[zoomLevel] / (EQUATOR_IN_METERS);
 		return new Coordinate(xIndex, yIndex);
 	}
 
-	/**
-	 * ???
-	 */
-	class OSMResolution {
-
-		private double resolution;
-
-		private int zoomLevel;
-
-		public OSMResolution(double resolution, int zoomLevel) {
-			this.resolution = resolution;
-			this.zoomLevel = zoomLevel;
-		}
-
-		public int getZoomLevel() {
-			return zoomLevel;
-		}
-
-		public double getResolution() {
-			return resolution;
-		}
-
-	}
 }
