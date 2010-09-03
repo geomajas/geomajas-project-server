@@ -111,11 +111,14 @@ public class GeomajasException extends Exception {
 		}
 		String message = messageObject.toString();
 		ResourceBundle bundleEn = ResourceBundle.getBundle(getResourceBundleName(), Locale.ENGLISH);
-		ResourceBundle bundle;
-		try {
-			bundle = ResourceBundle.getBundle(getResourceBundleName(), locale);
-		} catch (MissingResourceException mre) {
-			bundle = bundleEn;
+		ResourceBundle bundle = bundleEn;
+		if (null != locale) {
+			try {
+
+				bundle = ResourceBundle.getBundle(getResourceBundleName(), locale);
+			} catch (MissingResourceException mre) {
+				// ignore, bundle is already set to English
+			}
 		}
 		Object obj;
 		try {
