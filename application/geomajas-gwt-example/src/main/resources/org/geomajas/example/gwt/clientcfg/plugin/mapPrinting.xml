@@ -57,8 +57,8 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		</property>
 		<property name="layers">
 			<list>
-				<ref bean="countriesPrintingLayer" />
 				<ref bean="wmsPrintingLayer" />
+				<ref bean="countriesPrintingLayer" />
 			</list>
 		</property>
 		<property name="toolbar">
