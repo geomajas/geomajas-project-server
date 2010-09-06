@@ -10,7 +10,6 @@
 
 		// add a button in GWT code
 		toolbar.addModalButton(new ZoomToRectangleModalAction(map));
-		toolbar.addActionButton(new PrintAction(map));
 
 		layout.addMember(toolbar);
 		layout.addMember(map);
