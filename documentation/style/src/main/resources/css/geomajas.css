@@ -1,85 +1,316 @@
-@import url(documentation.css);
-@import url(docnav.css);
-@import url(reports.css);
-@import url(dirty.css);
 
-body {
-	background: url(../images/bkg_gradient.gif) repeat-x;
-	margin: 0 auto;
-	font-family: 'Lucida Grande', Geneva, Verdana, Arial, sans-serif;
-	font-size: 12px;
-	max-width: 55em;
-	padding: 0 2em;
-	color: #333;
-	line-height: 150%;
+/*---- TITLE BLOCK ----*/
+
+.book {
+	background: #FFFFFF url(../images/header.png) no-repeat;
+	padding-top: 90px;
 }
 
-/*Links*/
-a:link {
-	color: #0066cc;
+.releaseinfo, .copyright {
+	padding: 0px 10px;
 }
 
-a:visited {
-	color: #6699cc;
+.toc, .list-of-figures, .list-of-tables, .list-of-examples {
+	padding: 5px 20px;
 }
 
-div.longdesc-link {
-	float: right;
-	color: #999;
+.toc {
+	line-height: 21px;
+}
+.toc p {
+	padding: 0px;
 }
 
-/*headings*/
-h1, h2, h3, h4, h5, h6 {
-	color: #4a5d75;
-	line-height: 130%;
-	margin-top: 0;
-	font-family: 'Lucida Grande', Geneva, Verdana, Arial, sans-serif;
-	background-color: transparent;
+
+
+
+/*------- NOTIFICATIONS --------*/
+
+div.note, div.tip, div.important, div.caution, div.warning {
+	background: #849092 no-repeat 10px 10px;
+	color: white;
+	padding: 1em 1em 20px;
+	border: 1px solid #849092;
+	margin-bottom: 1.5em;
+
+	-moz-border-radius:10px;
+	border-radius:10px;
 }
 
-h1 {
-/*	background: #3B4E64 none repeat scroll 0% 50%; */
-	background: url(../images/title_hdr.png) no-repeat;
-	border-top: 1px dotted #CCCCCC;
-	line-height: 1.2em;
-	color: #182737;
-	font-size: 2em;
-	padding: 1.5em;
+div.note pre, div.tip pre, div.important pre, div.caution pre, div.warning pre {
+	background-color: #d6dee0;
+	color: #334558;
+	border: 1px solid #e1e9eb;
 }
 
-h2 {
-	font-size: 1.6em;
+div.note, div.tip, div.important, div.caution, div.warning {
+	margin-top: .5em;
 }
 
-h3 {
+div.note {
+	background-image: url(../images/note.png);
+}
+
+div.tip {
+	background-image: url(../images/tip.png);
+	background-color: #70A5C4;
+	border: 1px solid #70A5C4;
+}
+
+div.important {
+	background-image: url(../images/important.png);
+	background-color: #397941;
+	border: 1px solid #397941;
+}
+
+div.caution {
+	background-image: url(../images/caution.png);
+	background-color: #C09C0E;
+	border: 1px solid #C09C0E;
+}
+
+div.warning {
+	background-image: url(../images/warning.png);
+	background-color: #873009;
+	border: 1px solid #873009;
+}
+
+div.note .replaceable, div.tip .replaceable, div.important .replaceable, div.caution .replaceable, div.warning .replaceable {
+	color: #e3dcc0;
+}
+
+pre .replaceable, tt .replaceable {
+	color: #444 !important;
+}
+
+div.note h2, div.tip h2, div.important h2, div.caution h2, div.warning h2 {
+	height: 32px;
 	font-size: 1.3em;
-	padding-top: 0;
-	padding-bottom: 0;
+	color: white;
 }
 
-h4 {
-	font-size: 1.1em;
-	padding-top: 0;
-	padding-bottom: 0;
+div.note h3, div.tip h3, div.important h3, div.caution h3, div.warning h3 {
+	padding: 0px 0px 0px 56px;
+	height: 32px;
+	font-size: 1.3em;
+	color: white;
 }
 
-h5.formalpara {
-	font-size: 1em;
-	margin-top: 2em;
-	margin-bottom: .8em;
+div.note .guilabel, div.tip .guilabel, div.important .guilabel, div.caution .guilabel, div.warning .guilabel {
+	color: white !important;
 }
 
-/*element rules*/
-hr {
+div.note li, div.tip li, div.caution li, div.warning li, div.important li {
+	padding-left: 10px;
+	margin: 0;
+}
+
+div.note ul, div.tip ul, div.caution ul, div.warning ul, div.important ul {
+	padding-left: 40px;
+	margin: 0;
+}
+
+div.note pre pre a:visited, div.tip pre pre a:visited, div.important pre pre a:visited,
+div.caution pre pre a:visited, div.warning pre pre a:visited, div.note pre a:link,
+.tip pre a:link, div.important pre a:link, div.caution pre a:link, div.warning pre a:link {
+	color: #0066cc !important;
+}
+
+div.note a:visited, div.tip a:visited, div.important a:visited, div.caution a:visited,
+div.warning a:visited, div.note a:link, div.tip a:link, div.important a:link, div.caution a:link, div.warning a:link {
+	color: #f7f2d0;
+}
+
+div.note h2, div.note p, div.tip h2, div.tip p, div.caution h2, div.caution p, div.warning h2, div.warning p, div.important h2, .important p {
+	padding: 0 0 0 56px;
+	margin: 0;
+}
+
+
+
+
+
+
+/*----------- TABLE ---------*/
+
+table {
+	font-size:12px;
+	border: 1px solid #849092;
+	width: 95%;
 	border-collapse: collapse;
-	border-style: none;
-	border-top: 1px dotted #ccc;
-	width: 100% !important;
+	margin: 0 auto;
 }
 
-sup {
-	color: #999;
+table th {
+	text-align: left;
+	background: #849092 url(../images/table_header.png) repeat-x;
+	padding: 4px 8px;
+	color: white;
 }
 
-/*supporting stylesheets*/
+table td {
+	padding: 4px 8px;
+	background-color: #F8FBFC;
+}
 
+table tr.even td {
+	background-color: #f5f5f5;
+}
+
+table th p:first-child, table td p:first-child, table  li p:first-child {
+	margin-top: 0;
+	padding-top: 0;
+	display: inline;
+}
+
+th, td {
+	border-style: none;;
+}
+
+table table td {
+	border-bottom: 1px dotted #aaa !important;
+	background-color: white;
+	padding: .6em 0;
+}
+
+table table {
+	border: 1px solid white !important;
+	font-size: .9em;
+}
+
+td.remarkval {
+	font-size: .9em;
+	color: #444;
+}
+
+.defaultval {
+	font-size: .8em
+}
+
+td.typeval {
+	font-size: .8em
+}
+
+td.fieldval {
+	font-weight: bold;
+	font-size: .9em;
+}
+
+th.dbkey {
+	font-size: .9em;
+}
+
+.lbname, .lbtype, .lbdescr, .lbdriver, .lbhost {
+	color: white;
+	font-weight: bold;
+	background-color: #999;
+	font-size: 0.9em;
+	width: 120px;
+}
+
+td.remarkval {
+	width: 230px;
+}
+
+td.tname {
+	font-weight: bold;
+	font-size: 1.1em;
+}
+
+h5 {
+	font-size: 9pt;
+}
+
+h6 {
+	font-size: 10pt;
+}
+
+th.dbfield {
+	width: 120px;
+}
+
+th.dbtype {
+	width: 70px;
+}
+
+th.dbdefault {
+	width: 70px;
+}
+
+th.dbnul {
+	width: 70px;
+}
+
+th.dbkey {
+	width: 70px;
+}
+
+
+
+
+
+
+
+/*---------- CODES SNIPPETS & FIGURES ----------*/
+
+pre, code, .guibutton, .keycap, .guilabel {
+	font-size: 12px;
+	font-family: "liberation mono", "Bitstream vera mono", monospace;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+}
+
+pre {
+	display: block;
+	border: 1px solid #CCCCCC;
+	background-color: #F8FBFC;
+	color: #336666;
+	overflow: auto;
+	padding: 10px 15px;
+}
+
+
+.example, .figure {
+	margin: 0px 10px;
+	background-color: #E2E8EC;
+	border: 1px solid #CCCCCC;
+	padding: 5px;
+	margin-bottom: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+}
+
+.example .title {
+	margin: 3px 0px 0px 0px;
+}
+
+li pre {
+	margin: 2px 10px;
+}
+
+
+.figure .title {
+	margin: 3px 0px 5px 0px;
+}
+
+.figure table {
+	padding: 0px 5px 10px 5px;
+	width: 100%;
+	border: 0px;
+}
+
+.figure td {
+	background-color: #E2E8EC;
+}
+
+img {
+	display: block;
+	margin: 0px;
+	border: 1px solid #CCCCCC;
+}
+
+.inlinemediaobject, .inlinemediaobject img {
+	display: inline !important;
+	margin: 0px 5px 5px 5px;
+	border: 1px solid #CCCCCC;
+}
