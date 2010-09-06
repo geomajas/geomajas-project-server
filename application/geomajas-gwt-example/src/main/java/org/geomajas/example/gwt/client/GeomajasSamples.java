@@ -207,8 +207,8 @@ public class GeomajasSamples implements EntryPoint {
 		LayoutSpacer layoutSpacer = new LayoutSpacer();
 		layoutSpacer.setWidth(5);
 		LocaleSelect localeSelect = new LocaleSelect("English");
-		mainTabSet
-				.setTabBarControls(TabBarControls.TAB_SCROLLER, TabBarControls.TAB_PICKER, layoutSpacer, localeSelect);
+		mainTabSet.setTabBarControls(TabBarControls.TAB_SCROLLER, TabBarControls.TAB_PICKER, layoutSpacer, 
+				localeSelect);
 
 		hLayout.addMember(mainTabSet);
 
