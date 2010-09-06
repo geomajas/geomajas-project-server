@@ -533,7 +533,8 @@ public class MapView {
 
 	/** Fire an event. */
 	private void fireEvent(boolean resized, ZoomOption option) {
-		boolean sameScale = lastViewState != null && viewState.isSameScale(lastViewState);
+		// keep old semantics of sameScaleLevel for api compatibility !
+		boolean sameScale = lastViewState != null && viewState.isPannableFrom(lastViewState);
 		handlerManager.fireEvent(new MapViewChangedEvent(getBounds(), getCurrentScale(), sameScale, viewState
 				.isPanDragging(), resized, option));
 	}
