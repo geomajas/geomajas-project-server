@@ -63,8 +63,8 @@
 	</build>
 
 	<modules>
-		<!--
 		<module>style</module>
+		<!--
 		<module>xslt</module>
 		-->
 		<module>gettingstarted</module>
