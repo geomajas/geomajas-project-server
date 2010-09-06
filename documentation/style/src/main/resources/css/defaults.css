@@ -35,7 +35,7 @@ h1, h2, h3, h4, h5, h6 {
 	color: #20435C;
 	line-height: 150%;
 	font-family: 'Lucida Grande', Geneva, Verdana, Arial, sans-serif;
-	padding: 3px 0px 3px 10px;
+	padding: 3px 0 3px 10px;
 }
 
 
@@ -43,7 +43,7 @@ h1 {
 	font-size: 24px;
 	background-color: #F2F2F2;
 	border-bottom: 1px solid #CCCCCC;
-	margin: 30px 0px 10px 0px;
+	margin: 30px 0 10px 0;
 }
 
 h2 {
@@ -51,25 +51,25 @@ h2 {
 	line-height: 140%;
 	background-color: #F2F2F2;
 	border-bottom: 1px solid #CCCCCC;
-	margin: 20px 0px 10px 0px;
+	margin: 20px 0 10px 0;
 }
 
 h3 {
 	font-size: 14px;
 	line-height: 130%;
-	margin: 0px;
+	margin: 0;
 }
 
 h4 {
 	font-size: 12px;
 	line-height: 120%;
-	margin: 0px;
+	margin: 0;
 }
 
 h5.formalpara {
 	font-size: 12px;
 	line-height: 110%;
-	margin: 0px;
+	margin: 0;
 }
 
 
@@ -84,7 +84,7 @@ ol li, ul li {
 }
 
 li p {
-	padding-left: 0px;
+	padding-left: 0;
 }
 
 ul {
@@ -94,7 +94,6 @@ ul {
 
 
 ul ul {
-	list-style: circle #CCCCCC;
 	list-style: circle url(../images/dot2.png);
 }
 
@@ -138,5 +137,5 @@ sup {
 }
 
 p {
-	padding: 0px 10px;
+	padding: 0 10px;
 }
