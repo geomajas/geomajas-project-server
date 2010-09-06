@@ -73,7 +73,7 @@
 
       <mediaobject>
         <imageobject>
-          <imagedata fileref="../images/run-archetype.png" width="75%" />
+          <imagedata fileref="images/run-archetype.png" width="75%" />
         </imageobject>
       </mediaobject>
     </figure>
@@ -183,7 +183,7 @@ mvn gwt:run</programlisting>The "install" target will create a war file for
 
       <mediaobject>
         <imageobject>
-          <imagedata fileref="../images/eclipse-maven-settings.png"
+          <imagedata fileref="images/eclipse-maven-settings.png"
                      width="50%" />
         </imageobject>
       </mediaobject>
@@ -205,7 +205,7 @@ mvn gwt:run</programlisting>The "install" target will create a war file for
 
       <mediaobject>
         <imageobject>
-          <imagedata fileref="../images/eclipse-gwt-module-inclusion.png"
+          <imagedata fileref="images/eclipse-gwt-module-inclusion.png"
                      width="50%" />
         </imageobject>
       </mediaobject>
@@ -219,7 +219,7 @@ mvn gwt:run</programlisting>The "install" target will create a war file for
 
       <mediaobject>
         <imageobject>
-          <imagedata fileref="../images/gwt-eclipse-properties.png"
+          <imagedata fileref="images/gwt-eclipse-properties.png"
                      width="60%" />
         </imageobject>
       </mediaobject>
@@ -243,7 +243,7 @@ mvn gwt:run</programlisting>The "install" target will create a war file for
 
       <mediaobject>
         <imageobject>
-          <imagedata fileref="../images/IDEA - open project.png" width="50%" />
+          <imagedata fileref="images/IDEA - open project.png" width="50%" />
         </imageobject>
       </mediaobject>
     </figure>
@@ -258,7 +258,7 @@ mvn gwt:run</programlisting>The "install" target will create a war file for
 
       <mediaobject>
         <imageobject>
-          <imagedata fileref="../images/IDEA - run configuration.png"
+          <imagedata fileref="images/IDEA - run configuration.png"
                      width="90%" />
         </imageobject>
       </mediaobject>
@@ -274,7 +274,7 @@ mvn gwt:run</programlisting>The "install" target will create a war file for
 
       <mediaobject>
         <imageobject>
-          <imagedata fileref="../images/IDEA - maven targets.png" width="60%" />
+          <imagedata fileref="images/IDEA - maven targets.png" width="60%" />
         </imageobject>
       </mediaobject>
     </figure>
@@ -290,7 +290,7 @@ mvn gwt:run</programlisting>The "install" target will create a war file for
 
       <mediaobject>
         <imageobject>
-          <imagedata fileref="../images/IDEA%20-%20project%20structure.png"
+          <imagedata fileref="images/IDEA%20-%20project%20structure.png"
                      width="80%" />
         </imageobject>
       </mediaobject>

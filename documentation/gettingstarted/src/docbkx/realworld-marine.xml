@@ -162,7 +162,7 @@
 
         <mediaobject>
           <imageobject>
-            <imagedata fileref="../images/realworldexample/eclipse_gwt.png"
+            <imagedata fileref="images/realworldexample/eclipse_gwt.png"
                        width="75%" />
           </imageobject>
         </mediaobject>
@@ -204,7 +204,7 @@
 
                 <mediaobject>
                   <imageobject>
-                    <imagedata fileref="../images/realworldexample/layers_vha.png"
+                    <imagedata fileref="images/realworldexample/layers_vha.png"
                                width="-" />
                   </imageobject>
                 </mediaobject>
@@ -217,7 +217,7 @@
 
                 <mediaobject>
                   <imageobject>
-                    <imagedata fileref="../images/realworldexample/treenode_vha.png"
+                    <imagedata fileref="images/realworldexample/treenode_vha.png"
                                width="-" />
                   </imageobject>
                 </mediaobject>
@@ -231,7 +231,7 @@
 
                 <mediaobject>
                   <imageobject>
-                    <imagedata fileref="../images/realworldexample/bean_vha.png"
+                    <imagedata fileref="images/realworldexample/bean_vha.png"
                                width="-" />
                   </imageobject>
                 </mediaobject>
@@ -246,7 +246,7 @@
 
             <mediaobject>
               <imageobject>
-                <imagedata fileref="../images/realworldexample/webxml_vha.png"
+                <imagedata fileref="images/realworldexample/webxml_vha.png"
                            width="-" />
               </imageobject>
             </mediaobject>
@@ -265,7 +265,7 @@
         available fields.</para>
 
         <para>If you get really stuck you can download an example layerVha.xml
-        <ulink url="../files/realworldexample/layerVha.xml">right
+        <ulink url="files/realworldexample/layerVha.xml">right
         here</ulink>.</para>
       </listitem>
 
@@ -276,7 +276,7 @@
 
             <mediaobject>
               <imageobject>
-                <imagedata fileref="../images/realworldexample/symbol.png"
+                <imagedata fileref="images/realworldexample/symbol.png"
                            width="-" />
               </imageobject>
             </mediaobject>
@@ -340,7 +340,7 @@ port=5432" Y:\1R5EK012.000 -append</programlisting></para>
 
                 <mediaobject>
                   <imageobject>
-                    <imagedata fileref="../images/realworldexample/datasource_ecdis.png"
+                    <imagedata fileref="images/realworldexample/datasource_ecdis.png"
                                width="-" />
                   </imageobject>
                 </mediaobject>
@@ -353,7 +353,7 @@ port=5432" Y:\1R5EK012.000 -append</programlisting></para>
 
                 <mediaobject>
                   <imageobject>
-                    <imagedata fileref="../images/realworldexample/sessionfactory_ecdis.png"
+                    <imagedata fileref="images/realworldexample/sessionfactory_ecdis.png"
                                width="-" />
                   </imageobject>
                 </mediaobject>
@@ -366,7 +366,7 @@ port=5432" Y:\1R5EK012.000 -append</programlisting></para>
 
                 <mediaobject>
                   <imageobject>
-                    <imagedata fileref="../images/realworldexample/layers_ecdis.png"
+                    <imagedata fileref="images/realworldexample/layers_ecdis.png"
                                width="-" />
                   </imageobject>
                 </mediaobject>
@@ -380,7 +380,7 @@ port=5432" Y:\1R5EK012.000 -append</programlisting></para>
 
                 <mediaobject>
                   <imageobject>
-                    <imagedata fileref="../images/realworldexample/treenode_ecdis.png"
+                    <imagedata fileref="images/realworldexample/treenode_ecdis.png"
                                width="-" />
                   </imageobject>
                 </mediaobject>
@@ -394,7 +394,7 @@ port=5432" Y:\1R5EK012.000 -append</programlisting></para>
 
                 <mediaobject>
                   <imageobject>
-                    <imagedata fileref="../images/realworldexample/bean_ecdis.png"
+                    <imagedata fileref="images/realworldexample/bean_ecdis.png"
                                width="-" />
                   </imageobject>
                 </mediaobject>
@@ -409,7 +409,7 @@ port=5432" Y:\1R5EK012.000 -append</programlisting></para>
 
             <mediaobject>
               <imageobject>
-                <imagedata fileref="../images/realworldexample/webxml_ecdis1.png"
+                <imagedata fileref="images/realworldexample/webxml_ecdis1.png"
                            width="-" />
               </imageobject>
             </mediaobject>
@@ -418,7 +418,7 @@ port=5432" Y:\1R5EK012.000 -append</programlisting></para>
 
             <mediaobject>
               <imageobject>
-                <imagedata fileref="../images/realworldexample/webxml_ecdis2.png"
+                <imagedata fileref="images/realworldexample/webxml_ecdis2.png"
                            width="-" />
               </imageobject>
             </mediaobject>
@@ -437,7 +437,7 @@ port=5432" Y:\1R5EK012.000 -append</programlisting></para>
 
         <para>If you get really stuck you can download an example
         layerEcdis.xml <ulink
-        url="../files/realworldexample/layerEcdis.xml">right
+        url="files/realworldexample/layerEcdis.xml">right
         here</ulink>.</para>
       </listitem>
     </orderedlist>
@@ -474,7 +474,7 @@ port=5432" Y:\1R5EK012.000 -append</programlisting></para>
 
                 <mediaobject>
                   <imageobject>
-                    <imagedata fileref="../images/realworldexample/bean_agiv.png"
+                    <imagedata fileref="images/realworldexample/bean_agiv.png"
                                width="-" />
                   </imageobject>
                 </mediaobject>
@@ -520,7 +520,7 @@ port=5432" Y:\1R5EK012.000 -append</programlisting></para>
         </orderedlist>
 
         <para>You can download an example layerWmsAgiv.xml file <ulink
-        url="../realworldexample/layerWmsAgiv.xml">right here</ulink>. Note
+        url="realworldexample/layerWmsAgiv.xml">right here</ulink>. Note
         that as said before the login details are excluded from this example
         due to privacy reasons. This renders this example file useless. Please
         use your own, or a public WMS server to test out this part of the
@@ -563,7 +563,7 @@ port=5432" Y:\1R5EK012.000 -append</programlisting></para>
 
           <mediaobject>
             <imageobject>
-              <imagedata fileref="../images/realworldexample/soapfetch.png"
+              <imagedata fileref="images/realworldexample/soapfetch.png"
                          width="-" />
             </imageobject>
           </mediaobject>
@@ -578,7 +578,7 @@ port=5432" Y:\1R5EK012.000 -append</programlisting></para>
 
             <mediaobject>
               <imageobject>
-                <imagedata fileref="../images/realworldexample/soapzoom.png"
+                <imagedata fileref="images/realworldexample/soapzoom.png"
                            width="-" />
               </imageobject>
             </mediaobject>
@@ -597,7 +597,7 @@ port=5432" Y:\1R5EK012.000 -append</programlisting></para>
 
             <mediaobject>
               <imageobject>
-                <imagedata fileref="../images/realworldexample/soapcontroller.png"
+                <imagedata fileref="images/realworldexample/soapcontroller.png"
                            width="-" />
               </imageobject>
             </mediaobject>
@@ -626,7 +626,7 @@ port=5432" Y:\1R5EK012.000 -append</programlisting></para>
 
       <mediaobject>
         <imageobject>
-          <imagedata fileref="../images/realworldexample/facility.png"
+          <imagedata fileref="images/realworldexample/facility.png"
                      width="-" />
         </imageobject>
       </mediaobject>
@@ -640,7 +640,7 @@ port=5432" Y:\1R5EK012.000 -append</programlisting></para>
       <listitem>
         <para>Create src\main\resources\be\fks\shapeinmem\security.xml
         (download an example <ulink
-        url="../files/realworldexample/security.xml">right here</ulink>). This
+        url="files/realworldexample/security.xml">right here</ulink>). This
         is the file inside which you configure the users and what they are
         allowed to access.</para>
       </listitem>
@@ -658,7 +658,7 @@ port=5432" Y:\1R5EK012.000 -append</programlisting></para>
 
           <mediaobject>
             <imageobject>
-              <imagedata fileref="../images/realworldexample/securitywebxml.png"
+              <imagedata fileref="images/realworldexample/securitywebxml.png"
                          width="-" />
             </imageobject>
           </mediaobject>
@@ -671,7 +671,7 @@ port=5432" Y:\1R5EK012.000 -append</programlisting></para>
 
             <mediaobject>
               <imageobject>
-                <imagedata fileref="../images/realworldexample/securitypom.png"
+                <imagedata fileref="images/realworldexample/securitypom.png"
                            width="-" />
               </imageobject>
             </mediaobject>
@@ -684,7 +684,7 @@ port=5432" Y:\1R5EK012.000 -append</programlisting></para>
 
             <mediaobject>
               <imageobject>
-                <imagedata fileref="../images/realworldexample/securitygwtxml.png"
+                <imagedata fileref="images/realworldexample/securitygwtxml.png"
                            width="-" />
               </imageobject>
             </mediaobject>

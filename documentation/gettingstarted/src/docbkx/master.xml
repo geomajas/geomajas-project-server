@@ -33,7 +33,7 @@
 			<holder>Geosparc nv</holder>
 		</copyright>
 
-		<releaseinfo>v1.8.0-SNAPSHOT</releaseinfo>
+		<releaseinfo><?eval ${project.version}?></releaseinfo>
 
 		<productname>Geomajas</productname>
 
@@ -45,13 +45,13 @@
 	<toc/>
 	<lot/>
 
-	<xi:include href="modules/introduction.xml"
+	<xi:include href="introduction.xml"
 				xmlns:xi="http://www.w3.org/2001/XInclude"/>
 
-	<xi:include href="modules/getting-started.xml"
+	<xi:include href="getting-started.xml"
 				xmlns:xi="http://www.w3.org/2001/XInclude"/>
 
-	<xi:include href="modules/realworld-marine.xml"
+	<xi:include href="realworld-marine.xml"
 				xmlns:xi="http://www.w3.org/2001/XInclude"/>
 
 </book>
