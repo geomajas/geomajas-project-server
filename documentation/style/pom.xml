@@ -10,7 +10,7 @@
 	<groupId>org.geomajas.documentation</groupId>
 	<artifactId>geomajas-jdocbook-style</artifactId>
 	<version>1.0.2-SNAPSHOT</version>
-	<packaging>jdocbook-style</packaging>
+	<packaging>jar</packaging>
 	<name>JDocBook styles for User Guide for Developers</name>
 	<description>JDocBook styles for User Guide for Developers</description>
 
@@ -45,12 +45,6 @@
 	
 	<build>
 		<plugins>
-			<plugin>
-				<groupId>org.jboss.maven.plugins</groupId>
-				<artifactId>maven-jdocbook-style-plugin</artifactId>
-				<version>1.0.0</version>
-				<extensions>true</extensions>
-			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-jar-plugin</artifactId>
