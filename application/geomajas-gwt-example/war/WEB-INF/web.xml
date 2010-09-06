@@ -32,6 +32,7 @@
  			org.geotools.referencing.crs.EPSGCRSAuthorityFactory
 			org.springframework.transaction.config.TxNamespaceHandler
 			org.geomajas.plugin.printing.command.dto.PrintGetTemplateRequest
+			org.geomajas.plugin.geocoder.service.SplitCommaReverseService
        </param-value>
     </context-param>
 
