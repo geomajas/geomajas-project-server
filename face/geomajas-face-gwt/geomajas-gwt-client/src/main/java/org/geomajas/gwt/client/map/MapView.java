@@ -158,8 +158,8 @@ public class MapView {
 	/** Return the world-to-pan space translation matrix. */
 	public Matrix getWorldToPanTransformation() {
 		if (viewState.getScale() > 0) {
-			double dX = -(viewState.getX() * viewState.getScale());
-			double dY = viewState.getY() * viewState.getScale();
+			double dX = -(viewState.getPanX() * viewState.getScale());
+			double dY = viewState.getPanY() * viewState.getScale();
 			return new Matrix(viewState.getScale(), 0, 0, -viewState.getScale(), dX, dY);
 		}
 		return new Matrix(1, 0, 0, 1, 0, 0);
