@@ -49,7 +49,7 @@ public class ZoomOnClickController extends AbstractGraphicsController {
 		WorldViewTransformer transformer = mapView.getWorldViewTransformer();
 		Coordinate viewPosition = getScreenPosition(event);
 		Coordinate worldPosition = transformer.viewToWorld(viewPosition);
-		mapView.getCamera().setPosition(worldPosition);
+		mapView.setCenterPosition(worldPosition);
 		mapView.scale(zoomFactor, MapView.ZoomOption.LEVEL_CHANGE);
 	}
 

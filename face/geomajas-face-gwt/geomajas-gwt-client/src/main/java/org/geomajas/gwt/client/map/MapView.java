@@ -57,7 +57,7 @@ import com.google.gwt.event.shared.HandlerRegistration;
 @Api
 public class MapView {
 
-	private static final double EQUAL_CHECK_DELTA = 1e-10;
+
 	private static final double MAX_RESOLUTION = Float.MAX_VALUE;
 
 	/** Zoom options. */
@@ -82,18 +82,6 @@ public class MapView {
 	/** The map's height in pixels. */
 	private int height;
 
-	/** The current scale : how many pixels are there in 1 map unit ? */
-	private double currentScale = 1.0;
-
-	/**
-	 * The center of the map. The viewing frustum is determined by this camera object in combination with the map's
-	 * width and height.
-	 */
-	private Camera camera;
-
-	/** The center of the map. */
-	private Coordinate panOrigin = new Coordinate(0, 0);
-
 	/** A maximum scale level, that this MapView is not allowed to cross. */
 	private double maximumScale = 10;
 
@@ -109,15 +97,19 @@ public class MapView {
 	/** The current index in the resolutions array. That is, if the resolutions are actually used. */
 	private int resolutionIndex = -1;
 
-	private double previousScale;
+	/**
+	 * The current view state.
+	 */
+	private MapViewState viewState = new MapViewState();
 
-	private Coordinate previousPanOrigin = new Coordinate(0, 0);
+	/**
+	 * The previous view state.
+	 */
+	private MapViewState lastViewState;
 
 	private HandlerManager handlerManager;
 
 	private WorldViewTransformer worldViewTransformer;
-
-	private boolean panDragging;
 
 	// -------------------------------------------------------------------------
 	// Constructors:
@@ -125,7 +117,6 @@ public class MapView {
 
 	/** Default constructor that initializes all it's fields. */
 	public MapView() {
-		camera = new Camera();
 		handlerManager = new HandlerManager(this);
 	}
 
@@ -146,19 +137,19 @@ public class MapView {
 
 	/** Return the world-to-view space transformation matrix. */
 	public Matrix getWorldToViewTransformation() {
-		if (currentScale > 0) {
-			double dX = -(camera.getX() * currentScale) + width / 2;
-			double dY = camera.getY() * currentScale + height / 2;
-			return new Matrix(currentScale, 0, 0, -this.currentScale, dX, dY);
+		if (viewState.getScale() > 0) {
+			double dX = -(viewState.getX() * viewState.getScale()) + width / 2;
+			double dY = viewState.getY() * viewState.getScale() + height / 2;
+			return new Matrix(viewState.getScale(), 0, 0, -viewState.getScale(), dX, dY);
 		}
 		return new Matrix(1, 0, 0, 1, 0, 0);
 	}
 
 	/** Return the world-to-view space translation matrix. */
 	public Matrix getWorldToViewTranslation() {
-		if (currentScale > 0) {
-			double dX = -(camera.getX() * currentScale) + width / 2;
-			double dY = camera.getY() * currentScale + height / 2;
+		if (viewState.getScale() > 0) {
+			double dX = -(viewState.getX() * viewState.getScale()) + width / 2;
+			double dY = viewState.getY() * viewState.getScale() + height / 2;
 			return new Matrix(1, 0, 0, 1, dX, dY);
 		}
 		return new Matrix(1, 0, 0, 1, 0, 0);
@@ -166,19 +157,21 @@ public class MapView {
 
 	/** Return the world-to-pan space translation matrix. */
 	public Matrix getWorldToPanTransformation() {
-		if (currentScale > 0) {
-			double dX = -(panOrigin.getX() * currentScale);
-			double dY = panOrigin.getY() * currentScale;
-			return new Matrix(currentScale, 0, 0, -this.currentScale, dX, dY);
+		if (viewState.getScale() > 0) {
+			double dX = -(viewState.getX() * viewState.getScale());
+			double dY = viewState.getY() * viewState.getScale();
+			return new Matrix(viewState.getScale(), 0, 0, -viewState.getScale(), dX, dY);
 		}
 		return new Matrix(1, 0, 0, 1, 0, 0);
 	}
 
 	/** Return the translation of coordinates relative to the pan origin to view coordinates. */
 	public Matrix getPanToViewTranslation() {
-		if (currentScale > 0) {
-			double dX = -((camera.getX() - panOrigin.getX()) * currentScale) + width / 2;
-			double dY = (camera.getY() - panOrigin.getY()) * currentScale + height / 2;
+		if (viewState.getScale() > 0) {
+			double dX = -((viewState.getX() - viewState.getPanX()) * viewState.getScale())
+					+ width / 2;
+			double dY = (viewState.getY() - viewState.getPanY()) * viewState.getScale()
+					+ height / 2;
 			return new Matrix(1, 0, 0, 1, dX, dY);
 		}
 		return new Matrix(1, 0, 0, 1, 0, 0);
@@ -186,9 +179,9 @@ public class MapView {
 
 	/** Return the translation of scaled world coordinates to coordinates relative to the pan origin. */
 	public Matrix getWorldToPanTranslation() {
-		if (currentScale > 0) {
-			double dX = -(panOrigin.getX() * currentScale);
-			double dY = panOrigin.getY() * currentScale;
+		if (viewState.getScale() > 0) {
+			double dX = -(viewState.getPanX() * viewState.getScale());
+			double dY = viewState.getPanY() * viewState.getScale();
 			return new Matrix(1, 0, 0, 1, dX, dY);
 		}
 		return new Matrix(1, 0, 0, 1, 0, 0);
@@ -196,8 +189,8 @@ public class MapView {
 
 	/** Return the world-to-view space translation matrix. */
 	public Matrix getWorldToViewScaling() {
-		if (currentScale > 0) {
-			return new Matrix(currentScale, 0, 0, -currentScale, 0, 0);
+		if (viewState.getScale() > 0) {
+			return new Matrix(viewState.getScale(), 0, 0, -viewState.getScale(), 0, 0);
 		}
 		return new Matrix(1, 0, 0, 1, 0, 0);
 	}
@@ -213,8 +206,8 @@ public class MapView {
 	 *            the new center position
 	 */
 	public void setCenterPosition(Coordinate coordinate) {
-		pushPanData();
-		doSetPosition(coordinate);
+		saveState();
+		doSetOrigin(coordinate);
 		fireEvent(false, null);
 	}
 
@@ -229,7 +222,7 @@ public class MapView {
 	 *            zoom option, {@link org.geomajas.gwt.client.map.MapView.ZoomOption}
 	 */
 	public void setCurrentScale(final double newScale, final ZoomOption option) {
-		setCurrentScale(newScale, option, camera.getPosition());
+		setCurrentScale(newScale, option, new Coordinate(viewState.getX(), viewState.getY()));
 	}
 
 	/**
@@ -245,18 +238,17 @@ public class MapView {
 	 *            After zooming, this point will still be on the same position in the view as before.
 	 */
 	public void setCurrentScale(final double newScale, final ZoomOption option, final Coordinate rescalePoint) {
-		pushPanData();
+		saveState();
 		// calculate theoretical new bounds
-		Coordinate center = camera.getPosition();
 		Bbox newBbox = new Bbox(0, 0, getWidth() / newScale, getHeight() / newScale);
 
 		double factor = newScale / getCurrentScale();
 
 		// Calculate translate vector to assure rescalePoint is on the same position as before.
-		double dX = (rescalePoint.getX() - center.getX()) * (1 - 1 / factor);
-		double dY = (rescalePoint.getY() - center.getY()) * (1 - 1 / factor);
+		double dX = (rescalePoint.getX() - viewState.getX()) * (1 - 1 / factor);
+		double dY = (rescalePoint.getY() - viewState.getY()) * (1 - 1 / factor);
 
-		newBbox.setCenterPoint(center);
+		newBbox.setCenterPoint(new Coordinate(viewState.getX(), viewState.getY()));
 		newBbox.translate(dX, dY);
 		// and apply...
 		doApplyBounds(newBbox, option);
@@ -278,7 +270,7 @@ public class MapView {
 	 *            zoom option, {@link org.geomajas.gwt.client.map.MapView.ZoomOption}
 	 */
 	public void applyBounds(final Bbox bounds, final ZoomOption option) {
-		pushPanData();
+		saveState();
 		doApplyBounds(bounds, option);
 	}
 
@@ -291,13 +283,13 @@ public class MapView {
 	 *            The map's height.
 	 */
 	public void setSize(int newWidth, int newHeight) {
-		pushPanData();
+		saveState();
 		Bbox oldbbox = getBounds();
 		this.width = newWidth;
 		this.height = newHeight;
 
 		// Use the same center point for the new bounds, but don't zoom in or out.
-		doSetPosition(oldbbox.getCenterPoint());
+		doSetOrigin(oldbbox.getCenterPoint());
 		fireEvent(false, null);
 	}
 
@@ -310,9 +302,8 @@ public class MapView {
 	 *            Translation factor along the Y-axis in world space.
 	 */
 	public void translate(double x, double y) {
-		pushPanData();
-		Coordinate c = camera.getPosition();
-		doSetPosition(new Coordinate(c.getX() + x, c.getY() + y));
+		saveState();
+		doSetOrigin(new Coordinate(viewState.getX() + x, viewState.getY() + y));
 		fireEvent(false, null);
 	}
 
@@ -323,7 +314,7 @@ public class MapView {
 	 *            Adjust the scale by factor "delta".
 	 */
 	public void scale(double delta, ZoomOption option) {
-		setCurrentScale(currentScale * delta, option);
+		setCurrentScale(viewState.getScale() * delta, option);
 	}
 
 	/**
@@ -336,7 +327,7 @@ public class MapView {
 	 * 
 	 */
 	public void scale(double delta, ZoomOption option, Coordinate center) {
-		setCurrentScale(currentScale * delta, option, center);
+		setCurrentScale(viewState.getScale() * delta, option, center);
 	}
 
 	// -------------------------------------------------------------------------
@@ -345,7 +336,7 @@ public class MapView {
 
 	/** Return the current scale. */
 	public double getCurrentScale() {
-		return currentScale;
+		return viewState.getScale();
 	}
 
 	/**
@@ -357,8 +348,8 @@ public class MapView {
 	public Bbox getBounds() {
 		double w = getViewSpaceWidth();
 		double h = getViewSpaceHeight();
-		double x = camera.getX() - w / 2;
-		double y = camera.getY() - h / 2;
+		double x = viewState.getX() - w / 2;
+		double y = viewState.getY() - h / 2;
 		return new Bbox(x, y, w, h);
 	}
 
@@ -378,23 +369,6 @@ public class MapView {
 	public List<Double> getResolutions() {
 		return resolutions;
 	}
-	
-	
-	/**
-	 * Are we panning (same scale and pan origin) ?
-	 * 
-	 * @return true if panning
-	 * @since 1.8.0
-	 */
-	public boolean isPanning() {
-		return Math.abs(currentScale - previousScale) < EQUAL_CHECK_DELTA
-				&& previousPanOrigin.equalsDelta(this.panOrigin, EQUAL_CHECK_DELTA);
-	}
-
-	/** Return the internal camera that is used to represent the map's point of view. */
-	public Camera getCamera() {
-		return camera;
-	}
 
 	/** Return the transformer that is used to transform coordinate and geometries between world and screen space. */
 	public WorldViewTransformer getWorldViewTransformer() {
@@ -412,10 +386,6 @@ public class MapView {
 		return height;
 	}
 
-	public Coordinate getPanOrigin() {
-		return panOrigin;
-	}
-
 	public void setMaximumScale(double maximumScale) {
 		if (maximumScale > 0) {
 			this.maximumScale = maximumScale;
@@ -430,16 +400,21 @@ public class MapView {
 		this.maxBounds = maxBounds;
 	}
 
-	public boolean isPanDragging() {
-		return panDragging;
+	public void setPanDragging(boolean panDragging) {
+		saveState();
+		viewState = viewState.copyAndSetPanDragging(panDragging);
+	}
+	
+	public MapViewState getViewState() {
+		return viewState;
 	}
 
-	public void setPanDragging(boolean panDragging) {
-		this.panDragging = panDragging;
+	public Coordinate getPanOrigin() {
+		return new Coordinate(viewState.getPanX(), viewState.getPanY());
 	}
 
 	public String toString() {
-		return "VIEW: scale=" + this.currentScale + ", " + this.camera.toString();
+		return "VIEW: " + viewState.toString();
 	}
 
 	// -------------------------------------------------------------------------
@@ -447,14 +422,14 @@ public class MapView {
 	// -------------------------------------------------------------------------
 
 	private boolean doSetScale(double scale, ZoomOption option) {
-		boolean res = Math.abs(currentScale - scale) > .0000001;
-		currentScale = scale;
+		boolean res = Math.abs(viewState.getScale() - scale) > .0000001;
+		viewState = viewState.copyAndSetScale(scale);
 		return res;
 	}
 
-	private void doSetPosition(Coordinate coordinate) {
+	private void doSetOrigin(Coordinate coordinate) {
 		Coordinate center = calcCenterFromPoint(coordinate);
-		camera.setPosition(center);
+		viewState = viewState.copyAndSetOrigin(center.getX(), center.getY());
 	}
 
 	private void doApplyBounds(Bbox bounds, ZoomOption option) {
@@ -468,13 +443,12 @@ public class MapView {
 				// set scale
 				scaleChanged = doSetScale(scale, option);
 			}
-			doSetPosition(bounds.getCenterPoint());
+			doSetOrigin(bounds.getCenterPoint());
 			if (bounds.isEmpty()) {
 				fireEvent(false, null);
 			} else {
-				// set pan origin equal to camera
-				panOrigin.setX(camera.getX());
-				panOrigin.setY(camera.getY());
+				// set pan origin equal to origin
+				viewState = viewState.copyAndSetPanOrigin(viewState.getX(), viewState.getY());
 				fireEvent(scaleChanged, option);
 			}
 		}
@@ -541,26 +515,27 @@ public class MapView {
 	}
 
 	private double getViewSpaceWidth() {
-		return width / currentScale;
+		return width / viewState.getScale();
 	}
 
 	private double getViewSpaceHeight() {
-		return height / currentScale;
+		return height / viewState.getScale();
 	}
 
 	/**
 	 * keeps a copy of the previous pan data so we can detect if we are panning.
+	 * 
 	 * @see #isPanning()
 	 */
-	private void pushPanData() {
-		previousScale = currentScale;
-		previousPanOrigin = (Coordinate) panOrigin.clone();
+	private void saveState() {
+		this.lastViewState = viewState;
 	}
 
 	/** Fire an event. */
 	private void fireEvent(boolean resized, ZoomOption option) {
-		handlerManager.fireEvent(new MapViewChangedEvent(getBounds(), getCurrentScale(), isPanning(), panDragging,
-				resized, option));
+		boolean sameScale = lastViewState != null && viewState.isSameScale(lastViewState);
+		handlerManager.fireEvent(new MapViewChangedEvent(getBounds(), getCurrentScale(), sameScale, viewState
+				.isPanDragging(), resized, option));
 	}
 
 	/**
@@ -610,9 +585,9 @@ public class MapView {
 				}
 				// check if we need to change level
 				if (newResolutionIndex == resolutionIndex && option == ZoomOption.LEVEL_CHANGE) {
-					if (scale > currentScale && newResolutionIndex < indexes.getMax()) {
+					if (scale > viewState.getScale() && newResolutionIndex < indexes.getMax()) {
 						newResolutionIndex++;
-					} else if (scale < currentScale && newResolutionIndex > indexes.getMin()) {
+					} else if (scale < viewState.getScale() && newResolutionIndex > indexes.getMin()) {
 						newResolutionIndex--;
 					}
 				}
@@ -698,4 +673,5 @@ public class MapView {
 		}
 
 	}
+
 }

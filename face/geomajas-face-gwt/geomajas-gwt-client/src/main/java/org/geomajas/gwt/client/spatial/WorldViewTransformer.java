@@ -24,7 +24,6 @@
 package org.geomajas.gwt.client.spatial;
 
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.gwt.client.map.Camera;
 import org.geomajas.gwt.client.map.MapView;
 import org.geomajas.gwt.client.spatial.geometry.Geometry;
 import org.geomajas.gwt.client.spatial.geometry.LineString;
@@ -55,11 +54,6 @@ public class WorldViewTransformer {
 	 */
 	private MapView mapView;
 
-	/**
-	 * Shortcut to the MapView's camera object.
-	 */
-	private Camera camera;
-
 	// -------------------------------------------------------------------------
 	// Constructors:
 	// -------------------------------------------------------------------------
@@ -70,7 +64,6 @@ public class WorldViewTransformer {
 	 */
 	public WorldViewTransformer(MapView mapView) {
 		this.mapView = mapView;
-		this.camera = mapView.getCamera();
 	}
 
 	// -------------------------------------------------------------------------
@@ -89,14 +82,10 @@ public class WorldViewTransformer {
 			Vector2D position = new Vector2D(coordinate);
 			double scale = mapView.getCurrentScale();
 			position.scale(scale, -scale);
-			double translateX = -(camera.getX() * scale) + (mapView.getWidth() / 2);
-			double translateY = (camera.getY() * scale) + (mapView.getHeight() / 2);
+			double translateX = -(mapView.getViewState().getX() * scale) + (mapView.getWidth() / 2);
+			double translateY = (mapView.getViewState().getY() * scale) + (mapView.getHeight() / 2);
 			position.translate(translateX, translateY);
-
-			if (camera.getAlpha() != 0) {
-				// TODO: implement rotation support.
-			}
-
+			// TODO: implement rotation support.
 			return new Coordinate(position.getX(), position.getY());
 		}
 		return null;
@@ -182,11 +171,7 @@ public class WorldViewTransformer {
 			position.scale(scale, -scale);
 			Coordinate panOrigin = mapView.getPanOrigin();
 			position.translate(-(panOrigin.getX() * scale), panOrigin.getY() * scale);
-
-			if (camera.getAlpha() != 0) {
-				// TODO: implement rotation support.
-			}
-
+			// TODO: implement rotation support.
 			return new Coordinate(position.getX(), position.getY());
 		}
 		return null;
@@ -264,13 +249,10 @@ public class WorldViewTransformer {
 			double scale = mapView.getCurrentScale();
 			Coordinate panOrigin = mapView.getPanOrigin();
 			
-			double translateX = (camera.getX() - panOrigin.getX()) * scale - (mapView.getWidth() / 2);
-			double translateY = -(camera.getY() - panOrigin.getY()) * scale - (mapView.getHeight() / 2);
+			double translateX = (mapView.getViewState().getX() - panOrigin.getX()) * scale - (mapView.getWidth() / 2);
+			double translateY = -(mapView.getViewState().getY() - panOrigin.getY()) * scale - (mapView.getHeight() / 2);
 			position.translate(translateX , translateY);
-
-			if (camera.getAlpha() != 0) {
 				// TODO: implement rotation support.
-			}
 			return new Coordinate(position.getX(), position.getY());
 		}
 		return null;
@@ -350,14 +332,10 @@ public class WorldViewTransformer {
 
 			Bbox bounds = mapView.getBounds();
 			// -cam: center X axis around cam. +bbox.w/2: to place the origin in the center of the screen
-			double translateX = -camera.getX() + (bounds.getWidth() / 2);
-			double translateY = -camera.getY() - (bounds.getHeight() / 2); // Inverted Y-axis here...
+			double translateX = -mapView.getViewState().getX() + (bounds.getWidth() / 2);
+			double translateY = -mapView.getViewState().getY() - (bounds.getHeight() / 2); // Inverted Y-axis here...
 			position.translate(-translateX, -translateY);
-
-			if (camera.getAlpha() != 0) {
-				// TODO: implement rotation support.
-			}
-
+			// TODO: implement rotation support.
 			return new Coordinate(position.getX(), position.getY());
 		}
 		return null;

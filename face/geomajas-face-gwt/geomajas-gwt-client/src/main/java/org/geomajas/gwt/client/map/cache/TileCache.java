@@ -29,6 +29,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.geomajas.gwt.client.map.MapViewState;
 import org.geomajas.gwt.client.map.cache.tile.TileFunction;
 import org.geomajas.gwt.client.map.cache.tile.VectorTile;
 import org.geomajas.gwt.client.map.feature.Feature;
@@ -66,8 +67,7 @@ public class TileCache implements SpatialCache {
 
 	private List<VectorTile> evictedTiles;
 
-	private double previousScale;
-
+	private MapViewState lastViewState;
 	// -------------------------------------------------------------------------
 	// Constructors:
 	// -------------------------------------------------------------------------
@@ -208,9 +208,9 @@ public class TileCache implements SpatialCache {
 
 	public void queryAndSync(Bbox bbox, String filter, TileFunction<VectorTile> onDelete,
 			TileFunction<VectorTile> onUpdate) {
-		boolean scaleChanged = previousScale > 0 && !layer.getMapModel().getMapView().isPanning();
-
-		if (scaleChanged || isDirty()) {
+		MapViewState viewState = layer.getMapModel().getMapView().getViewState();
+		boolean panning = lastViewState == null || viewState.isPannableFrom(lastViewState);
+		if (!panning || isDirty()) {
 			// Delete all tiles
 			clear();
 			for (VectorTile tile : evictedTiles) {
@@ -221,7 +221,7 @@ public class TileCache implements SpatialCache {
 			}
 			evictedTiles.clear();
 		}
-		previousScale = layer.getMapModel().getMapView().getCurrentScale();
+		lastViewState = layer.getMapModel().getMapView().getViewState();
 
 		// Only fetch when inside the layer bounds:
 		if (bbox.intersects(layerBounds)) {

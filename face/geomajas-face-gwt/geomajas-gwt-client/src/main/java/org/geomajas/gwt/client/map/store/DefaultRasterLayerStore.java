@@ -34,6 +34,7 @@ import org.geomajas.gwt.client.command.CommandCallback;
 import org.geomajas.gwt.client.command.Deferred;
 import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
+import org.geomajas.gwt.client.map.MapViewState;
 import org.geomajas.gwt.client.map.cache.tile.RasterTile;
 import org.geomajas.gwt.client.map.cache.tile.TileFunction;
 import org.geomajas.gwt.client.map.layer.RasterLayer;
@@ -57,7 +58,7 @@ public class DefaultRasterLayerStore implements RasterLayerStore {
 
 	private boolean dirty;
 
-	private double previousScale = -1;
+	private MapViewState lastViewState;
 	
 	private Bbox tileBounds;
 
@@ -68,8 +69,9 @@ public class DefaultRasterLayerStore implements RasterLayerStore {
 	}
 
 	public void applyAndSync(Bbox bounds, TileFunction<RasterTile> onDelete, TileFunction<RasterTile> onUpdate) {
-		boolean scaleChanged = previousScale > 0 && !rasterLayer.getMapModel().getMapView().isPanning();
-		if (scaleChanged || isDirty()) {
+		MapViewState viewState = rasterLayer.getMapModel().getMapView().getViewState();
+		boolean panning = lastViewState == null || viewState.isPannableFrom(lastViewState);
+		if (!panning || isDirty()) {
 			if (callBack != null) {
 				callBack.cancel();
 			}
@@ -80,7 +82,7 @@ public class DefaultRasterLayerStore implements RasterLayerStore {
 			tileBounds = null;
 			dirty = false;
 		}
-		previousScale = rasterLayer.getMapModel().getMapView().getCurrentScale();
+		lastViewState = rasterLayer.getMapModel().getMapView().getViewState();
 		if (tileBounds == null || !tileBounds.contains(bounds)) {
 			fetchAndUpdateTiles(bounds, onUpdate);
 		} else {
