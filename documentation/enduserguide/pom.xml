@@ -70,7 +70,7 @@
 				<artifactId>maven-dependency-plugin</artifactId>
 				<executions>
 					<execution>
-						<id>explode-gwt-apps</id>
+						<id>explode-resources</id>
 						<phase>generate-sources</phase>
 						<goals>
 							<goal>unpack</goal>

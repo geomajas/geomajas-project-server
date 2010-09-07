@@ -27,7 +27,7 @@
 				<artifactId>maven-dependency-plugin</artifactId>
 				<executions>
 					<execution>
-						<id>explode-gwt-apps</id>
+						<id>explode-resources</id>
 						<phase>generate-sources</phase>
 						<goals>
 							<goal>unpack</goal>
@@ -59,7 +59,7 @@
 						</goals>
 						<configuration>
 							<sourceDirectory>${basedir}/..</sourceDirectory>
-							<destinationDirectory>${basedir}/en-GB/listing</destinationDirectory>
+							<destinationDirectory>${basedir}/src/docbkx/listing</destinationDirectory>
 						</configuration>
 					</execution>
 				</executions>
