@@ -142,11 +142,11 @@ include "org.geomajas.plugin" "geomajas-plugin-staticsecurity-documentation" "1.
     "incubating" "staticsecurity.pdf" \
     "org.geomajas.plugin" "geomajas-plugin-staticsecurity" "1.7.1"
 
-include "org.geomajas.plugin" "geomajas-plugin-printing-documentation" "2.0.0-SNAPSHOT" \
+include "org.geomajas.plugin" "geomajas-plugin-printing-documentation" "2.1.0-SNAPSHOT" \
     "Printing plug-in" \
     "Geomajas extension for printing." \
     "incubating" "printing.pdf" \
-    "" "" ""
+    "org.geomajas.plugin" "geomajas-plugin-printing" "2.0.0"
 
 include "org.geomajas.plugin" "caching-documentation" "1.0.0-SNAPSHOT" \
     "Caching plug-in" \
