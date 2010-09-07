@@ -43,7 +43,7 @@ _gaq.push(\[\'_trackPageview\'\]); \
 include() {
 	echo "" >> $TARGET
 	FILE="docs.zip"
-	LOCATION="https://oss.sonatype.org/service/local/artifact/maven/redirect?r=snapshots&g=$1&a=$2&v=$3&e=jdocbook"
+	LOCATION="https://oss.sonatype.org/service/local/artifact/maven/redirect?r=snapshots&g=$1&a=$2&v=$3&e=jar"
 	PWD=`pwd`
 	cd $TARGETDIR
 	wget --no-check-certificate $LOCATION -O docs.zip
@@ -65,7 +65,7 @@ include() {
 	echo "<h2>$4</h2>" >> $TARGET
 	echo "<p class="state">state: $6</p>" >> $TARGET
 	echo "<p class="desc">$5</p>" >> $TARGET
-	echo "<p class="links">View: <a href="$LINKPREFIX$2/pdf/$7">PDF</a> | <a href="$LINKPREFIX$2/html/index.html">html</a> | <a href="$LINKPREFIX$2/html_single/index.html">one page html</a>" >> $TARGET
+	echo "<p class="links">View: <a href="$LINKPREFIX$2/pdf/master.pdf">PDF</a> | <a href="$LINKPREFIX$2/html/master.html">html</a>" >> $TARGET
 	if [ -n "$8" ]
 	then
 		echo " | <a href="$LINKPREFIX$2/javadoc/index.html">javadoc</a>" >> $TARGET
@@ -106,49 +106,49 @@ include "org.geomajas.documentation" "geomajas-face-dojo-documentation" "1.5.8-S
 
 # plug-ins
 
-include "org.geomajas.documentation" "geomajas-layer-geotools-documentation" "1.8.0-SNAPSHOT" \
+include "org.geomajas.plugin" "geomajas-layer-geotools-documentation" "1.8.0-SNAPSHOT" \
     "Geotools layer" \
     "This is a layer which allows accessing GIS data through Geotools, for example for accessing WFS data." \
     "incubating" "Geotools_layer.pdf" \
     "org.geomajas.plugin" "geomajas-layer-geotools" "1.7.1"
 
-include "org.geomajas.documentation" "geomajas-layer-google-documentation" "1.8.0-SNAPSHOT" \
+include "org.geomajas.plugin" "geomajas-layer-google-documentation" "1.8.0-SNAPSHOT" \
     "Google layer" \
     "This is a layer which allows accessing Google images as raster layer." \
     "incubating" "Google_layer.pdf" \
     "org.geomajas.plugin" "geomajas-layer-google" "1.7.1"
 
-include "org.geomajas.documentation" "geomajas-layer-hibernate-documentation" "1.8.0-SNAPSHOT" \
+include "org.geomajas.plugin" "geomajas-layer-hibernate-documentation" "1.8.0-SNAPSHOT" \
     "Hibernate layer" \
     "This is a layer which allows accessing data in a GIS database using Hibernate and Hibernate Spatial." \
     "incubating" "Hibernate_layer.pdf" \
     "org.geomajas.plugin" "geomajas-layer-hibernate" "1.7.2"
 
-include "org.geomajas.documentation" "geomajas-layer-openstreetmap-documentation" "1.8.0-SNAPSHOT" \
+include "org.geomajas.plugin" "geomajas-layer-openstreetmap-documentation" "1.8.0-SNAPSHOT" \
     "Openstreetmap layer" \
     "This is a layer which allows accessing Openstreetmap images as raster layer." \
     "incubating" "Openstreetmap_layer.pdf" \
     "org.geomajas.plugin" "geomajas-layer-openstreetmap" "1.7.1"
 
-include "org.geomajas.documentation" "geomajas-layer-wms-documentation" "1.8.0-SNAPSHOT" \
+include "org.geomajas.plugin" "geomajas-layer-wms-documentation" "1.8.0-SNAPSHOT" \
     "WMS layer" \
     "This is a layer which allows accessing WMS images as raster layer." \
     "incubating" "WMS_layer.pdf" \
     "org.geomajas.plugin" "geomajas-layer-wms" "1.7.1"
 
-include "org.geomajas.documentation" "geomajas-plugin-staticsecurity-documentation" "1.8.0-SNAPSHOT" \
+include "org.geomajas.plugin" "geomajas-plugin-staticsecurity-documentation" "1.8.0-SNAPSHOT" \
     "Staticsecurity plug-in" \
     "Geomajas security plug-in which allows all users and policies to be defined as part of spring configuration." \
     "incubating" "staticsecurity.pdf" \
     "org.geomajas.plugin" "geomajas-plugin-staticsecurity" "1.7.1"
 
-include "org.geomajas.documentation" "geomajas-plugin-printing-documentation" "2.0.0-SNAPSHOT" \
+include "org.geomajas.plugin" "geomajas-plugin-printing-documentation" "2.0.0-SNAPSHOT" \
     "Printing plug-in" \
     "Geomajas extension for printing." \
     "incubating" "printing.pdf" \
     "" "" ""
 
-include "org.geomajas.documentation" "caching-documentation" "1.0.0-SNAPSHOT" \
+include "org.geomajas.plugin" "caching-documentation" "1.0.0-SNAPSHOT" \
     "Caching plug-in" \
     "Caching to allow data to be calculated only once and cached for later use." \
     "incubating" "caching.pdf" \
