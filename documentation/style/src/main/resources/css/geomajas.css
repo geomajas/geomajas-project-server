@@ -28,10 +28,8 @@
 /*------- NOTIFICATIONS --------*/
 
 div.note, div.tip, div.important, div.caution, div.warning {
-	background: #849092 no-repeat 10px 10px;
 	color: white;
 	padding: 1em 1em 20px;
-	border: 1px solid #849092;
 	margin-bottom: 1.5em;
 
 	-moz-border-radius:10px;
@@ -49,26 +47,27 @@ div.note, div.tip, div.important, div.caution, div.warning {
 }
 
 div.note {
-	background-image: url(../images/note.png);
+	background: #849092 url(../images/note.png) no-repeat 10px 10px;
+	border: 1px solid #849092;
 }
 
 div.tip {
-	background: #70A5C4 url(../images/tip.png);
+	background: #70A5C4 url(../images/tip.png) no-repeat 10px 10px;
 	border: 1px solid #70A5C4;
 }
 
 div.important {
-	background: #397941 url(../images/important.png);
+	background: #397941 url(../images/important.png) no-repeat 10px 10px;
 	border: 1px solid #397941;
 }
 
 div.caution {
-	background: #C09C0E url(../images/caution.png);
+	background: #C09C0E url(../images/caution.png) no-repeat 10px 10px;
 	border: 1px solid #C09C0E;
 }
 
 div.warning {
-	background: #873009 url(../images/warning.png);
+	background: #873009 url(../images/warning.png) no-repeat 10px 10px;
 	border: 1px solid #873009;
 }
 
@@ -132,7 +131,7 @@ div.note h2, div.note p, div.tip h2, div.tip p, div.caution h2, div.caution p, d
 
 table {
 	font-size:12px;
-	border: 1px solid #849092;
+	border: 1px solid #849C85;/*#849092*/
 	width: 95%;
 	border-collapse: collapse;
 	margin: 0 auto;
@@ -140,14 +139,14 @@ table {
 
 table th {
 	text-align: left;
-	background: #849092 url(../images/table_header.png) repeat-x;
+	background: #7E9E84 url(../images/table_header.png) repeat-x;
 	padding: 4px 8px;
 	color: white;
 }
 
 table td {
 	padding: 4px 8px;
-	background-color: #F8FBFC;
+	background-color: #F8FCF8;
 }
 
 table tr.even td {
@@ -158,10 +157,6 @@ table th p:first-child, table td p:first-child, table  li p:first-child {
 	margin-top: 0;
 	padding-top: 0;
 	display: inline;
-}
-
-th, td {
-	border-style: none;;
 }
 
 table table td {
@@ -259,9 +254,9 @@ pre, code, .guibutton, .keycap, .guilabel {
 
 pre {
 	display: block;
-	border: 1px solid #CCCCCC;
-	background-color: #F8FBFC;
-	color: #336666;
+	border: 1px solid #C8DDC8;
+	background-color: #F6FCF6;
+	color: #336633;
 	overflow: auto;
 	padding: 10px 15px;
 }
@@ -269,8 +264,8 @@ pre {
 
 .example, .figure {
 	margin: 0 10px 10px;
-	background-color: #E2E8EC;
-	border: 1px solid #CCCCCC;
+	background-color: #D3E7D3;
+	border: 1px solid #C8DDC8;
 	padding: 5px;
 	-moz-border-radius: 10px;
 	border-radius: 10px;
@@ -296,17 +291,17 @@ li pre {
 }
 
 .figure td {
-	background-color: #E2E8EC;
+	background-color: #D3E7D3;
 }
 
 img {
 	display: block;
 	margin: 0;
-	border: 1px solid #CCCCCC;
+	border: 1px solid #C8DDC8;
 }
 
 .inlinemediaobject, .inlinemediaobject img {
 	display: inline !important;
 	margin: 0 5px 5px 5px;
-	border: 1px solid #CCCCCC;
+	border: 1px solid #C8DDC8;
 }

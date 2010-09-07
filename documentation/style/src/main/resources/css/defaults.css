@@ -19,11 +19,11 @@ body {
 /*------ Links --------*/
 
 a:link {
-	color: #0066cc;
+	color: #009651;
 }
 
 a:visited {
-	color: #6699cc;
+	color: #00BC66;
 }
 
 
@@ -32,7 +32,7 @@ a:visited {
 /*------ headings -------*/
 
 h1, h2, h3, h4, h5, h6 {
-	color: #20435C;
+	color: #097B41;
 	line-height: 150%;
 	font-family: 'Lucida Grande', Geneva, Verdana, Arial, sans-serif;
 	padding: 3px 0 3px 10px;
