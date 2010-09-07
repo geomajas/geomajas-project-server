@@ -175,7 +175,7 @@
 
         <mediaobject>
           <imageobject>
-            <imagedata align="center" fileref="../images/gwtface_workflow.png"
+            <imagedata align="center" fileref="images/gwtface_workflow.png"
                        width="" />
           </imageobject>
         </mediaobject>
@@ -280,7 +280,7 @@
         <mediaobject>
           <imageobject>
             <imagedata align="center"
-                       fileref="../images/gwtface_selection.png" width="" />
+                       fileref="images/gwtface_selection.png" width="" />
           </imageobject>
         </mediaobject>
       </figure>
@@ -584,7 +584,7 @@
         <mediaobject>
           <imageobject>
             <imagedata align="center"
-                       fileref="../images/gwtface_gfx_context.png" width="" />
+                       fileref="images/gwtface_gfx_context.png" width="" />
           </imageobject>
         </mediaobject>
       </figure>
@@ -598,7 +598,7 @@
         <mediaobject>
           <imageobject>
             <imagedata align="center"
-                       fileref="../images/gwtface_graphicscontext.png" />
+                       fileref="images/gwtface_graphicscontext.png" />
           </imageobject>
         </mediaobject>
       </figure>
@@ -617,7 +617,7 @@
 
         <mediaobject>
           <imageobject>
-            <imagedata align="center" fileref="../images/gwtface_gfx.png" />
+            <imagedata align="center" fileref="images/gwtface_gfx.png" />
           </imageobject>
         </mediaobject>
       </figure>

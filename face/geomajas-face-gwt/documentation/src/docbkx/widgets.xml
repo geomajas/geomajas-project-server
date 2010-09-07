@@ -151,7 +151,7 @@
 	  <mediaobject>
 		<imageobject>
 		  <imagedata align="center"
-					 fileref="../images/gwtface_widget_mapwidget.png" />
+					 fileref="images/gwtface_widget_mapwidget.png" />
 		</imageobject>
 	  </mediaobject>
 	</figure>
@@ -176,7 +176,7 @@
 	  <mediaobject>
 		<imageobject>
 		  <imagedata align="center"
-					 fileref="../images/gwtface_widget_overviewmap.png" />
+					 fileref="images/gwtface_widget_overviewmap.png" />
 		</imageobject>
 	  </mediaobject>
 	</figure>
@@ -329,7 +329,7 @@
 	  <mediaobject>
 		<imageobject>
 		  <imagedata align="center"
-					 fileref="../images/gwtface_widget_toolbar.png" />
+					 fileref="images/gwtface_widget_toolbar.png" />
 		</imageobject>
 	  </mediaobject>
 	</figure>
@@ -364,7 +364,7 @@
 	  <mediaobject>
 		<imageobject>
 		  <imagedata align="center"
-					 fileref="../images/gwtface_widget_layertree1.png" />
+					 fileref="images/gwtface_widget_layertree1.png" />
 		</imageobject>
 	  </mediaobject>
 	</figure>
@@ -383,7 +383,7 @@
 	  <mediaobject>
 		<imageobject>
 		  <imagedata align="center"
-					 fileref="../images/gwtface_widget_layertree2.png" />
+					 fileref="images/gwtface_widget_layertree2.png" />
 		</imageobject>
 	  </mediaobject>
 	</figure>
@@ -445,7 +445,7 @@
 
 	  <mediaobject>
 		<imageobject>
-		  <imagedata fileref="../images/gwtface_widget_legend.png" />
+		  <imagedata fileref="images/gwtface_widget_legend.png" />
 		</imageobject>
 	  </mediaobject>
 	</figure>
@@ -511,7 +511,7 @@
 	  <mediaobject>
 		<imageobject>
 		  <imagedata align="center"
-					 fileref="../images/gwtface_widget_featurelistgrid.png" />
+					 fileref="images/gwtface_widget_featurelistgrid.png" />
 		</imageobject>
 	  </mediaobject>
 	</figure>
@@ -560,7 +560,7 @@
 	  <mediaobject>
 		<imageobject>
 		  <imagedata align="center"
-					 fileref="../images/gwtface_widget_featureattributewindow.png"
+					 fileref="images/gwtface_widget_featureattributewindow.png"
 					 width="60%" />
 		</imageobject>
 	  </mediaobject>
@@ -584,7 +584,7 @@
 	  <mediaobject>
 		<imageobject>
 		  <imagedata align="center"
-					 fileref="../images/gwtface_widget_activitymonitor.png" />
+					 fileref="images/gwtface_widget_activitymonitor.png" />
 		</imageobject>
 	  </mediaobject>
 	</figure>
@@ -610,7 +610,7 @@
 
 	  <mediaobject>
 		<imageobject>
-		  <imagedata fileref="../images/gwtface_widget_scaleselect.png" />
+		  <imagedata fileref="images/gwtface_widget_scaleselect.png" />
 		</imageobject>
 	  </mediaobject>
 	</figure>
@@ -647,7 +647,7 @@
 	  <mediaobject>
 		<imageobject>
 		  <imagedata align="center"
-					 fileref="../images/gwtface_widget_featuresearch.png" />
+					 fileref="images/gwtface_widget_featuresearch.png" />
 		</imageobject>
 	  </mediaobject>
 	</figure>

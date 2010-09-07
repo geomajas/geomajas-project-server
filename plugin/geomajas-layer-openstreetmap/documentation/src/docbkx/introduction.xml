@@ -34,7 +34,7 @@
 
     <mediaobject>
       <imageobject>
-        <imagedata fileref="../images/OpenStreetMap.png" />
+        <imagedata fileref="images/OpenStreetMap.png" />
       </imageobject>
     </mediaobject>
   </figure>

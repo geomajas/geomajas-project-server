@@ -35,7 +35,7 @@
 
     <mediaobject>
       <imageobject>
-        <imagedata fileref="../images/GoogleMap.png" />
+        <imagedata fileref="images/GoogleMap.png" />
       </imageobject>
     </mediaobject>
   </figure>

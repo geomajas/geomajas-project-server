@@ -54,100 +54,114 @@
 		</developer>
 	</developers>
 	
-	<dependencies>
-		<dependency>
-			<groupId>org.geomajas.documentation</groupId>
-			<artifactId>geomajas-jdocbook-xslt</artifactId>
-			<version>1.0.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.geomajas.documentation</groupId>
-			<artifactId>geomajas-jdocbook-style</artifactId>
-			<version>1.0.1</version>
-			<type>jdocbook-style</type>
-		</dependency>
-	</dependencies>
-
 	<build>
+		<resources>
+			<resource>
+				<filtering>false</filtering>
+				<directory>${project.build.directory}/docbkx/</directory>
+				<excludes>
+					<exclude>**/*.fo</exclude>
+					<exclude>html/META-INF/**</exclude>
+				</excludes>
+			</resource>
+		</resources>
 		<plugins>
 			<plugin>
 				<artifactId>maven-dependency-plugin</artifactId>
 				<executions>
 					<execution>
-						<phase>process-resources</phase>
+						<id>explode-gwt-apps</id>
+						<phase>generate-sources</phase>
 						<goals>
-							<goal>unpack-dependencies</goal>
+							<goal>unpack</goal>
 						</goals>
 						<configuration>
-							<outputDirectory>${project.build.directory}/resources</outputDirectory>
-							<includeArtifactIds>geomajas-jdocbook-xslt</includeArtifactIds>
+							<artifactItems>
+								<artifactItem>
+									<groupId>org.geomajas.documentation</groupId>
+									<artifactId>geomajas-jdocbook-style</artifactId>
+									<version>1.0.2-SNAPSHOT</version>
+									<outputDirectory>${project.build.directory}/docbkx/html</outputDirectory>
+								</artifactItem>
+							</artifactItems>
 						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>remove-listing</id>
+						<phase>clean</phase>
+						<configuration>
+							<tasks>
+								<delete dir="src/docbkx/listing" />
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>copy-resources</id>
+						<phase>generate-sources</phase>
+						<configuration>
+							<tasks>
+								<copy todir="${project.build.directory}/docbkx/html">
+									<fileset dir="${basedir}/src/docbkx">
+										<exclude name="**/*.xml"/>
+									</fileset>
+								</copy>
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
 					</execution>
 				</executions>
 			</plugin>
 
 			<plugin>
-				<groupId>org.jboss.maven.plugins</groupId>
-				<artifactId>maven-jdocbook-plugin</artifactId>
-				<version>2.0.0</version>
-				<extensions>true</extensions>
+				<groupId>com.agilejava.docbkx</groupId>
+				<artifactId>docbkx-maven-plugin</artifactId>
+				<version>2.0.11</version>
+				<dependencies>
+					<dependency>
+						<groupId>org.docbook</groupId>
+						<artifactId>docbook-xml</artifactId>
+						<version>4.4</version>
+						<scope>runtime</scope>
+					</dependency>
+				</dependencies>
+
+				<executions>
+					<execution>
+						<id>html-pdf</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>generate-pdf</goal>
+							<goal>generate-html</goal>
+						</goals>
+						<configuration>
+							<!-- per execution configuration -->
+							<includes>master.xml</includes>
+							<htmlStylesheet>css/geomajas.css</htmlStylesheet>
+							<sectionAutolabel>1</sectionAutolabel>
+						</configuration>
+					</execution>
+				</executions>
 				<configuration>
-					<sourceDocumentName>master.xml</sourceDocumentName>
-					<imageResource>
-						<directory>${basedir}/${translation}</directory>
-						<excludes>
-							<exclude>*.xml</exclude>
-						</excludes>
-					</imageResource>
-					<cssResource>
-						<directory>${basedir}/${translation}</directory>
-						<excludes>
-							<exclude>*.xml</exclude>
-						</excludes>
-					</cssResource>
-					<formats>
+					<!-- shared configuration -->
+					<xincludeSupported>true</xincludeSupported>
+					<paperType>A4</paperType>
+					<fop1Extensions>1</fop1Extensions>
 
-						<format>
-							<formatName>pdf</formatName>
-
-							<!--stylesheetResource>classpath:/standard/fopdf.xsl</stylesheetResource-->
-
-							<finalName>End_User_Guide.pdf</finalName>
-						</format>
-
-						<format>
-							<formatName>html</formatName>
-							<stylesheetResource>file:${project.build.directory}/resources/xslt/org/geomajas/main-html.xsl
-							</stylesheetResource>
-							<finalName>index.html</finalName>
-						</format>
-
-						<format>
-							<formatName>html_single</formatName>
-							<stylesheetResource>
-								file:${project.build.directory}/resources/xslt/org/geomajas/nochunk-html.xsl
-							</stylesheetResource>
-							<finalName>index.html</finalName>
-						</format>
-
-					</formats>
-					<options>
-						<xincludeSupported>true</xincludeSupported>
-						<xmlTransformerType>saxon</xmlTransformerType>
-						<!-- needed for uri-resolvers; can be omitted if using 'current' uri scheme -->
-						<!--     could also locate the docbook dependency and inspect its version... -->
-						<docbookVersion>1.72.0</docbookVersion>
-					</options>
-
-					<sourceDirectory>${basedir}/${translation}</sourceDirectory>
+					<highlightSource>1</highlightSource>
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
-
-	<properties>
-		<translation>en-GB</translation>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-	</properties>
 
 </project>

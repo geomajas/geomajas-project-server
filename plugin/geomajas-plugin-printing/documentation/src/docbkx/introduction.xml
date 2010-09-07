@@ -104,7 +104,7 @@
 
       <mediaobject>
         <imageobject>
-          <imagedata fileref="../images/components.png" />
+          <imagedata fileref="images/components.png" />
         </imageobject>
       </mediaobject>
     </figure>

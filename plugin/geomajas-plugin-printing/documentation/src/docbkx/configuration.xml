@@ -100,7 +100,7 @@
 
       <mediaobject>
         <imageobject>
-          <imagedata fileref="../images/print.png" />
+          <imagedata fileref="images/print.png" />
         </imageobject>
       </mediaobject>
     </figure>

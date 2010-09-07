@@ -30,7 +30,7 @@
   the printing tool in the toolbar by simply clicking the tool button
   (<inlinemediaobject>
       <imageobject>
-        <imagedata align="center" fileref="../images/print.png" />
+        <imagedata align="center" fileref="images/print.png" />
       </imageobject>
     </inlinemediaobject>).</para>
 
@@ -41,7 +41,7 @@
 
     <mediaobject>
       <imageobject>
-        <imagedata fileref="../images/printing-preferences.png" />
+        <imagedata fileref="images/printing-preferences.png" />
       </imageobject>
     </mediaobject>
   </figure>
@@ -107,7 +107,7 @@
     <listitem>
       <para>The PDF document is generated in-memory and a unique key is
       returned to the client. During this stage, the activity bar is activated
-      <inlinegraphic fileref="../images/pleasewait.gif" /></para>
+      <inlinegraphic fileref="images/pleasewait.gif" /></para>
     </listitem>
 
     <listitem>
@@ -124,7 +124,7 @@
 
     <mediaobject>
       <imageobject>
-        <imagedata fileref="../images/printing-sample.png" />
+        <imagedata fileref="images/printing-sample.png" />
       </imageobject>
     </mediaobject>
   </figure>
