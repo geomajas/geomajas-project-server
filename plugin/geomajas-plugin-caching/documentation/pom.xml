@@ -54,7 +54,7 @@
 				<executions>
 					<execution>
 						<id>extract-listings-plugin</id>
-						<phase>process-resources</phase>
+						<phase>generate-sources</phase>
 						<goals>
 							<goal>extract</goal>
 						</goals>
