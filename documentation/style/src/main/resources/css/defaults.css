@@ -33,25 +33,25 @@ a:visited {
 
 h1, h2, h3, h4, h5, h6 {
 	color: #097B41;
-	line-height: 150%;
+	line-height: 160%;
 	font-family: 'Lucida Grande', Geneva, Verdana, Arial, sans-serif;
-	padding: 3px 0 3px 10px;
+	padding: 4px 0 4px 10px;
 }
 
 
 h1 {
-	font-size: 24px;
+	font-size: 26px;
 	background-color: #F2F2F2;
 	border-bottom: 1px solid #CCCCCC;
-	margin: 30px 0 10px 0;
+	margin: 35px 0 15px 0;
 }
 
 h2 {
 	font-size: 18px;
-	line-height: 140%;
+	line-height: 150%;
 	background-color: #F2F2F2;
 	border-bottom: 1px solid #CCCCCC;
-	margin: 20px 0 10px 0;
+	margin: 25px 0 15px 0;
 }
 
 h3 {
@@ -64,6 +64,7 @@ h4 {
 	font-size: 12px;
 	line-height: 120%;
 	margin: 0;
+	padding-left: 25px;
 }
 
 h5.formalpara {

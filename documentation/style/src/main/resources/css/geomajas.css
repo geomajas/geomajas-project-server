@@ -254,7 +254,7 @@ pre, code, .guibutton, .keycap, .guilabel {
 
 pre {
 	display: block;
-	border: 1px solid #88AA88;
+	border: 1px solid #AACCAA;
 	background-color: #F6FCF6;
 	color: #336633;
 	overflow: auto;
@@ -264,8 +264,8 @@ pre {
 
 .example, .figure {
 	margin: 0 10px 10px;
-	background-color: #A6D6A6;
-	border: 1px solid #88AA88;
+	background-color: #D3EDD3;
+	border: 1px solid #AACCAA;
 	padding: 5px;
 	-moz-border-radius: 10px;
 	border-radius: 10px;
@@ -291,17 +291,17 @@ li pre {
 }
 
 .figure td {
-	background-color: #A6D6A6;
+	background-color: #D3EDD3;
 }
 
 img {
 	display: block;
 	margin: 0;
-	border: 1px solid #88AA88;
+	border: 1px solid #AACCAA;
 }
 
 .inlinemediaobject, .inlinemediaobject img {
 	display: inline !important;
 	margin: 0 5px 5px 5px;
-	border: 1px solid #88AA88;
+	border: 1px solid #AACCAA;
 }
