@@ -261,7 +261,6 @@ pre {
 	padding: 10px 15px;
 }
 
-
 .example, .figure {
 	margin: 0 10px 10px;
 	background-color: #D3EDD3;
@@ -269,6 +268,10 @@ pre {
 	padding: 5px;
 	-moz-border-radius: 10px;
 	border-radius: 10px;
+}
+
+.programlisting {
+	margin: 0 10px;
 }
 
 .example .title {
