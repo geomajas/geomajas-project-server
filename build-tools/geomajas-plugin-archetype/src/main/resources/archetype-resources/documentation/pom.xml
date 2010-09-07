@@ -9,8 +9,8 @@
 	<groupId>${groupId}</groupId>
 	<artifactId>${pluginName}-documentation</artifactId>
 	<packaging>jdocbook</packaging>
-	<name>${pluginName} documentation (${translation})</name>
-	<description>${pluginName} documentation (${translation})</description>
+	<name>${pluginName} documentation</name>
+	<description>${pluginName} documentation</description>
 	
 	<build>
 		<resources>
@@ -53,7 +53,7 @@
 				<inherited>false</inherited>
 				<executions>
 					<execution>
-						<id>extract-listings-app</id>
+						<id>extract-listings-plugin</id>
 						<phase>generate-sources</phase>
 						<goals>
 							<goal>extract</goal>

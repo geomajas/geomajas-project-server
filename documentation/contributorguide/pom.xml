@@ -9,8 +9,8 @@
 	<artifactId>docbook-contributorguide</artifactId>
 	<version>1.8.0-SNAPSHOT</version>
 	<packaging>jdocbook</packaging>
-	<name>Contributor Guide (${translation})</name>
-	<description>Contributor Guide (${translation})</description>
+	<name>Contributor Guide</name>
+	<description>Contributor Guide</description>
 
 	<scm>
 		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/documentation/contributorguide</connection>
