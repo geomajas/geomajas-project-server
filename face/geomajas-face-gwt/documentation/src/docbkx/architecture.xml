@@ -52,7 +52,7 @@
     object, that can be used to add more callback methods, both for successful
     as for an erroneous result of the command's execution.</para>
 
-    <xi:include href="../../en-GB/listing/GwtCommandExecution.xml"
+    <xi:include href="listing/GwtCommandExecution.xml"
                 xmlns:xi="http://www.w3.org/2001/XInclude" />
   </section>
 
@@ -386,7 +386,7 @@
 
       <para><code>GeometryOperation</code> interface:</para>
 
-      <xi:include href="../../en-GB/listing/GeometryOperation.xml"
+      <xi:include href="listing/GeometryOperation.xml"
                   xmlns:xi="http://www.w3.org/2001/XInclude" />
     </section>
 
@@ -484,7 +484,7 @@
         <para><emphasis>ALL</emphasis>: completely render or re-render the
         paintable object. If the paintable object contains other paintable
         object, go through them recursively (a map will paint layers, who in
-        turn will paint tiles, ...)</para>
+        turn will paint tiles,...)</para>
       </listitem>
 
       <listitem>
@@ -926,7 +926,7 @@ map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</
       be called for each of the parameters which are defined in the tool
       configuration.</para>
 
-      <xi:include href="../../en-GB/listing/ToolbarAction.xml"
+      <xi:include href="listing/ToolbarAction.xml"
                   xmlns:xi="http://www.w3.org/2001/XInclude" />
     </section>
 
@@ -955,7 +955,7 @@ map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</
       <code>configure()</code> method which will be called for each of the
       parameters which are defined in the tool configuration.</para>
 
-      <xi:include href="../../en-GB/listing/ToolbarModalAction.xml"
+      <xi:include href="listing/ToolbarModalAction.xml"
                   xmlns:xi="http://www.w3.org/2001/XInclude" />
     </section>
 
@@ -974,7 +974,7 @@ map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</
       the GWT face are statically defined in the class. Other tools can be
       added (or overwritten) at runtime before the map is initialised.</para>
 
-      <xi:include href="../../en-GB/listing/LayerTreeAction.xml"
+      <xi:include href="listing/LayerTreeAction.xml"
                   xmlns:xi="http://www.w3.org/2001/XInclude" />
     </section>
 
@@ -1002,7 +1002,7 @@ map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</
       <code>ClickHandler</code> interface for defining the
       <code>onClick()</code> execution function.</para>
 
-      <xi:include href="../../en-GB/listing/MenuAction.xml"
+      <xi:include href="listing/MenuAction.xml"
                   xmlns:xi="http://www.w3.org/2001/XInclude" />
     </section>
 
@@ -1038,7 +1038,7 @@ map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</
         removed from the <code>GraphicsWidget</code>. This is usually used for
         cleaning up.</para>
 
-        <xi:include href="../../en-GB/listing/GraphicsController.xml"
+        <xi:include href="listing/GraphicsController.xml"
                     xmlns:xi="http://www.w3.org/2001/XInclude" />
 
         <para>You should never directly implement
@@ -1054,7 +1054,7 @@ map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</
         <para>Small extract from the <code>AbstractGraphicsController</code>
         class:</para>
 
-        <xi:include href="../../en-GB/listing/AbstractGraphicsController.xml"
+        <xi:include href="listing/AbstractGraphicsController.xml"
                     xmlns:xi="http://www.w3.org/2001/XInclude" />
 
         <para>Now that you have your controller you can set it;</para>

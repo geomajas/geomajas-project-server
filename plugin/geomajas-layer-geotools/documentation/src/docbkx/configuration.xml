@@ -209,8 +209,7 @@
     </section>
 
     <section>
-      <title>Configuring a database layer (PostGIS, Oracle Spatial,
-      ...)</title>
+      <title>Configuring a database layer (PostGIS, Oracle Spatial,...)</title>
 
       <warning>
         <para>The configurations in this section still need to be
@@ -397,7 +396,7 @@
     <para>For GeoTools layers, the following transaction configuration can be
     used:</para>
 
-    <xi:include href="../../en-GB/listing/GeoToolsTx.xml"
+    <xi:include href="listing/GeoToolsTx.xml"
                 xmlns:xi="http://www.w3.org/2001/XInclude" />
 
     <para>Starting from the top, the following are defined:</para>

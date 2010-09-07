@@ -1465,7 +1465,7 @@
             NamedStyleInfo style, int featureIncludes, int offset, int
             maxResultSize) throws GeomajasException</code> : read a batch of
             features from the layer which match the filter. You can specify
-            which aspects of the feature need to be set..</para>
+            which aspects of the feature need to be set.</para>
           </listitem>
 
           <listitem>

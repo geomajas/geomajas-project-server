@@ -50,7 +50,7 @@
       </listitem>
     </itemizedlist>
 
-    <xi:include href="../../en-GB/listing/PrintingDependency.xml"
+    <xi:include href="listing/PrintingDependency.xml"
                 xmlns:xi="http://www.w3.org/2001/XInclude" />
 
     <para>If you want to use the use the printing plug-in within a GWT
@@ -72,7 +72,7 @@
     add the following configuration line to your applications .gwt.xml
     file:</para>
 
-    <xi:include href="../listing/PrintingGwtModule.xml"
+    <xi:include href="listing/PrintingGwtModule.xml"
                 xmlns:xi="http://www.w3.org/2001/XInclude" />
 
     <para>This will make the GWT widgets and their source (assuming you have
@@ -86,7 +86,7 @@
     <code>ClientToolInfo</code> bean should be added to the map's
     toolbar:</para>
 
-    <xi:include href="../../en-GB/listing/PrintingToolInfo.xml"
+    <xi:include href="listing/PrintingToolInfo.xml"
                 xmlns:xi="http://www.w3.org/2001/XInclude" />
 
     <para>The name of the <code>ClientToolInfo</code> bean should be exactly

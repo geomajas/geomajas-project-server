@@ -60,7 +60,7 @@
     search. It is recommended that you provide both a default name and a
     setter to allow users to change this.</para>
 
-    <xi:include href="../../en-GB/listing/GeocoderService.xml"
+    <xi:include href="listing/GeocoderService.xml"
                 xmlns:xi="http://www.w3.org/2001/XInclude" />
 
     <para>The getLocation() method does the actual work of converting the
@@ -73,7 +73,7 @@
     <para>The result itself contains the information from listing <xref
     linkend="GetLocationResult" />.</para>
 
-    <xi:include href="../../en-GB/listing/GetLocationResult.xml"
+    <xi:include href="listing/GetLocationResult.xml"
                 xmlns:xi="http://www.w3.org/2001/XInclude" />
 
     <para>The fields include:</para>
@@ -128,7 +128,7 @@
     linkend="SplitGeocoderStringService" /> and set that in the GeocoderInfo
     instance in your application context.</para>
 
-    <xi:include href="../../en-GB/listing/SplitGeocoderStringService.xml"
+    <xi:include href="listing/SplitGeocoderStringService.xml"
                 xmlns:xi="http://www.w3.org/2001/XInclude" />
 
     <para>You have to provide two methods, one for splitting and one for
@@ -145,7 +145,7 @@
     CombineUnionService and CombineIntersectionService), but you can also
     define your own combination strategy.</para>
 
-    <xi:include href="../../en-GB/listing/CombineResultService.xml"
+    <xi:include href="listing/CombineResultService.xml"
                 xmlns:xi="http://www.w3.org/2001/XInclude" />
 
     <para>All you have to do is implement the combine() method. The strategy
@@ -164,7 +164,7 @@
     to the location which was found or selected. The default implementation is
     displayed in listing <xref linkend="DefaultSelectLocation" />.</para>
 
-	  <xi:include href="../../en-GB/listing/DefaultSelectLocation.xml"
+	  <xi:include href="listing/DefaultSelectLocation.xml"
 				  xmlns:xi="http://www.w3.org/2001/XInclude" />
 
     <para>The SelectAlternativeHandler is used when the location was
@@ -174,7 +174,7 @@
     GeocoderAlternativesGrid which lists the options and invokes the
     SelectLocationHandler on the geocoder when the user selects a line.</para>
 
-	  <xi:include href="../../en-GB/listing/DefaultSelectAlternative.xml"
+	  <xi:include href="listing/DefaultSelectAlternative.xml"
 				  xmlns:xi="http://www.w3.org/2001/XInclude" />
 
 

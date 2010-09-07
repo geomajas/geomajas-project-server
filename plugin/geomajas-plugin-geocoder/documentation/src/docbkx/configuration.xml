@@ -66,7 +66,7 @@
     <para>To use the widget, you have to include the geocoder GWT module
     description as in listing <xref linkend="GwtModule" />.</para>
 
-    <xi:include href="../../en-GB/listing/GwtModule.xml"
+    <xi:include href="listing/GwtModule.xml"
                 xmlns:xi="http://www.w3.org/2001/XInclude" />
   </section>
 
@@ -79,7 +79,7 @@
 
     <para>An example configuration looks like this:</para>
 
-    <xi:include href="../../en-GB/listing/exampleConfiguration.xml"
+    <xi:include href="listing/exampleConfiguration.xml"
                 xmlns:xi="http://www.w3.org/2001/XInclude" />
 
     <para>To configure the geocoder plugin, you have to create a bean
@@ -145,7 +145,7 @@
     (EPSG:900913 in this case, which is Mercator) and define the location
     mappings.</para>
 
-    <xi:include href="../../en-GB/listing/RegexGeocoderInfo.xml"
+    <xi:include href="listing/RegexGeocoderInfo.xml"
                 xmlns:xi="http://www.w3.org/2001/XInclude" />
 
     <para>The location mappings themselves are contained in
@@ -158,7 +158,7 @@
     case independently, some examples of matching strings are "second" and
     SECondary". It indicates a point with coordinates (10000,10000).</para>
 
-    <xi:include href="../../en-GB/listing/RegexPoint.xml"
+    <xi:include href="listing/RegexPoint.xml"
                 xmlns:xi="http://www.w3.org/2001/XInclude" />
 
     <para>The location info object can also be used to match an area. In
@@ -167,14 +167,14 @@
     bounding box and point coordinates, then the bounding box will be used for
     the result.</para>
 
-    <xi:include href="../../en-GB/listing/RegexBbox.xml"
+    <xi:include href="listing/RegexBbox.xml"
                 xmlns:xi="http://www.w3.org/2001/XInclude" />
 
     <para>A location can also include extra data in the result. You need to
     wrap this data in a subclass of ClientUserDataInfo. The object to be
     returned can be defined using the userData property.</para>
 
-    <xi:include href="../../en-GB/listing/RegexBboxUserData.xml"
+    <xi:include href="listing/RegexBboxUserData.xml"
                 xmlns:xi="http://www.w3.org/2001/XInclude" />
 
     <para>The toMatch property contains a list of strings which need to be
@@ -216,7 +216,7 @@
         </listitem>
       </itemizedlist></para>
 
-    <xi:include href="../../en-GB/listing/RegexMulti.xml"
+    <xi:include href="listing/RegexMulti.xml"
                 xmlns:xi="http://www.w3.org/2001/XInclude" />
 
     <para>For this last case, where smaller divisions are not know (in this
@@ -226,7 +226,7 @@
     remaining. This would assure that the last case in the previous list
     matches. The other cases would still have the same result.</para>
 
-    <xi:include href="../../en-GB/listing/RegexMultiOpenEnd.xml"
+    <xi:include href="listing/RegexMultiOpenEnd.xml"
                 xmlns:xi="http://www.w3.org/2001/XInclude" />
 
     <para></para>
@@ -239,7 +239,7 @@
     geonames.org to handle the geocoder requests. The service does not allow
     any configuration, so its inclusion is pretty straightforward.</para>
 
-    <xi:include href="../../en-GB/listing/GeonamesConfiguration.xml"
+    <xi:include href="listing/GeonamesConfiguration.xml"
                 xmlns:xi="http://www.w3.org/2001/XInclude" />
 
     <para>The GeoNames service never returns more than 50 results.</para>
@@ -258,7 +258,7 @@
 
     <para>To use the geocoder, just create the bean and set the appId.</para>
 
-    <xi:include href="../../en-GB/listing/PlaceFinderConfig.xml"
+    <xi:include href="listing/PlaceFinderConfig.xml"
                 xmlns:xi="http://www.w3.org/2001/XInclude" />
 
     <para>There are a couple of properties which influence how the appId can

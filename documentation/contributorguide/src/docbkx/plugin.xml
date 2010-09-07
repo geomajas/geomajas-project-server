@@ -450,7 +450,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
           <listitem>
             <para>All code should oblige to the programming rules as laid out
             in the Geomajas contributor guide (code style, javadoc,
-            check-style, author tags, ...).</para>
+            check-style, author tags,...).</para>
           </listitem>
 
           <listitem>

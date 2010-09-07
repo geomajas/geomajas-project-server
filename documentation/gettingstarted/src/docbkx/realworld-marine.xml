@@ -261,7 +261,7 @@
 
         <para>Use a tool like <ulink
         url="http://udig.refractions.net/">uDig</ulink> to help you. With uDig
-        you can view shape files, postGIS data, ... and you can view all
+        you can view shape files, postGIS data,... and you can view all
         available fields.</para>
 
         <para>If you get really stuck you can download an example layerVha.xml
@@ -432,7 +432,7 @@ port=5432" Y:\1R5EK012.000 -append</programlisting></para>
 
         <para>Use a tool like <ulink
         url="http://udig.refractions.net/">uDig</ulink> to help you. With uDig
-        you can view shape files, postGIS data, ... and you can view all
+        you can view shape files, postGIS data,... and you can view all
         available fields.</para>
 
         <para>If you get really stuck you can download an example

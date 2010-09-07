@@ -51,7 +51,7 @@
     <para>A complete OpenStreetMap layer configuration looks as
     follows:</para>
 
-    <xi:include href="../../en-GB/listing/OsmLayerSample.xml"
+    <xi:include href="listing/OsmLayerSample.xml"
                 xmlns:xi="http://www.w3.org/2001/XInclude" />
 
     <para>The layer info inner bean has the same general content as usual,

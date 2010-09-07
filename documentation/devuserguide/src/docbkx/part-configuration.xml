@@ -335,7 +335,7 @@
                   <entry>The coordinate reference system, expressed as
                   "EPSG:&lt;srid&gt;". This is probably determined by the
                   layer, but has to be specified anyhow as we have no
-                  autodetection in place yet..</entry>
+                  auto detection in place yet.</entry>
                 </row>
 
                 <row>
@@ -707,7 +707,7 @@
     transaction managers, although configurations with multiple transaction
     managers should be possible. This will be investigated and fixed in the
     future. In practice this means that you currently must not mix editable
-    layers which require a different transaction manager..</para>
+    layers which require a different transaction manager.</para>
   </chapter>
 
   <chapter>

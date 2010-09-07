@@ -167,7 +167,7 @@
     the same VM, this can be run as in listing <xref
     linkend="UseCommandTest" />.</para>
 
-    <xi:include href="../../en-GB/listing/UseCommandTest.xml"
+    <xi:include href="listing/UseCommandTest.xml"
                 xmlns:xi="http://www.w3.org/2001/XInclude" />
 
     <para>For details on calling this command from inside a face, see the
@@ -202,7 +202,7 @@
     inside the map's toolbar. The widget tries to adapt itself to the
     currently active locale.</para>
 
-    <xi:include href="../../en-GB/listing/createGwtWidget.xml"
+    <xi:include href="listing/createGwtWidget.xml"
                 xmlns:xi="http://www.w3.org/2001/XInclude" />
 
     <para></para>

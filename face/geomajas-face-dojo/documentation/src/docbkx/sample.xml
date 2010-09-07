@@ -122,7 +122,7 @@
     for the compressed or uncompressed version of the layer. While the
     compressed version contains all necessary code in a single file (using the
     dojo custom build facility), the uncompressed version is just a set of
-    dojo.require(...) statements, one for each module.</para>
+    dojo.require() statements, one for each module.</para>
 
     <para>Our Maven dojo plug-in has two different configurations, depending
     on whether the custom build should be applied or not. The two different
@@ -156,7 +156,7 @@
 
     <para>A typical configuration looks as follows:</para>
 
-    <xi:include href="../../en-GB/listing/MavenDojoPluginConfiguration.xml"
+    <xi:include href="listing/MavenDojoPluginConfiguration.xml"
                 xmlns:xi="http://www.w3.org/2001/XInclude" />
 
     <para>The plug-in has the following goals:</para>

@@ -50,7 +50,7 @@
 
     <para>A complete WMS layer configuration looks as follows:</para>
 
-    <xi:include href="../../en-GB/listing/WmsLayerSample.xml"
+    <xi:include href="listing/WmsLayerSample.xml"
                 xmlns:xi="http://www.w3.org/2001/XInclude" />
 
     <para>As you can see, the bean class refers to the actual layer type:

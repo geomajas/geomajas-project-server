@@ -37,7 +37,7 @@
   include the "classpath:" or "classpath*:" prefix if you want (recommended to
   allow your IDE to check existence of the resources).</para>
 
-  <xi:include href="../../en-GB/listing/WebXmlDojoPart1.xml"
+  <xi:include href="listing/WebXmlDojoPart1.xml"
               xmlns:xi="http://www.w3.org/2001/XInclude" />
 
   <para>Next up is the definition of the actual servlets which are needed. The
@@ -59,14 +59,14 @@
     </listitem>
   </itemizedlist>
 
-  <xi:include href="../../en-GB/listing/WebXmlDojoPart2.xml"
+  <xi:include href="listing/WebXmlDojoPart2.xml"
               xmlns:xi="http://www.w3.org/2001/XInclude" />
 
   <para>To finish, the servlet mappings need to be defined. You don't really
   have a lot of choice here, as the client side JavaScript expects these
   values.</para>
 
-  <xi:include href="../../en-GB/listing/WebXmlDojoPart3.xml"
+  <xi:include href="listing/WebXmlDojoPart3.xml"
               xmlns:xi="http://www.w3.org/2001/XInclude" />
 
   <para>To finish, the servlet mappings need to be defined. You don't really
@@ -79,13 +79,13 @@
   <para>You can include a "geomajas-constants.js" file in your code (the name
   of the file can differ).</para>
 
-  <xi:include href="../../en-GB/listing/GeomajasConstantsJs.xml"
+  <xi:include href="listing/GeomajasConstantsJs.xml"
               xmlns:xi="http://www.w3.org/2001/XInclude" />
 
   <para>You can override some configurations in your html file, on the script
-  tags in head..</para>
+  tags in head.</para>
 
-  <xi:include href="../../en-GB/listing/HtmlIncludeConfig.xml"
+  <xi:include href="listing/HtmlIncludeConfig.xml"
               xmlns:xi="http://www.w3.org/2001/XInclude" />
 
   <section>

@@ -50,7 +50,7 @@
 
     <para>A complete Google layer configuration looks as follows:</para>
 
-    <xi:include href="../../en-GB/listing/GoogleLayerSample.xml"
+    <xi:include href="listing/GoogleLayerSample.xml"
                 xmlns:xi="http://www.w3.org/2001/XInclude" />
 
     <para><table>
