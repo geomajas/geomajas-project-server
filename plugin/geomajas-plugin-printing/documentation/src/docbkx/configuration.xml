@@ -64,7 +64,6 @@
 
     <section>
       <title>GWT module definition</title>
-    </section>
 
     <para>In order to be able to use the printing plug-in in a GWT
     application, you will need to include the GWT module for the printing
@@ -77,10 +76,10 @@
 
     <para>This will make the GWT widgets and their source (assuming you have
     the jars on the classpath) available for the GWT compiler. </para>
+	</section>
 
     <section>
       <title>Example toolbar configuration</title>
-    </section>
 
     <para>To use the printing functionality in a map, the following
     <code>ClientToolInfo</code> bean should be added to the map's
@@ -104,5 +103,6 @@
         </imageobject>
       </mediaobject>
     </figure>
+	</section>
   </section>
 </chapter>
