@@ -8,7 +8,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geocoder-documentation</artifactId>
-	<packaging>jdocbook</packaging>
+	<packaging>jar</packaging>
 	<name>geocoder documentation</name>
 	<description>geocoder documentation</description>
 	

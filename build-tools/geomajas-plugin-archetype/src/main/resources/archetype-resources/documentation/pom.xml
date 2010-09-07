@@ -8,7 +8,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>${groupId}</groupId>
 	<artifactId>${pluginName}-documentation</artifactId>
-	<packaging>jdocbook</packaging>
+	<packaging>jar</packaging>
 	<name>${pluginName} documentation</name>
 	<description>${pluginName} documentation</description>
 	

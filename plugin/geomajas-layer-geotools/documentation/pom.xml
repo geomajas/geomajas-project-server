@@ -7,7 +7,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.documentation</groupId>
 	<artifactId>geomajas-layer-geotools-documentation</artifactId>
-	<packaging>jdocbook</packaging>
+	<packaging>jar</packaging>
 	<name>Geomajas GeoTools layer documentation</name>
 	<description>Geomajas GeoTools layer documentation</description>
 

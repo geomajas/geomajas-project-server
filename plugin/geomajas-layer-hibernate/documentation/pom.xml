@@ -7,7 +7,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.documentation</groupId>
 	<artifactId>geomajas-layer-hibernate-documentation</artifactId>
-	<packaging>jdocbook</packaging>
+	<packaging>jar</packaging>
 	<name>Geomajas Hibernate layer documentation</name>
 	<description>Geomajas Hibernate layer documentation</description>
 

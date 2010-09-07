@@ -7,7 +7,7 @@
 	</parent>
 	<groupId>org.geomajas.documentation</groupId>
 	<artifactId>geomajas-face-dojo-documentation</artifactId>
-	<packaging>jdocbook</packaging>
+	<packaging>jar</packaging>
 	<name>Geomajas dojo face documentation</name>
 	<description>Geomajas dojo face documentation</description>
 

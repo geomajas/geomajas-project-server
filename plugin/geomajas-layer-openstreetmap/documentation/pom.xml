@@ -7,7 +7,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.documentation</groupId>
 	<artifactId>geomajas-layer-openstreetmap-documentation</artifactId>
-	<packaging>jdocbook</packaging>
+	<packaging>jar</packaging>
 	<name>Geomajas OpenStreetMap layer documentation</name>
 	<description>Geomajas OpenStreetMap layer documentation</description>
 
