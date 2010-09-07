@@ -6,7 +6,7 @@
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>org.geomajas.documentation</groupId>
+	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>caching-documentation</artifactId>
 	<packaging>jar</packaging>
 	<name>Caching documentation</name>
