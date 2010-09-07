@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+<!--
+  ~ This file is part of Geomajas, a component framework for building
+  ~ rich Internet applications (RIA) with sophisticated capabilities for the
+  ~ display, analysis and management of geographic information.
+  ~ It is a building block that allows developers to add maps
+  ~ and other geographic data capabilities to their web applications.
+  ~
+  ~ Copyright 2008-2010 Geosparc, http://www.geosparc.com, Belgium
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU Affero General Public License as
+  ~ published by the Free Software Foundation, either version 3 of the
+  ~ License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU Affero General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU Affero General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<chapter>
+  <title>dojo example application</title>
+
+  <section>
+    <title>Project layout</title>
+
+    <para>For simple applications which don't have any custom JavaScript code,
+    the dojo-simple project layout with only one module is recommended.
+    Anything more advanced is better of using the project layout of the
+    dojo-example project. This allows using dojo's shrinked builds which
+    combine all JavaScript in one large cachable file, thus optimizing load
+    time. As this shrinking processes has a massive impact on project build
+    time (and makes the code difficult to debug), you want to be able to test
+    without this shrinking step. This is tackled using the multi-module
+    project. It has the following sub-projects :</para>
+
+    <table>
+      <title>List of dojo-example projects</title>
+
+      <tgroup cols="2">
+        <tbody>
+          <row>
+            <entry>geomajas-dojo-example-client</entry>
+
+            <entry>JavaScript module code</entry>
+          </row>
+
+          <row>
+            <entry>geomajas-dojo-example-modules</entry>
+
+            <entry>generates dojo layer script with collected modules</entry>
+          </row>
+
+          <row>
+            <entry>geomajas-dojo-example-modules-shrinksafe</entry>
+
+            <entry>generates compressed version (shrinksafe) of dojo
+            layer</entry>
+          </row>
+
+          <row>
+            <entry>geomajas-dojo-example-modules-war</entry>
+
+            <entry>web application with html and configuration</entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+
+    <para>As opposed to the conventional practice of putting JavaScript
+    directly in the war project, our module concept allows you to put this
+    code on the classpath, including the possibility os using a separate jar
+    project. This jar will be added to the web application as a normal java
+    library and the JavaScript files in it will be served from the class path
+    by the ResourceController which is linked in by the DispatcherServlet. The
+    appropriate mapping should be added to the web.xml:</para>
+
+    <example>
+      <title>Dispatcher servlet definition and mapping</title>
+
+      <para><programlisting>&lt;servlet&gt;
+    &lt;servlet-name&gt;dispatcher&lt;/servlet-name&gt;
+    &lt;servlet-class&gt;org.springframework.web.servlet.DispatcherServlet&lt;/servlet-class&gt;
+    &lt;init-param&gt;
+        &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;
+        &lt;param-value&gt;classpath*:META-INF/geomajasWebContext.xml&lt;/param-value&gt;
+        &lt;description&gt;Spring Web-MVC specific (additional) context files.&lt;/description&gt;
+    &lt;/init-param&gt;
+    &lt;load-on-startup&gt;3&lt;/load-on-startup&gt;
+&lt;/servlet&gt;
+
+&lt;servlet-mapping&gt;
+    &lt;servlet-name&gt;dispatcher&lt;/servlet-name&gt;
+    &lt;url-pattern&gt;/d/*&lt;/url-pattern&gt;
+&lt;/servlet-mapping&gt;</programlisting></para>
+    </example>
+
+    <para>By structuring JavaScript code as jar artifacts, our Maven dojo
+    plug-in is capable of making this code accessible to the browser by
+    importing a single dojo layer script in the web page. If the name of the
+    layer is<emphasis role="bold">example</emphasis>, the import statements
+    will be:</para>
+
+    <example>
+      <title>Custom build script inclusion</title>
+
+      <programlisting>&lt;script type="text/javascript" src="d/resource/dojo/dojo.js"
+    djConfig="parseOnLoad:true, usePlainJson :true"&gt;&lt;/script&gt;
+&lt;script type="text/javascript" src="d/resource/<emphasis role="bold">example</emphasis>/<emphasis
+          role="bold">example</emphasis>.js"
+    geomajasConfig="showLog :false"&gt;&lt;/script&gt;</programlisting>
+    </example>
+
+    <para>As you can see, some configuration parameters can be passed by
+    adding a geomajasConfig attribute to the script tag, exactly like dojo
+    does with djConfig. The above import statements will be exactly the same
+    for the compressed or uncompressed version of the layer. While the
+    compressed version contains all necessary code in a single file (using the
+    dojo custom build facility), the uncompressed version is just a set of
+    dojo.require(...) statements, one for each module.</para>
+
+    <para>Our Maven dojo plug-in has two different configurations, depending
+    on whether the custom build should be applied or not. The two different
+    configurations have been applied in the
+    geomajas-dojo-example-modules-shrinksafe and geomajas-dojo-example-modules
+    projects, respectively. By defining a Maven dependency in
+    geomajas-dojo-example-modules-war on one or the other, the compressed or
+    uncompressed version of the JavaScript libraries is used. The switch
+    between the two options is managed by a Maven profile in the parent
+    project (geomajas-dojo-example). This should be passed in the Maven build
+    command:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para>compressed/shrinked build: <code>mvn install </code></para>
+      </listitem>
+
+      <listitem>
+        <para>uncompressed build: <code>mvn -DskipShrink install</code></para>
+      </listitem>
+    </itemizedlist>
+  </section>
+
+  <section>
+    <title>Maven dojo plug-in</title>
+
+    <para>The Maven dojo plug-in is capable of executing a custom dojo build
+    from within Maven. This essentially collects and/or compresses (using
+    shrinksafe) JavaScript modules that have been bundled as jar
+    artifacts.</para>
+
+    <para>A typical configuration looks as follows:</para>
+
+    <xi:include href="../../en-GB/listing/MavenDojoPluginConfiguration.xml"
+                xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+    <para>The plug-in has the following goals:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para><code>collect:</code> generates a dojo layer script with the
+        necessary <code>dojo.require()</code> statements to import all the
+        modules</para>
+      </listitem>
+
+      <listitem>
+        <para><code>build:</code> generates a compressed version (shrinksafe)
+        of the dojo layer script</para>
+      </listitem>
+    </itemizedlist>
+
+    <para>The following parameters can be configured:</para>
+
+    <table>
+      <title>Dojo plug-in configuration parameters</title>
+
+      <tgroup cols="3">
+        <tbody>
+          <row>
+            <entry>Name</entry>
+
+            <entry>Description</entry>
+
+            <entry>Default value</entry>
+          </row>
+
+          <row>
+            <entry>layerName</entry>
+
+            <entry>The name of the target layer file (without the ".js"
+            extension). The file is put in its own module directory and has to
+            be imported as follows: <programlisting>&lt;script src="d/resource/<emphasis>layerName</emphasis>/<emphasis>layerName</emphasis>.js"/&gt;</programlisting></entry>
+
+            <entry>modules</entry>
+          </row>
+
+          <row>
+            <entry>localeList</entry>
+
+            <entry>List of locales to be included in the build file (see dojo
+            custom build parameters)</entry>
+
+            <entry>en</entry>
+          </row>
+
+          <row>
+            <entry>layerOptimize</entry>
+
+            <entry>Compression type to be used (see dojo custom build
+            parameters). Options include "shrinksafe", "shrinksafe.keepLines",
+            "packer".</entry>
+
+            <entry>shrinksafe</entry>
+          </row>
+
+          <row>
+            <entry>modules</entry>
+
+            <entry>A list of module tags, one for each JavaScript module.
+            Beware: <itemizedlist>
+                <listitem>
+                  <para>the modules should be added as jar dependencies
+                  first.</para>
+                </listitem>
+
+                <listitem>
+                  <para>The scope for the dependency can be
+                  <code>provided</code> for a shrink build (this reduces the
+                  size of the war).</para>
+                </listitem>
+              </itemizedlist><para>Each module tag should provide a requires
+            parameter. This parameter is the argument of the
+            <code>dojo.require()</code> statement needed to import the module
+            from dojo. </para></entry>
+
+            <entry>empty list</entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+
+    <para>The output of the plug-in consists of generated JavaScript files.
+    The precise output dependens on the goal. If the goal is
+    <code>"collect</code>", it is a single file. If the goal is
+    "<code>build</code>", it contains the complete contents of the release
+    directory of the dojo build. In all cases, the JavaScript output is
+    generated in the folder
+    <code>&lt;projectdir&gt;/target/generated-resources/dojo</code>, which is
+    added as a resource folder to the Maven project.</para>
+  </section>
+</chapter>

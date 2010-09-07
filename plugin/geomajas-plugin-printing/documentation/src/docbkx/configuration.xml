@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+<!--
+  ~ This file is part of Geomajas, a component framework for building
+  ~ rich Internet applications (RIA) with sophisticated capabilities for the
+  ~ display, analysis and management of geographic information.
+  ~ It is a building block that allows developers to add maps
+  ~ and other geographic data capabilities to their web applications.
+  ~
+  ~ Copyright 2008-2010 Geosparc, http://www.geosparc.com, Belgium
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU Affero General Public License as
+  ~ published by the Free Software Foundation, either version 3 of the
+  ~ License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU Affero General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU Affero General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<chapter id="chapter-configuration">
+  <title>Configuration</title>
+
+  <para>Apart from the maven dependency configuration, most of the
+  configuration options of the printing plugin are currently provided by the
+  end user at runtime. To provide access to the plugin's functionality from
+  the GWT face, an action has been provided that pops up a printing
+  preferences window.</para>
+
+  <section>
+    <title>Dependency configuration</title>
+
+    <para>To use the printing plugin, the maven project file should be
+    enhanced with the following artifact dependencies:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para>geomajas-plugin-printing: this is the backend part of the
+        plugin</para>
+      </listitem>
+
+      <listitem>
+        <para>geomajas-plugin-printing-gwt: this is the GWT face part of the
+        plugin</para>
+      </listitem>
+    </itemizedlist>
+
+    <xi:include href="../../en-GB/listing/PrintingDependency.xml"
+                xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+    <para>If you want to use the use the printing plug-in within a GWT
+    application, you only need to include the 2 printing-gwt jars (normal and
+    sources) on the classpath. These will then automatically pull in the first
+    2 jars.</para>
+  </section>
+
+  <section>
+    <title>GWT face configuration</title>
+
+    <section>
+      <title>GWT module definition</title>
+    </section>
+
+    <para>In order to be able to use the printing plug-in in a GWT
+    application, you will need to include the GWT module for the printing
+    plug-in in your applications GWT module definition. In order to do this,
+    add the following configuration line to your applications .gwt.xml
+    file:</para>
+
+    <xi:include href="../listing/PrintingGwtModule.xml"
+                xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+    <para>This will make the GWT widgets and their source (assuming you have
+    the jars on the classpath) available for the GWT compiler. </para>
+
+    <section>
+      <title>Example toolbar configuration</title>
+    </section>
+
+    <para>To use the printing functionality in a map, the following
+    <code>ClientToolInfo</code> bean should be added to the map's
+    toolbar:</para>
+
+    <xi:include href="../../en-GB/listing/PrintingToolInfo.xml"
+                xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+    <para>The name of the <code>ClientToolInfo</code> bean should be exactly
+    as spelled in the above program listing.</para>
+
+    <para>If configured correctly, the following tool icon will show up in the
+    toolbar:</para>
+
+    <figure>
+      <title>Toolbar icon for printing</title>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="../images/print.png" />
+        </imageobject>
+      </mediaobject>
+    </figure>
+  </section>
+</chapter>
