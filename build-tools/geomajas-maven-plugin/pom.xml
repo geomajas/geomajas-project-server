@@ -11,7 +11,13 @@
 	<version>1.0.5-SNAPSHOT</version>
 	<name>Geomajas maven plugin</name>
 	<description>Geomajas maven plugin, used for extracting documentation extracts.</description>
-	<url>http://www.geomajas.org/geomajas-maven-plugin</url>
+	<url>http://www.geomajas.org/</url>
+
+	<scm>
+		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/build-tools/geomajas-maven-plugin</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/build-tools/geomajas-maven-plugin</developerConnection>
+		<url>https://svn.geomajas.org/majas/trunk/build-tools/geomajas-maven-plugin</url>
+	</scm>
 
 	<developers>
 		<developer>
