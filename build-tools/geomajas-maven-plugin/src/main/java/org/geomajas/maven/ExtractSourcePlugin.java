@@ -134,7 +134,7 @@ public class ExtractSourcePlugin extends AbstractMojo {
 			if (null != declaration) {
 				if (line.contains(endAnnotation)) {
 					prepareLines(lines);
-					createFile(declaration, lines, destination);
+					createFile(declaration, lines, destination, getLanguage(file));
 					declaration = null;
 					lines.clear();
 				} else {
@@ -159,8 +159,26 @@ public class ExtractSourcePlugin extends AbstractMojo {
 
 		if (null != declaration) {
 			prepareLines(lines);
-			createFile(declaration, lines, destination);
+			createFile(declaration, lines, destination, getLanguage(file));
 		}
+	}
+
+	private String getLanguage(File file) {
+		String fileName = file.getName();
+		int pos = fileName.lastIndexOf('.');
+		if (pos > 0) {
+			String extension = fileName.substring(pos + 1);
+			if ("java".equalsIgnoreCase(extension)) {
+				return "java";
+			}
+			if ("xml".equalsIgnoreCase(extension)) {
+				return "xml";
+			}
+			if ("js".equalsIgnoreCase(extension)) {
+				return "javascript";
+			}
+		}
+		return null;
 	}
 
 	/**
@@ -210,9 +228,11 @@ public class ExtractSourcePlugin extends AbstractMojo {
 	 * @param declaration part of comment line after marker, contains filename and optional caption separated by comma
 	 * @param lines lines to store in file
 	 * @param destinationDir directory to put file
+	 * @param language programming language for the input file
 	 * @throws IOException oops while creating file
 	 */
-	public void createFile(String declaration, List<String> lines, File destinationDir) throws IOException {
+	public void createFile(String declaration, List<String> lines, File destinationDir, String language)
+			throws IOException {
 		if(!destinationDir.isDirectory()) {
 			destinationDir.mkdirs();
 		}
@@ -239,7 +259,13 @@ public class ExtractSourcePlugin extends AbstractMojo {
 		writer.write("<title>");
 		writer.write(caption);
 		writer.write("</title>\n");
-		writer.write("<programlisting><![CDATA[");
+		writer.write("<programlisting");
+		if (null != language) {
+			writer.write(" language=\"");
+			writer.write(language);
+			writer.write("\"");
+		}
+		writer.write("><![CDATA[");
 		boolean first = true;
 		for (String line : lines) {
 			if (!first) {
