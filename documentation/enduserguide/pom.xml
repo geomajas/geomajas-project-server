@@ -159,7 +159,7 @@
 					<fop1Extensions>1</fop1Extensions>
 
 					<highlightSource>1</highlightSource>
-					<foCustomization>target/docbkx/html/docbkx/docbook-fo.xsl</foCustomization>
+					<foCustomization>${project.build.directory}/docbkx/html/docbkx/docbook-fo.xsl</foCustomization>
 				</configuration>
 			</plugin>
 		</plugins>
