@@ -3,15 +3,15 @@
 #set( $symbol_dollar = '$' )
 	<parent>
 		<groupId>${groupId}</groupId>
-		<artifactId>${rootArtifactId}-all</artifactId>
+		<artifactId>$!{artifactIdPrefix}${rootArtifactId}-all</artifactId>
 		<version>${version}</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>${groupId}</groupId>
-	<artifactId>${rootArtifactId}</artifactId>
+	<artifactId>$!{artifactIdPrefix}${rootArtifactId}</artifactId>
 	<packaging>jar</packaging>
-	<name>${pluginName}</name>
-	<description>${pluginName}</description>
+	<name>${rootArtifactId}</name>
+	<description>${rootArtifactId}</description>
 
 	<dependencies>
 		<dependency>

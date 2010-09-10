@@ -2,22 +2,22 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
 		<groupId>${groupId}</groupId>
-		<artifactId>${rootArtifactId}-all</artifactId>
+		<artifactId>$!{artifactIdPrefix}${rootArtifactId}-all</artifactId>
 		<version>${version}</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>${groupId}</groupId>
-	<artifactId>${rootArtifactId}-gwt</artifactId>
+	<artifactId>$!{artifactIdPrefix}${rootArtifactId}-gwt</artifactId>
 	<packaging>jar</packaging>
-	<name>${pluginName} (GWT face)</name>
-	<description>${pluginName} (GWT face)</description>
+	<name>${rootArtifactId} (GWT face)</name>
+	<description>${rootArtifactId} (GWT face)</description>
 
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-face-gwt</artifactId>
-				<version>${symbol_dollar}{${pluginName}-backend-version}</version>
+				<version>${symbol_dollar}{${rootArtifactId}-backend-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>

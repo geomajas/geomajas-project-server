@@ -38,19 +38,19 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	<bean class="org.geomajas.global.PluginInfo">
 		<property name="version">
 			<bean class="org.geomajas.global.PluginVersionInfo">
-				<property name="name" value="${pluginName}-gwt" />
+				<property name="name" value="${rootArtifactId}-gwt" />
 				<property name="version" value="${symbol_dollar}{project.version}" />
 			</bean>
 		</property>
-		<property name="backendVersion" value="${symbol_dollar}{${pluginName}-backend-version}" />
+		<property name="backendVersion" value="${symbol_dollar}{${rootArtifactId}-backend-version}" />
 		<property name="dependencies">
 			<list>
 				<bean class="org.geomajas.global.PluginVersionInfo">
 					<property name="name" value="GWT face" />
-					<property name="version" value="${symbol_dollar}{${pluginName}-backend-version}" />
+					<property name="version" value="${symbol_dollar}{${rootArtifactId}-backend-version}" />
 				</bean>
 				<bean class="org.geomajas.global.PluginVersionInfo">
-					<property name="name" value="${pluginName}" />
+					<property name="name" value="${rootArtifactId}" />
 					<property name="version" value="${symbol_dollar}{project.version}" />
 				</bean>
 			</list>

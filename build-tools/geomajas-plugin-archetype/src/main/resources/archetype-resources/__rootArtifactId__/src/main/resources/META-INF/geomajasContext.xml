@@ -37,11 +37,11 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	<bean class="org.geomajas.global.PluginInfo">
 		<property name="version">
 			<bean class="org.geomajas.global.PluginVersionInfo">
-				<property name="name" value="${pluginName}" />
+				<property name="name" value="${rootArtifactId}" />
 				<property name="version" value="${symbol_dollar}{project.version}" />
 			</bean>
 		</property>
-		<property name="backendVersion" value="${symbol_dollar}{${pluginName}-backend-version}" />
+		<property name="backendVersion" value="${symbol_dollar}{${rootArtifactId}-backend-version}" />
 		<property name="dependencies">
 			<list>
 				<!--

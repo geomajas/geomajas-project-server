@@ -8,13 +8,15 @@
 		<requiredProperty key="package">
 			<defaultValue>${groupId}</defaultValue>
 		</requiredProperty>
-		<requiredProperty key="pluginName">
-			<defaultValue>${artifactId}</defaultValue>
+		<!--
+		<requiredProperty key="artifactIdPrefix">
+			<defaultValue>geomajas-plugin-</defaultValue>
 		</requiredProperty>
+		-->
 	</requiredProperties>
 	<fileSets>
 		<fileSet filtered="true" encoding="UTF-8">
-			<directory></directory>
+			<directory>.</directory>
 			<includes>
 				<include>LICENSE.txt</include>
 			</includes>
@@ -76,13 +78,13 @@
 		<module id="documentation" dir="documentation" name="documentation">
 			<fileSets>
 				<fileSet filtered="true" encoding="UTF-8">
-					<directory>en-GB</directory>
+					<directory>docbkx</directory>
 					<includes>
 						<include>**/*.xml</include>
 					</includes>
 				</fileSet>
 				<fileSet encoding="UTF-8">
-					<directory>en-GB/images</directory>
+					<directory>docbkx/images</directory>
 					<includes>
 						<include>**/*.png</include>
 					</includes>
