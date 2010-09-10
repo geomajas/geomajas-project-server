@@ -181,7 +181,7 @@
 			<dependency>
 				<groupId>org.geotools</groupId>
 				<artifactId>gt-referencing</artifactId>
-				<version>${geotools-version}</version>
+				<version>${geotools-referencing-version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geotools</groupId>
@@ -275,6 +275,7 @@
 
 	<properties>
 		<geotools-version>2.6.3</geotools-version>
+		<geotools-referencing-version>2.6.3</geotools-referencing-version>
 		<spring-version>3.0.2.RELEASE</spring-version>
 		<slf4j-version>1.6.0</slf4j-version>
 	</properties>

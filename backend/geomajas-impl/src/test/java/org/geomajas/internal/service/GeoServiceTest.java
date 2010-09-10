@@ -49,6 +49,13 @@ public class GeoServiceTest {
 	private GeoService geoService;
 
 	@Test
+	public void getCrsTest() throws Exception {
+		CoordinateReferenceSystem crs = geoService.getCrs("EPSG:900913");
+		Assert.assertNotNull(crs);
+		Assert.assertEquals(900913, geoService.getSridFromCrs(crs));
+	}
+
+	@Test
 	public void transformEnvelopeTest() throws Exception {
 		CoordinateReferenceSystem source = geoService.getCrs("EPSG:900913");
 		CoordinateReferenceSystem target = geoService.getCrs("EPSG:4326");
