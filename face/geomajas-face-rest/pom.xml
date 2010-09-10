@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<!-- @todo remove the parent when the plug-in is not part of the Geomajas project, or remove this comment -->
 	<parent>
 		<groupId>org.geomajas</groupId>
 		<artifactId>geomajas-parent</artifactId>
@@ -14,26 +13,11 @@
 	<name>geomajas-face-rest plug-in parent</name>
 	<description>geomajas-face-rest plug-in grouping module</description>
 
-	<!-- @todo uncomment and fix when this module is part of the Geomajas project
 	<scm>
 		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-face-rest</connection>
 		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-face-rest</developerConnection>
 		<url>https://svn.geomajas.org/majas/trunk/plugin/geomajas-face-rest</url>
 	</scm>
-	-->
-
-	<!-- @todo you probably want to set the developers, otherwise it inherits from the parent if any
-	<developers>
-		<developer>
-			<id>jd</id>
-			<name>John Doe</name>
-			<email>john.doe@acmee.com</email>
-			<roles>
-				<role>Module maintainer</role>
-			</roles>
-		</developer>
-	</developers>
-	-->
 
 	<repositories>
 		<repository>
@@ -55,7 +39,7 @@
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-backend</artifactId>
-				<version>${symbol_dollar}{geomajas-face-rest-backend-version}</version>
+				<version>${geomajas-face-rest-backend-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -65,7 +49,7 @@
 	<modules>
 		<module>geomajas-face-rest</module>
 		<module>geomajas-face-rest-gwt</module>
-    <module>documentation</module>
+		<module>documentation</module>
   </modules>
 
 	<profiles>

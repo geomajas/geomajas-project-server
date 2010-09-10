@@ -15,6 +15,7 @@
 	<modules>
 		<module>geomajas-face-dojo</module>
 		<module>geomajas-face-gwt</module>
+		<module>geomajas-face-rest</module>
 	</modules>
 
 	<repositories>
