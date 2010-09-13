@@ -50,12 +50,6 @@ public class OsmLayerTest {
 	private GeoService geoService;
 
 	@Test
-	public void testContextOk() {
-		Assert.assertNotNull(layers);
-		Assert.assertEquals(1, layers.size());
-	}
-
-	@Test
 	public void testPaintOutOfBounds() throws Exception {
 		double equator = OsmLayer.EQUATOR_IN_METERS;
 		List<RasterTile> tiles = layers.get("osm").paint(geoService.getCrs("EPSG:900913"),

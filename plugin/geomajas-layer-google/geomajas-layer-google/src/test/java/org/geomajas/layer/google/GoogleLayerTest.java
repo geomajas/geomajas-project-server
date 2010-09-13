@@ -30,12 +30,6 @@ public class GoogleLayerTest {
 	private GeoService geoService;
 
 	@Test
-	public void testContextOk() {
-		Assert.assertNotNull(layers);
-		Assert.assertEquals(1, layers.size());
-	}
-
-	@Test
 	public void testPaintOutOfBounds() throws Exception {
 		double equator = GoogleLayer.EQUATOR_IN_METERS;
 		List<RasterTile> tiles = layers.get("google").paint(geoService.getCrs("EPSG:900913"),
