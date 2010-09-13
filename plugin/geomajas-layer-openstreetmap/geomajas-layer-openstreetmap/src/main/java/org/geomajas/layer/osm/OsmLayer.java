@@ -265,15 +265,16 @@ public class OsmLayer implements RasterLayer {
 			}
 			// Calculate the indexes of the lower right corner
 			// that just falls off the screen
+			int levelMax = (int) Math.pow(2, tileLevel) - 1;
 			double xMax = xCenter;
 			int iMax = iCenter;
-			while (xMax < bounds.getMaxX()) {
+			while (xMax < bounds.getMaxX() /*&& iMax < levelMax*/) {
 				xMax += width;
 				iMax++;
 			}
 			double yMin = yCenter;
 			int jMax = jCenter;
-			while (yMin > bounds.getMinY()) {
+			while (yMin > bounds.getMinY() /*&& jMax < levelMax*/) {
 				yMin -= height;
 				jMax++;
 			}

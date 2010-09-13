@@ -36,7 +36,7 @@ public class GoogleLayerTest {
 	}
 
 	@Test
-	public void testPaintOutOfBounds() throws LayerException, GeomajasException {
+	public void testPaintOutOfBounds() throws Exception {
 		double equator = GoogleLayer.EQUATOR_IN_METERS;
 		List<RasterTile> tiles = layers.get("google").paint(geoService.getCrs("EPSG:900913"),
 				new Envelope(-equator, equator, -equator, equator), 256 / equator);

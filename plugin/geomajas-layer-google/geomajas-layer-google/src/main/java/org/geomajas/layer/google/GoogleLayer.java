@@ -314,8 +314,8 @@ public class GoogleLayer implements RasterLayer {
 
 			// calculate the images
 			List<RasterTile> result = new ArrayList<RasterTile>();
-			log.info("bounds =" + bounds);
-			log.info("indices " + iMin + "," + iMax + "," + jMin + "," + jMax);
+			log.debug("bounds =" + bounds);
+			log.debug("indices " + iMin + "," + iMax + "," + jMin + "," + jMax);
 			int xScreenUpperLeft = (int) Math.round(upperLeft.x * scale);
 			int yScreenUpperLeft = (int) Math.round(upperLeft.y * scale);
 			int screenWidth = (int) Math.round(scale * width);
