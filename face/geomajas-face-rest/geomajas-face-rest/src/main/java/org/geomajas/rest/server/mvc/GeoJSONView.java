@@ -22,15 +22,20 @@
  */
 package org.geomajas.rest.server.mvc;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.layer.feature.InternalFeature;
+import org.geomajas.rest.server.GeoJSONParser;
 import org.geomajas.rest.server.GeotoolsConvertorService;
-import org.geotools.geojson.GeoJSON;
+import org.geotools.data.memory.MemoryFeatureCollection;
+import org.geotools.feature.FeatureCollection;
+import org.opengis.feature.simple.SimpleFeature;
 import org.opengis.feature.simple.SimpleFeatureType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -48,6 +53,8 @@ public class GeoJSONView extends AbstractView {
 	@Autowired
 	private GeotoolsConvertorService convertorService;
 
+	private GeoJSONParser parser = new GeoJSONParser();
+
 	public GeoJSONView() {
 		setContentType("application/json");
 	}
@@ -55,20 +62,23 @@ public class GeoJSONView extends AbstractView {
 	@Override
 	protected void renderMergedOutputModel(Map<String, Object> model, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		List<InternalFeature> features = (List<InternalFeature>) model.get(RestContoller.FEATURE_COLLECTION);
-
-		if (features.size() > 0) {
-			InternalFeature f = features.get(0);
-			SimpleFeatureType sft = convertorService.toSimpleFeatureType(f.getLayer().getLayerInfo());
-
-			response.setContentType(getContentType());
-
+		Object ff = model.get(RestController.FEATURE_COLLECTION);
+		VectorLayerInfo info = (VectorLayerInfo) model.get(RestController.FEATURE_INFO);
+		List<String> attrs = (List<String>) model.get(RestController.ATTRIBUTES);
+		SimpleFeatureType sft = convertorService.toSimpleFeatureType(info, attrs);
+		response.setContentType(getContentType());
+		if (Collection.class.isAssignableFrom(ff.getClass())) {
+			Collection<InternalFeature> features = (Collection<InternalFeature>) ff;
+			FeatureCollection<SimpleFeatureType, SimpleFeature> coll = new MemoryFeatureCollection(sft);
 			for (InternalFeature feature : features) {
-				GeoJSON.write(convertorService.toSimpleFeature(feature, sft), response.getOutputStream());
+				coll.add(convertorService.toSimpleFeature(feature, sft));
 			}
-
-			response.getOutputStream().flush();
-
+			parser.write(coll, response.getOutputStream());
+		} else {
+			InternalFeature feature = (InternalFeature) ff;
+			parser.write(convertorService.toSimpleFeature(feature, sft), response.getOutputStream());
 		}
+		response.getOutputStream().flush();
 	}
+
 }

@@ -27,7 +27,7 @@ public class RestControllerTest {
 	private final Logger log = LoggerFactory.getLogger(RestControllerTest.class);
 	
 	@Autowired
-	RestContoller restController;
+	RestController restController;
 
 	@Autowired
 	private SecurityManager securityManager;
@@ -41,28 +41,26 @@ public class RestControllerTest {
 	
 	@Test
 	public void readOneFeature() throws RestException {
-		ModelAndView mav = restController.readOneFeature("beans", "1");
-		Object o = mav.getModel().get(RestContoller.FEATURE_COLLECTION);
-		Assert.assertTrue(o instanceof List);
-		List<InternalFeature> features = (List<InternalFeature>) o; 
-		Assert.assertNotNull(features);
-		Assert.assertNotNull(features.get(0));
-		Assert.assertTrue(features.get(0) instanceof InternalFeature);
+		ModelAndView mav = restController.readOneFeature("beans", "1", false, null);
+		Object o = mav.getModel().get(RestController.FEATURE_COLLECTION);
+		Assert.assertTrue(o instanceof InternalFeature);
+		InternalFeature feature = (InternalFeature) o; 
+		Assert.assertTrue(feature instanceof InternalFeature);
 		
-		Assert.assertEquals("bean1", features.get(0).getAttributes().get("stringAttr").getValue());
-		Assert.assertEquals(true, features.get(0).getAttributes().get("booleanAttr").getValue());
-		Assert.assertEquals("100,23", features.get(0).getAttributes().get("currencyAttr").getValue());
+		Assert.assertEquals("bean1", feature.getAttributes().get("stringAttr").getValue());
+		Assert.assertEquals(true, feature.getAttributes().get("booleanAttr").getValue());
+		Assert.assertEquals("100,23", feature.getAttributes().get("currencyAttr").getValue());
 		Calendar c = Calendar.getInstance();
 		c.set(2010, 1, 23, 0, 0, 0);
 		c.set(Calendar.MILLISECOND, 0);
-		Assert.assertEquals(c.getTime(), features.get(0).getAttributes().get("dateAttr").getValue());
-		Assert.assertEquals(123.456, features.get(0).getAttributes().get("doubleAttr").getValue());
-		Assert.assertEquals(456.789F, features.get(0).getAttributes().get("floatAttr").getValue());
-		Assert.assertEquals("http://www.geomajas.org/image1", features.get(0).getAttributes().get("imageUrlAttr").getValue());
-		Assert.assertEquals(789, features.get(0).getAttributes().get("integerAttr").getValue());
-		Assert.assertEquals(123456789L, features.get(0).getAttributes().get("longAttr").getValue());
-		Assert.assertEquals((short) 123, features.get(0).getAttributes().get("shortAttr").getValue());
-		Assert.assertEquals("http://www.geomajas.org/url1", features.get(0).getAttributes().get("urlAttr").
+		Assert.assertEquals(c.getTime(), feature.getAttributes().get("dateAttr").getValue());
+		Assert.assertEquals(123.456, feature.getAttributes().get("doubleAttr").getValue());
+		Assert.assertEquals(456.789F, feature.getAttributes().get("floatAttr").getValue());
+		Assert.assertEquals("http://www.geomajas.org/image1", feature.getAttributes().get("imageUrlAttr").getValue());
+		Assert.assertEquals(789, feature.getAttributes().get("integerAttr").getValue());
+		Assert.assertEquals(123456789L, feature.getAttributes().get("longAttr").getValue());
+		Assert.assertEquals((short) 123, feature.getAttributes().get("shortAttr").getValue());
+		Assert.assertEquals("http://www.geomajas.org/url1", feature.getAttributes().get("urlAttr").
 				getValue());
 		
 	}

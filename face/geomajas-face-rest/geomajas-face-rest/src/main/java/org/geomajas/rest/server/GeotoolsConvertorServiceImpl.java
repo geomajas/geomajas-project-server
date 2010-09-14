@@ -24,7 +24,9 @@ package org.geomajas.rest.server;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.geomajas.configuration.AttributeInfo;
 import org.geomajas.configuration.PrimitiveAttributeInfo;
@@ -46,6 +48,7 @@ import com.vividsolutions.jts.geom.Geometry;
 /**
  * 
  * @author Oliver May
+ * @author Jan De Moerloose
  * 
  */
 @Component
@@ -63,67 +66,14 @@ public class GeotoolsConvertorServiceImpl implements GeotoolsConvertorService {
 	 * VectorLayerInfo)
 	 */
 	public SimpleFeatureType toSimpleFeatureType(VectorLayerInfo vectorLayerInfo) throws LayerException {
-
-		SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
-
-		builder.setName(vectorLayerInfo.getFeatureInfo().getDataSourceName());
-		builder.setNamespaceURI(NAMESPACE_URI);
-		builder.setCRS(geoservice.getCrs(vectorLayerInfo.getCrs()));
-
-		for (AttributeInfo a : vectorLayerInfo.getFeatureInfo().getAttributes()) {
-			if (a instanceof PrimitiveAttributeInfo) {
-				PrimitiveAttributeInfo attr = (PrimitiveAttributeInfo) a;
-				switch (attr.getType()) {
-					case BOOLEAN:
-						builder.add(attr.getName(), Boolean.class);
-						break;
-					case SHORT:
-						builder.add(attr.getName(), Short.class);
-						break;
-					case INTEGER:
-						builder.add(attr.getName(), Integer.class);
-						break;
-					case LONG:
-						builder.add(attr.getName(), Long.class);
-						break;
-					case FLOAT:
-						builder.add(attr.getName(), Float.class);
-						break;
-					case DOUBLE:
-						builder.add(attr.getName(), Double.class);
-						break;
-					case CURRENCY:
-						builder.add(attr.getName(), String.class);
-						break;
-					case STRING:
-						builder.add(attr.getName(), String.class);
-						break;
-					case DATE:
-						builder.add(attr.getName(), Date.class);
-						break;
-					case URL:
-						builder.add(attr.getName(), String.class);
-						break;
-					case IMGURL:
-						builder.add(attr.getName(), String.class);
-						break;
-				}
-			}
-		}
-		builder.add(vectorLayerInfo.getFeatureInfo().getGeometryType().getName(), Geometry.class);
-		builder.setDefaultGeometry(vectorLayerInfo.getFeatureInfo().getGeometryType().getName());
-
-		return builder.buildFeatureType();
-
+		return toSimpleFeatureType(vectorLayerInfo, null);
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.geomajas.rest.server.GeotoolsConvertorServiceInterface#toSimpleFeature(
-	 * org.geomajas.layer.feature.InternalFeature
-	 * , org.opengis.feature.simple.SimpleFeatureType)
+	 * @see org.geomajas.rest.server.GeotoolsConvertorServiceInterface#toSimpleFeature(
+	 * org.geomajas.layer.feature.InternalFeature , org.opengis.feature.simple.SimpleFeatureType)
 	 */
 	public SimpleFeature toSimpleFeature(InternalFeature feature, SimpleFeatureType featureType) {
 		SimpleFeatureBuilder builder = new SimpleFeatureBuilder(featureType);
@@ -143,6 +93,75 @@ public class GeotoolsConvertorServiceImpl implements GeotoolsConvertorService {
 		}
 
 		return builder.buildFeature(feature.getId(), attr.toArray());
+
+	}
+
+	public SimpleFeatureType toSimpleFeatureType(VectorLayerInfo vectorLayerInfo, List<String> attributeNames)
+			throws LayerException {
+
+		SimpleFeatureTypeBuilder builder = new SimpleFeatureTypeBuilder();
+
+		builder.setName(vectorLayerInfo.getFeatureInfo().getDataSourceName());
+		builder.setNamespaceURI(NAMESPACE_URI);
+		builder.setCRS(geoservice.getCrs(vectorLayerInfo.getCrs()));
+
+		// create a lookup map of attribute info's
+		Map<String, AttributeInfo> attrs = new LinkedHashMap<String, AttributeInfo>();
+		for (AttributeInfo a : vectorLayerInfo.getFeatureInfo().getAttributes()) {
+			attrs.put(a.getName(), a);
+		}
+		if (attributeNames == null) {
+			attributeNames = new ArrayList<String>(attrs.keySet());
+		}
+
+		// now list 'm up
+		for (String name : attributeNames) {
+			if (attrs.containsKey(name)) {
+				AttributeInfo a = attrs.get(name);
+				if (a instanceof PrimitiveAttributeInfo) {
+					PrimitiveAttributeInfo attr = (PrimitiveAttributeInfo) a;
+					switch (attr.getType()) {
+						case BOOLEAN:
+							builder.add(attr.getName(), Boolean.class);
+							break;
+						case SHORT:
+							builder.add(attr.getName(), Short.class);
+							break;
+						case INTEGER:
+							builder.add(attr.getName(), Integer.class);
+							break;
+						case LONG:
+							builder.add(attr.getName(), Long.class);
+							break;
+						case FLOAT:
+							builder.add(attr.getName(), Float.class);
+							break;
+						case DOUBLE:
+							builder.add(attr.getName(), Double.class);
+							break;
+						case CURRENCY:
+							builder.add(attr.getName(), String.class);
+							break;
+						case STRING:
+							builder.add(attr.getName(), String.class);
+							break;
+						case DATE:
+							builder.add(attr.getName(), Date.class);
+							break;
+						case URL:
+							builder.add(attr.getName(), String.class);
+							break;
+						case IMGURL:
+							builder.add(attr.getName(), String.class);
+							break;
+					}
+				}
+			}
+		}
+		builder.add(vectorLayerInfo.getFeatureInfo().getGeometryType().getName(), Geometry.class);
+		builder.setDefaultGeometry(vectorLayerInfo.getFeatureInfo().getGeometryType().getName());
+
+		return builder.buildFeatureType();
 
 	}
 }
