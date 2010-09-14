@@ -242,6 +242,10 @@ public class GoogleLayer implements RasterLayer {
 			MathTransform mapToLayer = layerToMap.inverse();
 
 			bounds = clipBounds(bounds);
+			if (bounds.isNull()) {
+				return new ArrayList<RasterTile>(); 
+			}
+
 			// find the center of the map in map coordinates (positive y-axis)
 			Coordinate center = new Coordinate(0.5 * (bounds.getMinX() + bounds.getMaxX()), 0.5 * (bounds
 					.getMinY() + bounds.getMaxY()));
@@ -254,7 +258,7 @@ public class GoogleLayer implements RasterLayer {
 
 			// find the google indices for the center
 			// google indices determine the row and column of the 256x256 image
-			// in the big google square for the given zoom zoomLevel
+			// in the big google square for the given zoomLevel
 			// the resulting indices are floating point values as the center
 			// is not coincident with an image corner !!!!
 			Coordinate indicesCenter = getGoogleIndicesFromMap(mapToLayer, center, tileLevel);
@@ -314,8 +318,11 @@ public class GoogleLayer implements RasterLayer {
 
 			// calculate the images
 			List<RasterTile> result = new ArrayList<RasterTile>();
-			log.debug("bounds =" + bounds);
-			log.debug("indices " + iMin + "," + iMax + "," + jMin + "," + jMax);
+			if (log.isDebugEnabled()) {
+				log.debug("bounds =" + bounds);
+				log.debug("tilebounds " + xMin + ", " + xMax + ", " + yMin + ", " + yMax);
+				log.debug("indices " + iMin + ", " + iMax + ", " + jMin + ", " + jMax);
+			}
 			int xScreenUpperLeft = (int) Math.round(upperLeft.x * scale);
 			int yScreenUpperLeft = (int) Math.round(upperLeft.y * scale);
 			int screenWidth = (int) Math.round(scale * width);
@@ -331,7 +338,8 @@ public class GoogleLayer implements RasterLayer {
 					image.setCode(new TileCode(tileLevel, i, j));
 					
 					image.setUrl(getTileUrl(i, j, tileLevel));
-
+					
+					log.debug("adding Google image {}", image);
 					result.add(image);
 				}
 			}
