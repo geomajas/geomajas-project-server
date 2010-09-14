@@ -27,6 +27,7 @@ import org.geomajas.global.Api;
 
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
+import org.geomajas.global.UserImplemented;
 
 /**
  * Handler for the editing events.
@@ -35,6 +36,7 @@ import com.google.gwt.event.shared.GwtEvent;
  * @since 1.8.0
  */
 @Api(allMethods = true)
+@UserImplemented
 public interface EditingHandler extends EventHandler {
 
 	GwtEvent.Type<EditingHandler> TYPE = new GwtEvent.Type<EditingHandler>();
