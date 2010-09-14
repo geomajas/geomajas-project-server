@@ -80,7 +80,7 @@
 								<artifactItem>
 									<groupId>org.geomajas.documentation</groupId>
 									<artifactId>geomajas-jdocbook-style</artifactId>
-									<version>1.0.2-SNAPSHOT</version>
+									<version>1.0.2</version>
 									<outputDirectory>${project.build.directory}/docbkx/html</outputDirectory>
 								</artifactItem>
 							</artifactItems>
