@@ -25,26 +25,28 @@ package org.geomajas.layer.osm;
 
 import com.vividsolutions.jts.geom.Envelope;
 import junit.framework.Assert;
-import org.geomajas.global.GeomajasException;
-import org.geomajas.layer.LayerException;
 import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.service.GeoService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.List;
-import java.util.Map;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
 		"/osmContext.xml" })
 public class OsmLayerTest {
 
+	private static final double ZOOMED_IN_SCALE = .0001;
+	private static final double DELTA = 1e-10;
+
 	@Autowired
-	private Map<String, OsmLayer> layers;
+	@Qualifier("osm")
+	private OsmLayer osm;
 
 	@Autowired
 	private GeoService geoService;
@@ -52,9 +54,46 @@ public class OsmLayerTest {
 	@Test
 	public void testPaintOutOfBounds() throws Exception {
 		double equator = OsmLayer.EQUATOR_IN_METERS;
-		List<RasterTile> tiles = layers.get("osm").paint(geoService.getCrs("EPSG:900913"),
+		List<RasterTile> tiles = osm.paint(geoService.getCrs("EPSG:900913"),
 				new Envelope(-equator, equator, -equator, equator), 256 / equator);
 		Assert.assertEquals(1, tiles.size());
 		Assert.assertEquals("http://a.tile.openstreetmap.org/0/0/0.png", tiles.iterator().next().getUrl());
 	}
+
+	@Test
+	public void testPaintToTheSide() throws Exception {
+		double equator = OsmLayer.EQUATOR_IN_METERS;
+		List<RasterTile> tiles = osm.paint(geoService.getCrs("EPSG:900913"),
+				new Envelope(equator * 2 / 3, (equator * 2 / 3) + 100, 0, 100), ZOOMED_IN_SCALE);
+		Assert.assertEquals(0, tiles.size());
+	}
+
+	@Test
+	public void testNormalOne() throws Exception {
+		List<RasterTile> tiles = osm.paint(geoService.getCrs("EPSG:900913"),
+				new Envelope(10000, 10010, 5000, 5010), ZOOMED_IN_SCALE);
+		Assert.assertEquals(1, tiles.size());
+		RasterTile tile = tiles.get(0);
+		Assert.assertEquals("http://b.tile.openstreetmap.org/4/8/7.png", tile.getUrl());
+		Assert.assertEquals(4, tile.getCode().getTileLevel());
+		Assert.assertEquals(8, tile.getCode().getX());
+		Assert.assertEquals(7, tile.getCode().getY());
+		Assert.assertEquals(0.0, tile.getBounds().getX(), DELTA);
+		/*
+		Assert.assertEquals(-256.0, tile.getBounds().getY(), DELTA);
+		Assert.assertEquals(256.0, tile.getBounds().getHeight(), DELTA);
+		Assert.assertEquals(256.0, tile.getBounds().getWidth(), DELTA);
+		*/
+	}
+
+	/*
+	@Test
+	public void testNormalSeveral() throws Exception {
+		List<RasterTile> tiles = osm.paint(geoService.getCrs("EPSG:900913"),
+				new Envelope(10000, 10010, 5000, 5010), ZOOMED_IN_SCALE);
+		Assert.assertEquals(1, tiles.size());
+		Assert.assertEquals("http://b.tile.openstreetmap.org/4/8/7.png", tiles.iterator().next().getUrl());
+	}
+	*/
+
 }

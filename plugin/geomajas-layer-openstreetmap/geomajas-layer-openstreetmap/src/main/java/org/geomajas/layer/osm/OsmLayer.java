@@ -204,11 +204,12 @@ public class OsmLayer implements RasterLayer {
 		try {
 			MathTransform layerToMap = geoService.findMathTransform(crs, boundsCrs);
 			MathTransform mapToLayer = layerToMap.inverse();
-			// TODO: if bounds width or height is 0, we run out of memory ?
+
 			bounds = clipBounds(bounds);
 			if (bounds.isNull()) {
 				return new ArrayList<RasterTile>();
 			}
+
 			// find the center of the map in map coordinates (positive y-axis)
 			Coordinate center = new Coordinate(0.5 * (bounds.getMinX() + bounds.getMaxX()), 0.5 * (bounds
 					.getMinY() + bounds.getMaxY()));
@@ -282,6 +283,11 @@ public class OsmLayer implements RasterLayer {
 
 			// calculate the images
 			List<RasterTile> result = new ArrayList<RasterTile>();
+			if (log.isDebugEnabled()) {
+				log.debug("bounds =" + bounds);
+				log.debug("tilebounds " + xMin + ", " + xMax + ", " + yMin + ", " + yMax);
+				log.debug("indices " + iMin + ", " + iMax + ", " + jMin + ", " + jMax);
+			}
 			int xScreenUpperLeft = (int) Math.round(upperLeft.x * scale);
 			int yScreenUpperLeft = (int) Math.round(upperLeft.y * scale);
 			int screenWidth = (int) Math.round(scale * width);
