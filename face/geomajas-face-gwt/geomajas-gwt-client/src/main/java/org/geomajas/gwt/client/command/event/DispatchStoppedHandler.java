@@ -42,6 +42,7 @@ public interface DispatchStoppedHandler extends EventHandler {
 	 *
 	 * @param event
 	 *            The actual {@link org.geomajas.gwt.client.command.event.DispatchStoppedEvent}.
+	 * @since 1.8.0
 	 */
 	void onDispatchStopped(DispatchStoppedEvent event);
 }
