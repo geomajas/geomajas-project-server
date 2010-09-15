@@ -26,6 +26,7 @@ package org.geomajas.layer.osm;
 import com.vividsolutions.jts.geom.Envelope;
 import org.geomajas.configuration.RasterLayerInfo;
 import org.geomajas.geometry.Bbox;
+import org.geomajas.global.Api;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
@@ -37,18 +38,14 @@ import java.util.List;
  * State container for {@link TiledRasterLayerService}.
  *
  * @author Joachim Van der Auwera
+ * @since 1.8.0
  */
+@Api(allMethods = true)
 public class TiledRasterLayerServiceState {
 
 	private String id;
 
-	private int tileWidth;
-
-	private int tileHeight;
-
-	private double maxWidth;
-
-	private double maxHeight;
+	private int tileSize;
 
 	private RasterLayerInfo layerInfo;
 
@@ -67,8 +64,7 @@ public class TiledRasterLayerServiceState {
 
 	public TiledRasterLayerServiceState(List<String> tileUrls, int tileSize, int maxZoomLevel) {
 		this.tileUrls = tileUrls;
-		this.tileWidth = tileSize;
-		this.tileHeight = tileSize;
+		this.tileSize = tileSize;
 		this.maxZoomLevel = maxZoomLevel;
 	}
 
@@ -78,38 +74,6 @@ public class TiledRasterLayerServiceState {
 
 	public void setId(String id) {
 		this.id = id;
-	}
-
-	public int getTileWidth() {
-		return tileWidth;
-	}
-
-	public void setTileWidth(int tileWidth) {
-		this.tileWidth = tileWidth;
-	}
-
-	public int getTileHeight() {
-		return tileHeight;
-	}
-
-	public void setTileHeight(int tileHeight) {
-		this.tileHeight = tileHeight;
-	}
-
-	public double getMaxWidth() {
-		return maxWidth;
-	}
-
-	public void setMaxWidth(double maxWidth) {
-		this.maxWidth = maxWidth;
-	}
-
-	public double getMaxHeight() {
-		return maxHeight;
-	}
-
-	public void setMaxHeight(double maxHeight) {
-		this.maxHeight = maxHeight;
 	}
 
 	public RasterLayerInfo getLayerInfo() {
@@ -167,8 +131,8 @@ public class TiledRasterLayerServiceState {
 		}
 		layerInfo.setCrs(TiledRasterLayerService.MERCATOR);
 		crs = geoService.getCrs(TiledRasterLayerService.MERCATOR);
-		layerInfo.setTileWidth(tileWidth);
-		layerInfo.setTileHeight(tileHeight);
+		layerInfo.setTileWidth(tileSize);
+		layerInfo.setTileHeight(tileSize);
 		Bbox bbox = new Bbox(-20026376.393709917, -20026376.393709917, 40052752.787419834, 40052752.787419834);
 		layerInfo.setMaxExtent(bbox);
 		maxBounds = converterService.toInternal(bbox);
@@ -178,7 +142,7 @@ public class TiledRasterLayerServiceState {
 		resolutions = new double[maxZoomLevel + 1];
 		double powerOfTwo = 1;
 		for (int zoomLevel = 0; zoomLevel <= maxZoomLevel; zoomLevel++) {
-			double resolution = (TiledRasterLayerService.EQUATOR_IN_METERS) / (tileWidth * powerOfTwo);
+			double resolution = (TiledRasterLayerService.EQUATOR_IN_METERS) / (tileSize * powerOfTwo);
 			resolutions[zoomLevel] = resolution;
 			powerOfTwo *= 2;
 		}

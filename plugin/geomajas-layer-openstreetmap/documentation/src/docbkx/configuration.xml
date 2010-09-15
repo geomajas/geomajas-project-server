@@ -87,9 +87,9 @@
     <section>
       <title>Image source configuration</title>
 
-      <para>The default configuration for the server layer will use the Mapnik
-      rendering of OpenStreetMap by round robin iteration over the following
-      base URLs:</para>
+      <para>The default configuration for the OpenStreetMap layer will use the
+      Mapnik rendering of OpenStreetMap by round robin iteration over the
+      following base URLs:</para>
 
       <itemizedlist>
         <listitem>
@@ -105,25 +105,28 @@
         </listitem>
       </itemizedlist>
 
-      <para>If you want to use a different list of base URLs to render e.g.
-      Tiles@Home tiles, cycle map tiles or even custom tiles, you can specify
-      a new set of base URLs in the server configuration:</para>
+      <para>This is configurable at two levels.</para>
 
-      <programlisting>&lt;bean name="cyclemap" class="org.geomajas.layer.osm.OsmLayer" &gt;
-    &lt;property name="layerInfo" ref="osmInfo" /&gt;
-    &lt;property name="baseUrls"&gt;
-      &lt;list&gt;
-        &lt;value&gt;http://a.tile.opencyclemap.org/cycle&lt;/value&gt;
-        &lt;value&gt;http://b.tile.opencyclemap.org/cycle&lt;/value&gt;
-        &lt;value&gt;http://c.tile.opencyclemap.org/cycle&lt;/value&gt;
-      &lt;/list&gt;
-   &lt;/property&gt;
-&lt;/bean&gt;
-</programlisting>
+      <para>You can configure the URLs which are used for the tiles. You
+      simply define the different options using ${level}, ${x} and ${y} for
+      the zoom level and tile coordinate. A simple configuration looks like
+      this:</para>
 
-      <para>It is even possible to configure your own tile builder strategy by
-      setting the <code>urlBuilder</code> property of the server layer to a
-      custom <code>TileUrlBuilder</code> implementation.</para>
+      <xi:include href="listing/OsmCustomUrls.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+      <para>You can also define the strategy to choose between the different
+      URLs which have been configured. By default, the URLs will be chosen
+      using a round robin strategy. </para>
+
+      <para>For example, the sample below uses the cycle map tiles and selects
+      the class to use for the URL selection strategy (this needs to implement
+      UrlSelectionStrategy.</para>
+
+      <xi:include href="listing/OsmCustomUrlStrategy.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+      <para></para>
     </section>
 
     <section>

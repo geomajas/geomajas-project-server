@@ -68,12 +68,12 @@ public class OsmLayer implements RasterLayer {
 			new TiledRasterLayerServiceState(OPEN_STREET_MAP_URLS, TILE_SIZE, DEFAULT_MAX_ZOOM_LEVEL);
 
 	static {
-		OPEN_STREET_MAP_URLS.add("http://a.tile.openstreetmap.org/${level}/${i}/${j}.png");
-		OPEN_STREET_MAP_URLS.add("http://b.tile.openstreetmap.org/${level}/${i}/${j}.png");
-		OPEN_STREET_MAP_URLS.add("http://c.tile.openstreetmap.org/${level}/${i}/${j}.png");
-		OPEN_CYCLE_MAP_URLS.add("http://a.tile.opencyclemap.org/${level}/${i}/${j}.png");
-		OPEN_CYCLE_MAP_URLS.add("http://b.tile.opencyclemap.org/${level}/${i}/${j}.png");
-		OPEN_CYCLE_MAP_URLS.add("http://c.tile.opencyclemap.org/${level}/${i}/${j}.png");
+		OPEN_STREET_MAP_URLS.add("http://a.tile.openstreetmap.org/${level}/${x}/${y}.png");
+		OPEN_STREET_MAP_URLS.add("http://b.tile.openstreetmap.org/${level}/${x}/${y}.png");
+		OPEN_STREET_MAP_URLS.add("http://c.tile.openstreetmap.org/${level}/${x}/${y}.png");
+		OPEN_CYCLE_MAP_URLS.add("http://a.tile.opencyclemap.org/${level}/${x}/${y}.png");
+		OPEN_CYCLE_MAP_URLS.add("http://b.tile.opencyclemap.org/${level}/${x}/${y}.png");
+		OPEN_CYCLE_MAP_URLS.add("http://c.tile.opencyclemap.org/${level}/${x}/${y}.png");
 	}
 
 	public String getId() {
@@ -124,8 +124,8 @@ public class OsmLayer implements RasterLayer {
 	}
 
 	/**
-	 * Set a list of tile URLs. The zoom level, and tile coordinates can be indicated using ${level}, ${i} and ${j},
-	 * for example "http://a.tile.openstreetmap.org/${level}/${i}/${j}.png",
+	 * Set a list of tile URLs. The zoom level, and tile coordinates can be indicated using ${level}, ${x} and ${y},
+	 * for example "http://a.tile.openstreetmap.org/${level}/${x}/${y}.png",
 	 *
 	 * @param tileUrls list of tile URLs
 	 * @since 1.8.0

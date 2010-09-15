@@ -25,11 +25,11 @@
 		xmlns="http://www.springframework.org/schema/beans"
 		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		xmlns:context="http://www.springframework.org/schema/context"
-		xsi:schemaLocation="
-http://www.springframework.org/schema/beans
+		xmlns:util="http://www.springframework.org/schema/util"
+		xsi:schemaLocation="http://www.springframework.org/schema/beans
 http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 http://www.springframework.org/schema/context
-http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+http://www.springframework.org/schema/context/spring-context-2.5.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 
 	<!--
 	<bean name="osmInfo" class="org.geomajas.configuration.RasterLayerInfo">
@@ -53,42 +53,42 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
  	-->
 
 	<!-- @extract-start SimpleOsmConfig, Simple OpenStreetMap layer configuration -->
-	<bean name="osm" class="org.geomajas.layer.osm.OsmLayer" />
+	<bean name="osm" class="org.geomajas.layer.osm.OsmLayer"/>
 	<!-- @extract-end -->
 
 	<!-- @extract-start OsmMaxZoomLevelConfig, OpenStreetMap layer max zoom level configuration -->
 	<bean name="osmMaxLevel" class="org.geomajas.layer.osm.OsmLayer">
-		<property name="maxZoomLevel" value="21" />
+		<property name="maxZoomLevel" value="12"/>
 	</bean>
 	<!-- @extract-end -->
 
+	<!-- @extract-start OsmCustomUrls, Using custom URLs -->
 	<bean name="osmSingle" class="org.geomajas.layer.osm.OsmLayer">
 		<property name="tileUrls">
 			<list>
-				<value>http://a.tile.openstreetmap.org/${level}/${i}/${j}.png</value>	
+				<value>http://a.tile.openstreetmap.org/${level}/${x}/${y}.png</value>
 			</list>
 		</property>
 	</bean>
+	<!-- @extract-end -->
 
 	<bean name="osmWrongCrs" class="org.geomajas.layer.osm.OsmLayer">
 		<property name="layerInfo">
 			<bean name="osmInfo" class="org.geomajas.configuration.RasterLayerInfo">
 				<property name="crs" value="EPSG:4326"/>
-			 </bean>
+			</bean>
 		</property>
 	</bean>
 
-	<bean name="osmUrlStrategy" class="org.geomajas.layer.osm.OsmLayer">
-		<property name="layerInfo">
-			<bean name="osmInfo" class="org.geomajas.configuration.RasterLayerInfo">
-				<property name="crs" value="EPSG:4326"/>
-			 </bean>
-		</property>
+	<!-- @extract-start OsmCustomUrlStrategy, Using a custom URL selection strategy -->
+	<bean name="osmCycleMap" class="org.geomajas.layer.osm.OsmLayer">
 		<property name="tileUrls">
-			<list>
-				<value>http://a.tile.openstreetmap.org/${level}/${i}/${j}.png</value>
-			</list>
+			<util:constant static-field="org.geomajas.layer.osm.OsmLayer.OPEN_CYCLE_MAP_URLS"/>
+		</property>
+		<property name="urlSelectionStrategy">
+			<bean class="org.geomajas.layer.osm.LastUrlSelectionStrategy" />
 		</property>
 	</bean>
+	<!-- @extract-end -->
 
 </beans>

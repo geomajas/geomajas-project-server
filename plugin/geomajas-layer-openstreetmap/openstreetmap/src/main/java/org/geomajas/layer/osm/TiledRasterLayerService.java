@@ -26,6 +26,7 @@ package org.geomajas.layer.osm;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
 import org.geomajas.geometry.Bbox;
+import org.geomajas.global.Api;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.tile.RasterTile;
@@ -47,7 +48,9 @@ import java.util.List;
  * Utility service which helps to handle a tiled raster layer.
  *
  * @author Joachim Van der Auwera
+ * @since 1.8.0
  */
+@Api
 @Component
 public class TiledRasterLayerService {
 
@@ -73,6 +76,18 @@ public class TiledRasterLayerService {
 		}
 	}
 
+	/**
+	 * Paint raster layer.
+	 *
+	 * @param tileServiceState state (as this is a singleton)
+	 * @param boundsCrs crs for bounds
+	 * @param bounds bounds for which tiles are needed
+	 * @param scale scale for rendering
+	 * @return list of raster tiles
+	 * @throws GeomajasException oops
+	 * @since 1.8.0
+	 */
+	@Api
 	public List<RasterTile> paint(TiledRasterLayerServiceState tileServiceState, CoordinateReferenceSystem boundsCrs,
 			Envelope bounds, double scale) throws GeomajasException {
 		try {
@@ -178,8 +193,8 @@ public class TiledRasterLayerService {
 					image.setCode(new TileCode(zoomLevel, i, j));
 					String url = tileServiceState.getUrlSelectionStrategy().next();
 					url = url.replace("${level}", Integer.toString(zoomLevel));
-					url = url.replace("${i}", Integer.toString(i));
-					url = url.replace("${j}", Integer.toString(j));
+					url = url.replace("${x}", Integer.toString(i));
+					url = url.replace("${y}", Integer.toString(j));
 					image.setUrl(url);
 					log.debug("adding image {}", image);
 					result.add(image);
