@@ -28,6 +28,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -65,7 +66,7 @@ public class BeanLayer implements VectorLayer, VectorLayerAssociationSupport {
 
 	private final Logger log = LoggerFactory.getLogger(BeanLayer.class);
 
-	private Map<String, Object> featuresById = new HashMap<String, Object>();
+	private Map<String, Object> featuresById = new LinkedHashMap<String, Object>();
 
 	/**
 	 * The features (should be Java beans compliant)
@@ -129,7 +130,14 @@ public class BeanLayer implements VectorLayer, VectorLayerAssociationSupport {
 		if (comparator != null) {
 			Collections.sort(filteredList, comparator);
 		}
-		return filteredList.iterator();
+		if(maxResultSize > 0){
+			int fromIndex = Math.max(0, offset);
+			int toIndex = Math.min(offset+maxResultSize, filteredList.size());
+			toIndex = Math.max(fromIndex, toIndex);
+			return filteredList.subList(fromIndex, toIndex).iterator();
+		} else {
+			return filteredList.iterator(); 
+		}
 	}
 
 	public Envelope getBounds() throws LayerException {
@@ -266,7 +274,7 @@ public class BeanLayer implements VectorLayer, VectorLayerAssociationSupport {
 			comparator = new FeatureComparator(name, sortType);
 		}
 	}
-	
+
 	/**
 	 * Compares features by a single attribute.
 	 * 
