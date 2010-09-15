@@ -29,6 +29,7 @@ import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.service.GeoService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
@@ -37,8 +38,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
-		"/osmContext.xml" })
+@ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
+		"/osmContext.xml"})
 public class OsmLayerTest {
 
 	private static final double ZOOMED_IN_SCALE = .0001;
@@ -49,13 +50,17 @@ public class OsmLayerTest {
 	private OsmLayer osm;
 
 	@Autowired
+	@Qualifier("osmWrongCrs")
+	private OsmLayer osmWrongCrs;
+
+	@Autowired
 	private GeoService geoService;
 
 	@Test
 	public void testPaintOutOfBounds() throws Exception {
 		double equator = TiledRasterLayerService.EQUATOR_IN_METERS;
-		List<RasterTile> tiles = osm.paint(geoService.getCrs("EPSG:900913"),
-				new Envelope(-equator, equator, -equator, equator), 256 / equator);
+		List<RasterTile> tiles =
+				osm.paint(osm.getCrs(), new Envelope(-equator, equator, -equator, equator), 256 / equator);
 		Assert.assertEquals(1, tiles.size());
 		Assert.assertEquals("http://a.tile.openstreetmap.org/0/0/0.png", tiles.iterator().next().getUrl());
 	}
@@ -63,14 +68,21 @@ public class OsmLayerTest {
 	@Test
 	public void testPaintToTheSide() throws Exception {
 		double equator = TiledRasterLayerService.EQUATOR_IN_METERS;
-		List<RasterTile> tiles = osm.paint(geoService.getCrs("EPSG:900913"),
+		List<RasterTile> tiles = osm.paint(osm.getCrs(),
 				new Envelope(equator * 2 / 3, (equator * 2 / 3) + 100, 0, 100), ZOOMED_IN_SCALE);
 		Assert.assertEquals(0, tiles.size());
 	}
 
 	@Test
+	public void testWrongCrsCorrected() throws Exception {
+		CoordinateReferenceSystem crs = osmWrongCrs.getCrs();
+		Assert.assertEquals(900913, geoService.getSridFromCrs(crs));
+		Assert.assertEquals("EPSG:900913", osmWrongCrs.getLayerInfo().getCrs());
+	}
+
+	@Test
 	public void testNormalOne() throws Exception {
-		List<RasterTile> tiles = osm.paint(geoService.getCrs("EPSG:900913"),
+		List<RasterTile> tiles = osm.paint(osm.getCrs(),
 				new Envelope(10000, 10010, 5000, 5010), ZOOMED_IN_SCALE);
 		Assert.assertEquals(1, tiles.size());
 		RasterTile tile = tiles.get(0);
