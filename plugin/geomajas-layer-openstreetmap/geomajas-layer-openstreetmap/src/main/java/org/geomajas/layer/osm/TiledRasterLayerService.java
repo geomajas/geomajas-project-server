@@ -53,6 +53,8 @@ public class TiledRasterLayerService {
 
 	private final Logger log = LoggerFactory.getLogger(TiledRasterLayerService.class);
 
+	public static final String MERCATOR = "EPSG:900913";
+	
 	public static final double EQUATOR_IN_METERS = 40075016.686;
 
 	public static final int MAX_ZOOM_LEVEL = 31;

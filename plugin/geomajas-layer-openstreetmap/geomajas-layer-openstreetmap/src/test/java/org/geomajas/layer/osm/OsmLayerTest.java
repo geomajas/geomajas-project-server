@@ -45,7 +45,7 @@ public class OsmLayerTest {
 	private static final double DELTA = 1e-10;
 
 	@Autowired
-	@Qualifier("osm")
+	@Qualifier("osmSingle")
 	private OsmLayer osm;
 
 	@Autowired
@@ -74,7 +74,7 @@ public class OsmLayerTest {
 				new Envelope(10000, 10010, 5000, 5010), ZOOMED_IN_SCALE);
 		Assert.assertEquals(1, tiles.size());
 		RasterTile tile = tiles.get(0);
-		Assert.assertEquals("http://b.tile.openstreetmap.org/4/8/7.png", tile.getUrl());
+		Assert.assertEquals("http://a.tile.openstreetmap.org/4/8/7.png", tile.getUrl());
 		Assert.assertEquals(4, tile.getCode().getTileLevel());
 		Assert.assertEquals(8, tile.getCode().getX());
 		Assert.assertEquals(7, tile.getCode().getY());
@@ -92,7 +92,7 @@ public class OsmLayerTest {
 		List<RasterTile> tiles = osm.paint(geoService.getCrs("EPSG:900913"),
 				new Envelope(10000, 10010, 5000, 5010), ZOOMED_IN_SCALE);
 		Assert.assertEquals(1, tiles.size());
-		Assert.assertEquals("http://b.tile.openstreetmap.org/4/8/7.png", tiles.iterator().next().getUrl());
+		Assert.assertEquals("http://a.tile.openstreetmap.org/4/8/7.png", tiles.iterator().next().getUrl());
 	}
 	*/
 

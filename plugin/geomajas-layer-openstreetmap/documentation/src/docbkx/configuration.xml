@@ -32,59 +32,84 @@
     <title>Dependencies</title>
 
     <para>Make sure your include the plug-in in your project. If you are using
-    Maven, add the following dependency to your pom:</para>
+    maven and the geomajas-dep dependency to manage versions, include
+    following dependency to your pom:</para>
 
     <example>
-      <title>OpenStreetMap layer dependency</title>
+      <title>OpenStreetMap layer dependency, using geomajas-dep</title>
 
       <programlisting>&lt;dependency&gt;
-	  &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
-	  &lt;artifactId&gt;geomajas-layer-openstreetmap&lt;/artifactId&gt;
-	  &lt;version&gt;1.7.1&lt;/version
-  &lt;/dependency&gt;</programlisting>
+    &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
+    &lt;artifactId&gt;geomajas-layer-openstreetmap&lt;/artifactId&gt;
+&lt;/dependency&gt;</programlisting>
+    </example>
+
+    <para>If you are not using geomajas-dep to manage versions, then you need
+    to mention the version explicitly.</para>
+
+    <example>
+      <title>OpenStreetMap layer dependency, explicit version</title>
+
+      <programlisting>&lt;dependency&gt;
+    &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
+    &lt;artifactId&gt;geomajas-layer-openstreetmap&lt;/artifactId&gt;
+    &lt;version&gt;<?eval ${project.version}?>&lt;/version
+&lt;/dependency&gt;</programlisting>
     </example>
   </section>
 
   <section>
-    <title>OpenStreetMap layer configuration</title>
+    <title>OpenStreetMap raster layer</title>
 
-    <para>A complete OpenStreetMap layer configuration looks as
-    follows:</para>
+    <section>
+      <title>Base configuration</title>
 
-    <xi:include href="listing/OsmLayerSample.xml"
-                xmlns:xi="http://www.w3.org/2001/XInclude" />
+      <para>A base OpenStreetMap layer configuration looks as follows:</para>
 
-    <para>The layer info inner bean has the same general content as usual,
-    with one exception : the dataSourceName property is not necessary in this
-    case. As with the WMS layer, the resolutions have been carefully chosen to
-    match the tile server's resolutions. The tile width and height are implied
-    by the server in this case but since they are required metadata for all
-    raster layers, they should be set to the server's values: 256 x
-    256.</para>
+      <xi:include href="listing/SimpleOsmConfig.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-    <para>The default configuration for the server layer will use the Mapnik
-    rendering of OpenStreetMap by round robin iteration over the following
-    base URLs:</para>
+      <warning>
+        <para>If you are using 1.7.1 or earlier of the OpenStreetMap plug-in
+        then this configuration will not work. In that version we simplified
+        configuration by not forcing you to configure values you are not
+        allowed to change anyway. For the old version, the configuration would
+        look like this:</para>
 
-    <itemizedlist>
-      <listitem>
-        <para>http://a.tile.openstreetmap.org</para>
-      </listitem>
+        <xi:include href="listing/OsmLayerSample.xml"
+                    xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-      <listitem>
-        <para>http://b.tile.openstreetmap.org</para>
-      </listitem>
+        <para>Note that these older versions did not allow any of the other
+        configurations either.</para>
+      </warning>
+    </section>
 
-      <listitem>
-        <para>http://c.tile.openstreetmap.org</para>
-      </listitem>
-    </itemizedlist>
+    <section>
+      <title>Image source configuration</title>
 
-    <para>If you want to use a different list of base URLs to render e.g.
-    Tiles@Home tiles, cycle map tiles or even custom tiles, you can specify a
-    new set of base URLs in the server configuration:</para>
+      <para>The default configuration for the server layer will use the Mapnik
+      rendering of OpenStreetMap by round robin iteration over the following
+      base URLs:</para>
 
-    <programlisting>&lt;bean name="cyclemap" class="org.geomajas.layer.osm.OsmLayer" &gt;
+      <itemizedlist>
+        <listitem>
+          <para>http://a.tile.openstreetmap.org</para>
+        </listitem>
+
+        <listitem>
+          <para>http://b.tile.openstreetmap.org</para>
+        </listitem>
+
+        <listitem>
+          <para>http://c.tile.openstreetmap.org</para>
+        </listitem>
+      </itemizedlist>
+
+      <para>If you want to use a different list of base URLs to render e.g.
+      Tiles@Home tiles, cycle map tiles or even custom tiles, you can specify
+      a new set of base URLs in the server configuration:</para>
+
+      <programlisting>&lt;bean name="cyclemap" class="org.geomajas.layer.osm.OsmLayer" &gt;
     &lt;property name="layerInfo" ref="osmInfo" /&gt;
     &lt;property name="baseUrls"&gt;
       &lt;list&gt;
@@ -96,8 +121,20 @@
 &lt;/bean&gt;
 </programlisting>
 
-    <para>It is even possible to configure your own tile builder strategy by
-    setting the <code>urlBuilder</code> property of the server layer to a
-    custom <code>TileUrlBuilder</code> implementation.</para>
+      <para>It is even possible to configure your own tile builder strategy by
+      setting the <code>urlBuilder</code> property of the server layer to a
+      custom <code>TileUrlBuilder</code> implementation.</para>
+    </section>
+
+    <section>
+      <title>Zoom level configuration</title>
+
+      <para>By default the maximum zoom level is 19, but this can be modified
+      using the maxZoomLevel property if your data source supports a different
+      level.</para>
+
+      <xi:include href="listing/OsmMaxZoomLevelConfig.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
+    </section>
   </section>
 </chapter>

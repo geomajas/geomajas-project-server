@@ -25,6 +25,7 @@ package org.geomajas.layer.osm;
 
 import com.vividsolutions.jts.geom.Envelope;
 import org.geomajas.configuration.RasterLayerInfo;
+import org.geomajas.geometry.Bbox;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -40,7 +41,7 @@ public class TiledRasterLayerServiceState {
 
 	private String id;
 
-	private  int tileWidth;
+	private int tileWidth;
 
 	private int tileHeight;
 
@@ -63,7 +64,8 @@ public class TiledRasterLayerServiceState {
 	protected double[] resolutions;
 
 
-	public TiledRasterLayerServiceState() {}
+	public TiledRasterLayerServiceState() {
+	}
 
 	public TiledRasterLayerServiceState(int tileSize, int maxZoomLevel) {
 		this.tileWidth = tileSize;
@@ -161,19 +163,22 @@ public class TiledRasterLayerServiceState {
 	}
 
 	public void postConstruct(GeoService geoService, DtoConverterService converterService) throws Exception {
-		if (null != layerInfo) {
-			crs = geoService.getCrs("EPSG:900913"); // we overrule the declared crs, always use mercator/google
-			tileWidth = layerInfo.getTileWidth();
-			tileHeight = layerInfo.getTileHeight();
-			maxWidth = layerInfo.getMaxExtent().getWidth();
-			maxHeight = layerInfo.getMaxExtent().getHeight();
+		if (null == layerInfo) {
+			layerInfo = new RasterLayerInfo();
 		}
+		layerInfo.setCrs(TiledRasterLayerService.MERCATOR);
+		crs = geoService.getCrs(TiledRasterLayerService.MERCATOR);
+		layerInfo.setTileWidth(tileWidth);
+		layerInfo.setTileHeight(tileHeight);
+		Bbox bbox = new Bbox(-20026376.393709917, -20026376.393709917, 40052752.787419834, 40052752.787419834);
+		layerInfo.setMaxExtent(bbox);
+		maxBounds = converterService.toInternal(bbox);
+
 		if (null != baseUrls) {
 			RoundRobinTileUrlBuilder rr = new RoundRobinTileUrlBuilder();
 			rr.setBaseUrls(baseUrls);
 			setUrlBuilder(rr);
 		}
-		maxBounds = converterService.toInternal(layerInfo.getMaxExtent());
 
 		resolutions = new double[maxZoomLevel + 1];
 		double powerOfTwo = 1;

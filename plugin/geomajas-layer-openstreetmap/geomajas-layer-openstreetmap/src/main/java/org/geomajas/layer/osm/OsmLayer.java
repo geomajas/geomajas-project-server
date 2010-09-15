@@ -41,6 +41,7 @@ import java.util.List;
  * Layer for displaying OpenStreetMap images.
  *
  * @author Jan De Moerloose
+ * @author Joachim Van der Auwera
  * @since 1.7.1
  */
 @Api
@@ -77,10 +78,6 @@ public class OsmLayer implements RasterLayer {
 		tileServiceState.setId(id);
 	}
 
-	public RasterLayerInfo getLayerInfo() {
-		return tileServiceState.getLayerInfo();
-	}
-
 	public CoordinateReferenceSystem getCrs() {
 		return tileServiceState.getCrs();
 	}
@@ -95,6 +92,10 @@ public class OsmLayer implements RasterLayer {
 	@Api
 	public void setMaxZoomLevel(int maxZoomLevel) {
 		tileServiceState.setMaxZoomLevel(maxZoomLevel);
+	}
+
+	public RasterLayerInfo getLayerInfo() {
+		return tileServiceState.getLayerInfo();
 	}
 
 	/**
