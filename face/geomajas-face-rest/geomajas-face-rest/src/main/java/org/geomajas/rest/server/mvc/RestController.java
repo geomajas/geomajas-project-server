@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 
 import org.geomajas.configuration.AttributeInfo;
 import org.geomajas.configuration.VectorLayerInfo;
@@ -47,6 +48,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.vividsolutions.jts.geom.Envelope;
@@ -111,12 +113,23 @@ public class RestController {
 			@RequestParam(value = "offset", required = false) Integer offset,
 			@RequestParam(value = "order_by", required = false) String orderBy,
 			@RequestParam(value = "dir", required = false) FeatureOrder dir,
-
+			@RequestParam(value = "queryable", required = false) List<String> queryable,
+			WebRequest request,
 			Model model) throws RestException {
 
 		List<Filter> filters = new ArrayList<Filter>();
 		try {
 			filters.add(createBBoxFilter(layerId, box, bbox));
+			if(queryable != null){
+				for (String attributeName : queryable) {
+					String prefix = attributeName+"_";
+					for (Map.Entry<String, String[]> entry : request.getParameterMap().entrySet()) {
+						if(entry.getKey().startsWith(prefix)){
+							filters.add(createAttributeFilter(attributeName, entry.getKey().substring(prefix.length()),entry.getValue()[0]));
+						}
+					}
+				}
+			}
 			List<InternalFeature> features = vectorLayerService.getFeatures(layerId, null, and(filters), null,
 					getIncludes(noGeom), getOffset(offset), getLimit(maxFeatures, limit));
 			if (features.size() > 0) {
@@ -213,7 +226,26 @@ public class RestController {
 			}
 		}
 		return filterService.createTrueFilter();
+	}
 
+	private Filter createAttributeFilter(String attributeName, String operation, String value) throws RestException {
+		if("eq".equalsIgnoreCase(operation)){
+			return filterService.createCompareFilter(attributeName, "==", value);
+		} else if ("ne".equalsIgnoreCase(operation)){
+			return filterService.createCompareFilter(attributeName, "<>", value);
+		} else if ("lt".equalsIgnoreCase(operation)){
+			return filterService.createCompareFilter(attributeName, "<", value);
+		} else if ("lte".equalsIgnoreCase(operation)){
+			return filterService.createCompareFilter(attributeName, "<=", value);
+		} else if ("gt".equalsIgnoreCase(operation)){
+			return filterService.createCompareFilter(attributeName, ">", value);			
+		} else if ("gte".equalsIgnoreCase(operation)){
+			return filterService.createCompareFilter(attributeName, ">=", value);
+		} else if ("like".equalsIgnoreCase(operation)){
+			return filterService.createLikeFilter(attributeName, value);
+		} else {
+			throw new RestException(RestException.UNSUPPORTED_QUERY_OPERATION, operation);
+		}  
 	}
 
 	private Comparator<? super InternalFeature> createComparator(VectorLayer layer, final String attributeName,
