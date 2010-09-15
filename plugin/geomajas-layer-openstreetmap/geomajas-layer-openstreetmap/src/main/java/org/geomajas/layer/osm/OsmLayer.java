@@ -124,11 +124,10 @@ public class OsmLayer implements RasterLayer {
 	}
 
 	/**
-	 * Set a list of base URLs. Use this as a shortcut for setting a RoundRobinTileUrlBuilder with the specified base
-	 * URLs.
+	 * Set a list of tile URLs. The zoom level, and tile coordinates can be indicated using ${level}, ${i} and ${j},
+	 * for example "http://a.tile.openstreetmap.org/${level}/${i}/${j}.png",
 	 *
-	 * @param tileUrls list of base URLs (e.g.
-	 * "a.tile.openstreetmap.org","b.tile.openstreetmap.org","c.tile.openstreetmap.org")
+	 * @param tileUrls list of tile URLs
 	 * @since 1.8.0
 	 */
 	@Api

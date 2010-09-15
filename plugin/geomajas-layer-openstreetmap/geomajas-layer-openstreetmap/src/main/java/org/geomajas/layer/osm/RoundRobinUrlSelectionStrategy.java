@@ -42,6 +42,6 @@ public class RoundRobinUrlSelectionStrategy implements UrlSelectionStrategy {
 	}
 
 	public String next() {
-		return urls.get((index++)%urlSize);
+		return urls.get((index++) % urlSize);
 	}
 }
