@@ -39,7 +39,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * @author Jan De Moerloose
  *
  */
-public class GeoJsonParse {
+public class GeoJsonParser {
 
 	private GeometryJSON gjson = new GeometryJSON();
 
