@@ -26,6 +26,7 @@ package org.geomajas.layer.osm;
 import com.vividsolutions.jts.geom.Envelope;
 import org.geomajas.configuration.RasterLayerInfo;
 import org.geomajas.geometry.Bbox;
+import org.geomajas.global.GeomajasException;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -55,19 +56,17 @@ public class TiledRasterLayerServiceState {
 
 	private int maxZoomLevel;
 
-	private TileUrlBuilder urlBuilder = new RoundRobinTileUrlBuilder();
+	private UrlSelectionStrategy urlStrategy = new RoundRobinUrlSelectionStrategy();
 
-	private List<String> baseUrls;
+	private List<String> tileUrls;
 
 	private Envelope maxBounds;
 
 	protected double[] resolutions;
 
 
-	public TiledRasterLayerServiceState() {
-	}
-
-	public TiledRasterLayerServiceState(int tileSize, int maxZoomLevel) {
+	public TiledRasterLayerServiceState(List<String> tileUrls, int tileSize, int maxZoomLevel) {
+		this.tileUrls = tileUrls;
 		this.tileWidth = tileSize;
 		this.tileHeight = tileSize;
 		this.maxZoomLevel = maxZoomLevel;
@@ -138,20 +137,20 @@ public class TiledRasterLayerServiceState {
 				TiledRasterLayerService.MAX_ZOOM_LEVEL;
 	}
 
-	public TileUrlBuilder getUrlBuilder() {
-		return urlBuilder;
+	public UrlSelectionStrategy getUrlSelectionStrategy() {
+		return urlStrategy;
 	}
 
-	public void setUrlBuilder(TileUrlBuilder urlBuilder) {
-		this.urlBuilder = urlBuilder;
+	public void setUrlSelectionStrategy(UrlSelectionStrategy urlStrategy) {
+		this.urlStrategy = urlStrategy;
 	}
 
-	public List<String> getBaseUrls() {
-		return baseUrls;
+	public List<String> getTileUrls() {
+		return tileUrls;
 	}
 
-	public void setBaseUrls(List<String> baseUrls) {
-		this.baseUrls = baseUrls;
+	public void setTileUrls(List<String> tileUrls) {
+		this.tileUrls = tileUrls;
 	}
 
 	public Envelope getMaxBounds() {
@@ -162,7 +161,7 @@ public class TiledRasterLayerServiceState {
 		return resolutions;
 	}
 
-	public void postConstruct(GeoService geoService, DtoConverterService converterService) throws Exception {
+	public void postConstruct(GeoService geoService, DtoConverterService converterService) throws GeomajasException {
 		if (null == layerInfo) {
 			layerInfo = new RasterLayerInfo();
 		}
@@ -174,11 +173,7 @@ public class TiledRasterLayerServiceState {
 		layerInfo.setMaxExtent(bbox);
 		maxBounds = converterService.toInternal(bbox);
 
-		if (null != baseUrls) {
-			RoundRobinTileUrlBuilder rr = new RoundRobinTileUrlBuilder();
-			rr.setBaseUrls(baseUrls);
-			setUrlBuilder(rr);
-		}
+		urlStrategy.setUrls(tileUrls);
 
 		resolutions = new double[maxZoomLevel + 1];
 		double powerOfTwo = 1;
@@ -187,6 +182,8 @@ public class TiledRasterLayerServiceState {
 			resolutions[zoomLevel] = resolution;
 			powerOfTwo *= 2;
 		}
+
+		urlStrategy.setUrls(tileUrls);
 
 	}
 

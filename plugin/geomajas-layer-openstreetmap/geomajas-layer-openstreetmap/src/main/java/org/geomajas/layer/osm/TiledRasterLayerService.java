@@ -176,7 +176,11 @@ public class TiledRasterLayerService {
 					RasterTile image = new RasterTile(new Bbox(x, -y, screenWidth, screenHeight),
 							tileServiceState.getId() + "." + zoomLevel + "." + i + "," + j);
 					image.setCode(new TileCode(zoomLevel, i, j));
-					image.setUrl(tileServiceState.getUrlBuilder().buildUrl(zoomLevel, i, j));
+					String url = tileServiceState.getUrlSelectionStrategy().next();
+					url = url.replace("${level}", Integer.toString(zoomLevel));
+					url = url.replace("${i}", Integer.toString(i));
+					url = url.replace("${j}", Integer.toString(j));
+					image.setUrl(url);
 					log.debug("adding image {}", image);
 					result.add(image);
 				}

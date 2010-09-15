@@ -35,6 +35,7 @@ import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -51,6 +52,9 @@ public class OsmLayer implements RasterLayer {
 
 	public static final int TILE_SIZE = 256; // tile size in pixels
 
+	public static final List<String> OPEN_STREET_MAP_URLS = new ArrayList<String>();
+	public static final List<String> OPEN_CYCLE_MAP_URLS = new ArrayList<String>();
+
 	@Autowired
 	private DtoConverterService converterService;
 
@@ -61,7 +65,16 @@ public class OsmLayer implements RasterLayer {
 	private TiledRasterLayerService tileService;
 
 	private TiledRasterLayerServiceState tileServiceState =
-			new TiledRasterLayerServiceState(TILE_SIZE, DEFAULT_MAX_ZOOM_LEVEL);
+			new TiledRasterLayerServiceState(OPEN_STREET_MAP_URLS, TILE_SIZE, DEFAULT_MAX_ZOOM_LEVEL);
+
+	static {
+		OPEN_STREET_MAP_URLS.add("http://a.tile.openstreetmap.org/${level}/${i}/${j}.png");
+		OPEN_STREET_MAP_URLS.add("http://b.tile.openstreetmap.org/${level}/${i}/${j}.png");
+		OPEN_STREET_MAP_URLS.add("http://c.tile.openstreetmap.org/${level}/${i}/${j}.png");
+		OPEN_CYCLE_MAP_URLS.add("http://a.tile.opencyclemap.org/${level}/${i}/${j}.png");
+		OPEN_CYCLE_MAP_URLS.add("http://b.tile.opencyclemap.org/${level}/${i}/${j}.png");
+		OPEN_CYCLE_MAP_URLS.add("http://c.tile.opencyclemap.org/${level}/${i}/${j}.png");
+	}
 
 	public String getId() {
 		return tileServiceState.getId();
@@ -114,24 +127,24 @@ public class OsmLayer implements RasterLayer {
 	 * Set a list of base URLs. Use this as a shortcut for setting a RoundRobinTileUrlBuilder with the specified base
 	 * URLs.
 	 *
-	 * @param baseUrls list of base URLs (e.g.
+	 * @param tileUrls list of base URLs (e.g.
 	 * "a.tile.openstreetmap.org","b.tile.openstreetmap.org","c.tile.openstreetmap.org")
 	 * @since 1.8.0
 	 */
 	@Api
-	public void setBaseUrls(List<String> baseUrls) {
-		tileServiceState.setBaseUrls(baseUrls);
+	public void setTileUrls(List<String> tileUrls) {
+		tileServiceState.setTileUrls(tileUrls);
 	}
 
 	/**
-	 * Set the builder that should be used to build a tile URL.
+	 * Set the strategy ({@see UrlSelectionStrategy})for selecting the URL to use for the tiles.
 	 *
-	 * @param urlBuilder a tile URL builder
+	 * @param strategy a tile URL builder
 	 * @since 1.8.0
 	 */
 	@Api
-	public void setUrlBuilder(TileUrlBuilder urlBuilder) {
-		tileServiceState.setUrlBuilder(urlBuilder);
+	public void setUrlSelectionStrategy(UrlSelectionStrategy strategy) {
+		tileServiceState.setUrlSelectionStrategy(strategy);
 	}
 
 	@PostConstruct
