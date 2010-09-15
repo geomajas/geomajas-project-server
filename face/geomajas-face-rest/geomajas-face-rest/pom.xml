@@ -22,16 +22,6 @@
 			<artifactId>geomajas-common-servlet</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-impl</artifactId>
-			<version>1.8.0-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-layer-geotools</artifactId>
-			<version>1.8.0-SNAPSHOT</version>
-		</dependency>
-		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
 		</dependency>
@@ -73,11 +63,11 @@
 			<artifactId>junit</artifactId>
 			<scope>test</scope>
 		</dependency>
+
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-testdata</artifactId>
 			<scope>test</scope>
-			<version>1.8.0-SNAPSHOT</version>
 		</dependency>
 		
 		<dependency>

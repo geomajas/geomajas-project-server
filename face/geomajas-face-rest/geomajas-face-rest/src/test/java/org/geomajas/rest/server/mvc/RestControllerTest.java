@@ -6,9 +6,8 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
-import javax.validation.constraints.AssertTrue;
-
 import org.geomajas.layer.feature.InternalFeature;
+import org.geomajas.rest.server.RestException;
 import org.geomajas.security.SecurityManager;
 import org.junit.Assert;
 import org.junit.Before;
@@ -54,7 +53,7 @@ public class RestControllerTest {
 	}
 
 	@Test
-	public void readOneFeature() throws Exception {
+	public void testReadOneFeature() throws Exception {
 
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.setRequestURI("/rest/beans/1.json");
@@ -92,7 +91,7 @@ public class RestControllerTest {
 	}
 
 	@Test
-	public void bboxFilter() throws Exception {
+	public void testBboxFilter() throws Exception {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.setRequestURI("/rest/beans");
 		request.addParameter("bbox", "4,6,0,3");
@@ -111,7 +110,7 @@ public class RestControllerTest {
 	}
 	
 	@Test
-	public void featurePaging() throws Exception {
+	public void testFeaturePaging() throws Exception {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.setRequestURI("/rest/beans");
 		request.setMethod("GET");
@@ -135,7 +134,7 @@ public class RestControllerTest {
 	}
 	
 	@Test
-	public void ordering() throws Exception {
+	public void testOrdering() throws Exception {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.setRequestURI("/rest/beans");
 		request.setMethod("GET");
@@ -145,6 +144,72 @@ public class RestControllerTest {
 		request.setParameter("dir", "DESC");
 		ModelAndView mav = adapter.handle(request, response, restController);
 		Assert.assertEquals(Arrays.asList("3","2","1"), getIdsFromModel(mav.getModel()));
+	}
+	
+	@Test
+	public void testAttributeFiltering() throws Exception {
+		MockHttpServletRequest request = new MockHttpServletRequest();
+		request.setRequestURI("/rest/beans");
+		request.setMethod("GET");
+		MockHttpServletResponse response = new MockHttpServletResponse();
+		// check attribute equality
+		request.setParameter("queryable", "stringAttr");
+		request.setParameter("stringAttr_eq", "bean2");
+		ModelAndView mav = adapter.handle(request, response, restController);
+		Assert.assertEquals(Arrays.asList("2"), getIdsFromModel(mav.getModel()));
+		// check range
+		request.removeAllParameters();
+		request.setParameter("queryable", "doubleAttr");
+		request.setParameter("doubleAttr_lt", "200");
+		request.setParameter("doubleAttr_gt", "100");
+		Assert.assertEquals(Arrays.asList("2"), getIdsFromModel(mav.getModel()));		
+	} 
+	
+	@Test
+	public void testWrongLayerId() {
+		MockHttpServletRequest request = new MockHttpServletRequest();
+		request.setRequestURI("/rest/badlayer");
+		request.setMethod("GET");
+		MockHttpServletResponse response = new MockHttpServletResponse();
+		try {
+			adapter.handle(request, response, restController);
+			Assert.fail("layer badlayer should not exist");
+		} catch (Exception e) {
+			Assert.assertTrue(e instanceof RestException);
+			Assert.assertEquals(RestException.PROBLEM_READING_LAYERSERVICE, ((RestException)e).getExceptionCode());
+		}
+	}
+
+	@Test
+	public void testWrongFeatureId() {
+		MockHttpServletRequest request = new MockHttpServletRequest();
+		request.setRequestURI("/rest/beans/200.json");
+		request.setMethod("GET");
+		MockHttpServletResponse response = new MockHttpServletResponse();
+		try {
+			adapter.handle(request, response, restController);
+			Assert.fail("feature 200 should not exist");
+		} catch (Exception e) {
+			Assert.assertTrue(e instanceof RestException);
+			Assert.assertEquals(RestException.FEATURE_NOT_FOUND, ((RestException)e).getExceptionCode());
+		}
+	}
+
+	@Test
+	public void testMissingAttribute() {
+		MockHttpServletRequest request = new MockHttpServletRequest();
+		request.setRequestURI("/rest/beans");
+		request.setMethod("GET");
+		request.setParameter("queryable", "noSuchAttr");
+		request.setParameter("noSuchAttr_eq", "200");
+		MockHttpServletResponse response = new MockHttpServletResponse();
+		try {
+			adapter.handle(request, response, restController);
+			Assert.fail("attribute noSuchAttr should not exist");
+		} catch (Exception e) {
+			Assert.assertTrue(e instanceof RestException);
+			Assert.assertEquals(RestException.PROBLEM_READING_LAYERSERVICE, ((RestException)e).getExceptionCode());
+		}
 	}
 
 	private List<String> getIdsFromModel(Map<String, Object> model) {

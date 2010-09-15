@@ -90,16 +90,16 @@ public class RestController {
 		try {
 			features = vectorLayerService.getFeatures(layerId, null, filterService
 					.createFidFilter(new String[] { featureId }), null, getIncludes(noGeom));
-			if (features.size() != 1) {
-				throw new RestException(RestException.FEATURE_NOT_FOUND, featureId, layerId);
-			}
-			model.addAttribute(FEATURE_COLLECTION, features.get(0));
-			model.addAttribute(VECTOR_LAYER_INFO, features.get(0).getLayer().getLayerInfo());
-			model.addAttribute(ATTRIBUTES, attrs);
-			return VIEW;
 		} catch (GeomajasException e) {
 			throw new RestException(e, RestException.PROBLEM_READING_LAYERSERVICE, layerId);
 		}
+		if (features.size() != 1) {
+			throw new RestException(RestException.FEATURE_NOT_FOUND, featureId, layerId);
+		}
+		model.addAttribute(FEATURE_COLLECTION, features.get(0));
+		model.addAttribute(VECTOR_LAYER_INFO, features.get(0).getLayer().getLayerInfo());
+		model.addAttribute(ATTRIBUTES, attrs);
+		return VIEW;
 	}
 
 	@RequestMapping(value = "/rest/{layerId}", method = RequestMethod.GET)
@@ -113,39 +113,39 @@ public class RestController {
 			@RequestParam(value = "offset", required = false) Integer offset,
 			@RequestParam(value = "order_by", required = false) String orderBy,
 			@RequestParam(value = "dir", required = false) FeatureOrder dir,
-			@RequestParam(value = "queryable", required = false) List<String> queryable,
-			WebRequest request,
-			Model model) throws RestException {
+			@RequestParam(value = "queryable", required = false) List<String> queryable, 
+			WebRequest request, Model model)
+			throws RestException {
 
 		List<Filter> filters = new ArrayList<Filter>();
-		try {
-			filters.add(createBBoxFilter(layerId, box, bbox));
-			if(queryable != null){
-				for (String attributeName : queryable) {
-					String prefix = attributeName+"_";
-					for (Map.Entry<String, String[]> entry : request.getParameterMap().entrySet()) {
-						if(entry.getKey().startsWith(prefix)){
-							filters.add(createAttributeFilter(attributeName, entry.getKey().substring(prefix.length()),entry.getValue()[0]));
-						}
+		filters.add(createBBoxFilter(layerId, box, bbox));
+		if (queryable != null) {
+			for (String attributeName : queryable) {
+				String prefix = attributeName + "_";
+				for (Map.Entry<String, String[]> entry : request.getParameterMap().entrySet()) {
+					if (entry.getKey().startsWith(prefix)) {
+						filters.add(createAttributeFilter(attributeName, entry.getKey().substring(prefix.length()),
+								entry.getValue()[0]));
 					}
 				}
 			}
-			List<InternalFeature> features = vectorLayerService.getFeatures(layerId, null, and(filters), null,
-					getIncludes(noGeom), getOffset(offset), getLimit(maxFeatures, limit));
-			if (features.size() > 0) {
-				VectorLayerInfo info = features.get(0).getLayer().getLayerInfo();
-				model.addAttribute(VECTOR_LAYER_INFO, info);
-				VectorLayer layer = configurationService.getVectorLayer(layerId);
-				if (orderBy != null) {
-					Collections.sort(features, createComparator(layer, orderBy, dir));
-				}
-				model.addAttribute(FEATURE_COLLECTION, features);
-				model.addAttribute(ATTRIBUTES, attrs);
-			}
-		} catch (LayerException e1) {
-			throw new RestException(RestException.PROBLEM_READING_LAYERSERVICE, layerId);
-		} catch (GeomajasException e) {
+		}
+		List<InternalFeature> features;
+		try {
+			features = vectorLayerService.getFeatures(layerId, null, and(filters), null, getIncludes(noGeom),
+					getOffset(offset), getLimit(maxFeatures, limit));
+		} catch (Exception e) {
 			throw new RestException(e, RestException.PROBLEM_READING_LAYERSERVICE, layerId);
+		}
+		if (features.size() > 0) {
+			VectorLayerInfo info = features.get(0).getLayer().getLayerInfo();
+			model.addAttribute(VECTOR_LAYER_INFO, info);
+			VectorLayer layer = configurationService.getVectorLayer(layerId);
+			if (orderBy != null) {
+				Collections.sort(features, createComparator(layer, orderBy, dir));
+			}
+			model.addAttribute(FEATURE_COLLECTION, features);
+			model.addAttribute(ATTRIBUTES, attrs);
 		}
 		return VIEW;
 	}
@@ -217,35 +217,39 @@ public class RestController {
 		}
 	}
 
-	private Filter createBBoxFilter(String layerId, Envelope... bbox) throws LayerException {
+	private Filter createBBoxFilter(String layerId, Envelope... bbox) throws RestException {
 		VectorLayer layer = configurationService.getVectorLayer(layerId);
 		for (Envelope envelope : bbox) {
 			if (envelope != null) {
-				return filterService.createBboxFilter(layer.getLayerInfo().getCrs(), envelope, layer.getFeatureModel()
-						.getGeometryAttributeName());
+				try {
+					return filterService.createBboxFilter(layer.getLayerInfo().getCrs(), envelope, layer
+							.getFeatureModel().getGeometryAttributeName());
+				} catch (LayerException e) {
+					throw new RestException(RestException.PROBLEM_READING_LAYERSERVICE, layerId);
+				}
 			}
 		}
 		return filterService.createTrueFilter();
 	}
 
 	private Filter createAttributeFilter(String attributeName, String operation, String value) throws RestException {
-		if("eq".equalsIgnoreCase(operation)){
+		if ("eq".equalsIgnoreCase(operation)) {
 			return filterService.createCompareFilter(attributeName, "==", value);
-		} else if ("ne".equalsIgnoreCase(operation)){
+		} else if ("ne".equalsIgnoreCase(operation)) {
 			return filterService.createCompareFilter(attributeName, "<>", value);
-		} else if ("lt".equalsIgnoreCase(operation)){
+		} else if ("lt".equalsIgnoreCase(operation)) {
 			return filterService.createCompareFilter(attributeName, "<", value);
-		} else if ("lte".equalsIgnoreCase(operation)){
+		} else if ("lte".equalsIgnoreCase(operation)) {
 			return filterService.createCompareFilter(attributeName, "<=", value);
-		} else if ("gt".equalsIgnoreCase(operation)){
-			return filterService.createCompareFilter(attributeName, ">", value);			
-		} else if ("gte".equalsIgnoreCase(operation)){
+		} else if ("gt".equalsIgnoreCase(operation)) {
+			return filterService.createCompareFilter(attributeName, ">", value);
+		} else if ("gte".equalsIgnoreCase(operation)) {
 			return filterService.createCompareFilter(attributeName, ">=", value);
-		} else if ("like".equalsIgnoreCase(operation)){
+		} else if ("like".equalsIgnoreCase(operation)) {
 			return filterService.createLikeFilter(attributeName, value);
 		} else {
 			throw new RestException(RestException.UNSUPPORTED_QUERY_OPERATION, operation);
-		}  
+		}
 	}
 
 	private Comparator<? super InternalFeature> createComparator(VectorLayer layer, final String attributeName,

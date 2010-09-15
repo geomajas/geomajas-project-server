@@ -67,6 +67,6 @@
 	</profiles>
 
 	<properties>
-		<geomajas-face-rest-backend-version>1.7.1</geomajas-face-rest-backend-version>
+		<geomajas-face-rest-backend-version>1.8.0-SNAPSHOT</geomajas-face-rest-backend-version>
 	</properties>	
 </project>
