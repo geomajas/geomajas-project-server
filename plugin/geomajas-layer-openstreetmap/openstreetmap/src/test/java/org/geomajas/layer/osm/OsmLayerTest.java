@@ -130,11 +130,9 @@ public class OsmLayerTest {
 		Assert.assertEquals(8, tile.getCode().getX());
 		Assert.assertEquals(7, tile.getCode().getY());
 		Assert.assertEquals(0.0, tile.getBounds().getX(), DELTA);
-		/*
-		Assert.assertEquals(-256.0, tile.getBounds().getY(), DELTA);
-		Assert.assertEquals(256.0, tile.getBounds().getHeight(), DELTA);
-		Assert.assertEquals(256.0, tile.getBounds().getWidth(), DELTA);
-		*/
+		Assert.assertEquals(-250.0, tile.getBounds().getY(), DELTA);
+		Assert.assertEquals(250.0, tile.getBounds().getHeight(), DELTA);
+		Assert.assertEquals(250.0, tile.getBounds().getWidth(), DELTA);
 	}
 
 	@Test
@@ -151,12 +149,10 @@ public class OsmLayerTest {
 		Assert.assertEquals(14, tile.getCode().getTileLevel());
 		Assert.assertEquals(8197, tile.getCode().getX());
 		Assert.assertEquals(8189, tile.getCode().getY());
-		/*
 		Assert.assertEquals(1223, tile.getBounds().getX(), DELTA);
 		Assert.assertEquals(-733.0, tile.getBounds().getY(), DELTA);
-		Assert.assertEquals(256.0, tile.getBounds().getHeight(), DELTA);
-		Assert.assertEquals(256.0, tile.getBounds().getWidth(), DELTA);
-		*/
+		Assert.assertEquals(245.0, tile.getBounds().getHeight(), DELTA);
+		Assert.assertEquals(245.0, tile.getBounds().getWidth(), DELTA);
 	}
 
 }
