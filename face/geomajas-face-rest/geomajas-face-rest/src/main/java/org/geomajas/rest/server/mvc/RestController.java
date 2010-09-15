@@ -22,21 +22,30 @@
  */
 package org.geomajas.rest.server.mvc;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.global.GeomajasException;
+import org.geomajas.layer.LayerException;
+import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.VectorLayerService;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.rest.server.RestException;
+import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.FilterService;
+import org.opengis.filter.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.vividsolutions.jts.geom.Envelope;
 
 /**
  * 
@@ -56,6 +65,9 @@ public class RestController {
 	@Autowired
 	private FilterService filterService;
 
+	@Autowired
+	private ConfigurationService configurationService;
+
 	static final String VIEW = "GeoJSONView";
 
 	static final String FEATURE_COLLECTION = "FeatureCollection";
@@ -65,13 +77,9 @@ public class RestController {
 	static final String ATTRIBUTES = "Attrs";
 
 	@RequestMapping(value = "/rest/{layerId}/{featureId}.json", method = RequestMethod.GET)
-	public ModelAndView readOneFeature(@PathVariable String layerId, @PathVariable String featureId,
-			@RequestParam(value = "no_geom", required = false) boolean noGeom, @RequestParam("attrs") String attrs)
-			throws RestException {
-		ModelAndView mav = new ModelAndView();
-
-		mav.setViewName(VIEW);
-
+	public String readOneFeature(@PathVariable String layerId, @PathVariable String featureId,
+			@RequestParam(value = "no_geom", required = false) boolean noGeom,
+			@RequestParam(value = "attrs", required = false) List<String> attrs, Model model) throws RestException {
 		List<InternalFeature> features;
 		try {
 			int featureIncludes = getIncludes(noGeom);
@@ -84,12 +92,10 @@ public class RestController {
 		if (features.size() != 1) {
 			throw new RestException(RestException.FEATURE_NOT_FOUND, featureId, layerId);
 		}
-		mav.addObject(FEATURE_COLLECTION, features.get(0));
-		mav.addObject(FEATURE_INFO, features.get(0).getLayer().getLayerInfo());
-		if (attrs != null) {
-			mav.addObject(ATTRIBUTES, Arrays.asList(attrs.split("[\\s,]+")));
-		}
-		return mav;
+		model.addAttribute(FEATURE_COLLECTION, features.get(0));
+		model.addAttribute(FEATURE_INFO, features.get(0).getLayer().getLayerInfo());
+		model.addAttribute(ATTRIBUTES, attrs);
+		return VIEW;
 	}
 
 	private int getIncludes(Boolean noGeom) {
@@ -101,30 +107,28 @@ public class RestController {
 	}
 
 	@RequestMapping(value = "/rest/{layerId}", method = RequestMethod.GET)
-	public ModelAndView readFeatures(@PathVariable String layerId,
+	public String readFeatures(@PathVariable String layerId,
 			@RequestParam(value = "no_geom", required = false) boolean noGeom,
-			@RequestParam(value = "attrs", required = false) String attrs,
-			@RequestParam(value = "box", required = false) String box) throws RestException {
+			@RequestParam(value = "attrs", required = false) List<String> attrs,
+			@RequestParam(value = "box", required = false) Envelope box,
+			@RequestParam(value = "bbox", required = false) Envelope bbox, Model model) throws RestException {
 
-		ModelAndView mav = new ModelAndView();
-		mav.setViewName(VIEW);
-
-		List<InternalFeature> features;
+		List<Filter> filters = new ArrayList<Filter>();
 		try {
-			int featureIncludes = getIncludes(noGeom);
-			features = vectorLayerService.getFeatures(layerId, null, filterService.createTrueFilter(), null,
-					featureIncludes);
+			filters.add(createBBoxFilter(layerId, box, bbox));
+			List<InternalFeature> features = vectorLayerService.getFeatures(layerId, null, and(filters), null,
+					getIncludes(noGeom));
+			if (features.size() > 0) {
+				model.addAttribute(FEATURE_INFO, features.get(0).getLayer().getLayerInfo());
+			}
+			model.addAttribute(FEATURE_COLLECTION, features);
+			model.addAttribute(ATTRIBUTES, attrs);
+		} catch (LayerException e1) {
+			throw new RestException(RestException.PROBLEM_READING_LAYERSERVICE, layerId);
 		} catch (GeomajasException e) {
 			throw new RestException(e, RestException.PROBLEM_READING_LAYERSERVICE, layerId);
 		}
-		mav.addObject(FEATURE_COLLECTION, features);
-		if (features.size() > 0) {
-			mav.addObject(FEATURE_INFO, features.get(0).getLayer().getLayerInfo());
-		}
-		if (attrs != null) {
-			mav.addObject(ATTRIBUTES, Arrays.asList(attrs.split("[\\s,]+")));
-		}
-		return mav;
+		return VIEW;
 	}
 
 	public ModelAndView createUpdateFeatures() {
@@ -149,6 +153,35 @@ public class RestController {
 		ModelAndView mav = new ModelAndView();
 
 		return mav;
+	}
+
+	@InitBinder
+	public void initBinder(WebDataBinder binder) {
+		binder.setConversionService(new RestParameterConversionService());
+	}
+
+	private Filter and(List<Filter> filters) {
+		if (filters.size() == 0) {
+			return null;
+		} else {
+			Filter result = filters.get(0);
+			for (int i = 1; i < filters.size(); i++) {
+				result = filterService.createAndFilter(result, filters.get(i));
+			}
+			return result;
+		}
+	}
+
+	private Filter createBBoxFilter(String layerId, Envelope... bbox) throws LayerException {
+		VectorLayer layer = configurationService.getVectorLayer(layerId);
+		for (Envelope envelope : bbox) {
+			if (envelope != null) {
+				return filterService.createBboxFilter(layer.getLayerInfo().getCrs(), envelope, layer.getFeatureModel()
+						.getGeometryAttributeName());
+			}
+		}
+		return filterService.createTrueFilter();
+
 	}
 
 }
