@@ -63,7 +63,7 @@ public class GeoJSONView extends AbstractView {
 	protected void renderMergedOutputModel(Map<String, Object> model, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
 		Object ff = model.get(RestController.FEATURE_COLLECTION);
-		VectorLayerInfo info = (VectorLayerInfo) model.get(RestController.FEATURE_INFO);
+		VectorLayerInfo info = (VectorLayerInfo) model.get(RestController.VECTOR_LAYER_INFO);
 		List<String> attrs = (List<String>) model.get(RestController.ATTRIBUTES);
 		SimpleFeatureType sft = convertorService.toSimpleFeatureType(info, attrs);
 		response.setContentType(getContentType());

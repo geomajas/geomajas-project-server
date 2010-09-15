@@ -39,6 +39,7 @@ public class RestException extends GeomajasException {
 
 	public static final int FEATURE_NOT_FOUND = 0;
 	public static final int PROBLEM_READING_LAYERSERVICE = 1;
+	public static final int NO_SUCH_ATTRIBUTE = 2;
 
 	/**
 	 * Create new RestException.

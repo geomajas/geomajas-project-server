@@ -23,8 +23,12 @@
 package org.geomajas.rest.server.mvc;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
+import org.geomajas.configuration.AttributeInfo;
+import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.VectorLayer;
@@ -72,7 +76,7 @@ public class RestController {
 
 	static final String FEATURE_COLLECTION = "FeatureCollection";
 
-	static final String FEATURE_INFO = "FeatureInfo";
+	static final String VECTOR_LAYER_INFO = "VectorLayerInfo";
 
 	static final String ATTRIBUTES = "Attrs";
 
@@ -82,28 +86,18 @@ public class RestController {
 			@RequestParam(value = "attrs", required = false) List<String> attrs, Model model) throws RestException {
 		List<InternalFeature> features;
 		try {
-			int featureIncludes = getIncludes(noGeom);
 			features = vectorLayerService.getFeatures(layerId, null, filterService
-					.createFidFilter(new String[] { featureId }), null, featureIncludes);
-
+					.createFidFilter(new String[] { featureId }), null, getIncludes(noGeom));
+			if (features.size() != 1) {
+				throw new RestException(RestException.FEATURE_NOT_FOUND, featureId, layerId);
+			}
+			model.addAttribute(FEATURE_COLLECTION, features.get(0));
+			model.addAttribute(VECTOR_LAYER_INFO, features.get(0).getLayer().getLayerInfo());
+			model.addAttribute(ATTRIBUTES, attrs);
+			return VIEW;
 		} catch (GeomajasException e) {
 			throw new RestException(e, RestException.PROBLEM_READING_LAYERSERVICE, layerId);
 		}
-		if (features.size() != 1) {
-			throw new RestException(RestException.FEATURE_NOT_FOUND, featureId, layerId);
-		}
-		model.addAttribute(FEATURE_COLLECTION, features.get(0));
-		model.addAttribute(FEATURE_INFO, features.get(0).getLayer().getLayerInfo());
-		model.addAttribute(ATTRIBUTES, attrs);
-		return VIEW;
-	}
-
-	private int getIncludes(Boolean noGeom) {
-		int featureIncludes = VectorLayerService.FEATURE_INCLUDE_ALL;
-		if (noGeom) {
-			featureIncludes = VectorLayerService.FEATURE_INCLUDE_ATTRIBUTES;
-		}
-		return featureIncludes;
 	}
 
 	@RequestMapping(value = "/rest/{layerId}", method = RequestMethod.GET)
@@ -111,18 +105,30 @@ public class RestController {
 			@RequestParam(value = "no_geom", required = false) boolean noGeom,
 			@RequestParam(value = "attrs", required = false) List<String> attrs,
 			@RequestParam(value = "box", required = false) Envelope box,
-			@RequestParam(value = "bbox", required = false) Envelope bbox, Model model) throws RestException {
+			@RequestParam(value = "bbox", required = false) Envelope bbox,
+			@RequestParam(value = "maxFeatures", required = false) Integer maxFeatures,
+			@RequestParam(value = "limit", required = false) Integer limit,
+			@RequestParam(value = "offset", required = false) Integer offset,
+			@RequestParam(value = "order_by", required = false) String orderBy,
+			@RequestParam(value = "dir", required = false) FeatureOrder dir,
+
+			Model model) throws RestException {
 
 		List<Filter> filters = new ArrayList<Filter>();
 		try {
 			filters.add(createBBoxFilter(layerId, box, bbox));
 			List<InternalFeature> features = vectorLayerService.getFeatures(layerId, null, and(filters), null,
-					getIncludes(noGeom));
+					getIncludes(noGeom), getOffset(offset), getLimit(maxFeatures, limit));
 			if (features.size() > 0) {
-				model.addAttribute(FEATURE_INFO, features.get(0).getLayer().getLayerInfo());
+				VectorLayerInfo info = features.get(0).getLayer().getLayerInfo();
+				model.addAttribute(VECTOR_LAYER_INFO, info);
+				VectorLayer layer = configurationService.getVectorLayer(layerId);
+				if (orderBy != null) {
+					Collections.sort(features, createComparator(layer, orderBy, dir));
+				}
+				model.addAttribute(FEATURE_COLLECTION, features);
+				model.addAttribute(ATTRIBUTES, attrs);
 			}
-			model.addAttribute(FEATURE_COLLECTION, features);
-			model.addAttribute(ATTRIBUTES, attrs);
 		} catch (LayerException e1) {
 			throw new RestException(RestException.PROBLEM_READING_LAYERSERVICE, layerId);
 		} catch (GeomajasException e) {
@@ -160,6 +166,32 @@ public class RestController {
 		binder.setConversionService(new RestParameterConversionService());
 	}
 
+	private int getIncludes(Boolean noGeom) {
+		int featureIncludes = VectorLayerService.FEATURE_INCLUDE_ALL;
+		if (noGeom) {
+			featureIncludes = VectorLayerService.FEATURE_INCLUDE_ATTRIBUTES;
+		}
+		return featureIncludes;
+	}
+
+	private int getOffset(Integer offset) {
+		if (offset != null && offset > 0) {
+			return offset;
+		} else {
+			return 0;
+		}
+	}
+
+	private int getLimit(Integer... limit) {
+		int result = Integer.MAX_VALUE;
+		for (Integer l : limit) {
+			if (l != null && l >= 0) {
+				result = Math.min(result, l);
+			}
+		}
+		return result;
+	}
+
 	private Filter and(List<Filter> filters) {
 		if (filters.size() == 0) {
 			return null;
@@ -182,6 +214,62 @@ public class RestController {
 		}
 		return filterService.createTrueFilter();
 
+	}
+
+	private Comparator<? super InternalFeature> createComparator(VectorLayer layer, final String attributeName,
+			final FeatureOrder order) throws RestException {
+		List<AttributeInfo> attributes = layer.getLayerInfo().getFeatureInfo().getAttributes();
+		AttributeInfo info = null;
+		for (AttributeInfo attributeInfo : attributes) {
+			// be tolerant on casing
+			if (attributeInfo.getName().equalsIgnoreCase(attributeName)) {
+				info = attributeInfo;
+			}
+		}
+		if (info == null) {
+			throw new RestException(RestException.NO_SUCH_ATTRIBUTE, attributeName, layer.getId());
+		}
+		return new InternalFeatureComparator(order, attributeName);
+	}
+
+	/**
+	 * Compares features based on a single attribute.
+	 * 
+	 * @author Jan De Moerloose
+	 * 
+	 */
+	class InternalFeatureComparator implements Comparator<InternalFeature> {
+
+		private FeatureOrder order;
+
+		private String attributeName;
+
+		public InternalFeatureComparator(FeatureOrder order, String attributeName) {
+			this.order = (order == null ? FeatureOrder.ASC : FeatureOrder.DESC);
+			this.attributeName = attributeName;
+		}
+
+		public int compare(InternalFeature f1, InternalFeature f2) {
+			Object value1 = f1.getAttributes().get(attributeName).getValue();
+			Object value2 = f2.getAttributes().get(attributeName).getValue();
+			if (value1 == null && value2 == null) {
+				return 0;
+			}
+			if (value1 == null) {
+				return 1;
+			} else if (value2 == null) {
+				return -1;
+			} else {
+				if (value1 instanceof Comparable && order == FeatureOrder.ASC) {
+					return ((Comparable) value1).compareTo(value2);
+				} else if (value2 instanceof Comparable && order == FeatureOrder.DESC) {
+					return ((Comparable) value2).compareTo(value1);
+				} else {
+					// can this happen ?
+					return 0;
+				}
+			}
+		}
 	}
 
 }

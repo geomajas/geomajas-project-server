@@ -1,7 +1,10 @@
 package org.geomajas.rest.server.mvc;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.constraints.AssertTrue;
 
@@ -89,7 +92,7 @@ public class RestControllerTest {
 	}
 
 	@Test
-	public void bboxArgument() throws Exception {
+	public void bboxFilter() throws Exception {
 		MockHttpServletRequest request = new MockHttpServletRequest();
 		request.setRequestURI("/rest/beans");
 		request.addParameter("bbox", "4,6,0,3");
@@ -105,6 +108,55 @@ public class RestControllerTest {
 					.getEnvelopeInternal()));
 		}
 
+	}
+	
+	@Test
+	public void featurePaging() throws Exception {
+		MockHttpServletRequest request = new MockHttpServletRequest();
+		request.setRequestURI("/rest/beans");
+		request.setMethod("GET");
+		MockHttpServletResponse response = new MockHttpServletResponse();
+		// check all
+		ModelAndView mav = adapter.handle(request, response, restController);
+		Assert.assertEquals(Arrays.asList("1","2","3"), getIdsFromModel(mav.getModel()));
+		// check first 1
+		request.setParameter("maxFeatures", "1");
+		mav = adapter.handle(request, response, restController);
+		Assert.assertEquals(Arrays.asList("1"), getIdsFromModel(mav.getModel()));
+		// check first 2
+		request.setParameter("maxFeatures", "2");
+		mav = adapter.handle(request, response, restController);
+		Assert.assertEquals(Arrays.asList("1","2"), getIdsFromModel(mav.getModel()));
+		// check 1 -3
+		request.setParameter("maxFeatures", "2");
+		request.setParameter("offset", "1");
+		mav = adapter.handle(request, response, restController);
+		Assert.assertEquals(Arrays.asList("2","3"), getIdsFromModel(mav.getModel()));
+	}
+	
+	@Test
+	public void ordering() throws Exception {
+		MockHttpServletRequest request = new MockHttpServletRequest();
+		request.setRequestURI("/rest/beans");
+		request.setMethod("GET");
+		MockHttpServletResponse response = new MockHttpServletResponse();
+		// check descending on string attribute
+		request.setParameter("order_by", "stringAttr");
+		request.setParameter("dir", "DESC");
+		ModelAndView mav = adapter.handle(request, response, restController);
+		Assert.assertEquals(Arrays.asList("3","2","1"), getIdsFromModel(mav.getModel()));
+	}
+
+	private List<String> getIdsFromModel(Map<String, Object> model) {
+		Object o = model.get(RestController.FEATURE_COLLECTION);
+		Assert.assertTrue(o instanceof List<?>);
+		List<?> ff = (List<?>) o;
+		ArrayList<String> ids = new ArrayList<String>();
+		for (Object f : ff) {
+			Assert.assertTrue(f instanceof InternalFeature);
+			ids.add(((InternalFeature)f).getId());
+		}
+		return ids;
 	}
 
 }
