@@ -38,4 +38,8 @@
       </imageobject>
     </mediaobject>
   </figure>
+
+  <para>This allows you to easily use the default rendering of the
+  OpenStreetMap data. You can further configure it to choose different
+  renderings.</para>
 </chapter>
