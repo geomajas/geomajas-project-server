@@ -53,7 +53,7 @@ public class OsmLayerTest {
 
 	@Test
 	public void testPaintOutOfBounds() throws Exception {
-		double equator = OsmLayer.EQUATOR_IN_METERS;
+		double equator = TiledRasterLayerService.EQUATOR_IN_METERS;
 		List<RasterTile> tiles = osm.paint(geoService.getCrs("EPSG:900913"),
 				new Envelope(-equator, equator, -equator, equator), 256 / equator);
 		Assert.assertEquals(1, tiles.size());
@@ -62,7 +62,7 @@ public class OsmLayerTest {
 
 	@Test
 	public void testPaintToTheSide() throws Exception {
-		double equator = OsmLayer.EQUATOR_IN_METERS;
+		double equator = TiledRasterLayerService.EQUATOR_IN_METERS;
 		List<RasterTile> tiles = osm.paint(geoService.getCrs("EPSG:900913"),
 				new Envelope(equator * 2 / 3, (equator * 2 / 3) + 100, 0, 100), ZOOMED_IN_SCALE);
 		Assert.assertEquals(0, tiles.size());
