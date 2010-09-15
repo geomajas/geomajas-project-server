@@ -44,65 +44,161 @@
     at the bottom of <ulink
     url="http://maven.apache.org/download.html">http://maven.apache.org/download.html</ulink>.</para>
 
-    <para>When Maven is installed you can create a base project using the
-    following command line (to use the latest release):</para>
+    <section>
+      <title>Creating the template project</title>
 
-    <example>
-      <title>Create project using GWT Maven archetype</title>
+      <para>At this point it is assumed that Maven has been succesfully
+      installed. Using Maven, you can now create a template project, called
+      the Geomajas GWT Application Archetype. </para>
 
-      <para><programlisting>mvn archetype:generate -DarchetypeCatalog=http://apps.geomajas.org/nexus/content/groups/released/</programlisting></para>
-    </example>
+      <orderedlist>
+        <listitem>
+          <para><emphasis>Step1</emphasis>: Go to the folder you want to
+          create this application in, and execute the following
+          command:</para>
 
-    <para>Alternatively, you can use the very latest (snapshot) archetype
-    using the following command.</para>
+          <example>
+            <title>Create project using GWT Maven archetype</title>
 
-    <example>
-      <title>Create project using GWT Maven archetype</title>
+            <para><programlisting>mvn archetype:generate -DarchetypeCatalog=http://apps.geomajas.org/nexus/content/groups/released/</programlisting></para>
+          </example>
 
-      <para><programlisting>mvn archetype:generate -DarchetypeCatalog=http://apps.geomajas.org/nexus/content/groups/latest/</programlisting></para>
-    </example>
+          <para>This will create the template project, using the latest stable
+          release. If you want to use the latest snapshot, use the follwing
+          command instead:</para>
 
-    <para>You first have to select the archetype you want to build
-    (geomajas-gwt-archetype). Then it will ask you the "groupId",
-    "artifactId", version and base package. Once you confirmed the settings,
-    the project will be created in a subdirectory with a name equalling the
-    "artifactId" you choose.</para>
+          <example>
+            <title>Create project using GWT Maven archetype</title>
 
-    <figure>
-      <title>Create project using GWT Maven archetype</title>
+            <para><programlisting>mvn archetype:generate -DarchetypeCatalog=http://apps.geomajas.org/nexus/content/groups/latest/</programlisting></para>
+          </example>
 
-      <mediaobject>
-        <imageobject>
-          <imagedata fileref="images/run-archetype.png" width="75%" />
-        </imageobject>
-      </mediaobject>
-    </figure>
+          <para>Maven will now prompt the user for input.</para>
+        </listitem>
 
-    <para>From the project root, you can immediately compile, test (using
-    jetty as servlet container), or run the application in development mode
-    using the following commands.</para>
+        <listitem>
+          <para><emphasis>Step2</emphasis>: Maven will display the full list
+          of available archetypes. Make sure you select the correct one:
+          <emphasis role="bold">geomajas-gwt-archetype</emphasis>. In the
+          image below, the correct number would be 36:</para>
 
-    <example>
-      <title>Maven targets</title>
+          <figure>
+            <title>Choose the correct archetype</title>
 
-      <para><programlisting>mvn install
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="images/select-archetype.png" width="75%" />
+              </imageobject>
+            </mediaobject>
+          </figure>
+        </listitem>
 
-mvn jetty:run
+        <listitem>
+          <para><emphasis>Step3</emphasis>: Next maven asks for the <emphasis
+          role="bold">groupId</emphasis>. Often the package name is used.
+          (foo.bar)</para>
+        </listitem>
 
-mvn gwt:run</programlisting>The "install" target will create a war file for
-      the project in the <code>target</code> directory.</para>
-    </example>
+        <listitem>
+          <para><emphasis>Step4</emphasis>: Next maven asks for the <emphasis
+          role="bold">artifactId</emphasis>. This represents the name for your
+          application. (i.e. my-app)</para>
+        </listitem>
 
-    <para>The "jetty:run" variant will immediately start a jetty server and
-    start the application. This way, you can test your application at full
-    speed (as when deployed). The application can be accessed at <ulink
-    url="http://localhost:8080/">http://localhost:8080/</ulink>.</para>
+        <listitem>
+          <para>Step5: Next maven asks for the first version for your
+          application. 1.0-SNAPSHOT is a good first version.</para>
+        </listitem>
 
-    <para>The "gwt:run" option allows you to start the application in GWT
-    development mode. A console will appear which allows starting your
-    application (from the browser). Amongst other things, this allows you to
-    see the messages GWT generates and see the output of the
-    "<code>GWT.log</code>" commands.</para>
+        <listitem>
+          <para>Step6: Next maven asks for the base package wherein to place
+          Java files. By default this is the same as the groupId. Just hit
+          "enter" to continue.</para>
+
+          <figure>
+            <title>Screenshot when building the Geomajas GWT archetype</title>
+
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="images/run-archetype.png" width="75%" />
+              </imageobject>
+            </mediaobject>
+          </figure>
+        </listitem>
+      </orderedlist>
+
+      <tip>
+        <para>You have now create a Geomajas template project! It is best to
+        continue by testing if everything went well.</para>
+      </tip>
+    </section>
+
+    <section>
+      <title>Testing the template project</title>
+
+      <para>From the project root, you can immediately compile, test (using
+      jetty as servlet container), or run the application in development mode
+      using the following commands.</para>
+
+      <section>
+        <title>Creating a full build</title>
+
+        <para>You now have several options to actually test your application.
+        First of all, you could compile it, and create a build. This can be
+        done with the following command:</para>
+
+        <example>
+          <title>Creating a build from your project</title>
+
+          <para><programlisting>mvn install</programlisting></para>
+        </example>
+
+        <para>The "install" target will create a .war file for the project in
+        the <code>target</code> directory. This web archive can simply be
+        dropped into a Java application container such as Tomcat.</para>
+      </section>
+
+      <section>
+        <title>Running the compiled template application (full speed)</title>
+
+        <para>Secondly, if you don't have a Java application container ready
+        or simply want a quick test, then you can use mvn to run the
+        application for you, using the following commands:</para>
+
+        <example>
+          <title>Create a build, then run it</title>
+
+          <para><programlisting>mvn install
+mvn jetty:run</programlisting></para>
+        </example>
+
+        <para>The "jetty:run" variant will immediately start a jetty server
+        and start the application. This way, you can test your application at
+        full speed (as when deployed). The application can be accessed at
+        <ulink
+        url="http://localhost:8080/">http://localhost:8080/</ulink>.</para>
+      </section>
+
+      <section>
+        <title>Running the template application in development mode</title>
+
+        <para>Another option is to start up the application in GWT development
+        mode, using the following command lines:</para>
+
+        <example>
+          <title>Run the template application in development mode</title>
+
+          <para><programlisting>mvn install
+mvn gwt:run</programlisting></para>
+        </example>
+
+        <para>The "gwt:run" option allows you to start the application in GWT
+        development mode. A console will appear which allows starting your
+        application (from the browser). Amongst other things, this allows you
+        to see the messages GWT generates and see the output of the
+        "<code>GWT.log</code>" commands.</para>
+      </section>
+    </section>
   </section>
 
   <section>
@@ -183,8 +279,7 @@ mvn gwt:run</programlisting>The "install" target will create a war file for
 
       <mediaobject>
         <imageobject>
-          <imagedata fileref="images/eclipse-maven-settings.png"
-                     width="50%" />
+          <imagedata fileref="images/eclipse-maven-settings.png" width="50%" />
         </imageobject>
       </mediaobject>
     </figure>
@@ -219,8 +314,7 @@ mvn gwt:run</programlisting>The "install" target will create a war file for
 
       <mediaobject>
         <imageobject>
-          <imagedata fileref="images/gwt-eclipse-properties.png"
-                     width="60%" />
+          <imagedata fileref="images/gwt-eclipse-properties.png" width="60%" />
         </imageobject>
       </mediaobject>
     </figure>
@@ -258,8 +352,7 @@ mvn gwt:run</programlisting>The "install" target will create a war file for
 
       <mediaobject>
         <imageobject>
-          <imagedata fileref="images/IDEA-run-configuration.png"
-                     width="90%" />
+          <imagedata fileref="images/IDEA-run-configuration.png" width="90%" />
         </imageobject>
       </mediaobject>
     </figure>
@@ -290,8 +383,7 @@ mvn gwt:run</programlisting>The "install" target will create a war file for
 
       <mediaobject>
         <imageobject>
-          <imagedata fileref="images/IDEA-project-structure.png"
-                     width="80%" />
+          <imagedata fileref="images/IDEA-project-structure.png" width="80%" />
         </imageobject>
       </mediaobject>
     </figure>
