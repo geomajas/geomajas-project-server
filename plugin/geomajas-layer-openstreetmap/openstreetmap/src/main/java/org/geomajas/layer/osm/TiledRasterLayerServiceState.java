@@ -146,9 +146,6 @@ public class TiledRasterLayerServiceState {
 			resolutions[zoomLevel] = resolution;
 			powerOfTwo *= 2;
 		}
-
-		urlStrategy.setUrls(tileUrls);
-
 	}
 
 }

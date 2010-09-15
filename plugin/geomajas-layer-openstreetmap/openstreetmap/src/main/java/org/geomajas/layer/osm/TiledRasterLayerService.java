@@ -100,13 +100,13 @@ public class TiledRasterLayerService {
 			}
 
 			// find the center of the map in map coordinates (positive y-axis)
-			Coordinate center = new Coordinate(0.5 * (bounds.getMinX() + bounds.getMaxX()), 0.5 * (bounds
+			Coordinate boundsCenter = new Coordinate(0.5 * (bounds.getMinX() + bounds.getMaxX()), 0.5 * (bounds
 					.getMinY() + bounds.getMaxY()));
 
 			// find zoomlevel
 			// scale in pix/m should just above the given scale so we have at least one
 			// screen pixel per google pixel ! (otherwise text unreadable)
-			int zoomLevel = getBestZoomLevelForScaleInPixPerMeter(tileServiceState, mapToLayer, center, scale);
+			int zoomLevel = getBestZoomLevelForScaleInPixPerMeter(tileServiceState, mapToLayer, boundsCenter, scale);
 			log.debug("zoomLevel={}", zoomLevel);
 
 			// find the google indices for the center
@@ -115,7 +115,7 @@ public class TiledRasterLayerService {
 			// the resulting indices are floating point values as the center
 			// is not coincident with an image corner !!!!
 			Coordinate indicesCenter;
-			indicesCenter = getTileIndicesFromMap(tileServiceState, mapToLayer, center, zoomLevel);
+			indicesCenter = getTileIndicesFromMap(mapToLayer, boundsCenter, zoomLevel);
 
 			// Calculate the width in map units of the image that contains the
 			// center
@@ -135,8 +135,8 @@ public class TiledRasterLayerService {
 
 			// Calculate the position and indexes of the center image corner
 			// in map space
-			double xCenter = center.x - (indicesCenter.x - indicesUpperLeft.x) * width;
-			double yCenter = center.y + (indicesCenter.y - indicesUpperLeft.y) * width;
+			double xCenter = boundsCenter.x - (indicesCenter.x - indicesUpperLeft.x) * width;
+			double yCenter = boundsCenter.y + (indicesCenter.y - indicesUpperLeft.y) * width;
 			int iCenter = (int) indicesUpperLeft.x;
 			int jCenter = (int) indicesUpperLeft.y;
 
@@ -254,12 +254,11 @@ public class TiledRasterLayerService {
 		return JTS.transform(new Coordinate(xMeter, yMeter), new Coordinate(), mapToLayer);
 	}
 
-	private Coordinate getTileIndicesFromMap(TiledRasterLayerServiceState tileServiceState, MathTransform mapToLayer,
-			Coordinate center, int zoomLevel)
+	private Coordinate getTileIndicesFromMap(MathTransform mapToLayer, Coordinate centerMapCoor, int zoomLevel)
 			throws TransformException {
-		Coordinate googleCenter = JTS.transform(center, new Coordinate(), mapToLayer);
-		double xIndex = (googleCenter.x + 0.5 * EQUATOR_IN_METERS) * POWERS_OF_TWO[zoomLevel] / (EQUATOR_IN_METERS);
-		double yIndex = (-googleCenter.y + 0.5 * EQUATOR_IN_METERS) * POWERS_OF_TWO[zoomLevel] / (EQUATOR_IN_METERS);
+		Coordinate centerLayerCoor = JTS.transform(centerMapCoor, new Coordinate(), mapToLayer);
+		double xIndex = (centerLayerCoor.x + 0.5 * EQUATOR_IN_METERS) * POWERS_OF_TWO[zoomLevel] / EQUATOR_IN_METERS;
+		double yIndex = (-centerLayerCoor.y + 0.5 * EQUATOR_IN_METERS) * POWERS_OF_TWO[zoomLevel] / EQUATOR_IN_METERS;
 		return new Coordinate(xIndex, yIndex);
 	}
 
