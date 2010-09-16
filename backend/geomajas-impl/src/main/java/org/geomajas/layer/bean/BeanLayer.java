@@ -26,7 +26,6 @@ package org.geomajas.layer.bean;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -130,13 +129,13 @@ public class BeanLayer implements VectorLayer, VectorLayerAssociationSupport {
 		if (comparator != null) {
 			Collections.sort(filteredList, comparator);
 		}
-		if(maxResultSize > 0){
+		if (maxResultSize > 0) {
 			int fromIndex = Math.max(0, offset);
-			int toIndex = Math.min(offset+maxResultSize, filteredList.size());
+			int toIndex = Math.min(offset + maxResultSize, filteredList.size());
 			toIndex = Math.max(fromIndex, toIndex);
 			return filteredList.subList(fromIndex, toIndex).iterator();
 		} else {
-			return filteredList.iterator(); 
+			return filteredList.iterator();
 		}
 	}
 
