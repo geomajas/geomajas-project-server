@@ -63,7 +63,7 @@ import java.util.zip.GZIPOutputStream;
  * @author Jan De Moerloose
  * @author Joachim Van der Auwera
  */
-@Controller
+@Controller("/resource/**")
 public class ResourceController implements LastModified, ServletContextAware {
 
 	private static final String RESOURCE_PREFIX = "/resource";
