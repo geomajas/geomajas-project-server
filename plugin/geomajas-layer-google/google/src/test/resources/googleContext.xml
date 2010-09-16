@@ -31,14 +31,15 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 http://www.springframework.org/schema/context
 http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
+	<!--
 	<bean name="googleInfo" class="org.geomajas.configuration.RasterLayerInfo">
 		<property name="crs" value="EPSG:900913"/>
 		<property name="maxExtent">
 			<bean class="org.geomajas.geometry.Bbox">
-				<!--
+				<!++
 				see http://cfis.savagexi.com/2006/05/03/google-maps-deconstructed
 				-20037508.342789, -20037508.342789 to 20037508.342789, 20037508.342789
-				-->
+				++>
 				<property name="x" value="-20026376.393709917"/>
 				<property name="y" value="-20026376.393709917"/>
 				<property name="width" value="40052752.787419834"/>
@@ -53,15 +54,51 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		<property name="layerInfo" ref="googleInfo" />
 		<property name="maxZoomLevel" value="21" />
 	</bean>
+	-->
+
+	<!-- @extract-start SimpleGoogleConfig, Simple Google layer configuration -->
+	<bean name="google" class="org.geomajas.layer.google.GoogleLayer"/>
+	<!-- @extract-end -->
+
+	<!-- @extract-start GoogleMaxZoomLevelConfig, Google layer max zoom level configuration -->
+	<bean name="googleMaxLevel" class="org.geomajas.layer.google.GoogleLayer">
+		<property name="maxZoomLevel" value="12"/>
+	</bean>
+	<!-- @extract-end -->
+
+	<!-- @extract-start GoogleCustomUrls, Using custom URLs -->
+	<bean name="googleSingle" class="org.geomajas.layer.google.GoogleLayer">
+		<property name="tileUrls">
+			<list>
+				<value>http://mt0.google.com/vt?v=w2.95&amp;x=${x}&amp;y=${y}&amp;z=${level}</value>
+			</list>
+		</property>
+	</bean>
+	<!-- @extract-end -->
+
+	<bean name="googleWrongCrs" class="org.geomajas.layer.google.GoogleLayer">
+		<property name="layerInfo">
+			<bean name="googleInfo" class="org.geomajas.configuration.RasterLayerInfo">
+				<property name="crs" value="EPSG:4326"/>
+			</bean>
+		</property>
+	</bean>
+
+	<!-- @extract-start OsmCustomUrlStrategy, Using a custom URL selection strategy -->
+	<bean name="googleStrategy" class="org.geomajas.layer.google.GoogleLayer">
+		<property name="urlSelectionStrategy">
+			<bean class="org.geomajas.layer.google.LastUrlSelectionStrategy" />
+		</property>
+	</bean>
+	<!-- @extract-end -->
+
 
 	<bean name="satellite" class="org.geomajas.layer.google.GoogleLayer" >
-		<property name="layerInfo" ref="googleInfo" />
 		<property name="satellite" value="true" />
 		<property name="maxZoomLevel" value="21" />
 	</bean>
 
-	<bean name="terrain" class="org.geomajas.layer.google.GoogleLayer" >
-		<property name="layerInfo" ref="googleInfo" />
+	<bean name="physical" class="org.geomajas.layer.google.GoogleLayer" >
 		<property name="physical" value="true" />
 		<property name="maxZoomLevel" value="21" />
 	</bean>

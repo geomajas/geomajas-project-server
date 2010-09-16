@@ -232,7 +232,6 @@ public class GoogleLayer implements RasterLayer {
 				tileServiceState.setTileUrls(PHYSICAL_URLS);
 			} else {
 				getLayerInfo().setDataSourceName(LAYER_NAME_NORMAL + DATA_SOURCE_GOOGLE_INDICATOR);
-				tileServiceState.setTileUrls(NORMAL_URLS);
 			}
 		} else if (!layerName.endsWith(DATA_SOURCE_GOOGLE_INDICATOR)) {
 			getLayerInfo().setDataSourceName(layerName + DATA_SOURCE_GOOGLE_INDICATOR);
