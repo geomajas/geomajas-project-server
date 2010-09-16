@@ -39,6 +39,14 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 			</bean>
 		</property>
 		<property name="backendVersion" value="${google-layer-backend-version}" />
+		<property name="dependencies">
+			<list>
+				<bean class="org.geomajas.global.PluginVersionInfo">
+					<property name="name" value="OpenStreetMap layer" />
+					<property name="version" value="${google-layer-osm-version}" />
+				</bean>
+			</list>
+		</property>
 		<property name="copyrightInfo">
 			<list>
 				<bean class="org.geomajas.global.CopyrightInfo">

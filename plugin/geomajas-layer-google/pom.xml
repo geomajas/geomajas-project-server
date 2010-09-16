@@ -54,6 +54,23 @@
 		</pluginRepository>
 	</pluginRepositories>
 
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-backend</artifactId>
+				<version>${google-layer-backend-version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-layer-openstreetmap</artifactId>
+				<version>${google-layer-osm-version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+	
 	<modules>
 		<module>google</module>
 	</modules>
@@ -71,5 +88,10 @@
 			</modules>
 		</profile>
 	</profiles>
+
+	<properties>
+		<google-layer-backend-version>1.7.1</google-layer-backend-version>
+		<google-layer-osm-version>1.8.0-SNAPSHOT</google-layer-osm-version>
+	</properties>
 	
 </project>

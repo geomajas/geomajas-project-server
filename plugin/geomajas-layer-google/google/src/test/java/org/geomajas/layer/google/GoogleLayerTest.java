@@ -4,6 +4,7 @@ import java.util.List;
 
 import junit.framework.Assert;
 
+import org.geomajas.layer.osm.TiledRasterLayerService;
 import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.service.GeoService;
 import org.junit.Test;
@@ -17,7 +18,7 @@ import com.vividsolutions.jts.geom.Envelope;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
-		"/org/geomajas/layer/google/googleContext.xml" })
+		"/googleContext.xml"})
 public class GoogleLayerTest {
 
 	private static final double ZOOMED_IN_SCALE = .0001;
@@ -40,8 +41,8 @@ public class GoogleLayerTest {
 
 	@Test
 	public void testPaintOutOfBounds() throws Exception {
-		double equator = GoogleLayer.EQUATOR_IN_METERS;
-		List<RasterTile> tiles = google.paint(geoService.getCrs("EPSG:900913"),
+		double equator = TiledRasterLayerService.EQUATOR_IN_METERS;
+		List<RasterTile> tiles = google.paint(google.getCrs(),
 				new Envelope(-equator, equator, -equator, equator), 256 / equator);
 		Assert.assertEquals(1, tiles.size());
 		Assert.assertEquals("http://mt0.google.com/vt?v=w2.95&x=0&y=0&z=0", tiles.iterator().next().getUrl());
@@ -49,8 +50,8 @@ public class GoogleLayerTest {
 
 	@Test
 	public void testPaintToTheSide() throws Exception {
-		double equator = GoogleLayer.EQUATOR_IN_METERS;
-		List<RasterTile> tiles = google.paint(geoService.getCrs("EPSG:900913"),
+		double equator = TiledRasterLayerService.EQUATOR_IN_METERS;
+		List<RasterTile> tiles = google.paint(google.getCrs(),
 				new Envelope(equator * 2 / 3, (equator * 2 / 3) + 100, 0, 100), ZOOMED_IN_SCALE);
 		Assert.assertEquals(0, tiles.size());
 	}

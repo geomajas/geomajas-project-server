@@ -63,7 +63,7 @@ public class TiledRasterLayerServiceState {
 
 
 	public TiledRasterLayerServiceState(List<String> tileUrls, int tileSize, int maxZoomLevel) {
-		this.tileUrls = tileUrls;
+		setTileUrls(tileUrls);
 		this.tileSize = tileSize;
 		this.maxZoomLevel = maxZoomLevel;
 	}
@@ -107,6 +107,7 @@ public class TiledRasterLayerServiceState {
 
 	public void setUrlSelectionStrategy(UrlSelectionStrategy urlStrategy) {
 		this.urlStrategy = urlStrategy;
+		urlStrategy.setUrls(tileUrls);
 	}
 
 	public List<String> getTileUrls() {
@@ -115,6 +116,9 @@ public class TiledRasterLayerServiceState {
 
 	public void setTileUrls(List<String> tileUrls) {
 		this.tileUrls = tileUrls;
+		if (null != urlStrategy) {
+			urlStrategy.setUrls(tileUrls);
+		}
 	}
 
 	public Envelope getMaxBounds() {
@@ -136,8 +140,6 @@ public class TiledRasterLayerServiceState {
 		Bbox bbox = new Bbox(-20026376.393709917, -20026376.393709917, 40052752.787419834, 40052752.787419834);
 		layerInfo.setMaxExtent(bbox);
 		maxBounds = converterService.toInternal(bbox);
-
-		urlStrategy.setUrls(tileUrls);
 
 		resolutions = new double[maxZoomLevel + 1];
 		double powerOfTwo = 1;
