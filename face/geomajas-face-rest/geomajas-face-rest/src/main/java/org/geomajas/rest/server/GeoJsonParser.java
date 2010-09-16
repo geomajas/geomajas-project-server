@@ -24,14 +24,7 @@ package org.geomajas.rest.server;
 
 import java.io.IOException;
 
-import org.geotools.feature.FeatureCollection;
-import org.geotools.geojson.feature.FeatureJSON;
-import org.geotools.geojson.geom.GeometryJSON;
-import org.opengis.feature.Feature;
-import org.opengis.feature.simple.SimpleFeature;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-
-import com.vividsolutions.jts.geom.Geometry;
+import org.geotools.geojson.GeoJSON;
 
 /**
  * Parses and produces GeoJSON.
@@ -41,30 +34,12 @@ import com.vividsolutions.jts.geom.Geometry;
  */
 public class GeoJsonParser {
 
-	private GeometryJSON gjson = new GeometryJSON();
-
-	private  FeatureJSON fjson = new FeatureJSON();
-
 	public Object read(Object input) throws IOException {
-		throw new UnsupportedOperationException();
+		return GeoJSON.read(input);
 	}
 
 	public void write(Object obj, Object output) throws IOException {
-		if (obj instanceof Geometry) {
-			gjson.write((Geometry) obj, output);
-		} else if (obj instanceof Feature || obj instanceof CoordinateReferenceSystem
-				|| obj instanceof FeatureCollection) {
-			if (obj instanceof SimpleFeature) {
-				fjson.writeFeature((SimpleFeature) obj, output);
-			} else if (obj instanceof FeatureCollection) {
-				fjson.writeFeatureCollection((FeatureCollection) obj, output);
-			} else if (obj instanceof CoordinateReferenceSystem) {
-				fjson.writeCRS((CoordinateReferenceSystem) obj, output);
-			} else {
-				throw new IllegalArgumentException("Unable able to encode object of type " + obj.getClass());
-			}
-
-		}
+		GeoJSON.write(obj, output);
 	}
 
 }

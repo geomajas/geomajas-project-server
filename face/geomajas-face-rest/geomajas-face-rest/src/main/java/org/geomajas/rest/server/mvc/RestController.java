@@ -62,7 +62,7 @@ import com.vividsolutions.jts.geom.Envelope;
  * 
  */
 
-@Controller("restController")
+@Controller("/rest/**")
 public class RestController {
 
 	@Autowired

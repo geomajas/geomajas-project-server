@@ -9,6 +9,8 @@ import java.util.Map;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.rest.server.RestException;
 import org.geomajas.security.SecurityManager;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -84,9 +86,25 @@ public class RestControllerTest {
 
 		view.render(mav.getModel(), request, response);
 		response.flushBuffer();
-		// TODO: fix for date GEOT-3266
-		// Object json = new JSONParser().parse(response.getContentAsString());
-		// Assert.assertTrue(json instanceof JSONObject);
+		Object json = new JSONParser().parse(response.getContentAsString());
+		Assert.assertTrue(json instanceof JSONObject);
+		Assert
+				.assertEquals(
+						"{\"type\":\"Feature\"," +
+						"\"geometry\":{\"type\":\"MultiPolygon\"," +
+						"\"coordinates\":[[[[0.0,0.0],[1,0.0],[1,1],[0.0,1],[0.0,0.0]]]]}," +
+						"\"properties\":{" +
+						"\"stringAttr\":\"bean1\"," +
+						"\"booleanAttr\":true," +
+						"\"currencyAttr\":\"100,23\"," +
+						"\"dateAttr\":\"2010-02-22T23:00:00.000+0000\"," +
+						"\"doubleAttr\":123.456,\"floatAttr\":456.789," +
+						"\"imageUrlAttr\":\"http://www.geomajas.org/image1\"," +
+						"\"integerAttr\":789,\"longAttr\":123456789," +
+						"\"shortAttr\":123," +
+						"\"urlAttr\":\"http://www.geomajas.org/url1\"}," +
+						"\"id\":\"1\"}",
+						response.getContentAsString());
 
 	}
 
@@ -108,7 +126,7 @@ public class RestControllerTest {
 		}
 
 	}
-	
+
 	@Test
 	public void testFeaturePaging() throws Exception {
 		MockHttpServletRequest request = new MockHttpServletRequest();
@@ -117,7 +135,7 @@ public class RestControllerTest {
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		// check all
 		ModelAndView mav = adapter.handle(request, response, restController);
-		Assert.assertEquals(Arrays.asList("1","2","3"), getIdsFromModel(mav.getModel()));
+		Assert.assertEquals(Arrays.asList("1", "2", "3"), getIdsFromModel(mav.getModel()));
 		// check first 1
 		request.setParameter("maxFeatures", "1");
 		mav = adapter.handle(request, response, restController);
@@ -125,14 +143,14 @@ public class RestControllerTest {
 		// check first 2
 		request.setParameter("maxFeatures", "2");
 		mav = adapter.handle(request, response, restController);
-		Assert.assertEquals(Arrays.asList("1","2"), getIdsFromModel(mav.getModel()));
+		Assert.assertEquals(Arrays.asList("1", "2"), getIdsFromModel(mav.getModel()));
 		// check 1 -3
 		request.setParameter("maxFeatures", "2");
 		request.setParameter("offset", "1");
 		mav = adapter.handle(request, response, restController);
-		Assert.assertEquals(Arrays.asList("2","3"), getIdsFromModel(mav.getModel()));
+		Assert.assertEquals(Arrays.asList("2", "3"), getIdsFromModel(mav.getModel()));
 	}
-	
+
 	@Test
 	public void testOrdering() throws Exception {
 		MockHttpServletRequest request = new MockHttpServletRequest();
@@ -143,9 +161,9 @@ public class RestControllerTest {
 		request.setParameter("order_by", "stringAttr");
 		request.setParameter("dir", "DESC");
 		ModelAndView mav = adapter.handle(request, response, restController);
-		Assert.assertEquals(Arrays.asList("3","2","1"), getIdsFromModel(mav.getModel()));
+		Assert.assertEquals(Arrays.asList("3", "2", "1"), getIdsFromModel(mav.getModel()));
 	}
-	
+
 	@Test
 	public void testAttributeFiltering() throws Exception {
 		MockHttpServletRequest request = new MockHttpServletRequest();
@@ -162,9 +180,9 @@ public class RestControllerTest {
 		request.setParameter("queryable", "doubleAttr");
 		request.setParameter("doubleAttr_lt", "200");
 		request.setParameter("doubleAttr_gt", "100");
-		Assert.assertEquals(Arrays.asList("2"), getIdsFromModel(mav.getModel()));		
-	} 
-	
+		Assert.assertEquals(Arrays.asList("2"), getIdsFromModel(mav.getModel()));
+	}
+
 	@Test
 	public void testWrongLayerId() {
 		MockHttpServletRequest request = new MockHttpServletRequest();
@@ -176,7 +194,7 @@ public class RestControllerTest {
 			Assert.fail("layer badlayer should not exist");
 		} catch (Exception e) {
 			Assert.assertTrue(e instanceof RestException);
-			Assert.assertEquals(RestException.PROBLEM_READING_LAYERSERVICE, ((RestException)e).getExceptionCode());
+			Assert.assertEquals(RestException.PROBLEM_READING_LAYERSERVICE, ((RestException) e).getExceptionCode());
 		}
 	}
 
@@ -191,7 +209,7 @@ public class RestControllerTest {
 			Assert.fail("feature 200 should not exist");
 		} catch (Exception e) {
 			Assert.assertTrue(e instanceof RestException);
-			Assert.assertEquals(RestException.FEATURE_NOT_FOUND, ((RestException)e).getExceptionCode());
+			Assert.assertEquals(RestException.FEATURE_NOT_FOUND, ((RestException) e).getExceptionCode());
 		}
 	}
 
@@ -208,7 +226,7 @@ public class RestControllerTest {
 			Assert.fail("attribute noSuchAttr should not exist");
 		} catch (Exception e) {
 			Assert.assertTrue(e instanceof RestException);
-			Assert.assertEquals(RestException.PROBLEM_READING_LAYERSERVICE, ((RestException)e).getExceptionCode());
+			Assert.assertEquals(RestException.PROBLEM_READING_LAYERSERVICE, ((RestException) e).getExceptionCode());
 		}
 	}
 
@@ -219,7 +237,7 @@ public class RestControllerTest {
 		ArrayList<String> ids = new ArrayList<String>();
 		for (Object f : ff) {
 			Assert.assertTrue(f instanceof InternalFeature);
-			ids.add(((InternalFeature)f).getId());
+			ids.add(((InternalFeature) f).getId());
 		}
 		return ids;
 	}
