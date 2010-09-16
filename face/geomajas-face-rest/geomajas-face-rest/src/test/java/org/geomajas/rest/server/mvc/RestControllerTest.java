@@ -5,10 +5,12 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.rest.server.RestException;
 import org.geomajas.security.SecurityManager;
+import org.geotools.geojson.GeoJSONUtil;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.junit.Assert;
@@ -18,6 +20,7 @@ import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ContextConfiguration;
@@ -37,12 +40,14 @@ public class RestControllerTest {
 	private final Logger log = LoggerFactory.getLogger(RestControllerTest.class);
 
 	@Autowired
+	@Qualifier("/rest/**")
 	RestController restController;
 
 	@Autowired
 	private SecurityManager securityManager;
 
 	@Autowired
+	@Qualifier("GeoJSONView")
 	private View view;
 
 	private HandlerAdapter adapter;
@@ -87,6 +92,7 @@ public class RestControllerTest {
 		view.render(mav.getModel(), request, response);
 		response.flushBuffer();
 		Object json = new JSONParser().parse(response.getContentAsString());
+		String isodate = GeoJSONUtil.DATE_FORMAT.format(c.getTime());
 		Assert.assertTrue(json instanceof JSONObject);
 		Assert
 				.assertEquals(
@@ -97,7 +103,7 @@ public class RestControllerTest {
 						"\"stringAttr\":\"bean1\"," +
 						"\"booleanAttr\":true," +
 						"\"currencyAttr\":\"100,23\"," +
-						"\"dateAttr\":\"2010-02-22T23:00:00.000+0000\"," +
+						"\"dateAttr\":\""+isodate+"\"," +
 						"\"doubleAttr\":123.456,\"floatAttr\":456.789," +
 						"\"imageUrlAttr\":\"http://www.geomajas.org/image1\"," +
 						"\"integerAttr\":789,\"longAttr\":123456789," +
