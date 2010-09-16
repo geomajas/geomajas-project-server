@@ -41,6 +41,18 @@
 			<version>1.8.0-SNAPSHOT</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-impl</artifactId>
+			<version>1.8.0-SNAPSHOT</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-layer-geotools</artifactId>
+			<version>1.7.1</version>
+		</dependency>
+		
 		<!-- logging dependencies, delegate all to slf4j and use logback -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
