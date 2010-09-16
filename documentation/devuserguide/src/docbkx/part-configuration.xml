@@ -334,8 +334,8 @@
 
                   <entry>The coordinate reference system, expressed as
                   "EPSG:&lt;srid&gt;". This is probably determined by the
-                  layer, but has to be specified anyhow as we have no
-                  auto detection in place yet.</entry>
+                  layer, but has to be specified anyhow as we have no auto
+                  detection in place yet.</entry>
                 </row>
 
                 <row>
@@ -530,8 +530,7 @@
 
         <mediaobject>
           <imageobject>
-            <imagedata fileref="images/clientConfiguration.png"
-                       width="100%" />
+            <imagedata fileref="images/clientConfiguration.png" width="100%" />
           </imageobject>
         </mediaobject>
       </figure>
@@ -708,6 +707,116 @@
     managers should be possible. This will be investigated and fixed in the
     future. In practice this means that you currently must not mix editable
     layers which require a different transaction manager.</para>
+  </chapter>
+
+  <chapter>
+    <title>Dispatcher servlet configuration</title>
+
+    <para>Additional servlet configuration may be needed for any plugin that
+    wants to support its own client-server communication protocol. This is
+    typically the case for faces, but in general any plugin that needs a form
+    of communication that does not match the default command structure should
+    be able to add its own endpoint to the dispatcher servlet. Fortunately,
+    Spring MVC has a very simple architecture to accomplish this. In general,
+    a single MVC dispatcher branch consists of three elements:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para>A chandler mapping, whose function it is to map servlet requests
+        to handlers (based on the url pattern)</para>
+      </listitem>
+
+      <listitem>
+        <para>A handler or controller, whose function it is to handle the
+        actual request and - in most cases - decide which of the views will
+        handle the response</para>
+      </listitem>
+
+      <listitem>
+        <para>A view, whose function it is to prepare the response data and
+        send them to the client</para>
+      </listitem>
+    </itemizedlist>
+
+    <para>Our default geomajasWebContext.xml configuration in
+    geomajas-common-servlet looks as follows:</para>
+
+    <programlisting>&lt;beans ...&gt;
+    &lt;!-- we use the default BeanNameUrlHandlerMapping for mapping to controllers --&gt;
+    &lt;bean id="defaultHandlerMapping" class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping"&gt;   
+        &lt;!-- need security  --&gt;
+        &lt;property name="interceptors"&gt;
+            &lt;list&gt;
+               &lt;ref bean="securityInterceptor" /&gt;
+            &lt;/list&gt;
+        &lt;/property&gt;
+    &lt;/bean&gt;
+
+    &lt;bean id="securityInterceptor" class="org.geomajas.servlet.mvc.SecurityInterceptor"&gt;&lt;/bean&gt;
+
+    &lt;!--  we need a view resolver --&gt;
+    &lt;bean class="org.springframework.web.servlet.view.BeanNameViewResolver"&gt;&lt;/bean&gt;
+
+    &lt;context:component-scan base-package="org.geomajas.servlet"/&gt;
+&lt;/beans&gt;
+</programlisting>
+
+    <para> It contains a default handler mapping which maps urls to controller
+    beans based on the name of the bean. This means that the controller's name
+    should actually be the part of the url that follows the dispatcher
+    servlet's base path (including wild cards if more than one url has to be
+    mapped). </para>
+
+    <para>The interceptor property is added to make sure that a secure context
+    is set up when accessing the Geomajas server. The interceptor assumes that
+    a parameter <code>userToken</code> will be passed as part of the HTTP
+    request. The value of the parameter should be equal to the user token
+    received from the authentication service.</para>
+
+    <para>The bean name view resolver kicks in when the controller returns a
+    string value or sets the view name in the <code>ModelAndView</code> object
+    (we will come to this later). It will invoke the correct view based on the
+    bean name specified by the controller.</para>
+
+    <para>With the current setup all the wiring between urls, controllers and
+    views can be done via annotations. Assume the base dispatcher url is
+    <code>http://localhost:8080/geomajas/d </code>and we want to set up a
+    specific end point for all urls with follow the pattern
+    <code>http://localhost:8080/geomajas/d/mymodule/**</code>. It is than
+    sufficient to create a controller component with the name<code>
+    /mymodule/**</code> and return the name of the view bean (which itself can
+    be a component) in the controller method:</para>
+
+    <para><programlisting>@Controller("/mymodule/**")
+public class MyController {
+    @RequestMapping(value = "/mymodule/test.html", method = RequestMethod.GET)
+    public String doMyStuff(@RequestParam("test") String test, Model model){
+        return "MyView";
+    }
+}
+</programlisting>Notice that apart from the annotations there is nothing
+    special about this class. Spring MVC autodetects the mapping based on the
+    <code>@Request</code>Mapping annotation (which in this case narrows down
+    the url to a specific one) and will even map request parameters to method
+    arguments if they are annotated with <code>@RequestParam</code>. The model
+    argument is basically just a hashmap to store the result of the operation
+    as needed by the view. There are actually many more advanced
+    possibilities, for which you may want to consult the Spring documentation.
+    If the method returns a string like above, this string will be used to
+    determine the view object, which could be the following bean:</para>
+
+    <para><programlisting>@Component("MyView")
+public class MyView extends AbstractView {
+    @Override
+    protected void renderMergedOutputModel(Map&lt;String, Object&gt; model, HttpServletRequest request,
+        HttpServletResponse response) throws Exception {
+        // write response using the model
+    }
+}
+</programlisting>Views are generally responsible for encoding the result in a
+    specified format (e.g. JSON, XML,...). The result itself can be retrieved
+    from the model argument, which will have the same contents as the model
+    argument in the controller.</para>
   </chapter>
 
   <chapter>
