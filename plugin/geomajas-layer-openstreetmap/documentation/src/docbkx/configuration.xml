@@ -32,7 +32,7 @@
     <title>Dependencies</title>
 
     <para>Make sure your include the plug-in in your project. If you are using
-    maven and the geomajas-dep dependency to manage versions, include
+    Maven and the geomajas-dep dependency to manage versions, include
     following dependency to your pom:</para>
 
     <example>
@@ -121,7 +121,7 @@
 
       <para>For example, the sample below uses the cycle map tiles and selects
       the class to use for the URL selection strategy (this needs to implement
-      UrlSelectionStrategy.</para>
+      UrlSelectionStrategy).</para>
 
       <xi:include href="listing/OsmCustomUrlStrategy.xml"
                   xmlns:xi="http://www.w3.org/2001/XInclude" />

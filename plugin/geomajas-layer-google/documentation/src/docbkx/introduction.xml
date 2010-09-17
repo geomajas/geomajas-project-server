@@ -28,7 +28,9 @@
 
   <para>The Google layer allows you to use Google maps imagery as a raster
   layer in Geomajas. There are three possible types of images which can be
-  displayed, </para>
+  displayed: the normal view displays street data, satellite view displays
+  satellite images and physical view displays a hybrid of street and elevation
+  information.</para>
 
   <figure>
     <title>Google layer formats, normal, satellite and hybrid</title>
@@ -41,6 +43,15 @@
   </figure>
 
   <para></para>
+
+  <note>
+    <para>Use of the Google Maps images is subject to Googles terms of use.
+    For details, check with Google, though the following URLs may help you
+    <ulink
+    url="http://code.google.com/intl/nl/apis/maps/terms.html">http://code.google.com/intl/nl/apis/maps/terms.html</ulink>
+    and <ulink
+    url="http://www.google.com/intl/en_ALL/help/terms_maps.html">http://www.google.com/intl/en_ALL/help/terms_maps.html</ulink>.</para>
+  </note>
 
   <para></para>
 </chapter>

@@ -32,29 +32,117 @@
     <title>Dependencies</title>
 
     <para>Make sure your include the plug-in in your project. If you are using
-    Maven, add the following dependency to your pom:</para>
+    Maven and the geomajas-dep dependency to manage versions, include
+    following dependency to your pom:</para>
 
     <example>
-      <title>Google layer dependency</title>
+      <title>Google layer dependency, using geomajas-dep</title>
 
       <programlisting>&lt;dependency&gt;
     &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
     &lt;artifactId&gt;geomajas-layer-google&lt;/artifactId&gt;
-    &lt;version&gt;${geomajas-layer-google-version}&lt;/version&gt;
+&lt;/dependency&gt;</programlisting>
+    </example>
+
+    <para>If you are not using geomajas-dep to manage versions, then you need
+    to mention the version explicitly.</para>
+
+    <example>
+      <title>Google layer dependency, explicit version</title>
+
+      <programlisting>&lt;dependency&gt;
+    &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
+    &lt;artifactId&gt;geomajas-layer-google&lt;/artifactId&gt;
+    &lt;version&gt;<?eval ${project.version}?>&lt;/version
+&lt;/dependency&gt;</programlisting>
+    </example>
+
+    <para>If you want to use these as part of an application using the GWT
+    face, then the dependencies change to:</para>
+
+    <example>
+      <title>Google layer dependency for GWT, using geomajas-dep</title>
+
+      <programlisting>&lt;dependency&gt;
+    &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
+    &lt;artifactId&gt;geomajas-layer-google-gwt&lt;/artifactId&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
+    &lt;artifactId&gt;geomajas-layer-google-gwt&lt;/artifactId&gt;
+    &lt;classifier&gt;sources&lt;/classifier&gt;
+&lt;/dependency&gt;
+</programlisting>
+    </example>
+
+    <para>If you are not using geomajas-dep to manage versions, then you need
+    to mention the version explicitly.</para>
+
+    <example>
+      <title>Google layer dependency for GWT, explicit version</title>
+
+      <programlisting>&lt;dependency&gt;
+    &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
+    &lt;artifactId&gt;geomajas-layer-google-gwt&lt;/artifactId&gt;
+    &lt;version&gt;<?eval ${project.version}?>&lt;/version
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
+    &lt;artifactId&gt;geomajas-layer-google-gwt&lt;/artifactId&gt;
+    &lt;classifier&gt;sources&lt;/classifier&gt;
+    &lt;version&gt;<?eval ${project.version}?>&lt;/version&gt;
 &lt;/dependency&gt;</programlisting>
     </example>
   </section>
 
   <section>
-    <title>Google Maps layer configuration</title>
+    <title>Google raster layer</title>
 
-    <para>A complete Google layer configuration looks as follows:</para>
+    <section>
+      <title>Base configuration</title>
 
-    <xi:include href="listing/GoogleLayerSample.xml"
-                xmlns:xi="http://www.w3.org/2001/XInclude" />
+      <warning>
+        <para>When using the Google layer, it is your responsibility to comply
+        with the Google's terms of use. Some sources of information about
+        these terms include <ulink
+        url="http://code.google.com/apis/maps/">http://code.google.com/apis/maps/</ulink>,
+        <ulink
+        url="http://code.google.com/intl/nl/apis/maps/terms.html">http://code.google.com/intl/nl/apis/maps/terms.html</ulink>
+        and <ulink
+        url="http://www.google.com/intl/en_ALL/help/terms_maps.html">http://www.google.com/intl/en_ALL/help/terms_maps.html</ulink>.
+        Some of the things you need to do include adding the Google API code
+        in your application (using a Google API key when not running on
+        localhost), and (from the GWT face), using the
+        <code>GoogleAddon</code> class to assure the copyright notices are
+        displayed on the map.</para>
+      </warning>
 
-    <para><table>
-        <title>GoogleLayer configuration</title>
+      <para>A base Google layer configuration looks as follows:</para>
+
+      <xi:include href="listing/SimpleGoogleConfig.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+      <warning>
+        <para>If you are using 1.7.1 or earlier of the OpenStreetMap plug-in
+        then this configuration will not work. In that version we simplified
+        configuration by not forcing you to configure values you are not
+        allowed to change anyway. For the old version, the configuration would
+        look like this:</para>
+
+        <xi:include href="listing/GoogleLayerSample.xml"
+                    xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+        <para>Note that these older versions do not allow all of the other
+        configurations.</para>
+      </warning>
+
+      <para>You can add some properties to define the kind of images which are
+      produced. By default, the layer displays road information, but this can
+      be changed to either satellite or physical (roads+elevation) imagery.
+      The view style modes are exclusive, last set will be valid</para>
+
+      <table>
+        <title>GoogleLayer image type configuration</title>
 
         <tgroup cols="2">
           <colspec colnum="1" colwidth="1*" />
@@ -95,31 +183,85 @@
             </row>
           </tbody>
         </tgroup>
-      </table></para>
+      </table>
 
-    <para>The layer info inner bean has the same general content as usual.
-    There are some simplifications though. There is no need to provide
-    resolutions or tile size (256x256 is always used). The crs should always
-    be set to Mercator ("EPSG:900913").</para>
+      <para>These are used in the following configuration.</para>
 
-    <para>On the layer, you can set the "satellite" or "physical" property to
-    choose between using normal display (showing streets), satellite view (by
-    setting this to "true"), or physical view (the modes are exclusive, last
-    set will be valid). You can also set the maximum tile level on the layer,
-    this defaults to 19 which is supported by Google in most places.</para>
+      <xi:include href="listing/GoogleSatellite.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-    <para>You can also set the display type using the dataSourceName parameter
-    of layerInfo, for example for physical use
-    G_PHYSICAL_MAP@GoogleLayer.</para>
+      <para>Alternatively, you can also configure the display style using the
+      dataSourceName property in the layer info. This is shown in the example
+      below. However, it is preferred to use the properties on the layer
+      itself. This can be useful for the dojo face, which uses this property
+      to detect Google layers. Note that the suffix "@GoogleLayer" will
+      automatically be added. Possible values are "G_NORMAL_MAP",
+      "G_SATELLITE_MAP" and "G_PHYSICAL_MAP".</para>
 
-    <note>
-      <para>You need to assure that you comply with Google's terms of use (see
-      <ulink
-      url="http://code.google.com/apis/maps/">http://code.google.com/apis/maps/</ulink>).
-      Some of the things you need to do include adding the Google API code in
-      your application (using a Google API key when not running on localhost),
-      and (from the GWT face, using the <code>GoogleAddon</code> class to
-      assure the copyright notes are displayed on the map.</para>
-    </note>
+      <xi:include href="listing/GoogleSatelliteDs.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
+    </section>
+
+    <section>
+      <title>Image source configuration</title>
+
+      <para>You can also force the set of URLs to choose from, as in the
+      following example. Note that this may fail when setting the image type.
+      You can define the different options using ${level}, ${x} and ${y} for
+      the zoom level and tile coordinate. A simple configuration looks like
+      this:</para>
+
+      <xi:include href="listing/GoogleCustomUrls.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+      <para>The Google layer allows configuration of the strategy to choose
+      the server to provide the tiles. Each of the image types can be served
+      from four servers. The default behaviour is to select the server using a
+      round robin strategy.</para>
+
+      <para>The strategy can also be configured. For example, the sample below
+      selects the class to use for the URL selection strategy (this needs to
+      implement UrlSelectionStrategy).</para>
+
+      <xi:include href="listing/GoogleCustomUrlStrategy.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+      <para></para>
+    </section>
+
+    <section>
+      <title>Zoom level configuration</title>
+
+      <para>By default the maximum zoom level is 19, but this can be modified
+      using the maxZoomLevel property if your data source supports a different
+      level.</para>
+
+      <xi:include href="listing/GoogleMaxZoomLevelConfig.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
+    </section>
+  </section>
+
+  <section>
+    <title>Using the Google map add-on</title>
+
+    <para>To enable the display of copyright information on the map (to comply
+    with Google's terms of use), you should use the GoogleAddon. This can be
+    done using a line of code like:</para>
+
+    <example>
+      <title>Using the GoogleAddon</title>
+
+      <programlisting>map.registerMapAddon(
+    new GoogleAddon("google", map, GoogleAddon.MapType.SATELLITE, false));</programlisting>
+    </example>
+
+    <para>This needs to be called on the MapWidget object. The first parameter
+    is the DOM id for the object, the second the map widget itself, the third
+    the type of imagery which needs to be used and the last indicates whether
+    the Google map should be made visible.</para>
+
+    <para>Note that you will need to add the Google API key in your html
+    source file to assure this can work (otherwise you will probably get an
+    exception from Google when not accessing the page on localhost.</para>
   </section>
 </chapter>

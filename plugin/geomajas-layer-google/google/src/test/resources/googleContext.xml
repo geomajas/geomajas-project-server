@@ -84,7 +84,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		</property>
 	</bean>
 
-	<!-- @extract-start OsmCustomUrlStrategy, Using a custom URL selection strategy -->
+	<!-- @extract-start GoogleCustomUrlStrategy, Using a custom URL selection strategy -->
 	<bean name="googleStrategy" class="org.geomajas.layer.google.GoogleLayer">
 		<property name="urlSelectionStrategy">
 			<bean class="org.geomajas.layer.google.LastUrlSelectionStrategy" />
@@ -93,10 +93,12 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 	<!-- @extract-end -->
 
 
+	<!-- @extract-start GoogleSatellite, Configure to use satellite images and increase max zoom level -->
 	<bean name="satellite" class="org.geomajas.layer.google.GoogleLayer" >
 		<property name="satellite" value="true" />
 		<property name="maxZoomLevel" value="21" />
 	</bean>
+	<!-- @extract-end -->
 
 	<bean name="physical" class="org.geomajas.layer.google.GoogleLayer" >
 		<property name="physical" value="true" />
@@ -112,6 +114,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		</property>
 	</bean>
 
+	<!-- @extract-start GoogleSatelliteDs, Configure to use satellite images and increase max zoom level -->
 	<bean name="satelliteDs" class="org.geomajas.layer.google.GoogleLayer" >
 		<property name="layerInfo">
 			<bean class="org.geomajas.configuration.RasterLayerInfo">
@@ -120,6 +123,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 			</bean>
 		</property>
 	</bean>
+	<!-- @extract-end -->
 
 	<bean name="physicalDs" class="org.geomajas.layer.google.GoogleLayer" >
 		<property name="layerInfo">
