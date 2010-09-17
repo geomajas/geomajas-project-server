@@ -60,47 +60,47 @@
 
   <itemizedlist>
     <listitem>
-       maven central: http://repo1.maven.org/maven2/ 
+       <para>maven central: http://repo1.maven.org/maven2/</para>
     </listitem>
 
     <listitem>
-       java.net repo: http://download.java.net/maven/2/ 
+       <para>java.net repo: http://download.java.net/maven/2/</para>
     </listitem>
 
     <listitem>
-       jts4gwt: http://jts4gwt.sourceforge.net/maven/repository/ 
+       <para>jts4gwt: http://jts4gwt.sourceforge.net/maven/repository/</para>
     </listitem>
 
     <listitem>
-       OSGeo: http://download.osgeo.org/webdav/geotools/ 
+       <para>OSGeo: http://download.osgeo.org/webdav/geotools/</para>
     </listitem>
 
     <listitem>
-       refractions: http://lists.refractions.net/m2 
+       <para>refractions: http://lists.refractions.net/m2</para>
     </listitem>
 
     <listitem>
-       smartgwt: http://www.smartclient.com/maven2 
+       <para>smartgwt: http://www.smartclient.com/maven2</para>
     </listitem>
 
     <listitem>
-       spring milestones: http://repository.springsource.com/maven/bundles/milestone 
+       <para>spring milestones: http://repository.springsource.com/maven/bundles/milestone</para>
     </listitem>
 
     <listitem>
-       spring releases: http://repository.springsource.com/maven/bundles/release 
+       <para>spring releases: http://repository.springsource.com/maven/bundles/release</para>
     </listitem>
 
     <listitem>
-       selenium: http://nexus.openqa.org/content/repositories/releases 
+       <para>selenium: http://nexus.openqa.org/content/repositories/releases</para>
     </listitem>
 
     <listitem>
-       selenium snapshots: http://nexus.openqa.org/content/repositories/snapshots 
+       <para>selenium snapshots: http://nexus.openqa.org/content/repositories/snapshots</para>
     </listitem>
 
     <listitem>
-       hibernate-spatial: http://www.hibernatespatial.org/repository 
+       <para>hibernate-spatial: http://www.hibernatespatial.org/repository</para> 
     </listitem>
 
   </itemizedlist>
