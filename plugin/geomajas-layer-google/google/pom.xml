@@ -97,9 +97,4 @@
 			</resource>
 		</resources>
 	</build>
-
-	<properties>
-		<google-layer-backend-version>1.7.1</google-layer-backend-version>
-		<google-layer-osm-version>1.8.0-SNAPSHOT</google-layer-osm-version>
-	</properties>
 </project>

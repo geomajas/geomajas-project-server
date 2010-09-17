@@ -103,4 +103,31 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		<property name="maxZoomLevel" value="21" />
 	</bean>
 
+	<bean name="googleDs" class="org.geomajas.layer.google.GoogleLayer">
+		<property name="layerInfo">
+			<bean class="org.geomajas.configuration.RasterLayerInfo">
+				<property name="dataSourceName" value="G_NORMAL_MAP" />
+				<property name="crs" value="EPSG:900913"/> <!-- required property -->
+			</bean>
+		</property>
+	</bean>
+
+	<bean name="satelliteDs" class="org.geomajas.layer.google.GoogleLayer" >
+		<property name="layerInfo">
+			<bean class="org.geomajas.configuration.RasterLayerInfo">
+				<property name="dataSourceName" value="G_SATELLITE_MAP" />
+				<property name="crs" value="EPSG:900913"/> <!-- required property -->
+			</bean>
+		</property>
+	</bean>
+
+	<bean name="physicalDs" class="org.geomajas.layer.google.GoogleLayer" >
+		<property name="layerInfo">
+			<bean class="org.geomajas.configuration.RasterLayerInfo">
+				<property name="dataSourceName" value="G_PHYSICAL_MAP" />
+				<property name="crs" value="EPSG:900913"/> <!-- required property -->
+			</bean>
+		</property>
+	</bean>
+
 </beans>
