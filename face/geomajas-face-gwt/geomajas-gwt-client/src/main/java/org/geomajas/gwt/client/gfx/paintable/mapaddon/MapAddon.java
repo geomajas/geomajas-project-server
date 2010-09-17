@@ -24,6 +24,7 @@
 package org.geomajas.gwt.client.gfx.paintable.mapaddon;
 
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.global.Api;
 import org.geomajas.gwt.client.gfx.Paintable;
 
 import com.smartgwt.client.types.Alignment;
@@ -40,7 +41,9 @@ import com.smartgwt.client.types.VerticalAlignment;
  * </p>
  * 
  * @author Pieter De Graef
+ * @since 1.8.0
  */
+@Api
 public abstract class MapAddon implements Paintable {
 
 	private String id;
@@ -64,7 +67,7 @@ public abstract class MapAddon implements Paintable {
 	// -------------------------------------------------------------------------
 
 	/**
-	 * Package visible and only constructor. When creating your own MapAddons, always use this constructor! All
+	 * When creating your own MapAddons, always use this constructor! All
 	 * MapAddons are in essence paintable objects on the map and therefore require a unique identifier. For correct
 	 * placing the width and height are also required.
 	 * 
@@ -74,8 +77,10 @@ public abstract class MapAddon implements Paintable {
 	 *            The width of the MapAddon on the map.
 	 * @param height
 	 *            The height of the MapAddon on the map.
+	 * @since 1.8.0
 	 */
-	MapAddon(String id, int width, int height) {
+	@Api
+	public MapAddon(String id, int width, int height) {
 		this.id = id;
 		this.width = width;
 		this.height = height;

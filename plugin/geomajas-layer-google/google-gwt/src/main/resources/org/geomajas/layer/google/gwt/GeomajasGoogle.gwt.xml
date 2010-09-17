@@ -1,0 +1,7 @@
+<module>
+	<inherits name="org.geomajas.gwt.GeomajasClient"/>
+
+	<!-- make sure the default is there -->
+	<source path="client"/>
+
+</module>

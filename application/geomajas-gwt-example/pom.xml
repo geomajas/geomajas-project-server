@@ -61,7 +61,7 @@
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-dep</artifactId>
-				<version>1.10.34-SNAPSHOT</version>
+				<version>1.10.38-SNAPSHOT</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -97,6 +97,15 @@
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-layer-google</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-layer-google-gwt</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-layer-google-gwt</artifactId>
+			<classifier>sources</classifier>
 		</dependency>
 		<!-- @extract-end -->
 

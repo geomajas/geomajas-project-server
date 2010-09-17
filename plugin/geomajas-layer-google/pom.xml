@@ -73,6 +73,7 @@
 	
 	<modules>
 		<module>google</module>
+		<module>google-gwt</module>
 	</modules>
 
 	<profiles>

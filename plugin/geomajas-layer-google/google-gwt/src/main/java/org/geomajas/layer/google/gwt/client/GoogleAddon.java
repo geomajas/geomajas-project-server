@@ -21,19 +21,20 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.gwt.client.gfx.paintable.mapaddon;
-
-import org.geomajas.geometry.Coordinate;
-import org.geomajas.gwt.client.gfx.PainterVisitor;
-import org.geomajas.gwt.client.map.event.MapViewChangedEvent;
-import org.geomajas.gwt.client.map.event.MapViewChangedHandler;
-import org.geomajas.gwt.client.spatial.Bbox;
-import org.geomajas.gwt.client.widget.MapWidget;
+package org.geomajas.layer.google.gwt.client;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.user.client.DOM;
 import com.smartgwt.client.types.VerticalAlignment;
+import org.geomajas.geometry.Coordinate;
+import org.geomajas.global.Api;
+import org.geomajas.gwt.client.gfx.PainterVisitor;
+import org.geomajas.gwt.client.gfx.paintable.mapaddon.MapAddon;
+import org.geomajas.gwt.client.map.event.MapViewChangedEvent;
+import org.geomajas.gwt.client.map.event.MapViewChangedHandler;
+import org.geomajas.gwt.client.spatial.Bbox;
+import org.geomajas.gwt.client.widget.MapWidget;
 
 /**
  * <p>
@@ -45,11 +46,11 @@ import com.smartgwt.client.types.VerticalAlignment;
  * This MapAddon does not allow center positioning. Also it takes in the whole width of the map, so setting the
  * horizontal alignment is of little use. By default, this MapAddon will be placed 20 pixels from the bottom of the map.
  * </p>
- * 
+ *
  * @author Jan De Moerloose
- * @deprecated use org.geomajas.layer.gwt.client.GoogleAddon from the geomajas-layer-google-gwt module instead
+ * @since 1.8.0
  */
-@Deprecated
+@Api
 public class GoogleAddon extends MapAddon implements MapViewChangedHandler {
 
 	private MapWidget map;
@@ -71,6 +72,15 @@ public class GoogleAddon extends MapAddon implements MapViewChangedHandler {
 
 	// Constructor:
 
+	/**
+	 * Create the Google addon to assure the copyright details are displayed on the map.
+	 *
+	 * @param id element id
+	 * @param map map widget to display copyright on
+	 * @param type map type
+	 * @param showMap should the map be visible?
+	 */
+	@Api
 	public GoogleAddon(String id, MapWidget map, MapType type, boolean showMap) {
 		super(id, 0, 0);
 		this.map = map;

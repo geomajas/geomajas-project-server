@@ -27,12 +27,11 @@ import org.geomajas.example.gwt.client.samples.base.SamplePanel;
 import org.geomajas.example.gwt.client.samples.base.SamplePanelFactory;
 import org.geomajas.example.gwt.client.samples.i18n.I18nProvider;
 import org.geomajas.gwt.client.controller.PanController;
-import org.geomajas.gwt.client.gfx.paintable.mapaddon.GoogleAddon;
-import org.geomajas.gwt.client.gfx.paintable.mapaddon.GoogleAddon.MapType;
 import org.geomajas.gwt.client.widget.MapWidget;
 
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.layout.VLayout;
+import org.geomajas.layer.google.gwt.client.GoogleAddon;
 
 /**
  * Sample that shows two Google maps, one with normal, one satellite, one with terrain.
@@ -115,9 +114,10 @@ public class GoogleSample extends SamplePanel {
 
 	// @extract-start GoogleSample, GoogleSample
 	protected void onDraw() {
-		googleMap.registerMapAddon(new GoogleAddon("google", googleMap, MapType.NORMAL, false));
-		googleSatMap.registerMapAddon(new GoogleAddon("google", googleSatMap, MapType.SATELLITE, false));
-		googleTerrainMap.registerMapAddon(new GoogleAddon("google", googleTerrainMap, MapType.PHYSICAL, false));
+		googleMap.registerMapAddon(new GoogleAddon("google", googleMap, GoogleAddon.MapType.NORMAL, false));
+		googleSatMap.registerMapAddon(new GoogleAddon("google", googleSatMap, GoogleAddon.MapType.SATELLITE, false));
+		googleTerrainMap.registerMapAddon(new GoogleAddon("google", googleTerrainMap, GoogleAddon.MapType.PHYSICAL,
+				false));
 		MapSynchronizer synchronizer = new MapSynchronizer(googleMap.getMapModel().getMapView(), googleSatMap
 				.getMapModel().getMapView());
 		MapSynchronizer synchronizer2 = new MapSynchronizer(googleMap.getMapModel().getMapView(), googleTerrainMap

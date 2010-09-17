@@ -27,8 +27,6 @@ import org.geomajas.example.gwt.client.samples.base.EditingManual;
 import org.geomajas.example.gwt.client.samples.base.SamplePanel;
 import org.geomajas.example.gwt.client.samples.base.SamplePanelFactory;
 import org.geomajas.example.gwt.client.samples.i18n.I18nProvider;
-import org.geomajas.gwt.client.gfx.paintable.mapaddon.GoogleAddon;
-import org.geomajas.gwt.client.gfx.paintable.mapaddon.GoogleAddon.MapType;
 import org.geomajas.gwt.client.map.event.MapModelEvent;
 import org.geomajas.gwt.client.map.event.MapModelHandler;
 import org.geomajas.gwt.client.widget.MapWidget;
@@ -37,6 +35,7 @@ import org.geomajas.gwt.client.widget.Toolbar;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
+import org.geomajas.layer.google.gwt.client.GoogleAddon;
 
 /**
  * <p>
@@ -72,7 +71,7 @@ public class EditLineLayerSample extends SamplePanel {
 			// When the map is initialized: select the cities layer - so that new features are created in this layer:
 			public void onMapModelChange(MapModelEvent event) {
 				map.getMapModel().selectLayer(map.getMapModel().getLayer("editableRoadtrl020Layer"));
-				map.registerMapAddon(new GoogleAddon("google", map, MapType.SATELLITE, false));
+				map.registerMapAddon(new GoogleAddon("google", map, GoogleAddon.MapType.SATELLITE, false));
 			}
 		});
 
