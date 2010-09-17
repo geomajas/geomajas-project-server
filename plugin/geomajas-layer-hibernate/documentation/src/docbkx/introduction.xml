@@ -26,5 +26,44 @@
 <chapter id="chapter-introduction">
   <title>Introduction</title>
 
-  <para></para>
+  <para>This plug-in represents a vector layer implementation based upon the
+  popular Hibernate O/R mapping framework. It uses a special spatial extension
+  of Hibernate, unsurprisingly called Hibernate Spatial. The Hibernate Spatial
+  project has its project website at <ulink
+  url="http://www.hibernatespatial.org/">http://www.hibernatespatial.org</ulink>.
+  The spatial extensions or dialects (in Hibernate language), that Hibernate
+  Spatial adds, allow the definition of spatial types and the execution of
+  spatial queries in a database independent way.</para>
+
+  <para>At this moment, the Hibernate layer plug-in supports the following
+  databases:</para>
+
+  <itemizedlist>
+    <listitem>
+      <para>Oracle SDO; It has been tested with Oracle 10i, but it should work
+      equally well with Oracle 9i and Oracle 11g.</para>
+    </listitem>
+
+    <listitem>
+      <para>Postgresql/PostGIS: PostGIS 1.1.6 and higher.</para>
+    </listitem>
+
+    <listitem>
+      <para>Mircosoft SQL server 2008. Currently only the Geometry types are
+      supported.</para>
+    </listitem>
+
+    <listitem>
+      <para>MySQL: Works with MySQL 5.0 and higher. Note that MySQL does not
+      completely implement the OGC Simple Feature Specification. Some
+      functions that work for PostGIS or Oracle may fail to work for
+      MySQL.</para>
+    </listitem>
+  </itemizedlist>
+
+  <para>The real strength of this plug-in lies in the fact that it allows you
+  to deal with geographic data in a standardized way. It abstracts away from
+  the specific way your database supports geographic data, and provides a
+  standardized, cross-database interface to geographic data storage and query
+  functions.</para>
 </chapter>

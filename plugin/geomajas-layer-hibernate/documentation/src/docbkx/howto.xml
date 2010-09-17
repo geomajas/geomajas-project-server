@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
 "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
-
 <!--
   ~ This file is part of Geomajas, a component framework for building
   ~ rich Internet applications (RIA) with sophisticated capabilities for the
@@ -27,5 +26,240 @@
 <chapter id="chapter-howto">
   <title>How-to</title>
 
-  <para></para>
+  <para>This section covers a few specific cases that might come in handy when
+  really using the Geomajas Hibernate layer plug-in.</para>
+
+  <sect1>
+    <title>How to use a many-to-one relation</title>
+
+    <para>A many-to-one relation is the Hibernate term for what would in the
+    database world be called a foreign key. Say you have a table
+    ("areaofinterest") with a foreign key to some other table("aoitype"). In
+    order to get this relation configured as an attribute within the Geomajas
+    layer definition, the following must be done:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para>Both tables must actually exist in the database.</para>
+      </listitem>
+
+      <listitem>
+        <para>For both tables a Java O/R mapping class must be defined.</para>
+      </listitem>
+
+      <listitem>
+        <para>The Geomajas layer definition must include the many-to-one
+        relation in it's attribute definitions.</para>
+      </listitem>
+    </itemizedlist>
+
+    <sect2>
+      <title>Spatial database tables</title>
+
+      <para>This time, 2 tables must be present in the database, in order for
+      one to be able to point to the other. Let's say the second table,
+      containing the type, is very simple and holds only an ID and a
+      description:</para>
+
+      <example>
+        <title>SQL for creating a PostGIS spatial table</title>
+
+        <programlisting>CREATE TABLE aoitype (
+    id integer NOT NULL,
+    description character varying,
+);</programlisting>
+      </example>
+
+      <para>Now we have the "areaofinterest" table point to it with a foreign
+      key ("type_id"):</para>
+
+      <example>
+        <title>SQL for creating a PostGIS spatial table</title>
+
+        <programlisting>CREATE TABLE areaofinterest (
+    id integer NOT NULL,
+    title character varying(100) NOT NULL,
+    description character varying,
+    type_id integer NOT NULL,
+    geom geometry,
+    CONSTRAINT enforce_dims_geom CHECK ((ndims(geom) = 2)),
+    CONSTRAINT enforce_geotype_geom CHECK (((geometrytype(geom) = 'POLYGON'::text) OR (geom IS NULL))),
+    CONSTRAINT enforce_srid_geom CHECK ((srid(geom) = 900913))
+);
+
+ALTER TABLE ONLY areaofinterest ADD CONSTRAINT fk_areaofinterest_aoitype FOREIGN KEY (type_id) REFERENCES aoitype(id);</programlisting>
+      </example>
+    </sect2>
+
+    <sect2>
+      <title>Java O/R mapping</title>
+
+      <para>For both database table, we will now create Java mapping classes.
+      First the "aoitype":</para>
+
+      <example>
+        <title>AoiType class</title>
+
+        <programlisting>@Entity
+@Table(name = "aoitype")
+public class AoiType{
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "description")
+    private String description;
+
+    // Constructors, getters, and setters
+    ....</programlisting>
+      </example>
+
+      <para>We now update the AreaOfInterest class to include the ManyToOne
+      relation:</para>
+
+      <example>
+        <title>AreaOfInterest class</title>
+
+        <programlisting>@Entity
+@Table(name = "areaofinterest")
+public class AreaOfInterest {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false, name = "title")
+    private String title;
+
+    @Column(name = "description")
+    private String description;
+
+<emphasis role="bold">    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "type_id", nullable = false)
+    private AoiType type;</emphasis>
+
+    @Type(type = "org.hibernatespatial.GeometryUserType")
+    @Column(nullable = false, name = "geom")
+    private Geometry geometry;
+
+    // Constructors, getters, and setters
+    ....</programlisting>
+      </example>
+    </sect2>
+
+    <sect2>
+      <title>Vector layer configuration</title>
+
+      <para>Lastly, you add the new many-to-one relation to the list of
+      attributes:</para>
+
+      <example>
+        <title>VectorLayerInfo for the AreaOfInterest class</title>
+
+        <programlisting>...
+    &lt;property name="attributes"&gt;
+        &lt;list&gt;
+            &lt;bean class="org.geomajas.configuration.PrimitiveAttributeInfo"&gt;
+                &lt;property name="label" value="Title" /&gt;
+                &lt;property name="name" value="title" /&gt;
+                &lt;property name="editable" value="true" /&gt;
+                &lt;property name="identifying" value="true" /&gt;
+                &lt;property name="type" value="STRING" /&gt;
+            &lt;/bean&gt;
+            &lt;bean class="org.geomajas.configuration.PrimitiveAttributeInfo"&gt;
+                &lt;property name="label" value="Description" /&gt;
+                &lt;property name="name" value="description" /&gt;
+                &lt;property name="editable" value="true" /&gt;
+                &lt;property name="identifying" value="false" /&gt;
+                &lt;property name="type" value="STRING" /&gt;
+            &lt;/bean&gt;
+
+<emphasis role="bold">            &lt;bean class="org.geomajas.configuration.AssociationAttributeInfo"&gt;
+                &lt;property name="label" value="Type" /&gt;
+                &lt;property name="name" value="type" /&gt;
+                &lt;property name="editable" value="true" /&gt;
+                &lt;property name="identifying" value="false" /&gt;
+                &lt;property name="type" value="MANY_TO_ONE" /&gt;
+                &lt;property name="feature"&gt;
+                    &lt;bean class="org.geomajas.configuration.FeatureInfo"&gt;
+                        &lt;property name="dataSourceName" value="org.geomajas.server.pojo.AoiType" /&gt;
+                        &lt;property name="identifier"&gt;
+                            &lt;bean class="org.geomajas.configuration.PrimitiveAttributeInfo"&gt;
+                                &lt;property name="label" value="Id" /&gt;
+                                &lt;property name="name" value="id" /&gt;
+                                &lt;property name="type" value="LONG" /&gt;
+                            &lt;/bean&gt;
+                        &lt;/property&gt;
+                        &lt;property name="attributes"&gt;
+                            &lt;list&gt;
+                                &lt;bean class="org.geomajas.configuration.PrimitiveAttributeInfo"&gt;
+                                    &lt;property name="label" value="Description" /&gt;
+                                    &lt;property name="name" value="description" /&gt;
+                                    &lt;property name="editable" value="false" /&gt;
+                                    &lt;property name="identifying" value="true" /&gt;
+                                    &lt;property name="type" value="STRING" /&gt;
+                                &lt;/bean&gt;
+                            &lt;/list&gt;
+                        &lt;/property&gt;
+                    &lt;/bean&gt;
+                &lt;/property&gt;
+            &lt;/bean&gt;
+
+</emphasis>        &lt;/list&gt;
+    &lt;/property&gt;
+...</programlisting>
+      </example>
+    </sect2>
+  </sect1>
+
+  <sect1>
+    <title>How to use a one-to-many relation</title>
+
+    <para>TODO</para>
+  </sect1>
+
+  <sect1>
+    <title>How to create my own DAOs</title>
+
+    <para>If you have followed the configuration guidelines and made use of
+    the Spring configuration options, this will be a piece of cake: we simply
+    inject the SessionFactory at run-time into your DAO implementation, and
+    this SessionFactory will take care of all session and transaction
+    handling.</para>
+
+    <para>Say, for example, we have the following DAO interface:</para>
+
+    <example>
+      <title>DAO interface</title>
+
+      <programlisting>public interface ZoneDao {
+
+    List&lt;AreaOfInterest&gt; getByTitle(String title);
+}</programlisting>
+    </example>
+
+    <para>In this case, a possible implementation could look like this:</para>
+
+    <example>
+      <title>DAO implementation</title>
+
+      <programlisting>@Component
+@Transactional(rollbackFor = Throwable.class, propagation = Propagation.REQUIRED)
+public class ZoneDaoImpl implements ZoneDao {
+
+    @Autowired
+    private SessionFactory sessionFactory;
+
+    public List&lt;AreaOfInterest&gt; getByTitle(String title) {
+        Session session = sessionFactory.getCurrentSession();
+        Query query = session.createQuery("FROM AreaOfInterest where title LIKE " + title);
+        return (List&lt;AreaOfInterest&gt;) query.list();
+    }
+}</programlisting>
+    </example>
+
+    <para>And that's it! No more worrying about sessions or transactions, or
+    how the hell everything should get initialized...</para>
+  </sect1>
 </chapter>

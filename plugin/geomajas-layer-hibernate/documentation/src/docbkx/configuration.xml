@@ -31,103 +31,89 @@
   <section>
     <title>Dependencies</title>
 
-    <para>The Hibernate layer is based on the popular Hibernate O/R mapping
-    framework. It uses a special spatial extension of Hibernate,
-    unsurprisingly called Hibernate Spatial. The Hibernate Spatial project has
-    its project website at <ulink
-    url="http://www.hibernatespatial.org/">http://www.hibernatespatial.org</ulink>.
-    The spatial extensions or dialects (in Hibernate language) allow the
-    definition of spatial types and the execution of spatial queries in a
-    database independent way.</para>
+    <para>In order to work with the Hibernate layer plug-in, you need multiple
+    libraries to be present on your classpath: the Geomajas Hibernate plug-in,
+    Hibernate Spatial, and drivers for the specific database that you want to
+    use.</para>
 
-    <para>You need to include the following dependencies to make this work.
-    This needs to include the hibernate spatial provider, in this example,
-    PostGis.</para>
+    <para>Lets say, for example, you want to make use of this plug-in through
+    a PostGIS database. Then you would need to include the following
+    dependencies:</para>
 
     <xi:include href="listing/HibernateLayerDependency.xml"
-					xmlns:xi="http://www.w3.org/2001/XInclude" />
-
-  </section>
-
-  <section>
-    <title>Hibernate layer configuration</title>
-
-    <para>A Hibernate layer cannot be defined by configuration only. As in
-    every O/R model, there has to be a mapping between Java classes and tables
-    in the database. In the most simple case there is a one-to-one mapping
-    between a single class and a single spatial table.</para>
-
-    <para>The following listing shows the (partial) definition of a Hibernate
-    annotated Java class <code>Road.java</code> that is mapped to a table
-    <code>roads</code> in the database.</para>
-
-    <xi:include href="listing/HibernateRoadsSample.xml"
-                xmlns:xi="http://www.w3.org/2001/XInclude" />
-
-    <para>The field annotations describe the relation between the fields of
-    the class and the columns in the table. A special annotation
-    <code>@Type</code> with type
-    <code>org.hibernatespatial.GeometryUserType</code> is used to map the
-    <code>geometry</code> field to the <code>the_geom</code> spatial
-    column.</para>
-
-    <para>Once the Java class mapping is finished, the actual layer
-    configuration can be made. An example configuration that matches the
-    <code>Road.java</code> class is shown below:</para>
-
-    <xi:include href="listing/HibernateRoadsLayer.xml"
-                xmlns:xi="http://www.w3.org/2001/XInclude" />
-
-    <para>The first property <code>layerInfo</code> is the reference to the
-    <code>VectorLayerInfo</code> object. While it can be defined inline, it
-    has been defined as an outer bean for clarity here.</para>
-
-    <para>The <code>featureModel</code> property refers to the internal
-    feature accessor face of the layer. This property will probably be removed
-    as it has no additional configuration parameters for the moment.</para>
-
-    <para>The <code>sessionFactory</code> property refers to the Hibernate
-    session factory. This is the same factory that has to be defined by the
-    transaction configuration.</para>
-
-    <para>The <code>dateFormat</code> property determines how the layer will
-    convert date values to strings and vice versa.</para>
-
-    <para>As already mentioned, the bulk part of the layer's metadata is
-    defined through the <code>VectorLayerInfo</code> object. An example
-    definition of this object is given below:</para>
-
-    <xi:include href="listing/HibernateRoadsInfo.xml"
-                xmlns:xi="http://www.w3.org/2001/XInclude" />
-
-    <para>The feature metadata can be found in the <code>FeatureInfo</code>
-    object. This objects contains the complete feature type description (id,
-    attributes and geometry) as well as the validation rules for the
-    attributes. An example definition of this object is given below:</para>
-
-    <xi:include href="listing/HibernateRoadsFeatureInfo.xml"
                 xmlns:xi="http://www.w3.org/2001/XInclude" />
   </section>
 
   <section>
-    <title>Transaction configuration</title>
+    <title>Basic Hibernate configuration</title>
 
-    <para>Transaction configuration for Hibernate layers:</para>
+    <para>First of all, you need to configure the basic Hibernate library. On
+    the root of your classpath (for a Maven project this is typically
+    <code>src/main/resources/</code>), you need a
+    <code>hibernate.cfg.xml</code> file. This configuration file determines
+    the dialect to use (PostGIS in the example below), and also which Java
+    classes that will provide the mapping onto the database. In the example
+    below, there is one Java class
+    (<code>org.geomajas.server.pojo.MyPojoClass</code>):</para>
 
-    <xi:include href="listing/HibernateTx.xml"
-                xmlns:xi="http://www.w3.org/2001/XInclude" />
+    <example>
+      <title>Example hibernate.cfg.xml</title>
 
-    <para>Starting from the top, the following are defined:</para>
+      <para><programlisting>&lt;?xml version="1.0" encoding="UTF-8"?&gt;
+&lt;!DOCTYPE hibernate-configuration PUBLIC
+    "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd"&gt;
+&lt;hibernate-configuration&gt;
+   &lt;session-factory&gt;
+      &lt;property name="hibernate.dialect"&gt;org.hibernatespatial.postgis.PostgisDialect&lt;/property&gt;
+      &lt;property name="cache.provider_class"&gt;org.hibernate.cache.HashtableCacheProvider&lt;/property&gt;
+      &lt;property name="show_sql"&gt;false&lt;/property&gt;
+
+      &lt;mapping class="org.geomajas.server.pojo.MyPojoClass" /&gt;
+      .....
+
+   &lt;/session-factory&gt;
+&lt;/hibernate-configuration&gt;</programlisting></para>
+    </example>
+
+    <para>It is recommended to read up on the Hibernate configuration options
+    on the <ulink url="http://www.hibernate.org/">official Hibernate
+    website</ulink>, to get a better grasp of all the possibilities Hibernate
+    provides.</para>
+
+    <tip>
+      <para>In normal Hibernate applications, you would also configure you
+      database connection parameters in the hibernate.cfg.xml. Geomajas
+      however uses the Spring framework, and so provides the option of
+      injecting Session factories at run-time. This can be a very powerfull
+      approach, as it allows you to set up new DAO's etc. much quicker.</para>
+    </tip>
+
+    <para>So instead of configuring all connection, session and transaction
+    parameters through the default Hibernate configuration, it is recommended
+    to configure these through Spring.</para>
+  </section>
+
+  <section>
+    <title>Spring transaction configuration</title>
+
+    <para>The Spring framework provides a connection to Hibernate by means of
+    the
+    <code>org.springframework.orm.hibernate3.HibernateTransactionManager</code>.
+    This allows you to make full use of the power of dependency injection in
+    your DAOs. In order to get up-and-running, the following parameters need
+    to be defined (somewhere in the Spring XML files):</para>
 
     <itemizedlist>
       <listitem>
         <para>The data source: this specifies the connection pool type and the
-        connection properties of the database (PostGis in this case)</para>
+        connection properties of the database (PostGis in this case).</para>
       </listitem>
 
       <listitem>
         <para>The session factory: this is Hibernate's primary singleton and
-        used by the Hibernate layer to access the session/connection</para>
+        used by the Hibernate layer to access the session/connection. It also
+        points to the Hibernate configuration file.</para>
       </listitem>
 
       <listitem>
@@ -140,5 +126,293 @@
         <para>The platform transaction manager for Hibernate</para>
       </listitem>
     </itemizedlist>
+
+    <para>Here is an example wherein the above parameters are
+    configured:</para>
+
+    <xi:include href="listing/HibernateTx.xml"
+                xmlns:xi="http://www.w3.org/2001/XInclude" />
+  </section>
+
+  <section>
+    <title>Configuring a vector layer</title>
+
+    <para>Creating a vector layers with the Geomajas Hibernate plug-in takes a
+    bit more work than using the GeoTools layers, but in return it provides
+    you with a lot more options. In short, the following actions need to be
+    taken in order to set up a vector layer:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para>You need a spatial database with one or more tables. At least
+        one table must have a geometric column. This of course falls out of
+        the scope of this document, but in order to correctly configure your
+        Java pojo objects, it is necessary for you to know what your database
+        looks like.</para>
+      </listitem>
+
+      <listitem>
+        <para>Configure your Java pojo objects that provide the mapping onto
+        the database. Note that these Java classes must be mentioned in the
+        hibernate.cfg.cml configuration file.</para>
+      </listitem>
+
+      <listitem>
+        <para>Configure a Geomajas vector layer that makes use of the Java
+        pojo object.</para>
+      </listitem>
+    </itemizedlist>
+
+    <para>In the following section, an example vector layer will be
+    configured. This example will demonstrate a simple case, with a one-to-one
+    mapping between a Java class and a single spatial database table.</para>
+
+    <section>
+      <title>Spatial database table</title>
+
+      <para>We start out by creating a simple spatial table in the database
+      containing "areas of interest". If you have your own data, you will be
+      creating your own database tables.</para>
+
+      <para>In the SQL query below, we create a table with the name
+      "areaofinterest" and give it 4 columns: an ID, 2 text columns (title and
+      description) and a geometry column (type Polygon).</para>
+
+      <example>
+        <title>SQL for creating a PostGIS spatial table</title>
+
+        <programlisting>CREATE TABLE areaofinterest (
+    id integer NOT NULL,
+    title character varying(100) NOT NULL,
+    description character varying,
+    geom geometry,
+    CONSTRAINT enforce_dims_geom CHECK ((ndims(geom) = 2)),
+    CONSTRAINT enforce_geotype_geom CHECK (((geometrytype(geom) = 'POLYGON'::text) OR (geom IS NULL))),
+    CONSTRAINT enforce_srid_geom CHECK ((srid(geom) = 900913))
+);</programlisting>
+      </example>
+    </section>
+
+    <section>
+      <title>Java O/R mapping</title>
+
+      <para>Assuming that you have a database with spatial data, let us now
+      create a Java class that maps onto that database. We will continue using
+      the "areaofinterest" database table from the previous section. A java
+      class <code>org.geomajas.server.pojo.AreaOfInterest</code> would now
+      look like this:</para>
+
+      <example>
+        <title>AreaOfInterest class</title>
+
+        <programlisting>@Entity
+@Table(name = "areaofinterest")
+public class AreaOfInterest {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false, name = "title")
+    private String title;
+
+    @Column(name = "description")
+    private String description;
+
+    @Type(type = "org.hibernatespatial.GeometryUserType")
+    @Column(nullable = false, name = "geom")
+    private Geometry geometry;
+
+    // Constructors, getters, and setters
+    ....</programlisting>
+      </example>
+
+      <para>At the top of the class, you make a reference to the actual
+      database table; in this case "areaofinterest". In the actual Java field
+      declarations, you refer to the database columns within the
+      "areaofinterest" table.</para>
+
+      <para><caution>
+          <para>The mappings in your Java class are case sensitive! Typically
+          PostGIS will use lowercase characters while Oracle uses uppercase
+          characters.</para>
+
+          <para>Also make sure you add the Java classnames to the
+          hibernate.cfg.cml configuration file.</para>
+        </caution></para>
+
+      <tip>
+        <para>At this point you might want to check if the O/R mapping is
+        correct by writing a DAO and few unit tests.</para>
+      </tip>
+    </section>
+
+    <section>
+      <title>Vector layer configuration</title>
+
+      <para>Now that you have a spatial database table and a Java class to map
+      it, it's time to create the actual Geomajas vector layer configuration.
+      Following the Geomajas configuration rules, we first configure a
+      <code>org.geomajas.configuration.VectorLayerInfo</code> object, and only
+      than the actual layer definition.</para>
+
+      <section>
+        <title>Configuring the VectorLayerInfo</title>
+
+        <para>The configuration of the VectorLayerInfo is almost identical as
+        with other vector layer plug-ins. The main difference is that the
+        dataSourceName in the FeatureInfo needs the Java classname of the
+        mapping class (i.e.
+        <code>org.geomajas.server.pojo.AreaOfInterest</code>), and the names
+        of the attributes, need to point to the fields in that Java
+        class.</para>
+
+        <para>So for the Java class from the previous section, we would
+        get:</para>
+
+        <example>
+          <title>VectorLayerInfo for the AreaOfInterest class</title>
+
+          <programlisting>&lt;!-- Area Of Interest Vector layer definition --&gt;
+&lt;bean name="aoiInfo" class="org.geomajas.configuration.VectorLayerInfo"&gt;
+    &lt;property name="layerType" value="POLYGON" /&gt;
+    &lt;property name="crs" value="EPSG:900913" /&gt;
+    &lt;property name="maxExtent"&gt;
+        &lt;bean class="org.geomajas.geometry.Bbox"&gt;
+            &lt;property name="x" value="-20026376.393709917" /&gt;
+            &lt;property name="y" value="-20026376.393709917" /&gt;
+            &lt;property name="width" value="40052752.787419834" /&gt;
+            &lt;property name="height" value="40052752.787419834" /&gt;
+        &lt;/bean&gt;
+    &lt;/property&gt;
+    &lt;property name="featureInfo" ref="aoiFeatureInfo" /&gt;
+    &lt;property name="namedStyleInfos"&gt;
+        &lt;list&gt;
+            &lt;ref bean="aoiStyleInfo" /&gt;
+        &lt;/list&gt;
+    &lt;/property&gt;
+&lt;/bean&gt;
+
+&lt;!-- Feature (attributes..) definition --&gt;
+&lt;bean name="aoiFeatureInfo" class="org.geomajas.configuration.FeatureInfo"&gt;
+    &lt;property name="dataSourceName" value="org.geomajas.server.pojo.AreaOfInterest" /&gt;
+    &lt;property name="identifier"&gt;
+        &lt;bean class="org.geomajas.configuration.PrimitiveAttributeInfo"&gt;
+            &lt;property name="label" value="Id" /&gt;
+            &lt;property name="name" value="id" /&gt;
+            &lt;property name="type" value="LONG" /&gt;
+        &lt;/bean&gt;
+    &lt;/property&gt;
+    &lt;property name="geometryType"&gt;
+        &lt;bean class="org.geomajas.configuration.GeometryAttributeInfo"&gt;
+            &lt;property name="name" value="geometry" /&gt;
+            &lt;property name="editable" value="false" /&gt;
+        &lt;/bean&gt;
+    &lt;/property&gt;
+    &lt;property name="attributes"&gt;
+        &lt;list&gt;
+            &lt;bean class="org.geomajas.configuration.PrimitiveAttributeInfo"&gt;
+                &lt;property name="label" value="Title" /&gt;
+                &lt;property name="name" value="title" /&gt;
+                &lt;property name="editable" value="true" /&gt;
+                &lt;property name="identifying" value="true" /&gt;
+                &lt;property name="type" value="STRING" /&gt;
+            &lt;/bean&gt;
+            &lt;bean class="org.geomajas.configuration.PrimitiveAttributeInfo"&gt;
+                &lt;property name="label" value="Description" /&gt;
+                &lt;property name="name" value="description" /&gt;
+                &lt;property name="editable" value="true" /&gt;
+                &lt;property name="identifying" value="false" /&gt;
+                &lt;property name="type" value="STRING" /&gt;
+            &lt;/bean&gt;
+        &lt;/list&gt;
+    &lt;/property&gt;
+&lt;/bean&gt;
+
+&lt;!-- Style definition --&gt;
+&lt;bean class="org.geomajas.configuration.NamedStyleInfo" name="aoiStyleInfo"&gt;
+    ............Not important here.......
+&lt;/bean&gt;</programlisting>
+        </example>
+
+        <para>Make sure to keep an eye on the following:</para>
+
+        <itemizedlist>
+          <listitem>
+            <para>The CRS must be the same as defined in the database
+            table.</para>
+          </listitem>
+
+          <listitem>
+            <para>The geometry type must be the same as defined in the
+            database table.</para>
+          </listitem>
+
+          <listitem>
+            <para>The dataSourceName must point to the Java class name.</para>
+          </listitem>
+
+          <listitem>
+            <para>All attribute names must point to the fields in the Java
+            class.</para>
+          </listitem>
+
+          <listitem>
+            <para>Don't just copy/paste; there is no styling information in
+            the example above ;-)</para>
+          </listitem>
+        </itemizedlist>
+      </section>
+
+      <section>
+        <title>Configuring the layer </title>
+
+        <para>When the <code>org.geomajas.configuration.VectorLayerInfo</code>
+        definition has been defined, it is time to define the actual layer.
+        This layer must of course point to the VectorLayerInfo object that we
+        just defined, but it must also make use of the SessionFactory that was
+        configured:</para>
+
+        <example>
+          <title>Hibernate layer definition</title>
+
+          <programlisting>&lt;!-- Needed when the Hibernate pojo classes contain dates. --&gt;
+&lt;bean name="simpleDateFormat" class="java.text.SimpleDateFormat"&gt;
+    &lt;constructor-arg type="java.lang.String" value="dd/MM/yyyy" /&gt;
+&lt;/bean&gt;
+
+&lt;bean name="aoi" class="org.geomajas.layer.hibernate.HibernateLayer"&gt;
+    &lt;property name="layerInfo" ref="aoiInfo" /&gt; &lt;!-- see previous section --&gt;
+    &lt;property name="featureModel"&gt;
+        &lt;bean class="org.geomajas.layer.hibernate.HibernateFeatureModel"&gt;
+            &lt;property name="sessionFactory" ref="simpleSessionFactory" /&gt;
+        &lt;/bean&gt;
+    &lt;/property&gt;
+    &lt;property name="sessionFactory" ref="simpleSessionFactory" /&gt;
+
+    &lt;!-- Needed when the Hibernate pojo classes contain dates. --&gt;
+    &lt;property name="dateFormat" ref="simpleDateFormat" /&gt;
+&lt;/bean&gt;</programlisting>
+        </example>
+
+        <para>Note that in the example above, some extra configuration was
+        added to support the use of java.util.Date objects as fields within
+        Java pojo classes. In the case of the AreaOfInterest layer there was
+        no such date, so technically this addition was not necessary.</para>
+
+        <note>
+          <para>You have now successfully create a Geomajas VectorLayer
+          definition, using the Hibernate layer plug-in. All you have to do
+          now, is use it in your map configuration.</para>
+        </note>
+
+        <important>
+          <para>This tutorial only covered the most basic case of mapping a
+          single table onto a Java class. More complex mappings (many-to-one
+          and one-to-many) are also supported. See the "howto" section for
+          more information.</para>
+        </important>
+      </section>
+    </section>
   </section>
 </chapter>
