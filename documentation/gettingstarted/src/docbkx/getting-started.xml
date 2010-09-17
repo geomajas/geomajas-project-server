@@ -49,7 +49,7 @@
 
       <para>At this point it is assumed that Maven has been succesfully
       installed. Using Maven, you can now create a template project, called
-      the Geomajas GWT Application Archetype. </para>
+      the Geomajas GWT Application Archetype.</para>
 
       <orderedlist>
         <listitem>
@@ -106,14 +106,15 @@
         </listitem>
 
         <listitem>
-          <para>Step5: Next maven asks for the first version for your
-          application. 1.0-SNAPSHOT is a good first version.</para>
+          <para><emphasis>Step5</emphasis>: Next maven asks for the first
+          version for your application. 1.0-SNAPSHOT is a good first
+          version.</para>
         </listitem>
 
         <listitem>
-          <para>Step6: Next maven asks for the base package wherein to place
-          Java files. By default this is the same as the groupId. Just hit
-          "enter" to continue.</para>
+          <para><emphasis>Step6</emphasis>: Next maven asks for the base
+          package wherein to place Java files. By default this is the same as
+          the groupId. Just hit "enter" to continue.</para>
 
           <figure>
             <title>Screenshot when building the Geomajas GWT archetype</title>
