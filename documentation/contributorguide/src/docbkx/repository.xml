@@ -103,8 +103,5 @@
        hibernate-spatial: http://www.hibernatespatial.org/repository 
     </listitem>
 
-    <listitem>
-       JBoss (a.o hibernate): https://repository.jboss.org/nexus/content/groups/public/ 
-    </listitem>
   </itemizedlist>
 </appendix>
