@@ -1,0 +1,1 @@
+// geomajas-plugin-printing-gwt module API, 2.0.0
