@@ -2,7 +2,7 @@
 	<parent>
 		<groupId>org.geomajas.plugin</groupId>
 		<artifactId>geomajas-plugin-openstreetmap-all</artifactId>
-		<version>1.8.0-SNAPSHOT</version>
+		<version>1.8.0</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.plugin</groupId>
@@ -112,7 +112,7 @@
 							<tasks>
 								<copy todir="${project.build.directory}/docbkx/html">
 									<fileset dir="${basedir}/src/docbkx">
-										<exclude name="**/*.xml"/>
+										<exclude name="**/*.xml" />
 									</fileset>
 								</copy>
 							</tasks>
