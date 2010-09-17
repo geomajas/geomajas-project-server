@@ -1,0 +1,1 @@
+// ${artifactId} module API, 2.0.0
