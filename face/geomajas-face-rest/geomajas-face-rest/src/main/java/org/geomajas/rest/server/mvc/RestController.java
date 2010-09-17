@@ -74,7 +74,7 @@ public class RestController {
 	@Autowired
 	private ConfigurationService configurationService;
 
-	static final String VIEW = "GeoJSONView";
+	static final String VIEW = "GeoJsonView";
 
 	static final String FEATURE_COLLECTION = "FeatureCollection";
 

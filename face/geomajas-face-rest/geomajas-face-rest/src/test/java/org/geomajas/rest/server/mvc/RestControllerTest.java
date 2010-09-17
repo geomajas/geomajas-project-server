@@ -47,7 +47,7 @@ public class RestControllerTest {
 	private SecurityManager securityManager;
 
 	@Autowired
-	@Qualifier("GeoJSONView")
+	@Qualifier("GeoJsonView")
 	private View view;
 
 	private HandlerAdapter adapter;

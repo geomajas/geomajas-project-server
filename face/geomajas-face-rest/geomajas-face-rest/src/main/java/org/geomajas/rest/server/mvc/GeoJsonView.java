@@ -47,7 +47,7 @@ import org.springframework.web.servlet.view.AbstractView;
  * 
  */
 
-@Component("GeoJSONView")
+@Component("GeoJsonView")
 public class GeoJsonView extends AbstractView {
 
 	@Autowired
