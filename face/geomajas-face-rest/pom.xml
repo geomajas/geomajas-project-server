@@ -47,8 +47,8 @@
 	</dependencyManagement>
 	
 	<modules>
-		<module>geomajas-face-rest</module>
-		<module>geomajas-face-rest-example</module>
+		<module>rest</module>
+		<module>rest-example</module>
 		<module>documentation</module>
   </modules>
 
