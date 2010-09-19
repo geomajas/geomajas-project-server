@@ -96,8 +96,8 @@
 	</pluginRepositories>
 	
 	<modules>
-		<module>geomajas-dojo-server</module>
-		<module>geomajas-dojo-client</module>
+		<module>dojo-server</module>
+		<module>dojo-client</module>
 	</modules>
 
 	<profiles>
@@ -132,7 +132,7 @@
 				</property>
 			</activation>
 			<modules>
-				<module>geomajas-dojo-client-shrinksafe</module>
+				<module>dojo-client-shrinksafe</module>
 			</modules>
 		</profile>
 	</profiles>
