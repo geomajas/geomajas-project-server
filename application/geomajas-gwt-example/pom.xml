@@ -48,7 +48,7 @@
 			</roles>
 		</developer>
 	</developers>
-	
+
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -113,15 +113,15 @@
 		<!-- @extract-start StaticSecurityDependency, staticsecurity source plugin - including source -->
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
-            <artifactId>geomajas-plugin-staticsecurity</artifactId>
-            <version>1.7.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.geomajas.plugin</groupId>
-            <artifactId>geomajas-plugin-staticsecurity</artifactId>
-            <version>1.7.1</version>
+			<artifactId>geomajas-plugin-staticsecurity</artifactId>
+			<version>1.7.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-plugin-staticsecurity</artifactId>
+			<version>1.7.1</version>
 			<classifier>sources</classifier>
-        </dependency>
+		</dependency>
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-plugin-staticsecurity-gwt</artifactId>
@@ -201,31 +201,17 @@
 			<version>4.7</version>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<!-- SmartGWT skins -->
 		<dependency>
 			<groupId>com.smartgwt</groupId>
 			<artifactId>smartgwt-skins</artifactId>
 			<version>2.3-20100827</version>
 		</dependency>
-		
+
 	</dependencies>
 
 	<build>
-		<resources>
-			<!-- needed for sources plugin to include web.xml, though this duplicates it all under WEB-INF/classes -->
-			<resource>
-				<directory>src/main/resources</directory>
-			</resource>
-			<resource>
-				<directory>war</directory>
-				<includes>
-					<include>WEB-INF/web.xml</include>
-					<include>*.html</include>
-				</includes>
-			</resource>
-		</resources>		
-		<outputDirectory>war/WEB-INF/classes</outputDirectory>
 		<plugins>
 			<!-- @extract-start MavenSourcePlugin, Maven source plugin -->
 			<plugin>
@@ -279,57 +265,11 @@
 			</plugin>
 
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-war-plugin</artifactId>
-				<configuration>
-					<warSourceExcludes>.gwt-tmp/**</warSourceExcludes>
-					<warSourceDirectory>war</warSourceDirectory>
-				</configuration>
-			</plugin>
-
-			<!-- Run the application using "mvn jetty:run" -->
-			<plugin>
-				<groupId>org.mortbay.jetty</groupId>
-				<artifactId>maven-jetty-plugin</artifactId>
-				<version>6.1.20</version>
-				<configuration>
-        			<webAppSourceDirectory>${basedir}/war</webAppSourceDirectory>
-					<webAppConfig>
-						<contextPath>/</contextPath>
-					</webAppConfig>
-					<reload>manual</reload>
-				</configuration>
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>remove-build-files</id>
-						<phase>clean</phase>
-						<configuration>
-							<tasks>
-								<delete dir="war/WEB-INF/lib" />
-								<delete dir="war/org.geomajas.example.gwt.GeomajasSamples" />
-							</tasks>
-						</configuration>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-
-			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>gwt-maven-plugin</artifactId>
 				<version>1.2</version>
 				<configuration>
 					<inplace>true</inplace>
-					<module>org.geomajas.example.gwt.GeomajasSamples</module>
-					<runTarget>samples.html</runTarget>
-					<warSourceDirectory>war</warSourceDirectory>
 					<disableCastChecking>true</disableCastChecking>
 					<disableClassMetadata>true</disableClassMetadata>
 					<extraJvmArgs>-Xmx512M -Xss1024k</extraJvmArgs>
@@ -344,8 +284,58 @@
 		<profile>
 			<id>defaultGWT</id>
 			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<build>
+				<plugins>
+					<!-- Run the application using "mvn jetty:run" -->
+					<plugin>
+						<groupId>org.mortbay.jetty</groupId>
+						<artifactId>maven-jetty-plugin</artifactId>
+						<version>6.1.20</version>
+						<configuration>
+							<webAppSourceDirectory>${project.build.directory}/${project.build.finalName}</webAppSourceDirectory>
+							<webAppConfig>
+								<contextPath>/</contextPath>
+							</webAppConfig>
+							<reload>manual</reload>
+						</configuration>
+					</plugin>
+
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>gwt-maven-plugin</artifactId>
+						<configuration>
+							<inplace>true</inplace>
+							<module>org.geomajas.example.gwt.GeomajasSamples</module>
+							<runTarget>samples.html</runTarget>
+							<webappDirectory>${basedir}/src/main/webapp</webappDirectory>
+							<hostedWebapp>${project.build.directory}/${project.build.finalName}</hostedWebapp>
+							<warSourceDirectory>${project.build.directory}/${project.build.finalName}</warSourceDirectory>
+						</configuration>
+						<executions>
+							<execution>
+								<goals>
+									<goal>clean</goal>
+									<goal>generateAsync</goal>
+									<goal>i18n</goal>
+									<goal>compiles</goal>
+									<goal>test</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<!--
+			m2eclipse with WTP deployment, see http://jvminside.blogspot.com/2010/02/efficient-gwt-development-with-eclipse.html
+		-->
+		<profile>
+			<id>m2e</id>
+			<activation>
 				<property>
-					<name>!skipGwt</name>
+					<name>m2e.version</name>
 				</property>
 			</activation>
 			<build>
@@ -353,18 +343,39 @@
 					<plugin>
 						<groupId>org.codehaus.mojo</groupId>
 						<artifactId>gwt-maven-plugin</artifactId>
+						<configuration>
+							<module>org.geomajas.example.gwt.GeomajasSamplesDev</module>
+							<runTarget>/geomajas-gwt-example/samples.html</runTarget>
+							<noServer>true</noServer>
+							<port>8080</port>
+							<debugPort>9008</debugPort>
+							<extra>${project.build.directory}/gwt-extra</extra>
+							<gen>${project.build.directory}/gwt-gen</gen>
+							<webappDirectory>${basedir}/src/main/webapp</webappDirectory>
+							<hostedWebapp>${project.build.directory}/generated-web-resources/gwt</hostedWebapp>
+							<warSourceDirectory>${project.build.directory}/generated-web-resources/gwt</warSourceDirectory>
+						</configuration>
 						<executions>
 							<execution>
 								<goals>
 									<goal>clean</goal>
 									<goal>generateAsync</goal>
 									<goal>i18n</goal>
-									<goal>compile</goal>
-									<goal>test</goal>
 								</goals>
 							</execution>
 						</executions>
-					</plugin>					
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-antrun-plugin</artifactId>
+						<version>1.5</version>
+						<configuration>
+							<target>
+								<xslt in=".settings/org.eclipse.wst.common.component" out=".settings/org.eclipse.wst.common.tmp" style=".eclipse/wb-resource.xsl" />
+								<move file=".settings/org.eclipse.wst.common.tmp" tofile=".settings/org.eclipse.wst.common.component" />
+							</target>
+						</configuration>
+					</plugin>
 				</plugins>
 			</build>
 		</profile>
@@ -389,39 +400,14 @@
 								</goals>
 							</execution>
 						</executions>
-					</plugin>					
-				</plugins>
-			</build>
-		</profile>
-		<profile>
-			<id>m2e</id>
-			<activation>
-				<property>
-					<name>m2eGwt</name>
-				</property>
-			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>gwt-maven-plugin</artifactId>
-						<executions>
-							<execution>
-								<goals>
-									<goal>clean</goal>
-									<goal>generateAsync</goal>
-									<goal>i18n</goal>
-								</goals>
-							</execution>
-						</executions>
 					</plugin>
 				</plugins>
 			</build>
-		</profile>	
+		</profile>
 	</profiles>
 
 	<repositories>
-		<repository>            
+		<repository>
 			<id>Geomajas</id>
 			<name>Geomajas repository</name>
 			<url>http://maven.geomajas.org/</url>
