@@ -153,7 +153,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 				</bean>
 				<bean class="org.geomajas.configuration.Parameter">
 					<property name="name" value="pixelTolerance" />
-					<property name="value" value="10" />
+					<property name="value" value="1" />
 				</bean>
 			</list>
 		</property>

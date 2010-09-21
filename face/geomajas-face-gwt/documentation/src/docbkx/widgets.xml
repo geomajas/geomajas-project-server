@@ -253,7 +253,7 @@
 
 			  <listitem>
 				<para><emphasis>pixelTolerance</emphasis>: number of pixels
-				of tolerance allowed when trying to select features.</para>
+				of tolerance allowed when trying to select features. The default pixel tolerance is 5.</para>
 			  </listitem>
 			</itemizedlist></para>
 		</listitem>
