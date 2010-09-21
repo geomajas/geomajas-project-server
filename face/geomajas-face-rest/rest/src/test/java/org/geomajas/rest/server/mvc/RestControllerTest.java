@@ -5,12 +5,14 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
-import java.util.TimeZone;
 
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.rest.server.RestException;
 import org.geomajas.security.SecurityManager;
+import org.geomajas.service.GeoService;
 import org.geotools.geojson.GeoJSONUtil;
+import org.geotools.geojson.geom.GeometryJSON;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.junit.Assert;
@@ -31,6 +33,10 @@ import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter;
 
 import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.MultiPolygon;
+import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.geom.PrecisionModel;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
@@ -45,6 +51,9 @@ public class RestControllerTest {
 
 	@Autowired
 	private SecurityManager securityManager;
+
+	@Autowired
+	private GeoService geoservice;
 
 	@Autowired
 	@Qualifier("GeoJsonView")
@@ -94,23 +103,13 @@ public class RestControllerTest {
 		Object json = new JSONParser().parse(response.getContentAsString());
 		String isodate = GeoJSONUtil.DATE_FORMAT.format(c.getTime());
 		Assert.assertTrue(json instanceof JSONObject);
-		Assert
-				.assertEquals(
-						"{\"type\":\"Feature\"," +
-						"\"geometry\":{\"type\":\"MultiPolygon\"," +
-						"\"coordinates\":[[[[0.0,0.0],[1,0.0],[1,1],[0.0,1],[0.0,0.0]]]]}," +
-						"\"properties\":{" +
-						"\"stringAttr\":\"bean1\"," +
-						"\"booleanAttr\":true," +
-						"\"currencyAttr\":\"100,23\"," +
-						"\"dateAttr\":\""+isodate+"\"," +
-						"\"doubleAttr\":123.456,\"floatAttr\":456.789," +
-						"\"imageUrlAttr\":\"http://www.geomajas.org/image1\"," +
-						"\"integerAttr\":789,\"longAttr\":123456789," +
-						"\"shortAttr\":123," +
-						"\"urlAttr\":\"http://www.geomajas.org/url1\"}," +
-						"\"id\":\"1\"}",
-						response.getContentAsString());
+		Assert.assertEquals("{\"type\":\"Feature\"," + "\"geometry\":{\"type\":\"MultiPolygon\","
+				+ "\"coordinates\":[[[[0.0,0.0],[1,0.0],[1,1],[0.0,1],[0.0,0.0]]]]}," + "\"properties\":{"
+				+ "\"stringAttr\":\"bean1\"," + "\"booleanAttr\":true," + "\"currencyAttr\":\"100,23\","
+				+ "\"dateAttr\":\"" + isodate + "\"," + "\"doubleAttr\":123.456,\"floatAttr\":456.789,"
+				+ "\"imageUrlAttr\":\"http://www.geomajas.org/image1\","
+				+ "\"integerAttr\":789,\"longAttr\":123456789," + "\"shortAttr\":123,"
+				+ "\"urlAttr\":\"http://www.geomajas.org/url1\"}," + "\"id\":\"1\"}", response.getContentAsString());
 
 	}
 
@@ -234,6 +233,38 @@ public class RestControllerTest {
 			Assert.assertTrue(e instanceof RestException);
 			Assert.assertEquals(RestException.PROBLEM_READING_LAYERSERVICE, ((RestException) e).getExceptionCode());
 		}
+	}
+
+	@Test
+	public void testEpsg() throws Exception {
+		MockHttpServletRequest request = new MockHttpServletRequest();
+		request.setRequestURI("/rest/beans");
+		request.setMethod("GET");
+		MockHttpServletResponse response = new MockHttpServletResponse();
+		// check attribute equality
+		request.setParameter("queryable", "stringAttr");
+		request.setParameter("stringAttr_eq", "bean1");
+		request.setParameter("epsg", "900913");
+		ModelAndView mav = adapter.handle(request, response, restController);
+		view.render(mav.getModel(), request, response);
+		response.flushBuffer();
+		Object json = new JSONParser().parse(response.getContentAsString());
+		Assert.assertTrue(json instanceof JSONObject);
+		JSONObject jsonObject = (JSONObject) json;
+		JSONArray features = (JSONArray) jsonObject.get("features");
+		JSONObject feature = (JSONObject) features.get(0);
+		JSONObject geometry = (JSONObject) feature.get("geometry");
+		GeometryJSON g = new GeometryJSON(0);
+		MultiPolygon m = (MultiPolygon) g.read(geometry.toJSONString());
+		GeometryFactory factory = new GeometryFactory(new PrecisionModel(), 4326);
+		Envelope envelope = new Envelope(0, 1, 0, 1);
+		MultiPolygon orig = (MultiPolygon) factory.createMultiPolygon(new Polygon[] { (Polygon) factory
+				.toGeometry(envelope) });
+		MultiPolygon m2 = (MultiPolygon) geoservice.transform(orig, geoservice.getCrs("EPSG:4326"), geoservice
+				.getCrs("EPSG:900913"));
+		// equality check on buffer, JTS equals does not do the trick !
+		Assert.assertTrue(m.buffer(0.01).contains(m2));
+		Assert.assertTrue(m2.buffer(0.01).contains(m));
 	}
 
 	private List<String> getIdsFromModel(Map<String, Object> model) {

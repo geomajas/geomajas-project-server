@@ -36,7 +36,7 @@ public class StringToStringArrayConverter implements Converter<String, String[]>
 
 	public String[] convert(String source) {
 
-		return source.split(regexSplitter);
+		return source.trim().split(regexSplitter);
 	}
 
 	public String getRegexSplitter() {

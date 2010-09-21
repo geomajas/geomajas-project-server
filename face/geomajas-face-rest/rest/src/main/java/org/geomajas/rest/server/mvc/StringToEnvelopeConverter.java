@@ -40,7 +40,7 @@ public class StringToEnvelopeConverter implements Converter<String, Envelope> {
 		if (source == null) {
 			return null;
 		} else {
-			String[] args = source.split("[\\s,]+");
+			String[] args = source.trim().split("[\\s,]+");
 			if (args.length != 4) {
 				throw new IllegalArgumentException("Cannot parse envelope from " + source
 						+ ", expected format is \"xmin,ymin,xmax,ymax\"");

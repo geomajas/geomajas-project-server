@@ -26,5 +26,16 @@
 <chapter id="chapter-introduction">
   <title>Introduction</title>
 
-  <para></para>
+  <para>The REST face provides access to the Geomajas server through a RESTful
+  protocol. The current implementation provides read-only access to the
+  various vector layers configured on the server. Our protocol implementation
+  was largely inspired by the <ulink
+  url="http://trac.mapfish.org/trac/mapfish/wiki/MapFishProtocol">Mapfish
+  protocol</ulink>, which should be in line with - or at least supported by -
+  the OpenLayers client implementation. We also support clients of <ulink
+  url="http://featureserver.org/">FeatureServer</ulink>, which has a much more
+  limited parameterset. As far as we know, there is currently no REST standard
+  for feature services, although there is some consensus on the rest
+  principles (using uri extensions to determine the output format, exposing
+  single features as uris, etc...). </para>
 </chapter>

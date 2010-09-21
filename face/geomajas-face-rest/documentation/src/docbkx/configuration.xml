@@ -23,27 +23,59 @@
   ~ You should have received a copy of the GNU Affero General Public License
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
-
 <chapter id="chapter-configuration">
   <title>Configuration</title>
 
-  <para></para>
+  <para>The configuration of the REST plugin consists of a maven part and a
+  web MVC part.</para>
 
-	<section>
-	  <title>Dependencies</title>
+  <section>
+    <title>Dependencies</title>
 
-	  <para>Make sure your include the plug-in in your project. If you are using
-	  Maven, add the following dependency to your pom:</para>
+    <para>Make sure your include the plug-in in your project. If you are using
+    Maven, add the following dependency to your pom:</para>
 
-	  <example>
-		<title>Plug-in dependency</title>
+    <example>
+      <title>Plug-in dependency</title>
 
-		<programlisting>&lt;dependency&gt;
-	  &lt;groupId&gt;${groupId}&lt;/groupId&gt;
-	  &lt;artifactId&gt;${artifactId}$!{artifactIdPrefix}&lt;/artifactId&gt;
-	  &lt;version&gt;${version}&lt;/version&gt;
-  &lt;/dependency&gt;</programlisting>
-	  </example>
-	</section>
+      <programlisting>&lt;dependency&gt;
+  &lt;groupId&gt;org.geomajas&lt;/groupId&gt;
+  &lt;artifactId&gt;geomajas-face-rest&lt;/artifactId&gt;
+  &lt;version&gt;1.0&lt;/version&gt;
+&lt;/dependency&gt;
+</programlisting>
+    </example>
+  </section>
 
+  <section>
+    <title>Web MVC configuration</title>
+
+    <para>The web configuration is by default based on the bean name URL
+    handler mapping. This means that the name of the scanned controller beans
+    determines the URL base that points to the REST services. More
+    specifically, the RestController class (see below) has an annotation that
+    tells the DispatcherServlet to map all urls that start with<code>
+    http://{host}:{port}/{context}/{dispatcher}/rest/ </code>to the REST
+    service, where <code>host</code>, <code>port</code> and
+    <code>context</code> should be replaced with the host, port and web
+    context of your deployment and <code>/{dispatcher}/*</code> is the url
+    pattern of the DispatcherServlet mapping (as configured in
+    web.xml).</para>
+
+    <programlisting>@Controller("/rest/**")
+public class RestController {
+   @RequestMapping(value = "/rest/{layerId}/{featureId}.json", method = RequestMethod.GET){
+...
+}</programlisting>
+
+    <para>Further narrowing of the url mapping to class methods is done
+    through the <code>RequestMapping</code> annotations. For a thorough
+    explanation of the various url parameters we refer to the next chapter,
+    which explains the usage of the REST face as a client. Unless you
+    absolutely want to change the url path, there is no need to override the
+    default configuration. If you do want to change this, however, one
+    possibility is to add additional mappings by configuring a
+    SimpleUrlHandlerMapping bean, which allows mapping of arbitrary paths to
+    controller beans.</para>
+  </section>
 </chapter>

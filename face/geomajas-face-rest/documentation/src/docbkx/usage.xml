@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
+"http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
+<!--
+  ~ This file is part of Geomajas, a component framework for building
+  ~ rich Internet applications (RIA) with sophisticated capabilities for the
+  ~ display, analysis and management of geographic information.
+  ~ It is a building block that allows developers to add maps
+  ~ and other geographic data capabilities to their web applications.
+  ~
+  ~ Copyright 2008-2010 Geosparc, http://www.geosparc.com, Belgium
+  ~
+  ~ This program is free software: you can redistribute it and/or modify
+  ~ it under the terms of the GNU Affero General Public License as
+  ~ published by the Free Software Foundation, either version 3 of the
+  ~ License, or (at your option) any later version.
+  ~
+  ~ This program is distributed in the hope that it will be useful,
+  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
+  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  ~ GNU Affero General Public License for more details.
+  ~
+  ~ You should have received a copy of the GNU Affero General Public License
+  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  -->
+<chapter id="chapter-howto">
+  <title>Usage</title>
+
+  <para>The REST plugin exposes a RESTful web interface towards compatible
+  clients. In this chapter we will give an overview of all available HTTP
+  operations and their respective parameters. The base uri for the REST
+  service is <code>http://{host}:{port}/{context}/{dispatcher} </code>where
+  <code>/dispatcher}/*</code> is the url mapping for the DispatcherServlet (as
+  configured in web.xml). We will refer to this as <code>http://base</code>.
+  </para>
+
+  <para>Although extensible to multiple response formats, the REST service is
+  currently limited to GeoJSON only. The GeoJSON specification can be found at
+  <ulink url="???">http://geojson.org/geojson-spec.html</ulink>.</para>
+
+  <section>
+    <title>Reading a single feature</title>
+
+    <para>The method and request uri for reading a single feature is:</para>
+
+    <para><programlisting>GET http://base/rest/{layerId}/{featureId}.json</programlisting>The
+    url parameters are:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para>layerId : the server layer id of the vector layer</para>
+      </listitem>
+
+      <listitem>
+        <para>featureId : the id of the feature</para>
+      </listitem>
+    </itemizedlist>
+
+    <para>If successful, the response is as follows:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para>200 OK</para>
+      </listitem>
+
+      <listitem>
+        <para>a single GeoJSON feature</para>
+      </listitem>
+    </itemizedlist>
+
+    <para>If the feature does not exist, the response is as follows:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para>404 Not Found </para>
+      </listitem>
+    </itemizedlist>
+
+    <para>If something else went wrong, the response is:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para>500 Internal server error</para>
+      </listitem>
+
+      <listitem>
+        <para>the error message of the RestException</para>
+      </listitem>
+    </itemizedlist>
+
+    <para>The following parameters are supported:</para>
+
+    <table>
+      <title>HTTP parameters</title>
+
+      <tgroup cols="3">
+        <thead>
+          <row>
+            <entry align="center">Name</entry>
+
+            <entry align="center">Value</entry>
+
+            <entry>Description</entry>
+          </row>
+        </thead>
+
+        <tbody>
+          <row>
+            <entry>no_geom</entry>
+
+            <entry>true|false</entry>
+
+            <entry>if true, the returned feature has no geometry ("geometry":
+            null) </entry>
+          </row>
+
+          <row>
+            <entry>attrs</entry>
+
+            <entry>{field1}[,{field2},...]</entry>
+
+            <entry>a list of attributes to restrict the list of properties
+            returned in the feature </entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+  </section>
+
+  <section>
+    <title>Reading multiple features</title>
+
+    <para>The method and request uri for reading multiple features is:</para>
+
+    <para><programlisting>GET http://base/rest/{layerId}</programlisting>The
+    url parameters are:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para>layerId : the server layer id of the vector layer</para>
+      </listitem>
+    </itemizedlist>
+
+    <para>If successful, the response is as follows:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para>200 OK</para>
+      </listitem>
+
+      <listitem>
+        <para>a GeoJSON feature collection with 0 or more features</para>
+      </listitem>
+    </itemizedlist>
+
+    <para>If the feature does not exist, the response is as follows:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para>404 Not Found</para>
+      </listitem>
+    </itemizedlist>
+
+    <para>If something else went wrong, the response is:</para>
+
+    <itemizedlist>
+      <listitem>
+        <para>500 Internal server error</para>
+      </listitem>
+
+      <listitem>
+        <para>the error message of the RestException</para>
+      </listitem>
+    </itemizedlist>
+
+    <para>The following parameters are supported:</para>
+
+    <table>
+      <title>HTTP parameters</title>
+
+      <tgroup cols="3">
+        <thead>
+          <row>
+            <entry align="center">Name</entry>
+
+            <entry align="center">Value</entry>
+
+            <entry>Description</entry>
+          </row>
+        </thead>
+
+        <tbody>
+          <row>
+            <entry>no_geom</entry>
+
+            <entry>true|false</entry>
+
+            <entry>if true, the returned feature has no geometry ("geometry":
+            null)</entry>
+          </row>
+
+          <row>
+            <entry>epsg</entry>
+
+            <entry>{num}</entry>
+
+            <entry>the EPSG code of the box value </entry>
+          </row>
+
+          <row>
+            <entry>attrs</entry>
+
+            <entry>{field1}[,{field2},...]</entry>
+
+            <entry>a list of attributes to restrict the list of properties
+            returned in the feature</entry>
+          </row>
+
+          <row>
+            <entry>box | bbox</entry>
+
+            <entry>{xmin,ymin,xmax,ymax}</entry>
+
+            <entry>a list of coordinates representing a bounding box, the
+            coords' projection system can be specified with the epsg parameter
+            (bbox is an alias to box)</entry>
+          </row>
+
+          <row>
+            <entry>maxFeatures | limit</entry>
+
+            <entry>{num}</entry>
+
+            <entry>limit the number of features to num features (maxfeatures
+            is an alias to limit) </entry>
+          </row>
+
+          <row>
+            <entry>offset</entry>
+
+            <entry>{num}</entry>
+
+            <entry>skip num features</entry>
+          </row>
+
+          <row>
+            <entry>order_by</entry>
+
+            <entry>{field}</entry>
+
+            <entry>order the features using field</entry>
+          </row>
+
+          <row>
+            <entry>dir</entry>
+
+            <entry>DESC|ASC</entry>
+
+            <entry>determine the ordering direction (applies only if order_by
+            is specified)</entry>
+          </row>
+
+          <row>
+            <entry>queryable</entry>
+
+            <entry>{field1}[,{field2},...]}</entry>
+
+            <entry>the names of the feature fields that can be used in the
+            field query parameters (see next row)</entry>
+          </row>
+
+          <row>
+            <entry>{field}__{query_op}</entry>
+
+            <entry>{value}</entry>
+
+            <entry>specify a filter expression, field must be in the list of
+            fields specified by queryable, supported query_op's
+            are:<itemizedlist>
+                <listitem>
+                  <para>eq: equal to</para>
+                </listitem>
+
+                <listitem>
+                  <para>ne: not equal to</para>
+                </listitem>
+
+                <listitem>
+                  <para>lt: lower than </para>
+                </listitem>
+
+                <listitem>
+                  <para>lte: lower than or equal to</para>
+                </listitem>
+
+                <listitem>
+                  <para>gt: greater than </para>
+                </listitem>
+
+                <listitem>
+                  <para>gte: greater than or equal to</para>
+                </listitem>
+
+                <listitem>
+                  <para>like: sql like for string values</para>
+                </listitem>
+              </itemizedlist></entry>
+          </row>
+        </tbody>
+      </tgroup>
+    </table>
+
+    <para>The parameters lat, lon, tolerance have not yet been
+    implemented.</para>
+  </section>
+</chapter>

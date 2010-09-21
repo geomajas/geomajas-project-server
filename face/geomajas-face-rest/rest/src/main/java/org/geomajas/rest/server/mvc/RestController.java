@@ -38,7 +38,9 @@ import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.rest.server.RestException;
 import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.FilterService;
+import org.geomajas.service.GeoService;
 import org.opengis.filter.Filter;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -73,6 +75,9 @@ public class RestController {
 
 	@Autowired
 	private ConfigurationService configurationService;
+
+	@Autowired
+	private GeoService geoService;
 
 	static final String VIEW = "GeoJsonView";
 
@@ -113,8 +118,8 @@ public class RestController {
 			@RequestParam(value = "offset", required = false) Integer offset,
 			@RequestParam(value = "order_by", required = false) String orderBy,
 			@RequestParam(value = "dir", required = false) FeatureOrder dir,
-			@RequestParam(value = "queryable", required = false) List<String> queryable, 
-			WebRequest request, Model model)
+			@RequestParam(value = "queryable", required = false) List<String> queryable,
+			@RequestParam(value = "epsg", required = false) String epsg, WebRequest request, Model model)
 			throws RestException {
 
 		List<Filter> filters = new ArrayList<Filter>();
@@ -132,7 +137,11 @@ public class RestController {
 		}
 		List<InternalFeature> features;
 		try {
-			features = vectorLayerService.getFeatures(layerId, null, and(filters), null, getIncludes(noGeom),
+			CoordinateReferenceSystem crs = null;
+			if (epsg != null) {
+				crs = geoService.getCrs("EPSG:" + epsg);
+			}
+			features = vectorLayerService.getFeatures(layerId, crs, and(filters), null, getIncludes(noGeom),
 					getOffset(offset), getLimit(maxFeatures, limit));
 		} catch (Exception e) {
 			throw new RestException(e, RestException.PROBLEM_READING_LAYERSERVICE, layerId);
