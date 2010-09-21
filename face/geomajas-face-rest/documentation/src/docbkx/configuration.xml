@@ -62,6 +62,11 @@
     pattern of the DispatcherServlet mapping (as configured in
     web.xml).</para>
 
+    <warning>
+      <para>the current faces depend on the mapping of <code>/d/*</code> to
+      the DispatcherServlet !</para>
+    </warning>
+
     <programlisting>@Controller("/rest/**")
 public class RestController {
    @RequestMapping(value = "/rest/{layerId}/{featureId}.json", method = RequestMethod.GET){

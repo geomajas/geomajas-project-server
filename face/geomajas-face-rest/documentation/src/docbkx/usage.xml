@@ -34,6 +34,11 @@
   configured in web.xml). We will refer to this as <code>http://base</code>.
   </para>
 
+  <warning>
+    <para>the current faces depend on the mapping of <code>/d/*</code> to the
+    DispatcherServlet !</para>
+  </warning>
+
   <para>Although extensible to multiple response formats, the REST service is
   currently limited to GeoJSON only. The GeoJSON specification can be found at
   <ulink url="???">http://geojson.org/geojson-spec.html</ulink>.</para>
