@@ -257,6 +257,11 @@ mvn gwt:run</programlisting></para>
       </listitem>
 
       <listitem>
+        <para>m2eclipse extras (especially WTP extension):
+        http://m2eclipse.sonatype.org/sites/m2e-extras </para>
+      </listitem>
+
+      <listitem>
         <para>checkstyle: update site http://eclipse-cs.sf.net/update/</para>
       </listitem>
 
@@ -272,58 +277,193 @@ mvn gwt:run</programlisting></para>
       </listitem>
     </itemizedlist>
 
-    <para>Make sure you add the process-resources as a goal to run on project
-    import in the general Maven preferences (Window-&gt;Preferences)</para>
+    <section>
+      <title>Combining Eclipse WTP with the maven GWT plugin (recommended
+      setup)</title>
 
-    <figure>
-      <title>Maven preferences</title>
+      <para>There is a classpath issue with the Google Plugin for Eclipse
+      (GPE) that prevents us from using it in a reliable way when there are
+      multiple versions of artifacts in the maven dependency tree:<ulink
+      url="???">
+      http://code.google.com/p/google-web-toolkit/issues/detail?id=5033</ulink></para>
 
-      <mediaobject>
-        <imageobject>
-          <imagedata fileref="images/eclipse-maven-settings.png" width="50%" />
-        </imageobject>
-      </mediaobject>
-    </figure>
+      <para>On top of that, GPE forces the use of the built-in jetty launcher,
+      which has problems with loading libraries from the maven repository.
+      Recent development by Google points in the direction of better maven
+      support, but a as far as we know a stable solution which does not
+      require explicit user interaction is not available. (see <ulink
+      url="???">http://googlewebtoolkit.blogspot.com/2010/08/how-to-use-google-plugin-for-eclipse.html</ulink>).</para>
 
-    <para>You can now use the project wizard to import the project as a Maven
-    project. The embedded maven instance will automatically run the
-    process-resources goal and generate and import the Eclipse project
-    configuration. Because the m2eclipse plugin hides all resources from the
-    eclipse source path, a conflict with the GWT plugin arises. The GWT plugin
-    will look for module files in the source path and therefore cannot find
-    them. To solve this, you have to manually remove the exclusion filters for
-    the src/main/resources path and include a filter for the gwt module
-    extension (**/*gwt.xml). In the end, the source path should look as
-    follows:</para>
+      <para>The most stable solution - in terms of classpath and ease-of-use -
+      we have found so far is to not use GPE at all but instead start the
+      hosted mode via the GWT maven plugin (see <ulink
+      url="???">http://mojo.codehaus.org/gwt-maven-plugin/</ulink>). The
+      following blog shows how to configure the plugin: <ulink
+      url="???">http://jvminside.blogspot.com/2010/02/efficient-gwt-development-with-eclipse.html</ulink>.
+      This requires an additional bit of maven configuration, which has been
+      put inside the m2e profile of the GWT archetype. This profile will be
+      automatically activated when the m2eclipse plugin is present.</para>
 
-    <figure>
-      <title>Including GWT modules in src/main/resources</title>
+      <para>Using this profile, the following actions have to be performed to
+      import, run and debug a project in Eclipse:</para>
 
-      <mediaobject>
-        <imageobject>
-          <imagedata fileref="images/eclipse-gwt-module-inclusion.png"
-                     width="50%" />
-        </imageobject>
-      </mediaobject>
-    </figure>
+      <itemizedlist>
+        <listitem>
+          <para>Import the project as a maven project</para>
 
-    <para>You can now manually mark the project as a GWT project in the
-    project properties dialog:</para>
+          <figure>
+            <title>Import project as Maven project</title>
 
-    <figure>
-      <title>Eclipse project properties dialog</title>
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="images/eclipse-wtp-import.png" />
+              </imageobject>
+            </mediaobject>
+          </figure>
+        </listitem>
 
-      <mediaobject>
-        <imageobject>
-          <imagedata fileref="images/gwt-eclipse-properties.png" width="60%" />
-        </imageobject>
-      </mediaobject>
-    </figure>
+        <listitem>
+          <para>After the project has been built, there are some errors left,
+          which can be solved by updating the Maven project configuration
+          (right-click on the project and select Maven -&gt; Update Project
+          Configuration)</para>
 
-    <para>Check the "Use Google Web Toolkit" checkbox. After configuration,
-    you should now be able to run the project as a GWT Web application by
-    right-clicking on the project and selecting <code>Run as -&gt; Web
-    Application</code>.</para>
+          <figure>
+            <title>Update Maven project configuration</title>
+
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="images/eclipse-wtp-update-maven-project.png"
+                           width="50%" />
+              </imageobject>
+            </mediaobject>
+          </figure>
+        </listitem>
+
+        <listitem>
+          <para>Open the run configurations. There should be 4 configurations
+          available: 3 maven configurations and 1 remote Java
+          application:</para>
+
+          <figure>
+            <title>Run configurations</title>
+
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="images/eclipse-wtp-configurations.png"
+                           width="50%" />
+              </imageobject>
+            </mediaobject>
+          </figure>
+        </listitem>
+
+        <listitem>
+          <para>Run the COMPILE GWT configuration once. This will do a
+          one-time GWT compilation and add the the result as an extra Web
+          Resource folder to the project. After refreshing the project (F5),
+          the following layout should appear in Web Resources:</para>
+
+          <figure>
+            <title>Web Resources layout</title>
+
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="images/eclipse-wtp-webresources.png"
+                           width="50%" />
+              </imageobject>
+            </mediaobject>
+          </figure>
+        </listitem>
+
+        <listitem>
+          <para>That's it, the project can now be deployed in the usual manner
+          on your preferred WTP server by right-clicking on the project and
+          selecting Run As... -&gt; Run on Server:</para>
+
+          <figure>
+            <title>Running the application</title>
+
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="images/eclipse-wtp-run.png" width="50%" />
+              </imageobject>
+            </mediaobject>
+          </figure>
+        </listitem>
+
+        <listitem>
+          <para>To debug the project, 2 additional processes have to be
+          started. First run the DEBUG GWT configuration in debug mode. This
+          process will start up a console and wait for the Java remote
+          application proces to connect. </para>
+        </listitem>
+
+        <listitem>
+          <para>Now run the CONNECT GWT configuration. This configuration will
+          connect to the GWT process and startup the GWT development console.
+          From there you can run the application in your default
+          browser.</para>
+        </listitem>
+      </itemizedlist>
+    </section>
+
+    <section>
+      <title>Using the Google Plugin for Eclipse (deprecated)</title>
+
+      <para>Make sure you add the process-resources as a goal to run on
+      project import in the general Maven preferences
+      (Window-&gt;Preferences)</para>
+
+      <figure>
+        <title>Maven preferences</title>
+
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="images/eclipse-maven-settings.png" width="50%" />
+          </imageobject>
+        </mediaobject>
+      </figure>
+
+      <para>You can now use the project wizard to import the project as a
+      Maven project. The embedded maven instance will automatically run the
+      process-resources goal and generate and import the Eclipse project
+      configuration. Because the m2eclipse plugin hides all resources from the
+      eclipse source path, a conflict with the GWT plugin arises. The GWT
+      plugin will look for module files in the source path and therefore
+      cannot find them. To solve this, you have to manually remove the
+      exclusion filters for the src/main/resources path and include a filter
+      for the gwt module extension (**/*gwt.xml). In the end, the source path
+      should look as follows:</para>
+
+      <figure>
+        <title>Including GWT modules in src/main/resources</title>
+
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="images/eclipse-gwt-module-inclusion.png"
+                       width="50%" />
+          </imageobject>
+        </mediaobject>
+      </figure>
+
+      <para>You can now manually mark the project as a GWT project in the
+      project properties dialog:</para>
+
+      <figure>
+        <title>Eclipse project properties dialog</title>
+
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="images/gwt-eclipse-properties.png" width="60%" />
+          </imageobject>
+        </mediaobject>
+      </figure>
+
+      <para>Check the "Use Google Web Toolkit" checkbox. After configuration,
+      you should now be able to run the project as a GWT Web application by
+      right-clicking on the project and selecting <code>Run as -&gt; Web
+      Application</code>.</para>
+    </section>
   </section>
 
   <section>
