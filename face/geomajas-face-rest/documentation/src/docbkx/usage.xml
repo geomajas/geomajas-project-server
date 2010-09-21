@@ -313,4 +313,25 @@
     <para>The parameters lat, lon, tolerance have not yet been
     implemented.</para>
   </section>
+
+  <section>
+    <title>OpenLayers configuration</title>
+
+    <para><ulink url="http://openlayers.org/">OpenLayers</ulink> is the most
+    popular web mapping javascript library and supports the REST protocol for
+    feature access. To connect with an OpenLayers client, add the following
+    layer to your map:</para>
+
+    <programlisting>var layer = new OpenLayers.Layer.Vector("GeoJSON", {
+    strategies: [new OpenLayers.Strategy.Fixed()],
+    protocol: new OpenLayers.Protocol.HTTP({
+    url: "http://base/rest/{layerId}", // replace with the actual url for your layer !
+    format: new OpenLayers.Format.GeoJSON()
+    })
+});
+</programlisting>
+
+    <para>An example web application with OpenLayers can be found in the
+    geomajas-face-rest-example project.</para>
+  </section>
 </chapter>
