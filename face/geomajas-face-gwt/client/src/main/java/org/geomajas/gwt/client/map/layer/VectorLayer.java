@@ -215,6 +215,8 @@ public class VectorLayer extends AbstractLayer<ClientVectorLayerInfo> implements
 
 	public void setFilter(String filter) {
 		this.filter = filter;
+		clearSelectedFeatures(); // these features may not comply with the current selection
+		cache.clear(); // need to clear this cache as this contains data for another filter
 	}
 
 	public VectorLayerStore getFeatureStore() {
