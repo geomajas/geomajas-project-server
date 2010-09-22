@@ -55,7 +55,7 @@
 	</pluginRepositories>
 	
 	<modules>
-		<module>geomajas-layer-geotools</module>
+		<module>geotools</module>
 	</modules>
 
 	<profiles>
