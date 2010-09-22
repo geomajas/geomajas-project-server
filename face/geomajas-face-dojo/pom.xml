@@ -96,8 +96,8 @@
 	</pluginRepositories>
 	
 	<modules>
-		<module>dojo-server</module>
-		<module>dojo-client</module>
+		<module>server</module>
+		<module>client</module>
 	</modules>
 
 	<profiles>
@@ -132,7 +132,7 @@
 				</property>
 			</activation>
 			<modules>
-				<module>dojo-client-shrinksafe</module>
+				<module>client-shrinksafe</module>
 			</modules>
 		</profile>
 	</profiles>
