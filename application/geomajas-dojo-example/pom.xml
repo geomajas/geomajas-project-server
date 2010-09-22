@@ -65,9 +65,9 @@
 	</pluginRepositories>
 
 	<modules>
-		<module>geomajas-dojo-example-client</module>
+		<module>example-client</module>
 		<module>${geomajas.modules.name}</module>
-		<module>geomajas-dojo-example-war</module>
+		<module>example-war</module>
 	</modules>
 
 	<dependencyManagement>
@@ -118,7 +118,7 @@
 				</property>
 			</activation>
 			<properties>
-				<geomajas.modules.name>geomajas-dojo-example-modules</geomajas.modules.name>
+				<geomajas.modules.name>example-modules</geomajas.modules.name>
 			</properties>
 		</profile>
 		<profile>
@@ -131,11 +131,11 @@
 				</property>
 			</activation>
 			<properties>
-				<geomajas.modules.name>geomajas-dojo-example-modules-shrinksafe</geomajas.modules.name>
+				<geomajas.modules.name>example-modules-shrinksafe</geomajas.modules.name>
 			</properties>
 			<modules>
 				<!-- include other module to assure version increased on release, doesn't really change anything -->
-				<module>geomajas-dojo-example-modules</module>
+				<module>example-modules</module>
 			</modules>
 		</profile>
 	</profiles>
