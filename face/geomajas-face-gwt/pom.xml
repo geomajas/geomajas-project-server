@@ -112,7 +112,7 @@
 	</pluginRepositories>
 	
 	<modules>
-		<module>geomajas-gwt-client</module>
+		<module>client</module>
 	</modules>
 
 	<dependencyManagement>
