@@ -66,6 +66,8 @@ public class BeanFeatureModel implements FeatureModel {
 
 	private final Logger log = LoggerFactory.getLogger(BeanFeatureModel.class);
 
+	public static final String XPATH_SEPARATOR = "/";
+	public static final String SEPARATOR = ".";
 	public static final String SEPARATOR_REGEXP = "\\.";
 
 	private Class<?> beanClass;
@@ -245,6 +247,7 @@ public class BeanFeatureModel implements FeatureModel {
 			return null;
 		}
 		// Split up properties: the first and the rest.
+		name = name.replace(XPATH_SEPARATOR, SEPARATOR);
 		String[] properties = name.split(SEPARATOR_REGEXP, 2);
 
 		// Get the first property:
