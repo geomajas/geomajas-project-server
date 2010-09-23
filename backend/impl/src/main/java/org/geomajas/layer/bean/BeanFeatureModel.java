@@ -22,18 +22,11 @@
  */
 package org.geomajas.layer.bean;
 
-import java.beans.PropertyDescriptor;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.Map.Entry;
-
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.PrecisionModel;
+import com.vividsolutions.jts.io.WKTReader;
+import com.vividsolutions.jts.io.WKTWriter;
 import org.geomajas.configuration.AssociationAttributeInfo;
 import org.geomajas.configuration.AttributeInfo;
 import org.geomajas.configuration.FeatureInfo;
@@ -51,15 +44,21 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.PrecisionModel;
-import com.vividsolutions.jts.io.WKTReader;
-import com.vividsolutions.jts.io.WKTWriter;
+import java.beans.PropertyDescriptor;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 
 /**
  * A simple Java beans based feature model.
- * 
+ *
  * @author Jan De Moerloose
  */
 public class BeanFeatureModel implements FeatureModel {
@@ -119,7 +118,10 @@ public class BeanFeatureModel implements FeatureModel {
 		}
 		attributeInfoMap.put(name, info);
 		if (info instanceof AssociationAttributeInfo) {
-			for (AttributeInfo assInfo : ((AssociationAttributeInfo) info).getFeature().getAttributes()) {
+			FeatureInfo association = ((AssociationAttributeInfo) info).getFeature();
+			attributeInfoMap
+					.put(name + SEPARATOR + association.getIdentifier().getName(), association.getIdentifier());
+			for (AttributeInfo assInfo : association.getAttributes()) {
 				addAttribute(name, assInfo);
 			}
 		}
@@ -218,9 +220,7 @@ public class BeanFeatureModel implements FeatureModel {
 		}
 	}
 
-	/**
-	 * Does not support many-to-one and one-to-many....
-	 */
+	/** Does not support many-to-one and one-to-many.... */
 	public void setAttributes(Object feature, Map<String, Attribute> attributes) throws LayerException {
 		for (Entry<String, Attribute> entry : attributes.entrySet()) {
 			setAttributeRecursively(feature, null, entry.getKey(), entry.getValue());
@@ -247,14 +247,11 @@ public class BeanFeatureModel implements FeatureModel {
 
 	/**
 	 * A recursive getAttribute method. In case a one-to-many is passed, an array will be returned.
-	 * 
-	 * @param feature
-	 *            The feature wherein to search for the attribute
-	 * @param name
-	 *            The attribute's full name. (can be attr1.attr2)
+	 *
+	 * @param feature The feature wherein to search for the attribute
+	 * @param name The attribute's full name. (can be attr1.attr2)
 	 * @return Returns the value. In case a one-to-many is passed along the way, an array will be returned.
-	 * @throws LayerException
-	 *             oops
+	 * @throws LayerException oops
 	 */
 	private Object getAttributeRecursively(Object feature, String name) throws LayerException {
 		if (feature == null) {
@@ -352,7 +349,7 @@ public class BeanFeatureModel implements FeatureModel {
 										throw new LayerException(t);
 									}
 								}
-								
+
 								// Set the identifier:
 								String identifierName = aso.getFeature().getIdentifier().getName();
 								writeProperty(manyToOneBean, attrValue.getValue().getId().getValue(), identifierName);

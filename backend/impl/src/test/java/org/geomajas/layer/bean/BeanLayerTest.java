@@ -75,8 +75,7 @@ public class BeanLayerTest {
 
 	@Test
 	public void simpleFilter() throws Exception {
-		//Filter filter = filterService.createCompareFilter("stringAttr", "=", "bean2");
-		Filter filter = filterService.parseFilter("stringAttr='bean2'");
+		Filter filter = filterService.createCompareFilter("stringAttr", "=", "bean2");
 		Iterator<?> it = layer.getElements(filter, 0, 0);
 		int t = 0;
 		while (it.hasNext()) {
@@ -88,8 +87,19 @@ public class BeanLayerTest {
 
 	@Test
 	public void manyToOneFilter() throws Exception {
-		//Filter filter = filterService.createCompareFilter("stringAttr", "=", "bean2");
 		Filter filter = filterService.parseFilter("manyToOneAttr.stringAttr='manyToOne - bean1'");
+		Iterator<?> it = layer.getElements(filter, 0, 0);
+		int t = 0;
+		while (it.hasNext()) {
+			Assert.assertTrue(it.next() instanceof FeatureBean);
+			t++;
+		}
+		Assert.assertEquals(1, t);
+	}
+
+	@Test
+	public void manyToOneIdFilter() throws Exception {
+		Filter filter = filterService.parseFilter("manyToOneAttr.id=1");
 		Iterator<?> it = layer.getElements(filter, 0, 0);
 		int t = 0;
 		while (it.hasNext()) {
