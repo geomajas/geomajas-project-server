@@ -41,11 +41,9 @@ import org.geomajas.layer.tile.TileCode;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
 import org.geotools.geometry.DirectPosition2D;
-import org.geotools.referencing.CRS;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
@@ -243,8 +241,6 @@ public class WmsLayer implements RasterLayer {
 			} catch (MismatchedDimensionException e) {
 				throw new GeomajasException(e, ExceptionCode.RENDER_DIMENSION_MISMATCH);
 			} catch (TransformException e) {
-				throw new GeomajasException(e, ExceptionCode.RENDER_TRANSFORMATION_FAILED);
-			} catch (FactoryException e) {
 				throw new GeomajasException(e, ExceptionCode.RENDER_TRANSFORMATION_FAILED);
 			}
 		}
