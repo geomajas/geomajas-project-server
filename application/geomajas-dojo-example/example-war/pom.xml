@@ -47,7 +47,7 @@
 		<!-- Geomajas dependencies -->
 		<dependency>
 			<groupId>org.geomajas</groupId>
-			<artifactId>${geomajas.modules.name}</artifactId>
+			<artifactId>geomajas-dojo-${geomajas.modules.name}</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
