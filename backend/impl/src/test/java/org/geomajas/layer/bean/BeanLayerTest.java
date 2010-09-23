@@ -1,12 +1,15 @@
 package org.geomajas.layer.bean;
 
 import java.util.Calendar;
+import java.util.Iterator;
 
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.VectorLayer;
+import org.geomajas.service.FilterService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.opengis.filter.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
@@ -33,6 +36,9 @@ public class BeanLayerTest {
 	@Autowired
 	@Qualifier("beans")
 	private VectorLayer layer;
+
+	@Autowired
+	protected FilterService filterService;
 
 	@Test
 	public void readPrimitives() throws LayerException {
@@ -66,4 +72,31 @@ public class BeanLayerTest {
 		Geometry g = layer.getFeatureModel().getGeometry(bean);
 		Assert.assertTrue(expected.equalsExact(g, 0.00001));
 	}
+
+	@Test
+	public void simpleFilter() throws Exception {
+		//Filter filter = filterService.createCompareFilter("stringAttr", "=", "bean2");
+		Filter filter = filterService.parseFilter("stringAttr='bean2'");
+		Iterator<?> it = layer.getElements(filter, 0, 0);
+		int t = 0;
+		while (it.hasNext()) {
+			Assert.assertTrue(it.next() instanceof FeatureBean);
+			t++;
+		}
+		Assert.assertEquals(1, t);
+	}
+
+	@Test
+	public void manyToOneFilter() throws Exception {
+		//Filter filter = filterService.createCompareFilter("stringAttr", "=", "bean2");
+		Filter filter = filterService.parseFilter("manyToOneAttr.stringAttr='manyToOne - bean1'");
+		Iterator<?> it = layer.getElements(filter, 0, 0);
+		int t = 0;
+		while (it.hasNext()) {
+			Assert.assertTrue(it.next() instanceof FeatureBean);
+			t++;
+		}
+		Assert.assertEquals(1, t);
+	}
+
 }

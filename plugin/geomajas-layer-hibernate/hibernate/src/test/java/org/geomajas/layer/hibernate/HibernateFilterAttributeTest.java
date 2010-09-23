@@ -276,6 +276,7 @@ public class HibernateFilterAttributeTest extends AbstractHibernateLayerModelTes
 		}		
 	}
 
+	/** @todo tests to write
 	@Test
 	public void containsFilter() {
 	}
@@ -299,4 +300,5 @@ public class HibernateFilterAttributeTest extends AbstractHibernateLayerModelTes
 	@Test
 	public void bboxFilter() {
 	}
+	*/
 }

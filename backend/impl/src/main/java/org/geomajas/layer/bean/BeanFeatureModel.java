@@ -108,7 +108,20 @@ public class BeanFeatureModel implements FeatureModel {
 		FeatureInfo featureInfo = vectorLayerInfo.getFeatureInfo();
 		attributeInfoMap.put(featureInfo.getIdentifier().getName(), featureInfo.getIdentifier());
 		for (AttributeInfo info : featureInfo.getAttributes()) {
-			attributeInfoMap.put(info.getName(), info);
+			addAttribute(null, info);
+		}
+	}
+
+	private void addAttribute(String prefix, AttributeInfo info) {
+		String name = info.getName();
+		if (null != prefix) {
+			name = prefix + SEPARATOR + name;
+		}
+		attributeInfoMap.put(name, info);
+		if (info instanceof AssociationAttributeInfo) {
+			for (AttributeInfo assInfo : ((AssociationAttributeInfo) info).getFeature().getAttributes()) {
+				addAttribute(name, assInfo);
+			}
 		}
 	}
 
@@ -118,6 +131,7 @@ public class BeanFeatureModel implements FeatureModel {
 
 	public Attribute getAttribute(Object feature, String name) throws LayerException {
 		Object attr = getAttributeRecursively(feature, name);
+		name = name.replace(XPATH_SEPARATOR, SEPARATOR);
 		AttributeInfo attributeInfo = attributeInfoMap.get(name);
 		if (null == attributeInfo) {
 			throw new LayerException(ExceptionCode.ATTRIBUTE_UNKNOWN, name);
