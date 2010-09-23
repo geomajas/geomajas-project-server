@@ -56,6 +56,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
 
+import javax.annotation.PostConstruct;
+
 /**
  * Layer model for accessing raster data from WMS servers.
  * 
@@ -107,14 +109,9 @@ public class WmsLayer implements RasterLayer {
 		return crs;
 	}
 
-	private void initCrs() throws LayerException {
-		try {
-			crs = CRS.decode(layerInfo.getCrs());
-		} catch (NoSuchAuthorityCodeException e) {
-			throw new LayerException(e, ExceptionCode.LAYER_CRS_UNKNOWN_AUTHORITY, getId(), getLayerInfo().getCrs());
-		} catch (FactoryException exception) {
-			throw new LayerException(exception, ExceptionCode.LAYER_CRS_PROBLEMATIC, getId(), getLayerInfo().getCrs());
-		}
+	@PostConstruct
+	private void postConstruct() throws GeomajasException {
+		crs = geoService.getCrs(getLayerInfo().getCrs());
 	}
 
 	public Envelope getMaxBounds() {
@@ -131,7 +128,6 @@ public class WmsLayer implements RasterLayer {
 	@Api
 	public void setLayerInfo(RasterLayerInfo layerInfo) throws LayerException {
 		this.layerInfo = layerInfo;
-		initCrs();
 		decimalFormat.setDecimalSeparatorAlwaysShown(false);
 		decimalFormat.setGroupingUsed(false);
 		decimalFormat.setMinimumFractionDigits(0);
@@ -201,7 +197,7 @@ public class WmsLayer implements RasterLayer {
 			}
 		} else {
 			try {
-				MathTransform layerToMap = geoService.findMathTransform(CRS.decode(getLayerInfo().getCrs()), boundsCrs);
+				MathTransform layerToMap = geoService.findMathTransform(crs, boundsCrs);
 				MathTransform mapToLayer = layerToMap.inverse();
 
 				// Translate the map coordinates to layer coordinates, assumes equal x-y orientation
