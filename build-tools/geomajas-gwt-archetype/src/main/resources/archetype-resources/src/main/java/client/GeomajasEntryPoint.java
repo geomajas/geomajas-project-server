@@ -29,7 +29,8 @@ package ${package}.client;
 import java.util.ArrayList;
 import java.util.List;
 
-import ${package}.client.i18n.Translation;
+import ${package}.client.i18n.ConfigurationConstants;
+import ${package}.client.i18n.LocalizedMessages;
 import ${package}.client.pages.AbstractTab;
 import ${package}.client.pages.FeatureListGridPage;
 import ${package}.client.pages.SearchPage;
@@ -80,13 +81,16 @@ public class GeomajasEntryPoint implements EntryPoint {
 	private TabSet tabSet = new TabSet();
 
 	private List<AbstractTab> tabs = new ArrayList<AbstractTab>();
+	
+	private LocalizedMessages messages = GWT.create(LocalizedMessages.class);
+
 
 	public GeomajasEntryPoint() {
 	}
 
 	public void onModuleLoad() {
 		// Used for i18n in configuration files:
-		I18nProvider.setLookUp(GWT.<ConstantsWithLookup>create(Translation.class));
+		I18nProvider.setLookUp(GWT.<ConstantsWithLookup>create(ConfigurationConstants.class));
 
 		VLayout mainLayout = new VLayout();
 		mainLayout.setWidth100();
@@ -105,7 +109,7 @@ public class GeomajasEntryPoint implements EntryPoint {
 		topBar.addMember(icon);
 		topBar.addSpacer(6);
 
-		Label title = new Label("Geomajas, hello world application");
+		Label title = new Label(messages.applicationTitle("hello world"));
 		title.setStyleName("sgwtTitle");
 		title.setWidth(300);
 		topBar.addMember(title);
