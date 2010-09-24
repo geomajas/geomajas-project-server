@@ -226,7 +226,7 @@
 						<groupId>org.codehaus.mojo</groupId>
 						<artifactId>gwt-maven-plugin</artifactId>
 						<configuration>
-							<module>${package}.GeomajasEntryPointDev</module>
+							<module>${package}.GeomajasEntryPoint</module>
 							<runTarget>/${artifactId}/index.html</runTarget>
 							<noServer>true</noServer>
 							<port>8080</port>

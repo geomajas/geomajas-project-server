@@ -58,5 +58,12 @@
 				<include>**/*.css</include>
 			</includes>
 		</fileSet>
+		<fileSet filtered="true" encoding="UTF-8">
+			<directory>.eclipse</directory>
+			<includes>
+				<include>**/*.launch</include>
+				<include>**/*.xsl</include>
+			</includes>
+		</fileSet>
 	</fileSets>
 </archetype-descriptor>
