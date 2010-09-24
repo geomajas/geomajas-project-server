@@ -68,6 +68,9 @@ public class TileCache implements SpatialCache {
 	private List<VectorTile> evictedTiles;
 
 	private MapViewState lastViewState;
+
+	private String cacheFilter; // filter which was used when filling the cache
+
 	// -------------------------------------------------------------------------
 	// Constructors:
 	// -------------------------------------------------------------------------
@@ -210,7 +213,7 @@ public class TileCache implements SpatialCache {
 			TileFunction<VectorTile> onUpdate) {
 		MapViewState viewState = layer.getMapModel().getMapView().getViewState();
 		boolean panning = lastViewState == null || viewState.isPannableFrom(lastViewState);
-		if (!panning || isDirty()) {
+		if (!panning || isDirty(filter)) {
 			// Delete all tiles
 			clear();
 			for (VectorTile tile : evictedTiles) {
@@ -258,7 +261,19 @@ public class TileCache implements SpatialCache {
 	}
 
 	public boolean isDirty() {
-		return !evictedTiles.isEmpty();
+		return isDirty(cacheFilter);
+	}
+	
+	public boolean isDirty(String filter) {
+		return !evictedTiles.isEmpty() || !objectEquals(filter, cacheFilter);
+	}
+
+	private boolean objectEquals(Object left, Object right) {
+		if (null == left) {
+			return null == right;
+		} else {
+			return left.equals(right);
+		}
 	}
 
 	public Collection<VectorTile> getTiles() {

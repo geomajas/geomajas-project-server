@@ -88,8 +88,7 @@ public class VectorLayer extends AbstractLayer<ClientVectorLayerInfo> implements
 	 */
 	public VectorLayer(MapModel mapModel, ClientVectorLayerInfo layerInfo) {
 		super(mapModel, layerInfo);
-		Bbox maxExtent = new Bbox(layerInfo.getMaxExtent().getX(), layerInfo.getMaxExtent().getY(), layerInfo
-				.getMaxExtent().getWidth(), layerInfo.getMaxExtent().getHeight());
+		Bbox maxExtent = new Bbox(layerInfo.getMaxExtent());
 		cache = new TileCache(this, maxExtent);
 	}
 
@@ -215,7 +214,7 @@ public class VectorLayer extends AbstractLayer<ClientVectorLayerInfo> implements
 
 	public void setFilter(String filter) {
 		this.filter = filter;
-		clearSelectedFeatures(); // these features may not comply with the current selection
+		clearSelectedFeatures(); // these features may not comply with the current filter
 		cache.clear(); // need to clear this cache as this contains data for another filter
 	}
 
