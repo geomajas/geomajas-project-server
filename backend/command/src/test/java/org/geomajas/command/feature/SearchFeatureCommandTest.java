@@ -168,6 +168,33 @@ public class SearchFeatureCommandTest {
 		Assert.assertTrue(actual.contains("Country 4"));
 	}
 
+	@Test
+	public void testSearchNoCriteria() throws Exception {
+		// prepare command
+		SearchFeatureRequest request = new SearchFeatureRequest();
+		request.setLayerId(LAYER_ID);
+		request.setCrs("EPSG:4326");
+		// execute
+		SearchFeatureResponse response = (SearchFeatureResponse) dispatcher.execute(
+				"command.feature.Search", request, null, "en");
+
+		// test
+		Assert.assertFalse(response.isError());
+		Assert.assertEquals(LAYER_ID, response.getLayerId());
+		List<Feature> features = Arrays.asList(response.getFeatures());
+		Assert.assertNotNull(features);
+		Assert.assertEquals(4, features.size());
+
+		List<String> actual = new ArrayList<String>();
+		for (Feature feature : features) {
+			actual.add(feature.getLabel());
+		}
+		Assert.assertTrue(actual.contains("Country 1"));
+		Assert.assertTrue(actual.contains("Country 2"));
+		Assert.assertTrue(actual.contains("Country 3"));
+		Assert.assertTrue(actual.contains("Country 4"));
+	}
+
 	// @todo need to test filter
 	// @todo need to test filter + limit + multiple criteria
 	// @todo need to test no filter, no criteria (return all?)

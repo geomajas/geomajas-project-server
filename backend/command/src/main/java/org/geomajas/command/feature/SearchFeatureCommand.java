@@ -114,21 +114,23 @@ public class SearchFeatureCommand implements Command<SearchFeatureRequest, Searc
 		Filter f = null;
 		VectorLayer layer = configurationService.getVectorLayer(layerId);
 		String idName = layer.getLayerInfo().getFeatureInfo().getIdentifier().getName();
-		for (SearchCriterion criterion : request.getCriteria()) {
-			Filter temp;
-			String attributeName = criterion.getAttributeName();
-			String operator = criterion.getOperator();
-			if ((SearchFeatureRequest.ID_ATTRIBUTE.equals(attributeName) || attributeName.equals(idName)) &&
-					(null == operator || "=".equals(operator))) {
-				temp = filterService.createFidFilter(new String[]{criterion.getValue()});
-			} else {
-				String c = criterion.toString().replace('*', '%').replace('?', '_');
-				temp = filterService.parseFilter(c);
-			}
-			if (f == null) {
-				f = temp;
-			} else {
-				f = filterService.createLogicFilter(f, request.getBooleanOperator(), temp);
+		if (null != request.getCriteria()) {
+			for (SearchCriterion criterion : request.getCriteria()) {
+				Filter temp;
+				String attributeName = criterion.getAttributeName();
+				String operator = criterion.getOperator();
+				if ((SearchFeatureRequest.ID_ATTRIBUTE.equals(attributeName) || attributeName.equals(idName)) &&
+						(null == operator || "=".equals(operator))) {
+					temp = filterService.createFidFilter(new String[]{criterion.getValue()});
+				} else {
+					String c = criterion.toString().replace('*', '%').replace('?', '_');
+					temp = filterService.parseFilter(c);
+				}
+				if (f == null) {
+					f = temp;
+				} else {
+					f = filterService.createLogicFilter(f, request.getBooleanOperator(), temp);
+				}
 			}
 		}
 
