@@ -294,6 +294,12 @@ public class SearchByLocationRequest extends LayerIdsCommandRequest {
 		this.filter = filter;
 	}
 
+	/**
+	 * Build string representation of object.
+	 *
+	 * @return string
+	 * @since 1.8.0
+	 */
 	@Override
 	public String toString() {
 		return "SearchByLocationRequest{" +
