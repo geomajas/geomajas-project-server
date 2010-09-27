@@ -148,6 +148,7 @@ public class ToggleSelectionAction extends MenuAction {
 				return;
 			}
 			request.setLayerIds(new String[] { layer.getServerLayerId() });
+			request.setFilter(((VectorLayer) layer).getFilter());
 		} else {
 			request.setLayerIds(getVisibleServerLayerIds(mapModel));
 		}

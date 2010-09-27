@@ -293,5 +293,18 @@ public class SearchByLocationRequest extends LayerIdsCommandRequest {
 	public void setFilter(String filter) {
 		this.filter = filter;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "SearchByLocationRequest{" +
+				"location=" + location +
+				", queryType=" + queryType +
+				", ratio=" + ratio +
+				", searchType=" + searchType +
+				", crs='" + crs + '\'' +
+				", filter='" + filter + '\'' +
+				", buffer=" + buffer +
+				", featureIncludes=" + featureIncludes +
+				'}';
+	}
 }

@@ -230,6 +230,10 @@ public class SelectionController extends AbstractRectangleController {
 		request.setRatio(coverageRatio);
 		request.setSearchType(SearchByLocationRequest.SEARCH_ALL_LAYERS);
 		request.setFeatureIncludes(GwtCommandDispatcher.getInstance().getLazyFeatureIncludesSelect());
+		Layer<?> layer = mapWidget.getMapModel().getSelectedLayer();
+		if (null != layer && layer instanceof VectorLayer) {
+			request.setFilter(((VectorLayer) layer).getFilter());
+		}
 		commandRequest.setCommandRequest(request);
 		GwtCommandDispatcher.getInstance().execute(commandRequest, new CommandCallback() {
 
