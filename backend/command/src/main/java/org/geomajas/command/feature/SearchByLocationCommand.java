@@ -163,6 +163,13 @@ public class SearchByLocationCommand implements Command<SearchByLocationRequest,
 								f = filterCreator.createWithinFilter(layerGeometry, geomName);
 								break;
 						}
+						if (null != request.getFilter()) {
+							if (null == f) {
+								f = filterCreator.parseFilter(request.getFilter());
+							} else {
+								f = filterCreator.createAndFilter(filterCreator.parseFilter(request.getFilter()), f);
+							}
+						}
 
 						// Get the features:
 						List<InternalFeature> temp = layerService.getFeatures(layerId, crs, f, null, request

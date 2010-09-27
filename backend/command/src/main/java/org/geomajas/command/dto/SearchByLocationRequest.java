@@ -103,6 +103,8 @@ public class SearchByLocationRequest extends LayerIdsCommandRequest {
 	 */
 	private String crs;
 
+	private String filter;
+
 	/**
 	 * The optional buffer that should be added around the location before executing the search.
 	 */
@@ -267,4 +269,29 @@ public class SearchByLocationRequest extends LayerIdsCommandRequest {
 	public void setFeatureIncludes(int featureIncludes) {
 		this.featureIncludes = featureIncludes;
 	}
+
+	/**
+	 * Get the filter expression which should be applied on the layer.
+	 * <p/>
+	 * If the filter contains a geometry, then this needs to be in layer CRS, it is not converted!
+	 *
+	 * @return filter expression
+	 * @since 1.8.0
+	 */
+	public String getFilter() {
+		return filter;
+	}
+
+	/**
+	 * Set the filter expression which should be applied on the layer.
+	 * <p/>
+	 * If the filter contains a geometry, then this needs to be in layer CRS, it is not converted!
+	 *
+	 * @param filter filter expression
+	 * @since 1.8.0
+	 */
+	public void setFilter(String filter) {
+		this.filter = filter;
+	}
+	
 }
