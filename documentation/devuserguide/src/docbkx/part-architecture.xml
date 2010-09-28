@@ -460,7 +460,8 @@
       <title>Security</title>
 
       <para>The data which is accessed using Geomajas can be security
-      sensitive.</para>
+      sensitive. Geomajas includes all the measures to assure protection of
+      sensitive or private data.</para>
 
       <section>
         <title>Security architecture</title>
@@ -716,6 +717,95 @@
         <para>The security uses the approach that all access is forbidden
         unless is is allowed. Hence, you will always need to configure at
         least one security service to assure the system is usable.</para>
+      </section>
+
+      <section>
+        <title>Interaction between client and back-end</title>
+
+        <para>When a user wants to access a secured Geomajas application, she
+        will normally surf to the URL for the application.</para>
+
+        <para>The application will then check whether the user is logged in.
+        If that is not the case, the user is redirected to the login page.
+        This may be an external page as provided by an authentication server
+        (as often used for SSO (Single-Sign-On) solutions), or it could be a
+        login widget. Note that the framework does not handle this redirection
+        itself or even know how the login can be handled. It is up to the
+        application writer to provide this redirection.</para>
+
+        <para>The login page will ask the user to provide her credentials.
+        This could be a user name, password pair, a request for a code coming
+        from a hardware device, login using a eID or some other means PKI
+        (Private Key Infrastructure), automatic recognition based on IP
+        address,... When the login handling is satisfied with the provided
+        credentials (the user is really authenticated), it will redirect back
+        to the original application with a security token.</para>
+
+        <para>This token is then used by the client to pass authentication
+        information to the back-end.</para>
+
+        <para>As seen from this example, the Geomajas client does not handle
+        the authentication and does not need to know he credentials for the
+        user.</para>
+
+        <figure>
+          <title>Logging into a Geomajas system</title>
+
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="images/security-login.png" />
+            </imageobject>
+          </mediaobject>
+        </figure>
+
+        <note>
+          <para>It is important to know that the security token typically has
+          a limited validity. As such, it can happen at any moment that the
+          token is no longer valid and the login screen needs to be presented
+          again. The application author should consider this while
+          developing.</para>
+        </note>
+
+        <para>At the back-end, the programmer has a reasonably simple job. At
+        each policy enforcement point, you need an injected security context
+        which can be used for the policy decisions. This can be included using
+        the following piece of code.</para>
+
+        <informalexample>
+          <programlisting>@Autowired
+private SecurityContext securityContext;</programlisting>
+        </informalexample>
+
+        <para>The framework handles the instantiation of this security context
+        based on the security token (which is typically received either
+        through the CommandDispatcher's request or a URL parameter). This is
+        done by the SecurityManager. The SecurityManager uses the
+        configuration supplied by Spring bean
+        <code>security.SecurityInfo</code>. Each of the security services will
+        check whether the token is valid (which includes checking whether it
+        was supplied by the authentication services which backs the service)
+        and extract the principal from the token. That principal is used to
+        fill some information about the user (like name, to allow the client
+        to display this) and to read the policies from the policy store. The
+        policies are converted by the service to Authentication objects. The
+        authentication objects are combined in the security context, only
+        allowing things which are allowed by at least one authentication
+        object.</para>
+
+        <figure>
+          <title>Building the security context</title>
+
+          <mediaobject>
+            <imageobject>
+              <imagedata fileref="images/security-context.png" />
+            </imageobject>
+          </mediaobject>
+        </figure>
+
+        <para>Both the authentication service and policy store are outside of
+        the Geomajas framework. They can be external services which are
+        accessed by the security services or implemented as part of the
+        security service implementation.</para>
       </section>
 
       <section>
