@@ -1,5 +1,5 @@
 ({
-	"tooltip" : "Toon muis co&ouml;rdinaten.",
+	"tooltip" : "Geef X, Y co&ouml;rdinaten weer",
 	"viewx" : "Scherm x: ",
 	"viewy" : "Scherm y: ",
 	"worldx" : "Wereld x: ",
