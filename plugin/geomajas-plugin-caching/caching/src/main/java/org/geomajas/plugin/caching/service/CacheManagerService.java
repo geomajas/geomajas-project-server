@@ -24,13 +24,16 @@
 package org.geomajas.plugin.caching.service;
 
 import com.vividsolutions.jts.geom.Geometry;
+import org.geomajas.global.Api;
 import org.geomajas.layer.Layer;
 
 /**
  * Service which manages the handling of the layer and type specific caches.
  *
  * @author Joachim Van der Auwera
+ * @since 1.0.0
  */
+@Api(allMethods = true)
 public interface CacheManagerService {
 
 	/**

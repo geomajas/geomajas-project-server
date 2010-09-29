@@ -23,11 +23,15 @@
 
 package org.geomajas.plugin.caching.service;
 
+import org.geomajas.global.Api;
+
 /**
  * A cache which is managed using the {@link org.geomajas.plugin.caching.service.CacheManagerService}.
  *
  * @author Joachim Van der Auwera
+ * @since 1.0.0
  */
+@Api(allMethods = true)
 public interface CacheService {
 
 	/**

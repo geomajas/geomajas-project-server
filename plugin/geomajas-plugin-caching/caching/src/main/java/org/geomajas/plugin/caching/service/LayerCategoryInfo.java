@@ -23,48 +23,52 @@
 
 package org.geomajas.plugin.caching.service;
 
-import com.vividsolutions.jts.geom.Geometry;
 import org.geomajas.global.Api;
 
-import java.util.List;
-
 /**
- * Spatial index for handling invalidation of entries in a {@link org.geomajas.plugin.caching.service.CacheService}.
- * This service is used by the {@link org.geomajas.plugin.caching.service.CacheManagerService}. 
+ * Definition of layer and cacheCategory for use in application context searches.
  *
  * @author Joachim Van der Auwera
  * @since 1.0.0
  */
 @Api(allMethods = true)
-public interface CacheIndexService {
+public class LayerCategoryInfo {
+	private String layerId;
+	private CacheCategory category;
 
 	/**
-	 * Add a key/geometry pair to the spatial index.
-	 * <p/>
-	 * This will overwrite any pre-existing object for the key.
+	 * Get layer if for this configuration.
 	 *
-	 * @param key key for the spatial object
-	 * @param geometry geometry for the object
+	 * @return layer id
 	 */
-	void put(String key, Geometry geometry);
+	public String getLayerId() {
+		return layerId;
+	}
 
 	/**
-	 * Remove a spatial object from the index.
+	 * Set layer id for this configuration.
 	 *
-	 * @param key key to remove
+	 * @param layerId layer id
 	 */
-	void remove(String key);
+	public void setLayerId(String layerId) {
+		this.layerId = layerId;
+	}
 
 	/**
-	 * Drop the entire index. This is only useful when dropping the cache which is indexed.
-	 */
-	void drop();
-
-	/**
-	 * Get the keys for the objects which (may) overlap with the given geometry.
+	 * Get cache category for this configuration.
 	 *
-	 * @param geometry geometry to test
-	 * @return list of keys of spatial objects which my overlap with the geometry
+	 * @return cache category
 	 */
-	List<String> getOverlappingKeys(Geometry geometry);
+	public CacheCategory getCategory() {
+		return category;
+	}
+
+	/**
+	 * Set cache category for this configuration.
+	 *
+	 * @param category cache category
+	 */
+	public void setCategory(CacheCategory category) {
+		this.category = category;
+	}
 }

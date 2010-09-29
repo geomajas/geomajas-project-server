@@ -23,48 +23,28 @@
 
 package org.geomajas.plugin.caching.service;
 
-import com.vividsolutions.jts.geom.Geometry;
 import org.geomajas.global.Api;
 
-import java.util.List;
+import javax.validation.constraints.NotNull;
 
 /**
- * Spatial index for handling invalidation of entries in a {@link org.geomajas.plugin.caching.service.CacheService}.
- * This service is used by the {@link org.geomajas.plugin.caching.service.CacheManagerService}. 
+ * Configuration of a cache.
  *
  * @author Joachim Van der Auwera
  * @since 1.0.0
  */
 @Api(allMethods = true)
-public interface CacheIndexService {
+public class CacheInfo extends LayerCategoryInfo {
 
-	/**
-	 * Add a key/geometry pair to the spatial index.
-	 * <p/>
-	 * This will overwrite any pre-existing object for the key.
-	 *
-	 * @param key key for the spatial object
-	 * @param geometry geometry for the object
-	 */
-	void put(String key, Geometry geometry);
+	@NotNull
+	private CacheFactory cacheFactory;
 
-	/**
-	 * Remove a spatial object from the index.
-	 *
-	 * @param key key to remove
-	 */
-	void remove(String key);
+	public CacheFactory getCacheFactory() {
+		return cacheFactory;
+	}
 
-	/**
-	 * Drop the entire index. This is only useful when dropping the cache which is indexed.
-	 */
-	void drop();
-
-	/**
-	 * Get the keys for the objects which (may) overlap with the given geometry.
-	 *
-	 * @param geometry geometry to test
-	 * @return list of keys of spatial objects which my overlap with the geometry
-	 */
-	List<String> getOverlappingKeys(Geometry geometry);
+	public void setCacheFactory(CacheFactory cacheFactory) {
+		this.cacheFactory = cacheFactory;
+	}
+	
 }

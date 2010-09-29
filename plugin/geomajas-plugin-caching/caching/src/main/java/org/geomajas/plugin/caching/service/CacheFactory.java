@@ -23,6 +23,8 @@
 
 package org.geomajas.plugin.caching.service;
 
+import org.geomajas.layer.Layer;
+
 /**
  * Factory for creating {@link CacheService} instances.
  *
@@ -33,7 +35,9 @@ public interface CacheFactory {
 	/**
 	 * Create a cache instance.
 	 *
+	 * @param layer layer to create cache for
+	 * @param category category to create cache for
 	 * @return cache instance
 	 */
-	CacheService create();
+	CacheService create(Layer layer, CacheCategory category);
 }

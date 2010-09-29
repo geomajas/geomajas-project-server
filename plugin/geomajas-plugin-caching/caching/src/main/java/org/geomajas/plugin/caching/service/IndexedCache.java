@@ -79,4 +79,15 @@ public class IndexedCache {
 	public void drop() {
 		cache.drop();
 	}
+
+	/**
+	 * Invalidate all entries which (may) overlap with the given geometry.
+	 *
+	 * @param geometry geometry to test
+	 */
+	public void invalidate(Geometry geometry) {
+		for (String key : index.getOverlappingKeys(geometry)) {
+			remove(key);
+		}
+	}
 }

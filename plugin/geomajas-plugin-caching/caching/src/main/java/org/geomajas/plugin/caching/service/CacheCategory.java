@@ -23,11 +23,15 @@
 
 package org.geomajas.plugin.caching.service;
 
+import org.geomajas.global.Api;
+
 /**
  * Immutable objects which represent cache categories. These a just strings which are made type safe.
  *
  * @author Joachim Van der Auwera
+ * @since 1.0.0
  */
+@Api(allMethods = true)
 public class CacheCategory {
 
 	public static final CacheCategory VML = new CacheCategory("vml");
