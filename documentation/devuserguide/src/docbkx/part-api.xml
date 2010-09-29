@@ -1674,7 +1674,9 @@
 
       <para>A pipeline can be layer specific and can refer to a delegate (bean
       reference). The use of the delegate means that the pipeline definition
-      (list of steps) is copied from the delegate.</para>
+      (list of steps) is copied from the delegate. The following pipeline
+      extends the previous one (the ref value indicates that the pipeline is
+      referenced by bean name/id).</para>
 
       <xi:include href="listing/PipelineDelegate.xml"
                   xmlns:xi="http://www.w3.org/2001/XInclude" />
@@ -1684,6 +1686,16 @@
       extension hooks. You can pass a map of "extensions" which are named
       steps. When a extension hook of the name is found, that step will be
       included in the pipeline just after the hook definition.</para>
+
+      <para>First you have to define the actual extension hooks by adding
+      steps of class <code>PipelineHook</code>.</para>
+
+      <xi:include href="listing/PipelineHooks.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+      <para>The hooks can then be used to add extra steps to the pipeline at
+      the pre-defined places. Note that multiple steps can be added for each
+      hook, but the order of the steps at the hook is not defined.</para>
 
       <xi:include href="listing/PipelineExtension.xml"
                   xmlns:xi="http://www.w3.org/2001/XInclude" />

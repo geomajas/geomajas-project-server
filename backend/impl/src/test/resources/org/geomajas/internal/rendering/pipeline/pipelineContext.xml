@@ -109,6 +109,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 		<property name="delegatePipeline" ref="inter" />
 	</bean>
 
+	<!-- @extract-start PipelineHooks, Define pipeline extension hooks -->
 	<bean id="hooked" class="org.geomajas.service.pipeline.PipelineInfo">
 		<property name="pipelineName" value="hookedTest"/>
 		<property name="layerId" value="base"/>
@@ -135,6 +136,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 			</list>
 		</property>
 	</bean>
+	<!-- @extract-end -->
 
 	<!-- @extract-start PipelineExtension, Extending a delegate pipeline -->
 	<bean id="hooked2" class="org.geomajas.service.pipeline.PipelineInfo">
