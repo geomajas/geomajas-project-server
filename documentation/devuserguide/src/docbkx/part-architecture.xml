@@ -296,6 +296,22 @@
     <section id="arch-pipeline">
       <title>Pipelines</title>
 
+      <para>Pipelines are used in Geomajas to allow extreme configurability of
+      the services which choose to use them.</para>
+
+      <para>They are comparable with BPM processes. At first sight pipelines
+      are much more limited as the steps are always sequential, only allowing
+      each step to either continue to the next stop or stop the pipeline.
+      Nesting pipelines gives back the expressive power of general BPM
+      processes. A step could loop over another pipeline, conditionally
+      execute a pipeline, start several pipelines for parallel processing etc.
+      An important differences is the configurability of pipelines. Pipelines
+      are selected on a combination of pipeline name and the layer on which
+      the pipeline operates. When defining pipelines, you can either define
+      them from scratch, copy an existing pipeline or copy and extend a
+      pipeline. A pipeline can be defined with extension hooks and these hooks
+      can be used to add additional pipeline steps.</para>
+
       <figure>
         <title>Geomajas pipeline architecture</title>
 
