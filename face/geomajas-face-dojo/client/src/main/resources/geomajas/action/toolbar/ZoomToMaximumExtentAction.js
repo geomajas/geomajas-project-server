@@ -38,7 +38,10 @@ dojo.declare("ZoomToMaximumExtentAction", ToolbarAction, {
 		this.mapWidget = mapWidget;
 		this.text = "Zoom to maximum extent";
 		this.excludeRasterLayers = (excludeRasterLayers==null ? true : excludeRasterLayers);
-		this.includeLayers = includeLayers;
+		if (includeLayers && includeLayers != "")
+			this.includeLayers = includeLayers.split(",");
+		else
+			this.includeLayers = [];
 	},
 
 	getText : function () {
@@ -58,7 +61,7 @@ dojo.declare("ZoomToMaximumExtentAction", ToolbarAction, {
 		var command = new JsonCommand("command.configuration.UserMaximumExtent","org.geomajas.command.dto.UserMaximumExtentRequest", null, false);
 		command.addParam("mapId", this.mapWidget.getMapModel().getId());
 		command.addParam("excludeRasterLayers", this.excludeRasterLayers);
-		command.addParam("includeLayers", this.includeLayers);
+		command.addParam("layerIds", this.includeLayers);
 		command.addParam("crs", "EPSG:"+this.mapWidget.getMapModel().getMapView().getSRID());
 		var deferred = geomajasConfig.dispatcher.execute(command);
 		deferred.addCallback(this, "_jsonCallback");
