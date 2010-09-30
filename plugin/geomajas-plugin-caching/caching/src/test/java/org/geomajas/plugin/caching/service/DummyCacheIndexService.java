@@ -23,25 +23,37 @@
 
 package org.geomajas.plugin.caching.service;
 
-import org.geomajas.layer.Layer;
+import com.vividsolutions.jts.geom.Geometry;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 /**
- * Dummy cache factory for testing.
+ * Dummy spatial index for testing. This is actually not spatial at all.
  *
  * @author Joachim Van der Auwera
  */
-public class DummyCacheFactory implements CacheFactory {
-	private String test;
+public class DummyCacheIndexService implements CacheIndexService {
 
-	public String getTest() {
-		return test;
+	Set<String> set = new HashSet<String>();
+
+	public void put(String key, Geometry geometry) {
+		set.add(key);
 	}
 
-	public void setTest(String test) {
-		this.test = test;
+	public void remove(String key) {
+		set.remove(key);
 	}
 
-	public CacheService create(Layer layer, CacheCategory category) {
-		return new DummyCacheService();
+	public void drop() {
+		set.clear();
+	}
+
+	public List<String> getOverlappingKeys(Geometry geometry) {
+		List<String> res = new ArrayList<String>();
+		res.addAll(set);
+		return res;
 	}
 }

@@ -23,12 +23,14 @@
 
 package org.geomajas.plugin.caching.service;
 
+import org.geomajas.layer.Layer;
+
 /**
  * Dummy cache index factory for testing.
  *
  * @author Joachim Van der Auwera
  */
-public class DummyCacheIndexFactory {
+public class DummyCacheIndexFactory implements CacheIndexFactory {
 	private String test;
 
 	public String getTest() {
@@ -37,5 +39,9 @@ public class DummyCacheIndexFactory {
 
 	public void setTest(String test) {
 		this.test = test;
+	}
+
+	public CacheIndexService create(Layer layer, CacheCategory category) {
+		return new DummyCacheIndexService();
 	}
 }

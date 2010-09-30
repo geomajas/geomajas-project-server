@@ -20,6 +20,7 @@
   ~ You should have received a copy of the GNU Affero General Public License
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
+
 <beans
 		xmlns="http://www.springframework.org/schema/beans"
 		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -30,6 +31,16 @@ http://www.springframework.org/schema/beans http://www.springframework.org/schem
 http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-2.5.xsd
 http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd"
 		>
+
+	<!-- beans for testing getInfo -->
+
+	<bean class="org.geomajas.plugin.caching.service.CacheIndexInfo">
+		<property name="cacheIndexFactory">
+			<bean class="org.geomajas.plugin.caching.service.DummyCacheIndexFactory">
+				<property name="test" value="default" />
+			</bean>
+		</property>
+	</bean>
 
 	<bean class="org.geomajas.plugin.caching.service.CacheInfo">
 		<property name="cacheFactory">
@@ -82,5 +93,27 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 			</bean>
 		</property>
 	</bean>
+
+	<bean class="org.geomajas.plugin.caching.service.CacheInfo">
+		<property name="layerId" value="blabla" />
+		<property name="cacheFactory">
+			<bean class="org.geomajas.plugin.caching.service.DummyCacheFactory">
+				<property name="test" value="semiBlabla" />
+			</bean>
+		</property>
+	</bean>
+
+	<bean class="org.geomajas.plugin.caching.service.CacheInfo">
+		<property name="category">
+			<util:constant static-field="org.geomajas.plugin.caching.service.CacheCategory.VML"/>
+		</property>
+		<property name="cacheFactory">
+			<bean class="org.geomajas.plugin.caching.service.DummyCacheFactory">
+				<property name="test" value="semiVML" />
+			</bean>
+		</property>
+	</bean>
+
+	<!-- ... -->
 
 </beans>

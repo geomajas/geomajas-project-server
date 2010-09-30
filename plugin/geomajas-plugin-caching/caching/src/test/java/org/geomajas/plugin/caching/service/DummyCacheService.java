@@ -23,25 +23,39 @@
 
 package org.geomajas.plugin.caching.service;
 
-import org.geomajas.layer.Layer;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
- * Dummy cache factory for testing.
+ * Dummy cache for testing.
  *
  * @author Joachim Van der Auwera
  */
-public class DummyCacheFactory implements CacheFactory {
-	private String test;
+public class DummyCacheService implements CacheService {
 
-	public String getTest() {
-		return test;
+	private Map<String, Object> map = new HashMap<String, Object>();
+
+	public void put(String key, Object object) {
+		map.put(key, object);
 	}
 
-	public void setTest(String test) {
-		this.test = test;
+	public Object get(String key) {
+		return map.get(key);
 	}
 
-	public CacheService create(Layer layer, CacheCategory category) {
-		return new DummyCacheService();
+	public <TYPE> TYPE get(String key, Class<TYPE> type) {
+		Object res = get(key);
+		if (type.isInstance(res)) {
+			return (TYPE) res;
+		}
+		return null;
+	}
+
+	public void remove(String key) {
+		map.remove(key);
+	}
+
+	public void drop() {
+		map.clear();
 	}
 }
