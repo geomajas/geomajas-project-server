@@ -26,6 +26,7 @@ package org.geomajas.plugin.caching.service;
 import com.vividsolutions.jts.geom.Geometry;
 import org.geomajas.global.Api;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,6 +38,13 @@ import java.util.List;
  */
 @Api(allMethods = true)
 public interface CacheIndexService {
+
+	/**
+	 * Special return value which can be used to indicate that the entire cache needs to be cleared.
+	 * <p/>
+	 * No items should even be added in this object. Should be tested for using object equality (==).
+	 */
+	List<String> ALL_KEYS = new ArrayList<String>();
 
 	/**
 	 * Add a key/geometry pair to the spatial index.

@@ -154,4 +154,17 @@ public class CacheManagerServiceTest {
 		Assert.assertNull(cacheManager.get(layer, CacheCategory.REBUILD, key));
 		Assert.assertNull(cacheManager.get(layer, CacheCategory.FEATURE, key));
 	}
+
+	@Test
+	public void invalidateNoIndexLayer() throws Exception {
+		String data = "data";
+		String key = "123";
+		cacheManager.put(otherLayer, CacheCategory.REBUILD, key, data, geometry);
+		cacheManager.put(otherLayer, CacheCategory.FEATURE, key, data, geometry);
+		Assert.assertEquals(data, cacheManager.get(otherLayer, CacheCategory.REBUILD, key));
+		Assert.assertEquals(data, cacheManager.get(otherLayer, CacheCategory.FEATURE, key));
+		cacheManager.invalidate(otherLayer, overlappingGeometry);
+		Assert.assertNull(cacheManager.get(otherLayer, CacheCategory.REBUILD, key));
+		Assert.assertNull(cacheManager.get(otherLayer, CacheCategory.FEATURE, key));
+	}
 }

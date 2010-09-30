@@ -71,5 +71,10 @@ public interface CacheService {
 	/**
 	 * Remove all objects from this cache.
 	 */
+	void clear();
+
+	/**
+	 * Clean up cache to prepare for removal.
+	 */
 	void drop();
 }

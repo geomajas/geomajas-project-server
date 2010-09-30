@@ -25,6 +25,8 @@ package org.geomajas.plugin.caching.service;
 
 import com.vividsolutions.jts.geom.Geometry;
 
+import java.util.List;
+
 /**
  * Indexed cache which delegates to the caching and indexing services when necessary.
  *
@@ -74,6 +76,13 @@ public class IndexedCache {
 	}
 
 	/**
+	 * Remove all entries from the cache.
+	 */
+	public void clear() {
+		cache.clear();
+	}
+
+	/**
 	 * Drop the entire cache.
 	 */
 	public void drop() {
@@ -86,8 +95,13 @@ public class IndexedCache {
 	 * @param geometry geometry to test
 	 */
 	public void invalidate(Geometry geometry) {
-		for (String key : index.getOverlappingKeys(geometry)) {
-			remove(key);
+		List<String> keys = index.getOverlappingKeys(geometry);
+		if (CacheIndexService.ALL_KEYS == keys) {
+			clear();
+		} else {
+			for (String key : keys) {
+				remove(key);
+			}
 		}
 	}
 }

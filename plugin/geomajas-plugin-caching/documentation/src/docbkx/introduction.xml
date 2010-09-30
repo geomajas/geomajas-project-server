@@ -26,5 +26,187 @@
 <chapter id="chapter-introduction">
   <title>Introduction</title>
 
+  <para>The caching plug-in allows you to speed-up the performance of the
+  Geomajas system. By deep integration into the functioning of the system,
+  this can be done in a way which prevents stale data from being presented to
+  the user.</para>
+
+  <para>Thanks to the use of pipelines when rendering tiles and doing updates
+  of data, and thanks to the power of the configuration system, Geomajas is
+  very flexible with regards to choices of when and how to apply
+  caching.</para>
+
+  <para>The system is sufficiently powerful to provide many use cases,
+  including<itemizedlist>
+      <listitem>
+        <para>keeping data cached for a pre-configured period</para>
+      </listitem>
+
+      <listitem>
+        <para>limiting the size of the cache according to a strategy</para>
+      </listitem>
+
+      <listitem>
+        <para>evicting cached data to disk according to a strategy to reduce
+        cache memory consumption</para>
+      </listitem>
+
+      <listitem>
+        <para>invalidation of cached data when it overlaps with a certain
+        area, avoiding stale data</para>
+      </listitem>
+
+      <listitem>
+        <para>smart invalidation based on an area, only invalidating when
+        objects where the cache may be visible (based on zoom level)</para>
+      </listitem>
+
+      <listitem>
+        <para>clustered cache</para>
+      </listitem>
+
+      <listitem>
+        <para>...</para>
+      </listitem>
+    </itemizedlist></para>
+
   <para></para>
+
+  <section>
+    <title>Overview</title>
+
+    <para>The caching is enabled by adding steps to the default pipelines at
+    some of the hooks. Two of the example pipelines are the GetVectorTile and
+    SaveOrUpdate pipelines.</para>
+
+    <para>The GetVectorTile pipeline can be enhanced to support caching as in
+    figure <xref linkend="fig-getvectortile-pipeline" />. At various hooks,
+    steps are included to try to get data from the case or to put it in the
+    cache.</para>
+
+    <figure id="fig-getvectortile-pipeline">
+      <title>Cache hooks in the GetVectorTile pipeline</title>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/GetTileCacheHooks.png" width="100%" />
+        </imageobject>
+      </mediaobject>
+    </figure>
+
+    <para>This is a read-only pipeline and only shows how to get data from the
+    cache. In figure <xref linkend="fig-saveorupdate-pipeline" /> below a part
+    of the SaveOrUpdate pipeline is shown. As all changes to data occur
+    through this layer, this is useful to handle invalidation of cache
+    data.</para>
+
+    <figure id="fig-saveorupdate-pipeline">
+      <title>Cache hooks in (a part of) the SaveOrUpdate pipeline</title>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/SaveOrUpdateCacheHooks.png" width="100%" />
+        </imageobject>
+      </mediaobject>
+    </figure>
+
+    <para>For each category of objects, a different cache configuration can be
+    used. Each combination of layer and category can use a different cache
+    implementation with different strategies for evicting and removing
+    objects, different size limitation etc. The type of spatial index can also
+    be chosen per layer and category combination. This is all managed by the
+    CacheManagerService.</para>
+
+    <figure id="fig-cache-layer-category">
+      <title>CacheManager and cache per layer and category</title>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/caches-type-layer.png" width="100%" />
+        </imageobject>
+      </mediaobject>
+    </figure>
+
+    <para>The different caches for a layer work together as shown in figure
+    <xref linkend="figure-cache-usage-raster" />. This displays the handling
+    of a request for a raster image, for example the image for a rasterized
+    tile. The request handler first check whether the image is available in
+    the cache. If this is the case, the image is returned to the client. If
+    not, the rebuild cache is used to convert the image name into a the
+    context which is used to (re)start the pipeline to build the raster image.
+    During the execution of the pipeline, the feature cache may be used to
+    avoid queries on the data source for the image.</para>
+
+    <figure id="figure-cache-usage-raster">
+      <title>Handling a request for the image part of a rasterized
+      tile</title>
+
+      <mediaobject>
+        <imageobject>
+          <imagedata fileref="images/rasterization-cache.png" width="100%" />
+        </imageobject>
+      </mediaobject>
+    </figure>
+
+    <para>The reason for the use of different caches is the configuration of
+    the cache.</para>
+
+    <para><itemizedlist>
+        <listitem>
+          <para>The raster cache does not need to store much in memory. The
+          data may very quickly be evicted to disk. On disk this cache may be
+          allowed to grow very big (disk space is very cheap). It can be
+          chosen how long data is kept. Removing data from the cache is no
+          problem as the image can be rendered at any time. Keeping data in
+          memory is no real advantage as the only purpose is to stream the
+          data to the network.</para>
+        </listitem>
+
+        <listitem>
+          <para>The rebuild cache contains many small objects to allow
+          rebuilding of rendered tiles. The data should not be removed for a
+          reasonably long amount of time (the maximum duration of a session)
+          as the tiles would otherwise be impossible to rebuild. Evicting to
+          disk is no problem, the time required to read the pipeline context
+          from disk is likely to be small compared to the evaluation of the
+          pipeline.</para>
+        </listitem>
+
+        <listitem>
+          <para>The feature cache is used to cache data store queries.
+          Evicting to disk is less useful as the original query could also be
+          repeated.</para>
+        </listitem>
+      </itemizedlist></para>
+
+    <para></para>
+  </section>
+
+  <section>
+    <title>Security</title>
+
+    <para>The cache also has consider security. All entries in the cache are
+    stored based on keys. These keys are determined based on the context which
+    is relevant when building the cached object, including the security
+    context. When a key is determined, As the key is determined using a
+    hashing algorithm, the chances of having two different contexts which may
+    to the same key is very very small. Still, when getting an object from the
+    cache, it is checked that the (security) context matches (and not just the
+    key).</para>
+
+    <para>The situation as displayed in figure <xref
+    linkend="figure-cache-usage-raster" /> is a little bit different. When
+    requesting (cached) images to be served, they key is used as (part of) the
+    URL. The default behaviour in this case is that the security token is not
+    included in the URL and this the matching of the security context can not
+    be done. This is explicitly to be able to serve the images faster.
+    However, the URL can be considered secret as they cannot be predicted. As
+    such you will normally see the tile as it was previously calculated.
+    However, it is possible that the rights for a user changes which would
+    result in changed data. It is possible that the cache represents
+    information according to old rights. There are two possible solutions, one
+    is to explicitly invalidate the caches when rights are changed. The other
+    is to limit the life of cache entries (notably including the rebuild
+    cache).</para>
+  </section>
 </chapter>

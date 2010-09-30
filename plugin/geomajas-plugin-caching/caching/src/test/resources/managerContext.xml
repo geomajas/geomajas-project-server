@@ -42,6 +42,27 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		</property>
 	</bean>
 
+	<bean class="org.geomajas.plugin.caching.service.CacheIndexInfo">
+		<property name="layerId" value="beans" />
+		<property name="cacheIndexFactory">
+			<bean class="org.geomajas.plugin.caching.service.NoCacheIndexFactory"/>
+		</property>
+	</bean>
+
+	<!-- @extract-start CacheIndexInfoSample, Example spatial index configuration -->
+	<bean class="org.geomajas.plugin.caching.service.CacheIndexInfo">
+		<property name="layerId" value="test" />
+		<property name="category">
+			<util:constant static-field="org.geomajas.plugin.caching.service.CacheCategory.SVG"/>
+		</property>
+		<property name="cacheIndexFactory">
+			<bean class="org.geomajas.plugin.caching.service.DummyCacheIndexFactory">
+				<property name="test" value="full" />
+			</bean>
+		</property>
+	</bean>
+	<!-- @extract-end -->
+
 	<bean class="org.geomajas.plugin.caching.service.CacheInfo">
 		<property name="cacheFactory">
 			<bean class="org.geomajas.plugin.caching.service.DummyCacheFactory">
@@ -50,6 +71,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		</property>
 	</bean>
 
+	<!-- @extract-start CacheInfoSample, Example cache configuration -->
 	<bean class="org.geomajas.plugin.caching.service.CacheInfo">
 		<property name="layerId" value="test" />
 		<property name="category">
@@ -61,6 +83,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 			</bean>
 		</property>
 	</bean>
+	<!-- @extract-end -->
 
 	<bean class="org.geomajas.plugin.caching.service.CacheInfo">
 		<property name="category">

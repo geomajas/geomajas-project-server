@@ -37,6 +37,7 @@ public class CacheCategory {
 	public static final CacheCategory VML = new CacheCategory("vml");
 	public static final CacheCategory SVG = new CacheCategory("svg");
 	public static final CacheCategory RASTER = new CacheCategory("raster");
+	public static final CacheCategory TILE = new CacheCategory("tile");
 	public static final CacheCategory REBUILD = new CacheCategory("rebuild");
 	public static final CacheCategory FEATURE = new CacheCategory("feature");
 

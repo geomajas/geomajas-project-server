@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
 "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
-
 <!--
   ~ This file is part of Geomajas, a component framework for building
   ~ rich Internet applications (RIA) with sophisticated capabilities for the
@@ -27,5 +26,150 @@
 <chapter id="chapter-configuration">
   <title>Configuration</title>
 
-  <para></para>
+  <para>The configuration of the caching plug-in covers many aspects.</para>
+
+  <para><itemizedlist>
+      <listitem>
+        <para>Use pipelines which include caching</para>
+      </listitem>
+
+      <listitem>
+        <para>Configure the cache implementations and configurations to use
+        for each layer/category combination</para>
+      </listitem>
+
+      <listitem>
+        <para>Configure the spatial index implementation and configuration for
+        each layer/category combination</para>
+      </listitem>
+    </itemizedlist></para>
+
+  <section>
+    <title>Pipeline configuration</title>
+
+    <para></para>
+  </section>
+
+  <section>
+    <title>Cache configuration</title>
+
+    <para>Cache configuration can be configured individually for each layer
+    and cache category (which more or less matches type of object). This is
+    done using the <code>CacheInfo</code> object. As you can see in listing
+    <xref linkend="CacheInfoSample" /> you can define three
+    properties<itemizedlist>
+        <listitem>
+          <para><emphasis>layerId</emphasis>: the layer for which this
+          configuration applies.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>category</emphasis>: the cache category for which
+          this configuration applies. This is always in instance of the
+          <code>CacheCategory</code> class.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>cacheFactory</emphasis>: the factory which should be
+          used to create cache instances. This is a bean of type CacheFactory
+          which is responsible for creating cache instances.</para>
+        </listitem>
+      </itemizedlist></para>
+
+    <xi:include href="listing/CacheInfoSample.xml"
+                xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+    <para>The layerId and category properties are not required to be set. This
+    can be used to set default caches to be used. When searching the
+    configuration for a layer/category combination, the following search order
+    is used.<orderedlist>
+        <listitem>
+          <para>matching layerId and matching category</para>
+        </listitem>
+
+        <listitem>
+          <para>matching layerId and null category</para>
+        </listitem>
+
+        <listitem>
+          <para>matching category and null layerId</para>
+        </listitem>
+
+        <listitem>
+          <para>null layerId and null category</para>
+        </listitem>
+      </orderedlist></para>
+
+    <para>The properties are null when no value is specified. If the
+    application context contains more than one bean matching bean (for each of
+    the lines above) the last definition is used.</para>
+
+    <section>
+      <title>Default caches</title>
+
+      <para>??? @TODO</para>
+    </section>
+  </section>
+
+  <section>
+    <title>Spatial index configuration</title>
+
+    <para>The spatial index to be used while caching can be configured individually for each layer
+    and cache category. This is
+    done using <code>CacheIndexInfo</code> objects. As you can see in listing
+    <xref linkend="CacheIndexInfoSample" /> you can define three
+    properties<itemizedlist>
+        <listitem>
+          <para><emphasis>layerId</emphasis>: the layer for which this
+          configuration applies.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>category</emphasis>: the cache category for which
+          this configuration applies. This is always in instance of the
+          <code>CacheCategory</code> class.</para>
+        </listitem>
+
+        <listitem>
+          <para><emphasis>cacheIndexFactory</emphasis>: the factory which should be
+          used to create spatial index instances. This is a bean of type CacheIndexFactory
+          which is responsible for creating cache instances.</para>
+        </listitem>
+      </itemizedlist></para>
+
+    <xi:include href="listing/CacheIndexInfoSample.xml"
+                xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+    <para>The layerId and category properties are not required to be set. This
+    can be used to set default caches to be used. When searching the
+    configuration for a layer/category combination, the following search order
+    is used.<orderedlist>
+        <listitem>
+          <para>matching layerId and matching category</para>
+        </listitem>
+
+        <listitem>
+          <para>matching layerId and null category</para>
+        </listitem>
+
+        <listitem>
+          <para>matching category and null layerId</para>
+        </listitem>
+
+        <listitem>
+          <para>null layerId and null category</para>
+        </listitem>
+      </orderedlist></para>
+
+    <para>The properties are null when no value is specified. If the
+    application context contains more than one bean matching bean (for each of
+    the lines above) the last definition is used.</para>
+
+    <section>
+      <title>Default spatial indexes</title>
+
+      <para>??? @TODO</para>
+    </section>
+  </section>
+
 </chapter>

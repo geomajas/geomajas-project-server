@@ -23,43 +23,18 @@
 
 package org.geomajas.plugin.caching.service;
 
-import java.util.HashMap;
-import java.util.Map;
+import org.geomajas.layer.Layer;
 
 /**
- * Dummy cache for testing.
+ * Create a spatial index which does not index anything (thus always forces everything to be invalidated).
  *
  * @author Joachim Van der Auwera
  */
-public class DummyCacheService implements CacheService {
+public class NoCacheIndexFactory implements CacheIndexFactory {
 
-	private Map<String, Object> map = new HashMap<String, Object>();
+	private static final NoCacheIndexService INSTANCE = new NoCacheIndexService();
 
-	public void put(String key, Object object) {
-		map.put(key, object);
-	}
-
-	public Object get(String key) {
-		return map.get(key);
-	}
-
-	public <TYPE> TYPE get(String key, Class<TYPE> type) {
-		Object res = get(key);
-		if (type.isInstance(res)) {
-			return (TYPE) res;
-		}
-		return null;
-	}
-
-	public void remove(String key) {
-		map.remove(key);
-	}
-
-	public void clear() {
-		map.clear();
-	}
-
-	public void drop() {
-		clear();
+	public CacheIndexService create(Layer layer, CacheCategory category) {
+		return INSTANCE;
 	}
 }

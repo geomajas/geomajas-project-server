@@ -23,43 +23,31 @@
 
 package org.geomajas.plugin.caching.service;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.vividsolutions.jts.geom.Geometry;
+
+import java.util.List;
 
 /**
- * Dummy cache for testing.
+ * Spatial index implementation which does not really indexes. When something needs to be invalidated, everything
+ * is invalidated.
  *
  * @author Joachim Van der Auwera
  */
-public class DummyCacheService implements CacheService {
+public class NoCacheIndexService implements CacheIndexService {
 
-	private Map<String, Object> map = new HashMap<String, Object>();
-
-	public void put(String key, Object object) {
-		map.put(key, object);
-	}
-
-	public Object get(String key) {
-		return map.get(key);
-	}
-
-	public <TYPE> TYPE get(String key, Class<TYPE> type) {
-		Object res = get(key);
-		if (type.isInstance(res)) {
-			return (TYPE) res;
-		}
-		return null;
+	public void put(String key, Geometry geometry) {
+		// nothing to do
 	}
 
 	public void remove(String key) {
-		map.remove(key);
-	}
-
-	public void clear() {
-		map.clear();
+		// nothing to do
 	}
 
 	public void drop() {
-		clear();
+		// nothing to do
+	}
+
+	public List<String> getOverlappingKeys(Geometry geometry) {
+		return ALL_KEYS;
 	}
 }
