@@ -179,7 +179,15 @@ dojo.declare("ConfigManager", null, {
 			layersById.add(layer.getId(),layer);
             mapModel.registerLayer(layer);
 		}
-
+		
+		// set maxBounds
+		if (mapInfo.maxBounds) {
+			var mapMaxBounds = new Bbox(mapInfo.maxBounds.x, mapInfo.maxBounds.y, mapInfo.maxBounds.width, mapInfo.maxBounds.height);
+			var viewMaxBounds = mapWidget.getMapView().getMaxBounds();
+			if (viewMaxBounds && viewMaxBounds.contains(mapMaxBounds))
+				mapWidget.getMapView().setMaxBounds(mapMaxBounds);
+		}
+		
 		// recursively configure the layer tree nodes
 		if (mapInfo.layerTree) {
 			var nodeConfig = mapInfo.layerTree.treeNode;
