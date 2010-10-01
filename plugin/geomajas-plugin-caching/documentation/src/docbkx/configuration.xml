@@ -47,7 +47,21 @@
   <section>
     <title>Pipeline configuration</title>
 
-    <para></para>
+    <para>To make sure the caching is actually used, you have to define assure
+    that the cached pipelines are used in the cases where you want the cache
+    to be enabled.</para>
+
+    <para>The easiest configuration is to enable the caches to be used by
+    default. This can be done by including the file<informalexample>
+        <programlisting>classpath:org/geomajas/plugin/caching/DefaultCachedPipelines.xml</programlisting>
+      </informalexample></para>
+
+    <para>in your web.xml file.</para>
+
+    <para>Alternatively you can configure for each layer individually which
+    pipelines should be used.</para>
+
+    <para>??? @TODO</para>
   </section>
 
   <section>
@@ -114,10 +128,10 @@
   <section>
     <title>Spatial index configuration</title>
 
-    <para>The spatial index to be used while caching can be configured individually for each layer
-    and cache category. This is
-    done using <code>CacheIndexInfo</code> objects. As you can see in listing
-    <xref linkend="CacheIndexInfoSample" /> you can define three
+    <para>The spatial index to be used while caching can be configured
+    individually for each layer and cache category. This is done using
+    <code>CacheIndexInfo</code> objects. As you can see in listing <xref
+    linkend="CacheIndexInfoSample" /> you can define three
     properties<itemizedlist>
         <listitem>
           <para><emphasis>layerId</emphasis>: the layer for which this
@@ -131,9 +145,10 @@
         </listitem>
 
         <listitem>
-          <para><emphasis>cacheIndexFactory</emphasis>: the factory which should be
-          used to create spatial index instances. This is a bean of type CacheIndexFactory
-          which is responsible for creating cache instances.</para>
+          <para><emphasis>cacheIndexFactory</emphasis>: the factory which
+          should be used to create spatial index instances. This is a bean of
+          type CacheIndexFactory which is responsible for creating cache
+          instances.</para>
         </listitem>
       </itemizedlist></para>
 
@@ -171,5 +186,4 @@
       <para>??? @TODO</para>
     </section>
   </section>
-
 </chapter>

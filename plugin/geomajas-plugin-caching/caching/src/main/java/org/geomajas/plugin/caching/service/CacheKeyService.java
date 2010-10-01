@@ -21,40 +21,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.plugin.caching.step;
+package org.geomajas.plugin.caching.service;
 
-import org.geomajas.global.GeomajasException;
-import org.geomajas.layer.pipeline.GetBoundsContainer;
-import org.geomajas.plugin.caching.service.CacheKeyService;
-import org.geomajas.plugin.caching.service.CacheManagerService;
+import org.geomajas.layer.Layer;
 import org.geomajas.service.pipeline.PipelineContext;
-import org.geomajas.service.pipeline.PipelineStep;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * Try to get the bounds from the cache (instead of accessing the data source).
+ * Service for determining a cache key based on cache context, which is typically based on pipeline context.
  *
  * @author Joachim Van der Auwera
  */
-public class GetBoundsFromCacheStep implements PipelineStep<GetBoundsContainer> {
+public interface CacheKeyService {
 
-	@Autowired
-	private CacheManagerService cacheManager;
+	String getCacheKey(Layer layer, CacheCategory category, CacheContext context);
 
-	@Autowired
-	private CacheKeyService cacheKeyService;
-
-	private String id;
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	public void execute(PipelineContext context, GetBoundsContainer getBoundsContainer) throws GeomajasException {
-		// @todo
-	}
+	CacheContext getCacheContext(PipelineContext pipelineContext, String[] keys);
 }

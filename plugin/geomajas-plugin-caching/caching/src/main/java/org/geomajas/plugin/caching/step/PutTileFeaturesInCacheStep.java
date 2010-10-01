@@ -24,26 +24,22 @@
 package org.geomajas.plugin.caching.step;
 
 import org.geomajas.global.GeomajasException;
-import org.geomajas.layer.pipeline.GetBoundsContainer;
-import org.geomajas.plugin.caching.service.CacheKeyService;
+import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.plugin.caching.service.CacheManagerService;
 import org.geomajas.service.pipeline.PipelineContext;
 import org.geomajas.service.pipeline.PipelineStep;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * Try to get the bounds from the cache (instead of accessing the data source).
+ * Store tile features in the cache.
  *
  * @author Joachim Van der Auwera
  */
-public class GetBoundsFromCacheStep implements PipelineStep<GetBoundsContainer> {
+public class PutTileFeaturesInCacheStep implements PipelineStep<InternalTile> {
 
 	@Autowired
 	private CacheManagerService cacheManager;
-
-	@Autowired
-	private CacheKeyService cacheKeyService;
-
+		
 	private String id;
 
 	public String getId() {
@@ -54,7 +50,7 @@ public class GetBoundsFromCacheStep implements PipelineStep<GetBoundsContainer> 
 		this.id = id;
 	}
 
-	public void execute(PipelineContext context, GetBoundsContainer getBoundsContainer) throws GeomajasException {
+	public void execute(PipelineContext context, InternalTile internalTile) throws GeomajasException {
 		// @todo
 	}
 }

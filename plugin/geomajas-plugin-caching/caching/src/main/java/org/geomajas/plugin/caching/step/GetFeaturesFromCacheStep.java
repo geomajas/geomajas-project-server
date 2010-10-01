@@ -23,11 +23,40 @@
 
 package org.geomajas.plugin.caching.step;
 
+import org.geomajas.global.GeomajasException;
+import org.geomajas.layer.feature.InternalFeature;
+import org.geomajas.plugin.caching.service.CacheKeyService;
+import org.geomajas.plugin.caching.service.CacheManagerService;
+import org.geomajas.service.pipeline.PipelineContext;
+import org.geomajas.service.pipeline.PipelineStep;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.util.List;
+
 /**
- * ...
+ * Try to get the features from the cache (instead of accessing the data source).
  *
  * @author Joachim Van der Auwera
  */
-public class GetFeaturesFromCacheStep {
+public class GetFeaturesFromCacheStep implements PipelineStep<List<InternalFeature>> {
 
+	@Autowired
+	private CacheManagerService cacheManager;
+
+	@Autowired
+	private CacheKeyService cacheKeyService;
+
+	private String id;
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	public void execute(PipelineContext context, List<InternalFeature> internalFeatures) throws GeomajasException {
+		// @todo
+	}
 }

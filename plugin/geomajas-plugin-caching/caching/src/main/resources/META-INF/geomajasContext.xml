@@ -38,13 +38,15 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 				<property name="version" value="${project.version}" />
 			</bean>
 		</property>
-		<property name="backendVersion" value="${back-end-version}" />
+		<property name="backendVersion" value="${caching-backend-version}" />
 		<property name="dependencies">
 			<list>
+				<!--
 				<bean class="org.geomajas.global.PluginVersionInfo">
 					<property name="name" value="GWT face" />
-					<property name="version" value="${caching-backend-version}" />
+					<property name="version" value="${caching-gwt-version}" />
 				</bean>
+				-->
 			</list>
 		</property>
 		<property name="copyrightInfo">
@@ -56,6 +58,108 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 					<property name="licenseUrl" value="http://www.gnu.org/licenses/agpl-3.0.html"/>
 				</bean>
 			</list>
+		</property>
+	</bean>
+
+
+	<!-- define cached pipelines for VectorLayerService -->
+
+	<bean name="PIPELINE_SAVE_OR_UPDATE_ONE_CACHED" class="org.geomajas.service.pipeline.PipelineInfo">
+		<property name="delegatePipeline" ref="PIPELINE_SAVE_OR_UPDATE_ONE" />
+		<property name="extensions">
+			<map>
+				<entry key="preDelete">
+					<bean class="org.geomajas.plugin.caching.step.DeleteFeatureInvalidateStep" >
+						<property name="id" value="DeleteFeatureInvalidateStep" />
+					</bean>
+				</entry>
+				<entry key="postTransformGeometry">
+					<bean class="org.geomajas.plugin.caching.step.UpdateFeatureInvalidateStep" >
+						<property name="id" value="UpdateFeatureInvalidateStep" />
+					</bean>
+				</entry>
+			</map>
+		</property>
+	</bean>
+
+	<bean name="PIPELINE_GET_FEATURES_CACHED" class="org.geomajas.service.pipeline.PipelineInfo">
+		<property name="delegatePipeline" ref="PIPELINE_GET_FEATURES" />
+		<property name="extensions">
+			<map>
+				<entry key="preGetFeatures">
+					<bean class="org.geomajas.plugin.caching.step.GetFeaturesFromCacheStep" >
+						<property name="id" value="GetFeaturesFromCacheStep" />
+					</bean>
+				</entry>
+				<entry key="postGetFeatures">
+					<bean class="org.geomajas.plugin.caching.step.PutFeaturesInCacheStep" >
+						<property name="id" value="PutFeaturesInCacheStep" />
+					</bean>
+				</entry>
+			</map>
+		</property>
+	</bean>
+
+	<bean name="PIPELINE_GET_BOUNDS_CACHED" class="org.geomajas.service.pipeline.PipelineInfo">
+		<property name="delegatePipeline" ref="PIPELINE_GET_BOUNDS" />
+		<property name="extensions">
+			<map>
+				<entry key="preGetBounds">
+					<bean class="org.geomajas.plugin.caching.step.GetBoundsFromCacheStep" >
+						<property name="id" value="GetBoundsFromCacheStep" />
+					</bean>
+				</entry>
+				<entry key="postGetBounds">
+					<bean class="org.geomajas.plugin.caching.step.PutBoundsInCacheStep" >
+						<property name="id" value="PutBoundsInCacheStep" />
+					</bean>
+				</entry>
+			</map>
+		</property>
+	</bean>
+
+	<bean name="intermediateCacheEntireTile" class="org.geomajas.service.pipeline.PipelineInfo">
+		<property name="delegatePipeline" ref="PIPELINE_GET_VECTOR_TILE" />
+		<property name="extensions">
+			<map>
+				<entry key="postTileFilter">
+					<bean class="org.geomajas.plugin.caching.step.GetTileFromCacheStep" >
+						<property name="id" value="GetTileFromCacheStep" />
+					</bean>
+				</entry>
+				<entry key="postGetStringContent">
+					<bean class="org.geomajas.plugin.caching.step.PutTileInCacheStep" >
+						<property name="id" value="PutTileInCacheStep" />
+					</bean>
+				</entry>
+			</map>
+		</property>
+	</bean>
+	<bean name="PIPELINE_GET_VECTOR_TILE_CACHED" class="org.geomajas.service.pipeline.PipelineInfo">
+		<property name="delegatePipeline" ref="intermediateCacheEntireTile" />
+		<property name="extensions">
+			<map>
+				<entry key="preGetFeatures">
+					<bean class="org.geomajas.plugin.caching.step.GetTileFeaturesFromCacheStep" >
+						<property name="id" value="GetTileFeaturesFromCacheStep" />
+					</bean>
+				</entry>
+				<entry key="postGetFeatures">
+					<bean class="org.geomajas.plugin.caching.step.PutTileFeaturesInCacheStep" >
+						<property name="id" value="PutTileFeaturesInCacheStep" />
+					</bean>
+				</entry>
+				<entry key="preGetStringContent">
+					<bean class="org.geomajas.plugin.caching.step.GetTileStringContentFromCacheStep" >
+						<property name="id" value="GetTileStringContentFromCacheStep" />
+					</bean>
+				</entry>
+				<entry key="postGetStringContent">
+					<bean class="org.geomajas.plugin.caching.step.PutTileStringContentInCacheStep" >
+						<property name="id" value="PutTileStringContentInCacheStep" />
+					</bean>
+				</entry>
+			</map>
 		</property>
 	</bean>
 
