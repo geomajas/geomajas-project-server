@@ -30,7 +30,7 @@ import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.internal.layer.tile.InternalTileImpl;
-import org.geomajas.internal.layer.vector.GetBoundsContainer;
+import org.geomajas.layer.pipeline.GetBoundsContainer;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.VectorLayerService;
 import org.geomajas.layer.feature.Attribute;

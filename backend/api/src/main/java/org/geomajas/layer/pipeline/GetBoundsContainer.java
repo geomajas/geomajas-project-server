@@ -21,7 +21,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.internal.layer.vector;
+package org.geomajas.layer.pipeline;
 
 import com.vividsolutions.jts.geom.Envelope;
 
