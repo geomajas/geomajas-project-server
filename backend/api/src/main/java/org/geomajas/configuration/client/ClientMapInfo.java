@@ -304,7 +304,7 @@ public class ClientMapInfo implements Serializable {
 	 * maximum bounds. As a better alternative for this value, you can also use <code>maximumZoomScale</code>.
 	 * 
 	 * @return the maximum scale (pixels/unit)
-	 * @deprecated use {@link #getScaleConfiguration()}
+	 * @deprecated use {@link #getScaleConfiguration}
 	 */
 	@Deprecated
 	public float getMaximumScale() {
@@ -317,7 +317,7 @@ public class ClientMapInfo implements Serializable {
 	 * 
 	 * @param maximumScale
 	 *            the maximum scale (pixels/unit)
-	 * @deprecated use {@link #setScaleConfiguration()}
+	 * @deprecated use {@link #setScaleConfiguration}
 	 */
 	@Deprecated
 	public void setMaximumScale(float maximumScale) {
@@ -365,7 +365,7 @@ public class ClientMapInfo implements Serializable {
 	 * 
 	 * @param resolutions
 	 *            a list of resolutions (unit/pixel or pure number if relative)
-	 * @deprecated use {@link #setScaleConfiguration()}
+	 * @deprecated use {@link #setScaleConfiguration}
 	 */
 	@Deprecated
 	public void setResolutions(List<Double> resolutions) {
@@ -376,7 +376,7 @@ public class ClientMapInfo implements Serializable {
 	 * Are the resolutions relative ? If true, the resolutions are expressed as pure numbers and denote the ratio of the
 	 * map unit and 1 m on the screen (as computed from the screen DPI).
 	 * 
-	 * @deprecated use {@link #getScaleConfiguration()}
+	 * @deprecated use {@link #getScaleConfiguration}
 	 * @return true if relative
 	 */
 	@Deprecated
@@ -390,7 +390,7 @@ public class ClientMapInfo implements Serializable {
 	 * 
 	 * @param resolutionsRelative
 	 *            true if relative
-	 * @deprecated use {@link #setScaleConfiguration()}
+	 * @deprecated use {@link #setScaleConfiguration}
 	 */
 	@Deprecated
 	public void setResolutionsRelative(boolean resolutionsRelative) {
