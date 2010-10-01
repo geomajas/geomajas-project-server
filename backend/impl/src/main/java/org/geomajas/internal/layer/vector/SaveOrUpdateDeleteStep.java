@@ -50,9 +50,10 @@ public class SaveOrUpdateDeleteStep extends AbstractSaveOrUpdateStep {
 				String layerId = context.get(PipelineCode.LAYER_ID_KEY, String.class);
 				if (securityContext.isFeatureDeleteAuthorized(layerId, oldFeature)) {
 					VectorLayer layer = context.get(PipelineCode.LAYER_KEY, VectorLayer.class);
-					Filter securityFilter = getSecurityFilter(layer, securityContext.getDeleteAuthorizedArea(layerId));
 					Object featureObj = layer.read(oldFeature.getId());
 					if (null != featureObj) {
+						Filter securityFilter = getSecurityFilter(layer,
+								securityContext.getDeleteAuthorizedArea(layerId));
 						if (securityFilter.evaluate(featureObj)) {
 							layer.delete(oldFeature.getId());
 						} else {

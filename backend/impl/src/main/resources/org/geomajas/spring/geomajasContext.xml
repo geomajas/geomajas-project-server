@@ -228,7 +228,7 @@ PROJCS["Google Mercator",
 
 	<!-- define default pipelines for RasterLayerService -->
 
-	<bean class="org.geomajas.service.pipeline.PipelineInfo">
+	<bean name="PIPELINE_GET_RASTER_TILES" class="org.geomajas.service.pipeline.PipelineInfo">
 		<property name="pipelineName"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_GET_RASTER_TILES"/></property>
 		<property name="pipeline">
 			<list>
@@ -248,7 +248,7 @@ PROJCS["Google Mercator",
 
 	<!-- define default pipelines for VectorLayerService -->
 
-	<bean class="org.geomajas.service.pipeline.PipelineInfo">
+	<bean name="PIPELINE_SAVE_OR_UPDATE" class="org.geomajas.service.pipeline.PipelineInfo">
 		<property name="pipelineName"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_SAVE_OR_UPDATE"/></property>
 		<property name="pipeline">
 			<list>
@@ -275,7 +275,7 @@ PROJCS["Google Mercator",
 		</property>
 	</bean>
 
-	<bean class="org.geomajas.service.pipeline.PipelineInfo">
+	<bean name="PIPELINE_SAVE_OR_UPDATE_ONE" class="org.geomajas.service.pipeline.PipelineInfo">
 		<property name="pipelineName"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_SAVE_OR_UPDATE_ONE"/></property>
 		<property name="pipeline">
 			<list>
@@ -346,7 +346,7 @@ PROJCS["Google Mercator",
 		</property>
 	</bean>
 
-	<bean class="org.geomajas.service.pipeline.PipelineInfo">
+	<bean name="PIPELINE_GET_FEATURES" class="org.geomajas.service.pipeline.PipelineInfo">
 		<property name="pipelineName"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_GET_FEATURES"/></property>
 		<property name="pipeline">
 			<list>
@@ -381,7 +381,7 @@ PROJCS["Google Mercator",
 		</property>
 	</bean>
 
-	<bean class="org.geomajas.service.pipeline.PipelineInfo">
+	<bean name="PIPELINE_GET_BOUNDS" class="org.geomajas.service.pipeline.PipelineInfo">
 		<property name="pipelineName"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_GET_BOUNDS"/></property>
 		<property name="pipeline">
 			<list>
@@ -408,7 +408,7 @@ PROJCS["Google Mercator",
 	</bean>
 
 
-	<bean class="org.geomajas.service.pipeline.PipelineInfo">
+	<bean name="PIPELINE_GET_ATTRIBUTES" class="org.geomajas.service.pipeline.PipelineInfo">
 		<property name="pipelineName"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_GET_ATTRIBUTES"/></property>
 		<property name="pipeline">
 			<list>
@@ -434,7 +434,7 @@ PROJCS["Google Mercator",
 		</property>
 	</bean>
 
-	<bean class="org.geomajas.service.pipeline.PipelineInfo">
+	<bean name="PIPELINE_GET_VECTOR_TILE" class="org.geomajas.service.pipeline.PipelineInfo">
 		<property name="pipelineName"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_GET_VECTOR_TILE"/></property>
 		<property name="pipeline">
 			<list>
