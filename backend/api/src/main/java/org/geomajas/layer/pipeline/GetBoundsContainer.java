@@ -24,20 +24,33 @@
 package org.geomajas.layer.pipeline;
 
 import com.vividsolutions.jts.geom.Envelope;
+import org.geomajas.global.Api;
 
 /**
  * Container for result of getBounds in {@link org.geomajas.layer.VectorLayerService}.
  *
  * @author Joachim Van der Auwera
+ * @since 1.8.0
  */
+@Api(allMethods = true)
 public class GetBoundsContainer {
 
 	private Envelope envelope;
 
+	/**
+	 * Get the bounds.
+	 *
+	 * @return bounds
+	 */
 	public Envelope getEnvelope() {
 		return envelope;
 	}
 
+	/**
+	 * Set the bounds.
+	 *
+	 * @param envelope bounds
+	 */
 	public void setEnvelope(Envelope envelope) {
 		this.envelope = envelope;
 	}
