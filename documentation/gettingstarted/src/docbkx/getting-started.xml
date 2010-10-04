@@ -341,12 +341,12 @@ mvn gwt:run</programlisting></para>
         </listitem>
 
         <listitem>
-          <para>Open the run configurations. There should be 4 configurations
+          <para>Open the debug configurations. There should be 4 configurations
           available: 3 maven configurations and 1 remote Java
           application:</para>
 
           <figure>
-            <title>Run configurations</title>
+            <title>Debug configurations</title>
 
             <mediaobject>
               <imageobject>
