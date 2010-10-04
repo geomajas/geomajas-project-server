@@ -24,9 +24,13 @@
 package org.geomajas.plugin.caching.step;
 
 import org.geomajas.global.GeomajasException;
+import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.pipeline.GetBoundsContainer;
+import org.geomajas.plugin.caching.service.CacheCategory;
+import org.geomajas.plugin.caching.service.CacheContext;
 import org.geomajas.plugin.caching.service.CacheKeyService;
 import org.geomajas.plugin.caching.service.CacheManagerService;
+import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
 import org.geomajas.service.pipeline.PipelineStep;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +41,8 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author Joachim Van der Auwera
  */
 public class GetBoundsFromCacheStep implements PipelineStep<GetBoundsContainer> {
+
+	private static final String[] KEYS = {PipelineCode.LAYER_ID_KEY, PipelineCode.CRS_KEY, PipelineCode.FILTER_KEY};
 
 	@Autowired
 	private CacheManagerService cacheManager;
@@ -54,7 +60,27 @@ public class GetBoundsFromCacheStep implements PipelineStep<GetBoundsContainer> 
 		this.id = id;
 	}
 
-	public void execute(PipelineContext context, GetBoundsContainer getBoundsContainer) throws GeomajasException {
-		// @todo
+	public void execute(PipelineContext pipelineContext, GetBoundsContainer getBoundsContainer)
+			throws GeomajasException {
+		VectorLayer layer = pipelineContext.get(PipelineCode.LAYER_KEY, VectorLayer.class);
+
+		CacheContext cacheContext = cacheKeyService.getCacheContext(pipelineContext, KEYS);
+		String cacheKey = cacheKeyService.getCacheKey(layer, CacheCategory.BOUNDS, cacheContext);
+
+		BoundsCacheContainer cc = cacheManager.get(layer, CacheCategory.BOUNDS, cacheKey, BoundsCacheContainer.class);
+
+		while (null != cc) {
+			if (cacheContext.equals(cc.getContext())) {
+				// found item in cache
+				getBoundsContainer.setEnvelope(cc.getBounds());
+				pipelineContext.put(CacheStepConstant.CACHE_BOUNDS_USED, true);
+				break;
+			} else {
+				cacheKey = cacheKeyService.makeUnique(cacheKey);
+				cc = cacheManager.get(layer, CacheCategory.BOUNDS, cacheKey, BoundsCacheContainer.class);
+			}
+		}
+		pipelineContext.put(CacheStepConstant.CACHE_BOUNDS_KEY, cacheKey);
+		pipelineContext.put(CacheStepConstant.CACHE_BOUNDS_CONTEXT, cacheContext);
 	}
 }

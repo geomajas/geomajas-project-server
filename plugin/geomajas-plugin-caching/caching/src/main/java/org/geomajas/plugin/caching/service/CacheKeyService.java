@@ -33,7 +33,30 @@ import org.geomajas.service.pipeline.PipelineContext;
  */
 public interface CacheKeyService {
 
+	/**
+	 * Get a key for an object to cache.
+	 *
+	 * @param layer layer for object to cache
+	 * @param category cache category
+	 * @param context context for object to cache
+	 * @return key
+	 */
 	String getCacheKey(Layer layer, CacheCategory category, CacheContext context);
 
+	/**
+	 * Build a cache context object from the requested keys of the pipeline context.
+	 *
+	 * @param pipelineContext pipeline context to key base info from
+	 * @param keys keys for items to include from pipeline context
+	 * @return cache context
+	 */
 	CacheContext getCacheContext(PipelineContext pipelineContext, String[] keys);
+
+	/**
+	 * Change a key to try to make it unique.
+	 *
+	 * @param duplicateKey key which was not unique
+	 * @return new key, hoping it is now unique
+	 */
+	String makeUnique(String duplicateKey);
 }

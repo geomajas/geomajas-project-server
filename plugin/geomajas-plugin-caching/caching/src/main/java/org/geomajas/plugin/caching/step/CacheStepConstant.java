@@ -21,63 +21,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.plugin.caching.service;
-
-import java.util.HashMap;
-import java.util.Map;
+package org.geomajas.plugin.caching.step;
 
 /**
- * Dummy cache for testing.
+ * Pipeline constants for caching steps.
  *
  * @author Joachim Van der Auwera
  */
-public class DummyCacheService implements CacheService {
+public interface CacheStepConstant {
 
-	private Map<String, Object> map = new HashMap<String, Object>();
-
-	public void put(String key, Object object) {
-		map.put(key, object);
-	}
-
-	public Object get(String key) {
-		return map.get(key);
-	}
-
-	public <TYPE> TYPE get(String key, Class<TYPE> type) {
-		Object res = get(key);
-		if (type.isInstance(res)) {
-			return (TYPE) res;
-		}
-		return null;
-	}
-
-	public void remove(String key) {
-		map.remove(key);
-	}
-
-	public void clear() {
-		map.clear();
-	}
-
-	public void drop() {
-		clear();
-	}
-
-	public long size() {
-		return map.size();
-	}
-
-	public String getKey() {
-		if (1 == size()) {
-			return map.entrySet().iterator().next().getKey();
-		}
-		return null;
-	}
-
-	public Object getObject() {
-		if (1 == size()) {
-			return map.entrySet().iterator().next().getValue();
-		}
-		return null;
-	}
+	String CACHE_BOUNDS_KEY = "CacheBounds-key";
+	String CACHE_BOUNDS_CONTEXT = "CacheBounds-context";
+	String CACHE_BOUNDS_USED = "CacheBounds-used";
 }

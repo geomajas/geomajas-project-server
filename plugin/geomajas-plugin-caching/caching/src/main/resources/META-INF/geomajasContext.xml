@@ -65,6 +65,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	<!-- define cached pipelines for VectorLayerService -->
 
 	<bean name="PIPELINE_SAVE_OR_UPDATE_ONE_CACHED" class="org.geomajas.service.pipeline.PipelineInfo">
+		<property name="pipelineName"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_SAVE_OR_UPDATE_ONE"/></property>
 		<property name="delegatePipeline" ref="PIPELINE_SAVE_OR_UPDATE_ONE" />
 		<property name="extensions">
 			<map>
@@ -83,6 +84,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	</bean>
 
 	<bean name="PIPELINE_GET_FEATURES_CACHED" class="org.geomajas.service.pipeline.PipelineInfo">
+		<property name="pipelineName"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_GET_FEATURES"/></property>
 		<property name="delegatePipeline" ref="PIPELINE_GET_FEATURES" />
 		<property name="extensions">
 			<map>
@@ -101,6 +103,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	</bean>
 
 	<bean name="PIPELINE_GET_BOUNDS_CACHED" class="org.geomajas.service.pipeline.PipelineInfo">
+		<property name="pipelineName"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_GET_BOUNDS"/></property>
 		<property name="delegatePipeline" ref="PIPELINE_GET_BOUNDS" />
 		<property name="extensions">
 			<map>
@@ -119,6 +122,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	</bean>
 
 	<bean name="intermediateCacheEntireTile" class="org.geomajas.service.pipeline.PipelineInfo">
+		<property name="pipelineName"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_GET_VECTOR_TILE"/></property>
 		<property name="delegatePipeline" ref="PIPELINE_GET_VECTOR_TILE" />
 		<property name="extensions">
 			<map>
@@ -136,6 +140,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		</property>
 	</bean>
 	<bean name="PIPELINE_GET_VECTOR_TILE_CACHED" class="org.geomajas.service.pipeline.PipelineInfo">
+		<property name="pipelineName"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_GET_VECTOR_TILE"/></property>
 		<property name="delegatePipeline" ref="intermediateCacheEntireTile" />
 		<property name="extensions">
 			<map>
@@ -163,5 +168,16 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		</property>
 	</bean>
 
+
+	<!-- default cache implementations -->
+
+	<bean class="org.geomajas.plugin.caching.service.CacheIndexInfo">
+		<!-- no index on bounds (there is no Geometry anyway) -->
+		<property name="category"><util:constant static-field="org.geomajas.plugin.caching.service.CacheCategory.BOUNDS"/></property>
+		<property name="cacheIndexFactory">
+			<bean class="org.geomajas.plugin.caching.service.NoCacheIndexFactory" />
+		</property>
+	</bean>
+	
 </beans>
 

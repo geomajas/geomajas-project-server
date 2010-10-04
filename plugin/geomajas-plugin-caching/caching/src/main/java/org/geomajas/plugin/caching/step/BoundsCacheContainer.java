@@ -21,63 +21,54 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.plugin.caching.service;
+package org.geomajas.plugin.caching.step;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.vividsolutions.jts.geom.Envelope;
+import org.geomajas.plugin.caching.service.CacheContext;
 
 /**
- * Dummy cache for testing.
+ * Container for the objects which need to be stored in the bounds cache.
  *
  * @author Joachim Van der Auwera
  */
-public class DummyCacheService implements CacheService {
+public class BoundsCacheContainer {
 
-	private Map<String, Object> map = new HashMap<String, Object>();
+	private CacheContext context;
+	private Envelope bounds;
 
-	public void put(String key, Object object) {
-		map.put(key, object);
+	/**
+	 * Get the context for this cached object to allow verifying key uniqueness.
+	 *
+	 * @return cache context
+	 */
+	public CacheContext getContext() {
+		return context;
 	}
 
-	public Object get(String key) {
-		return map.get(key);
+	/**
+	 * Set the context for this cached object to allow verifying key uniqueness.
+	 *
+	 * @param context cache context
+	 */
+	public void setContext(CacheContext context) {
+		this.context = context;
 	}
 
-	public <TYPE> TYPE get(String key, Class<TYPE> type) {
-		Object res = get(key);
-		if (type.isInstance(res)) {
-			return (TYPE) res;
-		}
-		return null;
+	/**
+	 * Get the cached bounds.
+	 *
+	 * @return bounds
+	 */
+	public Envelope getBounds() {
+		return bounds;
 	}
 
-	public void remove(String key) {
-		map.remove(key);
-	}
-
-	public void clear() {
-		map.clear();
-	}
-
-	public void drop() {
-		clear();
-	}
-
-	public long size() {
-		return map.size();
-	}
-
-	public String getKey() {
-		if (1 == size()) {
-			return map.entrySet().iterator().next().getKey();
-		}
-		return null;
-	}
-
-	public Object getObject() {
-		if (1 == size()) {
-			return map.entrySet().iterator().next().getValue();
-		}
-		return null;
+	/**
+	 * Set the cached bounds.
+	 *
+	 * @param bounds bounds
+	 */
+	public void setBounds(Envelope bounds) {
+		this.bounds = bounds;
 	}
 }

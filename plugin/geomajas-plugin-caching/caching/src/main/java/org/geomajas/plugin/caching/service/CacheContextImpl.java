@@ -25,14 +25,14 @@ package org.geomajas.plugin.caching.service;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 /**
- * Dummy cache for testing.
+ * Implementation for {@link CacheContext}.
  *
  * @author Joachim Van der Auwera
  */
-public class DummyCacheService implements CacheService {
-
+public class CacheContextImpl implements CacheContext {
 	private Map<String, Object> map = new HashMap<String, Object>();
 
 	public void put(String key, Object object) {
@@ -51,33 +51,26 @@ public class DummyCacheService implements CacheService {
 		return null;
 	}
 
-	public void remove(String key) {
-		map.remove(key);
+	public Set<Map.Entry<String, Object>> entries() {
+		return map.entrySet();
 	}
 
-	public void clear() {
-		map.clear();
-	}
-
-	public void drop() {
-		clear();
-	}
-
-	public long size() {
-		return map.size();
-	}
-
-	public String getKey() {
-		if (1 == size()) {
-			return map.entrySet().iterator().next().getKey();
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
 		}
-		return null;
+		if (!(o instanceof CacheContextImpl)) {
+			return false;
+		}
+
+		CacheContextImpl that = (CacheContextImpl) o;
+
+		return !(map != null ? !map.equals(that.map) : that.map != null);
 	}
 
-	public Object getObject() {
-		if (1 == size()) {
-			return map.entrySet().iterator().next().getValue();
-		}
-		return null;
+	@Override
+	public int hashCode() {
+		return map != null ? map.hashCode() : 0;
 	}
 }

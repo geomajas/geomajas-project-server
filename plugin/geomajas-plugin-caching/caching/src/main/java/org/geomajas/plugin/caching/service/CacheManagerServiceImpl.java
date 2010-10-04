@@ -97,6 +97,17 @@ public class CacheManagerServiceImpl implements CacheManagerService {
 		return getCache(layer, cacheCategory, true);
 	}
 
+	public CacheService getCacheForTesting(String layerId, CacheCategory cacheCategory) {
+		Map<CacheCategory, IndexedCache> layerCaches = caches.get(layerId);
+		if (null != layerCaches) {
+			IndexedCache cache = layerCaches.get(cacheCategory);
+			if (null != cache) {
+				return cache.getCacheForTesting();
+			}
+		}
+		return null;
+	}
+
 	IndexedCache getCache(Layer layer, CacheCategory cacheCategory, boolean createIfNotExists) {
 		String layerId = layer.getId();
 		Map<CacheCategory, IndexedCache> layerCaches = caches.get(layerId);

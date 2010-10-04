@@ -104,4 +104,13 @@ public class IndexedCache {
 			}
 		}
 	}
+
+	/**
+	 * Get unserlying {@link CacheService} for testing purposes.
+	 *
+	 * @return CacheService implementation
+	 */
+	CacheService getCacheForTesting() {
+		return cache;
+	}
 }

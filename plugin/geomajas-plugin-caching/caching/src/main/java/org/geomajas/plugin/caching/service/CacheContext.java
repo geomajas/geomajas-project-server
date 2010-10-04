@@ -24,9 +24,35 @@
 package org.geomajas.plugin.caching.service;
 
 /**
- * ...
+ * Context for a cached object, used to assure identical keys denote identical objects.
  *
  * @author Joachim Van der Auwera
  */
 public interface CacheContext {
+
+	/**
+	 * Put an object in the context.
+	 *
+	 * @param key object key
+	 * @param object object value
+	 */
+	void put(String key, Object object);
+
+	/**
+	 * Get an object from the context.
+	 *
+	 * @param key object key
+	 * @return value from context or null
+	 */
+	Object get(String key);
+
+	/**
+	 * Get an object from the context.
+	 *
+	 * @param key object key
+	 * @param type type for the object
+	 * @param <TYPE> type for the object
+	 * @return value from context or null when no value or value has wrong type
+	 */
+	<TYPE> TYPE get(String key, Class<TYPE> type);
 }

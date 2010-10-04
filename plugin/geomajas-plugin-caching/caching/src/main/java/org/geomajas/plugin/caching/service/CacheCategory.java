@@ -40,6 +40,7 @@ public class CacheCategory {
 	public static final CacheCategory TILE = new CacheCategory("tile");
 	public static final CacheCategory REBUILD = new CacheCategory("rebuild");
 	public static final CacheCategory FEATURE = new CacheCategory("feature");
+	public static final CacheCategory BOUNDS = new CacheCategory("bounds");
 
 	private String name;
 

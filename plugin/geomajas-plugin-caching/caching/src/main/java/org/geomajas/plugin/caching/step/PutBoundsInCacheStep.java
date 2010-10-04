@@ -24,8 +24,12 @@
 package org.geomajas.plugin.caching.step;
 
 import org.geomajas.global.GeomajasException;
+import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.pipeline.GetBoundsContainer;
+import org.geomajas.plugin.caching.service.CacheCategory;
+import org.geomajas.plugin.caching.service.CacheContext;
 import org.geomajas.plugin.caching.service.CacheManagerService;
+import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
 import org.geomajas.service.pipeline.PipelineStep;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +54,16 @@ public class PutBoundsInCacheStep implements PipelineStep<GetBoundsContainer> {
 		this.id = id;
 	}
 
-	public void execute(PipelineContext context, GetBoundsContainer getBoundsContainer) throws GeomajasException {
-		// @todo
+	public void execute(PipelineContext pipelineContext, GetBoundsContainer getBoundsContainer)
+			throws GeomajasException {
+		VectorLayer layer = pipelineContext.get(PipelineCode.LAYER_KEY, VectorLayer.class);
+
+		String cacheKey = pipelineContext.get(CacheStepConstant.CACHE_BOUNDS_KEY, String.class);
+		CacheContext cacheContext = pipelineContext.get(CacheStepConstant.CACHE_BOUNDS_CONTEXT, CacheContext.class);
+
+		BoundsCacheContainer cc = new BoundsCacheContainer();
+		cc.setContext(cacheContext);
+		cc.setBounds(getBoundsContainer.getEnvelope());
+		cacheManager.put(layer, CacheCategory.BOUNDS, cacheKey, cc, null);
 	}
 }
