@@ -55,15 +55,17 @@ public class GetBoundsStep implements PipelineStep<GetBoundsContainer> {
 
 	public void execute(PipelineContext context, GetBoundsContainer response)
 			throws GeomajasException {
-		VectorLayer layer = context.get(PipelineCode.LAYER_KEY, VectorLayer.class);
-		MathTransform crsTransform = context.get(PipelineCode.CRS_TRANSFORM_KEY, MathTransform.class);
-		Filter filter = context.get(PipelineCode.FILTER_KEY, Filter.class);
-		Envelope bounds = layer.getBounds(filter);
-		try {
-			bounds = JTS.transform(bounds, crsTransform);
-		} catch (TransformException te) {
-			throw new GeomajasException(te, ExceptionCode.GEOMETRY_TRANSFORMATION_FAILED);
+		if (null == response.getEnvelope()) {
+			VectorLayer layer = context.get(PipelineCode.LAYER_KEY, VectorLayer.class);
+			MathTransform crsTransform = context.get(PipelineCode.CRS_TRANSFORM_KEY, MathTransform.class);
+			Filter filter = context.get(PipelineCode.FILTER_KEY, Filter.class);
+			Envelope bounds = layer.getBounds(filter);
+			try {
+				bounds = JTS.transform(bounds, crsTransform);
+			} catch (TransformException te) {
+				throw new GeomajasException(te, ExceptionCode.GEOMETRY_TRANSFORMATION_FAILED);
+			}
+			response.setEnvelope(bounds);
 		}
-		response.setEnvelope(bounds);
 	}
 }

@@ -149,6 +149,7 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 		PipelineContext context = pipelineService.createContext();
 		context.put(PipelineCode.LAYER_ID_KEY, layerId);
 		context.put(PipelineCode.LAYER_KEY, layer);
+		context.put(PipelineCode.CRS_KEY, crs);
 		context.put(PipelineCode.CRS_TRANSFORM_KEY, geoService.findMathTransform(layer.getCrs(), crs));
 		context.put(PipelineCode.FILTER_KEY, queryFilter);
 		pipelineService.execute(PipelineCode.PIPELINE_GET_BOUNDS, layerId, context, container);
