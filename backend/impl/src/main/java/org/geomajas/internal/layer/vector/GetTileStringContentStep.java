@@ -49,7 +49,7 @@ public class GetTileStringContentStep implements PipelineStep<InternalTile> {
 
 	@Autowired
 	private GeoService geoService;
-	
+
 	@Autowired
 	private TextService textService;
 
@@ -62,16 +62,17 @@ public class GetTileStringContentStep implements PipelineStep<InternalTile> {
 	}
 
 	public void execute(PipelineContext context, InternalTile response) throws GeomajasException {
-		VectorLayer layer = context.get(PipelineCode.LAYER_KEY, VectorLayer.class);
-		TileMetadata metadata = context.get(PipelineCode.TILE_METADATA_KEY, TileMetadata.class);
+		if (null == response.getFeatureContent()) {
+			VectorLayer layer = context.get(PipelineCode.LAYER_KEY, VectorLayer.class);
+			TileMetadata metadata = context.get(PipelineCode.TILE_METADATA_KEY, TileMetadata.class);
 
-		response.setContentType(VectorTile.VectorTileContentType.STRING_CONTENT);
-		Coordinate panOrigin = new Coordinate(metadata.getPanOrigin().getX(), metadata.getPanOrigin().getY());
-		TilePainter tilePainter = new StringContentTilePainter(layer, metadata.getStyleInfo(), metadata
-				.getRenderer(), metadata.getScale(), panOrigin, geoService, textService);
-		tilePainter.setPaintGeometries(metadata.isPaintGeometries());
-		tilePainter.setPaintLabels(metadata.isPaintLabels());
-		tilePainter.paint(response);
-
+			response.setContentType(VectorTile.VectorTileContentType.STRING_CONTENT);
+			Coordinate panOrigin = new Coordinate(metadata.getPanOrigin().getX(), metadata.getPanOrigin().getY());
+			TilePainter tilePainter = new StringContentTilePainter(layer, metadata.getStyleInfo(), metadata
+					.getRenderer(), metadata.getScale(), panOrigin, geoService, textService);
+			tilePainter.setPaintGeometries(metadata.isPaintGeometries());
+			tilePainter.setPaintLabels(metadata.isPaintLabels());
+			tilePainter.paint(response);
+		}
 	}
 }

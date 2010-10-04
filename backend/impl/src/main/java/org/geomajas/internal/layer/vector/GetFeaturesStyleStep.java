@@ -29,7 +29,7 @@ import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.internal.rendering.StyleFilterImpl;
 import org.geomajas.layer.VectorLayer;
-import org.geomajas.layer.feature.InternalFeature;
+import org.geomajas.layer.pipeline.GetFeaturesContainer;
 import org.geomajas.rendering.StyleFilter;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
@@ -44,7 +44,7 @@ import java.util.List;
  *
  * @author Joachim Van der Auwera
  */
-public class GetFeaturesStyleStep implements PipelineStep<List<InternalFeature>> {
+public class GetFeaturesStyleStep implements PipelineStep<GetFeaturesContainer> {
 
 	public static final String STYLE_FILTERS_KEY = "styleFilters";
 	private String id;
@@ -57,7 +57,7 @@ public class GetFeaturesStyleStep implements PipelineStep<List<InternalFeature>>
 		this.id = id;
 	}
 
-	public void execute(PipelineContext context, List<InternalFeature> response) throws GeomajasException {
+	public void execute(PipelineContext context, GetFeaturesContainer response) throws GeomajasException {
 		VectorLayer layer = context.get(PipelineCode.LAYER_KEY, VectorLayer.class);
 		int featureIncludes = context.get(PipelineCode.FEATURE_INCLUDES_KEY, Integer.class);
 		NamedStyleInfo style = context.getOptional(PipelineCode.STYLE_KEY, NamedStyleInfo.class);

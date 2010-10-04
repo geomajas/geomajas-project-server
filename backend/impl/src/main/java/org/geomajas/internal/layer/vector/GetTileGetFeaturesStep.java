@@ -56,7 +56,7 @@ public class GetTileGetFeaturesStep implements PipelineStep<InternalTile> {
 
 	@Autowired
 	private TiledFeatureService tiledFeatureService;
-	
+
 	public String getId() {
 		return id;
 	}
@@ -66,15 +66,19 @@ public class GetTileGetFeaturesStep implements PipelineStep<InternalTile> {
 	}
 
 	public void execute(PipelineContext context, InternalTile response) throws GeomajasException {
-		VectorLayer layer = context.get(PipelineCode.LAYER_KEY, VectorLayer.class);
-		TileMetadata metadata = context.get(PipelineCode.TILE_METADATA_KEY, TileMetadata.class);
-		Filter filter = context.get(PipelineCode.FILTER_KEY, Filter.class);
+		if (null == response.getFeatures()) {
+			VectorLayer layer = context.get(PipelineCode.LAYER_KEY, VectorLayer.class);
+			TileMetadata metadata = context.get(PipelineCode.TILE_METADATA_KEY, TileMetadata.class);
+			Filter filter = context.get(PipelineCode.FILTER_KEY, Filter.class);
 
-		// Get the features:
-		List<InternalFeature> features = layerService.getFeatures(metadata.getLayerId(), layer.getCrs(), filter,
-				metadata .getStyleInfo(), metadata.getFeatureIncludes() | VectorLayerService.FEATURE_INCLUDE_GEOMETRY  |
-				VectorLayerService.FEATURE_INCLUDE_STYLE | VectorLayerService.FEATURE_INCLUDE_LABEL );
-		// Put them all in the tile to make them available to the next step
-		response.setFeatures(features);
+			// Get the features:
+			List<InternalFeature> features = layerService
+					.getFeatures(metadata.getLayerId(), layer.getCrs(), filter, metadata.getStyleInfo(),
+							metadata.getFeatureIncludes() | VectorLayerService.FEATURE_INCLUDE_GEOMETRY |
+									VectorLayerService.FEATURE_INCLUDE_STYLE |
+									VectorLayerService.FEATURE_INCLUDE_LABEL);
+			// Put them all in the tile to make them available to the next step
+			response.setFeatures(features);
+		}
 	}
 }

@@ -35,6 +35,7 @@ import org.geomajas.layer.VectorLayerService;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.FeatureModel;
 import org.geomajas.layer.feature.InternalFeature;
+import org.geomajas.layer.pipeline.GetFeaturesContainer;
 import org.geomajas.rendering.StyleFilter;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
@@ -48,6 +49,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -58,7 +60,7 @@ import java.util.Map;
  *
  * @author Joachim Van der Auwera
  */
-public class GetFeaturesEachStep implements PipelineStep<List<InternalFeature>> {
+public class GetFeaturesEachStep implements PipelineStep<GetFeaturesContainer> {
 
 	private final Logger log = LoggerFactory.getLogger(GetFeaturesEachStep.class);
 
@@ -75,34 +77,39 @@ public class GetFeaturesEachStep implements PipelineStep<List<InternalFeature>> 
 		this.id = id;
 	}
 
-	public void execute(PipelineContext context, List<InternalFeature> response) throws GeomajasException {
-		VectorLayer layer = context.get(PipelineCode.LAYER_KEY, VectorLayer.class);
-		Filter filter = context.get(PipelineCode.FILTER_KEY, Filter.class);
-		int offset = context.get(PipelineCode.OFFSET_KEY, Integer.class);
-		int maxResultSize = context.get(PipelineCode.MAX_RESULT_SIZE_KEY, Integer.class);
-		int featureIncludes = context.get(PipelineCode.FEATURE_INCLUDES_KEY, Integer.class);
-		String layerId = context.get(PipelineCode.LAYER_ID_KEY, String.class);
-		NamedStyleInfo style = context.get(PipelineCode.STYLE_KEY, NamedStyleInfo.class);
-		MathTransform transformation = context.getOptional(PipelineCode.CRS_TRANSFORM_KEY, MathTransform.class);
-		List<StyleFilter> styleFilters = context.getOptional(GetFeaturesStyleStep.STYLE_FILTERS_KEY, List.class);
+	public void execute(PipelineContext context, GetFeaturesContainer response) throws GeomajasException {
+		List<InternalFeature> features = response.getFeatures();
+		if (null == features) {
+			features = new ArrayList<InternalFeature>();
+			response.setFeatures(features);
+			VectorLayer layer = context.get(PipelineCode.LAYER_KEY, VectorLayer.class);
+			Filter filter = context.get(PipelineCode.FILTER_KEY, Filter.class);
+			int offset = context.get(PipelineCode.OFFSET_KEY, Integer.class);
+			int maxResultSize = context.get(PipelineCode.MAX_RESULT_SIZE_KEY, Integer.class);
+			int featureIncludes = context.get(PipelineCode.FEATURE_INCLUDES_KEY, Integer.class);
+			String layerId = context.get(PipelineCode.LAYER_ID_KEY, String.class);
+			NamedStyleInfo style = context.get(PipelineCode.STYLE_KEY, NamedStyleInfo.class);
+			MathTransform transformation = context.getOptional(PipelineCode.CRS_TRANSFORM_KEY, MathTransform.class);
+			List<StyleFilter> styleFilters = context.getOptional(GetFeaturesStyleStep.STYLE_FILTERS_KEY, List.class);
 
-		if (log.isDebugEnabled()) {
-			log.debug("getElements " + filter + ", offset = " + offset + ", maxResultSize= " + maxResultSize);
-		}
-		Iterator<?> it = layer.getElements(filter, offset, maxResultSize);
-		while (it.hasNext()) {
-			InternalFeature feature = convertFeature(it.next(), layerId, layer, transformation, styleFilters, style
-					.getLabelStyle(), featureIncludes);
-			log.debug("checking feature");
-			if (securityContext.isFeatureVisible(layerId, feature)) {
-				feature.setEditable(securityContext.isFeatureUpdateAuthorized(layerId, feature));
-				feature.setDeletable(securityContext.isFeatureDeleteAuthorized(layerId, feature));
-				response.add(feature);
-			} else {
-				log.debug("feature not visible");
+			if (log.isDebugEnabled()) {
+				log.debug("getElements " + filter + ", offset = " + offset + ", maxResultSize= " + maxResultSize);
 			}
+			Iterator<?> it = layer.getElements(filter, offset, maxResultSize);
+			while (it.hasNext()) {
+				InternalFeature feature = convertFeature(it.next(), layerId, layer, transformation, styleFilters, style
+						.getLabelStyle(), featureIncludes);
+				log.debug("checking feature");
+				if (securityContext.isFeatureVisible(layerId, feature)) {
+					feature.setEditable(securityContext.isFeatureUpdateAuthorized(layerId, feature));
+					feature.setDeletable(securityContext.isFeatureDeleteAuthorized(layerId, feature));
+					features.add(feature);
+				} else {
+					log.debug("feature not visible");
+				}
+			}
+			log.debug("getElements done");
 		}
-		log.debug("getElements done");
 	}
 
 	/**
@@ -128,7 +135,8 @@ public class GetFeaturesEachStep implements PipelineStep<List<InternalFeature>> 
 	 *             oops
 	 */
 	private InternalFeature convertFeature(Object feature, String layerId, VectorLayer layer,
-			MathTransform transformation, List<StyleFilter> styles, LabelStyleInfo labelStyle, int featureIncludes)
+										   MathTransform transformation, List<StyleFilter> styles,
+										   LabelStyleInfo labelStyle, int featureIncludes)
 			throws GeomajasException {
 		FeatureModel featureModel = layer.getFeatureModel();
 		InternalFeatureImpl res = new InternalFeatureImpl();

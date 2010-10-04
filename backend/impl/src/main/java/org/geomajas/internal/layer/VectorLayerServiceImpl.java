@@ -23,18 +23,19 @@
 
 package org.geomajas.internal.layer;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.internal.layer.tile.InternalTileImpl;
+import org.geomajas.layer.pipeline.GetAttributesContainer;
 import org.geomajas.layer.pipeline.GetBoundsContainer;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.VectorLayerService;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.InternalFeature;
+import org.geomajas.layer.pipeline.GetFeaturesContainer;
 import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.layer.tile.TileMetadata;
 import org.geomajas.security.GeomajasSecurityException;
@@ -121,7 +122,7 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 		if ((featureIncludes & FEATURE_INCLUDE_GEOMETRY) != 0 && crs != null && !crs.equals(layer.getCrs())) {
 			transformation = geoService.findMathTransform(layer.getCrs(), crs);
 		}
-		List<InternalFeature> res = new ArrayList<InternalFeature>();
+		GetFeaturesContainer container = new GetFeaturesContainer();
 		PipelineContext context = pipelineService.createContext();
 		context.put(PipelineCode.LAYER_ID_KEY, layerId);
 		context.put(PipelineCode.LAYER_KEY, layer);
@@ -132,8 +133,8 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 		context.put(PipelineCode.FEATURE_INCLUDES_KEY, featureIncludes);
 		context.put(PipelineCode.OFFSET_KEY, offset);
 		context.put(PipelineCode.MAX_RESULT_SIZE_KEY, maxResultSize);
-		pipelineService.execute(PipelineCode.PIPELINE_GET_FEATURES, layerId, context, res);
-		return res;
+		pipelineService.execute(PipelineCode.PIPELINE_GET_FEATURES, layerId, context, container);
+		return container.getFeatures();
 	}
 
 	public List<InternalFeature> getFeatures(String layerId, CoordinateReferenceSystem crs, Filter filter,
@@ -191,8 +192,8 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 		context.put(PipelineCode.LAYER_KEY, layer);
 		context.put(PipelineCode.FILTER_KEY, filter);
 		context.put(PipelineCode.ATTRIBUTE_NAME_KEY, attributeName);
-		List<Attribute<?>> response = new ArrayList<Attribute<?>>();
-		pipelineService.execute(PipelineCode.PIPELINE_GET_ATTRIBUTES, layerId, context, response);
-		return response;
+		GetAttributesContainer container = new GetAttributesContainer();
+		pipelineService.execute(PipelineCode.PIPELINE_GET_ATTRIBUTES, layerId, context, container);
+		return container.getAttributes();
 	}
 }
