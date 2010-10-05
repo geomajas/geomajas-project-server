@@ -91,6 +91,7 @@ public interface InternalTile {
 	 *
 	 * @param labelContent
 	 *            The new value for the actual rendered label content of this tile.
+	 * @since 1.8.0
 	 */
 	void setLabelContent(String labelContent);
 
