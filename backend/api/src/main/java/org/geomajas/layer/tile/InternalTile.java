@@ -86,6 +86,15 @@ public interface InternalTile {
 	String getLabelContent();
 
 	/**
+	 * Set the rendered content of a tile's labels. Depending on the rendering method used, a different content type
+	 * will be stored. Basically, the returned string will contain a string rendering (SVG/VML) or a URL.
+	 *
+	 * @param labelContent
+	 *            The new value for the actual rendered label content of this tile.
+	 */
+	void setLabelContent(String labelContent);
+
+	/**
 	 * Get bounding box for the tile (in map coordinates).
 	 *
 	 * @return bounding box
