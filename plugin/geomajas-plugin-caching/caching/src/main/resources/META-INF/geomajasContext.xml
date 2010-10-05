@@ -160,12 +160,25 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 
 
 	<!-- default cache implementations -->
+	<bean class="org.geomajas.plugin.caching.service.CacheInfo">
+		<property name="cacheFactory">
+			<bean class="org.geomajas.plugin.caching.cache.InfinispanCacheFactory">
+				<property name="configuration">
+					<bean class="org.infinispan.config.Configuration">
+						<property name="evictionMaxEntries" value="5000" />
+						<property name="evictionStrategy" value="LRU" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+
 
 	<bean class="org.geomajas.plugin.caching.service.CacheIndexInfo">
-		<!-- no index on bounds (there is no Geometry anyway) -->
+		<!-- no index on bounds (there is no Geometry/Envelope anyway) -->
 		<property name="category"><util:constant static-field="org.geomajas.plugin.caching.service.CacheCategory.BOUNDS"/></property>
 		<property name="cacheIndexFactory">
-			<bean class="org.geomajas.plugin.caching.service.NoCacheIndexFactory" />
+			<bean class="org.geomajas.plugin.caching.index.NoCacheIndexFactory" />
 		</property>
 	</bean>
 	

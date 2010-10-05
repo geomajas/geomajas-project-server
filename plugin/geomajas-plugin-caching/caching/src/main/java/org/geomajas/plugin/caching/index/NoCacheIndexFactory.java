@@ -21,37 +21,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.plugin.caching.service;
+package org.geomajas.plugin.caching.index;
 
-import com.vividsolutions.jts.geom.Envelope;
-
-import java.util.List;
+import org.geomajas.layer.Layer;
+import org.geomajas.plugin.caching.service.CacheCategory;
+import org.geomajas.plugin.caching.service.CacheIndexFactory;
+import org.geomajas.plugin.caching.service.CacheIndexService;
 
 /**
- * Spatial index implementation which does not really indexes. When something needs to be invalidated, everything
- * is invalidated.
+ * Create a spatial index which does not index anything (thus always forces everything to be invalidated).
  *
  * @author Joachim Van der Auwera
  */
-public class NoCacheIndexService implements CacheIndexService {
+public class NoCacheIndexFactory implements CacheIndexFactory {
 
-	public void put(String key, Envelope envelope) {
-		// nothing to do
-	}
+	private static final NoCacheIndexService INSTANCE = new NoCacheIndexService();
 
-	public void remove(String key) {
-		// nothing to do
-	}
-
-	public void clear() {
-		// nothing to do
-	}
-
-	public void drop() {
-		// nothing to do
-	}
-
-	public List<String> getOverlappingKeys(Envelope envelope) {
-		return ALL_KEYS;
+	public CacheIndexService create(Layer layer, CacheCategory category) {
+		return INSTANCE;
 	}
 }

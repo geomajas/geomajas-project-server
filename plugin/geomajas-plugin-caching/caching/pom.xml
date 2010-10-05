@@ -47,7 +47,7 @@
 		<dependency>          
 			<groupId>org.infinispan</groupId>
 			<artifactId>infinispan-core</artifactId>
-			<version>4.1.0.BETA2</version>
+			<version>4.1.0.FINAL</version>
 		</dependency>
 
 		<dependency>

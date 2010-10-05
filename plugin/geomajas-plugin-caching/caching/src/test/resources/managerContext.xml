@@ -45,7 +45,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	<bean class="org.geomajas.plugin.caching.service.CacheIndexInfo">
 		<property name="layerId" value="beans" />
 		<property name="cacheIndexFactory">
-			<bean class="org.geomajas.plugin.caching.service.NoCacheIndexFactory"/>
+			<bean class="org.geomajas.plugin.caching.index.NoCacheIndexFactory"/>
 		</property>
 	</bean>
 
