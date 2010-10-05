@@ -68,6 +68,16 @@ public interface InternalTile {
 	String getFeatureContent();
 
 	/**
+	 * Set the rendered content of a tile's features. Depending on the rendering method used, a different content type
+	 * will be stored. Basically, the returned string will contain a string rendering (SVG/VML) or a URL.
+	 *
+	 * @param featureContent
+	 *            The new value for the actual rendered feature content of this tile.
+	 * @since 1.8.0
+	 */
+	void setFeatureContent(String featureContent);
+
+	/**
 	 * Return the rendering of a tile's labels. Depending on the rendering method used, the returned string will contain
 	 * an entire rendering (SVG/VML) or a URL.
 	 *
