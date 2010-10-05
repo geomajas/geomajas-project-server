@@ -23,34 +23,47 @@
 
 package org.geomajas.plugin.caching.step;
 
-import org.geomajas.global.GeomajasException;
-import org.geomajas.layer.tile.InternalTile;
-import org.geomajas.plugin.caching.service.CacheManagerService;
-import org.geomajas.service.pipeline.PipelineContext;
-import org.geomajas.service.pipeline.PipelineStep;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.vividsolutions.jts.geom.Envelope;
+import org.geomajas.layer.feature.InternalFeature;
+
+import java.util.List;
 
 /**
- * Store tile features in the cache.
+ * Container for the objects which need to be stored in the features cache.
  *
  * @author Joachim Van der Auwera
  */
-public class PutTileFeaturesInCacheStep implements PipelineStep<InternalTile> {
+public class FeaturesCacheContainer extends CacheContainer {
 
-	@Autowired
-	private CacheManagerService cacheManager;
-		
-	private String id;
+	private List<InternalFeature> features;
+	private Envelope bounds;
 
-	public String getId() {
-		return id;
+	/**
+	 * Create for specific features.
+	 *
+	 * @param features features
+	 * @param bounds bounds for features
+	 */
+	public FeaturesCacheContainer(List<InternalFeature> features, Envelope bounds) {
+		this.features = features;
+		this.bounds = bounds;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	/**
+	 * Get the cached features.
+	 *
+	 * @return features
+	 */
+	public List<InternalFeature> getFeatures() {
+		return features;
 	}
 
-	public void execute(PipelineContext context, InternalTile internalTile) throws GeomajasException {
-		// @todo
+	/**
+	 * Bounds for the features.
+	 *
+	 * @return feature bounds
+	 */
+	public Envelope getBounds() {
+		return bounds;
 	}
 }

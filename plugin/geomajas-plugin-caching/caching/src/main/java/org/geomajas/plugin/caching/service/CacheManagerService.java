@@ -23,7 +23,7 @@
 
 package org.geomajas.plugin.caching.service;
 
-import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.Envelope;
 import org.geomajas.global.Api;
 import org.geomajas.layer.Layer;
 
@@ -45,9 +45,9 @@ public interface CacheManagerService {
 	 * @param category cache category
 	 * @param key key for the object
 	 * @param object object
-	 * @param geometry geometry for object
+	 * @param envelope envelope for object
 	 */
-	void put(Layer layer, CacheCategory category, String key, Object object, Geometry geometry);
+	void put(Layer layer, CacheCategory category, String key, Object object, Envelope envelope);
 
 	/**
 	 * Get the object with given key from the cache.
@@ -92,15 +92,22 @@ public interface CacheManagerService {
 	 *
 	 * @param layer layer for which cached objects need to be invalidated
 	 * @param category cache category
-	 * @param geometry geometry for which overlapping objects need to be invalidated
+	 * @param envelope envelope for which overlapping objects need to be invalidated
 	 */
-	void invalidate(Layer layer, CacheCategory category, Geometry geometry);
+	void invalidate(Layer layer, CacheCategory category, Envelope envelope);
 
 	/**
 	 * Invalidate the cached objects for a specific geometry in a cache category.
 	 *
 	 * @param layer layer for which cached objects need to be invalidated
-	 * @param geometry geometry for which overlapping objects need to be invalidated
+	 * @param envelope envelope for which overlapping objects need to be invalidated
 	 */
-	void invalidate(Layer layer, Geometry geometry);
+	void invalidate(Layer layer, Envelope envelope);
+
+	/**
+	 * Invalidate all the cached objects for a specific layer.
+	 *
+	 * @param layer layer for which cached objects need to be invalidated
+	 */
+	void invalidate(Layer layer);
 }

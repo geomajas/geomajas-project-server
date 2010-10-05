@@ -23,20 +23,32 @@
 
 package org.geomajas.plugin.caching.step;
 
-import org.geomajas.global.GeomajasException;
-import org.geomajas.layer.pipeline.GetBoundsContainer;
-import org.geomajas.service.pipeline.PipelineContext;
+import org.geomajas.layer.tile.InternalTile;
 
 /**
- * Put bounds in cache for later retrieval.
+ * Container for the objects which need to be stored in the tile cache.
  *
  * @author Joachim Van der Auwera
  */
-public class PutBoundsInCacheStep extends AbstractPutInCacheStep<GetBoundsContainer> {
+public class TileCacheContainer extends CacheContainer {
 
-	public void execute(PipelineContext pipelineContext, GetBoundsContainer result)
-			throws GeomajasException {
-		execute(pipelineContext, CacheStepConstant.CACHE_BOUNDS_KEY, CacheStepConstant.CACHE_BOUNDS_CONTEXT,
-				CacheStepConstant.CACHE_BOUNDS_USED, new BoundsCacheContainer(result.getEnvelope()), null);
+	private InternalTile tile;
+
+	/**
+	 * Create for a specific tile.
+	 *
+	 * @param tile tile
+	 */
+	public TileCacheContainer(InternalTile tile) {
+		this.tile = tile;
+	}
+
+	/**
+	 * Get the cached tile.
+	 *
+	 * @return tile
+	 */
+	public InternalTile getTile() {
+		return tile;
 	}
 }

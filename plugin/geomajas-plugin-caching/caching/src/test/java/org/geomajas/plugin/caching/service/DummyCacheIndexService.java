@@ -23,7 +23,7 @@
 
 package org.geomajas.plugin.caching.service;
 
-import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.Envelope;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -39,7 +39,7 @@ public class DummyCacheIndexService implements CacheIndexService {
 
 	Set<String> set = new HashSet<String>();
 
-	public void put(String key, Geometry geometry) {
+	public void put(String key, Envelope envelope) {
 		set.add(key);
 	}
 
@@ -47,11 +47,15 @@ public class DummyCacheIndexService implements CacheIndexService {
 		set.remove(key);
 	}
 
-	public void drop() {
+	public void clear() {
 		set.clear();
 	}
 
-	public List<String> getOverlappingKeys(Geometry geometry) {
+	public void drop() {
+		clear();
+	}
+
+	public List<String> getOverlappingKeys(Envelope envelope) {
 		List<String> res = new ArrayList<String>();
 		res.addAll(set);
 		return res;

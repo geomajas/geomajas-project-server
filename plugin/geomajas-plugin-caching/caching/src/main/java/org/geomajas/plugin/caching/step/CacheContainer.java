@@ -23,20 +23,32 @@
 
 package org.geomajas.plugin.caching.step;
 
-import org.geomajas.global.GeomajasException;
-import org.geomajas.layer.pipeline.GetBoundsContainer;
-import org.geomajas.service.pipeline.PipelineContext;
+import org.geomajas.plugin.caching.service.CacheContext;
 
 /**
- * Put bounds in cache for later retrieval.
+ * Base container for the objects which need to be stored in the cache, assure the context is included.
  *
  * @author Joachim Van der Auwera
  */
-public class PutBoundsInCacheStep extends AbstractPutInCacheStep<GetBoundsContainer> {
+public class CacheContainer {
 
-	public void execute(PipelineContext pipelineContext, GetBoundsContainer result)
-			throws GeomajasException {
-		execute(pipelineContext, CacheStepConstant.CACHE_BOUNDS_KEY, CacheStepConstant.CACHE_BOUNDS_CONTEXT,
-				CacheStepConstant.CACHE_BOUNDS_USED, new BoundsCacheContainer(result.getEnvelope()), null);
+	private CacheContext context;
+
+	/**
+	 * Get the context for this cached object to allow verifying key uniqueness.
+	 *
+	 * @return cache context
+	 */
+	public CacheContext getContext() {
+		return context;
+	}
+
+	/**
+	 * Set the context for this cached object to allow verifying key uniqueness.
+	 *
+	 * @param context cache context
+	 */
+	public void setContext(CacheContext context) {
+		this.context = context;
 	}
 }

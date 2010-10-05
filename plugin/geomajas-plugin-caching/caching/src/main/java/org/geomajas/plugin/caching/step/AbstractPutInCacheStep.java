@@ -23,12 +23,11 @@
 
 package org.geomajas.plugin.caching.step;
 
+import com.vividsolutions.jts.geom.Envelope;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.VectorLayer;
-import org.geomajas.layer.pipeline.GetTileContainer;
 import org.geomajas.plugin.caching.service.CacheCategory;
 import org.geomajas.plugin.caching.service.CacheContext;
-import org.geomajas.plugin.caching.service.CacheKeyService;
 import org.geomajas.plugin.caching.service.CacheManagerService;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
@@ -36,21 +35,15 @@ import org.geomajas.service.pipeline.PipelineStep;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * Try to get the entire tile from the cache.
+ * Put bounds in cache for later retrieval.
  *
+ * @param <TYPE> type of response object for pipeline.
  * @author Joachim Van der Auwera
  */
-public class GetTileFromCacheStep implements PipelineStep<GetTileContainer> {
-
-	private static final String[] KEYS =
-			{PipelineCode.LAYER_ID_KEY, PipelineCode.CRS_KEY, PipelineCode.FILTER_KEY, PipelineCode.LAYER_ID_KEY,
-					PipelineCode.TILE_METADATA_KEY, PipelineCode.FEATURE_INCLUDES_KEY};
+public abstract class AbstractPutInCacheStep<TYPE> implements PipelineStep<TYPE> {
 
 	@Autowired
 	private CacheManagerService cacheManager;
-
-	@Autowired
-	private CacheKeyService cacheKeyService;
 
 	private String id;
 
@@ -62,27 +55,15 @@ public class GetTileFromCacheStep implements PipelineStep<GetTileContainer> {
 		this.id = id;
 	}
 
-	public void execute(PipelineContext pipelineContext, GetTileContainer result) throws GeomajasException {
+	public void execute(PipelineContext pipelineContext, String keyKey, String contextKey, String useKey,
+			CacheContainer cacheContainer, Envelope envelope)
+			throws GeomajasException {
 		VectorLayer layer = pipelineContext.get(PipelineCode.LAYER_KEY, VectorLayer.class);
 
-		CacheContext cacheContext = cacheKeyService.getCacheContext(pipelineContext, KEYS);
-		String cacheKey = cacheKeyService.getCacheKey(layer, CacheCategory.TILE, cacheContext);
+		String cacheKey = pipelineContext.get(keyKey, String.class);
+		CacheContext cacheContext = pipelineContext.get(contextKey, CacheContext.class);
 
-		TileCacheContainer cc = cacheManager.get(layer, CacheCategory.TILE, cacheKey, TileCacheContainer.class);
-
-		while (null != cc) {
-			if (cacheContext.equals(cc.getContext())) {
-				// found item in cache
-				result.setTile(cc.getTile());
-				pipelineContext.put(CacheStepConstant.CACHE_TILE_USED, true);
-				break;
-			} else {
-				cacheKey = cacheKeyService.makeUnique(cacheKey);
-				cc = cacheManager.get(layer, CacheCategory.TILE, cacheKey, TileCacheContainer.class);
-			}
-		}
-		pipelineContext.put(CacheStepConstant.CACHE_TILE_KEY, cacheKey);
-		pipelineContext.put(CacheStepConstant.CACHE_TILE_CONTEXT, cacheContext);
-
+		cacheContainer.setContext(cacheContext);
+		cacheManager.put(layer, CacheCategory.BOUNDS, cacheKey, cacheContainer, envelope);
 	}
 }

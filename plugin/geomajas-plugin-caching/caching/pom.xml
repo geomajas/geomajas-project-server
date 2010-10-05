@@ -29,10 +29,15 @@
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-testdata</artifactId>
-			<version>1.8.0-SNAPSHOT</version>
+			<version>${caching-backend-version}</version>
 			<scope>test</scope>
 		</dependency>
 
+		<dependency>
+			<groupId>org.geotools</groupId>
+			<artifactId>gt-main</artifactId>
+		</dependency>
+		
 		<dependency>
 			<groupId>com.twmacinta</groupId>
 			<artifactId>fast-md5</artifactId>

@@ -23,7 +23,7 @@
 
 package org.geomajas.plugin.caching.service;
 
-import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.Envelope;
 import org.geomajas.global.Api;
 
 import java.util.ArrayList;
@@ -52,9 +52,9 @@ public interface CacheIndexService {
 	 * This will overwrite any pre-existing object for the key.
 	 *
 	 * @param key key for the spatial object
-	 * @param geometry geometry for the object
+	 * @param envelope envelope for the object
 	 */
-	void put(String key, Geometry geometry);
+	void put(String key, Envelope envelope);
 
 	/**
 	 * Remove a spatial object from the index.
@@ -64,15 +64,22 @@ public interface CacheIndexService {
 	void remove(String key);
 
 	/**
+	 * Clear the entire index. This is only useful when clearing the cache which is indexed.
+	 */
+	void clear();
+
+	/**
 	 * Drop the entire index. This is only useful when dropping the cache which is indexed.
+	 * <p/>
+	 * This should on y be called when the cache will no longer be used, it frees all necessary resources.
 	 */
 	void drop();
 
 	/**
 	 * Get the keys for the objects which (may) overlap with the given geometry.
 	 *
-	 * @param geometry geometry to test
+	 * @param envelope envelope to test
 	 * @return list of keys of spatial objects which my overlap with the geometry
 	 */
-	List<String> getOverlappingKeys(Geometry geometry);
+	List<String> getOverlappingKeys(Envelope envelope);
 }

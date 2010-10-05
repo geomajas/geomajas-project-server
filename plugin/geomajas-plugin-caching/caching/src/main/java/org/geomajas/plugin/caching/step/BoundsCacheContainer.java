@@ -24,34 +24,23 @@
 package org.geomajas.plugin.caching.step;
 
 import com.vividsolutions.jts.geom.Envelope;
-import org.geomajas.plugin.caching.service.CacheContext;
 
 /**
  * Container for the objects which need to be stored in the bounds cache.
  *
  * @author Joachim Van der Auwera
  */
-public class BoundsCacheContainer {
+public class BoundsCacheContainer extends CacheContainer {
 
-	private CacheContext context;
 	private Envelope bounds;
 
 	/**
-	 * Get the context for this cached object to allow verifying key uniqueness.
+	 * Create object for specific bounds.
 	 *
-	 * @return cache context
+	 * @param bounds bounds
 	 */
-	public CacheContext getContext() {
-		return context;
-	}
-
-	/**
-	 * Set the context for this cached object to allow verifying key uniqueness.
-	 *
-	 * @param context cache context
-	 */
-	public void setContext(CacheContext context) {
-		this.context = context;
+	public BoundsCacheContainer(Envelope bounds) {
+		this.bounds = bounds;
 	}
 
 	/**
@@ -61,14 +50,5 @@ public class BoundsCacheContainer {
 	 */
 	public Envelope getBounds() {
 		return bounds;
-	}
-
-	/**
-	 * Set the cached bounds.
-	 *
-	 * @param bounds bounds
-	 */
-	public void setBounds(Envelope bounds) {
-		this.bounds = bounds;
 	}
 }

@@ -23,7 +23,7 @@
 
 package org.geomajas.plugin.caching.service;
 
-import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.Envelope;
 
 import java.util.List;
 
@@ -47,10 +47,10 @@ public class IndexedCache {
 	 *
 	 * @param key key for object
 	 * @param object object itself
-	 * @param geometry geometry for object
+	 * @param envelope envelope for object
 	 */
-	public void put(String key, Object object, Geometry geometry) {
-		index.put(key, geometry);
+	public void put(String key, Object object, Envelope envelope) {
+		index.put(key, envelope);
 		cache.put(key, object);
 	}
 
@@ -80,6 +80,7 @@ public class IndexedCache {
 	 */
 	public void clear() {
 		cache.clear();
+		index.clear();
 	}
 
 	/**
@@ -92,10 +93,10 @@ public class IndexedCache {
 	/**
 	 * Invalidate all entries which (may) overlap with the given geometry.
 	 *
-	 * @param geometry geometry to test
+	 * @param envelope envelope to test
 	 */
-	public void invalidate(Geometry geometry) {
-		List<String> keys = index.getOverlappingKeys(geometry);
+	public void invalidate(Envelope envelope) {
+		List<String> keys = index.getOverlappingKeys(envelope);
 		if (CacheIndexService.ALL_KEYS == keys) {
 			clear();
 		} else {
@@ -106,7 +107,7 @@ public class IndexedCache {
 	}
 
 	/**
-	 * Get unserlying {@link CacheService} for testing purposes.
+	 * Get underlying {@link CacheService} for testing purposes.
 	 *
 	 * @return CacheService implementation
 	 */

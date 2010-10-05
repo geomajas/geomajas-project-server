@@ -83,7 +83,7 @@ public class DeleteFeatureInvalidateStep implements PipelineStep {
 						//}
 						Geometry geometry = layer.getFeatureModel().getGeometry(featureObj);
 						if (null != geometry) {
-							cacheManager.invalidate(layer, geometry);
+							cacheManager.invalidate(layer, geometry.getEnvelopeInternal());
 						}
 					}
 				} else {

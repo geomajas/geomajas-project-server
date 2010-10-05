@@ -24,33 +24,21 @@
 package org.geomajas.plugin.caching.step;
 
 import org.geomajas.global.GeomajasException;
+import org.geomajas.layer.pipeline.GetTileContainer;
 import org.geomajas.layer.tile.InternalTile;
-import org.geomajas.plugin.caching.service.CacheManagerService;
 import org.geomajas.service.pipeline.PipelineContext;
-import org.geomajas.service.pipeline.PipelineStep;
-import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Put tile string contents in cache for later retrieval.
  *
  * @author Joachim Van der Auwera
  */
-public class PutTileStringContentInCacheStep implements PipelineStep<InternalTile> {
+public class PutTileStringContentInCacheStep extends AbstractPutInCacheStep<GetTileContainer> {
 
-	@Autowired
-	private CacheManagerService cacheManager;
-
-	private String id;
-
-	public String getId() {
-		return id;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-	
-	public void execute(PipelineContext context, InternalTile result) throws GeomajasException {
-		// @todo
+	public void execute(PipelineContext pipelineContext, GetTileContainer result) throws GeomajasException {
+		InternalTile tile = result.getTile();
+		execute(pipelineContext, CacheStepConstant.CACHE_TILE_CONTENT_KEY, CacheStepConstant.CACHE_TILE_CONTENT_CONTEXT,
+				CacheStepConstant.CACHE_TILE_CONTENT_USED,
+				new TileContentCacheContainer(tile.getFeatureContent(), tile.getLabelContent()), tile.getBounds());
 	}
 }

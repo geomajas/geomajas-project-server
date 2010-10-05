@@ -144,16 +144,6 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<property name="delegatePipeline" ref="intermediateCacheEntireTile" />
 		<property name="extensions">
 			<map>
-				<entry key="preGetFeatures">
-					<bean class="org.geomajas.plugin.caching.step.GetTileFeaturesFromCacheStep" >
-						<property name="id" value="GetTileFeaturesFromCacheStep" />
-					</bean>
-				</entry>
-				<entry key="postGetFeatures">
-					<bean class="org.geomajas.plugin.caching.step.PutTileFeaturesInCacheStep" >
-						<property name="id" value="PutTileFeaturesInCacheStep" />
-					</bean>
-				</entry>
 				<entry key="preGetStringContent">
 					<bean class="org.geomajas.plugin.caching.step.GetTileStringContentFromCacheStep" >
 						<property name="id" value="GetTileStringContentFromCacheStep" />

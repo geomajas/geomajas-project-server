@@ -23,38 +23,42 @@
 
 package org.geomajas.plugin.caching.step;
 
-import org.geomajas.global.GeomajasException;
-import org.geomajas.layer.tile.InternalTile;
-import org.geomajas.plugin.caching.service.CacheKeyService;
-import org.geomajas.plugin.caching.service.CacheManagerService;
-import org.geomajas.service.pipeline.PipelineContext;
-import org.geomajas.service.pipeline.PipelineStep;
-import org.springframework.beans.factory.annotation.Autowired;
-
 /**
- * Try to get the features from the cache (instead of accessing the data source).
+ * Container for the objects which need to be stored in on of the tile content (string) caches.
  *
  * @author Joachim Van der Auwera
  */
-public class GetTileFeaturesFromCacheStep implements PipelineStep<InternalTile> {
+public class TileContentCacheContainer extends CacheContainer {
 
-	@Autowired
-	private CacheManagerService cacheManager;
+	private String featureContent;
+	private String labelContent;
 
-	@Autowired
-	private CacheKeyService cacheKeyService;
-
-	private String id;
-
-	public String getId() {
-		return id;
+	/**
+	 * Create for feature content.
+	 *
+	 * @param featureContent tile feature content
+	 * @param labelContent tile label content
+	 */
+	public TileContentCacheContainer(String featureContent, String labelContent) {
+		this.featureContent = featureContent;
+		this.labelContent = labelContent;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	/**
+	 * Get the tile feature content.
+	 *
+	 * @return tile feature content
+	 */
+	public String getFeatureContent() {
+		return featureContent;
 	}
 
-	public void execute(PipelineContext context, InternalTile internalTile) throws GeomajasException {
-		// @todo
+	/**
+	 * Get the tile label content.
+	 *
+	 * @return tile label content
+	 */
+	public String getLabelContent() {
+		return labelContent;
 	}
 }

@@ -23,7 +23,7 @@
 
 package org.geomajas.plugin.caching.service;
 
-import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.GeometryFactory;
 import com.vividsolutions.jts.geom.PrecisionModel;
 import com.vividsolutions.jts.io.WKTReader;
@@ -59,14 +59,13 @@ public class CacheManagerServiceTest {
 	@Qualifier("beans")
 	private VectorLayer otherLayer;
 
-	Geometry geometry;
-	Geometry overlappingGeometry;
+	private Envelope envelope;
+	private Envelope overlappingEnvelope;
 
 	@Before
 	public void init() throws Exception {
-		WKTReader reader = new WKTReader(new GeometryFactory(new PrecisionModel(), 900913));
-		geometry = reader.read("MULTIPOLYGON(((0 0,10 0,10 10,0 10,0 0)))");
-		overlappingGeometry = reader.read("MULTIPOLYGON(((5 5,5 15,15 15,15 5,5 5)))");
+		envelope = new Envelope(0, 10, 0, 10);
+		overlappingEnvelope = new Envelope(5, 15, 5, 15);
 	}
 
 	@Test
@@ -99,7 +98,7 @@ public class CacheManagerServiceTest {
 		String data = "data";
 		String key = "123";
 		String otherKey = "321";
-		cacheManager.put(layer, CacheCategory.REBUILD, key, data, geometry);
+		cacheManager.put(layer, CacheCategory.REBUILD, key, data, envelope);
 		Assert.assertEquals(data, cacheManager.get(layer, CacheCategory.REBUILD, key));
 		Assert.assertEquals(data, cacheManager.get(layer, CacheCategory.REBUILD, key, String.class));
 		Assert.assertNull(data, cacheManager.get(layer, CacheCategory.REBUILD, otherKey));
@@ -113,7 +112,7 @@ public class CacheManagerServiceTest {
 	public void dropOne() throws Exception {
 		String data = "data";
 		String key = "123";
-		cacheManager.put(layer, CacheCategory.REBUILD, key, data, geometry);
+		cacheManager.put(layer, CacheCategory.REBUILD, key, data, envelope);
 		Assert.assertEquals(data, cacheManager.get(layer, CacheCategory.REBUILD, key));
 		cacheManager.drop(layer, CacheCategory.REBUILD);
 		Assert.assertNull(cacheManager.get(layer, CacheCategory.REBUILD, key));
@@ -123,8 +122,8 @@ public class CacheManagerServiceTest {
 	public void dropLayer() throws Exception {
 		String data = "data";
 		String key = "123";
-		cacheManager.put(layer, CacheCategory.REBUILD, key, data, geometry);
-		cacheManager.put(layer, CacheCategory.FEATURE, key, data, geometry);
+		cacheManager.put(layer, CacheCategory.REBUILD, key, data, envelope);
+		cacheManager.put(layer, CacheCategory.FEATURE, key, data, envelope);
 		Assert.assertEquals(data, cacheManager.get(layer, CacheCategory.REBUILD, key));
 		Assert.assertEquals(data, cacheManager.get(layer, CacheCategory.FEATURE, key));
 		cacheManager.drop(layer);
@@ -136,9 +135,9 @@ public class CacheManagerServiceTest {
 	public void invalidateOne() throws Exception {
 		String data = "data";
 		String key = "123";
-		cacheManager.put(layer, CacheCategory.REBUILD, key, data, geometry);
+		cacheManager.put(layer, CacheCategory.REBUILD, key, data, envelope);
 		Assert.assertEquals(data, cacheManager.get(layer, CacheCategory.REBUILD, key));
-		cacheManager.invalidate(layer, CacheCategory.REBUILD, overlappingGeometry);
+		cacheManager.invalidate(layer, CacheCategory.REBUILD, overlappingEnvelope);
 		Assert.assertNull(cacheManager.get(layer, CacheCategory.REBUILD, key));
 	}
 
@@ -146,11 +145,11 @@ public class CacheManagerServiceTest {
 	public void invalidateLayer() throws Exception {
 		String data = "data";
 		String key = "123";
-		cacheManager.put(layer, CacheCategory.REBUILD, key, data, geometry);
-		cacheManager.put(layer, CacheCategory.FEATURE, key, data, geometry);
+		cacheManager.put(layer, CacheCategory.REBUILD, key, data, envelope);
+		cacheManager.put(layer, CacheCategory.FEATURE, key, data, envelope);
 		Assert.assertEquals(data, cacheManager.get(layer, CacheCategory.REBUILD, key));
 		Assert.assertEquals(data, cacheManager.get(layer, CacheCategory.FEATURE, key));
-		cacheManager.invalidate(layer, overlappingGeometry);
+		cacheManager.invalidate(layer, overlappingEnvelope);
 		Assert.assertNull(cacheManager.get(layer, CacheCategory.REBUILD, key));
 		Assert.assertNull(cacheManager.get(layer, CacheCategory.FEATURE, key));
 	}
@@ -159,11 +158,11 @@ public class CacheManagerServiceTest {
 	public void invalidateNoIndexLayer() throws Exception {
 		String data = "data";
 		String key = "123";
-		cacheManager.put(otherLayer, CacheCategory.REBUILD, key, data, geometry);
-		cacheManager.put(otherLayer, CacheCategory.FEATURE, key, data, geometry);
+		cacheManager.put(otherLayer, CacheCategory.REBUILD, key, data, envelope);
+		cacheManager.put(otherLayer, CacheCategory.FEATURE, key, data, envelope);
 		Assert.assertEquals(data, cacheManager.get(otherLayer, CacheCategory.REBUILD, key));
 		Assert.assertEquals(data, cacheManager.get(otherLayer, CacheCategory.FEATURE, key));
-		cacheManager.invalidate(otherLayer, overlappingGeometry);
+		cacheManager.invalidate(otherLayer, overlappingEnvelope);
 		Assert.assertNull(cacheManager.get(otherLayer, CacheCategory.REBUILD, key));
 		Assert.assertNull(cacheManager.get(otherLayer, CacheCategory.FEATURE, key));
 	}

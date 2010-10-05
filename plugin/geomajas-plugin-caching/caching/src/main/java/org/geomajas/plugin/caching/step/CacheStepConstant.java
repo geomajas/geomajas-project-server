@@ -33,4 +33,16 @@ public interface CacheStepConstant {
 	String CACHE_BOUNDS_KEY = "CacheBounds-key";
 	String CACHE_BOUNDS_CONTEXT = "CacheBounds-context";
 	String CACHE_BOUNDS_USED = "CacheBounds-used";
+
+	String CACHE_FEATURES_KEY = "CacheFeatures-key";
+	String CACHE_FEATURES_CONTEXT = "CacheFeatures-context";
+	String CACHE_FEATURES_USED = "CacheFeatures-used";
+
+	String CACHE_TILE_KEY = "CacheTile-key";
+	String CACHE_TILE_CONTEXT = "CacheTile-context";
+	String CACHE_TILE_USED = "CacheTile-used";
+
+	String CACHE_TILE_CONTENT_KEY = "CacheTileContent-key";
+	String CACHE_TILE_CONTENT_CONTEXT = "CacheTileContent-context";
+	String CACHE_TILE_CONTENT_USED = "CacheTileContent-used";
 }

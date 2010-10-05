@@ -26,6 +26,7 @@ package org.geomajas.plugin.caching.step;
 import com.vividsolutions.jts.geom.Envelope;
 import org.geomajas.layer.VectorLayerService;
 import org.geomajas.plugin.caching.service.CacheCategory;
+import org.geomajas.plugin.caching.service.CacheContext;
 import org.geomajas.plugin.caching.service.CacheManagerServiceImpl;
 import org.geomajas.plugin.caching.service.DummyCacheService;
 import org.geomajas.service.GeoService;
@@ -80,7 +81,9 @@ public class GetBoundsTest {
 		Assert.assertEquals(1, cache.size());
 		String key = cache.getKey();
 		BoundsCacheContainer bcc = (BoundsCacheContainer) cache.getObject();
-		bcc.setBounds(new Envelope(0, 10, 0, 10));
+		CacheContext cc = bcc.getContext();
+		bcc = new BoundsCacheContainer(new Envelope(0, 10, 0, 10));
+		bcc.setContext(cc);
 		cache.put(key, bcc);
 
 		// get bounds again, the result should be different because we changed the cached value

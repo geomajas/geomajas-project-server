@@ -23,7 +23,7 @@
 
 package org.geomajas.plugin.caching.service;
 
-import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.Envelope;
 import org.geomajas.layer.Layer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -49,8 +49,8 @@ public class CacheManagerServiceImpl implements CacheManagerService {
 	private Map<String, Map<CacheCategory, IndexedCache>> caches =
 			new ConcurrentHashMap<String, Map<CacheCategory, IndexedCache>>();
 
-	public void put(Layer layer, CacheCategory category, String key, Object object, Geometry geometry) {
-		getCache(layer, category).put(key, object, geometry);
+	public void put(Layer layer, CacheCategory category, String key, Object object, Envelope envelope) {
+		getCache(layer, category).put(key, object, envelope);
 	}
 
 	public Object get(Layer layer, CacheCategory category, String key) {
@@ -80,16 +80,22 @@ public class CacheManagerServiceImpl implements CacheManagerService {
 		caches.remove(layer.getId());
 	}
 
-	public void invalidate(Layer layer, CacheCategory category, Geometry geometry) {
+	public void invalidate(Layer layer, CacheCategory category, Envelope envelope) {
 		IndexedCache cache = getCache(layer, category, false);
 		if (null != cache) {
-			cache.invalidate(geometry);
+			cache.invalidate(envelope);
 		}
 	}
 
-	public void invalidate(Layer layer, Geometry geometry) {
+	public void invalidate(Layer layer, Envelope envelope) {
 		for (IndexedCache cache : getCaches(layer)) {
-			cache.invalidate(geometry);
+			cache.invalidate(envelope);
+		}
+	}
+
+	public void invalidate(Layer layer) {
+		for (IndexedCache cache : getCaches(layer)) {
+			cache.clear();
 		}
 	}
 
