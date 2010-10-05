@@ -28,7 +28,7 @@ import org.geomajas.global.GeomajasException;
 import org.geomajas.internal.rendering.strategy.TiledFeatureService;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.InternalFeature;
-import org.geomajas.layer.tile.InternalTile;
+import org.geomajas.layer.pipeline.GetTileContainer;
 import org.geomajas.layer.tile.TileMetadata;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
@@ -49,7 +49,7 @@ import com.vividsolutions.jts.geom.Envelope;
  * @author Joachim Van der Auwera
  * @author Jan De Moerloose
  */
-public class GetTileTransformStep implements PipelineStep<InternalTile> {
+public class GetTileTransformStep implements PipelineStep<GetTileContainer> {
 
 	private String id;
 
@@ -64,7 +64,7 @@ public class GetTileTransformStep implements PipelineStep<InternalTile> {
 		this.id = id;
 	}
 
-	public void execute(PipelineContext context, InternalTile response) throws GeomajasException {
+	public void execute(PipelineContext context, GetTileContainer response) throws GeomajasException {
 		VectorLayer layer = context.get(PipelineCode.LAYER_KEY, VectorLayer.class);
 		TileMetadata metadata = context.get(PipelineCode.TILE_METADATA_KEY, TileMetadata.class);
 		CoordinateReferenceSystem crs = context.get(PipelineCode.CRS_KEY, CoordinateReferenceSystem.class);
@@ -73,7 +73,7 @@ public class GetTileTransformStep implements PipelineStep<InternalTile> {
 		MathTransform transform = context.get(PipelineCode.CRS_TRANSFORM_KEY, MathTransform.class);
 
 		// convert feature geometries to layer
-		for (InternalFeature feature : response.getFeatures()) {
+		for (InternalFeature feature : response.getTile().getFeatures()) {
 			if (null != feature.getGeometry()) {
 				try {
 					feature.setGeometry(JTS.transform(feature.getGeometry(), transform));
@@ -86,10 +86,10 @@ public class GetTileTransformStep implements PipelineStep<InternalTile> {
 		// Determine the maximum tile extent
 		Envelope maxTileExtent = context.get(PipelineCode.TILE_MAX_EXTENT_KEY, Envelope.class);
 		// fill the tiles
-		tiledFeatureService.fillTile(response, maxTileExtent);
+		tiledFeatureService.fillTile(response.getTile(), maxTileExtent);
 
 		// clipping of features in tile
 		Coordinate panOrigin = new Coordinate(metadata.getPanOrigin().getX(), metadata.getPanOrigin().getY());
-		tiledFeatureService.clipTile(response, layer, metadata.getCode(), metadata.getScale(), panOrigin);
+		tiledFeatureService.clipTile(response.getTile(), layer, metadata.getCode(), metadata.getScale(), panOrigin);
 	}
 }

@@ -36,6 +36,7 @@ import org.geomajas.layer.VectorLayerService;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.layer.pipeline.GetFeaturesContainer;
+import org.geomajas.layer.pipeline.GetTileContainer;
 import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.layer.tile.TileMetadata;
 import org.geomajas.security.GeomajasSecurityException;
@@ -174,11 +175,12 @@ public class VectorLayerServiceImpl implements VectorLayerService {
 			Envelope layerExtent = dtoConverterService.toInternal(layer.getLayerInfo().getMaxExtent());
 			Envelope tileExtent = JTS.transform(layerExtent, layerToMap);
 			context.put(PipelineCode.TILE_MAX_EXTENT_KEY, tileExtent);
-			InternalTile response;
-			response = new InternalTileImpl(tileMetadata.getCode(), tileExtent, tileMetadata.getScale());
+			InternalTile tile = new InternalTileImpl(tileMetadata.getCode(), tileExtent, tileMetadata.getScale());
+			GetTileContainer response = new GetTileContainer();
+			response.setTile(tile);
 			pipelineService.execute(PipelineCode.PIPELINE_GET_VECTOR_TILE, layerId, context, response);
 			log.debug("getTile response InternalTile {}", response);
-			return response;
+			return response.getTile();
 		} catch (TransformException e) {
 			throw new GeomajasException(ExceptionCode.CRS_TRANSFORMATION_NOT_POSSIBLE, e);
 		}

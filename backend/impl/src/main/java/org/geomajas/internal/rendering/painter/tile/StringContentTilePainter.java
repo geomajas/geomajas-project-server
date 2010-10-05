@@ -200,7 +200,7 @@ public class StringContentTilePainter implements TilePainter {
 				} catch (RenderException e) {
 					log.error("Unable to write this tile's feature fragment", e);
 				}
-				((InternalTileImpl) tile).setFeatureContent(writer.toString());
+				tile.setFeatureContent(writer.toString());
 			}
 
 			// Create the SVG / VML label fragment:
@@ -214,7 +214,7 @@ public class StringContentTilePainter implements TilePainter {
 				} catch (RenderException e) {
 					log.error("Unable to write this tile's label fragment", e);
 				}
-				((InternalTileImpl) tile).setLabelContent(writer.toString());
+				tile.setLabelContent(writer.toString());
 			}
 			return tile;
 		}

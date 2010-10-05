@@ -27,7 +27,7 @@ import com.vividsolutions.jts.geom.Coordinate;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.internal.rendering.painter.tile.StringContentTilePainter;
 import org.geomajas.layer.VectorLayer;
-import org.geomajas.layer.tile.InternalTile;
+import org.geomajas.layer.pipeline.GetTileContainer;
 import org.geomajas.layer.tile.TileMetadata;
 import org.geomajas.layer.tile.VectorTile;
 import org.geomajas.rendering.painter.tile.TilePainter;
@@ -43,7 +43,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  *
  * @author Joachim Van der Auwera
  */
-public class GetTileStringContentStep implements PipelineStep<InternalTile> {
+public class GetTileStringContentStep implements PipelineStep<GetTileContainer> {
 
 	private String id;
 
@@ -61,18 +61,18 @@ public class GetTileStringContentStep implements PipelineStep<InternalTile> {
 		this.id = id;
 	}
 
-	public void execute(PipelineContext context, InternalTile response) throws GeomajasException {
-		if (null == response.getFeatureContent()) {
+	public void execute(PipelineContext context, GetTileContainer response) throws GeomajasException {
+		if (null == response.getTile().getFeatureContent()) {
 			VectorLayer layer = context.get(PipelineCode.LAYER_KEY, VectorLayer.class);
 			TileMetadata metadata = context.get(PipelineCode.TILE_METADATA_KEY, TileMetadata.class);
 
-			response.setContentType(VectorTile.VectorTileContentType.STRING_CONTENT);
+			response.getTile().setContentType(VectorTile.VectorTileContentType.STRING_CONTENT);
 			Coordinate panOrigin = new Coordinate(metadata.getPanOrigin().getX(), metadata.getPanOrigin().getY());
 			TilePainter tilePainter = new StringContentTilePainter(layer, metadata.getStyleInfo(), metadata
 					.getRenderer(), metadata.getScale(), panOrigin, geoService, textService);
 			tilePainter.setPaintGeometries(metadata.isPaintGeometries());
 			tilePainter.setPaintLabels(metadata.isPaintLabels());
-			tilePainter.paint(response);
+			tilePainter.paint(response.getTile());
 		}
 	}
 }

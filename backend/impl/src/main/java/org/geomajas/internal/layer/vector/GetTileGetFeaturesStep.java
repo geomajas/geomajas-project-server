@@ -28,7 +28,7 @@ import org.geomajas.internal.rendering.strategy.TiledFeatureService;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.VectorLayerService;
 import org.geomajas.layer.feature.InternalFeature;
-import org.geomajas.layer.tile.InternalTile;
+import org.geomajas.layer.pipeline.GetTileContainer;
 import org.geomajas.layer.tile.TileMetadata;
 import org.geomajas.service.GeoService;
 import org.geomajas.service.pipeline.PipelineCode;
@@ -44,7 +44,7 @@ import java.util.List;
  *
  * @author Joachim Van der Auwera
  */
-public class GetTileGetFeaturesStep implements PipelineStep<InternalTile> {
+public class GetTileGetFeaturesStep implements PipelineStep<GetTileContainer> {
 
 	private String id;
 
@@ -65,8 +65,8 @@ public class GetTileGetFeaturesStep implements PipelineStep<InternalTile> {
 		this.id = id;
 	}
 
-	public void execute(PipelineContext context, InternalTile response) throws GeomajasException {
-		if (null == response.getFeatures()) {
+	public void execute(PipelineContext context, GetTileContainer response) throws GeomajasException {
+		if (null == response.getTile().getFeatures()) {
 			VectorLayer layer = context.get(PipelineCode.LAYER_KEY, VectorLayer.class);
 			TileMetadata metadata = context.get(PipelineCode.TILE_METADATA_KEY, TileMetadata.class);
 			Filter filter = context.get(PipelineCode.FILTER_KEY, Filter.class);
@@ -78,7 +78,7 @@ public class GetTileGetFeaturesStep implements PipelineStep<InternalTile> {
 									VectorLayerService.FEATURE_INCLUDE_STYLE |
 									VectorLayerService.FEATURE_INCLUDE_LABEL);
 			// Put them all in the tile to make them available to the next step
-			response.setFeatures(features);
+			response.getTile().setFeatures(features);
 		}
 	}
 }

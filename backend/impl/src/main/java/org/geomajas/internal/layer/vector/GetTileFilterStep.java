@@ -26,7 +26,7 @@ package org.geomajas.internal.layer.vector;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.VectorLayer;
-import org.geomajas.layer.tile.InternalTile;
+import org.geomajas.layer.pipeline.GetTileContainer;
 import org.geomajas.layer.tile.TileMetadata;
 import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
@@ -48,7 +48,7 @@ import com.vividsolutions.jts.geom.Envelope;
  *
  * @author Joachim Van der Auwera
  */
-public class GetTileFilterStep implements PipelineStep<InternalTile> {
+public class GetTileFilterStep implements PipelineStep<GetTileContainer> {
 
 	private String id;
 
@@ -66,7 +66,7 @@ public class GetTileFilterStep implements PipelineStep<InternalTile> {
 		this.id = id;
 	}
 
-	public void execute(PipelineContext context, InternalTile response) throws GeomajasException {
+	public void execute(PipelineContext context, GetTileContainer response) throws GeomajasException {
 		VectorLayer layer = context.get(PipelineCode.LAYER_KEY, VectorLayer.class);
 		TileMetadata metadata = context.get(PipelineCode.TILE_METADATA_KEY, TileMetadata.class);
 		MathTransform maptoLayer;
@@ -83,7 +83,7 @@ public class GetTileFilterStep implements PipelineStep<InternalTile> {
 		// TODO: for non-affine transforms this is not accurate enough !
 		Envelope bounds;
 		try {
-			bounds = JTS.transform(response.getBounds(), maptoLayer);
+			bounds = JTS.transform(response.getTile().getBounds(), maptoLayer);
 			Filter filter = filterService.createBboxFilter(epsg, bounds, geomName);
 			if (null != metadata.getFilter()) {
 				filter = filterService.createAndFilter(filterService.parseFilter(metadata.getFilter()), filter);

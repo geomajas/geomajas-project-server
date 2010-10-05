@@ -23,7 +23,6 @@
 
 package org.geomajas.internal.rendering.painter.tile;
 
-import org.geomajas.internal.layer.tile.InternalTileImpl;
 import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.layer.tile.VectorTile.VectorTileContentType;
 import org.geomajas.rendering.RenderException;
@@ -85,12 +84,12 @@ public class UrlContentTilePainter implements TilePainter {
 				if (paintGeometries) {
 					urlBuilder.paintGeometries(paintGeometries);
 					urlBuilder.paintLabels(false);
-					((InternalTileImpl) tile).setFeatureContent(urlBuilder.getImageUrl());
+					tile.setFeatureContent(urlBuilder.getImageUrl());
 				}
 				if (paintLabels) {
 					urlBuilder.paintGeometries(false);
 					urlBuilder.paintLabels(paintLabels);
-					((InternalTileImpl) tile).setLabelContent(urlBuilder.getImageUrl());
+					tile.setLabelContent(urlBuilder.getImageUrl());
 				}
 				return tile;
 			}

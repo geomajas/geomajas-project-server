@@ -23,57 +23,35 @@
 
 package org.geomajas.layer.pipeline;
 
-import com.vividsolutions.jts.geom.Envelope;
 import org.geomajas.global.Api;
-import org.geomajas.layer.feature.InternalFeature;
-
-import java.util.List;
+import org.geomajas.layer.tile.InternalTile;
 
 /**
- * Container for result of getFeatures in {@link org.geomajas.layer.VectorLayerService}.
+ * Container for result of getTile in {@link org.geomajas.layer.VectorLayerService}.
  *
  * @author Joachim Van der Auwera
  * @since 1.8.0
  */
 @Api(allMethods = true)
-public class GetFeaturesContainer {
+public class GetTileContainer {
 
-	private List<InternalFeature> features;
-	private Envelope bounds;
+	private InternalTile tile;
 
 	/**
-	 * Get the features.
+	 * Get the tile.
 	 *
-	 * @return list of features or null when not set yet.
+	 * @return tile
 	 */
-	public List<InternalFeature> getFeatures() {
-		return features;
+	public InternalTile getTile() {
+		return tile;
 	}
 
 	/**
-	 * Set the list of features.
+	 * Set the tile.
 	 *
-	 * @param features features
+	 * @param tile tile
 	 */
-	public void setFeatures(List<InternalFeature> features) {
-		this.features = features;
-	}
-
-	/**
-	 * Get area covered by these features.
-	 *
-	 * @return bounds of the features
-	 */
-	public Envelope getBounds() {
-		return bounds;
-	}
-
-	/**
-	 * Set the area covered by the features.
-	 *
-	 * @param bounds bounds for the features
-	 */
-	public void setBounds(Envelope bounds) {
-		this.bounds = bounds;
+	public void setTile(InternalTile tile) {
+		this.tile = tile;
 	}
 }
