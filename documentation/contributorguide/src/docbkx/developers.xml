@@ -63,9 +63,15 @@ mvn install</programlisting>
       </listitem>
 
       <listitem>
+        <para>-DskipGwt: skip the GWT compilation phases. Useful when you just
+        want a quick compile or don't want/need the compile to
+        JavaScript.</para>
+      </listitem>
+
+      <listitem>
         <para><code>-Dfull-build</code>: from the root project, this enables
         inclusion of the build tools and documentation in the build. This is
-        actually enabled by default (to desable use
+        actually enabled by default (to disable use
         <code>-Dhudson</code>"),</para>
       </listitem>
 
@@ -99,7 +105,7 @@ mvn install</programlisting>
 
       <para>For development using the dojo face, apart from using the
       "-DskipShrink" setting mentioned higher, you may also want to configure
-      the ResourceController to try to directly read the javascript files from
+      the ResourceController to try to directly read the JavaScript files from
       disk before looking at the classpath (it also changes the cache
       headers). This allows a simple refresh in the browser to load the
       changed versions. You can configure this using a init-param for the
@@ -136,7 +142,7 @@ mvn install</programlisting>
       <para>For the dojo face, you can run the examples using (when in the
       geomajas-dojo-example directory) <programlisting>mvn jetty:run</programlisting></para>
 
-      <para>For the gwt face, you have two options. Once in the
+      <para>For the gwt face, you have three options. Once in the
       geomajas-gwt-simple directory, you can run the application in
       development mode using <programlisting>mvn gwt:run</programlisting></para>
 
@@ -145,6 +151,9 @@ mvn install</programlisting>
         not properly handle excluded dependencies (the "provided" scope), this
         can fail on some systems.</para>
       </note>
+
+      <para>You can also use jetty to run the normally built
+      application<programlisting>mvn jetty:run</programlisting></para>
 
       <para>Alternatively you can run the actual war using <programlisting>mvn jetty:run-war</programlisting><note>
           <para>It can be advisable to run "mvn clean" between "gwt:run" and

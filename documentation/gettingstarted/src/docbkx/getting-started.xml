@@ -146,7 +146,7 @@
 
         <para>You now have several options to actually test your application.
         First of all, you could compile it, and create a build. This can be
-        done with the following command:</para>
+        done using the following command:</para>
 
         <example>
           <title>Creating a build from your project</title>
@@ -169,8 +169,7 @@
         <example>
           <title>Create a build, then run it</title>
 
-          <para><programlisting>mvn install
-mvn jetty:run</programlisting></para>
+          <para><programlisting>mvn jetty:run</programlisting></para>
         </example>
 
         <para>The "jetty:run" variant will immediately start a jetty server
@@ -189,8 +188,7 @@ mvn jetty:run</programlisting></para>
         <example>
           <title>Run the template application in development mode</title>
 
-          <para><programlisting>mvn install
-mvn gwt:run</programlisting></para>
+          <para><programlisting>mvn gwt:run</programlisting></para>
         </example>
 
         <para>The "gwt:run" option allows you to start the application in GWT
@@ -206,19 +204,19 @@ mvn gwt:run</programlisting></para>
     <title>Eclipse</title>
 
     <para>The combination of Eclipse, maven and GWT is not quite trivial,
-    especially for complex multimodule projects like Geomajas. There are 2
+    especially for complex multi-module projects like Geomajas. There are 2
     approaches possible for integrating eclipse with maven:</para>
 
     <itemizedlist>
       <listitem>
-        <para>Eclipse plugin for maven, avoiding the use of the maven
+        <para>Eclipse plug-in for maven, avoiding the use of the maven
         command-line interface: m2eclipse (<ulink
         url="http://m2eclipse.sonatype.org/">http://m2eclipse.sonatype.org/</ulink>)
         is the most mature project here</para>
       </listitem>
 
       <listitem>
-        <para>Maven plugin to generate eclipse project configurations:
+        <para>Maven plug-in to generate eclipse project configurations:
         maven-eclipse-plugin (<ulink
         url="http://maven.apache.org/plugins/maven-eclipse-plugin/">http://maven.apache.org/plugins/maven-eclipse-plugin/</ulink>)</para>
       </listitem>
@@ -246,7 +244,7 @@ mvn gwt:run</programlisting></para>
       </listitem>
     </itemizedlist>
 
-    <para>For a functional Geomajas setup, the following Eclipse plugins
+    <para>For a functional Geomajas setup, the following Eclipse plug-ins
     should be installed on a fresh Galileo download (<ulink
     url="http://www.eclipse.org/downloads/">http://www.eclipse.org/downloads/</ulink>):</para>
 
@@ -281,7 +279,7 @@ mvn gwt:run</programlisting></para>
       <title>Combining Eclipse WTP with the maven GWT plugin (recommended
       setup)</title>
 
-      <para>There is a classpath issue with the Google Plugin for Eclipse
+      <para>There is a classpath issue with the Google Plug-in for Eclipse
       (GPE) that prevents us from using it in a reliable way when there are
       multiple versions of artifacts in the maven dependency tree:<ulink
       url="???">
@@ -294,15 +292,15 @@ mvn gwt:run</programlisting></para>
       require explicit user interaction is not available. (see <ulink
       url="???">http://googlewebtoolkit.blogspot.com/2010/08/how-to-use-google-plugin-for-eclipse.html</ulink>).</para>
 
-      <para>The most stable solution - in terms of classpath and ease-of-use -
-      we have found so far is to not use GPE at all but instead start the
-      hosted mode via the GWT maven plugin (see <ulink
+      <para>The most stable solution - in terms of class path and ease-of-use
+      - we have found so far is to not use GPE at all but instead start the
+      hosted mode via the GWT maven plug-in (see <ulink
       url="???">http://mojo.codehaus.org/gwt-maven-plugin/</ulink>). The
-      following blog shows how to configure the plugin: <ulink
+      following blog shows how to configure the plug-in: <ulink
       url="???">http://jvminside.blogspot.com/2010/02/efficient-gwt-development-with-eclipse.html</ulink>.
       This requires an additional bit of maven configuration, which has been
       put inside the m2e profile of the GWT archetype. This profile will be
-      automatically activated when the m2eclipse plugin is present.</para>
+      automatically activated when the m2eclipse plug-in is present.</para>
 
       <para>Using this profile, the following actions have to be performed to
       import, run and debug a project in Eclipse:</para>
@@ -341,8 +339,8 @@ mvn gwt:run</programlisting></para>
         </listitem>
 
         <listitem>
-          <para>Open the debug configurations. There should be 4 configurations
-          available: 3 maven configurations and 1 remote Java
+          <para>Open the debug configurations. There should be 4
+          configurations available: 3 maven configurations and 1 remote Java
           application:</para>
 
           <figure>
@@ -395,7 +393,7 @@ mvn gwt:run</programlisting></para>
           <para>To debug the project, 2 additional processes have to be
           started. First run the DEBUG GWT configuration in debug mode. This
           process will start up a console and wait for the Java remote
-          application proces to connect.</para>
+          application process to connect.</para>
         </listitem>
 
         <listitem>
@@ -408,10 +406,10 @@ mvn gwt:run</programlisting></para>
     </section>
 
     <section>
-      <title>Using the Google Plugin for Eclipse (possible classpath
+      <title>Using the Google Plug-in for Eclipse (possible class path
       issues)</title>
 
-      <para>To develop with the Google Plugin for Eclipse, the following
+      <para>To develop with the Google Plug-in for Eclipse, the following
       actions have to be taken:</para>
 
       <para><itemizedlist>
@@ -436,9 +434,9 @@ mvn gwt:run</programlisting></para>
             <para>You can now use the project wizard to import the project as
             a Maven project. The embedded maven instance will automatically
             run the process-resources goal and generate and import the Eclipse
-            project configuration. Because the m2eclipse plugin hides all
+            project configuration. Because the m2eclipse plug-in hides all
             resources from the eclipse source path, a conflict with the GWT
-            plugin arises. The GWT plugin will look for module files in the
+            plug-in arises. The GWT plug-in will look for module files in the
             source path and therefore cannot find them. To solve this, you
             have to manually remove the exclusion filters for the
             src/main/resources path and include a filter for the gwt module
@@ -508,13 +506,13 @@ mvn gwt:run</programlisting></para>
           </listitem>
 
           <listitem>
-            <para>With the GWT plugin , possible classpath issues may result
+            <para>With the GWT plug-in , possible class path issues may result
             because of incompatibilities between the m2eclipse maven container
-            and the GWT plugin. One of the issues is that Spring component
+            and the GWT plug-in. One of the issues is that Spring component
             scanning will only work when the jar to be scanned has been
             preloaded before the scanning is done. We have found a workaround
             for this issue by adding a list of classes to preload to context
-            listener in the web.xml: configuration. Whenever you use a plugin
+            listener in the web.xml: configuration. Whenever you use a plug-in
             that needs scanning, at least one class of this module should be
             added to the list:</para>
 
@@ -535,7 +533,7 @@ mvn gwt:run</programlisting></para>
           </listitem>
         </itemizedlist></para>
 
-      <para> </para>
+      <para></para>
     </section>
   </section>
 

@@ -34,6 +34,12 @@
 	<inherits name="com.smartclient.theme.graphite.GraphiteResources"/>
 
 	<extend-property name="locale" values="nl"/>
-	
+
+	<!-- uncomment following lines for faster compile during development -->
+	<!--
+	<set-property name="user.agent" value="gecko1_8" />
+	<set-property name="locale" value="default" />
+	-->
+
     <entry-point class="org.geomajas.example.gwt.client.GeomajasSamples"/>
 </module>

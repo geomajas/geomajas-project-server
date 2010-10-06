@@ -49,8 +49,10 @@ public class InfinispanCacheFactory implements CacheFactory {
 
 	/**
 	 * Set the location of the infinispan.
+	 * <p/>
+	 * This location is first searched on the classpath and if that fails, as a absolute path.
 	 *
-	 * @param configurationFile
+	 * @param configurationFile configuration file
 	 */
 	public void setConfigurationFile(String configurationFile) {
 		this.configurationFile = configurationFile;

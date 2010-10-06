@@ -13,7 +13,6 @@
 			classpath:org/geomajas/example/gwt/clientcfg/**/*.xml
 
 			classpath:org/geomajas/plugin/caching/DefaultCachedPipelines.xml
-
        </param-value>
     </context-param>
 
