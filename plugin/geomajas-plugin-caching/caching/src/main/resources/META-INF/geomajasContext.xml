@@ -175,12 +175,19 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 
 
 	<bean class="org.geomajas.plugin.caching.service.CacheIndexInfo">
+		<!-- @todo temporary as we don't have a working spatial cache yet -->
+		<property name="cacheIndexFactory">
+			<bean class="org.geomajas.plugin.caching.index.NoCacheIndexFactory" />
+		</property>
+	</bean>
+
+	<bean class="org.geomajas.plugin.caching.service.CacheIndexInfo">
 		<!-- no index on bounds (there is no Geometry/Envelope anyway) -->
 		<property name="category"><util:constant static-field="org.geomajas.plugin.caching.service.CacheCategory.BOUNDS"/></property>
 		<property name="cacheIndexFactory">
 			<bean class="org.geomajas.plugin.caching.index.NoCacheIndexFactory" />
 		</property>
 	</bean>
-	
+
 </beans>
 
