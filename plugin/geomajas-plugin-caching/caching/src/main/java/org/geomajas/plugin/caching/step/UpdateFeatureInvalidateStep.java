@@ -65,20 +65,21 @@ public class UpdateFeatureInvalidateStep implements PipelineStep {
 
 		// invalidate the area of the old feature
 		InternalFeature oldFeature = context.getOptional(PipelineCode.OLD_FEATURE_KEY, InternalFeature.class);
-		Geometry oldGeometry = oldFeature.getGeometry();
-		if (null != oldGeometry) {
-			// need to transform this to layer coordinates
-			MathTransform mapToLayer = context.get(PipelineCode.CRS_TRANSFORM_KEY, MathTransform.class);
+		if (null != oldFeature) {
+			Geometry oldGeometry = oldFeature.getGeometry();
+			if (null != oldGeometry) {
+				// need to transform this to layer coordinates
+				MathTransform mapToLayer = context.get(PipelineCode.CRS_TRANSFORM_KEY, MathTransform.class);
 
-			// and invalidate
-			try {
-				oldGeometry = JTS.transform(oldFeature.getGeometry(), mapToLayer);
-				cacheManager.invalidate(layer, oldGeometry.getEnvelopeInternal());
-			} catch (TransformException te) {
-				log.error("CRS transformation problem, cache entirely invalidated:" + te.getMessage(), te);
-				cacheManager.invalidate(layer);
+				// and invalidate
+				try {
+					oldGeometry = JTS.transform(oldFeature.getGeometry(), mapToLayer);
+					cacheManager.invalidate(layer, oldGeometry.getEnvelopeInternal());
+				} catch (TransformException te) {
+					log.error("CRS transformation problem, cache entirely invalidated:" + te.getMessage(), te);
+					cacheManager.invalidate(layer);
+				}
 			}
-
 		}
 
 		// invalidate are for new feature
