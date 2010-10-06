@@ -140,11 +140,28 @@
 				</configuration>
 			</plugin>
 
+			<!-- Run the application using "mvn jetty:run" -->
+			<plugin>
+				<groupId>org.mortbay.jetty</groupId>
+				<artifactId>maven-jetty-plugin</artifactId>
+				<version>6.1.20</version>
+				<configuration>
+					<webAppConfig>
+						<contextPath>/</contextPath>
+						<baseResource implementation="org.mortbay.resource.ResourceCollection">
+							<!-- need both the webbapp dir and location where GWT puts stuff -->
+							<resourcesAsCSV>src/main/webapp,${project.build.directory}/${project.build.finalName}</resourcesAsCSV>
+						</baseResource>
+					</webAppConfig>
+					<reload>manual</reload>
+				</configuration>
+			</plugin>			
 
+			<!-- some default config, added to in profiles -->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>gwt-maven-plugin</artifactId>
-				<version>1.2</version>
+				<version>1.2-CPFIX</version>
 				<configuration>
 					<inplace>true</inplace>
 					<disableCastChecking>true</disableCastChecking>
@@ -152,7 +169,6 @@
 					<extraJvmArgs>-Xmx512M -Xss1024k</extraJvmArgs>
 				</configuration>
 			</plugin>
-
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -171,30 +187,13 @@
 			</activation>
 			<build>
 				<plugins>
-					<!-- Run the application using "mvn jetty:run" -->
-					<plugin>
-						<groupId>org.mortbay.jetty</groupId>
-						<artifactId>maven-jetty-plugin</artifactId>
-						<version>6.1.20</version>
-						<configuration>
-							<webAppSourceDirectory>${project.build.directory}/${project.build.finalName}</webAppSourceDirectory>
-							<webAppConfig>
-								<contextPath>/</contextPath>
-							</webAppConfig>
-							<reload>manual</reload>
-						</configuration>
-					</plugin>
-
 					<plugin>
 						<groupId>org.codehaus.mojo</groupId>
 						<artifactId>gwt-maven-plugin</artifactId>
 						<configuration>
-							<inplace>true</inplace>
 							<module>${package}.GeomajasEntryPoint</module>
 							<runTarget>index.html</runTarget>
-							<webappDirectory>${basedir}/src/main/webapp</webappDirectory>
 							<hostedWebapp>${project.build.directory}/${project.build.finalName}</hostedWebapp>
-							<warSourceDirectory>${project.build.directory}/${project.build.finalName}</warSourceDirectory>
 						</configuration>
 						<executions>
 							<execution>
@@ -233,9 +232,7 @@
 							<debugPort>9008</debugPort>
 							<extra>${project.build.directory}/gwt-extra</extra>
 							<gen>${project.build.directory}/gwt-gen</gen>
-							<webappDirectory>${basedir}/src/main/webapp</webappDirectory>
 							<hostedWebapp>${project.build.directory}/generated-web-resources/gwt</hostedWebapp>
-							<warSourceDirectory>${project.build.directory}/generated-web-resources/gwt</warSourceDirectory>
 						</configuration>
 						<executions>
 							<execution>
