@@ -52,6 +52,7 @@ public class RealTestRecorder implements TestRecorder {
 		}
 		if (null != message) {
 			list.add(message);
+			log.debug("[{}] {}", group, message);
 		}
 	}
 

@@ -24,6 +24,8 @@
 package org.geomajas.plugin.caching.service;
 
 import com.vividsolutions.jts.geom.Envelope;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -33,6 +35,8 @@ import java.util.List;
  * @author Joachim Van der Auwera
  */
 public class IndexedCache {
+
+	private Logger log = LoggerFactory.getLogger(IndexedCache.class);
 
 	private CacheService cache;
 	private CacheIndexService index;
@@ -88,6 +92,7 @@ public class IndexedCache {
 	 */
 	public void drop() {
 		cache.drop();
+		index.drop();
 	}
 
 	/**
@@ -98,8 +103,10 @@ public class IndexedCache {
 	public void invalidate(Envelope envelope) {
 		List<String> keys = index.getOverlappingKeys(envelope);
 		if (CacheIndexService.ALL_KEYS == keys) {
+			log.debug("clear all keys from cache");
 			clear();
 		} else {
+			log.debug("invalidate keys {}", keys);
 			for (String key : keys) {
 				remove(key);
 			}

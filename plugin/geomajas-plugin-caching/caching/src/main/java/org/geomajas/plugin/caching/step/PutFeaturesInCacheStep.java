@@ -25,6 +25,7 @@ package org.geomajas.plugin.caching.step;
 
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.pipeline.GetFeaturesContainer;
+import org.geomajas.plugin.caching.service.CacheCategory;
 import org.geomajas.service.pipeline.PipelineContext;
 
 /**
@@ -35,8 +36,8 @@ import org.geomajas.service.pipeline.PipelineContext;
 public class PutFeaturesInCacheStep extends AbstractPutInCacheStep<GetFeaturesContainer> {
 
 	public void execute(PipelineContext pipelineContext, GetFeaturesContainer result) throws GeomajasException {
-		execute(pipelineContext, CacheStepConstant.CACHE_FEATURES_KEY, CacheStepConstant.CACHE_FEATURES_CONTEXT,
-				CacheStepConstant.CACHE_FEATURES_USED,
+		execute(pipelineContext, CacheCategory.FEATURE, CacheStepConstant.CACHE_FEATURES_KEY,
+				CacheStepConstant.CACHE_FEATURES_CONTEXT, CacheStepConstant.CACHE_FEATURES_USED,
 				new FeaturesCacheContainer(result.getFeatures(), result.getBounds()), result.getBounds());
 	}
 }

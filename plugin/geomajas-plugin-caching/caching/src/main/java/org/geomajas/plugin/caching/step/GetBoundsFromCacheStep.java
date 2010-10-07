@@ -30,6 +30,7 @@ import org.geomajas.plugin.caching.service.CacheCategory;
 import org.geomajas.plugin.caching.service.CacheContext;
 import org.geomajas.plugin.caching.service.CacheKeyService;
 import org.geomajas.plugin.caching.service.CacheManagerService;
+import org.geomajas.service.TestRecorder;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
 import org.geomajas.service.pipeline.PipelineStep;
@@ -49,6 +50,9 @@ public class GetBoundsFromCacheStep implements PipelineStep<GetBoundsContainer> 
 
 	@Autowired
 	private CacheKeyService cacheKeyService;
+
+	@Autowired
+	private TestRecorder recorder;
 
 	private String id;
 
@@ -74,6 +78,7 @@ public class GetBoundsFromCacheStep implements PipelineStep<GetBoundsContainer> 
 				// found item in cache
 				getBoundsContainer.setEnvelope(cc.getBounds());
 				pipelineContext.put(CacheStepConstant.CACHE_BOUNDS_USED, true);
+				recorder.record(CacheCategory.BOUNDS, "Got item from cache");
 				break;
 			} else {
 				cacheKey = cacheKeyService.makeUnique(cacheKey);

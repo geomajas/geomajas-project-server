@@ -26,6 +26,7 @@ package org.geomajas.plugin.caching.step;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.pipeline.GetTileContainer;
 import org.geomajas.layer.tile.InternalTile;
+import org.geomajas.plugin.caching.service.CacheCategory;
 import org.geomajas.service.pipeline.PipelineContext;
 
 /**
@@ -37,7 +38,8 @@ public class PutTileInCacheStep extends AbstractPutInCacheStep<GetTileContainer>
 
 	public void execute(PipelineContext pipelineContext, GetTileContainer result) throws GeomajasException {
 		InternalTile tile = result.getTile();
-		execute(pipelineContext, CacheStepConstant.CACHE_TILE_KEY, CacheStepConstant.CACHE_TILE_CONTEXT,
-				CacheStepConstant.CACHE_TILE_USED, new TileCacheContainer(tile), tile.getBounds());
+		execute(pipelineContext, CacheCategory.TILE, CacheStepConstant.CACHE_TILE_KEY,
+				CacheStepConstant.CACHE_TILE_CONTEXT, CacheStepConstant.CACHE_TILE_USED,
+				new TileCacheContainer(tile), tile.getBounds());
 	}
 }

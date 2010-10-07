@@ -31,6 +31,7 @@ import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.plugin.caching.service.CacheManagerService;
 import org.geomajas.security.GeomajasSecurityException;
 import org.geomajas.security.SecurityContext;
+import org.geomajas.service.TestRecorder;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
 import org.geomajas.service.pipeline.PipelineStep;
@@ -48,6 +49,9 @@ public class DeleteFeatureInvalidateStep implements PipelineStep {
 
 	@Autowired
 	private SecurityContext securityContext;
+
+	@Autowired
+	private TestRecorder recorder;
 
 	private String id;
 
@@ -83,6 +87,7 @@ public class DeleteFeatureInvalidateStep implements PipelineStep {
 						//}
 						Geometry geometry = layer.getFeatureModel().getGeometry(featureObj);
 						if (null != geometry) {
+							recorder.record("layer", "Invalidate geometry for deleted feature");
 							cacheManager.invalidate(layer, geometry.getEnvelopeInternal());
 						}
 					}

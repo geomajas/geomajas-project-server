@@ -29,6 +29,7 @@ import org.geomajas.layer.VectorLayer;
 import org.geomajas.plugin.caching.service.CacheCategory;
 import org.geomajas.plugin.caching.service.CacheContext;
 import org.geomajas.plugin.caching.service.CacheManagerService;
+import org.geomajas.service.TestRecorder;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
 import org.geomajas.service.pipeline.PipelineStep;
@@ -37,13 +38,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 /**
  * Put bounds in cache for later retrieval.
  *
- * @param <TYPE> type of response object for pipeline.
  * @author Joachim Van der Auwera
+ * @param <TYPE> type of response object for pipeline.
  */
 public abstract class AbstractPutInCacheStep<TYPE> implements PipelineStep<TYPE> {
 
 	@Autowired
 	private CacheManagerService cacheManager;
+
+	@Autowired
+	private TestRecorder recorder;
 
 	private String id;
 
@@ -55,15 +59,15 @@ public abstract class AbstractPutInCacheStep<TYPE> implements PipelineStep<TYPE>
 		this.id = id;
 	}
 
-	public void execute(PipelineContext pipelineContext, String keyKey, String contextKey, String useKey,
-			CacheContainer cacheContainer, Envelope envelope)
-			throws GeomajasException {
+	public void execute(PipelineContext pipelineContext, CacheCategory category, String keyKey, String contextKey,
+			String useKey, CacheContainer cacheContainer, Envelope envelope) throws GeomajasException {
+		recorder.record(category, "Put item in cache");
 		VectorLayer layer = pipelineContext.get(PipelineCode.LAYER_KEY, VectorLayer.class);
 
 		String cacheKey = pipelineContext.get(keyKey, String.class);
 		CacheContext cacheContext = pipelineContext.get(contextKey, CacheContext.class);
 
 		cacheContainer.setContext(cacheContext);
-		cacheManager.put(layer, CacheCategory.BOUNDS, cacheKey, cacheContainer, envelope);
+		cacheManager.put(layer, category, cacheKey, cacheContainer, envelope);
 	}
 }

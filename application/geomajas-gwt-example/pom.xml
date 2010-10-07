@@ -299,7 +299,6 @@
 				<artifactId>gwt-maven-plugin</artifactId>
 				<version>1.2-CPFIX</version>
 				<configuration>
-					<inplace>true</inplace>
 					<disableCastChecking>true</disableCastChecking>
 					<disableClassMetadata>true</disableClassMetadata>
 					<extraJvmArgs>-Xmx512M -Xss1024k</extraJvmArgs>

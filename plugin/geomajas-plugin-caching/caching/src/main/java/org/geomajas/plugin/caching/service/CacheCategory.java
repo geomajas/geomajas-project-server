@@ -55,6 +55,10 @@ public class CacheCategory {
 		return name;
 	}
 
+	public String toString() {
+		return name;
+	}
+
 	@Override
 	public boolean equals(Object o) {
 		if (this == o) {

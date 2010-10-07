@@ -26,6 +26,9 @@ package org.geomajas.plugin.caching.step;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.pipeline.GetTileContainer;
 import org.geomajas.layer.tile.InternalTile;
+import org.geomajas.layer.tile.TileMetadata;
+import org.geomajas.plugin.caching.service.CacheCategory;
+import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
 
 /**
@@ -36,8 +39,15 @@ import org.geomajas.service.pipeline.PipelineContext;
 public class PutTileStringContentInCacheStep extends AbstractPutInCacheStep<GetTileContainer> {
 
 	public void execute(PipelineContext pipelineContext, GetTileContainer result) throws GeomajasException {
+		TileMetadata metadata = pipelineContext.get(PipelineCode.TILE_METADATA_KEY, TileMetadata.class);
+		CacheCategory cacheCategory = CacheCategory.SVG;
+		if (TileMetadata.PARAM_VML_RENDERER.equalsIgnoreCase(metadata.getRenderer())) {
+			cacheCategory = CacheCategory.VML;
+		}
+
 		InternalTile tile = result.getTile();
-		execute(pipelineContext, CacheStepConstant.CACHE_TILE_CONTENT_KEY, CacheStepConstant.CACHE_TILE_CONTENT_CONTEXT,
+		execute(pipelineContext, cacheCategory, CacheStepConstant.CACHE_TILE_CONTENT_KEY, 
+				CacheStepConstant.CACHE_TILE_CONTENT_CONTEXT,
 				CacheStepConstant.CACHE_TILE_CONTENT_USED,
 				new TileContentCacheContainer(tile.getFeatureContent(), tile.getLabelContent()), tile.getBounds());
 	}

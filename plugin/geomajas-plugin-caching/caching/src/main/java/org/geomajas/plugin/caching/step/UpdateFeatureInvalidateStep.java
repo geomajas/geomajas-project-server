@@ -23,11 +23,13 @@
 
 package org.geomajas.plugin.caching.step;
 
+import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.plugin.caching.service.CacheManagerService;
+import org.geomajas.service.TestRecorder;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
 import org.geomajas.service.pipeline.PipelineStep;
@@ -50,6 +52,9 @@ public class UpdateFeatureInvalidateStep implements PipelineStep {
 	@Autowired
 	private CacheManagerService cacheManager;
 
+	@Autowired
+	private TestRecorder recorder;
+
 	private String id;
 
 	public String getId() {
@@ -61,6 +66,7 @@ public class UpdateFeatureInvalidateStep implements PipelineStep {
 	}
 
 	public void execute(PipelineContext context, Object result) throws GeomajasException {
+		log.debug("UpdateFeatureInvalidateStep start");
 		VectorLayer layer = context.get(PipelineCode.LAYER_KEY, VectorLayer.class);
 
 		// invalidate the area of the old feature
@@ -73,8 +79,11 @@ public class UpdateFeatureInvalidateStep implements PipelineStep {
 
 				// and invalidate
 				try {
+					recorder.record("layer", "Invalidate geometry for old version of feature");
 					oldGeometry = JTS.transform(oldFeature.getGeometry(), mapToLayer);
-					cacheManager.invalidate(layer, oldGeometry.getEnvelopeInternal());
+					Envelope oldEnvelope = oldGeometry.getEnvelopeInternal();
+					log.debug("invalidate old feature area {}", oldEnvelope);
+					cacheManager.invalidate(layer, oldEnvelope);
 				} catch (TransformException te) {
 					log.error("CRS transformation problem, cache entirely invalidated:" + te.getMessage(), te);
 					cacheManager.invalidate(layer);
@@ -82,11 +91,14 @@ public class UpdateFeatureInvalidateStep implements PipelineStep {
 			}
 		}
 
-		// invalidate are for new feature
+		// invalidate area for new feature
 		InternalFeature feature = context.get(PipelineCode.FEATURE_KEY, InternalFeature.class);
 		Geometry geometry = feature.getGeometry();
 		if (null != geometry) {
-			cacheManager.invalidate(layer, geometry.getEnvelopeInternal());
+			recorder.record("layer", "Invalidate geometry for new feature");
+			Envelope envelope = geometry.getEnvelopeInternal();
+			log.debug("invalidate new feature area {}", envelope);
+			cacheManager.invalidate(layer, envelope);
 		}
 	}
 }

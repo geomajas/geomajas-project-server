@@ -30,6 +30,7 @@ import org.geomajas.plugin.caching.service.CacheCategory;
 import org.geomajas.plugin.caching.service.CacheContext;
 import org.geomajas.plugin.caching.service.CacheKeyService;
 import org.geomajas.plugin.caching.service.CacheManagerService;
+import org.geomajas.service.TestRecorder;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
 import org.geomajas.service.pipeline.PipelineStep;
@@ -51,6 +52,9 @@ public class GetTileFromCacheStep implements PipelineStep<GetTileContainer> {
 
 	@Autowired
 	private CacheKeyService cacheKeyService;
+
+	@Autowired
+	private TestRecorder recorder;
 
 	private String id;
 
@@ -75,6 +79,7 @@ public class GetTileFromCacheStep implements PipelineStep<GetTileContainer> {
 				// found item in cache
 				result.setTile(cc.getTile());
 				pipelineContext.put(CacheStepConstant.CACHE_TILE_USED, true);
+				recorder.record(CacheCategory.TILE, "Got item from cache");
 				break;
 			} else {
 				cacheKey = cacheKeyService.makeUnique(cacheKey);
