@@ -13,6 +13,9 @@
 			classpath:org/geomajas/example/gwt/clientcfg/**/*.xml
 
 			classpath:org/geomajas/plugin/caching/DefaultCachedPipelines.xml
+			<!--
+			classpath:org/geomajas/spring/testRecorder.xml
+			-->
        </param-value>
     </context-param>
 

@@ -7,25 +7,17 @@
     </appender>
 
 	<!--
-    <logger name="org.geomajas.gwt">
-        <level value="DEBUG"/>
-    </logger>
-    <logger name="org.geomajas.internal.service">
-        <level value="DEBUG"/>
-    </logger>
-    <logger name="org.geomajas.internal.layer.vector">
-        <level value="INFO"/>
-    </logger>
-    <logger name="org.geomajas.internal.rendering.strategy">
-        <level value="DEBUG"/>
-    </logger>
-	<logger name="org.geomajas.internal.layer.vector.GetFeaturesEachStep">
-		<level value="DEBUG"/>
-	</logger>
+    <logger name="org.geomajas.gwt" level="DEBUG" />
+    <logger name="org.geomajas.internal.service" level="DEBUG" />
+    <logger name="org.geomajas.internal.layer.vector" level="DEBUG" />
+    <logger name="org.geomajas.internal.rendering.strategy" level="DEBUG" />
+	<logger name="org.geomajas.internal.layer.vector.GetFeaturesEachStep" level="DEBUG" />
 	-->
+	<logger name="org.geomajas.plugin.caching" level="DEBUG" />
+	<logger name="org.geomajas.internal.service" level="DEBUG" />
+	<logger name="org.geomajas.internal.layer.vector" level="DEBUG" />
 
-    <root>
-        <level value="INFO"/>
+    <root level="INFO">
         <appender-ref ref="CONSOLE"/>
     </root>
 

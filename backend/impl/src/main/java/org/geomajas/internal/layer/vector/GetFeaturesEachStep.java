@@ -80,6 +80,7 @@ public class GetFeaturesEachStep implements PipelineStep<GetFeaturesContainer> {
 
 	public void execute(PipelineContext context, GetFeaturesContainer response) throws GeomajasException {
 		List<InternalFeature> features = response.getFeatures();
+		log.debug("Get features, was {}", features);
 		if (null == features) {
 			features = new ArrayList<InternalFeature>();
 			response.setFeatures(features);
@@ -122,7 +123,7 @@ public class GetFeaturesEachStep implements PipelineStep<GetFeaturesContainer> {
 				}
 			}
 			response.setBounds(bounds);
-			log.debug("getElements done");
+			log.debug("getElements done, bounds {}", bounds);
 		}
 	}
 
