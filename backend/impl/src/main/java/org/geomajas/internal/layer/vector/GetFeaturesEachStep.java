@@ -23,6 +23,7 @@
 
 package org.geomajas.internal.layer.vector;
 
+import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import org.geomajas.configuration.LabelStyleInfo;
 import org.geomajas.configuration.NamedStyleInfo;
@@ -95,19 +96,32 @@ public class GetFeaturesEachStep implements PipelineStep<GetFeaturesContainer> {
 			if (log.isDebugEnabled()) {
 				log.debug("getElements " + filter + ", offset = " + offset + ", maxResultSize= " + maxResultSize);
 			}
+			Envelope bounds = null;
 			Iterator<?> it = layer.getElements(filter, offset, maxResultSize);
 			while (it.hasNext()) {
-				InternalFeature feature = convertFeature(it.next(), layerId, layer, transformation, styleFilters, style
-						.getLabelStyle(), featureIncludes);
+				Object featureObj = it.next();
+				Geometry geometry = layer.getFeatureModel().getGeometry(featureObj);
+				InternalFeature feature = convertFeature(featureObj, geometry, layerId, layer, transformation,
+						styleFilters, style.getLabelStyle(), featureIncludes);
 				log.debug("checking feature");
 				if (securityContext.isFeatureVisible(layerId, feature)) {
 					feature.setEditable(securityContext.isFeatureUpdateAuthorized(layerId, feature));
 					feature.setDeletable(securityContext.isFeatureDeleteAuthorized(layerId, feature));
 					features.add(feature);
+
+					if (null != geometry) {
+						Envelope envelope = geometry.getEnvelopeInternal();
+						if (null == bounds) {
+							bounds = envelope;
+						} else {
+							bounds.expandToInclude(envelope);
+						}
+					}
 				} else {
 					log.debug("feature not visible");
 				}
 			}
+			response.setBounds(bounds);
 			log.debug("getElements done");
 		}
 	}
@@ -118,6 +132,8 @@ public class GetFeaturesEachStep implements PipelineStep<GetFeaturesContainer> {
 	 *
 	 * @param feature
 	 *            A feature object that comes directly from the {@link VectorLayer}
+	 * @param geometry
+	 *            geometry of the feature, passed in as needed in surrounding code to calc bounding box
 	 * @param layerId
 	 *            layer id
 	 * @param layer
@@ -134,7 +150,7 @@ public class GetFeaturesEachStep implements PipelineStep<GetFeaturesContainer> {
 	 * @throws GeomajasException
 	 *             oops
 	 */
-	private InternalFeature convertFeature(Object feature, String layerId, VectorLayer layer,
+	private InternalFeature convertFeature(Object feature, Geometry geometry, String layerId, VectorLayer layer,
 										   MathTransform transformation, List<StyleFilter> styles,
 										   LabelStyleInfo labelStyle, int featureIncludes)
 			throws GeomajasException {
@@ -154,7 +170,6 @@ public class GetFeaturesEachStep implements PipelineStep<GetFeaturesContainer> {
 
 		// If allowed, add the geometry (transformed!) to the InternalFeature:
 		if ((featureIncludes & VectorLayerService.FEATURE_INCLUDE_GEOMETRY) != 0) {
-			Geometry geometry = featureModel.getGeometry(feature);
 			Geometry transformed;
 			if (null != transformation) {
 				try {
