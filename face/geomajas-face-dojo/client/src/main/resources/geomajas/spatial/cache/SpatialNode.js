@@ -80,15 +80,6 @@ dojo.declare("SpatialNode", PainterVisitable, {
 	 */
 	accept : function (/*PainterVisitor*/visitor, /*Bbox*/ bbox, /*Boolean*/recursive) {
 		visitor.visit(this);
-		if (recursive) {
-			var features = this.getFeatures();
-			// limit to selected features, normal features are drawn by tile !
-			for (var i=0; i<features.length; i++) {
-				if(features[i].isSelected()){
-					features[i].accept(visitor, bbox, recursive);
-				}
-			}
-		}
 	},
 	
 	apply : function (callback) {

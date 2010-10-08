@@ -142,18 +142,18 @@ dojo.declare("VectorLayer", [LayerTreeNode], {
 			if(this.filterEnabled){
 				filter = this.filter;
 			}
+			
+			// Redraw selection
+			var selectionList = this.selectionStore.getValueList();
+			for(var i = 0; i < selectionList.length; i++) {
+				visitor.remove(selectionList[i]);
+				visitor.visit(selectionList[i]);
+			}
+			
 			this.featureStore.applyAndSync (
 				bbox, 
 				filter, 
-				function (tile) { 
-					var features = tile.getFeatures();
-					for (var i=0; i < features.length; i++) {
-						if(features[i].isSelected()){
-							visitor.remove(features[i]);
-						}
-					}
-					visitor.remove(tile); 					
-				},
+				function (tile) { visitor.remove(tile); },
 				function (tile) { tile.accept (visitor, bbox, true); }
 			);
 		}
