@@ -35,28 +35,34 @@
   <section>
     <title>Dependency configuration</title>
 
-    <para>To use the printing plugin, the maven project file should be
-    enhanced with the following artifact dependencies:</para>
+    <para>To use the printing plugin, you have to include the plug-in
+    dependencies in your pom. When using this in the GWT face and you already
+    have a dependency on geomajas-dep version 1.10.36 or higher, you can
+    declare this as :</para>
 
-    <itemizedlist>
-      <listitem>
-        <para>geomajas-plugin-printing: this is the backend part of the
-        plugin</para>
-      </listitem>
+    <example>
+      <title>printing plug-in dependency for GWT face using
+      geomajas-dep</title>
 
-      <listitem>
-        <para>geomajas-plugin-printing-gwt: this is the GWT face part of the
-        plugin</para>
-      </listitem>
-    </itemizedlist>
+      <programlisting>&lt;dependency&gt;
+    &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
+    &lt;artifactId&gt;geomajas-plugin-printing-gwt&lt;/artifactId&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
+    &lt;artifactId&gt;geomajas-plugin-printing-gwt&lt;/artifactId&gt;
+    &lt;version&gt;2.1.0-SNAPSHOT&lt;/version&gt;
+&lt;/dependency&gt;</programlisting>
+    </example>
+
+    <para>When not using the version from geomajas-dep, you may need to
+    declare versions for both the back-end part of the plug-in and the GWT
+    face part.</para>
 
     <xi:include href="listing/PrintingDependency.xml"
                 xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-    <para>If you want to use the use the printing plug-in within a GWT
-    application, you only need to include the 2 printing-gwt jars (normal and
-    sources) on the classpath. These will then automatically pull in the first
-    2 jars.</para>
+    <para></para>
   </section>
 
   <section>
@@ -65,44 +71,44 @@
     <section>
       <title>GWT module definition</title>
 
-    <para>In order to be able to use the printing plug-in in a GWT
-    application, you will need to include the GWT module for the printing
-    plug-in in your applications GWT module definition. In order to do this,
-    add the following configuration line to your applications .gwt.xml
-    file:</para>
+      <para>In order to be able to use the printing plug-in in a GWT
+      application, you will need to include the GWT module for the printing
+      plug-in in your applications GWT module definition. In order to do this,
+      add the following configuration line to your applications .gwt.xml
+      file:</para>
 
-    <xi:include href="listing/PrintingGwtModule.xml"
-                xmlns:xi="http://www.w3.org/2001/XInclude" />
+      <xi:include href="listing/PrintingGwtModule.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-    <para>This will make the GWT widgets and their source (assuming you have
-    the jars on the classpath) available for the GWT compiler. </para>
-	</section>
+      <para>This will make the GWT widgets and their source (assuming you have
+      the jars on the classpath) available for the GWT compiler.</para>
+    </section>
 
     <section>
       <title>Example toolbar configuration</title>
 
-    <para>To use the printing functionality in a map, the following
-    <code>ClientToolInfo</code> bean should be added to the map's
-    toolbar:</para>
+      <para>To use the printing functionality in a map, the following
+      <code>ClientToolInfo</code> bean should be added to the map's
+      toolbar:</para>
 
-    <xi:include href="listing/PrintingToolInfo.xml"
-                xmlns:xi="http://www.w3.org/2001/XInclude" />
+      <xi:include href="listing/PrintingToolInfo.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-    <para>The name of the <code>ClientToolInfo</code> bean should be exactly
-    as spelled in the above program listing.</para>
+      <para>The name of the <code>ClientToolInfo</code> bean should be exactly
+      as spelled in the above program listing.</para>
 
-    <para>If configured correctly, the following tool icon will show up in the
-    toolbar:</para>
+      <para>If configured correctly, the following tool icon will show up in
+      the toolbar:</para>
 
-    <figure>
-      <title>Toolbar icon for printing</title>
+      <figure>
+        <title>Toolbar icon for printing</title>
 
-      <mediaobject>
-        <imageobject>
-          <imagedata fileref="images/print.png" />
-        </imageobject>
-      </mediaobject>
-    </figure>
-	</section>
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="images/print.png" />
+          </imageobject>
+        </mediaobject>
+      </figure>
+    </section>
   </section>
 </chapter>
