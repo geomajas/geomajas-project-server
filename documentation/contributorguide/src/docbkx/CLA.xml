@@ -46,7 +46,7 @@
 
   <para></para>
 
-  <section>
+  <section id="CLA-def">
     <title>Definitions</title>
 
     <para>When used in this Agreement the following words and or expressions
@@ -75,7 +75,7 @@
       </orderedlist></para>
   </section>
 
-  <section>
+  <section id="CLA-repr">
     <title>Granted Rights - Representations</title>
 
     <para><orderedlist>
@@ -223,7 +223,7 @@
       </orderedlist></para>
   </section>
 
-  <section>
+  <section id="CLA-warranties">
     <title>Warranties</title>
 
     <para>EXCEPT FOR THE EXPRESS WARRANTIES DETAILED IN ARTICLE 2, THE
@@ -233,7 +233,7 @@
     MERCHANTABILITY OR FITNESS FOR A PARTICULAR PURPOSE.</para>
   </section>
 
-  <section>
+  <section id="CLA-misc">
     <title>Miscellaneous</title>
 
     <para><orderedlist>

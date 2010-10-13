@@ -26,7 +26,7 @@
 <chapter id="developers" lang="en">
   <title>Developers information</title>
 
-  <section>
+  <section id="maven">
     <title>maven compilation, targets, profiles, variables</title>
 
     <para>When doing an initial compilation of Geomajas, you may need to start
@@ -85,7 +85,7 @@ mvn install</programlisting>
 
     <para></para>
 
-    <section>
+    <section id="GWTbuild">
       <title>GWT build</title>
 
       <para>For faster compilation during testing (when not using development
@@ -100,7 +100,7 @@ mvn install</programlisting>
 &lt;set-property name="user.agent" value="gecko1_8" /&gt;</programlisting></para>
     </section>
 
-    <section>
+    <section id="dojobuild">
       <title>dojo build</title>
 
       <para>For development using the dojo face, apart from using the
@@ -132,7 +132,7 @@ mvn install</programlisting>
 </programlisting></para>
     </section>
 
-    <section>
+    <section id="runexample">
       <title>Running the example applications</title>
 
       <para>Once you have done a "<code>mvn install</code>" on either the
@@ -163,7 +163,7 @@ mvn install</programlisting>
     </section>
   </section>
 
-  <section>
+  <section id="docs">
     <title>Documentation</title>
 
     <para>The general documentation is split in three books.</para>
@@ -230,7 +230,7 @@ for (String line : lines) {
     optionally a title for the example.</para>
   </section>
 
-  <section>
+  <section id="APIcontract">
     <title>API contract</title>
 
     <para>The Geomajas project has a very strong API contract. To assure the
@@ -293,7 +293,7 @@ for (String line : lines) {
     considered "maintaining a stable API".</para>
   </section>
 
-  <section>
+  <section id="versioning">
     <title>Versioning</title>
 
     <para>Version have a major.minor.patch structure.</para>
@@ -313,7 +313,7 @@ for (String line : lines) {
     </itemizedlist>
   </section>
 
-  <section>
+  <section id="commits">
     <title>subversion, commits</title>
 
     <para>New committers need to sign an agreement which hands over copyright
@@ -348,13 +348,13 @@ for (String line : lines) {
     on failures.</para>
   </section>
 
-  <section>
+  <section id="coding">
     <title>Coding</title>
 
-    <para>Note that details about coding style and naming are on the <ulink
-    url="???">coding style</ulink> page.</para>
+    <para>Note that details about coding style and naming are on the <xref
+    linkend="codingstyle">coding style</xref> page.</para>
 
-    <section>
+    <section id="logging">
       <title>Logging</title>
 
       <itemizedlist>
@@ -454,7 +454,7 @@ for (String line : lines) {
       </itemizedlist>
     </section>
 
-    <section>
+    <section id="unittesting">
       <title>Unit testing</title>
 
       <para>Unit testing: At least each class implementing the public API
@@ -504,7 +504,7 @@ for (String line : lines) {
       </itemizedlist>
     </section>
 
-    <section>
+    <section id="exceptionhandling">
       <title>Exception handling</title>
 
       <para>*Never* throw away exception, either log them or throw them again
@@ -519,7 +519,7 @@ for (String line : lines) {
       <para>When wrapping an exception, always include the cause.</para>
     </section>
 
-    <section>
+    <section id="refactoring">
       <title>Refactoring</title>
 
       <para>Changes in the (public) API use a "deprecate, then remove" cycle.
@@ -527,14 +527,14 @@ for (String line : lines) {
       can be removed in the next major version.</para>
     </section>
 
-    <section>
+    <section id="fileencoding">
       <title>File encoding</title>
 
       <para>All source files, including .properties files should use UTF-8
       encoding.</para>
     </section>
 
-    <section>
+    <section id="dev-other">
       <title>Other</title>
 
       <para>For the directory structure and file locations, we follow standard

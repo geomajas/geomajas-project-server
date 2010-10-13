@@ -26,10 +26,10 @@
 <chapter id="jira" lang="en">
   <title>JIRA conventions</title>
 
-  <section>
+  <section id="jira-basics">
     <title>Basic issue tracker rules</title>
 
-    <section>
+    <section id="jira-opoi">
       <title>One problem one issue</title>
 
       <para>When you report a problem, please submit one issue per problem.
@@ -57,7 +57,7 @@
       to split up your issue.</para>
     </section>
 
-    <section>
+    <section id="jira-summary">
       <title>Provide a meaningful summary</title>
 
       <para>Providing a meaningful summary helps the committers to easily
@@ -68,7 +68,7 @@
       descriptive as possible.</para>
     </section>
 
-    <section>
+    <section id="jira-desc">
       <title>Provide a clear description</title>
 
       <para>You, as the submitter of a problem, know exactly what you were
@@ -83,7 +83,7 @@
     </section>
   </section>
 
-  <section>
+  <section id="jira-form">
     <title>Filling out the JIRA form</title>
 
     <para>In order to create a new issue, you need to log in to the <ulink
@@ -131,6 +131,12 @@
       <listitem>
         <para>Assignee: Assign the issue to someone you believe is best suited
         to fix the issue.</para>
+      </listitem>
+
+      <listitem>
+        <para>CLA: Whether you agree to the CLA. This needs to be ticked when
+			you include a patch with the issue and haven't sent a signed CLA
+			to the project..</para>
       </listitem>
 
       <listitem>

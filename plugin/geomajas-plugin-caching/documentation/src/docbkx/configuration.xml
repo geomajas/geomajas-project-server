@@ -44,7 +44,7 @@
       </listitem>
     </itemizedlist></para>
 
-  <section>
+  <section id="conf">
     <title>Pipeline configuration</title>
 
     <para>To make sure the caching is actually used, you have to define assure
@@ -64,7 +64,7 @@
     <para>??? @TODO</para>
   </section>
 
-  <section>
+  <section id="cache-conf">
     <title>Cache configuration</title>
 
     <para>Cache configuration can be configured individually for each layer
@@ -118,14 +118,14 @@
     application context contains more than one bean matching bean (for each of
     the lines above) the last definition is used.</para>
 
-    <section>
+    <section id="cache-default">
       <title>Default caches</title>
 
       <para>??? @TODO</para>
     </section>
   </section>
 
-  <section>
+  <section id="si-config">
     <title>Spatial index configuration</title>
 
     <para>The spatial index to be used while caching can be configured
@@ -180,7 +180,7 @@
     application context contains more than one bean matching bean (for each of
     the lines above) the last definition is used.</para>
 
-    <section>
+    <section id="default-si">
       <title>Default spatial indexes</title>
 
       <para>??? @TODO</para>

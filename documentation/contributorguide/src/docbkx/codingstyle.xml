@@ -52,7 +52,7 @@ References
   there is a need to reformat existing code, then this should be done in a
   separate commit.</para>
 
-  <section>
+  <section id="cmvnames">
     <title>Class, method and variable names</title>
 
     <para>Rules</para>
@@ -167,9 +167,7 @@ References
       </listitem>
     </itemizedlist>
 
-    <section>
-       
-
+    <section id="comments">
       <title>Comment</title>
 
        Each file should have the correct copyright notice at the start of the file. 
@@ -258,7 +256,7 @@ References
        
     </section>
 
-    <section>
+    <section id="cyc">
       <title>Claim your code</title>
 
       <para>Be proud of your code and take responsibility of your changes.
@@ -267,7 +265,7 @@ References
       the authors list in the class comments.</para>
     </section>
 
-    <section>
+    <section id="codelayout">
       <title>Code layout</title>
 
       <para>See the example below</para>

@@ -72,7 +72,7 @@
 
   <para></para>
 
-  <section>
+  <section id="overview">
     <title>Overview</title>
 
     <para>The caching is enabled by adding steps to the default pipelines at
@@ -182,7 +182,7 @@
     <para></para>
   </section>
 
-  <section>
+  <section id="security">
     <title>Security</title>
 
     <para>The cache also has consider security. All entries in the cache are

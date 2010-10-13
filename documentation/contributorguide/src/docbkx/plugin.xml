@@ -59,14 +59,14 @@
       </listitem>
     </itemizedlist></para>
 
-  <section>
+  <section id="pi-struct">
     <title>Plug-in structure</title>
 
     <para>Some conventions are in use to make plug-ins easily accessible and
     auto-register, and to make plug-ins good citizens of the Geomajas
     project.</para>
 
-    <section>
+    <section id="pi-appcontext">
       <title>Plug-in application context</title>
 
       <para>Each plug-in can have a configuration file in
@@ -134,7 +134,7 @@
       dependent libraries.</para>
     </section>
 
-    <section>
+    <section id="pi-webcontext">
       <title>Plug-in web context</title>
 
       <para>Each plug-in can have a configuration file in
@@ -173,7 +173,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
       </example>
     </section>
 
-    <section>
+    <section id="pi-pom">
       <title>Plug-in pom</title>
 
       <para>The pom needs to be complete to allow proper release of the
@@ -324,7 +324,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
       <code>geomajas-parent</code> project.</para>
     </section>
 
-    <section>
+    <section id="pi-modules">
       <title>Plug-in modules</title>
 
       <para>All plug-ins consist of at least two modules, possibly
@@ -340,7 +340,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     </section>
   </section>
 
-  <section>
+  <section id="pi-creation">
     <title>Plug-in creation</title>
 
     <para>To add a plug-in to the Geomajas project, you should write a
@@ -403,7 +403,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     "artifactId" you choose.</para>
   </section>
 
-  <section>
+  <section id="pi-state">
     <title>Plug-in state</title>
 
     <para>A Geomajas plug-in has a "state" which indicates the
@@ -431,7 +431,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 
     <para></para>
 
-    <section>
+    <section id="pi-grad">
       <title>Plug-in graduation</title>
 
       <para>The process for a plug-in to move state from incubation to
@@ -488,7 +488,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
       plug-in maintainer can again propose to graduate.</para>
     </section>
 
-    <section>
+    <section id="pi-retire">
       <title>Plug-in retirement</title>
 
       <para>Plug-in retirement is also handled by a PSC vote. This will

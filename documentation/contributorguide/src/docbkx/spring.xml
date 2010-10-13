@@ -26,7 +26,7 @@
 <chapter id="spring" lang="en">
   <title>Spring usage in Geomajas</title>
 
-  <section>
+  <section id="spring-di">
     <title>Spring dependency injection</title>
 
     <para>To assure the spring dependency injection is used, you should obtain
@@ -58,7 +58,7 @@ private postConstruct() {
     // dome some stuff here
 }</programlisting></para>
 
-    <section>
+    <section id="spring-bnc">
       <title>Bean naming convention</title>
 
       <para>Bean names match the (fully qualified name of the) interface they
@@ -90,7 +90,7 @@ private postConstruct() {
       <programlisting>applicationContext.getBean(GeomajasBeanNameGenerator.simplify(className));</programlisting>
     </section>
 
-    <section>
+    <section id="spring-init">
       <title>Initialising the applicationContext</title>
 
       <para>For servlets, you can use the GeomajasContextListener in the
