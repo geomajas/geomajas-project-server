@@ -39,6 +39,7 @@
 	<source path="global">
 		<include name="GeomajasConstant.java"/>
 		<include name="CopyrightInfo.java"/>
+		<include name="GeomajasObject.java"/>
 	</source>
 
 </module>
