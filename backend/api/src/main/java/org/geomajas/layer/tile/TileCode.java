@@ -23,6 +23,7 @@
 package org.geomajas.layer.tile;
 
 import org.geomajas.global.Api;
+import org.geomajas.global.CacheableObject;
 
 import java.io.Serializable;
 
@@ -52,7 +53,7 @@ import java.io.Serializable;
  * @since 1.6.0
  */
 @Api(allMethods = true)
-public class TileCode implements Serializable {
+public class TileCode implements Serializable, CacheableObject {
 
 	private static final long serialVersionUID = 151L;
 
@@ -193,5 +194,17 @@ public class TileCode implements Serializable {
 	 */
 	public void setY(int y) {
 		this.y = y;
+	}
+
+	/**
+	 * String identifier which is guaranteed to include sufficient information to assure to be different for two
+	 * instances which could produce different result. It is typically used as basis for calculation of hash
+	 * codes (like MD5, SHA1, SHA2 etc) of (collections of) objects.
+	 *
+	 * @return cacheId
+	 * @since 1.8.0
+	 */
+	public String getCacheId() {
+		return tileLevel + "-" + x + "-" + y;
 	}
 }

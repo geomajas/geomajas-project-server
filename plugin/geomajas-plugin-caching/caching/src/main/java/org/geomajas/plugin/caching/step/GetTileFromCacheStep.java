@@ -30,6 +30,7 @@ import org.geomajas.plugin.caching.service.CacheCategory;
 import org.geomajas.plugin.caching.service.CacheContext;
 import org.geomajas.plugin.caching.service.CacheKeyService;
 import org.geomajas.plugin.caching.service.CacheManagerService;
+import org.geomajas.security.SecurityContext;
 import org.geomajas.service.TestRecorder;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
@@ -54,6 +55,9 @@ public class GetTileFromCacheStep implements PipelineStep<GetTileContainer> {
 	private CacheKeyService cacheKeyService;
 
 	@Autowired
+	private SecurityContext securityContext;
+
+	@Autowired
 	private TestRecorder recorder;
 
 	private String id;
@@ -70,6 +74,7 @@ public class GetTileFromCacheStep implements PipelineStep<GetTileContainer> {
 		VectorLayer layer = pipelineContext.get(PipelineCode.LAYER_KEY, VectorLayer.class);
 
 		CacheContext cacheContext = cacheKeyService.getCacheContext(pipelineContext, KEYS);
+		cacheContext.put("securityContext", securityContext.getId());
 		String cacheKey = cacheKeyService.getCacheKey(layer, CacheCategory.TILE, cacheContext);
 
 		TileCacheContainer cc = cacheManager.get(layer, CacheCategory.TILE, cacheKey, TileCacheContainer.class);
@@ -80,6 +85,7 @@ public class GetTileFromCacheStep implements PipelineStep<GetTileContainer> {
 				result.setTile(cc.getTile());
 				pipelineContext.put(CacheStepConstant.CACHE_TILE_USED, true);
 				recorder.record(CacheCategory.TILE, "Got item from cache");
+				pipelineContext.setFinished(true); // request nothing, stop now to avoid more work being done
 				break;
 			} else {
 				cacheKey = cacheKeyService.makeUnique(cacheKey);
@@ -88,6 +94,5 @@ public class GetTileFromCacheStep implements PipelineStep<GetTileContainer> {
 		}
 		pipelineContext.put(CacheStepConstant.CACHE_TILE_KEY, cacheKey);
 		pipelineContext.put(CacheStepConstant.CACHE_TILE_CONTEXT, cacheContext);
-
 	}
 }

@@ -24,6 +24,7 @@
 package org.geomajas.plugin.caching.service;
 
 import com.twmacinta.util.MD5;
+import org.geomajas.global.CacheableObject;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.Layer;
 import org.geomajas.service.pipeline.PipelineContext;
@@ -65,12 +66,20 @@ public class CacheKeyServiceImpl implements CacheKeyService {
 					md5.Update(":");
 					Object value = entry.getValue();
 					if (null != value) {
-						md5.Update(value.toString(), ENCODING);
+						if (value instanceof CacheableObject) {
+							md5.Update(((CacheableObject) value).getCacheId(), ENCODING);
+						} else {
+							md5.Update(value.toString(), ENCODING);
+						}
 					}
 					md5.Update("-");
 				}
 			} else {
-				md5.Update(context.toString(), ENCODING);
+				if (context instanceof CacheableObject) {
+					md5.Update(((CacheableObject) context).getCacheId(), ENCODING);
+				} else {
+					md5.Update(context.toString(), ENCODING);
+				}
 			}
 			md5.Update("$");
 			md5.Update(layer.getId());

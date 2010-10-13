@@ -27,6 +27,7 @@ import org.geomajas.command.LayerIdCommandRequest;
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.global.Api;
+import org.geomajas.global.CacheableObject;
 import org.geomajas.layer.tile.TileCode;
 import org.geomajas.layer.tile.TileMetadata;
 
@@ -37,7 +38,7 @@ import org.geomajas.layer.tile.TileMetadata;
  * @since 1.6.0
  */
 @Api(allMethods = true)
-public class GetVectorTileRequest extends LayerIdCommandRequest implements TileMetadata {
+public class GetVectorTileRequest extends LayerIdCommandRequest implements TileMetadata, CacheableObject {
 
 	private static final long serialVersionUID = 151L;
 
@@ -164,8 +165,15 @@ public class GetVectorTileRequest extends LayerIdCommandRequest implements TileM
 		this.featureIncludes = featureIncludes;
 	}
 
-	@Override
-	public String toString() {
+	/**
+	 * String identifier which is guaranteed to include sufficient information to assure to be different for two
+	 * instances which could produce different result. It is typically used as basis for calculation of hash
+	 * codes (like MD5, SHA1, SHA2 etc) of (collections of) objects.
+	 *
+	 * @return cacheId
+	 * @since 1.8.0
+	 */
+	public String getCacheId() {
 		return "GetVectorTileRequest{" +
 				"code=" + code +
 				", layerId=" + getLayerId() +
@@ -180,5 +188,10 @@ public class GetVectorTileRequest extends LayerIdCommandRequest implements TileM
 				", paintLabels=" + paintLabels +
 				", featureIncludes=" + featureIncludes +
 				'}';
+	}
+
+	@Override
+	public String toString() {
+		return getCacheId();
 	}
 }

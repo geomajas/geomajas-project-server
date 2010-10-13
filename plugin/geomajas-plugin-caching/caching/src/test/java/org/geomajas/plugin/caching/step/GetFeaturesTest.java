@@ -25,6 +25,7 @@ package org.geomajas.plugin.caching.step;
 
 import com.vividsolutions.jts.geom.Envelope;
 import org.geomajas.global.GeomajasConstant;
+import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.VectorLayerService;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.plugin.caching.service.CacheCategory;
@@ -37,6 +38,7 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -50,11 +52,17 @@ import java.util.List;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
 		"/META-INF/geomajasContext.xml", "/org/geomajas/plugin/caching/DefaultCachedPipelines.xml",
-		"/pipelineContext.xml", "/org/geomajas/testdata/layerBeans.xml", "/org/geomajas/spring/testRecorder.xml"})
+		"/pipelineContext.xml", "/org/geomajas/testdata/layerBeans.xml", "/org/geomajas/testdata/layerCountries.xml",
+		"/org/geomajas/spring/testRecorder.xml"})
 public class GetFeaturesTest {
 
 	private static final String LAYER_BEANS = "beans";
+	private static final String LAYER_COUNTRIES = "countries";
 	private static final double DELTA = 1e-10;
+
+	@Autowired
+	@Qualifier(LAYER_BEANS)
+	private VectorLayer layerBeans;
 
 	@Autowired
 	private TestRecorder recorder;
@@ -73,6 +81,8 @@ public class GetFeaturesTest {
 
 	@Test
 	public void testFeatures() throws Exception {
+		cacheManager.drop(layerBeans);
+
 		securityManager.createSecurityContext(null); // assure a security context exists for this thread
 		List<InternalFeature> features;
 
@@ -100,6 +110,15 @@ public class GetFeaturesTest {
 		Assert.assertEquals(2, features.size());
 		Assert.assertEquals("", recorder.matches(CacheCategory.FEATURE,
 				"Got item from cache",
+				"Put item in cache"));
+
+		// ask for different layer, should not be found in cache as context is different
+		recorder.clear();
+		features = vectorLayerService.getFeatures(LAYER_COUNTRIES, geoService.getCrs("EPSG:4326"), null, null,
+				GeomajasConstant.FEATURE_INCLUDE_NONE);
+		Assert.assertNotNull(features);
+		Assert.assertEquals(4, features.size());
+		Assert.assertEquals("", recorder.matches(CacheCategory.FEATURE,
 				"Put item in cache"));
 	}
 }

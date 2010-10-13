@@ -31,6 +31,7 @@ import org.geomajas.plugin.caching.service.CacheCategory;
 import org.geomajas.plugin.caching.service.CacheContext;
 import org.geomajas.plugin.caching.service.CacheKeyService;
 import org.geomajas.plugin.caching.service.CacheManagerService;
+import org.geomajas.security.SecurityContext;
 import org.geomajas.service.TestRecorder;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
@@ -55,6 +56,9 @@ public class GetTileStringContentFromCacheStep implements PipelineStep<GetTileCo
 	@Autowired
 	private TestRecorder recorder;
 
+	@Autowired
+	private SecurityContext securityContext;
+
 	private String id;
 
 	public String getId() {
@@ -75,6 +79,7 @@ public class GetTileStringContentFromCacheStep implements PipelineStep<GetTileCo
 		}
 
 		CacheContext cacheContext = cacheKeyService.getCacheContext(pipelineContext, KEYS);
+		cacheContext.put("securityContext", securityContext.getId());
 		String cacheKey = cacheKeyService.getCacheKey(layer, cacheCategory, cacheContext);
 
 		TileContentCacheContainer cc =
@@ -95,7 +100,5 @@ public class GetTileStringContentFromCacheStep implements PipelineStep<GetTileCo
 		}
 		pipelineContext.put(CacheStepConstant.CACHE_TILE_CONTENT_KEY, cacheKey);
 		pipelineContext.put(CacheStepConstant.CACHE_TILE_CONTENT_CONTEXT, cacheContext);
-
 	}
-
 }

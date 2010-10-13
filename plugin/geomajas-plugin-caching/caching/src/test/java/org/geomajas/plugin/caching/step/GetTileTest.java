@@ -23,10 +23,15 @@
 
 package org.geomajas.plugin.caching.step;
 
-import com.vividsolutions.jts.geom.Envelope;
+import org.geomajas.command.dto.GetVectorTileRequest;
+import org.geomajas.geometry.Coordinate;
+import org.geomajas.global.GeomajasConstant;
 import org.geomajas.layer.VectorLayerService;
+import org.geomajas.layer.feature.InternalFeature;
+import org.geomajas.layer.tile.InternalTile;
+import org.geomajas.layer.tile.TileCode;
+import org.geomajas.layer.tile.TileMetadata;
 import org.geomajas.plugin.caching.service.CacheCategory;
-import org.geomajas.plugin.caching.service.CacheContext;
 import org.geomajas.plugin.caching.service.CacheManagerServiceImpl;
 import org.geomajas.plugin.caching.service.DummyCacheService;
 import org.geomajas.service.GeoService;
@@ -38,6 +43,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import javax.swing.*;
+import java.util.List;
+
 /**
  * Tests for the cached variant of the GetBounds pipeline.
  *
@@ -48,7 +56,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 		"/META-INF/geomajasContext.xml", "/org/geomajas/plugin/caching/DefaultCachedPipelines.xml",
 		"/pipelineContext.xml", "/org/geomajas/testdata/layerBeans.xml", "/org/geomajas/testdata/layerCountries.xml",
 		"/org/geomajas/spring/testRecorder.xml"})
-public class GetBoundsTest {
+public class GetTileTest {
 
 	private static final String LAYER_BEANS = "beans";
 	private static final String LAYER_COUNTRIES = "countries";
@@ -70,48 +78,50 @@ public class GetBoundsTest {
 	private org.geomajas.security.SecurityManager securityManager;
 
 	@Test
-	public void testGetBounds() throws Exception {
+	public void testGetTile() throws Exception {
 		securityManager.createSecurityContext(null); // assure a security context exists for this thread
-		Envelope bounds;
+		InternalTile tile;
+		TileMetadata tmd = new GetVectorTileRequest();
+		tmd.setCrs("EPSG:4326");
+		tmd.setCode(new TileCode(1,0,1));
+		tmd.setLayerId(LAYER_BEANS);
+		tmd.setRenderer(TileMetadata.PARAM_SVG_RENDERER);
+		tmd.setScale(1.0);
+		tmd.setPanOrigin(new Coordinate(0, 0));
 
 		// first run, this should put things in the cache
 		recorder.clear();
-		bounds = vectorLayerService.getBounds(LAYER_BEANS, geoService.getCrs("EPSG:4326"), null);
-		Assert.assertNotNull(bounds);
-		Assert.assertEquals(0.0, bounds.getMinX(), DELTA);
-		Assert.assertEquals(0.0, bounds.getMinY(), DELTA);
-		Assert.assertEquals(7.0, bounds.getMaxX(), DELTA);
-		Assert.assertEquals(3.0, bounds.getMaxY(), DELTA);
-		Assert.assertEquals("", recorder.matches(CacheCategory.BOUNDS,
-				"Put item in cache"));
+		tile = vectorLayerService.getTile(tmd);
+		Assert.assertNotNull(tile);
+		Assert.assertEquals("<g id=\"beans.features.1-0-1\"/>", tile.getFeatureContent());
+		Assert.assertEquals("", recorder.matches(CacheCategory.FEATURE, "Put item in cache"));
+		Assert.assertEquals("", recorder.matches(CacheCategory.SVG, "Put item in cache"));
+		Assert.assertEquals("", recorder.matches(CacheCategory.TILE, "Put item in cache"));
 
 		// verify that data is in the cache
-		DummyCacheService cache = (DummyCacheService)cacheManager.getCacheForTesting(LAYER_BEANS, CacheCategory.BOUNDS);
+		DummyCacheService cache = (DummyCacheService)cacheManager.getCacheForTesting(LAYER_BEANS, CacheCategory.TILE);
 		Assert.assertEquals(1, cache.size());
 		String key = cache.getKey();
-		BoundsCacheContainer bcc = (BoundsCacheContainer) cache.getObject();
-		CacheContext cc = bcc.getContext();
-		bcc = new BoundsCacheContainer(new Envelope(0, 10, 0, 10));
-		bcc.setContext(cc);
-		cache.put(key, bcc);
+		TileCacheContainer tcc = (TileCacheContainer) cache.getObject();
+		tcc.getTile().setFeatureContent("<dummy />");
 
-		// get bounds again, the result should be different because we changed the cached value
+		// get tile again, the result should be different because we changed the cached value
 		recorder.clear();
-		bounds = vectorLayerService.getBounds(LAYER_BEANS, geoService.getCrs("EPSG:4326"), null);
-		Assert.assertNotNull(bounds);
-		Assert.assertEquals(0.0, bounds.getMinX(), DELTA);
-		Assert.assertEquals(0.0, bounds.getMinY(), DELTA);
-		Assert.assertEquals(10.0, bounds.getMaxX(), DELTA);
-		Assert.assertEquals(10.0, bounds.getMaxY(), DELTA);
-		Assert.assertEquals("", recorder.matches(CacheCategory.BOUNDS,
-				"Got item from cache",
-				"Put item in cache"));
+		tile = vectorLayerService.getTile(tmd);
+		Assert.assertNotNull(tile);
+		Assert.assertEquals("<dummy />", tile.getFeatureContent());
+		Assert.assertEquals("", recorder.matches(CacheCategory.TILE, "Got item from cache"));
+		Assert.assertEquals("", recorder.matches(CacheCategory.FEATURE));
+		Assert.assertEquals("", recorder.matches(CacheCategory.SVG));
 
 		// ask for different layer, should not be found in cache as context is different
 		recorder.clear();
-		bounds = vectorLayerService.getBounds(LAYER_COUNTRIES, geoService.getCrs("EPSG:4326"), null);
-		Assert.assertNotNull(bounds);
-		Assert.assertEquals("", recorder.matches(CacheCategory.BOUNDS,
-				"Put item in cache"));
+		tmd.setLayerId(LAYER_COUNTRIES);
+		tile = vectorLayerService.getTile(tmd);
+		Assert.assertNotNull(tile);
+		//Assert.assertEquals(4, features.size());
+		Assert.assertEquals("", recorder.matches(CacheCategory.FEATURE, "Put item in cache"));
+		Assert.assertEquals("", recorder.matches(CacheCategory.SVG, "Put item in cache"));
+		Assert.assertEquals("", recorder.matches(CacheCategory.TILE, "Put item in cache"));
 	}
 }

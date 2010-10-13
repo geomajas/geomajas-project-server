@@ -30,6 +30,7 @@ import org.geomajas.plugin.caching.service.CacheCategory;
 import org.geomajas.plugin.caching.service.CacheContext;
 import org.geomajas.plugin.caching.service.CacheKeyService;
 import org.geomajas.plugin.caching.service.CacheManagerService;
+import org.geomajas.security.SecurityContext;
 import org.geomajas.service.TestRecorder;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
@@ -52,6 +53,9 @@ public class GetBoundsFromCacheStep implements PipelineStep<GetBoundsContainer> 
 	private CacheKeyService cacheKeyService;
 
 	@Autowired
+	private SecurityContext securityContext;
+
+	@Autowired
 	private TestRecorder recorder;
 
 	private String id;
@@ -69,6 +73,7 @@ public class GetBoundsFromCacheStep implements PipelineStep<GetBoundsContainer> 
 		VectorLayer layer = pipelineContext.get(PipelineCode.LAYER_KEY, VectorLayer.class);
 
 		CacheContext cacheContext = cacheKeyService.getCacheContext(pipelineContext, KEYS);
+		cacheContext.put("securityContext", securityContext.getId());
 		String cacheKey = cacheKeyService.getCacheKey(layer, CacheCategory.BOUNDS, cacheContext);
 
 		BoundsCacheContainer cc = cacheManager.get(layer, CacheCategory.BOUNDS, cacheKey, BoundsCacheContainer.class);
