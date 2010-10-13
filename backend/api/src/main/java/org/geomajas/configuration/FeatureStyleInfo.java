@@ -23,6 +23,7 @@
 package org.geomajas.configuration;
 
 import org.geomajas.global.Api;
+import org.geomajas.global.CacheableObject;
 
 import java.io.Serializable;
 
@@ -35,7 +36,7 @@ import javax.validation.constraints.Null;
  * @since 1.6.0
  */
 @Api(allMethods = true)
-public class FeatureStyleInfo implements Serializable {
+public class FeatureStyleInfo implements Serializable, CacheableObject {
 
 	/**
 	 * Default value for style index, should be the last in sort order.
@@ -266,5 +267,39 @@ public class FeatureStyleInfo implements Serializable {
 	 */
 	public void setStyleId(String styleId) {
 		this.styleId = styleId;
+	}
+
+	/**
+	 * String identifier which is guaranteed to include sufficient information to assure to be different for two
+	 * instances which could produce different result. It is typically used as basis for calculation of hash
+	 * codes (like MD5, SHA1, SHA2 etc) of (collections of) objects.
+	 *
+	 * @return cacheId
+	 * @since 1.8.0
+	 */
+	public String getCacheId() {
+		return "FeatureStyleInfo{" +
+				"index=" + index +
+				", name='" + name + '\'' +
+				", formula='" + formula + '\'' +
+				", fillColor='" + fillColor + '\'' +
+				", fillOpacity=" + fillOpacity +
+				", strokeColor='" + strokeColor + '\'' +
+				", strokeOpacity=" + strokeOpacity +
+				", strokeWidth=" + strokeWidth +
+				", dashArray='" + dashArray + '\'' +
+				", symbol=" + symbol +
+				", styleId='" + styleId + '\'' +
+				'}';
+	}
+
+	/**
+	 * String representation of object.
+	 *
+	 * @return string representation of object
+	 * @since 1.8.0
+	 */
+	public String toString() {
+		return getCacheId();
 	}
 }

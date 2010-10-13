@@ -23,6 +23,7 @@
 package org.geomajas.configuration;
 
 import org.geomajas.global.Api;
+import org.geomajas.global.CacheableObject;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -38,7 +39,7 @@ import javax.validation.constraints.NotNull;
  * @since 1.6.0
  */
 @Api(allMethods = true)
-public class NamedStyleInfo implements Serializable {
+public class NamedStyleInfo implements Serializable, CacheableObject {
 
 	private static final long serialVersionUID = 154L;
 
@@ -105,7 +106,31 @@ public class NamedStyleInfo implements Serializable {
 	public void setLabelStyle(LabelStyleInfo labelStyleInfo) {
 		this.labelStyle = labelStyleInfo;
 	}
-	
-	
 
+	/**
+	 * String identifier which is guaranteed to include sufficient information to assure to be different for two
+	 * instances which could produce different result. It is typically used as basis for calculation of hash
+	 * codes (like MD5, SHA1, SHA2 etc) of (collections of) objects.
+	 *
+	 * @return cacheId
+	 * @since 1.8.0
+	 */
+	public String getCacheId() {
+		return "NamedStyleInfo{" +
+				"featureStyles=" + featureStyles +
+				", labelStyle=" + labelStyle +
+				", name='" + name + '\'' +
+				'}';
+	}
+
+	/**
+	 * String representation of object.
+	 *
+	 * @return string representation of object
+	 * @since 1.8.0
+	 */
+	@Override
+	public String toString() {
+		return getCacheId();
+	}
 }
