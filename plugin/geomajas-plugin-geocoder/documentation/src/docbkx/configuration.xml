@@ -28,7 +28,7 @@
 
   <para>Configuration for the geocoder plug-in.</para>
 
-  <section>
+  <section id="dependencies">
     <title>Dependencies</title>
 
     <para>Make sure your include the plug-in in your project. If you are using
@@ -70,7 +70,7 @@
                 xmlns:xi="http://www.w3.org/2001/XInclude" />
   </section>
 
-  <section>
+  <section id="command">
     <title>Geocoder command configuration</title>
 
     <para>When you include the geocoder dependency, you also have to configure
@@ -127,7 +127,7 @@
       </itemizedlist></para>
   </section>
 
-  <section>
+  <section id="staticregex">
     <title>Static regex geocoder service configuration</title>
 
     <para>The StaticRegexGeocoderService allows you to define the combinations
@@ -232,7 +232,7 @@
     <para></para>
   </section>
 
-  <section>
+  <section id="geonames">
     <title>GeoNames service configuration</title>
 
     <para>The GeonamesGeocoderService uses the search web service at
@@ -248,7 +248,7 @@
     using fuzzy matching.</para>
   </section>
 
-  <section>
+  <section id="placefinder">
     <title>Yahoo! PlaceFinder geocoder service configuration</title>
 
     <para>This uses the Yahoo! PlaceFinder service (<ulink

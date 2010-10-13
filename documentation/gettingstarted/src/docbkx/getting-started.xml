@@ -31,7 +31,7 @@
   Geomajas is by creating a new project using the Maven archetype. This will
   create a simple working project that you can use as starting point.</para>
 
-  <section>
+  <section id="prereq">
     <title>Prerequisites / Command line</title>
 
     <para>As the simple project is created using the Maven archetype, you will
@@ -44,7 +44,7 @@
     at the bottom of <ulink
     url="http://maven.apache.org/download.html">http://maven.apache.org/download.html</ulink>.</para>
 
-    <section>
+    <section id="templ">
       <title>Creating the template project</title>
 
       <para>At this point it is assumed that Maven has been succesfully
@@ -134,14 +134,14 @@
       </tip>
     </section>
 
-    <section>
+    <section id="testtempl">
       <title>Testing the template project</title>
 
       <para>From the project root, you can immediately compile, test (using
       jetty as servlet container), or run the application in development mode
       using the following commands.</para>
 
-      <section>
+      <section id="crefubi">
         <title>Creating a full build</title>
 
         <para>You now have several options to actually test your application.
@@ -159,7 +159,7 @@
         dropped into a Java application container such as Tomcat.</para>
       </section>
 
-      <section>
+      <section id="runapp">
         <title>Running the compiled template application (full speed)</title>
 
         <para>Secondly, if you don't have a Java application container ready
@@ -179,7 +179,7 @@
         url="http://localhost:8080/">http://localhost:8080/</ulink>.</para>
       </section>
 
-      <section>
+      <section id="rundevapp">
         <title>Running the template application in development mode</title>
 
         <para>Another option is to start up the application in GWT development
@@ -200,7 +200,7 @@
     </section>
   </section>
 
-  <section>
+  <section id="eclipse">
     <title>Eclipse</title>
 
     <para>The combination of Eclipse, maven and GWT is not quite trivial,
@@ -275,7 +275,7 @@
       </listitem>
     </itemizedlist>
 
-    <section>
+    <section id="eclipwtp">
       <title>Combining Eclipse WTP with the maven GWT plugin (recommended
       setup)</title>
 
@@ -405,7 +405,7 @@
       </itemizedlist>
     </section>
 
-    <section>
+    <section id="eclipgwt">
       <title>Using the Google Plug-in for Eclipse (possible class path
       issues)</title>
 
@@ -537,7 +537,7 @@
     </section>
   </section>
 
-  <section>
+  <section id="idea">
     <title>IntelliJ IDEA</title>
 
     <para>The setup in IntelliJ IDEA is quite straightforward and does not
@@ -605,7 +605,7 @@
     possible.</para>
   </section>
 
-  <section>
+  <section id="netbeans">
     <title>NetBeans</title>
 
     <para>You can both create the project from the archetype or open directly
@@ -614,7 +614,7 @@
     for more details.</para>
   </section>
 
-  <section>
+  <section id="cont">
     <title>How to continue</title>
 
     <para>The most important configuration files in the project are the

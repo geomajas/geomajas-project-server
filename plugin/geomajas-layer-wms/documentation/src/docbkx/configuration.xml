@@ -28,7 +28,7 @@
 
   <para></para>
 
-	<section>
+	<section id="dependencies">
 	  <title>Dependencies</title>
 
 	  <para>Make sure your include the plug-in in your project. If you are using
@@ -45,7 +45,7 @@
 	  </example>
 	</section>
 
-  <section>
+  <section id="wmsconf">
     <title>WMS layer configuration</title>
 
     <para>A complete WMS layer configuration looks as follows:</para>

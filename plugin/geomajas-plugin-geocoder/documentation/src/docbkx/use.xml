@@ -28,7 +28,7 @@
 
   <para>How to use the geocoder plug-in.</para>
 
-  <section>
+  <section id="usecommand">
     <title>Command</title>
 
     <para>The main access point for the functionality which is provided by
@@ -174,7 +174,7 @@
     specific face's documentation.</para>
   </section>
 
-  <section>
+  <section id="usegwt">
     <title>GWT widget</title>
 
     <para>To make it easier for you, the plug-in contains a widget which can

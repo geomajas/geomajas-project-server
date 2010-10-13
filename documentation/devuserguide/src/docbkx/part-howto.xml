@@ -185,19 +185,19 @@
     Additional information for specific types of plug-ins is described in
     subsequent chapters.</para>
 
-    <section>
+    <section id="pi-arch">
       <title>Using the plug-in archetype</title>
 
       <para>TODO.....</para>
     </section>
 
-    <section>
+    <section id="pi-struct">
       <title>Plug-in structure</title>
 
       <para>TODO.....</para>
     </section>
 
-    <section>
+    <section id="pi-depdec">
       <title>Plug-in declaration and dependencies</title>
 
       <para>TODO.....</para>
@@ -215,7 +215,7 @@
     linkend="backend-ch-configuration">configuration</link> section
     above.</para>
 
-    <section>
+    <section id="writlay">
       <title>Writing your own layer</title>
 
       <para>TODO.....</para>
@@ -225,7 +225,7 @@
   <chapter id="ch-howto-security-plugin">
     <title>Create a security plug-in</title>
 
-    <section>
+    <section id="writsecs">
       <title>Writing your own security service</title>
 
       <para>TODO.....</para>

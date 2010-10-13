@@ -23,10 +23,10 @@
   -->
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.5//EN"
 "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
-<chapter>
+<chapter id="ch-rw-marine">
   <title>Real world example: marine application</title>
 
-  <section>
+  <section id="rw-marine">
     <title>Introduction</title>
 
     <para>In this chapter a step-by-step guide is given of how to create a
@@ -102,7 +102,7 @@
     </itemizedlist>
   </section>
 
-  <section>
+  <section id="rw-mar-prel">
     <title>Preliminary note</title>
 
     <para>When using Eclipse and the GWT plug-in we removed the
@@ -117,7 +117,7 @@
     url="http://geomajas.org/forum">Geomajas forum</ulink>.</para>
   </section>
 
-  <section>
+  <section id="rw-ma-setup">
     <title>Setting up a Geomajas based project</title>
 
     <para>To create a new project based on Geomajas you must execute the
@@ -172,7 +172,7 @@
     OpenStreetMaps layer and a vector layer based on shape files.</para>
   </section>
 
-  <section>
+  <section id="rw-ma-shape">
     <title>Showing your own shape files in Geomajas</title>
 
     <para>In this section we are going to explain how to add a layer to your
@@ -285,7 +285,7 @@
     </orderedlist>
   </section>
 
-  <section>
+  <section id="rw-ma-pg">
     <title>Show your own postGIS data in Geomajas</title>
 
     <para>In this section we are going to explain how to add a layer to your
@@ -443,7 +443,7 @@ port=5432" Y:\1R5EK012.000 -append</programlisting></para>
     </orderedlist>
   </section>
 
-  <section>
+  <section id="rw-ma-wms">
     <title>Show your own WMS map using Geomajas</title>
 
     <para>Note that the WMS used in this example is a password protected WMS.
@@ -529,7 +529,7 @@ port=5432" Y:\1R5EK012.000 -append</programlisting></para>
     </orderedlist>
   </section>
 
-  <section>
+  <section id="rw-ma-soap">
     <title>Show locations of vessels using SOAP</title>
 
     <para>Geomajas doesn't have any native SOAP support implemented. So what
@@ -606,7 +606,7 @@ port=5432" Y:\1R5EK012.000 -append</programlisting></para>
     </orderedlist>
   </section>
 
-  <section>
+  <section id="rw-ma-linfo">
     <title>Show information about a lock using FacililyXML</title>
 
     <para>FacilityXML documents are XML documents containing information about
@@ -633,7 +633,7 @@ port=5432" Y:\1R5EK012.000 -append</programlisting></para>
     </figure>
   </section>
 
-  <section>
+  <section id="rw-ma-user">
     <title>User management</title>
 
     <orderedlist>

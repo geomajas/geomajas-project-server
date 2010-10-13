@@ -322,7 +322,7 @@
         </mediaobject>
       </figure>
 
-      <section>
+      <section id="arch-plarch">
         <title>Pipeline architecture</title>
 
         <para>All the layer access services provided by the Geomajas back-end
@@ -394,48 +394,15 @@
         names.</para>
       </section>
 
-      <section>
+      <section id="arch-pl-app">
         <title>Application in the back-end</title>
 
         <para>All the methods in both RasterLayerService and
         VectorLayerService are implemented using pipelines.</para>
       </section>
-
-      <!--
-      <section>
-        <title>Rendering strategies</title>
-
-        <para>By configuring the rendering pipeline, you can change the
-        rendering strategy. For vector rendering, you could for example use
-        this to switch between the following strategies.</para>
-
-        <itemizedlist>
-          <listitem>
-            <para>VectorRendering: creates SVG or VML (depending on the
-            client's browser type). This is the classic way of working. All
-            geometries are transformed into a string of either SVG or VML. On
-            the client-side this string is copied directly into the
-            DOM.</para>
-          </listitem>
-
-          <listitem>
-            <para>ImageRendering: creates PNG files for the<code>Tiles</code>.
-            These PNG files can also be cached. This way of on-the-fly
-            rasterization of the <code>Features</code> can provide a serious
-            performance boost for vector layers with lots of features.</para>
-          </listitem>
-
-          <listitem>
-            <para>ExternalWmsRendering: similar to the ImageRendering
-            strategy, but instead of rasterizing the <code>Features</code>
-            on-the-fly, it requests them from an external WMS server.</para>
-          </listitem>
-        </itemizedlist>
-      </section>
-      -->
     </section>
 
-    <section>
+    <section id="arch-layer">
       <title>Layer</title>
 
       <para>The layer extensions allow determining how a layer is built, which
@@ -447,39 +414,14 @@
       get obtain the layer data.</para>
     </section>
 
-    <!--
-    <section>
-      <title>Caching</title>
-
-      <para>This allows configuration for caching of layer data. Geomajas uses
-      caching in three places.</para>
-
-      <itemizedlist>
-        <listitem>
-          <para>caching of tile images</para>
-        </listitem>
-
-        <listitem>
-          <para>caching of features (?)</para>
-        </listitem>
-
-        <listitem>
-          <para>caching of user authentication tokens</para>
-        </listitem>
-      </itemizedlist>
-
-      <para></para>
-    </section>
-    -->
-
-    <section>
+    <section id="arch-securiry">
       <title>Security</title>
 
       <para>The data which is accessed using Geomajas can be security
       sensitive. Geomajas includes all the measures to assure protection of
       sensitive or private data.</para>
 
-      <section>
+      <section id="arch-sec">
         <title>Security architecture</title>
 
         <para>Geomajas is built to be entirely independent of the
@@ -735,7 +677,7 @@
         least one security service to assure the system is usable.</para>
       </section>
 
-      <section>
+      <section id="arch-sec-comm">
         <title>Interaction between client and back-end</title>
 
         <para>When a user wants to access a secured Geomajas application, she
@@ -824,7 +766,7 @@ private SecurityContext securityContext;</programlisting>
         security service implementation.</para>
       </section>
 
-      <section>
+      <section id="arch-sec-app">
         <title>How is this applied ?</title>
 
         <para>The security is applied throughout Geomajas. A list of places
@@ -986,7 +928,7 @@ private SecurityContext securityContext;</programlisting>
         </itemizedlist>
       </section>
 
-      <section>
+      <section id="arch-sec-transport">
         <title>Server configuration</title>
 
         <para>While this is not really touched by description above, the
@@ -1126,7 +1068,7 @@ private SecurityContext securityContext;</programlisting>
     services.</para>
   </chapter>
 
-  <chapter>
+  <chapter id="ch-projstruct">
     <title>Project structure</title>
 
     <para>The project is built from a large set of modules. A specific
@@ -1136,7 +1078,7 @@ private SecurityContext securityContext;</programlisting>
 
     <para></para>
 
-    <section>
+    <section id="arch-auto-reg">
       <title>Face and plug-in registration</title>
 
       <para>Plug-ins (which include faces) are automatically discovered when
@@ -1156,7 +1098,7 @@ private SecurityContext securityContext;</programlisting>
       web endpoints to be added using Spring MVC.</para>
     </section>
 
-    <section>
+    <section id="arch-module">
       <title>Module Overview</title>
 
       <para>Different modules have different impacts and different purposes.

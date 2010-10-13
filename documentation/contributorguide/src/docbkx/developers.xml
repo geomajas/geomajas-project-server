@@ -26,7 +26,7 @@
 <chapter id="developers" lang="en">
   <title>Developers information</title>
 
-  <section id="maven">
+  <section id="maveninfo">
     <title>maven compilation, targets, profiles, variables</title>
 
     <para>When doing an initial compilation of Geomajas, you may need to start

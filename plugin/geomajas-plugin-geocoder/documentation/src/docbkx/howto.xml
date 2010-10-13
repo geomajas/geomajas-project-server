@@ -29,7 +29,7 @@
   <para>This chapter details the extension possibilities of the geocoder
   plug-in.</para>
 
-  <section>
+  <section id="switchserv">
     <title>How to allow users to switch between geocoder services</title>
 
     <para>If you want your users to select between several geocoder services,
@@ -47,7 +47,7 @@
     pattern will work.</para>
   </section>
 
-  <section>
+  <section id="writeserv">
     <title>How to write a geocoder service</title>
 
     <para>Writing a geocoder service is reasonable easy. All you have to do is
@@ -113,7 +113,7 @@
       </itemizedlist></para>
   </section>
 
-  <section>
+  <section id="wrsplitserv">
     <title>How to write a service to split the input string</title>
 
     <para>The geocoder command uses an instance of SplitGeocoderStringService
@@ -135,7 +135,7 @@
     combining.</para>
   </section>
 
-  <section>
+  <section id="wricombserv">
     <title>How to write a service to combine results</title>
 
     <para>When multiple geocoder services found a match for the search string,
@@ -153,7 +153,7 @@
     context.</para>
   </section>
 
-  <section>
+  <section id="chawidget">
     <title>How to change behaviour of the GeocoderWidget</title>
 
     <para>The widgets behaviour is controlled using two handler classes,

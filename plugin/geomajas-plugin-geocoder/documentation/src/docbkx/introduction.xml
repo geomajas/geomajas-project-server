@@ -44,7 +44,7 @@
   service. Some standard implementations are provided. Either the first
   services which produces a match wins, or the results may be combined.</para>
 
-  <section>
+  <section id="how">
     <title>How does it work?</title>
 
     <para>The GetLocationForStringCommand class handles a request to get a

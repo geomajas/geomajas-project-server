@@ -28,7 +28,7 @@
 
   <para></para>
 
-  <section>
+  <section id="geotools">
     <title>GeoTools layer configuration</title>
 
     <para>This section handles possible configurations using the GeoTools
@@ -85,7 +85,7 @@
       </tgroup>
     </table>
 
-    <section>
+    <section id="WFS">
       <title>Configuring a Web Feature Service (WFS) layer</title>
 
       <para>In order to read data from a WFS, a GeoTools layer is required.
@@ -208,7 +208,7 @@
 &lt;/dependency&gt;</programlisting>
     </section>
 
-    <section>
+    <section id="db">
       <title>Configuring a database layer (PostGIS, Oracle Spatial,...)</title>
 
       <warning>
@@ -355,7 +355,7 @@
     </section>
   </section>
 
-  <section>
+  <section id="shape">
     <title>Shape in memory layer</title>
 
     <para>This layer is backed by a shape file that is loaded in memory at
@@ -390,7 +390,7 @@
       </table></para>
   </section>
 
-  <section>
+  <section id="tx">
     <title>Transaction configuration</title>
 
     <para>For GeoTools layers, the following transaction configuration can be

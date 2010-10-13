@@ -28,7 +28,7 @@
 
   <para></para>
 
-  <section>
+  <section id="dependencies">
     <title>Dependencies</title>
 
     <para>In order to work with the Hibernate layer plug-in, you need multiple
@@ -44,7 +44,7 @@
                 xmlns:xi="http://www.w3.org/2001/XInclude" />
   </section>
 
-  <section>
+  <section id="basichib">
     <title>Basic Hibernate configuration</title>
 
     <para>First of all, you need to configure the basic Hibernate library. On
@@ -94,7 +94,7 @@
     to configure these through Spring.</para>
   </section>
 
-  <section>
+  <section id="springtx">
     <title>Spring transaction configuration</title>
 
     <para>The Spring framework provides a connection to Hibernate by means of
@@ -134,7 +134,7 @@
                 xmlns:xi="http://www.w3.org/2001/XInclude" />
   </section>
 
-  <section>
+  <section id="confvl">
     <title>Configuring a vector layer</title>
 
     <para>Creating a vector layers with the Geomajas Hibernate plug-in takes a
@@ -167,7 +167,7 @@
     configured. This example will demonstrate a simple case, with a one-to-one
     mapping between a Java class and a single spatial database table.</para>
 
-    <section>
+    <section id="spatialtable">
       <title>Spatial database table</title>
 
       <para>We start out by creating a simple spatial table in the database
@@ -193,7 +193,7 @@
       </example>
     </section>
 
-    <section>
+    <section id="ormap">
       <title>Java O/R mapping</title>
 
       <para>Assuming that you have a database with spatial data, let us now
@@ -247,7 +247,7 @@ public class AreaOfInterest {
       </tip>
     </section>
 
-    <section>
+    <section id="vlconf">
       <title>Vector layer configuration</title>
 
       <para>Now that you have a spatial database table and a Java class to map
@@ -256,7 +256,7 @@ public class AreaOfInterest {
       <code>org.geomajas.configuration.VectorLayerInfo</code> object, and only
       than the actual layer definition.</para>
 
-      <section>
+      <section id="vlinfo">
         <title>Configuring the VectorLayerInfo</title>
 
         <para>The configuration of the VectorLayerInfo is almost identical as
@@ -364,8 +364,8 @@ public class AreaOfInterest {
         </itemizedlist>
       </section>
 
-      <section>
-        <title>Configuring the layer </title>
+      <section id="conflayer">
+        <title>Configuring the layer</title>
 
         <para>When the <code>org.geomajas.configuration.VectorLayerInfo</code>
         definition has been defined, it is time to define the actual layer.

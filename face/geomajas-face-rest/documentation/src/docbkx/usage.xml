@@ -43,7 +43,7 @@
   currently limited to GeoJSON only. The GeoJSON specification can be found at
   <ulink url="???">http://geojson.org/geojson-spec.html</ulink>.</para>
 
-  <section>
+  <section id="readfeature">
     <title>Reading a single feature</title>
 
     <para>The method and request uri for reading a single feature is:</para>
@@ -132,7 +132,7 @@
     </table>
   </section>
 
-  <section>
+  <section id="readfeatures">
     <title>Reading multiple features</title>
 
     <para>The method and request uri for reading multiple features is:</para>
@@ -319,7 +319,7 @@
     implemented.</para>
   </section>
 
-  <section>
+  <section id="openlayers">
     <title>OpenLayers configuration</title>
 
     <para><ulink url="http://openlayers.org/">OpenLayers</ulink> is the most

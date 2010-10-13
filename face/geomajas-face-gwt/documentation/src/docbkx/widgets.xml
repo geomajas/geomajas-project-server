@@ -33,7 +33,7 @@
   widgets are closely connected, either through configuration or
   coding.</para>
 
-  <section>
+  <section id="GraphicsWidget">
 	<title>GraphicsWidget</title>
 
 	<para>The <code>GraphicsWidget</code> is the basic widget that allows
@@ -64,7 +64,7 @@
 	developers.</para>
   </section>
 
-  <section>
+  <section id="MapWidget">
 	<title>MapWidget</title>
 
 	<para>The main map for any Geomajas application using the GWT face. This
@@ -157,7 +157,7 @@
 	</figure>
   </section>
 
-  <section>
+  <section id="OverviewMap">
 	<title>OverviewMap</title>
 
 	<para>The overview map is an extension of the <code>MapWidget</code>,
@@ -182,7 +182,7 @@
 	</figure>
   </section>
 
-  <section>
+  <section id="Toolbar">
 	<title>Toolbar</title>
 
 	<para>The Geomajas tool bar is an extension of the SmartGWT
@@ -335,7 +335,7 @@
 	</figure>
   </section>
 
-  <section>
+  <section id="LayerTree">
 	<title>LayerTree</title>
 
 	<para>This widget represents a view on the map model which is focused on
@@ -430,7 +430,7 @@
 	</itemizedlist>
   </section>
 
-  <section>
+  <section id="Legend">
 	<title>Legend</title>
 
 	<para>The <code>Legend</code> is a graphical widget that shows all
@@ -451,7 +451,7 @@
 	</figure>
   </section>
 
-  <section>
+  <section id="FeatureListGrid">
 	<title>FeatureListGrid</title>
 
 	<para>The <code>FeatureListGrid</code> is a table listing the attributes
@@ -517,7 +517,7 @@
 	</figure>
   </section>
 
-  <section>
+  <section id="FeatAttrWind">
 	<title>FeatureAttributeWindow</title>
 
 	<para>The <code>FeatureAttributeWindow</code> is a floating window to
@@ -567,7 +567,7 @@
 	</figure>
   </section>
 
-  <section>
+  <section id="ActivityMon">
 	<title>ActivityMonitor</title>
 
 	<para>This widget monitors client-server communication traffic, and
@@ -590,7 +590,7 @@
 	</figure>
   </section>
 
-  <section>
+  <section id="ScaleSelect">
 	<title>ScaleSelect</title>
 
 	<para>Combo box for changing the scale on the map which can be added to
@@ -616,7 +616,7 @@
 	</figure>
   </section>
 
-  <section>
+  <section id="FeatureSearch">
 	<title>FeatureSearch</title>
 
 	<para>Widget that supports searching for features on the attributes.

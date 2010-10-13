@@ -31,7 +31,7 @@
   the required build steps, and make sure the GWT dispatcher servlet is
   included in your web.xml.</para>
 
-  <section>
+  <section id="dependencies">
     <title>Dependencies</title>
 
     <para>You have to include the GWT face (client) module. As this is a GWT
@@ -116,7 +116,7 @@
     </example>
   </section>
 
-  <section>
+  <section id="webxml">
     <title>web.xml</title>
 
     <para>You need to include the Geomajas GWT service to assure the GWT files
@@ -139,7 +139,7 @@
     </example>
   </section>
 
-  <section>
+  <section id="buildsteps">
     <title>Build steps</title>
 
     <para>The GWT compilation needs to be added as one of the build steps. You

@@ -28,7 +28,7 @@
 
   <para></para>
 
-  <section>
+  <section id="dependencies">
     <title>Dependencies</title>
 
     <para>Make sure your include the plug-in in your project. If you are using
@@ -58,10 +58,10 @@
     </example>
   </section>
 
-  <section>
+  <section id="osmraster">
     <title>OpenStreetMap raster layer</title>
 
-    <section>
+    <section id="baseconf">
       <title>Base configuration</title>
 
       <para>A base OpenStreetMap layer configuration looks as follows:</para>
@@ -84,7 +84,7 @@
       </warning>
     </section>
 
-    <section>
+    <section id="imgsrc">
       <title>Image source configuration</title>
 
       <para>The default configuration for the OpenStreetMap layer will use the
@@ -129,7 +129,7 @@
       <para></para>
     </section>
 
-    <section>
+    <section id="zoom">
       <title>Zoom level configuration</title>
 
       <para>By default the maximum zoom level is 19, but this can be modified

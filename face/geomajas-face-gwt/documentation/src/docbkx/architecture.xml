@@ -23,10 +23,10 @@
   ~ You should have received a copy of the GNU Affero General Public License
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
-<chapter>
+<chapter id="ch-arch">
   <title>GWT face architecture</title>
 
-  <section>
+  <section id="comm">
     <title>Client-server communication</title>
 
     <para>Client-server communication in Geomajas is executed through a series
@@ -56,7 +56,7 @@
                 xmlns:xi="http://www.w3.org/2001/XInclude" />
   </section>
 
-  <section>
+  <section id="mapsmodel">
     <title>The map's model</title>
 
     <para>As with any GIS framework or application, the most crucial of all
@@ -69,7 +69,7 @@
     model, is represented by the
     <code>org.geomajas.gwt.client.map.<code>MapModel</code></code>.</para>
 
-    <section>
+    <section id="MapModel">
       <title>MapModel</title>
 
       <para>The definition of the model behind a map
@@ -127,7 +127,7 @@
       </itemizedlist>
     </section>
 
-    <section>
+    <section id="MapView">
       <title>MapView</title>
 
       <para>Part of a map is this
@@ -162,7 +162,7 @@
       screen space to world space and back.</para>
     </section>
 
-    <section>
+    <section id="WorkFlow">
       <title>Workflow</title>
 
       <para>A work flow in the GWT face determines how editing should be
@@ -253,7 +253,7 @@
       </itemizedlist>
     </section>
 
-    <section>
+    <section id="selfeat">
       <title>Selection of features</title>
 
       <para>A feature in a vector layer has the possibility to be selected.
@@ -298,7 +298,7 @@
     </section>
   </section>
 
-  <section>
+  <section id="spatial">
     <title>The spatial package</title>
 
     <para>The spatial package (<code>org.geomajas.gwt.client.spatial</code>)
@@ -314,7 +314,7 @@
     valuable tool. It allows you to transform coordinates, bounding boxes and
     geometries between the 3 pre-defined spaces (world, view, pan).</para>
 
-    <section>
+    <section id="geom">
       <title>Geometry definitions</title>
 
       <para>All <code>Geometry</code> definitions in the GWT face are based on
@@ -367,7 +367,7 @@
       </itemizedlist>
     </section>
 
-    <section>
+    <section id="editgeom">
       <title>Editing geometries</title>
 
       <para>The <code>Geometry</code> implementations themselves do not have
@@ -390,7 +390,7 @@
                   xmlns:xi="http://www.w3.org/2001/XInclude" />
     </section>
 
-    <section>
+    <section id="snapping">
       <title>Snapping</title>
 
       <para>Snapping in Geomajas, is handled by a single manager class called
@@ -462,7 +462,7 @@
     </section>
   </section>
 
-  <section>
+  <section id="graphrend">
     <title id="graphics">Graphics &amp; rendering</title>
 
     <para>In the GWT face, the main <code>render</code> method can be found in
@@ -547,7 +547,7 @@
       </listitem>
     </itemizedlist>
 
-    <section>
+    <section id="gfx">
       <title>GFX interfaces</title>
 
       <para>As will be explained in more detail in the "rendering manual",
@@ -717,7 +717,7 @@
       </itemizedlist>
     </section>
 
-    <section>
+    <section id="rendering">
       <title>Rendering manual</title>
 
       <para>There are two ways to render objects onto the map. One uses
@@ -738,10 +738,10 @@
       is important to be aware of the necessity of using the correct parent
       group when drawing.</para>
 
-      <section>
+      <section id="rendindi">
         <title>The simple approach - indirect drawing</title>
 
-        <section>
+        <section id="drawscreenspace">
           <title>Drawing in screen space</title>
 
           <para>This approach uses <code>MapWidget</code>'s render method,
@@ -771,7 +771,7 @@ map.render(rectangle, RenderGroup.SCREEN, RenderStatus.ALL);</programlisting>
           <programlisting>map.render(rectangle, RenderGroup.SCREEN, RenderStatus.DELETE);</programlisting>
         </section>
 
-        <section>
+        <section id="renddrawworldspace">
           <title>Drawing in world space</title>
 
           <para>Remember that there was also an extension of the
@@ -805,7 +805,7 @@ map.registerWorldPaintable(rectangle);</programlisting>
         </section>
       </section>
 
-      <section>
+      <section id="useGraphicsContext">
         <title>The advanced approach - using the GraphicsContext
         directly</title>
 
@@ -847,7 +847,7 @@ map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</
     </section>
   </section>
 
-  <section>
+  <section id="userInteraction">
     <title id="interaction">User interaction</title>
 
     <para>This section covers the many interfaces regarding buttons, menu
@@ -905,7 +905,7 @@ map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</
       included in the map configuration.</para>
     </note>
 
-    <section>
+    <section id="ToolbarAction">
       <title>Toolbar: ToolbarAction</title>
 
       <para>The <code>ToolbarAction</code> is your basic abstract class for
@@ -930,7 +930,7 @@ map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</
                   xmlns:xi="http://www.w3.org/2001/XInclude" />
     </section>
 
-    <section>
+    <section id="ToolbarModalAction">
       <title>Toolbar: ToolbarModalAction</title>
 
       <para>The <code>ToolbarModalAction</code> is the basic template for
@@ -959,7 +959,7 @@ map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</
                   xmlns:xi="http://www.w3.org/2001/XInclude" />
     </section>
 
-    <section>
+    <section id="LayerTreeAction">
       <title>LayerTree: LayerTreeAction</title>
 
       <para>The <code>LayerTreeAction</code> is your basic abstract class for
@@ -978,7 +978,7 @@ map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</
                   xmlns:xi="http://www.w3.org/2001/XInclude" />
     </section>
 
-    <section>
+    <section id="LayerTreeModalAction">
       <title>LayerTree: LayerTreeModalAction</title>
 
       <para>The <code>LayerTreeModalAction</code> is the basic template for
@@ -993,7 +993,7 @@ map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</
       initialised.</para>
     </section>
 
-    <section>
+    <section id="MenuAction">
       <title>Menu: MenuAction</title>
 
       <para>To create menu items or context menu items, Geomajas provides a
@@ -1006,10 +1006,10 @@ map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</
                   xmlns:xi="http://www.w3.org/2001/XInclude" />
     </section>
 
-    <section>
+    <section id="mapControllers">
       <title>Controllers on the map</title>
 
-      <section>
+      <section id="GraphicsController">
         <title>GraphicsController</title>
 
         <para>For interactive mouse listeners on the map there is a general
@@ -1088,7 +1088,7 @@ map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</
         <para><programlisting>mapWidget.setController(null);</programlisting></para>
       </section>
 
-      <section>
+      <section id="activeAndFallback">
         <title>Active and fallback controllers</title>
 
         <para>Only one <code>GraphicsController</code> can be active at any
@@ -1110,7 +1110,7 @@ map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</
     </section>
   </section>
 
-  <section>
+  <section id="i18n">
     <title>Internationalization in Geomajas</title>
 
     <para>For internationalization, Geomajas uses the default GWT i18n
@@ -1165,7 +1165,7 @@ map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</
 setContents( "&lt;div&gt;&lt;b&gt;" + I18nProvider.getMenu().distance() + "&lt;/b&gt;:&lt;/div&gt;&lt;div style='margin-top:5px;'&gt;" + dist + "&lt;/div&gt;"); </programlisting>
   </section>
 
-  <section>
+  <section id="junit">
     <title>Unit testing GWT widgets</title>
 
     <para>A GWT unit test should inherit from the <code>GWTTestcase</code>

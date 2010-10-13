@@ -29,7 +29,7 @@
   <appendix id="appendix-migrating">
     <title>Migrating between Geomajas versions</title>
 
-    <section>
+    <section id="mig-171">
       <title>Migrating between Geomajas 1.6.0 and Geomajas (back-end core)
       1.7.1</title>
 
@@ -88,7 +88,7 @@
         </itemizedlist></para>
     </section>
 
-    <section>
+    <section id="mig-160">
       <title>Migrating from Geomajas 1.5.4 to Geomajas 1.6.0</title>
 
       <para><itemizedlist>
@@ -156,7 +156,7 @@
         </itemizedlist></para>
     </section>
 
-    <section>
+    <section id="mig-154">
       <title>Migrating from Geomajas 1.5.3 to Geomajas 1.5.4</title>
 
       <para><itemizedlist>
@@ -292,7 +292,7 @@
         </itemizedlist></para>
     </section>
 
-    <section>
+    <section id="mig-153">
       <title>Migrating from Geomajas 1.5.2 to Geomajas 1.5.3</title>
 
       <itemizedlist>
@@ -356,7 +356,7 @@
         </listitem>
       </itemizedlist>
 
-      <section>
+      <section id="mig-153api">
         <title>General API changes</title>
 
         <para>The geomajas-API has been split up in a formal (geomajas-API)
@@ -409,7 +409,7 @@
         </itemizedlist>
       </section>
 
-      <section>
+      <section id="mig-153conf">
         <title>Configuration changes</title>
 
         <para>The configuration API has been split up in a back-end part and a
@@ -831,7 +831,7 @@
       </section>
     </section>
 
-    <section>
+    <section id="mig-152">
       <title>Migrating from Geomajas 1.5.1 to Geomajas 1.5.2</title>
 
       <itemizedlist>
@@ -842,7 +842,7 @@
       </itemizedlist>
     </section>
 
-    <section>
+    <section id="mig-151">
       <title>Migrating from Geomajas 1.5.0 to Geomajas 1.5.1</title>
 
       <itemizedlist>
@@ -859,7 +859,7 @@
       </itemizedlist>
     </section>
 
-    <section>
+    <section id="mig-150">
       <title>Migrating from Geomajas 1.4.x to 1.5.0</title>
 
       <para><itemizedlist>

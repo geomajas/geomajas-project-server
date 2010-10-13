@@ -88,7 +88,7 @@
   <xi:include href="listing/HtmlIncludeConfig.xml"
               xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-  <section>
+  <section id="gmaps">
     <title>Using Google maps raster layer</title>
 
     <para>To use the Google maps raster layer in the dojo face, you have to

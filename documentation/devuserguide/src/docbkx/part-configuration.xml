@@ -33,7 +33,7 @@
     initial configuration needs to be done using web.xml. There you need to
     indicate the files which contain the configuration information.</para>
 
-    <section>
+    <section id="conf-webxml">
       <title>web.xml</title>
 
       <para>In your <code>web.xml</code> file, you need to assure the
@@ -87,7 +87,7 @@
       <para></para>
     </section>
 
-    <section>
+    <section id="conf-gen">
       <title>General principles</title>
 
       <para>Each configuration file needs the following header:</para>
@@ -129,7 +129,7 @@
       than once. In that case, the last occurrence will be used.</para>
     </section>
 
-    <section>
+    <section id="conf-gm">
       <title>Geomajas configuration</title>
 
       <para>The initial bean which needs to be defined is a bean indicating
@@ -156,7 +156,7 @@
     <para>The central configuration which needs to be done is the map and the
     collection of layers which are part of that map.</para>
 
-    <section>
+    <section id="conf-raster">
       <title>Raster layer configuration</title>
 
       <para>Raster layers are image-based layers which, depending on the type,
@@ -169,7 +169,7 @@
       the type of layer, extra properties are needed to provide a full
       configuration.</para>
 
-      <section>
+      <section id="conf-rasterInfo">
         <title>Raster layer info</title>
 
         <para>For all raster layers, you will need to define a raster layer
@@ -272,7 +272,7 @@
       </section>
     </section>
 
-    <section>
+    <section id="conf-vector">
       <title>Vector layer configuration</title>
 
       <para>Vector layers contain homogeneous vectorial features. All vector
@@ -287,7 +287,7 @@
       <para>The definition of the actual layer is similar to the definition of
       a raster layer.</para>
 
-      <section>
+      <section id="conf-vectorInfo">
         <title>Vector layer info</title>
 
         <para>For the layer configuration, you have to create the layer info
@@ -456,7 +456,7 @@
         <xi:include href="listing/ShapeInMemAirportStyleInfo.xml"
                     xmlns:xi="http://www.w3.org/2001/XInclude" />
 
-        <section>
+        <section id="conf-validation">
           <title>Validation</title>
 
           <para>Most feature attributes should be validated before they can be
@@ -483,7 +483,7 @@
         </section>
       </section>
 
-      <section>
+      <section id="conf-beanLayer">
         <title>Bean layer configuration</title>
 
         <para>Bean layer provides an in-memory layer which is not persisted in
@@ -522,7 +522,7 @@
       </section>
     </section>
 
-    <section>
+    <section id="conf-client">
       <title>Client configuration</title>
 
       <figure>
@@ -535,7 +535,7 @@
         </mediaobject>
       </figure>
 
-      <section>
+      <section id="conf-map">
         <title>Map configuration</title>
 
         <para>A map is a client side object. The Geomajas back-end works
@@ -639,7 +639,7 @@
         configuration object.</para>
       </section>
 
-      <section>
+      <section id="conf-clientLayer">
         <title>Client layer configuration</title>
 
         <para>Layer configuration is split in two (linked) parts. You have to
@@ -648,13 +648,13 @@
         client side. Secondly, there is a distinction between raster and
         vector layers as they each needs a lot of specific information.</para>
 
-        <section>
+        <section id="conf-clientRaster">
           <title>Raster layer</title>
 
           <para>TODO.....</para>
         </section>
 
-        <section>
+        <section id="conf-clientVector">
           <title>Vector layer</title>
 
           <para>TODO.....</para>
@@ -663,7 +663,7 @@
     </section>
   </chapter>
 
-  <chapter>
+  <chapter id="ch-secConf">
     <title>Security configuration</title>
 
     <para>To make sure the system can be used, you have to configure the
@@ -687,7 +687,7 @@
     here).</para>
   </chapter>
 
-  <chapter>
+  <chapter id="ch-transconf">
     <title>Transaction configuration</title>
 
     <para>Spring has support declarative transaction management, which
@@ -709,7 +709,7 @@
     layers which require a different transaction manager.</para>
   </chapter>
 
-  <chapter>
+  <chapter id="ch-dispatcher">
     <title>Dispatcher servlet configuration</title>
 
     <para>Additional servlet configuration may be needed for any plugin that
@@ -819,7 +819,7 @@ public class MyView extends AbstractView {
     argument in the controller.</para>
   </chapter>
 
-  <chapter>
+  <chapter id="ch-crs">
     <title>Coordinate Reference Systems</title>
 
     <para>Geomajas uses GeoTools' gt-epsg-wkt module to define the coordinate

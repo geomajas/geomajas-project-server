@@ -29,7 +29,7 @@
   <para>The configuration of the REST plugin consists of a maven part and a
   web MVC part.</para>
 
-  <section>
+  <section id="dependencies">
     <title>Dependencies</title>
 
     <para>Make sure your include the plug-in in your project. If you are using
@@ -47,7 +47,7 @@
     </example>
   </section>
 
-  <section>
+  <section id="WebMVC">
     <title>Web MVC configuration</title>
 
     <para>The web configuration is by default based on the bean name URL

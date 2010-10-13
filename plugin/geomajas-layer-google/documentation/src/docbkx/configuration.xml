@@ -28,7 +28,7 @@
 
   <para></para>
 
-  <section>
+  <section id="dependencies">
     <title>Dependencies</title>
 
     <para>Make sure your include the plug-in in your project. If you are using
@@ -95,10 +95,10 @@
     </example>
   </section>
 
-  <section>
+  <section id="graster">
     <title>Google raster layer</title>
 
-    <section>
+    <section id="gmap-base">
       <title>Base configuration</title>
 
       <warning>
@@ -202,7 +202,7 @@
                   xmlns:xi="http://www.w3.org/2001/XInclude" />
     </section>
 
-    <section>
+    <section id="imgsource">
       <title>Image source configuration</title>
 
       <para>You can also force the set of URLs to choose from, as in the
@@ -229,7 +229,7 @@
       <para></para>
     </section>
 
-    <section>
+    <section id="zoom">
       <title>Zoom level configuration</title>
 
       <para>By default the maximum zoom level is 19, but this can be modified
@@ -241,7 +241,7 @@
     </section>
   </section>
 
-  <section>
+  <section id="mapaddon">
     <title>Using the Google map add-on</title>
 
     <para>To enable the display of copyright information on the map (to comply

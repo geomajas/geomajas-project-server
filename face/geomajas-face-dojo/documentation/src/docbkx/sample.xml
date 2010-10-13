@@ -23,10 +23,10 @@
   ~ You should have received a copy of the GNU Affero General Public License
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
-<chapter>
+<chapter id="ch-dojo">
   <title>dojo example application</title>
 
-  <section>
+  <section id="projlay">
     <title>Project layout</title>
 
     <para>For simple applications which don't have any custom JavaScript code,
@@ -146,7 +146,7 @@
     </itemizedlist>
   </section>
 
-  <section>
+  <section id="mavendojo">
     <title>Maven dojo plug-in</title>
 
     <para>The Maven dojo plug-in is capable of executing a custom dojo build

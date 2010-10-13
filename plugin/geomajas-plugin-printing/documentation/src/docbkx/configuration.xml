@@ -32,7 +32,7 @@
   the GWT face, an action has been provided that pops up a printing
   preferences window.</para>
 
-  <section>
+  <section id="dependencies">
     <title>Dependency configuration</title>
 
     <para>To use the printing plugin, you have to include the plug-in
@@ -65,10 +65,10 @@
     <para></para>
   </section>
 
-  <section>
+  <section id="gwtface">
     <title>GWT face configuration</title>
 
-    <section>
+    <section id="gwtmodule">
       <title>GWT module definition</title>
 
       <para>In order to be able to use the printing plug-in in a GWT
@@ -84,7 +84,7 @@
       the jars on the classpath) available for the GWT compiler.</para>
     </section>
 
-    <section>
+    <section id="gwttoolbar">
       <title>Example toolbar configuration</title>
 
       <para>To use the printing functionality in a map, the following

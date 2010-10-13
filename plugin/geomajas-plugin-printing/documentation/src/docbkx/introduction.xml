@@ -44,7 +44,7 @@
   This has the advantage of preserving the vectorial nature of the features in
   a layer, allowing crisp vector rendering at any zoom level.</para>
 
-  <section>
+  <section id="backend">
     <title>Back-end</title>
 
     <para>The printing plug-in consists of a client part (the GWT face) that
