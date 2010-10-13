@@ -109,8 +109,8 @@ public class GetLocationForStringCommandAltTest {
 		Assert.assertNotNull(response.getAlternatives());
 		Assert.assertTrue(response.getAlternatives().size() > 0);
 		GetLocationForStringAlternative alt = response.getAlternatives().get(0);
-		Assert.assertEquals(-0.12883, alt.getCenter().getX(), DELTA);
-		Assert.assertEquals(51.50051, alt.getCenter().getY(), DELTA);
+		Assert.assertEquals(-0.12574, alt.getCenter().getX(), DELTA);
+		Assert.assertEquals(51.50853, alt.getCenter().getY(), DELTA);
 		Assert.assertEquals("GeoNames", alt.getGeocoderName());
 	}
 
@@ -128,8 +128,8 @@ public class GetLocationForStringCommandAltTest {
 		Assert.assertNotNull(response.getAlternatives());
 		Assert.assertTrue(response.getAlternatives().size() > 0);
 		GetLocationForStringAlternative alt = response.getAlternatives().get(0);
-		Assert.assertEquals(-14341.289998897433, alt.getCenter().getX(), DELTA);
-		Assert.assertEquals(6710310.283493439, alt.getCenter().getY(), DELTA);
+		Assert.assertEquals(-13997.312772346217, alt.getCenter().getX(), DELTA);
+		Assert.assertEquals(6711744.580491004, alt.getCenter().getY(), DELTA);
 		Assert.assertEquals("GeoNames", alt.getGeocoderName());
 	}
 
