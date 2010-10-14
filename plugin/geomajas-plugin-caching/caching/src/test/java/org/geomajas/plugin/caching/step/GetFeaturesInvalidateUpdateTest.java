@@ -23,15 +23,14 @@
 
 package org.geomajas.plugin.caching.step;
 
-import com.vividsolutions.jts.geom.Envelope;
 import org.geomajas.global.GeomajasConstant;
+import org.geomajas.internal.layer.feature.InternalFeatureImpl;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.VectorLayerService;
 import org.geomajas.layer.feature.InternalFeature;
+import org.geomajas.layer.feature.attribute.StringAttribute;
 import org.geomajas.plugin.caching.service.CacheCategory;
-import org.geomajas.plugin.caching.service.CacheContext;
 import org.geomajas.plugin.caching.service.CacheManagerServiceImpl;
-import org.geomajas.plugin.caching.service.DummyCacheService;
 import org.geomajas.service.GeoService;
 import org.geomajas.service.TestRecorder;
 import org.junit.Assert;
@@ -43,6 +42,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -53,13 +53,11 @@ import java.util.List;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
 		"/META-INF/geomajasContext.xml", "/org/geomajas/plugin/caching/DefaultCachedPipelines.xml",
-		"/pipelineContext.xml", "/org/geomajas/testdata/layerBeans.xml", "/org/geomajas/testdata/layerCountries.xml",
+		"/pipelineContext.xml", "/org/geomajas/testdata/layerBeans.xml",
 		"/org/geomajas/spring/testRecorder.xml"})
-public class GetFeaturesTest {
+public class GetFeaturesInvalidateUpdateTest {
 
 	private static final String LAYER_BEANS = "beans";
-	private static final String LAYER_COUNTRIES = "countries";
-	private static final double DELTA = 1e-10;
 
 	@Autowired
 	@Qualifier(LAYER_BEANS)
@@ -87,41 +85,51 @@ public class GetFeaturesTest {
 	}
 
 	@Test
-	public void testFeatures() throws Exception {
+	public void testFeaturesInvalidateUpdate() throws Exception {
 		List<InternalFeature> features;
 
 		// first run, this should put things in the cache
 		recorder.clear();
 		features = vectorLayerService.getFeatures(LAYER_BEANS, geoService.getCrs("EPSG:4326"), null, null,
-				GeomajasConstant.FEATURE_INCLUDE_NONE);
+				GeomajasConstant.FEATURE_INCLUDE_ATTRIBUTES);
 		Assert.assertNotNull(features);
 		Assert.assertEquals(3, features.size());
 		Assert.assertEquals("", recorder.matches(CacheCategory.FEATURE,
 				"Put item in cache"));
 
-		// verify that data is in the cache
-		DummyCacheService cache = (DummyCacheService)cacheManager.getCacheForTesting(LAYER_BEANS, CacheCategory.FEATURE);
-		Assert.assertEquals(1, cache.size());
-		String key = cache.getKey();
-		FeaturesCacheContainer bcc = (FeaturesCacheContainer) cache.getObject();
-		bcc.getFeatures().remove(2);
-
-		// get features again, the result should be different because we changed the cached value
+		// get features again, it should now use the cache
 		recorder.clear();
 		features = vectorLayerService.getFeatures(LAYER_BEANS, geoService.getCrs("EPSG:4326"), null, null,
-				GeomajasConstant.FEATURE_INCLUDE_NONE);
+				GeomajasConstant.FEATURE_INCLUDE_ATTRIBUTES);
 		Assert.assertNotNull(features);
-		Assert.assertEquals(2, features.size());
+		Assert.assertEquals(3, features.size());
+		Assert.assertEquals("1", features.get(0).getId()); // assure testing same object later
+		Assert.assertNotSame("something has changed", features.get(0).getAttributes().get("stringAttr").getValue());
 		Assert.assertEquals("", recorder.matches(CacheCategory.FEATURE,
 				"Got item from cache",
 				"Put item in cache"));
 
-		// ask for different layer, should not be found in cache as context is different
+		// update one item
 		recorder.clear();
-		features = vectorLayerService.getFeatures(LAYER_COUNTRIES, geoService.getCrs("EPSG:4326"), null, null,
-				GeomajasConstant.FEATURE_INCLUDE_NONE);
+		InternalFeature org = features.get(0);
+		InternalFeature upd = new InternalFeatureImpl(org);
+		upd.getAttributes().put("stringAttr", new StringAttribute("something has changed"));
+		List<InternalFeature> orgFeatures = new ArrayList<InternalFeature>();
+		orgFeatures.add(org);
+		List<InternalFeature> updFeatures = new ArrayList<InternalFeature>();
+		updFeatures.add(upd);
+		vectorLayerService.saveOrUpdate(LAYER_BEANS, geoService.getCrs("EPSG:4326"), orgFeatures, updFeatures);
+		Assert.assertEquals("", recorder.matches("layer",
+				"Invalidate geometry for old version of feature")); // not invalidating on new as not given/changed
+
+		// get features again, it should *not* use the cache
+		recorder.clear();
+		features = vectorLayerService.getFeatures(LAYER_BEANS, geoService.getCrs("EPSG:4326"), null, null,
+				GeomajasConstant.FEATURE_INCLUDE_ATTRIBUTES);
 		Assert.assertNotNull(features);
-		Assert.assertEquals(4, features.size());
+		Assert.assertEquals(3, features.size());
+		Assert.assertEquals("1", features.get(0).getId()); // assure testing same object
+		Assert.assertEquals("something has changed", features.get(0).getAttributes().get("stringAttr").getValue());
 		Assert.assertEquals("", recorder.matches(CacheCategory.FEATURE,
 				"Put item in cache"));
 	}

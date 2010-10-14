@@ -27,6 +27,7 @@ import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.VectorLayer;
+import org.geomajas.layer.feature.FeatureModel;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.plugin.caching.service.CacheManagerService;
 import org.geomajas.service.TestRecorder;
@@ -72,22 +73,17 @@ public class UpdateFeatureInvalidateStep implements PipelineStep {
 		// invalidate the area of the old feature
 		InternalFeature oldFeature = context.getOptional(PipelineCode.OLD_FEATURE_KEY, InternalFeature.class);
 		if (null != oldFeature) {
-			Geometry oldGeometry = oldFeature.getGeometry();
+			// get original geometry from storage to assure not changed by transformation and available
+			Object feature = layer.read(oldFeature.getId());
+			context.put(PipelineCode.FEATURE_DATA_OBJECT_KEY, feature); // put in context to prevent getting twice
+			FeatureModel featureModel = layer.getFeatureModel();
+			Geometry oldGeometry = featureModel.getGeometry(feature);
 			if (null != oldGeometry) {
-				// need to transform this to layer coordinates
-				MathTransform mapToLayer = context.get(PipelineCode.CRS_TRANSFORM_KEY, MathTransform.class);
-
-				// and invalidate
-				try {
-					recorder.record("layer", "Invalidate geometry for old version of feature");
-					oldGeometry = JTS.transform(oldFeature.getGeometry(), mapToLayer);
-					Envelope oldEnvelope = oldGeometry.getEnvelopeInternal();
-					log.debug("invalidate old feature area {}", oldEnvelope);
-					cacheManager.invalidate(layer, oldEnvelope);
-				} catch (TransformException te) {
-					log.error("CRS transformation problem, cache entirely invalidated:" + te.getMessage(), te);
-					cacheManager.invalidate(layer);
-				}
+				// invalidate
+				recorder.record("layer", "Invalidate geometry for old version of feature");
+				Envelope oldEnvelope = oldGeometry.getEnvelopeInternal();
+				log.debug("invalidate old feature area {}", oldEnvelope);
+				cacheManager.invalidate(layer, oldEnvelope);
 			}
 		}
 

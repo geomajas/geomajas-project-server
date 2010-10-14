@@ -47,9 +47,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import javax.swing.*;
-import java.util.List;
-
 /**
  * Tests for the cached variant of the GetBounds pipeline.
  *
@@ -80,14 +77,11 @@ public class GetTileTest {
 	private VectorLayerService vectorLayerService;
 
 	@Autowired
-	private GeoService geoService;
-
-	@Autowired
 	private org.geomajas.security.SecurityManager securityManager;
 
 	@Before
 	public void init() {
-		cacheManager.invalidate(layerBeans);
+		cacheManager.drop(layerBeans);
 		securityManager.createSecurityContext(null); // assure a security context exists for this thread
 	}
 
