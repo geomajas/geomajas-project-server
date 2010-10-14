@@ -26,20 +26,24 @@ package org.geomajas.plugin.caching.step;
 import org.geomajas.command.dto.GetVectorTileRequest;
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.global.GeomajasConstant;
+import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.VectorLayerService;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.layer.tile.TileCode;
 import org.geomajas.layer.tile.TileMetadata;
 import org.geomajas.plugin.caching.service.CacheCategory;
+import org.geomajas.plugin.caching.service.CacheContext;
 import org.geomajas.plugin.caching.service.CacheManagerServiceImpl;
 import org.geomajas.plugin.caching.service.DummyCacheService;
 import org.geomajas.service.GeoService;
 import org.geomajas.service.TestRecorder;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -63,6 +67,10 @@ public class GetTileTest {
 	private static final double DELTA = 1e-10;
 
 	@Autowired
+	@Qualifier(LAYER_BEANS)
+	VectorLayer layerBeans;
+
+	@Autowired
 	private TestRecorder recorder;
 
 	@Autowired
@@ -77,9 +85,14 @@ public class GetTileTest {
 	@Autowired
 	private org.geomajas.security.SecurityManager securityManager;
 
+	@Before
+	public void init() {
+		cacheManager.invalidate(layerBeans);
+		securityManager.createSecurityContext(null); // assure a security context exists for this thread
+	}
+
 	@Test
 	public void testGetTile() throws Exception {
-		securityManager.createSecurityContext(null); // assure a security context exists for this thread
 		InternalTile tile;
 		TileMetadata tmd = new GetVectorTileRequest();
 		tmd.setCrs("EPSG:4326");
@@ -99,9 +112,8 @@ public class GetTileTest {
 		Assert.assertEquals("", recorder.matches(CacheCategory.TILE, "Put item in cache"));
 
 		// verify that data is in the cache
-		DummyCacheService cache = (DummyCacheService)cacheManager.getCacheForTesting(LAYER_BEANS, CacheCategory.TILE);
+		DummyCacheService cache = (DummyCacheService) cacheManager.getCacheForTesting(LAYER_BEANS, CacheCategory.TILE);
 		Assert.assertEquals(1, cache.size());
-		String key = cache.getKey();
 		TileCacheContainer tcc = (TileCacheContainer) cache.getObject();
 		tcc.getTile().setFeatureContent("<dummy />");
 
@@ -123,5 +135,49 @@ public class GetTileTest {
 		Assert.assertEquals("", recorder.matches(CacheCategory.FEATURE, "Put item in cache"));
 		Assert.assertEquals("", recorder.matches(CacheCategory.SVG, "Put item in cache"));
 		Assert.assertEquals("", recorder.matches(CacheCategory.TILE, "Put item in cache"));
+	}
+
+	@Test
+	public void testGetTileCheckFeatureStringCache() throws Exception {
+		InternalTile tile;
+		TileMetadata tmd = new GetVectorTileRequest();
+		tmd.setCrs("EPSG:4326");
+		tmd.setCode(new TileCode(1,0,1));
+		tmd.setLayerId(LAYER_BEANS);
+		tmd.setRenderer(TileMetadata.PARAM_SVG_RENDERER);
+		tmd.setScale(1.0);
+		tmd.setPanOrigin(new Coordinate(0, 0));
+
+		// first run, this should put things in the cache
+		recorder.clear();
+		tile = vectorLayerService.getTile(tmd);
+		Assert.assertNotNull(tile);
+		Assert.assertEquals("<g id=\"beans.features.1-0-1\"/>", tile.getFeatureContent());
+		Assert.assertEquals("", recorder.matches(CacheCategory.FEATURE, "Put item in cache"));
+		Assert.assertEquals("", recorder.matches(CacheCategory.SVG, "Put item in cache"));
+		Assert.assertEquals("", recorder.matches(CacheCategory.TILE, "Put item in cache"));
+
+		// verify that data is in the cache
+		DummyCacheService cache = (DummyCacheService)cacheManager.getCacheForTesting(LAYER_BEANS, CacheCategory.TILE);
+		Assert.assertEquals(1, cache.size());
+		cache.clear(); // remove tile from cache
+
+		cache = (DummyCacheService) cacheManager.getCacheForTesting(LAYER_BEANS, CacheCategory.SVG);
+		Assert.assertEquals(1, cache.size());
+		String key = cache.getKey();
+		TileContentCacheContainer tccc = (TileContentCacheContainer) cache.getObject();
+		CacheContext cc = tccc.getContext();
+		tccc = new TileContentCacheContainer("<blabla />", "");
+		tccc.setContext(cc);
+		cache.put(key, tccc);
+
+		// get tile again, should put tile in cache again but use features and string from cache
+		recorder.clear();
+		tile = vectorLayerService.getTile(tmd);
+		Assert.assertNotNull(tile);
+		Assert.assertEquals("<blabla />", tile.getFeatureContent());
+		Assert.assertEquals("", recorder.matches(CacheCategory.TILE, "Put item in cache"));
+		Assert.assertEquals("", recorder.matches(CacheCategory.SVG, "Got item from cache", "Put item in cache"));
+		Assert.assertEquals("", recorder.matches(CacheCategory.FEATURE, "Got item from cache", "Put item in cache"));
 	}
 }
