@@ -35,11 +35,10 @@
 	<source path="configuration"/>
 	<source path="geometry"/>
 	<source path="command/dto"/>
-	<source path="extension/printing/command/dto"/>
 	<source path="global">
 		<include name="GeomajasConstant.java"/>
 		<include name="CopyrightInfo.java"/>
-		<include name="GeomajasObject.java"/>
+		<include name="CacheableObject.java"/>
 	</source>
 
 </module>
