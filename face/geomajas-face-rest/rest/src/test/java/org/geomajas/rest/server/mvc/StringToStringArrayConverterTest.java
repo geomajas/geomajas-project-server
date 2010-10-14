@@ -3,7 +3,11 @@ package org.geomajas.rest.server.mvc;
 import org.junit.Assert;
 import org.junit.Test;
 
-public class StingToStringArrayConverterTest {
+/**
+ * Test for {@link org.geomajas.rest.server.mvc.StringToStringArrayConverter}.
+ */
+public class StringToStringArrayConverterTest {
+
 	@Test
 	public void testSplitWithoutWhitespace() {
 		StringToStringArrayConverter converter= new StringToStringArrayConverter();

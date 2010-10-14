@@ -34,6 +34,7 @@ import org.junit.Test;
 public class ScaleInfoTest {
 
 	private static final double DELTA = 1e-50;
+
 	@Test
 	public void testNoZeroPixelsPerUnit() {
 		ScaleInfo scaleInfo;

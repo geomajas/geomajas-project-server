@@ -178,7 +178,6 @@ public class AttributeCloneTest {
 	}
 
 	@Test
-	@SuppressWarnings("unchecked")
 	public void testOneToManyAttribute() {
 		Attribute<?> attribute = new OneToManyAttribute();
 		Attribute<?> clone = (Attribute<?>) attribute.clone();

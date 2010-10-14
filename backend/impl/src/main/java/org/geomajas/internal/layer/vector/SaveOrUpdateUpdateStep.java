@@ -45,7 +45,9 @@ public class SaveOrUpdateUpdateStep extends AbstractSaveOrUpdateStep {
 			String layerId = context.get(PipelineCode.LAYER_ID_KEY, String.class);
 			VectorLayer layer = context.get(PipelineCode.LAYER_KEY, VectorLayer.class);
 			if (securityContext.isFeatureUpdateAuthorized(layerId, oldFeature, newFeature)) {
-				context.put(PipelineCode.FEATURE_DATA_OBJECT_KEY, layer.read(newFeature.getId()));
+				if (null == context.getOptional(PipelineCode.FEATURE_DATA_OBJECT_KEY)) {
+					context.put(PipelineCode.FEATURE_DATA_OBJECT_KEY, layer.read(newFeature.getId()));
+				}
 			} else {
 				throw new GeomajasSecurityException(ExceptionCode.FEATURE_UPDATE_PROHIBITED,
 						oldFeature.getId(), securityContext.getUserId());
