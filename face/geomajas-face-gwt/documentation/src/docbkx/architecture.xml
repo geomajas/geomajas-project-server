@@ -905,7 +905,7 @@ map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</
       included in the map configuration.</para>
     </note>
 
-    <section id="ToolbarAction">
+    <section id="tbToolbarAction">
       <title>Toolbar: ToolbarAction</title>
 
       <para>The <code>ToolbarAction</code> is your basic abstract class for
@@ -930,7 +930,7 @@ map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</
                   xmlns:xi="http://www.w3.org/2001/XInclude" />
     </section>
 
-    <section id="ToolbarModalAction">
+    <section id="tbToolbarModalAction">
       <title>Toolbar: ToolbarModalAction</title>
 
       <para>The <code>ToolbarModalAction</code> is the basic template for
@@ -959,7 +959,7 @@ map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</
                   xmlns:xi="http://www.w3.org/2001/XInclude" />
     </section>
 
-    <section id="LayerTreeAction">
+    <section id="ltLayerTreeAction">
       <title>LayerTree: LayerTreeAction</title>
 
       <para>The <code>LayerTreeAction</code> is your basic abstract class for
@@ -978,7 +978,7 @@ map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</
                   xmlns:xi="http://www.w3.org/2001/XInclude" />
     </section>
 
-    <section id="LayerTreeModalAction">
+    <section id="ltLayerTreeModalAction">
       <title>LayerTree: LayerTreeModalAction</title>
 
       <para>The <code>LayerTreeModalAction</code> is the basic template for
@@ -993,7 +993,7 @@ map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</
       initialised.</para>
     </section>
 
-    <section id="MenuAction">
+    <section id="mMenuAction">
       <title>Menu: MenuAction</title>
 
       <para>To create menu items or context menu items, Geomajas provides a
