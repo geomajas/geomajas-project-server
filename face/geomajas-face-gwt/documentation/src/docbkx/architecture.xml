@@ -1009,7 +1009,7 @@ map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</
     <section id="mapControllers">
       <title>Controllers on the map</title>
 
-      <section id="GraphicsController">
+      <section id="cGraphicsController">
         <title>GraphicsController</title>
 
         <para>For interactive mouse listeners on the map there is a general
