@@ -29,7 +29,6 @@ import org.geomajas.layer.VectorLayerService;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.plugin.caching.service.CacheCategory;
 import org.geomajas.plugin.caching.service.CacheManagerServiceImpl;
-import org.geomajas.plugin.caching.service.DummyCacheService;
 import org.geomajas.service.GeoService;
 import org.geomajas.service.TestRecorder;
 import org.junit.Assert;
