@@ -109,9 +109,12 @@ public class GetFeaturesInvalidateDeleteTest {
 
 		// delete one item
 		recorder.clear();
-		List<InternalFeature> updateFeatures = new ArrayList<InternalFeature>(features);
-		updateFeatures.set(2, null);
-		vectorLayerService.saveOrUpdate(LAYER_BEANS, geoService.getCrs("EPSG:4326"), features, updateFeatures);
+		InternalFeature org = features.get(2);
+		List<InternalFeature> orgFeatures = new ArrayList<InternalFeature>();
+		orgFeatures.add(org);
+		List<InternalFeature> updFeatures = new ArrayList<InternalFeature>();
+		updFeatures.add(null);
+		vectorLayerService.saveOrUpdate(LAYER_BEANS, geoService.getCrs("EPSG:4326"), orgFeatures, updFeatures);
 		Assert.assertEquals("", recorder.matches("layer", "Invalidate geometry for deleted feature"));
 
 		// get features again, it should *not* use the cache
