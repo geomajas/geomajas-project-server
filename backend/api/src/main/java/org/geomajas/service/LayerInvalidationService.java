@@ -46,7 +46,7 @@ public interface LayerInvalidationService {
 	 * include deleting the layer, changes in the style, data structure, security, authorizations,...
 	 *
 	 * @param layer layer which needs to be invalidated
-	 * @throws org.geomajas.global.GeomajasException oops (should not happen, steps should just log and not (re)throw exceptions)
+	 * @throws GeomajasException oops (should not happen, steps should just log and not (re)throw exceptions)
 	 */
 	void invalidateLayer(Layer layer) throws GeomajasException;
 

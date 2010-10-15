@@ -26,7 +26,6 @@ package org.geomajas.internal.layer;
 import com.vividsolutions.jts.geom.Envelope;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
-import org.geomajas.layer.VectorLayer;
 import org.geomajas.security.GeomajasSecurityException;
 import org.geomajas.layer.RasterLayer;
 import org.geomajas.layer.tile.RasterTile;
