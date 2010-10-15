@@ -1881,6 +1881,21 @@
           applicationId)</code> : get the map with given id for a specific
           application.</para>
         </listitem>
+
+        <listitem>
+          <para><code>void invalidateLayer(String layerId)</code>: should be
+          called when the configuration of the layer has been changed in a way
+          which may affect the rendering of the layer. It is typically used to
+          invalidate cached. It should for example be used when the layer is
+          deleted or reconfigured, when authorizations for the layer change,
+          etc.</para>
+        </listitem>
+
+        <listitem>
+          <para><code>void invalidateAllLayers()</code>: similar to
+          invalidateLayer(), but invalidates all layers. A possible reason to
+          call this is changes in security configuration.</para>
+        </listitem>
       </itemizedlist>
     </section>
 

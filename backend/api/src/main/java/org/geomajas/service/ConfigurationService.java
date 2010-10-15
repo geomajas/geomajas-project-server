@@ -24,6 +24,7 @@ package org.geomajas.service;
 
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.global.Api;
+import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.Layer;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.RasterLayer;
@@ -62,6 +63,25 @@ public interface ConfigurationService {
 	 * @return vector layer
 	 */
 	Layer<?> getLayer(String id);
+
+	/**
+	 * Invalidate a layer. This should be called whenever significant changes to the layer have occurred. These
+	 * include deleting the layer, changes in the style, data structure, security, authorizations,...
+	 *
+	 * @param layerId id of layer which needs to be invalidated
+	 * @throws GeomajasException oops (should not happen, steps should just log and not (re)throw exceptions)
+	 * @since 1.8.0
+	 */
+	void invalidateLayer(String layerId) throws GeomajasException;
+
+	/**
+	 * Invalidate all layers. This should be called whenever significant changes to the layer have occurred. These
+	 * include deleting the layer, changes in the style, data structure, security, authorizations,...
+	 *
+	 * @throws GeomajasException oops (should not happen, steps should just log and not (re)throw exceptions)
+	 * @since 1.8.0
+	 */
+	void invalidateAllLayers() throws GeomajasException;
 
 	/**
 	 * Get information about the map with specified mapId in the application with the specified applicationId.

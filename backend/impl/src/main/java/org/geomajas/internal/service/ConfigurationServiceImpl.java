@@ -23,29 +23,36 @@
 
 package org.geomajas.internal.service;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
 import org.geomajas.configuration.client.ClientApplicationInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
+import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.Layer;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.RasterLayer;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.GeoService;
+import org.geomajas.service.LayerInvalidationService;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Container class which contains runtime information about the parameters and other information for Geomajas. Values
  * are injected using Spring.
- * 
+ *
  * @author Joachim Van der Auwera
  */
 @Component
 public class ConfigurationServiceImpl implements ConfigurationService {
+
+	private Logger log = LoggerFactory.getLogger(ConfigurationServiceImpl.class);
 
 	@Autowired(required = false)
 	protected Map<String, Layer<?>> layerMap = new LinkedHashMap<String, Layer<?>>();
@@ -58,6 +65,9 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 
 	@Autowired(required = false)
 	protected Map<String, ClientApplicationInfo> applicationMap = new LinkedHashMap<String, ClientApplicationInfo>();
+
+	@Autowired(required = false)
+	private List<LayerInvalidationService> layerInvalidationServices;
 
 	@Autowired
 	private GeoService geoService;
@@ -93,4 +103,28 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 		return geoService.getCrs(crs);
 	}
 
+	public void invalidateLayer(String layerId) throws GeomajasException {
+		if (null != layerId && null != layerInvalidationServices) {
+			Layer layer = getLayer(layerId);
+			invalidateLayer(layer);
+		}
+	}
+
+	private void invalidateLayer(Layer layer) {
+		if (null != layer) {
+			for (LayerInvalidationService service : layerInvalidationServices) {
+				try {
+					service.invalidateLayer(layer);
+				} catch (GeomajasException ge) {
+					log.error("Error during invalidateLayer, not rethrown, " + ge.getMessage(), ge);
+				}
+			}
+		}
+	}
+
+	public void invalidateAllLayers() throws GeomajasException {
+		for (Map.Entry<String, Layer<?>> entry : layerMap.entrySet()) {
+			invalidateLayer(entry.getValue());
+		}
+	}
 }
