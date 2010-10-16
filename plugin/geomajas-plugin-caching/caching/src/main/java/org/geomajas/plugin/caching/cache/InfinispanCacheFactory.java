@@ -31,8 +31,11 @@ import org.geomajas.plugin.caching.service.CacheService;
 import org.infinispan.config.Configuration;
 import org.infinispan.manager.CacheContainer;
 import org.infinispan.manager.DefaultCacheManager;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.PostConstruct;
+import java.io.IOException;
 
 /**
  * Cache factory for creating infinispan caches.
@@ -42,6 +45,8 @@ import javax.annotation.PostConstruct;
  */
 @Api
 public class InfinispanCacheFactory implements CacheFactory {
+
+	private Logger log = LoggerFactory.getLogger(InfinispanCacheFactory.class);
 
 	private CacheContainer manager;
 	private String configurationFile;
@@ -70,9 +75,11 @@ public class InfinispanCacheFactory implements CacheFactory {
 	}
 
 	@PostConstruct
-	public void init() {
+	public void init() throws IOException {
 		if (null != configuration) {
 			manager = new DefaultCacheManager(configuration);
+		} else if (null != configurationFile) {
+			manager = new DefaultCacheManager(configurationFile);
 		} else {
 			manager = new DefaultCacheManager();
 		}

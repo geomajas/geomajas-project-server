@@ -35,6 +35,8 @@ import org.geomajas.service.TestRecorder;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
 import org.geomajas.service.pipeline.PipelineStep;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -44,6 +46,8 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class GetFeaturesFromCacheStep implements PipelineStep<GetFeaturesContainer> {
 
+	private Logger log = LoggerFactory.getLogger(GetFeaturesFromCacheStep.class);
+	
 	private static final String[] KEYS =
 			{PipelineCode.LAYER_ID_KEY, PipelineCode.CRS_KEY, PipelineCode.FILTER_KEY, PipelineCode.OFFSET_KEY,
 					PipelineCode.MAX_RESULT_SIZE_KEY, PipelineCode.FEATURE_INCLUDES_KEY};
@@ -71,29 +75,34 @@ public class GetFeaturesFromCacheStep implements PipelineStep<GetFeaturesContain
 	}
 
 	public void execute(PipelineContext pipelineContext, GetFeaturesContainer result) throws GeomajasException {
-		VectorLayer layer = pipelineContext.get(PipelineCode.LAYER_KEY, VectorLayer.class);
+		try {
+			VectorLayer layer = pipelineContext.get(PipelineCode.LAYER_KEY, VectorLayer.class);
 
-		CacheContext cacheContext = cacheKeyService.getCacheContext(pipelineContext, KEYS);
-		cacheContext.put("securityContext", securityContext.getId());
-		String cacheKey = cacheKeyService.getCacheKey(layer, CacheCategory.FEATURE, cacheContext);
+			CacheContext cacheContext = cacheKeyService.getCacheContext(pipelineContext, KEYS);
+			cacheContext.put("securityContext", securityContext.getId());
+			String cacheKey = cacheKeyService.getCacheKey(layer, CacheCategory.FEATURE, cacheContext);
 
-		FeaturesCacheContainer cc =
-				cacheManager.get(layer, CacheCategory.FEATURE, cacheKey, FeaturesCacheContainer.class);
+			FeaturesCacheContainer cc =
+					cacheManager.get(layer, CacheCategory.FEATURE, cacheKey, FeaturesCacheContainer.class);
 
-		while (null != cc) {
-			if (cacheContext.equals(cc.getContext())) {
-				// found item in cache
-				result.setFeatures(cc.getFeatures());
-				result.setBounds(cc.getBounds());
-				pipelineContext.put(CacheStepConstant.CACHE_FEATURES_USED, true);
-				recorder.record(CacheCategory.FEATURE, "Got item from cache");
-				break;
-			} else {
-				cacheKey = cacheKeyService.makeUnique(cacheKey);
-				cc = cacheManager.get(layer, CacheCategory.FEATURE, cacheKey, FeaturesCacheContainer.class);
+			while (null != cc) {
+				if (cacheContext.equals(cc.getContext())) {
+					// found item in cache
+					result.setFeatures(cc.getFeatures());
+					result.setBounds(cc.getBounds());
+					pipelineContext.put(CacheStepConstant.CACHE_FEATURES_USED, true);
+					recorder.record(CacheCategory.FEATURE, "Got item from cache");
+					break;
+				} else {
+					cacheKey = cacheKeyService.makeUnique(cacheKey);
+					cc = cacheManager.get(layer, CacheCategory.FEATURE, cacheKey, FeaturesCacheContainer.class);
+				}
 			}
+			pipelineContext.put(CacheStepConstant.CACHE_FEATURES_KEY, cacheKey);
+			pipelineContext.put(CacheStepConstant.CACHE_FEATURES_CONTEXT, cacheContext);
+		} catch (Throwable t) {
+			// have to prevent caching code from making the pipeline fail, log and discard errors
+			log.error("Error during caching step, only logged: " + t.getMessage(), t);
 		}
-		pipelineContext.put(CacheStepConstant.CACHE_FEATURES_KEY, cacheKey);
-		pipelineContext.put(CacheStepConstant.CACHE_FEATURES_CONTEXT, cacheContext);
 	}
 }

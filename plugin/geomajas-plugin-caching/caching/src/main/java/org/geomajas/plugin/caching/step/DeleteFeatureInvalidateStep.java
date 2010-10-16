@@ -35,6 +35,8 @@ import org.geomajas.service.TestRecorder;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
 import org.geomajas.service.pipeline.PipelineStep;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -43,6 +45,8 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author Joachim Van der Auwera
  */
 public class DeleteFeatureInvalidateStep implements PipelineStep {
+
+	private Logger log = LoggerFactory.getLogger(DeleteFeatureInvalidateStep.class);
 
 	@Autowired
 	private CacheManagerService cacheManager;
@@ -64,38 +68,43 @@ public class DeleteFeatureInvalidateStep implements PipelineStep {
 	}
 
 	public void execute(PipelineContext context, Object result) throws GeomajasException {
-		InternalFeature newFeature = context.getOptional(PipelineCode.FEATURE_KEY, InternalFeature.class);
-		if (null == newFeature) {
-			// delete ?
-			InternalFeature oldFeature = context.getOptional(PipelineCode.OLD_FEATURE_KEY, InternalFeature.class);
-			if (null != oldFeature) {
-				String layerId = context.get(PipelineCode.LAYER_ID_KEY, String.class);
-				if (securityContext.isFeatureDeleteAuthorized(layerId, oldFeature)) {
-					VectorLayer layer = context.get(PipelineCode.LAYER_KEY, VectorLayer.class);
-					Object featureObj = layer.read(oldFeature.getId());
-					if (null != featureObj) {
-						// @todo no security checks before invalidating, the delete may still fail at this moment, in
-						// which case the invalidation should not have been done. Still better to invalidate too much
-						// then too little.
-						//Filter securityFilter = getSecurityFilter(layer,
-						// 	securityContext.getDeleteAuthorizedArea(layerId));
-						//if (securityFilter.evaluate(featureObj)) {
-						//	layer.delete(oldFeature.getId());
-						//} else {
-						//	throw new GeomajasSecurityException(ExceptionCode.FEATURE_DELETE_PROHIBITED,
-						//			oldFeature.getId(), securityContext.getUserId());
-						//}
-						Geometry geometry = layer.getFeatureModel().getGeometry(featureObj);
-						if (null != geometry) {
-							recorder.record("layer", "Invalidate geometry for deleted feature");
-							cacheManager.invalidate(layer, geometry.getEnvelopeInternal());
+		try {
+			InternalFeature newFeature = context.getOptional(PipelineCode.FEATURE_KEY, InternalFeature.class);
+			if (null == newFeature) {
+				// delete ?
+				InternalFeature oldFeature = context.getOptional(PipelineCode.OLD_FEATURE_KEY, InternalFeature.class);
+				if (null != oldFeature) {
+					String layerId = context.get(PipelineCode.LAYER_ID_KEY, String.class);
+					if (securityContext.isFeatureDeleteAuthorized(layerId, oldFeature)) {
+						VectorLayer layer = context.get(PipelineCode.LAYER_KEY, VectorLayer.class);
+						Object featureObj = layer.read(oldFeature.getId());
+						if (null != featureObj) {
+							// @todo no security checks before invalidating, the delete may still fail at this moment,
+							// in which case the invalidation should not have been done. Still better to invalidate too
+							// much then too little.
+							//Filter securityFilter = getSecurityFilter(layer,
+							// 	securityContext.getDeleteAuthorizedArea(layerId));
+							//if (securityFilter.evaluate(featureObj)) {
+							//	layer.delete(oldFeature.getId());
+							//} else {
+							//	throw new GeomajasSecurityException(ExceptionCode.FEATURE_DELETE_PROHIBITED,
+							//			oldFeature.getId(), securityContext.getUserId());
+							//}
+							Geometry geometry = layer.getFeatureModel().getGeometry(featureObj);
+							if (null != geometry) {
+								recorder.record("layer", "Invalidate geometry for deleted feature");
+								cacheManager.invalidate(layer, geometry.getEnvelopeInternal());
+							}
 						}
+					} else {
+						throw new GeomajasSecurityException(ExceptionCode.FEATURE_DELETE_PROHIBITED,
+								oldFeature.getId(), securityContext.getUserId());
 					}
-				} else {
-					throw new GeomajasSecurityException(ExceptionCode.FEATURE_DELETE_PROHIBITED,
-							oldFeature.getId(), securityContext.getUserId());
 				}
 			}
+		} catch (Throwable t) {
+			// have to prevent caching code from making the pipeline fail, log and discard errors
+			log.error("Error during caching step, only logged: " + t.getMessage(), t);
 		}
 	}
 }

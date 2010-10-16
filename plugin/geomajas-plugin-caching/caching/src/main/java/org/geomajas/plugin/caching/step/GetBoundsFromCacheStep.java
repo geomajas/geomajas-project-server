@@ -35,6 +35,8 @@ import org.geomajas.service.TestRecorder;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
 import org.geomajas.service.pipeline.PipelineStep;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -43,6 +45,8 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author Joachim Van der Auwera
  */
 public class GetBoundsFromCacheStep implements PipelineStep<GetBoundsContainer> {
+
+	private Logger log = LoggerFactory.getLogger(GetBoundsFromCacheStep.class);
 
 	private static final String[] KEYS = {PipelineCode.LAYER_ID_KEY, PipelineCode.CRS_KEY, PipelineCode.FILTER_KEY};
 
@@ -70,27 +74,33 @@ public class GetBoundsFromCacheStep implements PipelineStep<GetBoundsContainer> 
 
 	public void execute(PipelineContext pipelineContext, GetBoundsContainer getBoundsContainer)
 			throws GeomajasException {
-		VectorLayer layer = pipelineContext.get(PipelineCode.LAYER_KEY, VectorLayer.class);
+		try {
+			VectorLayer layer = pipelineContext.get(PipelineCode.LAYER_KEY, VectorLayer.class);
 
-		CacheContext cacheContext = cacheKeyService.getCacheContext(pipelineContext, KEYS);
-		cacheContext.put("securityContext", securityContext.getId());
-		String cacheKey = cacheKeyService.getCacheKey(layer, CacheCategory.BOUNDS, cacheContext);
+			CacheContext cacheContext = cacheKeyService.getCacheContext(pipelineContext, KEYS);
+			cacheContext.put("securityContext", securityContext.getId());
+			String cacheKey = cacheKeyService.getCacheKey(layer, CacheCategory.BOUNDS, cacheContext);
 
-		BoundsCacheContainer cc = cacheManager.get(layer, CacheCategory.BOUNDS, cacheKey, BoundsCacheContainer.class);
+			BoundsCacheContainer cc =
+					cacheManager.get(layer, CacheCategory.BOUNDS, cacheKey, BoundsCacheContainer.class);
 
-		while (null != cc) {
-			if (cacheContext.equals(cc.getContext())) {
-				// found item in cache
-				getBoundsContainer.setEnvelope(cc.getBounds());
-				pipelineContext.put(CacheStepConstant.CACHE_BOUNDS_USED, true);
-				recorder.record(CacheCategory.BOUNDS, "Got item from cache");
-				break;
-			} else {
-				cacheKey = cacheKeyService.makeUnique(cacheKey);
-				cc = cacheManager.get(layer, CacheCategory.BOUNDS, cacheKey, BoundsCacheContainer.class);
+			while (null != cc) {
+				if (cacheContext.equals(cc.getContext())) {
+					// found item in cache
+					getBoundsContainer.setEnvelope(cc.getBounds());
+					pipelineContext.put(CacheStepConstant.CACHE_BOUNDS_USED, true);
+					recorder.record(CacheCategory.BOUNDS, "Got item from cache");
+					break;
+				} else {
+					cacheKey = cacheKeyService.makeUnique(cacheKey);
+					cc = cacheManager.get(layer, CacheCategory.BOUNDS, cacheKey, BoundsCacheContainer.class);
+				}
 			}
+			pipelineContext.put(CacheStepConstant.CACHE_BOUNDS_KEY, cacheKey);
+			pipelineContext.put(CacheStepConstant.CACHE_BOUNDS_CONTEXT, cacheContext);
+		} catch (Throwable t) {
+			// have to prevent caching code from making the pipeline fail, log and discard errors
+			log.error("Error during caching step, only logged: " + t.getMessage(), t);
 		}
-		pipelineContext.put(CacheStepConstant.CACHE_BOUNDS_KEY, cacheKey);
-		pipelineContext.put(CacheStepConstant.CACHE_BOUNDS_CONTEXT, cacheContext);
 	}
 }

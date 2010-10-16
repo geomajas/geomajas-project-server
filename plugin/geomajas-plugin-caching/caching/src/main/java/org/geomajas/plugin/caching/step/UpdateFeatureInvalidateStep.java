@@ -64,34 +64,39 @@ public class UpdateFeatureInvalidateStep implements PipelineStep {
 	}
 
 	public void execute(PipelineContext context, Object result) throws GeomajasException {
-		log.debug("UpdateFeatureInvalidateStep start");
-		VectorLayer layer = context.get(PipelineCode.LAYER_KEY, VectorLayer.class);
+		try {
+			log.debug("UpdateFeatureInvalidateStep start");
+			VectorLayer layer = context.get(PipelineCode.LAYER_KEY, VectorLayer.class);
 
-		// invalidate the area of the old feature
-		InternalFeature oldFeature = context.getOptional(PipelineCode.OLD_FEATURE_KEY, InternalFeature.class);
-		if (null != oldFeature) {
-			// get original geometry from storage to assure not changed by transformation and available
-			Object feature = layer.read(oldFeature.getId());
-			context.put(PipelineCode.FEATURE_DATA_OBJECT_KEY, feature); // put in context to prevent getting twice
-			FeatureModel featureModel = layer.getFeatureModel();
-			Geometry oldGeometry = featureModel.getGeometry(feature);
-			if (null != oldGeometry) {
-				// invalidate
-				recorder.record("layer", "Invalidate geometry for old version of feature");
-				Envelope oldEnvelope = oldGeometry.getEnvelopeInternal();
-				log.debug("invalidate old feature area {}", oldEnvelope);
-				cacheManager.invalidate(layer, oldEnvelope);
+			// invalidate the area of the old feature
+			InternalFeature oldFeature = context.getOptional(PipelineCode.OLD_FEATURE_KEY, InternalFeature.class);
+			if (null != oldFeature) {
+				// get original geometry from storage to assure not changed by transformation and available
+				Object feature = layer.read(oldFeature.getId());
+				context.put(PipelineCode.FEATURE_DATA_OBJECT_KEY, feature); // put in context to prevent getting twice
+				FeatureModel featureModel = layer.getFeatureModel();
+				Geometry oldGeometry = featureModel.getGeometry(feature);
+				if (null != oldGeometry) {
+					// invalidate
+					recorder.record("layer", "Invalidate geometry for old version of feature");
+					Envelope oldEnvelope = oldGeometry.getEnvelopeInternal();
+					log.debug("invalidate old feature area {}", oldEnvelope);
+					cacheManager.invalidate(layer, oldEnvelope);
+				}
 			}
-		}
 
-		// invalidate area for new feature
-		InternalFeature feature = context.get(PipelineCode.FEATURE_KEY, InternalFeature.class);
-		Geometry geometry = feature.getGeometry();
-		if (null != geometry) {
-			recorder.record("layer", "Invalidate geometry for new feature");
-			Envelope envelope = geometry.getEnvelopeInternal();
-			log.debug("invalidate new feature area {}", envelope);
-			cacheManager.invalidate(layer, envelope);
+			// invalidate area for new feature
+			InternalFeature feature = context.get(PipelineCode.FEATURE_KEY, InternalFeature.class);
+			Geometry geometry = feature.getGeometry();
+			if (null != geometry) {
+				recorder.record("layer", "Invalidate geometry for new feature");
+				Envelope envelope = geometry.getEnvelopeInternal();
+				log.debug("invalidate new feature area {}", envelope);
+				cacheManager.invalidate(layer, envelope);
+			}
+		} catch (Throwable t) {
+			// have to prevent caching code from making the pipeline fail, log and discard errors
+			log.error("Error during caching step, only logged: " + t.getMessage(), t);
 		}
 	}
 }

@@ -33,6 +33,8 @@ import org.geomajas.service.TestRecorder;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
 import org.geomajas.service.pipeline.PipelineStep;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -42,6 +44,8 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @param <TYPE> type of response object for pipeline.
  */
 public abstract class AbstractPutInCacheStep<TYPE> implements PipelineStep<TYPE> {
+
+	private Logger log = LoggerFactory.getLogger(AbstractPutInCacheStep.class);
 
 	@Autowired
 	private CacheManagerService cacheManager;
@@ -61,13 +65,18 @@ public abstract class AbstractPutInCacheStep<TYPE> implements PipelineStep<TYPE>
 
 	public void execute(PipelineContext pipelineContext, CacheCategory category, String keyKey, String contextKey,
 			String useKey, CacheContainer cacheContainer, Envelope envelope) throws GeomajasException {
-		recorder.record(category, "Put item in cache");
-		VectorLayer layer = pipelineContext.get(PipelineCode.LAYER_KEY, VectorLayer.class);
+		try {
+			recorder.record(category, "Put item in cache");
+			VectorLayer layer = pipelineContext.get(PipelineCode.LAYER_KEY, VectorLayer.class);
 
-		String cacheKey = pipelineContext.get(keyKey, String.class);
-		CacheContext cacheContext = pipelineContext.get(contextKey, CacheContext.class);
+			String cacheKey = pipelineContext.get(keyKey, String.class);
+			CacheContext cacheContext = pipelineContext.get(contextKey, CacheContext.class);
 
-		cacheContainer.setContext(cacheContext);
-		cacheManager.put(layer, category, cacheKey, cacheContainer, envelope);
+			cacheContainer.setContext(cacheContext);
+			cacheManager.put(layer, category, cacheKey, cacheContainer, envelope);
+		} catch (Throwable t) {
+			// have to prevent caching code from making the pipeline fail, log and discard errors
+			log.error("Error during caching step, only logged: " + t.getMessage(), t);
+		}
 	}
 }

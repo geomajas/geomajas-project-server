@@ -36,6 +36,8 @@ import org.geomajas.service.TestRecorder;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
 import org.geomajas.service.pipeline.PipelineStep;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -44,6 +46,8 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author Joachim Van der Auwera
  */
 public class GetTileStringContentFromCacheStep implements PipelineStep<GetTileContainer> {
+
+	private Logger log = LoggerFactory.getLogger(GetTileStringContentFromCacheStep.class);
 
 	private static final String[] KEYS = {PipelineCode.LAYER_ID_KEY, PipelineCode.CRS_KEY, PipelineCode.FILTER_KEY};
 
@@ -70,35 +74,40 @@ public class GetTileStringContentFromCacheStep implements PipelineStep<GetTileCo
 	}
 
 	public void execute(PipelineContext pipelineContext, GetTileContainer result) throws GeomajasException {
-		VectorLayer layer = pipelineContext.get(PipelineCode.LAYER_KEY, VectorLayer.class);
-		TileMetadata metadata = pipelineContext.get(PipelineCode.TILE_METADATA_KEY, TileMetadata.class);
+		try {
+			VectorLayer layer = pipelineContext.get(PipelineCode.LAYER_KEY, VectorLayer.class);
+			TileMetadata metadata = pipelineContext.get(PipelineCode.TILE_METADATA_KEY, TileMetadata.class);
 
-		CacheCategory cacheCategory = CacheCategory.SVG;
-		if (TileMetadata.PARAM_VML_RENDERER.equalsIgnoreCase(metadata.getRenderer())) {
-			cacheCategory = CacheCategory.VML;
-		}
-
-		CacheContext cacheContext = cacheKeyService.getCacheContext(pipelineContext, KEYS);
-		cacheContext.put("securityContext", securityContext.getId());
-		String cacheKey = cacheKeyService.getCacheKey(layer, cacheCategory, cacheContext);
-
-		TileContentCacheContainer cc =
-				cacheManager.get(layer, cacheCategory, cacheKey, TileContentCacheContainer.class);
-
-		while (null != cc) {
-			if (cacheContext.equals(cc.getContext())) {
-				// found item in cache
-				result.getTile().setFeatureContent(cc.getFeatureContent());
-				result.getTile().setLabelContent(cc.getLabelContent());
-				pipelineContext.put(CacheStepConstant.CACHE_TILE_CONTENT_USED, true);
-				recorder.record(cacheCategory, "Got item from cache");
-				break;
-			} else {
-				cacheKey = cacheKeyService.makeUnique(cacheKey);
-				cc = cacheManager.get(layer, cacheCategory, cacheKey, TileContentCacheContainer.class);
+			CacheCategory cacheCategory = CacheCategory.SVG;
+			if (TileMetadata.PARAM_VML_RENDERER.equalsIgnoreCase(metadata.getRenderer())) {
+				cacheCategory = CacheCategory.VML;
 			}
+
+			CacheContext cacheContext = cacheKeyService.getCacheContext(pipelineContext, KEYS);
+			cacheContext.put("securityContext", securityContext.getId());
+			String cacheKey = cacheKeyService.getCacheKey(layer, cacheCategory, cacheContext);
+
+			TileContentCacheContainer cc =
+					cacheManager.get(layer, cacheCategory, cacheKey, TileContentCacheContainer.class);
+
+			while (null != cc) {
+				if (cacheContext.equals(cc.getContext())) {
+					// found item in cache
+					result.getTile().setFeatureContent(cc.getFeatureContent());
+					result.getTile().setLabelContent(cc.getLabelContent());
+					pipelineContext.put(CacheStepConstant.CACHE_TILE_CONTENT_USED, true);
+					recorder.record(cacheCategory, "Got item from cache");
+					break;
+				} else {
+					cacheKey = cacheKeyService.makeUnique(cacheKey);
+					cc = cacheManager.get(layer, cacheCategory, cacheKey, TileContentCacheContainer.class);
+				}
+			}
+			pipelineContext.put(CacheStepConstant.CACHE_TILE_CONTENT_KEY, cacheKey);
+			pipelineContext.put(CacheStepConstant.CACHE_TILE_CONTENT_CONTEXT, cacheContext);
+		} catch (Throwable t) {
+			// have to prevent caching code from making the pipeline fail, log and discard errors
+			log.error("Error during caching step, only logged: " + t.getMessage(), t);
 		}
-		pipelineContext.put(CacheStepConstant.CACHE_TILE_CONTENT_KEY, cacheKey);
-		pipelineContext.put(CacheStepConstant.CACHE_TILE_CONTENT_CONTEXT, cacheContext);
 	}
 }
