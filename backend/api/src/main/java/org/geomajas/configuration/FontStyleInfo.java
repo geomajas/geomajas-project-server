@@ -37,17 +37,17 @@ public class FontStyleInfo implements Serializable {
 
 	private static final long serialVersionUID = 160L;
 
-	private int size = -1;
+	private int size = 8;
 
-	private String family;
+	private String family = "Verdana";
 
-	private String weight;
+	private String weight = "normal";
 
-	private String style;
+	private String style = "normal";
 
-	private String color;
+	private String color = "#000000"; // black
 
-	private float opacity = -1;
+	private float opacity = 1;
 
 	/**
 	 * Get the font size.

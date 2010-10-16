@@ -47,11 +47,11 @@ public class ClientMapInfo implements Serializable {
 
 	private String backgroundColor;
 
-	private FeatureStyleInfo lineSelectStyle;
+	private FeatureStyleInfo lineSelectStyle = new FeatureStyleInfo();
 
-	private FeatureStyleInfo pointSelectStyle;
+	private FeatureStyleInfo pointSelectStyle = new FeatureStyleInfo();
 
-	private FeatureStyleInfo polygonSelectStyle;
+	private FeatureStyleInfo polygonSelectStyle = new FeatureStyleInfo();
 
 	@NotNull
 	private String crs;

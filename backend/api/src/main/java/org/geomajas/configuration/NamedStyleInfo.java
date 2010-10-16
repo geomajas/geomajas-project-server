@@ -46,7 +46,7 @@ public class NamedStyleInfo implements Serializable, CacheableObject {
 	private List<FeatureStyleInfo> featureStyles = new ArrayList<FeatureStyleInfo>();
 	
 	@NotNull
-	private LabelStyleInfo labelStyle;
+	private LabelStyleInfo labelStyle = new LabelStyleInfo();
 
 	@NotNull
 	private String name;

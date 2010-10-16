@@ -40,9 +40,9 @@ public class LabelStyleInfo implements Serializable {
 	private static final long serialVersionUID = 151L;
 	@NotNull
 	private String labelAttributeName;
-	private FontStyleInfo fontStyle;
-	private FeatureStyleInfo backgroundStyle;
-
+	private FontStyleInfo fontStyle = new FontStyleInfo();
+	private FeatureStyleInfo backgroundStyle = new FeatureStyleInfo();
+	
 	/**
 	 * Get label attribute name.
 	 *

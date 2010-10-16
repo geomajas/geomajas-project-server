@@ -51,15 +51,15 @@ public class FeatureStyleInfo implements Serializable, CacheableObject {
 
 	private String formula;
 
-	private String fillColor;
+	private String fillColor = "#ffffff"; // white
 
-	private float fillOpacity = -1;
+	private float fillOpacity = .5f; // 50% transparent by default
 
-	private String strokeColor;
+	private String strokeColor = "#000000"; // black
 
-	private float strokeOpacity = -1;
+	private float strokeOpacity = 1; // fully opaque by default
 
-	private int strokeWidth = -1;
+	private int strokeWidth = 1;
 
 	private String dashArray;
 
