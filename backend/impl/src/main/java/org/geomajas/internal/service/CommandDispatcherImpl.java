@@ -171,6 +171,9 @@ public final class CommandDispatcherImpl implements CommandDispatcher {
 				}
 			}
 			response.setExecutionTime(System.currentTimeMillis() - begin);
+			if (log.isTraceEnabled()) {
+				log.trace("response:\n{}", response);
+			}
 			return response;
 		} finally {
 			if (!tokenIdentical) {

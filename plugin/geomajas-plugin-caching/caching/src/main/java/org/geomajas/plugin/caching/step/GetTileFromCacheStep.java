@@ -49,8 +49,8 @@ public class GetTileFromCacheStep implements PipelineStep<GetTileContainer> {
 	private Logger log = LoggerFactory.getLogger(GetTileFromCacheStep.class);
 
 	private static final String[] KEYS =
-			{PipelineCode.LAYER_ID_KEY, PipelineCode.CRS_KEY, PipelineCode.FILTER_KEY, PipelineCode.LAYER_ID_KEY,
-					PipelineCode.TILE_METADATA_KEY, PipelineCode.FEATURE_INCLUDES_KEY};
+			{PipelineCode.LAYER_ID_KEY, PipelineCode.FILTER_KEY, PipelineCode.TILE_METADATA_KEY,
+					PipelineCode.FEATURE_INCLUDES_KEY};
 
 	@Autowired
 	private CacheManagerService cacheManager;

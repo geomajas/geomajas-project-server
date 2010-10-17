@@ -28,6 +28,7 @@ import org.geomajas.global.CacheableObject;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.Layer;
 import org.geomajas.service.pipeline.PipelineContext;
+import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -49,7 +50,7 @@ public class CacheKeyServiceImpl implements CacheKeyService {
 			'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
 			'u', 'v', 'w', 'x', 'y', 'z',
 			'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
-	
+
 	private static final String ENCODING = "UTF-8";
 
 	private Logger log = LoggerFactory.getLogger(CacheKeyServiceImpl.class);
@@ -59,36 +60,58 @@ public class CacheKeyServiceImpl implements CacheKeyService {
 	public String getCacheKey(Layer layer, CacheCategory category, CacheContext context) {
 		try {
 			MD5 md5 = new MD5();
+			String toHash = "";
 			if (context instanceof CacheContextImpl) {
 				CacheContextImpl cci = (CacheContextImpl) context;
 				for (Map.Entry<String, Object> entry : cci.entries()) {
 					md5.Update(entry.getKey(), ENCODING);
 					md5.Update(":");
+					if (log.isDebugEnabled()) {
+						toHash += entry.getKey() + ":";
+					}
 					Object value = entry.getValue();
 					if (null != value) {
-						if (value instanceof CacheableObject) {
-							md5.Update(((CacheableObject) value).getCacheId(), ENCODING);
-						} else {
-							md5.Update(value.toString(), ENCODING);
+						String cid = getCacheId(value);
+						md5.Update(cid, ENCODING);
+						if (log.isDebugEnabled()) {
+							toHash += cid;
 						}
 					}
 					md5.Update("-");
+					if (log.isDebugEnabled()) {
+						toHash += "-";
+					}
 				}
 			} else {
-				if (context instanceof CacheableObject) {
-					md5.Update(((CacheableObject) context).getCacheId(), ENCODING);
-				} else {
-					md5.Update(context.toString(), ENCODING);
+				String cid = getCacheId(context);
+				md5.Update(cid, ENCODING);
+				if (log.isDebugEnabled()) {
+					toHash += cid;
 				}
 			}
 			md5.Update("$");
 			md5.Update(layer.getId());
 			md5.Update("-");
 			md5.Update(category.getName());
-			return md5.asHex();
+			if (log.isDebugEnabled()) {
+				toHash += "$" + layer.getId() + "-" + category.getName();
+			}
+			String key = md5.asHex();
+			log.debug("key for context {} which is a hash for {}", key, toHash);
+			return key;
 		} catch (UnsupportedEncodingException uee) {
 			log.error("Impossible error, UTF-8 should be supported:" + uee.getMessage(), uee);
 			return null;
+		}
+	}
+
+	private String getCacheId(Object value) {
+		if (value instanceof CoordinateReferenceSystem) {
+			return ((CoordinateReferenceSystem) value).getIdentifiers().toString();
+		} else if (value instanceof CacheableObject) {
+			return ((CacheableObject) value).getCacheId();
+		} else {
+			return value.toString();
 		}
 	}
 
