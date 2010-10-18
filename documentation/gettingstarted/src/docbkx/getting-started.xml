@@ -47,7 +47,7 @@
     <section id="templ">
       <title>Creating the template project</title>
 
-      <para>At this point it is assumed that Maven has been succesfully
+      <para>At this point it is assumed that Maven has been successfully
       installed. Using Maven, you can now create a template project, called
       the Geomajas GWT Application Archetype.</para>
 
@@ -60,17 +60,19 @@
           <example>
             <title>Create project using GWT Maven archetype</title>
 
-            <para><programlisting>mvn archetype:generate -DarchetypeCatalog=http://apps.geomajas.org/nexus/content/groups/released/</programlisting></para>
+            <!--<programlisting>mvn archetype:generate -DarchetypeCatalog=http://apps.geomajas.org/nexus/content/groups/released/</programlisting>-->
+            <programlisting>mvn archetype:generate -DarchetypeCatalog=http://files.geomajas.org/archetype-catalog.xml</programlisting>
           </example>
 
           <para>This will create the template project, using the latest stable
-          release. If you want to use the latest snapshot, use the follwing
+          release. If you want to use the latest snapshot, use the following
           command instead:</para>
 
           <example>
             <title>Create project using GWT Maven archetype</title>
 
-            <para><programlisting>mvn archetype:generate -DarchetypeCatalog=http://apps.geomajas.org/nexus/content/groups/latest/</programlisting></para>
+            <!--<programlisting>mvn archetype:generate -DarchetypeCatalog=http://apps.geomajas.org/nexus/content/groups/latest/</programlisting>-->
+            <programlisting>mvn archetype:generate -DarchetypeCatalog=http://files.geomajas.org/archetype-latest.xml</programlisting>
           </example>
 
           <para>Maven will now prompt the user for input.</para>
