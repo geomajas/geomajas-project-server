@@ -34,7 +34,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class StaticSecurityService implements SecurityService {
 
-	public static final String SECURITY_SERVICE_ID = "SpringSecurity";
+	public static final String SECURITY_SERVICE_ID = "StaticSecurity";
 
 	@Autowired
 	private AuthenticationTokenService authenticationTokenService;

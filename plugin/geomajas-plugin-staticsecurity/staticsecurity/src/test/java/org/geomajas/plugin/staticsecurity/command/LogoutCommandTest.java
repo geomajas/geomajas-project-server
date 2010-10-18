@@ -65,7 +65,7 @@ public class LogoutCommandTest {
 	public void testLogout() throws Exception {
 		Authentication auth = new Authentication();
 		auth.setAuthorizations(new BaseAuthorization[0]);
-		auth.setSecurityServiceId(StaticSecurityService.SECURITY_SERVICE_ID); // mimic that this comes from the SpringSecurity stuff
+		auth.setSecurityServiceId(StaticSecurityService.SECURITY_SERVICE_ID); // mimic that this comes from the StaticSecurity stuff
 		String token = tokenService.login(auth);
 		SecurityContextImpl securityContext = (SecurityContextImpl) this.securityContext;
 		List<Authentication> auths = new ArrayList<Authentication>();
