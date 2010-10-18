@@ -25,6 +25,7 @@ package org.geomajas.configuration;
 import java.io.Serializable;
 
 import org.geomajas.global.Api;
+import org.geomajas.global.CacheableObject;
 
 /**
  * Information about how to access and how to render the label attribute.
@@ -33,7 +34,7 @@ import org.geomajas.global.Api;
  * @since 1.6.0
  */
 @Api(allMethods = true)
-public class FontStyleInfo implements Serializable {
+public class FontStyleInfo implements Serializable, CacheableObject {
 
 	private static final long serialVersionUID = 160L;
 
@@ -161,5 +162,35 @@ public class FontStyleInfo implements Serializable {
 	 */
 	public void setOpacity(float opacity) {
 		this.opacity = opacity;
+	}
+
+	/**
+	 * String identifier which is guaranteed to include sufficient information to assure to be different for two
+	 * instances which could produce different result. It is typically used as basis for calculation of hash
+	 * codes (like MD5, SHA1, SHA2 etc) of (collections of) objects.
+	 *
+	 * @return cacheId
+	 * @since 1.8.0
+	 */
+	public String getCacheId() {
+		return "FontStyleInfo{" +
+				"size=" + size +
+				", family='" + family + '\'' +
+				", weight='" + weight + '\'' +
+				", style='" + style + '\'' +
+				", color='" + color + '\'' +
+				", opacity=" + opacity +
+				'}';
+	}
+
+	/**
+	 * String representation of object.
+	 *
+	 * @return string representation of object
+	 * @since 1.8.0
+	 */
+	@Override
+	public String toString() {
+		return getCacheId();
 	}
 }

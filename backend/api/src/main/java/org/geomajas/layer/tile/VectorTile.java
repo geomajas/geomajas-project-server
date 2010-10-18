@@ -272,4 +272,25 @@ public class VectorTile implements Serializable {
 	public void setClipped(boolean clipped) {
 		this.clipped = clipped;
 	}
+
+	/**
+	 * String representation of object.
+	 *
+	 * @return string representation of object
+	 * @since 1.8.0
+	 */	
+	@Override
+	public String toString() {
+		return "VectorTile{" +
+				"features=" + features +
+				", codes=" + codes +
+				", code=" + code +
+				", screenWidth=" + screenWidth +
+				", screenHeight=" + screenHeight +
+				", clipped=" + clipped +
+				", featureContent='" + featureContent + '\'' +
+				", labelContent='" + labelContent + '\'' +
+				", contentType=" + contentType +
+				'}';
+	}
 }

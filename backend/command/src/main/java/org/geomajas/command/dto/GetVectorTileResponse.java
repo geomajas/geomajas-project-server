@@ -52,4 +52,17 @@ public class GetVectorTileResponse extends CommandResponse {
 	public void setTile(VectorTile tile) {
 		this.tile = tile;
 	}
+
+	/**
+	 * String representation of object.
+	 *
+	 * @return string representation of object
+	 * @since 1.8.0
+	 */
+	@Override
+	public String toString() {
+		return "GetVectorTileResponse{" +
+				"tile=" + tile +
+				'}';
+	}
 }
