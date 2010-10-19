@@ -46,7 +46,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class DeleteFeatureInvalidateStep implements PipelineStep {
 
-	private Logger log = LoggerFactory.getLogger(DeleteFeatureInvalidateStep.class);
+	private final Logger log = LoggerFactory.getLogger(DeleteFeatureInvalidateStep.class);
 
 	@Autowired
 	private CacheManagerService cacheManager;

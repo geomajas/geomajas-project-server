@@ -47,7 +47,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class GetTileStringContentFromCacheStep implements PipelineStep<GetTileContainer> {
 
-	private Logger log = LoggerFactory.getLogger(GetTileStringContentFromCacheStep.class);
+	private final Logger log = LoggerFactory.getLogger(GetTileStringContentFromCacheStep.class);
 
 	private static final String[] KEYS =
 			{PipelineCode.LAYER_ID_KEY, PipelineCode.FILTER_KEY, PipelineCode.TILE_METADATA_KEY};

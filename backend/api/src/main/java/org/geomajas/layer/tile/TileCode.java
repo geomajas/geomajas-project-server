@@ -103,30 +103,6 @@ public class TileCode implements Serializable, CacheableObject {
 	}
 
 	/**
-	 * Is the given object a <code>TileCode</code>, and are it's values equals to this object's values?
-	 *
-	 * @param obj object to compare
-	 * @return true when object equals this one
-	 */
-	public boolean equals(Object obj) {
-		if (obj == null || !(obj instanceof TileCode)) {
-			return false;
-		} else {
-			TileCode other = (TileCode) obj;
-			return tileLevel == other.getTileLevel() && x == other.getX() && y == other.getY();
-		}
-	}
-
-	/**
-	 * Return a unique hash code.
-	 *
-	 * @return hash code
-	 */
-	public int hashCode() {
-		return toString().hashCode();
-	}
-
-	/**
 	 * Return the values as a readable text: <code>TileLevel-X-Y</code>.
 	 *
 	 * @return readable tile code
@@ -206,5 +182,38 @@ public class TileCode implements Serializable, CacheableObject {
 	 */
 	public String getCacheId() {
 		return tileLevel + "-" + x + "-" + y;
+	}
+
+	/**
+	 * Are the two objects equal?
+	 *
+	 * @param o object to compare
+	 * @return true when objects are equal
+	 */
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) { return true; }
+		if (!(o instanceof TileCode)) { return false; }
+
+		TileCode tileCode = (TileCode) o;
+
+		if (tileLevel != tileCode.tileLevel) { return false; }
+		if (x != tileCode.x) { return false; }
+		if (y != tileCode.y) { return false; }
+
+		return true;
+	}
+
+	/**
+	 * Calculate object hash code.
+	 *
+	 * @return hash code
+	 */
+	@Override
+	public int hashCode() {
+		int result = x;
+		result = 31 * result + y;
+		result = 31 * result + tileLevel;
+		return result;
 	}
 }

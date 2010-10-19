@@ -37,6 +37,8 @@ public class Coordinate implements Comparable<Coordinate>, Cloneable, Serializab
 
 	private static final long serialVersionUID = 6683108902428366910L;
 
+	private static final double EQUALS_DELTA = 1e-12;
+
 	/**
 	 * The x-coordinate.
 	 */
@@ -109,7 +111,7 @@ public class Coordinate implements Comparable<Coordinate>, Cloneable, Serializab
 			return false;
 		}
 		Coordinate c = (Coordinate) other;
-		return x == c.x && y == c.y;
+		return (Math.abs(x - c.x) < EQUALS_DELTA) && (Math.abs(y - c.y) < EQUALS_DELTA);
 	}
 
 	/**

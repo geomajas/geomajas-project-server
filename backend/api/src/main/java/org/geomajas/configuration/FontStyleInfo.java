@@ -193,4 +193,45 @@ public class FontStyleInfo implements Serializable, CacheableObject {
 	public String toString() {
 		return getCacheId();
 	}
+
+	/**
+	 * Are the two objects equal?
+	 *
+	 * @param o object to compare
+	 * @return true when objects are equal
+	 * @since 1.8.0
+	 */
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) { return true; }
+		if (!(o instanceof FontStyleInfo)) { return false; }
+
+		FontStyleInfo that = (FontStyleInfo) o;
+
+		if (Float.compare(that.opacity, opacity) != 0) { return false; }
+		if (size != that.size) { return false; }
+		if (color != null ? !color.equals(that.color) : that.color != null) { return false; }
+		if (family != null ? !family.equals(that.family) : that.family != null) { return false; }
+		if (style != null ? !style.equals(that.style) : that.style != null) { return false; }
+		if (weight != null ? !weight.equals(that.weight) : that.weight != null) { return false; }
+
+		return true;
+	}
+
+	/**
+	 * Calculate object hash code.
+	 *
+	 * @return hash code
+	 * @since 1.8.0
+	 */
+	@Override
+	public int hashCode() {
+		int result = size;
+		result = 31 * result + (family != null ? family.hashCode() : 0);
+		result = 31 * result + (weight != null ? weight.hashCode() : 0);
+		result = 31 * result + (style != null ? style.hashCode() : 0);
+		result = 31 * result + (color != null ? color.hashCode() : 0);
+		result = 31 * result + (opacity != +0.0f ? (int) (opacity * 10000) : 0);
+		return result;
+	}
 }

@@ -133,4 +133,41 @@ public class NamedStyleInfo implements Serializable, CacheableObject {
 	public String toString() {
 		return getCacheId();
 	}
+
+	/**
+	 * Are the two objects equal?
+	 *
+	 * @param o object to compare
+	 * @return true when objects are equal
+	 * @since 1.8.0
+	 */
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) { return true; }
+		if (!(o instanceof NamedStyleInfo)) { return false; }
+
+		NamedStyleInfo that = (NamedStyleInfo) o;
+
+		if (featureStyles != null ? !featureStyles.equals(that.featureStyles) : that.featureStyles != null) {
+			return false;
+		}
+		if (labelStyle != null ? !labelStyle.equals(that.labelStyle) : that.labelStyle != null) { return false; }
+		if (name != null ? !name.equals(that.name) : that.name != null) { return false; }
+
+		return true;
+	}
+
+	/**
+	 * Calculate object hash code.
+	 *
+	 * @return hash code
+	 * @since 1.8.0
+	 */
+	@Override
+	public int hashCode() {
+		int result = featureStyles != null ? featureStyles.hashCode() : 0;
+		result = 31 * result + (labelStyle != null ? labelStyle.hashCode() : 0);
+		result = 31 * result + (name != null ? name.hashCode() : 0);
+		return result;
+	}
 }

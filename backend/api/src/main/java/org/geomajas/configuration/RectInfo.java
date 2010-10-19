@@ -23,6 +23,7 @@
 package org.geomajas.configuration;
 
 import org.geomajas.global.Api;
+import org.geomajas.global.CacheableObject;
 
 import java.io.Serializable;
 
@@ -33,7 +34,7 @@ import java.io.Serializable;
  * @since 1.6.0
  */
 @Api(allMethods = true)
-public class RectInfo implements Serializable {
+public class RectInfo implements Serializable, CacheableObject {
 
 	private static final long serialVersionUID = 151L;
 	private float h;
@@ -75,4 +76,62 @@ public class RectInfo implements Serializable {
 		this.w = value;
 	}
 
+	/**
+	 * String identifier which is guaranteed to include sufficient information to assure to be different for two
+	 * instances which could produce different result. It is typically used as basis for calculation of hash
+	 * codes (like MD5, SHA1, SHA2 etc) of (collections of) objects.
+	 *
+	 * @return cacheId
+	 * @since 1.8.0
+	 */
+	public String getCacheId() {
+		return "RectInfo{" +
+				"h=" + h +
+				", w=" + w +
+				'}';
+	}
+
+	/**
+	 * String representation of object.
+	 *
+	 * @return string representation of object
+	 * @since 1.8.0
+	 */
+	@Override
+	public String toString() {
+		return getCacheId();
+	}
+
+	/**
+	 * Are the two objects equal?
+	 *
+	 * @param o object to compare
+	 * @return true when objects are equal
+	 * @since 1.8.0
+	 */
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) { return true; }
+		if (!(o instanceof RectInfo)) { return false; }
+
+		RectInfo rectInfo = (RectInfo) o;
+
+		if (Float.compare(rectInfo.h, h) != 0) { return false; }
+		if (Float.compare(rectInfo.w, w) != 0) { return false; }
+
+		return true;
+	}
+
+	/**
+	 * Calculate object hash code.
+	 *
+	 * @return hash code
+	 * @since 1.8.0
+	 */
+	@Override
+	public int hashCode() {
+		int result = (h != +0.0f ? new Float(h).hashCode() : 0);
+		result = 31 * result + (w != +0.0f ? new Float(w).hashCode() : 0);
+		return result;
+	}
 }

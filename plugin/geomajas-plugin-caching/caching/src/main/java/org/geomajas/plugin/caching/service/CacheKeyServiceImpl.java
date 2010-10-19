@@ -53,7 +53,7 @@ public class CacheKeyServiceImpl implements CacheKeyService {
 
 	private static final String ENCODING = "UTF-8";
 
-	private Logger log = LoggerFactory.getLogger(CacheKeyServiceImpl.class);
+	private final Logger log = LoggerFactory.getLogger(CacheKeyServiceImpl.class);
 
 	private Random random = new Random();
 

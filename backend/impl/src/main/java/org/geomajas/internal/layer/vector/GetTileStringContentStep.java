@@ -47,7 +47,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class GetTileStringContentStep implements PipelineStep<GetTileContainer> {
 
-	private Logger log = LoggerFactory.getLogger(GetTileStringContentStep.class);
+	private final Logger log = LoggerFactory.getLogger(GetTileStringContentStep.class);
 
 	private String id;
 

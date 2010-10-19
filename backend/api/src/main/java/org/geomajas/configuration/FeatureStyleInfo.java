@@ -302,4 +302,55 @@ public class FeatureStyleInfo implements Serializable, CacheableObject {
 	public String toString() {
 		return getCacheId();
 	}
+
+	/**
+	 * Are the two objects equal?
+	 *
+	 * @param o object to compare
+	 * @return true when objects are equal
+	 * @since 1.8.0
+	 */
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) { return true; }
+		if (!(o instanceof FeatureStyleInfo)) { return false; }
+
+		FeatureStyleInfo that = (FeatureStyleInfo) o;
+
+		if (Float.compare(that.fillOpacity, fillOpacity) != 0) { return false; }
+		if (index != that.index) { return false; }
+		if (Float.compare(that.strokeOpacity, strokeOpacity) != 0) { return false; }
+		if (strokeWidth != that.strokeWidth) { return false; }
+		if (dashArray != null ? !dashArray.equals(that.dashArray) : that.dashArray != null) { return false; }
+		if (fillColor != null ? !fillColor.equals(that.fillColor) : that.fillColor != null) { return false; }
+		if (formula != null ? !formula.equals(that.formula) : that.formula != null) { return false; }
+		if (name != null ? !name.equals(that.name) : that.name != null) { return false; }
+		if (strokeColor != null ? !strokeColor.equals(that.strokeColor) : that.strokeColor != null) { return false; }
+		if (styleId != null ? !styleId.equals(that.styleId) : that.styleId != null) { return false; }
+		if (symbol != null ? !symbol.equals(that.symbol) : that.symbol != null) { return false; }
+
+		return true;
+	}
+
+	/**
+	 * Calculate object hash code.
+	 *
+	 * @return hash code
+	 * @since 1.8.0
+	 */
+	@Override
+	public int hashCode() {
+		int result = index;
+		result = 31 * result + (name != null ? name.hashCode() : 0);
+		result = 31 * result + (formula != null ? formula.hashCode() : 0);
+		result = 31 * result + (fillColor != null ? fillColor.hashCode() : 0);
+		result = 31 * result + (fillOpacity != +0.0f ? (int) (fillOpacity * 10000) : 0);
+		result = 31 * result + (strokeColor != null ? strokeColor.hashCode() : 0);
+		result = 31 * result + (strokeOpacity != +0.0f ? (int) (strokeOpacity * 10000) : 0);
+		result = 31 * result + strokeWidth;
+		result = 31 * result + (dashArray != null ? dashArray.hashCode() : 0);
+		result = 31 * result + (symbol != null ? symbol.hashCode() : 0);
+		result = 31 * result + (styleId != null ? styleId.hashCode() : 0);
+		return result;
+	}
 }

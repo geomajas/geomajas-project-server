@@ -42,6 +42,8 @@ public class GetVectorTileRequest extends LayerIdCommandRequest implements TileM
 
 	private static final long serialVersionUID = 151L;
 
+	private static final double EQUALS_DELTA = 1e-12;
+
 	private TileCode code;
 
 	private double scale;
@@ -193,5 +195,57 @@ public class GetVectorTileRequest extends LayerIdCommandRequest implements TileM
 	@Override
 	public String toString() {
 		return getCacheId();
+	}
+
+	/**
+	 * Are the two objects equal?
+	 *
+	 * @param o object to compare
+	 * @return true when objects are equal
+	 * @since 1.8.0
+	 */
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) { return true; }
+		if (!(o instanceof GetVectorTileRequest)) { return false; }
+
+		GetVectorTileRequest that = (GetVectorTileRequest) o;
+
+		if (featureIncludes != that.featureIncludes) { return false; }
+		if (paintGeometries != that.paintGeometries) { return false; }
+		if (paintLabels != that.paintLabels) { return false; }
+		if (Math.abs(that.scale - scale) < EQUALS_DELTA) { return false; }
+		if (code != null ? !code.equals(that.code) : that.code != null) { return false; }
+		if (crs != null ? !crs.equals(that.crs) : that.crs != null) { return false; }
+		if (filter != null ? !filter.equals(that.filter) : that.filter != null) { return false; }
+		if (panOrigin != null ? !panOrigin.equals(that.panOrigin) : that.panOrigin != null) { return false; }
+		if (renderer != null ? !renderer.equals(that.renderer) : that.renderer != null) { return false; }
+		if (styleInfo != null ? !styleInfo.equals(that.styleInfo) : that.styleInfo != null) { return false; }
+
+		return true;
+	}
+
+	/**
+	 * Calculate object hash code.
+	 *
+	 * @return hash code
+	 * @since 1.8.0
+	 */
+	@Override
+	public int hashCode() {
+		int result;
+		long temp;
+		result = code != null ? code.hashCode() : 0;
+		temp = scale != +0.0d ? new Double(scale).hashCode() : 0L;
+		result = 31 * result + (int) (temp ^ (temp >>> 32));
+		result = 31 * result + (panOrigin != null ? panOrigin.hashCode() : 0);
+		result = 31 * result + (filter != null ? filter.hashCode() : 0);
+		result = 31 * result + (crs != null ? crs.hashCode() : 0);
+		result = 31 * result + (renderer != null ? renderer.hashCode() : 0);
+		result = 31 * result + (styleInfo != null ? styleInfo.hashCode() : 0);
+		result = 31 * result + (paintGeometries ? 1 : 0);
+		result = 31 * result + (paintLabels ? 1 : 0);
+		result = 31 * result + featureIncludes;
+		return result;
 	}
 }

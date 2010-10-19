@@ -70,7 +70,7 @@ import com.vividsolutions.jts.geom.PrecisionModel;
 @Scope(value = "thread", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class SecurityContextImpl implements SecurityContext {
 
-	private Logger log = LoggerFactory.getLogger(SecurityManagerImpl.class);
+	private final Logger log = LoggerFactory.getLogger(SecurityManagerImpl.class);
 
 	private List<Authentication> authentications = new ArrayList<Authentication>();
 

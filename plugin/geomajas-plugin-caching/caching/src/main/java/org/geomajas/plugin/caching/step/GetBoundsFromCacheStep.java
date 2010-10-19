@@ -46,7 +46,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class GetBoundsFromCacheStep implements PipelineStep<GetBoundsContainer> {
 
-	private Logger log = LoggerFactory.getLogger(GetBoundsFromCacheStep.class);
+	private final Logger log = LoggerFactory.getLogger(GetBoundsFromCacheStep.class);
 
 	private static final String[] KEYS = {PipelineCode.LAYER_ID_KEY, PipelineCode.CRS_KEY, PipelineCode.FILTER_KEY};
 

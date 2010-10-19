@@ -36,7 +36,7 @@ import java.util.List;
  */
 public class IndexedCache {
 
-	private Logger log = LoggerFactory.getLogger(IndexedCache.class);
+	private final Logger log = LoggerFactory.getLogger(IndexedCache.class);
 
 	private CacheService cache;
 	private CacheIndexService index;

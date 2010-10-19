@@ -39,7 +39,7 @@ import java.util.Map;
  */
 public class RealTestRecorder implements TestRecorder {
 
-	private Logger log = LoggerFactory.getLogger(RealTestRecorder.class);
+	private final Logger log = LoggerFactory.getLogger(RealTestRecorder.class);
 
 	private Map<String, List<String>> messages = new HashMap<String, List<String>>();
 

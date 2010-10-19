@@ -79,7 +79,7 @@ import com.vividsolutions.jts.geom.Coordinate;
 @Api
 public class PrintServiceImpl implements PrintService {
 
-	private Logger log = LoggerFactory.getLogger(PrintServiceImpl.class);
+	private final Logger log = LoggerFactory.getLogger(PrintServiceImpl.class);
 
 	@Autowired
 	private PrintTemplateDao printTemplateDao;

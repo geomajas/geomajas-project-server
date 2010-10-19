@@ -52,7 +52,7 @@ import java.util.Map;
 @Component
 public class ConfigurationServiceImpl implements ConfigurationService {
 
-	private Logger log = LoggerFactory.getLogger(ConfigurationServiceImpl.class);
+	private final Logger log = LoggerFactory.getLogger(ConfigurationServiceImpl.class);
 
 	@Autowired(required = false)
 	protected Map<String, Layer<?>> layerMap = new LinkedHashMap<String, Layer<?>>();

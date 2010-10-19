@@ -46,7 +46,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class GetFeaturesFromCacheStep implements PipelineStep<GetFeaturesContainer> {
 
-	private Logger log = LoggerFactory.getLogger(GetFeaturesFromCacheStep.class);
+	private final Logger log = LoggerFactory.getLogger(GetFeaturesFromCacheStep.class);
 	
 	private static final String[] KEYS =
 			{PipelineCode.LAYER_ID_KEY, PipelineCode.CRS_KEY, PipelineCode.FILTER_KEY, PipelineCode.OFFSET_KEY,

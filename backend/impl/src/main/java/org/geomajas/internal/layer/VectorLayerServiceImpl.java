@@ -74,7 +74,7 @@ import com.vividsolutions.jts.geom.Envelope;
 @Component
 public class VectorLayerServiceImpl implements VectorLayerService {
 
-	private Logger log = LoggerFactory.getLogger(VectorLayerServiceImpl.class);
+	private final Logger log = LoggerFactory.getLogger(VectorLayerServiceImpl.class);
 
 	@Autowired
 	private ConfigurationService configurationService;

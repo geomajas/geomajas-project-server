@@ -45,7 +45,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public abstract class AbstractPutInCacheStep<TYPE> implements PipelineStep<TYPE> {
 
-	private Logger log = LoggerFactory.getLogger(AbstractPutInCacheStep.class);
+	private final Logger log = LoggerFactory.getLogger(AbstractPutInCacheStep.class);
 
 	@Autowired
 	private CacheManagerService cacheManager;

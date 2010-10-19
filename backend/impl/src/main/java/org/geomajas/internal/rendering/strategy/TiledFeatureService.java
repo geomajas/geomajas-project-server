@@ -63,7 +63,7 @@ import com.vividsolutions.jts.geom.Geometry;
 @Component
 public class TiledFeatureService {
 
-	private Logger log = LoggerFactory.getLogger(TiledFeatureService.class);
+	private final Logger log = LoggerFactory.getLogger(TiledFeatureService.class);
 
 	@Autowired
 	private DtoConverterService converterService;

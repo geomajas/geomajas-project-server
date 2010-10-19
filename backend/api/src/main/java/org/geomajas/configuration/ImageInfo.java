@@ -26,6 +26,7 @@ package org.geomajas.configuration;
 import java.io.Serializable;
 
 import org.geomajas.global.Api;
+import org.geomajas.global.CacheableObject;
 
 /**
  * Image configuration information. Contains a link to the normal image, a link to the selection image, a width and a
@@ -36,7 +37,7 @@ import org.geomajas.global.Api;
  * @since 1.6.0
  */
 @Api(allMethods = true)
-public class ImageInfo implements Serializable {
+public class ImageInfo implements Serializable, CacheableObject {
 
 	private static final long serialVersionUID = 160L;
 
@@ -108,5 +109,72 @@ public class ImageInfo implements Serializable {
 	 */
 	public void setHeight(int height) {
 		this.height = height;
+	}
+
+	/**
+	 * String identifier which is guaranteed to include sufficient information to assure to be different for two
+	 * instances which could produce different result. It is typically used as basis for calculation of hash
+	 * codes (like MD5, SHA1, SHA2 etc) of (collections of) objects.
+	 *
+	 * @return cacheId
+	 * @since 1.8.0
+	 */
+	public String getCacheId() {
+		return "ImageInfo{" +
+				"href='" + href + '\'' +
+				", selectionHref='" + selectionHref + '\'' +
+				", width=" + width +
+				", height=" + height +
+				'}';
+	}
+
+	/**
+	 * String representation of object.
+	 *
+	 * @return string representation of object
+	 * @since 1.8.0
+	 */
+	@Override
+	public String toString() {
+		return getCacheId();
+	}
+
+	/**
+	 * Are the two objects equal?
+	 *
+	 * @param o object to compare
+	 * @return true when objects are equal
+	 * @since 1.8.0
+	 */
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) { return true; }
+		if (!(o instanceof ImageInfo)) { return false; }
+
+		ImageInfo imageInfo = (ImageInfo) o;
+
+		if (height != imageInfo.height) { return false; }
+		if (width != imageInfo.width) { return false; }
+		if (href != null ? !href.equals(imageInfo.href) : imageInfo.href != null) { return false; }
+		if (selectionHref != null ? !selectionHref.equals(imageInfo.selectionHref) : imageInfo.selectionHref != null) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Calculate object hash code.
+	 *
+	 * @return hash code
+	 * @since 1.8.0
+	 */
+	@Override
+	public int hashCode() {
+		int result = href != null ? href.hashCode() : 0;
+		result = 31 * result + (selectionHref != null ? selectionHref.hashCode() : 0);
+		result = 31 * result + width;
+		result = 31 * result + height;
+		return result;
 	}
 }

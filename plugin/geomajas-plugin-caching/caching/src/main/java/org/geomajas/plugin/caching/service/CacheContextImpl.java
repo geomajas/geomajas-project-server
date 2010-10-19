@@ -23,6 +23,9 @@
 
 package org.geomajas.plugin.caching.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -33,6 +36,9 @@ import java.util.Set;
  * @author Joachim Van der Auwera
  */
 public class CacheContextImpl implements CacheContext {
+
+	private final Logger log = LoggerFactory.getLogger(CacheContextImpl.class);
+
 	private Map<String, Object> map = new HashMap<String, Object>();
 
 	public void put(String key, Object object) {
@@ -66,7 +72,29 @@ public class CacheContextImpl implements CacheContext {
 
 		CacheContextImpl that = (CacheContextImpl) o;
 
-		return !(map != null ? !map.equals(that.map) : that.map != null);
+		if (null == map) {
+			return null == that.map;
+		} else {
+			if (map.size() != that.map.size()) {
+				return false;
+			} else {
+				for (Map.Entry<String, Object> one : map.entrySet()) {
+					if (!objectEquals(one.getValue(), that.map.get(one.getKey()))) {
+						log.debug("Map key {} does not match.", one.getKey());
+						return false;
+					}
+				}
+			}
+		}
+		return true;
+	}
+
+	private boolean objectEquals(Object left, Object right) {
+		if (null == left) {
+			return null == right;
+		} else {
+			return left.equals(right);
+		}
 	}
 
 	@Override

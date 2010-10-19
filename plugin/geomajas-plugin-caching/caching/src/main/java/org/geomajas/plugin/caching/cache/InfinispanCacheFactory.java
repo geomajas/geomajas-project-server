@@ -46,7 +46,7 @@ import java.io.IOException;
 @Api
 public class InfinispanCacheFactory implements CacheFactory {
 
-	private Logger log = LoggerFactory.getLogger(InfinispanCacheFactory.class);
+	private final Logger log = LoggerFactory.getLogger(InfinispanCacheFactory.class);
 
 	private CacheContainer manager;
 	private String configurationFile;
