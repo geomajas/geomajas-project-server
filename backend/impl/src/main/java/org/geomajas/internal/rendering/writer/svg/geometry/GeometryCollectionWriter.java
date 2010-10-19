@@ -48,7 +48,7 @@ public class GeometryCollectionWriter implements GraphicsWriter {
 		document.writeAttribute("fill-rule", "evenodd");
 		document.writeAttributeStart("d");
 		for (int i = 0; i < coll.getNumGeometries(); i++) {
-			// TODO delegate to appropriate writers
+			document.writeObject(coll.getGeometryN(i), true); // TODO delegate to appropriate writers, is this correct?
 		}
 		document.writeAttributeEnd();
 	}

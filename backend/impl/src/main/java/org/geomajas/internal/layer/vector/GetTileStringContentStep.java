@@ -36,6 +36,8 @@ import org.geomajas.service.TextService;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
 import org.geomajas.service.pipeline.PipelineStep;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -44,6 +46,8 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author Joachim Van der Auwera
  */
 public class GetTileStringContentStep implements PipelineStep<GetTileContainer> {
+
+	private Logger log = LoggerFactory.getLogger(GetTileStringContentStep.class);
 
 	private String id;
 
@@ -72,6 +76,7 @@ public class GetTileStringContentStep implements PipelineStep<GetTileContainer> 
 					.getRenderer(), metadata.getScale(), panOrigin, geoService, textService);
 			tilePainter.setPaintGeometries(metadata.isPaintGeometries());
 			tilePainter.setPaintLabels(metadata.isPaintLabels());
+			log.debug("Going to paint features {}", response.getTile().getFeatures());
 			tilePainter.paint(response.getTile());
 		}
 	}
