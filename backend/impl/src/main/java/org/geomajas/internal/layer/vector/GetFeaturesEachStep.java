@@ -123,8 +123,8 @@ public class GetFeaturesEachStep implements PipelineStep<GetFeaturesContainer> {
 				}
 			}
 			response.setBounds(bounds);
-			log.debug("getElements done, features {}, bounds {}", features, bounds);
 		}
+		log.debug("getElements done, features {}, bounds {}", response.getFeatures(), response.getBounds());
 	}
 
 	/**

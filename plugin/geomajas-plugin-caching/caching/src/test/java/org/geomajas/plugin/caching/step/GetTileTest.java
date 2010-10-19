@@ -25,7 +25,6 @@ package org.geomajas.plugin.caching.step;
 
 import org.geomajas.command.dto.GetVectorTileRequest;
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.global.GeomajasConstant;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.VectorLayerService;
 import org.geomajas.layer.feature.InternalFeature;
@@ -46,6 +45,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+
+import java.util.List;
 
 /**
  * Tests for the cached variant of the GetBounds pipeline.
@@ -173,5 +174,76 @@ public class GetTileTest {
 		Assert.assertEquals("", recorder.matches(CacheCategory.TILE, "Put item in cache"));
 		Assert.assertEquals("", recorder.matches(CacheCategory.SVG, "Got item from cache", "Put item in cache"));
 		Assert.assertEquals("", recorder.matches(CacheCategory.FEATURE, "Got item from cache", "Put item in cache"));
+	}
+
+	/**
+	 * Test which verifies that the cached feature data is not changed while in the cache.
+	 */
+	@Test
+	public void testGetTileWithTransformationCheckFeatureCache() throws Exception {
+		InternalTile tile;
+		TileMetadata tmd = new GetVectorTileRequest();
+		tmd.setCrs("EPSG:900913");
+		tmd.setCode(new TileCode(1,1,1));
+		tmd.setLayerId(LAYER_BEANS);
+		tmd.setRenderer(TileMetadata.PARAM_SVG_RENDERER);
+		tmd.setScale(1.0);
+		tmd.setPanOrigin(new Coordinate(0, 0));
+
+		// first run, this should put things in the cache
+		recorder.clear();
+		tile = vectorLayerService.getTile(tmd);
+		Assert.assertNotNull(tile);
+		Assert.assertEquals(
+				"<g id=\"beans.features.1-1-1\"><g style=\"fill:#995500;fill-opacity:0.6;stroke:#995500;" +
+						"stroke-opacity:0.3;stroke-width:1px;\" id=\"beans.features.1-1-1.0\">" +
+						"<path fill-rule=\"evenodd\" d=\"M445278 0l0 -334111 222639 0 0 334111 -222639 0 Z\" " +
+						"id=\"2\"></path><path fill-rule=\"evenodd\" " +
+						"d=\"M222639 -111325l0 -111359 556597 0 -111319 111359 -445278 0 Z\" id=\"3\"/></g></g>",
+				tile.getFeatureContent());
+		Assert.assertEquals("", recorder.matches(CacheCategory.FEATURE, "Put item in cache"));
+		Assert.assertEquals("", recorder.matches(CacheCategory.SVG, "Put item in cache"));
+		Assert.assertEquals("", recorder.matches(CacheCategory.TILE, "Put item in cache"));
+
+		// verify that data is in the cache
+		DummyCacheService cache = (DummyCacheService)cacheManager.getCacheForTesting(LAYER_BEANS, CacheCategory.TILE);
+		Assert.assertEquals(1, cache.size());
+		cache.clear(); // remove tile from cache
+
+		cache = (DummyCacheService) cacheManager.getCacheForTesting(LAYER_BEANS, CacheCategory.FEATURE);
+		Assert.assertEquals(1, cache.size());
+		String key = cache.getKey();
+		FeaturesCacheContainer fcc = (FeaturesCacheContainer) cache.getObject();
+		List<InternalFeature> features = fcc.getFeatures();
+		Assert.assertEquals(3, features.size());
+		InternalFeature feature = features.get(2);
+		Assert.assertEquals(2, feature.getGeometry().getCoordinates()[0].x, DELTA);
+		Assert.assertEquals(1, feature.getGeometry().getCoordinates()[0].y, DELTA);
+
+		// get tile again, should put tile in cache again but use features and string from cache
+		recorder.clear();
+		tile = vectorLayerService.getTile(tmd);
+		Assert.assertNotNull(tile);
+		Assert.assertEquals(
+				"<g id=\"beans.features.1-1-1\"><g style=\"fill:#995500;fill-opacity:0.6;stroke:#995500;" +
+						"stroke-opacity:0.3;stroke-width:1px;\" id=\"beans.features.1-1-1.0\">" +
+						"<path fill-rule=\"evenodd\" d=\"M445278 0l0 -334111 222639 0 0 334111 -222639 0 Z\" " +
+						"id=\"2\"></path><path fill-rule=\"evenodd\" " +
+						"d=\"M222639 -111325l0 -111359 556597 0 -111319 111359 -445278 0 Z\" id=\"3\"/></g></g>",
+				tile.getFeatureContent());
+		Assert.assertEquals("", recorder.matches(CacheCategory.TILE, "Put item in cache"));
+		Assert.assertEquals("", recorder.matches(CacheCategory.SVG, "Got item from cache", "Put item in cache"));
+		Assert.assertEquals("", recorder.matches(CacheCategory.FEATURE, "Got item from cache", "Put item in cache"));
+
+		cache = (DummyCacheService) cacheManager.getCacheForTesting(LAYER_BEANS, CacheCategory.FEATURE);
+		Assert.assertEquals(1, cache.size());
+		key = cache.getKey();
+		fcc = (FeaturesCacheContainer) cache.getObject();
+		features = fcc.getFeatures();
+		Assert.assertEquals(3, features.size());
+		feature = features.get(2);
+		Assert.assertEquals(2, feature.getGeometry().getCoordinates()[0].x, DELTA);
+		Assert.assertEquals(1, feature.getGeometry().getCoordinates()[0].y, DELTA);
+
 	}
 }

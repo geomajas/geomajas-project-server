@@ -94,6 +94,7 @@ public class GetTileFromCacheStep implements PipelineStep<GetTileContainer> {
 					break;
 				} else {
 					cacheKey = cacheKeyService.makeUnique(cacheKey);
+					log.debug("Cache context did not match, new key {}", cacheKey);
 					cc = cacheManager.get(layer, CacheCategory.TILE, cacheKey, TileCacheContainer.class);
 				}
 			}

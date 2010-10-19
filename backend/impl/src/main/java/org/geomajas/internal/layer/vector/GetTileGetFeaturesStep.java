@@ -24,13 +24,11 @@
 package org.geomajas.internal.layer.vector;
 
 import org.geomajas.global.GeomajasException;
-import org.geomajas.internal.rendering.strategy.TiledFeatureService;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.VectorLayerService;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.layer.pipeline.GetTileContainer;
 import org.geomajas.layer.tile.TileMetadata;
-import org.geomajas.service.GeoService;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
 import org.geomajas.service.pipeline.PipelineStep;
@@ -50,12 +48,6 @@ public class GetTileGetFeaturesStep implements PipelineStep<GetTileContainer> {
 
 	@Autowired
 	private VectorLayerService layerService;
-
-	@Autowired
-	private GeoService geoService;
-
-	@Autowired
-	private TiledFeatureService tiledFeatureService;
 
 	public String getId() {
 		return id;

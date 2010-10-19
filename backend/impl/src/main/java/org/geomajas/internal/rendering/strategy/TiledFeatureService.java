@@ -28,7 +28,6 @@ import java.util.List;
 
 import org.geomajas.global.GeomajasException;
 import org.geomajas.internal.layer.feature.InternalFeatureImpl;
-import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.layer.tile.TileCode;
@@ -57,7 +56,7 @@ import com.vividsolutions.jts.geom.Geometry;
  * position of the first coordinate is used. The other tiles that the geometry in question spans, are considered
  * dependent tiles.
  * </p>
- * 
+ *
  * @author Pieter De Graef
  * @author Joachim Van der Auwera
  */
@@ -79,7 +78,7 @@ public class TiledFeatureService {
 	/**
 	 * Put features in a tile. This will assure all features are only added in one tile. When a feature's unique tile
 	 * is different from this one a link is added in the tile.
-	 * 
+	 *
 	 * @param tile
 	 *            tile to put features in
 	 * @param maxTileExtent
@@ -93,7 +92,7 @@ public class TiledFeatureService {
 		for (InternalFeature feature : origFeatures) {
 			if (!addTileCode(tile, maxTileExtent, feature.getGeometry())) {
 				log.debug("add feature");
-					tile.addFeature(feature);
+				tile.addFeature(feature);
 			}
 		}
 	}
@@ -103,10 +102,6 @@ public class TiledFeatureService {
 	 *
 	 * @param tile
 	 *            tile to put features in
-	 * @param layer
-	 *            layer
-	 * @param code
-	 *            tile code
 	 * @param scale
 	 *            scale
 	 * @param panOrigin
@@ -114,14 +109,15 @@ public class TiledFeatureService {
 	 *            the maxScreenEnvelope.
 	 * @throws GeomajasException oops
 	 */
-	public void clipTile(InternalTile tile, VectorLayer layer, TileCode code,
-			double scale, Coordinate panOrigin) throws GeomajasException {
+	public void clipTile(InternalTile tile, double scale, Coordinate panOrigin) throws GeomajasException {
+		log.debug("clipTile before {}", tile);
 		List<InternalFeature> orgFeatures = tile.getFeatures();
 		tile.setFeatures(new ArrayList<InternalFeature>());
 		Geometry maxScreenBbox = null; // The tile's maximum bounds in screen space. Used for clipping.
 		for (InternalFeature feature : orgFeatures) {
 			// clip feature if necessary
 			if (exceedsScreenDimensions(feature, scale)) {
+				log.debug("feature {} exceeds screen dimensions", feature);
 				InternalFeatureImpl vectorFeature = new InternalFeatureImpl(feature);
 				tile.setClipped(true);
 				vectorFeature.setClipped(true);
@@ -135,6 +131,7 @@ public class TiledFeatureService {
 				tile.addFeature(feature);
 			}
 		}
+		log.debug("clipTile after {}", tile);
 	}
 
 
@@ -145,30 +142,30 @@ public class TiledFeatureService {
 	/**
 	 * Add dependent tiles for this geometry.
 	 * <p/>
-	 * It checks the correct tile for the first coordinate in the geometry which is inside the layer bounds. When no
-	 * coordinates are inside the layer bounds, the feature is put in tile 0-0 (as this means the feature is bigger
+	 * It checks the correct tile for the first coordinate in the geometry which is inside the tile bounds. When no
+	 * coordinates are inside the tile bounds, the feature is put in tile 0-0 (as this means the feature is bigger
 	 * than the tiles).
-	 * 
+	 *
 	 * @param tile
 	 *            tile in which to add dependent tile
-	 * @param layerBounds layer bounds in map coordinates
+	 * @param tileBounds tile bounds in map coordinates
 	 * @param geometry geometry for feature
 	 * @return true when tilecode was added and feature will be contained in another tile
 	 */
-	private boolean addTileCode(InternalTile tile, Envelope layerBounds, Geometry geometry) {
+	private boolean addTileCode(InternalTile tile, Envelope tileBounds, Geometry geometry) {
 		if (log.isDebugEnabled()) {
-			log.debug("addTileCode {} {}", layerBounds, geometry);
+			log.debug("addTileCode {} {}", tileBounds, geometry);
 		}
 		TileCode tileCode = tile.getCode();
 		int tileX = tileCode.getX();
 		int tileY = tileCode.getY();
 		for (Coordinate coordinate : geometry.getCoordinates()) {
-			if (layerBounds.contains(coordinate)) {
+			if (tileBounds.contains(coordinate)) {
 				// We jump through some hoops to (try to) avoid rounding problems.
 				// This may result in having the feature in two adjacent tiles, but that should still be better than
 				// loosing the feature. Just hope the tolerance is small enough.
-				double xd = ((coordinate.x - layerBounds.getMinX()) / tile.getTileWidth());
-				double yd = ((coordinate.y - layerBounds.getMinY()) / tile.getTileHeight());
+				double xd = ((coordinate.x - tileBounds.getMinX()) / tile.getTileWidth());
+				double yd = ((coordinate.y - tileBounds.getMinY()) / tile.getTileHeight());
 				int x1 = (int) (xd);
 				int x2 = (int) (xd + ROUNDING_TOLERANCE);
 				int y1 = (int) (yd);
@@ -200,7 +197,7 @@ public class TiledFeatureService {
 
 	/**
 	 * The test that checks if clipping is needed.
-	 * 
+	 *
 	 * @param f
 	 *            feature to test
 	 * @param scale
@@ -209,22 +206,15 @@ public class TiledFeatureService {
 	 */
 	private boolean exceedsScreenDimensions(InternalFeature f, double scale) {
 		Envelope env = f.getBounds();
-		if (env.getWidth() * scale > MAXIMUM_TILE_COORDINATE) {
-			return true;
-		} else {
-			return env.getHeight() * scale > MAXIMUM_TILE_COORDINATE;
-		}
+		return (env.getWidth() * scale > MAXIMUM_TILE_COORDINATE) ||
+				(env.getHeight() * scale > MAXIMUM_TILE_COORDINATE);
 	}
 
 	/**
 	 * What is the maximum bounds in screen space? Needed for correct clipping calculation.
-	 * 
-	 * @param layer
-	 *            layer
-	 * @param code
-	 *            tile code
-	 * @param scale
-	 *            scale
+	 *
+	 * @param tile
+	 *            tile
 	 * @param panOrigin
 	 *            pan origin
 	 * @return max screen bbox

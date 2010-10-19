@@ -23,21 +23,21 @@
 
 package org.geomajas.plugin.caching.step;
 
-import com.vividsolutions.jts.geom.Envelope;
 import org.geomajas.global.GeomajasConstant;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.VectorLayerService;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.plugin.caching.service.CacheCategory;
-import org.geomajas.plugin.caching.service.CacheContext;
 import org.geomajas.plugin.caching.service.CacheManagerServiceImpl;
 import org.geomajas.plugin.caching.service.DummyCacheService;
+import org.geomajas.service.FilterService;
 import org.geomajas.service.GeoService;
 import org.geomajas.service.TestRecorder;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.opengis.filter.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
@@ -79,6 +79,9 @@ public class GetFeaturesTest {
 
 	@Autowired
 	private org.geomajas.security.SecurityManager securityManager;
+
+	@Autowired
+	private FilterService filterService;
 
 	@Before
 	public void init() {
@@ -123,6 +126,70 @@ public class GetFeaturesTest {
 		Assert.assertNotNull(features);
 		Assert.assertEquals(4, features.size());
 		Assert.assertEquals("", recorder.matches(CacheCategory.FEATURE,
+				"Put item in cache"));
+	}
+
+	@Test
+	public void testFeaturesFiltered() throws Exception {
+		List<InternalFeature> features;
+		InternalFeature feature;
+		Filter filter = filterService.createFidFilter(new String[] {"3"});
+
+		// first run, this should put things in the cache
+		recorder.clear();
+		features = vectorLayerService.getFeatures(LAYER_BEANS, geoService.getCrs("EPSG:4326"), filter, null,
+				GeomajasConstant.FEATURE_INCLUDE_GEOMETRY);
+		Assert.assertNotNull(features);
+		Assert.assertEquals(1, features.size());
+		feature = features.get(0);
+		Assert.assertEquals(2.0, feature.getGeometry().getCoordinates()[0].x, DELTA);
+		Assert.assertEquals(1.0, feature.getGeometry().getCoordinates()[0].y, DELTA);
+		Assert.assertEquals("", recorder.matches(CacheCategory.FEATURE,
+				"Put item in cache"));
+
+		// get features again, the result should come from the cache and be the same
+		recorder.clear();
+		features = vectorLayerService.getFeatures(LAYER_BEANS, geoService.getCrs("EPSG:4326"), filter, null,
+				GeomajasConstant.FEATURE_INCLUDE_GEOMETRY);
+		Assert.assertNotNull(features);
+		Assert.assertEquals(1, features.size());
+		feature = features.get(0);
+		Assert.assertEquals(2.0, feature.getGeometry().getCoordinates()[0].x, DELTA);
+		Assert.assertEquals(1.0, feature.getGeometry().getCoordinates()[0].y, DELTA);
+		Assert.assertEquals("", recorder.matches(CacheCategory.FEATURE,
+				"Got item from cache",
+				"Put item in cache"));
+	}
+
+	@Test
+	public void testFeaturesFilteredTransformed() throws Exception {
+		List<InternalFeature> features;
+		InternalFeature feature;
+		Filter filter = filterService.createFidFilter(new String[] {"3"});
+
+		// first run, this should put things in the cache
+		recorder.clear();
+		features = vectorLayerService.getFeatures(LAYER_BEANS, geoService.getCrs("EPSG:900913"), filter, null,
+				GeomajasConstant.FEATURE_INCLUDE_GEOMETRY);
+		Assert.assertNotNull(features);
+		Assert.assertEquals(1, features.size());
+		feature = features.get(0);
+		Assert.assertEquals(222638.98158654713, feature.getGeometry().getCoordinates()[0].x, DELTA);
+		Assert.assertEquals(111325.14286638486, feature.getGeometry().getCoordinates()[0].y, DELTA);
+		Assert.assertEquals("", recorder.matches(CacheCategory.FEATURE,
+				"Put item in cache"));
+
+		// get features again, the result should come from the cache and be the same
+		recorder.clear();
+		features = vectorLayerService.getFeatures(LAYER_BEANS, geoService.getCrs("EPSG:900913"), filter, null,
+				GeomajasConstant.FEATURE_INCLUDE_GEOMETRY);
+		Assert.assertNotNull(features);
+		Assert.assertEquals(1, features.size());
+		feature = features.get(0);
+		Assert.assertEquals(222638.98158654713, feature.getGeometry().getCoordinates()[0].x, DELTA);
+		Assert.assertEquals(111325.14286638486, feature.getGeometry().getCoordinates()[0].y, DELTA);
+		Assert.assertEquals("", recorder.matches(CacheCategory.FEATURE,
+				"Got item from cache",
 				"Put item in cache"));
 	}
 }
