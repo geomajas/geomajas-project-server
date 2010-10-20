@@ -159,18 +159,19 @@
     <section id="apiVersions">
       <title>API compatibility and Geomajas versions</title>
 
-      <para>Versions have the structure "major.minor.revision". Geomajas uses
-      a even-odd versioning scheme for the "minor" part.</para>
+      <para>Versions have the structure "major.minor.revision".</para>
 
       <para>The major number indicates major changes in the framework and thus
       gives no guarantee about API compatibility with previous major
       versions.</para>
 
-      <para>Versions with an even minor part are considered stable and
-      suitable for production use. Odd minor versions are used for development
-      to work on and test new features to be released in the next stable
-      version. The API for Geomajas needs to be upward compatible for all
-      stable versions with same major number. Specifically this means that
+      <para>Minor versions are used for adding features. Revisions are only
+      produced when bugs need to be fixed which cannot wait for the next minor
+      release (or when the previous revision was rejected in the release
+      vote).</para>
+
+      <para>The API for Geomajas needs to be upward compatible for all stable
+      versions with same major number. Specifically this means that
       <itemizedlist>
           <listitem>
             <para>No API classes or interfaces may be removed.</para>
@@ -1718,7 +1719,7 @@
 
           <para><itemizedlist>
               <listitem>
-                 "Get" : get the raster tile. 
+                <para>"Get" : get the raster tile.</para>
               </listitem>
             </itemizedlist></para>
         </section>
@@ -1732,11 +1733,13 @@
 
           <para><itemizedlist>
               <listitem>
-                 "EqualSize" : verify that the list of old and new features match. 
+                <para>"EqualSize" : verify that the list of old and new
+                features match.</para>
               </listitem>
 
               <listitem>
-                 "SaveOrUpdate" : this handles the save or update for the individual features using the pipeline below. 
+                <para>"SaveOrUpdate" : this handles the save or update for the
+                individual features using the pipeline below.</para>
               </listitem>
             </itemizedlist></para>
         </section>
@@ -1746,31 +1749,35 @@
 
           <para><itemizedlist>
               <listitem>
-                 "Delete" : delete the feature if it has been removed. 
+                <para>"Delete" : delete the feature if it has been
+                removed.</para>
               </listitem>
 
               <listitem>
-                 "CheckId" : check that the id for the old and new feature match. 
+                <para>"CheckId" : check that the id for the old and new
+                feature match.</para>
               </listitem>
 
               <listitem>
-                 "TransformGeometry" : assure the geometry is transformed to layer coordinate space. 
+                <para>"TransformGeometry" : assure the geometry is transformed
+                to layer coordinate space.</para>
               </listitem>
 
               <listitem>
-                 "Create" : handle the creation of a new feature. 
+                <para>"Create" : handle the creation of a new feature.</para>
               </listitem>
 
               <listitem>
-                 "Update" : update the feature. 
+                <para>"Update" : update the feature.</para>
               </listitem>
 
               <listitem>
-                 "UpdateSave" : save it back to the data store. 
+                <para>"UpdateSave" : save it back to the data store.</para>
               </listitem>
 
               <listitem>
-                 "UpdateFeature" : and assure the feature itself reflects the state from the database. 
+                <para>"UpdateFeature" : and assure the feature itself reflects
+                the state from the database.</para>
               </listitem>
             </itemizedlist></para>
         </section>
@@ -1780,15 +1787,17 @@
 
           <para><itemizedlist>
               <listitem>
-                 "LayerFilter" : calculate the correct filter based on security and layer extent. 
+                <para>"LayerFilter" : calculate the correct filter based on
+                security and layer extent.</para>
               </listitem>
 
               <listitem>
-                 "GetFeaturesStyle" : get the styles which are relevant for the features. 
+                <para>"GetFeaturesStyle" : get the styles which are relevant
+                for the features.</para>
               </listitem>
 
               <listitem>
-                 "GetFeatures" : fetch and fill the features. 
+                <para>"GetFeatures" : fetch and fill the features.</para>
               </listitem>
             </itemizedlist></para>
         </section>
@@ -1798,11 +1807,13 @@
 
           <para><itemizedlist>
               <listitem>
-                 "LayerFilter" : calculate the correct filter based on security and layer extent. 
+                <para>"LayerFilter" : calculate the correct filter based on
+                security and layer extent.</para>
               </listitem>
 
               <listitem>
-                 "GetBounds" : calculate the bounds for the features which comply with the filter. 
+                <para>"GetBounds" : calculate the bounds for the features
+                which comply with the filter.</para>
               </listitem>
             </itemizedlist></para>
         </section>
@@ -1812,11 +1823,13 @@
 
           <para><itemizedlist>
               <listitem>
-                 "LayerFilter" : calculate the correct filter based on security and layer extent. 
+                <para>"LayerFilter" : calculate the correct filter based on
+                security and layer extent.</para>
               </listitem>
 
               <listitem>
-                 "GetAttributes" : get the attributes for the filtered features. 
+                <para>"GetAttributes" : get the attributes for the filtered
+                features.</para>
               </listitem>
             </itemizedlist></para>
         </section>
@@ -1826,19 +1839,22 @@
 
           <para><itemizedlist>
               <listitem>
-                 "TileFilter" : calculate the correct filter based on security and tile extent. 
+                <para>"TileFilter" : calculate the correct filter based on
+                security and tile extent.</para>
               </listitem>
 
               <listitem>
-                 "GetFeatures" : fetch and fill the features. 
+                <para>"GetFeatures" : fetch and fill the features.</para>
               </listitem>
 
               <listitem>
-                 "TileTransform" : transform the tile to the requested coordinate reference system. 
+                <para>"TileTransform" : transform the tile to the requested
+                coordinate reference system.</para>
               </listitem>
 
               <listitem>
-                 "GetStringContent" : render the features to the requested string content. 
+                <para>"GetStringContent" : render the features to the
+                requested string content.</para>
               </listitem>
             </itemizedlist></para>
         </section>
