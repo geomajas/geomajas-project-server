@@ -13,9 +13,13 @@
     <logger name="org.geomajas.internal.rendering.strategy" level="DEBUG" />
 	<logger name="org.geomajas.internal.layer.vector.GetFeaturesEachStep" level="DEBUG" />
 	-->
+	<!--
 	<logger name="org.geomajas.plugin.caching" level="DEBUG" />
 	<logger name="org.geomajas.internal.service" level="DEBUG" />
+	<logger name="org.geomajas.internal.service.CommandDispatcherImpl" level="TRACE" />
 	<logger name="org.geomajas.internal.layer.vector" level="DEBUG" />
+	<logger name="org.geomajas.command" level="DEBUG" />
+	-->
 
     <root level="INFO">
         <appender-ref ref="CONSOLE"/>
