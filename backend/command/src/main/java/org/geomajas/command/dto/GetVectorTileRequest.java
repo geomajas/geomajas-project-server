@@ -214,7 +214,7 @@ public class GetVectorTileRequest extends LayerIdCommandRequest implements TileM
 		if (featureIncludes != that.featureIncludes) { return false; }
 		if (paintGeometries != that.paintGeometries) { return false; }
 		if (paintLabels != that.paintLabels) { return false; }
-		if (Math.abs(that.scale - scale) < EQUALS_DELTA) { return false; }
+		if (Math.abs(that.scale - scale) > EQUALS_DELTA) { return false; }
 		if (code != null ? !code.equals(that.code) : that.code != null) { return false; }
 		if (crs != null ? !crs.equals(that.crs) : that.crs != null) { return false; }
 		if (filter != null ? !filter.equals(that.filter) : that.filter != null) { return false; }

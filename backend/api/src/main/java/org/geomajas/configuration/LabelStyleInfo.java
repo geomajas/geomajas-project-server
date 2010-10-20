@@ -123,4 +123,50 @@ public class LabelStyleInfo implements Serializable {
 	public String toString() {
 		return getCacheId();
 	}
+
+	/**
+	 * Are the two objects equal?
+	 *
+	 * @param o object to compare
+	 * @return true when objects are equal
+	 * @since 1.8.0
+	 */
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof LabelStyleInfo)) {
+			return false;
+		}
+
+		LabelStyleInfo that = (LabelStyleInfo) o;
+
+		if (backgroundStyle != null ? !backgroundStyle.equals(that.backgroundStyle) : that.backgroundStyle != null) {
+			return false;
+		}
+		if (fontStyle != null ? !fontStyle.equals(that.fontStyle) : that.fontStyle != null) {
+			return false;
+		}
+		if (labelAttributeName != null ? !labelAttributeName.equals(that.labelAttributeName) :
+				that.labelAttributeName != null) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
+	 * Calculate object hash code.
+	 *
+	 * @return hash code
+	 * @since 1.8.0
+	 */
+	@Override
+	public int hashCode() {
+		int result = labelAttributeName != null ? labelAttributeName.hashCode() : 0;
+		result = 31 * result + (fontStyle != null ? fontStyle.hashCode() : 0);
+		result = 31 * result + (backgroundStyle != null ? backgroundStyle.hashCode() : 0);
+		return result;
+	}
 }
