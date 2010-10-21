@@ -49,7 +49,6 @@
 	<modules>
 		<module>rest</module>
 		<module>rest-example</module>
-		<module>documentation</module>
   </modules>
 
 	<profiles>

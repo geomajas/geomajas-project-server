@@ -9,7 +9,7 @@
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-plugin-caching</artifactId>
 	<packaging>jar</packaging>
-	<name>Caching plug-in</name>
+	<name>Caching</name>
 	<description>Caching to allow data to be calculated only once and cached for later use.</description>
 
 	<dependencies>

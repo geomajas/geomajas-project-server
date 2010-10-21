@@ -11,7 +11,7 @@
 	<artifactId>geomajas-plugin-rasterizing-all</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
 	<packaging>pom</packaging>
-	<name>rasterizing plug-in parent</name>
+	<name>rasterizing plug-in</name>
 	<description>rasterizing plug-in grouping module</description>
 
 	<scm>
@@ -54,7 +54,6 @@
 	
 	<modules>
 		<module>rasterizing</module>
-		<module>documentation</module>
   </modules>
 
 	<profiles>
