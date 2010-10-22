@@ -61,7 +61,45 @@
     <para>Alternatively you can configure for each layer individually which
     pipelines should be used.</para>
 
-    <para>??? @TODO</para>
+    <para>The following cached pipelines exist (bean names):</para>
+
+    <para><itemizedlist>
+        <listitem>
+          <para>PIPELINE_SAVE_OR_UPDATE_ONE_CACHED: pipeline for the
+          saveOrUpdate() on a vector layer.</para>
+        </listitem>
+
+        <listitem>
+          <para>PIPELINE_GET_FEATURES_CACHED: pipeline for getting feature
+          from a vector layer.</para>
+        </listitem>
+
+        <listitem>
+          <para>PIPELINE_GET_BOUNDS_CACHED: pipeline to determine layer
+          bounds.</para>
+        </listitem>
+
+        <listitem>
+          <para>PIPELINE_GET_VECTOR_TILE_CACHED: pipeline to get a tile for a
+          vector layer.</para>
+        </listitem>
+      </itemizedlist>You can set a specific pipeline using a configuration
+    like this:</para>
+
+    <example>
+      <title>Applying the cached pipeline for getVectorTile() on
+      myLayer</title>
+
+      <programlisting>&lt;bean class="org.geomajas.service.pipeline.PipelineInfo"&gt;
+    &lt;property name="pipelineName"&gt;
+        &lt;util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_GET_VECTOR_TILE"/&gt;
+    &lt;/property&gt;
+    &lt;property name="layerId" value="myLayer" /&gt;
+    &lt;property name="delegatePipeline" ref="PIPELINE_GET_VECTOR_TILE_CACHED" /&gt;
+&lt;/bean&gt;</programlisting>
+    </example>
+
+    <para></para>
   </section>
 
   <section id="cache-conf">
@@ -122,6 +160,51 @@
       <title>Default caches</title>
 
       <para>??? @TODO</para>
+    </section>
+
+    <section>
+      <title>Infinispan caches</title>
+
+      <para>One of the caching service which is provided out of the box uses
+      Infinispan as the caching library.</para>
+
+      <para>This provides two ways to provide the actual configuration. Either
+      by passing a configuration file which is searched on the classpath (and
+      if no found there, on the filesystem).</para>
+
+      <example>
+        <title>Infinispan configuration using configuration file</title>
+
+        <programlisting>&lt;bean class="org.geomajas.plugin.caching.service.CacheInfo"&gt;
+    &lt;property name="cacheFactory"&gt;
+        &lt;bean class="org.geomajas.plugin.caching.cache.InfinispanCacheFactory"&gt;
+            &lt;property name="configurationFile" value="my/app/cacheConfiguration.xml" /&gt;
+        &lt;/bean&gt;
+    &lt;/property&gt;
+&lt;/bean&gt;
+</programlisting>
+      </example>
+
+      <para>Alternatively, you can pass a configuration object which contains
+      the relevant settings.</para>
+
+      <example>
+        <title>Infinispan cache configuration using configuration
+        object</title>
+
+        <programlisting>&lt;bean class="org.geomajas.plugin.caching.service.CacheInfo"&gt;
+    &lt;property name="cacheFactory"&gt;
+        &lt;bean class="org.geomajas.plugin.caching.cache.InfinispanCacheFactory"&gt;
+            &lt;property name="configuration"&gt;
+                &lt;bean class="org.infinispan.config.Configuration"&gt;
+                    &lt;property name="evictionMaxEntries" value="5000" /&gt;
+                    &lt;property name="evictionStrategy" value="LRU" /&gt;
+                &lt;/bean&gt;
+            &lt;/property&gt;
+        &lt;/bean&gt;
+    &lt;/property&gt;
+&lt;/bean&gt;</programlisting>
+      </example>
     </section>
   </section>
 
