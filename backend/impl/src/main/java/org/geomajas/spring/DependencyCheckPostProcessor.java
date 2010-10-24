@@ -48,6 +48,10 @@ public class DependencyCheckPostProcessor {
 
 	@PostConstruct
 	public void checkPluginDependencies() {
+		if ("true".equals(System.getProperty("skipPluginDependencyCheck"))) {
+			return;
+		}
+
 		if (null == contextDeclaredPlugins) {
 			return;
 		}

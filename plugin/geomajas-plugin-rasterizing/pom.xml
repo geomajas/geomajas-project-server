@@ -71,6 +71,7 @@
 	</profiles>
 
 	<properties>
-		<rasterizing-backend-version>1.7.1</rasterizing-backend-version>
-	</properties>	
+		<rasterizing-backend-version>1.8.0-SNAPSHOT</rasterizing-backend-version>
+		<rasterizing-caching-version>1.0.0-SNAPSHOT</rasterizing-caching-version>
+	</properties>
 </project>
