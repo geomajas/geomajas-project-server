@@ -57,6 +57,16 @@
 		<filter-class>org.geomajas.servlet.JettyThreadParentFilter</filter-class>
 	</filter>
 
+	<filter>
+	    <filter-name>cachingFilter</filter-name>
+	    <filter-class>org.geomajas.servlet.CacheFilter</filter-class>
+	</filter>
+
+	<filter-mapping>
+	    <filter-name>cachingFilter</filter-name> 
+	    <url-pattern>*</url-pattern>  
+	</filter-mapping>
+
 	<servlet>
 		<servlet-name>GeomajasServiceServlet</servlet-name>
 		<servlet-class>org.geomajas.gwt.server.GeomajasServiceImpl</servlet-class>
