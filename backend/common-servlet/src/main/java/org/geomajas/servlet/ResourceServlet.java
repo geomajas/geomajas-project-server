@@ -22,20 +22,6 @@
  */
 package org.geomajas.servlet;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.util.AntPathMatcher;
-import org.springframework.util.ClassUtils;
-import org.springframework.util.PathMatcher;
-import org.springframework.util.StringUtils;
-
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -48,36 +34,53 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.zip.GZIPOutputStream;
+
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.util.AntPathMatcher;
+import org.springframework.util.ClassUtils;
+import org.springframework.util.PathMatcher;
+import org.springframework.util.StringUtils;
 
 /**
  * Special resource servlet for efficiently resolving and rendering static resources from within a JAR file. The cache
  * header is set to a date in the far future to improve caching. For development, you can specify a "files-location"
  * servlet init parameter. Any resources are searched at that location first. When found, the cache header is not set.
  * This assures the jar does not need building for testing.
- *
+ * 
  * @author Jan De Moerloose
- * @deprecated use DispatcherServlet which use the ResourceController (but changes base URL, 
- * probably from js to data/resource). Not deleted to allow 1.6.0 configurations to work.
+ * @deprecated use DispatcherServlet which use the ResourceController (but changes base URL, probably from js to
+ *             data/resource). Not deleted to allow 1.6.0 configurations to work.
  */
 @Deprecated
 public class ResourceServlet extends HttpServlet {
 
 	private static final String HTTP_CONTENT_LENGTH_HEADER = "Content-Length";
+
 	private static final String HTTP_LAST_MODIFIED_HEADER = "Last-Modified";
+
 	private static final String HTTP_EXPIRES_HEADER = "Expires";
+
 	private static final String HTTP_CACHE_CONTROL_HEADER = "Cache-Control";
+
 	private static final String INIT_PARAM_LOCATION = "files-location";
 
 	private final Logger log = LoggerFactory.getLogger(ResourceServlet.class);
+
 	private final String protectedPath = "/?WEB-INF/.*";
+
 	private final boolean gzipEnabled = true;
-	private final String[] allowedResourcePaths = new String[]{
-			"/**/*.css", "/**/*.gif", "/**/*.ico", "/**/*.jpeg",
-			"/**/*.jpg", "/**/*.js", "/**/*.html", "/**/*.png",
-			"META-INF/**/*.css", "META-INF/**/*.gif", "META-INF/**/*.ico", "META-INF/**/*.jpeg",
-			"META-INF/**/*.jpg", "META-INF/**/*.js", "META-INF/**/*.html", "META-INF/**/*.png",
-	};
+
+	private final String[] allowedResourcePaths = new String[] { "/**/*.css", "/**/*.gif", "/**/*.ico", "/**/*.jpeg",
+			"/**/*.jpg", "/**/*.js", "/**/*.html", "/**/*.png", "META-INF/**/*.css", "META-INF/**/*.gif",
+			"META-INF/**/*.ico", "META-INF/**/*.jpeg", "META-INF/**/*.jpg", "META-INF/**/*.js", "META-INF/**/*.html",
+			"META-INF/**/*.png", };
 
 	private File fileLocation;
 
@@ -121,8 +124,7 @@ public class ResourceServlet extends HttpServlet {
 		}
 	}
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
 		String rawResourcePath = request.getPathInfo();
 
@@ -155,7 +157,7 @@ public class ResourceServlet extends HttpServlet {
 					try {
 						resourceConn.getOutputStream().close();
 					} catch (Throwable t) {
-						/*ignore, just trying to free resources*/
+						/* ignore, just trying to free resources */
 					}
 				}
 			}
@@ -214,12 +216,12 @@ public class ResourceServlet extends HttpServlet {
 			try {
 				resourceConn.getInputStream().close();
 			} catch (Throwable t) {
-				/*ignore, just trying to free resources*/
+				/* ignore, just trying to free resources */
 			}
 			try {
 				resourceConn.getOutputStream().close();
 			} catch (Throwable t) {
-				/*ignore, just trying to free resources*/
+				/* ignore, just trying to free resources */
 			}
 		}
 
@@ -257,12 +259,12 @@ public class ResourceServlet extends HttpServlet {
 			try {
 				resourceConn.getInputStream().close();
 			} catch (Throwable t) {
-				/*ignore, just trying to free resources*/
+				/* ignore, just trying to free resources */
 			}
 			try {
 				resourceConn.getOutputStream().close();
 			} catch (Throwable t) {
-				/*ignore, just trying to free resources*/
+				/* ignore, just trying to free resources */
 			}
 		}
 		return lastModified;
@@ -344,9 +346,11 @@ public class ResourceServlet extends HttpServlet {
 
 	/**
 	 * Set HTTP headers to allow caching for the given number of seconds.
-	 *
-	 * @param response where to set the caching settings
-	 * @param seconds number of seconds into the future that the response should be cacheable for
+	 * 
+	 * @param response
+	 *            where to set the caching settings
+	 * @param seconds
+	 *            number of seconds into the future that the response should be cacheable for
 	 */
 	private void configureCaching(HttpServletResponse response, int seconds) {
 		// HTTP 1.0 header
@@ -358,70 +362,6 @@ public class ResourceServlet extends HttpServlet {
 			// HTTP 1.1 header
 			response.setHeader(HTTP_CACHE_CONTROL_HEADER, "no-cache");
 
-		}
-	}
-
-	/** Assure resources are gzip compressed. */
-	private class GzipResponseStream extends ServletOutputStream {
-
-		private ByteArrayOutputStream byteStream;
-
-		private GZIPOutputStream gzipStream;
-
-		private boolean closed;
-
-		private HttpServletResponse response;
-
-		private ServletOutputStream servletStream;
-
-		public GzipResponseStream(HttpServletResponse response) throws IOException {
-			super();
-			closed = false;
-			this.response = response;
-			this.servletStream = response.getOutputStream();
-			byteStream = new ByteArrayOutputStream();
-			gzipStream = new GZIPOutputStream(byteStream);
-		}
-
-		public void close() throws IOException {
-			if (closed) {
-				throw new IOException("This output stream has already been closed");
-			}
-			gzipStream.finish();
-
-			byte[] bytes = byteStream.toByteArray();
-
-			response.setContentLength(bytes.length);
-			response.addHeader("Content-Encoding", "gzip");
-			servletStream.write(bytes);
-			servletStream.flush();
-			servletStream.close();
-			closed = true;
-		}
-
-		public void flush() throws IOException {
-			if (closed) {
-				throw new IOException("Cannot flush a closed output stream");
-			}
-			gzipStream.flush();
-		}
-
-		public void write(int b) throws IOException {
-			if (closed) {
-				throw new IOException("Cannot write to a closed output stream");
-			}
-			gzipStream.write((byte) b);
-		}
-
-		public void write(byte[] b) throws IOException {
-			write(b, 0, b.length);
-		}
-
-		public void write(byte[] b, int off, int len) throws IOException {
-			if (closed) {
-				throw new IOException("Cannot write to a closed output stream");
-			}
-			gzipStream.write(b, off, len);
 		}
 	}
 }
