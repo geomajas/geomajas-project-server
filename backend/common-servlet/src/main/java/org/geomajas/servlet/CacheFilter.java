@@ -66,6 +66,8 @@ public class CacheFilter implements Filter {
 
 	private final String[] toCache = new String[] { ".cache.", ".js", ".png", ".jpg", ".gif", ".css", ".html" };
 
+	private final String[] toZip = new String[] { ".nocache.", ".cache.", ".js", ".css", ".html" };
+
 	// ------------------------------------------------------------------------
 	// Filter implementation:
 	// ------------------------------------------------------------------------
@@ -82,7 +84,6 @@ public class CacheFilter implements Filter {
 		HttpServletResponse httpResponse = (HttpServletResponse) response;
 
 		boolean notCached = false;
-		boolean tryToCompress = false;
 		String requestUri = httpRequest.getRequestURI();
 
 		for (String noc : noCache) {
@@ -90,35 +91,38 @@ public class CacheFilter implements Filter {
 			if (requestUri.contains(noc)) {
 				configureNoCaching(httpResponse);
 				notCached = true;
-				tryToCompress = true;
 				continue;
 			}
 		}
 
 		if (!notCached) {
 			// Only check for cache headers, if no-cache hasn't been set:
-			for (String c : toCache) {
+			for (String cacheable : toCache) {
 				// Should we set the "cache" headers?
-				if (requestUri.contains(c)) {
+				if (requestUri.contains(cacheable)) {
 					configureCaching(httpResponse);
-					tryToCompress = true;
 					continue;
 				}
 			}
 		}
 
 		// Check if the file needs compression:
-		String encodings = httpRequest.getHeader("Accept-Encoding");
-		if (tryToCompress && encodings != null && encodings.indexOf("gzip") != -1) {
-			GzipServletResponseWrapper responseWrapper = new GzipServletResponseWrapper(httpResponse);
-			try {
-				filterChain.doFilter(request, responseWrapper);
-			} finally {
-				responseWrapper.finish();
+		for (String zip : toZip) {
+			if (requestUri.contains(zip)) {
+				String encodings = httpRequest.getHeader("Accept-Encoding");
+				if (encodings != null && encodings.indexOf("gzip") != -1) {
+					GzipServletResponseWrapper responseWrapper = new GzipServletResponseWrapper(httpResponse);
+					try {
+						filterChain.doFilter(request, responseWrapper);
+						return;
+					} finally {
+						responseWrapper.finish();
+					}
+				}
 			}
-		} else {
-			filterChain.doFilter(request, response);
 		}
+		
+		filterChain.doFilter(request, response);
 	}
 
 	// ------------------------------------------------------------------------

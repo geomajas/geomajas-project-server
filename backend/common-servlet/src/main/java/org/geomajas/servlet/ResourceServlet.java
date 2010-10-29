@@ -124,12 +124,10 @@ public class ResourceServlet extends HttpServlet {
 		}
 	}
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException,
+			IOException {
 		String rawResourcePath = request.getPathInfo();
-
 		log.debug("Attempting to GET resource: {}", rawResourcePath);
-
 		URL[] resources = getRequestResourceUrls(request);
 
 		if (resources == null || resources.length == 0) {
@@ -139,9 +137,7 @@ public class ResourceServlet extends HttpServlet {
 		}
 
 		prepareResponse(response, resources, rawResourcePath);
-
 		OutputStream out = selectOutputStream(request, response);
-
 		try {
 			for (URL resource : resources) {
 				URLConnection resourceConn = resource.openConnection();
