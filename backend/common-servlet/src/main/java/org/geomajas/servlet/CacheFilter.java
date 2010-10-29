@@ -35,22 +35,37 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
 
+import org.springframework.util.AntPathMatcher;
+import org.springframework.util.PathMatcher;
+
 /**
- * {@link Filter} to add cache control headers for caching all files comply to one of the following:
+ * {@link Filter} that alters response in two ways: by adding cache control headers and by compressing the response.
+ * This has been tuned toward GWT file-naming. Files that should not be cached are the following:
  * <ul>
- * <li>contains: .cache.</li>
- * <li>contains: ISC_</li>
- * <li>ends with: .png</li>
- * <li>ends with: .jpg</li>
- * <li>ends with: .gif</li>
+ * <li>All files that contain ".nocache." in their name.</li>
  * </ul>
- * All files containing ".nocache." will not be cached.
+ * Files that should be cached included the following:
+ * <ul>
+ * <li>All files that contain ".cache." in their name.</li>
+ * <li>All javascript files.</li>
+ * <li>All CSS files.</li>
+ * <li>All HTML files.</li>
+ * <li>All image files.</li>
+ * </ul>
+ * Files that should be compressed include the following:
+ * <ul>
+ * <li>All files that contain ".nocache." in their name.</li>
+ * <li>All files that contain ".cache." in their name.</li>
+ * <li>All javascript files.</li>
+ * <li>All CSS files.</li>
+ * <li>All HTML files.</li>
+ * </ul>
  * 
  * @author Pieter De Graef
  */
 public class CacheFilter implements Filter {
 
-	private static final long CACHE_DURATION_IN_SECOND = 60 * 60 * 24 * 3650; // One year
+	private static final long CACHE_DURATION_IN_SECOND = 60 * 60 * 24 * 365; // One year
 
 	private static final long CACHE_DURATION_IN_MS = CACHE_DURATION_IN_SECOND * 1000;
 
@@ -62,11 +77,13 @@ public class CacheFilter implements Filter {
 
 	private static final String HTTP_CACHE_PRAGMA = "Pragma";
 
-	private final String[] noCache = new String[] { ".nocache." };
+	private static final String[] NOCACHE = new String[] { "/**/*.nocache.*" };
 
-	private final String[] toCache = new String[] { ".cache.", ".js", ".png", ".jpg", ".gif", ".css", ".html" };
+	private static final String[] TOCACHE = new String[] { "/**/*.cache.*", "/**/*.js", "/**/*.png", "/**/*.jpg",
+			"/**/*.gif", "/**/*.css", "/**/*.html" };
 
-	private final String[] toZip = new String[] { ".nocache.", ".cache.", ".js", ".css", ".html" };
+	private static final String[] TOZIP = new String[] { "/**/*.nocache.*", "/**/*.cache.*", "/**/*.js", "/**/*.css",
+			"/**/*.html" };
 
 	// ------------------------------------------------------------------------
 	// Filter implementation:
@@ -85,10 +102,11 @@ public class CacheFilter implements Filter {
 
 		boolean notCached = false;
 		String requestUri = httpRequest.getRequestURI();
+		PathMatcher pathMatcher = new AntPathMatcher();
 
-		for (String noc : noCache) {
+		for (String pattern : NOCACHE) {
 			// Should we set the "no-cache" headers?
-			if (requestUri.contains(noc)) {
+			if (pathMatcher.match(pattern, requestUri)) {
 				configureNoCaching(httpResponse);
 				notCached = true;
 				continue;
@@ -97,18 +115,18 @@ public class CacheFilter implements Filter {
 
 		if (!notCached) {
 			// Only check for cache headers, if no-cache hasn't been set:
-			for (String cacheable : toCache) {
+			for (String pattern : TOCACHE) {
 				// Should we set the "cache" headers?
-				if (requestUri.contains(cacheable)) {
+				if (pathMatcher.match(pattern, requestUri)) {
 					configureCaching(httpResponse);
 					continue;
 				}
 			}
 		}
 
-		// Check if the file needs compression:
-		for (String zip : toZip) {
-			if (requestUri.contains(zip)) {
+		for (String pattern : TOZIP) {
+			if (pathMatcher.match(pattern, requestUri)) {
+				System.out.println("MATCH for " + requestUri);
 				String encodings = httpRequest.getHeader("Accept-Encoding");
 				if (encodings != null && encodings.indexOf("gzip") != -1) {
 					GzipServletResponseWrapper responseWrapper = new GzipServletResponseWrapper(httpResponse);
@@ -121,7 +139,7 @@ public class CacheFilter implements Filter {
 				}
 			}
 		}
-		
+
 		filterChain.doFilter(request, response);
 	}
 
