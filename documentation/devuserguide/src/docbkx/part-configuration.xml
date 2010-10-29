@@ -67,7 +67,8 @@
       <example>
         <title>Dispatcher servlet declaration in web.xml</title>
 
-        <para><programlisting>&lt;servlet&gt;
+        <para>
+          <programlisting>&lt;servlet&gt;
     &lt;servlet-name&gt;dispatcher&lt;/servlet-name&gt;
     &lt;servlet-class&gt;org.springframework.web.servlet.DispatcherServlet&lt;/servlet-class&gt;
     &lt;init-param&gt;
@@ -81,10 +82,36 @@
 &lt;servlet-mapping&gt;
     &lt;servlet-name&gt;dispatcher&lt;/servlet-name&gt;
     &lt;url-pattern&gt;/d/*&lt;/url-pattern&gt;
-&lt;/servlet-mapping&gt;</programlisting></para>
+&lt;/servlet-mapping&gt;</programlisting>
+        </para>
       </example>
 
-      <para></para>
+      <para>Another option you have in setting up the web.xml file, is a
+      specially designed Filter that sets correct cache header controls and
+      takes care of compressing the response. This has been tuned toward GWT
+      file-naming. All files containing ".nocache." in their name will not be
+      cached, while all files containing ".cache." in their name will be
+      cached. Also all javascript, HTML and CSS files will be compressed
+      (using GZIP, if the client accepts it).</para>
+
+      <para>To activate this filter (higly recommended!) add the following to
+      the web.xml:</para>
+
+      <example>
+        <title>Cache filter declaration in web.xml</title>
+
+        <para>
+          <programlisting>&lt;filter&gt;
+    &lt;filter-name&gt;cachingFilter&lt;/filter-name&gt;
+    &lt;filter-class&gt;org.geomajas.servlet.CacheFilter&lt;/filter-class&gt;
+&lt;/filter&gt;
+
+&lt;filter-mapping&gt;
+    &lt;filter-name&gt;cachingFilter&lt;/filter-name&gt; 
+    &lt;url-pattern&gt;*&lt;/url-pattern&gt;  
+&lt;/filter-mapping&gt;</programlisting>
+        </para>
+      </example>
     </section>
 
     <section id="conf-gen">
@@ -146,7 +173,7 @@
       <para>There needs to be at least one <code>ClientApplicationInfo</code>
       bean. The bean name is used when requesting the application info.</para>
 
-      <para></para>
+      <para />
     </section>
   </chapter>
 
@@ -303,7 +330,8 @@
         <para>The following table describes the properties of the
         <code>VectorLayerInfo</code> object:</para>
 
-        <para><table>
+        <para>
+          <table>
             <title>VectorLayer info</title>
 
             <tgroup cols="2">
@@ -361,7 +389,8 @@
                 </row>
               </tbody>
             </tgroup>
-          </table></para>
+          </table>
+        </para>
 
         <para>The feature metadata can be found in the
         <code>FeatureInfo</code> object. This objects contains the complete
@@ -581,7 +610,8 @@
 
         <para>Scales can be defined in 2 possible notations:</para>
 
-        <para><itemizedlist>
+        <para>
+          <itemizedlist>
             <listitem>
               <para>the 1 : x notation (see the above listing) is most
               commonly used in geographics and expresses the ratio between 1
@@ -594,7 +624,8 @@
               unit on the map (1 pixel per 10000 map units in our
               example)</para>
             </listitem>
-          </itemizedlist></para>
+          </itemizedlist>
+        </para>
 
         <para>Both scale definitions serve a different purpose. The 1 : x
         scale should give you an idea of what the true scale is at which the
@@ -761,11 +792,11 @@
 &lt;/beans&gt;
 </programlisting>
 
-    <para> It contains a default handler mapping which maps urls to controller
+    <para>It contains a default handler mapping which maps urls to controller
     beans based on the name of the bean. This means that the controller's name
     should actually be the part of the url that follows the dispatcher
     servlet's base path (including wild cards if more than one url has to be
-    mapped). </para>
+    mapped).</para>
 
     <para>The interceptor property is added to make sure that a secure context
     is set up when accessing the Geomajas server. The interceptor assumes that
