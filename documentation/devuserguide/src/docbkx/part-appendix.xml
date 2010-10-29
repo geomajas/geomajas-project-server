@@ -29,8 +29,8 @@
   <appendix id="appendix-migrating">
     <title>Migrating between Geomajas versions</title>
 
-    <section id="mig-171">
-      <title>Migrating between Geomajas 1.71 and Geomajas (back-end core)
+    <section id="mig-180">
+      <title>Migrating between Geomajas 1.7.1 and Geomajas (back-end core)
       1.8.0</title>
 
       <para><itemizedlist>
