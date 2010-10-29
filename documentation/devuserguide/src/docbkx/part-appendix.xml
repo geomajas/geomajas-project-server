@@ -30,6 +30,30 @@
     <title>Migrating between Geomajas versions</title>
 
     <section id="mig-171">
+      <title>Migrating between Geomajas 1.71 and Geomajas (back-end core)
+      1.8.0</title>
+
+      <para><itemizedlist>
+          <listitem>
+            <para>The use of the CacheFilter servlet was introduced in 1.8.0.
+            It is strongly recommended that you include it in your web.xml
+            file to assure correct caching and compression on server-side
+            responses. This will greatly decrease loading times.</para>
+
+            <para><programlisting>&lt;filter&gt;
+    &lt;filter-name&gt;cachingFilter&lt;/filter-name&gt;
+    &lt;filter-class&gt;org.geomajas.servlet.CacheFilter&lt;/filter-class&gt;
+&lt;/filter&gt;
+
+&lt;filter-mapping&gt;
+    &lt;filter-name&gt;cachingFilter&lt;/filter-name&gt; 
+    &lt;url-pattern&gt;*&lt;/url-pattern&gt;  
+&lt;/filter-mapping&gt;</programlisting></para>
+          </listitem>
+        </itemizedlist></para>
+    </section>
+
+    <section id="mig-171">
       <title>Migrating between Geomajas 1.6.0 and Geomajas (back-end core)
       1.7.1</title>
 
