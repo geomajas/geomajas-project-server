@@ -1,11 +1,10 @@
 package org.geomajas.rest.server.mvc;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.List;
-import java.util.Map;
-
+import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.MultiPolygon;
+import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.geom.PrecisionModel;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.rest.server.RestException;
 import org.geomajas.security.SecurityManager;
@@ -32,15 +31,15 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.geom.PrecisionModel;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
+import java.util.List;
+import java.util.Map;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
-		"/org/geomajas/testdata/beanContext.xml", "/org/geomajas/testdata/layerBeans.xml" })
+@ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
+		"/org/geomajas/testdata/beanContext.xml", "/org/geomajas/testdata/layerBeans.xml"})
 public class RestControllerTest {
 
 	private final Logger log = LoggerFactory.getLogger(RestControllerTest.class);
@@ -92,11 +91,13 @@ public class RestControllerTest {
 		Assert.assertEquals(c.getTime(), feature.getAttributes().get("dateAttr").getValue());
 		Assert.assertEquals(123.456, feature.getAttributes().get("doubleAttr").getValue());
 		Assert.assertEquals(456.789F, feature.getAttributes().get("floatAttr").getValue());
-		Assert.assertEquals("http://www.geomajas.org/image1", feature.getAttributes().get("imageUrlAttr").getValue());
+		Assert.assertEquals("http://www.geomajas.org/image1",
+				fixSlash(feature.getAttributes().get("imageUrlAttr").getValue().toString()));
 		Assert.assertEquals(789, feature.getAttributes().get("integerAttr").getValue());
 		Assert.assertEquals(123456789L, feature.getAttributes().get("longAttr").getValue());
 		Assert.assertEquals((short) 123, feature.getAttributes().get("shortAttr").getValue());
-		Assert.assertEquals("http://www.geomajas.org/url1", feature.getAttributes().get("urlAttr").getValue());
+		Assert.assertEquals("http://www.geomajas.org/url1",
+				fixSlash(feature.getAttributes().get("urlAttr").getValue().toString()));
 
 		view.render(mav.getModel(), request, response);
 		response.flushBuffer();
@@ -109,8 +110,8 @@ public class RestControllerTest {
 				+ "\"dateAttr\":\"" + isodate + "\"," + "\"doubleAttr\":123.456,\"floatAttr\":456.789,"
 				+ "\"imageUrlAttr\":\"http://www.geomajas.org/image1\","
 				+ "\"integerAttr\":789,\"longAttr\":123456789," + "\"shortAttr\":123,"
-				+ "\"urlAttr\":\"http://www.geomajas.org/url1\"}," + "\"id\":\"1\"}", response.getContentAsString());
-
+				+ "\"urlAttr\":\"http://www.geomajas.org/url1\"}," + "\"id\":\"1\"}",
+				fixSlash(response.getContentAsString()));
 	}
 
 	@Test
@@ -258,8 +259,8 @@ public class RestControllerTest {
 		MultiPolygon m = (MultiPolygon) g.read(geometry.toJSONString());
 		GeometryFactory factory = new GeometryFactory(new PrecisionModel(), 4326);
 		Envelope envelope = new Envelope(0, 1, 0, 1);
-		MultiPolygon orig = (MultiPolygon) factory.createMultiPolygon(new Polygon[] { (Polygon) factory
-				.toGeometry(envelope) });
+		MultiPolygon orig = (MultiPolygon) factory.createMultiPolygon(new Polygon[] {(Polygon) factory
+				.toGeometry(envelope)});
 		MultiPolygon m2 = (MultiPolygon) geoservice.transform(orig, geoservice.getCrs("EPSG:4326"), geoservice
 				.getCrs("EPSG:900913"));
 		// equality check on buffer, JTS equals does not do the trick !
@@ -279,4 +280,19 @@ public class RestControllerTest {
 		return ids;
 	}
 
+	/**
+	 * JSON allow a forward slash to be escaped but does not mandate it. This method removes the escape chars.
+	 *
+	 * @param org base to have the escaping removed
+	 * @return original without escaped slashes
+	 */
+	private String fixSlash(String org) {
+		return org.replaceAll("\\\\/", "/");
+	}
+
+	@Test
+	public void testFixSlash() {
+		Assert.assertEquals("http://", fixSlash("http:\\/\\/"));
+		Assert.assertEquals("http://http://", fixSlash("http:\\/\\/http:\\/\\/"));
+	}
 }
