@@ -70,8 +70,8 @@ public class GeonamesGeocoderServiceTest {
 		Assert.assertNotNull(result);
 		Assert.assertEquals(1,result.length);
 		Assert.assertNotNull(result[0].getCoordinate());
-		Assert.assertEquals(4.76667, result[0].getCoordinate().x, .00001);
-		Assert.assertEquals(51.05, result[0].getCoordinate().y, .00001);
+		Assert.assertEquals(4.78343, result[0].getCoordinate().x, .00001);
+		Assert.assertEquals(51.05252, result[0].getCoordinate().y, .00001);
 
 		list.clear();
 		list.add("london");
