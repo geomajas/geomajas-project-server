@@ -25,7 +25,7 @@ import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * Hibernate test feature.
- *
+ * 
  * @author Pieter De Graef
  * @author Jan De Moerloose
  */
@@ -151,14 +151,6 @@ public class HibernateTestFeature {
 		p.setIntAttr(40);
 		p.setFloatAttr(40.0f);
 		p.setDoubleAttr(40.0);
-		DateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-		Date date;
-		try {
-			date = format.parse("01/01/2006");
-		} catch (ParseException e) {
-			date = new Date();
-		}
-		p.setDateAttr(date);
 		return p;
 	}
 

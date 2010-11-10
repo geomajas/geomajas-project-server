@@ -234,7 +234,9 @@ public class CriteriaVisitor implements FilterVisitor {
 	}
 
 	public Object visit(PropertyIsNull filter, Object userData) {
-		throw new UnsupportedOperationException("visit(PropertyIsNull filter, Object userData)");
+		String propertyName = ((PropertyName) filter.getExpression()).getPropertyName();
+		String finalName = parsePropertyName(propertyName, userData);
+		return Restrictions.isNull(finalName);
 	}
 
 	public Object visit(BBOX filter, Object userData) {

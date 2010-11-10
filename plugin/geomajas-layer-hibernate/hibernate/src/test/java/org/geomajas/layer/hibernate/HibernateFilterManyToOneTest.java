@@ -22,6 +22,11 @@
  */
 package org.geomajas.layer.hibernate;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Iterator;
+
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.hibernate.pojo.HibernateTestFeature;
 import org.geomajas.layer.hibernate.pojo.HibernateTestManyToOne;
@@ -29,11 +34,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.opengis.filter.Filter;
-
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Iterator;
 
 /**
  * TestCase for Hibernate's ManyToOne association. All possible filters we can imagine on such an association must be

@@ -5,7 +5,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,7 +16,7 @@ import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 
 /**
  * Hibernate test object for associations.
- *
+ * 
  * @author Pieter De Graef
  * @author Jan De Moerloose
  */
@@ -59,7 +58,7 @@ public class HibernateTestOneToMany {
 
 	@Column(name = "dateAttr")
 	private Date dateAttr;
-	
+
 	@ManyToOne
 	private HibernateTestFeature feature;
 
@@ -217,14 +216,12 @@ public class HibernateTestOneToMany {
 		this.dateAttr = dateAttr;
 	}
 
-	
 	public HibernateTestFeature getFeature() {
 		return feature;
 	}
 
-	
 	public void setFeature(HibernateTestFeature feature) {
 		this.feature = feature;
 	}
-	
+
 }
