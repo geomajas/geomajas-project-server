@@ -26,53 +26,41 @@
 
 package ${package}.client;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import ${package}.client.i18n.ConfigurationConstants;
-import ${package}.client.i18n.LocalizedMessages;
-import ${package}.client.pages.AbstractTab;
-import ${package}.client.pages.FeatureListGridPage;
-import ${package}.client.pages.SearchPage;
-
-import org.geomajas.gwt.client.Geomajas;
-import org.geomajas.gwt.client.i18n.I18nProvider;
-import org.geomajas.gwt.client.map.event.MapModelEvent;
-import org.geomajas.gwt.client.map.event.MapModelHandler;
-import org.geomajas.gwt.client.widget.LayerTree;
-import org.geomajas.gwt.client.widget.Legend;
-import org.geomajas.gwt.client.widget.LoadingScreen;
-import org.geomajas.gwt.client.widget.LocaleSelect;
-import org.geomajas.gwt.client.widget.MapWidget;
-import org.geomajas.gwt.client.widget.OverviewMap;
-import org.geomajas.gwt.client.widget.ScaleSelect;
-import org.geomajas.gwt.client.widget.Toolbar;
-
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.i18n.client.ConstantsWithLookup;
-import com.smartgwt.client.types.HeaderControls;
 import com.smartgwt.client.types.Side;
 import com.smartgwt.client.types.VisibilityMode;
 import com.smartgwt.client.widgets.Img;
 import com.smartgwt.client.widgets.Label;
-import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.SectionStack;
 import com.smartgwt.client.widgets.layout.SectionStackSection;
 import com.smartgwt.client.widgets.layout.VLayout;
 import com.smartgwt.client.widgets.tab.TabSet;
 import com.smartgwt.client.widgets.toolbar.ToolStrip;
+import ${package}.client.i18n.ApplicationMessages;
+import ${package}.client.pages.AbstractTab;
+import ${package}.client.pages.FeatureListGridPage;
+import ${package}.client.pages.SearchPage;
+import org.geomajas.gwt.client.Geomajas;
+import org.geomajas.gwt.client.widget.LayerTree;
+import org.geomajas.gwt.client.widget.Legend;
+import org.geomajas.gwt.client.widget.LoadingScreen;
+import org.geomajas.gwt.client.widget.LocaleSelect;
+import org.geomajas.gwt.client.widget.MapWidget;
+import org.geomajas.gwt.client.widget.OverviewMap;
+import org.geomajas.gwt.client.widget.Toolbar;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Entry point and main class for GWT application. This class defines the layout and functionality of this
  * application.
- * 
- * @author Pieter De Graef
+ *
+ * @author geomajas-gwt-archetype
  */
-public class GeomajasEntryPoint implements EntryPoint {
-
-	private MapWidget map;
+public class Application implements EntryPoint {
 
 	private OverviewMap overviewMap;
 
@@ -81,17 +69,13 @@ public class GeomajasEntryPoint implements EntryPoint {
 	private TabSet tabSet = new TabSet();
 
 	private List<AbstractTab> tabs = new ArrayList<AbstractTab>();
-	
-	private LocalizedMessages messages = GWT.create(LocalizedMessages.class);
 
+	private ApplicationMessages messages = GWT.create(ApplicationMessages.class);
 
-	public GeomajasEntryPoint() {
+	public Application() {
 	}
 
 	public void onModuleLoad() {
-		// Used for i18n in configuration files:
-		I18nProvider.setLookUp(GWT.<ConstantsWithLookup>create(ConfigurationConstants.class));
-
 		VLayout mainLayout = new VLayout();
 		mainLayout.setWidth100();
 		mainLayout.setHeight100();
@@ -127,7 +111,7 @@ public class GeomajasEntryPoint implements EntryPoint {
 		// ---------------------------------------------------------------------
 		// Create the left-side (map and tabs):
 		// ---------------------------------------------------------------------
-		map = new MapWidget("sampleFeaturesMap", "gwt-simple");
+		MapWidget map = new MapWidget("sampleFeaturesMap", "gwt-simple");
 		final Toolbar toolbar = new Toolbar(map);
 		toolbar.setButtonSize(Toolbar.BUTTON_SIZE_BIG);
 

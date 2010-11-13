@@ -640,7 +640,7 @@
 
         <listitem>
           <para>GWT configuration file :
-          <code>src/main/resources/GeomajasEntryPoint.gwt.xml</code></para>
+          <code>src/main/resources/Application.gwt.xml</code></para>
         </listitem>
 
         <listitem>

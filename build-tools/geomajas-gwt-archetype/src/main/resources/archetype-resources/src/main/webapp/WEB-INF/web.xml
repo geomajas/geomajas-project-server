@@ -12,20 +12,20 @@
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
-            classpath:${packageInPathFormat}/shapeinmem/applicationContext.xml
-            classpath:${packageInPathFormat}/shapeinmem/layerCountries110m.xml
-			classpath:${packageInPathFormat}/shapeinmem/layerWmsBluemarble.xml
+            classpath:${packageInPathFormat}/context/applicationContext.xml
+            classpath:${packageInPathFormat}/context/layerCountries110m.xml
+			classpath:${packageInPathFormat}/context/layerWmsBluemarble.xml
   
         <!--
-            classpath:${packageInPathFormat}/hibernate/applicationContext.xml
-            classpath:${packageInPathFormat}/hibernate/layerRoads.xml
-			classpath:${packageInPathFormat}/hibernate/layerOsm.xml
+            classpath:${packageInPathFormat}/context/example/hibernate/applicationContext.xml
+            classpath:${packageInPathFormat}/context/example/hibernate/layerRoads.xml
+			classpath:${packageInPathFormat}/context/example/hibernate/layerOsm.xml
         -->
         
         <!--
-            classpath:${packageInPathFormat}/geotools/applicationContext.xml
-            classpath:${packageInPathFormat}/geotools/layerRoads.xml
-			classpath:${packageInPathFormat}/geotools/layerOsm.xml
+            classpath:${packageInPathFormat}/context/example/geotools/applicationContext.xml
+            classpath:${packageInPathFormat}/context/example/geotools/layerRoads.xml
+			classpath:${packageInPathFormat}/context/example/geotools/layerOsm.xml
         -->
         </param-value>
     </context-param>
@@ -48,6 +48,7 @@
 		<servlet-name>GeomajasServiceServlet</servlet-name>
 	</filter-mapping>
 
+	<!--
 	<filter>
 	    <filter-name>cachingFilter</filter-name>
 	    <filter-class>org.geomajas.servlet.CacheFilter</filter-class>
@@ -57,7 +58,8 @@
 	    <filter-name>cachingFilter</filter-name> 
 	    <url-pattern>*</url-pattern>  
 	</filter-mapping>
-
+	-->
+	
 	<servlet>
 		<servlet-name>GeomajasServiceServlet</servlet-name>
 		<servlet-class>org.geomajas.gwt.server.GeomajasServiceImpl</servlet-class>
@@ -77,7 +79,7 @@
 
 	<servlet-mapping>
 		<servlet-name>GeomajasServiceServlet</servlet-name>
-		<url-pattern>/${package}.GeomajasEntryPoint/geomajasService</url-pattern>
+		<url-pattern>/${package}.Application/geomajasService</url-pattern>
 	</servlet-mapping>
 
 	<servlet-mapping>
@@ -87,6 +89,5 @@
 
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
-		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
 </web-app>

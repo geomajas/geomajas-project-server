@@ -26,15 +26,17 @@
 
 package ${package}.client.i18n;
 
-import com.google.gwt.i18n.client.ConstantsWithLookup;
+import com.google.gwt.i18n.client.Messages;
 
 /**
  * <p>
- * Localization constants that you may have defined in the server configuration.
+ * Localization messages for the GWT test samples.
  * </p>
- * 
- * @author Jan De Moerloose
+ *
+ * @author geomajas-gwt-archetype
  */
-public interface ConfigurationConstants extends ConstantsWithLookup {
+public interface ApplicationMessages extends Messages {
+
+	String applicationTitle(String version);
 
 }
