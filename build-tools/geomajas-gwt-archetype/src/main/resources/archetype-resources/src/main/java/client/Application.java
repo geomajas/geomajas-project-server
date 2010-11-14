@@ -94,7 +94,7 @@ public class Application implements EntryPoint {
 		topBar.addSpacer(6);
 
 		Label title = new Label(messages.applicationTitle("hello world"));
-		title.setStyleName("sgwtTitle");
+		title.setStyleName("appTitle");
 		title.setWidth(300);
 		topBar.addMember(title);
 		topBar.addFill();
@@ -111,20 +111,20 @@ public class Application implements EntryPoint {
 		// ---------------------------------------------------------------------
 		// Create the left-side (map and tabs):
 		// ---------------------------------------------------------------------
-		MapWidget map = new MapWidget("sampleFeaturesMap", "gwt-simple");
+		MapWidget map = new MapWidget("mainMap", "app");
 		final Toolbar toolbar = new Toolbar(map);
 		toolbar.setButtonSize(Toolbar.BUTTON_SIZE_BIG);
 
 		VLayout mapLayout = new VLayout();
 		mapLayout.setShowResizeBar(true);
-		mapLayout.setResizeBarTarget("mytabs");
+		mapLayout.setResizeBarTarget("tabs");
 		mapLayout.addMember(toolbar);
 		mapLayout.addMember(map);
 		mapLayout.setHeight("65%");
 		tabSet.setTabBarPosition(Side.TOP);
 		tabSet.setWidth100();
 		tabSet.setHeight("35%");
-		tabSet.setID("mytabs");
+		tabSet.setID("tabs");
 
 		VLayout leftLayout = new VLayout();
 		leftLayout.setShowEdges(true);
@@ -146,7 +146,7 @@ public class Application implements EntryPoint {
 		// Overview map layout:
 		SectionStackSection section1 = new SectionStackSection("Overview map");
 		section1.setExpanded(true);
-		overviewMap = new OverviewMap("sampleOverviewMap", "gwt-simple", map, true, true);
+		overviewMap = new OverviewMap("mainOverviewMap", "app", map, true, true);
 		section1.addItem(overviewMap);
 		sectionStack.addSection(section1);
 

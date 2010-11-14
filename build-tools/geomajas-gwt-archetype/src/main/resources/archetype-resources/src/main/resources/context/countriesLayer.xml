@@ -1,28 +1,6 @@
 #set( $symbol_pound = '#' )
 #set( $symbol_dollar = '$' )
 #set( $symbol_escape = '\' )
-<!--
-  ~ This file is part of Geomajas, a component framework for building
-  ~ rich Internet applications (RIA) with sophisticated capabilities for the
-  ~ display, analysis and management of geographic information.
-  ~ It is a building block that allows developers to add maps
-  ~ and other geographic data capabilities to their web applications.
-  ~
-  ~ Copyright 2008-2010 Geosparc, http://www.geosparc.com, Belgium
-  ~
-  ~ This program is free software: you can redistribute it and/or modify
-  ~ it under the terms of the GNU Affero General Public License as
-  ~ published by the Free Software Foundation, either version 3 of the
-  ~ License, or (at your option) any later version.
-  ~
-  ~ This program is distributed in the hope that it will be useful,
-  ~ but WITHOUT ANY WARRANTY; without even the implied warranty of
-  ~ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-  ~ GNU Affero General Public License for more details.
-  ~
-  ~ You should have received a copy of the GNU Affero General Public License
-  ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
-  -->
 <beans
 		xmlns="http://www.springframework.org/schema/beans"
 		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
@@ -34,7 +12,7 @@ http://www.springframework.org/schema/context
 http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 		>
 
-	<bean name="countries110mInfo" class="org.geomajas.configuration.VectorLayerInfo">
+	<bean name="countriesInfo" class="org.geomajas.configuration.VectorLayerInfo">
 		<property name="layerType" value="MULTIPOLYGON"/>
 		<property name="crs" value="EPSG:4326"/>
 		<property name="maxExtent">
@@ -45,15 +23,15 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
                 <property name="height" value="170.10225755961318"/>
 			</bean>
 		</property>
-		<property name="featureInfo" ref="countries110mFeatureInfo" />
+		<property name="featureInfo" ref="countriesFeatureInfo" />
 		<property name="namedStyleInfos">
 			<list>
-				<ref bean="countries110mStyleInfo" />
+				<ref bean="countriesStyleInfo" />
 			</list>
 		</property>
 	</bean>
 
-    <bean class="org.geomajas.configuration.FeatureInfo" name="countries110mFeatureInfo">
+    <bean class="org.geomajas.configuration.FeatureInfo" name="countriesFeatureInfo">
         <property name="dataSourceName" value="110m_admin_0_countries"/>
         <property name="identifier">
             <bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
@@ -103,14 +81,14 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
         </property>
     </bean>
 
-	<bean class="org.geomajas.configuration.NamedStyleInfo" name="countries110mStyleInfo">
+	<bean class="org.geomajas.configuration.NamedStyleInfo" name="countriesStyleInfo">
 		<property name="featureStyles">
             <list>
                 <bean class="org.geomajas.configuration.FeatureStyleInfo">
                     <property name="name" value="Countries: population > 100mil"/>
                     <property name="formula" value="(PEOPLE > 100000000)"/>
                     <property name="fillColor" value="${symbol_pound}3333FF"/>
-                    <property name="fillOpacity" value=".6"/>
+                    <property name="fillOpacity" value=".5"/>
                     <property name="strokeColor" value="${symbol_pound}000033"/>
                     <property name="strokeOpacity" value=".8"/>
                     <property name="strokeWidth" value="1"/>
@@ -119,7 +97,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
                     <property name="name" value="Countries: population > 50mil"/>
                     <property name="formula" value="(PEOPLE > 50000000)"/>
                     <property name="fillColor" value="${symbol_pound}6666FF"/>
-                    <property name="fillOpacity" value=".6"/>
+                    <property name="fillOpacity" value=".5"/>
                     <property name="strokeColor" value="${symbol_pound}000033"/>
                     <property name="strokeOpacity" value=".8"/>
                     <property name="strokeWidth" value="1"/>
@@ -128,7 +106,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
                     <property name="name" value="Countries: population > 10mil"/>
                     <property name="formula" value="(PEOPLE > 10000000)"/>
                     <property name="fillColor" value="${symbol_pound}9999FF"/>
-                    <property name="fillOpacity" value=".6"/>
+                    <property name="fillOpacity" value=".5"/>
                     <property name="strokeColor" value="${symbol_pound}000033"/>
                     <property name="strokeOpacity" value=".8"/>
                     <property name="strokeWidth" value="1"/>
@@ -136,7 +114,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
                 <bean class="org.geomajas.configuration.FeatureStyleInfo">
                     <property name="name" value="Countries: population &lt; 10mil"/>
                     <property name="fillColor" value="${symbol_pound}CCCCFF"/>
-                    <property name="fillOpacity" value=".6"/>
+                    <property name="fillOpacity" value=".5"/>
                     <property name="strokeColor" value="${symbol_pound}000033"/>
                     <property name="strokeOpacity" value=".8"/>
                     <property name="strokeWidth" value="1"/>
@@ -165,8 +143,8 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 		</property>
 	</bean>
 
-	<bean name="countries110m" class="org.geomajas.layer.shapeinmem.ShapeInMemLayer">
-		<property name="layerInfo" ref="countries110mInfo" />
+	<bean name="countries" class="org.geomajas.layer.shapeinmem.ShapeInMemLayer">
+		<property name="layerInfo" ref="countriesInfo" />
         <property name="url" value="classpath:/${packageInPathFormat}/context/shapes/110m_admin_0_countries.shp"/>
 	</bean>
 

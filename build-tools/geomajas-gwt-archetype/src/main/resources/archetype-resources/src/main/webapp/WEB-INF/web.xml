@@ -13,8 +13,9 @@
         <param-name>contextConfigLocation</param-name>
         <param-value>
             classpath:${packageInPathFormat}/context/applicationContext.xml
-            classpath:${packageInPathFormat}/context/layerCountries110m.xml
-			classpath:${packageInPathFormat}/context/layerWmsBluemarble.xml
+            classpath:${packageInPathFormat}/context/app.xml
+            classpath:${packageInPathFormat}/context/osmLayer.xml
+			classpath:${packageInPathFormat}/context/countriesLayer.xml
   
         <!--
             classpath:${packageInPathFormat}/context/example/hibernate/applicationContext.xml
