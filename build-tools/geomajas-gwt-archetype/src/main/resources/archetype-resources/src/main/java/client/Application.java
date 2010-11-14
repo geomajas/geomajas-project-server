@@ -111,7 +111,7 @@ public class Application implements EntryPoint {
 		// ---------------------------------------------------------------------
 		// Create the left-side (map and tabs):
 		// ---------------------------------------------------------------------
-		MapWidget map = new MapWidget("mainMap", "app");
+		final MapWidget map = new MapWidget("mainMap", "app");
 		final Toolbar toolbar = new Toolbar(map);
 		toolbar.setButtonSize(Toolbar.BUTTON_SIZE_BIG);
 
