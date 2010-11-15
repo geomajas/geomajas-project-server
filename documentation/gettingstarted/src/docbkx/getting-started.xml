@@ -61,6 +61,7 @@
             <title>Create project using GWT Maven archetype</title>
 
             <!--<programlisting>mvn archetype:generate -DarchetypeCatalog=http://apps.geomajas.org/nexus/content/groups/released/</programlisting>-->
+
             <programlisting>mvn archetype:generate -DarchetypeCatalog=http://files.geomajas.org/archetype-catalog.xml</programlisting>
           </example>
 
@@ -72,6 +73,7 @@
             <title>Create project using GWT Maven archetype</title>
 
             <!--<programlisting>mvn archetype:generate -DarchetypeCatalog=http://apps.geomajas.org/nexus/content/groups/latest/</programlisting>-->
+
             <programlisting>mvn archetype:generate -DarchetypeCatalog=http://files.geomajas.org/archetype-latest.xml</programlisting>
           </example>
 
@@ -619,6 +621,15 @@
   <section id="cont">
     <title>How to continue</title>
 
+    <para>The archetype generates a dependency on the geomajas-dep project to
+    manage the version of the Geomajas dependencies. This project exists for
+    the sole purpose of keeping track of the latest released versions. It is
+    quite likely that a new version of geomajas-dep has been released since
+    the latest release of the archetype. Therefore, we recommend you update
+    this dependency to the latest version. You can check the latest version
+    using this URL: <ulink
+    url="http://apps.geomajas.org/nexus/index.html#nexus-search;quick~geomajas-dep">http://apps.geomajas.org/nexus/index.html#nexus-search;quick~geomajas-dep</ulink>.</para>
+
     <para>The most important configuration files in the project are the
     following:</para>
 
@@ -647,7 +658,9 @@
           <para>web.xml: <code>war/WEB-INF/web.xml</code></para>
         </listitem>
       </itemizedlist>More details about the Geomajas configuration are found
-    in <xref linkend="backend-ch-configuration" />.</para>
+    in the <ulink
+    url="http://files.geomajas.org/maven/trunk/geomajas/docbook-devuserguide/html/master.html#part-configuration">developer's
+    guide</ulink>.</para>
 
     <para>Reference which may be interesting to read:</para>
 
