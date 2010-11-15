@@ -78,6 +78,15 @@
           </example>
 
           <para>Maven will now prompt the user for input.</para>
+
+          <note>
+            <para>If anything fails with these maven commands, you need to
+            check the output to check the problem. One typical problem is the
+            need to define a proxy to allow maven to access sites in the
+            outside world. See the <ulink
+            url="http://maven.apache.org/guides/mini/guide-proxies.html">http://maven.apache.org/guides/mini/guide-proxies.html</ulink>
+            for details.</para>
+          </note>
         </listitem>
 
         <listitem>
