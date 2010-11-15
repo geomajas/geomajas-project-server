@@ -280,6 +280,8 @@ public class ParentEditController extends EditController {
 	/**
 	 * Returns a pixel tolerance for selection. Tries to get it from the toolbar configuration for the selection
 	 * controller. Otherwise returns a default of 5 pixels.
+	 *
+	 * @return accuracy for clicking in pixels
 	 */
 	private int getPixelTolerance() {
 		if (pixelTolerance < 0) {
@@ -287,14 +289,16 @@ public class ParentEditController extends EditController {
 
 			// First try and get the pixelTolerance value from the selection controller configuration:
 			ClientToolbarInfo toolbarInfo = mapWidget.getMapModel().getMapInfo().getToolbar();
-			for (ClientToolInfo tool : toolbarInfo.getTools()) {
-				if ("SelectionMode".equals(tool.getId())) {
-					ToolbarBaseAction action = ToolbarRegistry.getToolbarAction(tool.getId(), mapWidget);
-					if (action instanceof SelectionModalAction) {
-						for (Parameter parameter : tool.getParameters()) {
-							((ConfigurableAction) action).configure(parameter.getName(), parameter.getValue());
+			if (null != toolbarInfo && null != toolbarInfo.getTools()) {
+				for (ClientToolInfo tool : toolbarInfo.getTools()) {
+					if ("SelectionMode".equals(tool.getId())) {
+						ToolbarBaseAction action = ToolbarRegistry.getToolbarAction(tool.getId(), mapWidget);
+						if (action instanceof SelectionModalAction) {
+							for (Parameter parameter : tool.getParameters()) {
+								((ConfigurableAction) action).configure(parameter.getName(), parameter.getValue());
+							}
+							pixelTolerance = ((SelectionModalAction) action).getPixelTolerance();
 						}
-						pixelTolerance = ((SelectionModalAction) action).getPixelTolerance();
 					}
 				}
 			}
