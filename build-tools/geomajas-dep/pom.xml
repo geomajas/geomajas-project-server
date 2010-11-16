@@ -181,7 +181,7 @@
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-layer-hibernate</artifactId>
+				<artifactId>geomajas-plugin-hibernate-all</artifactId>
 				<version>1.7.2</version>
 			</dependency>
 			<dependency>
@@ -271,43 +271,6 @@
 				<groupId>org.springframework</groupId>
 				<artifactId>spring-oxm</artifactId>
 				<version>${spring-version}</version>
-			</dependency>
-
-			<!--  next three dependencies for the Hibernate LayerModel -->
-			<dependency>
-				<groupId>org.hibernatespatial</groupId>
-				<artifactId>hibernate-spatial</artifactId>
-				<version>1.0</version>
-			</dependency>
-			<dependency>
-				<groupId>org.hibernatespatial</groupId>
-				<artifactId>hibernate-spatial-postgis</artifactId>
-				<version>1.0</version>
-			</dependency>
-			<dependency>
-				<groupId>org.hibernate</groupId>
-				<artifactId>hibernate-core</artifactId>
-				<version>3.5.2-Final</version>
-			</dependency>
-			<dependency>
-				<groupId>org.hibernate</groupId>
-				<artifactId>hibernate-annotations</artifactId>
-				<version>3.5.2-Final</version>
-			</dependency>
-			<dependency>
-				<groupId>org.hibernate</groupId>
-				<artifactId>hibernate-cglib-repack</artifactId>
-				<version>2.1_3</version>
-			</dependency>
-			<dependency>
-				<groupId>org.postgis</groupId>
-				<artifactId>postgis-jdbc</artifactId>
-				<version>1.1.6</version>
-			</dependency>
-			<dependency>
-				<groupId>postgresql</groupId>
-				<artifactId>postgresql</artifactId>
-				<version>8.1-407.jdbc3</version>
 			</dependency>
 
 			<dependency>
