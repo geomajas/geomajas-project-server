@@ -51,6 +51,8 @@ import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.ui.FocusWidget;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Canvas;
+import com.smartgwt.client.widgets.events.DrawEvent;
+import com.smartgwt.client.widgets.events.DrawHandler;
 import com.smartgwt.client.widgets.events.ResizedEvent;
 import com.smartgwt.client.widgets.events.ResizedHandler;
 
@@ -163,9 +165,10 @@ public class GraphicsWidget extends FocusWidget implements MapContext, HasDouble
 		menuContext = new MapMenuContext();
 		handlers = new ArrayList<HandlerRegistration>();
 
-		// capture right mouse info (target id and coordinate) 
+		// capture right mouse info (target id and coordinate)
 		RightMouseHandler rmh = new RightMouseHandler();
-		// we connect to both mouse events just to be sure (ubuntu/ff3.6 does not fire mouse up)
+		// we connect to both mouse events just to be sure (ubuntu/ff3.6 does
+		// not fire mouse up)
 		addMouseDownHandler(rmh);
 		addMouseUpHandler(rmh);
 		// workaround for an unsupported mix of SmartGWT and pure DOM
@@ -174,8 +177,13 @@ public class GraphicsWidget extends FocusWidget implements MapContext, HasDouble
 		base.setHeight100();
 		// raster at the back
 		base.addChild(this);
-		parent.addChild(base);
-		parent.addResizedHandler(new GwtResizedHandler());
+		// WARNING ! adding the child here was causing several problems:
+		// - GWT-153: embedding in plain html or other frameworks
+		// - GWT-145: autoscroll is no longer working (even after fixing height)
+		// parent.addChild(base); // moved to GwtResizedHandler
+		GwtResizedHandler h = new GwtResizedHandler();
+		parent.addResizedHandler(h);
+		parent.addDrawHandler(h);
 	}
 
 	// -------------------------------------------------------------------------
@@ -216,12 +224,12 @@ public class GraphicsWidget extends FocusWidget implements MapContext, HasDouble
 			handlers.add(addDoubleClickHandler(graphicsController));
 			controller = graphicsController;
 			controller.onActivate();
-		} 
+		}
 	}
 
 	/**
 	 * Get the currently active GraphicsController.
-	 *
+	 * 
 	 * @return current GraphicsController
 	 */
 	public GraphicsController getController() {
@@ -307,7 +315,7 @@ public class GraphicsWidget extends FocusWidget implements MapContext, HasDouble
 	}
 
 	/** Fixes resize problem by manually re-adding this component */
-	private class GwtResizedHandler implements ResizedHandler {
+	private class GwtResizedHandler implements ResizedHandler, DrawHandler {
 
 		public void onResized(ResizedEvent event) {
 			final int width = parent.getWidth();
@@ -322,14 +330,22 @@ public class GraphicsWidget extends FocusWidget implements MapContext, HasDouble
 			setHeight(base.getHeight() + "px");
 			setWidth(base.getWidth() + "px");
 			vectorContext.setSize(width, height);
-			parent.removeChild(base);
+			if (parent.contains(base)) {
+				parent.removeChild(base);
+			}
 			parent.addChild(base);
-			parent.redraw();
+			parent.markForRedraw();
 		}
+
+		public void onDraw(DrawEvent event) {
+			onResized(null);
+		}
+
 	}
-	
+
 	/** sets the right mouse coordinate and target */
 	private class RightMouseHandler implements MouseUpHandler, MouseDownHandler {
+
 		public void onMouseDown(MouseDownEvent event) {
 			process(event);
 		}

@@ -94,7 +94,7 @@ public class Legend extends Canvas {
 
 		widget = new GraphicsWidget(this, SC.generateID());
 		widget.setBackgroundColor("#FFFFFF");
-		addChild(widget);
+		//addChild(widget);
 
 		graphics = widget.getVectorContext();
 
@@ -175,6 +175,8 @@ public class Legend extends Canvas {
 				}
 			}
 		}
+		// this tells the parent the actual height that we want !
+		setHeight(y);
 		redraw();
 	}
 
