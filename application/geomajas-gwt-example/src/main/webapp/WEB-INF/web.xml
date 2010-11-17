@@ -40,6 +40,7 @@
 			org.springframework.transaction.config.TxNamespaceHandler
 			org.geomajas.plugin.printing.command.dto.PrintGetTemplateRequest
 			org.geomajas.plugin.geocoder.service.SplitCommaReverseService
+			org.geomajas.plugin.caching.service.CacheService
        </param-value>
     </context-param>
 
