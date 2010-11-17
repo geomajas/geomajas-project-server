@@ -300,6 +300,8 @@ dojo.extend(GraphicsContext, {
 				group.style.width=image.getWidth()+"px";
 				group.style.height=image.getHeight()+"px";
 				var img = this._findOrCreateElement("vml:image", {id:options.id+".img"});
+				img.style.top=image.getPosition().getY()+"px";
+				img.style.left=image.getPosition().getX()+"px";
 				img.style.width = "100%";
 				img.style.height = "100%";
 				img.src = image.getHref();
