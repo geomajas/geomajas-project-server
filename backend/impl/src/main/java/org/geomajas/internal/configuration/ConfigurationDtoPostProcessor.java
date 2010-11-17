@@ -34,6 +34,8 @@ import org.geomajas.configuration.RasterLayerInfo;
 import org.geomajas.configuration.VectorLayerInfo;
 import org.geomajas.configuration.client.ClientApplicationInfo;
 import org.geomajas.configuration.client.ClientLayerInfo;
+import org.geomajas.configuration.client.ClientLayerTreeInfo;
+import org.geomajas.configuration.client.ClientLayerTreeNodeInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.configuration.client.ScaleInfo;
@@ -110,7 +112,7 @@ public class ConfigurationDtoPostProcessor {
 				postProcess(style);
 			}
 		} catch (LayerException e) {
-			throw new BeanInitializationException("Could not post process configuration", e);
+			throw new BeanInitializationException("Invalid configuration", e);
 		}
 	}
 
@@ -128,7 +130,7 @@ public class ConfigurationDtoPostProcessor {
 		}
 	}
 
-	private ClientApplicationInfo postProcess(ClientApplicationInfo client) throws LayerException {
+	private ClientApplicationInfo postProcess(ClientApplicationInfo client) throws LayerException, BeansException {
 		// initialize maps
 		for (ClientMapInfo map : client.getMaps()) {
 			map.setUnitLength(getUnitLength(map.getCrs(), map.getInitialBounds()));
@@ -183,6 +185,7 @@ public class ConfigurationDtoPostProcessor {
 					postProcess((ClientVectorLayerInfo) layer);
 				}
 			}
+			checkLayerTree(map);
 		}
 		return client;
 	}
@@ -273,6 +276,38 @@ public class ConfigurationDtoPostProcessor {
 				scaleInfo.setDenominator(mapUnitInPixels / pixelPerUnit);
 			}
 		}
+	}
+
+	private void checkLayerTree(ClientMapInfo map) throws BeansException {
+		// if the map contains a layer tree, verify that the layers are part of the map
+		ClientLayerTreeInfo layerTree = map.getLayerTree();
+		if (null != layerTree) {
+			checkTreeNode(map, layerTree.getTreeNode());
+		}
+	}
+
+	private void checkTreeNode(ClientMapInfo map, ClientLayerTreeNodeInfo node) throws BeansException {
+		for (ClientLayerInfo layer : node.getLayers()) {
+			if (!mapContains(map, layer)) {
+				throw new BeanInitializationException(
+						"A LayerTreeNodeInfo object can only reference layers which are part of the map, layer " +
+								layer.getId() + " is not part of map " + map.getId() + ".");
+			}
+		}
+		for (ClientLayerTreeNodeInfo child : node.getTreeNodes()) {
+			checkTreeNode(map, child);
+		}
+	}
+
+	private boolean mapContains(ClientMapInfo map, ClientLayerInfo layer) {
+		String id = layer.getId();
+		boolean res = false;
+		if (null != id) {
+			for (ClientLayerInfo mapLayer : map.getLayers()) {
+				res |= id.equals(mapLayer.getId());
+			}
+		}
+		return res;
 	}
 
 }
