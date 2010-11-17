@@ -277,7 +277,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 		painterVisitor.registerPainter(new RasterLayerPainter(this));
 		painterVisitor.registerPainter(new RasterTilePainter());
 		painterVisitor.registerPainter(new VectorLayerPainter(this));
-		painterVisitor.registerPainter(new VectorTilePainter());
+		painterVisitor.registerPainter(new VectorTilePainter(this.getMapModel().getMapView()));
 		painterVisitor.registerPainter(new FeatureTransactionPainter(this));
 
 		// Install a default menu:

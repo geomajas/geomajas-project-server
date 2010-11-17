@@ -195,6 +195,7 @@ public class SvgGraphicsContext implements GraphicsContext {
 	 *            group object
 	 * @param tagName
 	 *            the tag name
+	 * @return element which was drawn
 	 */
 	public Element drawGroup(Object parent, Object object, String tagName) {
 		if (isAttached()) {
@@ -276,10 +277,10 @@ public class SvgGraphicsContext implements GraphicsContext {
 	public void drawImage(Object parent, String name, String href, Bbox bounds, PictureStyle style) {
 		if (isAttached()) {
 			Element image = helper.createOrUpdateElement(parent, name, "image", style);
-			DOM.setElementAttribute(image, "x", (int) bounds.getX() + "");
-			DOM.setElementAttribute(image, "y", (int) bounds.getY() + "");
-			DOM.setElementAttribute(image, "width", (int) bounds.getWidth() + "");
-			DOM.setElementAttribute(image, "height", (int) bounds.getHeight() + "");
+			DOM.setElementAttribute(image, "x", Integer.toString((int) bounds.getX()));
+			DOM.setElementAttribute(image, "y", Integer.toString((int) bounds.getY()));
+			DOM.setElementAttribute(image, "width", Integer.toString((int) bounds.getWidth()));
+			DOM.setElementAttribute(image, "height", Integer.toString((int) bounds.getHeight()));
 			DOM.setElementAttributeNS(DOM.NS_XLINK, image, "xlink:href", href);
 		}
 	}
@@ -525,7 +526,7 @@ public class SvgGraphicsContext implements GraphicsContext {
 	/**
 	 * Return the (enclosing) group for the specified element id.
 	 * 
-	 * @param id
+	 * @param id group id
 	 * @return the group object
 	 */
 	public Object getGroupById(String id) {
@@ -559,7 +560,7 @@ public class SvgGraphicsContext implements GraphicsContext {
 	/**
 	 * Return the element name for the specified id.
 	 * 
-	 * @param id
+	 * @param id element id
 	 * @return the name of the element
 	 */
 	public String getNameById(String id) {

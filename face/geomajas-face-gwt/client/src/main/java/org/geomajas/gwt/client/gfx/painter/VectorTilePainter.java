@@ -23,16 +23,19 @@
 
 package org.geomajas.gwt.client.gfx.painter;
 
+import com.google.gwt.core.client.GWT;
 import org.geomajas.gwt.client.gfx.GraphicsContext;
 import org.geomajas.gwt.client.gfx.MapContext;
 import org.geomajas.gwt.client.gfx.Paintable;
 import org.geomajas.gwt.client.gfx.PaintableGroup;
 import org.geomajas.gwt.client.gfx.Painter;
 import org.geomajas.gwt.client.gfx.style.PictureStyle;
+import org.geomajas.gwt.client.map.MapView;
 import org.geomajas.gwt.client.map.cache.tile.VectorTile;
 import org.geomajas.gwt.client.map.cache.tile.VectorTile.ContentHolder;
 import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.spatial.Matrix;
+import org.geomajas.gwt.client.spatial.WorldViewTransformer;
 
 /**
  * Paints a vector tile.
@@ -41,7 +44,17 @@ import org.geomajas.gwt.client.spatial.Matrix;
  */
 public class VectorTilePainter implements Painter {
 
-	public VectorTilePainter() {
+	private static final PictureStyle OPAQUE_PICTURE_STYLE = new PictureStyle(1);
+
+	private static final Matrix NO_TRANSFORMATION = new Matrix(1, 0, 0, 1, 0, 0);
+
+	private MapView mapView;
+
+	private WorldViewTransformer transformer;
+
+	public VectorTilePainter(MapView mapView) {
+		this.mapView = mapView;
+		transformer = new WorldViewTransformer(mapView);
 	}
 
 	public String getPaintableClassName() {
@@ -77,12 +90,12 @@ public class VectorTilePainter implements Painter {
 	private void drawContent(PaintableGroup group, VectorTile tile, ContentHolder holder, GraphicsContext graphics) {
 		switch (tile.getContentType()) {
 			case STRING_CONTENT:
-				graphics.drawData(group, holder, holder.getContent(), createTransformationMatrix(tile));
+				graphics.drawData(group, holder, holder.getContent(), NO_TRANSFORMATION);
 				break;
 			case URL_CONTENT:
 				graphics.drawGroup(group, holder, createTransformationMatrix(tile));
-				graphics.drawImage(tile, "img", holder.getContent(), new Bbox(0, 0, tile.getScreenWidth(), tile
-						.getScreenHeight()), new PictureStyle(1));
+				graphics.drawImage(holder, "img", holder.getContent(), new Bbox(0, 0, tile.getScreenWidth(), tile
+						.getScreenHeight()), OPAQUE_PICTURE_STYLE);
 		}
 	}
 
@@ -94,7 +107,7 @@ public class VectorTilePainter implements Painter {
 	 *            The object to be painted.
 	 * @param group
 	 *            The group where the object resides in (optional).
-	 * @param graphics
+	 * @param context
 	 *            The context to paint on.
 	 */
 	public void deleteShape(Paintable paintable, Object group, MapContext context) {
@@ -109,13 +122,11 @@ public class VectorTilePainter implements Painter {
 		double dX = 0;
 		double dY = 0;
 
-		// clipped tiles have the pan origin as origin, so no need to translate:
-		/*
-		 * if (!tile.isClipped()) { // The map has already been translated by this, so we compensate again. Matrix trans
-		 * = mapView.getPanToViewTranslation(); // To find the origin of the tile, we transform it's bounds to view
-		 * space. Bbox viewBounds = transformer.worldToView(tile.getBounds()); dX = Math.round(viewBounds.getX() -
-		 * trans.getDx()); dY = Math.round(viewBounds.getY() - trans.getDy()); }
-		 */
+		// To find the origin of the tile, we transform it's bounds to view space.
+		Matrix trans = mapView.getPanToViewTranslation();
+		Bbox viewBounds = transformer.worldToView(tile.getBounds());
+		dX = Math.round(viewBounds.getX() - trans.getDx());
+		dY = Math.round(viewBounds.getY() - trans.getDy());
 
 		return new Matrix(1, 0, 0, 1, dX, dY);
 	}

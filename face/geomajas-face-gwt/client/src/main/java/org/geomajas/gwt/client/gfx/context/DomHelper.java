@@ -716,7 +716,7 @@ public class DomHelper {
 			return null;
 		} else {
 			Element element = null;
-			if (namespace == DOM.NS_HTML) {
+			if (DOM.NS_HTML.equals(namespace)) {
 				element = DOM.createElement("div");
 			} else {
 				element = DOM.createElementNS(namespace, type);
