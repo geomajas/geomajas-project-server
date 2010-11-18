@@ -147,7 +147,7 @@ public class CacheFilter implements Filter {
 		PathMatcher pathMatcher = new AntPathMatcher();
 		for (String pattern : patterns) {
 			if (pathMatcher.match(pattern, requestUri)) {
-		        res = true;
+				res = true;
 			}
 		}
 		return res;
