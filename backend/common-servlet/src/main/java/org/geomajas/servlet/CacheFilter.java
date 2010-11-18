@@ -77,12 +77,12 @@ public class CacheFilter implements Filter {
 
 	private static final String HTTP_CACHE_PRAGMA = "Pragma";
 
-	private static final String[] NOCACHE = new String[] { "/**/*.nocache.*" };
+	private static final String[] NO_CACHE = new String[] { "/**/*.nocache.*" };
 
-	private static final String[] TOCACHE = new String[] { "/**/*.cache.*", "/**/*.js", "/**/*.png", "/**/*.jpg",
+	private static final String[] TO_CACHE = new String[] { "/**/*.cache.*", "/**/*.js", "/**/*.png", "/**/*.jpg",
 			"/**/*.gif", "/**/*.css", "/**/*.html" };
 
-	private static final String[] TOZIP = new String[] { "/**/*.nocache.*", "/**/*.cache.*", "/**/*.js", "/**/*.css",
+	private static final String[] TO_ZIP = new String[] { "/**/*.nocache.*", "/**/*.cache.*", "/**/*.js", "/**/*.css",
 			"/**/*.html" };
 
 	// ------------------------------------------------------------------------
@@ -100,47 +100,57 @@ public class CacheFilter implements Filter {
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
 		HttpServletResponse httpResponse = (HttpServletResponse) response;
 
-		boolean notCached = false;
 		String requestUri = httpRequest.getRequestURI();
+
+		/*
+		if ("localhost".equals(httpRequest.getServerName()) || "127.0.0.1".equals(httpRequest.getServerName())) {
+			filterChain.doFilter(request, response);
+			return;
+		}
+		*/
+
+		if (shouldNotCache(requestUri)) {
+			configureNoCaching(httpResponse);
+		} else if (shouldCache(requestUri)) {
+			configureCaching(httpResponse);
+		}
+
+		if (shouldCompress(requestUri)) {
+			String encodings = httpRequest.getHeader("Accept-Encoding");
+			if (encodings != null && encodings.indexOf("gzip") != -1) {
+				GzipServletResponseWrapper responseWrapper = new GzipServletResponseWrapper(httpResponse);
+				try {
+					filterChain.doFilter(request, responseWrapper);
+				} finally {
+					responseWrapper.finish();
+				}
+			}
+		} else {
+			filterChain.doFilter(request, response);
+		}
+	}
+
+	public boolean shouldCache(String requestUri) {
+		return check(requestUri, TO_CACHE);
+	}
+
+	public boolean shouldNotCache(String requestUri) {
+		return check(requestUri, NO_CACHE);
+	}
+
+	public boolean shouldCompress(String requestUri) {
+		return check(requestUri, TO_ZIP);
+	}
+
+	public boolean check(String requestUri, String[] patterns) {
+		boolean res = false;
 		PathMatcher pathMatcher = new AntPathMatcher();
-
-		for (String pattern : NOCACHE) {
-			// Should we set the "no-cache" headers?
+		for (String pattern : patterns) {
 			if (pathMatcher.match(pattern, requestUri)) {
-				configureNoCaching(httpResponse);
-				notCached = true;
-				continue;
+		        res = true;
 			}
 		}
-
-		if (!notCached) {
-			// Only check for cache headers, if no-cache hasn't been set:
-			for (String pattern : TOCACHE) {
-				// Should we set the "cache" headers?
-				if (pathMatcher.match(pattern, requestUri)) {
-					configureCaching(httpResponse);
-					continue;
-				}
-			}
-		}
-
-		for (String pattern : TOZIP) {
-			if (pathMatcher.match(pattern, requestUri)) {
-				System.out.println("MATCH for " + requestUri);
-				String encodings = httpRequest.getHeader("Accept-Encoding");
-				if (encodings != null && encodings.indexOf("gzip") != -1) {
-					GzipServletResponseWrapper responseWrapper = new GzipServletResponseWrapper(httpResponse);
-					try {
-						filterChain.doFilter(request, responseWrapper);
-						return;
-					} finally {
-						responseWrapper.finish();
-					}
-				}
-			}
-		}
-
-		filterChain.doFilter(request, response);
+		return res;
 	}
 
 	// ------------------------------------------------------------------------
