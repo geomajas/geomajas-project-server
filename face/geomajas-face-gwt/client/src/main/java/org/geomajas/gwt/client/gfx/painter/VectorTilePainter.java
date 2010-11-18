@@ -23,7 +23,6 @@
 
 package org.geomajas.gwt.client.gfx.painter;
 
-import com.google.gwt.core.client.GWT;
 import org.geomajas.gwt.client.gfx.GraphicsContext;
 import org.geomajas.gwt.client.gfx.MapContext;
 import org.geomajas.gwt.client.gfx.Paintable;
