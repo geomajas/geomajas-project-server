@@ -146,7 +146,7 @@ public class Application implements EntryPoint {
 		// Overview map layout:
 		SectionStackSection section1 = new SectionStackSection("Overview map");
 		section1.setExpanded(true);
-		overviewMap = new OverviewMap("mainOverviewMap", "app", map, true, true);
+		overviewMap = new OverviewMap("mainOverviewMap", "app", map, false, true);
 		section1.addItem(overviewMap);
 		sectionStack.addSection(section1);
 

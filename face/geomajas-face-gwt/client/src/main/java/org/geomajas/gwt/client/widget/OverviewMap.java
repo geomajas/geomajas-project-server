@@ -424,7 +424,7 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 	/**
 	 * The maximum bounds depend on whether useTargetMaxExtent was set. It it was set, then the maxExtent from the
 	 * target map is used. Otherwise it uses either (first value which is assigned) overviewMap.initialBounds or
-	 * overviewMap.maxBounds or targetMap.maxBounds.
+	 * overviewMap.maxBounds or targetMap.maxBounds or uniion of layer bounds/extent.
 	 *
 	 * @return maxBounds for overview map
 	 */
