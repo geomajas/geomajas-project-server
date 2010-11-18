@@ -37,13 +37,11 @@ import org.geomajas.gwt.client.map.event.MapModelEvent;
 import org.geomajas.gwt.client.map.event.MapModelHandler;
 import org.geomajas.gwt.client.map.event.MapViewChangedEvent;
 import org.geomajas.gwt.client.map.event.MapViewChangedHandler;
-import org.geomajas.gwt.client.map.layer.Layer;
 import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.spatial.WorldViewTransformer;
 import org.geomajas.gwt.client.spatial.geometry.LinearRing;
 import org.geomajas.gwt.client.spatial.geometry.Polygon;
 
-import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.widgets.events.ResizedEvent;
 import com.smartgwt.client.widgets.events.ResizedHandler;
 
@@ -79,7 +77,9 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 	 * Use the max extent to boot up this overview map (true), or use the default initial bounds from the configuration
 	 * (false). The map extent is calculated from the map's layers.
 	 */
-	private boolean useMaxExtent;
+	private boolean useTargetMaxExtent;
+
+	private int maxExtentIncreasePercentage = 5;
 
 	/** Draw the borders of the target map's maximum extent? */
 	private boolean drawTargetMaxExtent;
@@ -89,27 +89,28 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 	 * a {@link OverviewMapController} is automatically set.
 	 * 
 	 * @param id
-	 *            This map's unique identifier. Must resemble an ID from the XML configurations, so it can initialize
-	 *            itself.
+	 *            Overview map ID from the configurations. Will also be use as widget id.
 	 * @param applicationId
 	 *            This application's unique identifier. Must resemble an ID from the XML configurations, so it can
 	 *            initialize itself.
 	 * @param targetMap
-	 *            Reference to the main map, that this overview map is to follow.
-	 * @param useMaxExtent
+	 *            Reference to the main map, that this overview map has to follow.
+	 * @param useTargetMaxExtent
 	 *            Use the max extent to boot up this overview map (true), or use the default initial bounds from the
-	 *            configuration (false). The map extent is calculated from the map's layers.
+	 *            configuration (false).
 	 * @param drawTargetMaxExtent
 	 *            Draw the borders of the target map's maximum extent?
+	 * @since 1.8.0
 	 */
-	public OverviewMap(String id, String applicationId, MapWidget targetMap, boolean useMaxExtent,
+	@Api
+	public OverviewMap(String id, String applicationId, MapWidget targetMap, boolean useTargetMaxExtent,
 			boolean drawTargetMaxExtent) {
 		super(id, applicationId);
 		if (null == targetMap) {
 			throw new IllegalArgumentException("Please provide a targetmap");
 		}
 		this.targetMap = targetMap;
-		this.useMaxExtent = useMaxExtent;
+		this.useTargetMaxExtent = useTargetMaxExtent;
 		this.drawTargetMaxExtent = drawTargetMaxExtent;
 		targetMap.getMapModel().getMapView().addMapViewChangedHandler(this);
 		scaleBarEnabled = false;
@@ -117,18 +118,47 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 		rectangleStyle = new ShapeStyle("#FF9900", 0.2f, "#FF9900", 1f, 2);
 		targetMaxExtentRectangleStyle = new ShapeStyle("#555555", 0.4f, "#555555", 1f, 1);
 		setZoomOnScrollEnabled(false);
-		targetMap.getMapModel().addMapModelHandler(new MapModelHandler() {
+		MapModelHandler mmh = new MapModelHandler() {
 
 			public void onMapModelChange(MapModelEvent event) {
 				updateMaxExtent();
 			}
-		});
+		};
+		getMapModel().addMapModelHandler(mmh);
+		targetMap.getMapModel().addMapModelHandler(mmh);
 		addResizedHandler(new ResizedHandler() {
 
 			public void onResized(ResizedEvent event) {
 				updateMaxExtent();
 			}
 		});
+	}
+
+	/**
+	 * Constructor the an overview map. The scale bar, panning buttons and zoomOnScroll are automatically disabled. Also
+	 * a {@link OverviewMapController} is automatically set.
+	 *
+	 * @param id
+	 *            Overview map ID from the configurations. Will also be use as widget id.
+	 * @param applicationId
+	 *            This application's unique identifier. Must resemble an ID from the XML configurations, so it can
+	 *            initialize itself.
+	 * @param targetMap
+	 *            Reference to the main map, that this overview map has to follow.
+	 * @param useTargetMaxExtent
+	 *            Use the max extent to boot up this overview map (true), or use the default initial bounds from the
+	 *            configuration (false).
+	 * @param drawTargetMaxExtent
+	 *            Draw the borders of the target map's maximum extent?
+	 * @param maxExtentIncreasePercentage
+	 *            Percentage of border which should be displayed around the max extent in the overview map.
+	 * @since 1.8.0
+	 */
+	@Api
+	public OverviewMap(String id, String applicationId, MapWidget targetMap, boolean useTargetMaxExtent,
+			boolean drawTargetMaxExtent, int maxExtentIncreasePercentage) {
+		this(id, applicationId, targetMap, useTargetMaxExtent, drawTargetMaxExtent);
+		setMaxExtentIncreasePercentage(maxExtentIncreasePercentage);
 	}
 
 	// ------------------------------------------------------------------------
@@ -142,7 +172,7 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 	 * started using it's initial bounds (not max extents).
 	 */
 	public void onMapViewChanged(MapViewChangedEvent event) {
-		// No call to super; we don't wan't the OverViewMap to constantly redraw!
+		// No call to super; we don't want the OverViewMap to constantly redraw!
 		updatePov();
 	}
 
@@ -201,6 +231,17 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 	// Getters and setters:
 	// ------------------------------------------------------------------------
 
+	/**
+	 * Set the percentage to increase the map maxExtent.
+	 *
+	 * @param maxExtentIncreasePercentage presentage to increase the maxExtent
+	 * @since 1.8.0
+	 */
+	@Api
+	public void setMaxExtentIncreasePercentage(int maxExtentIncreasePercentage) {
+		this.maxExtentIncreasePercentage = maxExtentIncreasePercentage;
+	}
+
 	public ShapeStyle getRectangleStyle() {
 		return rectangleStyle;
 	}
@@ -208,8 +249,10 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 	/**
 	 * Set a new style for the rectangle that shows the current position on the target map.
 	 * 
-	 * @param rectangleStyle
+	 * @param rectangleStyle rectangle style
+	 * @since 1.8.0
 	 */
+	@Api
 	public void setRectangleStyle(ShapeStyle rectangleStyle) {
 		this.rectangleStyle = rectangleStyle;
 		if (targetRectangle != null) {
@@ -223,10 +266,12 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 	}
 
 	/**
-	 * Determine whether or not a rectangle that shows the target map's maximum extent, should be shown.
+	 * Determine whether or not a rectangle that shows the target map's maximum extent should be shown.
 	 * 
-	 * @param drawTargetMaxExtent
+	 * @param drawTargetMaxExtent should the max extent be marked on the map?
+	 * @since 1.8.0
 	 */
+	@Api
 	public void setDrawTargetMaxExtent(boolean drawTargetMaxExtent) {
 		this.drawTargetMaxExtent = drawTargetMaxExtent;
 
@@ -235,13 +280,9 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 			targetMaxExtentRectangle = new GfxGeometry("targetMaxExtentRectangle");
 			targetMaxExtentRectangle.setStyle(targetMaxExtentRectangleStyle);
 
-			// Use the targetMap bounds, no this map's bounds!!!
-			Bbox targetMaxBounds = targetMap.getMapModel().getMapView().getMaxBounds();
-			if (null == targetMaxBounds) {
-				targetMaxBounds = new Bbox(targetMap.getMapModel().getLayers().get(0).getLayerInfo().getMaxExtent());
-			}
+			Bbox targetMaxExtent = getOverviewMaxBounds();
 
-			Bbox box = getMapModel().getMapView().getWorldViewTransformer().worldToView(targetMaxBounds);
+			Bbox box = getMapModel().getMapView().getWorldViewTransformer().worldToView(targetMaxExtent);
 			LinearRing shell = getMapModel().getGeometryFactory().createLinearRing(
 					new Coordinate[] { new Coordinate(-2, -2), new Coordinate(getWidth() + 2, -2),
 							new Coordinate(getWidth() + 2, getHeight() + 2), new Coordinate(-2, getHeight() + 2) });
@@ -266,8 +307,10 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 	 * Set a new style for the rectangle that show the target map's maximum extent. This style will be applied
 	 * immediately.
 	 * 
-	 * @param targetMaxExtentRectangleStyle
+	 * @param targetMaxExtentRectangleStyle max extent marker rectangle style
+	 * @since 1.8.0
 	 */
+	@Api
 	public void setTargetMaxExtentRectangleStyle(ShapeStyle targetMaxExtentRectangleStyle) {
 		this.targetMaxExtentRectangleStyle = targetMaxExtentRectangleStyle;
 		if (targetMaxExtentRectangle != null) {
@@ -293,31 +336,26 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 	}
 
 	/**
-	 * Apply a maximum extent. This will take the target map's maximum extent (actually 5% bigger)
+	 * Apply a maximum extent. This will extend the map extend to be used by the percentage to increase.
 	 */
 	private void updateMaxExtent() {
-		if (useMaxExtent && targetMap.getMapModel().isInitialized()) {
+		if (targetMap.getMapModel().isInitialized()) {
+			Bbox targetMaxBounds = getOverviewMaxBounds();
+
 			MapView mapView = getMapModel().getMapView();
-
-			// Calculate the map extent from the target map:
-			Bbox targetMaxBounds = targetMap.getMapModel().getMapView().getMaxBounds();
-
-			targetMaxBounds = targetMaxBounds.buffer(targetMaxBounds.getWidth() / 20);
 
 			// Set the maxBounds on this map as well:
 			mapView.setMaxBounds(targetMaxBounds.buffer(targetMaxBounds.getWidth()));
 
+			// apply buffer
+			if (maxExtentIncreasePercentage > 0) {
+				targetMaxBounds =
+						targetMaxBounds.buffer(targetMaxBounds.getWidth() * maxExtentIncreasePercentage / 100);
+			}
+
 			// Then apply the map extent:
 			mapView.applyBounds(targetMaxBounds, MapView.ZoomOption.LEVEL_FIT);
 			super.onMapViewChanged(null);
-
-			// Warn for layers that aren't showing
-			for (Layer layer : getMapModel().getLayers()) {
-				if (!layer.isShowing()) {
-					GWT.log("The overview map " + getMapModel().getId() + " is probably misconfigured. Layer "
-							+ layer.getId() + " not showing", null);
-				}
-			}
 
 			// Immediately draw or remove the max extent rectangle:
 			setDrawTargetMaxExtent(drawTargetMaxExtent);
@@ -381,5 +419,33 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 			targetRectangle.setBounds(new Bbox(viewBegin.getX(), viewBegin.getY(), width, height));
 			render(targetRectangle, RenderGroup.SCREEN, RenderStatus.UPDATE);
 		}
+	}
+
+	/**
+	 * The maximum bounds depend on whether useTargetMaxExtent was set. It it was set, then the maxExtent from the
+	 * target map is used. Otherwise it uses either (first value which is assigned) overviewMap.initialBounds or
+	 * overviewMap.maxBounds or targetMap.maxBounds.
+	 *
+	 * @return maxBounds for overview map
+	 */
+	private Bbox getOverviewMaxBounds() {
+		Bbox targetMaxBounds;
+		org.geomajas.geometry.Bbox tmb;
+		tmb = getMapModel().getMapInfo().getInitialBounds();
+		if (null == tmb) {
+			// no initial bounds on overview map, use maxBounds
+			tmb = getMapModel().getMapInfo().getMaxBounds();
+		}
+		if (useTargetMaxExtent || org.geomajas.geometry.Bbox.ALL.equals(tmb)) {
+			// maxBounds was not configured, or need to use maxExtent from target
+			tmb = targetMap.getMapModel().getMapInfo().getMaxBounds();
+		}
+		if (org.geomajas.geometry.Bbox.ALL.equals(tmb)) {
+			// no maxBounds on target map, use union of all (visible) layers
+			targetMaxBounds = targetMap.getMapModel().getMapView().getMaxBounds();
+		} else {
+			targetMaxBounds = new Bbox(tmb);
+		}
+		return targetMaxBounds;
 	}
 }
