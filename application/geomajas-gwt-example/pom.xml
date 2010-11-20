@@ -368,6 +368,7 @@
 							<extra>${project.build.directory}/gwt-extra</extra>
 							<gen>${project.build.directory}/gwt-gen</gen>
 							<hostedWebapp>${project.build.directory}/generated-web-resources/gwt</hostedWebapp>
+							<webappDirectory>${project.build.directory}/generated-web-resources/gwt</webappDirectory>
 						</configuration>
 						<executions>
 							<execution>

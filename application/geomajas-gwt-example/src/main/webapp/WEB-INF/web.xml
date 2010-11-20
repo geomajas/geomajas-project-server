@@ -7,12 +7,12 @@
         <param-name>contextConfigLocation</param-name>
         <param-value>
             <!-- Server side raster layers -->
-			classpath:org/geomajas/example/gwt/servercfg/**/*.xml
+			classpath*:org/geomajas/example/gwt/servercfg/**/*.xml
 
             <!-- Map Configurations -->
-			classpath:org/geomajas/example/gwt/clientcfg/**/*.xml
+			classpath*:org/geomajas/example/gwt/clientcfg/**/*.xml
 
-			classpath:org/geomajas/plugin/caching/DefaultCachedPipelines.xml
+			classpath*:org/geomajas/plugin/caching/DefaultCachedPipelines.xml
 			<!--
 			classpath:org/geomajas/plugin/rasterizing/DefaultCachedAndRasterizedPipelines.xml
 			-->
@@ -32,6 +32,7 @@
 			org.geomajas.plugin.staticsecurity.command.dto.LoginRequest
 			org.geotools.data.shapefile.ShapefileDataStoreFactory
  			org.geomajas.gwt.client.Geomajas
+ 			org.geomajas.example.gwt.client.GeomajasSamples
  			org.geomajas.layer.geotools.GeoToolsLayer
  			org.geomajas.layer.hibernate.HibernateLayer
  			org.geomajas.layer.osm.OsmLayer
@@ -41,6 +42,7 @@
 			org.geomajas.plugin.printing.command.dto.PrintGetTemplateRequest
 			org.geomajas.plugin.geocoder.service.SplitCommaReverseService
 			org.geomajas.plugin.caching.service.CacheService
+			org.geomajas.plugin.geocoder.api.GeocoderInfo
        </param-value>
     </context-param>
 

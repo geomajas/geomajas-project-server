@@ -44,6 +44,7 @@ import org.geomajas.gwt.client.map.event.MapModelHandler;
 import org.geomajas.gwt.client.map.layer.Layer;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.Timer;
 import com.smartgwt.client.types.Alignment;
 import com.smartgwt.client.types.SelectionType;
 import com.smartgwt.client.widgets.Canvas;
@@ -98,8 +99,9 @@ public class LayerTree extends Canvas implements LeafClickHandler, FolderClickHa
 	/**
 	 * Initialize the LayerTree, using a MapWidget as base reference. It will display the map's layers, as configured in
 	 * the XML configuration, and select/deselect the layer as the user clicks on them in the tree.
-	 *
-	 * @param mapWidget map widget this layer tree is connected to
+	 * 
+	 * @param mapWidget
+	 *            map widget this layer tree is connected to
 	 * @since 1.6.0
 	 */
 	@Api
@@ -125,9 +127,9 @@ public class LayerTree extends Canvas implements LeafClickHandler, FolderClickHa
 					htmlSelectedLayer.setAlign(Alignment.CENTER);
 					vLayout.addMember(htmlSelectedLayer);
 					vLayout.addMember(treeGrid);
-					treeGrid.redraw();
+					treeGrid.markForRedraw();
 					LayerTree.this.addChild(vLayout);
-					LayerTree.this.redraw();
+					LayerTree.this.markForRedraw();
 				}
 				initialized = true;
 			}
@@ -142,7 +144,7 @@ public class LayerTree extends Canvas implements LeafClickHandler, FolderClickHa
 	/**
 	 * When a layer deselection event comes in, the LayerTree must also deselect the correct node in the tree, update
 	 * the selected layer text, and update all buttons icons.
-	 *
+	 * 
 	 * @since 1.6.0
 	 */
 	@Api
@@ -161,7 +163,7 @@ public class LayerTree extends Canvas implements LeafClickHandler, FolderClickHa
 	/**
 	 * When a layer selection event comes in, the LayerTree must also select the correct node in the tree, update the
 	 * selected layer text, and update all buttons icons.
-	 *
+	 * 
 	 * @since 1.6.0
 	 */
 	@Api
@@ -252,8 +254,17 @@ public class LayerTree extends Canvas implements LeafClickHandler, FolderClickHa
 				}
 			}
 		}
-		Canvas[] toolStripMembers = toolStrip.getMembers();
-		updateButtonIconsAndStates(toolStripMembers);
+		final Canvas[] toolStripMembers = toolStrip.getMembers();
+		// delaying this fixes an image 'undefined' error
+		Timer t = new Timer() {
+
+			@Override
+			public void run() {
+				updateButtonIconsAndStates(toolStripMembers);
+			}
+
+		};
+		t.schedule(10);
 		return toolStrip;
 	}
 
@@ -389,6 +400,7 @@ public class LayerTree extends Canvas implements LeafClickHandler, FolderClickHa
 				setTooltip(action.getTooltip());
 			} else {
 				setDisabled(true);
+				GWT.log("LayerTreeButton" + action.getDisabledIcon());
 				setIcon(action.getDisabledIcon());
 				setTooltip("");
 			}
@@ -448,6 +460,7 @@ public class LayerTree extends Canvas implements LeafClickHandler, FolderClickHa
 			} else {
 				setSelected(false);
 				setDisabled(true);
+				GWT.log("LayerTreeModalButton" + modalAction.getDisabledIcon());
 				setIcon(modalAction.getDisabledIcon());
 				setTooltip("");
 			}

@@ -20,45 +20,29 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.geomajas.gwt.client.gfx;
+package org.geomajas.gwt.client.widget.event;
 
-import org.geomajas.global.Api;
-import org.geomajas.gwt.client.widget.event.HasGraphicsReadyHandlers;
+import com.google.gwt.event.shared.GwtEvent;
 
 /**
- * Abstraction of the map for painting rasters and vectors.
+ * Event to announce that the graphics context is ready for drawing. This event is necessary because drawing can only
+ * take place when the graphics context is attached to the DOM. On startup and during resizing the graphics context is
+ * detached. Users should ensure that their content is correctly rendered with respect to the new size by reacting to
+ * this event.
  * 
  * @author Jan De Moerloose
- * @since 1.6.0
+ * 
  */
-@Api(allMethods = true)
-public interface MapContext extends HasGraphicsReadyHandlers {
+public class GraphicsReadyEvent extends GwtEvent<GraphicsReadyHandler> {
 
-	/**
-	 * Get the context for rendering vector data.
-	 * 
-	 * @return a graphics context
-	 */
-	GraphicsContext getVectorContext();
+	public static final Type<GraphicsReadyHandler> TYPE = new Type<GraphicsReadyHandler>();
 
-	/**
-	 * Get the context for rendering raster images.
-	 * 
-	 * @return an image context
-	 */
-	ImageContext getRasterContext();
+	@SuppressWarnings("unchecked")
+	public Type getAssociatedType() {
+		return TYPE;
+	}
 
-	/**
-	 * Get the right mouse menu context.
-	 * 
-	 * @return a menu context
-	 */
-	MenuContext getMenuContext();
-
-	/**
-	 * Is this context ready for drawing ? A context must be attached to the document's body to allow drawing.
-	 * 
-	 * @return true if ready for drawing
-	 */
-	boolean isReady();
+	protected void dispatch(GraphicsReadyHandler handler) {
+		handler.onReady(this);
+	}
 }

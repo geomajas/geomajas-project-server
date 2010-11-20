@@ -36,6 +36,9 @@ import org.geomajas.gwt.client.gfx.context.DefaultImageContext;
 import org.geomajas.gwt.client.gfx.context.SvgGraphicsContext;
 import org.geomajas.gwt.client.gfx.context.VmlGraphicsContext;
 import org.geomajas.gwt.client.util.GwtEventUtil;
+import org.geomajas.gwt.client.widget.event.GraphicsReadyEvent;
+import org.geomajas.gwt.client.widget.event.GraphicsReadyHandler;
+import org.geomajas.gwt.client.widget.event.HasGraphicsReadyHandlers;
 
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
@@ -44,17 +47,23 @@ import com.google.gwt.event.dom.client.HasDoubleClickHandlers;
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseDownHandler;
 import com.google.gwt.event.dom.client.MouseEvent;
+import com.google.gwt.event.dom.client.MouseMoveHandler;
+import com.google.gwt.event.dom.client.MouseOutHandler;
+import com.google.gwt.event.dom.client.MouseOverHandler;
 import com.google.gwt.event.dom.client.MouseUpEvent;
 import com.google.gwt.event.dom.client.MouseUpHandler;
+import com.google.gwt.event.dom.client.MouseWheelHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.user.client.Event;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.FocusWidget;
 import com.smartgwt.client.util.SC;
-import com.smartgwt.client.widgets.Canvas;
+import com.smartgwt.client.widgets.WidgetCanvas;
 import com.smartgwt.client.widgets.events.DrawEvent;
 import com.smartgwt.client.widgets.events.DrawHandler;
 import com.smartgwt.client.widgets.events.ResizedEvent;
 import com.smartgwt.client.widgets.events.ResizedHandler;
+import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
  * <p>
@@ -82,7 +91,7 @@ import com.smartgwt.client.widgets.events.ResizedHandler;
  * 
  * @author Pieter De Graef
  */
-public class GraphicsWidget extends FocusWidget implements MapContext, HasDoubleClickHandlers {
+public class GraphicsWidget extends VLayout implements MapContext, HasDoubleClickHandlers, HasGraphicsReadyHandlers {
 
 	/** The ID from which to start building the rendering DOM tree. */
 	private String graphicsId;
@@ -127,15 +136,10 @@ public class GraphicsWidget extends FocusWidget implements MapContext, HasDouble
 	 */
 	private String rightButtonTarget;
 
-	/** Parent canvas, needed for resizing */
-	private Canvas parent;
+	/** Focus widget with the real graphics, needed for native GWT events */
+	private EventWidget eventWidget;
 
-	/** Base canvas to insert this widget in */
-	private Canvas base;
-
-	private int previousWidth;
-
-	private int previousHeight;
+	private Timer resizeTimer;
 
 	// -------------------------------------------------------------------------
 	// Constructors:
@@ -150,17 +154,19 @@ public class GraphicsWidget extends FocusWidget implements MapContext, HasDouble
 	 * @param graphicsId
 	 *            The ID from which to start building the rendering DOM tree.
 	 */
-	public GraphicsWidget(Canvas parent, String graphicsId) {
-		super(Document.get().createDivElement());
-		this.parent = parent;
+	public GraphicsWidget(String graphicsId) {
+		eventWidget = new EventWidget(graphicsId);
+		setWidth100();
+		setHeight100();
+		setID(graphicsId);
 		this.graphicsId = graphicsId;
 		// append a raster context
-		rasterContext = new DefaultImageContext(this);
+		rasterContext = new DefaultImageContext(eventWidget.getWidget());
 		// append a vector context
 		if (SC.isIE()) {
-			vectorContext = new VmlGraphicsContext(this);
+			vectorContext = new VmlGraphicsContext(eventWidget.getWidget());
 		} else {
-			vectorContext = new SvgGraphicsContext(this);
+			vectorContext = new SvgGraphicsContext(eventWidget.getWidget());
 		}
 		menuContext = new MapMenuContext();
 		handlers = new ArrayList<HandlerRegistration>();
@@ -169,21 +175,17 @@ public class GraphicsWidget extends FocusWidget implements MapContext, HasDouble
 		RightMouseHandler rmh = new RightMouseHandler();
 		// we connect to both mouse events just to be sure (ubuntu/ff3.6 does
 		// not fire mouse up)
-		addMouseDownHandler(rmh);
-		addMouseUpHandler(rmh);
-		// workaround for an unsupported mix of SmartGWT and pure DOM
-		base = new Canvas();
-		base.setWidth100();
-		base.setHeight100();
+		eventWidget.addMouseDownHandler(rmh);
+		eventWidget.addMouseUpHandler(rmh);
 		// raster at the back
-		base.addChild(this);
 		// WARNING ! adding the child here was causing several problems:
 		// - GWT-153: embedding in plain html or other frameworks
 		// - GWT-145: autoscroll is no longer working (even after fixing height)
-		// parent.addChild(base); // moved to GwtResizedHandler
+		// base.addChild(this); // moved to GwtResizedHandler
+		// parent.addChild(base);
 		GwtResizedHandler h = new GwtResizedHandler();
-		parent.addResizedHandler(h);
-		parent.addDrawHandler(h);
+		super.addResizedHandler(h);
+		addDrawHandler(h);
 	}
 
 	// -------------------------------------------------------------------------
@@ -192,6 +194,10 @@ public class GraphicsWidget extends FocusWidget implements MapContext, HasDouble
 
 	public HandlerRegistration addDoubleClickHandler(DoubleClickHandler handler) {
 		return addDomHandler(handler, DoubleClickEvent.getType());
+	}
+
+	public HandlerRegistration addGraphicsReadyHandler(GraphicsReadyHandler handler) {
+		return doAddHandler(handler, GraphicsReadyEvent.TYPE);
 	}
 
 	/**
@@ -215,16 +221,20 @@ public class GraphicsWidget extends FocusWidget implements MapContext, HasDouble
 			graphicsController = fallbackController;
 		}
 		if (graphicsController != null) {
-			handlers.add(addMouseDownHandler(graphicsController));
-			handlers.add(addMouseMoveHandler(graphicsController));
-			handlers.add(addMouseOutHandler(graphicsController));
-			handlers.add(addMouseOverHandler(graphicsController));
-			handlers.add(addMouseUpHandler(graphicsController));
-			handlers.add(addMouseWheelHandler(graphicsController));
+			handlers.add(eventWidget.addMouseDownHandler(graphicsController));
+			handlers.add(eventWidget.addMouseMoveHandler(graphicsController));
+			handlers.add(eventWidget.addMouseOutHandler(graphicsController));
+			handlers.add(eventWidget.addMouseOverHandler(graphicsController));
+			handlers.add(eventWidget.addMouseUpHandler(graphicsController));
+			handlers.add(eventWidget.addMouseWheelHandler(graphicsController));
 			handlers.add(addDoubleClickHandler(graphicsController));
 			controller = graphicsController;
 			controller.onActivate();
 		}
+	}
+
+	public HandlerRegistration addMouseWheelHandler(MouseWheelHandler handler) {
+		return eventWidget.addMouseWheelHandler(handler);
 	}
 
 	/**
@@ -257,18 +267,6 @@ public class GraphicsWidget extends FocusWidget implements MapContext, HasDouble
 
 	public String getGraphicsId() {
 		return graphicsId;
-	}
-
-	public int getHeight() {
-		return vectorContext.getHeight();
-	}
-
-	public int getWidth() {
-		return vectorContext.getWidth();
-	}
-
-	public void setBackgroundColor(String color) {
-		base.setBackgroundColor(color);
 	}
 
 	public MenuContext getMenuContext() {
@@ -314,31 +312,49 @@ public class GraphicsWidget extends FocusWidget implements MapContext, HasDouble
 		}
 	}
 
+	public void markForResize() {
+		// remove child while browser is resizing + schedule redraw in 0.1 sec
+		if (contains(eventWidget)) {
+			removeChild(eventWidget);
+			eventWidget.setVisible(false);
+		}
+		if (resizeTimer == null) {
+			resizeTimer = new Timer() {
+
+				@Override
+				public void run() {
+					resize();
+				}
+
+			};
+		}
+		resizeTimer.schedule(100);
+	}
+
+	public void resize() {
+		// child was removed in markForResize(), add it again
+		if (!contains(eventWidget)) {
+			addChild(eventWidget);
+			eventWidget.setVisible(true);
+		}
+		// set the size and notify parents so they can redraw
+		vectorContext.setSize(getWidth(), getHeight());
+		if (isReady()) {
+			fireEvent(new GraphicsReadyEvent());
+		}
+	}
+
 	/** Fixes resize problem by manually re-adding this component */
 	private class GwtResizedHandler implements ResizedHandler, DrawHandler {
 
 		public void onResized(ResizedEvent event) {
-			final int width = parent.getWidth();
-			final int height = parent.getHeight();
-
-			if (width == previousWidth && height == previousHeight) {
-				return;
-			}
-			previousWidth = width;
-			previousHeight = height;
-
-			setHeight(base.getHeight() + "px");
-			setWidth(base.getWidth() + "px");
-			vectorContext.setSize(width, height);
-			if (parent.contains(base)) {
-				parent.removeChild(base);
-			}
-			parent.addChild(base);
-			parent.markForRedraw();
+			// resize later
+			markForResize();
 		}
 
 		public void onDraw(DrawEvent event) {
-			onResized(null);
+			// called on first draw
+			resize();
 		}
 
 	}
@@ -361,4 +377,60 @@ public class GraphicsWidget extends FocusWidget implements MapContext, HasDouble
 			}
 		}
 	}
+
+	/**
+	 * 
+	 * @author Jan De Moerloose
+	 *
+	 */
+	private static class EventWidget extends WidgetCanvas {
+
+		private FocusWidget widget;
+
+		private EventWidget(FocusWidget widget) {
+			super(widget);
+			this.widget = widget;
+			setWidth100();
+			setHeight100();
+		}
+
+		public EventWidget(String id) {
+			this(new FocusWidget(Document.get().createDivElement()) {
+			});
+		}
+
+		public HandlerRegistration addMouseDownHandler(MouseDownHandler handler) {
+			return widget.addMouseDownHandler(handler);
+		}
+
+		public HandlerRegistration addMouseMoveHandler(MouseMoveHandler handler) {
+			return widget.addMouseMoveHandler(handler);
+		}
+
+		public HandlerRegistration addMouseOutHandler(MouseOutHandler handler) {
+			return widget.addMouseOutHandler(handler);
+		}
+
+		public HandlerRegistration addMouseOverHandler(MouseOverHandler handler) {
+			return widget.addMouseOverHandler(handler);
+		}
+
+		public HandlerRegistration addMouseUpHandler(MouseUpHandler handler) {
+			return widget.addMouseUpHandler(handler);
+		}
+
+		public HandlerRegistration addMouseWheelHandler(MouseWheelHandler handler) {
+			return widget.addMouseWheelHandler(handler);
+		}
+
+		public FocusWidget getWidget() {
+			return widget;
+		}
+
+	}
+
+	public boolean isReady() {
+		return contains(eventWidget) && eventWidget.getWidget().isAttached();
+	}
+
 }

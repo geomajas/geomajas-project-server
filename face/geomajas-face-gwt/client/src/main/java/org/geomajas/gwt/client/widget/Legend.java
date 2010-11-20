@@ -92,9 +92,10 @@ public class Legend extends Canvas {
 		setHeight100();
 		this.mapModel = mapModel;
 
-		widget = new GraphicsWidget(this, SC.generateID());
+		widget = new GraphicsWidget(SC.generateID());
 		widget.setBackgroundColor("#FFFFFF");
-		//addChild(widget);
+		// adding the graphics here causes problems when embedding in HTML !
+		// addChild(widget);
 
 		graphics = widget.getVectorContext();
 
@@ -177,7 +178,7 @@ public class Legend extends Canvas {
 		}
 		// this tells the parent the actual height that we want !
 		setHeight(y);
-		redraw();
+		markForRedraw();
 	}
 
 	// -------------------------------------------------------------------------
@@ -204,6 +205,7 @@ public class Legend extends Canvas {
 	 * Called when the MapModel configuration has been loaded.
 	 */
 	private void initialize() {
+		addChild(widget);
 		for (Layer<?> layer : mapModel.getLayers()) {
 			registrations.add(layer.addLayerChangedHandler(new LayerChangedHandler() {
 
@@ -237,4 +239,5 @@ public class Legend extends Canvas {
 		loadedRegistration.removeHandler();
 		loadedRegistration = null;
 	}
+	
 }

@@ -28,12 +28,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 /**
  * <p>
  * Visitor pattern implementation for painter.
  * </p>
- *
+ * 
  * @author Jan De Moerloose
  */
 public class PainterVisitor {
@@ -44,16 +43,15 @@ public class PainterVisitor {
 	private MapContext context;
 
 	/**
-	 * Dictionary of registered painter. It is possible that more then one
-	 * painter is registered for a certain type of object.
+	 * Dictionary of registered painter. It is possible that more then one painter is registered for a certain type of
+	 * object.
 	 */
 	private Map<String, List<Painter>> painters;
 
 	/**
-	 * This class should always be initialized with a
-	 * <code>GraphicsContext</code> object, since all painter registered here
-	 * will apply their painting skills on it.
-	 *
+	 * This class should always be initialized with a <code>GraphicsContext</code> object, since all painter registered
+	 * here will apply their painting skills on it.
+	 * 
 	 * @param graphics
 	 *            Implementation of the MapContext interface.
 	 */
@@ -64,7 +62,7 @@ public class PainterVisitor {
 
 	/**
 	 * Register a new painter to this visitor.
-	 *
+	 * 
 	 * @param painter
 	 *            The painter itself.
 	 */
@@ -82,7 +80,7 @@ public class PainterVisitor {
 
 	/**
 	 * Unregister an existing painter from this visitor.
-	 *
+	 * 
 	 * @param painter
 	 *            The painter itself.
 	 */
@@ -99,7 +97,7 @@ public class PainterVisitor {
 
 	/**
 	 * The visitors visit function.
-	 *
+	 * 
 	 * @param paintable
 	 */
 	public void visit(Paintable paintable, Object group) {
@@ -107,14 +105,16 @@ public class PainterVisitor {
 		if (painters.containsKey(className)) {
 			List<Painter> list = painters.get(className);
 			for (Painter painter : list) {
-				painter.paint(paintable, group, context);
+				if (context.isReady()) {
+					painter.paint(paintable, group, context);
+				}
 			}
 		}
 	}
 
 	/**
 	 * Remove a paintable object from the graphics.
-	 *
+	 * 
 	 * @param paintable
 	 */
 	public void remove(Paintable paintable, Object group) {
@@ -128,10 +128,10 @@ public class PainterVisitor {
 	}
 
 	/**
-	 * Retrieve the full list of painter for a specific type of paintable
-	 * object.
-	 *
-	 * @param paintable The type of object to retrieve painter for.
+	 * Retrieve the full list of painter for a specific type of paintable object.
+	 * 
+	 * @param paintable
+	 *            The type of object to retrieve painter for.
 	 * @return Return a list of painter, or null.
 	 */
 	public List<Painter> getPaintersForObject(Paintable paintable) {

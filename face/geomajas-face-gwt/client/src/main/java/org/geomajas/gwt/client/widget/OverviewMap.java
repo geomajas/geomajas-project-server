@@ -118,14 +118,11 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 		rectangleStyle = new ShapeStyle("#FF9900", 0.2f, "#FF9900", 1f, 2);
 		targetMaxExtentRectangleStyle = new ShapeStyle("#555555", 0.4f, "#555555", 1f, 1);
 		setZoomOnScrollEnabled(false);
-		MapModelHandler mmh = new MapModelHandler() {
-
-			public void onMapModelChange(MapModelEvent event) {
-				updateMaxExtent();
-			}
-		};
-		getMapModel().addMapModelHandler(mmh);
-		targetMap.getMapModel().addMapModelHandler(mmh);
+		// handle max extent when both maps are loaded
+		MaxExtentHandler meh = new MaxExtentHandler();
+		getMapModel().addMapModelHandler(meh);
+		targetMap.getMapModel().addMapModelHandler(meh);
+		// handle max extent on resize
 		addResizedHandler(new ResizedHandler() {
 
 			public void onResized(ResizedEvent event) {
@@ -137,7 +134,7 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 	/**
 	 * Constructor the an overview map. The scale bar, panning buttons and zoomOnScroll are automatically disabled. Also
 	 * a {@link OverviewMapController} is automatically set.
-	 *
+	 * 
 	 * @param id
 	 *            Overview map ID from the configurations. Will also be use as widget id.
 	 * @param applicationId
@@ -233,8 +230,9 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 
 	/**
 	 * Set the percentage to increase the map maxExtent.
-	 *
-	 * @param maxExtentIncreasePercentage presentage to increase the maxExtent
+	 * 
+	 * @param maxExtentIncreasePercentage
+	 *            presentage to increase the maxExtent
 	 * @since 1.8.0
 	 */
 	@Api
@@ -249,7 +247,8 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 	/**
 	 * Set a new style for the rectangle that shows the current position on the target map.
 	 * 
-	 * @param rectangleStyle rectangle style
+	 * @param rectangleStyle
+	 *            rectangle style
 	 * @since 1.8.0
 	 */
 	@Api
@@ -268,7 +267,8 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 	/**
 	 * Determine whether or not a rectangle that shows the target map's maximum extent should be shown.
 	 * 
-	 * @param drawTargetMaxExtent should the max extent be marked on the map?
+	 * @param drawTargetMaxExtent
+	 *            should the max extent be marked on the map?
 	 * @since 1.8.0
 	 */
 	@Api
@@ -307,7 +307,8 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 	 * Set a new style for the rectangle that show the target map's maximum extent. This style will be applied
 	 * immediately.
 	 * 
-	 * @param targetMaxExtentRectangleStyle max extent marker rectangle style
+	 * @param targetMaxExtentRectangleStyle
+	 *            max extent marker rectangle style
 	 * @since 1.8.0
 	 */
 	@Api
@@ -349,8 +350,8 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 
 			// apply buffer
 			if (maxExtentIncreasePercentage > 0) {
-				targetMaxBounds =
-						targetMaxBounds.buffer(targetMaxBounds.getWidth() * maxExtentIncreasePercentage / 100);
+				targetMaxBounds = targetMaxBounds
+						.buffer(targetMaxBounds.getWidth() * maxExtentIncreasePercentage / 100);
 			}
 
 			// Then apply the map extent:
@@ -425,7 +426,7 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 	 * The maximum bounds depend on whether useTargetMaxExtent was set. It it was set, then the maxExtent from the
 	 * target map is used. Otherwise it uses either (first value which is assigned) overviewMap.initialBounds or
 	 * overviewMap.maxBounds or targetMap.maxBounds or uniion of layer bounds/extent.
-	 *
+	 * 
 	 * @return maxBounds for overview map
 	 */
 	private Bbox getOverviewMaxBounds() {
@@ -448,4 +449,30 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 		}
 		return targetMaxBounds;
 	}
+
+	/**
+	 * Updates the max extent when both maps are ready to go.
+	 * 
+	 * @author Jan De Moerloose
+	 * 
+	 */
+	private class MaxExtentHandler implements MapModelHandler {
+
+		private boolean targetMapDone;
+
+		private boolean overviewMapDone;
+
+		public void onMapModelChange(MapModelEvent event) {
+			if (event.getSource() == OverviewMap.this) {
+				overviewMapDone = true;
+			} else if (event.getSource() == targetMap) {
+				targetMapDone = true;
+			}
+			if (targetMapDone && overviewMapDone) {
+				updateMaxExtent();
+			}
+		}
+
+	}
+
 }

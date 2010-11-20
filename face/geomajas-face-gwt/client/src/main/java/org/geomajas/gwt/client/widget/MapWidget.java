@@ -70,7 +70,6 @@ import org.geomajas.gwt.client.gfx.style.ShapeStyle;
 import org.geomajas.gwt.client.map.MapModel;
 import org.geomajas.gwt.client.map.MapView;
 import org.geomajas.gwt.client.map.event.EditingEvent;
-import org.geomajas.gwt.client.map.event.EditingEvent.EditingEventType;
 import org.geomajas.gwt.client.map.event.EditingHandler;
 import org.geomajas.gwt.client.map.event.FeatureDeselectedEvent;
 import org.geomajas.gwt.client.map.event.FeatureSelectedEvent;
@@ -84,11 +83,14 @@ import org.geomajas.gwt.client.map.event.MapModelEvent;
 import org.geomajas.gwt.client.map.event.MapModelHandler;
 import org.geomajas.gwt.client.map.event.MapViewChangedEvent;
 import org.geomajas.gwt.client.map.event.MapViewChangedHandler;
+import org.geomajas.gwt.client.map.event.EditingEvent.EditingEventType;
 import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.feature.FeatureTransaction;
 import org.geomajas.gwt.client.map.layer.Layer;
 import org.geomajas.gwt.client.map.layer.RasterLayer;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
+import org.geomajas.gwt.client.widget.event.GraphicsReadyEvent;
+import org.geomajas.gwt.client.widget.event.GraphicsReadyHandler;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.MouseWheelEvent;
@@ -99,8 +101,6 @@ import com.smartgwt.client.types.Cursor;
 import com.smartgwt.client.types.VerticalAlignment;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Canvas;
-import com.smartgwt.client.widgets.events.ResizedEvent;
-import com.smartgwt.client.widgets.events.ResizedHandler;
 import com.smartgwt.client.widgets.menu.Menu;
 
 /**
@@ -257,12 +257,12 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	 */
 	@Api
 	public MapWidget(String id, String applicationId) {
-		super(id);
+		setID(id);
 		this.applicationId = applicationId;
 		mapModel = new MapModel(getID() + "Graphics");
 		mapModel.addMapModelHandler(this);
 		mapModel.getMapView().addMapViewChangedHandler(this);
-		graphics = new GraphicsWidget(this, getID() + "Graphics");
+		graphics = new GraphicsWidget(getID() + "Graphics");
 		painterVisitor = new PainterVisitor(graphics);
 		mapModel.addFeatureSelectionHandler(new MapWidgetFeatureSelectionHandler(this));
 		graphics.setFallbackController(new PanController(this));
@@ -289,7 +289,9 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 		setWidth100();
 		setHeight100();
 		setDynamicContents(true);
-		addResizedHandler(new MapResizedHandler(this));
+		graphics.addGraphicsReadyHandler(new RenderMapOnResizeHandler());
+		// adding the graphics here causes problems when embedding in HTML !
+		// addChild(graphics);
 		setZoomOnScrollEnabled(true);
 
 		mapModel.getFeatureEditor().addEditingHandler(new EditingHandler() {
@@ -381,7 +383,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 		if (renderGroup != null) {
 			group = getGroup(renderGroup);
 		}
-		if (!graphics.isAttached()) {
+		if (!graphics.isReady()) {
 			return;
 		}
 		if (paintable == null) {
@@ -396,6 +398,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 			}
 		} else {
 			if (RenderStatus.ALL.equals(status)) {
+				paintable.accept(painterVisitor, group, mapModel.getMapView().getBounds(), true);
 				if (paintable == this.mapModel) {
 					// Paint the world space paintable objects:
 					for (WorldPaintable worldPaintable : worldPaintables.values()) {
@@ -404,7 +407,6 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 								.getBounds(), true);
 					}
 				}
-				paintable.accept(painterVisitor, group, mapModel.getMapView().getBounds(), true);
 			} else if (RenderStatus.UPDATE.equals(status)) {
 				if (paintable == this.mapModel) {
 					// Paint the world space paintable objects:
@@ -672,8 +674,8 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	// -------------------------------------------------------------------------
 
 	/**
-	 * Apply a new {@link GraphicsController} on the map. This controller will handle all mouse-events that are
-	 * global for the map. Only one controller can be set at any given time.
+	 * Apply a new {@link GraphicsController} on the map. This controller will handle all mouse-events that are global
+	 * for the map. Only one controller can be set at any given time.
 	 * 
 	 * @param controller
 	 *            The new {@link GraphicsController} object.
@@ -686,7 +688,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 
 	/**
 	 * Get the currently active {@link GraphicsController}.
-	 *
+	 * 
 	 * @return currently active {@link GraphicsController}.
 	 * @since 1.8.0
 	 */
@@ -851,7 +853,7 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 
 	/** If the map view changes, redraw the map model and the scale bar. */
 	public void onMapViewChanged(MapViewChangedEvent event) {
-		if (isDrawn()) {
+		if (graphics.isReady()) {
 			if (scaleBarEnabled) {
 				ScaleBar scalebar = (ScaleBar) addons.get("scalebar");
 				if (scalebar != null) {
@@ -907,6 +909,9 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 
 	protected void initializationCallback(GetMapConfigurationResponse r) {
 		if (r.getMapInfo() != null && !mapModel.isInitialized()) {
+			// must be called before anything else !
+			addChild(graphics);
+			render(mapModel, null, RenderStatus.ALL);
 			ClientMapInfo info = r.getMapInfo();
 			unitLength = info.getUnitLength();
 			pixelLength = info.getPixelLength();
@@ -951,38 +956,29 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	/**
 	 * Handles map view and scalebar on resize
 	 */
-	private class MapResizedHandler implements ResizedHandler {
+	private class RenderMapOnResizeHandler implements GraphicsReadyHandler {
 
-		private MapWidget map;
-
-		public MapResizedHandler(MapWidget map) {
-			this.map = map;
-		}
-
-		public void onResized(ResizedEvent event) {
-			if (!map.isResizedHandlerDisabled()) {
-				try {
-					final int width = map.getWidth();
-					final int height = map.getHeight();
-					if (SC.isIE()) {
-						// Vector layers in IE loose their style (because the removeChild, addChild)
-						for (Layer<?> layer : mapModel.getLayers()) {
-							if (layer instanceof VectorLayer) {
-								render(layer, RenderGroup.VECTOR, RenderStatus.DELETE);
-							}
+		public void onReady(GraphicsReadyEvent event) {
+			try {
+				final int width = getWidth();
+				final int height = getHeight();
+				render(mapModel, null, RenderStatus.ALL);
+				if (SC.isIE()) {
+					// Vector layers in IE loose their style (because the removeChild, addChild)
+					for (Layer<?> layer : mapModel.getLayers()) {
+						if (layer instanceof VectorLayer) {
+							render(layer, RenderGroup.VECTOR, RenderStatus.DELETE);
 						}
 					}
-
-					mapModel.getMapView().setSize(width, height);
-
-					for (String addonId : addons.keySet()) {
-						MapAddon addon = addons.get(addonId);
-						addon.setMapSize(width, height);
-						render(addon, RenderGroup.SCREEN, RenderStatus.UPDATE);
-					}
-				} catch (Exception e) {
-					GWT.log("OnResized exception", e);
 				}
+				mapModel.getMapView().setSize(width, height);
+				for (String addonId : addons.keySet()) {
+					MapAddon addon = addons.get(addonId);
+					addon.setMapSize(width, height);
+					render(addon, RenderGroup.SCREEN, RenderStatus.UPDATE);
+				}
+			} catch (Exception e) {
+				GWT.log("OnResized exception", e);
 			}
 		}
 	}
@@ -1005,8 +1001,8 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 					mapModel.getMapView().scale(
 							2.0f,
 							MapView.ZoomOption.LEVEL_CHANGE,
-							mapModel.getMapView().getWorldViewTransformer()
-									.viewToWorld(new Coordinate(event.getX(), event.getY())));
+							mapModel.getMapView().getWorldViewTransformer().viewToWorld(
+									new Coordinate(event.getX(), event.getY())));
 				} else {
 					mapModel.getMapView().scale(2.0f, MapView.ZoomOption.LEVEL_CHANGE);
 				}
@@ -1015,8 +1011,8 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 					mapModel.getMapView().scale(
 							0.5f,
 							MapView.ZoomOption.LEVEL_CHANGE,
-							mapModel.getMapView().getWorldViewTransformer()
-									.viewToWorld(new Coordinate(event.getX(), event.getY())));
+							mapModel.getMapView().getWorldViewTransformer().viewToWorld(
+									new Coordinate(event.getX(), event.getY())));
 				} else {
 					mapModel.getMapView().scale(0.5f, MapView.ZoomOption.LEVEL_CHANGE);
 				}

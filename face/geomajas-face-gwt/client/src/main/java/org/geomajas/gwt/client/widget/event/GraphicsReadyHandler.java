@@ -20,45 +20,22 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package org.geomajas.gwt.client.gfx;
+package org.geomajas.gwt.client.widget.event;
 
-import org.geomajas.global.Api;
-import org.geomajas.gwt.client.widget.event.HasGraphicsReadyHandlers;
+import com.google.gwt.event.shared.EventHandler;
 
 /**
- * Abstraction of the map for painting rasters and vectors.
+ * Interface for graphics ready events.
  * 
  * @author Jan De Moerloose
- * @since 1.6.0
  */
-@Api(allMethods = true)
-public interface MapContext extends HasGraphicsReadyHandlers {
+public interface GraphicsReadyHandler extends EventHandler {
 
 	/**
-	 * Get the context for rendering vector data.
+	 * Called when graphics is ready to draw.
 	 * 
-	 * @return a graphics context
+	 * @param event
+	 *            The search event
 	 */
-	GraphicsContext getVectorContext();
-
-	/**
-	 * Get the context for rendering raster images.
-	 * 
-	 * @return an image context
-	 */
-	ImageContext getRasterContext();
-
-	/**
-	 * Get the right mouse menu context.
-	 * 
-	 * @return a menu context
-	 */
-	MenuContext getMenuContext();
-
-	/**
-	 * Is this context ready for drawing ? A context must be attached to the document's body to allow drawing.
-	 * 
-	 * @return true if ready for drawing
-	 */
-	boolean isReady();
+	void onReady(GraphicsReadyEvent event);
 }

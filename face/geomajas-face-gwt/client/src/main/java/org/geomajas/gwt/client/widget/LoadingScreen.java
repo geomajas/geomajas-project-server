@@ -78,6 +78,8 @@ public class LoadingScreen extends VLayout {
 
 	private int progressPercentage;
 
+	private boolean fadingDone;
+
 	// -------------------------------------------------------------------------
 	// Constructor:
 	// -------------------------------------------------------------------------
@@ -92,6 +94,17 @@ public class LoadingScreen extends VLayout {
 	 */
 	public LoadingScreen(MapWidget mapWidget, String applicationTitle) {
 		super();
+		// make sure we always fade out after 20s !
+		final MapWidget m = mapWidget;
+		Timer t = new Timer() {
+
+			@Override
+			public void run() {
+				fadeOut(m);
+			}
+
+		};
+		t.schedule(20000);
 		registerMap(mapWidget);
 		setCursor(Cursor.WAIT);
 
@@ -214,30 +227,17 @@ public class LoadingScreen extends VLayout {
 				public void onMapModelChange(MapModelEvent event) {
 					onLoadRegistration.removeHandler();
 					label.setContents(I18nProvider.getGlobal().loadScreenLoadText());
-					onDispatchStoppenRegistration = GwtCommandDispatcher.getInstance().addDispatchStoppedHandler(
-							new DispatchStoppedHandler() {
+					if (GwtCommandDispatcher.getInstance().isBusy()) {
+						onDispatchStoppenRegistration = GwtCommandDispatcher.getInstance().addDispatchStoppedHandler(
+								new DispatchStoppedHandler() {
 
-								public void onDispatchStopped(DispatchStoppedEvent event) {
-									// progressBar.setPercentDone(100);
-									label.setContents(I18nProvider.getGlobal().loadScreenReadyText());
-									onDispatchStoppenRegistration.removeHandler();
-									setCursor(Cursor.DEFAULT);
-
-									setAnimateTime(1000);
-
-									if (!DOM.isIE()) {
-										// TODO Why should IE have a different approach??
-										mapWidget.setResizedHandlerDisabled(true);
+									public void onDispatchStopped(DispatchStoppedEvent event) {
+										fadeOut(mapWidget);
 									}
-									animateFade(0, new AnimationCallback() {
-
-										public void execute(boolean earlyFinish) {
-											mapWidget.setResizedHandlerDisabled(false);
-											LoadingScreen.this.destroy();
-										}
-									});
-								}
-							});
+								});
+					} else {
+						fadeOut(mapWidget);
+					}
 				}
 			});
 		}
@@ -256,5 +256,31 @@ public class LoadingScreen extends VLayout {
 			}
 		};
 		timer.schedule(50);
+	}
+
+	private void fadeOut(final MapWidget mapWidget) {
+		if (!fadingDone) {
+			// progressBar.setPercentDone(100);
+			label.setContents(I18nProvider.getGlobal().loadScreenReadyText());
+			if (onDispatchStoppenRegistration != null) {
+				onDispatchStoppenRegistration.removeHandler();
+			}
+			setCursor(Cursor.DEFAULT);
+
+			setAnimateTime(1000);
+
+			if (!DOM.isIE()) {
+				// TODO Why should IE have a different approach??
+				mapWidget.setResizedHandlerDisabled(true);
+			}
+			animateFade(0, new AnimationCallback() {
+
+				public void execute(boolean earlyFinish) {
+					mapWidget.setResizedHandlerDisabled(false);
+					LoadingScreen.this.destroy();
+				}
+			});
+			fadingDone = true;
+		}
 	}
 }

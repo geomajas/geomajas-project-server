@@ -281,8 +281,8 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 			mapView.setMaxBounds(maxBounds);
 			mapView.applyBounds(initialBounds, MapView.ZoomOption.LEVEL_CLOSEST);
 		}
-		handlerManager.fireEvent(new MapModelEvent());
 		initialized = true;
+		handlerManager.fireEvent(new MapModelEvent());
 	}
 
 	/**

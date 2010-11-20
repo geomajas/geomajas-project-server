@@ -1,4 +1,3 @@
-// geomajas-face-gwt module API, 1.7.1
 org.geomajas.gwt.client.Geomajas::1.6.0
 org.geomajas.gwt.client.Geomajas:static Map<String,String> getSupportedLocales():1.6.0
 org.geomajas.gwt.client.Geomajas:static String getIsomorphicDir():1.6.0
@@ -121,8 +120,11 @@ org.geomajas.gwt.client.command.event.DispatchStoppedEvent::1.6.0
 org.geomajas.gwt.client.command.event.DispatchStoppedEvent:final Type<DispatchStoppedHandler> getAssociatedType():1.6.0
 org.geomajas.gwt.client.command.event.DispatchStoppedEvent:static Type<DispatchStoppedHandler> getType():1.6.0
 org.geomajas.gwt.client.command.event.DispatchStoppedHandler::1.6.0
+org.geomajas.gwt.client.command.event.DispatchStoppedHandler:void onDispatchStopped(DispatchStoppedEvent, ):1.8.0
 org.geomajas.gwt.client.command.event.HasDispatchHandlers::1.6.0
 org.geomajas.gwt.client.controller.AbstractGraphicsController::1.6.0
+org.geomajas.gwt.client.controller.AbstractGraphicsController:int getOffsetX():1.8.0
+org.geomajas.gwt.client.controller.AbstractGraphicsController:int getOffsetY():1.8.0
 org.geomajas.gwt.client.controller.AbstractGraphicsController:void onActivate():1.6.0
 org.geomajas.gwt.client.controller.AbstractGraphicsController:void onDeactivate():1.6.0
 org.geomajas.gwt.client.controller.AbstractGraphicsController:void onDoubleClick(DoubleClickEvent, ):1.6.0
@@ -132,9 +134,15 @@ org.geomajas.gwt.client.controller.AbstractGraphicsController:void onMouseOut(Mo
 org.geomajas.gwt.client.controller.AbstractGraphicsController:void onMouseOver(MouseOverEvent, ):1.6.0
 org.geomajas.gwt.client.controller.AbstractGraphicsController:void onMouseUp(MouseUpEvent, ):1.6.0
 org.geomajas.gwt.client.controller.AbstractGraphicsController:void onMouseWheel(MouseWheelEvent, ):1.6.0
+org.geomajas.gwt.client.controller.AbstractGraphicsController:void setOffsetX(int, ):1.8.0
+org.geomajas.gwt.client.controller.AbstractGraphicsController:void setOffsetY(int, ):1.8.0
 org.geomajas.gwt.client.controller.GraphicsController::1.6.0
+org.geomajas.gwt.client.controller.GraphicsController:int getOffsetX():1.8.0
+org.geomajas.gwt.client.controller.GraphicsController:int getOffsetY():1.8.0
 org.geomajas.gwt.client.controller.GraphicsController:void onActivate():1.6.0
 org.geomajas.gwt.client.controller.GraphicsController:void onDeactivate():1.6.0
+org.geomajas.gwt.client.controller.GraphicsController:void setOffsetX(int, ):1.8.0
+org.geomajas.gwt.client.controller.GraphicsController:void setOffsetY(int, ):1.8.0
 org.geomajas.gwt.client.gfx.GraphicsContext::1.6.0
 org.geomajas.gwt.client.gfx.GraphicsContext:Object getGroupById(String, ):1.6.0
 org.geomajas.gwt.client.gfx.GraphicsContext:String getId():1.6.0
@@ -158,6 +166,7 @@ org.geomajas.gwt.client.gfx.GraphicsContext:void drawSymbol(Object, String, Coor
 org.geomajas.gwt.client.gfx.GraphicsContext:void drawSymbolDefinition(Object, String, SymbolInfo, ShapeStyle, Matrix, ):1.6.0
 org.geomajas.gwt.client.gfx.GraphicsContext:void drawText(Object, String, String, Coordinate, FontStyle, ):1.6.0
 org.geomajas.gwt.client.gfx.GraphicsContext:void hide(Object, ):1.6.0
+org.geomajas.gwt.client.gfx.GraphicsContext:void moveElement(String, Object, Object, ):1.8.0
 org.geomajas.gwt.client.gfx.GraphicsContext:void setController(Object, GraphicsController, ):1.6.0
 org.geomajas.gwt.client.gfx.GraphicsContext:void setController(Object, GraphicsController, int, ):1.6.0
 org.geomajas.gwt.client.gfx.GraphicsContext:void setController(Object, String, GraphicsController, ):1.6.0
@@ -179,6 +188,7 @@ org.geomajas.gwt.client.gfx.ImageContext:void drawGroup(Object, Object, Matrix, 
 org.geomajas.gwt.client.gfx.ImageContext:void drawGroup(Object, Object, Style, ):1.6.0
 org.geomajas.gwt.client.gfx.ImageContext:void drawImage(Object, String, String, Bbox, PictureStyle, ):1.6.0
 org.geomajas.gwt.client.gfx.ImageContext:void hide(Object, ):1.6.0
+org.geomajas.gwt.client.gfx.ImageContext:void moveElement(String, Object, Object, ):1.8.0
 org.geomajas.gwt.client.gfx.ImageContext:void setController(Object, GraphicsController, ):1.6.0
 org.geomajas.gwt.client.gfx.ImageContext:void setController(Object, GraphicsController, int, ):1.6.0
 org.geomajas.gwt.client.gfx.ImageContext:void setController(Object, String, GraphicsController, ):1.6.0
@@ -190,11 +200,14 @@ org.geomajas.gwt.client.gfx.MapContext::1.6.0
 org.geomajas.gwt.client.gfx.MapContext:GraphicsContext getVectorContext():1.6.0
 org.geomajas.gwt.client.gfx.MapContext:ImageContext getRasterContext():1.6.0
 org.geomajas.gwt.client.gfx.MapContext:MenuContext getMenuContext():1.6.0
+org.geomajas.gwt.client.gfx.MapContext:boolean isReady():1.6.0
 org.geomajas.gwt.client.gfx.MenuContext::1.6.0
 org.geomajas.gwt.client.gfx.MenuContext:Coordinate getRightButtonCoordinate():1.6.0
 org.geomajas.gwt.client.gfx.Paintable::1.6.0
 org.geomajas.gwt.client.gfx.Painter::1.6.0
 org.geomajas.gwt.client.gfx.WorldPaintable::1.6.0
+org.geomajas.gwt.client.gfx.paintable.mapaddon.MapAddon::1.8.0
+org.geomajas.gwt.client.gfx.paintable.mapaddon.MapAddon:MapAddon(String, int, int, ):1.8.0
 org.geomajas.gwt.client.map.IndexRange::1.6.0
 org.geomajas.gwt.client.map.LayerSelectionPropagator::1.6.0
 org.geomajas.gwt.client.map.MapModel::1.6.0
@@ -208,6 +221,13 @@ org.geomajas.gwt.client.map.MapModel:final HandlerRegistration addFeatureSelecti
 org.geomajas.gwt.client.map.MapModel:final HandlerRegistration addMapModelHandler(MapModelHandler, ):1.6.0
 org.geomajas.gwt.client.map.MapModel:void removeMapModelHandler(MapModelHandler, ):1.6.0
 org.geomajas.gwt.client.map.MapView::1.6.0
+org.geomajas.gwt.client.map.event.EditingEvent::1.8.0
+org.geomajas.gwt.client.map.event.EditingEvent:EditingEvent(EditingEventType, ):1.8.0
+org.geomajas.gwt.client.map.event.EditingEvent:EditingEventType getEditingEventType():1.8.0
+org.geomajas.gwt.client.map.event.EditingEvent:Type<EditingHandler> getAssociatedType():1.8.0
+org.geomajas.gwt.client.map.event.EditingHandler:. TYPE:1.8.0
+org.geomajas.gwt.client.map.event.EditingHandler::1.8.0
+org.geomajas.gwt.client.map.event.EditingHandler:void onEditingChange(EditingEvent, ):1.8.0
 org.geomajas.gwt.client.map.event.FeatureDeselectedEvent::1.6.0
 org.geomajas.gwt.client.map.event.FeatureDeselectedEvent:Feature getFeature():1.6.0
 org.geomajas.gwt.client.map.event.FeatureDeselectedEvent:FeatureDeselectedEvent(Feature, ):1.6.0
@@ -254,6 +274,10 @@ org.geomajas.gwt.client.map.event.LayerSelectionHandler:Type<LayerSelectionHandl
 org.geomajas.gwt.client.map.event.LayerSelectionHandler:void onDeselectLayer(LayerDeselectedEvent, ):1.6.0
 org.geomajas.gwt.client.map.event.LayerSelectionHandler:void onSelectLayer(LayerSelectedEvent, ):1.6.0
 org.geomajas.gwt.client.map.event.LayerShownEvent::1.6.0
+org.geomajas.gwt.client.map.event.LayerStyleChangeEvent::1.8.0
+org.geomajas.gwt.client.map.event.LayerStyleChangeEvent:Layer<?> getLayer():1.8.0
+org.geomajas.gwt.client.map.event.LayerStyleChangeEvent:LayerStyleChangeEvent(Layer<?>, ):1.8.0
+org.geomajas.gwt.client.map.event.LayerStyleChangeEvent:Type<LayerStyleChangedHandler> getAssociatedType():1.8.0
 org.geomajas.gwt.client.map.event.MapModelEvent::1.6.0
 org.geomajas.gwt.client.map.event.MapModelEvent:Type<MapModelHandler> getAssociatedType():1.6.0
 org.geomajas.gwt.client.map.event.MapModelEvent:static final Type<MapModelHandler> TYPE:1.6.0
@@ -291,9 +315,9 @@ org.geomajas.gwt.client.widget.LayerTreeTreeNode::1.6.0
 org.geomajas.gwt.client.widget.LocaleSelect::1.6.0
 org.geomajas.gwt.client.widget.LocaleSelect:LocaleSelect(String, ):1.6.0
 org.geomajas.gwt.client.widget.LocaleSelect:void onChanged(ChangedEvent, ):1.6.0
-org.geomajas.gwt.client.widget.MapResizedHandler::1.6.0
 org.geomajas.gwt.client.widget.MapWidget::1.6.0
 org.geomajas.gwt.client.widget.MapWidget:GraphicsContext getVectorContext():1.6.0
+org.geomajas.gwt.client.widget.MapWidget:GraphicsController getController():1.8.0
 org.geomajas.gwt.client.widget.MapWidget:ImageContext getRasterContext():1.6.0
 org.geomajas.gwt.client.widget.MapWidget:MapModel getMapModel():1.6.0
 org.geomajas.gwt.client.widget.MapWidget:MapWidget(String, String, ):1.6.0
@@ -309,8 +333,16 @@ org.geomajas.gwt.client.widget.MapWidget:void setMouseWheelController(MouseWheel
 org.geomajas.gwt.client.widget.MapWidget:void unregisterPainter(Painter, ):1.6.0
 org.geomajas.gwt.client.widget.MapWidget:void unregisterWorldPaintable(WorldPaintable, ):1.6.0
 org.geomajas.gwt.client.widget.MapWidgetFeatureSelectionHandler::1.6.0
+org.geomajas.gwt.client.widget.MaxExtentHandler::1.6.0
 org.geomajas.gwt.client.widget.OverviewMap::1.6.0
+org.geomajas.gwt.client.widget.OverviewMap:OverviewMap(String, String, MapWidget, boolean, boolean, ):1.8.0
+org.geomajas.gwt.client.widget.OverviewMap:OverviewMap(String, String, MapWidget, boolean, boolean, int, ):1.8.0
+org.geomajas.gwt.client.widget.OverviewMap:void setDrawTargetMaxExtent(boolean, ):1.8.0
+org.geomajas.gwt.client.widget.OverviewMap:void setMaxExtentIncreasePercentage(int, ):1.8.0
+org.geomajas.gwt.client.widget.OverviewMap:void setRectangleStyle(ShapeStyle, ):1.8.0
+org.geomajas.gwt.client.widget.OverviewMap:void setTargetMaxExtentRectangleStyle(ShapeStyle, ):1.8.0
 org.geomajas.gwt.client.widget.RefreshableTree::1.6.0
+org.geomajas.gwt.client.widget.RenderMapOnResizeHandler::1.6.0
 org.geomajas.gwt.client.widget.ResetButton::1.6.0
 org.geomajas.gwt.client.widget.SaveButton::1.6.0
 org.geomajas.gwt.client.widget.ScaleSelect::1.6.0
@@ -324,4 +356,3 @@ org.geomajas.gwt.server.GeomajasServiceImpl::1.6.0
 org.geomajas.gwt.server.GeomajasServiceImpl:CommandResponse execute(GwtCommand, ):1.6.0
 org.geomajas.gwt.server.GeomajasServiceImpl:void init(ServletConfig, ):1.6.0
 org.geomajas.gwt.server.GeomajasServiceImpl:void onApplicationEvent(ContextRefreshedEvent, ):1.6.0
-

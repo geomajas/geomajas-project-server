@@ -290,7 +290,7 @@ public class MapView {
 
 		// Use the same center point for the new bounds, but don't zoom in or out.
 		doSetOrigin(oldbbox.getCenterPoint());
-		fireEvent(false, null);
+		fireEvent(true, null);
 	}
 
 	/**
