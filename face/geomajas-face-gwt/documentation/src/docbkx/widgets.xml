@@ -180,19 +180,13 @@
 
     <para>What can be tricky is to properly configure the bounds of the
     overview map. In the image above, this is slightly bigger than the world
-    (which in this case is probably not what you want). The bounds for the map
-    checks the following locations, using the first which was
-    configured:</para>
+    (which in this case is probably not what you want). The bounds for the
+    overview map normally uses the initial bounds as defined on the map.
+    However, when you set the useTargetMapMaxExtent parameter to true when
+    creating the overview map, following locations are checked, using the
+    first which was configured:</para>
 
     <orderedlist>
-      <listitem>
-        <para>overviewMap.initialBounds</para>
-      </listitem>
-
-      <listitem>
-        <para>overviewMap.maxBounds</para>
-      </listitem>
-
       <listitem>
         <para>targetMap.maxBounds</para>
       </listitem>
@@ -201,9 +195,6 @@
         <para>union of layer extents</para>
       </listitem>
     </orderedlist>
-
-    <para>When creating the overview map, you can set a useTargetMapMaxExtent
-    parameter which assures the list starts at step 3.</para>
 
     <para>The bounds are automatically extended by a percentage. The default
     is 5%, but this can be configured when creating the overview map.</para>

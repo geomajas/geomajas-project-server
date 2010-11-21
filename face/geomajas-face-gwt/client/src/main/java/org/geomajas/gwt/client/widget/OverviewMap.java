@@ -184,7 +184,7 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 	/**
 	 * Should the overview map zoom in/out according to targetMap?
 	 * 
-	 * @param dynamicOverview
+	 * @param dynamicOverview true when overview map needs to zoom in/out with target map
 	 */
 	public void setDynamicOverview(boolean dynamicOverview) {
 		this.dynamicOverview = dynamicOverview;
@@ -423,29 +423,26 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 	}
 
 	/**
-	 * The maximum bounds depend on whether useTargetMaxExtent was set. It it was set, then the maxExtent from the
-	 * target map is used. Otherwise it uses either (first value which is assigned) overviewMap.initialBounds or
-	 * overviewMap.maxBounds or targetMap.maxBounds or uniion of layer bounds/extent.
+	 * The maximum bounds depend on whether useTargetMaxExtent was set. If not set, the initialBounds from the
+	 * overviewMap are used. It it was set, then the maxExtent from the
+	 * target map is used (targetMap.maxBounds) or the union of layer bounds/extent (all layers, also invisible ones).
 	 * 
 	 * @return maxBounds for overview map
 	 */
 	private Bbox getOverviewMaxBounds() {
 		Bbox targetMaxBounds;
 		org.geomajas.geometry.Bbox tmb;
-		tmb = getMapModel().getMapInfo().getInitialBounds();
-		if (null == tmb) {
-			// no initial bounds on overview map, use maxBounds
-			tmb = getMapModel().getMapInfo().getMaxBounds();
-		}
-		if (useTargetMaxExtent || org.geomajas.geometry.Bbox.ALL.equals(tmb)) {
+		if (!useTargetMaxExtent) {
+			targetMaxBounds = new Bbox(getMapModel().getMapInfo().getInitialBounds());
+		} else {
 			// maxBounds was not configured, or need to use maxExtent from target
 			tmb = targetMap.getMapModel().getMapInfo().getMaxBounds();
-		}
-		if (org.geomajas.geometry.Bbox.ALL.equals(tmb)) {
-			// no maxBounds on target map, use union of all (visible) layers
-			targetMaxBounds = targetMap.getMapModel().getMapView().getMaxBounds();
-		} else {
-			targetMaxBounds = new Bbox(tmb);
+			if (org.geomajas.geometry.Bbox.ALL.equals(tmb)) {
+				// no maxBounds on target map, use union of all (visible) layers
+				targetMaxBounds = targetMap.getMapModel().getMapView().getMaxBounds();
+			} else {
+				targetMaxBounds = new Bbox(tmb);
+			}
 		}
 		return targetMaxBounds;
 	}
