@@ -7,12 +7,12 @@
         <param-name>contextConfigLocation</param-name>
         <param-value>
             <!-- Server side raster layers -->
-			classpath*:org/geomajas/example/gwt/servercfg/**/*.xml
+			classpath:org/geomajas/example/gwt/servercfg/**/*.xml
 
             <!-- Map Configurations -->
-			classpath*:org/geomajas/example/gwt/clientcfg/**/*.xml
+			classpath:org/geomajas/example/gwt/clientcfg/**/*.xml
 
-			classpath*:org/geomajas/plugin/caching/DefaultCachedPipelines.xml
+			classpath:org/geomajas/plugin/caching/DefaultCachedPipelines.xml
 			<!--
 			classpath:org/geomajas/plugin/rasterizing/DefaultCachedAndRasterizedPipelines.xml
 			-->
