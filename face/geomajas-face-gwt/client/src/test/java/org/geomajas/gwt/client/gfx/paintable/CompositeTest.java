@@ -1,12 +1,19 @@
 package org.geomajas.gwt.client.gfx.paintable;
 
+import org.geomajas.gwt.client.gfx.GraphicsContext;
+import org.geomajas.gwt.client.gfx.ImageContext;
 import org.geomajas.gwt.client.gfx.MapContext;
+import org.geomajas.gwt.client.gfx.MenuContext;
 import org.geomajas.gwt.client.gfx.Paintable;
 import org.geomajas.gwt.client.gfx.Painter;
 import org.geomajas.gwt.client.gfx.PainterVisitor;
 import org.geomajas.gwt.client.spatial.Bbox;
+import org.geomajas.gwt.client.widget.event.GraphicsReadyHandler;
 import org.junit.Assert;
 import org.junit.Test;
+
+import com.google.gwt.event.shared.GwtEvent;
+import com.google.gwt.event.shared.HandlerRegistration;
 
 public class CompositeTest {
 
@@ -18,7 +25,30 @@ public class CompositeTest {
 		MockPaintable r = new MockPaintable();
 		c.addChild(r);
 
-		PainterVisitor pv = new PainterVisitor(null);
+		PainterVisitor pv = new PainterVisitor(new MapContext(){
+
+			public MenuContext getMenuContext() {
+				return null;
+			}
+
+			public ImageContext getRasterContext() {
+				return null;
+			}
+
+			public GraphicsContext getVectorContext() {
+				return null;
+			}
+
+			public boolean isReady() {
+				return true;
+			}
+
+			public HandlerRegistration addGraphicsReadyHandler(GraphicsReadyHandler handler) {
+				return null;
+			}
+
+			public void fireEvent(GwtEvent<?> event) {
+			}});
 		pv.registerPainter(new MockPainter());
 		c.accept(pv, null, null, false);
 		Assert.assertTrue("should have accepted visitor", r.visitorAccepted);
