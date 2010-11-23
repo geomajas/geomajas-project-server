@@ -479,8 +479,80 @@
         <para>Each style object is itself composed of a number of feature
         styles (<code>FeatureStyleinfo</code>) and a label style
         (<code>LabelStyleInfo</code>). You can define formulas to determine
-        which feature style should be used. The first style whose formula
-        passes will be applied for the feature.</para>
+        which feature style should be used. Formulas are defined as CQL
+        strings that are parsed to <ulink
+        url="http://geoapi.sourceforge.net/2.0/javadoc/org/opengis/filter/package-summary.html">OpenGIS
+        Filter Objects</ulink> The first style whose formula passes will be
+        applied for the feature. Note that when applying filters to a style an
+        'other filter' should be defined to prevent null pointer exceptions
+        for features that are not captured by the filter. The following table
+        describes a subset of the CQL filter types:</para>
+
+        <para><table>
+            <title>OGC CQL Filter Types</title>
+
+            <tgroup cols="3">
+              <colspec align="left" colwidth="0.6*" />
+
+              <colspec align="left" colwidth="0.6*" />
+
+              <colspec align="left" colwidth="3*" />
+
+              <thead>
+                <row>
+                  <entry>Type</entry>
+
+                  <entry align="left">Operators</entry>
+
+                  <entry align="left">Example</entry>
+                </row>
+              </thead>
+
+              <tbody>
+                <row>
+                  <entry>Comparison</entry>
+
+                  <entry>=, &lt;, &gt;</entry>
+
+                  <entry>(ATTRIBUTE = 'GEORGE') (ATTRIBUTE &gt; 10 AND
+                  ATTRIBUTE &lt; 20)</entry>
+                </row>
+
+                <row>
+                  <entry>Text</entry>
+
+                  <entry>LIKE, NOT LIKE</entry>
+
+                  <entry>(ATTRIBUTE LIKE 'SAMUEL') (ATTRIBUTE NOT LIKE
+                  'TOM%')</entry>
+                </row>
+
+                <row>
+                  <entry>Null</entry>
+
+                  <entry>IS NULL, IS NOT NULL</entry>
+
+                  <entry>(ATTRIBUTE IS NULL) (ATTRIBUTE IS NOT NULL)</entry>
+                </row>
+
+                <row>
+                  <entry>Exists</entry>
+
+                  <entry>EXISTS, DOES-NOT-EXIST</entry>
+
+                  <entry>(ATTRIBUTE EXISTS) (ATTRIBUTE DOES-NOT-EXIST)</entry>
+                </row>
+
+                <row>
+                  <entry>Between</entry>
+
+                  <entry>BETWEEN</entry>
+
+                  <entry>(ATTRIBUTE BETWEEN 10 AND 20)</entry>
+                </row>
+              </tbody>
+            </tgroup>
+          </table>An example definition of this object is below:</para>
 
         <xi:include href="listing/ShapeInMemAirportStyleInfo.xml"
                     xmlns:xi="http://www.w3.org/2001/XInclude" />
