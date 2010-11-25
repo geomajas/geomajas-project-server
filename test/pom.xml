@@ -57,6 +57,7 @@
 	<modules>
 		<module>geomajas-test-integration</module>
 		<module>geomajas-test-apicheck</module>
+		<module>geomajas-test-plainhtml</module>
 	</modules>
 
 </project>
