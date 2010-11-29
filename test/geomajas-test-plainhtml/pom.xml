@@ -335,13 +335,6 @@
 			<url>http://maven.geomajas.org/</url>
 		</repository>
 
-		<repository>
-			<id>gwtupload</id>
-			<name>gwtupload</name>
-			<url>http://code.google.com/p/gwtupload/source/browse/mavenrepo/</url>
-		</repository>
-
-
 		<!--
 			uncomment if you want to use Geomajas snapshots, comment for faster
 			builds
