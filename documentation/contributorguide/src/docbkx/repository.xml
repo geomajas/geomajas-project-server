@@ -102,6 +102,10 @@
     <listitem>
        <para>hibernate-spatial: http://www.hibernatespatial.org/repository</para> 
     </listitem>
+ 
+    <listitem>
+       <para>alfresco: http://maven.alfresco.com/nexus/content/repositories/public/</para> 
+    </listitem>
 
   </itemizedlist>
 </appendix>
