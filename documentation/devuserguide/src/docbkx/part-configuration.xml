@@ -67,8 +67,7 @@
       <example>
         <title>Dispatcher servlet declaration in web.xml</title>
 
-        <para>
-          <programlisting>&lt;servlet&gt;
+        <para><programlisting>&lt;servlet&gt;
     &lt;servlet-name&gt;dispatcher&lt;/servlet-name&gt;
     &lt;servlet-class&gt;org.springframework.web.servlet.DispatcherServlet&lt;/servlet-class&gt;
     &lt;init-param&gt;
@@ -82,35 +81,88 @@
 &lt;servlet-mapping&gt;
     &lt;servlet-name&gt;dispatcher&lt;/servlet-name&gt;
     &lt;url-pattern&gt;/d/*&lt;/url-pattern&gt;
-&lt;/servlet-mapping&gt;</programlisting>
-        </para>
+&lt;/servlet-mapping&gt;</programlisting></para>
       </example>
 
       <para>Another option you have in setting up the web.xml file, is a
-      specially designed Filter that sets correct cache header controls and
-      takes care of compressing the response. This has been tuned toward GWT
-      file-naming. All files containing ".nocache." in their name will not be
-      cached, while all files containing ".cache." in their name will be
-      cached. Also all javascript, HTML and CSS files will be compressed
-      (using GZIP, if the client accepts it).</para>
+      specially designed filter that improves caching behaviour and compresses
+      some when sending them to the browser. The default configuration of this
+      filter is tuned to be used in combination with the GWT face. All files
+      containing ".nocache." in their name will not be cached, while all files
+      containing ".cache." in their name will be cached. It will cache all
+      graphics files, css, html and js files. The javascript, HTML and CSS
+      files will also be gzip compressed if the client supports it. The
+      caching will is not enable for requests to localhost, and all handling
+      is disabled for paths which are handled by the dispatcher
+      servlet.</para>
 
-      <para>To activate this filter (higly recommended!) add the following to
+      <para>To activate this filter (highly recommended!) add the following to
       the web.xml:</para>
 
       <example>
         <title>Cache filter declaration in web.xml</title>
 
-        <para>
-          <programlisting>&lt;filter&gt;
-    &lt;filter-name&gt;cachingFilter&lt;/filter-name&gt;
+        <para><programlisting>&lt;filter&gt;
+    &lt;filter-name&gt;CacheFilter&lt;/filter-name&gt;
     &lt;filter-class&gt;org.geomajas.servlet.CacheFilter&lt;/filter-class&gt;
 &lt;/filter&gt;
 
 &lt;filter-mapping&gt;
-    &lt;filter-name&gt;cachingFilter&lt;/filter-name&gt; 
+    &lt;filter-name&gt;CacheFilter&lt;/filter-name&gt; 
     &lt;url-pattern&gt;*&lt;/url-pattern&gt;  
-&lt;/filter-mapping&gt;</programlisting>
-        </para>
+&lt;/filter-mapping&gt;</programlisting></para>
+      </example>
+
+      <para>It is also possible to configure all aspects of this filter. The
+      full (default) configuration is like this:</para>
+
+      <example>
+        <title>Full cache filter declaration in web.xml</title>
+
+        <para><programlisting>&lt;filter&gt;
+    &lt;filter-name&gt;CacheFilter&lt;/filter-name&gt;
+    &lt;filter-class&gt;org.geomajas.servlet.CacheFilter&lt;/filter-class&gt;
+    &lt;init-param&gt;
+        &lt;description&gt;Time that cache stuff should be cached, defaults to 1 year.&lt;/description&gt;
+        &lt;param-name&gt;cacheDurationInSeconds&lt;/param-name&gt;
+        &lt;param-value&gt;31536000&lt;/param-value&gt;
+    &lt;/init-param&gt;
+    &lt;init-param&gt;
+        &lt;description&gt;All uris which start with one of these prefixes remain untouched.&lt;/description&gt;
+        &lt;param-name&gt;skipPrefixes&lt;/param-name&gt;
+        &lt;param-value&gt;/d/&lt;/param-value&gt;
+    &lt;/init-param&gt;
+    &lt;init-param&gt;
+        &lt;description&gt;When the uri contains one of these, the cache headers are added.&lt;/description&gt;
+        &lt;param-name&gt;cacheIdentifiers&lt;/param-name&gt;
+        &lt;param-value&gt;.cache.&lt;/param-value&gt;
+    &lt;/init-param&gt;
+    &lt;init-param&gt;
+        &lt;description&gt;When the uri ends in one of these, the cache headers are added.&lt;/description&gt;
+        &lt;param-name&gt;cacheSuffixes&lt;/param-name&gt;
+        &lt;param-value&gt;.js .png .jpg .jpeg .gif .css .html&lt;/param-value&gt;
+    &lt;/init-param&gt;
+    &lt;init-param&gt;
+        &lt;description&gt;When the uri contains one of these, the cache headers are removed.&lt;/description&gt;
+        &lt;param-name&gt;noCacheIdentifiers&lt;/param-name&gt;
+        &lt;param-value&gt;.nocache.&lt;/param-value&gt;
+    &lt;/init-param&gt;
+    &lt;init-param&gt;
+        &lt;description&gt;When the uri end in one of these, the cache headers are removed.&lt;/description&gt;
+        &lt;param-name&gt;noCacheSuffixes&lt;/param-name&gt;
+        &lt;param-value&gt;&lt;/param-value&gt;
+    &lt;/init-param&gt;
+    &lt;init-param&gt;
+        &lt;description&gt;When the uri ends in one of these, the response is gzip compressed.&lt;/description&gt;
+        &lt;param-name&gt;zipSuffixes&lt;/param-name&gt;
+        &lt;param-value&gt;.js .css .html&lt;/param-value&gt;
+    &lt;/init-param&gt;
+&lt;/filter&gt;
+
+&lt;filter-mapping&gt;
+    &lt;filter-name&gt;CacheFilter&lt;/filter-name&gt; 
+    &lt;url-pattern&gt;*&lt;/url-pattern&gt;  
+&lt;/filter-mapping&gt;</programlisting></para>
       </example>
     </section>
 
@@ -173,7 +225,7 @@
       <para>There needs to be at least one <code>ClientApplicationInfo</code>
       bean. The bean name is used when requesting the application info.</para>
 
-      <para />
+      <para></para>
     </section>
   </chapter>
 
@@ -330,8 +382,7 @@
         <para>The following table describes the properties of the
         <code>VectorLayerInfo</code> object:</para>
 
-        <para>
-          <table>
+        <para><table>
             <title>VectorLayer info</title>
 
             <tgroup cols="2">
@@ -389,8 +440,7 @@
                 </row>
               </tbody>
             </tgroup>
-          </table>
-        </para>
+          </table></para>
 
         <para>The feature metadata can be found in the
         <code>FeatureInfo</code> object. This objects contains the complete
@@ -682,8 +732,7 @@
 
         <para>Scales can be defined in 2 possible notations:</para>
 
-        <para>
-          <itemizedlist>
+        <para><itemizedlist>
             <listitem>
               <para>the 1 : x notation (see the above listing) is most
               commonly used in geographics and expresses the ratio between 1
@@ -696,8 +745,7 @@
               unit on the map (1 pixel per 10000 map units in our
               example)</para>
             </listitem>
-          </itemizedlist>
-        </para>
+          </itemizedlist></para>
 
         <para>Both scale definitions serve a different purpose. The 1 : x
         scale should give you an idea of what the true scale is at which the

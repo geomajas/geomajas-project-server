@@ -22,6 +22,18 @@
  */
 package org.geomajas.servlet;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.util.AntPathMatcher;
+import org.springframework.util.ClassUtils;
+import org.springframework.util.PathMatcher;
+import org.springframework.util.StringUtils;
+
+import javax.servlet.ServletConfig;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,52 +47,34 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.util.AntPathMatcher;
-import org.springframework.util.ClassUtils;
-import org.springframework.util.PathMatcher;
-import org.springframework.util.StringUtils;
-
 /**
  * Special resource servlet for efficiently resolving and rendering static resources from within a JAR file. The cache
  * header is set to a date in the far future to improve caching. For development, you can specify a "files-location"
  * servlet init parameter. Any resources are searched at that location first. When found, the cache header is not set.
  * This assures the jar does not need building for testing.
- * 
+ *
  * @author Jan De Moerloose
- * @deprecated use DispatcherServlet which use the ResourceController (but changes base URL, probably from js to
- *             data/resource). Not deleted to allow 1.6.0 configurations to work.
+ * @deprecated use DispatcherServlet which use the ResourceController (but changes base URL,
+ * probably from js to data/resource). Not deleted to allow 1.6.0 configurations to work.
  */
 @Deprecated
 public class ResourceServlet extends HttpServlet {
 
 	private static final String HTTP_CONTENT_LENGTH_HEADER = "Content-Length";
-
 	private static final String HTTP_LAST_MODIFIED_HEADER = "Last-Modified";
-
 	private static final String HTTP_EXPIRES_HEADER = "Expires";
-
 	private static final String HTTP_CACHE_CONTROL_HEADER = "Cache-Control";
-
 	private static final String INIT_PARAM_LOCATION = "files-location";
 
 	private final Logger log = LoggerFactory.getLogger(ResourceServlet.class);
-
 	private final String protectedPath = "/?WEB-INF/.*";
-
 	private final boolean gzipEnabled = true;
-
-	private final String[] allowedResourcePaths = new String[] { "/**/*.css", "/**/*.gif", "/**/*.ico", "/**/*.jpeg",
-			"/**/*.jpg", "/**/*.js", "/**/*.html", "/**/*.png", "META-INF/**/*.css", "META-INF/**/*.gif",
-			"META-INF/**/*.ico", "META-INF/**/*.jpeg", "META-INF/**/*.jpg", "META-INF/**/*.js", "META-INF/**/*.html",
-			"META-INF/**/*.png", };
+	private final String[] allowedResourcePaths = new String[]{
+			"/**/*.css", "/**/*.gif", "/**/*.ico", "/**/*.jpeg",
+			"/**/*.jpg", "/**/*.js", "/**/*.html", "/**/*.png",
+			"META-INF/**/*.css", "META-INF/**/*.gif", "META-INF/**/*.ico", "META-INF/**/*.jpeg",
+			"META-INF/**/*.jpg", "META-INF/**/*.js", "META-INF/**/*.html", "META-INF/**/*.png",
+	};
 
 	private File fileLocation;
 
@@ -124,10 +118,13 @@ public class ResourceServlet extends HttpServlet {
 		}
 	}
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException,
-			IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
 		String rawResourcePath = request.getPathInfo();
+
 		log.debug("Attempting to GET resource: {}", rawResourcePath);
+
 		URL[] resources = getRequestResourceUrls(request);
 
 		if (resources == null || resources.length == 0) {
@@ -137,7 +134,9 @@ public class ResourceServlet extends HttpServlet {
 		}
 
 		prepareResponse(response, resources, rawResourcePath);
+
 		OutputStream out = selectOutputStream(request, response);
+
 		try {
 			for (URL resource : resources) {
 				URLConnection resourceConn = resource.openConnection();
@@ -153,7 +152,7 @@ public class ResourceServlet extends HttpServlet {
 					try {
 						resourceConn.getOutputStream().close();
 					} catch (Throwable t) {
-						/* ignore, just trying to free resources */
+						/*ignore, just trying to free resources*/
 					}
 				}
 			}
@@ -212,12 +211,12 @@ public class ResourceServlet extends HttpServlet {
 			try {
 				resourceConn.getInputStream().close();
 			} catch (Throwable t) {
-				/* ignore, just trying to free resources */
+				/*ignore, just trying to free resources*/
 			}
 			try {
 				resourceConn.getOutputStream().close();
 			} catch (Throwable t) {
-				/* ignore, just trying to free resources */
+				/*ignore, just trying to free resources*/
 			}
 		}
 
@@ -255,12 +254,12 @@ public class ResourceServlet extends HttpServlet {
 			try {
 				resourceConn.getInputStream().close();
 			} catch (Throwable t) {
-				/* ignore, just trying to free resources */
+				/*ignore, just trying to free resources*/
 			}
 			try {
 				resourceConn.getOutputStream().close();
 			} catch (Throwable t) {
-				/* ignore, just trying to free resources */
+				/*ignore, just trying to free resources*/
 			}
 		}
 		return lastModified;
@@ -342,11 +341,9 @@ public class ResourceServlet extends HttpServlet {
 
 	/**
 	 * Set HTTP headers to allow caching for the given number of seconds.
-	 * 
-	 * @param response
-	 *            where to set the caching settings
-	 * @param seconds
-	 *            number of seconds into the future that the response should be cacheable for
+	 *
+	 * @param response where to set the caching settings
+	 * @param seconds number of seconds into the future that the response should be cacheable for
 	 */
 	private void configureCaching(HttpServletResponse response, int seconds) {
 		// HTTP 1.0 header

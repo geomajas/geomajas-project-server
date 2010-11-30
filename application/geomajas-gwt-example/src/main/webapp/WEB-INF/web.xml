@@ -61,12 +61,48 @@
 	</filter>
 
 	<filter>
-	    <filter-name>cachingFilter</filter-name>
+	    <filter-name>CacheFilter</filter-name>
 	    <filter-class>org.geomajas.servlet.CacheFilter</filter-class>
+		<!-- these are the default settings, mentioned as example -->
+		<init-param>
+			<param-name>cacheDurationInSeconds</param-name>
+			<param-value>31536000</param-value>
+			<description>Time that cache stuff should be cached, defaults to 1 year.</description>
+		</init-param>
+		<init-param>
+			<param-name>skipPrefixes</param-name>
+			<param-value>/d/</param-value>
+			<description>All uris which start with one of these prefixes remain untouched.</description>
+		</init-param>
+		<init-param>
+			<param-name>cacheIdentifiers</param-name>
+			<param-value>.cache.</param-value>
+			<description>When the uri contains one of these, the cache headers are added.</description>
+		</init-param>
+		<init-param>
+			<param-name>cacheSuffixes</param-name>
+			<param-value>.js .png .jpg .jpeg .gif .css .html</param-value>
+			<description>When the uri ends in one of these, the cache headers are added.</description>
+		</init-param>
+		<init-param>
+			<param-name>noCacheIdentifiers</param-name>
+			<param-value>.nocache.</param-value>
+			<description>When the uri contains one of these, the cache headers are removed.</description>
+		</init-param>
+		<init-param>
+			<param-name>noCacheSuffixes</param-name>
+			<param-value></param-value>
+			<description>When the uri end in one of these, the cache headers are removed.</description>
+		</init-param>
+		<init-param>
+			<param-name>zipSuffixes</param-name>
+			<param-value>.js .css .html</param-value>
+			<description>When the uri ends in one of these, the response is gzip compressed.</description>
+		</init-param>
 	</filter>
 
 	<filter-mapping>
-	    <filter-name>cachingFilter</filter-name> 
+	    <filter-name>CacheFilter</filter-name>
 	    <url-pattern>*</url-pattern>  
 	</filter-mapping>
 

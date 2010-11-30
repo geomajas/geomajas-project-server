@@ -41,12 +41,11 @@
             responses. This will greatly decrease loading times.</para>
 
             <para><programlisting>&lt;filter&gt;
-    &lt;filter-name&gt;cachingFilter&lt;/filter-name&gt;
+    &lt;filter-name&gt;CacheFilter&lt;/filter-name&gt;
     &lt;filter-class&gt;org.geomajas.servlet.CacheFilter&lt;/filter-class&gt;
 &lt;/filter&gt;
-
 &lt;filter-mapping&gt;
-    &lt;filter-name&gt;cachingFilter&lt;/filter-name&gt; 
+    &lt;filter-name&gt;CacheFilter&lt;/filter-name&gt; 
     &lt;url-pattern&gt;*&lt;/url-pattern&gt;  
 &lt;/filter-mapping&gt;</programlisting></para>
           </listitem>

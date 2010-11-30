@@ -22,11 +22,13 @@
  */
 package org.geomajas.servlet;
 
-import java.io.IOException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.ServletRequest;
@@ -34,40 +36,47 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpServletResponseWrapper;
-
-import org.springframework.util.AntPathMatcher;
-import org.springframework.util.PathMatcher;
+import java.io.IOException;
 
 /**
- * {@link Filter} that alters response in two ways: by adding cache control headers and by compressing the response.
- * This has been tuned toward GWT file-naming. Files that should not be cached are the following:
+ * {@link Filter} that alters response in two ways: adding cache control headers and compressing the response.
+ * Default settings are tuned for delivering GWT stuff in Geomajas context.
+ * <p/>
+ * When the request is for localhost or 127.0.0.1, then caching headers are not affected, only the gzip compression may
+ * be enabled.
+ * <p/>
+ * This can be controlled using the following context parameters (note that all uris start with a slash and are tested
+ * without uri parameters):
  * <ul>
- * <li>All files that contain ".nocache." in their name.</li>
+ * <li>cacheDurationInSeconds : time that cache stuff should be cached, defaults to 1 year.</li>
+ * <li>skipPrefixes : all uris which start with one of these prefixes remain untouched. Defaults to "/d/".</li>
+ * <li>cacheIdentifiers : when the uri contains one of these, the cache headers are added. Defaults to ".cache.".</li>
+ * <li>cacheSuffixes : when the uri ends in one of these, the cache headers are added. Defaults to
+ * ".js .png .jpg .jpeg .gif .css .html".</li>
+ * <li>noCacheIdentifiers : when the uri contains one of these, the cache headers are removed. Defaults to
+ * ".nocache.".</li>
+ * <li>noCacheSuffixes : when the uri end in one of these, the cache headers are removed. Defaults to "".</li>
+ * <li>zipSuffixes : when the uri ends in one of these, the response is gzip compressed. Defaults to
+ * ".js .css .html".</li>
  * </ul>
- * Files that should be cached included the following:
- * <ul>
- * <li>All files that contain ".cache." in their name.</li>
- * <li>All javascript files.</li>
- * <li>All CSS files.</li>
- * <li>All HTML files.</li>
- * <li>All image files.</li>
- * </ul>
- * Files that should be compressed include the following:
- * <ul>
- * <li>All files that contain ".nocache." in their name.</li>
- * <li>All files that contain ".cache." in their name.</li>
- * <li>All javascript files.</li>
- * <li>All CSS files.</li>
- * <li>All HTML files.</li>
- * </ul>
- * 
+ *
  * @author Pieter De Graef
+ * @author Joachim Van der Auwera
  */
 public class CacheFilter implements Filter {
 
-	private static final long CACHE_DURATION_IN_SECOND = 60 * 60 * 24 * 365; // One year
+	public static final String CACHE_DURATION_IN_SECONDS = "cacheDurationInSeconds";
+	public static final String CACHE_IDENTIFIERS = "cacheIdentifiers";
+	public static final String CACHE_SUFFIXES = "cacheSuffixes";
+	public static final String NO_CACHE_IDENTIFIERS = "noCacheIdentifiers";
+	public static final String NO_CACHE_SUFFIXES = "noCacheSuffixes";
+	public static final String ZIP_SUFFIXES = "zipSuffixes";
+	public static final String SKIP_PREFIXES = "skipPrefixes";
+	public static final String PARAMETER_SPLIT_REGEX = "[\\s,]+";
 
-	private static final long CACHE_DURATION_IN_MS = CACHE_DURATION_IN_SECOND * 1000;
+	private long cacheDurationInSeconds = 60 * 60 * 24 * 365; // One year
+
+	private long cacheDurationInMilliSeconds = cacheDurationInSeconds * 1000;
 
 	private static final String HTTP_LAST_MODIFIED_HEADER = "Last-Modified";
 
@@ -77,13 +86,12 @@ public class CacheFilter implements Filter {
 
 	private static final String HTTP_CACHE_PRAGMA = "Pragma";
 
-	private static final String[] NO_CACHE = new String[] { "/**/*.nocache.*" };
-
-	private static final String[] TO_CACHE = new String[] { "/**/*.cache.*", "/**/*.js", "/**/*.png", "/**/*.jpg",
-			"/**/*.gif", "/**/*.css", "/**/*.html" };
-
-	private static final String[] TO_ZIP = new String[] { "/**/*.nocache.*", "/**/*.cache.*", "/**/*.js", "/**/*.css",
-			"/**/*.html" };
+	private String[] cacheIdentifiers = new String[] {".cache."};
+	private String[] cacheSuffixes = new String[] {".js", ".png", ".jpg", ".jpeg", ".gif", ".css", ".html"};
+	private String[] noCacheIdentifiers = new String[] {".nocache."};
+	private String[] noCacheSuffixes = new String[] {};
+	private String[] zipSuffixes = new String[] {".js", ".css", ".html"};
+	private String[] skipPrefixes = new String[] {"/d/"};
 
 	// ------------------------------------------------------------------------
 	// Filter implementation:
@@ -93,6 +101,50 @@ public class CacheFilter implements Filter {
 	}
 
 	public void init(FilterConfig config) throws ServletException {
+		ServletContext context = config.getServletContext();
+		String param;
+
+		param = context.getInitParameter(CACHE_IDENTIFIERS);
+		if (null != param) {
+			cacheIdentifiers = param.split(PARAMETER_SPLIT_REGEX);
+		}
+
+		param = context.getInitParameter(CACHE_SUFFIXES);
+		if (null != param) {
+			cacheSuffixes = param.split(PARAMETER_SPLIT_REGEX);
+		}
+
+		param = context.getInitParameter(NO_CACHE_IDENTIFIERS);
+		if (null != param) {
+			noCacheIdentifiers = param.split(PARAMETER_SPLIT_REGEX);
+		}
+
+		param = context.getInitParameter(NO_CACHE_SUFFIXES);
+		if (null != param) {
+			noCacheSuffixes = param.split(PARAMETER_SPLIT_REGEX);
+		}
+
+		param = context.getInitParameter(ZIP_SUFFIXES);
+		if (null != param) {
+			zipSuffixes = param.split(PARAMETER_SPLIT_REGEX);
+		}
+
+		param = context.getInitParameter(SKIP_PREFIXES);
+		if (null != param) {
+			skipPrefixes = param.split(PARAMETER_SPLIT_REGEX);
+		}
+
+		param = context.getInitParameter(CACHE_DURATION_IN_SECONDS);
+		if (null != param) {
+			try {
+				cacheDurationInSeconds = Integer.parseInt(param);
+				cacheDurationInMilliSeconds = cacheDurationInSeconds * 1000;
+			} catch (NumberFormatException nfe) {
+				throw new ServletException("Cannot parse " + CACHE_DURATION_IN_SECONDS + " value " + param +
+						", should be parable to integer");
+			}
+
+		}
 	}
 
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain) throws IOException,
@@ -102,28 +154,30 @@ public class CacheFilter implements Filter {
 
 		String requestUri = httpRequest.getRequestURI();
 
-		/*
-		if ("localhost".equals(httpRequest.getServerName()) || "127.0.0.1".equals(httpRequest.getServerName())) {
-			filterChain.doFilter(request, response);
-			return;
-		}
-		*/
+		if (!checkPrefixes(requestUri, skipPrefixes)) {
+			boolean isLocalhost =
+					"localhost".equals(httpRequest.getServerName()) || "127.0.0.1".equals(httpRequest.getServerName());
 
-		if (shouldNotCache(requestUri)) {
-			configureNoCaching(httpResponse);
-		} else if (shouldCache(requestUri)) {
-			configureCaching(httpResponse);
-		}
-
-		if (shouldCompress(requestUri)) {
-			String encodings = httpRequest.getHeader("Accept-Encoding");
-			if (encodings != null && encodings.indexOf("gzip") != -1) {
-				GzipServletResponseWrapper responseWrapper = new GzipServletResponseWrapper(httpResponse);
-				try {
-					filterChain.doFilter(request, responseWrapper);
-				} finally {
-					responseWrapper.finish();
+			if (!isLocalhost) {
+				if (shouldNotCache(requestUri)) {
+					configureNoCaching(httpResponse);
+				} else if (shouldCache(requestUri)) {
+					configureCaching(httpResponse);
 				}
+			}
+
+			if (shouldCompress(requestUri)) {
+				String encodings = httpRequest.getHeader("Accept-Encoding");
+				if (encodings != null && encodings.indexOf("gzip") != -1) {
+					GzipServletResponseWrapper responseWrapper = new GzipServletResponseWrapper(httpResponse);
+					try {
+						filterChain.doFilter(request, responseWrapper);
+					} finally {
+						responseWrapper.finish();
+					}
+				}
+			} else {
+				filterChain.doFilter(request, response);
 			}
 		} else {
 			filterChain.doFilter(request, response);
@@ -131,26 +185,51 @@ public class CacheFilter implements Filter {
 	}
 
 	public boolean shouldCache(String requestUri) {
-		return check(requestUri, TO_CACHE);
+		String uri = requestUri.toLowerCase();
+		return checkContains(uri, cacheIdentifiers) || checkSuffixes(uri, cacheSuffixes);
 	}
 
 	public boolean shouldNotCache(String requestUri) {
-		return check(requestUri, NO_CACHE);
+		String uri = requestUri.toLowerCase();
+		return checkContains(uri, noCacheIdentifiers) || checkSuffixes(uri, noCacheSuffixes);
 	}
 
 	public boolean shouldCompress(String requestUri) {
-		return check(requestUri, TO_ZIP);
+		String uri = requestUri.toLowerCase();
+		return checkSuffixes(uri, zipSuffixes);
 	}
 
-	public boolean check(String requestUri, String[] patterns) {
-		boolean res = false;
-		PathMatcher pathMatcher = new AntPathMatcher();
+	public boolean checkContains(String uri, String[] patterns) {
 		for (String pattern : patterns) {
-			if (pathMatcher.match(pattern, requestUri)) {
-				res = true;
+			if (pattern.length() > 0) {
+				if (uri.contains(pattern)) {
+					return true;
+				}
 			}
 		}
-		return res;
+		return false;
+	}
+
+	public boolean checkSuffixes(String uri, String[] patterns) {
+		for (String pattern : patterns) {
+			if (pattern.length() > 0) {
+				if (uri.endsWith(pattern)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	public boolean checkPrefixes(String uri, String[] patterns) {
+		for (String pattern : patterns) {
+			if (pattern.length() > 0) {
+				if (uri.startsWith(pattern)) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 	// ------------------------------------------------------------------------
@@ -174,10 +253,10 @@ public class CacheFilter implements Filter {
 		response.setDateHeader(HTTP_LAST_MODIFIED_HEADER, now);
 
 		// HTTP 1.0 header
-		response.setDateHeader(HTTP_EXPIRES_HEADER, now + CACHE_DURATION_IN_MS);
+		response.setDateHeader(HTTP_EXPIRES_HEADER, now + cacheDurationInMilliSeconds);
 
 		// HTTP 1.1 header
-		response.setHeader(HTTP_CACHE_CONTROL_HEADER, "max-age=" + CACHE_DURATION_IN_SECOND);
+		response.setHeader(HTTP_CACHE_CONTROL_HEADER, "max-age=" + cacheDurationInSeconds);
 	}
 
 	// ------------------------------------------------------------------------
@@ -186,10 +265,12 @@ public class CacheFilter implements Filter {
 
 	/**
 	 * Wrapper around a response that uses a GZIP stream.
-	 * 
+	 *
 	 * @author Pieter De Graef
 	 */
 	private class GzipServletResponseWrapper extends HttpServletResponseWrapper {
+
+		private final Logger log = LoggerFactory.getLogger(GzipServletResponseWrapper.class);
 
 		private ServletOutputStream stream;
 
@@ -202,6 +283,7 @@ public class CacheFilter implements Filter {
 				try {
 					stream.close();
 				} catch (IOException e) {
+					log.error("Could not close stream", e);
 				}
 			}
 		}
