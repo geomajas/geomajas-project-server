@@ -78,13 +78,13 @@
 		<module id="documentation" dir="documentation" name="documentation">
 			<fileSets>
 				<fileSet filtered="true" encoding="UTF-8">
-					<directory>docbkx</directory>
+					<directory>src/docbkx</directory>
 					<includes>
 						<include>**/*.xml</include>
 					</includes>
 				</fileSet>
 				<fileSet encoding="UTF-8">
-					<directory>docbkx/images</directory>
+					<directory>src/docbkx/images</directory>
 					<includes>
 						<include>**/*.png</include>
 					</includes>
