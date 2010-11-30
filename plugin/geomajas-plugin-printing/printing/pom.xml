@@ -155,20 +155,6 @@
 			</resource>
 		</resources>
 	</build>
-
-	<!-- uncomment if you want to use Geomajas snapshots, comment for faster builds  -->
-	<!--
-	<repositories>
-		<repository>
-			<id>Geomajas snapshots</id>
-			<name>Geomajas snapshot repository</name>
-			<url>http://apps.geomajas.org/nexus/content/groups/latest/</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-	</repositories>
-	-->
 	
 	<properties>
 		<printing-layer-hibernate-version>1.7.2</printing-layer-hibernate-version>

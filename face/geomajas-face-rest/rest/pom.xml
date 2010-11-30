@@ -13,14 +13,6 @@
 	<name>geomajas-face-rest</name>
 	<description>geomajas-face-rest</description>
 
-	<repositories>
-		<repository>
-			<id>opengeo</id>
-			<name>OpenGeo Maven Repository</name>
-			<url>http://repo.opengeo.org</url>
-		</repository>
-	</repositories>
-
 	<dependencies>
 		<dependency>
 			<groupId>org.geomajas</groupId>
@@ -95,8 +87,6 @@
 			<artifactId>gt-geojson</artifactId>
 			<version>2.7-SNAPSHOT</version>
 		</dependency>
-
-
 	</dependencies>
 
 	<build>
