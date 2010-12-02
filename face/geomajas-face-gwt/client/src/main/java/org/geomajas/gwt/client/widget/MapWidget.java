@@ -847,6 +847,18 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 		return applicationId;
 	}
 
+	/**
+	 * Given a type of Paintable, which painters have been registered to handle it?
+	 * 
+	 * @param paintable
+	 *            A type of paintable for which a list of painters should be returned.
+	 * @return Returns a list of painters that apply on the given paintable.
+	 * @since 1.8.0
+	 */
+	public List<Painter> getPaintersForObject(Paintable paintable) {
+		return painterVisitor.getPaintersForObject(paintable);
+	}
+
 	// -------------------------------------------------------------------------
 	// MapViewChangedHandler implementation:
 	// -------------------------------------------------------------------------
@@ -1001,8 +1013,8 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 					mapModel.getMapView().scale(
 							2.0f,
 							MapView.ZoomOption.LEVEL_CHANGE,
-							mapModel.getMapView().getWorldViewTransformer().viewToWorld(
-									new Coordinate(event.getX(), event.getY())));
+							mapModel.getMapView().getWorldViewTransformer()
+									.viewToWorld(new Coordinate(event.getX(), event.getY())));
 				} else {
 					mapModel.getMapView().scale(2.0f, MapView.ZoomOption.LEVEL_CHANGE);
 				}
@@ -1011,8 +1023,8 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 					mapModel.getMapView().scale(
 							0.5f,
 							MapView.ZoomOption.LEVEL_CHANGE,
-							mapModel.getMapView().getWorldViewTransformer().viewToWorld(
-									new Coordinate(event.getX(), event.getY())));
+							mapModel.getMapView().getWorldViewTransformer()
+									.viewToWorld(new Coordinate(event.getX(), event.getY())));
 				} else {
 					mapModel.getMapView().scale(0.5f, MapView.ZoomOption.LEVEL_CHANGE);
 				}
