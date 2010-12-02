@@ -46,20 +46,12 @@
        </param-value>
     </context-param>
 
-	<listener>
- 		<listener-class>org.geomajas.servlet.PrepareScanningContextListener</listener-class>
-	</listener>
-	<!-- @extract-end -->
-	
-	<listener>
- 		<listener-class>org.geomajas.servlet.GeomajasContextListener</listener-class>
-	</listener>
-
 	<filter>
 		<filter-name>JettyFilter</filter-name>
 		<filter-class>org.geomajas.servlet.JettyThreadParentFilter</filter-class>
 	</filter>
 
+	<!-- @extract-skip-start -->
 	<filter>
 	    <filter-name>CacheFilter</filter-name>
 	    <filter-class>org.geomajas.servlet.CacheFilter</filter-class>
@@ -102,9 +94,19 @@
 	</filter>
 
 	<filter-mapping>
-	    <filter-name>CacheFilter</filter-name>
-	    <url-pattern>*</url-pattern>  
+		<filter-name>CacheFilter</filter-name>
+		<servlet-name>GeomajasServiceServlet</servlet-name>
 	</filter-mapping>
+	<!-- @extract-skip-end -->
+
+	<listener>
+ 		<listener-class>org.geomajas.servlet.PrepareScanningContextListener</listener-class>
+	</listener>
+	<!-- @extract-end -->
+	
+	<listener>
+ 		<listener-class>org.geomajas.servlet.GeomajasContextListener</listener-class>
+	</listener>
 
 	<servlet>
 		<servlet-name>GeomajasServiceServlet</servlet-name>

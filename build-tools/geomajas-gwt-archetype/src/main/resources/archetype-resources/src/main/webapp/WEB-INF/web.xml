@@ -1,7 +1,7 @@
 #set( $symbol_pound = '#' )
 #set( $symbol_dollar = '$' )
 #set( $symbol_escape = '\' )
-<web-app 
+<web-app
     version="2.5"
     xmlns="http://java.sun.com/xml/ns/javaee" 
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
@@ -42,10 +42,6 @@
 	</filter>
 	-->
 
-	<filter-mapping>
-		<filter-name>JettyFilter</filter-name>
-		<servlet-name>GeomajasServiceServlet</servlet-name>
-	</filter-mapping>
 	<!--
 	<filter-mapping>
 		<filter-name>CacheFilter</filter-name>

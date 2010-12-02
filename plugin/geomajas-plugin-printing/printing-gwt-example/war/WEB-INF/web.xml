@@ -10,6 +10,11 @@
 		</param-value>
     </context-param>
 
+	<filter>
+		<filter-name>JettyFilter</filter-name>
+		<filter-class>org.geomajas.servlet.JettyThreadParentFilter</filter-class>
+	</filter>
+
 	<listener>
  		<listener-class>org.geomajas.servlet.PrepareScanningContextListener</listener-class>
 	</listener>
@@ -17,16 +22,6 @@
 	<listener>
 		<listener-class>org.geomajas.servlet.GeomajasContextListener</listener-class>
 	</listener>
-
-	<filter>
-		<filter-name>JettyFilter</filter-name>
-		<filter-class>org.geomajas.servlet.JettyThreadParentFilter</filter-class>
-	</filter>
-
-	<filter-mapping>
-		<filter-name>JettyFilter</filter-name>
-		<servlet-name>GeomajasServiceServlet</servlet-name>
-	</filter-mapping>
 
 	<servlet>
 		<servlet-name>GeomajasServiceServlet</servlet-name>

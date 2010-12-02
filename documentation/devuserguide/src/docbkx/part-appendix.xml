@@ -46,7 +46,7 @@
 &lt;/filter&gt;
 &lt;filter-mapping&gt;
     &lt;filter-name&gt;CacheFilter&lt;/filter-name&gt; 
-    &lt;url-pattern&gt;*&lt;/url-pattern&gt;  
+    &lt;servlet-name&gt;GeomajasServiceServlet&lt;/servlet-name&gt;  
 &lt;/filter-mapping&gt;</programlisting></para>
           </listitem>
         </itemizedlist></para>
