@@ -65,8 +65,16 @@ public interface SampleMessages extends Messages {
 	String treeGroupAttributes();
 
 	String treeGroupPlugins();
+	
+	String treeGroupGeneral();
 
 	String introductionTitle();
+
+	String serverErrorTitle();
+
+	String serverErrorDescription();
+
+	String serverErrorButton();
 
 	// OpenStreetMap sample:
 
@@ -110,7 +118,7 @@ public interface SampleMessages extends Messages {
 
 	// Printing sample
 	String defaultPrintControllerTitle();
-	
+
 	String printingDescription();
 
 	// Geocoder sample

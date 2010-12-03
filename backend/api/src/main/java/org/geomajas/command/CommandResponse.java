@@ -23,12 +23,11 @@
 
 package org.geomajas.command;
 
-import org.geomajas.global.Api;
-import org.geomajas.global.Json;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.geomajas.global.Api;
 
 /**
  * Base result object from executing a command. This can contain actual data or hold error-messages.
@@ -44,7 +43,7 @@ public class CommandResponse implements Serializable {
 	private String id;
 	private long executionTime;
 	private List<String> errorMessages = new ArrayList<String>();
-	private transient List<Throwable> errors = new ArrayList<Throwable>();
+	private List<Throwable> errors = new ArrayList<Throwable>();
 
 	// Class specific functions:
 
@@ -89,11 +88,11 @@ public class CommandResponse implements Serializable {
 
 	/**
 	 * Get the list of exceptions which are thrown while dispatching the command.
-	 * This list is used (by the dispatcher) to fill the errorMessages list.
+	 * This list is used (by the dispatcher) to fill the errorMessages list.<br/>
+	 * Serializable since 1.8.0.
 	 *
 	 * @return list of {@link Throwable}s
 	 */
-	@Json(serialize = false)
 	public List<Throwable> getErrors() {
 		return errors;
 	}

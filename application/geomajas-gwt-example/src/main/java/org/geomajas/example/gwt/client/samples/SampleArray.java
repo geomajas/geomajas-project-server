@@ -37,6 +37,7 @@ import org.geomajas.example.gwt.client.samples.editing.EditMultiLineLayerSample;
 import org.geomajas.example.gwt.client.samples.editing.EditMultiPolygonLayerSample;
 import org.geomajas.example.gwt.client.samples.editing.EditPointLayerSample;
 import org.geomajas.example.gwt.client.samples.editing.EditPolygonLayerSample;
+import org.geomajas.example.gwt.client.samples.general.ServerErrorSample;
 import org.geomajas.example.gwt.client.samples.i18n.I18nProvider;
 import org.geomajas.example.gwt.client.samples.layer.GeoToolsSample;
 import org.geomajas.example.gwt.client.samples.layer.GoogleSample;
@@ -85,6 +86,13 @@ public final class SampleArray {
 
 	public static SampleTreeNode[] getSampleArray() {
 		return new SampleTreeNode[] {
+				// MapWidget samples:
+				new SampleTreeNode(I18nProvider.getSampleMessages().treeGroupGeneral(),
+						"[ISOMORPHIC]/geomajas/osgeo/settings.png", "General", "topLevel"),
+				new SampleTreeNode(I18nProvider.getSampleMessages().serverErrorTitle(),
+						"[ISOMORPHIC]/geomajas/osgeo/help-contents.png", ServerErrorSample.TITLE, "General",
+						ServerErrorSample.FACTORY),
+
 				// MapWidget samples:
 				new SampleTreeNode(I18nProvider.getSampleMessages().treeGroupLayers(),
 						"[ISOMORPHIC]/geomajas/osgeo/layer.png", "Layers", "topLevel"),

@@ -23,14 +23,6 @@
 
 package org.geomajas.gwt.client.command;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.shared.HandlerManager;
-import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.i18n.client.LocaleInfo;
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.rpc.ServiceDefTarget;
-import com.smartgwt.client.core.Function;
-import com.smartgwt.client.util.SC;
 import org.geomajas.command.CommandResponse;
 import org.geomajas.global.Api;
 import org.geomajas.global.GeomajasConstant;
@@ -42,6 +34,16 @@ import org.geomajas.gwt.client.command.event.DispatchStoppedEvent;
 import org.geomajas.gwt.client.command.event.DispatchStoppedHandler;
 import org.geomajas.gwt.client.command.event.HasDispatchHandlers;
 import org.geomajas.gwt.client.i18n.I18nProvider;
+import org.geomajas.gwt.client.widget.ExceptionWindow;
+
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.shared.HandlerManager;
+import com.google.gwt.event.shared.HandlerRegistration;
+import com.google.gwt.i18n.client.LocaleInfo;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.rpc.ServiceDefTarget;
+import com.smartgwt.client.core.Function;
+import com.smartgwt.client.util.SC;
 
 /**
  * The central client side dispatcher for all commands. Use the {@link #execute(GwtCommand, CommandCallback...)}
@@ -152,7 +154,13 @@ public final class GwtCommandDispatcher implements HasDispatchHandlers {
 							message += "\n" + error;
 						}
 						GWT.log(message, null);
-						SC.warn(message, null);
+						if (response.getErrors() == null || response.getErrors().size() == 0) {
+							SC.warn(message, null);
+						} else {
+							// The error messaging window only supports 1 exception to display:
+							ExceptionWindow window = new ExceptionWindow(response.getErrors().get(0));
+							window.show();
+						}
 					} else {
 						if (!deferred.isCancelled()) {
 							for (CommandCallback callback : deferred.getOnSuccessCallbacks()) {

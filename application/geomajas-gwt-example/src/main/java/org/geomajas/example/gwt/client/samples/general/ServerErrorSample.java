@@ -1,0 +1,103 @@
+/*
+ * This file is part of Geomajas, a component framework for building
+ * rich Internet applications (RIA) with sophisticated capabilities for the
+ * display, analysis and management of geographic information.
+ * It is a building block that allows developers to add maps
+ * and other geographic data capabilities to their web applications.
+ *
+ * Copyright 2008-2010 Geosparc, http://www.geosparc.com, Belgium
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+package org.geomajas.example.gwt.client.samples.general;
+
+import org.geomajas.command.CommandResponse;
+import org.geomajas.command.EmptyCommandRequest;
+import org.geomajas.example.gwt.client.samples.base.SamplePanel;
+import org.geomajas.example.gwt.client.samples.base.SamplePanelFactory;
+import org.geomajas.example.gwt.client.samples.i18n.I18nProvider;
+import org.geomajas.gwt.client.command.CommandCallback;
+import org.geomajas.gwt.client.command.GwtCommand;
+import org.geomajas.gwt.client.command.GwtCommandDispatcher;
+
+import com.smartgwt.client.types.Alignment;
+import com.smartgwt.client.widgets.Canvas;
+import com.smartgwt.client.widgets.IButton;
+import com.smartgwt.client.widgets.events.ClickEvent;
+import com.smartgwt.client.widgets.events.ClickHandler;
+import com.smartgwt.client.widgets.layout.VLayout;
+
+/**
+ * <p>
+ * Sample that displays an error messages when a command on the server has failed.
+ * </p>
+ * 
+ * @author Pieter De Graef
+ */
+public class ServerErrorSample extends SamplePanel {
+
+	public static final String TITLE = "ServerErrorMessage";
+
+	public static final SamplePanelFactory FACTORY = new SamplePanelFactory() {
+
+		public SamplePanel createPanel() {
+			return new ServerErrorSample();
+		}
+	};
+
+	public Canvas getViewPanel() {
+		VLayout layout = new VLayout();
+		layout.setWidth100();
+		layout.setHeight100();
+		layout.setLayoutTopMargin(200);
+
+		IButton button = new IButton(I18nProvider.getSampleMessages().serverErrorButton());
+		button.setIcon("[ISOMORPHIC]/geomajas/osgeo/help-contents.png");
+		button.setWidth(300);
+		button.setLayoutAlign(Alignment.CENTER);
+		button.addClickHandler(new ClickHandler() {
+
+			public void onClick(ClickEvent event) {
+				GwtCommand command = new GwtCommand("example.gwt.server.samples.GetExceptionCommand");
+				command.setCommandRequest(new EmptyCommandRequest());
+				GwtCommandDispatcher.getInstance().execute(command, new CommandCallback() {
+
+					public void execute(CommandResponse response) {
+						// Do nothing... an error message is shown automatically...
+					}
+				});
+			}
+		});
+		layout.addMember(button);
+
+		return layout;
+	}
+
+	public String getDescription() {
+		return I18nProvider.getSampleMessages().serverErrorDescription();
+	}
+
+	public String getSourceFileName() {
+		return "classpath:org/geomajas/example/gwt/client/samples/general/ServerErrorSample.txt";
+	}
+
+	public String[] getConfigurationFiles() {
+		return new String[] {};
+	}
+
+	public String ensureUserLoggedIn() {
+		return "luc";
+	}
+}
