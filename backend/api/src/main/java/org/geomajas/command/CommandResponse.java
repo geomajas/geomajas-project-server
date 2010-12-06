@@ -28,10 +28,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.global.Api;
+import org.geomajas.global.ExceptionDto;
+import org.geomajas.global.Json;
 
 /**
  * Base result object from executing a command. This can contain actual data or hold error-messages.
- *
+ * 
  * @author Jan De Moerloose
  * @author Joachim Van der Auwera
  * @since 1.6.0
@@ -40,16 +42,22 @@ import org.geomajas.global.Api;
 public class CommandResponse implements Serializable {
 
 	private static final long serialVersionUID = 151L;
+
 	private String id;
+
 	private long executionTime;
+
 	private List<String> errorMessages = new ArrayList<String>();
-	private List<Throwable> errors = new ArrayList<Throwable>();
+
+	private List<ExceptionDto> exceptions;
+
+	private transient List<Throwable> errors = new ArrayList<Throwable>();
 
 	// Class specific functions:
 
 	/**
 	 * Determine whether an error occurred while dispatching the command.
-	 *
+	 * 
 	 * @return true when an exception occurred during command processing
 	 */
 	public boolean isError() {
@@ -60,7 +68,7 @@ public class CommandResponse implements Serializable {
 
 	/**
 	 * Get the id assigned to this command. The id can help you to match client and server side logs about a command.
-	 *
+	 * 
 	 * @return id
 	 */
 	public String getId() {
@@ -69,17 +77,17 @@ public class CommandResponse implements Serializable {
 
 	/**
 	 * Set the id assigned to this command. The id can help you to match client and server side logs about a command.
-	 *
-	 * @param id id
+	 * 
+	 * @param id
+	 *            id
 	 */
 	public void setId(String id) {
 		this.id = id;
 	}
 
 	/**
-	 * Get the list of error messages which occurred when dispatching the command.
-	 * These messages are localised.
-	 *
+	 * Get the list of error messages which occurred when dispatching the command. These messages are localised.
+	 * 
 	 * @return list of error messages
 	 */
 	public List<String> getErrorMessages() {
@@ -87,19 +95,20 @@ public class CommandResponse implements Serializable {
 	}
 
 	/**
-	 * Get the list of exceptions which are thrown while dispatching the command.
-	 * This list is used (by the dispatcher) to fill the errorMessages list.<br/>
+	 * Get the list of exceptions which are thrown while dispatching the command. This list is used (by the dispatcher)
+	 * to fill the errorMessages list.<br/>
 	 * Serializable since 1.8.0.
-	 *
+	 * 
 	 * @return list of {@link Throwable}s
 	 */
+	@Json(serialize = false)
 	public List<Throwable> getErrors() {
 		return errors;
 	}
 
 	/**
 	 * Get execution time in milliseconds.
-	 *
+	 * 
 	 * @return command execution time in milliseconds
 	 */
 	public long getExecutionTime() {
@@ -108,10 +117,24 @@ public class CommandResponse implements Serializable {
 
 	/**
 	 * Set the execution time in milliseconds for the command.
-	 *
-	 * @param executionTime command execution time in milliseconds
+	 * 
+	 * @param executionTime
+	 *            command execution time in milliseconds
 	 */
 	public void setExecutionTime(long executionTime) {
 		this.executionTime = executionTime;
+	}
+
+	/**
+	 * Returns a list of serializable exceptions. These exceptions are actually send to the client.
+	 * 
+	 * @return The exception list.
+	 * @since 1.8.0
+	 */
+	public List<ExceptionDto> getExceptions() {
+		if (exceptions == null) {
+			exceptions = new ArrayList<ExceptionDto>();
+		}
+		return exceptions;
 	}
 }

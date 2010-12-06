@@ -29,6 +29,10 @@ import org.geomajas.command.EmptyCommandRequest;
 import org.geomajas.example.gwt.client.samples.base.GetResourcesResponse;
 import org.springframework.stereotype.Component;
 
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
+
 /**
  * <p>
  * Command that generates an exception with stack trace.
@@ -40,10 +44,36 @@ import org.springframework.stereotype.Component;
 public class GetExceptionCommand implements Command<EmptyCommandRequest, CommandResponse> {
 
 	public void execute(EmptyCommandRequest request, CommandResponse response) throws Exception {
-		throw new IllegalArgumentException("Oops. I guess the server encountered some 'unexpected' exception.");
+		throw new UnserializableException();
 	}
 
 	public CommandResponse getEmptyCommandResponse() {
 		return new GetResourcesResponse();
+	}
+
+	/**
+	 * Exception that should be difficult to serialize.
+	 * 
+	 * @author Pieter De Graef
+	 */
+	public class UnserializableException extends Exception {
+
+		private Geometry geometry;
+
+		private static final long serialVersionUID = 180L;
+
+		public UnserializableException() {
+			super("Oops. I guess the server encountered some 'unexpected' exception.");
+			GeometryFactory factory = new GeometryFactory();
+			geometry = factory.createLineString(new Coordinate[] { new Coordinate(0, 0), new Coordinate(10, 0) });
+		}
+
+		public Geometry getGeometry() {
+			return geometry;
+		}
+
+		public void setGeometry(Geometry geometry) {
+			this.geometry = geometry;
+		}
 	}
 }

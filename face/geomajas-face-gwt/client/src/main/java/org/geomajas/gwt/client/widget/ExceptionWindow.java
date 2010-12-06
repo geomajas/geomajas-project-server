@@ -23,6 +23,7 @@
 
 package org.geomajas.gwt.client.widget;
 
+import org.geomajas.global.ExceptionDto;
 import org.geomajas.gwt.client.i18n.I18nProvider;
 
 import com.smartgwt.client.types.Alignment;
@@ -51,7 +52,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
 public class ExceptionWindow extends Window {
 
 	/** The list of exceptions this window should display. */
-	private Throwable error;
+	private ExceptionDto error;
 
 	/** The button that displays the details about the exception upon clicking. */
 	private Button expandButton;
@@ -69,7 +70,7 @@ public class ExceptionWindow extends Window {
 	 * @param error
 	 *            The exception to display.
 	 */
-	public ExceptionWindow(Throwable error) {
+	public ExceptionWindow(ExceptionDto error) {
 		super();
 		this.error = error;
 
@@ -92,12 +93,13 @@ public class ExceptionWindow extends Window {
 		setHeight(132);
 		setCanDragResize(true);
 		centerInPage();
+		setAutoSize(true);
 
 		addItem(createErrorLayout(error));
 	}
 
 	/** Create the GUI for a single exception. */
-	private VLayout createErrorLayout(Throwable error) {
+	private VLayout createErrorLayout(ExceptionDto error) {
 		VLayout layout = new VLayout();
 		layout.setWidth100();
 		layout.setHeight100();
@@ -127,7 +129,7 @@ public class ExceptionWindow extends Window {
 			});
 			layout.addMember(expandButton);
 
-			String content = "<div><b>" + error.getClass().getName() + ":</b></div><div style='padding-left:10px;'>";
+			String content = "<div><b>" + error.getClassName() + ":</b></div><div style='padding-left:10px;'>";
 			for (StackTraceElement el : error.getStackTrace()) {
 				content += el.toString() + "<br/>";
 			}
@@ -150,12 +152,11 @@ public class ExceptionWindow extends Window {
 	private void setDetailsVisible(boolean detailsVisible) {
 		detailsLayout.setVisible(detailsVisible);
 		if (detailsVisible) {
+			setAutoSize(false);
 			expandButton.setTitle("Hide details");
-			setWidth(450);
 			setHeight(350);
 		} else {
 			expandButton.setTitle("View details");
-			setWidth(450);
 			setHeight(132);
 		}
 	}

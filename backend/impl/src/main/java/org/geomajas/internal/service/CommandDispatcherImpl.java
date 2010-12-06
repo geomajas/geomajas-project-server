@@ -22,11 +22,16 @@
  */
 package org.geomajas.internal.service;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
+
 import org.geomajas.command.Command;
 import org.geomajas.command.CommandDispatcher;
 import org.geomajas.command.CommandRequest;
 import org.geomajas.command.CommandResponse;
 import org.geomajas.global.ExceptionCode;
+import org.geomajas.global.ExceptionDto;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.security.GeomajasSecurityException;
 import org.geomajas.security.SecurityContext;
@@ -37,9 +42,6 @@ import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
-import java.util.Locale;
 
 /**
  * The <code>CommandDispatcher</code> is the main command execution center. It accepts command from the client and
@@ -143,7 +145,7 @@ public final class CommandDispatcherImpl implements CommandDispatcher {
 								.getUserId()));
 			}
 
-			// now process the errors for display on the client
+			// Now process the errors for display on the client:
 			List<Throwable> errors = response.getErrors();
 			Locale localeObject = null;
 			if (null != errors && !errors.isEmpty()) {
@@ -167,9 +169,13 @@ public final class CommandDispatcherImpl implements CommandDispatcher {
 						msg = ((GeomajasException) t).getMessage(localeObject);
 						log.warn(msg);
 					}
+					
+					// For each exception, make sure the entire exception is sent to the client:
 					response.getErrorMessages().add(msg);
+					response.getExceptions().add(new ExceptionDto(t.getClass().getName(), msg, t.getStackTrace()));
 				}
 			}
+
 			response.setExecutionTime(System.currentTimeMillis() - begin);
 			if (log.isTraceEnabled()) {
 				log.trace("response:\n{}", response);
@@ -182,5 +188,4 @@ public final class CommandDispatcherImpl implements CommandDispatcher {
 			}
 		}
 	}
-
 }
