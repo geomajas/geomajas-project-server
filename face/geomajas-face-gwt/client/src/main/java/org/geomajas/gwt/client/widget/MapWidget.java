@@ -39,6 +39,8 @@ import org.geomajas.gwt.client.command.GwtCommand;
 import org.geomajas.gwt.client.command.GwtCommandDispatcher;
 import org.geomajas.gwt.client.controller.GraphicsController;
 import org.geomajas.gwt.client.controller.PanController;
+import org.geomajas.gwt.client.controller.listener.Listener;
+import org.geomajas.gwt.client.controller.listener.ListenerController;
 import org.geomajas.gwt.client.gfx.GraphicsContext;
 import org.geomajas.gwt.client.gfx.ImageContext;
 import org.geomajas.gwt.client.gfx.MenuContext;
@@ -70,6 +72,7 @@ import org.geomajas.gwt.client.gfx.style.ShapeStyle;
 import org.geomajas.gwt.client.map.MapModel;
 import org.geomajas.gwt.client.map.MapView;
 import org.geomajas.gwt.client.map.event.EditingEvent;
+import org.geomajas.gwt.client.map.event.EditingEvent.EditingEventType;
 import org.geomajas.gwt.client.map.event.EditingHandler;
 import org.geomajas.gwt.client.map.event.FeatureDeselectedEvent;
 import org.geomajas.gwt.client.map.event.FeatureSelectedEvent;
@@ -83,7 +86,6 @@ import org.geomajas.gwt.client.map.event.MapModelEvent;
 import org.geomajas.gwt.client.map.event.MapModelHandler;
 import org.geomajas.gwt.client.map.event.MapViewChangedEvent;
 import org.geomajas.gwt.client.map.event.MapViewChangedHandler;
-import org.geomajas.gwt.client.map.event.EditingEvent.EditingEventType;
 import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.feature.FeatureTransaction;
 import org.geomajas.gwt.client.map.layer.Layer;
@@ -723,6 +725,38 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	@Api
 	public void setFallbackController(GraphicsController fallbackController) {
 		graphics.setFallbackController(fallbackController);
+	}
+
+	/**
+	 * Apply a listener that passively listens to mouse events on the map. These listeners do not interfere with the
+	 * mouse events.
+	 * 
+	 * @param listener
+	 *            The actual listener object or null to deactive the current listener.
+	 * @since 1.8.0
+	 */
+	@Api
+	public void setListener(Listener listener) {
+		if (listener != null) {
+			graphics.setListener(new ListenerController(this, listener));
+		} else {
+			graphics.setListener(null);
+		}
+	}
+
+	/**
+	 * Return a listener that passively listens to mouse events on the map. These listeners do not interfere with the
+	 * mouse events.
+	 * 
+	 * @return Return the listener or null if there is none active.
+	 * @since 1.8.0
+	 */
+	@Api
+	public Listener getListener() {
+		if (graphics.getListener() != null) {
+			return graphics.getListener().getListener();
+		}
+		return null;
 	}
 
 	public double getUnitLength() {

@@ -28,6 +28,7 @@ import java.util.List;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.controller.GraphicsController;
+import org.geomajas.gwt.client.controller.listener.ListenerController;
 import org.geomajas.gwt.client.gfx.GraphicsContext;
 import org.geomajas.gwt.client.gfx.ImageContext;
 import org.geomajas.gwt.client.gfx.MapContext;
@@ -121,10 +122,18 @@ public class GraphicsWidget extends VLayout implements MapContext, HasDoubleClic
 	 */
 	private GraphicsController fallbackController;
 
+	/** An optional passive listener that listens to mouse events on a map without interfering. */
+	private ListenerController listenerController;
+
 	/**
 	 * A list of handler registrations that are needed to correctly clean up after a controller is deactivated.
 	 */
 	private List<HandlerRegistration> handlers;
+
+	/**
+	 * A list of handler registrations that are needed to correctly clean up after a listener is deactivated.
+	 */
+	private List<HandlerRegistration> listenerHandlers;
 
 	/**
 	 * Every time a right mouse button has been clicked, this widget will store the event's coordinates.
@@ -170,6 +179,7 @@ public class GraphicsWidget extends VLayout implements MapContext, HasDoubleClic
 		}
 		menuContext = new MapMenuContext();
 		handlers = new ArrayList<HandlerRegistration>();
+		listenerHandlers = new ArrayList<HandlerRegistration>();
 
 		// capture right mouse info (target id and coordinate)
 		RightMouseHandler rmh = new RightMouseHandler();
@@ -258,6 +268,43 @@ public class GraphicsWidget extends VLayout implements MapContext, HasDoubleClic
 		this.fallbackController = fallbackController;
 		if (controller == null || fallbackActive) {
 			setController(fallbackController);
+		}
+	}
+
+	/**
+	 * Return the controller of a listener that passively listens to mouse events on the map. These listeners do not
+	 * interfere with the mouse events.
+	 * 
+	 * @return Return the ListenerController or null if there is none active.
+	 */
+	public ListenerController getListener() {
+		return listenerController;
+	}
+
+	/**
+	 * Apply a controller for a listener that passively listens to mouse events on the map. These listeners do not
+	 * interfere with the mouse events.
+	 * 
+	 * @param listener
+	 *            The actual listener object or null to deactive the current listener.
+	 */
+	public void setListener(ListenerController listener) {
+		for (HandlerRegistration registration : listenerHandlers) {
+			registration.removeHandler();
+		}
+		if (listenerController != null) {
+			listenerController.onDeactivate();
+			listenerController = null;
+		}
+		listenerHandlers = new ArrayList<HandlerRegistration>();
+		if (listener != null) {
+			listenerController = listener;
+			listenerHandlers.add(eventWidget.addMouseDownHandler(listenerController));
+			listenerHandlers.add(eventWidget.addMouseMoveHandler(listenerController));
+			listenerHandlers.add(eventWidget.addMouseOutHandler(listenerController));
+			listenerHandlers.add(eventWidget.addMouseOverHandler(listenerController));
+			listenerHandlers.add(eventWidget.addMouseUpHandler(listenerController));
+			listenerController.onActivate();
 		}
 	}
 
@@ -381,7 +428,7 @@ public class GraphicsWidget extends VLayout implements MapContext, HasDoubleClic
 	/**
 	 * 
 	 * @author Jan De Moerloose
-	 *
+	 * 
 	 */
 	private static class EventWidget extends WidgetCanvas {
 
@@ -432,5 +479,4 @@ public class GraphicsWidget extends VLayout implements MapContext, HasDoubleClic
 	public boolean isReady() {
 		return contains(eventWidget) && eventWidget.getWidget().isAttached();
 	}
-
 }

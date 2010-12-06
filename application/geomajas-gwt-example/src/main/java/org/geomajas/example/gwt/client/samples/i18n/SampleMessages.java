@@ -65,7 +65,7 @@ public interface SampleMessages extends Messages {
 	String treeGroupAttributes();
 
 	String treeGroupPlugins();
-	
+
 	String treeGroupGeneral();
 
 	String introductionTitle();
@@ -294,6 +294,12 @@ public interface SampleMessages extends Messages {
 	String fallbackControllerDescription();
 
 	String fallbackControllerExplanation();
+
+	// MouseMoveListener sample:
+
+	String mouseMoveListenerTitle();
+
+	String mouseMoveListenerDescription();
 
 	// Login sample:
 

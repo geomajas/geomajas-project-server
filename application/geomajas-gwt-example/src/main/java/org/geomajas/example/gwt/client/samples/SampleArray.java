@@ -31,6 +31,7 @@ import org.geomajas.example.gwt.client.samples.controller.CircleControllerSample
 import org.geomajas.example.gwt.client.samples.controller.ControllerOnElementSample;
 import org.geomajas.example.gwt.client.samples.controller.CustomControllerSample;
 import org.geomajas.example.gwt.client.samples.controller.FallbackControllerSample;
+import org.geomajas.example.gwt.client.samples.controller.MouseMoveListenerSample;
 import org.geomajas.example.gwt.client.samples.controller.RectangleControllerSample;
 import org.geomajas.example.gwt.client.samples.editing.EditLineLayerSample;
 import org.geomajas.example.gwt.client.samples.editing.EditMultiLineLayerSample;
@@ -205,6 +206,9 @@ public final class SampleArray {
 				new SampleTreeNode(I18nProvider.getSampleMessages().fallbackControllerTitle(),
 						"[ISOMORPHIC]/geomajas/osgeo/tools.png", FallbackControllerSample.TITLE, "MapController",
 						FallbackControllerSample.FACTORY),
+				new SampleTreeNode(I18nProvider.getSampleMessages().mouseMoveListenerTitle(),
+						"[ISOMORPHIC]/geomajas/osgeo/tools.png", MouseMoveListenerSample.TITLE, "MapController",
+						MouseMoveListenerSample.FACTORY),
 
 				// Plug-ins
 				new SampleTreeNode(I18nProvider.getSampleMessages().treeGroupPlugins(),
@@ -213,8 +217,7 @@ public final class SampleArray {
 						"[ISOMORPHIC]/geomajas/osgeo/print.png", DefaultPrintingSample.TITLE, "Plugins",
 						DefaultPrintingSample.FACTORY),
 				new SampleTreeNode(I18nProvider.getSampleMessages().geocoderTitle(),
-						"[ISOMORPHIC]/geomajas/osgeo/show.png", GeocoderSample.TITLE, "Plugins",
-						GeocoderSample.FACTORY),
+						"[ISOMORPHIC]/geomajas/osgeo/show.png", GeocoderSample.TITLE, "Plugins", GeocoderSample.FACTORY),
 
 				// Toolbar and controllers:
 				new SampleTreeNode(I18nProvider.getSampleMessages().treeGroupToolbarAndControllers(),
