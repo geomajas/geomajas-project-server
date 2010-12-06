@@ -38,31 +38,31 @@ import java.io.Reader;
  *
  * This file was copied from checkstyle and is originally licensed as LGPL.
  */
-final class StringArrayReader extends Reader
-{
-    /** the underlying String array */
-    private final String[] mUnderlyingArray;
+final class StringArrayReader extends Reader {
 
-    /** array containing the length of the strings. */
-    private final int[] mLenghtArray;
+	/** the underlying String array */
+	private final String[] mUnderlyingArray;
 
-    /** the index of the currently read String */
-    private int mArrayIdx;
+	/** array containing the length of the strings. */
+	private final int[] mLenghtArray;
 
-    /** the index of the next character to be read */
-    private int mStringIdx;
+	/** the index of the currently read String */
+	private int mArrayIdx;
 
-    /** flag to tell whether an implicit newline has to be reported */
-    private boolean mUnreportedNewline;
+	/** the index of the next character to be read */
+	private int mStringIdx;
 
-    /** flag to tell if the reader has been closed */
-    private boolean mClosed;
+	/** flag to tell whether an implicit newline has to be reported */
+	private boolean mUnreportedNewline;
 
-    /**
-     * Creates a new StringArrayReader.
-     *
-     * @param aUnderlyingArray the underlying String array.
-     */
+	/** flag to tell if the reader has been closed */
+	private boolean mClosed;
+
+	/**
+	 * Creates a new StringArrayReader.
+	 *
+	 * @param aUnderlyingArray the underlying String array.
+	 */
     StringArrayReader(String[] aUnderlyingArray)
     {
         final int length = aUnderlyingArray.length;
