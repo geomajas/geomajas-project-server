@@ -277,7 +277,9 @@
 		<!-- misc, see http://checkstyle.sourceforge.net/config_misc.html -->
 
 		<!--<module name="TodoComment"/>-->
-		<module name="UncommentedMain"/>
+		<module name="UncommentedMain">
+			<property name="excludedClasses" value="Runner$"/>
+		</module>
 		<module name="UpperEll"/>
 		<module name="ArrayTypeStyle"/>
 		<!--<module name="FinalParameters"/>-->
