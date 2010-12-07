@@ -24,6 +24,7 @@ package org.geomajas.servlet;
 
 import org.geomajas.global.Api;
 import org.springframework.context.ApplicationContext;
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -33,8 +34,10 @@ import javax.servlet.ServletContext;
  *
  * @author Joachim Van der Auwera
  * @since 1.7.0
+ * @deprecated use {@link org.springframework.web.context.ContextLoaderListener}
  */
 @Api(allMethods = true)
+@Deprecated
 public final class ApplicationContextUtil {
 
 	private static final String GEOMAJAS_SPRING_CONTEXT = "Geomajas-Spring-context";
@@ -47,7 +50,7 @@ public final class ApplicationContextUtil {
 	}
 
 	public static ApplicationContext getApplicationContext(ServletContext servletContext) {
-		return (ApplicationContext) servletContext.getAttribute(GEOMAJAS_SPRING_CONTEXT);
+		return WebApplicationContextUtils.getWebApplicationContext(servletContext);
 	}
 
 	public static void setApplicationContext(ServletContext servletContext, ApplicationContext applicationContext) {

@@ -32,7 +32,11 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 /**
- * Initialise the servlet context. This assures the Spring application context is created and stored in the servlet
+ * Note: This class is no longer needed, you can use the standard Spring ContextLoaderListener with the following configLocation entry:
+ * <p><code>classpath:org/geomajas/spring/geomajasContext.xml</code><p>
+ * 
+ * 
+ * Initialises the servlet context. This assures the Spring application context is created and stored in the servlet
  * context. The Geomajas configuration is also read and also stored in the servlet context.
  * <p/>
  * The spring application context can be extended by adding locations (on the classpath) where addition configuration
@@ -41,9 +45,13 @@ import javax.servlet.ServletContextListener;
  * <p/>
  * Note: In case of multiple config locations, later bean definitions will override ones defined in earlier loaded
  * files. This can be leveraged to deliberately override certain bean definitions via an extra XML file.
+ * 
  *
  * @author Joachim Van der Auwera
+ * @deprecated use {@link org.springframework.web.context.ContextLoaderListener}
+ * 
  */
+@Deprecated
 public class GeomajasContextListener implements ServletContextListener {
 
 	// private final Logger log = LoggerFactory.getLogger(GeomajasContextListener.class);
@@ -56,7 +64,6 @@ public class GeomajasContextListener implements ServletContextListener {
 		ServletContext servletContext = servletContextEvent.getServletContext();
 
 		String configLocation = "classpath:org/geomajas/spring/geomajasContext.xml";
-		configLocation += ",classpath*:META-INF/geomajasContext.xml";
 		String additionalLocations = servletContext.getInitParameter(CONFIG_LOCATION_PARAMETER);
 		if (null != additionalLocations) {
 			for (String onePart : additionalLocations.split("\\s")) {
