@@ -65,11 +65,6 @@ public class RefreshConfigurationCommand implements Command<RefreshConfiguration
 				if (null == classLoader) {
 					classLoader = this.getClass().getClassLoader();
 				}
-				Enumeration<URL> urls = classLoader.getResources("META-INF/geomajasContext.xml");
-				while (urls.hasMoreElements()) {
-					URL url = urls.nextElement();
-					configLocations.add(url.toExternalForm());
-				}
 				
 				configLocations.addAll(Arrays.asList(request.getConfigLocations()));
 				try {
