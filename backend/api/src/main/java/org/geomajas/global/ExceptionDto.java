@@ -71,26 +71,59 @@ public class ExceptionDto implements Serializable {
 	// Getters and setters:
 	// ------------------------------------------------------------------------
 
+	/**
+	 * Returns the class name of the original exception.
+	 * 
+	 * @return The real exceptions class name.
+	 */
 	public String getClassName() {
 		return className;
 	}
 
+	/**
+	 * Set the class name of the original exception.
+	 * 
+	 * @param className
+	 *            The exception class name.
+	 */
 	public void setClassName(String className) {
 		this.className = className;
 	}
 
+	/**
+	 * Returns the message of the original exception.
+	 * 
+	 * @return The real exceptions message.
+	 */
 	public String getMessage() {
 		return message;
 	}
 
+	/**
+	 * Set the message of the original exception.
+	 * 
+	 * @param message
+	 *            The exception message.
+	 */
 	public void setMessage(String message) {
 		this.message = message;
 	}
 
+	/**
+	 * Returns the stack trace of the original exception.
+	 * 
+	 * @return The real exceptions stack trace.
+	 */
 	public StackTraceElement[] getStackTrace() {
 		return stackTrace;
 	}
 
+	/**
+	 * Set the stack trace of the original exception.
+	 * 
+	 * @param stackTrace
+	 *            The exception stack trace.
+	 */
 	public void setStackTrace(StackTraceElement[] stackTrace) {
 		this.stackTrace = stackTrace;
 	}
