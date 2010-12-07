@@ -279,8 +279,8 @@
 
         <mediaobject>
           <imageobject>
-            <imagedata align="center"
-                       fileref="images/gwtface_selection.png" width="" />
+            <imagedata align="center" fileref="images/gwtface_selection.png"
+                       width="" />
           </imageobject>
         </mediaobject>
       </figure>
@@ -583,8 +583,8 @@
 
         <mediaobject>
           <imageobject>
-            <imagedata align="center"
-                       fileref="images/gwtface_gfx_context.png" width="" />
+            <imagedata align="center" fileref="images/gwtface_gfx_context.png"
+                       width="" />
           </imageobject>
         </mediaobject>
       </figure>
@@ -1012,7 +1012,7 @@ map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</
       <section id="cGraphicsController">
         <title>GraphicsController</title>
 
-        <para>For interactive mouse listeners on the map there is a general
+        <para>For interactive mouse controllers on the map there is a general
         interface, <code>GraphicsController</code>. To write a custom
         controller, you should always extend
         <code>AbstractGraphicsController</code>.</para>
@@ -1107,6 +1107,48 @@ map.getVectorContext().drawGroup(map.getGroup(RenderGroup.SCREEN), parent, m);</
         <para>In order to completely disable the use of a fallback controller,
         set "null" as the new fallback controller.</para>
       </section>
+    </section>
+
+    <section>
+      <title>Listeners on the map</title>
+
+      <para>As an alternative to the interactive controllers on a map, there
+      are passive <code>Listeners</code> as well. These listener have an
+      interface very much like the <code>GraphicsController</code> interface,
+      but they never receive the real mouse events. As such they are meant to
+      be passive observers, that simply receive notifications of mouse events.
+      As opposed to the <code>GraphicsControllers</code>, these listeners are
+      never allowed to interfere.</para>
+
+      <para>As a result, multiple listeners can be registered on the map,
+      while only one <code>GraphicsController</code> can be active at any
+      given time. Instead of the real mouse events, listeners receive
+      placeholder events of the type <code>ListenerEvent</code>. These
+      <code>ListenerEvent</code> objects resemble the GWT mouse events a bit,
+      and contain most of the information of the real mouse events.</para>
+
+      <para>In order to add a listener to the map, or remove a listener from
+      the map, your code should be something like this:</para>
+
+      <programlisting>// Define a new Listener, starting from the AbstractListener:
+Listener myListener = new AbstractListener() {
+    public void onMouseMove(ListenerEvent event) {
+        // Do something...
+    }
+};
+
+// Add the Listener to the map:
+mapWidget.addListener(myListener);
+
+// Remove the Listener from the map:
+mapWidget.removeListener(myListener);</programlisting>
+
+      <para><note>
+          <para>When creating a new Listener, often it is easiest to start
+          from the <code>AbstractListener</code> class, which has all empty
+          methods for catching the mouse events. In this case you simply
+          override the methods for the events you are interested in.</para>
+        </note></para>
     </section>
   </section>
 
