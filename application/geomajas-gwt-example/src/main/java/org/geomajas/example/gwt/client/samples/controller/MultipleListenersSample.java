@@ -64,7 +64,7 @@ public class MultipleListenersSample extends SamplePanel {
 		}
 	};
 
-	private int column = 0;
+	private int column;
 
 	/**
 	 * @return The viewPanel Canvas

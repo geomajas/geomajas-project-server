@@ -131,9 +131,6 @@ public class GraphicsWidget extends VLayout implements MapContext, HasDoubleClic
 	 */
 	private List<HandlerRegistration> handlers;
 
-	/** An optional passive listener that listens to mouse events on a map without interfering. */
-	// private List<ListenerController> listenerControllers = new ArrayList<ListenerController>();
-
 	/**
 	 * A list of handler registrations that are needed to correctly clean up after a listener is deactivated.
 	 */
