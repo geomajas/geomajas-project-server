@@ -39,6 +39,7 @@
 		<include name="GeomajasConstant.java"/>
 		<include name="CopyrightInfo.java"/>
 		<include name="CacheableObject.java"/>
+		<include name="ExceptionDto.java"/>
 	</source>
 
 </module>
