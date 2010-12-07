@@ -32,6 +32,7 @@ import org.geomajas.example.gwt.client.samples.controller.ControllerOnElementSam
 import org.geomajas.example.gwt.client.samples.controller.CustomControllerSample;
 import org.geomajas.example.gwt.client.samples.controller.FallbackControllerSample;
 import org.geomajas.example.gwt.client.samples.controller.MouseMoveListenerSample;
+import org.geomajas.example.gwt.client.samples.controller.MultipleListenersSample;
 import org.geomajas.example.gwt.client.samples.controller.RectangleControllerSample;
 import org.geomajas.example.gwt.client.samples.editing.EditLineLayerSample;
 import org.geomajas.example.gwt.client.samples.editing.EditMultiLineLayerSample;
@@ -207,8 +208,11 @@ public final class SampleArray {
 						"[ISOMORPHIC]/geomajas/osgeo/tools.png", FallbackControllerSample.TITLE, "MapController",
 						FallbackControllerSample.FACTORY),
 				new SampleTreeNode(I18nProvider.getSampleMessages().mouseMoveListenerTitle(),
-						"[ISOMORPHIC]/geomajas/osgeo/tools.png", MouseMoveListenerSample.TITLE, "MapController",
+						"[ISOMORPHIC]/geomajas/silk/monitor.png", MouseMoveListenerSample.TITLE, "MapController",
 						MouseMoveListenerSample.FACTORY),
+				new SampleTreeNode(I18nProvider.getSampleMessages().multipleListenersTitle(),
+						"[ISOMORPHIC]/geomajas/silk/monitor.png", MultipleListenersSample.TITLE, "MapController",
+						MultipleListenersSample.FACTORY),
 
 				// Plug-ins
 				new SampleTreeNode(I18nProvider.getSampleMessages().treeGroupPlugins(),

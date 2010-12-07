@@ -92,7 +92,7 @@ public class MouseMoveListenerSample extends SamplePanel {
 						+ ")");
 			}
 		}
-		map.setListener(new MouseMoveListener());
+		map.addListener(new MouseMoveListener());
 
 		layout.addMember(mapLayout);
 		layout.addMember(labelLayout);
@@ -109,8 +109,8 @@ public class MouseMoveListenerSample extends SamplePanel {
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "classpath:org/geomajas/example/gwt/servercfg/raster/layerWmsBluemarble.xml",
-				"classpath:org/geomajas/example/gwt/clientcfg/layer/mapWms.xml" };
+		return new String[] { "classpath:org/geomajas/example/gwt/servercfg/raster/layerOsm.xml",
+				"classpath:org/geomajas/example/gwt/clientcfg/layer/mapOsm.xml" };
 	}
 
 	public String ensureUserLoggedIn() {

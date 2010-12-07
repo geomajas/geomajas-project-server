@@ -35,8 +35,16 @@ import com.google.gwt.event.dom.client.MouseWheelHandler;
 
 // @extract-start GraphicsController, GraphicsController
 /**
+ * <p>
  * General interface for a controller set on a {@link org.geomajas.gwt.client.widget.MapWidget}. It should implement all
  * of the available mouse handling events.
+ * </p>
+ * <p>
+ * These controllers can do anything they want with these mouse events, and as a result only one controller can be
+ * active on a map at any given time. This is also the difference between controllers and listeners. A
+ * <code>Listener</code> passively listens to mouse events without ever interfering with them. Therefore there is no
+ * maximum of listeners that can be active on a map at any given time.
+ * </p>
  * 
  * @author Pieter De Graef
  * @since 1.6.0

@@ -24,10 +24,14 @@
 package org.geomajas.gwt.client.widget;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.controller.GraphicsController;
+import org.geomajas.gwt.client.controller.listener.Listener;
 import org.geomajas.gwt.client.controller.listener.ListenerController;
 import org.geomajas.gwt.client.gfx.GraphicsContext;
 import org.geomajas.gwt.client.gfx.ImageContext;
@@ -122,18 +126,18 @@ public class GraphicsWidget extends VLayout implements MapContext, HasDoubleClic
 	 */
 	private GraphicsController fallbackController;
 
-	/** An optional passive listener that listens to mouse events on a map without interfering. */
-	private ListenerController listenerController;
-
 	/**
 	 * A list of handler registrations that are needed to correctly clean up after a controller is deactivated.
 	 */
 	private List<HandlerRegistration> handlers;
 
+	/** An optional passive listener that listens to mouse events on a map without interfering. */
+	// private List<ListenerController> listenerControllers = new ArrayList<ListenerController>();
+
 	/**
 	 * A list of handler registrations that are needed to correctly clean up after a listener is deactivated.
 	 */
-	private List<HandlerRegistration> listenerHandlers;
+	private Map<ListenerController, List<HandlerRegistration>> listeners;
 
 	/**
 	 * Every time a right mouse button has been clicked, this widget will store the event's coordinates.
@@ -179,7 +183,7 @@ public class GraphicsWidget extends VLayout implements MapContext, HasDoubleClic
 		}
 		menuContext = new MapMenuContext();
 		handlers = new ArrayList<HandlerRegistration>();
-		listenerHandlers = new ArrayList<HandlerRegistration>();
+		listeners = new HashMap<ListenerController, List<HandlerRegistration>>();
 
 		// capture right mouse info (target id and coordinate)
 		RightMouseHandler rmh = new RightMouseHandler();
@@ -272,40 +276,74 @@ public class GraphicsWidget extends VLayout implements MapContext, HasDoubleClic
 	}
 
 	/**
-	 * Return the controller of a listener that passively listens to mouse events on the map. These listeners do not
-	 * interfere with the mouse events.
+	 * Get the full set of listener controllers currently active on this widget.
 	 * 
-	 * @return Return the ListenerController or null if there is none active.
+	 * @return The list of listener controllers.
+	 * @since 1.8.0
 	 */
-	public ListenerController getListener() {
-		return listenerController;
+	public Set<ListenerController> getListeners() {
+		return listeners.keySet();
 	}
 
 	/**
-	 * Apply a controller for a listener that passively listens to mouse events on the map. These listeners do not
-	 * interfere with the mouse events.
+	 * Add a new listener controller on this widget. These listeners passively listen to mouse events on the map. They
+	 * do not interfere with these events.
+	 * 
+	 * @param listenerController
+	 *            The new listener controller to add.
+	 * @return Returns true if addition was successful, false otherwise.
+	 * @since 1.8.0
+	 */
+	public boolean addListener(ListenerController listenerController) {
+		if (listenerController != null && !listeners.containsKey(listenerController)) {
+			List<HandlerRegistration> registrations = new ArrayList<HandlerRegistration>();
+			registrations.add(eventWidget.addMouseDownHandler(listenerController));
+			registrations.add(eventWidget.addMouseMoveHandler(listenerController));
+			registrations.add(eventWidget.addMouseOutHandler(listenerController));
+			registrations.add(eventWidget.addMouseOverHandler(listenerController));
+			registrations.add(eventWidget.addMouseUpHandler(listenerController));
+			registrations.add(eventWidget.addMouseWheelHandler(listenerController));
+			listeners.put(listenerController, registrations);
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Remove an existing listener controller from this widget. These listeners passively listen to mouse events on the
+	 * map. They do not interfere with these events.
+	 * 
+	 * @param listenerController
+	 *            The existing listener controller to remove.
+	 * @return Returns true if removal was successful, false otherwise (i.e. if it could not be found).
+	 * @since 1.8.0
+	 */
+	public boolean removeListener(ListenerController listenerController) {
+		if (listenerController != null && listeners.containsKey(listenerController)) {
+			List<HandlerRegistration> registrations = listeners.get(listenerController);
+			for (HandlerRegistration registration : registrations) {
+				registration.removeHandler();
+			}
+			listeners.remove(listenerController);
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Get the controller that belongs to the given listener. Protected method, used by the MapWidget.
 	 * 
 	 * @param listener
-	 *            The actual listener object or null to deactive the current listener.
+	 *            The listeners to search for.
+	 * @return Return the controller, or null if it could not be found.
 	 */
-	public void setListener(ListenerController listener) {
-		for (HandlerRegistration registration : listenerHandlers) {
-			registration.removeHandler();
+	protected ListenerController getController(Listener listener) {
+		for (ListenerController controller : listeners.keySet()) {
+			if (controller.getListener().equals(listener)) {
+				return controller;
+			}
 		}
-		if (listenerController != null) {
-			listenerController.onDeactivate();
-			listenerController = null;
-		}
-		listenerHandlers = new ArrayList<HandlerRegistration>();
-		if (listener != null) {
-			listenerController = listener;
-			listenerHandlers.add(eventWidget.addMouseDownHandler(listenerController));
-			listenerHandlers.add(eventWidget.addMouseMoveHandler(listenerController));
-			listenerHandlers.add(eventWidget.addMouseOutHandler(listenerController));
-			listenerHandlers.add(eventWidget.addMouseOverHandler(listenerController));
-			listenerHandlers.add(eventWidget.addMouseUpHandler(listenerController));
-			listenerController.onActivate();
-		}
+		return null;
 	}
 
 	// -------------------------------------------------------------------------

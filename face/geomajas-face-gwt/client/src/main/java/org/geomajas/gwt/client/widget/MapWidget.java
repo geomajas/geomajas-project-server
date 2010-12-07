@@ -24,8 +24,10 @@
 package org.geomajas.gwt.client.widget;
 
 import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.geomajas.command.CommandResponse;
 import org.geomajas.command.dto.GetMapConfigurationRequest;
@@ -728,35 +730,53 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 	}
 
 	/**
-	 * Apply a listener that passively listens to mouse events on the map. These listeners do not interfere with the
-	 * mouse events.
+	 * Get the currently active set of listeners on the map. These listeners passively listen to mouse events on the
+	 * map, without actually interfering with these events. The difference with a {@link GraphicsController} is that
+	 * controllers can do whatever they want, while a listener is not allowed to interfere with the mouse events in any
+	 * way.
 	 * 
-	 * @param listener
-	 *            The actual listener object or null to deactive the current listener.
+	 * @return Returns the full set of currently active listeners.
 	 * @since 1.8.0
 	 */
 	@Api
-	public void setListener(Listener listener) {
-		if (listener != null) {
-			graphics.setListener(new ListenerController(this, listener));
-		} else {
-			graphics.setListener(null);
+	public Set<Listener> getListeners() {
+		Set<ListenerController> controllers = graphics.getListeners();
+		Set<Listener> listeners = new LinkedHashSet<Listener>();
+		for (ListenerController controller : controllers) {
+			listeners.add(controller.getListener());
 		}
+		return listeners;
 	}
 
 	/**
-	 * Return a listener that passively listens to mouse events on the map. These listeners do not interfere with the
-	 * mouse events.
+	 * Add a new listener to the map. These listeners passively listen to mouse events on the map, without actually
+	 * interfering with these events. The difference with a {@link GraphicsController} is that controllers can do
+	 * whatever they want, while a listener is not allowed to interfere with the mouse events in any way.
 	 * 
-	 * @return Return the listener or null if there is none active.
+	 * @param listener
+	 *            The listener to try and remove again.
+	 * @return Returns true of removal was successful, false otherwise (i.e. if the listener could not be found).
 	 * @since 1.8.0
 	 */
 	@Api
-	public Listener getListener() {
-		if (graphics.getListener() != null) {
-			return graphics.getListener().getListener();
-		}
-		return null;
+	public boolean addListener(Listener listener) {
+		return graphics.addListener(new ListenerController(this, listener));
+	}
+
+	/**
+	 * Remove one of the currently active listeners on the map. These listeners passively listen to mouse events on the
+	 * map, without actually interfering with these events. The difference with a {@link GraphicsController} is that
+	 * controllers can do whatever they want, while a listener is not allowed to interfere with the mouse events in any
+	 * way.
+	 * 
+	 * @param listener
+	 *            The listener to try and remove again.
+	 * @return Returns true of removal was successful, false otherwise (i.e. if the listener could not be found).
+	 * @since 1.8.0
+	 */
+	@Api
+	public boolean removeListener(Listener listener) {
+		return graphics.removeListener(graphics.getController(listener));
 	}
 
 	public double getUnitLength() {

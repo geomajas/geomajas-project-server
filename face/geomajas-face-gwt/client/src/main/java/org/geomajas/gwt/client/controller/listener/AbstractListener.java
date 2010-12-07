@@ -23,6 +23,8 @@
 
 package org.geomajas.gwt.client.controller.listener;
 
+import org.geomajas.global.Api;
+
 /**
  * <p>
  * Abstract implementation for passive listeners on a map. These listeners receive notifications of mouse events on the
@@ -34,7 +36,9 @@ package org.geomajas.gwt.client.controller.listener;
  * </p>
  * 
  * @author Pieter De Graef
+ * @since 1.8.0
  */
+@Api(allMethods = true)
 public abstract class AbstractListener implements Listener {
 
 	public void onMouseDown(ListenerEvent event) {

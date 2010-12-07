@@ -301,6 +301,20 @@ public interface SampleMessages extends Messages {
 
 	String mouseMoveListenerDescription();
 
+	// MultipleListeners sample:
+
+	String multipleListenersTitle();
+
+	String multipleListenersDescription();
+
+	String multipleListenersBtn();
+
+	String multipleListenersPortletTitle();
+
+	String multipleListenersPortletText();
+
+	String multipleListenersCount(int count);
+
 	// Login sample:
 
 	String loginTitle();
