@@ -32,7 +32,8 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 /**
- * Note: This class is no longer needed, you can use the standard Spring ContextLoaderListener with the following configLocation entry:
+ * Note: This class is no longer needed, you can use the standard Spring ContextLoaderListener with the following 
+ * configLocation entry:
  * <p><code>classpath:org/geomajas/spring/geomajasContext.xml</code><p>
  * 
  * 
