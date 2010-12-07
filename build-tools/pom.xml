@@ -20,6 +20,7 @@
 		<module>geomajas-parent</module>
 		<module>geomajas-dep</module>
 		<module>geomajas-gwt-archetype</module>
+		<module>geomajas-jetty-runner</module>
 		<module>geomajas-plugin-archetype</module>
 	</modules>
 
