@@ -6,11 +6,12 @@
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
+			classpath:org/geomajas/spring/geomajasContext.xml
             <!-- Server side raster layers -->
-			classpath:org/geomajas/example/gwt/servercfg/**/*.xml
+			WEB-INF/servercfg/**/*.xml
 
             <!-- Map Configurations -->
-			classpath:org/geomajas/example/gwt/clientcfg/**/*.xml
+			WEB-INF/clientcfg/**/*.xml
 
 			classpath:org/geomajas/plugin/caching/DefaultCachedPipelines.xml
 			<!--
@@ -21,35 +22,6 @@
 			-->
        </param-value>
     </context-param>
-
-	<!-- @extract-start PreloadToPrepareScanning, Preload class to prevent scanning problems -->
-    <context-param>
-        <param-name>preloadClasses</param-name>
-        <param-value>
-			org.geomajas.command.general.LogCommand
-			org.geomajas.spring.GeomajasBeanNameGenerator
-			org.hibernate.validator.engine.ValidatorImpl
-			org.geomajas.plugin.staticsecurity.command.dto.LoginRequest
-			org.geotools.data.shapefile.ShapefileDataStoreFactory
- 			org.geomajas.gwt.client.Geomajas
- 			org.geomajas.example.gwt.client.GeomajasSamples
- 			org.geomajas.layer.geotools.GeoToolsLayer
- 			org.geomajas.layer.hibernate.HibernateLayer
- 			org.geomajas.layer.osm.OsmLayer
- 			org.geomajas.layer.wms.WmsLayer
- 			org.geotools.referencing.crs.EPSGCRSAuthorityFactory
-			org.springframework.transaction.config.TxNamespaceHandler
-			org.geomajas.plugin.printing.command.dto.PrintGetTemplateRequest
-			org.geomajas.plugin.geocoder.service.SplitCommaReverseService
-			org.geomajas.plugin.caching.service.CacheService
-			org.geomajas.plugin.geocoder.api.GeocoderInfo
-       </param-value>
-    </context-param>
-
-	<filter>
-		<filter-name>JettyFilter</filter-name>
-		<filter-class>org.geomajas.servlet.JettyThreadParentFilter</filter-class>
-	</filter>
 
 	<!-- @extract-skip-start -->
 	<filter>
@@ -98,14 +70,10 @@
 		<servlet-name>GeomajasServiceServlet</servlet-name>
 	</filter-mapping>
 	<!-- @extract-skip-end -->
-
-	<listener>
- 		<listener-class>org.geomajas.servlet.PrepareScanningContextListener</listener-class>
-	</listener>
 	<!-- @extract-end -->
 	
 	<listener>
- 		<listener-class>org.geomajas.servlet.GeomajasContextListener</listener-class>
+ 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
 
 	<servlet>
@@ -126,7 +94,7 @@
 
 	<servlet-mapping>
 		<servlet-name>GeomajasServiceServlet</servlet-name>
-		<url-pattern>/org.geomajas.example.gwt.GeomajasSamples/geomajasService</url-pattern>
+		<url-pattern>/GeomajasSamples/geomajasService</url-pattern>
 	</servlet-mapping>
 
 	<servlet-mapping>

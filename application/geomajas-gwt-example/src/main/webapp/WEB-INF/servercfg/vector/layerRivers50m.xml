@@ -134,7 +134,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 
 
 	<bean name="rivers50m" class="org.geomajas.layer.shapeinmem.ShapeInMemLayer">
-		<property name="url" value="classpath:org/geomajas/example/gwt/servercfg/vector/shapefile/nat_earth/50m-rivers-lake-centerlines.shp"/>
+		<property name="url" value="classpath:org/geomajas/example/gwt/shapefile/nat_earth/50m-rivers-lake-centerlines.shp"/>
 		<property name="layerInfo" ref="rivers50mInfo" />
 	</bean>
 

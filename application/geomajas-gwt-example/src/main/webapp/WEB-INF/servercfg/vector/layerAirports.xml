@@ -137,7 +137,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
 	<bean name="airports" class="org.geomajas.layer.shapeinmem.ShapeInMemLayer">
 		<property name="layerInfo" ref="airportsInfo" />
-		<property name="url" value="classpath:org/geomajas/example/gwt/servercfg/vector/shapefile/nationalatlas/airprtx020.shp" />
+		<property name="url" value="classpath:org/geomajas/example/gwt/shapefile/nationalatlas/airprtx020.shp" />
 	</bean>
 
 </beans>

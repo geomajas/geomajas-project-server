@@ -244,7 +244,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
 	<bean name="multiCities" class="org.geomajas.layer.shapeinmem.ShapeInMemLayer">
 		<property name="layerInfo" ref="multiCitiesInfo" />
-		<property name="url" value="classpath:org/geomajas/example/gwt/servercfg/vector/shapefile/geosparc/multiCities.shp" />
+		<property name="url" value="classpath:org/geomajas/example/gwt/shapefile/geosparc/multiCities.shp" />
 	</bean>
 
 </beans>
