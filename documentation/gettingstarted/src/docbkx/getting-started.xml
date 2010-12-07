@@ -278,19 +278,19 @@
 
       <listitem>
         <para>SVN team provider: update site
-        http://download.eclipse.org/releases/galileo, choose Collaboration
+        http://download.eclipse.org/releases/helios, choose Collaboration
         -&gt;Subversive SVN Team Provider (Incubation)</para>
       </listitem>
 
       <listitem>
         <para>Google's GWT Eclipse plug-in:
-        http://dl.google.com/eclipse/plugin/3.5 (Plugin and SDK)</para>
+        http://dl.google.com/eclipse/plugin/3.6 (Plugin and SDK)</para>
       </listitem>
     </itemizedlist>
 
-    <section id="eclipwtp">
-      <title>Combining Eclipse WTP with the maven GWT plugin (recommended
-      setup)</title>
+    <section>
+      <title>Running/debugging with the Google Plug-in for Eclipse (embedded
+      Jetty option)</title>
 
       <para>There is a classpath issue with the Google Plug-in for Eclipse
       (GPE) that prevents us from using it in a reliable way when there are
@@ -305,18 +305,22 @@
       require explicit user interaction is not available. (see <ulink
       url="???">http://googlewebtoolkit.blogspot.com/2010/08/how-to-use-google-plugin-for-eclipse.html</ulink>).</para>
 
-      <para>The most stable solution - in terms of class path and ease-of-use
-      - we have found so far is to not use GPE at all but instead start the
-      hosted mode via the GWT maven plug-in (see <ulink
-      url="???">http://mojo.codehaus.org/gwt-maven-plugin/</ulink>). The
-      following blog shows how to configure the plug-in: <ulink
-      url="???">http://jvminside.blogspot.com/2010/02/efficient-gwt-development-with-eclipse.html</ulink>.
-      This requires an additional bit of maven configuration, which has been
-      put inside the m2e profile of the GWT archetype. This profile will be
-      automatically activated when the m2eclipse plug-in is present.</para>
+      <para>In view of these problems, the following workaround seems to be
+      the most reliable way of using the GWT plugin for us:</para>
 
-      <para>Using this profile, the following actions have to be performed to
-      import, run and debug a project in Eclipse:</para>
+      <itemizedlist>
+        <listitem>
+          <para>Run the GWT plugin with the no-server option (this can be done
+          straight from the project since GWT 2.1</para>
+        </listitem>
+
+        <listitem>
+          <para>Run an embedded Jetty server to replace the GWT server</para>
+        </listitem>
+      </itemizedlist>
+
+      <para>The following series of steps have to be performed to achieve a
+      working project.</para>
 
       <itemizedlist>
         <listitem>
@@ -334,34 +338,85 @@
         </listitem>
 
         <listitem>
-          <para>After the project has been built, there are some errors left,
-          which can be solved by updating the Maven project configuration
-          (right-click on the project and select Maven -&gt; Update Project
-          Configuration)</para>
+          <para>After the project has been imported and the workspace has been
+          built, you should now manually mark the project as a GWT project in
+          the project properties dialog. Open the Google -&gt; Web Toolkit
+          section and mark the checkbox. If the eclipse GWT version differs
+          from the project version, the "Use specific SDK" checkbox will be
+          enabled:</para>
 
           <figure>
-            <title>Update Maven project configuration</title>
+            <title>Eclipse project properties dialog, Google Web
+            Toolkit</title>
 
             <mediaobject>
               <imageobject>
-                <imagedata fileref="images/eclipse-wtp-update-maven-project.png"
-                           width="50%" />
+                <imagedata fileref="images/eclipse-gwt-modules.png"
+                           width="60%" />
               </imageobject>
             </mediaobject>
           </figure>
         </listitem>
 
         <listitem>
-          <para>Open the debug configurations. There should be 4
-          configurations available: 3 maven configurations and 1 remote Java
+          <para>In the Google -&gt; Web Application section, the WAR directory
+          should be changed to the default maven war sources directory
+          (src/main/webapp)<figure>
+              <title>Eclipse project properties dialog, Google Web
+              Application</title>
+
+              <mediaobject>
+                <imageobject>
+                  <imagedata fileref="images/eclipse-gwt-webapp.png"
+                             width="70%" />
+                </imageobject>
+              </mediaobject>
+            </figure></para>
+        </listitem>
+
+        <listitem>
+          <para>Open the debug configurations dialog and create a new Java
           application:</para>
 
           <figure>
-            <title>Debug configurations</title>
+            <title>Debug configurations dialog </title>
 
             <mediaobject>
               <imageobject>
-                <imagedata fileref="images/eclipse-wtp-configurations.png"
+                <imagedata fileref="images/eclipse-debug-configurations.png"
+                           width="60%" />
+              </imageobject>
+            </mediaobject>
+          </figure>
+        </listitem>
+
+        <listitem>
+          <para>Search for JettyRunner as the main class. JettyRunner is a
+          specially prepared main class that starts up Jetty with the correct
+          parameters (port 8888 and src/main/webapp as webapp
+          directory)</para>
+
+          <figure>
+            <title>JettyRunner as main class</title>
+
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="images/eclipse-jetty-runner.png"
+                           width="60%" />
+              </imageobject>
+            </mediaobject>
+          </figure>
+        </listitem>
+
+        <listitem>
+          <para>Run the new Jetty server configuration (in debug mode):</para>
+
+          <figure>
+            <title>Running Jetty</title>
+
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="images/eclipse-jetty-console.png"
                            width="50%" />
               </imageobject>
             </mediaobject>
@@ -369,147 +424,60 @@
         </listitem>
 
         <listitem>
-          <para>Run the COMPILE GWT configuration once. This will do a
-          one-time GWT compilation and add the the result as an extra Web
-          Resource folder to the project. After refreshing the project (F5),
-          the following layout should appear in Web Resources:</para>
+          <para>Now, run the GWT plugin in no-server mode by by right-clicking
+          on the project and selecting Debug As -&gt; Web Application (running
+          on an external server):</para>
 
           <figure>
-            <title>Web Resources layout</title>
+            <title>Running the GWT application</title>
 
             <mediaobject>
               <imageobject>
-                <imagedata fileref="images/eclipse-wtp-webresources.png"
-                           width="50%" />
+                <imagedata fileref="images/eclipse-gwt-debug.png" width="70%" />
               </imageobject>
             </mediaobject>
           </figure>
         </listitem>
 
         <listitem>
-          <para>That's it, the project can now be deployed in the usual manner
-          on your preferred WTP server by right-clicking on the project and
-          selecting Run As... -&gt; Run on Server:</para>
-
-          <figure>
-            <title>Running the application</title>
-
-            <mediaobject>
-              <imageobject>
-                <imagedata fileref="images/eclipse-wtp-run.png" width="50%" />
-              </imageobject>
-            </mediaobject>
-          </figure>
-        </listitem>
-
-        <listitem>
-          <para>To debug the project, 2 additional processes have to be
-          started. First run the DEBUG GWT configuration in debug mode. This
-          process will start up a console and wait for the Java remote
-          application process to connect.</para>
-        </listitem>
-
-        <listitem>
-          <para>Now run the CONNECT GWT configuration. This configuration will
-          connect to the GWT process and startup the GWT development console.
-          From there you can run the application in your default
-          browser.</para>
+          <para>You can now add breakpoints and debug your application as if
+          it was a normal Java application. </para>
         </listitem>
       </itemizedlist>
     </section>
 
-    <section id="eclipgwt">
-      <title>Using the Google Plug-in for Eclipse (possible class path
-      issues)</title>
+    <section id="eclipwtp">
+      <title>Running/debugging with the Google Plug-in for Eclipse</title>
 
-      <para>To develop with the Google Plug-in for Eclipse, the following
-      actions have to be taken:</para>
+      <para>If you want to run your application directly with GPE, some extra
+      actions are needed to avoid classpath problems. You will have to change
+      your web.xml by adding a special context listener that allows Spring
+      component scanning and circumvents a GeoTools problem with the builtin
+      Jetty classloader:</para>
+
+      <programlisting>&lt;listener&gt;
+ &lt;listener-class&gt;org.geomajas.servlet.PrepareScanningContextListener&lt;/listener-class&gt;
+&lt;/listener&gt;</programlisting>
+
+      <para>This solves most of the classpath problems but does not cure the
+      problem of having multiple artifact versions in the classpath! This is
+      usually only a problem when you have several Geomajas projects opened in
+      your workspace. If this is the case, run the GWT plugin with an embedded
+      Jetty server as explained in the previous chapter and you should be
+      fine.</para>
+
+      <para>The following steps are needed to run GPE directly:</para>
 
       <para><itemizedlist>
           <listitem>
-            <para>Make sure you add the process-resources as a goal to run on
-            project import in the general Maven preferences
-            (Window-&gt;Preferences)</para>
-
-            <figure>
-              <title>Maven preferences</title>
-
-              <mediaobject>
-                <imageobject>
-                  <imagedata fileref="images/eclipse-maven-settings.png"
-                             width="50%" />
-                </imageobject>
-              </mediaobject>
-            </figure>
+            <para>Follow the configuration steps of the indirect mode, right
+            up to the Jetty part</para>
           </listitem>
 
           <listitem>
-            <para>You can now use the project wizard to import the project as
-            a Maven project. The embedded maven instance will automatically
-            run the process-resources goal and generate and import the Eclipse
-            project configuration. Because the m2eclipse plug-in hides all
-            resources from the eclipse source path, a conflict with the GWT
-            plug-in arises. The GWT plug-in will look for module files in the
-            source path and therefore cannot find them. To solve this, you
-            have to manually remove the exclusion filters for the
-            src/main/resources path and include a filter for the gwt module
-            extension (**/*gwt.xml). In the end, the source path should look
-            as follows:</para>
-
-            <figure>
-              <title>Including GWT modules in src/main/resources</title>
-
-              <mediaobject>
-                <imageobject>
-                  <imagedata fileref="images/eclipse-gwt-module-inclusion.png"
-                             width="50%" />
-                </imageobject>
-              </mediaobject>
-            </figure>
-          </listitem>
-
-          <listitem>
-            <para>You can now manually mark the project as a GWT project in
-            the project properties dialog and select the module entry point of
-            your choice. To reduce compilation time, a specific development
-            version of the module with a limited number of compile
-            permutations (1 browser, 1 language) should have been generated by
-            the Geomajas archetype. Our naming convention is to use the same
-            module name as for production but adding Dev at the end:</para>
-
-            <figure>
-              <title>Eclipse project properties dialog, Google Web
-              Toolkit</title>
-
-              <mediaobject>
-                <imageobject>
-                  <imagedata fileref="images/eclipse-gwt-modules.png"
-                             width="60%" />
-                </imageobject>
-              </mediaobject>
-            </figure>
-          </listitem>
-
-          <listitem>
-            <para>In the Google -&gt; Web Application section, the WAR
-            directory should be changed to the default maven war sources
-            directory (src/main/webapp)<figure>
-                <title>Eclipse project properties dialog, Google Web
-                Application</title>
-
-                <mediaobject>
-                  <imageobject>
-                    <imagedata fileref="images/eclipse-gwt-webapp.png"
-                               width="70%" />
-                  </imageobject>
-                </mediaobject>
-              </figure></para>
-          </listitem>
-
-          <listitem>
-            <para>After configuration, you should now be able to run the
-            project as a GWT Web application by right-clicking on the project
-            and selecting <code>Run as -&gt; Web Application</code>.</para>
+            <para>Run the project as a GWT Web application by right-clicking
+            on the project and selecting <code>Run as -&gt; Web
+            Application</code>.</para>
           </listitem>
 
           <listitem>
@@ -517,36 +485,7 @@
             right-clicking on the project and selecting <code>Debug as -&gt;
             Web Application</code>.</para>
           </listitem>
-
-          <listitem>
-            <para>With the GWT plug-in , possible class path issues may result
-            because of incompatibilities between the m2eclipse maven container
-            and the GWT plug-in. One of the issues is that Spring component
-            scanning will only work when the jar to be scanned has been
-            preloaded before the scanning is done. We have found a workaround
-            for this issue by adding a list of classes to preload to context
-            listener in the web.xml: configuration. Whenever you use a plug-in
-            that needs scanning, at least one class of this module should be
-            added to the list:</para>
-
-            <programlisting>&lt;!-- @extract-start PreloadToPrepareScanning, Preload class to prevent scanning problems --&gt;
-    &lt;context-param&gt;
-        &lt;param-name&gt;preloadClasses&lt;/param-name&gt;
-        &lt;param-value&gt;
-   org.geomajas.command.general.LogCommand
-   org.geomajas.spring.GeomajasBeanNameGenerator
-   .... &lt;add your class here !&gt;
-       &lt;/param-value&gt;
-    &lt;/context-param&gt;
-
-&lt;listener&gt;
- &lt;listener-class&gt;org.geomajas.servlet.PrepareScanningContextListener&lt;/listener-class&gt;
-&lt;/listener&gt;
-</programlisting>
-          </listitem>
         </itemizedlist></para>
-
-      <para></para>
     </section>
   </section>
 
