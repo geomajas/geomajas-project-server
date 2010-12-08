@@ -62,7 +62,7 @@
           <para>Subversive: Eclipse plug-in, can be found on the following
           Eclipse update site ( <ulink
           url="http://download.eclipse.org/releases/galileo">
-          http://download.eclipse.org/releases/galileo </ulink> &gt;
+          http://download.eclipse.org/releases/helios</ulink> &gt;
           Collaboration Tools)</para>
         </listitem>
 
@@ -121,70 +121,79 @@
       <para><prompt>geomajas-trunk&gt;</prompt> <command>mvn install
       </command></para>
 
-      <figure>
-        <title>Command prompt after running 'mvn install'</title>
-
-        <mediaobject>
-          <imageobject>
-            <imagedata fileref="images/mvn-install.png" width="80%" />
-          </imageobject>
-        </mediaobject>
-      </figure>
-
       <para>The install procedure will build all code, run all unit tests and
       install the artifacts in the repository. Integration tests based on
       Selenium will also be run.</para>
     </section>
   </section>
 
-  <section id="eclipse">
+  <section>
     <title>Eclipse</title>
 
-    <para>Eclipse project configurations can be generated using the maven
-    Eclipse plug-in. This requires you to run the following command:</para>
+    <para>The Eclipse setup is described in the "Getting Started"
+    documentation (see documentation root). For framework development, take
+    the setup described in "Running/debugging with the Google Plug-in for
+    Eclipse (embedded Jetty option)". The embedded Jetty setup is needed to
+    avoid problems with references to multiple versions of Geomajas artifacts
+    like the backend. When using the direct GWT setup, these artifacts are not
+    always correctly mediated.</para>
 
-    <para><prompt>geomajas-trunk&gt;</prompt> <command>mvn eclipse:eclipse
-    </command></para>
+    <section>
+      <title>Running/debugging with M2Eclipse (quickstart)</title>
 
-    <para>After the command has completed, Eclipse project definitions will
-    have been generated for all subprojects (except the pom projects). These
-    projects can now be imported into Eclipse.</para>
+      <para>The following steps are required (see "Getting Started" for more
+      detail)</para>
 
-    <para>If you will be working with the GWT face, you may want to make use
-    of the GWT Eclipse plug-in of Google. Detailed instructions can be found
-    on the following site:<ulink
-    url="http://code.google.com/eclipse/docs/download.html">
-    http://code.google.com/eclipse/docs/download.html</ulink>. We have
-    experienced a problem with the project dependencies in Eclipse, which can
-    be solved by running the gwt:eclipse goal of the GWT maven plug-in. This
-    goal should be run the GWT project directory: geomajas-gwt-simple or
-    geomajas-gwt-example (currently in development).</para>
+      <itemizedlist>
+        <listitem>
+          <para>Install the GWT plugin</para>
+        </listitem>
 
-    <para><prompt>geomajas-gwt-simple&gt;</prompt> <command>mvn gwt:eclipse
-    </command></para>
+        <listitem>
+          <para>Install the m2eclipse plugin</para>
+        </listitem>
 
-    <para>If you run this goal it will install the dependent libraries in the
-    lib folder of the GWT war layout. Unfortunately, however, GWT does not
-    allow Eclipse to automatically deploy in this folder.</para>
+        <listitem>
+          <para>Import the project as a maven project</para>
+        </listitem>
 
-    <para>After importing and building the GWT projects, make sure you convert
-    them to GWT projects in the project properties dialog:</para>
+        <listitem>
+          <para>Check the "Use GWT" option in project properties</para>
+        </listitem>
 
-    <figure>
-      <title>Eclipse project properties dialog</title>
+        <listitem>
+          <para>Set "src/main/webapp" as webapp directory in the War tab
+          </para>
+        </listitem>
 
-      <mediaobject>
-        <imageobject>
-          <imagedata fileref="images/gwt-eclipse-properties.png"
-                     width="60%" />
-        </imageobject>
-      </mediaobject>
-    </figure>
+        <listitem>
+          <para>Run/debug the embedded Jetty server (normal Java Application
+          with JettyRunner as main class)</para>
+        </listitem>
 
-    <para>Check the "Use Google Web Toolkit" checkbox. The GWT SDK can be
-    configured by clicking on the " <code>Configure SDKs..."</code> link.
-    After configuration, you should now be able to run the project as a GWT
-    Web application.</para>
+        <listitem>
+          <para>Run/debug the GWT plugin with option (on external
+          server)</para>
+        </listitem>
+      </itemizedlist>
+    </section>
+
+    <section>
+      <title>Running/debugging with the maven Eclipse plugin</title>
+
+      <para>Eclipse project configurations can be alternatively be generated
+      using the maven Eclipse plug-in. Running eclipse:eclipse fails on trunk
+      because of an issue with maven filtering: <ulink
+      url="???">http://jira.codehaus.org/browse/MECLIPSE-576</ulink>. This
+      will be fixed in the upcoming 2.9 release of the plugin, in the meantime
+      you can back up to 2.6: </para>
+
+      <programlisting>mvn -P noshrink eclipse:clean org.apache.maven.plugins:maven-eclipse-plugin:2.6:eclipse </programlisting>
+
+      <para>After the command has completed, Eclipse project definitions will
+      have been generated for all subprojects (except the pom projects). These
+      projects can now be imported into Eclipse.</para>
+    </section>
   </section>
 
   <section id="idea">
@@ -226,8 +235,7 @@
 
       <mediaobject>
         <imageobject>
-          <imagedata fileref="images/IDEA-project-structure.png"
-                     width="80%" />
+          <imagedata fileref="images/IDEA-project-structure.png" width="80%" />
         </imageobject>
       </mediaobject>
     </figure>
