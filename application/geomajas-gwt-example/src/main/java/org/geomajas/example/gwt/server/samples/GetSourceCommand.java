@@ -34,6 +34,8 @@ import java.util.Map;
 import org.geomajas.command.Command;
 import org.geomajas.example.gwt.client.samples.base.GetResourcesRequest;
 import org.geomajas.example.gwt.client.samples.base.GetResourcesResponse;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ResourceUtils;
 
@@ -47,12 +49,19 @@ import org.springframework.util.ResourceUtils;
 @Component
 public class GetSourceCommand implements Command<GetResourcesRequest, GetResourcesResponse> {
 
+	@Autowired
+	private ApplicationContext context;
+
 	public void execute(GetResourcesRequest request, GetResourcesResponse response) throws Exception {
 		if (request != null && request.getResources() != null) {
 			Map<String, String> resources = new HashMap<String, String>();
 
 			for (int i = 0; i < request.getResources().length; i++) {
 				File file = ResourceUtils.getFile(request.getResources()[i]);
+				if (!file.exists()) {
+					file = context.getResource(request.getResources()[i]).getFile();
+				}
+
 				InputStream in = new FileInputStream(file);
 				if (in != null) {
 					String content = new String(read(in), "UTF-8");
@@ -69,7 +78,7 @@ public class GetSourceCommand implements Command<GetResourcesRequest, GetResourc
 	public GetResourcesResponse getEmptyCommandResponse() {
 		return new GetResourcesResponse();
 	}
-	
+
 	// Private methods:
 
 	private byte[] read(InputStream in) throws IOException {

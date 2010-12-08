@@ -123,8 +123,7 @@ public class ControllerOnElementSample extends SamplePanel {
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "classpath:org/geomajas/example/gwt/servercfg/raster/layerWmsBluemarble.xml",
-				"classpath:org/geomajas/example/gwt/clientcfg/layer/mapWms.xml" };
+		return new String[] { "WEB-INF/layerWmsBluemarble.xml", "WEB-INF/mapWms.xml" };
 	}
 
 	public String ensureUserLoggedIn() {

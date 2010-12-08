@@ -123,7 +123,7 @@ public class CommandSecuritySample extends SamplePanel {
 
 			public void onClick(ClickEvent event) {
 				GetResourcesRequest request = new GetResourcesRequest(
-						new String[] { "classpath:org/geomajas/example/gwt/clientcfg/security/security.xml" });
+						new String[] { "WEB-INF/security/security.xml" });
 				GwtCommand command = new GwtCommand("example.gwt.server.samples.GetSourceCommand");
 				command.setCommandRequest(request);
 				GwtCommandDispatcher.getInstance().execute(command, new CommandCallback() {
@@ -151,7 +151,7 @@ public class CommandSecuritySample extends SamplePanel {
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "classpath:org/geomajas/example/gwt/clientcfg/security/security.xml" };
+		return new String[] { "WEB-INF/security/security.xml" };
 	}
 
 	public String ensureUserLoggedIn() {

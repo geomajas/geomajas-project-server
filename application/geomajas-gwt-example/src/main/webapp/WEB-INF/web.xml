@@ -7,11 +7,15 @@
         <param-name>contextConfigLocation</param-name>
         <param-value>
 			classpath:org/geomajas/spring/geomajasContext.xml
-            <!-- Server side raster layers -->
-			WEB-INF/servercfg/**/*.xml
-
+			WEB-INF/applicationContext.xml
+            <!-- Server side layers -->
+			WEB-INF/layer*.xml
             <!-- Map Configurations -->
-			WEB-INF/clientcfg/**/*.xml
+			WEB-INF/map*.xml
+            <!-- geocoder -->
+			WEB-INF/geocoder.xml
+            <!-- security -->
+			WEB-INF/security.xml
 
 			classpath:org/geomajas/plugin/caching/DefaultCachedPipelines.xml
 			<!--

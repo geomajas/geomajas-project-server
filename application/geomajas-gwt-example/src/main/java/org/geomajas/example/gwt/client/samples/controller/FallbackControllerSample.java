@@ -93,8 +93,7 @@ public class FallbackControllerSample extends SamplePanel {
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "classpath:org/geomajas/example/gwt/clientcfg/security/mapToolbarSecurity.xml",
-				"classpath:org/geomajas/example/gwt/servercfg/raster/layerWmsBluemarble.xml" };
+		return new String[] { "WEB-INF/mapToolbarSecurity.xml", "WEB-INF/layerWmsBluemarble.xml" };
 	}
 
 	public String ensureUserLoggedIn() {

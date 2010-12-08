@@ -132,9 +132,9 @@ public class ToolSecuritySample extends SamplePanel {
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "classpath:org/geomajas/example/gwt/clientcfg/security/security.xml",
-				"classpath:org/geomajas/example/gwt/clientcfg/security/mapToolbarSecurity.xml",
-				"classpath:org/geomajas/example/gwt/servercfg/raster/layerWmsBluemarble.xml" };
+		return new String[] { "WEB-INF/security/security.xml",
+				"WEB-INF/security/mapToolbarSecurity.xml",
+				"WEB-INF/layerWmsBluemarble.xml" };
 	}
 
 	public String ensureUserLoggedIn() {

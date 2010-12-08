@@ -79,8 +79,8 @@ public class ToolbarNavigationSample extends SamplePanel {
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "classpath:org/geomajas/example/gwt/servercfg/raster/layerOsm.xml",
-				"classpath:org/geomajas/example/gwt/clientcfg/toolbar/mapNavigation.xml" };
+		return new String[] { "WEB-INF/layerOsm.xml",
+				"WEB-INF/toolbar/mapNavigation.xml" };
 	}
 
 	public String ensureUserLoggedIn() {

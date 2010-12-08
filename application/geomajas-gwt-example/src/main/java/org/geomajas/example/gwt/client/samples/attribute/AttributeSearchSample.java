@@ -110,8 +110,7 @@ public class AttributeSearchSample extends SamplePanel {
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "classpath:org/geomajas/example/gwt/servercfg/vector/layerBeans.xml",
-				"classpath:org/geomajas/example/gwt/clientcfg/attribute/mapBeans.xml" };
+		return new String[] { "WEB-INF/layerBeans.xml", "WEB-INF/attribute/mapBeans.xml" };
 	}
 
 	public String ensureUserLoggedIn() {

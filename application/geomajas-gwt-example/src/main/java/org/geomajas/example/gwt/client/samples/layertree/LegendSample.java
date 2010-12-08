@@ -146,11 +146,9 @@ public class LegendSample extends SamplePanel {
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "classpath:org/geomajas/example/gwt/clientcfg/layertree/mapLegend.xml",
-				"classpath:org/geomajas/example/gwt/servercfg/vector/layerLakes110m.xml",
-				"classpath:org/geomajas/example/gwt/servercfg/vector/layerRivers50m.xml",
-				"classpath:org/geomajas/example/gwt/servercfg/vector/layerPopulatedPlaces110m.xml",
-				"classpath:org/geomajas/example/gwt/servercfg/raster/layerWmsBluemarble.xml" };
+		return new String[] { "WEB-INF/layertree/mapLegend.xml", "WEB-INF/layerLakes110m.xml",
+				"WEB-INF/layerRivers50m.xml", "WEB-INF/layerPopulatedPlaces110m.xml", 
+				"WEB-INF/layerWmsBluemarble.xml" };
 	}
 
 	public String ensureUserLoggedIn() {

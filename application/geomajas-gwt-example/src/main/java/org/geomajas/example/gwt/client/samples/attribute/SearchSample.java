@@ -104,9 +104,8 @@ public class SearchSample extends SamplePanel {
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "classpath:org/geomajas/example/gwt/clientcfg/attribute/mapFeatureListGrid.xml",
-				"classpath:org/geomajas/example/gwt/servercfg/vector/layerCountries110m.xml",
-				"classpath:org/geomajas/example/gwt/servercfg/raster/layerWmsBluemarble.xml", };
+		return new String[] { "WEB-INF/attribute/mapFeatureListGrid.xml", "WEB-INF/layerCountries110m.xml",
+				"WEB-INF/layerWmsBluemarble.xml", };
 	}
 
 	public String ensureUserLoggedIn() {

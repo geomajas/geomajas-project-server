@@ -92,9 +92,9 @@ public class ToolbarFeatureInfoSample extends SamplePanel {
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "classpath:org/geomajas/example/gwt/servercfg/vector/layerCountries110m.xml",
-				"classpath:org/geomajas/example/gwt/servercfg/raster/layerWmsBluemarble.xml",
-				"classpath:org/geomajas/example/gwt/clientcfg/toolbar/mapFeatureInfo.xml" };
+		return new String[] { "WEB-INF/layerCountries110m.xml",
+				"WEB-INF/layerWmsBluemarble.xml",
+				"WEB-INF/toolbar/mapFeatureInfo.xml" };
 	}
 
 	public String ensureUserLoggedIn() {

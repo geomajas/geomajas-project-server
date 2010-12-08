@@ -101,9 +101,8 @@ public class EditPolygonLayerSample extends SamplePanel {
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "classpath:org/geomajas/example/gwt/clientcfg/editing/mapEditPolygonLayer.xml",
-				"classpath:org/geomajas/example/gwt/servercfg/raster/layerWmsBluemarble.xml",
-				"classpath:org/geomajas/example/gwt/servercfg/vector/layerLakes110m.xml" };
+		return new String[] { "WEB-INF/editing/mapEditPolygonLayer.xml", "WEB-INF/layerWmsBluemarble.xml",
+				"WEB-INF/layerLakes110m.xml" };
 	}
 
 	public String ensureUserLoggedIn() {

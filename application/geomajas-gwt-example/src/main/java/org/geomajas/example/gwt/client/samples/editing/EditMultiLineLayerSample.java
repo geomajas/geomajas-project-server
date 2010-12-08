@@ -108,9 +108,8 @@ public class EditMultiLineLayerSample extends SamplePanel {
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "classpath:org/geomajas/example/gwt/clientcfg/editing/mapEditMultiLineLayer.xml",
-				"classpath:org/geomajas/example/gwt/servercfg/raster/layerGoogleSat.xml",
-				"classpath:org/geomajas/example/gwt/servercfg/vector/layerRoadsTrl020-ML.xml" };
+		return new String[] { "WEB-INF/editing/mapEditMultiLineLayer.xml", "WEB-INF/layerGoogleSat.xml",
+				"WEB-INF/layerRoadsTrl020-ML.xml" };
 	}
 
 	public String ensureUserLoggedIn() {

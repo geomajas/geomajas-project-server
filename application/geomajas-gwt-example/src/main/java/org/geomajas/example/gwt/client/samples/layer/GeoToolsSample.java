@@ -74,8 +74,7 @@ public class GeoToolsSample extends SamplePanel {
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "classpath:org/geomajas/example/gwt/clientcfg/layer/mapGeoTools.xml",
-				"classpath:org/geomajas/example/gwt/servercfg/vector/layerCountries110m.xml" };
+		return new String[] { "WEB-INF/mapGeoTools.xml", "WEB-INF/layerCountries110m.xml" };
 	}
 
 	public String ensureUserLoggedIn() {

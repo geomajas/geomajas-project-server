@@ -103,9 +103,8 @@ public class EditLineLayerSample extends SamplePanel {
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "classpath:org/geomajas/example/gwt/clientcfg/editing/mapEditLineLayer.xml",
-				"classpath:org/geomajas/example/gwt/servercfg/raster/layerGoogleSat.xml",
-				"classpath:org/geomajas/example/gwt/servercfg/vector/layerRoadsTrl020.xml" };
+		return new String[] { "WEB-INF/editing/mapEditLineLayer.xml", "WEB-INF/layerGoogleSat.xml",
+				"WEB-INF/layerRoadsTrl020.xml" };
 	}
 
 	public String ensureUserLoggedIn() {

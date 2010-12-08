@@ -125,10 +125,10 @@ public class LayerSecuritySample extends SamplePanel {
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "classpath:org/geomajas/example/gwt/clientcfg/security/security.xml",
-				"classpath:org/geomajas/example/gwt/clientcfg/security/mapVectorSecurity.xml",
-				"classpath:org/geomajas/example/gwt/servercfg/vector/layerCountries110m2.xml",
-				"classpath:org/geomajas/example/gwt/servercfg/raster/layerWmsBluemarble.xml" };
+		return new String[] { "WEB-INF/security/security.xml",
+				"WEB-INF/security/mapVectorSecurity.xml",
+				"WEB-INF/layerCountries110m2.xml",
+				"WEB-INF/layerWmsBluemarble.xml" };
 	}
 
 	public String ensureUserLoggedIn() {

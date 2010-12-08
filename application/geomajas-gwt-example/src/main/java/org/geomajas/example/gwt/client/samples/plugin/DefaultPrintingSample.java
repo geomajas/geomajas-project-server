@@ -75,9 +75,9 @@ public class DefaultPrintingSample extends SamplePanel {
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "classpath:org/geomajas/example/gwt/servercfg/raster/layerWmsBluemarble.xml",
-				"classpath:org/geomajas/example/gwt/servercfg/vector/layerCountries110m.xml",
-				"classpath:org/geomajas/example/gwt/clientcfg/plugin/mapPrinting.xml" };
+		return new String[] { "WEB-INF/layerWmsBluemarble.xml",
+				"WEB-INF/layerCountries110m.xml",
+				"WEB-INF/plugin/mapPrinting.xml" };
 	}
 
 	public String ensureUserLoggedIn() {
