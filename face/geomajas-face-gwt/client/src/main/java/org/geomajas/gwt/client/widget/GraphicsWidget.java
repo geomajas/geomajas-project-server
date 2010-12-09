@@ -46,6 +46,7 @@ import org.geomajas.gwt.client.widget.event.GraphicsReadyHandler;
 import org.geomajas.gwt.client.widget.event.HasGraphicsReadyHandlers;
 
 import com.google.gwt.dom.client.Document;
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.DoubleClickHandler;
 import com.google.gwt.event.dom.client.HasDoubleClickHandlers;
@@ -418,6 +419,8 @@ public class GraphicsWidget extends VLayout implements MapContext, HasDoubleClic
 		if (!contains(eventWidget)) {
 			addChild(eventWidget);
 			eventWidget.setVisible(true);
+			// xhtml needs this, or <div> won't show !
+			eventWidget.setInnerSize(getWidth() + "px", getHeight() + "px");
 		}
 		// set the size and notify parents so they can redraw
 		vectorContext.setSize(getWidth(), getHeight());
@@ -461,6 +464,8 @@ public class GraphicsWidget extends VLayout implements MapContext, HasDoubleClic
 	}
 
 	/**
+	 * Extension of WidgetCanvas that wraps a plain GWT FocusWidget. It allows for native GWT event registration and
+	 * explicitly setting the size of the FocusWidget.
 	 * 
 	 * @author Jan De Moerloose
 	 * 
@@ -477,8 +482,11 @@ public class GraphicsWidget extends VLayout implements MapContext, HasDoubleClic
 		}
 
 		public EventWidget(String id) {
-			this(new FocusWidget(Document.get().createDivElement()) {
-			});
+			this(new StyledFocusWidget(Document.get().createDivElement()));
+		}
+
+		public void setInnerSize(String width, String height) {
+			widget.setSize(width, height);
 		}
 
 		public HandlerRegistration addMouseDownHandler(MouseDownHandler handler) {
@@ -509,6 +517,19 @@ public class GraphicsWidget extends VLayout implements MapContext, HasDoubleClic
 			return widget;
 		}
 
+		/**
+		 * Xhtml does not like divs without size.
+		 * 
+		 * @author Jan De Moerloose
+		 * 
+		 */
+		private static final class StyledFocusWidget extends FocusWidget {
+
+			private StyledFocusWidget(Element elem) {
+				super(elem);
+				setSize("100%", "100%");
+			}
+		}
 	}
 
 	public boolean isReady() {
