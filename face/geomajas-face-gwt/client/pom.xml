@@ -1,4 +1,5 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
 		<groupId>org.geomajas</groupId>
 		<artifactId>geomajas-face-gwt</artifactId>
@@ -89,9 +90,9 @@
 						<link>http://www.smartclient.com/smartgwt/javadoc/</link>
 						<link>http://www.vividsolutions.com/jts/javadoc/</link>
 						<link>http://javadoc.geotools.fr/2.5/</link>
-				  	</links>
+					</links>
 				</configuration>
-			</plugin>			
+			</plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>gwt-maven-plugin</artifactId>
@@ -100,7 +101,7 @@
 					<execution>
 						<goals>
 							<goal>compile</goal>
-							<!-- <goal>test</goal> causes hudson problems (on gwt face build)-->
+							<!-- <goal>test</goal> causes hudson problems (on gwt face build) -->
 						</goals>
 					</execution>
 				</executions>
@@ -127,4 +128,33 @@
 
 		</plugins>
 	</build>
+
+	<profiles>
+		<!--  include sources in build -->
+		<profile>
+			<id>default</id>			
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<build>
+				<resources>
+					<resource>
+						<directory>src/main/java</directory>
+						<includes>
+							<include>**/*.java</include>
+						</includes>
+					</resource>
+				</resources>
+			</build>
+		</profile>
+		<!--  no sources needed in eclipse -->
+		<profile>
+			<id>m2e</id>
+			<activation>
+				<property>
+					<name>m2e.version</name>
+				</property>
+			</activation>
+		</profile>	
+	</profiles>
 </project>
