@@ -55,6 +55,8 @@ public class Bbox {
 	 */
 	private double height;
 
+	// huge bbox, should cover coordinate space of all known crs-es
+	public static final Bbox ALL = new Bbox(org.geomajas.geometry.Bbox.ALL);
 	// -------------------------------------------------------------------------
 	// Constructors:
 	// -------------------------------------------------------------------------
@@ -409,9 +411,23 @@ public class Bbox {
 		return getY() + getHeight();
 	}
 
+	/**
+	 * Is this bbox equal to the specified bbox ?
+	 * @param other another bbox
+	 * @param delta precision
+	 * @return true if equal within the precision, false otherwise
+	 */
 	public boolean equals(Bbox other, double delta) {
 		return equals(this.x, other.x, delta) && equals(this.y, other.y, delta)
 				&& equals(this.width, other.width, delta) && equals(this.height, other.height, delta);
+	}
+	
+	/**
+	 * Is this bbox the universal all bbox ?
+	 * @return true if all
+	 */
+	public boolean isAll() {
+		return equals(ALL, 0.001 * ALL.getWidth());
 	}
 
 	protected boolean equals(double d1, double d2, double delta) {

@@ -434,6 +434,7 @@ public class MapView {
 
 	private void doApplyBounds(Bbox bounds, ZoomOption option) {
 		if (bounds != null) {
+			// first set the scale, taking minimum and maximum scale into account
 			boolean scaleChanged = false;
 			if (!bounds.isEmpty()) {
 				// find best scale
@@ -443,6 +444,7 @@ public class MapView {
 				// set scale
 				scaleChanged = doSetScale(scale, option);
 			}
+			// now translate, taking maximum bounds into account 
 			doSetOrigin(bounds.getCenterPoint());
 			if (bounds.isEmpty()) {
 				fireEvent(false, null);
@@ -455,15 +457,15 @@ public class MapView {
 	}
 
 	private double getMinimumScale() {
-		return Double.MIN_VALUE;
-		// if (maxBounds != null) {
-		// double wRatio = width / (maxBounds.getWidth() * 2);
-		// double hRatio = height / (maxBounds.getHeight() * 2);
-		// // return the maximum to fit outside
-		// return wRatio > hRatio ? wRatio : hRatio;
-		// } else {
-		// return Double.MIN_VALUE;
-		// }
+		// the minimum scale is determined by the maximum bounds and the pixel size of the map
+		if (maxBounds != null) {
+			double wRatio = width / maxBounds.getWidth();
+			double hRatio = height / maxBounds.getHeight();
+			// return the maximum to fit outside
+			return wRatio > hRatio ? wRatio : hRatio;
+		} else {
+			return Double.MIN_VALUE;
+		}
 	}
 
 	private double getBestScale(Bbox bounds) {
