@@ -162,7 +162,7 @@ public class OverviewMapSample extends SamplePanel {
 
 	public String[] getConfigurationFiles() {
 		return new String[] { "WEB-INF/layerOsm.xml",
-				"WEB-INF/mapWidget/overviewMapOsm.xml",
+				"WEB-INF/mapOverviewOsm.xml",
 				"WEB-INF/mapOsm.xml" };
 	}
 
