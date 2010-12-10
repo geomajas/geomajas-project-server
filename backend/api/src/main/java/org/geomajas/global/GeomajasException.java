@@ -41,7 +41,7 @@ public class GeomajasException extends Exception {
 
 	private static final long serialVersionUID = 6523420918533106345L;
 	private int exceptionCode;
-	private Object[] msgParameters;
+	private transient Object[] msgParameters; // transient to assure GeomajasException is Serializable
 	
 	private static final String RESOURCE_BUNDLE_NAME = "org.geomajas.global.GeomajasException";
 
