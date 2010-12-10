@@ -54,12 +54,10 @@ public class DefaultRasterLayerStore implements RasterLayerStore {
 
 	private Map<TileCode, RasterTile> tiles = new HashMap<TileCode, RasterTile>();
 
-	private RasterCallBack callBack;
-
 	private boolean dirty;
 
 	private MapViewState lastViewState;
-	
+
 	private Bbox tileBounds;
 
 	private Deferred deferred;
@@ -72,8 +70,8 @@ public class DefaultRasterLayerStore implements RasterLayerStore {
 		MapViewState viewState = rasterLayer.getMapModel().getMapView().getViewState();
 		boolean panning = lastViewState == null || viewState.isPannableFrom(lastViewState);
 		if (!panning || isDirty()) {
-			if (callBack != null) {
-				callBack.cancel();
+			if (deferred != null) {
+				deferred.cancel();
 			}
 			for (RasterTile tile : tiles.values()) {
 				onDelete.execute(tile);
@@ -112,7 +110,7 @@ public class DefaultRasterLayerStore implements RasterLayerStore {
 	}
 
 	private void fetchAndUpdateTiles(Bbox bounds, final TileFunction<RasterTile> onUpdate) {
-		// fetch a bigger area to avoid server requests while panning 
+		// fetch a bigger area to avoid server requests while panning
 		tileBounds = bounds.scale(3);
 		GetRasterTilesRequest request = new GetRasterTilesRequest();
 		request.setBbox(new org.geomajas.geometry.Bbox(tileBounds.getX(), tileBounds.getY(), tileBounds.getWidth(),
@@ -122,10 +120,10 @@ public class DefaultRasterLayerStore implements RasterLayerStore {
 		request.setScale(getLayer().getMapModel().getMapView().getCurrentScale());
 		GwtCommand command = new GwtCommand("command.render.GetRasterTiles");
 		command.setCommandRequest(request);
-		callBack = new RasterCallBack(worldToPan(bounds), onUpdate);
+		RasterCallBack callBack = new RasterCallBack(worldToPan(bounds), onUpdate);
 		deferred = GwtCommandDispatcher.getInstance().execute(command, callBack);
 	}
-	
+
 	private void updateTiles(Bbox bounds, final TileFunction<RasterTile> onUpdate) {
 		Bbox panBounds = worldToPan(bounds);
 		for (RasterTile tile : tiles.values()) {
@@ -134,7 +132,6 @@ public class DefaultRasterLayerStore implements RasterLayerStore {
 			}
 		}
 	}
-	
 
 	private Bbox worldToPan(Bbox bounds) {
 		Matrix t = rasterLayer.getMapModel().getMapView().getWorldToPanTransformation();
@@ -166,10 +163,8 @@ public class DefaultRasterLayerStore implements RasterLayerStore {
 	 */
 	private final class RasterCallBack implements CommandCallback {
 
-		private boolean cancelled;
-
 		private TileFunction<RasterTile> callback;
-		
+
 		private Bbox bounds;
 
 		private RasterCallBack(Bbox bounds, TileFunction<RasterTile> callback) {
@@ -178,19 +173,14 @@ public class DefaultRasterLayerStore implements RasterLayerStore {
 		}
 
 		public void execute(CommandResponse response) {
-			if (!cancelled) {
-				GetRasterTilesResponse r = (GetRasterTilesResponse) response;
-				addTiles(r.getRasterData());
-				for (RasterTile tile : tiles.values()) {
-					if (bounds.intersects(tile.getBounds())) {
-						callback.execute(tile);
-					}
+			GetRasterTilesResponse r = (GetRasterTilesResponse) response;
+			addTiles(r.getRasterData());
+			for (RasterTile tile : tiles.values()) {
+				if (bounds.intersects(tile.getBounds())) {
+					callback.execute(tile);
 				}
 			}
 		}
 
-		public void cancel() {
-			cancelled = true;
-		}
 	}
 }
