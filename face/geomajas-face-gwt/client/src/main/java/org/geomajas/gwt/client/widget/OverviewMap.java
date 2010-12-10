@@ -112,7 +112,7 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 		this.targetMap = targetMap;
 		this.useTargetMaxExtent = useTargetMaxExtent;
 		this.drawTargetMaxExtent = drawTargetMaxExtent;
-		targetMap.getMapModel().getMapView().addMapViewChangedHandler(this);
+		targetMap.getMapModel().getMapView().addMapViewChangedHandler(new UpdatePointOfViewHandler());
 		scaleBarEnabled = false;
 		navigationAddonEnabled = false;
 		rectangleStyle = new ShapeStyle("#FF9900", 0.2f, "#FF9900", 1f, 2);
@@ -162,17 +162,6 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 	// Public methods:
 	// ------------------------------------------------------------------------
 
-	/**
-	 * Does not call it's super, because we don't want the OverViewMap to constantly redraw. Instead the POV is updated.
-	 * This updating can possible have a redraw as a consequence, when the target map is moving out of range of the
-	 * overview map. Note that this can only happen when <code>dynamicOverview</code> is true, and the OverViewMap has
-	 * started using it's initial bounds (not max extents).
-	 */
-	public void onMapViewChanged(MapViewChangedEvent event) {
-		// No call to super; we don't want the OverViewMap to constantly redraw!
-		updatePov();
-	}
-
 	public MapWidget getTargetMap() {
 		return targetMap;
 	}
@@ -184,7 +173,8 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 	/**
 	 * Should the overview map zoom in/out according to targetMap?
 	 * 
-	 * @param dynamicOverview true when overview map needs to zoom in/out with target map
+	 * @param dynamicOverview
+	 *            true when overview map needs to zoom in/out with target map
 	 */
 	public void setDynamicOverview(boolean dynamicOverview) {
 		this.dynamicOverview = dynamicOverview;
@@ -424,24 +414,22 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 
 	/**
 	 * The maximum bounds depend on whether useTargetMaxExtent was set. If not set, the initialBounds from the
-	 * overviewMap are used. It it was set, then the maxExtent from the
-	 * target map is used (targetMap.maxBounds) or the union of layer bounds/extent (all layers, also invisible ones).
+	 * overviewMap are used. It it was set the maximum bounds of the target view is used.
 	 * 
 	 * @return maxBounds for overview map
 	 */
 	private Bbox getOverviewMaxBounds() {
 		Bbox targetMaxBounds;
-		org.geomajas.geometry.Bbox tmb;
 		if (!useTargetMaxExtent) {
 			targetMaxBounds = new Bbox(getMapModel().getMapInfo().getInitialBounds());
 		} else {
-			// maxBounds was not configured, or need to use maxExtent from target
-			tmb = targetMap.getMapModel().getMapInfo().getMaxBounds();
-			if (org.geomajas.geometry.Bbox.ALL.equals(tmb)) {
-				// no maxBounds on target map, use union of all (visible) layers
+			// maxBounds was not configured, or need to use maxBounds from target
+			if (targetMap.getMapModel().isInitialized()) {
+				// rely on target map bounds
 				targetMaxBounds = targetMap.getMapModel().getMapView().getMaxBounds();
 			} else {
-				targetMaxBounds = new Bbox(tmb);
+				// fall back to configured bounds (should be temporary)
+				targetMaxBounds = new Bbox(targetMap.getMapModel().getMapInfo().getMaxBounds());
 			}
 		}
 		return targetMaxBounds;
@@ -460,14 +448,28 @@ public class OverviewMap extends MapWidget implements MapViewChangedHandler {
 		private boolean overviewMapDone;
 
 		public void onMapModelChange(MapModelEvent event) {
-			if (event.getSource() == OverviewMap.this) {
+			if (event.getSource() == getMapModel()) {
 				overviewMapDone = true;
-			} else if (event.getSource() == targetMap) {
+			} else if (event.getSource() == targetMap.getMapModel()) {
 				targetMapDone = true;
 			}
 			if (targetMapDone && overviewMapDone) {
 				updateMaxExtent();
 			}
+		}
+
+	}
+
+	/**
+	 * Updates the point of view of the overview map when the main map's view changes.
+	 * 
+	 * @author Jan De Moerloose
+	 * 
+	 */
+	private class UpdatePointOfViewHandler implements MapViewChangedHandler {
+
+		public void onMapViewChanged(MapViewChangedEvent event) {
+			updatePov();
 		}
 
 	}
