@@ -25,8 +25,11 @@ package org.geomajas.layer.osm;
 
 import com.vividsolutions.jts.geom.Envelope;
 import junit.framework.Assert;
+
+import org.geomajas.geometry.Bbox;
 import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.service.GeoService;
+import org.geotools.geometry.jts.JTS;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -38,12 +41,13 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.util.List;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
-		"/osmContext.xml"})
+@ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml", "/osmContext.xml" })
 public class OsmLayerTest {
 
 	private static final double ZOOMED_IN_SCALE = .0001;
+
 	private static final double MAX_LEVEL_SCALE = .1;
+
 	private static final double DELTA = 1e-10;
 
 	@Autowired
@@ -68,8 +72,8 @@ public class OsmLayerTest {
 	@Test
 	public void testPaintOutOfBounds() throws Exception {
 		double equator = TiledRasterLayerService.EQUATOR_IN_METERS;
-		List<RasterTile> tiles =
-				osm.paint(osm.getCrs(), new Envelope(-equator, equator, -equator, equator), 256 / equator);
+		List<RasterTile> tiles = osm.paint(osm.getCrs(), new Envelope(-equator, equator, -equator, equator),
+				256 / equator);
 		Assert.assertEquals(1, tiles.size());
 		Assert.assertEquals("http://a.tile.openstreetmap.org/0/0/0.png", tiles.iterator().next().getUrl());
 	}
@@ -121,8 +125,7 @@ public class OsmLayerTest {
 
 	@Test
 	public void testNormalOne() throws Exception {
-		List<RasterTile> tiles = osm.paint(osm.getCrs(),
-				new Envelope(10000, 10010, 5000, 5010), ZOOMED_IN_SCALE);
+		List<RasterTile> tiles = osm.paint(osm.getCrs(), new Envelope(10000, 10010, 5000, 5010), ZOOMED_IN_SCALE);
 		Assert.assertEquals(1, tiles.size());
 		RasterTile tile = tiles.get(0);
 		Assert.assertEquals("http://a.tile.openstreetmap.org/4/8/7.png", tile.getUrl());
@@ -153,6 +156,68 @@ public class OsmLayerTest {
 		Assert.assertEquals(-733.0, tile.getBounds().getY(), DELTA);
 		Assert.assertEquals(245.0, tile.getBounds().getHeight(), DELTA);
 		Assert.assertEquals(245.0, tile.getBounds().getWidth(), DELTA);
+	}
+
+	@Test
+	public void testReprojectOne() throws Exception {
+		Envelope googleEnvelope = new Envelope(10000, 10010, 5000, 5010);
+		// back-transform envelope to latlon
+		CoordinateReferenceSystem google = geoService.getCrs("EPSG:900913");
+		CoordinateReferenceSystem latlon = geoService.getCrs("EPSG:4326");
+		Envelope latlonEnvelope = geoService.transform(JTS.toGeometry(googleEnvelope), google, latlon)
+				.getEnvelopeInternal();
+		// back-transform scale to latlon
+		double latlonScale = ZOOMED_IN_SCALE * googleEnvelope.getWidth() / latlonEnvelope.getWidth();
+		// paint with reprojection (affine is fine for now...:-)
+		List<RasterTile> tiles = osm.paint(latlon, latlonEnvelope, latlonScale);
+		Assert.assertEquals(1, tiles.size());
+		RasterTile tile = tiles.get(0);
+		Assert.assertEquals("http://a.tile.openstreetmap.org/4/8/7.png", tile.getUrl());
+		Assert.assertEquals(4, tile.getCode().getTileLevel());
+		Assert.assertEquals(8, tile.getCode().getX());
+		Assert.assertEquals(7, tile.getCode().getY());
+		Assert.assertEquals(0.0, tile.getBounds().getX(), DELTA);
+		Assert.assertEquals(-244.0, tile.getBounds().getY(), DELTA);
+		Assert.assertEquals(244.0, tile.getBounds().getHeight(), DELTA);
+		Assert.assertEquals(250.0, tile.getBounds().getWidth(), DELTA);
+	}
+
+	@Test
+	public void testReprojectSeveral() throws Exception {
+		// move up north to test latlon flattening
+		Envelope googleEnvelope = new Envelope(10000, 13000, 6005000, 6008000);
+		// back-transform envelope to latlon
+		CoordinateReferenceSystem google = geoService.getCrs("EPSG:900913");
+		CoordinateReferenceSystem latlon = geoService.getCrs("EPSG:4326");
+		Envelope latlonEnvelope = geoService.transform(JTS.toGeometry(googleEnvelope), google, latlon)
+				.getEnvelopeInternal();
+		// back-transform scale to latlon
+		double latlonScale = MAX_LEVEL_SCALE * googleEnvelope.getWidth() / latlonEnvelope.getWidth();
+		// paint with reprojection (affine is fine for now...:-)
+		List<RasterTile> tiles = osm.paint(latlon, latlonEnvelope, latlonScale);
+		Assert.assertEquals(4, tiles.size());
+		Assert.assertEquals("http://a.tile.openstreetmap.org/14/8196/5735.png", tiles.get(0).getUrl());
+		Assert.assertEquals("http://a.tile.openstreetmap.org/14/8196/5736.png", tiles.get(1).getUrl());
+		Assert.assertEquals("http://a.tile.openstreetmap.org/14/8197/5735.png", tiles.get(2).getUrl());
+		Assert.assertEquals("http://a.tile.openstreetmap.org/14/8197/5736.png", tiles.get(3).getUrl());
+		// test first tile
+		double width = tiles.get(0).getBounds().getWidth();
+		double height = tiles.get(0).getBounds().getHeight();
+		double x = tiles.get(0).getBounds().getX();
+		double y = tiles.get(0).getBounds().getY();
+		Assert.assertEquals(245, width, DELTA);
+		Assert.assertEquals(166, height, DELTA);
+		Assert.assertEquals(978, x, DELTA);
+		Assert.assertEquals(-527802, y, DELTA);
+		// test alignment on grid
+		for (int i = 0; i <= 1; i++) {
+			for (int j = 0; j <= 1; j++) {
+				Assert.assertEquals(x + i * width, tiles.get(2 * i + j).getBounds().getX(), DELTA);
+				Assert.assertEquals(y + j * height, tiles.get(2 * i + j).getBounds().getY(), DELTA);
+				Assert.assertEquals(width, tiles.get(2 * i + j).getBounds().getWidth(), DELTA);
+				Assert.assertEquals(height, tiles.get(2 * i + j).getBounds().getHeight(), DELTA);
+			}
+		}
 	}
 
 }

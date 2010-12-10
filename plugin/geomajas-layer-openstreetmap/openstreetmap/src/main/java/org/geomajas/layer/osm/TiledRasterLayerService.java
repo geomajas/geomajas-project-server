@@ -136,7 +136,7 @@ public class TiledRasterLayerService {
 			// Calculate the position and indexes of the center image corner
 			// in map space
 			double xCenter = boundsCenter.x - (indicesCenter.x - indicesUpperLeft.x) * width;
-			double yCenter = boundsCenter.y + (indicesCenter.y - indicesUpperLeft.y) * width;
+			double yCenter = boundsCenter.y + (indicesCenter.y - indicesUpperLeft.y) * height;
 			int iCenter = (int) indicesUpperLeft.x;
 			int jCenter = (int) indicesUpperLeft.y;
 
@@ -186,7 +186,7 @@ public class TiledRasterLayerService {
 				for (int j = jMin; j < jMax; j++) {
 					// Using screen coordinates:
 					int x = xScreenUpperLeft + (i - iMin) * screenWidth;
-					int y = yScreenUpperLeft - (j - jMin) * screenWidth;
+					int y = yScreenUpperLeft - (j - jMin) * screenHeight;
 
 					RasterTile image = new RasterTile(new Bbox(x, -y, screenWidth, screenHeight),
 							tileServiceState.getId() + "." + zoomLevel + "." + i + "," + j);
