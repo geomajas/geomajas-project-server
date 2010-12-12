@@ -86,7 +86,7 @@ public class MapViewTest {
 		// zoom out beyond maximum bounds
 		mapView.setCurrentScale(0.2, MapView.ZoomOption.LEVEL_CLOSEST);
 		// should zoom out as far as possible
-		handler.expect(new Bbox(0, -50, 1000, 500), 0.2, false);
+		handler.expect(new Bbox(100, 0, 800, 400), 0.25, false);
 		// zoom in beyond maximum scale
 		mapView.setCurrentScale(3, MapView.ZoomOption.LEVEL_CLOSEST);
 		// should zoom in as far as possible
