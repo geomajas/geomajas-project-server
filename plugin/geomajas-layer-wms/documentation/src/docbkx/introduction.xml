@@ -26,5 +26,12 @@
 <chapter id="chapter-introduction">
   <title>Introduction</title>
 
-  <para></para>
+  <para>This plug-in contains a raster layer definition for accessing raster
+  data from WMS servers. It has support for WMS versions (1.0.0, 1.1.0, 1.1.1
+  and 1.3.0)</para>
+
+  <para>Since version 1.8.0 of this plug-in, there is also built-in support
+  for basic and digest HTTP authentication. On top of this, the option remains
+  to add user name and password parameters as GET parameters to each WMS
+  GetMap request.</para>
 </chapter>
