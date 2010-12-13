@@ -270,13 +270,16 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 			}
 			mapView.setResolutions(realResolutions);
 			mapView.setMaximumScale(scaleConfigurationInfo.getMaximumScale().getPixelPerUnit());
+			// replace layers by new layers
 			removeAllLayers();
+			for (ClientLayerInfo layerInfo : mapInfo.getLayers()) {
+				addLayer(layerInfo);
+			}
 			Bbox maxBounds = new Bbox(mapInfo.getMaxBounds());
 			Bbox initialBounds = new Bbox(mapInfo.getInitialBounds());
 			// if the max bounds was not configured, take the union of initial and layer bounds
 			if (maxBounds.isAll()) {
 				for (ClientLayerInfo layerInfo : mapInfo.getLayers()) {
-					addLayer(layerInfo);
 					maxBounds = (Bbox) initialBounds.clone();
 					maxBounds = maxBounds.union(new Bbox(layerInfo.getMaxExtent()));
 				}
