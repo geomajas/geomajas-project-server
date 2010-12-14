@@ -51,6 +51,10 @@ import com.smartgwt.client.util.BooleanCallback;
  */
 public final class Authentication {
 
+	private static final String DEFAULT_LOGIN_COMMAND = "command.staticsecurity.Login";
+
+	private static final String DEFAULT_LOGOUT_COMMAND = "command.staticsecurity.Logout";
+
 	private static Authentication LOGIN;
 
 	private HandlerManager manager;
@@ -58,6 +62,10 @@ public final class Authentication {
 	private String userToken;
 
 	private String userId;
+
+	private String loginCommandName = DEFAULT_LOGIN_COMMAND;
+
+	private String logoutCommandName = DEFAULT_LOGOUT_COMMAND;
 
 	private Authentication() {
 		manager = new HandlerManager(this);
@@ -113,7 +121,7 @@ public final class Authentication {
 			// Already logged in...
 			return;
 		} else {
-			GwtCommand command = new GwtCommand("command.staticsecurity.Logout");
+			GwtCommand command = new GwtCommand(logoutCommandName);
 			GwtCommandDispatcher.getInstance().execute(command, new CommandCallback() {
 
 				public void execute(CommandResponse response) {
@@ -140,7 +148,7 @@ public final class Authentication {
 	 *            A possible callback to be executed when the logout has been done (successfully or not). Can be null.
 	 */
 	public void logout(final BooleanCallback callback) {
-		GwtCommand command = new GwtCommand("command.staticsecurity.Logout");
+		GwtCommand command = new GwtCommand(logoutCommandName);
 		GwtCommandDispatcher.getInstance().execute(command, new CommandCallback() {
 
 			public void execute(CommandResponse response) {
@@ -178,6 +186,40 @@ public final class Authentication {
 		return userId;
 	}
 
+	/**
+	 * @return Get the Spring bean name of the command to use for logging in.
+	 */
+	public String getLoginCommandName() {
+		return loginCommandName;
+	}
+
+	/**
+	 * Determine which server-side command to use for logging in.
+	 * 
+	 * @param loginCommandName
+	 *            The Spring bean name of the command.
+	 */
+	public void setLoginCommandName(String loginCommandName) {
+		this.loginCommandName = loginCommandName;
+	}
+
+	/**
+	 * @return Get the Spring bean name of the command to use for logging out.
+	 */
+	public String getLogoutCommandName() {
+		return logoutCommandName;
+	}
+
+	/**
+	 * Determine which server-side command to use for logging out.
+	 * 
+	 * @param logoutCommandName
+	 *            The Spring bean name of the command.
+	 */
+	public void setLogoutCommandName(String logoutCommandName) {
+		this.logoutCommandName = logoutCommandName;
+	}
+
 	// -------------------------------------------------------------------------
 	// Private methods:
 	// -------------------------------------------------------------------------
@@ -187,7 +229,7 @@ public final class Authentication {
 		LoginRequest request = new LoginRequest();
 		request.setLogin(userId);
 		request.setPassword(password);
-		GwtCommand command = new GwtCommand("command.staticsecurity.Login");
+		GwtCommand command = new GwtCommand(loginCommandName);
 		command.setCommandRequest(request);
 		GwtCommandDispatcher.getInstance().execute(command, new CommandCallback() {
 
@@ -212,5 +254,4 @@ public final class Authentication {
 			}
 		});
 	}
-
 }
