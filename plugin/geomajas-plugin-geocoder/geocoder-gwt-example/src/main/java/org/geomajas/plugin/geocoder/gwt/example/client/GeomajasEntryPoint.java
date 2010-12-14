@@ -23,17 +23,12 @@
 
 package org.geomajas.plugin.geocoder.gwt.example.client;
 
-import org.geomajas.plugin.geocoder.client.GeocoderWidget;
-import org.geomajas.plugin.geocoder.gwt.example.client.i18n.Translation;
-
-import org.geomajas.gwt.client.i18n.I18nProvider;
 import org.geomajas.gwt.client.widget.LoadingScreen;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.Toolbar;
+import org.geomajas.plugin.geocoder.client.GeocoderWidget;
 
 import com.google.gwt.core.client.EntryPoint;
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.i18n.client.ConstantsWithLookup;
 import com.smartgwt.client.widgets.Img;
 import com.smartgwt.client.widgets.Label;
 import com.smartgwt.client.widgets.layout.HLayout;
@@ -51,8 +46,6 @@ public class GeomajasEntryPoint implements EntryPoint {
 	}
 
 	public void onModuleLoad() {
-		// Used for i18n in configuration files:
-		I18nProvider.setLookUp(GWT.<ConstantsWithLookup>create(Translation.class));
 
 		VLayout mainLayout = new VLayout();
 		mainLayout.setWidth100();
