@@ -6,17 +6,17 @@
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
-            <!-- generic Geomajas context -->
+			<!-- generic Geomajas context -->
 			classpath:org/geomajas/spring/geomajasContext.xml
-            <!-- local application context -->
+			<!-- local application context -->
 			WEB-INF/applicationContext.xml
-            <!-- Server side layers -->
+			<!-- Server side layers -->
 			WEB-INF/layer*.xml
-            <!-- Map Configurations -->
+			<!-- Map Configurations -->
 			WEB-INF/map*.xml
-            <!-- geocoder -->
+			<!-- geocoder -->
 			WEB-INF/geocoder.xml
-            <!-- security -->
+			<!-- security -->
 			WEB-INF/security.xml
 
 			classpath:org/geomajas/plugin/caching/DefaultCachedPipelines.xml
