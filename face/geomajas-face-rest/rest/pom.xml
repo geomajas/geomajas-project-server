@@ -85,7 +85,7 @@
 		<dependency>
 			<groupId>org.geotools</groupId>
 			<artifactId>gt-geojson</artifactId>
-			<version>2.7-SNAPSHOT</version>
+			<version>2.7-M4</version>
 		</dependency>
 	</dependencies>
 
