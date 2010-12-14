@@ -12,29 +12,28 @@
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
-            classpath:${packageInPathFormat}/context/applicationContext.xml
-            classpath:${packageInPathFormat}/context/app.xml
-            classpath:${packageInPathFormat}/context/osmLayer.xml
-			classpath:${packageInPathFormat}/context/countriesLayer.xml
+        <!-- framework context -->
+			classpath:org/geomajas/spring/geomajasContext.xml
+
+        <!-- application context -->
+            WEB-INF/applicationContext.xml
+            WEB-INF/osmLayer.xml
+			WEB-INF/countriesLayer.xml
   
         <!--
-            classpath:${packageInPathFormat}/context/example/hibernate/applicationContext.xml
-            classpath:${packageInPathFormat}/context/example/hibernate/layerRoads.xml
-			classpath:${packageInPathFormat}/context/example/hibernate/layerOsm.xml
+            WEB-INF/example/hibernate/applicationContext.xml
+            WEB-INF/example/hibernate/layerRoads.xml
+			WEB-INF/example/hibernate/layerOsm.xml
         -->
         
         <!--
-            classpath:${packageInPathFormat}/context/example/geotools/applicationContext.xml
-            classpath:${packageInPathFormat}/context/example/geotools/layerRoads.xml
-			classpath:${packageInPathFormat}/context/example/geotools/layerOsm.xml
+            WEB-INF/example/geotools/applicationContext.xml
+            WEB-INF/example/geotools/layerRoads.xml
+			WEB-INF/example/geotools/layerOsm.xml
         -->
         </param-value>
     </context-param>
 
-	<filter>
-		<filter-name>JettyFilter</filter-name>
-		<filter-class>org.geomajas.servlet.JettyThreadParentFilter</filter-class>
-	</filter>
 	<!-- enable when using back-end 1.8.0-SNAPSHOT or higher
 	<filter>
 	    <filter-name>CacheFilter</filter-name>
@@ -49,12 +48,13 @@
 	</filter-mapping>
 	-->
 
+	<!-- only needed for direct GWT -->
 	<listener>
  		<listener-class>org.geomajas.servlet.PrepareScanningContextListener</listener-class>
 	</listener>
 
 	<listener>
-		<listener-class>org.geomajas.servlet.GeomajasContextListener</listener-class>
+ 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
 
 	<servlet>

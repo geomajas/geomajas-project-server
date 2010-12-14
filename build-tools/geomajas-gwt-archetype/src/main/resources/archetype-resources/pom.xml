@@ -47,7 +47,7 @@
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-dep</artifactId>
-				<version>1.10.36</version>
+				<version>1.10.38</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -230,7 +230,6 @@
 							<execution>
 								<goals>
 									<goal>clean</goal>
-									<goal>generateAsync</goal>
 									<goal>compile</goal>
 									<goal>test</goal>
 								</goals>
@@ -240,9 +239,7 @@
 				</plugins>
 			</build>
 		</profile>
-		<!--
-			m2eclipse with WTP deployment, see http://jvminside.blogspot.com/2010/02/efficient-gwt-development-with-eclipse.html
-		-->
+		<!-- m2eclipse with embedded jetty -->
 		<profile>
 			<id>m2e</id>
 			<activation>
@@ -250,43 +247,13 @@
 					<name>m2e.version</name>
 				</property>
 			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>gwt-maven-plugin</artifactId>
-						<configuration>
-							<module>${package}.Application</module>
-							<runTarget>/${artifactId}/index.html</runTarget>
-							<noServer>true</noServer>
-							<port>8080</port>
-							<debugPort>9008</debugPort>
-							<extra>${project.build.directory}/gwt-extra</extra>
-							<gen>${project.build.directory}/gwt-gen</gen>
-							<hostedWebapp>${project.build.directory}/generated-web-resources/gwt</hostedWebapp>
-						</configuration>
-						<executions>
-							<execution>
-								<goals>
-									<goal>clean</goal>
-									<goal>generateAsync</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-antrun-plugin</artifactId>
-						<version>1.5</version>
-						<configuration>
-							<target>
-								<xslt in=".settings/org.eclipse.wst.common.component" out=".settings/org.eclipse.wst.common.tmp" style=".eclipse/wb-resource.xsl" />
-								<move file=".settings/org.eclipse.wst.common.tmp" tofile=".settings/org.eclipse.wst.common.component" />
-							</target>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
+			<dependencies>
+				<dependency>
+					<groupId>org.geomajas</groupId>
+					<artifactId>geomajas-jetty-runner</artifactId>
+					<version>1.0.0</version>
+				</dependency>
+			</dependencies>
 		</profile>
 		<profile>
 			<id>skipGwt</id>
@@ -304,7 +271,6 @@
 							<execution>
 								<goals>
 									<goal>clean</goal>
-									<goal>generateAsync</goal>
 								</goals>
 							</execution>
 						</executions>
