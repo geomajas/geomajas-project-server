@@ -120,7 +120,6 @@
 					<disableCastChecking>true</disableCastChecking>
 					<disableClassMetadata>true</disableClassMetadata>
 					<extraJvmArgs>-Xmx512M -Xss1024k</extraJvmArgs>
-					<i18nConstantsWithLookupBundle>org.geomajas.plugin.geocoder.gwt.example.client.i18n.Translation</i18nConstantsWithLookupBundle>
 				</configuration>
 			</plugin>
 
