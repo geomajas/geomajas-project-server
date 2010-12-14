@@ -1,0 +1,403 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<parent>
+		<groupId>org.geomajas</groupId>
+		<artifactId>geomajas-parent</artifactId>
+		<version>1.0.3</version>
+	</parent>
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>org.geomajas</groupId>
+	<artifactId>geomajas-gwt-simple</artifactId>
+	<version>1.8.0-SNAPSHOT</version>
+	<packaging>war</packaging>
+	<name>Geomajas simple gwt application demo</name>
+	<description>Geomajas simple gwt application demo</description>
+
+	<scm>
+		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/application/geomajas-gwt-simple</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/application/geomajas-gwt-simple</developerConnection>
+		<url>https://svn.geomajas.org/majas/trunk/application/geomajas-gwt-simple</url>
+	</scm>
+
+	<developers>
+		<developer>
+			<id>pieterdg</id>
+			<name>Pieter De Graef</name>
+			<email>pieter.degraef@geosparc.com</email>
+			<roles>
+				<role>Module maintainer</role>
+				<role>Architect</role>
+				<role>Lead Developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>jandm</id>
+			<name>Jan De Moerloose</name>
+			<email>jan.demoerloose@geosparc.com</email>
+			<roles>
+				<role>Architect</role>
+				<role>Lead Developer</role>
+			</roles>
+		</developer>
+		<developer>
+			<id>joachimvda</id>
+			<name>Joachim Van der Auwera</name>
+			<email>joachim@geosparc.com</email>
+			<roles>
+				<role>Architect</role>
+				<role>Lead Developer</role>
+			</roles>
+		</developer>
+	</developers>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-face-gwt</artifactId>
+				<version>${geomajas-face-gwt-version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-dep</artifactId>
+				<version>1.10.32</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+	<dependencies>
+		<dependency>
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-api</artifactId>
+		</dependency>
+		<!-- Geomajas dependencies -->
+		<dependency>
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-gwt-client</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-layer-geotools</artifactId>
+			<version>${geomajas-layer-geotools-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas</groupId>
+			<artifactId>geomajas-testdata</artifactId>
+			<version>${geomajas-backend-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-layer-wms</artifactId>
+			<version>${geomajas-layer-wms-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-layer-openstreetmap</artifactId>
+			<version>${geomajas-layer-openstreetmap-version}</version>
+		</dependency>
+
+		<!-- @extract-start HibernateLayerDependency, Hibernate layer dependency -->
+		<dependency>
+			<groupId>org.geomajas.plugin</groupId>
+			<artifactId>geomajas-layer-hibernate</artifactId>
+			<version>${geomajas-layer-hibernate-version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernatespatial</groupId>
+			<artifactId>hibernate-spatial-postgis</artifactId>
+			<version>1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.postgis</groupId>
+			<artifactId>postgis-jdbc</artifactId>
+			<version>1.1.6</version>
+		</dependency>
+		<dependency>
+			<groupId>postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>8.1-407.jdbc3</version>
+		</dependency>
+		
+		<!-- @extract-end -->
+		
+		<!-- Google dependencies -->
+		<dependency>
+			<groupId>com.google.gwt</groupId>
+			<artifactId>gwt-user</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.google.gwt</groupId>
+			<artifactId>gwt-servlet</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
+		<!-- logging dependencies, delegate all to slf4j and use logback -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>log4j-over-slf4j</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>ch.qos.logback</groupId>
+			<artifactId>logback-classic</artifactId>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<resources>
+			<!-- needed for sources plugin to include web.xml, though this duplicates it all under WEB-INF/classes -->
+			<resource>
+				<directory>src/main/resources</directory>
+			</resource>
+			<resource>
+				<directory>war</directory>
+				<includes>
+					<include>WEB-INF/web.xml</include>
+					<include>*.html</include>
+				</includes>
+			</resource>
+		</resources>
+		<outputDirectory>war/WEB-INF/classes</outputDirectory>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>2.5-DF</version>
+				<configuration>
+					<configLocation>config/geomajas-checkstyle.xml</configLocation>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>verify</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>org.geomajas</groupId>
+						<artifactId>geomajas-checkstyle</artifactId>
+						<version>1.0.4</version>
+					</dependency>
+				</dependencies>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<encoding>utf8</encoding>
+					<source>1.5</source>
+					<target>1.5</target>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>2.1.2</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+						<configuration>
+							<includePom>true</includePom>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>			
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<configuration>
+					<warSourceExcludes>.gwt-tmp/**</warSourceExcludes>
+					<warSourceDirectory>war</warSourceDirectory>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>gwt-maven-plugin</artifactId>
+				<version>1.2</version>
+				<configuration>
+					<inplace>true</inplace>
+					<module>mypackage.GeomajasSimple</module>
+					<runTarget>index.html</runTarget>
+					<warSourceDirectory>war</warSourceDirectory>
+					<disableCastChecking>true</disableCastChecking>
+					<disableClassMetadata>true</disableClassMetadata>
+					<extraJvmArgs>-Xmx512M -Xss1024k</extraJvmArgs>
+					<i18nConstantsWithLookupBundle>mypackage.client.i18n.Simple</i18nConstantsWithLookupBundle>
+				</configuration>
+			</plugin>
+
+			<!-- Run the application using "mvn jetty:run" -->
+			<plugin>
+				<groupId>org.mortbay.jetty</groupId>
+				<artifactId>maven-jetty-plugin</artifactId>
+				<version>6.1.20</version>
+				<configuration>
+         			<webAppSourceDirectory>${basedir}/war</webAppSourceDirectory>
+					<webAppConfig>
+						<contextPath>/</contextPath>
+					</webAppConfig>
+					<reload>manual</reload>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>remove-build-files</id>
+						<phase>clean</phase>
+						<configuration>
+							<tasks>
+								<delete dir="war/WEB-INF/lib" />
+								<delete dir="war/mypackage.GeomajasSimple" />
+							</tasks>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+		</plugins>
+	</build>
+
+	<repositories>
+		<repository>
+			<id>Geomajas</id>
+			<name>Geomajas repository</name>
+			<url>http://maven.geomajas.org/</url>
+		</repository>
+
+		<!-- uncomment if you want to use Geomajas snapshots, comment for faster builds  -->
+		<!--
+		<repository>
+			<id>Geomajas-latest</id>
+			<name>Geomajas snapshot repository</name>
+			<url>http://apps.geomajas.org/nexus/content/groups/latest</url>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		-->
+	</repositories>
+	<pluginRepositories>
+		<pluginRepository>
+			<id>Geomajas</id>
+			<name>Geomajas repository</name>
+			<url>http://maven.geomajas.org/</url>
+		</pluginRepository>
+	</pluginRepositories>
+
+	<profiles>
+		<profile>
+			<id>defaultGWT</id>
+			<activation>
+				<property>
+					<name>!skipGwt</name>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>gwt-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<goals>
+									<goal>clean</goal>
+									<goal>generateAsync</goal>
+									<goal>i18n</goal>
+									<goal>compile</goal>
+									<goal>test</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>					
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>skipGwt</id>
+			<activation>
+				<property>
+					<name>skipGwt</name>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>gwt-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<goals>
+									<goal>clean</goal>
+									<goal>generateAsync</goal>
+									<goal>i18n</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>					
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>m2e</id>
+			<activation>
+				<property>
+					<name>m2eGwt</name>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>gwt-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<goals>
+									<goal>clean</goal>
+									<goal>generateAsync</goal>
+									<goal>i18n</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>	
+	</profiles>
+
+	<properties>
+		<geomajas-face-gwt-version>1.7.1</geomajas-face-gwt-version>
+		<geomajas-backend-version>1.7.1</geomajas-backend-version>
+		<geomajas-layer-geotools-version>1.7.1</geomajas-layer-geotools-version>
+		<geomajas-layer-hibernate-version>1.7.2</geomajas-layer-hibernate-version>
+		<geomajas-layer-google-version>1.7.1</geomajas-layer-google-version>
+		<geomajas-layer-wms-version>1.7.1</geomajas-layer-wms-version>
+		<geomajas-layer-openstreetmap-version>1.7.1</geomajas-layer-openstreetmap-version>
+		<gwt-version>2.0.4</gwt-version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+</project>
