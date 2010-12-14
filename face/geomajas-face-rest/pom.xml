@@ -63,15 +63,29 @@
 
 	<profiles>
 		<profile>
-			<id>documentation</id>
+			<id>default</id>
 			<activation>
-				<property>
-					<name>!skipDocs</name>
-				</property>
+				<activeByDefault>true</activeByDefault>
 			</activation>
 			<modules>
 				<module>documentation</module>
 			</modules>
+		</profile>
+		<profile>
+			<id>skipDocs</id>
+			<activation>
+				<property>
+					<name>skipDocs</name>
+				</property>
+			</activation>
+		</profile>
+		<profile>
+			<id>m2e</id>
+			<activation>
+				<property>
+					<name>m2e.version</name>
+				</property>
+			</activation>
 		</profile>
 	</profiles>
 

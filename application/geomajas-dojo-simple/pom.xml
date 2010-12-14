@@ -197,29 +197,25 @@
 
 	<profiles>
 		<profile>
+			<!-- shrinking -->
+			<id>shrink</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<geomajas.modules.name>geomajas-dojo-client-shrinksafe</geomajas.modules.name>
+			</properties>
+		</profile>
+		<profile>
 			<!-- development profile, no shrinking -->
 			<id>noshrink</id>
 			<activation>
-				<activeByDefault>true</activeByDefault>
 				<property>
 					<name>skipShrink</name>
 				</property>
 			</activation>
 			<properties>
 				<geomajas.modules.name>geomajas-dojo-client</geomajas.modules.name>
-			</properties>
-		</profile>
-		<profile>
-			<!-- shrinking -->
-			<id>shrink</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-				<property>
-					<name>!skipShrink</name>
-				</property>
-			</activation>
-			<properties>
-				<geomajas.modules.name>geomajas-dojo-client-shrinksafe</geomajas.modules.name>
 			</properties>
 		</profile>
 	</profiles>

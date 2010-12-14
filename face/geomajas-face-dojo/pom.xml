@@ -98,42 +98,28 @@
 	<modules>
 		<module>server</module>
 		<module>client</module>
+		<module>documentation</module>
 	</modules>
 
 	<profiles>
 		<profile>
-			<id>documentation</id>
+			<!-- shrinking -->
+			<id>shrink</id>
 			<activation>
-				<property>
-					<name>!skipDocs</name>
-				</property>
+				<activeByDefault>true</activeByDefault>
 			</activation>
 			<modules>
-				<module>documentation</module>
+				<module>client-shrinksafe</module>
 			</modules>
 		</profile>
 		<profile>
 			<!-- development profile, no shrinking -->
 			<id>noshrink</id>
 			<activation>
-				<activeByDefault>true</activeByDefault>
 				<property>
 					<name>skipShrink</name>
 				</property>
 			</activation>
-		</profile>
-		<profile>
-			<!-- shrinking -->
-			<id>shrink</id>
-			<activation>
-				<activeByDefault>true</activeByDefault>
-				<property>
-					<name>!skipShrink</name>
-				</property>
-			</activation>
-			<modules>
-				<module>client-shrinksafe</module>
-			</modules>
 		</profile>
 	</profiles>
 

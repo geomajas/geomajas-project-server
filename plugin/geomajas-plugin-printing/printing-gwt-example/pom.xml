@@ -188,9 +188,7 @@
 		<profile>
 			<id>defaultGWT</id>
 			<activation>
-				<property>
-					<name>!skipGwt</name>
-				</property>
+				<activeByDefault>true</activeByDefault>
 			</activation>
 			<build>
 				<plugins>
@@ -212,6 +210,22 @@
 				</plugins>
 			</build>
 		</profile>
+		<!-- m2eclipse with embedded jetty -->
+		<profile>
+			<id>m2e</id>
+			<activation>
+				<property>
+					<name>m2e.version</name>
+				</property>
+			</activation>
+			<dependencies>
+				<dependency>
+					<groupId>org.geomajas</groupId>
+					<artifactId>geomajas-jetty-runner</artifactId>
+					<version>1.0.0</version>
+				</dependency>
+			</dependencies>
+		</profile>
 		<profile>
 			<id>skipGwt</id>
 			<activation>
@@ -228,40 +242,13 @@
 							<execution>
 								<goals>
 									<goal>clean</goal>
-									<goal>generateAsync</goal>
-									<goal>i18n</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>					
-				</plugins>
-			</build>
-		</profile>
-		<profile>
-			<id>m2e</id>
-			<activation>
-				<property>
-					<name>m2eGwt</name>
-				</property>
-			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>gwt-maven-plugin</artifactId>
-						<executions>
-							<execution>
-								<goals>
-									<goal>clean</goal>
-									<goal>generateAsync</goal>
-									<goal>i18n</goal>
 								</goals>
 							</execution>
 						</executions>
 					</plugin>
 				</plugins>
 			</build>
-		</profile>	
+		</profile>
 	</profiles>
 
 </project>

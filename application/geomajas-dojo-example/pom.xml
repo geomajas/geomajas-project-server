@@ -109,10 +109,23 @@
 
 	<profiles>
 		<profile>
+			<!-- shrinking -->
+			<id>shrink</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<properties>
+				<geomajas.modules.name>example-modules-shrinksafe</geomajas.modules.name>
+			</properties>
+			<modules>
+				<!-- include other module to assure version increased on release, doesn't really change anything -->
+				<module>example-modules</module>
+			</modules>
+		</profile>
+		<profile>
 			<!-- development profile, no shrinking -->
 			<id>noshrink</id>
 			<activation>
-				<activeByDefault>true</activeByDefault>
 				<property>
 					<name>skipShrink</name>
 				</property>
@@ -122,21 +135,16 @@
 			</properties>
 		</profile>
 		<profile>
-			<!-- shrinking -->
-			<id>shrink</id>
+			<!-- m2eclipse profile, no shrinking -->
+			<id>m2e</id>
 			<activation>
-				<activeByDefault>true</activeByDefault>
 				<property>
-					<name>!skipShrink</name>
+					<name>m2e.version</name>
 				</property>
 			</activation>
 			<properties>
-				<geomajas.modules.name>example-modules-shrinksafe</geomajas.modules.name>
+				<geomajas.modules.name>example-modules</geomajas.modules.name>
 			</properties>
-			<modules>
-				<!-- include other module to assure version increased on release, doesn't really change anything -->
-				<module>example-modules</module>
-			</modules>
 		</profile>
 	</profiles>
 
