@@ -6,7 +6,9 @@
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
+            <!-- generic Geomajas context -->
 			classpath:org/geomajas/spring/geomajasContext.xml
+            <!-- local application context -->
 			WEB-INF/applicationContext.xml
             <!-- Server side layers -->
 			WEB-INF/layer*.xml
@@ -75,7 +77,11 @@
 	</filter-mapping>
 	<!-- @extract-skip-end -->
 	<!-- @extract-end -->
-	
+
+	<listener>
+		<listener-class>org.geomajas.servlet.PrepareScanningContextListener</listener-class>
+	</listener>
+
 	<listener>
  		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
