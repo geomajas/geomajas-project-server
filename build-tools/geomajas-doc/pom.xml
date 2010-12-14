@@ -90,6 +90,13 @@
 											<version>1.0.2</version>
 											<outputDirectory>${project.build.directory}/docbkx/html</outputDirectory>
 										</artifactItem>
+										<artifactItem>
+											<groupId>org.geomajas</groupId>
+											<artifactId>geomajas-gwt-example</artifactId>
+											<version>1.8.0-SNAPSHOT</version>
+											<classifier>sources</classifier>
+											<outputDirectory>${project.build.directory}/extract/example</outputDirectory>
+										</artifactItem>
 									</artifactItems>
 								</configuration>
 							</execution>
@@ -186,6 +193,26 @@
 
 							<highlightSource>1</highlightSource>
 							<foCustomization>${project.build.directory}/docbkx/html/docbkx/docbook-fo.xsl</foCustomization>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<!-- avoids eclipse build -->
+		<profile>
+			<activation>
+				<property>
+					<name>m2e.version</name>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.maven.ide.eclipse</groupId>
+						<artifactId>lifecycle-mapping</artifactId>
+						<version>0.10.0</version>
+						<configuration>
+							<mappingId>customizable</mappingId>
 						</configuration>
 					</plugin>
 				</plugins>
