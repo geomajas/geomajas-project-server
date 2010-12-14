@@ -25,34 +25,62 @@
 		</dependency>
 	</dependencies>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-maven-dojo</artifactId>
-				<version>1.1</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>build</goal>
-						</goals>
+	<profiles>
+		<profile>
+			<id>default</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.geomajas</groupId>
+						<artifactId>geomajas-maven-dojo</artifactId>
+						<version>1.1</version>
+						<executions>
+							<execution>
+								<goals>
+									<goal>build</goal>
+								</goals>
+								<configuration>
+									<layerName>geomajas</layerName>
+									<localeList>en,fr,nl,pt,sp</localeList>
+									<modules>
+										<module>
+											<groupId>org.geomajas</groupId>
+											<artifactId>geomajas-dojo-client</artifactId>
+											<version>${project.version}</version>
+											<requires>geomajas.geomajas</requires>
+											<type>jar</type>
+										</module>
+									</modules>
+								</configuration>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<!-- avoids eclipse build -->
+		<profile>
+			<activation>
+				<property>
+					<name>m2e.version</name>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.maven.ide.eclipse</groupId>
+						<artifactId>lifecycle-mapping</artifactId>
+						<version>0.10.0</version>
 						<configuration>
-							<layerName>geomajas</layerName>
-							<localeList>en,fr,nl,pt,sp</localeList>
-							<modules>
-								<module>
-									<groupId>org.geomajas</groupId>
-									<artifactId>geomajas-dojo-client</artifactId>
-									<version>${project.version}</version>
-									<requires>geomajas.geomajas</requires>
-									<type>jar</type>
-								</module>
-							</modules>
+							<mappingId>customizable</mappingId>
 						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 </project>
 

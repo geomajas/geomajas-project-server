@@ -103,23 +103,34 @@
 
 	<profiles>
 		<profile>
+			<!-- development profile, skip shrink and docs -->
+			<id>default</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+		</profile>
+		<profile>
+			<id>documentation</id>
+			<activation>
+				<property>
+					<name>!skipDocs</name>
+				</property>
+			</activation>
+			<modules>
+				<module>documentation</module>
+			</modules>
+		</profile>
+		<profile>
 			<!-- shrinking -->
 			<id>shrink</id>
 			<activation>
-				<activeByDefault>true</activeByDefault>
+				<property>
+					<name>!skipShrink</name>
+				</property>
 			</activation>
 			<modules>
 				<module>client-shrinksafe</module>
 			</modules>
-		</profile>
-		<profile>
-			<!-- development profile, no shrinking -->
-			<id>noshrink</id>
-			<activation>
-				<property>
-					<name>skipShrink</name>
-				</property>
-			</activation>
 		</profile>
 	</profiles>
 
