@@ -44,7 +44,7 @@ public interface WmsLayerService {
 	 * 
 	 * @param layer
 	 *            The WMS layer to paint for.
-	 * @param boundsCrs
+	 * @param targetCrs
 	 *            Coordinate reference system used for bounds
 	 * @param bounds
 	 *            bounds to request images for

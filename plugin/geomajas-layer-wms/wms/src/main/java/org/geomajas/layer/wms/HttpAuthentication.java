@@ -22,6 +22,8 @@
  */
 package org.geomajas.layer.wms;
 
+import org.geomajas.global.Api;
+
 import java.io.Serializable;
 
 import javax.validation.constraints.NotNull;
@@ -37,7 +39,9 @@ import javax.validation.constraints.NotNull;
  * </p>
  * 
  * @author Pieter De Graef
+ * @since 1.8.0
  */
+@Api(allMethods = true)
 public class HttpAuthentication implements Serializable {
 
 	private static final long serialVersionUID = 180L;

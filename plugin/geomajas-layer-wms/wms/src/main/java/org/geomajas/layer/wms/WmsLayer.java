@@ -91,7 +91,7 @@ public class WmsLayer implements RasterLayer {
 	/**
 	 * Paints the specified bounds optimized for the specified scale in pixel/unit.
 	 * 
-	 * @param boundsCrs
+	 * @param targetCrs
 	 *            Coordinate reference system used for bounds
 	 * @param bounds
 	 *            bounds to request images for
