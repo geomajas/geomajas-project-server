@@ -17,10 +17,46 @@
 	</description>
 
 	<scm>
-		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/build-tools/geomajas-dep</connection>
-		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/build-tools/geomajas-dep</developerConnection>
-		<url>https://svn.geomajas.org/majas/trunk/build-tools/geomajas-dep</url>
+		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/build-tools/geomajas-doc-parent</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/build-tools/geomajas-doc-parent</developerConnection>
+		<url>https://svn.geomajas.org/majas/trunk/build-tools/geomajas-doc-parent</url>
 	</scm>
+
+	<organization>
+		<name>Geosparc</name>
+		<url>http://www.geosparc.com</url>
+	</organization>
+	<mailingLists>
+		<mailingList>
+			<name>DEV</name>
+			<post>mailto:majas-dev@geomajas.org</post>
+			<subscribe>http://lists.geomajas.org/mailman/listinfo/majas-dev</subscribe>
+			<unsubscribe>http://lists.geomajas.org/mailman/listinfo/majas-dev</unsubscribe>
+			<archive>http://lists.geomajas.org/pipermail/majas-dev/</archive>
+		</mailingList>
+	</mailingLists>
+	<licenses>
+		<license>
+			<name>GNU Affero General Public License, Version 3</name>
+			<url>http://www.gnu.org/licenses/agpl-3.0.html</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+	<issueManagement>
+		<system>JIRA</system>
+		<url>http://jira.geomajas.org</url>
+	</issueManagement>
+
+	<developers>
+		<developer>
+			<id>jandm</id>
+			<name>Jan De Moerloose</name>
+			<email>jan.demoerloose@geosparc.com</email>
+			<roles>
+				<role>Module maintainer</role>
+			</roles>
+		</developer>
+	</developers>
 
 	<repositories>
 		<repository>
@@ -36,6 +72,7 @@
 			<url>http://maven.geomajas.org/</url>
 		</pluginRepository>
 	</pluginRepositories>
+	
 	<profiles>
 		<profile>
 			<id>documentation</id>
