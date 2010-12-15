@@ -11,4 +11,9 @@
 	<packaging>jar</packaging>
 	<name>Caching documentation</name>
 	<description>Caching documentation</description>
+	
+	<properties>
+		<listing.sourceDirectory>${basedir}/..</listing.sourceDirectory>
+	</properties>
+	
 </project>

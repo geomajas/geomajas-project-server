@@ -59,4 +59,8 @@
 		</plugins>
 	</build>
 	
+	<properties>
+		<listing.sourceDirectory>${basedir}/..</listing.sourceDirectory>
+	</properties>
+	
 </project>

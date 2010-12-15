@@ -10,4 +10,9 @@
 	<packaging>jar</packaging>
 	<name>Geomajas staticsecurity plugin documentation</name>
 	<description>Geomajas static security plugin documentation</description>
+	
+	<properties>
+		<listing.sourceDirectory>${basedir}/..</listing.sourceDirectory>
+	</properties>
+	
 </project>

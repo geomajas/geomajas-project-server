@@ -11,4 +11,9 @@
 	<packaging>jar</packaging>
 	<name>rasterizing documentation</name>
 	<description>rasterizing documentation</description>
+	
+	<properties>
+		<listing.sourceDirectory>${basedir}/..</listing.sourceDirectory>
+	</properties>
+	
 </project>

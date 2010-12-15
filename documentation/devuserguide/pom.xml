@@ -1,8 +1,8 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<parent>
 		<groupId>org.geomajas</groupId>
-		<artifactId>geomajas-parent</artifactId>
-		<version>1.0.3</version>
+		<artifactId>geomajas-doc</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.documentation</groupId>
@@ -55,16 +55,6 @@
 	</developers>
 
 	<build>
-		<resources>
-			<resource>
-				<filtering>false</filtering>
-				<directory>${project.build.directory}/docbkx/</directory>
-				<excludes>
-					<exclude>**/*.fo</exclude>
-					<exclude>html/META-INF/**</exclude>
-				</excludes>
-			</resource>
-		</resources>
 		<plugins>
 			<plugin>
 				<artifactId>maven-dependency-plugin</artifactId>
@@ -77,12 +67,6 @@
 						</goals>
 						<configuration>
 							<artifactItems>
-								<artifactItem>
-									<groupId>org.geomajas.documentation</groupId>
-									<artifactId>geomajas-jdocbook-style</artifactId>
-									<version>1.0.2</version>
-									<outputDirectory>${project.build.directory}/docbkx/html</outputDirectory>
-								</artifactItem>
 								<artifactItem>
 									<groupId>org.geomajas</groupId>
 									<artifactId>geomajas-gwt-simple</artifactId>
@@ -116,100 +100,11 @@
 					</execution>
 				</executions>
 			</plugin>
-			<plugin>
-				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-maven-plugin</artifactId>
-				<version>1.0.5</version>
-				<inherited>false</inherited>
-				<executions>
-					<execution>
-						<id>extract-listings-app</id>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>extract</goal>
-						</goals>
-						<configuration>
-							<sourceDirectory>${project.build.directory}/extract</sourceDirectory>
-							<destinationDirectory>${basedir}/src/docbkx/listing</destinationDirectory>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>remove-listing</id>
-						<phase>clean</phase>
-						<configuration>
-							<tasks>
-								<delete dir="src/docbkx/listing" />
-							</tasks>
-						</configuration>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>
-					<execution>
-						<id>copy-resources</id>
-						<phase>generate-sources</phase>
-						<configuration>
-							<tasks>
-								<copy todir="${project.build.directory}/docbkx/html">
-									<fileset dir="${basedir}/src/docbkx">
-										<exclude name="**/*.xml"/>
-									</fileset>
-								</copy>
-							</tasks>
-						</configuration>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>			
-
-			<plugin>
-				<groupId>com.agilejava.docbkx</groupId>
-				<artifactId>docbkx-maven-plugin</artifactId>
-				<version>2.0.11</version>
-				<dependencies>
-					<dependency>
-						<groupId>org.docbook</groupId>
-						<artifactId>docbook-xml</artifactId>
-						<version>4.4</version>
-						<scope>runtime</scope>
-					</dependency>
-				</dependencies>
-
-				<executions>
-					<execution>
-						<id>html-pdf</id>
-						<phase>generate-sources</phase>
-						<goals>
-							<goal>generate-pdf</goal>
-							<goal>generate-html</goal>
-						</goals>
-						<configuration>
-							<!-- per execution configuration -->
-							<includes>master.xml</includes>
-							<htmlStylesheet>css/geomajas.css</htmlStylesheet>
-							<sectionAutolabel>1</sectionAutolabel>
-						</configuration>
-					</execution>
-				</executions>
-				<configuration>
-					<!-- shared configuration -->
-					<xincludeSupported>true</xincludeSupported>
-					<paperType>A4</paperType>
-					<fop1Extensions>1</fop1Extensions>
-
-					<highlightSource>1</highlightSource>
-					<foCustomization>${project.build.directory}/docbkx/html/docbkx/docbook-fo.xsl</foCustomization>
-				</configuration>
-			</plugin>
 		</plugins>
 	</build>
+
+	<properties>
+		<listing.sourceDirectory>${project.build.directory}/extract</listing.sourceDirectory>
+	</properties>
 
 </project>

@@ -11,4 +11,9 @@
 	<packaging>jar</packaging>
 	<name>geomajas-face-rest documentation</name>
 	<description>geomajas-face-rest documentation</description>
+	
+	<properties>
+		<listing.sourceDirectory>${basedir}/..</listing.sourceDirectory>
+	</properties>
+	
 </project>

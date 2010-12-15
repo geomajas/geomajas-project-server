@@ -11,4 +11,9 @@
 	<packaging>jar</packaging>
 	<name>geocoder documentation</name>
 	<description>geocoder documentation</description>
+
+	<properties>
+		<listing.sourceDirectory>${basedir}/..</listing.sourceDirectory>
+	</properties>
+	
 </project>

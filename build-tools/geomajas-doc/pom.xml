@@ -40,9 +40,7 @@
 		<profile>
 			<id>documentation</id>
 			<activation>
-				<file>
-					<exists>src/docbkx</exists>
-				</file>
+				<activeByDefault>true</activeByDefault>
 			</activation>
 			<build>
 				<plugins>
@@ -72,12 +70,11 @@
 							</execution>
 						</executions>
 					</plugin>
-
 					<plugin>
 						<artifactId>maven-dependency-plugin</artifactId>
 						<executions>
 							<execution>
-								<id>explode-resources</id>
+								<id>explode-style</id>
 								<phase>generate-sources</phase>
 								<goals>
 									<goal>unpack</goal>
@@ -89,13 +86,6 @@
 											<artifactId>geomajas-jdocbook-style</artifactId>
 											<version>1.0.2</version>
 											<outputDirectory>${project.build.directory}/docbkx/html</outputDirectory>
-										</artifactItem>
-										<artifactItem>
-											<groupId>org.geomajas</groupId>
-											<artifactId>geomajas-gwt-example</artifactId>
-											<version>1.8.0-SNAPSHOT</version>
-											<classifier>sources</classifier>
-											<outputDirectory>${project.build.directory}/extract/example</outputDirectory>
 										</artifactItem>
 									</artifactItems>
 								</configuration>
@@ -141,8 +131,7 @@
 								<phase>generate-sources</phase>
 								<configuration>
 									<tasks>
-										<copy todir="${project.build.directory}/docbkx/html"
-											failonerror="false">
+										<copy todir="${project.build.directory}/docbkx/html" failonerror="false">
 											<fileset dir="${basedir}/src/docbkx">
 												<exclude name="**/*.xml" />
 											</fileset>
@@ -222,6 +211,7 @@
 	
 	<!--  may be overridden by child poms -->
 	<properties>
-		<listing.sourceDirectory>${basedir}/..</listing.sourceDirectory>
+		<listing.sourceDirectory>${basedir}</listing.sourceDirectory>
 	</properties>
+	
 </project>
