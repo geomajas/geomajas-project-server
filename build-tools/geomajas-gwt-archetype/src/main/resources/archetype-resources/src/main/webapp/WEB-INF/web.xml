@@ -2,37 +2,37 @@
 #set( $symbol_dollar = '$' )
 #set( $symbol_escape = '\' )
 <web-app
-    version="2.5"
-    xmlns="http://java.sun.com/xml/ns/javaee" 
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-    xsi:schemaLocation="
-        http://java.sun.com/xml/ns/javaee 
-        http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+	version="2.5"
+	xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+		http://java.sun.com/xml/ns/javaee
+		http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 	<display-name>Geomajas application</display-name>
-    <context-param>
-        <param-name>contextConfigLocation</param-name>
-        <param-value>
-        <!-- framework context -->
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>
+			<!-- framework context -->
 			classpath:org/geomajas/spring/geomajasContext.xml
 
-        <!-- application context -->
-            WEB-INF/applicationContext.xml
-            WEB-INF/osmLayer.xml
+			<!-- application context -->
+			WEB-INF/applicationContext.xml
+			WEB-INF/osmLayer.xml
 			WEB-INF/countriesLayer.xml
   
-        <!--
-            WEB-INF/example/hibernate/applicationContext.xml
-            WEB-INF/example/hibernate/layerRoads.xml
+		<!--
+			WEB-INF/example/hibernate/applicationContext.xml
+			WEB-INF/example/hibernate/layerRoads.xml
 			WEB-INF/example/hibernate/layerOsm.xml
-        -->
+		-->
         
-        <!--
-            WEB-INF/example/geotools/applicationContext.xml
-            WEB-INF/example/geotools/layerRoads.xml
+		<!--
+			WEB-INF/example/geotools/applicationContext.xml
+			WEB-INF/example/geotools/layerRoads.xml
 			WEB-INF/example/geotools/layerOsm.xml
-        -->
-        </param-value>
-    </context-param>
+		-->
+		</param-value>
+	</context-param>
 
 	<!-- enable when using back-end 1.8.0-SNAPSHOT or higher
 	<filter>
@@ -50,7 +50,7 @@
 
 	<!-- only needed for direct GWT -->
 	<listener>
- 		<listener-class>org.geomajas.servlet.PrepareScanningContextListener</listener-class>
+		<listener-class>org.geomajas.servlet.PrepareScanningContextListener</listener-class>
 	</listener>
 
 	<listener>
