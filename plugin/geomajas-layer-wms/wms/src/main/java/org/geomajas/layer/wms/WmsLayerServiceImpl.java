@@ -213,9 +213,10 @@ public class WmsLayerServiceImpl implements WmsLayerService {
 	// ------------------------------------------------------------------------
 
 	private String getBaseWmsUrl(WmsLayer layer) {
-		if (layer.getAuthentication().getUser() == null && layer.getAuthentication().getPassword() == null) {
+		if (layer.getAuthentication() == null
+				|| (layer.getAuthentication().getUser() == null && layer.getAuthentication().getPassword() == null)) {
 			return layer.getBaseWmsUrl();
-		} else if (layer.getAuthentication().getApplicationUrl() != null) {
+		} else if (layer.getAuthentication() != null && layer.getAuthentication().getApplicationUrl() != null) {
 			if (layer.getAuthentication().getApplicationUrl().endsWith("/")) {
 				return layer.getAuthentication().getApplicationUrl() + "d/wms/" + layer.getId() + "/";
 			} else {
