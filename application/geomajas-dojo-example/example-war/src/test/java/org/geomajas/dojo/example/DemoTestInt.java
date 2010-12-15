@@ -42,7 +42,7 @@ public class DemoTestInt extends SeleneseTestCase {
 	public void testDemoLoadsProperly() throws Exception {
 		selenium.open("/");
 		selenium.click("//div[@id='sample1']/table/tbody/tr[7]/td[1]/a/img");
-		selenium.waitForPageToLoad("30000");
+		//selenium.waitForPageToLoad("30000"); don't use as this may fail when invoked after page already loaded
 		// when this is available, the page is loaded and dojo did it's job...
 		selenium.waitForCondition(
    			"selenium.browserbot.getCurrentWindow().document.getElementById('sampleTechToolbar.ZoomIn')",
