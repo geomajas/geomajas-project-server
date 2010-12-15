@@ -16,7 +16,7 @@
 	<modules>
 		<module>geomajas-checkstyle</module>
 		<module>geomajas-dep</module>
-		<module>geomajas-doc</module>
+		<module>geomajas-doc-parent</module>
 		<module>geomajas-gwt-archetype</module>
 		<module>geomajas-jetty-runner</module>
 		<module>geomajas-maven-dojo</module>
