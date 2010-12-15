@@ -26,10 +26,16 @@
 							<artifactItems>
 								<artifactItem>
 									<groupId>org.geomajas</groupId>
+									<artifactId>geomajas-gwt-simple</artifactId>
+									<version>1.7.1</version>
+									<classifier>sources</classifier>
+									<outputDirectory>${project.build.directory}/extract/simple</outputDirectory>
+								</artifactItem>
+								<artifactItem>
+									<groupId>org.geomajas</groupId>
 									<artifactId>geomajas-gwt-example</artifactId>
-									<version>1.8.0-SNAPSHOT</version>
-									<type>zip</type>
-									<classifier>src</classifier>
+									<version>1.7.1</version>
+									<classifier>sources</classifier>
 									<outputDirectory>${project.build.directory}/extract/example</outputDirectory>
 								</artifactItem>
 							</artifactItems>
