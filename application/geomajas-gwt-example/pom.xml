@@ -230,6 +230,26 @@
 
 	<build>
 		<plugins>
+			<!-- prepare src classifier for documentation listings -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<version>2.2</version>
+				<configuration>
+					<descriptorRefs>
+						<descriptorRef>src</descriptorRef>
+					</descriptorRefs>
+				</configuration>
+				<executions>
+					<execution>
+						<id>make-src</id>
+						<phase>package</phase>
+						<goals>
+							<goal>single</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 			<!-- @extract-start MavenSourcePlugin, Maven source plugin -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
