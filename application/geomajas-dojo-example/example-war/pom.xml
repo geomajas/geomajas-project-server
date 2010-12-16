@@ -253,7 +253,6 @@
 								</goals>
 								<configuration>
 									<background>true</background>
-									<logOutput>true</logOutput>
 								</configuration>
 							</execution>
 						</executions>
