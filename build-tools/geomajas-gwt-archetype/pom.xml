@@ -67,8 +67,8 @@
 	</build>
 
   <scm>
-    <connection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-gwt-archetype-1.7.1-R1</connection>
-    <developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/geomajas-gwt-archetype-1.7.1-R1</developerConnection>
-    <url>https://svn.geomajas.org/majas/tags/geomajas-gwt-archetype-1.7.1-R1</url>
+    <connection>scm:svn:https://svn.geomajas.org/majas/trunk/build-tools/geomajas-gwt-archetype-1.7.1</connection>
+    <developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/build-tools/geomajas-gwt-archetype-1.7.1</developerConnection>
+    <url>https://svn.geomajas.org/majas/trunk/build-tools/geomajas-gwt-archetype-1.7.1</url>
   </scm>
 </project> 

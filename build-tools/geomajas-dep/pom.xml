@@ -140,14 +140,14 @@
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-backend</artifactId>
-				<version>${back-end-version}</version>
+				<version>1.7.1</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-face-gwt</artifactId>
-				<version>1.8.0-SNAPSHOT</version>
+				<version>1.7.1</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -166,17 +166,17 @@
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-layer-google</artifactId>
-				<version>1.8.0-SNAPSHOT</version>
+				<version>1.7.1</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-layer-google-gwt</artifactId>
-				<version>1.8.0-SNAPSHOT</version>
+				<version>1.7.1</version>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas.plugin</groupId>
 				<artifactId>geomajas-layer-google-gwt</artifactId>
-				<version>1.8.0-SNAPSHOT</version>
+				<version>1.7.1</version>
 				<classifier>sources</classifier>
 			</dependency>
 			<dependency>
@@ -305,7 +305,6 @@
 	</dependencyManagement>
 
 	<properties>
-		<back-end-version>1.8.0-SNAPSHOT</back-end-version>
 		<geotools-version>2.6.3</geotools-version>
 		<spring-version>3.0.2.RELEASE</spring-version>
 		<dojo-version>1.1.0</dojo-version>

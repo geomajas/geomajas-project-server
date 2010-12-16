@@ -34,19 +34,15 @@
 		</param-value>
 	</context-param>
 
-	<!-- enable when using back-end 1.8.0-SNAPSHOT or higher
 	<filter>
 	    <filter-name>CacheFilter</filter-name>
 	    <filter-class>org.geomajas.servlet.CacheFilter</filter-class>
 	</filter>
-	-->
 
-	<!--
 	<filter-mapping>
 		<filter-name>CacheFilter</filter-name>
 		<servlet-name>GeomajasServiceServlet</servlet-name>
 	</filter-mapping>
-	-->
 
 	<!-- only needed for direct GWT -->
 	<listener>
