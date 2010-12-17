@@ -30,6 +30,7 @@ import org.geomajas.global.Api;
  * services linked in as dispatched controllers.
  *
  * @author Joachim Van der Auwera
+ * @since 1.8.0
  */
 @Api(allMethods = true)
 public interface DispatcherUrlService {
