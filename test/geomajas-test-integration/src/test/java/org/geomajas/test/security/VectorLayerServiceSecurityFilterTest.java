@@ -86,13 +86,13 @@ public class VectorLayerServiceSecurityFilterTest {
 		// check expected result when no filtering
 		login("luc");
 		features = layerService.getFeatures(LAYER_ID,
-				CRS.decode(beanLayer.getLayerInfo().getCrs()), null, null, VectorLayerService.FEATURE_INCLUDE_NONE);
+				beanLayer.getCrs(), null, null, VectorLayerService.FEATURE_INCLUDE_NONE);
 		Assert.assertEquals(3, features.size());
 
 		// check expected result when filter is applied
 		login("marino");
 		features = layerService.getFeatures(LAYER_ID,
-				CRS.decode(beanLayer.getLayerInfo().getCrs()), null, null, VectorLayerService.FEATURE_INCLUDE_NONE);
+				beanLayer.getCrs(), null, null, VectorLayerService.FEATURE_INCLUDE_NONE);
 		Assert.assertEquals(1, features.size());
 	}
 }

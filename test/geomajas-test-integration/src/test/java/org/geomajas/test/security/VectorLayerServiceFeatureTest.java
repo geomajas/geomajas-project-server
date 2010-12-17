@@ -103,7 +103,7 @@ public class VectorLayerServiceFeatureTest {
 	@Test
 	public void testGetFeaturesFeatureAuthorization() throws Exception {
 		List<InternalFeature> features;
-		CoordinateReferenceSystem crs = CRS.decode(beanLayer.getLayerInfo().getCrs());
+		CoordinateReferenceSystem crs = beanLayer.getCrs();
 
 		login("luc");
 		features = layerService.getFeatures(LAYER_ID, crs, null, null, VectorLayerService.FEATURE_INCLUDE_NONE);
@@ -138,7 +138,7 @@ public class VectorLayerServiceFeatureTest {
 		List<InternalFeature> oldFeatures;
 		List<InternalFeature> newFeatures;
 		InternalFeature feature;
-		CoordinateReferenceSystem crs = CRS.decode(beanLayer.getLayerInfo().getCrs());
+		CoordinateReferenceSystem crs = beanLayer.getCrs();
 
 		login("marino");
 		// should be able to update feature "1"
@@ -189,7 +189,7 @@ public class VectorLayerServiceFeatureTest {
 		Filter filter;
 		List<InternalFeature> oldFeatures;
 		List<InternalFeature> newFeatures;
-		CoordinateReferenceSystem crs = CRS.decode(beanLayer.getLayerInfo().getCrs());
+		CoordinateReferenceSystem crs = beanLayer.getCrs();
 
 		login("marino");
 		filter = filterService.createFidFilter(new String[]{"3"});
@@ -223,7 +223,7 @@ public class VectorLayerServiceFeatureTest {
 		List<InternalFeature> oldFeatures;
 		List<InternalFeature> newFeatures;
 		InternalFeature feature;
-		CoordinateReferenceSystem crs = CRS.decode(beanLayer.getLayerInfo().getCrs());
+		CoordinateReferenceSystem crs = beanLayer.getCrs();
 		GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel());
 		Geometry geometry;
 

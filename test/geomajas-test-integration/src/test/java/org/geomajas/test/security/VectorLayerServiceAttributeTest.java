@@ -95,7 +95,7 @@ public class VectorLayerServiceAttributeTest {
 	@Test
 	public void testGetFeaturesAttributeAuthorization() throws Exception {
 		List<InternalFeature> features;
-		CoordinateReferenceSystem crs = CRS.decode(beanLayer.getLayerInfo().getCrs());
+		CoordinateReferenceSystem crs = beanLayer.getCrs();
 		InternalFeature feature;
 
 		login("luc");
@@ -155,7 +155,7 @@ public class VectorLayerServiceAttributeTest {
 		List<InternalFeature> oldFeatures;
 		List<InternalFeature> newFeatures;
 		InternalFeature feature;
-		CoordinateReferenceSystem crs = CRS.decode(beanLayer.getLayerInfo().getCrs());
+		CoordinateReferenceSystem crs = beanLayer.getCrs();
 
 		login("marino");
 		filter = filterService.createFidFilter(new String[]{"1"});

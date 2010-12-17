@@ -106,7 +106,7 @@ public class VectorLayerServiceVisibleAreaTest {
 	@Test
 	public void testGetFeaturesVisibleArea() throws Exception {
 		List<InternalFeature> features;
-		CoordinateReferenceSystem crs = CRS.decode(beanLayer.getLayerInfo().getCrs());
+		CoordinateReferenceSystem crs = beanLayer.getCrs();
 
 		login("luc");
 		features = layerService.getFeatures(LAYER_ID,crs, null, null, VectorLayerService.FEATURE_INCLUDE_NONE);
@@ -125,7 +125,7 @@ public class VectorLayerServiceVisibleAreaTest {
 
 	@Test
 	public void testGetBoundsVisibleArea() throws Exception {
-		CoordinateReferenceSystem crs = CRS.decode(beanLayer.getLayerInfo().getCrs());
+		CoordinateReferenceSystem crs = beanLayer.getCrs();
 		Envelope envelope;
 
 		login("luc");
@@ -150,7 +150,7 @@ public class VectorLayerServiceVisibleAreaTest {
 		List<InternalFeature> oldFeatures;
 		List<InternalFeature> newFeatures;
 		InternalFeature feature;
-		CoordinateReferenceSystem crs = CRS.decode(beanLayer.getLayerInfo().getCrs());
+		CoordinateReferenceSystem crs = beanLayer.getCrs();
 
 		login("marino");
 		// should be able to update feature "2"
@@ -189,7 +189,7 @@ public class VectorLayerServiceVisibleAreaTest {
 		List<InternalFeature> oldFeatures;
 		List<InternalFeature> newFeatures;
 		InternalFeature feature;
-		CoordinateReferenceSystem crs = CRS.decode(beanLayer.getLayerInfo().getCrs());
+		CoordinateReferenceSystem crs = beanLayer.getCrs();
 
 		login("marino");
 		// should not be able to delete feature "2"
@@ -226,7 +226,7 @@ public class VectorLayerServiceVisibleAreaTest {
 		List<InternalFeature> oldFeatures;
 		List<InternalFeature> newFeatures;
 		InternalFeature feature;
-		CoordinateReferenceSystem crs = CRS.decode(beanLayer.getLayerInfo().getCrs());
+		CoordinateReferenceSystem crs = beanLayer.getCrs();
 		GeometryFactory geometryFactory = new GeometryFactory(new PrecisionModel());
 		Geometry geometry;
 

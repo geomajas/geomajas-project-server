@@ -88,7 +88,7 @@ public class VectorLayerServiceInvisibleLayerTest {
 		// verify features are accessible when layer is visible
 		login("luc");
 		List<InternalFeature> features = layerService.getFeatures(LAYER_ID,
-				CRS.decode(beanLayer.getLayerInfo().getCrs()), null, null, VectorLayerService.FEATURE_INCLUDE_NONE);
+				beanLayer.getCrs(), null, null, VectorLayerService.FEATURE_INCLUDE_NONE);
 		Assert.assertEquals(3, features.size());
 		Assert.assertTrue(features.get(0).isEditable());
 		Assert.assertFalse(features.get(0).isDeletable());
@@ -101,7 +101,7 @@ public class VectorLayerServiceInvisibleLayerTest {
 		login("marino");
 		try {
 			features = layerService.getFeatures(LAYER_ID,
-					CRS.decode(beanLayer.getLayerInfo().getCrs()), null, null, VectorLayerService.FEATURE_INCLUDE_NONE);
+					beanLayer.getCrs(), null, null, VectorLayerService.FEATURE_INCLUDE_NONE);
 			Assert.fail();
 		} catch (GeomajasSecurityException gse) {
 			Assert.assertEquals(ExceptionCode.LAYER_NOT_VISIBLE, gse.getExceptionCode());
