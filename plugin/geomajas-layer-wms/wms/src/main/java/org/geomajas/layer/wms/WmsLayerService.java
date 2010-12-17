@@ -59,7 +59,7 @@ public interface WmsLayerService {
 
 	/**
 	 * Calculate and apply the resolutions for a WMS layer.
-	 * 
+	 *
 	 * @param layer
 	 *            The WMS layer to apply resolutions for.
 	 */

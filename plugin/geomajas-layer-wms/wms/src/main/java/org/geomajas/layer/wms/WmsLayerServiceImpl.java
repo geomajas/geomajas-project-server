@@ -40,10 +40,8 @@ import org.geomajas.layer.wms.WmsLayer.Resolution;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
 import org.geotools.geometry.DirectPosition2D;
-import org.geotools.referencing.CRS;
 import org.opengis.geometry.DirectPosition;
 import org.opengis.geometry.MismatchedDimensionException;
-import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
@@ -109,13 +107,15 @@ public class WmsLayerServiceImpl implements WmsLayerService {
 		Envelope layerBounds = bounds;
 		double layerScale = scale;
 		MathTransform layerToMap = null;
+		CoordinateReferenceSystem layerCrs = layer.getCrs();
+		boolean needTransform = !layerCrs.equals(targetCrs);
 
 		try {
 			// We don't necessarily need to split into same CRS and different CRS cases, the latter implementation uses
 			// identity transform if crs's are equal for map and layer but might introduce bugs in rounding and/or
 			// conversions.
-			if (!layer.getCrs().equals(targetCrs)) {
-				layerToMap = geoService.findMathTransform(CRS.decode(layer.getLayerInfo().getCrs()), targetCrs);
+			if (needTransform) {
+				layerToMap = geoService.findMathTransform(layerCrs, targetCrs);
 				MathTransform mapToLayer = layerToMap.inverse();
 
 				// Translate the map coordinates to layer coordinates, assumes equal x-y orientation
@@ -125,8 +125,6 @@ public class WmsLayerServiceImpl implements WmsLayerService {
 		} catch (MismatchedDimensionException e) {
 			throw new GeomajasException(e, ExceptionCode.RENDER_DIMENSION_MISMATCH);
 		} catch (TransformException e) {
-			throw new GeomajasException(e, ExceptionCode.RENDER_TRANSFORMATION_FAILED);
-		} catch (FactoryException e) {
 			throw new GeomajasException(e, ExceptionCode.RENDER_TRANSFORMATION_FAILED);
 		}
 		layerBounds = clipBounds(layer, layerBounds);
@@ -149,7 +147,7 @@ public class WmsLayerServiceImpl implements WmsLayerService {
 				// layer coordinates
 				Bbox worldBox;
 				Bbox layerBox;
-				if (!layer.getCrs().equals(targetCrs)) {
+				if (needTransform) {
 					layerBox = new Bbox(x, y, grid.getTileWidth(), grid.getTileHeight());
 					// Transforming back to map coordinates will only result in a proper grid if the transformation
 					// is nearly affine
@@ -184,7 +182,7 @@ public class WmsLayerServiceImpl implements WmsLayerService {
 
 	/**
 	 * Calculate and apply the resolutions for a WMS layer.
-	 * 
+	 *
 	 * @param layer
 	 *            The WMS layer to apply resolutions for.
 	 */

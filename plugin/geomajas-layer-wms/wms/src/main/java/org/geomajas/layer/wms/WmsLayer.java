@@ -28,19 +28,18 @@ import java.util.List;
 import org.geomajas.configuration.Parameter;
 import org.geomajas.configuration.RasterLayerInfo;
 import org.geomajas.global.Api;
-import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.RasterLayer;
 import org.geomajas.layer.tile.RasterTile;
-import org.geotools.referencing.CRS;
-import org.opengis.referencing.FactoryException;
-import org.opengis.referencing.NoSuchAuthorityCodeException;
+import org.geomajas.service.GeoService;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
+
+import javax.annotation.PostConstruct;
 
 /**
  * <p>
@@ -70,7 +69,10 @@ import com.vividsolutions.jts.geom.Envelope;
 public class WmsLayer implements RasterLayer {
 
 	@Autowired
-	protected WmsLayerService wmsLayerService;
+	private WmsLayerService wmsLayerService;
+
+	@Autowired
+	private GeoService geoService;
 
 	protected List<Resolution> resolutions = new ArrayList<Resolution>();
 
@@ -127,6 +129,12 @@ public class WmsLayer implements RasterLayer {
 		this.id = id;
 	}
 
+	@PostConstruct
+	private void postConstruct() throws GeomajasException {
+		crs = geoService.getCrs(getLayerInfo().getCrs());
+		wmsLayerService.calculateResolutions(this);
+	}
+
 	/**
 	 * Return this layers coordinate reference system (CRS). This value is initialized when the <code>LayerInfo</code>
 	 * object is set.
@@ -167,14 +175,6 @@ public class WmsLayer implements RasterLayer {
 	@Api
 	public void setLayerInfo(RasterLayerInfo layerInfo) throws LayerException {
 		this.layerInfo = layerInfo;
-		try {
-			crs = CRS.decode(layerInfo.getCrs());
-		} catch (NoSuchAuthorityCodeException e) {
-			throw new LayerException(e, ExceptionCode.LAYER_CRS_UNKNOWN_AUTHORITY, getId(), getLayerInfo().getCrs());
-		} catch (FactoryException exception) {
-			throw new LayerException(exception, ExceptionCode.LAYER_CRS_PROBLEMATIC, getId(), getLayerInfo().getCrs());
-		}
-		wmsLayerService.calculateResolutions(this);
 	}
 
 	/**
@@ -399,7 +399,7 @@ public class WmsLayer implements RasterLayer {
 
 	/**
 	 * Single resolution definition for a WMS layer. This class is used internally in the WMS layer, and therefore has
-	 * no public contructors.
+	 * no public constructors.
 	 * 
 	 * @author Jan De Moerloose
 	 * @author Pieter De Graef
