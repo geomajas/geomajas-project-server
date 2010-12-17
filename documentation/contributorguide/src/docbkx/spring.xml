@@ -93,51 +93,55 @@ private postConstruct() {
     <section id="spring-init">
       <title>Initialising the applicationContext</title>
 
-      <para>For servlets, you can use the GeomajasContextListener in the
-      web.xml file.</para>
+      <para>For servlets, you should configure the Spring context loader
+      listener in the web.xml file.</para>
 
       <programlisting>&lt;!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd" &gt;
 &lt;web-app&gt;
     &lt;display-name&gt;Geomajas application&lt;/display-name&gt;
     &lt;context-param&gt;
         &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;
-        &lt;param-value&gt;classpath:/mypackage/shapeinmem/*.xml&lt;/param-value&gt;
+        &lt;param-value&gt;
+            &lt;!-- root context for Geomajas --&gt;
+            classpath:org/geomajas/spring/geomajasContext.xml
+            &lt;!-- additional context files for your application --&gt;
+            classpath:/mypackage/shapeinmem/*.xml
+        &lt;/param-value&gt;
     &lt;/context-param&gt;
 
     &lt;listener&gt;
-         &lt;listener-class&gt;org.geomajas.dojo.server.servlet.GeomajasContextListener&lt;/listener-class&gt;
+         &lt;listener-class&gt;org.springframework.web.context.ContextLoaderListener&lt;/listener-class&gt;
     &lt;/listener&gt;
     .....</programlisting>
 
-      <para>The "contextConfigLocation" context-param allows you to specify
-      additional application context definition files. These will be included
-      after the built-in Geomajas file and the configuration which is
-      contributed by the available plug-ins. You can include several files by
-      separating them using whitespace. Each location can include the
-      protocol/location used to find the file. When no protocol is specified,
-      the file is searched on the class path. Ant-style wild cards can be
-      used. The following are examples of allowed patterns:</para>
+      <para>The "contextConfigLocation" context-param is a space separated
+      list of Spring context files. The root Geomajas context - which is
+      contained in the Geomajas backend - should always be put on top of this
+      list. The root context will load all the predefined backend services and
+      automatically import plugin context files of all the available plugins
+      on the classpath. Below that you may specify additional application
+      context definition files which are needed for your application. You can
+      include several files by separating them using whitespace. Each location
+      can include the protocol/location used to find the file. Ant-style wild
+      cards can be used. If no protocol is specified, the web application
+      context root is searched. The following are examples of allowed
+      patterns:</para>
 
-      <para><programlisting>com/mycompany/**/applicationContext.xml
+      <para><programlisting>WEB-INF/applicationContext.xml
+WEB-INF/layer*.xml
 file:C:/some/path/*-context.xml
 classpath:com/mycompany/**/applicationContext.xml
 classpath*:conf/appContext.xml
-:/WEB-INF/*-context.xml</programlisting>The classpath* pattern is specific in
-      that it will combine all the resources that match this exact pattern in
-      the classpath, not just the first one.</para>
+</programlisting>The classpath* pattern is specific in that it will combine
+      all the resources that match this exact pattern in the classpath, not
+      just the first one.</para>
 
-      <para>When the GeomajasContextListener is used, the application context
-      can be obtained in the servlet using</para>
+      <para>The web application context can conveniently be retrieved from the
+      servlet configuration in other servlets:</para>
 
       <programlisting>public void init(ServletConfig config) throws ServletException {
-    ApplicationContext applicationContext = ApplicationContextUtil.getApplicationContext(config);
+    return WebApplicationContextUtils.getWebApplicationContext(servletContext);
     .....</programlisting>
-
-      <para>When using another way to define the application context, you have
-      to make sure to include "org/geomajas/spring/geomajasContext.xml"
-      (classpath resource, from the geomajas-impl module), and all the
-      "META-INF/geomajasContext.xml" (classpath resource, configuration for
-      the plug-ins).</para>
     </section>
   </section>
 </chapter>
