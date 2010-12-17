@@ -419,10 +419,10 @@ public class GraphicsWidget extends VLayout implements MapContext, HasDoubleClic
 		if (!contains(eventWidget)) {
 			addChild(eventWidget);
 			eventWidget.setVisible(true);
-			// xhtml needs this, or <div> won't show !
-			eventWidget.setInnerSize(getWidth() + "px", getHeight() + "px");
 		}
-		// set the size and notify parents so they can redraw
+		// xhtml needs this, or <div> won't show !
+		eventWidget.setInnerSize(getWidth() + "px", getHeight() + "px");		
+		// set the size and notify graphics users so they can redraw
 		vectorContext.setSize(getWidth(), getHeight());
 		if (isReady()) {
 			fireEvent(new GraphicsReadyEvent());
@@ -486,6 +486,7 @@ public class GraphicsWidget extends VLayout implements MapContext, HasDoubleClic
 		}
 
 		public void setInnerSize(String width, String height) {
+			//setSize(width, height);
 			widget.setSize(width, height);
 		}
 
