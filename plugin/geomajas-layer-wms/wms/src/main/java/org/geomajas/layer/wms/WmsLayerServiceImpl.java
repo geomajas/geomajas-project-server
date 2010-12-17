@@ -147,8 +147,8 @@ public class WmsLayerServiceImpl implements WmsLayerService {
 				double x = grid.getLowerLeft().x + (i - grid.getXmin()) * grid.getTileWidth();
 				double y = grid.getLowerLeft().y + (j - grid.getYmin()) * grid.getTileHeight();
 				// layer coordinates
-				Bbox worldBox = null;
-				Bbox layerBox = null;
+				Bbox worldBox;
+				Bbox layerBox;
 				if (!layer.getCrs().equals(targetCrs)) {
 					layerBox = new Bbox(x, y, grid.getTileWidth(), grid.getTileHeight());
 					// Transforming back to map coordinates will only result in a proper grid if the transformation
@@ -329,7 +329,7 @@ public class WmsLayerServiceImpl implements WmsLayerService {
 			return upper;
 		} else {
 			int level = 0;
-			Resolution lower = null;
+			Resolution lower = upper; // set value to avoid possible NPE
 			while (screenResolution < upper.getResolution()) {
 				lower = upper;
 				level++;
