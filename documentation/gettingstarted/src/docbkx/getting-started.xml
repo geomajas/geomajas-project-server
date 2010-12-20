@@ -379,7 +379,7 @@
           application:</para>
 
           <figure>
-            <title>Debug configurations dialog </title>
+            <title>Debug configurations dialog</title>
 
             <mediaobject>
               <imageobject>
@@ -440,8 +440,29 @@
         </listitem>
 
         <listitem>
+          <para>Click ok on the dialog screen</para>
+        </listitem>
+
+        <listitem>
           <para>You can now add breakpoints and debug your application as if
-          it was a normal Java application. </para>
+          it was a normal Java application.</para>
+        </listitem>
+
+        <listitem>
+          <para>If you have multiple versions of GWT in your project
+          workspace, make sure that the gwt-dev jar is in front of the default
+          classpath (reported GWT issue):</para>
+
+          <figure>
+            <title>classpath of GWT plugin (no-server mode)</title>
+
+            <mediaobject>
+              <imageobject>
+                <imagedata fileref="images/eclipse-gwt-runner-classpath.png"
+                           width="60%" />
+              </imageobject>
+            </mediaobject>
+          </figure>
         </listitem>
       </itemizedlist>
     </section>
