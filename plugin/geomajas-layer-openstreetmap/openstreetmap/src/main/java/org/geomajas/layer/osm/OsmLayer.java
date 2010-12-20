@@ -54,6 +54,7 @@ public class OsmLayer implements RasterLayer {
 
 	public static final List<String> OPEN_STREET_MAP_URLS = new ArrayList<String>();
 	public static final List<String> OPEN_CYCLE_MAP_URLS = new ArrayList<String>();
+	public static final List<String> TILES_AT_HOME_MAP_URLS = new ArrayList<String>();
 
 	@Autowired
 	private DtoConverterService converterService;
@@ -74,6 +75,9 @@ public class OsmLayer implements RasterLayer {
 		OPEN_CYCLE_MAP_URLS.add("http://a.tile.opencyclemap.org/${level}/${x}/${y}.png");
 		OPEN_CYCLE_MAP_URLS.add("http://b.tile.opencyclemap.org/${level}/${x}/${y}.png");
 		OPEN_CYCLE_MAP_URLS.add("http://c.tile.opencyclemap.org/${level}/${x}/${y}.png");
+		TILES_AT_HOME_MAP_URLS.add("http://a.tah.openstreetmap.org/Tiles/tile/${level}/${x}/${y}.png");
+		TILES_AT_HOME_MAP_URLS.add("http://b.tah.openstreetmap.org/Tiles/tile/${level}/${x}/${y}.png");
+		TILES_AT_HOME_MAP_URLS.add("http://c.tah.openstreetmap.org/Tiles/tile/${level}/${x}/${y}.png");
 	}
 
 	public String getId() {

@@ -40,6 +40,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.util.List;
 
+/**
+ * Test for {@link OsmLayer}.
+ *
+ * @author Joachim Van der Auwera
+ */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml", "/osmContext.xml" })
 public class OsmLayerTest {
