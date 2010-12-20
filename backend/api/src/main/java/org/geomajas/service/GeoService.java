@@ -27,6 +27,7 @@ import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.Point;
+import org.geomajas.geometry.Bbox;
 import org.geomajas.global.Api;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.LayerException;
@@ -84,6 +85,17 @@ public interface GeoService {
 			CoordinateReferenceSystem targetCrs) throws GeomajasException;
 
 	/**
+	 * Transform a {@link Geometry} using the given transformation.
+	 *
+	 * @param source source geometry
+	 * @param mathTransform transformation to be applied
+	 * @return transformed source, now in target CRS
+	 * @throws GeomajasException building the transformation or doing the transformation is not possible
+	 * @since 1.8.0
+	 */
+	Geometry transform(Geometry source, MathTransform mathTransform) throws GeomajasException;
+
+	/**
 	 * Transform a {@link Geometry} from the source to the target CRS.
 	 *
 	 * @param source source geometry
@@ -91,10 +103,21 @@ public interface GeoService {
 	 * @param targetCrs target CRS
 	 * @return transformed source, now in target CRS
 	 * @throws GeomajasException building the transformation or doing the transformation is not possible
-	 * @since 1.7.0 
+	 * @since 1.7.0
 	 */
 	Geometry transform(Geometry source, CoordinateReferenceSystem sourceCrs, CoordinateReferenceSystem targetCrs)
 			throws GeomajasException;
+
+	/**
+	 * Transform a {@link Envelope} using the given transformation.
+	 *
+	 * @param source source envelope
+	 * @param mathTransform transformation to be applied
+	 * @return transformed source, now in target CRS
+	 * @throws GeomajasException building the transformation or doing the transformation is not possible
+	 * @since 1.8.0
+	 */
+	Envelope transform(Envelope source, MathTransform mathTransform) throws GeomajasException;
 
 	/**
 	 * Transform a {@link Envelope} from the source to the target CRS.
@@ -107,6 +130,30 @@ public interface GeoService {
 	 * @since 1.8.0
 	 */
 	Envelope transform(Envelope source, CoordinateReferenceSystem sourceCrs, CoordinateReferenceSystem targetCrs)
+			throws GeomajasException;
+
+	/**
+	 * Transform a {@link Bbox} using the given transformation.
+	 *
+	 * @param source source bbox
+	 * @param mathTransform transformation to be applied
+	 * @return transformed source, now in target CRS
+	 * @throws GeomajasException building the transformation or doing the transformation is not possible
+	 * @since 1.8.0
+	 */
+	Bbox transform(Bbox source, MathTransform mathTransform) throws GeomajasException;
+
+	/**
+	 * Transform a {@link Bbox} from the source to the target CRS.
+	 *
+	 * @param source source bbox
+	 * @param sourceCrs source CRS
+	 * @param targetCrs target CRS
+	 * @return transformed source, now in target CRS
+	 * @throws GeomajasException building the transformation or doing the transformation is not possible
+	 * @since 1.8.0
+	 */
+	Bbox transform(Bbox source, CoordinateReferenceSystem sourceCrs, CoordinateReferenceSystem targetCrs)
 			throws GeomajasException;
 
 	/**

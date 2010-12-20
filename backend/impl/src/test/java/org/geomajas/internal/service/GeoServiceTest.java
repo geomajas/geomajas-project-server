@@ -25,6 +25,7 @@ package org.geomajas.internal.service;
 
 import com.vividsolutions.jts.geom.Envelope;
 import junit.framework.Assert;
+import org.geomajas.geometry.Bbox;
 import org.geomajas.service.GeoService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -63,6 +64,18 @@ public class GeoServiceTest {
 		Envelope transformed = geoService.transform(envelope, source, target);
 		Assert.assertEquals(8.983152841195215E-5, transformed.getMinX(), DELTA);
 		Assert.assertEquals(2.6949458522981454E-4, transformed.getMinY(), DELTA);
+		Assert.assertEquals(1.796630568239043E-4, transformed.getMaxX(), DELTA);
+		Assert.assertEquals(3.593261136397527E-4, transformed.getMaxY(), DELTA);
+	}
+
+	@Test
+	public void transformBboxTest() throws Exception {
+		CoordinateReferenceSystem source = geoService.getCrs("EPSG:900913");
+		CoordinateReferenceSystem target = geoService.getCrs("EPSG:4326");
+		Bbox bbox = new Bbox(10, 30, 10, 10);
+		Bbox transformed = geoService.transform(bbox, source, target);
+		Assert.assertEquals(8.983152841195215E-5, transformed.getX(), DELTA);
+		Assert.assertEquals(2.6949458522981454E-4, transformed.getY(), DELTA);
 		Assert.assertEquals(1.796630568239043E-4, transformed.getMaxX(), DELTA);
 		Assert.assertEquals(3.593261136397527E-4, transformed.getMaxY(), DELTA);
 	}

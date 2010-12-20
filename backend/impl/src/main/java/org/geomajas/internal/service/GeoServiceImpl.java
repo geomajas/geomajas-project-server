@@ -33,14 +33,17 @@ import com.vividsolutions.jts.geom.MultiLineString;
 import com.vividsolutions.jts.geom.MultiPolygon;
 import com.vividsolutions.jts.geom.Point;
 import com.vividsolutions.jts.geom.Polygon;
+import org.geomajas.geometry.Bbox;
 import org.geomajas.global.CrsInfo;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.service.GeoService;
+import org.geotools.geometry.DirectPosition2D;
 import org.geotools.geometry.jts.JTS;
 import org.geotools.referencing.CRS;
+import org.opengis.geometry.DirectPosition;
 import org.opengis.referencing.FactoryException;
 import org.opengis.referencing.NoSuchAuthorityCodeException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
@@ -149,18 +152,68 @@ public final class GeoServiceImpl implements GeoService {
 	/**
 	 * @inheritDoc
 	 */
+	public Geometry transform(Geometry source, MathTransform mathTransform) throws GeomajasException {
+		try {
+			return JTS.transform(source, mathTransform);
+		} catch (TransformException te) {
+			throw new GeomajasException(te, ExceptionCode.GEOMETRY_TRANSFORMATION_FAILED);
+		}
+	}
+
+	/**
+	 * @inheritDoc
+	 */
 	public Geometry transform(Geometry source, CoordinateReferenceSystem sourceCrs, CoordinateReferenceSystem targetCrs)
 			throws GeomajasException {
 		if (sourceCrs == targetCrs) {
 			// only works when the caching of the CRSs works
 			return source;
 		}
-		
+
 		MathTransform mathTransform = findMathTransform(sourceCrs, targetCrs);
+		return transform(source, mathTransform);
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public Bbox transform(Bbox source, MathTransform mathTransform) throws GeomajasException {
+
+		try {
+			DirectPosition ll = new DirectPosition2D(source.getX(), source.getY());
+			DirectPosition ur = new DirectPosition2D(source.getMaxX(), source.getMaxY());
+			mathTransform.transform(ll, ll);
+			mathTransform.transform(ur, ur);
+			return new Bbox(ll.getCoordinate()[0], ll.getCoordinate()[1], ur.getCoordinate()[0]
+					- ll.getCoordinate()[0], ur.getCoordinate()[1] - ll.getCoordinate()[1]);
+		} catch (TransformException te) {
+			throw new GeomajasException(te, ExceptionCode.GEOMETRY_TRANSFORMATION_FAILED);
+		}
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public Bbox transform(Bbox source, CoordinateReferenceSystem sourceCrs, CoordinateReferenceSystem targetCrs)
+			throws GeomajasException {
+		if (sourceCrs == targetCrs) {
+			// only works when the caching of the CRSs works
+			return source;
+		}
+
+		MathTransform mathTransform = findMathTransform(sourceCrs, targetCrs);
+		return transform(source, mathTransform);
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public Envelope transform(Envelope source, MathTransform mathTransform) throws GeomajasException {
+
 		try {
 			return JTS.transform(source, mathTransform);
 		} catch (TransformException te) {
-			throw new GeomajasException(te, ExceptionCode.CRS_TRANSFORMATION_NOT_POSSIBLE, sourceCrs, targetCrs);
+			throw new GeomajasException(te, ExceptionCode.GEOMETRY_TRANSFORMATION_FAILED);
 		}
 	}
 
@@ -175,11 +228,7 @@ public final class GeoServiceImpl implements GeoService {
 		}
 
 		MathTransform mathTransform = findMathTransform(sourceCrs, targetCrs);
-		try {
-			return JTS.transform(source, mathTransform);
-		} catch (TransformException te) {
-			throw new GeomajasException(te, ExceptionCode.CRS_TRANSFORMATION_NOT_POSSIBLE, sourceCrs, targetCrs);
-		}
+		return transform(source, mathTransform);
 	}
 
 	/**
