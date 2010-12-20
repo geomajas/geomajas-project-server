@@ -199,8 +199,6 @@
 							<execution>
 								<goals>
 									<goal>clean</goal>
-									<goal>generateAsync</goal>
-									<goal>i18n</goal>
 									<goal>compile</goal>
 									<goal>test</goal>
 								</goals>
