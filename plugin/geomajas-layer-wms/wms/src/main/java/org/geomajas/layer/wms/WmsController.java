@@ -149,7 +149,12 @@ public class WmsController {
 	private String parseDomain(String url) {
 		int index = url.indexOf("://");
 		String domain = url.substring(index + 3);
-		return domain.substring(0, domain.indexOf('/'));
+		domain = domain.substring(0, domain.indexOf('/'));
+		int colonPos = domain.indexOf(':');
+		if (colonPos >= 0) {
+			domain = domain.substring(0, colonPos);
+		}
+		return domain;
 	}
 
 	/**

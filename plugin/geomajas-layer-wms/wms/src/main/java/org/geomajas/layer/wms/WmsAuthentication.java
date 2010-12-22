@@ -30,19 +30,19 @@ import javax.validation.constraints.NotNull;
 
 /**
  * <p>
- * Configuration object that adds HTTP authentication support to the WMS layer. If a user configures a WMS layer with
- * such an authentication object, then the WMS layer will use a proxy controller to talk to the WMS server. This proxy
- * controller will than add these authentication parameters to the WMS requests.
+ * Configuration object that adds authentication support to the WMS layer. If a user configures a WMS layer with
+ * such an authentication object, then the WMS layer will use a proxy controller to talk to the WMS server.
+ * This ensures that the credentials are not leaked to the user.
  * </p>
  * <p>
- * This type of authentication supports both BASIC and DIGEST authentication.
+ * This object supports both BASIC and DIGEST (HTTP) authentication.
  * </p>
  * 
  * @author Pieter De Graef
  * @since 1.8.0
  */
 @Api(allMethods = true)
-public class HttpAuthentication implements Serializable {
+public class WmsAuthentication implements Serializable {
 
 	private static final long serialVersionUID = 180L;
 
@@ -54,89 +54,60 @@ public class HttpAuthentication implements Serializable {
 
 	private String realm;
 
-	private String applicationUrl;
-
-	// ------------------------------------------------------------------------
-	// Getters and setters:
-	// ------------------------------------------------------------------------
-
 	/**
-	 * Return the digest user name.
+	 * Get the user name.
 	 * 
-	 * @return The user name.
+	 * @return user name
 	 */
 	public String getUser() {
 		return user;
 	}
 
 	/**
-	 * Set the digest user name.
+	 * Set the user name.
 	 * 
 	 * @param user
-	 *            The new value.
+	 *            user name
 	 */
 	public void setUser(String user) {
 		this.user = user;
 	}
 
 	/**
-	 * Get the digest password.
+	 * Get the password.
 	 * 
-	 * @return The digest password.
+	 * @return password.
 	 */
 	public String getPassword() {
 		return password;
 	}
 
 	/**
-	 * Set the digest password.
+	 * Set the password.
 	 * 
 	 * @param password
-	 *            The new value.
+	 *            password
 	 */
 	public void setPassword(String password) {
 		this.password = password;
 	}
 
 	/**
-	 * Get the HTTP authentication realm. This value is optional, and can be left empty.
+	 * Get the HTTP authentication realm. This value is optional.
 	 * 
-	 * @return The realm, or null.
+	 * @return authentication realm or null.
 	 */
 	public String getRealm() {
 		return realm;
 	}
 
 	/**
-	 * Set the HTTP authentication realm. This value is optional, and can be left empty.
+	 * Set the HTTP authentication realm. This value is optional.
 	 * 
 	 * @param realm
-	 *            The new value.
+	 *            authentication realm
 	 */
 	public void setRealm(String realm) {
 		this.realm = realm;
-	}
-
-	/**
-	 * Get the URL for this web application. In order for the WMS layer to create URLs that point to the proxy
-	 * controller, it needs to know it's own URL. Although not strictly required, it is highly recommended to fill in
-	 * this value.
-	 * 
-	 * @return The application URL.
-	 */
-	public String getApplicationUrl() {
-		return applicationUrl;
-	}
-
-	/**
-	 * Set the URL for this web application. In order for the WMS layer to create URLs that point to the proxy
-	 * controller, it needs to know it's own URL. Although not strictly required, it is highly recommended to fill in
-	 * this value.
-	 * 
-	 * @param applicationUrl
-	 *            The new value.
-	 */
-	public void setApplicationUrl(String applicationUrl) {
-		this.applicationUrl = applicationUrl;
 	}
 }

@@ -133,7 +133,7 @@
 
             <entry>Optional basic or digest HTTP authentication. This bean is
             of the type:
-            <code>org.geomajas.layer.wms.HttpAuthentication</code></entry>
+            <code>org.geomajas.layer.wms.WmsAuthentication</code></entry>
           </row>
         </tbody>
       </tgroup>

@@ -41,6 +41,11 @@
             <groupId>org.springframework</groupId>
             <artifactId>spring-webmvc</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+			<scope>test</scope>
+        </dependency>
 		<dependency>
 			<groupId>javax.annotation</groupId>
 			<artifactId>jsr250-api</artifactId>
@@ -68,6 +73,7 @@
 		<dependency>
 			<groupId>commons-httpclient</groupId>
 			<artifactId>commons-httpclient</artifactId>
+			<!--<version>3.1</version>-->
 			<version>2.0</version>
 		</dependency>
 		
@@ -96,6 +102,7 @@
 			<artifactId>geomajas-impl</artifactId>
 			<scope>test</scope>
 		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -118,6 +125,6 @@
 	</build>
 
 	<properties>
-		<wms-layer-backend-version>1.7.1</wms-layer-backend-version>
+		<wms-layer-backend-version>1.8.0-SNAPSHOT</wms-layer-backend-version>
 	</properties>
 </project>
