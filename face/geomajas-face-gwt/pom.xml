@@ -92,7 +92,6 @@
 		</repository>
 
 		<!-- uncomment if you want to use Geomajas snapshots, comment for faster builds  -->
-		<!--
 		<repository>
 			<id>Geomajas-latest</id>
 			<name>Geomajas snapshot repository</name>
@@ -101,7 +100,6 @@
 				<enabled>true</enabled>
 			</snapshots>
 		</repository>
-		-->
 	</repositories>
 	<pluginRepositories>
 		<pluginRepository>
