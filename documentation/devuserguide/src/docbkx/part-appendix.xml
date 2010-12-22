@@ -35,6 +35,58 @@
 
       <para><itemizedlist>
           <listitem>
+            <para>The use of the GeomajasContextListener in web.xml is no
+            longer recommended. We recommend you use the normal spring
+            listeners. This does mean that you should add "classpath:" in
+            front of the locations in contextConfigLocation (the default
+            location is the web application context).</para>
+
+            <para>Note that you should add both the ContextLoaderListener and
+            RequestContextListener (this last one is not included in the
+            GeomajasContextListener but is needed for some services like
+            AutomaticDispatcherUrlService to function).<example>
+                <title>Defining spring configuration locations in
+                web.xml</title>
+
+                <programlisting>&lt;context-param&gt;
+    &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;
+    &lt;param-value&gt;
+        classpath:org/geomajas/spring/geomajasContext.xml<co id="???" />
+        WEB-INF/applicationContext.xml<co id="???" />
+    &lt;/param-value&gt;
+&lt;/context-param&gt;
+
+&lt;listener&gt;
+    &lt;listener-class&gt;org.springframework.web.context.ContextLoaderListener&lt;/listener-class&gt;<co
+                    id="???" />
+&lt;/listener&gt;
+&lt;listener&gt;
+    &lt;listener-class&gt;org.springframework.web.context.request.RequestContextListener&lt;/listener-class&gt;<co
+                    id="???" />
+&lt;/listener&gt;
+    .....</programlisting>
+
+                <calloutlist>
+                  <callout arearefs="???">
+                    <para>root context for geomajas</para>
+                  </callout>
+
+                  <callout arearefs="???">
+                    <para>additional context for your application</para>
+                  </callout>
+
+                  <callout arearefs="???">
+                    <para>assures the application context is available</para>
+                  </callout>
+
+                  <callout arearefs="???">
+                    <para>assures the request can be accessed</para>
+                  </callout>
+                </calloutlist>
+              </example></para>
+          </listitem>
+
+          <listitem>
             <para>The use of the CacheFilter servlet was introduced in 1.8.0.
             It is strongly recommended that you include it in your web.xml
             file to assure correct caching and compression on server-side

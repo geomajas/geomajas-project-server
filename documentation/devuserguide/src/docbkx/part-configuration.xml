@@ -40,25 +40,61 @@
       configuration is made available to the application, and you can indicate
       which files are used to contain the configuration. Though it is possible
       to put all configuration information in one file, we recommend splitting
-      your configuration in several files. At least one file per application,
-      possibly split further per client layer configuration, and one file for
-      server-side configuration of each of the layers.</para>
+      your configuration in several files (see <xref
+      linkend="sect-rec-appcontext-structure" />).</para>
 
       <para>The listener class initialises the application context as needed
-      for Geomajas. It appends the context configuration locations which are
-      specified in the <code>contextConfigLocation</code> context parameter to
-      the list of internal configuration locations and uses these to build the
-      application context. When no location is specified, the files is
-      searched on the class path. You can also use location prefixes as
-      defined by Spring. To allow use of configuration file on the web
-      context, use an empty location (just a colon as prefix, eg
-      ":/WEB-INF/config.xml"). Note that whitespace is used as separator which
-      means that the path itself should not contain spaces.</para>
+      for Geomajas. You have to specify the files which contain the
+      application context in the <code>contextConfigLocation</code> context
+      parameter. You have to add the Geomajas context file as first item in
+      the list. Each entry can start with a location prefix. When no location
+      prefix is specified, the file is searched in the web context. You can
+      also use location prefixes as defined by Spring, e.g. "classpath:" or
+      "classpath*:". Note that whitespace is used as separator which means
+      that the path itself should not contain spaces. It is possible to use
+      wildcards (e.g. "WEB-INF/*.xml").</para>
 
-      <para>These are defined using an excepts like the following:</para>
+      <para>These are defined using an excerpt like the following:</para>
 
-      <xi:include href="listing/WebXmlSpringConfiguration.xml"
-                  xmlns:xi="http://www.w3.org/2001/XInclude" />
+      <example>
+        <title>Defining spring configuration locations in web.xml</title>
+
+        <programlisting>&lt;context-param&gt;
+    &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;
+    &lt;param-value&gt;
+        classpath:org/geomajas/spring/geomajasContext.xml<co id="???" />
+        WEB-INF/applicationContext.xml<co id="???" />
+    &lt;/param-value&gt;
+&lt;/context-param&gt;
+
+&lt;listener&gt;
+    &lt;listener-class&gt;org.springframework.web.context.ContextLoaderListener&lt;/listener-class&gt;<co
+            id="???" />
+&lt;/listener&gt;
+&lt;listener&gt;
+    &lt;listener-class&gt;org.springframework.web.context.request.RequestContextListener&lt;/listener-class&gt;<co
+            id="???" />
+&lt;/listener&gt;
+    .....</programlisting>
+
+        <calloutlist>
+          <callout arearefs="???">
+            <para>root context for geomajas</para>
+          </callout>
+
+          <callout arearefs="???">
+            <para>additional context for your application</para>
+          </callout>
+
+          <callout arearefs="???">
+            <para>assures the application context is available</para>
+          </callout>
+
+          <callout arearefs="???">
+            <para>assures the request can be accessed</para>
+          </callout>
+        </calloutlist>
+      </example>
 
       <para>You also need to define at least the dispatcher servlet and
       possible an additional servlet for your faces. The dispatcher servlet
@@ -224,6 +260,12 @@
 
       <para>There needs to be at least one <code>ClientApplicationInfo</code>
       bean. The bean name is used when requesting the application info.</para>
+
+      <para></para>
+    </section>
+
+    <section id="sect-rec-appcontext-structure">
+      <title>Recommended application context structure</title>
 
       <para></para>
     </section>
