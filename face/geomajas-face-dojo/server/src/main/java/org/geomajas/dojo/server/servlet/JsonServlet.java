@@ -67,6 +67,7 @@ import com.metaparadigm.jsonrpc.NumberSerializer;
 import com.metaparadigm.jsonrpc.PrimitiveSerializer;
 import com.metaparadigm.jsonrpc.SetSerializer;
 import com.metaparadigm.jsonrpc.StringSerializer;
+import org.springframework.web.context.ContextLoaderListener;
 
 /**
  * This servlet handles JSON-RPC requests over HTTP and hands them to a JSONRPCBridge instance registered in the
@@ -109,7 +110,7 @@ public class JsonServlet extends HttpServlet implements ErrorInvocationCallback,
 		log.info("JSON servlet init");
 		log.debug("current working directory = {}", System.getProperty("user.dir"));
 
-		ApplicationContext applicationContext = ApplicationContextUtil.getApplicationContext(config);
+		ApplicationContext applicationContext = ContextLoaderListener.getCurrentWebApplicationContext();
 		if (applicationContext instanceof ConfigurableApplicationContext) {
 			((ConfigurableApplicationContext) applicationContext).addApplicationListener(this);
 		}
