@@ -1,6 +1,10 @@
 package org.geomajas.puregwt.client.spatial;
 
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.puregwt.client.spatial.Bbox;
+import org.geomajas.puregwt.client.spatial.GeometryFactory;
+import org.geomajas.puregwt.client.spatial.LineString;
+import org.geomajas.puregwt.client.spatial.SpatialService;
 import org.junit.Test;
 
 import com.vividsolutions.jts.geom.Envelope;

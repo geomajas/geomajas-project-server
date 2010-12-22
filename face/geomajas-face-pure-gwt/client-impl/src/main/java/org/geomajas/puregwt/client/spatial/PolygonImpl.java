@@ -46,12 +46,12 @@ public class PolygonImpl extends AbstractGeometry implements Polygon {
 	// Constructor:
 	// -------------------------------------------------------------------------
 
-	PolygonImpl(int srid, int precision) {
-		super(srid, precision);
+	PolygonImpl(GeometryFactory factory) {
+		super(factory);
 	}
 
-	PolygonImpl(int srid, int precision, LinearRing exteriorRing, LinearRing[] interiorRings) {
-		super(srid, precision);
+	PolygonImpl(GeometryFactory factory, LinearRing exteriorRing, LinearRing[] interiorRings) {
+		super(factory);
 		this.exteriorRing = exteriorRing;
 		this.interiorRings = interiorRings;
 	}

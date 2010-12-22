@@ -3,7 +3,11 @@ package org.geomajas.puregwt.client.spatial;
 import junit.framework.Assert;
 
 import org.geomajas.geometry.Coordinate;
+import org.junit.Before;
 import org.junit.Test;
+
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 
 /**
  * Tests the Bbox methods.
@@ -21,6 +25,28 @@ public class BboxTest {
 	private Bbox movedEmpty2 = new BboxImpl(5, 5, 0, 0);
 
 	private Bbox normal = new BboxImpl(-5, -5, 20, 20);
+
+	private GeometryFactory factory;
+
+	@Before
+	public void setUp() {
+		Injector myInjector = Guice.createInjector(new TestConfigurationModule());
+		factory = myInjector.getInstance(GeometryFactory.class);
+		empty = factory.createBbox(0, 0, 0, 0);
+
+		origin = factory.createBbox(0, 0, 10, 10);
+
+		movedEmpty = factory.createBbox(-10, -10, 0, 0);
+
+		movedEmpty2 = factory.createBbox(5, 5, 0, 0);
+
+		normal = factory.createBbox(-5, -5, 20, 20);
+	}
+
+	@Test
+	public void testGuice() {
+		Assert.assertNotNull(factory);
+	}
 
 	@Test
 	public void testGetCenterPoint() {

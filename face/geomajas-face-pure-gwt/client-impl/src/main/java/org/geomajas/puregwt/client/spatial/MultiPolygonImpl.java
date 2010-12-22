@@ -44,12 +44,12 @@ public class MultiPolygonImpl extends AbstractGeometry implements MultiPolygon {
 	// Constructor
 	// -------------------------------------------------------------------------
 
-	MultiPolygonImpl(int srid, int precision) {
-		super(srid, precision);
+	MultiPolygonImpl(GeometryFactory factory) {
+		super(factory);
 	}
 
-	MultiPolygonImpl(int srid, int precision, Polygon[] polygons) {
-		super(srid, precision);
+	MultiPolygonImpl(GeometryFactory factory, Polygon[] polygons) {
+		super(factory);
 		this.polygons = polygons;
 	}
 

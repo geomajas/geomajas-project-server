@@ -24,9 +24,6 @@
 package org.geomajas.puregwt.client.spatial;
 
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.puregwt.client.spatial.Geometry;
-import org.geomajas.puregwt.client.spatial.GeometryFactory;
-import org.geomajas.puregwt.client.spatial.SpatialService;
 
 /**
  * Abstract GWT client-side geometry.
@@ -39,9 +36,7 @@ public abstract class AbstractGeometry implements Geometry {
 	
 	protected SpatialService service;
 
-	private int srid;
-
-	private int precision;
+	private GeometryFactory factory;
 
 	// -------------------------------------------------------------------------
 	// Constructors:
@@ -58,9 +53,8 @@ public abstract class AbstractGeometry implements Geometry {
 	 * @param srid
 	 * @param precision
 	 */
-	AbstractGeometry(int srid, int precision) {
-		this.srid = srid;
-		this.precision = precision;
+	AbstractGeometry(GeometryFactory factory) {
+		this.factory = factory;
 	}
 
 	// -------------------------------------------------------------------------
@@ -77,18 +71,18 @@ public abstract class AbstractGeometry implements Geometry {
 	 * @return Returns the srid as an integer.
 	 */
 	public int getSrid() {
-		return srid;
+		return factory.getSrid();
 	}
 
 	public int getPrecision() {
-		return precision;
+		return factory.getPrecision();
 	}
 
 	/**
-	 * Return the {@link GeometryFactoryImpl} object that corresponds to this geometry.
+	 * Return the {@link GeometryFactory} object that corresponds to this geometry.
 	 */
 	public GeometryFactory getGeometryFactory() {
-		return new GeometryFactoryImpl(srid, precision);
+		return factory;
 	}
 
 	/**

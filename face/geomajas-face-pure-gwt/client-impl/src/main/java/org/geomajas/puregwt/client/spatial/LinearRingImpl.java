@@ -39,12 +39,12 @@ public class LinearRingImpl extends LineStringImpl implements LinearRing {
 	// Constructor
 	// -------------------------------------------------------------------------
 
-	LinearRingImpl(int srid, int precision) {
-		super(srid, precision);
+	LinearRingImpl(GeometryFactory factory) {
+		super(factory);
 	}
 
-	LinearRingImpl(int srid, int precision, Coordinate[] coordinates) {
-		super(srid, precision, coordinates);
+	LinearRingImpl(GeometryFactory factory, Coordinate[] coordinates) {
+		super(factory, coordinates);
 	}
 
 	// -------------------------------------------------------------------------

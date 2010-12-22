@@ -44,12 +44,12 @@ public class MultiLineStringImpl extends AbstractGeometry implements MultiLineSt
 	// Constructor (package visibility)
 	// -------------------------------------------------------------------------
 
-	MultiLineStringImpl(int srid, int precision) {
-		super(srid, precision);
+	MultiLineStringImpl(GeometryFactory factory) {
+		this(factory ,null);
 	}
 
-	MultiLineStringImpl(int srid, int precision, LineString[] lineStrings) {
-		super(srid, precision);
+	MultiLineStringImpl(GeometryFactory factory, LineString[] lineStrings) {
+		super(factory);
 		this.lineStrings = lineStrings;
 	}
 

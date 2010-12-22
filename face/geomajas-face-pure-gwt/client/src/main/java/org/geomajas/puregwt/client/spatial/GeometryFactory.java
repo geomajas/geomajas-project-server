@@ -31,11 +31,18 @@ import org.geomajas.geometry.Coordinate;
  * @author Pieter De Graef
  */
 public interface GeometryFactory {
+	
+	// TODO: replace with assisted inject of upcoming gin release
+	public void init(int srid, int precision);
 
 	public int getSrid();
 
 	public int getPrecision();
+	
+	public Bbox createBbox(double x, double y, double width, double height);
 
+	public Bbox createBbox(Bbox original);
+	
 	/**
 	 * Create a new {@link Point}, given a coordinate.
 	 * 

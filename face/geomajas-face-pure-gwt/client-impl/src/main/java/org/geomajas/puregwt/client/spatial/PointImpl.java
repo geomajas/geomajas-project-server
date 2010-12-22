@@ -46,13 +46,17 @@ public class PointImpl extends AbstractGeometry implements Point {
 	// Constructor
 	// -------------------------------------------------------------------------
 
-	PointImpl(int srid, int precision) {
-		super(srid, precision);
+	PointImpl(GeometryFactory factory) {
+		this(factory, null);
 	}
 
-	PointImpl(int srid, int precision, double x, double y) {
-		super(srid, precision);
-		coordinate = new Coordinate(x, y);
+	PointImpl(GeometryFactory factory, double x, double y) {
+		this(factory, new Coordinate(x, y));
+	}
+
+	PointImpl(GeometryFactory factory, Coordinate c) {
+		super(factory);
+		coordinate = c;
 	}
 
 	// -------------------------------------------------------------------------
