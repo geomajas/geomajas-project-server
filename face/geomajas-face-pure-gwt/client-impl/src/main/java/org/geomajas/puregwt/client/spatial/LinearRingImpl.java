@@ -40,11 +40,11 @@ public class LinearRingImpl extends LineStringImpl implements LinearRing {
 	// -------------------------------------------------------------------------
 
 	LinearRingImpl(GeometryFactory factory) {
-		super(factory);
+		super(factory, null, null);
 	}
 
-	LinearRingImpl(GeometryFactory factory, Coordinate[] coordinates) {
-		super(factory, coordinates);
+	LinearRingImpl(GeometryFactory factory, SpatialService service, Coordinate[] coordinates) {
+		super(factory, service, coordinates);
 	}
 
 	// -------------------------------------------------------------------------

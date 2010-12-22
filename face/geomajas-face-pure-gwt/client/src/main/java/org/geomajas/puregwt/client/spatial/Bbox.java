@@ -41,7 +41,7 @@ public interface Bbox {
 	 *            The other bounding box to compare against.
 	 * @return Returns true if all properties are the same.
 	 */
-	boolean equals(Bbox other);
+	boolean equals(Bbox other, double delta);
 
 	/**
 	 * Return the origin (x, y) as a Coordinate.

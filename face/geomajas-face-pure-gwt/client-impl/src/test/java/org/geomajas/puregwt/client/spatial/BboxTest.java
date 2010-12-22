@@ -33,13 +33,9 @@ public class BboxTest {
 		Injector myInjector = Guice.createInjector(new TestConfigurationModule());
 		factory = myInjector.getInstance(GeometryFactory.class);
 		empty = factory.createBbox(0, 0, 0, 0);
-
 		origin = factory.createBbox(0, 0, 10, 10);
-
 		movedEmpty = factory.createBbox(-10, -10, 0, 0);
-
 		movedEmpty2 = factory.createBbox(5, 5, 0, 0);
-
 		normal = factory.createBbox(-5, -5, 20, 20);
 	}
 

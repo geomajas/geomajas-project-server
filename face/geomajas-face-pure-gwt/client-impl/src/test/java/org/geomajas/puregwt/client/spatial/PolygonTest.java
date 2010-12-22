@@ -1,11 +1,14 @@
 package org.geomajas.puregwt.client.spatial;
 
 import org.geomajas.geometry.Coordinate;
+import org.junit.Before;
 import org.junit.Test;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.PrecisionModel;
-import com.vividsolutions.jts.util.Assert;
+import org.junit.Assert;
 
 /**
  * <p>
@@ -20,6 +23,8 @@ public class PolygonTest {
 	private final static int SRID = 4326;
 
 	private final static int PRECISION = -1;
+
+	private final static double DELTA = 1E-10;
 
 	private GeometryFactory gwtFactory;
 
@@ -36,8 +41,11 @@ public class PolygonTest {
 	/**
 	 * Creates polygons with a single hole in them.
 	 */
-	public PolygonTest() {
-		// gwtFactory = new GeometryFactory(SRID, PRECISION);
+	@Before
+	public void setUp() {
+		Injector myInjector = Guice.createInjector(new TestConfigurationModule());
+		gwtFactory = myInjector.getInstance(GeometryFactory.class);
+		gwtFactory.init(SRID, PRECISION);
 		LinearRing gwtShell = gwtFactory.createLinearRing(new Coordinate[] { new Coordinate(10.0, 10.0),
 				new Coordinate(20.0, 10.0), new Coordinate(20.0, 20.0), new Coordinate(10.0, 10.0) });
 		LinearRing gwtHole = gwtFactory.createLinearRing(new Coordinate[] { new Coordinate(12.0, 12.0),
@@ -66,61 +74,61 @@ public class PolygonTest {
 
 	@Test
 	public void getCentroid() {
-		Assert.isTrue(jts.getCentroid().getCoordinate().x - gwt.getCentroid().getX() < 1);
-		Assert.isTrue(jts.getCentroid().getCoordinate().y - gwt.getCentroid().getY() < 1);
+		Assert.assertTrue(jts.getCentroid().getCoordinate().x - gwt.getCentroid().getX() < 1);
+		Assert.assertTrue(jts.getCentroid().getCoordinate().y - gwt.getCentroid().getY() < 1);
 	}
 
 	@Test
 	public void getCoordinate() {
-		Assert.equals(jts.getCoordinate().x, gwt.getCoordinate().getX());
+		Assert.assertEquals(jts.getCoordinate().x, gwt.getCoordinate().getX(),DELTA);
 	}
 
 	@Test
 	public void getCoordinates() {
-		Assert.equals(jts.getCoordinates()[6].x, gwt.getCoordinates()[6].getX());
-		Assert.equals(jts.getCoordinates().length, gwt.getCoordinates().length);
+		Assert.assertEquals(jts.getCoordinates()[6].x, gwt.getCoordinates()[6].getX(),DELTA);
+		Assert.assertEquals(jts.getCoordinates().length, gwt.getCoordinates().length);
 	}
 
 	@Test
 	public void getBounds() {
 		Envelope env = jts.getEnvelopeInternal();
 		Bbox bbox = gwt.getBounds();
-		Assert.equals(env.getMinX(), bbox.getX());
-		Assert.equals(env.getMinY(), bbox.getY());
-		Assert.equals(env.getMaxX(), bbox.getMaxX());
-		Assert.equals(env.getMaxY(), bbox.getMaxY());
+		Assert.assertEquals(env.getMinX(), bbox.getX(),DELTA);
+		Assert.assertEquals(env.getMinY(), bbox.getY(),DELTA);
+		Assert.assertEquals(env.getMaxX(), bbox.getMaxX(),DELTA);
+		Assert.assertEquals(env.getMaxY(), bbox.getMaxY(),DELTA);
 	}
 
 	@Test
 	public void getNumPoints() {
-		Assert.equals(jts.getNumPoints(), gwt.getNumPoints());
+		Assert.assertEquals(jts.getNumPoints(), gwt.getNumPoints());
 	}
 
 	@Test
 	public void getGeometryN() {
-		Assert.equals(jts.getGeometryN(0).getCoordinate().x, gwt.getGeometryN(0).getCoordinate().getX());
-		Assert.equals(jts.getGeometryN(-1).getCoordinate().x, gwt.getGeometryN(-1).getCoordinate().getX());
-		Assert.equals(jts.getGeometryN(1).getCoordinate().x, gwt.getGeometryN(1).getCoordinate().getX());
+		Assert.assertEquals(jts.getGeometryN(0).getCoordinate().x, gwt.getGeometryN(0).getCoordinate().getX(),DELTA);
+		Assert.assertEquals(jts.getGeometryN(-1).getCoordinate().x, gwt.getGeometryN(-1).getCoordinate().getX(),DELTA);
+		Assert.assertEquals(jts.getGeometryN(1).getCoordinate().x, gwt.getGeometryN(1).getCoordinate().getX(),DELTA);
 	}
 
 	@Test
 	public void getNumGeometries() {
-		Assert.equals(jts.getNumGeometries(), gwt.getNumGeometries());
+		Assert.assertEquals(jts.getNumGeometries(), gwt.getNumGeometries());
 	}
 
 	@Test
 	public void isEmpty() {
-		Assert.equals(jts.isEmpty(), gwt.isEmpty());
+		Assert.assertEquals(jts.isEmpty(), gwt.isEmpty());
 	}
 
 	@Test
 	public void isSimple() {
-		Assert.equals(jts.isSimple(), gwt.isSimple());
+		Assert.assertEquals(jts.isSimple(), gwt.isSimple());
 	}
 
 	@Test
 	public void isValid() {
-		Assert.equals(jts.isValid(), gwt.isValid());
+		Assert.assertEquals(jts.isValid(), gwt.isValid());
 	}
 
 	@Test
@@ -129,14 +137,6 @@ public class PolygonTest {
 				.createLineString(new com.vividsolutions.jts.geom.Coordinate[] {
 						new com.vividsolutions.jts.geom.Coordinate(0, 0),
 						new com.vividsolutions.jts.geom.Coordinate(15, 0) });
-		com.vividsolutions.jts.geom.LineString jtsLine2 = jtsFactory
-				.createLineString(new com.vividsolutions.jts.geom.Coordinate[] {
-						new com.vividsolutions.jts.geom.Coordinate(15, 5),
-						new com.vividsolutions.jts.geom.Coordinate(15, 25) });
-		com.vividsolutions.jts.geom.LineString jtsLine3 = jtsFactory
-				.createLineString(new com.vividsolutions.jts.geom.Coordinate[] {
-						new com.vividsolutions.jts.geom.Coordinate(0, 0),
-						new com.vividsolutions.jts.geom.Coordinate(15, 15) });
 
 		LineString gwtLine1 = gwtFactory.createLineString(new Coordinate[] { new Coordinate(0, 0),
 				new Coordinate(15, 0) });
@@ -146,20 +146,20 @@ public class PolygonTest {
 				new Coordinate(15, 15) });
 
 		// TODO: problem with JTS intersection calculation...
-		Assert.equals(jts.intersects(jtsLine1), gwt.intersects(gwtLine1)); // No intersection
-		// Assert.equals(jts.intersects(jtsLine2), gwt.intersects(gwtLine2)); // crosses LineSegment
-		// Assert.equals(jts.intersects(jtsLine3), gwt.intersects(gwtLine3)); // touches point
-		Assert.equals(true, gwt.intersects(gwtLine2)); // crosses LineSegment
-		Assert.equals(true, gwt.intersects(gwtLine3)); // touches point
+		Assert.assertEquals(jts.intersects(jtsLine1), gwt.intersects(gwtLine1)); // No intersection
+		// Assert.assertEquals(jts.intersects(jtsLine2), gwt.intersects(gwtLine2)); // crosses LineSegment
+		// Assert.assertEquals(jts.intersects(jtsLine3), gwt.intersects(gwtLine3)); // touches point
+		Assert.assertEquals(true, gwt.intersects(gwtLine2)); // crosses LineSegment
+		Assert.assertEquals(true, gwt.intersects(gwtLine3)); // touches point
 	}
 
 	@Test
 	public void getArea() {
-		Assert.isTrue((jts.getArea() - gwt.getArea()) < SpatialService.ZERO);
+		Assert.assertTrue((jts.getArea() - gwt.getArea()) < DELTA);
 	}
 
 	@Test
 	public void getLength() {
-		Assert.isTrue((jts.getLength() - gwt.getLength()) < SpatialService.ZERO);
+		Assert.assertTrue((jts.getLength() - gwt.getLength()) < DELTA);
 	}
 }

@@ -33,10 +33,10 @@ import org.geomajas.geometry.Coordinate;
 public abstract class AbstractGeometry implements Geometry {
 
 	private static final long serialVersionUID = 100L;
+
+	protected GeometryFactory factory;
 	
 	protected SpatialService service;
-
-	private GeometryFactory factory;
 
 	// -------------------------------------------------------------------------
 	// Constructors:
@@ -53,8 +53,9 @@ public abstract class AbstractGeometry implements Geometry {
 	 * @param srid
 	 * @param precision
 	 */
-	AbstractGeometry(GeometryFactory factory) {
+	AbstractGeometry(GeometryFactory factory, SpatialService service) {
 		this.factory = factory;
+		this.service = service;
 	}
 
 	// -------------------------------------------------------------------------

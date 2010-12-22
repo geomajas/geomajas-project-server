@@ -25,6 +25,8 @@ package org.geomajas.puregwt.client.spatial;
 
 import org.geomajas.geometry.Coordinate;
 
+import com.vividsolutions.jts.geom.Envelope;
+
 /**
  * <p>
  * Definition of an (axis aligned) Bounding Box. Determined by an x-ordinate an y-ordinate, it's width and it's height.
@@ -409,11 +411,23 @@ public class BboxImpl implements Bbox {
 	public double getMaxY() {
 		return getY() + getHeight();
 	}
+	
+	public boolean equals(Object other) {
+		if (!(other instanceof BboxImpl)) {
+			return false;
+		}
+		BboxImpl otherBbox = (BboxImpl) other;
+		return x == otherBbox.x && y == otherBbox.y && width == otherBbox.width && height == otherBbox.height;
+	}
 
-	public boolean equals(Bbox other) {
-		return equals(x, other.getX(), SpatialService.ZERO) && equals(y, other.getY(), SpatialService.ZERO)
-				&& equals(width, other.getWidth(), SpatialService.ZERO)
-				&& equals(height, other.getHeight(), SpatialService.ZERO);
+    public int hashCode() {
+       return 0;
+    }
+
+	public boolean equals(Bbox other, double delta) {
+		return equals(x, other.getX(), delta) && equals(y, other.getY(), delta)
+				&& equals(width, other.getWidth(), delta)
+				&& equals(height, other.getHeight(), delta);
 	}
 
 	// ------------------------------------------------------------------------

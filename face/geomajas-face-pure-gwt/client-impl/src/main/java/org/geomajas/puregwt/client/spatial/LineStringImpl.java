@@ -44,11 +44,11 @@ public class LineStringImpl extends AbstractGeometry implements LineString {
 	// -------------------------------------------------------------------------
 
 	LineStringImpl(GeometryFactory factory) {
-		this(factory, null);
+		this(factory, null, null);
 	}
 
-	LineStringImpl(GeometryFactory factory, Coordinate[] coordinates) {
-		super(factory);
+	LineStringImpl(GeometryFactory factory, SpatialService service, Coordinate[] coordinates) {
+		super(factory, service);
 		this.coordinates = coordinates;
 	}
 

@@ -44,12 +44,12 @@ public class MultiPointImpl extends AbstractGeometry implements MultiPoint {
 	// Constructor
 	// -------------------------------------------------------------------------
 
-	MultiPointImpl(GeometryFactory factory) {
-		this(factory, null);
+	MultiPointImpl(GeometryFactory factory, SpatialService service) {
+		this(factory, service, null);
 	}
 
-	MultiPointImpl(GeometryFactory factory, Point[] points) {
-		super(factory);
+	MultiPointImpl(GeometryFactory factory, SpatialService service, Point[] points) {
+		super(factory, service);
 		this.points = points;
 	}
 

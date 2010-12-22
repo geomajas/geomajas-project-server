@@ -11,8 +11,6 @@ import com.vividsolutions.jts.geom.LinearRing;
  */
 public interface SpatialService {
 
-	public static final double ZERO = 0.00001;
-
 	/**
 	 * Calculates whether or not 2 line-segments intersect.
 	 * 

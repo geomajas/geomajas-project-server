@@ -39,6 +39,8 @@ public interface GeometryFactory {
 
 	public int getPrecision();
 	
+	public double getDelta();
+	
 	public Bbox createBbox(double x, double y, double width, double height);
 
 	public Bbox createBbox(Bbox original);
@@ -135,4 +137,5 @@ public interface GeometryFactory {
 	 * @return Returns a clone.
 	 */
 	Geometry createGeometry(Geometry geometry);
+	
 }

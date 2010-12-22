@@ -45,11 +45,11 @@ public class MultiLineStringImpl extends AbstractGeometry implements MultiLineSt
 	// -------------------------------------------------------------------------
 
 	MultiLineStringImpl(GeometryFactory factory) {
-		this(factory ,null);
+		this(factory, null, null);
 	}
 
-	MultiLineStringImpl(GeometryFactory factory, LineString[] lineStrings) {
-		super(factory);
+	MultiLineStringImpl(GeometryFactory factory, SpatialService service, LineString[] lineStrings) {
+		super(factory, service);
 		this.lineStrings = lineStrings;
 	}
 
@@ -264,7 +264,7 @@ public class MultiLineStringImpl extends AbstractGeometry implements MultiLineSt
 		}
 		return wkt + ")";
 	}
-	
+
 	// ------------------------------------------------------------------------
 	// Protected methods:
 	// ------------------------------------------------------------------------

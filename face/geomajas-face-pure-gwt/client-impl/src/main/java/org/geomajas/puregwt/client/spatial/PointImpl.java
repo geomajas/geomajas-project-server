@@ -46,16 +46,16 @@ public class PointImpl extends AbstractGeometry implements Point {
 	// Constructor
 	// -------------------------------------------------------------------------
 
-	PointImpl(GeometryFactory factory) {
-		this(factory, null);
+	PointImpl(GeometryFactory factory, SpatialService service) {
+		this(factory, service, null);
 	}
 
-	PointImpl(GeometryFactory factory, double x, double y) {
-		this(factory, new Coordinate(x, y));
+	PointImpl(GeometryFactory factory, SpatialService service, double x, double y) {
+		this(factory, service, new Coordinate(x, y));
 	}
 
-	PointImpl(GeometryFactory factory, Coordinate c) {
-		super(factory);
+	PointImpl(GeometryFactory factory, SpatialService service, Coordinate c) {
+		super(factory, service);
 		coordinate = c;
 	}
 
@@ -187,7 +187,7 @@ public class PointImpl extends AbstractGeometry implements Point {
 				return coordinate.equals(coordinates[0]);
 			} else {
 				for (int i = 0; i < coordinates.length - 1; i++) {
-					if (service.distance(coordinates[i], coordinates[i + 1], coordinate) < SpatialService.ZERO) {
+					if (service.distance(coordinates[i], coordinates[i + 1], coordinate) < factory.getDelta()) {
 						return true;
 					}
 				}

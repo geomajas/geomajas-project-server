@@ -2,6 +2,8 @@ package org.geomajas.puregwt.client.spatial;
 
 import org.geomajas.geometry.Coordinate;
 
+import com.google.inject.Inject;
+
 /**
  * Implementation of the general {@link SpatialService}.
  * 
@@ -146,7 +148,7 @@ public class SpatialServiceImpl implements SpatialService {
 			Coordinate c = geometry.getCoordinates()[0];
 			Vector2D v1 = new Vector2D(c.getX(), c.getY());
 			Vector2D v2 = new Vector2D(coordinate.getX(), coordinate.getY());
-			return (v1.distance(v2) < ZERO);
+			return (v1.distance(v2) < geometry.getGeometryFactory().getDelta());
 		}
 		return false;
 	}
@@ -202,7 +204,7 @@ public class SpatialServiceImpl implements SpatialService {
 		// Now loop over the edges:
 		for (int i = 1; i < lineString.getNumPoints(); i++) {
 			LineSegment edge = new LineSegment(lineString.getCoordinateN(i - 1), lineString.getCoordinateN(i));
-			if (edge.distance(coordinate) < ZERO) {
+			if (edge.distance(coordinate) < lineString.getGeometryFactory().getDelta()) {
 				return true;
 			}
 		}
