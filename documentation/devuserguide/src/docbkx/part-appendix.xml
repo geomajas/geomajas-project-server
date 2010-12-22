@@ -51,35 +51,35 @@
                 <programlisting>&lt;context-param&gt;
     &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;
     &lt;param-value&gt;
-        classpath:org/geomajas/spring/geomajasContext.xml<co id="???" />
-        WEB-INF/applicationContext.xml<co id="???" />
+        classpath:org/geomajas/spring/geomajasContext.xml<co id="co-20101222-1" />
+        WEB-INF/applicationContext.xml<co id="co-20101222-2" />
     &lt;/param-value&gt;
 &lt;/context-param&gt;
 
 &lt;listener&gt;
     &lt;listener-class&gt;org.springframework.web.context.ContextLoaderListener&lt;/listener-class&gt;<co
-                    id="???" />
+                    id="co-20101222-3" />
 &lt;/listener&gt;
 &lt;listener&gt;
     &lt;listener-class&gt;org.springframework.web.context.request.RequestContextListener&lt;/listener-class&gt;<co
-                    id="???" />
+                    id="co-20101222-1" />
 &lt;/listener&gt;
     .....</programlisting>
 
                 <calloutlist>
-                  <callout arearefs="???">
+                  <callout arearefs="co-20101222-1">
                     <para>root context for geomajas</para>
                   </callout>
 
-                  <callout arearefs="???">
+                  <callout arearefs="co-20101222-2">
                     <para>additional context for your application</para>
                   </callout>
 
-                  <callout arearefs="???">
+                  <callout arearefs="co-20101222-3">
                     <para>assures the application context is available</para>
                   </callout>
 
-                  <callout arearefs="???">
+                  <callout arearefs="co-20101222-4">
                     <para>assures the request can be accessed</para>
                   </callout>
                 </calloutlist>

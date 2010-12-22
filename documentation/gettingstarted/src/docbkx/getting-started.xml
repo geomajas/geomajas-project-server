@@ -295,7 +295,7 @@
       <para>There is a classpath issue with the Google Plug-in for Eclipse
       (GPE) that prevents us from using it in a reliable way when there are
       multiple versions of artifacts in the maven dependency tree:<ulink
-      url="???">
+      url="http://code.google.com/p/google-web-toolkit/issues/detail?id=5033">
       http://code.google.com/p/google-web-toolkit/issues/detail?id=5033</ulink></para>
 
       <para>On top of that, GPE forces the use of the built-in jetty launcher,
@@ -303,7 +303,7 @@
       Recent development by Google points in the direction of better maven
       support, but a as far as we know a stable solution which does not
       require explicit user interaction is not available. (see <ulink
-      url="???">http://googlewebtoolkit.blogspot.com/2010/08/how-to-use-google-plugin-for-eclipse.html</ulink>).</para>
+      url="http://googlewebtoolkit.blogspot.com/2010/08/how-to-use-google-plugin-for-eclipse.html">http://googlewebtoolkit.blogspot.com/2010/08/how-to-use-google-plugin-for-eclipse.html</ulink>).</para>
 
       <para>In view of these problems, the following workaround seems to be
       the most reliable way of using the GWT plugin for us:</para>

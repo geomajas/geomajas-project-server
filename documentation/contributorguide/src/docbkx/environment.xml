@@ -184,7 +184,7 @@
       <para>Eclipse project configurations can be alternatively be generated
       using the maven Eclipse plug-in. Running eclipse:eclipse fails on trunk
       because of an issue with maven filtering: <ulink
-      url="???">http://jira.codehaus.org/browse/MECLIPSE-576</ulink>. This
+      url="http://jira.codehaus.org/browse/MECLIPSE-576">http://jira.codehaus.org/browse/MECLIPSE-576</ulink>. This
       will be fixed in the upcoming 2.9 release of the plugin, in the meantime
       you can back up to 2.6: </para>
 
