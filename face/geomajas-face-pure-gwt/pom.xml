@@ -113,6 +113,7 @@
 	
 	<modules>
 		<module>client</module>
+		<module>client-impl</module>
 	</modules>
 
 	<dependencyManagement>
