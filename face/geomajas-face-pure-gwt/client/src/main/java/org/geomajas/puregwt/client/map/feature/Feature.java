@@ -21,7 +21,7 @@ public interface Feature {
 	 * @throws IllegalStateException
 	 *             attributes not present because of lazy loading
 	 */
-	Map<String, Attribute> getAttributes() throws IllegalStateException;
+	Map<String, Attribute<?>> getAttributes() throws IllegalStateException;
 
 	/**
 	 * Check whether the attributes are already available or should be lazy
