@@ -8,15 +8,19 @@
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
-			classpath:clientcfg/*.xml
+            classpath:org/geomajas/spring/geomajasContext.xml
+            classpath:clientcfg/*.xml
 			classpath:servercfg/*.xml
             classpath:applicationContext.xml
         </param-value>
 	</context-param>
 
-	<listener>
- 		<listener-class>org.geomajas.servlet.GeomajasContextListener</listener-class>
-	</listener>
+    <listener>
+         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+    <listener>
+         <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+    </listener>
 <!-- @extract-end -->
 
 <!-- @extract-start WebXmlDojoPart2, Servlet definitions -->

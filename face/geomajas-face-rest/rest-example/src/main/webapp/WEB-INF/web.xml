@@ -6,14 +6,18 @@
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
+            classpath:org/geomajas/spring/geomajasContext.xml
             classpath:org/geomajas/rest/shapeinmem/applicationContext.xml
             classpath:org/geomajas/rest/shapeinmem/layerCountries110m.xml
         </param-value>
     </context-param>
  
-	<listener>
-		<listener-class>org.geomajas.servlet.GeomajasContextListener</listener-class>
-	</listener>
+    <listener>
+         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+    <listener>
+         <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+    </listener>
 
 	<servlet>
 		<servlet-name>dispatcher</servlet-name>

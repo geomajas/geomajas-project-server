@@ -6,6 +6,7 @@
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
+            classpath:org/geomajas/spring/geomajasContext.xml
 			classpath:org/geomajas/plugin/geocoder/gwt/example/context/applicationContext.xml
 			classpath:org/geomajas/plugin/geocoder/gwt/example/context/osmMap.xml
 		</param-value>
@@ -20,9 +21,12 @@
  		<listener-class>org.geomajas.servlet.PrepareScanningContextListener</listener-class>
 	</listener>
 
-	<listener>
-		<listener-class>org.geomajas.servlet.GeomajasContextListener</listener-class>
-	</listener>
+    <listener>
+         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+    </listener>
+    <listener>
+         <listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+    </listener>
 
 	<servlet>
 		<servlet-name>GeomajasServiceServlet</servlet-name>

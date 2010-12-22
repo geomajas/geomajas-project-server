@@ -72,6 +72,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
         <property name="version" value="1.1.1"/>
         <property name="format" value="image/jpeg"/>
         <property name="styles" value=""/>
+		<!--<property name="useProxy" value="true"/>-->
 	</bean>
 	<!-- @extract-end -->
 
