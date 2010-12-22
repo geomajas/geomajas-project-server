@@ -14,7 +14,7 @@ import org.geomajas.puregwt.client.spatial.Bbox;
  */
 @Api
 public interface ViewPort {
-	
+
 	TransformationService getTransformationService();
 
 	// -------------------------------------------------------------------------
@@ -35,19 +35,19 @@ public interface ViewPort {
 	 * @param coordinate
 	 *            the new center position
 	 */
-	public void applyPosition(String mapId, Coordinate coordinate);
+	public void applyPosition(Coordinate coordinate);
 
 	/**
 	 * Apply a new scale level on the map. In case the are fixed resolutions defined on this MapView, it will
 	 * automatically snap to the nearest resolution. In case the maximum extents are exceeded, it will pan to avoid
 	 * this.
 	 * 
-	 * @param newScale
+	 * @param scale
 	 *            The preferred new scale.
 	 * @param option
 	 *            zoom option, {@link org.geomajas.puregwt.client.map.ZoomOption}
 	 */
-	public void applyScale(String mapId, double newScale, ZoomOption option);
+	public void applyScale(double scale, ZoomOption option);
 
 	/**
 	 * Apply a new scale level on the map. In case the are fixed resolutions defined on this MapView, it will
@@ -77,9 +77,9 @@ public interface ViewPort {
 	 * @param bounds
 	 *            A bounding box in world coordinates that determines the view from now on.
 	 * @param option
-	 *            zoom option, {@link org.geomajas.puregwt.client.map.MapView.ZoomOption}
+	 *            zoom option, {@link org.geomajas.puregwt.client.map.ZoomOption}
 	 */
-	public void applyBounds(String mapId, Bbox bounds, ZoomOption option);
+	public void applyBounds(Bbox bounds, ZoomOption option);
 
 	/**
 	 * Move the view on the map. This happens by translating the camera in turn.
@@ -89,24 +89,39 @@ public interface ViewPort {
 	 * @param y
 	 *            Translation factor along the Y-axis in world space.
 	 */
-	public void translate(String mapId, double x, double y);
+	public void translate(double x, double y);
 
 	/**
 	 * Adjust the current scale on the map by a new factor.
 	 * 
 	 * @param delta
 	 *            Adjust the scale by factor "delta".
+	 * @param option
+	 *            The zooming option to use when applying the scaling transformation.
 	 */
-	public void scale(String mapId, double delta, ZoomOption option);
+	public void scale(double delta, ZoomOption option);
 
 	/**
 	 * Adjust the current scale on the map by a new factor, keeping a coordinate in place.
 	 * 
 	 * @param delta
 	 *            Adjust the scale by factor "delta".
+	 * @param option
+	 *            The zooming option to use when applying the scaling transformation.
 	 * @param center
 	 *            Keep this coordinate on the same position as before.
 	 * 
 	 */
-	public void scale(String mapId, double delta, ZoomOption option, Coordinate center);
+	public void scale(double delta, ZoomOption option, Coordinate center);
+
+	/**
+	 * Drag the view on the map, without firing definitive ViewPortChanged events. This is used while dragging the map.
+	 * Other than the events, it behaves the same as a translate.
+	 * 
+	 * @param x
+	 *            Translation factor along the X-axis in world space.
+	 * @param y
+	 *            Translation factor along the Y-axis in world space.
+	 */
+	public void drag(double x, double y);
 }

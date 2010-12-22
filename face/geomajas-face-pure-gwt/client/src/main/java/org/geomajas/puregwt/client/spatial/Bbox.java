@@ -52,6 +52,14 @@ public interface Bbox {
 	 * Get the center of the bounding box as a Coordinate.
 	 */
 	Coordinate getCenterPoint();
+	
+	/**
+	 * Moves center to the specified coordinate.
+	 * 
+	 * @param center
+	 *            new center point
+	 */
+	void setCenterPoint(Coordinate center);
 
 	/**
 	 * Get the end-point of the bounding box as a Coordinate.

@@ -1,6 +1,10 @@
 package org.geomajas.puregwt.client.map;
 
-/** Zoom options. */
+/** 
+ * Zoom options. 
+ *
+ * @author Jan De Moerloose
+ */
 public enum ZoomOption {
 
 	/** Zoom exactly to the new scale. */
