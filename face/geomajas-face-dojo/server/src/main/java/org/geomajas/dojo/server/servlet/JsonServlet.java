@@ -110,7 +110,10 @@ public class JsonServlet extends HttpServlet implements ErrorInvocationCallback,
 		log.info("JSON servlet init");
 		log.debug("current working directory = {}", System.getProperty("user.dir"));
 
-		ApplicationContext applicationContext = ContextLoaderListener.getCurrentWebApplicationContext();
+		ApplicationContext applicationContext = ApplicationContextUtil.getApplicationContext( config );
+        if (null == applicationContext) {
+            applicationContext = ContextLoaderListener.getCurrentWebApplicationContext();
+        }
 		if (applicationContext instanceof ConfigurableApplicationContext) {
 			((ConfigurableApplicationContext) applicationContext).addApplicationListener(this);
 		}
