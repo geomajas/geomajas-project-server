@@ -156,7 +156,7 @@
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<modules>
-				<module>documentation</module>
+				<!--<module>documentation</module>-->
 			</modules>
 		</profile>
 		<profile>
