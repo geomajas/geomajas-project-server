@@ -24,17 +24,16 @@
 package org.geomajas.puregwt.client.map.event;
 
 import org.geomajas.global.Api;
+import org.geomajas.global.UserImplemented;
 
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent.Type;
 
-import org.geomajas.global.UserImplemented;
-
 /**
- * Interface for event handlers that catch {@link org.geomajas.puregwt.client.map.event.ViewPortChangedEvent}s.
- *
+ * Handler for the addition and removal of layers within a map.
+ * 
  * @author Pieter De Graef
- * @since 1.6.0
+ * @since 1.0.0
  */
 @Api(allMethods = true)
 @UserImplemented
@@ -43,5 +42,6 @@ public interface MapCompositionHandler extends EventHandler {
 	Type<MapCompositionHandler> TYPE = new Type<MapCompositionHandler>();
 
 	void onLayerAdded(LayerAddedEvent event);
+
 	void onLayerRemoved(LayerRemovedEvent event);
 }

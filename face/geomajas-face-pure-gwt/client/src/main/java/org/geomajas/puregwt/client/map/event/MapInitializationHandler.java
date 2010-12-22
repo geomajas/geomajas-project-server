@@ -23,24 +23,25 @@
 package org.geomajas.puregwt.client.map.event;
 
 import org.geomajas.global.Api;
-
-import com.google.gwt.event.shared.EventHandler;
 import org.geomajas.global.UserImplemented;
 
+import com.google.gwt.event.shared.EventHandler;
+
 /**
- * Interface for handling map model events.
- *
+ * Interface for handling map initialization events.
+ * 
  * @author Pieter De Graef
- * @since 1.6.0
+ * @since 1.0.0
  */
 @Api(allMethods = true)
 @UserImplemented
 public interface MapInitializationHandler extends EventHandler {
 
 	/**
-	 * Called when the map model changes.
+	 * Called when the map has been initialized.
 	 * 
-	 * @param event change event
+	 * @param event
+	 *            Initialization event
 	 */
 	void onMapInitialized(MapInitializationEvent event);
 }

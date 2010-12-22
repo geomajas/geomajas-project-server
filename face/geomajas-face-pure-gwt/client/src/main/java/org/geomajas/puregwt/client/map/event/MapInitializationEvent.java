@@ -27,10 +27,10 @@ import org.geomajas.global.Api;
 import com.google.gwt.event.shared.GwtEvent;
 
 /**
- * Event that reports <code>MapModel</code> changes.
+ * Event that reports the initialization of the map.
  * 
  * @author Jan De Moerloose
- * @since 1.6.0
+ * @since 1.0.0
  */
 @Api(allMethods = true)
 public class MapInitializationEvent extends GwtEvent<MapInitializationHandler> {

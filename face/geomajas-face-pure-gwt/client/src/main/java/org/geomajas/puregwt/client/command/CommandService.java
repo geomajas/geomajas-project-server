@@ -1,3 +1,25 @@
+/*
+ * This file is part of Geomajas, a component framework for building
+ * rich Internet applications (RIA) with sophisticated capabilities for the
+ * display, analysis and management of geographic information.
+ * It is a building block that allows developers to add maps
+ * and other geographic data capabilities to their web applications.
+ *
+ * Copyright 2008-2010 Geosparc, http://www.geosparc.com, Belgium
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
 package org.geomajas.puregwt.client.command;
 
 import org.geomajas.puregwt.client.command.event.DispatchStartedHandler;
@@ -5,26 +27,28 @@ import org.geomajas.puregwt.client.command.event.DispatchStoppedHandler;
 
 import com.google.gwt.event.shared.HandlerRegistration;
 
+/**
+ * Central service for executing commands. These commands are sent to the server for execution.
+ * 
+ * @author Pieter De Graef
+ * @author Jan De Moerloose
+ */
 public interface CommandService {
-	public HandlerRegistration addDispatchStartedHandler(
-			DispatchStartedHandler handler);
 
-	public HandlerRegistration addDispatchStoppedHandler(
-			DispatchStoppedHandler handler);
+	public HandlerRegistration addDispatchStartedHandler(DispatchStartedHandler handler);
+
+	public HandlerRegistration addDispatchStoppedHandler(DispatchStoppedHandler handler);
 
 	/**
 	 * The execution function. Executes a server side command.
 	 * 
 	 * @param command
-	 *            The command to be executed. This command is a wrapper around
-	 *            the actual request object.
+	 *            The command to be executed. This command is a wrapper around the actual request object.
 	 * @param onSuccess
-	 *            A <code>CommandCallback</code> function to be executed when
-	 *            the command successfully returns.
+	 *            A <code>CommandCallback</code> function to be executed when the command successfully returns.
 	 * @return deferred object which can be used to add extra callbacks
 	 */
-	public Deferred execute(GwtCommand command,
-			final CommandCallback... onSuccess);
+	public Deferred execute(GwtCommand command, final CommandCallback... onSuccess);
 
 	/**
 	 * Is the dispatcher busy ?
@@ -100,5 +124,4 @@ public interface CommandService {
 	 *            "featureIncludes" value when all should be included
 	 */
 	public void setLazyFeatureIncludesAll(int lazyFeatureIncludesAll);
-
 }

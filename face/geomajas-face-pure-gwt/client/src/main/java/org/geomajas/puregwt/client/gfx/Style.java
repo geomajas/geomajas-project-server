@@ -41,6 +41,11 @@ public interface Style {
 	 *            The scale value. (will usually be the opposite of the map's scale value)
 	 */
 	void scale(double scale);
-	
+
+	/**
+	 * Create a clone for this style object.
+	 * 
+	 * @return Returns the clone.
+	 */
 	Style clone();
 }

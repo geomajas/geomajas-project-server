@@ -1,3 +1,26 @@
+/*
+ * This file is part of Geomajas, a component framework for building
+ * rich Internet applications (RIA) with sophisticated capabilities for the
+ * display, analysis and management of geographic information.
+ * It is a building block that allows developers to add maps
+ * and other geographic data capabilities to their web applications.
+ *
+ * Copyright 2008-2010 Geosparc, http://www.geosparc.com, Belgium
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Affero General Public License as
+ * published by the Free Software Foundation, either version 3 of the
+ * License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Affero General Public License for more details.
+ *
+ * You should have received a copy of the GNU Affero General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 package org.geomajas.puregwt.client.map;
 
 import org.geomajas.geometry.Coordinate;
@@ -5,7 +28,10 @@ import org.geomajas.global.Api;
 import org.geomajas.puregwt.client.spatial.Bbox;
 
 /**
- * ...
+ * Central view port definition that determines and influences that position of the map. It allows for zooming in and
+ * out, translation, etc.<br/>
+ * Next to simply storing and changing the map location, implementation of this interface will also send out several
+ * types of events that clearly define the changes in the view on the map.
  * 
  * @author Pieter De Graef
  * @author Oliver May
@@ -15,14 +41,27 @@ import org.geomajas.puregwt.client.spatial.Bbox;
 @Api
 public interface ViewPort {
 
+	/**
+	 * Returns a transformation service that can transform vector objects between world and screen space.
+	 * 
+	 * @return Returns the transformation service object.
+	 */
 	TransformationService getTransformationService();
 
 	// -------------------------------------------------------------------------
 	// Methods that retrieve what is visible on the map:
 	// -------------------------------------------------------------------------
 
+	/**
+	 * Return the current scale on the map.
+	 */
 	double getScale();
 
+	/**
+	 * Return the currently visible bounds on the map. These bounds are expressed in the CRS of the map.
+	 * 
+	 * @return Returns the maps bounding box.
+	 */
 	Bbox getBounds();
 
 	// -------------------------------------------------------------------------

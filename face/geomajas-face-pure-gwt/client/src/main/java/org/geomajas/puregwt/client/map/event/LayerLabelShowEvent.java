@@ -28,10 +28,10 @@ import org.geomajas.puregwt.client.map.layer.Layer;
 import com.google.gwt.event.shared.GwtEvent;
 
 /**
- * Event that reports <code>Layer</code> changes.
+ * Event that is fired when the labels of a layer are made visible.
  *
  * @author Frank Wynants
- * @since 1.6.0
+ * @since 1.0.0
  */
 @Api(allMethods = true)
 public class LayerLabelShowEvent extends GwtEvent<LayerLabeledHandler> {

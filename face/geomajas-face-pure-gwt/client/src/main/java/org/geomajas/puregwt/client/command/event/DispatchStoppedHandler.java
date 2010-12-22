@@ -23,15 +23,15 @@
 package org.geomajas.puregwt.client.command.event;
 
 import org.geomajas.global.Api;
-
-import com.google.gwt.event.shared.EventHandler;
 import org.geomajas.global.UserImplemented;
 
+import com.google.gwt.event.shared.EventHandler;
+
 /**
- * Interface for event handlers that catch {@link org.geomajas.puregwt.client.command.event.plaingwt.client.command.event.DispatchStoppedEvent}s.
- *
+ * Interface for event handlers that catch {@link DispatchStoppedEvent}s.
+ * 
  * @author Jan De Moerloose
- * @since 1.6.0
+ * @since 1.0.0
  */
 @Api(allMethods = true)
 @UserImplemented
@@ -39,10 +39,9 @@ public interface DispatchStoppedHandler extends EventHandler {
 
 	/**
 	 * The event catching method.
-	 *
+	 * 
 	 * @param event
-	 *            The actual {@link org.geomajas.puregwt.client.command.event.plaingwt.client.command.event.DispatchStoppedEvent}.
-	 * @since 1.8.0
+	 *            The actual {@link DispatchStoppedEvent}.
 	 */
 	void onDispatchStopped(DispatchStoppedEvent event);
 }

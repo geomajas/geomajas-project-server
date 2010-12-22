@@ -31,7 +31,7 @@ import com.google.gwt.event.shared.GwtEvent;
  * Event that reports the deselection of a layer.
  *
  * @author Pieter De Graef
- * @since 1.6.0
+ * @since 1.0.0
  */
 @Api(allMethods = true)
 public class LayerDeselectedEvent extends GwtEvent<LayerSelectionHandler> {

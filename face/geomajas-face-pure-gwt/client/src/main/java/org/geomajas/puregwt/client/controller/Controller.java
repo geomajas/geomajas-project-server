@@ -56,5 +56,4 @@ public interface Controller extends MouseDownHandler, MouseUpHandler, MouseMoveH
 	 * mess this controller made.
 	 */
 	void onDeactivate(MapPresenter presenter);
-
 }

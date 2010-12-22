@@ -29,10 +29,10 @@ import com.google.gwt.event.shared.GwtEvent.Type;
 import org.geomajas.global.UserImplemented;
 
 /**
- * Interface for handling select layer events.
+ * Interface for handling the selection and deselection of layers.
  *
  * @author Pieter De Graef
- * @since 1.6.0
+ * @since 1.0.0
  */
 @Api(allMethods = true)
 @UserImplemented

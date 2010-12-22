@@ -30,7 +30,6 @@ import com.google.gwt.event.shared.GwtEvent.Type;
  * Handler that catches changes in layer style.
  * 
  * @author Pieter De Graef
- * @since 1.8.0
  */
 public interface LayerStyleChangedHandler extends EventHandler {
 

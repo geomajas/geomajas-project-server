@@ -23,9 +23,8 @@
 
 package org.geomajas.puregwt.client.spatial;
 
-
 /**
- * Ploygon client-side GWT object.
+ * Polygon client-side GWT object.
  * 
  * @author Pieter De Graef
  */

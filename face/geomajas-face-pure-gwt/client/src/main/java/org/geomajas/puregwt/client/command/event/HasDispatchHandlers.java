@@ -29,28 +29,28 @@ import com.google.gwt.event.shared.HandlerRegistration;
 /**
  * Classes triggering the {@link DispatchStartedEvent} should implement this interface, thereby allowing handlers to be
  * registered to catch these events.
- *
+ * 
  * @author Jan De Moerloose
- * @since 1.6.0
+ * @since 1.0.0
  */
 @Api
 public interface HasDispatchHandlers {
 
 	/**
-	 * Add a new handler for {@link org.geomajas.gwt.client.widget.event.ActivityChangedEvent} events.
-	 *
-	 * @param handler The handler to be registered.
+	 * Add a new handler for {@link DispatchStartedEvent} events.
+	 * 
+	 * @param handler
+	 *            The handler to be registered.
 	 * @return Returns the handlers registration object.
 	 */
-	HandlerRegistration addDispatchStartedHandler(DispatchStartedHandler
-			handler);
+	HandlerRegistration addDispatchStartedHandler(DispatchStartedHandler handler);
 
 	/**
-	 * Add a new handler for {@link org.geomajas.gwt.client.widget.event.ActivityChangedEvent} events.
-	 *
-	 * @param handler The handler to be registered.
+	 * Add a new handler for {@link DispatchStoppedEvent} events.
+	 * 
+	 * @param handler
+	 *            The handler to be registered.
 	 * @return Returns the handlers registration object.
 	 */
-	HandlerRegistration addDispatchStoppedHandler(DispatchStoppedHandler
-			handler);
+	HandlerRegistration addDispatchStoppedHandler(DispatchStoppedHandler handler);
 }

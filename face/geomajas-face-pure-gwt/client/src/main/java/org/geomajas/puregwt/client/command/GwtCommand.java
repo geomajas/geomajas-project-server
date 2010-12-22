@@ -35,12 +35,12 @@ import org.geomajas.global.Api;
  * </p>
  * 
  * @author Pieter De Graef
- * @since 1.6.0
+ * @since 1.0.0
  */
 @Api(allMethods = true)
 public class GwtCommand implements Serializable {
 
-	private static final long serialVersionUID = 5594368814162458480L;
+	private static final long serialVersionUID = 100L;
 
 	private String commandName;
 
@@ -50,7 +50,9 @@ public class GwtCommand implements Serializable {
 
 	private String locale;
 
+	// ------------------------------------------------------------------------
 	// constructors:
+	// ------------------------------------------------------------------------
 
 	/** Default constructor. Does nothing. */
 	public GwtCommand() {
@@ -66,7 +68,9 @@ public class GwtCommand implements Serializable {
 		this.commandName = commandName;
 	}
 
+	// ------------------------------------------------------------------------
 	// getters and setters:
+	// ------------------------------------------------------------------------
 
 	/** The Java class name of the actual command to be executed. Or rather the spring bean name. */
 	public String getCommandName() {

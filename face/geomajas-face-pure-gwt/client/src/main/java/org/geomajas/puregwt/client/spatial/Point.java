@@ -23,17 +23,24 @@
 
 package org.geomajas.puregwt.client.spatial;
 
-
 /**
- * <p>
  * GWT client side implementation of a Point.
- * </p>
  * 
  * @author Pieter De Graef
  */
 public interface Point extends Geometry {
 
+	/**
+	 * Return the X-ordinate for this point.
+	 * 
+	 * @return Returns the X-ordinate.
+	 */
 	double getX();
 
+	/**
+	 * Return the Y-ordinate for this point.
+	 * 
+	 * @return Returns the Y-ordinate.
+	 */
 	double getY();
 }

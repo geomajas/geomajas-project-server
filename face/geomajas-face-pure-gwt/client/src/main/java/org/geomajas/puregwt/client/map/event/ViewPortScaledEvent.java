@@ -29,7 +29,7 @@ import org.geomajas.puregwt.client.map.ViewPort;
 import com.google.gwt.event.shared.GwtEvent;
 
 /**
- * ...
+ * Event that is fired when the map has rescaled while the center has remained the same.
  * 
  * @author Pieter De Graef
  * @since 1.0.0

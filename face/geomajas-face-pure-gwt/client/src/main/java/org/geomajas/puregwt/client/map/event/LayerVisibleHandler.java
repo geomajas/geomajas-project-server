@@ -29,10 +29,9 @@ import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent.Type;
 
 /**
- * Interface for handling layer events.
+ * Interface for handling layer visibility events.
  * 
  * @author Frank Wynants
- * @since 1.6.0
  */
 @Api(allMethods = true)
 @UserImplemented

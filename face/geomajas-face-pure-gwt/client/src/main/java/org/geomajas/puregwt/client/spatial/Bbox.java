@@ -39,6 +39,8 @@ public interface Bbox {
 	 * 
 	 * @param other
 	 *            The other bounding box to compare against.
+	 * @param delta
+	 *            The delta to use as precision measure.
 	 * @return Returns true if all properties are the same.
 	 */
 	boolean equals(Bbox other, double delta);
@@ -52,7 +54,7 @@ public interface Bbox {
 	 * Get the center of the bounding box as a Coordinate.
 	 */
 	Coordinate getCenterPoint();
-	
+
 	/**
 	 * Moves center to the specified coordinate.
 	 * 
@@ -135,15 +137,45 @@ public interface Bbox {
 	 */
 	boolean isEmpty();
 
+	/**
+	 * Return the height of the bounding box.
+	 * 
+	 * @return The bounding box height.
+	 */
 	double getHeight();
 
+	/**
+	 * Return the width of the bounding box.
+	 * 
+	 * @return The bounding box width.
+	 */
 	double getWidth();
 
+	/**
+	 * Return the X-ordinate of the bounding box' origin.
+	 * 
+	 * @return Returns the X-ordinate.
+	 */
 	double getX();
 
+	/**
+	 * Return the Y-ordinate of the bounding box' origin.
+	 * 
+	 * @return Returns the Y-ordinate.
+	 */
 	double getY();
 
+	/**
+	 * Return the maximum X value of this bounding box. This is the X-ordinate of the origin plus the width.
+	 * 
+	 * @return Returns the maximum X value of this bounding box.
+	 */
 	double getMaxX();
 
+	/**
+	 * Return the maximum Y value of this bounding box. This is the Y-ordinate of the origin plus the height.
+	 * 
+	 * @return Returns the maximum Y value of this bounding box.
+	 */
 	double getMaxY();
 }

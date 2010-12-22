@@ -32,7 +32,21 @@ import org.geomajas.geometry.Coordinate;
  */
 public interface LineString extends Geometry {
 
+	/**
+	 * Is this line string closed or not? Closed means that the last point equals the first one. Typically
+	 * {@link LineString} geometries are not closed, while {@link LinearRing} geometries are. For a {@link LinearRing}
+	 * it is a necessity.
+	 * 
+	 * @return Returns true or false.
+	 */
 	boolean isClosed();
 
+	/**
+	 * Return the coordinate at the given index.
+	 * 
+	 * @param index
+	 *            The index to search.
+	 * @return Returns the coordinate, or null if no coordinate could be found at the given index.
+	 */
 	Coordinate getCoordinateN(int index);
 }

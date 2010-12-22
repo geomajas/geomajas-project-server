@@ -32,9 +32,9 @@ import org.geomajas.global.Api;
  * events.
  * </p>
  * <p>
- * The difference with a <code>GraphicsController</code> is that controllers can do whatever they want, while a listener
- * is not allowed to interfere with the mouse events in any way. As a result, only one <code>GraphicsController</code>
- * can be active on a map at any given time, while there is no limit to the amount of listeners active on a map.
+ * The difference with a {@link Controller} is that controllers can do whatever they want, while a listener is not
+ * allowed to interfere with the mouse events in any way. As a result, only one {@link Controller} can be active on a
+ * map at any given time, while there is no limit to the amount of listeners active on a map.
  * </p>
  * 
  * @author Pieter De Graef

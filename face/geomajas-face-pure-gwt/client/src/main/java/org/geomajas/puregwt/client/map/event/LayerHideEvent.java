@@ -28,7 +28,7 @@ import org.geomajas.puregwt.client.map.layer.Layer;
 import com.google.gwt.event.shared.GwtEvent;
 
 /**
- * Event that reports <code>Layer</code> changes.
+ * Event that is fired when a layer is marked as invisible.
  * 
  * @author Frank Wynants
  * @since 1.6.0

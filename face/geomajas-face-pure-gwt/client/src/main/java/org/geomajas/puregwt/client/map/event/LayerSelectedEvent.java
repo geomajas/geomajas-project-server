@@ -29,9 +29,9 @@ import com.google.gwt.event.shared.GwtEvent;
 
 /**
  * Event that reports the selection of a layer.
- *
+ * 
  * @author Pieter De Graef
- * @since 1.6.0
+ * @since 1.0.0
  */
 @Api(allMethods = true)
 public class LayerSelectedEvent extends GwtEvent<LayerSelectionHandler> {

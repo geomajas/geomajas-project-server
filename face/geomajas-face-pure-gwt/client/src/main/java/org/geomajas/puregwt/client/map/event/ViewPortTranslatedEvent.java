@@ -29,7 +29,7 @@ import org.geomajas.puregwt.client.map.ViewPort;
 import com.google.gwt.event.shared.GwtEvent;
 
 /**
- * ...
+ * Event that is fired when a translation on the {@link ViewPort} has occurred, while the scale has remained the same.
  * 
  * @author Pieter De Graef
  * @since 1.0.0
@@ -75,7 +75,7 @@ public class ViewPortTranslatedEvent extends GwtEvent<ViewPortChangedHandler> {
 	public ViewPort getViewPort() {
 		return viewPort;
 	}
-	
+
 	// ------------------------------------------------------------------------
 	// Protected methods:
 	// ------------------------------------------------------------------------

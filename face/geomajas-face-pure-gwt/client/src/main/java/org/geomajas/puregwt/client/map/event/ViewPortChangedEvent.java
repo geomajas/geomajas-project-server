@@ -29,8 +29,8 @@ import org.geomajas.puregwt.client.map.ViewPort;
 import com.google.gwt.event.shared.GwtEvent;
 
 /**
- * Custom defined event that is triggered every time the view on a map changes. This can be due to zooming in or
- * panning. This event contains the new bounding box and scale.
+ * Event that is fired when the view on the {@link ViewPort} has been changed so that both scaling and translation have
+ * occurred.
  * 
  * @author Pieter De Graef
  * @since 1.0.0
@@ -38,9 +38,6 @@ import com.google.gwt.event.shared.GwtEvent;
 @Api(allMethods = true)
 public class ViewPortChangedEvent extends GwtEvent<ViewPortChangedHandler> {
 
-	/**
-	 * Handler type.
-	 */
 	private static Type<ViewPortChangedHandler> TYPE;
 
 	private ViewPort viewPort;
@@ -48,6 +45,7 @@ public class ViewPortChangedEvent extends GwtEvent<ViewPortChangedHandler> {
 	// -------------------------------------------------------------------------
 	// Constructor:
 	// -------------------------------------------------------------------------
+
 	public ViewPortChangedEvent(ViewPort viewPort) {
 		this.viewPort = viewPort;
 	}

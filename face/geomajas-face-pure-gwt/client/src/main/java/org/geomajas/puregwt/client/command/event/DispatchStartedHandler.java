@@ -31,7 +31,7 @@ import org.geomajas.global.UserImplemented;
  * Interface for event handlers that catch {@link DispatchStartedEvent}s.
  *
  * @author Jan De Moerloose
- * @since 1.6.0
+ * @since 1.0.0
  */
 @Api(allMethods = true)
 @UserImplemented

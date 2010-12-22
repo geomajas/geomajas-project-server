@@ -31,7 +31,7 @@ import com.google.gwt.event.shared.GwtEvent;
  * Event that reports changes in layer style.
  * 
  * @author Pieter De Graef
- * @since 1.8.0
+ * @since 1.0.0
  */
 @Api(allMethods = true)
 public class LayerStyleChangedEvent extends GwtEvent<LayerStyleChangedHandler> {

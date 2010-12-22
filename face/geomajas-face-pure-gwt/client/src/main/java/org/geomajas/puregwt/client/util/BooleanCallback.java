@@ -23,11 +23,10 @@
 package org.geomajas.puregwt.client.util;
 
 /**
- * Call-back interface with a boolean value.<br/>
- * TODO Doesn't this exist yet within GWT?
+ * Call-back interface with a boolean value.
  * 
  * @author Pieter De Graef
- * @since 1.0
+ * @since 1.0.0
  */
 public interface BooleanCallback {
 

@@ -23,7 +23,6 @@
 
 package org.geomajas.puregwt.client.command;
 
-
 /**
  * Call-back holder for a command. When a response returns from the server (either successfully or with errors to
  * report), the call-backs within this object will be executed. The idea is that you send out a request with a certain

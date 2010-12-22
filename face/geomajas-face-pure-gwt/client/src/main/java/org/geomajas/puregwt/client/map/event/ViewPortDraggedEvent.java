@@ -29,7 +29,8 @@ import org.geomajas.puregwt.client.map.ViewPort;
 import com.google.gwt.event.shared.GwtEvent;
 
 /**
- * ...
+ * Event that is fired when the user has been panning on the map. The panning results in a quick succession of
+ * translations and therefore deserves it's own event.
  * 
  * @author Pieter De Graef
  * @since 1.0.0
@@ -37,9 +38,6 @@ import com.google.gwt.event.shared.GwtEvent;
 @Api(allMethods = true)
 public class ViewPortDraggedEvent extends GwtEvent<ViewPortChangedHandler> {
 
-	/**
-	 * Handler type.
-	 */
 	private static Type<ViewPortChangedHandler> TYPE;
 
 	private ViewPort viewPort;
@@ -75,7 +73,7 @@ public class ViewPortDraggedEvent extends GwtEvent<ViewPortChangedHandler> {
 	public ViewPort getViewPort() {
 		return viewPort;
 	}
-	
+
 	// ------------------------------------------------------------------------
 	// Protected methods:
 	// ------------------------------------------------------------------------

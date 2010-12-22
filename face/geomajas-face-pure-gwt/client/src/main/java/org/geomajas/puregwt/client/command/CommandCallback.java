@@ -28,7 +28,7 @@ import org.geomajas.global.Api;
 /**
  * Execution function that can be passed on to the CommandDispatcher to be executed when a command successfully returns.
  *
- * @since 1.6.0
+ * @since 1.0.0
  * @author Pieter De Graef
  */
 @Api(allMethods = true)
