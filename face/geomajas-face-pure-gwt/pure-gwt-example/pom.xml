@@ -127,7 +127,7 @@
 					<disableCastChecking>true</disableCastChecking>
 					<disableClassMetadata>true</disableClassMetadata>
 					<extraJvmArgs>-Xmx512M -Xss1024k</extraJvmArgs>
-					<i18nConstantsWithLookupBundle>org.geomajas.plaingwt.client.i18n.Translation</i18nConstantsWithLookupBundle>
+					<!--i18nConstantsWithLookupBundle>org.geomajas.plaingwt.client.i18n.Translation</i18nConstantsWithLookupBundle-->
 				</configuration>
 			</plugin>
 
@@ -192,7 +192,7 @@
 								<goals>
 									<goal>clean</goal>
 									<goal>generateAsync</goal>
-									<goal>i18n</goal>
+									<!--goal>i18n</goal-->
 									<goal>compile</goal>
 									<goal>test</goal>
 								</goals>
@@ -219,7 +219,7 @@
 								<goals>
 									<goal>clean</goal>
 									<goal>generateAsync</goal>
-									<goal>i18n</goal>
+									<!--goal>i18n</goal-->
 								</goals>
 							</execution>
 						</executions>
@@ -244,7 +244,7 @@
 								<goals>
 									<goal>clean</goal>
 									<goal>generateAsync</goal>
-									<goal>i18n</goal>
+									<!--goal>i18n</goal-->
 								</goals>
 							</execution>
 						</executions>

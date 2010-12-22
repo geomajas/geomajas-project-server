@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<module>
+	<inherits name='com.google.gwt.user.theme.standard.Standard'/>
+    <inherits name="org.geomajas.puregwt.GeomajasGwtClient"/>
+
+	<!-- add required languages
+	<extend-property name="locale" values="nl"/>
+	-->
+
+	<!-- set target browser to compile for, use this to limit to the browser used for testing -->
+	<!-- where value = "ie6/opera/gecko1_8/safari/gecko" , "gecko1_8" is FireFox 3 -->
+	<!--
+	<set-property name="user.agent" value="gecko1_8" />
+	-->
+
+    <entry-point class="org.geomajas.puregwt.client.GeomajasEntryPoint"/>
+</module>
