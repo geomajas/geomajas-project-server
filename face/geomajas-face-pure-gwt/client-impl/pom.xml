@@ -67,7 +67,12 @@
 			<artifactId>gwt-graphics</artifactId>
 			<version>0.9.7</version>
 		</dependency>
-
+		
+		<dependency>
+			<groupId>com.googlecode.gwt.inject</groupId>
+			<artifactId>gin</artifactId>
+			<version>1.0</version>
+		</dependency>
 
 		<!-- Other dependencies -->
 		<dependency>

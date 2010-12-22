@@ -23,9 +23,10 @@
 
 package org.geomajas.puregwt.client;
 
-import org.geomajas.puregwt.client.widget.MapWidget;
+import org.geomajas.puregwt.client.widget.MapWidgetImpl;
 
 import com.google.gwt.core.client.EntryPoint;
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
@@ -39,20 +40,17 @@ import com.google.gwt.user.client.ui.RootPanel;
  */
 public class GeomajasEntryPoint implements EntryPoint {
 
-	private MapWidget map;
-
-	public GeomajasEntryPoint() {
-	}
+	private final PureGwtExampleGinjector injector = GWT.create(PureGwtExampleGinjector.class);
 
 	public void onModuleLoad() {
-		map = new MapWidget("sampleFeaturesMap", "gwt-simple");
+		MapWidgetImpl map = injector.getMap();
 		map.setSize("800px", "600px");
 		map.setStyleName("test");
 
 		Button b2 = new Button("Init", new ClickHandler() {
 
 			public void onClick(ClickEvent event) {
-				map.init();
+				//map.init();
 			}
 		});
 

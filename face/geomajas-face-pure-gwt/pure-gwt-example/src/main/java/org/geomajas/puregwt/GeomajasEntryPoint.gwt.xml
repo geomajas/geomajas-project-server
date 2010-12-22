@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <module>
-	<inherits name='com.google.gwt.user.theme.standard.Standard'/>
+	<inherits name="com.google.gwt.user.theme.standard.Standard"/>
     <inherits name="org.geomajas.puregwt.GeomajasGwtClient"/>
-
+  	<inherits name="com.google.gwt.inject.Inject"/>
+  	
 	<!-- add required languages
 	<extend-property name="locale" values="nl"/>
 	-->
