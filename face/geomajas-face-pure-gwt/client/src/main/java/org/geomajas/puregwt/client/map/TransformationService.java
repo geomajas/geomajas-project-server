@@ -1,12 +1,11 @@
-package org.geomajas.puregwt.client.spatial;
+package org.geomajas.puregwt.client.map;
 
-import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.geometry.Geometry;
+import org.geomajas.puregwt.client.spatial.Bbox;
+import org.geomajas.puregwt.client.spatial.Geometry;
 
 /**
- * Interface for transformations between view space and world space.<br/>
- * TODO Is pan space really needed? I believe it complicates things too much.
+ * Interface for transformations between view space and world space.
  * 
  * @author Pieter De Graef
  */
@@ -65,5 +64,4 @@ public interface TransformationService {
 	 * @returns The world space equivalent of the given bounding box.
 	 */
 	Bbox viewToWorld(Bbox bbox);
-
 }

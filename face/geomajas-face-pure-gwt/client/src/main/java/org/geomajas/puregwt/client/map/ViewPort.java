@@ -1,14 +1,32 @@
 package org.geomajas.puregwt.client.map;
 
-import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.puregwt.client.spatial.TransformationService;
+import org.geomajas.global.Api;
+import org.geomajas.puregwt.client.spatial.Bbox;
 
+/**
+ * ...
+ * 
+ * @author Pieter De Graef
+ * @author Oliver May
+ * @author Jan De Moerloose
+ * @since 1.0.0
+ */
+@Api
 public interface ViewPort {
-
+	
+	TransformationService getTransformationService();
 
 	// -------------------------------------------------------------------------
-	// Functions that manipulate or retrieve what is visible on the map:
+	// Methods that retrieve what is visible on the map:
+	// -------------------------------------------------------------------------
+
+	double getScale();
+
+	Bbox getBounds();
+
+	// -------------------------------------------------------------------------
+	// Methods that manipulate what is visible on the map:
 	// -------------------------------------------------------------------------
 
 	/**
@@ -91,6 +109,4 @@ public interface ViewPort {
 	 * 
 	 */
 	public void scale(String mapId, double delta, ZoomOption option, Coordinate center);
-	
-	TransformationService getTransformationService();
 }

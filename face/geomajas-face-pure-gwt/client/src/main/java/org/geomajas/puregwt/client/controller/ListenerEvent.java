@@ -25,7 +25,7 @@ package org.geomajas.puregwt.client.controller;
 
 import org.geomajas.geometry.Coordinate;
 import org.geomajas.global.Api;
-import org.geomajas.puregwt.client.spatial.TransformationService;
+import org.geomajas.puregwt.client.map.TransformationService;
 
 import com.google.gwt.dom.client.Element;
 
