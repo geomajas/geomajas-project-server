@@ -103,7 +103,7 @@ public class EditLineLayerSample extends SamplePanel {
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "WEB-INF/editing/mapEditLineLayer.xml", "WEB-INF/layerGoogleSat.xml",
+		return new String[] { "WEB-INF/mapEditLineLayer.xml", "WEB-INF/layerGoogleSat.xml",
 				"WEB-INF/layerRoadsTrl020.xml" };
 	}
 
