@@ -47,9 +47,7 @@ import org.geomajas.gwt.client.widget.event.HasGraphicsReadyHandlers;
 
 import com.google.gwt.dom.client.Document;
 import com.google.gwt.dom.client.Element;
-import com.google.gwt.event.dom.client.DoubleClickEvent;
 import com.google.gwt.event.dom.client.DoubleClickHandler;
-import com.google.gwt.event.dom.client.HasDoubleClickHandlers;
 import com.google.gwt.event.dom.client.MouseDownEvent;
 import com.google.gwt.event.dom.client.MouseDownHandler;
 import com.google.gwt.event.dom.client.MouseEvent;
@@ -97,7 +95,7 @@ import com.smartgwt.client.widgets.layout.VLayout;
  * 
  * @author Pieter De Graef
  */
-public class GraphicsWidget extends VLayout implements MapContext, HasDoubleClickHandlers, HasGraphicsReadyHandlers {
+public class GraphicsWidget extends VLayout implements MapContext, HasGraphicsReadyHandlers {
 
 	/** The ID from which to start building the rendering DOM tree. */
 	private String graphicsId;
@@ -204,10 +202,6 @@ public class GraphicsWidget extends VLayout implements MapContext, HasDoubleClic
 	// Class specific methods:
 	// -------------------------------------------------------------------------
 
-	public HandlerRegistration addDoubleClickHandler(DoubleClickHandler handler) {
-		return addDomHandler(handler, DoubleClickEvent.getType());
-	}
-
 	public HandlerRegistration addGraphicsReadyHandler(GraphicsReadyHandler handler) {
 		return doAddHandler(handler, GraphicsReadyEvent.TYPE);
 	}
@@ -239,7 +233,7 @@ public class GraphicsWidget extends VLayout implements MapContext, HasDoubleClic
 			handlers.add(eventWidget.addMouseOverHandler(graphicsController));
 			handlers.add(eventWidget.addMouseUpHandler(graphicsController));
 			handlers.add(eventWidget.addMouseWheelHandler(graphicsController));
-			handlers.add(addDoubleClickHandler(graphicsController));
+			handlers.add(eventWidget.addDoubleClickHandler(graphicsController));
 			controller = graphicsController;
 			controller.onActivate();
 		}
@@ -421,7 +415,7 @@ public class GraphicsWidget extends VLayout implements MapContext, HasDoubleClic
 			eventWidget.setVisible(true);
 		}
 		// xhtml needs this, or <div> won't show !
-		eventWidget.setInnerSize(getWidth() + "px", getHeight() + "px");		
+		eventWidget.setInnerSize(getWidth() + "px", getHeight() + "px");
 		// set the size and notify graphics users so they can redraw
 		vectorContext.setSize(getWidth(), getHeight());
 		if (isReady()) {
@@ -486,7 +480,7 @@ public class GraphicsWidget extends VLayout implements MapContext, HasDoubleClic
 		}
 
 		public void setInnerSize(String width, String height) {
-			//setSize(width, height);
+			// setSize(width, height);
 			widget.setSize(width, height);
 		}
 
@@ -512,6 +506,10 @@ public class GraphicsWidget extends VLayout implements MapContext, HasDoubleClic
 
 		public HandlerRegistration addMouseWheelHandler(MouseWheelHandler handler) {
 			return widget.addMouseWheelHandler(handler);
+		}
+
+		public HandlerRegistration addDoubleClickHandler(DoubleClickHandler handler) {
+			return widget.addDoubleClickHandler(handler);
 		}
 
 		public FocusWidget getWidget() {
