@@ -87,7 +87,7 @@ public class LayertreeSample extends SamplePanel {
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "WEB-INF/layertree/mapLegend.xml", "WEB-INF/layerLakes110m.xml",
+		return new String[] { "WEB-INF/mapLegend.xml", "WEB-INF/layerLakes110m.xml",
 				"WEB-INF/layerRivers50m.xml", "WEB-INF/layerPopulatedPlaces110m.xml",
 				"WEB-INF/layerWmsBluemarble.xml" };
 	}
