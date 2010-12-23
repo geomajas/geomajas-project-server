@@ -94,7 +94,7 @@ public class ScaleSelectDefaultSample extends SamplePanel {
 
 	public String[] getConfigurationFiles() {
 		return new String[] { "WEB-INF/layerOsm.xml",
-				"WEB-INF/toolbar/mapResolutions.xml" };
+				"WEB-INF/mapResolutions.xml" };
 	}
 
 	public String ensureUserLoggedIn() {
