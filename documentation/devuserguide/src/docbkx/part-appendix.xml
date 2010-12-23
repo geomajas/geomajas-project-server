@@ -62,7 +62,7 @@
 &lt;/listener&gt;
 &lt;listener&gt;
     &lt;listener-class&gt;org.springframework.web.context.request.RequestContextListener&lt;/listener-class&gt;<co
-                    id="co-20101222-1" />
+                    id="co-20101222-4" />
 &lt;/listener&gt;
     .....</programlisting>
 
