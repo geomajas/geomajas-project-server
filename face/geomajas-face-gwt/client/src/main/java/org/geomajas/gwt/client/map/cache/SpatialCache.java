@@ -27,6 +27,7 @@ import org.geomajas.gwt.client.map.cache.tile.VectorTile;
 import org.geomajas.gwt.client.map.feature.LazyLoadCallback;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.map.store.VectorLayerStore;
+import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.layer.tile.TileCode;
 
 /**
@@ -67,4 +68,11 @@ public interface SpatialCache extends VectorLayerStore {
 	 * @return vector layer
 	 */
 	VectorLayer getLayer();
+	
+	/**
+	 * Return the layer bounds for this cache.
+	 * 
+	 * @return the bounding box of the layer
+	 */
+	Bbox getLayerBounds();
 }

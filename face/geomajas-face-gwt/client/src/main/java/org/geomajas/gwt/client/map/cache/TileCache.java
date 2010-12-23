@@ -279,6 +279,11 @@ public class TileCache implements SpatialCache {
 	public Collection<VectorTile> getTiles() {
 		return tiles.values();
 	}
+	
+	public Bbox getLayerBounds() {
+		return layerBounds;
+	}
+
 
 	// -------------------------------------------------------------------------
 	// Private functions:

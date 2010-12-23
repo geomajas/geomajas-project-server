@@ -74,6 +74,9 @@ public class VectorLayerPainter implements Painter {
 		FontStyle labelStyle = getLabelFontstyle(layer);
 		context.getVectorContext().drawGroup(layer, layer.getLabelGroup(), labelStyle);
 
+		// Create the needed groups in the correct order:
+		context.getRasterContext().drawGroup(mapWidget.getGroup(RenderGroup.RASTER), layer); // layer.getDefaultStyle???
+
 		// Draw symbol types, as these can change any time:
 		if (layer.getLayerInfo().getLayerType().equals(LayerType.POINT)
 				|| layer.getLayerInfo().getLayerType().equals(LayerType.MULTIPOINT)) {
@@ -86,8 +89,10 @@ public class VectorLayerPainter implements Painter {
 		// Check layer visibility:
 		if (layer.isShowing()) {
 			context.getVectorContext().unhide(layer);
+			context.getRasterContext().unhide(layer);
 		} else {
 			context.getVectorContext().hide(layer);
+			context.getRasterContext().hide(layer);
 		}
 
 		// Check label visibility:
@@ -116,6 +121,7 @@ public class VectorLayerPainter implements Painter {
 	 */
 	public void deleteShape(Paintable paintable, Object group, MapContext context) {
 		context.getVectorContext().deleteGroup(paintable);
+		context.getRasterContext().deleteGroup(paintable);
 	}
 
 	// Getters and setters:

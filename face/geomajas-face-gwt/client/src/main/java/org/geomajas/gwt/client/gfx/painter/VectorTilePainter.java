@@ -23,7 +23,7 @@
 
 package org.geomajas.gwt.client.gfx.painter;
 
-import org.geomajas.gwt.client.gfx.GraphicsContext;
+import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.gfx.MapContext;
 import org.geomajas.gwt.client.gfx.Paintable;
 import org.geomajas.gwt.client.gfx.PaintableGroup;
@@ -34,7 +34,6 @@ import org.geomajas.gwt.client.map.cache.tile.VectorTile;
 import org.geomajas.gwt.client.map.cache.tile.VectorTile.ContentHolder;
 import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.spatial.Matrix;
-import org.geomajas.gwt.client.spatial.WorldViewTransformer;
 
 /**
  * Paints a vector tile.
@@ -49,11 +48,8 @@ public class VectorTilePainter implements Painter {
 
 	private MapView mapView;
 
-	private WorldViewTransformer transformer;
-
 	public VectorTilePainter(MapView mapView) {
 		this.mapView = mapView;
-		transformer = new WorldViewTransformer(mapView);
 	}
 
 	public String getPaintableClassName() {
@@ -75,32 +71,29 @@ public class VectorTilePainter implements Painter {
 
 		// Paint the feature content:
 		if (tile.getFeatureContent().isLoaded()) {
-			drawContent(tile.getCache().getLayer().getFeatureGroup(), tile, tile.getFeatureContent(), context
-					.getVectorContext());
+			drawContent(tile.getCache().getLayer().getFeatureGroup(), tile, tile.getFeatureContent(), context);
 		}
 
 		// Paint the label content:
 		if (tile.getLabelContent().isLoaded()) {
-			drawContent(tile.getCache().getLayer().getLabelGroup(), tile, tile.getLabelContent(), context
-					.getVectorContext());
+			drawContent(tile.getCache().getLayer().getLabelGroup(), tile, tile.getLabelContent(), context);
 		}
 	}
 
-	private void drawContent(PaintableGroup group, VectorTile tile, ContentHolder holder, GraphicsContext graphics) {
+	private void drawContent(PaintableGroup group, VectorTile tile, ContentHolder holder, MapContext context) {
 		switch (tile.getContentType()) {
 			case STRING_CONTENT:
-				graphics.drawData(group, holder, holder.getContent(), NO_TRANSFORMATION);
+				context.getVectorContext().drawData(group, holder, holder.getContent(), NO_TRANSFORMATION);
 				break;
 			case URL_CONTENT:
-				graphics.drawGroup(group, holder, createTransformationMatrix(tile));
-				graphics.drawImage(holder, "img", holder.getContent(), new Bbox(0, 0, tile.getScreenWidth(), tile
-						.getScreenHeight()), OPAQUE_PICTURE_STYLE);
+				context.getRasterContext().drawImage(tile.getCache().getLayer(), tile.getCode().toString(),
+						holder.getContent(), getPanBounds(tile), OPAQUE_PICTURE_STYLE);
 		}
 	}
 
 	/**
-	 * Delete a {@link Paintable} object from the given {@link GraphicsContext}. It the object does not exist,
-	 * nothing will be done.
+	 * Delete a {@link Paintable} object from the given {@link GraphicsContext}. It the object does not exist, nothing
+	 * will be done.
 	 * 
 	 * @param paintable
 	 *            The object to be painted.
@@ -113,20 +106,26 @@ public class VectorTilePainter implements Painter {
 		VectorTile tile = (VectorTile) paintable;
 		context.getVectorContext().deleteGroup(tile.getFeatureContent());
 		context.getVectorContext().deleteGroup(tile.getLabelContent());
+		context.getRasterContext().deleteElement(tile.getCache().getLayer(), tile.getCode().toString());
 	}
 
-	private Matrix createTransformationMatrix(VectorTile tile) {
-		// We assume the geometries are in screen space, beginning from a tile's upper-left corner.
-
-		double dX = 0;
-		double dY = 0;
-
-		// To find the origin of the tile, we transform it's bounds to view space.
-		Matrix trans = mapView.getPanToViewTranslation();
-		Bbox viewBounds = transformer.worldToView(tile.getBounds());
-		dX = Math.round(viewBounds.getX() - trans.getDx());
-		dY = Math.round(viewBounds.getY() - trans.getDy());
-
-		return new Matrix(1, 0, 0, 1, dX, dY);
+	private Bbox getPanBounds(VectorTile tile) {
+		// Bounds should have integer coordinate values after transforming
+		// We shift the bbox to the next integer value point
+		Coordinate panOrigin = mapView.getPanOrigin();
+		double scale = mapView.getCurrentScale();
+		// calculate the normal shift of the origin tile's corner and extract the fractional part
+		double dx = Math.round((tile.getCache().getLayerBounds().getX() - panOrigin.getX()) * scale) / scale;
+		double dy = Math.round((tile.getCache().getLayerBounds().getY() - panOrigin.getY()) * scale) / scale;
+		// this gives the difference between integer positions and floating positions
+		dx = dx  - (tile.getCache().getLayerBounds().getX() - panOrigin.getX());
+		dy = dy  - (tile.getCache().getLayerBounds().getY() - panOrigin.getY());
+		// now apply to our bounds
+		Bbox  worldBounds = new Bbox(tile.getBounds());
+		worldBounds.translate(-dx, -dy);
+		// transform to pan space and round
+		Bbox panBounds = mapView.getWorldViewTransformer().worldToPan(worldBounds);
+		return new Bbox(Math.round(panBounds.getX()), Math.round(panBounds.getY()), Math.round(panBounds.getWidth()),
+				Math.round(panBounds.getHeight()));
 	}
 }
