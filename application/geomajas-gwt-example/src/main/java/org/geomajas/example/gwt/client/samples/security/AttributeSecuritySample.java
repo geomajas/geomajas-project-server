@@ -185,9 +185,9 @@ public class AttributeSecuritySample extends SamplePanel {
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "WEB-INF/security/security.xml",
+		return new String[] { "WEB-INF/security.xml",
 				"WEB-INF/layerBeans.xml",
-				"WEB-INF/attribute/mapBeans.xml" };
+				"WEB-INF/mapBeans.xml" };
 	}
 
 	public String ensureUserLoggedIn() {
