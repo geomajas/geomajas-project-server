@@ -26,28 +26,25 @@ package org.geomajas.example.gwt.client.samples.controller;
 import org.geomajas.example.gwt.client.samples.base.SamplePanel;
 import org.geomajas.example.gwt.client.samples.base.SamplePanelFactory;
 import org.geomajas.example.gwt.client.samples.i18n.I18nProvider;
-import org.geomajas.geometry.Coordinate;
 import org.geomajas.gwt.client.Geomajas;
 import org.geomajas.gwt.client.controller.AbstractGraphicsController;
 import org.geomajas.gwt.client.controller.GraphicsController;
 import org.geomajas.gwt.client.gfx.GraphicsContext;
 import org.geomajas.gwt.client.gfx.style.PictureStyle;
+import org.geomajas.gwt.client.map.event.MapModelEvent;
+import org.geomajas.gwt.client.map.event.MapModelHandler;
 import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.gwt.client.widget.MapWidget.RenderGroup;
 
-import com.google.gwt.event.dom.client.MouseDownEvent;
-import com.google.gwt.event.dom.client.MouseMoveEvent;
-import com.google.gwt.event.dom.client.MouseUpEvent;
+import com.google.gwt.event.dom.client.MouseOutEvent;
+import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.smartgwt.client.widgets.Canvas;
-import com.smartgwt.client.widgets.events.DrawEvent;
-import com.smartgwt.client.widgets.events.DrawHandler;
 import com.smartgwt.client.widgets.layout.VLayout;
 
 /**
  * <p>
- * Sample that shows how to add a customer controller to the map that can be dragged around by
- * the user.
+ * Sample that shows how to add a customer controller to the map that can be dragged around by the user.
  * </p>
  * 
  * @author Frank Wynants
@@ -72,45 +69,35 @@ public class ControllerOnElementSample extends SamplePanel {
 
 		// Map with ID wmsMap is defined in the XML configuration. (mapWms.xml)
 		final MapWidget map = new MapWidget("wmsMap", "gwt-samples");
-		map.addDrawHandler(new DrawHandler() {
-
-			public void onDraw(DrawEvent event) {
-				final GraphicsContext graphics = map.getVectorContext();
-				// after map initialization we draw an image on the map
-				graphics.drawImage(map.getGroup(RenderGroup.SCREEN), "image", Geomajas.getIsomorphicDir() + IMAGE,
-						new Bbox(300, 300, 48, 48), new PictureStyle(1.0));
-			}
-		});
 
 		// Create the custom controller:
-		GraphicsController customController = new AbstractGraphicsController(map) {
+		final GraphicsController customController = new AbstractGraphicsController(map) {
 
-			private boolean isDragging; // default is false
-
-			public void onMouseMove(MouseMoveEvent event) {
-				// When the user isDragging (mouse is down) we redraw the image at the location of the mousepointer
-				if (isDragging) {
-					Coordinate coordinate = this.getScreenPosition(event);
-					map.getVectorContext().drawImage(map.getGroup(RenderGroup.SCREEN), "image",
-							Geomajas.getIsomorphicDir() + IMAGE,
-							new Bbox(coordinate.getX() - 24, coordinate.getY() - 24, 48, 48), new PictureStyle(1.0));
-				}
-
+			public void onMouseOver(MouseOverEvent event) {
+				// When the mouse hovers over the image, make it transparent:
+				map.getVectorContext().drawImage(map.getGroup(RenderGroup.SCREEN), "image",
+						Geomajas.getIsomorphicDir() + IMAGE, new Bbox(200, 200, 48, 48), new PictureStyle(0.4));
 			}
 
-			public void onMouseDown(MouseDownEvent event) {
-				isDragging = true;
-			}
-
-			public void onMouseUp(MouseUpEvent event) {
-				isDragging = false;
+			public void onMouseOut(MouseOutEvent event) {
+				// When the mouse moves away from the image, make it visible again: 
+				map.getVectorContext().drawImage(map.getGroup(RenderGroup.SCREEN), "image",
+						Geomajas.getIsomorphicDir() + IMAGE, new Bbox(200, 200, 48, 48), new PictureStyle(1));
 			}
 		};
 
-		// Set the controller on the map:
-		map.setController(customController);
-		layout.addMember(map);
+		// After map initialization we draw an image on the map:
+		map.getMapModel().addMapModelHandler(new MapModelHandler() {
 
+			public void onMapModelChange(MapModelEvent event) {
+				GraphicsContext graphics = map.getVectorContext();
+				graphics.drawImage(map.getGroup(RenderGroup.SCREEN), "image", Geomajas.getIsomorphicDir() + IMAGE,
+						new Bbox(200, 200, 48, 48), new PictureStyle(1.0));
+				map.getVectorContext().setController(map.getGroup(RenderGroup.SCREEN), "image", customController);
+			}
+		});
+
+		layout.addMember(map);
 		return layout;
 	}
 
