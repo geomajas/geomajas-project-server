@@ -1,8 +1,15 @@
-package org.geomajas.puregwt.client.spatial;
+package org.geomajas.puregwt.client.util;
 
 import org.geomajas.geometry.Coordinate;
-
-import com.google.inject.Inject;
+import org.geomajas.puregwt.client.spatial.Geometry;
+import org.geomajas.puregwt.client.spatial.LineSegment;
+import org.geomajas.puregwt.client.spatial.LineString;
+import org.geomajas.puregwt.client.spatial.LinearRing;
+import org.geomajas.puregwt.client.spatial.MultiLineString;
+import org.geomajas.puregwt.client.spatial.MultiPolygon;
+import org.geomajas.puregwt.client.spatial.Point;
+import org.geomajas.puregwt.client.spatial.Polygon;
+import org.geomajas.puregwt.client.spatial.Vector2D;
 
 /**
  * Implementation of the general {@link SpatialService}.

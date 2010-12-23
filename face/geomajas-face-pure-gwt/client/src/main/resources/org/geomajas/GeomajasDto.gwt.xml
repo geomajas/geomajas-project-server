@@ -1,0 +1,37 @@
+<module>
+	<!-- Geomajas DTO source code, base path must be org/geomajas to access all packages !!! -->
+	<source path="command">
+		<include name="CommandRequest.java"/>
+		<include name="CommandResponse.java"/>
+		<include name="EmptyCommandRequest.java"/>
+		<include name="LayerIdCommandRequest.java"/>
+		<include name="LayerIdsCommandRequest.java"/>
+		<include name="SuccessCommandResponse.java"/>
+	</source>
+	<source path="layer">
+		<include name="LayerType.java"/>
+	</source>
+	<source path="layer/feature">
+		<include name="Feature.java"/>
+		<include name="Attribute.java"/>
+		<include name="FeatureTransaction.java"/>
+		<include name="SearchCriterion.java"/>
+	</source>
+	<source path="layer/feature/attribute">
+		<exclude name="*Test.java" />
+	</source>
+	<source path="layer/tile">
+		<exclude name="InternalTile.java"/>
+		<exclude name="InternalUrlTile.java"/>
+	</source>
+	<source path="configuration"/>
+	<source path="geometry"/>
+	<source path="command/dto"/>
+	<source path="global">
+		<include name="GeomajasConstant.java"/>
+		<include name="CopyrightInfo.java"/>
+		<include name="CacheableObject.java"/>
+		<include name="ExceptionDto.java"/>
+	</source>
+
+</module>

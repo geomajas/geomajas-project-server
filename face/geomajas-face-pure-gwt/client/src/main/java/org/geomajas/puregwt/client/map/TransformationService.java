@@ -24,6 +24,7 @@
 package org.geomajas.puregwt.client.map;
 
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.global.Api;
 import org.geomajas.puregwt.client.spatial.Bbox;
 import org.geomajas.puregwt.client.spatial.Geometry;
 
@@ -33,7 +34,9 @@ import org.geomajas.puregwt.client.spatial.Geometry;
  * are in, while view space is expressed in the pixel coordinates.
  * 
  * @author Pieter De Graef
+ * @since 1.0.0
  */
+@Api
 public interface TransformationService {
 
 	/**

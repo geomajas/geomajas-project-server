@@ -32,7 +32,7 @@ import com.google.gwt.event.shared.GwtEvent.Type;
 /**
  * Handler for the addition and removal of layers within a map.
  * 
- * @author Pieter De Graef
+ * @author Jan De Moerloose
  * @since 1.0.0
  */
 @Api(allMethods = true)
@@ -41,7 +41,19 @@ public interface MapCompositionHandler extends EventHandler {
 
 	Type<MapCompositionHandler> TYPE = new Type<MapCompositionHandler>();
 
+	/**
+	 * Called when a new layer has been added to the map model.
+	 * 
+	 * @param event
+	 *            The event.
+	 */
 	void onLayerAdded(LayerAddedEvent event);
 
+	/**
+	 * Called when a existing layer has been removed from the map model.
+	 * 
+	 * @param event
+	 *            The event.
+	 */
 	void onLayerRemoved(LayerRemovedEvent event);
 }

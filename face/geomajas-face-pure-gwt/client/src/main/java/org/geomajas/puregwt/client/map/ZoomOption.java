@@ -23,11 +23,15 @@
 
 package org.geomajas.puregwt.client.map;
 
-/** 
+import org.geomajas.global.Api;
+
+/**
  * Zoom options. These express the different ways to zoom in and out on a map.
- *
+ * 
  * @author Jan De Moerloose
+ * @since 1.0.0
  */
+@Api
 public enum ZoomOption {
 
 	/** Zoom exactly to the new scale. This is only possible if no resolutions have been defined on the map. */

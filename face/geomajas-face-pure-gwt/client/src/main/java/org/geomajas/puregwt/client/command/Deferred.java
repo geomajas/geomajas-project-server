@@ -23,6 +23,8 @@
 
 package org.geomajas.puregwt.client.command;
 
+import org.geomajas.global.Api;
+
 /**
  * Call-back holder for a command. When a response returns from the server (either successfully or with errors to
  * report), the call-backs within this object will be executed. The idea is that you send out a request with a certain
@@ -30,12 +32,30 @@ package org.geomajas.puregwt.client.command;
  * No need to send out an extra command to the server, just add a call-back here.
  * 
  * @author Pieter De Graef
+ * @since 1.0.0
  */
+@Api(allMethods = true)
 public interface Deferred {
 
-	public void cancel();
+	/** Cancel the execution of the call-back for the associated command. */
+	void cancel();
 
-	public void addCallback(CommandCallback callback);
+	/**
+	 * Add a call-back to the deferred, to be executed when the response returns from the server. More than 1 call-back
+	 * can be added to be executed when the response returns.<br/>
+	 * The idea is that you send out a request with a certain call-back, but perhaps while the command is being send,
+	 * you may want to do some extra calculations with the results. No need to send out an extra command to the server,
+	 * just add a call-back here.
+	 * 
+	 * @param callback
+	 *            The call-back to add.
+	 */
+	void addCallback(CommandCallback callback);
 
-	public boolean isCancelled();
+	/**
+	 * Returns wether or not the associated command has been cancelled.
+	 * 
+	 * @return Returns true or false.
+	 */
+	boolean isCancelled();
 }

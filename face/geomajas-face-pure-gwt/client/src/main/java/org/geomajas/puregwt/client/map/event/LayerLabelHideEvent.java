@@ -31,6 +31,7 @@ import com.google.gwt.event.shared.GwtEvent;
  * Event that is fired when the labels of a layer are made invisible.
  *
  * @author Frank Wynants
+ * @author Pieter De Graef
  * @since 1.0.0
  */
 @Api(allMethods = true)

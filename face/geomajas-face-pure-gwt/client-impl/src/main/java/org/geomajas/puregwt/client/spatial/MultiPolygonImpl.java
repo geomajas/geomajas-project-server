@@ -28,6 +28,7 @@ import org.geomajas.puregwt.client.spatial.Bbox;
 import org.geomajas.puregwt.client.spatial.Geometry;
 import org.geomajas.puregwt.client.spatial.MultiPolygon;
 import org.geomajas.puregwt.client.spatial.Polygon;
+import org.geomajas.puregwt.client.util.SpatialService;
 
 /**
  * MultiPolygon client-side GWT object.

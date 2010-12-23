@@ -23,14 +23,14 @@
 package org.geomajas.puregwt.client.map.event;
 
 import org.geomajas.global.Api;
+import org.geomajas.global.UserImplemented;
 
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent.Type;
-import org.geomajas.global.UserImplemented;
 
 /**
  * Interface for handling the selection and deselection of layers.
- *
+ * 
  * @author Pieter De Graef
  * @since 1.0.0
  */
@@ -40,7 +40,19 @@ public interface LayerSelectionHandler extends EventHandler {
 
 	Type<LayerSelectionHandler> TYPE = new Type<LayerSelectionHandler>();
 
+	/**
+	 * Called when a certain layer has been selected.
+	 * 
+	 * @param event
+	 *            The event.
+	 */
 	void onSelectLayer(LayerSelectedEvent event);
 
+	/**
+	 * Called when a certain layer has been deselected.
+	 * 
+	 * @param event
+	 *            The event.
+	 */
 	void onDeselectLayer(LayerDeselectedEvent event);
 }

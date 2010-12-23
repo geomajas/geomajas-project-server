@@ -33,7 +33,7 @@ import com.google.gwt.event.shared.HandlerRegistration;
  * @author Jan De Moerloose
  * @since 1.0.0
  */
-@Api
+@Api(allMethods = true)
 public interface HasDispatchHandlers {
 
 	/**

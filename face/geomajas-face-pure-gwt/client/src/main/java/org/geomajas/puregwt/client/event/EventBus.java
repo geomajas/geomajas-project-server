@@ -22,6 +22,8 @@
  */
 package org.geomajas.puregwt.client.event;
 
+import org.geomajas.global.Api;
+
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.event.shared.GwtEvent.Type;
@@ -31,7 +33,9 @@ import com.google.gwt.event.shared.HandlerRegistration;
  * Geomajas event bus.
  * 
  * @author Jan De Moerloose
+ * @since 1.0.0
  */
+@Api(allMethods = true)
 public interface EventBus {
 
 	<H extends EventHandler> HandlerRegistration addHandler(Type<H> type, H handler);

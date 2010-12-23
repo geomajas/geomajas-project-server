@@ -23,6 +23,9 @@
 
 package org.geomajas.puregwt.client.map.event;
 
+import org.geomajas.global.Api;
+import org.geomajas.global.UserImplemented;
+
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent.Type;
 
@@ -30,7 +33,10 @@ import com.google.gwt.event.shared.GwtEvent.Type;
  * Handler that catches changes in layer style.
  * 
  * @author Pieter De Graef
+ * @since 1.0.0
  */
+@Api(allMethods = true)
+@UserImplemented
 public interface LayerStyleChangedHandler extends EventHandler {
 
 	Type<LayerStyleChangedHandler> TYPE = new Type<LayerStyleChangedHandler>();
@@ -40,7 +46,6 @@ public interface LayerStyleChangedHandler extends EventHandler {
 	 * 
 	 * @param event
 	 *            event
-	 * @since 1.8.0
 	 */
 	void onLayerStyleChanged(LayerStyleChangedEvent event);
 }

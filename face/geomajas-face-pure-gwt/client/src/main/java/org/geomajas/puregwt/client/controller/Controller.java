@@ -35,8 +35,8 @@ import com.google.gwt.event.dom.client.MouseUpHandler;
 import com.google.gwt.event.dom.client.MouseWheelHandler;
 
 /**
- * General interface for a controller set on a {@link org.geomajas.puregwt.client.widget.OldMapWidget.client.widget.MapWidget}. It should
- * implement all of the available mouse handling events.
+ * General interface for an event controller set on a map that catches different types of mouse events. Implementations
+ * than decide how to react on these events.
  * 
  * @author Pieter De Graef
  * @since 1.0.0

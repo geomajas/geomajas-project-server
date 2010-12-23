@@ -21,17 +21,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.puregwt.client.spatial;
+package org.geomajas.puregwt.client.util;
 
 import org.geomajas.geometry.Coordinate;
-
-import com.vividsolutions.jts.geom.LinearRing;
+import org.geomajas.global.Api;
+import org.geomajas.puregwt.client.spatial.Geometry;
 
 /**
  * General service for calculating mathematical properties of geometries.
  * 
  * @author Pieter De Graef
+ * @since 1.0.0
  */
+@Api(allMethods = true)
 public interface SpatialService {
 
 	/**

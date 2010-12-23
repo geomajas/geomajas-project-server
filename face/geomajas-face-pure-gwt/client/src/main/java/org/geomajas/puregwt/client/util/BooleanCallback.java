@@ -22,11 +22,11 @@
  */
 package org.geomajas.puregwt.client.util;
 
+
 /**
  * Call-back interface with a boolean value.
  * 
  * @author Pieter De Graef
- * @since 1.0.0
  */
 public interface BooleanCallback {
 

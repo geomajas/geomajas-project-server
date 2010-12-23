@@ -24,12 +24,15 @@
 package org.geomajas.puregwt.client.spatial;
 
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.global.Api;
 
 /**
  * The main factory interface for creating geometry objects on the GWT client.
  * 
  * @author Pieter De Graef
+ * @since 1.0.0
  */
+@Api(allMethods = true)
 public interface GeometryFactory {
 
 	/**
@@ -41,21 +44,21 @@ public interface GeometryFactory {
 	 *            The precision to use when creating geometries.
 	 */
 	// TODO: replace with assisted inject of upcoming gin release
-	public void init(int srid, int precision);
+	void init(int srid, int precision);
 
 	/**
 	 * Return the spatial reference ID that this factory uses when creating new geometries.
 	 * 
 	 * @return The spatial reference ID.
 	 */
-	public int getSrid();
+	int getSrid();
 
 	/**
 	 * Return the precision that this factory uses when creating new geometries. Number of digits after the comma.
 	 * 
 	 * @return The precision.
 	 */
-	public int getPrecision();
+	int getPrecision();
 
 	/**
 	 * Create a new bounding box, using the given parameters.
@@ -70,12 +73,12 @@ public interface GeometryFactory {
 	 *            The height of the bounding box.
 	 * @return
 	 */
-	public Bbox createBbox(double x, double y, double width, double height);
+	Bbox createBbox(double x, double y, double width, double height);
 
 	/**
 	 * Return a delta value for precision comparing.
 	 */
-	public double getDelta();
+	double getDelta();
 
 	/**
 	 * Create a clone of the given bounding box.
@@ -84,7 +87,7 @@ public interface GeometryFactory {
 	 *            The original bounding box to clone.
 	 * @return Returns a clone of the original bounding box.
 	 */
-	public Bbox createBbox(Bbox original);
+	Bbox createBbox(Bbox original);
 
 	/**
 	 * Create a new {@link Point}, given a coordinate.
@@ -178,5 +181,4 @@ public interface GeometryFactory {
 	 * @return Returns a clone.
 	 */
 	Geometry createGeometry(Geometry geometry);
-	
 }

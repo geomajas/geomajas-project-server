@@ -26,6 +26,7 @@ package org.geomajas.puregwt.client.map;
 import java.util.List;
 
 import org.geomajas.configuration.client.ClientMapInfo;
+import org.geomajas.global.Api;
 import org.geomajas.puregwt.client.map.layer.Layer;
 
 /**
@@ -37,7 +38,10 @@ import org.geomajas.puregwt.client.map.layer.Layer;
  * </p>
  * 
  * @author Pieter De Graef
+ * @author Jan De Moerloose
+ * @since 1.0.0
  */
+@Api
 public interface MapModel {
 
 	/**

@@ -23,6 +23,8 @@
 
 package org.geomajas.puregwt.client.map;
 
+import org.geomajas.global.Api;
+
 /**
  * Definition for an autonomous gadget which can be displayed on the map. These gadgets receive some events from the map
  * and should take care of there own rendering and cleanup.<br/>
@@ -30,7 +32,9 @@ package org.geomajas.puregwt.client.map;
  * 
  * @author Pieter De Graef
  * @author Jan De Moerloose
+ * @since 1.0.0
  */
+@Api
 public interface MapGadget {
 
 	/**

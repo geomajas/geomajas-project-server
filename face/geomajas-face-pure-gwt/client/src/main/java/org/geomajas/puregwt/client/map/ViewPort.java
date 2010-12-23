@@ -38,7 +38,7 @@ import org.geomajas.puregwt.client.spatial.Bbox;
  * @author Jan De Moerloose
  * @since 1.0.0
  */
-@Api
+@Api(allMethods = true)
 public interface ViewPort {
 
 	/**
@@ -74,7 +74,7 @@ public interface ViewPort {
 	 * @param coordinate
 	 *            the new center position
 	 */
-	public void applyPosition(Coordinate coordinate);
+	void applyPosition(Coordinate coordinate);
 
 	/**
 	 * Apply a new scale level on the map. In case the are fixed resolutions defined on this MapView, it will
@@ -86,7 +86,7 @@ public interface ViewPort {
 	 * @param option
 	 *            zoom option, {@link org.geomajas.puregwt.client.map.ZoomOption}
 	 */
-	public void applyScale(double scale, ZoomOption option);
+	void applyScale(double scale, ZoomOption option);
 
 	/**
 	 * Apply a new scale level on the map. In case the are fixed resolutions defined on this MapView, it will
@@ -101,7 +101,7 @@ public interface ViewPort {
 	 *            After zooming, this point will still be on the same position in the view as before. Makes for easy
 	 *            double clicking on the map without it moving away.
 	 */
-	public void applyScale(double scale, ZoomOption option, Coordinate rescalePoint);
+	void applyScale(double scale, ZoomOption option, Coordinate rescalePoint);
 
 	/**
 	 * <p>
@@ -118,7 +118,7 @@ public interface ViewPort {
 	 * @param option
 	 *            zoom option, {@link org.geomajas.puregwt.client.map.ZoomOption}
 	 */
-	public void applyBounds(Bbox bounds, ZoomOption option);
+	void applyBounds(Bbox bounds, ZoomOption option);
 
 	/**
 	 * Move the view on the map. This happens by translating the camera in turn.
@@ -128,7 +128,7 @@ public interface ViewPort {
 	 * @param y
 	 *            Translation factor along the Y-axis in world space.
 	 */
-	public void translate(double x, double y);
+	void translate(double x, double y);
 
 	/**
 	 * Adjust the current scale on the map by a new factor.
@@ -138,7 +138,7 @@ public interface ViewPort {
 	 * @param option
 	 *            The zooming option to use when applying the scaling transformation.
 	 */
-	public void scale(double delta, ZoomOption option);
+	void scale(double delta, ZoomOption option);
 
 	/**
 	 * Adjust the current scale on the map by a new factor, keeping a coordinate in place.
@@ -151,7 +151,7 @@ public interface ViewPort {
 	 *            Keep this coordinate on the same position as before.
 	 * 
 	 */
-	public void scale(double delta, ZoomOption option, Coordinate center);
+	void scale(double delta, ZoomOption option, Coordinate center);
 
 	/**
 	 * Drag the view on the map, without firing definitive ViewPortChanged events. This is used while dragging the map.
@@ -162,5 +162,5 @@ public interface ViewPort {
 	 * @param y
 	 *            Translation factor along the Y-axis in world space.
 	 */
-	public void drag(double x, double y);
+	void drag(double x, double y);
 }

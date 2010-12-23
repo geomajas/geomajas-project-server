@@ -36,7 +36,7 @@ import org.geomajas.puregwt.client.map.MapModel;
  * @author Pieter De Graef
  * @since 1.0.0
  */
-@Api
+@Api(allMethods = true)
 public interface Layer<T extends ClientLayerInfo> {
 
 	/**

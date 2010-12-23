@@ -25,6 +25,7 @@ package org.geomajas.puregwt.client.map;
 
 import java.util.Collection;
 
+import org.geomajas.global.Api;
 import org.geomajas.puregwt.client.controller.Controller;
 import org.geomajas.puregwt.client.controller.Listener;
 
@@ -33,7 +34,9 @@ import org.geomajas.puregwt.client.controller.Listener;
  * 
  * @author Pieter De Graef
  * @author Jan De Moerloose
+ * @since 1.0.0
  */
+@Api
 public interface MapPresenter {
 
 	/**

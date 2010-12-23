@@ -29,10 +29,8 @@ import org.geomajas.command.CommandRequest;
 import org.geomajas.global.Api;
 
 /**
- * <p>
  * GWT implementation of an RPC request. On the server-side this request is transformed into a command object that is
- * then executed by a <code>CommandDispatcher</code> instance.
- * </p>
+ * then executed by a {@link CommandDispatcher} instance.
  * 
  * @author Pieter De Graef
  * @since 1.0.0

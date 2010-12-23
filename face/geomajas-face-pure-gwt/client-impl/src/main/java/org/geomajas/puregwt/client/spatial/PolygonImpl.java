@@ -28,6 +28,7 @@ import org.geomajas.puregwt.client.spatial.Bbox;
 import org.geomajas.puregwt.client.spatial.Geometry;
 import org.geomajas.puregwt.client.spatial.LinearRing;
 import org.geomajas.puregwt.client.spatial.Polygon;
+import org.geomajas.puregwt.client.util.SpatialService;
 
 /**
  * Ploygon client-side GWT object.

@@ -24,6 +24,7 @@
 package org.geomajas.puregwt.client.spatial;
 
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.puregwt.client.util.SpatialService;
 
 import com.google.inject.Inject;
 

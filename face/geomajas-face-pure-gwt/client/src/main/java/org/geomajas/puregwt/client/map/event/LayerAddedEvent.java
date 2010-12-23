@@ -22,6 +22,7 @@
  */
 package org.geomajas.puregwt.client.map.event;
 
+import org.geomajas.global.Api;
 import org.geomajas.puregwt.client.map.layer.Layer;
 
 import com.google.gwt.event.shared.GwtEvent;
@@ -30,7 +31,9 @@ import com.google.gwt.event.shared.GwtEvent;
  * Event that is fired when new layers are added to the map.
  * 
  * @author Pieter De Graef
+ * @since 1.0.0
  */
+@Api(allMethods = true)
 public class LayerAddedEvent extends GwtEvent<MapCompositionHandler> {
 
 	private Layer<?> layer;

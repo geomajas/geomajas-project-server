@@ -26,31 +26,34 @@ package org.geomajas.puregwt.client.spatial;
 import java.io.Serializable;
 
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.global.Api;
 
 /**
  * Gwt client-side Geometry representation.
- *
+ * 
  * @author Pieter De Graef
+ * @since 1.0.0
  */
+@Api(allMethods = true)
 public interface Geometry extends Serializable {
 
 	/**
 	 * Create a new identical geometry.
-	 *
+	 * 
 	 * @return
 	 */
 	Object clone();
 
 	/**
 	 * Return the spatial reference ID.
-	 *
+	 * 
 	 * @return Returns the srid as an integer.
 	 */
 	int getSrid();
 
 	/**
 	 * Return the precision used in this geometry as an integer.
-	 *
+	 * 
 	 * @return
 	 */
 	int getPrecision();
@@ -67,8 +70,8 @@ public interface Geometry extends Serializable {
 
 	/**
 	 * Return a vertex of this <code>Geometry</code>. Usually it will be the first one.
-	 *
-	 *@return a {@link Coordinate} which is a vertex of this <code>Geometry</code>, null if this Geometry is empty
+	 * 
+	 * @return a {@link Coordinate} which is a vertex of this <code>Geometry</code>, null if this Geometry is empty
 	 */
 	Coordinate getCoordinate();
 
@@ -84,7 +87,7 @@ public interface Geometry extends Serializable {
 
 	/**
 	 * Return a sub-geometry or null, or the geometry itself. Each implementation of this class should override it.
-	 *
+	 * 
 	 * @param n
 	 *            Index in the geometry. This can be an integer value or an array of values.
 	 * @return A geometry object.
@@ -111,14 +114,14 @@ public interface Geometry extends Serializable {
 
 	/**
 	 * This geometry is empty if there are no geometries/coordinates stored inside.
-	 *
+	 * 
 	 * @return true or false.
 	 */
 	boolean isEmpty();
 
 	/**
 	 * Basically this function checks if the geometry is self-intersecting or not.
-	 *
+	 * 
 	 * @return True or false. True if there are no self-intersections in the geometry.
 	 */
 	boolean isSimple();
@@ -131,7 +134,7 @@ public interface Geometry extends Serializable {
 
 	/**
 	 * Calculate whether or not this geometry intersects with another.
-	 *
+	 * 
 	 * @param geometry
 	 *            The other geometry to check for intersection.
 	 * @return Returns true or false.
@@ -150,21 +153,21 @@ public interface Geometry extends Serializable {
 
 	/**
 	 * The centroid is also known as the "center of gravity" or the "center of mass".
-	 *
+	 * 
 	 * @return Return the center point.
 	 */
 	Coordinate getCentroid();
 
 	/**
 	 * Return the minimal distance between this coordinate and any vertex of the geometry.
-	 *
+	 * 
 	 * @return Return the minimal distance
 	 */
 	double getDistance(Coordinate coordinate);
 
 	/**
 	 * Create a Well Known Text representation of the geometry.
-	 *
+	 * 
 	 * @return The geometry's WKT.
 	 */
 	String toWkt();

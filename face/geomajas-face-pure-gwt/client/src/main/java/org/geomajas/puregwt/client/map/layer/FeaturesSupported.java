@@ -25,6 +25,7 @@ package org.geomajas.puregwt.client.map.layer;
 
 import java.util.Collection;
 
+import org.geomajas.global.Api;
 import org.geomajas.layer.feature.Feature;
 
 /**
@@ -32,7 +33,9 @@ import org.geomajas.layer.feature.Feature;
  * that the individual objects that make up a layer are available.
  * 
  * @author Pieter De Graef
+ * @since 1.0.0
  */
+@Api
 public interface FeaturesSupported {
 
 	/**

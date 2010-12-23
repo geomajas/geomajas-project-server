@@ -24,6 +24,7 @@
 package org.geomajas.puregwt.client.spatial;
 
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.global.Api;
 
 /**
  * <p>
@@ -31,7 +32,9 @@ import org.geomajas.geometry.Coordinate;
  * </p>
  * 
  * @author Pieter De Graef
+ * @since 1.0.0
  */
+@Api(allMethods = true)
 public interface Bbox {
 
 	/**

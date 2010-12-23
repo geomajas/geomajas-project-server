@@ -24,12 +24,15 @@
 package org.geomajas.puregwt.client.spatial;
 
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.global.Api;
 
 /**
  * LineString client-side GWT object.
  * 
  * @author Pieter De Graef
+ * @since 1.0.0
  */
+@Api(allMethods = true)
 public interface LineString extends Geometry {
 
 	/**

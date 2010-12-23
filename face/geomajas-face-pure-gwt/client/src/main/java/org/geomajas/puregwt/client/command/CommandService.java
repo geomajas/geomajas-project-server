@@ -22,6 +22,7 @@
  */
 package org.geomajas.puregwt.client.command;
 
+import org.geomajas.global.Api;
 import org.geomajas.puregwt.client.command.event.DispatchStartedHandler;
 import org.geomajas.puregwt.client.command.event.DispatchStoppedHandler;
 
@@ -32,12 +33,28 @@ import com.google.gwt.event.shared.HandlerRegistration;
  * 
  * @author Pieter De Graef
  * @author Jan De Moerloose
+ * @since 1.0.0
  */
+@Api(allMethods = true)
 public interface CommandService {
 
-	public HandlerRegistration addDispatchStartedHandler(DispatchStartedHandler handler);
+	/**
+	 * Add a handler for catching events that signal the start of a command.
+	 * 
+	 * @param handler
+	 *            The handler object.
+	 * @return Returns the registration for the handler.
+	 */
+	HandlerRegistration addDispatchStartedHandler(DispatchStartedHandler handler);
 
-	public HandlerRegistration addDispatchStoppedHandler(DispatchStoppedHandler handler);
+	/**
+	 * Add a handler for catching events that signal the return of the response for a command.
+	 * 
+	 * @param handler
+	 *            The handler object.
+	 * @return Returns the registration for the handler.
+	 */
+	HandlerRegistration addDispatchStoppedHandler(DispatchStoppedHandler handler);
 
 	/**
 	 * The execution function. Executes a server side command.
@@ -48,14 +65,14 @@ public interface CommandService {
 	 *            A <code>CommandCallback</code> function to be executed when the command successfully returns.
 	 * @return deferred object which can be used to add extra callbacks
 	 */
-	public Deferred execute(GwtCommand command, final CommandCallback... onSuccess);
+	Deferred execute(GwtCommand command, final CommandCallback... onSuccess);
 
 	/**
 	 * Is the dispatcher busy ?
 	 * 
 	 * @return true if there are outstanding commands
 	 */
-	public boolean isBusy();
+	boolean isBusy();
 
 	/**
 	 * Set the user token, so it can be sent in very command.
@@ -63,14 +80,14 @@ public interface CommandService {
 	 * @param userToken
 	 *            user token
 	 */
-	public void setUserToken(String userToken);
+	void setUserToken(String userToken);
 
 	/**
 	 * Is lazy feature loading enabled ?
 	 * 
 	 * @return true when lazy feature loading is enabled
 	 */
-	public boolean isUseLazyLoading();
+	boolean isUseLazyLoading();
 
 	/**
 	 * Set lazy feature loading status.
@@ -78,14 +95,14 @@ public interface CommandService {
 	 * @param useLazyLoading
 	 *            lazy feature loading status
 	 */
-	public void setUseLazyLoading(boolean useLazyLoading);
+	void setUseLazyLoading(boolean useLazyLoading);
 
 	/**
 	 * Get default value for "featureIncludes" when getting features.
 	 * 
 	 * @return default "featureIncludes" value
 	 */
-	public int getLazyFeatureIncludesDefault();
+	int getLazyFeatureIncludesDefault();
 
 	/**
 	 * Set default value for "featureIncludes" when getting features.
@@ -93,14 +110,14 @@ public interface CommandService {
 	 * @param lazyFeatureIncludesDefault
 	 *            default for "featureIncludes"
 	 */
-	public void setLazyFeatureIncludesDefault(int lazyFeatureIncludesDefault);
+	void setLazyFeatureIncludesDefault(int lazyFeatureIncludesDefault);
 
 	/**
 	 * Get "featureIncludes" to use when selecting features.
 	 * 
 	 * @return default "featureIncludes" for select commands
 	 */
-	public int getLazyFeatureIncludesSelect();
+	int getLazyFeatureIncludesSelect();
 
 	/**
 	 * Set default "featureIncludes" for select commands.
@@ -108,14 +125,14 @@ public interface CommandService {
 	 * @param lazyFeatureIncludesSelect
 	 *            default "featureIncludes" for select commands
 	 */
-	public void setLazyFeatureIncludesSelect(int lazyFeatureIncludesSelect);
+	void setLazyFeatureIncludesSelect(int lazyFeatureIncludesSelect);
 
 	/**
 	 * Value to use for "featureIncludes" when all should be included.
 	 * 
 	 * @return value for "featureIncludes" when all should be included
 	 */
-	public int getLazyFeatureIncludesAll();
+	int getLazyFeatureIncludesAll();
 
 	/**
 	 * Set "featureIncludes" value when all should be included.
@@ -123,5 +140,5 @@ public interface CommandService {
 	 * @param lazyFeatureIncludesAll
 	 *            "featureIncludes" value when all should be included
 	 */
-	public void setLazyFeatureIncludesAll(int lazyFeatureIncludesAll);
+	void setLazyFeatureIncludesAll(int lazyFeatureIncludesAll);
 }

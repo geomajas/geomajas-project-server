@@ -28,6 +28,7 @@ import org.geomajas.puregwt.client.spatial.Bbox;
 import org.geomajas.puregwt.client.spatial.Geometry;
 import org.geomajas.puregwt.client.spatial.LineString;
 import org.geomajas.puregwt.client.spatial.MultiLineString;
+import org.geomajas.puregwt.client.util.SpatialService;
 
 /**
  * MultiLineString client-side GWT object.

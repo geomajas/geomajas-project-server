@@ -25,9 +25,24 @@ package org.geomajas.puregwt.client.widget;
 
 import org.geomajas.puregwt.client.map.VectorContainer;
 
+/**
+ * ....
+ * 
+ * @author Pieter De Graef
+ */
 public interface MapWidget {
 
+	/**
+	 * ...
+	 * @param id
+	 * @return
+	 */
 	VectorContainer getWorldContainer(String id);
 
+	/**
+	 * ....
+	 * @param id
+	 * @return
+	 */
 	VectorContainer getScreenContainer(String id);
 }

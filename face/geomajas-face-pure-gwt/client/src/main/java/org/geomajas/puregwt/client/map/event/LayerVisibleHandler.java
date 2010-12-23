@@ -32,6 +32,8 @@ import com.google.gwt.event.shared.GwtEvent.Type;
  * Interface for handling layer visibility events.
  * 
  * @author Frank Wynants
+ * @author Pieter De Graef
+ * @since 1.0.0
  */
 @Api(allMethods = true)
 @UserImplemented
@@ -46,6 +48,7 @@ public interface LayerVisibleHandler extends EventHandler {
 	 *            event
 	 */
 	void onShow(LayerShowEvent event);
+
 	/**
 	 * Called when labels are disabled on the layer.
 	 * 

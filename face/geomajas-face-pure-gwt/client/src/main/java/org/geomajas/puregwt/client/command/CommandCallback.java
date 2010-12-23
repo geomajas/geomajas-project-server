@@ -28,8 +28,8 @@ import org.geomajas.global.Api;
 /**
  * Execution function that can be passed on to the CommandDispatcher to be executed when a command successfully returns.
  *
- * @since 1.0.0
  * @author Pieter De Graef
+ * @since 1.0.0
  */
 @Api(allMethods = true)
 public interface CommandCallback {

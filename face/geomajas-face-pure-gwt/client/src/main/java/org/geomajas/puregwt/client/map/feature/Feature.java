@@ -26,6 +26,7 @@ package org.geomajas.puregwt.client.map.feature;
 import java.util.Map;
 
 import org.geomajas.geometry.Geometry;
+import org.geomajas.global.Api;
 import org.geomajas.layer.feature.Attribute;
 import org.geomajas.puregwt.client.map.layer.Layer;
 
@@ -34,7 +35,9 @@ import org.geomajas.puregwt.client.map.layer.Layer;
  * 
  * @author Pieter De Graef
  * @author Jan De Moerloose
+ * @since 1.0.0
  */
+@Api(allMethods = true)
 public interface Feature {
 
 	/**

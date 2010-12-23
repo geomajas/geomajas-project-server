@@ -23,11 +23,14 @@
 
 package org.geomajas.puregwt.client.spatial;
 
+import org.geomajas.global.Api;
 
 /**
  * MultiPolygon client-side GWT object.
  * 
  * @author Pieter De Graef
+ * @since 1.0.0
  */
+@Api(allMethods = true)
 public interface MultiPolygon extends Geometry {
 }

@@ -23,6 +23,9 @@
 
 package org.geomajas.puregwt.client.map.event;
 
+import org.geomajas.global.Api;
+import org.geomajas.global.UserImplemented;
+
 import com.google.gwt.event.shared.EventHandler;
 import com.google.gwt.event.shared.GwtEvent.Type;
 
@@ -30,7 +33,10 @@ import com.google.gwt.event.shared.GwtEvent.Type;
  * Handler for events that indicate that the layer order of a map has changed.
  * 
  * @author Pieter De Graef
+ * @since 1.0.0
  */
+@Api(allMethods = true)
+@UserImplemented
 public interface LayerOrderChangedHandler extends EventHandler {
 
 	Type<LayerOrderChangedHandler> TYPE = new Type<LayerOrderChangedHandler>();

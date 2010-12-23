@@ -23,6 +23,7 @@
 
 package org.geomajas.puregwt.client.map;
 
+import org.geomajas.global.Api;
 import org.vaadin.gwtgraphics.client.VectorObjectContainer;
 
 /**
@@ -31,7 +32,9 @@ import org.vaadin.gwtgraphics.client.VectorObjectContainer;
  * 
  * @author Pieter De Graef
  * @author Jan De Moerloose
+ * @since 1.0.0
  */
+@Api
 public interface VectorContainer extends VectorObjectContainer {
 
 	/**

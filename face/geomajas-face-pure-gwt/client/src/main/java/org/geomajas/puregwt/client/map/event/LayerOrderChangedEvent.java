@@ -23,6 +23,8 @@
 
 package org.geomajas.puregwt.client.map.event;
 
+import org.geomajas.global.Api;
+
 import com.google.gwt.event.shared.GwtEvent;
 
 /**
@@ -30,7 +32,9 @@ import com.google.gwt.event.shared.GwtEvent;
  * 
  * @author Pieter De Graef
  * @author Jan De Moerloose
+ * @since 1.0.0
  */
+@Api(allMethods = true)
 public class LayerOrderChangedEvent extends GwtEvent<LayerOrderChangedHandler> {
 
 	private int minIndex;
