@@ -94,7 +94,7 @@ public class ToolbarFeatureInfoSample extends SamplePanel {
 	public String[] getConfigurationFiles() {
 		return new String[] { "WEB-INF/layerCountries110m.xml",
 				"WEB-INF/layerWmsBluemarble.xml",
-				"WEB-INF/toolbar/mapFeatureInfo.xml" };
+				"WEB-INF/mapFeatureInfo.xml" };
 	}
 
 	public String ensureUserLoggedIn() {
