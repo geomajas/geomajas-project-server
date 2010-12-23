@@ -92,7 +92,7 @@ public class ToolbarSelectionSample extends SamplePanel {
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "WEB-INF/toolbar/mapSelection.xml",
+		return new String[] { "WEB-INF/mapSelection.xml",
 				"WEB-INF/layerCountries110m.xml",
 				"WEB-INF/layerWmsBluemarble.xml" };
 	}
