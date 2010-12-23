@@ -151,7 +151,7 @@ public class CommandSecuritySample extends SamplePanel {
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "WEB-INF/security/security.xml" };
+		return new String[] { "WEB-INF/security.xml" };
 	}
 
 	public String ensureUserLoggedIn() {
