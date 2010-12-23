@@ -132,8 +132,8 @@ public class ToolSecuritySample extends SamplePanel {
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "WEB-INF/security/security.xml",
-				"WEB-INF/security/mapToolbarSecurity.xml",
+		return new String[] { "WEB-INF/security.xml",
+				"WEB-INF/mapToolbarSecurity.xml",
 				"WEB-INF/layerWmsBluemarble.xml" };
 	}
 
