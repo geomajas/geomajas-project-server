@@ -24,7 +24,6 @@
 package org.geomajas.puregwt.client.spatial;
 
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.puregwt.client.spatial.LinearRing;
 import org.geomajas.puregwt.client.util.SpatialService;
 
 /**
