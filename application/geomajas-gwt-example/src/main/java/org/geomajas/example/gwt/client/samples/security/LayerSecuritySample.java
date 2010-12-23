@@ -125,8 +125,8 @@ public class LayerSecuritySample extends SamplePanel {
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "WEB-INF/security/security.xml",
-				"WEB-INF/security/mapVectorSecurity.xml",
+		return new String[] { "WEB-INF/security.xml",
+				"WEB-INF/mapVectorSecurity.xml",
 				"WEB-INF/layerCountries110m2.xml",
 				"WEB-INF/layerWmsBluemarble.xml" };
 	}
