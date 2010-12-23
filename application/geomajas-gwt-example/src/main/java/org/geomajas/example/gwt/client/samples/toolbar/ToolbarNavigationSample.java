@@ -80,7 +80,7 @@ public class ToolbarNavigationSample extends SamplePanel {
 
 	public String[] getConfigurationFiles() {
 		return new String[] { "WEB-INF/layerOsm.xml",
-				"WEB-INF/toolbar/mapNavigation.xml" };
+				"WEB-INF/mapNavigation.xml" };
 	}
 
 	public String ensureUserLoggedIn() {
