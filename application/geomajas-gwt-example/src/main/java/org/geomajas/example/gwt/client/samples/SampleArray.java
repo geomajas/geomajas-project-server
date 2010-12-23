@@ -89,13 +89,6 @@ public final class SampleArray {
 	public static SampleTreeNode[] getSampleArray() {
 		return new SampleTreeNode[] {
 				// MapWidget samples:
-				new SampleTreeNode(I18nProvider.getSampleMessages().treeGroupGeneral(),
-						"[ISOMORPHIC]/geomajas/osgeo/settings.png", "General", "topLevel"),
-				new SampleTreeNode(I18nProvider.getSampleMessages().serverErrorTitle(),
-						"[ISOMORPHIC]/geomajas/osgeo/help-contents.png", ServerErrorSample.TITLE, "General",
-						ServerErrorSample.FACTORY),
-
-				// MapWidget samples:
 				new SampleTreeNode(I18nProvider.getSampleMessages().treeGroupLayers(),
 						"[ISOMORPHIC]/geomajas/osgeo/layer.png", "Layers", "topLevel"),
 				new SampleTreeNode(I18nProvider.getSampleMessages().osmTitle(),
@@ -221,7 +214,7 @@ public final class SampleArray {
 						"[ISOMORPHIC]/geomajas/osgeo/print.png", DefaultPrintingSample.TITLE, "Plugins",
 						DefaultPrintingSample.FACTORY),
 				new SampleTreeNode(I18nProvider.getSampleMessages().geocoderTitle(),
-						"[ISOMORPHIC]/geomajas/osgeo/show.png", GeocoderSample.TITLE, "Plugins",
+						"[ISOMORPHIC]/geomajas/osgeo/show.png", GeocoderSample.TITLE, "Plugins", 
 						GeocoderSample.FACTORY),
 
 				// Toolbar and controllers:
@@ -280,6 +273,13 @@ public final class SampleArray {
 						CommandSecuritySample.FACTORY),
 				new SampleTreeNode(I18nProvider.getSampleMessages().toolSecurityTitle(),
 						"[ISOMORPHIC]/geomajas/staticsecurity/key_go.png", ToolSecuritySample.TITLE, "Security",
-						ToolSecuritySample.FACTORY) };
+						ToolSecuritySample.FACTORY),
+
+				// MapWidget samples:
+				new SampleTreeNode(I18nProvider.getSampleMessages().treeGroupGeneral(),
+						"[ISOMORPHIC]/geomajas/osgeo/settings.png", "General", "topLevel"),
+				new SampleTreeNode(I18nProvider.getSampleMessages().serverErrorTitle(),
+						"[ISOMORPHIC]/geomajas/osgeo/help-contents.png", ServerErrorSample.TITLE, "General",
+						ServerErrorSample.FACTORY) };
 	}
 }
