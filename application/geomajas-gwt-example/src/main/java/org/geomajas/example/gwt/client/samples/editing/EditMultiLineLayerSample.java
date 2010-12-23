@@ -94,11 +94,6 @@ public class EditMultiLineLayerSample extends SamplePanel {
 		return layout;
 	}
 
-	//
-	// protected void onDraw() {
-	// map.registerMapAddon(new GoogleAddon("google", map, MapType.SATELLITE, false));
-	// }
-
 	public String getDescription() {
 		return I18nProvider.getSampleMessages().editMultiLineLayerDescription();
 	}
@@ -108,7 +103,7 @@ public class EditMultiLineLayerSample extends SamplePanel {
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "WEB-INF/editing/mapEditMultiLineLayer.xml", "WEB-INF/layerGoogleSat.xml",
+		return new String[] { "WEB-INF/mapEditMultiLineLayer.xml", "WEB-INF/layerGoogleSat.xml",
 				"WEB-INF/layerRoadsTrl020-ML.xml" };
 	}
 
