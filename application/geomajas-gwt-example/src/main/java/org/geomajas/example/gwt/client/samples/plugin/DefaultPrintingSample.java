@@ -77,7 +77,7 @@ public class DefaultPrintingSample extends SamplePanel {
 	public String[] getConfigurationFiles() {
 		return new String[] { "WEB-INF/layerWmsBluemarble.xml",
 				"WEB-INF/layerCountries110m.xml",
-				"WEB-INF/plugin/mapPrinting.xml" };
+				"WEB-INF/mapPrinting.xml" };
 	}
 
 	public String ensureUserLoggedIn() {
