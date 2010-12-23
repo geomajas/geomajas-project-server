@@ -104,7 +104,7 @@ public class SearchSample extends SamplePanel {
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "WEB-INF/attribute/mapFeatureListGrid.xml", "WEB-INF/layerCountries110m.xml",
+		return new String[] { "WEB-INF/mapFeatureListGrid.xml", "WEB-INF/layerCountries110m.xml",
 				"WEB-INF/layerWmsBluemarble.xml", };
 	}
 

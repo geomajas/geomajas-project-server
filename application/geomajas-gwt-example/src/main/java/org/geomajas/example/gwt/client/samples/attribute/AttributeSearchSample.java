@@ -110,7 +110,7 @@ public class AttributeSearchSample extends SamplePanel {
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "WEB-INF/layerBeans.xml", "WEB-INF/attribute/mapBeans.xml" };
+		return new String[] { "WEB-INF/layerBeans.xml", "WEB-INF/mapBeans.xml" };
 	}
 
 	public String ensureUserLoggedIn() {
