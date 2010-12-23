@@ -101,7 +101,7 @@ public class EditMultiPointLayerSample extends SamplePanel {
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "WEB-INF/editing/mapEditMultiPointLayer.xml", "WEB-INF/layerWmsBluemarble.xml",
+		return new String[] { "WEB-INF/mapEditMultiPointLayer.xml", "WEB-INF/layerWmsBluemarble.xml",
 				"WEB-INF/layerMultiCities.xml" };
 	}
 
