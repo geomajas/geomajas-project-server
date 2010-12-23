@@ -81,7 +81,7 @@ public class ToolbarMeasureSample extends SamplePanel {
 
 	public String[] getConfigurationFiles() {
 		return new String[] { "WEB-INF/layerOsm.xml",
-				"WEB-INF/toolbar/mapMeasure.xml" };
+				"WEB-INF/mapMeasure.xml" };
 	}
 
 	public String ensureUserLoggedIn() {
