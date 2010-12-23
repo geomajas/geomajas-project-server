@@ -101,7 +101,7 @@ public class EditPointLayerSample extends SamplePanel {
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "WEB-INF/editing/mapEditPointLayer.xml", "WEB-INF/layerWmsBluemarble.xml",
+		return new String[] { "WEB-INF/mapEditPointLayer.xml", "WEB-INF/layerWmsBluemarble.xml",
 				"WEB-INF/layerAirports.xml" };
 	}
 

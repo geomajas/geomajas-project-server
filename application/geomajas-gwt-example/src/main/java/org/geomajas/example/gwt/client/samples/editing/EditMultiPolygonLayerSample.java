@@ -101,7 +101,7 @@ public class EditMultiPolygonLayerSample extends SamplePanel {
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "WEB-INF/editing/mapEditPolygonLayer.xml", "WEB-INF/layerWmsBluemarble.xml",
+		return new String[] { "WEB-INF/mapEditPolygonLayer.xml", "WEB-INF/layerWmsBluemarble.xml",
 				"WEB-INF/layerLakes110m-MP.xml" };
 	}
 
