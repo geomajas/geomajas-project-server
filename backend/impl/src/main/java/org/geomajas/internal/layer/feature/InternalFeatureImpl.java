@@ -99,6 +99,7 @@ public class InternalFeatureImpl implements InternalFeature {
 		id = other.getId();
 		layer = other.getLayer();
 		styleDefinition = other.getStyleInfo();
+		label = other.getLabel();
 	}
 
 	// -------------------------------------------------------------------------
@@ -121,6 +122,7 @@ public class InternalFeatureImpl implements InternalFeature {
 		f.setClippedGeometry(clippedGeometry);
 		f.setEditable(isEditable());
 		f.setDeletable(isDeletable());
+		f.setLabel(label);
 		return f;
 	}
 

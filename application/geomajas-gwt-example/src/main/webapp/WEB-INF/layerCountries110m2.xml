@@ -97,6 +97,8 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 					<bean class="org.geomajas.configuration.FontStyleInfo">
 						<property name="color" value="#000000" />
 						<property name="opacity" value="1" />
+						<property name="family" value="Arial" />
+						<property name="size" value="14" />
 					</bean>
                 </property>
                 <property name="backgroundStyle">
