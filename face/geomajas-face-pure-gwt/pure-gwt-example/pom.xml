@@ -34,15 +34,17 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-backend</artifactId>
+				<version>1.8.0-SNAPSHOT</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
 	<dependencies>
-		<dependency>
-			<groupId>javax.validation</groupId>
-			<artifactId>validation-api</artifactId>
-		</dependency>
-
 		<!-- Geomajas dependencies -->
 		<dependency>
 			<groupId>org.geomajas</groupId>
@@ -55,22 +57,20 @@
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-layer-wms</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-testdata</artifactId>
+			<artifactId>geomajas-layer-openstreetmap</artifactId>
 		</dependency>
 
 		<!-- Google dependencies -->
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-user</artifactId>
+			<version>2.1.0</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-servlet</artifactId>
+			<version>2.1.0</version>
 			<scope>runtime</scope>
 		</dependency>
 
@@ -121,7 +121,7 @@
 				<version>2.1.0-1</version>
 				<configuration>
 					<inplace>true</inplace>
-					<module>org.geomajas.plaingwt.GeomajasEntryPoint</module>
+					<module>org.geomajas.puregwt.GeomajasEntryPoint</module>
 					<runTarget>index.html</runTarget>
 					<warSourceDirectory>war</warSourceDirectory>
 					<disableCastChecking>true</disableCastChecking>
@@ -154,8 +154,8 @@
 						<phase>clean</phase>
 						<configuration>
 							<tasks>
-								<delete dir="war/WEB-INF/lib" />
-								<delete dir="war/org.geomajas.plaingwt.GeomajasEntryPoint" />
+								<delete dir="src/main/webapp/WEB-INF/lib" />
+								<delete dir="src/main/webapp/org.geomajas.puregwt.GeomajasEntryPoint" />
 							</tasks>
 						</configuration>
 						<goals>

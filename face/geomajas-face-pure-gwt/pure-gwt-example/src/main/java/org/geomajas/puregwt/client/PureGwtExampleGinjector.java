@@ -9,5 +9,4 @@ import com.google.gwt.inject.client.Ginjector;
 public interface PureGwtExampleGinjector extends Ginjector {
 
 	MapWidgetImpl getMap();
-
 }

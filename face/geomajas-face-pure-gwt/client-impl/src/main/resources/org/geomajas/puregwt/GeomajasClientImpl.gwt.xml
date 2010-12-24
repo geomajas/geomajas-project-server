@@ -1,0 +1,8 @@
+<module>
+	<inherits name="org.geomajas.puregwt.GeomajasClient"/>
+
+	<source path="client"/>
+	<source path="client/spatial">
+		<exclude name="*Test*.java"/>
+	</source>
+</module>

@@ -21,33 +21,31 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.geomajas.puregwt.client.widget;
+package org.geomajas.puregwt.client;
 
-import org.geomajas.puregwt.client.map.VectorContainer;
+import org.geomajas.command.CommandResponse;
+import org.geomajas.global.Api;
+import org.geomajas.puregwt.client.command.GwtCommand;
 
-import com.google.gwt.dom.client.DivElement;
-import com.google.gwt.dom.client.Document;
-import com.google.gwt.user.client.ui.Widget;
-import com.google.inject.Inject;
+import com.google.gwt.user.client.rpc.RemoteService;
 
 /**
- * ...
- * 
+ * <p>
+ * Interface for the service object that is responsible for the communication between the Geomajas client and server.
+ * </p>
+ *
  * @author Jan De Moerloose
+ * @since 1.0.0
  */
-public class MapWidgetImpl extends Widget implements MapWidget {
+@Api(allMethods = true)
+public interface GeomajasService extends RemoteService {
 
-	@Inject
-	public MapWidgetImpl() {
-		DivElement container = Document.get().createDivElement();
-		setElement(container);
-	}
-
-	public VectorContainer getWorldContainer(String id) {
-		return null;
-	}
-
-	public VectorContainer getScreenContainer(String id) {
-		return null;
-	}
+	/**
+	 * Execute a <code>GwtCommandRequest</code>, and return the answer as a <code>CommandResponse</code>.
+	 *
+	 * @param gwtCommand
+	 *            The gwtCommand to be executed.
+	 * @return The result.
+	 */
+	CommandResponse execute(GwtCommand gwtCommand);
 }

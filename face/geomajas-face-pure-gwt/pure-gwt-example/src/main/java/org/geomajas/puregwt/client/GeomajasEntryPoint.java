@@ -30,6 +30,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.DecoratorPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.RootPanel;
 
@@ -45,7 +46,6 @@ public class GeomajasEntryPoint implements EntryPoint {
 	public void onModuleLoad() {
 		MapWidgetImpl map = injector.getMap();
 		map.setSize("800px", "600px");
-		map.setStyleName("test");
 
 		Button b2 = new Button("Init", new ClickHandler() {
 
@@ -58,6 +58,9 @@ public class GeomajasEntryPoint implements EntryPoint {
 		hPanel.add(b2);
 
 		RootPanel.get().add(hPanel);
-		RootPanel.get().add(map);
+		
+		DecoratorPanel decPanel = new DecoratorPanel();
+		decPanel.setWidget(map);
+		RootPanel.get().add(decPanel);
 	}
 }
