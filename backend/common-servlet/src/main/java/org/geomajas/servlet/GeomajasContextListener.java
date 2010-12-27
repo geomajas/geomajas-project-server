@@ -22,14 +22,21 @@
  */
 package org.geomajas.servlet;
 
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.context.ConfigurableWebApplicationContext;
 import org.springframework.web.context.WebApplicationContext;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.RequestContextListener;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.context.support.XmlWebApplicationContext;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import javax.servlet.ServletRequestEvent;
+import javax.servlet.ServletRequestListener;
+import javax.servlet.http.HttpServletRequest;
 
 /**
  * Note: This class is no longer needed, you can use the standard Spring ContextLoaderListener with the following 
@@ -53,12 +60,15 @@ import javax.servlet.ServletContextListener;
  * 
  */
 @Deprecated
-public class GeomajasContextListener implements ServletContextListener {
+public class GeomajasContextListener implements ServletContextListener, ServletRequestListener {
 
 	// private final Logger log = LoggerFactory.getLogger(GeomajasContextListener.class);
 
 	/** Name of servlet context parameter that can specify additional config locations for the spring context. */
 	public static final String CONFIG_LOCATION_PARAMETER = "contextConfigLocation";
+
+	private static final String REQUEST_ATTRIBUTES_ATTRIBUTE =
+			RequestContextListener.class.getName() + ".REQUEST_ATTRIBUTES";
 
 	public void contextInitialized(ServletContextEvent servletContextEvent) {
 
@@ -112,6 +122,33 @@ public class GeomajasContextListener implements ServletContextListener {
 	 */
 	public void contextDestroyed(ServletContextEvent servletContextEvent) {
 		// nothing to do
+	}
+
+	public void requestInitialized(ServletRequestEvent servletRequestEvent) {
+		if (servletRequestEvent.getServletRequest() instanceof HttpServletRequest) {
+			HttpServletRequest request = (HttpServletRequest) servletRequestEvent.getServletRequest();
+			ServletRequestAttributes attributes = new ServletRequestAttributes(request);
+			request.setAttribute(REQUEST_ATTRIBUTES_ATTRIBUTE, attributes);
+			LocaleContextHolder.setLocale(request.getLocale());
+			RequestContextHolder.setRequestAttributes(attributes);
+		}
+	}
+
+	public void requestDestroyed(ServletRequestEvent servletRequestEvent) {
+		ServletRequestAttributes attributes = (ServletRequestAttributes) servletRequestEvent.getServletRequest()
+				.getAttribute(REQUEST_ATTRIBUTES_ATTRIBUTE);
+		ServletRequestAttributes threadAttributes =
+				(ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
+		if (threadAttributes != null) {
+			if (attributes == null) {
+				attributes = threadAttributes;
+			}
+			RequestContextHolder.setRequestAttributes(null);
+			LocaleContextHolder.setLocale(null);
+		}
+		if (attributes != null) {
+			attributes.requestCompleted();
+		}
 	}
 
 }
