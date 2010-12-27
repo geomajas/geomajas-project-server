@@ -111,9 +111,21 @@ public class GeomajasBeanNameGenerator extends AnnotationBeanNameGenerator imple
 				if (interfaces.length == 1) {
 					// only apply if not annotated with "ExpectAlternatives"
 					final Class interfaceClass = interfaces[0];
-					if (!interfaceClass.equals(Command.class) &&
-							!interfaceClass.isAnnotationPresent(ExpectAlternatives.class)) {
+					if (!isCobertura(interfaceClass) && useInterfaceForBeanName(interfaceClass)) {
 						name = interfaceClass.getName();
+					}
+				} else if (interfaces.length == 2) {
+					// maybe one of the two is a Cobertura class... try the other
+					if (isCobertura(interfaces[0])) {
+						final Class interfaceClass = interfaces[1];
+						if (!isCobertura(interfaceClass) && useInterfaceForBeanName(interfaceClass)) {
+							name = interfaceClass.getName();
+						}
+					} else if (isCobertura(interfaces[1])) {
+						final Class interfaceClass = interfaces[0];
+						if (!isCobertura(interfaceClass) && useInterfaceForBeanName(interfaceClass)) {
+							name = interfaceClass.getName();
+						}
 					}
 				}
 			}
@@ -122,6 +134,15 @@ public class GeomajasBeanNameGenerator extends AnnotationBeanNameGenerator imple
 			log.error(e.getMessage(), e);
 		}
 		return super.generateBeanName(definition, registry);
+	}
+
+	private boolean useInterfaceForBeanName(Class interfaceClass) {
+		return !interfaceClass.equals(Command.class) &&
+				!interfaceClass.isAnnotationPresent(ExpectAlternatives.class);
+	}
+
+	private boolean isCobertura(Class interfaceClass) {
+		return "net.sourceforge.cobertura.coveragedata.HasBeenInstrumented".equals(interfaceClass.getName());
 	}
 
 }
