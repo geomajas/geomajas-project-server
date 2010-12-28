@@ -48,6 +48,7 @@ public class RealTestRecorderTest {
 	public void testRecorder() throws Exception {
 		recorder.clear();
 		recorder.record("bla", "something");
+		recorder.record("bla", null);
 		recorder.record("bla", "more");
 		Assert.assertEquals("", recorder.matches("bla", "something", "more"));
 		recorder.record(null, "bla");
