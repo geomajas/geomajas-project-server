@@ -384,7 +384,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     <example>
       <title>Create project using GWT Maven archetype</title>
 
-      <para><programlisting>mvn archetype:generate -DarchetypeCatalog=http://apps.geomajas.org/nexus/content/groups/released/</programlisting></para>
+      <para><programlisting>mvn archetype:generate -DarchetypeCatalog=http://files.geomajas.org/archetype-catalog.xml</programlisting></para>
     </example>
 
     <para>Alternatively, you can use the very latest (snapshot) archetype
@@ -393,7 +393,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
     <example>
       <title>Create project using GWT Maven archetype</title>
 
-      <para><programlisting>mvn archetype:generate -DarchetypeCatalog=http://apps.geomajas.org/nexus/content/groups/latest/</programlisting></para>
+      <para><programlisting>mvn archetype:generate -DarchetypeCatalog=http://files.geomajas.org/archetype-latest.xml</programlisting></para>
     </example>
 
     <para>You first have to select the archetype you want to build
