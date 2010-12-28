@@ -68,11 +68,6 @@
     </listitem>
   </itemizedlist>
 
-  <para>Before doing the release, you should update the version which is
-  mentioned in the master.xml file (this version is displayed on the front
-  page of the manual and is not automatically updated). After the release,
-  this should be updated to the new development version.</para>
-
   <para>At the end of the build, the src/main/resources/api.txt needs to be
   updated with the file which is put in target during the build (though the
   header at the top should remain, with the version updated.</para>
@@ -108,6 +103,11 @@
   <para>When the vote failed, drop the repository. Development just continue
   and the version number is skipped. The release date in JIRA is actually the
   staging date.</para>
+
+  <para>When releasing an archetype, you have to update the files at
+  http://files.geomajas.org/archetype-catalog.xml after a successful vote, and
+  the file http://files.geomajas.org/archetype-latest.xml after doing the
+  release:perform.</para>
 
   <para>When the vote was successful, promote the staged artifacts and
   announce the release, for the back-end, this requires the following
@@ -233,6 +233,10 @@
 
           <listitem>
             <para>Publish on general forum.</para>
+          </listitem>
+
+          <listitem>
+            <para>Announce on freshmeat.</para>
           </listitem>
 
           <listitem>

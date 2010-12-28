@@ -35,7 +35,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
- * Test for GeoService implementation.
+ * Test for {@link GeoService} implementation.
  *
  * @author Joachim Van der Auwera
  */
