@@ -28,6 +28,7 @@ import org.geomajas.configuration.Parameter;
 import org.geomajas.configuration.RasterLayerInfo;
 import org.geomajas.configuration.client.ScaleInfo;
 import org.geomajas.geometry.Bbox;
+import org.geomajas.geometry.CrsTransform;
 import org.geomajas.global.Api;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
@@ -40,8 +41,6 @@ import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
 import org.opengis.geometry.MismatchedDimensionException;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.TransformException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -196,7 +195,7 @@ public class WmsLayer implements RasterLayer {
 			throws GeomajasException {
 		Envelope layerBounds = bounds;
 		double layerScale = scale;
-		MathTransform layerToMap = null;
+		CrsTransform layerToMap = null;
 		boolean needTransform = !crs.equals(targetCrs);
 
 		try {
@@ -204,8 +203,8 @@ public class WmsLayer implements RasterLayer {
 			// identity transform if crs's are equal for map and layer but might introduce bugs in rounding and/or
 			// conversions.
 			if (needTransform) {
-				layerToMap = geoService.findMathTransform(crs, targetCrs);
-				MathTransform mapToLayer = layerToMap.inverse();
+				layerToMap = geoService.getCrsTransform(crs, targetCrs);
+				CrsTransform mapToLayer = geoService.getCrsTransform(targetCrs, crs);
 
 				// Translate the map coordinates to layer coordinates, assumes equal x-y orientation
 				layerBounds = geoService.transform(bounds, mapToLayer);
@@ -213,8 +212,6 @@ public class WmsLayer implements RasterLayer {
 			}
 		} catch (MismatchedDimensionException e) {
 			throw new GeomajasException(e, ExceptionCode.RENDER_DIMENSION_MISMATCH);
-		} catch (TransformException e) {
-			throw new GeomajasException(e, ExceptionCode.RENDER_TRANSFORMATION_FAILED);
 		}
 		layerBounds = clipBounds(layerBounds);
 		if (layerBounds.isNull()) {

@@ -119,4 +119,9 @@ public interface ExceptionCode {
 	 */
 	int SCALE_CONVERSION_PROBLEM = 67;
 
+	/**
+	 * @since 1.8.0
+	 */
+	int CANNOT_PARSE_WKT_GEOMETRY = 68;
+
 }

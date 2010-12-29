@@ -186,6 +186,21 @@ PROJCS["Google Mercator",
 	</bean>
 	<!-- @extract-end -->
 
+	<!-- @extract-start CrsTransformInfo, Custom CRS transformation addition -->
+	<bean class="org.geomajas.global.CrsTransformInfo">
+		<property name="source" value="EPSG:4326" />
+		<property name="target" value="EPSG:900913" />
+		<property name="transformableArea">
+			<bean class="org.geomajas.geometry.Bbox">
+				<property name="x" value="-180" />
+				<property name="y" value="-85" />
+				<property name="width" value="360" />
+				<property name="height" value="170" />
+			</bean>
+		</property>
+	</bean>
+	<!-- @extract-end -->
+
 	<!-- default security configuration - should be overwritten to make something accessible -->
 	<bean name="security.securityInfo" class="org.geomajas.security.SecurityInfo">
 		<property name="loopAllServices" value="false" />
