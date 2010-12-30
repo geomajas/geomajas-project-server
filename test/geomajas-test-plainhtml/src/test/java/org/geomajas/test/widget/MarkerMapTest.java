@@ -1,8 +1,6 @@
 package org.geomajas.test.widget;
 
 import org.geomajas.geometry.Coordinate;
-import org.geomajas.global.GeomajasException;
-import org.geomajas.layer.LayerException;
 import org.geomajas.service.GeoService;
 import org.geomajas.test.client.util.GeoUtil;
 import org.junit.Assert;
@@ -22,11 +20,10 @@ public class MarkerMapTest {
 	private GeoService service;
 
 	@Test
-	public void testConversion() throws LayerException, GeomajasException {
+	public void testConversion() throws Exception {
 		Coordinate latlon = new Coordinate(50, 4);
 		Coordinate google = GeoUtil.convertToGoogle(latlon);
-		Envelope env = service.transform(new Envelope(0, 4, 0, 50), service.getCrs("EPSG:4326"), service
-				.getCrs("EPSG:900913"));
+		Envelope env = service.transform(new Envelope(0, 4, 0, 50), "EPSG:4326", "EPSG:900913");
 		Assert.assertEquals(google.getX(), env.getMaxX(), 0.01);
 		Assert.assertEquals(google.getY(), env.getMaxY(), 0.01);
 	}

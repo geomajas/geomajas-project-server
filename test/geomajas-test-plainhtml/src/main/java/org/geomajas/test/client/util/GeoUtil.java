@@ -38,10 +38,10 @@ public final class GeoUtil {
 	}
 
 	/**
-	 * converts Google coordinate to latlon coordinate.
+	 * Converts Google coordinate to latlon coordinate.
 	 * 
-	 * @param Google
-	 *            coordinate unit = meter
+	 * @param coordinate
+	 *            Google coordinate unit = meter
 	 * @return latlon coordinate
 	 */
 	public static Coordinate convertToLatLon(Coordinate coordinate) {
@@ -52,7 +52,7 @@ public final class GeoUtil {
 	}
 
 	/**
-	 * converts latlon coordinate to Google coordinate.
+	 * Converts latlon coordinate to Google coordinate.
 	 * 
 	 * @param coordinate
 	 *            latitude first, longitude last, unit = degree
