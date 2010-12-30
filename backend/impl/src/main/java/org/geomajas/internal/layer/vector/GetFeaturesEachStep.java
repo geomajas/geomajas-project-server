@@ -23,8 +23,12 @@
 
 package org.geomajas.internal.layer.vector;
 
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
 import org.geomajas.configuration.LabelStyleInfo;
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.global.ExceptionCode;
@@ -38,10 +42,10 @@ import org.geomajas.layer.feature.FeatureModel;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.layer.pipeline.GetFeaturesContainer;
 import org.geomajas.rendering.StyleFilter;
+import org.geomajas.security.SecurityContext;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
 import org.geomajas.service.pipeline.PipelineStep;
-import org.geomajas.security.SecurityContext;
 import org.geotools.geometry.jts.JTS;
 import org.opengis.filter.Filter;
 import org.opengis.referencing.operation.MathTransform;
@@ -50,16 +54,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.Geometry;
 
 /**
  * Get features from a vector layer.
  *
  * @author Joachim Van der Auwera
+ * @author Kristof Heirwegh
  */
 public class GetFeaturesEachStep implements PipelineStep<GetFeaturesContainer> {
 
@@ -98,7 +100,9 @@ public class GetFeaturesEachStep implements PipelineStep<GetFeaturesContainer> {
 				log.debug("getElements " + filter + ", offset = " + offset + ", maxResultSize= " + maxResultSize);
 			}
 			Envelope bounds = null;
-			Iterator<?> it = layer.getElements(filter, offset, maxResultSize);
+			Iterator<?> it = layer.getElements(filter, 0, Integer.MAX_VALUE); // do not limit result here
+
+			int count = 0;
 			while (it.hasNext()) {
 				Object featureObj = it.next();
 				Geometry geometry = layer.getFeatureModel().getGeometry(featureObj);
@@ -106,16 +110,23 @@ public class GetFeaturesEachStep implements PipelineStep<GetFeaturesContainer> {
 						styleFilters, style.getLabelStyle(), featureIncludes);
 				log.debug("checking feature");
 				if (securityContext.isFeatureVisible(layerId, feature)) {
-					feature.setEditable(securityContext.isFeatureUpdateAuthorized(layerId, feature));
-					feature.setDeletable(securityContext.isFeatureDeleteAuthorized(layerId, feature));
-					features.add(feature);
+					count++;
+					if (count > offset) {
+						feature.setEditable(securityContext.isFeatureUpdateAuthorized(layerId, feature));
+						feature.setDeletable(securityContext.isFeatureDeleteAuthorized(layerId, feature));
+						features.add(feature);
 
-					if (null != geometry) {
-						Envelope envelope = geometry.getEnvelopeInternal();
-						if (null == bounds) {
-							bounds = envelope;
-						} else {
-							bounds.expandToInclude(envelope);
+						if (null != geometry) {
+							Envelope envelope = geometry.getEnvelopeInternal();
+							if (null == bounds) {
+								bounds = envelope;
+							} else {
+								bounds.expandToInclude(envelope);
+							}
+						}
+
+						if (features.size() == maxResultSize) {
+							break;
 						}
 					}
 				} else {
@@ -128,7 +139,7 @@ public class GetFeaturesEachStep implements PipelineStep<GetFeaturesContainer> {
 	}
 
 	/**
-	 * Convert the generic feature object (as obtained from te layer model) into a {@link InternalFeature}, with
+	 * Convert the generic feature object (as obtained from the layer model) into a {@link InternalFeature}, with
 	 * requested data. Part may be lazy loaded.
 	 *
 	 * @param feature
