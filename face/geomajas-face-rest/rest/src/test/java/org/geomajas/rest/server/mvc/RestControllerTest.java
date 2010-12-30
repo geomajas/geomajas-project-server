@@ -1,16 +1,15 @@
 package org.geomajas.rest.server.mvc;
 
 import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.Geometry;
 import com.vividsolutions.jts.geom.MultiPolygon;
-import com.vividsolutions.jts.geom.Polygon;
-import com.vividsolutions.jts.geom.PrecisionModel;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.rest.server.RestException;
 import org.geomajas.security.SecurityManager;
 import org.geomajas.service.GeoService;
 import org.geotools.geojson.GeoJSONUtil;
 import org.geotools.geojson.geom.GeometryJSON;
+import org.geotools.geometry.jts.JTS;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -18,8 +17,6 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -41,8 +38,6 @@ import java.util.Map;
 @ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
 		"/org/geomajas/testdata/beanContext.xml", "/org/geomajas/testdata/layerBeans.xml"})
 public class RestControllerTest {
-
-	private final Logger log = LoggerFactory.getLogger(RestControllerTest.class);
 
 	@Autowired
 	@Qualifier("/rest/**")
@@ -80,7 +75,6 @@ public class RestControllerTest {
 		Object o = mav.getModel().get(RestController.FEATURE_COLLECTION);
 		Assert.assertTrue(o instanceof InternalFeature);
 		InternalFeature feature = (InternalFeature) o;
-		Assert.assertTrue(feature instanceof InternalFeature);
 
 		Assert.assertEquals("bean1", feature.getAttributes().get("stringAttr").getValue());
 		Assert.assertEquals(true, feature.getAttributes().get("booleanAttr").getValue());
@@ -257,12 +251,9 @@ public class RestControllerTest {
 		JSONObject geometry = (JSONObject) feature.get("geometry");
 		GeometryJSON g = new GeometryJSON(0);
 		MultiPolygon m = (MultiPolygon) g.read(geometry.toJSONString());
-		GeometryFactory factory = new GeometryFactory(new PrecisionModel(), 4326);
 		Envelope envelope = new Envelope(0, 1, 0, 1);
-		MultiPolygon orig = (MultiPolygon) factory.createMultiPolygon(new Polygon[] {(Polygon) factory
-				.toGeometry(envelope)});
-		MultiPolygon m2 = (MultiPolygon) geoservice.transform(orig, geoservice.getCrs("EPSG:4326"), geoservice
-				.getCrs("EPSG:900913"));
+		Geometry orig = JTS.toGeometry(envelope);
+		Geometry m2 = geoservice.transform(orig, "EPSG:4326", "EPSG:900913");
 		// equality check on buffer, JTS equals does not do the trick !
 		Assert.assertTrue(m.buffer(0.01).contains(m2));
 		Assert.assertTrue(m2.buffer(0.01).contains(m));
