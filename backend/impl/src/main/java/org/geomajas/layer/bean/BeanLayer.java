@@ -204,8 +204,10 @@ public class BeanLayer implements VectorLayer, VectorLayerAssociationSupport {
 	}
 
 	public void delete(String featureId) throws LayerException {
-		features.remove(featureId);
-		featuresById.remove(featureId);
+		Object o = featuresById.remove(featureId);
+		if (null != o) {
+			features.remove(o);
+		}
 	}
 
 	public List<Object> getFeatures() {
