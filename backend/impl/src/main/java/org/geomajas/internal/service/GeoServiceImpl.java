@@ -451,35 +451,33 @@ public final class GeoServiceImpl implements GeoService {
 	 */
 	public Coordinate calcDefaultLabelPosition(InternalFeature feature) {
 		Geometry geometry = feature.getGeometry();
-		Coordinate labelPoint;
-		if (geometry == null || geometry.isEmpty()) {
-			labelPoint = null;
-		} else if (geometry.isValid()) {
+		Coordinate labelPoint = null;
+		if (geometry != null && !geometry.isEmpty() && geometry.isValid()) {
 			if (geometry instanceof Polygon || geometry instanceof MultiPolygon) {
 				com.vividsolutions.jts.geom.Coordinate c;
 				try {
 					InteriorPointArea ipa = new InteriorPointArea(geometry);
-					c = ipa.getInteriorPoint();
+					labelPoint = ipa.getInteriorPoint();
 				} catch (Throwable t) {
-					// BUG in JTS for some valid geometries ? fall back to
-					// centroid
-					c = geometry.getCentroid().getCoordinate();
+					// BUG in JTS for some valid geometries ? fall back to centroid
 				}
-				return new Coordinate(c);
 			} else if (geometry instanceof LineString || geometry instanceof MultiLineString) {
 				InteriorPointLine ipa = new InteriorPointLine(geometry);
-				com.vividsolutions.jts.geom.Coordinate c = ipa.getInteriorPoint();
-				labelPoint = new Coordinate(c);
+				labelPoint = ipa.getInteriorPoint();
 			} else {
 				labelPoint = geometry.getCentroid().getCoordinate();
 			}
-		} else {
-			labelPoint = geometry.getCentroid().getCoordinate();
+		}
+		if (null == labelPoint && null != geometry) {
+			Point centroid = geometry.getCentroid();
+			if (null != centroid) {
+				labelPoint = centroid.getCoordinate();
+			}
 		}
 		if (null != labelPoint && (Double.isNaN(labelPoint.x) || Double.isNaN(labelPoint.y))) {
 			labelPoint = new Coordinate(geometry.getCoordinate());
 		}
-		return labelPoint;
+		return null == labelPoint ? null : new Coordinate(labelPoint);
 	}
 
 	/**

@@ -23,14 +23,23 @@
 
 package org.geomajas.internal.service;
 
+import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.Point;
+import com.vividsolutions.jts.geom.Polygon;
+import com.vividsolutions.jts.geom.PrecisionModel;
 import junit.framework.Assert;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Crs;
 import org.geomajas.geometry.CrsTransform;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
+import org.geomajas.internal.layer.feature.InternalFeatureImpl;
+import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.service.GeoService;
+import org.geotools.geometry.jts.JTS;
 import org.geotools.referencing.CRS;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -60,18 +69,12 @@ public class GeoServiceTest {
 	private GeoService geoService;
 
 	/*
-	MathTransform findMathTransform(CoordinateReferenceSystem sourceCrs,
-			CoordinateReferenceSystem targetCrs) throws GeomajasException;
-	CrsTransform getCrsTransform(Crs sourceCrs, Crs targetCrs) throws GeomajasException;
-	CrsTransform getCrsTransform(CoordinateReferenceSystem sourceCrs, CoordinateReferenceSystem targetCrs)
-			throws GeomajasException;
 	Geometry transform(Geometry source, CrsTransform crsTransform);
 	Geometry transform(Geometry source, Crs sourceCrs, Crs targetCrs) throws GeomajasException;
 	@Deprecated
 	Geometry transform(Geometry source, CoordinateReferenceSystem sourceCrs, CoordinateReferenceSystem targetCrs)
 			throws GeomajasException;
 	Coordinate calcDefaultLabelPosition(InternalFeature feature);
-	Geometry createCircle(Point center, double radius, int nrPoints);
 	*/
 
 	@Test
@@ -204,5 +207,56 @@ public class GeoServiceTest {
 		CrsTransform crsTransform2 = geoService.getCrsTransform(CRS.decode(LONLAT), CRS.decode(LAMBERT72));
 		Assert.assertEquals("EPSG:4326->EPSG:31300", crsTransform2.getId());
 		Assert.assertTrue(crsTransform2.equals(mathTransform));
+	}
+
+	@Test
+	public void testCalcDefaultLabelPosition() throws Exception {
+		Geometry geometry;
+		GeometryFactory factory = new GeometryFactory(new PrecisionModel(), 4326);
+		Coordinate coordinate;
+		InternalFeature feature = new InternalFeatureImpl();
+		feature.setId("x");
+		feature.setLabel("Label x");
+		coordinate = geoService.calcDefaultLabelPosition(feature);
+		Assert.assertNull(coordinate);
+
+		feature.setGeometry(factory.createMultiPolygon(new Polygon[] {}));
+		coordinate = geoService.calcDefaultLabelPosition(feature);
+		Assert.assertNull(coordinate);
+
+		feature.setGeometry(JTS.toGeometry(new Envelope(10, 20, 30, 40)));
+		coordinate = geoService.calcDefaultLabelPosition(feature);
+		// this tests current behaviour, without claims that this is the "best" (or even "good") position
+		Assert.assertEquals(15.0, coordinate.x, DELTA);
+		Assert.assertEquals(35.0, coordinate.y, DELTA);
+
+		geometry = factory.createLineString(new Coordinate[] { new Coordinate(5,4), new Coordinate(30,10) });
+		feature.setGeometry(geometry);
+		coordinate = geoService.calcDefaultLabelPosition(feature);
+		// this tests current behaviour, without claims that this is the "best" (or even "good") position
+		Assert.assertEquals(5.0, coordinate.x, DELTA);
+		Assert.assertEquals(4.0, coordinate.y, DELTA);
+	}
+
+	@Test
+	public void testCreateCircle() throws Exception {
+		Geometry geometry;
+		GeometryFactory factory = new GeometryFactory(new PrecisionModel(), 4326);
+		Point point = factory.createPoint(new Coordinate(0, 0));
+		Point inside = factory.createPoint(new Coordinate(9.5, 0));
+		Point insideFine = factory.createPoint(new Coordinate(6.8, 6.8));
+		Point outsideAll = factory.createPoint(new Coordinate(9, 5));
+
+		geometry = geoService.createCircle(point, 10, 4);
+		Assert.assertEquals(5, geometry.getCoordinates().length);
+		Assert.assertTrue(geometry.contains(inside));
+		Assert.assertFalse(geometry.contains(insideFine));
+		Assert.assertFalse(geometry.contains(outsideAll));
+
+		geometry = geoService.createCircle(point, 10, 16);
+		Assert.assertEquals(17, geometry.getCoordinates().length);
+		Assert.assertTrue(geometry.contains(inside));
+		Assert.assertTrue(geometry.contains(insideFine));
+		Assert.assertFalse(geometry.contains(outsideAll));
 	}
 }
