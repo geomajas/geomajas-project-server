@@ -53,6 +53,7 @@ import org.geomajas.service.GeoService;
 import org.hibernate.Criteria;
 import org.hibernate.EntityMode;
 import org.hibernate.HibernateException;
+import org.hibernate.ScrollableResults;
 import org.hibernate.Session;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
@@ -74,16 +75,26 @@ import com.vividsolutions.jts.geom.Geometry;
  * 
  * @author Pieter De Graef
  * @author Jan De Moerloose
+ * @author Kristof Heirwegh
  * @since 1.7.1
  */
 @Api
 @Transactional(rollbackFor = { Exception.class })
-public class HibernateLayer extends HibernateLayerUtil implements VectorLayer,
-		VectorLayerAssociationSupport {
+public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, VectorLayerAssociationSupport {
 
 	private final Logger log = LoggerFactory.getLogger(HibernateLayer.class);
 
 	private FeatureModel featureModel;
+
+	/**
+	 * <p>
+	 * Should the result be retrieved as a scrollable resultset? Your
+	 * database(driver) needs to support this.
+	 * </p>
+	 * 
+	 * @since 1.8.0
+	 */
+	private boolean scrollableResultSet = false;
 
 	/**
 	 * When parsing dates from filters, this model must know how to parse these
@@ -166,8 +177,7 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer,
 		return true;
 	}
 
-	public void setFeatureModel(FeatureModel featureModel)
-			throws LayerException {
+	public void setFeatureModel(FeatureModel featureModel) throws LayerException {
 		this.featureModel = featureModel;
 		if (null != getLayerInfo()) {
 			featureModel.setLayerInfo(getLayerInfo());
@@ -176,20 +186,20 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer,
 	}
 
 	/**
-	 * This implementation does not support the 'offset' and 'maxResultSize'
-	 * parameters.
+	 * This implementation does not support the 'offset' parameter. The
+	 * maxResultSize parameter is not used (limiting the result needs to be done
+	 * after security
+	 * {@link org.geomajas.internal.layer.vector.GetFeaturesEachStep
+	 * GetFeaturesEachStep}). If you expect large results to be returned enable
+	 * scrollableResultSet to retrieve only as many records as needed.
 	 */
-	public Iterator<?> getElements(Filter filter, int offset, int maxResultSize)
-			throws LayerException {
+	public Iterator<?> getElements(Filter filter, int offset, int maxResultSize) throws LayerException {
 		try {
 			Session session = getSessionFactory().getCurrentSession();
-			Criteria criteria = session.createCriteria(getFeatureInfo()
-					.getDataSourceName());
+			Criteria criteria = session.createCriteria(getFeatureInfo().getDataSourceName());
 			if (filter != null) {
 				if (filter != Filter.INCLUDE) {
-					CriteriaVisitor visitor = new CriteriaVisitor(
-							(HibernateFeatureModel) getFeatureModel(),
-							dateFormat);
+					CriteriaVisitor visitor = new CriteriaVisitor((HibernateFeatureModel) getFeatureModel(), dateFormat);
 					Criterion c = (Criterion) filter.accept(visitor, criteria);
 					if (c != null) {
 						criteria.add(c);
@@ -200,21 +210,23 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer,
 			// Sorting of elements.
 			if (getFeatureInfo().getSortAttributeName() != null) {
 				if (SortType.ASC.equals(getFeatureInfo().getSortType())) {
-					criteria.addOrder(Order.asc(getFeatureInfo()
-							.getSortAttributeName()));
+					criteria.addOrder(Order.asc(getFeatureInfo().getSortAttributeName()));
 				} else {
-					criteria.addOrder(Order.desc(getFeatureInfo()
-							.getSortAttributeName()));
+					criteria.addOrder(Order.desc(getFeatureInfo().getSortAttributeName()));
 				}
 			}
 
 			criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-			List<?> list = criteria.list();
-			return list.iterator();
+
+			if (isScrollableResultSet()) {
+				return (Iterator<?>) new ScrollIterator(criteria.scroll());
+			} else {
+				List<?> list = criteria.list();
+				return list.iterator();
+			}
 		} catch (HibernateException he) {
-			throw new HibernateLayerException(he,
-					ExceptionCode.HIBERNATE_LOAD_FILTER_FAIL, getFeatureInfo()
-							.getDataSourceName(), filter.toString());
+			throw new HibernateLayerException(he, ExceptionCode.HIBERNATE_LOAD_FILTER_FAIL, getFeatureInfo()
+					.getDataSourceName(), filter.toString());
 		}
 	}
 
@@ -290,10 +302,8 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer,
 		return getBoundsLocal(filter);
 	}
 
-	public List<Attribute<?>> getAttributes(String attributeName, Filter filter)
-			throws LayerException {
-		log.debug("creating iterator for attribute {} and filter: {}",
-				attributeName, filter);
+	public List<Attribute<?>> getAttributes(String attributeName, Filter filter) throws LayerException {
+		log.debug("creating iterator for attribute {} and filter: {}", attributeName, filter);
 		AttributeInfo attributeInfo = null;
 		for (AttributeInfo info : getFeatureInfo().getAttributes()) {
 			if (info.getName().equals(attributeName)) {
@@ -304,14 +314,11 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer,
 
 		String objectName = getObjectName(attributeName);
 		if (objectName == null) {
-			throw new HibernateLayerException(
-					ExceptionCode.HIBERNATE_ATTRIBUTE_TYPE_PROBLEM,
-					attributeName);
+			throw new HibernateLayerException(ExceptionCode.HIBERNATE_ATTRIBUTE_TYPE_PROBLEM, attributeName);
 		}
 		Session session = getSessionFactory().getCurrentSession();
 		Criteria criteria = session.createCriteria(objectName);
-		CriteriaVisitor visitor = new CriteriaVisitor(
-				(HibernateFeatureModel) getFeatureModel(), dateFormat);
+		CriteriaVisitor visitor = new CriteriaVisitor((HibernateFeatureModel) getFeatureModel(), dateFormat);
 		Criterion c = (Criterion) filter.accept(visitor, null);
 		if (c != null) {
 			criteria.add(c);
@@ -321,9 +328,7 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer,
 			try {
 				attributes.add(converterService.toDto(object, attributeInfo));
 			} catch (GeomajasException e) {
-				throw new HibernateLayerException(
-						ExceptionCode.HIBERNATE_ATTRIBUTE_TYPE_PROBLEM,
-						attributeName);
+				throw new HibernateLayerException(ExceptionCode.HIBERNATE_ATTRIBUTE_TYPE_PROBLEM, attributeName);
 			}
 		}
 		return attributes;
@@ -341,9 +346,51 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer,
 		this.dateFormat = dateFormat;
 	}
 
+	public boolean isScrollableResultSet() {
+		return scrollableResultSet;
+	}
+
+	public void setScrollableResultSet(boolean scrollableResultSet) {
+		this.scrollableResultSet = scrollableResultSet;
+	}
+
 	// -------------------------------------------------------------------------
 	// Private functions:
 	// -------------------------------------------------------------------------
+
+	/**
+	 * A wrapper around a Hibernate {@link ScrollableResults}
+	 * 
+	 * ScrollableResults are annoying they run 1 step behind an iterator...
+	 */
+	@SuppressWarnings("unchecked")
+	private class ScrollIterator implements Iterator {
+
+		private final ScrollableResults sr;
+		private boolean hasnext = false;
+
+		public ScrollIterator(ScrollableResults sr) {
+			this.sr = sr;
+			hasnext = sr.first();
+		}
+
+		public boolean hasNext() {
+			return hasnext;
+		}
+
+		public Object next() {
+			Object o = sr.get(0);
+			hasnext = sr.next();
+			return o;
+		}
+
+		public void remove() {
+			// TODO the alternative (default) version with list allows remove(), but this will
+			// only remove it from the list, not from db, so maybe we should
+			// just ignore instead of throwing an exception
+			throw new HibernateException("Unsupported operation: You cannot remove records this way.");
+		}
+	}
 
 	/**
 	 * Enforces the correct srid on incoming features.
@@ -369,10 +416,8 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer,
 	private Envelope getBoundsLocal(Filter filter) throws LayerException {
 		try {
 			Session session = getSessionFactory().getCurrentSession();
-			Criteria criteria = session.createCriteria(getFeatureInfo()
-					.getDataSourceName());
-			CriteriaVisitor visitor = new CriteriaVisitor(
-					(HibernateFeatureModel) getFeatureModel(), dateFormat);
+			Criteria criteria = session.createCriteria(getFeatureInfo().getDataSourceName());
+			CriteriaVisitor visitor = new CriteriaVisitor((HibernateFeatureModel) getFeatureModel(), dateFormat);
 			Criterion c = (Criterion) filter.accept(visitor, criteria);
 			if (c != null) {
 				criteria.add(c);
@@ -381,17 +426,15 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer,
 			List<?> features = criteria.list();
 			Envelope bounds = new Envelope();
 			for (Object f : features) {
-				Envelope geomBounds = getFeatureModel().getGeometry(f)
-						.getEnvelopeInternal();
+				Envelope geomBounds = getFeatureModel().getGeometry(f).getEnvelopeInternal();
 				if (!geomBounds.isNull()) {
 					bounds.expandToInclude(geomBounds);
 				}
 			}
 			return bounds;
 		} catch (HibernateException he) {
-			throw new HibernateLayerException(he,
-					ExceptionCode.HIBERNATE_LOAD_FILTER_FAIL, getFeatureInfo()
-							.getDataSourceName(), filter.toString());
+			throw new HibernateLayerException(he, ExceptionCode.HIBERNATE_LOAD_FILTER_FAIL, getFeatureInfo()
+					.getDataSourceName(), filter.toString());
 		}
 	}
 
@@ -422,35 +465,28 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer,
 	 *             oops
 	 */
 	@SuppressWarnings("unchecked")
-	private void setPersistentAssociations(Object feature)
-			throws LayerException {
+	private void setPersistentAssociations(Object feature) throws LayerException {
 		try {
-			Map<String, Attribute> attributes = featureModel
-					.getAttributes(feature);
+			Map<String, Attribute> attributes = featureModel.getAttributes(feature);
 			for (AttributeInfo attribute : getFeatureInfo().getAttributes()) {
 				// We're looping over all associations:
 				if (attribute instanceof AssociationAttributeInfo) {
-					String name = ((AssociationAttributeInfo) attribute)
-							.getFeature().getDataSourceName();
+					String name = ((AssociationAttributeInfo) attribute).getFeature().getDataSourceName();
 					Object value = attributes.get(name);
 					if (value != null) {
 						// Find the association's meta-data:
-						Session session = getSessionFactory()
-								.getCurrentSession();
+						Session session = getSessionFactory().getCurrentSession();
 						AssociationAttributeInfo aso = (AssociationAttributeInfo) attribute;
-						ClassMetadata meta = getSessionFactory()
-								.getClassMetadata(aso.getName());
+						ClassMetadata meta = getSessionFactory().getClassMetadata(aso.getName());
 
 						AssociationType asoType = aso.getType();
 						if (asoType == AssociationType.MANY_TO_ONE) {
 							// Many-to-one:
-							Serializable id = meta.getIdentifier(value,
-									EntityMode.POJO);
+							Serializable id = meta.getIdentifier(value, EntityMode.POJO);
 							if (id != null) { // We can only replace it, if it
-												// has an ID:
+								// has an ID:
 								value = session.load(aso.getName(), id);
-								getEntityMetadata().setPropertyValue(feature,
-										name, value, EntityMode.POJO);
+								getEntityMetadata().setPropertyValue(feature, name, value, EntityMode.POJO);
 							}
 						} else if (asoType == AssociationType.ONE_TO_MANY) {
 							// One-to-many - value is a collection:
@@ -460,8 +496,7 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer,
 							Type[] types = meta.getPropertyTypes();
 							for (int i = 0; i < types.length; i++) {
 								String name1 = types[i].getName();
-								String name2 = feature.getClass()
-										.getCanonicalName();
+								String name2 = feature.getClass().getCanonicalName();
 								if (name1.equals(name2)) {
 									// Only for circular references?
 									refPropName = meta.getPropertyNames()[i];
@@ -470,38 +505,27 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer,
 
 							// Instantiate a new collection:
 							Object[] array = (Object[]) value;
-							Type type = getEntityMetadata().getPropertyType(
-									name);
+							Type type = getEntityMetadata().getPropertyType(name);
 							CollectionType colType = (CollectionType) type;
-							Collection<Object> col = (Collection<Object>) colType
-									.instantiate(0);
+							Collection<Object> col = (Collection<Object>) colType.instantiate(0);
 
 							// Loop over all detached values:
 							for (int i = 0; i < array.length; i++) {
-								Serializable id = meta.getIdentifier(array[i],
-										EntityMode.POJO);
+								Serializable id = meta.getIdentifier(array[i], EntityMode.POJO);
 								if (id != null) {
 									// Existing values: need replacing!
-									Object persistent = session.load(aso
-											.getName(), id);
+									Object persistent = session.load(aso.getName(), id);
 									String[] props = meta.getPropertyNames();
 									for (String prop : props) {
 										if (!(prop.equals(refPropName))) {
-											Object propVal = meta
-													.getPropertyValue(array[i],
-															prop,
-															EntityMode.POJO);
-											meta.setPropertyValue(persistent,
-													prop, propVal,
-													EntityMode.POJO);
+											Object propVal = meta.getPropertyValue(array[i], prop, EntityMode.POJO);
+											meta.setPropertyValue(persistent, prop, propVal, EntityMode.POJO);
 										}
 									}
 									array[i] = persistent;
 								} else if (refPropName != null) {
 									// Circular reference to the feature itself:
-									meta.setPropertyValue(array[i],
-											refPropName, feature,
-											EntityMode.POJO);
+									meta.setPropertyValue(array[i], refPropName, feature, EntityMode.POJO);
 								} else {
 									// New values:
 									// do nothing...it can stay a detached
@@ -509,22 +533,20 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer,
 								}
 								col.add(array[i]);
 							}
-							getEntityMetadata().setPropertyValue(feature, name,
-									col, EntityMode.POJO);
+							getEntityMetadata().setPropertyValue(feature, name, col, EntityMode.POJO);
 						}
 					}
 				}
 			}
 		} catch (Exception e) {
-			throw new HibernateLayerException(e,
-					ExceptionCode.HIBERNATE_ATTRIBUTE_SET_FAILED,
-					getFeatureInfo().getDataSourceName());
+			throw new HibernateLayerException(e, ExceptionCode.HIBERNATE_ATTRIBUTE_SET_FAILED, getFeatureInfo()
+					.getDataSourceName());
 		}
 	}
 
 	private Object getFeature(String featureId) throws HibernateLayerException {
 		Session session = getSessionFactory().getCurrentSession();
-		return session.get(getFeatureInfo().getDataSourceName(), (Serializable) ConvertUtils.convert(
-				featureId, getEntityMetadata().getIdentifierType().getReturnedClass()));
+		return session.get(getFeatureInfo().getDataSourceName(), (Serializable) ConvertUtils.convert(featureId,
+				getEntityMetadata().getIdentifierType().getReturnedClass()));
 	}
 }

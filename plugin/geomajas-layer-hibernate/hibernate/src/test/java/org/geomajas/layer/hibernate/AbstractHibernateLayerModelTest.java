@@ -22,6 +22,8 @@
  */
 package org.geomajas.layer.hibernate;
 
+import javax.annotation.Resource;
+
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.hibernate.pojo.HibernateTestManyToOne;
 import org.geomajas.service.FilterService;
@@ -116,8 +118,11 @@ public abstract class AbstractHibernateLayerModelTest {
 	@Autowired
 	protected SessionFactory factory;
 
-	@Autowired
+	@Resource(name="layer")
 	protected VectorLayer layer;
+
+	@Resource(name="scrollableResultSetLayer")
+	protected VectorLayer scrollableResultSetLayer;
 
 	@Autowired
 	protected FilterService filterCreator;

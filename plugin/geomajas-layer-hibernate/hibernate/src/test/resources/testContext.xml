@@ -65,6 +65,18 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		<property name="dateFormat" ref="simpleDateFormat" />
 	</bean>
 
+	<bean name="scrollableResultSetLayer" class="org.geomajas.layer.hibernate.HibernateLayer">
+		<property name="layerInfo" ref="layerInfo" />
+		<property name="scrollableResultSet" value="true" />
+		<property name="featureModel">
+			<bean class="org.geomajas.layer.hibernate.HibernateFeatureModel">
+				<property name="sessionFactory" ref="testSessionFactory" />
+			</bean>
+		</property>
+		<property name="sessionFactory" ref="testSessionFactory" />
+		<property name="dateFormat" ref="simpleDateFormat" />
+	</bean>
+
 	<bean name="featureInfo" class="org.geomajas.configuration.FeatureInfo">
 		<property name="dataSourceName" value="org.geomajas.layer.hibernate.pojo.HibernateTestFeature" />
 		<property name="identifier">
