@@ -96,7 +96,7 @@ public interface GeoService {
 	String getCodeFromCrs(CoordinateReferenceSystem crs);
 
 	/**
-	 * Try to extract the code from the CRS.
+	 * Get the code from the CRS.
 	 *
 	 * @param crs reference system of EPSG type.
 	 * @return CRS code

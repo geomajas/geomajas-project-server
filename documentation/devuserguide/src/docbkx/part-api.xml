@@ -1924,8 +1924,14 @@
       <itemizedlist>
         <listitem>
           <para><code>CoordinateReferenceSystem getCrs(String crs) throws
-          LayerException</code> : get the CRS object based on the CRS
-          id.</para>
+          LayerException</code> : get the CRS object based on the CRS id (it
+          is advised to use getCrs2() instead of this one).</para>
+        </listitem>
+
+        <listitem>
+          <para><code>Crs getCrs2(String crs) throws LayerException</code> :
+          get the CRS object based on the CRS id (preferred, this also
+          contains the Crs id).</para>
         </listitem>
 
         <listitem>
@@ -1940,6 +1946,17 @@
         </listitem>
 
         <listitem>
+          <para><code>String getCodeFromCrs(CoordinateReferenceSystem
+          crs)</code> : attempts to extract the code (e.g. "EPSG:4326") from
+          the CRS.</para>
+        </listitem>
+
+        <listitem>
+          <para><code>String getCodeFromCrs(Crs crs)</code> : get the code
+          (e.g. "EPSG:4326") from the CRS.</para>
+        </listitem>
+
+        <listitem>
           <para><code>MathTransform
           findMathTransform(CoordinateReferenceSystem sourceCrs,
           CoordinateReferenceSystem targetCrs) throws GeomajasException</code>
@@ -1948,10 +1965,76 @@
         </listitem>
 
         <listitem>
-          <para><code>Geometry transform(Geometry source,
-          CoordinateReferenceSystem sourceCrs, CoordinateReferenceSystem
+          <para><code>CrsTransform getCrsTransform(CoordinateReferenceSystem
+          sourceCrs, CoordinateReferenceSystem targetCrs) throws
+          GeomajasException</code> : get the transformation which converts
+          between two coordinate systems.</para>
+        </listitem>
+
+        <listitem>
+          <para><code>CrsTransform getCrsTransform(Crs sourceCrs, Crs
+          targetCrs) throws GeomajasException</code> : get the transformation
+          which converts between two coordinate systems.</para>
+        </listitem>
+
+        <listitem>
+          <para><code>CrsTransform getCrsTransform(String sourceCrs, String
+          targetCrs) throws GeomajasException</code> : get the transformation
+          which converts between two coordinate systems.</para>
+        </listitem>
+
+        <listitem>
+          <para><code>Geometry transform(Geometry source, CrsTransform
+          transform)</code> : transform a geometry from source to target
+          CRS.</para>
+        </listitem>
+
+        <listitem>
+          <para><code>Geometry transform(Geometry source, Crs sourceCrs, Crs
           targetCrs) throws GeomajasException</code> : transform a geometry
           from source to target CRS.</para>
+        </listitem>
+
+        <listitem>
+          <para><code>Geometry transform(Geometry source, String sourceCrs,
+          String targetCrs) throws GeomajasException</code> : transform a
+          geometry from source to target CRS.</para>
+        </listitem>
+
+        <listitem>
+          <para><code>Geometry transform(Envelope source, CrsTransform
+          transform)</code> : transform an envelope from source to target
+          CRS.</para>
+        </listitem>
+
+        <listitem>
+          <para><code>Geometry transform(Envelope source, Crs sourceCrs, Crs
+          targetCrs) throws GeomajasException</code> : transform an envelope
+          from source to target CRS.</para>
+        </listitem>
+
+        <listitem>
+          <para><code>Geometry transform(Envelope source, String sourceCrs,
+          String targetCrs) throws GeomajasException</code> : transform an
+          envelope from source to target CRS.</para>
+        </listitem>
+
+        <listitem>
+          <para><code>Geometry transform(Bbox source, CrsTransform
+          transform)</code> : transform a bounding box from source to target
+          CRS.</para>
+        </listitem>
+
+        <listitem>
+          <para><code>Geometry transform(Bbox source, Crs sourceCrs, Crs
+          targetCrs) throws GeomajasException</code> : transform a bounding
+          box from source to target CRS.</para>
+        </listitem>
+
+        <listitem>
+          <para><code>Geometry transform(Bbox source, String sourceCrs, String
+          targetCrs) throws GeomajasException</code> : transform a bounding
+          box from source to target CRS.</para>
         </listitem>
 
         <listitem>
