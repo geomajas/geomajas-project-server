@@ -64,18 +64,8 @@ public class GeoServiceTest {
 	private static final String LONLAT = "EPSG:4326";
 	private static final String LAMBERT72 = "EPSG:31300";
 
-
 	@Autowired
 	private GeoService geoService;
-
-	/*
-	Geometry transform(Geometry source, CrsTransform crsTransform);
-	Geometry transform(Geometry source, Crs sourceCrs, Crs targetCrs) throws GeomajasException;
-	@Deprecated
-	Geometry transform(Geometry source, CoordinateReferenceSystem sourceCrs, CoordinateReferenceSystem targetCrs)
-			throws GeomajasException;
-	Coordinate calcDefaultLabelPosition(InternalFeature feature);
-	*/
 
 	@Test
 	public void getCrsTest() throws Exception {
@@ -258,5 +248,67 @@ public class GeoServiceTest {
 		Assert.assertTrue(geometry.contains(inside));
 		Assert.assertTrue(geometry.contains(insideFine));
 		Assert.assertFalse(geometry.contains(outsideAll));
+	}
+
+	@Test
+	public void transformGeometryString() throws Exception {
+		Geometry geometry = getLineString();
+
+		Assert.assertEquals(geometry, geoService.transform(geometry, LONLAT, LONLAT));
+
+		geometry = geoService.transform(geometry, LONLAT, LAMBERT72);
+		assertTransformedLineString(geometry);
+	}
+
+	@Test
+	public void transformGeometryCrs() throws Exception {
+		Geometry geometry = getLineString();
+		Crs source = geoService.getCrs2(LONLAT);
+		Crs target = geoService.getCrs2(LAMBERT72);
+
+		Assert.assertEquals(geometry, geoService.transform(geometry, source, source));
+
+		geometry = geoService.transform(geometry, source, target);
+		assertTransformedLineString(geometry);
+	}
+
+	@Test
+	public void transformGeometryCrsTransform() throws Exception {
+		Geometry geometry = getLineString();
+		CrsTransform transform = geoService.getCrsTransform(LONLAT, LAMBERT72);
+		geometry = geoService.transform(geometry, transform);
+		assertTransformedLineString(geometry);
+	}
+
+	@Test
+	public void transformGeometryJtsCrs() throws Exception {
+		Geometry geometry = getLineString();
+		CoordinateReferenceSystem source = CRS.decode(LONLAT);
+		CoordinateReferenceSystem target = CRS.decode(LAMBERT72);
+
+		Assert.assertEquals(geometry, geoService.transform(geometry, source, source));
+
+		geometry = geoService.transform(geometry, source, target);
+		assertTransformedLineString(geometry);
+	}
+
+	private void assertTransformedLineString(Geometry geometry) {
+		Coordinate[] coordinates = geometry.getCoordinates();
+		Assert.assertEquals(4, coordinates.length);
+		Assert.assertEquals(243226.22754535213, coordinates[0].x, DELTA);
+		Assert.assertEquals(-5562215.514234281, coordinates[0].y, DELTA);
+		Assert.assertEquals(3571200.025158979, coordinates[1].x, DELTA);
+		Assert.assertEquals(-4114095.376986935, coordinates[1].y, DELTA);
+		Assert.assertEquals(-5635607.7135451175, coordinates[2].x, DELTA);
+		Assert.assertEquals(488062.62359615415, coordinates[2].y, DELTA);
+		Assert.assertEquals(3219426.4637164664, coordinates[3].x, DELTA);
+		Assert.assertEquals(1050557.6016714368, coordinates[3].y, DELTA);
+	}
+
+	private Geometry getLineString() {
+		GeometryFactory factory = new GeometryFactory(new PrecisionModel(), 4326);
+		return factory.createLineString(new Coordinate[] {
+				new Coordinate(5, 4), new Coordinate(30, 10), new Coordinate(120, 150), new Coordinate(50, 50)});
+
 	}
 }

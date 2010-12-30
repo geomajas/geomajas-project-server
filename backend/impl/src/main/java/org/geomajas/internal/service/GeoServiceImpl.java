@@ -358,10 +358,10 @@ public final class GeoServiceImpl implements GeoService {
 			if (null != transformableArea) {
 				envelope = envelope.intersection(transformableArea);
 			}
-			envelope = JTS.transform(envelope, crsTransform);
 			if (envelope.isNull()) {
 				return new Bbox();
 			} else {
+				envelope = JTS.transform(envelope, crsTransform);
 				return new Bbox(envelope.getMinX(), envelope.getMinY(), envelope.getWidth(), envelope.getHeight());
 			}
 		} catch (TransformException te) {
@@ -409,7 +409,7 @@ public final class GeoServiceImpl implements GeoService {
 			if (null != transformableArea) {
 				source = source.intersection(transformableArea);
 			}
-			return JTS.transform(source, crsTransform);
+			return source.isNull() ? source : JTS.transform(source, crsTransform);
 		} catch (TransformException te) {
 			log.warn("Problem during transformation " + crsTransform.getId() + "of " + source +
 					", maybe you need to configure the transformable area using a CrsTransformInfo object for this " +
@@ -454,7 +454,6 @@ public final class GeoServiceImpl implements GeoService {
 		Coordinate labelPoint = null;
 		if (geometry != null && !geometry.isEmpty() && geometry.isValid()) {
 			if (geometry instanceof Polygon || geometry instanceof MultiPolygon) {
-				com.vividsolutions.jts.geom.Coordinate c;
 				try {
 					InteriorPointArea ipa = new InteriorPointArea(geometry);
 					labelPoint = ipa.getInteriorPoint();
