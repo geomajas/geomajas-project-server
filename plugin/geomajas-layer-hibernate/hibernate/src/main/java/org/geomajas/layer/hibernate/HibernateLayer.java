@@ -94,7 +94,7 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, V
 	 * 
 	 * @since 1.8.0
 	 */
-	private boolean scrollableResultSet = false;
+	private boolean scrollableResultSet;
 
 	/**
 	 * When parsing dates from filters, this model must know how to parse these
@@ -199,7 +199,8 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, V
 			Criteria criteria = session.createCriteria(getFeatureInfo().getDataSourceName());
 			if (filter != null) {
 				if (filter != Filter.INCLUDE) {
-					CriteriaVisitor visitor = new CriteriaVisitor((HibernateFeatureModel) getFeatureModel(), dateFormat);
+					CriteriaVisitor visitor = new CriteriaVisitor((HibernateFeatureModel) getFeatureModel(), 
+							dateFormat);
 					Criterion c = (Criterion) filter.accept(visitor, criteria);
 					if (c != null) {
 						criteria.add(c);
@@ -367,7 +368,7 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, V
 	private class ScrollIterator implements Iterator {
 
 		private final ScrollableResults sr;
-		private boolean hasnext = false;
+		private boolean hasnext;
 
 		public ScrollIterator(ScrollableResults sr) {
 			this.sr = sr;
@@ -385,7 +386,8 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, V
 		}
 
 		public void remove() {
-			// TODO the alternative (default) version with list allows remove(), but this will
+			// TODO the alternative (default) version with list allows remove(),
+			// but this will
 			// only remove it from the list, not from db, so maybe we should
 			// just ignore instead of throwing an exception
 			throw new HibernateException("Unsupported operation: You cannot remove records this way.");
