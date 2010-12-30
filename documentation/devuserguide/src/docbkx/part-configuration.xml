@@ -62,7 +62,8 @@
         <programlisting>&lt;context-param&gt;
     &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;
     &lt;param-value&gt;
-        classpath:org/geomajas/spring/geomajasContext.xml<co id="co-20101222-5" />
+        classpath:org/geomajas/spring/geomajasContext.xml<co
+            id="co-20101222-5" />
         WEB-INF/applicationContext.xml<co id="co-20101222-6" />
     &lt;/param-value&gt;
 &lt;/context-param&gt;
@@ -1033,5 +1034,20 @@ public class MyView extends AbstractView {
     <para>If you don't like the dependency on the gt-epsg-wkt library, then
     you could exclude this dependency in your maven pom and use a different
     dependency if needed.</para>
+
+    <para>The transformations between coordinate reference systems should be
+    done using the GeoService. When this is used for transformations, it
+    avoids throwing transformation exceptions by limiting the geometry to the
+    transformable area<footnote>
+        <para>If an exception does occur, it will be logged as a warning, but
+        the GeoService assures the transform does not fail. Instead, and empty
+        geometry will be returned.</para>
+      </footnote>. The system tries to determine the transformable area
+    automatically, but this is is not always possible and if it is, it can be
+    inaccurate. Therefor, you can also configure the transformable area for a
+    pair of CRSs. You can see an example configuration below.</para>
+
+    <xi:include href="listing/CrsTransformInfo.xml"
+                xmlns:xi="http://www.w3.org/2001/XInclude" />
   </chapter>
 </part>
