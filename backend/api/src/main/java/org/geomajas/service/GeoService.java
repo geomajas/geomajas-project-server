@@ -178,6 +178,20 @@ public interface GeoService {
 
 	/**
 	 * Transform a {@link Geometry} from the source to the target CRS.
+	 * <p/>
+	 * An empty geometry is returned (and a warning logged) if the transformation failed.
+	 *
+	 * @param source source geometry
+	 * @param sourceCrs source CRS
+	 * @param targetCrs target CRS
+	 * @return transformed source, now in target CRS
+	 * @throws GeomajasException building the transformation failed
+	 * @since 1.8.0
+	 */
+	Geometry transform(Geometry source, String sourceCrs, String targetCrs) throws GeomajasException;
+
+	/**
+	 * Transform a {@link Geometry} from the source to the target CRS.
 	 *
 	 * @param source source geometry
 	 * @param sourceCrs source CRS
@@ -218,6 +232,20 @@ public interface GeoService {
 	Envelope transform(Envelope source, Crs sourceCrs, Crs targetCrs) throws GeomajasException;
 
 	/**
+	 * Transform a {@link Envelope} from the source to the target CRS.
+	 * <p/>
+	 * An empty envelope is returned (and a warning logged) if the transformation failed.
+	 *
+	 * @param source source geometry
+	 * @param sourceCrs source CRS
+	 * @param targetCrs target CRS
+	 * @return transformed source, now in target CRS
+	 * @throws GeomajasException building the transformation failed
+	 * @since 1.8.0
+	 */
+	Envelope transform(Envelope source, String sourceCrs, String targetCrs) throws GeomajasException;
+
+	/**
 	 * Transform a {@link Bbox} using the given transformation.
 	 * <p/>
 	 * An empty bbox is returned (and a warning logged) if the transformation failed.
@@ -242,6 +270,20 @@ public interface GeoService {
 	 * @since 1.8.0
 	 */
 	Bbox transform(Bbox source, Crs sourceCrs, Crs targetCrs) throws GeomajasException;
+
+	/**
+	 * Transform a {@link Bbox} from the source to the target CRS.
+	 * <p/>
+	 * An empty bbox is returned (and a warning logged) if the transformation failed.
+	 *
+	 * @param source source bbox
+	 * @param sourceCrs source CRS
+	 * @param targetCrs target CRS
+	 * @return transformed source, now in target CRS
+	 * @throws GeomajasException building the transformation
+	 * @since 1.8.0
+	 */
+	Bbox transform(Bbox source, String sourceCrs, String targetCrs) throws GeomajasException;
 
 	/**
 	 * Determine a default position for positioning the label for a feature.

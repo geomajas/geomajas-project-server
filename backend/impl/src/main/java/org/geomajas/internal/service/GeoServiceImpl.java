@@ -312,6 +312,19 @@ public final class GeoServiceImpl implements GeoService {
 	/**
 	 * @inheritDoc
 	 */
+	public Geometry transform(Geometry geometry, String sourceCrs, String targetCrs)
+			throws GeomajasException {
+		if (sourceCrs.equals(targetCrs)) {
+			return geometry;
+		}
+
+		CrsTransform crsTransform = getCrsTransform(sourceCrs, targetCrs);
+		return transform(geometry, crsTransform);
+	}
+
+	/**
+	 * @inheritDoc
+	 */
 	public Geometry transform(Geometry geometry, CoordinateReferenceSystem sourceCrs,
 			CoordinateReferenceSystem targetCrs)
 			throws GeomajasException {
@@ -376,6 +389,20 @@ public final class GeoServiceImpl implements GeoService {
 	/**
 	 * @inheritDoc
 	 */
+	public Bbox transform(Bbox bbox, String sourceCrs, String targetCrs)
+			throws GeomajasException {
+		if (sourceCrs.equals(targetCrs)) {
+			// only works when the caching of the CRSs works
+			return bbox;
+		}
+
+		CrsTransform crsTransform = getCrsTransform(sourceCrs, targetCrs);
+		return transform(bbox, crsTransform);
+	}
+
+	/**
+	 * @inheritDoc
+	 */
 	public Envelope transform(Envelope source, CrsTransform crsTransform) {
 		try {
 			Envelope transformableArea = crsTransform.getTransformableEnvelope();
@@ -397,6 +424,20 @@ public final class GeoServiceImpl implements GeoService {
 	public Envelope transform(Envelope source, Crs sourceCrs, Crs targetCrs)
 			throws GeomajasException {
 		if (sourceCrs == targetCrs) {
+			// only works when the caching of the CRSs works
+			return source;
+		}
+
+		CrsTransform crsTransform = getCrsTransform(sourceCrs, targetCrs);
+		return transform(source, crsTransform);
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public Envelope transform(Envelope source, String sourceCrs, String targetCrs)
+			throws GeomajasException {
+		if (sourceCrs.equals(targetCrs)) {
 			// only works when the caching of the CRSs works
 			return source;
 		}

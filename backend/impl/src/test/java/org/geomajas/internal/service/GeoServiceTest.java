@@ -119,22 +119,23 @@ public class GeoServiceTest {
 	}
 
 	@Test
-	public void transformEnvelopeTest() throws Exception {
-		Crs source = geoService.getCrs2("EPSG:900913");
-		Crs target = geoService.getCrs2("EPSG:4326");
+	public void transformEnvelopeCrsTest() throws Exception {
+		Crs source = geoService.getCrs2(MERCATOR);
+		Crs target = geoService.getCrs2(LONLAT);
 		Envelope envelope = new Envelope(10, 20, 30, 40);
 		Envelope transformed = geoService.transform(envelope, source, target);
 		Assert.assertEquals(8.983152841195215E-5, transformed.getMinX(), DELTA);
 		Assert.assertEquals(2.6949458522981454E-4, transformed.getMinY(), DELTA);
 		Assert.assertEquals(1.796630568239043E-4, transformed.getMaxX(), DELTA);
 		Assert.assertEquals(3.593261136397527E-4, transformed.getMaxY(), DELTA);
+
+		Assert.assertEquals(envelope, geoService.transform(envelope, source, source));
 	}
 
 	@Test
-	public void transformEnvelope2Test() throws Exception {
-		CrsTransform crsTransform = geoService.getCrsTransform("EPSG:900913", "EPSG:4326");
+	public void transformEnvelopeStringTest() throws Exception {
 		Envelope envelope = new Envelope(10, 20, 30, 40);
-		Envelope transformed = geoService.transform(envelope, crsTransform);
+		Envelope transformed = geoService.transform(envelope, MERCATOR, LONLAT);
 		Assert.assertEquals(8.983152841195215E-5, transformed.getMinX(), DELTA);
 		Assert.assertEquals(2.6949458522981454E-4, transformed.getMinY(), DELTA);
 		Assert.assertEquals(1.796630568239043E-4, transformed.getMaxX(), DELTA);
@@ -142,20 +143,47 @@ public class GeoServiceTest {
 	}
 
 	@Test
-	public void transformBboxTest() throws Exception {
-		Crs source = geoService.getCrs2("EPSG:900913");
-		Crs target = geoService.getCrs2("EPSG:4326");
+	public void transformEnvelopeCrsTransformTest() throws Exception {
+		CrsTransform crsTransform = geoService.getCrsTransform(MERCATOR, LONLAT);
+		Envelope envelope = new Envelope(10, 20, 30, 40);
+		Envelope transformed = geoService.transform(envelope, crsTransform);
+		Assert.assertEquals(8.983152841195215E-5, transformed.getMinX(), DELTA);
+		Assert.assertEquals(2.6949458522981454E-4, transformed.getMinY(), DELTA);
+		Assert.assertEquals(1.796630568239043E-4, transformed.getMaxX(), DELTA);
+		Assert.assertEquals(3.593261136397527E-4, transformed.getMaxY(), DELTA);
+
+		Assert.assertEquals(envelope, geoService.transform(envelope, MERCATOR, MERCATOR));
+	}
+
+	@Test
+	public void transformBboxCrsTest() throws Exception {
+		Crs source = geoService.getCrs2(MERCATOR);
+		Crs target = geoService.getCrs2(LONLAT);
 		Bbox bbox = new Bbox(10, 30, 10, 10);
 		Bbox transformed = geoService.transform(bbox, source, target);
 		Assert.assertEquals(8.983152841195215E-5, transformed.getX(), DELTA);
 		Assert.assertEquals(2.6949458522981454E-4, transformed.getY(), DELTA);
 		Assert.assertEquals(1.796630568239043E-4, transformed.getMaxX(), DELTA);
 		Assert.assertEquals(3.593261136397527E-4, transformed.getMaxY(), DELTA);
+
+		Assert.assertEquals(bbox, geoService.transform(bbox, source, source));
 	}
 
 	@Test
-	public void transformBbox2Test() throws Exception {
-		CrsTransform crsTransform = geoService.getCrsTransform("EPSG:900913", "EPSG:4326");
+	public void transformBboxStringTest() throws Exception {
+		Bbox bbox = new Bbox(10, 30, 10, 10);
+		Bbox transformed = geoService.transform(bbox, MERCATOR, LONLAT);
+		Assert.assertEquals(8.983152841195215E-5, transformed.getX(), DELTA);
+		Assert.assertEquals(2.6949458522981454E-4, transformed.getY(), DELTA);
+		Assert.assertEquals(1.796630568239043E-4, transformed.getMaxX(), DELTA);
+		Assert.assertEquals(3.593261136397527E-4, transformed.getMaxY(), DELTA);
+
+		Assert.assertEquals(bbox, geoService.transform(bbox, MERCATOR, MERCATOR));
+	}
+
+	@Test
+	public void transformBboxCrsTransformTest() throws Exception {
+		CrsTransform crsTransform = geoService.getCrsTransform(MERCATOR, LONLAT);
 		Bbox bbox = new Bbox(10, 30, 10, 10);
 		Bbox transformed = geoService.transform(bbox, crsTransform);
 		Assert.assertEquals(8.983152841195215E-5, transformed.getX(), DELTA);
