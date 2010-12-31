@@ -64,7 +64,6 @@ public class GetFeaturesEachStepTest implements InitializingBean {
 	@Autowired
 	private BeanLayer testLayer;
 
-	@Override
 	public void afterPropertiesSet() throws Exception {
 		// -- clear layer, then add some features
 		FeatureBean fb;
@@ -171,42 +170,34 @@ public class GetFeaturesEachStepTest implements InitializingBean {
 		Field f = GetFeaturesEachStep.class.getDeclaredField("securityContext");
 		f.setAccessible(true);
 		f.set(gfes, new SecurityContext() {
-			@Override
 			public String getUserOrganization() {
 				return null;
 			}
 
-			@Override
 			public String getUserName() {
 				return null;
 			}
 
-			@Override
 			public Locale getUserLocale() {
 				return null;
 			}
 
-			@Override
 			public String getUserId() {
 				return null;
 			}
 
-			@Override
 			public String getUserDivision() {
 				return null;
 			}
 
-			@Override
 			public boolean isAttributeWritable(String layerId, InternalFeature feature, String attributeName) {
 				return false;
 			}
 
-			@Override
 			public boolean isAttributeReadable(String layerId, InternalFeature feature, String attributeName) {
 				return true;
 			}
 
-			@Override
 			public boolean isFeatureVisible(String layerId, InternalFeature feature) {
 				if (filter)
 					return (Integer.parseInt(feature.getId()) % 2 == 0); // filter
@@ -215,113 +206,91 @@ public class GetFeaturesEachStepTest implements InitializingBean {
 					return true;
 			}
 
-			@Override
 			public boolean isFeatureUpdateAuthorized(String layerId, InternalFeature orgFeature,
 					InternalFeature newFeature) {
 				return false;
 			}
 
-			@Override
 			public boolean isFeatureUpdateAuthorized(String layerId, InternalFeature feature) {
 				return false;
 			}
 
-			@Override
 			public boolean isFeatureDeleteAuthorized(String layerId, InternalFeature feature) {
 				return false;
 			}
 
-			@Override
 			public boolean isFeatureCreateAuthorized(String layerId, InternalFeature feature) {
 				return false;
 			}
 
-			@Override
 			public boolean isPartlyVisibleSufficient(String layerId) {
 				return false;
 			}
 
-			@Override
 			public boolean isPartlyUpdateAuthorizedSufficient(String layerId) {
 				return false;
 			}
 
-			@Override
 			public boolean isPartlyDeleteAuthorizedSufficient(String layerId) {
 				return false;
 			}
 
-			@Override
 			public boolean isPartlyCreateAuthorizedSufficient(String layerId) {
 				return false;
 			}
 
-			@Override
 			public Geometry getVisibleArea(String layerId) {
 				return null;
 			}
 
-			@Override
 			public Geometry getUpdateAuthorizedArea(String layerId) {
 				return null;
 			}
 
-			@Override
 			public Geometry getDeleteAuthorizedArea(String layerId) {
 				return null;
 			}
 
-			@Override
 			public Geometry getCreateAuthorizedArea(String layerId) {
 				return null;
 			}
 
-			@Override
 			public Filter getFeatureFilter(String layerId) {
 				return null;
 			}
 
-			@Override
 			public boolean isToolAuthorized(String toolId) {
 				return false;
 			}
 
-			@Override
 			public boolean isLayerVisible(String layerId) {
 				return false;
 			}
 
-			@Override
 			public boolean isLayerUpdateAuthorized(String layerId) {
 				return false;
 			}
 
-			@Override
 			public boolean isLayerDeleteAuthorized(String layerId) {
 				return false;
 			}
 
-			@Override
 			public boolean isLayerCreateAuthorized(String layerId) {
 				return false;
 			}
 
-			@Override
 			public boolean isCommandAuthorized(String commandName) {
 				return false;
 			}
 
-			@Override
 			public String getId() {
 				return null;
 			}
 
-			@Override
 			public String getToken() {
 				return null;
 			}
 
-			@Override
 			public List<Authentication> getSecurityServiceResults() {
 				return null;
 			}
