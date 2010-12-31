@@ -88,8 +88,7 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, V
 
 	/**
 	 * <p>
-	 * Should the result be retrieved as a scrollable resultset? Your
-	 * database(driver) needs to support this.
+	 * Should the result be retrieved as a scrollable resultset? Your database(driver) needs to support this.
 	 * </p>
 	 * 
 	 * @since 1.8.0
@@ -98,8 +97,7 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, V
 
 	/**
 	 * When parsing dates from filters, this model must know how to parse these
-	 * strings into Date objects before transforming them into Hibernate
-	 * criteria.
+	 * strings into Date objects before transforming them into Hibernate criteria.
 	 */
 	private DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
@@ -187,8 +185,7 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, V
 
 	/**
 	 * This implementation does not support the 'offset' parameter. The
-	 * maxResultSize parameter is not used (limiting the result needs to be done
-	 * after security
+	 * maxResultSize parameter is not used (limiting the result needs to be done after security
 	 * {@link org.geomajas.internal.layer.vector.GetFeaturesEachStep
 	 * GetFeaturesEachStep}). If you expect large results to be returned enable
 	 * scrollableResultSet to retrieve only as many records as needed.
