@@ -28,6 +28,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.geomajas.configuration.client.ClientMapInfo;
+import org.geomajas.geometry.Crs;
 import org.geomajas.plugin.printing.component.LayoutConstraint;
 import org.geomajas.plugin.printing.component.PdfContext;
 import org.geomajas.plugin.printing.component.PrintComponentVisitor;
@@ -37,7 +38,6 @@ import org.geomajas.plugin.printing.component.service.PrintConfigurationService;
 import org.geomajas.plugin.printing.component.service.PrintDtoConverterService;
 import org.geomajas.plugin.printing.parser.FontConverter;
 import org.geomajas.service.GeoService;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -124,19 +124,14 @@ public class ScaleBarComponentImpl extends PrintComponentImpl<ScaleBarComponentI
 		return font;
 	}
 
-
-
-	
 	public void setFont(Font font) {
 		this.font = font;
 	}
 
-
-
 	/**
 	 * Call back visitor.
 	 * 
-	 * @param visitor
+	 * @param visitor visitor
 	 */
 	public void accept(PrintComponentVisitor visitor) {
 		visitor.visit(this);
@@ -148,7 +143,7 @@ public class ScaleBarComponentImpl extends PrintComponentImpl<ScaleBarComponentI
 		float width = getConstraint().getWidth();
 
 		// Calculate width in map units and round.
-		float widthInUnits = width / (float) getMap().getPpUnit();
+		float widthInUnits = width / getMap().getPpUnit();
 
 		// Calculate ideal tic width in units
 		float ticWidthInUnits = widthInUnits / getTicNumber();
