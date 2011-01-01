@@ -89,7 +89,7 @@ public class StaticRegexGeocoderService implements GeocoderService {
 
 	@PostConstruct
 	private void initCrs() throws GeomajasException {
-		crs = geoService.getCrs(geocoderInfo.getCrs());
+		crs = geoService.getCrs2(geocoderInfo.getCrs());
 	}
 
 	public CoordinateReferenceSystem getCrs() {

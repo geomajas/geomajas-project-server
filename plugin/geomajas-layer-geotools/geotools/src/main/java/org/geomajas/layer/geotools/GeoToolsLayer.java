@@ -185,7 +185,7 @@ public class GeoToolsLayer extends FeatureSourceRetriever implements VectorLayer
 		if (null == layerInfo) {
 			return;
 		}
-		crs = geoService.getCrs(layerInfo.getCrs());
+		crs = geoService.getCrs2(layerInfo.getCrs());
 		setFeatureSourceName(layerInfo.getFeatureInfo().getDataSourceName());
 		try {
 			if (null == getDataStore()) {

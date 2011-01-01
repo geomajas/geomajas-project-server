@@ -27,6 +27,7 @@ import com.vividsolutions.jts.geom.Envelope;
 import org.geomajas.command.Command;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.geometry.Crs;
 import org.geomajas.global.Api;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
@@ -99,7 +100,7 @@ public class GetLocationForStringCommand implements Command<GetLocationForString
 		}
 		int maxAlternatives = request.getMaxAlternatives();
 
-		CoordinateReferenceSystem crs = geoService.getCrs(crsString);
+		Crs crs = geoService.getCrs2(crsString);
 
 		SplitGeocoderStringService splitGeocoderStringService = geocoderInfo.getSplitGeocoderStringService();
 		if (null == splitGeocoderStringService) {

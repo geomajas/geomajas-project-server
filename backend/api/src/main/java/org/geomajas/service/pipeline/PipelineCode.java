@@ -43,8 +43,8 @@ public interface PipelineCode {
 
 	String ATTRIBUTE_NAME_KEY = "attributeName"; // String
 	String BOUNDS_KEY = "bounds"; // Envelope
-	String CRS_KEY = "crs"; // CoordinateReferenceSystem
-	String CRS_TRANSFORM_KEY = "crsTransform"; // MathTransform
+	String CRS_KEY = "crs"; // Crs
+	String CRS_TRANSFORM_KEY = "crsTransform"; // CrsTransform
 	String FEATURE_DATA_OBJECT_KEY = "featureDataObject"; // Object
 	String FEATURE_INCLUDES_KEY = "featureIncludes"; // Integer
 	String FEATURE_KEY = "feature"; // InternalFeature

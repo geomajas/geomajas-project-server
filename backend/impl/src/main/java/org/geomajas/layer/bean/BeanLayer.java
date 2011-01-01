@@ -166,7 +166,7 @@ public class BeanLayer implements VectorLayer, VectorLayerAssociationSupport {
 
 	public void setLayerInfo(VectorLayerInfo layerInfo) throws LayerException {
 		this.layerInfo = layerInfo;
-		crs = geoService.getCrs(layerInfo.getCrs());
+		crs = geoService.getCrs2(layerInfo.getCrs());
 		initFeatureModel();
 		initComparator();
 	}

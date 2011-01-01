@@ -76,7 +76,7 @@ public class GetBoundsTest {
 
 		// first run, this should put things in the cache
 		recorder.clear();
-		bounds = vectorLayerService.getBounds(LAYER_BEANS, geoService.getCrs("EPSG:4326"), null);
+		bounds = vectorLayerService.getBounds(LAYER_BEANS, geoService.getCrs2("EPSG:4326"), null);
 		Assert.assertNotNull(bounds);
 		Assert.assertEquals(0.0, bounds.getMinX(), DELTA);
 		Assert.assertEquals(0.0, bounds.getMinY(), DELTA);
@@ -97,7 +97,7 @@ public class GetBoundsTest {
 
 		// get bounds again, the result should be different because we changed the cached value
 		recorder.clear();
-		bounds = vectorLayerService.getBounds(LAYER_BEANS, geoService.getCrs("EPSG:4326"), null);
+		bounds = vectorLayerService.getBounds(LAYER_BEANS, geoService.getCrs2("EPSG:4326"), null);
 		Assert.assertNotNull(bounds);
 		Assert.assertEquals(0.0, bounds.getMinX(), DELTA);
 		Assert.assertEquals(0.0, bounds.getMinY(), DELTA);
@@ -109,7 +109,7 @@ public class GetBoundsTest {
 
 		// ask for different layer, should not be found in cache as context is different
 		recorder.clear();
-		bounds = vectorLayerService.getBounds(LAYER_COUNTRIES, geoService.getCrs("EPSG:4326"), null);
+		bounds = vectorLayerService.getBounds(LAYER_COUNTRIES, geoService.getCrs2("EPSG:4326"), null);
 		Assert.assertNotNull(bounds);
 		Assert.assertEquals("", recorder.matches(CacheCategory.BOUNDS,
 				"Put item in cache"));

@@ -153,7 +153,7 @@ public class VectorLayerComponentImpl extends BaseLayerComponentImpl<VectorLayer
 					filter = filterService.createAndFilter(filterService.parseFilter(getFilter()), filter);
 				}
 
-				features = layerService.getFeatures(getLayerId(), geoService.getCrs(map.getCrs()), filter, styleInfo,
+				features = layerService.getFeatures(getLayerId(), geoService.getCrs2(map.getCrs()), filter, styleInfo,
 						VectorLayerService.FEATURE_INCLUDE_ALL);
 			} catch (Exception e) {
 				log.error("Error rendering vectorlayerRenderer", e);

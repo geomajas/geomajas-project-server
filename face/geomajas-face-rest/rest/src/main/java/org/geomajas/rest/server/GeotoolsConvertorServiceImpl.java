@@ -103,7 +103,7 @@ public class GeotoolsConvertorServiceImpl implements GeotoolsConvertorService {
 
 		builder.setName(vectorLayerInfo.getFeatureInfo().getDataSourceName());
 		builder.setNamespaceURI(NAMESPACE_URI);
-		builder.setCRS(geoservice.getCrs(vectorLayerInfo.getCrs()));
+		builder.setCRS(geoservice.getCrs2(vectorLayerInfo.getCrs()));
 
 		// create a lookup map of attribute info's
 		Map<String, AttributeInfo> attrs = new LinkedHashMap<String, AttributeInfo>();

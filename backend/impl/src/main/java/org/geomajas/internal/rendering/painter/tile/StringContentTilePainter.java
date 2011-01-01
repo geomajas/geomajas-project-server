@@ -148,6 +148,8 @@ public class StringContentTilePainter implements TilePainter {
 	 *            creating the world to view space coordinate transformer.
 	 * @param geoService
 	 *            geo service for geometry conversions
+	 * @param textService
+	 *            text service for string sizes
 	 */
 	public StringContentTilePainter(VectorLayer layer, NamedStyleInfo style, String renderer, double scale,
 			Coordinate panOrigin, GeoService geoService, TextService textService) {
@@ -298,8 +300,8 @@ public class StringContentTilePainter implements TilePainter {
 			return document;
 		} else if (TileMetadata.PARAM_VML_RENDERER.equalsIgnoreCase(renderer)) {
 			DefaultVmlDocument document = new DefaultVmlDocument(writer);
-			int coordWidth = (int) tile.getScreenWidth();
-			int coordHeight = (int) tile.getScreenHeight();
+			int coordWidth = tile.getScreenWidth();
+			int coordHeight = tile.getScreenHeight();
 			document.registerWriter(InternalFeatureImpl.class, new VmlFeatureWriter(getTransformer(), coordWidth,
 					coordHeight));
 			document.registerWriter(InternalTileImpl.class, new VmlLabelTileWriter(coordWidth, coordHeight,

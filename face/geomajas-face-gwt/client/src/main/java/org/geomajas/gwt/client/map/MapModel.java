@@ -155,7 +155,7 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 	 * 
 	 * @param handler
 	 *            the handler to be registered
-	 * @return
+	 * @return handler registration
 	 * @since 1.6.0
 	 */
 	@Api

@@ -224,7 +224,7 @@ public class ShapeInMemLayer extends FeatureSourceRetriever implements VectorLay
 
 	@PostConstruct
 	protected void initFeatures() throws LayerException {
-		crs = geoService.getCrs(layerInfo.getCrs());
+		crs = geoService.getCrs2(layerInfo.getCrs());
 		try {
 			setFeatureSourceName(layerInfo.getFeatureInfo().getDataSourceName());
 			featureModel = new ShapeInMemFeatureModel(getDataStore(), layerInfo.getFeatureInfo().getDataSourceName(),

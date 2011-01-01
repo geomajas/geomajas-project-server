@@ -34,9 +34,9 @@ import org.geomajas.global.GeomajasException;
 import org.geomajas.security.GeomajasSecurityException;
 import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.security.SecurityContext;
-import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.layer.RasterLayerService;
+import org.geomajas.service.GeoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,9 +60,6 @@ public class GetRasterTilesCommand implements Command<GetRasterTilesRequest, Get
 	private final Logger log = LoggerFactory.getLogger(GetRasterTilesCommand.class);
 
 	@Autowired
-	private ConfigurationService configurationService;
-
-	@Autowired
 	private DtoConverterService converterService;
 
 	@Autowired
@@ -70,6 +67,9 @@ public class GetRasterTilesCommand implements Command<GetRasterTilesRequest, Get
 
 	@Autowired
 	private RasterLayerService layerService;
+
+	@Autowired
+	private GeoService geoService;
 
 	public GetRasterTilesResponse getEmptyCommandResponse() {
 		return new GetRasterTilesResponse();
@@ -89,7 +89,7 @@ public class GetRasterTilesCommand implements Command<GetRasterTilesRequest, Get
 		}
 
 		log.debug("execute() : bbox {}", request.getBbox());
-		List<RasterTile> images = layerService.getTiles(layerId, configurationService.getCrs(request.getCrs()),
+		List<RasterTile> images = layerService.getTiles(layerId, geoService.getCrs2(request.getCrs()),
 				converterService.toInternal(request.getBbox()),	request.getScale());
 		log.debug("execute() : returning {} images", images.size());
 

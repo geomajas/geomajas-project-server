@@ -206,7 +206,7 @@ public class VectorLayerServiceTest {
 	public void testGetFeaturesAllFiltered() throws Exception {
 		Filter filter = filterService.createFidFilter(new String[]{"3"});
 		List<InternalFeature> features = layerService.getFeatures(LAYER_ID,
-				geoService.getCrs(beanLayer.getLayerInfo().getCrs()), filter, null,
+				geoService.getCrs2(beanLayer.getLayerInfo().getCrs()), filter, null,
 				VectorLayerService.FEATURE_INCLUDE_ALL);
 		Assert.assertEquals(1, features.size());
 		InternalFeature feature = features.get(0);
@@ -217,7 +217,7 @@ public class VectorLayerServiceTest {
 
 	@Test
 	public void testGetBoundsAll() throws Exception {
-		Envelope bounds = layerService.getBounds(LAYER_ID, geoService.getCrs(beanLayer.getLayerInfo().getCrs()), null);
+		Envelope bounds = layerService.getBounds(LAYER_ID, geoService.getCrs2(beanLayer.getLayerInfo().getCrs()), null);
 		Assert.assertEquals(0, bounds.getMinX(), ALLOWANCE);
 		Assert.assertEquals(0, bounds.getMinY(), ALLOWANCE);
 		Assert.assertEquals(7, bounds.getMaxX(), ALLOWANCE);
@@ -228,7 +228,7 @@ public class VectorLayerServiceTest {
 	public void testGetBoundsFidFiltered() throws Exception {
 		Filter filter = filterService.createFidFilter(new String[]{"2", "3"});
 		Envelope bounds = layerService.getBounds(LAYER_ID,
-				geoService.getCrs(beanLayer.getLayerInfo().getCrs()), filter);
+				geoService.getCrs2(beanLayer.getLayerInfo().getCrs()), filter);
 		Assert.assertEquals(2, bounds.getMinX(), ALLOWANCE);
 		Assert.assertEquals(0, bounds.getMinY(), ALLOWANCE);
 		Assert.assertEquals(7, bounds.getMaxX(), ALLOWANCE);
@@ -242,7 +242,7 @@ public class VectorLayerServiceTest {
 				new Coordinate(-180, 180) });
 		Filter filter = filterService.createIntersectsFilter(equator,beanLayer.getLayerInfo().getFeatureInfo().getGeometryType().getName());
 		Envelope bounds = layerService.getBounds(LAYER_ID,
-				geoService.getCrs(beanLayer.getLayerInfo().getCrs()), filter);
+				geoService.getCrs2(beanLayer.getLayerInfo().getCrs()), filter);
 		Assert.assertEquals(0, bounds.getMinX(), ALLOWANCE);
 		Assert.assertEquals(0, bounds.getMinY(), ALLOWANCE);
 		Assert.assertEquals(1, bounds.getMaxX(), ALLOWANCE);

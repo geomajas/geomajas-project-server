@@ -53,7 +53,9 @@ public interface GeoService {
 	 * @return {@link org.opengis.referencing.crs.CoordinateReferenceSystem}
 	 * @throws org.geomajas.layer.LayerException CRS code not found
 	 * @since 1.7.0
+	 * @deprecated use getCrs2()
 	 */
+	@Deprecated
 	CoordinateReferenceSystem getCrs(String crs) throws LayerException;
 
 	/**

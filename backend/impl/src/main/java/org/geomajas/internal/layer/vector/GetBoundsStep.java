@@ -24,17 +24,16 @@
 package org.geomajas.internal.layer.vector;
 
 import com.vividsolutions.jts.geom.Envelope;
-import org.geomajas.global.ExceptionCode;
+import org.geomajas.geometry.CrsTransform;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.pipeline.GetBoundsContainer;
+import org.geomajas.service.GeoService;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
 import org.geomajas.service.pipeline.PipelineStep;
-import org.geotools.geometry.jts.JTS;
 import org.opengis.filter.Filter;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.TransformException;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Step for getBounds in {@link org.geomajas.layer.VectorLayerService}.
@@ -42,6 +41,9 @@ import org.opengis.referencing.operation.TransformException;
  * @author Joachim Van der Auwera
  */
 public class GetBoundsStep implements PipelineStep<GetBoundsContainer> {
+
+	@Autowired
+	private GeoService geoService;
 
 	private String id;
 
@@ -57,14 +59,10 @@ public class GetBoundsStep implements PipelineStep<GetBoundsContainer> {
 			throws GeomajasException {
 		if (null == response.getEnvelope()) {
 			VectorLayer layer = context.get(PipelineCode.LAYER_KEY, VectorLayer.class);
-			MathTransform crsTransform = context.get(PipelineCode.CRS_TRANSFORM_KEY, MathTransform.class);
+			CrsTransform crsTransform = context.get(PipelineCode.CRS_TRANSFORM_KEY, CrsTransform.class);
 			Filter filter = context.get(PipelineCode.FILTER_KEY, Filter.class);
 			Envelope bounds = layer.getBounds(filter);
-			try {
-				bounds = JTS.transform(bounds, crsTransform);
-			} catch (TransformException te) {
-				throw new GeomajasException(te, ExceptionCode.GEOMETRY_TRANSFORMATION_FAILED);
-			}
+			bounds = geoService.transform(bounds, crsTransform);
 			response.setEnvelope(bounds);
 		}
 	}

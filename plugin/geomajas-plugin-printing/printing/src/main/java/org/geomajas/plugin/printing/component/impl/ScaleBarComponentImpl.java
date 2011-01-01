@@ -175,9 +175,9 @@ public class ScaleBarComponentImpl extends PrintComponentImpl<ScaleBarComponentI
 		ClientMapInfo map = configurationService.getMapInfo(getMap().getMapId(), getMap().getApplicationId());
 		if (map != null) {
 			log.debug("calculateSize getMap.getId({}), res {}", getMap().getId(), map);
-			CoordinateReferenceSystem crs;
+			Crs crs;
 			try {
-				crs = geoService.getCrs(map.getCrs());
+				crs = geoService.getCrs2(map.getCrs());
 				unit = crs.getCoordinateSystem().getAxis(0).getUnit().toString();
 			} catch (Exception e) {
 				log.error("could not calculate map unit", e);

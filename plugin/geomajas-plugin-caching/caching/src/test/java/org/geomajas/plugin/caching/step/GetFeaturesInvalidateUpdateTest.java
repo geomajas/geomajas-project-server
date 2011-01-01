@@ -92,7 +92,7 @@ public class GetFeaturesInvalidateUpdateTest {
 
 		// first run, this should put things in the cache
 		recorder.clear();
-		features = vectorLayerService.getFeatures(LAYER_BEANS, geoService.getCrs("EPSG:4326"), null, null,
+		features = vectorLayerService.getFeatures(LAYER_BEANS, geoService.getCrs2("EPSG:4326"), null, null,
 				GeomajasConstant.FEATURE_INCLUDE_ATTRIBUTES);
 		Assert.assertNotNull(features);
 		Assert.assertEquals(3, features.size());
@@ -101,7 +101,7 @@ public class GetFeaturesInvalidateUpdateTest {
 
 		// get features again, it should now use the cache
 		recorder.clear();
-		features = vectorLayerService.getFeatures(LAYER_BEANS, geoService.getCrs("EPSG:4326"), null, null,
+		features = vectorLayerService.getFeatures(LAYER_BEANS, geoService.getCrs2("EPSG:4326"), null, null,
 				GeomajasConstant.FEATURE_INCLUDE_ATTRIBUTES);
 		Assert.assertNotNull(features);
 		Assert.assertEquals(3, features.size());
@@ -120,13 +120,13 @@ public class GetFeaturesInvalidateUpdateTest {
 		orgFeatures.add(org);
 		List<InternalFeature> updFeatures = new ArrayList<InternalFeature>();
 		updFeatures.add(upd);
-		vectorLayerService.saveOrUpdate(LAYER_BEANS, geoService.getCrs("EPSG:4326"), orgFeatures, updFeatures);
+		vectorLayerService.saveOrUpdate(LAYER_BEANS, geoService.getCrs2("EPSG:4326"), orgFeatures, updFeatures);
 		Assert.assertEquals("", recorder.matches("layer",
 				"Invalidate geometry for old version of feature")); // not invalidating on new as not given/changed
 
 		// get features again, it should *not* use the cache
 		recorder.clear();
-		features = vectorLayerService.getFeatures(LAYER_BEANS, geoService.getCrs("EPSG:4326"), null, null,
+		features = vectorLayerService.getFeatures(LAYER_BEANS, geoService.getCrs2("EPSG:4326"), null, null,
 				GeomajasConstant.FEATURE_INCLUDE_ATTRIBUTES);
 		Assert.assertNotNull(features);
 		Assert.assertEquals(3, features.size());

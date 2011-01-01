@@ -27,6 +27,7 @@ import java.util.List;
 
 import junit.framework.Assert;
 
+import org.geomajas.geometry.Crs;
 import org.geomajas.layer.VectorLayerService;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.security.SecurityManager;
@@ -37,7 +38,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opengis.filter.Filter;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.opengis.referencing.operation.MathTransform;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
@@ -90,7 +90,6 @@ public class VectorCrsConversionTest {
 	private GeoService geoService;
 
 	private MathTransform layerToMap;
-	private MathTransform mapToLayer;
 
 	@Before
 	public void login() {
@@ -106,11 +105,10 @@ public class VectorCrsConversionTest {
 
 	@Test
 	public void testVerifyConversion() throws Exception {
-		CoordinateReferenceSystem mercator = geoService.getCrs("EPSG:900913");
-		CoordinateReferenceSystem lonlat = geoService.getCrs("EPSG:4326");
+		Crs mercator = geoService.getCrs2("EPSG:900913");
+		Crs lonlat = geoService.getCrs2("EPSG:4326");
 
 		layerToMap = geoService.findMathTransform(mercator, lonlat);
-		mapToLayer = geoService.findMathTransform(lonlat, mercator);
 
 		List<InternalFeature> features;
 		Filter filter = filterService.createFidFilter(new String[] {FEATURE_ID});
@@ -145,10 +143,6 @@ public class VectorCrsConversionTest {
 			throws Exception {
 		Coordinate projected = new Coordinate();
 		projected = JTS.transform(mercator, projected, layerToMap);
-		Coordinate expectedLonlat = new Coordinate(lon, lat);
-		Coordinate expectedMercator = new Coordinate();
-		expectedMercator = JTS.transform(expectedLonlat, expectedMercator, mapToLayer);
-		//System.out.println("expected lonlat " + lon + " " + lat + " mercator " + expectedMercator.x + " " + expectedMercator.y);
 		Assert.assertEquals(x, mercator.x, TOLERANCE);
 		Assert.assertEquals(lon, projected.x, TOLERANCE);
 		Assert.assertEquals(lon, lonlat.x, TOLERANCE);

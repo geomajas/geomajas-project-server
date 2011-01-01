@@ -23,7 +23,7 @@
 
 package org.geomajas.internal.layer.vector;
 
-import org.geomajas.global.ExceptionCode;
+import org.geomajas.geometry.CrsTransform;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.pipeline.GetTileContainer;
@@ -33,11 +33,7 @@ import org.geomajas.service.GeoService;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
 import org.geomajas.service.pipeline.PipelineStep;
-import org.geotools.geometry.jts.JTS;
 import org.opengis.filter.Filter;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.NoninvertibleTransformException;
-import org.opengis.referencing.operation.TransformException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vividsolutions.jts.geom.Envelope;
@@ -69,29 +65,20 @@ public class GetTileFilterStep implements PipelineStep<GetTileContainer> {
 	public void execute(PipelineContext context, GetTileContainer response) throws GeomajasException {
 		VectorLayer layer = context.get(PipelineCode.LAYER_KEY, VectorLayer.class);
 		TileMetadata metadata = context.get(PipelineCode.TILE_METADATA_KEY, TileMetadata.class);
-		MathTransform maptoLayer;
-		try {
-			maptoLayer = context.get(PipelineCode.CRS_TRANSFORM_KEY, MathTransform.class).inverse();
-		} catch (NoninvertibleTransformException e) {
-			throw new GeomajasException(ExceptionCode.CRS_TRANSFORMATION_NOT_POSSIBLE, e);
-		}
+		CrsTransform layerToMap = context.get(PipelineCode.CRS_TRANSFORM_KEY, CrsTransform.class);
+		CrsTransform maptoLayer = geoService.getCrsTransform(layerToMap.getTarget(), layerToMap.getSource());
 
 		String geomName = layer.getLayerInfo().getFeatureInfo().getGeometryType().getName();
 
 		String epsg = Integer.toString(geoService.getSridFromCrs(layer.getCrs()));
 		// transform tile bounds back to layer coordinates
 		// TODO: for non-affine transforms this is not accurate enough !
-		Envelope bounds;
-		try {
-			bounds = JTS.transform(response.getTile().getBounds(), maptoLayer);
-			Filter filter = filterService.createBboxFilter(epsg, bounds, geomName);
-			if (null != metadata.getFilter()) {
-				filter = filterService.createAndFilter(filterService.parseFilter(metadata.getFilter()), filter);
-			}
-
-			context.put(PipelineCode.FILTER_KEY, filter);
-		} catch (TransformException e) {
-			throw new GeomajasException(ExceptionCode.CRS_TRANSFORMATION_NOT_POSSIBLE, e);
+		Envelope bounds = geoService.transform(response.getTile().getBounds(), maptoLayer);
+		Filter filter = filterService.createBboxFilter(epsg, bounds, geomName);
+		if (null != metadata.getFilter()) {
+			filter = filterService.createAndFilter(filterService.parseFilter(metadata.getFilter()), filter);
 		}
+
+		context.put(PipelineCode.FILTER_KEY, filter);
 	}
 }

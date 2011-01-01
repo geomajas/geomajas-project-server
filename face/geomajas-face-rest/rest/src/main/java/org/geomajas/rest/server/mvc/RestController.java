@@ -139,7 +139,7 @@ public class RestController {
 		try {
 			CoordinateReferenceSystem crs = null;
 			if (epsg != null) {
-				crs = geoService.getCrs("EPSG:" + epsg);
+				crs = geoService.getCrs2("EPSG:" + epsg);
 			}
 			features = vectorLayerService.getFeatures(layerId, crs, and(filters), null, getIncludes(noGeom),
 					getOffset(offset), getLimit(maxFeatures, limit));

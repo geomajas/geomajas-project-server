@@ -31,7 +31,7 @@ import java.util.Map;
 
 import org.geomajas.configuration.LabelStyleInfo;
 import org.geomajas.configuration.NamedStyleInfo;
-import org.geomajas.global.ExceptionCode;
+import org.geomajas.geometry.CrsTransform;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.internal.layer.feature.InternalFeatureImpl;
 import org.geomajas.internal.rendering.StyleFilterImpl;
@@ -43,13 +43,11 @@ import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.layer.pipeline.GetFeaturesContainer;
 import org.geomajas.rendering.StyleFilter;
 import org.geomajas.security.SecurityContext;
+import org.geomajas.service.GeoService;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
 import org.geomajas.service.pipeline.PipelineStep;
-import org.geotools.geometry.jts.JTS;
 import org.opengis.filter.Filter;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.TransformException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,6 +70,9 @@ public class GetFeaturesEachStep implements PipelineStep<GetFeaturesContainer> {
 	@Autowired
 	private SecurityContext securityContext;
 
+	@Autowired
+	private GeoService geoService;
+
 	public String getId() {
 		return id;
 	}
@@ -80,6 +81,7 @@ public class GetFeaturesEachStep implements PipelineStep<GetFeaturesContainer> {
 		this.id = id;
 	}
 
+	@SuppressWarnings("unchecked")
 	public void execute(PipelineContext context, GetFeaturesContainer response) throws GeomajasException {
 		List<InternalFeature> features = response.getFeatures();
 		log.debug("Get features, was {}", features);
@@ -93,7 +95,7 @@ public class GetFeaturesEachStep implements PipelineStep<GetFeaturesContainer> {
 			int featureIncludes = context.get(PipelineCode.FEATURE_INCLUDES_KEY, Integer.class);
 			String layerId = context.get(PipelineCode.LAYER_ID_KEY, String.class);
 			NamedStyleInfo style = context.get(PipelineCode.STYLE_KEY, NamedStyleInfo.class);
-			MathTransform transformation = context.getOptional(PipelineCode.CRS_TRANSFORM_KEY, MathTransform.class);
+			CrsTransform transformation = context.getOptional(PipelineCode.CRS_TRANSFORM_KEY, CrsTransform.class);
 			List<StyleFilter> styleFilters = context.getOptional(GetFeaturesStyleStep.STYLE_FILTERS_KEY, List.class);
 
 			if (log.isDebugEnabled()) {
@@ -163,7 +165,7 @@ public class GetFeaturesEachStep implements PipelineStep<GetFeaturesContainer> {
 	 *             oops
 	 */
 	private InternalFeature convertFeature(Object feature, Geometry geometry, String layerId, VectorLayer layer,
-										   MathTransform transformation, List<StyleFilter> styles,
+										   CrsTransform transformation, List<StyleFilter> styles,
 										   LabelStyleInfo labelStyle, int featureIncludes)
 			throws GeomajasException {
 		FeatureModel featureModel = layer.getFeatureModel();
@@ -184,11 +186,7 @@ public class GetFeaturesEachStep implements PipelineStep<GetFeaturesContainer> {
 		if ((featureIncludes & VectorLayerService.FEATURE_INCLUDE_GEOMETRY) != 0) {
 			Geometry transformed;
 			if (null != transformation) {
-				try {
-					transformed = JTS.transform(geometry, transformation);
-				} catch (TransformException te) {
-					throw new GeomajasException(te, ExceptionCode.GEOMETRY_TRANSFORMATION_FAILED);
-				}
+				transformed = geoService.transform(geometry, transformation);
 			} else {
 				transformed = geometry;
 			}

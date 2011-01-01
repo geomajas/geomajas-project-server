@@ -25,12 +25,12 @@ package org.geomajas.plugin.geocoder.service;
 
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
+import org.geomajas.geometry.CrsTransform;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.service.GeoService;
 import org.geotools.geometry.jts.JTS;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -66,12 +66,8 @@ public class GeocoderUtilService {
 			return source;
 		}
 
-		MathTransform mathTransform = geoService.findMathTransform(sourceCrs, targetCrs);
-		try {
-			return JTS.transform(source, mathTransform);
-		} catch (TransformException te) {
-			throw new GeomajasException(te, ExceptionCode.CRS_TRANSFORMATION_NOT_POSSIBLE, sourceCrs, targetCrs);
-		}
+		CrsTransform crsTransform = geoService.getCrsTransform(sourceCrs, targetCrs);
+		return geoService.transform(source, crsTransform);
 	}
 
 	/**

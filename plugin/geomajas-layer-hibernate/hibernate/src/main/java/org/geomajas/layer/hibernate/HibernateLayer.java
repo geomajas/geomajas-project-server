@@ -155,7 +155,7 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, V
 
 	@PostConstruct
 	private void postConstruct() throws GeomajasException {
-		crs = geoService.getCrs(getLayerInfo().getCrs());
+		crs = geoService.getCrs2(getLayerInfo().getCrs());
 		srid = geoService.getSridFromCrs(crs);
 	}
 

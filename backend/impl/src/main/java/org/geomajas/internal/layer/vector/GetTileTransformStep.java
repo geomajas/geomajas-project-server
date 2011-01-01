@@ -23,19 +23,17 @@
 
 package org.geomajas.internal.layer.vector;
 
-import org.geomajas.global.ExceptionCode;
+import org.geomajas.geometry.CrsTransform;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.internal.layer.feature.InternalFeatureImpl;
 import org.geomajas.internal.rendering.strategy.TiledFeatureService;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.layer.pipeline.GetTileContainer;
 import org.geomajas.layer.tile.TileMetadata;
+import org.geomajas.service.GeoService;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
 import org.geomajas.service.pipeline.PipelineStep;
-import org.geotools.geometry.jts.JTS;
-import org.opengis.referencing.operation.MathTransform;
-import org.opengis.referencing.operation.TransformException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vividsolutions.jts.geom.Coordinate;
@@ -58,6 +56,9 @@ public class GetTileTransformStep implements PipelineStep<GetTileContainer> {
 	@Autowired
 	private TiledFeatureService tiledFeatureService;
 
+	@Autowired
+	private GeoService geoService;
+
 	public String getId() {
 		return id;
 	}
@@ -70,7 +71,7 @@ public class GetTileTransformStep implements PipelineStep<GetTileContainer> {
 		TileMetadata metadata = context.get(PipelineCode.TILE_METADATA_KEY, TileMetadata.class);
 
 		// Determine transformation to apply
-		MathTransform transform = context.get(PipelineCode.CRS_TRANSFORM_KEY, MathTransform.class);
+		CrsTransform transform = context.get(PipelineCode.CRS_TRANSFORM_KEY, CrsTransform.class);
 
 		// convert feature geometries to layer, need to copy to assure cache is not affected
 		List<InternalFeature> orgFeatures = response.getTile().getFeatures();
@@ -78,13 +79,9 @@ public class GetTileTransformStep implements PipelineStep<GetTileContainer> {
 		response.getTile().setFeatures(features);
 		for (InternalFeature feature : orgFeatures) {
 			if (null != feature.getGeometry()) {
-				try {
-					InternalFeature newFeature = new InternalFeatureImpl(feature);
-					newFeature.setGeometry(JTS.transform(feature.getGeometry(), transform));
-					features.add(newFeature);
-				} catch (TransformException te) {
-					throw new GeomajasException(te, ExceptionCode.GEOMETRY_TRANSFORMATION_FAILED);
-				}
+				InternalFeature newFeature = new InternalFeatureImpl(feature);
+				newFeature.setGeometry(geoService.transform(feature.getGeometry(), transform));
+				features.add(newFeature);
 			}
 		}
 		

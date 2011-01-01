@@ -26,7 +26,7 @@ package org.geomajas.layer.osm;
 import com.vividsolutions.jts.geom.Envelope;
 import junit.framework.Assert;
 
-import org.geomajas.geometry.Bbox;
+import org.geomajas.geometry.Crs;
 import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.service.GeoService;
 import org.geotools.geometry.jts.JTS;
@@ -167,8 +167,8 @@ public class OsmLayerTest {
 	public void testReprojectOne() throws Exception {
 		Envelope googleEnvelope = new Envelope(10000, 10010, 5000, 5010);
 		// back-transform envelope to latlon
-		CoordinateReferenceSystem google = geoService.getCrs("EPSG:900913");
-		CoordinateReferenceSystem latlon = geoService.getCrs("EPSG:4326");
+		Crs google = geoService.getCrs2("EPSG:900913");
+		Crs latlon = geoService.getCrs2("EPSG:4326");
 		Envelope latlonEnvelope = geoService.transform(JTS.toGeometry(googleEnvelope), google, latlon)
 				.getEnvelopeInternal();
 		// back-transform scale to latlon
@@ -192,8 +192,8 @@ public class OsmLayerTest {
 		// move up north to test latlon flattening
 		Envelope googleEnvelope = new Envelope(10000, 13000, 6005000, 6008000);
 		// back-transform envelope to latlon
-		CoordinateReferenceSystem google = geoService.getCrs("EPSG:900913");
-		CoordinateReferenceSystem latlon = geoService.getCrs("EPSG:4326");
+		Crs google = geoService.getCrs2("EPSG:900913");
+		Crs latlon = geoService.getCrs2("EPSG:4326");
 		Envelope latlonEnvelope = geoService.transform(JTS.toGeometry(googleEnvelope), google, latlon)
 				.getEnvelopeInternal();
 		// back-transform scale to latlon

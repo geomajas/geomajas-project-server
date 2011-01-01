@@ -41,6 +41,8 @@ import org.geomajas.configuration.client.ClientVectorLayerInfo;
 import org.geomajas.configuration.client.ScaleInfo;
 import org.geomajas.geometry.Bbox;
 import org.geomajas.geometry.Coordinate;
+import org.geomajas.geometry.Crs;
+import org.geomajas.geometry.CrsTransform;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.Layer;
@@ -49,10 +51,7 @@ import org.geomajas.layer.RasterLayer;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
 import org.geotools.geometry.DirectPosition2D;
-import org.geotools.geometry.jts.JTS;
 import org.geotools.referencing.GeodeticCalculator;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -215,7 +214,7 @@ public class ConfigurationDtoPostProcessor {
 			if (null == mapBounds) {
 				throw new LayerException(ExceptionCode.MAP_MAX_EXTENT_MISSING);
 			}
-			CoordinateReferenceSystem crs = geoService.getCrs(mapCrsKey);
+			Crs crs = geoService.getCrs2(mapCrsKey);
 			GeodeticCalculator calculator = new GeodeticCalculator(crs);
 			Coordinate center = new Coordinate(0.5 * (mapBounds.getX() + mapBounds.getMaxX()),
 					0.5 * (mapBounds.getY() + mapBounds.getMaxY()));
@@ -233,18 +232,16 @@ public class ConfigurationDtoPostProcessor {
 			return serverBbox;
 		}
 		try {
-			CoordinateReferenceSystem mapCrs = geoService.getCrs(mapCrsKey);
-			CoordinateReferenceSystem layerCrs = geoService.getCrs(layerCrsKey);
+			Crs mapCrs = geoService.getCrs2(mapCrsKey);
+			Crs layerCrs = geoService.getCrs2(layerCrsKey);
 			Envelope serverEnvelope = converterService.toInternal(serverBbox);
-			MathTransform transformer = geoService.findMathTransform(layerCrs, mapCrs);
-			Bbox res = converterService.toDto(JTS.transform(serverEnvelope, transformer));
+			CrsTransform transformer = geoService.getCrsTransform(layerCrs, mapCrs);
+			Bbox res = converterService.toDto(geoService.transform(serverEnvelope, transformer));
 			if (Double.isNaN(res.getX()) || Double.isNaN(res.getY()) || Double.isNaN(res.getWidth())
 					|| Double.isNaN(res.getHeight())) {
 				throw new LayerException(ExceptionCode.LAYER_EXTENT_CANNOT_CONVERT, layer, mapCrsKey);
 			}
 			return res;
-		} catch (TransformException e) {
-			throw new LayerException(e, ExceptionCode.TRANSFORMER_CREATE_LAYER_TO_MAP_FAILED);
 		} catch (GeomajasException e) {
 			throw new LayerException(e, ExceptionCode.TRANSFORMER_CREATE_LAYER_TO_MAP_FAILED);
 		}

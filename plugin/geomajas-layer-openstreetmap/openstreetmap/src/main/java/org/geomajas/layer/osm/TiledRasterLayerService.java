@@ -26,6 +26,7 @@ package org.geomajas.layer.osm;
 import com.vividsolutions.jts.geom.Coordinate;
 import com.vividsolutions.jts.geom.Envelope;
 import org.geomajas.geometry.Bbox;
+import org.geomajas.geometry.CrsTransform;
 import org.geomajas.global.Api;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
@@ -34,7 +35,6 @@ import org.geomajas.layer.tile.TileCode;
 import org.geomajas.service.GeoService;
 import org.geotools.geometry.jts.JTS;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.MathTransform;
 import org.opengis.referencing.operation.TransformException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -91,8 +91,8 @@ public class TiledRasterLayerService {
 	public List<RasterTile> paint(TiledRasterLayerServiceState tileServiceState, CoordinateReferenceSystem boundsCrs,
 			Envelope bounds, double scale) throws GeomajasException {
 		try {
-			MathTransform layerToMap = geoService.findMathTransform(tileServiceState.getCrs(), boundsCrs);
-			MathTransform mapToLayer = layerToMap.inverse();
+			CrsTransform layerToMap = geoService.getCrsTransform(tileServiceState.getCrs(), boundsCrs);
+			CrsTransform mapToLayer = geoService.getCrsTransform(boundsCrs, tileServiceState.getCrs());
 
 			bounds = clipBounds(tileServiceState, bounds);
 			if (bounds.isNull()) {
@@ -211,7 +211,7 @@ public class TiledRasterLayerService {
 	}
 
 	private int getBestZoomLevelForScaleInPixPerMeter(TiledRasterLayerServiceState tileServiceState,
-			MathTransform layerToGoogle, Coordinate mapPosition,
+			CrsTransform layerToGoogle, Coordinate mapPosition,
 			double scale) {
 		double scaleRatio = 0.653;
 		try {
@@ -246,7 +246,7 @@ public class TiledRasterLayerService {
 		return MAX_ZOOM_LEVEL;
 	}
 
-	private Coordinate getMapFromTileIndices(TiledRasterLayerServiceState tileServiceState, MathTransform mapToLayer,
+	private Coordinate getMapFromTileIndices(TiledRasterLayerServiceState tileServiceState, CrsTransform mapToLayer,
 			Coordinate indices, int zoomLevel)
 			throws TransformException {
 		double xMeter = EQUATOR_IN_METERS * indices.x / POWERS_OF_TWO[zoomLevel] - 0.5 * EQUATOR_IN_METERS;
@@ -254,7 +254,7 @@ public class TiledRasterLayerService {
 		return JTS.transform(new Coordinate(xMeter, yMeter), new Coordinate(), mapToLayer);
 	}
 
-	private Coordinate getTileIndicesFromMap(MathTransform mapToLayer, Coordinate centerMapCoor, int zoomLevel)
+	private Coordinate getTileIndicesFromMap(CrsTransform mapToLayer, Coordinate centerMapCoor, int zoomLevel)
 			throws TransformException {
 		Coordinate centerLayerCoor = JTS.transform(centerMapCoor, new Coordinate(), mapToLayer);
 		double xIndex = (centerLayerCoor.x + 0.5 * EQUATOR_IN_METERS) * POWERS_OF_TWO[zoomLevel] / EQUATOR_IN_METERS;

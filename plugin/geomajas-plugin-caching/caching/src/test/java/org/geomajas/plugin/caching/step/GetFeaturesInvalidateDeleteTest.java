@@ -89,7 +89,7 @@ public class GetFeaturesInvalidateDeleteTest {
 
 		// first run, this should put things in the cache
 		recorder.clear();
-		features = vectorLayerService.getFeatures(LAYER_BEANS, geoService.getCrs("EPSG:4326"), null, null,
+		features = vectorLayerService.getFeatures(LAYER_BEANS, geoService.getCrs2("EPSG:4326"), null, null,
 				GeomajasConstant.FEATURE_INCLUDE_NONE);
 		Assert.assertNotNull(features);
 		Assert.assertEquals(3, features.size());
@@ -98,7 +98,7 @@ public class GetFeaturesInvalidateDeleteTest {
 
 		// get features again, it should now use the cache
 		recorder.clear();
-		features = vectorLayerService.getFeatures(LAYER_BEANS, geoService.getCrs("EPSG:4326"), null, null,
+		features = vectorLayerService.getFeatures(LAYER_BEANS, geoService.getCrs2("EPSG:4326"), null, null,
 				GeomajasConstant.FEATURE_INCLUDE_NONE);
 		Assert.assertNotNull(features);
 		Assert.assertEquals(3, features.size());
@@ -113,12 +113,12 @@ public class GetFeaturesInvalidateDeleteTest {
 		orgFeatures.add(org);
 		List<InternalFeature> updFeatures = new ArrayList<InternalFeature>();
 		updFeatures.add(null);
-		vectorLayerService.saveOrUpdate(LAYER_BEANS, geoService.getCrs("EPSG:4326"), orgFeatures, updFeatures);
+		vectorLayerService.saveOrUpdate(LAYER_BEANS, geoService.getCrs2("EPSG:4326"), orgFeatures, updFeatures);
 		Assert.assertEquals("", recorder.matches("layer", "Invalidate geometry for deleted feature"));
 
 		// get features again, it should *not* use the cache
 		recorder.clear();
-		features = vectorLayerService.getFeatures(LAYER_BEANS, geoService.getCrs("EPSG:4326"), null, null,
+		features = vectorLayerService.getFeatures(LAYER_BEANS, geoService.getCrs2("EPSG:4326"), null, null,
 				GeomajasConstant.FEATURE_INCLUDE_NONE);
 		Assert.assertNotNull(features);
 		Assert.assertEquals(2, features.size());

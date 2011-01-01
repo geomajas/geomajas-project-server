@@ -167,7 +167,7 @@ public class RasterLayerComponentImpl extends BaseLayerComponentImpl<RasterLayer
 			}
 			ClientMapInfo map = configurationService.getMapInfo(getMap().getMapId(), getMap().getApplicationId());
 			try {
-				tiles = rasterLayerService.getTiles(getLayerId(), geoService.getCrs(map.getCrs()), bbox, rasterScale);
+				tiles = rasterLayerService.getTiles(getLayerId(), geoService.getCrs2(map.getCrs()), bbox, rasterScale);
 				if (tiles.size() > 0) {
 					Collection<Callable<ImageResult>> callables = new ArrayList<Callable<ImageResult>>(tiles.size());
 					// Build the image downloading threads

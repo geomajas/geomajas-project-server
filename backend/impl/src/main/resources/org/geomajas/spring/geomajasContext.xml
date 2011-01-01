@@ -193,9 +193,9 @@ PROJCS["Google Mercator",
 		<property name="transformableArea">
 			<bean class="org.geomajas.geometry.Bbox">
 				<property name="x" value="-180" />
-				<property name="y" value="-85" />
+				<property name="y" value="-86" />
 				<property name="width" value="360" />
-				<property name="height" value="170" />
+				<property name="height" value="172" />
 			</bean>
 		</property>
 	</bean>

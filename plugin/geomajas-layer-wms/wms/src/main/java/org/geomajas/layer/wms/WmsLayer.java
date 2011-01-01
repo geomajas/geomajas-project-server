@@ -28,6 +28,7 @@ import org.geomajas.configuration.Parameter;
 import org.geomajas.configuration.RasterLayerInfo;
 import org.geomajas.configuration.client.ScaleInfo;
 import org.geomajas.geometry.Bbox;
+import org.geomajas.geometry.Crs;
 import org.geomajas.geometry.CrsTransform;
 import org.geomajas.global.Api;
 import org.geomajas.global.ExceptionCode;
@@ -96,7 +97,7 @@ public class WmsLayer implements RasterLayer {
 
 	private RasterLayerInfo layerInfo;
 
-	private CoordinateReferenceSystem crs;
+	private Crs crs;
 
 	private String id;
 
@@ -147,7 +148,7 @@ public class WmsLayer implements RasterLayer {
 
 	@PostConstruct
 	private void postConstruct() throws GeomajasException {
-		crs = geoService.getCrs(getLayerInfo().getCrs());
+		crs = geoService.getCrs2(getLayerInfo().getCrs());
 
 		// calculate resolutions
 		List<ScaleInfo> scales = layerInfo.getZoomLevels();

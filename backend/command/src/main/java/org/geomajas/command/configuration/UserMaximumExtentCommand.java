@@ -28,6 +28,8 @@ import org.geomajas.command.Command;
 import org.geomajas.command.dto.UserMaximumExtentRequest;
 import org.geomajas.command.dto.UserMaximumExtentResponse;
 import org.geomajas.geometry.Bbox;
+import org.geomajas.geometry.Crs;
+import org.geomajas.geometry.CrsTransform;
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.security.GeomajasSecurityException;
@@ -38,9 +40,6 @@ import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
 import org.geomajas.layer.VectorLayerService;
-import org.geotools.geometry.jts.JTS;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
-import org.opengis.referencing.operation.MathTransform;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -100,7 +99,7 @@ public class UserMaximumExtentCommand implements Command<UserMaximumExtentReques
 		layers = tempLayers.toArray(new String[tempLayers.size()]);
 
 		Layer<?> layer;
-		CoordinateReferenceSystem targetCrs = geoService.getCrs(request.getCrs());
+		Crs targetCrs = geoService.getCrs2(request.getCrs());
 
 		if (layers.length == 0) {
 			// return empty bbox
@@ -113,8 +112,8 @@ public class UserMaximumExtentCommand implements Command<UserMaximumExtentReques
 					Envelope bounds;
 					if (layer.getLayerInfo().getLayerType() == LayerType.RASTER) {
 						bounds = securityContext.getVisibleArea(layerId).getEnvelopeInternal();
-						MathTransform transformer = geoService.findMathTransform(layer.getCrs(), targetCrs);
-						bounds = JTS.transform(bounds, transformer);
+						CrsTransform transform = geoService.getCrsTransform(layer.getCrs(), targetCrs);
+						bounds = geoService.transform(bounds, transform);
 					} else {
 						bounds = layerService.getBounds(layerId, targetCrs, null);
 					}

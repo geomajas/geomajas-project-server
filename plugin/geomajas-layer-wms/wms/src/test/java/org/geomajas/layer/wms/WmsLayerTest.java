@@ -23,14 +23,15 @@
 
 package org.geomajas.layer.wms;
 
+import com.sun.xml.internal.bind.v2.runtime.reflect.opt.MethodAccessor_Ref;
 import com.vividsolutions.jts.geom.Envelope;
 import junit.framework.Assert;
+import org.geomajas.geometry.Crs;
 import org.geomajas.layer.tile.RasterTile;
 import org.geomajas.service.GeoService;
 import org.geotools.geometry.jts.JTS;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
@@ -53,6 +54,9 @@ public class WmsLayerTest {
 
 	private static final double DELTA = 1e-10;
 
+	private static final String MERCATOR = "EPSG:900913";
+	private static final String LONLAT = "EPSG:4326";
+
 	@Autowired
 	@Qualifier("bluemarble")
 	private WmsLayer wms;
@@ -68,8 +72,8 @@ public class WmsLayerTest {
 	public void testNormalOne() throws Exception {
 		Envelope googleEnvelope = new Envelope(10000, 10010, 5000, 5010);
 		// back-transform envelope to latlon
-		CoordinateReferenceSystem google = geoService.getCrs("EPSG:900913");
-		CoordinateReferenceSystem latlon = geoService.getCrs("EPSG:4326");
+		Crs google = geoService.getCrs2(MERCATOR);
+		Crs latlon = geoService.getCrs2(LONLAT);
 		Envelope latlonEnvelope = geoService.transform(JTS.toGeometry(googleEnvelope), google, latlon)
 				.getEnvelopeInternal();
 		// back-transform scale to latlon
@@ -96,8 +100,8 @@ public class WmsLayerTest {
 		// move up north to test latlon flattening
 		Envelope googleEnvelope = new Envelope(10000, 13000, 6005000, 6008000);
 		// back-transform envelope to latlon
-		CoordinateReferenceSystem google = geoService.getCrs("EPSG:900913");
-		CoordinateReferenceSystem latlon = geoService.getCrs("EPSG:4326");
+		Crs google = geoService.getCrs2(MERCATOR);
+		Crs latlon = geoService.getCrs2(LONLAT);
 		Envelope latlonEnvelope = geoService.transform(JTS.toGeometry(googleEnvelope), google, latlon)
 				.getEnvelopeInternal();
 		// back-transform scale to latlon
@@ -134,7 +138,7 @@ public class WmsLayerTest {
 	public void testReprojectOne() throws Exception {
 		Envelope googleEnvelope = new Envelope(10000, 10010, 5000, 5010);
 		// back-transform envelope to latlon
-		CoordinateReferenceSystem google = geoService.getCrs("EPSG:900913");
+		Crs google = geoService.getCrs2(MERCATOR);
 		// paint with reprojection (affine is fine for now...:-)
 		List<RasterTile> tiles = wms.paint(google, googleEnvelope, ZOOMED_IN_SCALE);
 		Assert.assertEquals(1, tiles.size());
@@ -157,7 +161,7 @@ public class WmsLayerTest {
 		// move up north to test latlon flattening
 		Envelope googleEnvelope = new Envelope(10000, 13000, 6005000, 6008000);
 		// back-transform envelope to latlon
-		CoordinateReferenceSystem google = geoService.getCrs("EPSG:900913");
+		Crs google = geoService.getCrs2(MERCATOR);
 		// paint with reprojection (affine is fine for now...:-)
 		List<RasterTile> tiles = wms.paint(google, googleEnvelope, MAX_LEVEL_SCALE);
 		Assert.assertEquals(4, tiles.size());
@@ -175,10 +179,10 @@ public class WmsLayerTest {
 				"47.41258662242204&format=image/jpeg&version=1.1.1&srs=EPSG:4326&styles=", tiles.get(3).getUrl());
 		// test first tile
 		RasterTile tile = tiles.get(0);
-		double width = tiles.get(0).getBounds().getWidth();
-		double height = tiles.get(0).getBounds().getHeight();
-		double x = tiles.get(0).getBounds().getX();
-		double y = tiles.get(0).getBounds().getY();
+		double width = tile.getBounds().getWidth();
+		double height = tile.getBounds().getHeight();
+		double x = tile.getBounds().getX();
+		double y = tile.getBounds().getY();
 		Assert.assertEquals(695.0, width, DELTA);
 		Assert.assertEquals(1026.0, height, DELTA);
 		Assert.assertEquals(3907.0, x, DELTA);
@@ -204,8 +208,8 @@ public class WmsLayerTest {
 	public void testProxyOne() throws Exception {
 		Envelope googleEnvelope = new Envelope(10000, 10010, 5000, 5010);
 		// back-transform envelope to latlon
-		CoordinateReferenceSystem google = geoService.getCrs("EPSG:900913");
-		CoordinateReferenceSystem latlon = geoService.getCrs("EPSG:4326");
+		Crs google = geoService.getCrs2(MERCATOR);
+		Crs latlon = geoService.getCrs2(LONLAT);
 		Envelope latlonEnvelope = geoService.transform(JTS.toGeometry(googleEnvelope), google, latlon)
 				.getEnvelopeInternal();
 		// back-transform scale to latlon

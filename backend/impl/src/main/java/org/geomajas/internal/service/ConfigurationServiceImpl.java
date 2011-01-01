@@ -100,7 +100,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
 	}
 
 	public CoordinateReferenceSystem getCrs(String crs) throws LayerException {
-		return geoService.getCrs(crs);
+		return geoService.getCrs2(crs);
 	}
 
 	public void invalidateLayer(String layerId) throws GeomajasException {

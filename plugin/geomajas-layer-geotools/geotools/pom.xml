@@ -39,10 +39,6 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.geotools</groupId>
-			<artifactId>gt-main</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-api</artifactId>
 		</dependency>
@@ -155,7 +151,7 @@
 	</build>
 
 	<properties>
-		<geotools-layer-backend-version>1.7.1</geotools-layer-backend-version>
+		<geotools-layer-backend-version>1.8.0-SNAPSHOT</geotools-layer-backend-version>
 		<geotools-version>2.6.3</geotools-version>
 	</properties>
 </project>
