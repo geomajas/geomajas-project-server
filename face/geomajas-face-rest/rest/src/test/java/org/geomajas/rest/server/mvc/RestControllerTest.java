@@ -2,7 +2,6 @@ package org.geomajas.rest.server.mvc;
 
 import com.vividsolutions.jts.geom.Envelope;
 import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.MultiPolygon;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.rest.server.RestException;
 import org.geomajas.security.SecurityManager;
@@ -250,7 +249,7 @@ public class RestControllerTest {
 		JSONObject feature = (JSONObject) features.get(0);
 		JSONObject geometry = (JSONObject) feature.get("geometry");
 		GeometryJSON g = new GeometryJSON(0);
-		MultiPolygon m = (MultiPolygon) g.read(geometry.toJSONString());
+		Geometry m = g.read(geometry.toJSONString());
 		Envelope envelope = new Envelope(0, 1, 0, 1);
 		Geometry orig = JTS.toGeometry(envelope);
 		Geometry m2 = geoservice.transform(orig, "EPSG:4326", "EPSG:900913");
