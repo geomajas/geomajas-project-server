@@ -30,7 +30,6 @@ import java.util.Locale;
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.internal.service.pipeline.PipelineContextImpl;
 import org.geomajas.layer.bean.BeanLayer;
-import org.geomajas.layer.bean.FeatureBean;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.layer.pipeline.GetFeaturesContainer;
 import org.geomajas.security.Authentication;
@@ -41,8 +40,8 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opengis.filter.Filter;
-import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
@@ -56,27 +55,14 @@ import com.vividsolutions.jts.geom.Geometry;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
 		"/org/geomajas/layer/bean/beanContext.xml", "/org/geomajas/layer/bean/layerBeans.xml" })
-public class GetFeaturesEachStepTest implements InitializingBean {
+public class GetFeaturesEachStepTest {
 
 	// Small caveat, not everything is tested yet 
 	// (for example filter from pipeline)
 
 	@Autowired
+	@Qualifier("lotsObeans")
 	private BeanLayer testLayer;
-
-	public void afterPropertiesSet() throws Exception {
-		// -- clear layer, then add some features
-		FeatureBean fb;
-		for (Object o : testLayer.getFeatures().toArray()) {
-			testLayer.delete("" + ((FeatureBean) o).getId());
-		}
-		for (long i = 1l; i < 21l; i++) {
-			fb = new FeatureBean();
-			fb.setId(i);
-			testLayer.create(fb);
-		}
-		Assert.assertTrue("There should be 20 features", testLayer.getFeatures().size() == 20);
-	}
 
 	@Test
 	public void testNoSecurityNorOffsetNorLimit() throws Exception {

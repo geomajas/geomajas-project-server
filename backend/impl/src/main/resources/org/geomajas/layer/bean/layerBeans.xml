@@ -314,4 +314,71 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		</property>
 	</bean>
 
+	<bean name="lotsObeans" class="org.geomajas.layer.bean.BeanLayer">
+		<property name="layerInfo" ref="beansInfo" />
+		<property name="features">
+			<list>
+				<bean class="org.geomajas.layer.bean.FeatureBean">
+					<property name="id" value="1" />
+				</bean>
+				<bean class="org.geomajas.layer.bean.FeatureBean">
+					<property name="id" value="2" />
+				</bean>
+				<bean class="org.geomajas.layer.bean.FeatureBean">
+					<property name="id" value="3" />
+				</bean>
+				<bean class="org.geomajas.layer.bean.FeatureBean">
+					<property name="id" value="4" />
+				</bean>
+				<bean class="org.geomajas.layer.bean.FeatureBean">
+					<property name="id" value="5" />
+				</bean>
+				<bean class="org.geomajas.layer.bean.FeatureBean">
+					<property name="id" value="6" />
+				</bean>
+				<bean class="org.geomajas.layer.bean.FeatureBean">
+					<property name="id" value="7" />
+				</bean>
+				<bean class="org.geomajas.layer.bean.FeatureBean">
+					<property name="id" value="8" />
+				</bean>
+				<bean class="org.geomajas.layer.bean.FeatureBean">
+					<property name="id" value="9" />
+				</bean>
+				<bean class="org.geomajas.layer.bean.FeatureBean">
+					<property name="id" value="10" />
+				</bean>
+				<bean class="org.geomajas.layer.bean.FeatureBean">
+					<property name="id" value="11" />
+				</bean>
+				<bean class="org.geomajas.layer.bean.FeatureBean">
+					<property name="id" value="12" />
+				</bean>
+				<bean class="org.geomajas.layer.bean.FeatureBean">
+					<property name="id" value="13" />
+				</bean>
+				<bean class="org.geomajas.layer.bean.FeatureBean">
+					<property name="id" value="14" />
+				</bean>
+				<bean class="org.geomajas.layer.bean.FeatureBean">
+					<property name="id" value="15" />
+				</bean>
+				<bean class="org.geomajas.layer.bean.FeatureBean">
+					<property name="id" value="16" />
+				</bean>
+				<bean class="org.geomajas.layer.bean.FeatureBean">
+					<property name="id" value="17" />
+				</bean>
+				<bean class="org.geomajas.layer.bean.FeatureBean">
+					<property name="id" value="18" />
+				</bean>
+				<bean class="org.geomajas.layer.bean.FeatureBean">
+					<property name="id" value="19" />
+				</bean>
+				<bean class="org.geomajas.layer.bean.FeatureBean">
+					<property name="id" value="20" />
+				</bean>
+			</list>
+		</property>
+	</bean>
 </beans>
