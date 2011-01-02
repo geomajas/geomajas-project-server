@@ -23,7 +23,6 @@
 
 package org.geomajas.layer.wms;
 
-import com.sun.xml.internal.bind.v2.runtime.reflect.opt.MethodAccessor_Ref;
 import com.vividsolutions.jts.geom.Envelope;
 import junit.framework.Assert;
 import org.geomajas.geometry.Crs;
