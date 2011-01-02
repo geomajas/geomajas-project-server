@@ -65,7 +65,8 @@ public class BeanLayer implements VectorLayer, VectorLayerAssociationSupport {
 
 	private final Logger log = LoggerFactory.getLogger(BeanLayer.class);
 
-	private Map<String, Object> featuresById = new LinkedHashMap<String, Object>();
+	// all access to this variable needs to be synchronized
+	private final Map<String, Object> featuresById = new LinkedHashMap<String, Object>();
 
 	/**
 	 * The features (should be Java beans compliant)
@@ -120,9 +121,11 @@ public class BeanLayer implements VectorLayer, VectorLayerAssociationSupport {
 	 */
 	public Iterator<?> getElements(Filter filter, int offset, int maxResultSize) throws LayerException {
 		List<Object> filteredList = new ArrayList<Object>();
-		for (Object feature : featuresById.values()) {
-			if (filter.evaluate(feature)) {
-				filteredList.add(feature);
+		synchronized (featuresById) {
+			for (Object feature : featuresById.values()) {
+				if (filter.evaluate(feature)) {
+					filteredList.add(feature);
+				}
 			}
 		}
 		// Sorting of elements.
@@ -177,36 +180,44 @@ public class BeanLayer implements VectorLayer, VectorLayerAssociationSupport {
 
 	public Object create(Object feature) throws LayerException {
 		String id = featureModel.getId(feature);
-		if (id != null && !featuresById.containsKey(id)) {
-			features.add(feature);
-			featuresById.put(id, feature);
-			return feature;
-		} else {
-			throw new IllegalStateException("BeanLayer cannot auto assign the feature id");
+		synchronized (featuresById) {
+			if (id != null && !featuresById.containsKey(id)) {
+				features.add(feature);
+				featuresById.put(id, feature);
+				return feature;
+			} else {
+				throw new IllegalStateException("BeanLayer cannot auto assign the feature id");
+			}
 		}
 	}
 
 	public Object read(String featureId) throws LayerException {
-		if (!featuresById.containsKey(featureId)) {
-			throw new LayerException(ExceptionCode.LAYER_MODEL_FEATURE_NOT_FOUND, featureId);
-		} else {
-			return featuresById.get(featureId);
+		synchronized (featuresById) {
+			if (!featuresById.containsKey(featureId)) {
+				throw new LayerException(ExceptionCode.LAYER_MODEL_FEATURE_NOT_FOUND, featureId);
+			} else {
+				return featuresById.get(featureId);
+			}
 		}
 	}
 
 	public Object saveOrUpdate(Object feature) throws LayerException {
-		if (!featuresById.containsKey(getFeatureModel().getId(feature))) {
-			return create(feature);
-		} else {
-			// Nothing to do
-			return feature;
+		synchronized (featuresById) {
+			if (!featuresById.containsKey(getFeatureModel().getId(feature))) {
+				return create(feature);
+			} else {
+				// Nothing to do
+				return feature;
+			}
 		}
 	}
 
 	public void delete(String featureId) throws LayerException {
-		Object o = featuresById.remove(featureId);
-		if (null != o) {
-			features.remove(o);
+		synchronized (featuresById) {
+			Object o = featuresById.remove(featureId);
+			if (null != o) {
+				features.remove(o);
+			}
 		}
 	}
 
@@ -214,12 +225,14 @@ public class BeanLayer implements VectorLayer, VectorLayerAssociationSupport {
 		return features;
 	}
 
-	public void setFeatures(List<Object> features) throws LayerException {
+	public synchronized void setFeatures(List<Object> features) throws LayerException {
 		if (null != features) {
 			this.features.addAll(features);
 			if (null != featureModel) {
-				for (Object f : features) {
-					featuresById.put(featureModel.getId(f), f);
+				synchronized (featuresById) {
+					for (Object f : features) {
+						featuresById.put(featureModel.getId(f), f);
+					}
 				}
 			}
 		}
@@ -258,11 +271,13 @@ public class BeanLayer implements VectorLayer, VectorLayerAssociationSupport {
 		return layerInfo.getFeatureInfo();
 	}
 
-	protected void initFeatureModel() throws LayerException {
+	protected synchronized void initFeatureModel() throws LayerException {
 		featureModel = new BeanFeatureModel(layerInfo, geoService.getSridFromCrs(layerInfo.getCrs()), converterService);
 		filterService.registerFeatureModel(featureModel);
-		for (Object f : features) {
-			featuresById.put(featureModel.getId(f), f);
+		synchronized (featuresById) {
+			for (Object f : features) {
+				featuresById.put(featureModel.getId(f), f);
+			}
 		}
 	}
 
