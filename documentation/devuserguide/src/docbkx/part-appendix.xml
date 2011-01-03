@@ -35,6 +35,14 @@
 
       <para><itemizedlist>
           <listitem>
+            <para>Geomajas now automatically limits geometries to the
+            transformable area when doind CRS transformations. This can have
+            the effect that geometries are simplified. For example, a
+            MultiPolygon which contains only one polygon may be converted to a
+            Polygon geometry.</para>
+          </listitem>
+
+          <listitem>
             <para>The use of the GeomajasContextListener in web.xml is no
             longer recommended. We recommend you use the normal spring
             listeners. This does mean that you should add "classpath:" in
@@ -51,7 +59,8 @@
                 <programlisting>&lt;context-param&gt;
     &lt;param-name&gt;contextConfigLocation&lt;/param-name&gt;
     &lt;param-value&gt;
-        classpath:org/geomajas/spring/geomajasContext.xml<co id="co-20101222-1" />
+        classpath:org/geomajas/spring/geomajasContext.xml<co
+                    id="co-20101222-1" />
         WEB-INF/applicationContext.xml<co id="co-20101222-2" />
     &lt;/param-value&gt;
 &lt;/context-param&gt;
