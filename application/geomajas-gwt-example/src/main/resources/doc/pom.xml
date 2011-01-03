@@ -396,7 +396,7 @@
 		<geomajas-layer-google-version>1.7.1</geomajas-layer-google-version>
 		<geomajas-layer-wms-version>1.7.1</geomajas-layer-wms-version>
 		<geomajas-layer-openstreetmap-version>1.7.1</geomajas-layer-openstreetmap-version>
-		<gwt-version>2.1.0</gwt-version>
+		<gwt-version>2.1.1</gwt-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 

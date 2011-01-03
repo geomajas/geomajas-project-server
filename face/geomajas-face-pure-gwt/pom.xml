@@ -179,7 +179,7 @@
 
 	<properties>
 		<gwt-pure-face-backend-version>1.8.0-SNAPSHOT</gwt-pure-face-backend-version>
-		<gwt-version>2.1.0</gwt-version>
+		<gwt-version>2.1.1</gwt-version>
 	</properties>
 	
 </project>
