@@ -366,7 +366,7 @@
                   map itself. If the zoom levels of the map have different
                   values or are not specified at all (arbitrary zooming),
                   raster images will be stretched on the client side to
-                  accomodate for these differences. </para></entry>
+                  accommodate for these differences. </para></entry>
                 </row>
 
                 <row>
@@ -397,7 +397,7 @@
     <section id="conf-vector">
       <title>Vector layer configuration</title>
 
-      <para>Vector layers contain homogeneous vectorial features. All vector
+      <para>Vector layers contain homogeneous vector based features. All vector
       layer implementations implement the
       <code>org.geomajas.layer.VectorLayer</code> interface, which means they
       provide an accessor for a <code>VectorLayerInfo</code> metadata object.
