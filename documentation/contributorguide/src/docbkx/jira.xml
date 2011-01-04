@@ -49,9 +49,9 @@
       </itemizedlist>
 
       <para>In particular, if you're going to write sentences like "Besides
-      this, I noticed that..." or "There are several problems with....",
-      then please seriously ask yourself whether you should submit multiple
-      issues instead of a single one.</para>
+      this, I noticed that..." or "There are several problems with....", then
+      please seriously ask yourself whether you should submit multiple issues
+      instead of a single one.</para>
 
       <para>If you don't follow this rule, be prepared for people asking you
       to split up your issue.</para>
@@ -94,8 +94,10 @@
 
     <itemizedlist>
       <listitem>
-        <para>Project: the project you wish to report an issue for. (usually
-        Geomajas)</para>
+        <para>Project: the project you wish to report an issue for (please try
+        to use the correct module, only use the Geomajas when it doesn't fit a
+        specific module - if it fits multiple modules, please add to
+        all).</para>
       </listitem>
 
       <listitem>
@@ -115,7 +117,7 @@
       </listitem>
 
       <listitem>
-        <para>Due date: not used</para>
+        <para>Due date: not used.</para>
       </listitem>
 
       <listitem>
@@ -135,8 +137,8 @@
 
       <listitem>
         <para>CLA: Whether you agree to the CLA. This needs to be ticked when
-			you include a patch with the issue and haven't sent a signed CLA
-			to the project..</para>
+        you include a patch with the issue and haven't sent a signed CLA to
+        the project.</para>
       </listitem>
 
       <listitem>
