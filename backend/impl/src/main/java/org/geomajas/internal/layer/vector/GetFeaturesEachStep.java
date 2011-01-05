@@ -102,7 +102,7 @@ public class GetFeaturesEachStep implements PipelineStep<GetFeaturesContainer> {
 				log.debug("getElements " + filter + ", offset = " + offset + ", maxResultSize= " + maxResultSize);
 			}
 			Envelope bounds = null;
-			Iterator<?> it = layer.getElements(filter, 0, Integer.MAX_VALUE); // do not limit result here
+			Iterator<?> it = layer.getElements(filter, 0, 0); // do not limit result here, security needs to be applied
 
 			int count = 0;
 			while (it.hasNext()) {

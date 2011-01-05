@@ -118,7 +118,7 @@ public interface VectorLayer extends Layer<VectorLayerInfo> {
 	 *
 	 * @param filter filter to be applied
 	 * @param offset Skip the first 'offset' features in the result. This is meant for paging.
-	 * @param maxResultSize Limit the result to a maximum number of features. Can be used for paging.
+	 * @param maxResultSize Limit the result to a maximum number of features. Used for paging. Zero for unlimited.
 	 * @return reader of feature value objects
 	 * @throws LayerException oops
 	 */
