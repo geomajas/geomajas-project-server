@@ -63,6 +63,7 @@
 		</profile>
 		<!-- avoids eclipse build -->
 		<profile>
+			<id>avoidbuild</id>
 			<activation>
 				<property>
 					<name>m2e.version</name>
