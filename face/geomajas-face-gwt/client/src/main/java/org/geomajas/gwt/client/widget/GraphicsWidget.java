@@ -414,8 +414,12 @@ public class GraphicsWidget extends VLayout implements MapContext, HasGraphicsRe
 			addChild(eventWidget);
 			eventWidget.setVisible(true);
 		}
+		// Set size of the event widget:
+		eventWidget.setSize(getWidthAsString(), getHeightAsString());
+
 		// xhtml needs this, or <div> won't show !
 		eventWidget.setInnerSize(getWidth() + "px", getHeight() + "px");
+
 		// set the size and notify graphics users so they can redraw
 		vectorContext.setSize(getWidth(), getHeight());
 		if (isReady()) {
@@ -435,7 +439,6 @@ public class GraphicsWidget extends VLayout implements MapContext, HasGraphicsRe
 			// called on first draw
 			resize();
 		}
-
 	}
 
 	/** sets the right mouse coordinate and target */

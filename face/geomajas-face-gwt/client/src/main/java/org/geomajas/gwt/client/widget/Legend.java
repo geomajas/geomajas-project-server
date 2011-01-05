@@ -52,6 +52,8 @@ import org.geomajas.layer.LayerType;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Canvas;
+import com.smartgwt.client.widgets.events.ResizedEvent;
+import com.smartgwt.client.widgets.events.ResizedHandler;
 
 /**
  * <p>
@@ -67,6 +69,8 @@ public class Legend extends Canvas {
 	private List<HandlerRegistration> registrations = new ArrayList<HandlerRegistration>();
 
 	private HandlerRegistration loadedRegistration;
+
+	private HandlerRegistration resizeRegistration;
 
 	private MapModel mapModel;
 
@@ -99,10 +103,18 @@ public class Legend extends Canvas {
 
 		graphics = widget.getVectorContext();
 
-		mapModel.addMapModelHandler(new MapModelHandler() {
+		loadedRegistration = mapModel.addMapModelHandler(new MapModelHandler() {
 
 			public void onMapModelChange(MapModelEvent event) {
 				initialize();
+			}
+		});
+
+		resizeRegistration = addResizedHandler(new ResizedHandler() {
+
+			public void onResized(ResizedEvent event) {
+				widget.setSize(getWidthAsString(), getHeightAsString());
+				widget.resize();
 			}
 		});
 	}
@@ -160,7 +172,7 @@ public class Legend extends Canvas {
 
 						// After the style, draw the style's name:
 						Coordinate textPosition = new Coordinate(30, y - 2);
-						graphics.drawText(parentGroup, "text" + lineCount, styleInfo.getName(), textPosition, 
+						graphics.drawText(parentGroup, "text" + lineCount, styleInfo.getName(), textPosition,
 								fontStyle);
 						y += 21;
 					}
@@ -201,9 +213,7 @@ public class Legend extends Canvas {
 	// Private methods:
 	// -------------------------------------------------------------------------
 
-	/**
-	 * Called when the MapModel configuration has been loaded.
-	 */
+	/** Called when the MapModel configuration has been loaded. */
 	private void initialize() {
 		addChild(widget);
 		for (Layer<?> layer : mapModel.getLayers()) {
@@ -226,18 +236,15 @@ public class Legend extends Canvas {
 		render();
 	}
 
-	/**
-	 * Remove all handlers on unload.
-	 */
+	/** Remove all handlers on unload. */
 	protected void onUnload() {
-		super.onUnload();
 		if (registrations != null) {
 			for (HandlerRegistration registration : registrations) {
 				registration.removeHandler();
 			}
 		}
 		loadedRegistration.removeHandler();
-		loadedRegistration = null;
+		resizeRegistration.removeHandler();
+		super.onUnload();
 	}
-	
 }
