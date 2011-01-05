@@ -167,6 +167,17 @@ public class Bbox implements Serializable {
 	public double getMaxX() {
 		return getX() + getWidth();
 	}
+	
+	/**
+	 * Set the highest x boundary for the bbox.
+	 * Attention, order is important, setMaxY() must always be called after setY().
+	 * 
+	 * @param x highest x
+	 * @since 1.8.0
+	 */
+	public void setMaxX(double x) {
+		setWidth(x - this.x);
+	}
 
 	/**
 	 * Get the highest y boundary of the bbox.
@@ -177,6 +188,17 @@ public class Bbox implements Serializable {
 	public double getMaxY() {
 		return getY() + getHeight();
 	}
+	
+	/**
+	 * Set the highest y boundary for the bbox. 
+	 * Attention, order is important, setMaxY() must always be called after setY().
+	 *
+	 * @param y highest y
+	 * @since 1.8.0
+	 */
+	public void setMaxY(double y) {
+		setHeight(y - this.y);
+	}	
 
 	/**
 	 * Convert to readable string.
