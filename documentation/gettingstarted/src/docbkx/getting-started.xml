@@ -485,7 +485,8 @@
       usually only a problem when you have several Geomajas projects opened in
       your workspace. If this is the case, run the GWT plugin with an embedded
       Jetty server as explained in the previous chapter and you should be
-      fine.</para>
+      fine. Note that this should be the first listener in your web.xm files,
+	  before the spring listeners.</para>
 
       <para>The following steps are needed to run GPE directly:</para>
 

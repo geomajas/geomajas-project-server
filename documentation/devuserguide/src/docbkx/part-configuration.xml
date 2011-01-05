@@ -261,14 +261,60 @@
 
       <para>There needs to be at least one <code>ClientApplicationInfo</code>
       bean. The bean name is used when requesting the application info.</para>
-
-      <para></para>
     </section>
 
     <section id="sect-rec-appcontext-structure">
       <title>Recommended application context structure</title>
 
-      <para></para>
+      <para>Geomajas requires some configuration, especially of the maps and
+      layers, and some additional configuration for security, plug-ins etc.
+      This is typically done using the applicationContext.xml file. There can
+      be quite a lot of configuration, pieces can be split off to make that
+      file less overwhelming. You should still be able to know where to find
+      something without inspecting file contents (this particularly means that
+      a bean which is referenced from more than one file needs a predictable
+      file for finding that bean). We recommend using the following
+      scheme.</para>
+
+      <para>The context files are normally put in the WEB-INF directory in the
+      web context (src/main/webapp/WEB-INF in your maven project).</para>
+
+      <para><emphasis>Application/map configuration:</emphasis> the
+      configuration can be split at several levels. You can always put stuff
+      in the parent (# indication is used for cases where this will probably
+      be the default)<footnote>
+          <para>In many configurations, only the applicationContext.xml and
+          server-side layer files will exist.</para>
+        </footnote>.</para>
+
+      <para><itemizedlist>
+          <listitem>
+            <para>application info: appXxx.xml (# typically inside the
+            applicationContext.xml is there is only one application).</para>
+          </listitem>
+
+          <listitem>
+            <para>map info: mapYyy.xml (#)</para>
+          </listitem>
+
+          <listitem>
+            <para>client layer info: clientLayerZzz.xml (#)</para>
+          </listitem>
+
+          <listitem>
+            <para>server layer info: layerUuu.xml</para>
+          </listitem>
+        </itemizedlist></para>
+
+      <para>The main object of a file should have the same name or id as the
+      filename. For example the client layer "clientLayerRivers" would be in
+      the file "clientLayerRivers.xml" (if it is in a separate file).</para>
+
+      <para>General configuration (security, pipelines, tools for toolbars
+      etc) will be in applicationContext.xml. Extra files with clear names can
+      be created to store configuration for specific plug-ins. For example,
+      when extensive security configuration is needed, there may be a separate
+      security.xml file.</para>
     </section>
   </chapter>
 
@@ -397,8 +443,8 @@
     <section id="conf-vector">
       <title>Vector layer configuration</title>
 
-      <para>Vector layers contain homogeneous vector based features. All vector
-      layer implementations implement the
+      <para>Vector layers contain homogeneous vector based features. All
+      vector layer implementations implement the
       <code>org.geomajas.layer.VectorLayer</code> interface, which means they
       provide an accessor for a <code>VectorLayerInfo</code> metadata object.
       The info object configuration is normally defined in the Spring
