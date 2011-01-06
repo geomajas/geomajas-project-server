@@ -40,15 +40,16 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
- * Test cases for {@link GetFeaturesEachStep}.
- * 
+ * Test cases for {@link org.geomajas.internal.layer.vector.GetFeaturesEachStep}.
+ *
  * @author Kristof Heirwegh
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
 		"/org/geomajas/layer/bean/beanContext.xml", "/org/geomajas/layer/bean/layerBeans.xml",
-		"/org/geomajas/internal/layer/vector/getFeaturesEachStep.xml" })
-public class GetFeaturesEachStepTest {
+		"/org/geomajas/internal/layer/vector/getFeaturesEachStep.xml",
+		"/org/geomajas/internal/layer/vector/oddFeatureSecurity.xml" })
+public class GetFeaturesEachStepSecuredTest {
 
 	// Small caveat, not everything is tested yet 
 	// (for example filter from pipeline)
@@ -70,43 +71,23 @@ public class GetFeaturesEachStepTest {
 	}
 
 	@Test
-	public void testNoSecurityNorOffsetNorLimit() throws Exception {
+	public void testSecurity() throws Exception {
 		GetFeaturesContainer result = new GetFeaturesContainer();
 		gfes.execute(getPipelineContext(0, Integer.MAX_VALUE), result);
 
-		Assert.assertEquals(20, result.getFeatures().size());
-		Assert.assertEquals("1", result.getFeatures().get(0).getId());
-		Assert.assertEquals("20", result.getFeatures().get(19).getId());
-	}
-
-	@Test
-	public void testOffset() throws Exception {
-		GetFeaturesContainer result = new GetFeaturesContainer();
-		gfes.execute(getPipelineContext(5, Integer.MAX_VALUE), result);
-
-		Assert.assertEquals(15, result.getFeatures().size());
-		Assert.assertEquals("6", result.getFeatures().get(0).getId());
-		Assert.assertEquals("20", result.getFeatures().get(14).getId());
-	}
-
-	@Test
-	public void testLimit() throws Exception {
-		GetFeaturesContainer result = new GetFeaturesContainer();
-		gfes.execute(getPipelineContext(0, 10), result);
-
 		Assert.assertEquals(10, result.getFeatures().size());
-		Assert.assertEquals("1", result.getFeatures().get(0).getId());
-		Assert.assertEquals("10", result.getFeatures().get(9).getId());
+		Assert.assertEquals("2", result.getFeatures().get(0).getId());
+		Assert.assertEquals("20", result.getFeatures().get(9).getId());
 	}
 
 	@Test
-	public void testOffsetAndLimit() throws Exception {
+	public void testSecurityAndOffsetAndLimit() throws Exception {
 		GetFeaturesContainer result = new GetFeaturesContainer();
-		gfes.execute(getPipelineContext(5, 10), result);
+		gfes.execute(getPipelineContext(5, 3), result);
 
-		Assert.assertEquals(10, result.getFeatures().size());
-		Assert.assertEquals("6", result.getFeatures().get(0).getId());
-		Assert.assertEquals("15", result.getFeatures().get(9).getId());
+		Assert.assertEquals(3, result.getFeatures().size());
+		Assert.assertEquals("12", result.getFeatures().get(0).getId());
+		Assert.assertEquals("16", result.getFeatures().get(2).getId());
 	}
 
 	// ----------------------------------------------------------
