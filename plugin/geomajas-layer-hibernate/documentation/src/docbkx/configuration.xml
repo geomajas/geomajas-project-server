@@ -412,6 +412,33 @@ public class AreaOfInterest {
           and one-to-many) are also supported. See the "howto" section for
           more information.</para>
         </important>
+
+        <para>The properties which may be defined on a HibernateLayer object
+        are:</para>
+
+        <itemizedlist>
+          <listitem>
+            <para><emphasis>layerInfo</emphasis>: the description of the
+            features.</para>
+          </listitem>
+
+          <listitem>
+            <para><emphasis>featureModel</emphasis>: the feature model to use
+            for this layer.</para>
+          </listitem>
+
+          <listitem>
+            <para><emphasis>sessionfactory</emphasis>: the session factory to
+            use for this layer.</para>
+          </listitem>
+
+          <listitem>
+            <para><emphasis>scrollableResultSet</emphasis>: indicates whether
+            a scrollable resultset needs to be used. This can be more
+            efficient when queries return many records but needs to be
+            supported by your database driver.</para>
+          </listitem>
+        </itemizedlist>
       </section>
     </section>
   </section>

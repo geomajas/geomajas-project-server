@@ -55,6 +55,7 @@ import org.hibernate.EntityMode;
 import org.hibernate.HibernateException;
 import org.hibernate.ScrollableResults;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Order;
 import org.hibernate.metadata.ClassMetadata;
@@ -87,11 +88,7 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, V
 	private FeatureModel featureModel;
 
 	/**
-	 * <p>
 	 * Should the result be retrieved as a scrollable resultset? Your database(driver) needs to support this.
-	 * </p>
-	 * 
-	 * @since 1.8.0
 	 */
 	private boolean scrollableResultSet;
 
@@ -175,12 +172,32 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, V
 		return true;
 	}
 
+	/**
+	 * Set the featureModel.
+	 *
+	 * @param featureModel
+	 * @throws LayerException
+	 * @since 1.8.0
+	 */
+	@Api
 	public void setFeatureModel(FeatureModel featureModel) throws LayerException {
 		this.featureModel = featureModel;
 		if (null != getLayerInfo()) {
 			featureModel.setLayerInfo(getLayerInfo());
 		}
 		filterService.registerFeatureModel(featureModel);
+	}
+
+	/**
+	 * Set the session factory for creating Hibernate sessions.
+	 *
+	 * @param sessionFactory session factory
+	 * @throws HibernateLayerException factory could not be set
+	 * @since 1.8.0
+	 */
+	@Api
+	public void setSessionFactory(SessionFactory sessionFactory) throws HibernateLayerException {
+		super.setSessionFactory(sessionFactory);
 	}
 
 	/**
@@ -348,6 +365,15 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, V
 		return scrollableResultSet;
 	}
 
+	/**
+	 * <p>
+	 * Should the result be retrieved as a scrollable resultset? Your database(driver) needs to support this.
+	 * </p>
+	 *
+	 * @param scrollableResultSet true when a scrollable resultset should be used
+	 * @since 1.8.0
+	 */
+	@Api
 	public void setScrollableResultSet(boolean scrollableResultSet) {
 		this.scrollableResultSet = scrollableResultSet;
 	}
@@ -393,6 +419,8 @@ public class HibernateLayer extends HibernateLayerUtil implements VectorLayer, V
 
 	/**
 	 * Enforces the correct srid on incoming features.
+	 *
+	 * @param feature object to enforce srid on
 	 */
 	private void enforceSrid(Object feature) throws LayerException {
 		Geometry geom = getFeatureModel().getGeometry(feature);
