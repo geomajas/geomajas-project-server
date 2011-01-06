@@ -434,13 +434,14 @@ public class FeatureSearch extends Canvas {
 		layout.setWidth100();
 		layout.setHeight100();
 
-		logicalOperatorRadio = new RadioGroupItem("logicalOperator", "");
+		logicalOperatorRadio = new RadioGroupItem("logicalOperator");
 		logicalOperatorRadio.setValueMap(I18nProvider.getSearch().radioOperatorOr(), I18nProvider.getSearch()
 				.radioOperatorAnd());
 		logicalOperatorRadio.setVertical(false);
 		logicalOperatorRadio.setRequired(true);
 		logicalOperatorRadio.setAlign(Alignment.LEFT);
 		logicalOperatorRadio.setWidth(250);
+		logicalOperatorRadio.setShowTitle(false);
 
 		HLayout optionLayout = new HLayout();
 		optionLayout.setHeight(50);
@@ -510,6 +511,8 @@ public class FeatureSearch extends Canvas {
 
 		leftLayout.addMember(layerLayout);
 		DynamicForm logicalForm = new DynamicForm();
+		logicalForm.setAutoWidth();
+		logicalForm.setLayoutAlign(Alignment.CENTER);
 		logicalForm.setFields(logicalOperatorRadio);
 		leftLayout.setWidth(420);
 		leftLayout.addMember(logicalForm);
