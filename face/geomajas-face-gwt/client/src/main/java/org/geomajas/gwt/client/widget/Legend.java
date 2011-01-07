@@ -47,8 +47,11 @@ import org.geomajas.gwt.client.map.layer.RasterLayer;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.spatial.Bbox;
 import org.geomajas.gwt.client.spatial.geometry.LineString;
+import org.geomajas.gwt.client.widget.event.GraphicsReadyEvent;
+import org.geomajas.gwt.client.widget.event.GraphicsReadyHandler;
 import org.geomajas.layer.LayerType;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.smartgwt.client.util.SC;
 import com.smartgwt.client.widgets.Canvas;
@@ -71,6 +74,8 @@ public class Legend extends Canvas {
 	private HandlerRegistration loadedRegistration;
 
 	private HandlerRegistration resizeRegistration;
+
+	private HandlerRegistration graphicsRegistration;
 
 	private MapModel mapModel;
 
@@ -113,8 +118,17 @@ public class Legend extends Canvas {
 		resizeRegistration = addResizedHandler(new ResizedHandler() {
 
 			public void onResized(ResizedEvent event) {
+				// Triggered by the render method (setHeight):
 				widget.setSize(getWidthAsString(), getHeightAsString());
 				widget.resize();
+			}
+		});
+
+		graphicsRegistration = widget.addGraphicsReadyHandler(new GraphicsReadyHandler() {
+
+			public void onReady(GraphicsReadyEvent event) {
+				// Triggered by the resized handler (i.e. we're ready to render the legend):
+				renderWithoutResize();
 			}
 		});
 	}
@@ -127,6 +141,42 @@ public class Legend extends Canvas {
 	 * Render the legend. This triggers a complete redraw.
 	 */
 	public void render() {
+		int y = 5;
+		for (Layer<?> layer : mapModel.getLayers()) {
+			if (layer.isShowing()) {
+				if (layer instanceof VectorLayer) {
+					VectorLayer vLayer = (VectorLayer) layer;
+					y += 21 * vLayer.getLayerInfo().getNamedStyleInfo().getFeatureStyles().size();
+				} else if (layer instanceof RasterLayer) {
+					y += 20;
+				}
+			}
+		}
+		setHeight(y);
+	}
+
+	// -------------------------------------------------------------------------
+	// Getters and setters:
+	// -------------------------------------------------------------------------
+
+	public MapModel getMapModel() {
+		return mapModel;
+	}
+
+	public FontStyle getFontStyle() {
+		return fontStyle;
+	}
+
+	public void setFontStyle(FontStyle fontStyle) {
+		this.fontStyle = fontStyle;
+	}
+
+	// -------------------------------------------------------------------------
+	// Private methods:
+	// -------------------------------------------------------------------------
+
+	/** Render the legend, without actually resizing the widget. */
+	private void renderWithoutResize() {
 		graphics.deleteGroup(parentGroup);
 		parentGroup = new Composite("legend-group");
 		graphics.drawGroup(null, parentGroup);
@@ -188,30 +238,7 @@ public class Legend extends Canvas {
 				}
 			}
 		}
-		// this tells the parent the actual height that we want !
-		setHeight(y);
-		markForRedraw();
 	}
-
-	// -------------------------------------------------------------------------
-	// Getters and setters:
-	// -------------------------------------------------------------------------
-
-	public MapModel getMapModel() {
-		return mapModel;
-	}
-
-	public FontStyle getFontStyle() {
-		return fontStyle;
-	}
-
-	public void setFontStyle(FontStyle fontStyle) {
-		this.fontStyle = fontStyle;
-	}
-
-	// -------------------------------------------------------------------------
-	// Private methods:
-	// -------------------------------------------------------------------------
 
 	/** Called when the MapModel configuration has been loaded. */
 	private void initialize() {
@@ -223,16 +250,19 @@ public class Legend extends Canvas {
 				}
 
 				public void onVisibleChange(LayerShownEvent event) {
+					GWT.log("Legend: onVisibleChange()");
 					render();
 				}
 			}));
 			registrations.add(layer.addLayerStyleChangedHandler(new LayerStyleChangedHandler() {
 
 				public void onLayerStyleChange(LayerStyleChangeEvent event) {
+					GWT.log("Legend: onLayerStyleChange()");
 					render();
 				}
 			}));
 		}
+		GWT.log("Legend.initialize");
 		render();
 	}
 
@@ -245,6 +275,7 @@ public class Legend extends Canvas {
 		}
 		loadedRegistration.removeHandler();
 		resizeRegistration.removeHandler();
+		graphicsRegistration.removeHandler();
 		super.onUnload();
 	}
 }
