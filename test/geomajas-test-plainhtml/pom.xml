@@ -240,6 +240,7 @@
 						</configuration>
 						<executions>
 							<execution>
+								<phase>compile</phase>
 								<goals>
 									<goal>clean</goal>
 									<goal>generateAsync</goal>

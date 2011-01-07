@@ -179,6 +179,7 @@
 						<artifactId>gwt-maven-plugin</artifactId>
 						<executions>
 							<execution>
+								<phase>compile</phase>
 								<goals>
 									<goal>clean</goal>
 									<goal>compile</goal>

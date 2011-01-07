@@ -99,6 +99,7 @@
 				<version>2.1.0-1</version>
 				<executions>
 					<execution>
+						<phase>compile</phase>
 						<goals>
 							<goal>compile</goal>
 							<!-- <goal>test</goal> causes hudson problems (on gwt face build) -->
