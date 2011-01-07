@@ -24,7 +24,9 @@ package org.geomajas.configuration.client;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.constraints.NotNull;
 
@@ -84,6 +86,8 @@ public class ClientMapInfo implements Serializable {
 	private ClientToolbarInfo toolbar;
 
 	private Bbox maxBounds = Bbox.ALL;
+
+	private Map<String, ClientWidgetInfo> widgetInfo = new HashMap<String, ClientWidgetInfo>();
 
 	private ClientUserDataInfo userData;
 
@@ -510,6 +514,39 @@ public class ClientMapInfo implements Serializable {
 	 */
 	public void setMaxBounds(Bbox maxBounds) {
 		this.maxBounds = maxBounds;
+	}
+
+	/**
+	 * Get configuration for (custom) map widgets.
+	 *
+	 * @return map keyed on widget id containing widget configurations
+	 * @since 1.8.0
+	 */
+	@Api
+	public Map<String, ClientWidgetInfo> getWidgetInfo() {
+		return widgetInfo;
+	}
+
+	/**
+	 * Get configuration for a (custom) map widgets.
+	 *
+	 * @param widget widget key
+	 * @return widget configuration
+	 * @since 1.8.0
+	 */
+	@Api
+	public ClientWidgetInfo getWidgetInfo(String widget) {
+		return widgetInfo.get(widget);
+	}
+
+	/**
+	 * Set configuration for (custom) map widgets.
+	 *
+	 * @param widgetInfo map keyed on widget id containing widget configurations
+	 * @since 1.8.0
+	 */
+	public void setWidgetInfo(Map<String, ClientWidgetInfo> widgetInfo) {
+		this.widgetInfo = widgetInfo;
 	}
 
 	/**

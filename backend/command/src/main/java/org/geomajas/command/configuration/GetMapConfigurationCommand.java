@@ -121,6 +121,7 @@ public class GetMapConfigurationCommand implements Command<GetMapConfigurationRe
 		client.setToolbar(securityClone(original.getToolbar()));
 		client.setUnitLength(original.getUnitLength());
 		client.setUserData(original.getUserData());
+		client.setWidgetInfo(original.getWidgetInfo());
 		return client;
 	}
 

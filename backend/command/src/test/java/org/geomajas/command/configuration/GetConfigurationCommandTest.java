@@ -20,7 +20,6 @@
  * You should have received a copy of the GNU Affero General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
 package org.geomajas.command.configuration;
 
 import org.geomajas.command.CommandDispatcher;
@@ -45,9 +44,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * @author Joachim Van der Auwera
  */
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = {"/org/geomajas/spring/geomajasContext.xml",
-		"/org/geomajas/testdata/layerCountries.xml", "/org/geomajas/testdata/simplevectorsContext.xml"})
-public class GetMapConfigurationCommandTest {
+@ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
+		"/org/geomajas/testdata/layerCountries.xml", "/org/geomajas/testdata/simplevectorsContext.xml" })
+public class GetConfigurationCommandTest {
 
 	private static final double DOUBLE_TOLERANCE = .0000000001;
 

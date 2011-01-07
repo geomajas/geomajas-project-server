@@ -68,6 +68,7 @@ public class GetConfigurationCommand implements Command<GetConfigurationRequest,
 		ClientApplicationInfo client = new ClientApplicationInfo();
 		client.setId(original.getId());
 		client.setUserData(original.getUserData());
+		client.setWidgetInfo(original.getWidgetInfo());
 		client.setScreenDpi(original.getScreenDpi());
 		List<ClientMapInfo> maps = new ArrayList<ClientMapInfo>();
 		client.setMaps(maps);

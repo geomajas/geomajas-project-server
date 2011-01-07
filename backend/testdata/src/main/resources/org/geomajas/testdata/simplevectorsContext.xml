@@ -186,8 +186,28 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 							<property name="dummy" value="some data" />
 						</bean>
 					</property>
+					<property name="widgetInfo">
+						<map>
+							<entry key="layerTree">
+								<bean
+									class="org.geomajas.configuration.client.ClientApplicationInfo.DummyClientWidgetInfo">
+									<property name="dummy" value="layer1, layer2" />
+								</bean>
+							</entry>
+						</map>
+					</property>
 				</bean>
 			</list>
+		</property>
+		<property name="widgetInfo">
+			<map>
+				<entry key="mapSelect">
+					<bean
+						class="org.geomajas.configuration.client.ClientApplicationInfo.DummyClientWidgetInfo">
+						<property name="dummy" value="map1, map2" />
+					</bean>
+				</entry>
+			</map>
 		</property>
 	</bean>
 

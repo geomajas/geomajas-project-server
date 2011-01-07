@@ -26,7 +26,9 @@ import org.geomajas.global.Api;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.constraints.NotNull;
 
@@ -50,6 +52,8 @@ public class ClientApplicationInfo implements Serializable {
 	private ClientUserDataInfo userData;
 
 	private int screenDpi = 96;
+
+	private Map<String, ClientWidgetInfo> widgetInfo = new HashMap<String, ClientWidgetInfo>();
 
 	/**
 	 * Get the unique id for this application (auto-copied from Spring context).
@@ -128,6 +132,69 @@ public class ClientApplicationInfo implements Serializable {
 	 */
 	public void setUserData(ClientUserDataInfo userData) {
 		this.userData = userData;
+	}
+
+	/**
+	 * Get configuration for (custom) widgets which are not map specific.
+	 *
+	 * @return map keyed on widget id containing widget configurations
+	 * @since 1.8.0
+	 */
+	@Api
+	public Map<String, ClientWidgetInfo> getWidgetInfo() {
+		return widgetInfo;
+	}
+
+	/**
+	 * Get configuration for a (custom) map widgets which are not map specific.
+	 *
+	 * @param widget widget key
+	 * @return widget configuration
+	 * @since 1.8.0
+	 */
+	@Api
+	public ClientWidgetInfo getWidgetInfo(String widget) {
+		return widgetInfo.get(widget);
+	}
+
+	/**
+	 * Set configuration for (custom) map widgets which are not map specific.
+	 *
+	 * @param widgetInfo map keyed on widget id containing widget configurations
+	 * @since 1.8.0
+	 */
+	public void setWidgetInfo(Map<String, ClientWidgetInfo> widgetInfo) {
+		this.widgetInfo = widgetInfo;
+	}
+
+	/**
+	 * Dummy implementation to keep GWT serializer happy !
+	 *
+	 * @author Joachim Van der Auwera
+	 */
+	public static class DummyClientWidgetInfo implements ClientWidgetInfo {
+
+		private static final long serialVersionUID = 180L;
+
+		private String dummy;
+
+		/**
+		 * Dummy field, otherwise checkstyle complains.
+		 *
+		 * @return dummy field value
+		 */
+		public String getDummy() {
+			return dummy;
+		}
+
+		/**
+		 * Dummy field, otherwise checkstyle complains.
+		 *
+		 * @param dummy dummy field value
+		 */
+		public void setDummy(String dummy) {
+			this.dummy = dummy;
+		}
 	}
 
 	/**
