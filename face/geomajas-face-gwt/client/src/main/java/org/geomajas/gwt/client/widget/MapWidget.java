@@ -927,7 +927,11 @@ public class MapWidget extends Canvas implements MapViewChangedHandler, MapModel
 					render(scalebar, RenderGroup.SCREEN, RenderStatus.UPDATE);
 				}
 			}
-			render(mapModel, null, RenderStatus.ALL);
+			if (event.isPanDragging()) {
+				render(mapModel, null, RenderStatus.UPDATE);
+			} else {
+				render(mapModel, null, RenderStatus.ALL);
+			}
 		}
 	}
 

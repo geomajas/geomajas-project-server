@@ -123,14 +123,14 @@ public class VectorLayer extends AbstractLayer<ClientVectorLayerInfo> implements
 				// Updating a tile, is simply re-rendering it:
 				public void execute(VectorTile tile) {
 					tile.accept(visitor, group, bounds, true);
-					// also re-render the selected features !
-					for (Feature feature : selectedFeatures.values()) {
-						visitor.visit(feature, group);
-					}
-
 				}
 			};
 			cache.queryAndSync(bounds, filter, onDelete, onUpdate);
+			// also re-render the selected features !
+			for (Feature feature : selectedFeatures.values()) {
+				visitor.visit(feature, group);
+			}
+
 		}
 	}
 

@@ -62,15 +62,15 @@ public class MapViewState {
 	}
 
 	public MapViewState copyAndSetScale(double scale) {
-		return new MapViewState(scale, origin, panOrigin, false);
+		return new MapViewState(scale, origin, panOrigin, panDragging);
 	}
 
 	public MapViewState copyAndSetOrigin(double x, double y) {
-		return new MapViewState(scale, new Coordinate(x, y), panOrigin, false);
+		return new MapViewState(scale, new Coordinate(x, y), panOrigin, panDragging);
 	}
 
 	public MapViewState copyAndSetPanOrigin(double x, double y) {
-		return new MapViewState(scale, origin, new Coordinate(x, y), false);
+		return new MapViewState(scale, origin, new Coordinate(x, y), panDragging);
 	}
 
 	public double getX() {
