@@ -287,10 +287,15 @@ public class MapView {
 		Bbox oldbbox = getBounds();
 		this.width = newWidth;
 		this.height = newHeight;
+		if (viewState.getScale() < getMinimumScale()) {
+			// the new scale is too low, re-apply old bounds (this will limit the scale correctly)
+			doApplyBounds(oldbbox, ZoomOption.LEVEL_CLOSEST);
+		} else {
+			// Use the same center point for the new bounds, but don't zoom in or out.
+			doSetOrigin(oldbbox.getCenterPoint());
+			fireEvent(true, null);
+		}
 
-		// Use the same center point for the new bounds, but don't zoom in or out.
-		doSetOrigin(oldbbox.getCenterPoint());
-		fireEvent(true, null);
 	}
 
 	/**
