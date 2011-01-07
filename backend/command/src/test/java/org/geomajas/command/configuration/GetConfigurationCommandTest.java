@@ -23,8 +23,8 @@
 package org.geomajas.command.configuration;
 
 import org.geomajas.command.CommandDispatcher;
-import org.geomajas.command.dto.GetMapConfigurationRequest;
-import org.geomajas.command.dto.GetMapConfigurationResponse;
+import org.geomajas.command.dto.GetConfigurationRequest;
+import org.geomajas.command.dto.GetConfigurationResponse;
 import org.geomajas.configuration.client.ClientApplicationInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientUserDataInfo;
@@ -49,6 +49,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 public class GetConfigurationCommandTest {
 
 	private static final double DOUBLE_TOLERANCE = .0000000001;
+	private static final String APP_ID = "simplevectors";
 
 	@Autowired
 	private ConfigurationService configurationService;
@@ -57,7 +58,32 @@ public class GetConfigurationCommandTest {
 	private CommandDispatcher dispatcher;
 
 	@Test
-	public void testConvertMaxExtent() throws Exception {
+	public void testConvertApplication() throws Exception {
+		GetConfigurationRequest request = new GetConfigurationRequest();
+		request.setApplicationId(APP_ID);
+		GetConfigurationResponse response = (GetConfigurationResponse) dispatcher.execute(
+				"command.configuration.Get", request, null, "en");
+		if (response.isError()) {
+			response.getErrors().get(0).printStackTrace();
+		}
+		Assert.assertFalse(response.isError());
+		ClientApplicationInfo appInfo = response.getApplication();
+		Assert.assertNotNull(appInfo);
+		Assert.assertEquals(APP_ID, appInfo.getId());
+		Assert.assertEquals(96, appInfo.getScreenDpi());
+
+		// widget data
+		Assert.assertNotNull(appInfo.getWidgetInfo());
+		Assert.assertNotNull(appInfo.getWidgetInfo("mapSelect"));
+		Assert.assertNull(appInfo.getWidgetInfo("layerTree"));
+		Assert.assertEquals("map1, map2",
+				((ClientApplicationInfo.DummyClientWidgetInfo) appInfo.getWidgetInfo("mapSelect")).getDummy());
+
+		verifyMap(appInfo.getMaps().get(2));
+	}
+
+	private void verifyMap(ClientMapInfo mapInfo) {
+		// first test base assumptions
 		Layer layer = configurationService.getLayer("countries");
 		Bbox configMaxExtent = layer.getLayerInfo().getMaxExtent();
 		Assert.assertEquals(-85.05112877980659, configMaxExtent.getX(), DOUBLE_TOLERANCE);
@@ -65,16 +91,8 @@ public class GetConfigurationCommandTest {
 		Assert.assertEquals(170.102257, configMaxExtent.getWidth(), DOUBLE_TOLERANCE);
 		Assert.assertEquals(170.102257, configMaxExtent.getHeight(), DOUBLE_TOLERANCE);
 
-		GetMapConfigurationRequest request = new GetMapConfigurationRequest();
-		request.setApplicationId("simplevectors");
-		request.setMapId("coordTestMap");
-		GetMapConfigurationResponse response = (GetMapConfigurationResponse) dispatcher.execute(
-				"command.configuration.GetMap", request, null, "en");
-		if (response.isError()) {
-			response.getErrors().get(0).printStackTrace();
-		}
-		Assert.assertFalse(response.isError());
-		ClientMapInfo mapInfo = response.getMapInfo();
+		// now test the map conversion
+
 		Assert.assertNotNull(mapInfo);
 		Bbox mapMaxExtent = mapInfo.getLayers().get(0).getMaxExtent();
 		// these values were registered during a first run, they have *not* been externally verified
