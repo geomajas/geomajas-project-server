@@ -96,7 +96,7 @@ public class WmsController {
 
 			// Prepare the response:
 			response.setContentType(layer.getFormat());
-			response.getWriter().print(get.getResponseBodyAsString());
+			response.getOutputStream().write(get.getResponseBody());
 		} catch (Exception e) {
 			// Create an error image to make the reason for the error visible:
 			byte[] b = createErrorImage(layer.getLayerInfo().getTileWidth(), layer.getLayerInfo().getTileHeight(), e);
