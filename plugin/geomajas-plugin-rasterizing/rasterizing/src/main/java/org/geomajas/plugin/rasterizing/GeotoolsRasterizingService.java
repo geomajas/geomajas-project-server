@@ -52,7 +52,9 @@ import org.opengis.referencing.operation.TransformException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
+import javax.imageio.ImageIO;
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Font;
@@ -64,6 +66,7 @@ import java.awt.font.TextLayout;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Rectangle2D;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.io.OutputStream;
 
 /**
@@ -73,8 +76,9 @@ import java.io.OutputStream;
  * @author Joachim Van der Auwera
  * @since 1.0.0
  */
+@Component
 @Api
-public class GeotoolsRasterizingService {
+public class GeotoolsRasterizingService implements RasterizingService {
 
 	private final Logger log = LoggerFactory.getLogger(GeotoolsRasterizingService.class);
 
@@ -160,14 +164,15 @@ public class GeotoolsRasterizingService {
 	 */
 	@Api
 	public void rasterize(OutputStream stream, VectorLayer layer, NamedStyleInfo style, TileMetadata metadata,
-			InternalTile tile) throws GeomajasException {
+			InternalTile tile) throws GeomajasException, IOException {
 		BufferedImage image = createImage(tile.getScreenWidth(), tile.getScreenHeight());
 		Graphics2D graphics = getGraphics(image);
-		paintLayer(image, graphics, layer, style, tile, metadata);
+		paintLayer(image, graphics, layer, style, metadata, tile);
+		ImageIO.write(image, "PNG", stream);
 	}
 
 	private void paintLayer(BufferedImage image, final Graphics2D graphics2D, VectorLayer layer, NamedStyleInfo style,
-			InternalTile tile, TileMetadata metadata) throws GeomajasException {
+			TileMetadata metadata, InternalTile tile) throws GeomajasException {
 		MathTransform transform = getMathTransform(metadata, tile);
 		if (metadata.isPaintGeometries()) {
 			StyledShapePainter painter = new StyledShapePainter(new LabelCacheImpl());

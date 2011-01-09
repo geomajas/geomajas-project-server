@@ -59,6 +59,43 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		</property>
 	</bean>
 
+	<!-- default security configuration - should be overwritten to make something accessible -->
+
+	<bean name="plugin.rasterizing.rasterizingInfo" class="org.geomajas.plugin.rasterizing.RasterizingInfo">
+		<property name="rasterizingMoment">
+			<util:constant static-field="org.geomajas.plugin.rasterizing.RasterizingMoment.TILE_REQUEST" />
+		</property>
+	</bean>
+
+
+	<!-- define pipelines for actual rasterizing -->
+
+	<bean name="PIPELINE_RASTERIZING" class="org.geomajas.service.pipeline.PipelineInfo">
+		<property name="pipelineName"><util:constant static-field="org.geomajas.plugin.rasterizing.RasterizingPipelineCode.PIPELINE_RASTERIZING"/></property>
+		<property name="pipeline">
+			<list>
+				<bean class="org.geomajas.service.pipeline.PipelineHook">
+					<property name="id" value="preGetFromCache" />
+				</bean>
+				<bean class="org.geomajas.plugin.rasterizing.GetFromCacheStep">
+					<property name="id" value="GetFromCacheStep" />
+				</bean>
+				<bean class="org.geomajas.service.pipeline.PipelineHook">
+					<property name="id" value="postGetFromCache" />
+				</bean>
+				<bean class="org.geomajas.service.pipeline.PipelineHook">
+					<property name="id" value="preRasterize" />
+				</bean>
+				<bean class="org.geomajas.plugin.rasterizing.RasterizeStep">
+					<property name="id" value="RasterizeStep" />
+				</bean>
+				<bean class="org.geomajas.service.pipeline.PipelineHook">
+					<property name="id" value="postRasterize" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
 	<!-- define cached pipelines for VectorLayerService -->
 
 	<bean name="PIPELINE_GET_VECTOR_TILE_RASTERIZED" class="org.geomajas.service.pipeline.PipelineInfo">

@@ -38,17 +38,31 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-caching-all</artifactId>
+				<version>${rasterizing-caching-version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-backend</artifactId>
 				<version>${rasterizing-backend-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+
 			<dependency>
 				<groupId>org.geotools</groupId>
 				<artifactId>gt-render</artifactId>
 				<version>2.6.3</version>
 			</dependency>			
+
+			<dependency>
+				<groupId>org.springframework</groupId>
+				<artifactId>spring-webmvc</artifactId>
+				<version>3.0.5.RELEASE</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 	
