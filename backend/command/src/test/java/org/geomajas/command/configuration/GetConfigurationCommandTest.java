@@ -93,8 +93,19 @@ public class GetConfigurationCommandTest {
 
 		// now test the map conversion
 
+		GetMapConfigurationRequest request = new GetMapConfigurationRequest();
+		request.setApplicationId("simplevectors");
+		request.setMapId("coordTestMap");
+		GetMapConfigurationResponse response = (GetMapConfigurationResponse) dispatcher.execute(
+				"command.configuration.GetMap", request, null, "en");
+		if (response.isError()) {
+			response.getErrors().get(0).printStackTrace();
+		}
+		Assert.assertFalse(response.isError());
+		ClientMapInfo mapInfo = response.getMapInfo();
 		Assert.assertNotNull(mapInfo);
 		Bbox mapMaxExtent = mapInfo.getLayers().get(0).getMaxExtent();
+
 		// these values were registered during a first run, they have *not* been externally verified
 		Assert.assertEquals(-9467848.347161204, mapMaxExtent.getX(), DOUBLE_TOLERANCE);
 		Assert.assertEquals(-2.0037508342789236E7, mapMaxExtent.getY(), DOUBLE_TOLERANCE);
