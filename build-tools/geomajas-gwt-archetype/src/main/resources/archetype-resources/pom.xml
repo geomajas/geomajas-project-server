@@ -239,10 +239,11 @@
 							<module>${package}.Application</module>
 							<runTarget>index.html</runTarget>
 							<hostedWebapp>${project.build.directory}/${project.build.finalName}</hostedWebapp>
+							<copyWebapp>true</copyWebapp>
 						</configuration>
 						<executions>
 							<execution>
-								<phase>compile</phase>
+								<phase>test-compile</phase>
 								<goals>
 									<goal>clean</goal>
 									<goal>compile</goal>
