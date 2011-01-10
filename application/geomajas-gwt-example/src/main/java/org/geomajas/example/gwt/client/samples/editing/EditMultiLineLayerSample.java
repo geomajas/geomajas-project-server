@@ -27,6 +27,7 @@ import org.geomajas.example.gwt.client.samples.base.EditingManual;
 import org.geomajas.example.gwt.client.samples.base.SamplePanel;
 import org.geomajas.example.gwt.client.samples.base.SamplePanelFactory;
 import org.geomajas.example.gwt.client.samples.i18n.I18nProvider;
+import org.geomajas.gwt.client.gfx.paintable.mapaddon.GoogleAddon;
 import org.geomajas.gwt.client.map.event.MapModelEvent;
 import org.geomajas.gwt.client.map.event.MapModelHandler;
 import org.geomajas.gwt.client.widget.MapWidget;
@@ -35,7 +36,6 @@ import org.geomajas.gwt.client.widget.Toolbar;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.layout.HLayout;
 import com.smartgwt.client.widgets.layout.VLayout;
-import org.geomajas.layer.google.gwt.client.GoogleAddon;
 
 /**
  * <p>

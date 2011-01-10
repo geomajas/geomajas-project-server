@@ -19,8 +19,10 @@
 			<!-- security -->
 			WEB-INF/security.xml
 
+			<!-- @todo enable when compiling with caching, is not released at time of commit
 			classpath:org/geomajas/plugin/caching/DefaultCachedPipelines.xml
-			<!--
+			-->
+			<!-- @todo enable when compiling with rasterizing, is not released at time of commit
 			classpath:org/geomajas/plugin/rasterizing/DefaultCachedAndRasterizedPipelines.xml
 			-->
 			<!--
