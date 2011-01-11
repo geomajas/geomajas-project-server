@@ -71,7 +71,9 @@ public class AttributesAction extends MenuAction {
 			SimpleFeatureAttributeWindow window = new SimpleFeatureAttributeWindow(ft.getNewFeatures()[0]) {
 
 				public void onOk(Feature feature) {
-					ft.getNewFeatures()[0] = feature;
+					// Copy the attributes to the real feature:
+					// Don't overwrite the feature itself, as the GraphicsContext expects the same object for rendering!
+					ft.getNewFeatures()[0].setAttributes(feature.getAttributes());
 				}
 
 				public void onClose() {
@@ -98,12 +100,18 @@ public class AttributesAction extends MenuAction {
 			setIsModal(true);
 			centerInPage();
 			setAutoSize(true);
-			setTitle(I18nProvider.getAttribute().getAttributeWindowTitle(""));
 			setCanDragReposition(true);
 			setCanDragResize(true);
 
-			attributeTable = new FeatureAttributeEditor(feature.getLayer(), false);
-			attributeTable.setFeature(feature);
+			VLayout layout = new VLayout();
+			if (feature != null) {
+				setTitle(I18nProvider.getAttribute().getAttributeWindowTitle(feature.getLabel()));
+				attributeTable = new FeatureAttributeEditor(feature.getLayer(), false);
+				attributeTable.setFeature(feature);
+				layout.addMember(attributeTable);
+			} else {
+				setTitle(I18nProvider.getAttribute().getAttributeWindowTitle(""));
+			}
 
 			HLayout buttonLayout = new HLayout();
 			buttonLayout.setAlign(Alignment.CENTER);
@@ -114,18 +122,9 @@ public class AttributesAction extends MenuAction {
 			okButton = new OkButton();
 			buttonLayout.addMember(okButton);
 
-			VLayout layout = new VLayout();
-			layout.addMember(attributeTable);
 			layout.addMember(buttonLayout);
-
 			layout.setWidth(450);
 			addItem(layout);
-
-			if (feature != null) {
-				setTitle(I18nProvider.getAttribute().getAttributeWindowTitle(feature.getLabel()));
-			} else {
-				setTitle(I18nProvider.getAttribute().getAttributeWindowTitle(""));
-			}
 		}
 
 		public void onOk(Feature feature) {
