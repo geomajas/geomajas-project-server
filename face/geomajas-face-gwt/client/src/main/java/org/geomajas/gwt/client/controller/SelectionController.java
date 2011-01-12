@@ -141,7 +141,8 @@ public class SelectionController extends AbstractRectangleController {
 			// shift or CTRL is used when depressed either at beginning or end:
 			shiftOrCtrl = (event.isShiftKeyDown() || event.isControlKeyDown());
 
-			if (timestamp + clickTimeout > new Date().getTime()) {
+			if (timestamp + clickTimeout > new Date().getTime()
+					&& (bounds.getWidth() < pixelTolerance || bounds.getHeight() < pixelTolerance)) {
 				stopDragging();
 				// click behavior instead of drag
 				ToggleSelectionAction action = new ToggleSelectionAction(mapWidget, priorityToSelectedLayer,
