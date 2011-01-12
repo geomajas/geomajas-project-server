@@ -67,7 +67,7 @@ public class VmlLabelTileWriter implements GraphicsWriter {
 	private GeoService geoService;
 
 	private TextService textService;
-	
+
 	public VmlLabelTileWriter(int coordWidth, int coordHeight, GeometryCoordinateSequenceTransformer transformer,
 			LabelStyleInfo labelStyle, GeoService geoService, TextService textService) {
 		this.coordWidth = coordWidth;
@@ -120,7 +120,7 @@ public class VmlLabelTileWriter implements GraphicsWriter {
 				// Calculate label width, left and top:
 				Rectangle2D textBox = textService.getStringBounds(labelString, labelStyle.getFontStyle());
 				int boxWidth = (int) textBox.getWidth() + 8; // TODO: check why not wide enough !!!
-				int boxHeight = (int) textBox.getHeight();
+				int boxHeight = (int) textBox.getHeight() + 2;
 				int left = ((int) labelPos.getX()) - boxWidth / 2;
 				int top = ((int) labelPos.getY()) - boxHeight / 2;
 
@@ -133,7 +133,7 @@ public class VmlLabelTileWriter implements GraphicsWriter {
 				// First we draw the rectangle:
 				document.writeElement("vml:rect", true);
 				document.writeAttribute("id", feature.getId() + ".label");
-				document.writeAttribute("style", "WIDTH: " + (boxWidth) + "px; HEIGHT: " + (boxHeight) + "px;");
+				document.writeAttribute("style", "WIDTH: " + boxWidth + "px; HEIGHT: " + boxHeight + "px;");
 				document.writeAttribute("fillcolor", bgStyle.getFillColor());
 				document.writeAttribute("strokecolor", bgStyle.getStrokeColor());
 				document.writeAttribute("strokeweight", bgStyle.getStrokeWidth());
@@ -151,15 +151,17 @@ public class VmlLabelTileWriter implements GraphicsWriter {
 				// Then the label-text:
 				document.writeElement("vml:textbox", true);
 				document.writeAttribute("id", feature.getId() + ".text");
-				document.writeAttribute("style", getCssStyle(labelStyle.getFontStyle()));
-				document.writeAttribute("fillcolor", labelStyle.getFontStyle().getColor());
+				document.writeAttribute("v-text-anchor", "middle");
 				document.writeAttribute("inset", "0px, 0px, 0px, 0px");
+				document.writeAttribute("style", getCssStyle(labelStyle.getFontStyle())
+						+ "; text-align:center; WIDTH: " + boxWidth + "px; HEIGHT: " + boxHeight + "px;");
+				document.writeAttribute("fillcolor", labelStyle.getFontStyle().getColor());
 				if (labelStyle.getFontStyle().getOpacity() > 0) {
 					document.writeElement("vml:fill", true);
 					document.writeAttribute("opacity", Float.toString(labelStyle.getFontStyle().getOpacity()));
 					document.closeElement();
 				}
-				//document.writeTextNode(labelString.replaceAll(" ", "&nbsp;"));
+				// document.writeTextNode(labelString.replaceAll(" ", "&nbsp;"));
 				document.writeTextNode(labelString);
 				document.closeElement();
 
@@ -174,7 +176,7 @@ public class VmlLabelTileWriter implements GraphicsWriter {
 		}
 		document.closeElement();
 	}
-		
+
 	private String getCssStyle(FontStyleInfo style) {
 		String css = "";
 		if (style.getColor() != null && !"".equals(style.getColor())) {
@@ -194,6 +196,5 @@ public class VmlLabelTileWriter implements GraphicsWriter {
 		}
 		return css;
 	}
-
 
 }
