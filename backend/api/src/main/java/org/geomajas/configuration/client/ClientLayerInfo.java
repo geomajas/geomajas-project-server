@@ -23,6 +23,8 @@
 package org.geomajas.configuration.client;
 
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Null;
@@ -37,6 +39,7 @@ import org.geomajas.layer.LayerType;
  * server layer is established via the <code>layerInfo</code> field.
  * 
  * @author Jan De Moerloose
+ * @author Oliver May
  * @since 1.6.0
  */
 @Api(allMethods = true)
@@ -62,6 +65,8 @@ public abstract class ClientLayerInfo implements Serializable {
 
 	@NotNull
 	private String serverLayerId;
+
+	private Map<String, ClientWidgetInfo> widgetInfo = new HashMap<String, ClientWidgetInfo>();
 
 	private ClientUserDataInfo userData;
 	
@@ -283,6 +288,39 @@ public abstract class ClientLayerInfo implements Serializable {
 	 */
 	public String getCrs() {
 		return layerInfo.getCrs();
+	}
+
+	/**
+	 * Get configuration for (custom) layer widgets.
+	 *
+	 * @return map keyed on widget id containing widget configurations
+	 * @since 1.8.0
+	 */
+	@Api
+	public Map<String, ClientWidgetInfo> getWidgetInfo() {
+		return widgetInfo;
+	}
+
+	/**
+	 * Get configuration for a (custom) layer widgets.
+	 *
+	 * @param widget widget key
+	 * @return widget configuration
+	 * @since 1.8.0
+	 */
+	@Api
+	public ClientWidgetInfo getWidgetInfo(String widget) {
+		return widgetInfo.get(widget);
+	}
+
+	/**
+	 * Set configuration for (custom) layer widgets.
+	 *
+	 * @param widgetInfo map keyed on widget id containing widget configurations
+	 * @since 1.8.0
+	 */
+	public void setWidgetInfo(Map<String, ClientWidgetInfo> widgetInfo) {
+		this.widgetInfo = widgetInfo;
 	}
 
 	/**

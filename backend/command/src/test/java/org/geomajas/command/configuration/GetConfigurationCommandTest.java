@@ -26,6 +26,7 @@ import org.geomajas.command.CommandDispatcher;
 import org.geomajas.command.dto.GetConfigurationRequest;
 import org.geomajas.command.dto.GetConfigurationResponse;
 import org.geomajas.configuration.client.ClientApplicationInfo;
+import org.geomajas.configuration.client.ClientLayerInfo;
 import org.geomajas.configuration.client.ClientMapInfo;
 import org.geomajas.configuration.client.ClientUserDataInfo;
 import org.geomajas.geometry.Bbox;
@@ -114,6 +115,21 @@ public class GetConfigurationCommandTest {
 		Assert.assertNotNull(mapInfo.getWidgetInfo("layerTree"));
 		Assert.assertEquals("layer1, layer2",
 				((ClientApplicationInfo.DummyClientWidgetInfo) mapInfo.getWidgetInfo("layerTree")).getDummy());
+		
+		// widget data on the layer
+		ClientLayerInfo layerInfo = mapInfo.getLayers().get(0);
+		for(ClientLayerInfo i: mapInfo.getLayers()) {
+			if(i.getId().equals("countries")) {
+				layerInfo = i;
+			}
+		}
+		Assert.assertNotNull(layerInfo);
+		Assert.assertNotNull(layerInfo.getWidgetInfo());
+		Assert.assertNull(layerInfo.getWidgetInfo("layerTree"));
+		Assert.assertNotNull(layerInfo.getWidgetInfo("customLayerInfoWidget"));
+		Assert.assertEquals("org.geomajas.widget.IpsumWidget",
+				((ClientApplicationInfo.DummyClientWidgetInfo) layerInfo.getWidgetInfo("customLayerInfoWidget")).getDummy());
+		
 	}
 
 }
