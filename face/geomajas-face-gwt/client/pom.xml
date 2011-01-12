@@ -93,19 +93,16 @@
 					</links>
 				</configuration>
 			</plugin>
+			<!-- some default config, added to in profiles -->
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>gwt-maven-plugin</artifactId>
 				<version>2.1.0-1</version>
-				<executions>
-					<execution>
-						<phase>compile</phase>
-						<goals>
-							<goal>compile</goal>
-							<!-- <goal>test</goal> causes hudson problems (on gwt face build) -->
-						</goals>
-					</execution>
-				</executions>
+				<configuration>
+					<disableCastChecking>true</disableCastChecking>
+					<disableClassMetadata>true</disableClassMetadata>
+					<extraJvmArgs>-Xmx512M -Xss1024k</extraJvmArgs>
+				</configuration>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -146,6 +143,21 @@
 						</includes>
 					</resource>
 				</resources>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>gwt-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<phase>test-compile</phase>
+								<goals>
+									<goal>compile</goal>
+									<!-- <goal>test</goal> causes hudson problems (on gwt face build) -->
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
 			</build>
 		</profile>
 		<!--  no sources needed in eclipse -->
@@ -157,5 +169,28 @@
 				</property>
 			</activation>
 		</profile>	
+		<profile>
+			<id>skipGwt</id>
+			<activation>
+				<property>
+					<name>skipGwt</name>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>gwt-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<goals>
+									<goal>clean</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
 	</profiles>
 </project>
