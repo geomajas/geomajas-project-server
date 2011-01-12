@@ -19,7 +19,7 @@
 	<groupId>org.geomajas</groupId>
 	<artifactId>geomajas-checkstyle</artifactId>
 	<packaging>jar</packaging>
-	<version>1.0.5</version>
+	<version>1.0.6-SNAPSHOT</version>
 	<name>Geomajas checkstyle configuration</name>
 	<description>Geomajas checkstyle configuration</description>
 	<url>http://files.geomajas.org/maven/trunk/geomajas-checkstyle</url>
