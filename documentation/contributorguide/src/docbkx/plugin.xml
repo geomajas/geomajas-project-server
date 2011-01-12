@@ -99,7 +99,7 @@
         &lt;list&gt;
             &lt;bean class="org.geomajas.global.CopyrightInfo"&gt;
                 &lt;property name="key" value="Geomajas"/&gt;
-                &lt;property name="copyright" value="(c) 2008-2010 Geosparc nv"/&gt;
+                &lt;property name="copyright" value="(c) 2008-2011 Geosparc nv"/&gt;
                 &lt;property name="licenseName" value="GNU Affero General Public License, Version 3"/&gt;
                 &lt;property name="licenseUrl" value="http://www.gnu.org/licenses/agpl-3.0.html"/&gt;
             &lt;/bean&gt;
