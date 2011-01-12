@@ -16,6 +16,12 @@ import org.geomajas.global.CopyrightInfo;
 
 import java.util.List;
 
+/**
+ * Response class for {@link org.geomajas.command.general.CopyrightCommand}.
+ *
+ * @author Joachim Van der Auwera
+ * @since 1.7.1
+ */
 @Api(allMethods = true)
 public class CopyrightResponse extends CommandResponse {
 

@@ -14,6 +14,12 @@ package org.geomajas.global;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
+/**
+ * Copyright information for a plug-in and the dependencies.
+ *
+ * @author Joachim Van der Auwera
+ * @since 1.7.0
+ */
 @Api(allMethods = true)
 public class CopyrightInfo implements Serializable {
 

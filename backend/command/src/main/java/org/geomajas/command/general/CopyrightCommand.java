@@ -26,6 +26,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Command which allows fetching the copyright info for back-end and plug-ins.
+ * <p/>
+ * It also emits the copyright info in the logs for extra assurance of compliance with the requirements.
+ *
+ * @author Joachim Van der Auwera
+ * @since 1.7.0
+ */
 @Api
 @Component()
 public class CopyrightCommand implements Command<EmptyCommandRequest, CopyrightResponse> {
