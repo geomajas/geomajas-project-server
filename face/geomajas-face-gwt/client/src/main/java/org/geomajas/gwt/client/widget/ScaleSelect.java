@@ -164,8 +164,20 @@ public class ScaleSelect extends Canvas implements KeyPressHandler, ChangedHandl
 	 * When the MapView changes, update the select item to the correct scale.
 	 */
 	public void onMapViewChanged(MapViewChangedEvent event) {
-		if (!event.isSameScaleLevel() || scaleItem.getDisplayValue() == null || 
-				"".equals(scaleItem.getDisplayValue())) {
+		if (scaleItem.getValueAsString() == null || "".equals(scaleItem.getValueAsString())) {
+			setDisplayScale(mapView.getCurrentScale() * pixelLength);
+		}
+
+		if (event.isMapResized()) {
+			List<Double> scales = new ArrayList<Double>();
+			for (Double resolution : mapView.getAvailableResolutions()) {
+				scales.add(pixelLength / resolution);
+			}
+			if (scales.size() > 0) {
+				setScales(scales.toArray(new Double[0]));
+			}
+		} else if (!event.isSameScaleLevel() || scaleItem.getDisplayValue() == null
+				|| "".equals(scaleItem.getDisplayValue())) {
 			setDisplayScale(mapView.getCurrentScale() * pixelLength);
 		}
 	}

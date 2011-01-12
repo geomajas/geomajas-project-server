@@ -62,7 +62,7 @@ public class ScaleSelectCustomSample extends SamplePanel {
 		layout.setWidth100();
 		layout.setHeight100();
 
-		final MapWidget map = new MapWidget("osmMap", "gwt-samples");
+		final MapWidget map = new MapWidget("mapOsm2", "gwt-samples");
 
 		// Set a panning controller on the map:
 		map.setController(new PanController(map));

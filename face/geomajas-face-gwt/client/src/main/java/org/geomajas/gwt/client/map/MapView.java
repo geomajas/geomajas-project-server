@@ -295,7 +295,6 @@ public class MapView {
 			doSetOrigin(oldbbox.getCenterPoint());
 			fireEvent(true, null);
 		}
-
 	}
 
 	/**
@@ -375,6 +374,29 @@ public class MapView {
 		return resolutions;
 	}
 
+	/**
+	 * Get the full list of available map resolutions, given the map size and maximum bounds. This may be a sub-set of
+	 * the full resolution list.
+	 * 
+	 * @since 1.8.0
+	 */
+	public List<Double> getAvailableResolutions() {
+		List<Double> available = new ArrayList<Double>();
+		double max = MAX_RESOLUTION;
+		double minimumScale = getMinimumScale();
+		if (minimumScale > 0) {
+			max = 1.0 / getMinimumScale();
+		}
+		double min = 1.0 / maximumScale;
+		for (int i = 0; i < resolutions.size(); i++) {
+			Double resolution = resolutions.get(i);
+			if (resolution >= min && resolution <= max) {
+				available.add(resolution);
+			}
+		}
+		return available;
+	}
+
 	/** Return the transformer that is used to transform coordinate and geometries between world and screen space. */
 	public WorldViewTransformer getWorldViewTransformer() {
 		if (null == worldViewTransformer) {
@@ -440,14 +462,14 @@ public class MapView {
 	private void doApplyBounds(Bbox bounds, ZoomOption option) {
 		if (bounds != null) {
 			// first set the scale, taking minimum and maximum scale into account
-			boolean scaleChanged = false;
+			//boolean scaleChanged = false;
 			if (!bounds.isEmpty()) {
 				// find best scale
 				double scale = getBestScale(bounds);
 				// snap and limit
 				scale = snapToResolution(scale, option);
 				// set scale
-				scaleChanged = doSetScale(scale, option);
+				/*scaleChanged = */doSetScale(scale, option);
 			}
 			// now translate, taking maximum bounds into account 
 			doSetOrigin(bounds.getCenterPoint());
@@ -456,7 +478,7 @@ public class MapView {
 			} else {
 				// set pan origin equal to origin
 				viewState = viewState.copyAndSetPanOrigin(viewState.getX(), viewState.getY());
-				fireEvent(scaleChanged, option);
+				fireEvent(false, option);
 			}
 		}
 	}
@@ -679,7 +701,5 @@ public class MapView {
 		public boolean isValid() {
 			return min != null && max != null && min <= max;
 		}
-
 	}
-
 }

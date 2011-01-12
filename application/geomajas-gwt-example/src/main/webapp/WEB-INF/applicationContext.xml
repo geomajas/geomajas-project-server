@@ -60,6 +60,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 				<ref bean="legendMap" />
 				<ref bean="featureListGridMap" />
 				<ref bean="printingMap" />
+				<ref bean="mapOsm2" />
 			</list>
 		</property>
 	</bean>
