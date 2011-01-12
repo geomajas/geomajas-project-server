@@ -192,7 +192,7 @@
 				<goals> <goal>check</goal> </goals> </execution> </executions>
 				<dependencies> <dependency> <groupId>org.geomajas</groupId>
 				<artifactId>geomajas-checkstyle</artifactId>
-				<version>1.0.5-SNAPSHOT</version> </dependency> </dependencies> </plugin>
+				<version>1.0.5</version> </dependency> </dependencies> </plugin>
 			-->
 
 			<!-- Run the application using "mvn jetty:run" -->
