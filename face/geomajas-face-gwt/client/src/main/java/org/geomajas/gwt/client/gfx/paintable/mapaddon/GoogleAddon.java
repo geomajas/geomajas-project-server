@@ -1,24 +1,12 @@
 /*
- * This file is part of Geomajas, a component framework for building
- * rich Internet applications (RIA) with sophisticated capabilities for the
- * display, analysis and management of geographic information.
- * It is a building block that allows developers to add maps
- * and other geographic data capabilities to their web applications.
+ * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
  *
- * Copyright 2008-2010 Geosparc, http://www.geosparc.com, Belgium
+ * Copyright 2008-2011 Geosparc nv, http://www.geosparc.com/, Belgium.
  *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as
- * published by the Free Software Foundation, either version 3 of the
- * License, or (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ * The program is available in open source according to the GNU Affero
+ * General Public License. All contributions in this program are covered
+ * by the Geomajas Contributors License Agreement. For full licensing
+ * details, see LICENSE.txt in the project root.
  */
 
 package org.geomajas.gwt.client.gfx.paintable.mapaddon;
@@ -45,7 +33,7 @@ import com.smartgwt.client.types.VerticalAlignment;
  * This MapAddon does not allow center positioning. Also it takes in the whole width of the map, so setting the
  * horizontal alignment is of little use. By default, this MapAddon will be placed 20 pixels from the bottom of the map.
  * </p>
- * 
+ *
  * @author Jan De Moerloose
  * @deprecated use org.geomajas.layer.gwt.client.GoogleAddon from the geomajas-layer-google-gwt module instead
  */
