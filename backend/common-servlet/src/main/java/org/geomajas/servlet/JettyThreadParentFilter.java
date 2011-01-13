@@ -37,7 +37,7 @@ public class JettyThreadParentFilter implements Filter {
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException,
 			ServletException {
 		ClassLoader cl = Thread.currentThread().getContextClassLoader();
-		if (cl instanceof URLClassLoader) {
+		if (isGwtJettyClassLoader(cl)) {
 			Thread.currentThread().setContextClassLoader(
 					new ExtendedJettyClassLoader((URLClassLoader) cl, ClassLoader.getSystemClassLoader(),
 							includeSystemclasses));
@@ -50,5 +50,16 @@ public class JettyThreadParentFilter implements Filter {
 		String param = servletContext.getInitParameter(PrepareScanningContextListener.PRELOAD_CLASSES_PARAMETER);
 		includeSystemclasses = (param == null);
 	}
+	
+	private boolean isGwtJettyClassLoader(ClassLoader cl) {
+		ClassLoader sys = ClassLoader.getSystemClassLoader();
+		// move up until we find the system class loader or null
+		while (cl != sys && cl != null) {
+			cl = cl.getParent();
+		}
+		// found null, must be gwt classloader !
+		return cl == null;
+	}
+
 
 }
