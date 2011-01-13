@@ -82,16 +82,6 @@ public class GetConfigurationCommandTest {
 
 		// now test the map conversion
 
-		GetMapConfigurationRequest request = new GetMapConfigurationRequest();
-		request.setApplicationId("simplevectors");
-		request.setMapId("coordTestMap");
-		GetMapConfigurationResponse response = (GetMapConfigurationResponse) dispatcher.execute(
-				"command.configuration.GetMap", request, null, "en");
-		if (response.isError()) {
-			response.getErrors().get(0).printStackTrace();
-		}
-		Assert.assertFalse(response.isError());
-		ClientMapInfo mapInfo = response.getMapInfo();
 		Assert.assertNotNull(mapInfo);
 		Bbox mapMaxExtent = mapInfo.getLayers().get(0).getMaxExtent();
 
