@@ -17,7 +17,7 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 http://www.springframework.org/schema/context
 http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-	<bean name="featureListGridMap" class="org.geomajas.configuration.client.ClientMapInfo">
+	<bean name="mapFeatureListGrid" class="org.geomajas.configuration.client.ClientMapInfo">
 		<property name="backgroundColor" value="#FFFFFF" />
 		<property name="lineSelectStyle">
 			<bean class="org.geomajas.configuration.FeatureStyleInfo">
@@ -53,12 +53,12 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 			<list>
 				<ref bean="wmsLayer" />
 				<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="countries110mGridLayer">
-					<property name="serverLayerId" value="countries110m" />
+					<property name="serverLayerId" value="layerCountries110m" />
 				  	<property name="label" value="Countries"/>
 					<property name="visible" value="true"/>
 			 		<property name="maximumScale" value="1:100"/>
 					<property name="minimumScale" value="1:500000000" />
-					<property name="namedStyleInfo" ref="countries110mStyleInfo" />
+					<property name="namedStyleInfo" ref="layerCountries110mStyleInfo" />
 				</bean>
 			</list>
 		</property>

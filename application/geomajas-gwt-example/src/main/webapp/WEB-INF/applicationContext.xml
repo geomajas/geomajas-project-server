@@ -23,32 +23,31 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	<bean name="gwt-samples" class="org.geomajas.configuration.client.ClientApplicationInfo">
 		<property name="maps">
 			<list>
-				<ref bean="osmMap" />
-				<ref bean="wmsMap" />
-				<ref bean="beansMap" />
-				<ref bean="crsMap" />
+				<ref bean="mapOsm" />
+				<ref bean="mapWms" />
+				<ref bean="mapBeans" />
+				<ref bean="mapCrs" />
 				<ref bean="mapVectorSecurity" />
 				<ref bean="mapToolbarSecurity" />
-				<ref bean="geotoolsMap" />
-				<ref bean="googleMap" />
-				<ref bean="googleSatMap" />
-				<ref bean="googleTerrainMap" />
-				<ref bean="osmNavigationToolbarMap" />
-				<ref bean="selectionMap" />
-				<ref bean="featureInfoMap" />
-				<ref bean="osmMeasureMap" />
-				<ref bean="overviewOsmMap" />
-				<ref bean="osmMapResolutions" />
-				<ref bean="editPointLayerMap" />
-				<ref bean="editLineLayerMap" />
-				<ref bean="editPolygonLayerMap" />
-				<ref bean="editMultiPointLayerMap" />
-				<ref bean="editMultiLineLayerMap" />
-				<ref bean="editMultiPolygonLayerMap" />
-				<ref bean="legendMap" />
-				<ref bean="featureListGridMap" />
-				<ref bean="printingMap" />
-				<ref bean="mapOsm2" />
+				<ref bean="mapGeotools" />
+				<ref bean="mapGoogle" />
+				<ref bean="mapGoogleSat" />
+				<ref bean="mapGoogleTerrain" />
+				<ref bean="mapOsmNavigationToolbar" />
+				<ref bean="mapSelection" />
+				<ref bean="mapFeatureInfo" />
+				<ref bean="mapOsmMeasure" />
+				<ref bean="mapOverviewOsm" />
+				<ref bean="mapOsmResolutions" />
+				<ref bean="mapEditPointLayer" />
+				<ref bean="mapEditLineLayer" />
+				<ref bean="mapEditPolygonLayer" />
+				<ref bean="mapEditMultiPointLayer" />
+				<ref bean="mapEditMultiLineLayer" />
+				<ref bean="mapEditMultiPolygonLayer" />
+				<ref bean="mapLegend" />
+				<ref bean="mapFeatureListGrid" />
+				<ref bean="mapPrinting" />
 			</list>
 		</property>
 	</bean>

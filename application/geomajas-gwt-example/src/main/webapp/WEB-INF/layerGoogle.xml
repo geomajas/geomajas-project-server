@@ -20,7 +20,13 @@ http://www.springframework.org/schema/context
 http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
 	<!-- @extract-start GoogleLayerSample, Google layer configuration -->
-	<bean name="googleInfo" class="org.geomajas.configuration.RasterLayerInfo">
+	<bean name="layerGoogle" class="org.geomajas.layer.google.GoogleLayer" >
+		<property name="layerInfo" ref="layerGoogleInfo" />
+		<property name="satellite" value="false" />
+		<property name="maxZoomLevel" value="21" />
+	</bean>
+	
+	<bean name="layerGoogleInfo" class="org.geomajas.configuration.RasterLayerInfo">
 		<property name="crs" value="EPSG:900913"/>
 		<property name="maxExtent">
 			<bean class="org.geomajas.geometry.Bbox">
@@ -37,12 +43,6 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
         <property name="tileWidth" value="256"/>
         <property name="tileHeight" value="256"/>
  	</bean>
-
-	<bean name="google" class="org.geomajas.layer.google.GoogleLayer" >
-		<property name="layerInfo" ref="googleInfo" />
-		<property name="satellite" value="false" />
-		<property name="maxZoomLevel" value="21" />
-	</bean>
 	<!-- @extract-end -->
 
 </beans>

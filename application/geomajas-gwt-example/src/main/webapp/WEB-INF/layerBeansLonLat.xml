@@ -35,7 +35,36 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		</property>
 	</bean>
 
-	<bean name="beansLonLatInfo" class="org.geomajas.configuration.VectorLayerInfo">
+	<bean name="layerBeansLonLat" class="org.geomajas.layer.bean.BeanLayer">
+		<property name="layerInfo" ref="layerBeansLonLatInfo" />
+		<property name="features">
+			<list>
+				<bean class="org.geomajas.layer.bean.FeatureBean">
+					<property name="id" value="10" />
+					<property name="geometry" value="MULTIPOLYGON(((0 0, 0 20, 20 20, 20 0, 0 0)))" />
+				</bean>
+				<bean class="org.geomajas.layer.bean.FeatureBean">
+					<property name="id" value="11" />
+					<property name="geometry" value="MULTIPOLYGON(((31 11,
+						                                            39 11,
+						                                            39 39,
+						                                            31 39,
+						                                            31 11)))" />
+				</bean>
+				<bean class="org.geomajas.layer.bean.FeatureBean">
+					<property name="id" value="12" />
+					<property name="geometry" value="MULTIPOLYGON(((-15 30,
+						                                            20 30,
+						                                            20 40,
+						                                            -15 40,
+						                                            -15 30)))" />
+				</bean>
+
+			</list>
+		</property>
+	</bean>
+
+	<bean name="layerBeansLonLatInfo" class="org.geomajas.configuration.VectorLayerInfo">
 		<property name="layerType" value="MULTIPOLYGON" />
 		<property name="crs" value="EPSG:4326" />
 		<property name="maxExtent">
@@ -46,15 +75,15 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 				<property name="height" value="170.0" />
 			</bean>
 		</property>
-		<property name="featureInfo" ref="beansFeatureInfo" />
+		<property name="featureInfo" ref="layerBeansFeatureInfo" />
 		<property name="namedStyleInfos">
 			<list>
-				<ref bean="beansLonLatStyleInfo" />
+				<ref bean="layerBeansLonLatStyleInfo" />
 			</list>
 		</property>
 	</bean>
 
-	<bean class="org.geomajas.configuration.NamedStyleInfo" id="beansLonLatStyleInfo">
+	<bean class="org.geomajas.configuration.NamedStyleInfo" id="layerBeansLonLatStyleInfo">
 		<property name="featureStyles">
 			<list>
 				<bean class="org.geomajas.configuration.FeatureStyleInfo">
@@ -86,36 +115,6 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 					</bean>
 				</property>
 			</bean>
-		</property>
-	</bean>
-
-
-	<bean name="beansLonLat" class="org.geomajas.layer.bean.BeanLayer">
-		<property name="layerInfo" ref="beansLonLatInfo" />
-		<property name="features">
-			<list>
-				<bean class="org.geomajas.layer.bean.FeatureBean">
-					<property name="id" value="10" />
-					<property name="geometry" value="MULTIPOLYGON(((0 0, 0 20, 20 20, 20 0, 0 0)))" />
-				</bean>
-				<bean class="org.geomajas.layer.bean.FeatureBean">
-					<property name="id" value="11" />
-					<property name="geometry" value="MULTIPOLYGON(((31 11,
-						                                            39 11,
-						                                            39 39,
-						                                            31 39,
-						                                            31 11)))" />
-				</bean>
-				<bean class="org.geomajas.layer.bean.FeatureBean">
-					<property name="id" value="12" />
-					<property name="geometry" value="MULTIPOLYGON(((-15 30,
-						                                            20 30,
-						                                            20 40,
-						                                            -15 40,
-						                                            -15 30)))" />
-				</bean>
-
-			</list>
 		</property>
 	</bean>
 

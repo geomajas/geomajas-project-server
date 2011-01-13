@@ -61,7 +61,7 @@ public class LegendSample extends SamplePanel {
 
 		VLayout mapLayout = new VLayout();
 		mapLayout.setShowEdges(true);
-		final MapWidget map = new MapWidget("legendMap", "gwt-samples");
+		final MapWidget map = new MapWidget("mapLegend", "gwt-samples");
 		map.setController(new PanController(map));
 		mapLayout.addMember(map);
 

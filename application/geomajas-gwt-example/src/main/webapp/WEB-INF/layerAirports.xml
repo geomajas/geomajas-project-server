@@ -17,8 +17,14 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 http://www.springframework.org/schema/context
 http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
+
+	<bean name="layerAirports" class="org.geomajas.layer.shapeinmem.ShapeInMemLayer">
+		<property name="layerInfo" ref="layerAirportsInfo" />
+		<property name="url" value="classpath:org/geomajas/example/gwt/shapefile/nationalatlas/airprtx020.shp" />
+	</bean>
+
 	<!-- @extract-start ShapeInMemAirportInfo, Style info -->
-	<bean name="airportsInfo" class="org.geomajas.configuration.VectorLayerInfo">
+	<bean name="layerAirportsInfo" class="org.geomajas.configuration.VectorLayerInfo">
 		<property name="layerType" value="POINT" />
 		<property name="crs" value="EPSG:4326" />
 		<property name="maxExtent">
@@ -29,17 +35,17 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 				<property name="height" value="6.4" />
 			</bean>
 		</property>
-		<property name="featureInfo" ref="airportsFeatureInfo" />
+		<property name="featureInfo" ref="layerAirportsFeatureInfo" />
 		<property name="namedStyleInfos">
 			<list>
-				<ref bean="airportsStyleInfo" />
+				<ref bean="layerAirportsStyleInfo" />
 			</list>
 		</property>
 	</bean>
 	<!-- @extract-end -->
 
 	<!-- @extract-start ShapeInMemAirportFeatureInfo, Feature info -->
-	<bean class="org.geomajas.configuration.FeatureInfo" name="airportsFeatureInfo">
+	<bean class="org.geomajas.configuration.FeatureInfo" name="layerAirportsFeatureInfo">
 		<property name="dataSourceName" value="airprtx020" />
 		<property name="identifier">
 			<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
@@ -76,7 +82,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 	<!-- @extract-end -->
 
 	<!-- @extract-start ShapeInMemAirportStyleInfo, Style info -->
-	<bean class="org.geomajas.configuration.NamedStyleInfo" name="airportsStyleInfo">
+	<bean class="org.geomajas.configuration.NamedStyleInfo" name="layerAirportsStyleInfo">
 		<property name="featureStyles">
 			<list>
 				<bean class="org.geomajas.configuration.FeatureStyleInfo">
@@ -121,11 +127,5 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		</property>
 	</bean>
 	<!-- @extract-end -->
-
-
-	<bean name="airports" class="org.geomajas.layer.shapeinmem.ShapeInMemLayer">
-		<property name="layerInfo" ref="airportsInfo" />
-		<property name="url" value="classpath:org/geomajas/example/gwt/shapefile/nationalatlas/airprtx020.shp" />
-	</bean>
 
 </beans>

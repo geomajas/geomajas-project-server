@@ -67,7 +67,7 @@ public class RenderingSample extends SamplePanel {
 		mapLayout.setHeight("60%");
 
 		// Map with ID wmsMap is defined in the XML configuration. (mapOsm.xml)
-		final MapWidget map = new MapWidget("osmMap", "gwt-samples");
+		final MapWidget map = new MapWidget("mapOsm", "gwt-samples");
 		map.setController(new PanController(map));
 		mapLayout.addMember(map);
 

@@ -17,7 +17,7 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 http://www.springframework.org/schema/context
 http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-	<bean name="editMultiPolygonLayerMap" class="org.geomajas.configuration.client.ClientMapInfo">
+	<bean name="mapEditMultiPolygonLayer" class="org.geomajas.configuration.client.ClientMapInfo">
 		<property name="backgroundColor" value="#FFFFFF" />
 		<property name="lineSelectStyle">
 			<bean class="org.geomajas.configuration.FeatureStyleInfo">
@@ -52,7 +52,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		<property name="layers">
 			<list>
 				<bean class="org.geomajas.configuration.client.ClientRasterLayerInfo" id="wmsEditPolygonLayer">
-					<property name="serverLayerId" value="bluemarble" />
+					<property name="serverLayerId" value="layerWmsBluemarble" />
 					<property name="label" value="Blue marble WMS (raster)" />
 					<property name="visible" value="true" />
 					<property name="maximumScale" value="1:27000" />
@@ -60,12 +60,12 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 					<property name="style" value="0.8" />
 				</bean>
 				<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="editableMultiPolygonLayer">
-					<property name="serverLayerId" value="lakes110mMP" />
+					<property name="serverLayerId" value="layerLakes110mMP" />
 					<property name="label" value="Lakes (editable - MultiPolygon)" />
 					<property name="visible" value="true" />
 					<property name="maximumScale" value="1:27000" />
 					<property name="minimumScale" value="1:500000000" />
-					<property name="namedStyleInfo" ref="lakes110mStyleInfo" />
+					<property name="namedStyleInfo" ref="layerLakes110mStyleInfo" />
 					<property name="snappingRules">
 						<list>
 							<bean class="org.geomajas.configuration.SnappingRuleInfo">

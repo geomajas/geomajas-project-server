@@ -1,24 +1,39 @@
 	public Canvas getViewPanel() {
+
+		// Drawing information:
+		final Bbox rectangle = new Bbox(100, 100, 300, 100);
+		final ShapeStyle style = new ShapeStyle("#66AA00", 0.7f, "#667700", 0.8f, 3);
+		final ShapeStyle hoverStyle = new ShapeStyle("#66AA00", 0.5f, "#667700", 0.7f, 3);
+
 		VLayout layout = new VLayout();
 		layout.setWidth100();
 		layout.setHeight100();
 
 		// Map with ID wmsMap is defined in the XML configuration. (mapWms.xml)
-		final MapWidget map = new MapWidget("wmsMap", "gwt-samples");
+		final MapWidget map = new MapWidget("mapOsm", "gwt-samples");
 
 		// Create the custom controller:
 		final GraphicsController customController = new AbstractGraphicsController(map) {
 
 			public void onMouseOver(MouseOverEvent event) {
 				// When the mouse hovers over the image, make it transparent:
-				map.getVectorContext().drawImage(map.getGroup(RenderGroup.SCREEN), "image",
-						Geomajas.getIsomorphicDir() + IMAGE, new Bbox(200, 200, 48, 48), new PictureStyle(0.4));
+				map.getVectorContext().drawRectangle(map.getGroup(RenderGroup.SCREEN), "rectangle", rectangle,
+						hoverStyle);
 			}
 
 			public void onMouseOut(MouseOutEvent event) {
-				// When the mouse moves away from the image, make it visible again: 
-				map.getVectorContext().drawImage(map.getGroup(RenderGroup.SCREEN), "image",
-						Geomajas.getIsomorphicDir() + IMAGE, new Bbox(200, 200, 48, 48), new PictureStyle(1));
+				// When the mouse moves away from the image, make it visible again:
+				map.getVectorContext().drawRectangle(map.getGroup(RenderGroup.SCREEN), "rectangle", rectangle, style);
+			}
+
+			public void onMouseDown(MouseDownEvent event) {
+				map.getVectorContext().drawRectangle(map.getGroup(RenderGroup.SCREEN), "rectangle", rectangle,
+						new ShapeStyle("#AA0000", 0.8f, "#990000", 1.0f, 3));
+			}
+
+			public void onMouseUp(MouseUpEvent event) {
+				map.getVectorContext().drawRectangle(map.getGroup(RenderGroup.SCREEN), "rectangle", rectangle,
+						hoverStyle);
 			}
 		};
 
@@ -27,9 +42,8 @@
 
 			public void onMapModelChange(MapModelEvent event) {
 				GraphicsContext graphics = map.getVectorContext();
-				graphics.drawImage(map.getGroup(RenderGroup.SCREEN), "image", Geomajas.getIsomorphicDir() + IMAGE,
-						new Bbox(200, 200, 48, 48), new PictureStyle(1.0));
-				map.getVectorContext().setController(map.getGroup(RenderGroup.SCREEN), "image", customController);
+				graphics.drawRectangle(map.getGroup(RenderGroup.SCREEN), "rectangle", rectangle, style);
+				map.getVectorContext().setController(map.getGroup(RenderGroup.SCREEN), "rectangle", customController);
 			}
 		});
 

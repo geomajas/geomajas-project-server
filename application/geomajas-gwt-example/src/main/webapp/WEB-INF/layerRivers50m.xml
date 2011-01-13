@@ -20,7 +20,12 @@ http://www.springframework.org/schema/context
 http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 		>
 
-	<bean name="rivers50mInfo" class="org.geomajas.configuration.VectorLayerInfo">
+	<bean name="layerRivers50m" class="org.geomajas.layer.shapeinmem.ShapeInMemLayer">
+		<property name="url" value="classpath:org/geomajas/example/gwt/shapefile/nat_earth/50m-rivers-lake-centerlines.shp"/>
+		<property name="layerInfo" ref="layerRivers50mInfo" />
+	</bean>
+
+	<bean name="layerRivers50mInfo" class="org.geomajas.configuration.VectorLayerInfo">
 		<property name="layerType" value="MULTILINESTRING"/>
 		<property name="crs" value="EPSG:4326"/>
 		<property name="maxExtent">
@@ -37,15 +42,15 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 				<property name="height" value="35"/>
 			</bean>
 		</property>
-		<property name="featureInfo" ref="rivers50mFeatureInfo" />
+		<property name="featureInfo" ref="layerRivers50mFeatureInfo" />
 		<property name="namedStyleInfos">
 			<list>
-				<ref bean="rivers50mStyleInfo" />
+				<ref bean="layerRivers50mStyleInfo" />
 			</list>
 		</property>
 	</bean>
 
-    <bean class="org.geomajas.configuration.FeatureInfo" name="rivers50mFeatureInfo">
+    <bean class="org.geomajas.configuration.FeatureInfo" name="layerRivers50mFeatureInfo">
          <property name="dataSourceName" value="50m-rivers-lake-centerlines"/>
          <property name="identifier">
              <bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
@@ -83,7 +88,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
          </property>
      </bean>
 
-	<bean class="org.geomajas.configuration.NamedStyleInfo" name="rivers50mStyleInfo">
+	<bean class="org.geomajas.configuration.NamedStyleInfo" name="layerRivers50mStyleInfo">
 		<property name="featureStyles">
 			<list>
                 <bean class="org.geomajas.configuration.FeatureStyleInfo">
@@ -118,12 +123,6 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
                 </property>
 			</bean>
 		</property>
-	</bean>
-
-
-	<bean name="rivers50m" class="org.geomajas.layer.shapeinmem.ShapeInMemLayer">
-		<property name="url" value="classpath:org/geomajas/example/gwt/shapefile/nat_earth/50m-rivers-lake-centerlines.shp"/>
-		<property name="layerInfo" ref="rivers50mInfo" />
 	</bean>
 
 </beans>

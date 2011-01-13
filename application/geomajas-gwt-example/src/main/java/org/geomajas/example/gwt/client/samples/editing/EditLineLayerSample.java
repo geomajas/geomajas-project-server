@@ -53,7 +53,7 @@ public class EditLineLayerSample extends SamplePanel {
 		mapLayout.setShowResizeBar(true);
 
 		// Map with ID editLineLayerMap is defined in the XML configuration.
-		final MapWidget map = new MapWidget("editLineLayerMap", "gwt-samples");
+		final MapWidget map = new MapWidget("mapEditLineLayer", "gwt-samples");
 		map.getMapModel().addMapModelHandler(new MapModelHandler() {
 
 			// When the map is initialized: select the cities layer - so that new features are created in this layer:

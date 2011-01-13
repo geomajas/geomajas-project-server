@@ -19,8 +19,13 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 http://www.springframework.org/schema/context
 http://www.springframework.org/schema/context/spring-context-2.5.xsd"
         >
+        
+    <bean name="layerLakes110mMP" class="org.geomajas.layer.shapeinmem.ShapeInMemLayer">
+		<property name="layerInfo" ref="layerLakes110mMPInfo"/>
+        <property name="url" value="classpath:org/geomajas/example/gwt/shapefile/nat_earth/110m_lakes.shp"/>
+    </bean>
 
-    <bean name="lakes110mMPInfo" class="org.geomajas.configuration.VectorLayerInfo">
+    <bean name="layerLakes110mMPInfo" class="org.geomajas.configuration.VectorLayerInfo">
         <property name="layerType" value="MULTIPOLYGON"/>
         <property name="crs" value="EPSG:4326"/>
         <property name="maxExtent">
@@ -31,17 +36,12 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
                 <property name="height" value="20"/>
 			</bean>
         </property>
-		<property name="featureInfo" ref="lakes110mFeatureInfo" />
+		<property name="featureInfo" ref="layerLakes110mFeatureInfo" />
 		<property name="namedStyleInfos">
 			<list>
-				<ref bean="lakes110mStyleInfo" />
+				<ref bean="layerLakes110mStyleInfo" />
 			</list>
 		</property>
 	</bean>
-
-    <bean name="lakes110mMP" class="org.geomajas.layer.shapeinmem.ShapeInMemLayer">
-		<property name="layerInfo" ref="lakes110mMPInfo"/>
-        <property name="url" value="classpath:org/geomajas/example/gwt/shapefile/nat_earth/110m_lakes.shp"/>
-    </bean>
 
 </beans>

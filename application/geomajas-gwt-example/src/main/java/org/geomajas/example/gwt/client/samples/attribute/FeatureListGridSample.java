@@ -65,7 +65,7 @@ public class FeatureListGridSample extends SamplePanel {
 		mapLayout.setShowEdges(true);
 
 		// Map with ID featureListGridMap is defined in the XML configuration.
-		final MapWidget map = new MapWidget("featureListGridMap", "gwt-samples");
+		final MapWidget map = new MapWidget("mapFeatureListGrid", "gwt-samples");
 		map.setController(new PanController(map));
 		mapLayout.addMember(map);
 

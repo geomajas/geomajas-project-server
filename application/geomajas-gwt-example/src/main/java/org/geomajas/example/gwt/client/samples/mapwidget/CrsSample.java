@@ -44,7 +44,7 @@ public class CrsSample extends SamplePanel {
 		layout.setHeight100();
 
 		// Map with ID crsMap is defined in the XML configuration. (mapOsm.xml)
-		final MapWidget map = new MapWidget("crsMap", "gwt-samples");
+		final MapWidget map = new MapWidget("mapCrs", "gwt-samples");
 
 		// Set a panning controller on the map:
 		map.setController(new PanController(map));

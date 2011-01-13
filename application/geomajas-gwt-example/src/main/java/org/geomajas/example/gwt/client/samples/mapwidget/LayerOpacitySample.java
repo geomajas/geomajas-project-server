@@ -51,7 +51,7 @@ public class LayerOpacitySample extends SamplePanel {
 		mapLayout.setShowEdges(true);
 		mapLayout.setHeight("60%");
 
-		final MapWidget map = new MapWidget("osmMap", "gwt-samples");
+		final MapWidget map = new MapWidget("mapOsm", "gwt-samples");
 		map.setController(new PanController(map));
 		mapLayout.addMember(map);
 

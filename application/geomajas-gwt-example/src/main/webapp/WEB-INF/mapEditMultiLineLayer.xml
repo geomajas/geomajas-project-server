@@ -18,7 +18,7 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 http://www.springframework.org/schema/context
 http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-	<bean name="editMultiLineLayerMap" class="org.geomajas.configuration.client.ClientMapInfo">
+	<bean name="mapEditMultiLineLayer" class="org.geomajas.configuration.client.ClientMapInfo">
 		<property name="backgroundColor" value="#FFFFFF" />
 		<property name="lineSelectStyle">
 			<bean class="org.geomajas.configuration.FeatureStyleInfo">
@@ -79,12 +79,12 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 			<list>
 				<ref bean="googleSatLayer" />
 				<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="editableRoadtrl020LayerML">
-					<property name="serverLayerId" value="roadtrl020ML" />
+					<property name="serverLayerId" value="layerRoadsTrl020ML" />
 					<property name="label" value="Roads" />
 					<property name="visible" value="true" />
 					<property name="maximumScale" value="1:27000" />
 					<property name="minimumScale" value="1:500000000" />
-					<property name="namedStyleInfo" ref="roadstrl020StyleInfo" />
+					<property name="namedStyleInfo" ref="layerRoadsTrl020StyleInfo" />
 					<property name="snappingRules">
 						<list>
 							<bean class="org.geomajas.configuration.SnappingRuleInfo">

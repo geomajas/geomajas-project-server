@@ -17,7 +17,7 @@ http://www.springframework.org/schema/context
 http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
 	<!-- Beans sample -->
-	<bean name="googleMap" class="org.geomajas.configuration.client.ClientMapInfo">
+	<bean name="mapGoogle" class="org.geomajas.configuration.client.ClientMapInfo">
 		<property name="backgroundColor" value="#FFFFFF" />
 		<property name="lineSelectStyle">
 			<bean class="org.geomajas.configuration.FeatureStyleInfo">
@@ -74,7 +74,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		<property name="layers">
 			<list>
 				<bean class="org.geomajas.configuration.client.ClientRasterLayerInfo" id="googleLayer">
-					<property name="serverLayerId" value="google" />
+					<property name="serverLayerId" value="layerGoogle" />
 					<property name="label" value="Google layer" />
 					<property name="visible" value="true" />
 					<property name="style" value="1" />

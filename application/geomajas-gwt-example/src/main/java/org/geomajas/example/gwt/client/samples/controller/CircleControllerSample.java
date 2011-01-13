@@ -50,7 +50,7 @@ public class CircleControllerSample extends SamplePanel {
 		layout.setHeight100();
 
 		// Create the map, using the wmsMap configuration (mapWms.xml):
-		final MapWidget map = new MapWidget("wmsMap", "gwt-samples");
+		final MapWidget map = new MapWidget("mapWms", "gwt-samples");
 
 		/**
 		 * Define a AbstractCircleController that calculates the size of the selected area and outputs it.

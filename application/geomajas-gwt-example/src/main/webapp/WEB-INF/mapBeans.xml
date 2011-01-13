@@ -18,7 +18,7 @@ http://www.springframework.org/schema/context
 http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
 	<!-- Beans sample -->
-	<bean name="beansMap" class="org.geomajas.configuration.client.ClientMapInfo">
+	<bean name="mapBeans" class="org.geomajas.configuration.client.ClientMapInfo">
 		<property name="backgroundColor" value="#FFFFFF" />
 		<property name="lineSelectStyle">
 			<bean class="org.geomajas.configuration.FeatureStyleInfo">
@@ -51,12 +51,12 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		<property name="layers">
 			<list>
 				<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="beansLayer">
-					<property name="serverLayerId" value="beans" />
+					<property name="serverLayerId" value="layerBeans" />
 					<property name="label" value="Test beans" />
 					<property name="visible" value="true" />
 					<property name="minimumScale" value="1:500000000" />
 			 		<property name="maximumScale" value="1:100" />
-					<property name="namedStyleInfo" ref="beansStyleInfo" />
+					<property name="namedStyleInfo" ref="layerBeansStyleInfo" />
 				</bean>
 			</list>
 		</property>

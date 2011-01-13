@@ -50,7 +50,7 @@ public class ToolbarSelectionSample extends SamplePanel {
 		layout.setHeight100();
 
 		// Map with ID selectionMap is defined in the XML configuration.
-		final MapWidget map = new MapWidget("selectionMap", "gwt-samples");
+		final MapWidget map = new MapWidget("mapSelection", "gwt-samples");
 
 		final Toolbar toolbar = new Toolbar(map);
 		toolbar.setButtonSize(Toolbar.BUTTON_SIZE_BIG);

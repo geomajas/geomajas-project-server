@@ -17,7 +17,12 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 http://www.springframework.org/schema/context
 http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-	<bean name="roadstrl020Info" class="org.geomajas.configuration.VectorLayerInfo">
+	<bean name="layerRoadsTrl020" class="org.geomajas.layer.shapeinmem.ShapeInMemLayer">
+		<property name="url" value="classpath:org/geomajas/example/gwt/shapefile/nationalatlas/roadtrl020.shp" />
+		<property name="layerInfo" ref="layerRoadsTrl020Info" />
+	</bean>
+
+	<bean name="layerRoadsTrl020Info" class="org.geomajas.configuration.VectorLayerInfo">
 		<property name="layerType" value="LINESTRING" />
 		<property name="crs" value="EPSG:4326" />
 		<property name="maxExtent">
@@ -28,15 +33,15 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 				<property name="height" value="2" />
 			</bean>
 		</property>
-		<property name="featureInfo" ref="roadstrl020FeatureInfo" />
+		<property name="featureInfo" ref="layerRoadsTrl020FeatureInfo" />
 		<property name="namedStyleInfos">
 			<list>
-				<ref bean="roadstrl020StyleInfo" />
+				<ref bean="layerRoadsTrl020StyleInfo" />
 			</list>
 		</property>
 	</bean>
 
-	<bean class="org.geomajas.configuration.FeatureInfo" name="roadstrl020FeatureInfo">
+	<bean class="org.geomajas.configuration.FeatureInfo" name="layerRoadsTrl020FeatureInfo">
 		<property name="dataSourceName" value="roadtrl020" />
 		<property name="identifier">
 			<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
@@ -71,8 +76,8 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		</property>
 	</bean>
 
-	<bean class="org.geomajas.configuration.NamedStyleInfo" id="roadstrl020StyleInfo">
-		<property name="name" value="roadstrl020StyleInfo"/>
+	<bean class="org.geomajas.configuration.NamedStyleInfo" id="layerRoadsTrl020StyleInfo">
+		<property name="name" value="layerRoadsTrl020StyleInfo"/>
 		<property name="featureStyles">
 			<list>
 				<bean class="org.geomajas.configuration.FeatureStyleInfo">
@@ -105,11 +110,6 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 				</property>
 			</bean>
 		</property>
-	</bean>
-
-	<bean name="roadtrl020" class="org.geomajas.layer.shapeinmem.ShapeInMemLayer">
-		<property name="url" value="classpath:org/geomajas/example/gwt/shapefile/nationalatlas/roadtrl020.shp" />
-		<property name="layerInfo" ref="roadstrl020Info" />
 	</bean>
 
 </beans>

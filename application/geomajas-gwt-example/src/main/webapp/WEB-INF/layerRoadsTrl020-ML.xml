@@ -17,7 +17,12 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 http://www.springframework.org/schema/context
 http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-	<bean name="roadstrl020MLInfo" class="org.geomajas.configuration.VectorLayerInfo">
+	<bean name="layerRoadsTrl020ML" class="org.geomajas.layer.shapeinmem.ShapeInMemLayer">
+		<property name="url" value="classpath:org/geomajas/example/gwt/shapefile/nationalatlas/roadtrl020.shp" />
+		<property name="layerInfo" ref="layerRoadsTrl020MLInfo" />
+	</bean>
+
+	<bean name="layerRoadsTrl020MLInfo" class="org.geomajas.configuration.VectorLayerInfo">
 		<property name="layerType" value="MULTILINESTRING" />
 		<property name="crs" value="EPSG:4326" />
 		<property name="maxExtent">
@@ -28,17 +33,12 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 				<property name="height" value="2" />
 			</bean>
 		</property>
-		<property name="featureInfo" ref="roadstrl020FeatureInfo" />
+		<property name="featureInfo" ref="layerRoadsTrl020FeatureInfo" />
 		<property name="namedStyleInfos">
 			<list>
-				<ref bean="roadstrl020StyleInfo" />
+				<ref bean="layerRoadsTrl020StyleInfo" />
 			</list>
 		</property>
-	</bean>
-
-	<bean name="roadtrl020ML" class="org.geomajas.layer.shapeinmem.ShapeInMemLayer">
-		<property name="url" value="classpath:org/geomajas/example/gwt/shapefile/nationalatlas/roadtrl020.shp" />
-		<property name="layerInfo" ref="roadstrl020MLInfo" />
 	</bean>
 
 </beans>

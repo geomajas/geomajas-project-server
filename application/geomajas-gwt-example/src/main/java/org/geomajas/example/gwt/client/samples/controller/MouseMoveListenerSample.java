@@ -51,7 +51,7 @@ public class MouseMoveListenerSample extends SamplePanel {
 		layout.setHeight100();
 
 		// Create the map, using the wmsMap configuration (mapOsm.xml):
-		final MapWidget map = new MapWidget("osmMap", "gwt-samples");
+		final MapWidget map = new MapWidget("mapOsm", "gwt-samples");
 
 		VLayout mapLayout = new VLayout();
 		mapLayout.setShowEdges(true);

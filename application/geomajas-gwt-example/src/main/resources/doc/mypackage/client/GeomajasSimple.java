@@ -105,7 +105,7 @@ public class GeomajasSimple implements EntryPoint {
 		// ---------------------------------------------------------------------
 		// Create the left-side (map and tabs):
 		// ---------------------------------------------------------------------
-		map = new MapWidget("sampleFeaturesMap", "gwt-simple");
+		map = new MapWidget("mapSampleFeatures", "gwt-simple");
 		final Toolbar toolbar = new Toolbar(map);
 		toolbar.setButtonSize(Toolbar.BUTTON_SIZE_BIG);
 		// wait for the map to be loaded cause we need a correct map.getPixelPerUnit

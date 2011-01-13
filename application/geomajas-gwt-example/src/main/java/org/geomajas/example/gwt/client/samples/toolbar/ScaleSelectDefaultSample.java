@@ -50,7 +50,7 @@ public class ScaleSelectDefaultSample extends SamplePanel {
 		layout.setWidth100();
 		layout.setHeight100();
 
-		final MapWidget map = new MapWidget("osmMapResolutions", "gwt-samples");
+		final MapWidget map = new MapWidget("mapOsmResolutions", "gwt-samples");
 
 		// Set a panning controller on the map:
 		map.setController(new PanController(map));

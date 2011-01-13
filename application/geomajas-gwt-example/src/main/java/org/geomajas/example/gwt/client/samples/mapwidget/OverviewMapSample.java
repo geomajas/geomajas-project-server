@@ -57,7 +57,7 @@ public class OverviewMapSample extends SamplePanel {
 		mapLayout.setShowEdges(true);
 
 		// Map with ID osmNavigationToolbarMap is defined in the XML configuration.
-		final MapWidget map = new MapWidget("osmMap", "gwt-samples");
+		final MapWidget map = new MapWidget("mapOsm", "gwt-samples");
 		map.setController(new PanController(map));
 		mapLayout.addMember(map);
 
@@ -72,7 +72,7 @@ public class OverviewMapSample extends SamplePanel {
 		overviewMapLayout.setWidth(300);
 
 		// Create an overview map:
-		final OverviewMap overviewMap = new OverviewMap("overviewOsmMap", "gwt-samples", map, true, true);
+		final OverviewMap overviewMap = new OverviewMap("mapOverviewOsm", "gwt-samples", map, true, true);
 		overviewMapLayout.addMember(overviewMap);
 
 		// Create a layout for a few buttons:

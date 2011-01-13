@@ -17,7 +17,12 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 http://www.springframework.org/schema/context
 http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-	<bean name="multiCitiesInfo" class="org.geomajas.configuration.VectorLayerInfo">
+	<bean name="layerMultiCities" class="org.geomajas.layer.shapeinmem.ShapeInMemLayer">
+		<property name="layerInfo" ref="layerMultiCitiesInfo" />
+		<property name="url" value="classpath:org/geomajas/example/gwt/shapefile/geosparc/multiCities.shp" />
+	</bean>
+
+	<bean name="layerMultiCitiesInfo" class="org.geomajas.configuration.VectorLayerInfo">
 		<property name="layerType" value="MULTIPOINT" />
 		<property name="crs" value="EPSG:4326" />
 		<property name="maxExtent">
@@ -28,15 +33,15 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 				<property name="height" value="170.102257" />
 			</bean>
 		</property>
-		<property name="featureInfo" ref="multiCitiesFeatureInfo" />
+		<property name="featureInfo" ref="layerMultiCitiesFeatureInfo" />
 		<property name="namedStyleInfos">
 			<list>
-				<ref bean="multiCitiesStyleInfo" />
+				<ref bean="layerMultiCitiesStyleInfo" />
 			</list>
 		</property>
 	</bean>
 
-	<bean class="org.geomajas.configuration.FeatureInfo" name="multiCitiesFeatureInfo">
+	<bean class="org.geomajas.configuration.FeatureInfo" name="layerMultiCitiesFeatureInfo">
 		<property name="dataSourceName" value="multiCities" />
 		<property name="identifier">
 			<bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
@@ -119,7 +124,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		</property>
 	</bean>
 
-	<bean class="org.geomajas.configuration.NamedStyleInfo" name="multiCitiesStyleInfo">
+	<bean class="org.geomajas.configuration.NamedStyleInfo" name="layerMultiCitiesStyleInfo">
 		<property name="featureStyles">
 			<list>
 				<bean class="org.geomajas.configuration.FeatureStyleInfo">
@@ -227,12 +232,6 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 				</property>
 			</bean>
 		</property>
-	</bean>
-
-
-	<bean name="multiCities" class="org.geomajas.layer.shapeinmem.ShapeInMemLayer">
-		<property name="layerInfo" ref="multiCitiesInfo" />
-		<property name="url" value="classpath:org/geomajas/example/gwt/shapefile/geosparc/multiCities.shp" />
 	</bean>
 
 </beans>

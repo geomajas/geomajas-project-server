@@ -19,7 +19,12 @@ http://www.springframework.org/schema/context
 http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 		>
 
-	<bean name="populatedPlaces110mInfo" class="org.geomajas.configuration.VectorLayerInfo">
+	<bean name="layerPopulatedPlaces110m" class="org.geomajas.layer.shapeinmem.ShapeInMemLayer">
+		<property name="layerInfo" ref="layerPopulatedPlaces110mInfo" />
+        <property name="url" value="classpath:org/geomajas/example/gwt/shapefile/nat_earth/110m_populated_places_simple.shp"/>
+	</bean>
+
+	<bean name="layerPopulatedPlaces110mInfo" class="org.geomajas.configuration.VectorLayerInfo">
 		<property name="layerType" value="MULTIPOINT"/>
 		<property name="crs" value="EPSG:4326"/>
 		<property name="maxExtent">
@@ -30,15 +35,15 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 				<property name="height" value="35"/>
 			</bean>
 		</property>
-		<property name="featureInfo" ref="populatedPlaces110mFeatureInfo" />
+		<property name="featureInfo" ref="layerPopulatedPlaces110mFeatureInfo" />
 		<property name="namedStyleInfos">
 			<list>
-				<ref bean="populatedPlaces110mStyleInfo" />
+				<ref bean="layerPopulatedPlaces110mStyleInfo" />
 			</list>
 		</property>
 	</bean>
 
-    <bean class="org.geomajas.configuration.FeatureInfo" name="populatedPlaces110mFeatureInfo">
+    <bean class="org.geomajas.configuration.FeatureInfo" name="layerPopulatedPlaces110mFeatureInfo">
         <property name="dataSourceName" value="110m_populated_places_simple"/>
         <property name="identifier">
             <bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
@@ -81,7 +86,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
         </property>
     </bean>
 
-	<bean class="org.geomajas.configuration.NamedStyleInfo" name="populatedPlaces110mStyleInfo">
+	<bean class="org.geomajas.configuration.NamedStyleInfo" name="layerPopulatedPlaces110mStyleInfo">
 		<property name="featureStyles">
             <list>
                 <bean class="org.geomajas.configuration.FeatureStyleInfo">
@@ -149,11 +154,6 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
                 </property>
 			</bean>
 		</property>
-	</bean>
-
-	<bean name="populatedPlaces110m" class="org.geomajas.layer.shapeinmem.ShapeInMemLayer">
-		<property name="layerInfo" ref="populatedPlaces110mInfo" />
-        <property name="url" value="classpath:org/geomajas/example/gwt/shapefile/nat_earth/110m_populated_places_simple.shp"/>
 	</bean>
 
 </beans>

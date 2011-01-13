@@ -17,7 +17,7 @@ http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 http://www.springframework.org/schema/context
 http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
-	<bean name="legendMap" class="org.geomajas.configuration.client.ClientMapInfo">
+	<bean name="mapLegend" class="org.geomajas.configuration.client.ClientMapInfo">
 		<property name="backgroundColor" value="#FFFFFF" />
 		<property name="lineSelectStyle">
 			<bean class="org.geomajas.configuration.FeatureStyleInfo">
@@ -85,30 +85,30 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 	</bean>
 
 	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="rivers50mLayer">
-		<property name="serverLayerId" value="rivers50m" />
+		<property name="serverLayerId" value="layerRivers50m" />
 		<property name="label" value="Rivers (linestring)" />
 		<property name="visible" value="true" />
 		<property name="maximumScale" value="1:100000" />
 		<property name="minimumScale" value="1:500000000" />
-		<property name="namedStyleInfo" ref="rivers50mStyleInfo" />
+		<property name="namedStyleInfo" ref="layerRivers50mStyleInfo" />
 	</bean>
 
 	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="countries110mLayer">
-		<property name="serverLayerId" value="countries110m2" />
+		<property name="serverLayerId" value="layerCountries110m2" />
 		<property name="label" value="Countries (polygon)" />
 		<property name="visible" value="true" />
 		<property name="maximumScale" value="1:100000" />
 		<property name="minimumScale" value="1:500000000" />
-		<property name="namedStyleInfo" ref="countries110mStyleInfo2" />
+		<property name="namedStyleInfo" ref="layerCountries110m2StyleInfo" />
 	</bean>
 
 	<bean class="org.geomajas.configuration.client.ClientVectorLayerInfo" id="populatedPlaces110mLayer">
-		<property name="serverLayerId" value="populatedPlaces110m" />
+		<property name="serverLayerId" value="layerPopulatedPlaces110m" />
 		<property name="label" value="Populated places (point)" />
 		<property name="visible" value="true" />
 		<property name="maximumScale" value="1:100000" />
 		<property name="minimumScale" value="1:500000000" />
-		<property name="namedStyleInfo" ref="populatedPlaces110mStyleInfo" />
+		<property name="namedStyleInfo" ref="layerPopulatedPlaces110mStyleInfo" />
 	</bean>
 
 </beans>

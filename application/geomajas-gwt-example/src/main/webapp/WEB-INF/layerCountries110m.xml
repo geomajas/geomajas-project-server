@@ -19,7 +19,12 @@ http://www.springframework.org/schema/context
 http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 		>
 
-	<bean name="countries110mInfo" class="org.geomajas.configuration.VectorLayerInfo">
+	<bean name="layerCountries110m" class="org.geomajas.layer.shapeinmem.ShapeInMemLayer">
+		<property name="layerInfo" ref="layerCountries110mInfo" />
+        <property name="url" value="classpath:org/geomajas/example/gwt/shapefile/nat_earth/110m_admin_0_countries.shp"/>
+	</bean>
+
+	<bean name="layerCountries110mInfo" class="org.geomajas.configuration.VectorLayerInfo">
 		<property name="layerType" value="MULTIPOLYGON"/>
 		<property name="crs" value="EPSG:4326"/>
 		<property name="maxExtent">
@@ -30,15 +35,15 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
                 <property name="height" value="181"/>
 			</bean>
 		</property>
-		<property name="featureInfo" ref="countries110mFeatureInfo" />
+		<property name="featureInfo" ref="layerCountries110mFeatureInfo" />
 		<property name="namedStyleInfos">
 			<list>
-				<ref bean="countries110mStyleInfo" />
+				<ref bean="layerCountries110mStyleInfo" />
 			</list>
 		</property>
 	</bean>
 
-    <bean class="org.geomajas.configuration.FeatureInfo" name="countries110mFeatureInfo">
+    <bean class="org.geomajas.configuration.FeatureInfo" name="layerCountries110mFeatureInfo">
         <property name="dataSourceName" value="110m_admin_0_countries"/>
         <property name="identifier">
             <bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
@@ -88,7 +93,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
         </property>
     </bean>
 
-	<bean class="org.geomajas.configuration.NamedStyleInfo" name="countries110mStyleInfo">
+	<bean class="org.geomajas.configuration.NamedStyleInfo" name="layerCountries110mStyleInfo">
 		<property name="featureStyles">
             <list>
                 <bean class="org.geomajas.configuration.FeatureStyleInfo">
@@ -150,11 +155,6 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
                 </property>
 			</bean>
 		</property>
-	</bean>
-
-	<bean name="countries110m" class="org.geomajas.layer.shapeinmem.ShapeInMemLayer">
-		<property name="layerInfo" ref="countries110mInfo" />
-        <property name="url" value="classpath:org/geomajas/example/gwt/shapefile/nat_earth/110m_admin_0_countries.shp"/>
 	</bean>
 
 </beans>

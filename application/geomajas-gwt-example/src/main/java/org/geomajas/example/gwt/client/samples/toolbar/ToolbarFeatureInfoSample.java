@@ -50,7 +50,7 @@ public class ToolbarFeatureInfoSample extends SamplePanel {
 		layout.setHeight100();
 
 		// Map with ID featureInfoMap is defined in the XML configuration.
-		final MapWidget map = new MapWidget("featureInfoMap", "gwt-samples");
+		final MapWidget map = new MapWidget("mapFeatureInfo", "gwt-samples");
 
 		final Toolbar toolbar = new Toolbar(map);
 		toolbar.setButtonSize(Toolbar.BUTTON_SIZE_BIG);

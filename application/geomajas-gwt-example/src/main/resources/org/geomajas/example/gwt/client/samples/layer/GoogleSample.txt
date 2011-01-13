@@ -7,21 +7,21 @@
 		// Create map with Google layer, and add a PanController to it:
 		VLayout mapLayout1 = new VLayout();
 		mapLayout1.setShowEdges(true);
-		googleMap = new MapWidget("googleMap", "gwt-samples");
+		googleMap = new MapWidget("mapGoogle", "gwt-samples");
 		googleMap.setController(new PanController(googleMap));
 		mapLayout1.addMember(googleMap);
 
 		// Create map with Google layer (satellite), and add a PanController to it:
 		VLayout mapLayout2 = new VLayout();
 		mapLayout2.setShowEdges(true);
-		googleSatMap = new MapWidget("googleSatMap", "gwt-samples");
+		googleSatMap = new MapWidget("mapGoogleSat", "gwt-samples");
 		googleSatMap.setController(new PanController(googleSatMap));
 		mapLayout2.addMember(googleSatMap);
 
 		// Create map with Google layer (terrain), and add a PanController to it:
 		VLayout mapLayout3 = new VLayout();
 		mapLayout3.setShowEdges(true);
-		googleTerrainMap = new MapWidget("googleTerrainMap", "gwt-samples");
+		googleTerrainMap = new MapWidget("mapGoogleTerrain", "gwt-samples");
 		googleTerrainMap.setController(new PanController(googleTerrainMap));
 		mapLayout3.addMember(googleTerrainMap);
 

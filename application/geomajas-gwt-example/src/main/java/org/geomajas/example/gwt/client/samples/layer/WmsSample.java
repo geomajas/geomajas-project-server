@@ -44,7 +44,7 @@ public class WmsSample extends SamplePanel {
 		layout.setHeight100();
 
 		// Map with ID wmsMap is defined in the XML configuration. (mapWms.xml)
-		final MapWidget map = new MapWidget("wmsMap", "gwt-samples");
+		final MapWidget map = new MapWidget("mapWms", "gwt-samples");
 
 		// Set a panning controller on the map:
 		map.setController(new PanController(map));

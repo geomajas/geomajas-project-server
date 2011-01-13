@@ -18,7 +18,7 @@ http://www.springframework.org/schema/context
 http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
 	<!-- Overview map using OpenStreetMap -->
-	<bean name="overviewOsmMap" class="org.geomajas.configuration.client.ClientMapInfo">
+	<bean name="mapOverviewOsm" class="org.geomajas.configuration.client.ClientMapInfo">
 		<property name="backgroundColor" value="#FFFFFF" />
 		<property name="lineSelectStyle">
 			<bean class="org.geomajas.configuration.FeatureStyleInfo">
@@ -51,7 +51,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 		<property name="layers">
 			<list>
 				<bean class="org.geomajas.configuration.client.ClientRasterLayerInfo" id="overviewOsmLayer">
-					<property name="serverLayerId" value="osm" />
+					<property name="serverLayerId" value="layerOsm" />
 					<property name="label" value="OpenStreetMap (raster)" />
 					<property name="visible" value="true" />
 					<property name="maximumScale" value="1:100" />

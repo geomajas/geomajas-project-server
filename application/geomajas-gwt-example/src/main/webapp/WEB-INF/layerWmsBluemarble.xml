@@ -20,7 +20,18 @@ http://www.springframework.org/schema/context
 http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 
 	<!-- @extract-start WmsLayerSample, Wms layer configuration -->
-	<bean name="wmsBluemarbleInfo" class="org.geomajas.configuration.RasterLayerInfo">
+	<bean name="layerWmsBluemarble" class="org.geomajas.layer.wms.WmsLayer" >
+		<property name="layerInfo" ref="layerWmsBluemarbleInfo" />
+
+        <!-- When configuring your own applications, please do not use this WMS server -->
+        <property name="baseWmsUrl" value="http://apps.geomajas.org/geoserver/wms"/>
+        <property name="version" value="1.1.1"/>
+        <property name="format" value="image/jpeg"/>
+        <property name="styles" value=""/>
+		<!--<property name="useProxy" value="true"/>-->
+	</bean>
+
+	<bean name="layerWmsBluemarbleInfo" class="org.geomajas.configuration.RasterLayerInfo">
 		<property name="crs" value="EPSG:4326"/>
 		<property name="maxExtent">
 			<bean class="org.geomajas.geometry.Bbox">
@@ -52,16 +63,6 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
         <property name="tileHeight" value="512"/>
 	</bean>
 
-	<bean name="bluemarble" class="org.geomajas.layer.wms.WmsLayer" >
-		<property name="layerInfo" ref="wmsBluemarbleInfo" />
-
-        <!-- When configuring your own applications, please do not use this WMS server -->
-        <property name="baseWmsUrl" value="http://apps.geomajas.org/geoserver/wms"/>
-        <property name="version" value="1.1.1"/>
-        <property name="format" value="image/jpeg"/>
-        <property name="styles" value=""/>
-		<!--<property name="useProxy" value="true"/>-->
-	</bean>
 	<!-- @extract-end -->
 
 </beans>

@@ -62,7 +62,7 @@ public class ControllerOnElementSample extends SamplePanel {
 		layout.setHeight100();
 
 		// Map with ID wmsMap is defined in the XML configuration. (mapWms.xml)
-		final MapWidget map = new MapWidget("osmMap", "gwt-samples");
+		final MapWidget map = new MapWidget("mapOsm", "gwt-samples");
 
 		// Create the custom controller:
 		final GraphicsController customController = new AbstractGraphicsController(map) {

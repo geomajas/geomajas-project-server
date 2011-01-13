@@ -50,7 +50,7 @@ public class SearchSample extends SamplePanel {
 		GwtCommandDispatcher.getInstance().setUseLazyLoading(false);
 
 		// Create a map with the African countries and make it invisible:
-		final MapWidget map = new MapWidget("featureListGridMap", "gwt-samples");
+		final MapWidget map = new MapWidget("mapFeatureListGrid", "gwt-samples");
 		map.setVisible(false);
 		layout.addMember(map);
 		map.init();

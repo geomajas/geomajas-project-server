@@ -5,7 +5,7 @@
 		layout.setHeight100();
 
 		// Map with ID beansMap is defined in the XML configuration. (contains any type of attribute)
-		final MapWidget map = new MapWidget("beansMap", "gwt-samples");
+		final MapWidget map = new MapWidget("mapBeans", "gwt-samples");
 		map.setVisible(false);
 		layout.addMember(map);
 		map.init();

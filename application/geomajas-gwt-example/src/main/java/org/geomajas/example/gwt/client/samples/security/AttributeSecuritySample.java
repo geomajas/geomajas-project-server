@@ -71,7 +71,7 @@ public class AttributeSecuritySample extends SamplePanel {
 		buttonLayout.setHeight(20);
 
 		// Map with ID duisburgMap is defined in the XML configuration. (mapDuisburg.xml)
-		map = new MapWidget("beansMap", "gwt-samples");
+		map = new MapWidget("mapBeans", "gwt-samples");
 		map.setVisible(false);
 		layout.addMember(map);
 		map.init();
@@ -82,7 +82,7 @@ public class AttributeSecuritySample extends SamplePanel {
 			public void execute(Boolean value) {
 				if (value) {
 					map.destroy();
-					map = new MapWidget("beansMap", "gwt-samples");
+					map = new MapWidget("mapBeans", "gwt-samples");
 					map.setVisible(false);
 					layout.addMember(map);
 					map.init();

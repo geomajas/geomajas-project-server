@@ -44,7 +44,7 @@ public class GeoToolsSample extends SamplePanel {
 		layout.setHeight100();
 
 		// Map with ID geotoolsMap is defined in the XML configuration. (mapGeoTools.xml)
-		final MapWidget map = new MapWidget("geotoolsMap", "gwt-samples");
+		final MapWidget map = new MapWidget("mapGeotools", "gwt-samples");
 
 		// Set a panning controller on the map:
 		map.setController(new PanController(map));

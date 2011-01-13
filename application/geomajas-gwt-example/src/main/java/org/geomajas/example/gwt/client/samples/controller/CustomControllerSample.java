@@ -53,7 +53,7 @@ public class CustomControllerSample extends SamplePanel {
 		mapLayout.setHeight("60%");
 
 		// Map with ID wmsMap is defined in the XML configuration. (mapWms.xml)
-		final MapWidget map = new MapWidget("wmsMap", "gwt-samples");
+		final MapWidget map = new MapWidget("mapWms", "gwt-samples");
 		mapLayout.addMember(map);
 
 		VLayout labelLayout = new VLayout();
