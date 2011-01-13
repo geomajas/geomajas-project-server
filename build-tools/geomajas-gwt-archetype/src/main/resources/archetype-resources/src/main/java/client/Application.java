@@ -110,7 +110,7 @@ public class Application implements EntryPoint {
 		// ---------------------------------------------------------------------
 		// Create the left-side (map and tabs):
 		// ---------------------------------------------------------------------
-		final MapWidget map = new MapWidget("mainMap", "app");
+		final MapWidget map = new MapWidget("mapMain", "app");
 		final Toolbar toolbar = new Toolbar(map);
 		toolbar.setButtonSize(Toolbar.BUTTON_SIZE_BIG);
 
@@ -145,7 +145,7 @@ public class Application implements EntryPoint {
 		// Overview map layout:
 		SectionStackSection section1 = new SectionStackSection("Overview map");
 		section1.setExpanded(true);
-		overviewMap = new OverviewMap("mainOverviewMap", "app", map, false, true);
+		overviewMap = new OverviewMap("mapOverview", "app", map, false, true);
 		section1.addItem(overviewMap);
 		sectionStack.addSection(section1);
 

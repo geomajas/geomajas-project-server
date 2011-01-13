@@ -28,9 +28,13 @@
 
 			<!-- application context -->
 			WEB-INF/applicationContext.xml
+			WEB-INF/mapMain.xml
+			WEB-INF/mapOverview.xml
+			WEB-INF/clientLayerOsm.xml
+			WEB-INF/clientLayerCountries.xml
 			WEB-INF/layerOsm.xml
 			WEB-INF/layerCountries.xml
-  
+   
 		<!--
 			WEB-INF/example/hibernate/applicationContext.xml
 			WEB-INF/example/hibernate/layerRoads.xml
