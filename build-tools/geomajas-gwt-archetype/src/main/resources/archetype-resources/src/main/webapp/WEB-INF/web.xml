@@ -28,8 +28,8 @@
 
 			<!-- application context -->
 			WEB-INF/applicationContext.xml
-			WEB-INF/osmLayer.xml
-			WEB-INF/countriesLayer.xml
+			WEB-INF/layerOsm.xml
+			WEB-INF/layerCountries.xml
   
 		<!--
 			WEB-INF/example/hibernate/applicationContext.xml

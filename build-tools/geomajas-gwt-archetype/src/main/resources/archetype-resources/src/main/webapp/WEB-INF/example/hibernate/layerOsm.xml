@@ -21,7 +21,11 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
 http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
 
-	<bean name="osmInfo" class="org.geomajas.configuration.RasterLayerInfo">
+	<bean name="layerOsm" class="org.geomajas.layer.osm.OsmLayer" >
+		<property name="layerInfo" ref="layerOsmInfo" />
+	</bean>
+
+	<bean name="layerOsmInfo" class="org.geomajas.configuration.RasterLayerInfo">
 		<property name="layerType" value="RASTER"/>
 		<property name="crs" value="EPSG:900913"/>
 		<property name="maxExtent">
@@ -57,9 +61,5 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
         <property name="tileWidth" value="256"/>
         <property name="tileHeight" value="256"/>
  	</bean>
-
-	<bean name="osm" class="org.geomajas.layer.osm.OsmLayer" >
-		<property name="layerInfo" ref="osmInfo" />
-	</bean>
 
 </beans>

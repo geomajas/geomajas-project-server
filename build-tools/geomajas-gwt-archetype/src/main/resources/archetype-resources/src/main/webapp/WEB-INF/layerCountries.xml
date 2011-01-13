@@ -23,7 +23,12 @@ http://www.springframework.org/schema/context
 http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 		>
 
-	<bean name="countriesInfo" class="org.geomajas.configuration.VectorLayerInfo">
+	<bean name="layerCountries" class="org.geomajas.layer.shapeinmem.ShapeInMemLayer">
+		<property name="layerInfo" ref="layerCountriesInfo" />
+        <property name="url" value="classpath:/${packageInPathFormat}/context/shapes/110m_admin_0_countries.shp"/>
+	</bean>
+
+	<bean name="layerCountriesInfo" class="org.geomajas.configuration.VectorLayerInfo">
 		<property name="layerType" value="MULTIPOLYGON"/>
 		<property name="crs" value="EPSG:4326"/>
 		<property name="maxExtent">
@@ -34,15 +39,15 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
                 <property name="height" value="170.10225755961318"/>
 			</bean>
 		</property>
-		<property name="featureInfo" ref="countriesFeatureInfo" />
+		<property name="featureInfo" ref="layerCountriesFeatureInfo" />
 		<property name="namedStyleInfos">
 			<list>
-				<ref bean="countriesStyleInfo" />
+				<ref bean="layerCountriesStyleInfo" />
 			</list>
 		</property>
 	</bean>
 
-    <bean class="org.geomajas.configuration.FeatureInfo" name="countriesFeatureInfo">
+    <bean class="org.geomajas.configuration.FeatureInfo" name="layerCountriesFeatureInfo">
         <property name="dataSourceName" value="110m_admin_0_countries"/>
         <property name="identifier">
             <bean class="org.geomajas.configuration.PrimitiveAttributeInfo">
@@ -92,7 +97,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
         </property>
     </bean>
 
-	<bean class="org.geomajas.configuration.NamedStyleInfo" name="countriesStyleInfo">
+	<bean class="org.geomajas.configuration.NamedStyleInfo" name="layerCountriesStyleInfo">
 		<property name="featureStyles">
             <list>
                 <bean class="org.geomajas.configuration.FeatureStyleInfo">
@@ -152,11 +157,6 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
                 </property>
 			</bean>
 		</property>
-	</bean>
-
-	<bean name="countries" class="org.geomajas.layer.shapeinmem.ShapeInMemLayer">
-		<property name="layerInfo" ref="countriesInfo" />
-        <property name="url" value="classpath:/${packageInPathFormat}/context/shapes/110m_admin_0_countries.shp"/>
 	</bean>
 
 </beans>
