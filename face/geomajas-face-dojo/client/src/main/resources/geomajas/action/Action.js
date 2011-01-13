@@ -18,6 +18,7 @@ dojo.declare("Action", null, {
 	 *
 	 * @constructor 
 	 */
+	constructor : function () {
 		/** Unique identifier */
 		this.id = null;
 
