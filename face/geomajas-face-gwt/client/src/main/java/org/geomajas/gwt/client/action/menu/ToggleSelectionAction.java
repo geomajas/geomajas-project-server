@@ -122,7 +122,8 @@ public class ToggleSelectionAction extends MenuAction {
 		if (null == coordinate) {
 			return;
 		}
-		// we can clear here !
+		// we can clear here (but remember the selected feature for the special case of single selection) !
+		final String singleSelectionId = mapWidget.getMapModel().getSelectedFeature();
 		if (clearSelection) {
 			mapWidget.getMapModel().clearSelectedFeatures();
 		}
@@ -149,13 +150,12 @@ public class ToggleSelectionAction extends MenuAction {
 		request.setFeatureIncludes(GwtCommandDispatcher.getInstance().getLazyFeatureIncludesSelect());
 		commandRequest.setCommandRequest(request);
 		GwtCommandDispatcher.getInstance().execute(commandRequest, new CommandCallback() {
-
 			public void execute(CommandResponse commandResponse) {
 				if (commandResponse instanceof SearchByLocationResponse) {
 					SearchByLocationResponse response = (SearchByLocationResponse) commandResponse;
 					Map<String, List<Feature>> featureMap = response.getFeatureMap();
 					for (String layerId : featureMap.keySet()) {
-						selectFeatures(layerId, featureMap.get(layerId));
+						selectFeatures(layerId, featureMap.get(layerId), singleSelectionId);
 					}
 				}
 			}
@@ -205,14 +205,15 @@ public class ToggleSelectionAction extends MenuAction {
 	// Private methods:
 	// -------------------------------------------------------------------------
 
-	private void selectFeatures(String serverLayerId, List<org.geomajas.layer.feature.Feature> orgFeatures) {
+	private void selectFeatures(String serverLayerId, List<org.geomajas.layer.feature.Feature> orgFeatures,
+			String selectionId) {
 		List<VectorLayer> layers = mapWidget.getMapModel().getVectorLayersByServerId(serverLayerId);
 		for (VectorLayer vectorLayer : layers) {
 			for (org.geomajas.layer.feature.Feature orgFeature : orgFeatures) {
 				org.geomajas.gwt.client.map.feature.Feature feature = new org.geomajas.gwt.client.map.feature.Feature(
 						orgFeature, vectorLayer);
 				vectorLayer.getFeatureStore().addFeature(feature);
-				if (vectorLayer.isFeatureSelected(feature.getId())) {
+				if (vectorLayer.isFeatureSelected(feature.getId()) || feature.getId().equals(selectionId)) {
 					vectorLayer.deselectFeature(feature);
 				} else {
 					vectorLayer.selectFeature(feature);

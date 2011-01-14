@@ -414,6 +414,22 @@ public class MapModel implements Paintable, MapViewChangedHandler, HasFeatureSel
 		}
 		return count;
 	}
+	
+	/**
+	 * Return the selected feature if there is 1 selected feature.
+	 * 
+	 * @return the selected feature or null if none or multiple features are selected
+	 */
+	public String getSelectedFeature() {
+		if (getNrSelectedFeatures() == 1) {
+			for (VectorLayer layer : getVectorLayers()) {
+				if (layer.getSelectedFeatures().size() > 0) {
+					return layer.getSelectedFeatures().iterator().next();
+				}
+			}
+		}
+		return null;
+	}
 
 	/**
 	 * Searches for the selected layer, and returns it.
