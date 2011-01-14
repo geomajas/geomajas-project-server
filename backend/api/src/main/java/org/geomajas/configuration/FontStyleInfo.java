@@ -26,17 +26,41 @@ public class FontStyleInfo implements Serializable, CacheableObject {
 
 	private static final long serialVersionUID = 160L;
 
-	private int size = 8;
+	private int size = -1;
 
-	private String family = "Verdana";
+	private String family;
 
-	private String weight = "normal";
+	private String weight;
 
-	private String style = "normal";
+	private String style;
 
-	private String color = "#000000"; // black
+	private String color;
 
-	private float opacity = 1;
+	private float opacity = -1;
+
+	/**
+	 * Applies default values to all properties that have not been set.
+	 */
+	public void applyDefaults() {
+		if (size == -1) {
+			size = 8;
+		}
+		if (family == null) {
+			family = "Verdana";
+		}
+		if (weight == null) {
+			weight = "normal";
+		}
+		if (style == null) {
+			style = "normal";
+		}
+		if (color == null) {
+			color = "#000000"; // black
+		}
+		if (opacity == -1) {
+			opacity = 1;
+		}
+	}
 
 	/**
 	 * Get the font size.

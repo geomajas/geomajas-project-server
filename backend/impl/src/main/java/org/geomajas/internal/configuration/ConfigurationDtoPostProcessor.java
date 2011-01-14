@@ -36,6 +36,7 @@ import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.Layer;
 import org.geomajas.layer.LayerException;
 import org.geomajas.layer.RasterLayer;
+import org.geomajas.layer.VectorLayer;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
 import org.geotools.geometry.DirectPosition2D;
@@ -82,6 +83,9 @@ public class ConfigurationDtoPostProcessor {
 	@Autowired(required = false)
 	protected Map<String, RasterLayer> rasterLayerMap = new LinkedHashMap<String, RasterLayer>();
 
+	@Autowired(required = false)
+	protected Map<String, VectorLayer> vectorLayerMap = new LinkedHashMap<String, VectorLayer>();
+
 	public ConfigurationDtoPostProcessor() {
 
 	}
@@ -90,6 +94,9 @@ public class ConfigurationDtoPostProcessor {
 	public void processConfiguration() throws BeansException {
 		try {
 			for (RasterLayer layer : rasterLayerMap.values()) {
+				postProcess(layer);
+			}
+			for (VectorLayer layer : vectorLayerMap.values()) {
 				postProcess(layer);
 			}
 			for (ClientApplicationInfo application : applicationMap.values()) {
@@ -114,6 +121,18 @@ public class ConfigurationDtoPostProcessor {
 			}
 			// add the resolution for deprecated api support
 			info.getResolutions().add(1. / scale.getPixelPerUnit());
+		}
+	}
+
+	private void postProcess(VectorLayer layer) throws LayerException {
+		// apply defaults to all styles
+		VectorLayerInfo info = layer.getLayerInfo();
+		for (NamedStyleInfo namedStyle : info.getNamedStyleInfos()) {
+			for (FeatureStyleInfo featureStyle : namedStyle.getFeatureStyles()) {
+				featureStyle.applyDefaults();
+			}
+			namedStyle.getLabelStyle().getBackgroundStyle().applyDefaults();
+			namedStyle.getLabelStyle().getFontStyle().applyDefaults();
 		}
 	}
 

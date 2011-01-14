@@ -39,15 +39,15 @@ public class FeatureStyleInfo implements Serializable, CacheableObject {
 
 	private String formula;
 
-	private String fillColor = "#ffffff"; // white
+	private String fillColor;
 
-	private float fillOpacity = .5f; // 50% transparent by default
+	private float fillOpacity = -1;
 
-	private String strokeColor = "#000000"; // black
+	private String strokeColor;
 
-	private float strokeOpacity = 1; // fully opaque by default
+	private float strokeOpacity = -1;
 
-	private int strokeWidth = 1;
+	private int strokeWidth = -1;
 
 	private String dashArray;
 
@@ -55,6 +55,27 @@ public class FeatureStyleInfo implements Serializable, CacheableObject {
 
 	@Null
 	private String styleId;
+	
+	/**
+	 * Applies default values to all properties that have not been set.
+	 */
+	public void applyDefaults() {
+		if (fillColor == null) {
+			fillColor = "#ffffff"; // white
+		}
+		if (strokeColor == null) {
+			strokeColor = "#000000"; // black
+		}
+		if (strokeOpacity == -1) {
+			strokeOpacity = 1; // fully opaque by default
+		}
+		if (fillOpacity == -1) {
+			fillOpacity = .5f; // 50% transparent by default
+		}
+		if (strokeWidth == -1) {
+			strokeWidth = 1; // white
+		}
+	}
 
 	/**
 	 * Gets the ordering index of the style. Styles are applied in the incremental order determined by their index
