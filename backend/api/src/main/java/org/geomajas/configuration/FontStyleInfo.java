@@ -40,6 +40,8 @@ public class FontStyleInfo implements Serializable, CacheableObject {
 
 	/**
 	 * Applies default values to all properties that have not been set.
+	 * 
+	 * @since 1.8.0
 	 */
 	public void applyDefaults() {
 		if (size == -1) {
@@ -64,7 +66,7 @@ public class FontStyleInfo implements Serializable, CacheableObject {
 
 	/**
 	 * Get the font size.
-	 *
+	 * 
 	 * @return font size
 	 */
 	public int getSize() {
@@ -83,7 +85,7 @@ public class FontStyleInfo implements Serializable, CacheableObject {
 
 	/**
 	 * Get the font family.
-	 *
+	 * 
 	 * @return font family
 	 */
 	public String getFamily() {
@@ -102,7 +104,7 @@ public class FontStyleInfo implements Serializable, CacheableObject {
 
 	/**
 	 * Get the font weight.
-	 *
+	 * 
 	 * @return font weight ("normal", "bold")
 	 */
 	public String getWeight() {
@@ -121,7 +123,7 @@ public class FontStyleInfo implements Serializable, CacheableObject {
 
 	/**
 	 * Get the font style.
-	 *
+	 * 
 	 * @return font style ("normal", "italic", ...)
 	 */
 	public String getStyle() {
@@ -140,7 +142,7 @@ public class FontStyleInfo implements Serializable, CacheableObject {
 
 	/**
 	 * Get the font color.
-	 *
+	 * 
 	 * @return font color (as HTML color)
 	 */
 	public String getColor() {
@@ -159,7 +161,7 @@ public class FontStyleInfo implements Serializable, CacheableObject {
 
 	/**
 	 * Get the font opacity.
-	 *
+	 * 
 	 * @return font opacity (between 0 and 1)
 	 */
 	public float getOpacity() {
@@ -178,26 +180,20 @@ public class FontStyleInfo implements Serializable, CacheableObject {
 
 	/**
 	 * String identifier which is guaranteed to include sufficient information to assure to be different for two
-	 * instances which could produce different result. It is typically used as basis for calculation of hash
-	 * codes (like MD5, SHA1, SHA2 etc) of (collections of) objects.
-	 *
+	 * instances which could produce different result. It is typically used as basis for calculation of hash codes (like
+	 * MD5, SHA1, SHA2 etc) of (collections of) objects.
+	 * 
 	 * @return cacheId
 	 * @since 1.8.0
 	 */
 	public String getCacheId() {
-		return "FontStyleInfo{" +
-				"size=" + size +
-				", family='" + family + '\'' +
-				", weight='" + weight + '\'' +
-				", style='" + style + '\'' +
-				", color='" + color + '\'' +
-				", opacity=" + opacity +
-				'}';
+		return "FontStyleInfo{" + "size=" + size + ", family='" + family + '\'' + ", weight='" + weight + '\''
+				+ ", style='" + style + '\'' + ", color='" + color + '\'' + ", opacity=" + opacity + '}';
 	}
 
 	/**
 	 * String representation of object.
-	 *
+	 * 
 	 * @return string representation of object
 	 * @since 1.8.0
 	 */
@@ -208,31 +204,48 @@ public class FontStyleInfo implements Serializable, CacheableObject {
 
 	/**
 	 * Are the two objects equal?
-	 *
-	 * @param o object to compare
+	 * 
+	 * @param o
+	 *            object to compare
 	 * @return true when objects are equal
 	 * @since 1.8.0
 	 */
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) { return true; }
-		if (!(o instanceof FontStyleInfo)) { return false; }
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof FontStyleInfo)) {
+			return false;
+		}
 
 		FontStyleInfo that = (FontStyleInfo) o;
 
-		if (Float.compare(that.opacity, opacity) != 0) { return false; }
-		if (size != that.size) { return false; }
-		if (color != null ? !color.equals(that.color) : that.color != null) { return false; }
-		if (family != null ? !family.equals(that.family) : that.family != null) { return false; }
-		if (style != null ? !style.equals(that.style) : that.style != null) { return false; }
-		if (weight != null ? !weight.equals(that.weight) : that.weight != null) { return false; }
+		if (Float.compare(that.opacity, opacity) != 0) {
+			return false;
+		}
+		if (size != that.size) {
+			return false;
+		}
+		if (color != null ? !color.equals(that.color) : that.color != null) {
+			return false;
+		}
+		if (family != null ? !family.equals(that.family) : that.family != null) {
+			return false;
+		}
+		if (style != null ? !style.equals(that.style) : that.style != null) {
+			return false;
+		}
+		if (weight != null ? !weight.equals(that.weight) : that.weight != null) {
+			return false;
+		}
 
 		return true;
 	}
 
 	/**
 	 * Calculate object hash code.
-	 *
+	 * 
 	 * @return hash code
 	 * @since 1.8.0
 	 */

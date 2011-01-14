@@ -55,9 +55,11 @@ public class FeatureStyleInfo implements Serializable, CacheableObject {
 
 	@Null
 	private String styleId;
-	
+
 	/**
 	 * Applies default values to all properties that have not been set.
+	 * 
+	 * @since 1.8.0
 	 */
 	public void applyDefaults() {
 		if (fillColor == null) {
@@ -90,7 +92,8 @@ public class FeatureStyleInfo implements Serializable, CacheableObject {
 	/**
 	 * Sets the ordering index of the style. (auto-set by Spring)
 	 * 
-	 * @param index ordering index
+	 * @param index
+	 *            ordering index
 	 */
 	public void setIndex(int index) {
 		this.index = index;
@@ -98,7 +101,7 @@ public class FeatureStyleInfo implements Serializable, CacheableObject {
 
 	/**
 	 * Get feature style name.
-	 *
+	 * 
 	 * @return name
 	 */
 	public String getName() {
@@ -107,8 +110,9 @@ public class FeatureStyleInfo implements Serializable, CacheableObject {
 
 	/**
 	 * Set feature style name.
-	 *
-	 * @param name name
+	 * 
+	 * @param name
+	 *            name
 	 */
 	public void setName(String name) {
 		this.name = name;
@@ -116,7 +120,7 @@ public class FeatureStyleInfo implements Serializable, CacheableObject {
 
 	/**
 	 * Get formula to test whether this style can be applied.
-	 *
+	 * 
 	 * @return formula
 	 */
 	public String getFormula() {
@@ -125,8 +129,9 @@ public class FeatureStyleInfo implements Serializable, CacheableObject {
 
 	/**
 	 * Set formula to test whether this style can be applied.
-	 *
-	 * @param formula formula
+	 * 
+	 * @param formula
+	 *            formula
 	 */
 	public void setFormula(String formula) {
 		this.formula = formula;
@@ -134,7 +139,7 @@ public class FeatureStyleInfo implements Serializable, CacheableObject {
 
 	/**
 	 * Get fill colour.
-	 *
+	 * 
 	 * @return fill colour (in "#rrggbb" notation)
 	 */
 	public String getFillColor() {
@@ -143,8 +148,9 @@ public class FeatureStyleInfo implements Serializable, CacheableObject {
 
 	/**
 	 * Set fill colour.
-	 *
-	 * @param fillColor fill colour (in "#rrggbb" notation)
+	 * 
+	 * @param fillColor
+	 *            fill colour (in "#rrggbb" notation)
 	 */
 	public void setFillColor(String fillColor) {
 		this.fillColor = fillColor;
@@ -152,7 +158,7 @@ public class FeatureStyleInfo implements Serializable, CacheableObject {
 
 	/**
 	 * Get fill opacity. The value should be in the [0,1] range, where 0 is fully transparent, and 1 is opaque.
-	 *
+	 * 
 	 * @return opacity for background fill
 	 */
 	public float getFillOpacity() {
@@ -161,8 +167,9 @@ public class FeatureStyleInfo implements Serializable, CacheableObject {
 
 	/**
 	 * Set the fill opacity. The value should be in the [0,1] range, where 0 is fully transparent, and 1 is opaque.
-	 *
-	 * @param fillOpacity opacity for background fill
+	 * 
+	 * @param fillOpacity
+	 *            opacity for background fill
 	 */
 	public void setFillOpacity(float fillOpacity) {
 		this.fillOpacity = fillOpacity;
@@ -170,7 +177,7 @@ public class FeatureStyleInfo implements Serializable, CacheableObject {
 
 	/**
 	 * Get stroke colour.
-	 *
+	 * 
 	 * @return stroke colour (in "#rrggbb" notation)
 	 */
 	public String getStrokeColor() {
@@ -179,8 +186,9 @@ public class FeatureStyleInfo implements Serializable, CacheableObject {
 
 	/**
 	 * Set stroke colour.
-	 *
-	 * @param strokeColor stroke colour (in "#rrggbb" notation)
+	 * 
+	 * @param strokeColor
+	 *            stroke colour (in "#rrggbb" notation)
 	 */
 	public void setStrokeColor(String strokeColor) {
 		this.strokeColor = strokeColor;
@@ -188,7 +196,7 @@ public class FeatureStyleInfo implements Serializable, CacheableObject {
 
 	/**
 	 * Get stroke opacity. The value should be in the [0,1] range, where 0 is fully transparent, and 1 is opaque.
-	 *
+	 * 
 	 * @return opacity for stroke colour
 	 */
 	public float getStrokeOpacity() {
@@ -197,8 +205,9 @@ public class FeatureStyleInfo implements Serializable, CacheableObject {
 
 	/**
 	 * Set the stroke opacity. The value should be in the [0,1] range, where 0 is fully transparent, and 1 is opaque.
-	 *
-	 * @param strokeOpacity opacity for the stroke
+	 * 
+	 * @param strokeOpacity
+	 *            opacity for the stroke
 	 */
 	public void setStrokeOpacity(float strokeOpacity) {
 		this.strokeOpacity = strokeOpacity;
@@ -206,7 +215,7 @@ public class FeatureStyleInfo implements Serializable, CacheableObject {
 
 	/**
 	 * Get stroke width.
-	 *
+	 * 
 	 * @return stroke width
 	 */
 	public int getStrokeWidth() {
@@ -215,8 +224,9 @@ public class FeatureStyleInfo implements Serializable, CacheableObject {
 
 	/**
 	 * Set stroke width.
-	 *
-	 * @param strokeWidth stroke width
+	 * 
+	 * @param strokeWidth
+	 *            stroke width
 	 */
 	public void setStrokeWidth(int strokeWidth) {
 		this.strokeWidth = strokeWidth;
@@ -224,7 +234,7 @@ public class FeatureStyleInfo implements Serializable, CacheableObject {
 
 	/**
 	 * Get dash array to apply. When null, the line is solid.
-	 *
+	 * 
 	 * @return dash array, comma separated list of dash and gap lengths
 	 */
 	public String getDashArray() {
@@ -233,8 +243,9 @@ public class FeatureStyleInfo implements Serializable, CacheableObject {
 
 	/**
 	 * Set the dash array to apply. When null, the line is solid.
-	 *
-	 * @param dashArray dash array, comma separated list of dash and gap lengths
+	 * 
+	 * @param dashArray
+	 *            dash array, comma separated list of dash and gap lengths
 	 */
 	public void setDashArray(String dashArray) {
 		this.dashArray = dashArray;
@@ -242,7 +253,7 @@ public class FeatureStyleInfo implements Serializable, CacheableObject {
 
 	/**
 	 * Get symbol to indicate feature.
-	 *
+	 * 
 	 * @return symbol
 	 */
 	public SymbolInfo getSymbol() {
@@ -251,8 +262,9 @@ public class FeatureStyleInfo implements Serializable, CacheableObject {
 
 	/**
 	 * Set symbol to indicate feature.
-	 *
-	 * @param symbol symbol
+	 * 
+	 * @param symbol
+	 *            symbol
 	 */
 	public void setSymbol(SymbolInfo symbol) {
 		this.symbol = symbol;
@@ -261,7 +273,7 @@ public class FeatureStyleInfo implements Serializable, CacheableObject {
 	/**
 	 * Return a unique style identifier for this client side style definition. This value is set automatically on the
 	 * server during initialization so don't set it in the configuration.
-	 *
+	 * 
 	 * @return style id
 	 */
 	public String getStyleId() {
@@ -271,8 +283,9 @@ public class FeatureStyleInfo implements Serializable, CacheableObject {
 	/**
 	 * Set a unique style identifier for this client side style definition. This value is set automatically on the
 	 * server during initialization so don't set it in the configuration.
-	 *
-	 * @param styleId style id
+	 * 
+	 * @param styleId
+	 *            style id
 	 */
 	public void setStyleId(String styleId) {
 		this.styleId = styleId;
@@ -280,31 +293,22 @@ public class FeatureStyleInfo implements Serializable, CacheableObject {
 
 	/**
 	 * String identifier which is guaranteed to include sufficient information to assure to be different for two
-	 * instances which could produce different result. It is typically used as basis for calculation of hash
-	 * codes (like MD5, SHA1, SHA2 etc) of (collections of) objects.
-	 *
+	 * instances which could produce different result. It is typically used as basis for calculation of hash codes (like
+	 * MD5, SHA1, SHA2 etc) of (collections of) objects.
+	 * 
 	 * @return cacheId
 	 * @since 1.8.0
 	 */
 	public String getCacheId() {
-		return "FeatureStyleInfo{" +
-				"index=" + index +
-				", name='" + name + '\'' +
-				", formula='" + formula + '\'' +
-				", fillColor='" + fillColor + '\'' +
-				", fillOpacity=" + fillOpacity +
-				", strokeColor='" + strokeColor + '\'' +
-				", strokeOpacity=" + strokeOpacity +
-				", strokeWidth=" + strokeWidth +
-				", dashArray='" + dashArray + '\'' +
-				", symbol=" + symbol +
-				", styleId='" + styleId + '\'' +
-				'}';
+		return "FeatureStyleInfo{" + "index=" + index + ", name='" + name + '\'' + ", formula='" + formula + '\''
+				+ ", fillColor='" + fillColor + '\'' + ", fillOpacity=" + fillOpacity + ", strokeColor='" + strokeColor
+				+ '\'' + ", strokeOpacity=" + strokeOpacity + ", strokeWidth=" + strokeWidth + ", dashArray='"
+				+ dashArray + '\'' + ", symbol=" + symbol + ", styleId='" + styleId + '\'' + '}';
 	}
 
 	/**
 	 * String representation of object.
-	 *
+	 * 
 	 * @return string representation of object
 	 * @since 1.8.0
 	 */
@@ -314,36 +318,63 @@ public class FeatureStyleInfo implements Serializable, CacheableObject {
 
 	/**
 	 * Are the two objects equal?
-	 *
-	 * @param o object to compare
+	 * 
+	 * @param o
+	 *            object to compare
 	 * @return true when objects are equal
 	 * @since 1.8.0
 	 */
 	@Override
 	public boolean equals(Object o) {
-		if (this == o) { return true; }
-		if (!(o instanceof FeatureStyleInfo)) { return false; }
+		if (this == o) {
+			return true;
+		}
+		if (!(o instanceof FeatureStyleInfo)) {
+			return false;
+		}
 
 		FeatureStyleInfo that = (FeatureStyleInfo) o;
 
-		if (Float.compare(that.fillOpacity, fillOpacity) != 0) { return false; }
-		if (index != that.index) { return false; }
-		if (Float.compare(that.strokeOpacity, strokeOpacity) != 0) { return false; }
-		if (strokeWidth != that.strokeWidth) { return false; }
-		if (dashArray != null ? !dashArray.equals(that.dashArray) : that.dashArray != null) { return false; }
-		if (fillColor != null ? !fillColor.equals(that.fillColor) : that.fillColor != null) { return false; }
-		if (formula != null ? !formula.equals(that.formula) : that.formula != null) { return false; }
-		if (name != null ? !name.equals(that.name) : that.name != null) { return false; }
-		if (strokeColor != null ? !strokeColor.equals(that.strokeColor) : that.strokeColor != null) { return false; }
-		if (styleId != null ? !styleId.equals(that.styleId) : that.styleId != null) { return false; }
-		if (symbol != null ? !symbol.equals(that.symbol) : that.symbol != null) { return false; }
+		if (Float.compare(that.fillOpacity, fillOpacity) != 0) {
+			return false;
+		}
+		if (index != that.index) {
+			return false;
+		}
+		if (Float.compare(that.strokeOpacity, strokeOpacity) != 0) {
+			return false;
+		}
+		if (strokeWidth != that.strokeWidth) {
+			return false;
+		}
+		if (dashArray != null ? !dashArray.equals(that.dashArray) : that.dashArray != null) {
+			return false;
+		}
+		if (fillColor != null ? !fillColor.equals(that.fillColor) : that.fillColor != null) {
+			return false;
+		}
+		if (formula != null ? !formula.equals(that.formula) : that.formula != null) {
+			return false;
+		}
+		if (name != null ? !name.equals(that.name) : that.name != null) {
+			return false;
+		}
+		if (strokeColor != null ? !strokeColor.equals(that.strokeColor) : that.strokeColor != null) {
+			return false;
+		}
+		if (styleId != null ? !styleId.equals(that.styleId) : that.styleId != null) {
+			return false;
+		}
+		if (symbol != null ? !symbol.equals(that.symbol) : that.symbol != null) {
+			return false;
+		}
 
 		return true;
 	}
 
 	/**
 	 * Calculate object hash code.
-	 *
+	 * 
 	 * @return hash code
 	 * @since 1.8.0
 	 */
