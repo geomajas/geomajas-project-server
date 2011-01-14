@@ -127,12 +127,14 @@ public class ConfigurationDtoPostProcessor {
 	private void postProcess(VectorLayer layer) throws LayerException {
 		// apply defaults to all styles
 		VectorLayerInfo info = layer.getLayerInfo();
-		for (NamedStyleInfo namedStyle : info.getNamedStyleInfos()) {
-			for (FeatureStyleInfo featureStyle : namedStyle.getFeatureStyles()) {
-				featureStyle.applyDefaults();
+		if (info != null) {
+			for (NamedStyleInfo namedStyle : info.getNamedStyleInfos()) {
+				for (FeatureStyleInfo featureStyle : namedStyle.getFeatureStyles()) {
+					featureStyle.applyDefaults();
+				}
+				namedStyle.getLabelStyle().getBackgroundStyle().applyDefaults();
+				namedStyle.getLabelStyle().getFontStyle().applyDefaults();
 			}
-			namedStyle.getLabelStyle().getBackgroundStyle().applyDefaults();
-			namedStyle.getLabelStyle().getFontStyle().applyDefaults();
 		}
 	}
 
