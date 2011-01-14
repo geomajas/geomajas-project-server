@@ -111,7 +111,7 @@ public class CommandSecuritySample extends SamplePanel {
 
 			public void onClick(ClickEvent event) {
 				GetResourcesRequest request = new GetResourcesRequest(
-						new String[] { "WEB-INF/security/security.xml" });
+						new String[] { "WEB-INF/security.xml" });
 				GwtCommand command = new GwtCommand("example.gwt.server.samples.GetSourceCommand");
 				command.setCommandRequest(request);
 				GwtCommandDispatcher.getInstance().execute(command, new CommandCallback() {
