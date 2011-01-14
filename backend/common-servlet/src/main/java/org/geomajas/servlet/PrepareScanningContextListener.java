@@ -32,7 +32,7 @@ public class PrepareScanningContextListener implements ServletContextListener {
 		ServletContext servletContext = servletContextEvent.getServletContext();
 		String param = servletContext.getInitParameter(PRELOAD_CLASSES_PARAMETER);
 		ClassLoader cl = Thread.currentThread().getContextClassLoader();
-		if (isGwtJettyClassLoader(cl)) {
+		if (ExtendedJettyClassLoader.isGwtJettyClassLoader(cl)) {
 			Thread.currentThread()
 					.setContextClassLoader(
 							new ExtendedJettyClassLoader((URLClassLoader) cl, ClassLoader.getSystemClassLoader(),
@@ -49,16 +49,6 @@ public class PrepareScanningContextListener implements ServletContextListener {
 				}
 			}
 		}
-	}
-
-	private boolean isGwtJettyClassLoader(ClassLoader cl) {
-		ClassLoader sys = ClassLoader.getSystemClassLoader();
-		// move up until we find the system class loader or null
-		while (cl != sys && cl != null) {
-			cl = cl.getParent();
-		}
-		// found null, must be gwt classloader !
-		return cl == null;
 	}
 
 	public void contextDestroyed(ServletContextEvent sce) {

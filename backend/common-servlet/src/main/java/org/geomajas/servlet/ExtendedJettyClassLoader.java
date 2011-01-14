@@ -99,5 +99,15 @@ public class ExtendedJettyClassLoader extends URLClassLoader {
 	public URL[] getURLs() {
 		return delegate.getURLs();
 	}
+	
+	public static boolean isGwtJettyClassLoader(ClassLoader cl) {
+		ClassLoader sys = ClassLoader.getSystemClassLoader();
+		// move up until we find the system class loader or null
+		while (cl != sys && cl != null) {
+			cl = cl.getParent();
+		}
+		// found null, must be gwt classloader !
+		return cl == null;
+	}
 
 }
