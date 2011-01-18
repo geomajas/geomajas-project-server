@@ -3,7 +3,7 @@
 		layout.setWidth100();
 		layout.setHeight100();
 
-		final MapWidget map = new MapWidget("mapOsm", "gwt-samples");
+		final MapWidget map = new MapWidget("mapOsmNoResolutions", "gwt-samples");
 
 		// Set a panning controller on the map:
 		map.setController(new PanController(map));

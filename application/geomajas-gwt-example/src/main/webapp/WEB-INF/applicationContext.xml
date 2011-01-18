@@ -38,7 +38,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 				<ref bean="mapFeatureInfo" />
 				<ref bean="mapOsmMeasure" />
 				<ref bean="mapOverviewOsm" />
-				<ref bean="mapOsmResolutions" />
+				<ref bean="mapOsmNoResolutions" />
 				<ref bean="mapEditPointLayer" />
 				<ref bean="mapEditLineLayer" />
 				<ref bean="mapEditPolygonLayer" />

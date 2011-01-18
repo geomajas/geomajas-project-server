@@ -23,6 +23,7 @@ import org.geomajas.gwt.client.map.MapView;
 import org.geomajas.gwt.client.map.event.MapViewChangedEvent;
 import org.geomajas.gwt.client.map.event.MapViewChangedHandler;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.form.DynamicForm;
@@ -71,6 +72,10 @@ public class ScaleSelect extends Canvas implements KeyPressHandler, ChangedHandl
 
 	private boolean updatingScaleList;
 
+	// Full list of scales. These will not always be shown (depends on map size and maximum bounds), but they are
+	// stored here for when the map resizes, and these must all of a sudden become available.
+	private List<Double> scaleList;
+
 	// -------------------------------------------------------------------------
 	// Constructor:
 	// -------------------------------------------------------------------------
@@ -106,15 +111,17 @@ public class ScaleSelect extends Canvas implements KeyPressHandler, ChangedHandl
 	 */
 	@Api
 	public void setScales(Double... scales) {
-		// sort decreasing
+		// Sort decreasing and store the list:
 		Arrays.sort(scales, Collections.reverseOrder());
-		// create lookup maps
+		scaleList = Arrays.asList(scales);
+
+		// Create lookup maps (stores user friendly representation):
 		valueList = new ArrayList<String>();
 		scaleToValue = new LinkedHashMap<Double, String>();
 		valueToScale = new LinkedHashMap<String, Double>();
 		for (int i = 0; i < scales.length; i++) {
 			Double scale = scales[i];
-			// eliminate doubles and null
+			// Eliminate doubles and null:
 			if (scale != null && !scaleToValue.containsKey(scale)) {
 				String value = scaleToString(scale);
 				valueList.add(value);
@@ -122,10 +129,12 @@ public class ScaleSelect extends Canvas implements KeyPressHandler, ChangedHandl
 				valueToScale.put(value, scale);
 			}
 		}
-		// set list
-		scaleItem.setValueMap(valueList.toArray(new String[0]));
+
+		// Apply the requested scales on the SelectItem. Make sure only available scales are added:
+		updateScaleList();
 	}
 
+	/** Return the MapView object to which this widget is connected. */
 	public MapView getMapView() {
 		return mapView;
 	}
@@ -148,22 +157,15 @@ public class ScaleSelect extends Canvas implements KeyPressHandler, ChangedHandl
 		this.updatingScaleList = updatingScaleList;
 	}
 
-	/**
-	 * When the MapView changes, update the select item to the correct scale.
-	 */
+	/** When the MapView changes, update the select item to the correct scale. */
 	public void onMapViewChanged(MapViewChangedEvent event) {
 		if (scaleItem.getValueAsString() == null || "".equals(scaleItem.getValueAsString())) {
 			setDisplayScale(mapView.getCurrentScale() * pixelLength);
 		}
 
 		if (event.isMapResized()) {
-			List<Double> scales = new ArrayList<Double>();
-			for (Double resolution : mapView.getAvailableResolutions()) {
-				scales.add(pixelLength / resolution);
-			}
-			if (scales.size() > 0) {
-				setScales(scales.toArray(new Double[0]));
-			}
+			updateScaleList();
+			setDisplayScale(mapView.getCurrentScale() * pixelLength);
 		} else if (!event.isSameScaleLevel() || scaleItem.getDisplayValue() == null
 				|| "".equals(scaleItem.getDisplayValue())) {
 			setDisplayScale(mapView.getCurrentScale() * pixelLength);
@@ -218,6 +220,22 @@ public class ScaleSelect extends Canvas implements KeyPressHandler, ChangedHandl
 		} else {
 			return DENOMINATOR_FORMAT.parse(scale2[0].trim()) / DENOMINATOR_FORMAT.parse(scale2[1].trim());
 		}
+	}
+
+	/**
+	 * Given the full list of desirable resolutions, which ones are actually available? Update the widget accordingly.
+	 */
+	private void updateScaleList() {
+		List<String> availableScales = new ArrayList<String>();
+
+		for (Double scale : scaleList) {
+			if (mapView.isResolutionAvailable(pixelLength / scale)) {
+				availableScales.add(scaleToValue.get(scale));
+			}
+		}
+
+		GWT.log("Added " + availableScales.size() + " scale to the list.");
+		scaleItem.setValueMap(availableScales.toArray(new String[0]));
 	}
 
 	private void init() {

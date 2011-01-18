@@ -45,7 +45,6 @@ import com.google.gwt.event.shared.HandlerRegistration;
 @Api
 public class MapView {
 
-
 	private static final double MAX_RESOLUTION = Float.MAX_VALUE;
 
 	/** Zoom options. */
@@ -82,7 +81,9 @@ public class MapView {
 	 */
 	private List<Double> resolutions = new ArrayList<Double>();
 
-	/** The current index in the resolutions array. That is, if the resolutions are actually used. */
+	/**
+	 * The current index in the resolutions array. That is, if the resolutions are actually used.
+	 */
 	private int resolutionIndex = -1;
 
 	/**
@@ -153,19 +154,21 @@ public class MapView {
 		return new Matrix(1, 0, 0, 1, 0, 0);
 	}
 
-	/** Return the translation of coordinates relative to the pan origin to view coordinates. */
+	/**
+	 * Return the translation of coordinates relative to the pan origin to view coordinates.
+	 */
 	public Matrix getPanToViewTranslation() {
 		if (viewState.getScale() > 0) {
-			double dX = -((viewState.getX() - viewState.getPanX()) * viewState.getScale())
-					+ width / 2;
-			double dY = (viewState.getY() - viewState.getPanY()) * viewState.getScale()
-					+ height / 2;
+			double dX = -((viewState.getX() - viewState.getPanX()) * viewState.getScale()) + width / 2;
+			double dY = (viewState.getY() - viewState.getPanY()) * viewState.getScale() + height / 2;
 			return new Matrix(1, 0, 0, 1, dX, dY);
 		}
 		return new Matrix(1, 0, 0, 1, 0, 0);
 	}
 
-	/** Return the translation of scaled world coordinates to coordinates relative to the pan origin. */
+	/**
+	 * Return the translation of scaled world coordinates to coordinates relative to the pan origin.
+	 */
 	public Matrix getWorldToPanTranslation() {
 		if (viewState.getScale() > 0) {
 			double dX = -(viewState.getPanX() * viewState.getScale());
@@ -232,7 +235,8 @@ public class MapView {
 
 		double factor = newScale / getCurrentScale();
 
-		// Calculate translate vector to assure rescalePoint is on the same position as before.
+		// Calculate translate vector to assure rescalePoint is on the same
+		// position as before.
 		double dX = (rescalePoint.getX() - viewState.getX()) * (1 - 1 / factor);
 		double dY = (rescalePoint.getY() - viewState.getY()) * (1 - 1 / factor);
 
@@ -276,8 +280,11 @@ public class MapView {
 		this.width = newWidth;
 		this.height = newHeight;
 		if (viewState.getScale() < getMinimumScale()) {
-			// the new scale is too low, re-apply old bounds (this will limit the scale correctly)
-			doApplyBounds(oldbbox, ZoomOption.LEVEL_CLOSEST);
+			// The new scale is too low, re-apply old values:
+			double scale = getBestScale(oldbbox);
+			doSetScale(snapToResolution(scale, ZoomOption.LEVEL_FIT), ZoomOption.LEVEL_FIT);
+			doSetOrigin(oldbbox.getCenterPoint());
+			fireEvent(true, null);
 		} else {
 			// Use the same center point for the new bounds, but don't zoom in or out.
 			doSetOrigin(oldbbox.getCenterPoint());
@@ -357,35 +364,37 @@ public class MapView {
 		Collections.sort(this.resolutions, Collections.reverseOrder());
 	}
 
-	/** Get the list of predefined map resolutions (resolution = inverse of scale). */
+	/**
+	 * Get the list of predefined map resolutions (resolution = inverse of scale).
+	 */
 	public List<Double> getResolutions() {
 		return resolutions;
 	}
 
 	/**
-	 * Get the full list of available map resolutions, given the map size and maximum bounds. This may be a sub-set of
-	 * the full resolution list.
+	 * Is the given resolution available (given the maximum bounds, and current size of the map) or not?
 	 * 
+	 * @param resolution
+	 *            The resolution to calculate availability for.
+	 * @return Returns true or false. If false, the given resolution cannot be reached.
 	 * @since 1.8.0
 	 */
-	public List<Double> getAvailableResolutions() {
-		List<Double> available = new ArrayList<Double>();
+	public boolean isResolutionAvailable(double resolution) {
 		double max = MAX_RESOLUTION;
 		double minimumScale = getMinimumScale();
 		if (minimumScale > 0) {
 			max = 1.0 / getMinimumScale();
 		}
 		double min = 1.0 / maximumScale;
-		for (int i = 0; i < resolutions.size(); i++) {
-			Double resolution = resolutions.get(i);
-			if (resolution >= min && resolution <= max) {
-				available.add(resolution);
-			}
+		if (resolution >= min && resolution <= max) {
+			return true;
 		}
-		return available;
+		return false;
 	}
 
-	/** Return the transformer that is used to transform coordinate and geometries between world and screen space. */
+	/**
+	 * Return the transformer that is used to transform coordinate and geometries between world and screen space.
+	 */
 	public WorldViewTransformer getWorldViewTransformer() {
 		if (null == worldViewTransformer) {
 			worldViewTransformer = new WorldViewTransformer(this);
@@ -419,7 +428,7 @@ public class MapView {
 		saveState();
 		viewState = viewState.copyAndSetPanDragging(panDragging);
 	}
-	
+
 	public MapViewState getViewState() {
 		return viewState;
 	}
@@ -449,17 +458,18 @@ public class MapView {
 
 	private void doApplyBounds(Bbox bounds, ZoomOption option) {
 		if (bounds != null) {
-			// first set the scale, taking minimum and maximum scale into account
-			//boolean scaleChanged = false;
+			// first set the scale, taking minimum and maximum scale into
+			// account
+			// boolean scaleChanged = false;
 			if (!bounds.isEmpty()) {
 				// find best scale
 				double scale = getBestScale(bounds);
 				// snap and limit
 				scale = snapToResolution(scale, option);
 				// set scale
-				/*scaleChanged = */doSetScale(scale, option);
+				/* scaleChanged = */doSetScale(scale, option);
 			}
-			// now translate, taking maximum bounds into account 
+			// now translate, taking maximum bounds into account
 			doSetOrigin(bounds.getCenterPoint());
 			if (bounds.isEmpty()) {
 				fireEvent(false, null);
@@ -472,7 +482,8 @@ public class MapView {
 	}
 
 	private double getMinimumScale() {
-		// the minimum scale is determined by the maximum bounds and the pixel size of the map
+		// the minimum scale is determined by the maximum bounds and the pixel
+		// size of the map
 		if (maxBounds != null) {
 			double wRatio = width / maxBounds.getWidth();
 			double hRatio = height / maxBounds.getHeight();

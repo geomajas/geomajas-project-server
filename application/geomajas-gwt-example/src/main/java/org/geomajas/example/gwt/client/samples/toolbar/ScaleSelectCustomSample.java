@@ -50,7 +50,7 @@ public class ScaleSelectCustomSample extends SamplePanel {
 		layout.setWidth100();
 		layout.setHeight100();
 
-		final MapWidget map = new MapWidget("mapOsm", "gwt-samples");
+		final MapWidget map = new MapWidget("mapOsmNoResolutions", "gwt-samples");
 
 		// Set a panning controller on the map:
 		map.setController(new PanController(map));
@@ -83,8 +83,7 @@ public class ScaleSelectCustomSample extends SamplePanel {
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "WEB-INF/layerOsm.xml",
-				"WEB-INF/mapOsm.xml" };
+		return new String[] { "WEB-INF/layerOsm.xml", "WEB-INF/mapOsmNoResolutions.xml" };
 	}
 
 	public String ensureUserLoggedIn() {
