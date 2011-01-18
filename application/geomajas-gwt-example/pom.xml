@@ -1,15 +1,12 @@
-<!--
-  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
-  ~
-  ~ Copyright 2008-2011 Geosparc nv, http://www.geosparc.com/, Belgium.
-  ~
-  ~ The program is available in open source according to the GNU Affero
-  ~ General Public License. All contributions in this program are covered
-  ~ by the Geomajas Contributors License Agreement. For full licensing
-  ~ details, see LICENSE.txt in the project root.
-  -->
+<!-- ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/. 
+	~ ~ Copyright 2008-2011 Geosparc nv, http://www.geosparc.com/, Belgium. ~ 
+	~ The program is available in open source according to the GNU Affero ~ General 
+	Public License. All contributions in this program are covered ~ by the Geomajas 
+	Contributors License Agreement. For full licensing ~ details, see LICENSE.txt 
+	in the project root. -->
 
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 	<parent>
 		<groupId>org.geomajas</groupId>
 		<artifactId>geomajas-parent</artifactId>
@@ -117,49 +114,38 @@
 			<artifactId>geomajas-layer-google</artifactId>
 			<version>1.7.1</version>
 		</dependency>
-		<!-- this will be needed when using 1.8.0 (once released), the normal dependency can then be removed
-		<dependency>
-			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-layer-google-gwt</artifactId>
-			<version>1.8.0-SNAPSHOT</version>
-		</dependency>
-	    -->
+		<!-- this will be needed when using 1.8.0 (once released), the normal dependency 
+			can then be removed <dependency> <groupId>org.geomajas.plugin</groupId> <artifactId>geomajas-layer-google-gwt</artifactId> 
+			<version>1.8.0-SNAPSHOT</version> </dependency> -->
 		<!-- @extract-end -->
-		<!-- @todo caching and rasterizing, enable once released
-		<dependency>
-			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-plugin-caching</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-plugin-rasterizing</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-		</dependency>
-		-->
+		<!-- @todo caching and rasterizing, enable once released <dependency> <groupId>org.geomajas.plugin</groupId> 
+			<artifactId>geomajas-plugin-caching</artifactId> <version>1.0.0-SNAPSHOT</version> 
+			</dependency> <dependency> <groupId>org.geomajas.plugin</groupId> <artifactId>geomajas-plugin-rasterizing</artifactId> 
+			<version>1.0.0-SNAPSHOT</version> </dependency> -->
 
 		<!-- Extra Geomajas plugins -->
-		<!-- @extract-start StaticSecurityDependency, staticsecurity source plugin - including source -->
+		<!-- @extract-start StaticSecurityDependency, staticsecurity source plugin 
+			- including source -->
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-plugin-staticsecurity</artifactId>
-			<version>1.8.0-SNAPSHOT</version> <!--  @todo remove, should come from -dep  -->
+			<version>1.7.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-plugin-staticsecurity</artifactId>
-			<version>1.8.0-SNAPSHOT</version>
-			<classifier>sources</classifier> <!--  @todo remove, should come from -dep  -->
+			<version>1.7.1</version>
+			<classifier>sources</classifier>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-plugin-staticsecurity-gwt</artifactId>
-			<version>1.8.0-SNAPSHOT</version> <!--  @todo remove, should come from -dep  -->
+			<version>1.7.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-plugin-staticsecurity-gwt</artifactId>
-			<version>1.8.0-SNAPSHOT</version> <!--  @todo remove, should come from -dep  -->
+			<version>1.7.1</version>
 			<classifier>sources</classifier>
 		</dependency>
 		<!-- @extract-end -->
@@ -341,7 +327,7 @@
 					<extraJvmArgs>-Xmx512M -Xss1024k</extraJvmArgs>
 				</configuration>
 			</plugin>
-			
+
 			<!-- clean the source tree (Gwt compile of eclipse plugin) -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -354,7 +340,7 @@
 					</filesets>
 				</configuration>
 			</plugin>
-			
+
 		</plugins>
 	</build>
 
@@ -437,7 +423,8 @@
 			<url>http://maven.geomajas.org/</url>
 		</repository>
 
-		<!-- uncomment if you want to use Geomajas snapshots, comment for faster builds  -->
+		<!-- uncomment if you want to use Geomajas snapshots, comment for faster 
+			builds -->
 		<repository>
 			<id>Geomajas-latest</id>
 			<name>Geomajas snapshot repository</name>
