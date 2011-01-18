@@ -232,6 +232,19 @@
 				<version>2.8</version>
 			</plugin>
 
+			<!-- clean the source tree (Gwt compile of eclipse plugin) -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-clean-plugin</artifactId>
+				<configuration>
+					<filesets>
+						<fileset>
+							<directory>src/main/webapp/Application</directory>
+						</fileset>
+					</filesets>
+				</configuration>
+			</plugin>
+
 		</plugins>
 	</build>
 
