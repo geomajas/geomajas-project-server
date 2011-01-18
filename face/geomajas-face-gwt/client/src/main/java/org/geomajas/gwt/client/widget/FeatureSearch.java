@@ -392,6 +392,10 @@ public class FeatureSearch extends Canvas {
 	 */
 	public void setLayer(VectorLayer layer) {
 		this.layer = layer;
+		Object value = layerSelect.getValue();
+		if (value == null || !value.equals(layer.getLabel())) {
+			layerSelect.setValue(layer.getLabel());
+		}
 		empty();
 	}
 
