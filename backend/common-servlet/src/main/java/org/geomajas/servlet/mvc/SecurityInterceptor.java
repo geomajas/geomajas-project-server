@@ -21,7 +21,6 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
  * This interceptor establishes a Geomajas security context based on the user token parameter.
  * 
  * @author Jan De Moerloose
- * 
  */
 public class SecurityInterceptor extends HandlerInterceptorAdapter {
 
@@ -43,7 +42,4 @@ public class SecurityInterceptor extends HandlerInterceptorAdapter {
 			throws Exception {
 		securityManager.clearSecurityContext();
 	}
-	
-	
-
 }
