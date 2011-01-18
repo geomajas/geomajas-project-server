@@ -61,7 +61,7 @@ public class SecurityManagerImpl implements SecurityManager {
 		}
 		if (!authentications.isEmpty()) {
 			// build authorization and build thread local SecurityContext
-			((SecurityContextImpl) securityContext).setAuthentications("token", authentications);
+			((SecurityContextImpl) securityContext).setAuthentications(authenticationToken, authentications);
 			return true;
 		}
 		return false;
