@@ -63,7 +63,7 @@ public class YahooPlaceFinderGeocoderService implements GeocoderService {
 
 	private CoordinateReferenceSystem crs;
 
-	private String name = "GeoNames";
+	private String name = "YahooPlaceFinder";
 
 	private String appId;
 	private String appIdProperty;
