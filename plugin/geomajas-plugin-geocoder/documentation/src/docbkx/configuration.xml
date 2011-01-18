@@ -9,7 +9,6 @@
   ~ by the Geomajas Contributors License Agreement. For full licensing
   ~ details, see LICENSE.txt in the project root.
   -->
-
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
 "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
 <chapter id="chapter-configuration">
@@ -225,8 +224,11 @@
     <title>GeoNames service configuration</title>
 
     <para>The GeonamesGeocoderService uses the search web service at
-    geonames.org to handle the geocoder requests. The service does not allow
-    any configuration, so its inclusion is pretty straightforward.</para>
+    geonames.org to handle the geocoder requests. You can only configure the
+    "userName" property which is the geonames user which is registered to
+    access the service. This can either be passed directly or using the
+    "userNameProperty" which indicates the property which contains the user
+    name to use. Defining the service is pretty straightforward.</para>
 
     <xi:include href="listing/GeonamesConfiguration.xml"
                 xmlns:xi="http://www.w3.org/2001/XInclude" />

@@ -198,7 +198,9 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 	<!-- @extract-end -->
 
 	<!-- @extract-start GeonamesConfiguration, Defining the Geonames geocoder service -->
-	<bean name="geonames" class="org.geomajas.plugin.geocoder.service.GeonamesGeocoderService" />
+	<bean class="org.geomajas.plugin.geocoder.service.GeonamesGeocoderService" >
+		<property name="userName" value="geomajasHudson" />
+	</bean>
 	<!-- @extract-end -->
 
 </beans>

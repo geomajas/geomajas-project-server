@@ -33,9 +33,13 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd">
 	<bean name="geocoderInfo" class="org.geomajas.plugin.geocoder.api.GeocoderInfo">
 		<property name="geocoderServices">
 			<list>
-				<bean class="org.geomajas.plugin.geocoder.service.GeonamesGeocoderService" />
+				<bean class="org.geomajas.plugin.geocoder.service.GeonamesGeocoderService" >
+					<property name="userName" value="geomajasHudson" />
+				</bean>
 				<!-- need two instance to assure data needs to be removed -->
-				<bean class="org.geomajas.plugin.geocoder.service.GeonamesGeocoderService" />
+				<bean class="org.geomajas.plugin.geocoder.service.GeonamesGeocoderService" >
+					<property name="userName" value="geomajasHudson" />
+				</bean>
 			</list>
 		</property>
 		<property name="pointDisplayWidth" value="200" />

@@ -68,9 +68,17 @@ public class GeonamesGeocoderService implements GeocoderService {
 
 	private String name = "GeoNames";
 
+	private String userName;
+	private String userNameProperty;
+
 	@PostConstruct
 	private void initCrs() throws GeomajasException {
 		crs = geoService.getCrs2("EPSG:4326"); // WGS-84 latlong
+
+		if (null != userNameProperty) {
+			userName = System.getProperty(userNameProperty);
+		}
+
 	}
 
 	public String getName() {
@@ -86,7 +94,30 @@ public class GeonamesGeocoderService implements GeocoderService {
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
+	/**
+	 * Set user name which is passed on to the Geonames service.
+	 * This is needed as Geonames uses this to prevent DDOS attacks.
+	 *
+	 * @param userName geonames user name
+	 * @since 1.1.0
+	 */
+	@Api
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	/**
+	 * Set property which needs to be used to read the user name to pass to Geonames.
+	 *
+	 * @param userNameProperty property to read
+	 * @since 1.1.0
+	 */
+	@Api
+	public void setUserNameProperty(String userNameProperty) {
+		this.userNameProperty = userNameProperty;
+	}
+
 	public CoordinateReferenceSystem getCrs() {
 		return crs;
 	}
@@ -188,14 +219,17 @@ public class GeonamesGeocoderService implements GeocoderService {
 		List<Toponym> searchResult = new ArrayList<Toponym>();
 
 		String url = "q=" + URLEncoder.encode(q, "UTF8");
-		url = url + "&isNameRequired=true";
+		url += "&isNameRequired=true";
 		if (fuzzy) {
-			url = url + "&fuzzy=" + FUZZY_VALUE;
+			url += "&fuzzy=" + FUZZY_VALUE;
 		}
 		if (maxRows > 0) {
-			url = url + "&maxRows=" + maxRows;
+			url += "&maxRows=" + maxRows;
 		}
-		url = url + "&style=" + Style.SHORT;
+		url += "&style=" + Style.SHORT;
+		if (null != userName) {
+			url += "&username=" + userName;
+		}
 
 		InputStream inputStream = connect(url);
 		if (null != inputStream) {

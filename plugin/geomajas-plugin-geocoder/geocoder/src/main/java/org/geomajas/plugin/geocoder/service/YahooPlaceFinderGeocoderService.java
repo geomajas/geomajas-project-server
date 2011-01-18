@@ -77,7 +77,7 @@ public class YahooPlaceFinderGeocoderService implements GeocoderService {
 			appId = System.getProperty(appIdProperty);
 		}
 		if (null == appId && !skipAppIdCheck) {
-			throw new RuntimeException("Cannot instantiate YahooPlaceFinderGeocoderService, appid not known, " +
+			throw new RuntimeException("Cannot instantiate YahooPlaceFinderGeocoderService, appId not known, " +
 					"you need to set appId or appIdProperty.");
 		}
 	}
