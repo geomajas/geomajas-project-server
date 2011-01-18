@@ -93,7 +93,7 @@ public class CommandSecuritySample extends SamplePanel {
 
 			public void onClick(ClickEvent event) {
 				GwtCommand commandRequest = new GwtCommand("command.configuration.GetMap");
-				commandRequest.setCommandRequest(new GetMapConfigurationRequest("osmMap", "gwt-samples"));
+				commandRequest.setCommandRequest(new GetMapConfigurationRequest("mapOsm", "gwt-samples"));
 				GwtCommandDispatcher.getInstance().execute(commandRequest, new CommandCallback() {
 
 					public void execute(CommandResponse response) {

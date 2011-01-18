@@ -67,7 +67,7 @@ public class GeomajasEntryPoint implements EntryPoint {
 		// create the map and toolbar
 
 		// @extract-start createGwtWidget, Create GWT widget in toolbar
-		MapWidget map = new MapWidget("osmMap", "app");
+		MapWidget map = new MapWidget("mapOsm", "app");
 		Toolbar toolbar = new Toolbar(map);
 		// @extract-skip-start
 		toolbar.setButtonSize(Toolbar.BUTTON_SIZE_BIG);

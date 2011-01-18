@@ -43,7 +43,7 @@ public class OpenStreetMapSample extends SamplePanel {
 		layout.setWidth100();
 		layout.setHeight100();
 
-		// Map with ID osmMap is defined in the XML configuration. (mapOsm.xml)
+		// Map with ID mapOsm is defined in the XML configuration. (mapOsm.xml)
 		final MapWidget map = new MapWidget("mapOsm", "gwt-samples");
 
 		// Set a panning controller on the map:

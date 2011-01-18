@@ -19,7 +19,7 @@
         <param-value>
             classpath:org/geomajas/spring/geomajasContext.xml
 			classpath:org/geomajas/plugin/geocoder/gwt/example/context/applicationContext.xml
-			classpath:org/geomajas/plugin/geocoder/gwt/example/context/osmMap.xml
+			classpath:org/geomajas/plugin/geocoder/gwt/example/context/mapOsm.xml
 		</param-value>
     </context-param>
 

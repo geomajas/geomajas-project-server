@@ -21,7 +21,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	<bean name="pure-gwt-app" class="org.geomajas.configuration.client.ClientApplicationInfo">
 		<property name="maps">
 			<list>
-				<ref bean="osmMap" />
+				<ref bean="mapOsm" />
 			</list>
 		</property>
 	</bean>

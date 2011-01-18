@@ -54,7 +54,7 @@ public class UnitTypesSample extends SamplePanel {
 		mapLayout.setShowEdges(true);
 		mapLayout.setHeight("60%");
 
-		// Map with ID osmMap is defined in the XML configuration. (mapOsm.xml)
+		// Map with ID mapOsm is defined in the XML configuration. (mapOsm.xml)
 		final MapWidget map = new MapWidget("mapOsm", "gwt-samples");
 		map.setController(new PanController(map));
 		mapLayout.addMember(map);

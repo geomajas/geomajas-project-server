@@ -62,7 +62,7 @@ public class NavigationSample extends SamplePanel {
 		VLayout thirdColumn = new VLayout();
 		thirdColumn.setMembersMargin(5);
 
-		// Map with ID osmMap is defined in the XML configuration. (mapOsm.xml)
+		// Map with ID mapOsm is defined in the XML configuration. (mapOsm.xml)
 		final MapWidget map = new MapWidget("mapOsm", "gwt-samples");
 
 		// Set a panning controller on the map:

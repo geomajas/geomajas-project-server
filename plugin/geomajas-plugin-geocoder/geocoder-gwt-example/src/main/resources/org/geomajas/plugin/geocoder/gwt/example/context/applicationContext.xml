@@ -111,7 +111,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 		  class="org.geomajas.configuration.client.ClientApplicationInfo">
 		<property name="maps">
 			<list>
-				<ref bean="osmMap"/>
+				<ref bean="mapOsm"/>
 			</list>
 		</property>
 	</bean>
