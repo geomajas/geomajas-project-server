@@ -18,6 +18,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.plugin</groupId>
 	<artifactId>geomajas-layer-openstreetmap-documentation</artifactId>
+	<version>1.9.0-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>Geomajas OpenStreetMap layer documentation</name>
 	<description>Geomajas OpenStreetMap layer documentation</description>

@@ -18,6 +18,7 @@
 	</parent>
 	<groupId>org.geomajas.documentation</groupId>
 	<artifactId>geomajas-face-dojo-documentation</artifactId>
+	<version>1.5.8-SNAPSHOT</version>
 	<packaging>jar</packaging>
 	<name>Geomajas dojo face documentation</name>
 	<description>Geomajas dojo face documentation</description>
