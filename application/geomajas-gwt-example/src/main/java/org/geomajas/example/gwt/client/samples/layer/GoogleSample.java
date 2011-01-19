@@ -60,21 +60,21 @@ public class GoogleSample extends SamplePanel {
 		// Create map with Google layer (satellite), and add a PanController to it:
 		VLayout mapLayout2 = new VLayout();
 		mapLayout2.setShowEdges(true);
-		googleSatMap = new MapWidget("mapGoogleSat", "gwt-samples");
-		googleSatMap.setController(new PanController(googleSatMap));
-		mapLayout2.addMember(googleSatMap);
-
-		// Create map with Google layer (terrain), and add a PanController to it:
-		VLayout mapLayout3 = new VLayout();
-		mapLayout3.setShowEdges(true);
-		googleTerrainMap = new MapWidget("mapGoogleTerrain", "gwt-samples");
-		googleTerrainMap.setController(new PanController(googleTerrainMap));
-		mapLayout3.addMember(googleTerrainMap);
+//		googleSatMap = new MapWidget("mapGoogleSat", "gwt-samples");
+//		googleSatMap.setController(new PanController(googleSatMap));
+//		mapLayout2.addMember(googleSatMap);
+//
+//		// Create map with Google layer (terrain), and add a PanController to it:
+//		VLayout mapLayout3 = new VLayout();
+//		mapLayout3.setShowEdges(true);
+//		googleTerrainMap = new MapWidget("mapGoogleTerrain", "gwt-samples");
+//		googleTerrainMap.setController(new PanController(googleTerrainMap));
+//		mapLayout3.addMember(googleTerrainMap);
 
 		// Place all three in the layout:
 		layout.addMember(mapLayout1);
-		layout.addMember(mapLayout2);
-		layout.addMember(mapLayout3);
+//		layout.addMember(mapLayout2);
+//		layout.addMember(mapLayout3);
 
 		return layout;
 	}
@@ -98,7 +98,7 @@ public class GoogleSample extends SamplePanel {
 	}
 
 	// @extract-start GoogleSample, GoogleSample
-	protected void onDraw() {
+	protected void _onDraw() {
 		googleMap.registerMapAddon(new GoogleAddon("google", googleMap, GoogleAddon.MapType.NORMAL, false));
 		googleSatMap.registerMapAddon(new GoogleAddon("google", googleSatMap, GoogleAddon.MapType.SATELLITE, false));
 		googleTerrainMap.registerMapAddon(new GoogleAddon("google", googleTerrainMap, GoogleAddon.MapType.PHYSICAL,
