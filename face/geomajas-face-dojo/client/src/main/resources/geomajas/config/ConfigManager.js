@@ -47,6 +47,7 @@ dojo.declare("ConfigManager", null, {
 	},
 
 	getConfigWithJson : function () {
+		geomajasConfig.applicationId = this.applicationId;
 		var command = new JsonCommand(this.statics.cfgCmd, this.statics.cfgReqClass, null, false);
 		command.addParam("applicationId", this.applicationId);
 		var deferred = this.dispatcher.execute(command);
@@ -155,7 +156,7 @@ dojo.declare("ConfigManager", null, {
 			mapWidget.enablePanButtons();
 		}
 		if (mapInfo.displayUnitType != null) {
-			mapWidget.unitType = mapInfo.displayUnitType.value;
+			mapWidget.unitType = mapInfo.displayUnitType;
 		}
 		log.debug ("configureMap : widget intialized");
 		// Create all the layers
@@ -230,7 +231,7 @@ dojo.declare("ConfigManager", null, {
 	 * @private
 	 */
 	_createLayer : function (mapId, config, mapWidget, mapModel) {
-		if (config.layerType.value == geomajas.LayerTypes.RASTER) {
+		if (config.layerType == geomajas.LayerTypes.RASTER) {
 			return this._configureRasterLayer(mapId, config, mapWidget, mapModel);
 		} else {
 			return this._configureVectorLayer(mapId, config, mapModel);
@@ -244,7 +245,7 @@ dojo.declare("ConfigManager", null, {
         log.debug("_configureVectorLayer="+mapId+"."+lc.serverLayerId);
 		var layer = new VectorLayer(mapId, lc.serverLayerId, mapModel);
 		layer.setLabel (lc.label);
-		layer.setLayerType (lc.layerType.value);
+		layer.setLayerType (lc.layerType);
         layer.setVisible(lc.visible);
 		layer.setMaxExtent(lc.maxExtent);
 		layer.setMinViewScale(lc.viewScaleMin);
@@ -278,9 +279,9 @@ dojo.declare("ConfigManager", null, {
 			var at = viewArray[j];
 			var atd = null;
 			if(at.feature){
-				atd = new AssociationDefinition (layer, at.name, at.label, at.validator, at.type.value, at.editable, at.identifying, at.hidden, at.feature);
+				atd = new AssociationDefinition (layer, at.name, at.label, at.validator, at.type, at.editable, at.identifying, at.hidden, at.feature);
 			} else {
-				atd = new AttributeDefinition (layer, at.name, at.label, at.validator, at.type.value, at.editable, at.identifying, at.hidden);
+				atd = new AttributeDefinition (layer, at.name, at.label, at.validator, at.type, at.editable, at.identifying, at.hidden);
 			}
 			view.add (at.name, atd);
 		}
@@ -317,7 +318,7 @@ dojo.declare("ConfigManager", null, {
 			layer.setImageFactory(new GoogleImageFactory(lc.layerInfo.dataSourceName));
 		}
 		layer.setLabel (lc.label);
-		layer.setLayerType (lc.layerType.value);
+		layer.setLayerType (lc.layerType);
         layer.setVisible(lc.visible);
 		layer.setMaxExtent(lc.maxExtent);
 		layer.setMinViewScale(lc.viewScaleMin);
