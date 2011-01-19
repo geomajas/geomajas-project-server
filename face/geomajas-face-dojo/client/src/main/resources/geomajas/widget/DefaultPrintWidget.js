@@ -34,8 +34,8 @@ dojo.declare("geomajas.widget.DefaultPrintWidget", [
 	
 	postCreate : function() {
 		this.inherited(arguments);
-		printButton = dijit.byId(this.id+":print");
-		printButton.onClick = dojo.hitch(this, "print");
+		this.printButton = dijit.byId(this.id+":print");
+		this.printButton.onClick = dojo.hitch(this, "print");
 		// singleton model class
 		this.templateManager = geomajasConfig.printManager;
 	},
@@ -52,6 +52,7 @@ dojo.declare("geomajas.widget.DefaultPrintWidget", [
 	},
 	
 	print : function() {
+		this.printButton.setDisabled(true);
 		var template = this._buildTemplate();
 		var command = new JsonCommand("command.print.GetTemplate",
                 "org.geomajas.plugin.printing.command.dto.PrintGetTemplateRequest", null, false);
@@ -87,6 +88,7 @@ dojo.declare("geomajas.widget.DefaultPrintWidget", [
 			title: "File Download",
 			location:url
 		},null);
+		this.printButton.setDisabled(false);
 		panel.show();		
 	},
 

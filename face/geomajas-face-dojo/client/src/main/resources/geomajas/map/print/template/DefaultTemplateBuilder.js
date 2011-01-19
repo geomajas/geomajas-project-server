@@ -120,8 +120,8 @@ dojo.declare("DefaultTemplateBuilder", TemplateBuilder, {
 			if (layer instanceof VectorLayer && layer.checkVisibility()) {
 				var vectorLayer = layer;
 				var defs = vectorLayer.getStyles();
-				for(var i = 0; i < defs.count; i++){
-					var styleDefinition = defs.item(i);
+				for(var j = 0; j < defs.count; j++){
+					var styleDefinition = defs.item(j);
 					var text = "";
 					if (defs.count > 1) {
 						text = vectorLayer.getLabel() + " (" + styleDefinition.getName() + ")";
