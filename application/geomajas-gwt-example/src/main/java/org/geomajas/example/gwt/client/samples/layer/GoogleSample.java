@@ -58,8 +58,8 @@ public class GoogleSample extends SamplePanel {
 		mapLayout1.addMember(googleMap);
 
 		// Create map with Google layer (satellite), and add a PanController to it:
-		VLayout mapLayout2 = new VLayout();
-		mapLayout2.setShowEdges(true);
+//		VLayout mapLayout2 = new VLayout();
+//		mapLayout2.setShowEdges(true);
 //		googleSatMap = new MapWidget("mapGoogleSat", "gwt-samples");
 //		googleSatMap.setController(new PanController(googleSatMap));
 //		mapLayout2.addMember(googleSatMap);
@@ -98,7 +98,7 @@ public class GoogleSample extends SamplePanel {
 	}
 
 	// @extract-start GoogleSample, GoogleSample
-	protected void _onDraw() {
+	protected void onDraw2() {
 		googleMap.registerMapAddon(new GoogleAddon("google", googleMap, GoogleAddon.MapType.NORMAL, false));
 		googleSatMap.registerMapAddon(new GoogleAddon("google", googleSatMap, GoogleAddon.MapType.SATELLITE, false));
 		googleTerrainMap.registerMapAddon(new GoogleAddon("google", googleTerrainMap, GoogleAddon.MapType.PHYSICAL,
