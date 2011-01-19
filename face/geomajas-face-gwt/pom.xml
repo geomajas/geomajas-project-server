@@ -103,6 +103,7 @@
 		</repository>
 
 		<!-- uncomment if you want to use Geomajas snapshots, comment for faster builds  -->
+		<!--
 		<repository>
 			<id>Geomajas-latest</id>
 			<name>Geomajas snapshot repository</name>
@@ -111,6 +112,7 @@
 				<enabled>true</enabled>
 			</snapshots>
 		</repository>
+		-->
 	</repositories>
 	<pluginRepositories>
 		<pluginRepository>
@@ -202,7 +204,7 @@
 	</profiles>
 
 	<properties>
-		<gwt-face-backend-version>1.8.0-SNAPSHOT</gwt-face-backend-version>
+		<gwt-face-backend-version>1.8.0</gwt-face-backend-version>
 		<gwt-version>2.1.1</gwt-version>
 		<smartgwt-version>2.4</smartgwt-version>
 	</properties>
