@@ -28,6 +28,7 @@ import org.geomajas.dojo.server.json.AnnotatedBeanSerializer;
 import org.geomajas.dojo.server.json.BigNumberSerializer;
 import org.geomajas.dojo.server.json.ColorSerializer;
 import org.geomajas.dojo.server.json.DtoGeometrySerializer;
+import org.geomajas.dojo.server.json.EnumSerializer;
 import org.geomajas.dojo.server.json.FontSerializer;
 import org.geomajas.dojo.server.json.GeometrySerializer;
 import org.geomajas.dojo.server.json.JsonObjectWriter;
@@ -219,6 +220,7 @@ public class JsonServlet extends HttpServlet implements ErrorInvocationCallback,
 			jsonBridge.registerSerializer(new RectangleSerializer());
 			jsonBridge.registerSerializer(new ColorSerializer());
 			jsonBridge.registerSerializer(new FontSerializer());
+			jsonBridge.registerSerializer(new EnumSerializer());
 		} catch (Exception e) {
 			throw new ServletException("json : could not register all serializers", e);
 		}
