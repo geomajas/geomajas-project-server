@@ -52,7 +52,7 @@ dojo.declare("LabelStyleInfo", null, {
 
 	fromJSON : function(json) {
 		this.labelAttributeName = json.labelAttributeName;
-		this.fontStyle = new FeatureStyleInfo();
+		this.fontStyle = new FontStyleInfo();
 		this.fontStyle.fromJSON(json.fontStyle);
 		this.backgroundStyle = new FeatureStyleInfo();
 		this.backgroundStyle.fromJSON(json.backgroundStyle);
@@ -74,7 +74,7 @@ dojo.declare("LabelStyleInfo", null, {
 	},
 	
 	getFontStyle : function() {
-		return this.fontStyle.getStyle();
+		return this.fontStyle;
 	}
 
 });

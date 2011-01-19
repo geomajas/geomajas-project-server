@@ -1,4 +1,4 @@
-dojo.provide("geomajas.map.print.LabelComponent");
+dojo.provide("geomajas.map.print.PageComponentInfo");
 /*
  * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
  *
@@ -9,7 +9,7 @@ dojo.provide("geomajas.map.print.LabelComponent");
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-dojo.declare("LabelComponent", BaseComponent, {
+dojo.declare("PageComponentInfo", PrintComponentInfo, {
 
 	/**
 	 * @class 
@@ -18,12 +18,8 @@ dojo.declare("LabelComponent", BaseComponent, {
 	 *
 	 * @constructor
 	 */
-	constructor : function (/* json object */ json, /* unique string */ id) {
-	},
-	
-	setText : function (text) {
-		this.text = text;
+	constructor : function () {
+		this.javaClass = "org.geomajas.plugin.printing.component.dto.PageComponentInfo";
 	}
-
 
 });

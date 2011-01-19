@@ -1,4 +1,4 @@
-dojo.provide("geomajas.map.print.PageComponent");
+dojo.provide("geomajas.map.print.template.common");
 /*
  * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
  *
@@ -9,16 +9,11 @@ dojo.provide("geomajas.map.print.PageComponent");
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-dojo.declare("PageComponent", BaseComponent, {
-
-	/**
-	 * @class 
-	 * A map component (mirror of server object)
-	 * @author Jan De Moerloose
-	 *
-	 * @constructor
-	 */
-	constructor : function (/* json object */ json, /* unique string */ id) {
-	}
-
+dojo.platformRequire({
+    common: [
+             "geomajas.map.print.template.PageSize",
+             "geomajas.map.print.template.TemplateBuilder",
+             "geomajas.map.print.template.DefaultTemplateBuilder"
+            ],
+    browser: []
 });

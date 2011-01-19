@@ -282,7 +282,7 @@ dojo.declare("RenderedTile", SpatialNode, {
 		}
 		
 		if (json["featureContent"] != null) {
-			if (json.contentType.value == "STRING_CONTENT") {
+			if (json.contentType == "STRING_CONTENT") {
 				this.featureFragment = json.featureContent;
 				this.clipped = json.clipped;
 				for(var i = 0; i < json.codes.list.length; i++){
@@ -290,7 +290,7 @@ dojo.declare("RenderedTile", SpatialNode, {
 					code.fromJSON(json.codes.list[i]);
 					this.codes.push(code);
 				}
-			} else if (json.contentType.value == "URL_CONTENT") {
+			} else if (json.contentType == "URL_CONTENT") {
 				this.featureImage = new RasterImage();
 				this.featureImage.setId(this.getId());
 

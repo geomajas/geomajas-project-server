@@ -140,9 +140,9 @@ dojo.declare("LabeledTile", RenderedTile, {
 	 */
 	_fromJSON : function (json) {
 		if (json["labelContent"] != null) {
-			if (json.contentType.value == "STRING_CONTENT") {
+			if (json.contentType == "STRING_CONTENT") {
 				this.labelFragment = json.labelContent;
-			} else if (json.contentType.value == "URL_CONTENT") {
+			} else if (json.contentType == "URL_CONTENT") {
 				this.labelImage = new RasterImage();
 				this.labelImage.setId(this.getId());
 

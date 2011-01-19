@@ -11,23 +11,23 @@ dojo.provide("geomajas.map.print.common");
  */
 dojo.platformRequire({
     common: [
-             "geomajas.map.print.BaseComponent",
-             "geomajas.map.print.BaseComponentVisitor",
-             "geomajas.map.print.LayoutConstraint",
-             "geomajas.map.print.DefaultConfigurationVisitor",
-             "geomajas.map.print.LabelComponent",
-             "geomajas.map.print.LegendComponent",
-             "geomajas.map.print.LegendItemComponent",
-             "geomajas.map.print.MapComponent",
-             "geomajas.map.print.MapConfigurationVisitor",
-             "geomajas.map.print.PageComponent",
-             "geomajas.map.print.PrintTemplate",
-             "geomajas.map.print.PrintTemplateManager",
-             "geomajas.map.print.PrintTransformation",
-             "geomajas.map.print.PrintController",
-             "geomajas.map.print.RasterLayerComponent",
-             "geomajas.map.print.VectorLayerComponent",
-             "geomajas.map.print.ViewPortComponent"
+             "geomajas.map.print.PrintTemplateInfo",
+             "geomajas.map.print.LayoutConstraintInfo",
+
+             "geomajas.map.print.PrintComponentInfo",
+             "geomajas.map.print.BaseLayerComponentInfo",
+             "geomajas.map.print.PageComponentInfo",
+             "geomajas.map.print.MapComponentInfo",
+             "geomajas.map.print.ImageComponentInfo",
+             "geomajas.map.print.LegendComponentInfo",
+             "geomajas.map.print.LegendItemComponentInfo",
+             "geomajas.map.print.LegendIconComponentInfo",
+             "geomajas.map.print.ScaleBarComponentInfo",
+             "geomajas.map.print.LabelComponentInfo",
+             "geomajas.map.print.RasterLayerComponentInfo",
+             "geomajas.map.print.VectorLayerComponentInfo",
+
+             "geomajas.map.print.template.common"
             ],
     browser: []
 });

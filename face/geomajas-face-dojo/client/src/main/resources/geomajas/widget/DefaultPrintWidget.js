@@ -16,25 +16,19 @@ dojo.requireLocalization("geomajas.widget", "printDialog");
 dojo.declare("geomajas.widget.DefaultPrintWidget", [
 		dijit.layout.LayoutContainer, dijit._Templated ], {
 
-	templatePath :dojo.moduleUrl("geomajas.widget",
-			"html/DefaultPrintWidget.html"),
+	templatePath :dojo.moduleUrl("geomajas.widget",	"html/DefaultPrintWidget.html"),
 
 	widgetsInTemplate : true,
-
 	sourceMap : null,
-
 	bounds : null,
-
 	rectangle : null,
-	
 	printButton : null,
-	
 	downloadMethod : 0,
 
 	printSettingsString : "",
 	pageSizeString : "",
 	titleString : "",
-	dateString : "",
+	scalebarString : "",
 	northArrowString : "",
 	rasterDPIString : "",
 	
@@ -48,34 +42,22 @@ dojo.declare("geomajas.widget.DefaultPrintWidget", [
 	
 	postMixInProperties : function(/* Object */args, /* Object */frag, /* Widget */
 			parent) {
-		var widgetLocale = dojo.i18n.getLocalization("geomajas.widget",
-				"printDialog");
+		var widgetLocale = dojo.i18n.getLocalization("geomajas.widget",	"printDialog");
 		this.printSettingsString = widgetLocale.printSettings;
 		this.pageSizeString = widgetLocale.pageSize;
 		this.titleString = widgetLocale.title;
-		this.dateString = widgetLocale.date;
+		this.scalebarString = widgetLocale.scalebar;
 		this.northArrowString = widgetLocale.northArrow;
 		this.rasterDPIString = widgetLocale.rasterDPI;
 	},
 	
 	print : function() {
-		var template = this.templateManager.getTemplateByName("Default-A4-landscape");
-		if(template){
-			this.templateManager.activateTemplate(template, this.sourceMap, true, true);
-		}
-		
-		var defs = {
-			rasterDPI : this._getWidgetValue("rasterdpi"),
-			title : this._getWidgetValue("title"),
-			withArrow : this._getWidgetValue("arrow")=="on" ? true : false,
-			withDate : this._getWidgetValue("date")=="on" ? true : false
-		};
-				
-		// default config
-		this.templateManager.configureDefaults(defs);
-		
-		// send off !
-		this.templateManager.print(true,this._getWidgetValue("pagesize"));
+		var template = this._buildTemplate();
+		var command = new JsonCommand("command.print.GetTemplate",
+                "org.geomajas.plugin.printing.command.dto.PrintGetTemplateRequest", null, false);
+		command.addParam("template", template);
+		var deferred = geomajasConfig.dispatcher.execute(command);
+		deferred.addCallback(this, "_printCallback");
 	},
 	
 	setSourceMap : function (mapWidget) {
@@ -92,9 +74,43 @@ dojo.declare("geomajas.widget.DefaultPrintWidget", [
 			return widget.getValue();
 		}
 	},
+	
+	_printCallback : function (data) {
+		log.info("DefaultPrintWidget got back documentId: " + data.documentId);
+		var url = geomajasConfig.serverBase+"d/printing?documentId=" + data.documentId;
+		url += "&name=" + "Kaartzicht.pdf";
+		url += "&download=0";
+		url += "&userToken=" + geomajasConfig.userToken;
+		var panel = new geomajas.widget.experimental.DownloadDialog({
+			id: "downloadPrint"+data.documentId,
+			refocus:false,
+			title: "File Download",
+			location:url
+		},null);
+		panel.show();		
+	},
 
-	_callback : function (result) {
-		window.open("./geomajas.pdf?documentId=" + result.documentId);
+	_buildTemplate : function () {
+		var builder = new DefaultTemplateBuilder();
+		builder.setApplicationId(geomajasConfig.applicationId);
+		builder.setMapModel(this.sourceMap.getMapModel());
+		builder.setMarginX(20);
+		builder.setMarginY(20);
+		var size = geomajas.PageSizes[this._getWidgetValue("pagesize")];
+//		if ("landscape".equals(orientationGroup.getValue())) { // TODO: no option in printwidget
+			builder.setPageHeight(size.getWidth());
+			builder.setPageWidth(size.getHeight());
+//		} else {
+//			builder.setPageHeight(size.getHeight());
+//			builder.setPageWidth(size.getWidth());
+//		}
+		
+		builder.setTitleText(this._getWidgetValue("title"));
+		builder.setWithArrow(this._getWidgetValue("arrow")=="on" ? true : false);
+		builder.setWithScaleBar(this._getWidgetValue("scalebar")=="on" ? true : false);
+		builder.setRasterDpi(this._getWidgetValue("rasterdpi"));
+
+		return builder.buildTemplate();
 	}
 
 });

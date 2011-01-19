@@ -66,7 +66,7 @@ dojo.declare("ShowDefaultPrintAction", ToolbarAction, {
 			this.floater = new geomajas.widget.FloatingPane({
 				id:"defaultPrintFloater",
 				title: "Print",
-				dockable: true,
+				dockable: false,
 				maxable: false,
 				closable: true,
 				resizable: true
@@ -78,7 +78,7 @@ dojo.declare("ShowDefaultPrintAction", ToolbarAction, {
 			}
 			div.appendChild (this.floater.domNode);
 		}
-		this.floater.resize({ w:400, h:250, l:200, t:40 });
+		this.floater.resize({ w:400, h:230, l:200, t:60 });
 		this.floater.show();
 		this.floater.setContent ("<div dojoType=\"geomajas.widget.DefaultPrintWidget\" id=\"defaultPrinter\"></div>");
 		var printer = dijit.byId("defaultPrinter");

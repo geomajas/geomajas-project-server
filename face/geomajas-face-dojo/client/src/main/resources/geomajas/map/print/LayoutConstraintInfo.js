@@ -1,4 +1,4 @@
-dojo.provide("geomajas.map.print.LayoutConstraint");
+dojo.provide("geomajas.map.print.LayoutConstraintInfo");
 /*
  * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
  *
@@ -9,9 +9,7 @@ dojo.provide("geomajas.map.print.LayoutConstraint");
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
-dojo.declare("LayoutConstraint", null , {
-
-	statics : {
+geomajas.LayoutConstraints = { 
 	 LEFT : 0,
 	 BOTTOM : 1,
 	 CENTER : 2,
@@ -22,23 +20,27 @@ dojo.declare("LayoutConstraint", null , {
 	 FLOW_X : 0,
 	 FLOW_Y : 1,
 	 FLOW_NONE : 2
-	},
-	
+};
+
+dojo.declare("LayoutConstraintInfo", null , {
+
 	/**
 	 * @class 
-	 * A layout constraint (mirror of server object)
+	 * A layout constraint info (mirror of server object)
 	 * @author Jan De Moerloose
 	 *
 	 * @constructor
 	 */
-	constructor : function () {
-		this.alignmentX = this.statics.LEFT;
-		this.alignmentY = this.statics.BOTTOM;
-		this.flowDirection = this.statics.FLOW_NONE;
-		this.width = 100;
-		this.height = 100;
-		this.marginX = 10;
-		this.marginY = 10;
+	constructor : function (alignmentX, alignmentY, flowDirection, width, height, marginX, marginY) {
+		this.javaClass = "org.geomajas.plugin.printing.component.dto.LayoutConstraintInfo";
+		
+		this.alignmentX = (alignmentX ? alignmentX : geomajas.LayoutConstraints.LEFT);
+		this.alignmentY = (alignmentY ? alignmentY : geomajas.LayoutConstraints.BOTTOM);
+		this.flowDirection = (flowDirection ? flowDirection : geomajas.LayoutConstraints.FLOW_NONE);
+		this.width = (width ? width : 0); // auto
+		this.height = (height ? height : 0); // auto
+		this.marginX = (marginX ? marginX : 10);
+		this.marginY = (marginY ? marginY : 10);
 	},
 	
 	setAlignmentX : function (alignmentX) {
@@ -49,13 +51,13 @@ dojo.declare("LayoutConstraint", null , {
 		this.alignmentY = alignmentY;
 	},
 	
-	setWidth : function (width) {
-		this.width = width;
+	setFlowDirection : function (flowDirection) {
+		this.flowDirection = flowDirection;
 	},
-	
+
 	setHeight : function (height) {
 		this.height = height;
-	},
+	},	
 	
 	setMarginX : function (marginX) {
 		this.marginX = marginX;
@@ -64,9 +66,9 @@ dojo.declare("LayoutConstraint", null , {
 	setMarginY : function (marginY) {
 		this.marginY = marginY;
 	},
-	
-	setFlowDirection : function (flowDirection) {
-		this.flowDirection = flowDirection;
+
+	setWidth : function (width) {
+		this.width = width;
 	}
-	
+
 });

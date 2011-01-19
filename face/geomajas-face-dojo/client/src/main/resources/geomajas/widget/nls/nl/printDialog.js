@@ -14,6 +14,7 @@
 	"pageSize" : "Paginagrootte:",
 	"title" : "Titel:",
 	"date" : "Datum:",
+	"scalebar" : "Schaalbalk:",
 	"northArrow" : "Noordpijl:",
 	"rasterDPI" : "Raster DPI:"
 })

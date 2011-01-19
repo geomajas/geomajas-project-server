@@ -11,6 +11,7 @@ dojo.provide("geomajas.config.common");
  */
 dojo.platformRequire({
     common: ["geomajas.config.FeatureStyleInfo",
+             "geomajas.config.FontStyleInfo",
              "geomajas.config.LabelStyleInfo",
              "geomajas.config.NamedStyleInfo",
              "geomajas.config.factories.LayerTreeFactory",

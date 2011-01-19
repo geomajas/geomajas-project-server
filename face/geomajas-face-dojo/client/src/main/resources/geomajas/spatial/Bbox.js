@@ -296,5 +296,31 @@ dojo.declare("Bbox", null, {
 	translate : function (/*Double*/dx, /*Double*/dy){
 		this.x = this.x + dx;
 		this.y = this.y + dy;
+	},
+	
+	/**
+	 * Creates a bbox that fits exactly in this box but has a different width/height ratio.
+	 * @param ratioWidth
+	 * @param ratioHeight
+	 * @return
+	 */
+	createFittingBox : function (/*double*/ ratioWidth, /*double*/ ratioHeight) {
+		if (ratioWidth > 0 && ratioHeight > 0) {
+			var newRatio = ratioWidth / ratioHeight;
+			var oldRatio = this.width / this.height;
+			var newWidth = this.width;
+			var newHeight = this.height;
+			if (newRatio > oldRatio) {
+				newHeight = this.width / newRatio;
+			} else {
+				newWidth = this.height * newRatio;
+			}
+			var result = new Bbox(0, 0, newWidth, newHeight);
+			result.setCenterPoint(this.getCenterPoint());
+			return result;
+		} else {
+			return this.clone();
+		}
 	}
+	
 });

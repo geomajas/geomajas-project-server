@@ -14,6 +14,7 @@
 	"pageSize" : "Page size:",
 	"title" : "Title:",
 	"date" : "Date:",
+	"scalebar" : "Scalebar:",
 	"northArrow" : "North arrow:",
 	"rasterDPI" : "Raster DPI:"
 })
