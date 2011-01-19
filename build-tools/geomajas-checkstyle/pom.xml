@@ -25,9 +25,9 @@
 	<url>http://files.geomajas.org/maven/trunk/geomajas-checkstyle</url>
 
 	<scm>
-		<connection>scm:git:git://git.assembla.com/geomajas.git</connection>
-		<developerConnection>scm:git:git@git.assembla.com:geomajas.git</developerConnection>
-		<url>http://www.assembla.com/code/geomajas/git/nodes</url>
+		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/backend</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/backend</developerConnection>
+		<url>https://svn.geomajas.org/majas/trunk/backend</url>
 	</scm>
 
 	<organization>

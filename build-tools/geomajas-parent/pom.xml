@@ -29,9 +29,9 @@
 	<url>http://www.geomajas.org/</url>
 
 	<scm>
-		<connection>scm:git:git://git.assembla.com/geomajas.git</connection>
-		<developerConnection>scm:git:git@git.assembla.com:geomajas.git</developerConnection>
-		<url>http://www.assembla.com/code/geomajas/git/nodes</url>
+		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/build-tools/geomajas-parent</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/build-tools/geomajas-parent</developerConnection>
+		<url>https://svn.geomajas.org/majas/trunk/build-tools/geomajas-parent</url>
 	</scm>
 
 	<organization>
