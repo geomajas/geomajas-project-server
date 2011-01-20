@@ -85,12 +85,12 @@ public class EditMultiPolygonLayerSample extends SamplePanel {
 	}
 
 	public String getSourceFileName() {
-		return "classpath:org/geomajas/example/gwt/client/samples/editing/EditPolygonLayerSample.txt";
+		return "classpath:org/geomajas/example/gwt/client/samples/editing/EditMultiPolygonLayerSample.txt";
 	}
 
 	public String[] getConfigurationFiles() {
-		return new String[] { "WEB-INF/mapEditPolygonLayer.xml", "WEB-INF/layerWmsBluemarble.xml",
-				"WEB-INF/layerLakes110m-MP.xml" };
+		return new String[] { "WEB-INF/mapEditMultiPolygonLayer.xml", "WEB-INF/layerWmsBluemarble.xml",
+				"WEB-INF/layerLakes110mMP.xml" };
 	}
 
 	public String ensureUserLoggedIn() {
