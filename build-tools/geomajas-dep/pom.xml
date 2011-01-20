@@ -13,7 +13,7 @@
 	<parent>
 		<groupId>org.geomajas</groupId>
 		<artifactId>geomajas-parent</artifactId>
-		<version>1.0.4-SNAPSHOT</version>
+		<version>1.0.4</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas</groupId>
@@ -151,14 +151,14 @@
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-backend</artifactId>
-				<version>1.7.1</version>
+				<version>1.8.0</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-face-gwt</artifactId>
-				<version>1.7.1</version>
+				<version>1.8.0</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>

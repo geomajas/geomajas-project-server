@@ -77,26 +77,26 @@ template_start
 
 # main guides
 
-include "org.geomajas.documentation" "docbook-gettingstarted" "1.8.0-SNAPSHOT" \
+include "org.geomajas.documentation" "docbook-gettingstarted" "1.9.0-SNAPSHOT" \
     "Getting started" \
     "How to get your project up-and-running." \
     "incubating" "Getting_Started.pdf" \
     "" "" ""
 
-include "org.geomajas.documentation" "docbook-devuserguide" "1.8.0-SNAPSHOT" \
+include "org.geomajas.documentation" "docbook-devuserguide" "1.9.0-SNAPSHOT" \
     "User guide for developers" \
     "Reference guide detailing architecture, implementation and extension possibilities of the back-end core." \
     "incubating" "User_Guide_for_Developers.pdf" \
-    "org.geomajas" "geomajas-api" "1.7.1"
+    "org.geomajas" "geomajas-api" "1.8.0"
 
 
 # faces
 
-include "org.geomajas.documentation" "geomajas-face-gwt-documentation" "1.8.0-SNAPSHOT" \
+include "org.geomajas.documentation" "geomajas-face-gwt-documentation" "1.9.0-SNAPSHOT" \
     "GWT face" \
     "GWT face for building powerful AJAX web user interfaces in Java using SmartGWT." \
     "incubating" "gwt_face.pdf" \
-    "org.geomajas" "geomajas-gwt-client" "1.7.1"
+    "org.geomajas" "geomajas-gwt-client" "1.8.0"
 
 include "org.geomajas.documentation" "geomajas-face-dojo-documentation" "1.5.8-SNAPSHOT" \
     "dojo face" \
@@ -163,7 +163,7 @@ include "org.geomajas.plugin" "geocoder-documentation" "1.1.0-SNAPSHOT" \
 
 # contributors guide
 
-include "org.geomajas.documentation" "docbook-contributorguide" "1.8.0-SNAPSHOT" \
+include "org.geomajas.documentation" "docbook-contributorguide" "1.9.0-SNAPSHOT" \
     "Contributors guide" \
     "Information for contributors of the project." \
     "incubating" "Contributor_Guide.pdf" \
