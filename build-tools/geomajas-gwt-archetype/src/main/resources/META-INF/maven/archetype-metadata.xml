@@ -73,6 +73,12 @@
 				<include>**/*.css</include>
 			</includes>
 		</fileSet>
+		<fileSet encoding="UTF-8">
+			<directory>src/main/webapp</directory>
+			<includes>
+				<include>**/*.ico</include>
+			</includes>
+		</fileSet>
 		<fileSet filtered="true" encoding="UTF-8">
 			<directory>.eclipse</directory>
 			<includes>

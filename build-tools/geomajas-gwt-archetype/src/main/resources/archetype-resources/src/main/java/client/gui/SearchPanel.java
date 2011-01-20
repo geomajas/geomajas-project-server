@@ -272,6 +272,7 @@ public class SearchPanel extends VLayout {
 
 		// Limit the maximum number of features that a search may produce:
 		searchWidget.setMaximumResultSize(20);
+		searchWidget.setBackgroundColor("#F0F0F0");
 		layout.addMember(searchWidget);
 
 		mapModel.addMapModelHandler(new MapModelHandler() {
