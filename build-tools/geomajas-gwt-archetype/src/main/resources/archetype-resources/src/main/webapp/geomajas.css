@@ -11,8 +11,32 @@
 
 .appTitle {
     font-family: Arial,Verdana,tahoma,serif;
-    color: #454545;
+    /*color: #454545;*/
+    color: #DDBB00;
+    font-weight: bold;
     font-size: 18px;
+}
+
+.round_corner {
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+}
+
+
+.search_panel_buttons {
+	background: #647386;
+	padding: 4px;
+	border-bottom-left-radius: 8px;
+	-moz-border-radius-bottomleft: 8px;
+}
+.search_panel {
+	background: #647386;
+	padding: 0px 0px 8px 8px;
+	border-bottom-left-radius: 8px;
+	-moz-border-radius-bottomleft: 8px;
+}
+.search_panel_inner {
+	padding: 8px 32px 8px 8px;
 }
 
 /*------------- ATTRIBUTE FORMS -------------*/

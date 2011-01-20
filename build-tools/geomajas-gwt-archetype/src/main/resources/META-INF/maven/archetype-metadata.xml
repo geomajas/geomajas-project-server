@@ -44,6 +44,9 @@
 				<include>**/*.shx</include>
 				<include>**/*.dbf</include>
 				<include>**/*.prj</include>
+				<include>**/*.png</include>
+				<include>**/*.jpg</include>
+				<include>**/*.gif</include>
 			</includes>
 		</fileSet>
 		<fileSet filtered="true" encoding="UTF-8">
