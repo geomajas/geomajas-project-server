@@ -472,6 +472,15 @@ PROJCS["Google Mercator",
 					<property name="id" value="postTileTransform" />
 				</bean>
 				<bean class="org.geomajas.service.pipeline.PipelineHook">
+					<property name="id" value="preTileFill" />
+				</bean>
+				<bean class="org.geomajas.internal.layer.vector.GetTileFillStep">
+					<property name="id" value="GetTileFillStep" />
+				</bean>
+				<bean class="org.geomajas.service.pipeline.PipelineHook">
+					<property name="id" value="postTileFill" />
+				</bean>
+				<bean class="org.geomajas.service.pipeline.PipelineHook">
 					<property name="id" value="preGetStringContent" />
 				</bean>
 				<bean class="org.geomajas.internal.layer.vector.GetTileStringContentStep">

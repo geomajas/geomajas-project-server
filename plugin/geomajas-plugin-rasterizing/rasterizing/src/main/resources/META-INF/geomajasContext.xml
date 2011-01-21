@@ -91,7 +91,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<property name="delegatePipeline" ref="PIPELINE_GET_VECTOR_TILE" />
 		<property name="extensions">
 			<map>
-				<entry key="preGetStringContent">
+				<entry key="preTileFill">
 					<bean class="org.geomajas.plugin.rasterizing.RasterTileStep" >
 						<property name="id" value="RasterTileStep" />
 					</bean>
@@ -104,7 +104,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<property name="delegatePipeline" ref="PIPELINE_GET_VECTOR_TILE_CACHED" />
 		<property name="extensions">
 			<map>
-				<entry key="preGetStringContent">
+				<entry key="preTileFill">
 					<bean class="org.geomajas.plugin.rasterizing.RasterTileStep" >
 						<property name="id" value="RasterTileStep" />
 					</bean>

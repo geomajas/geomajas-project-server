@@ -11,6 +11,8 @@
 
 package org.geomajas.plugin.rasterizing;
 
+import java.io.ByteArrayOutputStream;
+
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.VectorLayer;
@@ -31,16 +33,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.io.ByteArrayOutputStream;
-
 /**
  * Pipeline step which rasterizes vector tiles.
- *
+ * 
  * @author Joachim Van der Auwera
  */
 public class RasterTileStep implements PipelineStep<GetTileContainer> {
 
-	private static final String[] KEYS = {PipelineCode.LAYER_ID_KEY, PipelineCode.TILE_METADATA_KEY};
+	private static final String[] KEYS = { PipelineCode.LAYER_ID_KEY, PipelineCode.TILE_METADATA_KEY };
 
 	private final Logger log = LoggerFactory.getLogger(RasterTileStep.class);
 
@@ -84,8 +84,8 @@ public class RasterTileStep implements PipelineStep<GetTileContainer> {
 		cacheContext.put("securityContext", securityContext.getId());
 		String cacheKey = cacheKeyService.getCacheKey(layer, CacheCategory.TILE, cacheContext);
 
-		RebuildCacheContainer cc = cacheManager.get(layer, CacheCategory.REBUILD, cacheKey,
-				RebuildCacheContainer.class);
+		RebuildCacheContainer cc = cacheManager
+				.get(layer, CacheCategory.REBUILD, cacheKey, RebuildCacheContainer.class);
 		if (cc == null) {
 			cc = new RebuildCacheContainer();
 			cc.setContext(cacheContext);
@@ -121,7 +121,7 @@ public class RasterTileStep implements PipelineStep<GetTileContainer> {
 				// only name specified, find it
 				style = layer.getLayerInfo().getNamedStyleInfo(style.getName());
 			}
-				ByteArrayOutputStream imageStream = new ByteArrayOutputStream(50000);
+			ByteArrayOutputStream imageStream = new ByteArrayOutputStream(50000);
 			try {
 				rasterizingService.rasterize(imageStream, layer, style, tileMetadata, tile);
 			} catch (Exception ex) {
@@ -138,8 +138,8 @@ public class RasterTileStep implements PipelineStep<GetTileContainer> {
 			RasterizingContainer cacheContainer = new RasterizingContainer();
 			cacheContainer.setContext(cacheContext);
 			cacheContainer.setImage(image);
-			cacheManager.put(layer, CacheCategory.RASTER, cacheKey, cacheContainer,
-					tileContainer.getTile().getBounds());
+			cacheManager
+					.put(layer, CacheCategory.RASTER, cacheKey, cacheContainer, tileContainer.getTile().getBounds());
 		}
 	}
 }
