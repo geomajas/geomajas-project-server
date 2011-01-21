@@ -11,9 +11,13 @@
 
 package org.geomajas.internal.service.pipeline;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+
 import org.geomajas.global.ExceptionCode;
 import org.geomajas.global.GeomajasException;
-import org.geomajas.internal.rendering.strategy.TiledFeatureService;
 import org.geomajas.service.pipeline.PipelineContext;
 import org.geomajas.service.pipeline.PipelineHook;
 import org.geomajas.service.pipeline.PipelineInfo;
@@ -24,11 +28,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Service which is allows "executing" a pipeline.
@@ -58,13 +57,13 @@ public class PipelineServiceImpl<RESPONSE> implements PipelineService<RESPONSE> 
 		if (null == context) {
 			context = createContext();
 		}
-		log.debug("executing pipeline "+pipeline);
+		log.debug("executing pipeline " + pipeline);
 		for (PipelineStep<RESPONSE> step : pipeline.getPipeline()) {
 			if (context.isFinished()) {
-				log.debug("context finished, pipeline "+pipeline+"execution done.");
+				log.debug("context finished, pipeline " + pipeline + "execution done.");
 				break;
 			}
-			log.debug("executing step "+step.getId()+" for pipeline "+pipeline);
+			log.debug("executing step " + step.getId() + " for pipeline " + pipeline);
 			step.execute(context, response);
 		}
 	}
