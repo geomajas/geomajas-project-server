@@ -11,6 +11,9 @@
 
 package org.geomajas.plugin.rasterizing;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
@@ -19,12 +22,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.StringTokenizer;
 
 /**
  * Controller which serves the actual rasterized images.
@@ -42,20 +42,21 @@ public class RasterizingController {
 	@Autowired
 	private ConfigurationService configurationService;
 
-	@RequestMapping(value = "/rasterizing/**", method = RequestMethod.GET)
-	public void getWms(HttpServletRequest request, HttpServletResponse response) throws Exception {
+	@RequestMapping(value = "/rasterizing/{layerId}/{key}.{format}", method = RequestMethod.GET)
+	public void getWms(@PathVariable String layerId, @PathVariable String key, HttpServletRequest request,
+			HttpServletResponse response) throws Exception {
 
-		// Search for the WMS layer:
-		String layer = parseLayer(request);
-		String key = parseKey(request);
+//		// Search for the WMS layer:
+//		String layer = parseLayer(request);
+//		String key = parseKey(request);
 
 		try {
 			PipelineContext context = pipelineService.createContext();
 			context.put(RasterizingPipelineCode.IMAGE_ID_KEY, key);
-			context.put(PipelineCode.LAYER_ID_KEY, layer);
-			context.put(PipelineCode.LAYER_KEY, configurationService.getVectorLayer(layer));
+			context.put(PipelineCode.LAYER_ID_KEY, layerId);
+			context.put(PipelineCode.LAYER_KEY, configurationService.getVectorLayer(layerId));
 			RasterizingContainer rasterizeContainer = new RasterizingContainer();
-			pipelineService.execute(RasterizingPipelineCode.PIPELINE_RASTERIZING, layer, context, rasterizeContainer);
+			pipelineService.execute(RasterizingPipelineCode.PIPELINE_RASTERIZING, layerId, context, rasterizeContainer);
 
 			// Prepare the response:
 			response.setContentType("image/png");
@@ -65,39 +66,5 @@ public class RasterizingController {
 			response.sendError(HttpServletResponse.SC_NO_CONTENT);
 		}
 	}
-
-	/**
-	 * Get the raster image cache key out of the request URL.
-	 *
-	 * @param request servlet request
-	 * @return cache key
-	 */
-	private String parseKey(HttpServletRequest request) {
-		StringTokenizer tokenizer = new StringTokenizer(request.getRequestURI(), "/.");
-		String token = "";
-		if (tokenizer.hasMoreTokens()) {
-			token = tokenizer.nextToken();
-		}
-		if (tokenizer.hasMoreTokens()) {
-			token = tokenizer.nextToken();
-		}
-		return token;
-	}
-
-	/**
-	 * Get the layer id out of the request URL.
-	 *
-	 * @param request servlet request
-	 * @return cache key
-	 */
-	private String parseLayer(HttpServletRequest request) {
-		StringTokenizer tokenizer = new StringTokenizer(request.getRequestURI(), "/.");
-		String token = "";
-		if (tokenizer.hasMoreTokens()) {
-			token = tokenizer.nextToken();
-		}
-		return token;
-	}
-
 
 }

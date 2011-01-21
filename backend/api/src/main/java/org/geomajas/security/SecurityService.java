@@ -37,7 +37,7 @@ public interface SecurityService {
 	 * information.
 	 *
 	 * @param authenticationToken authentication token
-	 * @return {@link org.geomajas.security.Authentication} object
+	 * @return {@link org.geomajas.security.Authentication} object or null if the token is invalid
 	 */
 	Authentication getAuthentication(String authenticationToken);
 }

@@ -86,14 +86,13 @@ public class RasterTileStep implements PipelineStep<GetTileContainer> {
 
 		RebuildCacheContainer cc = cacheManager.get(layer, CacheCategory.REBUILD, cacheKey,
 				RebuildCacheContainer.class);
-		cc.setContext(cacheContext);
-		cc.setMetadata(tileMetadata);
-
-		while (null != cc) {
-			if (cacheContext.equals(cc.getContext())) {
-				// found item in cache, nothing special to do
-				break;
-			} else {
+		if (cc == null) {
+			cc = new RebuildCacheContainer();
+			cc.setContext(cacheContext);
+			cc.setMetadata(tileMetadata);
+		} else {
+			// cache is stale
+			if (!cacheContext.equals(cc.getContext())) {
 				cacheKey = cacheKeyService.makeUnique(cacheKey);
 				log.debug("Cache context did not match, new key {}", cacheKey);
 				cc = cacheManager.get(layer, CacheCategory.REBUILD, cacheKey, RebuildCacheContainer.class);
@@ -103,6 +102,7 @@ public class RasterTileStep implements PipelineStep<GetTileContainer> {
 
 		StringBuilder url = new StringBuilder(200);
 		url.append(dispatcherUrlService.getDispatcherUrl());
+		url.append("/rasterizing/");
 		url.append(layerId);
 		url.append("/");
 		url.append(cacheKey);
@@ -113,8 +113,15 @@ public class RasterTileStep implements PipelineStep<GetTileContainer> {
 		RasterizingContainer rasterizingContainer = context.getOptional(RasterizingPipelineCode.CONTAINER_KEY,
 				RasterizingContainer.class);
 		if (RasterizingMoment.TILE_REQUEST == rasterizingInfo.getRasterizingMoment() || null != rasterizingContainer) {
-			NamedStyleInfo style = context.get(PipelineCode.STYLE_KEY, NamedStyleInfo.class);
-			ByteArrayOutputStream imageStream = new ByteArrayOutputStream(50000);
+			NamedStyleInfo style = tileMetadata.getStyleInfo();
+			if (style == null) {
+				// no style specified, take the first
+				style = layer.getLayerInfo().getNamedStyleInfos().get(0);
+			} else if (style.getFeatureStyles().isEmpty()) {
+				// only name specified, find it
+				style = layer.getLayerInfo().getNamedStyleInfo(style.getName());
+			}
+				ByteArrayOutputStream imageStream = new ByteArrayOutputStream(50000);
 			try {
 				rasterizingService.rasterize(imageStream, layer, style, tileMetadata, tile);
 			} catch (Exception ex) {
