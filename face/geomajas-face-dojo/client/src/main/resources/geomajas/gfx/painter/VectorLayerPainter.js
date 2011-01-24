@@ -62,7 +62,7 @@ dojo.declare("VectorLayerPainter", Painter, {
 		if (layer.isLabeled()) {
 			if (layer.getLabelFontStyle() != null) {
 				var style = this.labelStyle.clone();
-				style.setFillColor (layer.getLabelFontStyle().getFillColor());
+//				style.setFillColor (layer.getLabelFontStyle().getFillColor());
 				graphics.drawGroup ({id:layer.getId() + ".labels", style:style});
 			} else {
 				graphics.drawGroup ({id:layer.getId() + ".labels", style:this.labelStyle});
