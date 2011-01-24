@@ -1,0 +1,147 @@
+<!--
+  ~ This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+  ~
+  ~ Copyright 2008-2011 Geosparc nv, http://www.geosparc.com/, Belgium.
+  ~
+  ~ The program is available in open source according to the GNU Affero
+  ~ General Public License. All contributions in this program are covered
+  ~ by the Geomajas Contributors License Agreement. For full licensing
+  ~ details, see LICENSE.txt in the project root.
+  -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="
+http://www.springframework.org/schema/beans
+http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+http://www.springframework.org/schema/context
+http://www.springframework.org/schema/context/spring-context-2.5.xsd">
+
+	<bean class="org.springframework.beans.factory.config.CustomEditorConfigurer">
+		<property name="customEditors">
+			<map>
+				<entry key="java.util.Date">
+					<bean class="org.springframework.beans.propertyeditors.CustomDateEditor">
+						<constructor-arg>
+							<bean class="java.text.SimpleDateFormat">
+								<constructor-arg value="yyyy-MM-dd" />
+								<constructor-arg value="null" />
+							</bean>
+						</constructor-arg>
+						<constructor-arg value="true" />
+					</bean>
+				</entry>
+			</map>
+		</property>
+	</bean>
+
+	<bean name="layerBeansMultiLineInfo" class="org.geomajas.configuration.VectorLayerInfo">
+		<property name="layerType" value="MULTILINESTRING" />
+		<property name="crs" value="EPSG:4326" />
+		<property name="maxExtent">
+			<bean class="org.geomajas.geometry.Bbox">
+				<property name="x" value="-50" />
+				<property name="y" value="-50" />
+				<property name="width" value="100" />
+				<property name="height" value="100" />
+			</bean>
+		</property>
+		<property name="featureInfo" ref="beansFeatureInfo" />
+		<property name="namedStyleInfos">
+			<list>
+				<ref bean="layerBeansMultiLineStyleInfo" />
+			</list>
+		</property>
+	</bean>
+
+	<bean class="org.geomajas.configuration.NamedStyleInfo" id="layerBeansMultiLineStyleInfo">
+		<property name="featureStyles">
+			<list>
+				<bean class="org.geomajas.configuration.FeatureStyleInfo">
+					<property name="name" value="default" />
+					<property name="fillColor" value="#FFFFFF" />
+					<property name="fillOpacity" value="0" />
+					<property name="strokeColor" value="#000000" />
+					<property name="strokeOpacity" value="1" />
+					<property name="strokeWidth" value="1" />
+				</bean>
+			</list>
+		</property>
+		<property name="labelStyle">
+			<bean class="org.geomajas.configuration.LabelStyleInfo">
+				<property name="labelAttributeName" value="stringAttr" />
+				<property name="fontStyle">
+					<bean class="org.geomajas.configuration.FontStyleInfo">
+					</bean>
+				</property>
+				<property name="backgroundStyle">
+					<bean class="org.geomajas.configuration.FeatureStyleInfo">
+						<property name="fillColor" value="#FFFFFF" />
+						<property name="fillOpacity" value="1" />
+						<property name="strokeColor" value="#000000" />
+						<property name="strokeOpacity" value="1" />
+						<property name="strokeWidth" value="1" />
+					</bean>
+				</property>
+			</bean>
+		</property>
+	</bean>
+
+
+	<bean name="layerBeansMultiLine" class="org.geomajas.layer.bean.BeanLayer">
+		<property name="layerInfo" ref="layerBeansMultiLineInfo" />
+		<property name="features">
+			<list>
+				<bean class="org.geomajas.layer.bean.FeatureBean">
+					<property name="id" value="1" />
+					<property name="stringAttr" value="1" />
+					<property name="geometry"
+						value="MULTILINESTRING((40 0,20 0),(20 0,0 0))" />
+				</bean>
+				<bean class="org.geomajas.layer.bean.FeatureBean">
+					<property name="id" value="2" />
+					<property name="stringAttr" value="2" />
+					<property name="geometry"
+						value="MULTILINESTRING((40 40,20 20),(20 20,0 0))" />
+				</bean>
+				<bean class="org.geomajas.layer.bean.FeatureBean">
+					<property name="id" value="3" />
+					<property name="stringAttr" value="3" />
+					<property name="geometry"
+						value="MULTILINESTRING((0 40,0 20),(0 20,0 0))" />
+				</bean>
+				<bean class="org.geomajas.layer.bean.FeatureBean">
+					<property name="id" value="4" />
+					<property name="stringAttr" value="4" />
+					<property name="geometry"
+						value="MULTILINESTRING((-40 40,-20 20),(-20 20,0 0))" />
+				</bean>
+				<bean class="org.geomajas.layer.bean.FeatureBean">
+					<property name="id" value="5" />
+					<property name="stringAttr" value="5" />
+					<property name="geometry"
+						value="MULTILINESTRING((-40 0,-20 0),(-20 0,0 0))" />
+				</bean>
+				<bean class="org.geomajas.layer.bean.FeatureBean">
+					<property name="id" value="6" />
+					<property name="stringAttr" value="6" />
+					<property name="geometry"
+						value="MULTILINESTRING((-40 -40,-20 -20),(-20 -20,0 0))" />
+				</bean>
+				<bean class="org.geomajas.layer.bean.FeatureBean">
+					<property name="id" value="7" />
+					<property name="stringAttr" value="7" />
+					<property name="geometry"
+						value="MULTILINESTRING((0 -40,0 -20),(0 -20,0 0))" />
+				</bean>
+				<bean class="org.geomajas.layer.bean.FeatureBean">
+					<property name="id" value="8" />
+					<property name="stringAttr" value="8" />
+					<property name="geometry"
+						value="MULTILINESTRING((40 -40,20 -20),(20 -20,0 0))" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+</beans>

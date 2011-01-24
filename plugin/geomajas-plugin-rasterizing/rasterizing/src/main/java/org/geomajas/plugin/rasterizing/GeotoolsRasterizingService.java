@@ -27,6 +27,7 @@ import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.layer.tile.TileMetadata;
 import org.geomajas.service.GeoService;
+import org.geotools.factory.Hints;
 import org.geotools.geometry.jts.Decimator;
 import org.geotools.geometry.jts.GeometryCoordinateSequenceTransformer;
 import org.geotools.geometry.jts.LiteShape2;
@@ -82,6 +83,14 @@ public class GeotoolsRasterizingService implements RasterizingService {
 
 	@Autowired
 	private GeoService geoService;
+	
+	/**
+	 * Construct a Geotools rasterizing service with default settings.
+	 */
+	public GeotoolsRasterizingService() {
+		renderingHints = new Hints();
+		renderingHints.put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+	}
 
 	/**
 	 * Should the image be created with a transparency.
@@ -101,6 +110,15 @@ public class GeotoolsRasterizingService implements RasterizingService {
 	@Api
 	public void setRenderingHints(RenderingHints renderingHints) {
 		this.renderingHints = renderingHints;
+	}
+	
+	/**
+	 * Return the rendering hints which should be applied. Any changes to the returned value will affect this service.
+	 * 
+	 * @return rendering hints
+	 */
+	public RenderingHints getRenderingHints() {
+		return renderingHints;
 	}
 
 	/**
