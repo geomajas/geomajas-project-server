@@ -16,8 +16,7 @@
 	<parent>
 		<groupId>org.geomajas</groupId>
 		<artifactId>geomajas-parent</artifactId>
-		<version>1.0.4-SNAPSHOT</version>
-	</parent>
+		<version>1.0.4</version>nt>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>${groupId}</groupId>
 	<artifactId>$!{artifactIdPrefix}${rootArtifactId}-all</artifactId>

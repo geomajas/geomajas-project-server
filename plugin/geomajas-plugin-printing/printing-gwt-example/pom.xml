@@ -144,6 +144,7 @@
 					<inplace>true</inplace>
 					<module>org.geomajas.plugin.printing.gwt.example.GeomajasEntryPoint</module>
 					<runTarget>index.html</runTarget>
+					<copyWebapp>true</copyWebapp>
 					<warSourceDirectory>war</warSourceDirectory>
 					<disableCastChecking>true</disableCastChecking>
 					<disableClassMetadata>true</disableClassMetadata>
@@ -208,7 +209,7 @@
 						<artifactId>gwt-maven-plugin</artifactId>
 						<executions>
 							<execution>
-								<phase>compile</phase>
+								<phase>test-compile</phase>
 								<goals>
 									<goal>clean</goal>
 									<goal>compile</goal>

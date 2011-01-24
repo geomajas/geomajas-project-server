@@ -14,7 +14,7 @@
 	<parent>
 		<groupId>org.geomajas</groupId>
 		<artifactId>geomajas-parent</artifactId>
-		<version>1.0.4-SNAPSHOT</version>
+		<version>1.0.4</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas</groupId>
@@ -66,14 +66,14 @@
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-backend</artifactId>
-				<version>1.8.0-SNAPSHOT</version>
+				<version>1.9.0-SNAPSHOT</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-face-gwt</artifactId>
-				<version>1.8.0-SNAPSHOT</version>
+				<version>1.9.0-SNAPSHOT</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -125,7 +125,6 @@
 			<version>1.8.0-SNAPSHOT</version>
 		</dependency> -->
 		<!-- @extract-end -->
-		<!-- @todo caching and rasterizing, enable once released 
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId> 
 			<artifactId>geomajas-plugin-caching</artifactId>
@@ -135,7 +134,7 @@
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-plugin-rasterizing</artifactId> 
 			<version>1.0.0-SNAPSHOT</version>
-		</dependency> -->
+		</dependency>
 		<!-- Extra Geomajas plugins -->
 		<!-- @extract-start StaticSecurityDependency, staticsecurity source plugin - including source -->
 		<dependency>

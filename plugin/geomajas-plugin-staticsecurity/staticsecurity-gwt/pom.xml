@@ -24,6 +24,19 @@
 
 	<dependencyManagement>
 		<dependencies>
+			<!-- Google dependencies -->
+			<dependency>
+				<groupId>com.google.gwt</groupId>
+				<artifactId>gwt-user</artifactId>
+				<scope>provided</scope>
+				<version>2.1.1</version>
+			</dependency>
+			<dependency>
+				<groupId>com.google.gwt</groupId>
+				<artifactId>gwt-servlet</artifactId>
+	            <scope>runtime</scope>
+				<version>2.1.1</version>
+			</dependency>
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-face-gwt</artifactId>

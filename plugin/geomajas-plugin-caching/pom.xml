@@ -14,7 +14,7 @@
 	<parent>
 		<groupId>org.geomajas</groupId>
 		<artifactId>geomajas-parent</artifactId>
-		<version>1.0.4-SNAPSHOT</version>
+		<version>1.0.5-SNAPSHOT</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.plugin</groupId>
@@ -121,6 +121,6 @@
 	</profiles>
 
 	<properties>
-		<caching-backend-version>1.8.0-SNAPSHOT</caching-backend-version>
+		<caching-backend-version>1.9.0-SNAPSHOT</caching-backend-version>
 	</properties>
 </project>
