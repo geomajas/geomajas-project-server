@@ -15,7 +15,7 @@
 	<parent>
 		<groupId>org.geomajas</groupId>
 		<artifactId>geomajas-parent</artifactId>
-		<version>1.0.5-SNAPSHOT</version>
+		<version>1.0.4</version>
 	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.plugin</groupId>
@@ -76,10 +76,11 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-	
+
 	<modules>
 		<module>rasterizing</module>
-  </modules>
+		<module>rasterizing-gwt-example</module>
+	</modules>
 
 	<profiles>
 		<profile>
