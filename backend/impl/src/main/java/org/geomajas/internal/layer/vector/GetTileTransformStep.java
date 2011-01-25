@@ -60,7 +60,6 @@ public class GetTileTransformStep implements PipelineStep<GetTileContainer> {
 			}
 		}
 		// replace the contents of the list
-		response.getTile().getFeatures().clear();
-		response.getTile().getFeatures().addAll(features);
+		response.getTile().setFeatures(features);
 	}
 }
