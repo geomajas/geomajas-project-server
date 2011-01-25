@@ -474,8 +474,11 @@ public class MapView {
 			if (bounds.isEmpty()) {
 				fireEvent(false, null);
 			} else {
-				// set pan origin equal to origin
-				viewState = viewState.copyAndSetPanOrigin(viewState.getX(), viewState.getY());
+				// find pan origin by rounding origin to 10000 x 10000 grid (to enable caching)
+				double x = Math.round(viewState.getX() * viewState.getScale() / 10000) * 10000 / viewState.getScale();
+				double y = Math.round(viewState.getY() * viewState.getScale() / 10000) * 10000 / viewState.getScale();
+				// set pan origin
+				viewState = viewState.copyAndSetPanOrigin(x, y);
 				fireEvent(false, option);
 			}
 		}

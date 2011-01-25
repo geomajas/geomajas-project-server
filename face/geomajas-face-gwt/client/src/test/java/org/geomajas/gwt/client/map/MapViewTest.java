@@ -79,7 +79,7 @@ public class MapViewTest {
 		mapView.addMapViewChangedHandler(handler);
 		// pan to initial position
 		mapView.applyBounds(new Bbox(400, 150, 200, 100), MapView.ZoomOption.LEVEL_CLOSEST);
-		handler.expect(new Bbox(400, 150, 200, 100), 1.0, false);
+		handler.expect(new Bbox(400, 150, 200, 100), 1.0, true);
 		// zoom out
 		mapView.setCurrentScale(0.5, MapView.ZoomOption.LEVEL_CLOSEST);
 		handler.expect(new Bbox(300, 100, 400, 200), 0.5, false);
@@ -138,7 +138,7 @@ public class MapViewTest {
 		// force 1.0
 		mapView.setCurrentScale(1.0, MapView.ZoomOption.LEVEL_CLOSEST);
 		// zooms in to 1.0
-		handler.expect(new Bbox(400, 150, 200, 100), 1.0, false);
+		handler.expect(new Bbox(400, 150, 200, 100), 1.0, true);
 		// force 2.0
 		mapView.setCurrentScale(2.0, MapView.ZoomOption.LEVEL_CLOSEST);
 		// zooms in to 2.0
