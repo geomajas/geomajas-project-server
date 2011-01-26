@@ -26,6 +26,7 @@ import org.geomajas.plugin.caching.service.CacheKeyService;
 import org.geomajas.plugin.caching.service.CacheManagerService;
 import org.geomajas.security.SecurityContext;
 import org.geomajas.service.DispatcherUrlService;
+import org.geomajas.service.TestRecorder;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
 import org.geomajas.service.pipeline.PipelineStep;
@@ -62,6 +63,9 @@ public class RasterTileStep implements PipelineStep<GetTileContainer> {
 	@Autowired
 	private RasterizingService rasterizingService;
 
+	@Autowired
+	private TestRecorder recorder;
+
 	private String id;
 
 	public String getId() {
@@ -86,20 +90,26 @@ public class RasterTileStep implements PipelineStep<GetTileContainer> {
 
 		RebuildCacheContainer cc = cacheManager
 				.get(layer, CacheCategory.REBUILD, cacheKey, RebuildCacheContainer.class);
-		if (cc == null) {
-			cc = new RebuildCacheContainer();
-			cc.setContext(cacheContext);
-			cc.setMetadata(tileMetadata);
-		} else {
-			// cache is stale
-			if (!cacheContext.equals(cc.getContext())) {
+		
+		// loop until we have a valid key for the current context
+		while (null != cc) {
+			if (cacheContext.equals(cc.getContext())) {
+				// found item in cache, nothing special to do
+				break;
+			} else {
 				cacheKey = cacheKeyService.makeUnique(cacheKey);
 				log.debug("Cache context did not match, new key {}", cacheKey);
 				cc = cacheManager.get(layer, CacheCategory.REBUILD, cacheKey, RebuildCacheContainer.class);
 			}
 		}
+		// cc may have gotten null here !
+		if (cc == null) {
+			cc = new RebuildCacheContainer();
+		}
+		cc.setContext(cacheContext);
+		cc.setMetadata(tileMetadata);
+		recorder.record(CacheCategory.REBUILD, cacheKey);
 		cacheManager.put(layer, CacheCategory.REBUILD, cacheKey, cc, tileContainer.getTile().getBounds());
-
 		StringBuilder url = new StringBuilder(200);
 		url.append(dispatcherUrlService.getDispatcherUrl());
 		url.append("/rasterizing/");
@@ -124,7 +134,9 @@ public class RasterTileStep implements PipelineStep<GetTileContainer> {
 			ByteArrayOutputStream imageStream = new ByteArrayOutputStream(50000);
 			try {
 				rasterizingService.rasterize(imageStream, layer, style, tileMetadata, tile);
+				recorder.record(CacheCategory.REBUILD, "Rasterization success");
 			} catch (Exception ex) {
+				recorder.record(CacheCategory.REBUILD, "Rasterization failed");
 				log.error("Problem while rasterizing tile, image will be zero-length.", ex);
 			}
 

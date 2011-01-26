@@ -24,6 +24,7 @@ import org.geomajas.plugin.caching.service.CacheCategory;
 import org.geomajas.plugin.caching.service.CacheManagerService;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
+import org.geomajas.service.TestRecorder;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
 import org.geomajas.service.pipeline.PipelineService;
@@ -53,6 +54,9 @@ public class RasterizeStep extends AbstractRasterizingStep {
 	@Autowired
 	private DtoConverterService dtoConverterService;
 
+	@Autowired
+	private TestRecorder recorder;
+
 	public void execute(PipelineContext rasterContext, RasterizingContainer rasterizingContainer) throws
 			GeomajasException {
 
@@ -63,9 +67,11 @@ public class RasterizeStep extends AbstractRasterizingStep {
 		RebuildCacheContainer cc = cacheManager.get(layer, CacheCategory.REBUILD, cacheKey,
 				RebuildCacheContainer.class);
 		if (null == cc) {
+			recorder.record(CacheCategory.REBUILD, "Missing item in cache");
 			log.error("Cannot find raster information in rebuild cache. This will result in zero-length image.");
 			rasterizingContainer.setImage(new byte[0]);
 		} else {
+			recorder.record(CacheCategory.REBUILD, "Got item from cache");
 			TileMetadata tileMetadata = cc.getMetadata();
 			// @todo need to switch to the correct security context
 

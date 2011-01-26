@@ -32,5 +32,10 @@ http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
 	<util:constant id="valueAntiAliasOn"
 		static-field="java.awt.RenderingHints.VALUE_ANTIALIAS_ON" />
+		
+	<bean name="service.DispatcherUrlService"
+		class="org.geomajas.service.impl.StaticDispatcherUrlService">
+		<property name="dispatcherUrl" value="http://test" />
+	</bean>
 
 </beans>

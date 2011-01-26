@@ -15,6 +15,7 @@ import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.plugin.caching.service.CacheCategory;
 import org.geomajas.plugin.caching.service.CacheManagerService;
+import org.geomajas.service.TestRecorder;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +30,9 @@ public class GetFromCacheStep extends AbstractRasterizingStep {
 	@Autowired
 	private CacheManagerService cacheManager;
 
+	@Autowired
+	private TestRecorder recorder;
+
 	public void execute(PipelineContext context, RasterizingContainer rasterizingContainer) throws
 			GeomajasException {
 
@@ -37,6 +41,7 @@ public class GetFromCacheStep extends AbstractRasterizingStep {
 
 		RasterizingContainer rc = cacheManager.get(layer, CacheCategory.RASTER, id, RasterizingContainer.class);
 		if (null != rc) {
+			recorder.record(CacheCategory.RASTER, "Got item from cache");
 			rasterizingContainer.setImage(rc.getImage());
 			context.setFinished(true);
 		}
