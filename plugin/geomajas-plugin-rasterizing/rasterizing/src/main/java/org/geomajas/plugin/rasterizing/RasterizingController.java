@@ -11,7 +11,6 @@
 
 package org.geomajas.plugin.rasterizing;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.geomajas.service.ConfigurationService;
@@ -43,7 +42,7 @@ public class RasterizingController {
 	private ConfigurationService configurationService;
 
 	@RequestMapping(value = "/rasterizing/{layerId}/{key}.{format}", method = RequestMethod.GET)
-	public void getWms(@PathVariable String layerId, @PathVariable String key, HttpServletRequest request,
+	public void getWms(@PathVariable String layerId, @PathVariable String key,
 			HttpServletResponse response) throws Exception {
 
 //		// Search for the WMS layer:
