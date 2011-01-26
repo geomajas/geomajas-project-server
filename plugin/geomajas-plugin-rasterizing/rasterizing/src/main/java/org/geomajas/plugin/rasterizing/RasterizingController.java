@@ -42,7 +42,7 @@ public class RasterizingController {
 	private ConfigurationService configurationService;
 
 	@RequestMapping(value = "/rasterizing/{layerId}/{key}.png", method = RequestMethod.GET)
-	public void getWms(@PathVariable String layerId, @PathVariable String key,
+	public void getImage(@PathVariable String layerId, @PathVariable String key,
 			HttpServletResponse response) throws Exception {
 
 		try {

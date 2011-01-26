@@ -1,8 +1,18 @@
+/*
+ * This is part of Geomajas, a GIS framework, http://www.geomajas.org/.
+ *
+ * Copyright 2008-2011 Geosparc nv, http://www.geosparc.com/, Belgium.
+ *
+ * The program is available in open source according to the GNU Affero
+ * General Public License. All contributions in this program are covered
+ * by the Geomajas Contributors License Agreement. For full licensing
+ * details, see LICENSE.txt in the project root.
+ */
+
 package org.geomajas.plugin.rasterizing;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import org.geomajas.command.dto.GetVectorTileRequest;
 import org.geomajas.configuration.NamedStyleInfo;
@@ -22,12 +32,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import com.vividsolutions.jts.geom.Envelope;
 
 /**
  * Tests the rasterizing pipeline used by the RasterizingController.
@@ -67,7 +74,7 @@ public class RasterizingPipelineTest {
 
 	private static byte[] DUMMY_BYTES = new byte[] { 0, 1, 2 };
 
-	private static final String IMAGE_PATH = "src/test/resources/org/geomajas/plugin/rasterizing/images/";
+	private static final String IMAGE_PATH = "org/geomajas/plugin/rasterizing/images/";
 
 	@Before
 	public void login() {
@@ -100,9 +107,9 @@ public class RasterizingPipelineTest {
 		Object o = cacheManager.get(layerBeans, CacheCategory.RASTER, key);
 		Assert.assertNotNull("Missing raster in cache",o);
 		MockHttpServletResponse response = new MockHttpServletResponse();
-		controller.getWms(layerBeans.getId(), key, new MockHttpServletRequest(), response);
+		controller.getImage(layerBeans.getId(), key, response);
 		Assert.assertEquals("", recorder.matches(CacheCategory.RASTER, "Got item from cache"));
-		Assert.assertArrayEquals(getBytesFromFile(IMAGE_PATH + "beans-4-8-8.png"), response.getContentAsByteArray());
+		Assert.assertArrayEquals(getBytes(IMAGE_PATH + "beans-4-8-8.png"), response.getContentAsByteArray());
 		cacheManager.drop(layerBeans);
 	}
 
@@ -133,22 +140,85 @@ public class RasterizingPipelineTest {
 		// remove from normal cache
 		cacheManager.get(layerBeans, CacheCategory.RASTER, key);
 		MockHttpServletResponse response = new MockHttpServletResponse();
-		controller.getWms(layerBeans.getId(), key, new MockHttpServletRequest(), response);
+		controller.getImage(layerBeans.getId(), key, response);
 		Assert.assertEquals("",
 				recorder.matches(CacheCategory.REBUILD, 
 						key, 
 						"Rasterization success"
 		));
-		Assert.assertArrayEquals(getBytesFromFile(IMAGE_PATH + "beans-4-8-8.png"), response.getContentAsByteArray());
+		Assert.assertArrayEquals(getBytes(IMAGE_PATH + "beans-4-8-8.png"), response.getContentAsByteArray());
 		cacheManager.drop(layerBeans);
 	}
 
-	private byte[] getBytesFromFile(String fileName) throws IOException {
-		File file = new File(fileName);
-		FileInputStream fis = new FileInputStream(file);
-		byte[] buff = new byte[(int) file.length()];
-		fis.read(buff);
-		fis.close();
-		return buff;
+	public byte[] getBytes( String name )
+            throws IOException
+    {
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        if ( null == classLoader )
+        {
+            classLoader = getClass().getClassLoader();
+        }
+        InputStream stream = classLoader.getResourceAsStream( name );
+        ByteBuffer buffer = new ByteBuffer(20000);
+        try
+        {
+            byte[] b = new byte[4096];
+            for (int n; (n = stream.read(b)) != -1;) {
+                buffer.append(b, 0, n);
+            }
+        }
+        finally
+        {
+            try
+            {
+                stream.close();
+            }
+            catch (IOException ioe)
+            { /* ignore exception on close */}
+        }
+        return buffer.toByteArray();
+    }
+
+	public final class ByteBuffer {
+
+		private int length;
+
+		private byte[] buffer;
+
+		public ByteBuffer(int size) {
+			buffer = new byte[size];
+			length = 0;
+		}
+
+		public void ensureCapacity(int size) {
+			if (size > buffer.length) {
+				int newsize = (buffer.length + 1) * 2;
+				if (size > newsize) {
+					newsize = size;
+				}
+				byte[] old = buffer;
+				buffer = new byte[newsize];
+				System.arraycopy(old, 0, buffer, 0, old.length);
+			}
+		}
+
+		public void append(byte[] value, int offset, int width) {
+			if (width < 0) {
+				throw new IndexOutOfBoundsException();
+			}
+			ensureCapacity(length + width);
+			System.arraycopy(value, offset, buffer, length, width);
+			length += width;
+		}
+
+		public byte[] toByteArray() {
+			byte[] value = new byte[length];
+			System.arraycopy(buffer, 0, value, 0, length);
+			return value;
+		}
+
+		public String toString() {
+			return new String(buffer, 0, length);
+		}
 	}
 }
