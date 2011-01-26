@@ -9,11 +9,159 @@
   ~ by the Geomajas Contributors License Agreement. For full licensing
   ~ details, see LICENSE.txt in the project root.
   -->
-
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
 "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
 <chapter id="chapter-introduction">
   <title>Introduction</title>
 
-  <para></para>
+  <para>The rasterization plugin enables the conversion of vector data
+  (coordinate-based geometry definitions) to raster data (images). It allows
+  to extend the vector layer rendering pipeline by introducing an extra
+  rasterization step. The vector tile response will thereby contain an URL
+  content-type that allows the client to fetch the tile as a normal
+  image.</para>
+
+  <para>From a visualization view point, rasterized tiles are quite comparable
+  to vector tiles for many use cases such as panning and zooming. They have
+  significant advantages when the amount of vector data is high, either in
+  terms of features or in the amount of coordinates for each feature.
+  Especially for web clients, DOM-based vector rendering (SVG/VML) is quite
+  slow and should not be used beyond a couple of thousand features (state of
+  the art as of beginning 2011). In this case rasterization provides a
+  significant performance boost, especially when combined with server-side
+  caching of the image tiles.</para>
+
+  <para>On the other hand, there are some use cases which are evidently
+  difficult to treat without vectorial information at hand:</para>
+
+  <para><itemizedlist>
+      <listitem>
+        <para>Editing of geometries</para>
+      </listitem>
+
+      <listitem>
+        <para>Snapping to other layers</para>
+      </listitem>
+
+      <listitem>
+        <para>Selection of features</para>
+      </listitem>
+    </itemizedlist>Geomajas provides the ability to load vector data on demand
+  in such cases, thereby combining the best of both worlds.</para>
+
+  <section>
+    <title>Pipeline overview</title>
+
+    <para>The rasterization plugin adds a rasterization service and some
+    pipeline steps to the framework, as well as a controller to serve the tile
+    images.</para>
+
+    <para>The normal pipeline for getting the vector tiles is enhanced with an
+    extra rasterization step which is indicated in green in the following
+    figure:</para>
+
+    <para><figure>
+        <title>Vector tile pipeline for rasterization</title>
+
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="images/rastertilestep.png" />
+          </imageobject>
+        </mediaobject>
+      </figure>The rasterization takes place in the RasterTile step, right
+    after the point where all the features have been collected and transformed
+    to the screen coordinate system. It goes in front of the GetTileFill step
+    because it has to work with the complete set of interacting features of
+    the tile. The GetTileFill step removes the features that are not
+    completely contained in the tile and puts them in a separate "super tile"
+    to avoid duplicate features in the response. For rasterization this is not
+    necessary, as features cannot be drawn twice.</para>
+
+    <para>The RasterTile step performs the following actions:</para>
+
+    <para><itemizedlist>
+        <listitem>
+          <para>Check the rebuild cache and make sure it has the necessary
+          context to rebuild the rasterized tile image</para>
+        </listitem>
+
+        <listitem>
+          <para>Build the rasterized tile image by calling the
+          RasterizingService</para>
+        </listitem>
+
+        <listitem>
+          <para>Put the rasterized tile image in the normal cache so that it
+          can be fetched by the controller</para>
+        </listitem>
+
+        <listitem>
+          <para>Set the feature content of the tile to a unique url that
+          contains the cache key</para>
+        </listitem>
+      </itemizedlist>After this step, the cache must contain both the rebuild
+    information and the rasterized image. The tile that is returned must
+    contain the url to fetch the tile image. Normally, the client will
+    immediately fecth this url from the server in a separate client-server
+    interaction. </para>
+
+    <para>Our next figure shows how this url request is handled:<figure>
+        <title>URL handling for rasterization</title>
+
+        <mediaobject>
+          <imageobject>
+            <imagedata fileref="images/raster_url_handling.png" />
+          </imageobject>
+        </mediaobject>
+      </figure></para>
+
+    <para>The following series of actions take place:<itemizedlist>
+        <listitem>
+          <para>The dispatcher servlet dispatches the request to the
+          RasterizingController, based on the url prefix
+          <code>/rasterizing/</code></para>
+        </listitem>
+
+        <listitem>
+          <para>The RasterizingController invokes a seperate rasterizing
+          pipeline, consisting of 2 steps</para>
+        </listitem>
+
+        <listitem>
+          <para>The GetFromCache step tries to fetch the binary image from the
+          normal cache. If successful, the pipeline ends.</para>
+        </listitem>
+
+        <listitem>
+          <para>The Rasterize step tries to fetch the rebuild context from the
+          rebuild cache. If successful, the vector tile pipeline is invoked
+          again and the resulting image is returned. If not, an empty image is
+          returned.</para>
+        </listitem>
+      </itemizedlist></para>
+
+    <para>The scenario we just described can be slightly tweaked by changing
+    the moment at which the actual rasterization takes place. By setting a
+    configuration parameter, one can postpone the actual rasterization to the
+    moment where the url request is handled (effectively skipping the last 3
+    actions of the RasterTile step and invoking the rebuild scenario in the
+    url handling scheme).</para>
+  </section>
+
+  <section>
+    <title>Rasterizing service</title>
+
+    <para>The actual work of rasterizing the vector data to an image is done
+    by the RasterizingService. This service has a single method, taking a
+    number of contextual parameters and an outputstream to write the image
+    to:</para>
+
+    <para><programlisting>public interface RasterizingService {
+
+   void rasterize(OutputStream stream, VectorLayer layer, NamedStyleInfo style, TileMetadata metadata,InternalTile tile) 
+        throws GeomajasException, IOException;
+
+}</programlisting>There is currently 1 implementation available of this
+    service, based on the geotools library.</para>
+  </section>
 </chapter>

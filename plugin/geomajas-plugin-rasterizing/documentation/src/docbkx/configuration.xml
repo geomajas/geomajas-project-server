@@ -9,30 +9,171 @@
   ~ by the Geomajas Contributors License Agreement. For full licensing
   ~ details, see LICENSE.txt in the project root.
   -->
-
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
 "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
-
 <chapter id="chapter-configuration">
   <title>Configuration</title>
 
-  <para></para>
+  <para>The configuration of the rasterization involves the following
+  elements:</para>
 
-	<section id="dependencies">
-	  <title>Dependencies</title>
+  <para><itemizedlist>
+      <listitem>
+        <para>Configure the vector tile pipeline to use rasterization</para>
+      </listitem>
 
-	  <para>Make sure your include the plug-in in your project. If you are using
-	  Maven, add the following dependency to your pom:</para>
+      <listitem>
+        <para>Configure the rasterization moment</para>
+      </listitem>
 
-	  <example>
-		<title>Plug-in dependency</title>
+      <listitem>
+        <para>Configure the rasterizing service</para>
+      </listitem>
+    </itemizedlist></para>
 
-		<programlisting language="xml">&lt;dependency&gt;
-	  &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
-	  &lt;artifactId&gt;geomajas-plugin-rasterizing&lt;/artifactId&gt;
-	  &lt;version&gt;1.0.0-SNAPSHOT&lt;/version&gt;
-  &lt;/dependency&gt;</programlisting>
-	  </example>
-	</section>
+  <section id="dependencies">
+    <title>Dependencies</title>
 
+    <para>Make sure your include the plug-in in your project. If you are using
+    Maven, add the following dependency to your pom:</para>
+
+    <example>
+      <title>Plug-in dependency</title>
+
+      <programlisting language="xml">&lt;dependency&gt;
+  &lt;groupId&gt;org.geomajas.plugin&lt;/groupId&gt;
+  &lt;artifactId&gt;geomajas-plugin-rasterizing&lt;/artifactId&gt;
+  &lt;version&gt;1.0.0&lt;/version&gt;
+&lt;/dependency&gt;</programlisting>
+    </example>
+
+    <para>Rasterization is also dependent on caching, but the dependency is
+    automatically handled. For configuration of the caching plugin, see the
+    plugin documentation.</para>
+  </section>
+
+  <section>
+    <title>Pipeline configuration</title>
+
+    <para>The only pipeline that can optionally use rasterization is the
+    GetVectorTile pipeline used by the VectorLayerService. If you want to use
+    rasterization without extra caching of the complete tile, you can add the
+    following configuration location to your web.xml file:<programlisting>classpath:org/geomajas/plugin/rasterizing/DefaultRasterizedPipelines.xml</programlisting></para>
+
+    <para>If you want to maximize caching, add the following location
+    instead:<programlisting>classpath:org/geomajas/plugin/rasterizing/DefaultCachedAndRasterizedPipelines.xml</programlisting></para>
+
+    <para>Alternatively you can configure for each layer individually which
+    pipeline should be used.</para>
+
+    <para>The following rasterized pipelines exist (bean name):</para>
+
+    <para><itemizedlist>
+        <listitem>
+          <para>PIPELINE_GET_VECTOR_TILE_RASTERIZED: pipeline to get a tile
+          for a vector layer.</para>
+        </listitem>
+
+        <listitem>
+          <para>PIPELINE_GET_VECTOR_TILE_CACHED_AND_RASTERIZED: pipeline to
+          get a tile for a vector layer and cache the tile result</para>
+        </listitem>
+      </itemizedlist>You can set a specific pipeline using a configuration
+    like this:</para>
+
+    <example>
+      <title>Applying the rasterized pipeline for getVectorTile() on
+      myLayer</title>
+
+      <programlisting>&lt;bean class="org.geomajas.service.pipeline.PipelineInfo"&gt;
+    &lt;property name="pipelineName"&gt;
+        &lt;util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_GET_VECTOR_TILE"/&gt;
+    &lt;/property&gt;
+    &lt;property name="layerId" value="myLayer" /&gt;
+    &lt;property name="delegatePipeline" ref="PIPELINE_GET_VECTOR_TILE_RASTERIZED" /&gt;
+&lt;/bean&gt;</programlisting>
+    </example>
+  </section>
+
+  <section>
+    <title>Rasterization moment configuration</title>
+
+    <para>The moment at which rasterization takes place can be globally
+    configured by adding the following to your configuration:</para>
+
+    <para><programlisting>&lt;bean name="plugin.rasterizing.rasterizingInfo" class="org.geomajas.plugin.rasterizing.RasterizingInfo"&gt;
+  &lt;property name="rasterizingMoment"&gt;
+     &lt;util:constant static-field="org.geomajas.plugin.rasterizing.RasterizingMoment.TILE_REQUEST" /&gt;
+  &lt;/property&gt;
+&lt;/bean&gt;</programlisting>The default value is
+    <code>RasterizingMoment.TILE_REQUEST</code>, which means that
+    rasterization will already take place when the tile is requested. If you
+    want to postpone rasterization to the stage where the url is requested,
+    you should replace this value by
+    <code>RasterizingMoment.URL_REQUEST</code>.</para>
+  </section>
+
+  <section>
+    <title>Rasterizing service configuration</title>
+
+    <para>The rasterizing service defaults to a geotools implementation. You
+    can configure the following parameters of this service:<itemizedlist>
+        <listitem>
+          <para>transparent: boolean to indicate that the generated image
+          should be transparent (defaults to true)</para>
+        </listitem>
+
+        <listitem>
+          <para>renderingHints: this parameter defines an optional map of
+          rendering hints (of class RenderingHints) that are used by the Java
+          Graphics2D class. Each hint consists of a key-value pair.</para>
+        </listitem>
+
+        <listitem>
+          <para>fontName: default font name to be used in labels</para>
+        </listitem>
+
+        <listitem>
+          <para>fontSize: default font size to be used in labels</para>
+        </listitem>
+
+        <listitem>
+          <para>labelBorderDistanceX: distance between label border and text
+          (x-direction)</para>
+        </listitem>
+
+        <listitem>
+          <para>labelBorderDistanceY: distance between label border and text
+          (y-direction)</para>
+        </listitem>
+      </itemizedlist></para>
+
+    <para>A custom configuration might look like this:</para>
+
+    <para><programlisting>&lt;bean name="plugin.rasterizing.RasterizingService"
+  class="org.geomajas.plugin.rasterizing.GeotoolsRasterizingService"&gt;
+  &lt;property name="transparent" value="false" /&gt;
+  &lt;property name="renderingHints" ref="renderingHints" /&gt;
+  &lt;property name="fontName" value="Courier" /&gt;
+  &lt;property name="fontSize" value="14" /&gt;
+  &lt;property name="labelBorderDistanceX" value="4" /&gt;
+  &lt;property name="labelBorderDistanceY" value="3" /&gt;
+ &lt;/bean&gt;
+
+ &lt;util:map id="renderingHints" map-class="org.geotools.factory.Hints"&gt;
+  &lt;entry&gt;
+   &lt;key&gt;
+    &lt;util:constant static-field="java.awt.RenderingHints.KEY_ANTIALIASING" /&gt;
+   &lt;/key&gt;
+   &lt;ref bean="valueAntiAliasOff" /&gt;
+  &lt;/entry&gt;
+ &lt;/util:map&gt;
+
+ &lt;util:constant id="valueAntiAliasOff"
+  static-field="java.awt.RenderingHints.VALUE_ANTIALIAS_OFF" /&gt;</programlisting>Note
+    that we have to go through some hoops to configure the rendering hints in
+    xml. Of course, you can always provide your own service implementation by
+    implementing the RasterizingService interface and replacing the bean class
+    in the above configuration.</para>
+  </section>
 </chapter>
