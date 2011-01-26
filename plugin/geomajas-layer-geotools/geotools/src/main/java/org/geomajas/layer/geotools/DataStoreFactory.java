@@ -40,7 +40,8 @@ public final class DataStoreFactory {
 	 * @param parameters
 	 *            list of GeoTools parameters.
 	 * @return data store
-	 * @throws IOException oops
+	 * @throws IOException
+	 *             oops
 	 */
 	public static DataStore create(Map<String, String> parameters) throws IOException {
 		String url = parameters.get("url");
@@ -57,6 +58,11 @@ public final class DataStoreFactory {
 		}
 		if (store instanceof JDBC1DataStore) {
 			store = new ExtendedDataStore((JDBC1DataStore) store);
+		} else if (store == null) {
+			throw new IOException(
+					"No datastore found. Possible causes are missing provider or missing library for your datastore"
+							+ " (e.g. database driver).\nCheck the isAvailable() method of your"
+							+ " DataStoreFactory class to find out which libraries are needed.");
 		}
 		return store;
 	}
