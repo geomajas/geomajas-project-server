@@ -132,6 +132,6 @@
 	</build>
 
 	<properties>
-		<geocoder-gwt-version>1.8.0-SNAPSHOT</geocoder-gwt-version>
+		<geocoder-gwt-version>1.8.0</geocoder-gwt-version>
 	</properties>	
 </project>

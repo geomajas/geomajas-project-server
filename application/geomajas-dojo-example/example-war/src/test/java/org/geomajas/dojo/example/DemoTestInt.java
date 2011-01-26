@@ -13,7 +13,7 @@ package org.geomajas.dojo.example;
 import com.thoughtworks.selenium.SeleneseTestCase;
 
 /**
- * Verifications for the demo application
+ * Verifications for the demo application.
  *
  * @author Joachim Van der Auwera
  */

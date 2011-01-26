@@ -78,7 +78,20 @@
 				<version>${staticsecurity-backend-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
-			</dependency>			
+			</dependency>
+
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-staticsecurity</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-staticsecurity</artifactId>
+				<version>${project.version}</version>
+				<classifier>sources</classifier>
+			</dependency>
+
 		</dependencies>
 	</dependencyManagement>
 

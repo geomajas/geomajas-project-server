@@ -21,7 +21,7 @@
 	<artifactId>geomajas-plugin-geocoder-gwt-example</artifactId>
 	<packaging>war</packaging>
 	<name>Geomajas GWT application</name>
-	<description>Geomajas GWT application</description>
+	<description>Geocoder GWT example application</description>
 	<url>http://www.geomajas.org/</url>
 
 	<dependencyManagement>

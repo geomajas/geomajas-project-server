@@ -162,7 +162,7 @@
 	</build>
 
 	<properties>
-		<geotools-layer-backend-version>1.8.0-SNAPSHOT</geotools-layer-backend-version>
+		<geotools-layer-backend-version>1.8.0</geotools-layer-backend-version>
 		<geotools-version>2.6.3</geotools-version>
 	</properties>
 </project>

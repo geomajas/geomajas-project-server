@@ -29,8 +29,15 @@
 		<dependencies>
 			<dependency>
 				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-backend</artifactId>
+				<version>1.8.0</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-dep</artifactId>
-				<version>1.10.32</version>
+				<version>1.10.36</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -49,13 +56,12 @@
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-common-servlet</artifactId>
-			<version>1.8.0-SNAPSHOT</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-impl</artifactId>
-			<version>1.8.0-SNAPSHOT</version>
+			<scope>runtime</scope>
 		</dependency>
 		
 		<dependency>

@@ -11,7 +11,6 @@
   -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-	<!-- @todo remove the parent when the plug-in is not part of the Geomajas project, or remove this comment -->
 	<parent>
 		<groupId>org.geomajas</groupId>
 		<artifactId>geomajas-parent</artifactId>
@@ -49,16 +48,16 @@
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
-				<groupId>org.geomajas.plugin</groupId>
-				<artifactId>geomajas-plugin-caching-all</artifactId>
-				<version>${rasterizing-caching-version}</version>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-backend</artifactId>
+				<version>${rasterizing-backend-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
 			<dependency>
-				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-backend</artifactId>
-				<version>${rasterizing-backend-version}</version>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-caching-all</artifactId>
+				<version>${rasterizing-caching-version}</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>

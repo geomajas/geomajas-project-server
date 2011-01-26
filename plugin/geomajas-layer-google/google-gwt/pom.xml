@@ -81,6 +81,6 @@
 	</build>
 
 	<properties>
-		<google-gwt-version>1.8.0-SNAPSHOT</google-gwt-version>
+		<google-gwt-version>1.8.0</google-gwt-version>
 	</properties>
 </project>
