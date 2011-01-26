@@ -41,13 +41,9 @@ public class RasterizingController {
 	@Autowired
 	private ConfigurationService configurationService;
 
-	@RequestMapping(value = "/rasterizing/{layerId}/{key}.{format}", method = RequestMethod.GET)
+	@RequestMapping(value = "/rasterizing/{layerId}/{key}.png", method = RequestMethod.GET)
 	public void getWms(@PathVariable String layerId, @PathVariable String key,
 			HttpServletResponse response) throws Exception {
-
-//		// Search for the WMS layer:
-//		String layer = parseLayer(request);
-//		String key = parseKey(request);
 
 		try {
 			PipelineContext context = pipelineService.createContext();
