@@ -57,18 +57,19 @@ public class PipelineServiceImpl<RESPONSE> implements PipelineService<RESPONSE> 
 		if (null == context) {
 			context = createContext();
 		}
-		log.debug("executing pipeline " + pipeline);
+		log.debug("executing pipeline {}", pipeline);
 		for (PipelineStep<RESPONSE> step : pipeline.getPipeline()) {
 			if (context.isFinished()) {
-				log.debug("context finished, pipeline " + pipeline + "execution done.");
+				log.debug("context finished, pipeline {} execution done.", pipeline);
 				break;
 			}
-			log.debug("executing step " + step.getId() + " for pipeline " + pipeline);
+			log.debug("executing step {} for pipeline {}.", step.getId(), pipeline);
 			step.execute(context, response);
 		}
 	}
 
 	/** @inheritDoc */
+	@SuppressWarnings("unchecked")
 	public PipelineInfo<RESPONSE> getPipeline(String pipelineName, String layerId) throws GeomajasException {
 		PipelineInfo<RESPONSE> layerPipeline = null;
 		PipelineInfo<RESPONSE> defaultPipeline = null;
@@ -93,6 +94,7 @@ public class PipelineServiceImpl<RESPONSE> implements PipelineService<RESPONSE> 
 		return layerPipeline;
 	}
 
+	@SuppressWarnings("unchecked")
 	private void extendPipeline(PipelineInfo pipeline) throws GeomajasException {
 		if (null == pipeline.getPipeline() && null != pipeline.getDelegatePipeline()) {
 			PipelineInfo delegate = pipeline.getDelegatePipeline();
