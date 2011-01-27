@@ -24,6 +24,12 @@
 	<name>Geomajas GWT application archetype</name>
 	<description>Geomajas GWT application archetype</description>
 
+	<scm>
+		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/build-tools/geomajas-gwt-archetype</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/build-tools/geomajas-gwt-archetype</developerConnection>
+		<url>https://svn.geomajas.org/majas/trunk/build-tools/geomajas-gwt-archetype</url>
+	</scm>
+
 	<developers>
 		<developer>
 			<id>joachimvda</id>
@@ -76,10 +82,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
-  <scm>
-    <connection>scm:svn:https://svn.geomajas.org/majas/trunk/build-tools/geomajas-gwt-archetype-1.7.1</connection>
-    <developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/build-tools/geomajas-gwt-archetype-1.7.1</developerConnection>
-    <url>https://svn.geomajas.org/majas/trunk/build-tools/geomajas-gwt-archetype-1.7.1</url>
-  </scm>
 </project> 
