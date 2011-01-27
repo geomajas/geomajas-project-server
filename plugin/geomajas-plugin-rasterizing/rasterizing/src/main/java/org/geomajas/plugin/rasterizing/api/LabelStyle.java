@@ -9,26 +9,24 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.plugin.rasterizing;
+package org.geomajas.plugin.rasterizing.api;
 
-import org.geomajas.configuration.FeatureStyleInfo;
-import org.geomajas.configuration.FontStyleInfo;
-import org.geomajas.configuration.LabelStyleInfo;
-import org.geotools.renderer.style.Style2D;
-
-import java.awt.AlphaComposite;
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Composite;
+import java.awt.Font;
 import java.awt.Stroke;
+
+import org.geomajas.global.Api;
+import org.geotools.renderer.style.Style2D;
 
 /**
  * <p>
  * Extension of the Style2D class from the GeoTools library specific for labels.
  * </p>
- *
+ * 
  * @author Pieter De Graef
  */
+@Api(allMethods = true)
 public class LabelStyle extends Style2D {
 
 	/**
@@ -45,6 +43,11 @@ public class LabelStyle extends Style2D {
 	 * Background stroke opacity.
 	 */
 	private Composite strokeComposite;
+
+	/**
+	 * Text font.
+	 */
+	private Font font;
 
 	/**
 	 * Font color.
@@ -66,48 +69,10 @@ public class LabelStyle extends Style2D {
 	 */
 	private float strokeWidth;
 
-	private Stroke stroke;
-
-	// -------------------------------------------------------------------------
-	// Constructor
-	// -------------------------------------------------------------------------
-
-	public LabelStyle(LabelStyleInfo info) {
-		this(info.getFontStyle(), info.getBackgroundStyle());
-	}
 	/**
-	 * Initialize the LabelStyle using style info objects from the layer's XML label configuration.
-	 *
-	 * @param fontInfo
-	 *            Determines the font's style.
-	 * @param backgroundInfo
-	 *            Determines the background style.
+	 * Stroke
 	 */
-	public LabelStyle(FontStyleInfo fontInfo, FeatureStyleInfo backgroundInfo) {
-		fontComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, fontInfo.getOpacity());
-		backgroundComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, backgroundInfo.getFillOpacity());
-		strokeComposite = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, backgroundInfo.getStrokeOpacity());
-
-		if (fontInfo.getColor() != null) {
-			fontColor = Style2dFactory.createColorFromHTMLCode(fontInfo.getColor());
-		} else {
-			fontColor = Color.BLACK;
-		}
-
-		if (backgroundInfo.getFillColor() != null) {
-			backgroundColor = Style2dFactory.createColorFromHTMLCode(backgroundInfo.getFillColor());
-		} else {
-			backgroundColor = Color.WHITE;
-		}
-
-		if (backgroundInfo.getStrokeColor() != null) {
-			strokeColor = Style2dFactory.createColorFromHTMLCode(backgroundInfo.getStrokeColor());
-		} else {
-			strokeColor = Color.WHITE;
-		}
-
-		stroke = new BasicStroke(backgroundInfo.getStrokeWidth());
-	}
+	private Stroke stroke;
 
 	// -------------------------------------------------------------------------
 	// Getters and setters:
@@ -137,10 +102,19 @@ public class LabelStyle extends Style2D {
 		this.strokeComposite = strokeComposite;
 	}
 
+	public Font getFont() {
+		return font;
+	}
+
+	public void setFont(Font font) {
+		this.font = font;
+	}
+	
 	public Color getFontColor() {
 		return fontColor;
 	}
 
+	
 	public void setFontColor(Color fontColor) {
 		this.fontColor = fontColor;
 	}

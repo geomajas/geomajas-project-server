@@ -9,10 +9,12 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.plugin.rasterizing;
+package org.geomajas.plugin.rasterizing.mvc;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.geomajas.plugin.rasterizing.api.RasterizingContainer;
+import org.geomajas.plugin.rasterizing.api.RasterizingPipelineCode;
 import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;

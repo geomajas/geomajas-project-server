@@ -11,7 +11,6 @@
 
 package org.geomajas.plugin.rasterizing;
 
-import com.vividsolutions.jts.geom.Envelope;
 import org.geomajas.geometry.Crs;
 import org.geomajas.geometry.CrsTransform;
 import org.geomajas.global.GeomajasException;
@@ -22,6 +21,8 @@ import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.layer.tile.TileMetadata;
 import org.geomajas.plugin.caching.service.CacheCategory;
 import org.geomajas.plugin.caching.service.CacheManagerService;
+import org.geomajas.plugin.rasterizing.api.RasterizingContainer;
+import org.geomajas.plugin.rasterizing.api.RasterizingPipelineCode;
 import org.geomajas.service.DtoConverterService;
 import org.geomajas.service.GeoService;
 import org.geomajas.service.TestRecorder;
@@ -31,6 +32,8 @@ import org.geomajas.service.pipeline.PipelineService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import com.vividsolutions.jts.geom.Envelope;
 
 /**
  * Step which does the actual rasterizing. This is done by invoking the get getTile() call on the vector layer.

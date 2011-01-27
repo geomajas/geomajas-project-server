@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 
 import org.geomajas.command.dto.GetVectorTileRequest;
 import org.geomajas.configuration.CircleInfo;
@@ -80,9 +81,12 @@ public class GeotoolsRasterizingServiceTest {
 	@Autowired
 	GeotoolsRasterizingService geotoolsRasterizingService;
 
+	// changing this to true and running the test from the base directory will generate the images !
 	private boolean writeImages = false;
 
-	private static final String IMAGE_PATH = "src/test/resources/org/geomajas/plugin/rasterizing/images/";
+	private static final String IMAGE_FILE_PATH = "src/test/resources/org/geomajas/plugin/rasterizing/images/";
+
+	private static final String IMAGE_CLASS_PATH = "/org/geomajas/plugin/rasterizing/images/";
 
 	private final Logger log = LoggerFactory.getLogger(GeotoolsRasterizingServiceTest.class);
 
@@ -117,7 +121,7 @@ public class GeotoolsRasterizingServiceTest {
 		getMultiLineStyle().setStrokeOpacity(1f);
 	}
 
-	// @Test
+	@Test
 	public void testMultiLineLabelStyle() throws GeomajasException, IOException {
 		// label on/off
 		log.info("start");
@@ -153,21 +157,22 @@ public class GeotoolsRasterizingServiceTest {
 	public void testPointStyle() throws GeomajasException, IOException {
 		// default
 		checkPoint("point_default.png", false, true);
+		// save circle state
+		CircleInfo tmp = getPointStyle().getSymbol().getCircle();
+		getPointStyle().getSymbol().setCircle(null);
 		// symbol rect
-		CircleInfo circle = getPointStyle().getSymbol().getCircle();
 		getPointStyle().getSymbol().setRect(createRect());
 		checkPoint("point_rect.png", false, true);
 		getPointStyle().getSymbol().setRect(null);
-		getPointStyle().getSymbol().setCircle(circle);
 		// symbol image
-		getPointStyle().getSymbol().setCircle(null);
 		getPointStyle().getSymbol().setImage(createImage());
 		checkPoint("point_image.png", false, true);
 		getPointStyle().getSymbol().setImage(null);
-		getPointStyle().getSymbol().setCircle(circle);
+		// set circle state back
+		getPointStyle().getSymbol().setCircle(tmp);
 	}
 
-	// @Test
+	@Test
 	public void testPointLabelStyle() throws GeomajasException, IOException {
 		// label on/off
 		checkPoint("point_black_1_labeled.png", true, true);
@@ -217,7 +222,7 @@ public class GeotoolsRasterizingServiceTest {
 		getMultiPolygonStyle().setFillOpacity(1f);
 	}
 
-	// @Test
+	@Test
 	public void testMultiPolygonLabelStyle() throws GeomajasException, IOException {
 		// label on/off
 		checkMultiPolygon("multipolygon_black_1_labeled.png", true, true);
@@ -310,7 +315,7 @@ public class GeotoolsRasterizingServiceTest {
 		metadata.setPaintLabels(paintLabels);
 		metadata.setPaintGeometries(paintGeometries);
 		InternalTile tile = vectorLayerService.getTile(metadata);
-		File file = new File(IMAGE_PATH + fileName);
+		File file = new File(IMAGE_FILE_PATH + fileName);
 		if (writeImages) {
 			FileOutputStream fos;
 			fos = new FileOutputStream(file);
@@ -322,11 +327,16 @@ public class GeotoolsRasterizingServiceTest {
 			geotoolsRasterizingService.rasterize(baos, layer, styleInfo, metadata, tile);
 			baos.flush();
 			baos.close();
-			FileInputStream fis = new FileInputStream(file);
-			byte[] expecteds = new byte[(int) file.length()];
-			fis.read(expecteds);
-			fis.close();
-			log.info(expecteds.length+":"+baos.toByteArray().length);
+			ByteArrayOutputStream bos = new ByteArrayOutputStream();
+			InputStream is = getClass().getResourceAsStream(IMAGE_CLASS_PATH + fileName);
+			byte[] buf = new byte[1024];
+			int len;
+			while ((len = is.read(buf, 0, 1024)) != -1) {
+				bos.write(buf, 0, len);
+			}
+			is.close();
+			byte[] expecteds = bos.toByteArray();
+			log.info(expecteds.length + ":" + baos.toByteArray().length);
 			Assert.assertArrayEquals(expecteds, baos.toByteArray());
 		}
 	}
@@ -335,7 +345,7 @@ public class GeotoolsRasterizingServiceTest {
 		ImageInfo info = new ImageInfo();
 		info.setHeight(32);
 		info.setWidth(46);
-		info.setHref("org/geomajas/plugin/rasterizing/point.png");
+		info.setHref("org/geomajas/plugin/rasterizing/images/point.png");
 		return info;
 	}
 

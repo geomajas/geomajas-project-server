@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.plugin.rasterizing;
+package org.geomajas.plugin.rasterizing.api;
 
 import org.geomajas.configuration.NamedStyleInfo;
 import org.geomajas.global.Api;

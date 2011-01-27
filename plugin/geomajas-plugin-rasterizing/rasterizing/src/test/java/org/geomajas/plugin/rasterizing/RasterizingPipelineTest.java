@@ -24,6 +24,7 @@ import org.geomajas.layer.tile.TileCode;
 import org.geomajas.layer.tile.TileMetadata;
 import org.geomajas.plugin.caching.service.CacheCategory;
 import org.geomajas.plugin.caching.service.CacheManagerService;
+import org.geomajas.plugin.rasterizing.mvc.RasterizingController;
 import org.geomajas.security.SecurityManager;
 import org.geomajas.service.TestRecorder;
 import org.junit.Assert;

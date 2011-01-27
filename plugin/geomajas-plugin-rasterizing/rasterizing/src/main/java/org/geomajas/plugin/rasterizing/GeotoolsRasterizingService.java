@@ -11,21 +11,32 @@
 
 package org.geomajas.plugin.rasterizing;
 
-import com.vividsolutions.jts.geom.Coordinate;
-import com.vividsolutions.jts.geom.Envelope;
-import com.vividsolutions.jts.geom.Geometry;
-import com.vividsolutions.jts.geom.GeometryFactory;
-import com.vividsolutions.jts.geom.Point;
-import org.geomajas.configuration.CircleInfo;
-import org.geomajas.configuration.FeatureStyleInfo;
+import java.awt.AlphaComposite;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.font.FontRenderContext;
+import java.awt.font.GlyphVector;
+import java.awt.font.TextLayout;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.OutputStream;
+
+import javax.imageio.ImageIO;
+
 import org.geomajas.configuration.NamedStyleInfo;
-import org.geomajas.configuration.RectInfo;
 import org.geomajas.global.Api;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.InternalFeature;
 import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.layer.tile.TileMetadata;
+import org.geomajas.plugin.rasterizing.api.LabelStyle;
+import org.geomajas.plugin.rasterizing.api.RasterizingService;
+import org.geomajas.plugin.rasterizing.api.Style2dFactoryService;
 import org.geomajas.service.GeoService;
 import org.geotools.factory.Hints;
 import org.geotools.geometry.jts.Decimator;
@@ -43,20 +54,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import javax.imageio.ImageIO;
-import java.awt.AlphaComposite;
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.Graphics2D;
-import java.awt.RenderingHints;
-import java.awt.font.FontRenderContext;
-import java.awt.font.GlyphVector;
-import java.awt.font.TextLayout;
-import java.awt.geom.AffineTransform;
-import java.awt.geom.Rectangle2D;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.io.OutputStream;
+import com.vividsolutions.jts.geom.Coordinate;
+import com.vividsolutions.jts.geom.Envelope;
+import com.vividsolutions.jts.geom.Geometry;
+import com.vividsolutions.jts.geom.GeometryFactory;
+import com.vividsolutions.jts.geom.Point;
 
 /**
  * Service which rasterizes a vector tile based on the Geotools renderer.
@@ -76,13 +78,14 @@ public class GeotoolsRasterizingService implements RasterizingService {
 	private boolean transparent = true;
 	private RenderingHints renderingHints;
 
-	private String fontName = "Arial";
-	private int fontSize = 12;
 	private int labelBorderDistanceX = 3;
 	private int labelBorderDistanceY = 2;
 
 	@Autowired
 	private GeoService geoService;
+	
+	@Autowired
+	private Style2dFactoryService styleFactory;
 	
 	/**
 	 * Construct a Geotools rasterizing service with default settings.
@@ -122,25 +125,6 @@ public class GeotoolsRasterizingService implements RasterizingService {
 	}
 
 	/**
-	 * Configure font name for labels. Default is "Arial".
-	 *
-	 * @param fontName font name
-	 */
-	@Api
-	public void setFontName(String fontName) {
-		this.fontName = fontName;
-	}
-
-	/**
-	 * Configure default font size in pixels for labels, default is 12.
-	 *
-	 * @param fontSize font size for labels
-	 */
-	public void setFontSize(int fontSize) {
-		this.fontSize = fontSize;
-	}
-
-	/**
 	 * Set the horizontal blank space between the text and the label's borders.
 	 *
 	 * @param labelBorderDistanceX label border width
@@ -159,6 +143,17 @@ public class GeotoolsRasterizingService implements RasterizingService {
 	public void setLabelBorderDistanceY(int labelBorderDistanceY) {
 		this.labelBorderDistanceY = labelBorderDistanceY;
 	}
+
+	/**
+	 * Set the style factory service to be used.
+	 * 
+	 * @param styleFactory style factory
+	 */
+	@Api
+	public void setStyle2dFactoryService(Style2dFactoryService styleFactory) {
+		this.styleFactory = styleFactory;
+	}
+
 
 	/**
 	 * Rasterize the given tile (which contains the features).
@@ -187,7 +182,7 @@ public class GeotoolsRasterizingService implements RasterizingService {
 			}
 		}
 		if (metadata.isPaintLabels()) {
-			LabelStyle labelStyle = new LabelStyle(style.getLabelStyle());
+			LabelStyle labelStyle = styleFactory.createLabelStyle(style.getLabelStyle());
 			try {
 				labelStyle.setStrokeWidth(style.getLabelStyle().getBackgroundStyle().getStrokeWidth());
 			} catch (Exception e) {
@@ -254,7 +249,7 @@ public class GeotoolsRasterizingService implements RasterizingService {
 
 		try {
 			tp = transformer.transformPoint(p, f);
-			Font font = new Font(fontName, Font.PLAIN, fontSize);
+			Font font = style.getFont();
 
 			FontRenderContext frc = graphics.getFontRenderContext();
 			GlyphVector gv = font.createGlyphVector(frc, feature.getLabel());
@@ -323,12 +318,9 @@ public class GeotoolsRasterizingService implements RasterizingService {
 		// transformed from world to screen, and can be rendered using a
 		// painter:
 		Geometry geometry = feature.getGeometry();
-		if (geometry instanceof Point) {
-			geometry = convertPoint(feature.getStyleInfo(), (Point) geometry, metadata.getScale());
-		}
 		try {
 			LiteShape2 shape = new LiteShape2(geometry, transform, NULL_DECIMATOR, false, false);
-			Style2D style = Style2dFactory.createStyle(feature.getStyleInfo(), feature.getLayer().getLayerInfo()
+			Style2D style = styleFactory.createStyle(feature.getStyleInfo(), feature.getLayer().getLayerInfo()
 					.getLayerType());
 			painter.paint(graphics, shape, style, metadata.getScale());
 		} catch (TransformException e) {
@@ -337,29 +329,5 @@ public class GeotoolsRasterizingService implements RasterizingService {
 			log.error(e.getMessage(), e);
 		}
 	}
-
-	private Geometry convertPoint(FeatureStyleInfo style, Point point, double scale) {
-		if (style.getSymbol() != null) {
-			if (style.getSymbol().getRect() != null) {
-				RectInfo rect = style.getSymbol().getRect();
-				double w = (rect.getW() / 2) / scale;
-				double h = (rect.getH() / 2) / scale;
-				Coordinate c = point.getCoordinate();
-				Coordinate[] coords = new Coordinate[5];
-				coords[0] = new Coordinate(c.x - w, c.y - h);
-				coords[1] = new Coordinate(c.x + w, c.y - h);
-				coords[2] = new Coordinate(c.x + w, c.y + h);
-				coords[3] = new Coordinate(c.x - w, c.y + h);
-				coords[4] = coords[0];
-				return point.getFactory().createLinearRing(coords);
-			} else if (style.getSymbol().getCircle() != null) {
-				CircleInfo circle = style.getSymbol().getCircle();
-				double r = circle.getR() / scale;
-				return geoService.createCircle(point, r, 16);
-			}
-		}
-		return point;
-	}
-
-
+	
 }

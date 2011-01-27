@@ -29,6 +29,10 @@
       <listitem>
         <para>Configure the rasterizing service</para>
       </listitem>
+
+      <listitem>
+        <para>Configure the Style2DFactoryService</para>
+      </listitem>
     </itemizedlist></para>
 
   <section id="dependencies">
@@ -101,9 +105,9 @@
     <para>The moment at which rasterization takes place can be globally
     configured by adding the following to your configuration:</para>
 
-    <para><programlisting>&lt;bean name="plugin.rasterizing.rasterizingInfo" class="org.geomajas.plugin.rasterizing.RasterizingInfo"&gt;
+    <para><programlisting>&lt;bean name="plugin.rasterizing.api.rasterizingInfo" class="org.geomajas.plugin.rasterizing.api.RasterizingInfo"&gt;
   &lt;property name="rasterizingMoment"&gt;
-     &lt;util:constant static-field="org.geomajas.plugin.rasterizing.RasterizingMoment.TILE_REQUEST" /&gt;
+     &lt;util:constant static-field="org.geomajas.plugin.rasterizing.api.RasterizingMoment.TILE_REQUEST" /&gt;
   &lt;/property&gt;
 &lt;/bean&gt;</programlisting>The default value is
     <code>RasterizingMoment.TILE_REQUEST</code>, which means that
@@ -126,15 +130,7 @@
         <listitem>
           <para>renderingHints: this parameter defines an optional map of
           rendering hints (of class RenderingHints) that are used by the Java
-          Graphics2D class. Each hint consists of a key-value pair.</para>
-        </listitem>
-
-        <listitem>
-          <para>fontName: default font name to be used in labels</para>
-        </listitem>
-
-        <listitem>
-          <para>fontSize: default font size to be used in labels</para>
+          Graphics2D class. Each hint consists of a key-value pair</para>
         </listitem>
 
         <listitem>
@@ -146,16 +142,22 @@
           <para>labelBorderDistanceY: distance between label border and text
           (y-direction)</para>
         </listitem>
+
+        <listitem>
+          <para>style2DFactoryService: service that behaves as a factory for
+          turning configuration styles into geotools styles. This service can
+          be replaced by a custom service, e.g. to convert extensions of
+          current style configuration objects</para>
+        </listitem>
       </itemizedlist></para>
 
-    <para>A custom configuration might look like this:</para>
+    <para>A custom rasterizing service configuration might look like
+    this:</para>
 
     <para><programlisting>&lt;bean name="plugin.rasterizing.RasterizingService"
   class="org.geomajas.plugin.rasterizing.GeotoolsRasterizingService"&gt;
   &lt;property name="transparent" value="false" /&gt;
   &lt;property name="renderingHints" ref="renderingHints" /&gt;
-  &lt;property name="fontName" value="Courier" /&gt;
-  &lt;property name="fontSize" value="14" /&gt;
   &lt;property name="labelBorderDistanceX" value="4" /&gt;
   &lt;property name="labelBorderDistanceY" value="3" /&gt;
  &lt;/bean&gt;

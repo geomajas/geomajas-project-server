@@ -49,9 +49,9 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 
 	<!-- default security configuration - should be overwritten to make something accessible -->
 
-	<bean name="plugin.rasterizing.rasterizingInfo" class="org.geomajas.plugin.rasterizing.RasterizingInfo">
+	<bean name="plugin.rasterizing.rasterizingInfo" class="org.geomajas.plugin.rasterizing.api.RasterizingInfo">
 		<property name="rasterizingMoment">
-			<util:constant static-field="org.geomajas.plugin.rasterizing.RasterizingMoment.TILE_REQUEST" />
+			<util:constant static-field="org.geomajas.plugin.rasterizing.api.RasterizingMoment.TILE_REQUEST" />
 		</property>
 	</bean>
 
@@ -59,7 +59,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	<!-- define pipelines for actual rasterizing -->
 
 	<bean name="PIPELINE_RASTERIZING" class="org.geomajas.service.pipeline.PipelineInfo">
-		<property name="pipelineName"><util:constant static-field="org.geomajas.plugin.rasterizing.RasterizingPipelineCode.PIPELINE_RASTERIZING"/></property>
+		<property name="pipelineName"><util:constant static-field="org.geomajas.plugin.rasterizing.api.RasterizingPipelineCode.PIPELINE_RASTERIZING"/></property>
 		<property name="pipeline">
 			<list>
 				<bean class="org.geomajas.service.pipeline.PipelineHook">

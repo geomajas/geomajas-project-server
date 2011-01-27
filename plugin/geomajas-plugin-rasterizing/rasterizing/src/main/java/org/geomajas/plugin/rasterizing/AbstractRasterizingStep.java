@@ -11,6 +11,7 @@
 
 package org.geomajas.plugin.rasterizing;
 
+import org.geomajas.plugin.rasterizing.api.RasterizingContainer;
 import org.geomajas.service.pipeline.PipelineStep;
 
 /**

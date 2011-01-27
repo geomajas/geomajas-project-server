@@ -24,6 +24,6 @@
         http://www.springframework.org/schema/util
 		http://www.springframework.org/schema/util/spring-util-2.0.xsd">
 
-	<context:component-scan base-package="org.geomajas.plugin.rasterizing" />
+	<context:component-scan base-package="org.geomajas.plugin.rasterizing.mvc" />
 
 </beans>
