@@ -32,8 +32,6 @@ import org.springframework.util.ResourceUtils;
  */
 public final class DataStoreFactory {
 
-	private static final Logger LOG = LoggerFactory.getLogger(DataStoreFactory.class);
-
 	/**
 	 * Protect construction.
 	 */
@@ -68,10 +66,11 @@ public final class DataStoreFactory {
 			StringBuilder availableStr = new StringBuilder();
 			StringBuilder missingStr = new StringBuilder();
 			Iterator<DataStoreFactorySpi> all = DataStoreFinder.getAllDataStores();
+			Logger log = LoggerFactory.getLogger(DataStoreFactory.class);
 			while (all.hasNext()) {
 				DataStoreFactorySpi factory = all.next();
 				if (!factory.isAvailable()) {
-					LOG.warn("Datastore factory " + factory.getDisplayName() + "(" + factory.getDescription()
+					log.warn("Datastore factory " + factory.getDisplayName() + "(" + factory.getDescription()
 							+ ") is not available");
 					if (missingStr.length() != 0) {
 						missingStr.append(",");
