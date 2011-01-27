@@ -11,14 +11,18 @@
 package org.geomajas.layer.geotools;
 
 import java.io.IOException;
+import java.util.Iterator;
 import java.util.Map;
 
 import org.geomajas.layer.geotools.postgis.NonTypedPostgisFidMapperFactory;
 import org.geotools.data.DataStore;
+import org.geotools.data.DataStoreFactorySpi;
 import org.geotools.data.DataStoreFinder;
 import org.geotools.data.jdbc.JDBC1DataStore;
 import org.geotools.data.jdbc.JDBCDataStore;
 import org.geotools.data.postgis.PostgisDataStore;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.ResourceUtils;
 
 /**
@@ -27,6 +31,8 @@ import org.springframework.util.ResourceUtils;
  * @author Jan De Moerloose
  */
 public final class DataStoreFactory {
+
+	private static final Logger LOG = LoggerFactory.getLogger(DataStoreFactory.class);
 
 	/**
 	 * Protect construction.
@@ -59,10 +65,31 @@ public final class DataStoreFactory {
 		if (store instanceof JDBC1DataStore) {
 			store = new ExtendedDataStore((JDBC1DataStore) store);
 		} else if (store == null) {
+			StringBuilder availableStr = new StringBuilder();
+			StringBuilder missingStr = new StringBuilder();
+			Iterator<DataStoreFactorySpi> all = DataStoreFinder.getAllDataStores();
+			while (all.hasNext()) {
+				DataStoreFactorySpi factory = all.next();
+				if (!factory.isAvailable()) {
+					LOG.warn("Datastore factory " + factory.getDisplayName() + "(" + factory.getDescription()
+							+ ") is not available");
+					if (missingStr.length() != 0) {
+						missingStr.append(",");
+					}
+					missingStr.append(factory.getDisplayName());
+				} else {
+					if (availableStr.length() != 0) {
+						availableStr.append(",");
+					}
+					availableStr.append(factory.getDisplayName());
+				}
+			}
 			throw new IOException(
-					"No datastore found. Possible causes are missing provider or missing library for your datastore"
+					"No datastore found. Possible causes are missing factory or missing library for your datastore"
 							+ " (e.g. database driver).\nCheck the isAvailable() method of your"
-							+ " DataStoreFactory class to find out which libraries are needed.");
+							+ " DataStoreFactory class to find out which libraries are needed.\n"
+							+ "Unavailable factories : " + missingStr + "\n" + "Available factories : " + availableStr
+							+ "\n");
 		}
 		return store;
 	}
