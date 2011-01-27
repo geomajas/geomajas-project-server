@@ -65,22 +65,8 @@
 		<dependencies>
 			<dependency>
 				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-backend</artifactId>
-				<version>1.9.0-SNAPSHOT</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-face-gwt</artifactId>
-				<version>1.9.0-SNAPSHOT</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-dep</artifactId>
-				<version>1.10.38-SNAPSHOT</version>
+				<version>1.11.4</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -125,7 +111,7 @@
 			<version>1.8.0-SNAPSHOT</version>
 		</dependency> -->
 		<!-- @extract-end -->
-		<dependency>
+		<!--dependency>
 			<groupId>org.geomajas.plugin</groupId> 
 			<artifactId>geomajas-plugin-caching</artifactId>
 			<version>1.0.0-SNAPSHOT</version> 
@@ -134,7 +120,7 @@
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-plugin-rasterizing</artifactId> 
 			<version>1.0.0-SNAPSHOT</version>
-		</dependency>
+		</dependency-->
 		<!-- Extra Geomajas plugins -->
 		<!-- @extract-start StaticSecurityDependency, staticsecurity source plugin - including source -->
 		<dependency>
@@ -442,6 +428,7 @@
 
 		<!-- uncomment if you want to use Geomajas snapshots, comment for faster 
 			builds -->
+		<!--
 		<repository>
 			<id>Geomajas-latest</id>
 			<name>Geomajas snapshot repository</name>
@@ -450,6 +437,7 @@
 				<enabled>true</enabled>
 			</snapshots>
 		</repository>
+		-->
 	</repositories>
 	<pluginRepositories>
 		<pluginRepository>
