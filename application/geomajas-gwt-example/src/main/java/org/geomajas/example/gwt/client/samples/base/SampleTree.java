@@ -11,7 +11,6 @@
 
 package org.geomajas.example.gwt.client.samples.base;
 
-import org.geomajas.gwt.client.Geomajas;
 import org.geomajas.example.gwt.client.samples.SampleArray;
 import org.geomajas.example.gwt.client.samples.i18n.I18nProvider;
 
@@ -57,7 +56,7 @@ public class SampleTree extends TreeGrid {
 		tree.setData(SampleArray.getSampleArray());
 
 		setData(tree);
-		//tree.openAll(tree.getRoot());
+		// tree.openAll(tree.getRoot());
 		tree.openFolder(tree.getChildren(tree.getRoot())[2]);
 	}
 }
