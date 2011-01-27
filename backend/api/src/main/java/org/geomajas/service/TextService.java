@@ -23,6 +23,7 @@ import org.geomajas.global.Api;
  * environments.
  * 
  * @author Jan De Moerloose
+ * @since 1.9.0
  */
 @Api(allMethods = true)
 public interface TextService {
