@@ -33,7 +33,7 @@ public class TextServiceImpl implements TextService {
 		return font.getStringBounds(text, 0, text.length(), new FontRenderContext(new AffineTransform(), true, true));
 	}
 
-	private Font getFont(FontStyleInfo fontStyle) {
+	public Font getFont(FontStyleInfo fontStyle) {
 		int style = Font.PLAIN;
 		String styleStr = fontStyle.getStyle();
 		if (styleStr != null) {

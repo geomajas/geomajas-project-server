@@ -11,9 +11,11 @@
 
 package org.geomajas.service;
 
+import java.awt.Font;
 import java.awt.geom.Rectangle2D;
 
 import org.geomajas.configuration.FontStyleInfo;
+import org.geomajas.global.Api;
 
 /**
  * Utility functions for calculating text and font related parameters server-side. These parameters can of course be
@@ -22,6 +24,7 @@ import org.geomajas.configuration.FontStyleInfo;
  * 
  * @author Jan De Moerloose
  */
+@Api(allMethods = true)
 public interface TextService {
 
 	/**
@@ -32,4 +35,14 @@ public interface TextService {
 	 * @return dimension object containing the width and height
 	 */
 	Rectangle2D getStringBounds(String text, FontStyleInfo fontStyle);
+	
+	/**
+	 * Convert the specified font style to an AWT font.
+	 * 
+	 * @param fontStyle
+	 *            the font style
+	 * @return the AWT font
+	 */
+	Font getFont(FontStyleInfo fontStyle);
+
 }
