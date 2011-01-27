@@ -475,6 +475,8 @@ public class MapView {
 				fireEvent(false, null);
 			} else {
 				// find pan origin by rounding origin to 10000 x 10000 grid (to enable caching)
+				// pan origin is given in world space but the rounding is done in pixels,
+				// so convert to pixel, round, convert back to world
 				double x = Math.round(viewState.getX() * viewState.getScale() / 10000) * 10000 / viewState.getScale();
 				double y = Math.round(viewState.getY() * viewState.getScale() / 10000) * 10000 / viewState.getScale();
 				// set pan origin
