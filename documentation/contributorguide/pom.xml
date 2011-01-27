@@ -18,15 +18,15 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas.documentation</groupId>
 	<artifactId>docbook-contributorguide</artifactId>
-	<version>1.8.0-SNAPSHOT</version>
+	<version>1.8.0</version>
 	<packaging>jar</packaging>
 	<name>Contributor Guide</name>
 	<description>Contributor Guide</description>
 
 	<scm>
-		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/documentation/contributorguide</connection>
-		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/documentation/contributorguide</developerConnection>
-		<url>https://svn.geomajas.org/majas/trunk/documentation/contributorguide</url>
+		<connection>scm:svn:https://svn.geomajas.org/majas/tags/docbook-1.8.0/documentation/contributorguide</connection>
+		<developerConnection>scm:svn:https://svn.geomajas.org/majas/tags/docbook-1.8.0/documentation/contributorguide</developerConnection>
+		<url>https://svn.geomajas.org/majas/tags/docbook-1.8.0/documentation/contributorguide</url>
 	</scm>
 
 	<repositories>
