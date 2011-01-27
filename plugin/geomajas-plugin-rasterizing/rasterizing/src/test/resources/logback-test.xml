@@ -9,8 +9,9 @@
   ~ details, see LICENSE.txt in the project root.
   -->
 
-<configuration>
+<configuration debug="true">
 
+	<!--
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
             <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
@@ -18,12 +19,16 @@
     </appender>
 
     <logger name="org.geomajas">
-        <level value="INFO"/>
+        <level value="DEBUG"/>
     </logger>
-
+	
     <root>
         <level value="INFO"/>
         <appender-ref ref="CONSOLE"/>
+    </root>
+	-->
+    <root>
+        <level value="OFF"/>
     </root>
 
 </configuration>

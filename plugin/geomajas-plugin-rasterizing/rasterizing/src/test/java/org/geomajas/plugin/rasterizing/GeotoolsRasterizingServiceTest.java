@@ -2,7 +2,6 @@ package org.geomajas.plugin.rasterizing;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -123,6 +122,8 @@ public class GeotoolsRasterizingServiceTest {
 
 	@Test
 	public void testMultiLineLabelStyle() throws GeomajasException, IOException {
+		// bundled font for hudson testing
+		getMultiLineLabelStyle().getFontStyle().setFamily("Lucida");
 		// label on/off
 		log.info("start");
 		checkMultiLine("multiline_black_1_labeled.png", true, true);
@@ -131,10 +132,10 @@ public class GeotoolsRasterizingServiceTest {
 		getMultiLineLabelStyle().getFontStyle().setColor("#DA70D6");
 		checkMultiLine("multiline_black_1_labeled_font_orchid.png", true, true);
 		getMultiLineLabelStyle().getFontStyle().setColor("#000000");
-		// family
-		getMultiLineLabelStyle().getFontStyle().setFamily("courier");
-		checkMultiLine("multiline_black_1_labeled_font_courier.png", true, true);
-		getMultiLineLabelStyle().getFontStyle().setFamily("Verdana");
+//		// family
+//		getMultiLineLabelStyle().getFontStyle().setFamily("courier");
+//		checkMultiLine("multiline_black_1_labeled_font_courier.png", true, true);
+//		getMultiLineLabelStyle().getFontStyle().setFamily("Verdana");
 		// opacity
 		getMultiLineLabelStyle().getFontStyle().setOpacity(0.5f);
 		checkMultiLine("multiline_black_1_labeled_font_semitransparent.png", true, true);
@@ -174,16 +175,18 @@ public class GeotoolsRasterizingServiceTest {
 
 	@Test
 	public void testPointLabelStyle() throws GeomajasException, IOException {
+		// bundled font for hudson testing
+		getPointLabelStyle().getFontStyle().setFamily("Lucida");
 		// label on/off
 		checkPoint("point_black_1_labeled.png", true, true);
 		// color
 		getPointLabelStyle().getFontStyle().setColor("#DA70D6");
 		checkPoint("point_black_1_labeled_font_orchid.png", true, true);
 		getPointLabelStyle().getFontStyle().setColor("#000000");
-		// family
-		getPointLabelStyle().getFontStyle().setFamily("courier");
-		checkPoint("point_black_1_labeled_font_courier.png", true, true);
-		getPointLabelStyle().getFontStyle().setFamily("Verdana");
+//		// family
+//		getPointLabelStyle().getFontStyle().setFamily("courier");
+//		checkPoint("point_black_1_labeled_font_courier.png", true, true);
+//		getPointLabelStyle().getFontStyle().setFamily("Verdana");
 		// opacity
 		getPointLabelStyle().getFontStyle().setOpacity(0.5f);
 		checkPoint("point_black_1_labeled_font_semitransparent.png", true, true);
@@ -224,6 +227,8 @@ public class GeotoolsRasterizingServiceTest {
 
 	@Test
 	public void testMultiPolygonLabelStyle() throws GeomajasException, IOException {
+		// bundled font for hudson testing
+		getPointLabelStyle().getFontStyle().setFamily("Lucida");
 		// label on/off
 		checkMultiPolygon("multipolygon_black_1_labeled.png", true, true);
 		// color
@@ -231,9 +236,9 @@ public class GeotoolsRasterizingServiceTest {
 		checkMultiPolygon("multipolygon_black_1_labeled_font_orchid.png", true, true);
 		getMultiPolygonLabelStyle().getFontStyle().setColor("#000000");
 		// family
-		getMultiPolygonLabelStyle().getFontStyle().setFamily("courier");
-		checkMultiPolygon("multipolygon_black_1_labeled_font_courier.png", true, true);
-		getMultiPolygonLabelStyle().getFontStyle().setFamily("Verdana");
+//		getMultiPolygonLabelStyle().getFontStyle().setFamily("courier");
+//		checkMultiPolygon("multipolygon_black_1_labeled_font_courier.png", true, true);
+//		getMultiPolygonLabelStyle().getFontStyle().setFamily("Verdana");
 		// opacity
 		getMultiPolygonLabelStyle().getFontStyle().setOpacity(0.5f);
 		checkMultiPolygon("multipolygon_black_1_labeled_font_semitransparent.png", true, true);
