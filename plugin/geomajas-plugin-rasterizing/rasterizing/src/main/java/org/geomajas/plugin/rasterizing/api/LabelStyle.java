@@ -25,6 +25,8 @@ import org.geotools.renderer.style.Style2D;
  * </p>
  * 
  * @author Pieter De Graef
+ * @author Jan De Moerloose
+ * @since 1.0.0
  */
 @Api(allMethods = true)
 public class LabelStyle extends Style2D {
