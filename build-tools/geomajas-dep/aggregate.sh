@@ -160,6 +160,12 @@ include "org.geomajas.plugin" "geocoder-documentation" "1.1.0-SNAPSHOT" \
     "graduated" "geocoder.pdf" \
     "org.geomajas.plugin" "geomajas-plugin-geocoder" "1.0.0"
 
+include "org.geomajas.plugin" "rasterizing-documentation" "1.0.0-SNAPSHOT" \
+    "Rasterizing plug-in" \
+    "Allows tiles to be rasterized server-side." \
+    "incubating" "master.pdf" \
+    "" "" ""
+
 
 # contributors guide
 
