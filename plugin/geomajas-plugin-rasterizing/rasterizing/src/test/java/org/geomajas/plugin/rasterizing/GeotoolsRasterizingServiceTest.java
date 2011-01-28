@@ -122,8 +122,6 @@ public class GeotoolsRasterizingServiceTest {
 
 	@Test
 	public void testMultiLineLabelStyle() throws GeomajasException, IOException {
-		// bundled font for hudson testing
-		getMultiLineLabelStyle().getFontStyle().setFamily("Lucida");
 		// label on/off
 		log.info("start");
 		checkMultiLine("multiline_black_1_labeled.png", true, true);
@@ -175,8 +173,6 @@ public class GeotoolsRasterizingServiceTest {
 
 	@Test
 	public void testPointLabelStyle() throws GeomajasException, IOException {
-		// bundled font for hudson testing
-		getPointLabelStyle().getFontStyle().setFamily("Lucida");
 		// label on/off
 		checkPoint("point_black_1_labeled.png", true, true);
 		// color
@@ -227,8 +223,6 @@ public class GeotoolsRasterizingServiceTest {
 
 	@Test
 	public void testMultiPolygonLabelStyle() throws GeomajasException, IOException {
-		// bundled font for hudson testing
-		getPointLabelStyle().getFontStyle().setFamily("Lucida");
 		// label on/off
 		checkMultiPolygon("multipolygon_black_1_labeled.png", true, true);
 		// color
