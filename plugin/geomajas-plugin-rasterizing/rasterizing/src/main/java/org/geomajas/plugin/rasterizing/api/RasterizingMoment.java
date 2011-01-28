@@ -17,6 +17,8 @@ import org.geomajas.global.Api;
  * Possible rasterizing behaviour, when should the tile be initially rasterized.
  *
  * @author Joachim Van der Auwera
+ * @author Jan De Moerloose
+ * @since 1.0.0
  */
 @Api(allMethods = true)
 public enum RasterizingMoment {

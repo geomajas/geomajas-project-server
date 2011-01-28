@@ -24,6 +24,8 @@ import org.geotools.renderer.style.Style2D;
  * </p>
  *
  * @author Jan De Moerloose
+ * @author Jan De Moerloose
+ * @since 1.0.0
  */
 @Api(allMethods = true)
 public interface Style2dFactoryService {
