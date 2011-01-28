@@ -9,7 +9,7 @@
  * details, see LICENSE.txt in the project root.
  */
 
-package org.geomajas.gwt.samples;
+package org.geomajas.example.gwt;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
