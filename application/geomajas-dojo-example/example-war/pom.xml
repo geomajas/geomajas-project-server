@@ -264,7 +264,7 @@
 			<id>integration-tests-on-hudson</id>
 			<activation>
 				<property>
-					<name>hudson</name>
+					<name>skipSelenium</name>
 				</property>
 			</activation>
 			<build>

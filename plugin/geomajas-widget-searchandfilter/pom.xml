@@ -112,6 +112,6 @@
 	</profiles>
 
 	<properties>
-		<geomajas-widget-searchandfilter-backend-version>1.8.0-SNAPSHOT</geomajas-widget-searchandfilter-backend-version>
+		<geomajas-widget-searchandfilter-backend-version>1.8.0</geomajas-widget-searchandfilter-backend-version>
 	</properties>	
 </project>
