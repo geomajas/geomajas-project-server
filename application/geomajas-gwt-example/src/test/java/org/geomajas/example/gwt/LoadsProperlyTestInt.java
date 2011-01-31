@@ -32,7 +32,7 @@ public class LoadsProperlyTestInt extends SeleneseTestCase {
 		selenium.open("/");
 		selenium.waitForCondition(
    			"selenium.browserbot.getCurrentWindow().document.getElementById('isc_1E')",
-   			"30000"
+   			"90000"
 			);
 	}
 }
