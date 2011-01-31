@@ -89,12 +89,12 @@ public class Application implements EntryPoint {
 		topBar.addMember(icon);
 		topBar.addSpacer(6);
 
-		Label title = new Label(messages.applicationTitle("hello world"));
+		Label title = new Label(messages.applicationTitle("Feature info"));
 		title.setStyleName("appTitle");
 		title.setWidth(300);
 		topBar.addMember(title);
 		topBar.addFill();
-		topBar.addMember(new LocaleSelect("English"));
+		topBar.addMember(new LocaleSelect("Nederlands"));
 
 		mainLayout.addMember(topBar);
 

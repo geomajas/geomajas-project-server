@@ -13,10 +13,12 @@
 <module>
 	<inherits name="com.smartgwt.tools.SmartGwtTools"/>
     <inherits name="org.geomajas.gwt.GeomajasClient"/>
+	<!-- Inherit the GWT widget (plugin) module for the featureinfo widget . -->
+	<inherits name="org.geomajas.widget.featureinfo.Featureinfo"/>
 
-	<!-- add required languages
+	<!-- add required languages -->
 	<extend-property name="locale" values="nl"/>
-	-->
+
 
 	<!-- set target browser to compile for, use this to limit to the browser used for testing -->
 	<!-- where value = "ie6/opera/gecko1_8/safari/gecko" , "gecko1_8" is FireFox 3 -->
