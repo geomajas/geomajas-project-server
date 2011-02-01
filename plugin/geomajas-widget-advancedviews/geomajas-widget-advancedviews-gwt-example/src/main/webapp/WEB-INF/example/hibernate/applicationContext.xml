@@ -37,7 +37,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 	<bean id="appSessionFactory" class="org.springframework.orm.hibernate3.LocalSessionFactoryBean">
 		<property name="dataSource" ref="appDataSource" />
 		<property name="configLocation">
-			<value>classpath:/org/geomajas/widget/advancedviews/gwt/example/hibernate/cfg/hibernate.cfg.xml
+			<value>classpath:org/geomajas/widget/advancedviews/gwt/example/hibernate/cfg/hibernate.cfg.xml
 			</value>
 		</property>
 		<property name="configurationClass">
