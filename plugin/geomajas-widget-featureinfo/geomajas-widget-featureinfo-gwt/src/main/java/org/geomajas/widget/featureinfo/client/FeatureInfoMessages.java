@@ -25,6 +25,7 @@ public interface FeatureInfoMessages extends Messages {
 	String nearbyFeaturesWindowTitle();
 	String nearbyFeaturesListSectionTitle();
 	String nearbyFeaturesDetailsSectionTitle();
+	String nearbyFeaturesListTooltip();
 }
 
 	

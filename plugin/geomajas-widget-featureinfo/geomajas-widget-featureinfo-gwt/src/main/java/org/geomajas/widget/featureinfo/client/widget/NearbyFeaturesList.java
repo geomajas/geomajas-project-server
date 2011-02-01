@@ -20,7 +20,9 @@ import org.geomajas.gwt.client.map.MapModel;
 import org.geomajas.gwt.client.map.feature.Feature;
 import org.geomajas.gwt.client.map.layer.VectorLayer;
 import org.geomajas.gwt.client.widget.MapWidget;
+import org.geomajas.widget.featureinfo.client.FeatureInfoMessages;
 
+import com.google.gwt.core.client.GWT;
 import com.smartgwt.client.types.GroupStartOpen;
 import com.smartgwt.client.widgets.Canvas;
 import com.smartgwt.client.widgets.grid.ListGrid;
@@ -31,11 +33,10 @@ import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
 
 /**
  * <p>
- * Implements http://support.dfc.be/jira/browse/VIERGEO-17 and http://jira.geomajas.org/browse/FIT-2
- *
  * The <code>NearbyFeaturesList</code> is a class providing a floating window that shows a list of 
- * all the features 
- * results in a call of the provided {@link org.geomajas.widget.featureinfo.client.widget.FeatClickHandler}.
+ * all the features (possibly from different layers) provided to it. 
+ * Clicking on a feature in the list, results in a call of the provided 
+ * {@link org.geomajas.widget.featureinfo.client.widget.FeatClickHandler}.
  * </p>
  *
  * @author An Buyle
@@ -44,6 +45,8 @@ import com.smartgwt.client.widgets.grid.events.RecordClickHandler;
 @Api
 public class NearbyFeaturesList {
 
+	private FeatureInfoMessages messages = GWT.create(FeatureInfoMessages.class);
+	
 	private boolean initialized; /* = false */
 
 	/**
@@ -58,7 +61,7 @@ public class NearbyFeaturesList {
 
 	private Map<String/* serverLayerId+"."+featID */, Feature> features = new HashMap<String, Feature>();
 
-	private FeatClickHandler featClickHandler;
+	private FeatClickHandler featClickHandler; /* external handler, called when clicking on a feature in the list */
 
 	// -------------------------------------------------------------------------
 	// Constructor:
@@ -67,6 +70,9 @@ public class NearbyFeaturesList {
 	/**
 	 * Create an instance.
 	 *
+	 * @param mapWidget
+	 * @param featureMap
+	 * 					The features to be listed, grouped per serverLayerId
 	 * @param featClickHandler
 	 * @return
 	 * @since 1.8.0
@@ -87,26 +93,17 @@ public class NearbyFeaturesList {
 	// Public methods:
 	// -------------------------------------------------------------------------
 
-
+	/**
+	 * Get the Canvas instance for the feature grid list.
+	 *
+	 * @return Canvas
+	 * @since 1.8.0
+	 */
+	@Api
 	public Canvas getCanvas() {
 		return listGrid;
 	}
 
-
-	public void clearMembers() {
-		vectorLayers.clear();
-		features.clear();
-		this.listGrid.destroy();
-		this.listGrid = null;
-		createListGrid();
-	}
-
-	public void destroy() {
-		if (initialized) {
-			clearMembers();
-			initialized = false;
-		}
-	}
 
 	// -------------------------------------------------------------------------
 	// Private methods:
@@ -115,10 +112,12 @@ public class NearbyFeaturesList {
 	 * Builds up the list showing the features grouped by client layerId
 	 *
 	 * @param mapModel
-	 *            The mapModel containing the layerTree
+	 *          The mapModel 
+	 * @param featureMap
+	 * 			The features to be listed, grouped per serverLayerId            
 	 */
 	private void buildList(MapModel mapModel, Map<String, List<org.geomajas.layer.feature.Feature>> featureMap) {
-		listGrid.setTitle("Klik op feature voor zijn details"); /* TODO I18N */
+		listGrid.setTitle(messages.nearbyFeaturesListTooltip());
 		listGrid.setShowEmptyMessage(true);
 		listGrid.setWidth100();
 		listGrid.setHeight100();
@@ -126,20 +125,13 @@ public class NearbyFeaturesList {
 		listGrid.setShowAllRecords(true);
 		// listGrid.setAutoFitMaxRecords(20); // Not needed
 		// listGrid.setAutoFitData(Autofit.HORIZONTAL); // Not OK, expands too much so that vertical scroll bar can
-		// become invisible without hor. scrolling
+														// become invisible without hor. scrolling
 
 		ListGridField labelField = new ListGridField("label");
 		ListGridField featIdField = new ListGridField("featureId");
 		ListGridField layerField = new ListGridField("layerId");
 
 		listGrid.setGroupByField("layerId");
-
-		// String styleGroupByNode = listGrid.getGroupNodeStyle(); // "groupNode"
-		// listGrid.setGroupNodeStyle("featureListGroupNode");
-		// listGrid.setGroupLeadingIndent(10); /* Default number of pixels by which to indent all groups. Default=1 */
-		// listGrid.setGroupIndentSize(40); /* No effect here: Default number of pixels by which to indent subgroups
-		// relative to parent group Default=20 */
-		// listGrid.setBaseStyle("featureListNode");
 
 		listGrid.setGroupStartOpen(GroupStartOpen.ALL);
 		listGrid.setFields(/* dummyIndentField, */labelField, layerField, featIdField);
@@ -208,11 +200,11 @@ public class NearbyFeaturesList {
 	}
 
 	/**
-	 * Adds a new feature to the list. A {@link VectorLayer} must have been set first, and the feature must belong to
-	 * that VectorLayer.
+	 * Adds a new feature to the grid list. A {@link VectorLayer} must have been set first, and 
+	 * the feature must belong to that VectorLayer.
 	 *
 	 * @param feature
-	 *            The feature to be added to the list.
+	 *            The feature to be added to the grid list.
 	 * @return Returns true in case of success, and false if the feature is null
 	 *         or if the feature does not belong to the correct layer or if the layer has not yet been set.
 	 */
@@ -241,13 +233,26 @@ public class NearbyFeaturesList {
 	 * Build the entire widget.
 	 *
 	 * @param featureMap
+	 * @param featureMap
+	 * 			The features to be listed, grouped per serverLayerId     
 	 */
 	private void buildWidget(Map<String, List<org.geomajas.layer.feature.Feature>> featureMap) {
 
-		destroy();
+		if (initialized) {
+			clearMembers();
+			initialized = false;
+		}
 		buildList(mapModel, featureMap);
 		listGrid.markForRedraw();
 		initialized = true;
+	}
+	
+	private void clearMembers() {
+		vectorLayers.clear();
+		features.clear();
+		this.listGrid.destroy();
+		this.listGrid = null;
+		createListGrid();
 	}
 
 }

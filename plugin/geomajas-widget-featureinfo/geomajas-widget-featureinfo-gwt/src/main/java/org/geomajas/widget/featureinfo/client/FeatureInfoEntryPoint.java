@@ -17,7 +17,7 @@ import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.featureinfo.client.action.toolbar.NearbyFeaturesModalAction;
 
 import com.google.gwt.core.client.EntryPoint;
-import com.smartgwt.client.util.SC;
+//import com.smartgwt.client.util.SC;
 
 /**
  * Initializes the featureInfo plugin.
