@@ -102,6 +102,7 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 						<ref bean="SelectionMode" />
 						<!-- <ref bean="FeatureInfoMode" />  -->
 						<ref bean="NearbyFeaturesMode" />
+						<ref bean="NearbyFeaturesSepDetailsMode" />
 					</list>
 				</property>
 			</bean>
@@ -184,6 +185,18 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 				<bean class="org.geomajas.configuration.Parameter">
 					<property name="name" value="pixelTolerance" />
 					<property name="value" value="10" />
+				</bean>
+			</list>
+		</property>
+	
+	</bean>
+	
+	<bean name="NearbyFeaturesSepDetailsMode" class="org.geomajas.configuration.client.ClientToolInfo">
+		<property name="parameters">
+			<list>
+				<bean class="org.geomajas.configuration.Parameter">
+					<property name="name" value="pixelTolerance" />
+					<property name="value" value="50" />
 				</bean>
 			</list>
 		</property>

@@ -46,19 +46,20 @@ import com.smartgwt.client.widgets.Window;
 import com.smartgwt.client.widgets.layout.SectionStack;
 import com.smartgwt.client.widgets.layout.SectionStackSection;
 
-
 /**
- * Shows information of the  features (per visible vector layer) near the position where the user 
- * clicked on the map. First a list of all the appropriate features is shown in a floating window.
- * Clicking on a feature of the list shows its attributes in a feature attribute 
- * window under the list window.
- * As a starting point for this class the org.geomajas.gwt.client.controller.FeatureInfoController was used.
- *
+ * Shows information of the features (per visible vector layer) near the position where the user clicked on the map.
+ * First a list of all the appropriate features is shown in a floating window. Clicking on a feature of the list shows
+ * its attributes in a feature attribute window under the list window. As a starting point for this class the
+ * org.geomajas.gwt.client.controller.FeatureInfoController was used.
+ * 
  * @author An Buyle
  */
 public class FeatureInfoAllLayersController extends AbstractGraphicsController {
 
 	private FeatureInfoMessages messages = GWT.create(FeatureInfoMessages.class);
+
+	private boolean useSepDetailsWindow;
+	
 	/** Number of pixels that describes the tolerance allowed when trying to select features. */
 	private int pixelTolerance;
 
@@ -66,24 +67,36 @@ public class FeatureInfoAllLayersController extends AbstractGraphicsController {
 
 	private Window window; /* top window for this widget */
 
-	public FeatureInfoAllLayersController(MapWidget mapWidget, int pixelTolerance) {
+	private FeatureAttributeCanvas featureAttributeCanvas;
+
+	private SectionStackSection detailsSection;
+
+	public FeatureInfoAllLayersController(MapWidget mapWidget, int pixelTolerance, boolean useSepDetailsWindow) {
 		super(mapWidget);
 		this.pixelTolerance = pixelTolerance;
+		this.useSepDetailsWindow = useSepDetailsWindow;
 	}
 
 	public int getPixelTolerance() {
 		return pixelTolerance;
 	}
 
-	
 	public void setPixelTolerance(int pixelTolerance) {
 		this.pixelTolerance = pixelTolerance;
 	}
+
+	public boolean isUseSepDetailsWindow() {
+		return useSepDetailsWindow;
+	}
+
 	
+	public void setUseSepDetailsWindow(boolean useSepDetailsWindow) {
+		this.useSepDetailsWindow = useSepDetailsWindow;
+	}
+
 	/**
 	 * On mouse up, execute the search by location, and display a
-	 * {@link org.geomajas.widget.featureinfo.client.widget.NearbyFeaturesList} 
-	 * if features are found.
+	 * {@link org.geomajas.widget.featureinfo.client.widget.NearbyFeaturesList} if features are found.
 	 */
 	public void onMouseUp(MouseUpEvent event) {
 		Coordinate worldPosition = getWorldPosition(event);
@@ -115,29 +128,42 @@ public class FeatureInfoAllLayersController extends AbstractGraphicsController {
 						mapWidget.removeChild(window);
 					}
 					window = new Window();
+					FeatClickHandler featClickHandler = null;
 
-					final FeatureAttributeCanvas featureAttributeCanvas = new FeatureAttributeCanvas(null/* feature */,
-							false/* noedit */, mapWidget.getHeight() / 2);
+					if (!useSepDetailsWindow) {
+						featureAttributeCanvas = new FeatureAttributeCanvas(null/* feature */, false/* noedit */,
+								mapWidget.getHeight() / 2);
 
-					final SectionStackSection detailsSection = new SectionStackSection(
-								messages.nearbyFeaturesDetailsSectionTitle());
-					
-					/* handler for when a feature in the feature list is clicked-on */
-					FeatClickHandler featClickHandler = new FeatClickHandler() {
+						detailsSection = new SectionStackSection(messages.nearbyFeaturesDetailsSectionTitle());
+						/* handler for when a feature in the feature list is clicked-on */
+						featClickHandler = new FeatClickHandler() {
 
-						public void onClick(Feature feat) {
-							detailsSection.setTitle(I18nProvider.getAttribute()
-									.getAttributeWindowTitle(feat.getLabel()));
-							featureAttributeCanvas.setFeature(feat, mapWidget.getHeight() / 2);
-							detailsSection.setExpanded(true);
-						}
-					};
+							public void onClick(Feature feat) {
+								detailsSection.setTitle(I18nProvider.getAttribute().getAttributeWindowTitle(
+										feat.getLabel()));
+								featureAttributeCanvas.setFeature(feat, mapWidget.getHeight() / 2);
+								detailsSection.setExpanded(true);
+							}
+						};
+					} else {
+						featClickHandler = new FeatClickHandler() {
 
+							public void onClick(Feature feat) {
+								createSepDetailsWindow(feat);
+							}
+
+						};
+
+					}
 					nearbyFeaturesList = new NearbyFeaturesList(mapWidget, featureMap, featClickHandler);
 
 					window.setTitle(messages.nearbyFeaturesWindowTitle());
 					window.setWidth("300px");
-					window.setHeight("420px");
+					if (!useSepDetailsWindow) {
+						window.setHeight("420px");
+					} else {
+						window.setHeight("320px");
+					}
 					window.setMaxHeight(mapWidget.getHeight() - 10);
 					// window.setAutoHeight();
 					// window.setOverflow(Overflow.VISIBLE);
@@ -146,33 +172,37 @@ public class FeatureInfoAllLayersController extends AbstractGraphicsController {
 					window.setCanDragReposition(true);
 					window.setCanDragResize(true);
 
-					SectionStack featureInfoStack = new SectionStack();
-					featureInfoStack.setVisibilityMode(VisibilityMode.MULTIPLE);
-					featureInfoStack.setWidth100();
-					featureInfoStack.setHeight100();
-					// featureInfoStack.setAutoHeight();
-					featureInfoStack.setOverflow(Overflow.VISIBLE);
+					if (!useSepDetailsWindow) {
+						SectionStack featureInfoStack = new SectionStack();
+						featureInfoStack.setVisibilityMode(VisibilityMode.MULTIPLE);
+						featureInfoStack.setWidth100();
+						featureInfoStack.setHeight100();
+						// featureInfoStack.setAutoHeight();
+						featureInfoStack.setOverflow(Overflow.VISIBLE);
 
-					SectionStackSection listSection = new SectionStackSection(
-											messages.nearbyFeaturesListSectionTitle());
-					listSection.setExpanded(true);
+						SectionStackSection listSection = new SectionStackSection(messages
+								.nearbyFeaturesListSectionTitle());
+						listSection.setExpanded(true);
 
-					listSection.addItem(nearbyFeaturesList.getCanvas()); /*
+						listSection.addItem(nearbyFeaturesList.getCanvas()); /*
 																			 * do NOT use addChild because then the
 																			 * layout of window is lost (window title
 																			 * and close button)
 																			 */
 
-					featureInfoStack.addSection(listSection);
+						featureInfoStack.addSection(listSection);
 
-					detailsSection.setExpanded(false); /* initially minimized view */
-					// featureInfoStack.setOverflow(Overflow.AUTO);
+						detailsSection.setExpanded(false); /* initially minimized view */
+						// featureInfoStack.setOverflow(Overflow.AUTO);
 
-					detailsSection.addItem(featureAttributeCanvas); // initially the 
-																	// featureAttributeCanvas is empty
-					featureInfoStack.addSection(detailsSection);
+						detailsSection.addItem(featureAttributeCanvas); // initially the
+																		// featureAttributeCanvas is empty
+						featureInfoStack.addSection(detailsSection);
 
-					window.addItem(featureInfoStack);
+						window.addItem(featureInfoStack);
+					} else {
+						window.addItem(nearbyFeaturesList.getCanvas());
+					}
 					mapWidget.addChild(window);
 					window.markForRedraw();
 					mapWidget.redraw();
@@ -180,7 +210,7 @@ public class FeatureInfoAllLayersController extends AbstractGraphicsController {
 			}
 		});
 	}
-	
+
 	// -------------------------------------------------------------------------
 	// Private methods:
 	// -------------------------------------------------------------------------
@@ -201,4 +231,52 @@ public class FeatureInfoAllLayersController extends AbstractGraphicsController {
 		Coordinate c2 = transformer.viewToWorld(new Coordinate(pixelTolerance, 0));
 		return Mathlib.distance(c1, c2);
 	}
+
+	private void createSepDetailsWindow(Feature feat) {
+		FeatureAttributeCanvas featureAttributeCanvas = new FeatureAttributeCanvas(feat, false/* noedit */,
+				mapWidget.getHeight() / 2);
+
+		Window detailWindow = new Window();
+		detailWindow.setTitle(I18nProvider.getAttribute().getAttributeWindowTitle(feat.getLabel()));
+		detailWindow.addItem(featureAttributeCanvas);
+
+		detailWindow.setWidth("300px");
+		// detailWindow.setHeight("350px");
+		int heightDetailWindow = 300;
+		if (feat.getAttributes().size() <= 4) {
+			detailWindow.setHeight("300px");
+			heightDetailWindow = 300;
+		} else {
+			detailWindow.setHeight("350px");
+			heightDetailWindow = 350;
+		}
+
+		detailWindow.setMaxHeight(mapWidget.getHeight() - 10);
+		// detailWindow.setAutoHeight();
+		// detailWindow.setOverflow(Overflow.VISIBLE);
+		// Check if it's OK to put the detail window under the feature list
+		// TODO: organize detail windows (now they will overlap because they all have the same left-top coordinate
+		int absoluteTop = window.getAbsoluteTop() + window.getHeight();
+		int absoluteLeft = mapWidget.getAbsoluteLeft() + 10;
+
+		try {
+			heightDetailWindow = detailWindow.getHeight();
+		} catch (Exception e) {
+			// Do nothing
+		}
+		if (absoluteTop + heightDetailWindow > mapWidget.getAbsoluteTop() + mapWidget.getHeight()) {
+			absoluteTop = window.getAbsoluteTop();
+			absoluteLeft = mapWidget.getAbsoluteLeft() + (window.getWidth() * 2) / 3;
+		}
+
+		detailWindow.setPageTop(absoluteTop);
+		detailWindow.setPageLeft(absoluteLeft);
+		detailWindow.setCanDragReposition(true);
+		detailWindow.setCanDragResize(true);
+
+		mapWidget.addChild(detailWindow);
+		detailWindow.markForRedraw();
+		mapWidget.redraw();
+	}
+
 }

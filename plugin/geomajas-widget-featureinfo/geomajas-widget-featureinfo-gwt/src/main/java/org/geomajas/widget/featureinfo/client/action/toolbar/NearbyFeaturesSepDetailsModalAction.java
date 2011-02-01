@@ -21,11 +21,11 @@ import com.smartgwt.client.widgets.events.ClickEvent;
 
 /**
  * Tool which shows a list of nearby features. By clicking on a feature in the list
- * details of that feature will be shown
+ * details of that feature will be shown in a separate window
  *
  * @author An Buyle
  */
-public class NearbyFeaturesModalAction extends ToolbarModalAction  implements ConfigurableAction {
+public class NearbyFeaturesSepDetailsModalAction extends ToolbarModalAction  implements ConfigurableAction {
 
 	private MapWidget mapWidget;
 
@@ -37,11 +37,12 @@ public class NearbyFeaturesModalAction extends ToolbarModalAction  implements Co
 	
 	// Constructor:
 
-	public NearbyFeaturesModalAction(MapWidget mapWidget) {
+	public NearbyFeaturesSepDetailsModalAction(MapWidget mapWidget) {
 		super("[ISOMORPHIC]/geomajas/osgeo/info.png"/* TODO: icon*/, null);
 		setTooltip(messages.nearbyFeaturesModalActionTooltip());
 		this.mapWidget = mapWidget;
-		controller = new FeatureInfoAllLayersController(mapWidget, pixelTolerance, false);
+		controller = new FeatureInfoAllLayersController(mapWidget, pixelTolerance, 
+									true /* Use separate details window */);
 	}
 
 	// ToolbarModalAction implementation:

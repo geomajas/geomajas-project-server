@@ -15,6 +15,7 @@ import org.geomajas.gwt.client.action.ToolbarBaseAction;
 import org.geomajas.gwt.client.action.toolbar.ToolbarRegistry;
 import org.geomajas.gwt.client.widget.MapWidget;
 import org.geomajas.widget.featureinfo.client.action.toolbar.NearbyFeaturesModalAction;
+import org.geomajas.widget.featureinfo.client.action.toolbar.NearbyFeaturesSepDetailsModalAction;
 
 import com.google.gwt.core.client.EntryPoint;
 //import com.smartgwt.client.util.SC;
@@ -28,7 +29,8 @@ import com.google.gwt.core.client.EntryPoint;
 public class FeatureInfoEntryPoint implements EntryPoint {
 
 	public static final String SHOW_DEFAULT_FEATUREINFOALLLAYERSMODE_KEY = "NearbyFeaturesMode";
-
+	public static final String SHOW_DEFAULT_NEARBYFEATURESSEPDETAILSMODE_KEY = "NearbyFeaturesSepDetailsMode";
+																				
 	public void onModuleLoad() {
 		//SC.showConsole(); // Crash if console is closed
 		//SC.say("Registering toolbar tool " + SHOW_DEFAULT_FEATUREINFOALLLAYERSMODE_KEY);
@@ -41,6 +43,14 @@ public class FeatureInfoEntryPoint implements EntryPoint {
 				return new NearbyFeaturesModalAction(mapWidget);
 			}
 		});
+		
+		ToolbarRegistry.put(SHOW_DEFAULT_NEARBYFEATURESSEPDETAILSMODE_KEY, new ToolCreator() {
+
+			public ToolbarBaseAction createTool(MapWidget mapWidget) {
+				return new NearbyFeaturesSepDetailsModalAction(mapWidget);
+			}
+		});
+		
 
 	}
 
