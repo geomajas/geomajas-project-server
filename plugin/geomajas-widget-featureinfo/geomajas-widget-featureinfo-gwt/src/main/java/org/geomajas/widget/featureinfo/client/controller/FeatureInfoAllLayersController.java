@@ -65,7 +65,7 @@ public class FeatureInfoAllLayersController extends AbstractGraphicsController {
 
 	private NearbyFeaturesList nearbyFeaturesList;
 
-	private Window window; /* top window for this widget */
+	private Window window; /* top window for this widget or window with feature list */
 
 	private FeatureAttributeCanvas featureAttributeCanvas;
 
@@ -158,11 +158,11 @@ public class FeatureInfoAllLayersController extends AbstractGraphicsController {
 					nearbyFeaturesList = new NearbyFeaturesList(mapWidget, featureMap, featClickHandler);
 
 					window.setTitle(messages.nearbyFeaturesWindowTitle());
-					window.setWidth("300px");
+					window.setWidth("300px"); // TODO: configurable/calculate appropriate value at run-time
 					if (!useSepDetailsWindow) {
-						window.setHeight("420px");
+						window.setHeight("420px"); // TODO: configurable/calculate appropriate value at run-time
 					} else {
-						window.setHeight("320px");
+						window.setHeight("320px"); // TODO: configurable/calculate appropriate value at run-time
 					}
 					window.setMaxHeight(mapWidget.getHeight() - 10);
 					// window.setAutoHeight();
@@ -240,21 +240,22 @@ public class FeatureInfoAllLayersController extends AbstractGraphicsController {
 		detailWindow.setTitle(I18nProvider.getAttribute().getAttributeWindowTitle(feat.getLabel()));
 		detailWindow.addItem(featureAttributeCanvas);
 
-		detailWindow.setWidth("300px");
-		// detailWindow.setHeight("350px");
+		detailWindow.setWidth("300px"); // TODO: configurable/calculate appropriate value at run-time
+		
 		int heightDetailWindow = 300;
 		if (feat.getAttributes().size() <= 4) {
-			detailWindow.setHeight("300px");
+			detailWindow.setHeight("300px"); // TODO: configurable/calculate appropriate value at run-time
 			heightDetailWindow = 300;
 		} else {
-			detailWindow.setHeight("350px");
+			detailWindow.setHeight("350px"); // TODO: configurable/calculate appropriate value at run-time
 			heightDetailWindow = 350;
 		}
 
 		detailWindow.setMaxHeight(mapWidget.getHeight() - 10);
-		// detailWindow.setAutoHeight();
-		// detailWindow.setOverflow(Overflow.VISIBLE);
-		// Check if it's OK to put the detail window under the feature list
+		/* Check if it's OK to place the detail window under the feature list,
+		 * else place it at the left with some overlap 
+		 */
+
 		// TODO: organize detail windows (now they will overlap because they all have the same left-top coordinate
 		int absoluteTop = window.getAbsoluteTop() + window.getHeight();
 		int absoluteLeft = mapWidget.getAbsoluteLeft() + 10;
