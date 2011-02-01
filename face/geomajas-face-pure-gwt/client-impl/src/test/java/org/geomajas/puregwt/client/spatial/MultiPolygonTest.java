@@ -51,7 +51,7 @@ public class MultiPolygonTest {
 
 	@Before
 	public void setUp() {
-		Injector myInjector = Guice.createInjector(new TestConfigurationModule());
+		Injector myInjector = Guice.createInjector(new ConfigurationTestModule());
 		gwtFactory = myInjector.getInstance(GeometryFactory.class);
 		gwtFactory.init(SRID, PRECISION);
 		LinearRing gwtRing1 = gwtFactory.createLinearRing(new Coordinate[] { new Coordinate(10.0, 10.0),

@@ -16,6 +16,11 @@ import org.geomajas.puregwt.client.widget.MapWidgetImpl;
 import com.google.gwt.inject.client.GinModules;
 import com.google.gwt.inject.client.Ginjector;
 
+/**
+ * Gin injector.
+ *
+ * @author Jan De Moerloose
+ */
 @GinModules({ GeomajasPureModule.class, PureGwtExampleModule.class })
 public interface PureGwtExampleGinjector extends Ginjector {
 

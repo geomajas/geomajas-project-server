@@ -84,15 +84,6 @@
 			<name>Jan De Moerloose</name>
 			<email>jan.demoerloose@geosparc.com</email>
 		</developer>
-		<developer>
-			<id>joachimvda</id>
-			<name>Joachim Van der Auwera</name>
-			<email>joachim@geosparc.com</email>
-		</developer>
-		<developer>
-			<id>frankw</id>
-			<name>Frank Wynants</name>
-		</developer>
 	</developers>
 
 	<repositories>
@@ -125,6 +116,7 @@
 	<modules>
 		<module>client</module>
 		<module>client-impl</module>
+		<module>pure-gwt-example</module>
 	</modules>
 
 	<dependencyManagement>
@@ -137,7 +129,30 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
-			
+
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-pure-gwt-client</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas</groupId>
+				<artifactId>geomajas-pure-gwt-client-impl</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+
+			<dependency>
+				<groupId>org.vaadin.addons</groupId>
+				<artifactId>gwt-graphics</artifactId>
+				<version>0.9.7</version>
+			</dependency>
+
+			<dependency>
+				<groupId>com.googlecode.gwt.inject</groupId>
+				<artifactId>gin</artifactId>
+				<version>1.0</version>
+			</dependency>
+
 			<dependency>
 				<groupId>com.google.gwt</groupId>
 				<artifactId>gwt-user</artifactId>
@@ -157,6 +172,13 @@
 				<scope>test</scope>
 			</dependency>
 
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>4.8.2</version>
+				<scope>test</scope>
+			</dependency>
+
 		</dependencies>
 	</dependencyManagement>
 
@@ -167,7 +189,7 @@
 				<activeByDefault>true</activeByDefault>
 			</activation>
 			<modules>
-				<!--<module>documentation</module>-->
+				<module>documentation</module>
 			</modules>
 		</profile>
 		<profile>

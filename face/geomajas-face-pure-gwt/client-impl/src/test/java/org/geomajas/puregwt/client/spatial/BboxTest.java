@@ -41,7 +41,7 @@ public class BboxTest {
 
 	@Before
 	public void setUp() {
-		Injector myInjector = Guice.createInjector(new TestConfigurationModule());
+		Injector myInjector = Guice.createInjector(new ConfigurationTestModule());
 		factory = myInjector.getInstance(GeometryFactory.class);
 		empty = factory.createBbox(0, 0, 0, 0);
 		origin = factory.createBbox(0, 0, 10, 10);

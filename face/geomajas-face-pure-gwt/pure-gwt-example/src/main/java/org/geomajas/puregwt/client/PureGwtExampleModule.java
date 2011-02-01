@@ -16,6 +16,11 @@ import org.geomajas.puregwt.client.widget.MapWidgetImpl;
 
 import com.google.gwt.inject.client.AbstractGinModule;
 
+/**
+ * Module definition.
+ *
+ * @author Jan De Moerloose
+ */
 public class PureGwtExampleModule extends AbstractGinModule {
 
 	protected void configure() {

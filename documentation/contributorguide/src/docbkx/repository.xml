@@ -100,5 +100,9 @@
        <para>alfresco: http://maven.alfresco.com/nexus/content/repositories/public/</para> 
     </listitem>
 
+    <listitem>
+       <para>vaadin-addons: http://maven.vaadin.com/vaadin-addons</para>
+    </listitem>
+
   </itemizedlist>
 </appendix>

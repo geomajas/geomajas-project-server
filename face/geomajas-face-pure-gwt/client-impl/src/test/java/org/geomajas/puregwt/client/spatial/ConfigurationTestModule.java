@@ -16,7 +16,12 @@ import org.geomajas.puregwt.client.util.SpatialServiceImpl;
 
 import com.google.inject.AbstractModule;
 
-public class TestConfigurationModule extends AbstractModule {
+/**
+ * Module for testing.
+ *
+ * @author Jan De Moerloose
+ */
+public class ConfigurationTestModule extends AbstractModule {
 
 	@Override
 	protected void configure() {

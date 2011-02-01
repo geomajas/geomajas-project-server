@@ -54,7 +54,7 @@ public class PolygonTest {
 	 */
 	@Before
 	public void setUp() {
-		Injector myInjector = Guice.createInjector(new TestConfigurationModule());
+		Injector myInjector = Guice.createInjector(new ConfigurationTestModule());
 		gwtFactory = myInjector.getInstance(GeometryFactory.class);
 		gwtFactory.init(SRID, PRECISION);
 		LinearRing gwtShell = gwtFactory.createLinearRing(new Coordinate[] { new Coordinate(10.0, 10.0),

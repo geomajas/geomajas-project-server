@@ -51,7 +51,7 @@ public class MultiPointTest {
 
 	@Before
 	public void setUp() {
-		Injector myInjector = Guice.createInjector(new TestConfigurationModule());
+		Injector myInjector = Guice.createInjector(new ConfigurationTestModule());
 		gwtFactory = myInjector.getInstance(GeometryFactory.class);
 		gwtFactory.init(SRID, PRECISION);
 		Point point1 = gwtFactory.createPoint(new Coordinate(10.0, 10.0));

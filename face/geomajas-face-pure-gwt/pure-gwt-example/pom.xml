@@ -11,44 +11,25 @@
   -->
 
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<parent>
+		<groupId>org.geomajas</groupId>
+		<artifactId>geomajas-face-pure-gwt</artifactId>
+		<version>1.0.0-SNAPSHOT</version>
+	</parent>
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>org.geomajas</groupId>
 	<artifactId>geomajas-pure-gwt-example</artifactId>
-	<version>1.0-SNAPSHOT</version>
 	<packaging>war</packaging>
 	<name>Geomajas pure GWT application</name>
 	<description>Geomajas pure GWT application</description>
 	<url>http://www.geomajas.org/</url>
 
-	<!-- @todo required for sample applications which are included in the Geomajas project, fix or delete 
-	<scm>
-		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/application/geomajas-dojo-example</connection>
-		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/application/geomajas-dojo-example</developerConnection>
-		<url>https://svn.geomajas.org/majas/trunk/application/geomajas-dojo-example</url>
-	</scm>
-	-->
-
-	<licenses>
-		<license>
-			<name>GNU Affero General Public License, Version 3</name>
-			<url>http://www.gnu.org/licenses/agpl-3.0.html</url>
-			<distribution>repo</distribution>
-		</license>
-	</licenses>
-	
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
 				<groupId>org.geomajas</groupId>
-				<artifactId>geomajas-backend</artifactId>
-				<version>1.8.0</version>
-				<type>pom</type>
-				<scope>import</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-dep</artifactId>
-				<version>1.10.36</version>
+				<version>1.11.4</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -60,7 +41,6 @@
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-pure-gwt-client-impl</artifactId>
-			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
@@ -75,19 +55,16 @@
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-user</artifactId>
-			<version>${gwt-version}</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-servlet</artifactId>
-			<version>${gwt-version}</version>
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.google.gwt</groupId>
 			<artifactId>gwt-dev</artifactId>
-			<version>${gwt-version}</version>
 			<scope>test</scope>
 		</dependency>
 
@@ -111,26 +88,7 @@
 	</dependencies>
 
 	<build>
-		<outputDirectory>war/WEB-INF/classes</outputDirectory>
 		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<encoding>utf8</encoding>
-					<source>1.5</source>
-					<target>1.5</target>
-				</configuration>
-			</plugin>
-
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-war-plugin</artifactId>
-				<configuration>
-					<warSourceExcludes>.gwt-tmp/**</warSourceExcludes>
-					<warSourceDirectory>war</warSourceDirectory>
-				</configuration>
-			</plugin>
 
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
@@ -140,7 +98,6 @@
 					<inplace>true</inplace>
 					<module>org.geomajas.puregwt.GeomajasEntryPoint</module>
 					<runTarget>index.html</runTarget>
-					<warSourceDirectory>war</warSourceDirectory>
 					<disableCastChecking>true</disableCastChecking>
 					<disableClassMetadata>true</disableClassMetadata>
 					<extraJvmArgs>-Xmx512M -Xss1024k</extraJvmArgs>
@@ -154,7 +111,6 @@
 				<artifactId>maven-jetty-plugin</artifactId>
 				<version>6.1.20</version>
 				<configuration>
-         			<webAppSourceDirectory>${basedir}/war</webAppSourceDirectory>
 					<webAppConfig>
 						<contextPath>/</contextPath>
 					</webAppConfig>
@@ -165,6 +121,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.4</version>
 				<executions>
 					<execution>
 						<id>remove-build-files</id>
@@ -271,38 +228,8 @@
 		</profile>	
 	</profiles>
 
-	<repositories>
-		<repository>
-			<id>vaadin-addons</id>
-			<url>http://maven.vaadin.com/vaadin-addons</url>
-		</repository>
-		<repository>
-			<id>Geomajas</id>
-			<name>Geomajas repository</name>
-			<url>http://maven.geomajas.org/</url>
-		</repository>
-
-		<!-- uncomment if you want to use Geomajas snapshots, comment for faster builds  -->
-		<repository>
-			<id>Geomajas snapshots</id>
-			<name>Geomajas snapshot repository</name>
-			<url>http://apps.geomajas.org/nexus/content/groups/latest/</url>
-			<snapshots>
-				<enabled>true</enabled>
-			</snapshots>
-		</repository>
-	</repositories>
-	<pluginRepositories>
-		<pluginRepository>
-			<id>Geomajas</id>
-			<name>Geomajas repository</name>
-			<url>http://maven.geomajas.org/</url>
-		</pluginRepository>
-	</pluginRepositories>
-
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<gwt-version>2.1.1</gwt-version>
 	</properties>
 
 </project>

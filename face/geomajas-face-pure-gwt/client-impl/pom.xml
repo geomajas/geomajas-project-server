@@ -23,13 +23,6 @@
 	<name>Geomajas pure gwt face, client side</name>
 	<description>Geomajas pure gwt face, client side</description>
 
-	<repositories>
-		<repository>
-			<id>vaadin-addons</id>
-			<url>http://maven.vaadin.com/vaadin-addons</url>
-		</repository>
-	</repositories>
-
 	<dependencies>
 		<!-- Geomajas dependencies -->
 		<dependency>
@@ -44,13 +37,6 @@
 		<dependency>
 			<groupId>org.geomajas</groupId>
 			<artifactId>geomajas-pure-gwt-client</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>org.geomajas</groupId>
-			<artifactId>geomajas-pure-gwt-client</artifactId>
-			<version>1.0.0-SNAPSHOT</version>
-			<classifier>sources</classifier>
 		</dependency>
 		<dependency>
 			<groupId>org.geomajas</groupId>
@@ -76,13 +62,11 @@
 		<dependency>
 			<groupId>org.vaadin.addons</groupId>
 			<artifactId>gwt-graphics</artifactId>
-			<version>0.9.7</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>com.googlecode.gwt.inject</groupId>
 			<artifactId>gin</artifactId>
-			<version>1.0</version>
 		</dependency>
 
 		<!-- Other dependencies -->

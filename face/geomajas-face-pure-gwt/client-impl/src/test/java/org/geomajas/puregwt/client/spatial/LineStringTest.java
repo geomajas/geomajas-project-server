@@ -51,7 +51,7 @@ public class LineStringTest {
 
 	@Before
 	public void setUp() {
-		Injector myInjector = Guice.createInjector(new TestConfigurationModule());
+		Injector myInjector = Guice.createInjector(new ConfigurationTestModule());
 		gwtFactory = myInjector.getInstance(GeometryFactory.class);
 		gwtFactory.init(SRID, PRECISION);
 		gwt = gwtFactory.createLineString(new Coordinate[] { new Coordinate(10.0, 10.0), new Coordinate(20.0, 10.0),
