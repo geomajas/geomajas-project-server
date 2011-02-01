@@ -70,8 +70,28 @@
 			
 		<dependency>
 			<groupId>org.geomajas.widget</groupId>
+			<artifactId>geomajas-widget-featureinfo</artifactId>
+			<version>1.0-SNAPSHOT</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.geomajas.widget</groupId>
+			<artifactId>geomajas-widget-featureinfo</artifactId>
+			<version>1.0-SNAPSHOT</version>
+			<classifier>sources</classifier>
+		</dependency>
+
+		<dependency>
+			<groupId>org.geomajas.widget</groupId>
 			<artifactId>geomajas-widget-featureinfo-gwt</artifactId>
 			<version>1.0-SNAPSHOT</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.geomajas.widget</groupId>
+			<artifactId>geomajas-widget-featureinfo-gwt</artifactId>
+			<version>1.0-SNAPSHOT</version>
+			<classifier>sources</classifier>
 		</dependency>
 		
 		<dependency>
