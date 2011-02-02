@@ -70,79 +70,57 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 			</map>
 		</property>
 	</bean>
+	
 
 	<bean name="PIPELINE_GET_FEATURES_CACHED" class="org.geomajas.service.pipeline.PipelineInfo">
 		<property name="pipelineName" value="$PIPELINE_GET_FEATURES_CACHED" />
 		<property name="delegatePipeline" ref="PIPELINE_GET_FEATURES" />
-		<property name="extensions">
-			<map>
-				<entry key="preGetFeatures">
-					<bean class="org.geomajas.plugin.caching.step.GetFeaturesFromCacheStep" >
-						<property name="id" value="GetFeaturesFromCacheStep" />
-					</bean>
-				</entry>
-				<entry key="postGetFeatures">
-					<bean class="org.geomajas.plugin.caching.step.PutFeaturesInCacheStep" >
-						<property name="id" value="PutFeaturesInCacheStep" />
-					</bean>
-				</entry>
-			</map>
+		<property name="interceptors">
+			<list>
+				<bean
+					class="org.geomajas.plugin.caching.step.GetFeaturesEachCachingInterceptor">
+					<property name="id" value="GetFeaturesCache" />
+					<property name="fromStepId" value="preGetFeatures" />
+					<property name="toStepId" value="postGetFeatures" />
+				</bean>
+			</list>
 		</property>
 	</bean>
+	
 
 	<bean name="PIPELINE_GET_BOUNDS_CACHED" class="org.geomajas.service.pipeline.PipelineInfo">
 		<property name="pipelineName" value="$PIPELINE_GET_BOUNDS_CACHED" />
 		<property name="delegatePipeline" ref="PIPELINE_GET_BOUNDS" />
-		<property name="extensions">
-			<map>
-				<entry key="preGetBounds">
-					<bean class="org.geomajas.plugin.caching.step.GetBoundsFromCacheStep" >
-						<property name="id" value="GetBoundsFromCacheStep" />
-					</bean>
-				</entry>
-				<entry key="postGetBounds">
-					<bean class="org.geomajas.plugin.caching.step.PutBoundsInCacheStep" >
-						<property name="id" value="PutBoundsInCacheStep" />
-					</bean>
-				</entry>
-			</map>
+		<property name="interceptors">
+			<list>
+				<bean
+					class="org.geomajas.plugin.caching.step.GetBoundsCachingInterceptor">
+					<property name="id" value="GetBoundsCache" />
+					<property name="fromStepId" value="preGetBounds" />
+					<property name="toStepId" value="postGetBounds" />
+				</bean>
+			</list>
 		</property>
 	</bean>
 
-	<bean name="intermediateCacheEntireTile" class="org.geomajas.service.pipeline.PipelineInfo">
-		<property name="pipelineName" value="$intermediateCacheEntireTile" />
-		<property name="delegatePipeline" ref="PIPELINE_GET_VECTOR_TILE" />
-		<property name="extensions">
-			<map>
-				<entry key="postTileFilter">
-					<bean class="org.geomajas.plugin.caching.step.GetTileFromCacheStep" >
-						<property name="id" value="GetTileFromCacheStep" />
-					</bean>
-				</entry>
-				<entry key="postGetStringContent">
-					<bean class="org.geomajas.plugin.caching.step.PutTileInCacheStep" >
-						<property name="id" value="PutTileInCacheStep" />
-					</bean>
-				</entry>
-			</map>
-		</property>
-	</bean>
 	<bean name="PIPELINE_GET_VECTOR_TILE_CACHED" class="org.geomajas.service.pipeline.PipelineInfo">
 		<property name="pipelineName" value="$PIPELINE_GET_VECTOR_TILE_CACHED" />
-		<property name="delegatePipeline" ref="intermediateCacheEntireTile" />
-		<property name="extensions">
-			<map>
-				<entry key="preGetStringContent">
-					<bean class="org.geomajas.plugin.caching.step.GetTileStringContentFromCacheStep" >
-						<property name="id" value="GetTileStringContentFromCacheStep" />
-					</bean>
-				</entry>
-				<entry key="postGetStringContent">
-					<bean class="org.geomajas.plugin.caching.step.PutTileStringContentInCacheStep" >
-						<property name="id" value="PutTileStringContentInCacheStep" />
-					</bean>
-				</entry>
-			</map>
+		<property name="delegatePipeline" ref="PIPELINE_GET_VECTOR_TILE" />
+		<property name="interceptors">
+			<list>
+				<bean
+					class="org.geomajas.plugin.caching.step.GetTileStringContentCachingInterceptor">
+					<property name="id" value="GetTileStringContentCache" />
+					<property name="fromStepId" value="preGetStringContent" />
+					<property name="toStepId" value="postGetStringContent" />
+				</bean>
+				<bean
+					class="org.geomajas.plugin.caching.step.GetTileCachingInterceptor">
+					<property name="id" value="GetTileCache" />
+					<property name="fromStepId" value="postTileFilter" />
+					<property name="toStepId" value="postGetStringContent" />
+				</bean>
+			</list>
 		</property>
 	</bean>
 

@@ -96,8 +96,7 @@ public class GetFeaturesInvalidateUpdateTest {
 		Assert.assertEquals("1", features.get(0).getId()); // assure testing same object later
 		Assert.assertNotSame("something has changed", features.get(0).getAttributes().get("stringAttr").getValue());
 		Assert.assertEquals("", recorder.matches(CacheCategory.FEATURE,
-				"Got item from cache",
-				"Put item in cache"));
+				"Got item from cache"));
 
 		// update one item
 		recorder.clear();

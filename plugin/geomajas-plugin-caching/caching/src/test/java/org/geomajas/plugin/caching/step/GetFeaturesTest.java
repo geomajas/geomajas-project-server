@@ -104,8 +104,7 @@ public class GetFeaturesTest {
 		Assert.assertNotNull(features);
 		Assert.assertEquals(2, features.size());
 		Assert.assertEquals("", recorder.matches(CacheCategory.FEATURE,
-				"Got item from cache",
-				"Put item in cache"));
+				"Got item from cache"));
 
 		// ask for different layer, should not be found in cache as context is different
 		recorder.clear();
@@ -145,8 +144,7 @@ public class GetFeaturesTest {
 		Assert.assertEquals(2.0, feature.getGeometry().getCoordinates()[0].x, DELTA);
 		Assert.assertEquals(1.0, feature.getGeometry().getCoordinates()[0].y, DELTA);
 		Assert.assertEquals("", recorder.matches(CacheCategory.FEATURE,
-				"Got item from cache",
-				"Put item in cache"));
+				"Got item from cache"));
 	}
 
 	@Test
@@ -177,7 +175,6 @@ public class GetFeaturesTest {
 		Assert.assertEquals(222638.98158654713, feature.getGeometry().getCoordinates()[0].x, DELTA);
 		Assert.assertEquals(111325.14286638486, feature.getGeometry().getCoordinates()[0].y, DELTA);
 		Assert.assertEquals("", recorder.matches(CacheCategory.FEATURE,
-				"Got item from cache",
-				"Put item in cache"));
+				"Got item from cache"));
 	}
 }

@@ -92,8 +92,7 @@ public class GetBoundsTest {
 		Assert.assertEquals(10.0, bounds.getMaxX(), DELTA);
 		Assert.assertEquals(10.0, bounds.getMaxY(), DELTA);
 		Assert.assertEquals("", recorder.matches(CacheCategory.BOUNDS,
-				"Got item from cache",
-				"Put item in cache"));
+				"Got item from cache"));
 
 		// ask for different layer, should not be found in cache as context is different
 		recorder.clear();

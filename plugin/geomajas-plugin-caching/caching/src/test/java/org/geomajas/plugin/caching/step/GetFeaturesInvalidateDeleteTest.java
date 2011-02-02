@@ -91,8 +91,7 @@ public class GetFeaturesInvalidateDeleteTest {
 		Assert.assertNotNull(features);
 		Assert.assertEquals(3, features.size());
 		Assert.assertEquals("", recorder.matches(CacheCategory.FEATURE,
-				"Got item from cache",
-				"Put item in cache"));
+				"Got item from cache"));
 
 		// delete one item
 		recorder.clear();

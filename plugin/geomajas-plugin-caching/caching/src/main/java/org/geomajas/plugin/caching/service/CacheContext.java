@@ -19,6 +19,11 @@ package org.geomajas.plugin.caching.service;
 public interface CacheContext {
 
 	/**
+	 * Key for storing the security context in the cache.
+	 */
+	String SECURITY_CONTEXT_KEY = "$securityContext";
+	
+	/**
 	 * Put an object in the context.
 	 *
 	 * @param key object key
@@ -43,4 +48,6 @@ public interface CacheContext {
 	 * @return value from context or null when no value or value has wrong type
 	 */
 	<TYPE> TYPE get(String key, Class<TYPE> type);
+	
+
 }
