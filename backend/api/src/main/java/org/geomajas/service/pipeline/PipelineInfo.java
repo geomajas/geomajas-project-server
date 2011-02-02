@@ -38,6 +38,18 @@ public class PipelineInfo<RESPONSE> {
 	private List<PipelineStep<RESPONSE>> pipeline;
 
 	private Map<String, PipelineStep<RESPONSE>> extensions;
+
+	private List<PipelineInterceptor<RESPONSE>> interceptors;
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	/**
 	 * Get the name of the pipeline for which this is an implementation.
@@ -138,4 +150,43 @@ public class PipelineInfo<RESPONSE> {
 	public void setExtensions(Map<String, PipelineStep<RESPONSE>> extensions) {
 		this.extensions = extensions;
 	}
+	
+	/**
+	 * Get the list of interceptors to be added to thie pipeline.
+	 * 
+	 * @return list of interceptors
+	 * @since 1.9.0
+	 */
+	public List<PipelineInterceptor<RESPONSE>> getInterceptors() {
+		return interceptors;
+	}
+
+	/**
+	 * Set the set of steps which need to be weaved at the extension hooks.
+	 * 
+	 * @param interceptors
+	 *            list of interceptors
+	 * @since 1.9.0
+	 */
+	public void setInterceptors(List<PipelineInterceptor<RESPONSE>> interceptors) {
+		this.interceptors = interceptors;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
 }

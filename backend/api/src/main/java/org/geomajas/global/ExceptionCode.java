@@ -111,5 +111,13 @@ public interface ExceptionCode {
 	 * @since 1.8.0
 	 */
 	int CANNOT_PARSE_WKT_GEOMETRY = 68;
+	/**
+	 * @since 1.9.0
+	 */
+	int PIPELINE_UNSATISFIED_INTERCEPTOR = 69;
+	/**
+	 * @since 1.9.0
+	 */
+	int PIPELINE_HIDDEN_INTERCEPTOR_STEP = 70;
 
 }

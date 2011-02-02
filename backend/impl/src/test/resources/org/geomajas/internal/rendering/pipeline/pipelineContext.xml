@@ -156,19 +156,22 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 			</map>
 		</property>
 	</bean>
+
+	<!-- @extract-start PipelineInterceptor, Adding interceptor to delegate pipeline -->
 	<bean class="org.geomajas.service.pipeline.PipelineInfo">
-		<property name="pipelineName" value="hookedTest"/>
-		<property name="layerId" value="failed"/>
+		<property name="pipelineName" value="interceptorTest"/>
+		<property name="layerId" value="base"/>
 		<property name="delegatePipeline" ref="hooked" />
-		<property name="extensions">
-			<map>
-				<entry key="Oops">
-					<bean class="org.geomajas.internal.service.pipeline.Step2">
-						<property name="id" value="os2"/>
-					</bean>
-				</entry>
-			</map>
+		<property name="interceptors">
+			<list>
+				<bean class="org.geomajas.internal.service.pipeline.Interceptor1">
+					<property name="id" value="s1s2" />
+					<property name="fromStepId" value="s1" />
+					<property name="toStepId" value="s2" />
+				</bean>
+			</list>
 		</property>
 	</bean>
+	<!-- @extract-end -->
 
 </beans>

@@ -109,11 +109,17 @@ public class PipelineServiceTest {
 		context.put("start", "start");
 		pipelineService.execute("hookedTest", "delegate", context, response);
 		Assert.assertEquals("starts1ps2s2", response.getValue());
+	}
+	
+	@Test
+	public void interceptorTest() throws Exception {
+		StringAttribute response = new StringAttribute("bla");
+		PipelineContext context = pipelineService.createContext();
+		context.put("start", "start");
+		pipelineService.execute("interceptorTest", "base", context, response);
+		Assert.assertEquals("starts1s2", response.getValue());
+		Assert.assertEquals("s1s2",context.get("before"));
+		Assert.assertEquals("s1s2",context.get("after"));
 
-		try {
-			pipelineService.getPipeline("hookedTest", "failed");
-		} catch (GeomajasException ge) {
-			Assert.assertEquals(ExceptionCode.PIPELINE_UNSATISFIED_EXTENSION, ge.getExceptionCode());
-		}
 	}
 }
