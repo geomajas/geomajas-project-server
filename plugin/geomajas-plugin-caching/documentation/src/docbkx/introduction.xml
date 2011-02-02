@@ -9,7 +9,6 @@
   ~ by the Geomajas Contributors License Agreement. For full licensing
   ~ details, see LICENSE.txt in the project root.
   -->
-
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
 "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
 <chapter id="chapter-introduction">
@@ -70,11 +69,11 @@
 
     <para>The GetVectorTile pipeline can be enhanced to support caching as in
     figure <xref linkend="fig-getvectortile-pipeline" />. At various hooks,
-    steps are included to try to get data from the case or to put it in the
-    cache.</para>
+    interceptors are included to try to get data from the cache or to put it
+    in the cache.</para>
 
     <figure id="fig-getvectortile-pipeline">
-      <title>Cache hooks in the GetVectorTile pipeline</title>
+      <title>Cache interceptors in the GetVectorTile pipeline</title>
 
       <mediaobject>
         <imageobject>
