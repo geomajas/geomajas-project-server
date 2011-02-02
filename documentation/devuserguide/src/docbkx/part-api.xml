@@ -1688,6 +1688,16 @@
 
       <xi:include href="listing/PipelineExtension.xml"
                   xmlns:xi="http://www.w3.org/2001/XInclude" />
+
+      <para>Pipelines support the concept of a pipeline interceptor. A
+      pipeline interceptor surrounds a group of steps and allows some action
+      to be performed before the first step of the group and another action
+      after the last step. The group of steps can be skipped depending on the
+      outcome of the first action. The following configuration shows how to
+      add an interceptor to a pipeline:</para>
+
+      <xi:include href="listing/PipelineInterceptor.xml"
+                  xmlns:xi="http://www.w3.org/2001/XInclude" />
     </section>
 
     <section id="defPipelines">

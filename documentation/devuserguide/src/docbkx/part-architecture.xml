@@ -9,7 +9,6 @@
   ~ by the Geomajas Contributors License Agreement. For full licensing
   ~ details, see LICENSE.txt in the project root.
   -->
-
 <!DOCTYPE part PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
 "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
 <part id="part-architecture">
@@ -381,6 +380,13 @@
         extension steps. The pipeline will then be based on the delegate
         pipeline with the extensions steps added after the hooks with matching
         names.</para>
+
+        <para>Pipelines can be enhanced with interceptors. An interceptor will
+        intercept a block of consecutive steps, allowing to perform an action
+        before and after the block is executed. Depending on the return value
+        of the before action, the steps (and optionally the after action) can
+        be skipped. This is very useful to implement functionality like
+        caching and auditing.</para>
       </section>
 
       <section id="arch-pl-app">
