@@ -100,17 +100,11 @@
 		<!-- @extract-start GoogleLayerDependency, Google layer dependency -->
 		<dependency>
 			<groupId>org.geomajas.plugin</groupId>
-			<artifactId>geomajas-layer-google</artifactId>
-			<version>1.7.1</version>
-		</dependency>
-		<!-- this will be needed when using 1.8.0 (once released), the normal dependency can then be removed 
-		<dependency>
-			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-layer-google-gwt</artifactId> 
 			<version>1.8.0-SNAPSHOT</version>
-		</dependency> -->
+		</dependency>
 		<!-- @extract-end -->
-		<!--dependency>
+		<dependency>
 			<groupId>org.geomajas.plugin</groupId> 
 			<artifactId>geomajas-plugin-caching</artifactId>
 			<version>1.0.0-SNAPSHOT</version> 
@@ -119,7 +113,7 @@
 			<groupId>org.geomajas.plugin</groupId>
 			<artifactId>geomajas-plugin-rasterizing</artifactId> 
 			<version>1.0.0-SNAPSHOT</version>
-		</dependency-->
+		</dependency>
 		<!-- Extra Geomajas plugins -->
 		<!-- @extract-start StaticSecurityDependency, staticsecurity source plugin - including source -->
 		<dependency>
