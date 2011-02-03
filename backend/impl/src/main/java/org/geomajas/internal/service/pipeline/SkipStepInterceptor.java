@@ -11,6 +11,8 @@
 
 package org.geomajas.internal.service.pipeline;
 
+import javax.annotation.PostConstruct;
+
 import org.geomajas.global.GeomajasException;
 import org.geomajas.service.pipeline.PipelineContext;
 import org.geomajas.service.pipeline.PipelineInterceptor;
@@ -29,6 +31,8 @@ public class SkipStepInterceptor<T> implements PipelineInterceptor<T> {
 	private String toStepId;
 
 	private String fromStepId;
+
+	private String stepId;
 
 	public String getId() {
 		return id;
@@ -53,12 +57,28 @@ public class SkipStepInterceptor<T> implements PipelineInterceptor<T> {
 	public void setToStepId(String toStepId) {
 		this.toStepId = toStepId;
 	}
+	
+	public String getStepId() {
+		return stepId;
+	}
+	
+	public void setStepId(String stepId) {
+		this.stepId = stepId;
+	}
 
 	public ExecutionMode beforeSteps(PipelineContext context, T response) throws GeomajasException {
 		return ExecutionMode.EXECUTE_NONE;
 	}
 
 	public void afterSteps(PipelineContext context, T response) throws GeomajasException {
+	}
+	
+	@PostConstruct
+	public void postConstruct() {
+		if (stepId != null) {
+			setFromStepId(stepId);
+			setToStepId(stepId);
+		} 
 	}
 
 }

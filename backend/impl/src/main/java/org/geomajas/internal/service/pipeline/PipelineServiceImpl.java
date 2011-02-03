@@ -67,15 +67,17 @@ public class PipelineServiceImpl<RESPONSE> implements PipelineService<RESPONSE> 
 		if (null == context) {
 			context = createContext();
 		}
-		log.debug("executing pipeline {}", pipeline);
+		log.debug("");
+		log.debug("executing pipeline {}", pipeline.getPipelineName());
 		for (PipelineStep<RESPONSE> step : pipeline.getPipeline()) {
 			if (context.isFinished()) {
-				log.debug("context finished, pipeline {} execution done.", pipeline);
+				log.debug("context finished, pipeline {} execution done.", pipeline.getPipelineName());
 				break;
 			}
-			log.debug("executing step {} for pipeline {}.", step.getId(), pipeline);
+			log.debug("executing step {} for pipeline {}.", step.getId(), pipeline.getPipelineName());
 			step.execute(context, response);
 		}
+		log.debug("");
 	}
 
 	/** @inheritDoc */
@@ -160,7 +162,7 @@ public class PipelineServiceImpl<RESPONSE> implements PipelineService<RESPONSE> 
 	}
 
 	private void print(PipelineInfo<RESPONSE> pipeline) {
-		log.debug("<pipeline name = '{}'>", pipeline.getPipelineName());
+		log.debug("<pipeline name = '{}' layer = '{}'>", pipeline.getPipelineName(), pipeline.getLayerId());
 		for (PipelineStep<RESPONSE> step : pipeline.getPipeline()) {
 			printStep(INDENT, step);
 		}
