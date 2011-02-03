@@ -40,7 +40,6 @@ public class GetTileCachingInterceptor extends AbstractCachingInterceptor<GetTil
 			recorder.record(CacheCategory.TILE, "Got item from cache");
 			response.getTile().setFeatures(cc.getTile().getFeatures());
 			response.getTile().setFeatureContent(cc.getTile().getFeatureContent());
-			context.setFinished(true);
 			return ExecutionMode.EXECUTE_NONE;
 		}
 		return ExecutionMode.EXECUTE_ALL;

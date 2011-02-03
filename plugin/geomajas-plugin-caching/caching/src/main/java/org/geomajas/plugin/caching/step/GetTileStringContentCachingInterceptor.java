@@ -46,7 +46,6 @@ public class GetTileStringContentCachingInterceptor extends AbstractCachingInter
 			recorder.record(category, "Got item from cache");
 			response.getTile().setFeatureContent(tcc.getFeatureContent());
 			response.getTile().setLabelContent(tcc.getLabelContent());
-			context.setFinished(true);
 			return ExecutionMode.EXECUTE_NONE;
 		}
 		return ExecutionMode.EXECUTE_ALL;

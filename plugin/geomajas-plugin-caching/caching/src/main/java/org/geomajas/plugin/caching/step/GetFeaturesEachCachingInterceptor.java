@@ -39,7 +39,6 @@ public class GetFeaturesEachCachingInterceptor extends AbstractCachingIntercepto
 			recorder.record(CacheCategory.FEATURE, "Got item from cache");
 			response.setBounds(cc.getBounds());
 			response.setFeatures(cc.getFeatures());
-			context.setFinished(true);
 			return ExecutionMode.EXECUTE_NONE;
 		}
 		return ExecutionMode.EXECUTE_ALL;
