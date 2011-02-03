@@ -14,6 +14,7 @@ package org.geomajas.internal.service.pipeline;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,6 +29,7 @@ import org.geomajas.service.pipeline.PipelineInterceptor;
 import org.geomajas.service.pipeline.PipelineInterceptor.ExecutionMode;
 import org.geomajas.service.pipeline.PipelineService;
 import org.geomajas.service.pipeline.PipelineStep;
+import org.geotools.util.Utilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +48,8 @@ import org.springframework.stereotype.Component;
 public class PipelineServiceImpl<RESPONSE> implements PipelineService<RESPONSE> {
 
 	private final Logger log = LoggerFactory.getLogger(PipelineServiceImpl.class);
+	
+	private static final String INDENT = "   ";
 
 	@Autowired
 	private List<PipelineInfo<RESPONSE>> pipelineInfos;
@@ -98,58 +102,132 @@ public class PipelineServiceImpl<RESPONSE> implements PipelineService<RESPONSE> 
 		return layerPipeline;
 	}
 
+	/** @inheritDoc */
+	public PipelineContext createContext() {
+		return new PipelineContextImpl();
+	}
+
 	@PostConstruct
 	public void postConstruct() throws GeomajasException {
-		// extend the delegating pipelines
+		// sort pipelines so a pipeline is always before it's delegate (to make sure delegates are not handled before
+		// delegating)
+		List<PipelineInfo<RESPONSE>> delegateLast = new ArrayList<PipelineInfo<RESPONSE>>();
 		for (PipelineInfo<RESPONSE> pipeline : pipelineInfos) {
+			List<PipelineInfo<RESPONSE>> missing = new ArrayList<PipelineInfo<RESPONSE>>();
+			PipelineInfo<RESPONSE> delegate = pipeline;
+			while (delegate != null && !delegateLast.contains(delegate)) {
+				missing.add(delegate);
+				delegate = delegate.getDelegatePipeline();
+			}
+			// prepend missing delegate last
+			delegateLast.addAll(0, missing);
+		}
+
+		// extend the delegating pipelines
+		for (PipelineInfo<RESPONSE> pipeline : delegateLast) {
 			if (pipeline.getPipeline() == null) {
-				List<PipelineStep<RESPONSE>> steps = new ArrayList<PipelineStep<RESPONSE>>();
-				extendPipeline(pipeline, steps);
-				pipeline.setPipeline(steps);
+				log.debug("extending pipeline {} with delegate {}", pipeline.getPipelineName(), pipeline
+						.getDelegatePipeline() == null ? "none" : pipeline.getDelegatePipeline().getPipelineName());
+				extendPipeline(pipeline);
+				for (PipelineStep<RESPONSE> pipelineStep : pipeline.getPipeline()) {
+					log.debug("added step {} to pipeline {}", pipelineStep.getId(), pipeline.getPipelineName());
+				}
+				log.debug("pipeline {} finished", pipeline.getPipelineName());
+			} else {
+				log.debug("pipeline {} with delegate {} has no extensions", pipeline.getPipelineName(), pipeline
+						.getDelegatePipeline() == null ? "none" : pipeline.getDelegatePipeline().getPipelineName());
 			}
 		}
 		// add the interceptors
+		for (PipelineInfo<RESPONSE> pipeline : delegateLast) {
+			interceptPipeline(pipeline);
+		}
+		// remove double names
+		Map<PipelineStamp<RESPONSE>, PipelineInfo<RESPONSE>> map = 
+			new HashMap<PipelineStamp<RESPONSE>, PipelineInfo<RESPONSE>>();
 		for (PipelineInfo<RESPONSE> pipeline : pipelineInfos) {
-			List<PipelineStep<RESPONSE>> steps = new ArrayList<PipelineStep<RESPONSE>>(pipeline.getPipeline());
-			addInterceptors(pipeline, steps);
-			pipeline.setPipeline(steps);
+			// equal stamps will be overwritten here, last one wins !
+			map.put(new PipelineStamp<RESPONSE>(pipeline), pipeline);
+		}
+		// replace with unique names
+		pipelineInfos = new ArrayList<PipelineInfo<RESPONSE>>(map.values());
+		log.debug("listing pipeline structures");
+		for (PipelineInfo<RESPONSE> pipeline : pipelineInfos) {
+			log.debug("");
+			print(pipeline);
+		}
+
+	}
+
+	private void print(PipelineInfo<RESPONSE> pipeline) {
+		log.debug("<pipeline name = '{}'>", pipeline.getPipelineName());
+		for (PipelineStep<RESPONSE> step : pipeline.getPipeline()) {
+			printStep(INDENT, step);
+		}
+		log.debug("</pipeline>");
+	}
+
+	private void printStep(String indent, PipelineStep<RESPONSE> step) {
+		if (step instanceof PipelineInterceptorStep) {
+			PipelineInterceptorStep<RESPONSE> pis = (PipelineInterceptorStep<RESPONSE>) step;
+			log.debug(indent + "<interceptor id = '{}'>", pis.getId());
+			for (PipelineStep<RESPONSE> st : pis.getSteps()) {
+				printStep(indent + INDENT, st);
+			}
+			log.debug(indent + "</interceptor>");
+		} else {
+			log.debug(indent + "<step id = '{}'/>", step.getId());
 		}
 	}
 
 	@SuppressWarnings("unchecked")
-	private void extendPipeline(PipelineInfo<RESPONSE> pipeline, List<PipelineStep<RESPONSE>> steps)
-			throws GeomajasException {
-		if (null == pipeline.getPipeline() && null != pipeline.getDelegatePipeline()) {
-			PipelineInfo<RESPONSE> delegate = pipeline.getDelegatePipeline();
-			extendPipeline(delegate, steps);
-
-			Map<String, PipelineStep<RESPONSE>> extensions = pipeline.getExtensions();
+	private void extendPipeline(PipelineInfo<RESPONSE> pipeline) throws GeomajasException {
+		log.debug("extending pipeline {}", pipeline.getPipelineName());
+		// collect extensions and steps
+		List<PipelineStep<RESPONSE>> steps = new ArrayList<PipelineStep<RESPONSE>>();
+		Map<String, List<PipelineStep<RESPONSE>>> extensions = new HashMap<String, List<PipelineStep<RESPONSE>>>();
+		PipelineInfo<RESPONSE> delegate = pipeline;
+		int total = 0;
+		while (delegate != null) {
+			if (delegate.getExtensions() != null) {
+				for (Map.Entry<String, PipelineStep<RESPONSE>> extensionEntry : delegate.getExtensions().entrySet()) {
+					if (!extensions.containsKey(extensionEntry.getKey())) {
+						extensions.put(extensionEntry.getKey(), new ArrayList<PipelineStep<RESPONSE>>());
+					}
+					extensions.get(extensionEntry.getKey()).add(0, extensionEntry.getValue());
+					total++;
+				}
+			}
 			if (delegate.getPipeline() != null) {
 				steps.addAll(delegate.getPipeline());
-				if (extensions != null) {
-					int count = 0;
-					for (int i = steps.size() - 1; i >= 0; i--) {
-						PipelineStep<RESPONSE> step = steps.get(i);
-						if (step instanceof PipelineHook) {
-							PipelineStep<RESPONSE> ext = extensions.get(step.getId());
-							if (null != ext) {
-								steps.add(i + 1, ext);
-								count++;
-							}
-						}
+			}
+			delegate = delegate.getDelegatePipeline();
+		}
+
+		// we have everything, lets extend...
+		int count = 0;
+		for (int i = steps.size() - 1; i >= 0; i--) {
+			PipelineStep<RESPONSE> step = steps.get(i);
+			if (step instanceof PipelineHook) {
+				List<PipelineStep<RESPONSE>> extList = extensions.get(step.getId());
+				if (null != extList) {
+					steps.addAll(i + 1, extList);
+					for (PipelineStep<RESPONSE> ext : extList) {
+						log.debug("extending pipeline {} with step {}", pipeline.getPipelineName(), ext.getId());
 					}
-					if (count != extensions.size()) {
-						throw new GeomajasException(ExceptionCode.PIPELINE_UNSATISFIED_EXTENSION,
-								pipeline.getPipelineName(), pipeline.getLayerId());
-					}
+					count += extList.size();
 				}
 			}
 		}
+		if (count != total) {
+			throw new GeomajasException(ExceptionCode.PIPELINE_UNSATISFIED_EXTENSION, pipeline.getPipelineName(),
+					pipeline.getLayerId());
+		}
+		pipeline.setPipeline(steps);
 	}
 
 	@SuppressWarnings("unchecked")
-	private void addInterceptors(PipelineInfo<RESPONSE> pipeline, List<PipelineStep<RESPONSE>> steps)
-			throws GeomajasException {
+	private void interceptPipeline(PipelineInfo<RESPONSE> pipeline) throws GeomajasException {
 		// collect interceptors
 		List<PipelineInterceptor<RESPONSE>> interceptors = new ArrayList<PipelineInterceptor<RESPONSE>>();
 		PipelineInfo<RESPONSE> delegate = pipeline;
@@ -161,14 +239,18 @@ public class PipelineServiceImpl<RESPONSE> implements PipelineService<RESPONSE> 
 			delegate = delegate.getDelegatePipeline();
 		}
 
+		// create a step for each interceptor
 		List<PipelineInterceptorStep<RESPONSE>> interceptorSteps = new ArrayList<PipelineInterceptorStep<RESPONSE>>();
+		List<PipelineStep<RESPONSE>> steps = new ArrayList<PipelineStep<RESPONSE>>(pipeline.getPipeline());
 		for (PipelineInterceptor<RESPONSE> interceptor : interceptors) {
 			interceptorSteps.add(new PipelineInterceptorStep<RESPONSE>(interceptor, steps));
 		}
 		// sort by width, smallest first
 		Collections.sort(interceptorSteps, new WidthComparator());
 
+		// construct the nested hierarchy of normal steps and interceptor steps
 		for (PipelineInterceptorStep<RESPONSE> interceptorStep : interceptorSteps) {
+			log.debug("adding interceptor {} to pipeline {}", interceptorStep.getId(), pipeline.getPipelineName());
 			int fromIndex = -1;
 			int toIndex = -1;
 			// find the from and to step indices (takes nesting into account)
@@ -191,8 +273,7 @@ public class PipelineServiceImpl<RESPONSE> implements PipelineService<RESPONSE> 
 				}
 			}
 			if (fromIndex < 0 || toIndex < 0 || fromIndex > toIndex) {
-				throw new GeomajasException(ExceptionCode.PIPELINE_HIDDEN_INTERCEPTOR_STEP,
-						interceptorStep.getId());
+				throw new GeomajasException(ExceptionCode.PIPELINE_HIDDEN_INTERCEPTOR_STEP, interceptorStep.getId());
 			}
 			// nest the steps
 			interceptorStep.setSteps(new ArrayList<PipelineStep<RESPONSE>>(steps.subList(fromIndex, toIndex + 1)));
@@ -201,18 +282,14 @@ public class PipelineServiceImpl<RESPONSE> implements PipelineService<RESPONSE> 
 			}
 			steps.add(fromIndex, interceptorStep);
 		}
-	}
-
-	/** @inheritDoc */
-	public PipelineContext createContext() {
-		return new PipelineContextImpl();
+		pipeline.setPipeline(steps);
 	}
 
 	/**
 	 * Pipeline step that executes an interceptor.
 	 * 
 	 * @author Jan De Moerloose
-	 *
+	 * 
 	 * @param <T>
 	 */
 	protected class PipelineInterceptorStep<T> implements PipelineStep<T> {
@@ -273,6 +350,7 @@ public class PipelineServiceImpl<RESPONSE> implements PipelineService<RESPONSE> 
 		}
 
 		public void execute(PipelineContext context, T response) throws GeomajasException {
+			log.debug("executing beforeSteps for interceptor {}", interceptor.getId());
 			ExecutionMode mode = interceptor.beforeSteps(context, response);
 			if (mode == null) {
 				mode = ExecutionMode.EXECUTE_ALL;
@@ -283,24 +361,33 @@ public class PipelineServiceImpl<RESPONSE> implements PipelineService<RESPONSE> 
 					if (!context.isFinished()) {
 						for (PipelineStep<T> step : getSteps()) {
 							if (context.isFinished()) {
+								log.debug("context finished, interceptor {} execution done.", interceptor.getId());
 								break;
 							}
+							log.debug("executing step {} for interceptor {}.", step.getId(), interceptor.getId());
 							step.execute(context, response);
 						}
 					}
+					break;
+				default:
+					log.debug("skipping steps for interceptor {}", interceptor.getId());
 			}
 			switch (mode) {
 				case EXECUTE_ALL:
 				case EXECUTE_AFTER:
 					interceptor.afterSteps(context, response);
+					break;
+				default:
+					log.debug("skipping afterSteps for interceptor {}", interceptor.getId());
 			}
 		}
 	}
 
 	/**
 	 * Comparator for sorting interceptors by width.
+	 * 
 	 * @author Jan De Moerloose
-	 *
+	 * 
 	 */
 	protected class WidthComparator implements Comparator<PipelineInterceptorStep<RESPONSE>> {
 
@@ -308,6 +395,43 @@ public class PipelineServiceImpl<RESPONSE> implements PipelineService<RESPONSE> 
 			return o1.getWidth() - o2.getWidth();
 		}
 
+	}
+
+	/**
+	 * Stamp for detection of duplicate pipelines.
+	 * 
+	 * @author Jan De Moerloose
+	 * 
+	 * @param <T>
+	 */
+	protected class PipelineStamp<T> {
+
+		private final String name;
+
+		private final String layerId;
+
+		public PipelineStamp(PipelineInfo<T> info) {
+			this.name = info.getPipelineName();
+			this.layerId = info.getLayerId();
+		}
+
+		public boolean equals(Object other) {
+			if (this == other) {
+				return true;
+			}
+			if (other == null || !other.getClass().equals(getClass())) {
+				return false;
+			}
+			PipelineStamp<T> that = (PipelineStamp<T>) other;
+			return Utilities.equals(name, that.name) && Utilities.equals(layerId, that.layerId);
+		}
+
+		public int hashCode() {
+			int result = 13;
+			result = Utilities.hash(name, result);
+			result = Utilities.hash(layerId, result);
+			return result;
+		}
 	}
 
 }

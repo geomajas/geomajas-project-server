@@ -14,7 +14,7 @@ import org.geomajas.service.pipeline.PipelineInterceptor;
  * 
  * @param <RESPONSE>
  */
-public class Interceptor1<RESPONSE> implements PipelineInterceptor<StringAttribute> {
+public class Interceptor<RESPONSE> implements PipelineInterceptor<StringAttribute> {
 
 	private String fromStepId;
 
@@ -58,12 +58,12 @@ public class Interceptor1<RESPONSE> implements PipelineInterceptor<StringAttribu
 
 	public ExecutionMode beforeSteps(PipelineContext context,
 			StringAttribute response) throws GeomajasException {
-		context.put("before", id);
+		response.setValue(response.getValue() + "before"+ id);
 		return mode;
 	}
 
 	public void afterSteps(PipelineContext context, StringAttribute response) throws GeomajasException {
-		context.put("after", id);
+		response.setValue(response.getValue() + "after"+ id);
 	}
 
 }

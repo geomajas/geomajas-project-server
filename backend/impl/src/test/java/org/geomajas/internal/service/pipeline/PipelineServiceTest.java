@@ -104,7 +104,7 @@ public class PipelineServiceTest {
 
 		context.put("start", "start");
 		pipelineService.execute("hookedTest", "delegate2", context, response);
-		Assert.assertEquals("starts1pps2ps2s2", response.getValue());
+		Assert.assertEquals("starts1ps2pps2s2", response.getValue());
 
 		context.put("start", "start");
 		pipelineService.execute("hookedTest", "delegate", context, response);
@@ -115,11 +115,15 @@ public class PipelineServiceTest {
 	public void interceptorTest() throws Exception {
 		StringAttribute response = new StringAttribute("bla");
 		PipelineContext context = pipelineService.createContext();
-		context.put("start", "start");
-		pipelineService.execute("interceptorTest", "base", context, response);
-		Assert.assertEquals("starts1s2", response.getValue());
-		Assert.assertEquals("s1s2",context.get("before"));
-		Assert.assertEquals("s1s2",context.get("after"));
-
+		pipelineService.execute("interceptorTest1", "base", context, response);
+		Assert.assertEquals("blabeforei1s1s2afteri1", response.getValue());
+	}
+	
+	@Test
+	public void interceptorTestNested() throws Exception {
+		StringAttribute response = new StringAttribute("bla");
+		PipelineContext context = pipelineService.createContext();
+		pipelineService.execute("interceptorTest2", "base", context, response);
+		Assert.assertEquals("blabeforei1beforei2s1afteri2s2afteri1", response.getValue());
 	}
 }
