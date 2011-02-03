@@ -67,7 +67,7 @@ public class GetBoundsFromCacheStep implements PipelineStep<GetBoundsContainer> 
 
 			CacheContext cacheContext = cacheKeyService.getCacheContext(pipelineContext, KEYS);
 			cacheContext.put("securityContext", securityContext.getId());
-			String cacheKey = cacheKeyService.getCacheKey(layer, CacheCategory.BOUNDS, cacheContext);
+			String cacheKey = cacheKeyService.getCacheKey(cacheContext);
 
 			BoundsCacheContainer cc =
 					cacheManager.get(layer, CacheCategory.BOUNDS, cacheKey, BoundsCacheContainer.class);

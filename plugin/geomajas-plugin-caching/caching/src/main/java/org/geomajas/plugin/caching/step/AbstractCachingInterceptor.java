@@ -104,7 +104,7 @@ public abstract class AbstractCachingInterceptor<T> implements PipelineIntercept
 				}
 			}
 			CacheContext cacheContext = cacheKeyService.getCacheContext(pipelineContext, keys);
-			cacheKey = cacheKeyService.getCacheKey(layer, category, cacheContext);
+			cacheKey = cacheKeyService.getCacheKey(cacheContext);
 			cc = (CONTAINER) cacheManager.get(layer, category, cacheKey);
 			while (null != cc) {
 				if (!cacheContext.equals(cc.getContext())) {
@@ -130,7 +130,7 @@ public abstract class AbstractCachingInterceptor<T> implements PipelineIntercept
 				cacheContext.put(CacheContext.SECURITY_CONTEXT_KEY, securityContext);
 			}
 			cacheContainer.setContext(cacheContext);
-			String cacheKey = cacheKeyService.getCacheKey(layer, category, cacheContext);
+			String cacheKey = cacheKeyService.getCacheKey(cacheContext);
 			Object cc = cacheManager.get(layer, category, cacheKey);
 			while (null != cc) {
 				cacheKey = cacheKeyService.makeUnique(cacheKey);

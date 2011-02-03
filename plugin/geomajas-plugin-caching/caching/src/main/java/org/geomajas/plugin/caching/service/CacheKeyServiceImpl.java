@@ -11,19 +11,19 @@
 
 package org.geomajas.plugin.caching.service;
 
-import com.twmacinta.util.MD5;
+import java.io.UnsupportedEncodingException;
+import java.util.Map;
+import java.util.Random;
+
 import org.geomajas.global.CacheableObject;
 import org.geomajas.global.GeomajasException;
-import org.geomajas.layer.Layer;
 import org.geomajas.service.pipeline.PipelineContext;
 import org.opengis.referencing.crs.CoordinateReferenceSystem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-import java.io.UnsupportedEncodingException;
-import java.util.Map;
-import java.util.Random;
+import com.twmacinta.util.MD5;
 
 /**
  * Implementation of {@link CacheKeyService}.
@@ -45,7 +45,7 @@ public class CacheKeyServiceImpl implements CacheKeyService {
 
 	private Random random = new Random();
 
-	public String getCacheKey(Layer layer, CacheCategory category, CacheContext context) {
+	public String getCacheKey(CacheContext context) {
 		try {
 			MD5 md5 = new MD5();
 			String toHash = "";
@@ -76,13 +76,6 @@ public class CacheKeyServiceImpl implements CacheKeyService {
 				if (log.isDebugEnabled()) {
 					toHash += cid;
 				}
-			}
-			md5.Update("$");
-			md5.Update(layer.getId());
-			md5.Update("-");
-			md5.Update(category.getName());
-			if (log.isDebugEnabled()) {
-				toHash += "$" + layer.getId() + "-" + category.getName();
 			}
 			String key = md5.asHex();
 			log.debug("key for context {} which is a hash for {}", key, toHash);

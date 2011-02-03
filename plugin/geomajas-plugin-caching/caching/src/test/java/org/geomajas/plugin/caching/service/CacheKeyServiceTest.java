@@ -56,7 +56,7 @@ public class CacheKeyServiceTest {
 		Assert.assertNull(cacheContext1.get(key2));
 		Assert.assertNull(cacheContext1.get(key3));
 		Assert.assertEquals(key4, cacheContext1.get(key4));
-		String cacheKey1 = cacheKeyService.getCacheKey(beans, CacheCategory.REBUILD, cacheContext1);
+		String cacheKey1 = cacheKeyService.getCacheKey(cacheContext1);
 		Assert.assertNotNull(cacheKey1);
 
 		// same context (in a different instance), should be same key
@@ -65,7 +65,7 @@ public class CacheKeyServiceTest {
 		Assert.assertNull(cacheContext2.get(key2));
 		Assert.assertNull(cacheContext2.get(key3));
 		Assert.assertEquals(key4, cacheContext2.get(key4));
-		String cacheKey2 = cacheKeyService.getCacheKey(beans, CacheCategory.REBUILD, cacheContext2);
+		String cacheKey2 = cacheKeyService.getCacheKey(cacheContext2);
 		Assert.assertNotNull(cacheKey2);
 		Assert.assertEquals(cacheKey1, cacheKey2);
 
@@ -75,7 +75,7 @@ public class CacheKeyServiceTest {
 		Assert.assertNull(cacheContext3.get(key2));
 		Assert.assertNull(cacheContext3.get(key3));
 		Assert.assertNull(key4, cacheContext3.get(key4));
-		String cacheKey3 = cacheKeyService.getCacheKey(beans, CacheCategory.REBUILD, cacheContext2);
+		String cacheKey3 = cacheKeyService.getCacheKey(cacheContext2);
 		Assert.assertNotNull(cacheKey3);
 		Assert.assertEquals(cacheKey1, cacheKey3);
 
@@ -86,7 +86,7 @@ public class CacheKeyServiceTest {
 		Assert.assertNull(cacheContext4.get(key2));
 		Assert.assertNull(cacheContext4.get(key3));
 		Assert.assertEquals(key4, cacheContext4.get(key4));
-		String cacheKey4 = cacheKeyService.getCacheKey(beans, CacheCategory.REBUILD, cacheContext2);
+		String cacheKey4 = cacheKeyService.getCacheKey(cacheContext2);
 		Assert.assertNotNull(cacheKey4);
 		Assert.assertEquals(cacheKey1, cacheKey4);
 	}

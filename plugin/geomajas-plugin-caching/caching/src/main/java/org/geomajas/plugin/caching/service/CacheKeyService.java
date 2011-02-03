@@ -11,7 +11,6 @@
 
 package org.geomajas.plugin.caching.service;
 
-import org.geomajas.layer.Layer;
 import org.geomajas.service.pipeline.PipelineContext;
 
 /**
@@ -24,12 +23,10 @@ public interface CacheKeyService {
 	/**
 	 * Get a key for an object to cache.
 	 *
-	 * @param layer layer for object to cache
-	 * @param category cache category
 	 * @param context context for object to cache
 	 * @return key
 	 */
-	String getCacheKey(Layer layer, CacheCategory category, CacheContext context);
+	String getCacheKey(CacheContext context);
 
 	/**
 	 * Build a cache context object from the requested keys of the pipeline context.

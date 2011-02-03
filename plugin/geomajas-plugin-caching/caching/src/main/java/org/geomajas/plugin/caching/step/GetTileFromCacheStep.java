@@ -68,7 +68,7 @@ public class GetTileFromCacheStep implements PipelineStep<GetTileContainer> {
 
 			CacheContext cacheContext = cacheKeyService.getCacheContext(pipelineContext, KEYS);
 			cacheContext.put("securityContext", securityContext.getId());
-			String cacheKey = cacheKeyService.getCacheKey(layer, CacheCategory.TILE, cacheContext);
+			String cacheKey = cacheKeyService.getCacheKey(cacheContext);
 
 			TileCacheContainer cc = cacheManager.get(layer, CacheCategory.TILE, cacheKey, TileCacheContainer.class);
 

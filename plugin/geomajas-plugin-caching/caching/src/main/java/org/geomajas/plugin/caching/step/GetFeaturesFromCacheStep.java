@@ -68,7 +68,7 @@ public class GetFeaturesFromCacheStep implements PipelineStep<GetFeaturesContain
 
 			CacheContext cacheContext = cacheKeyService.getCacheContext(pipelineContext, KEYS);
 			cacheContext.put("securityContext", securityContext.getId());
-			String cacheKey = cacheKeyService.getCacheKey(layer, CacheCategory.FEATURE, cacheContext);
+			String cacheKey = cacheKeyService.getCacheKey(cacheContext);
 
 			FeaturesCacheContainer cc =
 					cacheManager.get(layer, CacheCategory.FEATURE, cacheKey, FeaturesCacheContainer.class);
