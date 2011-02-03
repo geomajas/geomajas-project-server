@@ -126,4 +126,12 @@ public class PipelineServiceTest {
 		pipelineService.execute("interceptorTest2", "base", context, response);
 		Assert.assertEquals("blabeforei1beforei2s1afteri2s2afteri1", response.getValue());
 	}
+	
+	@Test
+	public void interceptorTestSkip() throws Exception {
+		StringAttribute response = new StringAttribute("bla");
+		PipelineContext context = pipelineService.createContext();
+		pipelineService.execute("interceptorTest3", "base", context, response);
+		Assert.assertEquals("blas2", response.getValue());
+	}
 }

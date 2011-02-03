@@ -214,5 +214,20 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 			</list>
 		</property>
 	</bean>
+	
+	<bean class="org.geomajas.service.pipeline.PipelineInfo">
+		<property name="pipelineName" value="interceptorTest3"/>
+		<property name="layerId" value="base"/>
+		<property name="delegatePipeline" ref="intercepted" />
+		<property name="interceptors">
+			<list>
+				<bean class="org.geomajas.internal.service.pipeline.SkipStepInterceptor">
+					<property name="id" value="i3" />
+					<property name="fromStepId" value="s1" />
+					<property name="toStepId" value="s1" />
+				</bean>
+			</list>
+		</property>
+	</bean>
 
 </beans>
