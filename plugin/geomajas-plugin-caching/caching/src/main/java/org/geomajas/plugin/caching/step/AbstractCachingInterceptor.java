@@ -11,6 +11,8 @@
 
 package org.geomajas.plugin.caching.step;
 
+import javax.annotation.PostConstruct;
+
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.plugin.caching.service.CacheCategory;
@@ -44,6 +46,8 @@ public abstract class AbstractCachingInterceptor<T> implements PipelineIntercept
 
 	private String toStepId;
 
+	private String stepId;
+
 	@Autowired
 	private CacheManagerService cacheManager;
 
@@ -75,6 +79,14 @@ public abstract class AbstractCachingInterceptor<T> implements PipelineIntercept
 
 	public void setToStepId(String toStepId) {
 		this.toStepId = toStepId;
+	}
+
+	public String getStepId() {
+		return stepId;
+	}
+	
+	public void setStepId(String stepId) {
+		this.stepId = stepId;
 	}
 
 	protected <CONTAINER extends CacheContainer> CONTAINER getContainer(String[] keys, CacheCategory category,
@@ -142,6 +154,14 @@ public abstract class AbstractCachingInterceptor<T> implements PipelineIntercept
 			// have to prevent caching code from making the pipeline fail, log and discard errors
 			log.error("Error during caching step, only logged: " + t.getMessage(), t);
 		}
+	}
+	
+	@PostConstruct
+	public void postConstruct() {
+		if (stepId != null) {
+			setFromStepId(stepId);
+			setToStepId(stepId);
+		} 
 	}
 
 }

@@ -80,8 +80,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 				<bean
 					class="org.geomajas.plugin.caching.step.GetFeaturesEachCachingInterceptor">
 					<property name="id" value="GetFeaturesCache" />
-					<property name="fromStepId" value="preGetFeatures" />
-					<property name="toStepId" value="postGetFeatures" />
+					<property name="stepId" value="GetFeaturesEachStep" />
 				</bean>
 			</list>
 		</property>
@@ -96,8 +95,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 				<bean
 					class="org.geomajas.plugin.caching.step.GetBoundsCachingInterceptor">
 					<property name="id" value="GetBoundsCache" />
-					<property name="fromStepId" value="preGetBounds" />
-					<property name="toStepId" value="postGetBounds" />
+					<property name="stepId" value="GetBoundsStep" />
 				</bean>
 			</list>
 		</property>
@@ -111,8 +109,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 				<bean
 					class="org.geomajas.plugin.caching.step.GetTileStringContentCachingInterceptor">
 					<property name="id" value="GetTileStringContentCache" />
-					<property name="fromStepId" value="preGetStringContent" />
-					<property name="toStepId" value="postGetStringContent" />
+					<property name="stepId" value="GetTileStringContentStep" />
 				</bean>
 				<bean
 					class="org.geomajas.plugin.caching.step.GetTileCachingInterceptor">
