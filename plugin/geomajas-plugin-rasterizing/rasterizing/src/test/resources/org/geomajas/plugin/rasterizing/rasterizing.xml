@@ -40,6 +40,18 @@ http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 	<bean name="service.DispatcherUrlService"
 		class="org.geomajas.service.impl.StaticDispatcherUrlService">
 		<property name="dispatcherUrl" value="http://test" />
+	</bean>	
+		
+	<bean class="org.geomajas.service.pipeline.PipelineInfo">
+		<property name="pipelineName"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_GET_VECTOR_TILE"/></property>
+		<property name="layerId" value="beans"/>
+		<property name="delegatePipeline" ref="PIPELINE_GET_VECTOR_TILE_RASTER_ALL" />
+	</bean>
+			
+	<bean class="org.geomajas.service.pipeline.PipelineInfo">
+		<property name="pipelineName"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_GET_VECTOR_TILE"/></property>
+		<property name="layerId" value="layerBeansPoint"/>
+		<property name="delegatePipeline" ref="PIPELINE_GET_VECTOR_TILE_RASTER_URL" />
 	</bean>
 
 </beans>

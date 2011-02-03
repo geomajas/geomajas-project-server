@@ -23,7 +23,8 @@ import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.layer.tile.TileCode;
 import org.geomajas.layer.tile.TileMetadata;
 import org.geomajas.plugin.caching.service.CacheCategory;
-import org.geomajas.plugin.caching.service.CacheManagerService;
+import org.geomajas.plugin.caching.service.CacheManagerServiceImpl;
+import org.geomajas.plugin.caching.service.CacheService;
 import org.geomajas.plugin.rasterizing.mvc.RasterizingController;
 import org.geomajas.security.SecurityManager;
 import org.geomajas.service.TestRecorder;
@@ -47,11 +48,11 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 @ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
 		"/org/geomajas/plugin/rasterizing/rasterizing.xml", "/org/geomajas/spring/testRecorder.xml",
 		"/org/geomajas/testdata/beanContext.xml", "/org/geomajas/testdata/layerBeans.xml",
-		"/org/geomajas/plugin/rasterizing/DefaultRasterizedPipelines.xml" })
+		"/org/geomajas/testdata/layerBeansPoint.xml" })
 public class RasterizingPipelineTest {
 
 	@Autowired
-	private CacheManagerService cacheManager;
+	private CacheManagerServiceImpl cacheManager;
 
 	@Autowired
 	@Qualifier("beans")
@@ -60,6 +61,14 @@ public class RasterizingPipelineTest {
 	@Autowired
 	@Qualifier("beansStyleInfo")
 	private NamedStyleInfo layerBeansStyleInfo;
+
+	@Autowired
+	@Qualifier("layerBeansPoint")
+	private VectorLayer layerBeansPoint;
+
+	@Autowired
+	@Qualifier("layerBeansPointStyleInfo")
+	private NamedStyleInfo layerBeansPointStyleInfo;
 
 	@Autowired
 	RasterizingController controller;
@@ -104,12 +113,14 @@ public class RasterizingPipelineTest {
 		String url = tile.getFeatureContent();
 		Assert.assertTrue(url.startsWith("http://test/rasterizing/beans/"));
 		Assert.assertTrue(url.endsWith(".png"));
-		String key = url.substring("http://test/rasterizing/beans/".length(), url.length()-4);
+		String key = url.substring("http://test/rasterizing/beans/".length(), url.length() - 4);
 		Object o = cacheManager.get(layerBeans, CacheCategory.RASTER, key);
-		Assert.assertNotNull("Missing raster in cache",o);
+		CacheService ss = cacheManager.getCacheForTesting(layerBeans.getId(), CacheCategory.RASTER);
+		Assert.assertNotNull("Missing raster in cache", o);
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		controller.getImage(layerBeans.getId(), key, response);
-		Assert.assertEquals("", recorder.matches(CacheCategory.RASTER, "Got item from cache"));
+		Assert.assertEquals("", recorder.matches(CacheCategory.RASTER, "Rasterization success", "Put item in cache",
+				"Put item in cache", "Got item from cache"));
 		Assert.assertArrayEquals(getBytes(IMAGE_PATH + "beans-4-8-8.png"), response.getContentAsByteArray());
 		cacheManager.drop(layerBeans);
 	}
@@ -122,63 +133,51 @@ public class RasterizingPipelineTest {
 		GetVectorTileRequest metadata = new GetVectorTileRequest();
 		metadata.setCode(new TileCode(4, 8, 8));
 		metadata.setCrs("EPSG:4326");
-		metadata.setLayerId(layerBeans.getId());
+		metadata.setLayerId(layerBeansPoint.getId());
 		metadata.setPanOrigin(new Coordinate(0, 0));
 		metadata.setScale(16);
 		metadata.setRenderer(TileMetadata.PARAM_SVG_RENDERER);
-		metadata.setStyleInfo(layerBeansStyleInfo);
+		metadata.setStyleInfo(layerBeansPointStyleInfo);
 		metadata.setPaintLabels(false);
 		metadata.setPaintGeometries(true);
 		// get tile
 		tile = vectorLayerService.getTile(metadata);
 		// find the key
 		String url = tile.getFeatureContent();
-		Assert.assertTrue(url.startsWith("http://test/rasterizing/beans/"));
+		Assert.assertTrue(url.startsWith("http://test/rasterizing/layerBeansPoint/"));
 		Assert.assertTrue(url.endsWith(".png"));
-		String key = url.substring("http://test/rasterizing/beans/".length(), url.length()-4);
-		Object o = cacheManager.get(layerBeans, CacheCategory.RASTER, key);
-		Assert.assertNotNull("Missing raster in cache",o);
-		// remove from normal cache
-		cacheManager.get(layerBeans, CacheCategory.RASTER, key);
+		String key = url.substring("http://test/rasterizing/layerBeansPoint/".length(), url.length() - 4);
+		Object o = cacheManager.get(layerBeansPoint, CacheCategory.RASTER, key);
+		Assert.assertNull("Unexpected raster in cache", o);
+
 		MockHttpServletResponse response = new MockHttpServletResponse();
-		controller.getImage(layerBeans.getId(), key, response);
-		Assert.assertEquals("",
-				recorder.matches(CacheCategory.REBUILD, 
-						key, 
-						"Rasterization success"
-		));
-		Assert.assertArrayEquals(getBytes(IMAGE_PATH + "beans-4-8-8.png"), response.getContentAsByteArray());
-		cacheManager.drop(layerBeans);
+		controller.getImage(layerBeansPoint.getId(), key, response);
+		Assert.assertEquals("", recorder.matches(CacheCategory.REBUILD, "Put item in cache", "Got item from cache",
+				"Put item in cache"));
+		Assert.assertArrayEquals(getBytes(IMAGE_PATH + "beansPoint-4-8-8.png"), response.getContentAsByteArray());
+		cacheManager.drop(layerBeansPoint);
 	}
 
-	public byte[] getBytes( String name )
-            throws IOException
-    {
-        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-        if ( null == classLoader )
-        {
-            classLoader = getClass().getClassLoader();
-        }
-        InputStream stream = classLoader.getResourceAsStream( name );
-        ByteBuffer buffer = new ByteBuffer(20000);
-        try
-        {
-            byte[] b = new byte[4096];
-            for (int n; (n = stream.read(b)) != -1;) {
-                buffer.append(b, 0, n);
-            }
-        }
-        finally
-        {
-            try
-            {
-                stream.close();
-            }
-            catch (IOException ioe)
-            { /* ignore exception on close */}
-        }
-        return buffer.toByteArray();
-    }
+	public byte[] getBytes(String name) throws IOException {
+		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+		if (null == classLoader) {
+			classLoader = getClass().getClassLoader();
+		}
+		InputStream stream = classLoader.getResourceAsStream(name);
+		ByteBuffer buffer = new ByteBuffer(20000);
+		try {
+			byte[] b = new byte[4096];
+			for (int n; (n = stream.read(b)) != -1;) {
+				buffer.append(b, 0, n);
+			}
+		} finally {
+			try {
+				stream.close();
+			} catch (IOException ioe) { /* ignore exception on close */
+			}
+		}
+		return buffer.toByteArray();
+	}
 
 	public final class ByteBuffer {
 
@@ -222,4 +221,5 @@ public class RasterizingPipelineTest {
 			return new String(buffer, 0, length);
 		}
 	}
+	
 }

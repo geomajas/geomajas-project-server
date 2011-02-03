@@ -22,6 +22,10 @@ import org.geomajas.plugin.caching.step.CacheContainer;
  */
 @Api(allMethods = true)
 public class RasterizingContainer extends CacheContainer {
+	
+	public RasterizingContainer() {
+		System.out.println();
+	}
 
 	private byte[] image;
 

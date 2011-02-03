@@ -21,7 +21,8 @@ import org.geomajas.global.Api;
  */
 @Api(allMethods = true)
 public interface RasterizingPipelineCode {
-	String PIPELINE_RASTERIZING = "rasterizing.rasterize";
+	String PIPELINE_RASTERIZING_CACHED = "rasterizing.rasterize"; // controller pipeline
+	String PIPELINE_GET_VECTOR_TILE_RASTERIZING = "rasterizing.getVectorTile"; // command pipeline
 
 	String IMAGE_ID_KEY = "rasterizing.imageId"; // String
 	String CONTAINER_KEY = "rasterizing.container"; // rasterizingContainer

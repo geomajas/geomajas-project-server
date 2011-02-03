@@ -11,21 +11,10 @@
 
 package org.geomajas.plugin.rasterizing;
 
-import org.geomajas.geometry.Crs;
-import org.geomajas.geometry.CrsTransform;
 import org.geomajas.global.GeomajasException;
-import org.geomajas.internal.layer.tile.InternalTileImpl;
-import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.pipeline.GetTileContainer;
-import org.geomajas.layer.tile.InternalTile;
-import org.geomajas.layer.tile.TileMetadata;
-import org.geomajas.plugin.caching.service.CacheCategory;
-import org.geomajas.plugin.caching.service.CacheManagerService;
 import org.geomajas.plugin.rasterizing.api.RasterizingContainer;
 import org.geomajas.plugin.rasterizing.api.RasterizingPipelineCode;
-import org.geomajas.service.DtoConverterService;
-import org.geomajas.service.GeoService;
-import org.geomajas.service.TestRecorder;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
 import org.geomajas.service.pipeline.PipelineService;
@@ -33,12 +22,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.vividsolutions.jts.geom.Envelope;
-
 /**
- * Step which does the actual rasterizing. This is done by invoking the get getTile() call on the vector layer.
- * The {@link RasterTileStep} there will actually fill the {@link RasterizingContainer} object.
- *
+ * Step which does the actual rasterizing. This is done by invoking the get getTile() call on the vector layer. The
+ * {@link RasterTileStep} there will actually fill the {@link RasterizingContainer} object.
+ * 
  * @author Joachim Van der Auwera
  */
 public class RasterizeStep extends AbstractRasterizingStep {
@@ -46,56 +33,25 @@ public class RasterizeStep extends AbstractRasterizingStep {
 	private final Logger log = LoggerFactory.getLogger(RasterizeStep.class);
 
 	@Autowired
-	private CacheManagerService cacheManager;
+	private PipelineService<GetTileContainer> pipelineService;
 
-	@Autowired
-	private PipelineService pipelineService;
-
-	@Autowired
-	private GeoService geoService;
-
-	@Autowired
-	private DtoConverterService dtoConverterService;
-
-	@Autowired
-	private TestRecorder recorder;
-
-	public void execute(PipelineContext rasterContext, RasterizingContainer rasterizingContainer) throws
-			GeomajasException {
-
-		String cacheKey = rasterContext.get(RasterizingPipelineCode.IMAGE_ID_KEY, String.class);
-		String layerId = rasterContext.get(PipelineCode.LAYER_ID_KEY, String.class);
-		VectorLayer layer = rasterContext.get(PipelineCode.LAYER_KEY, VectorLayer.class);
-
-		RebuildCacheContainer cc = cacheManager.get(layer, CacheCategory.REBUILD, cacheKey,
-				RebuildCacheContainer.class);
-		if (null == cc) {
-			recorder.record(CacheCategory.REBUILD, "Missing item in cache");
-			log.error("Cannot find raster information in rebuild cache. This will result in zero-length image.");
-			rasterizingContainer.setImage(new byte[0]);
-		} else {
-			recorder.record(CacheCategory.REBUILD, "Got item from cache");
-			TileMetadata tileMetadata = cc.getMetadata();
-			// @todo need to switch to the correct security context
-
-			PipelineContext context = pipelineService.createContext();
-			context.put(RasterizingPipelineCode.CONTAINER_KEY, rasterizingContainer); // container to render image in!
-			context.put(PipelineCode.LAYER_ID_KEY, layerId);
-			context.put(PipelineCode.LAYER_KEY, layer);
-			context.put(PipelineCode.TILE_METADATA_KEY, tileMetadata);
-			Crs crs = geoService.getCrs2(tileMetadata.getCrs());
-			context.put(PipelineCode.CRS_KEY, crs);
-			CrsTransform layerToMap = geoService.getCrsTransform(layer.getCrs(), crs);
-			context.put(PipelineCode.CRS_TRANSFORM_KEY, layerToMap);
-			context.put(PipelineCode.FEATURE_INCLUDES_KEY, tileMetadata.getFeatureIncludes());
-			Envelope layerExtent = dtoConverterService.toInternal(layer.getLayerInfo().getMaxExtent());
-			Envelope tileExtent = geoService.transform(layerExtent, layerToMap);
-			context.put(PipelineCode.TILE_MAX_EXTENT_KEY, tileExtent);
-			InternalTile tile = new InternalTileImpl(tileMetadata.getCode(), tileExtent, tileMetadata.getScale());
-			GetTileContainer response = new GetTileContainer();
-			response.setTile(tile);
-			pipelineService.execute(PipelineCode.PIPELINE_GET_VECTOR_TILE, layerId, context, response);
-			log.debug("getTile response InternalTile {}", response);
-		}
+	public void execute(PipelineContext rasterContext, RasterizingContainer rasterizingContainer)
+			throws GeomajasException {
+		// calls the vector pipeline with the rebuild key
+		// Q: do we need a new context or can we pass our own raster context instead ?
+		PipelineContext context = pipelineService.createContext();
+		context.put(RasterizingPipelineCode.IMAGE_ID_KEY, rasterContext.get(RasterizingPipelineCode.IMAGE_ID_KEY));
+		context.put(PipelineCode.LAYER_ID_KEY, rasterContext.get(PipelineCode.LAYER_ID_KEY));
+		context.put(PipelineCode.LAYER_KEY, rasterContext.get(PipelineCode.LAYER_KEY));
+		
+		String layerId = context.get(PipelineCode.LAYER_ID_KEY, String.class);
+		GetTileContainer response = new GetTileContainer();
+		pipelineService.execute(RasterizingPipelineCode.PIPELINE_GET_VECTOR_TILE_RASTERIZING, layerId, context,
+				response);
+		rasterContext.put(PipelineCode.BOUNDS_KEY, response.getTile().getBounds());
+		rasterContext.put(PipelineCode.TILE_METADATA_KEY, context.get(PipelineCode.TILE_METADATA_KEY));
+		RasterizingContainer rc = context.get(RasterizingPipelineCode.CONTAINER_KEY, RasterizingContainer.class );
+		rasterizingContainer.setImage(rc.getImage());
+		log.debug("getTile response InternalTile {}", response);
 	}
 }
