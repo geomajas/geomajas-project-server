@@ -9,7 +9,6 @@
   ~ by the Geomajas Contributors License Agreement. For full licensing
   ~ details, see LICENSE.txt in the project root.
   -->
-
 <!DOCTYPE chapter PUBLIC "-//OASIS//DTD DocBook XML V4.4//EN"
 "http://www.oasis-open.org/docbook/xml/4.4/docbookx.dtd">
 <chapter id="release" lang="en">
@@ -42,206 +41,398 @@
       </listitem>
     </itemizedlist></para>
 
-  <para>The basic procedure is very easy, for the part you want to release,
-  execute the following two commands (using the next version as parameter,
-  this will make you type less). These steps should be done in a clean
-  location, it is best to do a fresh checkout.</para>
+  <para>Details below. For any steps which are problematic, you can ask help
+  on the majas-dev mailing list.</para>
 
-  <itemizedlist>
-    <listitem>
-      <para>mvn -DdevelopmentVersion=1.8.0-SNAPSHOT release:prepare</para>
-    </listitem>
+  <section>
+    <title>General steps</title>
 
-    <listitem>
-      <para>mvn release:perform</para>
-    </listitem>
-  </itemizedlist>
+    <para>Releasing is done in the following steps, each will be detailed
+    below. Do also check the part specific notes below.</para>
 
-  <para>At the end of the build, the src/main/resources/api.txt needs to be
-  updated with the file which is put in target during the build (though the
-  header at the top should remain, with the version updated.</para>
+    <orderedlist>
+      <listitem>
+        <para>Prepare release (on trunk)</para>
+      </listitem>
 
-  <para>The geomajas-dep pom and aggregate.sh need to be updated for the
-  released and new snapshot versions respectively.</para>
+      <listitem>
+        <para>Put the release in staging</para>
+      </listitem>
 
-  <para>Remember to comment the snapshot repository in all poms.</para>
+      <listitem>
+        <para>Finish the staging procedure</para>
+      </listitem>
 
-  <para>The documentation uses the example applications for extracting code
-  which is included in the manual. This is a circular dependency when it
-  includes the part to be released. It may be useful to do a local build using
-  the next release version locally, to allow the release the work for the
-  documentation part. You can do the actual release of the example application
-  at the end.</para>
+      <listitem>
+        <para>Start a vote for the release</para>
+      </listitem>
 
-  <para>When releasing the backend core, there may be a problem building the
-  javadocs. The solution can be to do a local build of the backend using the
-  next release version before doing the actual release.</para>
+      <listitem>
+        <para>Count votes</para>
+      </listitem>
 
-  <para>When releasing the GWT face, make sure the dependency versions are
-  correct in
-  <code>geomajas-gwt-archetype/src/main/resources/archetype-resources/pom.xml</code>.</para>
+      <listitem>
+        <para>Finish the release</para>
+      </listitem>
 
-  <para>Close the staging repository (which makes the artifacts available for
-  testing). When staging several parts, it is recommended to close each
-  separately. This allows more fine-grained promotion and/or dropping of
-  artifacts.</para>
+      <listitem>
+        <para>Announce</para>
+      </listitem>
+    </orderedlist>
 
-  <para>When staging is done and the repository closed, start a vote to allow
-  users to test the new artifact.</para>
+    <section>
+      <title>Prepare release</title>
 
-  <para>When the vote failed, drop the repository. Development just continue
-  and the version number is skipped. The release date in JIRA is actually the
-  staging date.</para>
+      <para>Put the reference to the snapshot repository in comments in all
+      poms.</para>
 
-  <para>When releasing an archetype, you have to update the files at
-  http://files.geomajas.org/archetype-catalog.xml after a successful vote, and
-  the file http://files.geomajas.org/archetype-latest.xml after doing the
-  release:perform.</para>
+      <para>Search for occurrences to the version number (with and without
+      -SNAPSHOT" in the part. Fix when needed (not in the pom, this will be
+      changed by the release procedure itself).</para>
 
-  <para>When the vote was successful, promote the staged artifacts and
-  announce the release, for the back-end, this requires the following
-  steps:</para>
+      <para>Commit.</para>
+    </section>
 
-  <orderedlist numeration="arabic">
-    <listitem>
-      <para>Upload zip files to sourceforge download area</para>
-    </listitem>
+    <section>
+      <title>Put the release in staging</title>
 
-    <listitem>
-      <para>JIRA: Assure the next version exists, mark the current version as
-      released agreeing to move open issue to the next version.</para>
-    </listitem>
+      <para>Do a fresh checkout of the part to in a temporary
+      directory.</para>
 
-    <listitem>
-      <para>For unstable release: install gwt-example for online trial</para>
-    </listitem>
+      <para>Execute the following two commands (using the next version as
+      parameter, this will make you type less).</para>
 
-    <listitem>
-      <para>For stable release: install all demo application for online
-      trial</para>
-    </listitem>
+      <itemizedlist>
+        <listitem>
+          <para>mvn -DdevelopmentVersion=1.8.0-SNAPSHOT release:prepare</para>
+        </listitem>
 
-    <listitem>
-      <para>Announce:</para>
+        <listitem>
+          <para>mvn release:perform</para>
+        </listitem>
+      </itemizedlist>
+    </section>
 
-      <para><itemizedlist>
-          <listitem>
-            <para>Build announcement message using the following
-            template:</para>
+    <section>
+      <title>Finish the staging procedure</title>
 
-            <blockquote>
-              <para>title: Geomajas <emphasis>1.5.0</emphasis>
-              <emphasis>technology preview/release candidate/stable
-              </emphasis> released</para>
+      <para>Update trunk (the versions will have rolled) to the next
+      snapshot..</para>
 
-              <para></para>
+      <para>For each of the modules in the part, the
+      src/main/resources/api.txt file needs to be updated. The header at the
+      top should remain, with the version updated. The rest of the file needs
+      to be replaced by the contents of target/api.txt.</para>
 
-              <para>The Geomajas project is proud to release Geomajas 1.5.0, a
-              technology preview showcasing the progress we are making towards
-              our next stable build.</para>
+      <para>The aggregate.sh need to be updated for the new snapshot versions
+      respectively.</para>
 
-              <para>The major advances in this version include
-              <emphasis>(indicate major contributors when
-              appropriate)</emphasis></para>
+      <para>In JIRA, create the next version for the project if that did not
+      yet exist. Close any issues which are fixed in this release but only
+      marked as resolved. Mark the project as released., moving issues which
+      are not fixed to the next version.</para>
 
-              <itemizedlist>
-                <listitem>
-                  <para>modularization of the system</para>
-                </listitem>
+      <para>Login to oss.sonatype.org. Check that the correct artifacts are in
+      the repository and close it. The artifacts are now ready for testing.
+      When staging several parts, it is recommended to close each separately.
+      This allows more fine-grained promotion and/or dropping of
+      artifacts.</para>
 
-                <listitem>
-                  <para>introduction of a GWT face</para>
-                </listitem>
-              </itemizedlist>
+      <para>Search for all occurrences to the previous snapshot version in
+      trunk, replace by the released version (yes this will cause a dependency
+      on the staged artifacts).</para>
+    </section>
 
-              <para>For the full list of changes, see
-              http://jira.geomajas.org/jira/secure/ReleaseNote.jspa?version=10131&amp;styleName=Html&amp;projectId=10000&amp;Create=Create</para>
+    <section>
+      <title>Start a vote for the release</title>
 
-              <para>Documentation for this release can be found at
-              http://files.geomajas.org/maven/1.5.0/geomajas/userguide.html
-              .</para>
+      <para>Start a vote on majas-dev for release of the part. The voting
+      period should be at least two working days and span a weekend. The
+      voting message should read something like "VOTE: release blabla plug-in
+      v1.0.0".</para>
 
-              <para>Download links can be found at
-              http://geomajas.org/release_1.5.0 .</para>
+      <para>The body of the vote needs to include:</para>
 
-              <para>For the next release we plan to include the following
-              features</para>
+      <itemizedlist>
+        <listitem>
+          <para>Short introduction to the released part.</para>
+        </listitem>
 
-              <itemizedlist>
-                <listitem>
-                  <para>absorb CO2 from the air to reduce global
-                  warming</para>
-                </listitem>
+        <listitem>
+          <para>Major improvements of the release.</para>
+        </listitem>
 
-                <listitem>
-                  <para>remove need for system to be powered</para>
-                </listitem>
-              </itemizedlist>
+        <listitem>
+          <para>Link to release notes.</para>
+        </listitem>
 
-              <para></para>
+        <listitem>
+          <para>Link to migration notes if any.</para>
+        </listitem>
 
-              <para>Please note that this is an unstable release, all the new
-              features since the previous stable release may still change and
-              we some new bugs may have been introduced.</para>
+        <listitem>
+          <para>An indication of how to test, typically a text like the
+          following will do:<blockquote>
+              <para>The artifacts are available in the staging repository:
+              https://oss.sonatype.org/content/groups/staging</para>
 
-              <para>If you want to help us, join the discussions on the
-              developer list, list bugs in jira and make feature requests in
-              our fora. See http://www.geomajas.org/gis-development .</para>
+              <para>To make sure you can use the artifacts you have to add
+              this repository in your local maven settings:
+              ~/.m2/settings.xml:</para>
 
-              <para></para>
+              <para><programlisting>&lt;settigs&gt;
+  &lt;profiles&gt;
+    &lt;profile&gt;
+      &lt;id&gt;mine&lt;/id&gt; 
+      &lt;!-- add staging repository --&gt;
+      &lt;repositories&gt;
+        &lt;repository&gt;
+          &lt;id&gt;oss-staging&lt;/id&gt;
+          &lt;url&gt;https://oss.sonatype.org/content/groups/staging&lt;/url&gt;
+        &lt;/repository&gt;
+      &lt;/repositories&gt; 
+    &lt;/profile&gt;
+  &lt;/profiles&gt;
+  &lt;activeProfiles&gt;
+    &lt;activeProfile&gt;mine&lt;/activeProfile&gt;
+  &lt;/activeProfiles&gt;
+&lt;/settings&gt;</programlisting></para>
+            </blockquote></para>
+        </listitem>
 
-              <para>Geomajas is the extensible open source web mapping
-              framework, enabling integrated GIS solutions for businesses and
-              government.</para>
-            </blockquote>
+        <listitem>
+          <para>Your vote.</para>
+        </listitem>
+      </itemizedlist>
+    </section>
 
-            <para>Feel free to change wording and add useful content.</para>
-          </listitem>
+    <section>
+      <title>Count votes</title>
 
-          <listitem>
-            <para>Create download image for this version (278x61
-            pixels).</para>
-          </listitem>
+      <para>When the voting period has ended, count the votes. The vote is
+      successful when there are at lease two +1 binding votes and no -1
+      binding votes.</para>
 
-          <listitem>
-            <para>Add release on download page (remember to name the page
-            "release_1.5.0" with correct version number).</para>
-          </listitem>
+      <para>Reply to your original vote message on majas-dev, change the title
+      to start with "VOTE SUCCESSFUL" or "VOTE FAILED". In the body of the
+      vote, include the full name of all voters and their vote.</para>
+    </section>
 
-          <listitem>
-            <para>For a stable release, update the documentation page.</para>
-          </listitem>
+    <section>
+      <title>Finish the release</title>
 
-          <listitem>
-            <para>For a stable release, update Geomajas wikipedia page.</para>
-          </listitem>
+      <para>When the vote failed, drop the repository. All the references to
+      the release version in trunk need to be rolled to the new snapshot
+      version. The version number is skipped. The release date in JIRA is
+      actually the staging date.</para>
 
-          <listitem>
-            <para>Send announcement to majas-dev (plain text).</para>
-          </listitem>
+      <para>The geomajas-dep pom and aggregate.sh need to be updated for the
+      newly released versions respectively.</para>
+    </section>
 
-          <listitem>
-            <para>Publish on general forum.</para>
-          </listitem>
+    <section>
+      <title>Announce</title>
 
-          <listitem>
-            <para>Announce on freshmeat.</para>
-          </listitem>
+      <para>Build announcement message, it is recommended this contains the
+      following:</para>
 
-          <listitem>
-            <para>Create news item (without the "Geomajas is..."
-            footer.</para>
-          </listitem>
+      <itemizedlist>
+        <listitem>
+          <para>Short introduction to the released part.</para>
+        </listitem>
 
-          <listitem>
-            <para>Send mail to jan.pote@geosparc.com to assure Geosparc is
-            informed of the release.</para>
-          </listitem>
-        </itemizedlist></para>
-    </listitem>
+        <listitem>
+          <para>Major improvements in the release.</para>
+        </listitem>
 
-    <listitem>
-      <para></para>
-    </listitem>
-  </orderedlist>
+        <listitem>
+          <para>Link to release notes.</para>
+        </listitem>
+
+        <listitem>
+          <para>Link to migration notes if any.</para>
+        </listitem>
+      </itemizedlist>
+
+      <para>Send announcement to majas-dev (plain text). </para>
+
+      <para>Publish on general forum. </para>
+
+      <para>Announce on freshmeat. </para>
+
+      <para>Create news item on geomajas.org site. </para>
+
+      <para>Send mail to jan.pote@geosparc.com to allow sending a press
+      release. </para>
+    </section>
+  </section>
+
+  <section>
+    <title>Additional notes for releasing the back-end</title>
+
+    <para></para>
+
+    <section>
+      <title>Announce</title>
+
+      <para>Create download image for this version (278x61 pixels).</para>
+
+      <para>Add release on download page (remember to name the page
+      "release_1.5.0" with correct version number).</para>
+
+      <para>Update the download block on the Geomajas site.</para>
+
+      <para>Update the javadoc links on the documentation page.</para>
+
+      <para>Update Geomajas wikipedia page.</para>
+    </section>
+  </section>
+
+  <section>
+    <title>Additional notes for releasing the GWT face</title>
+
+    <para></para>
+  </section>
+
+  <section>
+    <title>Additional notes for releasing the GTW archetype</title>
+
+    <para>Update the archetype-XXX.xml files.</para>
+
+    <para>Include the command to try the archetype in the vote message.</para>
+
+    <para>Include the command to use the archetype in the announce
+    message.</para>
+
+    <section>
+      <title>Prepare release</title>
+
+      <para>Do an explicit check to assure no -SNAPSHOT versions are included
+      in the archetype.</para>
+    </section>
+
+    <section>
+      <title>Finish the staging procedure</title>
+
+      <para>On gaya,
+      update/var/www/files.geomajas.org/htdocs/archetype-latest.xml. Make sure
+      the version is correct.</para>
+    </section>
+
+    <section>
+      <title>Start a vote for the release</title>
+
+      <para>On gaya,
+      update/var/www/files.geomajas.org/htdocs/archetype-staging.xml. Make
+      sure the version is correct.</para>
+
+      <para>Include the command to try the archetype in the vote
+      message.</para>
+
+      <para>It is recommended to start this vote only when all modules which
+      are referenced are already released. In that case, you don't have to
+      mention the staging repository in the vote message.</para>
+    </section>
+
+    <section>
+      <title>Finish the release</title>
+
+      <para>On gaya,
+      update/var/www/files.geomajas.org/htdocs/archetype-catalog.xml. Make
+      sure the version is correct.</para>
+    </section>
+  </section>
+
+  <section>
+    <title>Additional notes for releasing the GWT showcase</title>
+
+    <para></para>
+
+    <section>
+      <title>Finish the release</title>
+
+      <para>Upload war files to sourceforge download area.</para>
+
+      <para>Update the showcase on gaya. Make sure the Google API key is
+      set.</para>
+    </section>
+  </section>
+
+  <section>
+    <title>Possible problems and solutions</title>
+
+    <para>When releasing the backend core, there may be a problem building the
+    javadocs. The solution can be to do a local build of the backend using the
+    next release version before doing the actual release.</para>
+
+    <para>The documentation uses the example applications for extracting code
+    which is included in the manual. Sometimes (it shouldn't) this is a
+    circular dependency when it includes the part to be released. It may be
+    useful to do a local build using the next release version locally, to
+    allow the release the work for the documentation part. You can do the
+    actual release of the example application at the end.</para>
+  </section>
+
+  <section>
+    <title>Example announcement</title>
+
+    <para>title: Geomajas <emphasis>1.5.0</emphasis> <emphasis>technology
+    preview/release candidate/stable </emphasis> released</para>
+
+    <para></para>
+
+    <para>The Geomajas project is proud to release Geomajas 1.5.0, a
+    technology preview showcasing the progress we are making towards our next
+    stable build.</para>
+
+    <para>The major advances in this version include <emphasis>(indicate major
+    contributors when appropriate)</emphasis></para>
+
+    <itemizedlist>
+      <listitem>
+        <para>modularization of the system</para>
+      </listitem>
+
+      <listitem>
+        <para>introduction of a GWT face</para>
+      </listitem>
+    </itemizedlist>
+
+    <para>For the full list of changes, see
+    http://jira.geomajas.org/jira/secure/ReleaseNote.jspa?version=10131&amp;styleName=Html&amp;projectId=10000&amp;Create=Create</para>
+
+    <para>Documentation for this release can be found at
+    http://files.geomajas.org/maven/1.5.0/geomajas/userguide.html .</para>
+
+    <para>Download links can be found at http://geomajas.org/release_1.5.0
+    .</para>
+
+    <para>For the next release we plan to include the following
+    features</para>
+
+    <itemizedlist>
+      <listitem>
+        <para>absorb CO2 from the air to reduce global warming</para>
+      </listitem>
+
+      <listitem>
+        <para>remove need for system to be powered</para>
+      </listitem>
+    </itemizedlist>
+
+    <para></para>
+
+    <para>Please note that this is an unstable release, all the new features
+    since the previous stable release may still change and we some new bugs
+    may have been introduced.</para>
+
+    <para>If you want to help us, join the discussions on the developer list,
+    list bugs in jira and make feature requests in our fora. See
+    http://www.geomajas.org/gis-development .</para>
+
+    <para></para>
+
+    <para>Geomajas is the extensible open source web mapping framework,
+    enabling integrated GIS solutions for businesses and government.</para>
+  </section>
 </chapter>
