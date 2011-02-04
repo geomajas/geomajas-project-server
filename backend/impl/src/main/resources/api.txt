@@ -1,2 +1,4 @@
-// geomajas-impl module API, 1.7.1
 org.geomajas.security.allowall.AllowAllSecurityService::1.6.0
+org.geomajas.service.impl.StaticDispatcherUrlService::1.8.0
+org.geomajas.service.impl.StaticDispatcherUrlService:String getDispatcherUrl():1.8.0
+org.geomajas.service.impl.StaticDispatcherUrlService:void setDispatcherUrl(String, ):1.8.0

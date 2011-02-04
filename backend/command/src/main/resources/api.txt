@@ -1,4 +1,3 @@
-// geomajas-command module API, 1.7.0
 org.geomajas.command.configuration.GetMapConfigurationCommand::1.6.0
 org.geomajas.command.dto.CopyrightResponse::1.7.1
 org.geomajas.command.dto.CopyrightResponse:List<CopyrightInfo> getCopyrights():1.7.1
@@ -32,15 +31,18 @@ org.geomajas.command.dto.GetRasterTilesResponse:void setRasterData(List<RasterTi
 org.geomajas.command.dto.GetVectorTileRequest::1.6.0
 org.geomajas.command.dto.GetVectorTileRequest:Coordinate getPanOrigin():1.6.0
 org.geomajas.command.dto.GetVectorTileRequest:NamedStyleInfo getStyleInfo():1.6.0
+org.geomajas.command.dto.GetVectorTileRequest:String getCacheId():1.8.0
 org.geomajas.command.dto.GetVectorTileRequest:String getCrs():1.6.0
 org.geomajas.command.dto.GetVectorTileRequest:String getFilter():1.6.0
 org.geomajas.command.dto.GetVectorTileRequest:String getRenderer():1.6.0
 org.geomajas.command.dto.GetVectorTileRequest:String toString():1.6.0
 org.geomajas.command.dto.GetVectorTileRequest:TileCode getCode():1.6.0
+org.geomajas.command.dto.GetVectorTileRequest:boolean equals(Object, ):1.8.0
 org.geomajas.command.dto.GetVectorTileRequest:boolean isPaintGeometries():1.6.0
 org.geomajas.command.dto.GetVectorTileRequest:boolean isPaintLabels():1.6.0
 org.geomajas.command.dto.GetVectorTileRequest:double getScale():1.6.0
 org.geomajas.command.dto.GetVectorTileRequest:int getFeatureIncludes():1.6.0
+org.geomajas.command.dto.GetVectorTileRequest:int hashCode():1.8.0
 org.geomajas.command.dto.GetVectorTileRequest:void setCode(TileCode, ):1.6.0
 org.geomajas.command.dto.GetVectorTileRequest:void setCrs(String, ):1.6.0
 org.geomajas.command.dto.GetVectorTileRequest:void setFeatureIncludes(int, ):1.6.0
@@ -53,6 +55,7 @@ org.geomajas.command.dto.GetVectorTileRequest:void setScale(double, ):1.6.0
 org.geomajas.command.dto.GetVectorTileRequest:void setStyleInfo(NamedStyleInfo, ):1.6.0
 org.geomajas.command.dto.GetVectorTileResponse::1.6.0
 org.geomajas.command.dto.GetVectorTileResponse:GetVectorTileResponse():1.6.0
+org.geomajas.command.dto.GetVectorTileResponse:String toString():1.8.0
 org.geomajas.command.dto.GetVectorTileResponse:VectorTile getTile():1.6.0
 org.geomajas.command.dto.GetVectorTileResponse:void setTile(VectorTile, ):1.6.0
 org.geomajas.command.dto.PersistTransactionRequest::1.6.0
@@ -69,6 +72,8 @@ org.geomajas.command.dto.SearchByLocationRequest::1.6.0
 org.geomajas.command.dto.SearchByLocationRequest:Geometry getLocation():1.6.0
 org.geomajas.command.dto.SearchByLocationRequest:SearchByLocationRequest():1.6.0
 org.geomajas.command.dto.SearchByLocationRequest:String getCrs():1.6.0
+org.geomajas.command.dto.SearchByLocationRequest:String getFilter():1.8.0
+org.geomajas.command.dto.SearchByLocationRequest:String toString():1.8.0
 org.geomajas.command.dto.SearchByLocationRequest:double getBuffer():1.6.0
 org.geomajas.command.dto.SearchByLocationRequest:float getRatio():1.6.0
 org.geomajas.command.dto.SearchByLocationRequest:int getFeatureIncludes():1.6.0
@@ -83,6 +88,7 @@ org.geomajas.command.dto.SearchByLocationRequest:static final int SEARCH_FIRST_L
 org.geomajas.command.dto.SearchByLocationRequest:void setBuffer(double, ):1.6.0
 org.geomajas.command.dto.SearchByLocationRequest:void setCrs(String, ):1.6.0
 org.geomajas.command.dto.SearchByLocationRequest:void setFeatureIncludes(int, ):1.6.0
+org.geomajas.command.dto.SearchByLocationRequest:void setFilter(String, ):1.8.0
 org.geomajas.command.dto.SearchByLocationRequest:void setLocation(Geometry, ):1.6.0
 org.geomajas.command.dto.SearchByLocationRequest:void setQueryType(int, ):1.6.0
 org.geomajas.command.dto.SearchByLocationRequest:void setRatio(float, ):1.6.0

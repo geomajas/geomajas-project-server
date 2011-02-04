@@ -143,6 +143,20 @@ org.geomajas.gwt.client.controller.GraphicsController:void onActivate():1.6.0
 org.geomajas.gwt.client.controller.GraphicsController:void onDeactivate():1.6.0
 org.geomajas.gwt.client.controller.GraphicsController:void setOffsetX(int, ):1.8.0
 org.geomajas.gwt.client.controller.GraphicsController:void setOffsetY(int, ):1.8.0
+org.geomajas.gwt.client.controller.listener.AbstractListener::1.8.0
+org.geomajas.gwt.client.controller.listener.AbstractListener:void onMouseDown(ListenerEvent, ):1.8.0
+org.geomajas.gwt.client.controller.listener.AbstractListener:void onMouseMove(ListenerEvent, ):1.8.0
+org.geomajas.gwt.client.controller.listener.AbstractListener:void onMouseOut(ListenerEvent, ):1.8.0
+org.geomajas.gwt.client.controller.listener.AbstractListener:void onMouseOver(ListenerEvent, ):1.8.0
+org.geomajas.gwt.client.controller.listener.AbstractListener:void onMouseUp(ListenerEvent, ):1.8.0
+org.geomajas.gwt.client.controller.listener.AbstractListener:void onMouseWheel(ListenerEvent, ):1.8.0
+org.geomajas.gwt.client.controller.listener.Listener::1.8.0
+org.geomajas.gwt.client.controller.listener.Listener:void onMouseDown(ListenerEvent, ):1.8.0
+org.geomajas.gwt.client.controller.listener.Listener:void onMouseMove(ListenerEvent, ):1.8.0
+org.geomajas.gwt.client.controller.listener.Listener:void onMouseOut(ListenerEvent, ):1.8.0
+org.geomajas.gwt.client.controller.listener.Listener:void onMouseOver(ListenerEvent, ):1.8.0
+org.geomajas.gwt.client.controller.listener.Listener:void onMouseUp(ListenerEvent, ):1.8.0
+org.geomajas.gwt.client.controller.listener.Listener:void onMouseWheel(ListenerEvent, ):1.8.0
 org.geomajas.gwt.client.gfx.GraphicsContext::1.6.0
 org.geomajas.gwt.client.gfx.GraphicsContext:Object getGroupById(String, ):1.6.0
 org.geomajas.gwt.client.gfx.GraphicsContext:String getId():1.6.0
@@ -322,6 +336,9 @@ org.geomajas.gwt.client.widget.MapWidget:ImageContext getRasterContext():1.6.0
 org.geomajas.gwt.client.widget.MapWidget:MapModel getMapModel():1.6.0
 org.geomajas.gwt.client.widget.MapWidget:MapWidget(String, String, ):1.6.0
 org.geomajas.gwt.client.widget.MapWidget:MenuContext getMenuContext():1.6.0
+org.geomajas.gwt.client.widget.MapWidget:Set<Listener> getListeners():1.8.0
+org.geomajas.gwt.client.widget.MapWidget:boolean addListener(Listener, ):1.8.0
+org.geomajas.gwt.client.widget.MapWidget:boolean removeListener(Listener, ):1.8.0
 org.geomajas.gwt.client.widget.MapWidget:double getPixelPerUnit():1.7.0
 org.geomajas.gwt.client.widget.MapWidget:void init():1.6.0
 org.geomajas.gwt.client.widget.MapWidget:void registerPainter(Painter, ):1.6.0
@@ -350,6 +367,7 @@ org.geomajas.gwt.client.widget.ScaleSelect:ScaleSelect(MapView, double, ):1.6.0
 org.geomajas.gwt.client.widget.ScaleSelect:void setScales(Double, ):1.6.0
 org.geomajas.gwt.client.widget.ScaleValidator::1.6.0
 org.geomajas.gwt.client.widget.Toolbar::1.6.0
+org.geomajas.gwt.client.widget.UpdatePointOfViewHandler::1.6.0
 org.geomajas.gwt.client.widget.ZoomButton::1.6.0
 org.geomajas.gwt.client.widget.ZoomOnScrollController::1.6.0
 org.geomajas.gwt.server.GeomajasServiceImpl::1.6.0

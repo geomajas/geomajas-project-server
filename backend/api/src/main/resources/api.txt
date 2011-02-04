@@ -1087,9 +1087,6 @@ org.geomajas.service.TestRecorder::1.8.0
 org.geomajas.service.TestRecorder:String matches(Object, String, ):1.8.0
 org.geomajas.service.TestRecorder:void clear():1.8.0
 org.geomajas.service.TestRecorder:void record(Object, String, ):1.8.0
-org.geomajas.service.TextService::1.9.0
-org.geomajas.service.TextService:Font getFont(FontStyleInfo, ):1.9.0
-org.geomajas.service.TextService:Rectangle2D getStringBounds(String, FontStyleInfo, ):1.9.0
 org.geomajas.service.pipeline.PipelineCode::1.6.0
 org.geomajas.service.pipeline.PipelineCode:String ATTRIBUTE_NAME_KEY:1.6.0
 org.geomajas.service.pipeline.PipelineCode:String BOUNDS_KEY:1.6.0
