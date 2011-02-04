@@ -81,7 +81,7 @@ include "org.geomajas.documentation" "docbook-gettingstarted" "1.9.0-SNAPSHOT" \
     "Getting started" \
     "How to get your project up-and-running." \
     "incubating" "Getting_Started.pdf" \
-    "" "" ""
+    "org.geomajas" "geomajas-command" "1.8.0"
 
 include "org.geomajas.documentation" "docbook-devuserguide" "1.9.0-SNAPSHOT" \
     "User guide for developers" \
