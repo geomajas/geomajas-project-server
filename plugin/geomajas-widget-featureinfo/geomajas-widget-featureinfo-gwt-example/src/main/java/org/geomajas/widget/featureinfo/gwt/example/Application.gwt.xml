@@ -15,6 +15,7 @@
     <inherits name="org.geomajas.gwt.GeomajasClient"/>
 	<!-- Inherit the GWT widget (plugin) module for the featureinfo widget . -->
 	<inherits name="org.geomajas.widget.featureinfo.Featureinfo"/>
+	
 
 	<!-- add required languages -->
 	<extend-property name="locale" values="nl"/>

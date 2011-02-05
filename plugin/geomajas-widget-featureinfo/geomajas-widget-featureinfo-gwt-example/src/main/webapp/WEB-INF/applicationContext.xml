@@ -41,5 +41,38 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 			</list>
 		</property>
 	</bean>
+	
+	<!-- define server layer here -->
+	<bean name="populatedPlaces110m" class="org.geomajas.layer.bean.BeanLayer">
+		<property name="layerInfo" ref="populatedPlaces110mInfo" />
+		<property name="features">
+			<list>
+				<bean class="org.geomajas.widget.featureinfo.gwt.example.server.City">
+					<property name="name" value="Ghent" />
+					<property name="country" value="Belgium" />
+					<property name="worldcity" value="0" />
+					<property name="geometry" value="POINT(3.733333 51.05)" />
+ 				</bean>				
+				<bean class="org.geomajas.widget.featureinfo.gwt.example.server.City">
+					<property name="name" value="Brussels" />
+					<property name="country" value="Belgium" />
+					<property name="worldcity" value="1" />
+					<property name="geometry" value="POINT(4.35 50.85)" />
+ 				</bean>				
+				<bean class="org.geomajas.widget.featureinfo.gwt.example.server.City">
+					<property name="name" value="Paris" />
+					<property name="country" value="France" />
+					<property name="worldcity" value="1" />
+					<property name="geometry" value="POINT(2.350833 48.856667)" />
+ 				</bean>				
+				<bean class="org.geomajas.widget.featureinfo.gwt.example.server.City">
+					<property name="name" value="Barcelona" />
+					<property name="country" value="Spain" />
+					<property name="worldcity" value="1" />
+					<property name="geometry" value="POINT(2.183333 41.383333)" />
+ 				</bean>				
+			</list>
+		</property>
+	</bean>
 
 </beans>

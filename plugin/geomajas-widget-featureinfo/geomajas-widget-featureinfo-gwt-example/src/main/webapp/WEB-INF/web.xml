@@ -31,7 +31,10 @@
 			WEB-INF/clientLayerCountries.xml
 			WEB-INF/layerOsm.xml
 			WEB-INF/layerCountries.xml
-   
+			
+			WEB-INF/clientLayerPopulatedPlaces110m.xml 
+			WEB-INF/layerPopulatedPlaces110m.xml
+			
 		<!--
 			WEB-INF/example/hibernate/applicationContext.xml
 			WEB-INF/example/hibernate/layerRoads.xml
