@@ -13,6 +13,7 @@ package org.geomajas.plugin.caching.step;
 
 import javax.annotation.PostConstruct;
 
+import org.geomajas.global.CacheableObject;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.plugin.caching.service.CacheCategory;
@@ -30,7 +31,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.vividsolutions.jts.geom.Envelope;
 
 /**
- * Abstract base class for pipeline interceptors that implement a cache cycle.
+ * Abstract base class for pipeline interceptors that implement a cache cycle. Caches the security context.
  * 
  * @author Jan De Moerloose
  * 
@@ -56,7 +57,10 @@ public abstract class AbstractCachingInterceptor<T> implements PipelineIntercept
 
 	@Autowired
 	private SecurityContext securityContext;
+	
+	private boolean securityContextCached;
 
+	
 	public String getId() {
 		return id;
 	}
@@ -88,6 +92,22 @@ public abstract class AbstractCachingInterceptor<T> implements PipelineIntercept
 	public void setStepId(String stepId) {
 		this.stepId = stepId;
 	}
+	
+	/**
+	 * Is the security context cached by this interceptor ?
+	 * @return true if cached, false otherwise
+	 */
+	public boolean isSecurityContextCached() {
+		return securityContextCached;
+	}
+
+	/**
+	 * If set to true, the security context will be cached as well.
+	 * @param securityContextCached true if the security context has to be cached
+	 */
+	public void setSecurityContextCached(boolean securityContextCached) {
+		this.securityContextCached = securityContextCached;
+	}
 
 	protected <CONTAINER extends CacheContainer> CONTAINER getContainer(String[] keys, CacheCategory category,
 			PipelineContext pipelineContext) throws GeomajasException {
@@ -104,9 +124,9 @@ public abstract class AbstractCachingInterceptor<T> implements PipelineIntercept
 		}
 		if (cacheKey != null) {
 			cc = (CONTAINER) cacheManager.get(layer, category, cacheKey);
-			if (securityContext == null) {
-				// deserialize cached context
-				securityContext = (SecurityContext) cc.getContext().get(CacheContext.SECURITY_CONTEXT_KEY);
+			if (cc != null && isSecurityContextCached()) {
+				// deserialize cached security context
+				deSerializeSecurityContext(cc.getContext());
 			}
 		} else {
 			// context should have all keys !
@@ -116,6 +136,10 @@ public abstract class AbstractCachingInterceptor<T> implements PipelineIntercept
 				}
 			}
 			CacheContext cacheContext = cacheKeyService.getCacheContext(pipelineContext, keys);
+			// add the security key
+			if (isSecurityContextCached()) {
+				serializeSecurityContext(cacheContext);
+			}
 			cacheKey = cacheKeyService.getCacheKey(cacheContext);
 			cc = (CONTAINER) cacheManager.get(layer, category, cacheKey);
 			while (null != cc) {
@@ -127,7 +151,6 @@ public abstract class AbstractCachingInterceptor<T> implements PipelineIntercept
 				}
 			}
 		}
-
 		return cc;
 	}
 
@@ -137,11 +160,11 @@ public abstract class AbstractCachingInterceptor<T> implements PipelineIntercept
 			// recorder.record(category, "Put item in cache");
 			VectorLayer layer = pipelineContext.get(PipelineCode.LAYER_KEY, VectorLayer.class);
 			CacheContext cacheContext = cacheKeyService.getCacheContext(pipelineContext, keys);
-			if (securityContext == null) {
-				// deserialize cached context
-				cacheContext.put(CacheContext.SECURITY_CONTEXT_KEY, securityContext);
-			}
 			cacheContainer.setContext(cacheContext);
+			// serialize security for cacheKey users
+			if (isSecurityContextCached()) {
+				serializeSecurityContext(cacheContext);
+			}
 			String cacheKey = cacheKeyService.getCacheKey(cacheContext);
 			Object cc = cacheManager.get(layer, category, cacheKey);
 			while (null != cc) {
@@ -156,6 +179,32 @@ public abstract class AbstractCachingInterceptor<T> implements PipelineIntercept
 		}
 	}
 	
+	/**
+	 * Puts the cached security context in the thread local.
+	 * @param <CONTAINER>
+	 * @param context the cache context
+	 */
+	protected <CONTAINER extends CacheContainer> void deSerializeSecurityContext(CacheContext context) {
+		Object cached = context.get(CacheContext.SECURITY_CONTEXT_KEY);
+		if (cached != null) {
+			log.debug("Restoring security context ", cached);
+			securityContext.restore((CacheableObject) cached);
+		}
+	}
+	
+	/**
+	 * Puts the thread local security in the cache.
+	 * @param <CONTAINER>
+	 * @param context
+	 */
+	protected <CONTAINER extends CacheContainer> void serializeSecurityContext(CacheContext context) {
+		Object cached = context.get(CacheContext.SECURITY_CONTEXT_KEY);
+		if (cached == null) {
+			log.debug("Storing security context ", securityContext.getCacheableObject());
+			context.put(CacheContext.SECURITY_CONTEXT_KEY, securityContext.getCacheableObject());
+		}
+	}
+
 	@PostConstruct
 	public void postConstruct() {
 		if (stepId != null) {
@@ -163,5 +212,6 @@ public abstract class AbstractCachingInterceptor<T> implements PipelineIntercept
 			setToStepId(stepId);
 		} 
 	}
+	
 
 }
