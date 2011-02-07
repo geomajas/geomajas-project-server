@@ -14,44 +14,78 @@ import org.geomajas.gwt.client.action.ToolCreator;
 import org.geomajas.gwt.client.action.ToolbarBaseAction;
 import org.geomajas.gwt.client.action.toolbar.ToolbarRegistry;
 import org.geomajas.gwt.client.widget.MapWidget;
-import org.geomajas.widget.featureinfo.client.action.toolbar.NearbyFeaturesModalAction;
-import org.geomajas.widget.featureinfo.client.action.toolbar.NearbyFeaturesSepDetailsModalAction;
+import org.geomajas.widget.featureinfo.client.action.toolbar.MultiLayerFeatureInfoModalAction;
+import org.geomajas.widget.featureinfo.client.action.toolbar.MultiLayerFeatureInfoRepresentationType;
 
 import com.google.gwt.core.client.EntryPoint;
+
 //import com.smartgwt.client.util.SC;
 
 /**
  * Initializes the featureInfo plugin.
- *
+ * 
  * @author An Buyle
- *
+ * @author Oliver May
+ * 
  */
 public class FeatureInfoEntryPoint implements EntryPoint {
 
-	public static final String SHOW_DEFAULT_FEATUREINFOALLLAYERSMODE_KEY = "NearbyFeaturesMode";
-	public static final String SHOW_DEFAULT_NEARBYFEATURESSEPDETAILSMODE_KEY = "NearbyFeaturesSepDetailsMode";
-																				
+	private static final String SHOW_DEFAULT_MULTILAYERFEATUREINFO_KEY = "MultilayerFeatureInfoMode";
+
+	private static final String SHOW_DEFAULT_MULTILAYERFEATUREINFOTREE_KEY = "MultilayerFeatureInfoTreeMode";
+
+	private static final String SHOW_DEFAULT_MULTILAYERFEATUREINFOFULLTREE_KEY = "MultilayerFeatureInfoFullTreeMode";
+
+	private static final String SHOW_DEFAULT_MULTILAYERFEATUREINFO_INLINE_KEY = "MultilayerFeatureInfoInlineMode";
+
+	private static final String SHOW_DEFAULT_MULTILAYERFEATUREINFOTREE_INLINE_KEY = 
+		"MultilayerFeatureInfoTreeInlineMode";
+
 	public void onModuleLoad() {
-		//SC.showConsole(); // Crash if console is closed
-		//SC.say("Registering toolbar tool " + SHOW_DEFAULT_FEATUREINFOALLLAYERSMODE_KEY);
+		// SC.showConsole(); // Crash if console is closed
+		// SC.say("Registering toolbar tool " + SHOW_DEFAULT_FEATUREINFOALLLAYERSMODE_KEY);
 		// ---------------------------------------------------------------------
 		// Register extra button
 		// ---------------------------------------------------------------------
-		ToolbarRegistry.put(SHOW_DEFAULT_FEATUREINFOALLLAYERSMODE_KEY, new ToolCreator() {
+		ToolbarRegistry.put(SHOW_DEFAULT_MULTILAYERFEATUREINFO_KEY, new ToolCreator() {
 
 			public ToolbarBaseAction createTool(MapWidget mapWidget) {
-				return new NearbyFeaturesModalAction(mapWidget);
+				return new MultiLayerFeatureInfoModalAction(mapWidget);
 			}
 		});
-		
-		ToolbarRegistry.put(SHOW_DEFAULT_NEARBYFEATURESSEPDETAILSMODE_KEY, new ToolCreator() {
+		ToolbarRegistry.put(SHOW_DEFAULT_MULTILAYERFEATUREINFOTREE_KEY, new ToolCreator() {
 
 			public ToolbarBaseAction createTool(MapWidget mapWidget) {
-				return new NearbyFeaturesSepDetailsModalAction(mapWidget);
+				MultiLayerFeatureInfoModalAction action = new MultiLayerFeatureInfoModalAction(mapWidget);
+				action.setRepresentationType(MultiLayerFeatureInfoRepresentationType.TREE);
+				return action;
 			}
 		});
-		
+		ToolbarRegistry.put(SHOW_DEFAULT_MULTILAYERFEATUREINFOFULLTREE_KEY, new ToolCreator() {
 
+			public ToolbarBaseAction createTool(MapWidget mapWidget) {
+				MultiLayerFeatureInfoModalAction action = new MultiLayerFeatureInfoModalAction(mapWidget);
+				action.setRepresentationType(MultiLayerFeatureInfoRepresentationType.TREE_FULL);
+				return action;
+			}
+		});
+		ToolbarRegistry.put(SHOW_DEFAULT_MULTILAYERFEATUREINFO_INLINE_KEY, new ToolCreator() {
+
+			public ToolbarBaseAction createTool(MapWidget mapWidget) {
+				MultiLayerFeatureInfoModalAction action = new MultiLayerFeatureInfoModalAction(mapWidget);
+				action.setShowDetailWindowInline(true);
+				return action;
+			}
+		});
+		ToolbarRegistry.put(SHOW_DEFAULT_MULTILAYERFEATUREINFOTREE_INLINE_KEY, new ToolCreator() {
+
+			public ToolbarBaseAction createTool(MapWidget mapWidget) {
+				MultiLayerFeatureInfoModalAction action = new MultiLayerFeatureInfoModalAction(mapWidget);
+				action.setRepresentationType(MultiLayerFeatureInfoRepresentationType.TREE);
+				action.setShowDetailWindowInline(true);
+				return action;
+			}
+		});
 	}
 
 }

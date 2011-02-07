@@ -17,7 +17,7 @@ import org.geomajas.gwt.client.map.feature.Feature;
  *
  * @author An Buyle
  */
-public interface FeatClickHandler {
+public interface FeatureClickHandler {
 
 	void onClick(Feature feat);
 }
