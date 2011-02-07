@@ -309,6 +309,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
+				<version>2.3.2</version>
 				<configuration>
 					<encoding>utf8</encoding>
 					<source>1.5</source>
@@ -342,13 +343,28 @@
 					<disableCastChecking>true</disableCastChecking>
 					<disableClassMetadata>true</disableClassMetadata>
 					<extraJvmArgs>-Xmx1024M -Xss1024k</extraJvmArgs>
+					<module>org.geomajas.example.gwt.GeomajasSamples</module>
+					<runTarget>samples.html</runTarget>
+					<hostedWebapp>${project.build.directory}/${project.build.finalName}</hostedWebapp>
+					<copyWebapp>true</copyWebapp>
 				</configuration>
+				<executions>
+					<execution>
+						<phase>test-compile</phase>
+						<goals>
+							<goal>clean</goal>
+							<goal>compile</goal>
+							<goal>test</goal>
+						</goals>
+					</execution>
+				</executions>
 			</plugin>
 
 			<!-- clean the source tree (Gwt compile of eclipse plugin) -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-clean-plugin</artifactId>
+				<version>2.4.1</version>
 				<configuration>
 					<filesets>
 						<fileset>
@@ -362,39 +378,6 @@
 	</build>
 
 	<profiles>
-		<profile>
-			<id>defaultGWT</id>
-			<activation>
-				<!-- <activeByDefault>true</activeByDefault> -->
-				<property>
-					<name>!m2e.version</name>
-				</property>
-			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>gwt-maven-plugin</artifactId>
-						<configuration>
-							<module>org.geomajas.example.gwt.GeomajasSamples</module>
-							<runTarget>samples.html</runTarget>
-							<hostedWebapp>${project.build.directory}/${project.build.finalName}</hostedWebapp>
-							<copyWebapp>true</copyWebapp>
-						</configuration>
-						<executions>
-							<execution>
-								<phase>test-compile</phase>
-								<goals>
-									<goal>clean</goal>
-									<goal>compile</goal>
-									<goal>test</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
 		<!-- m2eclipse with embedded jetty -->
 		<profile>
 			<id>m2e</id>
@@ -416,6 +399,9 @@
 					<scope>provided</scope>
 				</dependency>
 			</dependencies>
+			<properties>
+				<gwt.compiler.skip>true</gwt.compiler.skip>
+			</properties>
 		</profile>
 		<profile>
 			<id>skipGwt</id>
@@ -424,21 +410,9 @@
 					<name>skipGwt</name>
 				</property>
 			</activation>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>gwt-maven-plugin</artifactId>
-						<executions>
-							<execution>
-								<goals>
-									<goal>clean</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
+			<properties>
+				<gwt.compiler.skip>true</gwt.compiler.skip>
+			</properties>
 		</profile>
 
 		<profile>
@@ -528,18 +502,6 @@
 				</plugins>
 			</build>
 		</profile>
-		<profile>
-			<id>no-selenium-tests</id>
-			<activation>
-				<property>
-					<name>skipSelenium</name>
-				</property>
-			</activation>
-			<build>
-				<plugins>
-				</plugins>
-			</build>
-		</profile>
 	</profiles>
 
 	<repositories>
@@ -573,6 +535,7 @@
 	<properties>
 		<gwt-version>2.1.1</gwt-version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<gwt.compiler.skip>false</gwt.compiler.skip>
 	</properties>
 
 </project>
