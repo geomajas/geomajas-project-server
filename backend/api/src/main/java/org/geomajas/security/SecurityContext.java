@@ -11,9 +11,10 @@
 
 package org.geomajas.security;
 
-import org.geomajas.global.Api;
-
 import java.util.List;
+
+import org.geomajas.global.Api;
+import org.geomajas.global.CacheableObject;
 
 /**
  * The security context is a thread scoped service which allows you to query the authorization details for the
@@ -40,4 +41,19 @@ public interface SecurityContext extends Authorization, UserInfo {
 	 * @return token which was used.
 	 */
 	String getToken();
+	
+	/**
+	 * Restores the context from the specified cacheable object.
+	 * @param object cacheable object
+	 * @since 1.9.0
+	 */
+	void restore(CacheableObject object);
+	
+	/**
+	 * Returns the cacheable object that allows to (persistently) cache this security context.
+	 * @return the cacheable object
+	 * @since 1.9.0
+	 */
+	CacheableObject getCacheableObject();
+	
 }

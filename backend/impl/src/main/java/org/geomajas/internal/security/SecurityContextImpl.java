@@ -19,6 +19,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.geomajas.configuration.LayerInfo;
+import org.geomajas.global.CacheableObject;
 import org.geomajas.layer.Layer;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.layer.feature.InternalFeature;
@@ -56,7 +57,7 @@ import com.vividsolutions.jts.geom.PrecisionModel;
  */
 @Component
 @Scope(value = "thread", proxyMode = ScopedProxyMode.TARGET_CLASS)
-public class SecurityContextImpl implements SecurityContext {
+public class SecurityContextImpl implements SecurityContext, CacheableObject {
 
 	private final Logger log = LoggerFactory.getLogger(SecurityManagerImpl.class);
 
@@ -144,6 +145,9 @@ public class SecurityContextImpl implements SecurityContext {
 		return userDivision;
 	}
 
+	public String getCacheId() {
+		return getId();
+	}
 	/**
 	 * Calculate UserInfo strings.
 	 */
@@ -692,4 +696,72 @@ public class SecurityContextImpl implements SecurityContext {
 		 */
 		boolean get(AUTH auth);
 	}
+
+	public void restore(CacheableObject object) {
+		SecurityContextInfo info = (SecurityContextInfo) object;
+		authentications = new ArrayList<Authentication>(info.getAuthentications());
+		id = info.getCacheId();
+	}
+
+	public CacheableObject getCacheableObject() {
+		return new SecurityContextInfo(this);
+	}
+	
+	
+	/**
+	 * Class to cache security context information. Should allow to safely cache and restore the security context. This
+	 * will only work if all authentications are effectively serializable. Equality condition is currently weak and
+	 * depends on cache id. No deep copy of authentications, so we assume immutability of the data.
+	 * 
+	 * @author Jan De Moerloose
+	 * 
+	 */
+	class SecurityContextInfo implements CacheableObject {
+
+		private final List<Authentication> authentications;
+
+		private final String cacheId;
+
+		public SecurityContextInfo(SecurityContext context) {
+			authentications = new ArrayList<Authentication>(context.getSecurityServiceResults());
+			cacheId = context.getId();
+		}
+
+		public String getCacheId() {
+			return cacheId;
+		}
+
+		public List<Authentication> getAuthentications() {
+			return authentications;
+		}
+
+		@Override
+		public boolean equals(Object o) {
+			if (this == o) {
+				return true;
+			}
+			if (!(o instanceof SecurityContextInfo)) {
+				return false;
+			}
+
+			SecurityContextInfo that = (SecurityContextInfo) o;
+
+			if (cacheId != null ? !cacheId.equals(that.cacheId) : that.cacheId != null) {
+				return false;
+			}
+
+			return true;
+		}
+
+		@Override
+		public int hashCode() {
+			int result = cacheId != null ? cacheId.hashCode() : 0;
+			return result;
+		}
+		
+		public String toString() {
+			return cacheId;
+		}
+	}
+
 }
