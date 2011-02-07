@@ -35,6 +35,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller("/rasterizing/**")
 public class RasterizingController {
 
+	private static final String HTTP_EXPIRES_HEADER = "Expires";
+
+	private static final String HTTP_CACHE_CONTROL_HEADER = "Cache-Control";
+
+	private static final String HTTP_CACHE_PRAGMA = "Pragma";
+
 	private final Logger log = LoggerFactory.getLogger(RasterizingController.class);
 
 	@Autowired
@@ -57,6 +63,7 @@ public class RasterizingController {
 					rasterizeContainer);
 
 			// Prepare the response:
+			configureNoCaching(response);
 			response.setContentType("image/png");
 			response.getOutputStream().write(rasterizeContainer.getImage());
 		} catch (Exception e) {
@@ -64,5 +71,18 @@ public class RasterizingController {
 			response.sendError(HttpServletResponse.SC_NO_CONTENT);
 		}
 	}
+	
+	private void configureNoCaching(HttpServletResponse response) {
+		long now = System.currentTimeMillis();
+		response.setDateHeader("Date", now);
+
+		// HTTP 1.0 header:
+		response.setDateHeader(HTTP_EXPIRES_HEADER, now - 86400000L); // one day old
+		response.setHeader(HTTP_CACHE_PRAGMA, "no-cache");
+
+		// HTTP 1.1 header:
+		response.setHeader(HTTP_CACHE_CONTROL_HEADER, "no-cache");
+	}
+
 
 }

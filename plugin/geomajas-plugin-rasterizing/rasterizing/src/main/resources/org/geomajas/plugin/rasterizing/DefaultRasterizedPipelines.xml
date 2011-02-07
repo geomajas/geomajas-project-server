@@ -19,6 +19,13 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd"
 		>
 
+	<!-- define invalidating pipeline for save or update (image cache should always be invalidated) -->
+
+	<bean class="org.geomajas.service.pipeline.PipelineInfo">
+		<property name="pipelineName"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_SAVE_OR_UPDATE_ONE"/></property>
+		<property name="delegatePipeline" ref="PIPELINE_SAVE_OR_UPDATE_ONE_CACHED" />
+	</bean>
+
 	<!-- define default pipelines for VectorLayerService -->
 
 	<bean class="org.geomajas.service.pipeline.PipelineInfo">

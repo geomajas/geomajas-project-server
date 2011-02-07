@@ -85,7 +85,6 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 			<list>
 				<ref bean="clientLayerOsm" />
 				<ref bean="clientLayerCountries" />
-				<ref bean="clientLayerRoads" />
 			</list>
 		</property>
 		<property name="toolbar">
@@ -123,7 +122,6 @@ http://www.springframework.org/schema/tx http://www.springframework.org/schema/t
 							<list>
 								<ref bean="clientLayerOsm" />
 								<ref bean="clientLayerCountries" />
-								<ref bean="clientLayerRoads" />
 							</list>
 						</property>
 						<property name="expanded" value="true" />

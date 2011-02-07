@@ -26,7 +26,7 @@ import org.geomajas.service.pipeline.PipelineInterceptor.ExecutionMode;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * Interceptor for caching the tile.
+ * Interceptor for caching the tile and (optionally) the image.
  * 
  * @author Jan De Moerloose
  * 
@@ -37,6 +37,10 @@ public class GetTileAllCachingInterceptor extends AbstractCachingInterceptor<Get
 	private TestRecorder recorder;
 
 	private static final String[] KEYS = { PipelineCode.LAYER_ID_KEY, PipelineCode.TILE_METADATA_KEY };
+
+	public GetTileAllCachingInterceptor() {
+		setSecurityContextCached(true);
+	}
 
 	public ExecutionMode beforeSteps(PipelineContext context, GetTileContainer response) throws GeomajasException {
 		TileCacheContainer cc = getContainer(CacheStepConstant.CACHE_TILE_KEY, KEYS, CacheCategory.TILE, context);

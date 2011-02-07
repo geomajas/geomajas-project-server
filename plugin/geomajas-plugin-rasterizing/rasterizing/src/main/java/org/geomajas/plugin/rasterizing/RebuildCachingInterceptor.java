@@ -53,6 +53,10 @@ public class RebuildCachingInterceptor extends AbstractCachingInterceptor<GetTil
 
 	@Autowired
 	private TestRecorder recorder;
+	
+	public RebuildCachingInterceptor() {
+		setSecurityContextCached(true);
+	}
 
 	public ExecutionMode beforeSteps(PipelineContext context, GetTileContainer response) throws GeomajasException {
 		RebuildCacheContainer rcc = getContainer(RasterizingPipelineCode.IMAGE_ID_KEY, KEYS, CacheCategory.REBUILD,
@@ -91,5 +95,7 @@ public class RebuildCachingInterceptor extends AbstractCachingInterceptor<GetTil
 				.getTile().getBounds());
 
 	}
+	
+	
 
 }

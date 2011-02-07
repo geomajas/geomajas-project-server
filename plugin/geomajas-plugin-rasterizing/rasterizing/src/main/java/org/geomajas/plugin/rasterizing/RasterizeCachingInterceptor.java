@@ -34,6 +34,10 @@ public class RasterizeCachingInterceptor  extends AbstractCachingInterceptor<Ras
 	@Autowired
 	private TestRecorder recorder;
 
+	public RasterizeCachingInterceptor() {
+		setSecurityContextCached(true);
+	}
+
 	public ExecutionMode beforeSteps(PipelineContext context, RasterizingContainer response) throws GeomajasException {
 		RasterizingContainer rc = getContainer(RasterizingPipelineCode.IMAGE_ID_KEY, KEYS, CacheCategory.RASTER,
 				context);

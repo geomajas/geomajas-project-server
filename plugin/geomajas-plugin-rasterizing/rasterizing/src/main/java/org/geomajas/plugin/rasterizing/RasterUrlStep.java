@@ -10,6 +10,8 @@
  */
 package org.geomajas.plugin.rasterizing;
 
+import java.util.Random;
+
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.pipeline.GetTileContainer;
 import org.geomajas.layer.tile.InternalTile;
@@ -31,6 +33,14 @@ public class RasterUrlStep implements PipelineStep<GetTileContainer> {
 
 	@Autowired
 	private DispatcherUrlService dispatcherUrlService;
+
+	private Random random = new Random();
+
+	private static final char[] CHARACTERS = {
+		'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j',
+		'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't',
+		'u', 'v', 'w', 'x', 'y', 'z',
+		'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
 
 	private String id;
 
@@ -54,7 +64,18 @@ public class RasterUrlStep implements PipelineStep<GetTileContainer> {
 		url.append("/");
 		url.append(cacheKey);
 		url.append(".png");
+		// must add a random parameter to force reload in some browsers like FF
+		// better solution would be to use a cache version id ?
+		url.append("?q=" + randomString(8));
 		tile.setFeatureContent(url.toString());
+	}
+	
+	private String randomString(int length) {
+		char[] buf = new char[length];
+		for (int i = 0; i < buf.length; i++) {
+			buf[i] = CHARACTERS[random.nextInt(36)];
+		}
+		return new String(buf);
 	}
 
 }

@@ -26,6 +26,7 @@ import org.geomajas.plugin.caching.service.CacheCategory;
 import org.geomajas.plugin.caching.service.CacheManagerServiceImpl;
 import org.geomajas.plugin.caching.service.CacheService;
 import org.geomajas.plugin.rasterizing.mvc.RasterizingController;
+import org.geomajas.security.SecurityContext;
 import org.geomajas.security.SecurityManager;
 import org.geomajas.service.TestRecorder;
 import org.junit.Assert;
@@ -112,10 +113,9 @@ public class RasterizingPipelineTest {
 		// find the key
 		String url = tile.getFeatureContent();
 		Assert.assertTrue(url.startsWith("http://test/rasterizing/beans/"));
-		Assert.assertTrue(url.endsWith(".png"));
-		String key = url.substring("http://test/rasterizing/beans/".length(), url.length() - 4);
+		Assert.assertTrue(url.contains("?"));
+		String key = url.substring("http://test/rasterizing/beans/".length(), url.indexOf(".png"));
 		Object o = cacheManager.get(layerBeans, CacheCategory.RASTER, key);
-		CacheService ss = cacheManager.getCacheForTesting(layerBeans.getId(), CacheCategory.RASTER);
 		Assert.assertNotNull("Missing raster in cache", o);
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		controller.getImage(layerBeans.getId(), key, response);
@@ -145,11 +145,13 @@ public class RasterizingPipelineTest {
 		// find the key
 		String url = tile.getFeatureContent();
 		Assert.assertTrue(url.startsWith("http://test/rasterizing/layerBeansPoint/"));
-		Assert.assertTrue(url.endsWith(".png"));
-		String key = url.substring("http://test/rasterizing/layerBeansPoint/".length(), url.length() - 4);
+		Assert.assertTrue(url.contains("?"));
+		String key = url.substring("http://test/rasterizing/layerBeansPoint/".length(), url.indexOf(".png"));
 		Object o = cacheManager.get(layerBeansPoint, CacheCategory.RASTER, key);
 		Assert.assertNull("Unexpected raster in cache", o);
 
+		// clear to test without security context
+		securityManager.clearSecurityContext();
 		MockHttpServletResponse response = new MockHttpServletResponse();
 		controller.getImage(layerBeansPoint.getId(), key, response);
 		Assert.assertEquals("", recorder.matches(CacheCategory.REBUILD, "Put item in cache", "Got item from cache",

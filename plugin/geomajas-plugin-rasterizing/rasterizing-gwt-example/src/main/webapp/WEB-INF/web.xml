@@ -29,12 +29,10 @@
 			WEB-INF/mapOverview.xml
 			WEB-INF/clientLayerOsm.xml
 			WEB-INF/clientLayerCountries.xml
-			WEB-INF/clientLayerRoads.xml
 			WEB-INF/layerOsm.xml
 			WEB-INF/layerCountries.xml
-			WEB-INF/layerRoads.xml
    
-			classpath:org/geomajas/plugin/rasterizing/DefaultCachedAndRasterizedPipelines.xml
+			classpath:org/geomajas/plugin/rasterizing/DefaultRasterizedPipelines.xml
 		<!--
 			WEB-INF/example/hibernate/applicationContext.xml
 			WEB-INF/example/hibernate/layerRoads.xml
