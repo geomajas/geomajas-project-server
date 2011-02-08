@@ -287,9 +287,12 @@ public class TileCache implements SpatialCache {
 	protected int calculateTileLevel(Bbox bounds) {
 		double baseX = layerBounds.getWidth();
 		double baseY = layerBounds.getHeight();
-		double tileFactor = Math.min(baseX / bounds.getWidth(), baseY / bounds.getHeight());
-		int tileLevel = (int) Math.ceil(Math.log(tileFactor) / Math.log(2.0));
-		if (tileLevel < 0 ) {
+		// choose the tile level so the area is between 256*256 and 512*512 pixels
+		double baseArea = baseX * baseY;
+		double scale = layer.getMapModel().getMapView().getCurrentScale();
+		double osmArea = 256 * 256 / (scale * scale);
+		int tileLevel = (int) Math.floor(Math.log(baseArea / osmArea) / Math.log(4.0));
+		if (tileLevel < 0) {
 			tileLevel = 0;
 		}
 		return tileLevel;
