@@ -20,28 +20,6 @@ http://www.springframework.org/schema/context/spring-context-3.0.xsd
 http://www.springframework.org/schema/util 
 http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 
-	<bean name="plugin.rasterizing.api.RasterizingService"
-		class="org.geomajas.plugin.rasterizing.GeotoolsRasterizingService">
-		<property name="renderingHints" ref="renderingHints" />
-	</bean>
-
-	<util:map id="renderingHints" map-class="org.geotools.factory.Hints">
-		<entry>
-			<key>
-				<util:constant static-field="java.awt.RenderingHints.KEY_ANTIALIASING" />
-			</key>
-			<ref bean="valueAntiAliasOn" />
-		</entry>
-	</util:map>
-
-	<util:constant id="valueAntiAliasOn"
-		static-field="java.awt.RenderingHints.VALUE_ANTIALIAS_ON" />
-		
-	<bean name="service.DispatcherUrlService"
-		class="org.geomajas.service.impl.StaticDispatcherUrlService">
-		<property name="dispatcherUrl" value="http://test" />
-	</bean>	
-		
 	<!--  default for rasterizing -->
 	<bean class="org.geomajas.service.pipeline.PipelineInfo">
 		<property name="pipelineName"><util:constant static-field="org.geomajas.plugin.rasterizing.api.RasterizingPipelineCode.PIPELINE_GET_VECTOR_TILE_RASTERIZING"/></property>

@@ -47,7 +47,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "/org/geomajas/spring/geomajasContext.xml",
-		"/org/geomajas/plugin/rasterizing/rasterizing.xml", "/org/geomajas/spring/testRecorder.xml",
+		"/org/geomajas/plugin/rasterizing/rasterizing-service.xml",
+		"/org/geomajas/plugin/rasterizing/rasterizing-pipelines.xml", "/org/geomajas/spring/testRecorder.xml",
 		"/org/geomajas/testdata/beanContext.xml", "/org/geomajas/testdata/layerBeans.xml",
 		"/org/geomajas/testdata/layerBeansPoint.xml" })
 public class RasterizingPipelineTest {

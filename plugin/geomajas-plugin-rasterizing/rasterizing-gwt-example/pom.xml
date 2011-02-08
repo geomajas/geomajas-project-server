@@ -106,6 +106,19 @@
 			<scope>runtime</scope>
 		</dependency>
 
+		<!-- database drivers
+		<dependency>
+			<groupId>org.postgis</groupId>
+			<artifactId>postgis-jdbc</artifactId>
+			<version>1.1.6</version>
+		</dependency>
+		<dependency>
+			<groupId>postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>8.4-701.jdbc3</version>
+		</dependency>
+        -->
+        
 		<!-- logging dependencies, delegate all to slf4j and use logback -->
 		<dependency>
 			<groupId>org.slf4j</groupId>
