@@ -58,8 +58,8 @@ public class GeonamesGeocoderServiceTest {
 		Assert.assertNotNull("Geonames may be down", result);
 		Assert.assertEquals(1,result.length);
 		Assert.assertNotNull(result[0].getCoordinate());
-		Assert.assertEquals(4.78343, result[0].getCoordinate().x, .00001);
-		Assert.assertEquals(51.05252, result[0].getCoordinate().y, .00001);
+		Assert.assertEquals(4.7751, result[0].getCoordinate().x, .00001);
+		Assert.assertEquals(51.05219, result[0].getCoordinate().y, .00001);
 
 		list.clear();
 		list.add("london");
