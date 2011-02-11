@@ -27,7 +27,7 @@
 	<scm>
 		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/build-tools/geomajas-maven-plugin</connection>
 		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/build-tools/geomajas-maven-plugin</developerConnection>
-		<url>https://svn.geomajas.org/majas/trunk/build-tools/geomajas-maven-plugin</url>
+		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/build-tools/geomajas-maven-plugin</url>
 	</scm>
 
 	<developers>

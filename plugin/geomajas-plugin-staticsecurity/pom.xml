@@ -26,7 +26,7 @@
 	<scm>
 		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-plugin-staticsecurity</connection>
 		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-plugin-staticsecurity</developerConnection>
-		<url>https://svn.geomajas.org/majas/trunk/plugin/geomajas-plugin-staticsecurity</url>
+		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/plugin/geomajas-plugin-staticsecurity</url>
 	</scm>
 
 	<developers>

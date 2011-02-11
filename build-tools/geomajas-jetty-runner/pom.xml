@@ -27,7 +27,7 @@
 	<scm>
 		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/build-tools/geomajas-jetty-runner</connection>
 		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/build-tools/geomajas-jetty-runner</developerConnection>
-		<url>https://svn.geomajas.org/majas/trunk/build-tools/geomajas-jetty-runner</url>
+		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/build-tools/geomajas-jetty-runner</url>
 	</scm>
 
 	<organization>

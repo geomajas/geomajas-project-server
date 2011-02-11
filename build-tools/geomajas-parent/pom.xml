@@ -31,7 +31,7 @@
 	<scm>
 		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/build-tools/geomajas-parent</connection>
 		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/build-tools/geomajas-parent</developerConnection>
-		<url>https://svn.geomajas.org/majas/trunk/build-tools/geomajas-parent</url>
+		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/build-tools/geomajas-parent</url>
 	</scm>
 
 	<organization>

@@ -27,7 +27,7 @@
 	<scm>
 		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-face-rest</connection>
 		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-face-rest</developerConnection>
-		<url>https://svn.geomajas.org/majas/trunk/plugin/geomajas-face-rest</url>
+		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/plugin/geomajas-face-rest</url>
 	</scm>
 
 	<repositories>

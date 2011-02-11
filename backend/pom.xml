@@ -35,7 +35,7 @@
 	<scm>
 		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/backend</connection>
 		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/backend</developerConnection>
-		<url>https://svn.geomajas.org/majas/trunk/backend</url>
+		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/backend</url>
 	</scm>
 
 	<modules>

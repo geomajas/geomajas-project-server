@@ -26,7 +26,7 @@
 	<scm>
 		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/application/geomajas-gwt-example</connection>
 		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/application/geomajas-gwt-example</developerConnection>
-		<url>https://svn.geomajas.org/majas/trunk/application/geomajas-gwt-example</url>
+		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/application/geomajas-gwt-example</url>
 	</scm>
 
 	<developers>

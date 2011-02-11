@@ -27,7 +27,7 @@
 	<scm>
 		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-plugin-geocoder</connection>
 		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-plugin-geocoder</developerConnection>
-		<url>https://svn.geomajas.org/majas/trunk/plugin/geomajas-plugin-geocoder</url>
+		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/plugin/geomajas-plugin-geocoder</url>
 	</scm>
 
 	<developers>

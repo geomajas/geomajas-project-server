@@ -27,7 +27,7 @@
 	<scm>
 		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/build-tools/geomajas-gwt-archetype</connection>
 		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/build-tools/geomajas-gwt-archetype</developerConnection>
-		<url>https://svn.geomajas.org/majas/trunk/build-tools/geomajas-gwt-archetype</url>
+		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/build-tools/geomajas-gwt-archetype</url>
 	</scm>
 
 	<developers>

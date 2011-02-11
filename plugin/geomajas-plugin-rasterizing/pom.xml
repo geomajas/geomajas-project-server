@@ -27,7 +27,7 @@
 	<scm>
 		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-plugin-rasterizing</connection>
 		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-plugin-rasterizing</developerConnection>
-		<url>https://svn.geomajas.org/majas/trunk/plugin/geomajas-plugin-rasterizing</url>
+		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/plugin/geomajas-plugin-rasterizing</url>
 	</scm>
 
 	<repositories>

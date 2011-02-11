@@ -30,7 +30,7 @@
 	<scm>
 		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/build-tools/geomajas-doc-parent</connection>
 		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/build-tools/geomajas-doc-parent</developerConnection>
-		<url>https://svn.geomajas.org/majas/trunk/build-tools/geomajas-doc-parent</url>
+		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/build-tools/geomajas-doc-parent</url>
 	</scm>
 
 	<organization>

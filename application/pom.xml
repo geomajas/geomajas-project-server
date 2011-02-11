@@ -26,7 +26,7 @@
 	<scm>
 		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/application</connection>
 		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/application</developerConnection>
-		<url>https://svn.geomajas.org/majas/trunk/application</url>
+		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/application</url>
 	</scm>
 	
 	<modules>

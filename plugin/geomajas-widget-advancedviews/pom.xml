@@ -25,7 +25,7 @@
 	<scm>
 		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-widget-advancedviews</connection>
 		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/geomajas-widget-advancedviews</developerConnection>
-		<url>https://svn.geomajas.org/majas/trunk/plugin/geomajas-widget-advancedviews</url>
+		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/plugin/geomajas-widget-advancedviews</url>
 	</scm>
 
 	<developers>

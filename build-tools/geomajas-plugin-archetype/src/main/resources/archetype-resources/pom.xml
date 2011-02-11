@@ -30,7 +30,7 @@
 	<scm>
 		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/$!{artifactIdPrefix}${rootArtifactId}</connection>
 		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/plugin/$!{artifactIdPrefix}${rootArtifactId}</developerConnection>
-		<url>https://svn.geomajas.org/majas/trunk/plugin/$!{artifactIdPrefix}${rootArtifactId}</url>
+		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/plugin/$!{artifactIdPrefix}${rootArtifactId}</url>
 	</scm>
 	-->
 

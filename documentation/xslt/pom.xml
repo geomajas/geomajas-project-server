@@ -28,7 +28,7 @@
 	<scm>
 		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/documentation/xslt</connection>
 		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/documentation/xslt</developerConnection>
-		<url>https://svn.geomajas.org/majas/trunk/documentation/xslt</url>
+		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/documentation/xslt</url>
 	</scm>
 
 	<licenses>

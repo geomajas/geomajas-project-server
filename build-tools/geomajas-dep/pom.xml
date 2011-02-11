@@ -30,7 +30,7 @@
 	<scm>
 		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/build-tools/geomajas-dep</connection>
 		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/build-tools/geomajas-dep</developerConnection>
-		<url>https://svn.geomajas.org/majas/trunk/build-tools/geomajas-dep</url>
+		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/build-tools/geomajas-dep</url>
 	</scm>
 
 	<repositories>

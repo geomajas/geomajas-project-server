@@ -15,7 +15,7 @@
 	<scm>
 		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/application/geomajas-dojo-example/geomajas-dojo-example-modules</connection>
 		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/application/geomajas-dojo-example/geomajas-dojo-example-modules</developerConnection>
-		<url>https://svn.geomajas.org/majas/trunk/application/geomajas-dojo-example/geomajas-dojo-example-modules</url>
+		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/application/geomajas-dojo-example/geomajas-dojo-example-modules</url>
 	</scm>
 	
 	<organization>

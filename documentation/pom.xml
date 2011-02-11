@@ -30,7 +30,7 @@
 	<scm>
 		<connection>scm:svn:https://svn.geomajas.org/majas/trunk/documentation</connection>
 		<developerConnection>scm:svn:https://svn.geomajas.org/majas/trunk/documentation</developerConnection>
-		<url>https://svn.geomajas.org/majas/trunk/documentation</url>
+		<url>http://ci.geomajas.org/svn/repos/Geomajas/list/trunk/documentation</url>
 	</scm>
 
 	<repositories>
