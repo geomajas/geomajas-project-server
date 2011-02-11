@@ -123,6 +123,8 @@ public class PipelineInfo<RESPONSE> {
 
 	/**
 	 * Get set of steps which need to be weaved at the extension hooks.
+	 * <p/>
+	 * Extensions are always added in the pipeline just after the hook (in the expanded delegate pipeline).
 	 *
 	 * @return map of hook name and pipeline step
 	 * @since 1.7.0
@@ -133,6 +135,8 @@ public class PipelineInfo<RESPONSE> {
 
 	/**
 	 * Set the set of steps which need to be weaved at the extension hooks.
+	 * <p/>
+	 * Extensions are always added in the pipeline just after the hook (in the expanded delegate pipeline).
 	 *
 	 * @param extensions map of hook name and pipeline step
 	 * @since 1.7.0

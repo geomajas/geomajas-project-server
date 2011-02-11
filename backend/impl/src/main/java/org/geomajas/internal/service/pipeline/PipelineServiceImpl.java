@@ -195,7 +195,7 @@ public class PipelineServiceImpl<RESPONSE> implements PipelineService<RESPONSE> 
 					if (!extensions.containsKey(extensionEntry.getKey())) {
 						extensions.put(extensionEntry.getKey(), new ArrayList<PipelineStep<RESPONSE>>());
 					}
-					extensions.get(extensionEntry.getKey()).add(0, extensionEntry.getValue());
+					extensions.get(extensionEntry.getKey()).add(extensionEntry.getValue());
 					total++;
 				}
 			}

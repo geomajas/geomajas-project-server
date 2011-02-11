@@ -104,7 +104,7 @@ public class PipelineServiceTest {
 
 		context.put("start", "start");
 		pipelineService.execute("hookedTest", "delegate2", context, response);
-		Assert.assertEquals("starts1ps2pps2s2", response.getValue());
+		Assert.assertEquals("starts1pps2ps2s2", response.getValue());
 
 		context.put("start", "start");
 		pipelineService.execute("hookedTest", "delegate", context, response);
