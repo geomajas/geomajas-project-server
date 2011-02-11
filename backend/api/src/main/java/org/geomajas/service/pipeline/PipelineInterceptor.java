@@ -17,7 +17,7 @@ import org.geomajas.global.UserImplemented;
 
 /**
  * A pipeline interceptor allows to perform some action before and after a consecutive series of pipeline steps. It also
- * allows to optionally skip those steps and/or the after action by letting the before action returning diffenret
+ * allows to optionally skip those steps and/or the after action by letting the before action returning different
  * execution modes.
  * 
  * @param <RESPONSE>

@@ -41,16 +41,6 @@ public class PipelineInfo<RESPONSE> {
 
 	private List<PipelineInterceptor<RESPONSE>> interceptors;
 
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	/**
 	 * Get the name of the pipeline for which this is an implementation.
 	 *
@@ -152,7 +142,7 @@ public class PipelineInfo<RESPONSE> {
 	}
 	
 	/**
-	 * Get the list of interceptors to be added to thie pipeline.
+	 * Get the list of interceptors to be added to the pipeline.
 	 * 
 	 * @return list of interceptors
 	 * @since 1.9.0
@@ -162,7 +152,7 @@ public class PipelineInfo<RESPONSE> {
 	}
 
 	/**
-	 * Set the set of steps which need to be weaved at the extension hooks.
+	 * Set the list of interceptors which need to be added to the pipeline.
 	 * 
 	 * @param interceptors
 	 *            list of interceptors
@@ -171,22 +161,5 @@ public class PipelineInfo<RESPONSE> {
 	public void setInterceptors(List<PipelineInterceptor<RESPONSE>> interceptors) {
 		this.interceptors = interceptors;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 
 }

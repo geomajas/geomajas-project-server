@@ -67,7 +67,6 @@ public class PipelineServiceImpl<RESPONSE> implements PipelineService<RESPONSE> 
 		if (null == context) {
 			context = createContext();
 		}
-		log.debug("");
 		log.debug("executing pipeline {}", pipeline.getPipelineName());
 		for (PipelineStep<RESPONSE> step : pipeline.getPipeline()) {
 			if (context.isFinished()) {
@@ -151,14 +150,14 @@ public class PipelineServiceImpl<RESPONSE> implements PipelineService<RESPONSE> 
 			// equal stamps will be overwritten here, last one wins !
 			map.put(new PipelineStamp<RESPONSE>(pipeline), pipeline);
 		}
-		// replace with unique names
 		pipelineInfos = new ArrayList<PipelineInfo<RESPONSE>>(map.values());
-		log.debug("listing pipeline structures");
-		for (PipelineInfo<RESPONSE> pipeline : pipelineInfos) {
-			log.debug("");
-			print(pipeline);
+		if (log.isDebugEnabled()) {
+			log.debug("listing pipeline structures");
+			for (PipelineInfo<RESPONSE> pipeline : pipelineInfos) {
+				log.debug("");
+				print(pipeline);
+			}
 		}
-
 	}
 
 	private void print(PipelineInfo<RESPONSE> pipeline) {
@@ -406,7 +405,7 @@ public class PipelineServiceImpl<RESPONSE> implements PipelineService<RESPONSE> 
 	 * 
 	 * @param <T>
 	 */
-	protected class PipelineStamp<T> {
+	protected final class PipelineStamp<T> {
 
 		private final String name;
 
@@ -417,15 +416,15 @@ public class PipelineServiceImpl<RESPONSE> implements PipelineService<RESPONSE> 
 			this.layerId = info.getLayerId();
 		}
 
-		public boolean equals(Object other) {
-			if (this == other) {
+		public boolean equals(Object otherObject) {
+			if (this == otherObject) {
 				return true;
 			}
-			if (other == null || !other.getClass().equals(getClass())) {
+			if (otherObject == null || !(otherObject instanceof PipelineStamp)) {
 				return false;
 			}
-			PipelineStamp<T> that = (PipelineStamp<T>) other;
-			return Utilities.equals(name, that.name) && Utilities.equals(layerId, that.layerId);
+			PipelineStamp<T> otherStamp = (PipelineStamp<T>) otherObject;
+			return Utilities.equals(name, otherStamp.name) && Utilities.equals(layerId, otherStamp.layerId);
 		}
 
 		public int hashCode() {
