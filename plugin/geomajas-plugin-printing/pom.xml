@@ -87,6 +87,16 @@
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-printing</artifactId>
+				<version>${project.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.geomajas.plugin</groupId>
+				<artifactId>geomajas-plugin-printing-gwt</artifactId>
+				<version>${project.version}</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
@@ -120,6 +130,6 @@
 
 	<properties>
 		<printing-backend-version>1.8.0</printing-backend-version>
-		<printing-gwt-version>1.7.1</printing-gwt-version>
+		<printing-gwt-version>1.8.0</printing-gwt-version>
 	</properties>
 </project>

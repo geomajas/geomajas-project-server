@@ -29,7 +29,7 @@
 			<dependency>
 				<groupId>org.geomajas</groupId>
 				<artifactId>geomajas-dep</artifactId>
-				<version>1.10.32</version>
+				<version>1.11.4</version>
 				<type>pom</type>
 				<scope>import</scope>
 			</dependency>
@@ -115,7 +115,6 @@
 	</dependencies>
 
 	<build>
-		<outputDirectory>war/WEB-INF/classes</outputDirectory>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -127,31 +126,30 @@
 				</configuration>
 			</plugin>
 
+			<!-- adhere to Geomajas checkstyle configuration -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-war-plugin</artifactId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>2.5-DF</version>
 				<configuration>
-					<warSourceExcludes>.gwt-tmp/**</warSourceExcludes>
-					<warSourceDirectory>war</warSourceDirectory>
+					<configLocation>config/geomajas-checkstyle.xml</configLocation>
 				</configuration>
-			</plugin>
-
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>gwt-maven-plugin</artifactId>
-				<version>1.2</version> <!-- should be updated to 2.1.0-1 when using GWT 2.1.0 or higher -->
-				<configuration>
-					<inplace>true</inplace>
-					<module>org.geomajas.plugin.printing.gwt.example.GeomajasEntryPoint</module>
-					<runTarget>index.html</runTarget>
-					<copyWebapp>true</copyWebapp>
-					<warSourceDirectory>war</warSourceDirectory>
-					<disableCastChecking>true</disableCastChecking>
-					<disableClassMetadata>true</disableClassMetadata>
-					<extraJvmArgs>-Xmx512M -Xss1024k</extraJvmArgs>
-					<i18nConstantsWithLookupBundle>org.geomajas.plugin.printing.gwt.example.client.i18n.Translation</i18nConstantsWithLookupBundle>
-				</configuration>
-			</plugin>
+				<executions>
+					<execution>
+						<phase>verify</phase>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+				<dependencies>
+					<dependency>
+						<groupId>org.geomajas</groupId>
+						<artifactId>geomajas-checkstyle</artifactId>
+						<version>1.0.5</version>
+					</dependency>
+				</dependencies>
+			</plugin> 
 
 			<!-- Run the application using "mvn jetty:run" -->
 			<plugin>
@@ -159,38 +157,46 @@
 				<artifactId>maven-jetty-plugin</artifactId>
 				<version>6.1.20</version>
 				<configuration>
-         			<webAppSourceDirectory>${basedir}/war</webAppSourceDirectory>
 					<webAppConfig>
 						<contextPath>/</contextPath>
+						<baseResource implementation="org.mortbay.resource.ResourceCollection">
+							<!-- need both the webbapp dir and location where GWT puts stuff -->
+							<resourcesAsCSV>${basedir}/src/main/webapp,${project.build.directory}/${project.build.finalName}</resourcesAsCSV>
+						</baseResource>
 					</webAppConfig>
 					<reload>manual</reload>
 				</configuration>
 			</plugin>
 
+			<!-- some default config, added to in profiles -->
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>remove-build-files</id>
-						<phase>clean</phase>
-						<configuration>
-							<tasks>
-								<delete dir="war/WEB-INF/lib" />
-								<delete dir="war/org.geomajas.plugin.printing.gwt.example.GeomajasEntryPoint" />
-							</tasks>
-						</configuration>
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>
-				</executions>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>gwt-maven-plugin</artifactId>
+				<version>2.1.0-1</version>
+				<configuration>
+					<disableCastChecking>true</disableCastChecking>
+					<disableClassMetadata>true</disableClassMetadata>
+					<extraJvmArgs>-Xmx512M -Xss1024k</extraJvmArgs>
+				</configuration>
 			</plugin>
 
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-eclipse-plugin</artifactId>
 				<version>2.8</version>
+			</plugin>
+
+			<!-- clean the source tree (Gwt compile of eclipse plugin) -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-clean-plugin</artifactId>
+				<configuration>
+					<filesets>
+						<fileset>
+							<directory>src/main/webapp/GeomajasPrintingExample</directory>
+						</fileset>
+					</filesets>
+				</configuration>
 			</plugin>
 
 		</plugins>
@@ -207,6 +213,12 @@
 					<plugin>
 						<groupId>org.codehaus.mojo</groupId>
 						<artifactId>gwt-maven-plugin</artifactId>
+						<configuration>
+							<module>org.geomajas.plugin.printing.gwt.example.GeomajasEntryPoint</module>
+							<runTarget>index.html</runTarget>
+							<hostedWebapp>${project.build.directory}/${project.build.finalName}</hostedWebapp>
+							<copyWebapp>true</copyWebapp>
+						</configuration>
 						<executions>
 							<execution>
 								<phase>test-compile</phase>
@@ -217,7 +229,7 @@
 								</goals>
 							</execution>
 						</executions>
-					</plugin>					
+					</plugin>
 				</plugins>
 			</build>
 		</profile>

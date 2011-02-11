@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.geomajas.plugin.printing.document.Document;
+import org.geomajas.plugin.printing.document.Document.Format;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.view.AbstractView;
 
@@ -25,34 +26,31 @@ import org.springframework.web.servlet.view.AbstractView;
  * @author Jan De Moerloose
  * 
  */
-@Component("pdfView")
-public class PdfView extends AbstractView {
-
-	public PdfView() {
-		setContentType("application/pdf");
-	}
+@Component("documentView")
+public class DocumentView extends AbstractView {
 
 	@Override
 	protected void renderMergedOutputModel(Map<String, Object> model, HttpServletRequest request,
 			HttpServletResponse response) throws Exception {
-		Document doc = (Document) model.get(PdfController.DOCUMENT_KEY);
-		String download = (String) model.get(PdfController.DOWNLOAD_KEY);
-		String fileName = (String) model.get(PdfController.FILENAME_KEY);
+		Document doc = (Document) model.get(PrintingController.DOCUMENT_KEY);
+		String download = (String) model.get(PrintingController.DOWNLOAD_KEY);
+		String fileName = (String) model.get(PrintingController.FILENAME_KEY);
+		Format format = (Format) model.get(PrintingController.FORMAT_KEY);
 				
 		// Write content type and also length (determined via byte array).
-		response.setContentType(getContentType());
+		response.setContentType(format.getMimetype());
 		response.setContentLength(doc.getContentLength());
 		
 		// check download method
-		if (download.equals(PdfController.DOWNLOAD_METHOD_SAVE)) {
+		if (download.equals(PrintingController.DOWNLOAD_METHOD_SAVE)) {
 			response.setHeader("Content-Disposition", " attachment; filename=\"" + fileName + "\"");
 		} else {
 			response.setHeader("Content-Disposition", " inline; filename=\"" + fileName + "\"");
 		}
 
-		// Write the pdf
+		// Write the docmuent
 		ServletOutputStream out = response.getOutputStream();
-		doc.render(out);
+		doc.render(out, format);
 		out.flush();
 	}
 

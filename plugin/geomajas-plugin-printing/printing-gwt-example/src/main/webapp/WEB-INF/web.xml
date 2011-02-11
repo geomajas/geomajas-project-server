@@ -17,8 +17,8 @@
     <context-param>
         <param-name>contextConfigLocation</param-name>
         <param-value>
-            classpath:org/geomajas/spring/geomajasContext.xml
-			classpath:org/geomajas/plugin/printing/gwt/example/context/*.xml
+			classpath:org/geomajas/spring/geomajasContext.xml
+ 			classpath:org/geomajas/plugin/printing/gwt/example/context/*.xml
 		</param-value>
     </context-param>
 
@@ -57,7 +57,7 @@
 
 	<servlet-mapping>
 		<servlet-name>GeomajasServiceServlet</servlet-name>
-		<url-pattern>/org.geomajas.plugin.printing.gwt.example.GeomajasEntryPoint/geomajasService</url-pattern>
+		<url-pattern>/GeomajasPrintingExample/geomajasService</url-pattern>
 	</servlet-mapping>
 
 	<servlet-mapping>

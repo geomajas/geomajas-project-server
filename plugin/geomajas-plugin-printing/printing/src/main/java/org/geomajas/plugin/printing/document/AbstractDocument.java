@@ -46,6 +46,6 @@ public abstract class AbstractDocument implements Document {
 	}
 
 
-	public abstract void render(OutputStream os) throws PrintingException;
+	public abstract void render(OutputStream os, Format format) throws PrintingException;
 
 }

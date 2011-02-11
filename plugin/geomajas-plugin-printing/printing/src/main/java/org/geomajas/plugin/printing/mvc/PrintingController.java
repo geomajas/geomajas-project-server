@@ -14,6 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.geomajas.plugin.printing.PrintingException;
+import org.geomajas.plugin.printing.component.service.PrintConfigurationService;
+import org.geomajas.plugin.printing.document.Document.Format;
 import org.geomajas.plugin.printing.service.PrintService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -30,16 +32,22 @@ import org.springframework.web.servlet.ModelAndView;
  * @author Jan De Moerloose
  * 
  */
-@Controller("/printing")
-public class PdfController {
+@Controller("/printing/**")
+public class PrintingController {
 
-	public static final String PDF_VIEW_NAME = "pdfView";
+	public static final String DOCUMENT_VIEW_NAME = "documentView";
+
+	public static final String IMAGE_VIEW_NAME = "imageView";
 
 	public static final String DOCUMENT_KEY = "document";
 
 	public static final String DOWNLOAD_KEY = "download";
 
 	public static final String FILENAME_KEY = "name";
+
+	public static final String FORMAT_KEY = "format";
+	
+	public static final String IMAGE_KEY = "image";
 
 	public static final String DOWNLOAD_METHOD_BROWSER = "0";
 
@@ -48,19 +56,23 @@ public class PdfController {
 	@Autowired
 	protected PrintService printService;
 
+	@Autowired
+	protected PrintConfigurationService configurationService;
+
 	@RequestMapping(value = "/printing", method = RequestMethod.GET)
 	public ModelAndView printDocument(@RequestParam("documentId") String documentId,
-			@RequestParam(value = "download", defaultValue = "1") String download,
+			@RequestParam(value = "download", defaultValue = DOWNLOAD_METHOD_SAVE) String download,
 			@RequestParam(value = "name", defaultValue = "geomajas.pdf") String fileName, HttpServletRequest request)
 			throws PrintingException {
 		ModelAndView mav = new ModelAndView();
-		mav.setViewName(PDF_VIEW_NAME);
+		mav.setViewName(DOCUMENT_VIEW_NAME);
 		mav.addObject(DOCUMENT_KEY, printService.removeDocument(documentId));
 		mav.addObject(DOWNLOAD_KEY, download);
 		mav.addObject(FILENAME_KEY, fileName);
+		mav.addObject(FORMAT_KEY, Format.decode(fileName));
 		return mav;
 	}
-
+	
 	@ExceptionHandler
 	public ModelAndView exception(PrintingException exception, HttpServletResponse response) throws Exception {
 		response.setContentType("text/html");
@@ -74,5 +86,6 @@ public class PdfController {
 		response.getWriter().println(exception.getLocalizedMessage());
 		return new ModelAndView();
 	}
+
 
 }

@@ -13,9 +13,7 @@ package org.geomajas.plugin.printing.service;
 
 import java.util.List;
 
-import org.geomajas.plugin.printing.component.service.PrintConfigurationService;
 import org.geomajas.plugin.printing.configuration.PrintTemplate;
-import org.geomajas.plugin.printing.service.PrintService;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

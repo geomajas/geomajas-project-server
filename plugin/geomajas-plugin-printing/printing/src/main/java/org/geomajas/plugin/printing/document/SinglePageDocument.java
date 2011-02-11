@@ -10,22 +10,28 @@
  */
 package org.geomajas.plugin.printing.document;
 
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.imageio.ImageIO;
+
 import org.geomajas.plugin.printing.PrintingException;
 import org.geomajas.plugin.printing.component.MapComponent;
 import org.geomajas.plugin.printing.component.PageComponent;
 import org.geomajas.plugin.printing.component.PdfContext;
 import org.geomajas.plugin.printing.component.PrintComponent;
+import org.jpedal.PdfDecoder;
+import org.jpedal.exception.PdfException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.lowagie.text.Document;
 import com.lowagie.text.DocumentException;
+import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.PdfWriter;
 
 /**
@@ -53,6 +59,10 @@ public class SinglePageDocument extends AbstractDocument {
 	private ByteArrayOutputStream baos;
 
 	/**
+	 * Format of the in-memory context.
+	 */
+	private Format format;
+	/**
 	 * Constructs a document with the specified dimensions.
 	 * 
 	 * @param page
@@ -75,9 +85,9 @@ public class SinglePageDocument extends AbstractDocument {
 	/**
 	 * Renders the document to the specified output stream.
 	 */
-	public void render(OutputStream outputStream) throws PrintingException {
+	public void render(OutputStream outputStream, Format format) throws PrintingException {
 		try {
-			doRender(outputStream);
+			doRender(outputStream, format);
 		} catch (Exception e) {
 			throw new PrintingException(e, PrintingException.DOCUMENT_RENDER_PROBLEM);
 		}
@@ -89,9 +99,9 @@ public class SinglePageDocument extends AbstractDocument {
 	 * 
 	 * @throws PrintingException
 	 */
-	public void layout() throws PrintingException {
+	public void layout(Format format) throws PrintingException {
 		try {
-			doRender(null);
+			doRender(null, format);
 		} catch (Exception e) {
 			throw new PrintingException(e, PrintingException.DOCUMENT_LAYOUT_PROBLEM);
 		}
@@ -104,14 +114,20 @@ public class SinglePageDocument extends AbstractDocument {
 	 *            outputstream to render to, null if only for layout
 	 * @throws DocumentException
 	 * @throws IOException
+	 * @throws PrintingException 
 	 */
-	private void doRender(OutputStream outputStream) throws IOException, DocumentException {
+	private void doRender(OutputStream outputStream, Format format) throws IOException, DocumentException,
+			PrintingException {
 		// first render or re-render for different layout
-		if (outputStream == null || baos == null) {
+		if (outputStream == null || baos == null || this.format != format) {
 			if (baos == null) {
-				baos = new ByteArrayOutputStream();
+				baos = new ByteArrayOutputStream(10 * 1024);
 			}
 			baos.reset();
+			boolean resize = false;
+			if (page.getBounds().getWidth() == 0 || page.getBounds().getHeight() == 0) {
+				resize = true;
+			}
 			// Create a document in the requested ISO scale.
 			Document document = new Document(page.getBounds(), 0, 0, 0, 0);
 			PdfWriter writer;
@@ -125,13 +141,28 @@ public class SinglePageDocument extends AbstractDocument {
 
 			// Write document title and metadata
 			document.open();
-			document.addTitle("Geomajas");
-
-			// Actual drawing
 			PdfContext context = new PdfContext(writer);
 			context.initSize(page.getBounds());
 			// first pass of all children to calculate size
 			page.calculateSize(context);
+			if (resize) {
+				// we now know the bounds of the document
+				// round 'm up and restart with a new document
+				int width = (int) Math.ceil(page.getBounds().getWidth());
+				int height = (int) Math.ceil(page.getBounds().getHeight());
+				page.getConstraint().setWidth(width);
+				page.getConstraint().setHeight(height);
+				document = new Document(new Rectangle(width, height), 0, 0, 0, 0);
+				writer = PdfWriter.getInstance(document, baos);
+				// Render in correct colors for transparent rasters
+				writer.setRgbTransparencyBlending(true);
+				document.open();
+				baos.reset();
+				context = new PdfContext(writer);
+				context.initSize(page.getBounds());
+			}
+			// Actual drawing
+			document.addTitle("Geomajas");
 			// second pass to layout
 			page.layout(context);
 			// finally render
@@ -139,12 +170,52 @@ public class SinglePageDocument extends AbstractDocument {
 			document.add(context.getImage());
 			// Now close the document
 			document.close();
+			// convert to non-pdf format
+			switch (format) {
+				case PDF:
+					break;
+				case PNG:
+				case JPG:
+					/** instance of PdfDecoder to convert PDF into image */
+					PdfDecoder decodePdf = new PdfDecoder(true);
+
+					/** set mappings for non-embedded fonts to use */
+					PdfDecoder.setFontReplacements(decodePdf);
+					decodePdf.useHiResScreenDisplay(true);
+					decodePdf.getDPIFactory().setDpi(2 * 72);
+					decodePdf.setPageParameters(1, 1);
+					try {
+						decodePdf.openPdfArray(baos.toByteArray());
+						/** get page 1 as an image */
+						BufferedImage img = decodePdf.getPageAsImage(1);
+
+						/** close the pdf file */
+						decodePdf.closePdfFile();
+						baos.reset();
+						ImageIO.write(img, getExtensionAsString(format), baos);
+					} catch (PdfException e) {
+						throw new PrintingException(e, PrintingException.DOCUMENT_RENDER_PROBLEM);
+					} 
+					break;
+			}
 			if (outputStream != null) {
 				baos.writeTo(outputStream);
 			}
 		} else {
 			baos.writeTo(outputStream);
 		}
+	}
+
+	private String getExtensionAsString(Format format) {
+		switch (format) {
+			case PDF:
+				return "pdf";
+			case PNG:
+				return "png";
+			case JPG:
+				return "jpg";
+		}
+		return "pdf";
 	}
 
 	public PageComponent getPage() {

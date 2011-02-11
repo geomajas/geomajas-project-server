@@ -13,6 +13,7 @@ package org.geomajas.plugin.printing.document;
 import java.io.OutputStream;
 
 import org.geomajas.plugin.printing.PrintingException;
+import org.springframework.util.StringUtils;
 
 /**
  * 
@@ -22,6 +23,45 @@ import org.geomajas.plugin.printing.PrintingException;
  */
 
 public interface Document {
+
+	/**
+	 * Format of the document.
+	 * 
+	 * @author Jan De Moerloose
+	 * 
+	 */
+	enum Format {
+		PDF("pdf", "application/pdf"), JPG("jpg", "image/jpg"), PNG("png", "image/png");
+
+		private String extension;
+
+		private String mimetype;
+
+		private Format(String extension, String mimetype) {
+			this.extension = extension;
+			this.mimetype = mimetype;
+		}
+
+		public String getExtension() {
+			return extension;
+		}
+
+		public String getMimetype() {
+			return mimetype;
+		}
+
+		public static Format decode(String path) throws PrintingException {
+			String extension = StringUtils.getFilenameExtension(path).toLowerCase();
+			if (JPG.getExtension().equals(extension)) {
+				return JPG;
+			} else if (PNG.getExtension().equals(extension)) {
+				return PNG;
+			} else {
+				return PDF;
+			}
+		}
+	}
+
 	/**
 	 * Renders the document to an output stream.
 	 * 
@@ -29,8 +69,8 @@ public interface Document {
 	 *            output stream
 	 * @throws PrintingException
 	 */
-	void render(OutputStream os) throws PrintingException;
-	
+	void render(OutputStream os, Format format) throws PrintingException;
+
 	/**
 	 * Gets the content length of the document.
 	 * 

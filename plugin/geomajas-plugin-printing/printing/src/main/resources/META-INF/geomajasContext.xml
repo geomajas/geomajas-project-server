@@ -65,6 +65,12 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 					<property name="licenseName" value="Java Distribution License (JDL)"/>
 					<property name="licenseUrl" value="https://jai.dev.java.net/#Licenses"/>
 				</bean>
+				<bean class="org.geomajas.global.CopyrightInfo">
+					<property name="key" value="JPedal"/>
+					<property name="copyright" value="Copyright © 1997-2008, IDRsolutions and Contributors"/>
+					<property name="licenseName" value="GNU LGPL v3"/>
+					<property name="licenseUrl" value="ttp://www.gnu.org/licenses/lgpl.txt"/>
+				</bean>
 			</list>
 		</property>
 	</bean>

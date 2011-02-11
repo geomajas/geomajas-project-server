@@ -22,6 +22,7 @@ import org.geomajas.plugin.printing.component.impl.LegendItemComponentImpl;
 import org.geomajas.plugin.printing.component.impl.MapComponentImpl;
 import org.geomajas.plugin.printing.component.service.PrintDtoConverterService;
 import org.geomajas.plugin.printing.configuration.PrintTemplate;
+import org.geomajas.plugin.printing.document.Document.Format;
 import org.geomajas.plugin.printing.document.SinglePageDocument;
 import org.geomajas.plugin.printing.service.PrintService;
 import org.geomajas.service.ConfigurationService;
@@ -80,7 +81,7 @@ public class PrintGetTemplateCommand implements Command<PrintGetTemplateRequest,
 		}
 		SinglePageDocument pdfDoc = new SinglePageDocument(page, null);
 		// layout the document
-		pdfDoc.layout();
+		pdfDoc.layout(Format.PDF);
 		// Add document to container
 		String documentId = printService.putDocument(pdfDoc);
 		response.setDocumentId(documentId);
