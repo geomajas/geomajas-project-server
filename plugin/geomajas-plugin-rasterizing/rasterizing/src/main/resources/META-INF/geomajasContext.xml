@@ -50,7 +50,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	<!-- define pipelines for actual rasterizing -->
 
 	<bean name="PIPELINE_RASTERIZING" class="org.geomajas.service.pipeline.PipelineInfo">
-		<property name="pipelineName" value="$PIPELINE_RASTERIZING"/>
+		<property name="pipelineName" value="PIPELINE_RASTERIZING"/>
 		<property name="pipeline">
 			<list>
 				<bean class="org.geomajas.service.pipeline.PipelineHook">
@@ -67,7 +67,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	</bean>
 
 	<bean name="PIPELINE_RASTERIZING_CACHED" class="org.geomajas.service.pipeline.PipelineInfo">
-		<property name="pipelineName"><util:constant static-field="org.geomajas.plugin.rasterizing.api.RasterizingPipelineCode.PIPELINE_RASTERIZING_CACHED"/></property>
+		<property name="pipelineName"><util:constant static-field="org.geomajas.plugin.rasterizing.api.RasterizingPipelineCode.PIPELINE_RASTERIZING"/></property>
 		<property name="delegatePipeline" ref="PIPELINE_RASTERIZING" />
 		<property name="interceptors">
 			<list>
@@ -92,12 +92,12 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 						<property name="id" value="ClearPanOrigin" />
 					</bean>
 				</entry>
-				<entry key="postTileFill">
+				<entry key="preGetStringContent">
 					<bean class="org.geomajas.plugin.rasterizing.RasterUrlStep" >
 						<property name="id" value="RasterUrl" />
 					</bean>
 				</entry>
-				<entry key="preGetStringContent">
+				<entry key="postGetStringContent">
 					<bean class="org.geomajas.plugin.rasterizing.RemoveTileFeaturesStep" >
 						<property name="id" value="RemoveTileFeatures" />
 					</bean>
@@ -117,7 +117,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 					<property name="stepId" value="GetTileFillStep" />
 				</bean>
 				<bean
-					class="org.geomajas.plugin.rasterizing.RebuildCachingInterceptor">
+					class="org.geomajas.plugin.rasterizing.RebuildCacheInterceptor">
 					<property name="id" value="RebuildCache" />
 					<property name="fromStepId" value="GetTileFilterStep" />
 					<property name="toStepId" value="GetTileFillStep" />
