@@ -65,6 +65,7 @@ import com.vividsolutions.jts.geom.Point;
  *
  * @author Pieter De Graef
  * @author Joachim Van der Auwera
+ * @author Jan De Moerloose
  * @since 1.0.0
  */
 @Component
@@ -120,7 +121,7 @@ public class GeotoolsRasterizingService implements RasterizingService {
 	 * 
 	 * @return rendering hints
 	 */
-	public RenderingHints getRenderingHints() {
+	RenderingHints getRenderingHints() {
 		return renderingHints;
 	}
 
@@ -168,12 +169,12 @@ public class GeotoolsRasterizingService implements RasterizingService {
 			InternalTile tile) throws GeomajasException, IOException {
 		BufferedImage image = createImage(tile.getScreenWidth(), tile.getScreenHeight());
 		Graphics2D graphics = getGraphics(image);
-		paintLayer(image, graphics, layer, style, metadata, tile);
+		paintLayer(graphics, style, metadata, tile);
 		ImageIO.write(image, "PNG", stream);
 	}
 
-	private void paintLayer(BufferedImage image, final Graphics2D graphics2D, VectorLayer layer, NamedStyleInfo style,
-			TileMetadata metadata, InternalTile tile) throws GeomajasException {
+	private void paintLayer(final Graphics2D graphics2D, NamedStyleInfo style, TileMetadata metadata, InternalTile tile)
+			throws GeomajasException {
 		MathTransform transform = getMathTransform(metadata, tile);
 		if (metadata.isPaintGeometries()) {
 			StyledShapePainter painter = new StyledShapePainter(new LabelCacheImpl());
@@ -230,12 +231,12 @@ public class GeotoolsRasterizingService implements RasterizingService {
 	/**
 	 * Paint the feature object on the graphics. It is the feature's label that this painter will draw.
 	 *
-	 * @param graphics
-	 *            The AWT graphics object onto which we draw.
-	 * @param feature
-	 *            The feature object of which we draw the label.
+	 * @param transform transformation to apply
+	 * @param graphics the AWT graphics object on which to draw
+	 * @param style style for the label
+	 * @param feature feature object for which to draw the label
 	 */
-	public void paintLabel(MathTransform transform, Graphics2D graphics, LabelStyle style, InternalFeature feature) {
+	private void paintLabel(MathTransform transform, Graphics2D graphics, LabelStyle style, InternalFeature feature) {
 		float strokeWidth = style.getStrokeWidth();
 
 		GeometryCoordinateSequenceTransformer transformer = new GeometryCoordinateSequenceTransformer();
@@ -295,7 +296,9 @@ public class GeotoolsRasterizingService implements RasterizingService {
 	/**
 	 * Find coordinates with respect to to upper left corner (0,0) and scale (pix/unit).
 	 *
-	 * @return
+	 * @param metadata tile meta data
+	 * @param tile tile to get transform for
+	 * @return transformation
 	 */
 	private MathTransform getMathTransform(TileMetadata metadata, InternalTile tile) {
 		double scale = metadata.getScale();
@@ -307,12 +310,13 @@ public class GeotoolsRasterizingService implements RasterizingService {
 	/**
 	 * Paint the feature object on the graphics. It is the feature's geometry that this painter draws.
 	 *
-	 * @param graphics
-	 *            The AWT graphics object onto which we draw.
-	 * @param feature
-	 *            The feature object of which we draw the geometry.
+	 * @param metadata tile meta data
+	 * @param transform transformation to apply
+	 * @param graphics The AWT graphics object onto which we draw.
+	 * @param painter to use
+	 * @param feature The feature object of which we draw the geometry.
 	 */
-	public void paintGeometry(TileMetadata metadata, MathTransform transform, Graphics2D graphics,
+	private void paintGeometry(TileMetadata metadata, MathTransform transform, Graphics2D graphics,
 			StyledShapePainter painter, InternalFeature feature) {
 		// Get the feature's geometry and turn it into a shape. This shape is
 		// transformed from world to screen, and can be rendered using a
