@@ -10,6 +10,7 @@
  */
 package org.geomajas.servlet;
 
+import org.geomajas.global.Api;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -50,7 +51,9 @@ import java.io.IOException;
  *
  * @author Pieter De Graef
  * @author Joachim Van der Auwera
+ * @since 1.9.0
  */
+@Api
 public class CacheFilter implements Filter {
 
 	public static final String CACHE_DURATION_IN_SECONDS = "cacheDurationInSeconds";
@@ -69,10 +72,14 @@ public class CacheFilter implements Filter {
 	private static final String HTTP_LAST_MODIFIED_HEADER = "Last-Modified";
 
 	private static final String HTTP_EXPIRES_HEADER = "Expires";
+	private static final String HTTP_EXPIRES_HEADER_NOCACHE_VALUE = "Wed, 11 Jan 1984 05:00:00:GMT";
 
 	private static final String HTTP_CACHE_CONTROL_HEADER = "Cache-Control";
+	private static final String HTTP_CACHE_CONTROL_HEADER_NOCACHE_VALUE =
+			"max-age=0, no-cache, no-store, must-revalidate";
 
 	private static final String HTTP_CACHE_PRAGMA = "Pragma";
+	private static final String HTTP_CACHE_PRAGMA_VALUE = "no-cache";
 
 	private String[] cacheIdentifiers = new String[] {".cache."};
 	private String[] cacheSuffixes = new String[] {".js", ".png", ".jpg", ".jpeg", ".gif", ".css", ".html"};
@@ -224,16 +231,20 @@ public class CacheFilter implements Filter {
 	// Private methods for setting cache/no-cache:
 	// ------------------------------------------------------------------------
 
-	private void configureNoCaching(HttpServletResponse response) {
-		long now = System.currentTimeMillis();
-		response.setDateHeader("Date", now);
-
+	/**
+	 * Configure the HTTP response to switch off caching.
+	 *
+	 * @param response response to configure
+	 * @since 1.9.0
+	 */
+	@Api
+	public static void configureNoCaching(HttpServletResponse response) {
 		// HTTP 1.0 header:
-		response.setDateHeader(HTTP_EXPIRES_HEADER, now - 86400000L); // one day old
-		response.setHeader(HTTP_CACHE_PRAGMA, "no-cache");
+		response.setHeader(HTTP_EXPIRES_HEADER, HTTP_EXPIRES_HEADER_NOCACHE_VALUE);
+		response.setHeader(HTTP_CACHE_PRAGMA, HTTP_CACHE_PRAGMA_VALUE);
 
 		// HTTP 1.1 header:
-		response.setHeader(HTTP_CACHE_CONTROL_HEADER, "no-cache");
+		response.setHeader(HTTP_CACHE_CONTROL_HEADER, HTTP_CACHE_CONTROL_HEADER_NOCACHE_VALUE);
 	}
 
 	private void configureCaching(HttpServletResponse response) {
