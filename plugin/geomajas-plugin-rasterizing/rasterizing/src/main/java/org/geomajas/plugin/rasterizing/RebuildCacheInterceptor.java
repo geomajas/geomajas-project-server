@@ -36,7 +36,6 @@ import com.vividsolutions.jts.geom.Envelope;
  * Interceptor that caches the rebuild context.
  * 
  * @author Jan De Moerloose
- * 
  */
 public class RebuildCacheInterceptor extends AbstractCachingInterceptor<GetTileContainer> {
 
@@ -95,7 +94,5 @@ public class RebuildCacheInterceptor extends AbstractCachingInterceptor<GetTileC
 				.getTile().getBounds());
 
 	}
-	
-	
 
 }

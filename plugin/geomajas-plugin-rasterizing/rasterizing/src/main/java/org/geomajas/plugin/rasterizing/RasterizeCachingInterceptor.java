@@ -22,10 +22,9 @@ import org.geomajas.service.pipeline.PipelineContext;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
- * Gets rasterized image from cache.
+ * Get rasterized image from cache.
  * 
  * @author Jan De Moerloose
- *
  */
 public class RasterizeCachingInterceptor  extends AbstractCachingInterceptor<RasterizingContainer> {
 

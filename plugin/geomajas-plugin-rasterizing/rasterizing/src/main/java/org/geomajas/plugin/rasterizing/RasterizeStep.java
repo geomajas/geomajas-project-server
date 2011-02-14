@@ -27,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * {@link RasterTileStep} there will actually fill the {@link RasterizingContainer} object.
  * 
  * @author Joachim Van der Auwera
+ * @author Jan De Moerloose
  */
 public class RasterizeStep extends AbstractRasterizingStep {
 

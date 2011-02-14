@@ -25,7 +25,6 @@ import org.springframework.beans.factory.annotation.Autowired;
  * Interceptor that caches the rasterized image.
  * 
  * @author Jan De Moerloose
- * 
  */
 public class RasterTileCachingInterceptor extends AbstractCachingInterceptor<GetTileContainer> {
 

@@ -249,7 +249,7 @@ public class Style2dFactoryServiceImpl implements Style2dFactoryService {
 			BufferedImage img = IMAGES.get(href);
 			if (img == null) {
 				// checks absolute uri or classpath or web context
-				URL url = null;
+				URL url;
 				Resource resource = applicationContext.getResource(href);
 				if (resource.exists()) {
 					url = resource.getURL();

@@ -25,7 +25,6 @@ import org.geomajas.service.pipeline.PipelineStep;
  * Step which removes feature and dependent node information. Rasterized tiles should not need this information.
  * 
  * @author Jan De Moerloose
- * 
  */
 public class RemoveTileFeaturesStep implements PipelineStep<GetTileContainer> {
 
@@ -44,6 +43,4 @@ public class RemoveTileFeaturesStep implements PipelineStep<GetTileContainer> {
 		tile.setFeatures(new ArrayList<InternalFeature>());
 		tile.setCodes(new ArrayList<TileCode>());
 	}
-	
-
 }

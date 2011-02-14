@@ -22,14 +22,12 @@ import org.geomajas.plugin.rasterizing.api.RasterizingPipelineCode;
 import org.geomajas.service.TestRecorder;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
-import org.geomajas.service.pipeline.PipelineInterceptor.ExecutionMode;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Interceptor for caching the tile and (optionally) the image.
  * 
  * @author Jan De Moerloose
- * 
  */
 public class GetTileAllCachingInterceptor extends AbstractCachingInterceptor<GetTileContainer> {
 

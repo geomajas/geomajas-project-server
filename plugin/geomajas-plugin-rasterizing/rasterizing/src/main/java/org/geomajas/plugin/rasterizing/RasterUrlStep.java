@@ -25,9 +25,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * Pipeline step which creates the image URL of the raster.
- * F
- * @author Jan De Moerloose
  *
+ * @author Jan De Moerloose
  */
 public class RasterUrlStep implements PipelineStep<GetTileContainer> {
 
@@ -66,7 +65,8 @@ public class RasterUrlStep implements PipelineStep<GetTileContainer> {
 		url.append(".png");
 		// must add a random parameter to force reload in some browsers like FF
 		// better solution would be to use a cache version id ?
-		url.append("?q=" + randomString(8));
+		url.append("?q=");
+		url.append(randomString(8));
 		tile.setFeatureContent(url.toString());
 	}
 	
