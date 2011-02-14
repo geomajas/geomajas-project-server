@@ -30,6 +30,17 @@ import java.io.OutputStream;
 @Api(allMethods = true)
 public interface RasterizingService {
 
+	/**
+	 * Call to convert a vector tile into a raster image.
+	 *
+	 * @param stream stream to write the image to
+	 * @param layer layer for which the image needs to be produced
+	 * @param style style for the rendering
+	 * @param metadata tile metadata
+	 * @param tile tile itself (containing the features to draw)
+	 * @throws GeomajasException problem during rendering
+	 * @throws IOException problem while writing to the stream
+	 */
 	void rasterize(OutputStream stream, VectorLayer layer, NamedStyleInfo style, TileMetadata metadata,
 			InternalTile tile) throws GeomajasException, IOException;
 

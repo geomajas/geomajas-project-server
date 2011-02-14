@@ -15,7 +15,7 @@ import org.geomajas.global.Api;
 import org.geomajas.plugin.caching.step.CacheContainer;
 
 /**
- * Container for result of a rasterize request in {@link RasterizingController}.
+ * Container for result of a rasterize request in {@link org.geomajas.plugin.rasterizing.mvc.RasterizingController}.
  *
  * @author Joachim Van der Auwera
  * @since 1.0.0
