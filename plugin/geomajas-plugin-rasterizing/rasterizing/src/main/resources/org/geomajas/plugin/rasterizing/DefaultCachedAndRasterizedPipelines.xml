@@ -21,20 +21,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 
 	<!-- these pipelines don't change with rasterization -->
 
-	<bean class="org.geomajas.service.pipeline.PipelineInfo">
-		<property name="pipelineName"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_SAVE_OR_UPDATE_ONE"/></property>
-		<property name="delegatePipeline" ref="PIPELINE_SAVE_OR_UPDATE_ONE_CACHED" />
-	</bean>
-
-	<bean class="org.geomajas.service.pipeline.PipelineInfo">
-		<property name="pipelineName"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_GET_FEATURES"/></property>
-		<property name="delegatePipeline" ref="PIPELINE_GET_FEATURES_CACHED" />
-	</bean>
-
-	<bean class="org.geomajas.service.pipeline.PipelineInfo">
-		<property name="pipelineName"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_GET_BOUNDS"/></property>
-		<property name="delegatePipeline" ref="PIPELINE_GET_BOUNDS_CACHED" />
-	</bean>
+	<import resource="classpath:org/geomajas/plugin/caching/DefaultCachedPipelines.xml" />
 
 	<!-- define default cached pipelines for VectorLayerService -->
 
