@@ -33,7 +33,7 @@ public interface RasterizingPipelineCode {
 	String PIPELINE_GET_VECTOR_TILE_RASTERIZING = "rasterizing.getVectorTile"; // command pipeline
 
 	/**
-	 * Pipeline context key for image id (=rebuild and raster image cache id)
+	 * Pipeline context key for image id (=rebuild and raster image cache id).
 	 */
 	String IMAGE_ID_KEY = "rasterizing.imageId"; // String
 
