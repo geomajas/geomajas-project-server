@@ -18,9 +18,8 @@
 		<groupId>org.geomajas.plugin</groupId>
 		<version>1.0.0-SNAPSHOT</version>
 	</parent>
-	<groupId>org.geomajas</groupId>
-	<artifactId>rasterizing-gwt-example</artifactId>
-	<version>1.0-SNAPSHOT</version>
+	<groupId>org.geomajas.plugin</groupId>
+	<artifactId>geomajas-plugin-rasterizing-gwt-example</artifactId>
 	<packaging>war</packaging>
 	<name>Geomajas GWT application</name>
 	<description>Rasterizing GWT example application</description>
