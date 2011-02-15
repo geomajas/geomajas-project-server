@@ -72,7 +72,7 @@ public class DependencyCheckPostProcessor {
 		}
 
 		// Check dependencies
-		StringBuffer message = new StringBuffer();
+		StringBuilder message = new StringBuilder();
 		String backendVersion = versions.get("Geomajas");
 		for (PluginInfo plugin : declaredPlugins) {
 			String name = plugin.getVersion().getName();
