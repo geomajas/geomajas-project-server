@@ -38,20 +38,16 @@ public class RasterizeStep extends AbstractRasterizingStep {
 
 	public void execute(PipelineContext rasterContext, RasterizingContainer rasterizingContainer)
 			throws GeomajasException {
+
 		// calls the vector pipeline with the rebuild key
-		// Q: do we need a new context or can we pass our own raster context instead ?
-		PipelineContext context = pipelineService.createContext();
-		context.put(RasterizingPipelineCode.IMAGE_ID_KEY, rasterContext.get(RasterizingPipelineCode.IMAGE_ID_KEY));
-		context.put(PipelineCode.LAYER_ID_KEY, rasterContext.get(PipelineCode.LAYER_ID_KEY));
-		context.put(PipelineCode.LAYER_KEY, rasterContext.get(PipelineCode.LAYER_KEY));
-		
-		String layerId = context.get(PipelineCode.LAYER_ID_KEY, String.class);
+		// reuse context, no reason to create a new one
+
+		String layerId = rasterContext.get(PipelineCode.LAYER_ID_KEY, String.class);
 		GetTileContainer response = new GetTileContainer();
-		pipelineService.execute(RasterizingPipelineCode.PIPELINE_GET_VECTOR_TILE_RASTERIZING, layerId, context,
+		pipelineService.execute(RasterizingPipelineCode.PIPELINE_GET_VECTOR_TILE_RASTERIZING, layerId, rasterContext,
 				response);
 		rasterContext.put(PipelineCode.BOUNDS_KEY, response.getTile().getBounds());
-		rasterContext.put(PipelineCode.TILE_METADATA_KEY, context.get(PipelineCode.TILE_METADATA_KEY));
-		RasterizingContainer rc = context.get(RasterizingPipelineCode.CONTAINER_KEY, RasterizingContainer.class );
+		RasterizingContainer rc = rasterContext.get(RasterizingPipelineCode.CONTAINER_KEY, RasterizingContainer.class );
 		rasterizingContainer.setImage(rc.getImage());
 		log.debug("getTile response InternalTile {}", response);
 	}
