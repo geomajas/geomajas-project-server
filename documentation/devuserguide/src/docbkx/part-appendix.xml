@@ -17,6 +17,32 @@
   <appendix id="appendix-migrating">
     <title>Migrating between Geomajas versions</title>
 
+    <section id="mig-190">
+      <title>Migrating between Geomajas 1.8.0 and Geomajas (back-end core)
+      1.9.0</title>
+
+      <para><itemizedlist>
+          <listitem>
+            <para>Pipelines are now fully checked on application startup, any
+            problems in pipeline configuration will now cause application
+            startup to fail (previously this only failed when the pipeline in
+            question was executed).</para>
+          </listitem>
+
+          <listitem>
+            <para>In the GetVectorTile pipeline the GetTileTransformStep has
+            been split in the GetTileTransformStep and GetTileFillStep. The
+            postTileTransform hook is still after tge GetTileTransformStep, so
+            the filtering of features to ensure they are only included in one
+            tile has not yet happened.</para>
+          </listitem>
+
+          <listitem>
+            <para>...</para>
+          </listitem>
+        </itemizedlist></para>
+    </section>
+
     <section id="mig-180">
       <title>Migrating between Geomajas 1.7.1 and Geomajas (back-end core)
       1.8.0</title>
