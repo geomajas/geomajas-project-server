@@ -12,11 +12,13 @@
 		xmlns="http://www.springframework.org/schema/beans"
 		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 		xmlns:context="http://www.springframework.org/schema/context"
+		xmlns:util="http://www.springframework.org/schema/util"
 		xsi:schemaLocation="
 http://www.springframework.org/schema/beans
 http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
 http://www.springframework.org/schema/context
-http://www.springframework.org/schema/context/spring-context-2.5.xsd"
+http://www.springframework.org/schema/context/spring-context-2.5.xsd
+http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.0.xsd"
 		>
 
 	<bean class="org.geomajas.service.pipeline.PipelineInfo">
@@ -225,6 +227,79 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 					<property name="id" value="i3" />
 					<property name="fromStepId" value="s1" />
 					<property name="toStepId" value="s1" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean class="org.geomajas.service.pipeline.PipelineInfo">
+		<property name="pipelineName" value="interceptorTest4"/>
+		<property name="layerId" value="base"/>
+		<property name="delegatePipeline" ref="intercepted" />
+		<property name="interceptors">
+			<list>
+				<bean class="org.geomajas.internal.service.pipeline.TestInterceptor">
+					<property name="id" value="i4" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean class="org.geomajas.service.pipeline.PipelineInfo">
+		<property name="pipelineName" value="interceptorExecutionMode1"/>
+		<property name="layerId" value="base"/>
+		<property name="delegatePipeline" ref="intercepted" />
+		<property name="interceptors">
+			<list>
+				<bean class="org.geomajas.internal.service.pipeline.TestInterceptor">
+					<property name="executionMode" value="EXECUTE_ALL" />
+					<property name="id" value="interceptor" />
+					<property name="stepId" value="s1" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean class="org.geomajas.service.pipeline.PipelineInfo">
+		<property name="pipelineName" value="interceptorExecutionMode2"/>
+		<property name="layerId" value="base"/>
+		<property name="delegatePipeline" ref="intercepted" />
+		<property name="interceptors">
+			<list>
+				<bean class="org.geomajas.internal.service.pipeline.TestInterceptor">
+					<property name="executionMode" value="EXECUTE_SKIP_STEPS" />
+					<property name="id" value="interceptor" />
+					<property name="stepId" value="s1" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean class="org.geomajas.service.pipeline.PipelineInfo">
+		<property name="pipelineName" value="interceptorExecutionMode3"/>
+		<property name="layerId" value="base"/>
+		<property name="delegatePipeline" ref="intercepted" />
+		<property name="interceptors">
+			<list>
+				<bean class="org.geomajas.internal.service.pipeline.TestInterceptor">
+					<property name="executionMode" value="EXECUTE_STEPS_NOT_AFTER" />
+					<property name="id" value="interceptor" />
+					<property name="stepId" value="s1" />
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+	<bean class="org.geomajas.service.pipeline.PipelineInfo">
+		<property name="pipelineName" value="interceptorExecutionMode4"/>
+		<property name="layerId" value="base"/>
+		<property name="delegatePipeline" ref="intercepted" />
+		<property name="interceptors">
+			<list>
+				<bean class="org.geomajas.internal.service.pipeline.TestInterceptor">
+					<property name="executionMode" value="EXECUTE_NONE" />
+					<property name="id" value="interceptor" />
+					<property name="stepId" value="s1" />
 				</bean>
 			</list>
 		</property>

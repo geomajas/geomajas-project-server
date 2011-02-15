@@ -19,7 +19,6 @@ import org.geomajas.service.pipeline.PipelineStep;
  * Step for interception testing.
  * 
  * @author Jan De Moerloose
- * 
  */
 public class StepIntercept implements PipelineStep<StringAttribute> {
 

@@ -35,10 +35,28 @@ public interface PipelineInterceptor<RESPONSE> {
 	 * action.
 	 * 
 	 * @author Jan De Moerloose
-	 * 
 	 */
 	enum ExecutionMode {
-		EXECUTE_ALL, EXECUTE_NONE, EXECUTE_STEPS, EXECUTE_AFTER
+		/**
+		 * Continue by executing everything, including the intercepted steps and
+		 * {@link PipelineInterceptor#afterSteps(PipelineContext, Object)}.
+		 */
+		EXECUTE_ALL,
+		/**
+		 * Skip after the intercepted steps but do execute
+		 * {@link PipelineInterceptor#afterSteps(PipelineContext, Object)}.
+		 */
+		EXECUTE_SKIP_STEPS,
+		/**
+		 * Continue by executing the steps, but do not execute
+		 * {@link PipelineInterceptor#afterSteps(PipelineContext, Object)}..
+		 */
+		EXECUTE_STEPS_NOT_AFTER,
+		/**
+		 * Continue after the intercepted steps. {@link PipelineInterceptor#afterSteps(PipelineContext, Object)} is
+		 * also not executed.
+		 */
+		EXECUTE_NONE
 	}
 
 	/**
@@ -50,6 +68,8 @@ public interface PipelineInterceptor<RESPONSE> {
 
 	/**
 	 * The id of the first step to intercept.
+	 * <p/>
+	 * When this is not set, this pipeline will be intercepted from the beginning.
 	 * 
 	 * @return pipeline step id
 	 */
@@ -57,7 +77,9 @@ public interface PipelineInterceptor<RESPONSE> {
 
 	/**
 	 * The id of the last step to intercept.
-	 * 
+	 * <p/>
+	 * When this is not set, this pipeline will be intercepted till the end.
+	 *
 	 * @return pipeline step id
 	 */
 	String getToStepId();

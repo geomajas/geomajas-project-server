@@ -134,4 +134,44 @@ public class PipelineServiceTest {
 		pipelineService.execute("interceptorTest3", "base", context, response);
 		Assert.assertEquals("blas2", response.getValue());
 	}
+
+	@Test
+	public void interceptorTestBoundaries() throws Exception {
+		StringAttribute response = new StringAttribute("bla");
+		PipelineContext context = pipelineService.createContext();
+		pipelineService.execute("interceptorTest4", "base", context, response);
+		Assert.assertEquals("bla_before_s1s2_after_", response.getValue());
+	}
+
+	@Test
+	public void interceptorTestExecutionModeAll() throws Exception {
+		StringAttribute response = new StringAttribute("bla");
+		PipelineContext context = pipelineService.createContext();
+		pipelineService.execute("interceptorExecutionMode1", "base", context, response);
+		Assert.assertEquals("bla_before_s1_after_s2", response.getValue());
+	}
+
+	@Test
+	public void interceptorTestExecutionSkipSteps() throws Exception {
+		StringAttribute response = new StringAttribute("bla");
+		PipelineContext context = pipelineService.createContext();
+		pipelineService.execute("interceptorExecutionMode2", "base", context, response);
+		Assert.assertEquals("bla_before__after_s2", response.getValue());
+	}
+
+	@Test
+	public void interceptorTestExecutionModeStepsNotAfter() throws Exception {
+		StringAttribute response = new StringAttribute("bla");
+		PipelineContext context = pipelineService.createContext();
+		pipelineService.execute("interceptorExecutionMode3", "base", context, response);
+		Assert.assertEquals("bla_before_s1s2", response.getValue());
+	}
+
+	@Test
+	public void interceptorTestExecutionModeNone() throws Exception {
+		StringAttribute response = new StringAttribute("bla");
+		PipelineContext context = pipelineService.createContext();
+		pipelineService.execute("interceptorExecutionMode4", "base", context, response);
+		Assert.assertEquals("bla_before_s2", response.getValue());
+	}
 }

@@ -108,6 +108,7 @@ public class PipelineServiceImpl<RESPONSE> implements PipelineService<RESPONSE> 
 		return new PipelineContextImpl();
 	}
 
+	@SuppressWarnings("unchecked")
 	@PostConstruct
 	public void postConstruct() throws GeomajasException {
 		// sort pipelines so a pipeline is always before it's delegate (to make sure delegates are not handled before
@@ -252,28 +253,29 @@ public class PipelineServiceImpl<RESPONSE> implements PipelineService<RESPONSE> 
 		// construct the nested hierarchy of normal steps and interceptor steps
 		for (PipelineInterceptorStep<RESPONSE> interceptorStep : interceptorSteps) {
 			log.debug("adding interceptor {} to pipeline {}", interceptorStep.getId(), pipeline.getPipelineName());
-			int fromIndex = -1;
-			int toIndex = -1;
+			int fromIndex = 0;
+			int toIndex = steps.size() - 1;
 			// find the from and to step indices (takes nesting into account)
-			for (PipelineStep<RESPONSE> pipelineStep : steps) {
+			for (int i = 0 ; i < steps.size() ; i ++) {
+				PipelineStep<RESPONSE> pipelineStep = steps.get(i);
 				if (pipelineStep instanceof PipelineInterceptorStep) {
 					PipelineInterceptorStep<RESPONSE> pis = (PipelineInterceptorStep<RESPONSE>) pipelineStep;
 					if (pis.getFromStep().equals(interceptorStep.getFromStep())) {
-						fromIndex = steps.indexOf(pis);
+						fromIndex = i;
 					}
 					if (pis.getToStep().equals(interceptorStep.getToStep())) {
-						toIndex = steps.indexOf(pis);
+						toIndex = i;
 					}
 				} else {
 					if (pipelineStep.equals(interceptorStep.getFromStep())) {
-						fromIndex = steps.indexOf(pipelineStep);
+						fromIndex = i;
 					}
 					if (pipelineStep.equals(interceptorStep.getToStep())) {
-						toIndex = steps.indexOf(pipelineStep);
+						toIndex = i;
 					}
 				}
 			}
-			if (fromIndex < 0 || toIndex < 0 || fromIndex > toIndex) {
+			if (fromIndex > toIndex) {
 				throw new GeomajasException(ExceptionCode.PIPELINE_HIDDEN_INTERCEPTOR_STEP, interceptorStep.getId());
 			}
 			// nest the steps
@@ -308,15 +310,16 @@ public class PipelineServiceImpl<RESPONSE> implements PipelineService<RESPONSE> 
 		public PipelineInterceptorStep(PipelineInterceptor<T> interceptor, List<PipelineStep<T>> steps)
 				throws GeomajasException {
 			this.interceptor = interceptor;
-			int fromIndex = -1;
-			int toIndex = -1;
-			for (PipelineStep<T> pipelineStep : steps) {
+			int fromIndex = 0;
+			int toIndex = steps.size() - 1;
+			for (int i = 0 ; i < steps.size() ; i ++) {
+				PipelineStep<T> pipelineStep = steps.get(i);
 				if (pipelineStep.getId().equals(interceptor.getFromStepId())) {
-					fromIndex = steps.indexOf(pipelineStep);
+					fromIndex = i;
 					fromStep = pipelineStep;
 				}
 				if (pipelineStep.getId().equals(interceptor.getToStepId())) {
-					toIndex = steps.indexOf(pipelineStep);
+					toIndex = i;
 					toStep = pipelineStep;
 				}
 			}
@@ -358,7 +361,7 @@ public class PipelineServiceImpl<RESPONSE> implements PipelineService<RESPONSE> 
 			}
 			switch (mode) {
 				case EXECUTE_ALL:
-				case EXECUTE_STEPS:
+				case EXECUTE_STEPS_NOT_AFTER:
 					if (!context.isFinished()) {
 						for (PipelineStep<T> step : getSteps()) {
 							if (context.isFinished()) {
@@ -375,7 +378,7 @@ public class PipelineServiceImpl<RESPONSE> implements PipelineService<RESPONSE> 
 			}
 			switch (mode) {
 				case EXECUTE_ALL:
-				case EXECUTE_AFTER:
+				case EXECUTE_SKIP_STEPS:
 					interceptor.afterSteps(context, response);
 					break;
 				default:
