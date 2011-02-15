@@ -70,34 +70,34 @@
 
     <para><itemizedlist>
         <listitem>
-          <para>PIPELINE_GET_VECTOR_TILE_RASTER_URL: pipeline to get a tile
+          <para>PIPELINE_GET_VECTOR_TILE_RASTERIZE_DELAYED: pipeline to get a tile
           for a vector layer. This will just generate the url, the
           rasterization will take place when the url is requested.</para>
         </listitem>
 
         <listitem>
-          <para>PIPELINE_GET_VECTOR_TILE_RASTER_ALL: pipeline to get a tile
+          <para>PIPELINE_GET_VECTOR_TILE_RASTERIZE_IMMEDIATE: pipeline to get a tile
           for a vector layer. This includes rasterization, the image will be
           cached.</para>
         </listitem>
 
         <listitem>
-          <para>PIPELINE_GET_VECTOR_TILE_RASTER_URL_CACHED: pipeline to get a
+          <para>PIPELINE_GET_VECTOR_TILE_RASTERIZE_DELAYED_CACHED: pipeline to get a
           tile for a vector layer and cache it. This will just generate the
           url, the rasterization will take place when the url is
           requested.</para>
         </listitem>
 
         <listitem>
-          <para>PIPELINE_GET_VECTOR_TILE_RASTER_ALL_CACHED: pipeline to get a
+          <para>PIPELINE_GET_VECTOR_TILE_RASTERIZE_IMMEDIATE_CACHED: pipeline to get a
           tile for a vector layer and cache it. This includes rasterization,
           so the image will also be cached.</para>
         </listitem>
       </itemizedlist></para>
 
     <para>With the default configurations, rasterization is set to
-    PIPELINE_GET_VECTOR_TILE_RASTER_URL or
-    PIPELINE_GET_VECTOR_TILE_RASTER_URL_CACHED for all layers.</para>
+    PIPELINE_GET_VECTOR_TILE_RASTERIZE_DELAYED or
+    PIPELINE_GET_VECTOR_TILE_RASTERIZE_DELAYED_CACHED for all layers.</para>
 
     <para>You can set a specific pipeline for a layer using a configuration
     like this:</para>
@@ -111,7 +111,7 @@
         &lt;util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_GET_VECTOR_TILE"/&gt;
     &lt;/property&gt;
     &lt;property name="layerId" value="myLayer" /&gt;
-    &lt;property name="delegatePipeline" ref="PIPELINE_GET_VECTOR_TILE_RASTER_ALL" /&gt;
+    &lt;property name="delegatePipeline" ref="PIPELINE_GET_VECTOR_TILE_RASTERIZE_IMMEDIATE" /&gt;
 &lt;/bean&gt;</programlisting>
     </example>
   </section>

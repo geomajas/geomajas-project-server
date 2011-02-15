@@ -23,20 +23,20 @@ http://www.springframework.org/schema/util/spring-util-3.0.xsd">
 	<!--  default for rasterizing -->
 	<bean class="org.geomajas.service.pipeline.PipelineInfo">
 		<property name="pipelineName"><util:constant static-field="org.geomajas.plugin.rasterizing.api.RasterizingPipelineCode.PIPELINE_GET_VECTOR_TILE_RASTERIZING"/></property>
-		<property name="delegatePipeline" ref="PIPELINE_GET_VECTOR_TILE_RASTER_ALL" />
+		<property name="delegatePipeline" ref="PIPELINE_GET_VECTOR_TILE_RASTERIZE_IMMEDIATE" />
 	</bean>
 
 	<!--  layer-specific for GetVectorTile -->
 	<bean class="org.geomajas.service.pipeline.PipelineInfo">
 		<property name="pipelineName"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_GET_VECTOR_TILE"/></property>
 		<property name="layerId" value="beans"/>
-		<property name="delegatePipeline" ref="PIPELINE_GET_VECTOR_TILE_RASTER_ALL" />
+		<property name="delegatePipeline" ref="PIPELINE_GET_VECTOR_TILE_RASTERIZE_IMMEDIATE" />
 	</bean>
 			
 	<bean class="org.geomajas.service.pipeline.PipelineInfo">
 		<property name="pipelineName"><util:constant static-field="org.geomajas.service.pipeline.PipelineCode.PIPELINE_GET_VECTOR_TILE"/></property>
 		<property name="layerId" value="layerBeansPoint"/>
-		<property name="delegatePipeline" ref="PIPELINE_GET_VECTOR_TILE_RASTER_URL" />
+		<property name="delegatePipeline" ref="PIPELINE_GET_VECTOR_TILE_RASTERIZE_DELAYED" />
 	</bean>
 
 </beans>

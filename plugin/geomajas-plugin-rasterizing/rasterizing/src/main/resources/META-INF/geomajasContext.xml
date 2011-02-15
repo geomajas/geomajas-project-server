@@ -82,8 +82,8 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 
 	<!-- define pipelines for VectorLayerService -->
 
-	<bean name="PIPELINE_GET_VECTOR_TILE_RASTER_URL" class="org.geomajas.service.pipeline.PipelineInfo">
-		<property name="pipelineName" value="$PIPELINE_GET_VECTOR_TILE_RASTER_URL" />
+	<bean name="PIPELINE_GET_VECTOR_TILE_RASTERIZE_DELAYED" class="org.geomajas.service.pipeline.PipelineInfo">
+		<property name="pipelineName" value="$PIPELINE_GET_VECTOR_TILE_RASTERIZE_DELAYED" />
 		<property name="delegatePipeline" ref="PIPELINE_GET_VECTOR_TILE" />
 		<property name="extensions">
 			<map>
@@ -126,9 +126,9 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		</property>
 	</bean>
 
-	<bean name="PIPELINE_GET_VECTOR_TILE_RASTER_ALL" class="org.geomajas.service.pipeline.PipelineInfo">
-		<property name="pipelineName" value="$PIPELINE_GET_VECTOR_TILE_RASTER_ALL" />
-		<property name="delegatePipeline" ref="PIPELINE_GET_VECTOR_TILE_RASTER_URL" />
+	<bean name="PIPELINE_GET_VECTOR_TILE_RASTERIZE_IMMEDIATE" class="org.geomajas.service.pipeline.PipelineInfo">
+		<property name="pipelineName" value="$PIPELINE_GET_VECTOR_TILE_RASTERIZE_IMMEDIATE" />
+		<property name="delegatePipeline" ref="PIPELINE_GET_VECTOR_TILE_RASTERIZE_DELAYED" />
 		<property name="extensions">
 			<map>
 				<entry key="preTileFill">
@@ -151,9 +151,9 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 	
 	<!-- define cached pipelines for VectorLayerService -->
 
-	<bean name="PIPELINE_GET_VECTOR_TILE_RASTER_URL_CACHED" class="org.geomajas.service.pipeline.PipelineInfo">
-		<property name="pipelineName" value="$PIPELINE_GET_VECTOR_TILE_RASTER_URL_CACHED" />
-		<property name="delegatePipeline" ref="PIPELINE_GET_VECTOR_TILE_RASTER_URL" />
+	<bean name="PIPELINE_GET_VECTOR_TILE_RASTERIZE_DELAYED_CACHED" class="org.geomajas.service.pipeline.PipelineInfo">
+		<property name="pipelineName" value="$PIPELINE_GET_VECTOR_TILE_RASTERIZE_DELAYED_CACHED" />
+		<property name="delegatePipeline" ref="PIPELINE_GET_VECTOR_TILE_RASTERIZE_DELAYED" />
 		<property name="interceptors">
 			<list>
 				<bean
@@ -166,9 +166,9 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		</property>
 	</bean>
 
-	<bean name="PIPELINE_GET_VECTOR_TILE_RASTER_ALL_CACHED" class="org.geomajas.service.pipeline.PipelineInfo">
-		<property name="pipelineName" value="$PIPELINE_GET_VECTOR_TILE_RASTER_ALL_CACHED" />
-		<property name="delegatePipeline" ref="PIPELINE_GET_VECTOR_TILE_RASTER_ALL" />
+	<bean name="PIPELINE_GET_VECTOR_TILE_RASTERIZE_IMMEDIATE_CACHED" class="org.geomajas.service.pipeline.PipelineInfo">
+		<property name="pipelineName" value="$PIPELINE_GET_VECTOR_TILE_RASTERIZE_IMMEDIATE_CACHED" />
+		<property name="delegatePipeline" ref="PIPELINE_GET_VECTOR_TILE_RASTERIZE_IMMEDIATE" />
 		<property name="interceptors">
 			<list>
 				<bean
