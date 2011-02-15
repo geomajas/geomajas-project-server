@@ -117,7 +117,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 					<property name="stepId" value="GetTileFillStep" />
 				</bean>
 				<bean
-					class="org.geomajas.plugin.rasterizing.RebuildCachingInterceptor">
+					class="org.geomajas.plugin.rasterizing.RebuildCacheCachingInterceptor">
 					<property name="id" value="RebuildCache" />
 					<property name="fromStepId" value="GetTileFilterStep" />
 					<property name="toStepId" value="GetTileFillStep" />

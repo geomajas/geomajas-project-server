@@ -37,7 +37,7 @@ import com.vividsolutions.jts.geom.Envelope;
  * 
  * @author Jan De Moerloose
  */
-public class RebuildCachingInterceptor extends AbstractCachingInterceptor<GetTileContainer> {
+public class RebuildCacheCachingInterceptor extends AbstractCachingInterceptor<GetTileContainer> {
 
 	private static final String[] KEYS = { PipelineCode.LAYER_ID_KEY, PipelineCode.TILE_METADATA_KEY };
 
@@ -53,7 +53,7 @@ public class RebuildCachingInterceptor extends AbstractCachingInterceptor<GetTil
 	@Autowired
 	private TestRecorder recorder;
 	
-	public RebuildCachingInterceptor() {
+	public RebuildCacheCachingInterceptor() {
 		setSecurityContextCached(true);
 	}
 
