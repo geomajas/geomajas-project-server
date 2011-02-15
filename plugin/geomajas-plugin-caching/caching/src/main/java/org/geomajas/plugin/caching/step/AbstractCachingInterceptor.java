@@ -11,6 +11,7 @@
 
 package org.geomajas.plugin.caching.step;
 
+import org.geomajas.global.Api;
 import org.geomajas.global.CacheableObject;
 import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.VectorLayer;
@@ -34,7 +35,9 @@ import com.vividsolutions.jts.geom.Envelope;
  * @author Jan De Moerloose
  * 
  * @param <T> pipeline
+ * @since 1.9.0
  */
+@Api(allMethods = true)
 public abstract class AbstractCachingInterceptor<T> extends AbstractPipelineInterceptor<T> {
 
 	private final Logger log = LoggerFactory.getLogger(AbstractCachingInterceptor.class);
