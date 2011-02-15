@@ -35,7 +35,7 @@ public class GetTileCachingInterceptor extends AbstractCachingInterceptor<GetTil
 
 	public ExecutionMode beforeSteps(PipelineContext context, GetTileContainer response) throws GeomajasException {
 		TileCacheContainer cc = getContainer(CacheStepConstant.CACHE_TILE_KEY, KEYS,
-				CacheCategory.TILE, context);
+				CacheCategory.TILE, context, TileCacheContainer.class);
 		if (cc != null) {
 			recorder.record(CacheCategory.TILE, "Got item from cache");
 			response.getTile().setFeatures(cc.getTile().getFeatures());

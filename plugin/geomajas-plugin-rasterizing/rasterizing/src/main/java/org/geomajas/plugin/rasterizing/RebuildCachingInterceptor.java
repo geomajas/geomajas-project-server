@@ -59,7 +59,7 @@ public class RebuildCachingInterceptor extends AbstractCachingInterceptor<GetTil
 
 	public ExecutionMode beforeSteps(PipelineContext context, GetTileContainer response) throws GeomajasException {
 		RebuildCacheContainer rcc = getContainer(RasterizingPipelineCode.IMAGE_ID_KEY, KEYS, CacheCategory.REBUILD,
-				context);
+				context, RebuildCacheContainer.class);
 		if (rcc != null) {
 			recorder.record(CacheCategory.REBUILD, "Got item from cache");
 			rcc.getContext();
@@ -92,7 +92,6 @@ public class RebuildCachingInterceptor extends AbstractCachingInterceptor<GetTil
 		rcc.setMetadata(tileMetadata);
 		putContainer(context, CacheCategory.REBUILD, KEYS, RasterizingPipelineCode.IMAGE_ID_KEY, rcc, response
 				.getTile().getBounds());
-
 	}
 
 }

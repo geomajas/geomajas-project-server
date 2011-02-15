@@ -34,7 +34,7 @@ public class GetBoundsCachingInterceptor extends AbstractCachingInterceptor<GetB
 
 	public ExecutionMode beforeSteps(PipelineContext context, GetBoundsContainer response) throws GeomajasException {
 		BoundsCacheContainer cc = getContainer(CacheStepConstant.CACHE_BOUNDS_KEY, KEYS,
-				CacheCategory.BOUNDS, context);
+				CacheCategory.BOUNDS, context, BoundsCacheContainer.class);
 		if (cc != null) {
 			recorder.record(CacheCategory.BOUNDS, "Got item from cache");
 			response.setEnvelope(cc.getBounds());

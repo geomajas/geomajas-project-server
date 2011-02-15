@@ -39,7 +39,7 @@ public class RasterizeCachingInterceptor  extends AbstractCachingInterceptor<Ras
 
 	public ExecutionMode beforeSteps(PipelineContext context, RasterizingContainer response) throws GeomajasException {
 		RasterizingContainer rc = getContainer(RasterizingPipelineCode.IMAGE_ID_KEY, KEYS, CacheCategory.RASTER,
-				context);
+				context, RasterizingContainer.class);
 		if (null != rc) {
 			recorder.record(CacheCategory.RASTER, "Got item from cache");
 			response.setImage(rc.getImage());

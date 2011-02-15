@@ -41,14 +41,15 @@ public class GetTileAllCachingInterceptor extends AbstractCachingInterceptor<Get
 	}
 
 	public ExecutionMode beforeSteps(PipelineContext context, GetTileContainer response) throws GeomajasException {
-		TileCacheContainer cc = getContainer(CacheStepConstant.CACHE_TILE_KEY, KEYS, CacheCategory.TILE, context);
+		TileCacheContainer cc = getContainer(CacheStepConstant.CACHE_TILE_KEY, KEYS, CacheCategory.TILE, context,
+				TileCacheContainer.class);
 		if (cc != null) {
 			recorder.record(CacheCategory.TILE, "Got item from cache");
 			response.getTile().setFeatures(cc.getTile().getFeatures());
 			response.getTile().setFeatureContent(cc.getTile().getFeatureContent());
 			response.getTile().setContentType(cc.getTile().getContentType());
 			RasterizingContainer rc = getContainer(RasterizingPipelineCode.IMAGE_ID_KEY, KEYS, CacheCategory.RASTER,
-					context);
+					context, RasterizingContainer.class);
 			if (null != rc) {
 				recorder.record(CacheCategory.RASTER, "Got item from cache");
 				context.put(RasterizingPipelineCode.CONTAINER_KEY, rc);

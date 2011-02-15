@@ -34,7 +34,7 @@ public class GetFeaturesEachCachingInterceptor extends AbstractCachingIntercepto
 
 	public ExecutionMode beforeSteps(PipelineContext context, GetFeaturesContainer response) throws GeomajasException {
 		FeaturesCacheContainer cc = getContainer(CacheStepConstant.CACHE_FEATURES_KEY, KEYS,
-				CacheCategory.FEATURE, context);
+				CacheCategory.FEATURE, context, FeaturesCacheContainer.class);
 		if (cc != null) {
 			recorder.record(CacheCategory.FEATURE, "Got item from cache");
 			response.setBounds(cc.getBounds());

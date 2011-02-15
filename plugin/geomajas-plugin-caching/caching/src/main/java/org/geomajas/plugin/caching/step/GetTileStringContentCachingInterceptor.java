@@ -37,10 +37,11 @@ public class GetTileStringContentCachingInterceptor extends AbstractCachingInter
 	public ExecutionMode beforeSteps(PipelineContext context, GetTileContainer response) throws GeomajasException {
 		CacheCategory category = CacheCategory.VML;
 		TileContentCacheContainer tcc = getContainer(CacheStepConstant.CACHE_TILE_CONTENT_KEY,
-				KEYS, category, context);
+				KEYS, category, context, TileContentCacheContainer.class);
 		if (tcc == null) {
 			category = CacheCategory.SVG;
-			tcc = getContainer(CacheStepConstant.CACHE_TILE_CONTENT_KEY, KEYS, category, context);
+			tcc = getContainer(CacheStepConstant.CACHE_TILE_CONTENT_KEY, KEYS, category, context,
+					TileContentCacheContainer.class);
 		}
 		if (tcc != null) {
 			recorder.record(category, "Got item from cache");
