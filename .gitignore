@@ -1,6 +1,8 @@
 .idea/
 .eclipse/
 *.iml
+*.ipr
+*.iws
 target/
 classes/
 *~
