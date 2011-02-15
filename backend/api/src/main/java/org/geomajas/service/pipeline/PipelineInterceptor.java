@@ -13,12 +13,13 @@ package org.geomajas.service.pipeline;
 
 import org.geomajas.global.Api;
 import org.geomajas.global.GeomajasException;
-import org.geomajas.global.UserImplemented;
 
 /**
  * A pipeline interceptor allows to perform some action before and after a consecutive series of pipeline steps. It also
  * allows to optionally skip those steps and/or the after action by letting the before action returning different
  * execution modes.
+ *
+ * Do not implement this class, extend {@link AbstractPipelineInterceptor} instead.
  * 
  * @param <RESPONSE>
  *            type of response object for the pipeline
@@ -27,7 +28,6 @@ import org.geomajas.global.UserImplemented;
  * @since 1.9.0
  */
 @Api(allMethods = true)
-@UserImplemented
 public interface PipelineInterceptor<RESPONSE> {
 
 	/**

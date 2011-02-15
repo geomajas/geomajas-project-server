@@ -107,12 +107,12 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<property name="interceptors">
 			<list>
 				<bean
-					class="org.geomajas.internal.service.pipeline.SkipStepInterceptor">
+					class="org.geomajas.service.pipeline.SkipStepPipelineInterceptor">
 					<property name="id" value="SkipTileStringContent" />
 					<property name="stepId" value="GetTileStringContentStep" />
 				</bean>
 				<bean
-					class="org.geomajas.internal.service.pipeline.SkipStepInterceptor">
+					class="org.geomajas.service.pipeline.SkipStepPipelineInterceptor">
 					<property name="id" value="SkipTileFill" />
 					<property name="stepId" value="GetTileFillStep" />
 				</bean>

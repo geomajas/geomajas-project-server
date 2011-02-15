@@ -221,7 +221,7 @@ http://www.springframework.org/schema/context/spring-context-2.5.xsd"
 		<property name="delegatePipeline" ref="intercepted" />
 		<property name="interceptors">
 			<list>
-				<bean class="org.geomajas.internal.service.pipeline.SkipStepInterceptor">
+				<bean class="org.geomajas.service.pipeline.SkipStepPipelineInterceptor">
 					<property name="id" value="i3" />
 					<property name="fromStepId" value="s1" />
 					<property name="toStepId" value="s1" />
