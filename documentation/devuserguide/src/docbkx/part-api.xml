@@ -1851,6 +1851,11 @@
               </listitem>
 
               <listitem>
+                <para>"TileFillStep" : assure features are only rendered in on
+                tile (as needed for SVG and VML rendering). </para>
+              </listitem>
+
+              <listitem>
                 <para>"GetStringContent" : render the features to the
                 requested string content.</para>
               </listitem>
