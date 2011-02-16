@@ -211,7 +211,7 @@ http://www.springframework.org/schema/context http://www.springframework.org/sch
 								</property>
 								<property name="filters">
 									<map>
-										<entry key="countries110m2" value="(PEOPLE > 50000000)"/>
+										<entry key="layerCountries110m2" value="(PEOPLE > 50000000)"/>
 									</map>
 								</property>
 							</bean>
