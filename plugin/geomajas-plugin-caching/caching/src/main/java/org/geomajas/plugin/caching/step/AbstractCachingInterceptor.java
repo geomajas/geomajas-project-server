@@ -109,6 +109,9 @@ public abstract class AbstractCachingInterceptor<T> extends AbstractPipelineInte
 					cacheKey = cacheKeyService.makeUnique(cacheKey);
 					cc = cacheManager.get(layer, category, cacheKey, containerClass);
 				} else {
+					if (keyKey != null) {
+						pipelineContext.put(keyKey, cacheKey);
+					}
 					return cc;
 				}
 			}
