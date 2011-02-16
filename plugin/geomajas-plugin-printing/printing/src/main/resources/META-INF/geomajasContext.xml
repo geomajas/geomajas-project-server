@@ -69,7 +69,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 					<property name="key" value="JPedal"/>
 					<property name="copyright" value="Copyright © 1997-2008, IDRsolutions and Contributors"/>
 					<property name="licenseName" value="GNU LGPL v3"/>
-					<property name="licenseUrl" value="ttp://www.gnu.org/licenses/lgpl.txt"/>
+					<property name="licenseUrl" value="http://www.gnu.org/licenses/lgpl.txt"/>
 				</bean>
 			</list>
 		</property>

@@ -146,12 +146,22 @@ public class VectorLayerComponentImpl extends BaseLayerComponentImpl<VectorLayer
 			} catch (Exception e) {
 				log.error("Error rendering vectorlayerRenderer", e);
 			}
+			
+			// order features, selected last
+			List<InternalFeature> orderedFeatures = new ArrayList<InternalFeature>();
+			for (InternalFeature feature : features) {
+				if (selectedFeatures.contains(feature.getId())) {
+					orderedFeatures.add(feature);
+				} else {
+					orderedFeatures.add(0, feature);
+				}
+			}
 
-			for (InternalFeature f : features) {
+			for (InternalFeature f : orderedFeatures) {
 				drawFeature(context, f);
 			}
 			if (isLabelsVisible()) {
-				for (InternalFeature f : features) {
+				for (InternalFeature f : orderedFeatures) {
 					drawLabel(context, f);
 				}
 			}
@@ -186,8 +196,9 @@ public class VectorLayerComponentImpl extends BaseLayerComponentImpl<VectorLayer
 		context.strokeRoundRectangle(rect, borderColor, linewidth, 3);
 		context.drawText(label, font, rect, fontColor);
 		if (f.getGeometry() instanceof Point) {
-			context.drawLine(0.5f * (rect.getLeft() + rect.getRight()), rect.getBottom(), 0.5f * (rect.getLeft() + rect
-					.getRight()), rect.getBottom() - SYMBOL_CONNECT_LENGTH, borderColor, linewidth);
+			context.drawLine(0.5f * (rect.getLeft() + rect.getRight()), rect.getBottom(),
+					0.5f * (rect.getLeft() + rect.getRight()), rect.getBottom() - SYMBOL_CONNECT_LENGTH, borderColor,
+					linewidth);
 		}
 	}
 
@@ -205,8 +216,8 @@ public class VectorLayerComponentImpl extends BaseLayerComponentImpl<VectorLayer
 		float margin = 0.25f * font.getSize();
 		Rectangle rect = new Rectangle(textSize.getWidth() + 2 * margin, textSize.getHeight() + 2 * margin);
 		Coordinate labelPosition = geoService.calcDefaultLabelPosition(f);
-		context.moveRectangleTo(rect, (float) labelPosition.x - rect.getWidth() / 2f, (float) labelPosition.y
-				- rect.getHeight() / 2f);
+		context.moveRectangleTo(rect, (float) labelPosition.x - rect.getWidth() / 2f,
+				(float) labelPosition.y - rect.getHeight() / 2f);
 		if (f.getGeometry() instanceof Point) {
 			float shiftHeight = 0.5f * (rect.getHeight() + getSymbolHeight(f));
 			// move up 15 pixels to make the symbol visible
@@ -239,11 +250,15 @@ public class VectorLayerComponentImpl extends BaseLayerComponentImpl<VectorLayer
 		ClientMapInfo map = configurationService.getMapInfo(getMap().getMapId(), getMap().getApplicationId());
 		if (selectedFeatures.contains(f.getId())) {
 			if (f.getGeometry() instanceof MultiPolygon || f.getGeometry() instanceof Polygon) {
-				fillColor = context.getColor(map.getPolygonSelectStyle().getFillColor(), style.getFillOpacity());
+				style = mergeStyle(style, map.getPolygonSelectStyle());
+				fillColor = context.getColor(style.getFillColor(), style.getFillOpacity());
+				strokeColor = context.getColor(style.getStrokeColor(), style.getStrokeOpacity());
 			} else if (f.getGeometry() instanceof MultiLineString || f.getGeometry() instanceof LineString) {
-				strokeColor = context.getColor(map.getLineSelectStyle().getStrokeColor(), style.getStrokeOpacity());
+				style = mergeStyle(style, map.getLineSelectStyle());
+				strokeColor = context.getColor(style.getStrokeColor(), style.getStrokeOpacity());
 			} else if (f.getGeometry() instanceof MultiPoint || f.getGeometry() instanceof Point) {
-				strokeColor = context.getColor(map.getPointSelectStyle().getStrokeColor(), style.getStrokeOpacity());
+				style = mergeStyle(style, map.getPointSelectStyle());
+				strokeColor = context.getColor(style.getStrokeColor(), style.getStrokeOpacity());
 			}
 		}
 
@@ -255,8 +270,23 @@ public class VectorLayerComponentImpl extends BaseLayerComponentImpl<VectorLayer
 		}
 		// transform to user space
 		f.getGeometry().apply(new MapToUserFilter());
+		// notify geometry change !!!
+		f.getGeometry().geometryChanged();
 		// now draw
 		context.drawGeometry(f.getGeometry(), symbol, fillColor, strokeColor, lineWidth, dashArray, getSize());
+	}
+
+	private FeatureStyleInfo mergeStyle(FeatureStyleInfo base, FeatureStyleInfo extension) {
+		FeatureStyleInfo merged = new FeatureStyleInfo();
+		merged.setDashArray(extension.getDashArray() != null ? extension.getDashArray() : base.getDashArray());
+		merged.setFillColor(extension.getFillColor() != null ? extension.getFillColor() : base.getFillColor());
+		merged.setFillOpacity(extension.getFillOpacity() != -1 ? extension.getFillOpacity() : base.getFillOpacity());
+		merged.setStrokeColor(extension.getStrokeColor() != null ? extension.getStrokeColor() : base.getStrokeColor());
+		merged.setStrokeOpacity(extension.getStrokeOpacity() != -1 ? extension.getStrokeOpacity() : base
+				.getStrokeOpacity());
+		merged.setSymbol(extension.getSymbol() != null ? extension.getSymbol() : base.getSymbol());
+		merged.setStrokeWidth(extension.getStrokeWidth() != -1 ? extension.getStrokeWidth() : base.getStrokeWidth());
+		return merged;
 	}
 
 	/**
