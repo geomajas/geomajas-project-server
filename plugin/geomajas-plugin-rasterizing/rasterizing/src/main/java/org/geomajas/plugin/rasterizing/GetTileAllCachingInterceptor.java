@@ -14,7 +14,7 @@ import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.pipeline.GetTileContainer;
 import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.plugin.caching.service.CacheCategory;
-import org.geomajas.plugin.caching.step.AbstractCachingInterceptor;
+import org.geomajas.plugin.caching.step.AbstractSecurityContextCachingInterceptor;
 import org.geomajas.plugin.caching.step.CacheStepConstant;
 import org.geomajas.plugin.caching.step.TileCacheContainer;
 import org.geomajas.plugin.rasterizing.api.RasterizingContainer;
@@ -29,16 +29,12 @@ import org.springframework.beans.factory.annotation.Autowired;
  * 
  * @author Jan De Moerloose
  */
-public class GetTileAllCachingInterceptor extends AbstractCachingInterceptor<GetTileContainer> {
+public class GetTileAllCachingInterceptor extends AbstractSecurityContextCachingInterceptor<GetTileContainer> {
 
 	@Autowired
 	private TestRecorder recorder;
 
 	private static final String[] KEYS = { PipelineCode.LAYER_ID_KEY, PipelineCode.TILE_METADATA_KEY };
-
-	public GetTileAllCachingInterceptor() {
-		setSecurityContextCached(true);
-	}
 
 	public ExecutionMode beforeSteps(PipelineContext context, GetTileContainer response) throws GeomajasException {
 		TileCacheContainer cc = getContainer(CacheStepConstant.CACHE_TILE_KEY, KEYS, CacheCategory.TILE, context,

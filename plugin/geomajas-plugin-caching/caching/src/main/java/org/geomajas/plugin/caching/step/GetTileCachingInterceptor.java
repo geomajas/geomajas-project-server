@@ -25,7 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * 
  * @author Jan De Moerloose
  */
-public class GetTileCachingInterceptor extends AbstractCachingInterceptor<GetTileContainer> {
+public class GetTileCachingInterceptor extends AbstractSecurityContextCachingInterceptor<GetTileContainer> {
 
 	@Autowired
 	private TestRecorder recorder;

@@ -24,7 +24,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author Jan De Moerloose
  * 
  */
-public class GetFeaturesEachCachingInterceptor extends AbstractCachingInterceptor<GetFeaturesContainer> {
+public class GetFeaturesEachCachingInterceptor extends AbstractSecurityContextCachingInterceptor<GetFeaturesContainer> {
 
 	@Autowired
 	private TestRecorder recorder;

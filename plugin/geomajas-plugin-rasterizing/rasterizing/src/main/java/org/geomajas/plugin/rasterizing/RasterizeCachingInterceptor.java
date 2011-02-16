@@ -13,7 +13,7 @@ package org.geomajas.plugin.rasterizing;
 
 import org.geomajas.global.GeomajasException;
 import org.geomajas.plugin.caching.service.CacheCategory;
-import org.geomajas.plugin.caching.step.AbstractCachingInterceptor;
+import org.geomajas.plugin.caching.step.AbstractSecurityContextCachingInterceptor;
 import org.geomajas.plugin.rasterizing.api.RasterizingContainer;
 import org.geomajas.plugin.rasterizing.api.RasterizingPipelineCode;
 import org.geomajas.service.TestRecorder;
@@ -26,16 +26,12 @@ import org.springframework.beans.factory.annotation.Autowired;
  * 
  * @author Jan De Moerloose
  */
-public class RasterizeCachingInterceptor  extends AbstractCachingInterceptor<RasterizingContainer> {
+public class RasterizeCachingInterceptor  extends AbstractSecurityContextCachingInterceptor<RasterizingContainer> {
 
 	private static final String[] KEYS = { PipelineCode.LAYER_ID_KEY, PipelineCode.TILE_METADATA_KEY };
 
 	@Autowired
 	private TestRecorder recorder;
-
-	public RasterizeCachingInterceptor() {
-		setSecurityContextCached(true);
-	}
 
 	public ExecutionMode beforeSteps(PipelineContext context, RasterizingContainer response) throws GeomajasException {
 		RasterizingContainer rc = getContainer(RasterizingPipelineCode.IMAGE_ID_KEY, KEYS, CacheCategory.RASTER,

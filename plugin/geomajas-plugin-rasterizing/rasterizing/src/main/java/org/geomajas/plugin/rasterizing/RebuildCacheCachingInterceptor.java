@@ -20,7 +20,7 @@ import org.geomajas.layer.pipeline.GetTileContainer;
 import org.geomajas.layer.tile.InternalTile;
 import org.geomajas.layer.tile.TileMetadata;
 import org.geomajas.plugin.caching.service.CacheCategory;
-import org.geomajas.plugin.caching.step.AbstractCachingInterceptor;
+import org.geomajas.plugin.caching.step.AbstractSecurityContextCachingInterceptor;
 import org.geomajas.plugin.rasterizing.api.RasterizingPipelineCode;
 import org.geomajas.service.ConfigurationService;
 import org.geomajas.service.DtoConverterService;
@@ -37,7 +37,7 @@ import com.vividsolutions.jts.geom.Envelope;
  * 
  * @author Jan De Moerloose
  */
-public class RebuildCacheCachingInterceptor extends AbstractCachingInterceptor<GetTileContainer> {
+public class RebuildCacheCachingInterceptor extends AbstractSecurityContextCachingInterceptor<GetTileContainer> {
 
 	private static final String[] KEYS = { PipelineCode.LAYER_ID_KEY, PipelineCode.TILE_METADATA_KEY };
 
@@ -53,10 +53,6 @@ public class RebuildCacheCachingInterceptor extends AbstractCachingInterceptor<G
 	@Autowired
 	private TestRecorder recorder;
 	
-	public RebuildCacheCachingInterceptor() {
-		setSecurityContextCached(true);
-	}
-
 	public ExecutionMode beforeSteps(PipelineContext context, GetTileContainer response) throws GeomajasException {
 		RebuildCacheContainer rcc = getContainer(RasterizingPipelineCode.IMAGE_ID_KEY, KEYS, CacheCategory.REBUILD,
 				context, RebuildCacheContainer.class);
@@ -80,6 +76,7 @@ public class RebuildCacheCachingInterceptor extends AbstractCachingInterceptor<G
 			// can't stop here, we have only prepared the context, not built the tile !
 			InternalTile tile = new InternalTileImpl(tileMetadata.getCode(), tileExtent, tileMetadata.getScale());
 			response.setTile(tile);
+			restoreSecurityContext(rcc.getContext());
 			return ExecutionMode.EXECUTE_ALL;
 		}
 		return ExecutionMode.EXECUTE_ALL;

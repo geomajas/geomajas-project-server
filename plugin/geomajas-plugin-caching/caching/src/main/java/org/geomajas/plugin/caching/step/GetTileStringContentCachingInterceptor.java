@@ -26,13 +26,13 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author Jan De Moerloose
  * 
  */
-public class GetTileStringContentCachingInterceptor extends AbstractCachingInterceptor<GetTileContainer> {
+public class GetTileStringContentCachingInterceptor
+		extends AbstractSecurityContextCachingInterceptor<GetTileContainer> {
 
 	@Autowired
 	private TestRecorder recorder;
 
-	private static final String[] KEYS = { PipelineCode.LAYER_ID_KEY, PipelineCode.TILE_METADATA_KEY,
-			PipelineCode.FEATURE_INCLUDES_KEY };
+	private static final String[] KEYS = { PipelineCode.LAYER_ID_KEY, PipelineCode.TILE_METADATA_KEY };
 
 	public ExecutionMode beforeSteps(PipelineContext context, GetTileContainer response) throws GeomajasException {
 		CacheCategory category = CacheCategory.VML;

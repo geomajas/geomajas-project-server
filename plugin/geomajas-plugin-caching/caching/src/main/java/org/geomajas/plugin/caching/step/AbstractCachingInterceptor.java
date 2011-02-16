@@ -12,14 +12,11 @@
 package org.geomajas.plugin.caching.step;
 
 import org.geomajas.global.Api;
-import org.geomajas.global.CacheableObject;
-import org.geomajas.global.GeomajasException;
 import org.geomajas.layer.VectorLayer;
 import org.geomajas.plugin.caching.service.CacheCategory;
 import org.geomajas.plugin.caching.service.CacheContext;
 import org.geomajas.plugin.caching.service.CacheKeyService;
 import org.geomajas.plugin.caching.service.CacheManagerService;
-import org.geomajas.security.SecurityContext;
 import org.geomajas.service.pipeline.AbstractPipelineInterceptor;
 import org.geomajas.service.pipeline.PipelineCode;
 import org.geomajas.service.pipeline.PipelineContext;
@@ -32,10 +29,10 @@ import com.vividsolutions.jts.geom.Envelope;
 /**
  * Abstract base class for pipeline interceptors that implement a cache cycle. Caches the security context.
  * 
+ * @param <T> pipeline result type
+ *
  * @author Jan De Moerloose
- * 
- * @param <T> pipeline
- * @since 1.9.0
+ * @since 1.0.0
  */
 @Api(allMethods = true)
 public abstract class AbstractCachingInterceptor<T> extends AbstractPipelineInterceptor<T> {
@@ -48,60 +45,54 @@ public abstract class AbstractCachingInterceptor<T> extends AbstractPipelineInte
 	@Autowired
 	private CacheKeyService cacheKeyService;
 
-	@Autowired
-	private SecurityContext securityContext;
-	
-	private boolean securityContextCached;
-
-
 	/**
-	 * Is the security context cached by this interceptor ?
-	 * @return true if cached, false otherwise
+	 * Hook to allow additional data to be added in the cache context by subclasses.
+	 *
+	 * @param cacheContext cache context
 	 */
-	public boolean isSecurityContextCached() {
-		return securityContextCached;
+	protected void addMoreContext(CacheContext cacheContext) {
+		// nothing to do, can be overwritten by subclasses...
 	}
 
 	/**
-	 * If set to true, the security context will be cached as well.
-	 * @param securityContextCached true if the security context has to be cached
+	 * ???
+	 *
+	 * @param keys keys which need to be include in the cache context
+	 * @param category cache category
+	 * @param pipelineContext pipeline context
+	 * @param containerClass container class
+	 * @param <CONTAINER> container class
+	 * @return cache container
 	 */
-	public void setSecurityContextCached(boolean securityContextCached) {
-		this.securityContextCached = securityContextCached;
-	}
-
 	protected <CONTAINER extends CacheContainer> CONTAINER getContainer(String[] keys, CacheCategory category,
-			PipelineContext pipelineContext, Class<CONTAINER> containerClass) throws GeomajasException {
+			PipelineContext pipelineContext, Class<CONTAINER> containerClass) {
 		return getContainer(null, keys, category, pipelineContext, containerClass);
 	}
 
+	/**
+	 * ???
+	 *
+	 * @param keyKey key to put the cache key in the pipeline context
+	 * @param keys keys which need to be include in the cache context
+	 * @param category cache category
+	 * @param pipelineContext pipeline context
+	 * @param containerClass container class
+	 * @param <CONTAINER> container class
+	 * @return cache container
+	 */
 	protected <CONTAINER extends CacheContainer> CONTAINER getContainer(String keyKey, String[] keys,
-			CacheCategory category, PipelineContext pipelineContext, Class<CONTAINER> containerClass)
-			throws GeomajasException {
-		VectorLayer layer = pipelineContext.get(PipelineCode.LAYER_KEY, VectorLayer.class);
-		CONTAINER cc;
-		String cacheKey = null;
-		if (keyKey != null) {
-			cacheKey = pipelineContext.getOptional(keyKey, String.class);
-		}
-		if (cacheKey != null) {
-			cc = cacheManager.get(layer, category, cacheKey, containerClass);
-			if (cc != null && isSecurityContextCached()) {
-				// deserialize cached security context
-				deserializeSecurityContext(cc.getContext());
+			CacheCategory category, PipelineContext pipelineContext, Class<CONTAINER> containerClass) {
+		CONTAINER cc = null;
+		try {
+			VectorLayer layer = pipelineContext.get(PipelineCode.LAYER_KEY, VectorLayer.class);
+			String cacheKey = null;
+			if (keyKey != null) {
+				cacheKey = pipelineContext.getOptional(keyKey, String.class);
 			}
-		} else {
-			// context should have all keys !
-			for (String key : keys) {
-				if (pipelineContext.getOptional(key) == null) {
-					return null;
-				}
+			if (cacheKey != null) {
+				cc = cacheManager.get(layer, category, cacheKey, containerClass);
 			}
-			CacheContext cacheContext = cacheKeyService.getCacheContext(pipelineContext, keys);
-			// add the security key
-			if (isSecurityContextCached()) {
-				serializeSecurityContext(cacheContext);
-			}
+<<<<<<< HEAD
 			cacheKey = cacheKeyService.getCacheKey(cacheContext);
 			cc = cacheManager.get(layer, category, cacheKey, containerClass);
 			while (null != cc) {
@@ -113,23 +104,59 @@ public abstract class AbstractCachingInterceptor<T> extends AbstractPipelineInte
 						pipelineContext.put(keyKey, cacheKey);
 					}
 					return cc;
+=======
+			if (null == cc) {
+				// context should have all keys !
+				for (String key : keys) {
+					if (pipelineContext.getOptional(key) == null) {
+						return null;
+					}
+				}
+				CacheContext cacheContext = cacheKeyService.getCacheContext(pipelineContext, keys);
+				addMoreContext(cacheContext); // add more data...
+
+				cacheKey = cacheKeyService.getCacheKey(cacheContext);
+				cc = cacheManager.get(layer, category, cacheKey, containerClass);
+				while (null != cc) {
+					if (!cacheContext.equals(cc.getContext())) {
+						cacheKey = cacheKeyService.makeUnique(cacheKey);
+						cc = cacheManager.get(layer, category, cacheKey, containerClass);
+					} else {
+						if (keyKey != null) {
+							pipelineContext.put(keyKey, cacheKey);
+						}
+						return cc;
+					}
+>>>>>>> RAST-12, CACHE-11 split AbstractCachingInterceptor in normal and SecurityContext variant, apply security context caching where needed, don't auto-restore security context
 				}
 			}
+		} catch (Throwable t) {
+			// have to prevent caching code from making the pipeline fail, log and discard errors
+			log.error("Error during caching step, only logged: " + t.getMessage(), t);
 		}
 		return cc;
 	}
 
+	/**
+	 * ???
+	 *
+	 * @param pipelineContext
+	 * @param category
+	 * @param keys
+	 * @param keyKey
+	 * @param cacheContainer
+	 * @param envelope
+	 */
 	protected void putContainer(PipelineContext pipelineContext, CacheCategory category, String[] keys, String keyKey,
-			CacheContainer cacheContainer, Envelope envelope) throws GeomajasException {
+			CacheContainer cacheContainer, Envelope envelope) {
 		try {
 			// recorder.record(category, "Put item in cache");
 			VectorLayer layer = pipelineContext.get(PipelineCode.LAYER_KEY, VectorLayer.class);
 			CacheContext cacheContext = cacheKeyService.getCacheContext(pipelineContext, keys);
+			addMoreContext(cacheContext); // add more data...
+
 			cacheContainer.setContext(cacheContext);
-			// serialize security for cacheKey users
-			if (isSecurityContextCached()) {
-				serializeSecurityContext(cacheContext);
-			}
+
 			String cacheKey = cacheKeyService.getCacheKey(cacheContext);
 			Object cc = cacheManager.get(layer, category, cacheKey);
 			while (null != cc) {
@@ -144,30 +171,5 @@ public abstract class AbstractCachingInterceptor<T> extends AbstractPipelineInte
 		}
 	}
 	
-	/**
-	 * Puts the cached security context in the thread local.
-	 *
-	 * @param context the cache context
-	 */
-	protected void deserializeSecurityContext(CacheContext context) {
-		Object cached = context.get(CacheContext.SECURITY_CONTEXT_KEY);
-		if (cached != null) {
-			log.debug("Restoring security context ", cached);
-			securityContext.restore((CacheableObject) cached);
-		}
-	}
-	
-	/**
-	 * Puts the thread local security in the cache.
-	 *
-	 * @param context cache context
-	 */
-	protected void serializeSecurityContext(CacheContext context) {
-		Object cached = context.get(CacheContext.SECURITY_CONTEXT_KEY);
-		if (cached == null) {
-			log.debug("Storing security context ", securityContext.getCacheableObject());
-			context.put(CacheContext.SECURITY_CONTEXT_KEY, securityContext.getCacheableObject());
-		}
-	}
 
 }
