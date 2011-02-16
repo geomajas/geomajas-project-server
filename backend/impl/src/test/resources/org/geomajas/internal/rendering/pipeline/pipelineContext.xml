@@ -238,7 +238,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<property name="delegatePipeline" ref="intercepted" />
 		<property name="interceptors">
 			<list>
-				<bean class="org.geomajas.internal.service.pipeline.TestInterceptor">
+				<bean class="org.geomajas.internal.service.pipeline.ForTestInterceptor">
 					<property name="id" value="i4" />
 				</bean>
 			</list>
@@ -251,7 +251,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<property name="delegatePipeline" ref="intercepted" />
 		<property name="interceptors">
 			<list>
-				<bean class="org.geomajas.internal.service.pipeline.TestInterceptor">
+				<bean class="org.geomajas.internal.service.pipeline.ForTestInterceptor">
 					<property name="executionMode" value="EXECUTE_ALL" />
 					<property name="id" value="interceptor" />
 					<property name="stepId" value="s1" />
@@ -266,7 +266,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<property name="delegatePipeline" ref="intercepted" />
 		<property name="interceptors">
 			<list>
-				<bean class="org.geomajas.internal.service.pipeline.TestInterceptor">
+				<bean class="org.geomajas.internal.service.pipeline.ForTestInterceptor">
 					<property name="executionMode" value="EXECUTE_SKIP_STEPS" />
 					<property name="id" value="interceptor" />
 					<property name="stepId" value="s1" />
@@ -281,7 +281,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<property name="delegatePipeline" ref="intercepted" />
 		<property name="interceptors">
 			<list>
-				<bean class="org.geomajas.internal.service.pipeline.TestInterceptor">
+				<bean class="org.geomajas.internal.service.pipeline.ForTestInterceptor">
 					<property name="executionMode" value="EXECUTE_STEPS_NOT_AFTER" />
 					<property name="id" value="interceptor" />
 					<property name="stepId" value="s1" />
@@ -296,7 +296,7 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 		<property name="delegatePipeline" ref="intercepted" />
 		<property name="interceptors">
 			<list>
-				<bean class="org.geomajas.internal.service.pipeline.TestInterceptor">
+				<bean class="org.geomajas.internal.service.pipeline.ForTestInterceptor">
 					<property name="executionMode" value="EXECUTE_NONE" />
 					<property name="id" value="interceptor" />
 					<property name="stepId" value="s1" />

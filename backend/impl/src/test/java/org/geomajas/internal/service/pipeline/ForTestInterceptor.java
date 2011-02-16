@@ -21,7 +21,7 @@ import org.geomajas.service.pipeline.PipelineContext;
  *
  * @author Joachim Van der Auwera
  */
-public class TestInterceptor extends AbstractPipelineInterceptor<StringAttribute> {
+public class ForTestInterceptor extends AbstractPipelineInterceptor<StringAttribute> {
 	private ExecutionMode executionMode = ExecutionMode.EXECUTE_ALL;
 
 	public void setExecutionMode(ExecutionMode executionMode) {

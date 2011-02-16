@@ -256,7 +256,7 @@ public class PipelineServiceImpl<RESPONSE> implements PipelineService<RESPONSE> 
 			int fromIndex = 0;
 			int toIndex = steps.size() - 1;
 			// find the from and to step indices (takes nesting into account)
-			for (int i = 0 ; i < steps.size() ; i ++) {
+			for (int i = 0 ; i < steps.size() ; iI++) {
 				PipelineStep<RESPONSE> pipelineStep = steps.get(i);
 				if (pipelineStep instanceof PipelineInterceptorStep) {
 					PipelineInterceptorStep<RESPONSE> pis = (PipelineInterceptorStep<RESPONSE>) pipelineStep;
@@ -312,7 +312,7 @@ public class PipelineServiceImpl<RESPONSE> implements PipelineService<RESPONSE> 
 			this.interceptor = interceptor;
 			int fromIndex = 0;
 			int toIndex = steps.size() - 1;
-			for (int i = 0 ; i < steps.size() ; i ++) {
+			for (int i = 0 ; i < steps.size() ; i++) {
 				PipelineStep<T> pipelineStep = steps.get(i);
 				if (pipelineStep.getId().equals(interceptor.getFromStepId())) {
 					fromIndex = i;
