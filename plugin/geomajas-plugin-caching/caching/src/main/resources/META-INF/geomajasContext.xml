@@ -114,8 +114,6 @@ http://www.springframework.org/schema/util http://www.springframework.org/schema
 				<bean
 					class="org.geomajas.plugin.caching.step.GetTileCachingInterceptor">
 					<property name="id" value="GetTileCache" />
-					<property name="fromStepId" value="postTileFilter" />
-					<property name="toStepId" value="postGetStringContent" />
 				</bean>
 			</list>
 		</property>

@@ -8,6 +8,7 @@
  * by the Geomajas Contributors License Agreement. For full licensing
  * details, see LICENSE.txt in the project root.
  */
+
 package org.geomajas.plugin.caching.step;
 
 import org.geomajas.global.GeomajasException;
@@ -23,7 +24,6 @@ import org.springframework.beans.factory.annotation.Autowired;
  * Interceptor for caching the tile.
  * 
  * @author Jan De Moerloose
- * 
  */
 public class GetTileCachingInterceptor extends AbstractCachingInterceptor<GetTileContainer> {
 
@@ -50,7 +50,6 @@ public class GetTileCachingInterceptor extends AbstractCachingInterceptor<GetTil
 		InternalTile tile = response.getTile();
 		putContainer(context, CacheCategory.TILE, KEYS, CacheStepConstant.CACHE_TILE_KEY,
 				new TileCacheContainer(tile), tile.getBounds());
-
 	}
 
 }
